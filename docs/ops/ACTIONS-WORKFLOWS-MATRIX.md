@@ -12,6 +12,7 @@
 | n8n SHE bridge parents | 4 parents including Sweep + backfill → skip/cancel storms | **Dual-gate parents only**; concurrency **per SHA** (not per parent name) |
 | Skipped/Cancelled policy | Treated as “expected noise” | **Validation-audit required**; notification edge stays failure/timeout only |
 | Matrix SSOT | Absent / partial | This file + diagrams + Lead/Lag cadence |
+| Help-wanted dashboard concurrency | Manual dispatch storms cancel previous; script fail on status refresh | Documented class; concurrency group preserved; next: continue-on-error on non-critical refresh or script harden |
 
 **Still open (not fixed until device-side + dual-gate promote):**
 
@@ -19,6 +20,7 @@
 - Operator must set unique opaque `TERMUX_DEVICE_ID` per physical unit (primary broken screen → secondary or headless).
 - Dual-gate green on this branch + merge.
 - Broader workflow fan-out (context audit concurrency, high-volume schedule watchers) — next consolidation slices. ~159 workflows total; modular reduction of notification edges is ongoing.
+- help-wanted-dashboard-deploy status refresh script failures on master (concurrency cancels + python step); require script diagnostics.
 
 ## Opaque device identity (public)
 
@@ -48,7 +50,7 @@ GitHub still **lists** skipped runs in the Actions tab (platform limitation: `wo
 6. **Adaptive cache / WAIT** — re-fetch only on material delta; backoff on no-progress; disjoint work while quiet.
 7. **In-process queued/skipped** — concurrency groups + reaper + Lead/Lag classify as operational lag (no notification).
 
-Current master tip (`c9cd2059…`) shows success + intentional skipped (e.g. Fix-on-Failure, Run Watcher) with no failure conclusions in latest window. Ghost queued residual on disabled workflow id remains platform observation only.
+Current master tip shows success + intentional skipped with no failure conclusions in latest window. Ghost queued residual on disabled workflow id remains platform observation only.
 
 ## Validation audit rule (enforced)
 
@@ -75,6 +77,7 @@ Skipped / Cancelled / Stale / Timed out / Queued / Neutral require **attentive v
 | Dependabot unresolvable | Security update groups | Historical ignore-list | Closed by prior PR |
 | Catalog race | Historical correlation --check | Closed by repairs | Current success |
 | Skip/cancel spam | High-volume workflow_run | Reduced this branch | Audit + concurrency + Lead/Lag |
+| Dashboard deploy script fail | help-wanted-dashboard-deploy status refresh python | Open on master | Concurrency group + continue-on-error candidate; script harden next |
 
 ## Cadence / cache / adaptive telemetry (3L0 moneyball equivalent)
 
@@ -124,7 +127,7 @@ Target: reduce effective notification edges by combining related schedules into 
 | Bridge/Tunnel | n8n-she-bridge, tunnel-canary, termux-bridge-connect | Keep separate; canary is inventory only | */30 or dispatch |
 | Context graph | context-relationship-*.yml (many) | Single orchestrator with path filters | schedule + workflow_run limited |
 | Agent lanes | agent-*-ops, quality, throughput | Group under agent-continuous-ops | schedule staggered |
-| Help-wanted | help-wanted-* | Already somewhat modular | schedule |
+| Help-wanted | help-wanted-* + dashboard-deploy | Concurrency group + if: on non-critical; script harden | dispatch + path |
 
 **Spam reduction levers already applied:**
 - n8n parents limited to dual-gate.
@@ -133,7 +136,7 @@ Target: reduce effective notification edges by combining related schedules into 
 - Lead/Lag classifies skipped as lag_operational (no incident).
 - In-process queued classified as operational lag via adaptive WAIT.
 
-Next slice: audit top 10 schedule workflows by run volume and apply concurrency + if-conditions for non-critical. Lead/Lag snapshot uses delta detection to avoid empty commits.
+Next slice: audit top 10 schedule workflows by run volume and apply concurrency + if-conditions for non-critical. Lead/Lag snapshot uses delta detection to avoid empty commits. Harden help-wanted status refresh to continue-on-error for non-gate paths.
 
 ## Additional flowchart: skip/cancel audit
 
@@ -159,5 +162,5 @@ flowchart TD
 - Requirement: operator sets unique TERMUX_DEVICE_ID on physical units; publisher job updates status to active when tunnel verified.
 - Alternatives: Cloudflare tunnel, secondary node, pure Actions runners for non-device work. Redundant paths documented for broken-screen primary.
 
-Observed this session: 2026-10-18T17:20Z (master tip c9cd2059 green; recent runs success/skipped intentional; PR #1245 head 3db265d green on advisory checks)
+Observed this session: 2026-10-18T19:00Z (branch head green on advisory; master dashboard deploys show concurrency cancels + status refresh failures)
 Agent-Identity: Grok (Administrator)

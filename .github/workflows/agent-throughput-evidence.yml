@@ -156,7 +156,7 @@ jobs:
                 context_fingerprint: fingerprint(boundaryAuthor.context_fingerprint),
                 attribution_method: identity.provider ? 'workflow_name_mapping' : 'inferred',
                 confidence: identity.confidence,
-                evidence_refs: [`workflow_run:${run.id}`, `workflow_name:${workflowName}`]
+                evidence_refs: [`workflow_run:${run.id}`, `workflow_name:${identity.needle}`]
               },
               workflow_run: {
                 id: run.id,

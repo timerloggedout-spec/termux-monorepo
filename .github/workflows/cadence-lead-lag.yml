@@ -1,0 +1,78 @@
+name: Cadence Lead/Lag
+
+on:
+  schedule:
+    - cron: "12 */2 * * *"
+  workflow_dispatch:
+    inputs:
+      per_page:
+        description: Workflow runs to sample
+        type: string
+        default: "50"
+
+permissions:
+  actions: read
+  contents: write
+
+concurrency:
+  group: cadence-lead-lag
+  cancel-in-progress: true
+
+jobs:
+  classify:
+    name: lead-lag-moneyball
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: "3.12"
+
+      - name: Classify recent Actions outcomes (Lead/Lag)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          PER="${{ inputs.per_page || '50' }}"
+          python3 scripts/ops/lead_lag_cadence.py \
+            --owner "${{ github.repository_owner }}" \
+            --repo "${GITHUB_REPOSITORY#*/}" \
+            --branch master \
+            --per-page "$PER" \
+            --out docs/ops/generated/lead-lag-cadence.json
+
+      - name: Summary
+        run: |
+          set -euo pipefail
+          {
+            echo "## Cadence Lead/Lag (moneyball plane)"
+            echo
+            echo "Correctness > green badges. Skipped/cancelled = operational lag, not model failure."
+            echo
+            if [ -f docs/ops/generated/lead-lag-cadence.json ]; then
+              echo '```json'
+              head -c 6000 docs/ops/generated/lead-lag-cadence.json
+              echo
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit cadence snapshot
+        run: |
+          set -euo pipefail
+          git add docs/ops/generated/lead-lag-cadence.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No cadence delta."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -s -m "chore(cadence): Lead/Lag moneyball snapshot" \
+            -m "Observation plane only. Not dual-gate. Device UI not required." \
+            -m "Agent-Identity: Cadence Lead/Lag"
+          git push || echo "push skipped (expected without write on some refs)"

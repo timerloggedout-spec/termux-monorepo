@@ -2,7 +2,7 @@
 # Opaque device identity, kept separate from hardware/software fingerprints.
 # See docs/ops/DEVICE-IDENTITY.md.
 #
-#   device-identity.sh init [--id tmx-node-xxxx] [--role observer|bridge] [--origin-id tmx-node-primary]
+#   device-identity.sh init [--id tmx-node-xxxx] [--role observer-controller|observer|bridge] [--origin-id tmx-node-primary]
 #   device-identity.sh show
 #   device-identity.sh keygen                 # operator age keypair (once, on one trusted unit)
 #   device-identity.sh seal [--recipient age1...]... [--secret] [--commit]
@@ -24,7 +24,7 @@ mint_id() { printf 'tmx-node-%s\n' "$(od -An -N4 -tx1 /dev/urandom | tr -d ' \n'
 secret_name() { printf 'TMX_FPMAP_%s' "$(printf '%s' "${1#tmx-node-}" | tr 'a-z-' 'A-Z_')"; }
 
 cmd_init() {
-  local id="" role="observer" origin="$TMX_ORIGIN_DEVICE_ID"
+  local id="" role="observer-controller" origin="$TMX_ORIGIN_DEVICE_ID"
   while [ $# -gt 0 ]; do
     case "$1" in
       --id) id="$2"; shift 2 ;;
@@ -41,7 +41,7 @@ cmd_init() {
   fi
   [ -n "$id" ] || id="$(mint_id)"
   printf '%s' "$id" | grep -Eq "$TMX_ID_REGEX" || tmx_die "invalid id '$id'"
-  case "$role" in observer|bridge|worker) ;; *) tmx_die "role must be observer|bridge|worker" ;; esac
+  case "$role" in observer-controller|observer|bridge|worker) ;; *) tmx_die "role must be observer-controller|observer|bridge|worker" ;; esac
   mkdir -p "$TMX_CONFIG_DIR" "$TMX_STATE_DIR"; chmod 700 "$TMX_CONFIG_DIR"
   umask 077
   cat >"$TMX_IDENTITY_ENV" <<EOF

@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-18T11:05:04Z UTC · receipts=2783 · foreign_open=40 · tributes=101_
+_Generated 2026-10-18T12:48:13Z UTC · receipts=2783 · foreign_open=40 · tributes=101_
 
 ## Tributes (contributor ledger)
 
+- [Octo-Protocol-org/Octo-frontend#592](https://github.com/Octo-Protocol-org/Octo-frontend/pull/592) · state=open · help-wanted: stake + contribute for #501
 - [0xLizTech/stellarforge#614](https://github.com/0xLizTech/stellarforge/pull/614) · state=open · help-wanted: stake + contribute for #92
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -36,17 +37,17 @@ _Generated 2026-10-18T11:05:04Z UTC · receipts=2783 · foreign_open=40 · tribu
 - [ciaren-labs/Ciaren#234](https://github.com/ciaren-labs/Ciaren/pull/234) · state=open · help-wanted: stake + contribute for #96
 - [finos/fluxnova-bpm-platform#352](https://github.com/finos/fluxnova-bpm-platform/pull/352) · state=open · help-wanted: stake + contribute for #152
 - [ShippedLabs/soroban-upgrade-safeguard#781](https://github.com/ShippedLabs/soroban-upgrade-safeguard/pull/781) · state=open · help-wanted: stake + contribute for #764
-- [Local-Settle/local-settle-backend#127](https://github.com/Local-Settle/local-settle-backend/pull/127) · state=open · help-wanted: stake + contribute for #2
+- [Local-Settle/local-settle-backend#127](https://github.com/Local-Settle/local-settle-backend/pull/127) · state=closed · help-wanted: stake + contribute for #2
 - [stellar-compliance-kit/compliance-primitives#656](https://github.com/stellar-compliance-kit/compliance-primitives/pull/656) · state=open · help-wanted: stake + contribute for #180
 - [Health-watchers/health_watchers#1698](https://github.com/Health-watchers/health_watchers/pull/1698) · state=open · help-wanted: stake + contribute for #1519
 - [Nodal-stellar/Nodal-AI#853](https://github.com/Nodal-stellar/Nodal-AI/pull/853) · state=open · help-wanted: stake + contribute for #769
 - [Nodal-stellar/Nodal-AI#857](https://github.com/Nodal-stellar/Nodal-AI/pull/857) · state=open · help-wanted: stake + contribute for #811
 - [LabsCrypt/remitlend#1990](https://github.com/LabsCrypt/remitlend/pull/1990) · state=open · help-wanted: stake + contribute for #1503
 - [xtekky/gpt4free#3541](https://github.com/xtekky/gpt4free/pull/3541) · state=open · Fix typo in README from 'Interference' to 'Inference'
-- [RetinaX-Org/RetinaX#352](https://github.com/RetinaX-Org/RetinaX/pull/352) · state=open · help-wanted: stake + contribute for #282
 
 ## Foreign open PRs
 
+- [Octo-Protocol-org/Octo-frontend#592](https://github.com/Octo-Protocol-org/Octo-frontend/pull/592) — help-wanted: stake + contribute for #501
 - [0xLizTech/stellarforge#614](https://github.com/0xLizTech/stellarforge/pull/614) — help-wanted: stake + contribute for #92
 - [xtekky/gpt4free#3541](https://github.com/xtekky/gpt4free/pull/3541) — Fix typo in README from 'Interference' to 'Inference'
 - [RetinaX-Org/RetinaX#352](https://github.com/RetinaX-Org/RetinaX/pull/352) — help-wanted: stake + contribute for #282
@@ -55,7 +56,6 @@ _Generated 2026-10-18T11:05:04Z UTC · receipts=2783 · foreign_open=40 · tribu
 - [Nodal-stellar/Nodal-AI#853](https://github.com/Nodal-stellar/Nodal-AI/pull/853) — help-wanted: stake + contribute for #769
 - [Health-watchers/health_watchers#1698](https://github.com/Health-watchers/health_watchers/pull/1698) — help-wanted: stake + contribute for #1519
 - [stellar-compliance-kit/compliance-primitives#656](https://github.com/stellar-compliance-kit/compliance-primitives/pull/656) — help-wanted: stake + contribute for #180
-- [Local-Settle/local-settle-backend#127](https://github.com/Local-Settle/local-settle-backend/pull/127) — help-wanted: stake + contribute for #2
 - [ShippedLabs/soroban-upgrade-safeguard#781](https://github.com/ShippedLabs/soroban-upgrade-safeguard/pull/781) — help-wanted: stake + contribute for #764
 - [finos/fluxnova-bpm-platform#352](https://github.com/finos/fluxnova-bpm-platform/pull/352) — help-wanted: stake + contribute for #152
 - [ciaren-labs/Ciaren#234](https://github.com/ciaren-labs/Ciaren/pull/234) — help-wanted: stake + contribute for #96

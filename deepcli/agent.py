@@ -32,7 +32,7 @@ TOOLS = [
         "parameters":{"type":"object","properties":{"path":{"type":"string"}},"required":["path"]}}},
     {"type":"function","function":{
         "name":"glob",
-        "description":"Glob a pattern under a base dir (e.g. path='~/.agents/skills', glob='*​/SKILL.md').",
+        "description":"Glob a pattern under a base dir (e.g. path='~/.agents/skills', glob='*/SKILL.md').",
         "parameters":{"type":"object","properties":{"path":{"type":"string"},"glob":{"type":"string"}},"required":["path","glob"]}}},
     {"type":"function","function":{
         "name":"list_skills",
@@ -361,7 +361,7 @@ def _agent_notify(kind: str, title: str, content: str, priority: str = "default"
 
 def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False, role=None, task_id=None, transport=None):
     print(f"\n▶ task: {task}\n")
-    print(f"  [role] {role or os.environ.get(\"DEEPCLI_ROLE\", \"engineer\")} [task_id] {task_id or os.environ.get(\"DEEPCLI_TASK_ID\", \"unassigned\")} [transport] {transport or os.environ.get(\"DEEPCLI_TRANSPORT\", \"auto\")}")
+    print(f"  [role] {role or os.environ.get('DEEPCLI_ROLE', 'engineer')} [task_id] {task_id or os.environ.get('DEEPCLI_TASK_ID', 'unassigned')} [transport] {transport or os.environ.get('DEEPCLI_TRANSPORT', 'auto')}")
     msgs = [{"role":"system","content":build_system_prompt(task, role=role, task_id=task_id, transport=transport)}, {"role":"user","content":task}]
     for step in range(MAX_STEPS):
         print(f"── step {step+1}/{MAX_STEPS} ──")
@@ -385,30 +385,21 @@ def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False
             if dry_run: continue
             result = execute(c)
             if fn == "finish":
-                print(f"\n✔ FINISH\n{result.get('summary','')}\n")
+                print(f"\n✔ FINISH\n{result.get('summary','')}")
                 return result.get("summary","")
-            printable = json.dumps(result) if not isinstance(result, str) else result
-            pass  # no cap — DeepSeek web session is ~1M tokens; tool results fit
-            print(f"    ← {printable[:300]}")
-            msgs.append({"role":"tool","tool_call_id":c["id"],"content":printable})
-    print(f"\n✗ hit MAX_STEPS={MAX_STEPS}\n")
-    return ""
-
+            msgs.append({"role":"tool","tool_call_id":c["id"],"content":json.dumps(result)[:8000]})
+    print("\n⚠ ceiling reached")
+    return "ceiling"
 
 if __name__ == "__main__":
-    argv = sys.argv[1:]
-    dry = False
-    role = os.environ.get("DEEPCLI_ROLE", "engineer")
-    task_id = os.environ.get("DEEPCLI_TASK_ID")
-    transport = os.environ.get("DEEPCLI_TRANSPORT", "auto")
-    if argv and argv[0] == "--dry-run":
-        dry = True; argv = argv[1:]
-    if "--role" in argv:
-        i=argv.index("--role"); role=argv[i+1]; del argv[i:i+2]
-    if "--task-id" in argv:
-        i=argv.index("--task-id"); task_id=argv[i+1]; del argv[i:i+2]
-    if "--transport" in argv:
-        i=argv.index("--transport"); transport=argv[i+1]; del argv[i:i+2]
-    if not argv:
-        print("usage: agent.py [--dry-run] \"<task>\""); sys.exit(2)
-    loop(" ".join(argv), dry_run=dry, role=role, task_id=task_id, transport=transport)
+    import argparse
+    p = argparse.ArgumentParser()
+    p.add_argument("task", nargs="?")
+    p.add_argument("--dry-run", action="store_true")
+    p.add_argument("--fresh", action="store_true")
+    p.add_argument("--role")
+    p.add_argument("--task-id")
+    p.add_argument("--transport")
+    args = p.parse_args()
+    task = args.task or "status"
+    loop(task, dry_run=args.dry_run, fresh=args.fresh, role=args.role, task_id=args.task_id, transport=args.transport)

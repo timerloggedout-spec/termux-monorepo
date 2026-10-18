@@ -1,9 +1,11 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-18T20:35:38Z UTC · receipts=2783 · foreign_open=38 · tributes=102_
+_Generated 2026-10-18T22:26:22Z UTC · receipts=2783 · foreign_open=38 · tributes=104_
 
 ## Tributes (contributor ledger)
 
+- [timerloggedout-spec/gh-aw_fork#2](https://github.com/timerloggedout-spec/gh-aw_fork/pull/2) · state=closed · ci: pause upstream scheduled workflows behind ENABLE_UPSTREAM_SCHEDULES
+- [timerloggedout-spec/gh-aw-mcpg_fork#1](https://github.com/timerloggedout-spec/gh-aw-mcpg_fork/pull/1) · state=closed · ci: pause upstream scheduled workflows behind ENABLE_UPSTREAM_SCHEDULES
 - [CodeGirlsInc/FrieghtFlow#1743](https://github.com/CodeGirlsInc/FrieghtFlow/pull/1743) · state=open · help-wanted: stake + contribute for #1717
 - [Octo-Protocol-org/Octo-frontend#592](https://github.com/Octo-Protocol-org/Octo-frontend/pull/592) · state=closed · help-wanted: stake + contribute for #501
 - [0xLizTech/stellarforge#614](https://github.com/0xLizTech/stellarforge/pull/614) · state=open · help-wanted: stake + contribute for #92
@@ -42,8 +44,6 @@ _Generated 2026-10-18T20:35:38Z UTC · receipts=2783 · foreign_open=38 · tribu
 - [stellar-compliance-kit/compliance-primitives#656](https://github.com/stellar-compliance-kit/compliance-primitives/pull/656) · state=open · help-wanted: stake + contribute for #180
 - [Health-watchers/health_watchers#1698](https://github.com/Health-watchers/health_watchers/pull/1698) · state=open · help-wanted: stake + contribute for #1519
 - [Nodal-stellar/Nodal-AI#853](https://github.com/Nodal-stellar/Nodal-AI/pull/853) · state=open · help-wanted: stake + contribute for #769
-- [Nodal-stellar/Nodal-AI#857](https://github.com/Nodal-stellar/Nodal-AI/pull/857) · state=open · help-wanted: stake + contribute for #811
-- [LabsCrypt/remitlend#1990](https://github.com/LabsCrypt/remitlend/pull/1990) · state=open · help-wanted: stake + contribute for #1503
 
 ## Foreign open PRs
 

@@ -1,0 +1,90 @@
+name: tribute-vercel-prod
+
+# Keeps the public Vercel production URL of the Ops · Tribute dashboard
+# (apps/help-wanted-dashboard) on the current master commit.
+#
+# Why this exists: the Vercel projects that serve this page (help-wanted-oversight,
+# help-wanted-dash) build master pushes as *Preview* (their Production Branch is
+# not master), so the public *.vercel.app production alias stayed on a
+# 2026-09-19-era build. This workflow promotes master explicitly with
+# `vercel deploy --prod` and stamps data/build.json with the commit it serves.
+#
+# Additive: new workflow only. Triggers on dashboard source changes, not on the
+# generated status JSON bots refresh, to protect the Hobby deployment quota.
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "apps/help-wanted-dashboard/**"
+      - ".github/workflows/tribute-vercel-prod.yml"
+  workflow_dispatch:
+    inputs:
+      projects:
+        description: "Space-separated Vercel project names to promote"
+        required: false
+        default: ""
+
+concurrency:
+  group: tribute-vercel-prod
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  promote:
+    name: promote-master-to-vercel-production
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      PROJECTS: ${{ github.event.inputs.projects || vars.TRIBUTE_VERCEL_PROJECTS || 'help-wanted-oversight help-wanted-dash' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Vercel CLI
+        run: npm i -g vercel@39
+      - name: Deploy master to production and verify
+        run: |
+          set -euo pipefail
+          if [ -z "${VERCEL_TOKEN:-}" ]; then
+            echo "::error::VERCEL_TOKEN secret is missing; cannot promote master to Vercel production."
+            exit 1
+          fi
+          SCOPE="${VERCEL_ORG_ID:-team_jKHy7m9xZrvrGP5cAlIMPs3S}"
+          SHORT="${GITHUB_SHA:0:7}"
+          rc=0
+          for P in $PROJECTS; do
+            echo "::group::$P"
+            W="$RUNNER_TEMP/deploy-$P"; rm -rf "$W"; mkdir -p "$W"; cd "$W"
+            vercel link --yes --project "$P" --scope "$SCOPE" --token "$VERCEL_TOKEN"
+            vercel pull --yes --environment=production --token "$VERCEL_TOKEN" || true
+            ROOT=$(jq -r '.settings.rootDirectory // empty' .vercel/project.json 2>/dev/null || true)
+            DEST="$W/${ROOT:-.}"; mkdir -p "$DEST/data"
+            cp -a "$GITHUB_WORKSPACE/apps/help-wanted-dashboard/." "$DEST/"
+            [ -f "$GITHUB_WORKSPACE/docs/ops/generated/help-wanted-status.json" ] && cp "$GITHUB_WORKSPACE/docs/ops/generated/help-wanted-status.json" "$DEST/data/status.json" || true
+            [ -f "$GITHUB_WORKSPACE/docs/ops/generated/lane-matrix-status.json" ] && cp "$GITHUB_WORKSPACE/docs/ops/generated/lane-matrix-status.json" "$DEST/data/lane-matrix-status.json" || true
+            printf '{"source_sha":"%s","short_sha":"%s","ref":"%s","run":"%s/%s/actions/runs/%s"}\n' \
+              "$GITHUB_SHA" "$SHORT" "$GITHUB_REF_NAME" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" > "$DEST/data/build.json"
+            rm -rf .vercel/output
+            if URL=$(vercel deploy --prod --yes --token "$VERCEL_TOKEN" --scope "$SCOPE"); then
+              echo "deployed $P -> $URL"
+              LIVE="https://$P.vercel.app/data/build.json"
+              got=""
+              for i in 1 2 3 4 5 6; do
+                got=$(curl -fsSL "$LIVE?t=$(date +%s)" | jq -r .source_sha 2>/dev/null || true)
+                [ "$got" = "$GITHUB_SHA" ] && break; sleep 10
+              done
+              if [ "$got" = "$GITHUB_SHA" ]; then
+                echo "- $P: https://$P.vercel.app serves \`$SHORT\` (verified via data/build.json)" >> "$GITHUB_STEP_SUMMARY"
+              else
+                echo "- $P: deployed $URL, but https://$P.vercel.app reports \`${got:-unreachable}\` (alias may differ)" >> "$GITHUB_STEP_SUMMARY"
+              fi
+            else
+              echo "::warning::vercel deploy --prod failed for $P"
+              echo "- $P: deploy failed" >> "$GITHUB_STEP_SUMMARY"; rc=1
+            fi
+            cd "$GITHUB_WORKSPACE"
+            echo "::endgroup::"
+          done
+          exit $rc

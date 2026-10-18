@@ -1,10 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-18T12:48:49Z UTC · receipts=2783 · foreign_open=40 · tributes=101_
+_Generated 2026-10-18T14:32:16Z UTC · receipts=2783 · foreign_open=38 · tributes=101_
 
 ## Tributes (contributor ledger)
 
-- [Octo-Protocol-org/Octo-frontend#592](https://github.com/Octo-Protocol-org/Octo-frontend/pull/592) · state=open · help-wanted: stake + contribute for #501
+- [Octo-Protocol-org/Octo-frontend#592](https://github.com/Octo-Protocol-org/Octo-frontend/pull/592) · state=closed · help-wanted: stake + contribute for #501
 - [0xLizTech/stellarforge#614](https://github.com/0xLizTech/stellarforge/pull/614) · state=open · help-wanted: stake + contribute for #92
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -29,7 +29,7 @@ _Generated 2026-10-18T12:48:49Z UTC · receipts=2783 · foreign_open=40 · tribu
 - [ROCm/rocm-libraries#13152](https://github.com/ROCm/rocm-libraries/pull/13152) · state=open · help-wanted: stake + contribute for #10586
 - [topoteretes/cognee#5439](https://github.com/topoteretes/cognee/pull/5439) · state=open · help-wanted: stake + contribute for #4757
 - [traceopt-ai/traceml#547](https://github.com/traceopt-ai/traceml/pull/547) · state=open · help-wanted: stake + contribute for #128
-- [Local-Settle/local-settle-frontend#4](https://github.com/Local-Settle/local-settle-frontend/pull/4) · state=open · help-wanted: stake + contribute for #1
+- [Local-Settle/local-settle-frontend#4](https://github.com/Local-Settle/local-settle-frontend/pull/4) · state=closed · help-wanted: stake + contribute for #1
 - [Suhas29wasnotavailable/blroad#12](https://github.com/Suhas29wasnotavailable/blroad/pull/12) · state=open · help-wanted: stake + contribute for #7
 - [MMALI3287/vibewatt#100](https://github.com/MMALI3287/vibewatt/pull/100) · state=open · help-wanted: stake + contribute for #95
 - [apache/hugegraph-computer#365](https://github.com/apache/hugegraph-computer/pull/365) · state=open · help-wanted: stake + contribute for #325
@@ -47,7 +47,6 @@ _Generated 2026-10-18T12:48:49Z UTC · receipts=2783 · foreign_open=40 · tribu
 
 ## Foreign open PRs
 
-- [Octo-Protocol-org/Octo-frontend#592](https://github.com/Octo-Protocol-org/Octo-frontend/pull/592) — help-wanted: stake + contribute for #501
 - [0xLizTech/stellarforge#614](https://github.com/0xLizTech/stellarforge/pull/614) — help-wanted: stake + contribute for #92
 - [xtekky/gpt4free#3541](https://github.com/xtekky/gpt4free/pull/3541) — Fix typo in README from 'Interference' to 'Inference'
 - [RetinaX-Org/RetinaX#352](https://github.com/RetinaX-Org/RetinaX/pull/352) — help-wanted: stake + contribute for #282
@@ -63,7 +62,6 @@ _Generated 2026-10-18T12:48:49Z UTC · receipts=2783 · foreign_open=40 · tribu
 - [apache/hugegraph-computer#365](https://github.com/apache/hugegraph-computer/pull/365) — help-wanted: stake + contribute for #325
 - [MMALI3287/vibewatt#100](https://github.com/MMALI3287/vibewatt/pull/100) — help-wanted: stake + contribute for #95
 - [Suhas29wasnotavailable/blroad#12](https://github.com/Suhas29wasnotavailable/blroad/pull/12) — help-wanted: stake + contribute for #7
-- [Local-Settle/local-settle-frontend#4](https://github.com/Local-Settle/local-settle-frontend/pull/4) — help-wanted: stake + contribute for #1
 - [traceopt-ai/traceml#547](https://github.com/traceopt-ai/traceml/pull/547) — help-wanted: stake + contribute for #128
 - [topoteretes/cognee#5439](https://github.com/topoteretes/cognee/pull/5439) — help-wanted: stake + contribute for #4757
 - [ROCm/rocm-libraries#13152](https://github.com/ROCm/rocm-libraries/pull/13152) — help-wanted: stake + contribute for #10586

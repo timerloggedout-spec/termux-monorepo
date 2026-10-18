@@ -16,6 +16,9 @@ class AgentThroughputEmitterTests(unittest.TestCase):
                 "head_sha": "a" * 40,
                 "created_at": "2026-09-25T18:00:00Z",
                 "conclusion": "success",
+                "name": "Gemini Dispatch (test)",
+                "event": "workflow_dispatch",
+                "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/12345",
             },
             "jobs": [{
                 "id": 99,
@@ -24,6 +27,8 @@ class AgentThroughputEmitterTests(unittest.TestCase):
                 "completed_at": "2026-09-25T18:03:30Z",
                 "conclusion": "success",
             }],
+            "pull_request_number": 1244,
+            "issue_number": 1241,
             "task_complexity": {
                 "additions": 12,
                 "deletions": 3,
@@ -42,6 +47,13 @@ class AgentThroughputEmitterTests(unittest.TestCase):
         self.assertEqual(events[-1]["metrics"]["files_changed"], 2)
         self.assertEqual(events[-1]["gha_run_attempt"], 2)
         self.assertEqual(events[-1]["source_sha"], "a" * 40)
+        self.assertEqual(events[-1]["workflow_name"], "Gemini Dispatch (test)")
+        self.assertEqual(events[-1]["workflow_event"], "workflow_dispatch")
+        self.assertEqual(events[-1]["workflow_run_url"], "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/12345")
+        self.assertEqual(events[-1]["job_id"], 99)
+        self.assertEqual(events[-1]["job_name"], "agent")
+        self.assertEqual(events[-1]["pull_request_number"], 1244)
+        self.assertEqual(events[-1]["issue_number"], 1241)
         self.assertTrue(events[-1]["event_id"])
 
     def test_task_boundary_fields_are_propagated_without_raw_task_text(self):

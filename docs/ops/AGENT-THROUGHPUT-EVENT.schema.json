@@ -124,6 +124,116 @@
     "environment_fingerprint": {
       "type": "string",
       "pattern": "^[0-9a-f]{64}$"
+    },
+    "author": {
+      "type": "object",
+      "description": "Evidence-backed attribution for the executing agent/provider. Never infer provider/model from GitHub actor identity. Settings/context are hashes only.",
+      "additionalProperties": false,
+      "required": [
+        "provider",
+        "model",
+        "adapter",
+        "role",
+        "identity_kind",
+        "settings_fingerprint",
+        "context_fingerprint",
+        "attribution_method",
+        "confidence",
+        "evidence_refs"
+      ],
+      "properties": {
+        "provider": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 128
+        },
+        "model": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 128
+        },
+        "adapter": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 128
+        },
+        "role": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 128
+        },
+        "identity_kind": {
+          "enum": [
+            "agent",
+            "manager",
+            "scout",
+            "orchestrator",
+            "infrastructure",
+            "human",
+            "unknown"
+          ]
+        },
+        "settings_fingerprint": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "context_fingerprint": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "attribution_method": {
+          "enum": [
+            "workflow_name_mapping",
+            "invocation_telemetry",
+            "task_boundary_declared",
+            "session_export",
+            "human_attested",
+            "inferred",
+            "unresolved"
+          ]
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "evidence_refs": {
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "github_actor": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "description": "GitHub Actions run actor; account identity is not agent identity."
+    },
+    "triggering_actor": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "description": "GitHub Actions triggering actor; may be a PAT owner and is not proof of model authorship."
     }
   },
   "additionalProperties": false

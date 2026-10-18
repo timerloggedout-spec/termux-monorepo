@@ -10,7 +10,13 @@ role="secondary"; [ "${1:-}" = "--role" ] && role="${2:-secondary}"
 PERIOD_MS="${TMX_JOB_PERIOD_MS:-900000}"   # 15 min = Android JobScheduler minimum
 tmx_have termux-job-scheduler || tmx_die "termux-job-scheduler missing (pkg install termux-api + Termux:API app)"
 tmx_require_identity
-chmod 700 "$SCRIPT_DIR"/*.sh
+# Jobs run tiny wrappers outside the repo, so tracked files keep their git mode (no chmod in the checkout).
+JOB_DIR="$HOME/.local/share/tmx-device/jobs"; mkdir -p "$JOB_DIR"
+wrap() {
+  local w="$JOB_DIR/$(basename "$1")"
+  printf '#!%s/bin/bash\nexec bash %q "$@"\n' "${PREFIX:-/data/data/com.termux/files/usr}" "$1" >"$w"
+  chmod 700 "$w"; printf '%s' "$w"
+}
 pending="$(termux-job-scheduler --pending 2>/dev/null || true)"
 sched() {
   # Refuse to clobber a job id that already runs some other script.
@@ -21,10 +27,10 @@ sched() {
     --network any --battery-not-low false --storage-not-low false --persisted true >/dev/null
   tmx_log "job $1 -> $(basename "$2") every $((PERIOD_MS/60000)) min"
 }
-sched "$TMX_JOB_HEARTBEAT" "$SCRIPT_DIR/publish-device-heartbeat.sh"
+sched "$TMX_JOB_HEARTBEAT" "$(wrap "$SCRIPT_DIR/publish-device-heartbeat.sh")"
 if [ "$role" = secondary ]; then
-  sched "$TMX_JOB_ORIGIN_STATUS" "$SCRIPT_DIR/origin-status-notify.sh"
+  sched "$TMX_JOB_ORIGIN_STATUS" "$(wrap "$SCRIPT_DIR/origin-status-notify.sh")"
 fi
-"$SCRIPT_DIR/publish-device-heartbeat.sh" || true
-[ "$role" = secondary ] && { "$SCRIPT_DIR/origin-status-notify.sh" || true; }
+bash "$SCRIPT_DIR/publish-device-heartbeat.sh" || true
+if [ "$role" = secondary ]; then bash "$SCRIPT_DIR/origin-status-notify.sh" || true; fi
 termux-job-scheduler --pending

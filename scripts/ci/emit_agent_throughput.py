@@ -154,7 +154,8 @@ def _author(metadata: Mapping[str, Any]) -> dict[str, Any]:
     return result
 
 
-def _base(metadata: Mapping[str, Any], agent_id: str, task_id: str) -> dict[str, Any]:
+def _base(metadata: Mapping[str, Any], agent_id: str, task_id: str,
+          job: Mapping[str, Any] | None = None) -> dict[str, Any]:
     """Build the common provenance fields for one sanitized event."""
     run = metadata["workflow_run"]
     event = {
@@ -167,6 +168,26 @@ def _base(metadata: Mapping[str, Any], agent_id: str, task_id: str) -> dict[str,
         "source_sha": _sha(run["head_sha"]),
         "author": _author(metadata),
     }
+    workflow_name = run.get("name")
+    if isinstance(workflow_name, str) and workflow_name.strip():
+        event["workflow_name"] = workflow_name.strip()[:256]
+    workflow_url = run.get("html_url")
+    if isinstance(workflow_url, str) and workflow_url.startswith("https://"):
+        event["workflow_run_url"] = workflow_url[:2048]
+    workflow_event = run.get("event")
+    if isinstance(workflow_event, str) and workflow_event.strip():
+        event["workflow_event"] = workflow_event.strip()[:64]
+    if job is not None:
+        job_id = int(job["id"])
+        if job_id > 0:
+            event["job_id"] = job_id
+        job_name = job.get("name")
+        if isinstance(job_name, str) and job_name.strip():
+            event["job_name"] = job_name.strip()[:256]
+    for source_field in ("pull_request_number", "issue_number"):
+        value = metadata.get(source_field)
+        if isinstance(value, int) and not isinstance(value, bool) and value > 0:
+            event[source_field] = value
     for source_field in ("github_actor", "triggering_actor"):
         value = metadata.get(source_field)
         if value is not None:
@@ -234,7 +255,7 @@ def build_events(metadata: Mapping[str, Any]) -> list[dict[str, Any]]:
             continue
         status = _status(conclusion)
 
-        started_event = _base(metadata, agent_id, task_id)
+        started_event = _base(metadata, agent_id, task_id, job)
         started_event.update({"timestamp": start, "event": "task_started"})
         started_event["source_sha"] = source_sha
         events.append(started_event)
@@ -268,7 +289,9 @@ def validate_event(event: Mapping[str, Any]) -> None:
         "tokens_in", "tokens_out", "complexity_score", "metrics",
         "gha_run_id", "gha_run_attempt", "source_sha", "event_id",
         "cohort_id", "task_fingerprint", "task_contract_hash", "environment_fingerprint",
-        "author", "github_actor", "triggering_actor",
+        "author", "github_actor", "triggering_actor", "workflow_name",
+        "workflow_run_url", "workflow_event", "job_id", "job_name",
+        "pull_request_number", "issue_number",
     }
     unknown = set(event) - allowed
     if unknown:
@@ -295,9 +318,20 @@ def validate_event(event: Mapping[str, Any]) -> None:
         normalized = _author({"author": event["author"]})
         if dict(event["author"]) != normalized:
             raise ValueError("author must be normalized and contain only contract fields")
-    for field in ("github_actor", "triggering_actor"):
-        if event.get(field) is not None and (not isinstance(event[field], str) or not event[field] or len(event[field]) > 128):
-            raise ValueError(f"{field} must be a non-empty string up to 128 characters")
+    for field, limit in (("github_actor", 128), ("triggering_actor", 128),
+                         ("workflow_name", 256), ("job_name", 256), ("workflow_event", 64)):
+        if event.get(field) is not None and (not isinstance(event[field], str) or not event[field] or len(event[field]) > limit):
+            raise ValueError(f"{field} must be a non-empty string up to {limit} characters")
+    if event.get("workflow_run_url") is not None and (
+        not isinstance(event["workflow_run_url"], str) or not event["workflow_run_url"].startswith("https://")
+        or len(event["workflow_run_url"]) > 2048
+    ):
+        raise ValueError("workflow_run_url must be an HTTPS URL up to 2048 characters")
+    if event.get("job_id") is not None and (not isinstance(event["job_id"], int) or event["job_id"] < 1):
+        raise ValueError("job_id must be a positive integer")
+    for field in ("pull_request_number", "issue_number"):
+        if event.get(field) is not None and (not isinstance(event[field], int) or isinstance(event[field], bool) or event[field] < 1):
+            raise ValueError(f"{field} must be a positive integer")
     if event.get("metrics") is not None:
         metrics = event["metrics"]
         if not isinstance(metrics, Mapping):

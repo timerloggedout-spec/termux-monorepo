@@ -244,8 +244,10 @@ remain null unless trusted invocation/task-boundary evidence supplies them.
 Settings/context values are SHA-256 fingerprints only; never persist raw prompts,
 completions, credentials, or session context.
 
-The existing read-only ATES observer now includes the known manager, scout, and
-orchestrator workflow cohort alongside Gemini/DeepSeek execution lanes. It retains
-run/attempt/SHA linkage, records attribution confidence and evidence references,
+The existing read-only ATES observer now includes the known manager, scout, orchestrator,
+and bridge/tunnel health workflow cohorts alongside Gemini/DeepSeek execution lanes.
+Bridge health is infrastructure evidence, not agent execution or provider authorship;
+Pinggy device-side status remains a separate TTL-bound runtime receipt. The observer
+retains run/attempt/SHA linkage, records attribution confidence and evidence references,
 and does not infer a model from the PAT owner. The citation curator and index are
 documented in `docs/briefing/SOURCE-CITATION-INDEX.md`.

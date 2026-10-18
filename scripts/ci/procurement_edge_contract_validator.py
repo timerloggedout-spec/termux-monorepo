@@ -94,6 +94,13 @@ def validate_procurement_record(record: Any) -> list[str]:
                 "version_or_commit"):
         if key in record and not nonempty(record[key]):
             errors.append(f"{key}: expected non-empty string")
+    lock_in = record.get("lock_in_risk")
+    if not isinstance(lock_in, dict):
+        errors.append("lock_in_risk: expected object with runtime and evidence dimensions")
+    else:
+        for field in ("runtime", "evidence"):
+            if not nonempty(lock_in.get(field)):
+                errors.append(f"lock_in_risk.{field}: expected non-empty string")
     if not http_url(record.get("canonical_source")):
         errors.append("canonical_source: expected absolute HTTP(S) URL")
     if record.get("horizon") not in HORIZONS:

@@ -17,6 +17,7 @@ perform autonomous online deployment. Promotion remains an external dual gate.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from functools import cached_property
 import hashlib
 import json
 from typing import Any, Iterable, Mapping, Sequence
@@ -46,10 +47,10 @@ class DiscoveryHistory:
     @classmethod
     def from_nodes(cls, nodes: Iterable[DiscoveryNode]) -> "DiscoveryHistory":
         materialized = tuple(nodes)
-        ids = [node.node_id for node in materialized]
-        if len(ids) != len(set(ids)):
+        # Performance optimization: construct known set directly to avoid intermediate list allocation
+        known = {node.node_id for node in materialized}
+        if len(known) != len(materialized):
             raise ValueError("discovery node IDs must be unique")
-        known = set(ids)
         for node in materialized:
             if node.parent_id is not None and node.parent_id not in known:
                 raise ValueError(f"unknown parent_id: {node.parent_id}")
@@ -97,8 +98,9 @@ class ExplorationPolicy:
             "stop_after_terminal": self.stop_after_terminal,
         }, sort_keys=True, separators=(",", ":"))
 
-    @property
+    @cached_property
     def policy_id(self) -> str:
+        # Performance optimization: cached_property memoizes policy ID calculation
         return hashlib.sha256(self.canonical().encode()).hexdigest()[:16]
 
 

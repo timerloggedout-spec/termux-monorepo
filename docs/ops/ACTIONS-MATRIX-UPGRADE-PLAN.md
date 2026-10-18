@@ -1,9 +1,10 @@
 # Actions Matrix Upgrade — 13-Phase Delivery Plan
 
 **Workstream:** CADE / Actions Matrix Upgrade  
-**Implementation branch:** `fix/actions-matrix-hardening-2026-10-18`  
+**Implementation branch:** `ops/actions-matrix-upgrade-hardening-2026-10-18`  
 **Planning baseline:** `ops/actions-matrix-upgrade-2026-10-18` at `0757583bcb5fad5ed247ea9a03d48ccb28df7c6a`  
-**Master comparison point:** `669c0d0bc81862c6fbab830b3521a82464031320`  
+**Requested master comparison point:** `669c0d0bc81862c6fbab830b3521a82464031320`  
+**Re-fetched PR base at creation:** `c83ea89d92eb4f3176f8d3371e7701183527692c` (re-fetch again before promotion)  
 **Status:** PLAN + implementation in progress; this document is not a claim of CI success, merge, live device health, or production promotion.
 
 ## Objectives and non-negotiable invariants

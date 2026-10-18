@@ -17,11 +17,9 @@ on:
       - "Continuous Team Evaluation"
       - "help-wanted scout"
       - "Peer review orchestrator"
-      - "Termux bridge connectivity"
-      - "Tunnel Canary"
-      - "DeepCLI Agent Bridge Smoke"
-      - "n8n SHE bridge"
-      - "termux smoke"
+      - "Jules on Issues (label / @jules)"
+      - "Agent review → auto Jules"
+      - "Gemini review after peers"
     types: [completed]
 
 permissions:
@@ -137,11 +135,9 @@ jobs:
               { needle: 'Continuous Team Evaluation', agentId: 'continuous-evaluation', provider: null, role: 'manager', kind: 'manager', confidence: 0.65 },
               { needle: 'help-wanted scout', agentId: 'help-wanted-scout', provider: null, role: 'scout', kind: 'scout', confidence: 0.65 },
               { needle: 'Peer review orchestrator', agentId: 'peer-review-orchestrator', provider: null, role: 'orchestrator', kind: 'orchestrator', confidence: 0.65 },
-              { needle: 'Termux bridge connectivity', agentId: 'termux-bridge-connect', provider: null, role: 'bridge-health', kind: 'infrastructure', confidence: 0.75 },
-              { needle: 'Tunnel Canary', agentId: 'tunnel-canary', provider: null, role: 'tunnel-health', kind: 'infrastructure', confidence: 0.75 },
-              { needle: 'DeepCLI Agent Bridge Smoke', agentId: 'deepcli-agent-bridge', provider: null, role: 'bridge-smoke', kind: 'infrastructure', confidence: 0.75 },
-              { needle: 'n8n SHE bridge', agentId: 'n8n-she-bridge', provider: null, role: 'telemetry-bridge', kind: 'infrastructure', confidence: 0.75 },
-              { needle: 'termux smoke', agentId: 'termux-smoke', provider: null, role: 'platform-smoke', kind: 'infrastructure', confidence: 0.75 }
+              { needle: 'Jules on Issues', agentId: 'jules', provider: 'google', role: 'builder', kind: 'agent', confidence: 0.80 },
+              { needle: 'Agent review', agentId: 'agent-review-auto-jules', provider: null, role: 'orchestrator', kind: 'orchestrator', confidence: 0.65 },
+              { needle: 'Gemini review after peers', agentId: 'gemini-peer-review', provider: 'google', role: 'reviewer', kind: 'agent', confidence: 0.80 }
             ].find(entry => workflowName.includes(entry.needle));
 
             if (!identity) {

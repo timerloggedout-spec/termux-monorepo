@@ -183,6 +183,7 @@ jobs:
               })),
               task_complexity: taskComplexity,
               pull_request_number: pullRequest?.number || null,
+              issue_number: Number.isSafeInteger(taskBoundary?.issue_number) && taskBoundary.issue_number > 0 ? taskBoundary.issue_number : null,
               task_boundary: taskBoundary
             };
 

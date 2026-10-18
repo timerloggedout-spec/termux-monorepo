@@ -52,6 +52,7 @@ jobs:
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Collect trusted workflow metadata
+        id: collect
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
           METADATA_PATH: ${{ runner.temp }}/agent-throughput-metadata.json
@@ -188,6 +189,10 @@ jobs:
             };
 
             fs.writeFileSync(process.env.METADATA_PATH, JSON.stringify(metadata, null, 2) + '\n', 'utf8');
+            // Gate downstream steps: early returns above (installation rate limit,
+            // unmapped workflow) write no metadata and must end as an honest skip,
+            // not a `cp: cannot stat` failure in the next step.
+            core.setOutput('emitted', 'true');
             await core.summary
               .addHeading('ATES evidence observation')
               .addRaw(`- workflow: ${run.name}\n`)
@@ -200,21 +205,25 @@ jobs:
               .write();
 
       - name: Move metadata into workspace
+        if: steps.collect.outputs.emitted == 'true'
         run: cp "${{ runner.temp }}/agent-throughput-metadata.json" ./agent-throughput-metadata.json
 
       - name: Emit sanitized ATES JSONL
+        if: steps.collect.outputs.emitted == 'true'
         run: |
           python3 scripts/ci/emit_agent_throughput.py \
             --metadata agent-throughput-metadata.json \
             --output agent-throughput.ndjson
 
       - name: Validate provenance and citation curation
+        if: steps.collect.outputs.emitted == 'true'
         run: |
           python3 -m unittest tests.test_emit_agent_throughput -v
           python3 -m unittest tests.test_curate_briefing_sources -v
           python3 scripts/ci/curate_briefing_sources.py --output source-citations.jsonl
 
       - name: Reduce observed ATES metrics
+        if: steps.collect.outputs.emitted == 'true'
         run: |
           python3 - <<'PY'
           import json
@@ -234,6 +243,7 @@ jobs:
           PY
 
       - name: Build evidence receipt
+        if: steps.collect.outputs.emitted == 'true'
         env:
           SOURCE_RUN_ID: ${{ github.event.workflow_run.id || '0' }}
           SOURCE_RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt || '1' }}
@@ -274,6 +284,7 @@ jobs:
           PY
 
       - name: Upload ATES evidence
+        if: steps.collect.outputs.emitted == 'true'
         uses: actions/upload-artifact@v4.6.2
         with:
           name: agent-throughput-${{ github.event.workflow_run.id }}-${{ github.event.workflow_run.run_attempt }}

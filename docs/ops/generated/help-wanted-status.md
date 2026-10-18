@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-18T18:38:44Z UTC · receipts=2783 · foreign_open=38 · tributes=101_
+_Generated 2026-10-18T18:57:23Z UTC · receipts=2783 · foreign_open=39 · tributes=102_
 
 ## Tributes (contributor ledger)
 
+- [CodeGirlsInc/FrieghtFlow#1743](https://github.com/CodeGirlsInc/FrieghtFlow/pull/1743) · state=open · help-wanted: stake + contribute for #1717
 - [Octo-Protocol-org/Octo-frontend#592](https://github.com/Octo-Protocol-org/Octo-frontend/pull/592) · state=closed · help-wanted: stake + contribute for #501
 - [0xLizTech/stellarforge#614](https://github.com/0xLizTech/stellarforge/pull/614) · state=open · help-wanted: stake + contribute for #92
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
@@ -43,10 +44,10 @@ _Generated 2026-10-18T18:38:44Z UTC · receipts=2783 · foreign_open=38 · tribu
 - [Nodal-stellar/Nodal-AI#853](https://github.com/Nodal-stellar/Nodal-AI/pull/853) · state=open · help-wanted: stake + contribute for #769
 - [Nodal-stellar/Nodal-AI#857](https://github.com/Nodal-stellar/Nodal-AI/pull/857) · state=open · help-wanted: stake + contribute for #811
 - [LabsCrypt/remitlend#1990](https://github.com/LabsCrypt/remitlend/pull/1990) · state=open · help-wanted: stake + contribute for #1503
-- [xtekky/gpt4free#3541](https://github.com/xtekky/gpt4free/pull/3541) · state=open · Fix typo in README from 'Interference' to 'Inference'
 
 ## Foreign open PRs
 
+- [CodeGirlsInc/FrieghtFlow#1743](https://github.com/CodeGirlsInc/FrieghtFlow/pull/1743) — help-wanted: stake + contribute for #1717
 - [0xLizTech/stellarforge#614](https://github.com/0xLizTech/stellarforge/pull/614) — help-wanted: stake + contribute for #92
 - [xtekky/gpt4free#3541](https://github.com/xtekky/gpt4free/pull/3541) — Fix typo in README from 'Interference' to 'Inference'
 - [RetinaX-Org/RetinaX#352](https://github.com/RetinaX-Org/RetinaX/pull/352) — help-wanted: stake + contribute for #282

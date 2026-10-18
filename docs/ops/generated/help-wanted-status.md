@@ -1,14 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-18T22:26:22Z UTC · receipts=2783 · foreign_open=38 · tributes=104_
+_Generated 2026-10-18T22:36:51Z UTC · receipts=2821 · foreign_open=39 · tributes=105_
 
 ## Tributes (contributor ledger)
 
-- [timerloggedout-spec/gh-aw_fork#2](https://github.com/timerloggedout-spec/gh-aw_fork/pull/2) · state=closed · ci: pause upstream scheduled workflows behind ENABLE_UPSTREAM_SCHEDULES
-- [timerloggedout-spec/gh-aw-mcpg_fork#1](https://github.com/timerloggedout-spec/gh-aw-mcpg_fork/pull/1) · state=closed · ci: pause upstream scheduled workflows behind ENABLE_UPSTREAM_SCHEDULES
-- [CodeGirlsInc/FrieghtFlow#1743](https://github.com/CodeGirlsInc/FrieghtFlow/pull/1743) · state=open · help-wanted: stake + contribute for #1717
-- [Octo-Protocol-org/Octo-frontend#592](https://github.com/Octo-Protocol-org/Octo-frontend/pull/592) · state=closed · help-wanted: stake + contribute for #501
-- [0xLizTech/stellarforge#614](https://github.com/0xLizTech/stellarforge/pull/614) · state=open · help-wanted: stake + contribute for #92
+- [SoroScan/soroscan#1690](https://github.com/SoroScan/soroscan/pull/1690) · state=open · help-wanted: stake + contribute for #1663
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -32,7 +28,6 @@ _Generated 2026-10-18T22:26:22Z UTC · receipts=2783 · foreign_open=38 · tribu
 - [ROCm/rocm-libraries#13152](https://github.com/ROCm/rocm-libraries/pull/13152) · state=open · help-wanted: stake + contribute for #10586
 - [topoteretes/cognee#5439](https://github.com/topoteretes/cognee/pull/5439) · state=open · help-wanted: stake + contribute for #4757
 - [traceopt-ai/traceml#547](https://github.com/traceopt-ai/traceml/pull/547) · state=open · help-wanted: stake + contribute for #128
-- [Local-Settle/local-settle-frontend#4](https://github.com/Local-Settle/local-settle-frontend/pull/4) · state=closed · help-wanted: stake + contribute for #1
 - [Suhas29wasnotavailable/blroad#12](https://github.com/Suhas29wasnotavailable/blroad/pull/12) · state=open · help-wanted: stake + contribute for #7
 - [MMALI3287/vibewatt#100](https://github.com/MMALI3287/vibewatt/pull/100) · state=open · help-wanted: stake + contribute for #95
 - [apache/hugegraph-computer#365](https://github.com/apache/hugegraph-computer/pull/365) · state=open · help-wanted: stake + contribute for #325
@@ -40,13 +35,19 @@ _Generated 2026-10-18T22:26:22Z UTC · receipts=2783 · foreign_open=38 · tribu
 - [ciaren-labs/Ciaren#234](https://github.com/ciaren-labs/Ciaren/pull/234) · state=open · help-wanted: stake + contribute for #96
 - [finos/fluxnova-bpm-platform#352](https://github.com/finos/fluxnova-bpm-platform/pull/352) · state=open · help-wanted: stake + contribute for #152
 - [ShippedLabs/soroban-upgrade-safeguard#781](https://github.com/ShippedLabs/soroban-upgrade-safeguard/pull/781) · state=open · help-wanted: stake + contribute for #764
-- [Local-Settle/local-settle-backend#127](https://github.com/Local-Settle/local-settle-backend/pull/127) · state=closed · help-wanted: stake + contribute for #2
 - [stellar-compliance-kit/compliance-primitives#656](https://github.com/stellar-compliance-kit/compliance-primitives/pull/656) · state=open · help-wanted: stake + contribute for #180
 - [Health-watchers/health_watchers#1698](https://github.com/Health-watchers/health_watchers/pull/1698) · state=open · help-wanted: stake + contribute for #1519
 - [Nodal-stellar/Nodal-AI#853](https://github.com/Nodal-stellar/Nodal-AI/pull/853) · state=open · help-wanted: stake + contribute for #769
+- [Nodal-stellar/Nodal-AI#857](https://github.com/Nodal-stellar/Nodal-AI/pull/857) · state=open · help-wanted: stake + contribute for #811
+- [LabsCrypt/remitlend#1990](https://github.com/LabsCrypt/remitlend/pull/1990) · state=open · help-wanted: stake + contribute for #1503
+- [RetinaX-Org/RetinaX#352](https://github.com/RetinaX-Org/RetinaX/pull/352) · state=open · help-wanted: stake + contribute for #282
+- [CodeGirlsInc/FrieghtFlow#1743](https://github.com/CodeGirlsInc/FrieghtFlow/pull/1743) · state=open · help-wanted: stake + contribute for #1717
+- [0xLizTech/stellarforge#614](https://github.com/0xLizTech/stellarforge/pull/614) · state=open · help-wanted: stake + contribute for #92
+- [timerloggedout-spec/gh-aw_fork#2](https://github.com/timerloggedout-spec/gh-aw_fork/pull/2) · state=closed · ci: pause upstream scheduled workflows behind ENABLE_UPSTREAM_SCHEDULES
 
 ## Foreign open PRs
 
+- [SoroScan/soroscan#1690](https://github.com/SoroScan/soroscan/pull/1690) — help-wanted: stake + contribute for #1663
 - [CodeGirlsInc/FrieghtFlow#1743](https://github.com/CodeGirlsInc/FrieghtFlow/pull/1743) — help-wanted: stake + contribute for #1717
 - [0xLizTech/stellarforge#614](https://github.com/0xLizTech/stellarforge/pull/614) — help-wanted: stake + contribute for #92
 - [RetinaX-Org/RetinaX#352](https://github.com/RetinaX-Org/RetinaX/pull/352) — help-wanted: stake + contribute for #282
@@ -86,6 +87,6 @@ _Generated 2026-10-18T22:26:22Z UTC · receipts=2783 · foreign_open=38 · tribu
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=2783 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 2577, 'followup_reengage': 50, 'followup_stale_nudge': 106, 'followup_changes': 2}`
+## Outcomes · ok=2821 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 2610, 'followup_reengage': 50, 'followup_stale_nudge': 111, 'followup_changes': 2}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

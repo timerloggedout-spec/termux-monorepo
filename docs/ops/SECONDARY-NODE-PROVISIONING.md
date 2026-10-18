@@ -78,3 +78,16 @@ bash scripts/termux/devices/device-identity.sh verify
 ```bash
 bash scripts/termux/devices/device-identity.sh seal --secret     # on each phone
 ```
+
+### E. Observer|controller 🎮 (see NODE-ROLE-SCHEMA.md)
+
+```bash
+# 0. RECON on both phones first (read-only, local file only)
+bash scripts/termux/devices/inventory.sh
+# new phone: provisioning prints one authorized_keys line for the controller key
+# origin (via adb forward + ssh, section B): append that exact line, then check it
+echo '<line printed by provision-secondary.sh>' >> ~/.ssh/authorized_keys
+SSH_ORIGINAL_COMMAND=help bash ~/termux-monorepo/scripts/termux/devices/tmx-ctl.sh
+# new phone: draw the controller pane (also refreshed by job 43111)
+bash scripts/termux/devices/controller-panel.sh
+```

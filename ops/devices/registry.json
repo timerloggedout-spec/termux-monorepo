@@ -14,17 +14,32 @@
       "kind": "origin",
       "status": "active",
       "operation": "headless (broken screen): ADB / wireless debugging, Termux sshd 8022",
-      "jobs": { "43107": "resource sentinel", "43108": "existing (untouched)", "43109": "pinggy publisher", "43110": "device heartbeat" },
+      "jobs": {
+        "43107": "resource sentinel",
+        "43108": "existing (untouched)",
+        "43109": "pinggy publisher",
+        "43110": "device heartbeat"
+      },
       "fpmap_secret": "TMX_FPMAP_PRIMARY"
     },
     {
       "device_id": "tmx-node-55619bd5",
-      "role": "observer",
+      "role": "observer-controller",
       "kind": "secondary",
       "status": "provisioning",
-      "operation": "working screen; watches origin and notifies",
-      "jobs": { "43110": "device heartbeat", "43111": "origin status notification" },
-      "fpmap_secret": "TMX_FPMAP_55619BD5"
+      "operation": "working screen; OBSERVER pane (43111) watches origin, CONTROLLER pane (43114) runs allowlisted read-only/idempotent verbs on origin via forced-command ssh",
+      "jobs": {
+        "43110": "device heartbeat",
+        "43111": "origin status notification"
+      },
+      "fpmap_secret": "TMX_FPMAP_55619BD5",
+      "notifications": {
+        "43111": "observer pane (status)",
+        "43112": "alert (transitions only)",
+        "43113": "git-guard block",
+        "43114": "controller pane 🎮"
+      },
+      "schema": "ops/devices/role-schema.json"
     }
   ]
 }

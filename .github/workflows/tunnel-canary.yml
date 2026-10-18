@@ -1,42 +1,68 @@
 name: Tunnel Canary
+# Honest bridge health: reads the device-published manifest (ops/termux-bridge/current.json)
+# and verifies TCP reachability. Fails when the bridge is stale or unreachable, so outages
+# are visible instead of being reported as green.
 on:
-  schedule: [{cron: '*/30 * * * *'}]
+  schedule: [{cron: '17 * * * *'}]   # hourly (was every 30 min)
   workflow_dispatch:
-permissions: {}
+permissions:
+  contents: read
+concurrency:
+  group: tunnel-canary
+  cancel-in-progress: true
 jobs:
   ping:
     runs-on: ubuntu-latest
-    timeout-minutes: 2
+    timeout-minutes: 3
     steps:
-      - name: Ping agent health (Lead/Lag class)
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: ops/termux-bridge
+      - name: Check bridge manifest + TCP reachability
         env:
-          URL: ${{ secrets.DEEPSEEK_AGENT_URL }}
+          AGENT_URL: ${{ secrets.DEEPSEEK_AGENT_URL }}
         run: |
-          set -euo pipefail
-          # Lead/Lag: missing URL = operational lag (inventory), not correctness failure.
-          if [ -z "${URL:-}" ]; then
-            echo "::notice::lead_lag=lag_operational reason=DEEPSEEK_AGENT_URL_unset; not dual-gate"
-            exit 0
-          fi
-          set +e
-          curl_err=$(mktemp)
-          code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 15 "$URL/health" 2>"$curl_err")
-          curl_rc=$?
-          set -e
-          err=$(tr '\n' ' ' < "$curl_err" | head -c 240)
-          rm -f "$curl_err"
-          echo "health -> ${code:-000} curl_rc=$curl_rc"
-          if [ -n "$err" ]; then
-            echo "curl_stderr=$err"
-          fi
-          # Ephemeral tunnels expire. DNS/connect 000 is inventory lag, not dual-gate.
-          if [ "${code:-000}" = "000" ] || [ "$curl_rc" -ne 0 ] || [ "$code" = "404" ]; then
-            echo "::notice::lead_lag=lag_operational code=${code:-000} rc=$curl_rc; not dual-gate"
-            exit 0
-          fi
-          if [ "$code" = "200" ]; then
-            echo "::notice::lead_lag=lag_success_badge tunnel_health=200"
-            exit 0
-          fi
-          echo "::error::lead_lag=lag_failure tunnel health $code"
-          exit 1
+          set -uo pipefail
+          python3 - <<'PY'
+          import json, os, socket, sys
+          from datetime import datetime, timezone
+          m = json.load(open("ops/termux-bridge/current.json"))
+          now = datetime.now(timezone.utc)
+          status, host, port = m.get("status"), m.get("endpoint"), m.get("port")
+          obs = m.get("observed_at")
+          ttl = int(m.get("ttl_minutes") or 60)
+          age = None
+          if obs:
+              age = (now - datetime.fromisoformat(obs.replace("Z", "+00:00"))).total_seconds() / 60
+          reachable = False
+          if host and port:
+              try:
+                  with socket.create_connection((host, int(port)), timeout=8):
+                      reachable = True
+              except OSError as e:
+                  err = str(e)
+          lines = [
+              "## Termux bridge",
+              f"- manifest status: `{status}`",
+              f"- endpoint: `{host}:{port}`",
+              f"- observed_at: `{obs}` (age: {'n/a' if age is None else f'{age:.0f} min'}, ttl {ttl} min)",
+              f"- TCP reachable from runner: **{reachable}**",
+          ]
+          problems = []
+          if status != "active":
+              problems.append(f"manifest status is '{status}' (device publisher not running? see scripts/termux/diagnose-pinggy-publisher.sh)")
+          if age is None or age > ttl * 2:
+              problems.append("manifest is stale: device has not published a fresh endpoint")
+          if not reachable:
+              problems.append("endpoint not reachable over TCP")
+          if problems:
+              lines.append("\n### Problems\n" + "\n".join(f"- {p}" for p in problems))
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as f:
+              f.write("\n".join(lines) + "\n")
+          print("\n".join(lines))
+          if problems:
+              for p in problems:
+                  print(f"::error::bridge_down {p}")
+              sys.exit(1)
+          print("::notice::bridge_up")
+          PY

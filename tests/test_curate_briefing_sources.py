@@ -63,12 +63,18 @@ class BriefingSourceCurationTests(unittest.TestCase):
         self.assertFalse(is_http_url("file:///etc/passwd"))
         self.assertFalse(is_http_url("javascript:alert(1)"))
 
-    def test_discovery_excludes_its_own_generated_output(self):
+    def test_discovery_excludes_its_own_generated_outputs(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             (root / "data/briefing").mkdir(parents=True)
-            (root / "data/briefing/source-citations.jsonl").write_text("", encoding="utf-8")
-            self.assertNotIn(root / "data/briefing/source-citations.jsonl", discover_inputs(root))
+            (root / "docs/briefing").mkdir(parents=True)
+            ledger = root / "data/briefing/source-citations.jsonl"
+            index = root / "docs/briefing/SOURCE-CITATION-INDEX.md"
+            ledger.write_text("", encoding="utf-8")
+            index.write_text("https://example.org", encoding="utf-8")
+            discovered = discover_inputs(root)
+            self.assertNotIn(ledger, discovered)
+            self.assertNotIn(index, discovered)
 
 
 if __name__ == "__main__":

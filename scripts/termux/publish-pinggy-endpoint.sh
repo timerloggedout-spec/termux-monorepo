@@ -10,6 +10,9 @@ TTL_MINUTES="${TERMUX_BRIDGE_TTL_MINUTES:-60}"
 # Operator sets TERMUX_DEVICE_ID on each physical unit (e.g. tmx-node-a7f3c91e).
 DEVICE_ID="${TERMUX_DEVICE_ID:-tmx-node-primary}"
 DEVICE_ROLE="${TERMUX_DEVICE_ROLE:-bridge}"
+[[ "$DEVICE_ID" =~ ^tmx-node-[a-z0-9-]{1,32}$ ]] || { echo "TERMUX_DEVICE_ID must be an opaque tmx-node-* token" >&2; exit 2; }
+[[ "$DEVICE_ROLE" =~ ^(bridge|primary|secondary|headless)$ ]] || { echo "TERMUX_DEVICE_ROLE must be bridge, primary, secondary, or headless" >&2; exit 2; }
+[[ "$TTL_MINUTES" =~ ^[0-9]+$ ]] && (( TTL_MINUTES >= 1 && TTL_MINUTES <= 1440 )) || { echo "TERMUX_BRIDGE_TTL_MINUTES must be 1..1440" >&2; exit 2; }
 command -v gh >/dev/null || { echo "gh is required" >&2; exit 1; }
 command -v python >/dev/null || { echo "python is required" >&2; exit 1; }
 test -r "$LOG" || { echo "reverse SSH log not found: $LOG" >&2; exit 1; }
@@ -24,7 +27,7 @@ d={
   "transport": "pinggy-tcp-over-ssh",
   "source": "device-runtime",
   "remote_target": "127.0.0.1:8022",
-  "ssh_user": user,
+  "ssh_user": None,  # Do not publish local account names.
   "ttl_minutes": ttl,
   "device_id": device_id,
   "device_role": device_role,

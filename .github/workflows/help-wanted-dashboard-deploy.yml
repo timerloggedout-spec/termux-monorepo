@@ -16,7 +16,7 @@ on:
       target:
         description: "pages | user-site | vercel | both | all (Vercel is opt-in to conserve the Hobby deployment quota)"
         required: false
-        default: "pages"
+        default: "user-site"
 
 concurrency:
   group: help-wanted-dashboard-deploy
@@ -64,7 +64,7 @@ jobs:
   pages:
     name: publish-gh-pages
     needs: [enable-pages]
-    if: ${{ github.event_name == 'push' || contains(fromJSON('["pages","both","all",""]'), github.event.inputs.target || 'all') }}
+    if: ${{ github.event_name == 'push' || contains(fromJSON('["pages","user-site","both","all",""]'), github.event.inputs.target || 'user-site') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

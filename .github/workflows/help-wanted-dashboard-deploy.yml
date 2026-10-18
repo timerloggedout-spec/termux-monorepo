@@ -14,9 +14,9 @@ on:
   workflow_dispatch:
     inputs:
       target:
-        description: "pages | user-site | vercel | both | all"
+        description: "pages | user-site | vercel | both | all (Vercel is opt-in to conserve the Hobby deployment quota)"
         required: false
-        default: "all"
+        default: "pages"
 
 concurrency:
   group: help-wanted-dashboard-deploy
@@ -149,7 +149,7 @@ jobs:
 
   vercel:
     name: vercel-prod
-    if: ${{ github.event_name == 'push' || contains(fromJSON('["vercel","both","all"]'), github.event.inputs.target || 'all') }}
+    if: ${{ github.event_name == 'workflow_dispatch' && contains(fromJSON('["vercel","both","all"]'), github.event.inputs.target || 'pages') }}
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
@@ -184,4 +184,33 @@ jobs:
           fi
           ORG="${VERCEL_ORG_ID:-team_jKHy7m9xZrvrGP5cAlIMPs3S}"
           cd apps/help-wanted-dashboard
-          vercel deploy --prod --yes --token="$VERCEL_TOKEN" --scope="$ORG" 2>&1 | tee /tmp/v.txt || true
+          set +e
+          vercel deploy --prod --yes --token="$VERCEL_TOKEN" --scope="$ORG" 2>&1 | tee /tmp/v.txt
+          deploy_rc=${PIPESTATUS[0]}
+          set -e
+          if [ "$deploy_rc" -eq 0 ]; then
+            {
+              echo "### Vercel deployment"
+              echo "- Outcome: command succeeded; verify deployment source SHA and READY state independently."
+              echo "- Requested source SHA: $GITHUB_SHA"
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          if grep -Eqi 'api-deployments-free-per-day|deployment.{0,30}(quota|limit)|rate.?limit|too many requests|quota exceeded' /tmp/v.txt; then
+            {
+              echo "### Vercel deployment — provider capacity constrained"
+              echo "- Outcome: quota/rate-limit response; Vercel is an optional non-gate."
+              echo "- Requested source SHA: $GITHUB_SHA"
+              echo "- Recovery: do not retry-loop. Keep GitHub Pages publication and CI moving; retry after capacity recovery or use only a separately provisioned, source-verified fallback lane."
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::warning::Vercel quota/capacity exhausted; deployment skipped as non-gate. No blind retry."
+          else
+            {
+              echo "### Vercel deployment — attempt failed"
+              echo "- Outcome: deployment command exited $deploy_rc. Vercel is an optional non-gate; inspect the preceding logs before retrying."
+              echo "- Requested source SHA: $GITHUB_SHA"
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::warning::Vercel deployment failed (exit $deploy_rc); preserved as a warning, not a CI correctness failure."
+          fi
+          exit 0

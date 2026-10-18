@@ -10,6 +10,16 @@ response_data = None
 response_event = threading.Event()
 token_file = Path.home() / ".multi-ai-tokens" / "mistral_token.txt"
 
+def _write_token_securely(token: str) -> None:
+    if token_file.is_symlink() or (token_file.parent.exists() and token_file.parent.is_symlink()):
+        raise ValueError("Symlink token path rejected for security")
+    token_file.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+    if os.name != "nt":
+        os.chmod(token_file.parent, 0o700)
+    fd = os.open(token_file, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, "w", encoding="utf-8") as f:
+        f.write(token)
+
 class BridgeHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         global prompt_queue, response_data
@@ -17,11 +27,16 @@ class BridgeHandler(BaseHTTPRequestHandler):
         body = self.rfile.read(length)
         data = json.loads(body)
         if data.get("type") == "token":
-            token_file.write_text(data["token"])
-            self.send_response(200)
-            self.end_headers()
-            self.wfile.write(b'ok')
-            print("[bridge] Token saved")
+            try:
+                _write_token_securely(data["token"])
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(b'ok')
+                print("[bridge] Token saved")
+            except ValueError as e:
+                self.send_response(400)
+                self.end_headers()
+                self.wfile.write(str(e).encode())
         elif data.get("type") == "prompt":
             prompt_queue = data["text"]
             response_event.clear()

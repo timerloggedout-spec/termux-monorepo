@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-18T04:34:24Z UTC · receipts=2783 · foreign_open=39 · tributes=100_
+_Generated 2026-10-18T05:09:04Z UTC · receipts=2783 · foreign_open=40 · tributes=101_
 
 ## Tributes (contributor ledger)
 
+- [0xLizTech/stellarforge#614](https://github.com/0xLizTech/stellarforge/pull/614) · state=open · help-wanted: stake + contribute for #92
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -43,10 +44,10 @@ _Generated 2026-10-18T04:34:24Z UTC · receipts=2783 · foreign_open=39 · tribu
 - [LabsCrypt/remitlend#1990](https://github.com/LabsCrypt/remitlend/pull/1990) · state=open · help-wanted: stake + contribute for #1503
 - [xtekky/gpt4free#3541](https://github.com/xtekky/gpt4free/pull/3541) · state=open · Fix typo in README from 'Interference' to 'Inference'
 - [RetinaX-Org/RetinaX#352](https://github.com/RetinaX-Org/RetinaX/pull/352) · state=open · help-wanted: stake + contribute for #282
-- [TrustHire/hiresettle-backend#518](https://github.com/TrustHire/hiresettle-backend/pull/518) · state=closed · help-wanted: stake + contribute for #517
 
 ## Foreign open PRs
 
+- [0xLizTech/stellarforge#614](https://github.com/0xLizTech/stellarforge/pull/614) — help-wanted: stake + contribute for #92
 - [xtekky/gpt4free#3541](https://github.com/xtekky/gpt4free/pull/3541) — Fix typo in README from 'Interference' to 'Inference'
 - [RetinaX-Org/RetinaX#352](https://github.com/RetinaX-Org/RetinaX/pull/352) — help-wanted: stake + contribute for #282
 - [LabsCrypt/remitlend#1990](https://github.com/LabsCrypt/remitlend/pull/1990) — help-wanted: stake + contribute for #1503

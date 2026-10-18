@@ -2,7 +2,7 @@
 
 **Purpose:** human-readable navigation for cited URLs found in the dated briefing snapshots, existing resource/procurement/radar JSONL, and the architecture/operations documents used to plan the BIUDL implementation.
 
-**Generated from repository evidence at branch `feat/biudl-full-stack-provenance`.** This human-readable index enumerates the cited source instances selected for direct navigation. The full offline ledger is produced by `scripts/ci/curate_briefing_sources.py` and retained as a 30-day GitHub Actions artifact named `source-citations-<run_id>` by the repo gate. The latest successful curation before artifact retention was wired extracted **185 citation instances across 19 source documents**. The extractor does not fetch or independently verify URLs; it preserves context and evidence metadata from the repository.
+**Generated from repository evidence at branch `feat/biudl-full-stack-provenance`.** This human-readable index enumerates cited source instances for direct navigation. The full offline ledger is produced by `scripts/ci/curate_briefing_sources.py` and retained as a 30-day GitHub Actions artifact named `source-citations-<run_id>` by the repo gate. The extractor excludes this index and its own generated ledger to prevent recursive self-citation; the exact citation/document counts are printed by each run. It does not fetch or independently verify URLs and preserves context/evidence metadata from the source documents.
 
 ## Canonical contracts
 

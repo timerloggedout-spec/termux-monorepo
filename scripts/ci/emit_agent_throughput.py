@@ -264,12 +264,12 @@ def build_events(metadata: Mapping[str, Any]) -> list[dict[str, Any]]:
         finish_dt = datetime.fromisoformat(finish.replace("Z", "+00:00"))
         duration = max(0.0, (finish_dt - start_dt).total_seconds())
 
-        active_event = _base(metadata, agent_id, task_id)
+        active_event = _base(metadata, agent_id, task_id, job)
         active_event.update({"timestamp": start, "event": "active_window", "active_seconds": duration})
         active_event["source_sha"] = source_sha
         events.append(active_event)
 
-        completed_event = _base(metadata, agent_id, task_id)
+        completed_event = _base(metadata, agent_id, task_id, job)
         completed_event.update({"timestamp": finish, "event": "task_completed", "status": status})
         completed_event["source_sha"] = source_sha
         if complexity is not None:

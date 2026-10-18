@@ -147,7 +147,8 @@ def discover_inputs(root: Path) -> list[Path]:
     ):
         paths.update(path for path in root.glob(pattern) if path.is_file())
     paths.update(root / item for item in DEFAULT_DOCS if (root / item).is_file())
-    return sorted(path for path in paths if path.name != "source-citations.jsonl")
+    excluded = {"source-citations.jsonl", "SOURCE-CITATION-INDEX.md"}
+    return sorted(path for path in paths if path.name not in excluded)
 
 
 def curate(paths: Iterable[Path], root: Path) -> list[dict[str, Any]]:

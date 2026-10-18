@@ -4,7 +4,6 @@ REPO="${TERMUX_BRIDGE_REPO:-timerloggedout-spec/termux-monorepo}"
 BRANCH="${TERMUX_BRIDGE_BRANCH:-master}"
 PATH_IN_REPO="${TERMUX_BRIDGE_PATH:-ops/termux-bridge/current.json}"
 LOG="${TERMUX_REVERSE_SSH_LOG:-$HOME/.local/state/termux-mcp/reverse-ssh.log}"
-USER_NAME="${TERMUX_SSH_USER:-$USER}"
 TTL_MINUTES="${TERMUX_BRIDGE_TTL_MINUTES:-60}"
 # Opaque public node tokens only. No make/model/IMEI/serial/MAC/secrets.
 # Operator sets TERMUX_DEVICE_ID on each physical unit (e.g. tmx-node-a7f3c91e).
@@ -17,10 +16,10 @@ command -v gh >/dev/null || { echo "gh is required" >&2; exit 1; }
 command -v python >/dev/null || { echo "python is required" >&2; exit 1; }
 test -r "$LOG" || { echo "reverse SSH log not found: $LOG" >&2; exit 1; }
 endpoint="$(awk '/^tcp:\/\// { v=$0; sub(/^tcp:\/\//,"",v); print v }' "$LOG" | tail -n 1)"
-payload="$(python - "$endpoint" "$USER_NAME" "$TTL_MINUTES" "$DEVICE_ID" "$DEVICE_ROLE" <<'PY'
+payload="$(python - "$endpoint" "$TTL_MINUTES" "$DEVICE_ID" "$DEVICE_ROLE" <<'PY'
 import json,socket,sys
 from datetime import datetime,timedelta,timezone
-endpoint,user,ttl,device_id,device_role=sys.argv[1],sys.argv[2],int(sys.argv[3]),sys.argv[4],sys.argv[5]
+endpoint,ttl,device_id,device_role=sys.argv[1],int(sys.argv[2]),sys.argv[3],sys.argv[4]
 now=datetime.now(timezone.utc)
 d={
   "schema_version": 3,

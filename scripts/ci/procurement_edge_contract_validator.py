@@ -90,7 +90,7 @@ def validate_procurement_record(record: Any) -> list[str]:
         errors.append(f"{key}: required field missing")
     for key in ("resource_id", "project", "license", "maintenance", "offline_capability",
                 "interoperability", "reproducibility", "provenance", "dependency_risk",
-                "lock_in_risk", "security_surface", "resource_cost", "operational_fit",
+                "security_surface", "resource_cost", "operational_fit",
                 "version_or_commit"):
         if key in record and not nonempty(record[key]):
             errors.append(f"{key}: expected non-empty string")

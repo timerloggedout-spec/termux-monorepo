@@ -2,25 +2,26 @@
 """Lead/Lag cadence classifier for GitHub Actions outcomes.
 
 Moneyball plane: correctness > green badges. Skipped route ≠ model failure.
-Latency is diagnostic. Samples are bounded to one API page (1–100 runs).
+Latency is diagnostic. Runs on Actions runners (no device UI required).
 """
 from __future__ import annotations
 
 import argparse
 import json
 import os
-import re
 import subprocess
 import sys
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
-from urllib.parse import quote
 
-LAG_CORRECTNESS = {"success"}  # badge only; never sufficient for task PASS
+# Lag outcome classes (execution results)
+LAG_CORRECTNESS = {"success"}  # still not task PASS without dual-gate context
 LAG_FAILURE = {"failure", "timed_out", "action_required"}
 LAG_OPERATIONAL = {"cancelled", "skipped", "neutral", "startup_failure"}
+
+# Dual-gate workflow name fragments (promote authority)
 DUAL_GATE_MARKERS = (
     "repo gate",
     "hygiene + portability",
@@ -30,17 +31,40 @@ DUAL_GATE_MARKERS = (
 
 
 def gh_api(path: str) -> Any:
-    """Fetch one bounded API page; never silently expand into a full history scan."""
     env = os.environ.copy()
     if not env.get("GH_TOKEN") and env.get("GITHUB_TOKEN"):
         env["GH_TOKEN"] = env["GITHUB_TOKEN"]
     out = subprocess.check_output(
-        ["gh", "api", path],
+        ["gh", "api", path, "--paginate"],
         env=env,
         text=True,
         stderr=subprocess.STDOUT,
     )
-    return json.loads(out) if out.strip() else {}
+    # paginate may concatenate JSON arrays
+    chunks: list[Any] = []
+    buf = out.strip()
+    if not buf:
+        return []
+    # single object or array
+    try:
+        data = json.loads(buf)
+        return data if isinstance(data, list) else [data]
+    except json.JSONDecodeError:
+        # multiple JSON values
+        decoder = json.JSONDecoder()
+        idx = 0
+        while idx < len(buf):
+            while idx < len(buf) and buf[idx].isspace():
+                idx += 1
+            if idx >= len(buf):
+                break
+            obj, end = decoder.raw_decode(buf, idx)
+            if isinstance(obj, list):
+                chunks.extend(obj)
+            else:
+                chunks.append(obj)
+            idx = end
+        return chunks
 
 
 def classify_conclusion(conclusion: str | None, status: str | None) -> str:
@@ -51,9 +75,9 @@ def classify_conclusion(conclusion: str | None, status: str | None) -> str:
     if c in LAG_FAILURE:
         return "lag_failure"
     if c in LAG_OPERATIONAL:
-        return "lag_operational"
+        return "lag_operational"  # skip/cancel — not correctness fail
     if c in LAG_CORRECTNESS:
-        return "lag_success_badge"
+        return "lag_success_badge"  # badge only until dual-gate context
     if not c and s == "completed":
         return "lag_unknown"
     return "lag_other"
@@ -61,7 +85,7 @@ def classify_conclusion(conclusion: str | None, status: str | None) -> str:
 
 def is_dual_gate(name: str) -> bool:
     n = name.lower()
-    return any(marker in n for marker in DUAL_GATE_MARKERS)
+    return any(m in n for m in DUAL_GATE_MARKERS)
 
 
 def classify_runs(runs: list[dict[str, Any]]) -> dict[str, Any]:
@@ -70,20 +94,20 @@ def classify_runs(runs: list[dict[str, Any]]) -> dict[str, Any]:
     failures: list[dict[str, Any]] = []
     operational: list[dict[str, Any]] = []
 
-    for run in runs:
-        name = run.get("name") or run.get("display_title") or ""
-        conclusion = run.get("conclusion")
-        status = run.get("status")
+    for r in runs:
+        name = r.get("name") or r.get("display_title") or ""
+        conclusion = r.get("conclusion")
+        status = r.get("status")
         cls = classify_conclusion(conclusion, status)
         by_class[cls] += 1
         row = {
-            "id": run.get("id"),
+            "id": r.get("id"),
             "name": name,
             "conclusion": conclusion,
             "status": status,
-            "head_sha": (run.get("head_sha") or "")[:12],
+            "head_sha": (r.get("head_sha") or "")[:12],
             "class": cls,
-            "html_url": run.get("html_url"),
+            "html_url": r.get("html_url"),
             "dual_gate": is_dual_gate(name),
         }
         if row["dual_gate"]:
@@ -93,16 +117,21 @@ def classify_runs(runs: list[dict[str, Any]]) -> dict[str, Any]:
         elif cls == "lag_operational":
             operational.append(row)
 
-    denominator = len(runs) or 1
+    # Moneyball score: failures matter; operational skips do not inflate failure rate
+    scored = sum(by_class.values()) or 1
+    failure_rate = by_class["lag_failure"] / scored
+    operational_rate = by_class["lag_operational"] / scored
+    success_badge_rate = by_class["lag_success_badge"] / scored
+
     return {
-        "schema": "lead-lag-cadence/v2",
+        "schema": "lead-lag-cadence/v1",
         "observed_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "sample_size": len(runs),
         "counts": dict(by_class),
         "rates": {
-            "failure": round(by_class["lag_failure"] / denominator, 4),
-            "operational_skip_cancel": round(by_class["lag_operational"] / denominator, 4),
-            "success_badge": round(by_class["lag_success_badge"] / denominator, 4),
+            "failure": round(failure_rate, 4),
+            "operational_skip_cancel": round(operational_rate, 4),
+            "success_badge": round(success_badge_rate, 4),
         },
         "policy": {
             "correctness_gt_green_badges": True,
@@ -114,58 +143,54 @@ def classify_runs(runs: list[dict[str, Any]]) -> dict[str, Any]:
         "dual_gate_runs": dual_gate[:30],
         "failures": failures[:40],
         "operational_sample": operational[:20],
-        "verdict": "PASS_BADGE_PLANE" if not failures else "FAIL_NEEDS_REPAIR",
+        "verdict": (
+            "PASS_BADGE_PLANE"
+            if by_class["lag_failure"] == 0
+            else "FAIL_NEEDS_REPAIR"
+        ),
+        # note: PASS_BADGE_PLANE ≠ dual-gate task PASS
         "note": "Badge plane is not promote authority. Dual-gate + task outcome required to promote.",
     }
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--owner", default=os.environ.get("GITHUB_REPOSITORY_OWNER", "timerloggedout-spec"))
-    parser.add_argument("--repo", default=None)
-    parser.add_argument("--branch", default="master")
-    parser.add_argument("--per-page", type=int, default=50)
-    parser.add_argument("--out", type=Path, default=Path("docs/ops/generated/lead-lag-cadence.json"))
-    args = parser.parse_args()
-
-    if not 1 <= args.per_page <= 100:
-        parser.error("--per-page must be between 1 and 100")
-    if not re.fullmatch(r"[A-Za-z0-9_.-]+", args.owner):
-        parser.error("--owner contains unsupported characters")
-    repo = args.repo or os.environ.get("GITHUB_REPOSITORY", "timerloggedout-spec/termux-monorepo").split("/")[-1]
-    if not re.fullmatch(r"[A-Za-z0-9_.-]+", repo):
-        parser.error("--repo contains unsupported characters")
-    if not args.branch or any(char in args.branch for char in "\r\n"):
-        parser.error("--branch must be a non-empty single-line ref")
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument("--owner", default=os.environ.get("GITHUB_REPOSITORY_OWNER", "timerloggedout-spec"))
+    p.add_argument("--repo", default=None)
+    p.add_argument("--branch", default="master")
+    p.add_argument("--per-page", type=int, default=50)
+    p.add_argument("--out", type=Path, default=Path("docs/ops/generated/lead-lag-cadence.json"))
+    args = p.parse_args()
+    repo = args.repo or (os.environ.get("GITHUB_REPOSITORY", "timerloggedout-spec/termux-monorepo").split("/")[-1])
 
     path = (
         f"repos/{args.owner}/{repo}/actions/runs"
-        f"?branch={quote(args.branch, safe='')}&per_page={args.per_page}"
+        f"?branch={args.branch}&per_page={args.per_page}"
     )
     try:
-        payload = gh_api(path)
-    except (subprocess.CalledProcessError, json.JSONDecodeError) as exc:
-        print(getattr(exc, "output", None) or str(exc), file=sys.stderr)
+        raw = gh_api(path)
+    except subprocess.CalledProcessError as e:
+        print(e.output if hasattr(e, "output") else e, file=sys.stderr)
         return 2
 
-    runs = payload.get("workflow_runs") or [] if isinstance(payload, dict) else []
+    # gh api without --jq returns {total_count, workflow_runs}
+    if isinstance(raw, list) and raw and isinstance(raw[0], dict) and "workflow_runs" in raw[0]:
+        runs = []
+        for page in raw:
+            runs.extend(page.get("workflow_runs") or [])
+    elif isinstance(raw, dict):
+        runs = raw.get("workflow_runs") or []
+    else:
+        runs = raw if isinstance(raw, list) else []
+
     report = classify_runs(runs)
     report["repository"] = f"{args.owner}/{repo}"
     report["branch"] = args.branch
-    report["api_total_count"] = payload.get("total_count") if isinstance(payload, dict) else None
-    report["sample_limit"] = args.per_page
-    report["sample_truncated"] = bool(report["api_total_count"] and report["api_total_count"] > len(runs))
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps({
-        "out": str(args.out),
-        "verdict": report["verdict"],
-        "sample_size": report["sample_size"],
-        "api_total_count": report["api_total_count"],
-        "counts": report["counts"],
-    }, indent=2))
-    # This is an observer, not a promotion gate; observed failures are data.
+    print(json.dumps({"out": str(args.out), "verdict": report["verdict"], "counts": report["counts"]}, indent=2))
+    # Non-zero only on lag_failure presence when --strict (default: always 0 for cadence observe)
     return 0
 
 

@@ -1,17 +1,16 @@
 {
   "schema": "lead-lag-cadence/v2",
-  "observed_at": "2026-10-18T15:51:24.014039Z",
+  "observed_at": "2026-10-18T18:38:12.311358Z",
   "sample_size": 50,
   "counts": {
     "lead_in_flight": 2,
-    "lag_success_badge": 37,
-    "lag_operational": 9,
-    "lag_failure": 2
+    "lag_success_badge": 21,
+    "lag_operational": 27
   },
   "rates": {
-    "failure": 0.04,
-    "operational_skip_cancel": 0.18,
-    "success_badge": 0.74
+    "failure": 0.0,
+    "operational_skip_cancel": 0.54,
+    "success_badge": 0.42
   },
   "policy": {
     "correctness_gt_green_badges": true,
@@ -30,121 +29,210 @@
     ]
   },
   "dual_gate_runs": [],
-  "failures": [
-    {
-      "id": 39136445323,
-      "name": "help-wanted-dashboard-deploy",
-      "conclusion": "failure",
-      "status": "completed",
-      "head_sha": "1a18de3b8970",
-      "class": "lag_failure",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39136445323",
-      "dual_gate": false
-    },
-    {
-      "id": 39128859135,
-      "name": "help-wanted-dashboard-deploy",
-      "conclusion": "failure",
-      "status": "completed",
-      "head_sha": "a57c340fa7dd",
-      "class": "lag_failure",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39128859135",
-      "dual_gate": false
-    }
-  ],
+  "failures": [],
   "operational_sample": [
     {
-      "id": 39139053591,
-      "name": "Fix-on-Failure Agent",
-      "conclusion": "skipped",
-      "status": "completed",
-      "head_sha": "1a18de3b8970",
-      "class": "lag_operational",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39139053591",
-      "dual_gate": false
-    },
-    {
-      "id": 39137089598,
+      "id": 39153048027,
       "name": "Actions Run Watcher \u2014 incident notification",
       "conclusion": "skipped",
       "status": "completed",
-      "head_sha": "1a18de3b8970",
+      "head_sha": "bf48bf865ba8",
       "class": "lag_operational",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39137089598",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39153048027",
       "dual_gate": false
     },
     {
-      "id": 39135893246,
+      "id": 39153039860,
       "name": "Actions Run Watcher \u2014 incident notification",
       "conclusion": "skipped",
       "status": "completed",
-      "head_sha": "a57c340fa7dd",
+      "head_sha": "bf48bf865ba8",
       "class": "lag_operational",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39135893246",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39153039860",
       "dual_gate": false
     },
     {
-      "id": 39131043285,
+      "id": 39153031707,
       "name": "Actions Run Watcher \u2014 incident notification",
       "conclusion": "skipped",
       "status": "completed",
-      "head_sha": "a57c340fa7dd",
+      "head_sha": "bf48bf865ba8",
       "class": "lag_operational",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39131043285",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39153031707",
       "dual_gate": false
     },
     {
-      "id": 39130137406,
-      "name": "Fix-on-Failure Agent",
+      "id": 39153031466,
+      "name": "Actions Run Watcher \u2014 incident notification",
       "conclusion": "skipped",
       "status": "completed",
-      "head_sha": "a57c340fa7dd",
+      "head_sha": "bf48bf865ba8",
       "class": "lag_operational",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39130137406",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39153031466",
       "dual_gate": false
     },
     {
-      "id": 39128816379,
-      "name": "help-wanted-dashboard-deploy",
+      "id": 39153030541,
+      "name": "Actions Run Watcher \u2014 incident notification",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "bf48bf865ba8",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39153030541",
+      "dual_gate": false
+    },
+    {
+      "id": 39153030952,
+      "name": "Actions Run Watcher \u2014 incident notification",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "bf48bf865ba8",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39153030952",
+      "dual_gate": false
+    },
+    {
+      "id": 39153028231,
+      "name": "Actions Run Watcher \u2014 incident notification",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "bf48bf865ba8",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39153028231",
+      "dual_gate": false
+    },
+    {
+      "id": 39153022210,
+      "name": "Actions Run Watcher \u2014 incident notification",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "bf48bf865ba8",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39153022210",
+      "dual_gate": false
+    },
+    {
+      "id": 39153020006,
+      "name": "Actions Run Watcher \u2014 incident notification",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "bf48bf865ba8",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39153020006",
+      "dual_gate": false
+    },
+    {
+      "id": 39153020444,
+      "name": "Actions Run Watcher \u2014 incident notification",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "bf48bf865ba8",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39153020444",
+      "dual_gate": false
+    },
+    {
+      "id": 39153019358,
+      "name": "Actions Run Watcher \u2014 incident notification",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "bf48bf865ba8",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39153019358",
+      "dual_gate": false
+    },
+    {
+      "id": 39153008548,
+      "name": "Actions Run Watcher \u2014 incident notification",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "bf48bf865ba8",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39153008548",
+      "dual_gate": false
+    },
+    {
+      "id": 39153008530,
+      "name": "Actions Run Watcher \u2014 incident notification",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "bf48bf865ba8",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39153008530",
+      "dual_gate": false
+    },
+    {
+      "id": 39153008465,
+      "name": "Actions Run Watcher \u2014 incident notification",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "bf48bf865ba8",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39153008465",
+      "dual_gate": false
+    },
+    {
+      "id": 39153001210,
+      "name": "Context Relationship + Lead/Lag Audit",
       "conclusion": "cancelled",
       "status": "completed",
-      "head_sha": "d78c4f9ab7d0",
+      "head_sha": "bf48bf865ba8",
       "class": "lag_operational",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39128816379",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39153001210",
       "dual_gate": false
     },
     {
-      "id": 39128787099,
-      "name": "help-wanted-status-refresh",
+      "id": 39153001190,
+      "name": "Audit Cycle \u2014 Single PR Feed-Forward",
       "conclusion": "cancelled",
       "status": "completed",
-      "head_sha": "a6510d8e6bb9",
+      "head_sha": "bf48bf865ba8",
       "class": "lag_operational",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39128787099",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39153001190",
       "dual_gate": false
     },
     {
-      "id": 39128299968,
-      "name": "Actions Run Watcher \u2014 incident notification",
-      "conclusion": "skipped",
+      "id": 39153001192,
+      "name": "PR production ledger",
+      "conclusion": "cancelled",
       "status": "completed",
-      "head_sha": "a6510d8e6bb9",
+      "head_sha": "bf48bf865ba8",
       "class": "lag_operational",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39128299968",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39153001192",
       "dual_gate": false
     },
     {
-      "id": 39128279826,
+      "id": 39152996360,
       "name": "Fix-on-Failure Agent",
       "conclusion": "skipped",
       "status": "completed",
-      "head_sha": "a6510d8e6bb9",
+      "head_sha": "bf48bf865ba8",
       "class": "lag_operational",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39128279826",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39152996360",
+      "dual_gate": false
+    },
+    {
+      "id": 39152991957,
+      "name": "Model live canary",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "bf48bf865ba8",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39152991957",
+      "dual_gate": false
+    },
+    {
+      "id": 39152992092,
+      "name": "PR evidence evaluation",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "bf48bf865ba8",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39152992092",
       "dual_gate": false
     }
   ],
-  "verdict": "FAIL_NEEDS_REPAIR",
+  "verdict": "PASS_BADGE_PLANE",
   "note": "Badge plane is not promote authority. Dual-gate + task outcome required to promote.",
   "repository": "timerloggedout-spec/termux-monorepo",
   "branch": "master",

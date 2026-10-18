@@ -6,18 +6,18 @@ PATH_IN_REPO="${TERMUX_BRIDGE_PATH:-ops/termux-bridge/current.json}"
 LOG="${TERMUX_REVERSE_SSH_LOG:-$HOME/.local/state/termux-mcp/reverse-ssh.log}"
 USER_NAME="${TERMUX_SSH_USER:-$USER}"
 TTL_MINUTES="${TERMUX_BRIDGE_TTL_MINUTES:-60}"
-# Public-obfuscated device identification (no IMEI/serial/MAC/secrets).
-DEVICE_ID="${TERMUX_DEVICE_ID:-blu-b160v-01}"
-DEVICE_LABEL="${TERMUX_DEVICE_LABEL:-BLU B160V#1}"
-DEVICE_ROLE="${TERMUX_DEVICE_ROLE:-primary-termux-bridge}"
+# Opaque public node tokens only. No make/model/IMEI/serial/MAC/secrets.
+# Operator sets TERMUX_DEVICE_ID on each physical unit (e.g. tmx-node-a7f3c91e).
+DEVICE_ID="${TERMUX_DEVICE_ID:-tmx-node-primary}"
+DEVICE_ROLE="${TERMUX_DEVICE_ROLE:-bridge}"
 command -v gh >/dev/null || { echo "gh is required" >&2; exit 1; }
 command -v python >/dev/null || { echo "python is required" >&2; exit 1; }
 test -r "$LOG" || { echo "reverse SSH log not found: $LOG" >&2; exit 1; }
 endpoint="$(awk '/^tcp:\/\// { v=$0; sub(/^tcp:\/\//,"",v); print v }' "$LOG" | tail -n 1)"
-payload="$(python - "$endpoint" "$USER_NAME" "$TTL_MINUTES" "$DEVICE_ID" "$DEVICE_LABEL" "$DEVICE_ROLE" <<'PY'
+payload="$(python - "$endpoint" "$USER_NAME" "$TTL_MINUTES" "$DEVICE_ID" "$DEVICE_ROLE" <<'PY'
 import json,socket,sys
 from datetime import datetime,timedelta,timezone
-endpoint,user,ttl,device_id,device_label,device_role=sys.argv[1],sys.argv[2],int(sys.argv[3]),sys.argv[4],sys.argv[5],sys.argv[6]
+endpoint,user,ttl,device_id,device_role=sys.argv[1],sys.argv[2],int(sys.argv[3]),sys.argv[4],sys.argv[5]
 now=datetime.now(timezone.utc)
 d={
   "schema_version": 3,
@@ -27,7 +27,6 @@ d={
   "ssh_user": user,
   "ttl_minutes": ttl,
   "device_id": device_id,
-  "device_label": device_label,
   "device_role": device_role,
 }
 if not endpoint or ":" not in endpoint:
@@ -40,9 +39,9 @@ else:
   with socket.create_connection((host,port),timeout=5): ok=True
  except OSError: pass
  if ok:
-  d.update(status="active",endpoint=host,port=port,observed_at=now.isoformat().replace("+00:00","Z"),expires_at=(now+timedelta(minutes=ttl)).isoformat().replace("+00:00","Z"),stale_reason=None,note="Published only after TCP reachability verification; SSH private keys are never stored here. device_id is public-obfuscated only.")
+  d.update(status="active",endpoint=host,port=port,observed_at=now.isoformat().replace("+00:00","Z"),expires_at=(now+timedelta(minutes=ttl)).isoformat().replace("+00:00","Z"),stale_reason=None,note="TCP-verified publish. device_id is an opaque operator token; no hardware identifiers.")
  else:
-  d.update(status="stale",endpoint=host,port=port,observed_at=None,expires_at=None,stale_reason="latest Pinggy endpoint is not accepting TCP connections",note="Stale endpoint retained for diagnosis only; wait for the boot tunnel to reconnect.")
+  d.update(status="stale",endpoint=host,port=port,observed_at=None,expires_at=None,stale_reason="latest Pinggy endpoint is not accepting TCP connections",note="Stale endpoint retained for diagnosis only.")
 print(json.dumps(d,indent=2))
 PY
 )"

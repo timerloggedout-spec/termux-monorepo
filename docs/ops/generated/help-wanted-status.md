@@ -1,6 +1,6 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-19T05:20:38Z UTC · receipts=2860 · foreign_open=40 · tributes=106_
+_Generated 2026-10-19T07:42:11Z UTC · receipts=2860 · foreign_open=39 · tributes=106_
 
 ## Tributes (contributor ledger)
 
@@ -41,7 +41,7 @@ _Generated 2026-10-19T05:20:38Z UTC · receipts=2860 · foreign_open=40 · tribu
 - [Nodal-stellar/Nodal-AI#857](https://github.com/Nodal-stellar/Nodal-AI/pull/857) · state=open · help-wanted: stake + contribute for #811
 - [LabsCrypt/remitlend#1990](https://github.com/LabsCrypt/remitlend/pull/1990) · state=open · help-wanted: stake + contribute for #1503
 - [RetinaX-Org/RetinaX#352](https://github.com/RetinaX-Org/RetinaX/pull/352) · state=open · help-wanted: stake + contribute for #282
-- [CodeGirlsInc/FrieghtFlow#1743](https://github.com/CodeGirlsInc/FrieghtFlow/pull/1743) · state=open · help-wanted: stake + contribute for #1717
+- [CodeGirlsInc/FrieghtFlow#1743](https://github.com/CodeGirlsInc/FrieghtFlow/pull/1743) · state=closed · help-wanted: stake + contribute for #1717
 - [0xLizTech/stellarforge#614](https://github.com/0xLizTech/stellarforge/pull/614) · state=open · help-wanted: stake + contribute for #92
 - [SoroScan/soroscan#1690](https://github.com/SoroScan/soroscan/pull/1690) · state=open · help-wanted: stake + contribute for #1663
 
@@ -49,7 +49,6 @@ _Generated 2026-10-19T05:20:38Z UTC · receipts=2860 · foreign_open=40 · tribu
 
 - [sorolens/sorolens#753](https://github.com/sorolens/sorolens/pull/753) — help-wanted: stake + contribute for #538
 - [SoroScan/soroscan#1690](https://github.com/SoroScan/soroscan/pull/1690) — help-wanted: stake + contribute for #1663
-- [CodeGirlsInc/FrieghtFlow#1743](https://github.com/CodeGirlsInc/FrieghtFlow/pull/1743) — help-wanted: stake + contribute for #1717
 - [0xLizTech/stellarforge#614](https://github.com/0xLizTech/stellarforge/pull/614) — help-wanted: stake + contribute for #92
 - [RetinaX-Org/RetinaX#352](https://github.com/RetinaX-Org/RetinaX/pull/352) — help-wanted: stake + contribute for #282
 - [LabsCrypt/remitlend#1990](https://github.com/LabsCrypt/remitlend/pull/1990) — help-wanted: stake + contribute for #1503

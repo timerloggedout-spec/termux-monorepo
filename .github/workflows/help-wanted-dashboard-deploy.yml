@@ -171,7 +171,7 @@ jobs:
             cp docs/ops/generated/lane-matrix-status.json apps/help-wanted-dashboard/data/lane-matrix-status.json
           fi
       - name: Install Vercel CLI
-        run: npm i -g vercel@39
+        run: npm i -g vercel@latest
       - name: Deploy to Vercel (production)
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}

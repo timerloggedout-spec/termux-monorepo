@@ -1,9 +1,12 @@
 """Tests for automated Help-Wanted tribute lifecycle auditing."""
+import io
 import unittest
+import urllib.error
+from email.message import Message
 from pathlib import Path
 from unittest.mock import patch
 
-from scripts.ci.help_wanted_tribute_audit import audit_one, parse_pr_url
+from scripts.ci.help_wanted_tribute_audit import api_get, audit_one, parse_pr_url
 
 
 class HelpWantedTributeAuditTests(unittest.TestCase):
@@ -11,6 +14,32 @@ class HelpWantedTributeAuditTests(unittest.TestCase):
         workflow = Path(".github/workflows/help-wanted-status-refresh.yml").read_text(encoding="utf-8")
         self.assertIn("python3 scripts/ci/help_wanted_tribute_audit.py", workflow)
         self.assertIn("docs/ops/generated/help-wanted-tribute-audit.json", workflow)
+
+    @patch("scripts.ci.help_wanted_tribute_audit.urllib.request.urlopen")
+    def test_http_429_is_classified_as_rate_limited(self, urlopen):
+        urlopen.side_effect = urllib.error.HTTPError(
+            "https://api.github.com/example", 429, "Too Many Requests",
+            Message(), io.BytesIO(b"secondary rate limit"),
+        )
+        self.assertEqual(api_get("/example"), (None, "rate_limited"))
+
+    @patch("scripts.ci.help_wanted_tribute_audit.urllib.request.urlopen")
+    def test_permission_403_is_not_misclassified_as_rate_limit(self, urlopen):
+        urlopen.side_effect = urllib.error.HTTPError(
+            "https://api.github.com/example", 403, "Forbidden",
+            Message(), io.BytesIO(b"Resource not accessible by integration"),
+        )
+        self.assertEqual(api_get("/example"), (None, "http_403"))
+
+    @patch("scripts.ci.help_wanted_tribute_audit.urllib.request.urlopen")
+    def test_rate_limit_403_header_is_classified_as_deferred(self, urlopen):
+        headers = Message()
+        headers["X-RateLimit-Remaining"] = "0"
+        urlopen.side_effect = urllib.error.HTTPError(
+            "https://api.github.com/example", 403, "Forbidden",
+            headers, io.BytesIO(b"API rate limit exceeded"),
+        )
+        self.assertEqual(api_get("/example"), (None, "rate_limited"))
 
     def test_parse_canonical_pull_request_url(self):
         self.assertEqual(

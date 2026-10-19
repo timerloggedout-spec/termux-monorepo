@@ -198,7 +198,7 @@ Agent-Identity: Grok (Administrator)
 - **Workflow:** `.github/workflows/gitlab-governed-reconciliation.yml`
 - **Contract:** `docs/ops/GITHUB-GITLAB-GOVERNED-RECONCILIATION.md`
 - **Canonical comparison:** GitHub `master` SHA ↔ selected GitLab branch SHA; never PR head ↔ GitLab master.
-- **Authentication:** `GITLAB_TOKEN` for GitLab fetch and `GH_SYNC_TOKEN` for GitHub branch/PR writes. Missing credentials fail closed.
+- **Authentication:** `GITLAB_TOKEN` for GitLab fetch; default `GITHUB_TOKEN` for bounded GitHub writes. Missing GitLab credentials fail closed. The default token intentionally suppresses recursive CI fan-out for unreviewed external code.
 - **Promotion:** normal PR checks and review; no force-push, no GitLab writes, no auto-merge.
 - **State model:** `aligned`, `gitlab-behind`, `gitlab-ahead`, `diverged`; merge conflicts stop for manual reconciliation.
 - **Status:** proposed/under validation. Do not mark operational until an Actions run proves the no-op or PR-publication effect. The old #311 remains the historical design reference until the replacement is accepted.

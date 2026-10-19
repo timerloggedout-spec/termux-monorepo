@@ -339,7 +339,8 @@ def main() -> int:
         "audited_pr_count": observed_history_count,
         "audited_this_run_count": observed_this_run_count,
         "attempted_this_run_count": len(results),
-        "deferred_this_run_count": statuses.get("deferred", 0),
+        "deferred_this_run_count": deferred_this_run_count,
+        "unknown_this_run_count": unknown_this_run_count,
         "audited_this_run_pr_urls": [
             row["pr_url"] for row in results
             if row.get("audit_status", "observed") not in {"deferred", "unknown"}

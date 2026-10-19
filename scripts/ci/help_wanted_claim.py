@@ -103,6 +103,8 @@ def find_existing_claim(owner: str, repo: str, number: int) -> str | None:
 
 def label_matches(issue: dict, required_label: str) -> bool:
     """Match a selected scout label against the current upstream issue labels."""
+    if not required_label.strip():
+        return True
     normalize = lambda value: " ".join(str(value or "").lower().replace("-", " ").split())
     expected = normalize(required_label)
     return any(

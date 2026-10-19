@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "9d98cabcf238061cc30af174d856b09a435511c36ccaf4a404c660cf66f79200",
-  "workflow_count": 132,
+  "source_fingerprint": "4bfb5da49fec4313c77815032342f13e2611d9f54e233a8efefd426e94eab29f",
+  "workflow_count": 134,
   "workflows": [
     {
       "action_pins": [
@@ -1300,6 +1300,22 @@
     },
     {
       "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "group: hark-enqueue-${{ inputs.key }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "enqueue"
+      ],
+      "name": "hark-enqueue",
+      "path": ".github/workflows/hark-enqueue.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_call",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
       "authority": "writer",
       "concurrency": "group: help-wanted-dashboard-deploy cancel-in-progress: true",
       "domain": "agentic-development",
@@ -2472,6 +2488,21 @@
       ],
       "triggers": [
         "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "probe"
+      ],
+      "name": "vercel-quota-probe",
+      "path": ".github/workflows/vercel-quota-probe.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },

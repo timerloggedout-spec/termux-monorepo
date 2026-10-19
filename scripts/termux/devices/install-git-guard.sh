@@ -58,6 +58,15 @@ while [ $i -lt $n ]; do
   esac
 done
 sub="${args[$i]:-}"; rest=("${args[@]:$((i+1))}")
+# Expand aliases (including -c alias.x=...) so `git rh` -> `reset --hard` is still guarded.
+if [ -n "$sub" ]; then
+  alias_val="$("$REAL_GIT" "${args[@]:0:$i}" config --get "alias.$sub" 2>/dev/null || true)"
+  if [ -n "$alias_val" ]; then
+    case "$alias_val" in '!'*) block "shell alias '$sub' cannot be inspected" "$@" ;; esac
+    read -r -a _exp <<<"$alias_val"
+    sub="${_exp[0]}"; rest=("${_exp[@]:1}" "${rest[@]}")
+  fi
+fi
 
 has() { local a; for a in "${rest[@]}"; do for p in "$@"; do [ "$a" = "$p" ] && return 0; done; done; return 1; }
 has_short() { local a; for a in "${rest[@]}"; do case "$a" in --*) ;; -*"$1"*) return 0 ;; esac; done; return 1; }
@@ -110,7 +119,7 @@ while read -r lref lsha rref rsha; do
   fi
 done <<<"$input"
 # Chain to the repository's own hook, if any.
-repo_hook="$(git rev-parse --git-path hooks/pre-push 2>/dev/null)"
+gcd="$(git rev-parse --git-common-dir 2>/dev/null)"; repo_hook="${gcd:+$gcd/hooks/pre-push}"
 if [ -n "$repo_hook" ] && [ -x "$repo_hook" ] && [ "$repo_hook" != "$0" ]; then
   printf '%s\n' "$input" | "$repo_hook" "$@"
 fi

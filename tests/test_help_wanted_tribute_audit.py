@@ -1,11 +1,17 @@
 """Tests for automated Help-Wanted tribute lifecycle auditing."""
 import unittest
+from pathlib import Path
 from unittest.mock import patch
 
 from scripts.ci.help_wanted_tribute_audit import audit_one, parse_pr_url
 
 
 class HelpWantedTributeAuditTests(unittest.TestCase):
+    def test_hourly_status_refresh_runs_and_publishes_audit(self):
+        workflow = Path(".github/workflows/help-wanted-status-refresh.yml").read_text(encoding="utf-8")
+        self.assertIn("python3 scripts/ci/help_wanted_tribute_audit.py", workflow)
+        self.assertIn("docs/ops/generated/help-wanted-tribute-audit.json", workflow)
+
     def test_parse_canonical_pull_request_url(self):
         self.assertEqual(
             parse_pr_url("https://github.com/example/project/pull/42"),

@@ -6,7 +6,9 @@ from email.message import Message
 from pathlib import Path
 from unittest.mock import patch
 
-from scripts.ci.help_wanted_tribute_audit import api_get, audit_one, parse_pr_url
+from scripts.ci.help_wanted_tribute_audit import (
+    api_get, audit_one, merge_audit_history, parse_pr_url, valid_realization_receipt,
+)
 
 
 class HelpWantedTributeAuditTests(unittest.TestCase):
@@ -40,6 +42,30 @@ class HelpWantedTributeAuditTests(unittest.TestCase):
             headers, io.BytesIO(b"API rate limit exceeded"),
         )
         self.assertEqual(api_get("/example"), (None, "rate_limited"))
+
+    def test_rotating_audit_accumulates_coverage_across_refreshes(self):
+        urls = ["https://github.com/example/project/pull/1", "https://github.com/example/project/pull/2"]
+        old = [{"pr_url": urls[0], "stage": "accepted"}]
+        fresh = [{"pr_url": urls[1], "stage": "validated_solution"}]
+        merged = merge_audit_history(urls, old, fresh)
+        self.assertEqual([row["pr_url"] for row in merged], urls)
+        self.assertEqual([row["stage"] for row in merged], ["accepted", "validated_solution"])
+
+    def test_realization_receipt_requires_independent_verifier_and_linked_evidence(self):
+        receipt = {
+            "pr_url": "https://github.com/example/project/pull/42",
+            "status": "verified",
+            "independence_attested": True,
+            "verified_by": "independent-maintainer",
+            "verified_at": "2026-10-18T10:00:00Z",
+            "verification_method": "reproduced benchmark",
+            "evidence_summary": "Measured regression eliminated in release",
+            "effect_url": "https://github.com/example/project/releases/tag/v1.2.3",
+            "verification_url": "https://github.com/example/project/actions/runs/123",
+        }
+        self.assertTrue(valid_realization_receipt(receipt, receipt["pr_url"], "contributor"))
+        self.assertFalse(valid_realization_receipt(receipt, receipt["pr_url"], "independent-maintainer"))
+        self.assertFalse(valid_realization_receipt({**receipt, "independence_attested": False}, receipt["pr_url"], "contributor"))
 
     def test_parse_canonical_pull_request_url(self):
         self.assertEqual(

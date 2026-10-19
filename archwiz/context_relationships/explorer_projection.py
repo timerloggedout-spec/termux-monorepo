@@ -106,7 +106,9 @@ def project_coverage(
             "manifest.edge_count",
         )
 
-    checkpoint_eligible = manifest.get("github_report", {}).get("checkpoint_eligible")
+    github_report = manifest.get("github_report")
+    github_report = github_report if isinstance(github_report, Mapping) else {}
+    checkpoint_eligible = github_report.get("checkpoint_eligible")
     if displayed_coverage == "COMPLETE" and checkpoint_eligible is False:
         finding(
             "COMPLETE_BUT_CHECKPOINT_INELIGIBLE",
@@ -127,8 +129,6 @@ def project_coverage(
         history_window = {}
 
     pr_count = _count(history_window, "pull_request_count")
-    github_report = manifest.get("github_report")
-    github_report = github_report if isinstance(github_report, Mapping) else {}
     report_counts = github_report.get("counts")
     report_counts = report_counts if isinstance(report_counts, Mapping) else {}
     pr_stubs = _count(report_counts, "pull_request_window_stubs")

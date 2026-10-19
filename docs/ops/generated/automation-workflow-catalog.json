@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "4bfb5da49fec4313c77815032342f13e2611d9f54e233a8efefd426e94eab29f",
-  "workflow_count": 134,
+  "source_fingerprint": "b2e5433ff6f70899f790fc5aa8037cfcb640e23707c0d4309776d2f79cea6e79",
+  "workflow_count": 135,
   "workflows": [
     {
       "action_pins": [
@@ -2299,6 +2299,24 @@
       ],
       "triggers": [
         "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: she-skill-clobber-${{ github.ref }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "detect",
+        "heal"
+      ],
+      "name": "SHE skill clobber heal",
+      "path": ".github/workflows/she-skill-clobber-heal.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push",
         "workflow_dispatch"
       ]
     },

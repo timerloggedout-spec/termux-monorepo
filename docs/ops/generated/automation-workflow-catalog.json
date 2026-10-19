@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "b2e5433ff6f70899f790fc5aa8037cfcb640e23707c0d4309776d2f79cea6e79",
-  "workflow_count": 135,
+  "source_fingerprint": "37dcdbea57d5b5ba2af28bf98e16a69a239aa3a94aa3fb72f04636e20f3757e2",
+  "workflow_count": 136,
   "workflows": [
     {
       "action_pins": [
@@ -1296,6 +1296,22 @@
       "triggers": [
         "schedule",
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "group: hark-enqueue-on-failure-${{ github.event.workflow_run.name }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "enqueue",
+        "prep"
+      ],
+      "name": "hark enqueue on failure",
+      "path": ".github/workflows/hark-enqueue-on-failure.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_run"
       ]
     },
     {

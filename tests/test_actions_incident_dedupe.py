@@ -1,10 +1,19 @@
 """Tests for idempotent Actions incident notification reconciliation."""
 import unittest
+from pathlib import Path
 
 from scripts.ci.actions_incident_dedupe import reconcile_incident
 
 
 class ActionsIncidentDedupeTests(unittest.TestCase):
+    def test_watcher_serializes_incident_updates_and_checks_out_helper(self):
+        workflow = Path(".github/workflows/actions-run-watcher.yml").read_text(encoding="utf-8")
+        self.assertIn("queue: max", workflow)
+        self.assertIn("group: actions-run-watcher-${{ github.event.workflow_run.name }}-${{ github.event.workflow_run.conclusion }}", workflow)
+        self.assertIn("Checkout observer implementation", workflow)
+        self.assertIn("--json number,title", workflow)
+        self.assertIn("actions-notified:${fp}", workflow)
+
     def test_first_fingerprint_requests_notification_and_records_run(self):
         result = reconcile_incident(
             {"body": "Initial incident"},

@@ -121,7 +121,7 @@ def audit_one(pr_url: str) -> dict[str, Any]:
     )
 
     base.update({
-        "audit_status": "partial" if files_error or checks_error else "observed",
+        "audit_status": "partial" if files_error or checks_error or checks_truncated else "observed",
         "state": pr.get("state"),
         "merged": bool(pr.get("merged_at")),
         "head_sha": head_sha,

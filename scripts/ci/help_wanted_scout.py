@@ -123,9 +123,9 @@ def comment_score(n: int | None) -> int:
 
 
 def language_score(repo_url: str, preferred: set[str]) -> int:
-    # Search results do not always embed language; light heuristic from URL/path
-    # Full language requires secondary API; keep zero-cost for scout.
-    return 5  # neutral baseline; workflow can enrich later
+    """Return zero until repository language is actually fetched and verified."""
+    del repo_url, preferred
+    return 0
 
 
 def rank_issue(item: dict) -> dict:
@@ -138,19 +138,29 @@ def rank_issue(item: dict) -> dict:
     title = item.get("title") or ""
     repo = (item.get("repository_url") or "").replace("api.github.com/repos/", "github.com/")
 
-    score = 0
-    score += label_score(labels)
-    score += 15 if not assignees else (5 if len(assignees) == 1 else 0)
-    score += body_clarity(body)
-    score += freshness_score(updated)
-    score += comment_score(comments)
-    score += 8  # repo health baseline (search already filters active-ish)
-    score += language_score(repo, PREFERRED_LANGS)
-    score += 5  # assume no competing PR unless later enriched
-    score = max(0, min(100, score))
+    # Unknown repository health, language, and competing-PR status are not
+    # positive evidence. Keep every score component inspectable.
+    components = {
+        "label_fit": label_score(labels),
+        "unassigned": 15 if not assignees else (5 if len(assignees) == 1 else 0),
+        "body_clarity": body_clarity(body),
+        "freshness": freshness_score(updated),
+        "comment_signal": comment_score(comments),
+        "repository_health": 0,
+        "language_fit": language_score(repo, PREFERRED_LANGS),
+        "competing_pr_absence": 0,
+    }
+    score = max(0, min(100, sum(components.values())))
 
     return {
         "score": score,
+        "score_components": components,
+        "evidence_gaps": [
+            "repository_health_not_checked",
+            "repository_language_not_verified",
+            "competing_pr_status_not_checked",
+        ],
+        "ranking_status": "candidate_only",
         "title": title,
         "url": html,
         "repo": repo,
@@ -181,11 +191,17 @@ def main() -> int:
     ranked = sorted((rank_issue(i) for i in items), key=lambda x: -x["score"])[: args.max]
 
     catalog = {
+        "schema_version": "help-wanted-catalog.v2",
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "query": query,
         "count": len(ranked),
         "items": ranked,
-        "heuristics": "CPPH v0 — see docs/ops/HELP-WANTED-LANE.md",
+        "ranking_contract": {
+            "heuristics": "CPPH v0 — see docs/ops/HELP-WANTED-LANE.md",
+            "meaning": "relative discovery priority, not eligibility or claim authorization",
+            "unknown_evidence_policy": "unknown signals earn zero points and are listed as evidence gaps",
+            "requires_fresh_validation_before_claim": True,
+        },
     }
 
     text = json.dumps(catalog, indent=2)

@@ -101,7 +101,33 @@ def find_existing_claim(owner: str, repo: str, number: int) -> str | None:
     return None
 
 
-def post_claim(owner: str, repo: str, number: int, dry: bool) -> str:
+def label_matches(issue: dict, required_label: str) -> bool:
+    """Match a selected scout label against the current upstream issue labels."""
+    if not required_label.strip():
+        return True
+    normalize = lambda value: " ".join(str(value or "").lower().replace("-", " ").split())
+    expected = normalize(required_label)
+    return any(
+        normalize(label.get("name")) == expected
+        for label in (issue.get("labels") or [])
+        if isinstance(label, dict)
+    )
+
+
+def post_claim(
+    owner: str, repo: str, number: int, dry: bool, required_label: str = ""
+) -> str:
+    # Revalidate auto-selected candidates at the point of action. Explicit issue
+    # inputs keep their existing behavior because required_label is empty.
+    if required_label:
+        current = get_issue(owner, repo, number)
+        if (current.get("state") or "open").lower() != "open":
+            raise SystemExit(f"refusing claim: selected issue is no longer open: {owner}/{repo}#{number}")
+        if not label_matches(current, required_label):
+            raise SystemExit(
+                f"refusing claim: required scout label {required_label!r} is no longer present "
+                f"on {owner}/{repo}#{number}"
+            )
     existing = find_existing_claim(owner, repo, number)
     if existing is not None:
         print(f"claim already present — skipping post: {existing}")
@@ -150,6 +176,11 @@ def main() -> int:
         help="LOCAL DEBUG ONLY — Actions must never pass this",
     )
     ap.add_argument(
+        "--required-label",
+        default="",
+        help="label observed on an auto-selected scout candidate; revalidate before claiming",
+    )
+    ap.add_argument(
         "--allow-closed",
         action="store_true",
         help="Allow claim on closed issues (default: skip closed)",
@@ -172,7 +203,7 @@ def main() -> int:
         print("::notice::claim_skipped_closed=true")
         return 0
 
-    comment_url = post_claim(owner, repo, number, args.dry_run)
+    comment_url = post_claim(owner, repo, number, args.dry_run, args.required_label)
     print(f"claim: {comment_url}")
     fork = ensure_fork(owner, repo, args.dry_run)
     print(f"fork: {fork}")

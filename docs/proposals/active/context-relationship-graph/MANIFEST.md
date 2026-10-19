@@ -64,7 +64,7 @@ The work extends the existing local context graph rather than treating it as aut
 
 ## Links
 
-- ITEMS: [./ITEMS.md ](./ITEMS.md)
+- ITEMS: [./ITEMS.md](./ITEMS.md)
 - Historical Corpus Explorer plan: [./HISTORICAL-CORPUS-EXPLORER-INTEGRATION-PLAN.md](./HISTORICAL-CORPUS-EXPLORER-INTEGRATION-PLAN.md)
 - Source: [./source.md](./source.md)
 - ICM navigation surface: [../../icm/objects/knowledge/navigation-and-indexes.md](../../icm/objects/knowledge/navigation-and-indexes.md)

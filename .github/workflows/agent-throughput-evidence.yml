@@ -77,6 +77,8 @@ jobs:
               const message = String(error.message || '');
               if (status === 403 || /rate limit/i.test(message)) {
                 core.warning(`installation rate limit; skipping throughput evidence: ${message}`);
+                core.setOutput('skip_reason', 'rate_limited');
+                core.setOutput('emitted', 'false');
                 return;
               }
               throw error;
@@ -143,6 +145,8 @@ jobs:
 
             if (!identity) {
               core.notice(`workflow is outside the attribution map; no provider/model identity will be guessed: ${workflowName}`);
+              core.setOutput('skip_reason', 'unmapped_workflow');
+              core.setOutput('emitted', 'false');
               return;
             }
 
@@ -203,6 +207,48 @@ jobs:
               .addRaw(`- jobs observed: ${jobs.length}\n`)
               .addRaw(`- structural complexity: ${taskComplexity ? 'available' : 'missing'}\n`)
               .write();
+
+      - name: Emit explicit ATES skip receipt
+        if: always() && steps.collect.outputs.emitted != 'true'
+        env:
+          SOURCE_RUN_ID: ${{ github.event.workflow_run.id || '0' }}
+          SOURCE_RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt || '1' }}
+          SOURCE_HEAD_SHA: ${{ github.event.workflow_run.head_sha || '' }}
+          SOURCE_WORKFLOW_NAME: ${{ github.event.workflow_run.name || '' }}
+          SKIP_REASON: ${{ steps.collect.outputs.skip_reason || 'metadata_unavailable' }}
+          TASK_BOUNDARY_OUTCOME: ${{ steps.task-boundary.outcome }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          from pathlib import Path
+          receipt = {
+              "schema_version": "ates.observation.v1",
+              "producer": "agent-throughput-evidence",
+              "status": "skipped",
+              "skip_reason": os.environ["SKIP_REASON"],
+              "source_run_id": int(os.environ["SOURCE_RUN_ID"]),
+              "source_run_attempt": int(os.environ["SOURCE_RUN_ATTEMPT"]),
+              "source_head_sha": os.environ["SOURCE_HEAD_SHA"] or None,
+              "source_workflow_name": os.environ["SOURCE_WORKFLOW_NAME"] or None,
+              "observed_at": datetime.now(timezone.utc).isoformat(),
+              "task_boundary_artifact_outcome": os.environ["TASK_BOUNDARY_OUTCOME"],
+              "metrics_emitted": False,
+              "missing_evidence_policy": "unknown remains unknown; no metrics inferred",
+          }
+          Path("ates-skip-receipt.json").write_text(
+              json.dumps(receipt, sort_keys=True, indent=2) + "\\n", encoding="utf-8"
+          )
+          PY
+
+      - name: Upload ATES skip receipt
+        if: always() && steps.collect.outputs.emitted != 'true'
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: agent-throughput-skip-${{ github.event.workflow_run.id || github.run_id }}-${{ github.event.workflow_run.run_attempt || github.run_attempt }}
+          path: ates-skip-receipt.json
+          if-no-files-found: error
+          retention-days: 14
 
       - name: Move metadata into workspace
         if: steps.collect.outputs.emitted == 'true'

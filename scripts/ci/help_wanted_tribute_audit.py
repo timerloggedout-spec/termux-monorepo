@@ -184,14 +184,14 @@ def audit_one(
     files_total_count = int(pr.get("changed_files") or 0)
     files_truncated = isinstance(files, list) and files_total_count > len(files)
     changed = [
-        row for row in (files if isinstance(files, list) else [])
+        row for row in files_rows
         if (int(row.get("additions") or 0) + int(row.get("deletions") or 0)) > 0
     ]
     implementation_files = [row for row in changed if row.get("filename") != STAKE_PATH]
     body = str(pr.get("body") or "")
     contributor_login = str((pr.get("user") or {}).get("login") or "")
     proof_present = all(marker in body for marker in SOLUTION_PROOF)
-    stake_only = bool(changed) and not implementation_files
+    stake_only = files_complete and bool(changed) and not implementation_files
     check_rows = (checks or {}).get("check_runs", []) if isinstance(checks, dict) else []
     checks_total_count = (checks or {}).get("total_count", len(check_rows)) if isinstance(checks, dict) else 0
     checks_truncated = isinstance(checks, dict) and checks_total_count > len(check_rows)
@@ -217,6 +217,10 @@ def audit_one(
         "base_sha": (pr.get("base") or {}).get("sha"),
         "changed_file_count": len(changed),
         "files_total_count": files_total_count,
+        "files_observed_count": len(files_rows),
+        "files_truncated": files_truncated,
+        "files_complete": files_complete,
+        "files_total_count": files_total_count,
         "files_observed_count": len(files) if isinstance(files, list) else 0,
         "files_truncated": files_truncated,
         "implementation_file_count": len(implementation_files),
@@ -232,6 +236,8 @@ def audit_one(
 
     if files_error:
         base["evidence_gaps"].append(f"files_{files_error}")
+    if files_truncated:
+        base["evidence_gaps"].append("files_truncated")
     if files_truncated:
         base["evidence_gaps"].append("files_truncated")
     if checks_error:
@@ -323,7 +329,7 @@ def main() -> int:
     results = [audit_one(url, realization_by_pr.get(url)) for url in selected]
     history_items = merge_audit_history(urls, previous_items, results)
     stages = Counter(row["stage"] for row in history_items)
-    statuses = Counter(row.get("audit_status", "observed") for row in history_items)
+    statuses = Counter(row.get("last_attempt_status", row.get("audit_status", "observed")) for row in history_items)
     report = {
         "schema_version": "help-wanted.tribute-audit.v1",
         "generated_at": datetime.now(timezone.utc).isoformat(),

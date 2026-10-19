@@ -61,7 +61,9 @@ The hourly Help-Wanted status refresh now invokes `scripts/ci/help_wanted_tribut
 - `docs/ops/generated/help-wanted-tribute-audit.json`;
 - a `tribute_audit` projection into the generated status JSON and dashboard data.
 
-The sample is intentionally capped at 25 PRs per refresh to limit API pressure. The window rotates hourly; `not_audited_count` must be shown alongside the sample results. Rate limits and missing check/file data are recorded as unknown/partial, not success. A merged PR is counted as accepted, never as realized effect.
+The live batch is intentionally capped at 25 PRs per refresh to limit API pressure. The window rotates hourly, and the generated report retains the latest known audit per currently listed PR across refreshes. `audited_pr_count` is cumulative coverage, `audited_this_run_count` is the current batch, and `not_audited_count` is the remaining gap. Cached stages are last-observed evidence, not current-state guarantees. Rate limits and missing/truncated check/file data are recorded as unknown/partial, not success. A merged PR is counted as accepted, never as realized effect.
+
+Independent realized-effect receipts are ingested from `docs/ops/help-wanted-realization-evidence.jsonl`; see `docs/ops/HELP-WANTED-REALIZATION-EVIDENCE.md` for the schema and attestation rules. A valid record requires a separate verifier, explicit independence attestation, HTTPS effect and verification links, a timestamp, method, and evidence summary. The checker validates structure and identity separation; it does not treat the JSON assertion itself as proof.
 
 ## Operational limitations
 

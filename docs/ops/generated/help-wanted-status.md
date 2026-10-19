@@ -1,10 +1,9 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-19T16:15:02Z UTC · receipts=2936 · foreign_open=37 · tributes=106_
+_Generated 2026-10-19T19:56:01Z UTC · receipts=2971 · foreign_open=35 · tributes=105_
 
 ## Tributes (contributor ledger)
 
-- [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
 - [mangiapanejohn-dev/MOBIUS-Searcher#7](https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7) · state=open · help-wanted: stake + contribute for #6
@@ -40,14 +39,14 @@ _Generated 2026-10-19T16:15:02Z UTC · receipts=2936 · foreign_open=37 · tribu
 - [0xLizTech/stellarforge#614](https://github.com/0xLizTech/stellarforge/pull/614) · state=open · help-wanted: stake + contribute for #92
 - [SoroScan/soroscan#1690](https://github.com/SoroScan/soroscan/pull/1690) · state=open · help-wanted: stake + contribute for #1663
 - [sorolens/sorolens#753](https://github.com/sorolens/sorolens/pull/753) · state=open · help-wanted: stake + contribute for #538
-- [StellarFoundry/soroban-security-scanner#200](https://github.com/StellarFoundry/soroban-security-scanner/pull/200) · state=open · help-wanted: stake + contribute for #158
+- [https://github.com/vedantnimbarte/zero/pull/81](https://github.com/vedantnimbarte/zero/pull/81) · state=? · 
+- [StellarFoundry/soroban-security-scanner#200](https://github.com/StellarFoundry/soroban-security-scanner/pull/200) · state=closed · help-wanted: stake + contribute for #158
 - [kiinshuk/kinshow#434](https://github.com/kiinshuk/kinshow/pull/434) · state=closed · help-wanted: stake + contribute for #157
 - [Nodal-stellar/Nodal-AI#853](https://github.com/Nodal-stellar/Nodal-AI/pull/853) · state=closed · help-wanted: stake + contribute for #769
 - [Nodal-stellar/Nodal-AI#857](https://github.com/Nodal-stellar/Nodal-AI/pull/857) · state=closed · help-wanted: stake + contribute for #811
 
 ## Foreign open PRs
 
-- [StellarFoundry/soroban-security-scanner#200](https://github.com/StellarFoundry/soroban-security-scanner/pull/200) — help-wanted: stake + contribute for #158
 - [sorolens/sorolens#753](https://github.com/sorolens/sorolens/pull/753) — help-wanted: stake + contribute for #538
 - [SoroScan/soroscan#1690](https://github.com/SoroScan/soroscan/pull/1690) — help-wanted: stake + contribute for #1663
 - [0xLizTech/stellarforge#614](https://github.com/0xLizTech/stellarforge/pull/614) — help-wanted: stake + contribute for #92
@@ -82,9 +81,8 @@ _Generated 2026-10-19T16:15:02Z UTC · receipts=2936 · foreign_open=37 · tribu
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) — help-wanted: stake + contribute for #25
 - [mangiapanejohn-dev/MOBIUS-Searcher#7](https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7) — help-wanted: stake + contribute for #6
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) — help-wanted: stake + contribute for #20
-- [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Operational outcomes · actioned=179 skipped=2757 failed=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 2721, 'followup_reengage': 50, 'followup_stale_nudge': 115, 'followup_changes': 2}`
+## Operational outcomes · actioned=179 skipped=2792 failed=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 2756, 'followup_reengage': 50, 'followup_stale_nudge': 115, 'followup_changes': 2}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

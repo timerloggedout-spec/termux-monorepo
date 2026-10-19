@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-19T21:01:01Z UTC · receipts=2971 · foreign_open=35 · tributes=105_
+_Generated 2026-10-19T21:15:39Z UTC · receipts=2971 · foreign_open=36 · tributes=106_
 
 ## Tributes (contributor ledger)
 
+- [francordel/kdemos#27](https://github.com/francordel/kdemos/pull/27) · state=open · help-wanted: stake + contribute for #26
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
 - [mangiapanejohn-dev/MOBIUS-Searcher#7](https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7) · state=open · help-wanted: stake + contribute for #6
@@ -43,10 +44,10 @@ _Generated 2026-10-19T21:01:01Z UTC · receipts=2971 · foreign_open=35 · tribu
 - [StellarFoundry/soroban-security-scanner#200](https://github.com/StellarFoundry/soroban-security-scanner/pull/200) · state=closed · help-wanted: stake + contribute for #158
 - [kiinshuk/kinshow#434](https://github.com/kiinshuk/kinshow/pull/434) · state=closed · help-wanted: stake + contribute for #157
 - [Nodal-stellar/Nodal-AI#853](https://github.com/Nodal-stellar/Nodal-AI/pull/853) · state=closed · help-wanted: stake + contribute for #769
-- [Nodal-stellar/Nodal-AI#857](https://github.com/Nodal-stellar/Nodal-AI/pull/857) · state=closed · help-wanted: stake + contribute for #811
 
 ## Foreign open PRs
 
+- [francordel/kdemos#27](https://github.com/francordel/kdemos/pull/27) — help-wanted: stake + contribute for #26
 - [sorolens/sorolens#753](https://github.com/sorolens/sorolens/pull/753) — help-wanted: stake + contribute for #538
 - [SoroScan/soroscan#1690](https://github.com/SoroScan/soroscan/pull/1690) — help-wanted: stake + contribute for #1663
 - [0xLizTech/stellarforge#614](https://github.com/0xLizTech/stellarforge/pull/614) — help-wanted: stake + contribute for #92

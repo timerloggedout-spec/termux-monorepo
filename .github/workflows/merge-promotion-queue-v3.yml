@@ -4,7 +4,8 @@ on:
   schedule:
     # v3 workflow id 377919668. Do not open another workflow id.
     # Ghost 37655538554 remains queued on disabled workflow id 354842048.
-    - cron: '7,37 * * * *'
+    # quota: hourly; the workflow_run triggers below already cover the half-hour.
+    - cron: '7 * * * *'
   workflow_dispatch:
   workflow_run:
     workflows: ["RECON INTEL discovery", "help-wanted execute", "Production Reconciliation Engine", "Engineering health (script)", "Tunnel Canary", "hygiene-sweep", "Continuous CI Sweep", "continuous-improve", "Continuous agent ops"]

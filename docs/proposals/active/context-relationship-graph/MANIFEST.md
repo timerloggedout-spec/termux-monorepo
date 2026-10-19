@@ -13,7 +13,7 @@ reviewers:
   - id: Manus
     role: author-executor
     status: executing
-related_prs: [232]
+related_prs: [232, 1286]
 related_branches: [manus/context-relationship-graph]
 gates_required: [repo-gate, termux-smoke]
 ---

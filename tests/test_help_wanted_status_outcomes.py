@@ -24,11 +24,17 @@ class HelpWantedStatusOutcomeTests(unittest.TestCase):
             "failed",
         )
 
+    def test_failed_skip_receipt_is_not_hidden_as_skipped(self):
+        self.assertEqual(
+            classify_receipt_outcome({"kind": "followup_skip_cooldown", "ok": False, "action": "skip"}),
+            "failed",
+        )
+
     def test_dashboard_exposes_audited_stages_and_operational_outcomes(self):
         html = Path("apps/help-wanted-dashboard/index.html").read_text(encoding="utf-8")
         self.assertIn("Validated (sample)", html)
         self.assertIn("Accepted (sample)", html)
-        self.assertIn("Realized effects", html)
+        self.assertIn("Realized effects (sample)", html)
         self.assertIn("out.skipped", html)
         self.assertIn("out.failed", html)
 

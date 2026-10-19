@@ -1,0 +1,88 @@
+# Enqueue a Hark job when a high-signal workflow fails on master.
+# Uses the Hark queue bridge (hark-enqueue.yml, docs/hark-bridge.md): one open
+# hark:queue issue per failing workflow (dedup key), re-failures append to it.
+# Additive: observes completions only, never changes the watched workflows.
+name: hark enqueue on failure
+
+on:
+  workflow_run:
+    workflows:
+      - repo gate
+      - termux smoke
+      - adaptive wait evidence skill contract
+      - SHE skill clobber heal
+      - Tunnel Canary
+      - tribute-vercel-prod
+      - Provision secrets (secret-to-secret)
+    types: [completed]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hark-enqueue-on-failure-${{ github.event.workflow_run.name }}
+  cancel-in-progress: false
+
+jobs:
+  prep:
+    if: >-
+      (github.event.workflow_run.conclusion == 'failure' ||
+       github.event.workflow_run.conclusion == 'timed_out') &&
+      github.event.workflow_run.head_branch == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    outputs:
+      key: ${{ steps.k.outputs.key }}
+      project: ${{ steps.k.outputs.project }}
+      priority: ${{ steps.k.outputs.priority }}
+      title: ${{ steps.k.outputs.title }}
+      inputs: ${{ steps.k.outputs.inputs }}
+    steps:
+      - id: k
+        env:
+          WF: ${{ github.event.workflow_run.name }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+          SHA: ${{ github.event.workflow_run.head_sha }}
+          CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
+        run: |
+          set -euo pipefail
+          slug=$(printf '%s' "$WF" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+|-+$//g' | cut -c1-80)
+          case "$WF" in
+            tribute-vercel-prod) project=deploy-quota; priority=P1 ;;
+            "Provision secrets (secret-to-secret)") project=access-resilience; priority=P1 ;;
+            "Tunnel Canary") project=device; priority=P2 ;;
+            "repo gate"|"termux smoke"|"adaptive wait evidence skill contract"|"SHE skill clobber heal") project=monorepo-ops; priority=P0 ;;
+            *) project=monorepo-ops; priority=P1 ;;
+          esac
+          {
+            echo "key=gha-failure:${slug}"
+            echo "project=${project}"
+            echo "priority=${priority}"
+            echo "title=Root-cause failing workflow on master: ${WF}"
+            echo "inputs<<HARK_EOF"
+            echo "workflow: \"${WF}\""
+            echo "run_id: ${RUN_ID}"
+            echo "run_attempt: ${ATTEMPT}"
+            echo "run_url: ${RUN_URL}"
+            echo "head_sha: ${SHA}"
+            echo "conclusion: ${CONCLUSION}"
+            echo "HARK_EOF"
+          } >> "$GITHUB_OUTPUT"
+
+  enqueue:
+    needs: prep
+    permissions:
+      issues: write
+      contents: read
+    uses: ./.github/workflows/hark-enqueue.yml
+    with:
+      title: ${{ needs.prep.outputs.title }}
+      key: ${{ needs.prep.outputs.key }}
+      project: ${{ needs.prep.outputs.project }}
+      priority: ${{ needs.prep.outputs.priority }}
+      inputs: ${{ needs.prep.outputs.inputs }}
+      done_when: |
+        The workflow's next master run succeeds (run URL in the closing comment), or a fix PR is linked
+        and the failure is classified (transient rate_limit / config / code) with evidence.

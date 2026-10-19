@@ -4,7 +4,19 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from repository_observatory import API, GitHubHttpError, build_records, build_payload, classify, resolve_login, snapshot_hash
+from repository_observatory import (
+    API,
+    GitHubHttpError,
+    RateLimitDeferred,
+    build_records,
+    build_payload,
+    classify,
+    page_budget,
+    probe_rate_limit,
+    resolve_login,
+    snapshot_hash,
+    main,
+)
 
 
 BASE = {
@@ -62,7 +74,6 @@ class ObservatoryTests(unittest.TestCase):
             path.write_text(json.dumps({"snapshot_hash": snapshot_hash(build_records([], [BASE])), "observed_at": "old"}))
             self.assertEqual(json.loads(path.read_text())["observed_at"], "old")
 
-
     def test_actions_token_403_falls_back_to_declared_owner(self):
         def fetch(path, token, params=None):
             if path == "/user":
@@ -79,6 +90,37 @@ class ObservatoryTests(unittest.TestCase):
 
         with self.assertRaises(RuntimeError):
             resolve_login(fetch, "ghs_test", "timerloggedout-spec")
+
+    def test_page_budget_applies_safety_and_reserve(self):
+        # remaining 100, reserve 20, safety 0.8 -> floor(80*0.8)=64
+        self.assertEqual(page_budget(100, 5000), 64)
+        self.assertEqual(page_budget(10, 5000), 0)  # after reserve headroom 0
+        self.assertLessEqual(page_budget(None, None), 20)
+
+    def test_probe_rate_limit_reads_core(self):
+        def fetch(path, token, params=None):
+            self.assertEqual(path, "/rate_limit")
+            return {"resources": {"core": {"remaining": 4000, "limit": 5000, "reset": 9999999999}}}
+
+        rl = probe_rate_limit(fetch, "tok")
+        self.assertEqual(rl["remaining"], 4000)
+        self.assertEqual(rl["limit"], 5000)
+
+    def test_main_defers_when_remaining_below_floor(self):
+        def fetch(path, token, params=None):
+            if path == "/rate_limit":
+                return {"resources": {"core": {"remaining": 5, "limit": 5000, "reset": 1}}}
+            raise AssertionError(path)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "index.json"
+            md = Path(tmp) / "matrix.md"
+            code = main(
+                ["--owner", "timerloggedout-spec", "--output", str(out), "--markdown", str(md)],
+                fetch=fetch,
+            )
+            self.assertEqual(code, 0)
+            self.assertFalse(out.exists())
 
 
 if __name__ == "__main__":

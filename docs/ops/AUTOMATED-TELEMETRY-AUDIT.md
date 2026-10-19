@@ -12,7 +12,8 @@ Every observer execution must end in one of these machine-readable outcomes:
 
 - `emitted`: sanitized events and metrics were produced from observed evidence.
 - `partial`: some source evidence was unavailable; available evidence is retained and missing fields remain null/absent.
-- `skipped`: metadata collection could not safely produce metrics; a skip receipt records source run, attempt, SHA, workflow, reason, timestamp, and artifact outcome.
+- `skipped`: metadata collection intentionally did not produce metrics (for example, an unmapped workflow); the receipt records source run, attempt, SHA, workflow, reason, timestamp, and artifact outcome.
+- `deferred`: rate limiting prevented collection; retry after the provider's reset window rather than interpreting the event as zero work.
 - `failed`: the observer itself failed unexpectedly; failure must remain visible as a failed check and incident.
 
 Rate limits are `deferred`, not evidence of zero work. Retry policies must honor reset/retry metadata where available and avoid immediate retry storms. Missing optional task-boundary artifacts are an attribution-quality gap, not grounds to fabricate task identity.

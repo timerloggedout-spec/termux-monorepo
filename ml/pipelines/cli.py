@@ -1,4 +1,4 @@
-"""cli: python3 -m ml.pipelines.cli <status|run|lanes|cctv|matrix|center|bind|drift|extract-plan|recon|steward|live|cut|explain|gate>"""
+"""cli: python3 -m ml.pipelines.cli <status|run|lanes|cctv|matrix|center|bind|drift|extract-plan|recon|steward|live|cut|probe|explain|gate>"""
 from __future__ import annotations
 
 import argparse
@@ -23,6 +23,7 @@ from ml.pipelines.stages import STAGES
 from ml.pipelines.recon08.stamp import stamp_report
 from ml.pipelines.recon09.stamp import stamp_report as live_stamp_report
 from ml.pipelines.recon10.stamp import stamp_report as cut_stamp_report
+from ml.pipelines.recon11.stamp import stamp_report as probe_stamp_report
 from ml.pipelines.recon08.steward import report as steward_report
 from ml.pipelines.viz.cctv import emit_cctv
 from ml.pipelines.viz.mermaid import dag_mermaid
@@ -127,6 +128,11 @@ def cmd_cut(_: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_probe(_: argparse.Namespace) -> int:
+    print(json.dumps(probe_stamp_report(), indent=2))
+    return 0
+
+
 def cmd_explain(ns: argparse.Namespace) -> int:
     payload = _fixture()
     wanted = int(ns.number)
@@ -169,6 +175,7 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("steward").set_defaults(fn=cmd_steward)
     sub.add_parser("live").set_defaults(fn=cmd_live)
     sub.add_parser("cut").set_defaults(fn=cmd_cut)
+    sub.add_parser("probe").set_defaults(fn=cmd_probe)
     sub.add_parser("dag").set_defaults(fn=cmd_dag)
     explain_p = sub.add_parser("explain")
     explain_p.add_argument("number")

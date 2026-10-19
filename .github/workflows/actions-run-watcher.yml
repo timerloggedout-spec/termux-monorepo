@@ -66,7 +66,7 @@ jobs:
           EOF
           )
 
-          existing=$(gh issue list --repo "$REPOSITORY" --state open --search "in:title \\"[Actions Incident] ${WORKFLOW_NAME}: ${CONCLUSION}\\"" --json number --limit 10)
+          existing=$(gh issue list --repo "$REPOSITORY" --state open --search "in:title Actions Incident ${WORKFLOW_NAME} ${CONCLUSION}" --json number --limit 10)
           number=$(python3 -c 'import json,sys; d=json.load(sys.stdin); print(d[0]["number"] if d else "")' <<<"$existing")
           if [ -n "$number" ]; then
             issue_json=$(gh issue view "$number" --repo "$REPOSITORY" --json body,comments)

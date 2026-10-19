@@ -2,7 +2,7 @@
 import unittest
 from datetime import datetime, timedelta, timezone
 
-from scripts.ci.help_wanted_followup import decide_action
+from scripts.ci.help_wanted_followup import decide_action, filter_maintainer_activity
 
 
 class HelpWantedFollowupPolicyTests(unittest.TestCase):
@@ -40,6 +40,20 @@ class HelpWantedFollowupPolicyTests(unittest.TestCase):
             decide_action(marker, feedback, None, self.old, self.now),
             "skip",
         )
+
+    def test_participant_and_unknown_association_activity_is_filtered(self):
+        comments = [
+            {"author_association": "NONE", "body": "A participant comment"},
+            {"author_association": "OWNER", "body": "Maintainer guidance"},
+            {"body": "Missing association is not trusted"},
+        ]
+        reviews = [
+            {"author_association": "CONTRIBUTOR", "state": "CHANGES_REQUESTED"},
+            {"author_association": "MEMBER", "state": "COMMENTED"},
+        ]
+        filtered_comments, filtered_reviews = filter_maintainer_activity(comments, reviews)
+        self.assertEqual([c["body"] for c in filtered_comments], ["Maintainer guidance"])
+        self.assertEqual([r["state"] for r in filtered_reviews], ["COMMENTED"])
 
     def test_changes_requested_after_marker_keeps_priority(self):
         changes = self.now - timedelta(hours=3)

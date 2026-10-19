@@ -2,15 +2,25 @@
   "version": 2,
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/matrix", "destination": "/matrix.html" },
-    { "source": "/lane-matrix", "destination": "/matrix.html" }
+    {
+      "source": "/matrix",
+      "destination": "/matrix.html"
+    },
+    {
+      "source": "/lane-matrix",
+      "destination": "/matrix.html"
+    }
   ],
   "headers": [
     {
       "source": "/data/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=60, s-maxage=60" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=60, s-maxage=60"
+        }
       ]
     }
-  ]
+  ],
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- ."
 }

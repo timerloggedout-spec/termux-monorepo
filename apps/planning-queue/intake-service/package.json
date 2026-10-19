@@ -1,0 +1,9 @@
+{
+  "name": "planning-queue-intake",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Validates planning/ops tasks and publishes them to the planning-tasks Pub/Sub topic.",
+  "engines": { "node": ">=20" },
+  "scripts": { "start": "node server.js" },
+  "dependencies": { "@google-cloud/pubsub": "^4.11.0", "express": "^5.1.0" }
+}

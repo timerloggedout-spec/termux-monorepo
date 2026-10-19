@@ -9,7 +9,7 @@ Every Termux node has two separate things:
 | Where it lives | `~/.config/tmx-device/identity.env` (0600), `ops/devices/registry.json`, heartbeats, `ops/termux-bridge/current.json` | age-encrypted only: GitHub secret `TMX_FPMAP_<SUFFIX>`, local `~/.config/tmx-device/sealed/<id>.fpmap.age`, optionally `ops/devices/sealed/<id>.fpmap.age` |
 | Linkable to hardware? | No. Never derived from, hashed from, or salted with any hardware/build value | Yes, by design, only for holders of the age identity |
 
-Both B160V phones share the Google account `timerloggedout@gmail.com`; the Google account is **not** a device identity and is never used as one.
+Both B160V phones share one Google account (`<operator Google account>`); the Google account is **not** a device identity and is never used as one.
 
 ## Rules
 

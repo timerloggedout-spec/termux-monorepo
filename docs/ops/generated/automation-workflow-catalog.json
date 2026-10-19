@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "37dcdbea57d5b5ba2af28bf98e16a69a239aa3a94aa3fb72f04636e20f3757e2",
-  "workflow_count": 136,
+  "source_fingerprint": "bcba564c5b7d178614f541f52ac259ff68ff5b88ab1796c428049c736f7529ad",
+  "workflow_count": 137,
   "workflows": [
     {
       "action_pins": [
@@ -1606,6 +1606,22 @@
       "triggers": [
         "push",
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: lane-events-recorder-${{ github.event.workflow_run.id || github.run_id }}-${{ github.event.workflow_run.run_attempt || github.run_attempt }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "record"
+      ],
+      "name": "lane events recorder",
+      "path": ".github/workflows/lane-events-recorder.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch",
+        "workflow_run"
       ]
     },
     {

@@ -1,46 +1,43 @@
 name: vercel-quota-probe
-# Reads the Vercel account's deployments in the last 24h and computes when the
-# Hobby 100-deploys/24h window frees a slot. Prints counts and timestamps only.
+# Quota probe: Vercel 24h deploy window (legacy QUOTA line used by the
+# slot-timed deploy task) plus the full quota registry poll
+# (ops/quota/registry.json -> scripts/quota_poll.py). Run on demand only by the
+# scheduled one-shots; no cron, so it is not a second monitor.
+# Lean by design: sparse checkout of 4 paths, no installs, artifacts not commits.
 on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
 jobs:
   probe:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Probe deployment quota
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            ops/quota
+            scripts/quota_poll.py
+            ml/pipelines/moneyball/quota_weights.py
+          sparse-checkout-cone-mode: false
+          fetch-depth: 1
+      - name: Poll quotas
         env:
+          GITHUB_TOKEN: ${{ github.token }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         run: |
-          python3 - <<'PY'
-          import json, os, time, urllib.request, urllib.parse
-          tok = os.environ.get("VERCEL_TOKEN")
-          if not tok:
-              print("QUOTA error=VERCEL_TOKEN_missing"); raise SystemExit(0)
-          now = int(time.time() * 1000); since = now - 24 * 3600 * 1000
-          team = os.environ.get("VERCEL_ORG_ID") or ""
-          stamps, until = [], None
-          for _ in range(10):
-              q = {"limit": "100", "since": str(since)}
-              if team: q["teamId"] = team
-              if until: q["until"] = str(until)
-              req = urllib.request.Request("https://api.vercel.com/v6/deployments?" + urllib.parse.urlencode(q),
-                                           headers={"Authorization": "Bearer " + tok})
-              try:
-                  d = json.load(urllib.request.urlopen(req, timeout=30))
-              except Exception as e:
-                  print("QUOTA error=api_" + type(e).__name__); raise SystemExit(0)
-              stamps += [x.get("createdAt") or x.get("created") for x in d.get("deployments", [])]
-              until = (d.get("pagination") or {}).get("next")
-              if not until: break
-          stamps = sorted(s for s in stamps if s and s >= since)
-          n = len(stamps)
-          iso = lambda ms: time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(ms / 1000))
-          free_at = iso(stamps[n - 100] + 24 * 3600 * 1000) if n >= 100 else iso(now)
-          print(f"QUOTA count24h={n} limit=100 next_free_at={free_at} oldest={iso(stamps[0]) if n else 'none'}")
-          with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as f:
-              f.write(f"Vercel deployments in last 24h: {n}/100. Next free slot: {free_at}\n")
-          PY
+          python3 scripts/quota_poll.py --registry ops/quota/registry.json --out quota-out
+          {
+            echo "### Quota readings"
+            python3 -c "import json;[print('- '+r['resource_id']+': '+str(r['used'])+' / '+str(r['limit'])+' '+r['unit']+' (x'+str(r['routing_multiplier'])+')') for r in map(json.loads,open('quota-out/quota-records.jsonl')) if r['used'] is not None]"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: quota-readings
+          path: quota-out/
+          retention-days: 7

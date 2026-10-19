@@ -49,7 +49,12 @@ tmx_gh_get_file() {
 }
 
 # tmx_gh_sha <path> <ref> -> blob sha or empty
-tmx_gh_sha() { gh api "repos/$TMX_REPO/contents/$1?ref=$2" --jq '.sha' 2>/dev/null || true; }
+tmx_gh_sha() {
+  local s
+  s="$(gh api "repos/$TMX_REPO/contents/$1?ref=$2" --jq '.sha' 2>/dev/null)" || return 0
+  printf '%s' "$s" | grep -Eq '^[0-9a-f]{40}$' && printf '%s' "$s"
+  return 0
+}
 
 # tmx_ensure_branch <branch>: create from master tip if missing (additive; never moves an existing ref)
 tmx_ensure_branch() {

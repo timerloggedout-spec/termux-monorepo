@@ -2,7 +2,7 @@
 
 **Proposal:** `context-relationship-graph`  
 **Work item:** CRG-15  
-**Status:** Proposed / not yet implemented  
+**Status:** Proposal active; temporal integrity validator added, Explorer not yet implemented  
 **Target:** Existing SHE dashboard and canonical context-relationship corpus  
 **Evidence baseline:** `master` at `9241ecdc8f44a447cade8ad59bd0491780cdcbf8` (inspected 2026-10-19)
 
@@ -55,6 +55,12 @@ Manifest blob SHA: `abef63ef1bb3278bdc144fcfc32dac22a0510979`.
 The build summary says `coverage: COMPLETE`, while the manifest reports zero PRs, 18 PR window stubs, and `checkpoint_eligible: false`. This is a real semantic/reconciliation question. A null continuation cursor is not, by itself, proof of exhaustive all-time history. The Explorer must show the declared status and separately flag unresolved contradictions; it must not silently redefine canonical source fields.
 
 The counts above are an inspection-time evidence record, **not constants**. Runtime values must be read from the selected manifest/snapshot.
+
+## First executable increment — temporal integrity validator
+
+A read-only validator has now been added at `scripts/ci/validate_context_relationship_temporal.py`, with focused contracts in `tests/test_context_relationship_temporal_integrity.py`. It checks lineage JSONL structure, unique snapshot IDs, chronological order, previous-snapshot chain integrity, referenced snapshot artifacts, manifest/lineage agreement, record counts, canonical content hashes, deterministic snapshot identity, duplicate node/edge IDs, and edge endpoint resolution. It fails closed with `UNVERIFIED` and a non-zero exit code on integrity errors; it never repairs or rewrites source data. The implementation is committed on the proposal branch, but its CI execution result must be checked before treating the validator as verified.
+
+This validator is a foundation, not the Explorer UI and not a replacement for the existing corpus schema validator. It does not resolve the current L1 coverage contradiction or establish all-time completeness. Those remain explicit reconciliation work.
 
 ## Product design
 
@@ -200,11 +206,13 @@ Failed validation blocks publication of a new snapshot but preserves the last kn
 
 1. Reconcile corpus completeness semantics and the manifest's PR/stub/checkpoint fields.
 2. Validate the existing L2 temporal lineage/snapshot set and identify the correct existing SHE UI surface.
-3. Implement the validator before UI work.
-4. Deliver the read-only graph MVP.
-5. Add temporal comparison only after Phase 0 passes.
-6. Wire into existing CI/publication and capture a provenance receipt.
+3. Run the new temporal integrity tests and repository gates against the same immutable PR head; fix any failures.
+4. Reconcile any validator findings against the checked-in temporal lineage and immutable artifacts.
+5. Inspect the existing app roots, deployment configuration, and SHE publication path before selecting the UI surface.
+6. Deliver the read-only graph MVP with provenance and coverage contradiction states.
+7. Add temporal comparison only after Phase 0 passes.
+8. Wire into existing CI/publication and capture a provenance receipt.
 
 ## Delivery status
 
-This file is a proposal/integration plan. At authoring time, no Explorer code, tests, workflow dispatch, deployment, commit, or merge is claimed by this document. Repository changes should be tracked through CRG-15 and the normal proposal/PR lifecycle.
+The temporal integrity validator and focused tests have been committed on the proposal branch. Test execution is not claimed here; consult the PR's current checks. The Explorer UI, CI workflow integration, publication, and deployment remain unimplemented. Repository changes should be tracked through CRG-15 and the normal proposal/PR lifecycle.

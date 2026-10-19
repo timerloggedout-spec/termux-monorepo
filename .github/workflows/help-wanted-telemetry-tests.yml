@@ -8,7 +8,6 @@ on:
       - ".github/workflows/agent-throughput-evidence.yml"
       - ".github/workflows/help-wanted-status-refresh.yml"
       - ".github/workflows/help-wanted-execute.yml"
-      - ".github/workflows/help-wanted-telemetry-tests.yml"
       - "apps/help-wanted-dashboard/index.html"
       - "docs/ops/AUTOMATED-TELEMETRY-AUDIT.md"
       - "docs/ops/HELP-WANTED-REALIZATION-EVIDENCE.md"
@@ -31,8 +30,7 @@ on:
       - ".github/workflows/help-wanted-telemetry-tests.yml"
       - ".github/workflows/actions-run-watcher.yml"
       - ".github/workflows/agent-throughput-evidence.yml"
-      - ".github/workflows/help-wanted-status-refr
-      - ".github/workflows/help-wanted-telemetry-tests.yml"esh.yml"
+      - ".github/workflows/help-wanted-status-refresh.yml"
       - ".github/workflows/help-wanted-execute.yml"
       - "apps/help-wanted-dashboard/index.html"
       - "docs/ops/AUTOMATED-TELEMETRY-AUDIT.md"
@@ -66,9 +64,9 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout
-        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        uses: actions/checkout@v4
       - name: Set up Python
-        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # pinned repository-approved revision
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - name: Compile changed Python modules

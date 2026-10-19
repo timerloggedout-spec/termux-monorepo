@@ -94,7 +94,7 @@ jobs:
           fi
           echo "state=$state" >> "$GITHUB_OUTPUT"
           echo "Synchronization state: $state"
-          git log --oneline --left-right "$GH_SHA...$GL_SHA" | head -80
+          git log --oneline --left-right "$GH_SHA...$GL_SHA" | sed -n '1,80p'
 
       - name: Record no-op state
         if: steps.classify.outputs.state == 'aligned' || steps.classify.outputs.state == 'gitlab-behind'

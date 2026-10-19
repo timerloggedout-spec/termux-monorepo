@@ -45,10 +45,21 @@ def api_get(path: str) -> tuple[Any | None, str | None]:
         with urllib.request.urlopen(req, timeout=30) as response:
             return json.loads(response.read().decode()), None
     except urllib.error.HTTPError as error:
-        reason = "rate_limited" if error.code == 403 and (
-            "rate limit" in error.read().decode(errors="ignore").lower()
-        ) else f"http_{error.code}"
-        return None, reason
+        headers = error.headers or {}
+        try:
+            body = error.read().decode(errors="ignore").lower()
+        except OSError:
+            body = ""
+        rate_limited = error.code == 429 or (
+            error.code == 403 and (
+                str(headers.get("X-RateLimit-Remaining", "")) == "0"
+                or bool(headers.get("Retry-After"))
+                or any(marker in body for marker in (
+                    "rate limit", "secondary rate limit", "abuse detection"
+                ))
+            )
+        )
+        return None, "rate_limited" if rate_limited else f"http_{error.code}"
     except (OSError, TimeoutError, json.JSONDecodeError) as error:
         return None, type(error).__name__
 
@@ -98,11 +109,15 @@ def audit_one(pr_url: str) -> dict[str, Any]:
     proof_present = all(marker in body for marker in SOLUTION_PROOF)
     stake_only = bool(changed) and not implementation_files
     check_rows = (checks or {}).get("check_runs", []) if isinstance(checks, dict) else []
-    checks_complete = bool(check_rows) and all(
+    checks_total_count = (checks or {}).get("total_count", len(check_rows)) if isinstance(checks, dict) else 0
+    checks_truncated = isinstance(checks, dict) and checks_total_count > len(check_rows)
+    checks_complete = bool(check_rows) and not checks_truncated and all(
         row.get("status") == "completed" for row in check_rows
     )
-    checks_pass = checks_complete and all(
-        row.get("conclusion") in SUCCESS_CONCLUSIONS for row in check_rows
+    checks_pass = (
+        checks_complete
+        and any(row.get("conclusion") == "success" for row in check_rows)
+        and all(row.get("conclusion") in SUCCESS_CONCLUSIONS for row in check_rows)
     )
 
     base.update({
@@ -117,6 +132,8 @@ def audit_one(pr_url: str) -> dict[str, Any]:
         "stake_only": stake_only,
         "solution_proof_present": proof_present,
         "checks_observed": len(check_rows),
+        "checks_total_count": checks_total_count,
+        "checks_truncated": checks_truncated,
         "checks_complete": checks_complete,
         "checks_pass": checks_pass,
     })
@@ -125,6 +142,8 @@ def audit_one(pr_url: str) -> dict[str, Any]:
         base["evidence_gaps"].append(f"files_{files_error}")
     if checks_error:
         base["evidence_gaps"].append(f"checks_{checks_error}")
+    if checks_truncated:
+        base["evidence_gaps"].append("checks_truncated")
     if not changed:
         base["evidence_gaps"].append("implementation_delta_not_observed")
     if not proof_present:

@@ -25,7 +25,7 @@ Append one JSON object per line to `docs/ops/help-wanted-realization-evidence.js
 - `pr_url` must exactly match the canonical upstream PR URL in the audit ledger.
 - `status` must be `verified`; `independence_attested` must be boolean `true`.
 - `verified_by` must be present and must not be the PR contributor, the configured operator identity, or `github-actions[bot]`.
-- `verified_at` must be an ISO-8601 timestamp.
+- `verified_at` must be an ISO-8601 timestamp with an explicit UTC offset or `Z` (for example `2026-10-18T10:00:00Z`); timestamps without a timezone are rejected.
 - `verification_method` and `evidence_summary` must be non-empty.
 - `effect_url` and `verification_url` must be HTTPS links to the observed effect and its verification evidence.
 - Invalid records are ignored as proof and appear as an evidence gap. Do not invent records to improve metrics.

@@ -38,6 +38,43 @@ class HelpWantedTributeAuditTests(unittest.TestCase):
         self.assertFalse(result["realized_effect_verified"])
 
     @patch("scripts.ci.help_wanted_tribute_audit.api_get")
+    def test_skipped_checks_without_success_do_not_validate(self, api_get):
+        api_get.side_effect = [
+            ({
+                "state": "open", "merged_at": None,
+                "body": "### Help-Given Tribute\n- Stage: solution\n- Diff proof: verified\n- Validation: skipped",
+                "head": {"sha": "abc123"}, "base": {"sha": "def456"},
+            }, None),
+            ([{"filename": "src/fix.py", "additions": 2, "deletions": 0}], None),
+            ({"total_count": 2, "check_runs": [
+                {"status": "completed", "conclusion": "skipped"},
+                {"status": "completed", "conclusion": "neutral"},
+            ]}, None),
+        ]
+        result = audit_one("https://github.com/example/project/pull/42")
+        self.assertFalse(result["checks_pass"])
+        self.assertEqual(result["stage"], "solution_claimed_unvalidated")
+
+    @patch("scripts.ci.help_wanted_tribute_audit.api_get")
+    def test_truncated_check_run_response_is_an_evidence_gap(self, api_get):
+        api_get.side_effect = [
+            ({
+                "state": "open", "merged_at": None,
+                "body": "### Help-Given Tribute\n- Stage: solution\n- Diff proof: verified\n- Validation: pytest passed",
+                "head": {"sha": "abc123"}, "base": {"sha": "def456"},
+            }, None),
+            ([{"filename": "src/fix.py", "additions": 2, "deletions": 0}], None),
+            ({"total_count": 101, "check_runs": [
+                {"status": "completed", "conclusion": "success"},
+            ]}, None),
+        ]
+        result = audit_one("https://github.com/example/project/pull/42")
+        self.assertTrue(result["checks_truncated"])
+        self.assertFalse(result["checks_complete"])
+        self.assertFalse(result["checks_pass"])
+        self.assertIn("checks_truncated", result["evidence_gaps"])
+
+    @patch("scripts.ci.help_wanted_tribute_audit.api_get")
     def test_stake_only_is_not_a_solution(self, api_get):
         api_get.side_effect = [
             ({

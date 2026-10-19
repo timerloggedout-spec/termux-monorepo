@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "b10a36bcf4ee24088dc944d9e0cd2c7cce0fddf532827d8c60d7148020e4ff6b",
-  "workflow_count": 138,
+  "source_fingerprint": "49bf9d7945cfca29334b39dbaa119164572d9a3809efe20cdc288ad6325da3d9",
+  "workflow_count": 139,
   "workflows": [
     {
       "action_pins": [
@@ -89,9 +89,11 @@
       ]
     },
     {
-      "action_pins": [],
+      "action_pins": [
+        "actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09"
+      ],
       "authority": "bounded-state-write",
-      "concurrency": "group: actions-run-watcher-${{ github.event.workflow_run.id }} cancel-in-progress: false",
+      "concurrency": "# Stable incident identity serializes writes; queue all observations instead of replacing pending runs. group: actions-run-watcher-${{ github.event.workflow_run.name }}-${{ github.event.workflow_run.conclusion }} queue: max",
       "domain": "agentic-development",
       "jobs": [
         "observe-completion"
@@ -277,7 +279,8 @@
       "action_pins": [
         "actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09",
         "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c",
-        "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
+        "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
       ],
       "authority": "read-only-or-advisory",
       "concurrency": "group: agent-throughput-evidence-${{ github.event.workflow_run.id || github.run_id }}-${{ github.event.workflow_run.run_attempt || github.run_attempt }} cancel-in-progress: false",
@@ -1478,6 +1481,23 @@
         "schedule",
         "workflow_dispatch",
         "workflow_run"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: help-wanted-telemetry-tests-${{ github.event.pull_request.number || github.ref }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "regression"
+      ],
+      "name": "Help-Wanted telemetry regression suite",
+      "path": ".github/workflows/help-wanted-telemetry-tests.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
       ]
     },
     {

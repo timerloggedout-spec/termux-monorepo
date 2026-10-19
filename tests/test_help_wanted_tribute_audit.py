@@ -63,6 +63,34 @@ class HelpWantedTributeAuditTests(unittest.TestCase):
         self.assertEqual([row["pr_url"] for row in merged], urls)
         self.assertEqual([row["stage"] for row in merged], ["accepted", "validated_solution"])
 
+    def test_transient_audit_failure_preserves_last_known_stage(self):
+        url = "https://github.com/example/project/pull/1"
+        previous = [{"pr_url": url, "stage": "accepted", "audit_status": "observed", "head_sha": "abc"}]
+        fresh = [{"pr_url": url, "stage": "unknown", "audit_status": "deferred", "audited_at": "2026-10-19T10:00:00Z", "evidence_gaps": ["rate_limited"]}]
+        merged = merge_audit_history([url], previous, fresh)
+        self.assertEqual(merged[0]["stage"], "accepted")
+        self.assertEqual(merged[0]["last_attempt_status"], "deferred")
+        self.assertEqual(merged[0]["last_attempt_evidence_gaps"], ["rate_limited"])
+
+    @patch("scripts.ci.help_wanted_tribute_audit.api_get")
+    def test_truncated_changed_file_response_is_partial_and_cannot_validate(self, api_get):
+        api_get.side_effect = [
+            ({
+                "state": "open", "merged_at": None, "changed_files": 101,
+                "body": "### Help-Given Tribute\n- Stage: solution\n- Diff proof: verified\n- Validation: pytest passed",
+                "head": {"sha": "abc123"}, "base": {"sha": "def456"},
+            }, None),
+            ([{"filename": "src/fix.py", "additions": 10, "deletions": 2}], None),
+            ({"check_runs": [{"status": "completed", "conclusion": "success"}]}, None),
+        ]
+        result = audit_one("https://github.com/example/project/pull/42")
+        self.assertTrue(result["files_truncated"])
+        self.assertFalse(result["files_complete"])
+        self.assertEqual(result["audit_status"], "partial")
+        self.assertFalse(result["checks_pass"] is False)
+        self.assertEqual(result["stage"], "solution_claimed_unvalidated")
+        self.assertIn("files_truncated", result["evidence_gaps"])
+
     def test_realization_receipt_requires_independent_verifier_and_linked_evidence(self):
         receipt = {
             "pr_url": "https://github.com/example/project/pull/42",

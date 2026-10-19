@@ -234,7 +234,7 @@ jobs:
           receipt = {
               "schema_version": "ates.observation.v1",
               "producer": "agent-throughput-evidence",
-              "status": ("failed" if os.environ["COLLECT_OUTCOME"] in ("failure", "skipped") or os.environ["CHECKOUT_OUTCOME"] == "failure" else "skipped"),
+              "status": ("failed" if os.environ["COLLECT_OUTCOME"] in ("failure", "skipped") or os.environ["CHECKOUT_OUTCOME"] == "failure" else ("deferred" if os.environ["SKIP_REASON"] == "rate_limited" else "skipped")),
               "skip_reason": (os.environ["SKIP_REASON"] if os.environ["COLLECT_OUTCOME"] == "success" else "collection_failed"),
               "collection_outcome": os.environ["COLLECT_OUTCOME"],
               "checkout_outcome": os.environ["CHECKOUT_OUTCOME"],

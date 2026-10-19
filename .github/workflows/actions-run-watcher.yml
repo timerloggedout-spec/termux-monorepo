@@ -74,7 +74,9 @@ jobs:
           EOF
           )
 
-          existing=$(gh issue list --repo "$REPOSITORY" --state open --search "in:title \"${title}\"" --json number,title --limit 1000)
+          # Paginate all open issues so an exact-title incident cannot fall beyond a result cap.
+          existing=$(gh api --repo "$REPOSITORY" --paginate --slurp "repos/$REPOSITORY/issues?state=open&per_page=100")
+          existing=$(python3 -c 'import json,sys; pages=json.load(sys.stdin); rows=[row for page in pages for row in page if not row.get("pull_request")]; print(json.dumps([{"number":r["number"],"title":r["title"]} for r in rows]))' <<<"$existing")
           number=$(python3 -c 'import json,sys; rows=json.load(sys.stdin); expected=sys.argv[1]; exact=[r for r in rows if r.get("title")==expected]; print(exact[0]["number"] if exact else "")' "$title" <<<"$existing")
           if [ -n "$number" ]; then
             issue_json=$(gh issue view "$number" --repo "$REPOSITORY" --json body,comments)

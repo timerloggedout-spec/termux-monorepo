@@ -336,10 +336,15 @@ def main() -> int:
         "source_status_generated_at": board.get("generated_at"),
         "source_tribute_count": len(tributes),
         "unique_pr_count": len(urls),
-        "audited_pr_count": len(history_items),
-        "audited_this_run_count": len(results),
-        "audited_this_run_pr_urls": [row["pr_url"] for row in results],
-        "not_audited_count": max(0, len(urls) - len(history_items)),
+        "audited_pr_count": observed_history_count,
+        "audited_this_run_count": observed_this_run_count,
+        "attempted_this_run_count": len(results),
+        "deferred_this_run_count": statuses.get("deferred", 0),
+        "audited_this_run_pr_urls": [
+            row["pr_url"] for row in results
+            if row.get("audit_status", "observed") not in {"deferred", "unknown"}
+        ],
+        "not_audited_count": max(0, len(urls) - observed_history_count),
         "audit_window_start": start,
         "audit_window_size": batch_size,
         "stages": dict(stages),
@@ -363,9 +368,10 @@ def main() -> int:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({
-        "audited": len(history_items),
-        "audited_this_run": len(results),
-        "not_audited": max(0, len(urls) - len(history_items)),
+        "audited": observed_history_count,
+        "audited_this_run": observed_this_run_count,
+        "attempted_this_run": len(results),
+        "not_audited": max(0, len(urls) - observed_history_count),
         "unique_prs": len(urls),
         "stages": dict(stages),
         "realized_effect_verified": report["realized_effect_verified_count"],

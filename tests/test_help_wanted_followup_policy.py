@@ -2,7 +2,9 @@
 import unittest
 from datetime import datetime, timedelta, timezone
 
-from scripts.ci.help_wanted_followup import decide_action, filter_maintainer_activity
+from scripts.ci.help_wanted_followup import (
+    decide_action, filter_maintainer_activity, latest_approval_ts, latest_maintainer_signal,
+)
 
 
 class HelpWantedFollowupPolicyTests(unittest.TestCase):
@@ -54,6 +56,30 @@ class HelpWantedFollowupPolicyTests(unittest.TestCase):
         filtered_comments, filtered_reviews = filter_maintainer_activity(comments, reviews)
         self.assertEqual([c["body"] for c in filtered_comments], ["Maintainer guidance"])
         self.assertEqual([r["state"] for r in filtered_reviews], ["COMMENTED"])
+
+    def test_empty_body_maintainer_approval_suppresses_stale_nudge(self):
+        approval = self.now - timedelta(days=3)
+        self.assertEqual(
+            decide_action(None, None, None, self.old, self.now, approval_ts=approval),
+            "skip",
+        )
+
+    def test_approval_after_marker_does_not_trigger_reengagement(self):
+        approval = self.now - timedelta(hours=1)
+        marker = self.now - timedelta(days=2)
+        self.assertEqual(
+            decide_action(marker, None, None, self.old, self.now, approval_ts=approval),
+            "skip",
+        )
+        reviews = [{
+            "author_association": "OWNER",
+            "state": "APPROVED",
+            "submitted_at": "2026-10-18T10:00:00Z",
+            "body": "",
+        }]
+        _, trusted_reviews = filter_maintainer_activity([], reviews)
+        self.assertEqual(latest_approval_ts(trusted_reviews), datetime(2026, 10, 18, 10, 0, tzinfo=timezone.utc))
+        self.assertEqual(latest_maintainer_signal([], trusted_reviews, "example")[0], None)
 
     def test_changes_requested_after_marker_keeps_priority(self):
         changes = self.now - timedelta(hours=3)

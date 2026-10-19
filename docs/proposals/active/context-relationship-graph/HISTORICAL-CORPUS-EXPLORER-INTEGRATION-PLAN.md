@@ -58,7 +58,9 @@ The counts above are an inspection-time evidence record, **not constants**. Runt
 
 ## First executable increment — temporal integrity validator
 
-A read-only validator has now been added at `scripts/ci/validate_context_relationship_temporal.py`, with focused contracts in `tests/test_context_relationship_temporal_integrity.py`. It checks lineage JSONL structure, unique snapshot IDs, chronological order, previous-snapshot chain integrity, referenced snapshot artifacts, manifest/lineage agreement, record counts, canonical content hashes, deterministic snapshot identity, duplicate node/edge IDs, and edge endpoint resolution. It fails closed with `UNVERIFIED` and a non-zero exit code on integrity errors; it never repairs or rewrites source data. The implementation is committed on the proposal branch, but its CI execution result must be checked before treating the validator as verified.
+A read-only validator has now been added at `scripts/ci/validate_context_relationship_temporal.py`, with focused contracts in `tests/test_context_relationship_temporal_integrity.py`. It checks lineage JSONL structure, unique snapshot IDs, chronological order, previous-snapshot chain integrity, referenced snapshot artifacts, manifest/lineage agreement, record counts, canonical content hashes, deterministic snapshot identity, duplicate node/edge IDs, and edge endpoint resolution. It fails closed with `UNVERIFIED` and a non-zero exit code on integrity errors; it never repairs or rewrites source data. The implementation is committed and was validated by GitHub Actions on PR head `ee974057995b4b81574f7244949770bb34581baf`: the focused relationship/temporal job passed **48 tests**, the existing lineage verifier reported `VALIDATED` for all **24** lineage records, and the new integrity validator reported `PASS` for **24 lineage records / 24 snapshot directories**. This is scoped CI evidence, not proof that the Explorer UI is implemented or deployed.
+
+The same CI run exposed and fixed a prior verifier assumption: a `COMPLETE` record closes one pagination window, but the append-only observation lineage may validly continue when a later backfill explicitly restarts at page 1. The verifier now checks that restart boundary and requires each `previous_snapshot_id` to link to the immediately preceding event.
 
 This validator is a foundation, not the Explorer UI and not a replacement for the existing corpus schema validator. It does not resolve the current L1 coverage contradiction or establish all-time completeness. Those remain explicit reconciliation work.
 
@@ -206,12 +208,11 @@ Failed validation blocks publication of a new snapshot but preserves the last kn
 
 1. Reconcile corpus completeness semantics and the manifest's PR/stub/checkpoint fields.
 2. Validate the existing L2 temporal lineage/snapshot set and identify the correct existing SHE UI surface.
-3. Run the new temporal integrity tests and repository gates against the same immutable PR head; fix any failures.
-4. Reconcile any validator findings against the checked-in temporal lineage and immutable artifacts.
-5. Inspect the existing app roots, deployment configuration, and SHE publication path before selecting the UI surface.
-6. Deliver the read-only graph MVP with provenance and coverage contradiction states.
-7. Add temporal comparison only after Phase 0 passes.
-8. Wire into existing CI/publication and capture a provenance receipt.
+3. Keep the validator and its focused tests in the context-relationship validation workflow (validated on PR head `ee974057995b4b81574f7244949770bb34581baf`).
+4. Inspect the Vercel root configuration and SHE publication/reducer contract to choose an integration surface; the project-pages hub is a redirect/navigation shell and the Help-Wanted dashboard is a separate product.
+5. Implement the read-only graph MVP with provenance and coverage contradiction states, reusing existing SHE reducers/snapshot contract where compatible.
+6. Add temporal comparison only after the repository-native query output and source-SHA binding are tested end to end.
+7. Wire publication/deployment into the existing SHE path and capture a provenance receipt.
 
 ## Delivery status
 

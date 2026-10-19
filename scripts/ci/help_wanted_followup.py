@@ -198,10 +198,14 @@ def decide_action(
         if marker_ts is None or (now - marker_ts) >= reengage_delta:
             return "reengage"
 
-    # Long-idle open PR with no recent marker
-    if pr_updated and (now - pr_updated) >= stale_delta:
-        if marker_ts is None or (now - marker_ts) >= stale_delta:
-            return "stale_nudge"
+    # A stale nudge is only appropriate when no substantive maintainer
+    # feedback/review exists. If feedback exists but predates our marker, the
+    # next action is ours: adapt/validate the patch, not ask the maintainer again.
+    # New feedback after the marker is handled by the reengage branch above.
+    if signal_ts is None and changes_ts is None:
+        if pr_updated and (now - pr_updated) >= stale_delta:
+            if marker_ts is None or (now - marker_ts) >= stale_delta:
+                return "stale_nudge"
 
     return "skip"
 

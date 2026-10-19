@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "abaf0ea5de901dcf87658363d4cd1105cbfa33adee74f7a1325aa66835711a86",
-  "workflow_count": 137,
+  "source_fingerprint": "b10a36bcf4ee24088dc944d9e0cd2c7cce0fddf532827d8c60d7148020e4ff6b",
+  "workflow_count": 138,
   "workflows": [
     {
       "action_pins": [
@@ -2055,6 +2055,22 @@
       "schedules": [],
       "triggers": [
         "pull_request",
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: readme-extractor-image cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "image"
+      ],
+      "name": "readme-extractor-image",
+      "path": ".github/workflows/readme-extractor-image.yml",
+      "schedules": [],
+      "triggers": [
         "push",
         "workflow_dispatch"
       ]

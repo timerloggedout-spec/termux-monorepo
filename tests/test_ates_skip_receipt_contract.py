@@ -1,0 +1,30 @@
+"""Contract tests for ATES explicit skip receipts."""
+import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+WORKFLOW = ROOT / ".github" / "workflows" / "agent-throughput-evidence.yml"
+
+
+class AtESkipReceiptContractTests(unittest.TestCase):
+    def test_non_emission_creates_and_uploads_a_skip_receipt(self):
+        source = WORKFLOW.read_text(encoding="utf-8")
+        self.assertIn("Emit explicit ATES skip receipt", source)
+        self.assertIn("Upload ATES skip receipt", source)
+        self.assertIn("ates.observation.v1", source)
+        self.assertIn("metrics_emitted", source)
+        self.assertIn("missing_evidence_policy", source)
+
+    def test_rate_limit_and_unmapped_workflow_are_classified(self):
+        source = WORKFLOW.read_text(encoding="utf-8")
+        self.assertIn("core.setOutput('skip_reason', 'rate_limited')", source)
+        self.assertIn("core.setOutput('skip_reason', 'unmapped_workflow')", source)
+
+    def test_skip_receipt_does_not_fabricate_metrics(self):
+        source = WORKFLOW.read_text(encoding="utf-8")
+        self.assertIn('"metrics_emitted": False', source)
+        self.assertIn('"unknown remains unknown; no metrics inferred"', source)
+
+
+if __name__ == "__main__":
+    unittest.main()

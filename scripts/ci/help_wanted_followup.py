@@ -110,6 +110,26 @@ def load_thread(owner: str, repo: str, number: int) -> tuple[list[dict], list[di
     )
 
 
+MAINTAINER_ASSOCIATIONS = {"OWNER", "MEMBER", "COLLABORATOR"}
+
+
+def filter_maintainer_activity(
+    comments: list[dict], reviews: list[dict]
+) -> tuple[list[dict], list[dict]]:
+    """Discard participant/bot activity unless GitHub identifies maintainer access.
+
+    GitHub's author_association is the evidence source; unknown association is
+    deliberately not promoted to maintainer feedback.
+    """
+    def is_maintainer(event: dict) -> bool:
+        return str(event.get("author_association") or "").upper() in MAINTAINER_ASSOCIATIONS
+
+    return (
+        [event for event in comments if is_maintainer(event)],
+        [event for event in reviews if is_maintainer(event)],
+    )
+
+
 def last_marker_ts(comments: list[dict]) -> datetime | None:
     last = None
     for c in comments:
@@ -247,9 +267,10 @@ def main() -> int:
 
         comments, reviews = load_thread(owner, repo, number)
         marker_ts = last_marker_ts(comments)
-        ch_user, changes_ts, changes_summary = latest_changes_requested(reviews)
+        maintainer_comments, maintainer_reviews = filter_maintainer_activity(comments, reviews)
+        ch_user, changes_ts, changes_summary = latest_changes_requested(maintainer_reviews)
         signal_ts, signal_summary, signal_urls = latest_maintainer_signal(
-            comments, reviews, owner
+            maintainer_comments, maintainer_reviews, owner
         )
         action = decide_action(marker_ts, signal_ts, changes_ts, pr_updated, now)
 

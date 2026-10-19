@@ -43,6 +43,18 @@ class HelpWantedTributeAuditTests(unittest.TestCase):
         )
         self.assertEqual(api_get("/example"), (None, "rate_limited"))
 
+    def test_deferred_attempt_preserves_prior_observed_stage(self):
+        url = "https://github.com/example/project/pull/1"
+        old = [{"pr_url": url, "stage": "accepted", "audit_status": "observed"}]
+        fresh = [{
+            "pr_url": url, "stage": "unknown", "audit_status": "deferred",
+            "audited_at": "2026-10-19T00:00:00+00:00", "evidence_gaps": ["rate_limited"],
+        }]
+        merged = merge_audit_history([url], old, fresh)
+        self.assertEqual(merged[0]["stage"], "accepted")
+        self.assertEqual(merged[0]["last_audit_attempt"]["audit_status"], "deferred")
+        self.assertEqual(merged[0]["last_audit_attempt"]["evidence_gaps"], ["rate_limited"])
+
     def test_rotating_audit_accumulates_coverage_across_refreshes(self):
         urls = ["https://github.com/example/project/pull/1", "https://github.com/example/project/pull/2"]
         old = [{"pr_url": urls[0], "stage": "accepted"}]

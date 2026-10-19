@@ -39,6 +39,7 @@ class HelpWantedStatusOutcomeTests(unittest.TestCase):
         self.assertIn("out.failed", html)
         self.assertIn("audit.not_audited_count", html)
         self.assertIn("audit.audited_this_run_count", html)
+        self.assertIn("audit.attempted_this_run_count", html)
         workflow = Path(".github/workflows/help-wanted-telemetry-tests.yml").read_text(encoding="utf-8")
         self.assertEqual(workflow.count(".github/workflows/help-wanted-telemetry-tests.yml"), 2)
         self.assertEqual(workflow.count("docs/ops/AUTOMATED-TELEMETRY-AUDIT.md"), 2)

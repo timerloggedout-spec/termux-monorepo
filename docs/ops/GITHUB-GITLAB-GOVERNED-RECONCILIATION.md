@@ -21,6 +21,7 @@ Workflow: `.github/workflows/gitlab-governed-reconciliation.yml`
 ## Credentials
 
 - `GITLAB_TOKEN`: GitHub Actions secret used only for GitLab fetch. Do not echo it, write it to repository files, or place it in artifacts/comments.
+- `GH_SYNC_TOKEN`: a narrowly scoped GitHub App installation token or fine-grained PAT with repository Contents: read/write and Pull requests: read/write. The workflow uses it for branch publication and PR creation so the resulting PR can trigger normal validation workflows; the default `GITHUB_TOKEN` would suppress most recursively triggered workflow runs. Keep this credential in Actions secrets and rotate it according to operator policy.
 - `OPERATOR_GITLAB_TOKEN`: operator-only credential; never substitute it into routine workflow jobs.
 - `GITHUB_ALLOW_GITLAB`: do not assume this name is a token or authorization primitive. If a separate feature-flag is intended, define its boolean semantics and test it independently; it does not replace authentication.
 

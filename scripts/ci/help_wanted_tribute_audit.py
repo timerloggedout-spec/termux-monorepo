@@ -89,13 +89,17 @@ def merge_audit_history(
         if prior is not None and row.get("audit_status") in {"deferred", "unknown"}:
             # A failed/unavailable attempt is not a new observation of the PR.
             # Preserve the last known stage and attach the failed attempt for transparency.
+            attempt = {
+                "audited_at": row.get("audited_at"),
+                "audit_status": row.get("audit_status"),
+                "evidence_gaps": row.get("evidence_gaps", []),
+            }
             merged[url] = {
                 **prior,
-                "last_audit_attempt": {
-                    "audited_at": row.get("audited_at"),
-                    "audit_status": row.get("audit_status"),
-                    "evidence_gaps": row.get("evidence_gaps", []),
-                },
+                "last_attempt_at": row.get("audited_at"),
+                "last_attempt_status": row.get("audit_status"),
+                "last_attempt_evidence_gaps": row.get("evidence_gaps", []),
+                "last_audit_attempt": attempt,
             }
         else:
             merged[url] = row
@@ -180,9 +184,11 @@ def audit_one(
     else:
         checks_error = "head_sha_missing"
 
-    names = [str(row.get("filename") or "") for row in files] if isinstance(files, list) else []
+    files_rows = files if isinstance(files, list) else []
+    names = [str(row.get("filename") or "") for row in files_rows]
     files_total_count = int(pr.get("changed_files") or 0)
     files_truncated = isinstance(files, list) and files_total_count > len(files)
+    files_complete = isinstance(files, list) and not files_error and not files_truncated
     changed = [
         row for row in files_rows
         if (int(row.get("additions") or 0) + int(row.get("deletions") or 0)) > 0
@@ -220,9 +226,6 @@ def audit_one(
         "files_observed_count": len(files_rows),
         "files_truncated": files_truncated,
         "files_complete": files_complete,
-        "files_total_count": files_total_count,
-        "files_observed_count": len(files) if isinstance(files, list) else 0,
-        "files_truncated": files_truncated,
         "implementation_file_count": len(implementation_files),
         "stake_marker_present": STAKE_PATH in names,
         "stake_only": stake_only,
@@ -236,8 +239,6 @@ def audit_one(
 
     if files_error:
         base["evidence_gaps"].append(f"files_{files_error}")
-    if files_truncated:
-        base["evidence_gaps"].append("files_truncated")
     if files_truncated:
         base["evidence_gaps"].append("files_truncated")
     if checks_error:
@@ -330,6 +331,16 @@ def main() -> int:
     history_items = merge_audit_history(urls, previous_items, results)
     stages = Counter(row["stage"] for row in history_items)
     statuses = Counter(row.get("last_attempt_status", row.get("audit_status", "observed")) for row in history_items)
+    observed_history_count = sum(
+        row.get("audit_status", "observed") not in {"deferred", "unknown"}
+        for row in history_items
+    )
+    observed_this_run_count = sum(
+        row.get("audit_status", "observed") not in {"deferred", "unknown"}
+        for row in results
+    )
+    deferred_this_run_count = sum(row.get("audit_status") == "deferred" for row in results)
+    unknown_this_run_count = sum(row.get("audit_status") == "unknown" for row in results)
     report = {
         "schema_version": "help-wanted.tribute-audit.v1",
         "generated_at": datetime.now(timezone.utc).isoformat(),

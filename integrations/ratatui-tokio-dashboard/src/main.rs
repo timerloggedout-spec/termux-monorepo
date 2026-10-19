@@ -1,7 +1,8 @@
+use color_eyre::eyre::{Result, WrapErr};
 use crossterm::event::{self, Event, KeyCode};
+use ratatui::layout::{Constraint, Flex, Layout};
 use ratatui::prelude::*;
 use ratatui::widgets::{Bar, BarChart, Block, Gauge, Paragraph, Row, Sparkline, Table};
-use std::io;
 use std::time::Duration;
 use tokio::sync::mpsc;
 
@@ -18,13 +19,17 @@ impl Drop for TerminalGuard {
 }
 
 #[tokio::main(flavor = "multi_thread")]
-async fn main() -> io::Result<()> {
+async fn main() -> Result<()> {
+    // color-eyre installs a panic hook that restores the terminal and prints
+    // a human-readable report. Must run before ratatui::init / raw mode.
+    color_eyre::install().wrap_err("install color-eyre panic hook")?;
+
     let mut terminal = ratatui::init();
     let _guard = TerminalGuard;
     run(&mut terminal).await
 }
 
-async fn run(terminal: &mut ratatui::DefaultTerminal) -> io::Result<()> {
+async fn run(terminal: &mut ratatui::DefaultTerminal) -> Result<()> {
     let (tx, mut rx) = mpsc::channel::<AppEvent>(128);
     let mut tasks = Vec::new();
 
@@ -36,7 +41,9 @@ async fn run(terminal: &mut ratatui::DefaultTerminal) -> io::Result<()> {
 
     loop {
         if app.dirty {
-            terminal.draw(|frame| render(frame, &app))?;
+            terminal
+                .draw(|frame| render(frame, &app))
+                .wrap_err("draw frame")?;
             app.dirty = false;
             app.redraws = app.redraws.saturating_add(1);
         }
@@ -160,12 +167,15 @@ fn render(frame: &mut Frame<'_>, app: &DashboardState) {
         return;
     }
 
+    // Flex::SpaceBetween distributes excess vertical space between panes
+    // without manual column arithmetic (DreamBeans Flex guidance).
     let vertical = Layout::vertical([
         Constraint::Length(2),
         Constraint::Percentage(58),
         Constraint::Percentage(40),
         Constraint::Length(1),
     ])
+    .flex(Flex::SpaceBetween)
     .spacing(1)
     .split(root);
 
@@ -177,6 +187,7 @@ fn render(frame: &mut Frame<'_>, app: &DashboardState) {
     frame.render_widget(title, vertical[0]);
 
     let main = Layout::horizontal([Constraint::Percentage(38), Constraint::Percentage(62)])
+        .flex(Flex::Start)
         .spacing(1)
         .split(vertical[1]);
 
@@ -184,6 +195,7 @@ fn render(frame: &mut Frame<'_>, app: &DashboardState) {
     render_charts(frame, app, main[1]);
 
     let lower = Layout::horizontal([Constraint::Percentage(50), Constraint::Percentage(50)])
+        .flex(Flex::SpaceBetween)
         .spacing(1)
         .split(vertical[2]);
 
@@ -191,7 +203,7 @@ fn render(frame: &mut Frame<'_>, app: &DashboardState) {
     render_runtime(frame, app, lower[1]);
 
     let footer = Paragraph::new(format!(
-        " redraws={}  coalesced={}  cores={}  load={:.2}  mem={}%  last_update={}ms ago",
+        " redraws={}  coalesced={}  cores={}  load={:.2}  mem={}%  last_update={}ms ago  flex=on  eyre=on",
         app.redraws,
         app.skipped_draws,
         app.cpu_cores,
@@ -238,6 +250,7 @@ fn render_charts(frame: &mut Frame<'_>, app: &DashboardState, area: Rect) {
         Constraint::Percentage(33),
         Constraint::Percentage(33),
     ])
+    .flex(Flex::SpaceEvenly)
     .spacing(1)
     .split(area);
 
@@ -298,10 +311,12 @@ fn render_processes(frame: &mut Frame<'_>, app: &DashboardState, area: Rect) {
 }
 
 fn render_runtime(frame: &mut Frame<'_>, app: &DashboardState, area: Rect) {
-    let split =
-        Layout::vertical([Constraint::Percentage(45), Constraint::Percentage(55)]).split(area);
+    let split = Layout::vertical([Constraint::Percentage(45), Constraint::Percentage(55)])
+        .flex(Flex::Start)
+        .split(area);
 
     let gauges = Layout::horizontal([Constraint::Percentage(50), Constraint::Percentage(50)])
+        .flex(Flex::SpaceBetween)
         .spacing(1)
         .split(split[0]);
 
@@ -343,6 +358,8 @@ fn render_runtime(frame: &mut Frame<'_>, app: &DashboardState, area: Rect) {
         Line::from(format!("Selected: {selected}")),
         Line::from(""),
         Line::from("Dirty redraw policy: ON"),
+        Line::from("Flex layout: SpaceBetween / Start / SpaceEvenly"),
+        Line::from("Panic restore: color-eyre + Drop guard"),
         Line::from("Metric fallback: /proc + graceful zero"),
     ];
 

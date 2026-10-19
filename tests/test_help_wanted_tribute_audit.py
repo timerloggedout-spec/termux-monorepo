@@ -119,6 +119,24 @@ class HelpWantedTributeAuditTests(unittest.TestCase):
         self.assertIsNone(parse_pr_url("https://github.com/example/project/issues/42"))
 
     @patch("scripts.ci.help_wanted_tribute_audit.api_get")
+    def test_unavailable_changed_files_are_partial_not_a_crash(self, api_get):
+        api_get.side_effect = [
+            ({
+                "state": "open", "merged_at": None, "changed_files": 2,
+                "body": "### Help-Given Tribute\\n- Stage: solution\\n- Diff proof: verified\\n- Validation: pytest passed",
+                "head": {"sha": "abc123"}, "base": {"sha": "def456"},
+            }, None),
+            (None, "http_403"),
+            ({"check_runs": [{"status": "completed", "conclusion": "success"}]}, None),
+        ]
+        result = audit_one("https://github.com/example/project/pull/42")
+        self.assertEqual(result["audit_status"], "partial")
+        self.assertFalse(result["files_complete"])
+        self.assertEqual(result["files_observed_count"], 0)
+        self.assertIn("files_http_403", result["evidence_gaps"])
+        self.assertNotEqual(result["stage"], "validated_solution")
+
+    @patch("scripts.ci.help_wanted_tribute_audit.api_get")
     def test_validated_solution_requires_diff_proof_and_successful_checks(self, api_get):
         api_get.side_effect = [
             ({

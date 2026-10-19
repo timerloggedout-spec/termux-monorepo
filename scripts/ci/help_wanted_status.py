@@ -70,10 +70,10 @@ def classify_receipt_outcome(row: dict) -> str:
     """
     kind = str(row.get("kind") or "").lower()
     action = str(row.get("action") or "").lower()
-    if action == "skip" or "skip" in kind:
-        return "skipped"
     if row.get("ok") is False:
         return "failed"
+    if action == "skip" or "skip" in kind:
+        return "skipped"
     return "actioned"
 
 

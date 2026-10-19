@@ -237,7 +237,7 @@ jobs:
               "missing_evidence_policy": "unknown remains unknown; no metrics inferred",
           }
           Path("ates-skip-receipt.json").write_text(
-              json.dumps(receipt, sort_keys=True, indent=2) + "\\n", encoding="utf-8"
+              json.dumps(receipt, sort_keys=True, indent=2) + "\n", encoding="utf-8"
           )
           PY
 
@@ -308,9 +308,19 @@ jobs:
                   "sha256": hashlib.sha256(data).hexdigest(),
               }
 
+          metadata = json.loads(Path("agent-throughput-metadata.json").read_text(encoding="utf-8"))
+          evidence_gaps = []
+          if not metadata.get("task_boundary"):
+              evidence_gaps.append("task_boundary_artifact_missing")
+          if not metadata.get("task_complexity"):
+              evidence_gaps.append("task_complexity_unavailable")
+          if not metadata.get("pull_request_number"):
+              evidence_gaps.append("pull_request_association_unavailable")
           receipt = {
               "schema_version": "ates.evidence.v1",
               "producer": "agent-throughput-evidence",
+              "status": "partial" if evidence_gaps else "emitted",
+              "evidence_gaps": evidence_gaps,
               "source_run_id": int(os.environ["SOURCE_RUN_ID"]),
               "source_run_attempt": int(os.environ["SOURCE_RUN_ATTEMPT"]),
               "files": files,

@@ -17,7 +17,7 @@ permissions:
   issues: write
 
 concurrency:
-  group: actions-run-watcher-${{ github.event.workflow_run.id }}
+  group: actions-run-watcher-${{ github.event.workflow_run.name }}-${{ github.event.workflow_run.conclusion }}-${{ github.event.workflow_run.head_sha }}
   cancel-in-progress: false
 
 jobs:
@@ -66,12 +66,27 @@ jobs:
           EOF
           )
 
-          existing=$(gh issue list --repo "$REPOSITORY" --state open --search "in:title \"[Actions Incident] ${WORKFLOW_NAME}: ${CONCLUSION}\"" --json number --limit 10)
+          existing=$(gh issue list --repo "$REPOSITORY" --state open --search "in:title \\"[Actions Incident] ${WORKFLOW_NAME}: ${CONCLUSION}\\"" --json number --limit 10)
           number=$(python3 -c 'import json,sys; d=json.load(sys.stdin); print(d[0]["number"] if d else "")' <<<"$existing")
           if [ -n "$number" ]; then
-            gh issue comment "$number" --repo "$REPOSITORY" --body "$body"
+            issue_json=$(gh issue view "$number" --repo "$REPOSITORY" --json body,comments)
           else
-            gh issue create --repo "$REPOSITORY" --title "$title" --body "$body"
+            issue_json=$(python3 -c 'import json,sys; print(json.dumps({"body":sys.stdin.read(),"comments":[]}))' <<<"$body")
+          fi
+
+          decision=$(python3 scripts/ci/actions_incident_dedupe.py "$fp" "$RUN_ID" "$RUN_ATTEMPT" "$RUN_URL" <<<"$issue_json")
+          updated_body=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["body"])' <<<"$decision")
+          notify=$(python3 -c 'import json,sys; print("true" if json.load(sys.stdin)["notify"] else "false")' <<<"$decision")
+
+          if [ -n "$number" ]; then
+            gh issue edit "$number" --repo "$REPOSITORY" --body "$updated_body"
+            if [ "$notify" = "true" ]; then
+              gh issue comment "$number" --repo "$REPOSITORY" --body "$body"
+            else
+              echo "deduplicated notification for fingerprint $fp; linked run $RUN_ID"
+            fi
+          else
+            gh issue create --repo "$REPOSITORY" --title "$title" --body "$updated_body"
           fi
 
       - name: Emit structured incident receipt

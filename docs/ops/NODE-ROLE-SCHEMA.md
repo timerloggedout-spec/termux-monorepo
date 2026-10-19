@@ -47,7 +47,7 @@ Secrets and tokens never cross via the clipboard. Android clipboard history and 
 
 ## Accounts, cookies, sessions
 
-Both phones share `timerloggedout@gmail.com`. Running the same cookies or OAuth refresh tokens from a second device is a common revocation trigger. Rules:
+Both phones share one Google account (`<operator Google account>`). Running the same cookies or OAuth refresh tokens from a second device is a common revocation trigger. Rules:
 - The controller never imports origin cookie jars, browser profiles or `DEEPSEEK_COOKIES*` style material.
 - A new login on the controller goes through the capture-login OAuth callback flow, giving it its own session. It never reuses one.
 - Identity stays opaque (`tmx-node-*`). Fingerprints exist only in the age-sealed `TMX_FPMAP_*` secrets.

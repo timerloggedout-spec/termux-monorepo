@@ -11,6 +11,7 @@ import sys
 from typing import Any
 
 OBSERVATIONS_MARKER = "<!-- actions-run-observations:v1 -->"
+NOTIFIED_MARKER_PREFIX = "<!-- actions-notified:"
 
 
 def reconcile_incident(
@@ -28,7 +29,10 @@ def reconcile_incident(
         searchable.extend(
             str(c.get("body") or "") for c in comments if isinstance(c, dict)
         )
-    already_notified = any(fingerprint in text for text in searchable)
+    notification_marker = f"{NOTIFIED_MARKER_PREFIX}{fingerprint} -->"
+    # A fingerprint in the issue body records an incident, not successful delivery.
+    # Only a marker in a successfully published notification proves notification.
+    already_notified = any(notification_marker in text for text in searchable)
     run_marker = f"actions-run:{run_id}:{run_attempt}"
     run_already_recorded = run_marker in body
 
@@ -48,6 +52,7 @@ def reconcile_incident(
         "notify": not already_notified,
         "run_already_recorded": run_already_recorded,
         "fingerprint": fingerprint,
+        "notification_marker": notification_marker,
         "run_id": run_id,
         "run_attempt": run_attempt,
     }

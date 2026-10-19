@@ -17,9 +17,9 @@ permissions:
   issues: write
 
 concurrency:
-  # Unique per completion so GitHub never replaces a pending run observation.
-  group: actions-run-watcher-${{ github.event.workflow_run.id }}-${{ github.event.workflow_run.run_attempt }}
-  cancel-in-progress: false
+  # Stable incident identity serializes writes; queue all observations instead of replacing pending runs.
+  group: actions-run-watcher-${{ github.event.workflow_run.name }}-${{ github.event.workflow_run.conclusion }}
+  queue: max
 
 jobs:
   observe-completion:

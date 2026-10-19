@@ -1,10 +1,9 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-19T15:54:00Z UTC · receipts=2899 · foreign_open=37 · tributes=106_
+_Generated 2026-10-19T16:15:02Z UTC · receipts=2936 · foreign_open=37 · tributes=106_
 
 ## Tributes (contributor ledger)
 
-- [StellarFoundry/soroban-security-scanner#200](https://github.com/StellarFoundry/soroban-security-scanner/pull/200) · state=open · help-wanted: stake + contribute for #158
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
@@ -31,19 +30,20 @@ _Generated 2026-10-19T15:54:00Z UTC · receipts=2899 · foreign_open=37 · tribu
 - [Suhas29wasnotavailable/blroad#12](https://github.com/Suhas29wasnotavailable/blroad/pull/12) · state=open · help-wanted: stake + contribute for #7
 - [MMALI3287/vibewatt#100](https://github.com/MMALI3287/vibewatt/pull/100) · state=open · help-wanted: stake + contribute for #95
 - [apache/hugegraph-computer#365](https://github.com/apache/hugegraph-computer/pull/365) · state=open · help-wanted: stake + contribute for #325
-- [kiinshuk/kinshow#434](https://github.com/kiinshuk/kinshow/pull/434) · state=closed · help-wanted: stake + contribute for #157
 - [ciaren-labs/Ciaren#234](https://github.com/ciaren-labs/Ciaren/pull/234) · state=open · help-wanted: stake + contribute for #96
 - [finos/fluxnova-bpm-platform#352](https://github.com/finos/fluxnova-bpm-platform/pull/352) · state=open · help-wanted: stake + contribute for #152
 - [ShippedLabs/soroban-upgrade-safeguard#781](https://github.com/ShippedLabs/soroban-upgrade-safeguard/pull/781) · state=open · help-wanted: stake + contribute for #764
 - [stellar-compliance-kit/compliance-primitives#656](https://github.com/stellar-compliance-kit/compliance-primitives/pull/656) · state=open · help-wanted: stake + contribute for #180
 - [Health-watchers/health_watchers#1698](https://github.com/Health-watchers/health_watchers/pull/1698) · state=open · help-wanted: stake + contribute for #1519
-- [Nodal-stellar/Nodal-AI#853](https://github.com/Nodal-stellar/Nodal-AI/pull/853) · state=closed · help-wanted: stake + contribute for #769
-- [Nodal-stellar/Nodal-AI#857](https://github.com/Nodal-stellar/Nodal-AI/pull/857) · state=closed · help-wanted: stake + contribute for #811
 - [LabsCrypt/remitlend#1990](https://github.com/LabsCrypt/remitlend/pull/1990) · state=open · help-wanted: stake + contribute for #1503
 - [RetinaX-Org/RetinaX#352](https://github.com/RetinaX-Org/RetinaX/pull/352) · state=open · help-wanted: stake + contribute for #282
 - [0xLizTech/stellarforge#614](https://github.com/0xLizTech/stellarforge/pull/614) · state=open · help-wanted: stake + contribute for #92
 - [SoroScan/soroscan#1690](https://github.com/SoroScan/soroscan/pull/1690) · state=open · help-wanted: stake + contribute for #1663
 - [sorolens/sorolens#753](https://github.com/sorolens/sorolens/pull/753) · state=open · help-wanted: stake + contribute for #538
+- [StellarFoundry/soroban-security-scanner#200](https://github.com/StellarFoundry/soroban-security-scanner/pull/200) · state=open · help-wanted: stake + contribute for #158
+- [kiinshuk/kinshow#434](https://github.com/kiinshuk/kinshow/pull/434) · state=closed · help-wanted: stake + contribute for #157
+- [Nodal-stellar/Nodal-AI#853](https://github.com/Nodal-stellar/Nodal-AI/pull/853) · state=closed · help-wanted: stake + contribute for #769
+- [Nodal-stellar/Nodal-AI#857](https://github.com/Nodal-stellar/Nodal-AI/pull/857) · state=closed · help-wanted: stake + contribute for #811
 
 ## Foreign open PRs
 
@@ -85,6 +85,6 @@ _Generated 2026-10-19T15:54:00Z UTC · receipts=2899 · foreign_open=37 · tribu
 - [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Operational outcomes · actioned=179 skipped=2720 failed=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 2684, 'followup_reengage': 50, 'followup_stale_nudge': 115, 'followup_changes': 2}`
+## Operational outcomes · actioned=179 skipped=2757 failed=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 2721, 'followup_reengage': 50, 'followup_stale_nudge': 115, 'followup_changes': 2}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

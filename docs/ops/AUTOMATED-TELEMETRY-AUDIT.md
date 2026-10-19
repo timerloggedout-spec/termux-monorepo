@@ -66,3 +66,8 @@ The sample is intentionally capped at 25 PRs per refresh to limit API pressure. 
 ## Operational limitations
 
 Automated skip/partial receipts, cross-run incident notification deduplication, evidence-honest candidate ranking, feedback-first nudge suppression, and sampled upstream tribute auditing are now wired into the PR implementation. Full historical reconciliation of every claimed tribute and a fully populated, user-filterable canonical queue remain outstanding; neither should be described as complete until the historical ledger has been traversed and the public dashboard exposes the stage-separated counts.
+
+
+## Receipt-count semantics
+
+The generated status builder classifies each receipt as `actioned`, `skipped`, or `failed`. A skip is an observed no-op, not successful work. The public dashboard displays these operational counts separately from audited `validated_solution`, `accepted`, and `realized effect` stages. The latter two are not interchangeable: acceptance does not prove downstream realization.

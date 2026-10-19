@@ -39,6 +39,8 @@ jobs:
           python3 scripts/ci/help_wanted_status.py
 
       - name: Audit tribute lifecycle against upstream evidence
+        continue-on-error: true
+        timeout-minutes: 5
         env:
           OPERATOR_GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
           OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}

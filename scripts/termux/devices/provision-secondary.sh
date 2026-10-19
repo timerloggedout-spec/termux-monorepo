@@ -46,6 +46,8 @@ else
   bash "$SCRIPT_DIR/device-identity.sh" init --role observer-controller --origin-id "$ORIGIN_ID"
 fi
 bash "$SCRIPT_DIR/device-identity.sh" show
+# shellcheck source=lib.sh
+. "$SCRIPT_DIR/lib.sh"
 bash "$SCRIPT_DIR/inventory.sh" >/dev/null && echo "inventory: $TMX_STATE_DIR/inventory.json (local only)"
 # Controller key: restricted to tmx-ctl.sh on the origin via an authorized_keys forced command.
 if [ ! -f "$HOME/.ssh/tmx_controller_ed25519" ]; then
@@ -70,8 +72,15 @@ step "7/8 sshd (key-only, LAN/ADB recovery)"
 if [ "$NO_SSHD" = 0 ]; then
   mkdir -p "$HOME/.ssh"; chmod 700 "$HOME/.ssh"; touch "$HOME/.ssh/authorized_keys"; chmod 600 "$HOME/.ssh/authorized_keys"
   cfg="$PREFIX/etc/ssh/sshd_config"
-  grep -q '^# tmx-secondary' "$cfg" 2>/dev/null || printf '\n# tmx-secondary\nPasswordAuthentication no\nPermitRootLogin no\n' >>"$cfg"
-  pgrep -x sshd >/dev/null || sshd
+  if ! grep -q '^# tmx-secondary' "$cfg" 2>/dev/null; then
+    # sshd uses the FIRST value per keyword, so the key-only directives must precede stock settings.
+    tmp="$(mktemp)"
+    { printf '# tmx-secondary (must stay first)\nPasswordAuthentication no\nKbdInteractiveAuthentication no\nPermitRootLogin no\n\n'; cat "$cfg" 2>/dev/null || true; } >"$tmp"
+    install -m 600 "$tmp" "$cfg"; rm -f "$tmp"
+  fi
+  sshd -t || { echo "sshd_config invalid; not restarting" >&2; exit 1; }
+  pkill -x sshd 2>/dev/null || true; sshd
+  sshd -T 2>/dev/null | grep -qx 'passwordauthentication no' && echo "sshd: key-only verified (sshd -T)" || echo "WARN: sshd -T does not report passwordauthentication no" >&2
   [ -s "$HOME/.ssh/authorized_keys" ] || echo "NOTE: add your workstation public key to ~/.ssh/authorized_keys"
 fi
 

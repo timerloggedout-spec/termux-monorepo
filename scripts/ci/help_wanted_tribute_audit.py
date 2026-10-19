@@ -158,7 +158,7 @@ def main() -> int:
     parser.add_argument("--status", default="docs/ops/generated/help-wanted-status.json")
     parser.add_argument("--out", default="docs/ops/generated/help-wanted-tribute-audit.json")
     parser.add_argument("--dashboard", default="apps/help-wanted-dashboard/data/status.json")
-    parser.add_argument("--max-prs", type=int, default=100)
+    parser.add_argument("--max-prs", type=int, default=25)
     args = parser.parse_args()
 
     status_path = Path(args.status)
@@ -169,7 +169,15 @@ def main() -> int:
         url = str(tribute.get("pr_url") or "")
         if url and url not in urls:
             urls.append(url)
-    selected = urls[: max(0, args.max_prs)]
+    batch_size = max(0, args.max_prs)
+    if batch_size and len(urls) > batch_size:
+        # Rotate the bounded audit window hourly so old entries are not starved.
+        hour = int(datetime.now(timezone.utc).timestamp() // 3600)
+        start = (hour * batch_size) % len(urls)
+        selected = [urls[(start + offset) % len(urls)] for offset in range(min(batch_size, len(urls)))]
+    else:
+        start = 0
+        selected = urls[:batch_size]
     results = [audit_one(url) for url in selected]
     stages = Counter(row["stage"] for row in results)
     statuses = Counter(row.get("audit_status", "observed") for row in results)
@@ -181,6 +189,8 @@ def main() -> int:
         "unique_pr_count": len(urls),
         "audited_pr_count": len(results),
         "not_audited_count": max(0, len(urls) - len(results)),
+        "audit_window_start": start,
+        "audit_window_size": batch_size,
         "stages": dict(stages),
         "audit_statuses": dict(statuses),
         "realized_effect_verified_count": sum(bool(row.get("realized_effect_verified")) for row in results),

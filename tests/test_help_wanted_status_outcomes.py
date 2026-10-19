@@ -37,6 +37,8 @@ class HelpWantedStatusOutcomeTests(unittest.TestCase):
         self.assertIn("Realized effects (sample)", html)
         self.assertIn("out.skipped", html)
         self.assertIn("out.failed", html)
+        self.assertIn("audit.not_audited_count", html)
+        self.assertIn("audit.audited_this_run_count", html)
 
 
 if __name__ == "__main__":

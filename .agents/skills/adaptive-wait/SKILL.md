@@ -119,7 +119,7 @@ This skill is the wait/controller layer. adaptive-feedback-cycle owns broader co
 Session stamps are append-only. Fetch the current file, append the new `Session ...` block at the end, and write the whole result back. Never write a placeholder, a summary of history, or an unexpanded shell command substitution in place of the file body. If a tool call cannot carry the full file, skip the stamp and record it in the PR or issue comment instead.
 
 How CI evaluates a change (`scripts/ci/validate_operational_skills.py`, against the PR base or `HEAD~1`):
-- Placeholder bodies fail (a placeholder marker line, a "too large for this call" note, or an unexpanded command substitution).
+- Placeholder bodies fail (a placeholder marker line, a size-excuse note, or an unexpanded command substitution).
 - Content loss is measured order-insensitively: the parent's non-blank lines are compared as a multiset, so moving or reordering text costs nothing and only lines that disappeared count. More than 50% lost fails; more than 10% lost warns. An intentional trim passes with `[allow-skill-shrink]` in the commit message and is still reported.
 - Reordering is allowed but checked: the required contract sections must stay in contract order (error), and `Session` entries must stay in date order (warning).
 - Every run prints `parent / lost / added / lost_ratio / reordered` per canonical skill, so the delta is visible in the job summary.

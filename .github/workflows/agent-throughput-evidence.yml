@@ -37,6 +37,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout observer implementation
+        id: checkout-observer
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
           fetch-depth: 1
@@ -75,7 +76,13 @@ jobs:
             } catch (error) {
               const status = error.status || error.response?.status;
               const message = String(error.message || '');
-              if (status === 403 || /rate limit/i.test(message)) {
+              const headers = error.response?.headers || {};
+              const rateLimited = status === 429 ||
+                (status === 403 && (
+                  String(headers['x-ratelimit-remaining'] || '') === '0' ||
+                  /rate limit|secondary rate limit|abuse detection/i.test(message)
+                ));
+              if (rateLimited) {
                 core.warning(`installation rate limit; skipping throughput evidence: ${message}`);
                 core.setOutput('skip_reason', 'rate_limited');
                 core.setOutput('emitted', 'false');
@@ -208,7 +215,7 @@ jobs:
               .addRaw(`- structural complexity: ${taskComplexity ? 'available' : 'missing'}\n`)
               .write();
 
-      - name: Emit explicit ATES skip receipt
+      - name: Emit explicit ATES outcome receipt
         if: always() && steps.collect.outputs.emitted != 'true'
         env:
           SOURCE_RUN_ID: ${{ github.event.workflow_run.id || '0' }}
@@ -217,6 +224,8 @@ jobs:
           SOURCE_WORKFLOW_NAME: ${{ github.event.workflow_run.name || '' }}
           SKIP_REASON: ${{ steps.collect.outputs.skip_reason || 'metadata_unavailable' }}
           TASK_BOUNDARY_OUTCOME: ${{ steps.task-boundary.outcome }}
+          COLLECT_OUTCOME: ${{ steps.collect.outcome }}
+          CHECKOUT_OUTCOME: ${{ steps.checkout-observer.outcome }}
         run: |
           python3 - <<'PY'
           import json, os
@@ -225,8 +234,10 @@ jobs:
           receipt = {
               "schema_version": "ates.observation.v1",
               "producer": "agent-throughput-evidence",
-              "status": "skipped",
-              "skip_reason": os.environ["SKIP_REASON"],
+              "status": ("failed" if os.environ["COLLECT_OUTCOME"] in ("failure", "skipped") or os.environ["CHECKOUT_OUTCOME"] == "failure" else "skipped"),
+              "skip_reason": (os.environ["SKIP_REASON"] if os.environ["COLLECT_OUTCOME"] == "success" else "collection_failed"),
+              "collection_outcome": os.environ["COLLECT_OUTCOME"],
+              "checkout_outcome": os.environ["CHECKOUT_OUTCOME"],
               "source_run_id": int(os.environ["SOURCE_RUN_ID"]),
               "source_run_attempt": int(os.environ["SOURCE_RUN_ATTEMPT"]),
               "source_head_sha": os.environ["SOURCE_HEAD_SHA"] or None,
@@ -241,11 +252,11 @@ jobs:
           )
           PY
 
-      - name: Upload ATES skip receipt
+      - name: Upload ATES outcome receipt
         if: always() && steps.collect.outputs.emitted != 'true'
         uses: actions/upload-artifact@v4.6.2
         with:
-          name: agent-throughput-skip-${{ github.event.workflow_run.id || github.run_id }}-${{ github.event.workflow_run.run_attempt || github.run_attempt }}
+          name: agent-throughput-outcome-${{ github.event.workflow_run.id || github.run_id }}-${{ github.event.workflow_run.run_attempt || github.run_attempt }}
           path: ates-skip-receipt.json
           if-no-files-found: error
           retention-days: 14

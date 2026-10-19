@@ -69,6 +69,8 @@ termux-job-scheduler --pending                                       # 43107-431
 ```bash
 # on the new phone
 bash scripts/termux/devices/origin-status-notify.sh --print
+# open a NEW Termux session first, then:
+command -v git | grep -q '/.local/bin/git$' || { echo "guard not on PATH; open a new shell"; exit 1; }
 git -C ~/termux-monorepo reset --hard        # expect: BLOCKED by tmx-git-guard (exit 97)
 bash scripts/termux/devices/device-identity.sh verify
 ```

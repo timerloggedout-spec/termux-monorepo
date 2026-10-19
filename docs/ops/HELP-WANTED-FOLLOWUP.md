@@ -35,4 +35,4 @@ Agent-Identity: Grok (Administrator)
 
 A stale nudge is permitted only when there is **no substantive maintainer feedback/review** in the observed thread and no known `CHANGES_REQUESTED` review. If feedback exists but predates our last marker, the next action belongs to our side: adapt the patch, validate the fix, or mark the work blocked. Do not ask the maintainer to repeat guidance that is already present.
 
-New substantive feedback after the last marker remains eligible for `reengage` after the configured cooldown; `CHANGES_REQUESTED` after the marker retains priority. The policy is covered by `tests/test_help_wanted_followup_policy.py`.
+New substantive comment/review feedback after the last marker remains eligible for `reengage` after the configured cooldown; `CHANGES_REQUESTED` after the marker retains priority. A trusted maintainer `APPROVED` review—including an empty-body approval—suppresses stale nudges but is not itself a request to re-engage. The policy is covered by `tests/test_help_wanted_followup_policy.py`.

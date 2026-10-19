@@ -104,11 +104,11 @@ jobs:
                           items = []
                   if items:
                       normalize = lambda value: " ".join(str(value or "").lower().replace("-", " ").split())
+                      requested_label = label
                       candidate = next((
                           item for item in items
-                          if any(normalize(label) == normalize(label_name)
-                                 for label_name in (item.get("labels") or [])
-                                 for label in [label])
+                          if any(normalize(label_name) == normalize(requested_label)
+                                 for label_name in (item.get("labels") or []))
                       ), None)
                       if candidate:
                           issue = candidate.get("url") or candidate.get("html_url") or ""

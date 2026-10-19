@@ -308,7 +308,7 @@ def main() -> int:
         "audit_window_size": batch_size,
         "stages": dict(stages),
         "audit_statuses": dict(statuses),
-        "realized_effect_verified_count": sum(bool(row.get("realized_effect_verified")) for row in results),
+        "realized_effect_verified_count": sum(bool(row.get("realized_effect_verified")) for row in history_items),
         "policy": {
             "claim_is_solution": False,
             "merge_is_realized_effect": False,
@@ -327,7 +327,9 @@ def main() -> int:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({
-        "audited": len(results),
+        "audited": len(history_items),
+        "audited_this_run": len(results),
+        "not_audited": max(0, len(urls) - len(history_items)),
         "unique_prs": len(urls),
         "stages": dict(stages),
         "realized_effect_verified": report["realized_effect_verified_count"],

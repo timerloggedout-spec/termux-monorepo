@@ -62,7 +62,11 @@ A read-only validator has now been added at `scripts/ci/validate_context_relatio
 
 The same CI run exposed and fixed a prior verifier assumption: a `COMPLETE` record closes one pagination window, but the append-only observation lineage may validly continue when a later backfill explicitly restarts at page 1. The verifier now checks that restart boundary and requires each `previous_snapshot_id` to link to the immediately preceding event.
 
-This validator is a foundation, not the Explorer UI and not a replacement for the existing corpus schema validator. It does not resolve the current L1 coverage contradiction or establish all-time completeness. Those remain explicit reconciliation work.
+A second pure projection increment is now present at `archwiz/context_relationships/explorer_projection.py`, with contracts in `tests/test_context_relationship_explorer_projection.py`. It keeps the build summary's declared coverage unchanged, binds source ref/SHA and manifest blob SHA, reconciles manifest/build-summary counts, checks edge classification totals, and emits structured warnings for `COMPLETE` plus checkpoint-ineligible state and for zero declared PRs alongside PR window stubs. Unknown counts remain unavailable rather than becoming zero. This reducer is wired into the existing context-relationship validation workflow; its latest CI result is pending at the time of this edit.
+
+The app-surface inspection found that `apps/project-pages-hub/index.html` is a thin redirect/navigation shell and `apps/help-wanted-dashboard/` is a separate Help-Wanted product with its own deployment contract. The repository root has no checked-in `vercel.json` or package manifest, and no SHE-specific dashboard deployment workflow was found under the obvious workflow names. Therefore, do not embed the Explorer in the Help-Wanted UI or assume Vercel project-root settings. The next UI slice must first establish the actual Vercel project root and static publication contract, then extend SHE's existing snapshot contract.
+
+This validator is a foundation, not the Explorer UI and not a replacement for the existing corpus schema validator. It does not resolve all-time completeness. Those remain explicit reconciliation work.
 
 ## Product design
 

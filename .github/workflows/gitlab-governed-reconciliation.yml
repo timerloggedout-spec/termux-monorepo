@@ -116,6 +116,7 @@ jobs:
         if: steps.classify.outputs.state == 'gitlab-ahead' || steps.classify.outputs.state == 'diverged'
         id: branch
         env:
+          GH_SYNC_TOKEN: ${{ secrets.GH_SYNC_TOKEN }}
           GH_SHA: ${{ steps.refs.outputs.github_sha }}
           GL_SHA: ${{ steps.refs.outputs.gitlab_sha }}
         shell: bash

@@ -519,3 +519,20 @@ proposals:
     related_prs: []
     related_branches: []
     gates_required: [repo-gate]
+
+  - id: lane-compounding
+    title: "Lane compounding: live dashboard data, Bayesian/Markov tribute qualification, ForeSight→HindSight calibration, blind-graded treatments"
+    author: Hark
+    status: posted
+    priority: P1
+    path: active/lane-compounding/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: Hark
+        role: author+executor
+        status: executing
+    related_prs: [1244, 1274, 1277, 1278, 1280]
+    related_branches: [hark/lane-compounding]
+    gates_required: [repo-gate]

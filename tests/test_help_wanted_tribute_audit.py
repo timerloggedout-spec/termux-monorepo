@@ -91,7 +91,7 @@ class HelpWantedTributeAuditTests(unittest.TestCase):
         self.assertFalse(result["files_complete"])
         self.assertEqual(result["audit_status"], "partial")
         self.assertTrue(result["checks_pass"])
-        self.assertEqual(result["stage"], "solution_claimed_unvalidated")
+        self.assertEqual(result["stage"], "unknown")
         self.assertIn("files_truncated", result["evidence_gaps"])
 
     def test_realization_receipt_requires_independent_verifier_and_linked_evidence(self):

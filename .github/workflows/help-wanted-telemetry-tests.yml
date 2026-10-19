@@ -3,6 +3,7 @@ name: Help-Wanted telemetry regression suite
 on:
   pull_request:
     paths:
+      - ".github/workflows/help-wanted-telemetry-tests.yml"
       - ".github/workflows/actions-run-watcher.yml"
       - ".github/workflows/agent-throughput-evidence.yml"
       - ".github/workflows/help-wanted-status-refresh.yml"
@@ -26,11 +27,14 @@ on:
   push:
     branches: [master]
     paths:
+      - ".github/workflows/help-wanted-telemetry-tests.yml"
       - ".github/workflows/actions-run-watcher.yml"
       - ".github/workflows/agent-throughput-evidence.yml"
       - ".github/workflows/help-wanted-status-refresh.yml"
       - ".github/workflows/help-wanted-execute.yml"
       - "apps/help-wanted-dashboard/index.html"
+      - "docs/ops/AUTOMATED-TELEMETRY-AUDIT.md"
+      - "docs/ops/HELP-WANTED-REALIZATION-EVIDENCE.md"
       - "scripts/ci/actions_incident_dedupe.py"
       - "scripts/ci/help_wanted_claim.py"
       - "scripts/ci/help_wanted_followup.py"

@@ -22,7 +22,7 @@ gates_required: [repo-gate, termux-smoke]
 
 ## Summary
 
-Build a repository-native, evidence-backed relationship graph that starts with a deterministic schema compiler and sparse matrix. It will unify safe, normalized metadata about source files and symbols with GitHub pull requests, issues, labels, comments, commits, and explicit references. The resulting index will support bounded timeline search and optional Mermaid export while deliberately excluding session stores, browser profiles, tokens, and full discussion bodies.
+Build a repository-native, evidence-backed relationship graph that starts with a deterministic schema compiler and sparse matrix. It will unify safe, normalized metadata about source files and symbols with GitHub pull requests, issues, labels, comments, commits, and explicit references. The resulting index supports bounded timeline search and optional Mermaid export while deliberately excluding session stores, browser profiles, tokens, and full discussion bodies. CRG-15 proposes a read-only Historical Corpus Explorer as a SHE projection over this same canonical corpus—not a second collector, datastore, or source of truth. The Explorer must expose coverage contradictions, preserve verified/candidate separation, trace claims to immutable evidence, and gate temporal views on validated L2 data.
 
 ## Scope and Boundary
 
@@ -64,6 +64,6 @@ The work extends the existing local context graph rather than treating it as aut
 
 ## Links
 
-- ITEMS: [./ITEMS.md](./ITEMS.md)
+- ITEMS: [./ITEMS.md](./ITEMS.md)\n- Historical Corpus Explorer plan: [./HISTORICAL-CORPUS-EXPLORER-INTEGRATION-PLAN.md](./HISTORICAL-CORPUS-EXPLORER-INTEGRATION-PLAN.md)
 - Source: [./source.md](./source.md)
 - ICM navigation surface: [../../icm/objects/knowledge/navigation-and-indexes.md](../../icm/objects/knowledge/navigation-and-indexes.md)

@@ -1,0 +1,16 @@
+{
+  "name": "planning-queue-stale-sweeper",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Scheduler target: marks claims older than STALE_AFTER_MINUTES as stale (or requeues them).",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "pg": "^8.16.0"
+  }
+}

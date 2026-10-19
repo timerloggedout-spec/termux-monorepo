@@ -332,11 +332,11 @@ def main() -> int:
     stages = Counter(row["stage"] for row in history_items)
     statuses = Counter(row.get("last_attempt_status", row.get("audit_status", "observed")) for row in history_items)
     observed_history_count = sum(
-        row.get("audit_status", "observed") not in {"deferred", "unknown"}
+        row.get("audit_status", "observed") == "observed"
         for row in history_items
     )
     observed_this_run_count = sum(
-        row.get("audit_status", "observed") not in {"deferred", "unknown"}
+        row.get("audit_status", "observed") == "observed"
         for row in results
     )
     deferred_this_run_count = sum(row.get("audit_status") == "deferred" for row in results)

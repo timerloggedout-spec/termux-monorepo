@@ -82,8 +82,23 @@ def merge_audit_history(
         if isinstance(row, dict) and row.get("pr_url") in allowed
     }
     for row in fresh_items:
-        if isinstance(row, dict) and row.get("pr_url") in allowed:
-            merged[str(row["pr_url"])] = row
+        if not isinstance(row, dict) or row.get("pr_url") not in allowed:
+            continue
+        url = str(row["pr_url"])
+        prior = merged.get(url)
+        if prior is not None and row.get("audit_status") in {"deferred", "unknown"}:
+            # A failed/unavailable attempt is not a new observation of the PR.
+            # Preserve the last known stage and attach the failed attempt for transparency.
+            merged[url] = {
+                **prior,
+                "last_audit_attempt": {
+                    "audited_at": row.get("audited_at"),
+                    "audit_status": row.get("audit_status"),
+                    "evidence_gaps": row.get("evidence_gaps", []),
+                },
+            }
+        else:
+            merged[url] = row
     return [merged[url] for url in current_urls if url in merged]
 
 
@@ -166,6 +181,8 @@ def audit_one(
         checks_error = "head_sha_missing"
 
     names = [str(row.get("filename") or "") for row in files] if isinstance(files, list) else []
+    files_total_count = int(pr.get("changed_files") or 0)
+    files_truncated = isinstance(files, list) and files_total_count > len(files)
     changed = [
         row for row in (files if isinstance(files, list) else [])
         if (int(row.get("additions") or 0) + int(row.get("deletions") or 0)) > 0
@@ -188,13 +205,20 @@ def audit_one(
     )
 
     base.update({
-        "audit_status": "partial" if files_error or checks_error or checks_truncated else "observed",
+        "audit_status": (
+            "partial"
+            if files_error or checks_error or checks_truncated or files_truncated
+            else "observed"
+        ),
         "state": pr.get("state"),
         "merged": bool(pr.get("merged_at")),
         "head_sha": head_sha,
         "contributor_login": contributor_login or None,
         "base_sha": (pr.get("base") or {}).get("sha"),
         "changed_file_count": len(changed),
+        "files_total_count": files_total_count,
+        "files_observed_count": len(files) if isinstance(files, list) else 0,
+        "files_truncated": files_truncated,
         "implementation_file_count": len(implementation_files),
         "stake_marker_present": STAKE_PATH in names,
         "stake_only": stake_only,
@@ -208,6 +232,8 @@ def audit_one(
 
     if files_error:
         base["evidence_gaps"].append(f"files_{files_error}")
+    if files_truncated:
+        base["evidence_gaps"].append("files_truncated")
     if checks_error:
         base["evidence_gaps"].append(f"checks_{checks_error}")
     if checks_truncated:
@@ -225,7 +251,7 @@ def audit_one(
         base["stage"] = "closed_unmerged"
     elif stake_only:
         base["stage"] = "stake_only"
-    elif implementation_files and proof_present and checks_pass:
+    elif implementation_files and proof_present and checks_pass and not files_truncated:
         base["stage"] = "validated_solution"
     elif implementation_files and proof_present:
         base["stage"] = "solution_claimed_unvalidated"

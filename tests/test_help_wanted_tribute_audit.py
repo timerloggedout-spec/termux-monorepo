@@ -16,6 +16,9 @@ class HelpWantedTributeAuditTests(unittest.TestCase):
         workflow = Path(".github/workflows/help-wanted-status-refresh.yml").read_text(encoding="utf-8")
         self.assertIn("python3 scripts/ci/help_wanted_tribute_audit.py", workflow)
         self.assertIn("docs/ops/generated/help-wanted-tribute-audit.json", workflow)
+        tests_workflow = Path(".github/workflows/help-wanted-telemetry-tests.yml").read_text(encoding="utf-8")
+        self.assertIn('.github/workflows/help-wanted-telemetry-tests.yml', tests_workflow)
+        self.assertIn('docs/ops/AUTOMATED-TELEMETRY-AUDIT.md', tests_workflow.split('  push:', 1)[1])
 
     @patch("scripts.ci.help_wanted_tribute_audit.urllib.request.urlopen")
     def test_http_429_is_classified_as_rate_limited(self, urlopen):
@@ -87,7 +90,7 @@ class HelpWantedTributeAuditTests(unittest.TestCase):
         self.assertTrue(result["files_truncated"])
         self.assertFalse(result["files_complete"])
         self.assertEqual(result["audit_status"], "partial")
-        self.assertFalse(result["checks_pass"] is False)
+        self.assertTrue(result["checks_pass"])
         self.assertEqual(result["stage"], "solution_claimed_unvalidated")
         self.assertIn("files_truncated", result["evidence_gaps"])
 

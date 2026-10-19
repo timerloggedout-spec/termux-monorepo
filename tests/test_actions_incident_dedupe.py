@@ -11,9 +11,11 @@ class ActionsIncidentDedupeTests(unittest.TestCase):
         self.assertIn("queue: max", workflow)
         self.assertIn("group: actions-run-watcher-${{ github.event.workflow_run.name }}-${{ github.event.workflow_run.conclusion }}", workflow)
         self.assertIn("Checkout observer implementation", workflow)
-        self.assertIn("--json number,title", workflow)
-        self.assertIn('--search "in:title', workflow)
-        self.assertIn("--limit 1000", workflow)
+        ates = Path(".github/workflows/agent-throughput-evidence.yml").read_text(encoding="utf-8")
+        self.assertIn("actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02", ates)
+        self.assertIn('--paginate --slurp "repos/$REPOSITORY/issues?state=open&per_page=100"', workflow)
+        self.assertIn('if not row.get("pull_request")', workflow)
+        self.assertIn('r.get("title")==expected', workflow)
         self.assertIn("actions-notified:${fp}", workflow)
 
     def test_first_fingerprint_requests_notification_and_records_run(self):

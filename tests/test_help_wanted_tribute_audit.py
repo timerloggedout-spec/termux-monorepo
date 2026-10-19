@@ -58,6 +58,17 @@ class HelpWantedTributeAuditTests(unittest.TestCase):
         self.assertEqual(merged[0]["last_audit_attempt"]["audit_status"], "deferred")
         self.assertEqual(merged[0]["last_audit_attempt"]["evidence_gaps"], ["rate_limited"])
 
+    def test_partial_audits_are_not_counted_as_complete_coverage(self):
+        url = "https://github.com/example/project/pull/1"
+        previous = [{"pr_url": url, "stage": "accepted", "audit_status": "observed"}]
+        fresh = [{
+            "pr_url": url, "stage": "accepted", "audit_status": "partial",
+            "audited_at": "2026-10-19T10:00:00Z", "evidence_gaps": ["checks_http_403"],
+        }]
+        merged = merge_audit_history([url], previous, fresh)
+        self.assertEqual(merged[0]["audit_status"], "partial")
+        self.assertEqual(merged[0]["stage"], "accepted")
+
     def test_rotating_audit_accumulates_coverage_across_refreshes(self):
         urls = ["https://github.com/example/project/pull/1", "https://github.com/example/project/pull/2"]
         old = [{"pr_url": urls[0], "stage": "accepted"}]

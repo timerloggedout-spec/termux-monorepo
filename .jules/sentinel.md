@@ -42,3 +42,8 @@
 **Vulnerability:** High-level file creation (`open(path, "w")`) creates session cache files with default process umask permissions (`0o644`/`0o666`), briefly leaving sensitive message history world/group-readable before post-write `chmod(0o600)` executes.
 **Learning:** Standard `open()` does not allow specifying low-level file creation mode bits directly, resulting in a race window where created files inherit default umask permissions before explicit `chmod` calls.
 **Prevention:** Use `fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)` wrapped in `os.fdopen()` to guarantee atomic `0o600` permissions from the moment of file creation.
+
+## 2026-10-15 - Symlink Hijacking and Path Traversal Prevention in Session Cache Initialization
+**Vulnerability:** In `deepcli/session_manager.py`, `ensure_session` created cache directory structures using `mkdir(parents=True, exist_ok=True)` without validating path components for path traversal (`..`) or checking if `cache_dir_path` or `cache_dir_path.parent` was a symlink prior to creation and operations.
+**Learning:** Calling `mkdir` or operating on directory structures before checking whether any parent component or target directory is a symlink creates a race window where an attacker can redirect session credential writes or directory permissions to external folders.
+**Prevention:** Always validate `".." not in cache_dir_path.parts` and verify `not cache_dir_path.is_symlink() and not cache_dir_path.parent.is_symlink()` prior to directory creation and file operations.

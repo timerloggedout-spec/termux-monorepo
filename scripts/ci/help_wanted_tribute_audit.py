@@ -256,6 +256,9 @@ def audit_one(
         base["stage"] = "accepted"
     elif pr.get("state") == "closed":
         base["stage"] = "closed_unmerged"
+    elif files_truncated:
+        # The first page cannot establish stake-only or implementation status.
+        base["stage"] = "unknown"
     elif stake_only:
         base["stage"] = "stake_only"
     elif implementation_files and proof_present and checks_pass and not files_truncated:

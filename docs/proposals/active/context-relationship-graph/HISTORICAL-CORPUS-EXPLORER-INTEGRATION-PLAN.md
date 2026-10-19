@@ -32,7 +32,7 @@ Observed via the connected GitHub read API. Links point to canonical repository 
 - Existing bounded backfill and read-only progression observer: [backfill workflow](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/.github/workflows/context-relationship-backfill.yml), [watcher workflow](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/.github/workflows/context-relationship-backfill-watcher.yml).
 - Existing proposal process: [`docs/proposals/PROCESS.md`](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/proposals/PROCESS.md); proposal work is registered in `docs/proposals/registry.yaml` and itemized in the active proposal.
 - PR #523 is currently **closed, not merged**: [PR #523](https://github.com/timerloggedout-spec/termux-monorepo/pull/523). Its history is contextual evidence, not proof of a merged implementation.
-- The path [`workspace/llm_map/context_relationships/temporal/temporal-current.json`](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/workspace/llm_map/context_relationships/temporal/temporal-current.json) returned 404 at inspection. The backfill status document describes an L2 temporal layer, but the existence of that exact current-file path is not verified.
+- L2 temporal implementation **does exist**: [`archwiz/context_relationships/temporal.py`](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/archwiz/context_relationships/temporal.py), [`temporal_query.py`](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/archwiz/context_relationships/temporal_query.py), and [`tests/test_context_relationship_temporal.py`](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/tests/test_context_relationship_temporal.py) are present. The temporal directory contains `lineage.jsonl` plus snapshot directories; the lineage file had **24 records** at inspection. Its latest record identifies snapshot `crg-4f08c1b65ec4f5f8263c`, observed 2026-10-15T19:16:02.945529Z, with `coverage: COMPLETE` and `next_start_page: null`. However, `temporal-current.json` itself returned 404. The Explorer should therefore use the verified lineage/snapshot inventory and repository-native query module after consistency tests; do not depend on the missing convenience pointer or assume the latest snapshot is the current branch state.
 
 ### Current corpus snapshot observed on master
 
@@ -88,7 +88,7 @@ Enable timeline/range/point-in-time features only after verifying the repository
 - `temporal_query --between START END`
 - `temporal_query --changes-only --between START END`
 
-These commands are documented interfaces, but the exact executable and current L2 files still require verification. If unavailable, show a clear `UNVERIFIED / TEMPORAL DATA UNAVAILABLE` state; do not manufacture history from the latest L1 graph.
+The executable module, tests, lineage file, and 24 snapshot directories were found on `master`; the `temporal-current.json` convenience pointer was not. Before enabling history, test the query module against the checked-out lineage and every referenced snapshot, confirm source SHA and content hashes, and verify chronological ordering. If any required snapshot is absent or inconsistent, show `UNVERIFIED / TEMPORAL DATA INCONSISTENT` for the affected range; do not manufacture history from the latest L1 graph.
 
 ## Integration architecture
 
@@ -112,7 +112,7 @@ Reuse existing components:
 - Diagrams: extend the existing authoritative `.mmd` → generated-asset automation if a diagram is added.
 - Deployment: extend the existing SHE/Vercel-first path; Pages is an optional static mirror; Hex remains an optional consumer, never a runtime dependency.
 
-Do not scaffold a second app until the actual SHE app root and package/test commands have been located.
+The repository has a root `she/` Python package (including ledger, replay, publish, verify, and metrics modules), but no `she/dashboard` path was found. The root also contains `apps/help-wanted-dashboard` and `apps/project-pages-hub`; their suitability as the SHE UI is not yet established. Do not scaffold a second app until those existing app surfaces, Vercel root configuration, and package/test commands have been inspected.
 
 ## Proposed snapshot extension
 
@@ -161,7 +161,8 @@ Failed validation blocks publication of a new snapshot but preserves the last kn
 - Re-fetch manifest, nodes, edges, reports, and build summary at one immutable SHA.
 - Explain zero PR count versus 18 PR stubs and `checkpoint_eligible: false`.
 - Define exactly what `coverage: COMPLETE` means.
-- Locate the real temporal CLI, L2 files, lineage, tests, and SHE app root.
+- Validate the existing temporal query module against the 24-entry lineage and referenced immutable snapshots; explain the missing `temporal-current.json` pointer.
+- Locate the intended SHE UI within existing app surfaces and inspect its build/test/deployment configuration.
 - Reconcile stale/missing documentation references.
 **Exit:** coverage semantics and temporal availability are documented and testable.
 
@@ -198,7 +199,7 @@ Failed validation blocks publication of a new snapshot but preserves the last kn
 ## Immediate next actions
 
 1. Reconcile corpus completeness semantics and the manifest's PR/stub/checkpoint fields.
-2. Verify the actual L2 temporal implementation and SHE app root.
+2. Validate the existing L2 temporal lineage/snapshot set and identify the correct existing SHE UI surface.
 3. Implement the validator before UI work.
 4. Deliver the read-only graph MVP.
 5. Add temporal comparison only after Phase 0 passes.

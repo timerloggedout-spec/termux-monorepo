@@ -305,3 +305,13 @@ Learned remediation must retain provenance: source incident/SHA, diagnosis, reme
 ## Priority
 
 SHE is **P0**. ArchW1z and deepcli-TUI remain parallel Termux UI lanes and are intentionally lower priority than the underlying resilience/control-plane primitives. Their eventual convergence should occur through the shared protocols rather than by making either UI the protocol authority.
+
+## Known repairs (live)
+
+### L1 `skill-clobber`: SKILL.md overwritten with a stub
+
+- **Detect:** `scripts/ci/skill_clobber.py check` on every master push that touches a `SKILL.md`. It flags stub bodies and >50% order-insensitive content loss, judged against the parent, or against the last good ancestor when the parent is itself a stub.
+- **Repair:** `skill_clobber.py repair --write` restores the last good body and appends any genuinely new lines.
+- **Verify / promote:** the heal workflow (`.github/workflows/she-skill-clobber-heal.yml`) opens a repair PR, and the normal PR gates plus the contract check verify it. Merge is HITL unless policy auto-promotes.
+- **Record:** a `she.incident.Incident` (classification `skill-clobber`, authority `L1-known-repair`) is uploaded as a run artifact.
+- **Incident:** `docs/ops/incidents/2026-10-18-skill-clobber.md`.

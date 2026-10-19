@@ -34,11 +34,10 @@ REQUIRED = {
 }
 
 # Bodies that mean a writer clobbered the file instead of appending to it.
-PLACEHOLDER_PATTERNS = [
-    re.compile(r"(?im)^\s*PLACEHOLDER\b"),
-    re.compile(r"(?i)full content too large"),
-    re.compile(r"\$\((cat|<)\s"),
-]
+# Single source of truth lives in skill_clobber.py (shared with the SHE heal workflow).
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from skill_clobber import MIN_BODY_BYTES, PLACEHOLDER_PATTERNS, reference_text  # noqa: E402
+
 # Content-change evaluation against the parent commit (PR base or HEAD~1).
 # Lines are compared as a multiset of stripped, non-blank lines, so moving or
 # reordering content is not counted as loss; only lines that no longer appear are.
@@ -122,6 +121,8 @@ def main() -> int:
         for section in REQUIRED[canonical]:
             if section not in text:
                 errors.append(f"missing section in {canonical}: {section}")
+        if len(text.encode()) < MIN_BODY_BYTES:
+            errors.append(f"stub body in {canonical} ({len(text.encode())} bytes)")
         for pat in PLACEHOLDER_PATTERNS:
             if pat.search(text):
                 errors.append(f"placeholder/clobbered body in {canonical}: matches {pat.pattern!r}")
@@ -129,7 +130,8 @@ def main() -> int:
             errors.append(f"required sections out of contract order in {canonical}")
         if not session_dates_monotonic(text):
             warnings.append(f"session log in {canonical} is not in date order (reordered history?)")
-        before = parent_text(canonical)
+        import os as _os
+        before, _ = reference_text(canonical, _os.environ.get("SKILL_BASE_REF") or "HEAD~1")
         if before is not None:
             d = content_delta(before, text)
             summary = (

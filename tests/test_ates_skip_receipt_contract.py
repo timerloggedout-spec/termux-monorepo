@@ -25,6 +25,7 @@ class AtESkipReceiptContractTests(unittest.TestCase):
         self.assertIn('"metrics_emitted": False', source)
         self.assertIn('"status": ("failed" if os.environ["COLLECT_OUTCOME"]', source)
         self.assertIn('"collection_outcome": os.environ["COLLECT_OUTCOME"]', source)
+        self.assertIn('"deferred" if os.environ["SKIP_REASON"] == "rate_limited"', source)
         self.assertIn('"unknown remains unknown; no metrics inferred"', source)
 
     def test_emitted_receipt_marks_missing_evidence_as_partial(self):

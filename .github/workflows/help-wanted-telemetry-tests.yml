@@ -1,0 +1,87 @@
+name: Help-Wanted telemetry regression suite
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/actions-run-watcher.yml"
+      - ".github/workflows/agent-throughput-evidence.yml"
+      - ".github/workflows/help-wanted-status-refresh.yml"
+      - ".github/workflows/help-wanted-execute.yml"
+      - "apps/help-wanted-dashboard/index.html"
+      - "docs/ops/AUTOMATED-TELEMETRY-AUDIT.md"
+      - "docs/ops/HELP-WANTED-REALIZATION-EVIDENCE.md"
+      - "scripts/ci/actions_incident_dedupe.py"
+      - "scripts/ci/help_wanted_claim.py"
+      - "scripts/ci/help_wanted_followup.py"
+      - "scripts/ci/help_wanted_scout.py"
+      - "scripts/ci/help_wanted_status.py"
+      - "scripts/ci/help_wanted_tribute_audit.py"
+      - "tests/test_actions_incident_dedupe.py"
+      - "tests/test_ates_skip_receipt_contract.py"
+      - "tests/test_help_wanted_claim_label.py"
+      - "tests/test_help_wanted_followup_policy.py"
+      - "tests/test_help_wanted_scout_evidence.py"
+      - "tests/test_help_wanted_status_outcomes.py"
+      - "tests/test_help_wanted_tribute_audit.py"
+  push:
+    branches: [master]
+    paths:
+      - ".github/workflows/actions-run-watcher.yml"
+      - ".github/workflows/agent-throughput-evidence.yml"
+      - ".github/workflows/help-wanted-status-refresh.yml"
+      - ".github/workflows/help-wanted-execute.yml"
+      - "apps/help-wanted-dashboard/index.html"
+      - "scripts/ci/actions_incident_dedupe.py"
+      - "scripts/ci/help_wanted_claim.py"
+      - "scripts/ci/help_wanted_followup.py"
+      - "scripts/ci/help_wanted_scout.py"
+      - "scripts/ci/help_wanted_status.py"
+      - "scripts/ci/help_wanted_tribute_audit.py"
+      - "tests/test_actions_incident_dedupe.py"
+      - "tests/test_ates_skip_receipt_contract.py"
+      - "tests/test_help_wanted_claim_label.py"
+      - "tests/test_help_wanted_followup_policy.py"
+      - "tests/test_help_wanted_scout_evidence.py"
+      - "tests/test_help_wanted_status_outcomes.py"
+      - "tests/test_help_wanted_tribute_audit.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: help-wanted-telemetry-tests-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  regression:
+    name: Targeted telemetry regression tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile changed Python modules
+        run: |
+          python -m py_compile \
+            scripts/ci/actions_incident_dedupe.py \
+            scripts/ci/help_wanted_claim.py \
+            scripts/ci/help_wanted_followup.py \
+            scripts/ci/help_wanted_scout.py \
+            scripts/ci/help_wanted_status.py \
+            scripts/ci/help_wanted_tribute_audit.py
+      - name: Run telemetry and Help-Wanted regression suite
+        run: |
+          set -euo pipefail
+          python -m unittest -v \
+            tests.test_actions_incident_dedupe \
+            tests.test_ates_skip_receipt_contract \
+            tests.test_help_wanted_claim_label \
+            tests.test_help_wanted_followup_policy \
+            tests.test_help_wanted_scout_evidence \
+            tests.test_help_wanted_status_outcomes \
+            tests.test_help_wanted_tribute_audit

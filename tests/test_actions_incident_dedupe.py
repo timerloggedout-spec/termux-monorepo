@@ -12,6 +12,8 @@ class ActionsIncidentDedupeTests(unittest.TestCase):
         self.assertIn("group: actions-run-watcher-${{ github.event.workflow_run.name }}-${{ github.event.workflow_run.conclusion }}", workflow)
         self.assertIn("Checkout observer implementation", workflow)
         self.assertIn("--json number,title", workflow)
+        self.assertIn('--search "in:title', workflow)
+        self.assertIn("--limit 1000", workflow)
         self.assertIn("actions-notified:${fp}", workflow)
 
     def test_first_fingerprint_requests_notification_and_records_run(self):

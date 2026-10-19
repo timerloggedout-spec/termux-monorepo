@@ -71,7 +71,69 @@ def parse_pr_url(url: str) -> tuple[str, str, int] | None:
     return match.group(1), match.group(2), int(match.group(3))
 
 
-def audit_one(pr_url: str) -> dict[str, Any]:
+def merge_audit_history(
+    current_urls: list[str], previous_items: list[dict[str, Any]], fresh_items: list[dict[str, Any]]
+) -> list[dict[str, Any]]:
+    """Keep the latest known evidence for every current PR across rotating runs."""
+    allowed = set(current_urls)
+    merged = {
+        str(row.get("pr_url")): row
+        for row in previous_items
+        if isinstance(row, dict) and row.get("pr_url") in allowed
+    }
+    for row in fresh_items:
+        if isinstance(row, dict) and row.get("pr_url") in allowed:
+            merged[str(row["pr_url"])] = row
+    return [merged[url] for url in current_urls if url in merged]
+
+
+def load_realization_evidence(path: Path) -> dict[str, dict[str, Any]]:
+    """Read the append-only, manually attested realization evidence registry."""
+    records: dict[str, dict[str, Any]] = {}
+    if not path.exists():
+        return records
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
+        try:
+            row = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(row, dict) and isinstance(row.get("pr_url"), str):
+            records[row["pr_url"]] = row
+    return records
+
+
+def valid_realization_receipt(
+    receipt: dict[str, Any] | None, pr_url: str, contributor_login: str | None
+) -> bool:
+    """Require explicit, independent, linked evidence; never infer realization."""
+    if not isinstance(receipt, dict) or receipt.get("pr_url") != pr_url:
+        return False
+    if receipt.get("status") != "verified" or receipt.get("independence_attested") is not True:
+        return False
+    verifier = str(receipt.get("verified_by") or "").strip().lower()
+    operator = os.environ.get("HELP_WANTED_AUTHOR", "timerloggedout-spec").lower()
+    if not verifier or verifier in {operator, "github-actions[bot]", (contributor_login or "").lower()}:
+        return False
+    if not str(receipt.get("verification_method") or "").strip():
+        return False
+    if not str(receipt.get("evidence_summary") or "").strip():
+        return False
+    for field in ("effect_url", "verification_url"):
+        parsed = urllib.parse.urlparse(str(receipt.get(field) or ""))
+        if parsed.scheme != "https" or not parsed.netloc:
+            return False
+    try:
+        datetime.fromisoformat(str(receipt.get("verified_at") or "").replace("Z", "+00:00"))
+    except ValueError:
+        return False
+    return True
+
+
+def audit_one(
+    pr_url: str, realization_evidence: dict[str, Any] | None = None
+) -> dict[str, Any]:
     parsed = parse_pr_url(pr_url)
     base: dict[str, Any] = {
         "pr_url": pr_url,
@@ -106,6 +168,7 @@ def audit_one(pr_url: str) -> dict[str, Any]:
     ]
     implementation_files = [row for row in changed if row.get("filename") != STAKE_PATH]
     body = str(pr.get("body") or "")
+    contributor_login = str((pr.get("user") or {}).get("login") or "")
     proof_present = all(marker in body for marker in SOLUTION_PROOF)
     stake_only = bool(changed) and not implementation_files
     check_rows = (checks or {}).get("check_runs", []) if isinstance(checks, dict) else []
@@ -125,6 +188,7 @@ def audit_one(pr_url: str) -> dict[str, Any]:
         "state": pr.get("state"),
         "merged": bool(pr.get("merged_at")),
         "head_sha": head_sha,
+        "contributor_login": contributor_login or None,
         "base_sha": (pr.get("base") or {}).get("sha"),
         "changed_file_count": len(changed),
         "implementation_file_count": len(implementation_files),
@@ -167,8 +231,23 @@ def audit_one(pr_url: str) -> dict[str, Any]:
         base["stage"] = "unknown"
 
     # A merge is not, by itself, proof of downstream realized effect.
-    base["realized_effect_verified"] = False
-    base["realization_note"] = "requires a separately linked, independently verified effect receipt"
+    realization_valid = valid_realization_receipt(
+        realization_evidence, pr_url, contributor_login
+    )
+    base["realized_effect_verified"] = realization_valid
+    if realization_valid:
+        base["realization_note"] = "verified through a separately linked, independently attested effect receipt"
+        base["realization_evidence"] = {
+            "effect_url": realization_evidence["effect_url"],
+            "verification_url": realization_evidence["verification_url"],
+            "verified_by": realization_evidence["verified_by"],
+            "verified_at": realization_evidence["verified_at"],
+            "verification_method": realization_evidence["verification_method"],
+        }
+    else:
+        base["realization_note"] = "requires a separately linked, independently verified effect receipt"
+        if realization_evidence:
+            base["evidence_gaps"].append("realization_receipt_invalid_or_not_independent")
     return base
 
 
@@ -178,6 +257,11 @@ def main() -> int:
     parser.add_argument("--out", default="docs/ops/generated/help-wanted-tribute-audit.json")
     parser.add_argument("--dashboard", default="apps/help-wanted-dashboard/data/status.json")
     parser.add_argument("--max-prs", type=int, default=25)
+    parser.add_argument(
+        "--realization-evidence",
+        default="docs/ops/help-wanted-realization-evidence.jsonl",
+        help="append-only JSONL of independently attested realized-effect receipts",
+    )
     args = parser.parse_args()
 
     status_path = Path(args.status)
@@ -197,17 +281,29 @@ def main() -> int:
     else:
         start = 0
         selected = urls[:batch_size]
-    results = [audit_one(url) for url in selected]
-    stages = Counter(row["stage"] for row in results)
-    statuses = Counter(row.get("audit_status", "observed") for row in results)
+    previous_items = []
+    previous_path = Path(args.out)
+    if previous_path.exists():
+        try:
+            previous_report = json.loads(previous_path.read_text(encoding="utf-8"))
+            previous_items = previous_report.get("items") or []
+        except (OSError, json.JSONDecodeError):
+            previous_items = []
+    realization_by_pr = load_realization_evidence(Path(args.realization_evidence))
+    results = [audit_one(url, realization_by_pr.get(url)) for url in selected]
+    history_items = merge_audit_history(urls, previous_items, results)
+    stages = Counter(row["stage"] for row in history_items)
+    statuses = Counter(row.get("audit_status", "observed") for row in history_items)
     report = {
         "schema_version": "help-wanted.tribute-audit.v1",
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "source_status_generated_at": board.get("generated_at"),
         "source_tribute_count": len(tributes),
         "unique_pr_count": len(urls),
-        "audited_pr_count": len(results),
-        "not_audited_count": max(0, len(urls) - len(results)),
+        "audited_pr_count": len(history_items),
+        "audited_this_run_count": len(results),
+        "audited_this_run_pr_urls": [row["pr_url"] for row in results],
+        "not_audited_count": max(0, len(urls) - len(history_items)),
         "audit_window_start": start,
         "audit_window_size": batch_size,
         "stages": dict(stages),
@@ -219,7 +315,7 @@ def main() -> int:
             "missing_evidence_is_success": False,
             "audit_is_read_only": True,
         },
-        "items": results,
+        "items": history_items,
     }
     board["tribute_audit"] = report
     serialized_board = json.dumps(board, indent=2) + "\n"

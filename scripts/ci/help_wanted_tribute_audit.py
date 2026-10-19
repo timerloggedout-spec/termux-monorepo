@@ -344,6 +344,7 @@ def main() -> int:
     )
     deferred_this_run_count = sum(row.get("audit_status") == "deferred" for row in results)
     unknown_this_run_count = sum(row.get("audit_status") == "unknown" for row in results)
+    partial_this_run_count = sum(row.get("audit_status") == "partial" for row in results)
     report = {
         "schema_version": "help-wanted.tribute-audit.v1",
         "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -355,9 +356,10 @@ def main() -> int:
         "attempted_this_run_count": len(results),
         "deferred_this_run_count": deferred_this_run_count,
         "unknown_this_run_count": unknown_this_run_count,
+        "partial_this_run_count": partial_this_run_count,
         "audited_this_run_pr_urls": [
             row["pr_url"] for row in results
-            if row.get("audit_status", "observed") not in {"deferred", "unknown"}
+            if row.get("audit_status", "observed") == "observed"
         ],
         "not_audited_count": max(0, len(urls) - observed_history_count),
         "audit_window_start": start,
@@ -386,6 +388,9 @@ def main() -> int:
         "audited": observed_history_count,
         "audited_this_run": observed_this_run_count,
         "attempted_this_run": len(results),
+        "partial_this_run": partial_this_run_count,
+        "deferred_this_run": deferred_this_run_count,
+        "unknown_this_run": unknown_this_run_count,
         "not_audited": max(0, len(urls) - observed_history_count),
         "unique_prs": len(urls),
         "stages": dict(stages),

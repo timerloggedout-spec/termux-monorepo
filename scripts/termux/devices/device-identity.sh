@@ -41,16 +41,17 @@ cmd_init() {
   fi
   [ -n "$id" ] || id="$(mint_id)"
   printf '%s' "$id" | grep -Eq "$TMX_ID_REGEX" || tmx_die "invalid id '$id'"
+  printf '%s' "$origin" | grep -Eq "$TMX_ID_REGEX" || tmx_die "invalid origin id '$origin'"
   case "$role" in observer-controller|observer|bridge|worker) ;; *) tmx_die "role must be observer-controller|observer|bridge|worker" ;; esac
   mkdir -p "$TMX_CONFIG_DIR" "$TMX_STATE_DIR"; chmod 700 "$TMX_CONFIG_DIR"
   umask 077
-  cat >"$TMX_IDENTITY_ENV" <<EOF
-# tmx device identity (local only, never committed). Opaque, random, hardware-independent.
-export TERMUX_DEVICE_ID="$id"
-export TERMUX_DEVICE_ROLE="$role"
-export TMX_ORIGIN_DEVICE_ID="$origin"
-export TERMUX_MONOREPO_ROOT="$TERMUX_MONOREPO_ROOT"
-EOF
+  {
+    echo "# tmx device identity (local only, never committed). Opaque, random, hardware-independent."
+    printf 'export TERMUX_DEVICE_ID=%q\n' "$id"
+    printf 'export TERMUX_DEVICE_ROLE=%q\n' "$role"
+    printf 'export TMX_ORIGIN_DEVICE_ID=%q\n' "$origin"
+    printf 'export TERMUX_MONOREPO_ROOT=%q\n' "$TERMUX_MONOREPO_ROOT"
+  } >"$TMX_IDENTITY_ENV"
   chmod 600 "$TMX_IDENTITY_ENV"
   tmx_log "identity written: $id (role=$role, origin=$origin)"
 }

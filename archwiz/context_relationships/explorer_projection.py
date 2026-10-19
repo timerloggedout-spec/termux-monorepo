@@ -2,6 +2,8 @@
 
 This module intentionally preserves source-declared coverage and reports
 reconciliation findings separately. It never treats unknown values as zero.
+A warning is enough to require reconciliation; it is not permission to rewrite
+or downgrade the source-declared coverage status.
 """
 
 from __future__ import annotations

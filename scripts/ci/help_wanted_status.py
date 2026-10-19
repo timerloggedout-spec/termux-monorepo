@@ -63,6 +63,22 @@ def is_internal(issue: str) -> bool:
     return "timerloggedout-spec/termux-monorepo" in (issue or "")
 
 
+def classify_receipt_outcome(row: dict) -> str:
+    """Classify lane activity, not tribute success.
+
+    Skip receipts are successful observations of a no-op, not completed work.
+    """
+    kind = str(row.get("kind") or "").lower()
+    action = str(row.get("action") or "").lower()
+    if action == "skip" or "skip" in kind:
+        return "skipped"
+    if row.get("ok") is False:
+        return "failed"
+    return "actioned"
+
+
+
+
 def lane_git_history() -> list[dict]:
     paths = ['apps/help-wanted-dashboard/', 'docs/ops/HELP-WANTED-*', '.agents/skills/help-wanted-lane/', '.github/workflows/help-wanted-*', 'scripts/ci/help_wanted_*']
     try:
@@ -183,12 +199,12 @@ def main() -> int:
 
     by_issue: dict[str, list[dict]] = defaultdict(list)
     kinds = Counter()
-    ok_c = Counter()
+    outcomes = Counter()
     for r in rows:
         issue = r.get("issue") or "(unknown)"
         by_issue[issue].append(r)
         kinds[r.get("kind") or "unknown"] += 1
-        ok_c["ok" if r.get("ok") else "fail"] += 1
+        outcomes[classify_receipt_outcome(r)] += 1
 
     foreign = live_foreign_prs("open")
     foreign_closed = live_foreign_prs("closed")
@@ -203,7 +219,8 @@ def main() -> int:
         "project": "help-wanted-with-tribute",
         "receipts": len(rows),
         "kinds": dict(kinds),
-        "outcomes": dict(ok_c),
+        "outcomes": dict(outcomes),
+        "outcome_semantics": "actioned/skipped/failed are operational receipt states, not successful tribute counts",
         "foreign_open_prs": foreign,
         "foreign_open_count": len(foreign),
         "tributes": tributes,
@@ -270,7 +287,7 @@ def main() -> int:
     lines.extend(
         [
             "",
-            f"## Outcomes · ok={ok_c.get('ok', 0)} fail={ok_c.get('fail', 0)} kinds=`{dict(kinds)}`",
+            f"## Operational outcomes · actioned={outcomes.get('actioned', 0)} skipped={outcomes.get('skipped', 0)} failed={outcomes.get('failed', 0)} kinds=`{dict(kinds)}`",
             "",
             "See docs/ops/HELP-WANTED-TRIBUTE.md",
             "",

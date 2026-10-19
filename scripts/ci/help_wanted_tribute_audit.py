@@ -125,7 +125,11 @@ def valid_realization_receipt(
         if parsed.scheme != "https" or not parsed.netloc:
             return False
     try:
-        datetime.fromisoformat(str(receipt.get("verified_at") or "").replace("Z", "+00:00"))
+        verified_at = datetime.fromisoformat(
+            str(receipt.get("verified_at") or "").replace("Z", "+00:00")
+        )
+        if verified_at.tzinfo is None:
+            return False
     except ValueError:
         return False
     return True

@@ -190,3 +190,15 @@ Agent-Identity: Grok (Administrator)
 Observed: master tip green; this branch continues zero-failure posture.
 
 Agent-Identity: Grok (Administrator)
+
+
+## GitLab reconciliation lane — current integration proposal (2026-10-19)
+
+- **Implementation PR:** [#1288](https://github.com/timerloggedout-spec/termux-monorepo/pull/1288)
+- **Workflow:** `.github/workflows/gitlab-governed-reconciliation.yml`
+- **Contract:** `docs/ops/GITHUB-GITLAB-GOVERNED-RECONCILIATION.md`
+- **Canonical comparison:** GitHub `master` SHA ↔ selected GitLab branch SHA; never PR head ↔ GitLab master.
+- **Authentication:** `GITLAB_TOKEN` for GitLab fetch and `GH_SYNC_TOKEN` for GitHub branch/PR writes. Missing credentials fail closed.
+- **Promotion:** normal PR checks and review; no force-push, no GitLab writes, no auto-merge.
+- **State model:** `aligned`, `gitlab-behind`, `gitlab-ahead`, `diverged`; merge conflicts stop for manual reconciliation.
+- **Status:** proposed/under validation. Do not mark operational until an Actions run proves the no-op or PR-publication effect. The old #311 remains the historical design reference until the replacement is accepted.

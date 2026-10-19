@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """Write lane_events rows to Neon Postgres. Never fails its caller.
 
+Credentials are never written to stdout/stderr: the env values arrive from
+Actions secrets (masked by the runner) and the resolved Neon URI is only
+passed to psql as an argument.
+
 Credential resolution (names only; values are never printed):
   1. LANE_EVENTS_DATABASE_URL  - a Postgres connection string, or
   2. NEON_API_KEY              - finds or creates Neon project "lane-events"
@@ -58,11 +62,6 @@ def normalize(ev: dict) -> dict:
     return out
 
 
-def mask(value: str) -> None:
-    if os.environ.get("GITHUB_ACTIONS") == "true" and value:
-        print(f"::add-mask::{value}")
-
-
 def _neon(method: str, path: str, key: str, body: dict | None = None) -> dict:
     data = json.dumps(body).encode() if body is not None else None
     req = urllib.request.Request(NEON_API + path, data=data, method=method, headers={
@@ -74,12 +73,10 @@ def _neon(method: str, path: str, key: str, body: dict | None = None) -> dict:
 def resolve_url() -> str | None:
     url = os.environ.get("LANE_EVENTS_DATABASE_URL", "").strip()
     if url:
-        mask(url)
         return url
     key = os.environ.get("NEON_API_KEY", "").strip()
     if not key:
         return None
-    mask(key)
     projects = _neon("GET", f"/projects?search={NEON_PROJECT}&limit=50", key).get("projects", [])
     proj = next((p for p in projects if p.get("name") == NEON_PROJECT), None)
     if proj is None:
@@ -94,7 +91,6 @@ def resolve_url() -> str | None:
     role = next((r["name"] for r in roles if not r.get("protected")), "neondb_owner")
     q = f"/projects/{pid}/connection_uri?database_name=neondb&role_name={role}&branch_id={default['id']}"
     uri = _neon("GET", q, key)["uri"]
-    mask(uri)
     return uri
 
 

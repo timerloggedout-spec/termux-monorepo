@@ -25,6 +25,12 @@ class AtESkipReceiptContractTests(unittest.TestCase):
         self.assertIn('"metrics_emitted": False', source)
         self.assertIn('"unknown remains unknown; no metrics inferred"', source)
 
+    def test_emitted_receipt_marks_missing_evidence_as_partial(self):
+        source = WORKFLOW.read_text(encoding="utf-8")
+        self.assertIn('"status": "partial" if evidence_gaps else "emitted"', source)
+        self.assertIn('"task_boundary_artifact_missing"', source)
+        self.assertIn('"task_complexity_unavailable"', source)
+
 
 if __name__ == "__main__":
     unittest.main()

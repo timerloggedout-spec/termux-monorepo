@@ -155,6 +155,17 @@ def latest_changes_requested(reviews: list[dict]) -> tuple[str | None, datetime 
     return None, None, ""
 
 
+def latest_approval_ts(reviews: list[dict]) -> datetime | None:
+    """Return the latest trusted maintainer approval, including empty-body reviews."""
+    timestamps = [
+        parse_ts(review.get("submitted_at"))
+        for review in reviews or []
+        if review.get("state") == "APPROVED"
+    ]
+    valid = [timestamp for timestamp in timestamps if timestamp is not None]
+    return max(valid) if valid else None
+
+
 def latest_maintainer_signal(
     comments: list[dict], reviews: list[dict], owner: str
 ) -> tuple[datetime | None, str, list[str]]:
@@ -183,8 +194,9 @@ def latest_maintainer_signal(
         body = (r.get("body") or "").strip()
         if len(body) < 40:
             continue
-        # Treat substantive COMMENTED / CHANGES_REQUESTED as signals
-        if r.get("state") in ("CHANGES_REQUESTED", "COMMENTED", "APPROVED"):
+        # Approval is tracked separately: it suppresses stale nudges but is not
+        # a request to re-engage. Only comments and change requests are signals.
+        if r.get("state") in ("CHANGES_REQUESTED", "COMMENTED"):
             events.append((ts, login, body))
     if not events:
         return None, "", []
@@ -203,6 +215,7 @@ def decide_action(
     changes_ts: datetime | None,
     pr_updated: datetime | None,
     now: datetime,
+    approval_ts: datetime | None = None,
 ) -> str:
     """Return action: changes | reengage | stale_nudge | skip."""
     reengage_delta = timedelta(hours=REENGAGE_HOURS)
@@ -222,7 +235,7 @@ def decide_action(
     # feedback/review exists. If feedback exists but predates our marker, the
     # next action is ours: adapt/validate the patch, not ask the maintainer again.
     # New feedback after the marker is handled by the reengage branch above.
-    if signal_ts is None and changes_ts is None:
+    if signal_ts is None and changes_ts is None and approval_ts is None:
         if pr_updated and (now - pr_updated) >= stale_delta:
             if marker_ts is None or (now - marker_ts) >= stale_delta:
                 return "stale_nudge"
@@ -272,7 +285,10 @@ def main() -> int:
         signal_ts, signal_summary, signal_urls = latest_maintainer_signal(
             maintainer_comments, maintainer_reviews, owner
         )
-        action = decide_action(marker_ts, signal_ts, changes_ts, pr_updated, now)
+        approval_ts = latest_approval_ts(maintainer_reviews)
+        action = decide_action(
+            marker_ts, signal_ts, changes_ts, pr_updated, now, approval_ts=approval_ts
+        )
 
         if action == "skip":
             print(f"skip {html} (no new signal / cooldown)")

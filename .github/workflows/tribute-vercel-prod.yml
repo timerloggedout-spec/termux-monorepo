@@ -43,7 +43,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install Vercel CLI
-        run: npm i -g vercel@39
+        run: npm i -g vercel@latest
       - name: Deploy master to production and verify
         run: |
           set -euo pipefail

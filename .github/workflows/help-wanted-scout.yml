@@ -5,7 +5,8 @@ name: help-wanted scout
 
 on:
   schedule:
-    - cron: "17 */2 * * *"
+    # quota: every 4h, 24 min before help-wanted execute (41 */4), which re-scouts inline anyway.
+    - cron: "17 */4 * * *"
   workflow_dispatch:
     inputs:
       max:

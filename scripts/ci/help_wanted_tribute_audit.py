@@ -106,7 +106,7 @@ def audit_one(pr_url: str) -> dict[str, Any]:
     )
 
     base.update({
-        "audit_status": "observed",
+        "audit_status": "partial" if files_error or checks_error else "observed",
         "state": pr.get("state"),
         "merged": bool(pr.get("merged_at")),
         "head_sha": head_sha,
@@ -157,6 +157,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--status", default="docs/ops/generated/help-wanted-status.json")
     parser.add_argument("--out", default="docs/ops/generated/help-wanted-tribute-audit.json")
+    parser.add_argument("--dashboard", default="apps/help-wanted-dashboard/data/status.json")
     parser.add_argument("--max-prs", type=int, default=100)
     args = parser.parse_args()
 
@@ -192,7 +193,11 @@ def main() -> int:
         "items": results,
     }
     board["tribute_audit"] = report
-    status_path.write_text(json.dumps(board, indent=2) + "\n", encoding="utf-8")
+    serialized_board = json.dumps(board, indent=2) + "\n"
+    status_path.write_text(serialized_board, encoding="utf-8")
+    dashboard_path = Path(args.dashboard)
+    dashboard_path.parent.mkdir(parents=True, exist_ok=True)
+    dashboard_path.write_text(serialized_board, encoding="utf-8")
     out_path = Path(args.out)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")

@@ -55,6 +55,14 @@ Each audit record should carry schema version, canonical record/incident ID, sou
 - Aggregate dashboard totals equal the deduplicated ledger at each lifecycle stage.
 - Classifier calibration is evaluated against independent labels and reported with abstentions and false-positive/false-nudge rates.
 
-## Operational limitation
+## Automated tribute audit operation
 
-The current changes add explicit ATES skip receipts and evidence-honest Help-Wanted ranking. They do not yet implement persistent cross-run incident deduplication or a full historical tribute reconciliation; those remain follow-on acceptance gates and must not be described as complete until code and tests land.
+The hourly Help-Wanted status refresh now invokes `scripts/ci/help_wanted_tribute_audit.py`. It performs a bounded, rotating read-only sample of upstream tribute PRs, checks PR state, changed-file evidence, solution-proof markers, and GitHub check runs, and writes:
+- `docs/ops/generated/help-wanted-tribute-audit.json`;
+- a `tribute_audit` projection into the generated status JSON and dashboard data.
+
+The sample is intentionally capped at 25 PRs per refresh to limit API pressure. The window rotates hourly; `not_audited_count` must be shown alongside the sample results. Rate limits and missing check/file data are recorded as unknown/partial, not success. A merged PR is counted as accepted, never as realized effect.
+
+## Operational limitations
+
+Automated skip/partial receipts, cross-run incident notification deduplication, evidence-honest candidate ranking, feedback-first nudge suppression, and sampled upstream tribute auditing are now wired into the PR implementation. Full historical reconciliation of every claimed tribute and a fully populated, user-filterable canonical queue remain outstanding; neither should be described as complete until the historical ledger has been traversed and the public dashboard exposes the stage-separated counts.

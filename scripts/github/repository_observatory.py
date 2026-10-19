@@ -3,6 +3,11 @@
 
 GitHub metadata is the fact layer. Classification is deterministic and explicitly
 marked as inference. JSON is canonical; Markdown is a generated projection.
+
+Capacity contract (Cadence collaborative orchestration):
+- Preflight GET /rate_limit before multi-page spend.
+- Treat 403/429 after retries as RateLimitDeferred (exit 0, no graph commit).
+- Bound page budget from remaining * safety (registry github.api.* safety 0.8).
 """
 from __future__ import annotations
 
@@ -19,16 +24,35 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable
 
+
 class GitHubHttpError(RuntimeError):
-    def __init__(self, code: int, path: str):
+    def __init__(self, code: int, path: str, headers: dict[str, str] | None = None):
         super().__init__(f"HTTP {code} for {path}")
         self.code = code
         self.path = path
-UA = "termux-monorepo-repository-observatory/2.1"
+        self.headers = headers or {}
+
+
+class RateLimitDeferred(RuntimeError):
+    """Transient GitHub 403/429 or preflight headroom too low. Callers exit 0."""
+
+    def __init__(self, message: str, remaining: int | None = None, reset: int | None = None):
+        super().__init__(message)
+        self.remaining = remaining
+        self.reset = reset
+
+
+UA = "termux-monorepo-repository-observatory/2.2"
 SCHEMA_VERSION = "1.1"
 MAX_PAGES = 100
 RETRIES = 3
 API = "https://api.github.com"
+# ops/quota/registry.json github.api.* planned_use.safety
+SAFETY = 0.8
+# Soft floor: do not start multi-page work below this core remaining
+MIN_REMAINING_START = 50
+# Reserve requests for concurrent jobs on the same token
+RESERVED = 20
 
 
 def now() -> str:
@@ -48,17 +72,60 @@ def get_json(path: str, token: str, params: dict[str, Any] | None = None) -> Any
             with urllib.request.urlopen(req, timeout=30) as response:  # nosec B310: fixed API host
                 return json.loads(response.read().decode("utf-8"))
         except urllib.error.HTTPError as exc:
-            if exc.code in {429, 500, 502, 503, 504} and attempt != RETRIES - 1:
-                retry_after = exc.headers.get("Retry-After")
-                delay = min(int(retry_after), 60) if retry_after and retry_after.isdigit() else 2**attempt
+            hdrs = {k.lower(): v for k, v in (exc.headers.items() if exc.headers else [])}
+            # Primary and secondary rate limits (GitHub often returns 403 for secondary)
+            retriable = exc.code in {403, 429, 500, 502, 503, 504}
+            if retriable and attempt != RETRIES - 1:
+                retry_after = hdrs.get("retry-after")
+                reset = hdrs.get("x-ratelimit-reset")
+                if retry_after and retry_after.isdigit():
+                    delay = min(int(retry_after), 60)
+                elif reset and reset.isdigit():
+                    delay = min(max(int(reset) - int(time.time()) + 1, 1), 60)
+                else:
+                    delay = 2 ** attempt
                 time.sleep(delay)
                 continue
-            raise GitHubHttpError(exc.code, path) from exc
+            if exc.code in {403, 429}:
+                remaining = hdrs.get("x-ratelimit-remaining")
+                reset_i = hdrs.get("x-ratelimit-reset")
+                raise RateLimitDeferred(
+                    f"GitHub API {path} deferred after HTTP {exc.code}",
+                    remaining=int(remaining) if remaining and remaining.isdigit() else None,
+                    reset=int(reset_i) if reset_i and reset_i.isdigit() else None,
+                ) from exc
+            raise GitHubHttpError(exc.code, path, hdrs) from exc
         except (urllib.error.URLError, TimeoutError):
             if attempt == RETRIES - 1:
                 raise
-            time.sleep(2**attempt)
+            time.sleep(2 ** attempt)
     raise RuntimeError(f"GitHub API request failed: {path}")
+
+
+def probe_rate_limit(fetch: Callable[..., Any], token: str) -> dict[str, Any]:
+    """Return core resource remaining/limit/reset from GET /rate_limit."""
+    payload = fetch("/rate_limit", token)
+    if not isinstance(payload, dict):
+        return {"remaining": None, "limit": None, "reset": None, "raw": payload}
+    resources = payload.get("resources") or {}
+    core = resources.get("core") if isinstance(resources, dict) else {}
+    if not isinstance(core, dict):
+        core = payload.get("rate") if isinstance(payload.get("rate"), dict) else {}
+    return {
+        "remaining": core.get("remaining") if isinstance(core.get("remaining"), int) else None,
+        "limit": core.get("limit") if isinstance(core.get("limit"), int) else None,
+        "reset": core.get("reset") if isinstance(core.get("reset"), int) else None,
+        "raw": payload,
+    }
+
+
+def page_budget(remaining: int | None, limit: int | None) -> int:
+    """Max API pages this run may spend (each page ~= 1 request)."""
+    if remaining is None:
+        return min(20, MAX_PAGES)  # conservative when probe unavailable
+    headroom = max(remaining - RESERVED, 0)
+    ceiling = int(headroom * SAFETY)
+    return max(0, min(ceiling, MAX_PAGES))
 
 
 # Pre-compiled classification terms to eliminate repeated collection allocations in loops
@@ -216,7 +283,7 @@ def build_payload(owner: str, login: str, records: list[dict[str, Any]], observe
             c_integration += 1
 
     return {
-        "schema_version": SCHEMA_VERSION, "builder": "termux-monorepo.repository_observatory@2.1", "repository": f"{owner}/termux-monorepo",
+        "schema_version": SCHEMA_VERSION, "builder": "termux-monorepo.repository_observatory@2.2", "repository": f"{owner}/termux-monorepo",
         "observed_at": observed_at, "authenticated_user": login, "snapshot_hash": snapshot_hash(records),
         "counts": {"owned": c_owned, "starred": c_starred, "both": c_both,
                    "research_seeds": c_research, "integration_candidates": c_integration},
@@ -237,6 +304,8 @@ def resolve_login(fetch: Callable[..., Any], token: str, owner: str) -> str:
             if login != owner:
                 raise RuntimeError(f"authenticated GitHub user is {login!r}, expected {owner!r}")
             return login
+    except RateLimitDeferred:
+        raise
     except GitHubHttpError as exc:
         if exc.code not in {401, 403, 404}:
             raise
@@ -252,34 +321,83 @@ def resolve_login(fetch: Callable[..., Any], token: str, owner: str) -> str:
 
 def main(argv: list[str] | None = None, fetch: Callable[..., Any] = get_json) -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--owner", required=True); parser.add_argument("--output", type=Path, required=True); parser.add_argument("--markdown", type=Path, required=True)
+    parser.add_argument("--owner", required=True)
+    parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--markdown", type=Path, required=True)
     parser.add_argument("--token-env", default="REPOSITORY_OBSERVATORY_TOKEN")
     args = parser.parse_args(argv)
     token = os.environ.get(args.token_env) or os.environ.get("GITHUB_TOKEN")
-    if not token: print(f"missing {args.token_env} or GITHUB_TOKEN", file=sys.stderr); return 2
-    login = resolve_login(fetch, token, args.owner)
-    owner_path = urllib.parse.quote(args.owner)
-    def pages(path: str, params: dict[str, Any]) -> list[dict[str, Any]]:
-        out: list[dict[str, Any]] = []
-        for page in range(1, MAX_PAGES + 1):
-            payload = fetch(path, token, dict(params, per_page=100, page=page))
-            if not isinstance(payload, list): raise RuntimeError(f"expected list from {path}")
-            out.extend(x for x in payload if isinstance(x, dict))
-            if len(payload) < 100: return out
-        raise RuntimeError(f"pagination exceeded {MAX_PAGES} pages for {path}")
-    owned = [r for r in pages(f"/users/{owner_path}/repos", {"type": "owner", "sort": "updated", "direction": "desc"}) if r.get("owner", {}).get("login") == args.owner]
-    starred = pages(f"/users/{owner_path}/starred", {"sort": "updated", "direction": "desc"})
-    records = build_records(owned, starred)
-    previous: dict[str, Any] = {}
-    if args.output.exists():
-        try: previous = json.loads(args.output.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError): previous = {}
-    digest = snapshot_hash(records)
-    observed_at = previous.get("observed_at") if previous.get("snapshot_hash") == digest else now()
-    payload = build_payload(args.owner, login, records, observed_at)
-    args.output.parent.mkdir(parents=True, exist_ok=True); args.markdown.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    args.markdown.write_text(markdown(records, observed_at), encoding="utf-8")
-    print(json.dumps(payload["counts"], sort_keys=True)); return 0
+    if not token:
+        print(f"missing {args.token_env} or GITHUB_TOKEN", file=sys.stderr)
+        return 2
 
-if __name__ == "__main__": raise SystemExit(main())
+    try:
+        # PROBE — proactive capacity (Cadence collaborative pattern)
+        rl = probe_rate_limit(fetch, token)
+        remaining, limit, reset = rl.get("remaining"), rl.get("limit"), rl.get("reset")
+        print(json.dumps({"rate_limit": {"remaining": remaining, "limit": limit, "reset": reset}}, sort_keys=True))
+        if remaining is not None and remaining < MIN_REMAINING_START:
+            raise RateLimitDeferred(
+                f"preflight core remaining {remaining} < {MIN_REMAINING_START}; defer window",
+                remaining=remaining,
+                reset=reset if isinstance(reset, int) else None,
+            )
+        budget = page_budget(remaining if isinstance(remaining, int) else None, limit if isinstance(limit, int) else None)
+        if budget < 2:
+            raise RateLimitDeferred(
+                f"page budget {budget} too low after safety={SAFETY} reserved={RESERVED}; defer",
+                remaining=remaining if isinstance(remaining, int) else None,
+                reset=reset if isinstance(reset, int) else None,
+            )
+
+        login = resolve_login(fetch, token, args.owner)
+        owner_path = urllib.parse.quote(args.owner)
+
+        def pages(path: str, params: dict[str, Any], max_pages: int) -> list[dict[str, Any]]:
+            out: list[dict[str, Any]] = []
+            for page in range(1, max_pages + 1):
+                payload = fetch(path, token, dict(params, per_page=100, page=page))
+                if not isinstance(payload, list):
+                    raise RuntimeError(f"expected list from {path}")
+                out.extend(x for x in payload if isinstance(x, dict))
+                if len(payload) < 100:
+                    return out
+            return out  # truncated under budget — not an error
+
+        # Split budget across owned + starred list calls
+        half = max(1, budget // 2)
+        owned = [
+            r for r in pages(f"/users/{owner_path}/repos", {"type": "owner", "sort": "updated", "direction": "desc"}, half)
+            if r.get("owner", {}).get("login") == args.owner
+        ]
+        starred = pages(f"/users/{owner_path}/starred", {"sort": "updated", "direction": "desc"}, budget - half)
+        records = build_records(owned, starred)
+        previous: dict[str, Any] = {}
+        if args.output.exists():
+            try:
+                previous = json.loads(args.output.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                previous = {}
+        digest = snapshot_hash(records)
+        observed_at = previous.get("observed_at") if previous.get("snapshot_hash") == digest else now()
+        payload = build_payload(args.owner, login, records, observed_at)
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.markdown.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        args.markdown.write_text(markdown(records, observed_at), encoding="utf-8")
+        print(json.dumps(payload["counts"], sort_keys=True))
+        return 0
+    except RateLimitDeferred as exc:
+        # Capacity skip — not dual-gate failure (Cadence / CodeRabbit cooldown pattern)
+        print(json.dumps({
+            "disposition": "quota_cooldown",
+            "message": str(exc),
+            "remaining": getattr(exc, "remaining", None),
+            "reset": getattr(exc, "reset", None),
+        }, sort_keys=True))
+        print(f"::notice::repository observatory deferred: {exc}")
+        return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

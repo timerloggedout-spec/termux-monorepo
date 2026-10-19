@@ -17,7 +17,7 @@ class ActionsIncidentDedupeTests(unittest.TestCase):
         self.assertIn("actions-run:100:1", result["body"])
         self.assertIn("gha:observer:failure:abcdef012345", result["body"])
 
-    def test_same_fingerprint_suppresses_repeat_notification(self):
+    def test_body_fingerprint_without_delivery_marker_retries_notification(self):
         existing = {
             "body": "Fingerprint: gha:observer:failure:abcdef012345",
             "comments": [],
@@ -29,7 +29,7 @@ class ActionsIncidentDedupeTests(unittest.TestCase):
             run_attempt="1",
             run_url="https://github.com/example/repo/actions/runs/101",
         )
-        self.assertFalse(result["notify"])
+        self.assertTrue(result["notify"])
         self.assertIn("actions-run:101:1", result["body"])
         self.assertIn("/runs/101", result["body"])
 
@@ -47,7 +47,7 @@ class ActionsIncidentDedupeTests(unittest.TestCase):
         result = reconcile_incident(
             {
                 "body": "Incident body",
-                "comments": [{"body": "Fingerprint gha:observer:failure:abcdef012345"}],
+                "comments": [{"body": "Fingerprint gha:observer:failure:abcdef012345 <!-- actions-notified:gha:observer:failure:abcdef012345 -->"}],
             },
             fingerprint="gha:observer:failure:abcdef012345",
             run_id="103",

@@ -33,6 +33,7 @@ jobs:
         run: python -m unittest -v test_repository_observatory.py
 
       - name: Build repository index
+        id: build
         env:
           REPOSITORY_OBSERVATORY_TOKEN: ${{ secrets.REPOSITORY_OBSERVATORY_TOKEN || github.token }}
         run: |
@@ -41,8 +42,15 @@ jobs:
             --owner "$GITHUB_REPOSITORY_OWNER" \
             --output workspace/llm_map/repositories/repository-index.json \
             --markdown docs/repositories/matrix.md
+          if [ -f workspace/llm_map/repositories/repository-index.json ]; then
+            echo "wrote_index=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "wrote_index=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::observatory capacity-deferred (quota_cooldown); no index commit"
+          fi
 
       - name: Validate generated artifacts
+        if: steps.build.outputs.wrote_index == 'true'
         run: |
           set -euo pipefail
           python - <<'PY'
@@ -64,6 +72,7 @@ jobs:
           PY
 
       - name: Publish summary
+        if: steps.build.outputs.wrote_index == 'true'
         run: |
           set -euo pipefail
           python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
@@ -79,7 +88,18 @@ jobs:
               print(f'- **{key}:** {value}')
           PY
 
+      - name: Capacity deferred summary
+        if: steps.build.outputs.wrote_index != 'true'
+        run: |
+          {
+            echo '## Repository Observatory'
+            echo
+            echo 'Disposition: `quota_cooldown` (capacity preflight or RateLimitDeferred)'
+            echo 'No index commit. Not a dual-gate failure.'
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Commit canonical index delta
+        if: steps.build.outputs.wrote_index == 'true'
         run: |
           set -euo pipefail
           git add workspace/llm_map/repositories/repository-index.json docs/repositories/matrix.md

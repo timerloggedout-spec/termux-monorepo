@@ -66,6 +66,7 @@ class HelpWantedTributeAuditTests(unittest.TestCase):
         self.assertTrue(valid_realization_receipt(receipt, receipt["pr_url"], "contributor"))
         self.assertFalse(valid_realization_receipt(receipt, receipt["pr_url"], "independent-maintainer"))
         self.assertFalse(valid_realization_receipt({**receipt, "independence_attested": False}, receipt["pr_url"], "contributor"))
+        self.assertFalse(valid_realization_receipt({**receipt, "verified_at": "2026-10-18T10:00:00"}, receipt["pr_url"], "contributor"))
 
     def test_parse_canonical_pull_request_url(self):
         self.assertEqual(

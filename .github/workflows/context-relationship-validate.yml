@@ -55,6 +55,7 @@ jobs:
             tests/test_context_relationship_explorer_projection.py \
             tests/test_historical_corpus_explorer_snapshot.py \
             -q
+          node --check apps/historical-corpus-explorer/explorer.js
           python scripts/ci/build_historical_corpus_explorer_snapshot.py --check
           python -m archwiz.context_relationships.compiler \
             --input tests/fixtures/context_relationships/seed.json \

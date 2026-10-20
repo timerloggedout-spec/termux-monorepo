@@ -2,7 +2,12 @@ import json
 import unittest
 from pathlib import Path
 
-from she.metrics.agent_throughput import (\n    reduce_events,\n    retry_amplification_ratio,\n    retry_recovery_rate,\n    wilson_proportion_interval,\n)
+from she.metrics.agent_throughput import (
+    reduce_events,
+    retry_amplification_ratio,
+    retry_recovery_rate,
+    wilson_proportion_interval,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]

@@ -56,12 +56,16 @@ def evaluate(snapshot: dict[str, Any]) -> dict[str, Any]:
         login = str(user.get("login") or "").lower()
         if not login or user.get("type") == "Bot" or login == str(pr.get("author") or "").lower():
             continue
+        # Old-head reviews must not count as approvals or erase a current-head
+        # change request merely because the old-head review was submitted later.
+        if review.get("commit_id") != head_sha:
+            continue
         if review.get("state") == "PENDING" or not review.get("submitted_at"):
             continue
         prior = latest_by_reviewer.get(login)
         if prior is None or _parse_time(review.get("submitted_at")) >= _parse_time(prior.get("submitted_at")):
             latest_by_reviewer[login] = review
-    current_reviews = [review for review in latest_by_reviewer.values() if review.get("commit_id") == head_sha]
+    current_reviews = list(latest_by_reviewer.values())
     if any(review.get("state") == "CHANGES_REQUESTED" for review in current_reviews):
         reasons.append("a current-head human review requests changes")
     approvals = sum(1 for review in current_reviews if review.get("state") == "APPROVED")

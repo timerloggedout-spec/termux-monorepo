@@ -41,7 +41,7 @@ SECRETS = {
     "gemini": "GEMINI_API_KEY",
 }
 SECRET_ALIASES = {
-    "huggingface": ("HUGGINGFACE_TOKEN", "HUGGING_FACE_HUB_TOKEN", "HF_API_TOKEN"),
+    "huggingface": ("HUGGINGFACE_TOKEN", "HUGGING_FACE_HUB_TOKEN", "HF_API_TOKEN", "HF_TOKEN"),
     "gemini": ("GEMINI_API_KEY", "GOOGLE_API_KEY"),
 }
 

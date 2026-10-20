@@ -52,6 +52,33 @@ These formulas now have pure helper implementations and regression tests in the 
 
 **Do not combine these candidates into a new scalar score yet.** Display coverage and outcomes separately first. Any future composite must specify normalization, weights, uncertainty, version, and sensitivity tests.
 
+## Retry semantics and uncertainty-aware outcomes
+
+Additional helpers were added for analysis and are deliberately **not runtime-emitted** until a versioned logical-operation identity and terminal-state contract is adopted.
+
+| ID | Formula | Interpretation | Preconditions / guard |
+|---|---|---|---|
+| EQ-RAMP-v1 — Retry Amplification | RAMP = total attempts / logical operations | Average attempts per logical operation. 1.0 means one attempt per operation; 1.3 means 1.3 attempts per operation. It is not a failure probability. | Count attempts and logical operations at separate identity levels; require attempts ≥ logical operations and a positive known denominator. |
+| EQ-RREC-v1 — Retry Recovery Rate | RREC = retried logical operations that eventually succeeded / logical operations with at least one retry | Conditional recovery among operations that needed retry. | Numerator and denominator count logical operations, not attempts. Include only retried operations with known terminal outcomes in the denominator; publish sample size. |
+| STAT-WILSON-v1 — Wilson interval | (p=x/n), (d=1+z^2/n), (c=(p+z^2/(2n))/d), (h=z\sqrt{p(1-p)/n+z^2/(4n^2)}/d), interval = [max(0,c−h), min(1,c+h)] | Uncertainty interval for a binomial proportion; default (z≈1.96) gives an approximate 95% interval. | Requires integer counts (0≤x≤n), (n>0), and independent Bernoulli trials. Return null when counts or denominator are unavailable. Clustered workflow events require a cluster-aware method. |
+
+### Operational interpretation from primary documentation
+
+- OpenTelemetry's error-recording guidance says errors that were retried or handled so an operation completes gracefully should not be recorded as errors on spans or metrics describing that logical operation. Preserve attempt-level failures/retries separately from the terminal outcome: [Recording errors](https://opentelemetry.io/docs/specs/semconv/general/recording-errors/).
+- Temporal distinguishes an Activity Execution from its Activity Task Executions; individual task executions represent attempts/retries. Keep workflow/activity logical identity separate from attempt identity: [Detecting Activity failures](https://docs.temporal.io/encyclopedia/detecting-activity-failures) and [Retry policies](https://docs.temporal.io/encyclopedia/retry-policies).
+- n8n provides explicit error-workflow control paths. The adapter must preserve source execution IDs and terminal status rather than assuming n8n retry behavior is equivalent to Temporal: [n8n error handling](https://docs.n8n.io/build/flow-logic/handle-errors-gracefully/).
+- OpenTelemetry's metrics data model and CI/CD conventions are interoperability references, not a mandate to encode every repository-specific diagnostic as a standard semantic convention: [Metrics data model](https://opentelemetry.io/docs/specs/otel/metrics/data-model/) and [CI/CD metrics](https://opentelemetry.io/docs/specs/semconv/cicd/cicd-metrics/).
+
+### Aggregation rules
+
+1. Keep **attempt events**, **logical-operation terminal outcomes**, and **validation outcomes** as distinct populations. A retry attempt is not a second completed logical task.
+2. Pair every rate with its numerator, denominator, eligible-population definition, and terminal-state policy. A rate without denominator counts is not auditable.
+3. Missing, pending, and unknown outcomes are not failures or successes. Exclude unresolved outcomes only under an explicitly versioned eligibility policy; expose their count separately.
+4. Do not average precomputed p50/p95/p99 values across workers or time windows. Merge compatible histogram buckets or aggregate raw observations, then calculate the percentile.
+5. A Wilson interval assumes independent Bernoulli trials. If events are clustered within workflows, agents, repositories, or repeated CI runs, the naive interval can be too narrow; use a cluster-aware method or report descriptive counts only.
+6. Compare rates across compatible cohorts and time windows. Stratify by task class/provider/workflow when mix changes; otherwise Simpson's paradox can make an aggregate trend misleading.
+7. The helper implementations and fixtures are useful now, but no new candidate metric is wired into the runtime event schema or SHE projection. Integration requires versioned IDs for logical operations and attempts, explicit terminal states, tests for duplicate/out-of-order events, and a replay-safe reducer migration.
+
 ## Wolfram reference checks
 
 Wolfram Language evaluation was used as an independent arithmetic check for these fixtures. Values are illustrative test inputs, not live production measurements.
@@ -126,3 +153,7 @@ The existing repository is Python/JSONL/GitHub Actions oriented. Kotlin/Compose,
 - n8n error handling: https://docs.n8n.io/build/flow-logic/handle-errors-gracefully/
 - Temporal workflow execution: https://docs.temporal.io/workflow-execution
 - Temporal retry policies: https://docs.temporal.io/encyclopedia/retry-policies
+- Temporal Activity failure/attempt semantics: https://docs.temporal.io/encyclopedia/detecting-activity-failures
+- OpenTelemetry error-recording guidance: https://opentelemetry.io/docs/specs/semconv/general/recording-errors/
+- OpenTelemetry metrics data model: https://opentelemetry.io/docs/specs/otel/metrics/data-model/
+- OpenTelemetry CI/CD metric conventions: https://opentelemetry.io/docs/specs/semconv/cicd/cicd-metrics/

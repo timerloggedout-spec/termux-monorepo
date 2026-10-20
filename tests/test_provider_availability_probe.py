@@ -83,6 +83,8 @@ def test_main_writes_document_without_leaking_secrets(tmp_path):
     out = tmp_path / "availability.json"
     env = {k: "" for k in CREDENTIAL_KEYS}
     env["OUTPUT"] = str(out)
+    env["HF_TOKEN"] = "fixture-hf-secret"
+    env["SAMBANOVA_API_KEY"] = "fixture-sambanova-secret"
     from scripts import provider_model_catalog
 
     # Public catalogs are still observed, but the test must never use the network.
@@ -100,21 +102,35 @@ def test_main_writes_document_without_leaking_secrets(tmp_path):
             "cerebras", "groq", "mistral", "nvidia", "modelscope", "siliconflow", "kilo", "ovhcloud",
             "sambanova", "cloudflare", "cohere", "ollama"}.issubset(providers)
     public = {"llm7", "modelscope", "ovhcloud"}
+    configured = {"huggingface": "HF_TOKEN", "sambanova": "SAMBANOVA_API_KEY"}
+    by_provider = {row["provider"]: row for row in doc["providers"]}
     for row in doc["providers"]:
-        assert row["credential_present"] is False
         assert row["inference_ok"] is False
         if row["provider"] in public:
+            assert row["credential_present"] is False
             assert row["auth_mode"] == "public"
+            assert row["credential_env_resolved"] is None
+            assert row["credential_env_expected"] is None
+            assert row["catalog_probe_required"] is True
+            assert row["catalog_ok"] is True
+        elif row["provider"] in configured:
+            assert row["credential_present"] is True
+            assert row["auth_mode"] == "credential"
+            assert row["credential_env_resolved"] == configured[row["provider"]]
+            assert row["credential_env_expected"] is None
             assert row["catalog_probe_required"] is True
             assert row["catalog_ok"] is True
         else:
+            assert row["credential_present"] is False
             assert row["auth_mode"] == "unconfigured"
+            assert row["credential_env_resolved"] is None
             assert row["catalog_probe_required"] is False
             assert row["catalog_ok"] is False
-    # Credentials must never be serialized into the evidence document.
+    assert by_provider["groq"]["credential_env_expected"] == "GROQ_API_KEY"
+    # Artifacts may name the resolved environment variable, but never the secret value.
     body = out.read_text(encoding="utf-8")
-    for key in CREDENTIAL_KEYS:
-        assert key not in body
+    assert "fixture-hf-secret" not in body
+    assert "fixture-sambanova-secret" not in body
 
 
 def test_huggingface_alias_precedence_matches_catalog():
@@ -251,3 +267,31 @@ def test_expanded_catalog_probe_never_runs_inference():
     assert row["catalog_ok"] is True
     assert row["inference_ok"] is False
     assert "fixture-secret" not in json.dumps(row)
+
+
+
+def test_resolved_credential_alias_is_recorded_without_secret_value():
+    from scripts import provider_model_catalog
+
+    row = probe.result("huggingface")
+    with patch.dict("os.environ", {"HF_TOKEN": "fixture-private-token"}, clear=True), patch.object(
+        provider_model_catalog, "poll", return_value=([{"id": "fixture-model"}], {})
+    ):
+        probe.catalog_provider_probe("huggingface", row, provider_model_catalog)
+    assert row["credential_env_resolved"] == "HF_TOKEN"
+    assert row["credential_env_expected"] is None
+    assert "fixture-private-token" not in json.dumps(row)
+
+
+def test_missing_provider_credential_reports_only_expected_environment_name():
+    from scripts import provider_model_catalog
+
+    row = probe.result("groq")
+    with patch.dict("os.environ", {}, clear=True), patch.object(
+        provider_model_catalog, "poll"
+    ) as poll:
+        probe.catalog_provider_probe("groq", row, provider_model_catalog)
+    poll.assert_not_called()
+    assert row["credential_env_resolved"] is None
+    assert row["credential_env_expected"] == "GROQ_API_KEY"
+    assert "secret" not in json.dumps(row).lower()

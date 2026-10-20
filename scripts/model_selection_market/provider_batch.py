@@ -14,6 +14,8 @@ from pathlib import Path
 import tempfile
 
 from .resource_index import _validate_provider
+from scripts.provider_model_catalog import ENDPOINTS as CATALOG_ENDPOINTS
+from llm_api_hub.server.research_providers import ENDPOINTS as CHAT_ENDPOINTS
 
 # Reviewed identity mappings, not fuzzy provider-name matching.
 PROVIDER_MAP = {
@@ -23,8 +25,18 @@ PROVIDER_MAP = {
     "groq": "groq",
     "mistral-ai": "mistral",
     "nvidia-nim": "nvidia",
+    "aion-labs": "aion",
+    "llm7-io": "llm7",
+    "z-ai-zhipu-ai": "zai",
+    "modelscope": "modelscope",
+    "siliconflow": "siliconflow",
+    "kilo-code": "kilo",
+    "cloudflare-workers-ai": "cloudflare",
+    "cohere": "cohere",
+    "ollama-cloud": "ollama",
+    "ovhcloud-ai-endpoints": "ovhcloud",
 }
-NATIVE_CHAT_PROVIDERS = frozenset({"groq", "mistral", "gemini", "huggingface", "cerebras", "nvidia"})
+NATIVE_CHAT_PROVIDERS = frozenset(CHAT_ENDPOINTS)
 
 
 def reconcile(snapshot: dict, catalog: dict) -> dict:
@@ -54,11 +66,13 @@ def reconcile(snapshot: dict, catalog: dict) -> dict:
             raise ValueError("research model_id must be a string")
         observed = live.get((native, model_id))
         # An injected documented model-page row is not a successful list result.
-        listed = observed is not None and observed.get("raw_source") == f"{native}:/v1/models"
+        listed = observed is not None and native in CATALOG_ENDPOINTS and observed.get("raw_source") in {f"{native}:/v1/models", f"{native}:official_catalog"}
         if not model_id or model_id.startswith("aggregate:"):
             status = "not_an_individual_model"
         elif not native:
             status = "adapter_not_implemented"
+        elif native not in CATALOG_ENDPOINTS:
+            status = "catalog_adapter_not_implemented"
         elif native not in catalog["provider_observations"]:
             status = "catalog_unavailable"
         elif listed:
@@ -72,6 +86,7 @@ def reconcile(snapshot: dict, catalog: dict) -> dict:
             "model_id": model_id,
             "native_provider": native,
             "native_chat_adapter": native in NATIVE_CHAT_PROVIDERS,
+            "catalog_adapter": native in CATALOG_ENDPOINTS,
             "status": status,
             "pricing_classification": observed.get("pricing_classification", "unknown") if listed else "unknown",
             "runtime_eligible": False,
@@ -88,7 +103,8 @@ def reconcile(snapshot: dict, catalog: dict) -> dict:
             "individual_model_claims": len(individual),
             "static_or_aggregate_references": len(rows) - len(individual),
             "provider_families": len({row["provider_key"] for row in rows}),
-            "catalog_adapter_families": sorted({row["native_provider"] for row in rows if row["native_provider"]}),
+            "catalog_adapter_families": sorted({row["native_provider"] for row in rows if row["catalog_adapter"]}),
+            "chat_transport_families": sorted({row["native_provider"] for row in rows if row["native_provider"] == "openrouter" or row["native_chat_adapter"]}),
             "gated_native_chat_model_claims": sum(row["native_chat_adapter"] for row in individual),
             "legacy_openrouter_model_claims": sum(row["native_provider"] == "openrouter" for row in individual),
             "observed_model_claims": sum(row["status"] == "observed_in_catalog" for row in rows),

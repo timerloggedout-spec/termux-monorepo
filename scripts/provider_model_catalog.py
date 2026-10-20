@@ -21,7 +21,14 @@ import urllib.error
 import urllib.request
 from urllib.parse import urlencode
 
+try:
+    from scripts import provider_catalog_protocols
+except ImportError:
+    import provider_catalog_protocols  # type: ignore
+
 UA = "termux-monorepo-provider-catalog/5"
+# Official Models API documents this GET without authentication; inference still needs admission and a token.
+PUBLIC_CATALOGS = frozenset({"llm7"})
 ENDPOINTS = {
     "openrouter": "https://openrouter.ai/api/v1/models",
     "felo": "https://openapi.felo.ai/api/v1/models",
@@ -32,6 +39,10 @@ ENDPOINTS = {
     "gemini": "https://generativelanguage.googleapis.com/v1beta/models",
     "cerebras": "https://api.cerebras.ai/v1/models",
     "nvidia": "https://integrate.api.nvidia.com/v1/models",
+    "aion": "https://api.aionlabs.ai/v1/models",
+    "llm7": "https://api.llm7.io/v1/models",
+    "kilo": "https://ai-gateway.kilo.ai/api/v1/models",
+    "siliconflow": "https://api.siliconflow.com/v1/models",
 }
 SECRETS = {
     "openrouter": "OPENROUTER_API_KEY",
@@ -43,7 +54,15 @@ SECRETS = {
     "gemini": "GEMINI_API_KEY",
     "cerebras": "CEREBRAS_API_KEY",
     "nvidia": "NVIDIA_API_KEY",
+    "aion": "AION_API_KEY",
+    "llm7": "LLM7_API_TOKEN",
+    "zai": "ZAI_API_KEY",
+    "modelscope": "MODELSCOPE_TOKEN",
+    "siliconflow": "SILICONFLOW_API_KEY",
+    "kilo": "KILO_API_KEY",
 }
+ENDPOINTS.update(provider_catalog_protocols.ENDPOINTS)
+SECRETS.update({p: names[0] for p, names in provider_catalog_protocols.SECRET_ENV.items()})
 SECRET_ALIASES = {
     "huggingface": ("HUGGINGFACE_TOKEN", "HUGGING_FACE_HUB_TOKEN", "HF_API_TOKEN", "HF_TOKEN"),
     "cerebras": ("CEREBRAS_API_KEY",),
@@ -216,6 +235,8 @@ def _positive_int(value):
     return value if isinstance(value, int) and not isinstance(value, bool) and value > 0 else None
 
 def poll(provider: str, token: str) -> tuple[list[dict], dict]:
+    if provider in provider_catalog_protocols.PROVIDERS:
+        return provider_catalog_protocols.poll(provider, token, get_json, os.environ.get("CLOUDFLARE_ACCOUNT_ID"))
     payload, response_headers = _gemini_pages(token) if provider == "gemini" else get_json(ENDPOINTS[provider], token)
     items = payload.get("models" if provider == "gemini" else "data")
     if not isinstance(items, list) or any(not isinstance(item, dict) for item in items):
@@ -323,7 +344,7 @@ def main(argv: list[str] | None = None) -> int:
             errors.append({"provider": provider, "error": "unsupported_provider"})
             continue
         token, env_name = resolve_secret(provider)
-        if not token:
+        if not token and provider not in PUBLIC_CATALOGS:
             errors.append({"provider": provider, "error": "missing_secret", "secret_env": env_name, "aliases": list(SECRET_ALIASES.get(provider, ()))})
             continue
         try:
@@ -332,7 +353,8 @@ def main(argv: list[str] | None = None) -> int:
             provider_observations[provider] = {
                 "catalog_observed_at": observed_at,
                 "response_headers": headers,
-                "secret_env_resolved": env_name,
+                "secret_env_resolved": env_name if token else None,
+                "catalog_authentication": "credential" if token else "documented_public_get",
                 "account_endpoint": None,
                 "account_endpoint_status": "not_documented",
                 "documented_entitlements": DOCUMENTED_ENTITLEMENTS.get(provider, []),

@@ -10,6 +10,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Mapping
 
+try:
+    from llm_api_hub.server import provider_protocols
+except ImportError:
+    import provider_protocols  # type: ignore
+
 SCHEMA = "research-provider-admission/v1"
 ENDPOINTS = {
     "groq": ("https://api.groq.com/openai/v1/chat/completions", ("GROQ_API_KEY",)),
@@ -18,7 +23,15 @@ ENDPOINTS = {
     "mistral": ("https://api.mistral.ai/v1/chat/completions", ("MISTRAL_API_KEY",)),
     "gemini": ("https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", ("GEMINI_API_KEY", "GOOGLE_API_KEY")),
     "nvidia": ("https://integrate.api.nvidia.com/v1/chat/completions", ("NVIDIA_API_KEY", "NVIDIA_NIM_API_KEY")),
+    "aion": ("https://api.aionlabs.ai/v1/chat/completions", ("AION_API_KEY",)),
+    "llm7": ("https://api.llm7.io/v1/chat/completions", ("LLM7_API_TOKEN",)),
+    "zai": ("https://api.z.ai/api/paas/v4/chat/completions", ("ZAI_API_KEY",)),
+    "modelscope": ("https://api-inference.modelscope.ai/v1/chat/completions", ("MODELSCOPE_TOKEN",)),
+    "siliconflow": ("https://api.siliconflow.com/v1/chat/completions", ("SILICONFLOW_API_KEY",)),
+    "kilo": ("https://ai-gateway.kilo.ai/api/v1/chat/completions", ("KILO_API_KEY",)),
+    "ovhcloud": ("https://oai.endpoints.kepler.ai.cloud.ovh.net/v1/chat/completions", ("OVHCLOUD_API_KEY",)),
 }
+ENDPOINTS.update({p: (provider_protocols.CHAT_ENDPOINTS[p], provider_protocols.SECRET_ENV[p]) for p in provider_protocols.PROVIDER_KEYS})
 MAX_RESPONSE_BYTES = 2 * 1024 * 1024
 
 
@@ -99,6 +112,12 @@ def _validate_entry(entry: Mapping[str, Any], provider: str, model: str, now: da
     if expires <= now:
         raise ProviderAdmissionError(403, "native provider admission is expired or invalid", "provider_not_admitted")
 
+    if provider == "cloudflare":
+        try:
+            provider_protocols.validate_cloudflare_account_id(os.environ.get("CLOUDFLARE_ACCOUNT_ID"))
+        except provider_protocols.ProtocolError:
+            raise ProviderAdmissionError(503, "native provider account is not configured", "provider_unconfigured")
+
 
 def authorize(provider: str, model: str) -> str:
     if not isinstance(provider, str) or provider not in ENDPOINTS or not _valid_model(model):
@@ -119,7 +138,7 @@ class _NoRedirect(urllib.request.HTTPRedirectHandler):
         return None
 
 
-def post_json(url: str, payload: dict[str, Any], key: str, timeout: float) -> dict[str, Any]:
+def post_json(url: str, payload: dict[str, Any], key: str, timeout: float, *, response_provider: str | None = None, model: str = "") -> dict[str, Any]:
     req = urllib.request.Request(url, data=json.dumps(payload).encode(), method="POST", headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json", "Accept": "application/json"})
     opener = urllib.request.build_opener(_NoRedirect)
     try:
@@ -141,6 +160,11 @@ def post_json(url: str, payload: dict[str, Any], key: str, timeout: float) -> di
         raise ProviderAdmissionError(502, "native provider is unreachable", "upstream_unreachable")
     except (UnicodeDecodeError, json.JSONDecodeError):
         raise ProviderAdmissionError(502, "native provider returned invalid JSON", "upstream_invalid_response")
+    if response_provider:
+        try:
+            value = provider_protocols.normalize_chat_response(response_provider, value, model)
+        except provider_protocols.ProtocolError:
+            raise ProviderAdmissionError(502, "native provider returned an invalid response", "upstream_invalid_response")
     if not isinstance(value, dict) or not isinstance(value.get("choices"), list) or not value["choices"]:
         raise ProviderAdmissionError(502, "native provider returned an invalid response", "upstream_invalid_response")
     return value
@@ -150,5 +174,13 @@ def complete(provider: str, model: str, payload: dict[str, Any], timeout: float)
     key = authorize(provider, model)
     if not isinstance(payload, dict) or payload.get("model") != model:
         raise ProviderAdmissionError(403, "request model does not match admitted model", "provider_not_admitted")
-    # URL is selected solely from a fixed provider map; model is only a JSON body value.
+    if provider == "cloudflare":
+        return post_json(provider_protocols.cloudflare_chat_url(os.environ.get("CLOUDFLARE_ACCOUNT_ID")), payload, key, timeout)
+    if provider == "cohere":
+        try:
+            payload = provider_protocols.build_chat_request(provider, model, payload)
+        except provider_protocols.ProtocolError:
+            raise ProviderAdmissionError(400, "invalid native provider request", "invalid_request")
+        return post_json(ENDPOINTS[provider][0], payload, key, timeout, response_provider=provider, model=model)
+    # URLs come only from the reviewed map; model identities stay in JSON bodies.
     return post_json(ENDPOINTS[provider][0], payload, key, timeout)

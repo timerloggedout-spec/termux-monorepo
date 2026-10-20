@@ -11,6 +11,9 @@ on:
       - 'tests/test_provider_batch.py'
       - 'scripts/ops/provider_secret_inventory.py'
       - 'tests/test_provider_secret_inventory.py'
+      - 'scripts/provider_catalog_protocols.py'
+      - 'tests/test_provider_protocols.py'
+      - 'tests/test_provider_family_completion.py'
       - 'tests/test_review_evidence.py'
       - 'tests/test_research_provider_hub.py'
       - 'tests/test_llm_api_hub_server.py'
@@ -28,6 +31,7 @@ on:
       - 'scripts/model_selection_market/**'
       - 'llm_api_hub/**'
       - 'scripts/ops/provider_secret_inventory.py'
+      - 'scripts/provider_catalog_protocols.py'
       - 'scripts/provider_availability_probe.py'
       - 'DeepAgent.py'
       - 'deepcli/agent.py'
@@ -51,6 +55,7 @@ jobs:
         run: python3 -m pip install pytest==8.4.2 fastapi==0.143.3 pydantic==2.14.1 httpx==0.28.1 PyYAML==6.0.3
       - name: Test active production entry points and reconciliation contracts
         run: |
+          python3 -m pytest -q tests/test_provider_protocols.py tests/test_provider_family_completion.py
           python3 -m pytest -q tests/test_provider_availability_probe.py tests/test_deepagent_entrypoint.py deepcli/tests/test_agent_execute.py
           python3 -m pytest -q tests/test_provider_secret_inventory.py
           python3 -m pytest -q tests/test_provider_model_catalog.py tests/test_provider_batch.py tests/test_review_evidence.py tests/test_research_provider_hub.py tests/test_llm_api_hub_server.py
@@ -84,12 +89,20 @@ jobs:
           CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY }}
           NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY || secrets.NVIDIA_NIM_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GOOGLE_API_KEY }}
+          AION_API_KEY: ${{ secrets.AION_API_KEY }}
+          LLM7_API_TOKEN: ${{ secrets.LLM7_API_TOKEN }}
+          KILO_API_KEY: ${{ secrets.KILO_API_KEY }}
+          COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+          OLLAMA_API_KEY: ${{ secrets.OLLAMA_API_KEY }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SILICONFLOW_API_KEY: ${{ secrets.SILICONFLOW_API_KEY }}
         run: |
           set -euo pipefail
           mkdir -p /tmp/provider-batch
           # Exit 1 means no successful model rows, not a successful admission.
           status=0
-          python3 scripts/provider_model_catalog.py --providers openrouter,felo,omni,huggingface,groq,mistral,gemini,cerebras,nvidia --output /tmp/provider-batch/catalog.json || status=$?
+          python3 scripts/provider_model_catalog.py --providers openrouter,felo,omni,huggingface,groq,mistral,gemini,cerebras,nvidia,aion,llm7,kilo,cohere,ollama,cloudflare,siliconflow --output /tmp/provider-batch/catalog.json || status=$?
           if [ "$status" -gt 1 ]; then exit "$status"; fi
           python3 -m scripts.model_selection_market.provider_batch --catalog /tmp/provider-batch/catalog.json --output /tmp/provider-batch/coverage.json
       - name: Collect paginated matrix-review evidence with the read-only job token

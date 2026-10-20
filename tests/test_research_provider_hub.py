@@ -193,3 +193,39 @@ def test_nvidia_research_ids_use_gated_native_route(client, monkeypatch, tmp_pat
     response = client.post("/v1/chat/completions", json=request_body("nvidia/" + model))
     assert response.status_code == 200
     assert calls == [("https://integrate.api.nvidia.com/v1/chat/completions", model, "nim-alias-key")]
+
+@pytest.mark.parametrize(("provider", "model", "secret", "expected_url"), [
+    ("aion", "aion-labs/aion-3.5", "AION_API_KEY", "https://api.aionlabs.ai/v1/chat/completions"),
+    ("llm7", "turbo", "LLM7_API_TOKEN", "https://api.llm7.io/v1/chat/completions"),
+    ("zai", "glm-5.3", "ZAI_API_KEY", "https://api.z.ai/api/paas/v4/chat/completions"),
+    ("modelscope", "Qwen/Qwen3.5-35B-A3B", "MODELSCOPE_TOKEN", "https://api-inference.modelscope.ai/v1/chat/completions"),
+    ("siliconflow", "openai/gpt-oss-120b", "SILICONFLOW_API_KEY", "https://api.siliconflow.com/v1/chat/completions"),
+    ("kilo", "google/gemma-4-26b-a4b-it:free", "KILO_API_KEY", "https://ai-gateway.kilo.ai/api/v1/chat/completions"),
+])
+def test_remaining_openai_compatible_routes_use_fixed_official_endpoint(client, monkeypatch, tmp_path, provider, model, secret, expected_url):
+    monkeypatch.setenv(secret, "not-for-output")
+    monkeypatch.setenv("LLM_API_HUB_PROVIDER_POLICY", str(policy_file(tmp_path, [entry(provider=provider, model=model)])))
+    calls = []
+    monkeypatch.setattr(providers, "post_json", lambda url, payload, key, timeout: calls.append((url, payload["model"], key)) or {"choices": [{"message": {"content": "ok"}}]})
+    response = client.post("/v1/chat/completions", json=request_body(f"{provider}/{model}"))
+    assert response.status_code == 200
+    assert calls == [(expected_url, model, "not-for-output")]
+
+
+@pytest.mark.parametrize('provider', sorted(providers.ENDPOINTS))
+def test_every_registered_native_prefix_reaches_admission_not_router(client, monkeypatch, provider):
+    monkeypatch.delenv('LLM_API_HUB_PROVIDER_POLICY', raising=False)
+    monkeypatch.setenv('OPENROUTER_API_KEY', 'synthetic-router-key')
+    response = client.post('/v1/chat/completions', json=request_body(f'{provider}/synthetic-exact-model'))
+    assert response.status_code == 403
+    assert response.json()['error']['code'] == 'provider_not_admitted'
+
+
+def test_cloudflare_missing_account_is_not_listed_or_sent(client, monkeypatch, tmp_path):
+    monkeypatch.setenv('CLOUDFLARE_API_TOKEN', 'synthetic-cf')
+    monkeypatch.delenv('CLOUDFLARE_ACCOUNT_ID', raising=False)
+    model = '@cf/meta/synthetic-model'
+    monkeypatch.setenv('LLM_API_HUB_PROVIDER_POLICY', str(policy_file(tmp_path, [entry(provider='cloudflare', model=model)])))
+    response = client.post('/v1/chat/completions', json=request_body(f'cloudflare/{model}'))
+    assert response.status_code == 503
+    assert f'cloudflare/{model}' not in [r['id'] for r in client.get('/v1/models').json()['data']]

@@ -225,3 +225,18 @@ def test_authorized_hf_token_alias_retains_precedence():
     from pathlib import Path
     workflow = Path(".github/workflows/provider-batch.yml").read_text()
     assert "secrets.HF_API_TOKEN || secrets.HF_TOKEN" in workflow
+
+
+def test_new_official_catalog_endpoints_are_pinned_and_exact():
+    assert provider_model_catalog.ENDPOINTS["aion"] == "https://api.aionlabs.ai/v1/models"
+    assert provider_model_catalog.ENDPOINTS["llm7"] == "https://api.llm7.io/v1/models"
+    assert provider_model_catalog.ENDPOINTS["kilo"] == "https://ai-gateway.kilo.ai/api/v1/models"
+    assert provider_model_catalog.SECRETS["zai"] == "ZAI_API_KEY"
+    assert provider_model_catalog.SECRETS["modelscope"] == "MODELSCOPE_TOKEN"
+    assert provider_model_catalog.SECRETS["siliconflow"] == "SILICONFLOW_API_KEY"
+    payload = {"data": [{"id": "openai/gpt-oss-120b", "pricing": {"prompt": 0, "completion": 0}}]}
+    from unittest.mock import patch
+    with patch.object(provider_model_catalog, "get_json", return_value=(payload, {})):
+        rows, _ = provider_model_catalog.poll("kilo", "token")
+    assert rows[0]["id"] == "openai/gpt-oss-120b"
+    assert rows[0]["pricing_classification"] == "free_zero_price"

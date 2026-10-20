@@ -95,18 +95,16 @@ jobs:
             url=$(echo "$row" | jq -r '.html_url')
             id=$(echo "$row" | jq -r '.id')
             title="[Actions Incident] ${name}: ${conclusion}"
-            body=$(cat <<EOF
-## GitHub Actions incident (cadence poller)
-
-**Classification:** ${conclusion}
-**Workflow:** ${name}
-**Run:** ${id}
-**SHA:** ${sha}
-**Evidence:** ${url}
-
-Emitted by cadence-lead-lag.yml (Lead/Lag moneyball plane). Observation only; remediation via SHE + dual-gate.
-EOF
-)
+            body=$(printf '%s\n' \
+              "## GitHub Actions incident (cadence poller)" \
+              "" \
+              "**Classification:** ${conclusion}" \
+              "**Workflow:** ${name}" \
+              "**Run:** ${id}" \
+              "**SHA:** ${sha}" \
+              "**Evidence:** ${url}" \
+              "" \
+              "Emitted by cadence-lead-lag.yml (Lead/Lag moneyball plane). Observation only; remediation via SHE + dual-gate.")
             existing=$(gh issue list --repo "$REPOSITORY" --state open --search "in:title \"${title}\"" --json number --limit 5)
             number=$(echo "$existing" | jq -r '.[0].number // empty')
             if [ -n "$number" ]; then

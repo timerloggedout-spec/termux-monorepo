@@ -3,6 +3,8 @@ name: Governed PR Auto-Merge Readiness
 # Event-driven only. Auto-merge requires explicit opt-in, branch protection,
 # a current-head human approval, and the automerge:eligible label.
 on:
+  pull_request:
+    types: [opened, reopened, ready_for_review]
   pull_request_review:
     types: [submitted]
   workflow_dispatch:
@@ -23,6 +25,38 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  request-review:
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.draft == false &&
+      vars.GOVERNED_REVIEW_TEAM != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    permissions:
+      pull-requests: read
+    steps:
+      - name: Mint scoped reviewer-routing token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ vars.GOVERNED_AUTOMERGE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.GOVERNED_AUTOMERGE_APP_PRIVATE_KEY }}
+          permission-pull-requests: write
+      - name: Request configured review team once
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          TEAM_SLUG: ${{ vars.GOVERNED_REVIEW_TEAM }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          pr_json="$(gh api "repos/$REPOSITORY/pulls/$PR_NUMBER")"
+          if jq -e --arg team "$TEAM_SLUG" '[.requested_teams[]?.slug] | index($team) != null' <<<"$pr_json" >/dev/null; then
+            echo "Review team already requested; no duplicate API write."
+            exit 0
+          fi
+          gh api --method POST "repos/$REPOSITORY/pulls/$PR_NUMBER/requested_reviewers" -f "team_reviewers[]=$TEAM_SLUG"
   evaluate:
     if: >-
       github.event_name == 'workflow_dispatch' ||

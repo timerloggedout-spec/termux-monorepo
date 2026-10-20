@@ -12,6 +12,7 @@ import os
 import re
 import sys
 import time
+from pathlib import Path
 
 from scripts import capability_spine
 
@@ -227,10 +228,12 @@ def fetch_openrouter_free_models():
 
 def fetch_openrouter_free_models_cached_with_source():
     """Return catalog models and one of live, cached, stale, or unavailable."""
+    if ".." in Path(COUNTER_DIR).parts:
+        raise ValueError(f"Path traversal detected in COUNTER_DIR: {COUNTER_DIR}")
     cache_file = os.path.join(COUNTER_DIR, "openrouter_models_cache.json")
     cached_models = None
     cached_time = 0
-    if os.path.exists(cache_file):
+    if os.path.exists(cache_file) and not os.path.islink(cache_file):
         try:
             with open(cache_file, "r", encoding="utf-8") as handle:
                 cache_data = json.load(handle)
@@ -244,9 +247,12 @@ def fetch_openrouter_free_models_cached_with_source():
     models = fetch_openrouter_free_models()
     if models is not None:
         try:
-            os.makedirs(COUNTER_DIR, exist_ok=True)
-            with open(cache_file, "w", encoding="utf-8") as handle:
-                json.dump({"timestamp": time.time(), "models": models}, handle)
+            if not os.path.islink(COUNTER_DIR):
+                os.makedirs(COUNTER_DIR, exist_ok=True)
+                if not os.path.islink(cache_file):
+                    fd = os.open(cache_file, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+                    with os.fdopen(fd, "w", encoding="utf-8") as handle:
+                        json.dump({"timestamp": time.time(), "models": models}, handle)
         except (OSError, TypeError, ValueError) as error:
             sys.stderr.write(f"Warning: Could not persist OpenRouter catalog ({error}).\n")
         return models, "live"
@@ -262,9 +268,11 @@ def fetch_openrouter_free_models_cached():
 
 
 def get_usage(provider, model):
+    if ".." in Path(COUNTER_DIR).parts:
+        raise ValueError(f"Path traversal detected in COUNTER_DIR: {COUNTER_DIR}")
     key = f"{provider}/{model}" if provider != "gemini" else model
     filename = os.path.join(COUNTER_DIR, key.replace("/", "_") + ".txt")
-    if os.path.exists(filename):
+    if os.path.exists(filename) and not os.path.islink(filename):
         try:
             with open(filename, "r", encoding="utf-8") as handle:
                 return int(handle.read().strip())
@@ -275,12 +283,19 @@ def get_usage(provider, model):
 
 
 def increment_usage(provider, model):
+    if ".." in Path(COUNTER_DIR).parts:
+        raise ValueError(f"Path traversal detected in COUNTER_DIR: {COUNTER_DIR}")
+    if os.path.islink(COUNTER_DIR):
+        raise ValueError(f"COUNTER_DIR is a symlink: {COUNTER_DIR}")
     key = f"{provider}/{model}" if provider != "gemini" else model
     os.makedirs(COUNTER_DIR, exist_ok=True)
     filename = os.path.join(COUNTER_DIR, key.replace("/", "_") + ".txt")
+    if os.path.islink(filename):
+        raise ValueError(f"Usage file is a symlink: {filename}")
     current = get_usage(provider, model)
     new_usage = current + 1
-    with open(filename, "w", encoding="utf-8") as handle:
+    fd = os.open(filename, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, "w", encoding="utf-8") as handle:
         handle.write(str(new_usage))
     return new_usage
 

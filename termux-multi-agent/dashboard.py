@@ -256,7 +256,7 @@ def make_dashboard():
             timestamp
         )
 
-    footer_text = Text("\nPress Ctrl+C to exit Dashboard Viewer.", style="dim italic red")
+    footer_text = Text("\nStatus Legend: ✔ Pass  |  ⚠ Retry/Warn  |  ✖ Fail  |  ⚙ Active\nPress Ctrl+C to exit Dashboard Viewer.", style="dim italic red")
 
     return Panel(
         Group(

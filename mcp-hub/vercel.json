@@ -14,5 +14,5 @@
       "maxDuration": 60
     }
   },
-  "ignoreCommand": "if [ -z \"$VERCEL_GIT_PREVIOUS_SHA\" ] || [ -z \"$VERCEL_GIT_COMMIT_SHA\" ]; then exit 1; fi; git diff --quiet \"$VERCEL_GIT_PREVIOUS_SHA\" \"$VERCEL_GIT_COMMIT_SHA\" -- ':(top)mcp-hub/'; rc=$?; if [ \"$rc\" -eq 0 ]; then exit 0; else exit 1; fi"
+  "ignoreCommand": "bash \"$(git rev-parse --show-toplevel)/scripts/ci/vercel_ignore_build.sh\" mcp-hub"
 }

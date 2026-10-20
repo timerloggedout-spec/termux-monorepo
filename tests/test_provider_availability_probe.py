@@ -94,3 +94,94 @@ def test_main_writes_document_without_leaking_secrets(tmp_path):
     body = out.read_text(encoding="utf-8")
     for key in CREDENTIAL_KEYS:
         assert key not in body
+
+
+def test_huggingface_alias_precedence_matches_catalog():
+    env = {
+        "HUGGINGFACE_TOKEN": "first",
+        "HUGGING_FACE_HUB_TOKEN": "second",
+        "HF_API_TOKEN": "third",
+        "HF_TOKEN": "fourth",
+    }
+    assert probe.resolve_huggingface_token(env) == "first"
+    for alias in probe.HF_TOKEN_ALIASES:
+        env = {name: "" for name in probe.HF_TOKEN_ALIASES}
+        env[alias] = alias
+        assert probe.resolve_huggingface_token(env) == alias
+
+
+def test_gemini_auth_uses_header_never_url_token():
+    calls = []
+
+    def fake_request(url, **kwargs):
+        calls.append((url, kwargs))
+        if url.endswith("/models"):
+            return 200, {"models": [{"name": "models/gemini-flash", "supportedGenerationMethods": ["generateContent"]}]}
+        return 200, {}
+
+    row = probe.result("gemini")
+    with patch.object(probe, "request", side_effect=fake_request):
+        probe.gemini_probe(row, "secret-value")
+    assert row["catalog_ok"] and row["inference_ok"]
+    assert len(calls) == 2
+    for url, kwargs in calls:
+        assert "secret-value" not in url
+        assert "key=" not in url
+        assert kwargs["auth_header"] == "x-goog-api-key"
+        assert kwargs["token"] == "secret-value"
+
+
+def test_probe_errors_do_not_expose_error_body_or_token():
+    row = probe.result("gemini")
+    secret = "private-key-value"
+    with patch.object(probe, "request", side_effect=OSError(f"request failed {secret}")):
+        probe.gemini_probe(row, secret)
+    assert row["error_class"] == "OSError"
+    assert secret not in json.dumps(row)
+
+
+def test_request_rejects_redirects_and_bounds_response():
+    from unittest.mock import Mock
+    import urllib.error
+
+    redirect = urllib.error.HTTPError("https://example.test", 302, "Found", {}, None)
+    with patch.object(probe._OPENER, "open", side_effect=redirect):
+        try:
+            probe.request("https://example.test", token="secret")
+        except urllib.error.HTTPError as exc:
+            assert exc.code == 302
+        else:
+            raise AssertionError("redirect must not be followed")
+    response = Mock()
+    response.__enter__ = Mock(return_value=response)
+    response.__exit__ = Mock(return_value=False)
+    response.read.return_value = b"x" * (probe.MAX_RESPONSE_BYTES + 1)
+    with patch.object(probe._OPENER, "open", return_value=response):
+        try:
+            probe.request("https://example.test")
+        except ValueError as exc:
+            assert str(exc) == "response_too_large"
+        else:
+            raise AssertionError("oversized response must be rejected")
+
+
+def test_request_places_gemini_key_in_header_not_url():
+    from unittest.mock import Mock
+
+    response = Mock()
+    response.__enter__ = Mock(return_value=response)
+    response.__exit__ = Mock(return_value=False)
+    response.status = 200
+    response.read.return_value = b"{}"
+    captured = {}
+
+    def open_request(request, timeout):
+        captured["url"] = request.full_url
+        captured["headers"] = request.headers
+        return response
+
+    with patch.object(probe._OPENER, "open", side_effect=open_request):
+        probe.request("https://example.test/models", token="private-key", auth_header="x-goog-api-key")
+    assert "private-key" not in captured["url"]
+    assert "key=" not in captured["url"]
+    assert captured["headers"]["X-goog-api-key"] == "private-key"

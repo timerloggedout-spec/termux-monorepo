@@ -30,6 +30,8 @@ ENDPOINTS = {
     "groq": "https://api.groq.com/openai/v1/models",
     "mistral": "https://api.mistral.ai/v1/models",
     "gemini": "https://generativelanguage.googleapis.com/v1beta/models",
+    "cerebras": "https://api.cerebras.ai/v1/models",
+    "nvidia": "https://integrate.api.nvidia.com/v1/models",
 }
 SECRETS = {
     "openrouter": "OPENROUTER_API_KEY",
@@ -39,9 +41,13 @@ SECRETS = {
     "groq": "GROQ_API_KEY",
     "mistral": "MISTRAL_API_KEY",
     "gemini": "GEMINI_API_KEY",
+    "cerebras": "CEREBRAS_API_KEY",
+    "nvidia": "NVIDIA_API_KEY",
 }
 SECRET_ALIASES = {
     "huggingface": ("HUGGINGFACE_TOKEN", "HUGGING_FACE_HUB_TOKEN", "HF_API_TOKEN", "HF_TOKEN"),
+    "cerebras": ("CEREBRAS_API_KEY",),
+    "nvidia": ("NVIDIA_API_KEY", "NVIDIA_NIM_API_KEY"),
     "gemini": ("GEMINI_API_KEY", "GOOGLE_API_KEY"),
 }
 
@@ -302,7 +308,7 @@ def poll(provider: str, token: str) -> tuple[list[dict], dict]:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--providers", default="openrouter,felo,omni,huggingface")
+    parser.add_argument("--providers", default="openrouter,felo,omni,huggingface,cerebras")
     parser.add_argument("--output", default="/tmp/model-catalog/catalog.json")
     args = parser.parse_args(argv)
 

@@ -13,8 +13,11 @@ from typing import Any, Mapping
 SCHEMA = "research-provider-admission/v1"
 ENDPOINTS = {
     "groq": ("https://api.groq.com/openai/v1/chat/completions", ("GROQ_API_KEY",)),
+    "huggingface": ("https://router.huggingface.co/v1/chat/completions", ("HUGGINGFACE_TOKEN", "HUGGING_FACE_HUB_TOKEN", "HF_API_TOKEN", "HF_TOKEN")),
+    "cerebras": ("https://api.cerebras.ai/v1/chat/completions", ("CEREBRAS_API_KEY",)),
     "mistral": ("https://api.mistral.ai/v1/chat/completions", ("MISTRAL_API_KEY",)),
     "gemini": ("https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", ("GEMINI_API_KEY", "GOOGLE_API_KEY")),
+    "nvidia": ("https://integrate.api.nvidia.com/v1/chat/completions", ("NVIDIA_API_KEY", "NVIDIA_NIM_API_KEY")),
 }
 MAX_RESPONSE_BYTES = 2 * 1024 * 1024
 

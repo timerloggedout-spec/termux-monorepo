@@ -27,7 +27,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "fa8337a83c165bfb5dc4de2e09b95df4bfab9b53a9e7ab4cd105b25e7cf006ac",
+  "source_fingerprint": "a01eeee3559762e3b0317476ce3cb8fe1612e1b8e1f2f966911292e8d91feea6",
   "workflow_count": 141,
   "workflows": [
     {
@@ -2018,6 +2018,7 @@
       "domain": "peer-provider-review",
       "jobs": [
         "contracts",
+        "diagnose",
         "observe"
       ],
       "name": "Provider batch production contracts",

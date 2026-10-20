@@ -181,3 +181,13 @@ Agent-Identity: Grok (Administrator)
 - Pinggy: opaque ID enforced; live publish still required on device #1.
 
 Agent-Identity: Grok (Administrator)
+
+## Continuation (2026-10-20 22:45Z)
+
+- PR #1292 head `4a7bb1e0` dual-gate green (termux smoke, historical promotion gate, repository development evaluation, audit cycle, sweep all success on pull_request).
+- Watcher file confirmed dispatch-only on branch; residual high-volume skipped Actions Run Watcher runs observed on master (workflow_run events from pre-merge state or other triggers). Merge of this PR eliminates the auto-trigger spam source.
+- Quota / capacity lag (observatory 403, registry runs) classified non-gate; caching + Lead/Lag adaptive cadence addresses volume.
+- In-process waiting and skipped/cancelled remain audit-only; no new incident issues from them.
+- Next: merge #1292 after final re-fetch; device-side Pinggy publish on #1 remains operator action.
+
+Agent-Identity: Grok (Administrator)

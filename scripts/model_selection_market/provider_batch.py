@@ -22,8 +22,9 @@ PROVIDER_MAP = {
     "google-gemini": "gemini",
     "groq": "groq",
     "mistral-ai": "mistral",
+    "nvidia-nim": "nvidia",
 }
-NATIVE_CHAT_PROVIDERS = frozenset({"groq", "mistral", "gemini"})
+NATIVE_CHAT_PROVIDERS = frozenset({"groq", "mistral", "gemini", "huggingface", "cerebras", "nvidia"})
 
 
 def reconcile(snapshot: dict, catalog: dict) -> dict:
@@ -54,10 +55,10 @@ def reconcile(snapshot: dict, catalog: dict) -> dict:
         observed = live.get((native, model_id))
         # An injected documented model-page row is not a successful list result.
         listed = observed is not None and observed.get("raw_source") == f"{native}:/v1/models"
-        if not native:
-            status = "adapter_not_implemented"
-        elif not model_id or model_id.startswith("aggregate:"):
+        if not model_id or model_id.startswith("aggregate:"):
             status = "not_an_individual_model"
+        elif not native:
+            status = "adapter_not_implemented"
         elif native not in catalog["provider_observations"]:
             status = "catalog_unavailable"
         elif listed:
@@ -78,12 +79,27 @@ def reconcile(snapshot: dict, catalog: dict) -> dict:
             "blocked_reasons": [*candidate["blocked_reasons"], "exact-model account admission required; catalog is not free entitlement"],
         })
     results.sort(key=lambda row: (row["source_repo"], row["provider_key"], row["model_key"]))
+    by_source = {}
+    for source in sorted({row["source_repo"] for row in results}):
+        rows = [row for row in results if row["source_repo"] == source]
+        individual = [row for row in rows if row["model_id"] and not row["model_id"].startswith("aggregate:")]
+        by_source[source] = {
+            "research_records": len(rows),
+            "individual_model_claims": len(individual),
+            "static_or_aggregate_references": len(rows) - len(individual),
+            "provider_families": len({row["provider_key"] for row in rows}),
+            "catalog_adapter_families": sorted({row["native_provider"] for row in rows if row["native_provider"]}),
+            "gated_native_chat_model_claims": sum(row["native_chat_adapter"] for row in individual),
+            "legacy_openrouter_model_claims": sum(row["native_provider"] == "openrouter" for row in individual),
+            "observed_model_claims": sum(row["status"] == "observed_in_catalog" for row in rows),
+            "runtime_eligible": 0,
+        }
     return {
         "schema_version": "msm-provider-batch-v1",
         "research_sha256": hashlib.sha256(json.dumps(snapshot, sort_keys=True, separators=(",", ":")).encode()).hexdigest(),
         "sources": snapshot["sources"],
         "catalog_observed_at": catalog.get("observed_at"),
-        "summary": {"candidates": len(results), "by_status": dict(sorted(Counter(row["status"] for row in results).items())), "runtime_eligible": 0},
+        "summary": {"candidates": len(results), "by_status": dict(sorted(Counter(row["status"] for row in results).items())), "by_source": by_source, "runtime_eligible": 0},
         "candidates": results,
     }
 

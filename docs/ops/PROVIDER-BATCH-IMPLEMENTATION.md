@@ -51,3 +51,26 @@ Actions secret values cannot be read back through GitHub's secret API. The sessi
 The fresh production [research run 39377722728](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39377722728) passed contracts, collection, and publication on master `2b559f48fa14ee466baf2242355ca9e1f1950a78`. Its downloaded artifact contains two pinned sources, 160 research candidates, and 185 aggregate records. This verifies #1298's metadata authentication recovery; it does not verify free inference or deploy a hub server.
 
 Review artifacts identify PR-history counts, not current-head approvals. Each formal review retains its commit ID. The production collector records UTC collection start and a separate normalization time, verifies an unchanged head before/after pagination, and requires that head in the collected commit list. This detects head drift without pretending independently retrieved API pages are an atomic event snapshot.
+
+## Completion slice: MSM-012 / MSM-013 / MSM-014
+
+Native exact-model admission now also covers **Hugging Face, Cerebras and NVIDIA**, using fixed official chat URLs: `https://router.huggingface.co/v1/chat/completions`, `https://api.cerebras.ai/v1/chat/completions`, and `https://integrate.api.nvidia.com/v1/chat/completions`. Cerebras and NVIDIA have matching native `/v1/models` adapters. Credentials are `CEREBRAS_API_KEY` and `NVIDIA_API_KEY` (alias `NVIDIA_NIM_API_KEY`); HF retains its four existing aliases. None is enabled merely by possessing a key.
+
+Official references: [HF inference providers](https://huggingface.co/docs/inference-providers/en/index), [HF current pricing](https://huggingface.co/docs/inference-providers/en/pricing), [Cerebras compatibility](https://inference-docs.cerebras.ai/resources/openai), [Cerebras models](https://inference-docs.cerebras.ai/models/overview), [NVIDIA hosted APIs](https://docs.api.nvidia.com/nim/reference/llm-apis), and [NVIDIA catalog](https://integrate.api.nvidia.com/v1/models). NVIDIA's hosted API is distinct from downloadable NIM containers. Documentation establishes transport contracts, not this project's account entitlement.
+
+### How many are implemented?
+
+The pinned snapshot contains **160 research records**, not 160 invocable models:
+
+| Source | Records | Exact model claims | Static/aggregate references | Exact claims covered by chat transports |
+|---|---:|---:|---:|---:|
+| `mnfst/awesome-free-llm-apis` | 123 | 117 | 6 | 48: 32 explicitly gated native + 16 legacy OpenRouter |
+| `tashfeenahmed/freellmapi` | 37 | 0 | 37 provider-class references | 0 exact claims extracted by this parser |
+
+The 32 gated claims comprise 3 Groq, 7 Mistral, 11 Gemini, 5 HF and 6 NVIDIA. This adds 11 exact claims over the earlier batch. Cerebras is implemented but has no exact claim in the pinned snapshot, so does not inflate the count. Six of the directory's 16 provider families have transport coverage. The second source's 37 references do **not** describe its complete upstream model inventory; upstream headline endpoint counts are not the implementation denominator. All records retain dispositions and zero automatic runtime admissions. `summary.by_source` exposes these denominators and labels legacy OpenRouter separately.
+
+### Credential discovery and remaining decisions
+
+The manual default-branch workflow now attempts **names-only** inventory with existing issue-184-authorized administration credentials, isolated from catalogs and read-only review collection. The fixed GitHub metadata endpoint cannot retrieve secret values. Missing authorization, 403 and bounded-pagination failures remain explicit observations. PR runs receive no credentials; no new schedule, permission grant or routing activation is created. The earlier description of a wholly read-only observation job applies to catalog/review calls: the new inventory step uses an existing administrative credential strictly for a metadata GET.
+
+Availability monitoring is separately repaired for HF alias parity and Gemini header authentication; its existing health lane is not admission evidence for new providers. See the [Delphi/RFP matrix](../proposals/active/free-llm-provider-prioritization/DEBATE.md) for proposed priorities and uncast ballots, and the [HITL checklist](PROVIDER-HITL.md) for signup contact/verification, exact-model entitlement and Origin-device access. `DeepAgent.py --doctor` reports local readiness; a local doctor or Administrator title does not prove a remotely running administrator.

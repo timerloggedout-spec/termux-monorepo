@@ -160,3 +160,36 @@ def test_retry_after_preserved_safely(client, monkeypatch, tmp_path):
     monkeypatch.setattr(providers, "post_json", lambda *a: (_ for _ in ()).throw(providers.ProviderAdmissionError(429, "limited", "upstream_rate_limited", "17")))
     r = client.post("/v1/chat/completions", json=request_body())
     assert r.status_code == 429 and r.headers["retry-after"] == "17"
+
+@pytest.mark.parametrize(("provider", "model", "secret", "expected_url"), [
+    ("huggingface", "openai/gpt-oss-120b:groq", "HF_TOKEN", "https://router.huggingface.co/v1/chat/completions"),
+    ("cerebras", "gpt-oss-120b", "CEREBRAS_API_KEY", "https://api.cerebras.ai/v1/chat/completions"),
+    ("nvidia", "google/gemma-4-31b-it", "NVIDIA_API_KEY", "https://integrate.api.nvidia.com/v1/chat/completions"),
+])
+def test_new_provider_uses_fixed_endpoint_and_exact_admission(client, monkeypatch, tmp_path, provider, model, secret, expected_url):
+    monkeypatch.setenv(secret, "not-for-output")
+    admitted = entry(provider=provider, model=model)
+    monkeypatch.setenv("LLM_API_HUB_PROVIDER_POLICY", str(policy_file(tmp_path, [admitted])))
+    calls = []
+    monkeypatch.setattr(providers, "post_json", lambda url, payload, key, timeout: calls.append((url, payload["model"], key)) or {"choices": [{"message": {"content": "ok"}}]})
+    response = client.post("/v1/chat/completions", json=request_body(f"{provider}/{model}"))
+    assert response.status_code == 200
+    assert calls == [(expected_url, model, "not-for-output")]
+
+
+@pytest.mark.parametrize("model", [
+    "google/gemma-4-31b-it",
+    "mistralai/mistral-large-2-instruct",
+    "nvidia/llama-3.1-nemotron-ultra-253b-v1",
+    "nvidia/nemotron-3-super-120b-a12b",
+    "nvidia/nemotron-3-ultra-550b-a55b",
+    "openai/gpt-oss-20b",
+])
+def test_nvidia_research_ids_use_gated_native_route(client, monkeypatch, tmp_path, model):
+    monkeypatch.setenv("NVIDIA_NIM_API_KEY", "nim-alias-key")
+    monkeypatch.setenv("LLM_API_HUB_PROVIDER_POLICY", str(policy_file(tmp_path, [entry(provider="nvidia", model=model)])))
+    calls = []
+    monkeypatch.setattr(providers, "post_json", lambda url, payload, key, timeout: calls.append((url, payload["model"], key)) or {"choices": [{"message": {"content": "ok"}}]})
+    response = client.post("/v1/chat/completions", json=request_body("nvidia/" + model))
+    assert response.status_code == 200
+    assert calls == [("https://integrate.api.nvidia.com/v1/chat/completions", model, "nim-alias-key")]

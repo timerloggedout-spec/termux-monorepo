@@ -536,3 +536,19 @@ proposals:
     related_prs: [1244, 1274, 1277, 1278, 1280]
     related_branches: [hark/lane-compounding]
     gates_required: [repo-gate]
+  - id: free-llm-provider-prioritization
+    title: "Free LLM provider research/RFP feedback prioritization and HITL"
+    author: Cue
+    status: in_review
+    priority: P1
+    path: active/free-llm-provider-prioritization/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: Cue
+        role: author+executor
+        status: executing
+    related_prs: []
+    related_branches: []
+    gates_required: [repo-gate, termux-smoke]

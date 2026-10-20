@@ -100,7 +100,12 @@ def test_production_observation_uses_trusted_master_and_separate_secret_scopes()
     assert 'GH_TOKEN' not in provider_step['env']
     assert 'chat/completions' not in provider_step['run']
     assert 'coverage.json' in provider_step['run']
-    review_step = next(s for s in steps if 'GH_TOKEN' in s.get('env', {}))
+    inventory_step = next(s for s in steps if 'provider_secret_inventory.py' in s.get('run', ''))
+    assert set(inventory_step['env']) == {'GH_TOKEN'}
+    assert 'secrets.OPERATOR' in inventory_step['env']['GH_TOKEN']
+    assert 'credential-names.json' in inventory_step['run']
+    assert 'CEREBRAS_API_KEY' in provider_step['env']
+    review_step = next(s for s in steps if s.get('env', {}).get('GH_TOKEN') == '${{ github.token }}')
     assert review_step['env'] == {'GH_TOKEN': '${{ github.token }}'}
     assert review_step['run'].count('--paginate --slurp') == 4
     assert 'matrix-review.json' in review_step['run']
@@ -108,3 +113,24 @@ def test_production_observation_uses_trusted_master_and_separate_secret_scopes()
         assert 'write' not in str(step.get('env', {})).lower()
     assert 'secrets: inherit' not in path.read_text()
     assert 'pull_request_target' not in path.read_text()
+
+
+def test_per_source_denominators_do_not_count_provider_classes_as_models():
+    summary = batch.reconcile(research(), catalog())['summary']['by_source']
+    directory = summary['mnfst/awesome-free-llm-apis']
+    assert directory['research_records'] == 123
+    assert directory['individual_model_claims'] == 117
+    assert directory['static_or_aggregate_references'] == 6
+    assert directory['gated_native_chat_model_claims'] == 32
+    assert directory['legacy_openrouter_model_claims'] == 16
+    assert len(directory['catalog_adapter_families']) == 6
+    proxy = summary['tashfeenahmed/freellmapi']
+    assert proxy['research_records'] == 37
+    assert proxy['individual_model_claims'] == 0
+    assert proxy['static_or_aggregate_references'] == 37
+    assert proxy['runtime_eligible'] == directory['runtime_eligible'] == 0
+
+
+def test_reconciliation_native_provider_registry_matches_real_dispatch():
+    from llm_api_hub.server.research_providers import ENDPOINTS
+    assert batch.NATIVE_CHAT_PROVIDERS == frozenset(ENDPOINTS)

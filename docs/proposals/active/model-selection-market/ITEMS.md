@@ -10,6 +10,8 @@
 | MSM-003 | series \| parallel \| concurrent selector | **done** | MSM-002 | `selector.py` |
 | MSM-004 | DSPy-DoE consideration stub | **done** | MSM-000 | `dspy_doe.py` — not default router |
 | MSM-005 | Cards + bets + graph stub | **done** | MSM-002, MSM-003 | `market.py` |
+| MSM-006 | Provenance-pinned provider research ingestion + deterministic refresh PR lane | **executing** | MSM-000, MSM-002 | Agent Q; public upstream data only; no inference, paid fallback, or routing mutation |
+| MSM-007 | Evidence-gated Bayesian/Delphi advisory ranking + dependency-aware Cadence plan | **executing** | MSM-006 | Offline tested; production weights unchanged |
 
 ## Runtime package
 

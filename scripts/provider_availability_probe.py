@@ -5,6 +5,7 @@ from __future__ import annotations
 import datetime as dt
 import json
 import os
+import re
 import urllib.error
 import urllib.request
 
@@ -40,8 +41,51 @@ def request(url, *, token=None, method="GET", payload=None, auth_header="Authori
 
 
 def result(provider):
-    return {"provider": provider, "credential_present": False, "catalog_ok": False,
-            "inference_ok": False, "model": None, "observed_at": now(), "error_class": None}
+    return {"provider": provider, "credential_present": False, "auth_mode": "unconfigured",
+            "catalog_probe_required": False, "catalog_ok": False, "inference_ok": False,
+            "model": None, "observed_at": now(), "error_class": None}
+
+
+
+def catalog_provider_probe(provider, row, catalog_module=None):
+    """Observe one provider through the canonical catalog adapters; never infer here."""
+    if catalog_module is None:
+        try:
+            from scripts import provider_model_catalog as catalog_module
+        except ImportError:
+            import provider_model_catalog as catalog_module
+
+    token, _env_name = catalog_module.resolve_secret(provider)
+    public = provider in catalog_module.PUBLIC_CATALOGS
+    row["credential_present"] = bool(token)
+    row["auth_mode"] = "credential" if token else ("public" if public else "unconfigured")
+    row["catalog_probe_required"] = bool(token) or public
+    if not token and not public:
+        row["error_class"] = "missing_secret"
+        return
+
+    try:
+        models, _headers = catalog_module.poll(provider, token)
+        row["catalog_ok"] = bool(models)
+        row["model_count"] = len(models)
+        if not models:
+            row["error_class"] = "empty_catalog"
+            return
+        if provider == "openrouter":
+            free = [model.get("id") for model in models if model.get("free_suffix")]
+            preferred = os.environ.get("OPENROUTER_HEALTH_MODEL", "").strip()
+            row["free_model_count"] = len(free)
+            row["model"] = preferred if preferred and preferred in free else (free[0] if free else None)
+        else:
+            row["model"] = models[0].get("id")
+    except Exception as exc:
+        # The catalog adapter already sanitizes HTTP errors; retain only a
+        # narrow error vocabulary and never serialize upstream bodies/headers.
+        safe = str(exc)
+        if re.fullmatch(r"http_status_[1-5][0-9][0-9]|response_too_large|invalid_json|invalid_response_shape|invalid_pagination|invalid_model|invalid_account_id", safe):
+            row["error_class"] = safe
+        else:
+            row["error_class"] = type(exc).__name__
 
 
 def probe_catalog(provider, url, token, row):
@@ -85,6 +129,8 @@ def openrouter_inference(row, token):
 
 def gemini_probe(row, token):
     row["credential_present"] = bool(token)
+    row["auth_mode"] = "credential" if token else "unconfigured"
+    row["catalog_probe_required"] = bool(token)
     if not token:
         row["error_class"] = "missing_secret"
         return
@@ -126,31 +172,37 @@ def resolve_huggingface_token(environ=None):
 
 
 def main():
+    try:
+        from scripts import provider_model_catalog
+    except ImportError:
+        import provider_model_catalog
+
     observed = now()
     rows = []
-    gem = result("gemini")
-    gemini_probe(gem, os.environ.get("GEMINI_API_KEY", ""))
-    rows.append(gem)
-    providers = [
-        ("openrouter", "https://openrouter.ai/api/v1/models", os.environ.get("OPENROUTER_API_KEY", "")),
-        ("felo", "https://openapi.felo.ai/api/v1/models", os.environ.get("FELO_AI_API", "")),
-        ("huggingface", "https://router.huggingface.co/v1/models", resolve_huggingface_token()),
-    ]
-    for provider, url, token in providers:
+    # Keep the two existing inference probes explicitly bounded. All other
+    # providers receive catalog-only observations; catalog discovery never
+    # activates native routing or sends a completion request.
+    for provider in sorted(provider_model_catalog.ENDPOINTS):
         row = result(provider)
-        probe_catalog(provider, url, token, row)
-        if provider == "openrouter":
-            openrouter_inference(row, token)
+        if provider == "gemini":
+            gemini_probe(row, os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY", ""))
+        else:
+            catalog_provider_probe(provider, row, provider_model_catalog)
+            if provider == "openrouter" and row["credential_present"] and row["catalog_ok"]:
+                openrouter_inference(row, os.environ.get("OPENROUTER_API_KEY", ""))
         rows.append(row)
+
     document = {"schema": "provider-availability/v1", "observed_at": observed,
                 "semantics": {"credential_present": "workflow secret resolved; does not prove validity",
+                              "auth_mode": "credential, public, or unconfigured; public does not imply entitlement",
+                              "catalog_probe_required": "true for configured providers and explicitly public catalogs",
                               "catalog_ok": "provider catalog endpoint responded with usable model metadata",
-                              "inference_ok": "minimal live inference succeeded"}, "providers": rows}
+                              "inference_ok": "minimal live inference succeeded only for the established OpenRouter/Gemini probes"}, "providers": rows}
     with open(os.environ.get("OUTPUT", "/tmp/provider-availability.json"), "w", encoding="utf-8") as fh:
         json.dump(document, fh, indent=2, sort_keys=True)
         fh.write("\n")
     for row in rows:
-        print(f"{row['provider']}: credential={row['credential_present']} catalog={row['catalog_ok']} inference={row['inference_ok']} model={row.get('model') or '-'} error={row.get('error_class') or '-'}")
+        print(f"{row['provider']}: auth={row['auth_mode']} credential={row['credential_present']} catalog={row['catalog_ok']} inference={row['inference_ok']} model={row.get('model') or '-'} error={row.get('error_class') or '-'}")
 
 
 if __name__ == "__main__":

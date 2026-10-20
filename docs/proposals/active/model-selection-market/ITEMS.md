@@ -18,6 +18,8 @@
 | MSM-010 | Official provider catalog + explicit native hub adapters for harvested models | **done** | MSM-006, MSM-009 | Q; Groq, Mistral and Gemini official endpoints; exact-model opt-in admission, no inferred free entitlement or routing-weight mutation; real production-contract regressions |
 | MSM-011 | Evidence-backed matrix review attribution and reconciliation tests | **done** | MSM-008 | Q; distinguish submitted reviews, conversation, inline comments, claimed local roles, and authenticated actors; preserve provenance |
 
+| MSM-013 | Diagnose existing Actions provider-secret mappings and execute only a verified no-cost bounded smoke | **executing** | MSM-010 | Owner authorizes existing tokens only; exact allowlist, account evidence, zero prices, one synthetic request, no keys/account changes/paid fallback; sanitized receipts and regressions |
+
 ## Runtime package
 
 ```text

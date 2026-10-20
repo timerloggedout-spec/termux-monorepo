@@ -127,6 +127,7 @@ def test_main_writes_document_without_leaking_secrets(tmp_path):
             assert row["catalog_probe_required"] is False
             assert row["catalog_ok"] is False
     assert by_provider["groq"]["credential_env_expected"] == "GROQ_API_KEY"
+    assert by_provider["gemini"]["error_class"] == "missing_secret"
     # Artifacts may name the resolved environment variable, but never the secret value.
     body = out.read_text(encoding="utf-8")
     assert "fixture-hf-secret" not in body
@@ -147,6 +148,23 @@ def test_huggingface_alias_precedence_matches_catalog():
         assert probe.resolve_huggingface_token(env) == alias
 
 
+
+def test_openrouter_inference_delegates_to_nonexecuting_safe_observer():
+    from scripts.ops import provider_free_smoke
+
+    row = probe.result("openrouter")
+    row.update(catalog_ok=True, model="liquid/lfm-2.5-2.6b:free")
+    with patch.object(provider_free_smoke, "observe", return_value={
+        "inference_ok": False, "reason": "explicit_smoke_not_requested",
+        "model": "liquid/lfm-2.5-2.6b:free", "token": "must-not-leak",
+    }) as observe:
+        probe.openrouter_inference(row, "secret-token")
+    observe.assert_called_once_with("secret-token", execute=False)
+    assert row["inference_ok"] is False
+    assert row["error_class"] is None
+    assert "must-not-leak" not in json.dumps(row)
+    assert "secret-token" not in json.dumps(row)
+
 def test_gemini_auth_uses_header_never_url_token():
     calls = []
 
@@ -159,13 +177,15 @@ def test_gemini_auth_uses_header_never_url_token():
     row = probe.result("gemini")
     with patch.object(probe, "request", side_effect=fake_request):
         probe.gemini_probe(row, "secret-value")
-    assert row["catalog_ok"] and row["inference_ok"]
-    assert len(calls) == 2
-    for url, kwargs in calls:
-        assert "secret-value" not in url
-        assert "key=" not in url
-        assert kwargs["auth_header"] == "x-goog-api-key"
-        assert kwargs["token"] == "secret-value"
+    assert row["catalog_ok"] and not row["inference_ok"]
+    assert row["error_class"] == "free_account_unverified"
+    assert len(calls) == 1
+    url, kwargs = calls[0]
+    assert url.endswith("/models")
+    assert "secret-value" not in url
+    assert "key=" not in url
+    assert kwargs["auth_header"] == "x-goog-api-key"
+    assert kwargs["token"] == "secret-value"
 
 
 def test_probe_errors_do_not_expose_error_body_or_token():

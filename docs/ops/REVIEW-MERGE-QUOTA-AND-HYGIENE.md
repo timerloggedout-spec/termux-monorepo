@@ -172,14 +172,15 @@ The workflow is triggered by submitted reviews (it proceeds only for an `APPROVE
 All conditions must hold:
 
 1. Repository variable `GOVERNED_AUTO_MERGE_ENABLED=true`.
-2. The target branch protection can be read; missing/forbidden protection data blocks.
-3. At least one approving review is required by branch protection.
-4. Stale approvals are dismissed or approval of the latest push is required.
-5. At least one required status check is configured.
-6. Required conversation resolution is enabled.
-7. PR is open, non-draft, merge state is `CLEAN`, and carries the explicit `automerge:eligible` label.
-8. The current head SHA has enough approvals from distinct, non-bot human reviewers other than the PR author; each counted approval must reference that exact head SHA.
-9. A current-head human `CHANGES_REQUESTED` review blocks the decision.
+2. Repository variable `GOVERNED_AUTOMERGE_APP_CLIENT_ID` and secret `GOVERNED_AUTOMERGE_APP_PRIVATE_KEY` are configured for a dedicated GitHub App installation with narrowly scoped Administration:read, Pull requests:write, Contents:read, Checks:read, and Commit statuses:read permissions. The App token is minted only when the opt-in variable is true; missing credentials fail before mutation.
+3. The target branch protection can be read; missing/forbidden protection data blocks.
+4. At least one approving review is required by branch protection.
+5. Stale approvals are dismissed or approval of the latest push is required.
+6. At least one required status check is configured.
+7. Required conversation resolution is enabled.
+8. PR is open, non-draft, merge state is `CLEAN`, and carries the explicit `automerge:eligible` label.
+9. The current head SHA has enough approvals from distinct, non-bot human reviewers other than the PR author; each counted approval must reference that exact head SHA.
+10. A current-head human `CHANGES_REQUESTED` review blocks the decision.
 
 If the API cannot prove a prerequisite, the evaluator returns `wait`; it does not merge, comment, or start a retry loop. GitHub's own required checks and protections still govern the eventual merge after auto-merge is enabled.
 
@@ -187,7 +188,7 @@ If the API cannot prove a prerequisite, the evaluator returns `wait`; it does no
 
 The workflow checks out policy code from the trusted default branch, not the reviewed PR head. This prevents an untrusted PR from replacing the evaluator and then executing modified policy code with a write-capable token. The new workflow becomes active after its code lands on the default branch. Do not enable the repository variable until the branch protection requirements above are verified. Add the `automerge:eligible` label only to deliberately opted-in, appropriately scoped PRs; never blanket-label the backlog.
 
-The initial implementation reads the classic branch-protection endpoint. If the repository uses rulesets without equivalent classic protection data, it fails closed. Add and test a ruleset-aware reader before relying on auto-merge for that configuration. The workflow's branch-protection API permission must also be confirmed on a real run; a permission/endpoint error is deliberately treated as "not verified".
+The initial implementation reads the classic branch-protection endpoint. If the repository uses rulesets without equivalent classic protection data, it fails closed. Add and test a ruleset-aware reader before relying on auto-merge for that configuration. The dedicated App must be installed on this repository and granted the permissions listed above; a permission/endpoint error is deliberately treated as "not verified". This is intentionally not implemented with a long-lived personal access token.
 
 ### Validation status
 

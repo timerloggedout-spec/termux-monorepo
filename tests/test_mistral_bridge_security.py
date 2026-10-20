@@ -1,55 +1,62 @@
 import os
-import stat
+import sys
 from pathlib import Path
 import pytest
-import importlib.util
 
-spec = importlib.util.spec_from_file_location("mistral_bridge", "multi-ai-cli/bridge/mistral_bridge.py")
-mistral_bridge = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(mistral_bridge)
+# Add parent directory to path to import mistral_bridge directly or via importlib
+bridge_path = Path(__file__).parent.parent / "multi-ai-cli" / "bridge"
+if str(bridge_path) not in sys.path:
+    sys.path.insert(0, str(bridge_path))
+
+import mistral_bridge
 
 
-def test_mistral_bridge_write_token_securely_permissions(tmp_path, monkeypatch):
-    test_token_dir = tmp_path / ".multi-ai-tokens"
-    test_token_file = test_token_dir / "mistral_token.txt"
+def test_write_token_securely_enforcement(tmp_path):
+    token_dir = tmp_path / ".multi-ai-tokens"
+    token_file = token_dir / "mistral_token.txt"
 
-    monkeypatch.setattr(mistral_bridge, "token_file", test_token_file)
+    mistral_bridge._write_token_securely("test_secret_token_123", target_path=token_file)
 
-    mistral_bridge._write_token_securely("test_secret_token_123")
-
-    assert test_token_file.exists()
-    assert test_token_file.read_text(encoding="utf-8") == "test_secret_token_123"
+    assert token_file.exists()
+    assert token_file.read_text(encoding="utf-8") == "test_secret_token_123"
 
     if os.name != "nt":
-        dir_mode = stat.S_IMODE(os.stat(test_token_dir).st_mode)
-        file_mode = stat.S_IMODE(os.stat(test_token_file).st_mode)
-        assert dir_mode == 0o700
-        assert file_mode == 0o600
+        assert (token_dir.stat().st_mode & 0o777) == 0o700
+        assert (token_file.stat().st_mode & 0o777) == 0o600
 
 
-def test_mistral_bridge_symlink_file_rejected(tmp_path, monkeypatch):
-    target_file = tmp_path / "actual_file.txt"
-    target_file.write_text("old_content", encoding="utf-8")
+def test_write_token_securely_symlink_file_rejection(tmp_path):
+    token_dir = tmp_path / ".multi-ai-tokens"
+    token_dir.mkdir(parents=True, exist_ok=True)
+    if os.name != "nt":
+        token_dir.chmod(0o700)
 
-    symlink_file = tmp_path / "symlink_token.txt"
+    target_file = tmp_path / "sensitive_system_file.txt"
+    target_file.write_text("sensitive_data", encoding="utf-8")
+    if os.name != "nt":
+        target_file.chmod(0o644)
+
+    symlink_file = token_dir / "mistral_token.txt"
     symlink_file.symlink_to(target_file)
 
-    monkeypatch.setattr(mistral_bridge, "token_file", symlink_file)
+    with pytest.raises(ValueError, match="Symlink token path rejected"):
+        mistral_bridge._write_token_securely("malicious_token_payload", target_path=symlink_file)
 
-    with pytest.raises(ValueError, match="Symlink token path rejected for security"):
-        mistral_bridge._write_token_securely("malicious_token")
+    # Ensure target file content and permissions remain untouched
+    assert target_file.read_text(encoding="utf-8") == "sensitive_data"
+    if os.name != "nt":
+        assert (target_file.stat().st_mode & 0o777) == 0o644
 
-    assert target_file.read_text(encoding="utf-8") == "old_content"
 
-
-def test_mistral_bridge_symlink_dir_rejected(tmp_path, monkeypatch):
+def test_write_token_securely_symlink_dir_rejection(tmp_path):
     real_dir = tmp_path / "real_dir"
-    real_dir.mkdir()
-    symlink_dir = tmp_path / "symlink_dir"
+    real_dir.mkdir(parents=True, exist_ok=True)
+
+    symlink_dir = tmp_path / ".multi-ai-tokens"
     symlink_dir.symlink_to(real_dir)
 
-    symlink_token_file = symlink_dir / "mistral_token.txt"
-    monkeypatch.setattr(mistral_bridge, "token_file", symlink_token_file)
+    token_file = symlink_dir / "mistral_token.txt"
 
-    with pytest.raises(ValueError, match="Symlink token path rejected for security"):
-        mistral_bridge._write_token_securely("malicious_token")
+    with pytest.raises(ValueError, match="Symlink directory rejected"):
+        mistral_bridge._write_token_securely("malicious_token_payload", target_path=token_file)
+

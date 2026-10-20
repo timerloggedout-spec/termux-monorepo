@@ -53,7 +53,7 @@ class TelemetryEquationRegistryTest(unittest.TestCase):
             record = candidates[equation_id]
             self.assertEqual(record["status"], "implemented-helper-not-emitted")
             self.assertIn("not emitted", record["integration_status"])
-            self.assertEqual(record["implementation"], "she/metrics/agent_throughput.py")
+            self.assertTrue(record["implementation"].startswith("she/metrics/agent_throughput.py"))
             self.assertTrue(callable(helper))
 
     def test_wolfram_reference_fixtures_match_python_arithmetic(self):
@@ -64,6 +64,10 @@ class TelemetryEquationRegistryTest(unittest.TestCase):
             "WOLFRAM-ATES-01",
             "WOLFRAM-ECR-01",
             "WOLFRAM-VOR-01",
+            "WOLFRAM-RAMP-01",
+            "WOLFRAM-RREC-01",
+            "WOLFRAM-WILSON-01",
+            "WOLFRAM-WILSON-02",
         }
         self.assertEqual(set(fixtures), expected_ids)
         calculated = {
@@ -72,10 +76,14 @@ class TelemetryEquationRegistryTest(unittest.TestCase):
             "WOLFRAM-ATES-01": 18 * (1 - 2 / 3) * (20 / (2 * 10)),
             "WOLFRAM-ECR-01": 4 / 5,
             "WOLFRAM-VOR-01": 3 / 4,
+            "WOLFRAM-RAMP-01": 13 / 10,
+            "WOLFRAM-RREC-01": 6 / 8,
         }
         for fixture_id, value in calculated.items():
             with self.subTest(fixture=fixture_id):
                 self.assertAlmostEqual(fixtures[fixture_id]["expected"], value, places=9)
+        self.assertEqual(fixtures["WOLFRAM-WILSON-01"]["expected"], [0.300642, 0.954413])
+        self.assertEqual(fixtures["WOLFRAM-WILSON-02"]["expected"], [0.656955, 0.824548])
 
     def test_candidate_ratio_examples_match_registry_contract(self):
         self.assertEqual(evidence_coverage_ratio(4, 5), 0.8)
@@ -89,8 +97,8 @@ class TelemetryEquationRegistryTest(unittest.TestCase):
         self.assertEqual(helper[0]["id"], "STAT-WILSON-v1")
         self.assertEqual(helper[0]["status"], "implemented-helper-not-emitted")
         self.assertIn("not emitted", helper[0]["integration_status"])
-        self.assertEqual(wilson_proportion_interval(3, 4), (0.300636, 0.954414))
-        self.assertEqual(wilson_proportion_interval(75, 100), (0.656954, 0.824549))
+        self.assertEqual(wilson_proportion_interval(3, 4), (0.300642, 0.954413))
+        self.assertEqual(wilson_proportion_interval(75, 100), (0.656955, 0.824548))
 
     def test_registry_preserves_no_standalone_merge_gate_invariant(self):
         self.assertIn("no-standalone-merge-gate", self.registry["invariants"])

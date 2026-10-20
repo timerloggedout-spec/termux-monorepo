@@ -11,6 +11,12 @@ CREDENTIAL_KEYS = (
     "FELO_AI_API",
     "HUGGINGFACE_TOKEN",
     "HF_TOKEN",
+    "GOOGLE_API_KEY", "OMNI_API_KEY", "GROQ_API_KEY", "MISTRAL_API_KEY",
+    "CEREBRAS_API_KEY", "NVIDIA_API_KEY", "NVIDIA_NIM_API_KEY", "AION_API_KEY",
+    "LLM7_API_TOKEN", "ZAI_API_KEY", "MODELSCOPE_TOKEN", "SILICONFLOW_API_KEY",
+    "KILO_API_KEY", "OVHCLOUD_API_KEY", "SAMBANOVA_API_KEY", "CLOUDFLARE_API_TOKEN",
+    "CLOUDFLARE_ACCOUNT_ID", "COHERE_API_KEY", "OLLAMA_API_KEY",
+    "HUGGING_FACE_HUB_TOKEN", "HF_API_TOKEN",
 )
 
 
@@ -77,19 +83,34 @@ def test_main_writes_document_without_leaking_secrets(tmp_path):
     out = tmp_path / "availability.json"
     env = {k: "" for k in CREDENTIAL_KEYS}
     env["OUTPUT"] = str(out)
-    with patch.dict("os.environ", env, clear=False):
+    from scripts import provider_model_catalog
+
+    # Public catalogs are still observed, but the test must never use the network.
+    with patch.dict("os.environ", env, clear=True), patch.object(
+        provider_model_catalog, "poll",
+        side_effect=lambda provider, token: ([{"id": f"fixture-{provider}", "free_suffix": False}], {}),
+    ):
         probe.main()
     assert out.exists()
     doc = json.loads(out.read_text(encoding="utf-8"))
     assert doc["schema"] == "provider-availability/v1"
     assert doc["observed_at"].endswith("Z")
     providers = {row["provider"] for row in doc["providers"]}
-    assert {"gemini", "openrouter", "felo", "huggingface"}.issubset(providers)
+    assert {"gemini", "openrouter", "felo", "huggingface", "aion", "llm7",
+            "zai", "modelscope", "siliconflow", "kilo", "ovhcloud",
+            "sambanova", "cloudflare", "cohere", "ollama"}.issubset(providers)
+    public = {"llm7", "modelscope", "ovhcloud"}
     for row in doc["providers"]:
-        # With no credentials configured, every provider must be inert.
         assert row["credential_present"] is False
-        assert row["catalog_ok"] is False
         assert row["inference_ok"] is False
+        if row["provider"] in public:
+            assert row["auth_mode"] == "public"
+            assert row["catalog_probe_required"] is True
+            assert row["catalog_ok"] is True
+        else:
+            assert row["auth_mode"] == "unconfigured"
+            assert row["catalog_probe_required"] is False
+            assert row["catalog_ok"] is False
     # Credentials must never be serialized into the evidence document.
     body = out.read_text(encoding="utf-8")
     for key in CREDENTIAL_KEYS:
@@ -185,3 +206,48 @@ def test_request_places_gemini_key_in_header_not_url():
     assert "private-key" not in captured["url"]
     assert "key=" not in captured["url"]
     assert captured["headers"]["X-goog-api-key"] == "private-key"
+
+
+
+def test_public_catalog_probe_does_not_require_credentials_or_inference():
+    from scripts import provider_model_catalog
+
+    row = probe.result("ovhcloud")
+    with patch.dict("os.environ", {}, clear=True), patch.object(
+        provider_model_catalog, "poll", return_value=([{"id": "public-model"}], {})
+    ) as poll:
+        probe.catalog_provider_probe("ovhcloud", row, provider_model_catalog)
+    poll.assert_called_once_with("ovhcloud", None)
+    assert row["auth_mode"] == "public"
+    assert row["catalog_probe_required"] is True
+    assert row["catalog_ok"] is True
+    assert row["model_count"] == 1
+    assert row["inference_ok"] is False
+
+
+def test_unconfigured_expanded_provider_never_calls_network():
+    from scripts import provider_model_catalog
+
+    row = probe.result("sambanova")
+    with patch.dict("os.environ", {}, clear=True), patch.object(
+        provider_model_catalog, "poll"
+    ) as poll:
+        probe.catalog_provider_probe("sambanova", row, provider_model_catalog)
+    poll.assert_not_called()
+    assert row["auth_mode"] == "unconfigured"
+    assert row["catalog_probe_required"] is False
+    assert row["error_class"] == "missing_secret"
+
+
+def test_expanded_catalog_probe_never_runs_inference():
+    from scripts import provider_model_catalog
+
+    row = probe.result("sambanova")
+    with patch.dict("os.environ", {"SAMBANOVA_API_KEY": "fixture-secret"}, clear=True), patch.object(
+        provider_model_catalog, "poll", return_value=([{"id": "fixture-model"}], {})
+    ) as poll:
+        probe.catalog_provider_probe("sambanova", row, provider_model_catalog)
+    poll.assert_called_once_with("sambanova", "fixture-secret")
+    assert row["catalog_ok"] is True
+    assert row["inference_ok"] is False
+    assert "fixture-secret" not in json.dumps(row)

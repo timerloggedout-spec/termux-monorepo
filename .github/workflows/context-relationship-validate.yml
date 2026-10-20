@@ -53,7 +53,9 @@ jobs:
             tests/test_context_relationship_build_index.py \
             tests/test_context_relationship_temporal_integrity.py \
             tests/test_context_relationship_explorer_projection.py \
+            tests/test_historical_corpus_explorer_snapshot.py \
             -q
+          python scripts/ci/build_historical_corpus_explorer_snapshot.py --check
           python -m archwiz.context_relationships.compiler \
             --input tests/fixtures/context_relationships/seed.json \
             --validate

@@ -1,8 +1,7 @@
 """Regression tests for Vercel ignored-build-step path filters.
 
-Vercel's contract: exit 0 means skip this deployment; non-zero means continue
-building. Missing SHAs and diff errors must fail open (continue build), never
-silently skip a required deployment.
+Vercel's contract: exit 0 skips a deployment; non-zero continues the build.
+Missing SHAs, unknown projects, and Git errors must fail open to a build.
 """
 from __future__ import annotations
 
@@ -15,9 +14,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIGS = {
-    "mcp-hub/vercel.json": "mcp-hub/api/mcp/index.ts",
-    "apps/help-wanted-dashboard/vercel.json": "scripts/ci/help_wanted_status.py",
-    "demo-portal/public/vercel.json": "demo-portal/public/index.html",
+    "mcp-hub/vercel.json": ("mcp-hub", "mcp-hub/api/mcp/index.ts"),
+    "apps/help-wanted-dashboard/vercel.json": (
+        "help-wanted-dashboard", "scripts/ci/help_wanted_status.py"
+    ),
+    "demo-portal/public/vercel.json": ("demo-portal", "demo-portal/public/index.html"),
 }
 
 
@@ -26,20 +27,25 @@ def run(command: list[str], cwd: Path, env: dict[str, str] | None = None) -> sub
 
 
 class VercelIgnoreCommandTests(unittest.TestCase):
-    def test_configs_have_project_scoped_ignore_commands(self) -> None:
-        for relative, relevant_path in CONFIGS.items():
+    def test_configs_use_short_project_scoped_helper(self) -> None:
+        for relative, (project, _relevant_path) in CONFIGS.items():
             with self.subTest(config=relative):
                 config = json.loads((ROOT / relative).read_text(encoding="utf-8"))
                 command = config.get("ignoreCommand", "")
                 self.assertTrue(command, f"{relative} must define ignoreCommand")
-                self.assertIn("VERCEL_GIT_PREVIOUS_SHA", command)
-                self.assertIn("VERCEL_GIT_COMMIT_SHA", command)
-                self.assertIn(":(top)", command)
-                self.assertNotIn("HEAD^ HEAD -- .", command)
-                self.assertIn(relevant_path.split("/")[0], command)
+                self.assertIn("scripts/ci/vercel_ignore_build.sh", command)
+                self.assertIn(project, command)
+                self.assertLessEqual(len(command), 256)
 
-    def test_ignore_commands_skip_unrelated_changes_and_build_relevant_changes(self) -> None:
-        for relative, relevant_path in CONFIGS.items():
+        helper = (ROOT / "scripts/ci/vercel_ignore_build.sh").read_text(encoding="utf-8")
+        self.assertIn("VERCEL_GIT_PREVIOUS_SHA", helper)
+        self.assertIn("VERCEL_GIT_COMMIT_SHA", helper)
+        self.assertIn(":(top)", helper)
+        self.assertNotIn("HEAD^ HEAD -- .", helper)
+
+    def test_unrelated_changes_skip_and_relevant_changes_build(self) -> None:
+        helper_source = (ROOT / "scripts/ci/vercel_ignore_build.sh").read_text(encoding="utf-8")
+        for relative, (project, relevant_path) in CONFIGS.items():
             with self.subTest(config=relative):
                 config = json.loads((ROOT / relative).read_text(encoding="utf-8"))
                 command = config["ignoreCommand"]
@@ -48,15 +54,20 @@ class VercelIgnoreCommandTests(unittest.TestCase):
                     run(["git", "init", "-q"], repo)
                     run(["git", "config", "user.email", "vercel-ignore-test@example.invalid"], repo)
                     run(["git", "config", "user.name", "Vercel ignore test"], repo)
-                    (repo / relevant_path).parent.mkdir(parents=True, exist_ok=True)
-                    (repo / relevant_path).write_text("baseline\n", encoding="utf-8")
-                    (repo / "unrelated" / "notes.txt").parent.mkdir(parents=True, exist_ok=True)
-                    (repo / "unrelated" / "notes.txt").write_text("baseline\n", encoding="utf-8")
+                    helper = repo / "scripts/ci/vercel_ignore_build.sh"
+                    helper.parent.mkdir(parents=True, exist_ok=True)
+                    helper.write_text(helper_source, encoding="utf-8")
+                    relevant = repo / relevant_path
+                    relevant.parent.mkdir(parents=True, exist_ok=True)
+                    relevant.write_text("baseline\n", encoding="utf-8")
+                    unrelated = repo / "unrelated/notes.txt"
+                    unrelated.parent.mkdir(parents=True, exist_ok=True)
+                    unrelated.write_text("baseline\n", encoding="utf-8")
                     self.assertEqual(run(["git", "add", "."], repo).returncode, 0)
                     self.assertEqual(run(["git", "commit", "-qm", "baseline"], repo).returncode, 0)
                     base_sha = run(["git", "rev-parse", "HEAD"], repo).stdout.strip()
 
-                    (repo / "unrelated" / "notes.txt").write_text("unrelated update\n", encoding="utf-8")
+                    unrelated.write_text("unrelated update\n", encoding="utf-8")
                     self.assertEqual(run(["git", "add", "."], repo).returncode, 0)
                     self.assertEqual(run(["git", "commit", "-qm", "unrelated"], repo).returncode, 0)
                     unrelated_sha = run(["git", "rev-parse", "HEAD"], repo).stdout.strip()
@@ -68,10 +79,10 @@ class VercelIgnoreCommandTests(unittest.TestCase):
                     skipped = run(["bash", "-c", command], repo, env)
                     self.assertEqual(
                         skipped.returncode, 0,
-                        f"{relative} should skip unrelated changes; stdout={skipped.stdout!r}, stderr={skipped.stderr!r}",
+                        f"{relative} should skip unrelated changes: {skipped.stdout!r} {skipped.stderr!r}",
                     )
 
-                    (repo / relevant_path).write_text("relevant update\n", encoding="utf-8")
+                    relevant.write_text("relevant update\n", encoding="utf-8")
                     self.assertEqual(run(["git", "add", "."], repo).returncode, 0)
                     self.assertEqual(run(["git", "commit", "-qm", "relevant"], repo).returncode, 0)
                     relevant_sha = run(["git", "rev-parse", "HEAD"], repo).stdout.strip()
@@ -82,7 +93,7 @@ class VercelIgnoreCommandTests(unittest.TestCase):
                     built = run(["bash", "-c", command], repo, env)
                     self.assertEqual(
                         built.returncode, 1,
-                        f"{relative} should build relevant changes; stdout={built.stdout!r}, stderr={built.stderr!r}",
+                        f"{relative} should build relevant changes: {built.stdout!r} {built.stderr!r}",
                     )
 
                     env["VERCEL_GIT_PREVIOUS_SHA"] = ""

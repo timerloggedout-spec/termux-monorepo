@@ -54,6 +54,19 @@ class MergeReadinessTests(unittest.TestCase):
         result = evaluate(snapshot)
         self.assertEqual(result["decision"], "wait")
         self.assertTrue(any("requests changes" in reason for reason in result["reasons"]))
+
+    def test_later_old_head_review_does_not_clear_current_head_change_request(self):
+        snapshot = eligible_snapshot()
+        snapshot["reviews"] = [
+            {"user": {"login": "reviewer", "type": "User"}, "state": "CHANGES_REQUESTED",
+             "submitted_at": "2026-10-19T12:00:00Z", "commit_id": "abc123"},
+            {"user": {"login": "reviewer", "type": "User"}, "state": "APPROVED",
+             "submitted_at": "2026-10-19T12:05:00Z", "commit_id": "oldsha"},
+        ]
+        result = evaluate(snapshot)
+        self.assertEqual(result["decision"], "wait")
+        self.assertTrue(any("requests changes" in reason for reason in result["reasons"]))
+
     def test_missing_required_checks_blocks(self):
         snapshot = eligible_snapshot(); snapshot["protection"]["required_status_checks"] = None
         self.assertEqual(evaluate(snapshot)["decision"], "wait")

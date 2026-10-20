@@ -22,5 +22,5 @@
       ]
     }
   ],
-  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- ."
+  "ignoreCommand": "if [ -z \"$VERCEL_GIT_PREVIOUS_SHA\" ] || [ -z \"$VERCEL_GIT_COMMIT_SHA\" ]; then exit 1; fi; git diff --quiet \"$VERCEL_GIT_PREVIOUS_SHA\" \"$VERCEL_GIT_COMMIT_SHA\" -- ':(top)apps/help-wanted-dashboard/' ':(top)docs/ops/generated/help-wanted-status.json' ':(top)docs/ops/generated/lane-matrix-status.json' ':(top)scripts/ci/help_wanted_status.py' ':(top)scripts/ci/verify_help_wanted_dashboard.py'; rc=$?; if [ \"$rc\" -eq 0 ]; then exit 0; else exit 1; fi"
 }

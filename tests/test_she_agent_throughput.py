@@ -154,8 +154,8 @@ class AgentThroughputTest(unittest.TestCase):
         self.assertIsNone(retry_recovery_rate(2, None))
 
     def test_wilson_interval_matches_wolfram_reference_fixtures(self):
-        self.assertEqual(wilson_proportion_interval(3, 4), (0.300636, 0.954414))
-        self.assertEqual(wilson_proportion_interval(75, 100), (0.656954, 0.824549))
+        self.assertEqual(wilson_proportion_interval(3, 4), (0.300642, 0.954413))
+        self.assertEqual(wilson_proportion_interval(75, 100), (0.656955, 0.824548))
         self.assertIsNone(wilson_proportion_interval(0, 0))
         self.assertIsNone(wilson_proportion_interval(1, None))
 

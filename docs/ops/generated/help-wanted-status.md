@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-20T17:04:17Z UTC · receipts=3229 · foreign_open=38 · tributes=109_
+_Generated 2026-10-20T20:08:59Z UTC · receipts=3229 · foreign_open=39 · tributes=110_
 
 ## Tributes (contributor ledger)
 
+- [SO4-Markets/interface#1029](https://github.com/SO4-Markets/interface/pull/1029) · state=open · help-wanted: stake + contribute for #918
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
 - [mangiapanejohn-dev/MOBIUS-Searcher#7](https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7) · state=open · help-wanted: stake + contribute for #6
@@ -43,10 +44,10 @@ _Generated 2026-10-20T17:04:17Z UTC · receipts=3229 · foreign_open=38 · tribu
 - [seleniumboot/selenium-boot#183](https://github.com/seleniumboot/selenium-boot/pull/183) · state=open · help-wanted: stake + contribute for #180
 - [use-assay/Assay#509](https://github.com/use-assay/Assay/pull/509) · state=open · help-wanted: stake + contribute for #305
 - [https://github.com/vedantnimbarte/zero/pull/81](https://github.com/vedantnimbarte/zero/pull/81) · state=? · 
-- [StellarFoundry/soroban-security-scanner#200](https://github.com/StellarFoundry/soroban-security-scanner/pull/200) · state=closed · help-wanted: stake + contribute for #158
 
 ## Foreign open PRs
 
+- [SO4-Markets/interface#1029](https://github.com/SO4-Markets/interface/pull/1029) — help-wanted: stake + contribute for #918
 - [use-assay/Assay#509](https://github.com/use-assay/Assay/pull/509) — help-wanted: stake + contribute for #305
 - [seleniumboot/selenium-boot#183](https://github.com/seleniumboot/selenium-boot/pull/183) — help-wanted: stake + contribute for #180
 - [francordel/kdemos#27](https://github.com/francordel/kdemos/pull/27) — help-wanted: stake + contribute for #26

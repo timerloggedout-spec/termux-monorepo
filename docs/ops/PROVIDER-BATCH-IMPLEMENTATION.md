@@ -30,9 +30,11 @@ Policy is revalidated on each request, so revocation or expiry takes effect with
 
 The report distinguishes `observed_in_catalog`, `not_observed_in_catalog`, `catalog_unavailable`, `not_an_individual_model`, and `adapter_not_implemented`. Aggregate labels and static provider-class references never become invocable model IDs. Unimplemented provider families remain visible rather than being silently dropped or relabeled complete. Every report row retains `runtime_eligible: false`, null remaining quota, source provenance, and blocking reasons. An injected documented model-page record is not counted as a live model-list match.
 
+The command below targets every provider in the current catalog adapter registry. Z.ai is intentionally excluded until its model-list contract is verified; native chat transport support does not substitute for catalog evidence.
+
 ```bash
 python3 scripts/provider_model_catalog.py \
-  --providers openrouter,felo,omni,huggingface,groq,mistral,gemini \
+  --providers openrouter,felo,omni,huggingface,groq,mistral,gemini,cerebras,nvidia,aion,llm7,modelscope,siliconflow,kilo,ovhcloud,sambanova,cloudflare,cohere,ollama \
   --output /tmp/provider-batch/catalog.json
 python3 -m scripts.model_selection_market.provider_batch \
   --catalog /tmp/provider-batch/catalog.json \
@@ -85,11 +87,13 @@ Names-only inventory succeeded with 30 repository secret names. No supported HF 
 
 Live catalogs returned **578 model rows: 470 OpenRouter, 45 Felo, 63 Gemini**. Exactly **22 research claims matched**: 11 Gemini and 11 OpenRouter. Five covered OpenRouter claims were not observed; 21 covered native claims had unavailable catalogs; 69 exact claims lack implemented adapters; 43 records are static/aggregate references. These categories total 160. No inference was performed by this observation and no model was automatically admitted. Implementation coverage (48 exact claims) and catalog matches (22) answer different questions.
 
-## Full direct transport completion
+## Full direct transport completion (historical implementation record)
+
+> **Historical snapshot note:** the coverage figures in this section describe the earlier direct-transport batch before PRs #1307/#1308 completed the later catalog and service observations. They are retained as historical evidence, not current status. Current catalog coverage is 15/16 families (14 published contracts plus runtime-observed ModelScope); the latest trusted production receipt is linked at the top of this document and in [provider service expansion](PROVIDER-SERVICE-EXPANSION.md). Z.ai remains the only unverified model-list adapter.
 
 The next completion slice implements the remaining ten directory families through fixed official APIs: Aion, LLM7, Z.ai, ModelScope, SiliconFlow, Kilo, OVHcloud, Cloudflare Workers AI, Cohere and Ollama Cloud. **All 117 exact directory claims now have chat transport coverage across all 16 families**: 101 gated native claims plus 16 legacy OpenRouter claims. This is wire-protocol coverage, not 117 successful inferences or account-entitled models. Endpoint/model compatibility and current availability still require live account evidence. Cerebras remains extra implemented functionality with no exact pinned claim, and is never added to the denominator.
 
-Catalog support is deliberately narrower: **13/16 directory families**. No model-list route is guessed for Z.ai, ModelScope or OVHcloud (16 exact claims). Their report status is `catalog_adapter_not_implemented`, distinct from a missing credential, a disappeared model and a missing chat adapter. Cloudflare uses its documented account-scoped OpenAI Chat Completions endpoint with a strict 32-hex account ID, not model-specific raw-run schema guesses. Cohere v2 messages/response text are normalized explicitly. Cohere and Cloudflare catalog pagination is bounded and remains on the fixed official path. Ollama preserves cloud catalog IDs exactly, including colons; no `:cloud` suffix is fabricated.
+At the time of this historical snapshot, catalog support was deliberately narrower: **13/16 directory families**. No model-list route was guessed for Z.ai, ModelScope or OVHcloud (16 exact claims). Their report status was `catalog_adapter_not_implemented`, distinct from a missing credential, a disappeared model and a missing chat adapter. Later work implemented OVHcloud's official public catalog and recorded ModelScope's provider-host catalog as a runtime observation; Z.ai remains unverified. Cloudflare uses its documented account-scoped OpenAI Chat Completions endpoint with a strict 32-hex account ID, not model-specific raw-run schema guesses. Cohere v2 messages/response text are normalized explicitly. Cohere and Cloudflare catalog pagination is bounded and remains on the fixed official path. Ollama preserves cloud catalog IDs exactly, including colons; no `:cloud` suffix is fabricated.
 
 | Native key | Fixed official chat contract | Credential / extra input | Official reference |
 |---|---|---|---|

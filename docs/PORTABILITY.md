@@ -1,6 +1,6 @@
 # Portability: why a fresh clone of this monorepo does not work yet
 
-Measured on `master` @ `320c73b` (3410 tracked paths).
+Measured on `master` @ `2c67628` (7607 tracked paths).
 
 This is the single highest-leverage finding in the current repo state, and it is
 upstream of almost every open PR: **the tree on `master` cannot be reproduced from a
@@ -10,12 +10,14 @@ process-runtime artifact, or an editor backup.
 
 | Symptom | Count | Class |
 |---|---:|---|
-| Tracked symlinks | 45 | — |
-| …dangling in this clone | 42 | — |
-| …pointing at `/data/data/com.termux/...` | 34 | A / B |
-| Tracked `.bak*` / `.old` copies | 120 | D |
-| Tracked agent session-store artifacts | 423 | E |
-| Tracked paths containing spaces | 452 | F |
+| Tracked paths | 7607 | — |
+| …pointing at `/data/data/com.termux/...` (device_absolute_symlinks) | 34 | A / B |
+| other_absolute_symlinks | 0 | — |
+| Tracked `.bak*` / `.old` copies (tracked_backup_files) | 120 | D |
+| Tracked agent session-store artifacts (tracked_session_artifacts) | 423 | E |
+| Tracked paths containing spaces (paths_with_spaces) | 452 | F |
+| tracked_browser_profile_files | 607 | — |
+| tracked_browser_credential_stores | 115 | — |
 
 `scripts/ci/repo_gate.py` turns each row into a ratchet counter, so the numbers can
 only go down. Nothing below has to be fixed in one pass.
@@ -150,4 +152,6 @@ python3 scripts/ci/repo_gate.py --write-baseline
 
 The gate reads the git **index** and `git cat-file`, never the working tree, so it
 behaves identically in a sparse checkout, with submodules uninitialised, and in the
-presence of 42 dangling links.
+presence of dangling device links.
+
+**Live measurement (2026-10-20 on tip 2c67628):** counters match the table above. Future hourly runs can lower these by vendoring or untracking the debt classes.

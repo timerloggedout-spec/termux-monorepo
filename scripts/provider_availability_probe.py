@@ -50,7 +50,10 @@ def result(provider):
 def catalog_provider_probe(provider, row, catalog_module=None):
     """Observe one provider through the canonical catalog adapters; never infer here."""
     if catalog_module is None:
-        from scripts import provider_model_catalog as catalog_module
+        try:
+            from scripts import provider_model_catalog as catalog_module
+        except ImportError:
+            import provider_model_catalog as catalog_module
 
     token, _env_name = catalog_module.resolve_secret(provider)
     public = provider in catalog_module.PUBLIC_CATALOGS
@@ -169,7 +172,10 @@ def resolve_huggingface_token(environ=None):
 
 
 def main():
-    from scripts import provider_model_catalog
+    try:
+        from scripts import provider_model_catalog
+    except ImportError:
+        import provider_model_catalog
 
     observed = now()
     rows = []

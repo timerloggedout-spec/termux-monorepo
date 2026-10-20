@@ -27,7 +27,7 @@ The authoritative implementation is [she/metrics/agent_throughput.py](../../she/
 | EQ-PY-v1 | PY = sequential baseline seconds / (agent count × workflow seconds) | baseline-normalized parallel yield | Requires declared sequential baseline, identified agents, and positive wall time; otherwise null. Do not silently clamp values; values above 1 should trigger cohort/baseline review. |
 | EQ-TPV-v1 | TPV = (input tokens + output tokens) / inference seconds | tokens/second of inference time | Requires positive inference seconds; otherwise null. Not end-to-end latency. |
 | EQ-CIE-v1 | CIE = output tokens / input tokens | output/input token ratio | Requires positive input tokens; otherwise null. Not a quality score. |
-| EQ-ATES-v1 | ATES = WTCV × (1 − RPI) × PY | composite throughput observation | Requires WTCV and parallel-yield evidence; otherwise null. Never use as a standalone quality or merge gate. |
+| EQ-ATES-v1 | ATES = WTCV × max(0, 1 − RPI) × PY | composite throughput observation | Requires WTCV and parallel-yield evidence; otherwise null. Never use as a standalone quality or merge gate. |
 
 The structural fallback is implemented with math.log1p(additions + deletions) * math.sqrt(files_changed). Invalid or absent complexity stays unavailable; the reducer does not invent a complexity of 1.0.
 

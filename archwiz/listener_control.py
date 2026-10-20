@@ -8,10 +8,10 @@ PID_FILE = HOME / 'archwiz/.listener.pid'
 LISTENER = HOME / 'archwiz/activity_listener.py'
 
 def start():
-    if PID_FILE.is_symlink():
-        raise ValueError("Symlink PID_FILE rejected")
     if LISTENER.is_symlink():
-        raise ValueError("Symlink LISTENER rejected")
+        raise ValueError(f"Symlink LISTENER rejected: {LISTENER}")
+    if PID_FILE.is_symlink():
+        raise ValueError(f"Symlink PID_FILE rejected: {PID_FILE}")
     if PID_FILE.exists():
         pid = PID_FILE.read_text().strip()
         if pid and Path(f'/proc/{pid}').exists():
@@ -25,6 +25,8 @@ def start():
         stdin=subprocess.DEVNULL, start_new_session=True
     )
     PID_FILE.parent.mkdir(parents=True, exist_ok=True)
+    if PID_FILE.parent.is_symlink():
+        raise ValueError(f"Symlink PID_FILE parent directory rejected: {PID_FILE.parent}")
     fd = os.open(PID_FILE, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
     with os.fdopen(fd, 'w') as f:
         f.write(str(proc.pid))
@@ -32,7 +34,7 @@ def start():
 
 def stop():
     if PID_FILE.is_symlink():
-        raise ValueError("Symlink PID_FILE rejected")
+        raise ValueError(f"Symlink PID_FILE rejected: {PID_FILE}")
     if not PID_FILE.exists():
         print("Listener not running.")
         return
@@ -42,6 +44,8 @@ def stop():
             os.kill(int(pid), 9)
         except:
             pass
+    if PID_FILE.is_symlink():
+        raise ValueError(f"Symlink PID_FILE rejected: {PID_FILE}")
     PID_FILE.unlink(missing_ok=True)
     print("Listener stopped.")
 

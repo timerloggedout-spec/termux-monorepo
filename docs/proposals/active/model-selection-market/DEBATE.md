@@ -15,3 +15,17 @@ No proposal-wide acceptance or closure is claimed. Existing routing/promotion po
 ## Independent implementation review
 
 A separate read-only reviewer ran the focused suite (43 passed at the reviewed revision) and found no workflow-run trust-boundary issue. It identified a medium retry-state ambiguity for closed, unmerged refresh PRs. Resolution: a closed proposal whose snapshot is absent from master now raises an explicit terminal error; automatic reopening is deliberately unsupported so the loop cannot override a deliberate rejection. A regression test asserts no writes occur. This is an item-scoped technical review, not proposal-wide acceptance or an authenticated Delphi vote.
+
+## MSM-008 — complete resource coverage and offline aggregate search
+
+Q extends the existing package and workflow with a reviewed resource registry covering all 20 supplied link occurrences (19 canonical references), the five named service surfaces and the optional prior gpt4free reference. Native implementation paths and next actions are explicit. General directories, search queries, discussions, templates and provider pages retain distinct kinds; none becomes runtime authority. Hex remains one optional analytics projection alongside independent storage and compute surfaces.
+
+The stdlib index joins registry references with existing commit-pinned provider claims, preserves source and input attribution, and supports deterministic offline AND-token search plus role/kind filters. The existing research collection job builds the combined index from its freshly collected provider snapshot and retains it as a same-run artifact. No new cron, provider account, secret scope, recursive crawler, routing mutation or publisher write path is added. Larger source ingestion and actual multi-provider runtime/failover require separate tested adapters and admission evidence.
+
+Issue #184 and all 80 returned comments were consulted as a names-only authorization inventory. No service credential value was recovered or needed for this implementation. Repository Actions secret-name listing returned HTTP 403; service secret presence therefore remains unknown. No secret or permission was changed. The matrix links official product/pricing sources while explicitly avoiding a general free-tier or account-entitlement claim.
+
+Promotion requires focused contracts, exact supplied-input coverage, CLI reproduction, independent review, local dual gates and SHA-bound remote dual gates. Run evidence and final disposition belong to the implementation PR; a local build alone is not deployment evidence.
+
+### MSM-008 independent review and resolution
+
+A separate read-only reviewer confirmed all supplied-link counts, same-run index construction, literal-false runtime eligibility, null candidate quota, offline stdlib behavior and unchanged workflow/publication trust boundaries. Its 15 focused resource tests passed. It found one P2 completeness issue: snapshot-level integration references and original blocking reasons were omitted from the aggregate. Resolution: preserve both as `provider_integration_references` and `provider_blocked_reasons`, with a regression using the real checked-in snapshot. No release-blocking security issue was found. Final local validation after the fix: 60 focused contracts plus nine legacy market tests; repo gate, Termux smoke and workflow-run contract pass. SHA-bound remote gate and deployment receipts remain recorded in the PR rather than inferred from these local results.

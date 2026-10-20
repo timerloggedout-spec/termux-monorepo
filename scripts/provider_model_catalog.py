@@ -27,8 +27,9 @@ except ImportError:
     import provider_catalog_protocols  # type: ignore
 
 UA = "termux-monorepo-provider-catalog/5"
-# Official Models API documents this GET without authentication; inference still needs admission and a token.
-PUBLIC_CATALOGS = frozenset({"llm7"})
+# Catalog-only public GETs; ModelScope is verified by a current provider response,
+# not a published catalog specification. Inference still requires account admission.
+PUBLIC_CATALOGS = frozenset({"llm7", "ovhcloud", "modelscope"})
 ENDPOINTS = {
     "openrouter": "https://openrouter.ai/api/v1/models",
     "felo": "https://openapi.felo.ai/api/v1/models",
@@ -43,6 +44,9 @@ ENDPOINTS = {
     "llm7": "https://api.llm7.io/v1/models",
     "kilo": "https://ai-gateway.kilo.ai/api/v1/models",
     "siliconflow": "https://api.siliconflow.com/v1/models",
+    "modelscope": "https://api-inference.modelscope.ai/v1/models",
+    "ovhcloud": "https://catalog.endpoints.ai.ovh.net/rest/v1/models_v2",
+    "sambanova": "https://api.sambanova.ai/v1/models",
 }
 SECRETS = {
     "openrouter": "OPENROUTER_API_KEY",
@@ -60,6 +64,8 @@ SECRETS = {
     "modelscope": "MODELSCOPE_TOKEN",
     "siliconflow": "SILICONFLOW_API_KEY",
     "kilo": "KILO_API_KEY",
+    "ovhcloud": "OVHCLOUD_API_KEY",
+    "sambanova": "SAMBANOVA_API_KEY",
 }
 ENDPOINTS.update(provider_catalog_protocols.ENDPOINTS)
 SECRETS.update({p: names[0] for p, names in provider_catalog_protocols.SECRET_ENV.items()})
@@ -170,6 +176,8 @@ def _request(url: str, token: str | None = None, header_name: str = "Authorizati
             if len(body) > 8 * 1024 * 1024:
                 raise ValueError("response_too_large")
             payload = json.loads(body)
+            if url == ENDPOINTS["ovhcloud"] and isinstance(payload, list):
+                payload = {"data": payload}
             if not isinstance(payload, dict):
                 raise ValueError("invalid_response_shape")
             metadata = {key.lower(): value for key, value in response.headers.items()
@@ -284,6 +292,9 @@ def poll(provider: str, token: str) -> tuple[list[dict], dict]:
             ctx_len = item.get("context_window")
             max_out = item.get("max_completion_tokens")
             pricing = {}
+        elif provider == "sambanova":
+            max_out = item.get("max_completion_tokens")
+            pricing = item.get("pricing") if isinstance(item.get("pricing"), dict) else {}
         else:
             pricing = item.get("pricing") if isinstance(item.get("pricing"), dict) else {}
         ctx_len = _positive_int(ctx_len) or (trial.get("context_length") if trial else None)
@@ -343,7 +354,7 @@ def main(argv: list[str] | None = None) -> int:
         if provider not in ENDPOINTS:
             errors.append({"provider": provider, "error": "unsupported_provider"})
             continue
-        token, env_name = resolve_secret(provider)
+        token, env_name = (None, None) if provider in PUBLIC_CATALOGS else resolve_secret(provider)
         if not token and provider not in PUBLIC_CATALOGS:
             errors.append({"provider": provider, "error": "missing_secret", "secret_env": env_name, "aliases": list(SECRET_ALIASES.get(provider, ()))})
             continue
@@ -354,7 +365,8 @@ def main(argv: list[str] | None = None) -> int:
                 "catalog_observed_at": observed_at,
                 "response_headers": headers,
                 "secret_env_resolved": env_name if token else None,
-                "catalog_authentication": "credential" if token else "documented_public_get",
+                "catalog_authentication": "credential" if token else ("observed_public_get" if provider == "modelscope" else "documented_public_get"),
+                "catalog_contract_source": "provider_runtime_observation" if provider == "modelscope" else "official_documentation",
                 "account_endpoint": None,
                 "account_endpoint_status": "not_documented",
                 "documented_entitlements": DOCUMENTED_ENTITLEMENTS.get(provider, []),

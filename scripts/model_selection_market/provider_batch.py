@@ -32,6 +32,7 @@ PROVIDER_MAP = {
     "siliconflow": "siliconflow",
     "kilo-code": "kilo",
     "cloudflare-workers-ai": "cloudflare",
+    "cloudflare": "cloudflare",
     "cohere": "cohere",
     "ollama-cloud": "ollama",
     "ovhcloud-ai-endpoints": "ovhcloud",

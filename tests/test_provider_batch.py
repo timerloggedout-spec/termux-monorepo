@@ -28,7 +28,7 @@ def test_every_real_research_candidate_has_a_disposition_without_activation():
     assert all(row['runtime_eligible'] is False and row['quota_remaining'] is None for row in report['candidates'])
     assert sum(report['summary']['by_status'].values()) == 160
     assert 'adapter_not_implemented' not in report['summary']['by_status']
-    assert report['summary']['by_status']['catalog_adapter_not_implemented'] == 16
+    assert report['summary']['by_status']['catalog_adapter_not_implemented'] == 3
     assert batch.reconcile(deepcopy(source), catalog()) == report
 
 
@@ -106,8 +106,13 @@ def test_production_observation_uses_trusted_master_and_separate_secret_scopes()
     assert 'secrets.OPERATOR' in inventory_step['env']['GH_TOKEN']
     assert 'credential-names.json' in inventory_step['run']
     assert 'CEREBRAS_API_KEY' in provider_step['env']
-    review_step = next(s for s in steps if s.get('env', {}).get('GH_TOKEN') == '${{ github.token }}')
-    assert review_step['env'] == {'GH_TOKEN': '${{ github.token }}'}
+    review_step = next(s for s in steps if 'matrix-review.json' in s.get('run', ''))
+    assert set(review_step['env']) == {'GH_TOKEN', 'FEEDBACK_AUTH_CONTEXT'}
+    assert 'secrets.OPERATOR' in review_step['env']['GH_TOKEN']
+    assert review_step['env']['GH_TOKEN'].endswith('|| github.token }}')
+    assert 'github-feedback-auth.json' in review_step['run']
+    assert 'repository-permissions.json' in review_step['run']
+    assert 'gh api rate_limit' in review_step['run']
     assert review_step['run'].count('--paginate --slurp') == 4
     assert 'matrix-review.json' in review_step['run']
     for step in steps:
@@ -124,15 +129,28 @@ def test_per_source_denominators_do_not_count_provider_classes_as_models():
     assert directory['static_or_aggregate_references'] == 6
     assert directory['gated_native_chat_model_claims'] == 101
     assert directory['legacy_openrouter_model_claims'] == 16
-    assert len(directory['catalog_adapter_families']) == 13
+    assert len(directory['catalog_adapter_families']) == 15
     assert len(directory['chat_transport_families']) == 16
     proxy = summary['tashfeenahmed/freellmapi']
     assert proxy['research_records'] == 37
     assert proxy['individual_model_claims'] == 0
     assert proxy['static_or_aggregate_references'] == 37
+    assert proxy['chat_transport_families'] == ['cloudflare', 'cohere', 'modelscope']
     assert proxy['runtime_eligible'] == directory['runtime_eligible'] == 0
 
 
 def test_reconciliation_native_provider_registry_matches_real_dispatch():
     from llm_api_hub.server.research_providers import ENDPOINTS
     assert batch.NATIVE_CHAT_PROVIDERS == frozenset(ENDPOINTS)
+
+
+def test_keyless_research_observation_is_explicit_and_has_no_secret_environment():
+    import yaml
+    workflow = yaml.safe_load((ROOT / '.github/workflows/provider-batch.yml').read_text())
+    events = workflow.get('on', workflow.get(True))
+    assert events['workflow_dispatch']['inputs']['observe_public_research']['default'] is False
+    step = next(s for s in workflow['jobs']['observe']['steps'] if 'public-research-service.json' in s.get('run', ''))
+    assert step['if'] == 'inputs.observe_public_research'
+    assert not step.get('env')
+    assert '--source awesome-free-llm-apis' in step['run']
+    assert 'GH_TOKEN' not in step['run'] and 'API_KEY' not in step['run']

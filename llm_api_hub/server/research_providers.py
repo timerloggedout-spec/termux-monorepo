@@ -30,6 +30,7 @@ ENDPOINTS = {
     "siliconflow": ("https://api.siliconflow.com/v1/chat/completions", ("SILICONFLOW_API_KEY",)),
     "kilo": ("https://ai-gateway.kilo.ai/api/v1/chat/completions", ("KILO_API_KEY",)),
     "ovhcloud": ("https://oai.endpoints.kepler.ai.cloud.ovh.net/v1/chat/completions", ("OVHCLOUD_API_KEY",)),
+    "sambanova": ("https://api.sambanova.ai/v1/chat/completions", ("SAMBANOVA_API_KEY",)),
 }
 ENDPOINTS.update({p: (provider_protocols.CHAT_ENDPOINTS[p], provider_protocols.SECRET_ENV[p]) for p in provider_protocols.PROVIDER_KEYS})
 MAX_RESPONSE_BYTES = 2 * 1024 * 1024

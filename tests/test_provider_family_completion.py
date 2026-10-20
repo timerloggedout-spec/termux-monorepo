@@ -39,7 +39,7 @@ def test_all_117_claims_have_transports_but_no_automatic_admission():
     directory = report['summary']['by_source']['mnfst/awesome-free-llm-apis']
     assert directory['gated_native_chat_model_claims'] + directory['legacy_openrouter_model_claims'] == directory['individual_model_claims'] == 117
     assert len(directory['chat_transport_families']) == directory['provider_families'] == 16
-    assert len(directory['catalog_adapter_families']) == 13  # no invented model-list APIs
+    assert len(directory['catalog_adapter_families']) == 15  # Z.ai remains unverified; ModelScope is runtime-observed.
     assert report['summary']['runtime_eligible'] == 0
 
 

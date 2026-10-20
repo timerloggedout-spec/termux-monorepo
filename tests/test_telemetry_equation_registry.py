@@ -11,8 +11,11 @@ from pathlib import Path
 from she.metrics.agent_throughput import (
     correlation_completeness,
     evidence_coverage_ratio,
+    retry_amplification_ratio,
+    retry_recovery_rate,
     validated_outcome_rate,
     validation_coverage,
+    wilson_proportion_interval,
 )
 
 
@@ -42,6 +45,8 @@ class TelemetryEquationRegistryTest(unittest.TestCase):
             "EQ-VOR-v1": validated_outcome_rate,
             "EQ-VCOV-v1": validation_coverage,
             "EQ-CORR-v1": correlation_completeness,
+            "EQ-RAMP-v1": retry_amplification_ratio,
+            "EQ-RREC-v1": retry_recovery_rate,
         }
         self.assertEqual(set(candidates), set(expected))
         for equation_id, helper in expected.items():
@@ -77,6 +82,15 @@ class TelemetryEquationRegistryTest(unittest.TestCase):
         self.assertEqual(validated_outcome_rate(3, 4), 0.75)
         self.assertEqual(validation_coverage(4, 5), 0.8)
         self.assertEqual(correlation_completeness(9, 10), 0.9)
+
+    def test_wilson_analysis_helper_is_registered_and_matches_fixture(self):
+        helper = self.registry["analysis_helpers"]
+        self.assertEqual(len(helper), 1)
+        self.assertEqual(helper[0]["id"], "STAT-WILSON-v1")
+        self.assertEqual(helper[0]["status"], "implemented-helper-not-emitted")
+        self.assertIn("not emitted", helper[0]["integration_status"])
+        self.assertEqual(wilson_proportion_interval(3, 4), (0.300636, 0.954414))
+        self.assertEqual(wilson_proportion_interval(75, 100), (0.656954, 0.824549))
 
     def test_registry_preserves_no_standalone_merge_gate_invariant(self):
         self.assertIn("no-standalone-merge-gate", self.registry["invariants"])

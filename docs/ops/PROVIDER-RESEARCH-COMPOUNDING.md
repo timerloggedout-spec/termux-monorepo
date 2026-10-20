@@ -14,7 +14,7 @@ Existing daily OpenRouter catalog workflow completes on master
   → established promotion lane evaluates current-head checks and outcome
 ```
 
-There is no additional cron. A manual dispatch starts one cycle. A PR event runs tests only: it cannot enter the collection/publication jobs. A privileged `workflow_run` job checks out the trusted default branch, never its triggering revision or artifacts. Publication downloads only the normalized artifact generated in the same run. Its token exists only during publication.
+There is no additional cron. A manual dispatch starts one cycle. A PR event runs tests only: it cannot enter the collection/publication jobs. A privileged `workflow_run` job checks out the trusted default branch, never its triggering revision or artifacts. Publication downloads only the normalized artifact generated in the same run. Its write-capable token exists only during publication. The collect step may use its separate read-only job token solely for the two fixed GitHub commit-metadata URLs; raw-source downloads receive no token.
 
 The existing `openrouter-free-catalog-sync.yml` remains read-only and never creates PRs. The separately named research workflow owns the narrowly authorized write. It does not change the catalog workflow's contract.
 

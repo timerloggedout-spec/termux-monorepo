@@ -12,6 +12,7 @@ import os
 import sys
 import time
 import urllib.request
+from pathlib import Path
 
 SNAPSHOT_PATH = os.environ.get(
     "OPENROUTER_FREE_SNAPSHOT",
@@ -109,10 +110,12 @@ def resolve_free_catalog(counter_dir="/tmp/model-router"):
 
     Seed is bootstrap only. Live is preferred on every call.
     """
+    if ".." in Path(counter_dir).parts:
+        raise ValueError(f"Path traversal detected in counter_dir: {counter_dir}")
     cache_file = os.path.join(counter_dir, "openrouter_models_cache.json")
     cached_models = None
     cached_time = 0
-    if os.path.exists(cache_file):
+    if os.path.exists(cache_file) and not os.path.islink(cache_file):
         try:
             with open(cache_file, "r", encoding="utf-8") as handle:
                 cache_data = json.load(handle)
@@ -124,9 +127,12 @@ def resolve_free_catalog(counter_dir="/tmp/model-router"):
     live = fetch_live_free_ids()
     if live is not None:
         try:
-            os.makedirs(counter_dir, exist_ok=True)
-            with open(cache_file, "w", encoding="utf-8") as handle:
-                json.dump({"timestamp": time.time(), "models": live}, handle)
+            if not os.path.islink(counter_dir):
+                os.makedirs(counter_dir, exist_ok=True)
+                if not os.path.islink(cache_file):
+                    fd = os.open(cache_file, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+                    with os.fdopen(fd, "w", encoding="utf-8") as handle:
+                        json.dump({"timestamp": time.time(), "models": live}, handle)
         except (OSError, TypeError, ValueError):
             pass
         return live, "live"

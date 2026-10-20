@@ -8,6 +8,7 @@ import os
 import re
 import urllib.error
 import urllib.request
+from pathlib import Path
 
 TIMEOUT = 30
 MAX_RESPONSE_BYTES = 1_048_576
@@ -201,9 +202,26 @@ def main():
                               "catalog_probe_required": "true for configured providers and explicitly public catalogs",
                               "catalog_ok": "provider catalog endpoint responded with usable model metadata",
                               "inference_ok": "false for scheduled probes; explicit smoke workflow may run separately"}, "providers": rows}
-    with open(os.environ.get("OUTPUT", "/tmp/provider-availability.json"), "w", encoding="utf-8") as fh:
+    out_target = os.environ.get("OUTPUT", "/tmp/provider-availability.json")
+    out_path = Path(out_target)
+    if ".." in out_path.parts:
+        raise ValueError(f"Path traversal detected in OUTPUT path: {out_target}")
+    if out_path.is_symlink():
+        raise ValueError(f"OUTPUT path {out_target} cannot be a symlink")
+    if out_path.parent.exists() and out_path.parent.is_symlink():
+        raise ValueError(f"OUTPUT parent directory {out_path.parent} cannot be a symlink")
+
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    flags = os.O_WRONLY | os.O_CREAT | os.O_TRUNC
+    fd = os.open(out_path, flags, 0o600)
+    with open(fd, "w", encoding="utf-8") as fh:
         json.dump(document, fh, indent=2, sort_keys=True)
         fh.write("\n")
+    if not out_path.is_symlink():
+        try:
+            os.chmod(out_path, 0o600)
+        except Exception:
+            pass
     for row in rows:
         print(f"{row['provider']}: auth={row['auth_mode']} credential={row['credential_present']} catalog={row['catalog_ok']} inference={row['inference_ok']} model={row.get('model') or '-'} error={row.get('error_class') or '-'}")
 

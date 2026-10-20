@@ -96,6 +96,52 @@ class AgentThroughputTest(unittest.TestCase):
         self.assertIsNone(metrics.ates)
 
 
+    def test_evidence_quality_equation_helpers(self):
+        from she.metrics.agent_throughput import (
+            correlation_completeness,
+            evidence_coverage_ratio,
+            validated_outcome_rate,
+            validation_coverage,
+        )
+
+        self.assertEqual(evidence_coverage_ratio(4, 5), 0.8)
+        self.assertEqual(validated_outcome_rate(3, 4), 0.75)
+        self.assertEqual(validation_coverage(4, 5), 0.8)
+        self.assertEqual(correlation_completeness(9, 10), 0.9)
+
+    def test_evidence_quality_equations_preserve_missing_denominators(self):
+        from she.metrics.agent_throughput import (
+            correlation_completeness,
+            evidence_coverage_ratio,
+            validated_outcome_rate,
+            validation_coverage,
+        )
+
+        self.assertIsNone(evidence_coverage_ratio(0, None))
+        self.assertIsNone(evidence_coverage_ratio(0, 0))
+        self.assertIsNone(validated_outcome_rate(None, 4))
+        self.assertIsNone(validation_coverage(0, 0))
+        self.assertIsNone(correlation_completeness(2, None))
+
+    def test_evidence_quality_equations_reject_impossible_counts(self):
+        from she.metrics.agent_throughput import (
+            correlation_completeness,
+            evidence_coverage_ratio,
+            validated_outcome_rate,
+            validation_coverage,
+        )
+
+        for calculate in (
+            lambda: evidence_coverage_ratio(-1, 2),
+            lambda: validated_outcome_rate(3, 2),
+            lambda: validation_coverage(1, -2),
+            lambda: correlation_completeness(1, 0),
+        ):
+            with self.subTest(calculate=calculate):
+                with self.assertRaises(ValueError):
+                    calculate()
+
+
 class AgentThroughputSchemaTest(unittest.TestCase):
     """Protect the telemetry boundary against undeclared sensitive fields."""
 

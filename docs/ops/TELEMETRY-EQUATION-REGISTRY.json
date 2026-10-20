@@ -1,0 +1,215 @@
+{
+  "schema_version": "telemetry.equations.v1",
+  "status": "documentation-proposal",
+  "verified_at": "2026-10-19",
+  "invariants": [
+    "quality-over-speed",
+    "missing-evidence-is-null",
+    "no-standalone-merge-gate",
+    "canonical-sanitized-jsonl",
+    "version-derived-metrics"
+  ],
+  "existing": [
+    {
+      "id": "EQ-C-STRUCT-v1",
+      "name": "structural_complexity",
+      "formula": "ln(1 + additions + deletions) * sqrt(files_changed)",
+      "status": "implemented",
+      "implementation": "she/metrics/agent_throughput.py::_complexity",
+      "preconditions": [
+        "additions >= 0",
+        "deletions >= 0",
+        "files_changed >= 0",
+        "all three values present"
+      ],
+      "missing": "null",
+      "unit": "dimensionless heuristic"
+    },
+    {
+      "id": "EQ-TCV-v1",
+      "name": "task_completion_velocity",
+      "formula": "completed_tasks / workflow_minutes",
+      "status": "implemented",
+      "implementation": "she/metrics/agent_throughput.py::reduce_events",
+      "preconditions": [
+        "workflow_minutes > 0"
+      ],
+      "missing": "0 when duration is unavailable in current reducer",
+      "unit": "tasks/min"
+    },
+    {
+      "id": "EQ-WTCV-v1",
+      "name": "weighted_task_completion_velocity",
+      "formula": "sum(complexity_score_i) / workflow_minutes",
+      "status": "implemented",
+      "implementation": "she/metrics/agent_throughput.py::reduce_events",
+      "preconditions": [
+        "workflow_minutes > 0",
+        "every completed task has valid complexity"
+      ],
+      "missing": "null",
+      "unit": "complexity units/min"
+    },
+    {
+      "id": "EQ-RPI-v1",
+      "name": "retry_penalty_ratio",
+      "formula": "(failed_tool_calls + retry_events) / (tool_calls + retry_events)",
+      "status": "implemented",
+      "implementation": "she/metrics/agent_throughput.py::reduce_events",
+      "preconditions": [
+        "tool and retry events counted consistently"
+      ],
+      "missing": "0 when there are no actions in current reducer",
+      "unit": "ratio"
+    },
+    {
+      "id": "EQ-PY-v1",
+      "name": "parallel_yield",
+      "formula": "sequential_baseline_seconds / (agent_count * workflow_seconds)",
+      "status": "implemented",
+      "implementation": "she/metrics/agent_throughput.py::reduce_events",
+      "preconditions": [
+        "declared sequential baseline",
+        "agent_count > 0",
+        "workflow_seconds > 0"
+      ],
+      "missing": "null",
+      "unit": "baseline-normalized yield"
+    },
+    {
+      "id": "EQ-TPV-v1",
+      "name": "token_processing_velocity",
+      "formula": "(tokens_in + tokens_out) / inference_seconds",
+      "status": "implemented",
+      "implementation": "she/metrics/agent_throughput.py::reduce_events",
+      "preconditions": [
+        "inference_seconds > 0"
+      ],
+      "missing": "null",
+      "unit": "tokens/s"
+    },
+    {
+      "id": "EQ-CIE-v1",
+      "name": "context_ingestion_efficiency",
+      "formula": "tokens_out / tokens_in",
+      "status": "implemented",
+      "implementation": "she/metrics/agent_throughput.py::reduce_events",
+      "preconditions": [
+        "tokens_in > 0"
+      ],
+      "missing": "null",
+      "unit": "ratio"
+    },
+    {
+      "id": "EQ-ATES-v1",
+      "name": "agent_throughput_effectiveness_score",
+      "formula": "WTCV * max(0, 1 - RPI) * parallel_yield",
+      "status": "implemented",
+      "implementation": "she/metrics/agent_throughput.py::reduce_events",
+      "preconditions": [
+        "WTCV available",
+        "parallel yield available"
+      ],
+      "missing": "null",
+      "unit": "diagnostic composite; not quality score"
+    }
+  ],
+  "proposed": [
+    {
+      "id": "EQ-ECR-v1",
+      "name": "evidence_coverage_ratio",
+      "formula": "valid_required_observations / expected_required_observations",
+      "status": "proposed",
+      "preconditions": [
+        "versioned expected field set",
+        "known expected denominator"
+      ],
+      "missing": "null if denominator unknown or zero",
+      "range": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": "EQ-VOR-v1",
+      "name": "validated_outcome_rate",
+      "formula": "explicit_validation_passes / tasks_with_explicit_validation_outcome",
+      "status": "proposed",
+      "preconditions": [
+        "validation outcome labels are explicit",
+        "nonzero evaluated tasks"
+      ],
+      "missing": "null if no evaluated tasks",
+      "range": [
+        0,
+        1
+      ],
+      "companion_metric": "EQ-VCOV-v1"
+    },
+    {
+      "id": "EQ-VCOV-v1",
+      "name": "validation_coverage",
+      "formula": "tasks_with_explicit_validation_outcome / completed_tasks",
+      "status": "proposed",
+      "preconditions": [
+        "known completed task count",
+        "explicit validation outcome count"
+      ],
+      "missing": "null if no completed tasks",
+      "range": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": "EQ-CORR-v1",
+      "name": "correlation_completeness",
+      "formula": "eligible_records_with_required_provenance / eligible_records",
+      "status": "proposed",
+      "preconditions": [
+        "eligibility rule and required provenance fields versioned"
+      ],
+      "missing": "null if expected population unknown",
+      "range": [
+        0,
+        1
+      ]
+    }
+  ],
+  "wolfram_fixtures": [
+    {
+      "id": "WOLFRAM-C-01",
+      "expression": "Log[1 + 9 + 1] * Sqrt[1]",
+      "expected": 2.3978952728
+    },
+    {
+      "id": "WOLFRAM-C-02",
+      "expression": "Log[1 + 9 + 1] * Sqrt[4]",
+      "expected": 4.7957905456
+    },
+    {
+      "id": "WOLFRAM-ATES-01",
+      "expression": "18 * (1 - 2/3) * (20/(2*10))",
+      "expected": 6
+    },
+    {
+      "id": "WOLFRAM-ECR-01",
+      "expression": "4/5",
+      "expected": 0.8
+    },
+    {
+      "id": "WOLFRAM-VOR-01",
+      "expression": "3/4",
+      "expected": 0.75
+    }
+  ],
+  "source_refs": [
+    "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/she/metrics/agent_throughput.py",
+    "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/tests/test_she_agent_throughput.py",
+    "https://github.com/timerloggedout-spec/NerdCalci_fork",
+    "https://opentelemetry.io/docs/specs/semconv/",
+    "https://docs.n8n.io/build/flow-logic/handle-errors-gracefully/",
+    "https://docs.temporal.io/workflow-execution",
+    "https://docs.temporal.io/encyclopedia/retry-policies"
+  ]
+}

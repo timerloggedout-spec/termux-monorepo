@@ -1,0 +1,72 @@
+name: vercel-ignore-guard
+
+# Stops Vercel preview builds from FAILING on branches cut before
+# scripts/ci/vercel_ignore_build.sh existed.
+#
+# Evidence (2026-10-20): project termux-monorepo preview on branch
+# ops/actions-matrix-upgrade-2026-10-18 (bad2c75) failed with
+#   bash: /vercel/path0/scripts/ci/vercel_ignore_build.sh: No such file or directory
+# (exit 127). That branch has no demo-portal/public/vercel.json, so the
+# Ignored Build Step came from the project settings, and it calls a helper that
+# only exists on newer commits. Exit 127 is neither "skip" (0) nor "build" (1),
+# so Vercel marks the deployment failed, and each failure still spends the
+# Hobby api-deployments-free-per-day quota that help-wanted-dash's production
+# promotion is waiting on.
+#
+# Fix: set the project-level Ignored Build Step to a guarded form that skips the
+# preview (exit 0) when the helper is absent on the branch, and runs the helper
+# unchanged when it is present. Branches carrying their own vercel.json keep
+# their own ignoreCommand (vercel.json overrides the project setting).
+#
+# Additive: new workflow only, manual dispatch, mode=plan by default (read-only).
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "plan (read current settings only) or apply"
+        required: false
+        default: "plan"
+      project:
+        description: "Vercel project name"
+        required: false
+        default: "termux-monorepo"
+      helper_arg:
+        description: "Argument passed to vercel_ignore_build.sh (demo-portal | mcp-hub | help-wanted-dashboard)"
+        required: false
+        default: "demo-portal"
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      SCOPE: timerloggedout-5184s-projects
+      MODE: ${{ inputs.mode }}
+      PROJECT: ${{ inputs.project }}
+      HELPER_ARG: ${{ inputs.helper_arg }}
+    steps:
+      - name: Read or patch Ignored Build Step
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${VERCEL_TOKEN:-}" ]; then
+            echo "::error::VERCEL_TOKEN secret is missing"; exit 1
+          fi
+          case "$HELPER_ARG" in demo-portal|mcp-hub|help-wanted-dashboard) ;; *)
+            echo "::error::unknown helper_arg '$HELPER_ARG'"; exit 1;; esac
+          api="https://api.vercel.com/v9/projects/${PROJECT}?slug=${SCOPE}"
+          cur=$(curl -fsS -H "Authorization: Bearer $VERCEL_TOKEN" "$api")
+          echo "::notice::${PROJECT} rootDirectory=$(jq -r '.rootDirectory // "-"' <<<"$cur")"
+          echo "::notice::${PROJECT} current ignore=$(jq -r '.commandForIgnoringBuildStep // "-"' <<<"$cur")"
+          guarded='f="$(git rev-parse --show-toplevel)/scripts/ci/vercel_ignore_build.sh"; if [ -f "$f" ]; then bash "$f" '"$HELPER_ARG"'; else echo "[vercel-ignore] helper absent; skip"; exit 0; fi'
+          echo "::notice::guarded ignore length=${#guarded}"
+          if [ "$MODE" != "apply" ]; then
+            echo "::notice::plan only; dispatch with mode=apply to set the guarded command"; exit 0
+          fi
+          body=$(jq -n --arg c "$guarded" '{commandForIgnoringBuildStep: $c}')
+          out=$(curl -fsS -X PATCH -H "Authorization: Bearer $VERCEL_TOKEN" -H "Content-Type: application/json" -d "$body" "$api")
+          echo "::notice::${PROJECT} new ignore=$(jq -r '.commandForIgnoringBuildStep // "-"' <<<"$out")"

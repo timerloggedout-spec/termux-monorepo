@@ -215,3 +215,13 @@ def test_duplicate_catalog_models_are_stably_deduplicated():
         rows, _ = provider_model_catalog.poll('groq', 'secret')
     assert len(rows) == 1
     assert rows[0]['context_length'] == 128
+
+
+def test_authorized_hf_token_alias_retains_precedence():
+    with patch.dict("os.environ", {"HF_TOKEN": "alias"}, clear=True):
+        assert provider_model_catalog.resolve_secret("huggingface") == ("alias", "HF_TOKEN")
+    with patch.dict("os.environ", {"HUGGINGFACE_TOKEN": "primary", "HF_TOKEN": "alias"}, clear=True):
+        assert provider_model_catalog.resolve_secret("huggingface") == ("primary", "HUGGINGFACE_TOKEN")
+    from pathlib import Path
+    workflow = Path(".github/workflows/provider-batch.yml").read_text()
+    assert "secrets.HF_API_TOKEN || secrets.HF_TOKEN" in workflow

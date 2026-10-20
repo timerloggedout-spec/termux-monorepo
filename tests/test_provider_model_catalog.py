@@ -50,10 +50,15 @@ def test_get_json():
         @property
         def headers(self):
             return MockHeaders()
-        def read(self):
+        def read(self, size):
             return b'{"data": []}'
 
-    with patch("urllib.request.urlopen", return_value=MockResponse()):
+    class MockOpener:
+        def open(self, request, timeout):
+            assert request.get_header("Authorization") == "Bearer tok"
+            return MockResponse()
+
+    with patch("urllib.request.build_opener", return_value=MockOpener()):
         data, headers = provider_model_catalog.get_json("https://example.com", token="tok")
         assert data == {"data": []}
         assert headers == {"x-ratelimit-remaining": "100", "retry-after": "10"}
@@ -106,3 +111,107 @@ def test_main(tmp_path):
         # Verify exit code 0 when catalog rows are parsed
         assert ret == 0
         assert output_file.exists()
+
+def test_native_provider_normalization_and_auth_headers():
+    fixtures = {
+        "groq": ({"data": [{"id":"g1", "context_window":8192,"max_completion_tokens":1024,"active":True}]}, "Authorization", "Bearer secret"),
+        "mistral": ({"data": [{"id":"m1","max_context_length":32768,"capabilities":{"vision":True}}]}, "Authorization", "Bearer secret"),
+        "gemini": ({"models": [{"name":"models/g1","inputTokenLimit":4096,"outputTokenLimit":512,"supportedGenerationMethods":["generateContent"]}]}, "x-goog-api-key", "secret"),
+    }
+    for provider,(payload,header,value) in fixtures.items():
+        calls=[]
+        def fake(url,token,header_name="Authorization",page_token=None):
+            calls.append((url,token,header_name,page_token)); return payload,{}
+        with patch.object(provider_model_catalog,"_request",side_effect=fake):
+            rows,_=provider_model_catalog.poll(provider,"secret")
+        assert rows[0]["id"]=="g1" if provider=="gemini" else rows[0]["id"] in ("g1","m1")
+        assert calls[0][1:3]==("secret",header)
+        if provider=="gemini":
+            assert rows[0]["context_length"]==4096 and rows[0]["max_output_tokens"]==512
+        if provider=="mistral": assert rows[0]["context_length"]==32768 and rows[0]["capabilities"]=={"vision":True}
+        if provider=="groq": assert rows[0]["active"] is True
+
+def test_gemini_pagination_and_repeat_token_rejection():
+    pages=[({"models":[{"name":"models/a"}],"nextPageToken":"a b"},{}),({"models":[{"name":"models/b"}]},{})]
+    with patch.object(provider_model_catalog,"_request",side_effect=pages) as request:
+        rows,_=provider_model_catalog.poll("gemini","tok")
+    assert [r["id"] for r in rows]==["a","b"]
+    assert request.call_args_list[1].args[0] == provider_model_catalog.ENDPOINTS["gemini"]
+    assert request.call_args_list[1].args[3] == "a b"
+    with patch.object(provider_model_catalog,"_request",return_value=({"models":[],"nextPageToken":"x"},{})):
+        with pytest.raises(ValueError): provider_model_catalog.poll("gemini","tok")
+
+def test_strict_catalog_shapes_prices_and_provider_specific_free_suffix():
+    for payload in ({}, {"data":{}}, {"data":[None]}, {"data":[{"id":7}]}):
+        with patch.object(provider_model_catalog,"get_json",return_value=(payload,{})):
+            with pytest.raises(ValueError): provider_model_catalog.poll("groq","t")
+    for val in (True,float("nan"),float("inf"),"NaN"):
+        assert provider_model_catalog.price_classification({"pricing":{"prompt":val,"completion":0}})=="unknown"
+    item={"data":[{"id":"x:free","pricing":{"prompt":"0","completion":"0"}}]}
+    with patch.object(provider_model_catalog,"get_json",return_value=(item,{})):
+        groq,_=provider_model_catalog.poll("groq","t")
+        openrouter,_=provider_model_catalog.poll("openrouter","t")
+    assert not groq[0]["free_suffix"] and openrouter[0]["free_suffix"]
+
+def test_secret_alias_and_legacy_default_providers():
+    with patch.dict("os.environ",{"GOOGLE_API_KEY":"g"},clear=True):
+        assert provider_model_catalog.resolve_secret("gemini")==("g","GOOGLE_API_KEY")
+    assert set(("openrouter","felo","omni","huggingface")).issubset(provider_model_catalog.ENDPOINTS)
+
+
+def test_legacy_felo_trial_and_documentation_when_missing_from_catalog():
+    with patch.object(provider_model_catalog, "get_json", return_value=({"data": []}, {})):
+        rows, _ = provider_model_catalog.poll("felo", "token")
+    trial = next(row for row in rows if row["id"] == "ox-alpha")
+    assert trial["raw_source"] == "felo:/v1/models + documented-model-page"
+    assert trial["access_classification"] == "free_trial"
+    assert any(row["id"] == "ox-alpha" for row in provider_model_catalog.DOCUMENTED_ENTITLEMENTS["felo"])
+
+
+def test_gemini_wire_contract_uses_query_page_token_but_header_api_key():
+    from urllib.parse import urlsplit, parse_qs
+    from unittest.mock import MagicMock
+    response = MagicMock()
+    response.__enter__.return_value = response
+    response.read.return_value = b'{"models": []}'
+    response.headers = {}
+    opener = MagicMock()
+    opener.open.return_value = response
+    with patch.object(provider_model_catalog.urllib.request, 'build_opener', return_value=opener):
+        provider_model_catalog._request(provider_model_catalog.ENDPOINTS['gemini'], 'never-in-url', 'x-goog-api-key', 'token +/?=')
+    request = opener.open.call_args.args[0]
+    assert parse_qs(urlsplit(request.full_url).query) == {'pageToken': ['token +/?=']}
+    assert request.get_header('X-goog-api-key') == 'never-in-url'
+    assert 'never-in-url' not in request.full_url
+    assert not request.has_header('Authorization')
+    assert not request.has_header('X-goog-page-token')
+    response.read.assert_called_once_with(8 * 1024 * 1024 + 1)
+
+
+def test_authenticated_transport_installs_redirect_rejecting_handler():
+    import urllib.request
+    from unittest.mock import MagicMock
+    response = MagicMock()
+    response.__enter__.return_value = response
+    response.read.return_value = b'{"data": []}'
+    response.headers = {}
+    opener = MagicMock()
+    opener.open.return_value = response
+    real_builder = urllib.request.build_opener
+    handlers = []
+    def capture(handler):
+        handlers.append(handler())
+        return opener
+    with patch.object(provider_model_catalog.urllib.request, 'build_opener', side_effect=capture):
+        provider_model_catalog.get_json(provider_model_catalog.ENDPOINTS['groq'], 'secret')
+    assert isinstance(handlers[0], urllib.request.HTTPRedirectHandler)
+    req = urllib.request.Request(provider_model_catalog.ENDPOINTS['groq'])
+    assert handlers[0].redirect_request(req, None, 302, 'found', {}, 'https://elsewhere.invalid/') is None
+
+
+def test_duplicate_catalog_models_are_stably_deduplicated():
+    payload = {'data': [{'id': 'qualified/model', 'context_window': 128}, {'id': 'qualified/model', 'context_window': 256}]}
+    with patch.object(provider_model_catalog, 'get_json', return_value=(payload, {})):
+        rows, _ = provider_model_catalog.poll('groq', 'secret')
+    assert len(rows) == 1
+    assert rows[0]['context_length'] == 128

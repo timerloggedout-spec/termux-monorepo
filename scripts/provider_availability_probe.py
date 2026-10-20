@@ -42,6 +42,7 @@ def request(url, *, token=None, method="GET", payload=None, auth_header="Authori
 
 def result(provider):
     return {"provider": provider, "credential_present": False, "auth_mode": "unconfigured",
+            "credential_env_resolved": None, "credential_env_expected": None,
             "catalog_probe_required": False, "catalog_ok": False, "inference_ok": False,
             "model": None, "observed_at": now(), "error_class": None}
 
@@ -55,9 +56,11 @@ def catalog_provider_probe(provider, row, catalog_module=None):
         except ImportError:
             import provider_model_catalog as catalog_module
 
-    token, _env_name = catalog_module.resolve_secret(provider)
+    token, env_name = catalog_module.resolve_secret(provider)
     public = provider in catalog_module.PUBLIC_CATALOGS
     row["credential_present"] = bool(token)
+    row["credential_env_resolved"] = env_name if token else None
+    row["credential_env_expected"] = env_name if not token and not public else None
     row["auth_mode"] = "credential" if token else ("public" if public else "unconfigured")
     row["catalog_probe_required"] = bool(token) or public
     if not token and not public:
@@ -185,7 +188,10 @@ def main():
     for provider in sorted(provider_model_catalog.ENDPOINTS):
         row = result(provider)
         if provider == "gemini":
-            gemini_probe(row, os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY", ""))
+            token, env_name = provider_model_catalog.resolve_secret("gemini")
+            gemini_probe(row, token or "")
+            row["credential_env_resolved"] = env_name if token else None
+            row["credential_env_expected"] = env_name if not token else None
         else:
             catalog_provider_probe(provider, row, provider_model_catalog)
             if provider == "openrouter" and row["credential_present"] and row["catalog_ok"]:
@@ -195,6 +201,8 @@ def main():
     document = {"schema": "provider-availability/v1", "observed_at": observed,
                 "semantics": {"credential_present": "workflow secret resolved; does not prove validity",
                               "auth_mode": "credential, public, or unconfigured; public does not imply entitlement",
+                              "credential_env_resolved": "resolved environment-variable name only; never the secret value",
+                              "credential_env_expected": "canonical expected environment-variable name when a credential is missing",
                               "catalog_probe_required": "true for configured providers and explicitly public catalogs",
                               "catalog_ok": "provider catalog endpoint responded with usable model metadata",
                               "inference_ok": "minimal live inference succeeded only for the established OpenRouter/Gemini probes"}, "providers": rows}

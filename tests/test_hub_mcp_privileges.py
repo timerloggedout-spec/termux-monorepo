@@ -6,9 +6,10 @@ from tempfile import TemporaryDirectory
 from unittest import TestCase, main
 from uuid import uuid4
 
+from hub_mcp.cli import main as cli_main
 from hub_mcp.policy import PolicyError, get_capability
 from hub_mcp.protocol import Job, JobValidationError
-from hub_mcp.runner import ReplayStore, execute
+from hub_mcp.runner import ReplayStore, execute, execute_payload
 
 
 def make_job():
@@ -108,6 +109,38 @@ class HubMcpPrivilegeTests(TestCase):
             store = ReplayStore(tmp_path / "processed_jobs.json")
             with self.assertRaisesRegex(JobValidationError, "Symlink repository path"):
                 execute(job, symlink_repo, store)
+
+    def test_cli_job_path_traversal_rejection(self):
+        exit_code = cli_main(["some/../job.json"])
+        self.assertEqual(exit_code, 2)
+
+    def test_cli_job_symlink_rejection(self):
+        with TemporaryDirectory() as tmp_dir:
+            tmp_path = Path(tmp_dir)
+            target = tmp_path / "actual.json"
+            target.write_text("{}")
+            symlink_job = tmp_path / "symlink.json"
+            symlink_job.symlink_to(target)
+
+            exit_code = cli_main([str(symlink_job)])
+            self.assertEqual(exit_code, 2)
+
+    def test_execute_payload_state_directory_traversal_rejection(self):
+        with TemporaryDirectory() as tmp_dir:
+            bad_state = Path(tmp_dir) / "sub/../state"
+            with self.assertRaisesRegex(JobValidationError, "Path traversal in state directory"):
+                execute_payload({}, Path(tmp_dir), bad_state)
+
+    def test_execute_payload_state_directory_symlink_rejection(self):
+        with TemporaryDirectory() as tmp_dir:
+            tmp_path = Path(tmp_dir)
+            real_state = tmp_path / "real_state"
+            real_state.mkdir()
+            symlink_state = tmp_path / "symlink_state"
+            symlink_state.symlink_to(real_state)
+
+            with self.assertRaisesRegex(JobValidationError, "Symlink state directory"):
+                execute_payload({}, tmp_path, symlink_state)
 
 
 if __name__ == "__main__":

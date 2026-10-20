@@ -68,6 +68,12 @@ The app-surface inspection found that `apps/project-pages-hub/index.html` is a t
 
 This validator is a foundation, not the Explorer UI and not a replacement for the existing corpus schema validator. It does not resolve all-time completeness. Those remain explicit reconciliation work.
 
+## Implemented Explorer MVP increment
+
+A first accessible static UI now lives at `apps/historical-corpus-explorer/`. It renders source-provided coverage, node/edge counts, observation time, source and manifest SHAs, and reconciliation findings. It includes bounded search over locally selected node/edge JSONL artifacts, rejects malformed records and duplicate IDs, caps displayed results, uses text-only DOM insertion for untrusted record content, and does not upload selected files. No graph data or snapshot values are fabricated when a published projection is absent.
+
+The deterministic publisher `scripts/ci/build_historical_corpus_explorer_snapshot.py` writes `apps/historical-corpus-explorer/data/snapshot.json` from the canonical manifest and build summary, binds the Git commit and manifest blob SHA, and preserves the declared coverage status while surfacing contradictions. The existing context-relationship validation workflow now tests the publisher and runs its input/provenance check. This establishes the data contract; it does not yet connect the UI to a deployed Vercel/Pages project or implement a spatial graph canvas.
+
 ## Product design
 
 ### 1. Coverage and provenance strip
@@ -220,4 +226,4 @@ Failed validation blocks publication of a new snapshot but preserves the last kn
 
 ## Delivery status
 
-The temporal integrity validator and focused tests have been committed on the proposal branch. Test execution is not claimed here; consult the PR's current checks. The Explorer UI, CI workflow integration, publication, and deployment remain unimplemented. Repository changes should be tracked through CRG-15 and the normal proposal/PR lifecycle.
+The temporal integrity validator and focused tests have been committed on the proposal branch. Test execution is not claimed here; consult the PR's current checks. The The static Explorer MVP and deterministic snapshot publisher are committed on the proposal branch and included in CI. Automatic snapshot publication into the deployed site, Vercel/Pages root integration, spatial graph visualization, and deployment remain unimplemented. Repository changes should be tracked through CRG-15 and the normal proposal/PR lifecycle.

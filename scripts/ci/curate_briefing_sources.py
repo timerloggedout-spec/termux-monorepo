@@ -18,6 +18,7 @@ from urllib.parse import urlsplit
 
 URL_RE = re.compile(r"https?://[^\s<>\"']+", re.IGNORECASE)
 MARKDOWN_LINK_RE = re.compile(r"\[([^\]]+)\]\((https?://[^\s)]+)\)", re.IGNORECASE)
+HEADING_RE = re.compile(r"^\s{0,3}#{1,6}\s+(.+?)\s*#*\s*$")
 TRAILING = ".,;:!?)]}"
 DEFAULT_DOCS = (
     "docs/ops/AGENT-TEAM-ORCHESTRATION.md",
@@ -38,7 +39,7 @@ def clean_url(value: str) -> str:
 
 
 def is_http_url(value: Any) -> bool:
-    if not isinstance(value, str):
+    if not isinstance(value, str) or not value.startswith(("http://", "https://")):
         return False
     try:
         parsed = urlsplit(value)
@@ -117,10 +118,14 @@ def _json_citations(value: Any, source_file: str, locator: str = "$",
 def _markdown_citations(text: str, source_file: str) -> list[dict[str, Any]]:
     records: list[dict[str, Any]] = []
     heading = None
+    # Bolt optimization: Pre-compiled HEADING_RE and "http" substring fast-path guard
+    # bypass link extraction loops on non-link prose lines.
     for line_number, line in enumerate(text.splitlines(), 1):
-        match = re.match(r"^\s{0,3}#{1,6}\s+(.+?)\s*#*\s*$", line)
+        match = HEADING_RE.match(line)
         if match:
             heading = match.group(1).strip()
+        if "http" not in line and "HTTP" not in line:
+            continue
         context = {"item_headline": heading}
         # Markdown links preserve link text; the raw URL pass adds only URLs
         # not already covered on this line.

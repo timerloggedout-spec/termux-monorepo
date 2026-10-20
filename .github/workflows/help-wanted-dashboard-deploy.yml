@@ -20,7 +20,7 @@ on:
 
 concurrency:
   group: help-wanted-dashboard-deploy
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -30,6 +30,7 @@ permissions:
 jobs:
   enable-pages:
     name: enable-project-pages
+    if: ${{ github.event_name == 'push' || contains(fromJSON('["pages","user-site","both","all",""]'), github.event.inputs.target || 'user-site') }}
     runs-on: ubuntu-latest
     steps:
       - name: Create or update Pages site (branch gh-pages)
@@ -39,27 +40,49 @@ jobs:
           set -euo pipefail
           OWNER=timerloggedout-spec
           REPO=termux-monorepo
+          API="https://api.github.com/repos/$OWNER/$REPO/pages"
+          if [ -z "${GH_TOKEN:-}" ]; then
+            echo "::error::No GitHub token available for Pages configuration."
+            exit 1
+          fi
+
           CODE=$(curl -sS -o /tmp/pages.json -w "%{http_code}" \
             -H "Authorization: Bearer $GH_TOKEN" \
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
-            "https://api.github.com/repos/$OWNER/$REPO/pages" || true)
+            "$API")
           echo "GET pages => $CODE"
-          if [ "$CODE" = "404" ]; then
-            curl -sS -X POST \
-              -H "Authorization: Bearer $GH_TOKEN" \
-              -H "Accept: application/vnd.github+json" \
-              -H "X-GitHub-Api-Version: 2022-11-28" \
-              "https://api.github.com/repos/$OWNER/$REPO/pages" \
-              -d '{"build_type":"legacy","source":{"branch":"gh-pages","path":"/"}}' || true
+
+          if [ "$CODE" = "200" ]; then
+            if jq -e '.source.branch == "gh-pages" and .source.path == "/"' /tmp/pages.json >/dev/null; then
+              echo "Pages source already matches gh-pages:/; no configuration write needed."
+              exit 0
+            fi
+            METHOD=PUT
+          elif [ "$CODE" = "404" ]; then
+            METHOD=POST
           else
-            curl -sS -X PUT \
-              -H "Authorization: Bearer $GH_TOKEN" \
-              -H "Accept: application/vnd.github+json" \
-              -H "X-GitHub-Api-Version: 2022-11-28" \
-              "https://api.github.com/repos/$OWNER/$REPO/pages" \
-              -d '{"build_type":"legacy","source":{"branch":"gh-pages","path":"/"}}' || true
+            echo "::error::Unexpected Pages API status $CODE"
+            cat /tmp/pages.json
+            exit 1
           fi
+
+          UPDATE_CODE=$(curl -sS -o /tmp/pages-update.json -w "%{http_code}" \
+            -X "$METHOD" \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "$API" \
+            -d '{"build_type":"legacy","source":{"branch":"gh-pages","path":"/"}}')
+          echo "$METHOD pages => $UPDATE_CODE"
+          case "$UPDATE_CODE" in
+            2??) cat /tmp/pages-update.json ;;
+            *)
+              echo "::error::Pages configuration failed with HTTP $UPDATE_CODE"
+              cat /tmp/pages-update.json
+              exit 1
+              ;;
+          esac
 
   pages:
     name: publish-gh-pages

@@ -11,6 +11,8 @@ on:
       - 'tests/test_provider_recon.py'
       - 'tests/test_market_cadence.py'
       - 'tests/test_publish_provider_recon.py'
+      - 'tests/test_resource_index.py'
+      - 'tests/test_resource_registry.py'
       - '.github/workflows/provider-recon-compound.yml'
       - 'data/model-selection-market/**'
 permissions: {}
@@ -32,6 +34,7 @@ jobs:
       - name: Validate discovery, advisory planning and restricted publication
         run: |
           python3 -m pytest -q tests/test_provider_recon.py tests/test_market_cadence.py tests/test_publish_provider_recon.py
+          python3 -m pytest -q tests/test_resource_index.py tests/test_resource_registry.py
           python3 -m unittest scripts.model_selection_market.test_msm
   collect:
     needs: contracts
@@ -57,6 +60,7 @@ jobs:
           mkdir -p /tmp/provider-research
           python3 -m scripts.model_selection_market.provider_recon --output /tmp/provider-research/provider-recon.json
           python3 -m scripts.model_selection_market.cadence --input data/model-selection-market/cadence-seed.json --output /tmp/provider-research/cadence-plan.json
+          python3 -m scripts.model_selection_market.resource_index --registry data/model-selection-market/resource-registry.json --providers /tmp/provider-research/provider-recon.json --output /tmp/provider-research/resource-index.json
       - name: Preserve run-attempt evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

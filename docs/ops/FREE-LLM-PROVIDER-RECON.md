@@ -50,3 +50,7 @@ Existing integration anchors reinforce this separation: [`scripts/provider_model
 - User-provided notes were consulted; unrelated general “awesome free” directories and promotional links were not treated as evidence.
 
 **Research snapshot: 2026-10-20.** Provider rules, model rosters, limits, and repository content may change; re-check primary sources and account-level evidence immediately before any proposed experiment or adoption.
+
+## Complete supplied-resource follow-through
+
+The subsequent [resource implementation matrix](RESOURCE-IMPLEMENTATION-MATRIX.md) now registers all supplied resources, including general awesome lists, search/topic/discussion links and provider pages previously excluded from this narrow brief. Those references remain discovery inputs, not evidence of free access or runtime eligibility. The native offline aggregate search and existing-workflow artifact generation are tracked as MSM-008.

@@ -97,7 +97,7 @@ def test_main_writes_document_without_leaking_secrets(tmp_path):
     assert doc["observed_at"].endswith("Z")
     providers = {row["provider"] for row in doc["providers"]}
     assert {"gemini", "openrouter", "felo", "huggingface", "aion", "llm7",
-            "zai", "modelscope", "siliconflow", "kilo", "ovhcloud",
+            "cerebras", "groq", "mistral", "nvidia", "modelscope", "siliconflow", "kilo", "ovhcloud",
             "sambanova", "cloudflare", "cohere", "ollama"}.issubset(providers)
     public = {"llm7", "modelscope", "ovhcloud"}
     for row in doc["providers"]:

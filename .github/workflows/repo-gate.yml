@@ -58,6 +58,7 @@ jobs:
           python3 -m unittest discover -s tests -p 'test_curate_briefing_sources.py' -v
           python3 -m unittest discover -s tests -p 'test_emit_agent_throughput.py' -v
           python3 -m unittest discover -s tests -p 'test_procurement_edge_contracts.py' -v
+          python3 -m unittest discover -s tests -p 'test_vercel_ignore_commands.py' -v
           python3 scripts/ci/briefing_contract_validator.py --briefing data/briefing/briefings/2026-09-30.json --registry config/foresight_digest_sources.json
           python3 scripts/ci/curate_briefing_sources.py --output source-citations.jsonl
           python3 scripts/ci/procurement_edge_contract_validator.py

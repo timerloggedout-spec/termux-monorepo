@@ -51,8 +51,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          pr_json="$(gh api "repos/$REPOSITORY/pulls/$PR_NUMBER")"
-          if jq -e --arg team "$TEAM_SLUG" '[.requested_teams[]?.slug] | index($team) != null' <<<"$pr_json" >/dev/null; then
+          requested="$(gh api "repos/$REPOSITORY/pulls/$PR_NUMBER/requested_reviewers")"
+          if jq -e --arg team "$TEAM_SLUG" '[.teams[]?.slug] | index($team) != null' <<<"$requested" >/dev/null; then
             echo "Review team already requested; no duplicate API write."
             exit 0
           fi

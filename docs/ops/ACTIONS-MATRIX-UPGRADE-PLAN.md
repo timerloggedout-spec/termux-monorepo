@@ -15,6 +15,7 @@
 3. Adaptive asynchronous execution is governed by `.agents/skills/adaptive-wait/SKILL.md`: re-fetch after material changes, back off only on no-delta evidence, retry only when the attempt changes for an evidence-backed reason, and do not duplicate active work.
 4. The repository dual-gate is hygiene/portability plus agentic Termux smoke. Vercel is explicitly a non-gate in the canonical ops skill and issue #772. A Vercel quota failure must not be misreported as a code defect or CI gate failure.
 5. `docs/DEPLOYMENT-LANES.md` records the `termux-monorepo` and `mcp-hub` Vercel lanes as live. The GitHub Pages workflow and `gh-pages` branch exist, but current publication/source-SHA proof was not available in this RECON pass; Pages is configured but unverified. Render and Cloudflare remain unproven candidates. Do not silently claim or route production traffic to an unproven lane.
+8. Vercel project checks on merge commit `fe617f7f8eff0aeaecac67e0964e139ae9ab9035` reported `build-rate-limit` for four connected projects. A separate live deployment inspection showed `termux-monorepo` at `5827176ea6ec3580c5050e275493f94baef4a9e8` READY, while three deployments on unrelated research commit `e3ff387c95b9f94ab789a2ba65b51a103e357012` were CANCELED with the provider's `ignored-build-step` help link. Keep these states separate: quota failures are capacity evidence; ignored-build-step cancellations are intentional skip outcomes.
 6. `docs/schemas/model-rotation.yaml` governs **LLM** free-tier rotation; it is not a Vercel deployment quota registry. Reuse its quota-first design principles, but do not conflate provider types or their budgets.
 7. The latest known PR #1242 head before this RECON correction was `4b569bc2c9a8e032fd8464636b2d0d9e6a6e2087`. Re-fetch the live PR head/base and checks before drawing any current-state conclusion.
 
@@ -87,6 +88,20 @@ flowchart TD
 | Current-SHA integration evidence | | | ■ | ■ | | |
 | Review, promotion, post-promotion watch | | | | ■ | ■ | ■ |
 
+## Implemented in the quota-resilience follow-up branch
+
+- The GitHub Actions publisher now uses `cancel-in-progress: false` so a later event cannot cancel an active publication after consuming work/capacity.
+- The Pages setup job is skipped for a Vercel-only manual request; it no longer performs an unrelated Pages configuration API call on that path.
+- Pages setup is idempotent: an already-correct `gh-pages:/` configuration exits without a write. API transport errors, unexpected statuses, and failed writes are no longer hidden with `|| true`.
+- Vercel ignored-build-step commands are now explicitly top-root path-scoped in:
+  - `mcp-hub/vercel.json` → `mcp-hub/`
+  - `apps/help-wanted-dashboard/vercel.json` → dashboard sources plus generated dashboard snapshots and status validation scripts
+  - `demo-portal/public/vercel.json` → static demo portal only
+- Missing previous/current SHAs and diff errors fail open to a build; unchanged source returns exit 0 to skip; relevant changes return nonzero to continue the build. This follows Vercel's documented ignored-build-step contract.
+- `tests/test_vercel_ignore_commands.py` adds regression coverage for unrelated changes, relevant changes, missing previous SHA, and project-path scoping.
+
+**Activation boundary:** these repository changes are on the follow-up branch and are not active in Vercel until the branch is merged and each connected project consumes its applicable configuration. The source-path filters reduce unnecessary deployment attempts; they do not manufacture quota headroom, expose a remaining quota counter, or provide a cross-provider production failover.
+
 ## Quota resilience policy — act before exhaustion, never after a retry storm
 
 ### Correct classification
@@ -113,7 +128,7 @@ A Vercel `api-deployments-free-per-day` response is **provider capacity = constr
 | Render | Candidate / unproven in this repository | Not an automatic fallback. Requires concrete project/service and source-SHA health proof. |
 | Cloudflare / Pages / Workers | Candidate / unproven in this repository | Not an automatic fallback. Establish the exact product, project, route/domain, source boundary, and verification first. |
 
-**Present limitation:** this RECON verified the connected Vercel team is on the Hobby plan, and provider check URLs report `build-rate-limit`. No authoritative remaining daily-deployment counter was exposed. The workflow change removes this repository's explicit Vercel production deploy from ordinary GitHub Actions pushes, but it does **not** disable Vercel's separate Git-connected auto-deployments; four Vercel project checks still failed on the merged commit. GitHub Pages is configured for static publication, but its current URL/source-SHA health was not verified here. Automatic application/MCP failover remains gated on provisioning and verifying a compatible alternative lane. The next priority is to suppress irrelevant Git-connected deployments at each Vercel project's ignored-build-step boundary, using per-project source-path rules and a safe fallback when the previous SHA is unavailable.
+**Present limitation:** this RECON verified the connected Vercel team is on the Hobby plan, and provider check URLs report `build-rate-limit`. No authoritative remaining daily-deployment counter was exposed. The follow-up branch now narrows ignored-build-step checks by source path, preventing unrelated repository changes from triggering project builds once merged and consumed by each project. The branch itself is not yet active provider configuration. GitHub Pages is configured for static publication, but its current URL/source-SHA health was not verified here. Automatic application/MCP failover remains gated on provisioning and verifying a compatible alternative lane.
 
 ## Acceptance checklist
 

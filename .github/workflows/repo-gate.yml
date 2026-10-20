@@ -51,3 +51,23 @@ jobs:
 
       - name: workflow_run contract
         run: python3 scripts/ci/workflow_run_contract.py
+
+      - name: Briefing and source provenance contracts
+        run: |
+          python3 -m unittest discover -s tests -p 'test_briefing_contract_validator.py' -v
+          python3 -m unittest discover -s tests -p 'test_curate_briefing_sources.py' -v
+          python3 -m unittest discover -s tests -p 'test_emit_agent_throughput.py' -v
+          python3 -m unittest discover -s tests -p 'test_procurement_edge_contracts.py' -v
+          python3 -m unittest discover -s tests -p 'test_vercel_ignore_commands.py' -v
+          python3 scripts/ci/briefing_contract_validator.py --briefing data/briefing/briefings/2026-09-30.json --registry config/foresight_digest_sources.json
+          python3 scripts/ci/curate_briefing_sources.py --output source-citations.jsonl
+          python3 scripts/ci/procurement_edge_contract_validator.py
+
+      - name: Upload curated source citation ledger
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-citations-${{ github.run_id }}
+          path: source-citations.jsonl
+          if-no-files-found: ignore
+          retention-days: 30

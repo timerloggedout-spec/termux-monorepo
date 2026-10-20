@@ -11,6 +11,12 @@ CREDENTIAL_KEYS = (
     "FELO_AI_API",
     "HUGGINGFACE_TOKEN",
     "HF_TOKEN",
+    "GOOGLE_API_KEY", "OMNI_API_KEY", "GROQ_API_KEY", "MISTRAL_API_KEY",
+    "CEREBRAS_API_KEY", "NVIDIA_API_KEY", "NVIDIA_NIM_API_KEY", "AION_API_KEY",
+    "LLM7_API_TOKEN", "ZAI_API_KEY", "MODELSCOPE_TOKEN", "SILICONFLOW_API_KEY",
+    "KILO_API_KEY", "OVHCLOUD_API_KEY", "SAMBANOVA_API_KEY", "CLOUDFLARE_API_TOKEN",
+    "CLOUDFLARE_ACCOUNT_ID", "COHERE_API_KEY", "OLLAMA_API_KEY",
+    "HUGGING_FACE_HUB_TOKEN", "HF_API_TOKEN",
 )
 
 
@@ -77,20 +83,235 @@ def test_main_writes_document_without_leaking_secrets(tmp_path):
     out = tmp_path / "availability.json"
     env = {k: "" for k in CREDENTIAL_KEYS}
     env["OUTPUT"] = str(out)
-    with patch.dict("os.environ", env, clear=False):
+    env["HF_TOKEN"] = "fixture-hf-secret"
+    env["SAMBANOVA_API_KEY"] = "fixture-sambanova-secret"
+    from scripts import provider_model_catalog
+
+    # Public catalogs are still observed, but the test must never use the network.
+    with patch.dict("os.environ", env, clear=True), patch.object(
+        provider_model_catalog, "poll",
+        side_effect=lambda provider, token: ([{"id": f"fixture-{provider}", "free_suffix": False}], {}),
+    ):
         probe.main()
     assert out.exists()
     doc = json.loads(out.read_text(encoding="utf-8"))
     assert doc["schema"] == "provider-availability/v1"
     assert doc["observed_at"].endswith("Z")
     providers = {row["provider"] for row in doc["providers"]}
-    assert {"gemini", "openrouter", "felo", "huggingface"}.issubset(providers)
+    assert {"gemini", "openrouter", "felo", "huggingface", "aion", "llm7",
+            "cerebras", "groq", "mistral", "nvidia", "modelscope", "siliconflow", "kilo", "ovhcloud",
+            "sambanova", "cloudflare", "cohere", "ollama"}.issubset(providers)
+    public = {"llm7", "modelscope", "ovhcloud"}
+    configured = {"huggingface": "HF_TOKEN", "sambanova": "SAMBANOVA_API_KEY"}
+    by_provider = {row["provider"]: row for row in doc["providers"]}
     for row in doc["providers"]:
-        # With no credentials configured, every provider must be inert.
-        assert row["credential_present"] is False
-        assert row["catalog_ok"] is False
         assert row["inference_ok"] is False
-    # Credentials must never be serialized into the evidence document.
+        if row["provider"] in public:
+            assert row["credential_present"] is False
+            assert row["auth_mode"] == "public"
+            assert row["credential_env_resolved"] is None
+            assert row["credential_env_expected"] is None
+            assert row["catalog_probe_required"] is True
+            assert row["catalog_ok"] is True
+        elif row["provider"] in configured:
+            assert row["credential_present"] is True
+            assert row["auth_mode"] == "credential"
+            assert row["credential_env_resolved"] == configured[row["provider"]]
+            assert row["credential_env_expected"] is None
+            assert row["catalog_probe_required"] is True
+            assert row["catalog_ok"] is True
+        else:
+            assert row["credential_present"] is False
+            assert row["auth_mode"] == "unconfigured"
+            assert row["credential_env_resolved"] is None
+            assert row["catalog_probe_required"] is False
+            assert row["catalog_ok"] is False
+    assert by_provider["groq"]["credential_env_expected"] == "GROQ_API_KEY"
+    assert by_provider["gemini"]["error_class"] == "missing_secret"
+    # Artifacts may name the resolved environment variable, but never the secret value.
     body = out.read_text(encoding="utf-8")
-    for key in CREDENTIAL_KEYS:
-        assert key not in body
+    assert "fixture-hf-secret" not in body
+    assert "fixture-sambanova-secret" not in body
+
+
+def test_huggingface_alias_precedence_matches_catalog():
+    env = {
+        "HUGGINGFACE_TOKEN": "first",
+        "HUGGING_FACE_HUB_TOKEN": "second",
+        "HF_API_TOKEN": "third",
+        "HF_TOKEN": "fourth",
+    }
+    assert probe.resolve_huggingface_token(env) == "first"
+    for alias in probe.HF_TOKEN_ALIASES:
+        env = {name: "" for name in probe.HF_TOKEN_ALIASES}
+        env[alias] = alias
+        assert probe.resolve_huggingface_token(env) == alias
+
+
+
+def test_openrouter_inference_delegates_to_nonexecuting_safe_observer():
+    from scripts.ops import provider_free_smoke
+
+    row = probe.result("openrouter")
+    row.update(catalog_ok=True, model="liquid/lfm-2.5-2.6b:free")
+    with patch.object(provider_free_smoke, "observe", return_value={
+        "inference_ok": False, "reason": "explicit_smoke_not_requested",
+        "model": "liquid/lfm-2.5-2.6b:free", "token": "must-not-leak",
+    }) as observe:
+        probe.openrouter_inference(row, "secret-token")
+    observe.assert_called_once_with("secret-token", execute=False)
+    assert row["inference_ok"] is False
+    assert row["error_class"] is None
+    assert "must-not-leak" not in json.dumps(row)
+    assert "secret-token" not in json.dumps(row)
+
+def test_gemini_auth_uses_header_never_url_token():
+    calls = []
+
+    def fake_request(url, **kwargs):
+        calls.append((url, kwargs))
+        if url.endswith("/models"):
+            return 200, {"models": [{"name": "models/gemini-flash", "supportedGenerationMethods": ["generateContent"]}]}
+        return 200, {}
+
+    row = probe.result("gemini")
+    with patch.object(probe, "request", side_effect=fake_request):
+        probe.gemini_probe(row, "secret-value")
+    assert row["catalog_ok"] and not row["inference_ok"]
+    assert row["error_class"] == "free_account_unverified"
+    assert len(calls) == 1
+    url, kwargs = calls[0]
+    assert url.endswith("/models")
+    assert "secret-value" not in url
+    assert "key=" not in url
+    assert kwargs["auth_header"] == "x-goog-api-key"
+    assert kwargs["token"] == "secret-value"
+
+
+def test_probe_errors_do_not_expose_error_body_or_token():
+    row = probe.result("gemini")
+    secret = "private-key-value"
+    with patch.object(probe, "request", side_effect=OSError(f"request failed {secret}")):
+        probe.gemini_probe(row, secret)
+    assert row["error_class"] == "OSError"
+    assert secret not in json.dumps(row)
+
+
+def test_request_rejects_redirects_and_bounds_response():
+    from unittest.mock import Mock
+    import urllib.error
+
+    redirect = urllib.error.HTTPError("https://example.test", 302, "Found", {}, None)
+    with patch.object(probe._OPENER, "open", side_effect=redirect):
+        try:
+            probe.request("https://example.test", token="secret")
+        except urllib.error.HTTPError as exc:
+            assert exc.code == 302
+        else:
+            raise AssertionError("redirect must not be followed")
+    response = Mock()
+    response.__enter__ = Mock(return_value=response)
+    response.__exit__ = Mock(return_value=False)
+    response.read.return_value = b"x" * (probe.MAX_RESPONSE_BYTES + 1)
+    with patch.object(probe._OPENER, "open", return_value=response):
+        try:
+            probe.request("https://example.test")
+        except ValueError as exc:
+            assert str(exc) == "response_too_large"
+        else:
+            raise AssertionError("oversized response must be rejected")
+
+
+def test_request_places_gemini_key_in_header_not_url():
+    from unittest.mock import Mock
+
+    response = Mock()
+    response.__enter__ = Mock(return_value=response)
+    response.__exit__ = Mock(return_value=False)
+    response.status = 200
+    response.read.return_value = b"{}"
+    captured = {}
+
+    def open_request(request, timeout):
+        captured["url"] = request.full_url
+        captured["headers"] = request.headers
+        return response
+
+    with patch.object(probe._OPENER, "open", side_effect=open_request):
+        probe.request("https://example.test/models", token="private-key", auth_header="x-goog-api-key")
+    assert "private-key" not in captured["url"]
+    assert "key=" not in captured["url"]
+    assert captured["headers"]["X-goog-api-key"] == "private-key"
+
+
+
+def test_public_catalog_probe_does_not_require_credentials_or_inference():
+    from scripts import provider_model_catalog
+
+    row = probe.result("ovhcloud")
+    with patch.dict("os.environ", {}, clear=True), patch.object(
+        provider_model_catalog, "poll", return_value=([{"id": "public-model"}], {})
+    ) as poll:
+        probe.catalog_provider_probe("ovhcloud", row, provider_model_catalog)
+    poll.assert_called_once_with("ovhcloud", None)
+    assert row["auth_mode"] == "public"
+    assert row["catalog_probe_required"] is True
+    assert row["catalog_ok"] is True
+    assert row["model_count"] == 1
+    assert row["inference_ok"] is False
+
+
+def test_unconfigured_expanded_provider_never_calls_network():
+    from scripts import provider_model_catalog
+
+    row = probe.result("sambanova")
+    with patch.dict("os.environ", {}, clear=True), patch.object(
+        provider_model_catalog, "poll"
+    ) as poll:
+        probe.catalog_provider_probe("sambanova", row, provider_model_catalog)
+    poll.assert_not_called()
+    assert row["auth_mode"] == "unconfigured"
+    assert row["catalog_probe_required"] is False
+    assert row["error_class"] == "missing_secret"
+
+
+def test_expanded_catalog_probe_never_runs_inference():
+    from scripts import provider_model_catalog
+
+    row = probe.result("sambanova")
+    with patch.dict("os.environ", {"SAMBANOVA_API_KEY": "fixture-secret"}, clear=True), patch.object(
+        provider_model_catalog, "poll", return_value=([{"id": "fixture-model"}], {})
+    ) as poll:
+        probe.catalog_provider_probe("sambanova", row, provider_model_catalog)
+    poll.assert_called_once_with("sambanova", "fixture-secret")
+    assert row["catalog_ok"] is True
+    assert row["inference_ok"] is False
+    assert "fixture-secret" not in json.dumps(row)
+
+
+
+def test_resolved_credential_alias_is_recorded_without_secret_value():
+    from scripts import provider_model_catalog
+
+    row = probe.result("huggingface")
+    with patch.dict("os.environ", {"HF_TOKEN": "fixture-private-token"}, clear=True), patch.object(
+        provider_model_catalog, "poll", return_value=([{"id": "fixture-model"}], {})
+    ):
+        probe.catalog_provider_probe("huggingface", row, provider_model_catalog)
+    assert row["credential_env_resolved"] == "HF_TOKEN"
+    assert row["credential_env_expected"] is None
+    assert "fixture-private-token" not in json.dumps(row)
+
+
+def test_missing_provider_credential_reports_only_expected_environment_name():
+    from scripts import provider_model_catalog
+
+    row = probe.result("groq")
+    with patch.dict("os.environ", {}, clear=True), patch.object(
+        provider_model_catalog, "poll"
+    ) as poll:
+        probe.catalog_provider_probe("groq", row, provider_model_catalog)
+    poll.assert_not_called()
+    assert row["credential_env_resolved"] is None
+    assert row["credential_env_expected"] == "GROQ_API_KEY"
+    assert "fixture" not in json.dumps(row)

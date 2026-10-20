@@ -7,16 +7,28 @@ Same tool semantics as agent.py, but:
 - server.py stays for external callers (GH Actions, Agora, curl)
 """
 import json, os, sys, time, uuid
-import session_store
-from deepcli.prompt_system import build_system_prompt  # noqa
 from pathlib import Path
 
 HOME = Path.home()
+HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE / "deepcli"))
+sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HOME / "deepcli"))
 sys.path.insert(0, str(HOME))
 
-from deepcli.core import get_token, create_session, chat_completion  # noqa
-from src.gh_broker import GhBroker                                    # noqa
+import session_store
+from prompt_system import build_system_prompt  # noqa
+from core import get_token, create_session, chat_completion  # noqa
+try:
+    from src.gh_broker import GhBroker  # noqa
+except ImportError as _broker_import_error:
+    _BROKER_IMPORT_ERROR = str(_broker_import_error)
+    # Some deployments omit the optional broker package. Keep task execution
+    # available; fail closed only if the task actually requests GitHub access.
+    class GhBroker:  # type: ignore[no-redef]
+        def run(self, _argv):
+            raise RuntimeError(f"GitHub broker unavailable: {_BROKER_IMPORT_ERROR}")
+
 
 # Hindsight memory (optional, env-gated)
 try:
@@ -922,7 +934,10 @@ def _autosnapshot(reason: str = "auto"):
 def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False, role=None, task_id=None, transport=None):
     """Loop until finish OR no-progress detected. Ceiling is safety, not policy."""
     print(f"\n▶ task: {task}\n")
-    print(f"  [role] {role or os.environ.get(\"DEEPCLI_ROLE\", \"engineer\")} [task_id] {task_id or os.environ.get(\"DEEPCLI_TASK_ID\", \"unassigned\")} [transport] {transport or os.environ.get(\"DEEPCLI_TRANSPORT\", \"auto\")}")
+    effective_role = role or os.environ.get("DEEPCLI_ROLE", "engineer")
+    effective_task_id = task_id or os.environ.get("DEEPCLI_TASK_ID", "unassigned")
+    effective_transport = transport or os.environ.get("DEEPCLI_TRANSPORT", "auto")
+    print(f"  [role] {effective_role} [task_id] {effective_task_id} [transport] {effective_transport}")
     _t0 = time.time()
     key = session_store.task_key(task, task_path)
     _notify("run", "🤖 Agent starting",
@@ -1099,6 +1114,28 @@ if __name__ == "__main__":
     transport = os.environ.get("DEEPCLI_TRANSPORT", "auto")
     fresh = False
     task_path = None
+    # The Termux task runner supplies these options explicitly. Consume them
+    # here rather than treating them as part of the natural-language task.
+    for option, destination in (("--role", "role"), ("--task-id", "task_id"),
+                                ("--transport", "transport")):
+        if option in argv:
+            i = argv.index(option)
+            if i + 1 >= len(argv):
+                print(f"error: {option} requires a value", file=sys.stderr)
+                sys.exit(2)
+            value = argv[i + 1]
+            if destination == "role": role = value
+            elif destination == "task_id": task_id = value
+            else: transport = value
+            del argv[i:i + 2]
+    roles_path = Path(__file__).with_name("roles.json")
+    try:
+        available_roles = json.loads(roles_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        available_roles = {}
+    if role not in available_roles:
+        print(f"error: unknown execution role {role!r}; choose from: {', '.join(sorted(available_roles))}", file=sys.stderr)
+        sys.exit(2)
     if "--dry-run" in argv:
         dry = True; argv.remove("--dry-run")
     if "--fresh" in argv:

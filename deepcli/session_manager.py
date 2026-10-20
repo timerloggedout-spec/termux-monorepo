@@ -362,6 +362,10 @@ def get_new_session(account: str = "primary"):
 def ensure_session(cache_dir, account: str | None = None):
     account = normalize_account(account)
     cache_dir_path = Path(cache_dir) / account
+    if ".." in cache_dir_path.parts:
+        raise ValueError("Path traversal ('..') detected in cache path")
+    if cache_dir_path.is_symlink() or cache_dir_path.parent.is_symlink():
+        raise ValueError("Symlink session cache directory rejected for security")
     cache_dir_path.mkdir(parents=True, exist_ok=True)
     if not cache_dir_path.is_symlink():
         try:

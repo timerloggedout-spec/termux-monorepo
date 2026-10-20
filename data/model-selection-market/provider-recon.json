@@ -1,0 +1,3369 @@
+{
+  "blocked_reasons": [
+    "catalog data is unverified third-party research",
+    "provider endpoints are never queried",
+    "runtime eligibility is always false"
+  ],
+  "integration_references": [
+    {
+      "count": 37,
+      "kind": "static provider import/register references only",
+      "path": "server/src/providers/index.ts",
+      "source_repo": "tashfeenahmed/freellmapi"
+    }
+  ],
+  "model_candidates": [
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "aclide",
+      "provider_name": "Aclide",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "aihorde",
+      "provider_name": "AIHorde",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "128K",
+        "max_output": "32K",
+        "modality": "Text (reasoning)",
+        "quota": "15 RPM, 20K TPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "aion-labs/aion-2.0",
+      "model_key": "aion-labs-aion-2-0",
+      "model_name": "aion-labs/aion-2.0",
+      "provider_key": "aion-labs",
+      "provider_name": "Aion Labs",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "128K",
+        "max_output": "32K",
+        "modality": "Text (reasoning)",
+        "quota": "15 RPM, 20K TPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "aion-labs/aion-3.0",
+      "model_key": "aion-labs-aion-3-0",
+      "model_name": "aion-labs/aion-3.0",
+      "provider_key": "aion-labs",
+      "provider_name": "Aion Labs",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "128K",
+        "max_output": "32K",
+        "modality": "Text (reasoning)",
+        "quota": "15 RPM, 20K TPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "aion-labs/aion-3.0-mini",
+      "model_key": "aion-labs-aion-3-0-mini",
+      "model_name": "aion-labs/aion-3.0-mini",
+      "provider_key": "aion-labs",
+      "provider_name": "Aion Labs",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "32K",
+        "max_output": "32K",
+        "modality": "Text",
+        "quota": "15 RPM, 20K TPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "aion-labs/aion-rp-llama-3.1-8b",
+      "model_key": "aion-labs-aion-rp-llama-3-1-8b",
+      "model_name": "aion-labs/aion-rp-llama-3.1-8b",
+      "provider_key": "aion-labs",
+      "provider_name": "Aion Labs",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "airforce",
+      "provider_name": "Airforce",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "apinex",
+      "provider_name": "Apinex",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "beatapi",
+      "provider_name": "BeatApi",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "blaze",
+      "provider_name": "Blaze",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "blockrun",
+      "provider_name": "BlockRun",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "clod",
+      "provider_name": "Clod",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "cloudflare",
+      "provider_name": "Cloudflare",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "Varies",
+        "max_output": "Varies",
+        "modality": "Text, Image, Audio, Embeddings",
+        "quota": "10K neurons/day (shared)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "aggregate:+ 55 more models",
+      "model_key": "aggregate-55-more-models",
+      "model_name": "+ 55 more models",
+      "provider_key": "cloudflare-workers-ai",
+      "provider_name": "Cloudflare Workers AI",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "80K",
+        "max_output": "Shared w/ context",
+        "modality": "Text (reasoning)",
+        "quota": "10K neurons/day (shared)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "@cf/deepseek-ai/deepseek-r1-distill-qwen-32b",
+      "model_key": "cf-deepseek-ai-deepseek-r1-distill-qwen-32b",
+      "model_name": "@cf/deepseek-ai/deepseek-r1-distill-qwen-32b",
+      "provider_key": "cloudflare-workers-ai",
+      "provider_name": "Cloudflare Workers AI",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "256K",
+        "max_output": "Shared w/ context",
+        "modality": "Text + Vision",
+        "quota": "10K neurons/day (shared)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "@cf/google/gemma-4-26b-a4b-it",
+      "model_key": "cf-google-gemma-4-26b-a4b-it",
+      "model_name": "@cf/google/gemma-4-26b-a4b-it",
+      "provider_key": "cloudflare-workers-ai",
+      "provider_name": "Cloudflare Workers AI",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "24K",
+        "max_output": "Shared w/ context",
+        "modality": "Text",
+        "quota": "10K neurons/day (shared)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+      "model_key": "cf-meta-llama-3-3-70b-instruct-fp8-fast",
+      "model_name": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+      "provider_key": "cloudflare-workers-ai",
+      "provider_name": "Cloudflare Workers AI",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "131K",
+        "max_output": "Shared w/ context",
+        "modality": "Multimodal",
+        "quota": "10K neurons/day (shared)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "model_key": "cf-meta-llama-4-scout-17b-16e-instruct",
+      "model_name": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "provider_key": "cloudflare-workers-ai",
+      "provider_name": "Cloudflare Workers AI",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "128K",
+        "max_output": "Shared w/ context",
+        "modality": "Text + Vision",
+        "quota": "10K neurons/day (shared)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "@cf/mistralai/mistral-small-3.1-24b-instruct",
+      "model_key": "cf-mistralai-mistral-small-3-1-24b-instruct",
+      "model_name": "@cf/mistralai/mistral-small-3.1-24b-instruct",
+      "provider_key": "cloudflare-workers-ai",
+      "provider_name": "Cloudflare Workers AI",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "128K",
+        "max_output": "Shared w/ context",
+        "modality": "Text",
+        "quota": "10K neurons/day (shared)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "@cf/openai/gpt-oss-120b",
+      "model_key": "cf-openai-gpt-oss-120b",
+      "model_name": "@cf/openai/gpt-oss-120b",
+      "provider_key": "cloudflare-workers-ai",
+      "provider_name": "Cloudflare Workers AI",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "131K",
+        "max_output": "Shared w/ context",
+        "modality": "Text",
+        "quota": "10K neurons/day (shared)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "@cf/zai-org/glm-4.7-flash",
+      "model_key": "cf-zai-org-glm-4-7-flash",
+      "model_name": "@cf/zai-org/glm-4.7-flash",
+      "provider_key": "cloudflare-workers-ai",
+      "provider_name": "Cloudflare Workers AI",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "128K",
+        "max_output": "4K",
+        "modality": "Text",
+        "quota": "20 RPM"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "c4ai-aya-expanse-32b",
+      "model_key": "c4ai-aya-expanse-32b",
+      "model_name": "Aya Expanse 32B",
+      "provider_key": "cohere",
+      "provider_name": "Cohere",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "16K",
+        "max_output": "4K",
+        "modality": "Text + Image",
+        "quota": "20 RPM"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "c4ai-aya-vision-32b",
+      "model_key": "c4ai-aya-vision-32b",
+      "model_name": "Aya Vision 32B",
+      "provider_key": "cohere",
+      "provider_name": "Cohere",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "256K",
+        "max_output": "8K",
+        "modality": "Text",
+        "quota": "20 RPM"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "command-a-03-2025",
+      "model_key": "command-a-03-2025",
+      "model_name": "Command A (111B)",
+      "provider_key": "cohere",
+      "provider_name": "Cohere",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "128K",
+        "max_output": "64K",
+        "modality": "Text + Image",
+        "quota": "20 RPM"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "command-a-plus-05-2026",
+      "model_key": "command-a-plus-05-2026",
+      "model_name": "Command A+ (218B)",
+      "provider_key": "cohere",
+      "provider_name": "Cohere",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "256K",
+        "max_output": "32K",
+        "modality": "Text (reasoning)",
+        "quota": "20 RPM"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "command-a-reasoning-08-2025",
+      "model_key": "command-a-reasoning-08-2025",
+      "model_name": "Command A Reasoning",
+      "provider_key": "cohere",
+      "provider_name": "Cohere",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "8K",
+        "max_output": "8K",
+        "modality": "Text",
+        "quota": "20 RPM"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "command-a-translate-08-2025",
+      "model_key": "command-a-translate-08-2025",
+      "model_name": "Command A Translate",
+      "provider_key": "cohere",
+      "provider_name": "Cohere",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "128K",
+        "max_output": "8K",
+        "modality": "Text + Image",
+        "quota": "20 RPM"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "command-a-vision-07-2025",
+      "model_key": "command-a-vision-07-2025",
+      "model_name": "Command A Vision",
+      "provider_key": "cohere",
+      "provider_name": "Cohere",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "128K",
+        "max_output": "4K",
+        "modality": "Text",
+        "quota": "20 RPM"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "command-r-08-2024",
+      "model_key": "command-r-08-2024",
+      "model_name": "Command R",
+      "provider_key": "cohere",
+      "provider_name": "Cohere",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "128K",
+        "max_output": "4K",
+        "modality": "Text",
+        "quota": "20 RPM"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "command-r-plus-08-2024",
+      "model_key": "command-r-plus-08-2024",
+      "model_name": "Command R+",
+      "provider_key": "cohere",
+      "provider_name": "Cohere",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "128K",
+        "max_output": "4K",
+        "modality": "Text",
+        "quota": "20 RPM"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "command-r7b-12-2024",
+      "model_key": "command-r7b-12-2024",
+      "model_name": "Command R7B",
+      "provider_key": "cohere",
+      "provider_name": "Cohere",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "128K",
+        "max_output": "~4K",
+        "modality": "Text",
+        "quota": "20 RPM"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "command-r7b-arabic-02-2025",
+      "model_key": "command-r7b-arabic-02-2025",
+      "model_name": "Command R7B Arabic",
+      "provider_key": "cohere",
+      "provider_name": "Cohere",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "cohere",
+      "provider_name": "Cohere",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "dreamprompting",
+      "provider_name": "DreamPrompting",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "electronhub",
+      "provider_name": "ElectronHub",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "exa",
+      "provider_name": "Exa",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "experiential",
+      "provider_name": "Experiential",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "firecrawl",
+      "provider_name": "Firecrawl",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "freeai",
+      "provider_name": "FreeAi",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "gizmo",
+      "provider_name": "Gizmo",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "1M",
+        "max_output": "65K",
+        "modality": "Text + Image + Audio + Video",
+        "quota": "15 RPM, 1,500 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "gemini-2.5-flash",
+      "model_key": "gemini-2-5-flash",
+      "model_name": "Gemini 2.5 Flash",
+      "provider_key": "google-gemini",
+      "provider_name": "Google Gemini",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "1M",
+        "max_output": "65K",
+        "modality": "Text + Image + Audio + Video",
+        "quota": "30 RPM, 1,500 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "gemini-2.5-flash-lite",
+      "model_key": "gemini-2-5-flash-lite",
+      "model_name": "Gemini 2.5 Flash-Lite",
+      "provider_key": "google-gemini",
+      "provider_name": "Google Gemini",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "1M",
+        "max_output": "65K",
+        "modality": "Text + Image + Audio + Video",
+        "quota": "5 RPM, 50 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "gemini-2.5-pro",
+      "model_key": "gemini-2-5-pro",
+      "model_name": "Gemini 2.5 Pro",
+      "provider_key": "google-gemini",
+      "provider_name": "Google Gemini",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "1M",
+        "max_output": "65K",
+        "modality": "Text + Image + Audio + Video",
+        "quota": "30 RPM, 1,500 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "gemini-3.1-flash-lite",
+      "model_key": "gemini-3-1-flash-lite",
+      "model_name": "Gemini 3.1 Flash-Lite",
+      "provider_key": "google-gemini",
+      "provider_name": "Google Gemini",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "1M",
+        "max_output": "65K",
+        "modality": "Text + Image + Audio + Video",
+        "quota": "15 RPM, 1,500 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "gemini-3.5-flash",
+      "model_key": "gemini-3-5-flash",
+      "model_name": "Gemini 3.5 Flash",
+      "provider_key": "google-gemini",
+      "provider_name": "Google Gemini",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "1M",
+        "max_output": "65K",
+        "modality": "Text + Image + Audio + Video",
+        "quota": "30 RPM, 1,500 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "gemini-3.5-flash-lite",
+      "model_key": "gemini-3-5-flash-lite",
+      "model_name": "Gemini 3.5 Flash-Lite",
+      "provider_key": "google-gemini",
+      "provider_name": "Google Gemini",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "1M",
+        "max_output": "65K",
+        "modality": "Text + Image + Audio + Video",
+        "quota": "15 RPM, 1,500 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "gemini-3.6-flash",
+      "model_key": "gemini-3-6-flash",
+      "model_name": "Gemini 3.6 Flash",
+      "provider_key": "google-gemini",
+      "provider_name": "Google Gemini",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "1M",
+        "max_output": "65K",
+        "modality": "Text + Image + Audio + Video",
+        "quota": "—"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "gemini-3.7-flash",
+      "model_key": "gemini-3-7-flash",
+      "model_name": "Gemini 3.7 Flash",
+      "provider_key": "google-gemini",
+      "provider_name": "Google Gemini",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "1M",
+        "max_output": "65K",
+        "modality": "Text + Image + Audio + Video",
+        "quota": "—"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "gemini-3.8-flash",
+      "model_key": "gemini-3-8-flash",
+      "model_name": "Gemini 3.8 Flash",
+      "provider_key": "google-gemini",
+      "provider_name": "Google Gemini",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "256K",
+        "max_output": "32K",
+        "modality": "Text",
+        "quota": "—"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "gemma-4-26b-a4b-it",
+      "model_key": "gemma-4-26b-a4b-it",
+      "model_name": "Gemma 4 26B A4B",
+      "provider_key": "google-gemini",
+      "provider_name": "Google Gemini",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "256K",
+        "max_output": "32K",
+        "modality": "Text",
+        "quota": "—"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "gemma-4-31b-it",
+      "model_key": "gemma-4-31b-it",
+      "model_name": "Gemma 4 31B",
+      "provider_key": "google-gemini",
+      "provider_name": "Google Gemini",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "131K",
+        "max_output": "65K",
+        "modality": "Text",
+        "quota": "30 RPM, 1,000 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "openai/gpt-oss-120b",
+      "model_key": "openai-gpt-oss-120b",
+      "model_name": "openai/gpt-oss-120b",
+      "provider_key": "groq",
+      "provider_name": "Groq",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "131K",
+        "max_output": "65K",
+        "modality": "Text",
+        "quota": "30 RPM, 1,000 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "openai/gpt-oss-20b",
+      "model_key": "openai-gpt-oss-20b",
+      "model_name": "openai/gpt-oss-20b",
+      "provider_key": "groq",
+      "provider_name": "Groq",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "131K",
+        "max_output": "16K",
+        "modality": "Text",
+        "quota": "30 RPM, 1,000 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "qwen/qwen3.8-27b",
+      "model_key": "qwen-qwen3-8-27b",
+      "model_name": "qwen/qwen3.8-27b",
+      "provider_key": "groq",
+      "provider_name": "Groq",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "Varies",
+        "max_output": "Varies",
+        "modality": "Text, Image, Audio, Embeddings",
+        "quota": "Credit-metered"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "aggregate:+ thousands of community models",
+      "model_key": "aggregate-thousands-of-community-models",
+      "model_name": "+ thousands of community models",
+      "provider_key": "hugging-face",
+      "provider_name": "Hugging Face",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "131K",
+        "max_output": "~4K",
+        "modality": "Text",
+        "quota": "Credit-metered"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "google/gemma-3-4b-it",
+      "model_key": "google-gemma-3-4b-it",
+      "model_name": "gemma-3-4b-it",
+      "provider_key": "hugging-face",
+      "provider_name": "Hugging Face",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "128K",
+        "max_output": "~4K",
+        "modality": "Text",
+        "quota": "Credit-metered"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "meta-llama/Llama-3.1-8B-Instruct",
+      "model_key": "meta-llama-llama-3-1-8b-instruct",
+      "model_name": "Meta-Llama-3.1-8B-Instruct",
+      "provider_key": "hugging-face",
+      "provider_name": "Hugging Face",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "16K",
+        "max_output": "~4K",
+        "modality": "Text",
+        "quota": "Credit-metered"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "microsoft/phi-4",
+      "model_key": "microsoft-phi-4",
+      "model_name": "phi-4",
+      "provider_key": "hugging-face",
+      "provider_name": "Hugging Face",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "131K",
+        "max_output": "~4K",
+        "modality": "Text",
+        "quota": "Credit-metered"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "Qwen/Qwen2.5-7B-Instruct",
+      "model_key": "qwen-qwen2-5-7b-instruct",
+      "model_name": "Qwen2.5-7B-Instruct",
+      "provider_key": "hugging-face",
+      "provider_name": "Hugging Face",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "131K",
+        "max_output": "~4K",
+        "modality": "Text",
+        "quota": "Credit-metered"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "Qwen/Qwen2.5-Coder-7B-Instruct",
+      "model_key": "qwen-qwen2-5-coder-7b-instruct",
+      "model_name": "Qwen2.5-Coder-7B-Instruct",
+      "provider_key": "hugging-face",
+      "provider_name": "Hugging Face",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "inferbase",
+      "provider_name": "Inferbase",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "262K",
+        "max_output": "235K",
+        "modality": "Text",
+        "quota": "200 req/hr"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "apodex/apodex-1.1-mini:free",
+      "model_key": "apodex-apodex-1-1-mini-free",
+      "model_name": "apodex/apodex-1.1-mini:free",
+      "provider_key": "kilo-code",
+      "provider_name": "Kilo Code",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "256K",
+        "max_output": "64K",
+        "modality": "Text (code)",
+        "quota": "200 req/hr"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "cohere/north-mini-code:free",
+      "model_key": "cohere-north-mini-code-free",
+      "model_name": "cohere/north-mini-code:free",
+      "provider_key": "kilo-code",
+      "provider_name": "Kilo Code",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "512K",
+        "max_output": "460K",
+        "modality": "Text + Vision",
+        "quota": "200 req/hr"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "dots-studio/dots-3-note-preview:free",
+      "model_key": "dots-studio-dots-3-note-preview-free",
+      "model_name": "dots-studio/dots-3-note-preview:free",
+      "provider_key": "kilo-code",
+      "provider_name": "Kilo Code",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "262K",
+        "max_output": "32K",
+        "modality": "Text",
+        "quota": "200 req/hr"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "inclusionai/ling-3.0-flash-sante:free",
+      "model_key": "inclusionai-ling-3-0-flash-sante-free",
+      "model_name": "inclusionai/ling-3.0-flash-sante:free",
+      "provider_key": "kilo-code",
+      "provider_name": "Kilo Code",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "262K",
+        "max_output": "32K",
+        "modality": "Text",
+        "quota": "200 req/hr"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "inclusionai/ling-3.1-flash",
+      "model_key": "inclusionai-ling-3-1-flash",
+      "model_name": "inclusionai/ling-3.1-flash",
+      "provider_key": "kilo-code",
+      "provider_name": "Kilo Code",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "256K",
+        "max_output": "32K",
+        "modality": "Text",
+        "quota": "200 req/hr"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "kilo-auto/free",
+      "model_key": "kilo-auto-free",
+      "model_name": "kilo-auto/free",
+      "provider_key": "kilo-code",
+      "provider_name": "Kilo Code",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "64K",
+        "max_output": "8K",
+        "modality": "Text",
+        "quota": "200 req/hr"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "liquid/lfm-2.5-2.6b:free",
+      "model_key": "liquid-lfm-2-5-2-6b-free",
+      "model_name": "liquid/lfm-2.5-2.6b:free",
+      "provider_key": "kilo-code",
+      "provider_name": "Kilo Code",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "1M",
+        "max_output": "65K",
+        "modality": "Text",
+        "quota": "200 req/hr"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "nvidia/nemotron-3.5-lightning:free",
+      "model_key": "nvidia-nemotron-3-5-lightning-free",
+      "model_name": "nvidia/nemotron-3.5-lightning:free",
+      "provider_key": "kilo-code",
+      "provider_name": "Kilo Code",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "256K",
+        "max_output": "65K",
+        "modality": "Multimodal",
+        "quota": "200 req/hr"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+      "model_key": "nvidia-nemotron-3-nano-omni-30b-a3b-reasoning-free",
+      "model_name": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+      "provider_key": "kilo-code",
+      "provider_name": "Kilo Code",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "262K",
+        "max_output": "262K",
+        "modality": "Text",
+        "quota": "200 req/hr"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "nvidia/nemotron-3-super-120b-a12b:free",
+      "model_key": "nvidia-nemotron-3-super-120b-a12b-free",
+      "model_name": "nvidia/nemotron-3-super-120b-a12b:free",
+      "provider_key": "kilo-code",
+      "provider_name": "Kilo Code",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "1M",
+        "max_output": "65K",
+        "modality": "Text",
+        "quota": "200 req/hr"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "model_key": "nvidia-nemotron-3-ultra-550b-a55b-free",
+      "model_name": "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "provider_key": "kilo-code",
+      "provider_name": "Kilo Code",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "Varies",
+        "max_output": "Varies",
+        "modality": "Text",
+        "quota": "200 req/hr"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "openrouter/free",
+      "model_key": "openrouter-free",
+      "model_name": "openrouter/free",
+      "provider_key": "kilo-code",
+      "provider_name": "Kilo Code",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "262K",
+        "max_output": "32K",
+        "modality": "Text (code)",
+        "quota": "200 req/hr"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "poolside/laguna-s-2.1:free",
+      "model_key": "poolside-laguna-s-2-1-free",
+      "model_name": "poolside/laguna-s-2.1:free",
+      "provider_key": "kilo-code",
+      "provider_name": "Kilo Code",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "262K",
+        "max_output": "32K",
+        "modality": "Text (code)",
+        "quota": "200 req/hr"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "poolside/laguna-xs-2.1:free",
+      "model_key": "poolside-laguna-xs-2-1-free",
+      "model_name": "poolside/laguna-xs-2.1:free",
+      "provider_key": "kilo-code",
+      "provider_name": "Kilo Code",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "262K",
+        "max_output": "235K",
+        "modality": "Multimodal",
+        "quota": "200 req/hr"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "qwen/qwen3.8-27b:free",
+      "model_key": "qwen-qwen3-8-27b-free",
+      "model_name": "qwen/qwen3.8-27b:free",
+      "provider_key": "kilo-code",
+      "provider_name": "Kilo Code",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "262K",
+        "max_output": "262K",
+        "modality": "Text + Vision",
+        "quota": "200 req/hr"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "stepfun/step-3.7-flash:free",
+      "model_key": "stepfun-step-3-7-flash-free",
+      "model_name": "stepfun/step-3.7-flash:free",
+      "provider_key": "kilo-code",
+      "provider_name": "Kilo Code",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "262K",
+        "max_output": "128K",
+        "modality": "Text",
+        "quota": "200 req/hr"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "tencent/hy3:free",
+      "model_key": "tencent-hy3-free",
+      "model_name": "tencent/hy3:free",
+      "provider_key": "kilo-code",
+      "provider_name": "Kilo Code",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "linkup",
+      "provider_name": "Linkup",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "400K",
+        "max_output": "—",
+        "modality": "Text (reasoning)",
+        "quota": "60 RPM, 250 req/hr (free token)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "DeepSeek-V4-Flash-0731",
+      "model_key": "deepseek-v4-flash-0731",
+      "model_name": "DeepSeek-V4-Flash-0731",
+      "provider_key": "llm7-io",
+      "provider_name": "LLM7.io",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "128K",
+        "max_output": "—",
+        "modality": "Text",
+        "quota": "60 RPM, 250 req/hr (free token)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "gpt-oss:20b",
+      "model_key": "gpt-oss-20b",
+      "model_name": "gpt-oss:20b",
+      "provider_key": "llm7-io",
+      "provider_name": "LLM7.io",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "180K",
+        "max_output": "—",
+        "modality": "Text (reasoning)",
+        "quota": "60 RPM, 250 req/hr (free token)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "minimax-m2.7",
+      "model_key": "minimax-m2-7",
+      "model_name": "minimax-m2.7",
+      "provider_key": "llm7-io",
+      "provider_name": "LLM7.io",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "128K",
+        "max_output": "—",
+        "modality": "Text",
+        "quota": "60 RPM, 250 req/hr (free token)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "mistral-Nemo-Instruct-2407",
+      "model_key": "mistral-nemo-instruct-2407",
+      "model_name": "mistral-Nemo-Instruct-2407",
+      "provider_key": "llm7-io",
+      "provider_name": "LLM7.io",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "llmtr",
+      "provider_name": "Llmtr",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "logfare",
+      "provider_name": "Logfare",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "lucidity",
+      "provider_name": "Lucidity",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "128K",
+        "max_output": "—",
+        "modality": "Code",
+        "quota": "~1 RPS, 500K TPM"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "codestral-2508",
+      "model_key": "codestral-2508",
+      "model_name": "Codestral",
+      "provider_key": "mistral-ai",
+      "provider_name": "Mistral AI",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "256K",
+        "max_output": "—",
+        "modality": "Text + Vision",
+        "quota": "~1 RPS, 500K TPM"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "ministral-14b-2512",
+      "model_key": "ministral-14b-2512",
+      "model_name": "Ministral 3 14B",
+      "provider_key": "mistral-ai",
+      "provider_name": "Mistral AI",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "256K",
+        "max_output": "—",
+        "modality": "Text + Vision",
+        "quota": "~1 RPS, 500K TPM"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "ministral-3b-2512",
+      "model_key": "ministral-3b-2512",
+      "model_name": "Ministral 3 3B",
+      "provider_key": "mistral-ai",
+      "provider_name": "Mistral AI",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "256K",
+        "max_output": "—",
+        "modality": "Text + Vision",
+        "quota": "~1 RPS, 500K TPM"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "ministral-8b-2512",
+      "model_key": "ministral-8b-2512",
+      "model_name": "Ministral 3 8B",
+      "provider_key": "mistral-ai",
+      "provider_name": "Mistral AI",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "256K",
+        "max_output": "—",
+        "modality": "Multimodal",
+        "quota": "~1 RPS, 500K TPM"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "mistral-large-2512",
+      "model_key": "mistral-large-2512",
+      "model_name": "Mistral Large 3",
+      "provider_key": "mistral-ai",
+      "provider_name": "Mistral AI",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "256K",
+        "max_output": "—",
+        "modality": "Text + Image + Code",
+        "quota": "~1 RPS, 500K TPM"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "mistral-medium-3-5",
+      "model_key": "mistral-medium-3-5",
+      "model_name": "Mistral Medium 3.5 (128B)",
+      "provider_key": "mistral-ai",
+      "provider_name": "Mistral AI",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "256K",
+        "max_output": "—",
+        "modality": "Text + Image + Code",
+        "quota": "~1 RPS, 500K TPM"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "mistral-small-2603",
+      "model_key": "mistral-small-2603",
+      "model_name": "Mistral Small 4",
+      "provider_key": "mistral-ai",
+      "provider_name": "Mistral AI",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "Varies",
+        "max_output": "Varies",
+        "modality": "LLM, MLLM",
+        "quota": "Dynamic quotas + dynamic concurrency"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "aggregate:+ API-Inference-enabled models",
+      "model_key": "aggregate-api-inference-enabled-models",
+      "model_name": "+ API-Inference-enabled models",
+      "provider_key": "modelscope",
+      "provider_name": "ModelScope",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "modelscope",
+      "provider_name": "ModelScope",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "256K",
+        "max_output": "—",
+        "modality": "Text",
+        "quota": "2,000 RPD total; <=500 RPD/model (dynamic)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "Qwen/Qwen3.5-27B",
+      "model_key": "qwen-qwen3-5-27b",
+      "model_name": "Qwen/Qwen3.5-27B",
+      "provider_key": "modelscope",
+      "provider_name": "ModelScope",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "256K",
+        "max_output": "—",
+        "modality": "Text",
+        "quota": "2,000 RPD total; <=500 RPD/model (dynamic)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "Qwen/Qwen3.5-35B-A3B",
+      "model_key": "qwen-qwen3-5-35b-a3b",
+      "model_name": "Qwen/Qwen3.5-35B-A3B",
+      "provider_key": "modelscope",
+      "provider_name": "ModelScope",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "moondream",
+      "provider_name": "Moondream",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "Varies",
+        "max_output": "Varies",
+        "modality": "Text, Image, Video, Speech, Embeddings",
+        "quota": "40 RPM, 10,000 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "aggregate:+ 92 more models",
+      "model_key": "aggregate-92-more-models",
+      "model_name": "+ 92 more models",
+      "provider_key": "nvidia-nim",
+      "provider_name": "NVIDIA NIM",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "262K",
+        "max_output": "8K",
+        "modality": "Text",
+        "quota": "40 RPM, 10,000 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "google/gemma-4-31b-it",
+      "model_key": "google-gemma-4-31b-it",
+      "model_name": "google/gemma-4-31b-it",
+      "provider_key": "nvidia-nim",
+      "provider_name": "NVIDIA NIM",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "128K",
+        "max_output": "4K",
+        "modality": "Text",
+        "quota": "40 RPM, 10,000 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "mistralai/mistral-large-2-instruct",
+      "model_key": "mistralai-mistral-large-2-instruct",
+      "model_name": "mistralai/mistral-large-2-instruct",
+      "provider_key": "nvidia-nim",
+      "provider_name": "NVIDIA NIM",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "128K",
+        "max_output": "4K",
+        "modality": "Text",
+        "quota": "40 RPM, 10,000 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "nvidia/llama-3.1-nemotron-ultra-253b-v1",
+      "model_key": "nvidia-llama-3-1-nemotron-ultra-253b-v1",
+      "model_name": "nvidia/llama-3.1-nemotron-ultra-253b-v1",
+      "provider_key": "nvidia-nim",
+      "provider_name": "NVIDIA NIM",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "1M",
+        "max_output": "262K",
+        "modality": "Text",
+        "quota": "40 RPM, 10,000 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "nvidia/nemotron-3-super-120b-a12b",
+      "model_key": "nvidia-nemotron-3-super-120b-a12b",
+      "model_name": "nvidia/nemotron-3-super-120b-a12b",
+      "provider_key": "nvidia-nim",
+      "provider_name": "NVIDIA NIM",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "1M",
+        "max_output": "262K",
+        "modality": "Text",
+        "quota": "40 RPM, 10,000 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "nvidia/nemotron-3-ultra-550b-a55b",
+      "model_key": "nvidia-nemotron-3-ultra-550b-a55b",
+      "model_name": "nvidia/nemotron-3-ultra-550b-a55b",
+      "provider_key": "nvidia-nim",
+      "provider_name": "NVIDIA NIM",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "131K",
+        "max_output": "131K",
+        "modality": "Text",
+        "quota": "40 RPM, 10,000 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "openai/gpt-oss-20b",
+      "model_key": "openai-gpt-oss-20b",
+      "model_name": "openai/gpt-oss-20b",
+      "provider_key": "nvidia-nim",
+      "provider_name": "NVIDIA NIM",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "Varies",
+        "max_output": "Varies",
+        "modality": "Text",
+        "quota": "Session/weekly limits (unpublished)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "aggregate:+ 7 more cloud models",
+      "model_key": "aggregate-7-more-cloud-models",
+      "model_name": "+ 7 more cloud models",
+      "provider_key": "ollama-cloud",
+      "provider_name": "Ollama Cloud",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "1M",
+        "max_output": "Model-dependent",
+        "modality": "Text",
+        "quota": "Session/weekly limits (unpublished)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "deepseek-v4-flash",
+      "model_key": "deepseek-v4-flash",
+      "model_name": "deepseek-v4-flash",
+      "provider_key": "ollama-cloud",
+      "provider_name": "Ollama Cloud",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "1M",
+        "max_output": "Model-dependent",
+        "modality": "Text",
+        "quota": "Session/weekly limits (unpublished)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "deepseek-v4-pro",
+      "model_key": "deepseek-v4-pro",
+      "model_name": "deepseek-v4-pro",
+      "provider_key": "ollama-cloud",
+      "provider_name": "Ollama Cloud",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "128K",
+        "max_output": "Model-dependent",
+        "modality": "Text",
+        "quota": "Session/weekly limits (unpublished)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "gpt-oss:120b",
+      "model_key": "gpt-oss-120b",
+      "model_name": "gpt-oss:120b",
+      "provider_key": "ollama-cloud",
+      "provider_name": "Ollama Cloud",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "131K",
+        "max_output": "Model-dependent",
+        "modality": "Text",
+        "quota": "Session/weekly limits (unpublished)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "gpt-oss:20b",
+      "model_key": "gpt-oss-20b",
+      "model_name": "gpt-oss:20b",
+      "provider_key": "ollama-cloud",
+      "provider_name": "Ollama Cloud",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "1M",
+        "max_output": "Model-dependent",
+        "modality": "Text",
+        "quota": "Session/weekly limits (unpublished)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "kimi-k3",
+      "model_key": "kimi-k3",
+      "model_name": "kimi-k3",
+      "provider_key": "ollama-cloud",
+      "provider_name": "Ollama Cloud",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "512K",
+        "max_output": "Model-dependent",
+        "modality": "Text",
+        "quota": "Session/weekly limits (unpublished)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "minimax-m3",
+      "model_key": "minimax-m3",
+      "model_name": "minimax-m3",
+      "provider_key": "ollama-cloud",
+      "provider_name": "Ollama Cloud",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "256K",
+        "max_output": "Model-dependent",
+        "modality": "Text",
+        "quota": "Session/weekly limits (unpublished)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "mistral-large-3:675b",
+      "model_key": "mistral-large-3-675b",
+      "model_name": "mistral-large-3:675b",
+      "provider_key": "ollama-cloud",
+      "provider_name": "Ollama Cloud",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "262K",
+        "max_output": "Model-dependent",
+        "modality": "Text",
+        "quota": "Session/weekly limits (unpublished)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "nemotron-3-ultra",
+      "model_key": "nemotron-3-ultra",
+      "model_name": "nemotron-3-ultra",
+      "provider_key": "ollama-cloud",
+      "provider_name": "Ollama Cloud",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "256K",
+        "max_output": "Model-dependent",
+        "modality": "Text",
+        "quota": "Session/weekly limits (unpublished)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "qwen3.5:397b",
+      "model_key": "qwen3-5-397b",
+      "model_name": "qwen3.5:397b",
+      "provider_key": "ollama-cloud",
+      "provider_name": "Ollama Cloud",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "Varies",
+        "max_output": "Varies",
+        "modality": "Text / Image",
+        "quota": "20 RPM, 50 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "aggregate:+ 6 more free models",
+      "model_key": "aggregate-6-more-free-models",
+      "model_name": "+ 6 more free models",
+      "provider_key": "openrouter",
+      "provider_name": "OpenRouter",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "262K",
+        "max_output": "235K",
+        "modality": "Text",
+        "quota": "20 RPM, 50 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "apodex/apodex-1.1-mini:free",
+      "model_key": "apodex-apodex-1-1-mini-free",
+      "model_name": "apodex/apodex-1.1-mini:free",
+      "provider_key": "openrouter",
+      "provider_name": "OpenRouter",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "256K",
+        "max_output": "64K",
+        "modality": "Text (code)",
+        "quota": "20 RPM, 50 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "cohere/north-mini-code:free",
+      "model_key": "cohere-north-mini-code-free",
+      "model_name": "cohere/north-mini-code:free",
+      "provider_key": "openrouter",
+      "provider_name": "OpenRouter",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "512K",
+        "max_output": "460K",
+        "modality": "Text + Image",
+        "quota": "20 RPM, 50 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "dots-studio/dots-3-note-preview:free",
+      "model_key": "dots-studio-dots-3-note-preview-free",
+      "model_name": "dots-studio/dots-3-note-preview:free",
+      "provider_key": "openrouter",
+      "provider_name": "OpenRouter",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "262K",
+        "max_output": "32K",
+        "modality": "Text + Image",
+        "quota": "20 RPM, 50 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "google/gemma-4-26b-a4b-it:free",
+      "model_key": "google-gemma-4-26b-a4b-it-free",
+      "model_name": "google/gemma-4-26b-a4b-it:free",
+      "provider_key": "openrouter",
+      "provider_name": "OpenRouter",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "262K",
+        "max_output": "32K",
+        "modality": "Text + Image",
+        "quota": "20 RPM, 50 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "google/gemma-4-31b-it:free",
+      "model_key": "google-gemma-4-31b-it-free",
+      "model_name": "google/gemma-4-31b-it:free",
+      "provider_key": "openrouter",
+      "provider_name": "OpenRouter",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "262K",
+        "max_output": "32K",
+        "modality": "Text",
+        "quota": "20 RPM, 50 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "inclusionai/ling-3.0-flash-sante:free",
+      "model_key": "inclusionai-ling-3-0-flash-sante-free",
+      "model_name": "inclusionai/ling-3.0-flash-sante:free",
+      "provider_key": "openrouter",
+      "provider_name": "OpenRouter",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "64K",
+        "max_output": "8K",
+        "modality": "Text",
+        "quota": "20 RPM, 50 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "liquid/lfm-2.5-2.6b:free",
+      "model_key": "liquid-lfm-2-5-2-6b-free",
+      "model_name": "liquid/lfm-2.5-2.6b:free",
+      "provider_key": "openrouter",
+      "provider_name": "OpenRouter",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "1M",
+        "max_output": "65K",
+        "modality": "Text",
+        "quota": "20 RPM, 50 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "nvidia/nemotron-3.5-lightning:free",
+      "model_key": "nvidia-nemotron-3-5-lightning-free",
+      "model_name": "nvidia/nemotron-3.5-lightning:free",
+      "provider_key": "openrouter",
+      "provider_name": "OpenRouter",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "262K",
+        "max_output": "262K",
+        "modality": "Text",
+        "quota": "20 RPM, 50 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "nvidia/nemotron-3-super-120b-a12b:free",
+      "model_key": "nvidia-nemotron-3-super-120b-a12b-free",
+      "model_name": "nvidia/nemotron-3-super-120b-a12b:free",
+      "provider_key": "openrouter",
+      "provider_name": "OpenRouter",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "1M",
+        "max_output": "65K",
+        "modality": "Text",
+        "quota": "20 RPM, 50 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "model_key": "nvidia-nemotron-3-ultra-550b-a55b-free",
+      "model_name": "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "provider_key": "openrouter",
+      "provider_name": "OpenRouter",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "128K",
+        "max_output": "128K",
+        "modality": "Text + Image",
+        "quota": "20 RPM, 50 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "nvidia/nemotron-nano-12b-v2-vl:free",
+      "model_key": "nvidia-nemotron-nano-12b-v2-vl-free",
+      "model_name": "nvidia/nemotron-nano-12b-v2-vl:free",
+      "provider_key": "openrouter",
+      "provider_name": "OpenRouter",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "128K",
+        "max_output": "—",
+        "modality": "Text",
+        "quota": "20 RPM, 50 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "nvidia/nemotron-nano-9b-v2:free",
+      "model_key": "nvidia-nemotron-nano-9b-v2-free",
+      "model_name": "nvidia/nemotron-nano-9b-v2:free",
+      "provider_key": "openrouter",
+      "provider_name": "OpenRouter",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "262K",
+        "max_output": "32K",
+        "modality": "Text (code)",
+        "quota": "20 RPM, 50 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "poolside/laguna-s-2.1:free",
+      "model_key": "poolside-laguna-s-2-1-free",
+      "model_name": "poolside/laguna-s-2.1:free",
+      "provider_key": "openrouter",
+      "provider_name": "OpenRouter",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "262K",
+        "max_output": "32K",
+        "modality": "Text (code)",
+        "quota": "20 RPM, 50 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "poolside/laguna-xs-2.1:free",
+      "model_key": "poolside-laguna-xs-2-1-free",
+      "model_name": "poolside/laguna-xs-2.1:free",
+      "provider_key": "openrouter",
+      "provider_name": "OpenRouter",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "262K",
+        "max_output": "235K",
+        "modality": "Text + Image + Video",
+        "quota": "20 RPM, 50 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "qwen/qwen3.8-27b:free",
+      "model_key": "qwen-qwen3-8-27b-free",
+      "model_name": "qwen/qwen3.8-27b:free",
+      "provider_key": "openrouter",
+      "provider_name": "OpenRouter",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "1M",
+        "max_output": "262K",
+        "modality": "Text + Image + Audio",
+        "quota": "20 RPM, 50 RPD"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "thinkingmachines/inkling:free",
+      "model_key": "thinkingmachines-inkling-free",
+      "model_name": "thinkingmachines/inkling:free",
+      "provider_key": "openrouter",
+      "provider_name": "OpenRouter",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "128K",
+        "max_output": "~32K",
+        "modality": "Text",
+        "quota": "2 RPM (anonymous)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "gpt-oss-120b",
+      "model_key": "gpt-oss-120b",
+      "model_name": "gpt-oss-120b",
+      "provider_key": "ovhcloud-ai-endpoints",
+      "provider_name": "OVHcloud AI Endpoints",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "128K",
+        "max_output": "~8K",
+        "modality": "Text",
+        "quota": "2 RPM (anonymous)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "gpt-oss-20b",
+      "model_key": "gpt-oss-20b",
+      "model_name": "gpt-oss-20b",
+      "provider_key": "ovhcloud-ai-endpoints",
+      "provider_name": "OVHcloud AI Endpoints",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "131K",
+        "max_output": "~4K",
+        "modality": "Text",
+        "quota": "2 RPM (anonymous)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "Meta-Llama-3_3-70B-Instruct",
+      "model_key": "meta-llama-3-3-70b-instruct",
+      "model_name": "Meta-Llama-3_3-70B-Instruct",
+      "provider_key": "ovhcloud-ai-endpoints",
+      "provider_name": "OVHcloud AI Endpoints",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "128K",
+        "max_output": "~4K",
+        "modality": "Text",
+        "quota": "2 RPM (anonymous)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "Mistral-Nemo-Instruct-2407",
+      "model_key": "mistral-nemo-instruct-2407",
+      "model_name": "Mistral-Nemo-Instruct-2407",
+      "provider_key": "ovhcloud-ai-endpoints",
+      "provider_name": "OVHcloud AI Endpoints",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "128K",
+        "max_output": "~4K",
+        "modality": "Text",
+        "quota": "2 RPM (anonymous)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "Mistral-Small-3.2-24B-Instruct-2506",
+      "model_key": "mistral-small-3-2-24b-instruct-2506",
+      "model_name": "Mistral-Small-3.2-24B-Instruct",
+      "provider_key": "ovhcloud-ai-endpoints",
+      "provider_name": "OVHcloud AI Endpoints",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "32K",
+        "max_output": "~8K",
+        "modality": "Text + Vision",
+        "quota": "2 RPM (anonymous)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "Qwen2.5-VL-72B-Instruct",
+      "model_key": "qwen2-5-vl-72b-instruct",
+      "model_name": "Qwen2.5-VL-72B-Instruct",
+      "provider_key": "ovhcloud-ai-endpoints",
+      "provider_name": "OVHcloud AI Endpoints",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "131K",
+        "max_output": "~32K",
+        "modality": "Text",
+        "quota": "2 RPM (anonymous)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "Qwen3-32B",
+      "model_key": "qwen3-32b",
+      "model_name": "Qwen3-32B",
+      "provider_key": "ovhcloud-ai-endpoints",
+      "provider_name": "OVHcloud AI Endpoints",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "262K",
+        "max_output": "~32K",
+        "modality": "Text + Vision",
+        "quota": "2 RPM (anonymous)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "Qwen3.5-397B-A17B",
+      "model_key": "qwen3-5-397b-a17b",
+      "model_name": "Qwen3.5-397B-A17B",
+      "provider_key": "ovhcloud-ai-endpoints",
+      "provider_name": "OVHcloud AI Endpoints",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "262K",
+        "max_output": "~8K",
+        "modality": "Text + Vision",
+        "quota": "2 RPM (anonymous)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "Qwen3.5-9B",
+      "model_key": "qwen3-5-9b",
+      "model_name": "Qwen3.5-9B",
+      "provider_key": "ovhcloud-ai-endpoints",
+      "provider_name": "OVHcloud AI Endpoints",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "262K",
+        "max_output": "~32K",
+        "modality": "Text + Vision",
+        "quota": "2 RPM (anonymous)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "Qwen3.6-27B",
+      "model_key": "qwen3-6-27b",
+      "model_name": "Qwen3.6-27B",
+      "provider_key": "ovhcloud-ai-endpoints",
+      "provider_name": "OVHcloud AI Endpoints",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "262K",
+        "max_output": "—",
+        "modality": "Text + Vision",
+        "quota": "2 RPM (anonymous)"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "Qwen3.8-27B",
+      "model_key": "qwen3-8-27b",
+      "model_name": "Qwen3.8-27B",
+      "provider_key": "ovhcloud-ai-endpoints",
+      "provider_name": "OVHcloud AI Endpoints",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "parallel",
+      "provider_name": "Parallel",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "plugsky",
+      "provider_name": "Plugsky",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "pollinations",
+      "provider_name": "Pollinations",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "router9",
+      "provider_name": "Router9",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "sail",
+      "provider_name": "Sail",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "septor",
+      "provider_name": "Septor",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "serpsearch",
+      "provider_name": "SerpSearch",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "128K",
+        "max_output": "—",
+        "modality": "Text",
+        "quota": "1,000 RPM, 50,000 TPM"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "Qwen/Qwen3-8B",
+      "model_key": "qwen-qwen3-8b",
+      "model_name": "Qwen/Qwen3-8B",
+      "provider_key": "siliconflow",
+      "provider_name": "SiliconFlow",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "simplellm",
+      "provider_name": "SimpleLLM",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "speechify",
+      "provider_name": "Speechify",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "speka",
+      "provider_name": "Speka",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "tavily",
+      "provider_name": "Tavily",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "typhoon",
+      "provider_name": "Typhoon",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "waterfall",
+      "provider_name": "Waterfall",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "128K",
+        "max_output": "96K",
+        "modality": "Text (reasoning)",
+        "quota": "1 concurrent request"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "glm-4.5-flash",
+      "model_key": "glm-4-5-flash",
+      "model_name": "GLM-4.5-Flash (retirement announced)",
+      "provider_key": "z-ai-zhipu-ai",
+      "provider_name": "Z AI (Zhipu AI)",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "128K",
+        "max_output": "32K",
+        "modality": "Multimodal",
+        "quota": "1 concurrent request"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "glm-4.6v-flash",
+      "model_key": "glm-4-6v-flash",
+      "model_name": "GLM-4.6V-Flash",
+      "provider_key": "z-ai-zhipu-ai",
+      "provider_name": "Z AI (Zhipu AI)",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "blocked_reasons": [
+        "third-party unverified claim",
+        "no runtime eligibility evidence"
+      ],
+      "claims": {
+        "context": "200K",
+        "max_output": "128K",
+        "modality": "Text (reasoning)",
+        "quota": "1 concurrent request"
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_id": "glm-4.7-flash",
+      "model_key": "glm-4-7-flash",
+      "model_name": "GLM-4.7-Flash",
+      "provider_key": "z-ai-zhipu-ai",
+      "provider_name": "Z AI (Zhipu AI)",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "mnfst/awesome-free-llm-apis"
+    }
+  ],
+  "schema_version": "msm-provider-recon-v1",
+  "sources": [
+    {
+      "commit_sha": "cf97c32fec1b2e96e9936746e2731a81bd5ea33f",
+      "files": {
+        "data.json": {
+          "sha256": "b69cda36116ac76bc24b1a0951f51199b09879bda4e8ef05b55f25c530c34bd6",
+          "url": "https://raw.githubusercontent.com/mnfst/awesome-free-llm-apis/cf97c32fec1b2e96e9936746e2731a81bd5ea33f/data.json"
+        }
+      },
+      "license_designation": "UNVERIFIED_UPSTREAM_LICENSE",
+      "repo": "mnfst/awesome-free-llm-apis"
+    },
+    {
+      "commit_sha": "5540efac9dc9c2a26f13c56da5b271e20081d29e",
+      "files": {
+        "package.json": {
+          "sha256": "d3121c43f3c5eabb4fd0a7a2efc2e46586232b628fbd2f333626e8c7ab94c631",
+          "url": "https://raw.githubusercontent.com/tashfeenahmed/freellmapi/5540efac9dc9c2a26f13c56da5b271e20081d29e/package.json"
+        },
+        "server/src/providers/index.ts": {
+          "sha256": "c418ab142cf5d4229e201dc5fcbb3c6f0e017b5072f6352eaacec8c6b9c05589",
+          "url": "https://raw.githubusercontent.com/tashfeenahmed/freellmapi/5540efac9dc9c2a26f13c56da5b271e20081d29e/server/src/providers/index.ts"
+        }
+      },
+      "license_designation": "UNVERIFIED_UPSTREAM_LICENSE",
+      "repo": "tashfeenahmed/freellmapi"
+    }
+  ]
+}

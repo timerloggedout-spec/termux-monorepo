@@ -1,0 +1,172 @@
+name: Provider batch production contracts
+# No scheduler or routing activation. Manual observations run trusted master only.
+on:
+  workflow_dispatch:
+    inputs:
+      execute_free_smoke:
+        description: 'One exact allowlisted no-cost inference only after account and price verification; no retries or routing activation'
+        type: boolean
+        default: false
+      observe_public_research:
+        description: 'One keyless scrape of the fixed public upstream source; no keys or paid fallback'
+        type: boolean
+        default: false
+  pull_request:
+    paths:
+      - 'scripts/provider_model_catalog.py'
+      - 'scripts/model_selection_market/**'
+      - 'llm_api_hub/**'
+      - 'tests/test_provider_model_catalog.py'
+      - 'tests/test_provider_batch.py'
+      - 'scripts/ops/provider_free_smoke.py'
+      - 'tests/test_provider_free_smoke.py'
+      - 'scripts/ops/provider_secret_inventory.py'
+      - 'tests/test_provider_secret_inventory.py'
+      - 'scripts/provider_catalog_protocols.py'
+      - 'scripts/services/firecrawl_public_research.py'
+      - 'tests/test_provider_protocols.py'
+      - 'tests/test_provider_family_completion.py'
+      - 'tests/test_ovh_catalog.py'
+      - 'tests/test_proposal_feedback_api.py'
+      - 'tests/test_provider_next_batch.py'
+      - 'tests/test_firecrawl_public_research.py'
+      - 'scripts/proposals/feedback_api_diagnostics.py'
+      - 'tests/test_review_evidence.py'
+      - 'tests/test_research_provider_hub.py'
+      - 'tests/test_llm_api_hub_server.py'
+      - 'scripts/provider_availability_probe.py'
+      - 'tests/test_provider_availability_probe.py'
+      - 'DeepAgent.py'
+      - 'deepcli/agent.py'
+      - 'deepcli/deepagent.py'
+      - 'tests/test_deepagent_entrypoint.py'
+      - '.github/workflows/provider-batch.yml'
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/provider_model_catalog.py'
+      - 'scripts/model_selection_market/**'
+      - 'llm_api_hub/**'
+      - 'scripts/ops/provider_free_smoke.py'
+      - 'tests/test_provider_free_smoke.py'
+      - 'scripts/ops/provider_secret_inventory.py'
+      - 'scripts/provider_catalog_protocols.py'
+      - 'scripts/services/firecrawl_public_research.py'
+      - 'scripts/provider_availability_probe.py'
+      - 'DeepAgent.py'
+      - 'deepcli/agent.py'
+      - 'deepcli/deepagent.py'
+      - '.github/workflows/provider-batch.yml'
+permissions: {}
+concurrency:
+  group: provider-batch-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+      - name: Install contract test dependencies
+        run: python3 -m pip install pytest==8.4.2 fastapi==0.143.3 pydantic==2.14.1 httpx==0.28.1 PyYAML==6.0.3
+      - name: Test active production entry points and reconciliation contracts
+        run: |
+          python3 -m pytest -q tests/test_provider_protocols.py tests/test_provider_family_completion.py tests/test_ovh_catalog.py tests/test_proposal_feedback_api.py tests/test_provider_next_batch.py tests/test_firecrawl_public_research.py
+          python3 -m pytest -q tests/test_provider_availability_probe.py tests/test_deepagent_entrypoint.py deepcli/tests/test_agent_execute.py
+          python3 -m pytest -q tests/test_provider_secret_inventory.py tests/test_provider_free_smoke.py
+          python3 -m pytest -q tests/test_provider_model_catalog.py tests/test_provider_batch.py tests/test_review_evidence.py tests/test_research_provider_hub.py tests/test_llm_api_hub_server.py
+          python3 -m pytest -q tests/test_provider_recon.py tests/test_market_cadence.py tests/test_publish_provider_recon.py tests/test_resource_index.py tests/test_resource_registry.py
+          python3 -m unittest scripts.model_selection_market.test_msm
+  observe:
+    needs: contracts
+    if: github.event_name == 'workflow_dispatch' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+      - name: Inventory credential names with existing issue-184 authorization
+        env:
+          GH_TOKEN: ${{ secrets.OPERATOR || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
+        run: python3 scripts/ops/provider_secret_inventory.py --output /tmp/provider-batch/credential-names.json
+      - name: Observe official catalogs without inference or routing changes
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          FELO_AI_API: ${{ secrets.FELO_AI_API }}
+          OMNI_API_KEY: ${{ secrets.OMNI_API_KEY }}
+          HUGGINGFACE_TOKEN: ${{ secrets.HUGGINGFACE_TOKEN || secrets.HUGGING_FACE_HUB_TOKEN || secrets.HF_API_TOKEN || secrets.HF_TOKEN }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+          CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY }}
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY || secrets.NVIDIA_NIM_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GOOGLE_API_KEY }}
+          AION_API_KEY: ${{ secrets.AION_API_KEY }}
+          LLM7_API_TOKEN: ${{ secrets.LLM7_API_TOKEN }}
+          KILO_API_KEY: ${{ secrets.KILO_API_KEY }}
+          COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+          OLLAMA_API_KEY: ${{ secrets.OLLAMA_API_KEY }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SILICONFLOW_API_KEY: ${{ secrets.SILICONFLOW_API_KEY }}
+          SAMBANOVA_API_KEY: ${{ secrets.SAMBANOVA_API_KEY }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/provider-batch
+          # Exit 1 means no successful model rows, not a successful admission.
+          status=0
+          python3 scripts/provider_model_catalog.py --providers openrouter,felo,omni,huggingface,groq,mistral,gemini,cerebras,nvidia,aion,llm7,kilo,cohere,ollama,cloudflare,siliconflow,ovhcloud,modelscope,sambanova --output /tmp/provider-batch/catalog.json || status=$?
+          if [ "$status" -gt 1 ]; then exit "$status"; fi
+          python3 -m scripts.model_selection_market.provider_batch --catalog /tmp/provider-batch/catalog.json --output /tmp/provider-batch/coverage.json
+      - name: Execute one explicitly requested verified no-cost smoke
+        if: inputs.execute_free_smoke
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: python3 scripts/ops/provider_free_smoke.py --execute --output /tmp/provider-batch/free-inference-smoke.json
+      - name: Observe one fixed public research source without credentials
+        if: inputs.observe_public_research
+        run: |
+          status=0
+          python3 scripts/services/firecrawl_public_research.py --source awesome-free-llm-apis --output /tmp/provider-batch/public-research-service.json || status=$?
+          if [ "$status" -gt 1 ]; then exit "$status"; fi
+          test -s /tmp/provider-batch/public-research-service.json
+      - name: Collect paginated matrix-review evidence with authorized feedback credentials
+        env:
+          GH_TOKEN: ${{ secrets.OPERATOR || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
+          FEEDBACK_AUTH_CONTEXT: ${{ (secrets.OPERATOR || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN) && 'configured_operator_credential' || 'actions_job_token' }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/matrix-review
+          base=repos/timerloggedout-spec/termux-monorepo
+          collected_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          gh api "$base" --jq '{repository:.full_name,permissions:.permissions}' > /tmp/matrix-review/repository-permissions.json
+          gh api rate_limit --jq '.resources.core | {limit,remaining,used,reset}' > /tmp/matrix-review/core-quota.json
+          python3 - <<'PY'
+          import json, os, pathlib
+          root = pathlib.Path('/tmp/matrix-review')
+          report = {'schema': 'github-feedback-auth/v1', 'auth_context': os.environ['FEEDBACK_AUTH_CONTEXT'], 'scope': 'GitHub metadata reads only; never model requests', 'repository': json.loads((root / 'repository-permissions.json').read_text()), 'core_quota': json.loads((root / 'core-quota.json').read_text())}
+          pathlib.Path('/tmp/provider-batch/github-feedback-auth.json').write_text(json.dumps(report, indent=2) + '\n')
+          PY
+          gh api "$base/pulls/1297" --jq .head.sha > /tmp/matrix-review/head
+          gh api --paginate --slurp "$base/pulls/1297/reviews?per_page=100" > /tmp/matrix-review/reviews.json
+          gh api --paginate --slurp "$base/issues/1297/comments?per_page=100" > /tmp/matrix-review/comments.json
+          gh api --paginate --slurp "$base/pulls/1297/comments?per_page=100" > /tmp/matrix-review/inline.json
+          gh api --paginate --slurp "$base/pulls/1297/commits?per_page=100" > /tmp/matrix-review/commits.json
+          gh api "$base/pulls/1297" --jq .head.sha > /tmp/matrix-review/head-after
+          python3 -m scripts.model_selection_market.review_evidence --reviews /tmp/matrix-review/reviews.json --comments /tmp/matrix-review/comments.json --inline-comments /tmp/matrix-review/inline.json --commits /tmp/matrix-review/commits.json --repo timerloggedout-spec/termux-monorepo --pr 1297 --head-sha "$(cat /tmp/matrix-review/head)" --head-sha-after "$(cat /tmp/matrix-review/head-after)" --collected-at "$collected_at" --output /tmp/provider-batch/matrix-review.json
+      - name: Preserve sanitized run-attempt observations
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: provider-batch-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/provider-batch/
+          if-no-files-found: error
+          retention-days: 30

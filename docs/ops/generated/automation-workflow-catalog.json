@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "9cb2b658d175c0d1f6b743d6ff64e8d3d9edfa313767a2c711fdba3c19d78e9a",
-  "workflow_count": 140,
+  "source_fingerprint": "aaaf811dd6a6ca8389745d88dd52e82608f25a88dbbf2fecaac24592f633eadd",
+  "workflow_count": 141,
   "workflows": [
     {
       "action_pins": [
@@ -2005,6 +2005,27 @@
       ],
       "triggers": [
         "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: provider-batch-${{ github.ref }} cancel-in-progress: false",
+      "domain": "peer-provider-review",
+      "jobs": [
+        "contracts",
+        "observe"
+      ],
+      "name": "Provider batch production contracts",
+      "path": ".github/workflows/provider-batch.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push",
         "workflow_dispatch"
       ]
     },

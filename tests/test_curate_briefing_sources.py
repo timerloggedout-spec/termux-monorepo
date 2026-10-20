@@ -76,6 +76,36 @@ class BriefingSourceCurationTests(unittest.TestCase):
             self.assertNotIn(ledger, discovered)
             self.assertNotIn(index, discovered)
 
+    def test_default_corpus_includes_provider_and_collaborator_evidence(self):
+        root = Path(__file__).resolve().parents[1]
+        discovered = {path.relative_to(root).as_posix() for path in discover_inputs(root)}
+        expected = {
+            "docs/ops/PROVIDER-BATCH-IMPLEMENTATION.md",
+            "docs/ops/PROVIDER-SERVICE-EXPANSION.md",
+            "docs/ops/PROVIDER-HITL.md",
+            "docs/ops/FREE-LLM-PROVIDER-RECON.md",
+            "docs/ops/PROVIDER-RESEARCH-COMPOUNDING.md",
+            "docs/ops/GITHUB-FEEDBACK-API-DIAGNOSTICS.md",
+            "docs/ops/AGENT-MONIKERS.md",
+            "docs/ops/AGENT-TEAM-ROSTER.md",
+            "docs/ops/AGENT-EVIDENCE-SUBSTRATE.md",
+            "docs/ops/BIUDL-EXECUTION-AND-PROVENANCE.md",
+            "docs/ops/LANE-MATRIX.md",
+            "docs/research/FOSS-PROCUREMENT-MATRIX.md",
+            "docs/research/FORESIGHT-RADAR.md",
+            "docs/research/BRIEFING-INGEST.md",
+        }
+        self.assertTrue(expected.issubset(discovered))
+
+    def test_provider_research_citations_keep_source_document_context(self):
+        root = Path(__file__).resolve().parents[1]
+        path = root / "docs/ops/PROVIDER-SERVICE-EXPANSION.md"
+        rows = curate([path], root)
+        urls = {row["source_url"] for row in rows}
+        self.assertIn("https://docs.firecrawl.dev/introduction", urls)
+        self.assertIn("https://docs.firecrawl.dev/billing", urls)
+        self.assertTrue(all(row["source_file"] == "docs/ops/PROVIDER-SERVICE-EXPANSION.md" for row in rows))
+
 
 if __name__ == "__main__":
     unittest.main()

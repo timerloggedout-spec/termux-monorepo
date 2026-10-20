@@ -101,7 +101,7 @@ def observe(token, execute=False):
         choices = value.get("choices")
         content = choices[0].get("message", {}).get("content") if isinstance(choices, list) and choices and isinstance(choices[0], dict) and isinstance(choices[0].get("message"), dict) else None
         usage = value.get("usage")
-        if value.get("error") or value.get("model") != MODEL or not isinstance(content, str) or content.strip() != "OK":
+        if value.get("error") or value.get("model") not in {MODEL, MODEL.removesuffix(":free")} or not isinstance(content, str) or content.strip() != "OK":
             report["reason"] = "inference_response_unverified"
             return report
         if not isinstance(usage, dict) or not zero(usage.get("cost")):

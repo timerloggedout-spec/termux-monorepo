@@ -137,3 +137,25 @@ def test_scheduled_availability_is_catalog_only():
     script = next(s['run'] for s in workflow['jobs']['probe']['steps'] if s.get('name') == 'Validate configured-provider continuity')
     assert 'ok=p["catalog_ok"]' in script
     assert 'required_inference=' not in script
+
+
+def test_exact_canonical_response_model_is_accepted_without_routing_change():
+    completion = response()
+    completion["model"] = smoke.MODEL.removesuffix(":free")
+    report, request = run(completion=completion)
+    assert report["inference_ok"]
+    assert request.call_args.args[2]["model"] == smoke.MODEL
+
+
+def test_inventory_direct_cli_has_import_parity(tmp_path):
+    import os
+    from pathlib import Path
+    import subprocess
+    import sys
+    root = Path(__file__).resolve().parents[1]
+    env = dict(os.environ, GH_TOKEN="")
+    env.pop("PYTHONPATH", None)
+    path = tmp_path / "inventory.json"
+    result = subprocess.run([sys.executable, str(root / "scripts/ops/provider_secret_inventory.py"), "--output", str(path)], cwd=tmp_path, env=env, text=True, capture_output=True)
+    assert result.returncode == 0
+    assert json.loads(path.read_text())["reason"] == "missing_inventory_credential"

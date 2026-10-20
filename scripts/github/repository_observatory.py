@@ -61,15 +61,17 @@ def get_json(path: str, token: str, params: dict[str, Any] | None = None) -> Any
     raise RuntimeError(f"GitHub API request failed: {path}")
 
 
-# Pre-compiled classification terms to eliminate repeated collection allocations in loops
+# Bolt optimization: Pre-order DOMAIN_TERMS alphabetically at module load time
+# so domain matching inherently produces an alphabetically sorted list, bypassing
+# per-repository domains.sort() calls.
 DOMAIN_TERMS: dict[str, tuple[str, ...]] = {
     "agent": ("agents", "agent"),
     "ai": ("ai", "llm", "machine-learning", "deepseek", "openai"),
     "context": ("context", "knowledge-graph", "knowledge", "rag"),
-    "research": ("research", "arxiv", "empirical", "science"),
-    "termux": ("termux", "android"),
-    "security": ("security", "forensics", "supply-chain"),
     "developer-tools": ("cli", "developer-tools", "devtools"),
+    "research": ("research", "arxiv", "empirical", "science"),
+    "security": ("security", "forensics", "supply-chain"),
+    "termux": ("termux", "android"),
 }
 WORKFLOW_TERMS: tuple[str, ...] = ("github-action", "github-actions", "workflow")
 DEPENDENCY_TERMS: tuple[str, ...] = ("library", "framework", "sdk")
@@ -77,18 +79,21 @@ RESEARCH_DOMAINS: set[str] = {"research", "context"}
 
 
 def topics(repo: dict[str, Any]) -> list[str]:
-    return sorted({str(x).lower() for x in repo.get("topics", []) if isinstance(x, str)})
+    # Bolt optimization: Fast-path empty/missing topic lists to return [] immediately
+    raw = repo.get("topics")
+    if not raw:
+        return []
+    return sorted({str(x).lower() for x in raw if isinstance(x, str)})
 
 
 def classify(repo: dict[str, Any], provenance: list[str], repo_topics: list[str] | None = None) -> dict[str, Any]:
     t_list = repo_topics if repo_topics is not None else topics(repo)
     text = f"{repo.get('name', '')} {repo.get('description') or ''} {' '.join(t_list)}".lower()
 
+    # Domain keys are pre-ordered alphabetically in DOMAIN_TERMS
     domains = [key for key, labels in DOMAIN_TERMS.items() if any(label in text for label in labels)]
     if not domains:
         domains = ["unclassified"]
-    else:
-        domains.sort()
 
     role = ["reference"] if "starred" in provenance else ["owned"]
     if repo.get("fork"):
@@ -107,9 +112,13 @@ def classify(repo: dict[str, Any], provenance: list[str], repo_topics: list[str]
         integration.append("dependency-candidate")
 
     research = "high" if any(d in RESEARCH_DOMAINS for d in domains) else "medium"
+    # Bolt optimization: Direct list sort since role elements are unique by construction,
+    # eliminating set() allocation overhead.
+    role.sort()
+
     return {
         "domains": domains,
-        "role": sorted(set(role)),
+        "role": role,
         "integration": sorted(integration),
         "research_value": research,
         "submodule_candidate": bool(repo.get("fork") or repo.get("is_template")),
@@ -178,7 +187,9 @@ def build_records(owned: list[dict[str, Any]], starred: list[dict[str, Any]]) ->
         if not full_name:
             continue
         if full_name in merged:
-            provenance = sorted(set(merged[full_name]["provenance"] + ["starred"]))
+            # Bolt optimization: Owned repo present in starred list gets direct
+            # sorted provenance ["owned", "starred"], eliminating set() and sorted() allocations.
+            provenance = ["owned", "starred"]
             merged[full_name]["provenance"] = provenance
             merged[full_name]["classification"] = classify(merged[full_name], provenance, repo_topics=merged[full_name].get("topics"))
         else:
@@ -199,7 +210,9 @@ def build_payload(owner: str, login: str, records: list[dict[str, Any]], observe
     c_integration = 0
 
     for r in records:
-        prov = set(r["provenance"])
+        # Bolt optimization: Direct list membership on pre-sorted provenance list
+        # eliminates per-record set() allocations.
+        prov = r["provenance"]
         has_owned = "owned" in prov
         has_starred = "starred" in prov
         if has_owned:

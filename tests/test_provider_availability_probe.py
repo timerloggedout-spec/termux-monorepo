@@ -1,6 +1,8 @@
 import datetime as dt
 import json
+import os
 from unittest.mock import patch
+import pytest
 
 from scripts import provider_availability_probe as probe
 
@@ -94,6 +96,8 @@ def test_main_writes_document_without_leaking_secrets(tmp_path):
     ):
         probe.main()
     assert out.exists()
+    if os.name != "nt":
+        assert (out.stat().st_mode & 0o777) == 0o600
     doc = json.loads(out.read_text(encoding="utf-8"))
     assert doc["schema"] == "provider-availability/v1"
     assert doc["observed_at"].endswith("Z")
@@ -132,6 +136,29 @@ def test_main_writes_document_without_leaking_secrets(tmp_path):
     body = out.read_text(encoding="utf-8")
     assert "fixture-hf-secret" not in body
     assert "fixture-sambanova-secret" not in body
+
+
+def test_main_rejects_path_traversal(tmp_path):
+    env = {k: "" for k in CREDENTIAL_KEYS}
+    env["OUTPUT"] = str(tmp_path / ".." / "traversal.json")
+    with patch.dict("os.environ", env, clear=False):
+        with pytest.raises(ValueError, match="Path traversal detected"):
+            probe.main()
+
+
+def test_main_rejects_symlink_output(tmp_path):
+    target = tmp_path / "secret.txt"
+    target.write_text("secret_content")
+    symlink_out = tmp_path / "symlink.json"
+    symlink_out.symlink_to(target)
+
+    env = {k: "" for k in CREDENTIAL_KEYS}
+    env["OUTPUT"] = str(symlink_out)
+    with patch.dict("os.environ", env, clear=False):
+        with pytest.raises(ValueError, match="cannot be a symlink"):
+            probe.main()
+
+    assert target.read_text() == "secret_content"
 
 
 def test_huggingface_alias_precedence_matches_catalog():

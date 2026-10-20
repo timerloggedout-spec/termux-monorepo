@@ -218,3 +218,33 @@ Agent-Identity: Grok (Administrator)
 **Next:** Dual-gate on PR #1292 head, promote to eliminate residual watcher spam. Continue modular consolidations. Device-side Pinggy validation.
 
 Agent-Identity: Grok (Administrator)
+
+## Continuation RECON (2026-10-20T22:00Z+ / session)
+
+**Current master tip:** `ed2ab069b77672baac8ee81e6d594e46a160ca4a` (ops(help-wanted): live status refresh 2026-10-20T21:37Z)
+
+**Branch head:** `68e82d5eaaa7eb110f32276e6996e45680e1d122` (pre-rebase note)
+
+**PR #1292:** MERGEABLE, mergeStateStatus=UNSTABLE (Vercel non-gate). Dual-gate SUCCESS on branch checks. Base needs reconciliation to live tip for clean promote.
+
+**Skip/Cancel Validation Audit (attentive):**
+- High-volume skipped "Actions Run Watcher — incident notification" on master are residual pre-change records. Post-promote of dispatch-only watcher, new skip listings cease.
+- Recent cancelled runs are concurrency supersessions — lag_operational, not correctness.
+- No conclusion=failure in latest master window samples. Historical observatory / quota-registry runs remain capacity lag / non-gate.
+
+**Cadence / Cache / Telemetry 3L0 moneyball:**
+- Cadence Lead/Lag */4 owns incident emission for lag_failure.
+- Remaining spam levers: modular consolidations of lane-events-recorder / help-wanted-* into shared orchestrators with tighter path filters and SHA-scoped concurrency.
+- Dynamic adaptive telemetry via ledger + this matrix. Quota planning continues soft classification.
+
+**Pinggy / Device #1:**
+- Opaque public ID `tmx-node-primary` reaffirmed. Requirement for operational tunnel (Pinggy or proven alternative) on device #1 stands. Device identification data public-obfuscated only. Device #2 must not overwrite origin bridge manifest. Live validation remains device-side.
+
+**What was fixed / refined this continuation:**
+- Matrix updated with current master tip and residual skip classification.
+- Zero-failure posture maintained: successes, intentional residuals, capacity lags correctly separated.
+- Consolidation path retained for further reduction of notification surface.
+
+**Next:** Rebase or merge master into branch for clean dual-gate, then promote #1292 if green. Continue modular consolidations and adaptive cadence refinements. C.A.D.E. ongoing.
+
+Agent-Identity: Grok (Administrator)

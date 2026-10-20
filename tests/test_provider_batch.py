@@ -27,7 +27,8 @@ def test_every_real_research_candidate_has_a_disposition_without_activation():
     assert len(report['research_sha256']) == 64
     assert all(row['runtime_eligible'] is False and row['quota_remaining'] is None for row in report['candidates'])
     assert sum(report['summary']['by_status'].values()) == 160
-    assert 'adapter_not_implemented' in report['summary']['by_status']
+    assert 'adapter_not_implemented' not in report['summary']['by_status']
+    assert report['summary']['by_status']['catalog_adapter_not_implemented'] == 16
     assert batch.reconcile(deepcopy(source), catalog()) == report
 
 
@@ -121,9 +122,10 @@ def test_per_source_denominators_do_not_count_provider_classes_as_models():
     assert directory['research_records'] == 123
     assert directory['individual_model_claims'] == 117
     assert directory['static_or_aggregate_references'] == 6
-    assert directory['gated_native_chat_model_claims'] == 32
+    assert directory['gated_native_chat_model_claims'] == 101
     assert directory['legacy_openrouter_model_claims'] == 16
-    assert len(directory['catalog_adapter_families']) == 6
+    assert len(directory['catalog_adapter_families']) == 13
+    assert len(directory['chat_transport_families']) == 16
     proxy = summary['tashfeenahmed/freellmapi']
     assert proxy['research_records'] == 37
     assert proxy['individual_model_claims'] == 0

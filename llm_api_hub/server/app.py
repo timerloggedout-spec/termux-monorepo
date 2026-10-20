@@ -390,7 +390,7 @@ def chat_completions(request: ChatCompletionRequest, raw_request: Request) -> An
         response = runtime.complete_upstream("openai", request)
     elif model.startswith("anthropic/"):
         response = runtime.complete_upstream("anthropic", request)
-    elif model.startswith(("groq/", "mistral/", "gemini/", "huggingface/", "cerebras/", "nvidia/")):
+    elif model.partition("/")[0] in research_providers.ENDPOINTS and "/" in model:
         provider, exact_model = model.split("/", 1)
         if any(not isinstance(message.content, str) for message in request.messages) or any(
             key in request.model_fields_set and getattr(request, key) is not None

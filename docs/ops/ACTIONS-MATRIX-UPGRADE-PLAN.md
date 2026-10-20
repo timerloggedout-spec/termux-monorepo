@@ -100,7 +100,7 @@ flowchart TD
 - Missing previous/current SHAs and diff errors fail open to a build; unchanged source returns exit 0 to skip; relevant changes return nonzero to continue the build. This follows Vercel's documented ignored-build-step contract.
 - `tests/test_vercel_ignore_commands.py` adds regression coverage for unrelated changes, relevant changes, missing previous SHA, and project-path scoping.
 
-**Activation boundary:** these repository changes are on the follow-up branch and are not active in Vercel until the branch is merged and each connected project consumes its applicable configuration. The source-path filters reduce unnecessary deployment attempts; they do not manufacture quota headroom, expose a remaining quota counter, or provide a cross-provider production failover.
+**Activation boundary:** PR #1310 is merged as `2194a62192dce89e3dedbb3142418aad06d6fab9`. The shared helper and project-scoped `vercel.json` settings are now on master, and the connected Vercel project settings for `mcp-hub`, `help-wanted-dash`, `help-wanted-oversight`, and `termux-monorepo` were updated to call the helper. This makes the selector configured, but the provider still returned `build-rate-limit` on the merge SHA and no deployment records were returned for that SHA; effectiveness is therefore not yet verified by a successful post-merge event. Source-path filters reduce unnecessary build attempts; they do not manufacture quota headroom, expose a remaining-quota counter, or provide cross-provider production failover.
 
 ## Quota resilience policy — act before exhaustion, never after a retry storm
 
@@ -128,7 +128,7 @@ A Vercel `api-deployments-free-per-day` response is **provider capacity = constr
 | Render | Candidate / unproven in this repository | Not an automatic fallback. Requires concrete project/service and source-SHA health proof. |
 | Cloudflare / Pages / Workers | Candidate / unproven in this repository | Not an automatic fallback. Establish the exact product, project, route/domain, source boundary, and verification first. |
 
-**Present limitation:** this RECON verified the connected Vercel team is on the Hobby plan, and provider check URLs report `build-rate-limit`. No authoritative remaining daily-deployment counter was exposed. The follow-up branch now narrows ignored-build-step checks by source path, preventing unrelated repository changes from triggering project builds once merged and consumed by each project. The branch itself is not yet active provider configuration. GitHub Pages is configured for static publication, but its current URL/source-SHA health was not verified here. Automatic application/MCP failover remains gated on provisioning and verifying a compatible alternative lane.
+**Present limitation:** the connected Vercel team is on the Hobby plan and provider check URLs report `build-rate-limit`; no authoritative remaining daily-deployment counter was exposed. PR #1310 is merged, and the four connected projects' ignored-build settings now point to the shared path selector. The merge SHA still has provider-capacity failures and no deployment records, so skip/build behavior must be verified on the next provider-eligible event. GitHub Pages is configured for static publication, but current URL/source-SHA health is unverified. Automatic application/MCP failover remains gated on provisioning and verifying a compatible alternative lane.
 
 ## Acceptance checklist
 

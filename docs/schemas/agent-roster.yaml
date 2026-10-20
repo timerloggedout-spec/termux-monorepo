@@ -311,7 +311,7 @@ contributor_lanes:
     roles: [catalog, inference, evaluation, benchmark, adapter]
     callable_identity: "adapter-only"
     attribution_boundary: "Mistral Vibe agent identity and Mistral API-provider identity are distinct lanes."
-    adapters: [mistral-http, mistral-vibe]
+    adapters: [mistral-http]
     health_contract: {catalog: true, inference: false, cadence: "6h"}
 
   - id: cerebras

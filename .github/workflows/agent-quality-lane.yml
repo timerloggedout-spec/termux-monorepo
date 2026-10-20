@@ -4,6 +4,9 @@ on:
     paths:
       - "she/metrics/**"
       - "tests/test_she_agent_throughput.py"
+      - "tests/test_telemetry_equation_registry.py"
+      - "docs/ops/TELEMETRY-EQUATION-REGISTRY.md"
+      - "docs/ops/TELEMETRY-EQUATION-REGISTRY.json"
       - "tests/test_emit_agent_throughput.py"
       - "scripts/ci/write_agent_task_boundary.py"
       - "tests/test_write_agent_task_boundary.py"
@@ -67,7 +70,7 @@ jobs:
             ':(glob)**/*.sh'
 
       - name: Compile measurement Python sources
-        run: python -m compileall -q she/metrics scripts/ci tests/test_she_agent_throughput.py tests/test_emit_agent_throughput.py tests/test_tdqs.py
+        run: python -m compileall -q she/metrics scripts/ci tests/test_she_agent_throughput.py tests/test_telemetry_equation_registry.py tests/test_emit_agent_throughput.py tests/test_tdqs.py
 
       - name: Validate event schema JSON
         run: python -m json.tool docs/ops/AGENT-THROUGHPUT-EVENT.schema.json >/dev/null
@@ -81,6 +84,7 @@ jobs:
       - name: Run focused ATES reducer tests with coverage
         run: |
           coverage run --branch --source=she/metrics -m unittest tests.test_she_agent_throughput -v
+          python -m unittest tests.test_telemetry_equation_registry -v
           python -m unittest tests.test_emit_agent_throughput tests.test_ates_baseline tests.test_write_agent_task_boundary -v
           coverage run --branch --source=she/metrics -a -m unittest tests.test_tdqs -v
           coverage xml -o coverage.xml

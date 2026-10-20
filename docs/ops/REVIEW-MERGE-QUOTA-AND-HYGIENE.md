@@ -165,7 +165,7 @@ This PR now includes an event-driven implementation:
 - `scripts/ci/pr_merge_readiness.py`
 - `tests/test_pr_merge_readiness.py`
 
-The workflow requests a configured review team on PR open/reopen/ready-for-review events (when `GOVERNED_REVIEW_TEAM` is set), deduplicating the request by reading the requested-reviewers endpoint. Submitted reviews (only an `APPROVED` event) or explicit workflow dispatch trigger the merge-readiness evaluation. It has no cron and no automatic polling loop. It gathers one bounded PR/protection/review snapshot, runs the deterministic evaluator and its unit tests, publishes a JSON decision to the Actions job summary, and enables GitHub auto-merge only when every gate passes.
+The workflow requests a configured review team on PR open/reopen/ready-for-review events (when `GOVERNED_REVIEW_TEAM` is set), deduplicating the request by reading the requested-reviewers endpoint. Submitted reviews (only an `APPROVED` event) or explicit workflow dispatch trigger the merge-readiness evaluation. It has no cron, automatic polling loop, or concurrency-cancellation group, so independent review events are not cancelled by this lane. It gathers one bounded PR/protection/review snapshot, runs the deterministic evaluator and its unit tests, publishes a JSON decision to the Actions job summary, and enables GitHub auto-merge only when every gate passes.
 
 ### Fail-closed eligibility contract
 

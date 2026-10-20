@@ -13,6 +13,7 @@
 | MSM-006 | Provenance-pinned provider research ingestion + deterministic refresh PR lane | **done** | MSM-000, MSM-002 | Q; implementation #1294, generated data #1295 merged; deployed run 39373733705 passed; no runtime activation |
 | MSM-007 | Evidence-gated Bayesian/Delphi advisory ranking + dependency-aware Cadence plan | **done** | MSM-006 | Q; #1294 merged; deployed six-task plan verified; 63 focused/workflow tests + 9 legacy tests pass; production weights unchanged |
 | MSM-008 | Complete supplied resource matrix + deterministic aggregate implementation search | **done** | MSM-006 | Q; preserve all supplied links as canonical references, reviewed resource registry, offline searchable provider/resource index and existing workflow artifacts; no account activation or expanded publication authority |
+| MSM-009 | Scoped read-only GitHub metadata authentication for production collection | **done** | MSM-008 | Q; deployed run 39376417124 failed closed on anonymous GitHub API 403; token only on two fixed commit-metadata URLs, never raw source or provider endpoints; no retry or permission expansion |
 
 ## Runtime package
 

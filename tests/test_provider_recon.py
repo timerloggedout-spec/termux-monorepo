@@ -68,3 +68,67 @@ class ProviderReconTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def test_optional_token_is_sent_only_to_exact_prioritized_commit_metadata(monkeypatch):
+    from unittest.mock import MagicMock, patch
+    token = "test-only-not-a-credential"
+    monkeypatch.setenv("PROVIDER_RECON_GITHUB_TOKEN", token)
+    metadata = [f"https://api.github.com/repos/{repo}/commits/HEAD" for repo in recon.REPOS]
+    other = [
+        "https://raw.githubusercontent.com/mnfst/awesome-free-llm-apis/" + "a" * 40 + "/data.json",
+        "https://api.github.com/repos/other/repo/commits/HEAD",
+        metadata[0] + "?extra=true",
+        metadata[0].replace("api.github.com", "api.github.com:8443"),
+    ]
+    for url in metadata + other:
+        opener = MagicMock()
+        response = opener.open.return_value.__enter__.return_value
+        response.geturl.return_value = url
+        response.read.return_value = b"{}"
+        with patch.object(recon.urllib.request, "build_opener", return_value=opener):
+            assert recon.fetch_bytes(url) == b"{}"
+        request = opener.open.call_args.args[0]
+        assert request.get_header("Authorization") == ("Bearer " + token if url in metadata else None)
+
+
+def test_collector_without_optional_token_remains_usable(monkeypatch):
+    from unittest.mock import MagicMock, patch
+    monkeypatch.delenv("PROVIDER_RECON_GITHUB_TOKEN", raising=False)
+    url = "https://api.github.com/repos/mnfst/awesome-free-llm-apis/commits/HEAD"
+    opener = MagicMock()
+    response = opener.open.return_value.__enter__.return_value
+    response.geturl.return_value = url
+    response.read.return_value = b"{}"
+    with patch.object(recon.urllib.request, "build_opener", return_value=opener):
+        assert recon.fetch_bytes(url) == b"{}"
+    assert opener.open.call_args.args[0].get_header("Authorization") is None
+
+
+def test_malformed_metadata_token_fails_without_echoing_or_sending_it(monkeypatch):
+    from unittest.mock import patch
+    import pytest
+    token = "never-log-this\nvalue"
+    monkeypatch.setenv("PROVIDER_RECON_GITHUB_TOKEN", token)
+    with patch.object(recon.urllib.request, "build_opener") as opener:
+        with pytest.raises(recon.ReconError) as caught:
+            recon.fetch_bytes("https://api.github.com/repos/mnfst/awesome-free-llm-apis/commits/HEAD")
+        opener.assert_not_called()
+    assert "never-log-this" not in str(caught.value)
+
+
+def test_redirect_handler_cannot_forward_metadata_authorization():
+    import pytest
+    with pytest.raises(recon.ReconError, match="redirects are not permitted"):
+        recon._NoRedirect().redirect_request(None, None, 302, "redirect", {}, "https://example.com")
+
+
+def test_metadata_token_workflow_scope_is_read_only_and_step_local():
+    from pathlib import Path
+    workflow = (Path(__file__).resolve().parents[1] / ".github/workflows/provider-recon-compound.yml").read_text()
+    collect = workflow.split("  collect:\n", 1)[1].split("  publish:\n", 1)[0]
+    assert "permissions:\n      contents: read" in collect
+    assert "contents: write" not in collect
+    assert "PROVIDER_RECON_GITHUB_TOKEN: ${{ github.token }}" in collect
+    assert workflow.count("PROVIDER_RECON_GITHUB_TOKEN:") == 1
+    assert "pull_request_target" not in workflow

@@ -55,6 +55,9 @@ jobs:
           ref: ${{ github.event.repository.default_branch }}
           persist-credentials: false
       - name: Ingest pinned public source data and generate an advisory Cadence plan
+        env:
+          # Read-only collect-job token; used only for fixed GitHub commit metadata.
+          PROVIDER_RECON_GITHUB_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           mkdir -p /tmp/provider-research

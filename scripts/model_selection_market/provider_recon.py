@@ -35,7 +35,14 @@ def fetch_bytes(url: str) -> bytes:
     parsed = urlsplit(url)
     if parsed.scheme != "https" or parsed.hostname not in {"api.github.com", "raw.githubusercontent.com"} or parsed.username or parsed.password:
         raise ReconError("refusing non-allowlisted URL")
-    request = urllib.request.Request(url, headers={"User-Agent": "msm-provider-recon/1", "Accept": "application/vnd.github+json"})
+    headers = {"User-Agent": "msm-provider-recon/1", "Accept": "application/vnd.github+json"}
+    metadata_urls = {f"https://api.github.com/repos/{repo}/commits/HEAD" for repo in REPOS}
+    token = os.environ.get("PROVIDER_RECON_GITHUB_TOKEN", "")
+    if token and url in metadata_urls:
+        if not re.fullmatch(r"[A-Za-z0-9_.-]+", token):
+            raise ReconError("invalid GitHub metadata credential format")
+        headers["Authorization"] = "Bearer " + token
+    request = urllib.request.Request(url, headers=headers)
     opener = urllib.request.build_opener(_NoRedirect())
     try:
         with opener.open(request, timeout=TIMEOUT_SECONDS) as response:

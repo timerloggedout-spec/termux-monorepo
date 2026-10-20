@@ -1,0 +1,17 @@
+flowchart TD
+  SRC[GitHub Actions / agent invocation] --> EVT[Canonical sanitized event contract]
+  SRC2[platform201 / n8n adapters] --> EVT
+  SRC3[Temporal workflows and activities] --> EVT
+  EVT --> VAL[Schema + identity + privacy validation]
+  VAL --> RAW[Immutable JSONL evidence + receipt]
+  RAW --> RED[Pure reducers: ATES / WTCV / quality metrics]
+  RED --> EQ[Equation registry + Wolfram reference checks]
+  RAW --> COR[Run / attempt / SHA / cohort correlation]
+  COR --> SHE[SHE projections and historical corpus]
+  EQ --> SHE
+  SHE --> AD[Dashboards / reports / research adapters]
+  AD --> LANG[Langfuse / Phoenix / Hex optional adapters]
+  SHE --> DOC[Versioned docs + Mermaid / SVG / Equation.io views]
+  DOC --> REVIEW[Human review and promotion gate]
+  REVIEW --> LOOP[Observe → compare → learn → repeat]
+  LOOP --> SRC

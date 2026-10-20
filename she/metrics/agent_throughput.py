@@ -123,6 +123,79 @@ def _duration(events: list[Mapping[str, Any]]) -> float:
     return max(0.0, (max(stamps) - min(stamps)).total_seconds())
 
 
+def _bounded_ratio(numerator: int | None, denominator: int | None, *, metric_name: str) -> float | None:
+    """Calculate a bounded evidence ratio without manufacturing missing data.
+
+    Counts must be non-negative integers and numerator cannot exceed denominator.
+    An unknown count or zero denominator returns None; invalid known counts fail
+    loudly so corrupt aggregate inputs are not silently normalized.
+    """
+    if numerator is None or denominator is None:
+        return None
+    if (
+        isinstance(numerator, bool)
+        or isinstance(denominator, bool)
+        or not isinstance(numerator, int)
+        or not isinstance(denominator, int)
+    ):
+        raise ValueError(f"{metric_name} counts must be integers")
+    if numerator < 0 or denominator < 0:
+        raise ValueError(f"{metric_name} counts must be non-negative")
+    if numerator > denominator:
+        raise ValueError(f"{metric_name} numerator cannot exceed denominator")
+    if denominator == 0:
+        return None
+    return round(numerator / denominator, 6)
+
+
+def evidence_coverage_ratio(
+    valid_required_observations: int | None,
+    expected_required_observations: int | None,
+) -> float | None:
+    """Return valid required observations / expected observations, or None."""
+    return _bounded_ratio(
+        valid_required_observations,
+        expected_required_observations,
+        metric_name="evidence coverage ratio",
+    )
+
+
+def validated_outcome_rate(
+    explicit_validation_passes: int | None,
+    tasks_with_explicit_validation_outcome: int | None,
+) -> float | None:
+    """Return explicit validation passes / tasks with an explicit outcome."""
+    return _bounded_ratio(
+        explicit_validation_passes,
+        tasks_with_explicit_validation_outcome,
+        metric_name="validated outcome rate",
+    )
+
+
+def validation_coverage(
+    tasks_with_explicit_validation_outcome: int | None,
+    completed_tasks: int | None,
+) -> float | None:
+    """Return the share of completed tasks with an explicit validation outcome."""
+    return _bounded_ratio(
+        tasks_with_explicit_validation_outcome,
+        completed_tasks,
+        metric_name="validation coverage",
+    )
+
+
+def correlation_completeness(
+    eligible_records_with_required_provenance: int | None,
+    eligible_records: int | None,
+) -> float | None:
+    """Return the share of eligible records with the required provenance."""
+    return _bounded_ratio(
+        eligible_records_with_required_provenance,
+        eligible_records,
+        metric_name="correlation completeness",
+    )
+
+
 def reduce_events(
     events: Iterable[Mapping[str, Any]],
     *,
@@ -215,3 +288,97 @@ def reduce_events(
         mean_tool_delay_ms=round(tool_delay, 6) if tool_delay is not None else None,
         mean_handoff_latency_ms=round(handoff, 6) if handoff is not None else None,
     )
+
+
+
+def retry_amplification_ratio(
+    total_attempts: int | None,
+    logical_operations: int | None,
+) -> float | None:
+    """Return attempts per logical operation, including the initial attempt.
+
+    A value of 1.0 means one attempt per operation on average. Values above 1
+    indicate additional attempts. This is not a failure probability.
+    """
+    if total_attempts is None or logical_operations is None:
+        return None
+    if (
+        isinstance(total_attempts, bool)
+        or isinstance(logical_operations, bool)
+        or not isinstance(total_attempts, int)
+        or not isinstance(logical_operations, int)
+    ):
+        raise ValueError("retry amplification counts must be integers")
+    if total_attempts < 0 or logical_operations < 0:
+        raise ValueError("retry amplification counts must be non-negative")
+    if logical_operations == 0:
+        return None
+    if total_attempts < logical_operations:
+        raise ValueError("total attempts cannot be less than logical operations")
+    return round(total_attempts / logical_operations, 6)
+
+
+def retry_recovery_rate(
+    retried_operations_that_eventually_succeeded: int | None,
+    operations_with_at_least_one_retry: int | None,
+) -> float | None:
+    """Return the share of retried logical operations that eventually succeeded.
+
+    The numerator and denominator count logical operations, not individual
+    attempts. Operations still in progress or with unknown final state must not
+    be included in the denominator.
+    """
+    return _bounded_ratio(
+        retried_operations_that_eventually_succeeded,
+        operations_with_at_least_one_retry,
+        metric_name="retry recovery rate",
+    )
+
+
+def wilson_proportion_interval(
+    successes: int | None,
+    trials: int | None,
+    *,
+    z_score: float = 1.959963984540054,
+) -> tuple[float, float] | None:
+    """Return a two-sided Wilson score interval for a binomial proportion.
+
+    Defaults to approximately 95% confidence. This interval is appropriate for
+    a count of independent Bernoulli trials; clustered/repeated workflow events
+    violate that assumption and need a cluster-aware analysis instead.
+    """
+    if successes is None or trials is None:
+        return None
+    if (
+        isinstance(successes, bool)
+        or isinstance(trials, bool)
+        or not isinstance(successes, int)
+        or not isinstance(trials, int)
+    ):
+        raise ValueError("Wilson interval counts must be integers")
+    if successes < 0 or trials < 0:
+        raise ValueError("Wilson interval counts must be non-negative")
+    if successes > trials:
+        raise ValueError("Wilson interval successes cannot exceed trials")
+    if trials == 0:
+        return None
+    try:
+        z = float(z_score)
+    except (TypeError, ValueError) as exc:
+        raise ValueError("z_score must be a finite positive number") from exc
+    if not math.isfinite(z) or z <= 0:
+        raise ValueError("z_score must be a finite positive number")
+
+    proportion = successes / trials
+    z_squared = z * z
+    denominator = 1 + z_squared / trials
+    center = (proportion + z_squared / (2 * trials)) / denominator
+    margin = (
+        z
+        * math.sqrt(
+            proportion * (1 - proportion) / trials
+            + z_squared / (4 * trials * trials)
+        )
+        / denominator
+    )
+    return (round(max(0.0, center - margin), 6), round(min(1.0, center + margin), 6))

@@ -2,7 +2,12 @@ import json
 import unittest
 from pathlib import Path
 
-from she.metrics.agent_throughput import reduce_events
+from she.metrics.agent_throughput import (
+    reduce_events,
+    retry_amplification_ratio,
+    retry_recovery_rate,
+    wilson_proportion_interval,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -94,6 +99,83 @@ class AgentThroughputTest(unittest.TestCase):
         ])
         self.assertIsNone(metrics.parallel_yield)
         self.assertIsNone(metrics.ates)
+
+
+    def test_evidence_quality_equation_helpers(self):
+        from she.metrics.agent_throughput import (
+            correlation_completeness,
+            evidence_coverage_ratio,
+            validated_outcome_rate,
+            validation_coverage,
+        )
+
+        self.assertEqual(evidence_coverage_ratio(4, 5), 0.8)
+        self.assertEqual(validated_outcome_rate(3, 4), 0.75)
+        self.assertEqual(validation_coverage(4, 5), 0.8)
+        self.assertEqual(correlation_completeness(9, 10), 0.9)
+
+    def test_evidence_quality_equations_preserve_missing_denominators(self):
+        from she.metrics.agent_throughput import (
+            correlation_completeness,
+            evidence_coverage_ratio,
+            validated_outcome_rate,
+            validation_coverage,
+        )
+
+        self.assertIsNone(evidence_coverage_ratio(0, None))
+        self.assertIsNone(evidence_coverage_ratio(0, 0))
+        self.assertIsNone(validated_outcome_rate(None, 4))
+        self.assertIsNone(validation_coverage(0, 0))
+        self.assertIsNone(correlation_completeness(2, None))
+
+    def test_evidence_quality_equations_reject_impossible_counts(self):
+        from she.metrics.agent_throughput import (
+            correlation_completeness,
+            evidence_coverage_ratio,
+            validated_outcome_rate,
+            validation_coverage,
+        )
+
+        for calculate in (
+            lambda: evidence_coverage_ratio(-1, 2),
+            lambda: validated_outcome_rate(3, 2),
+            lambda: validation_coverage(1, -2),
+            lambda: correlation_completeness(1, 0),
+        ):
+            with self.subTest(calculate=calculate):
+                with self.assertRaises(ValueError):
+                    calculate()
+
+
+    def test_retry_amplification_counts_attempts_per_logical_operation(self):
+        self.assertEqual(retry_amplification_ratio(10, 10), 1.0)
+        self.assertEqual(retry_amplification_ratio(13, 10), 1.3)
+        self.assertIsNone(retry_amplification_ratio(None, 10))
+        self.assertIsNone(retry_amplification_ratio(0, 0))
+
+    def test_retry_recovery_uses_logical_operation_denominator(self):
+        self.assertEqual(retry_recovery_rate(6, 8), 0.75)
+        self.assertIsNone(retry_recovery_rate(0, 0))
+        self.assertIsNone(retry_recovery_rate(2, None))
+
+    def test_wilson_interval_matches_wolfram_reference_fixtures(self):
+        self.assertEqual(wilson_proportion_interval(3, 4), (0.300642, 0.954413))
+        self.assertEqual(wilson_proportion_interval(75, 100), (0.656955, 0.824548))
+        self.assertIsNone(wilson_proportion_interval(0, 0))
+        self.assertIsNone(wilson_proportion_interval(1, None))
+
+    def test_retry_and_interval_helpers_reject_invalid_inputs(self):
+        invalid_calls = (
+            lambda: retry_amplification_ratio(9, 10),
+            lambda: retry_amplification_ratio(-1, 1),
+            lambda: retry_recovery_rate(4, 3),
+            lambda: wilson_proportion_interval(5, 4),
+            lambda: wilson_proportion_interval(1, 2, z_score=0),
+        )
+        for calculate in invalid_calls:
+            with self.subTest(calculate=calculate):
+                with self.assertRaises(ValueError):
+                    calculate()
 
 
 class AgentThroughputSchemaTest(unittest.TestCase):

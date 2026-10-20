@@ -165,14 +165,14 @@ This PR now includes an event-driven implementation:
 - `scripts/ci/pr_merge_readiness.py`
 - `tests/test_pr_merge_readiness.py`
 
-The workflow is triggered by submitted reviews (it proceeds only for an `APPROVED` event) or explicit workflow dispatch. It has no cron and no automatic polling loop. It gathers one bounded PR/protection/review snapshot, runs the deterministic evaluator and its unit tests, publishes a JSON decision to the Actions job summary, and enables GitHub auto-merge only when every gate passes.
+The workflow requests a configured review team on PR open/reopen/ready-for-review events (when `GOVERNED_REVIEW_TEAM` is set), deduplicating the request by reading the requested-reviewers endpoint. Submitted reviews (only an `APPROVED` event) or explicit workflow dispatch trigger the merge-readiness evaluation. It has no cron and no automatic polling loop. It gathers one bounded PR/protection/review snapshot, runs the deterministic evaluator and its unit tests, publishes a JSON decision to the Actions job summary, and enables GitHub auto-merge only when every gate passes.
 
 ### Fail-closed eligibility contract
 
 All conditions must hold:
 
 1. Repository variable `GOVERNED_AUTO_MERGE_ENABLED=true`.
-2. Repository variable `GOVERNED_AUTOMERGE_APP_CLIENT_ID` and secret `GOVERNED_AUTOMERGE_APP_PRIVATE_KEY` are configured for a dedicated GitHub App installation with narrowly scoped Administration:read, Pull requests:write, Contents:read, Checks:read, and Commit statuses:read permissions. The App token is minted only when the opt-in variable is true; missing credentials fail before mutation.
+2. Repository variable `GOVERNED_AUTOMERGE_APP_CLIENT_ID` and secret `GOVERNED_AUTOMERGE_APP_PRIVATE_KEY` are configured for a dedicated GitHub App installation with narrowly scoped Administration:read, Pull requests:write, Contents:read, Checks:read, and Commit statuses:read permissions. The App token is minted only when the opt-in variable is true; missing credentials fail before mutation. Optional variable `GOVERNED_REVIEW_TEAM` holds the configured team slug for automatic review requests; if absent, no team is guessed or pinged.
 3. The target branch protection can be read; missing/forbidden protection data blocks.
 4. At least one approving review is required by branch protection.
 5. Stale approvals are dismissed or approval of the latest push is required.

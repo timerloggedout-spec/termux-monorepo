@@ -115,19 +115,22 @@ def probe_catalog(provider, url, token, row):
 
 
 def openrouter_inference(row, token):
-    model = row.get("model")
-    if not token or not model or not row.get("catalog_ok"):
+    """Record safe smoke observation only; scheduled probes never execute inference."""
+    if not token or not row.get("catalog_ok"):
         return
     try:
-        status, _ = request("https://openrouter.ai/api/v1/chat/completions", token=token, method="POST",
-                            payload={"model": model, "messages": [{"role": "user", "content": "Reply with exactly: PROVIDER_HEALTH_OK"}], "max_tokens": 8})
-        row["inference_ok"] = 200 <= status < 300
-        if not row["inference_ok"]:
-            row["error_class"] = f"inference_http_{status}"
-    except urllib.error.HTTPError as e:
-        row["error_class"] = f"inference_http_{e.code}"
-    except Exception as e:
-        row["error_class"] = f"inference_{type(e).__name__}"
+        try:
+            from scripts.ops import provider_free_smoke
+        except ImportError:
+            from ops import provider_free_smoke
+        observation = provider_free_smoke.observe(token, execute=False)
+        row["inference_ok"] = bool(observation.get("inference_ok", False))
+        reason = observation.get("reason")
+        if reason and reason != "explicit_smoke_not_requested":
+            row["error_class"] = reason
+    except Exception:
+        # Keep availability output restricted to a fixed, non-sensitive code.
+        row["error_class"] = "safe_smoke_observation_failed"
 
 
 def gemini_probe(row, token):
@@ -156,17 +159,9 @@ def gemini_probe(row, token):
     model_name = chosen.get("name", "").split("/")[-1]
     row["catalog_ok"] = True
     row["model"] = model_name
-    try:
-        status, _ = request(f"https://generativelanguage.googleapis.com/v1beta/{chosen['name']}:generateContent",
-                            token=token, auth_header="x-goog-api-key", method="POST",
-                            payload={"contents": [{"parts": [{"text": "Reply with exactly: PROVIDER_HEALTH_OK"}]}]})
-        row["inference_ok"] = 200 <= status < 300
-        if not row["inference_ok"]:
-            row["error_class"] = f"inference_http_{status}"
-    except urllib.error.HTTPError as e:
-        row["error_class"] = f"inference_http_{e.code}"
-    except Exception as e:
-        row["error_class"] = f"inference_{type(e).__name__}"
+    # Catalog visibility is not proof that this account is admitted to inference.
+    # Never issue a completion request from the scheduled availability probe.
+    row["error_class"] = "free_account_unverified"
 
 
 def resolve_huggingface_token(environ=None):
@@ -205,7 +200,7 @@ def main():
                               "credential_env_expected": "canonical expected environment-variable name when a credential is missing",
                               "catalog_probe_required": "true for configured providers and explicitly public catalogs",
                               "catalog_ok": "provider catalog endpoint responded with usable model metadata",
-                              "inference_ok": "minimal live inference succeeded only for the established OpenRouter/Gemini probes"}, "providers": rows}
+                              "inference_ok": "false for scheduled probes; explicit smoke workflow may run separately"}, "providers": rows}
     with open(os.environ.get("OUTPUT", "/tmp/provider-availability.json"), "w", encoding="utf-8") as fh:
         json.dump(document, fh, indent=2, sort_keys=True)
         fh.write("\n")

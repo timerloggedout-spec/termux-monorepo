@@ -6,7 +6,7 @@ name: Provider availability continuity
 # Semantics:
 #   credential_present = workflow secret is configured
 #   catalog_ok        = live provider catalog is reachable
-#   inference_ok      = minimal live inference succeeded
+#   inference_ok      = false here; explicit verified no-cost smoke is manual only
 #
 # Provider secrets are never printed, committed, or included in artifacts.
 
@@ -89,9 +89,8 @@ jobs:
               if not required:
                   print(f"- {p['provider']}: not configured (no secret); observation only")
                   continue
-              # Only the two established providers receive bounded inference probes.
-              required_inference=configured and p["provider"] in {"openrouter","gemini"}
-              ok=p["inference_ok"] if required_inference else p["catalog_ok"]
+              # Catalog continuity does not authorize recurring inference spend.
+              ok=p["catalog_ok"]
               mode=p.get("auth_mode", "credential" if configured else "unconfigured")
               print(f"- {p['provider']} ({mode}): {'PASS' if ok else 'FAIL'}")
               if not ok:

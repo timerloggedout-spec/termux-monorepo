@@ -117,3 +117,38 @@ class ReviewEvidenceTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def test_review_commit_and_history_scope_are_explicit():
+    item = review(200)
+    item['commit_id'] = 'b' * 40
+    result = re.normalize([item], [], [], [], repo=REPO, pr=1297, head_sha=SHA)
+    assert result['formal_reviews'][0]['commit_id'] == 'b' * 40
+    assert result['observed_head_sha'] == SHA
+    assert result['counts_scope'] == 'pull_request_history_not_current_head_approval'
+    assert result['provenance']['normalized_at'].endswith('Z')
+    assert 'bound_head_sha' not in result
+
+
+def test_collection_head_race_fails_without_replacing_previous_report(tmp_path):
+    import pytest
+    paths = []
+    for name, data in [('reviews', []), ('comments', []), ('inline', []), ('commits', [commit(1, SHA)])]:
+        path = tmp_path / (name + '.json')
+        path.write_text(json.dumps(data))
+        paths.append(path)
+    output = tmp_path / 'report.json'
+    output.write_text('previous valid report')
+    args = ['--reviews', str(paths[0]), '--comments', str(paths[1]), '--inline-comments', str(paths[2]), '--commits', str(paths[3]), '--output', str(output), '--repo', REPO, '--pr', '1297', '--head-sha', SHA, '--collected-at', '2026-10-20T06:00:00Z']
+    with pytest.raises(SystemExit):
+        re.main(args + ['--head-sha-after', 'b' * 40])
+    assert output.read_text() == 'previous valid report'
+    assert re.main(args + ['--head-sha-after', SHA]) == 0
+    report = json.loads(output.read_text())
+    assert report['provenance']['head_stability_verified'] is True
+    assert report['provenance']['collected_at'] == '2026-10-20T06:00:00Z'
+    paths[3].write_text('[]')
+    previous = output.read_bytes()
+    with pytest.raises(SystemExit):
+        re.main(args + ['--head-sha-after', SHA])
+    assert output.read_bytes() == previous

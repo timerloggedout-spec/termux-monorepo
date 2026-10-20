@@ -8,6 +8,7 @@ import re
 import tempfile
 from pathlib import Path
 from typing import Any
+from datetime import datetime, timezone
 
 SCHEMA_VERSION = "msm-review-evidence-v1"
 SHA_RE = re.compile(r"^[0-9a-fA-F]{40}$")
@@ -143,9 +144,13 @@ def normalize(
             _fail(f"{label}.submitted_at must be null or non-empty string")
         login, typ = _actor(row, label)
         is_formal = state != "PENDING" and submitted is not None
+        review_commit = row.get("commit_id")
+        if review_commit is not None and (not isinstance(review_commit, str) or not SHA_RE.fullmatch(review_commit)):
+            _fail(f"{label}.commit_id must be null or a full SHA")
         entry = {
             "id": str(row["id"]), "state": state, "submitted_at": submitted,
             "actor_login": login, "actor_type": typ,
+            "commit_id": review_commit.lower() if review_commit else None,
         }
         if is_formal:
             formal.append(entry)
@@ -197,7 +202,8 @@ def normalize(
         "schema_version": SCHEMA_VERSION,
         "repository": repo,
         "pull_request": pr,
-        "bound_head_sha": head_sha.lower(),
+        "observed_head_sha": head_sha.lower(),
+        "counts_scope": "pull_request_history_not_current_head_approval",
         "counts": {
             "formal_submitted_reviews": len(formal),
             "pending_reviews": len(pending),
@@ -215,6 +221,7 @@ def normalize(
             "commit_committers": _count_by(commit_rows, lambda row: row["committer_login"]),
         },
         "provenance": {
+            "normalized_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             "source_urls": {
                 "reviews": f"https://api.github.com/repos/{repo}/pulls/{pr}/reviews",
                 "conversation_comments": f"https://api.github.com/repos/{repo}/issues/{pr}/comments",
@@ -257,6 +264,8 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     for arg in ("reviews", "comments", "inline-comments", "commits", "output", "repo", "pr", "head-sha"):
         parser.add_argument("--" + arg, required=True)
+    parser.add_argument("--head-sha-after", help="Head re-fetched after pagination; production collection requires this")
+    parser.add_argument("--collected-at", help="UTC time when API collection started, not a historical event time")
     args = parser.parse_args(argv)
     try:
         def load(path):
@@ -267,6 +276,19 @@ def main(argv: list[str] | None = None) -> int:
             load(args.reviews), load(args.comments), load(args.inline_comments),
             load(args.commits), repo=args.repo, pr=int(args.pr), head_sha=args.head_sha,
         )
+        if args.head_sha_after is not None:
+            if args.head_sha.lower() != args.head_sha_after.lower():
+                _fail("PR head changed during pagination; collect a fresh snapshot")
+            if args.head_sha.lower() not in [sha.lower() for sha in result["provenance"]["commit_shas"]]:
+                _fail("collected commit list does not contain the observed head")
+        result["provenance"]["head_stability_verified"] = args.head_sha_after is not None
+        if args.collected_at is not None:
+            when = datetime.fromisoformat(args.collected_at.replace("Z", "+00:00"))
+            if not args.collected_at.endswith("Z") or when.utcoffset().total_seconds() != 0:
+                _fail("collected_at must be a UTC timestamp ending in Z")
+            result["provenance"]["collected_at"] = args.collected_at
+        else:
+            result["provenance"]["collected_at"] = None
         write_output(args.output, result)
     except (EvidenceError, OSError, json.JSONDecodeError, ValueError) as exc:
         parser.exit(2, f"review evidence failed; output not written: {exc}\n")

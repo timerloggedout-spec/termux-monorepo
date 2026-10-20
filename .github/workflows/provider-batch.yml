@@ -78,12 +78,14 @@ jobs:
           set -euo pipefail
           mkdir -p /tmp/matrix-review
           base=repos/timerloggedout-spec/termux-monorepo
+          collected_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)
           gh api "$base/pulls/1297" --jq .head.sha > /tmp/matrix-review/head
           gh api --paginate --slurp "$base/pulls/1297/reviews?per_page=100" > /tmp/matrix-review/reviews.json
           gh api --paginate --slurp "$base/issues/1297/comments?per_page=100" > /tmp/matrix-review/comments.json
           gh api --paginate --slurp "$base/pulls/1297/comments?per_page=100" > /tmp/matrix-review/inline.json
           gh api --paginate --slurp "$base/pulls/1297/commits?per_page=100" > /tmp/matrix-review/commits.json
-          python3 -m scripts.model_selection_market.review_evidence --reviews /tmp/matrix-review/reviews.json --comments /tmp/matrix-review/comments.json --inline-comments /tmp/matrix-review/inline.json --commits /tmp/matrix-review/commits.json --repo timerloggedout-spec/termux-monorepo --pr 1297 --head-sha "$(cat /tmp/matrix-review/head)" --output /tmp/provider-batch/matrix-review.json
+          gh api "$base/pulls/1297" --jq .head.sha > /tmp/matrix-review/head-after
+          python3 -m scripts.model_selection_market.review_evidence --reviews /tmp/matrix-review/reviews.json --comments /tmp/matrix-review/comments.json --inline-comments /tmp/matrix-review/inline.json --commits /tmp/matrix-review/commits.json --repo timerloggedout-spec/termux-monorepo --pr 1297 --head-sha "$(cat /tmp/matrix-review/head)" --head-sha-after "$(cat /tmp/matrix-review/head-after)" --collected-at "$collected_at" --output /tmp/provider-batch/matrix-review.json
       - name: Preserve sanitized run-attempt observations
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

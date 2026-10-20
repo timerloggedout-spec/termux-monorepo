@@ -30,6 +30,22 @@ DEFAULT_DOCS = (
     "docs/ops/TERMUX-LIVE-BRIDGE.md",
     "docs/ops/ACTIONS-WORKFLOWS-MATRIX.md",
     "docs/ops/sessions/HINDSIGHT.md",
+    # Provider/API evidence used by the current procurement and adapter lanes.
+    "docs/ops/PROVIDER-BATCH-IMPLEMENTATION.md",
+    "docs/ops/PROVIDER-SERVICE-EXPANSION.md",
+    "docs/ops/PROVIDER-HITL.md",
+    "docs/ops/FREE-LLM-PROVIDER-RECON.md",
+    "docs/ops/PROVIDER-RESEARCH-COMPOUNDING.md",
+    "docs/ops/GITHUB-FEEDBACK-API-DIAGNOSTICS.md",
+    # Collaborator identity, execution and evidence contracts.
+    "docs/ops/AGENT-MONIKERS.md",
+    "docs/ops/AGENT-TEAM-ROSTER.md",
+    "docs/ops/AGENT-EVIDENCE-SUBSTRATE.md",
+    "docs/ops/BIUDL-EXECUTION-AND-PROVENANCE.md",
+    "docs/ops/LANE-MATRIX.md",
+    "docs/research/FOSS-PROCUREMENT-MATRIX.md",
+    "docs/research/FORESIGHT-RADAR.md",
+    "docs/research/BRIEFING-INGEST.md",
 )
 
 

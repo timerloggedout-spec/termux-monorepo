@@ -1,54 +1,53 @@
 {
   "schema_version": "help-wanted.tribute-audit.v1",
-  "generated_at": "2026-10-20T04:51:44.936661+00:00",
-  "source_status_generated_at": "2026-10-20T04:51:19Z",
-  "source_tribute_count": 106,
-  "unique_pr_count": 106,
-  "audited_pr_count": 101,
-  "audited_this_run_count": 25,
+  "generated_at": "2026-10-20T05:18:58.937627+00:00",
+  "source_status_generated_at": "2026-10-20T05:18:18Z",
+  "source_tribute_count": 107,
+  "unique_pr_count": 107,
+  "audited_pr_count": 102,
+  "audited_this_run_count": 24,
   "attempted_this_run_count": 25,
   "deferred_this_run_count": 0,
   "unknown_this_run_count": 0,
-  "partial_this_run_count": 0,
+  "partial_this_run_count": 1,
   "audited_this_run_pr_urls": [
-    "https://github.com/TrusTrove/TrusTrove-contract/pull/860",
-    "https://github.com/laugh-tales/starpass-contracts/pull/59",
-    "https://github.com/Saidur-droid/MergeEarn/pull/76",
-    "https://github.com/TricklePay/tricklepay-backend/pull/441",
-    "https://github.com/fsr5-fhaachen/portals/pull/948",
-    "https://github.com/ROCm/rocm-libraries/pull/13152",
-    "https://github.com/topoteretes/cognee/pull/5439",
-    "https://github.com/traceopt-ai/traceml/pull/547",
-    "https://github.com/Suhas29wasnotavailable/blroad/pull/12",
-    "https://github.com/MMALI3287/vibewatt/pull/100",
-    "https://github.com/apache/hugegraph-computer/pull/365",
-    "https://github.com/ciaren-labs/Ciaren/pull/234",
-    "https://github.com/finos/fluxnova-bpm-platform/pull/352",
-    "https://github.com/ShippedLabs/soroban-upgrade-safeguard/pull/781",
-    "https://github.com/stellar-compliance-kit/compliance-primitives/pull/656",
-    "https://github.com/Health-watchers/health_watchers/pull/1698",
-    "https://github.com/LabsCrypt/remitlend/pull/1990",
-    "https://github.com/RetinaX-Org/RetinaX/pull/352",
-    "https://github.com/0xLizTech/stellarforge/pull/614",
-    "https://github.com/SoroScan/soroscan/pull/1690",
-    "https://github.com/sorolens/sorolens/pull/753",
-    "https://github.com/francordel/kdemos/pull/27",
-    "https://github.com/vedantnimbarte/zero/pull/81",
-    "https://github.com/StellarFoundry/soroban-security-scanner/pull/200",
-    "https://github.com/kiinshuk/kinshow/pull/434"
+    "https://github.com/arsova-mx/OpenPoker/pull/69",
+    "https://github.com/Agora-Events/agora/pull/1518",
+    "https://github.com/tarantool/tarantool/pull/13285",
+    "https://github.com/bmad-code-org/bmad-loop/pull/819",
+    "https://github.com/mergepay/mergepay-web/pull/552",
+    "https://github.com/olcf/olcf-test-harness/pull/280",
+    "https://github.com/umn-adc/ATLAS/pull/42",
+    "https://github.com/lonestill/onyx-launcher/pull/45",
+    "https://github.com/UnityChainxx/StellarHunts/pull/599",
+    "https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587",
+    "https://github.com/vavallee/bindery/pull/2770",
+    "https://github.com/chahe-dridi/vscode-agent-bell/pull/225",
+    "https://github.com/seleniumboot/selenium-boot/pull/183",
+    "https://github.com/E-Timileyin/Sail-CLI/pull/23",
+    "https://github.com/Kilo-Org/agentic-path/pull/26",
+    "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7",
+    "https://github.com/w1977-0/open-stream-saver/pull/3",
+    "https://github.com/Vasudev-ai/Focusflow/pull/15",
+    "https://github.com/OrionStarAI/EasyCode/pull/53",
+    "https://github.com/ThinkLikeAFounder/pulsartrack/pull/898",
+    "https://github.com/MergeFi/contracts/pull/374",
+    "https://github.com/EF-CHAIN/SendAm/pull/492",
+    "https://github.com/Heliobond/frontend/pull/614",
+    "https://github.com/EF-CHAIN/SendAm/pull/607"
   ],
   "not_audited_count": 5,
-  "audit_window_start": 14,
+  "audit_window_start": 94,
   "audit_window_size": 25,
   "stages": {
-    "stake_only": 35,
+    "stake_only": 36,
     "implementation_unproven": 1,
     "accepted": 16,
     "closed_unmerged": 51,
     "unknown": 1
   },
   "audit_statuses": {
-    "observed": 101,
+    "observed": 102,
     "partial": 2,
     "unknown": 1
   },
@@ -61,8 +60,39 @@
   },
   "items": [
     {
+      "pr_url": "https://github.com/seleniumboot/selenium-boot/pull/183",
+      "audited_at": "2026-10-20T05:18:39.572352+00:00",
+      "stage": "stake_only",
+      "evidence_gaps": [
+        "solution_proof_missing",
+        "validation_not_verified"
+      ],
+      "realized_effect_verified": false,
+      "audit_status": "observed",
+      "state": "open",
+      "merged": false,
+      "head_sha": "d8353cc6422fd94552ca35db515493055eeb3fd9",
+      "contributor_login": "timerloggedout-spec",
+      "base_sha": "1178404c874bbec46961103258023ffdeabc79f9",
+      "changed_file_count": 1,
+      "files_total_count": 1,
+      "files_observed_count": 1,
+      "files_truncated": false,
+      "files_complete": true,
+      "implementation_file_count": 0,
+      "stake_marker_present": true,
+      "stake_only": true,
+      "solution_proof_present": false,
+      "checks_observed": 0,
+      "checks_total_count": 0,
+      "checks_truncated": false,
+      "checks_complete": false,
+      "checks_pass": false,
+      "realization_note": "requires a separately linked, independently verified effect receipt"
+    },
+    {
       "pr_url": "https://github.com/E-Timileyin/Sail-CLI/pull/23",
-      "audited_at": "2026-10-19T23:42:42.883993+00:00",
+      "audited_at": "2026-10-20T05:18:41.073480+00:00",
       "stage": "stake_only",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -93,7 +123,7 @@
     },
     {
       "pr_url": "https://github.com/Kilo-Org/agentic-path/pull/26",
-      "audited_at": "2026-10-19T23:42:44.254302+00:00",
+      "audited_at": "2026-10-20T05:18:43.031894+00:00",
       "stage": "stake_only",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -124,7 +154,7 @@
     },
     {
       "pr_url": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7",
-      "audited_at": "2026-10-19T23:42:45.407326+00:00",
+      "audited_at": "2026-10-20T05:18:44.675054+00:00",
       "stage": "stake_only",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -155,7 +185,7 @@
     },
     {
       "pr_url": "https://github.com/w1977-0/open-stream-saver/pull/3",
-      "audited_at": "2026-10-19T23:42:46.399027+00:00",
+      "audited_at": "2026-10-20T05:18:46.200572+00:00",
       "stage": "stake_only",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -186,7 +216,7 @@
     },
     {
       "pr_url": "https://github.com/Vasudev-ai/Focusflow/pull/15",
-      "audited_at": "2026-10-19T23:42:47.585706+00:00",
+      "audited_at": "2026-10-20T05:18:47.874052+00:00",
       "stage": "stake_only",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -217,7 +247,7 @@
     },
     {
       "pr_url": "https://github.com/OrionStarAI/EasyCode/pull/53",
-      "audited_at": "2026-10-19T23:42:48.760313+00:00",
+      "audited_at": "2026-10-20T05:18:49.254359+00:00",
       "stage": "implementation_unproven",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -248,7 +278,7 @@
     },
     {
       "pr_url": "https://github.com/ThinkLikeAFounder/pulsartrack/pull/898",
-      "audited_at": "2026-10-19T23:42:49.830173+00:00",
+      "audited_at": "2026-10-20T05:18:50.712643+00:00",
       "stage": "stake_only",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -279,7 +309,7 @@
     },
     {
       "pr_url": "https://github.com/MergeFi/contracts/pull/374",
-      "audited_at": "2026-10-19T23:42:51.219889+00:00",
+      "audited_at": "2026-10-20T05:18:52.692635+00:00",
       "stage": "stake_only",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -310,7 +340,7 @@
     },
     {
       "pr_url": "https://github.com/EF-CHAIN/SendAm/pull/492",
-      "audited_at": "2026-10-19T23:42:52.243163+00:00",
+      "audited_at": "2026-10-20T05:18:54.245143+00:00",
       "stage": "stake_only",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -341,7 +371,7 @@
     },
     {
       "pr_url": "https://github.com/Heliobond/frontend/pull/614",
-      "audited_at": "2026-10-19T23:42:53.394277+00:00",
+      "audited_at": "2026-10-20T05:18:55.832384+00:00",
       "stage": "stake_only",
       "evidence_gaps": [
         "solution_proof_missing"
@@ -371,7 +401,7 @@
     },
     {
       "pr_url": "https://github.com/EF-CHAIN/SendAm/pull/607",
-      "audited_at": "2026-10-19T23:42:54.527147+00:00",
+      "audited_at": "2026-10-20T05:18:57.445456+00:00",
       "stage": "stake_only",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -2849,7 +2879,7 @@
     },
     {
       "pr_url": "https://github.com/arsova-mx/OpenPoker/pull/69",
-      "audited_at": "2026-10-19T21:01:03.806923+00:00",
+      "audited_at": "2026-10-20T05:18:18.713671+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -2880,7 +2910,7 @@
     },
     {
       "pr_url": "https://github.com/Agora-Events/agora/pull/1518",
-      "audited_at": "2026-10-19T21:01:04.898009+00:00",
+      "audited_at": "2026-10-20T05:18:20.182444+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -2911,7 +2941,7 @@
     },
     {
       "pr_url": "https://github.com/tarantool/tarantool/pull/13285",
-      "audited_at": "2026-10-19T21:01:06.017268+00:00",
+      "audited_at": "2026-10-20T05:18:21.731941+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -2942,7 +2972,7 @@
     },
     {
       "pr_url": "https://github.com/bmad-code-org/bmad-loop/pull/819",
-      "audited_at": "2026-10-19T21:01:07.713632+00:00",
+      "audited_at": "2026-10-20T05:18:23.426751+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -2973,7 +3003,7 @@
     },
     {
       "pr_url": "https://github.com/mergepay/mergepay-web/pull/552",
-      "audited_at": "2026-10-19T21:01:08.952840+00:00",
+      "audited_at": "2026-10-20T05:18:25.334682+00:00",
       "stage": "accepted",
       "evidence_gaps": [
         "solution_proof_missing"
@@ -3003,7 +3033,7 @@
     },
     {
       "pr_url": "https://github.com/olcf/olcf-test-harness/pull/280",
-      "audited_at": "2026-10-19T21:01:10.140176+00:00",
+      "audited_at": "2026-10-20T05:18:26.724331+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -3034,7 +3064,7 @@
     },
     {
       "pr_url": "https://github.com/umn-adc/ATLAS/pull/42",
-      "audited_at": "2026-10-19T21:01:11.406728+00:00",
+      "audited_at": "2026-10-20T05:18:28.373603+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -3065,7 +3095,7 @@
     },
     {
       "pr_url": "https://github.com/lonestill/onyx-launcher/pull/45",
-      "audited_at": "2026-10-19T21:01:12.613503+00:00",
+      "audited_at": "2026-10-20T05:18:29.929742+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -3096,7 +3126,7 @@
     },
     {
       "pr_url": "https://github.com/UnityChainxx/StellarHunts/pull/599",
-      "audited_at": "2026-10-19T23:42:36.762070+00:00",
+      "audited_at": "2026-10-20T05:18:32.069460+00:00",
       "stage": "accepted",
       "evidence_gaps": [
         "solution_proof_missing"
@@ -3126,7 +3156,7 @@
     },
     {
       "pr_url": "https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587",
-      "audited_at": "2026-10-19T23:42:37.925079+00:00",
+      "audited_at": "2026-10-20T05:18:33.435231+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -3157,7 +3187,7 @@
     },
     {
       "pr_url": "https://github.com/vavallee/bindery/pull/2770",
-      "audited_at": "2026-10-19T23:42:39.036384+00:00",
+      "audited_at": "2026-10-20T05:18:34.712502+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing"
@@ -3187,7 +3217,7 @@
     },
     {
       "pr_url": "https://github.com/DioNanos/codex-termux/pull/27",
-      "audited_at": "2026-10-19T23:42:40.395594+00:00",
+      "audited_at": "2026-10-20T05:18:36.356891+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "files_truncated",
@@ -3219,7 +3249,7 @@
     },
     {
       "pr_url": "https://github.com/chahe-dridi/vscode-agent-bell/pull/225",
-      "audited_at": "2026-10-19T23:42:41.799338+00:00",
+      "audited_at": "2026-10-20T05:18:37.967046+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing",

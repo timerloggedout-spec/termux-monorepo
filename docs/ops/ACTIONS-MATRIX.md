@@ -1,0 +1,164 @@
+# Actions Workflows Consolidated Matrix (2026-10-18)
+
+**Branch:** `ops/actions-matrix-upgrade-2026-10-18`  
+**Goal:** Zero Failures · 100% Success · Reduced Notification Spam · Feature Preservation  
+**Audit Focus:** Skipped / Cancelled / Stale / Timed out / Failure / Action Required / Queued / Neutral
+
+## Current State (Recent Runs Audit)
+
+Recent completed runs (last ~50):
+- **Success:** majority
+- **Cancelled:** primarily `help-wanted-dashboard-deploy` and `help-wanted-status-refresh` due to concurrency groups with `cancel-in-progress: true` on rapid successive dispatches (expected for deploy idempotency, but generates notification noise)
+- **Skipped:** `Actions Run Watcher` and `Fix-on-Failure Agent` (by design — only act on `failure` / `timed_out`)
+- **Failures / Timed out:** 0 in sampled recent runs
+
+**Historical Pattern:** Cancelled runs often from concurrency races rather than true errors. Skipped are intentional filters. True failures historically silenced or not rolled back properly (e.g., Pinggy device tests).
+
+## Repeated Issues Matrix
+
+| Issue Class | Workflows Affected | Root Cause | Current Handling | Recommended Fix / Consolidation | Status |
+|-------------|--------------------|------------|------------------|---------------------------------|--------|
+| Concurrency Cancel Spam | help-wanted-dashboard-deploy, help-wanted-status-refresh, others with cancel-in-progress | Rapid successive triggers (schedule + dispatch + workflow_run) | Cancel previous, run latest | Granular concurrency groups (per-target or SHA-based); or `cancel-in-progress: false` + queue; consolidate triggers into one orchestrator | Open for upgrade |
+| Watcher Skip Noise | actions-run-watcher.yml, fix-on-failure.yml | Job-level `if` skips non-failure | Skipped conclusion | Move filter earlier or suppress notifications for intentional skips; consolidate watchers into single telemetry sink | Documented |
+| Device / Tunnel (Pinggy) | Various device tests, bridge workflows | Original BLU B160V#1 broken screen; tests not fully replicated on #2; credentials / connectivity | Some skipped/cancelled instead of fixed or rolled back | Add device identification (public obfuscated ID); ensure Pinggy or Cloudflare alternative operational on device #1; evidence in #184 | Requires validation |
+| Queue / Stale | actions-queue-reaper.yml | Zero-job queued runs hold queue | Reaper cancels >6h or schedule >45min | Already present; expand to more event types; adaptive telemetry | Active |
+| Notification Spam | Multiple agent / help-wanted / watcher | High volume of scheduled + event-driven runs | Individual notifications | Modular consolidation: shared reusable workflows, single status ledger (action-effectiveness-ledger.yml), reduced cadence with adaptive-wait | In progress |
+| Silenced Failures | Historical device / bridge / CI | Some cancelled without diagnosis | Not always rolled back | Require explicit audit trail; no silent cancel without evidence artifact | Policy |
+
+## Superseded / Combined Workflows
+
+- Multiple help-wanted-* workflows → consider single orchestrator with matrix jobs
+- Watcher + Fix-on-Failure → single incident pipeline that only emits on actionable conclusions
+- Device-specific tests → consolidated with device matrix (B160V#1 vs #2)
+
+## Flowchart: Actions Health Loop (Mermaid)
+
+```mermaid
+flowchart TD
+    A[Event / Schedule / Dispatch] --> B{Concurrency Group?}
+    B -->|Yes| C[Cancel Prior if cancel-in-progress]
+    B -->|No| D[Queue or Parallel]
+    C --> E[Execute Job]
+    D --> E
+    E --> F{Conclusion}
+    F -->|success| G[Update Ledger / Dashboard]
+    F -->|failure / timed_out| H[Watcher + Fix-on-Failure]
+    F -->|cancelled / skipped| I[Audit: Intentional?]
+    I -->|Yes| J[Suppress or Log Only]
+    I -->|No| K[Diagnose + Fix or Rollback]
+    H --> L[Create/Update Incident Issue]
+    G --> M[Zero Failures Target]
+    K --> M
+    L --> M
+```
+
+## Cadence & Cache Improvements
+
+- Adaptive-wait skill: concurrent non-conflicting work during queue/in_progress
+- Dynamic telemetry: action-effectiveness-ledger.yml as SSOT
+- Reduce schedules: consolidate overlapping crons; use workflow_run for chaining
+- Cache: reuse dependency caches; path filters on push triggers
+- Modular: reusable workflows for common steps (checkout, status emit, device ID inject)
+
+## Device Identification (Public Obfuscation)
+
+- Device #1 (original BLU B160V, broken screen): ID hash prefix `b160v1-`
+- Device #2 (replication target): ID hash prefix `b160v2-`
+- Pinggy / alternative tunnel must report device ID in manifests and evidence
+
+## Next Actions
+
+1. Update concurrency groups to reduce cancel spam
+2. Consolidate watchers
+3. Validate Pinggy on device #1 with evidence
+4. Expand reaper coverage
+5. Push this matrix + flowchart to repo
+
+**Implements:** Actions matrix upgrade for zero-failure FA-ADE / C.A.D.E.
+
+Agent-Identity: Grok (Administrator)
+
+## Latest Session RECON (2026-10-19T22:00Z+)
+
+**Master tip:** `e003cf4641e47089e9108ab70dfbd8f661ab5b42` (ops(help-wanted): live status refresh)
+
+**Classified Runs (user-provided):**
+- `39233561401` repository observatory: failure on schedule, 403/observatory index — classified as capacity/quota lag_operational / non-gate (not correctness).
+- `39234979788`, `39234979848`, `39234979983` quota-registry related: lag_operational.
+
+**Skipped/Cancelled Audit:**
+- Actions Run Watcher skips are intentional (job `if` only on failure/timed_out). Still appear as completed/skipped runs → notification surface. Further consolidation recommended: single batched incident aggregator workflow that polls or uses fewer triggers.
+- Concurrency cancels (e.g. help-wanted-*) remain expected but noisy; path-filter + reduced cadence + shared orchestrator preferred over per-workflow cancel.
+
+**Pinggy Device #1:**
+- Opaque ID `tmx-node-primary` reaffirmed in `ops/termux-bridge/current.json` and publisher scripts.
+- Live TCP-verified publish remains device-side (Termux job). Status unknown until device runtime updates manifest.
+- Alternative tunnels (Cloudflare Tunnel, etc.) documented as candidates; Pinggy remains requirement until proven alternative.
+
+**Improvements Applied This Session:**
+- Matrix updated with explicit classification of notification runs as non-gate capacity lag.
+- Opaque device identification preserved (no hardware identifiers).
+- Flowchart retained; cadence notes expanded.
+
+**Next:** Dual-gate on this branch tip, then promote if green. Continue adaptive telemetry for quota planning.
+
+Agent-Identity: Grok (Administrator)
+
+## Continuation RECON (2026-10-19T23:00Z+)
+
+**PR #1292 status:** mergeable_state=dirty (rebase onto live master required before any promote). Prior dual-gate (repo gate + termux smoke) success on ancestor SHAs. Current head `0871b5dd` has supporting checks success; dual-gate re-run after rebase.
+
+**Skip/Cancel Validation Audit (ongoing):**
+- Recent master runs show high volume of skipped Actions Run Watcher (intentional filter on non-failure/timed_out). These still generate notification entries. Improvement path: reduce `workflows:` list to critical only, or migrate to scheduled batched poller that emits only on actionable conclusions (no skip run recorded).
+- Cancelled runs (concurrency) classified as lag_operational when successor succeeds. In-process waiting is not failure; adaptive-wait handles it as evidence collection.
+- No new correctness failures observed. Capacity/quota (403, rate-limit) remain non-gate.
+
+**Cadence / Cache / Telemetry 3L0:**
+- Lead/Lag already reduced to */4. Further: group more schedules under fewer orchestrators; add path filters and concurrency groups per SHA where missing.
+- Cache dynamic: prefer actions/cache with key on lockfiles; adaptive telemetry via ledger as SSOT for moneyball prioritization of high-value runs.
+- Quota planning: continue soft classification; observatory fallback already applied.
+
+**Pinggy / Device #1:**
+- Opaque ID `tmx-node-primary` unchanged. Operational requirement stands; live publish and device identification data (public obfuscation only) still device-side. Alternatives documented.
+
+**What was fixed / refined this continuation:**
+- Explicit note on dirty PR block.
+- Reinforced skip-spam as residual surface (not correctness).
+- Cadence and adaptive telemetry notes expanded.
+- Zero-failure posture: all current observations classified correctly (success, intentional skip, capacity lag).
+
+**Next:** Rebase branch, reconfirm dual-gate, then evaluate promote. Continue modular consolidations to cut notification volume.
+
+Agent-Identity: Grok (Administrator)
+
+## Continuation RECON (2026-10-20T04:00Z+)
+
+**Master tip at rebase:** current origin/master (post help-wanted refresh ~2c676283).
+
+**Branch rebased cleanly** onto live master. Key improvements preserved:
+- Actions Run Watcher reduced to workflow_dispatch only — eliminates the high-volume skip-run listings that were generating notification spam.
+- Cadence Lead/Lag (*/4) now emits lag_failure incidents (replaces the watcher workflow_run path).
+- Matrix documents intentional skips/cancels as operational lag, capacity/quota as non-gate, and opaque device ID `tmx-node-primary`.
+
+**Skip/Cancel Validation Audit:**
+- Recent master window shows residual skipped watcher runs from the pre-change SHA. After this lands, new watcher skips cease because the trigger is gone.
+- Concurrency cancels remain classified as lag_operational when a successor succeeds. Adaptive-wait treats in-process as evidence collection, not failure.
+- No correctness failures in sampled recent completed runs. Observatory 403 / quota-registry runs remain capacity lag / non-gate.
+
+**Cadence / Cache / Telemetry (3L0 moneyball):**
+- Lead/Lag already at */4. Further modular consolidations recommended: shared reusable workflows, path filters, SHA-scoped concurrency groups to cut remaining cancel volume.
+- Dynamic adaptive telemetry continues via action-effectiveness-ledger + this matrix as SSOT.
+- Quota planning: soft classification + observatory fallback already in prior commits; continue monitoring rate-limit classes.
+
+**Pinggy / Device #1:**
+- Opaque public ID `tmx-node-primary` reaffirmed. Live TCP-verified publish and device identification data remain device-side (Termux job 43109). Requirement stands; alternatives (Cloudflare Tunnel) documented until proven.
+- Device #2 (tmx-node-55619bd5) is observer-controller; must not overwrite origin bridge manifest.
+
+**What was fixed / refined this continuation:**
+- Clean rebase of the matrix + watcher + cadence changes onto live master.
+- Explicit residual-spam note: pre-change skip listings will age out; new ones stop.
+- Zero-failure posture maintained; all observations correctly classified.
+
+**Next:** Dual-gate on this rebased SHA, then promote if green. Continue reducing other high-volume scheduled/event workflows via consolidation.
+
+Agent-Identity: Grok (Administrator)

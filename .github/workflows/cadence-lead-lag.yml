@@ -2,7 +2,7 @@ name: Cadence Lead/Lag
 
 on:
   schedule:
-    - cron: "12 */2 * * *"
+    - cron: "12 */4 * * *"
   workflow_dispatch:
     inputs:
       per_page:
@@ -14,6 +14,7 @@ on:
 permissions:
   actions: read
   contents: write
+  issues: write
 
 # Do not cancel a running snapshot writer; queued invocations may coalesce naturally.
 concurrency:
@@ -73,6 +74,47 @@ jobs:
             echo
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Emit incidents for lag_failure (replaces watcher)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          REPORT=docs/ops/generated/lead-lag-cadence.json
+          FAILURES=$(jq -c '.failures[]?' "$REPORT" || true)
+          if [ -z "$FAILURES" ]; then
+            echo "No lag_failure in sample."
+            exit 0
+          fi
+          echo "$FAILURES" | while IFS= read -r row; do
+            name=$(echo "$row" | jq -r '.name')
+            conclusion=$(echo "$row" | jq -r '.conclusion')
+            sha=$(echo "$row" | jq -r '.head_sha')
+            url=$(echo "$row" | jq -r '.html_url')
+            id=$(echo "$row" | jq -r '.id')
+            title="[Actions Incident] ${name}: ${conclusion}"
+            body=$(cat <<EOF
+## GitHub Actions incident (cadence poller)
+
+**Classification:** ${conclusion}
+**Workflow:** ${name}
+**Run:** ${id}
+**SHA:** ${sha}
+**Evidence:** ${url}
+
+Emitted by cadence-lead-lag.yml (Lead/Lag moneyball plane). Observation only; remediation via SHE + dual-gate.
+EOF
+)
+            existing=$(gh issue list --repo "$REPOSITORY" --state open --search "in:title \"${title}\"" --json number --limit 5)
+            number=$(echo "$existing" | jq -r '.[0].number // empty')
+            if [ -n "$number" ]; then
+              gh issue comment "$number" --repo "$REPOSITORY" --body "$body"
+            else
+              gh issue create --repo "$REPOSITORY" --title "$title" --body "$body"
+            fi
+          done
 
       - name: Commit cadence snapshot
         shell: bash

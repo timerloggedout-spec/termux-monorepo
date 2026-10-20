@@ -41,14 +41,14 @@ The structural fallback is implemented with math.log1p(additions + deletions) * 
 
 ## New candidate equations
 
-These definitions are **proposed measurement contracts**, not represented as already implemented production metrics. Before adoption, add schema fields or a versioned aggregate input, tests, and SHE projection support.
+These formulas now have pure helper implementations and regression tests in the existing reducer module. They are **not yet emitted by the runtime schema or projected into SHE**. Before production adoption, add versioned aggregate inputs, wire the helpers into a reducer/projection, and validate the resulting cohort evidence.
 
 | ID | Candidate formula | Why it helps | Required guard |
 |---|---|---|---|
-| EQ-ECR-v1 — Evidence Coverage Ratio | ECR = valid required observations / expected required observations | Quantifies whether a cohort contains the evidence it was supposed to produce. | Expected fields and schema version must be declared. Return null when denominator is unknown or zero. |
-| EQ-VOR-v1 — Validated Outcome Rate | VOR = explicit validation passes / tasks with explicit validation outcome | Separates completed work from work explicitly validated. | Return null with no evaluated tasks; show validation coverage alongside VOR so unevaluated tasks are not hidden. |
-| EQ-VCOV-v1 — Validation Coverage | VCOV = tasks with explicit validation outcome / completed tasks | Exposes the share of completed work whose correctness was actually assessed. | Return null when no completed tasks exist. Missing outcomes are not failures or passes. |
-| EQ-CORR-v1 — Correlation Completeness | CORR = eligible records with required provenance / eligible records | Measures ability to connect observations to run, attempt, SHA, cohort, and event identity. | Define eligibility and required identity fields per event class; return null if expected population is unknown. |
+| EQ-ECR-v1 — Evidence Coverage Ratio | ECR = valid required observations / expected required observations (pure helper implemented) | Quantifies whether a cohort contains the evidence it was supposed to produce. | Expected fields and schema version must be declared. Return null when denominator is unknown or zero. |
+| EQ-VOR-v1 — Validated Outcome Rate | VOR = explicit validation passes / tasks with explicit validation outcome (pure helper implemented) | Separates completed work from work explicitly validated. | Return null with no evaluated tasks; show validation coverage alongside VOR so unevaluated tasks are not hidden. |
+| EQ-VCOV-v1 — Validation Coverage | VCOV = tasks with explicit validation outcome / completed tasks (pure helper implemented) | Exposes the share of completed work whose correctness was actually assessed. | Return null when no completed tasks exist. Missing outcomes are not failures or passes. |
+| EQ-CORR-v1 — Correlation Completeness | CORR = eligible records with required provenance / eligible records (pure helper implemented) | Measures ability to connect observations to run, attempt, SHA, cohort, and event identity. | Define eligibility and required identity fields per event class; return null if expected population is unknown. |
 
 **Do not combine these candidates into a new scalar score yet.** Display coverage and outcomes separately first. Any future composite must specify normalization, weights, uncertainty, version, and sensitivity tests.
 

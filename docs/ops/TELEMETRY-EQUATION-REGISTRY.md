@@ -11,7 +11,7 @@ This registry makes telemetry formulas reviewable across GitHub Actions, SHE, pl
 - **Canonical evidence:** sanitized repository-native JSONL and receipts, correlated to run/attempt/SHA where available.
 - **Computation:** pure reducers with deterministic tests.
 - **Independent check:** Wolfram reference calculations and hand-checkable fixtures.
-- **Visualization:** Equation.io for interactive exploration; Mermaid .mmd remains a source-controlled diagram.
+- **Visualization:** Equation.io for interactive exploration; The [canonical Mermaid source](TELEMETRY-EQUATION-PIPELINE.mmd) remains source-controlled outside the auto-render folder; the interactive view is rendered with Mermaid Chart.
 - **Promotion:** human review and normal repository gates. No equation score independently authorizes a merge or deployment.
 
 ## Existing implemented equations
@@ -109,7 +109,7 @@ The existing repository is Python/JSONL/GitHub Actions oriented. Kotlin/Compose,
 2. Run focused Python tests and JSON schema validation.
 3. Recalculate reference fixtures in Wolfram and record exact inputs/outputs.
 4. Validate interactive graph syntax in Equation.io when a graph is included.
-5. Update the Mermaid source and generated visualizations without replacing canonical source files with rendered outputs.
+5. Update the canonical Mermaid source and review its Mermaid Chart rendering; preserve existing auto-render folder contracts and never replace canonical source files with rendered outputs.
 6. Review provenance, privacy, missing-data behavior, and cohort compatibility.
 7. Observe actual CI, re-fetch the final SHA, compare evidence, and record COMMITTED, EXECUTED, VALIDATED, and PROMOTED independently.
 

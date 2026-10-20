@@ -159,3 +159,20 @@ def test_inventory_direct_cli_has_import_parity(tmp_path):
     result = subprocess.run([sys.executable, str(root / "scripts/ops/provider_secret_inventory.py"), "--output", str(path)], cwd=tmp_path, env=env, text=True, capture_output=True)
     assert result.returncode == 0
     assert json.loads(path.read_text())["reason"] == "missing_inventory_credential"
+
+
+def test_limit_diagnostics_are_explicit_read_only_and_secret_scoped():
+    from pathlib import Path
+    import yaml
+    workflow = yaml.safe_load((Path(__file__).resolve().parents[1] / '.github/workflows/provider-batch.yml').read_text())
+    events = workflow.get('on', workflow.get(True))
+    assert events['workflow_dispatch']['inputs']['diagnose_free_limits']['default'] is False
+    job = workflow['jobs']['diagnose']
+    step = next(s for s in job['steps'] if s.get('name') == 'Diagnose existing free-key limits without inference')
+    assert 'inputs.diagnose_free_limits' in job['if']
+    assert job['permissions'] == {'contents': 'read'}
+    assert set(step['env']) == {'OPENROUTER_API_KEY'}
+    assert 'scripts.ops.provider_free_diagnostics' in step['run']
+    assert '--execute' not in step['run']
+    assert 'github.event.repository.default_branch' in job['if']
+    assert '!inputs.diagnose_free_limits' in workflow['jobs']['observe']['if']

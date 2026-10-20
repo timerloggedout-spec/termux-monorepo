@@ -39,3 +39,13 @@ This smoke is not production admission, a quota reservation, a free-capacity gua
 Previously, the continuity probe could POST to Gemini based solely on a token and discovered model, and its OpenRouter POST lacked explicit maximum-price and no-fallback controls. The continuity path is now **catalog-only**. Gemini no-cost entitlement is unverified, so no Gemini completion is sent. OpenRouter smoke is available only through the explicit guarded manual path above. Strict continuity checks now judge catalogs, not unapproved inference.
 
 Historical `inference_ok` values are not upgraded into current no-cost evidence. New receipts distinguish credential configuration, live catalogs, verification blockers, attempted requests, and successful zero-cost inference.
+
+## 429 diagnosis: original details were not retained
+
+The original run's retained Actions logs and sanitized smoke artifact contain `inference_http_429`, but no `Retry-After`, `X-RateLimit-*`, typed error category, or raw provider error. The original HTTP exception handler discarded those details. Therefore its exact cause and actionable reset cannot be recovered: neither elapsed wall time nor current free-account status establishes that the original restriction has cleared. **No further inference request is authorized by this evidence.**
+
+The manual `diagnose_free_limits` input defaults to false. When explicitly selected on trusted master, it runs a dedicated read-only job with only the existing `OPENROUTER_API_KEY`; it excludes the ordinary observation/smoke job even if both inputs are selected. Its only provider request is `GET /api/v1/key`. The artifact contains sanitized eligibility/quota booleans and reset-state enums, never balances, quota figures, labels, account identifiers, token values, or full responses. It cannot reconstruct the prior error or authorize an inference retry.
+
+Future smoke failures preserve only allowlisted 429 categories and header/reset-state indicators. Generic 429/rate-limit errors remain unknown; upstream capacity requires explicit provider evidence. Daily token and request limits are distinct. Error-body reads are bounded and no raw error text is logged or persisted. No retry loop, model switch, paid fallback, secret mutation, production admission change, or scheduled inference is introduced.
+
+Official semantics: [OpenRouter limits and read-only key metadata](https://openrouter.ai/docs/api_reference/limits) distinguish platform limits from upstream rate limiting; [error handling](https://openrouter.ai/docs/api_reference/errors-and-debugging) explains typed error metadata and optional `Retry-After`. A missing reset is not proof that waiting is sufficient, and deprecated key spending-limit fields are not a free-model request quota.

@@ -110,6 +110,13 @@ def observe(token, execute=False):
         report.update(inference_ok=True, reason="verified_zero_cost_smoke", observed_cost_zero=True)
     except urllib.error.HTTPError as exc:
         report["reason"] = f"{stage}_http_{exc.code}"
+        if exc.code == 429:
+            # The original receipt lost the cause. Never persist raw error data.
+            if __package__:
+                from scripts.ops.provider_free_diagnostics import classify_http_error
+            else:
+                from provider_free_diagnostics import classify_http_error
+            report["rate_limit_diagnostic"] = classify_http_error(exc)
     except (OSError, ValueError, TypeError, KeyError, IndexError):
         report["reason"] = f"{stage}_transport_or_response_failure"
     return report

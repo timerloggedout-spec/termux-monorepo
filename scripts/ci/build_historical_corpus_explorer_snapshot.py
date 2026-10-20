@@ -11,9 +11,12 @@ import sys
 from pathlib import Path
 from typing import Any
 
+ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 from archwiz.context_relationships.explorer_projection import project_coverage
 
-ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_MANIFEST = ROOT / "workspace/llm_map/context_relationships/manifest.json"
 DEFAULT_SUMMARY = ROOT / "workspace/llm_map/context_relationships/build-summary.json"
 DEFAULT_OUTPUT = ROOT / "apps/historical-corpus-explorer/data/snapshot.json"

@@ -178,3 +178,18 @@ def test_telemetry_symlink_hijacking_prevention(tmp_path, monkeypatch):
     # 2. Attempt dashboard read on symlink
     jobs = dashboard.read_latest_telemetry()
     assert jobs == []
+
+
+def test_telemetry_atomic_permissions_on_creation(tmp_path, monkeypatch):
+    from src.telemetry import TermuxTelemetryLogger
+
+    test_log = tmp_path / "atomic_telemetry_stream.json"
+    monkeypatch.setattr("src.telemetry.TELEMETRY_LOG", str(test_log))
+
+    assert not test_log.exists()
+    TermuxTelemetryLogger.notify("INFO", "AgentA", "Test message", target_file="main.py", attempt=1)
+
+    assert test_log.exists()
+    if os.name != "nt":
+        mode = test_log.stat().st_mode & 0o777
+        assert mode == 0o600

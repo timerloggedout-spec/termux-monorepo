@@ -4,6 +4,24 @@ updated_at: "2026-10-01T01:58:00Z"
 updated_by: grok-administrator
 
 proposals:
+  - id: agent-contributor-provenance
+    title: "Evidence-backed agent contributor attribution and source citation ledger"
+    author: ChatGPT
+    status: in_review
+    priority: P1
+    path: active/agent-contributor-provenance/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_issues: [1241]
+    related_prs: [1244]
+    related_branches: [feat/biudl-full-stack-provenance]
+    gates_required: [repo-gate, termux-smoke]
+
   - id: model-selection-market
     title: "Model selection market — equal-weight bootstrap, 3L0 performance, DSPy-DoE, bets/trading-cards"
     author: grok
@@ -500,4 +518,21 @@ proposals:
         status: posted
     related_prs: []
     related_branches: []
+    gates_required: [repo-gate]
+
+  - id: lane-compounding
+    title: "Lane compounding: live dashboard data, Bayesian/Markov tribute qualification, ForeSight→HindSight calibration, blind-graded treatments"
+    author: Hark
+    status: posted
+    priority: P1
+    path: active/lane-compounding/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: Hark
+        role: author+executor
+        status: executing
+    related_prs: [1244, 1274, 1277, 1278, 1280]
+    related_branches: [hark/lane-compounding]
     gates_required: [repo-gate]

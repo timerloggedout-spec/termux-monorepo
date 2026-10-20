@@ -14,9 +14,9 @@ on:
   workflow_dispatch:
     inputs:
       target:
-        description: "pages | user-site | vercel | both | all"
+        description: "pages | user-site | vercel | both | all (Vercel is opt-in to conserve the Hobby deployment quota)"
         required: false
-        default: "all"
+        default: "user-site"
 
 concurrency:
   group: help-wanted-dashboard-deploy
@@ -64,7 +64,7 @@ jobs:
   pages:
     name: publish-gh-pages
     needs: [enable-pages]
-    if: ${{ github.event_name == 'push' || contains(fromJSON('["pages","both","all",""]'), github.event.inputs.target || 'all') }}
+    if: ${{ github.event_name == 'push' || contains(fromJSON('["pages","user-site","both","all",""]'), github.event.inputs.target || 'user-site') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -77,6 +77,21 @@ jobs:
             cp docs/ops/generated/lane-matrix-status.json _site/data/lane-matrix-status.json
           fi
           touch _site/.nojekyll
+      - name: Opt gh-pages out of Vercel Git deployments
+        # gh-pages is a force-orphaned static Pages artifact, not an app source.
+        # Every Vercel project linked to this repo (mcp-hub, help-wanted-dash,
+        # help-wanted-oversight, termux-monorepo) otherwise tries a Preview build
+        # of it and fails because its Root Directory is absent here. Drop a
+        # vercel.json at the root and at every known lane Root Directory so
+        # Vercel skips the branch (git.deploymentEnabled) and, as a fallback,
+        # cancels instead of failing (ignoreCommand). Additive only; no app files.
+        run: |
+          set -euo pipefail
+          for d in . mcp-hub demo-portal/public deepseek-cli apps/help-wanted-dashboard apps/help-wanted-oversight; do
+            mkdir -p "_site/$d"
+            printf '%s\n' '{' '  "git": { "deploymentEnabled": false },' '  "ignoreCommand": "exit 0"' '}' > "_site/$d/vercel.json"
+          done
+          find _site -name vercel.json -print
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
@@ -149,7 +164,7 @@ jobs:
 
   vercel:
     name: vercel-prod
-    if: ${{ github.event_name == 'push' || contains(fromJSON('["vercel","both","all"]'), github.event.inputs.target || 'all') }}
+    if: ${{ github.event_name == 'workflow_dispatch' && contains(fromJSON('["vercel","both","all"]'), github.event.inputs.target || 'pages') }}
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
@@ -171,7 +186,7 @@ jobs:
             cp docs/ops/generated/lane-matrix-status.json apps/help-wanted-dashboard/data/lane-matrix-status.json
           fi
       - name: Install Vercel CLI
-        run: npm i -g vercel@39
+        run: npm i -g vercel@latest
       - name: Deploy to Vercel (production)
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
@@ -184,4 +199,33 @@ jobs:
           fi
           ORG="${VERCEL_ORG_ID:-team_jKHy7m9xZrvrGP5cAlIMPs3S}"
           cd apps/help-wanted-dashboard
-          vercel deploy --prod --yes --token="$VERCEL_TOKEN" --scope="$ORG" 2>&1 | tee /tmp/v.txt || true
+          set +e
+          vercel deploy --prod --yes --token="$VERCEL_TOKEN" --scope="$ORG" 2>&1 | tee /tmp/v.txt
+          deploy_rc=${PIPESTATUS[0]}
+          set -e
+          if [ "$deploy_rc" -eq 0 ]; then
+            {
+              echo "### Vercel deployment"
+              echo "- Outcome: command succeeded; verify deployment source SHA and READY state independently."
+              echo "- Requested source SHA: $GITHUB_SHA"
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          if grep -Eqi 'api-deployments-free-per-day|deployment.{0,30}(quota|limit)|rate.?limit|too many requests|quota exceeded' /tmp/v.txt; then
+            {
+              echo "### Vercel deployment — provider capacity constrained"
+              echo "- Outcome: quota/rate-limit response; Vercel is an optional non-gate."
+              echo "- Requested source SHA: $GITHUB_SHA"
+              echo "- Recovery: do not retry-loop. Keep GitHub Pages publication and CI moving; retry after capacity recovery or use only a separately provisioned, source-verified fallback lane."
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::warning::Vercel quota/capacity exhausted; deployment skipped as non-gate. No blind retry."
+          else
+            {
+              echo "### Vercel deployment — attempt failed"
+              echo "- Outcome: deployment command exited $deploy_rc. Vercel is an optional non-gate; inspect the preceding logs before retrying."
+              echo "- Requested source SHA: $GITHUB_SHA"
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::warning::Vercel deployment failed (exit $deploy_rc); preserved as a warning, not a CI correctness failure."
+          fi
+          exit 0

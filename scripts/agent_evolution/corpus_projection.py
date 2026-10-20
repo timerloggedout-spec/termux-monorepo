@@ -14,6 +14,10 @@ from typing import Any
 from scripts.agent_evolution.replay_simulator import ExplorationPolicy, ReplayResult
 
 _SHA_RE = re.compile(r"^[0-9a-f]{40}$")
+# Performance optimization: pre-allocate validation sets at module scope
+VALID_STATUSES = {"observed", "running", "passed", "failed", "skipped", "blocked", "superseded"}
+VALID_PROVENANCES = {"github", "linear", "notion", "hex", "vercel", "forensic", "manual", "other"}
+VALID_CONFIDENCES = {"high", "medium", "low"}
 
 
 def to_experiment_record(*, experiment_id: str, observed_at: str, baseline_sha: str,
@@ -29,11 +33,11 @@ def to_experiment_record(*, experiment_id: str, observed_at: str, baseline_sha: 
     for name, value in (("baseline_sha", baseline_sha), ("candidate_sha", candidate_sha)):
         if not _SHA_RE.fullmatch(value):
             raise ValueError(f"{name} must be a 40-character lowercase SHA")
-    if status not in {"observed", "running", "passed", "failed", "skipped", "blocked", "superseded"}:
+    if status not in VALID_STATUSES:
         raise ValueError("unsupported experiment status")
-    if provenance not in {"github", "linear", "notion", "hex", "vercel", "forensic", "manual", "other"}:
+    if provenance not in VALID_PROVENANCES:
         raise ValueError("unsupported experiment provenance")
-    if confidence not in {"high", "medium", "low"}:
+    if confidence not in VALID_CONFIDENCES:
         raise ValueError("unsupported experiment confidence")
     datetime.fromisoformat(observed_at.replace("Z", "+00:00"))
     return {

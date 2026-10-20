@@ -1,10 +1,9 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-10T08:25:31Z UTC · receipts=1605 · foreign_open=31 · tributes=82_
+_Generated 2026-10-20T00:17:25Z UTC · receipts=3043 · foreign_open=36 · tributes=106_
 
 ## Tributes (contributor ledger)
 
-- [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) · state=open · docs(layout): refresh stale ponytail comments (flex + grid)
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
 - [mangiapanejohn-dev/MOBIUS-Searcher#7](https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7) · state=open · help-wanted: stake + contribute for #6
@@ -19,50 +18,57 @@ _Generated 2026-10-10T08:25:31Z UTC · receipts=1605 · foreign_open=31 · tribu
 - [SO4-Markets/so4-oracle#1143](https://github.com/SO4-Markets/so4-oracle/pull/1143) · state=open · help-wanted: stake + contribute for #906
 - [StellarLock/StellarLock#865](https://github.com/StellarLock/StellarLock/pull/865) · state=open · help-wanted: stake + contribute for #721
 - [KayStcx/KayStcx#104](https://github.com/KayStcx/KayStcx/pull/104) · state=open · help-wanted: stake + contribute for #85
-- [prime-radiant-inc/evener#2661](https://github.com/prime-radiant-inc/evener/pull/2661) · state=open · help-wanted: stake + contribute for #2627
 - [TrusTrove/TrusTrove-contract#860](https://github.com/TrusTrove/TrusTrove-contract/pull/860) · state=open · help-wanted: stake + contribute for #836
-- [Vikram-sardiwal/react-open-source#50](https://github.com/Vikram-sardiwal/react-open-source/pull/50) · state=open · help-wanted: stake + contribute for #16
 - [laugh-tales/starpass-contracts#59](https://github.com/laugh-tales/starpass-contracts/pull/59) · state=open · help-wanted: stake + contribute for #28
 - [Saidur-droid/MergeEarn#76](https://github.com/Saidur-droid/MergeEarn/pull/76) · state=open · help-wanted: stake + contribute for #69
-- [uttrflow/uttrflow-swift#3719](https://github.com/uttrflow/uttrflow-swift/pull/3719) · state=open · help-wanted: stake + contribute for #3713
-- [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) · state=open · help-wanted: stake + contribute for #225
 - [TricklePay/tricklepay-backend#441](https://github.com/TricklePay/tricklepay-backend/pull/441) · state=open · help-wanted: stake + contribute for #395
 - [fsr5-fhaachen/portals#948](https://github.com/fsr5-fhaachen/portals/pull/948) · state=open · help-wanted: stake + contribute for #928
 - [ROCm/rocm-libraries#13152](https://github.com/ROCm/rocm-libraries/pull/13152) · state=open · help-wanted: stake + contribute for #10586
 - [topoteretes/cognee#5439](https://github.com/topoteretes/cognee/pull/5439) · state=open · help-wanted: stake + contribute for #4757
 - [traceopt-ai/traceml#547](https://github.com/traceopt-ai/traceml/pull/547) · state=open · help-wanted: stake + contribute for #128
-- [Local-Settle/local-settle-frontend#4](https://github.com/Local-Settle/local-settle-frontend/pull/4) · state=open · help-wanted: stake + contribute for #1
 - [Suhas29wasnotavailable/blroad#12](https://github.com/Suhas29wasnotavailable/blroad/pull/12) · state=open · help-wanted: stake + contribute for #7
 - [MMALI3287/vibewatt#100](https://github.com/MMALI3287/vibewatt/pull/100) · state=open · help-wanted: stake + contribute for #95
-- [Tanishq964/trail-kit.#6](https://github.com/Tanishq964/trail-kit./pull/6) · state=open · help-wanted: stake + contribute for #1
-- [tusharmotwani1718/dropsend#24](https://github.com/tusharmotwani1718/dropsend/pull/24) · state=closed · help-wanted: stake + contribute for #23
-- [gabe-santana/saccade#27](https://github.com/gabe-santana/saccade/pull/27) · state=closed · help-wanted: stake + contribute for #25
-- [P-r-e-m-i-u-m/open-source-starter-lab#492](https://github.com/P-r-e-m-i-u-m/open-source-starter-lab/pull/492) · state=closed · help-wanted: stake + contribute for #490
-- [aHuddini/UniPlaySong#101](https://github.com/aHuddini/UniPlaySong/pull/101) · state=closed · help-wanted: stake + contribute for #94
-- [Soneso/stellar-agent-wallet#349](https://github.com/Soneso/stellar-agent-wallet/pull/349) · state=closed · help-wanted: stake + contribute for #285
-- [O2sa/DevImpact#221](https://github.com/O2sa/DevImpact/pull/221) · state=closed · help-wanted: stake + contribute for #220
-- [amponce/archive-movie-browser#437](https://github.com/amponce/archive-movie-browser/pull/437) · state=closed · help-wanted: stake + contribute for #332
-- [CopilotKit/CopilotKit#7594](https://github.com/CopilotKit/CopilotKit/pull/7594) · state=closed · help-wanted: stake + contribute for #4775
-- [pulseaiclub/phi#286](https://github.com/pulseaiclub/phi/pull/286) · state=closed · help-wanted: stake + contribute for #285
+- [apache/hugegraph-computer#365](https://github.com/apache/hugegraph-computer/pull/365) · state=open · help-wanted: stake + contribute for #325
+- [ciaren-labs/Ciaren#234](https://github.com/ciaren-labs/Ciaren/pull/234) · state=open · help-wanted: stake + contribute for #96
+- [finos/fluxnova-bpm-platform#352](https://github.com/finos/fluxnova-bpm-platform/pull/352) · state=open · help-wanted: stake + contribute for #152
+- [ShippedLabs/soroban-upgrade-safeguard#781](https://github.com/ShippedLabs/soroban-upgrade-safeguard/pull/781) · state=open · help-wanted: stake + contribute for #764
+- [stellar-compliance-kit/compliance-primitives#656](https://github.com/stellar-compliance-kit/compliance-primitives/pull/656) · state=open · help-wanted: stake + contribute for #180
+- [Health-watchers/health_watchers#1698](https://github.com/Health-watchers/health_watchers/pull/1698) · state=open · help-wanted: stake + contribute for #1519
+- [LabsCrypt/remitlend#1990](https://github.com/LabsCrypt/remitlend/pull/1990) · state=open · help-wanted: stake + contribute for #1503
+- [RetinaX-Org/RetinaX#352](https://github.com/RetinaX-Org/RetinaX/pull/352) · state=open · help-wanted: stake + contribute for #282
+- [0xLizTech/stellarforge#614](https://github.com/0xLizTech/stellarforge/pull/614) · state=open · help-wanted: stake + contribute for #92
+- [SoroScan/soroscan#1690](https://github.com/SoroScan/soroscan/pull/1690) · state=open · help-wanted: stake + contribute for #1663
+- [sorolens/sorolens#753](https://github.com/sorolens/sorolens/pull/753) · state=open · help-wanted: stake + contribute for #538
+- [francordel/kdemos#27](https://github.com/francordel/kdemos/pull/27) · state=open · help-wanted: stake + contribute for #26
+- [https://github.com/vedantnimbarte/zero/pull/81](https://github.com/vedantnimbarte/zero/pull/81) · state=? · 
+- [StellarFoundry/soroban-security-scanner#200](https://github.com/StellarFoundry/soroban-security-scanner/pull/200) · state=closed · help-wanted: stake + contribute for #158
+- [kiinshuk/kinshow#434](https://github.com/kiinshuk/kinshow/pull/434) · state=closed · help-wanted: stake + contribute for #157
+- [Nodal-stellar/Nodal-AI#853](https://github.com/Nodal-stellar/Nodal-AI/pull/853) · state=closed · help-wanted: stake + contribute for #769
 
 ## Foreign open PRs
 
-- [Tanishq964/trail-kit.#6](https://github.com/Tanishq964/trail-kit./pull/6) — help-wanted: stake + contribute for #1
+- [francordel/kdemos#27](https://github.com/francordel/kdemos/pull/27) — help-wanted: stake + contribute for #26
+- [sorolens/sorolens#753](https://github.com/sorolens/sorolens/pull/753) — help-wanted: stake + contribute for #538
+- [SoroScan/soroscan#1690](https://github.com/SoroScan/soroscan/pull/1690) — help-wanted: stake + contribute for #1663
+- [0xLizTech/stellarforge#614](https://github.com/0xLizTech/stellarforge/pull/614) — help-wanted: stake + contribute for #92
+- [RetinaX-Org/RetinaX#352](https://github.com/RetinaX-Org/RetinaX/pull/352) — help-wanted: stake + contribute for #282
+- [LabsCrypt/remitlend#1990](https://github.com/LabsCrypt/remitlend/pull/1990) — help-wanted: stake + contribute for #1503
+- [Health-watchers/health_watchers#1698](https://github.com/Health-watchers/health_watchers/pull/1698) — help-wanted: stake + contribute for #1519
+- [stellar-compliance-kit/compliance-primitives#656](https://github.com/stellar-compliance-kit/compliance-primitives/pull/656) — help-wanted: stake + contribute for #180
+- [ShippedLabs/soroban-upgrade-safeguard#781](https://github.com/ShippedLabs/soroban-upgrade-safeguard/pull/781) — help-wanted: stake + contribute for #764
+- [finos/fluxnova-bpm-platform#352](https://github.com/finos/fluxnova-bpm-platform/pull/352) — help-wanted: stake + contribute for #152
+- [ciaren-labs/Ciaren#234](https://github.com/ciaren-labs/Ciaren/pull/234) — help-wanted: stake + contribute for #96
+- [apache/hugegraph-computer#365](https://github.com/apache/hugegraph-computer/pull/365) — help-wanted: stake + contribute for #325
 - [MMALI3287/vibewatt#100](https://github.com/MMALI3287/vibewatt/pull/100) — help-wanted: stake + contribute for #95
 - [Suhas29wasnotavailable/blroad#12](https://github.com/Suhas29wasnotavailable/blroad/pull/12) — help-wanted: stake + contribute for #7
-- [Local-Settle/local-settle-frontend#4](https://github.com/Local-Settle/local-settle-frontend/pull/4) — help-wanted: stake + contribute for #1
 - [traceopt-ai/traceml#547](https://github.com/traceopt-ai/traceml/pull/547) — help-wanted: stake + contribute for #128
 - [topoteretes/cognee#5439](https://github.com/topoteretes/cognee/pull/5439) — help-wanted: stake + contribute for #4757
 - [ROCm/rocm-libraries#13152](https://github.com/ROCm/rocm-libraries/pull/13152) — help-wanted: stake + contribute for #10586
 - [fsr5-fhaachen/portals#948](https://github.com/fsr5-fhaachen/portals/pull/948) — help-wanted: stake + contribute for #928
 - [TricklePay/tricklepay-backend#441](https://github.com/TricklePay/tricklepay-backend/pull/441) — help-wanted: stake + contribute for #395
-- [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) — help-wanted: stake + contribute for #225
-- [uttrflow/uttrflow-swift#3719](https://github.com/uttrflow/uttrflow-swift/pull/3719) — help-wanted: stake + contribute for #3713
 - [Saidur-droid/MergeEarn#76](https://github.com/Saidur-droid/MergeEarn/pull/76) — help-wanted: stake + contribute for #69
 - [laugh-tales/starpass-contracts#59](https://github.com/laugh-tales/starpass-contracts/pull/59) — help-wanted: stake + contribute for #28
-- [Vikram-sardiwal/react-open-source#50](https://github.com/Vikram-sardiwal/react-open-source/pull/50) — help-wanted: stake + contribute for #16
 - [TrusTrove/TrusTrove-contract#860](https://github.com/TrusTrove/TrusTrove-contract/pull/860) — help-wanted: stake + contribute for #836
-- [prime-radiant-inc/evener#2661](https://github.com/prime-radiant-inc/evener/pull/2661) — help-wanted: stake + contribute for #2627
 - [KayStcx/KayStcx#104](https://github.com/KayStcx/KayStcx/pull/104) — help-wanted: stake + contribute for #85
 - [StellarLock/StellarLock#865](https://github.com/StellarLock/StellarLock/pull/865) — help-wanted: stake + contribute for #721
 - [SO4-Markets/so4-oracle#1143](https://github.com/SO4-Markets/so4-oracle/pull/1143) — help-wanted: stake + contribute for #906
@@ -76,9 +82,8 @@ _Generated 2026-10-10T08:25:31Z UTC · receipts=1605 · foreign_open=31 · tribu
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) — help-wanted: stake + contribute for #25
 - [mangiapanejohn-dev/MOBIUS-Searcher#7](https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7) — help-wanted: stake + contribute for #6
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) — help-wanted: stake + contribute for #20
-- [vedantnimbarte/zero#81](https://github.com/vedantnimbarte/zero/pull/81) — docs(layout): refresh stale ponytail comments (flex + grid)
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Outcomes · ok=1605 fail=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 1457, 'followup_reengage': 40, 'followup_stale_nudge': 58, 'followup_changes': 2}`
+## Operational outcomes · actioned=181 skipped=2862 failed=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 2826, 'followup_reengage': 50, 'followup_stale_nudge': 117, 'followup_changes': 2}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

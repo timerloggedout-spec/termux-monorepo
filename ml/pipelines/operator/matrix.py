@@ -17,7 +17,10 @@ PRIORITY: list[dict[str, Any]] = [
     {"p": 2, "item": "#265 Providers RE + Manus replay", "status": "EXTRACT", "lane": "EXTRACT"},
     {"p": 2, "item": "#838 foresight evidence spine", "status": "NEED_EVIDENCE stale base", "lane": "NEED_EVIDENCE"},
     {"p": 3, "item": "Linear TER-15 #788", "status": "NEED_EVIDENCE wrong-base master-staging", "lane": "NEED_EVIDENCE"},
-    {"p": 3, "item": "Linear TER-71 remainder #48", "status": "EXTRACT; core on master via #805", "lane": "EXTRACT"},
+    {"p": 3, "item": "Linear TER-71 remainder #48", "status": "EXTRACT; core on master via #805; never retarget", "lane": "EXTRACT"},
+    {"p": 0, "item": "Observer tip 677a2d72 sweep receipt", "status": "NON-PROMOTE — product SHA remains 8d36f149", "lane": "SUPERSEDE"},
+    {"p": 1, "item": "PR #1188 recon07", "status": "SUPERSEDE — stale base 0acc8d24; live cut is recon08", "lane": "SUPERSEDE"},
+    {"p": 1, "item": "Actions incidents #1023 #1024 #1025 #1026", "status": "NEED_EVIDENCE — not a promote gate", "lane": "NEED_EVIDENCE"},
 ]
 
 

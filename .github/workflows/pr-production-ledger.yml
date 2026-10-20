@@ -30,6 +30,9 @@ concurrency:
 
 jobs:
   ledger:
+    # Skip comment events authored by bots (coderabbitai, jules, etc.): each one
+    # costs ~7 paginated API calls and the storms exhaust the installation limit.
+    if: ${{ github.event_name != 'issue_comment' || github.event.comment.user.type != 'Bot' }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -69,6 +72,7 @@ jobs:
               throw lastError;
             }
 
+            try {
             const { data: pr } = await retryApi(() => github.rest.pulls.get({ owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber }));
             const { data: comparison } = await retryApi(() => github.rest.repos.compareCommitsWithBasehead({ owner: context.repo.owner, repo: context.repo.repo, basehead: `${pr.base.ref}...${pr.head.sha}`, per_page: 100 }));
             const commits = await retryApi(() => github.paginate(github.rest.pulls.listCommits, { owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber, per_page: 100 }));
@@ -159,6 +163,17 @@ jobs:
               .addRaw(failedChecks.length ? `❌ ${failedChecks.length} failed check(s).\n` : '✅ No completed failing checks observed.\n')
               .addRaw(pendingChecks.length ? `⏳ ${pendingChecks.length} check(s) still pending.\n` : '✅ No pending checks observed.\n')
               .write();
+            } catch (error) {
+              // Rate-limit exhaustion after retries is GitHub capacity, not PR state:
+              // record it visibly and defer instead of failing the ledger.
+              const status = Number(error?.status || error?.response?.status || 0);
+              if (status === 403 || status === 429 || /rate limit/i.test(String(error?.message || ''))) {
+                core.warning(`PR #${prNumber} ledger deferred: installation rate limit exhausted (${error.message})`);
+                await core.summary.addHeading(`PR #${prNumber} ledger deferred`).addRaw('Installation API rate limit exhausted after retries; no ledger was produced for this event.\n').write();
+                return;
+              }
+              throw error;
+            }
 
 
       - name: Upload EPS telemetry artifact

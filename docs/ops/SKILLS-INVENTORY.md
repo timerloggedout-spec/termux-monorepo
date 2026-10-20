@@ -104,3 +104,16 @@ See `docs/ops/SKILL-DISCOVERY-MATRIX.md` for focused discovery and session-scope
 - Architecture: `docs/ops/ORCHESTRATION-CONTRACTS.md`.
 
 The treatment registry composes existing evidence, wait, relationship, and workflow contracts; it does not replace them.
+
+
+## Session 2026-10-11 01:20 UTC
+
+- Master tip: `1bba84f2ac3ef1ecdd6fc628ddcf90ae6bfc02f9`
+- Dual-gate PASS on `9b40e8de8a70a46d71e7af668ecd51530c049657`: repo-gate 38098247754 + termux-smoke 38098247777
+- v3 schedule 38101050389 SUCCESS
+- No new master filename-named workflow failures
+- #184 names-only. Do not pulse #175. #903 HOLD
+- Ghost on disabled workflow id remains non-actionable
+- Open PRs monitored; promote only on current-SHA dual-gate + mergeable
+
+Agent-Identity: Grok (Administrator)

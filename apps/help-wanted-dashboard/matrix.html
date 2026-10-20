@@ -33,9 +33,9 @@ main{max-width:1180px;margin:auto;padding:1.5rem 1.2rem 4rem}h1{margin:.2rem 0}.
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 async function load(){
   const sources=[
+    'https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/ops/generated/lane-matrix-status.json?t='+Date.now(),
     './data/lane-matrix-status.json?t='+Date.now(),
-    '/matrix/data/lane-matrix-status.json?t='+Date.now(),
-    'https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/ops/generated/lane-matrix-status.json?t='+Date.now()
+    '/matrix/data/lane-matrix-status.json?t='+Date.now()
   ];
   let data=null;
   for(const u of sources){try{const r=await fetch(u,{cache:'no-store'});if(r.ok){data=await r.json();break}}catch(_){}}

@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "aa2a07c3f5431b14584823e7e7ec0863f66a0d44d1cfa7b756013617289512c0",
-  "workflow_count": 129,
+  "source_fingerprint": "c69da1e79a6b39aa15059b5e0cb0baf0543885574a86da709ba71b1f8fd9c170",
+  "workflow_count": 139,
   "workflows": [
     {
       "action_pins": [
@@ -89,9 +89,11 @@
       ]
     },
     {
-      "action_pins": [],
+      "action_pins": [
+        "actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09"
+      ],
       "authority": "bounded-state-write",
-      "concurrency": "group: actions-run-watcher-${{ github.event.workflow_run.id }} cancel-in-progress: false",
+      "concurrency": "# Stable incident identity serializes writes; queue all observations instead of replacing pending runs. group: actions-run-watcher-${{ github.event.workflow_run.name }}-${{ github.event.workflow_run.conclusion }} queue: max",
       "domain": "agentic-development",
       "jobs": [
         "observe-completion"
@@ -277,7 +279,8 @@
       "action_pins": [
         "actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09",
         "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c",
-        "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
+        "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
       ],
       "authority": "read-only-or-advisory",
       "concurrency": "group: agent-throughput-evidence-${{ github.event.workflow_run.id || github.run_id }}-${{ github.event.workflow_run.run_attempt || github.run_attempt }} cancel-in-progress: false",
@@ -416,6 +419,27 @@
       "triggers": [
         "pull_request",
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
+      ],
+      "authority": "writer",
+      "concurrency": "group: cadence-lead-lag cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "classify"
+      ],
+      "name": "Cadence Lead/Lag",
+      "path": ".github/workflows/cadence-lead-lag.yml",
+      "schedules": [
+        "12 */2 * * *"
+      ],
+      "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -1279,6 +1303,38 @@
     },
     {
       "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "group: hark-enqueue-on-failure-${{ github.event.workflow_run.name }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "enqueue",
+        "prep"
+      ],
+      "name": "hark enqueue on failure",
+      "path": ".github/workflows/hark-enqueue-on-failure.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_run"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "group: hark-enqueue-${{ inputs.key }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "enqueue"
+      ],
+      "name": "hark-enqueue",
+      "path": ".github/workflows/hark-enqueue.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_call",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
       "authority": "writer",
       "concurrency": "group: help-wanted-dashboard-deploy cancel-in-progress: true",
       "domain": "agentic-development",
@@ -1428,6 +1484,23 @@
       ]
     },
     {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: help-wanted-telemetry-tests-${{ github.event.pull_request.number || github.ref }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "regression"
+      ],
+      "name": "Help-Wanted telemetry regression suite",
+      "path": ".github/workflows/help-wanted-telemetry-tests.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
@@ -1556,6 +1629,22 @@
       ]
     },
     {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: lane-events-recorder-${{ github.event.workflow_run.id || github.run_id }}-${{ github.event.workflow_run.run_attempt || github.run_attempt }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "record"
+      ],
+      "name": "lane events recorder",
+      "path": ".github/workflows/lane-events-recorder.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch",
+        "workflow_run"
+      ]
+    },
+    {
       "action_pins": [
         "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
       ],
@@ -1649,7 +1738,7 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
-      "concurrency": "group: n8n-she-bridge-${{ github.event.workflow_run.name }}-${{ github.event.workflow_run.head_sha || github.ref }} cancel-in-progress: true",
+      "concurrency": "group: n8n-she-bridge-${{ github.event.workflow_run.head_sha || github.ref }} cancel-in-progress: true",
       "domain": "agentic-development",
       "jobs": [
         "emit"
@@ -1938,6 +2027,21 @@
       ]
     },
     {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: provision-secrets cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "provision"
+      ],
+      "name": "Provision secrets (secret-to-secret)",
+      "path": ".github/workflows/provision-secrets.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
       "action_pins": [
         "Andrew-Chen-Wang/github-wiki-action@1bbb4280446f9630e8e21a18012cbacf3b0f992e",
         "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683"
@@ -1971,6 +2075,22 @@
       "schedules": [],
       "triggers": [
         "pull_request",
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: readme-extractor-image cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "image"
+      ],
+      "name": "readme-extractor-image",
+      "path": ".github/workflows/readme-extractor-image.yml",
+      "schedules": [],
+      "triggers": [
         "push",
         "workflow_dispatch"
       ]
@@ -2251,6 +2371,24 @@
       ]
     },
     {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: she-skill-clobber-${{ github.ref }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "detect",
+        "heal"
+      ],
+      "name": "SHE skill clobber heal",
+      "path": ".github/workflows/she-skill-clobber-heal.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
       "action_pins": [
         "actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09",
         "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
@@ -2408,6 +2546,22 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
+      "concurrency": "group: tribute-vercel-prod cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "promote"
+      ],
+      "name": "tribute-vercel-prod",
+      "path": ".github/workflows/tribute-vercel-prod.yml",
+      "schedules": [],
+      "triggers": [
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
       "concurrency": "",
       "domain": "agentic-development",
       "jobs": [
@@ -2420,6 +2574,21 @@
       ],
       "triggers": [
         "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "probe"
+      ],
+      "name": "vercel-quota-probe",
+      "path": ".github/workflows/vercel-quota-probe.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },

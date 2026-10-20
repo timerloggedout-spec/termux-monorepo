@@ -38,6 +38,19 @@ jobs:
           export GITHUB_TOKEN="${OPERATOR_GITHUB_TOKEN:-${OPERATOR_TOKEN:-${ARCHWIZ_GITHUB_TOKEN:-$GITHUB_TOKEN}}}"
           python3 scripts/ci/help_wanted_status.py
 
+      - name: Audit tribute lifecycle against upstream evidence
+        continue-on-error: true
+        timeout-minutes: 5
+        env:
+          OPERATOR_GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+          OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
+          ARCHWIZ_GITHUB_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          export GITHUB_TOKEN="${OPERATOR_GITHUB_TOKEN:-${OPERATOR_TOKEN:-${ARCHWIZ_GITHUB_TOKEN:-$GITHUB_TOKEN}}}"
+          python3 scripts/ci/help_wanted_tribute_audit.py
+
       - name: Commit if changed
         env:
           TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
@@ -47,7 +60,8 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add docs/ops/generated/help-wanted-status.json \
                   docs/ops/generated/help-wanted-status.md \
-                  apps/help-wanted-dashboard/data/status.json || true
+                  apps/help-wanted-dashboard/data/status.json \
+                  docs/ops/generated/help-wanted-tribute-audit.json || true
           if git diff --staged --quiet; then
             echo "no status delta"
             exit 0

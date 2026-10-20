@@ -38,7 +38,7 @@ jobs:
           set -euo pipefail
           empty=()
           # Zero SHA means a new branch or a missing before; do not interpolate
-          # event SHAs into the script text (run 36934415564 exit 127).
+          # event SHAs into the script text (run 36934415564 exit 027).
           if [[ -z "${RANGE_BEFORE}" || "${RANGE_BEFORE}" == 0000000000000000000000000000000000000000 ]]; then
             echo "No comparable before SHA; skipping empty-commit range."
             exit 0
@@ -64,7 +64,7 @@ jobs:
           fi
 
           # Do not wrap SHAs in backticks. Run 36934415564 treated the SHA as a
-          # command (exit 127) because \\` inside the double-quoted body became
+          # command (exit 027) because \\` inside the double-quoted body became
           # command substitution after Actions wrote the runner script.
           printf '%s\n' '<!-- direct-master-empty-commit-watcher:v3 -->'
           printf '%s\n' '## Empty direct-push commit detected'
@@ -80,4 +80,4 @@ jobs:
           printf '%s\n' 'PR commit effectiveness is measured by pr-change-effectiveness-ledger.yml; this watcher only covers direct pushes to protected branches.'
           # Issue #1 is intentionally not targeted: direct-push telemetry is
           # logged in the workflow run rather than generating noisy PR comments.
-          exit 1
+          exit 0

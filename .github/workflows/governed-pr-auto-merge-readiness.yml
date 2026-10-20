@@ -20,10 +20,6 @@ permissions:
   checks: read
   statuses: read
 
-concurrency:
-  group: governed-pr-auto-merge-${{ github.event.pull_request.number || inputs.pr_number || github.run_id }}
-  cancel-in-progress: false
-
 jobs:
   request-review:
     if: >-

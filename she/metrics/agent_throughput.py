@@ -123,6 +123,79 @@ def _duration(events: list[Mapping[str, Any]]) -> float:
     return max(0.0, (max(stamps) - min(stamps)).total_seconds())
 
 
+def _bounded_ratio(numerator: int | None, denominator: int | None, *, metric_name: str) -> float | None:
+    """Calculate a bounded evidence ratio without manufacturing missing data.
+
+    Counts must be non-negative integers and numerator cannot exceed denominator.
+    An unknown count or zero denominator returns None; invalid known counts fail
+    loudly so corrupt aggregate inputs are not silently normalized.
+    """
+    if numerator is None or denominator is None:
+        return None
+    if (
+        isinstance(numerator, bool)
+        or isinstance(denominator, bool)
+        or not isinstance(numerator, int)
+        or not isinstance(denominator, int)
+    ):
+        raise ValueError(f"{metric_name} counts must be integers")
+    if numerator < 0 or denominator < 0:
+        raise ValueError(f"{metric_name} counts must be non-negative")
+    if numerator > denominator:
+        raise ValueError(f"{metric_name} numerator cannot exceed denominator")
+    if denominator == 0:
+        return None
+    return round(numerator / denominator, 6)
+
+
+def evidence_coverage_ratio(
+    valid_required_observations: int | None,
+    expected_required_observations: int | None,
+) -> float | None:
+    """Return valid required observations / expected observations, or None."""
+    return _bounded_ratio(
+        valid_required_observations,
+        expected_required_observations,
+        metric_name="evidence coverage ratio",
+    )
+
+
+def validated_outcome_rate(
+    explicit_validation_passes: int | None,
+    tasks_with_explicit_validation_outcome: int | None,
+) -> float | None:
+    """Return explicit validation passes / tasks with an explicit outcome."""
+    return _bounded_ratio(
+        explicit_validation_passes,
+        tasks_with_explicit_validation_outcome,
+        metric_name="validated outcome rate",
+    )
+
+
+def validation_coverage(
+    tasks_with_explicit_validation_outcome: int | None,
+    completed_tasks: int | None,
+) -> float | None:
+    """Return the share of completed tasks with an explicit validation outcome."""
+    return _bounded_ratio(
+        tasks_with_explicit_validation_outcome,
+        completed_tasks,
+        metric_name="validation coverage",
+    )
+
+
+def correlation_completeness(
+    eligible_records_with_required_provenance: int | None,
+    eligible_records: int | None,
+) -> float | None:
+    """Return the share of eligible records with the required provenance."""
+    return _bounded_ratio(
+        eligible_records_with_required_provenance,
+        eligible_records,
+        metric_name="correlation completeness",
+    )
+
+
 def reduce_events(
     events: Iterable[Mapping[str, Any]],
     *,

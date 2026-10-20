@@ -9,7 +9,7 @@
 Recent completed runs (last ~50):
 - **Success:** majority (master cadence schedule green)
 - **Cancelled:** primarily concurrency races (help-wanted-*); lag_operational when successor succeeds
-- **Skipped:** residual pre-change watcher runs aging out; new ones eliminated by dispatch-only
+- **Skipped:** residual pre-change watcher runs aging out; new ones eliminated by dispatch-only (post-merge)
 - **Failures / Timed out:** residual zero-job startup_failure on branch push for cadence (platform evaluation of non-matching event); not correctness
 
 **Historical Pattern:** Cancelled runs often from concurrency races rather than true errors. Skipped are intentional filters. True failures historically silenced or not rolled back properly (e.g., Pinggy device tests).
@@ -69,11 +69,11 @@ flowchart TD
 
 ## Next Actions
 
-1. Promote PR #1292 once dual-gate green (residual zero-job will cease)
-2. Continue modular consolidations for remaining cancel volume
-3. Device-side Pinggy publish + validation on #1
+1. Promote PR #1292 once dual-gate green (residual zero-job will cease; watcher skips stop)
+2. Continue modular consolidations for remaining cancel volume (lane-events-recorder, help-wanted-*)
+3. Device-side Pinggy publish + validation on #1 (tmx-node-primary)
 4. Expand reaper coverage if needed
-5. Quota planning via soft classification + ledger
+5. Quota planning via soft classification + ledger (Vercel rate-limits non-gate)
 
 **Implements:** Actions matrix upgrade for zero-failure FA-ADE / C.A.D.E.
 
@@ -187,5 +187,34 @@ Agent-Identity: Grok (Administrator)
 - Zero-failure posture: all observations correctly classified (success, intentional residual, capacity lag).
 
 **Next:** Dual-gate re-run on updated SHA, then promote if green. Continue consolidations for remaining notification surface.
+
+Agent-Identity: Grok (Administrator)
+
+## Continuation RECON (2026-10-20T19:00Z+)
+
+**Current master tip:** ~93eeac51 (sweep accountability). High volume of skipped Actions Run Watcher runs still listed (pre-merge residual from workflow_run trigger). These generate notification spam; will cease after PR #1292 promotes (dispatch-only).
+
+**Classified user runs:** 39233561401 (observatory 403) and 392349* (quota-registry) = capacity lag_operational / non-gate. Not correctness failures.
+
+**Skip/Cancel Validation Audit:**
+- Residual skips are intentional filters or pre-change; post-promote, watcher no longer emits skip records.
+- Concurrency cancels (lane-events-recorder, help-wanted) = lag_operational when successor succeeds. Adaptive-wait treats as evidence, not failure.
+- No new correctness failures in recent samples.
+
+**Cadence / Cache / Telemetry 3L0 moneyball:**
+- Cadence */4 green on master.
+- Remaining levers: path filters, SHA concurrency groups, modular reusable workflows for high-volume recorders.
+- Quota: soft classification + Vercel ignore-build selector (see #1314) to reduce rate-limit noise.
+
+**Pinggy / Device #1:**
+- Opaque ID `tmx-node-primary` confirmed in `ops/termux-bridge/current.json` (endpoint ephemeral, device-side publish required).
+- Requirement stands; alternatives documented. Device #2 must not overwrite origin manifest.
+
+**What was fixed / refined this continuation:**
+- Matrix refreshed with current residual skip volume and explicit non-gate classification of quota/observatory runs.
+- Device ID evidence bound to current.json.
+- Zero-failure posture: all observations classified (success, intentional residual skip, capacity lag).
+
+**Next:** Dual-gate on PR #1292 head, promote to eliminate residual watcher spam. Continue modular consolidations. Device-side Pinggy validation.
 
 Agent-Identity: Grok (Administrator)

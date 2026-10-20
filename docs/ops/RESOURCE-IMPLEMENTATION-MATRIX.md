@@ -1,6 +1,6 @@
 # Resource implementation matrix and aggregate search
 
-**25 resources, including every one of the 20 supplied links.** The supplied links resolve to 19 distinct references: FreeLLMAPI appears twice. The registry also includes Hex, Neon, Supabase, GitHub Codespaces, DigitalOcean, and the previously researched optional gpt4free reference. Google redirect wrappers and advertising parameters are removed, not followed; search queries remain queries. Source line numbers and hashes preserve attribution without copying the tracking URLs.
+**26 resources, including every one of the 20 supplied links.** The supplied links resolve to 19 distinct references: FreeLLMAPI appears twice. The registry also includes Hex, Neon, Supabase, GitHub Codespaces, DigitalOcean, and the previously researched optional gpt4free reference, plus the owner's OmniRouter fork as the routing-template reference. Google redirect wrappers and advertising parameters are removed, not followed; search queries remain queries. Source line numbers and hashes preserve attribution without copying the tracking URLs.
 
 The working implementation is a portable, offline aggregate search over reviewed resource references and the existing commit-pinned provider claims. It does not turn a directory's “free” label into permission to deploy or invoke a service. Every record stays `runtime_eligible: false`.
 
@@ -44,6 +44,7 @@ These rows document supplied references and implementation next actions, not ver
 | [FreeLLMAPI topic](https://github.com/topics/freellmapi) | Topic / discovery | Topic membership is an untrusted lead, not approval or evidence of invocation. |
 | [Fireworks GPT OSS page](https://fireworks.ai/models/fireworks/gpt-oss-120b) | Provider / inference | [Official pricing](https://fireworks.ai/pricing) describes usage/credit billing; verify model/account access. Training promotions do not prove free inference. |
 | [gpt4free, optional prior reference](https://github.com/xtekky/gpt4free) | Access-method template / discovery | Retain [prior license and access-method review](FREE-LLM-PROVIDER-RECON.md); no upstream execution, cookies or HAR harvesting. |
+| [OmniRouter fork](https://github.com/timerloggedout-spec/omnirouter_fork) | Routing template / discovery and inference | Model the OmniRoute (omni) provider leg of `scripts/live_catalog_feed.py` and `scripts/model_router.py` from this fork; verify entitlements separately; no upstream execution. |
 
 ## Search that works without a vendor account
 

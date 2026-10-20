@@ -119,7 +119,7 @@
       "id": "EQ-ECR-v1",
       "name": "evidence_coverage_ratio",
       "formula": "valid_required_observations / expected_required_observations",
-      "status": "proposed",
+      "status": "implemented-helper-not-emitted",
       "preconditions": [
         "versioned expected field set",
         "known expected denominator"
@@ -128,13 +128,15 @@
       "range": [
         0,
         1
-      ]
+      ],
+      "implementation": "she/metrics/agent_throughput.py",
+      "integration_status": "not emitted by runtime schema or projected into SHE"
     },
     {
       "id": "EQ-VOR-v1",
       "name": "validated_outcome_rate",
       "formula": "explicit_validation_passes / tasks_with_explicit_validation_outcome",
-      "status": "proposed",
+      "status": "implemented-helper-not-emitted",
       "preconditions": [
         "validation outcome labels are explicit",
         "nonzero evaluated tasks"
@@ -144,13 +146,15 @@
         0,
         1
       ],
-      "companion_metric": "EQ-VCOV-v1"
+      "companion_metric": "EQ-VCOV-v1",
+      "implementation": "she/metrics/agent_throughput.py",
+      "integration_status": "not emitted by runtime schema or projected into SHE"
     },
     {
       "id": "EQ-VCOV-v1",
       "name": "validation_coverage",
       "formula": "tasks_with_explicit_validation_outcome / completed_tasks",
-      "status": "proposed",
+      "status": "implemented-helper-not-emitted",
       "preconditions": [
         "known completed task count",
         "explicit validation outcome count"
@@ -159,13 +163,15 @@
       "range": [
         0,
         1
-      ]
+      ],
+      "implementation": "she/metrics/agent_throughput.py",
+      "integration_status": "not emitted by runtime schema or projected into SHE"
     },
     {
       "id": "EQ-CORR-v1",
       "name": "correlation_completeness",
       "formula": "eligible_records_with_required_provenance / eligible_records",
-      "status": "proposed",
+      "status": "implemented-helper-not-emitted",
       "preconditions": [
         "eligibility rule and required provenance fields versioned"
       ],
@@ -173,7 +179,9 @@
       "range": [
         0,
         1
-      ]
+      ],
+      "implementation": "she/metrics/agent_throughput.py",
+      "integration_status": "not emitted by runtime schema or projected into SHE"
     }
   ],
   "wolfram_fixtures": [

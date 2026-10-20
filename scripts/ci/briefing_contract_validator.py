@@ -11,7 +11,7 @@ import argparse
 import json
 import re
 import sys
-from datetime import datetime
+from datetime import date as date_cls, datetime
 from pathlib import Path
 from urllib.parse import urlsplit
 
@@ -23,6 +23,9 @@ ITEM_FIELDS = {
     "opportunity_or_procurement", "monorepo_relevance", "sources", "confidence",
     "unresolved_questions", "image_query",
 }
+
+# Bolt optimization: Pre-sorted ITEM_FIELDS tuple avoids repeated sorting in validation loops
+SORTED_ITEM_FIELDS: tuple[str, ...] = tuple(sorted(ITEM_FIELDS))
 CONTRACT_PATHS = {
     "spec": "docs/briefing/DAILY-DIGEST-SPEC.md",
     "ingest": "docs/research/BRIEFING-INGEST.md",
@@ -38,7 +41,7 @@ def _is_nonempty_string(value: object) -> bool:
 
 
 def _is_http_url(value: object) -> bool:
-    if not isinstance(value, str):
+    if not isinstance(value, str) or not value.startswith(("http://", "https://")):
         return False
     try:
         parsed = urlsplit(value)
@@ -69,7 +72,8 @@ def validate_briefing(data: object) -> list[str]:
         errors.append("briefing.briefing_date: expected YYYY-MM-DD")
     else:
         try:
-            if datetime.strptime(date, "%Y-%m-%d").date().isoformat() != date:
+            # Bolt optimization: Fast date parsing with date.fromisoformat instead of datetime.strptime
+            if date_cls.fromisoformat(date).isoformat() != date:
                 raise ValueError
         except ValueError:
             errors.append("briefing.briefing_date: expected valid YYYY-MM-DD")
@@ -91,7 +95,7 @@ def validate_briefing(data: object) -> list[str]:
         if not isinstance(item, dict):
             errors.append(f"{prefix}: expected object")
             continue
-        for field in sorted(ITEM_FIELDS):
+        for field in SORTED_ITEM_FIELDS:
             if field not in item:
                 errors.append(f"{prefix}.{field}: required field missing")
         for field in ("headline", "summary", "why_it_matters", "opportunity_or_procurement",

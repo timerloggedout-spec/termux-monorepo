@@ -1,0 +1,11 @@
+# Items — free-llm-provider-prioritization
+
+The user's direct implementation authorization permits this code work. Priority ranking and account admission remain separate decisions; no human ballots are fabricated.
+
+| ID | Proposed priority | Scope and evidence | State |
+|---|---|---|---|
+| MSM-012 | P1 | [Full direct transports](../../../ops/PROVIDER-BATCH-IMPLEMENTATION.md#full-direct-transport-completion): all 117 exact directory claims, 16 chat families, 13 catalog families; 101 gated native claims plus 16 legacy OpenRouter. All 160 research records retain dispositions. Names-only issue-184 inventory, four HF aliases and fixed Gemini health authentication. | Implemented with admission required. Initial production run 39381048664 observed 30 repository secret names, 578 catalog rows and 22 exact research matches. No HF token available; no automatic runtime admissions. Catalog contracts remain unverified for Z.ai, ModelScope and OVHcloud. |
+| MSM-013 | P1 | Canonical executable `DeepAgent.py`, doctor, launch/import repairs, role validation and mocked `release_steward` execution; existing agent regressions pass. Administrator is a collaborator responsibility, not a permission bypass. | Local runtime repaired. Live worker/Admin not established: optional GitHub broker unavailable, Origin bridge unknown, remote canary 39381490398 failed DNS (HTTP 000/curl 6). |
+| MSM-014 | P1 | [DEBATE.md](DEBATE.md) supplies the Delphi/RFP feedback matrix and independent-ballot protocol. [HITL](../../../ops/PROVIDER-HITL.md) records missing signup contact/verification, account entitlement and Origin access. | Documents implemented; actual ballots, missing credentials/contact and external verification remain unresolved. |
+
+Validation: 213 focused pytest cases passed, as did the 9 legacy market unittest cases; the 33-proposal registry and dual gates are checked before promotion. The [initial production receipt](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39381048664) records actual catalog/inventory outcomes, not inferred inference success. FreeLLMAPI has 37 static provider-class references and zero extracted exact model IDs; two class identities map to implemented transports. These labels do not declare every upstream proxy endpoint operational.

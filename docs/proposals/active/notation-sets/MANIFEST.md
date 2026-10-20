@@ -106,3 +106,8 @@ These additions remain governed by NSE-008 (evolution ledger). The proposal rema
 - Issue #1115: https://github.com/timerloggedout-spec/termux-monorepo/issues/1115
 - PR #322: https://github.com/timerloggedout-spec/termux-monorepo/pull/322
 - PR #324: https://github.com/timerloggedout-spec/termux-monorepo/pull/324
+
+
+## Nomenclature equivalency crosswalk
+
+The sourced nomenclature/label/mapping contract is documented in [`NOMENCLATURE-EQUIVALENCY-MATRIX.md`](./NOMENCLATURE-EQUIVALENCY-MATRIX.md). Treat formal terms, plain-language explanations, colloquial/ad hoc labels, abbreviations, and semantic matches as distinct typed records; do not infer equivalence from string similarity. The crosswalk is a research proposal and does not promote candidate mappings to runtime authority.

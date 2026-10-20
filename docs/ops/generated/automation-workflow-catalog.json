@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "c69da1e79a6b39aa15059b5e0cb0baf0543885574a86da709ba71b1f8fd9c170",
-  "workflow_count": 139,
+  "source_fingerprint": "0831d78470fd5c417fc581a506596381a3596581df896547b8ac6587c68677b5",
+  "workflow_count": 141,
   "workflows": [
     {
       "action_pins": [
@@ -2010,6 +2010,27 @@
     },
     {
       "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: provider-batch-${{ github.ref }} cancel-in-progress: false",
+      "domain": "peer-provider-review",
+      "jobs": [
+        "contracts",
+        "observe"
+      ],
+      "name": "Provider batch production contracts",
+      "path": ".github/workflows/provider-batch.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
         "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
       ],
       "authority": "writer",
@@ -2024,6 +2045,29 @@
       "triggers": [
         "repository_dispatch",
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
+      "authority": "writer",
+      "concurrency": "group: provider-research-${{ github.event.pull_request.number || 'compound' }} cancel-in-progress: false",
+      "domain": "peer-provider-review",
+      "jobs": [
+        "collect",
+        "contracts",
+        "publish"
+      ],
+      "name": "Provider research compounding",
+      "path": ".github/workflows/provider-recon-compound.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "workflow_dispatch",
+        "workflow_run"
       ]
     },
     {

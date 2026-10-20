@@ -1,6 +1,6 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-20T00:17:25Z UTC · receipts=3043 · foreign_open=36 · tributes=106_
+_Generated 2026-10-20T05:58:10Z UTC · receipts=3116 · foreign_open=37 · tributes=107_
 
 ## Tributes (contributor ledger)
 
@@ -40,13 +40,14 @@ _Generated 2026-10-20T00:17:25Z UTC · receipts=3043 · foreign_open=36 · tribu
 - [SoroScan/soroscan#1690](https://github.com/SoroScan/soroscan/pull/1690) · state=open · help-wanted: stake + contribute for #1663
 - [sorolens/sorolens#753](https://github.com/sorolens/sorolens/pull/753) · state=open · help-wanted: stake + contribute for #538
 - [francordel/kdemos#27](https://github.com/francordel/kdemos/pull/27) · state=open · help-wanted: stake + contribute for #26
+- [seleniumboot/selenium-boot#183](https://github.com/seleniumboot/selenium-boot/pull/183) · state=open · help-wanted: stake + contribute for #180
 - [https://github.com/vedantnimbarte/zero/pull/81](https://github.com/vedantnimbarte/zero/pull/81) · state=? · 
 - [StellarFoundry/soroban-security-scanner#200](https://github.com/StellarFoundry/soroban-security-scanner/pull/200) · state=closed · help-wanted: stake + contribute for #158
 - [kiinshuk/kinshow#434](https://github.com/kiinshuk/kinshow/pull/434) · state=closed · help-wanted: stake + contribute for #157
-- [Nodal-stellar/Nodal-AI#853](https://github.com/Nodal-stellar/Nodal-AI/pull/853) · state=closed · help-wanted: stake + contribute for #769
 
 ## Foreign open PRs
 
+- [seleniumboot/selenium-boot#183](https://github.com/seleniumboot/selenium-boot/pull/183) — help-wanted: stake + contribute for #180
 - [francordel/kdemos#27](https://github.com/francordel/kdemos/pull/27) — help-wanted: stake + contribute for #26
 - [sorolens/sorolens#753](https://github.com/sorolens/sorolens/pull/753) — help-wanted: stake + contribute for #538
 - [SoroScan/soroscan#1690](https://github.com/SoroScan/soroscan/pull/1690) — help-wanted: stake + contribute for #1663
@@ -84,6 +85,6 @@ _Generated 2026-10-20T00:17:25Z UTC · receipts=3043 · foreign_open=36 · tribu
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) — help-wanted: stake + contribute for #20
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Operational outcomes · actioned=181 skipped=2862 failed=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 2826, 'followup_reengage': 50, 'followup_stale_nudge': 117, 'followup_changes': 2}`
+## Operational outcomes · actioned=183 skipped=2933 failed=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 2897, 'followup_reengage': 50, 'followup_stale_nudge': 119, 'followup_changes': 2}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

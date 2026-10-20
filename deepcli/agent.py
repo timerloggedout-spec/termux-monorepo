@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """agent.py — YOLO loop with gh, run, file ops, and skill access."""
 import json, os, sys, time, urllib.request
+from pathlib import Path
+HOME = Path.home()
 
 HUB = os.environ.get("DSH_HUB", "http://127.0.0.1:8800")
 TOK = open(os.path.expanduser("~/.deepcli/hub.token")).read().strip()
@@ -187,7 +189,7 @@ def _log_tool_error(fn, args, exc):
     Policy blocks (PermissionError, FileNotFoundError, HTTPException 4xx) do NOT go here."""
     import traceback as _tb, datetime as _dt, json as _j, os as _os
     from pathlib import Path as _P
-    log = _P.home() / ".deepcli" / "logs" / "tool_errors.jsonl"
+    log = HOME / ".deepcli" / "logs" / "tool_errors.jsonl"
     log.parent.mkdir(parents=True, exist_ok=True)
     try:
         args_head = _j.dumps(args)[:300] if not isinstance(args, str) else str(args)[:300]
@@ -361,7 +363,10 @@ def _agent_notify(kind: str, title: str, content: str, priority: str = "default"
 
 def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False, role=None, task_id=None, transport=None):
     print(f"\n▶ task: {task}\n")
-    print(f"  [role] {role or os.environ.get(\"DEEPCLI_ROLE\", \"engineer\")} [task_id] {task_id or os.environ.get(\"DEEPCLI_TASK_ID\", \"unassigned\")} [transport] {transport or os.environ.get(\"DEEPCLI_TRANSPORT\", \"auto\")}")
+    active_role = role or os.environ.get("DEEPCLI_ROLE", "engineer")
+    active_task_id = task_id or os.environ.get("DEEPCLI_TASK_ID", "unassigned")
+    active_transport = transport or os.environ.get("DEEPCLI_TRANSPORT", "auto")
+    print(f"  [role] {active_role} [task_id] {active_task_id} [transport] {active_transport}")
     msgs = [{"role":"system","content":build_system_prompt(task, role=role, task_id=task_id, transport=transport)}, {"role":"user","content":task}]
     for step in range(MAX_STEPS):
         print(f"── step {step+1}/{MAX_STEPS} ──")

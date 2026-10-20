@@ -6,12 +6,12 @@ of git.  It exposes one stable contract while routing to the existing
 
 Run from the repository root with::
 
-    uvicorn llm-api-hub.server.app:app --host 127.0.0.1 --port 8787
+    uvicorn llm_api_hub.server.app:app --host 127.0.0.1 --port 8787
 
 Because ``llm-api-hub`` contains a hyphen, the supported executable form is also
 available from this directory::
 
-    cd llm-api-hub/server && uvicorn app:app --host 127.0.0.1 --port 8787
+    cd llm_api_hub/server && uvicorn app:app --host 127.0.0.1 --port 8787
 """
 # Keep annotations eagerly resolved: this module is also loaded directly by
 # Termux launchers, not only through a package import.
@@ -31,6 +31,11 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel, ConfigDict, Field
 
+try:
+    from llm_api_hub.server import research_providers
+except ImportError:  # direct ``uvicorn app:app`` launch from server directory
+    import research_providers  # type: ignore
+
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 MULTI_AI_CLI = REPO_ROOT / "multi-ai-cli"
@@ -42,11 +47,12 @@ REQUEST_TIMEOUT = float(os.environ.get("LLM_API_HUB_TIMEOUT", "120"))
 class HubError(Exception):
     """An expected request or provider failure with an HTTP-compatible status."""
 
-    def __init__(self, status_code: int, message: str, *, code: str = "hub_error") -> None:
+    def __init__(self, status_code: int, message: str, *, code: str = "hub_error", headers: Optional[Dict[str, str]] = None) -> None:
         super().__init__(message)
         self.status_code = status_code
         self.message = message
         self.code = code
+        self.headers = headers or {}
 
 
 class ChatMessage(BaseModel):
@@ -321,15 +327,18 @@ def configured_models() -> List[str]:
         models.append("openai/<model>")
     if os.environ.get("ANTHROPIC_API_KEY"):
         models.append("anthropic/<model>")
+    models.extend(research_providers.admitted_models())
     return models
 
 
 @app.exception_handler(HubError)
 def hub_error_handler(_: Request, exc: HubError) -> JSONResponse:
-    return JSONResponse(
-        status_code=exc.status_code,
-        content={"error": {"message": exc.message, "type": exc.code, "code": exc.code}},
-    )
+    return JSONResponse(status_code=exc.status_code, content={"error": {"message": exc.message, "type": exc.code, "code": exc.code}}, headers=exc.headers)
+
+
+@app.exception_handler(research_providers.ProviderAdmissionError)
+def research_provider_error_handler(_: Request, exc: research_providers.ProviderAdmissionError) -> JSONResponse:
+    return JSONResponse(status_code=exc.status, content={"error": {"message": exc.message, "type": exc.code, "code": exc.code}}, headers={"Retry-After": exc.retry_after} if exc.retry_after else None)
 
 
 @app.get("/")
@@ -381,12 +390,29 @@ def chat_completions(request: ChatCompletionRequest, raw_request: Request) -> An
         response = runtime.complete_upstream("openai", request)
     elif model.startswith("anthropic/"):
         response = runtime.complete_upstream("anthropic", request)
+    elif model.partition("/")[0] in research_providers.ENDPOINTS and "/" in model:
+        provider, exact_model = model.split("/", 1)
+        if any(not isinstance(message.content, str) for message in request.messages) or any(
+            key in request.model_fields_set and getattr(request, key) is not None
+            for key in ("tools", "tool_choice", "functions", "function_call", "modalities", "audio", "image", "video")
+        ):
+            raise HubError(400, "native research providers accept text-only messages without multimodal or tool inputs", code="invalid_messages")
+        upstream_payload: Dict[str, Any] = {
+            "model": exact_model,
+            "messages": [message_to_dict(message) for message in request.messages],
+            "stream": False,
+        }
+        for key in ("temperature", "max_tokens", "top_p", "stop"):
+            value = getattr(request, key)
+            if value is not None:
+                upstream_payload[key] = value
+        response = research_providers.complete(provider, exact_model, upstream_payload, REQUEST_TIMEOUT)
     elif "/" not in model and os.environ.get("OPENROUTER_API_KEY"):
         response = runtime.complete_upstream("openrouter", request)
     else:
         raise HubError(
             400,
-            "model must use wrapper/<name>, openrouter/<model>, openai/<model>, or anthropic/<model>",
+            "model must use wrapper/<name>, openrouter/<model>, openai/<model>, anthropic/<model>, or an admitted native provider/model",
             code="unknown_model",
         )
 

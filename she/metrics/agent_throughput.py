@@ -288,3 +288,97 @@ def reduce_events(
         mean_tool_delay_ms=round(tool_delay, 6) if tool_delay is not None else None,
         mean_handoff_latency_ms=round(handoff, 6) if handoff is not None else None,
     )
+
+
+
+def retry_amplification_ratio(
+    total_attempts: int | None,
+    logical_operations: int | None,
+) -> float | None:
+    """Return attempts per logical operation, including the initial attempt.
+
+    A value of 1.0 means one attempt per operation on average. Values above 1
+    indicate additional attempts. This is not a failure probability.
+    """
+    if total_attempts is None or logical_operations is None:
+        return None
+    if (
+        isinstance(total_attempts, bool)
+        or isinstance(logical_operations, bool)
+        or not isinstance(total_attempts, int)
+        or not isinstance(logical_operations, int)
+    ):
+        raise ValueError("retry amplification counts must be integers")
+    if total_attempts < 0 or logical_operations < 0:
+        raise ValueError("retry amplification counts must be non-negative")
+    if logical_operations == 0:
+        return None
+    if total_attempts < logical_operations:
+        raise ValueError("total attempts cannot be less than logical operations")
+    return round(total_attempts / logical_operations, 6)
+
+
+def retry_recovery_rate(
+    retried_operations_that_eventually_succeeded: int | None,
+    operations_with_at_least_one_retry: int | None,
+) -> float | None:
+    """Return the share of retried logical operations that eventually succeeded.
+
+    The numerator and denominator count logical operations, not individual
+    attempts. Operations still in progress or with unknown final state must not
+    be included in the denominator.
+    """
+    return _bounded_ratio(
+        retried_operations_that_eventually_succeeded,
+        operations_with_at_least_one_retry,
+        metric_name="retry recovery rate",
+    )
+
+
+def wilson_proportion_interval(
+    successes: int | None,
+    trials: int | None,
+    *,
+    z_score: float = 1.959963984540054,
+) -> tuple[float, float] | None:
+    """Return a two-sided Wilson score interval for a binomial proportion.
+
+    Defaults to approximately 95% confidence. This interval is appropriate for
+    a count of independent Bernoulli trials; clustered/repeated workflow events
+    violate that assumption and need a cluster-aware analysis instead.
+    """
+    if successes is None or trials is None:
+        return None
+    if (
+        isinstance(successes, bool)
+        or isinstance(trials, bool)
+        or not isinstance(successes, int)
+        or not isinstance(trials, int)
+    ):
+        raise ValueError("Wilson interval counts must be integers")
+    if successes < 0 or trials < 0:
+        raise ValueError("Wilson interval counts must be non-negative")
+    if successes > trials:
+        raise ValueError("Wilson interval successes cannot exceed trials")
+    if trials == 0:
+        return None
+    try:
+        z = float(z_score)
+    except (TypeError, ValueError) as exc:
+        raise ValueError("z_score must be a finite positive number") from exc
+    if not math.isfinite(z) or z <= 0:
+        raise ValueError("z_score must be a finite positive number")
+
+    proportion = successes / trials
+    z_squared = z * z
+    denominator = 1 + z_squared / trials
+    center = (proportion + z_squared / (2 * trials)) / denominator
+    margin = (
+        z
+        * math.sqrt(
+            proportion * (1 - proportion) / trials
+            + z_squared / (4 * trials * trials)
+        )
+        / denominator
+    )
+    return (round(max(0.0, center - margin), 6), round(min(1.0, center + margin), 6))

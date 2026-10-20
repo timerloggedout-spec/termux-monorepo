@@ -15,6 +15,9 @@
 | MSM-008 | Complete supplied resource matrix + deterministic aggregate implementation search | **done** | MSM-006 | Q; preserve all supplied links as canonical references, reviewed resource registry, offline searchable provider/resource index and existing workflow artifacts; no account activation or expanded publication authority |
 | MSM-009 | Scoped read-only GitHub metadata authentication for production collection | **done** | MSM-008 | Q; deployed run 39376417124 failed closed on anonymous GitHub API 403; token only on two fixed commit-metadata URLs, never raw source or provider endpoints; no retry or permission expansion |
 
+| MSM-010 | Official provider catalog + explicit native hub adapters for harvested models | **executing** | MSM-006, MSM-009 | Q; Groq, Mistral and Gemini official endpoints; exact-model opt-in admission, no inferred free entitlement or routing-weight mutation; real production-contract regressions |
+| MSM-011 | Evidence-backed matrix review attribution and reconciliation tests | **executing** | MSM-008 | Q; distinguish submitted reviews, conversation, inline comments, claimed local roles, and authenticated actors; preserve provenance |
+
 ## Runtime package
 
 ```text

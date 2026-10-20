@@ -547,6 +547,30 @@
       ],
       "title": "gpt4free optional access-method reference",
       "url": "https://github.com/xtekky/gpt4free"
+    },
+    {
+      "evidence_class": "REFERENCE_ONLY",
+      "id": "omnirouter-fork",
+      "implementation_paths": [
+        "scripts/live_catalog_feed.py",
+        "scripts/model_router.py"
+      ],
+      "kind": "template",
+      "mesh_roles": [
+        "discovery",
+        "inference"
+      ],
+      "next_action": "Model the OmniRoute (omni) provider leg of the live catalog feed and model router from this fork; verify entitlements separately; no upstream executable code adoption.",
+      "runtime_eligible": false,
+      "status": "discovery-only",
+      "tags": [
+        "llm",
+        "router",
+        "omniroute",
+        "go"
+      ],
+      "title": "OmniRouter fork routing template",
+      "url": "https://github.com/timerloggedout-spec/omnirouter_fork"
     }
   ],
   "schema_version": "msm-resource-registry-v1",

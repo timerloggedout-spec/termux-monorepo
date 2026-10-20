@@ -33,8 +33,8 @@ def test_every_supplied_link_has_a_canonical_resource_and_input_fingerprint():
         else:
             assert not parsed.query
     assert len(covered) == 19  # FreeLLMAPI is supplied twice, not two projects.
-    assert len(resources) == 25
-    assert set(resources) - covered == {"hex", "neon", "supabase", "codespaces", "digitalocean", "gpt4free"}
+    assert len(resources) == 26
+    assert set(resources) - covered == {"hex", "neon", "supabase", "codespaces", "digitalocean", "gpt4free", "omnirouter-fork"}
 
 
 def test_resource_matrix_preserves_native_anchors_and_research_boundary():
@@ -54,7 +54,7 @@ def test_human_matrix_documents_all_canonical_references():
     for row in registry()["resources"]:
         assert row["url"] in matrix, row["id"]
     assert "20 supplied links" in matrix
-    assert "25 resources" in matrix
+    assert "26 resources" in matrix
 
 
 def test_existing_cadence_generates_search_index_without_expanding_publication():

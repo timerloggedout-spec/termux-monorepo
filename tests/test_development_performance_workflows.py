@@ -18,7 +18,9 @@ class DevelopmentPerformanceWorkflowTests(TestCase):
         before_run = SWE_WORKFLOW.split("- name: Run one bounded benchmark instance", maxsplit=1)[0]
         self.assertNotIn("SWE_EVALUATION_API_KEY:", before_run)
         self.assertIn("SWE_EVALUATION_API_KEY: ${{ secrets.SWE_EVALUATION_API_KEY }}", SWE_WORKFLOW)
-        self.assertIn("if: inputs.run_external_reference && vars.SWE_REFERENCE_EVALUATION_ENABLED == 'true'", SWE_WORKFLOW)
+        self.assertIn('if [ "${GITHUB_EVENT_NAME}" = "workflow_dispatch" ] && [ "${RUN_EXT}" = "true" ] && [ "${ENABLED}" = "true" ]; then', SWE_WORKFLOW)
+        self.assertIn("vars.SWE_REFERENCE_EVALUATION_ENABLED", SWE_WORKFLOW)
+        self.assertNotIn("runner.temp", SWE_WORKFLOW)
         self.assertIn("Checkout pinned mini-SWE-agent reference without provider credentials", SWE_WORKFLOW)
         self.assertIn("Install pinned reference dependencies without provider credentials", SWE_WORKFLOW)
 

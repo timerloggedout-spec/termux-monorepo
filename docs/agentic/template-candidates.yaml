@@ -1,8 +1,9 @@
 schema_version: 1
-assessment_date: 2026-08-18
+assessment_date: 2026-09-10
 scope: >-
   User-owned Gantt/agentic seeds discovered through owned and starred repository
-  metadata, plus the four active refTemplates/smods reference forks.
+  metadata, plus the active refTemplates/smods reference forks (including
+  cost-of-remembering_fork).
 evidence_policy:
   primary: source code, repository metadata, tests, CI records, and reproducible commands
   secondary: DeepWiki pages, local wiki/mirror artifacts, agent comments, README claims
@@ -213,10 +214,51 @@ candidates:
       - CONTEXT.md
     disposition: pinned-customization-candidate
 
+  - candidate_id: COST_OF_REMEMBERING
+    repository: https://github.com/timerloggedout-spec/cost-of-remembering_fork
+    upstream: https://github.com/RinDig/cost-of-remembering
+    default_branch: main
+    language: Python
+    license: MIT
+    category: filesystem-memory vs long-context evidence harness
+    intended_inspiration:
+      - LongMemEval accuracy parity with 97% fewer tokens / 95% lower cost
+      - ICM folder conventions as storage layer (no embeddings)
+      - reproducible harness, brains, and paper tables
+    evidence_status: source-reviewed
+    direct_evidence:
+      - README.md
+      - lme-icm/
+      - paper/
+      - docs/RUNBOOK.md
+    material_limitations:
+      - LongMemEval data and API keys are external; never committed
+      - harness not part of monorepo CI control plane
+    disposition: pinned-customization-candidate
+
+  - candidate_id: AUDIT_ENGINE
+    repository: https://github.com/timerloggedout-spec/AuditEngine_fork
+    upstream: https://github.com/RinDig/AuditEngine
+    default_branch: main
+    language: TypeScript and Python
+    license: MIT
+    category: psychometric / ethics assessment of LLMs
+    intended_inspiration:
+      - validated scales (RWA, MFQ, BFI, etc.) against multiple providers
+      - persona framing and visual-stimulus assessment patterns
+      - exportable evidence for model disposition work
+    evidence_status: pending-fork
+    direct_evidence:
+      - README.md (upstream)
+    material_limitations:
+      - frontend/backend deploy and provider keys out of monorepo scope until Tier-4 auth
+    disposition: adapter-candidate
+
 selection_scope:
-  include_in_shortlist: [CAMSHAFT, ICM_ARCHITECT, ICM_METHODOLOGY, CONTENT_AGENT_ROUTING, GANTT_CLI, GANTTLESS]
+  include_in_shortlist: [CAMSHAFT, ICM_ARCHITECT, ICM_METHODOLOGY, CONTENT_AGENT_ROUTING, COST_OF_REMEMBERING, GANTT_CLI, GANTTLESS]
   retain_as_reference: [GANTTY, GANTT_CHART_CODE, ICM_CCTV]
   defer: [MONTT]
+  staged_adapt: [AUDIT_ENGINE]
   excluded_from_execution_authority:
     - all candidates
   canonical_authority_target: docs/agentic/dependency-phases.yaml

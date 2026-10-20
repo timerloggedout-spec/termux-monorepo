@@ -90,7 +90,10 @@ def load_optional_json(path: Path | None) -> dict[str, Any] | None:
 def parse_time(value: str | None) -> datetime | None:
     if not value:
         return None
-    return datetime.fromisoformat(value.replace("Z", "+00:00"))
+    dt = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt
 
 
 def seconds_between(a: str | None, b: str | None) -> float | None:
@@ -226,27 +229,43 @@ def main(argv: list[str] | None = None) -> int:
         except Exception as exc:
             lag_events.append(warning("check_query_warning", observed_at, exc))
 
+    parsed_lags = []
+    for lag in lag_events:
+        if not correlatable_lag(lag):
+            continue
+        lag_time_str = lag.get("observed_at") or lag.get("completed_at") or lag.get("started_at")
+        lag_dt = parse_time(lag_time_str)
+        if lag_dt:
+            parsed_lags.append((lag, lag_time_str, lag_dt))
+
     pairs = []
     for lead in lead_events:
         if not correlatable_lead(lead):
             continue
-        lead_time = lead.get("observed_at") or lead.get("created_at")
-        candidates = []
-        for lag in lag_events:
-            if not correlatable_lag(lag):
-                continue
-            lag_time = lag.get("observed_at") or lag.get("completed_at") or lag.get("started_at")
-            delta = seconds_between(lead_time, lag_time)
-            if delta is not None and delta >= 0:
-                candidates.append((delta, lag))
-        if candidates:
-            delta, lag = min(candidates, key=lambda item: item[0])
+        lead_time_str = lead.get("observed_at") or lead.get("created_at")
+        lead_dt = parse_time(lead_time_str)
+        if not lead_dt:
+            continue
+
+        best_delta = None
+        best_lag = None
+        best_lag_time_str = None
+
+        for lag, lag_time_str, lag_dt in parsed_lags:
+            delta = (lag_dt - lead_dt).total_seconds()
+            if delta >= 0:
+                if best_delta is None or delta < best_delta:
+                    best_delta = delta
+                    best_lag = lag
+                    best_lag_time_str = lag_time_str
+
+        if best_lag is not None and best_delta is not None:
             pairs.append({
                 "lead_kind": lead.get("kind"),
-                "lag_kind": lag.get("kind"),
-                "lead_at": lead_time,
-                "lag_at": lag.get("observed_at") or lag.get("completed_at") or lag.get("started_at"),
-                "elapsed_seconds": delta,
+                "lag_kind": best_lag.get("kind"),
+                "lead_at": lead_time_str,
+                "lag_at": best_lag_time_str,
+                "elapsed_seconds": max(0.0, best_delta),
                 "relationship_status": "temporal-correlation",
                 "causal_claim": False,
             })

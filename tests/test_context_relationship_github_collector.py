@@ -262,6 +262,54 @@ def test_mixed_issues_window_marks_checkpoint_ineligible_when_truncated(tmp_path
     assert report["checkpoint_eligible"] is False
 
 
+def test_issue_window_pull_absent_from_pulls_page_still_compiles(tmp_path):
+    registry = tmp_path / "scopes.json"
+    write_registry(registry)
+    client = FakeGitHubClient()
+    client.responses["/repos/example/repo/issues"] = [
+        {
+            "number": 86,
+            "state": "open",
+            "title": "Relate index work",
+            "body": "See #850",
+            "created_at": "2026-08-18T10:00:00Z",
+            "updated_at": "2026-08-18T11:00:00Z",
+            "html_url": "https://github.com/example/repo/issues/86",
+            "labels": [],
+        },
+        {
+            "number": 850,
+            "state": "open",
+            "title": "Window-only pull",
+            "pull_request": {"html_url": "https://github.com/example/repo/pull/850"},
+            "updated_at": "2026-08-18T12:00:00Z",
+            "html_url": "https://github.com/example/repo/pull/850",
+            "labels": [],
+        },
+    ]
+    client.responses["/repos/example/repo/pulls"] = []
+    client.responses["/repos/example/repo/issues/86/comments"] = []
+    client.responses["/repos/example/repo/issues/86/timeline"] = []
+
+    seed, report = collect_github_seed(
+        client,
+        "example",
+        "repo",
+        "master",
+        registry,
+        max_items=5,
+        max_commits=1,
+        max_comments_per_item=1,
+        include_comments=False,
+    )
+
+    nodes, edges, _, manifest = compile_seed(seed, registry, SCHEMA)
+    assert report["counts"]["pull_request_window_stubs"] == 1
+    assert any(node["kind"] == "pull_request" and node["external_id"] == "850" for node in nodes)
+    assert any(edge["type"] == "REFERENCES" for edge in edges)
+    assert manifest["edge_count"] == len(edges)
+
+
 def test_load_checkpoint_ignores_a_different_repository_or_ref(tmp_path):
     from archwiz.context_relationships.github_collector import load_checkpoint
 

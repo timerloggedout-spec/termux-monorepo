@@ -1,0 +1,73 @@
+{
+  "collected_at": "2026-10-15T08:14:15.478778+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 38701210961,
+    "endpoint": ".../runs/38701210961/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 116309566156,
+        "run_id": 38701210961,
+        "workflow_name": "PR production ledger",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/38701210961",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAbFJcizA",
+        "head_sha": "dd8661b44769101b6bfd822c1a449ee192580cf0",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/116309566156",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/38701210961/job/116309566156",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-15T07:48:11Z",
+        "started_at": "2026-10-15T07:48:14Z",
+        "completed_at": "2026-10-15T07:48:22Z",
+        "name": "ledger",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-15T07:48:15Z",
+            "completed_at": "2026-10-15T07:48:16Z"
+          },
+          {
+            "name": "Build SHA-bound production ledger",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-15T07:48:16Z",
+            "completed_at": "2026-10-15T07:48:19Z"
+          },
+          {
+            "name": "Upload EPS telemetry artifact",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-15T07:48:19Z",
+            "completed_at": "2026-10-15T07:48:20Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-15T07:48:20Z",
+            "completed_at": "2026-10-15T07:48:20Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/116309566156",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000242160,
+        "runner_name": "GitHub Actions 1000242160",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

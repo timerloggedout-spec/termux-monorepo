@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/ORCHESTRATION-TREATMENT.schema.json",
+  "title": "Native Orchestration Treatment",
+  "description": "Evidence-backed descriptor for a repeatable orchestration treatment. A treatment is a comparable implementation pattern, not an authority or leaderboard entry.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version","id","name","lineage","strategy","wait_policy","retry_policy","evidence_contract","validation_contract","status"],
+  "properties": {
+    "version": {"const": 1},
+    "id": {"type":"string","pattern":"^[a-z0-9][a-z0-9._-]*$"},
+    "name": {"type":"string","minLength":1},
+    "lineage": {"type":"array","items":{"type":"string","minLength":1}},
+    "source": {"type":"string","minLength":1},
+    "source_sha": {"type":"string","pattern":"^[0-9a-f]{40}$"},
+    "manager": {"type":"string","minLength":1},
+    "strategy": {"type":"string","minLength":1},
+    "capabilities": {"type":"array","items":{"type":"string","minLength":1}},
+    "hooks": {"type":"array","items":{"type":"string","minLength":1}},
+    "tools": {"type":"array","items":{"type":"string","minLength":1}},
+    "routing": {"type":"array","items":{"type":"string","minLength":1}},
+    "wait_policy": {"type":"string","minLength":1},
+    "retry_policy": {"type":"string","minLength":1},
+    "evidence_contract": {"type":"string","minLength":1},
+    "validation_contract": {"type":"string","minLength":1},
+    "status": {"enum":["candidate","experimental","accepted","deprecated","rejected"]}
+  }
+}

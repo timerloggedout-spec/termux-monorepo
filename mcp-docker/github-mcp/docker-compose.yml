@@ -1,0 +1,23 @@
+version: "3.8"
+
+# Separated GitHub MCP Docker lane (official image).
+# Not part of the Vercel mcp-hub deployment.
+
+services:
+  github-mcp:
+    image: ghcr.io/github/github-mcp-server:latest
+    container_name: github-mcp-server
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8082:8082"   # loopback by default; open only if reverse-proxy is in front
+    environment:
+      GITHUB_PERSONAL_ACCESS_TOKEN: ${GITHUB_PERSONAL_ACCESS_TOKEN}
+      # GITHUB_HOST: https://github.example.com   # GHES / ghe.com only
+      # GITHUB_MCP_SERVER_MRTR_STATE_KEY: "…"     # required only for delete_repository in HTTP mode
+    command: ["http"]
+    # Health is upstream-dependent; optional:
+    # healthcheck:
+    #   test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8082/health"]
+    #   interval: 30s
+    #   timeout: 5s
+    #   retries: 3

@@ -1,0 +1,40 @@
+{
+  "collected_at": "2026-10-08T10:30:28.293429+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 37754538509,
+    "endpoint": ".../runs/37754538509/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 113235721143,
+        "run_id": 37754538509,
+        "workflow_name": "Actions Run Watcher \u2014 incident notification",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37754538509",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaXV_7tw",
+        "head_sha": "b52bf0fef9ccdead9b65362530f1a655967d5bd8",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/113235721143",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37754538509/job/113235721143",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-10-08T09:08:09Z",
+        "started_at": "2026-10-08T09:08:09Z",
+        "completed_at": "2026-10-08T09:08:08Z",
+        "name": "observe-completion",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/113235721143",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      }
+    ]
+  }
+}

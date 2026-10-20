@@ -205,10 +205,12 @@ def main() -> None:
     # Isolate any incidental HOME-relative writes
     os.environ.setdefault("MULTI_AI_CACHE_DIR", args.cache_dir)
     os.makedirs(args.cache_dir, exist_ok=True)
-    try:
-        os.chmod(args.cache_dir, 0o700)
-    except Exception:
-        pass
+    cache_path = Path(args.cache_dir)
+    if not cache_path.is_symlink():
+        try:
+            os.chmod(args.cache_dir, 0o700)
+        except Exception:
+            pass
 
     event = _load_event()
     result = run_ci(
@@ -233,6 +235,9 @@ def main() -> None:
     }
 
     output_path = Path("deepseek_output.json")
+    if output_path.is_symlink():
+        raise ValueError(f"Output path {output_path} cannot be a symlink")
+
     flags = os.O_WRONLY | os.O_CREAT | os.O_TRUNC
     mode = 0o600
     try:
@@ -242,10 +247,11 @@ def main() -> None:
     except Exception:
         with open(output_path, "w", encoding="utf-8") as f:
             json.dump(safe, f, indent=2)
-    try:
-        os.chmod(output_path, 0o600)
-    except Exception:
-        pass
+    if not output_path.is_symlink():
+        try:
+            os.chmod(output_path, 0o600)
+        except Exception:
+            pass
 
     print(
         f"CI run completed. status={safe.get('status')} "

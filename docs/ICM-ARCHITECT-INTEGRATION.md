@@ -10,7 +10,7 @@ The monorepo applies ICM to **itself**: its `docs/icm/` catalog, contracts, card
 |---|---|
 | Submodule path | `refTemplates/smods/icm-architect_fork` |
 | Fork remote | `https://github.com/timerloggedout-spec/icm-architect_fork.git` |
-| Upstream project | `https://github.com/RinDig/ICM-Architect` |
+| Upstream project | `https://github.com/RinDig/icm-architect` |
 | Tracking branch | `main` |
 | Initial pinned revision | `b20fb45063a564cf607b03526e206f519d174def` |
 | Checkout policy | Shallow, intentionally pinned through the Gitlink |
@@ -25,7 +25,9 @@ The monorepo maintains a bounded reference-input layer under `refTemplates/smods
 | ICM Architect | `refTemplates/smods/icm-architect_fork` | Select the smallest ICM form and audit maps. |
 | Full methodology | `refTemplates/smods/interpretable-context-methodology_fork` | Consult detailed conventions, examples, and workspace-builder patterns. |
 | Promptbase | `refTemplates/smods/content-agent-routing-promptbase_fork` | Consult Layer 0–3 routing, canonical-source, and one-way-dependency patterns. |
+| Cost of Remembering | `refTemplates/smods/cost-of-remembering_fork` | Filesystem-memory vs long-context evidence (97% fewer tokens / 95% lower cost on LongMemEval). Harness reference-only. |
 | ICM CCTV | `refTemplates/smods/icm-cctv_fork` | Consult optional visual stage mirrors and human-checkpoint patterns; keep the native Pipeline output canonical. |
+| AuditEngine (staged) | `refTemplates/smods/AuditEngine_fork` (pending) | Psychometric / ethics-engine patterns; adapt after cost-of-remembering lands. |
 
 The user-declared BLU B160V/free-services envelope is documented in the repository-native [`docs/icm/` platform card](icm/objects/platform/blu-b160v-free-services.md). It is a design constraint only; this integration neither accesses the Termux MCP nor configures the device.[1]
 
@@ -43,6 +45,26 @@ The user-owned **Interpretable Context Methodology** companion fork is pinned be
 | Checkout policy | Shallow, intentionally pinned through the Gitlink |
 | Governing work item | `ICM-04` |
 
+## Cost of Remembering (filesystem-memory evidence)
+
+| Property | Value |
+|---|---|
+| Submodule path | `refTemplates/smods/cost-of-remembering_fork` |
+| Fork remote | `https://github.com/timerloggedout-spec/cost-of-remembering_fork.git` |
+| Upstream project | `https://github.com/RinDig/cost-of-remembering` |
+| Tracking branch | `main` |
+| Checkout policy | Shallow, intentionally pinned through the Gitlink |
+| Native card | [`docs/icm/objects/knowledge/cost-of-remembering.md`](icm/objects/knowledge/cost-of-remembering.md) |
+| Governing work item | `COR-01`…`COR-10` (see `docs/proposals/active/cost-of-remembering-integration/`) |
+
+After cloning, finish the gitlink if needed:
+
+```bash
+bash scripts/icm/init-cost-of-remembering-submodule.sh
+# or:
+git submodule update --init --depth 1 refTemplates/smods/cost-of-remembering_fork
+```
+
 ## Initialize a Clone
 
 After cloning the monorepo, initialize only the reference needed for the work. The commands keep setup scoped and avoid fetching unrelated submodules.
@@ -51,10 +73,11 @@ After cloning the monorepo, initialize only the reference needed for the work. T
 git submodule update --init --depth 1 refTemplates/smods/icm-architect_fork
 git submodule update --init --depth 1 refTemplates/smods/interpretable-context-methodology_fork
 git submodule update --init --depth 1 refTemplates/smods/content-agent-routing-promptbase_fork
+git submodule update --init --depth 1 refTemplates/smods/cost-of-remembering_fork
 git submodule update --init --depth 1 refTemplates/smods/icm-cctv_fork
 ```
 
-ICM Architect provides `SKILL.md`, reference notes, and starter templates. The methodology fork provides the complete conventions and example workspaces. Neither is automatically executed or copied into an agent runtime. A consuming agent or developer should read the relevant reference before selecting a destination workspace.[1] [2]
+ICM Architect provides `SKILL.md`, reference notes, and starter templates. The methodology fork provides the complete conventions and example workspaces. Cost-of-remembering provides the LongMemEval harness and paper evidence. None are automatically executed or copied into an agent runtime. A consuming agent or developer should read the relevant reference before selecting a destination workspace.[1] [2] [5]
 
 ## Make a Local Customization
 
@@ -63,7 +86,7 @@ A customization is made in the fork, not by copying files beside the Gitlink. St
 ```bash
 cd refTemplates/smods/icm-architect_fork
 git remote get-url upstream >/dev/null 2>&1 || \
-  git remote add upstream https://github.com/RinDig/ICM-Architect.git
+  git remote add upstream https://github.com/RinDig/icm-architect.git
 git fetch upstream main
 git switch main
 # Make and test the intended change.
@@ -117,11 +140,13 @@ No source files, generated indexes, recovery artifacts, device state, or applica
 
 The method is completed as a composition of a **System map** for repository editing and a nested, documentation-only **maintenance Pipeline** at [`docs/icm/maintenance/CLAUDE.md`](icm/maintenance/CLAUDE.md). The pipeline separates stable rules/templates from per-update artifacts, requires a human design gate, verifies links and canonical sources, and records `master-staging` validation before a later `master` merge. See [`docs/icm/_meta/method-coverage.md`](icm/_meta/method-coverage.md) for the exact method-to-file coverage.
 
-Historical and pending PRs are not silently absorbed into this implementation. [`docs/icm/_meta/related-pull-requests.md`](icm/_meta/related-pull-requests.md) reconciles the merged reconnaissance precursor (#4), the open metadata-recovery skeleton (#47), the pending CAVEMAN workspace (#103), and this direct implementation (#232).
+Historical and pending PRs are not silently absorbed into this implementation. [`docs/icm/_meta/related-pull-requests.md`](icm/_meta/related-pull-requests.md) reconciles the merged reconnaissance precursor (#4), the open metadata-recovery skeleton (#47), the pending CAVEMAN workspace (#103), and this direct implementation (#232). Cost-of-remembering integration is tracked as PR #485.
 
 ## References
 
-[1]: https://github.com/RinDig/ICM-Architect "RinDig/icm-architect — upstream project and usage overview"
+[1]: https://github.com/RinDig/icm-architect "RinDig/icm-architect — upstream project and usage overview"
 [2]: https://github.com/RinDig/Interpretable-Context-Methodology "RinDig/Interpretable-Context-Methodology — full conventions and reference workspaces"
 [3]: https://github.com/RinDig/Content-Agent-Routing-Promptbase "RinDig/Content-Agent-Routing-Promptbase — layered context-routing precedent"
 [4]: https://github.com/timerloggedout-spec/icm-cctv_fork "timerloggedout-spec/icm-cctv_fork — optional file-backed visual review reference"
+[5]: https://github.com/timerloggedout-spec/cost-of-remembering_fork "timerloggedout-spec/cost-of-remembering_fork — filesystem memory evidence"
+[6]: https://github.com/RinDig/AuditEngine "RinDig/AuditEngine — staged for adapt"

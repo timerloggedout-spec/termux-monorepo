@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the governed Termux fork submodules from the superproject index."""
+"""Validate governed Termux fork submodules under refTemplates/smods."""
 
 from __future__ import annotations
 
@@ -11,6 +11,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 GITMODULES = ROOT / ".gitmodules"
+SMODS_PREFIX = "refTemplates/smods/"
+# Hard checks for operator-owned forks (URL must match + gitlink present).
 REQUIRED = {
     "refTemplates/smods/termux-mcp-server_fork": "https://github.com/timerloggedout-spec/termux-mcp-server_fork.git",
     "refTemplates/smods/mcp-android-ssh_fork": "https://github.com/timerloggedout-spec/mcp-android-ssh_fork.git",
@@ -36,6 +38,10 @@ def main() -> int:
         if path:
             discovered[path] = url
 
+    smods = {p: u for p, u in discovered.items() if p.startswith(SMODS_PREFIX)}
+    if not smods:
+        fail("no refTemplates/smods/* entries in .gitmodules")
+
     for path, expected_url in REQUIRED.items():
         actual_url = discovered.get(path)
         if actual_url != expected_url:
@@ -49,9 +55,6 @@ def main() -> int:
         for line in listing
         if line.startswith("160000 ") and "\t" in line
     }
-    for path in REQUIRED:
-        if path not in gitlinks:
-            fail(f"{path}: missing pinned gitlink in the superproject index")
 
     status = subprocess.run(
         ["git", "submodule", "status", "--cached"],
@@ -60,11 +63,33 @@ def main() -> int:
         text=True,
         check=True,
     ).stdout
+
+    drift: list[str] = []
+    for path in sorted(smods):
+        if path not in gitlinks:
+            msg = f"{path}: listed in .gitmodules but missing 160000 gitlink in index"
+            if path in REQUIRED:
+                fail(msg)
+            drift.append(msg)
+            print(f"WARN: {msg}", file=sys.stderr)
+            continue
+        if path not in status:
+            msg = f"{path}: not present in cached submodule status"
+            if path in REQUIRED:
+                fail(msg)
+            drift.append(msg)
+            print(f"WARN: {msg}", file=sys.stderr)
+
     for path in REQUIRED:
+        if path not in gitlinks:
+            fail(f"{path}: missing pinned gitlink in the superproject index")
         if path not in status:
             fail(f"{path}: not present in cached submodule status")
 
-    print(f"OK: validated {len(REQUIRED)} governed fork submodules")
+    print(
+        f"OK: validated {len(REQUIRED)} governed forks; "
+        f"{len(smods)} smods entries; {len(drift)} non-required drift warning(s)"
+    )
     return 0
 
 

@@ -1,0 +1,40 @@
+{
+  "collected_at": "2026-10-10T09:46:42.465972+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 38038733184,
+    "endpoint": ".../runs/38038733184/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 114174577322,
+        "run_id": 38038733184,
+        "workflow_name": "Fix-on-Failure Agent",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/38038733184",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAalVXKqg",
+        "head_sha": "c1ca1ac90a89983543719a94968839a13360cb8e",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/114174577322",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/38038733184/job/114174577322",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-10-10T08:41:14Z",
+        "started_at": "2026-10-10T08:41:14Z",
+        "completed_at": "2026-10-10T08:41:05Z",
+        "name": "fix",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/114174577322",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      }
+    ]
+  }
+}

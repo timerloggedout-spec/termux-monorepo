@@ -1,0 +1,42 @@
+name: Tunnel Canary
+on:
+  schedule: [{cron: '*/30 * * * *'}]
+  workflow_dispatch:
+permissions: {}
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Ping agent health (Lead/Lag class)
+        env:
+          URL: ${{ secrets.DEEPSEEK_AGENT_URL }}
+        run: |
+          set -euo pipefail
+          # Lead/Lag: missing URL = operational lag (inventory), not correctness failure.
+          if [ -z "${URL:-}" ]; then
+            echo "::notice::lead_lag=lag_operational reason=DEEPSEEK_AGENT_URL_unset; not dual-gate"
+            exit 0
+          fi
+          set +e
+          curl_err=$(mktemp)
+          code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 15 "$URL/health" 2>"$curl_err")
+          curl_rc=$?
+          set -e
+          err=$(tr '\n' ' ' < "$curl_err" | head -c 240)
+          rm -f "$curl_err"
+          echo "health -> ${code:-000} curl_rc=$curl_rc"
+          if [ -n "$err" ]; then
+            echo "curl_stderr=$err"
+          fi
+          # Ephemeral tunnels expire. DNS/connect 000 is inventory lag, not dual-gate.
+          if [ "${code:-000}" = "000" ] || [ "$curl_rc" -ne 0 ] || [ "$code" = "404" ]; then
+            echo "::notice::lead_lag=lag_operational code=${code:-000} rc=$curl_rc; not dual-gate"
+            exit 0
+          fi
+          if [ "$code" = "200" ]; then
+            echo "::notice::lead_lag=lag_success_badge tunnel_health=200"
+            exit 0
+          fi
+          echo "::error::lead_lag=lag_failure tunnel health $code"
+          exit 1

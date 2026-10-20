@@ -15,15 +15,28 @@ try:
 except ImportError:  # Supports direct script use.
     from compiler import CompilationError, load_json
 
-MERGER_ID = "archwiz.context_relationships.seed_merger@1.0"
+MERGER_ID = "archwiz.context_relationships.seed_merger@1.4"
+
+# Line spans are observations of the same symbol, not identity. Collectors
+# disagree when one parse includes a decorator or trailing blank and another
+# does not. Historical seeds may store the same span as int or numeric string.
+# Missing observed_at must not fail the historical backfill.
+SPAN_ATTRIBUTE_KEYS = {"line", "start_line", "end_line"}
 
 
-def node_reference(record: Mapping[str, Any]) -> str:
-    kind = record.get("kind")
-    external_id = record.get("external_id")
-    if not isinstance(kind, str) or not isinstance(external_id, str):
-        raise CompilationError("seed node must contain string kind and external_id")
-    return f"{kind}:{external_id}"
+def span_line(value: Any) -> int | None:
+    """Coerce a span observation to int. Bool is not a line number."""
+    if isinstance(value, bool) or value is None:
+        return None
+    if isinstance(value, int):
+        return value
+    if isinstance(value, float) and value.is_integer():
+        return int(value)
+    if isinstance(value, str):
+        text = value.strip()
+        if text.isdigit() or (text.startswith("-") and text[1:].isdigit()):
+            return int(text)
+    return None
 
 
 def merge_attributes(
@@ -39,6 +52,19 @@ def merge_attributes(
     timestamps_available = isinstance(existing_observed_at, str) and isinstance(incoming_observed_at, str)
     for key, value in right.items():
         if key in merged and merged[key] != value:
+            if key in SPAN_ATTRIBUTE_KEYS:
+                left_line = span_line(merged[key])
+                right_line = span_line(value)
+                if left_line is None and right_line is None:
+                    continue
+                if left_line is None:
+                    merged[key] = right_line
+                    continue
+                if right_line is None:
+                    merged[key] = left_line
+                    continue
+                merged[key] = max(left_line, right_line) if key == "end_line" else min(left_line, right_line)
+                continue
             if not timestamps_available:
                 raise CompilationError(f"node {node_ref} has contradictory attribute {key!r}")
             if incoming_observed_at >= existing_observed_at:
@@ -48,7 +74,31 @@ def merge_attributes(
     return merged
 
 
-def merge_node(existing: Mapping[str, Any], incoming: Mapping[str, Any]) -> dict[str, Any]:
+def node_reference(record: Mapping[str, Any]) -> str:
+    kind = record.get("kind")
+    external_id = record.get("external_id")
+    if not isinstance(kind, str) or not isinstance(external_id, str):
+        raise CompilationError("seed node must contain string kind and external_id")
+    return f"{kind}:{external_id}"
+
+
+def canonical_github_blob_url(url: str, owner: str, name: str, ref: str) -> str:
+    """Rewrite blob locators onto the seed ref. File identity is the path, not the blob SHA."""
+    marker = f"https://github.com/{owner}/{name}/blob/"
+    if not url.startswith(marker):
+        return url
+    rest = url[len(marker):].split("#", 1)[0].split("?", 1)[0]
+    parts = rest.split("/", 1)
+    if len(parts) != 2 or not parts[1]:
+        return url
+    return f"{marker}{ref}/{parts[1]}"
+
+
+def merge_node(
+    existing: Mapping[str, Any],
+    incoming: Mapping[str, Any],
+    repository: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
     node_ref = node_reference(existing)
     if node_reference(incoming) != node_ref:
         raise CompilationError("cannot merge different nodes")
@@ -60,12 +110,31 @@ def merge_node(existing: Mapping[str, Any], incoming: Mapping[str, Any]) -> dict
         existing.get("observed_at"),
         incoming.get("observed_at"),
     )
+    owner = repository.get("owner") if isinstance(repository, Mapping) else None
+    name = repository.get("name") if isinstance(repository, Mapping) else None
+    ref = repository.get("default_branch") if isinstance(repository, Mapping) else None
+    can_canonicalize = all(isinstance(value, str) and value for value in (owner, name, ref))
     for field in ("url",):
         left, right = existing.get(field), incoming.get(field)
+        if can_canonicalize and isinstance(left, str):
+            left = canonical_github_blob_url(left, owner, name, ref)
+        if can_canonicalize and isinstance(right, str):
+            right = canonical_github_blob_url(right, owner, name, ref)
         if left and right and left != right:
-            raise CompilationError(f"node {node_ref} has contradictory {field}")
+            # Prefer the canonical repository URL for issue nodes when a contradictory external URL is present.
+            # Historical collection can surface cross-repo references that should not fail the entire backfill.
+            canonical_prefix = f"https://github.com/{owner}/{name}/"
+            left_canonical = isinstance(left, str) and left.startswith(canonical_prefix)
+            right_canonical = isinstance(right, str) and right.startswith(canonical_prefix)
+            if node_ref.startswith("issue:") and (left_canonical or right_canonical):
+                preferred = left if left_canonical else right
+                merged[field] = preferred
+                continue
+            raise CompilationError(f"node {node_ref} has contradictory {field}: {left!r} vs {right!r}")
         if right:
             merged[field] = right
+        elif left:
+            merged[field] = left
     observed = [value for value in (existing.get("observed_at"), incoming.get("observed_at")) if isinstance(value, str)]
     if observed:
         merged["observed_at"] = max(observed)
@@ -97,7 +166,11 @@ def merge_seeds(*seeds: Mapping[str, Any]) -> tuple[dict[str, Any], dict[str, An
             if not isinstance(raw_node, Mapping):
                 raise CompilationError("seed node must be an object")
             reference = node_reference(raw_node)
-            nodes[reference] = merge_node(nodes[reference], raw_node) if reference in nodes else dict(raw_node)
+            nodes[reference] = (
+                merge_node(nodes[reference], raw_node, repository)
+                if reference in nodes
+                else dict(raw_node)
+            )
         for raw_edge in raw_edges:
             if not isinstance(raw_edge, Mapping):
                 raise CompilationError("seed edge must be an object")

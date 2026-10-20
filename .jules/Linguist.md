@@ -46,3 +46,80 @@ Restore the behavior as an explicit reversible phase in `workspace/compression_s
 - `1103d832` / `51023b87` / `7a6e5a7` — cached mappings, Caveman, single-pass regex optimization
 - `4eb9f830` / `267fecc` — fast-path term search
 - #196 — `AGENTS.hum.md` round-trip milestone
+
+## 2026-09-04 - Fast-Path Search Short-Circuiting in Surface Codecs
+**Learning:**
+Adding a pre-search check (`if not VARIANT_REGEX.search(text): return text`) before string substitution in `to_1337speak()` and `from_1337speak()` reduces CPU execution time on non-matching prose/inputs from ~24.5µs to ~6.2µs (~4x speedup) by bypassing RNG instantiation and regex match allocations.
+
+**Action:**
+Apply pre-search short-circuit guards on single-pass regex transformers when processing high volumes of uncompressed prose.
+
+## 2026-09-10 - Closure Allocation Elimination and Direct RNG Handle Resolution
+**Learning:**
+Defining inner callback functions inside high-frequency string substitution functions (e.g. `_sub_cb` in `translate_text_raw` or `replace` in `from_1337speak`) creates Python closure function object allocations on every execution frame. Lifting callbacks to module-level functions (`_sub_cb_comp`, `_sub_cb_decomp`, `_from_1337_replace`) eliminates per-call closure creation overhead. Additionally, in `to_1337speak()`, avoiding `random.Random()` object creation when unseeded by resolving `rng.random if rng is not None else random.random` directly reduces execution latency on 1337speak surface encoding by ~25% (from 43.7µs to 32.7µs per invocation).
+
+**Action:**
+Extract nested substitution callbacks to module scope where possible and resolve default RNG method references directly instead of instantiating new `random.Random()` generator objects on every function invocation.
+
+## 2026-09-15 - Non-Capturing Trie Regex Root Groups and Code Fence Character Guarding
+**Learning:**
+Using capturing parentheses in root Trie regex patterns (`\b(...)` vs `\b(?:...)`) forces Python's regex engine to allocate match tuple capturing groups on every match, adding unnecessary overhead during regex matching loops. Switching `build_trie_regex` to construct root non-capturing groups `\b(?:...)\b` eliminates group allocation overhead. Additionally, guarding `line.strip().startswith('```')` with a cheap fast-path character check (`if "`" in line:`) avoids redundant `strip()` string allocations across document compilation loops.
+
+**Action:**
+Ensure all Trie-structured regex builders use non-capturing groups `(?:...)` at the root level, and prepend cheap character checks before invoking line string stripping methods in document iteration loops.
+
+## 2026-09-20 - Document-Level Fast-Path Short-Circuiting and Fenced Code Guarding
+**Learning:**
+Calling line-by-line document translation and regex parsing on documents that contain zero target translatable terms introduces unnecessary CPU overhead and string allocations. By adding a single document-level pre-search check (`if not text or not COMP_SINGLE_REGEX.search(text): return text`) in `compile_doc` and `decompile_doc`, non-matching documents bypass line splitting and regex parsing entirely, reducing latency from ~0.7-2.6ms down to ~0.02ms (~35x-130x speedup). Furthermore, tightening the code fence line check to `"```" in line and line.strip().startswith("```")` prevents string `strip()` allocations on lines with single backticks (e.g., inline code markers).
+
+**Action:**
+Always perform document-level fast-path search short-circuiting before line splitting in document transformation routines, and restrict code fence start checks using full triple-backtick substring guards.
+
+## 2026-09-25 - Surface Codec Translation Fast-Path for 100% Substitution Probability
+**Learning:**
+Evaluating character-by-character probability checks (`rand_val() < probability`), per-match `list(token)` conversions, and string joins during 1337speak surface codec substitution when `probability == 1.0` adds unnecessary CPU overhead and closure frame allocations. Implementing a dedicated fast-path branch using a pre-computed C-level string translation table (`LEET_TRANS = str.maketrans(...)`) combined with a top-level match callback (`_replace_leet_100`) bypasses RNG iterations and list allocations, reducing invocation latency for `to_1337speak(text, probability=1.0)` from ~42.4µs to ~36.4µs (~14% speedup).
+
+**Action:**
+When surface codecs support configurable mutation probabilities, add a fast-path branch for 100% probability using pre-computed C-level string translation tables (`str.maketrans` / `str.translate`) and top-level callbacks to bypass RNG and string construction allocations.
+
+## 2026-10-02 - Stateful Context Object for Line Translation Placeholder Management
+**Learning:**
+Instantiating multiple nested function closures (`link_repl`, `bold_repl_1`, `bold_repl_2`, etc.) and lambdas inside high-frequency line translation functions like `translate_line` allocates function objects on every single line execution frame. Refactoring line translation to use a lightweight `LinePlaceholderContext` class with `__slots__` and pre-bound methods consolidates placeholder tracking and regex match callbacks, eliminating per-line closure allocations and reducing document compilation latency by ~15% (from 1.70s to 1.45s per 1,000 document compilations). Furthermore, fast-path character checks for path regex matching must check `.` alongside `/`, `\\`, and `~` to ensure standalone filenames (e.g., `script.py`) are protected.
+
+**Action:**
+Use `__slots__` context objects with pre-bound method callbacks instead of inner function closures in high-frequency line iteration loops, and ensure character guards cover all matching prefix/separator symbols including dot extensions.
+
+## 2026-09-25 - Decimal Guard via Pre-Compiled Regex Search
+**Learning:**
+Using generator expressions like `any(c.isdigit() for c in line)` inside high-frequency line iteration loops allocates a Python generator on every line that already contains `.`. Replacing that guard with `DECIMAL_PATTERN.search(line)` reuses the module-level compiled pattern and delegates digit+dot detection to the C regex engine.
+
+**Action:**
+Prefer pre-compiled `PATTERN.search(text)` over Python `any(...)` generator guards for numeric/decimal checks in `translate_line`.
+
+## 2026-10-03 - ASCII Trie Character Class Expansion vs Unicode `re.IGNORECASE` Overhead
+**Learning:**
+Compiling Trie-structured regular expressions with the `re.IGNORECASE` flag in Python forces the regex engine to perform Unicode case-folding table lookups on every single character comparison across string scanning operations. By expanding alphabetic characters into ASCII case character classes (`[aA]`, `[bB]`) directly within Trie regex node generation, case matching is executed via direct ASCII byte comparisons in C-level regex automaton state transitions. Removing `re.IGNORECASE` reduced document compilation latency by ~20% and PhaseCodec surface transformations by ~21-25%. Additionally, extracting top-level callback functions (`_replace_leet_default`) for default probability configurations in `to_1337speak()` eliminated inner function closure allocations during high-frequency surface codec invocations.
+
+**Action:**
+In high-performance regex matching pipelines over ASCII technical documents, compile explicit character class branches into Trie regex builders and omit `re.IGNORECASE` flags to delegate case matching directly to automaton state transitions.
+
+## 2026-10-04 - Invariant Token Pre-Filtering Set in Surface Codecs
+**Learning:**
+During high-frequency randomized surface codec substitutions (`to_1337speak`), executing character-by-character loop iterations, dictionary lookups, list allocations, and random number generator evaluations on matched tokens that contain zero eligible leet substitution characters (e.g., `pr0b3`, `h4x`, `3ch0`, `l00p`, `gr1m01r3`) creates significant CPU overhead (~25% of callback runtime). Precomputing an `O(1)` module-level set `VARIANTS_WITH_NO_ELIGIBLE` allows `_replace_leet_default` to short-circuit instantly for invariant tokens, bypassing list creation and RNG evaluations.
+
+**Action:**
+In randomized surface transformers, pre-filter non-mutable tokens using pre-computed module-scope sets to eliminate unnecessary allocations and RNG evaluations.
+
+## 2026-10-05 - Mutable-Only Variant Trie Pre-Filtering and Positional Character Indexing
+**Learning:**
+When performing randomized surface codec transformations (`to_1337speak`), executing regex matching over all variant tokens (including invariant tokens like `pr0b3`, `h4x`, `3ch0`, `l00p`, `gr1m01r3`) causes the regex engine to trigger match callbacks and perform string replacements on tokens that will never be mutated. Filtering the token dictionary at module load to construct `MUTABLE_VARIANT_REGEX` (which matches only tokens containing eligible leet characters) allows the regex engine to skip invariant tokens entirely. Furthermore, pre-computing `MUTABLE_VARIANT_MAP` to store `(character_position, leet_char)` tuples for each token allows the substitution callback to index mutable characters directly, bypassing string character loops and `LEET_MAP.get()` lookups. This reduced `to_1337speak()` execution latency from 1.98ms to 1.70ms per call (~15% speedup).
+
+**Action:**
+In surface codec transformers, build pre-search regexes using only mutable dictionary tokens and pre-compute positional index maps to eliminate runtime character iteration and map lookups inside substitution callbacks.
+
+## 2026-10-06 - Fast-Path Phrase Existence Guarding and Redundant Pre-Search Elimination
+**Learning:**
+Executing 32 sequential `.sub()` regex passes unconditionally in `compress()` / `caveman()` creates significant regex matcher overhead on non-matching prose. Adding a C-level substring pre-check (`if phrase.lower() in text_lower:`) before calling `pattern.sub()` bypasses regex evaluations on non-matching phrases, reducing execution time by ~54% (~2.18x speedup) while preserving overlapping space-bounded token semantics. Additionally, calling `.search()` immediately prior to `.sub()` in `to_1337speak()` and `from_1337speak()` forces Python's regex engine to perform an extra full pass over document text. Removing redundant `.search()` checks allows `.sub()` to perform substitution in a single C-level pass, reducing PhaseCodec surface transformation latency by ~14.5% - 15.3%.
+
+**Action:**
+Use C-level substring guards (`if phrase.lower() in text_lower:`) before running sequential regex phrase substitutions, pre-compute reverse pair tuples at module scope, and avoid pre-calling `.search()` prior to `.sub()` on document transformations.

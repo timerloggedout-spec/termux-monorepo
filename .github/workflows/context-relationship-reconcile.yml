@@ -20,7 +20,7 @@ permissions:
   pull-requests: read
 
 concurrency:
-  group: context-relationship-writer-master-staging
+  group: context-relationship-writer-master
   cancel-in-progress: false
 
 jobs:
@@ -31,7 +31,7 @@ jobs:
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
-          ref: master-staging
+          ref: master
           fetch-depth: 1
           persist-credentials: true
 
@@ -50,7 +50,7 @@ jobs:
             --root . \
             --owner "$GITHUB_REPOSITORY_OWNER" \
             --repo "${GITHUB_REPOSITORY#*/}" \
-            --ref master-staging \
+            --ref master \
             --max-items "$MAX_ITEMS" \
             --max-commits "$MAX_COMMITS" \
             --max-comments-per-item 10 \
@@ -82,4 +82,4 @@ jobs:
             -m 'Implements: CRG-05' \
             -m 'Agent-Identity: GitHub Actions Context Indexer' \
             -m 'Task-Ref: CRG-05'
-          git push origin HEAD:master-staging
+          git push origin HEAD:master

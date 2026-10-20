@@ -1,5 +1,6 @@
 import json
 import time
+import os
 
 TELEMETRY_LOG = "agent_telemetry_stream.json"
 
@@ -14,5 +15,23 @@ class TermuxTelemetryLogger:
         print(f"{timestamp} {color_tag} [{agent_id}]{context_str}: {message}")
         log_entry = {"timestamp": timestamp, "level": level, "agent": agent_id,
                      "target": target_file, "attempt": attempt, "message": message}
-        with open(TELEMETRY_LOG, "a") as f:
-            f.write(json.dumps(log_entry) + "\n")
+        # Security: Reject symlinks and open with atomic 0o600 permissions to avoid umask exposure
+        if os.path.islink(TELEMETRY_LOG):
+            return
+        try:
+            fd = os.open(TELEMETRY_LOG, os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o600)
+        except OSError:
+            return
+        try:
+            if os.path.islink(TELEMETRY_LOG):
+                os.close(fd)
+                return
+            with os.fdopen(fd, "a", encoding="utf-8") as f:
+                f.write(json.dumps(log_entry) + "\n")
+        except Exception:
+            pass
+        if not os.path.islink(TELEMETRY_LOG):
+            try:
+                os.chmod(TELEMETRY_LOG, 0o600)
+            except Exception:
+                pass

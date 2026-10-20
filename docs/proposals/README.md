@@ -14,6 +14,7 @@
 | kimi-cloud-offload | P1 | posted | [active/kimi-cloud-offload/](active/kimi-cloud-offload/) |
 | chatgpt-initial | P2 | posted | [active/chatgpt-initial/](active/chatgpt-initial/) |
 | chatgpt-droidapp | P2 | posted | [active/chatgpt-droidapp/](active/chatgpt-droidapp/) |
+| agent-contributor-provenance | P1 | in_review | [active/agent-contributor-provenance/](active/agent-contributor-provenance/) |
 | notation-sets-evolution | P1 | posted | [active/notation-sets/](active/notation-sets/) |
 
 ## Large sources / debate branches

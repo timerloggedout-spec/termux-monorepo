@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/matrix",
+      "destination": "/matrix.html"
+    },
+    {
+      "source": "/lane-matrix",
+      "destination": "/matrix.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/data/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=60, s-maxage=60"
+        }
+      ]
+    }
+  ],
+  "ignoreCommand": "bash \"$(git rev-parse --show-toplevel)/scripts/ci/vercel_ignore_build.sh\" help-wanted-dashboard"
+}

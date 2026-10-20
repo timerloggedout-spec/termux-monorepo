@@ -6,6 +6,13 @@ SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 SNAPSHOT="$SCRIPT_DIR/termux-resource-snapshot.sh"
 JOB_ID=43107
 
+# The notifier is provided by the optional Termux:API addon. Without it the
+# whole sentinel is a no-op, so exit cleanly instead of aborting under `set -e`
+# on the first missing `termux-notification` call.
+if ! command -v termux-notification >/dev/null 2>&1; then
+  exit 0
+fi
+
 if [ ! -x "$SNAPSHOT" ]; then
   termux-notification --id "$JOB_ID" --title "Termux sentinel unavailable" --content "Resource snapshot script is missing or not executable."
   exit 0

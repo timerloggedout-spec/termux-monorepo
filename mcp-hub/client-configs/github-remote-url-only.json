@@ -1,0 +1,12 @@
+{
+  "_comment": "URL-only agents (Android / OAuth-field UIs). No command/args. Paste URL + PAT into the app.",
+  "mcpServers": {
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "headers": {
+        "Authorization": "Bearer REPLACE_WITH_GITHUB_PAT"
+      }
+    }
+  }
+}

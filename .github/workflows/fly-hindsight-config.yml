@@ -1,0 +1,77 @@
+name: Fly Hindsight Config
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "apply | restart | status"
+        required: true
+        default: "apply"
+        type: choice
+        options: [apply, restart, status]
+
+jobs:
+  config:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install flyctl
+        run: curl -L https://fly.io/install.sh | sh
+
+      - name: Add flyctl to PATH
+        run: echo "$HOME/.fly/bin" >> $GITHUB_PATH
+
+      - name: Apply secrets + restart
+        if: ${{ github.event.inputs.action == 'apply' }}
+        env:
+          FLY_API_TOKEN:   ${{ secrets.Fly_io_ORG_TOKEN }}
+          OPENROUTER_KEY:  ${{ secrets.OPENROUTER_API_KEY }}
+          GEMINI_KEY:      ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          set -euo pipefail
+          [ -n "$OPENROUTER_KEY" ] || { echo "::error::OPENROUTER_API_KEY missing"; exit 1; }
+          [ -n "$GEMINI_KEY" ]     || { echo "::error::GEMINI_API_KEY missing"; exit 1; }
+
+          fly secrets set -a hindsight-termux \
+            HINDSIGHT_API_LLM_PROVIDER="openrouter" \
+            HINDSIGHT_API_LLM_API_KEY="$OPENROUTER_KEY" \
+            HINDSIGHT_API_LLM_MODEL="openai/gpt-4o-mini" \
+            HINDSIGHT_API_EMBEDDINGS_PROVIDER="google" \
+            HINDSIGHT_API_EMBEDDINGS_API_KEY="$GEMINI_KEY" \
+            HINDSIGHT_API_EMBEDDINGS_MODEL="text-embedding-004" \
+            HINDSIGHT_API_RERANKER_PROVIDER="rrf" \
+            HINDSIGHT_BIND_HOST="0.0.0.0" \
+            HINDSIGHT_BIND_PORT="8888"
+
+          fly machine restart -a hindsight-termux || true
+          sleep 30
+
+          URL="https://hindsight-termux.fly.dev/health"
+          for i in $(seq 1 40); do
+            code=$(curl -sS -o /dev/null -w '%{http_code}' -m 15 "$URL" || echo 000)
+            echo "attempt $i: $code"
+            [ "$code" = "200" ] && { echo "LIVE"; break; }
+            sleep 20
+          done
+
+          echo "=== last 40 log lines ==="
+          fly logs -a hindsight-termux --no-tail 2>&1 | tail -40 || true
+
+      - name: Restart only
+        if: ${{ github.event.inputs.action == 'restart' }}
+        env:
+          FLY_API_TOKEN: ${{ secrets.Fly_io_ORG_TOKEN }}
+        run: |
+          fly machine restart -a hindsight-termux
+          sleep 30
+          fly status -a hindsight-termux
+
+      - name: Status
+        if: ${{ github.event.inputs.action == 'status' }}
+        env:
+          FLY_API_TOKEN: ${{ secrets.Fly_io_ORG_TOKEN }}
+        run: |
+          fly status -a hindsight-termux
+          curl -sS -m 30 -o /dev/null -w 'health: %{http_code} in %{time_total}s\n' \
+            https://hindsight-termux.fly.dev/health || true

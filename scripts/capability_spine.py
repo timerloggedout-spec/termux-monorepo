@@ -8,6 +8,7 @@ capability. Eligibility is decided before a candidate receives a score.
 
 from __future__ import annotations
 
+import itertools
 from collections.abc import Iterable
 from typing import Any
 
@@ -20,6 +21,8 @@ BRANCH_WRITE_EFFECTS = {
     "stacked_pull_request",
     "provider_configuration",
 }
+# Pre-computed valid effects union to avoid set allocation overhead per gate check
+VALID_EFFECTS = READ_ONLY_EFFECTS | BRANCH_WRITE_EFFECTS
 
 
 def _clamp(value: float, low: float = 0.0, high: float = 1.0) -> float:
@@ -66,7 +69,7 @@ def _hard_gate_reason(
     """Return the first failed authorization gate; successful gates return None."""
     if not capability or capability not in declared_capabilities:
         return "requested capability is not declared for this specialist"
-    if effect not in READ_ONLY_EFFECTS | BRANCH_WRITE_EFFECTS:
+    if effect not in VALID_EFFECTS:
         return "candidate effect is not declared by the capability policy"
     if not provenance.get("trusted") or not provenance.get("declared_source"):
         return "candidate provenance is not trusted and declared"
@@ -122,9 +125,8 @@ def make_candidate(
         openrouter_models,
         openrouter_catalog_state,
     )
-    limit = int(
-        limits.get(f"{provider}/{model}", limits.get(model, {})).get(capability, 0)
-    )
+    limit_entry = limits.get(f"{provider}/{model}") or limits.get(model) or {}
+    limit = int(limit_entry.get(capability, 0))
     quota_reason = None
     if limit <= 0:
         quota_reason = "no declared capability quota exists"
@@ -136,7 +138,8 @@ def make_candidate(
         availability = "blocked"
 
     elo = float(success_entry.get("elo", 1000))
-    suitability = float(success_entry.get("role_suitability", {}).get(capability, 1.0))
+    role_suitability_map = success_entry.get("role_suitability") or {}
+    suitability = float(role_suitability_map.get(capability, 1.0))
     historic_prior = _normalise_elo(elo) * _clamp(suitability / 1.3)
     repository_evidence_confidence = 0.20 if success_entry else 0.0
     repository_outcome = (
@@ -203,7 +206,7 @@ def decide(
     """Return a stable bounded observation without executing a specialist."""
     if mode != OBSERVE_MODE:
         raise ValueError("AR-18 accepts observe mode only")
-    all_candidates = list(candidates)[:MAX_CANDIDATES]
+    all_candidates = list(itertools.islice(candidates, MAX_CANDIDATES))
     eligible = [candidate for candidate in all_candidates if candidate["eligible"]]
     eligible.sort(
         key=lambda item: (

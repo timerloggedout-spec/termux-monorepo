@@ -1,0 +1,497 @@
+{
+  "schema_version": "1.0",
+  "registry_id": "termux-monorepo.foss-foresight",
+  "updated_at": "2026-09-27T18:30:00Z",
+  "maintainer": "timerloggedout-spec",
+  "policy": {
+    "horizons": [
+      "H0",
+      "H1",
+      "H2",
+      "H3"
+    ],
+    "evidence_status": [
+      "CONFIRMED",
+      "ATTRIBUTED",
+      "EARLY_SIGNAL",
+      "SPECULATIVE"
+    ],
+    "canonical_evidence_plane": "GitHub-native JSONL + immutable run/SHA/artifact linkage",
+    "vendor_neutrality": true,
+    "missing_evidence": "null",
+    "secrets_allowed": false
+  },
+  "resources": [
+    {
+      "id": "otel-core",
+      "name": "OpenTelemetry",
+      "category": "observability",
+      "horizon": "H0",
+      "evidence_status": "CONFIRMED",
+      "license": "Apache-2.0",
+      "canonical_sources": [
+        "https://github.com/open-telemetry/opentelemetry-specification",
+        "https://github.com/open-telemetry/semantic-conventions"
+      ],
+      "capabilities": [
+        "tracing",
+        "metrics",
+        "logs",
+        "OTLP",
+        "semantic-conventions"
+      ],
+      "lock_in_risk": "LOW",
+      "egress_risk": "LOW",
+      "reproducibility": "HIGH",
+      "procurement_action": "P0_ADOPT_NEUTRAL_TELEMETRY_BOUNDARY",
+      "unresolved": "GenAI/MCP semantic conventions remain development-status.",
+      "agent_interoperability": [
+        "GenAI semantic conventions",
+        "MCP instrumentation"
+      ],
+      "deployment": [
+        "self-host",
+        "container",
+        "local"
+      ],
+      "platforms": [
+        "linux",
+        "arm64",
+        "android-adjacent"
+      ]
+    },
+    {
+      "id": "otel-genai-mcp",
+      "name": "OpenTelemetry GenAI/MCP Semantic Conventions",
+      "category": "agent-interoperability",
+      "horizon": "H1",
+      "evidence_status": "CONFIRMED",
+      "license": "Apache-2.0",
+      "canonical_sources": [
+        "https://github.com/open-telemetry/semantic-conventions-genai",
+        "https://github.com/open-telemetry/semantic-conventions-genai/blob/main/docs/gen-ai/mcp.md"
+      ],
+      "capabilities": [
+        "agent-spans",
+        "tool-spans",
+        "MCP-tracing",
+        "context-propagation"
+      ],
+      "lock_in_risk": "LOW",
+      "egress_risk": "LOW",
+      "reproducibility": "MEDIUM",
+      "procurement_action": "ADAPTER_ONLY_UNTIL_STABLE",
+      "unresolved": "Field names and stability can change before standardization.",
+      "deployment": [
+        "library",
+        "collector"
+      ]
+    },
+    {
+      "id": "docker",
+      "name": "Docker Engine / OCI containers",
+      "category": "reproducible-environments",
+      "horizon": "H0",
+      "evidence_status": "CONFIRMED",
+      "license": "Apache-2.0",
+      "canonical_sources": [
+        "https://github.com/moby/moby",
+        "https://github.com/opencontainers/image-spec"
+      ],
+      "capabilities": [
+        "isolated-execution",
+        "image-digests",
+        "reproducible-ci",
+        "environment-fingerprints"
+      ],
+      "lock_in_risk": "LOW",
+      "egress_risk": "LOW",
+      "reproducibility": "HIGH",
+      "procurement_action": "P0_EXECUTION_SUBSTRATE",
+      "unresolved": "Containers are not equivalent to a VM trust boundary for hostile code.",
+      "deployment": [
+        "self-host",
+        "local",
+        "ci"
+      ],
+      "platforms": [
+        "linux",
+        "arm64"
+      ]
+    },
+    {
+      "id": "tree-sitter",
+      "name": "Tree-sitter",
+      "category": "ast-complexity",
+      "horizon": "H0",
+      "evidence_status": "CONFIRMED",
+      "license": "MIT",
+      "canonical_sources": [
+        "https://github.com/tree-sitter/tree-sitter"
+      ],
+      "capabilities": [
+        "incremental-parsing",
+        "syntax-trees",
+        "structural-analysis"
+      ],
+      "lock_in_risk": "LOW",
+      "egress_risk": "LOW",
+      "reproducibility": "HIGH",
+      "procurement_action": "P1_STRUCTURAL_COMPLEXITY_PROVIDER",
+      "unresolved": null,
+      "deployment": [
+        "library",
+        "cli",
+        "local"
+      ],
+      "platforms": [
+        "linux",
+        "arm64",
+        "android-adjacent"
+      ]
+    },
+    {
+      "id": "lizard",
+      "name": "Lizard",
+      "category": "complexity",
+      "horizon": "H0",
+      "evidence_status": "CONFIRMED",
+      "license": "MIT",
+      "canonical_sources": [
+        "https://github.com/terryyin/lizard"
+      ],
+      "capabilities": [
+        "CCN",
+        "NLOC",
+        "tokens",
+        "parameters",
+        "multi-language-analysis"
+      ],
+      "lock_in_risk": "LOW",
+      "egress_risk": "LOW",
+      "reproducibility": "HIGH",
+      "procurement_action": "P1_BROAD_COMPLEXITY_PROVIDER",
+      "unresolved": null,
+      "deployment": [
+        "python",
+        "cli",
+        "local"
+      ],
+      "platforms": [
+        "linux",
+        "arm64",
+        "android-adjacent"
+      ]
+    },
+    {
+      "id": "radon",
+      "name": "Radon",
+      "category": "complexity",
+      "horizon": "H0",
+      "evidence_status": "CONFIRMED",
+      "license": "MIT",
+      "canonical_sources": [
+        "https://github.com/rubik/radon"
+      ],
+      "capabilities": [
+        "Python-CCN",
+        "Halstead",
+        "maintainability-index"
+      ],
+      "lock_in_risk": "LOW",
+      "egress_risk": "LOW",
+      "reproducibility": "HIGH",
+      "procurement_action": "P1_PYTHON_COMPLEXITY_PROVIDER",
+      "unresolved": null,
+      "deployment": [
+        "python",
+        "cli",
+        "local"
+      ],
+      "platforms": [
+        "linux",
+        "arm64",
+        "android-adjacent"
+      ]
+    },
+    {
+      "id": "langfuse",
+      "name": "Langfuse",
+      "category": "evaluation-observability",
+      "horizon": "H1",
+      "evidence_status": "CONFIRMED",
+      "license": "MIT",
+      "canonical_sources": [
+        "https://github.com/langfuse/langfuse",
+        "https://github.com/langfuse/langfuse-docs"
+      ],
+      "capabilities": [
+        "traces",
+        "datasets",
+        "experiments",
+        "scores",
+        "OTel-ingestion"
+      ],
+      "lock_in_risk": "MEDIUM",
+      "egress_risk": "MEDIUM",
+      "reproducibility": "HIGH",
+      "procurement_action": "P1_OPTIONAL_EXPERIMENT_ADAPTER",
+      "unresolved": "Canonical evidence must remain independent of Langfuse persistence.",
+      "deployment": [
+        "self-host",
+        "cloud",
+        "docker"
+      ]
+    },
+    {
+      "id": "phoenix",
+      "name": "Arize Phoenix",
+      "category": "evaluation-observability",
+      "horizon": "H1",
+      "evidence_status": "CONFIRMED",
+      "license": "Apache-2.0",
+      "canonical_sources": [
+        "https://github.com/Arize-ai/phoenix"
+      ],
+      "capabilities": [
+        "OTel-tracing",
+        "evaluation",
+        "datasets",
+        "experiments",
+        "MCP-server"
+      ],
+      "lock_in_risk": "LOW",
+      "egress_risk": "LOW",
+      "reproducibility": "HIGH",
+      "procurement_action": "P1_PARALLEL_EXPERIMENT_ADAPTER",
+      "unresolved": "Compare operational cost and evidence completeness against Langfuse on identical cohorts.",
+      "deployment": [
+        "self-host",
+        "docker",
+        "local"
+      ]
+    },
+    {
+      "id": "mcp",
+      "name": "Model Context Protocol",
+      "category": "agent-interoperability",
+      "horizon": "H1",
+      "evidence_status": "CONFIRMED",
+      "license": "Apache-2.0",
+      "canonical_sources": [
+        "https://github.com/modelcontextprotocol"
+      ],
+      "capabilities": [
+        "tools",
+        "resources",
+        "prompts",
+        "client-server-interoperability"
+      ],
+      "lock_in_risk": "LOW",
+      "egress_risk": "LOW",
+      "reproducibility": "HIGH",
+      "procurement_action": "P0_INTEROPERABILITY_CONTRACT",
+      "unresolved": "Transport interoperability is ahead of semantic/conformance interoperability.",
+      "deployment": [
+        "stdio",
+        "streamable-http",
+        "local",
+        "self-host"
+      ]
+    },
+    {
+      "id": "maseval",
+      "name": "MASEval",
+      "category": "multi-agent-evaluation",
+      "horizon": "H0",
+      "evidence_status": "CONFIRMED",
+      "license": "MIT",
+      "canonical_sources": [
+        "https://github.com/maseval/MASEval",
+        "https://aclanthology.org/2026.acl-demo.34/"
+      ],
+      "capabilities": [
+        "system-level-benchmarking",
+        "framework-adapters",
+        "benchmark-lifecycle",
+        "evaluation-hooks"
+      ],
+      "lock_in_risk": "LOW",
+      "egress_risk": "LOW",
+      "reproducibility": "HIGH",
+      "procurement_action": "P2_MANAGER_TOURNAMENT_INPUT",
+      "unresolved": "Validate benchmark coverage for long-horizon and local/edge workloads.",
+      "deployment": [
+        "python",
+        "local",
+        "ci"
+      ],
+      "platforms": [
+        "linux",
+        "arm64"
+      ]
+    },
+    {
+      "id": "sigstore",
+      "name": "Sigstore",
+      "category": "supply-chain-provenance",
+      "horizon": "H0",
+      "evidence_status": "CONFIRMED",
+      "license": "Apache-2.0",
+      "canonical_sources": [
+        "https://github.com/sigstore",
+        "https://www.sigstore.dev/"
+      ],
+      "capabilities": [
+        "artifact-signing",
+        "identity-bound-provenance",
+        "verification"
+      ],
+      "lock_in_risk": "LOW",
+      "egress_risk": "MEDIUM",
+      "reproducibility": "HIGH",
+      "procurement_action": "P1_PROVENANCE_OPTION",
+      "unresolved": "Define offline/air-gapped verification policy.",
+      "deployment": [
+        "cli",
+        "ci"
+      ]
+    },
+    {
+      "id": "slsa",
+      "name": "SLSA",
+      "category": "supply-chain-provenance",
+      "horizon": "H0",
+      "evidence_status": "CONFIRMED",
+      "license": "Apache-2.0",
+      "canonical_sources": [
+        "https://github.com/slsa-framework/slsa"
+      ],
+      "capabilities": [
+        "build-provenance",
+        "supply-chain-levels",
+        "verification"
+      ],
+      "lock_in_risk": "LOW",
+      "egress_risk": "LOW",
+      "reproducibility": "HIGH",
+      "procurement_action": "P1_PROVENANCE_POLICY_INPUT",
+      "unresolved": null,
+      "deployment": [
+        "ci",
+        "policy"
+      ]
+    },
+    {
+      "id": "firecracker",
+      "name": "Firecracker",
+      "category": "agentic-security",
+      "horizon": "H0",
+      "evidence_status": "CONFIRMED",
+      "license": "Apache-2.0",
+      "canonical_sources": [
+        "https://github.com/firecracker-microvm/firecracker"
+      ],
+      "capabilities": [
+        "microvm-isolation",
+        "ephemeral-sandboxing"
+      ],
+      "lock_in_risk": "LOW",
+      "egress_risk": "LOW",
+      "reproducibility": "HIGH",
+      "procurement_action": "P1_UNTRUSTED_CODE_SANDBOX_RESEARCH",
+      "unresolved": "Requires compatible virtualization infrastructure; not a Termux-native runtime.",
+      "deployment": [
+        "linux",
+        "self-host"
+      ]
+    },
+    {
+      "id": "llama-cpp",
+      "name": "llama.cpp",
+      "category": "local-inference",
+      "horizon": "H0",
+      "evidence_status": "CONFIRMED",
+      "license": "MIT",
+      "canonical_sources": [
+        "https://github.com/ggml-org/llama.cpp"
+      ],
+      "capabilities": [
+        "CPU-inference",
+        "quantization",
+        "GGUF",
+        "local-server"
+      ],
+      "lock_in_risk": "LOW",
+      "egress_risk": "LOW",
+      "reproducibility": "HIGH",
+      "procurement_action": "P0_LOCAL_INFERENCE_BASELINE",
+      "unresolved": "Accelerator behavior remains device-specific.",
+      "deployment": [
+        "local",
+        "cli",
+        "server"
+      ],
+      "platforms": [
+        "linux",
+        "arm64",
+        "android-adjacent"
+      ]
+    },
+    {
+      "id": "nix",
+      "name": "Nix",
+      "category": "reproducible-environments",
+      "horizon": "H0",
+      "evidence_status": "CONFIRMED",
+      "license": "LGPL-2.1-or-later",
+      "canonical_sources": [
+        "https://github.com/NixOS/nix"
+      ],
+      "capabilities": [
+        "declarative-environments",
+        "content-addressed-builds",
+        "dependency-reproducibility"
+      ],
+      "lock_in_risk": "LOW",
+      "egress_risk": "LOW",
+      "reproducibility": "HIGH",
+      "procurement_action": "P1_REPRODUCIBILITY_RESEARCH",
+      "unresolved": "Evaluate operational complexity against the existing Docker/devcontainer contract.",
+      "deployment": [
+        "local",
+        "ci",
+        "linux"
+      ],
+      "platforms": [
+        "linux",
+        "arm64"
+      ]
+    },
+    {
+      "id": "nisto-ir8536",
+      "name": "NIST IR 8536 Supply Chain Traceability Meta-Framework",
+      "category": "supply-chain-provenance",
+      "horizon": "H0",
+      "evidence_status": "CONFIRMED",
+      "license": "PUBLICATION",
+      "canonical_sources": [
+        "https://www.nist.gov/news-events/news/2026/09/finalized-manufacturing-supply-chain-traceability-meta-framework"
+      ],
+      "capabilities": [
+        "traceability",
+        "interoperability",
+        "provenance-verification"
+      ],
+      "lock_in_risk": "NONE",
+      "egress_risk": "LOW",
+      "reproducibility": "MEDIUM",
+      "procurement_action": "P1_TRACEABILITY_POLICY_INPUT",
+      "unresolved": "NIST reported the Python reference implementation was still under final review on 2026-09-09.",
+      "deployment": [
+        "policy",
+        "reference-implementation-watch"
+      ]
+    }
+  ]
+}

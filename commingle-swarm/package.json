@@ -3,9 +3,9 @@
   "version": "0.2.0",
   "private": true,
   "scripts": {
-    "build:web": "cd web && npm run build",
-    "dev:web": "cd web && npm run dev",
-    "serve:web": "cd web && npm run serve",
+    "build:web": "cd web && pnpm run build",
+    "dev:web": "cd web && pnpm run dev",
+    "serve:web": "cd web && pnpm run serve",
     "start:node": "ts-node --transpile-only termux/src/node.ts",
     "build:node": "tsc -p tsconfig.json && node dist/termux/src/node.js"
   },

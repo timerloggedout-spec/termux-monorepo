@@ -9,7 +9,7 @@ The file `docs/schemas/openrouter-free-catalog.json` is a **seed** — an initia
 | **Every router use** | Prefer live OpenRouter `/api/v1/models` poll; free rule applied |
 | **Live success** | Refresh 1h process cache; optionally rewrite snapshot when `OPENROUTER_PERSIST_SNAPSHOT=true` |
 | **Live fail** | Fall back: 1h cache → seed snapshot → legacy hardcode |
-| **Daily workflow** | Always rewrite snapshot from live poll; open PR on drift |
+| **Daily workflow** | Rewrite snapshot from live poll and publish an immutable workflow artifact; do not open a PR on drift |
 
 A seed is not a frozen allow-list. It grows/shrinks with the live free set.
 

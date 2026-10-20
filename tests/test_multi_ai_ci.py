@@ -128,3 +128,81 @@ def test_ci_output_permissions(monkeypatch):
             os.chdir(original_cwd)
     finally:
         shutil.rmtree(temp_dir)
+
+
+def test_ci_output_symlink_safety(monkeypatch):
+    temp_dir = tempfile.mkdtemp()
+    try:
+        cache_symlink = Path(temp_dir) / "cache_symlink"
+        real_target_dir = Path(temp_dir) / "real_target_dir"
+        real_target_dir.mkdir()
+        os.symlink(real_target_dir, cache_symlink)
+
+        event_path = Path(temp_dir) / "event.json"
+        event_data = {
+            "action": "opened",
+            "pull_request": {"number": 137},
+            "repository": {"full_name": "test/repo"},
+        }
+        with open(event_path, "w", encoding="utf-8") as f:
+            json.dump(event_data, f)
+
+        monkeypatch.setenv("GITHUB_EVENT_PATH", str(event_path))
+        monkeypatch.setenv("OPERATOR_TOKEN", "test_token")
+        monkeypatch.setenv("DEEPSEEK_TOKEN", "test-model-token")
+
+        import backends.deepseek as ds_mod
+        import subprocess
+
+        monkeypatch.setattr(
+            ds_mod.DeepSeekBackend,
+            "__init__",
+            lambda self, session_manager: None,
+        )
+        monkeypatch.setattr(
+            ds_mod.DeepSeekBackend,
+            "send_message",
+            lambda self, msg, ctx: "Mocked output!",
+        )
+        monkeypatch.setattr(
+            subprocess,
+            "check_output",
+            lambda *a, **k: "diff",
+        )
+        monkeypatch.setattr(
+            subprocess,
+            "run",
+            lambda *a, **k: type("R", (), {"returncode": 0})(),
+        )
+
+        original_cwd = os.getcwd()
+        os.chdir(temp_dir)
+        try:
+            # Set deepseek_output.json as a symlink
+            output_file = Path("deepseek_output.json")
+            target_secret = Path(temp_dir) / "target_secret.txt"
+            target_secret.write_text("sensitive", encoding="utf-8")
+            os.symlink(target_secret, output_file)
+
+            monkeypatch.setattr(
+                sys,
+                "argv",
+                [
+                    "ci_mode.py",
+                    "--workspace",
+                    temp_dir,
+                    "--cache-dir",
+                    str(cache_symlink),
+                ],
+            )
+
+            import pytest
+            with pytest.raises(ValueError, match="cannot be a symlink"):
+                main()
+
+            # Verify target secret file content was untouched
+            assert target_secret.read_text(encoding="utf-8") == "sensitive"
+        finally:
+            os.chdir(original_cwd)
+    finally:
+        shutil.rmtree(temp_dir)

@@ -1,0 +1,16 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://github.com/timerloggedout-spec/termux-monorepo/docs/ops/MANAGER-TOURNAMENT.schema.json",
+  "title":"Manager Tournament Cohort","type":"object","additionalProperties":false,
+  "required":["schema_version","tournament_id","cohort_id","policy_version","task_contract_hash","environment_fingerprint","managers","evaluation_contract","provenance"],
+  "properties":{
+    "schema_version":{"const":"manager.tournament.v1"},"tournament_id":{"type":"string"},"cohort_id":{"type":"string"},
+    "policy_version":{"type":"string"},"task_contract_hash":{"type":"string"},"environment_fingerprint":{"type":"string"},
+    "managers":{"type":"array","minItems":1,"items":{"type":"object","additionalProperties":false,"required":["manager_id","policy_hash"],
+      "properties":{"manager_id":{"type":"string"},"policy_hash":{"type":"string"},"routing_policy":{"type":["string","null"]}}}},
+    "evaluation_contract":{"type":"object","additionalProperties":false,"required":["acceptance","evidence_schema","repetitions"],
+      "properties":{"acceptance":{"type":"string"},"evidence_schema":{"type":"string"},"repetitions":{"type":"integer","minimum":1}}},
+    "provenance":{"type":"object","additionalProperties":false,"required":["created_at","repository_sha"],
+      "properties":{"created_at":{"type":"string"},"repository_sha":{"type":"string"},"benchmark_source":{"type":["string","null"],"format":"uri"}}}
+  }
+}

@@ -16,6 +16,7 @@ from __future__ import annotations
 import os
 import re
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any, Mapping
 
 from she.incident import Incident, IncidentState
@@ -51,6 +52,14 @@ class SandboxError(ValueError):
 def live_sandbox_enabled() -> bool:
     """Live git/worktree materialization remains gated and unused in P0.5."""
     return os.environ.get("SHE_SANDBOX_LIVE", "").strip() == "1"
+
+
+def _validate_path(path_str: str, name: str) -> None:
+    p = Path(path_str)
+    if ".." in p.parts:
+        raise SandboxError(f"path traversal sequence '..' detected in {name}: {path_str!r}")
+    if p.is_symlink():
+        raise SandboxError(f"symlink detected in {name}: {path_str!r}")
 
 
 def _slug(text: str, *, max_len: int = 48) -> str:
@@ -132,15 +141,19 @@ class SandboxPlan:
         branch = str(data["branch"])
         if not branch.startswith(SANDBOX_BRANCH_PREFIX):
             raise SandboxError(f"sandbox branch must start with {SANDBOX_BRANCH_PREFIX}")
+        worktree_path = str(data["worktree_path"])
+        evidence_dir = str(data["evidence_dir"])
+        _validate_path(worktree_path, "worktree_path")
+        _validate_path(evidence_dir, "evidence_dir")
         return cls(
             incident_id=str(data["incident_id"]),
             branch=branch,
             base_ref=str(data.get("base_ref") or "refs/heads/master"),
             base_sha=str(data.get("base_sha") or ""),
-            worktree_path=str(data["worktree_path"]),
+            worktree_path=worktree_path,
             credential_profile=profile,
             env_profile=env,
-            evidence_dir=str(data["evidence_dir"]),
+            evidence_dir=evidence_dir,
             mutates_source=False,
             live=False,
             constraints=tuple(str(x) for x in (data.get("constraints") or ())),
@@ -168,10 +181,18 @@ def plan_repair_sandbox(
             f"sandbox not applicable for terminal state {incident.state.value}"
         )
 
+    _validate_path(worktree_root, "worktree_root")
+    _validate_path(evidence_root, "evidence_root")
+
     branch = sandbox_branch_name(incident)
     slug = _slug(incident.incident_id, max_len=24)
     creds = _credential_profile(incident)
     env = _env_profile(incident)
+    worktree_path = f"{worktree_root.rstrip('/')}/{slug}"
+    evidence_dir = f"{evidence_root.rstrip('/')}/{slug}"
+    _validate_path(worktree_path, "worktree_path")
+    _validate_path(evidence_dir, "evidence_dir")
+
     constraints = (
         "no_host_mount_expansion",
         "no_new_secret_scope",
@@ -184,10 +205,10 @@ def plan_repair_sandbox(
         branch=branch,
         base_ref=incident.ref or "refs/heads/master",
         base_sha=incident.sha,
-        worktree_path=f"{worktree_root.rstrip('/')}/{slug}",
+        worktree_path=worktree_path,
         credential_profile=creds,
         env_profile=env,
-        evidence_dir=f"{evidence_root.rstrip('/')}/{slug}",
+        evidence_dir=evidence_dir,
         mutates_source=False,
         live=False,
         constraints=constraints,

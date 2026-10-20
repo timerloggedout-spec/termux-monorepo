@@ -109,7 +109,11 @@ def create_askpass() -> Path:
     finally:
         handle.close()
     path = Path(handle.name)
-    path.chmod(path.stat().st_mode | stat.S_IXUSR)
+    if path.is_symlink():
+        path.unlink(missing_ok=True)
+        raise ValueError(f"Symlink askpass script rejected: {path}")
+    if os.name != "nt":
+        path.chmod(stat.S_IRWXU)
     return path
 
 

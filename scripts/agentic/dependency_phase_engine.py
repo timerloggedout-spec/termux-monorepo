@@ -201,6 +201,21 @@ def validate_plan(plan: dict[str, Any]) -> list[str]:
     return errors
 
 
+def compute_waves(phases: Iterable[dict[str, Any]]) -> dict[str, int]:
+    """Assign deterministic parallel-wave numbers from the dependency DAG.
+
+    Wave 0 contains phases with no prerequisites. A phase is placed one wave
+    after its latest prerequisite. Runtime evidence still decides readiness.
+    """
+    phase_list = list(phases)
+    order = topological_order(phase_list)
+    by_id = {phase["phase_id"]: phase for phase in phase_list}
+    waves: dict[str, int] = {}
+    for phase_id in order:
+        dependencies = by_id[phase_id].get("depends_on", [])
+        waves[phase_id] = 0 if not dependencies else max(waves[dependency] for dependency in dependencies) + 1
+    return waves
+
 def require_valid_plan(plan: dict[str, Any]) -> None:
     errors = validate_plan(plan)
     if errors:
@@ -328,19 +343,27 @@ def evaluate_plan(plan: dict[str, Any], snapshot: dict[str, Any] | None = None) 
         outcomes[phase_id] = Evaluation(phase_id, "ready", "all prerequisites and current evidence permit a claim",
                                         item.get("id") if item else None, project_status, pr_numbers, key)
 
+    waves = compute_waves(plan["phases"])
+    ordered = topological_order(plan["phases"])
+    evaluations = []
+    for phase_id in ordered:
+        entry = outcomes[phase_id].as_dict()
+        entry["wave"] = waves[phase_id]
+        evaluations.append(entry)
     return {
         "plan_id": plan["plan_id"],
         "plan_sha256": digest,
         "base_branch": plan["base_branch"],
         "valid": True,
-        "topological_order": topological_order(plan["phases"]),
-        "evaluations": [outcomes[phase_id].as_dict() for phase_id in topological_order(plan["phases"])],
+        "topological_order": ordered,
+        "waves": waves,
+        "evaluations": evaluations,
     }
 
 
 def _mermaid_label(phase: dict[str, Any], evaluation: dict[str, Any]) -> str:
     title = str(phase["title"]).replace('"', "'")
-    return f'{phase["phase_id"]}<br/>{title}<br/>{evaluation["state"]}'
+    return f'{phase["phase_id"]}<br/>Wave {evaluation["wave"]}<br/>{title}<br/>{evaluation["state"]}'
 
 
 def render_mermaid(plan: dict[str, Any], report: dict[str, Any]) -> str:
@@ -385,14 +408,14 @@ def render_markdown(plan: dict[str, Any], report: dict[str, Any]) -> str:
         render_mermaid(plan, report).rstrip(),
         "```",
         "",
-        "| Phase | State | GitHub Project status | Linked PRs | Reason |",
-        "|---|---|---|---|---|",
+        "| Wave | Phase | State | GitHub Project status | Linked PRs | Reason |",
+        "|---:|---|---|---|---|---|",
     ]
     for phase_id in report["topological_order"]:
         evaluation = evaluation_by_id[phase_id]
         prs = ", ".join(f"#{number}" for number in evaluation["pull_requests"]) or "—"
         project_status = evaluation["project_status"] or "unmapped"
-        lines.append(f"| `{phase_id}` | **{evaluation['state']}** | {project_status} | {prs} | {evaluation['reason']} |")
+        lines.append(f"| {evaluation['wave']} | `{phase_id}` | **{evaluation['state']}** | {project_status} | {prs} | {evaluation['reason']} |")
     lines.extend([
         "",
         "## Safety boundary",

@@ -21,6 +21,16 @@ from pathlib import Path
 DEFAULT_URL = "https://openrouter.ai/api/v1/models"
 USER_AGENT = "termux-monorepo-openrouter-free-catalog/1.0"
 
+# Module-level constant set to eliminate set instantiation per model check
+KNOWN_FREE_MODELS_WITHOUT_PRICING = {
+    "stealth/ox-alpha",
+    "google/lyria-3-clip-preview",
+    "google/lyria-3-pro-preview",
+}
+
+# Pre-allocated zero-pricing set for O(1) zero-price fast-path matching
+ZERO_PRICING = {"0", "0.0", 0, 0.0}
+
 
 def is_free_openrouter_model(model_id: str, pricing=None) -> bool:
     if not model_id:
@@ -28,15 +38,14 @@ def is_free_openrouter_model(model_id: str, pricing=None) -> bool:
     if model_id.endswith(":free"):
         return True
     if pricing is None:
-        return model_id in {
-            "stealth/ox-alpha",
-            "google/lyria-3-clip-preview",
-            "google/lyria-3-pro-preview",
-        }
+        return model_id in KNOWN_FREE_MODELS_WITHOUT_PRICING
+    prompt = pricing.get("prompt", 1.0)
+    completion = pricing.get("completion", 1.0)
+    # Bolt optimization: Fast-path zero matching to avoid float() parsing frames
+    if prompt in ZERO_PRICING and completion in ZERO_PRICING:
+        return True
     try:
-        return float(pricing.get("prompt", 1.0)) == 0.0 and float(
-            pricing.get("completion", 1.0)
-        ) == 0.0
+        return float(prompt) == 0.0 and float(completion) == 0.0
     except (TypeError, ValueError):
         return False
 

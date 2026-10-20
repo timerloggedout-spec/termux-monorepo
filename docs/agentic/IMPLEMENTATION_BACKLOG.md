@@ -1,20 +1,22 @@
 # Dependency-Phase Implementation Backlog
 
-**Status:** Proposed backlog. It is not registered as an active proposal, does not authorize work, and does not change existing workflow behavior.
+**Status:** HISTORICAL (post-land). Retained for provenance.
 
-The items are deliberately ordered so that policy and deterministic validation are reviewable before any agent-launch capability exists. Each implementation item should become a separate PR against `master`, cite its item ID, use the repository’s agent identity conventions where applicable, and pass `git diff --check`, `repo-gate`, `termux-smoke`, and the smallest relevant test.
+The original ordered backlog below guided PR #248 and follow-ups. The live system is documented in [`README.md`](README.md). New work should be registered via `docs/proposals/` rather than extending this file as authority.
 
-| Order | Proposed item | Dependency | Deliverable | Explicit exclusion |
-|---:|---|---|---|---|
-| 1 | **DPH-00-01 — Adopt canonical phase contract** | Human approval | Promote/revise the draft example into a reviewed canonical YAML plan and freeze schema version 1. | Workflow changes, submodule changes, agent launch. |
-| 2 | **DPH-00-02 — Implement pure validator** | DPH-00-01 | Parser, schema validation, duplicate/unknown/cycle checks, topological output, and fixtures. | GitHub writes or external service calls. |
-| 3 | **DPH-10-01 — Add read-only evaluator** | DPH-00-02 | A deterministic report that combines plan state with PR/check/item evidence. | Labels, comments, dispatches, merge/close actions. |
-| 4 | **DPH-20-01 — Add controlled phase-ready dispatcher** | DPH-10-01 plus human approval | Revalidation, plan-hash idempotency, one phase claim, and approved agent-launch adapter. | Automatic merge, proposal closure, submodule pointer updates. |
-| 5 | **DPH-20-02 — Add recovery/reconciliation report** | DPH-20-01 | Bounded report for stale claims, failed checks, and missed event diagnosis. | Automatic retries or high-frequency polling. |
-| 6 | **DPH-30-01 — Add derived projection** | DPH-10-01 | Deterministic JSON/Markdown/Mermaid or ASCII view generated only from canonical plan/evaluator output. | Rendering as authority; mutable terminal UI in CI. |
-| 7 | **DPH-40-01 — Evaluate Camshaft adapter portability** | DPH-30-01 | Pinned GanttML provenance, isolated build evidence, and fixture-parity comparison. | Importing an unpinned local path dependency. |
-| 8 | **DPH-50-01 — Evaluate optional local visual board** | DPH-30-01 | Local-only status board proposal derived from ICM CCTV/GanTTY patterns. | Network exposure or GitHub Actions runtime requirement. |
+| Order | Item | Outcome |
+|---:|---|---|
+| 1–3 | Canonical contract, pure validator, read-only evaluator | Delivered (PR #248) |
+| 4–5 | Controlled dispatcher + recovery report | Delivered (workflows + claim path) |
+| 6 | Derived projection (JSON/Markdown/Mermaid) | Delivered; waves + Gantt polish #717/#774 |
+| 7 | Camshaft / GanttML adapter portability | Deferred — inspiration only; no unpinned path dep |
+| 8 | Optional local visual board (ICM CCTV / GanTTY patterns) | Deferred — local-only; no CI/network exposure |
 
-## Required approval gates
+## Authority reminder
 
-No item may pass from design to implementation merely because a preceding item is marked complete in this document. The implementation PR must have an approved proposal/item context, applicable human approval evidence, and current required repository gates. The phase plan and GitHub Actions evaluator are expected to **report** such evidence, not replace the existing governance process.
+- Canonical plan: `dependency-phases.json`
+- Generated views: `DEPENDENCY_PHASES.md`, `dependency-phases.mmd`, report artifacts — **not** authority
+- Dispatch: re-evaluate live evidence; claim key `PHASE_ID:PLAN_SHA256`
+- Prohibited: automatic merge, automatic proposal closure, automatic submodule update, approval inference
+
+See also: [`docs/GANTT_DEPENDENCY_PHASES_ACTIONS_DESIGN.md`](../GANTT_DEPENDENCY_PHASES_ACTIONS_DESIGN.md) (historical design).

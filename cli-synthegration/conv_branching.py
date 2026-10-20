@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Branching conversation DAG: fork, merge, branch pointer management."""
-import sys, json, hashlib, time
+import sys, json, hashlib, time, os, re
 from pathlib import Path
 from typing import Dict, List, Optional
 from datetime import datetime, timezone
+
+SAFE_IDENTIFIER_RE = re.compile(r"^[a-zA-Z0-9_\-\.]+$")
 
 sys.path.insert(0, str(Path.home() / 'cli-synthegration'))
 from conv_versioner import ConversationDAG, MessageRef
@@ -121,15 +123,40 @@ class ConversationRepo:
     
     def link_knowledge(self, from_branch: str, to_branch: str, link_type: str = "reference"):
         """Create a semantic link between branches (knowledge graph edge)."""
+        for param_name, val in [("from_branch", from_branch), ("to_branch", to_branch), ("link_type", link_type)]:
+            if not val or not SAFE_IDENTIFIER_RE.match(str(val)) or ".." in str(val):
+                raise ValueError(f"Invalid {param_name}: must be safe identifier without path traversal")
+
+        if self.path.is_symlink():
+            raise ValueError("Symlink repository directory rejected for security")
+
+        try:
+            os.chmod(str(self.path), 0o700)
+        except OSError:
+            pass
+
         links_file = self.path / 'knowledge_links.jsonl'
-        link = {
-            'from': from_branch,
-            'to': to_branch,
-            'type': link_type,
-            'timestamp': datetime.now(timezone.utc).isoformat()
-        }
-        with open(links_file, 'a') as f:
-            f.write(json.dumps(link) + '\n')
+        if links_file.is_symlink():
+            raise ValueError("Symlink knowledge links file rejected for security")
+
+        fd = os.open(str(links_file), os.O_CREAT | os.O_WRONLY | os.O_APPEND, 0o600)
+        try:
+            try:
+                os.fchmod(fd, 0o600)
+            except OSError:
+                pass
+            link = {
+                'from': from_branch,
+                'to': to_branch,
+                'type': link_type,
+                'timestamp': datetime.now(timezone.utc).isoformat()
+            }
+            with os.fdopen(fd, 'a') as f:
+                f.write(json.dumps(link) + '\n')
+                fd = -1
+        finally:
+            if fd >= 0:
+                os.close(fd)
         return link
     
     def list_branches(self):

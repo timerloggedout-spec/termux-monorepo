@@ -25,6 +25,22 @@ The custom 3L0 score is an inference matrix, not a claim of objective model inte
 
 `$0` is therefore **not** the ROI metric. Free capacity is valuable only when its return on effort/time/context is better.
 
+## Contributor identity model
+
+Provider ecosystems are contributors to the ADE, but **contributor identity is not GitHub authorship**. The roster separates provider, agent, model, execution adapter, orchestration role, and research/evaluation lane.
+
+Required contributor coverage has two separate populations:
+
+**Agent / collaborator identities** — Gemini CLI, Jules, DeepSeek CI, Devin, CodeRabbit, Copilot, Tembo, Mistral Vibe, the manager/scout/orchestrator workflows, and the operator lane. These identities can review, implement, route, or coordinate only where their real invocation workflow exists. A provider API key is not an agent identity, and an agent's GitHub handle is not its model identity.
+
+**Provider API and research-service lanes** — OpenRouter, FELO, Hugging Face, OmniRoute, Groq, Mistral API, Cerebras, NVIDIA NIM, Aion, LLM7, ModelScope, SiliconFlow, Kilo, OVHcloud, SambaNova, Cloudflare Workers AI, Cohere, and Ollama Cloud. The machine-readable contributor roster tracks these independently from agent roles. Z.ai remains a candidate with an unverified catalog contract, not a completed adapter. Firecrawl's fixed-URL keyless scrape is a public-research service, not an inference provider.
+
+The six-hour [provider availability workflow](../../.github/workflows/provider-availability.yml) follows the canonical catalog-adapter registry. It performs catalog-only probes for configured expanded providers and public LLM7/OVHcloud/ModelScope catalogs; only OpenRouter and Gemini retain inference probes. Unconfigured credentialed providers are not contacted. A passing catalog probe does not prove account entitlement, accepted terms, free quota, inference health, or routing admission. New provider lanes must not be inserted into the agent routing candidate pools unless a real execution adapter and explicit admission contract exist.
+
+Contributor provenance must retain the provider/model/adapter/role dimensions alongside workflow run/job/step, triggering event, PR/issue, SHA, and attribution confidence. A model response incorporated into a commit does not establish provider authorship. PAT owner, commit author, workflow actor, and model provider are separate fields.
+
+The display-moniker SSOT is `docs/ops/AGENT-MONIKERS.md`; capability/routing declarations are in `docs/schemas/agent-roster.yaml`. See Issue #921 for the continuing moniker/role expansion track.
+
 ## Team roles
 
 ### Manager
@@ -35,6 +51,16 @@ Chooses a coordinated plan: sequencing, parallelism, waiting, escalation, and cu
 
 Selects an eligible provider/model from the current live catalog. Model IDs are **data**, not architecture. No model should be hardcoded as a permanent special route when it can be selected from catalog state.
 
+### Dependency-phase admission routing
+
+Agentic-Agile dependency waves are **admission evidence**, not an execution-provider choice. The dependency-phase dispatcher must resolve a manager-approved specialist route before creating an execution claim. The route is resolved from the approved specialist allowlist plus `docs/schemas/agent-roster.yaml` capability routing and records a routing envelope before any specialist adapter runs.
+
+The control path is therefore:
+
+`dependency DAG → wave/readiness → manager policy → specialist route → execution adapter → evidence`
+
+A direct `ready → Jules` path is prohibited because Jules is one bounded specialist in the roster, not the manager or universal execution sink. If the selected specialist has no configured execution adapter, an applied dispatch must stop before claiming work rather than silently falling through to Jules.
+
 ### Specialists
 
 Gemini CLI, OpenRouter peers, OmniRoute, Jules, Felo models, and other agents are specialists. Jules is an escalation/specialist worker, not the default sink for every task.
@@ -42,6 +68,23 @@ Gemini CLI, OpenRouter peers, OmniRoute, Jules, Felo models, and other agents ar
 ### Evidence collector
 
 Records actual invocations and outcomes. A declared route earns no performance credit until it actually executes.
+
+### Evaluation / PR boundary
+
+Continuous evaluation is a state/evidence loop, not a pull-request generator.
+
+Every observation may update the longitudinal catalog/evidence plane: provider/model eligibility, role routing, invocation telemetry, outcomes, attribution, rankings, and evaluation epochs. A moving live-master SHA is an observation dimension and does not justify opening another PR.
+
+**PR invariant:** create a PR only for a durable implementation or policy change. Do not create PRs for session recon/bind/stamp receipts, live-master refreshes, catalog observations, ranking recalculations, evaluation manifests, or repeated evidence-only skill updates.
+
+The canonical loop is:
+
+`action → observation → outcome → evidence/catalog → next selection → next evaluation`
+
+Evaluation identity must preserve `run_id + run_attempt + head_sha + manager + task/cohort + provider + model + role`. Preserve the catalog snapshot/hash used for each epoch so rankings remain reproducible without freezing runtime catalog state.
+
+The repository's PR scope guard closes session/evaluation-only PRs as **not planned** when they cross this boundary. That guard is containment; the evidence/ledger is the system of record.
+
 
 ## Dynamic libraries and parallelism
 
@@ -184,3 +227,27 @@ The scheduler should exploit a verified promotional window while it is open, but
 Agents should have clear bounded authority, observable decisions, and durable handoff state. Humans should be able to inspect why an agent was selected, what it consumed, what it produced, and why another agent was or was not invoked.
 
 The goal is an environment where agent autonomy and human UX reinforce each other rather than competing.
+
+
+## BIUDL execution and author provenance implementation
+
+The cross-lane implementation/acceptance contract is indexed in
+[`docs/ops/BIUDL-EXECUTION-AND-PROVENANCE.md`](BIUDL-EXECUTION-AND-PROVENANCE.md).
+The event-level author contract is
+[`docs/ops/AGENT-THROUGHPUT-EVENT.schema.json`](AGENT-THROUGHPUT-EVENT.schema.json).
+
+For PAT-mediated activity, keep `github_actor` and `triggering_actor` separate
+from the `author` attribution object. A workflow-name mapping can identify a
+known provider/role at workflow level, but it cannot prove which model generated
+a particular line of code. `model`, settings fingerprint, and context fingerprint
+remain null unless trusted invocation/task-boundary evidence supplies them.
+Settings/context values are SHA-256 fingerprints only; never persist raw prompts,
+completions, credentials, or session context.
+
+The existing read-only ATES observer now includes the known manager, scout, and
+orchestrator workflow cohort plus selected Gemini, DeepSeek, and Jules execution/review
+lanes. Bridge/tunnel health (including Pinggy) remains a separate infrastructure receipt
+and is deliberately excluded from agent-throughput task counts. The observer retains
+run/attempt/SHA linkage, records attribution confidence and evidence references, and
+does not infer a model from the PAT owner. The citation curator and index are documented
+in `docs/briefing/SOURCE-CITATION-INDEX.md`.

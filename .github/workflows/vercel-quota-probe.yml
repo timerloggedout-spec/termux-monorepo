@@ -1,0 +1,43 @@
+name: vercel-quota-probe
+# Quota probe: Vercel 24h deploy window (legacy QUOTA line used by the
+# slot-timed deploy task) plus the full quota registry poll
+# (ops/quota/registry.json -> scripts/quota_poll.py). Run on demand only by the
+# scheduled one-shots; no cron, so it is not a second monitor.
+# Lean by design: sparse checkout of 4 paths, no installs, artifacts not commits.
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            ops/quota
+            scripts/quota_poll.py
+            ml/pipelines/moneyball/quota_weights.py
+          sparse-checkout-cone-mode: false
+          fetch-depth: 1
+      - name: Poll quotas
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          python3 scripts/quota_poll.py --registry ops/quota/registry.json --out quota-out
+          {
+            echo "### Quota readings"
+            python3 -c "import json;[print('- '+r['resource_id']+': '+str(r['used'])+' / '+str(r['limit'])+' '+r['unit']+' (x'+str(r['routing_multiplier'])+')') for r in map(json.loads,open('quota-out/quota-records.jsonl')) if r['used'] is not None]"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: quota-readings
+          path: quota-out/
+          retention-days: 7

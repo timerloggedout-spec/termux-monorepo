@@ -2,7 +2,8 @@
 **28 tools** across **7 categories**.
 
 ## Cockpit & Pipeline
-- **archwiz.py** — Dashboard: 16 options + 3 mode toggles (auto/review/pipeline)
+- **archwiz.py** — Dashboard: legacy cockpit plus the Termux Hyper-Forge entry point
+- **termux_cockpit.py** — Dependency-free Termux Hyper-Forge operator surface with optional Tron presentation
 - **activity_listener.py** — Auto‑executes assistant code blocks; deduplicated; TUI‑pipe send
 - **live_view.py** — Review panel: /exec, /skip, /send, /m, /c, /ctx, /clear, /hist, /sync
 - **debug_daemon.py** — Watches failures; auto‑fixes with ruff/shellcheck; reports to chat

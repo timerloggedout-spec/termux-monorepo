@@ -10,6 +10,8 @@ Hex is the analytics and evidence layer for the Agent Team Moneyball system. Git
 
 The repository already has a continuous evaluation workflow that dynamically discovers eligible provider/model candidates, preserves cohort refs, invokes candidates through the HTTP LLM action, and uploads immutable evaluation manifests/telemetry artifacts. The Hex integration consumes those evidence artifacts; it does not become the execution authority.
 
+For mathematical verification and optimization, the complementary bridge is documented in [`docs/ops/WOLFRAM-HEX-BRIDGE.md`](WOLFRAM-HEX-BRIDGE.md). The preferred no-secret experiment is Hex Custom External App → official Wolfram Cloud MCP, subject to verification in the actual Hex workspace.
+
 ## Data contract
 
 Every record is associated with a GitHub Actions **run attempt**, not merely a workflow run ID. Re-runs reuse `run_id`, so `run_attempt` is mandatory for identity.
@@ -95,19 +97,31 @@ Partition by `contract_version`, table, and event date. Upserts/deduplication mu
 
 A Hex API trigger may be added after the landing transaction succeeds. The trigger is a refresh signal; it is not the data transport.
 
+### Wolfram verification lane
+
+Use Wolfram for calculations whose correctness benefits from an independent computational engine. Initial candidates are similarity-threshold calibration, graph/community analysis, proposal SLA distributions, uncertainty-aware agent ratings, multi-objective routing, retry expected-value analysis, anomaly detection, cost/performance frontiers, and matcher precision/recall.
+
+The preferred connector is Hex Custom External App → official Wolfram Cloud MCP when the workspace accepts the documented endpoint. Wolfram-derived results are **derived evidence** and must carry a calculation ID, source-evidence IDs, source SHA/ref where relevant, timestamp, method/formula ID, result type/units, and uncertainty/confidence when applicable. Never allow a Wolfram result by itself to merge a PR, close an issue, or deploy.
+
 ## Hex project topology
 
 1. **`3L0 — Contract Validation`** — blocking data-quality checks.
 2. **`3L0 — Experiment Ledger Explorer`** — parameterized evidence drill-down.
 3. **`3L0 — Moneyball Scorecard`** — manager/provider/model comparison.
 4. **`3L0 — Regression Watch`** — SHA/harness/model-version-aware change detection.
+5. **`3L0 — Issue Observatory`** — issue/sub-issue/PR/comment/file/workflow relationship and similarity analysis.
+6. **`3L0 — Proposal Decision Observatory`** — evidence-backed decision latency, research depth, and outcome analysis.
+7. **`3L0 — Research Adaptation Radar`** — starred/added/forked/external candidate tracking and adopt/adapt/watch/reject disposition.
+8. **`3L0 — Wolfram Verification Bench`** — independent calculation checks for selected Moneyball metrics.
 
-Recommended parameters: experiment, arm, suite, date window, manager policy, provider/model, and `min_attribution_confidence`.
+Recommended parameters: experiment, arm, suite, date window, manager policy, provider/model, issue relation type, research disposition, and `min_attribution_confidence`.
 
 ## Refresh policy
 
 - Contract validation: per evidence batch.
+- Issue Observatory: event-driven plus scheduled reconciliation.
 - Scorecard/regression: hourly plus event-triggered when production transport exists.
+- Proposal/Research Radar: daily reconciliation, with event-triggered refresh for material changes.
 - Explorer: on demand.
 - Long-term retention: warehouse/object storage, not Hex run history.
 
@@ -132,7 +146,9 @@ Production-only gates:
 - **reconciliation:** emitted attempt counts equal mart counts per run;
 - **freshness:** newest accepted batch is inside the configured freshness budget;
 - **idempotency:** replaying a batch does not increase row counts;
-- **contract drift:** unknown contract versions fail closed.
+- **contract drift:** unknown contract versions fail closed;
+- **calculation drift:** Wolfram/local reference calculations remain within declared tolerance;
+- **matcher quality:** similarity changes are measured against labeled fixtures before threshold promotion.
 
 ## Current environment boundary
 

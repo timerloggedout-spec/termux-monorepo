@@ -28,6 +28,7 @@ concurrency:
 
 jobs:
   detect-bot-feedback:
+    timeout-minutes: 15
     if: |
       (
         github.event_name == 'pull_request_review' &&
@@ -272,10 +273,12 @@ jobs:
     needs: detect-bot-feedback
     if: needs.detect-bot-feedback.outputs.should_invoke == 'true' && vars.JULES_AUTO_INVOKE != '0'
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: read
     steps:
       - name: Jules API session (if key present)
+        timeout-minutes: 5
         env:
           JULES_API_KEY: ${{ secrets.JULES_API_KEY }}
           PR: ${{ needs.detect-bot-feedback.outputs.pr_number }}

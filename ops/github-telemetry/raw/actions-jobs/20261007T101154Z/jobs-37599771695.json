@@ -1,0 +1,73 @@
+{
+  "collected_at": "2026-10-07T10:11:57.411491+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 37599771695,
+    "endpoint": ".../runs/37599771695/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 112721015914,
+        "run_id": 37599771695,
+        "workflow_name": "Merge Promotion Queue",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37599771695",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaPrI0ag",
+        "head_sha": "4c267b141734fedc9389decfa8a47656f879bd99",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/112721015914",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37599771695/job/112721015914",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-07T09:19:05Z",
+        "started_at": "2026-10-07T09:19:07Z",
+        "completed_at": "2026-10-07T09:22:16Z",
+        "name": "inventory",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-07T09:19:08Z",
+            "completed_at": "2026-10-07T09:19:09Z"
+          },
+          {
+            "name": "Inventory open master PRs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-07T09:19:09Z",
+            "completed_at": "2026-10-07T09:22:13Z"
+          },
+          {
+            "name": "Publish queue artifact",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-07T09:22:13Z",
+            "completed_at": "2026-10-07T09:22:14Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-07T09:22:14Z",
+            "completed_at": "2026-10-07T09:22:14Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/112721015914",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000221051,
+        "runner_name": "GitHub Actions 1000221051",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

@@ -168,7 +168,7 @@ Observer-only SHA-256 digest of the planned evidence ledger. Still no live signi
 
 ## P0.13 Attestation replay
 
-**Status:** implemented (planner) — `she/replay.py` · package `0.14.0`
+**Status:** implemented (planner) — `she/replay.py` · package `0.14.0` · #400 `74eeadb`
 
 Observer-only recomputation of the P0.12 digest against a planned ledger. Still no live signing, persist, network, or git mutation.
 
@@ -179,6 +179,21 @@ Observer-only recomputation of the P0.12 digest against a planned ledger. Still 
 - `from_mapping` fail-closed (`verdict=hold`, `live=False`, `signed=False`)
 - Live replay gated by `SHE_REPLAY_LIVE=1` and **not implemented** here
 - Tests: `tests/test_she_replay.py`
+
+## P0.14 Publication planner
+
+**Status:** implemented (planner) — `she/publish.py` · package `0.15.0`
+
+Observer-only publication contract bound to a P0.13 replay verdict. Still no live publish, persist, sign, network, or git mutation.
+
+- `PublicationPlan` + `plan_publication(incident, replay=?, ledger=?)`
+- Dual gates always required (subset)
+- Security/Dependabot → `observe-only` action
+- Replay mismatch → `quarantine-plan` (never publish)
+- Replay match + promote decision → `publish-plan` (still not published)
+- `from_mapping` fail-closed (`action=hold`, `published=False`, `live=False`)
+- Live publication gated by `SHE_PUBLISH_LIVE=1` and **not implemented** here
+- Tests: `tests/test_she_publish.py`
 
 ## Priority boundary
 

@@ -45,7 +45,7 @@ Citations: `config/context_relationships/schema.json`, `config/context_relations
 | Scope registry | Bounds source collection and excludes sensitive or generated paths. |
 | GitHub collector | Reads bounded metadata, native cross-reference events, exact permalink targets, and explicit references only in memory. |
 | Canonical index | Offers queryable JSONL, sparse matrix, manifest, reports, and checkpoint. |
-| Query/Mermaid renderer | Produces bounded relationship timelines, direct permalink lookups, file-review projections, and optional diagrams with candidate styling. |
+| Query/Mermaid renderer | Produces bounded relationship timelines, direct permalink lookups, file-review projections, optional diagrams with candidate styling, and read-only temporal reconstruction/change projections. |
 | Publisher, reconciliation, and backfill workflows | Build and commit canonical artifacts only from trusted staging contexts; page backfill reports coverage explicitly. |
 | Linear freshness workflow | Compares explicit GitHub mappings against bounded Linear metadata read-only and emits `current`, `stale`, `missing`, or `ambiguous` for review. |
 

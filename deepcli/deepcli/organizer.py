@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Organizer – project/code-snippet manager for DeepCLI conversations."""
-import json, os, hashlib, re, time
+import json, os, sys, hashlib, re, time
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 from rich.console import Console

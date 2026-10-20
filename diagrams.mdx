@@ -1,0 +1,569 @@
+---
+title: "Interactive Diagrams"
+sidebarTitle: "Diagrams"
+description: "Every .mmd Mermaid source in the monorepo, rendered live and interactively (pan, zoom, click) via Mintlify's native Mermaid support."
+---
+
+This page renders every Mermaid diagram (`.mmd`) currently committed in the monorepo, using Mintlify's built-in client-side Mermaid rendering — no build step, no generated PNGs, no extra CI. Each diagram below is interactive: you can pan and zoom directly in the browser.
+
+<Note>
+  These fenced blocks are copies of the authoritative `.mmd` files. If a diagram changes, update its source file under `docs/` and refresh the matching block here in the same PR.
+</Note>
+
+## Dependency Phases
+
+How proposal/registry items move through dependency phases. Source: [`docs/agentic/dependency-phases.mmd`](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/agentic/dependency-phases.mmd)
+
+```mermaid
+flowchart LR
+  DPH_000["DPH-000<br/>Foundation and lifecycle engine<br/>complete"]
+  DPH_100["DPH-100<br/>GitHub Projects synchronization<br/>ready"]
+  DPH_200["DPH-200<br/>Idempotent agent dispatch<br/>waiting"]
+  DPH_300["DPH-300<br/>Derived timeline and reconciliation<br/>waiting"]
+  DPH_000 --> DPH_100
+  DPH_100 --> DPH_200
+  DPH_200 --> DPH_300
+  class DPH_000 complete
+  classDef complete fill:#0f766e,color:#ffffff,stroke:#115e59
+  class DPH_100 ready
+  classDef ready fill:#166534,color:#ffffff,stroke:#14532d
+  class DPH_200,DPH_300 waiting
+  classDef waiting fill:#64748b,color:#ffffff,stroke:#475569
+```
+
+## Model Routing (3-Lane)
+
+Provider routing across the three operational lanes. Source: [`docs/ops/diagrams/model-routing-3l0.mmd`](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/diagrams/model-routing-3l0.mmd)
+
+```mermaid
+flowchart TD
+  classDef state fill:#e8f0fe,stroke:#1a73e8,color:#102a43
+  classDef good fill:#e6f4ea,stroke:#188038,color:#102a43
+  classDef guard fill:#fef7e0,stroke:#b06000,color:#4a2c00
+  classDef external fill:#f3e8fd,stroke:#7b1fa2,color:#2b0c3d
+  classDef stop fill:#f1f3f4,stroke:#5f6368,color:#202124
+
+  task[Bounded role request: triage, review, or invoke]:::state
+  task --> context[Role, prompt-size, free-tier, and secret-availability preflight]:::guard
+  context --> gemini{Gemini enabled and primary candidate under soft budget?}:::guard
+  gemini -->|yes| gemscore[3L0 / ELO × role suitability rank]:::state
+  gemscore --> gemrun[Gemini primary route]:::external
+  gemini -->|no| peer[Consider configured secondary peers]:::guard
+
+  peer --> omni{Omni code path enabled by current operational policy?}:::guard
+  omni -->|yes| omnirun[Omni free peer route]:::external
+  omni -->|temporarily decommissioned| orouter
+  omni -->|no| orouter
+
+  orouter{OpenRouter credential and provider route enabled?}:::guard
+  orouter -->|no| exhausted
+  orouter -->|yes| cache{Fresh 1-hour catalog cache available?}:::guard
+  cache -->|yes| catalog[Use cached free-model catalog]:::state
+  cache -->|no| poll[Poll OpenRouter models endpoint with bounded timeout]:::external
+  poll -->|success| catalog
+  poll -->|failed, stale cache exists| stale[Use stale cached catalog with warning]:::guard
+  poll -->|failed, no cache| legacy[Use proven-only legacy free-model allowlist]:::guard
+
+  catalog --> free{Candidate is :free and in live catalog?}:::guard
+  stale --> free
+  legacy --> free
+  free -->|no| next[Skip unverified or paid candidate]:::stop
+  free -->|yes| rank[Rank provider/model by 3L0 / ELO × role suitability]:::state
+  rank --> budget{Per-model soft budget available?}:::guard
+  budget -->|yes| orrun[OpenRouter secondary route]:::external
+  budget -->|no| exhausted
+  next --> exhausted
+
+  gemrun --> evidence[Normalized non-secret result and usage evidence]:::good
+  omnirun --> evidence
+  orrun --> evidence
+  exhausted[Explicit skip: no eligible free route]:::stop
+  evidence --> outcome{Cooldown, error, or completion?}:::guard
+  outcome -->|completion| done[Visible bounded result / next workflow state]:::good
+  outcome -->|cooldown or rate limit| pending[Visible cooldown; no retry storm]:::guard
+  outcome -->|failure| fallback[Apply declared fallback only; otherwise explicit skip]:::stop
+```
+
+## Timing & Resilience
+
+Retry, backoff, and resilience timing model for automation. Source: [`docs/ops/diagrams/timing-resilience.mmd`](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/diagrams/timing-resilience.mmd)
+
+```mermaid
+flowchart TD
+  classDef event fill:#e8f0fe,stroke:#1a73e8,color:#102a43
+  classDef guard fill:#fef7e0,stroke:#b06000,color:#4a2c00
+  classDef good fill:#e6f4ea,stroke:#188038,color:#102a43
+  classDef wait fill:#f3e8fd,stroke:#7b1fa2,color:#2b0c3d
+  classDef writer fill:#fce8e6,stroke:#c5221f,color:#4a1010
+  classDef stop fill:#f1f3f4,stroke:#5f6368,color:#202124
+
+  event[Event or schedule]:::event --> concurrency{Concurrency policy}:::guard
+  concurrency -->|cancel in progress| coalesce[Superseded run cancelled; newest state retained]:::wait
+  concurrency -->|FIFO or per-target lease| queue[Wait for active target cycle]:::wait
+  concurrency -->|no active conflict| begin[Begin bounded operation]:::good
+  queue --> begin
+
+  subgraph execution[Bounded provider and workflow execution]
+    direction TB
+    begin --> budget{Credit, request, artifact, and role budget available?}:::guard
+    budget -->|no| quota[Visible quota-exhausted or deferred state]:::stop
+    budget -->|yes| availability{Provider/catalog cache fresh?}:::guard
+    availability -->|yes| route[Route eligible model/provider]:::good
+    availability -->|no| refresh[Bounded availability/catalog refresh]:::wait
+    refresh -->|success| route
+    refresh -->|stale cache| stale[Use declared stale/proven fallback]:::wait
+    refresh -->|failed/no fallback| unavailable[No eligible route]:::stop
+    stale --> route
+    route --> invokeStep[Bounded provider or workflow invocation]:::good
+    invokeStep --> outcome{Completion, pending evidence, or cooldown?}:::guard
+    outcome -->|completion| report[Summary, artifact, check, or marker]:::good
+    outcome -->|pending evidence| evidencewait[Visible advisory/required pending state]:::wait
+    outcome -->|cooldown/rate limit| cooldown[Record cooldown class and bounded retry eligibility]:::wait
+    cooldown --> retry{Exact retry policy and wait elapsed?}:::guard
+    retry -->|yes| begin
+    retry -->|no| report
+  end
+
+  subgraph cadence[Scheduled control-plane cadence]
+    direction TB
+    weekly[Weekly read-only agentic operations report]:::good
+    hourly[Hourly continuous operations sweep]:::good
+    mondaywriter[Monday context-relationship writer reconciliation]:::writer
+    mondayaudit[Monday read-only fork audit: separate queued time-slot remediation]:::wait
+    nightly[Advisory security and validation schedules]:::good
+  end
+
+  event -. scheduled route .-> cadence
+```
+
+## Automation Overview
+
+High-level map of the automation surface. Source: [`docs/ops/diagrams/automation-overview.mmd`](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/diagrams/automation-overview.mmd)
+
+```mermaid
+flowchart TB
+  classDef event fill:#e8f0fe,stroke:#1a73e8,color:#102a43
+  classDef read fill:#e6f4ea,stroke:#188038,color:#102a43
+  classDef state fill:#fef7e0,stroke:#b06000,color:#4a2c00
+  classDef writer fill:#fce8e6,stroke:#c5221f,color:#4a1010
+  classDef external fill:#f3e8fd,stroke:#7b1fa2,color:#2b0c3d
+  classDef hold fill:#f1f3f4,stroke:#5f6368,color:#202124
+
+  event[GitHub event or schedule]:::event
+  event --> intake{Event family and trust context}:::event
+
+  subgraph intake_lanes[Entry and routing lanes]
+    intake --> pr[PR / review / comment lifecycle]:::read
+    intake --> issue[Issue / trusted command lifecycle]:::read
+    intake --> schedule[Scheduled or manual control-plane work]:::read
+    intake --> dispatch[Bounded dispatch or reusable workflow]:::state
+  end
+
+  subgraph autonomous_lanes[Autonomous development lanes]
+    pr --> gates[Repository gates and advisory security]:::read
+    issue --> triage[Issue triage and bounded agent lanes]:::state
+    pr --> peers[Peer-provider review orchestration]:::state
+    peers --> secondpass[Verified second-pass review dispatch]:::state
+    triage --> router[Role-aware model router]:::state
+    router --> modelrun[Bounded Gemini or OpenRouter work]:::external
+    schedule --> ops[Read-only operations and scorecard reports]:::read
+    schedule --> reconcile[Relationship, fork, Wiki, and surface reconciliation]:::writer
+    dispatch --> dependency[Dependency/project phase automation]:::state
+  end
+
+  gates --> evidence[(Checks, summaries, artifacts, state markers)]:::read
+  triage --> evidence
+  peers --> evidence
+  modelrun --> evidence
+  ops --> evidence
+  reconcile --> evidence
+  dependency --> evidence
+
+  evidence --> outcome{Outcome and authority boundary}:::event
+  outcome --> pass[Pass / advisory result / reviewable state]:::read
+  outcome --> wait[Pending evidence, cooldown, quota, or retry wait]:::state
+  outcome --> mutate[Fixed-scope attributable writer mutation]:::writer
+  outcome --> hold[Reject, skip, circuit-break, or separate acceptance hold]:::hold
+
+  mutate --> postcheck{Postcondition verified?}:::writer
+  postcheck -->|yes| pass
+  postcheck -->|no| rollback[Bounded rollback or frozen writer lane]:::writer
+
+  linkStyle default stroke:#5f6368,stroke-width:1.5px
+```
+
+## Self-Healing Engine
+
+Architecture of the self-healing remediation engine. Source: [`docs/architecture/SELF-HEALING-ENGINE.mmd`](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/architecture/SELF-HEALING-ENGINE.mmd)
+
+```mermaid
+flowchart TD
+    E[Event Sources\nGitHub Actions / repo-gate / termux-smoke / Dependabot / runtime] --> I[Failure Ingestion\nnormalize / dedupe / correlate / fingerprint]
+    I --> INC[Incident Model\nID / SHA / severity / evidence / authority]
+    INC --> D[Diagnosis Engine]
+    D --> P[Remediation Planner]
+    P --> X[Dynamic Dispatcher]
+
+    X --> CAP[Capability Matching]
+    X --> AUTH[Authority / Policy Check]
+    X --> AV[Availability / Workload]
+    X --> MB[MoneyBall + 3L0 LeaderBoards\nmatrices / manager signals]
+    CAP --> SEL[Worker Selection]
+    AUTH --> SEL
+    AV --> SEL
+    MB --> SEL
+
+    SEL --> GH[GitHub Worker]
+    SEL --> TX[Termux Worker]
+    SEL --> RW[Remote Worker]
+
+    GH --> SB[Repair Sandbox]
+    TX --> SB
+    RW --> SB
+    SB --> V[Verification\ntargeted tests / repo-gate / termux-smoke / security / regression]
+    V -->|PASS| PG[Promotion Gate]
+    V -->|FAIL| R[Retry / Re-diagnose / Escalate]
+    R --> D
+    PG -->|AUTO| M[Promote / Merge]
+    PG -->|HITL| H[Human / Operator]
+    M --> MON[Post-merge Monitor]
+    H --> MON
+    MON -->|REGRESSION| RB[Rollback / Escalate]
+    MON -->|HEALTHY| RES[Resolved]
+    RES --> K[Knowledge / Evidence]
+    K --> D
+
+    DB[Dependabot] --> I
+    AZ[ArchW1z TUI] -. client projection .-> X
+    DT[deepcli-TUI] -. client projection .-> X
+
+    classDef p0 fill:none,stroke-width:3px;
+```
+
+## Peer Provider Review
+
+Peer review flow between provider agents. Source: [`docs/ops/diagrams/peer-provider-review.mmd`](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/diagrams/peer-provider-review.mmd)
+
+```mermaid
+flowchart TD
+  classDef event fill:#e8f0fe,stroke:#1a73e8,color:#102a43
+  classDef guard fill:#fef7e0,stroke:#b06000,color:#4a2c00
+  classDef good fill:#e6f4ea,stroke:#188038,color:#102a43
+  classDef pending fill:#f3e8fd,stroke:#7b1fa2,color:#2b0c3d
+  classDef stop fill:#f1f3f4,stroke:#5f6368,color:#202124
+
+  start[Supported PR lifecycle, new issue comment, or submitted review]:::event
+  start --> route{Target is an eligible same-repository PR and non-superseded run?}:::guard
+  route -->|no| ignore[Ignore or coalesce obsolete event]:::stop
+  route -->|yes| policy[Load provider policy and current head SHA]:::good
+  policy --> providers{Required provider set}:::guard
+  providers --> default[Default: verified CodeRabbit]:::good
+  providers --> optin[Optional: Qodo and Devin only when explicitly configured]:::pending
+
+  default --> marker{Authorized OPERATOR marker with exact action, provider, cycle, and SHA?}:::guard
+  optin --> marker
+  marker -->|existing exact request| dedupe[Reuse idempotent request state]:::good
+  marker -->|no request| request[Create bounded provider request evidence]:::good
+
+  request --> observe[Collect review, check, or inline-comment evidence]:::pending
+  dedupe --> observe
+  observe --> current{Evidence is provider-bound and matches current SHA?}:::guard
+  current -->|no| stale[Status-only observation; cannot complete cycle]:::stop
+  current -->|yes| complete[Mark provider completed for current cycle]:::good
+
+  complete --> wait{All configured providers complete?}:::guard
+  wait -->|yes| second[Eligible second pass or downstream review route]:::good
+  wait -->|no| cooldown{Provider cooldown or bounded retry evidence?}:::guard
+  cooldown -->|yes| pending[Publish visible cooldown/pending state]:::pending
+  cooldown -->|no| pending
+
+  pending --> enforce{PEER_ENFORCE_PROVIDER_COMPLETION explicitly true?}:::guard
+  enforce -->|no| advisory[Advisory pending: workflow succeeds with state summary]:::good
+  enforce -->|yes| required[Deliberate required pending state; no fake completion]:::stop
+
+  second --> final[Publish SHA-bound completion summary]:::good
+```
+
+## Issue/PR Decision Tree
+
+Decision tree agents follow when triaging an issue or PR. Source: [`docs/ops/diagrams/issue-pr-decision-tree.mmd`](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/diagrams/issue-pr-decision-tree.mmd)
+
+```mermaid
+flowchart TD
+  classDef event fill:#e8f0fe,stroke:#1a73e8,color:#102a43
+  classDef safe fill:#e6f4ea,stroke:#188038,color:#102a43
+  classDef gate fill:#fef7e0,stroke:#b06000,color:#4a2c00
+  classDef write fill:#fce8e6,stroke:#c5221f,color:#4a1010
+  classDef stop fill:#f1f3f4,stroke:#5f6368,color:#202124
+
+  start[Issue, PR, review, comment, dispatch, or schedule event]:::event
+  start --> kind{Event family}:::gate
+
+  kind -->|PR lifecycle| prctx{Same repository, supported action, and non-draft route?}:::gate
+  prctx -->|no| prskip[Ignore or record no-op state]:::stop
+  prctx -->|yes| filter{Affected surface?}:::gate
+  filter -->|automation or policy| surface[Workflow-surface policy and peer-review route]:::safe
+  filter -->|source/test/docs| gates[Repository gates, path checks, and advisory controls]:::safe
+
+  kind -->|Issue or comment| issuectx{Trusted actor, repository association, and explicit supported trigger?}:::gate
+  issuectx -->|no| issuereject[No execution; untrusted content remains data]:::stop
+  issuectx -->|yes| command{Authorized label or marker command?}:::gate
+  command -->|no| triage[Bounded triage or advisory analysis route]:::safe
+  command -->|yes| capability{Within accepted agent/provider capability?}:::gate
+  capability -->|no| capabilityhold[Status-only diagnostic or separate acceptance hold]:::stop
+  capability -->|yes| agent[Per-issue concurrency, trusted prompt boundary, bounded agent route]:::safe
+
+  kind -->|Review/provider evidence| evidence{Current SHA, exact cycle, and accepted evidence type?}:::gate
+  evidence -->|no| stale[Status-only evidence; do not complete current cycle]:::stop
+  evidence -->|yes| advance[Advance bounded orchestration state]:::safe
+
+  kind -->|Manual dispatch or schedule| control{Inputs allowlisted and workflow capability chartered?}:::gate
+  control -->|no| controlhold[Fail closed]:::stop
+  control -->|yes| lane[Read-only report, bounded dispatch, or fixed-scope reconciler]:::safe
+
+  surface --> terminal{Result}:::gate
+  gates --> terminal
+  triage --> terminal
+  agent --> terminal
+  advance --> terminal
+  lane --> terminal
+  terminal -->|success or advisory| visible[Summary, check, artifact, or reviewable record]:::safe
+  terminal -->|wait or cooldown| pending[Visible pending state; bounded retry only]:::gate
+  terminal -->|writer preconditions met| writer[Fixed target, provenance, postcondition, rollback boundary]:::write
+  terminal -->|required failure| stop[Stop and surface actionable evidence]:::stop
+```
+
+## Role & Authority Hierarchy
+
+Who holds authority over which class of decision. Source: [`docs/ops/diagrams/role-authority-hierarchy.mmd`](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/diagrams/role-authority-hierarchy.mmd)
+
+```mermaid
+flowchart TB
+  classDef human fill:#e8f0fe,stroke:#1a73e8,color:#102a43
+  classDef token fill:#fef7e0,stroke:#b06000,color:#4a2c00
+  classDef auto fill:#e6f4ea,stroke:#188038,color:#102a43
+  classDef writer fill:#fce8e6,stroke:#c5221f,color:#4a1010
+  classDef external fill:#f3e8fd,stroke:#7b1fa2,color:#2b0c3d
+  classDef hold fill:#f1f3f4,stroke:#5f6368,color:#202124
+
+  operator[Repository operator / human approver]:::human
+  maintainer[Trusted collaborator / reviewer]:::human
+  operator --> policy[Accepted policy, capability charters, kill switches]:::human
+  maintainer --> review[PR review and protected-branch checks]:::human
+
+  policy --> gh[GitHub workflow token: least job permissions]:::token
+  policy --> optoken[OPERATOR token lane: exact allowlisted action only]:::token
+  policy --> provider[Configured external provider credential]:::token
+
+  gh --> reader[Read-only/advisory workflow]:::auto
+  gh --> statewriter[Bounded issue/PR/check state writer]:::writer
+  gh --> fixedwriter[Fixed-path or fixed-ref repository writer]:::writer
+  optoken --> peerrequest[Provider request/acknowledgement state]:::writer
+  provider --> model[Gemini or OpenRouter invocation]:::external
+  provider --> reviewer[CodeRabbit / opt-in peer review]:::external
+
+  reader --> evidence[Summaries, checks, artifacts, catalogs]:::auto
+  statewriter --> evidence
+  fixedwriter --> postcheck[Postcondition + rollback boundary]:::writer
+  peerrequest --> evidence
+  model --> evidence
+  reviewer --> evidence
+
+  fixedwriter --> charter{Accepted writer tier and fixed scope?}:::hold
+  charter -->|no| blocked[Separate acceptance / hold]:::hold
+  charter -->|yes| postcheck
+  postcheck --> review
+  evidence --> review
+```
+
+## Agent Team Control Plane
+
+Control-plane architecture coordinating the multi-agent team. Source: [`docs/architecture/AGENT-TEAM-CONTROL-PLANE.mmd`](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/architecture/AGENT-TEAM-CONTROL-PLANE.mmd)
+
+```mermaid
+```mermaid
+flowchart TD
+    B[BROAD] --> I[INTEGRATE]
+    I --> V[VALIDATE]
+    V --> D[DEVELOP]
+    D --> L[LEARN]
+    L --> B
+
+    L --> S[SCOUT POPULATION]
+    S --> C[TEAM CANDIDATES]
+    C --> OA[OpenRouter / OX-Alpha]
+    C --> DS[DeepSeek]
+    C --> GM[Gemini]
+    C --> F[Future providers/models]
+
+    OA --> E[MVT / DOE]
+    DS --> E
+    GM --> E
+    F --> E
+    E --> MX[provider × model × prompt\n× manager × cohort × sequencing]
+    MX --> T[TELEMETRY]
+    T --> R[SHA → run → job → step\n→ logs → artifacts]
+    R --> CR[BILATERAL REVIEW]
+    CR --> K[RETAIN / PROMOTE]
+    CR --> X[CULL / QUARANTINE\nprovenance preserved]
+    K --> MB[MONEYBALL / 3L0]
+    X --> MB
+    MB --> A[TEAM ADMISSION]
+    A --> SS[SKILL / SSOT SYNTHESIS]
+    SS --> L
+```
+
+# Agent Team Control Plane — BIUDL
+
+This chart is the canonical compact orientation view of the evolving agent-team development loop. It complements, rather than replaces, detailed SSOTs, workflows, skills, experiments, and historical decision records.
+
+## BIUDL
+
+**BIUDL = Broad → Integrate → Validate → Develop → Learn.**
+
+The loop is intentionally cyclic: learning changes the next broad baseline. A thin validated slice is therefore an intermediate state, not the final destination.
+
+## Evidence contract
+
+A node transition is not proof of success. HTTP success, workflow success, review acknowledgement, low latency, or response size are observations. Task outcome remains separately classified (`PASS`, `FAIL`, `UNKNOWN`, or another documented state).
+
+Correctness has priority over latency. Resource/quota state is a capacity signal, not a quality score.
+
+## Control-plane roles
+
+Scout discovers candidates and proposes missions; it does not grant routing authority. Managers/MoneyBall/3L0 make promotion decisions from attributable evidence. Experiment lanes apply DOE/MVT designs. Telemetry establishes SHA-to-runtime lineage. Bilateral review challenges both implementation and conclusions. Synthesis feeds verified learning into skills and SSOTs.
+
+## Dynamic population
+
+OX-Alpha, DeepSeek, Gemini, and future providers/models are selectable population members rather than permanent hardcoded winners. Discovery, availability, pricing, quota, capability, and runtime evidence should be observed dynamically.
+
+## Culling
+
+Culling is a state transition, not deletion. Preserve identity, attempts, scores, contributions, reviews, and provenance. Future wallet/reward/community-pot accounting must consume this contribution history without changing the performance evidence.
+
+## Research and oversight
+
+Scout missions may propose provider research, code reconnaissance, performance tests, regression investigations, and oversight/security evaluation cohorts such as Bug Bounty, Help Wanted, CTF, developer-skill, and security-skill tasks. These are evidence-producing evaluation populations, not automatic trust grants.
+
+## Runtime evidence lineage
+
+`SHA → workflow run → job → step → logs/artifacts → outcome → review → promotion decision`.
+
+## Related systems
+
+- `.agents/skills/evidence-led-monorepo-ops/SKILL.md`
+- `.agents/skills/review-loop/SKILL.md`
+- `.agents/skills/adaptive-feedback-cycle/SKILL.md`
+- `.agents/skills/context-relationship-graph/SKILL.md`
+- `.agents/skills/gemini-performance-psychology/SKILL.md`
+- `.agents/skills/multivariate-doe/SKILL.md`
+- `docs/ops/AGENT-TEAM-DEVELOPMENT-LANES.md`
+- `docs/ops/SCOUT-MISSIONS.md`
+- `docs/ops/SCOUT-ROSTER.md`
+- `docs/ops/ACTIONS-METRICS-INTEGRATION.md`
+- `docs/architecture/AGENT-TEAM-CONTROL-PLANE.mmd`
+- `docs/architecture/SELF-HEALING-ENGINE-ROADMAP.md`
+```
+
+## Leaderboard Data Lineage
+
+Data lineage feeding the agent leaderboard. Source: [`docs/ops/diagrams/leaderboard-data-lineage.mmd`](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/diagrams/leaderboard-data-lineage.mmd)
+
+```mermaid
+flowchart TD
+  classDef external fill:#f3e8fd,stroke:#7b1fa2,color:#2b0c3d
+  classDef state fill:#e8f0fe,stroke:#1a73e8,color:#102a43
+  classDef guard fill:#fef7e0,stroke:#b06000,color:#4a2c00
+  classDef good fill:#e6f4ea,stroke:#188038,color:#102a43
+  classDef stop fill:#f1f3f4,stroke:#5f6368,color:#202124
+
+  public[Public leaderboard references: context features only]:::external
+  local[Local model-success matrix: 3L0/ELO and role suitability]:::state
+  availability[OpenRouter catalog poll, cache, stale cache, or proven fallback]:::external
+  budgets[Per-provider/model role usage counters and free-tier ceilings]:::guard
+  policy[Routing policy: free tier, role, prompt bound, declared peers]:::guard
+
+  public --> context[Contextual feature signal]:::state
+  local --> score[Role-aware local ranking label]:::state
+  availability --> eligible[Availability and free-model eligibility]:::guard
+  budgets --> eligible
+  policy --> eligible
+
+  context --> combine[Selection inputs assembled]:::state
+  score --> combine
+  eligible --> combine
+  combine --> route{Eligible candidate remains after policy and budget gates?}:::guard
+  route -->|yes| selected[Chosen provider/model with non-secret route reason]:::good
+  route -->|no| skip[Explicit no eligible route]:::stop
+  selected --> outcome[Completion, latency, request usage, cooldown, and route outcome]:::good
+  outcome --> evidence[Normalized operational evidence]:::state
+  evidence --> future[Future score update or experiment review only under accepted policy]:::guard
+
+  public -. never sole authority .-> route
+```
+
+## Autonomous Writer Rollback
+
+Rollback path for autonomous-writer changes. Source: [`docs/ops/diagrams/autonomous-writer-rollback.mmd`](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/diagrams/autonomous-writer-rollback.mmd)
+
+```mermaid
+flowchart TD
+  classDef event fill:#e8f0fe,stroke:#1a73e8,color:#102a43
+  classDef guard fill:#fef7e0,stroke:#b06000,color:#4a2c00
+  classDef write fill:#fce8e6,stroke:#c5221f,color:#4a1010
+  classDef good fill:#e6f4ea,stroke:#188038,color:#102a43
+  classDef stop fill:#f1f3f4,stroke:#5f6368,color:#202124
+
+  start[Writer-capable workflow receives eligible event]:::event
+  start --> switch{Kill switch disabled and writer capability accepted?}:::guard
+  switch -->|no| hold[Fail closed; summarize disabled/unsupported route]:::stop
+  switch -->|yes| trust{Trusted source, target ref, and actor/context?}:::guard
+  trust -->|no| reject[Reject without mutation]:::stop
+  trust -->|yes| charter{Fixed target/path and capability charter allow operation?}:::guard
+  charter -->|no| scopehold[Stop; record bounded diagnostic state]:::stop
+  charter -->|yes| lease{Concurrency lease and idempotency marker available?}:::guard
+  lease -->|duplicate| converge[Converge on existing cycle]:::good
+  lease -->|yes| dryrun[Dry-run/diff policy validates deterministic desired output]:::guard
+  dryrun -->|no| diffhold[Do not write; expose unexpected path or policy failure]:::stop
+  dryrun -->|yes| preimage[Record source revision, parent ref, digest, expected paths, and rollback reference]:::guard
+  preimage --> mutation[Perform fixed-scope attributed mutation]:::write
+  mutation --> post{Re-read target and verify postcondition/digest}:::guard
+  post -->|yes| success[Publish provenance, result, and review state]:::good
+  post -->|no| breaker{Failure threshold/circuit breaker reached?}:::guard
+  breaker -->|no| rollback[Run only approved bounded rollback/compensation]:::write
+  breaker -->|yes| freeze[Freeze writer lane; preserve evidence and escalate]:::stop
+  rollback --> verifyrollback{Rollback postcondition verified?}:::guard
+  verifyrollback -->|yes| recovered[Publish recovery evidence]:::good
+  verifyrollback -->|no| incident[Manual/operator incident path; no arbitrary rollback input]:::stop
+```
+
+## Agent Selection (Blind Evaluation)
+
+Blind-evaluation flow for selecting between candidate agents. Source: [`docs/architecture/AGENT-SELECTION-BLIND-EVALUATION.mmd`](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/architecture/AGENT-SELECTION-BLIND-EVALUATION.mmd)
+
+```mermaid
+```mermaid
+flowchart TD
+    A[Candidate population] --> B[Randomized / opaque treatment assignment]
+    B --> C[BLINDED EVALUATOR VIEW]
+    C --> D[Execute treatment]
+    D --> E[Evidence freeze]
+    E --> F[Blind correctness evaluation]
+    F --> G{PASS / FAIL / UNKNOWN / PARTIAL}
+    G --> H[UNBLIND attribution]
+    H --> I[MONEYBALL / 3L0]
+    I --> J[BIUDL LEARN]
+    J --> A
+
+    B -. protected mapping .-> P[(Provenance mapping)]
+    D --> P
+    E --> P
+    F --> P
+    H --> P
+```
+
+# Blind Agent Selection — Evaluation Boundary
+
+This diagram shows the evaluation boundary: identity is hidden where feasible, but provenance remains reconstructable. Unblinding occurs after evidence is frozen unless a documented safety, debugging, quota, or operational exception requires earlier access.
+```
+

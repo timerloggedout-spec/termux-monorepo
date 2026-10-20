@@ -14,6 +14,33 @@ from datetime import datetime
 DEFAULT_DEBOUNCE_SEC = 45 * 60
 DEFAULT_STALE_SEC = 2 * 60 * 60
 
+# Pre-compiled classification keyword tuples to eliminate per-comment allocation overhead
+QUOTA_COOLDOWN_KEYWORDS = (
+    "limit exceeded", "quota", "cooldown", "rate limit", "usage limit", "free-tier", "rate_limit", "hourly limit"
+)
+ACK_PENDING_KEYWORDS = (
+    "i will re-review", "promised review", "will look at", "i'll review", "ack", "review scheduled", "queued", "acknowledged"
+)
+SUMMON_KEYWORDS = (
+    "<!-- continuous-agent-ops -->", "<!-- agent-auto-jules -->", "@jules", "@gemini-cli"
+)
+REAL_REVIEW_KEYWORDS = (
+    "findings", "approved", "changes requested", "review complete", "lgtm", "looks good", "reviewed by"
+)
+AGENT_LOGINS = (
+    "google-labs-jules",
+    "devin-ai-integration",
+    "coderabbitai",
+    "github-actions",
+    "copilot",
+    "gitar-bot",
+    "blocksorg",
+)
+
+def is_agent(username: str) -> bool:
+    u = (username or "").lower()
+    return any(a in u for a in AGENT_LOGINS)
+
 def github_api_request(url: str, token: str | None):
     req = urllib.request.Request(url)
     req.add_header("User-Agent", "termux-monorepo-lag-index")
@@ -135,19 +162,6 @@ def main() -> None:
     all_prs = open_prs + closed_prs
     all_message_lags: list[float] = []
     all_actual_lags: list[float] = []
-    agent_logins = [
-        "google-labs-jules",
-        "devin-ai-integration",
-        "coderabbitai",
-        "github-actions",
-        "copilot",
-        "gitar-bot",
-        "blocksorg",
-    ]
-
-    def is_agent(username: str) -> bool:
-        u = (username or "").lower()
-        return any(a in u for a in agent_logins)
 
     for pr in all_prs:
         pr_number = pr["number"]
@@ -185,7 +199,6 @@ def main() -> None:
         actual_response_time = None
         message_response_time = None
 
-        # v2 classification state
         open_disposition = "programmatic"
         jules_actionable = False
         wait_sec = 0
@@ -194,38 +207,25 @@ def main() -> None:
             if event["type"] == "comment":
                 body = event["body"]
                 body_lower = body.lower()
+                is_summon = any(m in body_lower for m in SUMMON_KEYWORDS)
 
-                # Check for v2 classification
-                # 1. Check for quota/cooldown keywords
-                if any(k in body_lower for k in ("limit exceeded", "quota", "cooldown", "rate limit", "usage limit", "free-tier", "rate_limit", "hourly limit")):
+                if any(k in body_lower for k in QUOTA_COOLDOWN_KEYWORDS):
                     open_disposition = "quota_cooldown"
                     jules_actionable = False
                     wait_sec = 3600
-                # 2. Check for ack pending keywords
-                elif any(k in body_lower for k in ("i will re-review", "promised review", "will look at", "i'll review", "ack", "review scheduled", "queued", "acknowledged")):
+                elif any(k in body_lower for k in ACK_PENDING_KEYWORDS):
                     open_disposition = "ack_pending"
                     jules_actionable = False
                     wait_sec = 1200
-                # 3. Check for summon keywords
-                elif any(k in body_lower for k in ("<!-- continuous-agent-ops -->", "<!-- agent-auto-jules -->", "@jules", "@gemini-cli")):
+                elif is_summon:
                     open_disposition = "summon"
                     jules_actionable = True
                     wait_sec = 0
-                # 4. Check for real review keywords
-                elif any(k in body_lower for k in ("findings", "approved", "changes requested", "review complete", "lgtm", "looks good", "reviewed by")):
+                elif any(k in body_lower for k in REAL_REVIEW_KEYWORDS):
                     open_disposition = "real_review"
                     jules_actionable = True
                     wait_sec = 0
 
-                is_summon = any(
-                    m in body
-                    for m in (
-                        "<!-- continuous-agent-ops -->",
-                        "<!-- agent-auto-jules -->",
-                        "@jules",
-                        "@gemini-cli",
-                    )
-                )
                 if is_summon:
                     summon_time = event["time"]
                     message_response_time = None
@@ -252,7 +252,6 @@ def main() -> None:
         suggested_debounce = max(30 * 60, (pr_avg_msg or DEFAULT_DEBOUNCE_SEC) * 1.5)
         suggested_stale = max(60 * 60, (pr_avg_act or DEFAULT_STALE_SEC) * 1.5)
 
-        # Merge calculated lags with classification state
         metrics["by_pr"][str(pr_number)] = {
             "avg_message_response_lag_sec": pr_avg_msg,
             "avg_actual_response_lag_sec": pr_avg_act,

@@ -1,6 +1,7 @@
 import sqlite3
 import os
 import re
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -13,8 +14,14 @@ class AutomatedContextCollector:
         func_index = Path.home() / 'workspace/llm_map/func_index.jsonl'
         if not func_index.exists():
             return None
+        try:
+            rel_path_str = str(Path(file_path).resolve().relative_to(Path.home().resolve()))
+        except ValueError:
+            rel_path_str = str(file_path)
         current_hash = hashlib.sha256(Path(file_path).read_bytes()).hexdigest()[:16]
         cache_file = Path.home() / '.cache/sig_cache' / f'{Path(file_path).name}.{current_hash}.json'
+        if cache_file.is_symlink() or cache_file.parent.is_symlink():
+            return None
         if cache_file.exists():
             with open(cache_file) as cf:
                 return json.load(cf)
@@ -23,17 +30,31 @@ class AutomatedContextCollector:
         with open(func_index) as fi:
             for line in fi:
                 entry = json.loads(line)
-                if entry['file'] == str(Path(file_path).relative_to(Path.home())):
+                if entry['file'] == rel_path_str:
                     sigs.append(f"{entry['name']} line {entry['line']}: {entry.get('sig','')[:80]}")
         if sigs:
-            cache_file.parent.mkdir(parents=True, exist_ok=True)
-            with open(cache_file, 'w') as cf:
-                json.dump(sigs, cf)
+            if not cache_file.parent.is_symlink():
+                cache_file.parent.mkdir(parents=True, exist_ok=True)
+            if not cache_file.is_symlink():
+                with open(cache_file, 'w') as cf:
+                    json.dump(sigs, cf)
             return sigs
         return None
 
     def __init__(self, workspace_root):
-        self.workspace = os.path.abspath(workspace_root)
+        self.workspace = os.path.realpath(os.path.abspath(workspace_root))
+
+    def _validate_path(self, relative_path: str) -> str:
+        p_str = str(relative_path)
+        if ".." in Path(p_str).parts or os.path.isabs(p_str) or "\\" in p_str:
+            raise ValueError("Invalid file path")
+        raw_target = Path(os.path.join(self.workspace, p_str))
+        if raw_target.is_symlink():
+            raise ValueError("Invalid file path: symlink target rejected")
+        abs_target = os.path.realpath(str(raw_target))
+        if os.path.commonpath([self.workspace, abs_target]) != self.workspace:
+            raise ValueError("Invalid file path")
+        return abs_target
 
     def find_dependent_files(self, file_relative_path, conn=None):
         """
@@ -41,6 +62,7 @@ class AutomatedContextCollector:
         Accepts an optional open sqlite3.Connection to reuse existing connection handles and minimize disk I/O.
         Combines edge queries with UNION to halve query roundtrips.
         """
+        self._validate_path(file_relative_path)
         base_name = os.path.splitext(file_relative_path)[0]
         related_files = set()
         close_conn = False
@@ -65,16 +87,23 @@ class AutomatedContextCollector:
                 conn.close()
 
         valid_dependencies = []
+        extensions = ('.py', '.js', '.mjs', '.rs', '.sh')
         for ref in related_files:
-            for ext in ['.py', '.js', '.mjs', '.rs', '.sh']:
-                check_path = ref if ref.endswith(ext) else f"{ref}{ext}"
-                if os.path.exists(os.path.join(self.workspace, check_path)) and check_path != file_relative_path:
+            if ref == file_relative_path:
+                continue
+            if ref.endswith(extensions):
+                if os.path.exists(os.path.join(self.workspace, ref)):
+                    valid_dependencies.append(ref)
+                continue
+            for ext in extensions:
+                check_path = f"{ref}{ext}"
+                if check_path != file_relative_path and os.path.exists(os.path.join(self.workspace, check_path)):
                     valid_dependencies.append(check_path)
                     break
         return valid_dependencies
 
     def generate_ast_skeleton(self, file_relative_path):
-        abs_path = os.path.join(self.workspace, file_relative_path)
+        abs_path = self._validate_path(file_relative_path)
         ext = os.path.splitext(file_relative_path)[1]
         if ext == '.py':
             pattern = "class $NAME: $$$"
@@ -82,6 +111,8 @@ class AutomatedContextCollector:
             pattern = "function $NAME($$ $) { $$$ }"
         else:
             return f"/* Structural stub context for file: {file_relative_path} */"
+        if not shutil.which("ast-grep"):
+            return f"// Unable to trace AST module boundary map for {file_relative_path}"
         try:
             output = subprocess.check_output(["ast-grep", "run", "--pattern", pattern, "--json", abs_path], cwd="/data/data/com.termux/files/home/termux-multi-agent", text=True)
             import json
@@ -97,16 +128,24 @@ class AutomatedContextCollector:
     def assemble_minimized_bundle(self, active_target_file):
         import os
         mode = os.environ.get("CONTEXT_MODE", "full")
-        target_path = os.path.join(self.workspace, active_target_file)
+        target_path = self._validate_path(active_target_file)
         if mode == "minimized":
-            sigs = self._get_cached_signatures(Path(target_path).relative_to(Path.home()))
+            sigs = self._get_cached_signatures(Path(target_path))
             target_code = "\n".join(sigs) if sigs else "# No signatures"
         elif mode == "compact":
             with open(target_path) as f:
                 target_code = f.read()[:2048]
-            sigs = self._get_cached_signatures(Path(target_path).relative_to(Path.home()))
+            sigs = self._get_cached_signatures(Path(target_path))
             if sigs:
                 target_code += "\n\n" + "\n".join(sigs)
         else:
             with open(target_path) as f:
                 target_code = f.read()
+
+        dependencies = self.find_dependent_files(active_target_file)
+        bundle = ["=== CODEBASE ARCHITECTURE SUBSTRUCTURE CONTEXT ==="]
+        for dep in dependencies:
+            skeleton = self.generate_ast_skeleton(dep)
+            bundle.append(f'\n<file path="{dep}" layout="dependent_skeleton">\n{skeleton}\n')
+        bundle.append(f'\n<file path="{active_target_file}" layout="active_target_edit_zone">\n{target_code}\n')
+        return "\n".join(bundle)

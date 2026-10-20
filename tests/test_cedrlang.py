@@ -111,8 +111,8 @@ def test_link_protection_and_translation():
 
 def test_emerging_technologies_procurement_mappings():
     # Test compilation of new mappings
-    orig = "We are researching emerging technology curation and procurement compliance."
-    expected = "We are researching em_t3ch cur473 and pr0cur3 c0mp1."
+    orig = "We are conducting research on emerging technology curation, procurement concepts, and compliance."
+    expected = "We are conducting r3534rch on em_t3ch cur473, pr0cur3 c0nc3p7s, and c0mp1."
     compiled = compile_doc(orig)
     assert compiled == expected
 
@@ -124,12 +124,18 @@ def test_emerging_technologies_procurement_mappings():
     assert compile_doc("Procurement") == "Pr0cur3"
     assert decompile_doc("Pr0cur3") == "Procurement"
 
+    assert compile_doc("Research") == "R3534rch"
+    assert decompile_doc("R3534rch") == "Research"
+
     assert compile_doc("PROCUREMENT") == "PR0CUR3"
     assert decompile_doc("PR0CUR3") == "PROCUREMENT"
 
     # Test plurals
     assert compile_doc("Emerging Technologies") == "Em_t3chs"
     assert decompile_doc("Em_t3chs") == "Emerging Technologies"
+
+    assert compile_doc("Concepts") == "C0nc3p7s"
+    assert decompile_doc("C0nc3p7s") == "Concepts"
 
 def test_caveman_six_lines():
     # Test without max_up (default)
@@ -147,3 +153,11 @@ def test_caveman_six_lines():
     # Test stopword stripping
     res4 = caveman("the quick brown fox", max_up=True)
     assert res4 == "QUICK BROWN FOX"
+
+def test_non_string_and_empty_inputs():
+    assert compile_doc("") == ""
+    assert decompile_doc("") == ""
+    assert compile_doc(None) == ""
+    assert decompile_doc(None) == ""
+    assert compile_doc(12345) == ""
+    assert decompile_doc(12345) == ""

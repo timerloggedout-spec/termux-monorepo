@@ -13,36 +13,70 @@ from typing import Optional, List, Dict, Any
 try:
     from curl_cffi import requests as curl_requests
 except Exception:
-    import requests as standard_requests
-    class MockCurlSession(standard_requests.Session):
-        def __init__(self, *args, **kwargs):
-            kwargs.pop("impersonate", None)
-            super().__init__(*args, **kwargs)
-        def request(self, method, url, *args, **kwargs):
-            kwargs.pop("impersonate", None)
-            return super().request(method, url, *args, **kwargs)
+    try:
+        import requests as standard_requests
+        class MockCurlSession(standard_requests.Session):
+            def __init__(self, *args, **kwargs):
+                kwargs.pop("impersonate", None)
+                super().__init__(*args, **kwargs)
+            def request(self, method, url, *args, **kwargs):
+                kwargs.pop("impersonate", None)
+                return super().request(method, url, *args, **kwargs)
 
-    class CurlRequestsFallback:
-        Session = MockCurlSession
-        def get(self, *args, **kwargs):
-            kwargs.pop("impersonate", None)
-            return standard_requests.get(*args, **kwargs)
-        def post(self, *args, **kwargs):
-            kwargs.pop("impersonate", None)
-            return standard_requests.post(*args, **kwargs)
-        def put(self, *args, **kwargs):
-            kwargs.pop("impersonate", None)
-            return standard_requests.put(*args, **kwargs)
-        def delete(self, *args, **kwargs):
-            kwargs.pop("impersonate", None)
-            return standard_requests.delete(*args, **kwargs)
+        class CurlRequestsFallback:
+            Session = MockCurlSession
+            def get(self, *args, **kwargs):
+                kwargs.pop("impersonate", None)
+                return standard_requests.get(*args, **kwargs)
+            def post(self, *args, **kwargs):
+                kwargs.pop("impersonate", None)
+                return standard_requests.post(*args, **kwargs)
+            def put(self, *args, **kwargs):
+                kwargs.pop("impersonate", None)
+                return standard_requests.put(*args, **kwargs)
+            def delete(self, *args, **kwargs):
+                kwargs.pop("impersonate", None)
+                return standard_requests.delete(*args, **kwargs)
 
-    curl_requests = CurlRequestsFallback()
+        curl_requests = CurlRequestsFallback()
+    except Exception:
+        class DummySession:
+            headers = {}
+            cookies = type('DummyCookies', (), {'set': lambda *a, **kw: None})()
+            def get(self, *args, **kwargs):
+                raise RuntimeError("HTTP library ('requests' or 'curl_cffi') is required to perform network operations")
+            def post(self, *args, **kwargs):
+                raise RuntimeError("HTTP library ('requests' or 'curl_cffi') is required to perform network operations")
+            def put(self, *args, **kwargs):
+                raise RuntimeError("HTTP library ('requests' or 'curl_cffi') is required to perform network operations")
+            def delete(self, *args, **kwargs):
+                raise RuntimeError("HTTP library ('requests' or 'curl_cffi') is required to perform network operations")
 
-import requests as http_requests
-from rich.console import Console
+        class CurlRequestsFallback:
+            Session = DummySession
+            def get(self, *args, **kwargs):
+                raise RuntimeError("HTTP library ('requests' or 'curl_cffi') is required to perform network operations")
+            def post(self, *args, **kwargs):
+                raise RuntimeError("HTTP library ('requests' or 'curl_cffi') is required to perform network operations")
+            def put(self, *args, **kwargs):
+                raise RuntimeError("HTTP library ('requests' or 'curl_cffi') is required to perform network operations")
+            def delete(self, *args, **kwargs):
+                raise RuntimeError("HTTP library ('requests' or 'curl_cffi') is required to perform network operations")
 
-console = Console()
+        curl_requests = CurlRequestsFallback()
+
+try:
+    import requests as http_requests
+except Exception:
+    http_requests = curl_requests
+
+try:
+    from rich.console import Console
+    console = Console()
+except Exception:
+    class DummyConsole:
+        def print(self, *args, **kwargs): pass
+    console = DummyConsole()
 
 CONFIG_DIR = Path.home() / ".deepcli"
 CONFIG_FILE = CONFIG_DIR / "config.json"
@@ -123,10 +157,14 @@ def _cache_save(session_id: str, messages: List[Dict[str, Any]], account: str = 
         except Exception:
             pass
 
-    with open(path, 'w') as f:
+    p_file = Path(path)
+    if p_file.is_symlink():
+        raise ValueError("Symlink cache path rejected for security")
+
+    fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, 'w') as f:
         json.dump(messages, f, indent=2)
 
-    p_file = Path(path)
     if p_file.exists() and not p_file.is_symlink():
         try:
             p_file.chmod(0o600)
@@ -166,7 +204,9 @@ def load_config() -> Dict[str, Any]:
     return {}
 
 def save_config(cfg: Dict[str, Any]):
-    # Ensure directory is secured
+    # Ensure directory and file targets are not symlinked
+    if CONFIG_DIR.is_symlink() or CONFIG_FILE.is_symlink():
+        return
     CONFIG_DIR.mkdir(parents=True, exist_ok=True)
     try:
         CONFIG_DIR.chmod(0o700)
@@ -292,6 +332,8 @@ def get_pow_challenge(token: str, target_path="/api/v0/chat/completion") -> dict
     return r.json()["data"]["biz_data"]["challenge"]
 
 def upload_file(token: str, session_id: str, file_path: str) -> Optional[str]:
+    if ".." in str(file_path) or (not Path(file_path).is_absolute() and ".." in Path(file_path).parts):
+        raise ValueError("Invalid file path")
     if not Path(file_path).exists():
         console.print(f"[red]File not found: {file_path}[/]")
         return None
@@ -398,6 +440,7 @@ def stream_completion(token: str, prompt: str, session_id: str,
     retries = 0
     max_retries = 8
     base_delay = 2
+    final_text = ""
     while retries < max_retries:
         try:
             resp = base_sess.post(url, json=payload, headers=headers, stream=True)

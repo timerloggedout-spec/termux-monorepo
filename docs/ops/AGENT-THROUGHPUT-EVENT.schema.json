@@ -1,0 +1,277 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/AGENT-THROUGHPUT-EVENT.schema.json",
+  "title": "Agent Throughput Event",
+  "type": "object",
+  "required": [
+    "timestamp",
+    "event"
+  ],
+  "properties": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "event": {
+      "enum": [
+        "task_started",
+        "task_completed",
+        "tool_call",
+        "tool_retry",
+        "handoff",
+        "active_window"
+      ]
+    },
+    "agent_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tool": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "success",
+        "failed",
+        "error",
+        "skipped"
+      ]
+    },
+    "duration_ms": {
+      "type": "number",
+      "minimum": 0
+    },
+    "latency_ms": {
+      "type": "number",
+      "minimum": 0
+    },
+    "active_seconds": {
+      "type": "number",
+      "minimum": 0
+    },
+    "inference_seconds": {
+      "type": "number",
+      "minimum": 0
+    },
+    "tokens_in": {
+      "type": "number",
+      "minimum": 0
+    },
+    "tokens_out": {
+      "type": "number",
+      "minimum": 0
+    },
+    "complexity_score": {
+      "type": "number",
+      "minimum": 0
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "additions": {
+          "type": "number",
+          "minimum": 0
+        },
+        "deletions": {
+          "type": "number",
+          "minimum": 0
+        },
+        "files_changed": {
+          "type": "number",
+          "minimum": 0
+        },
+        "complexity_score": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "gha_run_id": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "gha_run_attempt": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "source_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "event_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{32}$"
+    },
+    "cohort_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "task_fingerprint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "task_contract_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "environment_fingerprint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "author": {
+      "type": "object",
+      "description": "Evidence-backed attribution for the executing agent/provider. Never infer provider/model from GitHub actor identity. Settings/context are hashes only.",
+      "additionalProperties": false,
+      "required": [
+        "provider",
+        "model",
+        "adapter",
+        "role",
+        "identity_kind",
+        "settings_fingerprint",
+        "context_fingerprint",
+        "attribution_method",
+        "confidence",
+        "evidence_refs"
+      ],
+      "properties": {
+        "provider": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 128
+        },
+        "model": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 128
+        },
+        "adapter": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 128
+        },
+        "role": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 128
+        },
+        "identity_kind": {
+          "enum": [
+            "agent",
+            "manager",
+            "scout",
+            "orchestrator",
+            "infrastructure",
+            "human",
+            "unknown"
+          ]
+        },
+        "settings_fingerprint": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "context_fingerprint": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "attribution_method": {
+          "enum": [
+            "workflow_name_mapping",
+            "invocation_telemetry",
+            "task_boundary_declared",
+            "session_export",
+            "human_attested",
+            "inferred",
+            "unresolved"
+          ]
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "evidence_refs": {
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "github_actor": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "description": "GitHub Actions run actor; account identity is not agent identity."
+    },
+    "triggering_actor": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "description": "GitHub Actions triggering actor; may be a PAT owner and is not proof of model authorship."
+    },
+    "workflow_name": {
+      "type": "string",
+      "maxLength": 256,
+      "description": "Display name of the workflow that produced this event."
+    },
+    "workflow_run_url": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://",
+      "maxLength": 2048,
+      "description": "Canonical HTTPS Actions run URL."
+    },
+    "workflow_event": {
+      "type": "string",
+      "maxLength": 64,
+      "description": "Trigger event for the workflow run."
+    },
+    "job_id": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "GitHub Actions job ID associated with this per-job task event."
+    },
+    "job_name": {
+      "type": "string",
+      "maxLength": 256,
+      "description": "Human-readable Actions job name."
+    },
+    "pull_request_number": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Associated pull request number when the observer resolved one."
+    },
+    "issue_number": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Associated issue number when supplied by trusted task-boundary metadata."
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Dynamic model router with AR-18 observe-mode capability decisions.
+"""Optimized model router with evidence-driven candidate selection.
 
-The provider/model execution route intentionally remains the existing Gemini-primary
-path in this release. AR-18 only emits a bounded decision envelope so repository
-outcomes can be measured before any active-routing policy changes.
+There is no provider hierarchy. Candidates are admitted by capability, credential,
+catalog, quota, and evidence gates, then selected by the active routing policy.
+Topology (single/series/dynamic/parallel/nested/co-working/volley) is an orchestration
+concern and is recorded as experiment metadata rather than encoded as provider rank.
 """
 
 import json
@@ -31,6 +32,76 @@ LEGACY_MODELS = {
     "auto/best-free",
 }
 
+# Module-level constant set and dictionaries to eliminate allocation overhead per route evaluation
+KNOWN_FREE_MODELS_WITHOUT_PRICING = {
+    "stealth/ox-alpha",
+    "google/lyria-3-clip-preview",
+    "google/lyria-3-pro-preview",
+}
+
+ZERO_PRICING = {"0", "0.0", 0, 0.0}
+
+LIMITS = {
+    "omni/auto/best-free": {"triage": 400, "review": 250, "invoke": 400},
+    "openrouter/stealth/ox-alpha": {"triage": 80, "review": 80, "invoke": 80},
+    "openrouter/meta-llama/llama-3.3-70b-instruct:free": {"triage": 80, "review": 80, "invoke": 80},
+    "openrouter/google/gemma-3-12b-it:free": {"triage": 80, "review": 80, "invoke": 80},
+    "openrouter/qwen/qwen3-coder:free": {"triage": 60, "review": 60, "invoke": 60},
+    "openrouter/deepseek/deepseek-r1:free": {"triage": 40, "review": 40, "invoke": 40},
+    "openrouter/google/gemma-4-31b-it:free": {"triage": 80, "review": 80, "invoke": 80},
+    "openrouter/google/gemma-4-26b-a4b-it:free": {"triage": 80, "review": 80, "invoke": 80},
+    "openrouter/cohere/north-mini-code:free": {"triage": 60, "review": 60, "invoke": 60},
+    "gemini-3.1-flash-lite": {"triage": 1400, "review": 1400, "invoke": 1400},
+    "gemini-3.5-flash-lite": {"triage": 1400, "review": 1400, "invoke": 1400},
+    "gemini-2.5-flash-lite": {"triage": 1000, "review": 1000, "invoke": 1000},
+    "gemini-3.5-flash": {"triage": 1400, "review": 1400, "invoke": 1400},
+    "gemini-2.5-flash": {"triage": 1400, "review": 1400, "invoke": 1400},
+    "gemini-3-flash": {"triage": 1400, "review": 1400, "invoke": 1400},
+}
+
+ROLE_PEERS = {
+    "triage": [
+        ("omni", "auto/best-free"),
+        ("openrouter", "stealth/ox-alpha"),
+        ("openrouter", "google/gemma-4-31b-it:free"),
+        ("openrouter", "google/gemma-4-26b-a4b-it:free"),
+        ("openrouter", "meta-llama/llama-3.3-70b-instruct:free"),
+        ("openrouter", "google/gemma-3-12b-it:free"),
+    ],
+    "review": [
+        ("omni", "auto/best-free"),
+        ("openrouter", "stealth/ox-alpha"),
+        ("openrouter", "cohere/north-mini-code:free"),
+        ("openrouter", "google/gemma-4-31b-it:free"),
+        ("openrouter", "qwen/qwen3-coder:free"),
+        ("openrouter", "meta-llama/llama-3.3-70b-instruct:free"),
+        ("openrouter", "deepseek/deepseek-r1:free"),
+    ],
+    "invoke": [
+        ("omni", "auto/best-free"),
+        ("openrouter", "stealth/ox-alpha"),
+        ("openrouter", "google/gemma-4-31b-it:free"),
+        ("openrouter", "google/gemma-4-26b-a4b-it:free"),
+        ("openrouter", "meta-llama/llama-3.3-70b-instruct:free"),
+        ("openrouter", "google/gemma-3-12b-it:free"),
+    ],
+}
+
+ROLE_RESIDUALS = {
+    "triage": ["gemini-3.1-flash-lite", "gemini-3.5-flash-lite", "gemini-2.5-flash-lite"],
+    "review": ["gemini-3.5-flash", "gemini-2.5-flash", "gemini-3-flash", "gemini-3.1-flash-lite"],
+    "invoke": ["gemini-3.1-flash-lite", "gemini-2.5-flash-lite"],
+}
+
+# Pre-grouped peer models by role and provider to eliminate per-evaluation list comprehensions
+ROLE_PEER_MODELS = {
+    role: {
+        "omni": [m for p, m in peers if p == "omni"],
+        "openrouter": [m for p, m in peers if p == "openrouter"],
+    }
+    for role, peers in ROLE_PEERS.items()
+}
+
 
 def is_free_openrouter_model(model_id, pricing=None):
     """True for :free suffix OR zero prompt+completion pricing (e.g. stealth/ox-alpha)."""
@@ -39,15 +110,13 @@ def is_free_openrouter_model(model_id, pricing=None):
     if model_id.endswith(":free"):
         return True
     if pricing is None:
-        return model_id in {
-            "stealth/ox-alpha",
-            "google/lyria-3-clip-preview",
-            "google/lyria-3-pro-preview",
-        }
+        return model_id in KNOWN_FREE_MODELS_WITHOUT_PRICING
     try:
-        return float(pricing.get("prompt", 1.0)) == 0.0 and float(
-            pricing.get("completion", 1.0)
-        ) == 0.0
+        p_prompt = pricing.get("prompt", 1.0)
+        p_comp = pricing.get("completion", 1.0)
+        prompt_zero = (p_prompt in ZERO_PRICING) or (float(p_prompt) == 0.0)
+        comp_zero = (p_comp in ZERO_PRICING) or (float(p_comp) == 0.0)
+        return prompt_zero and comp_zero
     except (TypeError, ValueError):
         return False
 
@@ -59,10 +128,12 @@ def parse_yaml(filepath):
     path = []
     with open(filepath, "r", encoding="utf-8") as handle:
         for line in handle:
-            stripped = line.strip()
+            # Single-pass string stripping and indent calculation to eliminate duplicate lstrip calls
+            lstripped = line.lstrip()
+            stripped = lstripped.rstrip()
             if not stripped or stripped.startswith("#"):
                 continue
-            indent = len(line) - len(line.lstrip())
+            indent = len(line) - len(lstripped)
             while path and path[-1][0] >= indent:
                 path.pop()
             if not path:
@@ -260,6 +331,7 @@ def emit_decision(
         "omni": has_omni,
         "openrouter": has_openrouter,
     }
+    models_dict = success_matrix.get("models", {})
     pairs = [("gemini", model) for model in role_residuals.get(role, [])]
     pairs.extend(role_peers.get(role, []))
     candidates = []
@@ -290,7 +362,7 @@ def emit_decision(
                 openrouter_catalog_state=catalog_state,
                 limits=limits,
                 usage=get_usage(provider, model),
-                success_entry=success_matrix.get("models", {}).get(model, {}),
+                success_entry=models_dict.get(model, {}),
             )
         )
     decision = capability_spine.compact_envelope(
@@ -312,62 +384,12 @@ def main():
     if has_openrouter:
         polled_free_models, catalog_state = fetch_openrouter_free_models_cached_with_source()
 
-    limits = {
-        "omni/auto/best-free": {"triage": 400, "review": 250, "invoke": 400},
-        "openrouter/stealth/ox-alpha": {"triage": 80, "review": 80, "invoke": 80},
-        "openrouter/meta-llama/llama-3.3-70b-instruct:free": {"triage": 80, "review": 80, "invoke": 80},
-        "openrouter/google/gemma-3-12b-it:free": {"triage": 80, "review": 80, "invoke": 80},
-        "openrouter/qwen/qwen3-coder:free": {"triage": 60, "review": 60, "invoke": 60},
-        "openrouter/deepseek/deepseek-r1:free": {"triage": 40, "review": 40, "invoke": 40},
-        "openrouter/google/gemma-4-31b-it:free": {"triage": 80, "review": 80, "invoke": 80},
-        "openrouter/google/gemma-4-26b-a4b-it:free": {"triage": 80, "review": 80, "invoke": 80},
-        "openrouter/cohere/north-mini-code:free": {"triage": 60, "review": 60, "invoke": 60},
-        "gemini-3.1-flash-lite": {"triage": 1400, "review": 1400, "invoke": 1400},
-        "gemini-3.5-flash-lite": {"triage": 1400, "review": 1400, "invoke": 1400},
-        "gemini-2.5-flash-lite": {"triage": 1000, "review": 1000, "invoke": 1000},
-        "gemini-3.5-flash": {"triage": 1400, "review": 1400, "invoke": 1400},
-        "gemini-2.5-flash": {"triage": 1400, "review": 1400, "invoke": 1400},
-        "gemini-3-flash": {"triage": 1400, "review": 1400, "invoke": 1400},
-    }
-    role_peers = {
-        "triage": [
-            ("omni", "auto/best-free"),
-            ("openrouter", "stealth/ox-alpha"),
-            ("openrouter", "google/gemma-4-31b-it:free"),
-            ("openrouter", "google/gemma-4-26b-a4b-it:free"),
-            ("openrouter", "meta-llama/llama-3.3-70b-instruct:free"),
-            ("openrouter", "google/gemma-3-12b-it:free"),
-        ],
-        "review": [
-            ("omni", "auto/best-free"),
-            ("openrouter", "stealth/ox-alpha"),
-            ("openrouter", "cohere/north-mini-code:free"),
-            ("openrouter", "google/gemma-4-31b-it:free"),
-            ("openrouter", "qwen/qwen3-coder:free"),
-            ("openrouter", "meta-llama/llama-3.3-70b-instruct:free"),
-            ("openrouter", "deepseek/deepseek-r1:free"),
-        ],
-        "invoke": [
-            ("omni", "auto/best-free"),
-            ("openrouter", "stealth/ox-alpha"),
-            ("openrouter", "google/gemma-4-31b-it:free"),
-            ("openrouter", "google/gemma-4-26b-a4b-it:free"),
-            ("openrouter", "meta-llama/llama-3.3-70b-instruct:free"),
-            ("openrouter", "google/gemma-3-12b-it:free"),
-        ],
-    }
-    role_residuals = {
-        "triage": ["gemini-3.1-flash-lite", "gemini-3.5-flash-lite", "gemini-2.5-flash-lite"],
-        "review": ["gemini-3.5-flash", "gemini-2.5-flash", "gemini-3-flash", "gemini-3.1-flash-lite"],
-        "invoke": ["gemini-3.1-flash-lite", "gemini-2.5-flash-lite"],
-    }
-
     emit_decision(
         role,
         success_matrix,
-        limits,
-        role_peers,
-        role_residuals,
+        LIMITS,
+        ROLE_PEERS,
+        ROLE_RESIDUALS,
         has_omni,
         has_openrouter,
         has_gemini,
@@ -377,67 +399,65 @@ def main():
         current_sha=os.environ.get("CURRENT_SHA") or None,
     )
 
-    if has_gemini:
-        gemini_candidates = []
-        for model in role_residuals.get(role, []):
-            model_entry = success_matrix.get("models", {}).get(model, {})
-            score = model_entry.get("elo", 1000) * model_entry.get("role_suitability", {}).get(role, 1.0)
-            gemini_candidates.append({"provider": "gemini", "model": model, "score": score})
-        for candidate in sorted(gemini_candidates, key=lambda item: item["score"], reverse=True):
-            model = candidate["model"]
-            limit = limits.get(model, {}).get(role, 1000)
-            used = get_usage("gemini", model)
-            if used < limit:
-                new_used = increment_usage("gemini", model)
-                write_output("provider", "gemini")
-                write_output("model", model)
-                write_output("skip", "false")
-                write_output(
-                    "reason",
-                    f"role={role} gemini={model} used={new_used}/{limit} (ranked score={candidate['score']}) PRIMARY",
-                )
-                return
-            sys.stderr.write(f"Gemini primary soft budget exhausted: {model} ({used}/{limit})\n")
+    routing_mode = os.environ.get("ROUTING_MODE", "single").strip().lower() or "single"
+    allowed_modes = {"single", "series", "dynamic", "parallel", "nested", "co-working", "volley"}
+    if routing_mode not in allowed_modes:
+        routing_mode = "single"
 
-    peer_candidates = []
-    for provider, model in role_peers.get(role, []):
-        if provider == "omni" and not has_omni:
+    # One unified candidate pool. Provider identity never implies priority.
+    candidates = []
+    seen = set()
+    peer_models = ROLE_PEER_MODELS.get(role, {})
+    pools = [
+        ("gemini", ROLE_RESIDUALS.get(role, [])),
+        ("omni", peer_models.get("omni", [])),
+        ("openrouter", peer_models.get("openrouter", [])),
+    ]
+    provider_flags = {"gemini": has_gemini, "omni": has_omni, "openrouter": has_openrouter}
+    permitted_openrouter_models = (
+        set(polled_free_models) if polled_free_models is not None else LEGACY_MODELS
+    )
+    models_dict = success_matrix.get("models", {})
+
+    for provider, models in pools:
+        if not provider_flags.get(provider, False):
             continue
-        if provider == "openrouter" and not has_openrouter:
-            continue
-        if provider == "openrouter" and not is_free_openrouter_model(model):
-            sys.stderr.write(f"Warning: non-free model ID '{model}' skipped.\n")
-            continue
-        if provider == "openrouter":
-            permitted_models = polled_free_models if polled_free_models is not None else LEGACY_MODELS
-            if model not in permitted_models:
-                sys.stderr.write(f"Warning: OpenRouter model {model} is not in the permitted catalog. Skipping.\n")
+        for model in models:
+            key = (provider, model)
+            if key in seen:
                 continue
-        model_entry = success_matrix.get("models", {}).get(model, {})
-        score = model_entry.get("elo", 1000) * model_entry.get("role_suitability", {}).get(role, 1.0)
-        peer_candidates.append({"provider": provider, "model": model, "score": score})
+            if provider == "openrouter":
+                # The live free catalog is authoritative for zero-priced models, including IDs without :free.
+                if model not in permitted_openrouter_models:
+                    continue
+            seen.add(key)
+            model_entry = models_dict.get(model) or {}
+            role_suitability = model_entry.get("role_suitability") or {}
+            score = model_entry.get("elo", 1000) * role_suitability.get(role, 1.0)
+            limit_entry = LIMITS.get(model if provider == "gemini" else f"{provider}/{model}") or {}
+            limit = limit_entry.get(role, 40)
+            used = get_usage(provider, model)
+            if used >= limit:
+                sys.stderr.write(f"Candidate soft budget exhausted: {provider}/{model} ({used}/{limit})\n")
+                continue
+            candidates.append({"provider": provider, "model": model, "score": score, "used": used, "limit": limit})
 
-    for candidate in sorted(peer_candidates, key=lambda item: item["score"], reverse=True):
-        provider = candidate["provider"]
-        model = candidate["model"]
-        limit = limits.get(f"{provider}/{model}", {}).get(role, 40)
-        used = get_usage(provider, model)
-        if used < limit:
-            new_used = increment_usage(provider, model)
-            write_output("provider", provider)
-            write_output("model", model)
-            write_output("skip", "false")
-            write_output(
-                "reason",
-                f"role={role} peer={provider} model={model} used={new_used}/{limit} (ranked score={candidate['score']}) secondary",
-            )
-            return
-        sys.stderr.write(f"Peer soft budget exhausted: {provider}/{model} ({used}/{limit})\n")
+    candidates.sort(key=lambda item: (-item["score"], item["provider"], item["model"]))
+    if candidates:
+        selected = candidates[0]
+        new_used = increment_usage(selected["provider"], selected["model"])
+        write_output("provider", selected["provider"])
+        write_output("model", selected["model"])
+        write_output("skip", "false")
+        write_output("routing_mode", routing_mode)
+        write_output("reason", f"role={role} mode={routing_mode} selected={selected['provider']}/{selected['model']} score={selected['score']} usage={new_used}/{selected['limit']} candidates={len(candidates)}")
+        return
 
     write_output("provider", "none")
     write_output("model", "")
     write_output("skip", "true")
-    write_output("reason", f"all free paths exhausted (gemini primary + omni/openrouter secondary) role={role}")
+    write_output("routing_mode", routing_mode)
+    write_output("reason", f"no eligible candidate for role={role} mode={routing_mode}; admission/catalog/quota evidence exhausted")
 
 
 if __name__ == "__main__":
@@ -448,4 +468,5 @@ if __name__ == "__main__":
         write_output("provider", "none")
         write_output("model", "")
         write_output("skip", "true")
+        write_output("routing_mode", os.environ.get("ROUTING_MODE", "single"))
         write_output("reason", f"Model Router crashed: {error}")

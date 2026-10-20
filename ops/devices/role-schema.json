@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "id": "tmx-node-role/observer-controller",
+  "doc": "docs/ops/NODE-ROLE-SCHEMA.md",
+  "roles": {
+    "bridge": {
+      "node": "tmx-node-primary",
+      "owns": [
+        "pinggy tunnel (43109)",
+        "DeepAgent/DeepCLI/Agent.py via core.py",
+        "resource sentinel (43107)",
+        "account sessions + OAuth callbacks (canonical)"
+      ],
+      "never": [
+        "is controlled except via tmx-ctl.sh verbs"
+      ]
+    },
+    "observer-controller": {
+      "node": "tmx-node-55619bd5",
+      "observer": {
+        "reads": [
+          "heartbeat branch device-heartbeat",
+          "ops/termux-bridge/current.json",
+          "TCP probe of pinggy endpoint"
+        ],
+        "writes": [
+          "own heartbeat only"
+        ],
+        "notification": 43111,
+        "alert": 43112
+      },
+      "controller": {
+        "notification": 43114,
+        "transport": "ssh over pinggy endpoint -> origin forced command tmx-ctl.sh",
+        "key": "~/.ssh/tmx_controller_ed25519 (ssh-keygen on controller; pubkey added on origin with command=,no-pty,no-port-forwarding)",
+        "verbs": {
+          "status": "read",
+          "agent": "read",
+          "tunnel": "read",
+          "jobs": "read",
+          "disk": "read",
+          "heartbeat-now": "idempotent write (own heartbeat file on side branch)",
+          "wake-lock": "idempotent"
+        },
+        "forbidden": [
+          "restart/kill pinggy (cuts its own transport)",
+          "kill/restart core.py agents",
+          "any git write on origin",
+          "termux-job-scheduler changes",
+          "reuse of 43107-43109",
+          "clipboard transfer of commands or secrets between devices"
+        ]
+      },
+      "never": [
+        "run publish-pinggy-endpoint.sh",
+        "import origin cookies/OAuth sessions/browser profiles",
+        "log in to accounts already active on origin without the capture-login callback flow"
+      ]
+    }
+  },
+  "notification_layout": {
+    "group": "tmx-origin",
+    "panes": [
+      {
+        "id": 43111,
+        "pane": "observer",
+        "buttons": [
+          "Refresh",
+          "Copy SSH (local clipboard only)",
+          "Mute 2h"
+        ]
+      },
+      {
+        "id": 43114,
+        "pane": "controller",
+        "type": "media",
+        "media": {
+          "previous": "select prev verb",
+          "next": "select next verb",
+          "play": "run selected verb",
+          "pause": "mute alerts 2h"
+        },
+        "buttons": [
+          "Heartbeat",
+          "Wake",
+          "Agent?"
+        ]
+      }
+    ]
+  },
+  "verification": [
+    "inventory.sh output present before provisioning",
+    "role in identity.env == observer-controller",
+    "origin authorized_keys controller line has command= and no-pty",
+    "tmx-ctl.sh rejects unknown verbs (exit 2) and verb injection ('disk; rm -rf /')",
+    "43107-43109 unchanged on origin",
+    "no fingerprint fields in heartbeat/inventory"
+  ]
+}

@@ -1,0 +1,84 @@
+name: help-wanted scout
+
+# Rank external help-wanted / good-first-issue candidates via CPPH.
+# Interthread: optional chain-execute via repository_dispatch after scout.
+
+on:
+  schedule:
+    - cron: "17 */2 * * *"
+  workflow_dispatch:
+    inputs:
+      max:
+        description: Max issues to rank
+        required: false
+        default: "40"
+      label:
+        description: Primary label phrase
+        required: false
+        default: "help wanted"
+      lang:
+        description: Optional language filter
+        required: false
+        default: ""
+      chain_execute:
+        description: "true = dispatch help-wanted-execute after scout"
+        required: false
+        default: "false"
+  repository_dispatch:
+    types:
+      - help-wanted-scout
+      - help-wanted-foreign-scout
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: help-wanted-scout
+  cancel-in-progress: true
+
+jobs:
+  scout:
+    name: CPPH rank help-wanted
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Scout
+        env:
+          OPERATOR_GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+          OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
+          ARCHWIZ_GITHUB_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MAX: ${{ github.event.inputs.max || github.event.client_payload.max || '40' }}
+          LABEL: ${{ github.event.inputs.label || github.event.client_payload.label || 'help wanted' }}
+          LANG: ${{ github.event.inputs.lang || github.event.client_payload.lang || '' }}
+        run: |
+          set -euo pipefail
+          export GITHUB_TOKEN="${OPERATOR_GITHUB_TOKEN:-${OPERATOR_TOKEN:-${ARCHWIZ_GITHUB_TOKEN:-$GITHUB_TOKEN}}}"
+          mkdir -p docs/ops/generated
+          ARGS=(python3 scripts/ci/help_wanted_scout.py --max "$MAX" --label "$LABEL" --out docs/ops/generated/help-wanted-catalog.json)
+          if [ -n "${LANG:-}" ]; then ARGS+=(--lang "$LANG"); fi
+          "${ARGS[@]}"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: help-wanted-catalog
+          path: docs/ops/generated/help-wanted-catalog.json
+          if-no-files-found: ignore
+
+      - name: Interthread → execute (optional)
+        if: ${{ github.event.inputs.chain_execute == 'true' || github.event.client_payload.chain_execute == true }}
+        env:
+          TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          curl -sS -X POST \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/dispatches" \
+            -d '{"event_type":"help-wanted-execute","client_payload":{"mode":"claim-and-pr","source":"scout"}}'
+          echo "chained execute"

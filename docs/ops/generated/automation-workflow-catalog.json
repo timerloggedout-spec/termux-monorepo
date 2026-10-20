@@ -27,7 +27,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "12c25bf1a1d021b386ec71b239fe7bd6e46f36f3d5ff77d2e5c08a591391820c",
+  "source_fingerprint": "260af4b4e9d0f6d8d8aae116a0242d858d7afd6af28f3f0c5df082d3b9f10611",
   "workflow_count": 141,
   "workflows": [
     {
@@ -1336,7 +1336,7 @@
     {
       "action_pins": [],
       "authority": "writer",
-      "concurrency": "group: help-wanted-dashboard-deploy cancel-in-progress: true",
+      "concurrency": "group: help-wanted-dashboard-deploy cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
         "enable-pages",

@@ -116,3 +116,16 @@ def test_bad_provenance_is_rejected(kind):
     if kind == "claim": data["model_candidates"][0]["evidence_class"] = "VERIFIED"
     if kind == "duplicate": data["model_candidates"].append(data["model_candidates"][0])
     with pytest.raises(ValueError): validate_snapshot(json.dumps(data).encode())
+
+
+def test_closed_proposal_is_explicitly_blocked_not_silently_successful():
+    api = fake_api(existing=True)
+    original = api.call.side_effect
+    def call(method, path, payload=None):
+        result = original(method, path, payload)
+        if path.startswith("pulls?"): result[0]["state"] = "closed"
+        return result
+    api.call.side_effect = call
+    with pytest.raises(ValueError, match="explicit disposition"):
+        publish(api, snapshot())
+    assert all(c.args[0] == "GET" for c in api.call.call_args_list)

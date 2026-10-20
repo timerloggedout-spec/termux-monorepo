@@ -11,3 +11,7 @@ The workflow reuses the existing daily catalog completion event rather than addi
 Local module and workflow contract tests, repo-gate and termux-smoke are required. Live source ingestion is separate evidence from live inference, which is not part of this slice. Independent implementation review is requested before promotion. A green local test does not mean a deployed workflow or merged PR; remote run/commit evidence belongs in the implementation PR.
 
 No proposal-wide acceptance or closure is claimed. Existing routing/promotion policy remains authoritative. Further provider adapters, causal DOE, DSPy optimization, authentic reviewer identity and real-outcome ingestion require separate scoped items and evidence.
+
+## Independent implementation review
+
+A separate read-only reviewer ran the focused suite (43 passed at the reviewed revision) and found no workflow-run trust-boundary issue. It identified a medium retry-state ambiguity for closed, unmerged refresh PRs. Resolution: a closed proposal whose snapshot is absent from master now raises an explicit terminal error; automatic reopening is deliberately unsupported so the loop cannot override a deliberate rejection. A regression test asserts no writes occur. This is an item-scoped technical review, not proposal-wide acceptance or an authenticated Delphi vote.

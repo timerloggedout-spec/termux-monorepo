@@ -114,10 +114,13 @@ def publish(api: GitHub, raw: bytes, *, base: str = "master") -> dict:
     prs = api.call("GET", f"pulls?state=all&head={quoted}&per_page=100")
     if prs:
         pr = prs[0]
+        # Respect an explicitly closed proposal; do not silently resurrect it or
+        # call it a successful refresh when master still lacks the snapshot.
+        if pr["state"] != "open":
+            raise ValueError("refresh proposal is closed and snapshot is absent from master; explicit disposition required")
         # Re-dispatch known gates after an interrupted earlier publication.
-        if pr["state"] == "open":
-            for workflow in GATES:
-                api.call("POST", f"actions/workflows/{workflow}/dispatches", {"ref": branch})
+        for workflow in GATES:
+            api.call("POST", f"actions/workflows/{workflow}/dispatches", {"ref": branch})
         return {"status": "existing", "url": pr["html_url"], "content_sha256": digest}
     refs = api.call("GET", "git/matching-refs/heads/" + branch)
     exact = [ref for ref in refs if ref["ref"] == "refs/heads/" + branch]

@@ -294,4 +294,4 @@ def test_missing_provider_credential_reports_only_expected_environment_name():
     poll.assert_not_called()
     assert row["credential_env_resolved"] is None
     assert row["credential_env_expected"] == "GROQ_API_KEY"
-    assert "secret" not in json.dumps(row).lower()
+    assert "fixture" not in json.dumps(row)

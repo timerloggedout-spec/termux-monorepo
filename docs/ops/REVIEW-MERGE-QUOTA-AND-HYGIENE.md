@@ -192,7 +192,7 @@ The initial implementation reads the classic branch-protection endpoint. If the 
 
 ### Validation status
 
-The evaluator has nine deterministic unit tests covering the eligible path, disabled switch, unavailable protection, stale-head approval, bot/author exclusion, latest review precedence, missing checks, missing conversation-resolution policy, and missing opt-in label. The tests are included in the workflow before any mutation. A successful remote workflow run is still required to validate GitHub's actual permission and branch-protection behavior; this PR does not claim that the auto-merge gate is active in production.
+The evaluator has ten deterministic unit tests covering the eligible path, disabled switch, unavailable protection, stale-head approval, bot/author exclusion, latest review precedence, a stale review failing to erase a current-head change request, missing checks, missing conversation-resolution policy, and missing opt-in label. The tests are included in the workflow before any mutation. A successful remote workflow run is still required to validate GitHub's actual permission and branch-protection behavior; this PR does not claim that the auto-merge gate is active in production.
 
 ## Reconciliation map and sequencing
 

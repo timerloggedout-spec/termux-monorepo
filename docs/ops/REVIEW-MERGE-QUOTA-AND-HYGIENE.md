@@ -155,3 +155,56 @@ Keep the human-readable matrix as the index and store full run evidence as bound
 - The GitHub connector can report repo-level `allow_auto_merge`, but the snapshot did not verify branch-protection/ruleset requirements.
 - GitLab secret/config state and actual authenticated GitLab reconciliation were not accessible through the available connector.
 - Search results are bounded and some issue results lacked state/timestamps. Confirm current state before any destructive cleanup.
+
+
+## Implemented: fail-closed PR auto-merge readiness gate
+
+This PR now includes an event-driven implementation:
+
+- `.github/workflows/governed-pr-auto-merge-readiness.yml`
+- `scripts/ci/pr_merge_readiness.py`
+- `tests/test_pr_merge_readiness.py`
+
+The workflow is triggered by submitted reviews (it proceeds only for an `APPROVED` event) or explicit workflow dispatch. It has no cron and no automatic polling loop. It gathers one bounded PR/protection/review snapshot, runs the deterministic evaluator and its unit tests, publishes a JSON decision to the Actions job summary, and enables GitHub auto-merge only when every gate passes.
+
+### Fail-closed eligibility contract
+
+All conditions must hold:
+
+1. Repository variable `GOVERNED_AUTO_MERGE_ENABLED=true`.
+2. The target branch protection can be read; missing/forbidden protection data blocks.
+3. At least one approving review is required by branch protection.
+4. Stale approvals are dismissed or approval of the latest push is required.
+5. At least one required status check is configured.
+6. Required conversation resolution is enabled.
+7. PR is open, non-draft, merge state is `CLEAN`, and carries the explicit `automerge:eligible` label.
+8. The current head SHA has enough approvals from distinct, non-bot human reviewers other than the PR author; each counted approval must reference that exact head SHA.
+9. A current-head human `CHANGES_REQUESTED` review blocks the decision.
+
+If the API cannot prove a prerequisite, the evaluator returns `wait`; it does not merge, comment, or start a retry loop. GitHub's own required checks and protections still govern the eventual merge after auto-merge is enabled.
+
+### Security boundary and activation
+
+The workflow checks out policy code from the trusted default branch, not the reviewed PR head. This prevents an untrusted PR from replacing the evaluator and then executing modified policy code with a write-capable token. The new workflow becomes active after its code lands on the default branch. Do not enable the repository variable until the branch protection requirements above are verified. Add the `automerge:eligible` label only to deliberately opted-in, appropriately scoped PRs; never blanket-label the backlog.
+
+The initial implementation reads the classic branch-protection endpoint. If the repository uses rulesets without equivalent classic protection data, it fails closed. Add and test a ruleset-aware reader before relying on auto-merge for that configuration. The workflow's branch-protection API permission must also be confirmed on a real run; a permission/endpoint error is deliberately treated as "not verified".
+
+### Validation status
+
+The evaluator has nine deterministic unit tests covering the eligible path, disabled switch, unavailable protection, stale-head approval, bot/author exclusion, latest review precedence, missing checks, missing conversation-resolution policy, and missing opt-in label. The tests are included in the workflow before any mutation. A successful remote workflow run is still required to validate GitHub's actual permission and branch-protection behavior; this PR does not claim that the auto-merge gate is active in production.
+
+## Reconciliation map and sequencing
+
+Use this order to minimize duplicate work and preserve unique changes:
+
+| Lane | Related PRs | Harmonization rule |
+|---|---|---|
+| PR review / merge governance | #1293, #1278 | Land and verify the guard before enabling the repository variable; require an explicit opt-in label |
+| Cadence audit | #1289, #684, #1292, #1290 | Prefer the focused audit extraction; compare cadence changes by workflow path before taking the broad matrix PR |
+| GitLab sync | #1288, #311 | Treat #1288 as the safer reconciliation direction; require a real authenticated dry run before considering any write-capable sync |
+| Actions matrix / cancellation | #1292, #1260, #684 | Preserve workflow IDs and existing event triggers; consolidate only after diff-level overlap review |
+| Temporal integrity | #1286 | Keep independent validation and Explorer/deployment evidence separate from quota changes |
+| Tunnel/auth canary | #1252, #1249 | Review as a dependency pair; don't promote either on stale status alone |
+| Research / planning | #1284, #1274, #1246 | Keep experimental and procurement contracts separate from production promotion gates |
+
+For each older PR or branch, compare the unique commit set against `master`, inspect its changed-file overlap with active PRs, check for a merged replacement, and record one disposition: `keep`, `extract`, `superseded`, `blocked`, or `archive`. Age is evidence for triage, not a disposition by itself.

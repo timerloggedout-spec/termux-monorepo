@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "49bf9d7945cfca29334b39dbaa119164572d9a3809efe20cdc288ad6325da3d9",
-  "workflow_count": 139,
+  "source_fingerprint": "25b18c2ad8555582e2871528be01539a72827615fb20ae5cbf421bdc3a530477",
+  "workflow_count": 140,
   "workflows": [
     {
       "action_pins": [
@@ -2024,6 +2024,29 @@
       "triggers": [
         "repository_dispatch",
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
+      "authority": "writer",
+      "concurrency": "group: provider-research-${{ github.event.pull_request.number || 'compound' }} cancel-in-progress: false",
+      "domain": "peer-provider-review",
+      "jobs": [
+        "collect",
+        "contracts",
+        "publish"
+      ],
+      "name": "Provider research compounding",
+      "path": ".github/workflows/provider-recon-compound.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "workflow_dispatch",
+        "workflow_run"
       ]
     },
     {

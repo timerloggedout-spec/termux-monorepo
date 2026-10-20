@@ -1,0 +1,95 @@
+name: Governed PR Auto-Merge Readiness
+
+# Event-driven only. Auto-merge requires explicit opt-in, branch protection,
+# a current-head human approval, and the automerge:eligible label.
+on:
+  pull_request_review:
+    types: [submitted]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: Open pull request number to re-evaluate
+        required: true
+        type: number
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: read
+  statuses: read
+  administration: read
+
+concurrency:
+  group: governed-pr-auto-merge-${{ github.event.pull_request.number || inputs.pr_number || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  evaluate:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'pull_request_review' &&
+       github.event.review.state == 'approved')
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Checkout policy code
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: Collect bounded PR and branch-protection snapshot
+        id: snapshot
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          EVENT_PR: ${{ github.event.pull_request.number }}
+          DISPATCH_PR: ${{ inputs.pr_number }}
+          AUTO_MERGE_ENABLED: ${{ vars.GOVERNED_AUTO_MERGE_ENABLED }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          pr_number="${EVENT_PR:-${DISPATCH_PR}}"
+          [[ "$pr_number" =~ ^[1-9][0-9]*$ ]] || { echo "Invalid PR number"; exit 2; }
+          pr_json="$(gh api "repos/$REPOSITORY/pulls/$pr_number")"
+          base_branch="$(jq -r '.base.ref' <<<"$pr_json")"
+          protection="$(gh api "repos/$REPOSITORY/branches/$base_branch/protection" 2>/dev/null || printf '%s' '{"unavailable":true}')"
+          reviews="$(gh api --paginate "repos/$REPOSITORY/pulls/$pr_number/reviews" | jq -s 'add // []')"
+          labels="$(jq -c '[.labels[].name]' <<<"$pr_json")"
+          state="$(jq -r '.state | ascii_upcase' <<<"$pr_json")"
+          draft="$(jq -r '.draft' <<<"$pr_json")"
+          author="$(jq -r '.user.login' <<<"$pr_json")"
+          head_sha="$(jq -r '.head.sha' <<<"$pr_json")"
+          merge_state="$(gh pr view "$pr_number" --repo "$REPOSITORY" --json mergeStateStatus --jq '.mergeStateStatus')"
+          enabled_json=false
+          [[ "$AUTO_MERGE_ENABLED" == "true" ]] && enabled_json=true
+          snapshot="$(jq -cn \
+            --argjson enabled "$enabled_json" \
+            --argjson protection "$protection" \
+            --argjson reviews "$reviews" \
+            --argjson labels "$labels" \
+            --argjson number "$pr_number" \
+            --arg state "$state" \
+            --argjson draft "$draft" \
+            --arg author "$author" \
+            --arg head_sha "$head_sha" \
+            --arg merge_state "$merge_state" \
+            '{enabled:$enabled,protection:$protection,reviews:$reviews,pr:{number:$number,state:$state,draft:$draft,author:$author,labels:$labels,head_sha:$head_sha,merge_state:$merge_state}}')"
+          printf '%s\n' "$snapshot" > "$RUNNER_TEMP/pr-merge-snapshot.json"
+          echo "pr_number=$pr_number" >> "$GITHUB_OUTPUT"
+      - name: Evaluate fail-closed merge policy
+        id: policy
+        run: |
+          python3 scripts/ci/pr_merge_readiness.py < "$RUNNER_TEMP/pr-merge-snapshot.json" | tee "$RUNNER_TEMP/pr-merge-decision.json"
+          decision="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["decision"])' "$RUNNER_TEMP/pr-merge-decision.json")"
+          echo "decision=$decision" >> "$GITHUB_OUTPUT"
+          {
+            echo "## Governed PR auto-merge readiness"
+            cat "$RUNNER_TEMP/pr-merge-decision.json"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Enable GitHub auto-merge when eligible
+        if: steps.policy.outputs.decision == 'enable_auto_merge'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ steps.snapshot.outputs.pr_number }}
+        run: gh pr merge "$PR_NUMBER" --repo "$REPOSITORY" --auto --squash
+      - name: Record blocked decision without noisy comments
+        if: steps.policy.outputs.decision != 'enable_auto_merge'
+        run: echo "Auto-merge not enabled. See this run's JSON summary; no PR comment or retry loop was created."

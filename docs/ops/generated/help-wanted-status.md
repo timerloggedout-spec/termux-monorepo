@@ -1,10 +1,9 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-20T13:51:53Z UTC · receipts=3153 · foreign_open=38 · tributes=109_
+_Generated 2026-10-20T16:54:53Z UTC · receipts=3191 · foreign_open=38 · tributes=109_
 
 ## Tributes (contributor ledger)
 
-- [use-assay/Assay#509](https://github.com/use-assay/Assay/pull/509) · state=open · help-wanted: stake + contribute for #305
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
 - [mangiapanejohn-dev/MOBIUS-Searcher#7](https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7) · state=open · help-wanted: stake + contribute for #6
@@ -42,6 +41,7 @@ _Generated 2026-10-20T13:51:53Z UTC · receipts=3153 · foreign_open=38 · tribu
 - [sorolens/sorolens#753](https://github.com/sorolens/sorolens/pull/753) · state=open · help-wanted: stake + contribute for #538
 - [francordel/kdemos#27](https://github.com/francordel/kdemos/pull/27) · state=open · help-wanted: stake + contribute for #26
 - [seleniumboot/selenium-boot#183](https://github.com/seleniumboot/selenium-boot/pull/183) · state=open · help-wanted: stake + contribute for #180
+- [use-assay/Assay#509](https://github.com/use-assay/Assay/pull/509) · state=open · help-wanted: stake + contribute for #305
 - [https://github.com/vedantnimbarte/zero/pull/81](https://github.com/vedantnimbarte/zero/pull/81) · state=? · 
 - [StellarFoundry/soroban-security-scanner#200](https://github.com/StellarFoundry/soroban-security-scanner/pull/200) · state=closed · help-wanted: stake + contribute for #158
 
@@ -86,6 +86,6 @@ _Generated 2026-10-20T13:51:53Z UTC · receipts=3153 · foreign_open=38 · tribu
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) — help-wanted: stake + contribute for #20
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Operational outcomes · actioned=183 skipped=2970 failed=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 2934, 'followup_reengage': 50, 'followup_stale_nudge': 119, 'followup_changes': 2}`
+## Operational outcomes · actioned=185 skipped=3006 failed=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 2970, 'followup_reengage': 50, 'followup_stale_nudge': 121, 'followup_changes': 2}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

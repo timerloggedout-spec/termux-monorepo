@@ -332,8 +332,10 @@ def test_quota_multiplier_zero_excludes_provider(tmp_path, monkeypatch, capsys):
     monkeypatch.setenv("COUNTER_DIR", str(tmp_path))
     monkeypatch.setattr(mr, "COUNTER_DIR", str(tmp_path))
     matrix_file = tmp_path / "model-success-matrix.yaml"
-    matrix_file.write_text('models:\
-  "google/gemma-4-31b-it:free":\n    elo: 1300\n')
+    matrix_file.write_text("""models:
+  "google/gemma-4-31b-it:free":
+    elo: 1300
+""")
     original_parse_yaml = mr.parse_yaml
     monkeypatch.setattr(mr, "parse_yaml", lambda path: original_parse_yaml(str(matrix_file)) if "success" in path else {})
     monkeypatch.setattr(mr, "fetch_openrouter_free_models_cached_with_source", lambda: (["google/gemma-4-31b-it:free"], "live"))
@@ -354,6 +356,7 @@ def test_active_rate_limit_cooldown_excludes_model(tmp_path, monkeypatch):
     assert mr.is_in_cooldown("openrouter", "google/gemma-4-31b-it:free")
 
 def test_required_live_openrouter_quota_fails_closed(tmp_path, monkeypatch):
+    from datetime import datetime, timezone
     monkeypatch.setenv("ROLE", "triage")
     monkeypatch.setenv("HAS_OMNI", "false")
     monkeypatch.setenv("HAS_OPENROUTER", "true")
@@ -361,6 +364,16 @@ def test_required_live_openrouter_quota_fails_closed(tmp_path, monkeypatch):
     monkeypatch.setenv("REQUIRE_LIVE_OPENROUTER_QUOTA", "true")
     monkeypatch.setattr(mr, "COUNTER_DIR", str(tmp_path))
     monkeypatch.setenv("COUNTER_DIR", str(tmp_path))
+    monkeypatch.setenv("QUOTA_WEIGHTS_PATH", str(tmp_path / "isolated-weights.json"))
+    matrix_file = tmp_path / "model-success-matrix.yaml"
+    matrix_file.write_text("""models:
+  "google/gemma-4-31b-it:free":
+    elo: 1300
+    role_suitability:
+      triage: 1.5
+""")
+    original_parse_yaml = mr.parse_yaml
+    monkeypatch.setattr(mr, "parse_yaml", lambda path: original_parse_yaml(str(matrix_file)) if "success" in path else {})
     monkeypatch.setattr(
         mr, "fetch_openrouter_free_models_cached_with_source",
         lambda: (["google/gemma-4-31b-it:free"], "live"),
@@ -373,6 +386,23 @@ def test_required_live_openrouter_quota_fails_closed(tmp_path, monkeypatch):
     outputs = output_file.read_text()
     assert "provider=none" in outputs
     assert "skip=true" in outputs
+
+    # A well-formed, fresh live snapshot for an actually eligible matrix/catalog
+    # candidate is a positive control: the same REQUIRE flag must admit it.
+    quota_file = tmp_path / "provider-quota-state.json"
+    quota_file.write_text(json.dumps({
+        "schema": "3l0.provider-quota-snapshot.v1",
+        "observed_at": datetime.now(timezone.utc).isoformat(),
+        "provider": "openrouter", "metric": "free_model_daily_requests",
+        "window": "UTC day", "status": "live", "used": 1,
+        "limit": 100, "remaining": 99,
+    }))
+    output_file.unlink()
+    mr.main()
+    outputs = output_file.read_text()
+    assert "provider=openrouter" in outputs
+    assert "model=google/gemma-4-31b-it:free" in outputs
+    assert "skip=false" in outputs
 
 
 def test_openrouter_quota_reconciliation_uses_conservative_max(tmp_path, monkeypatch):
@@ -399,3 +429,42 @@ def test_openrouter_quota_reconciliation_uses_conservative_max(tmp_path, monkeyp
     assert admission["effective_used"] == 95
     assert admission["admit"] is False
 
+
+def test_openrouter_quota_reconciliation_rejects_invalid_counters(tmp_path, monkeypatch):
+    from datetime import datetime, timezone
+    import pytest
+    monkeypatch.setattr(mr, "COUNTER_DIR", str(tmp_path))
+    base = {
+        "schema": "3l0.provider-quota-snapshot.v1",
+        "observed_at": datetime.now(timezone.utc).isoformat(),
+        "provider": "openrouter", "metric": "free_model_daily_requests",
+        "window": "UTC day", "status": "live", "used": 1,
+        "limit": 100, "remaining": 99,
+    }
+    invalid_cases = [
+        ("used", True), ("limit", False), ("used", float("nan")),
+        ("limit", float("inf")), ("used", -1), ("limit", 0),
+        ("limit", -1),
+    ]
+    for field, value in invalid_cases:
+        state = dict(base, **{field: value})
+        (tmp_path / "provider-quota-state.json").write_text(json.dumps(state))
+        admission = mr.load_openrouter_quota_admission()
+        assert admission["known"] is False, (field, value, admission)
+
+
+@__import__("pytest").mark.parametrize("safety", ["nan", "inf", "-inf", "0.09", "1.01"])
+def test_openrouter_quota_rejects_nonfinite_or_out_of_range_safety(tmp_path, monkeypatch, safety):
+    from datetime import datetime, timezone
+    monkeypatch.setattr(mr, "COUNTER_DIR", str(tmp_path))
+    monkeypatch.setenv("OPENROUTER_QUOTA_SAFETY", safety)
+    (tmp_path / "provider-quota-state.json").write_text(json.dumps({
+        "schema": "3l0.provider-quota-snapshot.v1",
+        "observed_at": datetime.now(timezone.utc).isoformat(),
+        "provider": "openrouter", "metric": "free_model_daily_requests",
+        "window": "UTC day", "status": "live", "used": 1,
+        "limit": 100, "remaining": 99,
+    }))
+    admission = mr.load_openrouter_quota_admission()
+    assert admission["known"] is False
+    assert admission["reason"] == "invalid quota safety threshold"

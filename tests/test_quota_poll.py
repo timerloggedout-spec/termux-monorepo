@@ -73,3 +73,34 @@ class QuotaPollTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def test_openrouter_reader_validates_real_response_shape(monkeypatch):
+    from datetime import datetime, timezone
+    monkeypatch.setenv("OPENROUTER_API_KEY", "offline-dummy")
+    payload = {"data": {"free_model_daily_requests": {"used": 4, "limit": 100}}}
+    monkeypatch.setattr(_qp, "_get", lambda *args, **kwargs: payload)
+    assert _qp.openrouter_reader(datetime.now(timezone.utc))["used"] == 4
+    for used, limit in [(True, 100), (1, False), (float("nan"), 100),
+                        (1, float("inf")), (-1, 100), (1, 0)]:
+        payload["data"]["free_model_daily_requests"] = {"used": used, "limit": limit}
+        assert _qp.openrouter_reader(datetime.now(timezone.utc)) is None
+
+
+def test_official_snapshot_never_borrows_registry_limit(tmp_path, monkeypatch):
+    registry = tmp_path / "registry.json"
+    registry.write_text(json.dumps({"services": [{
+        "id": "openrouter.free_models", "provider": "openrouter", "lane": "model",
+        "metric": "free requests", "unit": "requests/day", "window": "UTC day",
+        "reset": "UTC midnight", "zone": "UTC", "source": "https://example.test/docs",
+        "limit": 999, "planned_use": {"safety": 0.9},
+    }]}))
+    monkeypatch.setattr(_qp, "LIVE", {"openrouter.free_models": lambda now: {
+        "used": 4, "extra": {"source": "official OpenRouter GET /api/v1/key"},
+    }})
+    monkeypatch.setattr(_qp, "MULTI", [])
+    out = tmp_path / "out"
+    _qp.main(["--registry", str(registry), "--out", str(out)])
+    snapshot = json.loads((out / "provider-quota-state.json").read_text())
+    assert snapshot["status"] == "unknown"
+    assert snapshot["limit"] is None

@@ -574,7 +574,7 @@ def main():
                 continue
             quota_multiplier = quota_multipliers.get(provider.lower(), 1.0)
             if quota_multiplier <= 0:
-                sys.stderr.write(f"Candidate provider quota exhausted: {provider}/{model}\\n")
+                sys.stderr.write(f"Candidate provider quota exhausted: {provider}/{model}\n")
                 continue
             model_entry = models_dict.get(model) or {}
             role_suitability = model_entry.get("role_suitability") or {}

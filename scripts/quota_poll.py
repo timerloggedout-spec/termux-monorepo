@@ -8,7 +8,7 @@ routing-weights.json, and one QUOTA line per live reading on stdout.
 """
 from __future__ import annotations
 
-import argparse, hashlib, json, os, sys, time, urllib.request, urllib.parse
+import argparse, hashlib, json, math, os, sys, time, urllib.request, urllib.parse
 from datetime import datetime, timezone
 
 UA = {"User-Agent": "termux-monorepo-quota-poll"}
@@ -105,6 +105,16 @@ def neon_reader(now):
             "neon.storage": {"used": round(st, 3), "elapsed": None}}
 
 
+def _valid_counters(used, limit):
+    if (isinstance(used, bool) or isinstance(limit, bool)
+            or not isinstance(used, (int, float)) or not isinstance(limit, (int, float))):
+        return False
+    try:
+        return math.isfinite(used) and math.isfinite(limit) and used >= 0 and limit > 0
+    except OverflowError:
+        return False
+
+
 def openrouter_reader(now):
     key = os.environ.get("OPENROUTER_API_KEY")
     if not key:
@@ -112,10 +122,7 @@ def openrouter_reader(now):
     d = _get("https://openrouter.ai/api/v1/key", {"Authorization": "Bearer " + key}).get("data", {})
     fm = d.get("free_model_daily_requests") or {}
     used, lim = fm.get("used", fm.get("count")), fm.get("limit")
-    if (isinstance(used, bool) or isinstance(lim, bool)
-            or not isinstance(used, (int, float)) or not isinstance(lim, (int, float))
-            or not math.isfinite(float(used)) or not math.isfinite(float(lim))
-            or used < 0 or lim <= 0):
+    if not _valid_counters(used, lim):
         return None
     return {
         "used": used,
@@ -211,11 +218,12 @@ def main(argv=None):
     # and limit. A documented entitlement or a failed poll is not a live balance.
     prov = {}
     for r in recs:
+        raw = readings.get("openrouter.free_models") or {}
+        if r["resource_id"] == "quota:openrouter.free_models" and not _valid_counters(raw.get("used"), raw.get("limit")):
+            continue
         if (r["lane_id"] in ("quota-model", "quota-deploy", "quota-data")
                 and r["horizon"] == "H0"
-                and isinstance(r.get("used"), (int, float))
-                and isinstance(r.get("limit"), (int, float))
-                and r["limit"] > 0):
+                and _valid_counters(r.get("used"), r.get("limit"))):
             prov[r["provider"].lower()] = min(
                 prov.get(r["provider"].lower(), 2.0), r["routing_multiplier"]
             )
@@ -230,7 +238,11 @@ def main(argv=None):
         json.dump(weights, handle, indent=2)
     # Keep a focused, machine-readable official OpenRouter snapshot for audit and
     # preflight policy. Never fill in unknown fields from the registry.
-    or_rec = next((r for r in recs if r["resource_id"] == "quota:openrouter.free_models" and r.get("horizon") == "H0" and r.get("evidence_status") == "confirmed" and r.get("extra", {}).get("source") == "official OpenRouter GET /api/v1/key"), None)
+    or_rec = readings.get("openrouter.free_models")
+    if (not isinstance(or_rec, dict)
+            or (or_rec.get("extra") or {}).get("source") != "official OpenRouter GET /api/v1/key"
+            or not _valid_counters(or_rec.get("used"), or_rec.get("limit"))):
+        or_rec = None
     snapshot = {
         "schema": "3l0.provider-quota-snapshot.v1",
         "observed_at": now.isoformat(),
@@ -238,9 +250,7 @@ def main(argv=None):
         "source": "https://openrouter.ai/api/v1/key",
         "metric": "free_model_daily_requests",
         "window": "UTC day",
-        "status": "live" if or_rec and or_rec["horizon"] == "H0" and
-                  isinstance(or_rec.get("used"), (int, float)) and
-                  isinstance(or_rec.get("limit"), (int, float)) else "unknown",
+        "status": "live" if or_rec else "unknown",
         "used": or_rec.get("used") if or_rec else None,
         "limit": or_rec.get("limit") if or_rec else None,
         "remaining": or_rec.get("remaining") if or_rec else None,

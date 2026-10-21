@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "5fa30774d2de1951084b9844cc1c5185ec5e1f00fbcf38d5be7da94eda33c9d5",
-  "workflow_count": 150,
+  "source_fingerprint": "439abc0a208eefb8cc02dee0e7ad2fc03616a509d5d44633cea4b1e7ba70235b",
+  "workflow_count": 149,
   "workflows": [
     {
       "action_pins": [
@@ -240,7 +240,7 @@
     },
     {
       "action_pins": [
-        "actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09"
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
       "authority": "read-only-or-advisory",
       "concurrency": "group: agent-quality-${{ github.event.pull_request.number || github.ref }} cancel-in-progress: true",
@@ -253,7 +253,6 @@
       "schedules": [],
       "triggers": [
         "pull_request",
-        "push",
         "workflow_dispatch"
       ]
     },
@@ -276,7 +275,10 @@
       ]
     },
     {
-      "action_pins": [],
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
       "authority": "read-only-or-advisory",
       "concurrency": "group: agent-runtime-stall-watch cancel-in-progress: false",
       "domain": "agentic-development",
@@ -1683,24 +1685,6 @@
       "triggers": [
         "pull_request",
         "push",
-        "workflow_dispatch"
-      ]
-    },
-    {
-      "action_pins": [
-        "actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09"
-      ],
-      "authority": "read-only-or-advisory",
-      "concurrency": "",
-      "domain": "agentic-development",
-      "jobs": [
-        "validate-backfill-migration-boundary"
-      ],
-      "name": "historical backfill promotion gate",
-      "path": ".github/workflows/historical-backfill-promotion-gate.yml",
-      "schedules": [],
-      "triggers": [
-        "pull_request",
         "workflow_dispatch"
       ]
     },

@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-10-21T04:23:15Z` UTC  
+**Generated:** `2026-10-21T04:25:55Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 81 docs-lane branch(es)
+**Count:** 82 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -40,6 +40,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/foresight-evidence-spine-2026-10-03-rebased`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/foresight-evidence-spine-2026-10-03-rebased) | `0b9bbffb143f` | — | — | orphan lane |
 | [`docs/free-inference-production-receipt`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/free-inference-production-receipt) | `7422b87bc9d6` | — | — | orphan lane |
 | [`docs/gantt-dependency-phases-upgrade-20260925`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/gantt-dependency-phases-upgrade-20260925) | `1fe39c044994` | — | — | orphan lane |
+| [`docs/gaps-opportunities-pass1-500`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/gaps-opportunities-pass1-500) | `48f5013741a5` | — | — | orphan lane |
 | [`docs/github-mcp-url-only-clients`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/github-mcp-url-only-clients) | `54f17f18989f` | — | — | orphan lane |
 | [`docs/hex-non-ai-trial-lane`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/hex-non-ai-trial-lane) | `252dae071c8d` | — | — | orphan lane |
 | [`docs/historical-corpus-explorer-proposal`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/historical-corpus-explorer-proposal) | `63ed3f22745c` | — | `Manus` | registered; no open PR |
@@ -70,7 +71,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/project-status-provider-museai-2026-10-21`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/project-status-provider-museai-2026-10-21) | `8a965e78eba4` | [#1402](https://github.com/timerloggedout-spec/termux-monorepo/pull/1402)→`master` | — | PR without registry link |
 | [`docs/promote-archwiz-to-master`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/promote-archwiz-to-master) | `70bfdeff314a` | — | — | orphan lane |
 | [`docs/proposals/agentic-scoped-access-and-tier4-review`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/proposals/agentic-scoped-access-and-tier4-review) | `7f39e156f87f` | — | `agent-automation`, `agent-automation` | registered; no open PR |
-| [`docs/proposals/codespaces-enablement`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/proposals/codespaces-enablement) | `0dc0c23dbb15` | [#500](https://github.com/timerloggedout-spec/termux-monorepo/pull/500)→`master` | — | PR without registry link |
+| [`docs/proposals/codespaces-enablement`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/proposals/codespaces-enablement) | `0dc0c23dbb15` | — | `gaps-and-opportunities-subagent` | registered; no open PR |
 | [`docs/proposals/demo-portal`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/proposals/demo-portal) | `563c02aa8de5` | — | `Claude` | registered; no open PR |
 | [`docs/proposals/vercel-lane-topology`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/proposals/vercel-lane-topology) | `7b45afe7373e` | — | `Claude` | registered; no open PR |
 | [`docs/provenance-record-kwonly-docstring`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/provenance-record-kwonly-docstring) | `6fe7e7282d50` | — | — | orphan lane |

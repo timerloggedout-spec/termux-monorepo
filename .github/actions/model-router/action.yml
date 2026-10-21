@@ -128,6 +128,7 @@ runs:
         OMNI_API_KEY: ${{ inputs.omni-api-key }}
         COUNTER_DIR: /tmp/model-router
         MODEL_ROUTER_CACHE_SCHEMA: ${{ inputs.cache-schema }}
+        REQUIRE_LIVE_OPENROUTER_QUOTA: 'true'
       run: |
         python3 -m scripts.model_router_bootstrap
 

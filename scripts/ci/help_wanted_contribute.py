@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-"""After claim: fork + stake branch + open upstream PR (PRIMARY delivery).
+"""After claim: fork + real-patch branch + open upstream PR (PRIMARY delivery).
 
 LIVE ONLY. No dry-run path.
-PRIMARY = upstream PR. FALLBACK = issue notice + fork branch when PR blocked.
-Stake PRs must NOT claim Fixes # (that auto-closes issues on merge).
+Stake-only PRs (.github/help-wanted-lane-stake.md) are retired: a stake PR got
+ResQNet #53 closed. A PR opens only when a real patch is supplied (--patch or
+HELP_WANTED_PATCH) and Tribute System 1 preflight_pr(files) allows it.
+No fallback issue notice is posted when the PR is blocked.
 """
 from __future__ import annotations
 
@@ -19,6 +21,12 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
+
+try:
+    from scripts.ci import tribute_system1
+except ImportError:  # pragma: no cover - Actions checkout root
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+    from scripts.ci import tribute_system1  # type: ignore
 
 
 def _headers() -> dict[str, str]:
@@ -172,10 +180,51 @@ def create_pr_api(owner: str, repo: str, head: str, base: str, title: str, body:
     return ""
 
 
+def load_patch(path: str | None) -> str:
+    """Real patch text, or "" when none was supplied."""
+    if not path:
+        return ""
+    try:
+        return Path(path).read_text(encoding="utf-8")
+    except OSError as e:
+        print(f"patch unreadable {path}: {e}", file=sys.stderr)
+        return ""
+
+
+def staged_files(cwd: str) -> list[dict]:
+    """Staged diff in Tribute System 1 `files` shape (filename/additions/deletions/patch)."""
+    files: list[dict] = []
+    numstat = run(["git", "diff", "--cached", "--numstat"], cwd=cwd).stdout or ""
+    for line in numstat.splitlines():
+        parts = line.split("\t")
+        if len(parts) != 3:
+            continue
+        add, dele, name = parts
+        patch = run(["git", "diff", "--cached", "--", name], cwd=cwd, check=False).stdout or ""
+        files.append({
+            "filename": name,
+            "additions": int(add) if add.isdigit() else 0,
+            "deletions": int(dele) if dele.isdigit() else 0,
+            "patch": patch[:4000],
+        })
+    return files
+
+
+def preflight_issue(owner: str, repo: str, number: int, meta: dict) -> dict:
+    """Same candidate gate as claim, re-run at the point of action."""
+    try:
+        from scripts.ci.help_wanted_claim import preflight
+    except ImportError:  # pragma: no cover
+        from help_wanted_claim import preflight  # type: ignore
+    return preflight(owner, repo, number, meta, allow_closed=os.environ.get("HELP_WANTED_ALLOW_CLOSED") == "1")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--issue", required=True)
     ap.add_argument("--actor-fork", default="timerloggedout-spec")
+    ap.add_argument("--patch", default=os.environ.get("HELP_WANTED_PATCH", ""),
+                    help="unified diff with the real fix; without it no PR is opened")
     args = ap.parse_args()
     owner, repo, number = parse_issue(args.issue)
     token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
@@ -187,15 +236,28 @@ def main() -> int:
     os.environ["GITHUB_TOKEN"] = token
     print(f"contribute LIVE: {owner}/{repo}#{number}", flush=True)
 
+    patch_text = load_patch(args.patch)
+    if not patch_text.strip():
+        print(f"SKIP {owner}/{repo}#{number}: no real patch supplied; stake-only PRs are retired", file=sys.stderr)
+        print("::notice::contribute_skipped_no_patch=true")
+        return 0
+
     try:
         meta = _api("GET", f"https://api.github.com/repos/{owner}/{repo}/issues/{number}")
-        if isinstance(meta, dict) and (meta.get("state") or "").lower() == "closed":
-            if os.environ.get("HELP_WANTED_ALLOW_CLOSED") != "1":
-                print(f"SKIP closed issue {owner}/{repo}#{number}", file=sys.stderr)
-                print("::notice::contribute_skipped_closed=true")
-                return 0
-    except urllib.error.HTTPError:
-        pass
+    except urllib.error.HTTPError as e:
+        print(f"SKIP {owner}/{repo}#{number}: issue unreadable ({e.code})", file=sys.stderr)
+        return 0
+    if not isinstance(meta, dict):
+        return 0
+    if (meta.get("state") or "").lower() == "closed" and os.environ.get("HELP_WANTED_ALLOW_CLOSED") != "1":
+        print(f"SKIP closed issue {owner}/{repo}#{number}", file=sys.stderr)
+        print("::notice::contribute_skipped_closed=true")
+        return 0
+    pf = preflight_issue(owner, repo, number, meta)
+    if not pf["eligible"]:
+        print(f"SKIP {owner}/{repo}#{number}: Tribute System 1 preflight {pf['reasons']}", file=sys.stderr)
+        print("::notice::contribute_skipped_preflight=true")
+        return 0
 
     fork = ensure_fork(owner, repo, args.actor_fork, token)
     branch = f"help-wanted/issue-{number}"
@@ -219,36 +281,29 @@ def main() -> int:
         run(["git", "config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com"], cwd=tmp)
         run(["git", "checkout", "-B", branch], cwd=tmp)
 
-        stake = Path(tmp) / ".github" / "help-wanted-lane-stake.md"
-        stake.parent.mkdir(parents=True, exist_ok=True)
-        stake.write_text(
-            f"""# Help-wanted lane stake
-
-- Issue: https://github.com/{owner}/{repo}/issues/{number}
-- Actor: timerloggedout-spec (help-wanted execute)
-- Delivery: upstream PR (PRIMARY) — stake only until real fix lands
-- Fork: https://github.com/{fork}
-
-Replace this file with a real fix; do not merge stake-only as complete.
-""",
-            encoding="utf-8",
-        )
-        run(["git", "add", ".github/help-wanted-lane-stake.md"], cwd=tmp)
-        commit = run(["git", "commit", "-m", f"help-wanted: stake claim for #{number}"], cwd=tmp, check=False)
-        if commit.returncode != 0 and "nothing to commit" not in ((commit.stdout or "") + (commit.stderr or "")):
+        patch_path = Path(tmp).parent / f"hw-{number}.patch"
+        patch_path.write_text(patch_text, encoding="utf-8")
+        applied = run(["git", "apply", "--index", str(patch_path)], cwd=tmp, check=False)
+        if applied.returncode != 0:
+            print(f"SKIP: patch does not apply: {(applied.stderr or '')[:400]}", file=sys.stderr)
+            return 1
+        files = staged_files(tmp)
+        gate = tribute_system1.preflight_pr(files)
+        if not files or not gate["allowed"]:
+            print(f"SKIP: Tribute System 1 preflight_pr refused {gate['placeholder']}", file=sys.stderr)
+            print("::notice::contribute_skipped_placeholder=true")
+            return 0
+        commit = run(["git", "commit", "-m", f"fix: address #{number}"], cwd=tmp, check=False)
+        if commit.returncode != 0:
             return 1
         run(["git", "push", "-u", "origin", branch, "--force"], cwd=tmp)
 
-    title = f"help-wanted: stake + contribute for #{number}"
-    # NEVER use Fixes # on stake-only — that auto-closes issues on merge
+    title = f"Fix #{number}: {(meta.get('title') or '').strip()[:80]}".rstrip(": ")
+    changed = ", ".join(f"`{f['filename']}`" for f in files[:10])
     body = (
-        f"## Help-wanted lane contribution (stake)\n\n"
-        f"Opens a reviewable upstream PR for #{number}.\n\n"
-        f"- PRIMARY: upstream PR into author repo\n"
-        f"- This commit is a **stake** (`.github/help-wanted-lane-stake.md`) — not the final fix\n"
-        f"- Fork: https://github.com/{fork}\n"
-        f"- Related: https://github.com/{owner}/{repo}/issues/{number}\n\n"
-        f"Maintainers: request changes or wait for a real patch commit on this branch.\n"
+        f"Addresses #{number}.\n\n"
+        f"Changed: {changed}\n\n"
+        f"Happy to adjust anything to fit the project's conventions.\n"
     )
     head = f"{args.actor_fork}:{branch}"
 
@@ -281,18 +336,8 @@ Replace this file with a real fix; do not merge stake-only as complete.
         print(f"::notice::upstream_pr={pr_url}")
         return 0
 
-    notice = (
-        f"### Help-wanted lane — contribution stake (fallback notice)\n\n"
-        f"Upstream PR blocked. Fork branch: https://github.com/{fork}/tree/{branch}\n"
-    )
-    try:
-        out = _api("POST", f"https://api.github.com/repos/{owner}/{repo}/issues/{number}/comments", {"body": notice})
-        print(f"fallback: {(out.get('html_url') if isinstance(out, dict) else '')}")
-        return 0
-    except Exception as e:
-        print(f"fallback failed: {e}", file=sys.stderr)
-        return 1
-
+    print("upstream PR blocked; no fallback notice is posted", file=sys.stderr)
+    return 1
 
 if __name__ == "__main__":
     raise SystemExit(main())

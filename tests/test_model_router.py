@@ -373,3 +373,28 @@ def test_required_live_openrouter_quota_fails_closed(tmp_path, monkeypatch):
     assert "provider=none" in outputs
     assert "skip=true" in outputs
 
+
+def test_openrouter_quota_reconciliation_uses_conservative_max(tmp_path, monkeypatch):
+    from datetime import datetime, timezone
+    monkeypatch.setattr(mr, "COUNTER_DIR", str(tmp_path))
+    monkeypatch.setenv("OPENROUTER_QUOTA_SAFETY", "0.90")
+    state = {
+        "schema": "3l0.provider-quota-snapshot.v1",
+        "observed_at": datetime.now(timezone.utc).isoformat(),
+        "provider": "openrouter",
+        "metric": "free_model_daily_requests",
+        "window": "UTC day",
+        "status": "live",
+        "used": 80,
+        "limit": 100,
+        "remaining": 20,
+    }
+    (tmp_path / "provider-quota-state.json").write_text(json.dumps(state))
+    # Local route reservations are intentionally treated conservatively if the
+    # official counter has not caught up yet.
+    (tmp_path / "openrouter_google_gemma-4-31b-it:free.txt").write_text("95")
+    admission = mr.load_openrouter_quota_admission()
+    assert admission["known"] is True
+    assert admission["effective_used"] == 95
+    assert admission["admit"] is False
+

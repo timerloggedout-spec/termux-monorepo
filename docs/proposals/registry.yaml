@@ -605,3 +605,18 @@ proposals:
     related_prs: [131]
     related_branches: [docs/agent-team-formation-draft]
     gates_required: [repo-gate, termux-smoke]
+  - id: ops-hitl-control-plane
+    title: "OPS-EVENT HITL Control Plane"
+    author: timerloggedout-spec
+    status: posted
+    priority: P1
+    path: active/ops-hitl-control-plane/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: []
+    related_prs: [739]
+    related_branches:
+      - feat/hitl-control-plane-739
+    gates_required: [repo-gate, termux-smoke]

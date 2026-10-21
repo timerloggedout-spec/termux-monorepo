@@ -108,12 +108,12 @@ def dependency_state(
     The caller owns execution and must record the resulting terminal state.
     """
     del node  # node identity is for caller-facing APIs; dependencies drive admission.
+    has_unknown = False
     for prerequisite in sorted(set(prerequisites)):
         state = states.get(prerequisite)
         if state is None or state == "unknown":
-            return "unknown"
-        if state not in TERMINAL_STATES:
+            has_unknown = True
+            continue
+        if state not in TERMINAL_STATES or state not in allowed_success_states:
             return "blocked"
-        if state not in allowed_success_states:
-            return "blocked"
-    return "ready"
+    return "unknown" if has_unknown else "ready"

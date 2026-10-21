@@ -191,3 +191,14 @@ Agent-Identity: Grok (Administrator)
 - Next: merge #1292 after final re-fetch; device-side Pinggy publish on #1 remains operator action.
 
 Agent-Identity: Grok (Administrator)
+
+## Continuation (2026-10-21 03:00Z)
+
+- Re-fetched PR #1292 head `d832c2f11d7090df7e2d8fa1ebf2866bb7ac67e9`. Combined status = failure solely from Vercel build-rate-limit on four projects (non-gate per #772 and ops skill). Dual-gate / code checks remain independent.
+- Actions Run Watcher still produces skipped runs on master because the workflow_run trigger removal is only on this branch; merge eliminates the spam source.
+- Quota messages (observatory 403, registry, Vercel) classified as capacity lag; Lead/Lag */4 + adaptive WAIT + delta cache prevent retry storms and empty commits.
+- Skipped/Cancelled/In-process remain validation-audit only; no incident emission. Notification edges further modularized via dispatch-only watcher + cadence ownership.
+- Pinggy / device #1: opaque ID `tmx-node-primary` preserved; live status:active still requires device-side publish. Alternatives (Cloudflare, secondary opaque node, pure Actions) documented and ready.
+- Next: confirm dual-gate terminal on current head, then merge to stop residual watcher spam. Operator action for device tunnel remains.
+
+Agent-Identity: Grok (Administrator)

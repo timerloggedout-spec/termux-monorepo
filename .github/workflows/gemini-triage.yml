@@ -190,7 +190,7 @@ jobs:
         if: always()
         id: router_feedback_date
         shell: bash
-        run: echo "key=$(TZ=America/Los_Angeles date +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+        run: echo "key=$(TZ=UTC date +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
 
       - name: Persist rate-limit cooldown feedback
         if: always() && steps.router.outputs.skip != 'true'

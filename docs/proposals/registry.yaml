@@ -552,3 +552,22 @@ proposals:
     related_prs: []
     related_branches: []
     gates_required: [repo-gate, termux-smoke]
+  - id: archwiz-markov-trellis-lab
+    title: "ArchWiz Markov recombining tree/trellis visualization and evaluation sandbox"
+    author: ChatGPT
+    status: executing
+    priority: P1
+    path: active/archwiz-markov-trellis-lab/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_issues: [966]
+    related_prs: [967]
+    related_branches:
+      - experiment/archwiz-markov-trellis-lab
+    gates_required: [repo-gate, termux-smoke]
+

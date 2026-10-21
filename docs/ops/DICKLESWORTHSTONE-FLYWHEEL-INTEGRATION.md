@@ -1,7 +1,7 @@
 # Dicklesworthstone Flywheel Stack — Integration and Upgrade Plan
 
-**Status:** Active integration lane; reference metadata landed on feat/dicklesworthstone-flywheel-stack.  
-**Upstream checked:** 2026-10-21.  
+**Status:** Active integration lane; reference metadata landed on feat/dicklesworthstone-flywheel-stack.
+**Upstream checked:** 2026-10-21.
 **Primary sources:** https://github.com/Dicklesworthstone/agentic_coding_flywheel_setup and https://github.com/Dicklesworthstone/agentic_coding_flywheel_setup/blob/main/docs/methodology/THE_FLYWHEEL_CORE_LOOP.md.
 
 ## Executive status

@@ -71,7 +71,8 @@
         "SLB"
       ],
       "sources": [
-        "https://github.com/Dicklesworthstone/destructive_command_guard"
+        "https://github.com/Dicklesworthstone/destructive_command_guard",
+        "https://github.com/Dicklesworthstone/slb"
       ],
       "project_action": "map_to_existing_permission_and_guard_controls",
       "runtime_status": "research"
@@ -84,7 +85,8 @@
         "NTM"
       ],
       "project_action": "optional_interactive_surface_not_actions_replacement",
-      "runtime_status": "research"
+      "runtime_status": "research",
+      "source": "https://github.com/Dicklesworthstone/ntm"
     },
     {
       "id": "memory_search",
@@ -95,7 +97,11 @@
         "CASS Memory"
       ],
       "project_action": "privacy_and_retrieval_benchmark_before_adoption",
-      "runtime_status": "research"
+      "runtime_status": "research",
+      "sources": [
+        "https://github.com/Dicklesworthstone/coding_agent_session_search",
+        "https://github.com/Dicklesworthstone/cass_memory_system"
+      ]
     },
     {
       "id": "bootstrap",
@@ -105,7 +111,8 @@
         "ACFS"
       ],
       "project_action": "metadata_only_until_container_reproducibility_and_security_review",
-      "runtime_status": "not_deployed"
+      "runtime_status": "not_deployed",
+      "source": "https://github.com/Dicklesworthstone/agentic_coding_flywheel_setup"
     }
   ],
   "promotion_gates": [

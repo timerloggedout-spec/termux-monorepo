@@ -130,3 +130,10 @@ In document translation pipelines (`translate_line`), evaluating `PATH_REGEX` wh
 
 **Action:**
 Guard file/path regex evaluations in line translation pipelines by checking for known file extension tokens (`any(ext in line for ext in PATH_EXTENSIONS)`) alongside path separators (`/`, `\`, `~`) when periods are present.
+
+## 2026-10-21 - Subword BPE Tokenization Inflation vs Pre-Parser Steganographic Trie Regexes
+**Learning:**
+Base64 string encoding increases text length by ~33% and fragments into high subword token counts (~0.75-1.0 tokens/character in Tiktoken/BPE) due to lack of standard natural word sub-sequences. In contrast, CedrLang symbolic compression and pre-LLM steganographic ciphers using pre-compiled Trie-structured regular expressions (`build_trie_regex`) achieve ~30-60% token savings and execute pre-parser obfuscation/decryption in single-pass C-level regex matches without allocating inner function closures or redundant string passes. Furthermore, negative lookarounds `(?<!\w)...(?!\w)` in markdown delimiter regexes prevent inner underscore tokens in Grimoire symbols (such as `3qu1v_m47`) from triggering false-positive bold/italic placeholder extraction.
+
+**Action:**
+Avoid Base64 for LLM context compression; use CedrLang symbolic/Trie regex pipelines for pre-LLM communication, and apply negative lookarounds on markdown formatting guards to prevent symbol underscore collisions.

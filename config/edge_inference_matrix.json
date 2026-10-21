@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "purpose": "Evidence registry for reproducible ARM/Android/Termux inference and procurement.",
+  "targets": ["arm64-linux", "x86_64-linux", "android", "termux", "offline"],
+  "measurements": [
+    "time_to_first_token_ms",
+    "tokens_per_second",
+    "peak_rss_bytes",
+    "model_memory_bytes",
+    "wall_time_ms",
+    "energy_mwh",
+    "temperature_c",
+    "output_agreement",
+    "failure_class"
+  ],
+  "required_identity": [
+    "device",
+    "soc",
+    "ram",
+    "os_version",
+    "runtime",
+    "runtime_version",
+    "model_digest",
+    "quantization",
+    "backend",
+    "accelerator",
+    "workload_fixture"
+  ],
+  "procurement_policy": {
+    "vendor_tops_is_measured_evidence": false,
+    "untested_target_is_portable": false,
+    "prefer_open_export": true,
+    "prefer_offline": true
+  }
+}

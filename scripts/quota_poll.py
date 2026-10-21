@@ -150,6 +150,7 @@ def record(svc, reading, now):
         "provider": svc["provider"], "metric": svc["metric"], "unit": svc["unit"],
         "limit": (reading or {}).get("limit", svc.get("limit")),
         "used": (reading or {}).get("used"),
+        "remaining": (reading or {}).get("remaining"),
         "window": svc["window"], "reset": (reading or {}).get("reset", svc["reset"]), "reset_zone": svc["zone"],
         "planned_use": svc.get("planned_use", {}),
         "extra": (reading or {}).get("extra", {}),
@@ -193,12 +194,47 @@ def main(argv=None):
                 f.write(json.dumps({"op": "retain", "bank_id": "deepagent::termux-monorepo",
                                     "content": f"{now.date()} quota {r['resource_id']}: used {r['used']} of {r['limit']} {r['unit']}; reset {r['reset']} ({r['reset_zone']}); multiplier {r['routing_multiplier']}",
                                     "evidence_hash": r["evidence_hash"]}) + "\n")
+    # Only publish a routing weight when it is backed by a live numeric usage
+    # and limit. A documented entitlement or a failed poll is not a live balance.
     prov = {}
     for r in recs:
-        if r["lane_id"] in ("quota-model", "quota-deploy", "quota-data"):
-            prov[r["provider"]] = min(prov.get(r["provider"], 2.0), r["routing_multiplier"])
-    json.dump({"schema": "3l0.quota-weights.v1", "generated_at": now.isoformat(), "multipliers": prov},
-              open(os.path.join(a.out, "routing-weights.json"), "w"), indent=2)
+        if (r["lane_id"] in ("quota-model", "quota-deploy", "quota-data")
+                and r["horizon"] == "H0"
+                and isinstance(r.get("used"), (int, float))
+                and isinstance(r.get("limit"), (int, float))
+                and r["limit"] > 0):
+            prov[r["provider"].lower()] = min(
+                prov.get(r["provider"].lower(), 2.0), r["routing_multiplier"]
+            )
+    weights = {
+        "schema": "3l0.quota-weights.v1",
+        "generated_at": now.isoformat(),
+        "multipliers": prov,
+        "authority": "live-only; absent provider means quota unknown, not unlimited",
+    }
+    weights_path = os.path.join(a.out, "routing-weights.json")
+    with open(weights_path, "w", encoding="utf-8") as handle:
+        json.dump(weights, handle, indent=2)
+    # Keep a focused, machine-readable official OpenRouter snapshot for audit and
+    # preflight policy. Never fill in unknown fields from the registry.
+    or_rec = next((r for r in recs if r["resource_id"] == "quota:openrouter.free_models"), None)
+    snapshot = {
+        "schema": "3l0.provider-quota-snapshot.v1",
+        "observed_at": now.isoformat(),
+        "provider": "openrouter",
+        "source": "https://openrouter.ai/api/v1/key",
+        "metric": "free_model_daily_requests",
+        "window": "UTC day",
+        "status": "live" if or_rec and or_rec["horizon"] == "H0" and
+                  isinstance(or_rec.get("used"), (int, float)) and
+                  isinstance(or_rec.get("limit"), (int, float)) else "unknown",
+        "used": or_rec.get("used") if or_rec else None,
+        "limit": or_rec.get("limit") if or_rec else None,
+        "remaining": or_rec.get("remaining") if or_rec else None,
+        "reset": or_rec.get("reset") if or_rec else None,
+    }
+    with open(os.path.join(a.out, "provider-quota-state.json"), "w", encoding="utf-8") as handle:
+        json.dump(snapshot, handle, indent=2)
     for r in recs:
         if r["used"] is not None:
             print(f"QUOTA {r['resource_id']} used={r['used']} limit={r['limit']} mult={r['routing_multiplier']} reset={r['reset']}")

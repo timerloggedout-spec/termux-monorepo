@@ -320,3 +320,34 @@ def test_secure_permissions_and_creation(tmp_path, monkeypatch):
     assert cache_file.exists()
     mode = os.stat(cache_file).st_mode
     assert stat.S_IMODE(mode) == 0o600
+
+
+
+def test_quota_multiplier_zero_excludes_provider(tmp_path, monkeypatch, capsys):
+    import time
+    monkeypatch.setenv("ROLE", "triage")
+    monkeypatch.setenv("HAS_OMNI", "false")
+    monkeypatch.setenv("HAS_OPENROUTER", "true")
+    monkeypatch.setenv("HAS_GEMINI", "false")
+    monkeypatch.setenv("COUNTER_DIR", str(tmp_path))
+    monkeypatch.setattr(mr, "COUNTER_DIR", str(tmp_path))
+    matrix_file = tmp_path / "model-success-matrix.yaml"
+    matrix_file.write_text('models:\\n  "google/gemma-4-31b-it:free":\\n    elo: 1300\\n')
+    original_parse_yaml = mr.parse_yaml
+    monkeypatch.setattr(mr, "parse_yaml", lambda path: original_parse_yaml(str(matrix_file)) if "success" in path else {})
+    monkeypatch.setattr(mr, "fetch_openrouter_free_models_cached_with_source", lambda: (["google/gemma-4-31b-it:free"], "live"))
+    weights = tmp_path / "routing-weights.json"
+    weights.write_text(json.dumps({"schema":"3l0.quota-weights.v1","generated_at":__import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat(),"multipliers":{"openrouter":0}}))
+    monkeypatch.setenv("QUOTA_WEIGHTS_PATH", str(weights))
+    go_file = tmp_path / "github_output.txt"
+    monkeypatch.setenv("GITHUB_OUTPUT", str(go_file))
+    mr.main()
+    assert "provider=none" in go_file.read_text()
+    assert "skip=true" in go_file.read_text()
+
+
+def test_active_rate_limit_cooldown_excludes_model(tmp_path, monkeypatch):
+    import time
+    monkeypatch.setattr(mr, "COUNTER_DIR", str(tmp_path))
+    (tmp_path / "cooldowns.json").write_text(json.dumps({"cooldowns":{"openrouter/google/gemma-4-31b-it:free":time.time()+600}}))
+    assert mr.is_in_cooldown("openrouter", "google/gemma-4-31b-it:free")

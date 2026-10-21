@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Branching conversation DAG: fork, merge, branch pointer management."""
-import sys, json, hashlib, time
+import sys, json, hashlib, time, os, re
 from pathlib import Path
 from typing import Dict, List, Optional
 from datetime import datetime, timezone
+
+SAFE_IDENTIFIER_RE = re.compile(r"^[a-zA-Z0-9_\-\.]+$")
 
 sys.path.insert(0, str(Path.home() / 'cli-synthegration'))
 from conv_versioner import ConversationDAG, MessageRef
@@ -24,13 +26,23 @@ class ConversationRepo:
     
     def __init__(self, repo_path: Path = None):
         self.path = repo_path or Path.home() / 'cli-synthegration' / 'conv_repo'
+        if self.path.is_symlink():
+            raise ValueError("Symlink repository directory rejected for security")
         self.path.mkdir(parents=True, exist_ok=True)
+        try:
+            os.chmod(str(self.path), 0o700)
+        except OSError:
+            pass
         self.branches: Dict[str, BranchRef] = {}
         self.current_branch: Optional[str] = None
         self._load_refs()
     
     def _load_refs(self):
+        if self.path.is_symlink():
+            raise ValueError("Symlink repository directory rejected for security")
         refs_file = self.path / 'refs.json'
+        if refs_file.is_symlink():
+            raise ValueError("Symlink refs.json rejected for security")
         if refs_file.exists():
             data = json.loads(refs_file.read_text())
             for br_data in data.get('branches', []):
@@ -42,6 +54,11 @@ class ConversationRepo:
             self.current_branch = data.get('HEAD')
     
     def _save_refs(self):
+        if self.path.is_symlink():
+            raise ValueError("Symlink repository directory rejected for security")
+        refs_file = self.path / 'refs.json'
+        if refs_file.is_symlink():
+            raise ValueError("Symlink refs.json rejected for security")
         refs = {
             'HEAD': self.current_branch,
             'branches': [
@@ -51,7 +68,19 @@ class ConversationRepo:
                 for b in self.branches.values()
             ]
         }
-        (self.path / 'refs.json').write_text(json.dumps(refs, indent=2))
+        # Atomic low-level open with 0o600 permissions
+        fd = os.open(str(refs_file), os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+        try:
+            try:
+                os.fchmod(fd, 0o600)
+            except OSError:
+                pass
+            with os.fdopen(fd, 'w') as f:
+                f.write(json.dumps(refs, indent=2))
+                fd = -1
+        finally:
+            if fd >= 0:
+                os.close(fd)
     
     def create_branch(self, name: str, session_id: str, parent_branch: str = None) -> BranchRef:
         """Fork a new branch from an existing session."""
@@ -121,15 +150,40 @@ class ConversationRepo:
     
     def link_knowledge(self, from_branch: str, to_branch: str, link_type: str = "reference"):
         """Create a semantic link between branches (knowledge graph edge)."""
+        for param_name, val in [("from_branch", from_branch), ("to_branch", to_branch), ("link_type", link_type)]:
+            if not val or not SAFE_IDENTIFIER_RE.match(str(val)) or ".." in str(val):
+                raise ValueError(f"Invalid {param_name}: must be safe identifier without path traversal")
+
+        if self.path.is_symlink():
+            raise ValueError("Symlink repository directory rejected for security")
+
+        try:
+            os.chmod(str(self.path), 0o700)
+        except OSError:
+            pass
+
         links_file = self.path / 'knowledge_links.jsonl'
-        link = {
-            'from': from_branch,
-            'to': to_branch,
-            'type': link_type,
-            'timestamp': datetime.now(timezone.utc).isoformat()
-        }
-        with open(links_file, 'a') as f:
-            f.write(json.dumps(link) + '\n')
+        if links_file.is_symlink():
+            raise ValueError("Symlink knowledge links file rejected for security")
+
+        fd = os.open(str(links_file), os.O_CREAT | os.O_WRONLY | os.O_APPEND, 0o600)
+        try:
+            try:
+                os.fchmod(fd, 0o600)
+            except OSError:
+                pass
+            link = {
+                'from': from_branch,
+                'to': to_branch,
+                'type': link_type,
+                'timestamp': datetime.now(timezone.utc).isoformat()
+            }
+            with os.fdopen(fd, 'a') as f:
+                f.write(json.dumps(link) + '\n')
+                fd = -1
+        finally:
+            if fd >= 0:
+                os.close(fd)
         return link
     
     def list_branches(self):

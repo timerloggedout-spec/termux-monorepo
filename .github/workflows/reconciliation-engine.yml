@@ -1,0 +1,117 @@
+name: Production Reconciliation Engine
+
+# Observer-only control plane. It resolves refs and classifies repository drift.
+# It never checks out or executes candidate/PR code and never mutates refs.
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_ref:
+        description: 'Candidate branch, tag, or SHA to reconcile against base_ref'
+        required: true
+        type: string
+      base_ref:
+        description: 'Baseline branch, tag, or SHA'
+        required: true
+        default: master
+        type: string
+      mode:
+        description: 'Observe only; mutation requires a separately reviewed workflow'
+        required: true
+        default: observe
+        type: choice
+        options: [observe]
+  schedule:
+    - cron: '17 * * * *'
+
+permissions:
+  contents: read
+  pull-requests: read
+  issues: read
+  actions: read
+
+concurrency:
+  group: reconciliation-${{ github.event.inputs.target_ref || github.ref }}-${{ github.event.inputs.base_ref || 'master' }}
+  cancel-in-progress: false
+
+jobs:
+  recon:
+    name: Resolve refs and classify drift
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout control-plane only
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - name: Resolve immutable refs
+        id: refs
+        env:
+          TARGET_REF: ${{ github.event.inputs.target_ref || github.ref }}
+          BASE_REF: ${{ github.event.inputs.base_ref || 'master' }}
+        run: |
+          set -euo pipefail
+          git fetch --prune origin '+refs/heads/*:refs/remotes/origin/*' '+refs/tags/*:refs/tags/*'
+          target_sha="$(git rev-parse "$TARGET_REF^{commit}")"
+          base_sha="$(git rev-parse "$BASE_REF^{commit}")"
+          merge_base="$(git merge-base "$target_sha" "$base_sha")"
+          ahead="$(git rev-list --count "$base_sha".."$target_sha")"
+          behind="$(git rev-list --count "$target_sha".."$base_sha")"
+          changed="$(git diff --name-only "$base_sha" "$target_sha" | wc -l | tr -d ' ')"
+          {
+            echo "target_sha=$target_sha"
+            echo "base_sha=$base_sha"
+            echo "merge_base=$merge_base"
+            echo "ahead=$ahead"
+            echo "behind=$behind"
+            echo "changed=$changed"
+          } >> "$GITHUB_OUTPUT"
+          printf '%s\n' "target_sha=$target_sha" "base_sha=$base_sha" "merge_base=$merge_base" "ahead=$ahead" "behind=$behind" "changed=$changed"
+
+      - name: Classify reconciliation state
+        env:
+          AHEAD: ${{ steps.refs.outputs.ahead }}
+          BEHIND: ${{ steps.refs.outputs.behind }}
+        run: |
+          set -euo pipefail
+          if [ "$AHEAD" = 0 ] && [ "$BEHIND" = 0 ]; then
+            state='identical'
+          elif [ "$BEHIND" = 0 ]; then
+            state='candidate-ahead'
+          elif [ "$AHEAD" = 0 ]; then
+            state='behind'
+          else
+            state='diverged'
+          fi
+          {
+            echo "state=$state"
+            echo "## Reconciliation evidence"
+            echo "- target: \`${{ steps.refs.outputs.target_sha }}\`"
+            echo "- baseline: \`${{ steps.refs.outputs.base_sha }}\`"
+            echo "- merge-base: \`${{ steps.refs.outputs.merge_base }}\`"
+            echo "- ahead: \`${{ steps.refs.outputs.ahead }}\`"
+            echo "- behind: \`${{ steps.refs.outputs.behind }}\`"
+            echo "- changed paths: \`${{ steps.refs.outputs.changed }}\`"
+            echo "- state: **$state**"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if [ "$state" = 'diverged' ]; then
+            echo 'Safe default: STOP. Require reviewed reconciliation strategy; no force-push, reset, or automatic conflict resolution.' >> "$GITHUB_STEP_SUMMARY"
+          elif [ "$state" = 'behind' ]; then
+            echo 'Safe default: STOP. Candidate lacks baseline history; require explicit reconciliation authorization.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Record changed-path manifest
+        env:
+          BASE_SHA: ${{ steps.refs.outputs.base_sha }}
+          TARGET_SHA: ${{ steps.refs.outputs.target_sha }}
+        run: |
+          set -euo pipefail
+          echo '### Changed paths (deterministic)' >> "$GITHUB_STEP_SUMMARY"
+          git diff --name-status "$BASE_SHA" "$TARGET_SHA" | sed -n '1,500p' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Refuse mutation and candidate execution
+        run: |
+          set -euo pipefail
+          echo 'Observer-only invariant: no candidate checkout, candidate execution, force-push, reset, or automatic conflict resolution.'

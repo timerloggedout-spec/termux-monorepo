@@ -1,0 +1,113 @@
+{
+  "collected_at": "2026-08-27T14:08:11.075966+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 33080547688,
+    "endpoint": ".../runs/33080547688/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 98546251643,
+        "run_id": 33080547688,
+        "workflow_name": "github-telemetry-snapshot",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/33080547688",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW8dB3ew",
+        "head_sha": "36e84cfab8f98480c72ad1c33b3fee45f1153145",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98546251643",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/33080547688/job/98546251643",
+        "status": "in_progress",
+        "conclusion": null,
+        "created_at": "2026-08-27T14:08:01Z",
+        "started_at": "2026-08-27T14:08:04Z",
+        "completed_at": null,
+        "name": "collect-reduce-report",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-27T14:08:04Z",
+            "completed_at": "2026-08-27T14:08:05Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-27T14:08:05Z",
+            "completed_at": "2026-08-27T14:08:09Z"
+          },
+          {
+            "name": "Run actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-27T14:08:09Z",
+            "completed_at": "2026-08-27T14:08:09Z"
+          },
+          {
+            "name": "Collect Actions runs (+ jobs/traffic)",
+            "status": "in_progress",
+            "conclusion": null,
+            "number": 4,
+            "started_at": "2026-08-27T14:08:09Z",
+            "completed_at": null
+          },
+          {
+            "name": "Reduce jobs \u2192 reconstructed performance JSON",
+            "status": "pending",
+            "conclusion": null,
+            "number": 5,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Summary",
+            "status": "pending",
+            "conclusion": null,
+            "number": 6,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Commit derived report (authority-gated path only)",
+            "status": "pending",
+            "conclusion": null,
+            "number": 7,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Post Run actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b",
+            "status": "pending",
+            "conclusion": null,
+            "number": 13,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "pending",
+            "conclusion": null,
+            "number": 14,
+            "started_at": null,
+            "completed_at": null
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98546251643",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000027321,
+        "runner_name": "GitHub Actions 1000027321",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

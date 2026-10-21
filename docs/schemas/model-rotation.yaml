@@ -7,16 +7,18 @@
 #
 # Updated from AI Studio rate-limit page (issue #86 snapshot 2026-08-08).
 # FB-01 (2026-08-08): OpenRouter :free invoke is LIVE when Gemini soft budgets exhaust.
+# 2026-08-23: stealth/ox-alpha free-by-pricing (no :free suffix) allowed.
 #
 # Policy:
 # - Prefer high-RPD Lite models for triage/invoke
 # - Reserve limited Flash RPD for review quality (soft 15/20)
-# - On Gemini exhaustion → OpenRouter :free models only (never paid)
+# - On Gemini exhaustion → OpenRouter free models only (never paid)
+# - Free = :free suffix OR zero prompt+completion pricing
 # - Never hard-fail CI on quota; graceful skip + comment
 # - Actions cache counters are per-branch best-effort (not global RPD)
 
 version: 2
-updated_at: "2026-08-08T22:30:00Z"
+updated_at: "2026-08-23T11:20:00Z"
 updated_by: grok
 source_issue: 86
 fb01_issue: 94
@@ -99,10 +101,17 @@ providers:
     secret: OPENROUTER_API_KEY
     base_url: https://openrouter.ai/api/v1
     notes: |
-      FREE TIER ONLY. Models must end with :free.
-      Account-wide free limits (~20 RPM, 50 RPD default / 1000 after $10 lifetime credits).
-      See docs/schemas/llm-leaderboard-matrix.yaml for role picks + public board features.
+      FREE TIER ONLY. Free = ends with :free OR zero prompt+completion pricing
+      (e.g. stealth/ox-alpha). Account-wide free limits (~20 RPM, 50 RPD default /
+      1000 after $10 lifetime credits). See llm-leaderboard-matrix.yaml.
     models:
+      stealth/ox-alpha:
+        id: stealth/ox-alpha
+        roles: [triage, review, invoke]
+        soft_rpd: 40
+        priority: 15
+        status: preferred_fallback
+        notes: "1M context; free by pricing (no :free suffix)"
       meta-llama/llama-3.3-70b-instruct:free:
         id: meta-llama/llama-3.3-70b-instruct:free
         roles: [triage, review, invoke]
@@ -136,6 +145,7 @@ role_matrix:
     fallback:
       - gemini-2.5-flash-lite
     openrouter_free:
+      - stealth/ox-alpha
       - meta-llama/llama-3.3-70b-instruct:free
       - google/gemma-3-12b-it:free
     max_prompt_chars: 4000
@@ -147,6 +157,7 @@ role_matrix:
     fallback:
       - gemini-3.1-flash-lite
     openrouter_free:
+      - stealth/ox-alpha
       - qwen/qwen3-coder:free
       - meta-llama/llama-3.3-70b-instruct:free
       - deepseek/deepseek-r1:free
@@ -157,6 +168,7 @@ role_matrix:
       - gemini-3.5-flash-lite
     fallback: []
     openrouter_free:
+      - stealth/ox-alpha
       - meta-llama/llama-3.3-70b-instruct:free
       - google/gemma-3-12b-it:free
     max_prompt_chars: 6000
@@ -168,6 +180,7 @@ job_gate:
 related:
   quota_gate: .github/actions/gemini-quota-gate
   leaderboard_matrix: docs/schemas/llm-leaderboard-matrix.yaml
+  free_catalog: docs/schemas/openrouter-free-catalog.json
   promote_pr: 81
   loadbalancer_pr: 72
   omniroute_issue: 91

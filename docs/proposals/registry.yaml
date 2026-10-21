@@ -1,9 +1,219 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-08-08T18:30:00Z"
-updated_by: grok
+updated_at: "2026-10-19T20:55:00Z"
+updated_by: ChatGPT
 
 proposals:
+  - id: agent-contributor-provenance
+    title: "Evidence-backed agent contributor attribution and source citation ledger"
+    author: ChatGPT
+    status: in_review
+    priority: P1
+    path: active/agent-contributor-provenance/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_issues: [1241]
+    related_prs: [1244]
+    related_branches: [feat/biudl-full-stack-provenance]
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: model-selection-market
+    title: "Model selection market — equal-weight bootstrap, 3L0 performance, DSPy-DoE, bets/trading-cards"
+    author: grok
+    status: posted
+    priority: P1
+    path: active/model-selection-market/
+    reviewers:
+      - id: grok
+        role: author+executor
+        status: executing
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_prs: []
+    related_branches:
+      - docs/model-selection-market-3l0-20261001
+    related_proposals:
+      - approxination-integration
+      - ml-keep-alive
+      - rate-limit-rotation
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: ratatui-tokio-terminal-dashboard
+    title: "Termux-first Ratatui + Tokio responsive terminal dashboard"
+    author: ChatGPT
+    status: executing
+    priority: P1
+    path: active/ratatui-tokio-terminal-dashboard/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_issues: [934]
+    related_prs: [935, 938, 940, 955]
+    related_branches:
+      - feat/ratatui-tokio-terminal-dashboard
+      - docs/ratatui-dashboard-collaborator
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: ml-keep-alive
+    title: "ML keep-alive DAG extract onto live master (Issue #175)"
+    author: grok
+    status: executing
+    priority: P0
+    path: active/ml-keep-alive/
+    reviewers:
+      - id: grok
+        role: author+executor
+        status: executing
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: [175, 772]
+    related_prs: [817, 787, 746, 682, 432]
+    related_branches: [feat/ml-pipelines-keepalive-20260925]
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: temporal-langsmith-adapter
+    title: "Temporal self-host + LangSmith Trajectories adapter (P1 observational)"
+    author: grok
+    status: executing
+    priority: P1
+    path: active/temporal-langsmith-adapter/
+    reviewers:
+      - id: grok
+        role: author+executor
+        status: executing
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_prs: []
+    related_branches:
+      - feat/temporal-langsmith-adapter
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: approxination-integration
+    title: "Approxination skill search/create/contribute + A/B/C/D evaluation cohort"
+    author: grok
+    status: executing
+    priority: P1
+    path: active/approxination-integration/
+    reviewers:
+      - id: grok
+        role: author+executor
+        status: executing
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_prs: [614]
+    related_branches: [feat/approxination-integration]
+    related_repos:
+      - https://github.com/timerloggedout-spec/Approxination-Benchmark_fork
+      - https://github.com/timerloggedout-spec/Inverse-Arena_fork
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: bifrost-gateway-integration
+    title: "Bifrost AI gateway + benchmarking forks — RECON, catalog, provider path"
+    author: grok
+    status: executing
+    priority: P1
+    path: active/bifrost-gateway-integration/
+    reviewers:
+      - id: grok
+        role: author+executor
+        status: executing
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_prs: [611]
+    related_branches: [docs/bifrost-gateway-recon-reconcile]
+    related_repos:
+      - https://github.com/timerloggedout-spec/bifrost_fork
+      - https://github.com/timerloggedout-spec/bifrost-benchmarking_fork
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: auditengine-adapt
+    title: "RinDig AuditEngine (Ethics Engine) adapt pass"
+    author: timerloggedout-spec
+    status: draft
+    priority: P2
+    path: active/auditengine-adapt/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_prs: []
+    related_branches: []
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: cost-of-remembering-integration
+    title: "RinDig cost-of-remembering_fork ICM evidence lane"
+    author: timerloggedout-spec
+    status: executing
+    priority: P1
+    path: active/cost-of-remembering-integration/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_prs: []
+    related_branches:
+      - feat/rindig-cost-of-remembering-icm
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: mcp-hub-risk-split
+    title: "mcp-hub / hub_mcp risk split"
+    author: timerloggedout-spec
+    status: executing
+    priority: P1
+    path: active/mcp-hub-risk-split/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_prs: []
+    related_branches: []
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: context-relationship-graph
+    title: "GitHub-native context relationship graph and scope index"
+    author: Manus
+    status: executing
+    priority: P1
+    path: active/context-relationship-graph/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: Manus
+        role: author-executor
+        status: executing
+    related_prs: [232, 1286]
+    related_branches: [manus/context-relationship-graph, docs/historical-corpus-explorer-proposal]
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: manus-critical-eval
+    title: "Manus Critical Evaluation & Novel Work"
+    author: Manus
+    status: executing
+    priority: P0
+    path: active/manus-critical-eval/
+    reviewers:
+      - id: manus
+        role: author
+        status: posted
+    related_prs: [13]
+    related_branches: [manus/novel-work]
+    gates_required: [repo-gate, termux-smoke]
+
   - id: rate-limit-rotation
     title: "Rate limits, model rotation, OpenRouter fallback"
     author: grok
@@ -17,6 +227,23 @@ proposals:
     related_issues: [86, 87, 88, 91]
     related_prs: [72, 81]
     gates_required: [repo-gate]
+
+  - id: termux-agentic-hub
+    title: "Termux-first Agentic Hub and governed fork integration"
+    author: Manus
+    status: executing
+    priority: P1
+    path: active/termux-agentic-hub/
+    reviewers:
+      - id: user
+        role: operator+approver
+        status: accepted
+      - id: Manus
+        role: author+executor
+        status: executing
+    related_prs: []
+    related_branches: [feature/termux-agentic-hub]
+    gates_required: [repo-gate, termux-smoke]
 
   - id: chatgpt-critical-eval
     title: "Critical Eval TER0-15 + other branches"
@@ -50,7 +277,7 @@ proposals:
         role: reviewer
         status: accepted
     related_prs: []
-    gates_required: [repo-gate]
+    related_gates_required: [repo-gate]
 
   - id: chatgpt-droidapp
     title: "droidApp / early branch inventory + plugin architecture"
@@ -88,3 +315,339 @@ proposals:
     related_branches:
       - docs/kimi-cloud-offload-evaluation
     gates_required: [repo-gate]
+
+  - id: icm-architect-integration
+    title: "Repository-native ICM integration"
+    author: timerloggedout-spec
+    status: executing
+    priority: P0
+    path: active/icm-architect-integration/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: Manus AI
+        role: executor
+        status: executing
+    related_prs: [232]
+    related_branches: [feat/icm-architect-submodule]
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: actions-refinements
+    title: "Issue #192 action-integration refinements"
+    author: Manus AI
+    status: accepted
+    priority: P1
+    path: active/actions-refinements/
+    reviewers:
+      - id: user
+        role: operator+approver
+        status: accepted
+      - id: Manus AI
+        role: executor
+        status: executing
+    related_issues: [192, 175]
+    related_prs: [193, 81, 92, 143, 72, 232]
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: linguist-machine-parity
+    title: "Linguist README machine-parity enhancement"
+    author: Manus AI
+    status: posted
+    priority: P2
+    path: active/linguist-machine-parity/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: Manus AI
+        role: registrar
+        status: posted
+    related_prs: []
+    related_branches: []
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: gantt-dependency-phases
+    title: "Dependency-phase automation and GitHub Projects integration"
+    author: Manus AI
+    status: executing
+    priority: P1
+    path: active/gantt-dependency-phases/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: Manus AI
+        role: executor
+        status: executing
+    related_prs: [248]
+    related_branches: [manus/dependency-phase-automation]
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: notation-sets
+    title: "Notation Sets, Living Lexicon, and Cross-Domain Semantic Index"
+    author: ChatGPT
+    status: posted
+    priority: P1
+    path: active/notation-sets/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: [320, 309, 182, 175, 126, 304, 196, 177, 208, 274]
+    related_prs: [322]
+    related_branches:
+      - docs/notation-sets-evolution
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: archwiz-ui-protocol
+    title: "ArchW1z Termux UI over shared agentic protocols"
+    author: ChatGPT
+    status: posted
+    priority: P1
+    path: active/archwiz-ui-protocol/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: pending
+      - id: ChatGPT
+        role: author
+        status: posted
+    related_issues: [292]
+    related_prs: [329]
+    related_branches: [proposal/archwiz-ui-protocol-clean]
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: vercel-lane-topology
+    title: "Vercel deployment lane topology: legacy project fate, mcp-multi-host retirement, lanes registry"
+    author: Claude
+    status: accepted
+    priority: P1
+    path: active/vercel-lane-topology/
+    reviewers:
+      - id: Claude
+        role: author+driver
+        status: posted
+    related_prs: [442, 445, 446]
+    related_branches: [docs/proposals/vercel-lane-topology]
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: demo-portal
+    title: "Demo portal: public showcase of archwiz.py / deepcli-tui via a sandboxed Termux emulator"
+    author: Claude
+    status: posted
+    priority: P2
+    path: active/demo-portal/
+    reviewers:
+      - id: Claude
+        role: author+driver
+        status: posted
+    related_prs: [447]
+    related_branches: [docs/proposals/demo-portal]
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: agentic-scoped-access
+    title: "Agentic scoped access: per-agent scoped tokens instead of shared full-scope credentials"
+    author: agent-automation
+    status: posted
+    priority: P2
+    path: active/agentic-scoped-access/
+    reviewers:
+      - id: agent-automation
+        role: author+driver
+        status: posted
+    related_prs: [492]
+    related_branches: [docs/proposals/agentic-scoped-access-and-tier4-review]
+    gates_required: []
+
+  - id: tier4-scope-review
+    title: "Tier 4 scope review: pre-authorized allowlist for repeatable Operator-approved actions"
+    author: agent-automation
+    status: posted
+    priority: P2
+    path: active/tier4-scope-review/
+    reviewers:
+      - id: agent-automation
+        role: author+driver
+        status: posted
+    related_prs: [492]
+    related_branches: [docs/proposals/agentic-scoped-access-and-tier4-review]
+    gates_required: []
+
+  - id: rindig-eduba-consolidation
+    title: "RinDig ICM + EDUBA repository consolidation"
+    author: timerloggedout-spec
+    status: executing
+    priority: P0
+    path: active/rindig-eduba-consolidation/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_prs: []
+    related_branches: [feat/rindig-eduba-consolidation]
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: paper2agent-scientific-factory
+    title: "Paper2Agent scientific factory: manifest, claim graph, reproduction, certificate"
+    author: ChatGPT
+    status: posted
+    priority: P1
+    path: active/paper2agent-scientific-factory/
+    reviewers:
+      - id: ChatGPT
+        role: author+executor
+        status: posted
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: [621]
+    related_prs: [695]
+    related_branches: [docs/paper2agent-scientific-factory-proposal-2026-09-29]
+    gates_required: [repo-gate, termux-smoke]
+
+  - id: domain-composition-matrix
+    title: "Domain composition matrix: versioned research database for composition rules"
+    author: timerloggedout-spec
+    status: posted
+    priority: P2
+    path: active/domain-composition-matrix/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: posted
+    related_prs: []
+    related_branches: []
+    gates_required: [repo-gate]
+
+  - id: lane-compounding
+    title: "Lane compounding: live dashboard data, Bayesian/Markov tribute qualification, ForeSight→HindSight calibration, blind-graded treatments"
+    author: Hark
+    status: posted
+    priority: P1
+    path: active/lane-compounding/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: Hark
+        role: author+executor
+        status: executing
+    related_prs: [1244, 1274, 1277, 1278, 1280]
+    related_branches: [hark/lane-compounding]
+    gates_required: [repo-gate]
+  - id: free-llm-provider-prioritization
+    title: "Free LLM provider research/RFP feedback prioritization and HITL"
+    author: Cue
+    status: in_review
+    priority: P1
+    path: active/free-llm-provider-prioritization/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: Cue
+        role: author+executor
+        status: executing
+    related_prs: []
+    related_branches: []
+    gates_required: [repo-gate, termux-smoke]
+  - id: archwiz-markov-trellis-lab
+    title: "ArchWiz Markov recombining tree/trellis visualization and evaluation sandbox"
+    author: ChatGPT
+    status: executing
+    priority: P1
+    path: active/archwiz-markov-trellis-lab/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_issues: [966]
+    related_prs: [967]
+    related_branches:
+      - experiment/archwiz-markov-trellis-lab
+    gates_required: [repo-gate, termux-smoke]
+  - id: archwiz-hyperforge-gemini-review
+    title: "ArchWiz Hyper-Forge — Gemini plan reconciliation and collaborative development"
+    author: ChatGPT
+    status: posted
+    priority: P1
+    path: active/archwiz-hyperforge-gemini-review/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: ChatGPT
+        role: author+executor
+        status: posted
+    related_issues: [943, 951, 952, 944, 945, 946, 947, 948, 949, 950]
+    related_prs: [937]
+    related_branches:
+      - docs/archwiz-hyperforge-gemini-review-package
+    gates_required: [repo-gate, termux-smoke]
+  - id: agent-team-formation
+    title: "Role-aware agent teams, game-player fleet, scoring, and controlled research"
+    author: Manus AI
+    status: draft
+    priority: P1
+    path: active/agent-team-formation/
+    reviewers:
+      - id: Manus AI
+        role: author
+        status: posted
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: awaiting_review
+    related_issues: [129, 236, 243]
+    related_prs: [131]
+    related_branches: [docs/agent-team-formation-draft]
+    gates_required: [repo-gate, termux-smoke]
+  - id: ops-hitl-control-plane
+    title: "OPS-EVENT HITL Control Plane"
+    author: timerloggedout-spec
+    status: posted
+    priority: P1
+    path: active/ops-hitl-control-plane/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: []
+    related_prs: [739]
+    related_branches:
+      - feat/hitl-control-plane-739
+  - id: arrhythmic-zero-token-search
+    title: "Arrhythmic Flow + Matrix Intersections for Zero-Token Web Search Wrappers"
+    author: grok
+    status: executing
+    priority: P1
+    path: active/arrhythmic-zero-token-search/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: grok
+        role: author+executor
+        status: executing
+    related_prs: [685]
+    related_issues: []
+    related_branches: [feat/arrhythmic-zero-token-search]
+  - id: codespaces-enablement
+    title: "Codespaces prebuilds (cost decision) + org-wide standard-piece gaps from the gaps-and-opportunities sweep"
+    author: gaps-and-opportunities-subagent
+    status: posted
+    priority: P2
+    path: active/codespaces-enablement/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: pending
+      - id: gaps-and-opportunities-subagent
+        role: author+driver
+        status: posted
+    related_prs: [499, 530, 531]
+    related_branches: [gaps-opps/add-devcontainer-codespaces, docs/proposals/codespaces-enablement]
+    gates_required: [repo-gate, termux-smoke]

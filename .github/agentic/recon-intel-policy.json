@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "policy_version": "recon-intel-v1",
+  "repository_pair": {
+    "github": "timerloggedout-spec/termux-monorepo",
+    "gitlab": "a-group2180532/termux-monorepo",
+    "gitlab_ref": "master"
+  },
+  "credentials": {
+    "gitlab_discovery_precedence": [
+      "RECON_INTEL_GITLAB_READ_TOKEN",
+      "GITLAB_TOKEN",
+      "OPERATOR_GITLAB_TOKEN"
+    ],
+    "gitlab_manual_reconciliation_precedence": [
+      "RECON_INTEL_GITLAB_READ_TOKEN",
+      "OPERATOR_GITLAB_TOKEN",
+      "GITLAB_TOKEN"
+    ],
+    "github_manual_writer_precedence": ["RECON_INTEL_GITHUB_WRITE_TOKEN", "github.token"],
+    "credential_values_must_not_be_logged": true
+  },
+  "discovery": {
+    "allowed_gitlab_refs": ["master"],
+    "active_pr_schedule_minutes": 15,
+    "idle_schedule_cron": "17 */6 * * *",
+    "allow_scheduled_repository_writes": false
+  },
+  "parallel_coordination": {
+    "mandatory": true,
+    "one_corrective_write_lane_per_sha_tuple": true,
+    "review_is_allowed_in_shadow_mode": true,
+    "reconciliation_requires_exact_fresh_sha_tuple": true,
+    "hold_states": ["diverged", "no-common-ancestor", "not-configured", "external-access-denied"],
+    "unknown_provider_default": "deny"
+  },
+  "lease_states": {
+    "aligned": {
+      "lane": "github-primary",
+      "allow_corrective_write_platforms": ["github"],
+      "allow_reconciliation_apply": false
+    },
+    "github-ahead": {
+      "lane": "github-primary",
+      "allow_corrective_write_platforms": ["github"],
+      "allow_reconciliation_apply": false
+    },
+    "gitlab-ahead": {
+      "lane": "gitlab-primary",
+      "allow_corrective_write_platforms": ["gitlab"],
+      "allow_reconciliation_apply": true
+    },
+    "diverged": {
+      "lane": "hold",
+      "allow_corrective_write_platforms": [],
+      "allow_reconciliation_apply": false
+    },
+    "no-common-ancestor": {
+      "lane": "hold",
+      "allow_corrective_write_platforms": [],
+      "allow_reconciliation_apply": false
+    },
+    "not-configured": {
+      "lane": "not-configured",
+      "allow_corrective_write_platforms": [],
+      "allow_reconciliation_apply": false
+    },
+    "external-access-denied": {
+      "lane": "access-denied",
+      "allow_corrective_write_platforms": [],
+      "allow_reconciliation_apply": false
+    }
+  },
+  "providers": {
+    "coderabbit": {
+      "review_platforms": ["github", "gitlab"],
+      "corrective_write_platforms": ["github"],
+      "requires_current_lease_for_corrective_write": true,
+      "provider_command_key": "coderabbit"
+    },
+    "jules": {
+      "review_platforms": ["github"],
+      "corrective_write_platforms": [],
+      "requires_current_lease_for_corrective_write": true,
+      "provider_command_key": null
+    },
+    "gemini": {
+      "review_platforms": ["github"],
+      "corrective_write_platforms": [],
+      "requires_current_lease_for_corrective_write": true,
+      "provider_command_key": null
+    },
+    "qodo": {
+      "review_platforms": ["github", "gitlab"],
+      "corrective_write_platforms": [],
+      "requires_current_lease_for_corrective_write": true,
+      "provider_command_key": "qodo"
+    },
+    "devin": {
+      "review_platforms": ["github", "gitlab"],
+      "corrective_write_platforms": [],
+      "requires_current_lease_for_corrective_write": true,
+      "provider_command_key": "devin"
+    }
+  },
+  "evidence": {
+    "require_current_github_head_sha": true,
+    "require_policy_version": true,
+    "require_gitlab_sha_for_lease": true,
+    "review_messages_are_data_only": true,
+    "provider_control_notices_are_not_review_evidence": true
+  }
+}

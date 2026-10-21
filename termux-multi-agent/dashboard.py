@@ -12,33 +12,148 @@ try:
     from rich.live import Live
     from rich.text import Text
     from rich.box import ROUNDED
+    _has_rich = True
 except ImportError:
-    # Clean fallback warning
-    print("[ERROR] 'rich' library is required. Please run: pip install rich")
-    sys.exit(1)
+    _has_rich = False
+    ROUNDED = None
+
+    class Text:
+        def __init__(self, text="", style=None):
+            self.text = str(text)
+            self.style = style
+
+        def append(self, text, style=None):
+            self.text += str(text)
+
+        def __str__(self):
+            return self.text
+
+        def __repr__(self):
+            return f"Text({self.text!r})"
+
+    class Panel:
+        def __init__(self, renderable, title=None, box=None, border_style=None, expand=True):
+            self.renderable = renderable
+            self.title = title
+
+    class Group:
+        def __init__(self, *renderables):
+            self.renderables = renderables
+
+    class Table:
+        def __init__(self, box=None, border_style=None, expand=True):
+            self.columns = []
+            self.rows = []
+
+        def add_column(self, name, **kwargs):
+            self.columns.append(name)
+
+        def add_row(self, *args):
+            self.rows.append(args)
+
+    class Live:
+        def __init__(self, renderable, refresh_per_second=1, screen=True):
+            self.renderable = renderable
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc_val, exc_tb):
+            pass
+
+        def update(self, renderable):
+            self.renderable = renderable
 
 TELEMETRY_LOG = "agent_telemetry_stream.json"
-console = Console()
+if _has_rich:
+    console = Console()
+else:
+    console = None
+
+# State-tracking cache and position pointers for incremental I/O performance optimization
+_active_jobs_cache = {}
+_sorted_telemetry_cache = None
+_last_file_pos = 0
+_last_file_ino = None
+_last_file_mtime = 0
 
 def read_latest_telemetry():
-    if not os.path.exists(TELEMETRY_LOG):
+    """
+    Optimized telemetry parser using state tracking and seek/tell operations
+    to perform incremental I/O, yielding massive performance gains on large log streams.
+    """
+    global _last_file_pos, _active_jobs_cache, _sorted_telemetry_cache, _last_file_ino, _last_file_mtime
+    if not os.path.exists(TELEMETRY_LOG) or os.path.islink(TELEMETRY_LOG):
+        # Reset cache if file is missing or is a symlink
+        _active_jobs_cache = {}
+        _sorted_telemetry_cache = None
+        _last_file_pos = 0
+        _last_file_ino = None
+        _last_file_mtime = 0
         return []
-    active_jobs = {}
+
     try:
+        stat_info = os.stat(TELEMETRY_LOG)
+        file_size = stat_info.st_size
+        file_ino = stat_info.st_ino
+        file_mtime = stat_info.st_mtime
+
+        # If file was truncated, recreated, or replaced, reset position and cache
+        if (file_size < _last_file_pos or
+            _last_file_ino is None or
+            _last_file_ino != file_ino or
+            file_mtime < _last_file_mtime):
+            _active_jobs_cache = {}
+            _sorted_telemetry_cache = None
+            _last_file_pos = 0
+            _last_file_ino = file_ino
+            _last_file_mtime = file_mtime
+
+        # Bolt Optimization: short-circuit file I/O and re-sorting if file metadata is unchanged
+        if (_sorted_telemetry_cache is not None and
+            file_size == _last_file_pos and
+            file_mtime == _last_file_mtime and
+            file_ino == _last_file_ino):
+            return _sorted_telemetry_cache
+
+        new_entries = False
         with open(TELEMETRY_LOG, "r") as f:
-            for line in f:
+            if _last_file_pos > 0:
+                f.seek(_last_file_pos)
+
+            while True:
+                curr_pos = f.tell()
+                line = f.readline()
+                if not line:
+                    break
+                # Torn append guard: check if line terminates with a newline character
+                if not line.endswith("\n"):
+                    # Seek back so this incomplete line can be fully read on the next tick
+                    f.seek(curr_pos)
+                    break
+
+                # Commit offset up to the end of this complete line
+                _last_file_pos = f.tell()
+
                 if not line.strip():
                     continue
                 try:
                     entry = json.loads(line)
                     target = entry.get("target") or "System"
-                    active_jobs[target] = entry
+                    _active_jobs_cache[target] = entry
+                    new_entries = True
                 except json.JSONDecodeError:
                     continue
+
+        _last_file_mtime = file_mtime
+        if new_entries or _sorted_telemetry_cache is None:
+            _sorted_telemetry_cache = sorted(_active_jobs_cache.values(), key=lambda x: x.get("timestamp", ""))
     except Exception:
-        pass
-    # Sort by timestamp so the list ordering is consistent/predictable
-    return sorted(active_jobs.values(), key=lambda x: x.get("timestamp", ""))
+        # Fallback to returning current cache on file access or read errors
+        if _sorted_telemetry_cache is not None:
+            return _sorted_telemetry_cache
+
+    return _sorted_telemetry_cache if _sorted_telemetry_cache is not None else sorted(_active_jobs_cache.values(), key=lambda x: x.get("timestamp", ""))
 
 def make_dashboard():
     # Read data
@@ -49,6 +164,11 @@ def make_dashboard():
     header_text = Text()
     header_text.append("⚡ TERMUX MULTI-AGENT PARALLEL TELEMETRY ⚡\n", style="bold yellow")
     header_text.append(f"Last Sync: {now_str}  |  File: {TELEMETRY_LOG}", style="dim")
+    if jobs:
+        passed_cnt = sum(1 for j in jobs if str(j.get("level", "")).upper() in ("SUCCESS", "PASS", "COMPLETED"))
+        failed_cnt = sum(1 for j in jobs if str(j.get("level", "")).upper() in ("CRITICAL", "ERROR", "FAILED", "FAIL"))
+        active_cnt = len(jobs) - passed_cnt - failed_cnt
+        header_text.append(f"\nJobs: {len(jobs)} Total  |  ✔ {passed_cnt} Passed  |  ✖ {failed_cnt} Failed  |  ⚙ {active_cnt} Active", style="dim cyan")
 
     header_panel = Panel(
         header_text,
@@ -103,22 +223,29 @@ def make_dashboard():
         message = job.get("message", "")
         timestamp = job.get("timestamp", "")
         if timestamp:
-            # Format time if it has full date/time
-            try:
-                dt = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
-                timestamp = dt.strftime("%H:%M:%S")
-            except ValueError:
-                pass
+            # Bolt Optimization: Fast-path string slice formatting for HH:MM:SS
+            # Avoids datetime.strptime overhead in high-frequency dashboard rendering loops
+            if len(timestamp) >= 19 and timestamp[10] in (" ", "T"):
+                timestamp = timestamp[11:19]
+            elif not (len(timestamp) == 8 and timestamp[2] == ":" and timestamp[5] == ":"):
+                try:
+                    dt = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
+                    timestamp = dt.strftime("%H:%M:%S")
+                except ValueError:
+                    pass
 
         # Beautiful styled status tag
-        if level == "SUCCESS":
-            status_str = Text("SUCCESS", style="bold green")
-        elif level == "RETRY":
-            status_str = Text("RETRYING", style="bold yellow")
-        elif level == "CRITICAL":
-            status_str = Text("CRITICAL", style="bold red")
+        lvl_upper = str(level).upper()
+        if lvl_upper in ("SUCCESS", "PASS", "COMPLETED"):
+            status_str = Text("✔ SUCCESS", style="bold green")
+        elif lvl_upper in ("RETRY", "RETRYING"):
+            status_str = Text("⚠ RETRYING", style="bold yellow")
+        elif lvl_upper in ("WARNING", "WARN"):
+            status_str = Text("⚠ WARNING", style="bold yellow")
+        elif lvl_upper in ("CRITICAL", "ERROR", "FAILED", "FAIL"):
+            status_str = Text(f"✖ {lvl_upper}", style="bold red")
         else:
-            status_str = Text("PROCESSING", style="bold blue")
+            status_str = Text("⚙ PROCESSING", style="bold blue")
 
         table.add_row(
             target,
@@ -129,7 +256,7 @@ def make_dashboard():
             timestamp
         )
 
-    footer_text = Text("\nPress Ctrl+C to exit Dashboard Viewer.", style="dim italic red")
+    footer_text = Text("\nStatus Legend: ✔ Pass  |  ⚠ Retry/Warn  |  ✖ Fail  |  ⚙ Active\nPress Ctrl+C to exit Dashboard Viewer.", style="dim italic red")
 
     return Panel(
         Group(
@@ -143,6 +270,9 @@ def make_dashboard():
     )
 
 def main():
+    if not _has_rich:
+        print("[ERROR] 'rich' library is required. Please run: pip install rich")
+        sys.exit(1)
     try:
         # Use Live rendering for smooth, flicker-free updates
         with Live(make_dashboard(), refresh_per_second=1, screen=True) as live:
@@ -151,14 +281,17 @@ def main():
                 live.update(make_dashboard())
     except KeyboardInterrupt:
         # Clear screen and say goodbye gracefully
-        console.clear()
-        console.print(Panel(
-            "[bold green]Thank you for using Termux Multi-Agent Dashboard![/bold green]\n"
-            "Stay productive and keep building! ⚡🚀",
-            title="Exiting Dashboard",
-            border_style="green",
-            expand=False
-        ))
+        if console:
+            console.clear()
+            console.print(Panel(
+                "[bold green]Thank you for using Termux Multi-Agent Dashboard![/bold green]\n"
+                "Stay productive and keep building! ⚡🚀",
+                title="Exiting Dashboard",
+                border_style="green",
+                expand=False
+            ))
+        else:
+            print("Thank you for using Termux Multi-Agent Dashboard!\nStay productive and keep building! ⚡🚀")
 
 if __name__ == '__main__':
     main()

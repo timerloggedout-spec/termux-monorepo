@@ -1,0 +1,2733 @@
+{
+  "collected_at": "2026-08-26T04:01:29.995353+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 32928330287,
+    "endpoint": ".../runs/32928330287/jobs"
+  },
+  "data": {
+    "total_count": 37,
+    "jobs": [
+      {
+        "id": 98055579276,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JFmjA",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055579276",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055579276",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:34Z",
+        "started_at": "2026-08-26T03:56:37Z",
+        "completed_at": "2026-08-26T03:56:41Z",
+        "name": "select-targets",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:56:37Z",
+            "completed_at": "2026-08-26T03:56:39Z"
+          },
+          {
+            "name": "Select bounded trusted-repository targets",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:56:39Z",
+            "completed_at": "2026-08-26T03:56:39Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:56:39Z",
+            "completed_at": "2026-08-26T03:56:39Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055579276",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024240,
+        "runner_name": "GitHub Actions 1000024240",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 98055599696,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JG2UA",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055599696",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055599696",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:41Z",
+        "started_at": "2026-08-26T03:56:44Z",
+        "completed_at": "2026-08-26T03:56:56Z",
+        "name": "discover (354, 0b1a721b972990aac5b5ddb1503fafa62238cfef)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:56:45Z",
+            "completed_at": "2026-08-26T03:56:46Z"
+          },
+          {
+            "name": "Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:56:46Z",
+            "completed_at": "2026-08-26T03:56:50Z"
+          },
+          {
+            "name": "Resolve selected GitHub revision through the GitHub API",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:56:50Z",
+            "completed_at": "2026-08-26T03:56:51Z"
+          },
+          {
+            "name": "Classify GitHub\u2013GitLab ancestry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-26T03:56:51Z",
+            "completed_at": "2026-08-26T03:56:53Z"
+          },
+          {
+            "name": "Record SHA-bound RECON INTEL lease check",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-26T03:56:53Z",
+            "completed_at": "2026-08-26T03:56:54Z"
+          },
+          {
+            "name": "Publish bounded metadata-only summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-26T03:56:54Z",
+            "completed_at": "2026-08-26T03:56:54Z"
+          },
+          {
+            "name": "Post Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-08-26T03:56:54Z",
+            "completed_at": "2026-08-26T03:56:54Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-08-26T03:56:54Z",
+            "completed_at": "2026-08-26T03:56:54Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055599696",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024244,
+        "runner_name": "GitHub Actions 1000024244",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 98055599711,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JG2Xw",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055599711",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055599711",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:41Z",
+        "started_at": "2026-08-26T03:56:44Z",
+        "completed_at": "2026-08-26T03:56:54Z",
+        "name": "discover (355, 4c6c48ea95ebfea7fe7933d83c23b19c4c9bf690)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:56:45Z",
+            "completed_at": "2026-08-26T03:56:46Z"
+          },
+          {
+            "name": "Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:56:46Z",
+            "completed_at": "2026-08-26T03:56:50Z"
+          },
+          {
+            "name": "Resolve selected GitHub revision through the GitHub API",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:56:50Z",
+            "completed_at": "2026-08-26T03:56:50Z"
+          },
+          {
+            "name": "Classify GitHub\u2013GitLab ancestry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-26T03:56:50Z",
+            "completed_at": "2026-08-26T03:56:52Z"
+          },
+          {
+            "name": "Record SHA-bound RECON INTEL lease check",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-26T03:56:52Z",
+            "completed_at": "2026-08-26T03:56:53Z"
+          },
+          {
+            "name": "Publish bounded metadata-only summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-26T03:56:53Z",
+            "completed_at": "2026-08-26T03:56:53Z"
+          },
+          {
+            "name": "Post Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-08-26T03:56:53Z",
+            "completed_at": "2026-08-26T03:56:53Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-08-26T03:56:53Z",
+            "completed_at": "2026-08-26T03:56:53Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055599711",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024241,
+        "runner_name": "GitHub Actions 1000024241",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 98055599719,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JG2Zw",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055599719",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055599719",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:41Z",
+        "started_at": "2026-08-26T03:56:44Z",
+        "completed_at": "2026-08-26T03:56:59Z",
+        "name": "discover (351, df31734fcdd7e78defd2ff830a325c26a9d4e3ae)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:56:45Z",
+            "completed_at": "2026-08-26T03:56:47Z"
+          },
+          {
+            "name": "Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:56:47Z",
+            "completed_at": "2026-08-26T03:56:52Z"
+          },
+          {
+            "name": "Resolve selected GitHub revision through the GitHub API",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:56:52Z",
+            "completed_at": "2026-08-26T03:56:52Z"
+          },
+          {
+            "name": "Classify GitHub\u2013GitLab ancestry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-26T03:56:52Z",
+            "completed_at": "2026-08-26T03:56:55Z"
+          },
+          {
+            "name": "Record SHA-bound RECON INTEL lease check",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-26T03:56:55Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          },
+          {
+            "name": "Publish bounded metadata-only summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-26T03:56:56Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          },
+          {
+            "name": "Post Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-08-26T03:56:56Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-08-26T03:56:56Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055599719",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024248,
+        "runner_name": "GitHub Actions 1000024248",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 98055599737,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JG2eQ",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055599737",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055599737",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:41Z",
+        "started_at": "2026-08-26T03:56:44Z",
+        "completed_at": "2026-08-26T03:56:56Z",
+        "name": "discover (73, 4f28f8298c0c4954d34ae71054239b1695582697)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:56:45Z",
+            "completed_at": "2026-08-26T03:56:45Z"
+          },
+          {
+            "name": "Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:56:45Z",
+            "completed_at": "2026-08-26T03:56:49Z"
+          },
+          {
+            "name": "Resolve selected GitHub revision through the GitHub API",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:56:49Z",
+            "completed_at": "2026-08-26T03:56:50Z"
+          },
+          {
+            "name": "Classify GitHub\u2013GitLab ancestry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-26T03:56:50Z",
+            "completed_at": "2026-08-26T03:56:53Z"
+          },
+          {
+            "name": "Record SHA-bound RECON INTEL lease check",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-26T03:56:53Z",
+            "completed_at": "2026-08-26T03:56:54Z"
+          },
+          {
+            "name": "Publish bounded metadata-only summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-26T03:56:54Z",
+            "completed_at": "2026-08-26T03:56:54Z"
+          },
+          {
+            "name": "Post Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-08-26T03:56:54Z",
+            "completed_at": "2026-08-26T03:56:54Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-08-26T03:56:54Z",
+            "completed_at": "2026-08-26T03:56:54Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055599737",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024242,
+        "runner_name": "GitHub Actions 1000024242",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 98055599746,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JG2gg",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055599746",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055599746",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:41Z",
+        "started_at": "2026-08-26T03:56:45Z",
+        "completed_at": "2026-08-26T03:56:59Z",
+        "name": "discover (81, f1d2eef16b75d73f90e7f94759740e805b50d991)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:56:46Z",
+            "completed_at": "2026-08-26T03:56:47Z"
+          },
+          {
+            "name": "Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:56:47Z",
+            "completed_at": "2026-08-26T03:56:51Z"
+          },
+          {
+            "name": "Resolve selected GitHub revision through the GitHub API",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:56:51Z",
+            "completed_at": "2026-08-26T03:56:51Z"
+          },
+          {
+            "name": "Classify GitHub\u2013GitLab ancestry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-26T03:56:51Z",
+            "completed_at": "2026-08-26T03:56:55Z"
+          },
+          {
+            "name": "Record SHA-bound RECON INTEL lease check",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-26T03:56:55Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          },
+          {
+            "name": "Publish bounded metadata-only summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-26T03:56:56Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          },
+          {
+            "name": "Post Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-08-26T03:56:56Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-08-26T03:56:56Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055599746",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024243,
+        "runner_name": "GitHub Actions 1000024243",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 98055599748,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JG2hA",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055599748",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055599748",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:41Z",
+        "started_at": "2026-08-26T03:56:44Z",
+        "completed_at": "2026-08-26T03:57:00Z",
+        "name": "discover (125, 95c45d8c43c161af105a72b5f3255bb877ce82df)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:56:45Z",
+            "completed_at": "2026-08-26T03:56:46Z"
+          },
+          {
+            "name": "Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:56:46Z",
+            "completed_at": "2026-08-26T03:56:51Z"
+          },
+          {
+            "name": "Resolve selected GitHub revision through the GitHub API",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:56:51Z",
+            "completed_at": "2026-08-26T03:56:52Z"
+          },
+          {
+            "name": "Classify GitHub\u2013GitLab ancestry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-26T03:56:52Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          },
+          {
+            "name": "Record SHA-bound RECON INTEL lease check",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-26T03:56:56Z",
+            "completed_at": "2026-08-26T03:56:57Z"
+          },
+          {
+            "name": "Publish bounded metadata-only summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-26T03:56:57Z",
+            "completed_at": "2026-08-26T03:56:57Z"
+          },
+          {
+            "name": "Post Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-08-26T03:56:57Z",
+            "completed_at": "2026-08-26T03:56:57Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-08-26T03:56:57Z",
+            "completed_at": "2026-08-26T03:56:57Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055599748",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024247,
+        "runner_name": "GitHub Actions 1000024247",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 98055599754,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JG2ig",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055599754",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055599754",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:41Z",
+        "started_at": "2026-08-26T03:56:45Z",
+        "completed_at": "2026-08-26T03:57:00Z",
+        "name": "discover (143, 297eb2d1518fca929e4dbf8a2bd844f8191cd952)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:56:46Z",
+            "completed_at": "2026-08-26T03:56:47Z"
+          },
+          {
+            "name": "Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:56:47Z",
+            "completed_at": "2026-08-26T03:56:51Z"
+          },
+          {
+            "name": "Resolve selected GitHub revision through the GitHub API",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:56:51Z",
+            "completed_at": "2026-08-26T03:56:52Z"
+          },
+          {
+            "name": "Classify GitHub\u2013GitLab ancestry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-26T03:56:52Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          },
+          {
+            "name": "Record SHA-bound RECON INTEL lease check",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-26T03:56:56Z",
+            "completed_at": "2026-08-26T03:56:57Z"
+          },
+          {
+            "name": "Publish bounded metadata-only summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-26T03:56:57Z",
+            "completed_at": "2026-08-26T03:56:57Z"
+          },
+          {
+            "name": "Post Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-08-26T03:56:57Z",
+            "completed_at": "2026-08-26T03:56:57Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-08-26T03:56:57Z",
+            "completed_at": "2026-08-26T03:56:57Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055599754",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024251,
+        "runner_name": "GitHub Actions 1000024251",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 98055599757,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JG2jQ",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055599757",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055599757",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:41Z",
+        "started_at": "2026-08-26T03:56:44Z",
+        "completed_at": "2026-08-26T03:56:56Z",
+        "name": "discover (370, 5377cb93ae236c2e6355fb1138e37feef093dc4b)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:56:45Z",
+            "completed_at": "2026-08-26T03:56:46Z"
+          },
+          {
+            "name": "Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:56:46Z",
+            "completed_at": "2026-08-26T03:56:51Z"
+          },
+          {
+            "name": "Resolve selected GitHub revision through the GitHub API",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:56:51Z",
+            "completed_at": "2026-08-26T03:56:51Z"
+          },
+          {
+            "name": "Classify GitHub\u2013GitLab ancestry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-26T03:56:51Z",
+            "completed_at": "2026-08-26T03:56:53Z"
+          },
+          {
+            "name": "Record SHA-bound RECON INTEL lease check",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-26T03:56:53Z",
+            "completed_at": "2026-08-26T03:56:55Z"
+          },
+          {
+            "name": "Publish bounded metadata-only summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-26T03:56:55Z",
+            "completed_at": "2026-08-26T03:56:55Z"
+          },
+          {
+            "name": "Post Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-08-26T03:56:55Z",
+            "completed_at": "2026-08-26T03:56:55Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-08-26T03:56:55Z",
+            "completed_at": "2026-08-26T03:56:55Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055599757",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024245,
+        "runner_name": "GitHub Actions 1000024245",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 98055599763,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JG2kw",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055599763",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055599763",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:41Z",
+        "started_at": "2026-08-26T03:57:00Z",
+        "completed_at": "2026-08-26T03:57:13Z",
+        "name": "discover (356, e13c889b41da99fa9d471f764e60fd413e379654)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:57:01Z",
+            "completed_at": "2026-08-26T03:57:02Z"
+          },
+          {
+            "name": "Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:57:02Z",
+            "completed_at": "2026-08-26T03:57:06Z"
+          },
+          {
+            "name": "Resolve selected GitHub revision through the GitHub API",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:57:06Z",
+            "completed_at": "2026-08-26T03:57:06Z"
+          },
+          {
+            "name": "Classify GitHub\u2013GitLab ancestry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-26T03:57:06Z",
+            "completed_at": "2026-08-26T03:57:08Z"
+          },
+          {
+            "name": "Record SHA-bound RECON INTEL lease check",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-26T03:57:08Z",
+            "completed_at": "2026-08-26T03:57:10Z"
+          },
+          {
+            "name": "Publish bounded metadata-only summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-26T03:57:10Z",
+            "completed_at": "2026-08-26T03:57:10Z"
+          },
+          {
+            "name": "Post Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-08-26T03:57:10Z",
+            "completed_at": "2026-08-26T03:57:10Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-08-26T03:57:10Z",
+            "completed_at": "2026-08-26T03:57:10Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055599763",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024264,
+        "runner_name": "GitHub Actions 1000024264",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 98055599768,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JG2mA",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055599768",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055599768",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:41Z",
+        "started_at": "2026-08-26T03:56:45Z",
+        "completed_at": "2026-08-26T03:56:58Z",
+        "name": "discover (154, ace9218341e6c1e5fd73ae9d3abe6e6b3da88198)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:56:45Z",
+            "completed_at": "2026-08-26T03:56:47Z"
+          },
+          {
+            "name": "Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:56:47Z",
+            "completed_at": "2026-08-26T03:56:52Z"
+          },
+          {
+            "name": "Resolve selected GitHub revision through the GitHub API",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:56:52Z",
+            "completed_at": "2026-08-26T03:56:52Z"
+          },
+          {
+            "name": "Classify GitHub\u2013GitLab ancestry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-26T03:56:52Z",
+            "completed_at": "2026-08-26T03:56:54Z"
+          },
+          {
+            "name": "Record SHA-bound RECON INTEL lease check",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-26T03:56:54Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          },
+          {
+            "name": "Publish bounded metadata-only summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-26T03:56:56Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          },
+          {
+            "name": "Post Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-08-26T03:56:56Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-08-26T03:56:56Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055599768",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024250,
+        "runner_name": "GitHub Actions 1000024250",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 98055599770,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JG2mg",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055599770",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055599770",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:41Z",
+        "started_at": "2026-08-26T03:56:44Z",
+        "completed_at": "2026-08-26T03:56:58Z",
+        "name": "discover (286, ec9fc82c61d2324656c931640f0facc7ba55a351)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:56:45Z",
+            "completed_at": "2026-08-26T03:56:45Z"
+          },
+          {
+            "name": "Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:56:45Z",
+            "completed_at": "2026-08-26T03:56:50Z"
+          },
+          {
+            "name": "Resolve selected GitHub revision through the GitHub API",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:56:50Z",
+            "completed_at": "2026-08-26T03:56:51Z"
+          },
+          {
+            "name": "Classify GitHub\u2013GitLab ancestry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-26T03:56:51Z",
+            "completed_at": "2026-08-26T03:56:55Z"
+          },
+          {
+            "name": "Record SHA-bound RECON INTEL lease check",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-26T03:56:55Z",
+            "completed_at": "2026-08-26T03:56:57Z"
+          },
+          {
+            "name": "Publish bounded metadata-only summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-26T03:56:57Z",
+            "completed_at": "2026-08-26T03:56:57Z"
+          },
+          {
+            "name": "Post Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-08-26T03:56:57Z",
+            "completed_at": "2026-08-26T03:56:57Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-08-26T03:56:57Z",
+            "completed_at": "2026-08-26T03:56:57Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055599770",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024249,
+        "runner_name": "GitHub Actions 1000024249",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 98055599776,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JG2oA",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055599776",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055599776",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:41Z",
+        "started_at": "2026-08-26T03:56:44Z",
+        "completed_at": "2026-08-26T03:56:58Z",
+        "name": "discover (371, afaa79f3d84bb3be24d07b854c37b667ebe674bc)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:56:45Z",
+            "completed_at": "2026-08-26T03:56:46Z"
+          },
+          {
+            "name": "Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:56:46Z",
+            "completed_at": "2026-08-26T03:56:52Z"
+          },
+          {
+            "name": "Resolve selected GitHub revision through the GitHub API",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:56:52Z",
+            "completed_at": "2026-08-26T03:56:53Z"
+          },
+          {
+            "name": "Classify GitHub\u2013GitLab ancestry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-26T03:56:53Z",
+            "completed_at": "2026-08-26T03:56:55Z"
+          },
+          {
+            "name": "Record SHA-bound RECON INTEL lease check",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-26T03:56:55Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          },
+          {
+            "name": "Publish bounded metadata-only summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-26T03:56:56Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          },
+          {
+            "name": "Post Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-08-26T03:56:56Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-08-26T03:56:56Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055599776",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024254,
+        "runner_name": "GitHub Actions 1000024254",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 98055599777,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JG2oQ",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055599777",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055599777",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:41Z",
+        "started_at": "2026-08-26T03:56:59Z",
+        "completed_at": "2026-08-26T03:57:14Z",
+        "name": "discover (263, 2f80f2bd042d827c21a239d66efd8a384fc26980)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:57:00Z",
+            "completed_at": "2026-08-26T03:57:01Z"
+          },
+          {
+            "name": "Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:57:01Z",
+            "completed_at": "2026-08-26T03:57:06Z"
+          },
+          {
+            "name": "Resolve selected GitHub revision through the GitHub API",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:57:06Z",
+            "completed_at": "2026-08-26T03:57:07Z"
+          },
+          {
+            "name": "Classify GitHub\u2013GitLab ancestry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-26T03:57:07Z",
+            "completed_at": "2026-08-26T03:57:11Z"
+          },
+          {
+            "name": "Record SHA-bound RECON INTEL lease check",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-26T03:57:11Z",
+            "completed_at": "2026-08-26T03:57:12Z"
+          },
+          {
+            "name": "Publish bounded metadata-only summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-26T03:57:12Z",
+            "completed_at": "2026-08-26T03:57:12Z"
+          },
+          {
+            "name": "Post Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-08-26T03:57:12Z",
+            "completed_at": "2026-08-26T03:57:12Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-08-26T03:57:12Z",
+            "completed_at": "2026-08-26T03:57:12Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055599777",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024266,
+        "runner_name": "GitHub Actions 1000024266",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 98055599778,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JG2og",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055599778",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055599778",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:41Z",
+        "started_at": "2026-08-26T03:56:45Z",
+        "completed_at": "2026-08-26T03:56:59Z",
+        "name": "discover (69, be30f0ceaa9bc071beaf39ed5f5356b59bd5b7a8)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:56:46Z",
+            "completed_at": "2026-08-26T03:56:46Z"
+          },
+          {
+            "name": "Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:56:46Z",
+            "completed_at": "2026-08-26T03:56:50Z"
+          },
+          {
+            "name": "Resolve selected GitHub revision through the GitHub API",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:56:50Z",
+            "completed_at": "2026-08-26T03:56:51Z"
+          },
+          {
+            "name": "Classify GitHub\u2013GitLab ancestry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-26T03:56:51Z",
+            "completed_at": "2026-08-26T03:56:54Z"
+          },
+          {
+            "name": "Record SHA-bound RECON INTEL lease check",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-26T03:56:54Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          },
+          {
+            "name": "Publish bounded metadata-only summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-26T03:56:56Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          },
+          {
+            "name": "Post Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-08-26T03:56:56Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-08-26T03:56:56Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055599778",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024246,
+        "runner_name": "GitHub Actions 1000024246",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 98055599781,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JG2pQ",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055599781",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055599781",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:41Z",
+        "started_at": "2026-08-26T03:56:49Z",
+        "completed_at": "2026-08-26T03:57:01Z",
+        "name": "discover (258, bfab9cc4c2c9ce7e63c5a9d5c4c871dd7d9e908e)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:56:50Z",
+            "completed_at": "2026-08-26T03:56:51Z"
+          },
+          {
+            "name": "Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:56:51Z",
+            "completed_at": "2026-08-26T03:56:55Z"
+          },
+          {
+            "name": "Resolve selected GitHub revision through the GitHub API",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:56:55Z",
+            "completed_at": "2026-08-26T03:56:55Z"
+          },
+          {
+            "name": "Classify GitHub\u2013GitLab ancestry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-26T03:56:55Z",
+            "completed_at": "2026-08-26T03:56:58Z"
+          },
+          {
+            "name": "Record SHA-bound RECON INTEL lease check",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-26T03:56:58Z",
+            "completed_at": "2026-08-26T03:56:59Z"
+          },
+          {
+            "name": "Publish bounded metadata-only summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-26T03:56:59Z",
+            "completed_at": "2026-08-26T03:56:59Z"
+          },
+          {
+            "name": "Post Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-08-26T03:56:59Z",
+            "completed_at": "2026-08-26T03:56:59Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-08-26T03:56:59Z",
+            "completed_at": "2026-08-26T03:56:59Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055599781",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024260,
+        "runner_name": "GitHub Actions 1000024260",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 98055599783,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JG2pw",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055599783",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055599783",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:41Z",
+        "started_at": "2026-08-26T03:56:44Z",
+        "completed_at": "2026-08-26T03:56:57Z",
+        "name": "discover (135, 84aac65e06a8d03266937694f7fdc818deef9f7c)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:56:45Z",
+            "completed_at": "2026-08-26T03:56:46Z"
+          },
+          {
+            "name": "Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:56:46Z",
+            "completed_at": "2026-08-26T03:56:51Z"
+          },
+          {
+            "name": "Resolve selected GitHub revision through the GitHub API",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:56:51Z",
+            "completed_at": "2026-08-26T03:56:51Z"
+          },
+          {
+            "name": "Classify GitHub\u2013GitLab ancestry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-26T03:56:51Z",
+            "completed_at": "2026-08-26T03:56:54Z"
+          },
+          {
+            "name": "Record SHA-bound RECON INTEL lease check",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-26T03:56:54Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          },
+          {
+            "name": "Publish bounded metadata-only summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-26T03:56:56Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          },
+          {
+            "name": "Post Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-08-26T03:56:56Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-08-26T03:56:56Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055599783",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024259,
+        "runner_name": "GitHub Actions 1000024259",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 98055599784,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JG2qA",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055599784",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055599784",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:41Z",
+        "started_at": "2026-08-26T03:56:45Z",
+        "completed_at": "2026-08-26T03:56:58Z",
+        "name": "discover (352, b8f30eb9a865732c88d3833fd9e8ebb840bc22c9)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:56:45Z",
+            "completed_at": "2026-08-26T03:56:47Z"
+          },
+          {
+            "name": "Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:56:47Z",
+            "completed_at": "2026-08-26T03:56:52Z"
+          },
+          {
+            "name": "Resolve selected GitHub revision through the GitHub API",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:56:52Z",
+            "completed_at": "2026-08-26T03:56:52Z"
+          },
+          {
+            "name": "Classify GitHub\u2013GitLab ancestry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-26T03:56:52Z",
+            "completed_at": "2026-08-26T03:56:54Z"
+          },
+          {
+            "name": "Record SHA-bound RECON INTEL lease check",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-26T03:56:54Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          },
+          {
+            "name": "Publish bounded metadata-only summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-26T03:56:56Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          },
+          {
+            "name": "Post Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-08-26T03:56:56Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-08-26T03:56:56Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055599784",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024258,
+        "runner_name": "GitHub Actions 1000024258",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 98055599788,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JG2rA",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055599788",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055599788",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:41Z",
+        "started_at": "2026-08-26T03:56:59Z",
+        "completed_at": "2026-08-26T03:57:15Z",
+        "name": "discover (142, c6ea259d29fae1fac8e332417608590a53113c3c)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:57:00Z",
+            "completed_at": "2026-08-26T03:57:02Z"
+          },
+          {
+            "name": "Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:57:02Z",
+            "completed_at": "2026-08-26T03:57:06Z"
+          },
+          {
+            "name": "Resolve selected GitHub revision through the GitHub API",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:57:06Z",
+            "completed_at": "2026-08-26T03:57:07Z"
+          },
+          {
+            "name": "Classify GitHub\u2013GitLab ancestry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-26T03:57:07Z",
+            "completed_at": "2026-08-26T03:57:10Z"
+          },
+          {
+            "name": "Record SHA-bound RECON INTEL lease check",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-26T03:57:10Z",
+            "completed_at": "2026-08-26T03:57:12Z"
+          },
+          {
+            "name": "Publish bounded metadata-only summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-26T03:57:12Z",
+            "completed_at": "2026-08-26T03:57:12Z"
+          },
+          {
+            "name": "Post Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-08-26T03:57:12Z",
+            "completed_at": "2026-08-26T03:57:12Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-08-26T03:57:12Z",
+            "completed_at": "2026-08-26T03:57:12Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055599788",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024265,
+        "runner_name": "GitHub Actions 1000024265",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 98055599789,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JG2rQ",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055599789",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055599789",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:41Z",
+        "started_at": "2026-08-26T03:56:45Z",
+        "completed_at": "2026-08-26T03:56:59Z",
+        "name": "discover (302, d6aaf4691d459700cadd1bc51178c4617abff64e)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:56:46Z",
+            "completed_at": "2026-08-26T03:56:47Z"
+          },
+          {
+            "name": "Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:56:47Z",
+            "completed_at": "2026-08-26T03:56:51Z"
+          },
+          {
+            "name": "Resolve selected GitHub revision through the GitHub API",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:56:51Z",
+            "completed_at": "2026-08-26T03:56:52Z"
+          },
+          {
+            "name": "Classify GitHub\u2013GitLab ancestry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-26T03:56:52Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          },
+          {
+            "name": "Record SHA-bound RECON INTEL lease check",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-26T03:56:56Z",
+            "completed_at": "2026-08-26T03:56:57Z"
+          },
+          {
+            "name": "Publish bounded metadata-only summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-26T03:56:57Z",
+            "completed_at": "2026-08-26T03:56:57Z"
+          },
+          {
+            "name": "Post Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-08-26T03:56:57Z",
+            "completed_at": "2026-08-26T03:56:57Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-08-26T03:56:57Z",
+            "completed_at": "2026-08-26T03:56:58Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055599789",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024256,
+        "runner_name": "GitHub Actions 1000024256",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 98055599799,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JG2tw",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055599799",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055599799",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:41Z",
+        "started_at": "2026-08-26T03:56:45Z",
+        "completed_at": "2026-08-26T03:56:59Z",
+        "name": "discover (249, ce17762905eb2a98a53fe3e0f6ac398a08f2f999)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:56:46Z",
+            "completed_at": "2026-08-26T03:56:47Z"
+          },
+          {
+            "name": "Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:56:47Z",
+            "completed_at": "2026-08-26T03:56:51Z"
+          },
+          {
+            "name": "Resolve selected GitHub revision through the GitHub API",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:56:51Z",
+            "completed_at": "2026-08-26T03:56:52Z"
+          },
+          {
+            "name": "Classify GitHub\u2013GitLab ancestry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-26T03:56:52Z",
+            "completed_at": "2026-08-26T03:56:55Z"
+          },
+          {
+            "name": "Record SHA-bound RECON INTEL lease check",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-26T03:56:55Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          },
+          {
+            "name": "Publish bounded metadata-only summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-26T03:56:56Z",
+            "completed_at": "2026-08-26T03:56:56Z"
+          },
+          {
+            "name": "Post Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-08-26T03:56:56Z",
+            "completed_at": "2026-08-26T03:56:57Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-08-26T03:56:57Z",
+            "completed_at": "2026-08-26T03:56:57Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055599799",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024252,
+        "runner_name": "GitHub Actions 1000024252",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 98055599806,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JG2vg",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055599806",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055599806",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:41Z",
+        "started_at": "2026-08-26T03:56:59Z",
+        "completed_at": "2026-08-26T03:57:13Z",
+        "name": "discover (65, 57d3c5af00ce6907dfd740631e22bdd84dd63c6e)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:57:00Z",
+            "completed_at": "2026-08-26T03:57:01Z"
+          },
+          {
+            "name": "Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:57:01Z",
+            "completed_at": "2026-08-26T03:57:05Z"
+          },
+          {
+            "name": "Resolve selected GitHub revision through the GitHub API",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:57:05Z",
+            "completed_at": "2026-08-26T03:57:06Z"
+          },
+          {
+            "name": "Classify GitHub\u2013GitLab ancestry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-26T03:57:06Z",
+            "completed_at": "2026-08-26T03:57:09Z"
+          },
+          {
+            "name": "Record SHA-bound RECON INTEL lease check",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-26T03:57:09Z",
+            "completed_at": "2026-08-26T03:57:10Z"
+          },
+          {
+            "name": "Publish bounded metadata-only summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-26T03:57:10Z",
+            "completed_at": "2026-08-26T03:57:10Z"
+          },
+          {
+            "name": "Post Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-08-26T03:57:10Z",
+            "completed_at": "2026-08-26T03:57:11Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-08-26T03:57:11Z",
+            "completed_at": "2026-08-26T03:57:11Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055599806",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024263,
+        "runner_name": "GitHub Actions 1000024263",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 98055599807,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JG2vw",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055599807",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055599807",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:41Z",
+        "started_at": "2026-08-26T03:56:44Z",
+        "completed_at": "2026-08-26T03:56:54Z",
+        "name": "discover (7, 9b634699de900823c11447e208964e76c6f10e73)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:56:45Z",
+            "completed_at": "2026-08-26T03:56:46Z"
+          },
+          {
+            "name": "Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:56:46Z",
+            "completed_at": "2026-08-26T03:56:50Z"
+          },
+          {
+            "name": "Resolve selected GitHub revision through the GitHub API",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:56:50Z",
+            "completed_at": "2026-08-26T03:56:50Z"
+          },
+          {
+            "name": "Classify GitHub\u2013GitLab ancestry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-26T03:56:50Z",
+            "completed_at": "2026-08-26T03:56:51Z"
+          },
+          {
+            "name": "Record SHA-bound RECON INTEL lease check",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-26T03:56:51Z",
+            "completed_at": "2026-08-26T03:56:53Z"
+          },
+          {
+            "name": "Publish bounded metadata-only summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-26T03:56:53Z",
+            "completed_at": "2026-08-26T03:56:53Z"
+          },
+          {
+            "name": "Post Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-08-26T03:56:53Z",
+            "completed_at": "2026-08-26T03:56:53Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-08-26T03:56:53Z",
+            "completed_at": "2026-08-26T03:56:53Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055599807",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024253,
+        "runner_name": "GitHub Actions 1000024253",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 98055599810,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JG2wg",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055599810",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055599810",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:41Z",
+        "started_at": "2026-08-26T03:56:44Z",
+        "completed_at": "2026-08-26T03:56:56Z",
+        "name": "discover (311, 38318f5714371106f579cc6cf4549336b54b0464)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:56:45Z",
+            "completed_at": "2026-08-26T03:56:46Z"
+          },
+          {
+            "name": "Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:56:46Z",
+            "completed_at": "2026-08-26T03:56:51Z"
+          },
+          {
+            "name": "Resolve selected GitHub revision through the GitHub API",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:56:51Z",
+            "completed_at": "2026-08-26T03:56:52Z"
+          },
+          {
+            "name": "Classify GitHub\u2013GitLab ancestry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-26T03:56:52Z",
+            "completed_at": "2026-08-26T03:56:53Z"
+          },
+          {
+            "name": "Record SHA-bound RECON INTEL lease check",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-26T03:56:53Z",
+            "completed_at": "2026-08-26T03:56:54Z"
+          },
+          {
+            "name": "Publish bounded metadata-only summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-26T03:56:54Z",
+            "completed_at": "2026-08-26T03:56:54Z"
+          },
+          {
+            "name": "Post Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-08-26T03:56:54Z",
+            "completed_at": "2026-08-26T03:56:54Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-08-26T03:56:54Z",
+            "completed_at": "2026-08-26T03:56:54Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055599810",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024257,
+        "runner_name": "GitHub Actions 1000024257",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 98055599815,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JG2xw",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055599815",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055599815",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:41Z",
+        "started_at": "2026-08-26T03:56:44Z",
+        "completed_at": "2026-08-26T03:56:57Z",
+        "name": "discover (48, 7839eeb7da8040ee22217f907867fabf62d6f160)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:56:45Z",
+            "completed_at": "2026-08-26T03:56:45Z"
+          },
+          {
+            "name": "Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:56:45Z",
+            "completed_at": "2026-08-26T03:56:50Z"
+          },
+          {
+            "name": "Resolve selected GitHub revision through the GitHub API",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:56:50Z",
+            "completed_at": "2026-08-26T03:56:50Z"
+          },
+          {
+            "name": "Classify GitHub\u2013GitLab ancestry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-26T03:56:50Z",
+            "completed_at": "2026-08-26T03:56:54Z"
+          },
+          {
+            "name": "Record SHA-bound RECON INTEL lease check",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-26T03:56:54Z",
+            "completed_at": "2026-08-26T03:56:55Z"
+          },
+          {
+            "name": "Publish bounded metadata-only summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-26T03:56:55Z",
+            "completed_at": "2026-08-26T03:56:55Z"
+          },
+          {
+            "name": "Post Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-08-26T03:56:55Z",
+            "completed_at": "2026-08-26T03:56:55Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-08-26T03:56:55Z",
+            "completed_at": "2026-08-26T03:56:55Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055599815",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024255,
+        "runner_name": "GitHub Actions 1000024255",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 98055599817,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JG2yQ",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055599817",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055599817",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:41Z",
+        "started_at": "2026-08-26T03:56:59Z",
+        "completed_at": "2026-08-26T03:57:15Z",
+        "name": "discover (34, d90c37b5dfda789b91c62309d63a00ac544d1b81)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:57:00Z",
+            "completed_at": "2026-08-26T03:57:02Z"
+          },
+          {
+            "name": "Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:57:02Z",
+            "completed_at": "2026-08-26T03:57:06Z"
+          },
+          {
+            "name": "Resolve selected GitHub revision through the GitHub API",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:57:06Z",
+            "completed_at": "2026-08-26T03:57:07Z"
+          },
+          {
+            "name": "Classify GitHub\u2013GitLab ancestry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-26T03:57:07Z",
+            "completed_at": "2026-08-26T03:57:11Z"
+          },
+          {
+            "name": "Record SHA-bound RECON INTEL lease check",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-26T03:57:11Z",
+            "completed_at": "2026-08-26T03:57:12Z"
+          },
+          {
+            "name": "Publish bounded metadata-only summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-26T03:57:12Z",
+            "completed_at": "2026-08-26T03:57:12Z"
+          },
+          {
+            "name": "Post Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-08-26T03:57:12Z",
+            "completed_at": "2026-08-26T03:57:12Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-08-26T03:57:12Z",
+            "completed_at": "2026-08-26T03:57:12Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055599817",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024267,
+        "runner_name": "GitHub Actions 1000024267",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 98055599828,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JG21A",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055599828",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055599828",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:41Z",
+        "started_at": "2026-08-26T03:57:01Z",
+        "completed_at": "2026-08-26T03:57:12Z",
+        "name": "discover (47, 11b61f8139c2e4689eebfbfa20d0678133d476b3)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:57:01Z",
+            "completed_at": "2026-08-26T03:57:02Z"
+          },
+          {
+            "name": "Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:57:02Z",
+            "completed_at": "2026-08-26T03:57:06Z"
+          },
+          {
+            "name": "Resolve selected GitHub revision through the GitHub API",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:57:06Z",
+            "completed_at": "2026-08-26T03:57:06Z"
+          },
+          {
+            "name": "Classify GitHub\u2013GitLab ancestry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-26T03:57:06Z",
+            "completed_at": "2026-08-26T03:57:09Z"
+          },
+          {
+            "name": "Record SHA-bound RECON INTEL lease check",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-26T03:57:09Z",
+            "completed_at": "2026-08-26T03:57:11Z"
+          },
+          {
+            "name": "Publish bounded metadata-only summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-26T03:57:11Z",
+            "completed_at": "2026-08-26T03:57:11Z"
+          },
+          {
+            "name": "Post Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-08-26T03:57:11Z",
+            "completed_at": "2026-08-26T03:57:11Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-08-26T03:57:11Z",
+            "completed_at": "2026-08-26T03:57:11Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055599828",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024272,
+        "runner_name": "GitHub Actions 1000024272",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 98055599834,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JG22g",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055599834",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055599834",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:41Z",
+        "started_at": "2026-08-26T03:57:02Z",
+        "completed_at": "2026-08-26T03:57:13Z",
+        "name": "discover (8, f5d428d0ca0f0e6c84f62fa54e04fadd15af6e06)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:57:02Z",
+            "completed_at": "2026-08-26T03:57:03Z"
+          },
+          {
+            "name": "Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:57:03Z",
+            "completed_at": "2026-08-26T03:57:07Z"
+          },
+          {
+            "name": "Resolve selected GitHub revision through the GitHub API",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:57:07Z",
+            "completed_at": "2026-08-26T03:57:07Z"
+          },
+          {
+            "name": "Classify GitHub\u2013GitLab ancestry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-26T03:57:07Z",
+            "completed_at": "2026-08-26T03:57:10Z"
+          },
+          {
+            "name": "Record SHA-bound RECON INTEL lease check",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-26T03:57:10Z",
+            "completed_at": "2026-08-26T03:57:11Z"
+          },
+          {
+            "name": "Publish bounded metadata-only summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-26T03:57:11Z",
+            "completed_at": "2026-08-26T03:57:11Z"
+          },
+          {
+            "name": "Post Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-08-26T03:57:11Z",
+            "completed_at": "2026-08-26T03:57:11Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-08-26T03:57:11Z",
+            "completed_at": "2026-08-26T03:57:11Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055599834",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024277,
+        "runner_name": "GitHub Actions 1000024277",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 98055599845,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JG25Q",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055599845",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055599845",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:41Z",
+        "started_at": "2026-08-26T03:57:01Z",
+        "completed_at": "2026-08-26T03:57:36Z",
+        "name": "discover (108, f486ff7956fd58ccad851294d616f28fd828ba23)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:57:02Z",
+            "completed_at": "2026-08-26T03:57:03Z"
+          },
+          {
+            "name": "Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:57:03Z",
+            "completed_at": "2026-08-26T03:57:08Z"
+          },
+          {
+            "name": "Resolve selected GitHub revision through the GitHub API",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:57:08Z",
+            "completed_at": "2026-08-26T03:57:09Z"
+          },
+          {
+            "name": "Classify GitHub\u2013GitLab ancestry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-26T03:57:09Z",
+            "completed_at": "2026-08-26T03:57:32Z"
+          },
+          {
+            "name": "Record SHA-bound RECON INTEL lease check",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-26T03:57:32Z",
+            "completed_at": "2026-08-26T03:57:33Z"
+          },
+          {
+            "name": "Publish bounded metadata-only summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-26T03:57:33Z",
+            "completed_at": "2026-08-26T03:57:33Z"
+          },
+          {
+            "name": "Post Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-08-26T03:57:33Z",
+            "completed_at": "2026-08-26T03:57:34Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-08-26T03:57:34Z",
+            "completed_at": "2026-08-26T03:57:34Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055599845",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024270,
+        "runner_name": "GitHub Actions 1000024270",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 98055599848,
+        "run_id": 32928330287,
+        "workflow_name": "RECON INTEL discovery",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32928330287",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAW1JG26A",
+        "head_sha": "9ed30240939d8b56ba32659d52b7e922af8e535a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/98055599848",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32928330287/job/98055599848",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-26T03:56:41Z",
+        "started_at": "2026-08-26T03:57:00Z",
+        "completed_at": "2026-08-26T03:57:13Z",
+        "name": "discover (121, 5b67abb210ae85156903469f7643f3a46e38be2a)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-26T03:57:01Z",
+            "completed_at": "2026-08-26T03:57:03Z"
+          },
+          {
+            "name": "Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-26T03:57:03Z",
+            "completed_at": "2026-08-26T03:57:07Z"
+          },
+          {
+            "name": "Resolve selected GitHub revision through the GitHub API",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-26T03:57:07Z",
+            "completed_at": "2026-08-26T03:57:07Z"
+          },
+          {
+            "name": "Classify GitHub\u2013GitLab ancestry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-26T03:57:07Z",
+            "completed_at": "2026-08-26T03:57:10Z"
+          },
+          {
+            "name": "Record SHA-bound RECON INTEL lease check",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-26T03:57:10Z",
+            "completed_at": "2026-08-26T03:57:11Z"
+          },
+          {
+            "name": "Publish bounded metadata-only summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-26T03:57:11Z",
+            "completed_at": "2026-08-26T03:57:11Z"
+          },
+          {
+            "name": "Post Check out trusted default-branch control plane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-08-26T03:57:11Z",
+            "completed_at": "2026-08-26T03:57:12Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-08-26T03:57:12Z",
+            "completed_at": "2026-08-26T03:57:12Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/98055599848",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000024269,
+        "runner_name": "GitHub Actions 1000024269",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

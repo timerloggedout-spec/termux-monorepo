@@ -1,0 +1,109 @@
+# Execution-backed model/team performance index.
+# Observation ledger, not routing authority. Actual execution is required for credit.
+version: 2
+updated_at: "2026-08-24"
+
+identity:
+  player_key: [provider, model, role]
+  observation_key: [repository, workflow, run_id, attempt, head_sha, provider, model, role, experiment_id, prompt_variant]
+  manager_key: [manager_id, policy_version]
+
+required_observation_fields:
+  - timestamp
+  - repository
+  - workflow
+  - run_id
+  - run_attempt
+  - head_sha
+  - provider
+  - requested_model
+  - response_model
+  - role
+  - route_status
+  - http_status
+  - latency_ms
+  - requests_used
+
+outcome_fields:
+  task_outcome: "PASS | FAIL | UNKNOWN"
+  task_outcome_notes: "short evidence-backed explanation"
+  correctness: "0..1 | unknown"
+  integration_success: "0..1 | unknown"
+  reviewer_acceptance: "0..1 | unknown"
+  warnings: "count or structured list"
+  errors: "count or structured list"
+  max_error_severity: "none | info | warning | error | critical"
+  complexity_assessment:
+    relevant: "true | false | unknown"
+    time_big_o: "string | unknown"
+    compute_class: "low | medium | high | unknown"
+    evidence: "short justification"
+  human_override: "true | false | unknown"
+
+routing_fields:
+  - experiment_id
+  - manager_id
+  - policy_version
+  - prompt_variant
+  - fallback_from
+  - fallback_to
+  - attribution_confidence
+
+rules:
+  - id: actual-use-only
+    description: "A player receives performance credit only after an attempted provider invocation."
+  - id: outcome-first
+    description: "Correctness and integrated working outcome dominate speed. A fast incorrect result cannot outrank a slower correct result."
+  - id: latency-is-diagnostic
+    description: "Latency is primarily a diagnostic signal for loops, stalls, retries, provider degradation, and operational efficiency; it is a low-weight tiebreaker."
+  - id: pass-fail-required-for-rank
+    description: "A rankable task needs an evidence-backed PASS/FAIL outcome; UNKNOWN remains provisional."
+  - id: skipped-is-not-model-failure
+    description: "Capacity, policy, duplicate, credential, and admission skips are dispatch/capacity observations, not model-quality failures."
+  - id: provider-failure-distinct
+    description: "Transport, auth, rate-limit, and provider errors are distinct from correctness or task-quality failures."
+  - id: manager-failure-distinct
+    description: "Bad decomposition, duplicate work, stale context, conflicting writes, or bad prompt design are orchestration findings and must not be charged blindly to the model."
+  - id: complexity-is-task-dependent
+    description: "Big-O/compute complexity is recorded only when relevant to the task; it does not automatically penalize a model."
+  - id: immutable-evidence
+    description: "Raw observations remain append-only; aggregates may be regenerated."
+  - id: attribution-confidence
+    description: "GitHub actor identity is not sufficient when a PAT signs on behalf of multiple agents; attribution is inferred with confidence."
+  - id: historical-cohort
+    description: "Historical repository refs are immutable experiment cohorts; experiments never rewrite the audited source history."
+
+score:
+  name: execution_score_v2
+  weights:
+    correctness: 0.50
+    integration_success: 0.25
+    reviewer_acceptance: 0.15
+    task_outcome: 0.05
+    latency: 0.05
+  latency_role: "low-weight tiebreaker/diagnostic; never allowed to compensate for correctness failure"
+  minimum_attempts: 5
+  note: "Scores below minimum sample size are provisional. Missing quality evidence is UNKNOWN, not zero."
+
+experiment_design:
+  lanes:
+    - openrouter_ox_alpha
+    - openrouter_other_candidate
+    - felo_variant
+    - other_provider
+  dimensions:
+    - manager
+    - provider
+    - model
+    - prompt_variant
+    - repository_cohort
+    - task_family
+    - sequencing
+    - concurrency
+  objective: "maximize correct integrated outcomes while minimizing wasted effort, context, retries, conflicts, and human intervention"
+
+collection:
+  storage: "GitHub Actions artifacts + generated JSON"
+  source_of_truth: "execution observations"
+  publication: "docs/ops/generated/model-performance-index.json"
+  refresh: "every invocation; aggregate on demand"

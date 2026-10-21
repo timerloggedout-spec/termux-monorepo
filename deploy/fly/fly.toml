@@ -1,0 +1,32 @@
+app = "hindsight-deepagent"
+primary_region = "sjc"
+
+[build]
+  image = "ghcr.io/vectorize-io/hindsight:0.5.1"
+
+[env]
+  HINDSIGHT_API_PORT = "8888"
+  HINDSIGHT_API_HOST = "0.0.0.0"
+  HINDSIGHT_API_LLM_PROVIDER = "openrouter"
+  HINDSIGHT_API_LLM_MODEL = "meta-llama/llama-3.1-8b-instruct:free"
+  HINDSIGHT_API_EMBEDDINGS_PROVIDER = "google"
+  HINDSIGHT_API_EMBEDDINGS_MODEL = "gemini-embedding-001"
+  HINDSIGHT_API_RERANKER_PROVIDER = "rrf"
+  HINDSIGHT_API_LOG_LEVEL = "info"
+
+[[mounts]]
+  source = "hindsight_data"
+  destination = "/home/hindsight/.pg0"
+
+[http_service]
+  internal_port = 8888
+  force_https = true
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["app"]
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"
+  cpus = 1

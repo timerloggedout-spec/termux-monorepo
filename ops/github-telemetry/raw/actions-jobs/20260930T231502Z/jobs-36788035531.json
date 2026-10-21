@@ -1,0 +1,105 @@
+{
+  "collected_at": "2026-09-30T23:15:10.842157+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 36788035531,
+    "endpoint": ".../runs/36788035531/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 110134042151,
+        "run_id": 36788035531,
+        "workflow_name": "Context Relationship + Lead/Lag Audit",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/36788035531",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAZpIAeJw",
+        "head_sha": "f87e2c542779810d488200b09f8477e8c6f068f7",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/110134042151",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36788035531/job/110134042151",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-09-30T22:52:31Z",
+        "started_at": "2026-09-30T22:52:45Z",
+        "completed_at": "2026-09-30T22:53:09Z",
+        "name": "Build append-only temporal evidence",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-09-30T22:52:46Z",
+            "completed_at": "2026-09-30T22:52:47Z"
+          },
+          {
+            "name": "Checkout SSOT source",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-09-30T22:52:47Z",
+            "completed_at": "2026-09-30T22:52:53Z"
+          },
+          {
+            "name": "Build context relationship and lead/lag index",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-09-30T22:52:53Z",
+            "completed_at": "2026-09-30T22:53:05Z"
+          },
+          {
+            "name": "Validate index structure",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-09-30T22:53:05Z",
+            "completed_at": "2026-09-30T22:53:06Z"
+          },
+          {
+            "name": "Publish audit summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-09-30T22:53:06Z",
+            "completed_at": "2026-09-30T22:53:06Z"
+          },
+          {
+            "name": "Upload immutable evidence artifact",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-09-30T22:53:06Z",
+            "completed_at": "2026-09-30T22:53:07Z"
+          },
+          {
+            "name": "Post Checkout SSOT source",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-09-30T22:53:07Z",
+            "completed_at": "2026-09-30T22:53:07Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-09-30T22:53:07Z",
+            "completed_at": "2026-09-30T22:53:07Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/110134042151",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000172884,
+        "runner_name": "GitHub Actions 1000172884",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

@@ -10,6 +10,27 @@ response_data = None
 response_event = threading.Event()
 token_file = Path.home() / ".multi-ai-tokens" / "mistral_token.txt"
 
+def _write_token_securely(token: str, target_path: Path = None):
+    p = target_path or token_file
+    if p.parent.is_symlink():
+        raise ValueError(f"Symlink directory rejected for security: {p.parent}")
+    os.makedirs(p.parent, exist_ok=True)
+    if not p.parent.is_symlink():
+        try:
+            os.chmod(p.parent, 0o700)
+        except Exception:
+            pass
+    if p.is_symlink():
+        raise ValueError(f"Symlink token path rejected for security: {p}")
+    fd = os.open(p, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, "w", encoding="utf-8") as f:
+        f.write(token)
+    if not p.is_symlink():
+        try:
+            os.chmod(p, 0o600)
+        except Exception:
+            pass
+
 class BridgeHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         global prompt_queue, response_data
@@ -17,11 +38,20 @@ class BridgeHandler(BaseHTTPRequestHandler):
         body = self.rfile.read(length)
         data = json.loads(body)
         if data.get("type") == "token":
-            token_file.write_text(data["token"])
-            self.send_response(200)
-            self.end_headers()
-            self.wfile.write(b'ok')
-            print("[bridge] Token saved")
+            try:
+                _write_token_securely(data["token"])
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(b'ok')
+                print("[bridge] Token saved")
+            except ValueError as e:
+                self.send_response(400)
+                self.end_headers()
+                self.wfile.write(str(e).encode())
+            except Exception as e:
+                self.send_response(500)
+                self.end_headers()
+                self.wfile.write(f"Error: {e}".encode())
         elif data.get("type") == "prompt":
             prompt_queue = data["text"]
             response_event.clear()

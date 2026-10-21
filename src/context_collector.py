@@ -1,39 +1,77 @@
 import sqlite3
 import os
 import re
+import shutil
 import subprocess
 
 DB_PATH = "local_repo.db"
 
+from pathlib import Path
+
 class AutomatedContextCollector:
     def __init__(self, workspace_root):
-        self.workspace = os.path.abspath(workspace_root)
+        self.workspace = os.path.realpath(os.path.abspath(workspace_root))
 
-    def find_dependent_files(self, file_relative_path):
+    def _validate_path(self, relative_path: str) -> str:
+        p_str = str(relative_path)
+        if ".." in Path(p_str).parts or os.path.isabs(p_str) or "\\" in p_str:
+            raise ValueError("Invalid file path")
+        raw_target = Path(os.path.join(self.workspace, p_str))
+        if raw_target.is_symlink():
+            raise ValueError("Invalid file path: symlink target rejected")
+        abs_target = os.path.realpath(str(raw_target))
+        if os.path.commonpath([self.workspace, abs_target]) != self.workspace:
+            raise ValueError("Invalid file path")
+        return abs_target
+
+    def find_dependent_files(self, file_relative_path, conn=None):
+        """
+        Find files in the workspace dependent on or referenced by the target file.
+        Accepts an optional open sqlite3.Connection to reuse existing connection handles and minimize disk I/O.
+        Combines edge queries with UNION to halve query roundtrips.
+        """
+        self._validate_path(file_relative_path)
         base_name = os.path.splitext(file_relative_path)[0]
         related_files = set()
-        with sqlite3.connect(DB_PATH) as conn:
+        close_conn = False
+        if conn is None:
+            conn = sqlite3.connect(DB_PATH)
+            close_conn = True
+
+        try:
             cursor = conn.cursor()
-            cursor.execute("SELECT target_file FROM edges WHERE source_file = ? OR target_file LIKE ?",
-                           (file_relative_path, f"%{base_name}%"))
+            cursor.execute(
+                """
+                SELECT target_file FROM edges WHERE source_file = ? OR target_file LIKE ?
+                UNION
+                SELECT source_file FROM edges WHERE target_file = ? OR source_file LIKE ?
+                """,
+                (file_relative_path, f"%{base_name}%", file_relative_path, f"%{base_name}%")
+            )
             for row in cursor.fetchall():
                 related_files.add(row[0])
-            cursor.execute("SELECT source_file FROM edges WHERE target_file = ? OR source_file LIKE ?",
-                           (file_relative_path, f"%{base_name}%"))
-            for row in cursor.fetchall():
-                related_files.add(row[0])
+        finally:
+            if close_conn:
+                conn.close()
 
         valid_dependencies = []
+        extensions = ('.py', '.js', '.mjs', '.rs', '.sh')
         for ref in related_files:
-            for ext in ['.py', '.js', '.mjs', '.rs', '.sh']:
-                check_path = ref if ref.endswith(ext) else f"{ref}{ext}"
-                if os.path.exists(os.path.join(self.workspace, check_path)) and check_path != file_relative_path:
+            if ref == file_relative_path:
+                continue
+            if ref.endswith(extensions):
+                if os.path.exists(os.path.join(self.workspace, ref)):
+                    valid_dependencies.append(ref)
+                continue
+            for ext in extensions:
+                check_path = f"{ref}{ext}"
+                if check_path != file_relative_path and os.path.exists(os.path.join(self.workspace, check_path)):
                     valid_dependencies.append(check_path)
                     break
         return valid_dependencies
 
     def generate_ast_skeleton(self, file_relative_path):
-        abs_path = os.path.join(self.workspace, file_relative_path)
+        abs_path = self._validate_path(file_relative_path)
         ext = os.path.splitext(file_relative_path)[1]
         if ext == '.py':
             pattern = "class $NAME: $$$"
@@ -41,6 +79,8 @@ class AutomatedContextCollector:
             pattern = "function $NAME($$ $) { $$$ }"
         else:
             return f"/* Structural stub context for file: {file_relative_path} */"
+        if not shutil.which("ast-grep"):
+            return f"// Unable to trace AST module boundary map for {file_relative_path}"
         try:
             output = subprocess.check_output(["ast-grep", "scan", "--pattern", pattern, "--json", abs_path], text=True)
             import json
@@ -63,12 +103,13 @@ class AutomatedContextCollector:
         Returns:
         	str: Formatted architecture context containing dependency skeletons and the active file source.
         """
+        abs_target = self._validate_path(active_target_file)
         dependencies = self.find_dependent_files(active_target_file)
         bundle = ["=== CODEBASE ARCHITECTURE SUBSTRUCTURE CONTEXT ==="]
         for dep in dependencies:
             skeleton = self.generate_ast_skeleton(dep)
             bundle.append(f'\n<file path="{dep}" layout="dependent_skeleton">\n{skeleton}\n')
-        with open(os.path.join(self.workspace, active_target_file), 'r') as f:
+        with open(abs_target, 'r') as f:
             full_source = f.read()
         bundle.append(f'\n<file path="{active_target_file}" layout="active_target_edit_zone">\n{full_source}\n')
         return "\n".join(bundle)

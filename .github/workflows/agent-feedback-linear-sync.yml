@@ -38,6 +38,7 @@ jobs:
         )
       )
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: read
       pull-requests: write
@@ -88,10 +89,10 @@ jobs:
               return json.data;
             }
 
-            const teamId = '1e672463-31de-40b2-a378-3c03fd8f7e3b';
-            const parentTitle = `PR #${prNumber} agent feedback rollup`;
-
             try {
+              const teamId = '1e672463-31de-40b2-a378-3c03fd8f7e3b';
+              const parentTitle = `PR #${prNumber} agent feedback rollup`;
+
               const search = await linear(
                 `query($filter: IssueFilter!) {
                   issues(filter: $filter, first: 5) {
@@ -190,11 +191,11 @@ jobs:
                   core.info(String(e));
                 }
               }
-            } catch (error) {
-              const errMsg = String(error.message || error);
-              if (errMsg.includes('usage limit exceeded') || errMsg.includes('USAGE_LIMIT_EXCEEDED')) {
-                core.warning('Linear workspace free issue limit exceeded — gracefully skipping subtask sync.');
+            } catch (err) {
+              const msg = err.message || '';
+              if (msg.includes('usage limit exceeded') || msg.includes('USAGE_LIMIT_EXCEEDED')) {
+                core.warning('Linear workspace limit exceeded — skipping sync cleanly: ' + msg);
               } else {
-                throw error;
+                throw err;
               }
             }

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/schemas/briefing/radar-record.schema.json",
+  "title": "Foresight Radar Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["signal_id","title","horizon","evidence_status","enabling_technologies","convergence","bottlenecks","strategic_dependencies","foss_alternatives","prototype_concepts","procurement_implications","lock_in_exposure","termux_relevance","confidence"],
+  "properties": {
+    "signal_id":{"type":"string"},
+    "title":{"type":"string"},
+    "horizon":{"enum":["H0","H1","H2","H3"]},
+    "evidence_status":{"enum":["confirmed","research","attributed","signal","speculative","disputed"]},
+    "enabling_technologies":{"type":"array","items":{"type":"string"}},
+    "convergence":{"type":"array","items":{"type":"string"}},
+    "bottlenecks":{"type":"array","items":{"type":"string"}},
+    "strategic_dependencies":{"type":"array","items":{"type":"string"}},
+    "foss_alternatives":{"type":"array","items":{"type":"string"}},
+    "prototype_concepts":{"type":"array","items":{"type":"string"}},
+    "procurement_implications":{"type":"array","items":{"type":"string"}},
+    "lock_in_exposure":{"type":"string"},
+    "termux_relevance":{"type":"string"},
+    "confidence":{"enum":["high","medium","low"]},
+    "evidence":{"type":"array","items":{"type":"object","additionalProperties":false,"required":["url","source_type"],"properties":{"url":{"type":"string","format":"uri"},"source_type":{"type":"string"}}}},
+    "unresolved_questions":{"type":"array","items":{"type":"string"}}
+  }
+}

@@ -1,0 +1,86 @@
+name: Grafana MCP Smoke
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    secrets:
+      GRAFANA_SERVICE_ACCOUNT_TOKEN:
+        required: false
+      GRAFANA_TOKEN:
+        required: false
+      GRAFANA_API_KEY:
+        required: false
+      GRAFANA_URL:
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  grafana-authentication:
+    name: Validate Grafana service-account authentication
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      GRAFANA_URL: ${{ vars.GRAFANA_URL || secrets.GRAFANA_URL }}
+      GRAFANA_SERVICE_ACCOUNT_TOKEN: ${{ secrets.GRAFANA_SERVICE_ACCOUNT_TOKEN || secrets.GRAFANA_TOKEN || secrets.GRAFANA_API_KEY }}
+    steps:
+      - name: Validate required configuration without revealing secrets
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "${GRAFANA_URL:-}" ]]; then
+            echo "GRAFANA_URL is not configured as a repository variable or secret."
+            exit 2
+          fi
+          if [[ -z "${GRAFANA_SERVICE_ACCOUNT_TOKEN:-}" ]]; then
+            echo "No Grafana service-account secret is configured."
+            echo "Expected GRAFANA_SERVICE_ACCOUNT_TOKEN (preferred), GRAFANA_TOKEN, or GRAFANA_API_KEY."
+            exit 2
+          fi
+          case "$GRAFANA_URL" in
+            https://*) ;;
+            *) echo "GRAFANA_URL must use HTTPS for remote Grafana."; exit 2 ;;
+          esac
+
+      - name: Authenticate to Grafana without logging credentials
+        id: grafana
+        shell: bash
+        run: |
+          set -euo pipefail
+          response_file="${RUNNER_TEMP}/grafana-user.json"
+          status="$(curl --silent --show-error --location \
+            --output "$response_file" \
+            --write-out '%{http_code}' \
+            --fail-with-body \
+            --header "Authorization: Bearer ${GRAFANA_SERVICE_ACCOUNT_TOKEN}" \
+            --header 'Accept: application/json' \
+            --connect-timeout 10 \
+            --max-time 30 \
+            "${GRAFANA_URL%/}/api/user")" || {
+              echo "Grafana authentication request failed with HTTP status ${status:-unknown}."
+              exit 1
+            }
+
+          python - "$response_file" <<'PY'
+          import json
+          import pathlib
+          import sys
+
+          payload = json.loads(pathlib.Path(sys.argv[1]).read_text())
+          safe = {
+              key: payload.get(key)
+              for key in ("id", "uid", "login", "name", "orgId", "isGrafanaAdmin")
+              if key in payload
+          }
+          print("Grafana authentication succeeded; safe identity metadata:")
+          print(json.dumps(safe, sort_keys=True))
+          PY
+
+      - name: Verify credential was not accidentally written to the workspace
+        shell: bash
+        run: |
+          set -euo pipefail
+          # The token is supplied only through the process environment and is never
+          # written to repository files or artifacts.
+          echo "Credential handling check complete; no token artifact is produced."

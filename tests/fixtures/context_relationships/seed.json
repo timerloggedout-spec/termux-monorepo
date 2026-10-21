@@ -1,0 +1,204 @@
+{
+  "schema_version": "1.0",
+  "repository": {
+    "owner": "timerloggedout-spec",
+    "name": "termux-monorepo",
+    "default_branch": "master-staging"
+  },
+  "nodes": [
+    {
+      "kind": "repository",
+      "external_id": "timerloggedout-spec/termux-monorepo",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo",
+      "observed_at": "2026-08-18T00:49:30Z",
+      "attributes": {}
+    },
+    {
+      "kind": "scope",
+      "external_id": "context-relationships",
+      "observed_at": "2026-08-18T20:58:05Z",
+      "attributes": {"registry_version": "1.0"}
+    },
+    {
+      "kind": "file",
+      "external_id": "archwiz/context_graph_builder.py",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master-staging/archwiz/context_graph_builder.py",
+      "observed_at": "2026-08-18T20:58:05Z",
+      "attributes": {"language": "python", "path": "archwiz/context_graph_builder.py"}
+    },
+    {
+      "kind": "file",
+      "external_id": "workspace/llm_map/graph_query.py",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master-staging/workspace/llm_map/graph_query.py",
+      "observed_at": "2026-08-18T20:58:05Z",
+      "attributes": {"language": "python", "path": "workspace/llm_map/graph_query.py"}
+    },
+    {
+      "kind": "pull_request",
+      "external_id": "232",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/232",
+      "observed_at": "2026-08-18T00:49:30Z",
+      "attributes": {"number": 232, "state": "merged", "title": "Repository-native ICM integration"}
+    },
+    {
+      "kind": "issue",
+      "external_id": "86",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/86",
+      "observed_at": "2026-08-18T20:58:05Z",
+      "attributes": {"number": 86, "state": "open"}
+    },
+    {
+      "kind": "label",
+      "external_id": "P1",
+      "observed_at": "2026-08-18T20:58:05Z",
+      "attributes": {"name": "P1"}
+    },
+    {
+      "kind": "review",
+      "external_id": "900",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/232#pullrequestreview-900",
+      "observed_at": "2026-08-18T01:00:00Z",
+      "attributes": {"parent_pull_request": 232, "state": "CHANGES_REQUESTED"}
+    },
+    {
+      "kind": "review_comment",
+      "external_id": "901",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/232#discussion_r901",
+      "observed_at": "2026-08-18T01:05:00Z",
+      "attributes": {"parent_pull_request": 232, "path": "archwiz/context_graph_builder.py", "line": 42}
+    },
+    {
+      "kind": "issue_comment",
+      "external_id": "902",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/86#issuecomment-902",
+      "observed_at": "2026-08-18T01:10:00Z",
+      "attributes": {"parent_issue": 86}
+    }
+  ],
+  "edges": [
+    {
+      "type": "IN_SCOPE",
+      "source": "file:archwiz/context_graph_builder.py",
+      "target": "scope:context-relationships",
+      "classification": "verified",
+      "observed_at": "2026-08-18T20:58:05Z",
+      "evidence": [
+        {
+          "kind": "scope_registry",
+          "source": "config/context_relationships/scope_registry.json#/scopes/context-relationships",
+          "collector": "fixture",
+          "details": {"matched_path": "archwiz/context_graph_builder.py"}
+        }
+      ]
+    },
+    {
+      "type": "IN_SCOPE",
+      "source": "file:workspace/llm_map/graph_query.py",
+      "target": "scope:context-relationships",
+      "classification": "verified",
+      "observed_at": "2026-08-18T20:58:05Z",
+      "evidence": [
+        {
+          "kind": "scope_registry",
+          "source": "config/context_relationships/scope_registry.json#/scopes/context-relationships",
+          "collector": "fixture",
+          "details": {"matched_path": "workspace/llm_map/graph_query.py"}
+        }
+      ]
+    },
+    {
+      "type": "REFERENCES",
+      "source": "pull_request:232",
+      "target": "issue:86",
+      "classification": "verified",
+      "observed_at": "2026-08-18T00:49:30Z",
+      "evidence": [
+        {
+          "kind": "github_reference",
+          "source": "https://github.com/timerloggedout-spec/termux-monorepo/pull/232",
+          "collector": "fixture",
+          "details": {"reference": "#86"}
+        }
+      ]
+    },
+    {
+      "type": "LABELED_AS",
+      "source": "issue:86",
+      "target": "label:P1",
+      "classification": "verified",
+      "observed_at": "2026-08-18T20:58:05Z",
+      "evidence": [
+        {
+          "kind": "manual_fixture",
+          "source": "tests/fixtures/context_relationships/seed.json",
+          "collector": "fixture",
+          "details": {"reason": "label relation contract"}
+        }
+      ]
+    },
+    {
+      "type": "TOUCHES",
+      "source": "pull_request:232",
+      "target": "file:archwiz/context_graph_builder.py",
+      "classification": "verified",
+      "observed_at": "2026-08-18T00:55:00Z",
+      "evidence": [{"kind": "github_api", "source": "https://github.com/timerloggedout-spec/termux-monorepo/pull/232", "collector": "fixture", "details": {"status": "modified"}}]
+    },
+    {
+      "type": "REVIEWS",
+      "source": "review:900",
+      "target": "pull_request:232",
+      "classification": "verified",
+      "observed_at": "2026-08-18T01:00:00Z",
+      "evidence": [{"kind": "github_api", "source": "https://github.com/timerloggedout-spec/termux-monorepo/pull/232#pullrequestreview-900", "collector": "fixture", "details": {"parent": "pull_request:232"}}]
+    },
+    {
+      "type": "TOUCHES",
+      "source": "review_comment:901",
+      "target": "file:archwiz/context_graph_builder.py",
+      "classification": "verified",
+      "observed_at": "2026-08-18T01:05:00Z",
+      "evidence": [{"kind": "github_api", "source": "https://github.com/timerloggedout-spec/termux-monorepo/pull/232#discussion_r901", "collector": "fixture", "details": {"path": "archwiz/context_graph_builder.py", "line": 42}}]
+    },
+    {
+      "type": "COMMENTS_ON",
+      "source": "review_comment:901",
+      "target": "pull_request:232",
+      "classification": "verified",
+      "observed_at": "2026-08-18T01:05:00Z",
+      "evidence": [{"kind": "github_api", "source": "https://github.com/timerloggedout-spec/termux-monorepo/pull/232#discussion_r901", "collector": "fixture", "details": {"parent": "pull_request:232"}}]
+    },
+    {
+      "type": "REFERENCES",
+      "source": "review_comment:901",
+      "target": "issue_comment:902",
+      "classification": "verified",
+      "observed_at": "2026-08-18T01:06:00Z",
+      "evidence": [{"kind": "github_reference", "source": "https://github.com/timerloggedout-spec/termux-monorepo/pull/232#discussion_r901", "collector": "fixture", "details": {"permalink": "https://github.com/timerloggedout-spec/termux-monorepo/issues/86#issuecomment-902"}}]
+    },
+    {
+      "type": "COMMENTS_ON",
+      "source": "issue_comment:902",
+      "target": "issue:86",
+      "classification": "verified",
+      "observed_at": "2026-08-18T01:10:00Z",
+      "evidence": [{"kind": "github_api", "source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/86#issuecomment-902", "collector": "fixture", "details": {"parent": "issue:86"}}]
+    },
+    {
+      "type": "SIMILAR_TO",
+      "source": "file:archwiz/context_graph_builder.py",
+      "target": "file:workspace/llm_map/graph_query.py",
+      "classification": "candidate",
+      "score": 0.42,
+      "observed_at": "2026-08-18T20:58:05Z",
+      "evidence": [
+        {
+          "kind": "lexical_similarity",
+          "source": "tests/fixtures/context_relationships/seed.json",
+          "collector": "fixture",
+          "details": {"features": ["graph", "query", "context"]}
+        }
+      ]
+    }
+  ]
+}

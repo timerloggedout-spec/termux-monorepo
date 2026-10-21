@@ -4,7 +4,7 @@ CENTRAL MAPPER – The One Ring of your ~/ directory indexing.
 Integrates ast-grep, bloat detection, provenance tracking, and LLM-optimised output.
 Built by the best, for the best (you). 
 """
-import os, json, hashlib, subprocess, time, re, sys
+import os, json, hashlib, subprocess, time, re, sys, shutil
 from pathlib import Path
 from datetime import datetime, timezone
 
@@ -25,6 +25,8 @@ BLOAT_PATTERNS = [
     r'tree_dump\.txt', r'explore_output\.txt', r'bloat_report\.txt',
     r'research_dump\.txt', r'sigs_.*\.txt', r'map_.*\.jsonl', r'ast_.*\.json'
 ]
+BLOAT_REGEX = re.compile('|'.join(f'(?:{p})' for p in BLOAT_PATTERNS))
+
 # Files to always treat as system/bloat (if not in a project dir)
 ALWAYS_BLOAT = {
     'agent_telemetry_stream.json', 'local_repo.db', 'test.txt',
@@ -53,24 +55,27 @@ class CentralMapper:
         self.state_file.write_text(json.dumps(self.state, indent=2))
 
     def check_ast_grep(self):
-        """Check if ast-grep is available, install if possible."""
-        try:
-            subprocess.run(['sg', '--version'], capture_output=True, check=True, timeout=5)
+        """Check if ast-grep is available and set self.ast_bin to valid executable."""
+        self.ast_bin = None
+        ast_grep_path = shutil.which('ast-grep')
+        if ast_grep_path:
+            self.ast_bin = ast_grep_path
             return True
-        except (FileNotFoundError, subprocess.CalledProcessError):
-            print("[!] ast-grep not found. Attempting pip install ast-grep...")
+        sg_path = shutil.which('sg')
+        if sg_path:
             try:
-                subprocess.run([sys.executable, '-m', 'pip', 'install', 'ast-grep'], 
-                               check=True, capture_output=True, timeout=60)
-                print("[✓] ast-grep installed via pip.")
-                return True
-            except Exception as e:
-                print(f"[✗] Could not install ast-grep: {e}. AST features disabled.")
-                return False
+                res = subprocess.run([sg_path, '--version'], capture_output=True, text=True, timeout=5)
+                if res.returncode == 0 and 'ast-grep' in res.stdout:
+                    self.ast_bin = sg_path
+                    return True
+            except Exception:
+                pass
+        return False
 
     def get_ast_sig(self, filepath: Path, lang: str) -> dict:
         """Use ast-grep to extract a compact signature: funcs, classes, imports."""
-        if not hasattr(self, 'ast_available') or not self.ast_available:
+        ast_bin = getattr(self, 'ast_bin', None)
+        if not ast_bin or not getattr(self, 'ast_available', False):
             return {}
         try:
             # Extract function/method names (pattern depends on language)
@@ -83,7 +88,7 @@ class CentralMapper:
             if not pattern:
                 return {}
             # Run ast-grep
-            cmd = ['sg', '--pattern', pattern, '--lang', lang, '--json', str(filepath)]
+            cmd = [ast_bin, '--pattern', pattern, '--lang', lang, '--json', str(filepath)]
             res = subprocess.run(cmd, capture_output=True, text=True, timeout=10)
             if res.returncode == 0 and res.stdout.strip():
                 matches = json.loads(res.stdout)
@@ -104,15 +109,14 @@ class CentralMapper:
             return ''
         return h.hexdigest()
 
-    def is_bloat(self, path: Path) -> bool:
+    def is_bloat(self, path: Path, size: int = 0) -> bool:
         name = path.name
         if name in ALWAYS_BLOAT:
             return True
-        for pat in BLOAT_PATTERNS:
-            if re.fullmatch(pat, name):
-                return True
+        if BLOAT_REGEX.fullmatch(name):
+            return True
         # Also flag files larger than 5MB as potential bloat (logs, dumps)
-        if path.stat().st_size > 5_000_000:
+        if size > 5_000_000:
             return True
         return False
 
@@ -137,18 +141,25 @@ class CentralMapper:
                 mtime = stat.st_mtime
                 ext = filepath.suffix.lower()
                 lang = CODE_EXTS.get(ext, 'unknown')
-                sha = self.hash_file(filepath)
-                # Detect new/modified based on state
+
+                # Detect new/modified based on state; reuse cached SHA if unchanged
                 prev = self.state.get(str(rel_path), {})
-                is_new = not prev
-                is_modified = prev and (prev.get('sha') != sha or prev.get('size') != size)
+                if prev and prev.get('size') == size and prev.get('mtime') == mtime:
+                    sha = prev.get('sha', '')
+                    is_new = False
+                    is_modified = False
+                else:
+                    sha = self.hash_file(filepath)
+                    is_new = not prev
+                    is_modified = bool(prev)
+
                 if is_new:
                     self.new_files += 1
                 elif is_modified:
                     self.modified_files += 1
 
                 # Bloat flag
-                bloat_flag = self.is_bloat(filepath)
+                bloat_flag = self.is_bloat(filepath, size)
                 if bloat_flag:
                     self.bloat_files.append(str(rel_path))
 

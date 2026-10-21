@@ -1,0 +1,54 @@
+---
+title: "Notation Sets Proposal"
+description: "Canonical, continuously evolving notation vocabulary, living lexicon, and cross-domain semantic index for the termux-monorepo."
+---
+
+# Notation Sets, Living Lexicon, and Cross-Domain Semantic Index
+
+The `notation-sets` proposal establishes a canonical, continuously evolving notation vocabulary supporting Grimoire compression (#309/#182) and cross-domain semantic indexing. It separates canonical notation from domain aliases and domain-specific syntax, connects the vocabulary to the repository's existing pointer/concept/tool/context indexes, and defines a research-driven evolution loop so the glossary stays synchronized with implementation and operator governance.
+
+## Status
+
+- **Proposal status:** `posted` (not accepted) — execution remains gated by `repo-gate` + `termux-smoke`.
+- **Malleable by design:** revisions are additive and attributed via the evolution ledger (NSE-004 loop, NSE-008 ledger). This is a revision pass, not a freeze.
+- **Latest revision:** [PR #324](https://github.com/timerloggedout-spec/termux-monorepo/pull/324) — integrated language-density + ADLM + grimoire research (NSE-009 → NSE-018).
+
+## Research basis
+
+This revision integrates two prior research sessions:
+
+- **Language information density & ADLM** — Coupé et al. 2019 (cross-language convergence near ~39 bits/s); Petrov et al. EMNLP 2023 (tokenizer inequity across scripts); FLORES-200; tiktoken; Adaptive Dynamic Language Mixing as a tokenizer- and model-specific semantic codec with a canonical-IR truth layer.
+- **Grimoire compression & category-theoretic IR** — layered compression stack (zstd, LZ4, Brotli, FastCDC, xdelta3, CBOR, Parquet); canonical IR for category theory; per-corpus dictionary training.
+
+See NSE-009 → NSE-018 in the full proposal.
+
+## Item index
+
+| ID | Title |
+| --- | --- |
+| NSE-001 | Canonical notation taxonomy |
+| NSE-002 | Semantic contract for notation |
+| NSE-003 | Living glossary / lexicon |
+| NSE-004 | Research-driven evolution loop |
+| NSE-005 | Alias and domain-syntax separation |
+| NSE-006 | Integration with existing indexes |
+| NSE-007 | Operator governance gates |
+| NSE-008 | Evolution ledger |
+| NSE-009 | Language information-density baseline |
+| NSE-010 | Token-cost measurement schema |
+| NSE-011 | Adaptive Dynamic Language Mixing (ADLM) semantic codec |
+| NSE-012 | Context-adaptive codec and layered codebooks |
+| NSE-013 | Evolutionary search and Pareto frontier |
+| NSE-014 | Grimoire compression stack |
+| NSE-015 | Canonical IR for category-theoretic notation |
+| NSE-016 | Agent-native compressed communication |
+| NSE-017 | Domain-specific / repo-specific / author-org codec considerations |
+| NSE-018 | Falsifiable research question and control conditions |
+
+## Related issues
+
+`#320`, `#309`, `#182`, `#175`, `#126`, `#304`, `#196`, `#177`, `#208`, `#274`.
+
+## Source
+
+Full proposal: [`docs/proposals/active/notation-sets/`](https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/notation-sets) (ITEMS.md, MANIFEST.md) and registry entry in [`docs/proposals/registry.yaml`](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/proposals/registry.yaml).

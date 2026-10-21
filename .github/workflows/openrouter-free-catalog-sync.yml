@@ -1,0 +1,61 @@
+name: OpenRouter free catalog snapshot
+
+# Runtime routing polls the live catalog. This workflow records a periodic seed
+# snapshot for bootstrap/reproducibility. Catalog drift is observation data,
+# not a product change, so this workflow never creates a PR.
+
+on:
+  schedule:
+    - cron: "17 12 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: openrouter-free-catalog-snapshot
+  cancel-in-progress: true
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Poll OpenRouter free catalog
+        id: poll
+        run: |
+          set -euo pipefail
+          set +e
+          python3 scripts/poll_openrouter_free_catalog.py --out /tmp/openrouter-free-catalog.json | tee /tmp/drift.json
+          status=${PIPESTATUS[0]}
+          set -e
+          if [ "$status" -gt 1 ]; then
+            echo "Catalog poll failed with status $status" >&2
+            exit "$status"
+          fi
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          d=json.load(open('/tmp/drift.json', encoding='utf-8'))
+          print('### Catalog observation')
+          print(f"- changed: `{d['changed']}`")
+          print(f"- previous ids: `{d['prev_count']}`")
+          print(f"- current ids: `{d['curr_count']}`")
+          print(f"- added: `{len(d['added'])}`")
+          print(f"- removed: `{len(d['removed'])}`")
+          print(f"- ox-alpha present: `{d['ox_alpha_present']}`")
+          print('- PR creation: `disabled by contract`')
+          PY
+
+      - name: Publish immutable catalog observation
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: openrouter-free-catalog-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            /tmp/openrouter-free-catalog.json
+            /tmp/drift.json
+          if-no-files-found: error
+          retention-days: 14

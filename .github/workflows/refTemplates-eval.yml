@@ -1,0 +1,67 @@
+name: refTemplates continuous eval
+
+on:
+  push:
+    paths:
+      - "refTemplates/**"
+      - "scripts/ci/refTemplates_*.py"
+      - "scripts/decision_engines.py"
+      - "scripts/laya_decision_stub.py"
+      - ".github/workflows/refTemplates-eval.yml"
+  pull_request:
+    paths:
+      - "refTemplates/**"
+      - "scripts/ci/refTemplates_*.py"
+      - "scripts/decision_engines.py"
+      - "scripts/laya_decision_stub.py"
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inventory-score:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: inventory (strict)
+        run: |
+          mkdir -p docs/ops/generated/refTemplates
+          python3 scripts/ci/refTemplates_inventory.py \
+            --output docs/ops/generated/refTemplates/inventory.jsonl \
+            --strict
+      - name: score
+        run: |
+          python3 scripts/ci/refTemplates_score.py \
+            --inventory docs/ops/generated/refTemplates/inventory.jsonl \
+            --output docs/ops/generated/refTemplates/scores.jsonl
+      - name: papers seed
+        run: python3 scripts/ci/refTemplates_papers_seed.py
+      - name: commit-slice (github API when token present)
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python3 scripts/ci/refTemplates_commit_slice.py \
+            --github-api \
+            --output docs/ops/generated/refTemplates/commit-slice.jsonl
+      - name: decision engines + laya stub
+        run: |
+          python3 scripts/decision_engines.py --list > docs/ops/generated/refTemplates/decision-engines.json
+          python3 scripts/laya_decision_stub.py --json > docs/ops/generated/refTemplates/laya-stub.json
+      - name: deepwiki dry-run
+        run: |
+          python3 scripts/ci/refTemplates_deepwiki_batch.py \
+            --output docs/ops/generated/refTemplates/deepwiki-batch.jsonl
+      - name: upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: refTemplates-eval
+          path: docs/ops/generated/refTemplates/
+          if-no-files-found: warn

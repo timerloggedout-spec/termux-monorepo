@@ -1,0 +1,129 @@
+{
+  "collected_at": "2026-10-08T10:30:27.649697+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 37754748963,
+    "endpoint": ".../runs/37754748963/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 113236424482,
+        "run_id": 37754748963,
+        "workflow_name": "context relationship historical backfill",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37754748963",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaXWq3Ig",
+        "head_sha": "b52bf0fef9ccdead9b65362530f1a655967d5bd8",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/113236424482",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37754748963/job/113236424482",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-08T09:09:57Z",
+        "started_at": "2026-10-08T09:10:00Z",
+        "completed_at": "2026-10-08T09:10:10Z",
+        "name": "operator-controlled historical graph backfill",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-08T09:10:00Z",
+            "completed_at": "2026-10-08T09:10:02Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-08T09:10:02Z",
+            "completed_at": "2026-10-08T09:10:06Z"
+          },
+          {
+            "name": "Run actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-08T09:10:06Z",
+            "completed_at": "2026-10-08T09:10:06Z"
+          },
+          {
+            "name": "Determine historical continuation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-08T09:10:06Z",
+            "completed_at": "2026-10-08T09:10:07Z"
+          },
+          {
+            "name": "Build one historical relationship-index window",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 5,
+            "started_at": "2026-10-08T09:10:07Z",
+            "completed_at": "2026-10-08T09:10:07Z"
+          },
+          {
+            "name": "Publish backfill coverage summary",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 6,
+            "started_at": "2026-10-08T09:10:07Z",
+            "completed_at": "2026-10-08T09:10:07Z"
+          },
+          {
+            "name": "Commit canonical historical delta",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-08T09:10:07Z",
+            "completed_at": "2026-10-08T09:10:08Z"
+          },
+          {
+            "name": "Publish completion state",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-08T09:10:08Z",
+            "completed_at": "2026-10-08T09:10:08Z"
+          },
+          {
+            "name": "Post Run actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 15,
+            "started_at": "2026-10-08T09:10:08Z",
+            "completed_at": "2026-10-08T09:10:08Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 16,
+            "started_at": "2026-10-08T09:10:08Z",
+            "completed_at": "2026-10-08T09:10:08Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17,
+            "started_at": "2026-10-08T09:10:08Z",
+            "completed_at": "2026-10-08T09:10:08Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/113236424482",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000223868,
+        "runner_name": "GitHub Actions 1000223868",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

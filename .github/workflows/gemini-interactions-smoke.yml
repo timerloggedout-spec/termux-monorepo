@@ -1,0 +1,86 @@
+name: "Gemini Interactions API Smoke"
+
+on:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: "Gemini model used for the non-sensitive probe"
+        required: false
+        default: "gemini-flash-latest"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      MODEL: ${{ inputs.model }}
+    steps:
+      - name: Verify secret is available without printing it
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "${GEMINI_API_KEY:-}" ]]; then
+            echo "::error::GEMINI_API_KEY is not configured"
+            exit 1
+          fi
+          echo "GEMINI_API_KEY is configured."
+
+      - name: Create stored Interactions API probe
+        id: probe
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          payload = {
+              "model": os.environ["MODEL"],
+              "input": "Return exactly the single word READY.",
+              "store": True,
+              "labels": {
+                  "lane": "termux-monorepo",
+                  "purpose": "interactions-smoke",
+              },
+          }
+
+          req = urllib.request.Request(
+              "https://generativelanguage.googleapis.com/v1beta/interactions",
+              data=json.dumps(payload).encode(),
+              headers={
+                  "x-goog-api-key": os.environ["GEMINI_API_KEY"],
+                  "Content-Type": "application/json",
+              },
+              method="POST",
+          )
+          with urllib.request.urlopen(req, timeout=120) as response:
+              result = json.loads(response.read().decode())
+
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as out:
+              out.write(f"interaction_id={result.get('id', '')}\n")
+              out.write(f"status={result.get('status', '')}\n")
+              usage = result.get("usage") or {}
+              out.write(f"input_tokens={usage.get('total_input_tokens', 0)}\n")
+              out.write(f"output_tokens={usage.get('total_output_tokens', 0)}\n")
+          PY
+
+      - name: Record non-sensitive evidence
+        shell: bash
+        run: |
+          {
+            echo "## Gemini Interactions API"
+            echo
+            echo "- status: \`${{ steps.probe.outputs.status }}\`"
+            echo "- interaction_id: \`${{ steps.probe.outputs.interaction_id }}\`"
+            echo "- input_tokens: \`${{ steps.probe.outputs.input_tokens }}\`"
+            echo "- output_tokens: \`${{ steps.probe.outputs.output_tokens }}\`"
+            echo "- request storage: \`true\`"
+            echo
+            echo "Prompt/response bodies and GEMINI_API_KEY are intentionally omitted."
+          } >> "$GITHUB_STEP_SUMMARY"

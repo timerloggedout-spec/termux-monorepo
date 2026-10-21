@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/ACTION-EFFECT-EVENT.schema.json",
+  "title": "Action-Effect Event Correlation",
+  "description": "Machine-readable, SHA-anchored evidence for correlating review/discussion actions with later repository effects. Correlation is temporal follow-through, not causal attribution.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "observed_at", "experiment_id", "base_sha", "head_sha", "events", "delta", "confidence"],
+  "properties": {
+    "version": {"const": 1},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "experiment_id": {"type": "string", "minLength": 1},
+    "base_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "head_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "merge_base": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "id", "at", "associated_commit_sha", "relationship"],
+        "properties": {
+          "kind": {"enum": ["issue_comment", "review", "review_comment"]},
+          "id": {"type": "string", "minLength": 1},
+          "at": {"type": "string", "format": "date-time"},
+          "associated_commit_sha": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
+          "associated_commit_at": {"type": ["string", "null"], "format": "date-time"},
+          "lag_minutes": {"type": ["integer", "null"], "minimum": 0},
+          "relationship": {"enum": ["FOLLOWED_BY_COMMIT", "NO_LATER_COMMIT_IN_RANGE"]}
+        }
+      }
+    },
+    "delta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["final_delta", "behind", "check_failure", "check_pending", "event_count", "followed_count"],
+      "properties": {
+        "final_delta": {"type": "integer"},
+        "behind": {"type": "integer"},
+        "check_failure": {"type": "integer"},
+        "check_pending": {"type": "integer"},
+        "event_count": {"type": "integer", "minimum": 0},
+        "followed_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "confidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["level", "basis"],
+      "properties": {
+        "level": {"enum": ["high", "medium", "low"]},
+        "basis": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}

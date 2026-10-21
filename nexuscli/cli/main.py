@@ -8,25 +8,56 @@ import sys
 import os
 import json
 from pathlib import Path
-from rich.console import Console
-from rich.panel import Panel
-from rich.prompt import Prompt
+# Add parent directory to sys.path if not already present
+parent_dir = str(Path(__file__).parent.parent)
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
 
-# Add parent directory to path for imports
-sys.path.insert(0, str(Path(__file__).parent.parent))
+try:
+    from rich.console import Console
+    from rich.panel import Panel
+    from rich.prompt import Prompt
+    console = Console()
+except ModuleNotFoundError:
+    class DummyConsole:
+        def print(self, *args, **kwargs): pass
+    class DummyPanel:
+        @classmethod
+        def fit(cls, *args, **kwargs): return "panel"
+    class DummyPrompt:
+        @classmethod
+        def ask(cls, *args, **kwargs): return "exit"
+    console = DummyConsole()
+    Panel = DummyPanel
+    Prompt = DummyPrompt
 
-from core.api import (
-    get_token,
-    create_session,
-    fetch_sessions,
-    get_history,
-    stream_completion,
-    send_message,
-    export_markdown,
-    export_json,
-)
+try:
+    from nexuscli.core.api import (
+        get_token,
+        create_session,
+        fetch_sessions,
+        get_history,
+        stream_completion,
+        send_message,
+        export_markdown,
+        export_json,
+        load_config,
+        save_config,
+    )
+except ModuleNotFoundError:
+    from core.api import (
+        get_token,
+        create_session,
+        fetch_sessions,
+        get_history,
+        stream_completion,
+        send_message,
+        export_markdown,
+        export_json,
+        load_config,
+        save_config,
+    )
 
-console = Console()
 
 
 def print_banner():
@@ -63,21 +94,9 @@ def cmd_new_session(args):
     session_id = create_session(token, model_type=model_type)
     console.print(f"[green]New session created: {session_id}[/]")
     if args.save:
-        cfg_path = Path.home() / ".nexuscli" / "config.json"
-        cfg_path.parent.mkdir(parents=True, exist_ok=True)
-        try:
-            cfg_path.parent.chmod(0o700)
-        except Exception:
-            pass
-        cfg = {}
-        if cfg_path.exists():
-            cfg = json.loads(cfg_path.read_text())
+        cfg = load_config()
         cfg["last_session"] = session_id
-        cfg_path.write_text(json.dumps(cfg, indent=2))
-        try:
-            cfg_path.chmod(0o600)
-        except Exception:
-            pass
+        save_config(cfg)
         console.print("[yellow]Saved as last_session.[/]")
 
 
@@ -167,10 +186,15 @@ def cmd_export(args):
         content = export_json(token, session_id)
 
     if args.output:
+        out_path = Path(args.output)
+        if out_path.is_symlink() or (out_path.parent.exists() and out_path.parent.is_symlink()):
+            console.print(f"[red]Output target cannot be a symlink: {args.output}[/]")
+            raise ValueError("Symlink targets are not permitted for exports")
         with open(args.output, "w") as f:
             f.write(content)
         try:
-            os.chmod(args.output, 0o600)
+            if not out_path.is_symlink():
+                os.chmod(args.output, 0o600)
         except Exception:
             pass
         console.print(f"[green]Exported to {args.output}[/]")
@@ -180,11 +204,8 @@ def cmd_export(args):
 
 def get_last_session():
     """Get the last session ID from config."""
-    cfg_path = Path.home() / ".nexuscli" / "config.json"
-    if cfg_path.exists():
-        cfg = json.loads(cfg_path.read_text())
-        return cfg.get("last_session")
-    return None
+    cfg = load_config()
+    return cfg.get("last_session")
 
 
 def main():

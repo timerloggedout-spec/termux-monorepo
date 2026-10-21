@@ -1,0 +1,67 @@
+# Upstream surfaces for github-telemetry collectors.
+# Network fetch is out of band of SHE pure reducers.
+owner: timerloggedout-spec
+repo: termux-monorepo
+
+sources:
+  actions_runs:
+    method: GET
+    path: /repos/{owner}/{repo}/actions/runs
+    params:
+      per_page: 100
+    notes: paginate; filter status/created/workflow_id as needed
+
+  actions_jobs:
+    method: GET
+    path: /repos/{owner}/{repo}/actions/runs/{run_id}/jobs
+    notes: durable duration source (started_at/completed_at)
+
+  actions_timing_deprecated:
+    method: GET
+    path: /repos/{owner}/{repo}/actions/runs/{run_id}/timing
+    status: closing_down
+    notes: do not use for new automation
+
+  commit_activity:
+    method: GET
+    path: /repos/{owner}/{repo}/stats/commit_activity
+
+  code_frequency:
+    method: GET
+    path: /repos/{owner}/{repo}/stats/code_frequency
+    fallback: git log --numstat
+
+  traffic_views:
+    method: GET
+    path: /repos/{owner}/{repo}/traffic/views
+    retention_days: 14
+
+  traffic_clones:
+    method: GET
+    path: /repos/{owner}/{repo}/traffic/clones
+    retention_days: 14
+
+  traffic_popular_paths:
+    method: GET
+    path: /repos/{owner}/{repo}/traffic/popular/paths
+
+  traffic_popular_referrers:
+    method: GET
+    path: /repos/{owner}/{repo}/traffic/popular/referrers
+
+  projects_v2:
+    method: GraphQL
+    endpoint: https://api.github.com/graphql
+    permission: read:project
+    notes: ProjectV2 fields/items; generic schema inspector preferred
+
+  discussions:
+    method: GraphQL
+    endpoint: https://api.github.com/graphql
+    notes: categories, answers, reactions, comments
+
+ui_exports:
+  performance_csv:
+    - docs/ops/generated/actions-metrics-job-failures-2026-08-24.csv
+  minutes_csv:
+    - docs/ops/generated/actions-metrics-total-minutes-2026-08-24.csv

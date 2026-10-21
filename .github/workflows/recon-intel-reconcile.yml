@@ -1,0 +1,178 @@
+name: RECON INTEL reconciliation apply
+
+# This is the only RECON INTEL content-writing lane. It is never scheduled and
+# cannot update GitLab, force-push, merge a pull request, or resolve conflicts.
+
+on:
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: Type true to authorize one reconciliation preparation after all preflight checks pass.
+        required: true
+        default: false
+        type: boolean
+      github_sha:
+        description: Exact current GitHub default-branch SHA from RECON INTEL discovery.
+        required: true
+        type: string
+      gitlab_sha:
+        description: Exact current GitLab master SHA from RECON INTEL discovery.
+        required: true
+        type: string
+      gitlab_ref:
+        description: Allowlisted GitLab source ref.
+        required: true
+        default: master
+        type: choice
+        options: [master]
+
+concurrency:
+  group: recon-intel-reconcile-${{ github.event.repository.default_branch }}
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  reconcile:
+    if: github.event.inputs.apply == 'true' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Check out trusted GitHub default branch
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Validate exact bounded input tuple
+        env:
+          INPUT_GITHUB_SHA: ${{ github.event.inputs.github_sha }}
+          INPUT_GITLAB_SHA: ${{ github.event.inputs.gitlab_sha }}
+          INPUT_GITLAB_REF: ${{ github.event.inputs.gitlab_ref }}
+        run: |
+          set -euo pipefail
+          case "$INPUT_GITHUB_SHA" in ''|*[!0-9a-f]*) echo "Invalid GitHub SHA." >&2; exit 1 ;; esac
+          case "$INPUT_GITLAB_SHA" in ''|*[!0-9a-f]*) echo "Invalid GitLab SHA." >&2; exit 1 ;; esac
+          if [ "$INPUT_GITLAB_REF" != "master" ]; then
+            echo "Only GitLab master is allowlisted." >&2
+            exit 1
+          fi
+          actual_github_sha="$(git rev-parse HEAD)"
+          if [ "$actual_github_sha" != "$INPUT_GITHUB_SHA" ]; then
+            echo "GitHub default branch changed; a fresh RECON INTEL observation is required." >&2
+            exit 1
+          fi
+
+      - name: Recompute fresh GitLab topology with read-only credential
+        id: classify
+        env:
+          RECON_INTEL_GITLAB_READ_TOKEN: ${{ secrets.RECON_INTEL_GITLAB_READ_TOKEN || secrets.OPERATOR_GITLAB_TOKEN || secrets.GITLAB_TOKEN }}
+        run: |
+          set -euo pipefail
+          python3 scripts/ci/recon_intel_discovery.py \
+            --github-sha "${{ github.event.inputs.github_sha }}" \
+            --gitlab-ref "${{ github.event.inputs.gitlab_ref }}"
+
+      - name: Require a fresh GitLab-ahead observation
+        env:
+          INPUT_GITLAB_SHA: ${{ github.event.inputs.gitlab_sha }}
+          OBSERVED_STATE: ${{ steps.classify.outputs.state }}
+          OBSERVED_GITLAB_SHA: ${{ steps.classify.outputs.gitlab_sha }}
+          OBSERVED_LANE: ${{ steps.classify.outputs.lane }}
+        run: |
+          set -euo pipefail
+          if [ "$OBSERVED_STATE" != "gitlab-ahead" ] || [ "$OBSERVED_LANE" != "gitlab-primary" ]; then
+            echo "Reconciliation is allowed only for a fresh gitlab-ahead observation." >&2
+            exit 1
+          fi
+          if [ "$OBSERVED_GITLAB_SHA" != "$INPUT_GITLAB_SHA" ]; then
+            echo "GitLab changed; a fresh exact SHA tuple is required." >&2
+            exit 1
+          fi
+
+      - name: Prepare deterministic reconciliation branch without conflict synthesis
+        id: prepare
+        env:
+          GITHUB_TOKEN: ${{ secrets.RECON_INTEL_GITHUB_WRITE_TOKEN || github.token }}
+          INPUT_GITHUB_SHA: ${{ github.event.inputs.github_sha }}
+          INPUT_GITLAB_SHA: ${{ github.event.inputs.gitlab_sha }}
+        run: |
+          set -euo pipefail
+          short_github="${INPUT_GITHUB_SHA:0:12}"
+          short_gitlab="${INPUT_GITLAB_SHA:0:12}"
+          branch="sync/gitlab/${short_github}-${short_gitlab}"
+          if git ls-remote --exit-code --heads origin "refs/heads/${branch}" >/dev/null 2>&1; then
+            echo "A reconciliation branch for this exact tuple already exists; refusing duplicate preparation." >&2
+            exit 1
+          fi
+          git switch --create "$branch"
+          if ! git merge --no-commit --no-ff "refs/recon-intel/gitlab/master"; then
+            git merge --abort || true
+            echo "GitLab topology requires a manual conflict-resolution plan; no branch was pushed." >&2
+            exit 1
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -S=false -m "chore(recon): prepare GitLab reconciliation" \
+            -m "Implements: AR-17" \
+            -m "Agent-Identity: RECON INTEL" \
+            -m "Task-Ref: AR-17"
+          askpass="$(mktemp)"
+          trap 'rm -f "$askpass"' EXIT
+          cat > "$askpass" <<'EOF'
+          #!/bin/sh
+          case "$1" in
+            *Username*) printf '%s\n' 'x-access-token' ;;
+            *Password*) printf '%s\n' "${GITHUB_TOKEN:?missing GitHub token}" ;;
+            *) exit 1 ;;
+          esac
+          EOF
+          chmod 700 "$askpass"
+          GIT_ASKPASS="$askpass" GIT_TERMINAL_PROMPT=0 git push origin "HEAD:refs/heads/${branch}"
+          echo "branch=$branch" >> "$GITHUB_OUTPUT"
+
+      - name: Open one reviewable GitHub reconciliation pull request
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          BRANCH: ${{ steps.prepare.outputs.branch }}
+          GITHUB_SHA: ${{ github.event.inputs.github_sha }}
+          GITLAB_SHA: ${{ github.event.inputs.gitlab_sha }}
+        with:
+          github-token: ${{ secrets.RECON_INTEL_GITHUB_WRITE_TOKEN || github.token }}
+          script: |
+            const branch = process.env.BRANCH;
+            const head = `${context.repo.owner}:${branch}`;
+            const existing = await github.paginate(github.rest.pulls.list, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              head,
+              base: context.payload.repository.default_branch,
+              per_page: 100,
+            });
+            if (existing.length) {
+              core.info(`Reusing open reconciliation PR #${existing[0].number}.`);
+              return;
+            }
+            const { data: pr } = await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'chore(recon): prepare GitLab reconciliation',
+              head: branch,
+              base: context.payload.repository.default_branch,
+              body: [
+                'Implements: AR-17',
+                '',
+                'This pull request was prepared only after a fresh RECON INTEL `gitlab-ahead` observation.',
+                `github_sha: ${process.env.GITHUB_SHA}`,
+                `gitlab_sha: ${process.env.GITLAB_SHA}`,
+                'gitlab_ref: master',
+                '',
+                'This workflow did not update GitLab, force-push, auto-merge, or synthesize conflict resolution. Normal GitHub review and protected-branch checks remain required.',
+              ].join('\n'),
+            });
+            core.info(`Created reconciliation PR #${pr.number}.`);

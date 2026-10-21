@@ -29,7 +29,9 @@ def cmd_dep(args):
 def cmd_funcfind(args):
     if not args: print("Usage: aether funcfind <pattern>"); return
     pattern = args[0]
-    jq = f'''jq -r 'select(.file | test("{pattern}")) | "\\(.name) \t line \\(.line) \t \\(.sig[:60])"' {LLM_MAP}/func_index.jsonl'''
+    jq_filter = r'select(.file | test($pattern)) | "\(.name) \t line \(.line) \t \(.sig[:60])"'
+    jq = shlex.join(["jq", "-r", "--arg", "pattern", pattern,
+                     jq_filter, os.path.join(LLM_MAP, "func_index.jsonl")])
     out, _, _ = run(jq)
     print(out)
 

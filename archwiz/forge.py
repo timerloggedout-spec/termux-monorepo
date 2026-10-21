@@ -37,7 +37,9 @@ def cmd_funcfind(args):
         print("Usage: forge funcfind <file_pattern>")
         return
     pattern = args[0]
-    jq_cmd = f'''jq -r 'select(.file | test("{pattern}")) | "\\(.name) \t line \\(.line) \t \\(.sig[:60])"' {LLM_MAP}/func_index.jsonl'''
+    jq_filter = r'select(.file | test($pattern)) | "\(.name) \t line \(.line) \t \(.sig[:60])"'
+    jq_cmd = shlex.join(["jq", "-r", "--arg", "pattern", pattern,
+                         jq_filter, os.path.join(LLM_MAP, "func_index.jsonl")])
     out, _, _ = run(jq_cmd)
     print(out)
 

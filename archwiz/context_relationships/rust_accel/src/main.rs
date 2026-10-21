@@ -114,7 +114,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     for fragment in &fragments {
         let hash = digest(fragment);
-        let bytes = fragment.bytes.unwrap_or_else(|| fragment.text.len());
+        let bytes = fragment.bytes.unwrap_or(fragment.text.len());
         let ref_text = ref_id(&hash);
         fingerprints.push(Fingerprint {
             id: fragment.id.clone(),
@@ -137,7 +137,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     for (level, values) in &by_level {
         let frequencies: Vec<u64> = values.values().map(|v| v.0).collect();
         alpha.insert(level.clone(), estimate_alpha(&frequencies));
-        for (_hash, (freq, bytes)) in values {
+        for (freq, bytes) in values.values() {
             let savings = ((freq.saturating_sub(1) as i64) * (*bytes as i64))
                 - ((*freq as i64) * REF_BYTES as i64)
                 - DEFAULT_NODE_OVERHEAD as i64;

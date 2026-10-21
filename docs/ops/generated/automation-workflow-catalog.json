@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "3da21be75f8cf72ee931c44e1f94b0c3df45ad90ec73b35ddb590301a2184d22",
+  "source_fingerprint": "bdec915ed99655ffd5813264fb85ec3b6a68f8905dd0604e29d15dbc9702456d",
   "workflow_count": 155,
   "workflows": [
     {
@@ -784,6 +784,7 @@
       "concurrency": "group: context-relationship-validate-${{ github.event.pull_request.number || github.ref }} cancel-in-progress: true",
       "domain": "governance-relationships",
       "jobs": [
+        "rust-accelerator",
         "validate"
       ],
       "name": "context relationship validation",

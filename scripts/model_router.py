@@ -473,6 +473,7 @@ def main():
         set(polled_free_models) if polled_free_models is not None else LEGACY_MODELS
     )
     models_dict = success_matrix.get("models", {})
+    quota_multipliers = load_quota_multipliers()
 
     for provider, models in pools:
         if not provider_flags.get(provider, False):
@@ -486,9 +487,16 @@ def main():
                 if model not in permitted_openrouter_models:
                     continue
             seen.add(key)
+            if is_in_cooldown(provider, model):
+                sys.stderr.write(f"Candidate in rate-limit cooldown: {provider}/{model}\\n")
+                continue
+            quota_multiplier = quota_multipliers.get(provider.lower(), 1.0)
+            if quota_multiplier <= 0:
+                sys.stderr.write(f"Candidate provider quota exhausted: {provider}/{model}\\n")
+                continue
             model_entry = models_dict.get(model) or {}
             role_suitability = model_entry.get("role_suitability") or {}
-            score = model_entry.get("elo", 1000) * role_suitability.get(role, 1.0)
+            score = model_entry.get("elo", 1000) * role_suitability.get(role, 1.0) * quota_multiplier
             limit_entry = LIMITS.get(model if provider == "gemini" else f"{provider}/{model}") or {}
             limit = limit_entry.get(role, 40)
             used = get_usage(provider, model)

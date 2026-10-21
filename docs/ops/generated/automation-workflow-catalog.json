@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "edb0af9b5728be8f6c6355cfe3021e92df7024c8f88a631457eefef81ec6e5b3",
-  "workflow_count": 143,
+  "source_fingerprint": "d51dc67a6e8d2a88cb6b798d9bf9f6c5273959d7dfa957a531bc21f423030a8c",
+  "workflow_count": 144,
   "workflows": [
     {
       "action_pins": [
@@ -324,6 +324,25 @@
       "triggers": [
         "schedule",
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744",
+        "actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "mvt"
+      ],
+      "name": "ATES Orchestrator Benchmark",
+      "path": ".github/workflows/ates-orchestrator-benchmark.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push"
       ]
     },
     {

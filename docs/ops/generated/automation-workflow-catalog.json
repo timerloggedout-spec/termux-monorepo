@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "2dea472887e23f19ec2ede3f790e0e5226d4ed74739bc437285e7350df783743",
-  "workflow_count": 162,
+  "source_fingerprint": "e887bcb880d875ada5425219455d416ee5bcc5d398229e80cc7ab5edd6aaf97e",
+  "workflow_count": 164,
   "workflows": [
     {
       "action_pins": [
@@ -2888,6 +2888,24 @@
       ]
     },
     {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: tailscale-bridge-probe cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "probe"
+      ],
+      "name": "tailscale-bridge-probe",
+      "path": ".github/workflows/tailscale-bridge-probe.yml",
+      "schedules": [
+        "17,47 * * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
@@ -2940,6 +2958,21 @@
       ],
       "name": "Termux bridge connectivity",
       "path": ".github/workflows/termux-bridge-connect.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: termux-remote-exec cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "exec"
+      ],
+      "name": "Termux remote exec (Hark lane)",
+      "path": ".github/workflows/termux-remote-exec.yml",
       "schedules": [],
       "triggers": [
         "workflow_dispatch"

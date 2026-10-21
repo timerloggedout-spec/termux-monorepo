@@ -37,6 +37,11 @@ class NomenclatureMatrixTests(unittest.TestCase):
         data["labels"][0]["label_type"] = "hidden_search_alias"
         self.assertEqual([], MODULE.validate(data))
 
+    def test_schema_and_validator_agree_on_hidden_search_alias(self):
+        schema = (ROOT / "docs/proposals/active/notation-sets/nomenclature-matrix/schema.sql").read_text(encoding="utf-8")
+        self.assertIn("hidden_search_alias", schema)
+        self.assertIn("hidden_search_alias", MODULE.LABEL_TYPES)
+
     def test_expanded_seed_covers_colloquial_mapping_and_near_synonymy(self):
         concepts = {c["concept_id"] for c in self.data["concepts"]}
         self.assertIn("terminology.colloquial_to_formal_mapping", concepts)

@@ -43,7 +43,16 @@ The current `docs/ops/PROVIDER-FREE-INFERENCE.md` references production run [394
 - The cause of the rate limit is not established. No successful completion is claimed.
 - Gemini and Felo catalog observations were recorded, but account-specific no-cost entitlement was not established and no inference request was sent to them in that run.
 
-These are concrete historical observations, not proof of current health on the observation date. A fresh provider-specific run result was not verified during this pass. The connector path available for this task does not expose a workflow-dispatch operation, so no new provider workflow is claimed to have been triggered.
+These are concrete observations from run 39432211461, not the newest health signal. Additional current runtime evidence was inspected during this hand-off:
+
+- [Provider availability continuity run 39501175974](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39501175974), completed SUCCESS on 2026-10-20 21:32:21Z at SHA `42a72f2b12361dbf1be465a5711f5fd2f41e7c3d`. I inspected its job steps and logs and confirmed the sanitized health artifact was uploaded.
+- The provider availability probe reported **OpenRouter: credential present + catalog OK; Felo: credential present + catalog OK; Gemini: credential present + catalog OK but `free_account_unverified`**. It also observed public catalogs for LLM7, ModelScope, and OVHcloud. These checks explicitly reported `inference=false`; they do not prove completion capability or free-tier entitlement.
+- The same probe reported many providers as `missing_secret` / unconfigured, including Groq, Hugging Face, Mistral, NVIDIA, Omni, Cohere, and others. This is the Actions environment's observed mapping, not a claim that the user has no account or credentials elsewhere.
+- [Provider batch production contracts run 39452118281](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39452118281) completed SUCCESS. The contract job and no-inference free-key diagnostics job passed; the optional public-research observation job was skipped.
+- [Continuous Team Evaluation run 39524836826](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39524836826) completed SUCCESS on 2026-10-21 01:01:22Z at SHA `36d96630027ba2221b7cf65590543c505e6d2adb`. The discover/catalog job and its experiment jobs, including the Felo OX Alpha candidate and multiple OpenRouter candidates, completed successfully and uploaded artifacts. This establishes that the invocation steps executed without workflow-level failure for that cohort; quality/acceptance outcomes still require reading the corresponding manifests/receipts, and a successful step is not a provider-wide SLA.
+- [OpenRouter free catalog snapshot run 39464361856](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39464361856) completed SUCCESS and uploaded its catalog observation.
+
+The resulting diagnosis is **partially healthy and evidence-backed**, not “all providers working”: catalog continuity is confirmed for the configured OpenRouter/Felo/Gemini paths; one recent team-evaluation cohort completed its invocation steps; Gemini's no-cost entitlement remains unverified; and OpenRouter's separate bounded inference smoke previously returned HTTP 429. No new provider workflow was dispatched during this pass.
 
 ### Required validation cadence
 

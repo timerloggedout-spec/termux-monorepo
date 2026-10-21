@@ -22,10 +22,11 @@ import urllib.request
 from urllib.parse import urlencode
 
 try:
-    from scripts import provider_catalog_protocols, provider_extension_catalogs
+    from scripts import provider_catalog_protocols, provider_extension_catalogs, provider_quota_managers
 except ImportError:
     import provider_catalog_protocols  # type: ignore
     import provider_extension_catalogs  # type: ignore
+    import provider_quota_managers  # type: ignore
 
 UA = "termux-monorepo-provider-catalog/5"
 # Catalog-only public GETs; ModelScope is verified by a current provider response,
@@ -93,6 +94,7 @@ DOCUMENTED_TRIAL_MODELS = {
         "access_classification": "free_trial",
         "source": "https://openapi.felo.ai/models/stealth/ox-alpha",
         "source_observed": "2026-08-24",
+        "entitlement_verification": "unknown",
         "max_output_tokens": 128_000,
         "context_length": 1_000_000,
         "cadence": "trial",
@@ -104,16 +106,20 @@ DOCUMENTED_ENTITLEMENTS = {
         {
             "id": "search-api-free-standard",
             "cadence": "daily",
-            "public_claim": "200 daily free credits (Free Standard Search API docs)",
-            "source": "docs/ops/FREE-QUOTA-WINDOWS.md",
-            "remaining_source": "authenticated_headers_or_account_api_only",
+            "public_claim": "Standard plan: 200 daily free credits for selected API models/tools, shared with Playground and supported Felo tools",
+            "source": "https://openapi.felo.ai/pricing",
+            "remaining_source": "not_verified_for_model_api",
+            "entitlement_verification": "unknown",
+            "verification_note": "Published free-credit claim does not establish current account entitlement, remaining balance, reset time, timezone, or carryover.",
         },
         {
             "id": "ox-alpha",
             "cadence": "trial",
-            "public_claim": "documented free-trial model page",
+            "public_claim": "historical free-preview mapping; current model page says trial ended while pricing still lists Free",
             "source": "https://openapi.felo.ai/models/stealth/ox-alpha",
-            "remaining_source": "catalog_plus_invocation",
+            "remaining_source": "not_verified_for_model_api",
+            "entitlement_verification": "unknown",
+            "verification_note": "The legacy trial label is not authoritative evidence of current entitlement; the model page and pricing claim conflict.",
         },
     ],
     "openrouter": [
@@ -313,6 +319,7 @@ def poll(provider: str, token: str) -> tuple[list[dict], dict]:
             "access_classification": access_class,
             "access_source": access_src,
             "access_source_observed": access_observed,
+            "entitlement_verification": trial.get("entitlement_verification", "unknown") if trial else ("unknown" if provider == "felo" else None),
             "cadence": cadence,
             "free_suffix": provider == "openrouter" and model_id.endswith(":free"),
             "context_length": ctx_len,
@@ -334,6 +341,7 @@ def poll(provider: str, token: str) -> tuple[list[dict], dict]:
             "access_classification": trial["access_classification"],
             "access_source": trial["source"],
             "access_source_observed": trial["source_observed"],
+            "entitlement_verification": trial.get("entitlement_verification", "unknown"),
             "cadence": trial.get("cadence", "trial"),
             "free_suffix": False,
             "context_length": trial["context_length"],
@@ -376,6 +384,9 @@ def main(argv: list[str] | None = None) -> int:
                 "account_endpoint_status": "not_documented",
                 "documented_entitlements": DOCUMENTED_ENTITLEMENTS.get(provider, []),
                 "quota_note": "Account-level balance/quota is not asserted unless exposed by an authoritative provider endpoint or response metadata. Cadence entitlements are public claims only.",
+                "quota_manager": provider_quota_managers.catalog_quota_status(
+                    provider, headers, observed_at=observed_at, source=ENDPOINTS[provider]),
+                **({"entitlement_verification": "unknown"} if provider == "felo" else {}),
             }
         except Exception as exc:
             safe_message = str(exc) if re.fullmatch(r"http_status_[1-5][0-9][0-9]|response_too_large|invalid_json|invalid_response_shape|invalid_pagination|invalid_model", str(exc)) else "request_failed"
@@ -413,7 +424,7 @@ def main(argv: list[str] | None = None) -> int:
     eligible = [r for r in rows if r["pricing_classification"] == "free_zero_price" or r["free_suffix"] or r["access_classification"] == "free_trial"]
     print(f"catalog_models={len(rows)} eligible_free_zero_trial={len(eligible)} errors={len(errors)}")
     for provider, observation in provider_observations.items():
-        print(f"ACCOUNT_METADATA {provider}: {json.dumps(observation['response_headers'], sort_keys=True)}")
+        print(f"QUOTA_STATUS {provider}: {json.dumps(observation['quota_manager'], sort_keys=True)}")
     for row in eligible:
         print(f"ELIGIBLE {row['provider']}/{row['id']} [{row['access_classification']}; cadence={row.get('cadence')}; max_output={row.get('max_output_tokens')}; context={row.get('context_length')}]")
     return 0 if rows or not providers else 1

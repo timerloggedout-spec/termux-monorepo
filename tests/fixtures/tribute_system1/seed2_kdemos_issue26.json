@@ -1,0 +1,97 @@
+{
+ "case_id": "seed-2-kdemos-issue26",
+ "source": "Gmail label GitHub/Priority/Direct (2026-10-20); hydrated from the public GitHub API 2026-10-21",
+ "self_login": "timerloggedout-spec",
+ "subject": {
+  "repo": "francordel/kdemos",
+  "number": 26,
+  "kind": "issue",
+  "url": "https://github.com/francordel/kdemos/issues/26",
+  "title": "Add the Turkish landing page (/tr/) for SEO",
+  "state": "open",
+  "state_reason": null,
+  "author": "francordel",
+  "assignees": [],
+  "labels": [
+   "help wanted",
+   "good first issue",
+   "hacktoberfest",
+   "beginner",
+   "i18n",
+   "translation"
+  ],
+  "body": "## Context\n\nTurkish was added to the app in #18, but there is no static landing page at `https://kdemos.com/tr/`, so search engines have nothing to index in Turkish and the language switchers on the other landings do not list it. You need to speak Turkish to take this one.\n\n## Where\n\n- `scripts/generate-i18n-landings.mjs`: the `LANGS` object has one entry per landing (`en`, `de`, ..., `no`). Copy one (e.g. `de`) and translate it.\n- `public/sitemap.xml`: add `https://kdemos.com/tr/`.\n\n## What to do\n\n1. Add a `tr` entry to `LANGS` with all the same fields (title, desc, h1, sub, cta, how, faq, ...). Keep it natural, not word for word.\n2. Run `node scripts/generate-i18n-landings.mjs`. It regenerates every `public/<code>/index.html`, so the new hreflang and language switcher reach all landings. Commit all generated files.\n3. Add the URL to `public/sitemap.xml` with its `xhtml:link` alternates, like the other languages.\n\n## Acceptance criteria\n\n- `public/tr/index.html` exists, has `lang=\"tr\"`, a Turkish title and description, and links to the app with `?lang=tr`.\n- Every other landing lists \"Türkçe\" in its language switcher and has `hreflang=\"tr\"`.\n---\nSetup: `npm install && REACT_APP_DB_MODE=mock npm start` (no credentials needed). Run tests with `CI=true npm test -- --watchAll=false`.\nConventions: [.github/CONTRIBUTING.md](https://github.com/francordel/kdemos/blob/main/.github/CONTRIBUTING.md). Comment here if you want to take it, and ask anything you are unsure about.",
+  "created_at": "2026-10-19T21:14:35Z",
+  "closed_at": null
+ },
+ "comments": [
+  {
+   "id": 6277474977,
+   "author": "timerloggedout-spec",
+   "author_type": "User",
+   "association": "NONE",
+   "created_at": "2026-10-19T21:15:01Z",
+   "body": "### Claim — termux-monorepo help-wanted lane\n\nTaking a look at this issue as part of our external evaluation + contribution lane.\n\n- Lane: help-wanted / CPPH ranked\n- Actor: timerloggedout-spec (agentic)\n- Will open a focused PR if a clean fix is in scope\n\nIf someone is already actively working this, say so and we will yield.\n"
+  },
+  {
+   "id": 6301404363,
+   "author": "francordel",
+   "author_type": "User",
+   "association": "OWNER",
+   "created_at": "2026-10-20T21:01:52Z",
+   "body": "@timerloggedout-spec this issue needs a fluent Turkish speaker (it's marketing copy, not a code change), so I'm not assigning it to an automated lane. It stays open for a human contributor who speaks Turkish."
+  }
+ ],
+ "events": [
+  {
+   "event": "labeled",
+   "actor": "francordel",
+   "assignee": null,
+   "created_at": "2026-10-19T21:14:36Z"
+  },
+  {
+   "event": "labeled",
+   "actor": "francordel",
+   "assignee": null,
+   "created_at": "2026-10-19T21:14:37Z"
+  },
+  {
+   "event": "labeled",
+   "actor": "francordel",
+   "assignee": null,
+   "created_at": "2026-10-19T21:14:37Z"
+  },
+  {
+   "event": "labeled",
+   "actor": "francordel",
+   "assignee": null,
+   "created_at": "2026-10-19T21:14:37Z"
+  },
+  {
+   "event": "labeled",
+   "actor": "francordel",
+   "assignee": null,
+   "created_at": "2026-10-19T21:14:37Z"
+  },
+  {
+   "event": "labeled",
+   "actor": "francordel",
+   "assignee": null,
+   "created_at": "2026-10-19T21:14:37Z"
+  }
+ ],
+ "expected": {
+  "labels": [
+   "needs_human_skill"
+  ],
+  "primary": "needs_human_skill",
+  "skill": "language:turkish",
+  "action": "drop_candidate",
+  "escalate": false,
+  "prefilter_rules": [
+   "skill_language_filter"
+  ],
+  "reengage_allowed": false,
+  "rung": "system1"
+ }
+}

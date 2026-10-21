@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "e887bcb880d875ada5425219455d416ee5bcc5d398229e80cc7ab5edd6aaf97e",
-  "workflow_count": 164,
+  "source_fingerprint": "90522766911f2b549be6b82f1f1bbc9b7ea937205fba262aa666eb859b62cfad",
+  "workflow_count": 165,
   "workflows": [
     {
       "action_pins": [
@@ -2992,6 +2992,28 @@
       "triggers": [
         "pull_request",
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: tribute-system1-${{ github.event_name }}-${{ github.ref }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "enqueue",
+        "eval",
+        "route"
+      ],
+      "name": "tribute-system1",
+      "path": ".github/workflows/tribute-system1.yml",
+      "schedules": [
+        "17 */3 * * *"
+      ],
+      "triggers": [
+        "pull_request",
+        "push",
+        "schedule",
         "workflow_dispatch"
       ]
     },

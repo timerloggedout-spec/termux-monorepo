@@ -172,7 +172,7 @@
     {
       "covered": false,
       "documented_limit": null,
-      "documented_reset_semantics": "unknown",
+      "documented_reset_semantics": "unknown for model API and daily-credit grant: no exact reset instant, timezone, carryover or machine-readable remaining-credit contract verified",
       "documented_signals": [],
       "evidence_state": "unknown",
       "free_entitlement": null,
@@ -184,7 +184,10 @@
       "observation_method": "unsupported_or_no_verified_official_counter",
       "observed_reset": "unknown",
       "official_evidence": [
-        "https://openapi.felo.ai/docs/getting-started"
+        "https://openapi.felo.ai/pricing",
+        "https://openapi.felo.ai/models/stealth/ox-alpha",
+        "https://openapi.felo.ai/docs/model-api/operations/createChatCompletion",
+        "https://openapi.felo.ai/docs/api-reference/chat"
       ],
       "opt_in_private_service_ids": [],
       "private_balance": "not_published",
@@ -197,7 +200,7 @@
       "registry_reader_service_ids": [],
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
-      "scope": "official OpenAPI getting-started docs; counter/reset schema not verified",
+      "scope": "existing /api/v1 model API: account eligibility and request/token counters unknown; /v2/chat key/user search limits are a separate endpoint contract",
       "service_ids": [],
       "source_capability": "no_provider_specific_quota_capability",
       "static_mapping_evidence": [

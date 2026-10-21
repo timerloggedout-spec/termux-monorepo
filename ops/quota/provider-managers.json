@@ -37,9 +37,16 @@
     {
       "provider_family": "felo",
       "status": "unsupported",
-      "source": "https://openapi.felo.ai/docs/getting-started",
-      "scope": "official OpenAPI getting-started docs; counter/reset schema not verified",
-      "reset": "unknown",
+      "source": "https://openapi.felo.ai/docs/api-reference/llm",
+      "official_evidence": [
+        "https://openapi.felo.ai/pricing",
+        "https://openapi.felo.ai/models/stealth/ox-alpha",
+        "https://openapi.felo.ai/docs/model-api/operations/createChatCompletion",
+        "https://openapi.felo.ai/docs/api-reference/chat"
+      ],
+      "scope": "existing /api/v1 model API: account eligibility and request/token counters unknown; /v2/chat key/user search limits are a separate endpoint contract",
+      "reset": "unknown for model API and daily-credit grant: no exact reset instant, timezone, carryover or machine-readable remaining-credit contract verified",
+      "free_entitlement": "public Standard plan: 200 free credits daily for selected API models/tools, shared with Playground and supported Felo tools; exact account/model entitlement unknown; OX Alpha ended-trial notice conflicts with free pricing row",
       "signals": []
     },
     {

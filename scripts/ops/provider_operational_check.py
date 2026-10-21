@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import datetime as dt
 import json
 import os
 from pathlib import Path
@@ -14,7 +15,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from llm_api_hub.server import provider_extensions, research_providers
-from scripts import provider_model_catalog
+from scripts import provider_model_catalog, provider_quota_managers
 
 
 def check(*, catalogs=False):
@@ -31,6 +32,8 @@ def check(*, catalogs=False):
             "catalog_implemented": provider in provider_model_catalog.ENDPOINTS,
             "catalog_status": "not_requested",
             "inference_attempted": False,
+            "quota_manager": provider_quota_managers.catalog_quota_status(
+                provider, {}, observed_at=dt.datetime.now(dt.timezone.utc).isoformat()),
         }
         if catalogs:
             if provider not in provider_model_catalog.ENDPOINTS:
@@ -40,7 +43,10 @@ def check(*, catalogs=False):
             else:
                 try:
                     token = next((os.environ.get(name) for name in aliases if os.environ.get(name)), "")
-                    provider_model_catalog.poll(provider, token)
+                    _, headers = provider_model_catalog.poll(provider, token)
+                    row["quota_manager"] = provider_quota_managers.catalog_quota_status(
+                        provider, headers, observed_at=dt.datetime.now(dt.timezone.utc).isoformat(),
+                        source=provider_model_catalog.ENDPOINTS[provider])
                     row["catalog_status"] = "ok"
                 except urllib.error.HTTPError as exc:
                     row["catalog_status"] = f"http_{exc.code}" if 100 <= exc.code <= 599 else "unavailable"

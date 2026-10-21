@@ -78,7 +78,7 @@ def build_coverage(root: Path = ROOT) -> dict[str, Any]:
         else:
             method = "unknown"
         if opt_in_ids:
-            method = "opt_in_private_balance_service; live account validation not established"
+            method = "opt_in_private_quota_service; live account validation not established"
         rows.append({
             "provider_family": family,
             "quota_manager_owner": "Manager",

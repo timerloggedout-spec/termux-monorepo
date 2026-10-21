@@ -9,6 +9,9 @@ on:
       - 'scripts/quota_poll.py'
       - 'scripts/provider_quota_managers.py'
       - 'scripts/provider_quota_coverage.py'
+      - 'scripts/provider_quota_service.py'
+      - 'scripts/provider_quota_transport.py'
+      - 'ops/quota/**'
       - 'tests/test_http_llm_invoke_action.py'
       - 'tests/test_model_router.py'
       - 'tests/test_quota_poll.py'
@@ -16,6 +19,11 @@ on:
       - 'tests/test_provider_quota_managers.py'
       - 'tests/test_provider_quota_coverage.py'
       - 'tests/test_quota_dashboard.py'
+      - 'tests/test_router_quota_boundary.py'
+      - 'tests/test_provider_quota_service.py'
+      - 'tests/test_provider_quota_transport.py'
+      - 'tests/test_provider_quota_openrouter.py'
+      - 'tests/test_provider_quota_private_workflow.py'
   workflow_dispatch:
 permissions:
   contents: read
@@ -49,4 +57,9 @@ jobs:
             tests/test_model_performance_index.py \
             tests/test_provider_quota_managers.py \
             tests/test_provider_quota_coverage.py \
-            tests/test_quota_dashboard.py
+            tests/test_quota_dashboard.py \
+            tests/test_router_quota_boundary.py \
+            tests/test_provider_quota_service.py \
+            tests/test_provider_quota_transport.py \
+            tests/test_provider_quota_openrouter.py \
+            tests/test_provider_quota_private_workflow.py

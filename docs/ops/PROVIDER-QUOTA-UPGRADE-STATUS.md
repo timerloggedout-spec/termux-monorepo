@@ -1,6 +1,20 @@
 # Provider quota upgrade: shipped capability versus remaining gaps
 
-## Current continuation: MSM-023 private OpenRouter current-key service
+## Current continuation: MSM-024 existing router lane hardening
+
+Continue [PR #1441](https://github.com/timerloggedout-spec/termux-monorepo/pull/1441), not a replacement PR. Inspection at head `cd95c448` found all nine inline review threads resolved but the older formal `CHANGES_REQUESTED` review still outstanding. Later `COMMENTED` reviews and bot success statuses are not approval. Reconcile the same branch with merged [#1463](https://github.com/timerloggedout-spec/termux-monorepo/pull/1463), then validate the exact new head; do not promote while that formal disposition, failing checks or policy blocks remain.
+
+The remaining hardening is a strict complete integer request triplet, official source/provider/metric/window binding, malformed-root/timestamp handling, and stale/future/cross-UTC-day rejection. Unknown request quota is never filled from monetary balance, tier, registry entitlement or a derived reset. The legacy daily window is not an observed reset timestamp. The private service observation schema is deliberately not a router snapshot and supplies no independent account identity or admission authority.
+
+The proposed action previously printed raw account counters and cached quota files. It now separates quota preflight into an ephemeral mode-0700 runner directory with mode-0600 files, suppresses reader stdout/stderr, logs status only, removes private files even on failure, and allowlists only local reservation/catalog/cooldown cache paths in a new namespace. Private observations and quota weights are not saved in shared Actions caches. This does not erase historical caches or logs, and does not claim distributed-atomic reservations: the existing conservative reservation heuristic still races across concurrent jobs and cannot guarantee zero overshoot.
+
+**Coverage delta: zero new service mappings, passive adapters or live-account validations.** Totals remain twenty family inventories/static links, three actual mapped families, seventeen mapping gaps, two opt-in private service implementations, six passive parsers, eleven documentation-only and three unsupported contracts. Dashboard/registry artifacts and the separate default-off private services remain unchanged. No account request or inference is made during this continuation; no production merge, paid fallback, router-weight activation, admission deployment or schedule change is authorized by these tests.
+
+Existing [issues #86](https://github.com/timerloggedout-spec/termux-monorepo/issues/86) and [#272](https://github.com/timerloggedout-spec/termux-monorepo/issues/272) retain the remaining mappings, authenticated account-scope/reservation and contributor-evidence gaps. Roles, monikers, context delivery and connector/MCP claims remain curated in the [capability map](PROVIDER-COLLABORATOR-CAPABILITY-MAP.md); app comments are not provider identity, and no independent Delphi ballots were established by this hardening. Exact-head validation and review-disposition receipts belong to #1441.
+
+Local validation: 236 focused offline quota/router/action/service/dashboard tests, nine market unit tests, both repository gates, the unchanged quota projection and the 39-proposal registry passed. Independent diff review found no blocking findings; its additional failure-cleanup suggestion was implemented and tested. These local results are not a formal GitHub approval or current-head CI/promotion evidence.
+
+## Historical continuation: MSM-023 private OpenRouter current-key service
 
 Baseline `5d54d22f` includes merged Ollama [PR #1462](https://github.com/timerloggedout-spec/termux-monorepo/pull/1462), merge `b92c0c5d`. Current-source inspection found the OpenRouter passive parser, legacy daily-counter reader and boolean-only diagnostic, but no equivalent complete private current-key service wrapper. MSM-023 adds only that missing opt-in observation, using the [official GET /api/v1/key contract](https://openrouter.ai/docs/api/api-reference/api-keys/get-current-api-key) and [limits semantics](https://openrouter.ai/docs/api_reference/limits). See the [service operating contract](PROVIDER-QUOTA-MANAGERS.md#msm-023-private-openrouter-current-key-observation).
 

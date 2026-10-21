@@ -21,7 +21,7 @@ class QuotaPollTest(unittest.TestCase):
              patch.object(_qp, "_get", return_value=payload):
             result = _qp.openrouter_reader(None)
         self.assertEqual(result, {"used": 12, "limit": 50, "remaining": 38, "elapsed": None,
-                                  "reset": "UTC midnight",
+                                  "reset": None,
                                   "extra": {"source": "official OpenRouter GET /api/v1/key"}})
         self.assertNotIn("private", json.dumps(result))
 

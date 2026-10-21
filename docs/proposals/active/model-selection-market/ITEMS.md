@@ -28,6 +28,8 @@
 
 | MSM-023 | Opt-in private OpenRouter current-key quota service observation | **done** | MSM-022 | Official GET /api/v1/key only; manual trusted-master/private secret pathway, default off. Request counters, monetary key limits and account tier remain separate; private exclusive output and status-only projection. No inference, retries, schedules, key hopping, paid fallback or routing/admission changes. |
 
+| MSM-024 | Harden existing router PR #1441 quota snapshot validation and private preflight boundaries | **in_review** | MSM-023 | Continue #1441, not a duplicate lane. Reject incomplete/inconsistent or cross-day request counters; keep account quota out of logs and shared caches. 236 focused offline tests, nine market tests and both local gates pass; private services remain opt-in and disconnected from admission. Formal unresolved change-request disposition blocks promotion. |
+
 ## Runtime package
 
 ```text

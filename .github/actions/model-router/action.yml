@@ -43,7 +43,7 @@ inputs:
   cache-schema:
     description: 'Versioned cache namespace for advisory catalog/capacity state'
     required: false
-    default: 'v4'
+    default: 'v5'
   routing-mode:
     description: 'Topology policy: single | series | dynamic | parallel | nested | co-working | volley'
     required: false
@@ -81,7 +81,10 @@ runs:
       id: restore
       uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830
       with:
-        path: /tmp/model-router
+        path: |
+          /tmp/model-router/*.txt
+          /tmp/model-router/openrouter_models_cache.json
+          /tmp/model-router/cooldowns.json
         key: model-router-${{ inputs.cache-schema }}-${{ steps.date.outputs.key }}-${{ github.repository }}
         restore-keys: |
           model-router-${{ inputs.cache-schema }}-${{ steps.date.outputs.key }}-
@@ -95,19 +98,19 @@ runs:
         echo "cache_hit=${{ steps.restore.outputs.cache-hit || 'false' }}"
 
     - name: Refresh live provider quota weights
+      id: quota
       if: inputs.has-openrouter == 'true' && inputs.openrouter-api-key != ''
       shell: bash
       env:
         OPENROUTER_API_KEY: ${{ inputs.openrouter-api-key }}
-        COUNTER_DIR: /tmp/model-router
       run: |
         set -euo pipefail
-        python3 -m scripts.quota_poll --out /tmp/model-router
-        if [ -f /tmp/model-router/routing-weights.json ]; then
-          echo "Live quota weights refreshed for model admission."
-        else
-          echo "::warning::Quota poll produced no routing weights; router will treat quota as unknown."
-        fi
+        umask 077
+        PRIVATE_QUOTA_DIR=$(mktemp -d "$RUNNER_TEMP/model-router-quota.XXXXXX")
+        trap 'status=$?; if [ "$status" -ne 0 ]; then rm -rf -- "$PRIVATE_QUOTA_DIR"; fi; exit "$status"' EXIT
+        echo "path=$PRIVATE_QUOTA_DIR" >> "$GITHUB_OUTPUT"
+        python3 -m scripts.quota_poll --out "$PRIVATE_QUOTA_DIR" >/dev/null 2>&1
+        echo "Quota preflight completed; private values withheld."
 
     - name: Pick provider + model (live catalog feed)
       id: pick
@@ -128,13 +131,29 @@ runs:
         COUNTER_DIR: /tmp/model-router
         MODEL_ROUTER_CACHE_SCHEMA: ${{ inputs.cache-schema }}
         REQUIRE_LIVE_OPENROUTER_QUOTA: 'true'
+        QUOTA_SNAPSHOT_DIR: ${{ steps.quota.outputs.path || format('{0}/model-router-no-quota', runner.temp) }}
+        QUOTA_WEIGHTS_PATH: ${{ steps.quota.outputs.path || format('{0}/model-router-no-quota', runner.temp) }}/routing-weights.json
       run: |
         python3 -m scripts.model_router_bootstrap
+
+    - name: Remove private quota preflight files
+      if: always() && steps.quota.outputs.path != ''
+      shell: bash
+      env:
+        PRIVATE_QUOTA_DIR: ${{ steps.quota.outputs.path }}
+      run: |
+        case "$PRIVATE_QUOTA_DIR" in
+          "$RUNNER_TEMP"/model-router-quota.*) rm -rf -- "$PRIVATE_QUOTA_DIR" ;;
+          *) exit 1 ;;
+        esac
 
     - name: Save versioned model-router capacity cache
       if: steps.pick.outputs.skip != 'true'
       uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830
       with:
-        path: /tmp/model-router
+        path: |
+          /tmp/model-router/*.txt
+          /tmp/model-router/openrouter_models_cache.json
+          /tmp/model-router/cooldowns.json
         key: model-router-${{ inputs.cache-schema }}-${{ steps.date.outputs.key }}-${{ github.repository }}-${{ github.run_id }}-${{ github.run_attempt }}
         enableCrossOsArchive: true

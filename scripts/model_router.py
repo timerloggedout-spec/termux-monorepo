@@ -393,50 +393,66 @@ def load_quota_multipliers():
     """Read fresh 3L0 quota weights; unknown/stale data is neutral, zero is a hard deny."""
     path = os.environ.get("QUOTA_WEIGHTS_PATH") or os.path.join(COUNTER_DIR, "routing-weights.json")
     try:
+        if os.path.islink(path):
+            return {}
         with open(path, "r", encoding="utf-8") as handle:
             payload = json.load(handle)
-        if payload.get("schema") != "3l0.quota-weights.v1":
+        if not isinstance(payload, dict) or payload.get("schema") != "3l0.quota-weights.v1":
             return {}
         generated = payload.get("generated_at")
-        if not generated:
+        if not isinstance(generated, str) or not generated:
             return {}
         from datetime import datetime, timezone
         stamp = datetime.fromisoformat(generated.replace("Z", "+00:00"))
+        if stamp.tzinfo is None:
+            return {}
         age = (datetime.now(timezone.utc) - stamp.astimezone(timezone.utc)).total_seconds()
         max_age = int(os.environ.get("QUOTA_WEIGHTS_MAX_AGE_SEC", "21600"))
-        if age < -300 or age > max_age:
+        if age < 0 or age > max_age:
             sys.stderr.write(f"Quota weights stale ({age:.0f}s); treating quota as unknown.\n")
             return {}
         multipliers = payload.get("multipliers", {})
+        if (not isinstance(multipliers, dict)
+                or any(isinstance(value, bool) or not isinstance(value, (int, float))
+                       or not math.isfinite(value) for value in multipliers.values())):
+            return {}
         return {str(k).lower(): max(0.0, min(2.0, float(v))) for k, v in multipliers.items()}
-    except (OSError, ValueError, TypeError, json.JSONDecodeError):
+    except (OSError, ValueError, TypeError, OverflowError, json.JSONDecodeError):
         return {}
 
 
 
 def load_openrouter_quota_admission(now=None):
     """Compare official UTC-day quota with our conservative local reservations."""
-    path = os.path.join(COUNTER_DIR, "provider-quota-state.json")
+    path = os.path.join(os.environ.get("QUOTA_SNAPSHOT_DIR") or COUNTER_DIR,
+                        "provider-quota-state.json")
     try:
         if os.path.islink(path):
             return {"known": False, "reason": "quota snapshot is a symlink"}
         with open(path, "r", encoding="utf-8") as handle:
             state = json.load(handle)
-        if state.get("schema") != "3l0.provider-quota-snapshot.v1" or state.get("status") != "live":
+        if not isinstance(state, dict) or state.get("schema") != "3l0.provider-quota-snapshot.v1" or state.get("status") != "live":
             return {"known": False, "reason": "official quota snapshot is not live"}
+        expected = {"provider": "openrouter", "source": "https://openrouter.ai/api/v1/key",
+                    "metric": "free_model_daily_requests", "window": "UTC day"}
+        if any(state.get(key) != value for key, value in expected.items()):
+            return {"known": False, "reason": "official quota snapshot source or metric mismatch"}
         from datetime import datetime, timezone
+        if not isinstance(state.get("observed_at"), str):
+            return {"known": False, "reason": "official quota timestamp unavailable"}
         observed = datetime.fromisoformat(state["observed_at"].replace("Z", "+00:00"))
         current = datetime.now(timezone.utc) if now is None else now
-        age = (current - observed.astimezone(timezone.utc)).total_seconds()
+        if observed.tzinfo is None or current.tzinfo is None:
+            return {"known": False, "reason": "official quota timestamp requires timezone"}
+        observed, current = observed.astimezone(timezone.utc), current.astimezone(timezone.utc)
+        age = (current - observed).total_seconds()
         max_age = int(os.environ.get("OPENROUTER_QUOTA_MAX_AGE_SEC", "900"))
-        if age < -60 or age > max_age:
-            return {"known": False, "reason": f"official quota snapshot stale ({age:.0f}s)"}
-        used, limit = state.get("used"), state.get("limit")
-        if (isinstance(used, bool) or isinstance(limit, bool)
-                or not isinstance(used, (int, float)) or not isinstance(limit, (int, float))
-                or not math.isfinite(float(used)) or not math.isfinite(float(limit))
-                or used < 0 or limit <= 0):
-            return {"known": False, "reason": "official quota used/limit unavailable"}
+        if age < 0 or age > max_age or observed.date() != current.date():
+            return {"known": False, "reason": "official quota snapshot stale or future-dated"}
+        used, limit, remaining = (state.get(key) for key in ("used", "limit", "remaining"))
+        if (any(type(value) is not int or value < 0 for value in (used, limit, remaining))
+                or limit <= 0 or used + remaining != limit):
+            return {"known": False, "reason": "official quota request triplet unavailable or inconsistent"}
         # The cache is scoped to the same UTC date as OpenRouter's daily reset.
         # Local selections are reservations, not proof of completed provider calls;
         # using max() avoids double-counting requests already reflected by OpenRouter.
@@ -453,7 +469,7 @@ def load_openrouter_quota_admission(now=None):
         safe_limit = float(limit) * safety
         return {
             "known": True, "used": float(used), "limit": float(limit),
-            "official_remaining": state.get("remaining", max(0.0, float(limit) - float(used))),
+            "official_remaining": remaining,
             "local_reserved": local_reserved, "effective_used": effective_used,
             "effective_remaining": max(0.0, float(limit) - effective_used),
             # 0.90 leaves a daily headroom margin; concurrent jobs still race
@@ -461,7 +477,7 @@ def load_openrouter_quota_admission(now=None):
             "safe_limit": safe_limit, "admit": effective_used < safe_limit,
             "observed_at": state.get("observed_at"),
         }
-    except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as error:
+    except (OSError, ValueError, TypeError, KeyError, OverflowError, json.JSONDecodeError) as error:
         return {"known": False, "reason": f"official quota snapshot unavailable ({type(error).__name__})"}
 
 
@@ -534,13 +550,7 @@ def main():
     if has_openrouter:
         if openrouter_quota.get("known"):
             sys.stderr.write(
-                "OpenRouter quota reconciliation: "
-                f"official_used={openrouter_quota['used']:.0f}/"
-                f"{openrouter_quota['limit']:.0f}; "
-                f"local_reserved={openrouter_quota['local_reserved']}; "
-                f"effective_used={openrouter_quota['effective_used']:.0f}; "
-                f"effective_remaining={openrouter_quota['effective_remaining']:.0f}; "
-                f"safe_limit={openrouter_quota['safe_limit']:.0f}\n"
+                "OpenRouter quota preflight: live request evidence; private values withheld.\n"
             )
         else:
             sys.stderr.write(

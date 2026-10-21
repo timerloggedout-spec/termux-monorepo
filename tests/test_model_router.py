@@ -406,6 +406,7 @@ def test_required_live_openrouter_quota_fails_closed(tmp_path, monkeypatch):
     quota_file.write_text(json.dumps({
         "schema": "3l0.provider-quota-snapshot.v1",
         "observed_at": datetime.now(timezone.utc).isoformat(),
+        "source": "https://openrouter.ai/api/v1/key",
         "provider": "openrouter", "metric": "free_model_daily_requests",
         "window": "UTC day", "status": "live", "used": 1,
         "limit": 100, "remaining": 99,
@@ -425,6 +426,7 @@ def test_openrouter_quota_reconciliation_uses_conservative_max(tmp_path, monkeyp
     state = {
         "schema": "3l0.provider-quota-snapshot.v1",
         "observed_at": datetime.now(timezone.utc).isoformat(),
+        "source": "https://openrouter.ai/api/v1/key",
         "provider": "openrouter",
         "metric": "free_model_daily_requests",
         "window": "UTC day",
@@ -450,6 +452,7 @@ def test_openrouter_quota_reconciliation_rejects_invalid_counters(tmp_path, monk
     base = {
         "schema": "3l0.provider-quota-snapshot.v1",
         "observed_at": datetime.now(timezone.utc).isoformat(),
+        "source": "https://openrouter.ai/api/v1/key",
         "provider": "openrouter", "metric": "free_model_daily_requests",
         "window": "UTC day", "status": "live", "used": 1,
         "limit": 100, "remaining": 99,
@@ -474,6 +477,7 @@ def test_openrouter_quota_rejects_nonfinite_or_out_of_range_safety(tmp_path, mon
     (tmp_path / "provider-quota-state.json").write_text(json.dumps({
         "schema": "3l0.provider-quota-snapshot.v1",
         "observed_at": datetime.now(timezone.utc).isoformat(),
+        "source": "https://openrouter.ai/api/v1/key",
         "provider": "openrouter", "metric": "free_model_daily_requests",
         "window": "UTC day", "status": "live", "used": 1,
         "limit": 100, "remaining": 99,

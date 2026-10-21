@@ -115,6 +115,17 @@ def _valid_counters(used, limit):
         return False
 
 
+def _valid_openrouter_reading(reading):
+    """Only a complete official integer request triplet is admission evidence."""
+    if not isinstance(reading, dict):
+        return False
+    values = [reading.get(key) for key in ("used", "limit", "remaining")]
+    return (all(type(value) is int and value >= 0 for value in values)
+            and values[1] > 0 and values[0] + values[2] == values[1]
+            and isinstance(reading.get("extra"), dict)
+            and reading["extra"].get("source") == "official OpenRouter GET /api/v1/key")
+
+
 def openrouter_reader(now):
     key = os.environ.get("OPENROUTER_API_KEY")
     if not key:
@@ -132,10 +143,9 @@ def openrouter_reader(now):
     used, limit, remaining = values
     if used > limit or remaining > limit or used + remaining != limit:
         return None
-    # Docs define the daily counter as UTC-day and say it resets at UTC midnight;
-    # the endpoint does not return a per-counter reset timestamp.
+    # A UTC-day window does not supply an observed per-counter reset timestamp.
     return {"used": used, "limit": limit, "remaining": remaining, "elapsed": None,
-            "reset": "UTC midnight",
+            "reset": None,
             "extra": {"source": "official OpenRouter GET /api/v1/key"}}
 
 
@@ -251,7 +261,7 @@ def main(argv=None):
     prov = {}
     for r in recs:
         raw = readings.get("openrouter.free_models") or {}
-        if r["resource_id"] == "quota:openrouter.free_models" and not _valid_counters(raw.get("used"), raw.get("limit")):
+        if r["resource_id"] == "quota:openrouter.free_models" and not _valid_openrouter_reading(raw):
             continue
         if (r["lane_id"] in ("quota-model", "quota-deploy", "quota-data")
                 and r["horizon"] == "H0"
@@ -271,9 +281,7 @@ def main(argv=None):
     # Keep a focused, machine-readable official OpenRouter snapshot for audit and
     # preflight policy. Never fill in unknown fields from the registry.
     or_rec = readings.get("openrouter.free_models")
-    if (not isinstance(or_rec, dict)
-            or (or_rec.get("extra") or {}).get("source") != "official OpenRouter GET /api/v1/key"
-            or not _valid_counters(or_rec.get("used"), or_rec.get("limit"))):
+    if not _valid_openrouter_reading(or_rec):
         or_rec = None
     snapshot = {
         "schema": "3l0.provider-quota-snapshot.v1",

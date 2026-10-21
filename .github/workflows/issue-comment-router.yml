@@ -1,0 +1,64 @@
+name: Issue Comment Router — modular fan-out reduction
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: issue-comment-router-${{ github.event.issue.number }}
+  cancel-in-progress: true
+
+jobs:
+  route:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      needs_jules: ${{ steps.classify.outputs.needs_jules }}
+      needs_ledger: ${{ steps.classify.outputs.needs_ledger }}
+      needs_gemini: ${{ steps.classify.outputs.needs_gemini }}
+    steps:
+      - name: Classify comment for routing
+        id: classify
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.comment.body || '';
+            const isBot = context.payload.sender.type === 'Bot';
+            const isPR = !!context.payload.issue.pull_request;
+            const labels = (context.payload.issue.labels || []).map(l => l.name);
+
+            // Early filters to avoid unnecessary downstream starts
+            const needs_jules = !isBot && (body.includes('@jules') || labels.includes('jules'));
+            const needs_ledger = isPR && body.includes('Implements:');
+            const needs_gemini = !isBot && (body.includes('@gemini') || labels.includes('gemini'));
+
+            core.setOutput('needs_jules', needs_jules);
+            core.setOutput('needs_ledger', needs_ledger);
+            core.setOutput('needs_gemini', needs_gemini);
+
+            console.log(`Classification: jules=${needs_jules}, ledger=${needs_ledger}, gemini=${needs_gemini}, bot=${isBot}`);
+
+      - name: Route to Jules (if matched)
+        if: steps.classify.outputs.needs_jules == 'true'
+        run: |
+          echo "Dispatching Jules handoff (placeholder for workflow_call or existing job extract)"
+          # In full implementation: uses: ./.github/workflows/agent-jules-on-issues.yml or extract job
+
+      - name: Route to Ledger (if matched)
+        if: steps.classify.outputs.needs_ledger == 'true'
+        run: |
+          echo "Dispatching production ledger update"
+
+      - name: Route to Gemini (if matched)
+        if: steps.classify.outputs.needs_gemini == 'true'
+        run: |
+          echo "Dispatching Gemini peer"
+
+      - name: Emit routing receipt
+        run: |
+          echo "Router completed; no spam from unmatched issue_comment."

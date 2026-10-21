@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "26061151d3ce41caf9cd2960f075990c06d54888cde6da46c2e1d247ed8361b8",
-  "workflow_count": 145,
+  "source_fingerprint": "fe1b0b8b878dcb79d913706b20620623f86ce6ba874e9bd320b76cd6830518a5",
+  "workflow_count": 146,
   "workflows": [
     {
       "action_pins": [
@@ -1142,6 +1142,24 @@
       "path": ".github/workflows/fly-ssh-diag.yml",
       "schedules": [],
       "triggers": []
+    },
+    {
+      "action_pins": [
+        "actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: foresight-contracts-${{ github.event.pull_request.number || github.ref }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "validate"
+      ],
+      "name": "Foresight Contract Validation",
+      "path": ".github/workflows/foresight-contracts.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "workflow_dispatch"
+      ]
     },
     {
       "action_pins": [

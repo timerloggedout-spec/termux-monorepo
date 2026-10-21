@@ -2,7 +2,7 @@
 
 **Scope:** SHE + ATES/WTCV + Action→Effect + Historical Context Relationship corpus + Hex-compatible evidence + Docker/Codespaces + review orchestration.
 
-**Primary branch:** `master`  
+**Primary branch:** `master`
 **Active integration PR:** #523 (`ops/automate-historical-backfill-ates-she`)
 
 ## Operating loop

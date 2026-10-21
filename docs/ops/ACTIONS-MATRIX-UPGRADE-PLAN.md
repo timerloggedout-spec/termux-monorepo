@@ -2,11 +2,11 @@
 
 **Authority:** established 13-phase process in [Issue #631](https://github.com/timerloggedout-spec/termux-monorepo/issues/631). This document maps the Actions Matrix work into that process; it does not redefine the phases or establish a parallel methodology.
 
-**Implementation branch:** `ops/actions-matrix-upgrade-hardening-2026-10-18`  
-**Source branch at request:** `ops/actions-matrix-upgrade-2026-10-18` @ `0757583bcb5fad5ed247ea9a03d48ccb28df7c6a`  
-**Requested master comparison point:** `669c0d0bc81862c6fbab830b3521a82464031320`  
-**Base observed at prior PR fetch:** `c83ea89d92eb4f3176f8d3371e7701183527692c` — re-fetch before promotion.  
-**State:** RECON found existing governance, quota policy, and the canonical phase definitions. Current implementation and current-SHA validation remain distinct states.
+**Implementation branch:** `ops/actions-matrix-upgrade-2026-10-18`
+**Source branch at request:** `ops/actions-matrix-upgrade-2026-10-18` @ `0757583bcb5fad5ed247ea9a03d48ccb28df7c6a`
+**Requested master comparison point:** `669c0d0bc81862c6fbab830b3521a82464031320`
+**Base observed at prior PR fetch:** `c83ea89d92eb4f3176f8d3371e7701183527692c` — re-fetch before promotion.
+**State:** RECON found existing governance, quota policy, and the canonical phase definitions. Current implementation and current-SHA validation remain distinct states. Historical repository-observatory failure 39233561401 on 2026-10-19 resolved by subsequent success 39400597496. Vercel quota remains non-gate capacity noise (issues #1397/#1358/#1330/#1283).
 
 ## RECON findings — verified repository authority
 
@@ -18,6 +18,39 @@
 8. Vercel project checks on merge commit `fe617f7f8eff0aeaecac67e0964e139ae9ab9035` reported `build-rate-limit` for four connected projects. A separate live deployment inspection showed `termux-monorepo` at `5827176ea6ec3580c5050e275493f94baef4a9e8` READY, while three deployments on unrelated research commit `e3ff387c95b9f94ab789a2ba65b51a103e357012` were CANCELED with the provider's `ignored-build-step` help link. Keep these states separate: quota failures are capacity evidence; ignored-build-step cancellations are intentional skip outcomes.
 6. `docs/schemas/model-rotation.yaml` governs **LLM** free-tier rotation; it is not a Vercel deployment quota registry. Reuse its quota-first design principles, but do not conflate provider types or their budgets.
 7. The latest known PR #1242 head before this RECON correction was `4b569bc2c9a8e032fd8464636b2d0d9e6a6e2087`. Re-fetch the live PR head/base and checks before drawing any current-state conclusion.
+
+## Notification fan-out reduction — modularized consolidations
+
+Observed spam: dozens of `issue_comment` triggered workflows (peer-review-orchestrator, pr-production-ledger, cellcog-review, deepseek-ci, action-effectiveness-ledger, sweep-accountability, agent-review-auto-jules, jules-on-issues, gemini-dispatch, actions-run-watcher, etc.) start runs that immediately conclude `skipped` or `cancelled` (concurrency), generating notification noise even when no work occurs. Examples: runs 39541657xxx on 2026-10-21.
+
+**Proposal (Phase 7/11):** Introduce a single modular `issue-comment-router.yml` that:
+- Triggers once on `issue_comment`.
+- Applies early filters (bot vs human, relevant labels, body keywords, PR vs issue).
+- Uses `workflow_dispatch` or `workflow_call` / reusable workflows only for the subset that actually needs to act.
+- Others become dispatch-only or are absorbed into the router as jobs with `if:` guards that never start if not matched.
+- Preserves all required downstream coverage (Jules, Gemini, ledger, evidence, etc.).
+- Measures before/after run volume and notification count.
+
+Superseded individual workflows retain their files as deprecated with notes pointing to the router; features are preserved via modular job extraction. Skipped/Cancelled require attentive validation audits — they are not silent failures; they must be classified as intentional no-op vs. missed trigger.
+
+## Pinggy / tunnel device identification (public obfuscation)
+
+Pinggy (or Cloudflare Tunnel / alternative) must remain operational on device #1 (original BLU B160V with broken screen) and be replicable on device #2. September tests targeted #1; now dual-device.
+
+**Public obfuscation requirement:** Never publish local usernames, raw serials, or private device fingerprints. Use opaque, stable identifiers:
+- SHA-256 of (device model + truncated serial last-4 + salt from secret) → `device_id: blu-b160v-1-a1b2c3d4`
+- Published in heartbeat manifests (`scripts/termux/check-gh-agentic-auth.sh --publish`) and tunnel-canary.
+- Roles: `primary` (#1), `replica` (#2).
+- TTL + status in the public manifest; live health remains UNKNOWN until independent probe confirms reachability.
+
+See `tunnel-canary.yml`, `agentic-auth-canary.yml`, `deepseek-termux-agent.yml`. Credentials in Issue #184 (names-only; do not paste values).
+
+## Adaptive cadence, cache, and 3L0 telemetry
+
+- Cadence: adaptive WAIT — immediate re-fetch on material delta, backoff on QUIET, stop on STALLED.
+- Cache: Actions cache keys must include SHA + path filters to avoid stale hits; dynamic adaptive based on quota remaining (observe before dispatch).
+- 3L0 moneyball: telemetry weights for provider selection (LLM free-tier, Actions minutes, Vercel deploys) driven by observed success/cost/latency. Quota registry (see quota-status.json, vercel-quota-probe) feeds the weights. Act before exhaustion.
+- Quota messages (Vercel daily deploy cap, OpenRouter free models) are capacity, not code FAIL. Track in dashboard and issues #772/#1314.
 
 ## Canonical 13 phases — retained verbatim in name and intent
 
@@ -49,8 +82,8 @@ These are workstreams inside the canonical phases, not replacement phases:
 | Bounded cadence collector | 3, 6, 8 | Workflow input and API contract | Single-page run sampling; validate 1–100; expose API total and truncation; deterministic tests. |
 | Snapshot writer correctness | 3, 6, 8 | Cadence collector output | No swallowed write/push errors; safe no-op; reconcile concurrent master movement; never cancel active writer. |
 | Classification and regression tests | 3, 8, 9 | Explicit operational-state contract | Distinguish workflow badge, task outcome, queued/in-flight, skipped/cancelled/neutral, and real failure. |
-| Notification/fan-out reduction | 4, 7, 11 | Verified trigger and consumer inventory | Remove only redundant fan-out; retain required downstream coverage; measure noise/volume before and after. |
-| Device bridge safety | 3, 4, 8 | Manifest schema and live device access | Validate opaque device IDs, roles, TTL; do not publish local usernames; live health remains UNKNOWN until independently proven. |
+| Notification/fan-out reduction | 4, 7, 11 | Verified trigger and consumer inventory | Remove only redundant fan-out; retain required downstream coverage; measure noise/volume before and after. **Router proposal active.** |
+| Device bridge safety | 3, 4, 8 | Manifest schema and live device access | Validate opaque device IDs, roles, TTL; do not publish local usernames; live health remains UNKNOWN until independently proven. **Public obfuscation defined.** |
 | Quota and capacity management | 2, 5, 6, 8, 11 | Provider identity, observed limits, and configured alternatives | Classify provider-capacity failures independently; avoid retry storms; rotate only to a pre-provisioned, verified eligible lane. |
 | Promotion and post-promotion watch | 8–13 | Exact-SHA validation, reviews, current base | Dual-gate + task outcome on candidate; deliberate promotion; inspect first production cycle and record resulting SHA. |
 
@@ -65,6 +98,8 @@ flowchart TD
   CLASSIFY --> TEST
   RECON --> FANOUT[Phase 7: verify consumers and owners]
   FANOUT --> REDUCE[Phase 11: remove measured waste]
+  REDUCE --> ROUTER[Modular issue-comment router]
+  ROUTER --> DEVICE[Opaque device ID for Pinggy #1/#2]
   TEST --> EVIDENCE[Phase 9: verify task outcome]
   REDUCE --> EVIDENCE
   EVIDENCE --> REVIEW[Phase 12: review/disposition]
@@ -145,9 +180,13 @@ A Vercel `api-deployments-free-per-day` response is **provider capacity = constr
 - [ ] Device bridge remains UNKNOWN until live publication and reachability are proven.
 - [ ] Review, dual-gate, mergeability, and task outcome are current-SHA-bound.
 - [ ] Post-promotion observation records run/job/artifact and resulting source/deployment SHA.
+- [ ] Notification volume reduced by modular router without loss of feature coverage.
+- [ ] Pinggy operational on device #1 with public obfuscated device ID.
 
 ## Operating receipt
 
 Every material cycle should retain the repository's existing receipt fields: operation, repo, base SHA, head SHA, observed-at timestamp, evidence IDs, state/outcome, provenance/confidence, decision, reason, and remaining unproven work. Use the established RECON → CLASSIFY → PLAN → ACT → WAIT → VALIDATE → RE-FETCH → RECORD → REPEAT loop; do not create a parallel phase system.
 
 **Truth boundary:** this document is a reconstructed execution map, not proof that CI passed, a provider quota is available, a fallback deployment is live, a device is healthy, or production promotion occurred.
+
+**Session note 2026-10-20:** Historical observatory failure resolved. Quota noise classified. Notification consolidation and device ID documented. Ready for router implementation and dual-device Pinggy verification.

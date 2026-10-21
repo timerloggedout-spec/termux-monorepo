@@ -12,6 +12,8 @@ The upstream project is a maintained, broad bootstrap stack (currently documente
 
 **This change:** adds a source-tracked metadata slot and a project-specific adoption contract. It deliberately does not run upstream installers, create a broken gitlink to a nonexistent project fork, or claim that the full stack is deployed. A custom fork and live gitlink remain a separate gated step.
 
+**Executable follow-up (THUB-010):** [`FLYWHEEL-RUNTIME.md`](FLYWHEEL-RUNTIME.md) documents `scripts/agentic/flywheel.py`: a repository-native dependency/triage/handoff/validation loop with versioned provenance receipts and CI coverage. This makes the local adoption lane executable while retaining all upstream adoption gates below. It does not install Agent Mail, br/bv or ACFS, post Delphi feedback, or deploy a live service.
+
 ## Repository-wide Flywheel audit (2026-10-21)
 
 The repository search for `flywheel` surfaced two related but distinct systems. The ACFS reference stack must be integrated *with* these existing project control planes, not mistaken for them or allowed to replace them.

@@ -6,14 +6,16 @@ No LLM calls, no third-party writes. Stdlib only.
 Pipeline (docs/ops/TRIBUTE-SYSTEM1.md):
   ingest (GitHub API thread / Gmail notification) -> dedupe by comment id
   -> extract_features -> classify (rules + lexicons, each label has a confidence)
-  -> route (action, escalation rung, lane_event, hark:queue entry, prefilter
+  -> route (action, ladder rung, re-plan, lane_event, audit record, prefilter
      rules, Delphi reweighting signal).
 
 Escalation ladder:
-  rung 0  system1        confident label -> auto-route (retire / yield / drop / revise / record)
-  rung 1  system2_llm    low confidence -> LLM pass (help-wanted-llm-assist), never a public post
-  rung 2  hitl           LLM unsure or question_to_us or maintainer spam flag ->
-                         hitl_control_plane proposal in AWAITING_APPROVAL -> hark:queue
+  rung 0  programmatic   deterministic state/assignee/close/diff/timeline checks
+  rung 1  system1        token/feature/semantic classifiers (lexicons, regex)
+  rung 2  system2_llm    only what System 1 cannot settle (incl. question_to_us)
+  rung 3  replan         LLM unsure -> the system re-plans the lane itself
+                         (yield / retire / park, tighten prefilters, Delphi
+                         reweight, pick next candidate). No HITL, no human queue.
 
 The classifier is advisory to every writer: nothing here posts anywhere.
 """
@@ -50,7 +52,7 @@ ACTIONS = {
     "needs_human_skill": "drop_candidate",
     "claimed_by_other": "yield_lane",
     "low_effort_placeholder": "retire_lane",
-    "hostile_spam_flag": "pause_repo",
+    "hostile_spam_flag": "retire_lane_cooldown",
     "question_to_us": "escalate",
     "changes_requested": "revise_patch",
     "approved": "await_merge",
@@ -332,35 +334,78 @@ def delphi_signal(primary: str | None, subject: dict) -> dict | None:
             "lesson": {"merged": "repeat", "approved": "repeat"}.get(primary, "reweight")}
 
 
+PROGRAMMATIC_PREFIXES = ("state:", "review:", "diff:", "timeline:", "body:")
+
+
+def replan(feats: dict, labels: list[dict], why: str) -> dict:
+    """Rung 3: the system re-plans the lane itself. No human in the loop."""
+    by = {l["label"] for l in labels}
+    steps: list[str] = []
+    if feats["assigned_to_other"] or feats["claims"] or "claimed_by_other" in by:
+        steps.append("yield_lane")
+    elif feats["state"] == "closed" and not feats["merged"]:
+        steps.append("retire_lane")
+    elif "hostile_spam_flag" in by:
+        steps += ["retire_lane", "repo_cooldown"]
+    else:
+        steps.append("park_lane")  # stop engaging; only fresh maintainer activity re-opens it
+    steps += ["tighten_prefilters", "delphi_reweight", "pick_next_candidate"]
+    return {"why": why, "steps": steps}
+
+
 def route(thread: dict, labels: list[dict] | None = None, feats: dict | None = None,
           system2: dict | None = None) -> dict:
-    """Decide the action and escalation rung. `system2` is an optional LLM verdict
-    {"label": str, "confidence": float, "unsure": bool} supplied by rung 1."""
+    """Ladder (no HITL): programmatic -> system1 -> system2_llm -> replan.
+
+    `system2` is the optional LLM verdict {"label", "confidence", "unsure",
+    "needs_public_reply"}. When the LLM is unsure the system re-plans the lane
+    itself. The only Owner stop is a standing rule (posting on a third-party
+    repo); it is recorded as owner_required and counted as HITL cost.
+    """
     subject = thread.get("subject") or {}
     feats = feats or extract_features(thread)
     labels = labels if labels is not None else classify(thread, feats)
     by = {l["label"]: l for l in labels}
     confident = [l for l in labels if l["confidence"] >= CONFIDENT]
-    primary = confident[0]["label"] if confident else (labels[0]["label"] if labels else None)
+    primary = confident[0]["label"] if confident else None
+    plan = None
+    owner_required = None
 
-    rung, reason = "system1", "confident"
-    if not labels:
-        rung, reason = ("system2_llm", "no_label") if feats["n_external_human"] else ("system1", "no_external_activity")
-    elif not confident:
-        rung, reason = "system2_llm", "low_confidence"
+    if confident and all(e.startswith(PROGRAMMATIC_PREFIXES) for e in confident[0]["evidence"][:1]):
+        rung, reason = "programmatic", "deterministic_signal"
+    elif confident:
+        rung, reason = "system1", "confident"
+    elif feats["n_external_human"]:
+        rung, reason = "system2_llm", "low_confidence" if labels else "no_label"
+    else:
+        rung, reason = "system1", "no_external_activity"
+    # A question to us cannot be settled by rules: the LLM decides between a
+    # patch revision, a re-plan, or (standing rule) an Owner-approved reply.
     if primary == "question_to_us":
-        rung, reason = "hitl", "question_to_us"
-    if primary == "hostile_spam_flag" and by["hostile_spam_flag"]["confidence"] >= CONFIDENT:
-        rung, reason = "hitl", "maintainer_spam_flag"
-    if system2 is not None and rung == "system2_llm":
-        if system2.get("unsure") or float(system2.get("confidence") or 0) < CONFIDENT:
-            rung, reason = "hitl", "system2_unsure"
-        else:
-            primary, rung, reason = system2.get("label"), "system1", "system2_confident"
+        rung, reason = "system2_llm", "question_to_us"
 
-    action = ACTIONS.get(primary, "noop") if rung == "system1" else ("escalate" if rung == "hitl" else "llm_review")
-    if rung == "system1" and reason == "no_external_activity":
+    if system2 is not None and rung == "system2_llm":
+        conf = float(system2.get("confidence") or 0)
+        if system2.get("unsure") or conf < CONFIDENT:
+            rung, reason = "replan", "system2_unsure"
+            plan = replan(feats, labels, reason)
+        elif system2.get("needs_public_reply"):
+            primary, rung, reason = system2.get("label") or primary, "system2_llm", "system2_confident"
+            owner_required = "post_on_third_party_repo"
+            plan = {"why": "reply drafted; posting upstream is a standing Owner stop", "steps": ["park_lane", "pick_next_candidate"]}
+        else:
+            primary, rung, reason = system2.get("label"), "system2_llm", "system2_confident"
+
+    if rung == "replan":
+        action = plan["steps"][0]
+    elif rung == "system2_llm" and system2 is None:
+        action = "llm_review"
+    elif reason == "no_external_activity":
         action = "noop"
+    else:
+        action = ACTIONS.get(primary, "noop")
+        if action == "escalate":
+            action = "park_lane"
     out = {
         "schema": SCHEMA,
         "subject": {k: subject.get(k) for k in ("repo", "number", "kind", "url", "state")},
@@ -369,8 +414,12 @@ def route(thread: dict, labels: list[dict] | None = None, feats: dict | None = N
         "action": action,
         "rung": rung,
         "reason": reason,
-        "escalate": rung != "system1",
-        "reengage_allowed": not (set(by) & NO_REENGAGE) and rung == "system1" and primary in (None, "changes_requested", "approved"),
+        "escalate": rung not in ("programmatic", "system1"),
+        "llm_call": rung == "system2_llm" or (system2 is not None),
+        "owner_required": owner_required,
+        "plan": plan,
+        "reengage_allowed": (not (set(by) & NO_REENGAGE) and rung in ("programmatic", "system1")
+                             and primary in (None, "changes_requested", "approved")),
         "prefilter_rules": prefilter_rules(by, feats),
         "features": feats,
         "delphi_signal": delphi_signal(primary, subject),
@@ -378,15 +427,10 @@ def route(thread: dict, labels: list[dict] | None = None, feats: dict | None = N
     out["lane_event"] = {
         "lane": "tribute", "workflow": "tribute-system1", "event_type": f"s1:{action}",
         "repo": subject.get("repo") or "", "subject_url": subject.get("url") or "",
-        "payload": {"primary": primary, "rung": rung, "labels": {l["label"]: l["confidence"] for l in labels}},
+        "payload": {"primary": primary, "rung": rung, "plan": plan, "labels": {l["label"]: l["confidence"] for l in labels}},
     }
-    if rung == "hitl":
-        out["hitl"] = {"intent": f"tribute:{primary or 'unknown'}", "target": subject.get("url"), "state": "AWAITING_APPROVAL"}
-        out["hark_queue"] = {
-            "title": f"Tribute reply needs a decision: {subject.get('repo')}#{subject.get('number')} ({primary or 'unclassified'})",
-            "key": _key(subject), "project": "tribute-system1-routing", "priority": "P1" if primary == "question_to_us" else "P2",
-            "done_when": "User decides; nothing is posted upstream without the user's OK",
-        }
+    # Audit-only record for hitl_control_plane (never AWAITING_APPROVAL).
+    out["audit"] = {"intent": f"tribute:{action}", "target": subject.get("url"), "state": "RECORDED", "audit_only": True}
     return out
 
 
@@ -521,8 +565,7 @@ def main(argv: list[str] | None = None) -> int:
     for p in (c, s):
         p.add_argument("--out", default="", help="decisions JSONL")
         p.add_argument("--lane-events", default="", help="lane_event.py --events-file JSONL")
-        p.add_argument("--hark-queue", default="", help="escalations JSONL for hark-enqueue")
-    a = ap.parse_args(argv)
+        a = ap.parse_args(argv)
     if a.cmd == "classify":
         threads = [json.loads(Path(p).read_text(encoding="utf-8")) for p in a.paths]
     else:
@@ -540,7 +583,6 @@ def main(argv: list[str] | None = None) -> int:
             Path(path).write_text("".join(json.dumps(r, sort_keys=True, default=str) + "\n" for r in rows), encoding="utf-8")
     dump(a.out, decisions)
     dump(a.lane_events, [dict(d["lane_event"], occurred_at=now) for d in decisions])
-    dump(a.hark_queue, [d["hark_queue"] for d in decisions if "hark_queue" in d])
     for d in decisions:
         print(f"{d['subject']['repo']}#{d['subject']['number']}\t{d['primary']}\t{d['action']}\t{d['rung']}\t"
               + ",".join(f"{l['label']}:{l['confidence']}" for l in d["labels"]))

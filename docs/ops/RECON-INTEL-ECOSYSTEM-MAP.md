@@ -132,3 +132,8 @@ Allowed disposition values: `APPROVED`, `APPROVED_WITH_OBLIGATIONS`, `REVIEW_REQ
 - MLflow: https://github.com/mlflow/mlflow
 
 **Research discipline:** links above are primary project/documentation entry points. This map is not a legal opinion or a guarantee of current release license. Before dependency adoption, capture the exact release/revision and inspect its license and all applicable data/model/service terms.
+
+
+## Machine-readable inventory
+
+The companion [ecosystem integration registry](ecosystem-integration-registry.v1.json) records each candidate's category, observed implementation status, evidence paths, upstream URLs, next action, and license-review state. Its baseline SHA is a historical observation, not a live ref; refresh it before making promotion decisions.

@@ -49,3 +49,20 @@ How other lanes file RFPs into the Delphi gate and consume its awards. Payloads 
 Consumers read the newest comment starting with `<!-- delphi-ledger v1 -->`.
 
 Signed-off-by: Hark (OPERATOR) delphi-gate-2026-10-20 / project-bbf883e1
+
+## Emitting events from a workflow (2026-10-21)
+
+`repository_dispatch` needs a PAT. Workflows inside this repo should call the reusable emitter instead. It validates the event name and dispatches `delphi-gate.yml` with `GITHUB_TOKEN`:
+
+```yaml
+jobs:
+  wake-delphi:
+    uses: ./.github/workflows/delphi-signal.yml
+    permissions: { actions: write }
+    with:
+      event: hindsight-forecast-miss   # or quota-registry-changed | foresight-radar-hit | delphi-feedback | delphi-rfp
+      rfp: "1423"                      # feedback / forecast miss only
+      outcome: ""                      # confirmed | miss for delphi-feedback
+```
+
+Consumers who want every award in one place should read the `delphi:board` issue (generated). Per-RFP ledger comments remain the record.

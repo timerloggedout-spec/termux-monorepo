@@ -4,8 +4,8 @@
 #            false re-engage gate) on every change to the classifier.
 # - route:   read-only scan of foreign threads (GET only; never posts on
 #            third-party repos). Backfill = workflow_dispatch with an old `since`.
-# - enqueue: escalations (rung hitl) -> hark:queue via hark-enqueue.yml, only
-#            when repo variable TRIBUTE_S1_ENQUEUE == 'true' (shadow by default).
+# No HITL: the ladder is programmatic -> System 1 -> LLM -> self re-plan.
+# Nothing is routed to a person or to hark:queue; decisions land as lane_events.
 name: tribute-system1
 
 on:
@@ -63,8 +63,6 @@ jobs:
     timeout-minutes: 20
     permissions:
       contents: write   # only for the tribute-s1/backfill branch, never master
-    outputs:
-      escalations: ${{ steps.esc.outputs.json }}
     env:
       GITHUB_TOKEN: ${{ github.token }}
     steps:
@@ -79,7 +77,7 @@ jobs:
           since="${SINCE:-$(date -u -d '3 days ago' +%F)}"
           case "$since" in [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]) ;; *) echo "::error::since must be YYYY-MM-DD"; exit 1;; esac
           python scripts/ci/tribute_system1.py scan --since "$since" \
-            --out decisions.jsonl --lane-events lane-events.jsonl --hark-queue hark-queue.jsonl | tee scan.tsv
+            --out decisions.jsonl --lane-events lane-events.jsonl | tee scan.tsv
           {
             echo "## Tribute System 1 scan since $since"
             echo
@@ -91,14 +89,6 @@ jobs:
           LANE_EVENTS_DATABASE_URL: ${{ secrets.LANE_EVENTS_DATABASE_URL }}
           NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
         run: python scripts/ops/lane_event.py record --events-file lane-events.jsonl || true
-      - name: Escalations for hark:queue
-        id: esc
-        run: |
-          python - <<'PY' >> "$GITHUB_OUTPUT"
-          import json
-          rows=[json.loads(l) for l in open("hark-queue.jsonl") if l.strip()][:10]
-          print("json="+json.dumps(rows))
-          PY
       - uses: actions/upload-artifact@v4
         with: { name: tribute-s1-decisions, path: "*.jsonl", retention-days: 30 }
       - name: Publish backfill to branch tribute-s1/backfill
@@ -116,21 +106,3 @@ jobs:
           fi
           mkdir -p backfill && cp /tmp/decisions.jsonl "backfill/$day.jsonl"
           git add backfill && git commit -m "tribute-s1: backfill decisions $day [skip render]" && git push origin HEAD:tribute-s1/backfill
-
-  enqueue:
-    needs: route
-    if: needs.route.outputs.escalations != '[]' && needs.route.outputs.escalations != '' && vars.TRIBUTE_S1_ENQUEUE == 'true'
-    strategy:
-      max-parallel: 1
-      matrix:
-        job: ${{ fromJSON(needs.route.outputs.escalations) }}
-    permissions:
-      issues: write
-      contents: read
-    uses: ./.github/workflows/hark-enqueue.yml
-    with:
-      title: ${{ matrix.job.title }}
-      key: ${{ matrix.job.key }}
-      project: ${{ matrix.job.project }}
-      priority: ${{ matrix.job.priority }}
-      done_when: ${{ matrix.job.done_when }}

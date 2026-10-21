@@ -20,6 +20,8 @@ on:
       - 'scripts/provider_model_catalog.py'
       - 'scripts/provider_quota_coverage.py'
       - 'scripts/provider_quota_managers.py'
+      - 'scripts/provider_quota_service.py'
+      - 'tests/test_provider_quota_service.py'
       - 'scripts/provider_quota_transport.py'
       - 'ops/quota/static-service-mappings.json'
       - 'tests/test_provider_quota_transport.py'
@@ -73,6 +75,8 @@ on:
       - 'scripts/provider_model_catalog.py'
       - 'scripts/provider_quota_coverage.py'
       - 'scripts/provider_quota_managers.py'
+      - 'scripts/provider_quota_service.py'
+      - 'tests/test_provider_quota_service.py'
       - 'scripts/provider_quota_transport.py'
       - 'ops/quota/static-service-mappings.json'
       - 'tests/test_provider_quota_transport.py'
@@ -132,7 +136,7 @@ jobs:
           python3 -m pytest -q tests/test_provider_model_catalog.py tests/test_provider_batch.py tests/test_review_evidence.py tests/test_research_provider_hub.py tests/test_llm_api_hub_server.py
           python3 -m pytest -q tests/test_provider_recon.py tests/test_market_cadence.py tests/test_publish_provider_recon.py tests/test_resource_index.py tests/test_resource_registry.py
           python3 -m unittest scripts.model_selection_market.test_msm
-          python3 -m pytest -q tests/test_provider_quota_managers.py tests/test_provider_quota_transport.py tests/test_provider_quota_coverage.py tests/test_quota_dashboard.py tests/test_quota_poll.py tests/test_delphi_gate.py
+          python3 -m pytest -q tests/test_provider_quota_managers.py tests/test_provider_quota_transport.py tests/test_provider_quota_service.py tests/test_provider_quota_coverage.py tests/test_quota_dashboard.py tests/test_quota_poll.py tests/test_delphi_gate.py
           python3 scripts/provider_quota_coverage.py --check apps/help-wanted-dashboard/data/provider-quota-coverage.json
   diagnose:
     needs: contracts

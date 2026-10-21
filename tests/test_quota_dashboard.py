@@ -110,14 +110,16 @@ def test_dashboard_does_not_equate_static_links_or_parsers_with_live_managers():
     html = (ROOT / "apps/help-wanted-dashboard/quota.html").read_text()
     assert "static adapter links" in html
     assert "quota-service mappings" in html
-    assert "passive parsers · live accounts unknown" in html
+    assert "passive parsers · " in html and "live accounts unknown" in html
     assert "r.static_mapping_state==='static_roster_link_only'" in html
     assert "r.mapping_state==='documented_registry_mapping'" in html
     snapshot = json.loads((ROOT / "apps/help-wanted-dashboard/data/provider-quota-coverage.json").read_text())
     counts = snapshot["coverage_counts"]
     assert "live_account_managers" not in counts
     assert counts["implemented_passive_adapters"] == 6
-    assert counts["missing_actual_quota_service_mappings"] == 18
+    assert counts["missing_actual_quota_service_mappings"] == 17
+    assert counts["opt_in_private_service_managers"] == 1
+    assert "opt-in private services" in html
     assert all(row["evidence_state"] == "unknown" for row in snapshot["provider_families"])
 
 

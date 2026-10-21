@@ -14,7 +14,10 @@ def test_provider_families_exhaust_registry_and_no_alias_hiding():
     assert "gemini" in families and "google" not in families
     assert families["gemini"]["quota_manager_owner"] == "Manager"
     assert families["gemini"]["observation_method"] == "official_documentation_only; no passive parser"
-    assert families["ollama"]["covered"] is False
+    assert families["ollama"]["covered"] is True
+    assert families["ollama"]["opt_in_private_service_ids"] == ["ollama.balance"]
+    assert families["ollama"]["reader_service_ids"] == []  # Not an automatic collector.
+    assert families["ollama"]["live_account_validation"] == "unknown"
     assert families["cloudflare"]["covered"] is False  # D1/Queues is not an inference quota
     assert families["openrouter"]["reader_service_ids"] == ["openrouter.free_models"]
     assert all(r["evidence_state"] == "unknown" for r in families.values())
@@ -29,9 +32,10 @@ def test_static_mappings_exhaust_canonical_roster_without_claiming_quota_service
     assert counts["provider_families"] == len(coverage._providers())
     assert counts["static_adapter_mappings"] == len(families)
     assert counts["missing_static_adapter_mappings"] == 0
-    # The 18 prior gaps are static adapter links, not invented quota services.
-    assert counts["actual_quota_service_mappings"] == 2
-    assert counts["missing_actual_quota_service_mappings"] == 18
+    # One implemented opt-in balance service is not live account validation.
+    assert counts["actual_quota_service_mappings"] == 3
+    assert counts["missing_actual_quota_service_mappings"] == 17
+    assert counts["opt_in_private_service_managers"] == 1
     assert counts["implemented_passive_adapters"] == sum(
         row["manager_status"] == "implemented_passive_adapter" for row in families.values()
     )

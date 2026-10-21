@@ -2,7 +2,7 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-10-21T02:20:37Z` UTC  
+**Generated:** `2026-10-21T03:34:18Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
 **Count:** 79 docs-lane branch(es)
@@ -72,7 +72,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/proposals/codespaces-enablement`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/proposals/codespaces-enablement) | `0dc0c23dbb15` | [#500](https://github.com/timerloggedout-spec/termux-monorepo/pull/500)→`master` | — | PR without registry link |
 | [`docs/proposals/demo-portal`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/proposals/demo-portal) | `563c02aa8de5` | — | `Claude` | registered; no open PR |
 | [`docs/proposals/vercel-lane-topology`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/proposals/vercel-lane-topology) | `7b45afe7373e` | — | `Claude` | registered; no open PR |
-| [`docs/provenance-record-kwonly-docstring`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/provenance-record-kwonly-docstring) | `6fe7e7282d50` | [#1103](https://github.com/timerloggedout-spec/termux-monorepo/pull/1103)→`master` | — | PR without registry link |
+| [`docs/provenance-record-kwonly-docstring`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/provenance-record-kwonly-docstring) | `6fe7e7282d50` | — | — | orphan lane |
 | [`docs/provider-batch-current-state-reconciliation`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/provider-batch-current-state-reconciliation) | `9bdb107ee58e` | — | — | orphan lane |
 | [`docs/provider-contributor-roster-expansion`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/provider-contributor-roster-expansion) | `34cc0be9fb0e` | — | — | orphan lane |
 | [`docs/provider-production-receipt-1307`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/provider-production-receipt-1307) | `1c4bd647593f` | — | — | orphan lane |

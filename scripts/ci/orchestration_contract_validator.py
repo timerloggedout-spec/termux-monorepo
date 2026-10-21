@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import json
-import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -29,7 +28,7 @@ def _load(path: Path, errors: list[str]) -> dict[str, Any] | None:
     try:
         value = json.loads(path.read_text(encoding="utf-8"))
     except FileNotFoundError:
-        errors.append(f"missing required schema: {path.relative_to(ROOT)}")
+        errors.append(f"missing required schema: {path.as_posix()}")
     except (OSError, json.JSONDecodeError) as exc:
         errors.append(f"cannot read valid JSON from {path.relative_to(ROOT)}: {exc}")
     else:

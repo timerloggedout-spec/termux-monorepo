@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "90522766911f2b549be6b82f1f1bbc9b7ea937205fba262aa666eb859b62cfad",
+  "source_fingerprint": "ce110c0ac26a63476dfc4a9d85d0fc32f79fc1477417d642886de7cb4f185fb3",
   "workflow_count": 165,
   "workflows": [
     {
@@ -3001,7 +3001,6 @@
       "concurrency": "group: tribute-system1-${{ github.event_name }}-${{ github.ref }} cancel-in-progress: true",
       "domain": "agentic-development",
       "jobs": [
-        "enqueue",
         "eval",
         "route"
       ],

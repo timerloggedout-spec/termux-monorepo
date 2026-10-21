@@ -1,97 +1,569 @@
 {
-  "schema": "delphi.surfaces.v1",
-  "doc": "docs/ops/DELPHI-ORACLE-RFP-GATE.md",
-  "rules": [
-    "Oracle facts only: every limit carries the source URL it came from; limit null means no fetched page states a number (FREE-QUOTA-WINDOWS.md). Never invent a balance.",
-    "sourced=true only when the limit was read from the vendor page named in source (fetched_at says when).",
-    "auth.present: true = secret/credential verified present in Actions; false = verified absent; null = unverified. Values are never recorded.",
-    "headroom 1-5 = how much free allowance the planned workload leaves (5 = workload is a rounding error of the cap). lock_in 1-5 (5 = hardest to leave). fit 1-5 = fit to the ledger/queue/model/observability lanes that asked."
-  ],
-  "surfaces": [
-    {"id": "neon.realtime", "title": "Neon Realtime (beta)", "lane": "data", "registry_id": "neon.realtime", "horizon": "H2",
-     "quota": {"metric": "Realtime subscriptions (beta)", "limit": null, "unit": "free during beta (unverified)", "window": "n/a", "reset": "n/a", "zone": "UTC", "source": "https://neon.com/docs/realtime/overview"},
-     "sourced": false, "auth": {"actions_secret": "NEON_API_KEY", "present": false}, "lock_in": 3, "fit": 4, "headroom": 3,
-     "failure_modes": ["beta terms can change", "compute auto-suspend adds cold-start latency", "no NEON_API_KEY repo secret yet (lane_events recorder no-ops)"],
-     "card_required": false, "overage_autobill": false},
-    {"id": "neon.data_api", "title": "Neon Data API (HTTP/PostgREST-style)", "lane": "data", "registry_id": "neon.compute", "horizon": "H1",
-     "quota": {"metric": "compute shared with project", "limit": 100, "unit": "CU-hours/project/month", "window": "monthly", "reset": "billing month", "zone": "UTC", "source": "https://neon.com/docs/introduction/plans"},
-     "sourced": true, "auth": {"actions_secret": "NEON_API_KEY", "present": false}, "lock_in": 2, "fit": 4, "headroom": 4,
-     "failure_modes": ["shares the 100 CU-hour compute budget", "no NEON_API_KEY repo secret yet"],
-     "card_required": false, "overage_autobill": false},
-    {"id": "platform201.solo", "title": "Platform201 Solo (visual GCP backend deployer)", "lane": "deploy", "registry_id": null, "horizon": "H2",
-     "quota": {"metric": "Solo plan allowance", "limit": null, "unit": "unpublished", "window": "unknown", "reset": "unknown", "zone": "UTC", "source": "https://app.platform201.com/sign-in"},
-     "sourced": false, "auth": {"actions_secret": null, "present": false, "note": "web login only (Kinde email code); no Actions credential"}, "lock_in": 4, "fit": 3, "headroom": 3,
-     "failure_modes": ["no public pricing page fetched", "no API token for Actions", "vendor-specific blueprints"],
-     "card_required": false, "overage_autobill": false},
-    {"id": "render.free", "title": "Render free (web service + Postgres + Key Value)", "lane": "deploy", "registry_id": "render.instance_hours", "horizon": "H0",
-     "quota": {"metric": "free instance hours", "limit": 750, "unit": "hours/month", "window": "calendar month", "reset": "1st of month (assumed)", "zone": "UTC", "source": "https://render.com/docs/free"},
-     "sourced": true, "auth": {"actions_secret": "RENDER_API_KEY", "present": null}, "lock_in": 2, "fit": 3, "headroom": 2,
-     "failure_modes": ["500 pipeline minutes/month exhausted (500/500 observed 2026-10-19)", "15-minute spin-down cold starts", "free Postgres expires 30 days after creation"],
-     "card_required": false, "overage_autobill": false},
-    {"id": "vercel.hobby", "title": "Vercel Hobby", "lane": "deploy", "registry_id": "vercel.deployments", "horizon": "H0",
-     "quota": {"metric": "deployments created", "limit": 100, "unit": "deployments/day", "window": "rolling 24h", "reset": "rolling", "zone": "UTC", "source": "https://vercel.com/docs/limits"},
-     "sourced": true, "auth": {"actions_secret": "VERCEL_TOKEN", "present": true}, "lock_in": 2, "fit": 3, "headroom": 2,
-     "failure_modes": ["api-deployments-free-per-day hit 2026-10-18 and 2026-10-19", "preview builds on bot commits burn the daily cap"],
-     "card_required": false, "overage_autobill": false},
-    {"id": "supabase.free", "title": "Supabase Free", "lane": "data", "registry_id": "supabase.free", "horizon": "H1",
-     "quota": {"metric": "database size / egress / realtime messages", "limit": 500, "unit": "MB database (+5 GB egress, 2M realtime msgs/month, 200 peak realtime connections, 500K edge invocations)", "window": "monthly", "reset": "billing month", "zone": "UTC", "source": "https://supabase.com/pricing", "fetched_at": "2026-10-20"},
-     "sourced": true, "auth": {"actions_secret": "SUPABASE_ACCESS_TOKEN", "present": null}, "lock_in": 2, "fit": 4, "headroom": 4,
-     "failure_modes": ["free projects pause after 1 week of inactivity", "limit of 2 active projects", "no automatic backups on free"],
-     "card_required": false, "overage_autobill": false},
-    {"id": "cloudflare.d1_queues", "title": "Cloudflare D1 + Queues (Workers Free)", "lane": "data", "registry_id": "cloudflare.d1_queues", "horizon": "H1",
-     "quota": {"metric": "D1 rows read/written; Queues operations", "limit": 100000, "unit": "D1 rows written/day (+5M rows read/day, 5 GB storage; Queues 10,000 ops/day, 24h retention)", "window": "daily", "reset": "00:00", "zone": "UTC", "source": "https://developers.cloudflare.com/d1/platform/pricing/", "source_2": "https://developers.cloudflare.com/queues/platform/pricing/", "fetched_at": "2026-10-20"},
-     "sourced": true, "auth": {"actions_secret": "CLOUDFLARE_API_TOKEN", "present": null}, "lock_in": 3, "fit": 4, "headroom": 4,
-     "failure_modes": ["hard stop with errors at the daily cap", "Queues retention fixed at 24h on free", "needs a Worker in front (Workers runtime lock-in)"],
-     "card_required": false, "overage_autobill": false},
-    {"id": "upstash.free", "title": "Upstash Redis Free", "lane": "queue", "registry_id": "upstash.free", "horizon": "H1",
-     "quota": {"metric": "commands", "limit": 500000, "unit": "commands/month (+250 MB data, 10 GB bandwidth, 1 free DB)", "window": "monthly", "reset": "billing period", "zone": "UTC", "source": "https://upstash.com/pricing/redis", "fetched_at": "2026-10-20"},
-     "sourced": true, "auth": {"actions_secret": "UPSTASH_REDIS_REST_TOKEN", "present": null}, "lock_in": 2, "fit": 3, "headroom": 3,
-     "failure_modes": ["500K commands/month is tight for a polling queue", "rate limited at cap"],
-     "card_required": false, "overage_autobill": false},
-    {"id": "turso.free", "title": "Turso Free (libSQL)", "lane": "data", "registry_id": "turso.free", "horizon": "H1",
-     "quota": {"metric": "rows written", "limit": 10000000, "unit": "rows written/month (+500M rows read, 5 GB, 100 DBs, 3 GB syncs)", "window": "monthly", "reset": "billing month", "zone": "UTC", "source": "https://turso.tech/pricing", "fetched_at": "2026-10-20"},
-     "sourced": true, "auth": {"actions_secret": "TURSO_AUTH_TOKEN", "present": null}, "lock_in": 2, "fit": 4, "headroom": 5,
-     "failure_modes": ["vendor announced it is joining Supabase (plan terms may change)", "SQLite dialect differs from Postgres ledger code"],
-     "card_required": false, "overage_autobill": false},
-    {"id": "github.native_ledger", "title": "GitHub-native ledger (issues + comments + Actions)", "lane": "data", "registry_id": "github.api.github_token", "horizon": "H0",
-     "quota": {"metric": "REST requests via GITHUB_TOKEN", "limit": 1000, "unit": "requests/hour/repo", "window": "hourly", "reset": "x-ratelimit-reset header", "zone": "UTC", "source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api"},
-     "sourced": true, "auth": {"actions_secret": "GITHUB_TOKEN", "present": true}, "lock_in": 1, "fit": 5, "headroom": 4,
-     "failure_modes": ["hourly API rate limit", "not queryable like SQL", "public repo: never store secrets or private data"],
-     "card_required": false, "overage_autobill": false},
-    {"id": "gemini.free", "title": "Gemini API free tier", "lane": "model", "registry_id": "gemini.api_free", "horizon": "H0",
-     "quota": {"metric": "RPM/TPM/RPD per model", "limit": null, "unit": "per-model", "window": "daily (RPD)", "reset": "midnight", "zone": "America/Los_Angeles", "source": "https://ai.google.dev/gemini-api/docs/rate-limits"},
-     "sourced": true, "auth": {"actions_secret": "GEMINI_API_KEY", "present": null}, "lock_in": 2, "fit": 4, "headroom": 3,
-     "failure_modes": ["429 at RPD cap", "per-model limits change without notice"],
-     "card_required": false, "overage_autobill": false},
-    {"id": "openrouter.free", "title": "OpenRouter :free models", "lane": "model", "registry_id": "openrouter.free_models", "horizon": "H0",
-     "quota": {"metric": ":free model requests", "limit": null, "unit": "requests/day (tiered by credits purchased)", "window": "daily", "reset": "per GET /api/v1/key", "zone": "UTC", "source": "https://openrouter.ai/docs/api-reference/limits"},
-     "sourced": true, "auth": {"actions_secret": "OPENROUTER_API_KEY", "present": null}, "lock_in": 1, "fit": 4, "headroom": 3,
-     "failure_modes": ["daily cap depends on credits ever purchased", "free model list rotates"],
-     "card_required": false, "overage_autobill": false},
-    {"id": "g4f.vendors", "title": "g4f / gpt4free-templated providers (multi-ai-cli/vendors)", "lane": "model", "registry_id": "g4f.vendors", "horizon": "H2",
-     "quota": {"metric": "web-wrapped endpoints", "limit": null, "unit": "unmetered / unknown", "window": "unknown", "reset": "unknown", "zone": "UTC", "source": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/multi-ai-cli/vendors/README.md"},
-     "sourced": false, "auth": {"actions_secret": null, "present": true, "note": "none needed"}, "lock_in": 1, "fit": 3, "headroom": 3,
-     "failure_modes": ["undocumented limits", "upstream breakage / terms risk", "experiment label required by FREE-QUOTA-WINDOWS router rule"],
-     "card_required": false, "overage_autobill": false},
-    {"id": "grafana.cloud_free", "title": "Grafana Cloud Free", "lane": "observability", "registry_id": "grafana.cloud_free", "horizon": "H1",
-     "quota": {"metric": "ingestion rate per series", "limit": 10000, "unit": "samples/s", "window": "instant", "reset": "n/a", "zone": "UTC", "source": "https://grafana.com/docs/grafana-cloud/cost-management-and-billing/understand-your-invoice/usage-limits/"},
-     "sourced": true, "auth": {"actions_secret": "GRAFANA_CLOUD_TOKEN", "present": null}, "lock_in": 2, "fit": 3, "headroom": 4,
-     "failure_modes": ["monthly series/log/trace allowances not verified on a fetched page"],
-     "card_required": false, "overage_autobill": false},
-    {"id": "cellcog.credits", "title": "CellCog referral credits", "lane": "partner", "registry_id": "partners.credits", "horizon": "H2",
-     "quota": {"metric": "bonus credits", "limit": 500, "unit": "one-time credits on first purchase", "window": "one-time", "reset": "none", "zone": "UTC", "source": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/PARTNERS.md"},
-     "sourced": false, "auth": {"actions_secret": null, "present": false}, "lock_in": 3, "fit": 2, "headroom": 1,
-     "failure_modes": ["bonus requires a first purchase (money)", "one-time, no reset"],
-     "card_required": true, "overage_autobill": false},
-    {"id": "manus.credits", "title": "Manus invitation credits", "lane": "partner", "registry_id": "partners.credits", "horizon": "H2",
-     "quota": {"metric": "invitation credits", "limit": null, "unit": "unspecified", "window": "one-time", "reset": "none", "zone": "UTC", "source": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/PARTNERS.md"},
-     "sourced": false, "auth": {"actions_secret": null, "present": false}, "lock_in": 3, "fit": 2, "headroom": 2,
-     "failure_modes": ["credit amount not stated", "no Actions API path", "one-time"],
-     "card_required": false, "overage_autobill": false},
-    {"id": "polsia.credits", "title": "Polsia referral credits", "lane": "partner", "registry_id": "partners.credits", "horizon": "H2",
-     "quota": {"metric": "extra credits", "limit": 500, "unit": "one-time credits (per #574, verify on signup)", "window": "one-time", "reset": "none", "zone": "UTC", "source": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/PARTNERS.md"},
-     "sourced": false, "auth": {"actions_secret": null, "present": false}, "lock_in": 3, "fit": 2, "headroom": 2,
-     "failure_modes": ["amount unverified", "no Actions API path", "one-time"],
-     "card_required": false, "overage_autobill": false}
-  ]
+ "schema": "delphi.surfaces.v1",
+ "doc": "docs/ops/DELPHI-ORACLE-RFP-GATE.md",
+ "rules": [
+  "Oracle facts only: every limit carries the source URL it came from; limit null means no fetched page states a number (FREE-QUOTA-WINDOWS.md). Never invent a balance.",
+  "sourced=true only when the limit was read from the vendor page named in source (fetched_at says when).",
+  "auth.present: true = secret/credential verified present in Actions; false = verified absent; null = unverified. Values are never recorded.",
+  "headroom 1-5 = how much free allowance the planned workload leaves (5 = workload is a rounding error of the cap). lock_in 1-5 (5 = hardest to leave). fit 1-5 = fit to the ledger/queue/model/observability lanes that asked."
+ ],
+ "surfaces": [
+  {
+   "id": "neon.realtime",
+   "title": "Neon Realtime (beta)",
+   "lane": "data",
+   "registry_id": "neon.realtime",
+   "horizon": "H2",
+   "quota": {
+    "metric": "Realtime subscriptions (beta)",
+    "limit": null,
+    "unit": "free during beta (unverified)",
+    "window": "n/a",
+    "reset": "n/a",
+    "zone": "UTC",
+    "source": "https://neon.com/docs/realtime/overview"
+   },
+   "sourced": false,
+   "auth": {
+    "actions_secret": "NEON_API_KEY",
+    "present": false
+   },
+   "lock_in": 3,
+   "fit": 4,
+   "headroom": 3,
+   "failure_modes": [
+    "beta terms can change",
+    "compute auto-suspend adds cold-start latency",
+    "no NEON_API_KEY repo secret yet (lane_events recorder no-ops)"
+   ],
+   "card_required": false,
+   "overage_autobill": false
+  },
+  {
+   "id": "neon.data_api",
+   "title": "Neon Data API (HTTP/PostgREST-style)",
+   "lane": "data",
+   "registry_id": "neon.compute",
+   "horizon": "H1",
+   "quota": {
+    "metric": "compute shared with project",
+    "limit": 100,
+    "unit": "CU-hours/project/month",
+    "window": "monthly",
+    "reset": "billing month",
+    "zone": "UTC",
+    "source": "https://neon.com/docs/introduction/plans"
+   },
+   "sourced": true,
+   "auth": {
+    "actions_secret": "NEON_API_KEY",
+    "present": false
+   },
+   "lock_in": 2,
+   "fit": 4,
+   "headroom": 4,
+   "failure_modes": [
+    "shares the 100 CU-hour compute budget",
+    "no NEON_API_KEY repo secret yet"
+   ],
+   "card_required": false,
+   "overage_autobill": false
+  },
+  {
+   "id": "platform201.solo",
+   "title": "Platform201 Solo (visual GCP backend deployer)",
+   "lane": "deploy",
+   "registry_id": null,
+   "horizon": "H2",
+   "quota": {
+    "metric": "Solo plan allowance",
+    "limit": null,
+    "unit": "unpublished",
+    "window": "unknown",
+    "reset": "unknown",
+    "zone": "UTC",
+    "source": "https://app.platform201.com/sign-in"
+   },
+   "sourced": false,
+   "auth": {
+    "actions_secret": null,
+    "present": false,
+    "note": "web login only (Kinde email code); no Actions credential"
+   },
+   "lock_in": 4,
+   "fit": 3,
+   "headroom": 3,
+   "failure_modes": [
+    "no public pricing page fetched",
+    "no API token for Actions",
+    "vendor-specific blueprints"
+   ],
+   "card_required": false,
+   "overage_autobill": false
+  },
+  {
+   "id": "render.free",
+   "title": "Render free (web service + Postgres + Key Value)",
+   "lane": "deploy",
+   "registry_id": "render.instance_hours",
+   "horizon": "H0",
+   "quota": {
+    "metric": "free instance hours",
+    "limit": 750,
+    "unit": "hours/month",
+    "window": "calendar month",
+    "reset": "1st of month (assumed)",
+    "zone": "UTC",
+    "source": "https://render.com/docs/free"
+   },
+   "sourced": true,
+   "auth": {
+    "actions_secret": "RENDER_API_KEY",
+    "present": null
+   },
+   "lock_in": 2,
+   "fit": 3,
+   "headroom": 2,
+   "failure_modes": [
+    "500 pipeline minutes/month exhausted (500/500 observed 2026-10-19)",
+    "15-minute spin-down cold starts",
+    "free Postgres expires 30 days after creation"
+   ],
+   "card_required": false,
+   "overage_autobill": false
+  },
+  {
+   "id": "vercel.hobby",
+   "title": "Vercel Hobby",
+   "lane": "deploy",
+   "registry_id": "vercel.deployments",
+   "horizon": "H0",
+   "quota": {
+    "metric": "deployments created",
+    "limit": 100,
+    "unit": "deployments/day",
+    "window": "rolling 24h",
+    "reset": "rolling",
+    "zone": "UTC",
+    "source": "https://vercel.com/docs/limits"
+   },
+   "sourced": true,
+   "auth": {
+    "actions_secret": "VERCEL_TOKEN",
+    "present": true
+   },
+   "lock_in": 2,
+   "fit": 3,
+   "headroom": 2,
+   "failure_modes": [
+    "api-deployments-free-per-day hit 2026-10-18 and 2026-10-19",
+    "preview builds on bot commits burn the daily cap"
+   ],
+   "card_required": false,
+   "overage_autobill": false
+  },
+  {
+   "id": "supabase.free",
+   "title": "Supabase Free",
+   "lane": "data",
+   "registry_id": "supabase.free",
+   "horizon": "H1",
+   "quota": {
+    "metric": "database size / egress / realtime messages",
+    "limit": 500,
+    "unit": "MB database (+5 GB egress, 2M realtime msgs/month, 200 peak realtime connections, 500K edge invocations)",
+    "window": "monthly",
+    "reset": "billing month",
+    "zone": "UTC",
+    "source": "https://supabase.com/pricing",
+    "fetched_at": "2026-10-20"
+   },
+   "sourced": true,
+   "auth": {
+    "actions_secret": "SUPABASE_ACCESS_TOKEN",
+    "present": null
+   },
+   "lock_in": 2,
+   "fit": 4,
+   "headroom": 4,
+   "failure_modes": [
+    "free projects pause after 1 week of inactivity",
+    "limit of 2 active projects",
+    "no automatic backups on free"
+   ],
+   "card_required": false,
+   "overage_autobill": false
+  },
+  {
+   "id": "cloudflare.d1_queues",
+   "title": "Cloudflare D1 + Queues (Workers Free)",
+   "lane": "data",
+   "registry_id": "cloudflare.d1_queues",
+   "horizon": "H1",
+   "quota": {
+    "metric": "D1 rows read/written; Queues operations",
+    "limit": 100000,
+    "unit": "D1 rows written/day (+5M rows read/day, 5 GB storage; Queues 10,000 ops/day, 24h retention)",
+    "window": "daily",
+    "reset": "00:00",
+    "zone": "UTC",
+    "source": "https://developers.cloudflare.com/d1/platform/pricing/",
+    "source_2": "https://developers.cloudflare.com/queues/platform/pricing/",
+    "fetched_at": "2026-10-20"
+   },
+   "sourced": true,
+   "auth": {
+    "actions_secret": "CLOUDFLARE_API_TOKEN",
+    "present": null
+   },
+   "lock_in": 3,
+   "fit": 4,
+   "headroom": 4,
+   "failure_modes": [
+    "hard stop with errors at the daily cap",
+    "Queues retention fixed at 24h on free",
+    "needs a Worker in front (Workers runtime lock-in)"
+   ],
+   "card_required": false,
+   "overage_autobill": false
+  },
+  {
+   "id": "upstash.free",
+   "title": "Upstash Redis Free",
+   "lane": "queue",
+   "registry_id": "upstash.free",
+   "horizon": "H1",
+   "quota": {
+    "metric": "commands",
+    "limit": 500000,
+    "unit": "commands/month (+250 MB data, 10 GB bandwidth, 1 free DB)",
+    "window": "monthly",
+    "reset": "billing period",
+    "zone": "UTC",
+    "source": "https://upstash.com/pricing/redis",
+    "fetched_at": "2026-10-20"
+   },
+   "sourced": true,
+   "auth": {
+    "actions_secret": "UPSTASH_REDIS_REST_TOKEN",
+    "present": null
+   },
+   "lock_in": 2,
+   "fit": 3,
+   "headroom": 3,
+   "failure_modes": [
+    "500K commands/month is tight for a polling queue",
+    "rate limited at cap"
+   ],
+   "card_required": false,
+   "overage_autobill": false
+  },
+  {
+   "id": "turso.free",
+   "title": "Turso Free (libSQL)",
+   "lane": "data",
+   "registry_id": "turso.free",
+   "horizon": "H1",
+   "quota": {
+    "metric": "rows written",
+    "limit": 10000000,
+    "unit": "rows written/month (+500M rows read, 5 GB, 100 DBs, 3 GB syncs)",
+    "window": "monthly",
+    "reset": "billing month",
+    "zone": "UTC",
+    "source": "https://turso.tech/pricing",
+    "fetched_at": "2026-10-20"
+   },
+   "sourced": true,
+   "auth": {
+    "actions_secret": "TURSO_AUTH_TOKEN",
+    "present": null
+   },
+   "lock_in": 2,
+   "fit": 4,
+   "headroom": 5,
+   "failure_modes": [
+    "vendor announced it is joining Supabase (plan terms may change)",
+    "SQLite dialect differs from Postgres ledger code"
+   ],
+   "card_required": false,
+   "overage_autobill": false
+  },
+  {
+   "id": "github.native_ledger",
+   "title": "GitHub-native ledger (issues + comments + Actions)",
+   "lane": "data",
+   "registry_id": "github.api.github_token",
+   "horizon": "H0",
+   "quota": {
+    "metric": "REST requests via GITHUB_TOKEN",
+    "limit": 1000,
+    "unit": "requests/hour/repo",
+    "window": "hourly",
+    "reset": "x-ratelimit-reset header",
+    "zone": "UTC",
+    "source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api"
+   },
+   "sourced": true,
+   "auth": {
+    "actions_secret": "GITHUB_TOKEN",
+    "present": true
+   },
+   "lock_in": 1,
+   "fit": 5,
+   "headroom": 4,
+   "failure_modes": [
+    "hourly API rate limit",
+    "not queryable like SQL",
+    "public repo: never store secrets or private data"
+   ],
+   "card_required": false,
+   "overage_autobill": false
+  },
+  {
+   "id": "gemini.free",
+   "title": "Gemini API free tier",
+   "lane": "model",
+   "registry_id": "gemini.api_free",
+   "horizon": "H0",
+   "quota": {
+    "metric": "RPM/TPM/RPD per model",
+    "limit": null,
+    "unit": "per-model",
+    "window": "daily (RPD)",
+    "reset": "midnight",
+    "zone": "America/Los_Angeles",
+    "source": "https://ai.google.dev/gemini-api/docs/rate-limits"
+   },
+   "sourced": true,
+   "auth": {
+    "actions_secret": "GEMINI_API_KEY",
+    "present": null
+   },
+   "lock_in": 2,
+   "fit": 4,
+   "headroom": 3,
+   "failure_modes": [
+    "429 at RPD cap",
+    "per-model limits change without notice"
+   ],
+   "card_required": false,
+   "overage_autobill": false
+  },
+  {
+   "id": "openrouter.free",
+   "title": "OpenRouter :free models",
+   "lane": "model",
+   "registry_id": "openrouter.free_models",
+   "horizon": "H0",
+   "quota": {
+    "metric": ":free model requests",
+    "limit": null,
+    "unit": "requests/day (tiered by credits purchased)",
+    "window": "daily",
+    "reset": "per GET /api/v1/key",
+    "zone": "UTC",
+    "source": "https://openrouter.ai/docs/api-reference/limits"
+   },
+   "sourced": true,
+   "auth": {
+    "actions_secret": "OPENROUTER_API_KEY",
+    "present": null
+   },
+   "lock_in": 1,
+   "fit": 4,
+   "headroom": 3,
+   "failure_modes": [
+    "daily cap depends on credits ever purchased",
+    "free model list rotates"
+   ],
+   "card_required": false,
+   "overage_autobill": false
+  },
+  {
+   "id": "g4f.vendors",
+   "title": "g4f / gpt4free-templated providers (multi-ai-cli/vendors)",
+   "lane": "model",
+   "registry_id": "g4f.vendors",
+   "horizon": "H2",
+   "quota": {
+    "metric": "web-wrapped endpoints",
+    "limit": null,
+    "unit": "unmetered / unknown",
+    "window": "unknown",
+    "reset": "unknown",
+    "zone": "UTC",
+    "source": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/multi-ai-cli/vendors/README.md"
+   },
+   "sourced": false,
+   "auth": {
+    "actions_secret": null,
+    "present": true,
+    "note": "none needed"
+   },
+   "lock_in": 1,
+   "fit": 3,
+   "headroom": 3,
+   "failure_modes": [
+    "undocumented limits",
+    "upstream breakage / terms risk",
+    "experiment label required by FREE-QUOTA-WINDOWS router rule"
+   ],
+   "card_required": false,
+   "overage_autobill": false
+  },
+  {
+   "id": "grafana.cloud_free",
+   "title": "Grafana Cloud Free",
+   "lane": "observability",
+   "registry_id": "grafana.cloud_free",
+   "horizon": "H1",
+   "quota": {
+    "metric": "ingestion rate per series",
+    "limit": 10000,
+    "unit": "samples/s",
+    "window": "instant",
+    "reset": "n/a",
+    "zone": "UTC",
+    "source": "https://grafana.com/docs/grafana-cloud/cost-management-and-billing/understand-your-invoice/usage-limits/"
+   },
+   "sourced": true,
+   "auth": {
+    "actions_secret": "GRAFANA_CLOUD_TOKEN",
+    "present": null
+   },
+   "lock_in": 2,
+   "fit": 3,
+   "headroom": 4,
+   "failure_modes": [
+    "monthly series/log/trace allowances not verified on a fetched page"
+   ],
+   "card_required": false,
+   "overage_autobill": false
+  },
+  {
+   "id": "cellcog.credits",
+   "title": "CellCog referral credits",
+   "lane": "partner",
+   "registry_id": "partners.credits",
+   "horizon": "H2",
+   "quota": {
+    "metric": "bonus credits",
+    "limit": 500,
+    "unit": "one-time credits on first purchase",
+    "window": "one-time",
+    "reset": "none",
+    "zone": "UTC",
+    "source": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/PARTNERS.md"
+   },
+   "sourced": false,
+   "auth": {
+    "actions_secret": null,
+    "present": false
+   },
+   "lock_in": 3,
+   "fit": 2,
+   "headroom": 1,
+   "failure_modes": [
+    "bonus requires a first purchase (money)",
+    "one-time, no reset"
+   ],
+   "card_required": true,
+   "overage_autobill": false
+  },
+  {
+   "id": "manus.credits",
+   "title": "Manus invitation credits",
+   "lane": "partner",
+   "registry_id": "partners.credits",
+   "horizon": "H2",
+   "quota": {
+    "metric": "invitation credits",
+    "limit": null,
+    "unit": "unspecified",
+    "window": "one-time",
+    "reset": "none",
+    "zone": "UTC",
+    "source": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/PARTNERS.md"
+   },
+   "sourced": false,
+   "auth": {
+    "actions_secret": null,
+    "present": false
+   },
+   "lock_in": 3,
+   "fit": 2,
+   "headroom": 2,
+   "failure_modes": [
+    "credit amount not stated",
+    "no Actions API path",
+    "one-time"
+   ],
+   "card_required": false,
+   "overage_autobill": false
+  },
+  {
+   "id": "polsia.credits",
+   "title": "Polsia referral credits",
+   "lane": "partner",
+   "registry_id": "partners.credits",
+   "horizon": "H2",
+   "quota": {
+    "metric": "extra credits",
+    "limit": 500,
+    "unit": "one-time credits (per #574, verify on signup)",
+    "window": "one-time",
+    "reset": "none",
+    "zone": "UTC",
+    "source": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/PARTNERS.md"
+   },
+   "sourced": false,
+   "auth": {
+    "actions_secret": null,
+    "present": false
+   },
+   "lock_in": 3,
+   "fit": 2,
+   "headroom": 2,
+   "failure_modes": [
+    "amount unverified",
+    "no Actions API path",
+    "one-time"
+   ],
+   "card_required": false,
+   "overage_autobill": false
+  },
+  {
+   "id": "tribute-lane",
+   "title": "Tribute lane (System 1 routed upstream contributions)",
+   "lane": "outreach",
+   "registry_id": "github.api.user_token",
+   "horizon": "H1",
+   "quota": {
+    "metric": "REST requests via user/OAuth token",
+    "limit": 5000,
+    "unit": "requests/hour",
+    "window": "hourly",
+    "reset": "x-ratelimit-reset header",
+    "zone": "UTC",
+    "source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api"
+   },
+   "sourced": true,
+   "auth": {
+    "actions_secret": null,
+    "present": null,
+    "note": "see .github/workflows/tribute-system1.yml"
+   },
+   "lock_in": 1,
+   "fit": 3,
+   "headroom": 4,
+   "failure_modes": [
+    "upstream maintainers may flag low-effort or spammy contributions (hostile_spam_flag)",
+    "issues claimed by others or already assigned",
+    "needs human skill the lane lacks"
+   ],
+   "card_required": false,
+   "overage_autobill": false
+  }
+ ]
 }

@@ -1,19 +1,28 @@
 name: vercel-batch-deploy
-# One quota-aware batch replaces per-commit Vercel deploys.
-# - Git auto-deploys are off for every project (git.deploymentEnabled=false in each
-#   project's vercel.json). On Hobby, even ignored or canceled builds count toward
-#   "Deployments Created per Day: 100" (https://vercel.com/docs/limits).
-# - Each run deploys only the projects whose source changed since that project's
-#   last successful batch deploy. The state lives on branch vercel-deploy-state.
-# - Priority order (Tribute first), capped by the live 24 h budget
-#   (100 - count24h - reserve). What doesn't fit waits for the next slot.
+# Quota-aware Vercel deploys that replace per-commit deploys.
+# - Git auto-deploys are off (git.deploymentEnabled=false in each project's vercel.json).
+#   On Hobby, even canceled or ignored deployments count toward "Deployments Created
+#   per Day: 100" (https://vercel.com/docs/limits). That's a ROLLING 24 h window,
+#   not a daily reset.
+# - Adaptive budget. Each hourly check compares three counts:
+#     official limit -> ops/quota/registry.json  (vercel.deployments.limit, sourced)
+#     API count      -> GET /v6/deployments, last 24 h, fully paginated
+#     own ledger     -> ledger.jsonl on branch vercel-deploy-state (every deploy we make)
+#   plus a LEARNED offset: when Vercel refuses with api-deployments* while the API
+#   count says there's room, the hidden gap (limit - api_count) is stored and
+#   subtracted on later runs. It decays by 1 per successful deploy.
+#   used = max(api_count + offset, own_count)
+#   budget = limit - used - reserve
+# - Batching. A project deploys only when its paths changed since its last deploy,
+#   and at most once per COOLDOWN_H hours (Tribute first). Deferred work is retried
+#   the hour room opens, using next_free_at (oldest deployment in window + 24 h).
 on:
   schedule:
-    - cron: "23 */6 * * *"
+    - cron: "23 * * * *"
   workflow_dispatch:
     inputs:
       force:
-        description: "Space-separated projects to deploy even if unchanged"
+        description: "Space-separated projects to deploy now (ignores change check and cooldown, not budget)"
         required: false
         default: ""
 permissions:
@@ -28,8 +37,9 @@ jobs:
     env:
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       SCOPE: ${{ secrets.VERCEL_ORG_ID || 'team_jKHy7m9xZrvrGP5cAlIMPs3S' }}
+      FORCE: ${{ github.event.inputs.force }}
       RESERVE: "5"
-      # project|source dir|change paths (comma-separated), in priority order
+      COOLDOWN_H: "6"
       PLAN: |
         help-wanted-oversight|apps/help-wanted-dashboard|apps/help-wanted-dashboard/,docs/ops/generated/help-wanted-status.json,docs/ops/generated/lane-matrix-status.json
         help-wanted-dash|apps/help-wanted-dashboard|apps/help-wanted-dashboard/,docs/ops/generated/help-wanted-status.json,docs/ops/generated/lane-matrix-status.json
@@ -40,60 +50,107 @@ jobs:
         with:
           fetch-depth: 0
           filter: blob:none
-      - name: Batch deploy
+      - name: Plan (quota reconciliation and change detection)
+        id: plan
+        run: |
+          set -u
+          [ -n "${VERCEL_TOKEN:-}" ] || { echo "::notice title=vercel-batch::VERCEL_TOKEN missing, skip"; echo "todo=" >> "$GITHUB_OUTPUT"; exit 0; }
+          mkdir -p "$RUNNER_TEMP/st"
+          git fetch -q origin vercel-deploy-state 2>/dev/null && {
+            git show FETCH_HEAD:state.json  > "$RUNNER_TEMP/st/state.json"  2>/dev/null
+            git show FETCH_HEAD:ledger.jsonl > "$RUNNER_TEMP/st/ledger.jsonl" 2>/dev/null; } || true
+          python3 - <<'PY'
+          import json, os, subprocess, time, urllib.request
+          T=os.environ["RUNNER_TEMP"]+"/st"; now=time.time()
+          def load(p, d):
+              try: return json.load(open(p))
+              except Exception: return d
+          st=load(T+"/state.json", {}); st.setdefault("last",{}); st.setdefault("offset",0)
+          ledger=[]
+          try: ledger=[json.loads(l) for l in open(T+"/ledger.jsonl") if l.strip()]
+          except Exception: pass
+          reg=load("ops/quota/registry.json", {}); items=reg.get("services",reg)
+          items=items.values() if isinstance(items,dict) else items
+          limit=next((int(i["limit"]) for i in items if isinstance(i,dict) and i.get("id")=="vercel.deployments" and i.get("limit")), 100)
+          since=int((now-86400)*1000); stamps=[]; url=f"https://api.vercel.com/v6/deployments?limit=100&since={since}&teamId={os.environ['SCOPE']}"
+          api_ok=True
+          try:
+              for _ in range(10):
+                  r=json.load(urllib.request.urlopen(urllib.request.Request(url,headers={"Authorization":"Bearer "+os.environ["VERCEL_TOKEN"]}),timeout=30))
+                  stamps+= [d.get("created") or d.get("createdAt") for d in r.get("deployments",[])]
+                  nxt=(r.get("pagination") or {}).get("next")
+                  if not nxt: break
+                  url=f"https://api.vercel.com/v6/deployments?limit=100&since={since}&until={nxt}&teamId={os.environ['SCOPE']}"
+          except Exception as e:
+              api_ok=False; print("::warning::Vercel API count failed:",type(e).__name__)
+          stamps=sorted(s for s in stamps if s and s>=since)
+          api=len(stamps) if api_ok else limit
+          own=sum(1 for e in ledger if e.get("ok") and e.get("ts",0)>=now-86400)
+          used=max(api+int(st["offset"]), own)
+          budget=limit-used-int(os.environ["RESERVE"])
+          next_free=time.strftime("%Y-%m-%dT%H:%MZ",time.gmtime(stamps[0]/1000+86400)) if stamps else "now"
+          force=os.environ.get("FORCE","").split(); sha=os.environ["GITHUB_SHA"]; cool=float(os.environ["COOLDOWN_H"])*3600
+          todo=[]; why={}
+          for line in os.environ["PLAN"].strip().splitlines():
+              p,src,paths=line.split("|"); last=st["last"].get(p,{})
+              changed=True
+              if last.get("sha") and subprocess.run(["git","cat-file","-e",last["sha"]+"^{commit}"]).returncode==0:
+                  changed=subprocess.run(["git","diff","--quiet",last["sha"],sha,"--",*paths.split(",")]).returncode!=0
+              cooling=now-last.get("ts",0)<cool
+              if p in force: todo.append(p); continue
+              if not changed: why[p]="unchanged"
+              elif cooling: why[p]="cooldown"
+              else: todo.append(p)
+          fits=todo[:max(budget,0)]
+          for p in todo[len(fits):]: why[p]="deferred-budget"
+          json.dump(st,open(T+"/state.json","w")); json.dump({"limit":limit,"api":api,"own":own,"offset":st["offset"],"used":used,"budget":budget},open(T+"/q.json","w"))
+          print(f"::notice title=vercel-quota::limit={limit} api24h={api} own24h={own} learned_offset={st['offset']} used={used} budget={budget} next_free_at={next_free}")
+          if why: print("::notice title=vercel-batch-skip::"+" ".join(f"{k}={v}" for k,v in why.items()))
+          with open(os.environ["GITHUB_OUTPUT"],"a") as f: f.write("todo="+" ".join(fits)+"\n")
+          PY
+      - name: Deploy
+        if: steps.plan.outputs.todo != ''
+        env:
+          TODO: ${{ steps.plan.outputs.todo }}
         run: |
           set -uo pipefail
-          [ -n "${VERCEL_TOKEN:-}" ] || { echo "::notice title=vercel-batch::VERCEL_TOKEN missing, skip"; exit 0; }
-          git fetch -q origin vercel-deploy-state:vercel-deploy-state 2>/dev/null || true
-          git show vercel-deploy-state:state.json > "$RUNNER_TEMP/state.json" 2>/dev/null || echo '{}' > "$RUNNER_TEMP/state.json"
-          SINCE=$(( ($(date +%s) - 86400) * 1000 ))
-          COUNT=$(curl -fsS -H "Authorization: Bearer $VERCEL_TOKEN" \
-            "https://api.vercel.com/v6/deployments?limit=100&since=$SINCE&teamId=$SCOPE" | jq '.deployments | length' 2>/dev/null || echo 100)
-          BUDGET=$(( 100 - COUNT - RESERVE ))
-          echo "count24h=$COUNT budget=$BUDGET"
+          T="$RUNNER_TEMP/st"; touch "$T/ledger.jsonl"
           npm i -g vercel@latest >/dev/null 2>&1
-          DEPLOYED=""; DEFERRED=""; SKIPPED=""; FAILED=""
-          while IFS='|' read -r P SRC PATHS; do
-            [ -n "$P" ] || continue
-            LAST=$(jq -r --arg p "$P" '.[$p] // empty' "$RUNNER_TEMP/state.json")
-            CHANGED=1
-            if [ -n "$LAST" ] && git cat-file -e "$LAST^{commit}" 2>/dev/null; then
-              IFS=',' read -ra PS <<< "$PATHS"
-              git diff --quiet "$LAST" "$GITHUB_SHA" -- "${PS[@]}" && CHANGED=0
-            fi
-            case " ${{ github.event.inputs.force }} " in *" $P "*) CHANGED=1;; esac
-            if [ "$CHANGED" = 0 ]; then SKIPPED="$SKIPPED $P"; continue; fi
-            if [ "$BUDGET" -le 0 ]; then DEFERRED="$DEFERRED $P"; continue; fi
+          FAILED=""
+          for P in $TODO; do
+            SRC=$(printf '%s\n' "$PLAN" | awk -F'|' -v p="$P" '$1==p{print $2}')
             W="$RUNNER_TEMP/deploy-$P"; rm -rf "$W"; mkdir -p "$W"; cd "$W"
             vercel link --yes --project "$P" --scope "$SCOPE" --token "$VERCEL_TOKEN" >/dev/null
             ROOT=$(jq -r '.settings.rootDirectory // empty' .vercel/project.json 2>/dev/null || true)
-            DEST="$W/${ROOT:-.}"; mkdir -p "$DEST"
-            cp -a "$GITHUB_WORKSPACE/$SRC/." "$DEST/"
+            DEST="$W/${ROOT:-.}"; mkdir -p "$DEST"; cp -a "$GITHUB_WORKSPACE/$SRC/." "$DEST/"
             if [ "$SRC" = "apps/help-wanted-dashboard" ]; then
-              mkdir -p "$DEST/data"
-              G="$GITHUB_WORKSPACE/docs/ops/generated"
+              mkdir -p "$DEST/data"; G="$GITHUB_WORKSPACE/docs/ops/generated"
               [ -f "$G/help-wanted-status.json" ] && cp "$G/help-wanted-status.json" "$DEST/data/status.json"
               [ -f "$G/lane-matrix-status.json" ] && cp "$G/lane-matrix-status.json" "$DEST/data/lane-matrix-status.json"
-              printf '{"source_sha":"%s","short_sha":"%s","run":"%s/%s/actions/runs/%s"}\n' "$GITHUB_SHA" "${GITHUB_SHA:0:7}" \
-                "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" > "$DEST/data/build.json"
+              printf '{"source_sha":"%s","short_sha":"%s","run":"%s/%s/actions/runs/%s"}\n' "$GITHUB_SHA" "${GITHUB_SHA:0:7}" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" > "$DEST/data/build.json"
             fi
-            BUDGET=$(( BUDGET - 1 ))
+            TS=$(date +%s)
             if vercel deploy --prod --yes --token "$VERCEL_TOKEN" --scope "$SCOPE" > "$RUNNER_TEMP/$P.url" 2> "$RUNNER_TEMP/$P.err"; then
-              DEPLOYED="$DEPLOYED $P"
-              jq --arg p "$P" --arg s "$GITHUB_SHA" '.[$p]=$s' "$RUNNER_TEMP/state.json" > "$RUNNER_TEMP/s2" && mv "$RUNNER_TEMP/s2" "$RUNNER_TEMP/state.json"
+              echo "{\"ts\":$TS,\"project\":\"$P\",\"sha\":\"$GITHUB_SHA\",\"ok\":true}" >> "$T/ledger.jsonl"
+              jq --arg p "$P" --arg s "$GITHUB_SHA" --argjson t "$TS" '.last[$p]={sha:$s,ts:$t} | .offset=([(.offset // 0)-1,0]|max)' "$T/state.json" > "$T/s2" && mv "$T/s2" "$T/state.json"
             elif grep -q "api-deployments" "$RUNNER_TEMP/$P.err"; then
-              DEFERRED="$DEFERRED $P"; BUDGET=0
+              # Vercel says full while our count said room: learn the hidden gap.
+              jq --slurpfile q "$T/q.json" '.offset=([ ($q[0].limit - $q[0].api), (.offset // 0) ]|max)' "$T/state.json" > "$T/s2" && mv "$T/s2" "$T/state.json"
+              echo "::notice title=vercel-batch::$P refused by Vercel quota; learned offset=$(jq .offset "$T/state.json"), deferred"
+              echo "{\"ts\":$TS,\"project\":\"$P\",\"ok\":false,\"reason\":\"quota\"}" >> "$T/ledger.jsonl"
+              cd "$GITHUB_WORKSPACE"; break
             else
               FAILED="$FAILED $P"; tail -n 5 "$RUNNER_TEMP/$P.err"
+              echo "{\"ts\":$TS,\"project\":\"$P\",\"ok\":false,\"reason\":\"error\"}" >> "$T/ledger.jsonl"
             fi
             cd "$GITHUB_WORKSPACE"
-          done <<< "$PLAN"
-          echo "::notice title=vercel-batch::count24h=$COUNT deployed=[${DEPLOYED# }] deferred=[${DEFERRED# }] unchanged=[${SKIPPED# }] failed=[${FAILED# }]"
-          if [ -n "$DEPLOYED" ]; then
-            cp "$RUNNER_TEMP/state.json" "$RUNNER_TEMP/keep.json"
-            git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            if git show-ref -q refs/heads/vercel-deploy-state; then git switch -q vercel-deploy-state; else git switch -q --orphan vercel-deploy-state; git rm -rqf . 2>/dev/null || true; fi
-            cp "$RUNNER_TEMP/keep.json" state.json
-            git add state.json && git commit -qm "vercel batch state ${GITHUB_SHA:0:7} [skip ci] [skip render]" && git push -q origin vercel-deploy-state
-          fi
+          done
+          # Keep 7 days of ledger; persist state on the orphan branch.
+          python3 -c "import json,time,sys;c=time.time()-7*86400;L=[l for l in open('$T/ledger.jsonl') if l.strip() and json.loads(l).get('ts',0)>=c];open('$T/ledger.jsonl','w').writelines(L)"
+          cp -a "$T" "$RUNNER_TEMP/keep"
+          git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git fetch -q origin vercel-deploy-state 2>/dev/null; then git switch -q -C vercel-deploy-state FETCH_HEAD; else git switch -q --orphan vercel-deploy-state; git rm -rqf . >/dev/null 2>&1 || true; fi
+          cp "$RUNNER_TEMP/keep/state.json" "$RUNNER_TEMP/keep/ledger.jsonl" .
+          git add state.json ledger.jsonl && git commit -qm "vercel batch state ${GITHUB_SHA:0:7} [skip ci] [skip render]" && git push -q origin vercel-deploy-state
+          echo "::notice title=vercel-batch::deployed=[$(jq -r --arg s "$GITHUB_SHA" '[.last|to_entries[]|select(.value.sha==$s)|.key]|join(" ")' state.json)] failed=[${FAILED# }]"
           [ -z "$FAILED" ]

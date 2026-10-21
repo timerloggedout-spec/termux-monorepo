@@ -13,7 +13,7 @@ on:
   issue_comment:
     types: [created]
   repository_dispatch:
-    types: [delphi-rfp, delphi-tick, quota-registry-changed, foresight-radar-hit, hindsight-forecast-miss, delphi-feedback]
+    types: [delphi-rfp, delphi-tick, quota-registry-changed, foresight-radar-hit, hindsight-forecast-miss, delphi-feedback, tribute-outcome]
   workflow_run:
     workflows: [vercel-quota-probe]
     types: [completed]
@@ -28,6 +28,7 @@ on:
       depth:  { description: "Acceleration chain depth (bounded)", required: false, default: "0", type: string }
       feedback_rfp: { description: "Flywheel: RFP issue number with a real outcome", required: false, default: "", type: string }
       outcome: { description: "confirmed | miss", required: false, default: "", type: string }
+      signal_json: { description: "tribute-outcome: delphi_signal object or array (<=50) {surface,repo,outcome,weight -1..+1}", required: false, default: "", type: string }
 
 permissions:
   contents: read
@@ -97,6 +98,16 @@ jobs:
           if [ -n "$rfp" ] && printf '%s' "$rfp" | grep -Eq '^[0-9]+$' && { [ "$out" = confirmed ] || [ "$out" = miss ]; }; then
             python3 -m scripts.delphi.gate feedback --rfp "$rfp" --outcome "$out"
           fi
+
+      - name: Graded outcomes (tribute-outcome)
+        if: inputs.signal_json != '' || github.event.action == 'tribute-outcome'
+        env:
+          SIG_IN: ${{ inputs.signal_json }}
+          SIG_RD: ${{ toJSON(github.event.client_payload.signal) }}
+        run: |
+          set -euo pipefail
+          sig="${SIG_IN:-}"; [ -z "$sig" ] && sig="${SIG_RD:-}"
+          python3 -m scripts.delphi.gate tribute --signal-json "$sig"
 
       - name: Oracle + blind panel + rounds (all open RFPs, idempotent)
         env:

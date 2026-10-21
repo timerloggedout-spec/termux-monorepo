@@ -20,7 +20,7 @@ time.sleep(2)
 s = get_session(token)
 
 # Create share
-share_r = s.post(f"{BASE}/api/v0/share/create", json={"chat_session_id": sid})
+share_r = s.post(f"{BASE}/share/create", json={"chat_session_id": sid})
 print(f"\nShare create status: {share_r.status_code}")
 print(f"Share create headers: {dict(share_r.headers)}")
 print(f"Share create body: {share_r.text[:1000]}")
@@ -33,7 +33,7 @@ print(f"Extracted share_id: {share_id}")
 if share_id:
     # Fork
     fork_payload = {"share_id": share_id}
-    fork_r = s.post(f"{BASE}/api/v0/share/fork", json=fork_payload)
+    fork_r = s.post(f"{BASE}/share/fork", json=fork_payload)
     print(f"\nFork status: {fork_r.status_code}")
     print(f"Fork headers: {dict(fork_r.headers)}")
     print(f"Fork body: {fork_r.text}")

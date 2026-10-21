@@ -1,0 +1,71 @@
+name: Development performance contracts
+
+# Implements: THUB-007
+# Validates suite adapters and redacted manifests without invoking a model,
+# benchmark service, device command, GitHub write operation, or provider credential.
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/development-performance-contract.yml"
+      - ".github/workflows/repository-development-evaluation.yml"
+      - ".github/workflows/swe-reference-evaluation.yml"
+      - "scripts/ci/repository_development_evaluation.py"
+      - "scripts/ci/swe_evaluation_contract.py"
+      - "tests/test_repository_development_evaluation.py"
+      - "tests/test_swe_evaluation_contract.py"
+      - "tests/test_development_performance_workflows.py"
+      - "docs/evaluations/development-performance/**"
+      - "docs/evaluations/swe-performance/**"
+      - "config/context_relationships/scope_registry.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: development-performance-contract-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: adapter contract validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 1
+          submodules: false
+
+      - name: Run deterministic adapter contract tests
+        run: |
+          python3 -m unittest \
+            tests/test_repository_development_evaluation.py \
+            tests/test_swe_evaluation_contract.py \
+            tests/test_development_performance_workflows.py
+
+      - name: Audit submitted repository-development manifests
+        run: |
+          set -euo pipefail
+          directory="docs/evaluations/development-performance/results"
+          if [ ! -d "${directory}" ]; then
+            echo "No committed repository-development manifests to audit."
+            exit 0
+          fi
+          while IFS= read -r -d '' manifest; do
+            python3 scripts/ci/repository_development_evaluation.py audit "${manifest}"
+          done < <(find "${directory}" -type f -name '*.json' -print0)
+
+      - name: Audit submitted SWE reference manifests
+        run: |
+          set -euo pipefail
+          directory="docs/evaluations/swe-performance/results"
+          if [ ! -d "${directory}" ]; then
+            echo "No committed SWE reference manifests to audit."
+            exit 0
+          fi
+          while IFS= read -r -d '' manifest; do
+            python3 scripts/ci/swe_evaluation_contract.py audit "${manifest}"
+          done < <(find "${directory}" -type f -name '*.json' -print0)

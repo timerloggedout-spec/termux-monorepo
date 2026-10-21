@@ -1,0 +1,28 @@
+flowchart TD
+  classDef event fill:#e8f0fe,stroke:#1a73e8,color:#102a43
+  classDef guard fill:#fef7e0,stroke:#b06000,color:#4a2c00
+  classDef write fill:#fce8e6,stroke:#c5221f,color:#4a1010
+  classDef good fill:#e6f4ea,stroke:#188038,color:#102a43
+  classDef stop fill:#f1f3f4,stroke:#5f6368,color:#202124
+
+  start[Writer-capable workflow receives eligible event]:::event
+  start --> switch{Kill switch disabled and writer capability accepted?}:::guard
+  switch -->|no| hold[Fail closed; summarize disabled/unsupported route]:::stop
+  switch -->|yes| trust{Trusted source, target ref, and actor/context?}:::guard
+  trust -->|no| reject[Reject without mutation]:::stop
+  trust -->|yes| charter{Fixed target/path and capability charter allow operation?}:::guard
+  charter -->|no| scopehold[Stop; record bounded diagnostic state]:::stop
+  charter -->|yes| lease{Concurrency lease and idempotency marker available?}:::guard
+  lease -->|duplicate| converge[Converge on existing cycle]:::good
+  lease -->|yes| dryrun[Dry-run/diff policy validates deterministic desired output]:::guard
+  dryrun -->|no| diffhold[Do not write; expose unexpected path or policy failure]:::stop
+  dryrun -->|yes| preimage[Record source revision, parent ref, digest, expected paths, and rollback reference]:::guard
+  preimage --> mutation[Perform fixed-scope attributed mutation]:::write
+  mutation --> post{Re-read target and verify postcondition/digest}:::guard
+  post -->|yes| success[Publish provenance, result, and review state]:::good
+  post -->|no| breaker{Failure threshold/circuit breaker reached?}:::guard
+  breaker -->|no| rollback[Run only approved bounded rollback/compensation]:::write
+  breaker -->|yes| freeze[Freeze writer lane; preserve evidence and escalate]:::stop
+  rollback --> verifyrollback{Rollback postcondition verified?}:::guard
+  verifyrollback -->|yes| recovered[Publish recovery evidence]:::good
+  verifyrollback -->|no| incident[Manual/operator incident path; no arbitrary rollback input]:::stop

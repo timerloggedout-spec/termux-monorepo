@@ -1,0 +1,113 @@
+---
+title: "Certifications & Roles Roadmap"
+description: "A track-record lane for security/dev credentials (bug bounties, CTF, FreeCodeCamp, CompTIA, CISSP, OffSec) — structured as a ladder + build process, PRD-first."
+---
+
+## What You'll Get From This
+
+A framework for planning a certification/role track deliberately — which credential to pursue first, why, and what it unlocks — instead of collecting certifications in a random order. This lane also scaffolds toward a future **Agentic Role Crypto Wallets** concept (see placeholder at the bottom); nothing wallet-related is implemented yet.
+
+## Before You Build Anything: The Credential Ladder
+
+This methodology works at different levels. You don't always need the top of the ladder to be useful — most people should climb it in order, not jump straight to the hardest credential.
+
+- **Level 1: FreeCodeCamp (self-paced, free)** — Structured curricula in web dev, Python, data analysis, and a security-adjacent track (Relational Database, JavaScript Algorithms). No cost, no gatekeeping. Good for establishing baseline fluency and a public GitHub trail of completed projects before touching anything security-specific.
+- **Level 2: CTF (Capture the Flag) practice** — Platforms like picoCTF, HackTheBox, TryHackMe. Applies Level 1 fundamentals under adversarial conditions — web exploitation, crypto puzzles, reverse engineering, forensics. This is where "I can code" turns into "I can find and exploit a flaw." No formal certification, but a public scoreboard/writeup trail is real, checkable evidence.
+- **Level 3: CompTIA (Security+, Network+, Pentest+)** — Vendor-neutral, multiple-choice/perf-based, broadly recognized as an HR-filter baseline for security roles. Lower cost and lower time investment than Level 4/5, and often a prerequisite (explicit or implicit) for the roles that lead to them.
+- **Level 4: Bug bounties (live-fire, paid)** — Public programs (HackerOne, Bugcrowd) where CTF-honed skills get pointed at real production systems for real payouts. This is the first level where the track record is not just a badge — it's a paid, disclosed, third-party-verified finding.
+- **Level 5: OffSec (OSCP and the harder OffSec certifications)** — Practitioner-grade, hands-on exam (not multiple choice) that most of the industry treats as the credible signal for offensive security roles. Substantially higher time/cost investment; sits at the top of the technical-practitioner ladder.
+- **Level 6: CISSP** — Broader, management/architecture-oriented (not purely hands-on offensive skill); usually pursued after several years of practitioner experience, often layered on top of a Level 4/5 track record rather than instead of it. Requires a work-experience attestation, so it sits later in sequence almost by construction.
+
+**The philosophy for this lane:** know the shape of the whole ladder before committing years to one rung. Each level compounds on the one below it — CTF is much harder without FreeCodeCamp-level fundamentals, and OSCP is much harder without CTF reps. Certifications, unlike custom tooling, don't get superseded by a vendor's next release — but the *order* you take them in still matters more than the count.
+
+## What This Lane Is
+
+This isn't a step-by-step "get certified in 90 days" tutorial. This is a planning-and-tracking lane: a place to record which rung you're on, what evidence exists for it, and what the next rung requires.
+
+The pages in this lane will cover:
+
+- How to decide which rung to target next given current skill level and goal role
+- How to write a role/credential plan before spending money on an exam or bounty program
+- Where the public evidence for each rung lives (write-ups, disclosed reports, transcripts, certificate IDs) so a track record is verifiable, not just claimed
+- How the rungs sequence into concrete job/role outcomes (what a Security+ actually opens vs. what only an OSCP or CISSP opens)
+
+## The Build Process Framework
+
+Whether the target is a bug-bounty track record or a CISSP, the planning process is the same:
+
+1. **Define the target role, not the target certification** — What job/role is this for? "Pentester at a mid-size firm" and "security architect at an enterprise" imply different rungs and different sequencing. Don't pick a certification because it sounds impressive; pick the role, then work backward to the rung that role actually requires.
+2. **Audit the current rung honestly** — Can current skill clear a CTF room unassisted? Has a FreeCodeCamp track actually been finished, or started three times? The plan only works if the starting point is real, not aspirational.
+3. **Map existing evidence** — What write-ups, disclosed bounty reports, completed certificates, or GitHub history already exist? A plan should build on real evidence already on record, not assume a blank slate.
+4. **Write a Role Requirements Plan** — A markdown plan (see template below) naming the target rung, the prerequisite rungs still missing, the cost/time budget, and the concrete next action. Living in the docs lane, not a private notes app, so it's checkable later.
+5. **Work the plan in phases** — Early phase: close the nearest evidence gap (finish the unfinished FreeCodeCamp track; log 5 CTF write-ups). Late phase: the actual paid exam or bounty submission. Don't front-load spend on the hardest rung before the evidence for the rungs beneath it exists.
+6. **Log each completed rung back into this lane** — Certificate ID, date, disclosed report link, or write-up link. Each entry becomes prerequisite evidence for the next plan, the same way a PRD gets revisited session to session.
+
+## The Role Requirements Plan (PRD-first, adapted)
+
+Before spending money on any exam or submitting to any bounty program, write a Role Requirements Plan. This is a markdown file that lives in this docs lane and gets revisited as evidence accumulates.
+
+The plan describes:
+
+- The target role/outcome (what job or capability this is actually for)
+- The target rung on the ladder, and which rungs beneath it are already cleared vs. still missing
+- What evidence already exists (write-ups, GitHub history, disclosed reports, prior certificates)
+- Cost and time budget for the next rung
+- The concrete next action (not "get better at security" — "finish picoCTF's web track, then attempt Security+ within 60 days")
+
+### Role Requirements Plan Template
+
+```
+Target role: [describe the job/role/outcome this track is aimed at]
+
+Current rung (be honest): [Level 1-6 from the ladder above]
+
+Evidence on record:
+- [FreeCodeCamp certificates / GitHub repos]
+- [CTF platforms + rank/write-ups]
+- [Disclosed bug bounty reports, if any]
+- [Existing vendor certifications, if any]
+
+Target rung for this plan: [Level N]
+
+Gap between current and target: [what's actually missing — skills, hours, cost]
+
+Next concrete action: [the one thing to do next, with a rough date]
+
+Cost/time budget: [exam fee, course cost, expected hours/week, target completion window]
+```
+
+## Who This Is For
+
+This lane is for:
+
+- Anyone building a verifiable security/dev track record inside this org's docs, rather than an informal resume claim
+- People deciding which certification to pursue next and wanting the sequencing made explicit instead of guessed
+- Future agents or contributors who need to understand what "the certifications lane" tracks and why it's ordered the way it is
+
+If the goal is just "learn to code," start at Level 1 (FreeCodeCamp) and don't worry about the rest of the ladder yet.
+
+If a target rung is already unclear, that's a sign to write the Role Requirements Plan first — don't start an exam registration before the plan names why that rung, specifically, is next.
+
+## Placeholder: Agentic Role Crypto Wallets (future work — not implemented)
+
+<Warning>
+This section is a placeholder only. No wallet infrastructure, key management, or crypto-asset
+handling exists in this repo as a result of this page. It is recorded here so the future work
+has a named home and isn't lost, not as a spec to build from.
+</Warning>
+
+The eventual idea (not scoped, not designed, not started): once a role/certification track on this ladder has enough verified evidence attached to it (disclosed bounty reports, certificate IDs, CTF rankings), that verified track record could in principle back an "agentic role" — a scoped, credentialed identity an autonomous agent operates under, analogous to how a human's certifications back the role they're trusted to perform. A "crypto wallet" framing has been proposed for representing that credentialed identity/authority in a portable, verifiable way.
+
+This raises real open questions before any implementation is warranted: custody and key-rotation model, how it interacts with the org's existing Tier 0-4 consensus model (credential rotation is Tier 4/Operator-only per `docs/CONSENSUS.md` — a wallet scheme would need to fit inside that, not route around it), and whether a blockchain-backed credential even adds anything over a simpler signed-attestation file in this lane.
+
+**Status: idea only.** Follow-up: if and when this gets scoped, it should go through the normal `docs/proposals/` lifecycle like any other proposal in this org — not be built ad hoc off this placeholder.
+
+## Go Deeper
+
+- Where do bounty/CTF write-ups actually get logged? See `guides/` for the org's evidence-logging conventions.
+- How does this lane relate to the org's own agent-permission tiers? See [Governance → Consensus](/governance/consensus) — Tier 4 (credential rotation) is directly relevant to the wallet placeholder above.
+- Curious about the shape this page follows? It's adapted from a public-preview lesson structure (Tool Ladder / Build Process Framework / PRD-first), not copied content — see the PR description for the source note.
+
+## Next Up
+
+The next page in this lane should log the first real Role Requirements Plan once one exists, and start the evidence index (write-ups, certificate IDs, disclosed reports) referenced above.

@@ -1,0 +1,760 @@
+{
+  "notes_sha256": "cf24eca32c96a277007f45da6ee7db96071eb5abdb01874db240f700f4f9cf07",
+  "resources": [
+    {
+      "evidence_class": "REFERENCE_ONLY",
+      "id": "awesome-free-llm-apis",
+      "implementation_paths": [
+        "scripts/model_selection_market/provider_recon.py"
+      ],
+      "kind": "directory",
+      "mesh_roles": [
+        "discovery"
+      ],
+      "next_action": "Maintain existing commit-pinned data importer; verify individual provider entitlements separately.",
+      "runtime_eligible": false,
+      "status": "discovery-only",
+      "tags": [
+        "llm",
+        "free",
+        "api",
+        "catalog"
+      ],
+      "title": "Awesome free LLM APIs",
+      "url": "https://github.com/mnfst/awesome-free-llm-apis"
+    },
+    {
+      "evidence_class": "REFERENCE_ONLY",
+      "id": "freellmapi",
+      "implementation_paths": [
+        "scripts/model_selection_market/provider_recon.py",
+        "scripts/provider_model_catalog.py"
+      ],
+      "kind": "template",
+      "mesh_roles": [
+        "discovery",
+        "inference"
+      ],
+      "next_action": "Adapt concepts to native catalog and routing contracts; no upstream executable code adoption.",
+      "runtime_eligible": false,
+      "status": "discovery-only",
+      "tags": [
+        "llm",
+        "proxy",
+        "failover",
+        "quota"
+      ],
+      "title": "FreeLLMAPI proxy template",
+      "url": "https://github.com/tashfeenahmed/freellmapi"
+    },
+    {
+      "evidence_class": "REFERENCE_ONLY",
+      "id": "github-awesome-search",
+      "implementation_paths": [
+        "docs/ops/PROVIDER-RESEARCH-COMPOUNDING.md"
+      ],
+      "kind": "search",
+      "mesh_roles": [
+        "discovery"
+      ],
+      "next_action": "Manually triage results into reviewed registry rows; do not treat search ranking as evidence.",
+      "runtime_eligible": false,
+      "status": "discovery-only",
+      "tags": [
+        "github",
+        "awesome",
+        "free",
+        "discovery"
+      ],
+      "title": "GitHub awesome free discovery query",
+      "url": "https://www.google.com/search?q=site%3Agithub.com+awesome+free"
+    },
+    {
+      "evidence_class": "REFERENCE_ONLY",
+      "id": "awesome-free-chatgpt",
+      "implementation_paths": [
+        "docs/ops/PROVIDER-RESEARCH-COMPOUNDING.md"
+      ],
+      "kind": "directory",
+      "mesh_roles": [
+        "discovery"
+      ],
+      "next_action": "Classify API versus web-only access and account terms before considering integration.",
+      "runtime_eligible": false,
+      "status": "discovery-only",
+      "tags": [
+        "chatgpt",
+        "llm",
+        "web"
+      ],
+      "title": "Awesome free ChatGPT",
+      "url": "https://github.com/LiLittleCat/awesome-free-chatgpt/blob/main/README_en.md"
+    },
+    {
+      "evidence_class": "REFERENCE_ONLY",
+      "id": "awesome-free-models",
+      "implementation_paths": [
+        "docs/ops/PROVIDER-RESEARCH-COMPOUNDING.md"
+      ],
+      "kind": "directory",
+      "mesh_roles": [
+        "discovery"
+      ],
+      "next_action": "Review model licenses, modality, hosting and current primary-provider sources.",
+      "runtime_eligible": false,
+      "status": "discovery-only",
+      "tags": [
+        "models",
+        "llm",
+        "free"
+      ],
+      "title": "Awesome free models",
+      "url": "https://github.com/12britz/awesome-free-models"
+    },
+    {
+      "evidence_class": "REFERENCE_ONLY",
+      "id": "awesome-legal",
+      "implementation_paths": [
+        "docs/proposals/AGENTIC-PERMISSIONS.md"
+      ],
+      "kind": "directory",
+      "mesh_roles": [
+        "policy"
+      ],
+      "next_action": "Review legal resources as references, not legal advice or licensing approval.",
+      "runtime_eligible": false,
+      "status": "discovery-only",
+      "tags": [
+        "legal",
+        "license",
+        "compliance"
+      ],
+      "title": "Awesome legal",
+      "url": "https://github.com/ankane/awesome-legal"
+    },
+    {
+      "evidence_class": "REFERENCE_ONLY",
+      "id": "awesome-free-tools",
+      "implementation_paths": [
+        "docs/ops/PROVIDER-RESEARCH-COMPOUNDING.md"
+      ],
+      "kind": "directory",
+      "mesh_roles": [
+        "discovery"
+      ],
+      "next_action": "Extract candidate tools only after maintenance, license and primary-source review.",
+      "runtime_eligible": false,
+      "status": "discovery-only",
+      "tags": [
+        "tools",
+        "free",
+        "development"
+      ],
+      "title": "Awesome free tools",
+      "url": "https://github.com/abdessamadbettal/awesome-free-tools"
+    },
+    {
+      "evidence_class": "REFERENCE_ONLY",
+      "id": "awesome-free-services",
+      "implementation_paths": [
+        "docs/ops/PROVIDER-RESEARCH-COMPOUNDING.md"
+      ],
+      "kind": "directory",
+      "mesh_roles": [
+        "discovery",
+        "compute",
+        "storage"
+      ],
+      "next_action": "Identify service categories and verify free versus trial status with official documentation.",
+      "runtime_eligible": false,
+      "status": "discovery-only",
+      "tags": [
+        "services",
+        "hosting",
+        "free"
+      ],
+      "title": "Awesome free services",
+      "url": "https://github.com/hql287/awesome-free-services"
+    },
+    {
+      "evidence_class": "REFERENCE_ONLY",
+      "id": "awesome-free-developer-services",
+      "implementation_paths": [
+        "docs/ops/PROVIDER-RESEARCH-COMPOUNDING.md"
+      ],
+      "kind": "directory",
+      "mesh_roles": [
+        "discovery"
+      ],
+      "next_action": "Confirm repository exists and review candidates before adding a dedicated pinned collector.",
+      "runtime_eligible": false,
+      "status": "discovery-only",
+      "tags": [
+        "developer",
+        "services",
+        "free"
+      ],
+      "title": "Awesome Free Developer Services",
+      "url": "https://github.com/kebbbnnn/Awesome-Free-Developer-Services"
+    },
+    {
+      "evidence_class": "REFERENCE_ONLY",
+      "id": "webawesome-discussion",
+      "implementation_paths": [
+        "docs/ops/PROVIDER-RESEARCH-COMPOUNDING.md"
+      ],
+      "kind": "discussion",
+      "mesh_roles": [
+        "presentation"
+      ],
+      "next_action": "Read discussion and assess reusable UI ideas against native schema and licensing.",
+      "runtime_eligible": false,
+      "status": "discovery-only",
+      "tags": [
+        "ui",
+        "components",
+        "webawesome"
+      ],
+      "title": "Web Awesome discussion 1353",
+      "url": "https://github.com/shoelace-style/webawesome/discussions/1353"
+    },
+    {
+      "evidence_class": "REFERENCE_ONLY",
+      "id": "developer-tools-2026",
+      "implementation_paths": [
+        "docs/ops/PROVIDER-RESEARCH-COMPOUNDING.md"
+      ],
+      "kind": "directory",
+      "mesh_roles": [
+        "discovery"
+      ],
+      "next_action": "Verify source existence and maintenance; do not infer freshness from repository name.",
+      "runtime_eligible": false,
+      "status": "discovery-only",
+      "tags": [
+        "developer",
+        "tools",
+        "free"
+      ],
+      "title": "Awesome free developer tools 2026",
+      "url": "https://github.com/spinov001-art/awesome-free-developer-tools-2026"
+    },
+    {
+      "evidence_class": "REFERENCE_ONLY",
+      "id": "nonprofit-resources",
+      "implementation_paths": [
+        "docs/ops/PROVIDER-RESEARCH-COMPOUNDING.md"
+      ],
+      "kind": "directory",
+      "mesh_roles": [
+        "policy",
+        "discovery"
+      ],
+      "next_action": "Check nonprofit eligibility restrictions; do not assume this project qualifies.",
+      "runtime_eligible": false,
+      "status": "discovery-only",
+      "tags": [
+        "nonprofit",
+        "eligibility",
+        "free"
+      ],
+      "title": "Awesome free nonprofits",
+      "url": "https://github.com/athman3/awesome-free-nonprofits"
+    },
+    {
+      "evidence_class": "REFERENCE_ONLY",
+      "id": "startup-resources",
+      "implementation_paths": [
+        "docs/ops/PROVIDER-RESEARCH-COMPOUNDING.md"
+      ],
+      "kind": "directory",
+      "mesh_roles": [
+        "discovery"
+      ],
+      "next_action": "Separate startup-only promotional credits from recurring free service tiers.",
+      "runtime_eligible": false,
+      "status": "discovery-only",
+      "tags": [
+        "startup",
+        "credits",
+        "free"
+      ],
+      "title": "Awesome free startup resources",
+      "url": "https://github.com/bllshttng/awesome-free-startup-resources"
+    },
+    {
+      "evidence_class": "REFERENCE_ONLY",
+      "id": "web-tools",
+      "implementation_paths": [
+        "docs/ops/PROVIDER-RESEARCH-COMPOUNDING.md"
+      ],
+      "kind": "directory",
+      "mesh_roles": [
+        "discovery"
+      ],
+      "next_action": "Review maintenance and service terms before selecting candidates.",
+      "runtime_eligible": false,
+      "status": "discovery-only",
+      "tags": [
+        "web",
+        "tools",
+        "free"
+      ],
+      "title": "Awesome free web tools",
+      "url": "https://github.com/aitaskorchestra/awesome-free-web-tools"
+    },
+    {
+      "evidence_class": "REFERENCE_ONLY",
+      "id": "freellmapi-search",
+      "implementation_paths": [
+        "docs/ops/PROVIDER-RESEARCH-COMPOUNDING.md"
+      ],
+      "kind": "search",
+      "mesh_roles": [
+        "discovery"
+      ],
+      "next_action": "Deduplicate results by canonical project identity and preserve primary-source links.",
+      "runtime_eligible": false,
+      "status": "discovery-only",
+      "tags": [
+        "freellmapi",
+        "search",
+        "llm"
+      ],
+      "title": "FreeLLMAPI discovery query",
+      "url": "https://www.google.com/search?q=freellmapi"
+    },
+    {
+      "evidence_class": "REFERENCE_ONLY",
+      "id": "together",
+      "implementation_paths": [
+        "scripts/provider_model_catalog.py"
+      ],
+      "kind": "provider",
+      "mesh_roles": [
+        "inference"
+      ],
+      "next_action": "Verify official pricing, account entitlement, privacy and model capabilities before adapter admission.",
+      "runtime_eligible": false,
+      "status": "discovery-only",
+      "tags": [
+        "llm",
+        "inference",
+        "serverless"
+      ],
+      "title": "Together serverless inference",
+      "url": "https://www.together.ai/serverless-inference"
+    },
+    {
+      "evidence_class": "REFERENCE_ONLY",
+      "id": "meta",
+      "implementation_paths": [
+        "scripts/provider_model_catalog.py"
+      ],
+      "kind": "provider",
+      "mesh_roles": [
+        "inference"
+      ],
+      "next_action": "Verify current official API access, eligibility, regional policy and costs.",
+      "runtime_eligible": false,
+      "status": "discovery-only",
+      "tags": [
+        "meta",
+        "llama",
+        "llm",
+        "api"
+      ],
+      "title": "Meta developer API",
+      "url": "https://dev.meta.ai/lp/start-building"
+    },
+    {
+      "evidence_class": "REFERENCE_ONLY",
+      "id": "freellmapi-topic",
+      "implementation_paths": [
+        "docs/ops/PROVIDER-RESEARCH-COMPOUNDING.md"
+      ],
+      "kind": "topic",
+      "mesh_roles": [
+        "discovery"
+      ],
+      "next_action": "Review topic results as untrusted leads; topic labels are not provider approval.",
+      "runtime_eligible": false,
+      "status": "discovery-only",
+      "tags": [
+        "github",
+        "topic",
+        "freellmapi"
+      ],
+      "title": "GitHub FreeLLMAPI topic",
+      "url": "https://github.com/topics/freellmapi"
+    },
+    {
+      "evidence_class": "REFERENCE_ONLY",
+      "id": "fireworks",
+      "implementation_paths": [
+        "scripts/provider_model_catalog.py"
+      ],
+      "kind": "provider",
+      "mesh_roles": [
+        "inference"
+      ],
+      "next_action": "Verify current model, pricing, quota and account-level invocation evidence.",
+      "runtime_eligible": false,
+      "status": "discovery-only",
+      "tags": [
+        "llm",
+        "inference",
+        "gpt-oss"
+      ],
+      "title": "Fireworks GPT OSS model page",
+      "url": "https://fireworks.ai/models/fireworks/gpt-oss-120b"
+    },
+    {
+      "evidence_class": "REFERENCE_ONLY",
+      "id": "hex",
+      "implementation_paths": [
+        "scripts/hex_moneyball_export.py",
+        "docs/ops/HEX-MONEYBALL-INTEGRATION.md"
+      ],
+      "kind": "service",
+      "mesh_roles": [
+        "analytics",
+        "presentation"
+      ],
+      "next_action": "Consume sanitized native export as an optional analytics replica; never make Hex the sole evidence source.",
+      "runtime_eligible": false,
+      "status": "discovery-only",
+      "tags": [
+        "analytics",
+        "sql",
+        "notebook",
+        "dashboard"
+      ],
+      "title": "Hex analytics surface",
+      "url": "https://hex.tech/docs"
+    },
+    {
+      "evidence_class": "REFERENCE_ONLY",
+      "id": "neon",
+      "implementation_paths": [
+        "scripts/ops/lane_event.py",
+        ".github/actions/lane-event/action.yml",
+        "docs/ops/AGENT-EVIDENCE-SUBSTRATE.md"
+      ],
+      "kind": "service",
+      "mesh_roles": [
+        "storage"
+      ],
+      "next_action": "Review existing lane-event adapter and its project-creation side effect; test migration, replay and restore contracts before invocation.",
+      "runtime_eligible": false,
+      "status": "discovery-only",
+      "tags": [
+        "postgres",
+        "database",
+        "storage",
+        "neon"
+      ],
+      "title": "Neon Postgres surface",
+      "url": "https://neon.com/docs"
+    },
+    {
+      "evidence_class": "REFERENCE_ONLY",
+      "id": "supabase",
+      "implementation_paths": [
+        "docs/ops/AGENT-EVIDENCE-SUBSTRATE.md"
+      ],
+      "kind": "service",
+      "mesh_roles": [
+        "storage"
+      ],
+      "next_action": "Map native evidence contracts to Postgres; test RLS, migrations and idempotent replay before writes.",
+      "runtime_eligible": false,
+      "status": "discovery-only",
+      "tags": [
+        "postgres",
+        "database",
+        "storage",
+        "supabase"
+      ],
+      "title": "Supabase Postgres surface",
+      "url": "https://supabase.com/docs"
+    },
+    {
+      "evidence_class": "REFERENCE_ONLY",
+      "id": "codespaces",
+      "implementation_paths": [
+        ".github/workflows/codespace-create.yml",
+        ".github/workflows/codespace-start.yml",
+        "docs/ops/CODESPACE-CREDENTIALS-SSOT.md"
+      ],
+      "kind": "service",
+      "mesh_roles": [
+        "compute"
+      ],
+      "next_action": "Reuse existing lanes; verify account entitlement, least-privilege secret access and spend controls before provisioning.",
+      "runtime_eligible": false,
+      "status": "discovery-only",
+      "tags": [
+        "compute",
+        "reproduction",
+        "codespaces",
+        "github"
+      ],
+      "title": "GitHub Codespaces execution surface",
+      "url": "https://docs.github.com/en/codespaces"
+    },
+    {
+      "evidence_class": "REFERENCE_ONLY",
+      "id": "digitalocean",
+      "implementation_paths": [
+        "docs/ops/BRIDGE-REDUNDANCY.md",
+        "docs/ops/AGENT-EVIDENCE-SUBSTRATE.md"
+      ],
+      "kind": "service",
+      "mesh_roles": [
+        "compute"
+      ],
+      "next_action": "Define reproducible deployment and restore contracts; require explicit resource and cost approval before provisioning.",
+      "runtime_eligible": false,
+      "status": "discovery-only",
+      "tags": [
+        "compute",
+        "hosting",
+        "digitalocean"
+      ],
+      "title": "DigitalOcean execution surface",
+      "url": "https://docs.digitalocean.com"
+    },
+    {
+      "evidence_class": "REFERENCE_ONLY",
+      "id": "gpt4free",
+      "implementation_paths": [
+        "docs/ops/FREE-LLM-PROVIDER-RECON.md"
+      ],
+      "kind": "template",
+      "mesh_roles": [
+        "discovery",
+        "inference"
+      ],
+      "next_action": "Research-only optional reference; review GPL obligations and official access authorization; no cookie or HAR harvesting.",
+      "runtime_eligible": false,
+      "status": "discovery-only",
+      "tags": [
+        "gpt4free",
+        "llm",
+        "gpl",
+        "access-method"
+      ],
+      "title": "gpt4free optional access-method reference",
+      "url": "https://github.com/xtekky/gpt4free"
+    },
+    {
+      "evidence_class": "REFERENCE_ONLY",
+      "id": "omnirouter-fork",
+      "implementation_paths": [
+        "scripts/live_catalog_feed.py",
+        "scripts/model_router.py"
+      ],
+      "kind": "template",
+      "mesh_roles": [
+        "discovery",
+        "inference"
+      ],
+      "next_action": "Model the OmniRoute (omni) provider leg of the live catalog feed and model router from this fork; verify entitlements separately; no upstream executable code adoption.",
+      "runtime_eligible": false,
+      "status": "discovery-only",
+      "tags": [
+        "llm",
+        "router",
+        "omniroute",
+        "go"
+      ],
+      "title": "OmniRouter fork routing template",
+      "url": "https://github.com/timerloggedout-spec/omnirouter_fork"
+    }
+  ],
+  "schema_version": "msm-resource-registry-v1",
+  "source_inputs": [
+    {
+      "id": "notes-line-01",
+      "input_sha256": "854ce05a71167e8b90c03ac2757534a4d4b10ee960ccf51e0e0fd3f2c5d7cf8d",
+      "resource_ids": [
+        "awesome-free-llm-apis"
+      ],
+      "source_line": 1,
+      "url": "https://github.com/mnfst/awesome-free-llm-apis"
+    },
+    {
+      "id": "notes-line-03",
+      "input_sha256": "f9d54d6e051498a6f64367d2ad139b4acb2e5b0803775d98f6961b43fb658dcb",
+      "resource_ids": [
+        "freellmapi"
+      ],
+      "source_line": 3,
+      "url": "https://github.com/tashfeenahmed/freellmapi"
+    },
+    {
+      "id": "notes-line-07",
+      "input_sha256": "806d547f1e892d22f1f95dde5994962c7e629431a361720c8f1fb5ef5ee35a8f",
+      "resource_ids": [
+        "github-awesome-search"
+      ],
+      "source_line": 7,
+      "url": "https://www.google.com/search?q=site%3Agithub.com+awesome+free"
+    },
+    {
+      "id": "notes-line-08",
+      "input_sha256": "d0333259872147ff08a71eb5616966b8c17365e54508b26383449e93eb42b33f",
+      "resource_ids": [
+        "awesome-free-chatgpt"
+      ],
+      "source_line": 8,
+      "url": "https://github.com/LiLittleCat/awesome-free-chatgpt/blob/main/README_en.md"
+    },
+    {
+      "id": "notes-line-09",
+      "input_sha256": "9ab5f9b031da80e11f9a6dd053911353f5ec63aa7310942c10b013ea90173e88",
+      "resource_ids": [
+        "awesome-free-models"
+      ],
+      "source_line": 9,
+      "url": "https://github.com/12britz/awesome-free-models"
+    },
+    {
+      "id": "notes-line-10",
+      "input_sha256": "e1b7be86a772a71bbe0a2f5c353019c4fc00441d1b3a21963135eaae39ce0d85",
+      "resource_ids": [
+        "awesome-legal"
+      ],
+      "source_line": 10,
+      "url": "https://github.com/ankane/awesome-legal"
+    },
+    {
+      "id": "notes-line-11",
+      "input_sha256": "6c8d4f50f2676797fdd3c923f1342e9989dcc162acc0b23880f86802126b3357",
+      "resource_ids": [
+        "awesome-free-tools"
+      ],
+      "source_line": 11,
+      "url": "https://github.com/abdessamadbettal/awesome-free-tools"
+    },
+    {
+      "id": "notes-line-12",
+      "input_sha256": "38850668596a316e33b5baeb29025c10f6df774ab1607570c3bb0ea12e10b8d9",
+      "resource_ids": [
+        "awesome-free-services"
+      ],
+      "source_line": 12,
+      "url": "https://github.com/hql287/awesome-free-services"
+    },
+    {
+      "id": "notes-line-13",
+      "input_sha256": "1a29b8d61fd354e1caffa3f73dc1f58fae2700e4c128438ff00829b2ae31b3e9",
+      "resource_ids": [
+        "awesome-free-developer-services"
+      ],
+      "source_line": 13,
+      "url": "https://github.com/kebbbnnn/Awesome-Free-Developer-Services"
+    },
+    {
+      "id": "notes-line-14",
+      "input_sha256": "c543977e3ee99eaab1230bbb16cf77456b9d95142fbbe70562b18ab254e273b6",
+      "resource_ids": [
+        "webawesome-discussion"
+      ],
+      "source_line": 14,
+      "url": "https://github.com/shoelace-style/webawesome/discussions/1353"
+    },
+    {
+      "id": "notes-line-15",
+      "input_sha256": "b311631e1d5ef9144db3f0d42dff0521e3857c483a0d9c7e7903c5b924204b83",
+      "resource_ids": [
+        "developer-tools-2026"
+      ],
+      "source_line": 15,
+      "url": "https://github.com/spinov001-art/awesome-free-developer-tools-2026"
+    },
+    {
+      "id": "notes-line-16",
+      "input_sha256": "9d3fad6795b431adf9f822f979161cacbc712b97beab63c604805f119d924dd7",
+      "resource_ids": [
+        "nonprofit-resources"
+      ],
+      "source_line": 16,
+      "url": "https://github.com/athman3/awesome-free-nonprofits"
+    },
+    {
+      "id": "notes-line-17",
+      "input_sha256": "2155218dbc12501e23ebad4e81260265faf96d56368857106c6697e0a0e0f13b",
+      "resource_ids": [
+        "startup-resources"
+      ],
+      "source_line": 17,
+      "url": "https://github.com/bllshttng/awesome-free-startup-resources"
+    },
+    {
+      "id": "notes-line-18",
+      "input_sha256": "c1e67a45372413e6d79e05558a7d6a34ab8a5a7311927686f0b0e18894a770eb",
+      "resource_ids": [
+        "web-tools"
+      ],
+      "source_line": 18,
+      "url": "https://github.com/aitaskorchestra/awesome-free-web-tools"
+    },
+    {
+      "id": "notes-line-19",
+      "input_sha256": "f9b40558477d6845646461a4b3e763164d08ff1016d5e68d3fdbf78fe447c618",
+      "resource_ids": [
+        "freellmapi-search"
+      ],
+      "source_line": 19,
+      "url": "https://www.google.com/search?q=freellmapi"
+    },
+    {
+      "id": "notes-line-20",
+      "input_sha256": "bba483e83cd0f1f98ae951b8deead29540b14ac7d2d580d61c78ca2c8194a247",
+      "resource_ids": [
+        "together"
+      ],
+      "source_line": 20,
+      "url": "https://www.together.ai/serverless-inference"
+    },
+    {
+      "id": "notes-line-21",
+      "input_sha256": "ea94655890014739be509ef0158ae4cfefff2b514f757f56ed1397b99897a2ec",
+      "resource_ids": [
+        "meta"
+      ],
+      "source_line": 21,
+      "url": "https://dev.meta.ai/lp/start-building"
+    },
+    {
+      "id": "notes-line-22",
+      "input_sha256": "f9d54d6e051498a6f64367d2ad139b4acb2e5b0803775d98f6961b43fb658dcb",
+      "resource_ids": [
+        "freellmapi"
+      ],
+      "source_line": 22,
+      "url": "https://github.com/tashfeenahmed/freellmapi"
+    },
+    {
+      "id": "notes-line-23",
+      "input_sha256": "96a0338a5b76418d9f75fdada17cac544662ee6fc6576e7bfda39d264104e50b",
+      "resource_ids": [
+        "freellmapi-topic"
+      ],
+      "source_line": 23,
+      "url": "https://github.com/topics/freellmapi"
+    },
+    {
+      "id": "notes-line-24",
+      "input_sha256": "20e91e8c4842366e0c39257896279249572cb0aa875a4bec9d766ccddd70c156",
+      "resource_ids": [
+        "fireworks"
+      ],
+      "source_line": 24,
+      "url": "https://fireworks.ai/models/fireworks/gpt-oss-120b"
+    }
+  ],
+  "source_policy": "Canonical references only; tracking parameters removed. Supplied links are not verified entitlements. New source collectors require reviewed code; registry additions never authorize fetching or execution."
+}

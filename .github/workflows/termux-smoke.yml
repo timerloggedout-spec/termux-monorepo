@@ -1,0 +1,42 @@
+name: termux smoke
+
+# Agentic Termux runtime surface check.
+# Sits *after* repo-gate (hygiene) and *before* language-specific / provider work.
+#
+# On device:
+#     python3 scripts/ci/termux_smoke.py
+#     python3 scripts/ci/termux_smoke.py --with-optional
+#
+# No cargo, no node, no pip, no network required for the default path.
+
+on:
+  pull_request:
+  push:
+    branches: [master, master-staging, termux-smoke]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: termux-smoke-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    name: agentic termux smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          submodules: false
+
+      - name: Core smoke (required)
+        run: python3 scripts/ci/termux_smoke.py
+
+      - name: Optional agent-surface probes
+        run: python3 scripts/ci/termux_smoke.py --with-optional
+        # Optional probes never fail the job unless --strict is used later.
+        continue-on-error: true

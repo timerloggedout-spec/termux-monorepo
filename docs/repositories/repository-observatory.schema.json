@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/repositories/repository-observatory.schema.json",
+  "title": "Termux Monorepo Repository Observatory Index",
+  "type": "object",
+  "required": ["schema_version", "builder", "repository", "observed_at", "authenticated_user", "snapshot_hash", "counts", "repositories"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.1"},
+    "builder": {"type": "string"},
+    "repository": {"type": "string", "pattern": "^[^/]+/termux-monorepo$"},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "authenticated_user": {"type": "string", "minLength": 1},
+    "snapshot_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "counts": {
+      "type": "object",
+      "required": ["owned", "starred", "both", "research_seeds", "integration_candidates"],
+      "additionalProperties": {"type": "integer", "minimum": 0}
+    },
+    "repositories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "full_name", "name", "html_url", "provenance", "classification"],
+        "properties": {
+          "id": {"type": "string"},
+          "full_name": {"type": "string"},
+          "name": {"type": "string"},
+          "html_url": {"type": "string", "format": "uri"},
+          "provenance": {"type": "array", "items": {"enum": ["owned", "starred"]}, "uniqueItems": true, "minItems": 1},
+          "classification": {
+            "type": "object",
+            "required": ["domains", "role", "integration", "research_value", "submodule_candidate"],
+            "properties": {
+              "domains": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+              "role": {"type": "array", "items": {"type": "string"}},
+              "integration": {"type": "array", "items": {"type": "string"}},
+              "research_value": {"enum": ["medium", "high"]},
+              "submodule_candidate": {"type": "boolean"}
+            }
+          }
+        }
+      }
+    }
+  }
+}

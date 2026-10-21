@@ -14,12 +14,16 @@
 | kimi-cloud-offload | P1 | posted | [active/kimi-cloud-offload/](active/kimi-cloud-offload/) |
 | chatgpt-initial | P2 | posted | [active/chatgpt-initial/](active/chatgpt-initial/) |
 | chatgpt-droidapp | P2 | posted | [active/chatgpt-droidapp/](active/chatgpt-droidapp/) |
+| agent-contributor-provenance | P1 | in_review | [active/agent-contributor-provenance/](active/agent-contributor-provenance/) |
+| notation-sets-evolution | P1 | posted | [active/notation-sets/](active/notation-sets/) |
+| context-relationship-graph | P1 | executing | [active/context-relationship-graph/](active/context-relationship-graph/) — includes proposed CRG-15 Historical Corpus Explorer |
 
 ## Large sources / debate branches
 
 | Pointer on master | Full text branch | Notes |
 |-------------------|------------------|-------|
 | `corrected_cloud_offload_evaluation.md` | `docs/kimi-cloud-offload-evaluation` | Kimi corrections; nested as `active/kimi-cloud-offload/` |
+| `active/notation-sets/` | `docs/notation-sets-evolution` | #320 notation vocabulary + living lexicon/index research; related #309/#182/#175 |
 
 Flat historical sources still on master:
 

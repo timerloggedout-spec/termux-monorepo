@@ -1,0 +1,59 @@
+"""Operational receipts must not be counted as successful tributes."""
+import unittest
+from pathlib import Path
+
+from scripts.ci.help_wanted_status import classify_receipt_outcome
+
+
+class HelpWantedStatusOutcomeTests(unittest.TestCase):
+    def test_skip_is_skipped_not_successful_work(self):
+        self.assertEqual(
+            classify_receipt_outcome({"kind": "followup_skip_cooldown", "ok": True, "action": "skip"}),
+            "skipped",
+        )
+
+    def test_successful_action_is_actioned_not_accepted(self):
+        self.assertEqual(
+            classify_receipt_outcome({"kind": "followup_stale_nudge", "ok": True, "action": "stale_nudge"}),
+            "actioned",
+        )
+
+    def test_failed_action_is_failed(self):
+        self.assertEqual(
+            classify_receipt_outcome({"kind": "followup_changes", "ok": False, "action": "changes"}),
+            "failed",
+        )
+
+    def test_failed_skip_receipt_is_not_hidden_as_skipped(self):
+        self.assertEqual(
+            classify_receipt_outcome({"kind": "followup_skip_cooldown", "ok": False, "action": "skip"}),
+            "failed",
+        )
+
+    def test_dashboard_exposes_audited_stages_and_operational_outcomes(self):
+        html = Path("apps/help-wanted-dashboard/index.html").read_text(encoding="utf-8")
+        self.assertIn("Validated (audited)", html)
+        self.assertIn("Accepted (audited)", html)
+        self.assertIn("Realized effects (sample)", html)
+        self.assertIn("out.skipped", html)
+        self.assertIn("out.failed", html)
+        self.assertIn("audit.not_audited_count", html)
+        self.assertIn("audit.audited_this_run_count", html)
+        self.assertIn("audit.partial_this_run_count", html)
+        self.assertIn("audit.deferred_this_run_count", html)
+        self.assertIn("audit.unknown_this_run_count", html)
+        self.assertIn("audit.attempted_this_run_count", html)
+        workflow = Path(".github/workflows/help-wanted-telemetry-tests.yml").read_text(encoding="utf-8")
+        pull_request_paths = workflow.split("  pull_request:", 1)[1].split("  push:", 1)[0]
+        push_paths = workflow.split("  push:", 1)[1].split("  workflow_dispatch:", 1)[0]
+        for path in (
+            ".github/workflows/help-wanted-telemetry-tests.yml",
+            "docs/ops/AUTOMATED-TELEMETRY-AUDIT.md",
+            "docs/ops/HELP-WANTED-REALIZATION-EVIDENCE.md",
+        ):
+            self.assertIn(path, pull_request_paths)
+            self.assertIn(path, push_paths)
+
+
+if __name__ == "__main__":
+    unittest.main()

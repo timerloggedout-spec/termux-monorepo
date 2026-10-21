@@ -1,0 +1,73 @@
+{
+  "collected_at": "2026-10-04T09:43:36.598195+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 37190579102,
+    "endpoint": ".../runs/37190579102/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 111401704766,
+        "run_id": 37190579102,
+        "workflow_name": "n8n SHE bridge",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37190579102",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAZ8A8dPg",
+        "head_sha": "d9959935bfff816dc5c8b26ee944dc3a71b45e5f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/111401704766",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37190579102/job/111401704766",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-04T08:57:16Z",
+        "started_at": "2026-10-04T08:57:18Z",
+        "completed_at": "2026-10-04T08:57:21Z",
+        "name": "Emit sanitized workflow evidence to optional n8n",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-04T08:57:19Z",
+            "completed_at": "2026-10-04T08:57:19Z"
+          },
+          {
+            "name": "Check n8n bridge configuration",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-04T08:57:19Z",
+            "completed_at": "2026-10-04T08:57:19Z"
+          },
+          {
+            "name": "Emit sanitized workflow_run receipt",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 3,
+            "started_at": "2026-10-04T08:57:19Z",
+            "completed_at": "2026-10-04T08:57:19Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-04T08:57:19Z",
+            "completed_at": "2026-10-04T08:57:19Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/111401704766",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000205169,
+        "runner_name": "GitHub Actions 1000205169",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

@@ -58,6 +58,8 @@ def execute_block(code):
     sandbox=HOME/'sandbox/activity_listener'; sandbox.mkdir(parents=True,exist_ok=True)
     ext='.sh' if is_shell(code) else '.py'
     script=sandbox/f'block_{datetime.now().strftime("%H%M%S")}{ext}'
+    if script.is_symlink():
+        raise ValueError(f"Symlink execution script rejected: {script}")
     script.write_text(code); script.chmod(0o755)
     res=subprocess.run(['bash',str(script)] if ext=='.sh' else ['python3',str(script)],
         capture_output=True,text=True,timeout=60,cwd=str(sandbox),stdin=subprocess.DEVNULL)

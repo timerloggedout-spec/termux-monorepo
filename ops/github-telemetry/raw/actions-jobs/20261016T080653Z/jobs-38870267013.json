@@ -1,0 +1,67 @@
+{
+  "collected_at": "2026-10-16T08:07:03.718816+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 38870267013,
+    "endpoint": ".../runs/38870267013/jobs"
+  },
+  "data": {
+    "total_count": 2,
+    "jobs": [
+      {
+        "id": 116872448217,
+        "run_id": 38870267013,
+        "workflow_name": "Agent review \u2192 auto Jules",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/38870267013",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAbNiQI2Q",
+        "head_sha": "3732c3bb45af031ff627c97c9cb45c3fe63aa796",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/116872448217",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/38870267013/job/116872448217",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-10-16T07:55:18Z",
+        "started_at": "2026-10-16T07:55:18Z",
+        "completed_at": "2026-10-16T07:55:17Z",
+        "name": "detect-bot-feedback",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/116872448217",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      },
+      {
+        "id": 116872497502,
+        "run_id": 38870267013,
+        "workflow_name": "Agent review \u2192 auto Jules",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/38870267013",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAbNiTJXg",
+        "head_sha": "3732c3bb45af031ff627c97c9cb45c3fe63aa796",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/116872497502",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/38870267013/job/116872497502",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-10-16T07:55:26Z",
+        "started_at": "2026-10-16T07:55:26Z",
+        "completed_at": "2026-10-16T07:55:18Z",
+        "name": "invoke-jules-api",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/116872497502",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      }
+    ]
+  }
+}

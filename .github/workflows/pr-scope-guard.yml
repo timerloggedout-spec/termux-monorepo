@@ -1,0 +1,100 @@
+name: PR scope guard
+
+# Keep continuous observation/evaluation out of the product PR lane.
+# This workflow never checks out or executes pull-request code.
+# Session/recon/pulse-only PRs are closed as not planned so stale agent loops
+# cannot turn every evaluation epoch or live-master observation into another PR.
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize]
+
+permissions:
+  contents: read
+  pull-requests: read
+  issues: write
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enforce evaluation/PR boundary
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const pr = context.payload.pull_request;
+            if (!pr) return;
+
+            const title = String(pr.title || '');
+            const body = String(pr.body || '');
+            const titleStrong =
+              /^(?:SUPERSEDED:\s*)?ops\(skills\):\s*bind session\b/i.test(title) ||
+              /^ops\(session\)/i.test(title) ||
+              /^ops\/session-/i.test(title);
+            const sessionTitle =
+              /(?:ops\((?:session|skills)\)|session(?:[- ]recon|[- ]pulse)|ops\/session|SUPERSEDED:).*\b(?:bind|stamp|recon|receipt|pulse|refresh|live master|session)\b/i.test(title);
+            const sessionBody =
+              /(?:session-recon|session[- ]receipt|live master|do not pulse #175|session pulse)/i.test(body);
+
+            const { data: files } = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+              per_page: 100,
+            });
+            const paths = files.map(f => f.filename);
+            const evidenceOnly = paths.length > 0 && paths.every(path =>
+              path.startsWith('.agents/skills/') ||
+              path.startsWith('docs/ops/sessions/') ||
+              path.startsWith('docs/ops/generated/') ||
+              /^docs\/ops\/SESSION-[^/]+\.md$/i.test(path) ||
+              path === 'docs/ops/LANE-MATRIX.md' ||
+              path === 'docs/icm/cards/session-ssot-pulse.md'
+            );
+
+            const sessionOnly = evidenceOnly && (titleStrong || (sessionTitle && sessionBody));
+            if (!sessionOnly) {
+              core.info(`PR #${pr.number}: product/policy scope accepted by guard`);
+              return;
+            }
+
+            const marker = '<!-- pr-scope-guard:session-only:v1 -->';
+            const message = [
+              marker,
+              '## Session/evaluation PR suppressed',
+              '',
+              'This PR contains session/recon/pulse-only state. Continuous evaluation, catalog observations, live-master bindings, receipts, and routing evidence belong in the longitudinal evidence/catalog plane, not the product PR plane.',
+              '',
+              '**Boundary:**',
+              '- evaluation epoch → evidence/ledger/artifact',
+              '- catalog observation/ranking → catalog state/projection',
+              '- live master movement → new observation epoch',
+              '- implementation or durable policy change → pull request',
+              '',
+              'The PR is closed as **not planned** to prevent evaluation/agent loops from amplifying PR churn. Re-open only if the branch contains a genuine implementation or durable policy change.',
+            ].join('\n');
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              per_page: 100,
+            });
+            if (!comments.some(c => String(c.body || '').includes(marker))) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body: message,
+              });
+            }
+
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              state: 'closed',
+              state_reason: 'not_planned',
+            });
+            core.warning(`Closed PR #${pr.number}: session/evaluation-only change is not a product PR.`);

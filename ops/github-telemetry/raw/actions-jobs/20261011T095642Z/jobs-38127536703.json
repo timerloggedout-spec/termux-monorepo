@@ -1,0 +1,2897 @@
+{
+  "collected_at": "2026-10-11T09:56:45.623040+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 38127536703,
+    "endpoint": ".../runs/38127536703/jobs"
+  },
+  "data": {
+    "total_count": 21,
+    "jobs": [
+      {
+        "id": 114434914825,
+        "run_id": 38127536703,
+        "workflow_name": "Continuous Team Evaluation",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/38127536703",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAapNo6CQ",
+        "head_sha": "56188dc1a3e1cc7239d9ec46cae51645740946ef",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/114434914825",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/38127536703/job/114434914825",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-11T09:12:24Z",
+        "started_at": "2026-10-11T09:12:27Z",
+        "completed_at": "2026-10-11T09:12:38Z",
+        "name": "discover",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-11T09:12:27Z",
+            "completed_at": "2026-10-11T09:12:28Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-11T09:12:28Z",
+            "completed_at": "2026-10-11T09:12:34Z"
+          },
+          {
+            "name": "Poll live provider catalogs and account-facing response metadata",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-11T09:12:34Z",
+            "completed_at": "2026-10-11T09:12:35Z"
+          },
+          {
+            "name": "Build dynamic MVT matrix from current eligible library",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-11T09:12:35Z",
+            "completed_at": "2026-10-11T09:12:35Z"
+          },
+          {
+            "name": "Upload catalog snapshot",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-11T09:12:35Z",
+            "completed_at": "2026-10-11T09:12:36Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-11T09:12:36Z",
+            "completed_at": "2026-10-11T09:12:36Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-11T09:12:36Z",
+            "completed_at": "2026-10-11T09:12:36Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/114434914825",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000232491,
+        "runner_name": "GitHub Actions 1000232491",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 114434953104,
+        "run_id": 38127536703,
+        "workflow_name": "Continuous Team Evaluation",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/38127536703",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAapNrPkA",
+        "head_sha": "56188dc1a3e1cc7239d9ec46cae51645740946ef",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/114434953104",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/38127536703/job/114434953104",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-11T09:12:38Z",
+        "started_at": "2026-10-11T09:12:41Z",
+        "completed_at": "2026-10-11T09:13:01Z",
+        "name": "experiment (openrouter-nvidia-nemotron-3-nano-omni-30b-a3b-reasoning-free, openrouter, nvidia/nem...",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-11T09:12:42Z",
+            "completed_at": "2026-10-11T09:12:43Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-11T09:12:43Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Resolve experiment cohort and rotating manager",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Poll live catalog again before invocation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Verify dynamic candidate is still eligible",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Create immutable evaluation epoch metadata",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Snapshot repository history without mutation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Build MVT prompt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Invoke live candidate with uncapped provider/model response capability",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:56Z"
+          },
+          {
+            "name": "Expose invocation telemetry in audit logs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-11T09:12:56Z",
+            "completed_at": "2026-10-11T09:12:56Z"
+          },
+          {
+            "name": "Write immutable experiment manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-11T09:12:56Z",
+            "completed_at": "2026-10-11T09:12:56Z"
+          },
+          {
+            "name": "Upload immutable evaluation ledger",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-10-11T09:12:56Z",
+            "completed_at": "2026-10-11T09:12:58Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 24,
+            "started_at": "2026-10-11T09:12:58Z",
+            "completed_at": "2026-10-11T09:12:58Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 25,
+            "started_at": "2026-10-11T09:12:58Z",
+            "completed_at": "2026-10-11T09:12:58Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/114434953104",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000232495,
+        "runner_name": "GitHub Actions 1000232495",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 114434953105,
+        "run_id": 38127536703,
+        "workflow_name": "Continuous Team Evaluation",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/38127536703",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAapNrPkQ",
+        "head_sha": "56188dc1a3e1cc7239d9ec46cae51645740946ef",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/114434953105",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/38127536703/job/114434953105",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-11T09:12:38Z",
+        "started_at": "2026-10-11T09:12:41Z",
+        "completed_at": "2026-10-11T09:13:12Z",
+        "name": "experiment (openrouter-poolside-laguna-s-2.1-free, openrouter, poolside/laguna-s-2.1:free, indepe...",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-11T09:12:42Z",
+            "completed_at": "2026-10-11T09:12:43Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-11T09:12:43Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Resolve experiment cohort and rotating manager",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Poll live catalog again before invocation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Verify dynamic candidate is still eligible",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Create immutable evaluation epoch metadata",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Snapshot repository history without mutation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Build MVT prompt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Invoke live candidate with uncapped provider/model response capability",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:13:07Z"
+          },
+          {
+            "name": "Expose invocation telemetry in audit logs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-11T09:13:07Z",
+            "completed_at": "2026-10-11T09:13:07Z"
+          },
+          {
+            "name": "Write immutable experiment manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-11T09:13:07Z",
+            "completed_at": "2026-10-11T09:13:08Z"
+          },
+          {
+            "name": "Upload immutable evaluation ledger",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-10-11T09:13:08Z",
+            "completed_at": "2026-10-11T09:13:09Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 24,
+            "started_at": "2026-10-11T09:13:09Z",
+            "completed_at": "2026-10-11T09:13:09Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 25,
+            "started_at": "2026-10-11T09:13:09Z",
+            "completed_at": "2026-10-11T09:13:09Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/114434953105",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000232492,
+        "runner_name": "GitHub Actions 1000232492",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 114434953107,
+        "run_id": 38127536703,
+        "workflow_name": "Continuous Team Evaluation",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/38127536703",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAapNrPkw",
+        "head_sha": "56188dc1a3e1cc7239d9ec46cae51645740946ef",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/114434953107",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/38127536703/job/114434953107",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-11T09:12:38Z",
+        "started_at": "2026-10-11T09:12:42Z",
+        "completed_at": "2026-10-11T09:13:00Z",
+        "name": "experiment (openrouter-apodex-apodex-1.1-mini-free, openrouter, apodex/apodex-1.1-mini:free, inde...",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-11T09:12:43Z",
+            "completed_at": "2026-10-11T09:12:43Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-11T09:12:43Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Resolve experiment cohort and rotating manager",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Poll live catalog again before invocation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Verify dynamic candidate is still eligible",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Create immutable evaluation epoch metadata",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Snapshot repository history without mutation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Build MVT prompt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Invoke live candidate with uncapped provider/model response capability",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:56Z"
+          },
+          {
+            "name": "Expose invocation telemetry in audit logs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-11T09:12:56Z",
+            "completed_at": "2026-10-11T09:12:56Z"
+          },
+          {
+            "name": "Write immutable experiment manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-11T09:12:56Z",
+            "completed_at": "2026-10-11T09:12:56Z"
+          },
+          {
+            "name": "Upload immutable evaluation ledger",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-10-11T09:12:56Z",
+            "completed_at": "2026-10-11T09:12:57Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 24,
+            "started_at": "2026-10-11T09:12:57Z",
+            "completed_at": "2026-10-11T09:12:58Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 25,
+            "started_at": "2026-10-11T09:12:58Z",
+            "completed_at": "2026-10-11T09:12:58Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/114434953107",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000232497,
+        "runner_name": "GitHub Actions 1000232497",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 114434953109,
+        "run_id": 38127536703,
+        "workflow_name": "Continuous Team Evaluation",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/38127536703",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAapNrPlQ",
+        "head_sha": "56188dc1a3e1cc7239d9ec46cae51645740946ef",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/114434953109",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/38127536703/job/114434953109",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-11T09:12:38Z",
+        "started_at": "2026-10-11T09:12:41Z",
+        "completed_at": "2026-10-11T09:12:52Z",
+        "name": "experiment (openrouter-nvidia-nemotron-3.5-content-safety-free, openrouter, nvidia/nemotron-3.5-c...",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-11T09:12:41Z",
+            "completed_at": "2026-10-11T09:12:42Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-11T09:12:42Z",
+            "completed_at": "2026-10-11T09:12:48Z"
+          },
+          {
+            "name": "Resolve experiment cohort and rotating manager",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-11T09:12:48Z",
+            "completed_at": "2026-10-11T09:12:48Z"
+          },
+          {
+            "name": "Poll live catalog again before invocation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-11T09:12:48Z",
+            "completed_at": "2026-10-11T09:12:48Z"
+          },
+          {
+            "name": "Verify dynamic candidate is still eligible",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-11T09:12:48Z",
+            "completed_at": "2026-10-11T09:12:48Z"
+          },
+          {
+            "name": "Create immutable evaluation epoch metadata",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-11T09:12:48Z",
+            "completed_at": "2026-10-11T09:12:48Z"
+          },
+          {
+            "name": "Snapshot repository history without mutation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-11T09:12:48Z",
+            "completed_at": "2026-10-11T09:12:48Z"
+          },
+          {
+            "name": "Build MVT prompt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-11T09:12:48Z",
+            "completed_at": "2026-10-11T09:12:48Z"
+          },
+          {
+            "name": "Invoke live candidate with uncapped provider/model response capability",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-10-11T09:12:48Z",
+            "completed_at": "2026-10-11T09:12:49Z"
+          },
+          {
+            "name": "Expose invocation telemetry in audit logs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-11T09:12:49Z",
+            "completed_at": "2026-10-11T09:12:49Z"
+          },
+          {
+            "name": "Write immutable experiment manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-11T09:12:49Z",
+            "completed_at": "2026-10-11T09:12:49Z"
+          },
+          {
+            "name": "Upload immutable evaluation ledger",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-10-11T09:12:49Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 24,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 25,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/114434953109",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000232493,
+        "runner_name": "GitHub Actions 1000232493",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 114434953114,
+        "run_id": 38127536703,
+        "workflow_name": "Continuous Team Evaluation",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/38127536703",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAapNrPmg",
+        "head_sha": "56188dc1a3e1cc7239d9ec46cae51645740946ef",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/114434953114",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/38127536703/job/114434953114",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-11T09:12:38Z",
+        "started_at": "2026-10-11T09:12:41Z",
+        "completed_at": "2026-10-11T09:13:10Z",
+        "name": "experiment (openrouter-nvidia-nemotron-3.5-lightning-free, openrouter, nvidia/nemotron-3.5-lightn...",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-11T09:12:41Z",
+            "completed_at": "2026-10-11T09:12:42Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-11T09:12:42Z",
+            "completed_at": "2026-10-11T09:12:49Z"
+          },
+          {
+            "name": "Resolve experiment cohort and rotating manager",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-11T09:12:49Z",
+            "completed_at": "2026-10-11T09:12:49Z"
+          },
+          {
+            "name": "Poll live catalog again before invocation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-11T09:12:49Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Verify dynamic candidate is still eligible",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Create immutable evaluation epoch metadata",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Snapshot repository history without mutation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Build MVT prompt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Invoke live candidate with uncapped provider/model response capability",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:13:07Z"
+          },
+          {
+            "name": "Expose invocation telemetry in audit logs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-11T09:13:07Z",
+            "completed_at": "2026-10-11T09:13:07Z"
+          },
+          {
+            "name": "Write immutable experiment manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-11T09:13:07Z",
+            "completed_at": "2026-10-11T09:13:07Z"
+          },
+          {
+            "name": "Upload immutable evaluation ledger",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-10-11T09:13:07Z",
+            "completed_at": "2026-10-11T09:13:08Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 24,
+            "started_at": "2026-10-11T09:13:08Z",
+            "completed_at": "2026-10-11T09:13:08Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 25,
+            "started_at": "2026-10-11T09:13:08Z",
+            "completed_at": "2026-10-11T09:13:08Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/114434953114",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000232494,
+        "runner_name": "GitHub Actions 1000232494",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 114434953117,
+        "run_id": 38127536703,
+        "workflow_name": "Continuous Team Evaluation",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/38127536703",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAapNrPnQ",
+        "head_sha": "56188dc1a3e1cc7239d9ec46cae51645740946ef",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/114434953117",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/38127536703/job/114434953117",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-11T09:12:38Z",
+        "started_at": "2026-10-11T09:12:41Z",
+        "completed_at": "2026-10-11T09:13:28Z",
+        "name": "experiment (openrouter-cohere-north-mini-code-free, openrouter, cohere/north-mini-code:free, inde...",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-11T09:12:42Z",
+            "completed_at": "2026-10-11T09:12:42Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-11T09:12:42Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Resolve experiment cohort and rotating manager",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Poll live catalog again before invocation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Verify dynamic candidate is still eligible",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Create immutable evaluation epoch metadata",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Snapshot repository history without mutation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Build MVT prompt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Invoke live candidate with uncapped provider/model response capability",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:13:26Z"
+          },
+          {
+            "name": "Expose invocation telemetry in audit logs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-11T09:13:26Z",
+            "completed_at": "2026-10-11T09:13:26Z"
+          },
+          {
+            "name": "Write immutable experiment manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-11T09:13:26Z",
+            "completed_at": "2026-10-11T09:13:26Z"
+          },
+          {
+            "name": "Upload immutable evaluation ledger",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-10-11T09:13:26Z",
+            "completed_at": "2026-10-11T09:13:27Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 24,
+            "started_at": "2026-10-11T09:13:27Z",
+            "completed_at": "2026-10-11T09:13:27Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 25,
+            "started_at": "2026-10-11T09:13:27Z",
+            "completed_at": "2026-10-11T09:13:27Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/114434953117",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000232498,
+        "runner_name": "GitHub Actions 1000232498",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 114434953122,
+        "run_id": 38127536703,
+        "workflow_name": "Continuous Team Evaluation",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/38127536703",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAapNrPog",
+        "head_sha": "56188dc1a3e1cc7239d9ec46cae51645740946ef",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/114434953122",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/38127536703/job/114434953122",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-11T09:12:38Z",
+        "started_at": "2026-10-11T09:12:41Z",
+        "completed_at": "2026-10-11T09:12:53Z",
+        "name": "experiment (openrouter-google-lyria-3-clip-preview, openrouter, google/lyria-3-clip-preview, inde...",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-11T09:12:42Z",
+            "completed_at": "2026-10-11T09:12:42Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-11T09:12:42Z",
+            "completed_at": "2026-10-11T09:12:49Z"
+          },
+          {
+            "name": "Resolve experiment cohort and rotating manager",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-11T09:12:49Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Poll live catalog again before invocation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Verify dynamic candidate is still eligible",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Create immutable evaluation epoch metadata",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Snapshot repository history without mutation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Build MVT prompt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Invoke live candidate with uncapped provider/model response capability",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Expose invocation telemetry in audit logs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Write immutable experiment manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Upload immutable evaluation ledger",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 24,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 25,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/114434953122",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000232500,
+        "runner_name": "GitHub Actions 1000232500",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 114434953131,
+        "run_id": 38127536703,
+        "workflow_name": "Continuous Team Evaluation",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/38127536703",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAapNrPqw",
+        "head_sha": "56188dc1a3e1cc7239d9ec46cae51645740946ef",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/114434953131",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/38127536703/job/114434953131",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-11T09:12:38Z",
+        "started_at": "2026-10-11T09:12:41Z",
+        "completed_at": "2026-10-11T09:13:12Z",
+        "name": "experiment (openrouter-nvidia-nemotron-3-super-120b-a12b-free, openrouter, nvidia/nemotron-3-supe...",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-11T09:12:42Z",
+            "completed_at": "2026-10-11T09:12:43Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-11T09:12:43Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Resolve experiment cohort and rotating manager",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Poll live catalog again before invocation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Verify dynamic candidate is still eligible",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Create immutable evaluation epoch metadata",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Snapshot repository history without mutation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Build MVT prompt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Invoke live candidate with uncapped provider/model response capability",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:13:09Z"
+          },
+          {
+            "name": "Expose invocation telemetry in audit logs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-11T09:13:09Z",
+            "completed_at": "2026-10-11T09:13:09Z"
+          },
+          {
+            "name": "Write immutable experiment manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-11T09:13:09Z",
+            "completed_at": "2026-10-11T09:13:09Z"
+          },
+          {
+            "name": "Upload immutable evaluation ledger",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-10-11T09:13:09Z",
+            "completed_at": "2026-10-11T09:13:10Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 24,
+            "started_at": "2026-10-11T09:13:10Z",
+            "completed_at": "2026-10-11T09:13:10Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 25,
+            "started_at": "2026-10-11T09:13:10Z",
+            "completed_at": "2026-10-11T09:13:10Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/114434953131",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000232499,
+        "runner_name": "GitHub Actions 1000232499",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 114434953132,
+        "run_id": 38127536703,
+        "workflow_name": "Continuous Team Evaluation",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/38127536703",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAapNrPrA",
+        "head_sha": "56188dc1a3e1cc7239d9ec46cae51645740946ef",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/114434953132",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/38127536703/job/114434953132",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-11T09:12:38Z",
+        "started_at": "2026-10-11T09:12:41Z",
+        "completed_at": "2026-10-11T09:12:55Z",
+        "name": "experiment (openrouter-google-gemma-4-31b-it-free, openrouter, google/gemma-4-31b-it:free, indepe...",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-11T09:12:42Z",
+            "completed_at": "2026-10-11T09:12:43Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-11T09:12:43Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Resolve experiment cohort and rotating manager",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Poll live catalog again before invocation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Verify dynamic candidate is still eligible",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Create immutable evaluation epoch metadata",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Snapshot repository history without mutation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Build MVT prompt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Invoke live candidate with uncapped provider/model response capability",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Expose invocation telemetry in audit logs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Write immutable experiment manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Upload immutable evaluation ledger",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:52Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 24,
+            "started_at": "2026-10-11T09:12:52Z",
+            "completed_at": "2026-10-11T09:12:52Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 25,
+            "started_at": "2026-10-11T09:12:52Z",
+            "completed_at": "2026-10-11T09:12:52Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/114434953132",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000232504,
+        "runner_name": "GitHub Actions 1000232504",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 114434953137,
+        "run_id": 38127536703,
+        "workflow_name": "Continuous Team Evaluation",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/38127536703",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAapNrPsQ",
+        "head_sha": "56188dc1a3e1cc7239d9ec46cae51645740946ef",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/114434953137",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/38127536703/job/114434953137",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-11T09:12:38Z",
+        "started_at": "2026-10-11T09:12:42Z",
+        "completed_at": "2026-10-11T09:12:58Z",
+        "name": "experiment (openrouter-dots-studio-dots-3-note-preview-free, openrouter, dots-studio/dots-3-note-...",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-11T09:12:42Z",
+            "completed_at": "2026-10-11T09:12:43Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-11T09:12:43Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Resolve experiment cohort and rotating manager",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Poll live catalog again before invocation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Verify dynamic candidate is still eligible",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Create immutable evaluation epoch metadata",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Snapshot repository history without mutation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Build MVT prompt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Invoke live candidate with uncapped provider/model response capability",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:55Z"
+          },
+          {
+            "name": "Expose invocation telemetry in audit logs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-11T09:12:55Z",
+            "completed_at": "2026-10-11T09:12:55Z"
+          },
+          {
+            "name": "Write immutable experiment manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-11T09:12:55Z",
+            "completed_at": "2026-10-11T09:12:55Z"
+          },
+          {
+            "name": "Upload immutable evaluation ledger",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-10-11T09:12:55Z",
+            "completed_at": "2026-10-11T09:12:56Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 24,
+            "started_at": "2026-10-11T09:12:56Z",
+            "completed_at": "2026-10-11T09:12:56Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 25,
+            "started_at": "2026-10-11T09:12:56Z",
+            "completed_at": "2026-10-11T09:12:56Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/114434953137",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000232496,
+        "runner_name": "GitHub Actions 1000232496",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 114434953146,
+        "run_id": 38127536703,
+        "workflow_name": "Continuous Team Evaluation",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/38127536703",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAapNrPug",
+        "head_sha": "56188dc1a3e1cc7239d9ec46cae51645740946ef",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/114434953146",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/38127536703/job/114434953146",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-11T09:12:38Z",
+        "started_at": "2026-10-11T09:12:42Z",
+        "completed_at": "2026-10-11T09:12:58Z",
+        "name": "experiment (felo-ox-alpha, felo, ox-alpha, adversarial-ox-alpha, free-trial)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-11T09:12:43Z",
+            "completed_at": "2026-10-11T09:12:43Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-11T09:12:43Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Resolve experiment cohort and rotating manager",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Poll live catalog again before invocation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Verify dynamic candidate is still eligible",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:52Z"
+          },
+          {
+            "name": "Create immutable evaluation epoch metadata",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-11T09:12:52Z",
+            "completed_at": "2026-10-11T09:12:52Z"
+          },
+          {
+            "name": "Snapshot repository history without mutation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-11T09:12:52Z",
+            "completed_at": "2026-10-11T09:12:52Z"
+          },
+          {
+            "name": "Build MVT prompt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-11T09:12:52Z",
+            "completed_at": "2026-10-11T09:12:52Z"
+          },
+          {
+            "name": "Invoke live candidate with uncapped provider/model response capability",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-10-11T09:12:52Z",
+            "completed_at": "2026-10-11T09:12:52Z"
+          },
+          {
+            "name": "Expose invocation telemetry in audit logs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-11T09:12:52Z",
+            "completed_at": "2026-10-11T09:12:52Z"
+          },
+          {
+            "name": "Write immutable experiment manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-11T09:12:52Z",
+            "completed_at": "2026-10-11T09:12:52Z"
+          },
+          {
+            "name": "Upload immutable evaluation ledger",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-10-11T09:12:52Z",
+            "completed_at": "2026-10-11T09:12:53Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 24,
+            "started_at": "2026-10-11T09:12:53Z",
+            "completed_at": "2026-10-11T09:12:54Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 25,
+            "started_at": "2026-10-11T09:12:54Z",
+            "completed_at": "2026-10-11T09:12:54Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/114434953146",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000232506,
+        "runner_name": "GitHub Actions 1000232506",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 114434953149,
+        "run_id": 38127536703,
+        "workflow_name": "Continuous Team Evaluation",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/38127536703",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAapNrPvQ",
+        "head_sha": "56188dc1a3e1cc7239d9ec46cae51645740946ef",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/114434953149",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/38127536703/job/114434953149",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-11T09:12:38Z",
+        "started_at": "2026-10-11T09:12:41Z",
+        "completed_at": "2026-10-11T09:12:53Z",
+        "name": "experiment (openrouter-poolside-laguna-xs-2.1-free, openrouter, poolside/laguna-xs-2.1:free, inde...",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-11T09:12:42Z",
+            "completed_at": "2026-10-11T09:12:42Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-11T09:12:42Z",
+            "completed_at": "2026-10-11T09:12:49Z"
+          },
+          {
+            "name": "Resolve experiment cohort and rotating manager",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-11T09:12:49Z",
+            "completed_at": "2026-10-11T09:12:49Z"
+          },
+          {
+            "name": "Poll live catalog again before invocation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-11T09:12:49Z",
+            "completed_at": "2026-10-11T09:12:49Z"
+          },
+          {
+            "name": "Verify dynamic candidate is still eligible",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-11T09:12:49Z",
+            "completed_at": "2026-10-11T09:12:49Z"
+          },
+          {
+            "name": "Create immutable evaluation epoch metadata",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-11T09:12:49Z",
+            "completed_at": "2026-10-11T09:12:49Z"
+          },
+          {
+            "name": "Snapshot repository history without mutation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-11T09:12:49Z",
+            "completed_at": "2026-10-11T09:12:49Z"
+          },
+          {
+            "name": "Build MVT prompt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-11T09:12:49Z",
+            "completed_at": "2026-10-11T09:12:49Z"
+          },
+          {
+            "name": "Invoke live candidate with uncapped provider/model response capability",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-10-11T09:12:49Z",
+            "completed_at": "2026-10-11T09:12:49Z"
+          },
+          {
+            "name": "Expose invocation telemetry in audit logs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-11T09:12:49Z",
+            "completed_at": "2026-10-11T09:12:49Z"
+          },
+          {
+            "name": "Write immutable experiment manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-11T09:12:49Z",
+            "completed_at": "2026-10-11T09:12:49Z"
+          },
+          {
+            "name": "Upload immutable evaluation ledger",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-10-11T09:12:49Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 24,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 25,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/114434953149",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000232501,
+        "runner_name": "GitHub Actions 1000232501",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 114434953150,
+        "run_id": 38127536703,
+        "workflow_name": "Continuous Team Evaluation",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/38127536703",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAapNrPvg",
+        "head_sha": "56188dc1a3e1cc7239d9ec46cae51645740946ef",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/114434953150",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/38127536703/job/114434953150",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-11T09:12:38Z",
+        "started_at": "2026-10-11T09:12:41Z",
+        "completed_at": "2026-10-11T09:12:57Z",
+        "name": "experiment (openrouter-inclusionai-ling-3.1-flash, openrouter, inclusionai/ling-3.1-flash, indepe...",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-11T09:12:42Z",
+            "completed_at": "2026-10-11T09:12:43Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-11T09:12:43Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Resolve experiment cohort and rotating manager",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Poll live catalog again before invocation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:53Z"
+          },
+          {
+            "name": "Verify dynamic candidate is still eligible",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-11T09:12:53Z",
+            "completed_at": "2026-10-11T09:12:53Z"
+          },
+          {
+            "name": "Create immutable evaluation epoch metadata",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-11T09:12:53Z",
+            "completed_at": "2026-10-11T09:12:53Z"
+          },
+          {
+            "name": "Snapshot repository history without mutation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-11T09:12:53Z",
+            "completed_at": "2026-10-11T09:12:53Z"
+          },
+          {
+            "name": "Build MVT prompt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-11T09:12:53Z",
+            "completed_at": "2026-10-11T09:12:53Z"
+          },
+          {
+            "name": "Invoke live candidate with uncapped provider/model response capability",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-10-11T09:12:53Z",
+            "completed_at": "2026-10-11T09:12:54Z"
+          },
+          {
+            "name": "Expose invocation telemetry in audit logs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-11T09:12:54Z",
+            "completed_at": "2026-10-11T09:12:54Z"
+          },
+          {
+            "name": "Write immutable experiment manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-11T09:12:54Z",
+            "completed_at": "2026-10-11T09:12:54Z"
+          },
+          {
+            "name": "Upload immutable evaluation ledger",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-10-11T09:12:54Z",
+            "completed_at": "2026-10-11T09:12:55Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 24,
+            "started_at": "2026-10-11T09:12:55Z",
+            "completed_at": "2026-10-11T09:12:55Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 25,
+            "started_at": "2026-10-11T09:12:55Z",
+            "completed_at": "2026-10-11T09:12:55Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/114434953150",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000232505,
+        "runner_name": "GitHub Actions 1000232505",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 114434953169,
+        "run_id": 38127536703,
+        "workflow_name": "Continuous Team Evaluation",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/38127536703",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAapNrP0Q",
+        "head_sha": "56188dc1a3e1cc7239d9ec46cae51645740946ef",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/114434953169",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/38127536703/job/114434953169",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-11T09:12:38Z",
+        "started_at": "2026-10-11T09:12:42Z",
+        "completed_at": "2026-10-11T09:12:59Z",
+        "name": "experiment (openrouter-google-gemma-4-26b-a4b-it-free, openrouter, google/gemma-4-26b-a4b-it:free...",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-11T09:12:43Z",
+            "completed_at": "2026-10-11T09:12:43Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-11T09:12:43Z",
+            "completed_at": "2026-10-11T09:12:53Z"
+          },
+          {
+            "name": "Resolve experiment cohort and rotating manager",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-11T09:12:53Z",
+            "completed_at": "2026-10-11T09:12:53Z"
+          },
+          {
+            "name": "Poll live catalog again before invocation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-11T09:12:53Z",
+            "completed_at": "2026-10-11T09:12:53Z"
+          },
+          {
+            "name": "Verify dynamic candidate is still eligible",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-11T09:12:53Z",
+            "completed_at": "2026-10-11T09:12:53Z"
+          },
+          {
+            "name": "Create immutable evaluation epoch metadata",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-11T09:12:53Z",
+            "completed_at": "2026-10-11T09:12:53Z"
+          },
+          {
+            "name": "Snapshot repository history without mutation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-11T09:12:53Z",
+            "completed_at": "2026-10-11T09:12:53Z"
+          },
+          {
+            "name": "Build MVT prompt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-11T09:12:53Z",
+            "completed_at": "2026-10-11T09:12:53Z"
+          },
+          {
+            "name": "Invoke live candidate with uncapped provider/model response capability",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-10-11T09:12:53Z",
+            "completed_at": "2026-10-11T09:12:53Z"
+          },
+          {
+            "name": "Expose invocation telemetry in audit logs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-11T09:12:53Z",
+            "completed_at": "2026-10-11T09:12:53Z"
+          },
+          {
+            "name": "Write immutable experiment manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-11T09:12:53Z",
+            "completed_at": "2026-10-11T09:12:54Z"
+          },
+          {
+            "name": "Upload immutable evaluation ledger",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-10-11T09:12:54Z",
+            "completed_at": "2026-10-11T09:12:55Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 24,
+            "started_at": "2026-10-11T09:12:55Z",
+            "completed_at": "2026-10-11T09:12:55Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 25,
+            "started_at": "2026-10-11T09:12:55Z",
+            "completed_at": "2026-10-11T09:12:55Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/114434953169",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000232508,
+        "runner_name": "GitHub Actions 1000232508",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 114434953177,
+        "run_id": 38127536703,
+        "workflow_name": "Continuous Team Evaluation",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/38127536703",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAapNrP2Q",
+        "head_sha": "56188dc1a3e1cc7239d9ec46cae51645740946ef",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/114434953177",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/38127536703/job/114434953177",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-11T09:12:38Z",
+        "started_at": "2026-10-11T09:12:42Z",
+        "completed_at": "2026-10-11T09:12:59Z",
+        "name": "experiment (openrouter-liquid-lfm-2.5-2.6b-free, openrouter, liquid/lfm-2.5-2.6b:free, independen...",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-11T09:12:43Z",
+            "completed_at": "2026-10-11T09:12:43Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-11T09:12:43Z",
+            "completed_at": "2026-10-11T09:12:52Z"
+          },
+          {
+            "name": "Resolve experiment cohort and rotating manager",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-11T09:12:52Z",
+            "completed_at": "2026-10-11T09:12:52Z"
+          },
+          {
+            "name": "Poll live catalog again before invocation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-11T09:12:52Z",
+            "completed_at": "2026-10-11T09:12:52Z"
+          },
+          {
+            "name": "Verify dynamic candidate is still eligible",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-11T09:12:52Z",
+            "completed_at": "2026-10-11T09:12:52Z"
+          },
+          {
+            "name": "Create immutable evaluation epoch metadata",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-11T09:12:52Z",
+            "completed_at": "2026-10-11T09:12:52Z"
+          },
+          {
+            "name": "Snapshot repository history without mutation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-11T09:12:52Z",
+            "completed_at": "2026-10-11T09:12:52Z"
+          },
+          {
+            "name": "Build MVT prompt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-11T09:12:52Z",
+            "completed_at": "2026-10-11T09:12:52Z"
+          },
+          {
+            "name": "Invoke live candidate with uncapped provider/model response capability",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-10-11T09:12:52Z",
+            "completed_at": "2026-10-11T09:12:52Z"
+          },
+          {
+            "name": "Expose invocation telemetry in audit logs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-11T09:12:52Z",
+            "completed_at": "2026-10-11T09:12:52Z"
+          },
+          {
+            "name": "Write immutable experiment manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-11T09:12:52Z",
+            "completed_at": "2026-10-11T09:12:52Z"
+          },
+          {
+            "name": "Upload immutable evaluation ledger",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-10-11T09:12:52Z",
+            "completed_at": "2026-10-11T09:12:53Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 24,
+            "started_at": "2026-10-11T09:12:53Z",
+            "completed_at": "2026-10-11T09:12:54Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 25,
+            "started_at": "2026-10-11T09:12:54Z",
+            "completed_at": "2026-10-11T09:12:54Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/114434953177",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000232507,
+        "runner_name": "GitHub Actions 1000232507",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 114434953181,
+        "run_id": 38127536703,
+        "workflow_name": "Continuous Team Evaluation",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/38127536703",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAapNrP3Q",
+        "head_sha": "56188dc1a3e1cc7239d9ec46cae51645740946ef",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/114434953181",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/38127536703/job/114434953181",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-11T09:12:38Z",
+        "started_at": "2026-10-11T09:12:42Z",
+        "completed_at": "2026-10-11T09:12:58Z",
+        "name": "experiment (openrouter-openrouter-free, openrouter, openrouter/free, independent-peer, free-zero)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-11T09:12:43Z",
+            "completed_at": "2026-10-11T09:12:43Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-11T09:12:43Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Resolve experiment cohort and rotating manager",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Poll live catalog again before invocation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Verify dynamic candidate is still eligible",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Create immutable evaluation epoch metadata",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Snapshot repository history without mutation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Build MVT prompt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Invoke live candidate with uncapped provider/model response capability",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:54Z"
+          },
+          {
+            "name": "Expose invocation telemetry in audit logs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-11T09:12:54Z",
+            "completed_at": "2026-10-11T09:12:54Z"
+          },
+          {
+            "name": "Write immutable experiment manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-11T09:12:54Z",
+            "completed_at": "2026-10-11T09:12:54Z"
+          },
+          {
+            "name": "Upload immutable evaluation ledger",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-10-11T09:12:54Z",
+            "completed_at": "2026-10-11T09:12:55Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 24,
+            "started_at": "2026-10-11T09:12:55Z",
+            "completed_at": "2026-10-11T09:12:56Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 25,
+            "started_at": "2026-10-11T09:12:56Z",
+            "completed_at": "2026-10-11T09:12:56Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/114434953181",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000232503,
+        "runner_name": "GitHub Actions 1000232503",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 114434953190,
+        "run_id": 38127536703,
+        "workflow_name": "Continuous Team Evaluation",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/38127536703",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAapNrP5g",
+        "head_sha": "56188dc1a3e1cc7239d9ec46cae51645740946ef",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/114434953190",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/38127536703/job/114434953190",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-11T09:12:38Z",
+        "started_at": "2026-10-11T09:12:41Z",
+        "completed_at": "2026-10-11T09:13:00Z",
+        "name": "experiment (openrouter-nvidia-nemotron-3-ultra-550b-a55b-free, openrouter, nvidia/nemotron-3-ultr...",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-11T09:12:42Z",
+            "completed_at": "2026-10-11T09:12:43Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-11T09:12:43Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Resolve experiment cohort and rotating manager",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Poll live catalog again before invocation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Verify dynamic candidate is still eligible",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Create immutable evaluation epoch metadata",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Snapshot repository history without mutation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Build MVT prompt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Invoke live candidate with uncapped provider/model response capability",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:57Z"
+          },
+          {
+            "name": "Expose invocation telemetry in audit logs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-11T09:12:57Z",
+            "completed_at": "2026-10-11T09:12:57Z"
+          },
+          {
+            "name": "Write immutable experiment manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-11T09:12:57Z",
+            "completed_at": "2026-10-11T09:12:57Z"
+          },
+          {
+            "name": "Upload immutable evaluation ledger",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-10-11T09:12:57Z",
+            "completed_at": "2026-10-11T09:12:58Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 24,
+            "started_at": "2026-10-11T09:12:58Z",
+            "completed_at": "2026-10-11T09:12:58Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 25,
+            "started_at": "2026-10-11T09:12:58Z",
+            "completed_at": "2026-10-11T09:12:58Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/114434953190",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000232502,
+        "runner_name": "GitHub Actions 1000232502",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 114434953252,
+        "run_id": 38127536703,
+        "workflow_name": "Continuous Team Evaluation",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/38127536703",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAapNrQJA",
+        "head_sha": "56188dc1a3e1cc7239d9ec46cae51645740946ef",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/114434953252",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/38127536703/job/114434953252",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-11T09:12:38Z",
+        "started_at": "2026-10-11T09:12:41Z",
+        "completed_at": "2026-10-11T09:12:53Z",
+        "name": "experiment (openrouter-thinkingmachines-inkling-small-free, openrouter, thinkingmachines/inkling-...",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-11T09:12:42Z",
+            "completed_at": "2026-10-11T09:12:42Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-11T09:12:42Z",
+            "completed_at": "2026-10-11T09:12:48Z"
+          },
+          {
+            "name": "Resolve experiment cohort and rotating manager",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-11T09:12:48Z",
+            "completed_at": "2026-10-11T09:12:48Z"
+          },
+          {
+            "name": "Poll live catalog again before invocation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-11T09:12:48Z",
+            "completed_at": "2026-10-11T09:12:48Z"
+          },
+          {
+            "name": "Verify dynamic candidate is still eligible",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-11T09:12:48Z",
+            "completed_at": "2026-10-11T09:12:48Z"
+          },
+          {
+            "name": "Create immutable evaluation epoch metadata",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-11T09:12:48Z",
+            "completed_at": "2026-10-11T09:12:49Z"
+          },
+          {
+            "name": "Snapshot repository history without mutation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-11T09:12:49Z",
+            "completed_at": "2026-10-11T09:12:49Z"
+          },
+          {
+            "name": "Build MVT prompt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-11T09:12:49Z",
+            "completed_at": "2026-10-11T09:12:49Z"
+          },
+          {
+            "name": "Invoke live candidate with uncapped provider/model response capability",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-10-11T09:12:49Z",
+            "completed_at": "2026-10-11T09:12:49Z"
+          },
+          {
+            "name": "Expose invocation telemetry in audit logs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-11T09:12:49Z",
+            "completed_at": "2026-10-11T09:12:49Z"
+          },
+          {
+            "name": "Write immutable experiment manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-11T09:12:49Z",
+            "completed_at": "2026-10-11T09:12:49Z"
+          },
+          {
+            "name": "Upload immutable evaluation ledger",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-10-11T09:12:49Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 24,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 25,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/114434953252",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000232510,
+        "runner_name": "GitHub Actions 1000232510",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 114434953289,
+        "run_id": 38127536703,
+        "workflow_name": "Continuous Team Evaluation",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/38127536703",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAapNrQSQ",
+        "head_sha": "56188dc1a3e1cc7239d9ec46cae51645740946ef",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/114434953289",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/38127536703/job/114434953289",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-11T09:12:38Z",
+        "started_at": "2026-10-11T09:12:41Z",
+        "completed_at": "2026-10-11T09:12:54Z",
+        "name": "experiment (openrouter-thinkingmachines-inkling-free, openrouter, thinkingmachines/inkling:free, ...",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-11T09:12:42Z",
+            "completed_at": "2026-10-11T09:12:43Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-11T09:12:43Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Resolve experiment cohort and rotating manager",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Poll live catalog again before invocation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Verify dynamic candidate is still eligible",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Create immutable evaluation epoch metadata",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Snapshot repository history without mutation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Build MVT prompt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Invoke live candidate with uncapped provider/model response capability",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Expose invocation telemetry in audit logs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Write immutable experiment manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:50Z"
+          },
+          {
+            "name": "Upload immutable evaluation ledger",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-10-11T09:12:50Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 24,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 25,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/114434953289",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000232509,
+        "runner_name": "GitHub Actions 1000232509",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 114434953554,
+        "run_id": 38127536703,
+        "workflow_name": "Continuous Team Evaluation",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/38127536703",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAapNrRUg",
+        "head_sha": "56188dc1a3e1cc7239d9ec46cae51645740946ef",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/114434953554",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/38127536703/job/114434953554",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-11T09:12:39Z",
+        "started_at": "2026-10-11T09:12:42Z",
+        "completed_at": "2026-10-11T09:12:54Z",
+        "name": "experiment (openrouter-google-lyria-3-pro-preview, openrouter, google/lyria-3-pro-preview, indepe...",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-11T09:12:43Z",
+            "completed_at": "2026-10-11T09:12:43Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-11T09:12:43Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Resolve experiment cohort and rotating manager",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Poll live catalog again before invocation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Verify dynamic candidate is still eligible",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Create immutable evaluation epoch metadata",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Snapshot repository history without mutation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Build MVT prompt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Invoke live candidate with uncapped provider/model response capability",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Expose invocation telemetry in audit logs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Write immutable experiment manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:51Z"
+          },
+          {
+            "name": "Upload immutable evaluation ledger",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-10-11T09:12:51Z",
+            "completed_at": "2026-10-11T09:12:52Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 24,
+            "started_at": "2026-10-11T09:12:52Z",
+            "completed_at": "2026-10-11T09:12:52Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 25,
+            "started_at": "2026-10-11T09:12:52Z",
+            "completed_at": "2026-10-11T09:12:52Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/114434953554",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000232511,
+        "runner_name": "GitHub Actions 1000232511",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

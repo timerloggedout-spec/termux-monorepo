@@ -1,0 +1,101 @@
+[
+  {
+    "case": {
+      "case_id": "mvt-boundary-pass",
+      "requires_abstain": true,
+      "abstain_option_available": true,
+      "wrong_commit_penalty": 0.2,
+      "required_fragments": {
+        "actor": [
+          "f1",
+          "f2"
+        ],
+        "critic": [
+          "f3"
+        ]
+      },
+      "distractors": {
+        "actor": [
+          "private-critic-test"
+        ],
+        "critic": [
+          "actor-private-context"
+        ]
+      },
+      "spawn_mode": "SPAWN",
+      "actor_critic": true,
+      "execution": {
+        "exit_code": 0,
+        "assertions": [
+          "state_valid"
+        ],
+        "state_change": true
+      }
+    },
+    "observed": {
+      "routed_context": {
+        "actor": [
+          "f1",
+          "f2"
+        ],
+        "critic": [
+          "f3"
+        ]
+      },
+      "spawn_mode": "SPAWN",
+      "inherit_parent_context": false,
+      "sibling_context_visible": false,
+      "critic_private_context_visible_to_actor": false,
+      "actor_context_visible_to_critic": true,
+      "execution": {
+        "exit_code": 0,
+        "assertions_passed": [
+          "state_valid"
+        ],
+        "state_change": true
+      },
+      "wrong_commits": 0
+    }
+  },
+  {
+    "case": {
+      "case_id": "mvt-boundary-leak",
+      "requires_abstain": true,
+      "abstain_option_available": true,
+      "wrong_commit_penalty": 0.2,
+      "required_fragments": {
+        "actor": [
+          "f1"
+        ],
+        "critic": [
+          "f2"
+        ]
+      },
+      "distractors": {
+        "actor": [
+          "critic-private"
+        ],
+        "critic": []
+      },
+      "spawn_mode": "SPAWN",
+      "actor_critic": true
+    },
+    "observed": {
+      "routed_context": {
+        "actor": [
+          "f1",
+          "critic-private"
+        ],
+        "critic": [
+          "f2"
+        ]
+      },
+      "spawn_mode": "SPAWN",
+      "inherit_parent_context": false,
+      "sibling_context_visible": false,
+      "critic_private_context_visible_to_actor": true,
+      "actor_context_visible_to_critic": true,
+      "wrong_commits": 0
+    }
+  }
+]

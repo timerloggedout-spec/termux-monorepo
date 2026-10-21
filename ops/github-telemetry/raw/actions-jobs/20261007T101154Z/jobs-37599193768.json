@@ -1,0 +1,2061 @@
+{
+  "collected_at": "2026-10-07T10:11:58.232212+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 37599193768,
+    "endpoint": ".../runs/37599193768/jobs"
+  },
+  "data": {
+    "total_count": 16,
+    "jobs": [
+      {
+        "id": 112719125037,
+        "run_id": 37599193768,
+        "workflow_name": "Team MVT \u2014 simultaneous provider lanes",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37599193768",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaPpVaLQ",
+        "head_sha": "4c267b141734fedc9389decfa8a47656f879bd99",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/112719125037",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37599193768/job/112719125037",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-07T09:14:07Z",
+        "started_at": "2026-10-07T09:14:10Z",
+        "completed_at": "2026-10-07T09:14:24Z",
+        "name": "lane (a-ox-felo, 2)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-07T09:14:11Z",
+            "completed_at": "2026-10-07T09:14:11Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-07T09:14:11Z",
+            "completed_at": "2026-10-07T09:14:18Z"
+          },
+          {
+            "name": "Resolve manager cohort",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-07T09:14:18Z",
+            "completed_at": "2026-10-07T09:14:18Z"
+          },
+          {
+            "name": "Poll live catalogs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-07T09:14:18Z",
+            "completed_at": "2026-10-07T09:14:19Z"
+          },
+          {
+            "name": "Select DOE treatment",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-07T09:14:19Z",
+            "completed_at": "2026-10-07T09:14:19Z"
+          },
+          {
+            "name": "Invoke Felo lane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-07T09:14:19Z",
+            "completed_at": "2026-10-07T09:14:19Z"
+          },
+          {
+            "name": "Invoke OpenRouter lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 7,
+            "started_at": "2026-10-07T09:14:19Z",
+            "completed_at": "2026-10-07T09:14:19Z"
+          },
+          {
+            "name": "Invoke OmniRoute lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 8,
+            "started_at": "2026-10-07T09:14:19Z",
+            "completed_at": "2026-10-07T09:14:19Z"
+          },
+          {
+            "name": "Invoke Hugging Face lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 9,
+            "started_at": "2026-10-07T09:14:19Z",
+            "completed_at": "2026-10-07T09:14:19Z"
+          },
+          {
+            "name": "Write lane manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-07T09:14:19Z",
+            "completed_at": "2026-10-07T09:14:19Z"
+          },
+          {
+            "name": "Upload lane evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-07T09:14:19Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 22,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 23,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/112719125037",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000221036,
+        "runner_name": "GitHub Actions 1000221036",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 112719125157,
+        "run_id": 37599193768,
+        "workflow_name": "Team MVT \u2014 simultaneous provider lanes",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37599193768",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaPpVapQ",
+        "head_sha": "4c267b141734fedc9389decfa8a47656f879bd99",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/112719125157",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37599193768/job/112719125157",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-07T09:14:07Z",
+        "started_at": "2026-10-07T09:14:10Z",
+        "completed_at": "2026-10-07T09:14:28Z",
+        "name": "lane (d-omni-peer, 3)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-07T09:14:11Z",
+            "completed_at": "2026-10-07T09:14:12Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-07T09:14:12Z",
+            "completed_at": "2026-10-07T09:14:22Z"
+          },
+          {
+            "name": "Resolve manager cohort",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-07T09:14:22Z",
+            "completed_at": "2026-10-07T09:14:22Z"
+          },
+          {
+            "name": "Poll live catalogs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-07T09:14:22Z",
+            "completed_at": "2026-10-07T09:14:23Z"
+          },
+          {
+            "name": "Select DOE treatment",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-07T09:14:23Z",
+            "completed_at": "2026-10-07T09:14:23Z"
+          },
+          {
+            "name": "Invoke Felo lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 6,
+            "started_at": "2026-10-07T09:14:23Z",
+            "completed_at": "2026-10-07T09:14:23Z"
+          },
+          {
+            "name": "Invoke OpenRouter lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 7,
+            "started_at": "2026-10-07T09:14:23Z",
+            "completed_at": "2026-10-07T09:14:23Z"
+          },
+          {
+            "name": "Invoke OmniRoute lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 8,
+            "started_at": "2026-10-07T09:14:23Z",
+            "completed_at": "2026-10-07T09:14:23Z"
+          },
+          {
+            "name": "Invoke Hugging Face lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 9,
+            "started_at": "2026-10-07T09:14:23Z",
+            "completed_at": "2026-10-07T09:14:23Z"
+          },
+          {
+            "name": "Write lane manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-07T09:14:23Z",
+            "completed_at": "2026-10-07T09:14:23Z"
+          },
+          {
+            "name": "Upload lane evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-07T09:14:23Z",
+            "completed_at": "2026-10-07T09:14:24Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 22,
+            "started_at": "2026-10-07T09:14:24Z",
+            "completed_at": "2026-10-07T09:14:24Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 23,
+            "started_at": "2026-10-07T09:14:24Z",
+            "completed_at": "2026-10-07T09:14:24Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/112719125157",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000221033,
+        "runner_name": "GitHub Actions 1000221033",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 112719125218,
+        "run_id": 37599193768,
+        "workflow_name": "Team MVT \u2014 simultaneous provider lanes",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37599193768",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaPpVa4g",
+        "head_sha": "4c267b141734fedc9389decfa8a47656f879bd99",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/112719125218",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37599193768/job/112719125218",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-07T09:14:07Z",
+        "started_at": "2026-10-07T09:14:10Z",
+        "completed_at": "2026-10-07T09:14:23Z",
+        "name": "lane (a-ox-felo, 3)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-07T09:14:10Z",
+            "completed_at": "2026-10-07T09:14:11Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-07T09:14:11Z",
+            "completed_at": "2026-10-07T09:14:19Z"
+          },
+          {
+            "name": "Resolve manager cohort",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-07T09:14:19Z",
+            "completed_at": "2026-10-07T09:14:19Z"
+          },
+          {
+            "name": "Poll live catalogs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-07T09:14:19Z",
+            "completed_at": "2026-10-07T09:14:19Z"
+          },
+          {
+            "name": "Select DOE treatment",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-07T09:14:19Z",
+            "completed_at": "2026-10-07T09:14:19Z"
+          },
+          {
+            "name": "Invoke Felo lane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-07T09:14:19Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Invoke OpenRouter lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 7,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Invoke OmniRoute lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 8,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Invoke Hugging Face lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 9,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Write lane manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Upload lane evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 22,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 23,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/112719125218",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000221034,
+        "runner_name": "GitHub Actions 1000221034",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 112719125240,
+        "run_id": 37599193768,
+        "workflow_name": "Team MVT \u2014 simultaneous provider lanes",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37599193768",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaPpVa-A",
+        "head_sha": "4c267b141734fedc9389decfa8a47656f879bd99",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/112719125240",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37599193768/job/112719125240",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-07T09:14:07Z",
+        "started_at": "2026-10-07T09:14:10Z",
+        "completed_at": "2026-10-07T09:14:24Z",
+        "name": "lane (e-huggingface, 1)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-07T09:14:11Z",
+            "completed_at": "2026-10-07T09:14:12Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-07T09:14:12Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Resolve manager cohort",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Poll live catalogs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Select DOE treatment",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Invoke Felo lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 6,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Invoke OpenRouter lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 7,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Invoke OmniRoute lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 8,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Invoke Hugging Face lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 9,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Write lane manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Upload lane evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 22,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:22Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 23,
+            "started_at": "2026-10-07T09:14:22Z",
+            "completed_at": "2026-10-07T09:14:22Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/112719125240",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000221040,
+        "runner_name": "GitHub Actions 1000221040",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 112719125266,
+        "run_id": 37599193768,
+        "workflow_name": "Team MVT \u2014 simultaneous provider lanes",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37599193768",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaPpVbEg",
+        "head_sha": "4c267b141734fedc9389decfa8a47656f879bd99",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/112719125266",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37599193768/job/112719125266",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-07T09:14:07Z",
+        "started_at": "2026-10-07T09:14:11Z",
+        "completed_at": "2026-10-07T09:14:27Z",
+        "name": "lane (b-other-openrouter, 2)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-07T09:14:12Z",
+            "completed_at": "2026-10-07T09:14:13Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-07T09:14:13Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Resolve manager cohort",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Poll live catalogs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Select DOE treatment",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Invoke Felo lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 6,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Invoke OpenRouter lane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:22Z"
+          },
+          {
+            "name": "Invoke OmniRoute lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 8,
+            "started_at": "2026-10-07T09:14:22Z",
+            "completed_at": "2026-10-07T09:14:22Z"
+          },
+          {
+            "name": "Invoke Hugging Face lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 9,
+            "started_at": "2026-10-07T09:14:22Z",
+            "completed_at": "2026-10-07T09:14:22Z"
+          },
+          {
+            "name": "Write lane manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-07T09:14:22Z",
+            "completed_at": "2026-10-07T09:14:22Z"
+          },
+          {
+            "name": "Upload lane evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-07T09:14:22Z",
+            "completed_at": "2026-10-07T09:14:23Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 22,
+            "started_at": "2026-10-07T09:14:23Z",
+            "completed_at": "2026-10-07T09:14:23Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 23,
+            "started_at": "2026-10-07T09:14:23Z",
+            "completed_at": "2026-10-07T09:14:23Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/112719125266",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000221035,
+        "runner_name": "GitHub Actions 1000221035",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 112719125268,
+        "run_id": 37599193768,
+        "workflow_name": "Team MVT \u2014 simultaneous provider lanes",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37599193768",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaPpVbFA",
+        "head_sha": "4c267b141734fedc9389decfa8a47656f879bd99",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/112719125268",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37599193768/job/112719125268",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-07T09:14:07Z",
+        "started_at": "2026-10-07T09:14:10Z",
+        "completed_at": "2026-10-07T09:14:26Z",
+        "name": "lane (c-felo-prompt-variant, 1)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-07T09:14:11Z",
+            "completed_at": "2026-10-07T09:14:12Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-07T09:14:12Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Resolve manager cohort",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Poll live catalogs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Select DOE treatment",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Invoke Felo lane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Invoke OpenRouter lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 7,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Invoke OmniRoute lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 8,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Invoke Hugging Face lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 9,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Write lane manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Upload lane evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:22Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 22,
+            "started_at": "2026-10-07T09:14:22Z",
+            "completed_at": "2026-10-07T09:14:22Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 23,
+            "started_at": "2026-10-07T09:14:22Z",
+            "completed_at": "2026-10-07T09:14:22Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/112719125268",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000221043,
+        "runner_name": "GitHub Actions 1000221043",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 112719125272,
+        "run_id": 37599193768,
+        "workflow_name": "Team MVT \u2014 simultaneous provider lanes",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37599193768",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaPpVbGA",
+        "head_sha": "4c267b141734fedc9389decfa8a47656f879bd99",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/112719125272",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37599193768/job/112719125272",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-07T09:14:07Z",
+        "started_at": "2026-10-07T09:14:10Z",
+        "completed_at": "2026-10-07T09:14:24Z",
+        "name": "lane (e-huggingface, 2)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-07T09:14:11Z",
+            "completed_at": "2026-10-07T09:14:11Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-07T09:14:11Z",
+            "completed_at": "2026-10-07T09:14:19Z"
+          },
+          {
+            "name": "Resolve manager cohort",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-07T09:14:19Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Poll live catalogs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Select DOE treatment",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Invoke Felo lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 6,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Invoke OpenRouter lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 7,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Invoke OmniRoute lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 8,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Invoke Hugging Face lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 9,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Write lane manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Upload lane evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 22,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 23,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/112719125272",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000221037,
+        "runner_name": "GitHub Actions 1000221037",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 112719125328,
+        "run_id": 37599193768,
+        "workflow_name": "Team MVT \u2014 simultaneous provider lanes",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37599193768",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaPpVbUA",
+        "head_sha": "4c267b141734fedc9389decfa8a47656f879bd99",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/112719125328",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37599193768/job/112719125328",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-07T09:14:07Z",
+        "started_at": "2026-10-07T09:14:10Z",
+        "completed_at": "2026-10-07T09:14:22Z",
+        "name": "lane (d-omni-peer, 2)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-07T09:14:10Z",
+            "completed_at": "2026-10-07T09:14:11Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-07T09:14:11Z",
+            "completed_at": "2026-10-07T09:14:18Z"
+          },
+          {
+            "name": "Resolve manager cohort",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-07T09:14:18Z",
+            "completed_at": "2026-10-07T09:14:18Z"
+          },
+          {
+            "name": "Poll live catalogs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-07T09:14:18Z",
+            "completed_at": "2026-10-07T09:14:19Z"
+          },
+          {
+            "name": "Select DOE treatment",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-07T09:14:19Z",
+            "completed_at": "2026-10-07T09:14:19Z"
+          },
+          {
+            "name": "Invoke Felo lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 6,
+            "started_at": "2026-10-07T09:14:19Z",
+            "completed_at": "2026-10-07T09:14:19Z"
+          },
+          {
+            "name": "Invoke OpenRouter lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 7,
+            "started_at": "2026-10-07T09:14:19Z",
+            "completed_at": "2026-10-07T09:14:19Z"
+          },
+          {
+            "name": "Invoke OmniRoute lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 8,
+            "started_at": "2026-10-07T09:14:19Z",
+            "completed_at": "2026-10-07T09:14:19Z"
+          },
+          {
+            "name": "Invoke Hugging Face lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 9,
+            "started_at": "2026-10-07T09:14:19Z",
+            "completed_at": "2026-10-07T09:14:19Z"
+          },
+          {
+            "name": "Write lane manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-07T09:14:19Z",
+            "completed_at": "2026-10-07T09:14:19Z"
+          },
+          {
+            "name": "Upload lane evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-07T09:14:19Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 22,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 23,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/112719125328",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000221038,
+        "runner_name": "GitHub Actions 1000221038",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 112719125338,
+        "run_id": 37599193768,
+        "workflow_name": "Team MVT \u2014 simultaneous provider lanes",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37599193768",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaPpVbWg",
+        "head_sha": "4c267b141734fedc9389decfa8a47656f879bd99",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/112719125338",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37599193768/job/112719125338",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-07T09:14:07Z",
+        "started_at": "2026-10-07T09:14:10Z",
+        "completed_at": "2026-10-07T09:14:23Z",
+        "name": "lane (c-felo-prompt-variant, 3)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-07T09:14:10Z",
+            "completed_at": "2026-10-07T09:14:11Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-07T09:14:11Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Resolve manager cohort",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Poll live catalogs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Select DOE treatment",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Invoke Felo lane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Invoke OpenRouter lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 7,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Invoke OmniRoute lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 8,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Invoke Hugging Face lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 9,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Write lane manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Upload lane evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:22Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 22,
+            "started_at": "2026-10-07T09:14:22Z",
+            "completed_at": "2026-10-07T09:14:22Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 23,
+            "started_at": "2026-10-07T09:14:22Z",
+            "completed_at": "2026-10-07T09:14:22Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/112719125338",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000221042,
+        "runner_name": "GitHub Actions 1000221042",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 112719125340,
+        "run_id": 37599193768,
+        "workflow_name": "Team MVT \u2014 simultaneous provider lanes",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37599193768",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaPpVbXA",
+        "head_sha": "4c267b141734fedc9389decfa8a47656f879bd99",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/112719125340",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37599193768/job/112719125340",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-07T09:14:07Z",
+        "started_at": "2026-10-07T09:14:10Z",
+        "completed_at": "2026-10-07T09:14:23Z",
+        "name": "lane (c-felo-prompt-variant, 2)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-07T09:14:10Z",
+            "completed_at": "2026-10-07T09:14:11Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-07T09:14:11Z",
+            "completed_at": "2026-10-07T09:14:18Z"
+          },
+          {
+            "name": "Resolve manager cohort",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-07T09:14:18Z",
+            "completed_at": "2026-10-07T09:14:18Z"
+          },
+          {
+            "name": "Poll live catalogs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-07T09:14:18Z",
+            "completed_at": "2026-10-07T09:14:19Z"
+          },
+          {
+            "name": "Select DOE treatment",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-07T09:14:19Z",
+            "completed_at": "2026-10-07T09:14:19Z"
+          },
+          {
+            "name": "Invoke Felo lane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-07T09:14:19Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Invoke OpenRouter lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 7,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Invoke OmniRoute lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 8,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Invoke Hugging Face lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 9,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Write lane manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Upload lane evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 22,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 23,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/112719125340",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000221041,
+        "runner_name": "GitHub Actions 1000221041",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 112719125342,
+        "run_id": 37599193768,
+        "workflow_name": "Team MVT \u2014 simultaneous provider lanes",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37599193768",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaPpVbXg",
+        "head_sha": "4c267b141734fedc9389decfa8a47656f879bd99",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/112719125342",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37599193768/job/112719125342",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-07T09:14:07Z",
+        "started_at": "2026-10-07T09:14:11Z",
+        "completed_at": "2026-10-07T09:14:25Z",
+        "name": "lane (d-omni-peer, 1)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-07T09:14:12Z",
+            "completed_at": "2026-10-07T09:14:12Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-07T09:14:12Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Resolve manager cohort",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Poll live catalogs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Select DOE treatment",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Invoke Felo lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 6,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Invoke OpenRouter lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 7,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Invoke OmniRoute lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 8,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Invoke Hugging Face lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 9,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Write lane manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Upload lane evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 22,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:22Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 23,
+            "started_at": "2026-10-07T09:14:22Z",
+            "completed_at": "2026-10-07T09:14:22Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/112719125342",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000221044,
+        "runner_name": "GitHub Actions 1000221044",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 112719125344,
+        "run_id": 37599193768,
+        "workflow_name": "Team MVT \u2014 simultaneous provider lanes",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37599193768",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaPpVbYA",
+        "head_sha": "4c267b141734fedc9389decfa8a47656f879bd99",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/112719125344",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37599193768/job/112719125344",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-07T09:14:07Z",
+        "started_at": "2026-10-07T09:14:10Z",
+        "completed_at": "2026-10-07T09:14:21Z",
+        "name": "lane (b-other-openrouter, 1)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-07T09:14:10Z",
+            "completed_at": "2026-10-07T09:14:11Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-07T09:14:11Z",
+            "completed_at": "2026-10-07T09:14:16Z"
+          },
+          {
+            "name": "Resolve manager cohort",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-07T09:14:16Z",
+            "completed_at": "2026-10-07T09:14:16Z"
+          },
+          {
+            "name": "Poll live catalogs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-07T09:14:16Z",
+            "completed_at": "2026-10-07T09:14:17Z"
+          },
+          {
+            "name": "Select DOE treatment",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-07T09:14:17Z",
+            "completed_at": "2026-10-07T09:14:17Z"
+          },
+          {
+            "name": "Invoke Felo lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 6,
+            "started_at": "2026-10-07T09:14:17Z",
+            "completed_at": "2026-10-07T09:14:17Z"
+          },
+          {
+            "name": "Invoke OpenRouter lane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-07T09:14:17Z",
+            "completed_at": "2026-10-07T09:14:17Z"
+          },
+          {
+            "name": "Invoke OmniRoute lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 8,
+            "started_at": "2026-10-07T09:14:17Z",
+            "completed_at": "2026-10-07T09:14:17Z"
+          },
+          {
+            "name": "Invoke Hugging Face lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 9,
+            "started_at": "2026-10-07T09:14:17Z",
+            "completed_at": "2026-10-07T09:14:17Z"
+          },
+          {
+            "name": "Write lane manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-07T09:14:17Z",
+            "completed_at": "2026-10-07T09:14:17Z"
+          },
+          {
+            "name": "Upload lane evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-07T09:14:17Z",
+            "completed_at": "2026-10-07T09:14:18Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 22,
+            "started_at": "2026-10-07T09:14:18Z",
+            "completed_at": "2026-10-07T09:14:18Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 23,
+            "started_at": "2026-10-07T09:14:18Z",
+            "completed_at": "2026-10-07T09:14:18Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/112719125344",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000221039,
+        "runner_name": "GitHub Actions 1000221039",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 112719125357,
+        "run_id": 37599193768,
+        "workflow_name": "Team MVT \u2014 simultaneous provider lanes",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37599193768",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaPpVbbQ",
+        "head_sha": "4c267b141734fedc9389decfa8a47656f879bd99",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/112719125357",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37599193768/job/112719125357",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-07T09:14:07Z",
+        "started_at": "2026-10-07T09:14:11Z",
+        "completed_at": "2026-10-07T09:14:26Z",
+        "name": "lane (a-ox-felo, 1)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-07T09:14:12Z",
+            "completed_at": "2026-10-07T09:14:12Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-07T09:14:12Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Resolve manager cohort",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Poll live catalogs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Select DOE treatment",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Invoke Felo lane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:22Z"
+          },
+          {
+            "name": "Invoke OpenRouter lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 7,
+            "started_at": "2026-10-07T09:14:22Z",
+            "completed_at": "2026-10-07T09:14:22Z"
+          },
+          {
+            "name": "Invoke OmniRoute lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 8,
+            "started_at": "2026-10-07T09:14:22Z",
+            "completed_at": "2026-10-07T09:14:22Z"
+          },
+          {
+            "name": "Invoke Hugging Face lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 9,
+            "started_at": "2026-10-07T09:14:22Z",
+            "completed_at": "2026-10-07T09:14:22Z"
+          },
+          {
+            "name": "Write lane manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-07T09:14:22Z",
+            "completed_at": "2026-10-07T09:14:22Z"
+          },
+          {
+            "name": "Upload lane evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-07T09:14:22Z",
+            "completed_at": "2026-10-07T09:14:23Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 22,
+            "started_at": "2026-10-07T09:14:23Z",
+            "completed_at": "2026-10-07T09:14:23Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 23,
+            "started_at": "2026-10-07T09:14:23Z",
+            "completed_at": "2026-10-07T09:14:23Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/112719125357",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000221045,
+        "runner_name": "GitHub Actions 1000221045",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 112719125433,
+        "run_id": 37599193768,
+        "workflow_name": "Team MVT \u2014 simultaneous provider lanes",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37599193768",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaPpVbuQ",
+        "head_sha": "4c267b141734fedc9389decfa8a47656f879bd99",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/112719125433",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37599193768/job/112719125433",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-07T09:14:07Z",
+        "started_at": "2026-10-07T09:14:22Z",
+        "completed_at": "2026-10-07T09:14:37Z",
+        "name": "lane (e-huggingface, 3)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-07T09:14:23Z",
+            "completed_at": "2026-10-07T09:14:24Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-07T09:14:24Z",
+            "completed_at": "2026-10-07T09:14:32Z"
+          },
+          {
+            "name": "Resolve manager cohort",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-07T09:14:32Z",
+            "completed_at": "2026-10-07T09:14:32Z"
+          },
+          {
+            "name": "Poll live catalogs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-07T09:14:32Z",
+            "completed_at": "2026-10-07T09:14:33Z"
+          },
+          {
+            "name": "Select DOE treatment",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-07T09:14:33Z",
+            "completed_at": "2026-10-07T09:14:33Z"
+          },
+          {
+            "name": "Invoke Felo lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 6,
+            "started_at": "2026-10-07T09:14:33Z",
+            "completed_at": "2026-10-07T09:14:33Z"
+          },
+          {
+            "name": "Invoke OpenRouter lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 7,
+            "started_at": "2026-10-07T09:14:33Z",
+            "completed_at": "2026-10-07T09:14:33Z"
+          },
+          {
+            "name": "Invoke OmniRoute lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 8,
+            "started_at": "2026-10-07T09:14:33Z",
+            "completed_at": "2026-10-07T09:14:33Z"
+          },
+          {
+            "name": "Invoke Hugging Face lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 9,
+            "started_at": "2026-10-07T09:14:33Z",
+            "completed_at": "2026-10-07T09:14:33Z"
+          },
+          {
+            "name": "Write lane manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-07T09:14:33Z",
+            "completed_at": "2026-10-07T09:14:33Z"
+          },
+          {
+            "name": "Upload lane evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-07T09:14:33Z",
+            "completed_at": "2026-10-07T09:14:34Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 22,
+            "started_at": "2026-10-07T09:14:34Z",
+            "completed_at": "2026-10-07T09:14:34Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 23,
+            "started_at": "2026-10-07T09:14:34Z",
+            "completed_at": "2026-10-07T09:14:34Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/112719125433",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000221046,
+        "runner_name": "GitHub Actions 1000221046",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 112719125504,
+        "run_id": 37599193768,
+        "workflow_name": "Team MVT \u2014 simultaneous provider lanes",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37599193768",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaPpVcAA",
+        "head_sha": "4c267b141734fedc9389decfa8a47656f879bd99",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/112719125504",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37599193768/job/112719125504",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-07T09:14:07Z",
+        "started_at": "2026-10-07T09:14:11Z",
+        "completed_at": "2026-10-07T09:14:25Z",
+        "name": "lane (b-other-openrouter, 3)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-07T09:14:11Z",
+            "completed_at": "2026-10-07T09:14:12Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-07T09:14:12Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Resolve manager cohort",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Poll live catalogs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:20Z"
+          },
+          {
+            "name": "Select DOE treatment",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-07T09:14:20Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Invoke Felo lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 6,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Invoke OpenRouter lane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Invoke OmniRoute lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 8,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Invoke Hugging Face lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 9,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Write lane manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:21Z"
+          },
+          {
+            "name": "Upload lane evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-07T09:14:21Z",
+            "completed_at": "2026-10-07T09:14:22Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 22,
+            "started_at": "2026-10-07T09:14:22Z",
+            "completed_at": "2026-10-07T09:14:22Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 23,
+            "started_at": "2026-10-07T09:14:22Z",
+            "completed_at": "2026-10-07T09:14:22Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/112719125504",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000221047,
+        "runner_name": "GitHub Actions 1000221047",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 112719319505,
+        "run_id": 37599193768,
+        "workflow_name": "Team MVT \u2014 simultaneous provider lanes",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37599193768",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaPphR0Q",
+        "head_sha": "4c267b141734fedc9389decfa8a47656f879bd99",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/112719319505",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37599193768/job/112719319505",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-07T09:14:37Z",
+        "started_at": "2026-10-07T09:14:41Z",
+        "completed_at": "2026-10-07T09:14:49Z",
+        "name": "evaluate",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-07T09:14:42Z",
+            "completed_at": "2026-10-07T09:14:43Z"
+          },
+          {
+            "name": "Download lane evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-07T09:14:43Z",
+            "completed_at": "2026-10-07T09:14:45Z"
+          },
+          {
+            "name": "Evaluate DOE evidence boundary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-07T09:14:45Z",
+            "completed_at": "2026-10-07T09:14:45Z"
+          },
+          {
+            "name": "Upload evaluation summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-07T09:14:45Z",
+            "completed_at": "2026-10-07T09:14:46Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-07T09:14:46Z",
+            "completed_at": "2026-10-07T09:14:46Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/112719319505",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000221049,
+        "runner_name": "GitHub Actions 1000221049",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

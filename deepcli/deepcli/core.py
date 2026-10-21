@@ -1,46 +1,82 @@
 #!/usr/bin/env python3
 """Core API wrapper for DeepSeek internal API."""
 import os
+import sys
 import json
 import base64
 import time
 import subprocess
 import random
+import hashlib
 from pathlib import Path
 from typing import Optional, List, Dict, Any
 try:
     from curl_cffi import requests as curl_requests
 except Exception:
-    import requests as standard_requests
-    class MockCurlSession(standard_requests.Session):
-        def __init__(self, *args, **kwargs):
-            kwargs.pop("impersonate", None)
-            super().__init__(*args, **kwargs)
-        def request(self, method, url, *args, **kwargs):
-            kwargs.pop("impersonate", None)
-            return super().request(method, url, *args, **kwargs)
+    try:
+        import requests as standard_requests
+        class MockCurlSession(standard_requests.Session):
+            def __init__(self, *args, **kwargs):
+                kwargs.pop("impersonate", None)
+                super().__init__(*args, **kwargs)
+            def request(self, method, url, *args, **kwargs):
+                kwargs.pop("impersonate", None)
+                return super().request(method, url, *args, **kwargs)
 
-    class CurlRequestsFallback:
-        Session = MockCurlSession
-        def get(self, *args, **kwargs):
-            kwargs.pop("impersonate", None)
-            return standard_requests.get(*args, **kwargs)
-        def post(self, *args, **kwargs):
-            kwargs.pop("impersonate", None)
-            return standard_requests.post(*args, **kwargs)
-        def put(self, *args, **kwargs):
-            kwargs.pop("impersonate", None)
-            return standard_requests.put(*args, **kwargs)
-        def delete(self, *args, **kwargs):
-            kwargs.pop("impersonate", None)
-            return standard_requests.delete(*args, **kwargs)
+        class CurlRequestsFallback:
+            Session = MockCurlSession
+            def get(self, *args, **kwargs):
+                kwargs.pop("impersonate", None)
+                return standard_requests.get(*args, **kwargs)
+            def post(self, *args, **kwargs):
+                kwargs.pop("impersonate", None)
+                return standard_requests.post(*args, **kwargs)
+            def put(self, *args, **kwargs):
+                kwargs.pop("impersonate", None)
+                return standard_requests.put(*args, **kwargs)
+            def delete(self, *args, **kwargs):
+                kwargs.pop("impersonate", None)
+                return standard_requests.delete(*args, **kwargs)
 
-    curl_requests = CurlRequestsFallback()
+        curl_requests = CurlRequestsFallback()
+    except Exception:
+        class DummySession:
+            headers = {}
+            cookies = type('DummyCookies', (), {'set': lambda *a, **kw: None})()
+            def get(self, *args, **kwargs):
+                raise RuntimeError("HTTP library ('requests' or 'curl_cffi') is required to perform network operations")
+            def post(self, *args, **kwargs):
+                raise RuntimeError("HTTP library ('requests' or 'curl_cffi') is required to perform network operations")
+            def put(self, *args, **kwargs):
+                raise RuntimeError("HTTP library ('requests' or 'curl_cffi') is required to perform network operations")
+            def delete(self, *args, **kwargs):
+                raise RuntimeError("HTTP library ('requests' or 'curl_cffi') is required to perform network operations")
 
-import requests as http_requests
-from rich.console import Console
+        class CurlRequestsFallback:
+            Session = DummySession
+            def get(self, *args, **kwargs):
+                raise RuntimeError("HTTP library ('requests' or 'curl_cffi') is required to perform network operations")
+            def post(self, *args, **kwargs):
+                raise RuntimeError("HTTP library ('requests' or 'curl_cffi') is required to perform network operations")
+            def put(self, *args, **kwargs):
+                raise RuntimeError("HTTP library ('requests' or 'curl_cffi') is required to perform network operations")
+            def delete(self, *args, **kwargs):
+                raise RuntimeError("HTTP library ('requests' or 'curl_cffi') is required to perform network operations")
 
-console = Console()
+        curl_requests = CurlRequestsFallback()
+
+try:
+    import requests as http_requests
+except Exception:
+    http_requests = curl_requests
+
+try:
+    from rich.console import Console
+    console = Console()
+except Exception:
+    class DummyConsole:
+        def print(self, *args, **kwargs): pass
+    console = DummyConsole()
 
 CONFIG_DIR = Path.home() / ".deepcli"
 CONFIG_FILE = CONFIG_DIR / "config.json"
@@ -48,15 +84,60 @@ WASM_SOLVER = Path(__file__).parent.parent / "pow_solver.js"
 BASE_URL = "https://chat.deepseek.com"
 
 CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+if not CONFIG_DIR.is_symlink():
+    try:
+        CONFIG_DIR.chmod(0o700)
+    except Exception:
+        pass
 
 # Persistent session (cookies preserved across API calls)
 _session: Optional[curl_requests.Session] = None
+_sessions: Dict[str, curl_requests.Session] = {}
+
+
+def _session_cache_key(token: str, cookie: Optional[str] = None) -> str:
+    """Collision-resistant key for token+cookie pairs."""
+    material = f"{token}\0{cookie or ''}".encode("utf-8", errors="replace")
+    return hashlib.sha256(material).hexdigest()
 
 # ---------- cache helpers ----------
 def _cache_path(session_id: str, account: str = "primary") -> str:
-    store_dir = os.path.join(os.path.expanduser("~/.deepcli/session_store"), account)
+    if ".." in str(account) or str(account).startswith("/") or "\\" in str(account):
+        raise ValueError("Invalid account name")
+
+    base_store = os.path.realpath(os.path.expanduser("~/.deepcli/session_store"))
+    safe_account = "".join(c if c.isalnum() or c in "-_." else "_" for c in str(account))
+    store_dir = os.path.join(base_store, safe_account)
+
+    store_real = os.path.realpath(store_dir)
+    if os.path.commonpath([base_store, store_real]) != base_store:
+        raise ValueError("Invalid account path")
+
     os.makedirs(store_dir, exist_ok=True)
-    return os.path.join(store_dir, f"{session_id}.json")
+
+    # Restrict permissions of store_dir and parent directories if not symlinks
+    parent_store = os.path.dirname(store_dir)
+    for d_path in [parent_store, store_dir]:
+        p = Path(d_path)
+        if p.exists() and not p.is_symlink():
+            try:
+                p.chmod(0o700)
+            except Exception:
+                pass
+
+    if ".." in str(session_id) or str(session_id).startswith("/") or "\\" in str(session_id):
+        raise ValueError("Invalid file path")
+
+    # Sanitize session_id filename component
+    safe_id = "".join(c if c.isalnum() or c in "-_." else "_" for c in str(session_id))
+    path = os.path.join(store_dir, f"{safe_id}.json")
+
+    base_real = os.path.realpath(store_dir)
+    target_real = os.path.realpath(path)
+    if os.path.commonpath([base_real, target_real]) != base_real:
+        raise ValueError("Invalid file path")
+
+    return path
 
 def _cache_load(session_id: str, account: str = "primary") -> Optional[List[Dict[str, Any]]]:
     path = _cache_path(session_id, account)
@@ -68,8 +149,28 @@ def _cache_load(session_id: str, account: str = "primary") -> Optional[List[Dict
 def _cache_save(session_id: str, messages: List[Dict[str, Any]], account: str = "primary"):
     path = _cache_path(session_id, account)
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, 'w') as f:
+
+    p_dir = Path(os.path.dirname(path))
+    if p_dir.exists() and not p_dir.is_symlink():
+        try:
+            p_dir.chmod(0o700)
+        except Exception:
+            pass
+
+    p_file = Path(path)
+    if p_file.is_symlink():
+        raise ValueError("Symlink cache path rejected for security")
+
+    fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, 'w') as f:
         json.dump(messages, f, indent=2)
+
+    if p_file.exists() and not p_file.is_symlink():
+        try:
+            p_file.chmod(0o600)
+        except Exception:
+            pass
+
     # === DISPATCH HOOK — additive, never blocks save ===
     try:
         import importlib.util
@@ -103,7 +204,20 @@ def load_config() -> Dict[str, Any]:
     return {}
 
 def save_config(cfg: Dict[str, Any]):
+    # Ensure directory and file targets are not symlinked
+    if CONFIG_DIR.is_symlink() or CONFIG_FILE.is_symlink():
+        return
+    CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+    try:
+        CONFIG_DIR.chmod(0o700)
+    except Exception:
+        pass
     CONFIG_FILE.write_text(json.dumps(cfg, indent=2))
+    if CONFIG_FILE.exists() and not CONFIG_FILE.is_symlink():
+        try:
+            CONFIG_FILE.chmod(0o600)
+        except Exception:
+            pass
 
 def get_token() -> str:
     token = os.environ.get("DEEPSEEK_TOKEN")
@@ -117,13 +231,14 @@ def get_token() -> str:
 
 # ---------- HTTP session ----------
 def get_session(token: str, cookie: str = None) -> curl_requests.Session:
-    global _session
-    cache_key = (token[:20] + '_' + (cookie or ''))[:30]
+    global _session, _sessions
+    cache_key = _session_cache_key(token, cookie)
     if '_sessions' not in globals() or not isinstance(_sessions, dict):
         globals()['_sessions'] = {}
     if cache_key in _sessions:
         _session = _sessions[cache_key]
         _session.headers["Authorization"] = f"Bearer {token}"
+        _session.headers.pop("X-Ds-Pow-Response", None)
     else:
         _session = curl_requests.Session()
         _session.headers.update({
@@ -217,6 +332,8 @@ def get_pow_challenge(token: str, target_path="/api/v0/chat/completion") -> dict
     return r.json()["data"]["biz_data"]["challenge"]
 
 def upload_file(token: str, session_id: str, file_path: str) -> Optional[str]:
+    if ".." in str(file_path) or (not Path(file_path).is_absolute() and ".." in Path(file_path).parts):
+        raise ValueError("Invalid file path")
     if not Path(file_path).exists():
         console.print(f"[red]File not found: {file_path}[/]")
         return None
@@ -224,10 +341,9 @@ def upload_file(token: str, session_id: str, file_path: str) -> Optional[str]:
     pow_header = solve_pow(challenge)
 
     s = get_session(token)
-    s.headers["X-Ds-Pow-Response"] = pow_header
     with open(file_path, "rb") as f:
         file_bytes = f.read()
-    upload_headers = {k: v for k, v in s.headers.items()}
+    upload_headers = {k: v for k, v in s.headers.items() if k != "X-Ds-Pow-Response"}
     upload_headers["X-Ds-Pow-Response"] = pow_header
     r = http_requests.post(
         f"{BASE_URL}/api/v0/file/upload_file",
@@ -324,6 +440,7 @@ def stream_completion(token: str, prompt: str, session_id: str,
     retries = 0
     max_retries = 8
     base_delay = 2
+    final_text = ""
     while retries < max_retries:
         try:
             resp = base_sess.post(url, json=payload, headers=headers, stream=True)

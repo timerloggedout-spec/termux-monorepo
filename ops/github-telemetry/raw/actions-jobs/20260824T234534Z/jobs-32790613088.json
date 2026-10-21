@@ -1,0 +1,437 @@
+{
+  "collected_at": "2026-08-24T23:45:36.590942+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 32790613088,
+    "endpoint": ".../runs/32790613088/jobs"
+  },
+  "data": {
+    "total_count": 4,
+    "jobs": [
+      {
+        "id": 97631259929,
+        "run_id": 32790613088,
+        "workflow_name": "Team MVT \u2014 simultaneous provider lanes",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32790613088",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAWu0bNGQ",
+        "head_sha": "ff2a3af3343e37d260dc414c85021dbc8bcfc997",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/97631259929",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32790613088/job/97631259929",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-24T23:43:32Z",
+        "started_at": "2026-08-24T23:43:36Z",
+        "completed_at": "2026-08-24T23:43:45Z",
+        "name": "lane (d-omni-peer)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-24T23:43:36Z",
+            "completed_at": "2026-08-24T23:43:37Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-24T23:43:37Z",
+            "completed_at": "2026-08-24T23:43:41Z"
+          },
+          {
+            "name": "Resolve manager cohort",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-24T23:43:41Z",
+            "completed_at": "2026-08-24T23:43:42Z"
+          },
+          {
+            "name": "Poll live catalogs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-24T23:43:42Z",
+            "completed_at": "2026-08-24T23:43:42Z"
+          },
+          {
+            "name": "Select lane model and prompt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-24T23:43:42Z",
+            "completed_at": "2026-08-24T23:43:42Z"
+          },
+          {
+            "name": "Invoke lane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-24T23:43:42Z",
+            "completed_at": "2026-08-24T23:43:42Z"
+          },
+          {
+            "name": "Write lane manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-08-24T23:43:42Z",
+            "completed_at": "2026-08-24T23:43:42Z"
+          },
+          {
+            "name": "Upload lane evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-08-24T23:43:42Z",
+            "completed_at": "2026-08-24T23:43:43Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 16,
+            "started_at": "2026-08-24T23:43:43Z",
+            "completed_at": "2026-08-24T23:43:43Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17,
+            "started_at": "2026-08-24T23:43:43Z",
+            "completed_at": "2026-08-24T23:43:43Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/97631259929",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000020700,
+        "runner_name": "GitHub Actions 1000020700",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 97631260046,
+        "run_id": 32790613088,
+        "workflow_name": "Team MVT \u2014 simultaneous provider lanes",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32790613088",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAWu0bNjg",
+        "head_sha": "ff2a3af3343e37d260dc414c85021dbc8bcfc997",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/97631260046",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32790613088/job/97631260046",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-24T23:43:32Z",
+        "started_at": "2026-08-24T23:43:35Z",
+        "completed_at": "2026-08-24T23:43:47Z",
+        "name": "lane (b-other-openrouter)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-24T23:43:36Z",
+            "completed_at": "2026-08-24T23:43:37Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-24T23:43:37Z",
+            "completed_at": "2026-08-24T23:43:42Z"
+          },
+          {
+            "name": "Resolve manager cohort",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-24T23:43:42Z",
+            "completed_at": "2026-08-24T23:43:42Z"
+          },
+          {
+            "name": "Poll live catalogs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-24T23:43:42Z",
+            "completed_at": "2026-08-24T23:43:43Z"
+          },
+          {
+            "name": "Select lane model and prompt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-24T23:43:43Z",
+            "completed_at": "2026-08-24T23:43:43Z"
+          },
+          {
+            "name": "Invoke lane",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-08-24T23:43:43Z",
+            "completed_at": "2026-08-24T23:43:43Z"
+          },
+          {
+            "name": "Write lane manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-08-24T23:43:43Z",
+            "completed_at": "2026-08-24T23:43:43Z"
+          },
+          {
+            "name": "Upload lane evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-08-24T23:43:43Z",
+            "completed_at": "2026-08-24T23:43:44Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 16,
+            "started_at": "2026-08-24T23:43:44Z",
+            "completed_at": "2026-08-24T23:43:45Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17,
+            "started_at": "2026-08-24T23:43:45Z",
+            "completed_at": "2026-08-24T23:43:45Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/97631260046",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000020701,
+        "runner_name": "GitHub Actions 1000020701",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 97631260090,
+        "run_id": 32790613088,
+        "workflow_name": "Team MVT \u2014 simultaneous provider lanes",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32790613088",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAWu0bNug",
+        "head_sha": "ff2a3af3343e37d260dc414c85021dbc8bcfc997",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/97631260090",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32790613088/job/97631260090",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-08-24T23:43:32Z",
+        "started_at": "2026-08-24T23:43:36Z",
+        "completed_at": "2026-08-24T23:43:47Z",
+        "name": "lane (c-felo-prompt-variant)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-24T23:43:37Z",
+            "completed_at": "2026-08-24T23:43:38Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-24T23:43:38Z",
+            "completed_at": "2026-08-24T23:43:43Z"
+          },
+          {
+            "name": "Resolve manager cohort",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-24T23:43:43Z",
+            "completed_at": "2026-08-24T23:43:43Z"
+          },
+          {
+            "name": "Poll live catalogs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-24T23:43:43Z",
+            "completed_at": "2026-08-24T23:43:44Z"
+          },
+          {
+            "name": "Select lane model and prompt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-24T23:43:44Z",
+            "completed_at": "2026-08-24T23:43:44Z"
+          },
+          {
+            "name": "Invoke lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 6,
+            "started_at": "2026-08-24T23:43:44Z",
+            "completed_at": "2026-08-24T23:43:44Z"
+          },
+          {
+            "name": "Write lane manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-08-24T23:43:44Z",
+            "completed_at": "2026-08-24T23:43:44Z"
+          },
+          {
+            "name": "Upload lane evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-08-24T23:43:44Z",
+            "completed_at": "2026-08-24T23:43:45Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 16,
+            "started_at": "2026-08-24T23:43:45Z",
+            "completed_at": "2026-08-24T23:43:45Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17,
+            "started_at": "2026-08-24T23:43:45Z",
+            "completed_at": "2026-08-24T23:43:45Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/97631260090",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000020702,
+        "runner_name": "GitHub Actions 1000020702",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 97631260095,
+        "run_id": 32790613088,
+        "workflow_name": "Team MVT \u2014 simultaneous provider lanes",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32790613088",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAWu0bNvw",
+        "head_sha": "ff2a3af3343e37d260dc414c85021dbc8bcfc997",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/97631260095",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32790613088/job/97631260095",
+        "status": "in_progress",
+        "conclusion": null,
+        "created_at": "2026-08-24T23:43:32Z",
+        "started_at": "2026-08-24T23:43:35Z",
+        "completed_at": null,
+        "name": "lane (a-ox-openrouter)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-08-24T23:43:35Z",
+            "completed_at": "2026-08-24T23:43:36Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-08-24T23:43:36Z",
+            "completed_at": "2026-08-24T23:43:41Z"
+          },
+          {
+            "name": "Resolve manager cohort",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-08-24T23:43:41Z",
+            "completed_at": "2026-08-24T23:43:41Z"
+          },
+          {
+            "name": "Poll live catalogs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-08-24T23:43:41Z",
+            "completed_at": "2026-08-24T23:43:41Z"
+          },
+          {
+            "name": "Select lane model and prompt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-08-24T23:43:41Z",
+            "completed_at": "2026-08-24T23:43:41Z"
+          },
+          {
+            "name": "Invoke lane",
+            "status": "in_progress",
+            "conclusion": null,
+            "number": 6,
+            "started_at": "2026-08-24T23:43:41Z",
+            "completed_at": null
+          },
+          {
+            "name": "Write lane manifest",
+            "status": "pending",
+            "conclusion": null,
+            "number": 7,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Upload lane evidence",
+            "status": "pending",
+            "conclusion": null,
+            "number": 8,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "pending",
+            "conclusion": null,
+            "number": 16,
+            "started_at": null,
+            "completed_at": null
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/97631260095",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000020703,
+        "runner_name": "GitHub Actions 1000020703",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

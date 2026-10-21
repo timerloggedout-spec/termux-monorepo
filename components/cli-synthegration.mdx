@@ -1,0 +1,68 @@
+---
+title: "cli-synthegration"
+sidebarTitle: "CLI Synthegration"
+description: "Synthesize, branch, and export DeepSeek conversations with CLI Synthegration. Manage accounts, tokens, sync pipelines, and search across 3,281 sessions."
+---
+
+CLI Synthegration is the conversation synthesis and branching layer of the Termux Monorepo. It manages DeepSeek session exports, conversation branching, account credentials, token provisioning, and synchronization pipelines. The module also includes Chronos for time-loop acceleration and maintains a searchable archive of 3,281 exported sessions.
+
+## Core modules
+
+The `cli-synthegration/` directory contains the following modules:
+
+- **`branch_manager.py`** — Create, list, merge, and delete conversation branches
+- **`conv_branching.py`** — Core branching logic for forked DeepSeek threads
+- **`conv_explorer.py`** — Interactive explorer for browsing session trees and message history
+- **`conv_export_cli.py`** — Command-line exporter for sessions in JSON and other formats
+- **`account_manager.py`** — Manage DeepSeek accounts, API keys, and profiles
+- **`token_provider.py`** — Rotate and provision API tokens with expiration tracking
+- **`sync_pipeline.py`** — Synchronize session exports between local storage and remote archives
+- **`live_export.py`** — Real-time export of active conversations as they progress
+- **`live_search.py`** — Full-text search across the entire session archive
+
+## Session archive
+
+All exported sessions are stored in `synthegration_exports/`. The archive currently holds **3,281 session files** and is continuously updated by `live_export.py` and `sync_pipeline.py`. Each export contains the full message tree, metadata, and branch pointers so you can reconstruct any conversation state.
+
+## Conversation branching
+
+Branching lets you split a conversation at any message and continue on a new thread without affecting the original. Use `branch_manager.py` to create branches, or fork directly from DeepCLI with the `fork` command. Branch metadata is stored alongside the session export so the full tree remains navigable.
+
+```bash
+python branch_manager.py create --session <id> --message-id <msg> --name "experiment-1"
+python branch_manager.py list --session <id>
+python branch_manager.py merge --branch <branch-id> --target-session <id>
+```
+
+## Chronos: time-loop acceleration
+
+Chronos is a utility within CLI Synthegration that accelerates iterative conversation loops. It batches prompts, preloads context, and pipelines exports so you can run rapid experiments against the same base conversation without waiting for full round-trips between each iteration.
+
+<Note>
+  Chronos is most effective when combined with `live_export.py` so results are captured automatically during fast loops.
+</Note>
+
+## Account and token management
+
+CLI Synthegration includes dedicated modules for credential lifecycle management.
+
+```bash
+python account_manager.py add --name work --key $DEEPSEEK_API_KEY
+python account_manager.py switch --name work
+python token_provider.py rotate --account work
+```
+
+`token_provider.py` tracks expiration dates and can proactively rotate tokens before they expire, which is useful for long-running autonomous agents that depend on stable API access.
+
+## Sync pipeline
+
+The sync pipeline moves session exports between local Termux storage and a remote archive. Configure the pipeline with a target URL or S3-compatible endpoint, then run:
+
+```bash
+python sync_pipeline.py push --remote <endpoint>
+python sync_pipeline.py pull --remote <endpoint>
+```
+
+## Workspace correlation index
+
+CLI Synthegration maintains a correlation index that links sessions to workspace artifacts. When an agent produces a file patch or a code change during a conversation, the index records the relationship between the session ID and the resulting file path. This lets you search conversations by the files they produced, and vice versa.

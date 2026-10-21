@@ -1,0 +1,49 @@
+flowchart TB
+  classDef event fill:#e8f0fe,stroke:#1a73e8,color:#102a43
+  classDef read fill:#e6f4ea,stroke:#188038,color:#102a43
+  classDef state fill:#fef7e0,stroke:#b06000,color:#4a2c00
+  classDef writer fill:#fce8e6,stroke:#c5221f,color:#4a1010
+  classDef external fill:#f3e8fd,stroke:#7b1fa2,color:#2b0c3d
+  classDef hold fill:#f1f3f4,stroke:#5f6368,color:#202124
+
+  event[GitHub event or schedule]:::event
+  event --> intake{Event family and trust context}:::event
+
+  subgraph intake_lanes[Entry and routing lanes]
+    intake --> pr[PR / review / comment lifecycle]:::read
+    intake --> issue[Issue / trusted command lifecycle]:::read
+    intake --> schedule[Scheduled or manual control-plane work]:::read
+    intake --> dispatch[Bounded dispatch or reusable workflow]:::state
+  end
+
+  subgraph autonomous_lanes[Autonomous development lanes]
+    pr --> gates[Repository gates and advisory security]:::read
+    issue --> triage[Issue triage and bounded agent lanes]:::state
+    pr --> peers[Peer-provider review orchestration]:::state
+    peers --> secondpass[Verified second-pass review dispatch]:::state
+    triage --> router[Role-aware model router]:::state
+    router --> modelrun[Bounded Gemini or OpenRouter work]:::external
+    schedule --> ops[Read-only operations and scorecard reports]:::read
+    schedule --> reconcile[Relationship, fork, Wiki, and surface reconciliation]:::writer
+    dispatch --> dependency[Dependency/project phase automation]:::state
+  end
+
+  gates --> evidence[(Checks, summaries, artifacts, state markers)]:::read
+  triage --> evidence
+  peers --> evidence
+  modelrun --> evidence
+  ops --> evidence
+  reconcile --> evidence
+  dependency --> evidence
+
+  evidence --> outcome{Outcome and authority boundary}:::event
+  outcome --> pass[Pass / advisory result / reviewable state]:::read
+  outcome --> wait[Pending evidence, cooldown, quota, or retry wait]:::state
+  outcome --> mutate[Fixed-scope attributable writer mutation]:::writer
+  outcome --> hold[Reject, skip, circuit-break, or separate acceptance hold]:::hold
+
+  mutate --> postcheck{Postcondition verified?}:::writer
+  postcheck -->|yes| pass
+  postcheck -->|no| rollback[Bounded rollback or frozen writer lane]:::writer
+
+  linkStyle default stroke:#5f6368,stroke-width:1.5px

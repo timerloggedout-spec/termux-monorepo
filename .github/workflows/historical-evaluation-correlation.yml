@@ -1,0 +1,74 @@
+name: Historical Evaluation Correlation
+
+on:
+  schedule:
+    - cron: '7 * * * *'
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/github/historical_event_correlation.py'
+      - 'scripts/ci/automation_docs.py'
+      - '.github/workflows/**'
+      - '.agents/skills/**'
+      - 'docs/architecture/**'
+      - 'docs/ops/**'
+
+permissions:
+  contents: read
+  actions: read
+  issues: read
+  pull-requests: read
+
+concurrency:
+  group: historical-evaluation-correlation
+  cancel-in-progress: false
+
+jobs:
+  correlate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Validate automation documentation freshness
+        # automation-docs-continuous-refresh owns the generated catalog commit.
+        # A workflow-file push is stale until that follow-up lands (run 36914069529
+        # on ffb39b22). Warn here; do not fail correlation on catalog drift.
+        run: |
+          set -euo pipefail
+          if python3 scripts/ci/automation_docs.py --check; then
+            echo "automation catalog is fresh"
+          else
+            echo "::warning::generated automation catalog is stale; automation-docs-continuous-refresh owns the follow-up commit"
+          fi
+      - name: Snapshot and correlate repository history
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          python3 -m py_compile scripts/github/historical_event_correlation.py
+          python3 scripts/github/historical_event_correlation.py --repo "$GITHUB_REPOSITORY" --out artifacts/github-history --pages 5 --nested-pages 1
+      - name: Validate documented workflow references
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import pathlib,re
+          workflows={p.name for p in pathlib.Path('.github/workflows').glob('*.yml')}|{p.name for p in pathlib.Path('.github/workflows').glob('*.yaml')}
+          missing=[]
+          for p in pathlib.Path('docs').rglob('*.md'):
+              text=p.read_text(errors='ignore')
+              for m in re.findall(r'\.github/workflows/([A-Za-z0-9_.-]+\.ya?ml)',text):
+                  if m not in workflows: missing.append(f'{p}: {m}')
+          if missing:
+              print('::error::Stale workflow references detected')
+              print('\n'.join(missing))
+              raise SystemExit(1)
+          print('All documented workflow filenames resolve.')
+          PY
+      - name: Publish immutable correlation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: github-history-correlation-${{ github.run_id }}
+          path: artifacts/github-history
+          if-no-files-found: error

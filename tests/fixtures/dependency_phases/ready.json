@@ -1,0 +1,35 @@
+{
+  "project_items": [
+    {
+      "id": "PVTI_fixture_000",
+      "title": "[DPH-000] Foundation and lifecycle engine",
+      "status": "Done"
+    },
+    {
+      "id": "PVTI_fixture_100",
+      "title": "[DPH-100] GitHub Projects synchronization",
+      "status": "Todo"
+    }
+  ],
+  "pull_requests": [
+    {
+      "number": 900,
+      "title": "feat: DPH-000 lifecycle engine",
+      "body": "Implements: DPH-000",
+      "state": "closed",
+      "merged": true,
+      "checks": {
+        "repo-gate": "SUCCESS",
+        "termux-smoke": "SUCCESS"
+      }
+    }
+  ],
+  "approvals": {
+    "DPH-100": {
+      "approved": true,
+      "by": "timerloggedout-spec",
+      "evidence": "fixture"
+    }
+  },
+  "claims": []
+}

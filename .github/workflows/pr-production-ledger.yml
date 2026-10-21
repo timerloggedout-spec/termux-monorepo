@@ -1,0 +1,186 @@
+name: PR production ledger
+
+# Read-only control-plane telemetry for active PR production.
+# Never checks out or executes pull-request code.
+# The ledger is SHA-bound and uses status-aware retries so transient GitHub
+# transport/rate-limit/server failures do not masquerade as repository state.
+#
+# Failure class: comment-storm — do NOT use cancel-in-progress:true on
+# issue_comment fan-out; that cancels useful ledger evidence and is a failure
+# mode, not skippable noise.
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
+  pull_request_review:
+    types: [submitted, edited, dismissed]
+  issue_comment:
+    types: [created, edited, deleted]
+
+permissions:
+  contents: read
+  pull-requests: read
+  issues: read
+  checks: read
+
+concurrency:
+  # Include event_name so comment storms do not cancel PR-sync ledger runs.
+  # cancel-in-progress:false — concurrent ledgers are cheap; cancelled ones are failures.
+  group: pr-production-ledger-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}-${{ github.event_name }}
+  cancel-in-progress: false
+
+jobs:
+  ledger:
+    # Skip comment events authored by bots (coderabbitai, jules, etc.): each one
+    # costs ~7 paginated API calls and the storms exhaust the installation limit.
+    if: ${{ github.event_name != 'issue_comment' || github.event.comment.user.type != 'Bot' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Build SHA-bound production ledger
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const prNumber = Number(context.payload.pull_request?.number || (issue?.pull_request ? issue.number : 0));
+            if (!prNumber) {
+              core.info('Event is not a pull request; ledger skipped.');
+              return;
+            }
+
+            const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+            const isTransient = error => {
+              const status = Number(error?.status || error?.response?.status || 0);
+              const message = String(error?.message || '').toLowerCase();
+              return status === 408 || status === 409 || status === 425 || status === 429 || status >= 500 ||
+                message.includes('econnreset') || message.includes('etimedout') ||
+                message.includes('socket hang up') || message.includes('network') ||
+                message.includes('rate limit');
+            };
+            async function retryApi(fn, retries = 5, delay = 1000) {
+              let lastError;
+              for (let attempt = 1; attempt <= retries; attempt++) {
+                try {
+                  return await fn();
+                } catch (error) {
+                  lastError = error;
+                  if (!isTransient(error) || attempt === retries) throw error;
+                  const wait = Math.min(delay * 2 ** (attempt - 1), 30000);
+                  core.warning(`Transient GitHub API failure; retry ${attempt}/${retries - 1} in ${wait}ms: ${error.message}`);
+                  await sleep(wait);
+                }
+              }
+              throw lastError;
+            }
+
+            try {
+            const { data: pr } = await retryApi(() => github.rest.pulls.get({ owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber }));
+            const { data: comparison } = await retryApi(() => github.rest.repos.compareCommitsWithBasehead({ owner: context.repo.owner, repo: context.repo.repo, basehead: `${pr.base.ref}...${pr.head.sha}`, per_page: 100 }));
+            const commits = await retryApi(() => github.paginate(github.rest.pulls.listCommits, { owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber, per_page: 100 }));
+            const reviews = await retryApi(() => github.paginate(github.rest.pulls.listReviews, { owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber, per_page: 100 }));
+            const reviewComments = await retryApi(() => github.paginate(github.rest.pulls.listReviewComments, { owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber, per_page: 100 }));
+            const issueComments = await retryApi(() => github.paginate(github.rest.issues.listComments, { owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, per_page: 100 }));
+            const checks = await retryApi(() => github.paginate(github.rest.checks.listForRef, { owner: context.repo.owner, repo: context.repo.repo, ref: pr.head.sha, per_page: 100 }));
+            const iso = value => value ? new Date(value).toISOString() : 'n/a';
+            const latestCommit = commits[commits.length - 1];
+            const latestReview = reviews.filter(r => r.submitted_at).sort((a,b) => new Date(b.submitted_at)-new Date(a.submitted_at))[0];
+            const latestReviewComment = reviewComments.sort((a,b) => new Date(b.updated_at||b.created_at)-new Date(a.updated_at||a.created_at))[0];
+            const latestIssueComment = issueComments.sort((a,b) => new Date(b.updated_at||b.created_at)-new Date(a.updated_at||a.created_at))[0];
+            const changedFiles = comparison.files?.length ?? pr.changed_files ?? 0;
+            const ahead = comparison.ahead_by ?? 0;
+            const behind = comparison.behind_by ?? 0;
+            const failedChecks = checks.filter(c => c.status === 'completed' && c.conclusion && !['success','neutral','skipped'].includes(c.conclusion));
+            const pendingChecks = checks.filter(c => c.status !== 'completed');
+            const ledger = [
+              '<!-- pr-production-ledger:v2 -->',
+              `pr: #${prNumber}`,
+              `head_sha: ${pr.head.sha}`,
+              `base_sha: ${pr.base.sha}`,
+              `generated_at: ${new Date().toISOString()}`,
+              `commits: ${commits.length}`,
+              `changed_files: ${changedFiles}`,
+              `additions: ${pr.additions}`,
+              `deletions: ${pr.deletions}`,
+              `ahead_of_master: ${ahead}`,
+              `behind_master: ${behind}`,
+              `branch_alignment: ${behind > 0 ? 'BEHIND_MASTER' : 'ALIGNED_OR_AHEAD'}`,
+              `latest_commit_at: ${iso(latestCommit?.commit?.committer?.date || latestCommit?.commit?.author?.date)}`,
+              `latest_review_at: ${iso(latestReview?.submitted_at)}`,
+              `latest_review_comment_at: ${iso(latestReviewComment?.updated_at || latestReviewComment?.created_at)}`,
+              `latest_issue_comment_at: ${iso(latestIssueComment?.updated_at || latestIssueComment?.created_at)}`,
+              `checks_total: ${checks.length}`,
+              `checks_pending: ${pendingChecks.length}`,
+              `checks_failed: ${failedChecks.length}`,
+            ].join('\n');
+            const epsEvent = {
+              schema_version: 'eps.v1',
+              event_type: 'pr.ledger_observed',
+              occurred_at: new Date().toISOString(),
+              source: 'github.actions.pr-production-ledger',
+              repo: `${context.repo.owner}/${context.repo.repo}`,
+              git_sha: pr.head.sha,
+              run_id: context.runId,
+              run_attempt: Number(process.env.GITHUB_RUN_ATTEMPT || 1),
+              entity_type: 'pull_request',
+              entity_id: `pr:${prNumber}`,
+              status: 'observed',
+              provenance: { source_ref: pr.html_url, source_kind: 'github_api', attribution_confidence: 1 },
+              attributes: {
+                base_sha: pr.base.sha, commits: commits.length, changed_files: changedFiles,
+                additions: pr.additions, deletions: pr.deletions, ahead_of_base: ahead,
+                behind_base: behind, checks_total: checks.length,
+                checks_pending: pendingChecks.length, checks_failed: failedChecks.length,
+                branch_alignment: behind > 0 ? 'BEHIND_MASTER' : 'ALIGNED_OR_AHEAD'
+              }
+            };
+            const stable = JSON.stringify([
+              epsEvent.event_type, epsEvent.source, epsEvent.repo,
+              epsEvent.git_sha, epsEvent.run_id, epsEvent.run_attempt,
+              epsEvent.entity_type, epsEvent.entity_id, epsEvent.status
+            ]);
+            epsEvent.event_id = `eps-${require('crypto').createHash('sha256').update(stable).digest('hex').slice(0, 32)}`;
+            require('fs').writeFileSync(
+              `${process.env.GITHUB_WORKSPACE}/eps-events.ndjson`,
+              JSON.stringify(epsEvent) + '\n',
+              { encoding: 'utf8', flag: 'w' }
+            );
+            // Validate the emitted envelope before artifact publication. This job intentionally
+            // does not checkout PR code, so validation stays inside the trusted ledger step.
+            if (epsEvent.schema_version !== 'eps.v1' || !epsEvent.event_id || !epsEvent.provenance?.source_ref || !epsEvent.entity_id || !epsEvent.entity_type) {
+              core.setFailed('EPS envelope validation failed');
+              return;
+            }
+
+            await core.summary
+              .addHeading(`PR #${prNumber} production ledger`)
+              .addRaw(ledger + '\n\n')
+              .addHeading('Latest evidence')
+              .addRaw(`- latest commit: ${latestCommit?.sha || 'n/a'} @ ${iso(latestCommit?.commit?.committer?.date || latestCommit?.commit?.author?.date)}\n`)
+              .addRaw(`- latest review: ${latestReview?.html_url || 'none'} @ ${iso(latestReview?.submitted_at)}\n`)
+              .addRaw(`- latest review comment: ${latestReviewComment?.html_url || 'none'} @ ${iso(latestReviewComment?.updated_at || latestReviewComment?.created_at)}\n`)
+              .addRaw(`- latest issue comment: ${latestIssueComment?.html_url || 'none'} @ ${iso(latestIssueComment?.updated_at || latestIssueComment?.created_at)}\n`)
+              .addHeading('Gate interpretation')
+              .addRaw(behind > 0 ? '⚠️ Branch is behind master; production alignment is incomplete.\n' : '✅ Branch is not behind master at ledger generation time.\n')
+              .addRaw(failedChecks.length ? `❌ ${failedChecks.length} failed check(s).\n` : '✅ No completed failing checks observed.\n')
+              .addRaw(pendingChecks.length ? `⏳ ${pendingChecks.length} check(s) still pending.\n` : '✅ No pending checks observed.\n')
+              .write();
+            } catch (error) {
+              // Rate-limit exhaustion after retries is GitHub capacity, not PR state:
+              // record it visibly and defer instead of failing the ledger.
+              const status = Number(error?.status || error?.response?.status || 0);
+              if (status === 403 || status === 429 || /rate limit/i.test(String(error?.message || ''))) {
+                core.warning(`PR #${prNumber} ledger deferred: installation rate limit exhausted (${error.message})`);
+                await core.summary.addHeading(`PR #${prNumber} ledger deferred`).addRaw('Installation API rate limit exhausted after retries; no ledger was produced for this event.\n').write();
+                return;
+              }
+              throw error;
+            }
+
+
+      - name: Upload EPS telemetry artifact
+        if: ${{ always() && hashFiles('eps-events.ndjson') != '' }}
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: eps-events-${{ github.run_id }}-${{ github.run_attempt }}
+          path: eps-events.ndjson
+          if-no-files-found: error
+          retention-days: 14

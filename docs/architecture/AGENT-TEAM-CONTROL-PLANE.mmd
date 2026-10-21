@@ -1,0 +1,82 @@
+```mermaid
+flowchart TD
+    B[BROAD] --> I[INTEGRATE]
+    I --> V[VALIDATE]
+    V --> D[DEVELOP]
+    D --> L[LEARN]
+    L --> B
+
+    L --> S[SCOUT POPULATION]
+    S --> C[TEAM CANDIDATES]
+    C --> OA[OpenRouter / OX-Alpha]
+    C --> DS[DeepSeek]
+    C --> GM[Gemini]
+    C --> F[Future providers/models]
+
+    OA --> E[MVT / DOE]
+    DS --> E
+    GM --> E
+    F --> E
+    E --> MX[provider × model × prompt\n× manager × cohort × sequencing]
+    MX --> T[TELEMETRY]
+    T --> R[SHA → run → job → step\n→ logs → artifacts]
+    R --> CR[BILATERAL REVIEW]
+    CR --> K[RETAIN / PROMOTE]
+    CR --> X[CULL / QUARANTINE\nprovenance preserved]
+    K --> MB[MONEYBALL / 3L0]
+    X --> MB
+    MB --> A[TEAM ADMISSION]
+    A --> SS[SKILL / SSOT SYNTHESIS]
+    SS --> L
+```
+
+# Agent Team Control Plane — BIUDL
+
+This chart is the canonical compact orientation view of the evolving agent-team development loop. It complements, rather than replaces, detailed SSOTs, workflows, skills, experiments, and historical decision records.
+
+## BIUDL
+
+**BIUDL = Broad → Integrate → Validate → Develop → Learn.**
+
+The loop is intentionally cyclic: learning changes the next broad baseline. A thin validated slice is therefore an intermediate state, not the final destination.
+
+## Evidence contract
+
+A node transition is not proof of success. HTTP success, workflow success, review acknowledgement, low latency, or response size are observations. Task outcome remains separately classified (`PASS`, `FAIL`, `UNKNOWN`, or another documented state).
+
+Correctness has priority over latency. Resource/quota state is a capacity signal, not a quality score.
+
+## Control-plane roles
+
+Scout discovers candidates and proposes missions; it does not grant routing authority. Managers/MoneyBall/3L0 make promotion decisions from attributable evidence. Experiment lanes apply DOE/MVT designs. Telemetry establishes SHA-to-runtime lineage. Bilateral review challenges both implementation and conclusions. Synthesis feeds verified learning into skills and SSOTs.
+
+## Dynamic population
+
+OX-Alpha, DeepSeek, Gemini, and future providers/models are selectable population members rather than permanent hardcoded winners. Discovery, availability, pricing, quota, capability, and runtime evidence should be observed dynamically.
+
+## Culling
+
+Culling is a state transition, not deletion. Preserve identity, attempts, scores, contributions, reviews, and provenance. Future wallet/reward/community-pot accounting must consume this contribution history without changing the performance evidence.
+
+## Research and oversight
+
+Scout missions may propose provider research, code reconnaissance, performance tests, regression investigations, and oversight/security evaluation cohorts such as Bug Bounty, Help Wanted, CTF, developer-skill, and security-skill tasks. These are evidence-producing evaluation populations, not automatic trust grants.
+
+## Runtime evidence lineage
+
+`SHA → workflow run → job → step → logs/artifacts → outcome → review → promotion decision`.
+
+## Related systems
+
+- `.agents/skills/evidence-led-monorepo-ops/SKILL.md`
+- `.agents/skills/review-loop/SKILL.md`
+- `.agents/skills/adaptive-feedback-cycle/SKILL.md`
+- `.agents/skills/context-relationship-graph/SKILL.md`
+- `.agents/skills/gemini-performance-psychology/SKILL.md`
+- `.agents/skills/multivariate-doe/SKILL.md`
+- `docs/ops/AGENT-TEAM-DEVELOPMENT-LANES.md`
+- `docs/ops/SCOUT-MISSIONS.md`
+- `docs/ops/SCOUT-ROSTER.md`
+- `docs/ops/ACTIONS-METRICS-INTEGRATION.md`
+- `docs/architecture/AGENT-TEAM-CONTROL-PLANE.mmd`
+- `docs/architecture/SELF-HEALING-ENGINE-ROADMAP.md`

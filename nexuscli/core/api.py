@@ -17,42 +17,75 @@ from typing import Optional, List, Dict, Any
 try:
     from curl_cffi import requests as curl_requests
 except Exception:
-    import requests as standard_requests
+    try:
+        import requests as standard_requests
 
-    class MockCurlSession(standard_requests.Session):
-        def __init__(self, *args, **kwargs):
-            kwargs.pop("impersonate", None)
-            super().__init__(*args, **kwargs)
+        class MockCurlSession(standard_requests.Session):
+            def __init__(self, *args, **kwargs):
+                kwargs.pop("impersonate", None)
+                super().__init__(*args, **kwargs)
 
-        def request(self, method, url, *args, **kwargs):
-            kwargs.pop("impersonate", None)
-            return super().request(method, url, *args, **kwargs)
+            def request(self, method, url, *args, **kwargs):
+                kwargs.pop("impersonate", None)
+                return super().request(method, url, *args, **kwargs)
 
-    class CurlRequestsFallback:
-        Session = MockCurlSession
+        class CurlRequestsFallback:
+            Session = MockCurlSession
 
-        def get(self, *args, **kwargs):
-            kwargs.pop("impersonate", None)
-            return standard_requests.get(*args, **kwargs)
+            def get(self, *args, **kwargs):
+                kwargs.pop("impersonate", None)
+                return standard_requests.get(*args, **kwargs)
 
-        def post(self, *args, **kwargs):
-            kwargs.pop("impersonate", None)
-            return standard_requests.post(*args, **kwargs)
+            def post(self, *args, **kwargs):
+                kwargs.pop("impersonate", None)
+                return standard_requests.post(*args, **kwargs)
 
-        def put(self, *args, **kwargs):
-            kwargs.pop("impersonate", None)
-            return standard_requests.put(*args, **kwargs)
+            def put(self, *args, **kwargs):
+                kwargs.pop("impersonate", None)
+                return standard_requests.put(*args, **kwargs)
 
-        def delete(self, *args, **kwargs):
-            kwargs.pop("impersonate", None)
-            return standard_requests.delete(*args, **kwargs)
+            def delete(self, *args, **kwargs):
+                kwargs.pop("impersonate", None)
+                return standard_requests.delete(*args, **kwargs)
 
-    curl_requests = CurlRequestsFallback()
+        curl_requests = CurlRequestsFallback()
+    except Exception:
+        class DummySession:
+            headers = {}
+            cookies = type('DummyCookies', (), {'set': lambda *a, **kw: None})()
+            def get(self, *args, **kwargs):
+                raise RuntimeError("HTTP library ('requests' or 'curl_cffi') is required to perform network operations")
+            def post(self, *args, **kwargs):
+                raise RuntimeError("HTTP library ('requests' or 'curl_cffi') is required to perform network operations")
+            def put(self, *args, **kwargs):
+                raise RuntimeError("HTTP library ('requests' or 'curl_cffi') is required to perform network operations")
+            def delete(self, *args, **kwargs):
+                raise RuntimeError("HTTP library ('requests' or 'curl_cffi') is required to perform network operations")
 
-import requests as http_requests
-from rich.console import Console
+        class CurlRequestsFallback:
+            Session = DummySession
+            def get(self, *args, **kwargs):
+                raise RuntimeError("HTTP library ('requests' or 'curl_cffi') is required to perform network operations")
+            def post(self, *args, **kwargs):
+                raise RuntimeError("HTTP library ('requests' or 'curl_cffi') is required to perform network operations")
+            def put(self, *args, **kwargs):
+                raise RuntimeError("HTTP library ('requests' or 'curl_cffi') is required to perform network operations")
+            def delete(self, *args, **kwargs):
+                raise RuntimeError("HTTP library ('requests' or 'curl_cffi') is required to perform network operations")
 
-console = Console()
+        curl_requests = CurlRequestsFallback()
+
+try:
+    import requests as http_requests
+except Exception:
+    http_requests = curl_requests
+try:
+    from rich.console import Console
+    console = Console()
+except ModuleNotFoundError:
+    class DummyConsole:
+        def print(self, *args, **kwargs): pass
+    console = DummyConsole()
 
 # Configuration
 CONFIG_DIR = Path.home() / ".nexuscli"
@@ -60,11 +93,13 @@ CONFIG_FILE = CONFIG_DIR / "config.json"
 WASM_SOLVER = Path(__file__).parent.parent / "pow_solver.js"
 BASE_URL = "https://chat.deepseek.com"
 
-CONFIG_DIR.mkdir(parents=True, exist_ok=True)
-try:
-    CONFIG_DIR.chmod(0o700)
-except Exception:
-    pass
+if not CONFIG_DIR.is_symlink():
+    CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+    if not CONFIG_DIR.is_symlink():
+        try:
+            CONFIG_DIR.chmod(0o700)
+        except Exception:
+            pass
 
 # Persistent session (cookies preserved across API calls)
 _session: Optional[curl_requests.Session] = None
@@ -80,13 +115,32 @@ def _session_cache_key(token: str, cookie: Optional[str] = None) -> str:
 # ---------- Cache Helpers ----------
 
 def _cache_path(session_id: str, account: str = "primary") -> str:
-    store_dir = os.path.join(os.path.expanduser("~/.nexuscli/session_store"), account)
+    if ".." in str(account) or str(account).startswith("/") or "\\" in str(account):
+        raise ValueError("Invalid account name")
+
+    base_store = os.path.realpath(os.path.expanduser("~/.nexuscli/session_store"))
+    safe_account = "".join(c if c.isalnum() or c in "-_." else "_" for c in str(account))
+    store_dir = os.path.join(base_store, safe_account)
+
+    store_real = os.path.realpath(store_dir)
+    if os.path.commonpath([base_store, store_real]) != base_store:
+        raise ValueError("Invalid account path")
+
     os.makedirs(store_dir, exist_ok=True)
-    try:
-        os.chmod(os.path.dirname(store_dir), 0o700)
-        os.chmod(store_dir, 0o700)
-    except Exception:
-        pass
+
+    # Restrict permissions of store_dir and parent directories if not symlinks
+    parent_store = os.path.dirname(store_dir)
+    for d_path in [parent_store, store_dir]:
+        p = Path(d_path)
+        if p.exists() and not p.is_symlink():
+            try:
+                p.chmod(0o700)
+            except Exception:
+                pass
+
+    if ".." in str(session_id) or str(session_id).startswith("/") or "\\" in str(session_id):
+        raise ValueError("Invalid file path")
+
     # Sanitize session_id filename component
     safe_id = "".join(c if c.isalnum() or c in "-_." else "_" for c in str(session_id))
     path = os.path.join(store_dir, f"{safe_id}.json")
@@ -110,32 +164,52 @@ def _cache_load(session_id: str, account: str = "primary") -> Optional[List[Dict
 def _cache_save(session_id: str, messages: List[Dict[str, Any]], account: str = "primary"):
     path = _cache_path(session_id, account)
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    try:
-        os.chmod(os.path.dirname(path), 0o700)
-    except Exception:
-        pass
-    with open(path, "w") as f:
+
+    p_dir = Path(os.path.dirname(path))
+    if p_dir.exists() and not p_dir.is_symlink():
+        try:
+            p_dir.chmod(0o700)
+        except Exception:
+            pass
+
+    p_file = Path(path)
+    if p_file.is_symlink():
+        raise ValueError("Symlink cache path rejected for security")
+
+    fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, "w") as f:
         json.dump(messages, f, indent=2)
-    try:
-        os.chmod(path, 0o600)
-    except Exception:
-        pass
+
+    if p_file.exists() and not p_file.is_symlink():
+        try:
+            p_file.chmod(0o600)
+        except Exception:
+            pass
 
 
 # ---------- Config Helpers ----------
 
 def load_config() -> Dict[str, Any]:
-    if CONFIG_FILE.exists():
+    if CONFIG_FILE.exists() and not CONFIG_FILE.is_symlink():
         return json.loads(CONFIG_FILE.read_text())
     return {}
 
 
 def save_config(cfg: Dict[str, Any]):
+    if not CONFIG_DIR.is_symlink():
+        CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+        try:
+            CONFIG_DIR.chmod(0o700)
+        except Exception:
+            pass
+    if CONFIG_FILE.is_symlink():
+        raise ValueError("Config file target cannot be a symlink")
     CONFIG_FILE.write_text(json.dumps(cfg, indent=2))
-    try:
-        CONFIG_FILE.chmod(0o600)
-    except Exception:
-        pass
+    if CONFIG_FILE.exists() and not CONFIG_FILE.is_symlink():
+        try:
+            CONFIG_FILE.chmod(0o600)
+        except Exception:
+            pass
 
 
 def get_token() -> str:
@@ -265,11 +339,11 @@ def get_pow_challenge(token: str, target_path="/api/v0/chat/completion") -> dict
 
 
 def upload_file(token: str, session_id: str, file_path: str) -> Optional[str]:
+    if ".." in str(file_path) or (not Path(file_path).is_absolute() and ".." in Path(file_path).parts):
+        raise ValueError("Invalid file path")
     if not Path(file_path).exists():
         console.print(f"[red]File not found: {file_path}[/]")
         return None
-    if ".." in file_path or Path(file_path).is_absolute() is False and ".." in Path(file_path).parts:
-        raise ValueError("Invalid file path")
 
     challenge = get_pow_challenge(token, "/api/v0/file/upload_file")
     pow_header = solve_pow(challenge)

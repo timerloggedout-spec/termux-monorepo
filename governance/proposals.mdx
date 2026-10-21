@@ -1,0 +1,54 @@
+---
+title: "Proposal Process: From Idea to Merged Change"
+sidebarTitle: "Proposals"
+description: "Learn the Termux Monorepo proposal lifecycle from posting to debate, consensus, and close. Track work in registry.yaml and active ITEMS.md files."
+---
+
+The Termux Monorepo governs changes through a structured proposal lifecycle. Every change starts as a posted proposal, moves through debate and consensus, and closes only when work is complete and validated. This page walks you through each stage and the files you must keep up to date.
+
+## Proposal lifecycle
+
+A proposal moves through four stages: post, debate, consensus, and close. You must follow this sequence for any non-trivial change.
+
+<Steps>
+  <Step title="Post">
+    Open a proposal by creating an entry in `docs/proposals/registry.yaml`. Set the status to `active` and create the proposal directory under `docs/proposals/active/<id>/`. Write the initial scope in `ITEMS.md`.
+  </Step>
+  <Step title="Debate">
+    Discuss the proposal in `DEBATE.md` or a linked Review log. Record alternatives, objections, and resolutions. Do not treat informal chat as consensus.
+  </Step>
+  <Step title="Consensus">
+    Mark consensus in `docs/proposals/PROCESS.md` when debate resolves. Only then may implementation begin.
+  </Step>
+  <Step title="Close">
+    Update `registry.yaml` to `closed`, archive the directory, and cite `Implements: <ITEM-ID>` on the final PR and commits.
+  </Step>
+</Steps>
+
+## Key files
+
+| File | Purpose |
+| --- | --- |
+| `docs/proposals/registry.yaml` | Master list of all proposals and their current status |
+| `docs/proposals/PROCESS.md` | Governance rules for how proposals move through stages |
+| `docs/proposals/active/<id>/ITEMS.md` | Work items for the active proposal |
+| `docs/proposals/active/<id>/DEBATE.md` | Record of debate and decisions |
+
+## Citing work items
+
+Every PR and commit that implements a proposal must cite the item ID. Use the exact format:
+
+```text
+Implements: PROPOSAL-42-A
+```
+
+Replace `PROPOSAL-42-A` with the real item ID from the proposal's `ITEMS.md`. Do not invent work outside the items listed there.
+
+<Note>
+  Unposted chat in a messaging thread is not consensus. Write a Review log or `DEBATE.md` entry so the decision is recorded and auditable.
+</Note>
+
+## Next steps
+
+- Read the [Consensus tiers and CRDT model](/governance/consensus) to understand how agreement is reached
+- Review [Security boundaries](/governance/security) before proposing credential or gate changes

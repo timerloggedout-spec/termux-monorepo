@@ -1,0 +1,110 @@
+# Record completed runs of the help-wanted (Tribute) and SHE lanes into the
+# Neon lane_events ledger (ops/lane-events/schema.sql, scripts/ops/lane_event.py).
+# Additive: observes completions via workflow_run; never edits or blocks the
+# watched workflows. No-ops (notice only) until a repo secret exists:
+#   LANE_EVENTS_DATABASE_URL (Postgres URL) or NEON_API_KEY (Neon free tier).
+name: lane events recorder
+
+on:
+  workflow_run:
+    workflows:
+      - help-wanted scout
+      - help-wanted execute
+      - help-wanted-followup
+      - help-wanted-status-refresh
+      - Agent Throughput Evidence
+      - n8n SHE bridge
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      command:
+        description: "record (self-test event) | count | schema"
+        default: count
+        type: choice
+        options: [count, record, schema]
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: lane-events-recorder-${{ github.event.workflow_run.id || github.run_id }}-${{ github.event.workflow_run.run_attempt || github.run_attempt }}
+  cancel-in-progress: false
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            .github/actions/lane-event
+            scripts/ops/lane_event.py
+            ops/lane-events
+            docs/ops/generated/help-wanted-status.json
+          sparse-checkout-cone-mode: false
+
+      - name: build events
+        id: ev
+        if: github.event_name == 'workflow_run'
+        env:
+          WR: ${{ toJson(github.event.workflow_run) }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -uo pipefail
+          python3 - <<'PY'
+          import json, os, pathlib, subprocess
+          wr = json.loads(os.environ["WR"])
+          name = wr.get("name") or ""
+          lane = "she" if name in ("Agent Throughput Evidence", "n8n SHE bridge") else "help-wanted"
+          base = {"lane": lane, "workflow": name, "repo": os.environ["GITHUB_REPOSITORY"],
+                  "run_id": wr.get("id"), "run_attempt": wr.get("run_attempt"),
+                  "conclusion": wr.get("conclusion"), "head_sha": wr.get("head_sha"),
+                  "occurred_at": wr.get("updated_at") or wr.get("created_at")}
+          events = [dict(base, event_type="run_completed", payload={
+              "event": wr.get("event"), "head_branch": wr.get("head_branch"),
+              "run_started_at": wr.get("run_started_at"), "html_url": wr.get("html_url")})]
+          if name == "help-wanted-status-refresh":
+              p = pathlib.Path("docs/ops/generated/help-wanted-status.json")
+              try:
+                  st = json.loads(p.read_text())
+                  for pr in (st.get("foreign_open_prs") or [])[:100]:
+                      if pr.get("html_url"):
+                          events.append(dict(base, event_type=f"pr_state:{pr.get('state') or 'unknown'}",
+                                             subject_url=pr["html_url"],
+                                             payload={k: pr.get(k) for k in ("repo", "number", "title", "updated_at", "tribute")}))
+                  events.append(dict(base, event_type="status_snapshot",
+                                     payload={"receipts": st.get("receipts"), "kinds": st.get("kinds"), "outcomes": st.get("outcomes")}))
+              except Exception as exc:  # status file optional
+                  print(f"::notice::help-wanted-status.json unreadable: {exc}")
+          with open("lane-events.jsonl", "w") as fh:
+              for e in events:
+                  fh.write(json.dumps(e) + "\n")
+          print(f"::notice title=lane-events::{len(events)} event(s) built for {name}")
+          PY
+
+      - name: write to ledger
+        if: github.event_name == 'workflow_run'
+        uses: ./.github/actions/lane-event
+        with:
+          lane: from-file
+          workflow: ${{ github.event.workflow_run.name }}
+          events-file: lane-events.jsonl
+          database-url: ${{ secrets.LANE_EVENTS_DATABASE_URL }}
+          neon-api-key: ${{ secrets.NEON_API_KEY }}
+
+      - name: manual (${{ inputs.command }})
+        if: github.event_name == 'workflow_dispatch'
+        uses: ./.github/actions/lane-event
+        with:
+          command: ${{ inputs.command }}
+          lane: selftest
+          workflow: lane events recorder
+          event-type: selftest
+          run-id: ${{ github.run_id }}
+          run-attempt: ${{ github.run_attempt }}
+          head-sha: ${{ github.sha }}
+          database-url: ${{ secrets.LANE_EVENTS_DATABASE_URL }}
+          neon-api-key: ${{ secrets.NEON_API_KEY }}

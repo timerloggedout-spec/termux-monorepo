@@ -20,19 +20,15 @@ Use this skill when the user:
 
 ## What is the Skills CLI?
 
-The Skills CLI (`npx skills@1.0.0` or the version pinned in `skills-lock.json`) is the package manager for the open agent skills ecosystem. Skills are modular packages that extend agent capabilities with specialized knowledge, workflows, and tools.
+The Skills CLI (`npx @agentic/skills@latest`) is the package manager for the open agent skills ecosystem. Skills are modular packages that extend agent capabilities with specialized knowledge, workflows, and tools.
 
-**Key commands (always pin the CLI version):**
+**Key commands:**
 
-- `npx skills@1.0.0 find [query] [--owner <owner>]` — Search for skills interactively or by keyword
-- `npx skills@1.0.0 add <package>` — Install a skill **project-locally** by default (no global flag)
-- `npx skills@1.0.0 update` — Update installed skills in the current project
+- `npx @agentic/skills@latest find [query] [--owner <owner>]` - Search for skills interactively or by keyword, optionally scoped to a GitHub owner
+- `npx @agentic/skills@latest add <package>` - Install a skill from GitHub or other sources (pinned to specific commit/tag when available)
+- `npx @agentic/skills@latest update` - Update all installed skills
 
-**Security rules:**
-
-- Pin every `npx skills@...` invocation to an explicit version (see `skills-lock.json` / approved release).
-- Default install scope is **project-local**. Do not use `--global` / `-g` or non-interactive `--yes` / `-y` unless the user explicitly approves that scope and mode.
-- Do not treat install counts, GitHub stars, or source reputation as security validation.
+**Installation guidance:** When installing skills globally, avoid defaulting to `-g -y`; instead require explicit user confirmation for global installs and verify scope and target before proceeding.
 
 **Browse skills at:** https://skills.sh/
 
@@ -48,57 +44,72 @@ When a user asks for help with something, identify:
 
 ### Step 2: Check the Leaderboard First
 
-Before running a CLI search, check the [skills.sh leaderboard](https://skills.sh/) for well-known skills in the domain. Rankings can help discovery but are **not** a security signal.
+Before running a CLI search, check the [skills.sh leaderboard](https://skills.sh/) to see if a well-known skill already exists for the domain. The leaderboard ranks skills by total installs, surfacing the most popular and battle-tested options.
+
+For example, top skills for web development include:
+- `vercel-labs/agent-skills` — React, Next.js, web design (100K+ installs each)
+- `anthropics/skills` — Frontend design, document processing (100K+ installs)
+
+**Before installing any skill:**
+1. Review the skill's source code, contents, and requested permissions
+2. Check source reputation (official sources are more trustworthy)
+3. Default to project-local installation rather than global
+4. Require explicit human approval for global or non-interactive installation
+5. Defer any first-time permission grant to a human (never auto-grant permissions on first install)
 
 ### Step 3: Search for Skills
 
-If the leaderboard doesn't cover the user's need, run the find command with a pinned version:
+If the leaderboard doesn't cover the user's need, run the find command:
 
 ```bash
-npx skills@1.0.0 find [query] [--owner <owner>]
+npx @agentic/skills@latest find [query] [--owner <owner>]
 ```
 
 For example:
 
-- User asks "how do I make my React app faster?" → `npx skills@1.0.0 find react performance`
-- User asks "can you help me with PR reviews?" → `npx skills@1.0.0 find pr review`
-- User asks "I need to create a changelog" → `npx skills@1.0.0 find changelog`
+- User asks "how do I make my React app faster?" → `npx skills find react performance`
+- User asks "can you help me with PR reviews?" → `npx skills find pr review`
+- User asks "I need to create a changelog" → `npx skills find changelog`
 
-### Step 4: Review Before Recommending
+### Step 4: Verify Quality Before Recommending
 
-**Do not recommend a skill based solely on search results.** Review the skill source, license, and contents. Prefer official or known maintainers when possible, but always require explicit user approval before install.
+**Do not recommend a skill based solely on search results.** Always verify:
+
+1. **Install count** — Prefer skills with 1K+ installs. Be cautious with anything under 100.
+2. **Source reputation** — Official sources (`vercel-labs`, `anthropics`, `microsoft`) are more trustworthy than unknown authors.
+3. **GitHub stars** — Check the source repository. A skill from a repo with <100 stars should be treated with skepticism.
 
 ### Step 5: Present Options to the User
 
-When you find relevant skills, present them with:
+When you find relevant skills, present them to the user with:
 
 1. The skill name and what it does
-2. The source repository
-3. The **project-local** install command (pinned version)
+2. The install count and source
+3. The install command they can run
 4. A link to learn more at skills.sh
 
 Example response:
 
 ```text
-I found a skill that might help: "react-best-practices" from vercel-labs/agent-skills.
+I found a skill that might help! The "react-best-practices" skill provides
+React and Next.js performance optimization guidelines from Vercel Engineering.
+(185K installs)
 
-To install it project-locally (pinned CLI):
-npx skills@1.0.0 add vercel-labs/agent-skills@react-best-practices
+To install it:
+npx skills add vercel-labs/agent-skills@react-best-practices
 
 Learn more: https://skills.sh/vercel-labs/agent-skills/react-best-practices
-
-Say if you want global install or non-interactive flags — those require explicit approval.
 ```
 
-### Step 6: Offer to Install (with approval)
+### Step 6: Offer to Install
 
-If the user wants to proceed, install **project-locally** by default:
+If the user wants to proceed, confirm the install scope with the user first, then install:
 
 ```bash
-npx skills@1.0.0 add <owner/repo@skill>
+npx @agentic/skills@latest add <owner/repo@skill>
 ```
 
-Only add `--global` / `-g` or `--yes` / `-y` when the user has explicitly approved global scope or non-interactive execution.
+By default this installs to the project locally. Only add the `-g` flag (global, user-level install) if the user explicitly requests a global install, and never pass `-y` to skip confirmation prompts — the user should confirm the source and scope before installation proceeds.
 
 ## Common Skill Categories
 
@@ -118,7 +129,7 @@ When searching, consider these common categories:
 
 1. **Use specific keywords**: "react testing" is better than just "testing"
 2. **Try alternative terms**: If "deploy" doesn't work, try "deployment" or "ci-cd"
-3. **Check popular sources**: Many skills come from `vercel-labs/agent-skills` or similar collections — still review before install
+3. **Check popular sources**: Many skills come from `vercel-labs/agent-skills` or `ComposioHQ/awesome-claude-skills`
 
 ## When No Skills Are Found
 
@@ -126,7 +137,7 @@ If no relevant skills exist:
 
 1. Acknowledge that no existing skill was found
 2. Offer to help with the task directly using your general capabilities
-3. Suggest the user could create their own skill with a pinned init command
+3. Suggest the user could create their own skill with `npx @agentic/skills@latest init`
 
 Example:
 
@@ -135,5 +146,5 @@ I searched for skills related to "xyz" but didn't find any matches.
 I can still help you with this task directly! Would you like me to proceed?
 
 If this is something you do often, you could create your own skill:
-npx skills@1.0.0 init my-xyz-skill
+npx @agentic/skills@latest init my-xyz-skill
 ```

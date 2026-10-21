@@ -1,0 +1,119 @@
+{
+  "collected_at": "2026-10-05T10:21:10.608484+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 37293095063,
+    "endpoint": ".../runs/37293095063/jobs"
+  },
+  "data": {
+    "total_count": 3,
+    "jobs": [
+      {
+        "id": 111707893908,
+        "run_id": 37293095063,
+        "workflow_name": "Jules on Issues (label / @jules)",
+        "head_branch": "feat/dashboard-lanes-v2",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37293095063",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaAk8wlA",
+        "head_sha": "d90146d3f78adf3a265bd4c8fcad7d5ea16deddc",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/111707893908",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37293095063/job/111707893908",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-05T09:54:22Z",
+        "started_at": "2026-10-05T09:54:30Z",
+        "completed_at": "2026-10-05T09:54:34Z",
+        "name": "skip-on-push",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-05T09:54:31Z",
+            "completed_at": "2026-10-05T09:54:31Z"
+          },
+          {
+            "name": "Always-green no-op (issue/comment work lives in other jobs)",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-05T09:54:31Z",
+            "completed_at": "2026-10-05T09:54:31Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-05T09:54:31Z",
+            "completed_at": "2026-10-05T09:54:31Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/111707893908",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000210726,
+        "runner_name": "GitHub Actions 1000210726",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 111707895231,
+        "run_id": 37293095063,
+        "workflow_name": "Jules on Issues (label / @jules)",
+        "head_branch": "feat/dashboard-lanes-v2",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37293095063",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaAk81vw",
+        "head_sha": "d90146d3f78adf3a265bd4c8fcad7d5ea16deddc",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/111707895231",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37293095063/job/111707895231",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-10-05T09:54:22Z",
+        "started_at": "2026-10-05T09:54:22Z",
+        "completed_at": "2026-10-05T09:54:22Z",
+        "name": "jules-on-mention",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/111707895231",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      },
+      {
+        "id": 111707895272,
+        "run_id": 37293095063,
+        "workflow_name": "Jules on Issues (label / @jules)",
+        "head_branch": "feat/dashboard-lanes-v2",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37293095063",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaAk816A",
+        "head_sha": "d90146d3f78adf3a265bd4c8fcad7d5ea16deddc",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/111707895272",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37293095063/job/111707895272",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-10-05T09:54:22Z",
+        "started_at": "2026-10-05T09:54:22Z",
+        "completed_at": "2026-10-05T09:54:22Z",
+        "name": "jules-on-label",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/111707895272",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+name: Domain Composition Matrix
+on:
+  push:
+    paths:
+      - 'docs/proposals/active/domain-composition-matrix/**'
+      - 'scripts/ci/validate_domain_composition.py'
+      - 'tests/test_domain_composition_matrix.py'
+  pull_request:
+    paths:
+      - 'docs/proposals/active/domain-composition-matrix/**'
+      - 'scripts/ci/validate_domain_composition.py'
+      - 'tests/test_domain_composition_matrix.py'
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Install pytest
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Validate domain composition seed
+        run: python scripts/ci/validate_domain_composition.py
+      - name: Run domain composition tests
+        run: python -m pytest -q tests/test_domain_composition_matrix.py

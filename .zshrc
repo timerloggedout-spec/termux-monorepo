@@ -78,3 +78,6 @@ alias map-build='cd ~/workspace/llm_map && python3 build_final_all_profile.py'
 alias oracle2='python3 ~/archwiz/oracle_v2.py'
 alias oracle2="python3 ~/archwiz/oracle_v2.py"
 alias block-verdicts='python3 ~/archwiz/block_verdicts.py'
+export PATH=/data/data/com.termux/files/home/.local/bin:$PATH
+export PATH="$HOME/.local/bin:$PATH"
+alias coderabbit="grun ~/.local/bin/coderabbit"

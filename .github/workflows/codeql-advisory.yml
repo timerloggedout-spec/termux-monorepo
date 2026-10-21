@@ -1,0 +1,71 @@
+name: Advisory CodeQL analysis
+
+on:
+  pull_request:
+    paths:
+      - "**/*.py"
+      - "**/*.js"
+      - "**/*.cjs"
+      - "**/*.mjs"
+      - "**/*.ts"
+      - "**/*.tsx"
+      - ".github/workflows/**"
+      - ".github/actions/**"
+  schedule:
+    - cron: "23 3 * * 1"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: codeql-advisory-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze:
+    name: CodeQL advisory (${{ matrix.language }})
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        language:
+          - actions
+          - javascript-typescript
+          - python
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@ff2f1c621b7f889edc0d3c761ac2e6a3f8cdb0dd # v4
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: none
+          queries: security-extended
+
+      - name: Analyze and publish CodeQL findings
+        uses: github/codeql-action/analyze@ff2f1c621b7f889edc0d3c761ac2e6a3f8cdb0dd # v4
+        with:
+          category: "/language:${{ matrix.language }}"
+
+      - name: Publish advisory boundary
+        if: always()
+        run: |
+          {
+            echo "## Advisory CodeQL analysis"
+            echo
+            echo "This B6 pilot analyzes supported interpreted-language and GitHub Actions sources. It does not modify repository content, issues, pull requests, or workflow configuration."
+            echo
+            echo "| Field | Value |"
+            echo "|---|---|"
+            echo "| CodeQL revision | \`ff2f1c621b7f889edc0d3c761ac2e6a3f8cdb0dd\` (v4) |"
+            echo "| languages | \`${{ matrix.language }}\` with build mode \`none\` |"
+            echo "| query suite | \`security-extended\` |"
+            echo "| write capability | isolated \`security-events: write\` for Code Scanning SARIF publication |"
+            echo "| merge policy | advisory; no required-check promotion in this batch |"
+          } >> "$GITHUB_STEP_SUMMARY"

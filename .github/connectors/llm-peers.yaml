@@ -1,0 +1,71 @@
+# LEADER 2026-08-20 (issue #272): Gemini PRIMARY for best roles.
+# Omni ↔ OpenRouter secondary free-tier peers. Soft budgets = real free-tier RPD (no soft room).
+
+peers:
+  omni:
+    enabled_env: OMNI_API_KEY  # or OMNIROUTE_API_KEY
+    base_url_env: OMNI_BASE_URL
+    default_base: https://cloud.omniroute.online/v1
+    models:
+      - id: auto/best-free
+        roles: [triage, review, invoke]
+        soft_limits:
+          triage: 400
+          review: 250
+          invoke: 400
+  openrouter:
+    enabled_env: OPENROUTER_API_KEY
+    default_base: https://openrouter.ai/api/v1
+    # free = :free suffix OR zero-price (stealth/ox-alpha). See is_free_openrouter_model.
+    require_free_suffix: false
+    models:
+      - id: stealth/ox-alpha
+        roles: [triage, review, invoke]
+        soft_limits: { triage: 80, review: 80, invoke: 80 }
+        notes: "1M-ctx free stealth model; free by pricing not :free suffix"
+      - id: google/gemma-4-31b-it:free
+        roles: [triage, review, invoke]
+        soft_limits: { triage: 80, review: 80, invoke: 80 }
+      - id: google/gemma-4-26b-a4b-it:free
+        roles: [triage, review, invoke]
+        soft_limits: { triage: 80, review: 80, invoke: 80 }
+      - id: meta-llama/llama-3.3-70b-instruct:free
+        roles: [triage, review, invoke]
+        soft_limits: { triage: 80, review: 80, invoke: 80 }
+      - id: google/gemma-3-12b-it:free
+        roles: [triage, review, invoke]
+        soft_limits: { triage: 80, review: 80, invoke: 80 }
+      - id: qwen/qwen3-coder:free
+        roles: [review, invoke]
+        soft_limits: { triage: 60, review: 60, invoke: 60 }
+      - id: deepseek/deepseek-r1:free
+        roles: [review]
+        soft_limits: { triage: 40, review: 40, invoke: 40 }
+      - id: cohere/north-mini-code:free
+        roles: [review, invoke]
+        soft_limits: { triage: 60, review: 60, invoke: 60 }
+  gemini:
+    enabled_env: GEMINI_API_KEY
+    residual_only: false  # LEADER: primary for best roles
+    models:
+      - id: gemini-3.1-flash-lite
+        soft_limits: { triage: 1400, review: 1400, invoke: 1400 }
+      - id: gemini-3.5-flash-lite
+        soft_limits: { triage: 1400, review: 1400, invoke: 1400 }
+      - id: gemini-2.5-flash-lite
+        soft_limits: { triage: 1000, review: 1000, invoke: 1000 }
+      - id: gemini-3.5-flash
+        soft_limits: { triage: 1400, review: 1400, invoke: 1400 }
+      - id: gemini-2.5-flash
+        soft_limits: { triage: 1400, review: 1400, invoke: 1400 }
+      - id: gemini-3-flash
+        soft_limits: { triage: 1400, review: 1400, invoke: 1400 }
+
+  felo:
+    enabled_env: FELO_AI_API  # also accept FELO_API_KEY
+    default_base: https://openapi.felo.ai/api/v1
+    notes: "OpenAI-compatible Felo platform; optional secondary free/tool path"
+    models:
+      - id: claude-sonnet-4-6
+        roles: [review, invoke]
+        soft_limits: { triage: 40, review: 40, invoke: 40 }

@@ -53,18 +53,19 @@ def gate(command: list[str]) -> int:
 
 def panel(title: str, rows: list[str], width: int | None = None) -> None:
     if width is None:
-        term_cols = shutil.get_terminal_size((80, 24)).columns
-        width = min(80, max(36, term_cols - 2))
+        cols = shutil.get_terminal_size((80, 24)).columns
+        width = max(30, min(88, cols - 2))
+    inner = max(1, width - 2)
     print(c(CYAN, "+" + "-" * width + "+"))
-    print(c(BOLD + CYAN, f"| {title:<{width - 2}}|"))
+    print(c(BOLD + CYAN, f"| {title[:inner]:<{inner}}|"))
     print(c(CYAN, "+" + "-" * width + "+"))
     for row in rows:
-        print(c(CYAN, f"| {row[: width - 2]:<{width - 2}}|"))
+        print(c(CYAN, f"| {row[:inner]:<{inner}}|"))
     print(c(CYAN, "+" + "-" * width + "+"))
 
 def banner() -> None:
     clear()
-    print(c(BOLD + GREEN, "⚡ ARCHWIZ // TERMUX HYPER-FORGE ⚡"))
+    print(c(BOLD + GREEN, "  ARCHWIZ // TERMUX HYPER-FORGE"))
     print(c(DIM, "  Tron-inspired display layer • dependency-free • operator-first"))
     print()
     panel("TERMUX EXECUTION SURFACE", [

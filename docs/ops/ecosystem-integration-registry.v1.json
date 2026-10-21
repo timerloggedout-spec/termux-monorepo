@@ -1,0 +1,335 @@
+{
+  "schema_version": "ecosystem-integration-registry.v1",
+  "repository": "timerloggedout-spec/termux-monorepo",
+  "observed_ref": "feat/system-one-experiment-lanes",
+  "observed_sha": "3051b1a10c0d7bf3a146e08cf241ee69694b72c3",
+  "note": "Observed SHA is the inspected baseline for this reconnaissance, not necessarily the branch's current head. Re-fetch before decisions.",
+  "status_vocabulary": [
+    "EXISTS",
+    "PARTIAL",
+    "PROPOSED",
+    "RESEARCH_CANDIDATE",
+    "BLOCKED",
+    "RETIRED"
+  ],
+  "license_review_vocabulary": [
+    "APPROVED",
+    "APPROVED_WITH_OBLIGATIONS",
+    "REVIEW_REQUIRED",
+    "REJECTED",
+    "NOT_APPLICABLE"
+  ],
+  "records": [
+    {
+      "id": "agent-evaluation-framework",
+      "name": "Agent Evaluation Framework",
+      "category": "evaluation-orchestration",
+      "status": "EXISTS",
+      "evidence_paths": [
+        "docs/architecture/AGENT-EVALUATION-FRAMEWORK.md"
+      ],
+      "purpose": "Common task, treatment, cohort, outcome and evidence lineage.",
+      "next_action": "Map existing evaluation IDs and artifact contracts into shared Evidence Envelope."
+    },
+    {
+      "id": "blind-agent-evaluation",
+      "name": "Blind Agent Evaluation",
+      "category": "evaluation-bias-control",
+      "status": "EXISTS",
+      "evidence_paths": [
+        "docs/architecture/AGENT-SELECTION-BLIND-EVALUATION.md",
+        ".agents/skills/blind-agent-evaluation/SKILL.md"
+      ],
+      "purpose": "Blinded/partially blinded candidate evaluation; pairwise judge calibration extension is present in inspected skill.",
+      "next_action": "Verify calibration metrics are emitted by actual runner; skill guidance alone is not runtime implementation."
+    },
+    {
+      "id": "swe-reference",
+      "name": "SWE reference evaluation",
+      "category": "code-agent-benchmark",
+      "status": "EXISTS",
+      "evidence_paths": [
+        ".github/workflows/swe-reference-evaluation.yml",
+        "docs/evaluations/swe-performance/README.md",
+        "scripts/ci/swe_evaluation_contract.py"
+      ],
+      "purpose": "Manual-only bounded mini-SWE reference run with redacted manifest.",
+      "next_action": "Diagnose recurring failure runs; preserve disabled-by-default secret and scope boundaries."
+    },
+    {
+      "id": "codeql",
+      "name": "CodeQL advisory",
+      "category": "static-security-analysis",
+      "status": "EXISTS",
+      "evidence_paths": [
+        ".github/workflows/codeql-advisory.yml",
+        "docs/proposals/active/actions-refinements/B6-CODEQL-ADVISORY.md"
+      ],
+      "purpose": "Advisory semantic analysis of Actions, JavaScript/TypeScript and Python.",
+      "next_action": "Check current-head run evidence; keep language/build scope explicit."
+    },
+    {
+      "id": "scorecard",
+      "name": "OpenSSF Scorecard advisory",
+      "category": "supply-chain-posture",
+      "status": "EXISTS",
+      "evidence_paths": [
+        ".github/workflows/scorecard-advisory.yml",
+        "docs/proposals/active/actions-refinements/B6-SCORECARD-ADVISORY.md"
+      ],
+      "purpose": "Advisory repository supply-chain signals with action/image pin controls.",
+      "next_action": "Normalize report into evidence index without treating score as security proof."
+    },
+    {
+      "id": "recon-intel",
+      "name": "RECON INTEL",
+      "category": "repository-reconciliation",
+      "status": "EXISTS",
+      "evidence_paths": [
+        "docs/ops/RECON_INTEL.md",
+        ".github/agentic/recon-intel-policy.json",
+        ".github/workflows/recon-intel-discovery.yml",
+        ".github/workflows/recon-intel-reconcile.yml"
+      ],
+      "purpose": "SHA-bound GitHub/GitLab observation, lease states and explicitly authorized reconciliation.",
+      "next_action": "Attach ecosystem registry to the existing recon/evidence process."
+    },
+    {
+      "id": "github-telemetry",
+      "name": "GitHub telemetry",
+      "category": "repository-observability",
+      "status": "EXISTS",
+      "evidence_paths": [
+        "docs/ops/GITHUB-OBSERVABILITY.md",
+        "ops/github-telemetry/README.md",
+        ".github/workflows/github-telemetry-snapshot.yml"
+      ],
+      "purpose": "Longitudinal workflow/repository metrics.",
+      "next_action": "Add current-head correlation without collecting sensitive prompt payloads."
+    },
+    {
+      "id": "continuous-evaluation",
+      "name": "Continuous evaluation workflows",
+      "category": "ci-evaluation",
+      "status": "EXISTS",
+      "evidence_paths": [
+        ".github/workflows/continuous-evaluation.yml",
+        ".github/workflows/pr-evidence-evaluation.yml",
+        ".github/workflows/repository-development-evaluation.yml"
+      ],
+      "purpose": "Existing repository and PR evaluation flows.",
+      "next_action": "Reconcile ownership to avoid duplicate scoring ledgers."
+    },
+    {
+      "id": "classifier-tournament",
+      "name": "Classifier and offline tournament tools",
+      "category": "model-evaluation",
+      "status": "PARTIAL",
+      "evidence_paths": [
+        "docs/ops/CLASSIFIER-REGISTRY-AND-EVALUATION.md",
+        "scripts/classifier_eval.py",
+        "scripts/eval_tournament.py",
+        "tests/test_eval_tournament.py"
+      ],
+      "purpose": "Versioned synthetic bank, deterministic baseline, normalized JSONL and offline pairwise scorer.",
+      "next_action": "Verify exact current-head tests; add calibrated judge runs and uncertainty intervals."
+    },
+    {
+      "id": "dspy",
+      "name": "DSPy",
+      "category": "program-optimization",
+      "status": "RESEARCH_CANDIDATE",
+      "upstream_urls": [
+        "https://github.com/stanfordnlp/dspy",
+        "https://dspy.ai/"
+      ],
+      "purpose": "Optimize structured LLM programs for routing/extraction pipelines.",
+      "next_action": "Prototype on non-sensitive train/validation cases and score on held-out data; inspect exact license and dependency terms.",
+      "license_review": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "langfuse",
+      "name": "Langfuse",
+      "category": "llm-observability",
+      "status": "RESEARCH_CANDIDATE",
+      "upstream_urls": [
+        "https://github.com/langfuse/langfuse",
+        "https://langfuse.com/docs"
+      ],
+      "purpose": "LLM tracing, prompt/dataset management and feedback.",
+      "next_action": "Compare through normalized OTLP/event export using synthetic traces; inspect self-host/cloud/version terms.",
+      "license_review": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "arize-phoenix",
+      "name": "Arize Phoenix",
+      "category": "llm-observability-evaluation",
+      "status": "RESEARCH_CANDIDATE",
+      "upstream_urls": [
+        "https://github.com/Arize-ai/phoenix",
+        "https://arize.com/docs/phoenix"
+      ],
+      "purpose": "Open-source tracing and LLM/agent evaluation workflows.",
+      "next_action": "Compare against Langfuse with identical traces and retention/redaction policy; inspect exact release terms.",
+      "license_review": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "swe-bench",
+      "name": "SWE-bench",
+      "category": "issue-to-patch-benchmark",
+      "status": "PARTIAL",
+      "upstream_urls": [
+        "https://github.com/swe-bench/SWE-bench",
+        "https://www.swebench.com/SWE-bench/"
+      ],
+      "purpose": "Standardized repository issue-to-patch benchmark family.",
+      "next_action": "Pin dataset/environment revision and review dataset terms before expanding beyond the existing bounded reference lane.",
+      "license_review": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "opentelemetry-genai",
+      "name": "OpenTelemetry GenAI semantic conventions",
+      "category": "observability-standard",
+      "status": "PROPOSED",
+      "upstream_urls": [
+        "https://opentelemetry.io/docs/specs/semconv/gen-ai/"
+      ],
+      "purpose": "Vendor-neutral trace and GenAI event contract.",
+      "next_action": "Define versioned internal Evidence Envelope and map OTEL fields; redact sensitive payloads.",
+      "license_review": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "inspect-ai",
+      "name": "Inspect AI",
+      "category": "evaluation-runner",
+      "status": "RESEARCH_CANDIDATE",
+      "upstream_urls": [
+        "https://github.com/UKGovernmentBEIS/inspect_ai",
+        "https://inspect.aisi.org.uk/"
+      ],
+      "purpose": "Task/solver/scorer-based evaluation runner.",
+      "next_action": "Compare adapter cost against AEF; verify exact release license, plugins and dataset terms.",
+      "license_review": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "lm-eval-harness",
+      "name": "lm-evaluation-harness",
+      "category": "model-benchmark",
+      "status": "RESEARCH_CANDIDATE",
+      "upstream_urls": [
+        "https://github.com/EleutherAI/lm-evaluation-harness"
+      ],
+      "purpose": "Reusable model/task evaluation harness.",
+      "next_action": "Adopt only task adapters not already served by AEF; inspect license and benchmark data terms.",
+      "license_review": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "helm",
+      "name": "HELM",
+      "category": "evaluation-methodology",
+      "status": "RESEARCH_CANDIDATE",
+      "upstream_urls": [
+        "https://crfm.stanford.edu/helm/"
+      ],
+      "purpose": "Multi-axis benchmark methodology and transparent reporting.",
+      "next_action": "Reuse measurement principles before adopting code/data.",
+      "license_review": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "promptfoo",
+      "name": "Promptfoo",
+      "category": "prompt-regression-redteam",
+      "status": "RESEARCH_CANDIDATE",
+      "upstream_urls": [
+        "https://github.com/promptfoo/promptfoo"
+      ],
+      "purpose": "Scenario tests, prompt regression, red-team tests and CI.",
+      "next_action": "Trial as an optional adapter against current fixture bank; inspect exact version terms.",
+      "license_review": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "syft-grype",
+      "name": "Syft + Grype",
+      "category": "sbom-vulnerability-analysis",
+      "status": "RESEARCH_CANDIDATE",
+      "upstream_urls": [
+        "https://github.com/anchore/syft",
+        "https://github.com/anchore/grype"
+      ],
+      "purpose": "SBOM generation and vulnerability matching.",
+      "next_action": "Produce advisory SBOM/vulnerability artifacts tied to lockfiles, commit SHA, image digest and database timestamp.",
+      "license_review": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "pytest-benchmark",
+      "name": "pytest-benchmark",
+      "category": "microbenchmarking",
+      "status": "RESEARCH_CANDIDATE",
+      "upstream_urls": [
+        "https://github.com/ionelmc/pytest-benchmark"
+      ],
+      "purpose": "Repeatable Python microbenchmarks.",
+      "next_action": "Benchmark deterministic internal hot paths; establish baseline distributions before regression gates.",
+      "license_review": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "mutation-testing",
+      "name": "Mutation testing ecosystem",
+      "category": "test-effectiveness",
+      "status": "RESEARCH_CANDIDATE",
+      "upstream_urls": [
+        "https://github.com/theofidry/awesome-mutation-testing"
+      ],
+      "purpose": "Measure whether tests detect injected behavioral faults.",
+      "next_action": "Start with a bounded changed-module cohort and record cost/runtime.",
+      "license_review": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "giskard",
+      "name": "Giskard",
+      "category": "llm-risk-evaluation",
+      "status": "RESEARCH_CANDIDATE",
+      "upstream_urls": [
+        "https://github.com/Giskard-AI/giskard-oss"
+      ],
+      "purpose": "LLM quality and risk testing.",
+      "next_action": "Compare against current evaluation cases and inspect maintenance/dependency terms.",
+      "license_review": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "guardrails",
+      "name": "Guardrails",
+      "category": "output-validation",
+      "status": "RESEARCH_CANDIDATE",
+      "upstream_urls": [
+        "https://github.com/guardrails-ai/guardrails"
+      ],
+      "purpose": "Output validation and structured-response constraints.",
+      "next_action": "Compare to current schema validation before adding runtime dependencies.",
+      "license_review": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "dvc-mlflow",
+      "name": "DVC + MLflow",
+      "category": "data-run-lineage",
+      "status": "RESEARCH_CANDIDATE",
+      "upstream_urls": [
+        "https://github.com/iterative/dvc",
+        "https://github.com/mlflow/mlflow"
+      ],
+      "purpose": "Dataset/model/run lineage.",
+      "next_action": "Defer until existing Git + JSONL + artifact lineage shows a measured scaling gap.",
+      "license_review": "REVIEW_REQUIRED"
+    }
+  ],
+  "policy": {
+    "no_license_inference_from_name": true,
+    "no_claim_of_absence_from_path_search_alone": true,
+    "source_code_dataset_model_and_hosted_terms_are_separate": true,
+    "commit_is_not_validation": true,
+    "workflow_success_is_scoped_evidence": true,
+    "third_party_adoption_requires_explicit_capability_gap": true,
+    "default_integration_mode": "optional_adapter_or_advisory",
+    "promotion_requires": "reproducible task improvement, current-SHA evidence, no critical safety regression, bounded cost/latency, owner and rollback plan"
+  }
+}

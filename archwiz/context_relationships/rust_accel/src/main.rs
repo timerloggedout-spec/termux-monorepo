@@ -139,7 +139,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         alpha.insert(level.clone(), estimate_alpha(&frequencies));
         for (_hash, (freq, bytes)) in values {
             let savings = ((freq.saturating_sub(1) as i64) * (*bytes as i64))
-                - ((freq as i64) * REF_BYTES as i64)
+                - ((*freq as i64) * REF_BYTES as i64)
                 - DEFAULT_NODE_OVERHEAD as i64;
             policies.push(Policy {
                 level: level.clone(),
@@ -148,9 +148,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 ref_bytes: REF_BYTES,
                 node_overhead: DEFAULT_NODE_OVERHEAD,
                 estimated_savings: savings,
-                pointer: *freq >= DEFAULT_MIN_FREQ
-                    && *bytes >= DEFAULT_MIN_BYTES
-                    && savings > 0,
+                pointer: *freq >= DEFAULT_MIN_FREQ && *bytes >= DEFAULT_MIN_BYTES && savings > 0,
             });
         }
     }

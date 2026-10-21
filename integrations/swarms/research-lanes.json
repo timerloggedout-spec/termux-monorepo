@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "policy": "source-registered planning only; no upstream runtime imports or execution",
+  "lanes": {
+    "parity": {
+      "purpose": "Compare the canonical Python kyegomez/swarms implementation; Rust remains a parallel primary/testing alternative.",
+      "sources": [
+        {"repository": "kyegomez/swarms", "revision": "8ec7948ce6e8ab28c4454d6c2c3187a735672067", "lock": "integrations/swarms/source-lock.json", "target_path": "refTemplates/smods/swarms", "sha256": {"pyproject.toml": "d7c472afae0823f39d5667245e6d624be21f77cc087bc2c2a3817b3bf2252f3a", "LICENSE": "8f046d1264d68cbac4b2f141e9015d62cd9c11e64f44c763f9430e1643c5f3fd", "swarms/structs/agent.py": "1667c35455adc1b4636b4a7085761ad381b3c17fe32ed74ec1fa6cc2f609bac0", "swarms/structs/sequential_workflow.py": "669c28157080971c201d2f51f9fdb622e570c2417f4e2f121a569198beb256dd", "swarms/telemetry/otel.py": "3a7e13eff126fabe29f5bcbd80ec4a7d0a534a0da71f9c729cc32d4e5fcd86c1"}},
+        {"repository": "The-Swarm-Corporation/swarms-rs", "revision": "ee1e74cb6e2c94775db88dddb311f2235e3fe9e3", "lock": "integrations/swarms/rust/Cargo.toml", "role": "parallel primary/testing alternative"}
+      ],
+      "evidence": ["Pinned-source comparison with paths and SHA-256", "Offline contract tests", "Explicit compatibility gaps; do not imply runtime parity without measurements"]
+    },
+    "research": {
+      "purpose": "Research source planning only; likely intended research repository is AdvancedResearch, not a definitive identification.",
+      "sources": [
+        {"repository": "The-Swarm-Corporation/AdvancedResearch", "revision": "a262cb9d9703681c5a5066f03eb9fb89ad4d9cae", "reference": "https://github.com/The-Swarm-Corporation/AdvancedResearch/tree/a262cb9d9703681c5a5066f03eb9fb89ad4d9cae"}
+      ],
+      "evidence": ["Review exact pinned paths and license/dependency metadata", "Document boundedness, concurrency/order, environment and secret behavior", "No runtime integration claim"]
+    },
+    "wallets": {
+      "purpose": "Assess wallet/payment integration safety and testnet readiness; planning only.",
+      "sources": [
+        {"repository": "The-Swarm-Corporation/ATP-Protocol", "revision": "fc4940f145f38529b9acf5c9e79b0435ab769b7f", "reference": "https://github.com/The-Swarm-Corporation/ATP-Protocol/tree/fc4940f145f38529b9acf5c9e79b0435ab769b7f"},
+        {"repository": "The-Swarm-Corporation/kyegomez-swarms-token-usecases", "revision": "25e66b156d70a6ff32735449876609a2ec91b3c0", "reference": "https://github.com/The-Swarm-Corporation/kyegomez-swarms-token-usecases/tree/25e66b156d70a6ff32735449876609a2ec91b3c0"},
+        {"reference": "https://docs.swarms.world/examples/integrations/x402-payment", "note": "Separate x402 reference; documented example uses Base Sepolia."}
+      ],
+      "evidence": ["Explicit RPC chain and genesis identity", "Test mint and allowlisted recipients and treasury", "Signer separation and custody review", "Spend caps, replay protection, escrow/refund invariants", "Testnet-only proof; no chain transactions authorized"]
+    }
+  },
+  "market_contract": "docs/proposals/active/model-selection-market/DESIGN.md#6-bets--wagers--bids-itself--others--job-msm-005",
+  "market_policy": "Reuse existing observational, free-only MSM-005 ledger; do not create a second ledger."
+}

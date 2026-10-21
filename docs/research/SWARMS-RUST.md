@@ -18,7 +18,7 @@ The existing [`llm_api_hub` client](../../llm_api_hub/clients/openai_compat.py) 
 
 For hub model names such as `wrapper/...`, prefer explicit `OpenAI::from_url(...).set_model(...)` over automatic provider inference. [`AnyModel`](https://github.com/The-Swarm-Corporation/swarms-rs/blob/ee1e74cb6e2c94775db88dddb311f2235e3fe9e3/swarms-rs/src/llm/provider/any.rs#L119-L149) has its own vendor/model routing; do not assume arbitrary hub route identifiers will resolve to the hub.
 
-The **THUB-013 continuation now verifies this path** with a built, revision-pinned Rust worker calling the actual local hub HTTP server and deterministic stub inference. Tests assert model and message forwarding, non-streaming requests, no tools, token settings, one/two-stage success, cross-pass handoff, authorization failure before inference, deadline cleanup, and valid CLI JSON. This is not live-provider or Android evidence. The [optional Rust adapter](../../integrations/swarms/rust/README.md) records the build and execution contract.
+The **THUB-015 continuation now verifies this path** with a built, revision-pinned Rust worker calling the actual local hub HTTP server and deterministic stub inference. Tests assert model and message forwarding, non-streaming requests, no tools, token settings, one/two-stage success, cross-pass handoff, authorization failure before inference, deadline cleanup, and valid CLI JSON. This is not live-provider or Android evidence. The [optional Rust adapter](../../integrations/swarms/rust/README.md) records the build and execution contract.
 
 ## Deployment choices
 

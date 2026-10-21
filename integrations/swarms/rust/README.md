@@ -1,6 +1,6 @@
 # Swarms Rust → model hub
 
-This optional worker carries the tested Rust-to-hub path into the monorepo without replacing its orchestrator or granting tools/device authority. It uses `The-Swarm-Corporation/swarms-rs` at `ee1e74cb6e2c94775db88dddb311f2235e3fe9e3` through a revision-pinned Git dependency and checked-in `Cargo.lock`. The Python Swarms SDK is not required. Implements **THUB-013**.
+This optional worker carries the tested Rust-to-hub path into the monorepo without replacing its orchestrator or granting tools/device authority. It uses `The-Swarm-Corporation/swarms-rs` at `ee1e74cb6e2c94775db88dddb311f2235e3fe9e3` through a revision-pinned Git dependency and checked-in `Cargo.lock`. The Python Swarms SDK is not required. Implements **THUB-015**.
 
 ## Start offline
 

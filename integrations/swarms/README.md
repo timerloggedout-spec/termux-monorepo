@@ -1,8 +1,8 @@
 # Optional Swarms sequential adapter
 
-This integration adds an explicit sequential analysis/review workflow without replacing the monorepo's orchestrator, provider hub, or device policy. Implements **THUB-009**, **THUB-010**, and **THUB-011**, with corrected research provenance under **THUB-012**. The [research](../../docs/research/SWARMS-ECOSYSTEM.md) distinguishes Kye Gomez's 455-repository public listing from the historical 676-repository `timerloggedout-spec` inventory; neither is an all-code audit. The [architecture synthesis](../../docs/architecture/SWARMS-SYNTHESIS.md) explains local boundaries. Rust and remote services are valid alternatives; see the [pinned Swarms Rust assessment](../../docs/research/SWARMS-RUST.md).
+This integration adds an explicit sequential analysis/review workflow without replacing the monorepo's orchestrator, provider hub, or device policy. Implements **THUB-011**, **THUB-012**, and **THUB-013**, with corrected research provenance under **THUB-014**. The [research](../../docs/research/SWARMS-ECOSYSTEM.md) distinguishes Kye Gomez's 455-repository public listing from the historical 676-repository `timerloggedout-spec` inventory; neither is an all-code audit. The [architecture synthesis](../../docs/architecture/SWARMS-SYNTHESIS.md) explains local boundaries. Rust and remote services are valid alternatives; see the [pinned Swarms Rust assessment](../../docs/research/SWARMS-RUST.md).
 
-**Rust path implemented under THUB-013:** the [optional pinned Rust worker](rust/README.md) has its own offline-first CLI, `python3 scripts/swarms/run-rust.py --task 'Analyze supplied evidence'`. It does not require the Python Swarms SDK. Its single-agent, handoff, auth-error, deadline, and cleanup behavior is tested against the actual local hub with stub inference. The Python-specific instructions below remain unchanged; neither backend establishes native Android support or a deployed remote task service.
+**Rust path implemented under THUB-015:** the [optional pinned Rust worker](rust/README.md) has its own offline-first CLI, `python3 scripts/swarms/run-rust.py --task 'Analyze supplied evidence'`. It does not require the Python Swarms SDK. Its single-agent, handoff, auth-error, deadline, and cleanup behavior is tested against the actual local hub with stub inference. The Python-specific instructions below remain unchanged; neither backend establishes native Android support or a deployed remote task service.
 
 ## Try it offline
 
@@ -61,3 +61,7 @@ python3 scripts/ci/termux_smoke.py
 ```
 
 The optional SDK test skips when Swarms is not installed. Native Termux installation, live provider calls, production promotion, concurrency gains, and task-quality improvements remain unverified. See [`VALIDATION.md`](VALIDATION.md) for the recorded local results.
+
+## Remote-first and research lanes
+
+The Python pin is the Kye Gomez behavioral parity origin; Rust is a separate primary/parallel evaluation backend, not an assumption of API equivalence. [Remote validation and Workspace operation](REMOTE.md) keep Termux as the control surface. The [pinned research/wallet registry](research-lanes.json) and `python3 scripts/swarms/research-plan.py --lane research --task "Compare supplied evidence"` produce offline plans only: AdvancedResearch is not yet a live adapted research runtime. [Research and wallet findings](../../docs/research/SWARMS-RESEARCH-WALLETS.md) map to existing MSM-005 bids/wagers/cards rather than a second ledger.

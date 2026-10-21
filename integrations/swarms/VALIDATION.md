@@ -39,7 +39,7 @@ Native Termux installation and Android/Bionic dependencies remain unverified. Th
 
 This is a locally tested, reviewable integration slice. Because the checkout is stale and has unrelated user edits, it must be reconciled against the current target branch and pass remote checks before production promotion.
 
-## THUB-012: corrected Kye Gomez scope and Rust assessment
+## THUB-014: corrected Kye Gomez scope and Rust assessment
 
 The corrected inventory is [`swarms-kyegomez-repositories.json`](../../docs/research/swarms-kyegomez-repositories.json): owner `kyegomez`, 455 public repositories, five HTTP-200 pages, no errors or duplicates, and pagination exhausted. Its 19 Swarms/multi-agent and 197 model-research leads are name/description matches, not source-audit coverage. The original 676-repository JSON remains unchanged as historical monorepo-owner evidence.
 
@@ -57,7 +57,7 @@ The [selected Python code review](../../docs/research/SWARMS-CODE-REVIEW.md) rec
 
 Both local gates passed with the correction staged: `python3 scripts/ci/repo_gate.py` and `python3 scripts/ci/termux_smoke.py`. Local research links resolve, and a byte-for-byte comparison confirms the original owner inventory is unchanged. No unrelated provider files, session state, remote branches, or deployment settings were modified by this correction.
 
-## THUB-013: built Rust worker and actual-hub HTTP integration
+## THUB-015: built Rust worker and actual-hub HTTP integration
 
 The source-only Rust assessment above is historical. This continuation carries the preserved `/tmp/swarms-rust-smoke-20261021` proof into a checked-in [Rust worker and CLI wrapper](rust/README.md), pinned to `ee1e74cb6e2c94775db88dddb311f2235e3fe9e3` with a complete Cargo dependency lock. Build/test host: Linux x86_64/glibc, Rust/Cargo 1.97.1. The worker declares Rust 1.88 as its minimum, but that exact minimum toolchain was not tested. Both `cargo test --locked` and `cargo build --locked` passed; four Rust unit tests passed. Build artifacts remain outside the repository.
 
@@ -76,4 +76,12 @@ The local worker test executable path above is an execution aid, not a runtime r
 
 No real inference, remote service deployment, Android/Termux execution, full upstream test suite, task-quality comparison, or performance benchmark was performed. A timeout stops the local worker but does not promise cancellation of already-accepted remote inference. State isolation is not an OS sandbox or secure-erasure guarantee; diagnostic capture remains memory-buffered. The branch remains a local integration slice pending reconciliation with the current remote target; unrelated provider edits and `.serena/` remain untouched.
 
-With the THUB-013 files staged, both required local gates passed: `python3 scripts/ci/repo_gate.py` and `python3 scripts/ci/termux_smoke.py`. The smoke explicitly reports `termux=False`; it is not an Android hardware result. `git diff --cached --check` passed. The separate genuine Python SDK regression test also passed again using `/tmp/swarms-validation-20261021/bin/python -m unittest discover -s tests -p 'test_swarms_sdk.py' -v`. This optional test is the one skipped in the 82-test base-Python run, not a Rust test failure.
+With the THUB-015 files staged, both required local gates passed: `python3 scripts/ci/repo_gate.py` and `python3 scripts/ci/termux_smoke.py`. The smoke explicitly reports `termux=False`; it is not an Android hardware result. `git diff --cached --check` passed. The separate genuine Python SDK regression test also passed again using `/tmp/swarms-validation-20261021/bin/python -m unittest discover -s tests -p 'test_swarms_sdk.py' -v`. This optional test is the one skipped in the 82-test base-Python run, not a Rust test failure.
+
+## THUB-016: current-master PR reconstruction and remote validation
+
+Replayed only the three Swarms commits onto `origin/master` `5e9e5d0fa8c83f1c250cf7675e900348b85f81e4` in `/workspace/termux-swarms-pr`. The original checkout and unrelated edits were not reset or staged. Kept both the Wingman and Swarms submodule entries; retained upstream Flywheel THUB-009/010 IDs and reassigned Swarms work THUB-011..015.
+
+Fresh locked Cargo build and four Rust unit tests passed. The focused Python suite passed 74 tests with two optional/environment skips when the rebuilt worker enabled six actual loopback hub HTTP tests with stub inference; a new registry identity/lock-consistency test was subsequently added and included in the final run. The genuine pinned Python SDK regression separately passed in its existing optional environment with stub inference and networking forbidden. A new clean venv containing only the declared pinned pytest/PyYAML/uvicorn dependencies passed test collection and the base suite (68 passed, 8 skips before that additional registry test). Optional SDK and Rust HTTP tests are intentionally not represented as executed by the base remote Python job.
+
+Both required local gates passed on the staged current-master extract; smoke reports Linux and `termux=False`. Independent read-only review identified an ATP repository-name mismatch in the new registry, corrected to `The-Swarm-Corporation/ATP-Protocol`; no other concrete blockers were found in its focused review. Remote CI is added for contract tests and fixed dry-runs, with a separate locked Cargo unit-test job, not provider inference, AdvancedResearch runtime execution, wallet transactions, recurring automation, deployment or merge. PR/check status must be read from GitHub rather than inferred from these local results.

@@ -2,6 +2,12 @@
 
 Swarms supplies an optional multi-agent coordination layer. The monorepo keeps ownership of provider routing, device permissions, validation, and Git operations. The first applied slice is a sequential analysis-and-review workflow, not a replacement for the existing development environment.
 
+## Parity authority and remote-first operation
+
+Kye Gomez’s pinned Python `kyegomez/swarms` is the intended behavioral parity origin. `The-Swarm-Corporation/swarms-rs` is the same Swarms ecosystem, not the same implementation or a blanket parity claim; its pinned worker may be a primary or parallel test backend as evidence develops. Custom modules and other upstreams remain valid candidates. Re-run the same task fixtures before claiming parity or promoting a replacement.
+
+Termux is the control surface, not a requirement to compile every SDK on Android. Use remote Linux WorkSpaces/Codespaces or Actions for the orchestration and validation plane; see [remote execution](../../integrations/swarms/REMOTE.md). This PR adds remote validation, not a deployed research service. Research/wallet lanes reuse the existing market authority; see [research and wallets](../research/SWARMS-RESEARCH-WALLETS.md).
+
 ## Keep the existing boundaries
 
 The root [`src/orchestrator.py`](../../src/orchestrator.py) implements a code-change/test/retry loop. It already sends model requests through [`llm_api_hub/clients/openai_compat.py`](../../llm_api_hub/clients/openai_compat.py). The new [`src/swarms_adapter.py`](../../src/swarms_adapter.py) is a separate entry point so importing or running the existing orchestrator does not suddenly import Swarms, install packages, or spawn agents.

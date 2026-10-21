@@ -1,4 +1,4 @@
-"""Optional, bounded Swarms SequentialWorkflow adapter (THUB-010)."""
+"""Optional, bounded Swarms SequentialWorkflow adapter (THUB-012)."""
 from __future__ import annotations
 
 import os

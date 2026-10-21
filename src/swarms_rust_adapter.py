@@ -1,4 +1,4 @@
-"""Optional pinned swarms-rs worker boundary (THUB-013).
+"""Optional pinned swarms-rs worker boundary (THUB-015).
 
 No cargo invocation, SDK import, or model request occurs during a dry-run.
 This is process/state isolation for a trusted SDK, not a security sandbox.

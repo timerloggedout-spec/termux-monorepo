@@ -1,5 +1,7 @@
 # Provider quota upgrade: shipped capability versus remaining gaps
 
+Implementation and release receipts: [PR #1448](https://github.com/timerloggedout-spec/termux-monorepo/pull/1448). Its current-head checks, merge state and exact-source publication verification are authoritative; this checked-in snapshot is not a self-certifying release approval.
+
 ## What this upgrade supplies
 
 All **20 canonical provider families** now have an explicit manager-evidence record in [`ops/quota/provider-managers.json`](../../ops/quota/provider-managers.json). This is complete inventory coverage, **not 20 live quota managers**. The existing service registry still contains 26 resources and only two model-provider mappings (Gemini and OpenRouter); the other 18 service-mapping/account-manager gaps are not silently declared closed.

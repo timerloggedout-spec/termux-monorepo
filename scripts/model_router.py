@@ -412,6 +412,49 @@ def load_quota_multipliers():
         return {}
 
 
+
+def load_openrouter_quota_admission(now=None):
+    """Compare official UTC-day quota with our conservative local reservations."""
+    path = os.path.join(COUNTER_DIR, "provider-quota-state.json")
+    try:
+        if os.path.islink(path):
+            return {"known": False, "reason": "quota snapshot is a symlink"}
+        with open(path, "r", encoding="utf-8") as handle:
+            state = json.load(handle)
+        if state.get("schema") != "3l0.provider-quota-snapshot.v1" or state.get("status") != "live":
+            return {"known": False, "reason": "official quota snapshot is not live"}
+        from datetime import datetime, timezone
+        observed = datetime.fromisoformat(state["observed_at"].replace("Z", "+00:00"))
+        current = datetime.now(timezone.utc) if now is None else now
+        age = (current - observed.astimezone(timezone.utc)).total_seconds()
+        max_age = int(os.environ.get("OPENROUTER_QUOTA_MAX_AGE_SEC", "900"))
+        if age < -60 or age > max_age:
+            return {"known": False, "reason": f"official quota snapshot stale ({age:.0f}s)"}
+        used, limit = state.get("used"), state.get("limit")
+        if not isinstance(used, (int, float)) or not isinstance(limit, (int, float)) or limit <= 0:
+            return {"known": False, "reason": "official quota used/limit unavailable"}
+        # The cache is scoped to the same UTC date as OpenRouter's daily reset.
+        # Local selections are reservations, not proof of completed provider calls;
+        # using max() avoids double-counting requests already reflected by OpenRouter.
+        models = {model for peers in ROLE_PEERS.values()
+                  for provider, model in peers if provider == "openrouter"}
+        local_reserved = sum(get_usage("openrouter", model) for model in models)
+        effective_used = max(float(used), float(local_reserved))
+        safety = float(os.environ.get("OPENROUTER_QUOTA_SAFETY", "0.90"))
+        safety = max(0.1, min(1.0, safety))
+        safe_limit = float(limit) * safety
+        return {
+            "known": True, "used": float(used), "limit": float(limit),
+            "official_remaining": state.get("remaining", max(0.0, float(limit) - float(used))),
+            "local_reserved": local_reserved, "effective_used": effective_used,
+            "effective_remaining": max(0.0, float(limit) - effective_used),
+            "safe_limit": safe_limit, "admit": effective_used < safe_limit,
+            "observed_at": state.get("observed_at"),
+        }
+    except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as error:
+        return {"known": False, "reason": f"official quota snapshot unavailable ({type(error).__name__})"}
+
+
 def is_in_cooldown(provider, model, now=None):
     """Fail closed for a provider/model with a still-active rate-limit cooldown."""
     path = os.path.join(COUNTER_DIR, "cooldowns.json")
@@ -477,11 +520,22 @@ def main():
     require_live_openrouter_quota = (
         os.environ.get("REQUIRE_LIVE_OPENROUTER_QUOTA", "false").lower() == "true"
     )
-    if has_openrouter and "openrouter" not in quota_multipliers:
-        sys.stderr.write(
-            "OpenRouter preflight: official live quota unavailable; "
-            "local/model counters cannot establish account-wide remaining quota.\\n"
-        )
+    openrouter_quota = load_openrouter_quota_admission()
+    if has_openrouter:
+        if openrouter_quota.get("known"):
+            sys.stderr.write(
+                "OpenRouter quota reconciliation: "
+                f"official_used={openrouter_quota['used']:.0f}/"
+                f"{openrouter_quota['limit']:.0f}; "
+                f"local_reserved={openrouter_quota['local_reserved']}; "
+                f"effective_used={openrouter_quota['effective_used']:.0f}; "
+                f"effective_remaining={openrouter_quota['effective_remaining']:.0f}; "
+                f"safe_limit={openrouter_quota['safe_limit']:.0f}\\n"
+            )
+        else:
+            sys.stderr.write(
+                "OpenRouter preflight: " + openrouter_quota.get("reason", "quota unknown") + "\\n"
+            )
 
     for provider, models in pools:
         if not provider_flags.get(provider, False):
@@ -496,9 +550,12 @@ def main():
                     continue
                 # Preflight gate: never dispatch OpenRouter free-tier traffic on a
                 # stale/missing official account quota snapshot when policy requires it.
-                if require_live_openrouter_quota and "openrouter" not in quota_multipliers:
+                if require_live_openrouter_quota and (
+                    not openrouter_quota.get("known") or not openrouter_quota.get("admit")
+                ):
+                    reason = openrouter_quota.get("reason", "daily safety budget reached")
                     sys.stderr.write(
-                        f"Candidate denied: official OpenRouter quota unknown ({model})\\n"
+                        f"Candidate denied by OpenRouter quota preflight ({model}): {reason}\\n"
                     )
                     continue
             seen.add(key)

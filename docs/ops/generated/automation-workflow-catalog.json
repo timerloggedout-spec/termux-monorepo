@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "d7b46cf5dc2ca6228136732b5413100e9bea232cbac10fd7eb9258fd9e2f5ab0",
-  "workflow_count": 147,
+  "source_fingerprint": "27db7a1da2a13d9fa4d05979ed8c526a1d1fbe16ae99a7b71e2803248de259e1",
+  "workflow_count": 148,
   "workflows": [
     {
       "action_pins": [
@@ -1415,6 +1415,22 @@
       "triggers": [
         "pull_request",
         "pull_request_review",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "grafana-authentication"
+      ],
+      "name": "Grafana MCP Smoke",
+      "path": ".github/workflows/grafana-mcp-smoke.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_call",
         "workflow_dispatch"
       ]
     },

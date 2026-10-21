@@ -30,6 +30,8 @@
 
 | MSM-024 | Harden existing router PR #1441 quota snapshot validation and private preflight boundaries | **in_review** | MSM-023 | Continue #1441, not a duplicate lane. Reject incomplete/inconsistent or cross-day request counters; keep account quota out of logs and shared caches. Ignore malformed cooldown-cache mappings and unrepresentable timestamps without crashing routing; valid active cooldowns remain enforced. 246 focused offline tests, nine market tests and both local gates pass; private services remain opt-in and disconnected from admission. All nine original review threads are resolved, but the formal change-request disposition still blocks promotion. |
 
+| MSM-025 | Implement project/model-scoped Gemini tier-aware quota evidence and fail-closed evaluation | **in_review** | MSM-024 | Continue #1441 against current master. Separate inherited billing-account tier, project quota, exact model, request/input-token dimensions, freshness, Pacific RPD reset and entitlement. Offline parser/service/evaluator only; no live collector or admission activation. Exact credential/project binding and current project/model evidence remain blockers; documentation and account visibility are not quota observations. 354 focused tests (49 Gemini parser/service cases), nine market unit tests and both local gates pass; independent offline implementation review found no remaining blockers. |
+
 ## Runtime package
 
 ```text

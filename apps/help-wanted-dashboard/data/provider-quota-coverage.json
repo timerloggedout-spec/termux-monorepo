@@ -1,7 +1,7 @@
 {
   "coverage_counts": {
     "actual_quota_service_mappings": 3,
-    "implemented_passive_adapters": 6,
+    "implemented_passive_adapters": 7,
     "missing_actual_quota_service_mappings": 24,
     "missing_static_adapter_mappings": 0,
     "opt_in_private_service_managers": 2,
@@ -217,9 +217,9 @@
       "freshness_owner": "ChronoMancer",
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
-      "manager_status": "public_documentation_only",
+      "manager_status": "implemented_passive_adapter",
       "mapping_state": "documented_registry_mapping",
-      "observation_method": "official_documentation_only; no passive parser",
+      "observation_method": "implemented_passive_parser; live account validation not established",
       "observed_reset": "unknown",
       "official_evidence": [
         "https://ai.google.dev/gemini-api/docs/rate-limits"
@@ -235,7 +235,7 @@
       "registry_reader_service_ids": [],
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
-      "scope": "project and model; UI limits are not response counters",
+      "scope": "project and exact model quota; tier inherited from billing account; offline evidence only, binding unverified",
       "service_ids": [
         "gemini.api_free"
       ],

@@ -11,6 +11,7 @@ on:
       - 'scripts/provider_quota_coverage.py'
       - 'scripts/provider_quota_service.py'
       - 'scripts/provider_quota_transport.py'
+      - 'scripts/provider_quota_gemini.py'
       - 'ops/quota/**'
       - 'tests/test_http_llm_invoke_action.py'
       - 'tests/test_model_router.py'
@@ -24,6 +25,8 @@ on:
       - 'tests/test_provider_quota_transport.py'
       - 'tests/test_provider_quota_openrouter.py'
       - 'tests/test_provider_quota_private_workflow.py'
+      - 'tests/test_provider_quota_gemini.py'
+      - 'tests/test_provider_quota_gemini_service.py'
   workflow_dispatch:
 permissions:
   contents: read
@@ -62,4 +65,6 @@ jobs:
             tests/test_provider_quota_service.py \
             tests/test_provider_quota_transport.py \
             tests/test_provider_quota_openrouter.py \
+            tests/test_provider_quota_gemini.py \
+            tests/test_provider_quota_gemini_service.py \
             tests/test_provider_quota_private_workflow.py

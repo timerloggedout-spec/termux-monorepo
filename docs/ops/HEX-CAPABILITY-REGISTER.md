@@ -1,6 +1,6 @@
 # Hex Capability & Access Register
 
-**Status:** verified connector-surface record  
+**Status:** verified connector-surface record
 **Purpose:** prevent future collaborators from confusing a connected tool definition with successful workspace access.
 
 ## What was actually available

@@ -1,0 +1,124 @@
+{
+  "schema_version": "1.0",
+  "profile_id": "dicklesworthstone.agentic-coding-flywheel",
+  "status": "metadata_only",
+  "checked_at": "2026-10-21",
+  "upstream": {
+    "repository": "https://github.com/Dicklesworthstone/agentic_coding_flywheel_setup",
+    "methodology": "https://github.com/Dicklesworthstone/agentic_coding_flywheel_setup/blob/main/docs/methodology/THE_FLYWHEEL_CORE_LOOP.md",
+    "stated_platforms": [
+      "Ubuntu 22.04+",
+      "Arch/Omarchy"
+    ],
+    "mutable_ref_allowed_for_production": false
+  },
+  "principles": {
+    "canonical_task_ledger": "reuse_existing_project_surface_until_adapter_is_proven",
+    "duplicate_runtime_prohibited": true,
+    "full_installer_execution_allowed": false,
+    "termux_compatibility": "must_be_tested_separately",
+    "custom_fork_required_for_project_patches": true,
+    "live_gitlink_requires_reviewed_immutable_pin": true
+  },
+  "layers": [
+    {
+      "id": "plan",
+      "priority": 0,
+      "capability": "written_plan_and_acceptance_criteria",
+      "upstream_tools": [],
+      "project_action": "reuse_proposals_and_ITEMS",
+      "runtime_status": "integrated_by_convention"
+    },
+    {
+      "id": "task_graph",
+      "priority": 1,
+      "capability": "dependency_aware_tasks",
+      "upstream_tools": [
+        "beads_rust"
+      ],
+      "source": "https://github.com/Dicklesworthstone/beads_rust",
+      "project_action": "overlap_audit_before_adapter",
+      "runtime_status": "research"
+    },
+    {
+      "id": "triage",
+      "priority": 1,
+      "capability": "graph_aware_task_ranking",
+      "upstream_tools": [
+        "beads_viewer"
+      ],
+      "source": "https://github.com/Dicklesworthstone/beads_viewer",
+      "project_action": "read_only_benchmark",
+      "runtime_status": "research"
+    },
+    {
+      "id": "coordination",
+      "priority": 1,
+      "capability": "agent_messaging_and_file_leases",
+      "upstream_tools": [
+        "mcp_agent_mail"
+      ],
+      "source": "https://github.com/Dicklesworthstone/mcp_agent_mail",
+      "project_action": "compare_existing_actions_and_mail_contracts",
+      "runtime_status": "overlap_audit_required"
+    },
+    {
+      "id": "safety",
+      "priority": 2,
+      "capability": "destructive_command_guard_and_two_person_rule",
+      "upstream_tools": [
+        "destructive_command_guard",
+        "SLB"
+      ],
+      "sources": [
+        "https://github.com/Dicklesworthstone/destructive_command_guard"
+      ],
+      "project_action": "map_to_existing_permission_and_guard_controls",
+      "runtime_status": "research"
+    },
+    {
+      "id": "orchestration",
+      "priority": 2,
+      "capability": "multi_agent_terminal_orchestration",
+      "upstream_tools": [
+        "NTM"
+      ],
+      "project_action": "optional_interactive_surface_not_actions_replacement",
+      "runtime_status": "research"
+    },
+    {
+      "id": "memory_search",
+      "priority": 2,
+      "capability": "session_search_and_memory",
+      "upstream_tools": [
+        "CASS",
+        "CASS Memory"
+      ],
+      "project_action": "privacy_and_retrieval_benchmark_before_adoption",
+      "runtime_status": "research"
+    },
+    {
+      "id": "bootstrap",
+      "priority": 3,
+      "capability": "environment_bootstrap",
+      "upstream_tools": [
+        "ACFS"
+      ],
+      "project_action": "metadata_only_until_container_reproducibility_and_security_review",
+      "runtime_status": "not_deployed"
+    }
+  ],
+  "promotion_gates": [
+    "capability_overlap_audit",
+    "disposable_linux_container_reproduction",
+    "security_and_license_review",
+    "Termux_Android_compatibility_test_when_relevant",
+    "custom_timerloggedout_spec_fork_exists",
+    "upstream_commit_and_fork_delta_recorded",
+    "shallow_gitlink_pinned_to_reviewed_commit",
+    "refTemplates_inventory_strict",
+    "repo_gate",
+    "termux_smoke",
+    "task_outcome_verified"
+  ]
+}

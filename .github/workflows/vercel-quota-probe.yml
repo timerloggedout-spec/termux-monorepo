@@ -1,6 +1,7 @@
 name: vercel-quota-probe
-# Quota probe: Vercel 24h deploy window (legacy QUOTA line used by the
-# slot-timed deploy task) plus the full quota registry poll
+# Quota probe: full quota registry poll with a status-only public projection.
+# Private CLI consumers retain their existing default output; this public job
+# must not expose account readings, routing weights or legacy numeric log lines.
 # (ops/quota/registry.json -> scripts/quota_poll.py). Run on demand only by the
 # scheduled one-shots; no cron, so it is not a second monitor.
 # Lean by design: sparse checkout of 4 paths, no installs, artifacts not commits.
@@ -31,13 +32,13 @@ jobs:
           NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         run: |
-          python3 scripts/quota_poll.py --registry ops/quota/registry.json --out quota-out
+          python3 scripts/quota_poll.py --public --registry ops/quota/registry.json --out quota-out
           {
-            echo "### Quota readings"
-            python3 -c "import json;[print('- '+r['resource_id']+': '+str(r['used'])+' / '+str(r['limit'])+' '+r['unit']+' (x'+str(r['routing_multiplier'])+')') for r in map(json.loads,open('quota-out/quota-records.jsonl')) if r['used'] is not None]"
+            echo "### Quota observation status (private values withheld)"
+            python3 -c "import json;[print('- '+r['resource_id']+': '+r['status']) for r in json.load(open('quota-out/quota-public-status.json'))['readings']]"
           } >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         with:
           name: quota-readings
-          path: quota-out/
+          path: quota-out/quota-public-status.json
           retention-days: 7

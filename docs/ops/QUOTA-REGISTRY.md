@@ -4,8 +4,8 @@ Plan every free allowance so it gets fully used without going over. Everything h
 
 - **Registry:** `ops/quota/registry.json` has one entry per service the repo uses: GitHub Actions, cache, API and Copilot; Vercel; Render; Neon; OpenRouter; Gemini; the g4f, CLIProxyAPI and Chapito vendors; Grafana; the Platform201 data candidates; and the partner credits. Each entry carries the documented limit and its **source URL**, the window, the reset and its zone, the live endpoint, and a `planned_use` safety factor. `limit: null` means no fetched page states a number, and the poller never invents one (FREE-QUOTA-WINDOWS.md).
 - **Poller:** `scripts/quota_poll.py`, stdlib only. It reads a live source only when that source's credential env var is set, and never prints a secret.
-- **Runner:** the existing `vercel-quota-probe.yml` (workflow_dispatch only) does a sparse checkout of 3 paths and uploads the artifact `quota-readings` with 7-day retention. Nothing is committed, so polling never triggers Vercel or Render builds. The scheduled one-shots dispatch it; there is no cron and no second monitor.
-- **Outputs:**
+- **Runner:** the existing `vercel-quota-probe.yml` (workflow_dispatch only) uses `--public`: it suppresses private reader logs and uploads only `quota-public-status.json` as `quota-readings` with 7-day retention. No private counts, account balances, resets, routing weights or hashes of private records enter its summary/artifact. Nothing is committed, so polling never triggers Vercel or Render builds. There is no new cron or second monitor.
+- **Private CLI outputs (default mode; not for public artifact upload):**
   - `quota-records.jsonl`: Foresight Evidence Spine v2 records (`resource_id`, `item_id`, `lane_id`, `canonical_source == source.url`, horizon H0 for a live reading and H1 for a documented one, `evidence_status`, `evidence_hash`).
   - `hindsight-retain.jsonl`: `retain(bank_id="deepagent::termux-monorepo", content)` payloads.
   - `routing-weights.json` (`3l0.quota-weights.v1`): a per-provider multiplier.
@@ -29,7 +29,15 @@ Public quota snapshots are historical attributed reports, **not** an automatical
 ```bash
 python3 scripts/provider_quota_coverage.py --output apps/help-wanted-dashboard/data/provider-quota-coverage.json
 python3 scripts/provider_quota_coverage.py --check apps/help-wanted-dashboard/data/provider-quota-coverage.json
-python3 -m pytest -q tests/test_provider_quota_coverage.py tests/test_quota_dashboard.py tests/test_quota_poll.py
+python3 -m pytest -q tests/test_provider_quota_managers.py tests/test_provider_quota_coverage.py tests/test_quota_dashboard.py tests/test_quota_poll.py
 ```
 
 The [participation and role audit](PROVIDER-QUOTA-PARTICIPATION-AUDIT.md) curates existing issues/proposals, attributable contributions, context delivery and connector boundaries. A provider registration or green catalog job is not an agent contribution or independent Delphi ballot.
+
+## Passive provider managers (MSM-019)
+
+The [provider manager manifest](../../ops/quota/provider-managers.json) supplements, rather than replaces, the service registry with a canonical-family inventory of official quota evidence and explicit parser/documentation/unsupported states. The [manager contract and provider-by-provider gaps](PROVIDER-QUOTA-MANAGERS.md) distinguish a passive offline normalizer from an authenticated account reader. Neither a static mapping nor a parser proves that live account evidence exists. Normalized observations are private and are not a public dashboard feed or an admission input.
+
+The [collaborator capability map](PROVIDER-COLLABORATOR-CAPABILITY-MAP.md) separately records declared roles/monikers, implemented workflow and connector scopes, context handoffs, actual sampled GitHub participation and missing model-level attribution. The [upgrade status](PROVIDER-QUOTA-UPGRADE-STATUS.md) tracks what is implemented, deployed and still open, with publication receipts. Existing quota/router integration PR #1441 and consolidation PR #1278 remain separate review lanes; this overlay does not activate or merge them.
+
+Public mode requires a new or empty output directory so stale private artifacts cannot accidentally ride along. It does not emit the legacy numeric `QUOTA count24h=` log line: any downstream scheduling consumer that reads public workflow logs must migrate to a separately authorized private execution path, not request private values in a public summary. Default private CLI behavior and existing routing/admission logic are unchanged. Historical artifacts are not rewritten or deleted by this upgrade.

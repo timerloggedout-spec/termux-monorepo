@@ -1,10 +1,9 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-21T14:08:27Z UTC · receipts=3419 · foreign_open=38 · tributes=112_
+_Generated 2026-10-21T15:12:06Z UTC · receipts=3457 · foreign_open=38 · tributes=112_
 
 ## Tributes (contributor ledger)
 
-- [zh-95/fronte-rivoluzionario#59](https://github.com/zh-95/fronte-rivoluzionario/pull/59) · state=open · help-wanted: stake + contribute for #9
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
 - [mangiapanejohn-dev/MOBIUS-Searcher#7](https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7) · state=open · help-wanted: stake + contribute for #6
@@ -42,6 +41,7 @@ _Generated 2026-10-21T14:08:27Z UTC · receipts=3419 · foreign_open=38 · tribu
 - [use-assay/Assay#509](https://github.com/use-assay/Assay/pull/509) · state=open · help-wanted: stake + contribute for #305
 - [SO4-Markets/interface#1029](https://github.com/SO4-Markets/interface/pull/1029) · state=open · help-wanted: stake + contribute for #918
 - [C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge--Frontend-#971](https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge--Frontend-/pull/971) · state=open · help-wanted: stake + contribute for #901
+- [zh-95/fronte-rivoluzionario#59](https://github.com/zh-95/fronte-rivoluzionario/pull/59) · state=open · help-wanted: stake + contribute for #9
 - [Gautam-aman/ResQNet#53](https://github.com/Gautam-aman/ResQNet/pull/53) · state=closed · help-wanted: stake + contribute for #50
 - [traceopt-ai/traceml#547](https://github.com/traceopt-ai/traceml/pull/547) · state=closed · help-wanted: stake + contribute for #128
 
@@ -86,6 +86,6 @@ _Generated 2026-10-21T14:08:27Z UTC · receipts=3419 · foreign_open=38 · tribu
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) — help-wanted: stake + contribute for #20
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Operational outcomes · actioned=192 skipped=3227 failed=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 3191, 'followup_reengage': 50, 'followup_stale_nudge': 128, 'followup_changes': 2}`
+## Operational outcomes · actioned=192 skipped=3265 failed=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 3229, 'followup_reengage': 50, 'followup_stale_nudge': 128, 'followup_changes': 2}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

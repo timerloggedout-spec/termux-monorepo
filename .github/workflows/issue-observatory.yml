@@ -6,10 +6,6 @@ on:
   workflow_dispatch:
   issues:
     types: [opened, edited, labeled, unlabeled, closed, reopened]
-  issue_comment:
-    types: [created, edited]
-  pull_request:
-    types: [opened, edited, synchronize, reopened, closed]
 
 permissions:
   contents: read
@@ -40,11 +36,23 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p observatory
-          gh api \
+          # The per-repository GITHUB_TOKEN bucket is shared with every other
+          # workflow and is chronically rate-limited in this repo. A failed
+          # collection is an evidence outage: record it as a receipt and
+          # continue with an empty evidence set instead of failing the job
+          # (and every unrelated PR check) — the outage stays visible here
+          # and in the lifecycle receipt, never silent.
+          if ! gh api \
             -H 'Accept: application/vnd.github+json' \
             "/repos/${REPOSITORY}/issues?state=all&per_page=${OBSERVATORY_LIMIT}" \
             --jq '.[] | select(.pull_request == null) | {number,title,body,labels:[.labels[].name],state,updated_at,html_url}' \
-            > observatory/issues.ndjson
+            > observatory/issues.ndjson; then
+            echo "::warning title=Observatory collection outage::gh api issues read failed (likely GITHUB_TOKEN rate limit); recording an outage receipt with an empty evidence set."
+            : > observatory/issues.ndjson
+            echo "rate_limited_or_unavailable" > observatory/collection_status.txt
+          else
+            echo "ok" > observatory/collection_status.txt
+          fi
           python3 - <<'PY'
           import json
           from pathlib import Path

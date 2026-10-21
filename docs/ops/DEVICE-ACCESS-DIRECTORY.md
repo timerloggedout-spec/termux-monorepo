@@ -6,6 +6,14 @@ The origin node has a **damaged screen**. Clipboard does not cross the screen-sh
 Related: `BRIDGE-REDUNDANCY.md` (execution order), `TERMUX-LIVE-BRIDGE.md` (Pinggy contract), `DEVICE-IDENTITY.md` (opaque ids).
 No secrets, IPs, or hardware identifiers belong in this file.
 
+## Device checkout layout (observed 2026-10-21)
+
+On both B160V nodes the repository checkout **is `$HOME`** (`~`), not `~/termux-monorepo`. The origin node is on branch `feat/dashboard-lanes-v2` with local changes, and its `~/scripts/` holds only `ci/`, `commit-msg.sh`, `entropy_scan.py` and `model_router.py`. **`scripts/termux/` (the Pinggy publisher, the diagnosis, the job installers) is absent on the device**, which explains why job 43109 never published. To bring those scripts in without switching branches or touching local changes:
+
+```bash
+cd ~ && git fetch origin master && git checkout origin/master -- scripts/termux
+```
+
 ## Directory
 
 | Method | Direction | Who drives it | Device input | Identity / credential (names only) | Publishes / proves | Status (2026-10-21) | Failure signal |

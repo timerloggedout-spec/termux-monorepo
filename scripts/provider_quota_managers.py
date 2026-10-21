@@ -14,6 +14,10 @@ from typing import Any, Mapping
 
 ROOT = Path(__file__).resolve().parents[1]
 REGISTRY = ROOT / "ops/quota/provider-managers.json"
+_CATALOG_HEADER_SOURCES = {
+    "groq": "https://api.groq.com/openai/v1/models",
+    "sambanova": "https://api.sambanova.ai/v1/models",
+}
 _NUMERIC_FIELDS = {
     "limit_requests", "remaining_requests", "limit_tokens", "remaining_tokens",
     "limit_requests_day", "remaining_requests_day", "reset_after_requests",
@@ -210,6 +214,29 @@ def normalize_observation(provider_family: str, headers: Mapping[str, Any] | Non
             "scope": scope.strip(), "scope_status": "caller_declared_unverified", "signals": values,
             "reset_semantics": row.get("reset", "unknown"),
             "status": "observed" if values else "unknown"}
+
+
+def catalog_quota_status(provider_family: str, headers: Mapping[str, Any] | None,
+                         *, observed_at: str, source: str | None = None) -> dict[str, str]:
+    """Return an allowlisted status projection; never expose parsed values or provenance details."""
+    row = load_managers().get(provider_family)
+    manager_status = row.get("status") if row else "unsupported"
+    result = {"status": "unknown", "manager_status": manager_status}
+    # Only these exact model-catalog origins are documented to return these
+    # counters. In particular, Hub RateLimit is not router.huggingface.co quota.
+    expected_source = _CATALOG_HEADER_SOURCES.get(provider_family)
+    if expected_source is None or source != expected_source:
+        return result
+    if manager_status != "implemented_passive_adapter":
+        return result
+    try:
+        obs = normalize_observation(provider_family, headers=headers, observed_at=observed_at,
+                                    scope="catalog response; account scope unverified")
+        if obs["status"] == "observed":
+            result["status"] = "observed"
+    except (TypeError, ValueError, OverflowError):
+        pass
+    return result
 
 
 def _normalize_ollama(metadata: Mapping[str, Any], observed_at: str, scope: str) -> dict[str, Any]:

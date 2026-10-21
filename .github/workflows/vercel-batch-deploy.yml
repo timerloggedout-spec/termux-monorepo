@@ -1,0 +1,99 @@
+name: vercel-batch-deploy
+# One quota-aware batch replaces per-commit Vercel deploys.
+# - Git auto-deploys are off for every project (git.deploymentEnabled=false in each
+#   project's vercel.json). On Hobby, even ignored or canceled builds count toward
+#   "Deployments Created per Day: 100" (https://vercel.com/docs/limits).
+# - Each run deploys only the projects whose source changed since that project's
+#   last successful batch deploy. The state lives on branch vercel-deploy-state.
+# - Priority order (Tribute first), capped by the live 24 h budget
+#   (100 - count24h - reserve). What doesn't fit waits for the next slot.
+on:
+  schedule:
+    - cron: "23 */6 * * *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Space-separated projects to deploy even if unchanged"
+        required: false
+        default: ""
+permissions:
+  contents: write
+concurrency:
+  group: vercel-batch-deploy
+  cancel-in-progress: false
+jobs:
+  batch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      SCOPE: ${{ secrets.VERCEL_ORG_ID || 'team_jKHy7m9xZrvrGP5cAlIMPs3S' }}
+      RESERVE: "5"
+      # project|source dir|change paths (comma-separated), in priority order
+      PLAN: |
+        help-wanted-oversight|apps/help-wanted-dashboard|apps/help-wanted-dashboard/,docs/ops/generated/help-wanted-status.json,docs/ops/generated/lane-matrix-status.json
+        help-wanted-dash|apps/help-wanted-dashboard|apps/help-wanted-dashboard/,docs/ops/generated/help-wanted-status.json,docs/ops/generated/lane-matrix-status.json
+        mcp-hub|mcp-hub|mcp-hub/
+        termux-monorepo|demo-portal/public|demo-portal/public/
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          filter: blob:none
+      - name: Batch deploy
+        run: |
+          set -uo pipefail
+          [ -n "${VERCEL_TOKEN:-}" ] || { echo "::notice title=vercel-batch::VERCEL_TOKEN missing, skip"; exit 0; }
+          git fetch -q origin vercel-deploy-state:vercel-deploy-state 2>/dev/null || true
+          git show vercel-deploy-state:state.json > "$RUNNER_TEMP/state.json" 2>/dev/null || echo '{}' > "$RUNNER_TEMP/state.json"
+          SINCE=$(( ($(date +%s) - 86400) * 1000 ))
+          COUNT=$(curl -fsS -H "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v6/deployments?limit=100&since=$SINCE&teamId=$SCOPE" | jq '.deployments | length' 2>/dev/null || echo 100)
+          BUDGET=$(( 100 - COUNT - RESERVE ))
+          echo "count24h=$COUNT budget=$BUDGET"
+          npm i -g vercel@latest >/dev/null 2>&1
+          DEPLOYED=""; DEFERRED=""; SKIPPED=""; FAILED=""
+          while IFS='|' read -r P SRC PATHS; do
+            [ -n "$P" ] || continue
+            LAST=$(jq -r --arg p "$P" '.[$p] // empty' "$RUNNER_TEMP/state.json")
+            CHANGED=1
+            if [ -n "$LAST" ] && git cat-file -e "$LAST^{commit}" 2>/dev/null; then
+              IFS=',' read -ra PS <<< "$PATHS"
+              git diff --quiet "$LAST" "$GITHUB_SHA" -- "${PS[@]}" && CHANGED=0
+            fi
+            case " ${{ github.event.inputs.force }} " in *" $P "*) CHANGED=1;; esac
+            if [ "$CHANGED" = 0 ]; then SKIPPED="$SKIPPED $P"; continue; fi
+            if [ "$BUDGET" -le 0 ]; then DEFERRED="$DEFERRED $P"; continue; fi
+            W="$RUNNER_TEMP/deploy-$P"; rm -rf "$W"; mkdir -p "$W"; cd "$W"
+            vercel link --yes --project "$P" --scope "$SCOPE" --token "$VERCEL_TOKEN" >/dev/null
+            ROOT=$(jq -r '.settings.rootDirectory // empty' .vercel/project.json 2>/dev/null || true)
+            DEST="$W/${ROOT:-.}"; mkdir -p "$DEST"
+            cp -a "$GITHUB_WORKSPACE/$SRC/." "$DEST/"
+            if [ "$SRC" = "apps/help-wanted-dashboard" ]; then
+              mkdir -p "$DEST/data"
+              G="$GITHUB_WORKSPACE/docs/ops/generated"
+              [ -f "$G/help-wanted-status.json" ] && cp "$G/help-wanted-status.json" "$DEST/data/status.json"
+              [ -f "$G/lane-matrix-status.json" ] && cp "$G/lane-matrix-status.json" "$DEST/data/lane-matrix-status.json"
+              printf '{"source_sha":"%s","short_sha":"%s","run":"%s/%s/actions/runs/%s"}\n' "$GITHUB_SHA" "${GITHUB_SHA:0:7}" \
+                "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" > "$DEST/data/build.json"
+            fi
+            BUDGET=$(( BUDGET - 1 ))
+            if vercel deploy --prod --yes --token "$VERCEL_TOKEN" --scope "$SCOPE" > "$RUNNER_TEMP/$P.url" 2> "$RUNNER_TEMP/$P.err"; then
+              DEPLOYED="$DEPLOYED $P"
+              jq --arg p "$P" --arg s "$GITHUB_SHA" '.[$p]=$s' "$RUNNER_TEMP/state.json" > "$RUNNER_TEMP/s2" && mv "$RUNNER_TEMP/s2" "$RUNNER_TEMP/state.json"
+            elif grep -q "api-deployments" "$RUNNER_TEMP/$P.err"; then
+              DEFERRED="$DEFERRED $P"; BUDGET=0
+            else
+              FAILED="$FAILED $P"; tail -n 5 "$RUNNER_TEMP/$P.err"
+            fi
+            cd "$GITHUB_WORKSPACE"
+          done <<< "$PLAN"
+          echo "::notice title=vercel-batch::count24h=$COUNT deployed=[${DEPLOYED# }] deferred=[${DEFERRED# }] unchanged=[${SKIPPED# }] failed=[${FAILED# }]"
+          if [ -n "$DEPLOYED" ]; then
+            cp "$RUNNER_TEMP/state.json" "$RUNNER_TEMP/keep.json"
+            git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            if git show-ref -q refs/heads/vercel-deploy-state; then git switch -q vercel-deploy-state; else git switch -q --orphan vercel-deploy-state; git rm -rqf . 2>/dev/null || true; fi
+            cp "$RUNNER_TEMP/keep.json" state.json
+            git add state.json && git commit -qm "vercel batch state ${GITHUB_SHA:0:7} [skip ci] [skip render]" && git push -q origin vercel-deploy-state
+          fi
+          [ -z "$FAILED" ]

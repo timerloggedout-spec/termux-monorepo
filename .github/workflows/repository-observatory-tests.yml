@@ -1,0 +1,33 @@
+name: repository observatory tests
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/github/repository_observatory.py'
+      - 'scripts/github/test_repository_observatory.py'
+      - 'docs/repositories/repository-observatory.schema.json'
+      - '.github/workflows/repository-observatory-tests.yml'
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/github/repository_observatory.py'
+      - 'scripts/github/test_repository_observatory.py'
+      - 'docs/repositories/repository-observatory.schema.json'
+      - '.github/workflows/repository-observatory-tests.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  unit-tests:
+    name: Repository Observatory unit tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: '3.12'
+      - name: Run dependency-free unit tests
+        working-directory: scripts/github
+        run: python -m unittest -v test_repository_observatory.py

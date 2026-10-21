@@ -75,3 +75,15 @@ action accuracy, escalation rate and false re-engagements. CI fails on any false
 re-engagement, any misrouted real seed, or macro P/R below 0.9. Grow the set by
 adding hydrated real threads (with an `expected` block) to the fixtures folder;
 backfill output on branch `tribute-s1/backfill` is the source for new labels.
+
+## Lane wiring (gates in the Tribute writers)
+
+| Writer | Gate | Effect |
+|---|---|---|
+| `scripts/ci/help_wanted_followup.py` | `hydrate` then `reengage_allowed(thread)` before every `reengage` / `stale_nudge` post | Post skipped unless System 1 allows it (fails closed on any read error). Closed foreign PRs from the last `HELP_WANTED_LESSON_DAYS` (default 14) are routed into a `followup_lesson` evidence row, once per PR, and are never posted on. |
+| `scripts/ci/help_wanted_scout.py` | `preflight_candidate(issue, comments)` | Ineligible issues (assigned elsewhere, prior human claim, human skill/language, closed, comments unreadable) are moved to the catalog's `excluded` list. |
+| `scripts/ci/help_wanted_claim.py` | `preflight_candidate` before the claim comment and fork | Ineligible = no comment, no fork, exit 0 with `claim_skipped_preflight`. |
+| `scripts/ci/help_wanted_contribute.py` | real patch required (`--patch` / `HELP_WANTED_PATCH`), candidate preflight, then `preflight_pr(files)` on the staged diff | Stake-only PRs (`.github/help-wanted-lane-stake.md`) are retired; no fallback issue notice. |
+| `.github/workflows/help-wanted-llm-assist.yml` | `route(hydrate(...))["rung"] == "system2_llm"` | Only rung-1 threads get an LLM pass; explicit inputs are gated too. |
+
+Regression: `tests/test_tribute_system1_gates.py` proves the three seed fixtures never trigger a follow-up post, claim, or PR.

@@ -69,7 +69,10 @@ selection_rule: |
 
 capability_scope_specialist:
   mode: observe
-  rollback: set capability-spine-observe: 'false' on each model-router action call, or set CAPABILITY_SPINE_OBSERVE=false only for direct script execution; current execution routing remains unchanged
+  rollback: >-
+    set capability-spine-observe: 'false' on each model-router action call, or set
+    CAPABILITY_SPINE_OBSERVE=false only for direct script execution; current execution
+    routing remains unchanged
   requested_capabilities: [triage, review, invoke, security_analysis, implementation, test, autofix, fix_ci, resolve_merge_conflict, conflict_resolution]
   authority_effects: [read_only_analysis, review_request, branch_write, stacked_pull_request, provider_configuration]
   hard_gates:

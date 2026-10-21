@@ -20,6 +20,43 @@ Two kinds of check:
            Fail if a counter goes UP. Print a nudge if it goes DOWN so the
            baseline can be lowered. Debt can only shrink.
 
+One HARD check deserves its own note: `check_yaml_structure`. A workflow file with
+invalid YAML never schedules a job, so it fails *silently* — the run is red with no
+step output, and every tool that reads the file leniently (regex parsing, docs
+catalogues) keeps reporting it as healthy. A control-plane schema is worse: nothing
+parses it at all, so the breakage is invisible until a consumer adds a parser. Five
+workflow files and one schema in this repository reached that state.
+`yaml_structure_faults()` is a stdlib-only structural check for the failure classes
+actually observed:
+
+  * a root-level (column 0) line that is not a mapping key — the signature of a
+    heredoc or quoted string body whose continuation lines lost their indentation
+    while the surrounding `run: |` block scalar stayed behind;
+  * a mapping value starting with `!(` — YAML reads `!` as a tag token, so an
+    unquoted `if: !(...)` is a scanner error, not a boolean expression;
+  * a block scalar whose first body line is not indented past its header, or
+    whose later content dedents below the indentation the first content line
+    established (a *partial* dedent, which YAML rejects but a naive
+    indentation comparison against the header alone does not see);
+  * a plain scalar value containing `: `, which the scanner reads as a nested
+    mapping ("mapping values are not allowed here");
+  * a literal `\\n` / `\\r` / `\\t` escape in an unquoted scalar — a JSON body
+    pasted into YAML, where the author meant a newline and YAML keeps the two
+    characters. `\\n` is only an escape inside a double-quoted scalar, so in an
+    unquoted position it silently swallows the rest of the line and the next key
+    it was carrying. Quoted scalars are exempt in both styles: quoting is how an
+    author says "I mean the backslash".
+
+The same check covers the three surfaces where a silent parse failure does real
+damage: `.github/workflows/*.yml`, the control-plane schemas in `docs/schemas/`,
+and the research lane registry in `docs/research/` (a live dependency of
+`config/foresight_digest_sources.json`).
+
+It is validated to agree with a full YAML parse on every file in its scope across
+the repository (see tests/test_repo_gate_workflow_yaml.py). It is not a YAML parser
+and does not replace the advisory actionlint lane; it exists so the specific
+silent-failure classes above cannot grow again.
+
 Usage:
   python3 scripts/ci/repo_gate.py                    # full gate
   python3 scripts/ci/repo_gate.py --base origin/master
@@ -91,6 +128,320 @@ SECRET_PATTERNS = (
     ("slack token", re.compile(r"\bxox[abprs]-[0-9A-Za-z\-]{10,}\b")),
     ("private key block", re.compile(r"-----BEGIN (?:RSA |EC |OPENSSH |PGP )?PRIVATE KEY-----")),
 )
+
+# --------------------------------------------------------------------------- #
+# Workflow YAML structure (see the module docstring)
+# --------------------------------------------------------------------------- #
+
+# YAML surfaces where a parse failure is silent and high-impact: a workflow never
+# schedules a job, a control-plane schema is read by policy gates and doc
+# generators that do not parse it, and docs/research/RESEARCH-LANES.yaml is the
+# live lane registry for config/foresight_digest_sources.json.
+CONTROL_PLANE_YAML_RE = re.compile(
+    r"^(?:\.github/workflows/[^/]+\.ya?ml"
+    r"|docs/schemas/[^/]+\.ya?ml"
+    r"|docs/research/[^/]+\.ya?ml)$"
+)
+
+# A mapping or sequence-entry block scalar header, with optional chomping/indent
+# indicators and a trailing comment. A bare shell pipeline is not a header.
+BLOCK_SCALAR_HEADER_RE = re.compile(
+    r"^(?P<indent>[ ]*)(?:(?P<dash>- +)?(?P<key>[A-Za-z_][A-Za-z0-9_.\-]*) *: *|- +)[|>][-+0-9]* *(?:#.*)?$"
+)
+# A line that is legal at the document root: a document marker or a mapping key.
+# `(?:\s|$)` rather than `\b`: `-` and `.` are non-word characters, so a trailing
+# word boundary can never match after `---` / `...`.
+ROOT_MARKER_RE = re.compile(r"^(?:---|\.\.\.|%YAML|%TAG)(?:\s|$)")
+# Leading whitespace, tabs included, so indentation faults are measured the way the
+# YAML scanner measures them.
+INDENT_RE = re.compile(r"^[ \t]*")
+ROOT_MAPPING_KEY_RE = re.compile(r"^[^\s#][^:]*:")
+# `key: !(...)` — `!` starts a tag; `(` is not a legal shorthand tag character.
+UNQUOTED_TAG_VALUE_RE = re.compile(r"^[ ]*(?:- +)?[A-Za-z_][A-Za-z0-9_.\-]* *: +!\(")
+# `key: value` whose plain (unquoted, non-flow, non-block) value itself contains a
+# `: ` — the scanner reads that as a nested mapping and raises
+# "mapping values are not allowed here". Shell/JS code inside a block scalar is
+# full of these, so the rule is only applied outside a block scalar body.
+PLAIN_VALUE_COLON_RE = re.compile(
+    r"^(?P<indent>[ ]*)(?:- +)?[A-Za-z_][A-Za-z0-9_.\-]* *: +"
+    r"(?P<value>[^\s'\"|>\[\]{#*&!%@`].*)$"
+)
+TRAILING_COMMENT_RE = re.compile(r"\s+#.*$")
+# An explicit indentation indicator in a block scalar header (`|2`, `>4`, and the
+# chomping variants `|-2` / `>+4`). It fixes the content indentation up front, so the
+# partial-dedent rule below applies to it too.
+BLOCK_SCALAR_INDENT_RE = re.compile(r"[|>][-+]?(?P<indent>[1-9])")
+# A line that may legally follow an *empty* block scalar: a mapping key, a sequence
+# entry, or (handled separately) a comment. Only used to tell "the scalar is empty and
+# this is the next entry" from "the scalar's body lost its indentation".
+SIBLING_ENTRY_RE = re.compile(r"^[ ]*(?:- +[^\s#]|[^\s#][^:]*:)")
+# A YAML escape (`\n`, `\r`, `\t`) sitting in an unquoted scalar. Double-quoted is
+# the only style where those are real escapes; unquoted, they are two literal
+# characters, which is what a JSON body pasted into YAML looks like. YAML does not
+# reject it — the escape just eats the rest of the line, so
+# `inputs: [a, b]\n    contributors: [c]` carries the next key inside the value, or
+# fails to parse further down.
+LITERAL_ESCAPE_RE = re.compile(r"\\[nrt]")
+
+
+def literal_escape_fault(line: str, quote_state: list[bool] | None = None) -> str | None:
+    """Return the offending `\\x` escape in `line`, or None.
+
+    Optional mutable quote_state preserves open quotes across YAML lines.
+    Scans left to right tracking quoted-scalar state, so the rule fires only where
+    the escape is unquoted and therefore unintended: inside either quote style the
+    author has explicitly asked for the backslash (as a real escape in `"..."`, as
+    a literal character in `'...'`), and an escape inside a trailing comment is not
+    content at all.
+
+    A backslash that is itself preceded by an odd run of backslashes does not
+    introduce anything, and is skipped — `C:\\\\Users\\\\runner` is a path, not a `\\r`
+    escape. The same parity test every lexer uses.
+
+    Finally the escape has to sit where a swallowed newline would: at the end of
+    the line, in front of whitespace, or directly after a flow/sequence delimiter
+    (`]`, `}`, `,`) — the JSON-paste shape. A path like `C:\\temp` or a prose value
+    like `line one\\nline two` is left alone: a Windows path is not this class's
+    business, and a plain scalar holding a stray backslash still parses, so it is
+    not structural.
+    """
+    index = 0
+    in_single, in_double = quote_state if quote_state is not None else (False, False)
+    while index < len(line):
+        char = line[index]
+        if in_double:
+            if char == "\\":
+                index += 2
+                continue
+            if char == '"':
+                in_double = False
+        elif in_single:
+            if char == "'":
+                if line[index + 1 : index + 2] == "'":
+                    index += 2
+                    continue
+                in_single = False
+        elif char == '"':
+            in_double = True
+        elif char == "'":
+            in_single = True
+        elif char == "#" and (index == 0 or line[index - 1] in " \t"):
+            break
+        elif char == "\\" and LITERAL_ESCAPE_RE.match(line, index):
+            preceding = 0
+            cursor = index - 1
+            while cursor >= 0 and line[cursor] == "\\":
+                preceding += 1
+                cursor -= 1
+            after = line[index + 2 : index + 3]
+            before = line[index - 1 : index]
+            if preceding % 2 == 0 and (
+                after == "" or after.isspace() or before in ("]", "}", ",")
+            ):
+                return line[index : index + 2]
+        index += 1
+    if quote_state is not None:
+        quote_state[:] = [in_single, in_double]
+    return None
+
+
+def indent_of(line: str) -> tuple[int, str]:
+    """Return `(width, text)` of a line's leading whitespace, tabs included."""
+    whitespace = INDENT_RE.match(line).group(0)
+    return len(whitespace), whitespace
+
+
+def block_scalar_scan(lines: list[str]) -> tuple[set[int], list[str]]:
+    """Walk every block scalar: return `(body line indices, faults)`.
+
+    A block scalar runs from its header to the first non-blank line indented no
+    further than the *content* indentation. Two consequences, and both are load
+    bearing:
+
+    * A heredoc body that lost its indentation *terminates* the surrounding scalar,
+      so those lines stay eligible for the root-level rule instead of being skipped
+      as body content.
+    * A content line that dedents below the indentation the first content line
+      established — while still indenting past the header — is a *partial* dedent,
+      which YAML rejects outright. Comparing only against the header indent, as a
+      naive rule does, cannot see it. An explicit indentation indicator (`|2`, `>4`)
+      fixes the content indentation up front and is compared the same way.
+
+    An empty scalar is legal, and so is any dedent back to an enclosing level:
+    only a line that is neither a sibling entry nor a comment is reported as a lost
+    body, because that is the shape a de-indented body actually leaves behind.
+
+    The scan is a single forward walk, so a line that is block scalar *content*
+    (including something that looks exactly like a `key: |` header) is consumed by
+    its own scalar and can never be re-examined as a header.
+    """
+    inside: set[int] = set()
+    faults: list[str] = []
+    index = 0
+    while index < len(lines):
+        header = BLOCK_SCALAR_HEADER_RE.match(lines[index])
+        if header is None:
+            index += 1
+            continue
+        header_number = index + 1
+        header_indent = len(header.group("indent"))
+        # An indentation indicator counts from the *parent node* — the mapping the
+        # scalar is a value in — so a `- ` sequence marker shifts it by its width.
+        key_indent = header_indent + len(header.group("dash") or "")
+        indicator = BLOCK_SCALAR_INDENT_RE.search(header.group(0))
+        declared = key_indent + int(indicator.group("indent")) if indicator else None
+
+        cursor = index + 1
+        while cursor < len(lines) and not lines[cursor].strip():
+            cursor += 1
+        if cursor >= len(lines):
+            index += 1
+            continue
+        line = lines[cursor]
+        first_indent = indent_of(line)[0]
+        content_indent = declared if declared is not None else first_indent
+
+        if declared is None:
+            for leading in range(index + 1, cursor):
+                if indent_of(lines[leading])[0] > content_indent:
+                    faults.append(
+                        f"line {leading + 1}: leading blank scalar line indented beyond "
+                        f"content indentation {content_indent} established on line {cursor + 1}"
+                    )
+
+        if first_indent <= header_indent:
+            # The scalar is empty; the next line is whatever follows it. It is only a
+            # fault when that line could not legally follow — the lost-body shape.
+            if (
+                not line.lstrip().startswith("#")
+                and not ROOT_MARKER_RE.match(line)
+                and not SIBLING_ENTRY_RE.match(line)
+            ):
+                faults.append(
+                    f"line {cursor + 1}: block scalar body indented {first_indent}, not past "
+                    f"its header on line {header_number} at {header_indent}: {line.strip()[:60]!r}"
+                )
+            index = cursor
+            continue
+        if first_indent < content_indent:
+            faults.append(
+                f"line {cursor + 1}: block scalar body indented {first_indent}, below the "
+                f"{content_indent} its indentation indicator requires on line {header_number}: "
+                f"{line.strip()[:60]!r}"
+            )
+            index = cursor
+            continue
+
+        for leading in range(index + 1, cursor):
+            inside.add(leading)
+        walk = cursor
+        while walk < len(lines):
+            text = lines[walk]
+            if not text.strip():
+                inside.add(walk)
+                walk += 1
+                continue
+            line_indent = indent_of(text)[0]
+            if line_indent <= header_indent:
+                break
+            if line_indent < content_indent:
+                faults.append(
+                    f"line {walk + 1}: block scalar content dedents to {line_indent}, below the "
+                    f"{content_indent} established on line {cursor + 1} — YAML rejects a partial "
+                    f"dedent: {text.strip()[:60]!r}"
+                )
+                break
+            inside.add(walk)
+            walk += 1
+        index = walk
+    return inside, faults
+
+
+def block_scalar_body_lines(lines: list[str]) -> set[int]:
+    """Line indices (0-based) that fall inside a block scalar body."""
+    return block_scalar_scan(lines)[0]
+
+
+def yaml_structure_faults(text: str) -> list[str]:
+    """Return structural YAML faults, as `line N: reason` strings.
+
+    Only high-precision rules for the observed silent-failure classes; see the
+    module docstring. An empty list means "no fault found", not "valid YAML" — the
+    authoritative lint remains the advisory actionlint lane.
+    """
+    faults: list[str] = []
+    lines = text.split("\n")
+    inside_block, block_faults = block_scalar_scan(lines)
+    quote_state = [False, False]
+
+    for index, line in enumerate(lines):
+        number = index + 1
+        if index in inside_block:
+            continue
+        continued_quote = any(quote_state)
+        escape = literal_escape_fault(line, quote_state)
+        if continued_quote:
+            # YAML folds multiline quoted content; it is not a new mapping entry.
+            continue
+        if not line.strip() or line.lstrip().startswith("#"):
+            continue
+        indent, indent_text = indent_of(line)
+        if (
+            indent == 0
+            and not ROOT_MARKER_RE.match(line)
+            and not ROOT_MAPPING_KEY_RE.match(line)
+            and not BLOCK_SCALAR_HEADER_RE.match(line)
+        ):
+            faults.append(
+                f"line {number}: root-level line is neither a mapping key nor a document "
+                f"marker (an escaped string/heredoc body?): {line.strip()[:60]!r}"
+            )
+            continue
+        if "\t" in indent_text:
+            faults.append(f"line {number}: tab used for indentation (YAML forbids tabs)")
+            continue
+        if escape is not None:
+            faults.append(
+                f"line {number}: literal '\\{escape[1]}' escape in an unquoted scalar — "
+                f"YAML keeps the two characters, so this line no longer means what it says "
+                f"(a JSON body pasted into YAML?): {line.strip()[:60]!r}"
+            )
+            continue
+        if UNQUOTED_TAG_VALUE_RE.match(line):
+            faults.append(
+                f"line {number}: value starts with '!(', which YAML scans as a tag rather "
+                f"than a string — quote the whole expression: {line.strip()[:60]!r}"
+            )
+            continue
+        match = PLAIN_VALUE_COLON_RE.match(line)
+        if match:
+            value = TRAILING_COMMENT_RE.sub("", match.group("value"))
+            if ": " in value or value.endswith(":"):
+                faults.append(
+                    f"line {number}: plain scalar value contains ': ', which YAML scans as "
+                    f"a nested mapping — quote the value or use a block scalar: "
+                    f"{value.strip()[:60]!r}"
+                )
+
+    return faults + block_faults
+
+
+def check_yaml_structure(report: Report, paths: list[str], index: dict[str, IndexEntry]) -> int:
+    checked = 0
+    for path in paths:
+        if not CONTROL_PLANE_YAML_RE.match(path):
+            continue
+        entry = index.get(path)
+        if entry is None or entry.is_symlink or entry.is_gitlink:
+            continue
+        checked += 1
+        text = blob(entry.sha).decode("utf-8", "replace")
+        for fault in yaml_structure_faults(text):
+            report.fail(
+                "yaml-structure",
+                f"{path}: {fault} — nothing will run or read this file until it parses",
+            )
+    return checked
 
 BOLD, RED, YELLOW, GREEN, DIM, RESET = (
     ("\033[1m", "\033[31m", "\033[33m", "\033[32m", "\033[2m", "\033[0m")
@@ -373,6 +724,7 @@ def measure(index: list[IndexEntry]) -> dict[str, int]:
     paths_with_spaces = 0
     tracked_browser_profile_files = 0
     tracked_browser_credential_stores = 0
+    invalid_control_plane_yaml = 0
 
     blob_cache: dict[str, str] = {}
 
@@ -381,6 +733,11 @@ def measure(index: list[IndexEntry]) -> dict[str, int]:
 
         if " " in path:
             paths_with_spaces += 1
+
+        if CONTROL_PLANE_YAML_RE.match(path) and not entry.is_symlink and not entry.is_gitlink:
+            text = blob(entry.sha).decode("utf-8", "replace")
+            if yaml_structure_faults(text):
+                invalid_control_plane_yaml += 1
 
         if entry.is_symlink:
             target = blob_cache.get(entry.sha)
@@ -412,6 +769,7 @@ def measure(index: list[IndexEntry]) -> dict[str, int]:
         "paths_with_spaces": paths_with_spaces,
         "tracked_browser_profile_files": tracked_browser_profile_files,
         "tracked_browser_credential_stores": tracked_browser_credential_stores,
+        "invalid_control_plane_yaml": invalid_control_plane_yaml,
     }
 
 
@@ -488,6 +846,7 @@ def main() -> int:
                 "py": check_python_syntax(report, paths, by_path),
                 "sh": check_shell_syntax(report, paths, by_path),
                 "json": check_json_parses(report, paths, by_path),
+                "yaml-structure": check_yaml_structure(report, paths, by_path),
                 "symlinks": check_new_symlinks(report, paths, by_path),
                 "scanned": check_secrets(report, paths, by_path),
             }

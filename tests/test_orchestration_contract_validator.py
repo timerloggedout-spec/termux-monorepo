@@ -41,6 +41,52 @@ class OrchestrationContractValidatorTests(unittest.TestCase):
             self.assertTrue(any("status lifecycle enum drifted" in error for error in errors))
             self.assertTrue(any("cannot read valid JSON" in error for error in errors))
 
+    def test_malformed_top_level_schema_structures_are_reported_without_crashing(self):
+        cases = (
+            ("properties", None, "properties must be an object"),
+            ("properties", [], "properties must be an object"),
+            ("properties", "bad", "properties must be an object"),
+            ("required", None, "required must be a string array"),
+            ("required", "bad", "required must be a string array"),
+            ("required", [{}], "required must be a string array"),
+        )
+        for key, value, diagnostic in cases:
+            with self.subTest(key=key, value=value):
+                with tempfile.TemporaryDirectory() as tmp:
+                    root = Path(tmp)
+                    schema_dir = root / "docs" / "ops"
+                    schema_dir.mkdir(parents=True)
+                    treatment = json.loads((ROOT / "docs/ops/ORCHESTRATION-TREATMENT.schema.json").read_text())
+                    treatment[key] = value
+                    (schema_dir / "ORCHESTRATION-TREATMENT.schema.json").write_text(json.dumps(treatment))
+                    receipt = ROOT / "docs/ops/ORCHESTRATION-RECEIPT.schema.json"
+                    (schema_dir / "ORCHESTRATION-RECEIPT.schema.json").write_text(receipt.read_text())
+                    skill_dir = root / ".agents/skills/orchestration-treatment-registry"
+                    skill_dir.mkdir(parents=True)
+                    (skill_dir / "SKILL.md").write_text((ROOT / ".agents/skills/orchestration-treatment-registry/SKILL.md").read_text())
+                    errors = validate_contracts(root)
+                    self.assertTrue(any(diagnostic in error for error in errors), errors)
+
+    def test_unhashable_enum_entries_and_nested_values_are_reported_without_crashing(self):
+        for invalid in ([{}], [[], "TASK_PASS"], {"enum": [None]}):
+            with self.subTest(invalid=invalid):
+                with tempfile.TemporaryDirectory() as tmp:
+                    root = Path(tmp)
+                    schema_dir = root / "docs" / "ops"
+                    schema_dir.mkdir(parents=True)
+                    treatment = json.loads((ROOT / "docs/ops/ORCHESTRATION-TREATMENT.schema.json").read_text())
+                    receipt = json.loads((ROOT / "docs/ops/ORCHESTRATION-RECEIPT.schema.json").read_text())
+                    treatment["properties"]["status"]["enum"] = invalid if not isinstance(invalid, dict) else invalid["enum"]
+                    receipt["properties"]["outcome"]["enum"] = invalid if not isinstance(invalid, dict) else invalid["enum"]
+                    (schema_dir / "ORCHESTRATION-TREATMENT.schema.json").write_text(json.dumps(treatment))
+                    (schema_dir / "ORCHESTRATION-RECEIPT.schema.json").write_text(json.dumps(receipt))
+                    skill_dir = root / ".agents/skills/orchestration-treatment-registry"
+                    skill_dir.mkdir(parents=True)
+                    (skill_dir / "SKILL.md").write_text((ROOT / ".agents/skills/orchestration-treatment-registry/SKILL.md").read_text())
+                    errors = validate_contracts(root)
+                    self.assertTrue(any("status lifecycle enum drifted" in error for error in errors), errors)
+                    self.assertTrue(any("outcome enum drifted" in error for error in errors), errors)
+
     def test_receipt_schema_rejects_state_outcome_conflation(self):
         receipt_path = ROOT / "docs" / "ops" / "ORCHESTRATION-RECEIPT.schema.json"
         schema = json.loads(receipt_path.read_text())

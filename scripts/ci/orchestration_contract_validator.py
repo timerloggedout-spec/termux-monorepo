@@ -39,7 +39,7 @@ def _load(path: Path, errors: list[str]) -> dict[str, Any] | None:
     return None
 
 
-def _check_schema(name: str, schema: dict[str, Any], errors: list[str]) -> None:
+def _check_schema(name: str, schema: dict[str, Any], errors: list[str]) -> bool:
     if schema.get("$schema") != "https://json-schema.org/draft/2020-12/schema":
         errors.append(f"{name}: unexpected or missing JSON Schema draft")
     if schema.get("type") != "object":
@@ -49,15 +49,20 @@ def _check_schema(name: str, schema: dict[str, Any], errors: list[str]) -> None:
 
     properties = schema.get("properties")
     required = schema.get("required")
+    structurally_valid = True
     if not isinstance(properties, dict):
         errors.append(f"{name}: properties must be an object")
-        return
+        structurally_valid = False
     if not isinstance(required, list) or not all(isinstance(x, str) for x in required):
         errors.append(f"{name}: required must be a string array")
-        return
+        structurally_valid = False
+    if not structurally_valid:
+        return False
     missing = sorted(set(required) - set(properties))
     if missing:
         errors.append(f"{name}: required keys lack property definitions: {', '.join(missing)}")
+        return False
+    return True
 
 
 def validate_contracts(root: Path = ROOT) -> list[str]:
@@ -66,24 +71,22 @@ def validate_contracts(root: Path = ROOT) -> list[str]:
     treatment = _load(schema_dir / TREATMENT, errors)
     receipt = _load(schema_dir / RECEIPT, errors)
 
-    if treatment is not None:
-        _check_schema(TREATMENT, treatment, errors)
-        props = treatment.get("properties", {})
+    if treatment is not None and _check_schema(TREATMENT, treatment, errors):
+        props = treatment["properties"]
         status = props.get("status")
         status_enum = status.get("enum") if isinstance(status, dict) else None
-        if not isinstance(status_enum, list) or set(status_enum) != EXPECTED_TREATMENT_STATUSES:
+        if not isinstance(status_enum, list) or not all(isinstance(x, str) for x in status_enum) or set(status_enum) != EXPECTED_TREATMENT_STATUSES:
             errors.append(f"{TREATMENT}: status lifecycle enum drifted")
-        if "wait_policy" not in treatment.get("required", []):
+        if "wait_policy" not in treatment["required"]:
             errors.append(f"{TREATMENT}: wait_policy must be required")
-        if "evidence_contract" not in treatment.get("required", []):
+        if "evidence_contract" not in treatment["required"]:
             errors.append(f"{TREATMENT}: evidence_contract must be required")
         sha = props.get("source_sha", {})
         if not isinstance(sha, dict) or sha.get("pattern") != "^[0-9a-f]{40}$":
             errors.append(f"{TREATMENT}: source_sha must be a lowercase 40-character commit SHA")
 
-    if receipt is not None:
-        _check_schema(RECEIPT, receipt, errors)
-        props = receipt.get("properties", {})
+    if receipt is not None and _check_schema(RECEIPT, receipt, errors):
+        props = receipt["properties"]
         for field, expected in (
             ("state", EXPECTED_STATES),
             ("outcome", EXPECTED_OUTCOMES),
@@ -91,13 +94,13 @@ def validate_contracts(root: Path = ROOT) -> list[str]:
         ):
             field_schema = props.get(field)
             actual = field_schema.get("enum") if isinstance(field_schema, dict) else None
-            if not isinstance(actual, list) or set(actual) != expected:
+            if not isinstance(actual, list) or not all(isinstance(x, str) for x in actual) or set(actual) != expected:
                 errors.append(f"{RECEIPT}: {field} enum drifted")
         required_ids = {
             "orchestration_id", "cycle_id", "attempt_id", "action_id",
             "event_id", "repo", "ref", "sha", "evidence_ids",
         }
-        missing_ids = sorted(required_ids - set(receipt.get("required", [])))
+        missing_ids = sorted(required_ids - set(receipt["required"]))
         if missing_ids:
             errors.append(f"{RECEIPT}: missing required identity/evidence fields: {', '.join(missing_ids)}")
         sha = props.get("sha")

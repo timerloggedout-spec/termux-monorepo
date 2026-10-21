@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "0270b7a6eca491dd147a1725fffa3d05e7e54349d8fddee539341851da4dabb0",
-  "workflow_count": 151,
+  "source_fingerprint": "88ba4f3476d848a4afe650ede562b80b87ed875a3d61fab942cdefef9ce29dc5",
+  "workflow_count": 152,
   "workflows": [
     {
       "action_pins": [
@@ -1725,6 +1725,22 @@
       "triggers": [
         "push",
         "schedule"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "contract"
+      ],
+      "name": "hitl-control-plane-verify",
+      "path": ".github/workflows/hitl-control-plane-verify.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push"
       ]
     },
     {

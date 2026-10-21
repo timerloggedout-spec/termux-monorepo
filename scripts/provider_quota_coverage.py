@@ -67,14 +67,25 @@ def _safe_public(obj: Any) -> Any:
     return obj
 
 def evaluate(provider: str, model: str, evidence: list[Mapping[str, Any]], *, now: dt.datetime | None = None, safety: float = 0.9, cooldown_seconds: float = 0, max_age_seconds: float = 300) -> dict[str, str]:
-    """Reason-only private quota CHECK, not runtime admission; ``admit`` is quota-only."""
+    """Reason-only private quota CHECK; ``admit`` is quota-only, not authorization.
+
+    Trusted adapters supply provider/model, horizon=H0, evidence_status=confirmed,
+    observed_at/reset_at timezone-aware timestamps, and private limit/used values.
+    This function neither authenticates that adapter nor atomically reserves quota.
+    """
     def result(reason: str, decision: str = "deny") -> dict[str, str]:
         return {"admit": decision, "reason": reason}
 
     def finite_number(value: Any) -> bool:
-        return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+        try:
+            return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+        except (TypeError, OverflowError, ValueError):
+            return False
 
-    if not isinstance(provider, str) or not provider or not isinstance(model, str) or not model:
+    if (not isinstance(provider, str) or not provider or not isinstance(model, str) or not model
+            or model == "<model>" or any(c.isspace() or ord(c) < 32 or ord(c) == 127 for c in model)
+            or any(c in model for c in "*?#\\")
+            or any(part in ("", ".", "..") for part in model.split("/"))):
         return result("invalid_provider_or_model")
     try:
         known = _providers()
@@ -101,7 +112,7 @@ def evaluate(provider: str, model: str, evidence: list[Mapping[str, Any]], *, no
         return result("duplicate_or_missing_evidence")
     e = matched[0]
     try:
-        if e.get("evidence_status") != "confirmed" or e.get("evidence_horizon") != "H0":
+        if e.get("evidence_status") != "confirmed" or e.get("horizon") != "H0":
             return result("unconfirmed_or_unauthorized_evidence")
         limit, used = e["limit"], e["used"]
         if not finite_number(limit) or not finite_number(used) or limit <= 0 or used < 0:

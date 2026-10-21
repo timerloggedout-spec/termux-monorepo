@@ -28,7 +28,7 @@ def test_evaluator_boundaries_and_reason_only_output(monkeypatch):
     now = dt.datetime(2025, 1, 1, tzinfo=dt.timezone.utc)
     row = {"provider": "p", "model": "m", "limit": 100, "used": 10,
            "observed_at": "2025-01-01T00:00:00Z", "reset_at": "2025-01-02T00:00:00Z",
-           "evidence_status": "confirmed", "evidence_horizon": "H0",
+           "evidence_status": "confirmed", "horizon": "H0",
            "api_key": "do-not-disclose", "prompt": "private"}
     assert coverage.evaluate("p", "m", [row], now=now)["admit"] == "allow"
     for alter, reason in [({"observed_at": "2025-01-01T00:02:00Z"}, "future_evidence"),
@@ -56,7 +56,7 @@ def _now():
 def _valid_row(**changes):
     return {"provider": "p", "model": "m", "limit": 100, "used": 10,
             "observed_at": "2025-01-01T00:00:00Z", "reset_at": "2025-01-02T00:00:00Z",
-            "evidence_status": "confirmed", "evidence_horizon": "H0", **changes}
+            "evidence_status": "confirmed", "horizon": "H0", **changes}
 
 
 @pytest.fixture(autouse=True)
@@ -74,7 +74,7 @@ def test_invalid_numeric_values_are_denied(field, value):
 
 @pytest.mark.parametrize("changes,reason", [
     ({"evidence_status": "unconfirmed"}, "unconfirmed_or_unauthorized_evidence"),
-    ({"evidence_horizon": "H1"}, "unconfirmed_or_unauthorized_evidence"),
+    ({"horizon": "H1"}, "unconfirmed_or_unauthorized_evidence"),
     ({"observed_at": None}, "unknown_reset_or_timestamp"),
     ({"observed_at": "2024-12-31T23:54:59Z"}, "stale_evidence"),
     ({"observed_at": "2025-01-01T00:00:01Z"}, "future_evidence"),
@@ -121,3 +121,14 @@ def test_public_metadata_excludes_sensitive_field_names_and_values():
     encoded = json.dumps(public)
     assert "secret" not in encoded and "text" not in encoded
     assert "used" not in encoded and public["nested"] == {"safe": True}
+
+
+@pytest.mark.parametrize("model", ["", "<model>", "*", "p/../m", "a b", "m\n", "a\\b"])
+def test_invalid_model_identities_fail_closed(model):
+    assert coverage.evaluate("p", model, [_valid_row(model=model)], now=_now())["reason"] == "invalid_provider_or_model"
+
+
+def test_oversized_numeric_controls_fail_closed():
+    huge = 10 ** 1000
+    assert coverage.evaluate("p", "m", [_valid_row()], now=_now(), safety=huge)["admit"] == "deny"
+    assert coverage.evaluate("p", "m", [_valid_row(limit=huge)], now=_now())["admit"] == "deny"

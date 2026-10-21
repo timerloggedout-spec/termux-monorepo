@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "a01eeee3559762e3b0317476ce3cb8fe1612e1b8e1f2f966911292e8d91feea6",
-  "workflow_count": 141,
+  "source_fingerprint": "f97c5ddfce748739e45a8b976ebc372308342308569e0ad56b1c378add11c3ab",
+  "workflow_count": 142,
   "workflows": [
     {
       "action_pins": [
@@ -1302,6 +1302,26 @@
       ]
     },
     {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "writer",
+      "concurrency": "group: gitlab-governed-reconciliation cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "reconcile"
+      ],
+      "name": "GitLab governed reconciliation",
+      "path": ".github/workflows/gitlab-governed-reconciliation.yml",
+      "schedules": [
+        "23 */6 * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
       "action_pins": [],
       "authority": "bounded-state-write",
       "concurrency": "group: hark-enqueue-on-failure-${{ github.event.workflow_run.name }} cancel-in-progress: false",
@@ -1772,20 +1792,24 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
       ],
       "authority": "read-only-or-advisory",
-      "concurrency": "group: operations-cadence-audit-${{ github.ref }} cancel-in-progress: false",
+      "concurrency": "group: operations-cadence-audit-${{ github.event.pull_request.number || github.ref }} cancel-in-progress: true",
       "domain": "agentic-development",
       "jobs": [
         "audit"
       ],
       "name": "Operations Cadence Audit",
       "path": ".github/workflows/operations-cadence-audit.yml",
-      "schedules": [],
+      "schedules": [
+        "13 0 1 * *"
+      ],
       "triggers": [
         "pull_request",
         "push",
+        "schedule",
         "workflow_dispatch"
       ]
     },

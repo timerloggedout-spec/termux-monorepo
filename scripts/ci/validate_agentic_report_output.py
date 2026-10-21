@@ -11,7 +11,8 @@ from pathlib import Path
 from typing import Any
 
 
-DEFAULT_SCHEMA = Path("tests/fixtures/agentic-repo-report/output-schema.json")
+REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
+DEFAULT_SCHEMA = REPOSITORY_ROOT / "tests/fixtures/agentic-repo-report/output-schema.json"
 
 
 def load_json_object(path: Path) -> dict[str, Any]:

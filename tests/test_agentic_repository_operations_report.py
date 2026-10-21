@@ -2,6 +2,9 @@ from __future__ import annotations
 
 import json
 import re
+import subprocess
+import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -132,6 +135,81 @@ class AgenticRepositoryOperationsReportTests(unittest.TestCase):
         missing_headings = dict(valid, body="## Scope\nA report without the required sections.")
         errors = validate_report_output(missing_headings, self.schema)
         self.assertTrue(any(error.startswith("missing or out-of-order heading") for error in errors))
+
+    def test_cli_uses_default_schema_outside_checkout(self) -> None:
+        valid = {
+            "type": "create_issue",
+            "title": "Repository operations report — 2026-08-19",
+            "body": "\n".join(self.schema["required_headings"]),
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            cwd = Path(directory)
+            output = cwd / "report.json"
+            output.write_text(json.dumps(valid), encoding="utf-8")
+            result = subprocess.run(
+                [sys.executable, str(ROOT / "scripts/ci/validate_agentic_report_output.py"), "--output", str(output)],
+                cwd=cwd, capture_output=True, text=True, check=False,
+            )
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_cli_explicit_relative_schema_is_caller_relative(self) -> None:
+        valid = {
+            "type": "create_issue",
+            "title": "Repository operations report — 2026-08-19",
+            "body": "\n".join(self.schema["required_headings"]),
+        }
+        custom_schema = dict(self.schema, type="different_type")
+        with tempfile.TemporaryDirectory() as directory:
+            cwd = Path(directory)
+            (cwd / "custom-schema.json").write_text(json.dumps(custom_schema), encoding="utf-8")
+            output = cwd / "report.json"
+            output.write_text(json.dumps(valid), encoding="utf-8")
+            result = subprocess.run(
+                [sys.executable, str(ROOT / "scripts/ci/validate_agentic_report_output.py"), "--output", str(output), "--schema", "custom-schema.json"],
+                cwd=cwd, capture_output=True, text=True, check=False,
+            )
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertIn("type must be 'different_type'", result.stderr)
+
+    def test_cli_explicit_absolute_schema_works_outside_checkout(self) -> None:
+        valid = {
+            "type": "create_issue",
+            "title": "Repository operations report — 2026-08-19",
+            "body": "\n".join(self.schema["required_headings"]),
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            cwd = Path(directory)
+            output = cwd / "report.json"
+            output.write_text(json.dumps(valid), encoding="utf-8")
+            result = subprocess.run(
+                [sys.executable, str(ROOT / "scripts/ci/validate_agentic_report_output.py"), "--output", str(output), "--schema", str(FIXTURES / "output-schema.json")],
+                cwd=cwd, capture_output=True, text=True, check=False,
+            )
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_cli_missing_explicit_schema_returns_error_two(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            cwd = Path(directory)
+            output = cwd / "report.json"
+            output.write_text("{}", encoding="utf-8")
+            result = subprocess.run(
+                [sys.executable, str(ROOT / "scripts/ci/validate_agentic_report_output.py"), "--output", str(output), "--schema", "absent.json"],
+                cwd=cwd, capture_output=True, text=True, check=False,
+            )
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("validation error", result.stderr)
+
+    def test_cli_rejects_malformed_report_outside_checkout(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            cwd = Path(directory)
+            output = cwd / "report.json"
+            output.write_text('{"not": "the report contract"}', encoding="utf-8")
+            result = subprocess.run(
+                [sys.executable, str(ROOT / "scripts/ci/validate_agentic_report_output.py"), "--output", str(output)],
+                cwd=cwd, capture_output=True, text=True, check=False,
+            )
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertIn("contract violation", result.stderr)
 
 
 if __name__ == "__main__":

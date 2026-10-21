@@ -60,10 +60,10 @@ jobs:
             ':(glob)**/*.sh'
 
       - name: Compile telemetry Python sources
-        run: python -m compileall -q she/metrics scripts/ci tests/test_she_agent_throughput.py tests/test_emit_ates_run_receipt.py tests/test_bridge_ates_trace_to_events.py
+        run: python -m compileall -q she/metrics scripts/ci tests/test_she_agent_throughput.py tests/test_emit_ates_run_receipt.py tests/test_bridge_ates_trace_to_events.py tests/test_orchestrator_trace.py
 
       - name: Validate event schema JSON
         run: python -m json.tool docs/ops/AGENT-THROUGHPUT-EVENT.schema.json >/dev/null
 
-      - name: Run focused ATES reducer and receipt tests
+      - name: Run focused ATES reducer, receipt, and trace tests
         run: python -m unittest tests.test_she_agent_throughput tests.test_emit_ates_run_receipt tests.test_bridge_ates_trace_to_events tests.test_orchestrator_trace -v

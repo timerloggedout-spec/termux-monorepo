@@ -79,3 +79,28 @@ def test_parse_issue_form():
     _, _, cat = _load()
     s = gate.surface_from_issue({"number": 9, "title": "x", "body": body, "html_url": "https://github.com/x"}, cat)
     assert s["id"] == "turso.free"
+
+
+def test_model_ballots_disabled_even_with_keys_and_legacy_opt_in(monkeypatch):
+    monkeypatch.setenv("DELPHI_PANEL", "llm")
+    monkeypatch.setenv("OPENROUTER_API_KEY", "test-not-a-key")
+    monkeypatch.setenv("GEMINI_API_KEY", "test-not-a-key")
+    monkeypatch.setenv("DELPHI_LLM_MAX", "30")
+    def forbidden(*args, **kwargs):
+        raise AssertionError("No provider request is authorized by a role or key")
+    monkeypatch.setattr(gate.urllib.request, "urlopen", forbidden)
+    panel, reg, cat = _load()
+    budget = {"llm": 30}
+    assert gate.llm_vote("Scout", cat["openrouter.free"], "", budget) is None
+    assert budget == {"llm": 30}
+    result = gate.delphi(cat["openrouter.free"], panel, budget=budget)
+    assert all(v["via"] == "rubric" for r in result["rounds"] for v in r["votes"])
+
+
+def test_workflow_never_passes_provider_credentials_to_delphi():
+    from pathlib import Path
+    text = (Path(ROOT) / ".github/workflows/delphi-gate.yml").read_text()
+    assert "DELPHI_PANEL: rubric" in text
+    assert 'DELPHI_LLM_MAX: "0"' in text
+    assert "secrets.OPENROUTER_API_KEY" not in text
+    assert "secrets.GEMINI_API_KEY" not in text

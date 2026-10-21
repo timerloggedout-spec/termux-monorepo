@@ -1,8 +1,8 @@
 """Delphi Oracle RFP gate (docs/ops/DELPHI-ORACLE-RFP-GATE.md).
 
 Stdlib only. Never prints secrets. Never picks a model for live routing: the
-panel may *vote* through a free model (OpenRouter ':free' or Gemini free tier)
-when a key is present, otherwise every role votes with its transparent rubric.
+panel uses transparent rubric scoring only. Model voting requires a separately
+validated no-cost and quota admission implementation; key presence is not enough.
 
 Subcommands
   score   --surface ID [--surface ID ...]   offline: oracle + blind panel + rounds, JSON to stdout
@@ -108,59 +108,13 @@ def rubric_vote(role: str, s: dict) -> dict:
     return {"role": role, "impact": imp, "importance": impt, "score": score, "veto": veto, "reason": why, "via": "rubric"}
 
 
-FREE_PROMPT = (
-    "You are the {role} on a blind Delphi panel. Score this free-tier surface for the termux-monorepo "
-    "lanes using DECISION-MATRIX: impact 1-5 and importance 1-5. Facts (oracle, sourced):\n{facts}\n"
-    "{feedback}Reply with JSON only: {{\"impact\":n,\"importance\":n,\"reason\":\"<20 words\"}}"
-)
-
-
 def llm_vote(role: str, s: dict, feedback: str, budget: dict) -> dict | None:
-    """Optional free-model vote. Only ':free' OpenRouter models or Gemini free tier. Returns None to fall back."""
-    if os.environ.get("DELPHI_PANEL", "rubric") != "llm" or budget.get("llm", 0) <= 0:
-        return None
-    facts = json.dumps({k: s.get(k) for k in ("title", "lane", "quota", "auth", "lock_in", "failure_modes", "horizon", "card_required")})
-    prompt = FREE_PROMPT.format(role=role, facts=facts, feedback=feedback)
-    text = None
-    try:
-        if os.environ.get("OPENROUTER_API_KEY"):
-            model = os.environ.get("DELPHI_FREE_MODEL", "meta-llama/llama-3.3-70b-instruct:free")
-            if not model.endswith(":free"):
-                return None  # free models only
-            req = urllib.request.Request("https://openrouter.ai/api/v1/chat/completions",
-                data=json.dumps({"model": model, "messages": [{"role": "user", "content": prompt}]}).encode(),
-                headers={"Authorization": "Bearer " + os.environ["OPENROUTER_API_KEY"], "Content-Type": "application/json"})
-            text = json.load(urllib.request.urlopen(req, timeout=60))["choices"][0]["message"]["content"]
-        elif os.environ.get("GEMINI_API_KEY"):
-            model = os.environ.get("DELPHI_GEMINI_MODEL", "gemini-2.0-flash")
-            req = urllib.request.Request(
-                f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
-                data=json.dumps({"contents": [{"parts": [{"text": prompt}]}]}).encode(),
-                headers={"x-goog-api-key": os.environ["GEMINI_API_KEY"], "Content-Type": "application/json"})
-            text = json.load(urllib.request.urlopen(req, timeout=60))["candidates"][0]["content"]["parts"][0]["text"]
-    except Exception as e:  # noqa: BLE001 - any provider error falls back to the rubric
-        code = getattr(e, "code", "")
-        prov = "openrouter" if os.environ.get("OPENROUTER_API_KEY") else "gemini"
-        print(f"::notice::delphi llm vote fell back to rubric ({prov} {type(e).__name__} {code})")
-        if code in (401, 403, 404):
-            budget["llm"] = 0  # a dead key or model id will not recover inside this run
-        return None
-    finally:
-        budget["llm"] = budget.get("llm", 0) - 1
-    m = re.search(r"\{.*\}", text or "", re.S)
-    if not m:
-        return None
-    try:
-        j = json.loads(m.group(0))
-        imp, impt = clamp(float(j["impact"])), clamp(float(j["importance"]))
-    except (ValueError, KeyError, TypeError):
-        return None
-    base = rubric_vote(role, s)
-    score = imp * impt
-    if base["veto"]:
-        score = min(score, 4)  # money veto is a hard rule, not a model opinion
-    return {"role": role, "impact": imp, "importance": impt, "score": score, "veto": base["veto"],
-            "reason": str(j.get("reason", ""))[:160], "via": "free-model"}
+    """Model ballots are disabled pending separate no-cost and quota admission.
+
+    A key, :free suffix, role label or neutral multiplier is not admission.
+    Keep the callable for compatibility; callers use the transparent rubric.
+    """
+    return None
 
 
 def sign(vote: dict, rfp: str, rnd: int, session: str) -> dict:

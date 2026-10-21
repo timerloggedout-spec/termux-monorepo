@@ -48,10 +48,9 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ github.token }}
       GH_TOKEN: ${{ github.token }}
-      DELPHI_PANEL: ${{ (secrets.OPENROUTER_API_KEY != '' || secrets.GEMINI_API_KEY != '') && 'llm' || 'rubric' }}
-      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-      DELPHI_LLM_MAX: "30"
+      # Rubric scores are not independent model ballots; no provider credentials.
+      DELPHI_PANEL: rubric
+      DELPHI_LLM_MAX: "0"
       QUOTA_WEIGHTS_PATH: quota-out/routing-weights.json
     steps:
       - uses: actions/checkout@v4

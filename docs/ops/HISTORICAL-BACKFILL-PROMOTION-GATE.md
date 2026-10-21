@@ -2,40 +2,53 @@
 
 ## Purpose
 
-PR #523 must not promote the new master-anchored continuation layer while the existing `master-staging` historical backfill remains incomplete.
+This document records the safety contract for the Historical Corpus backfill. It supersedes the earlier `master-staging` instructions below, which describe an obsolete branch topology and must not be used to authorize promotion.
 
-## Current evidence
+## Current authoritative evidence
 
-- Authoritative `master` corpus snapshot: `next_start_page = 2`, observed `2026-08-19T07:53:15Z`.
-- `master-staging` corpus is newer: observed `2026-09-07T12:33:24.770669Z`, but still reports `next_start_page = 2`.
-- The old staging writer was manual-only and therefore could remain unchanged indefinitely.
+The canonical source is `workspace/llm_map/context_relationships/manifest.json` on `master`.
 
-## Immediate remediation
+At the latest inspected snapshot (`2026-10-15T19:16:02.945529Z`):
 
-The staging writer now:
+- `default_branch = master`
+- history window starts at page 13 and `next_start_page = null`
+- issue and pull-request history-window completion flags are true
+- nodes: 30,978; edges: 52,624; verified edges: 47,845; candidate edges: 4,779
+- `github_report.checkpoint_eligible = false`
+- one unresolved internal reference remains
+- 14 source parser failures remain
 
-1. triggers on pushes to `master-staging` and manual dispatch;
-2. reads `history_window.next_start_page` from the existing staging manifest;
-3. never restarts from page 1 when a continuation page exists;
-4. validates page advancement and canonical artifact/hash/count invariants;
-5. commits only the validated corpus delta back to `master-staging`.
+**Important:** exhausted pagination is not equivalent to a promotable/validated checkpoint. The manifest itself marks checkpoint eligibility false. Do not promote or label the corpus fully validated based only on `next_start_page = null`.
 
-PR #523 also contains `historical-backfill-promotion-gate.yml`. That gate reads the authoritative `master-staging` manifest and fails while `next_start_page` is non-null. Therefore promotion is explicitly blocked until the current staging backfill reports `next_start_page = null`.
+Canonical artifacts:
+- Manifest: `workspace/llm_map/context_relationships/manifest.json`
+- Bounded collector: `.github/workflows/context-relationship-backfill.yml`
+- Runtime watcher: `.github/workflows/context-relationship-backfill-watcher.yml`
+- Tracking issue: [#522](https://github.com/timerloggedout-spec/termux-monorepo/issues/522)
 
-## Required state transition
+## Current workflow behavior
 
-`master-staging next_start_page=2`
+The collector checks out `master`, resumes from the manifest's `next_start_page`, builds one bounded history window, validates the delta and hashes, and writes only the bounded corpus change back to `master`. It is triggered by relevant corpus pushes, an hourly schedule, or explicit dispatch.
 
-→ execute page 2
+The watcher records run/attempt/SHA, job and step states, artifact names, and a structured observer-only receipt. A watcher receipt is runtime evidence, not a corpus-promotion decision.
 
-→ validate authoritative effect
+The earlier `historical-backfill-promotion-gate.yml` referenced by the legacy staging design is **not present on current master**. Do not claim that a dedicated promotion workflow currently enforces the final checkpoint gate.
 
-→ repeat from the newly committed `next_start_page`
+## Required promotion conditions
 
-→ `next_start_page=null`
+Promotion requires all of the following, evidenced against the current master SHA:
 
-→ promotion gate passes
+1. Record source SHA/ref, start page, next page, input/schema/manifest hashes, and the bounded diff.
+2. Confirm history-window pagination is exhausted for the intended scope.
+3. Resolve or explicitly disposition all parser failures and unresolved internal references; any accepted exclusions must be documented and test-covered.
+4. Run the canonical corpus validators and record their actual result.
+5. Verify node/edge counts, verified/candidate classification, and reference integrity without interpreting missing data as zero.
+6. Inspect the Actions run, jobs, steps, artifacts, and receipt for the exact run/attempt and SHA.
+7. Confirm the diff contains only the intended corpus delta and required metadata.
+8. Record an explicit promotion decision. If any gate is absent or fails, keep `checkpoint_eligible = false`.
 
-→ only then can PR #523 establish the new master-anchored continuation layer.
+A successful workflow conclusion, elapsed time, branch mergeability, or `next_start_page = null` alone is not evidence that these conditions passed.
 
-A successful PR check, mergeability, or elapsed time is not evidence that the historical corpus completed.
+## Historical note
+
+The previous version described `master-staging` as the continuation target and cited 2026-08/09 manifest snapshots. That record is retained in repository history, but its branch-specific directions are obsolete after the collector was re-anchored to current `master`.

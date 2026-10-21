@@ -17,7 +17,7 @@ real runs ─▶ "/delphi confirmed|miss" or repository_dispatch ─▶ flywheel
 |---|---|---|
 | RFP | Issue form `.github/ISSUE_TEMPLATE/delphi-rfp.yml` in Gantt proposal format: lane, free quota with source URL, reset with zone, auth from Actions (secret **name** only), lock-in, failure modes | template |
 | Oracle | Attaches the documented limit + source URL (`ops/delphi/surfaces.json`, cross-referenced to `ops/quota/registry.json`), the live 3L0 quota multiplier from the `quota-readings` artifact when one exists, and ForeSight horizon / failure-mode evidence. `limit: null` = no fetched page states a number; nothing is invented | `gate.oracle` |
-| Panel | 5 blind roles: OPERATOR, builder, reviewer, Scout, cost_auditor. Each scores DECISION-MATRIX Impact 1-5 × Importance 1-5. With `OPENROUTER_API_KEY` (`:free` models only) or `GEMINI_API_KEY` (free tier) present, roles vote through the free model; otherwise each role's transparent rubric votes. The cost auditor's **money veto** (needs a card / auto-bills) caps the score at 4 regardless | `gate.rubric_vote`, `gate.llm_vote` |
+| Panel | 5 blind roles: OPERATOR, builder, reviewer, Scout, cost_auditor. Each scores DECISION-MATRIX Impact 1-5 × Importance 1-5. MSM-018 keeps every role on transparent rubric scoring only. Provider keys are not passed to the job; model ballots remain disabled until exact no-cost entitlement and fresh quota admission are implemented and independently validated. The cost auditor's **money veto** (needs a card / auto-bills) caps the score at 4 regardless | `gate.rubric_vote`, `gate.llm_vote` |
 | Rounds | Rounds 2-3 show each role only the median, the IQR and anonymous outlier reasons. Stop when IQR ≤ 4 or range ≤ 6, or after round 3 | `gate.delphi` |
 | Score | `effective_score = Σ(w×score)/Σw`, `w = base × (0.5 + gate_pass_rate) × (elo/1500)` | `gate.effective` |
 | Award | ≥ 15 (High/P0) and no veto → **shadow** at 5% traffic, promote after 3 confirmed runs. 9-14.99 → **parked**, recheck 14 days. < 9 or veto → **parked**, recheck 30 days. A shadow award whose Actions credential is verified absent also gets `delphi:needs-access` (Access lane) | `gate.award` |
@@ -57,3 +57,7 @@ python3 -m pytest -q tests/test_delphi_gate.py
 ```
 
 Signed-off-by: Hark (OPERATOR) delphi-gate-2026-10-20 / project-bbf883e1
+
+## Quota and attribution reconciliation (MSM-018)
+
+Generated rubric scores (including role-labeled signatures) are not independent human or provider-model ballots. The existing OpenRouter [RFP ledger](https://github.com/timerloggedout-spec/termux-monorepo/issues/1426#issuecomment-6310432412) explicitly records `via: rubric`; its result establishes rubric processing, not OpenRouter inference. A shadow award is advisory and never opens runtime admission. Key presence, `:free` names and neutral unknown-quota multipliers cannot authorize model voting. This slice preserves event/cadence behavior while removing the implicit key-to-inference path; it does not cast or alter historical votes.

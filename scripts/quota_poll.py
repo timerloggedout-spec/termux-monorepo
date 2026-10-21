@@ -8,7 +8,7 @@ routing-weights.json, and one QUOTA line per live reading on stdout.
 """
 from __future__ import annotations
 
-import argparse, hashlib, json, math, os, sys, time, urllib.request, urllib.parse
+import argparse, contextlib, hashlib, json, math, os, sys, time, urllib.request, urllib.parse
 from datetime import datetime, timezone
 
 UA = {"User-Agent": "termux-monorepo-quota-poll"}
@@ -119,22 +119,24 @@ def openrouter_reader(now):
     key = os.environ.get("OPENROUTER_API_KEY")
     if not key:
         return None
-    d = _get("https://openrouter.ai/api/v1/key", {"Authorization": "Bearer " + key}).get("data", {})
-    fm = d.get("free_model_daily_requests") or {}
-    used, lim = fm.get("used", fm.get("count")), fm.get("limit")
-    if not _valid_counters(used, lim):
+    payload = _get("https://openrouter.ai/api/v1/key", {"Authorization": "Bearer " + key})
+    data = payload.get("data") if isinstance(payload, dict) else None
+    fm = data.get("free_model_daily_requests") if isinstance(data, dict) else None
+    if not isinstance(fm, dict):
         return None
-    return {
-        "used": used,
-        "limit": lim,
-        "remaining": fm.get("remaining", max(0, lim - used)),
-        "elapsed": None,
-        "reset": fm.get("reset") or fm.get("resets_at") or "UTC midnight",
-        "extra": {
-            "is_free_tier": d.get("is_free_tier"),
-            "source": "official OpenRouter GET /api/v1/key",
-        },
-    }
+    # The documented counter is an integer triplet. Do not treat credit/budget
+    # fields, response metadata, booleans, or malformed numeric values as quota.
+    values = (fm.get("used"), fm.get("limit"), fm.get("remaining"))
+    if any(type(v) is not int or v < 0 for v in values):
+        return None
+    used, limit, remaining = values
+    if used > limit or remaining > limit or used + remaining != limit:
+        return None
+    # Docs define the daily counter as UTC-day and say it resets at UTC midnight;
+    # the endpoint does not return a per-counter reset timestamp.
+    return {"used": used, "limit": limit, "remaining": remaining, "elapsed": None,
+            "reset": "UTC midnight",
+            "extra": {"source": "official OpenRouter GET /api/v1/key"}}
 
 
 LIVE = {"github.api.github_token": gh_rate, "github.actions.cache": gh_cache,
@@ -183,28 +185,58 @@ def record(svc, reading, now):
     return rec
 
 
+def collect_readings(now):
+    """Private collection; callers decide whether reader stdout may be exposed."""
+    readings = {}
+    for sid, fn in LIVE.items():
+        try:
+            r = fn(now)
+            if r: readings[sid] = r
+        except Exception as e:
+            print(f"QUOTA {sid} error={type(e).__name__}")
+    for fn in MULTI:
+        try:
+            readings.update(fn(now) or {})
+        except Exception as e:
+            print(f"QUOTA {fn.__name__} error={type(e).__name__}")
+    return readings
+
+
+def public_snapshot(services, readings, now):
+    """Allowlist status metadata only; never export values or hashes of private data."""
+    return {"schema": "quota-public-status/v1", "generated_at": now.isoformat(),
+            "policy": "Private observations withheld; status is not remaining quota or admission.",
+            "readings": [{"resource_id": svc["id"], "provider": svc["provider"],
+                          "status": "private_preflight" if svc["id"] in readings else "unknown",
+                          "observed_at": now.isoformat() if svc["id"] in readings else None}
+                         for svc in services]}
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--registry", default="ops/quota/registry.json")
     ap.add_argument("--out", default="quota-out")
     ap.add_argument("--offline", action="store_true", help="skip all network reads")
+    ap.add_argument("--public", action="store_true", help="publish status metadata only; suppress private reader logs and artifacts")
     a = ap.parse_args(argv)
+    if a.public and os.path.exists(a.out) and os.listdir(a.out):
+        ap.error("--public requires a new or empty output directory")
     reg = json.load(open(a.registry))
     now = datetime.now(timezone.utc)
     readings = {}
     if not a.offline:
-        for sid, fn in LIVE.items():
-            try:
-                r = fn(now)
-                if r: readings[sid] = r
-            except Exception as e:
-                print(f"QUOTA {sid} error={type(e).__name__}")
-        for fn in MULTI:
-            try:
-                readings.update(fn(now) or {})
-            except Exception as e:
-                print(f"QUOTA {fn.__name__} error={type(e).__name__}")
+        if a.public:
+            with open(os.devnull, "w") as sink, contextlib.redirect_stdout(sink), contextlib.redirect_stderr(sink):
+                readings = collect_readings(now)
+        else:
+            readings = collect_readings(now)
     os.makedirs(a.out, exist_ok=True)
+    if a.public:
+        with open(os.path.join(a.out, "quota-public-status.json"), "w") as f:
+            json.dump(public_snapshot(reg["services"], readings, now), f, indent=2)
+            f.write("\n")
+        print("QUOTA public status projection written; private readings and routing weights withheld")
+        return 0
     recs = [record(s, readings.get(s["id"]), now) for s in reg["services"]]
     with open(os.path.join(a.out, "quota-records.jsonl"), "w") as f:
         for r in recs: f.write(json.dumps(r, sort_keys=True) + "\n")

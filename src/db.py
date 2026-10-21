@@ -3,6 +3,7 @@ import os
 import json
 import re
 import subprocess
+import shutil
 
 DB_PATH = "local_repo.db"
 
@@ -84,6 +85,27 @@ def log_attempt_telemetry(target_file, attempt, patch, errors, verdict):
     except Exception:
         pass
 
+_AST_GREP_BIN = None
+_AST_GREP_CHECKED = False
+
+def _get_ast_grep_bin():
+    global _AST_GREP_BIN, _AST_GREP_CHECKED
+    if not _AST_GREP_CHECKED:
+        _AST_GREP_CHECKED = True
+        ast_grep = shutil.which("ast-grep")
+        if ast_grep:
+            _AST_GREP_BIN = ast_grep
+        else:
+            sg_path = shutil.which("sg")
+            if sg_path:
+                try:
+                    res = subprocess.run([sg_path, "--version"], capture_output=True, text=True, timeout=5)
+                    if res.returncode == 0 and "ast-grep" in res.stdout:
+                        _AST_GREP_BIN = sg_path
+                except Exception:
+                    pass
+    return _AST_GREP_BIN
+
 def index_project_file(workspace_root, relative_path, conn=None):
     """
     Index a supported project file's code elements and import relationships in the database.
@@ -92,6 +114,9 @@ def index_project_file(workspace_root, relative_path, conn=None):
         workspace_root: Root directory of the project.
         relative_path: File path relative to the project root.
     """
+    ast_bin = _get_ast_grep_bin()
+    if not ast_bin:
+        return
     abs_path = os.path.join(workspace_root, relative_path)
     ext = os.path.splitext(relative_path)[1]
     lang_map = {'.py': 'python', '.js': 'javascript', '.mjs': 'javascript', '.rs': 'rust'}
@@ -100,13 +125,13 @@ def index_project_file(workspace_root, relative_path, conn=None):
         return
     try:
         # Run first ast-grep to scan nodes
-        output = subprocess.check_output(["ast-grep", "scan", "--json", abs_path], text=True)
+        output = subprocess.check_output([ast_bin, "scan", "--json", abs_path], text=True)
         nodes = json.loads(output)
 
         # Run second ast-grep to scan imports
         import_pattern = "import $MOD from '$PATH'" if lang == 'javascript' else "import $MOD"
         import_output = subprocess.check_output(
-            ["ast-grep", "scan", "--pattern", import_pattern, "--json", abs_path], text=True
+            [ast_bin, "scan", "--pattern", import_pattern, "--json", abs_path], text=True
         )
         import_nodes = json.loads(import_output)
 

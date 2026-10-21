@@ -3,7 +3,7 @@
 1337 MAPPER GRAPH v1.1 – Fixed path resolution & ast-grep robustness.
 Reads existing map_*.jsonl, resolves imports/symlinks, writes file_graph.json.
 """
-import json, re, os, subprocess, sys
+import json, re, os, subprocess, sys, shutil
 from pathlib import Path
 from collections import defaultdict
 
@@ -11,6 +11,23 @@ HOME = Path.home()
 MAP_FILES = ['map_py.jsonl', 'map_js.jsonl', 'map_sh.jsonl', 'map_json.jsonl',
              'map_md.jsonl', 'map_other.jsonl', 'central_index.jsonl']
 GRAPH_OUT = HOME / 'file_graph.json'
+
+def check_ast_grep() -> str | None:
+    """Check if ast-grep is available and return valid binary name, else None."""
+    ast_grep_path = shutil.which('ast-grep')
+    if ast_grep_path:
+        return ast_grep_path
+    sg_path = shutil.which('sg')
+    if sg_path:
+        try:
+            res = subprocess.run([sg_path, '--version'], capture_output=True, text=True, timeout=5)
+            if res.returncode == 0 and 'ast-grep' in res.stdout:
+                return sg_path
+        except Exception:
+            pass
+    return None
+
+AST_GREP_BIN = check_ast_grep()
 
 IMPORT_RE = {
     'python': [
@@ -54,26 +71,27 @@ def extract_imports(file_path: Path, lang: str) -> list:
         return []
     imports = set()
     if lang == 'python':
-        # Try ast-grep for precise import statements
-        try:
-            cmd = ['sg', '--pattern', 'import_statement', '--lang', 'python',
-                   '--json', str(file_path)]
-            res = subprocess.run(cmd, capture_output=True, text=True, timeout=5)
-            if res.returncode == 0 and res.stdout.strip():
-                # ast-grep outputs one JSON object per match
-                for line in res.stdout.splitlines():
-                    try:
-                        match = json.loads(line)
-                    except:
-                        continue
-                    node = match.get('text','')
-                    for m in re.finditer(r'(?:from\s+(\S+)\s+import|import\s+(\S+))', node):
-                        imp = m.group(1) or m.group(2)
-                        if imp:
-                            imports.add(imp)
-                return list(imports)
-        except:
-            pass
+        if AST_GREP_BIN:
+            # Try ast-grep for precise import statements
+            try:
+                cmd = [AST_GREP_BIN, '--pattern', 'import_statement', '--lang', 'python',
+                       '--json', str(file_path)]
+                res = subprocess.run(cmd, capture_output=True, text=True, timeout=5)
+                if res.returncode == 0 and res.stdout.strip():
+                    # ast-grep outputs one JSON object per match
+                    for line in res.stdout.splitlines():
+                        try:
+                            match = json.loads(line)
+                        except:
+                            continue
+                        node = match.get('text','')
+                        for m in re.finditer(r'(?:from\s+(\S+)\s+import|import\s+(\S+))', node):
+                            imp = m.group(1) or m.group(2)
+                            if imp:
+                                imports.add(imp)
+                    return list(imports)
+            except:
+                pass
         # Fallback regex
         for pattern in IMPORT_RE.get(lang, []):
             for m in pattern.finditer(content):
@@ -92,16 +110,26 @@ def resolve_import_to_file(import_spec, current_file: Path, file_set: set, name_
     """Resolve an import string to an absolute Path using known file_set (relative paths)."""
     # Try relative resolution (current_file is absolute)
     target = resolve_import_target(current_file, import_spec)
-    if target and str(target.relative_to(HOME)) in file_set:
-        return target
+    if target:
+        try:
+            if str(target.relative_to(HOME)) in file_set:
+                return target
+        except ValueError:
+            pass
     # Try as absolute under HOME: import 'foo.bar' -> HOME/foo/bar.py
     parts = import_spec.split('.')
-    candidate = HOME.joinpath(*parts).with_suffix('.py')
-    if str(candidate.relative_to(HOME)) in file_set:
-        return candidate
-    candidate = HOME.joinpath(*parts) / '__init__.py'
-    if str(candidate.relative_to(HOME)) in file_set:
-        return candidate
+    try:
+        candidate = HOME.joinpath(*parts).with_suffix('.py')
+        if str(candidate.relative_to(HOME)) in file_set:
+            return candidate
+    except ValueError:
+        pass
+    try:
+        candidate = HOME.joinpath(*parts) / '__init__.py'
+        if str(candidate.relative_to(HOME)) in file_set:
+            return candidate
+    except ValueError:
+        pass
     # Fallback: match filename anywhere in known files (O(1) lookup via name_map)
     filename = parts[-1] + '.py'
     if name_map is None:

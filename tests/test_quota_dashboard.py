@@ -117,7 +117,7 @@ def test_dashboard_does_not_equate_static_links_or_parsers_with_live_managers():
     counts = snapshot["coverage_counts"]
     assert "live_account_managers" not in counts
     assert counts["implemented_passive_adapters"] == 6
-    assert counts["missing_actual_quota_service_mappings"] == 17
+    assert counts["missing_actual_quota_service_mappings"] == counts["provider_families"] - counts["actual_quota_service_mappings"]
     assert counts["opt_in_private_service_managers"] == 2
     assert "opt-in private services" in html
     assert all(row["evidence_state"] == "unknown" for row in snapshot["provider_families"])

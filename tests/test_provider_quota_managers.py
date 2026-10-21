@@ -11,7 +11,7 @@ class ProviderQuotaManagerTests(unittest.TestCase):
     def test_registry_is_exhaustive_and_explicit(self):
         rows = managers.load_managers()
         self.assertEqual(set(rows), set(_providers()))
-        self.assertEqual(len(rows), 20)
+        self.assertEqual(len(rows), 27)
         self.assertTrue(all(r['status'] in {'implemented_passive_adapter', 'public_documentation_only', 'unsupported'} for r in rows.values()))
 
     def test_public_metadata_is_static_and_has_no_account_values(self):

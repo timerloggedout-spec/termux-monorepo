@@ -170,6 +170,26 @@
       "live_account_state": "unknown"
     },
     {
+      "provider_family": "requesty",
+      "mapping_id": "adapter:requesty",
+      "evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "routeway",
+      "mapping_id": "adapter:routeway",
+      "evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
       "provider_family": "sambanova",
       "mapping_id": "adapter:sambanova",
       "evidence": [
@@ -180,8 +200,56 @@
       "live_account_state": "unknown"
     },
     {
+      "provider_family": "sealion",
+      "mapping_id": "adapter:sealion",
+      "evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
       "provider_family": "siliconflow",
       "mapping_id": "adapter:siliconflow",
+      "evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "typhoon",
+      "mapping_id": "adapter:typhoon",
+      "evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "unorouter",
+      "mapping_id": "adapter:unorouter",
+      "evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "xfyun",
+      "mapping_id": "adapter:xfyun",
+      "evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "xkiro",
+      "mapping_id": "adapter:xkiro",
       "evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"

@@ -12,8 +12,11 @@ from typing import Any, Mapping
 
 try:
     from llm_api_hub.server import provider_protocols
+    from llm_api_hub.server import provider_extensions, typhoon_protocol
 except ImportError:
     import provider_protocols  # type: ignore
+    import provider_extensions  # type: ignore
+    import typhoon_protocol  # type: ignore
 
 SCHEMA = "research-provider-admission/v1"
 ENDPOINTS = {
@@ -33,6 +36,7 @@ ENDPOINTS = {
     "sambanova": ("https://api.sambanova.ai/v1/chat/completions", ("SAMBANOVA_API_KEY",)),
 }
 ENDPOINTS.update({p: (provider_protocols.CHAT_ENDPOINTS[p], provider_protocols.SECRET_ENV[p]) for p in provider_protocols.PROVIDER_KEYS})
+ENDPOINTS.update(provider_extensions.ENDPOINTS)
 MAX_RESPONSE_BYTES = 2 * 1024 * 1024
 
 
@@ -154,6 +158,8 @@ def post_json(url: str, payload: dict[str, Any], key: str, timeout: float, *, re
             retry = None
         if exc.code == 429:
             raise ProviderAdmissionError(429, "native provider rate limit reached", "upstream_rate_limited", retry)
+        if exc.code in (401, 402, 403):
+            raise ProviderAdmissionError(502, "native provider authentication or account error", "upstream_auth_error")
         if exc.code in (301, 302, 303, 307, 308):
             raise ProviderAdmissionError(502, "native provider redirect refused", "upstream_redirect")
         raise ProviderAdmissionError(502, "native provider request failed", "upstream_error")
@@ -163,8 +169,13 @@ def post_json(url: str, payload: dict[str, Any], key: str, timeout: float, *, re
         raise ProviderAdmissionError(502, "native provider returned invalid JSON", "upstream_invalid_response")
     if response_provider:
         try:
-            value = provider_protocols.normalize_chat_response(response_provider, value, model)
-        except provider_protocols.ProtocolError:
+            if response_provider == "typhoon":
+                value = typhoon_protocol.normalize_chat_response(value, model)
+            elif response_provider in provider_extensions.ENDPOINTS:
+                value = _normalize_extension_response(value, model, response_provider)
+            else:
+                value = provider_protocols.normalize_chat_response(response_provider, value, model)
+        except (provider_protocols.ProtocolError, typhoon_protocol.TyphoonProtocolError, ValueError, TypeError):
             raise ProviderAdmissionError(502, "native provider returned an invalid response", "upstream_invalid_response")
     if not isinstance(value, dict) or not isinstance(value.get("choices"), list) or not value["choices"]:
         raise ProviderAdmissionError(502, "native provider returned an invalid response", "upstream_invalid_response")
@@ -175,6 +186,19 @@ def complete(provider: str, model: str, payload: dict[str, Any], timeout: float)
     key = authorize(provider, model)
     if not isinstance(payload, dict) or payload.get("model") != model:
         raise ProviderAdmissionError(403, "request model does not match admitted model", "provider_not_admitted")
+    if provider in provider_extensions.ENDPOINTS:
+        if provider == "typhoon":
+            try:
+                payload = typhoon_protocol.build_chat_request(payload)
+            except typhoon_protocol.TyphoonProtocolError:
+                raise ProviderAdmissionError(400, "invalid native provider request", "invalid_request")
+        else:
+            try:
+                payload = _build_extension_request(provider, model, payload)
+            except (TypeError, ValueError):
+                raise ProviderAdmissionError(400, "invalid native provider request", "invalid_request")
+        return post_json(ENDPOINTS[provider][0], payload, key, timeout,
+                         response_provider=provider, model=model)
     if provider == "cloudflare":
         return post_json(provider_protocols.cloudflare_chat_url(os.environ.get("CLOUDFLARE_ACCOUNT_ID")), payload, key, timeout)
     if provider == "cohere":
@@ -185,3 +209,94 @@ def complete(provider: str, model: str, payload: dict[str, Any], timeout: float)
         return post_json(ENDPOINTS[provider][0], payload, key, timeout, response_provider=provider, model=model)
     # URLs come only from the reviewed map; model identities stay in JSON bodies.
     return post_json(ENDPOINTS[provider][0], payload, key, timeout)
+
+
+def _build_extension_request(provider: str, model: str, payload: Mapping[str, Any]) -> dict[str, Any]:
+    """Validate a small text-only OpenAI request subset for every extension."""
+    if not isinstance(payload, Mapping) or payload.get("model") != model:
+        raise ValueError("model mismatch")
+    if provider == "xfyun" and model != "lite":
+        raise ValueError("unsupported model")
+    if provider in {"unorouter", "routeway"} and not model.endswith(":free"):
+        raise ValueError("free model suffix required")
+    if provider == "requesty" and ("/" not in model or model.startswith(("policy/", "router/"))):
+        raise ValueError("routing alias unsupported")
+    allowed = {"model", "messages", "max_tokens", "temperature", "top_p", "n", "stream", "stop", "presence_penalty", "frequency_penalty"}
+    if set(payload) - allowed or payload.get("stream", False) is not False:
+        raise ValueError("unsupported field")
+    msgs = payload.get("messages")
+    if not isinstance(msgs, list) or not msgs:
+        raise ValueError("invalid messages")
+    messages = []
+    for msg in msgs:
+        if not isinstance(msg, Mapping) or set(msg) != {"role", "content"} or msg.get("role") not in {"system", "user", "assistant"} or not isinstance(msg.get("content"), str):
+            raise ValueError("invalid message")
+        messages.append({"role": msg["role"], "content": msg["content"]})
+    result: dict[str, Any] = {"model": model, "messages": messages, "stream": False}
+    for field, maximum in (("max_tokens", 1_000_000), ("n", 4)):
+        if field in payload:
+            value = payload[field]
+            if provider == "xfyun" and field == "max_tokens":
+                maximum = 4096
+            if isinstance(value, bool) or not isinstance(value, int) or not 1 <= value <= maximum:
+                raise ValueError("invalid numeric value")
+            result[field] = value
+    for field, low, high in (("temperature", 0, 2), ("top_p", 0, 1), ("presence_penalty", -2, 2), ("frequency_penalty", -2, 2)):
+        if field in payload:
+            value = payload[field]
+            if isinstance(value, bool) or not isinstance(value, (int, float)) or not low <= value <= high:
+                raise ValueError("invalid numeric value")
+            if provider == "xfyun" and field == "top_p" and value == 0:
+                raise ValueError("invalid numeric value")
+            result[field] = value
+    if "stop" in payload:
+        value = payload["stop"]
+        if not isinstance(value, str) and not (isinstance(value, list) and 1 <= len(value) <= 4 and all(isinstance(v, str) for v in value)):
+            raise ValueError("invalid stop")
+        result["stop"] = value
+    return result
+
+
+def _normalize_extension_response(value: Any, model: str, provider: str = "") -> dict[str, Any]:
+    """Normalize documented text responses; discard unknown account metadata."""
+    if provider == "xfyun":
+        # Spark's documented non-stream response omits model and finish_reason.
+        # Only the fixed, admitted Lite request is allowed to supply that model.
+        if (not isinstance(value, dict) or model != "lite"
+                or not isinstance(value.get("code"), int) or isinstance(value.get("code"), bool) or value.get("code") != 0):
+            raise ValueError("invalid response")
+        value = dict(value)
+        value.setdefault("model", model)
+    if not isinstance(value, dict) or value.get("error") or value.get("model") != model:
+        raise ValueError("invalid response")
+    choices = value.get("choices")
+    if not isinstance(choices, list) or not choices:
+        raise ValueError("invalid response")
+    clean, seen = [], set()
+    for choice in choices:
+        if not isinstance(choice, dict):
+            raise ValueError("invalid choice")
+        index, message = choice.get("index"), choice.get("message")
+        reason = choice.get("finish_reason")
+        if provider == "xfyun" and reason is None:
+            reason = "stop"
+        if (isinstance(index, bool) or not isinstance(index, int) or index < 0 or index in seen
+                or not isinstance(message, dict) or message.get("role") != "assistant"
+                or not isinstance(message.get("content"), str)
+                or reason not in (None, "stop", "length", "content_filter")):
+            raise ValueError("invalid choice")
+        seen.add(index)
+        clean.append({"index": index, "message": {"role": "assistant", "content": message["content"]}, "finish_reason": reason})
+    result = {"object": "chat.completion", "model": model, "choices": clean}
+    if isinstance(value.get("id"), str):
+        result["id"] = value["id"]
+    if isinstance(value.get("created"), int) and not isinstance(value.get("created"), bool):
+        result["created"] = value["created"]
+    usage = value.get("usage")
+    fields = ("prompt_tokens", "completion_tokens", "total_tokens")
+    if usage is not None:
+        if (not isinstance(usage, dict) or any(isinstance(usage.get(k), bool) or not isinstance(usage.get(k), int) or usage[k] < 0 for k in fields)
+                or usage["total_tokens"] != usage["prompt_tokens"] + usage["completion_tokens"]):
+            raise ValueError("invalid usage")
+        result["usage"] = {k: usage[k] for k in fields}
+    return result

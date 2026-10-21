@@ -162,7 +162,7 @@ def test_reviewed_freellmapi_aliases_do_not_execute_or_admit_services():
     source['model_candidates'] = [dict(template, provider_key=key, provider_name=key)
                                   for key in batch.SOURCE_PROVIDER_MAP['tashfeenahmed/freellmapi']]
     report = batch.reconcile(source, catalog())
-    assert len(report['candidates']) == 16
+    assert len(report['candidates']) == 23
     for row in report['candidates']:
         assert row['service_disposition'] == 'chat_transport_available'
         assert row['runtime_eligible'] is False and row['quota_remaining'] is None
@@ -171,7 +171,7 @@ def test_reviewed_freellmapi_aliases_do_not_execute_or_admit_services():
     summary = report['summary']['by_source']['tashfeenahmed/freellmapi']
     assert summary['individual_model_claims'] == summary['observed_model_claims'] == 0
     assert summary['service_reference_coverage'] == {
-        'total': 16, 'by_disposition': {'chat_transport_available': 16}}
+        'total': 23, 'by_disposition': {'chat_transport_available': 23}}
 
 
 def test_source_aliases_never_fuzzy_match_or_cross_key_namespaces():

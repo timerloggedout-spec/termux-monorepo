@@ -48,27 +48,14 @@ SOURCE_PROVIDER_MAP = {
         "huggingface": "huggingface", "ollama": "ollama", "kilo": "kilo",
         "llm7": "llm7", "ovh": "ovhcloud", "siliconflow": "siliconflow",
         "aion": "aion", "cloudflare": "cloudflare", "cohere": "cohere",
-        "modelscope": "modelscope",
+        "modelscope": "modelscope", "typhoon": "typhoon", "xfyun": "xfyun",
+        "unorouter": "unorouter", "routeway": "routeway", "requesty": "requesty",
+        "xkiro": "xkiro", "sealion": "sealion",
     },
 }
 RESEARCH_SERVICE_MAP = {
     ("tashfeenahmed/freellmapi", "firecrawl"): "firecrawl_fixed_public_research",
 }
-# Protocol implementation is separate from callable transports and account admission.
-# No upstream identity can opt itself into this reviewed, source-scoped map.
-OFFLINE_PROTOCOL_MAP = {
-    ("tashfeenahmed/freellmapi", "typhoon"): {
-        "provider": "typhoon",
-        "implementation_path": "llm_api_hub/server/typhoon_protocol.py",
-        "documentation_path": "docs/ops/TYPHOON-FREE-API-CONTRACT.md",
-        "status": "offline_protocol_legal_hold",
-        "official_free_tier": "documented_zero_cost_light_usage",
-        "account_entitlement": "unverified",
-        "live_inference": "not_attempted",
-    },
-}
-
-
 def reconcile(snapshot: dict, catalog: dict) -> dict:
     candidates, _ = _validate_provider(snapshot)
     if not isinstance(catalog, dict) or catalog.get("schema") != "provider-model-catalog/v5":
@@ -127,15 +114,10 @@ def reconcile(snapshot: dict, catalog: dict) -> dict:
         })
         if candidate["model_key"] == "provider-catalog":
             service = RESEARCH_SERVICE_MAP.get((candidate["source_repo"], candidate["provider_key"]))
-            offline = OFFLINE_PROTOCOL_MAP.get((candidate["source_repo"], candidate["provider_key"]))
-            if offline:
-                results[-1]["offline_protocol_adapter"] = dict(offline)
-                results[-1]["blocked_reasons"].append("Typhoon terms/data-use review required; no transport, credentials or live calls enabled")
             results[-1]["research_service_adapter"] = service
             results[-1]["service_disposition"] = (
                 "custom_configuration_placeholder" if (candidate["source_repo"], candidate["provider_key"]) == ("tashfeenahmed/freellmapi", "custom")
                 else "chat_transport_available" if native == "openrouter" or native in NATIVE_CHAT_PROVIDERS
-                else "offline_protocol_legal_hold" if offline
                 else "fixed_public_research_only" if service
                 else "unmapped_service_reference"
             )

@@ -1,0 +1,21 @@
+flowchart LR
+  OWNER["Maintainer / Owner"] --> UI["Dual-pane HITL surface"]
+  UI --> REPLAY["Replay spine / SeekLog + TimeSeries"]
+  UI --> COMMAND["Command deck / Preview → Policy → HITL"]
+  REPLAY --> GRAPH["Context constellation / verified + candidate"]
+  REPLAY --> MMD[".mmd topology draft"]
+  REPLAY --> GOURCE["Gource parallel renderer"]
+  REPLAY --> CCTV["ICM-CCTV / observatory strip"]
+  COMMAND --> CONTEXT["GitHub / foreign-repo context"]
+  CONTEXT --> CONTRIB["CONTRIBUTING / CODEOWNERS / templates"]
+  COMMAND --> CADENCE["Sprint / cycle"]
+  COMMAND --> COLLAB["Collaborator sync planner"]
+  COMMAND --> STATE["DRAFT → APPROVED → DISPATCHED"]
+  STATE --> GITHUB["GitHub / Actions"]
+  GITHUB --> EFFECT["Effect + Evidence"]
+  EFFECT --> EVENTS["OPS-EVENT"]
+  EVENTS --> REPLAY
+  EVENTS --> MDX["MDX / image projections"]
+  EVENTS --> N8N["n8n-style adapter"]
+  TELEMETRY["EPS telemetry #732"] -. provider .-> EVENTS
+  TELEMETRY -. separated .-> CCTV

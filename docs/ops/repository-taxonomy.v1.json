@@ -1,0 +1,174 @@
+{
+  "schema_version": "repository-taxonomy.v1",
+  "status": "proposed_versioned_working_taxonomy",
+  "repository": "timerloggedout-spec/termux-monorepo",
+  "source_issue": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1450",
+  "counts": {
+    "mission_domains": 12,
+    "benchmark_task_families": 8,
+    "existing_system_one_routing_labels": 6
+  },
+  "existing_system_one_routing_labels": [
+    "routing",
+    "security",
+    "agent",
+    "code",
+    "ops",
+    "general"
+  ],
+  "mission_domains": [
+    {
+      "id": "governance_provenance",
+      "name": "Repository governance & provenance",
+      "subcategories": [
+        "issue_pr_commit_linkage",
+        "claim_evidence_ledger",
+        "ownership_and_traceability",
+        "source_citations"
+      ],
+      "status": "design"
+    },
+    {
+      "id": "agent_orchestration",
+      "name": "AI / agent orchestration",
+      "subcategories": [
+        "role_contracts",
+        "routing_and_delegation",
+        "tool_boundaries",
+        "retry_and_stop_conditions"
+      ],
+      "status": "design"
+    },
+    {
+      "id": "system_one_decisions",
+      "name": "System One / typed decisions",
+      "subcategories": [
+        "choice",
+        "score",
+        "boolean",
+        "ranking",
+        "abstention"
+      ],
+      "status": "partial"
+    },
+    {
+      "id": "text_classification",
+      "name": "Text classification & routing",
+      "subcategories": [
+        "intent",
+        "support_queue",
+        "repository_task_routing",
+        "out_of_distribution"
+      ],
+      "status": "partial"
+    },
+    {
+      "id": "extraction_structured",
+      "name": "Extraction & structured understanding",
+      "subcategories": [
+        "entity_span_extraction",
+        "multi_label",
+        "schema_parsing"
+      ],
+      "status": "partial"
+    },
+    {
+      "id": "code_intelligence",
+      "name": "Code intelligence & repair",
+      "subcategories": [
+        "code_review",
+        "patch_generation",
+        "regression_analysis",
+        "issue_to_patch"
+      ],
+      "status": "design"
+    },
+    {
+      "id": "performance_resources",
+      "name": "Performance & resource efficiency",
+      "subcategories": [
+        "latency_percentiles",
+        "throughput",
+        "concurrency",
+        "memory_cpu_gpu",
+        "cost_and_energy"
+      ],
+      "status": "design"
+    },
+    {
+      "id": "observability_messages",
+      "name": "Observability & message quality",
+      "subcategories": [
+        "trace_completeness",
+        "message_size_tokens",
+        "tool_call_failures",
+        "retry_lineage",
+        "privacy_redaction"
+      ],
+      "status": "design"
+    },
+    {
+      "id": "security_trust",
+      "name": "Security & trust",
+      "subcategories": [
+        "prompt_injection",
+        "secret_boundaries",
+        "dependency_risk",
+        "artifact_provenance",
+        "policy_compliance"
+      ],
+      "status": "partial"
+    },
+    {
+      "id": "evaluation_science",
+      "name": "Testing & evaluation science",
+      "subcategories": [
+        "datasets_and_splits",
+        "judge_calibration",
+        "statistical_uncertainty",
+        "reproducibility",
+        "regression_gates"
+      ],
+      "status": "partial"
+    },
+    {
+      "id": "research_foss",
+      "name": "Research & FOSS procurement",
+      "subcategories": [
+        "source_verification",
+        "license_terms",
+        "upstream_health",
+        "compatibility",
+        "novelty_triage"
+      ],
+      "status": "design"
+    },
+    {
+      "id": "operations_delivery",
+      "name": "Operations & delivery",
+      "subcategories": [
+        "ci",
+        "release_readiness",
+        "deployment_health",
+        "artifact_retention",
+        "rollback_incident_evidence"
+      ],
+      "status": "partial"
+    }
+  ],
+  "benchmark_task_families": [
+    "typed_decision",
+    "single_label_classification",
+    "multi_label_classification",
+    "span_entity_extraction",
+    "ranking_pairwise_preference",
+    "abstention_selective_prediction",
+    "code_task_success",
+    "tool_trace_process_conformance"
+  ],
+  "counting_rules": [
+    "Mission domains, task families, and routing labels are different taxonomies; never sum them as one count.",
+    "Subcategories are proposed coverage targets unless linked to tests and evidence.",
+    "Only report implemented coverage when test IDs, source paths, and latest CI evidence are attached."
+  ]
+}

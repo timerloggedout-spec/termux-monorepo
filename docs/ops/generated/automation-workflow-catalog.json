@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "e64e91bc6e1e62516cb3a92b12fb1d912d419f06f70821b4b9ee7ee0c9eb7509",
-  "workflow_count": 159,
+  "source_fingerprint": "03e5cd47daa0e8636c1f8443c07be684e876f1d69893ee5021288288ddea9fa7",
+  "workflow_count": 160,
   "workflows": [
     {
       "action_pins": [
@@ -399,6 +399,24 @@
       "triggers": [
         "pull_request",
         "push"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/upload-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "emit-receipt"
+      ],
+      "name": "ATES Phase B Run Receipt",
+      "path": ".github/workflows/ates-phase-b-run-receipt.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_run"
       ]
     },
     {

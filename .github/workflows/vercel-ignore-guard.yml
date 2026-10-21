@@ -62,8 +62,11 @@ jobs:
           cur=$(curl -fsS -H "Authorization: Bearer $VERCEL_TOKEN" "$api")
           echo "::notice::${PROJECT} rootDirectory=$(jq -r '.rootDirectory // "-"' <<<"$cur")"
           echo "::notice::${PROJECT} current ignore=$(jq -r '.commandForIgnoringBuildStep // "-"' <<<"$cur")"
-          guarded='f="$(git rev-parse --show-toplevel)/scripts/ci/vercel_ignore_build.sh"; if [ -f "$f" ]; then bash "$f" '"$HELPER_ARG"'; else echo "[vercel-ignore] helper absent; skip"; exit 0; fi'
+          guarded='r=$(git rev-parse --show-toplevel) || exit 1; f="$r/scripts/ci/vercel_ignore_build.sh"; if [ -f "$f" ]; then bash "$f" '"$HELPER_ARG"'; else echo "[vercel-ignore] helper absent; skip"; exit 0; fi'
           echo "::notice::guarded ignore length=${#guarded}"
+          if [ "${#guarded}" -gt 256 ]; then
+            echo "::error::guarded ignore exceeds Vercel's 256-character limit"; exit 1
+          fi
           if [ "$MODE" != "apply" ]; then
             echo "::notice::plan only; dispatch with mode=apply to set the guarded command"; exit 0
           fi

@@ -6,7 +6,7 @@
   ],
   "integration_references": [
     {
-      "count": 72,
+      "count": 73,
       "kind": "static provider import/register references only",
       "path": "server/src/providers/index.ts",
       "source_repo": "tashfeenahmed/freellmapi"
@@ -2798,6 +2798,26 @@
       "evidence_class": "THIRD_PARTY_CLAIM",
       "model_key": "provider-catalog",
       "model_name": "provider catalog reference",
+      "provider_key": "onomeo",
+      "provider_name": "Onomeo",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
       "provider_key": "opencode",
       "provider_name": "OpenCode Zen",
       "quota_remaining": null,
@@ -4051,15 +4071,15 @@
       "repo": "mnfst/awesome-free-llm-apis"
     },
     {
-      "commit_sha": "19eb7e1c3bd5e7421ee72c3878a099f511ea4275",
+      "commit_sha": "ecdc9cbe27aa3db5e3d8935be13a5a17b9a513b1",
       "files": {
         "package.json": {
           "sha256": "d3121c43f3c5eabb4fd0a7a2efc2e46586232b628fbd2f333626e8c7ab94c631",
-          "url": "https://raw.githubusercontent.com/tashfeenahmed/freellmapi/19eb7e1c3bd5e7421ee72c3878a099f511ea4275/package.json"
+          "url": "https://raw.githubusercontent.com/tashfeenahmed/freellmapi/ecdc9cbe27aa3db5e3d8935be13a5a17b9a513b1/package.json"
         },
         "server/src/providers/index.ts": {
-          "sha256": "c418ab142cf5d4229e201dc5fcbb3c6f0e017b5072f6352eaacec8c6b9c05589",
-          "url": "https://raw.githubusercontent.com/tashfeenahmed/freellmapi/19eb7e1c3bd5e7421ee72c3878a099f511ea4275/server/src/providers/index.ts"
+          "sha256": "e54e7951a8679782a6b8ed27a79993bbc55bd1efaa03aec5ee48481238b4bf4e",
+          "url": "https://raw.githubusercontent.com/tashfeenahmed/freellmapi/ecdc9cbe27aa3db5e3d8935be13a5a17b9a513b1/server/src/providers/index.ts"
         }
       },
       "license_designation": "UNVERIFIED_UPSTREAM_LICENSE",

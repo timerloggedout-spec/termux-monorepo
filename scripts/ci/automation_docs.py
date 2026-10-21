@@ -27,6 +27,10 @@ GENERATED_DIR = ROOT / "docs/ops/generated"
 SCHEMA_VERSION = 1
 
 WORKFLOW_DIR = Path(".github/workflows")
+CONTROL_PLANE_DIRS = (
+    Path("ops/n8n"),
+)
+
 CONTROL_PLANE_EXTRAS = (
     Path(".github/actions/model-router/action.yml"),
     Path(".github/actions/http-llm-invoke/action.yml"),
@@ -52,6 +56,7 @@ MATERIAL_PREFIXES = (
     "docs/ops/diagrams/",
     "docs/proposals/active/actions-refinements/",
     "docs/proposals/active/rate-limit-rotation/",
+    "ops/n8n/",
 )
 GENERATED_PREFIX = "docs/ops/generated/"
 
@@ -283,6 +288,10 @@ def parse_workflow(
 
 def control_plane_paths(root: Path = ROOT) -> list[Path]:
     paths = sorted((root / WORKFLOW_DIR).glob("*.yml"))
+    for directory in CONTROL_PLANE_DIRS:
+        base = root / directory
+        if base.exists():
+            paths.extend(path for path in sorted(base.rglob("*")) if path.is_file())
     paths.extend(root / item for item in CONTROL_PLANE_EXTRAS if (root / item).exists())
     return sorted(paths)
 

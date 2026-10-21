@@ -339,3 +339,50 @@ Security boundary:
 Operational provenance remains:
 
 `DESIGNED → IMPORTED → CONFIGURED → OBSERVED → VALIDATED → PROMOTED`
+
+
+---
+
+## 15. Documentation graph ↔ n8n adapter boundary (2026-10-03)
+
+The existing Mermaid automation and the n8n lane are **connected by provenance, not by execution coupling**.
+
+| Surface | Function | Authority |
+|---|---|---|
+| `docs/ops/diagrams/*.mmd` | authoritative diagram source | **documentation source** |
+| `automation-docs-continuous-refresh.yml` + `mmdc` | deterministic render/refresh | **documentation build** |
+| `docs/ops/generated/*.png` | derived visual review assets | generated |
+| `docs/ops/generated/automation-diagram-assets.json` | source/render hash manifest | generated provenance |
+| `ops/n8n/**` | optional workflow runtime + importable adapter definitions | **runtime adapter** |
+| SHE / GitHub evidence | operational truth | **canonical** |
+
+The boundary is intentionally:
+
+```text
+            ARCHITECTURE / DOCUMENTATION
+                       │
+                 .mmd source
+                       │
+                mmdc render
+                       │
+                    .png
+                       │
+          asset/hash provenance
+                       │
+                       ▼
+                operator view
+
+            OPERATIONAL RUNTIME
+                       │
+GitHub truth → Actions → SHE ───────► optional n8n adapter
+                       │                         │
+                       └── canonical evidence ◄──┘
+```
+
+`ops/n8n/**` is now included in the automation documentation freshness surface, so changes to n8n workflows/configuration participate in the same catalog/freshness loop. This does **not** make n8n responsible for rendering Mermaid or make generated PNGs a runtime dependency.
+
+### Invariant
+
+**`.mmd` is source; `.png` is derived; n8n is an optional consumer/adapter.**
+
+Neither generated images nor n8n execution receipts replace GitHub/SHE evidence.

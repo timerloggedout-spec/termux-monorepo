@@ -138,11 +138,21 @@
     },
     {
       "provider_family": "ollama",
-      "status": "public_documentation_only",
-      "source": "https://ollama.com/blog/transparent-pricing",
-      "scope": "account monthly pool or shared Team pool; usage statistics are not remaining quota or free entitlement",
-      "reset": "monthly on plan-start day or free-account signup day; account date and observed reset unknown; no rollover",
-      "signals": []
+      "status": "implemented_passive_adapter",
+      "source": "https://docs.ollama.com/api/balance",
+      "scope": "private balance response; included and unexpired purchased USD pools or legacy session/weekly percentages; Team balances are shared",
+      "reset": "modern included period has documented inclusive from/exclusive until timestamps; legacy session and weekly reset timestamps; no account identity or entitlement inferred",
+      "signals": [
+        {"path": "included.balance_usd", "field": "ollama_included_balance_usd"},
+        {"path": "included.allowance_usd", "field": "ollama_included_allowance_usd"},
+        {"path": "included.period.from", "field": "ollama_included_period_from"},
+        {"path": "included.period.until", "field": "ollama_included_period_until"},
+        {"path": "purchased.balance_usd", "field": "ollama_purchased_balance_usd"},
+        {"path": "included.session.remaining_percent", "field": "ollama_session_remaining_percent"},
+        {"path": "included.session.resets_at", "field": "ollama_session_resets_at"},
+        {"path": "included.weekly.remaining_percent", "field": "ollama_weekly_remaining_percent"},
+        {"path": "included.weekly.resets_at", "field": "ollama_weekly_resets_at"}
+      ]
     },
     {
       "provider_family": "omni",

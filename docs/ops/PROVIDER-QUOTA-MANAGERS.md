@@ -1,4 +1,4 @@
-# Provider quota managers (MSM-019)
+# Provider quota managers (MSM-019 / MSM-020)
 
 This is an **offline metadata registry and passive normalizer**, not another quota poller. It makes no provider calls, reads no credentials, mutates no account, and does not affect runtime admission. A parser being implemented is not evidence that it ran against an account or that the account's state is known.
 
@@ -30,13 +30,24 @@ Counters are non-negative finite numeric values; timestamps must be timezone-awa
 | LLM7 | [Official service page](https://llm7.io/) states free-tier request/token caps and rolling 24-hour token usage; no API counter/reset schema verified. | Public documentation only. |
 | ModelScope | [Official API-Inference limits docs](https://www.modelscope.ai/docs/model-service/API-Inference/limits) describe dynamic per-model concurrency and Magicube costs; no usage counter/reset API schema. | Public documentation only. |
 | NVIDIA | [Official API docs index](https://docs.api.nvidia.com/); no quota counter/reset schema verified. | Public documentation only. |
-| Ollama | [Official pricing/reset policy](https://ollama.com/blog/transparent-pricing) describes monthly account/Team pools and refresh on the plan-start or free-signup day, without rollover; [Cloud usage API](https://docs.ollama.com/api/cloud-usage) usage is not remaining quota/balance. Account dates remain unknown. | Public documentation only; intentionally no quota parser or inferred reset instant. |
+| Ollama | [Official Balance API](https://docs.ollama.com/api/balance): bearer-authenticated `GET https://ollama.com/api/balance`, no query parameters. Current plans report included USD balance/allowance and inclusive-start/exclusive-end UTC period; purchased USD balance covers unexpired credits. Legacy plans instead report session/weekly remaining percentages and explicit UTC resets. All Team members share the pools. [Cloud usage](https://docs.ollama.com/api/cloud-usage) is usage history, not remaining balance. | Passive parser plus a bounded injectable private transport, tested only with synthetic responses. USD credits and 0–100 percentages stay distinct; no request/token quota, entitlement, account identity or reset is inferred. |
 | Omni | [Official model listing endpoint](https://cloud.omniroute.online/v1/models); no quota documentation or counter/reset contract verified. | Unsupported. |
 | OVHcloud | [Official AI Endpoints capabilities](https://docs.ovhcloud.com/en/guides/public-cloud/ai-machine-learning/ai-endpoints-capabilities) describes limit categories/scopes; no account counter/header schema verified. | Public documentation only. |
 | SiliconFlow | [Official user-info API](https://docs.siliconflow.com/en/api-reference/userinfo/get-user-info) documents decimal-string balance/chargeBalance/totalBalance; [official rate-limit explanation](https://www.siliconflow.com/blog/siliconflow-api-rate-limits-rpm-tpm-429) says quotas are account/model scoped and shared across keys. Monetary balances are not request quota, currency is not assumed, and reset/entitlement remain unknown. | Passive parser for private monetary balance strings only; no request-quota parser or account call. |
 | Z.ai | [Official usage policy](https://docs.z.ai/devpack/usage-policy) describes plan-tier concurrency dynamically adjusted; no counter/reset response schema verified. | Public documentation only. |
 
 The repository's 20 canonical names are taken dynamically from `_providers()` in `scripts/provider_quota_coverage.py`; manifest completeness does not mean the 18 prior gaps are closed as live managers. Statuses describe **checked-in mapping/parser capability**, not account validation, provider availability, freshness, or runtime coverage. Caller-provided scope is labeled `caller_declared_unverified`; provenance or account/model association is not authenticated. Compatible transport does not imply compatible quota semantics.
+
+## Continuation: source-confirmed implementation and deliberate gaps
+
+Ollama moves from documentation-only to a sixth passive adapter: eleven families remain documentation-only and three remain unsupported. Its official endpoint permits ten requests/minute/user, shared across keys/devices, and recommends once/minute. HTTP 429 has seconds-valued `Retry-After`; no scheduling or retry is installed here. The separate transport has no default network implementation or credential/environment discovery, accepts only an explicitly injected transport, and returns private results. It was not invoked against an account. A production integration must still establish authorization, account/Team association, freshness, reset handling and shared reservation. USD balances cannot be passed to the request-count quota evaluator.
+
+Additional official research preserves the distinction between usage and capacity:
+
+- [Cloudflare Billable Usage API](https://blog.cloudflare.com/billable-usage-api) exposes account service-period consumption/cost through a Billing Read bearer token, updated daily. It is not remaining Workers AI entitlement; charge-period bounds are not quota resets. No remaining parser is added.
+- [Kilo usage/billing](https://kilo.ai/docs/gateway/usage-and-billing) and [API reference](https://kilo.ai/docs/gateway/api-reference) describe per-inference usage/cost and shared pools, not a documented balance endpoint. No inference is issued to collect usage.
+- [LLM7 limits](https://docs.llm7.io/limits) document rolling allowances, not a remaining-counter/reset API. [Cerebras usage monitoring](https://inference-docs.cerebras.ai/console/usage-monitoring) provides console analytics/CSV exports, not a verified API counter contract.
+- Mistral's named remaining header still lacks verified metric/reset semantics. NVIDIA hosted and self-hosted products must not be conflated. OVHcloud's project/model limits and console metrics do not supply a verified remaining/reset schema. Gemini, Cohere, ModelScope and Z.ai remain documentation-only for the reasons in the table.
 
 ## Explicit non-goals and separate follow-up
 

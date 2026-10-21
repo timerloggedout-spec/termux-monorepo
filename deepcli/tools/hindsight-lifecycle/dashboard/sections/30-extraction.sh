@@ -5,8 +5,8 @@
 set -u
 echo
 echo "=== [ EXTRACTION ] ==="
-[ -n "${PSQL:-}" ] || { echo "  database:  unavailable"; exit 0; }
-"$PSQL" -tA <<'SQL' 2>/dev/null || echo "  query:     unavailable"
+[ -n "${PSQL:-}" ] || { echo "  database:  unavailable (required)" >&2; exit 1; }
+"$PSQL" -X -v ON_ERROR_STOP=1 -tA <<'SQL' 2>/dev/null || { echo "  query:     unavailable (required database query failed)" >&2; exit 1; }
 WITH d AS (SELECT bank_id,count(*) documents FROM documents GROUP BY bank_id),
 m AS (SELECT bank_id,count(*) memories FROM memory_units GROUP BY bank_id)
 SELECT rpad(coalesce(d.bank_id,m.bank_id),56,' ') ||

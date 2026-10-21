@@ -36,6 +36,10 @@ start, stop, rotate, assign, purge, or mutate the pipeline.
 5. Keep sections independently runnable; never rely on another section's output.
 6. Use exit 0 for an intentionally unavailable optional source; use non-zero for
    a genuine section failure so `hs-dash` records it.
+   Built-in database sections require `PSQL`: missing clients, connection errors,
+   and SQL errors must fail the section, not print a fallback and return success.
+   Invoke psql with `-X -v ON_ERROR_STOP=1`, check its exit status, and suppress
+   raw database stderr so receipts do not expose connection credentials.
 
 ## Environment
 
@@ -79,9 +83,20 @@ bash dashboard/verify.sh
 The verifier checks shell syntax, required metadata, and mutation/safety
 invariants without contacting the database.
 
+Offline receipt regressions (no Codespace or production database access):
+
+```bash
+python3 -m unittest discover -s tests -p 'test_hindsight_dashboard_safety.py' -v
+python3 -m unittest discover -s tests -p 'test_hindsight_purge_safety.py' -v
+```
+
+The purge tests use a disposable local PostgreSQL cluster when its binaries are
+installed; an explicit skip is not evidence of database validation. Staging the
+purge SQL does not execute it, and local tests do not certify a production schema.
+
 ## Commit flow
 
-- Branch: `feat/dashboard-lanes`
-- Owner: collaborator
-- Merge path: PR to `feat/gh-actions/deepseek-integrates-itself`
-- Never force-push that branch
+- Target `master` through a focused PR, following root `CLAUDE.md`.
+- Cite `Implements: LC-009` for the database receipt / purge safety follow-up.
+- Require exact-head dual gates, verified outcomes, and permitted review state.
+- Never force-push the contributor branch or apply a live purge as validation.

@@ -13,6 +13,9 @@
 | irudik-repo-template | https://github.com/irudik/repo-template |
 | jdingel-projecttemplate | https://github.com/jdingel/projecttemplate |
 | 3rdCore-Research_Project_Template | https://github.com/3rdCore/Research_Project_Template |
+| dicklesworthstone-agentic-flywheel | https://github.com/Dicklesworthstone/agentic_coding_flywheel_setup |
+
+The Flywheel slot is metadata-first and tracks a composable stack; it is not a request to run the upstream installer. See docs/ops/DICKLESWORTHSTONE-FLYWHEEL-INTEGRATION.md.
 
 ## Candidates (tier B — re-score on cadence)
 
@@ -32,4 +35,4 @@ See root `.gitmodules`:
 
 AuditEngine_fork, batteries_fork, content-agent-routing-promptbase_fork, cost-of-remembering_fork, icm-architect_fork, icm-cctv_fork, interpretable-context-methodology_fork, mcp-android-ssh_fork, term_mcp_deepseek_fork, termux-mcp-server_fork, lego_fork
 
-Pins intentional; no auto-advance without dual-gate green.
+Pins intentional; no auto-advance without dual-gate green. Flywheel components remain metadata-only until a real customized fork and compatibility evidence exist.

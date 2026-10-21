@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-21T13:48:01Z UTC · receipts=3419 · foreign_open=37 · tributes=111_
+_Generated 2026-10-21T14:08:27Z UTC · receipts=3419 · foreign_open=38 · tributes=112_
 
 ## Tributes (contributor ledger)
 
+- [zh-95/fronte-rivoluzionario#59](https://github.com/zh-95/fronte-rivoluzionario/pull/59) · state=open · help-wanted: stake + contribute for #9
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
 - [mangiapanejohn-dev/MOBIUS-Searcher#7](https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7) · state=open · help-wanted: stake + contribute for #6
@@ -43,10 +44,10 @@ _Generated 2026-10-21T13:48:01Z UTC · receipts=3419 · foreign_open=37 · tribu
 - [C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge--Frontend-#971](https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge--Frontend-/pull/971) · state=open · help-wanted: stake + contribute for #901
 - [Gautam-aman/ResQNet#53](https://github.com/Gautam-aman/ResQNet/pull/53) · state=closed · help-wanted: stake + contribute for #50
 - [traceopt-ai/traceml#547](https://github.com/traceopt-ai/traceml/pull/547) · state=closed · help-wanted: stake + contribute for #128
-- [seleniumboot/selenium-boot#183](https://github.com/seleniumboot/selenium-boot/pull/183) · state=closed · help-wanted: stake + contribute for #180
 
 ## Foreign open PRs
 
+- [zh-95/fronte-rivoluzionario#59](https://github.com/zh-95/fronte-rivoluzionario/pull/59) — help-wanted: stake + contribute for #9
 - [C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge--Frontend-#971](https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge--Frontend-/pull/971) — help-wanted: stake + contribute for #901
 - [SO4-Markets/interface#1029](https://github.com/SO4-Markets/interface/pull/1029) — help-wanted: stake + contribute for #918
 - [use-assay/Assay#509](https://github.com/use-assay/Assay/pull/509) — help-wanted: stake + contribute for #305

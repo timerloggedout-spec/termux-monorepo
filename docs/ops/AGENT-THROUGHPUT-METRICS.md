@@ -127,7 +127,7 @@ Land schema + pure reducer + fixtures + quality verification. No external teleme
 
 `.github/workflows/ates-phase-b-run-receipt.yml` observes completed `Continuous agent ops` runs and publishes one metadata-only JSONL receipt as a 30-day Actions artifact. `scripts/ci/emit_ates_run_receipt.py` retains the observed run ID, attempt, source SHA, workflow label, completion timestamp, conclusion, and duration when both timestamps exist. It intentionally omits commit messages, run URLs, prompts, completions, and arbitrary payloads. Missing duration remains absent. The existing event schema is validated by the receipt workflow.
 
-This is a bounded first emitter, not full span instrumentation: it does not yet emit per-agent/tool events or upload receipts into the longitudinal corpus. Extend to other eligible workflows only after their event semantics and permissions are confirmed.
+`she/observability/orchestrator_trace.py` provides an opt-in privacy-preserving span boundary, and `scripts/ci/bridge_ates_trace_to_events.py` converts only recognized span kinds into the canonical event schema. The bridge drops unknown kinds, exports only allowlisted metadata, and can attach run/attempt/SHA linkage. Tool labels are retained only as explicit metadata; fingerprints and arbitrary attributes are not copied into throughput events. The bridge is a tested adapter, not a claim that every production orchestrator path is already instrumented or that trace artifacts are automatically ingested into the longitudinal corpus. Extend to other eligible workflows only after their event semantics and permissions are confirmed.
 
 ### Phase C — longitudinal correlation
 

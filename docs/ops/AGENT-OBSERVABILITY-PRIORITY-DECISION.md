@@ -79,3 +79,15 @@ A later Phase C review may show that a policy was faster but less effective, or 
 - no secrets/PATs in images, workspaces, telemetry, or artifacts;
 - no automatic rerun merely to obtain a green dashboard;
 - no assumption that Docker and Codespaces are interchangeable environments.
+
+
+## 2026-10-01 foresight-agent-stack bindings
+OpenTelemetry remains P0 canonical telemetry. WSO2 Agent Manager and NVIDIA OpenShell are P1 adapter/reference lanes; neither may become the evidence system of record.
+
+OrchBench is bound to the P2 manager-tournament research lane as a deterministic preflight, with simulation evidence kept distinct from live execution evidence.
+
+NIST IR 8536 is a provenance-policy input that strengthens the P0 evidence/provenance foundation; it is not a compliance certification.
+
+For local inference, the order is intentionally **Needle/candidate evaluation → llama.cpp Android CPU baseline → Vulkan only after device/resource admission**. The Vulkan lane is documented as HOLD until capability, memory, thermal, energy, backend, and reproducibility gates pass.
+
+Machine-readable integration state: `config/agent_stack_integrations.json`.

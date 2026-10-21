@@ -136,6 +136,47 @@ class AgenticRepositoryOperationsReportTests(unittest.TestCase):
         errors = validate_report_output(missing_headings, self.schema)
         self.assertTrue(any(error.startswith("missing or out-of-order heading") for error in errors))
 
+    def test_output_schema_rejects_inline_heading_mentions(self) -> None:
+        payload = {
+            "type": "create_issue",
+            "title": "Repository operations report — 2026-08-19",
+            "body": "Mentioned sections: " + ", ".join(self.schema["required_headings"]),
+        }
+        errors = validate_report_output(payload, self.schema)
+        self.assertEqual(len(errors), len(self.schema["required_headings"]))
+
+    def test_output_schema_rejects_longer_heading_prefixes(self) -> None:
+        for suffix in (" extra", "less"):
+            with self.subTest(suffix=suffix):
+                payload = {
+                    "type": "create_issue",
+                    "title": "Repository operations report — 2026-08-19",
+                    "body": "\n".join(heading + suffix for heading in self.schema["required_headings"]),
+                }
+                errors = validate_report_output(payload, self.schema)
+                self.assertEqual(len(errors), len(self.schema["required_headings"]))
+
+    def test_output_schema_accepts_heading_line_endings_and_whitespace(self) -> None:
+        for newline in ("\n", "\r\n"):
+            with self.subTest(newline=newline):
+                payload = {
+                    "type": "create_issue",
+                    "title": "Repository operations report — 2026-08-19",
+                    "body": newline.join(
+                        heading + " \t" + newline + "Section content."
+                        for heading in self.schema["required_headings"]
+                    ),
+                }
+                self.assertEqual(validate_report_output(payload, self.schema), [])
+
+    def test_output_schema_rejects_out_of_order_heading_lines(self) -> None:
+        payload = {
+            "type": "create_issue",
+            "title": "Repository operations report — 2026-08-19",
+            "body": "\n".join(reversed(self.schema["required_headings"])),
+        }
+        self.assertTrue(validate_report_output(payload, self.schema))
+
     def test_cli_uses_default_schema_outside_checkout(self) -> None:
         valid = {
             "type": "create_issue",

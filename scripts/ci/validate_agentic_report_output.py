@@ -54,11 +54,12 @@ def validate_report_output(
 
     cursor = 0
     for heading in schema["required_headings"]:
-        location = body.find(heading, cursor)
-        if location < 0:
+        pattern = re.compile(rf"^{re.escape(heading)}[ \t]*\r?$", re.MULTILINE)
+        match = pattern.search(body, cursor)
+        if match is None:
             errors.append(f"missing or out-of-order heading: {heading}")
             continue
-        cursor = location + len(heading)
+        cursor = match.end()
     return errors
 
 

@@ -14,6 +14,7 @@ from dependency_phase_engine import (  # noqa: E402
     compute_waves,
     evaluate_plan,
     render_mermaid,
+    topological_order,
     validate_plan,
 )
 
@@ -80,6 +81,49 @@ def completed_snapshot() -> dict:
 
 
 class DependencyPhaseEngineTests(unittest.TestCase):
+    def test_topological_order_respects_prerequisites_and_is_repeatable(self) -> None:
+        phases = [
+            {"phase_id": "A", "depends_on": []},
+            {"phase_id": "B", "depends_on": ["A"]},
+            {"phase_id": "C", "depends_on": ["A"]},
+            {"phase_id": "D", "depends_on": ["B", "C"]},
+            {"phase_id": "E", "depends_on": []},
+            {"phase_id": "F", "depends_on": ["E"]},
+        ]
+        order = topological_order(phases)
+        self.assertEqual(order, topological_order(deepcopy(phases)))
+        self.assertEqual(set("ABCDEF"), set(order))
+        positions = {phase_id: index for index, phase_id in enumerate(order)}
+        for phase in phases:
+            for prerequisite in phase["depends_on"]:
+                self.assertLess(positions[prerequisite], positions[phase["phase_id"]])
+
+    def test_topological_order_reports_cycle_residual_nodes(self) -> None:
+        phases = [
+            {"phase_id": "A", "depends_on": ["B"]},
+            {"phase_id": "B", "depends_on": ["A"]},
+            {"phase_id": "C", "depends_on": ["B"]},
+            {"phase_id": "D", "depends_on": []},
+        ]
+        with self.assertRaisesRegex(PlanValidationError, "dependency cycle detected: A, B, C"):
+            topological_order(phases)
+
+    def test_unknown_dependency_fails_closed(self) -> None:
+        plan = plan_fixture()
+        plan["phases"][1]["depends_on"] = ["DPH-999"]
+        errors = validate_plan(plan)
+        self.assertTrue(any("depends on unknown phase DPH-999" in error for error in errors))
+        with self.assertRaises(PlanValidationError):
+            evaluate_plan(plan, {})
+
+    def test_duplicate_dependency_fails_closed(self) -> None:
+        plan = plan_fixture()
+        plan["phases"][1]["depends_on"] = ["DPH-000", "DPH-000"]
+        errors = validate_plan(plan)
+        self.assertTrue(any("depends_on contains duplicates" in error for error in errors))
+        with self.assertRaises(PlanValidationError):
+            evaluate_plan(plan, {})
+
     def test_compute_deterministic_waves(self) -> None:
         plan = plan_fixture()
         plan["phases"].append({

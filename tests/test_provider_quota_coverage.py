@@ -36,7 +36,7 @@ def test_static_mappings_exhaust_canonical_roster_without_claiming_quota_service
     assert counts["missing_static_adapter_mappings"] == 0
     # Two opt-in services do not establish public live account validation.
     assert counts["actual_quota_service_mappings"] == 3
-    assert counts["missing_actual_quota_service_mappings"] == 17
+    assert counts["missing_actual_quota_service_mappings"] == counts["provider_families"] - counts["actual_quota_service_mappings"]
     assert counts["opt_in_private_service_managers"] == 2
     assert counts["implemented_passive_adapters"] == sum(
         row["manager_status"] == "implemented_passive_adapter" for row in families.values()

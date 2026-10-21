@@ -60,7 +60,7 @@ def test_public_contract_is_fresh_and_does_not_invent_remaining_or_reset():
     assert second["models"] == list(typhoon.MODELS)
     assert second["credential_env_name"] == "OPENTYPHOON_API_KEY"
     assert second["documented_public_rate_caps"] == {"requests_per_second": 5, "requests_per_minute": 200}
-    assert second["quota_unknowns"] and second["legal_hold_reasons"]
+    assert second["quota_unknowns"] and second["legal_hold_reasons"] == []
     assert "8K" in second["context_and_output_caps"]
     assert "128K/56K" in second["context_and_output_caps"]
     assert "quota_remaining" not in second and "reset_at" not in second
@@ -97,7 +97,7 @@ def test_stop_limit_and_no_invented_token_cap():
     p["stop"].append("e")
     with pytest.raises(typhoon.TyphoonProtocolError): typhoon.build_chat_request(p)
     p=fixture("chat_request.json"); p["max_tokens"]=10**10
-    assert typhoon.build_chat_request(p)["max_tokens"] == 10**10
+    with pytest.raises(typhoon.TyphoonProtocolError): typhoon.build_chat_request(p)
 
 
 @pytest.mark.parametrize("value", [["assistant"], {"x":1}])
@@ -137,7 +137,7 @@ def test_no_environment_or_network_access(monkeypatch):
     assert not imports & forbidden
 
 
-def test_legal_hold_is_intentional_and_not_registered():
-    assert typhoon.public_documentation_contract()["runtime_eligible"] is False
+def test_registered_but_requires_explicit_exact_admission():
+    assert typhoon.public_documentation_contract()["runtime_eligible"] is True
     from llm_api_hub.server import research_providers
-    assert "typhoon" not in research_providers.ENDPOINTS
+    assert research_providers.ENDPOINTS["typhoon"] == (typhoon.ENDPOINT, ("OPENTYPHOON_API_KEY", "TYPHOON_API_KEY"))

@@ -38,17 +38,17 @@ def test_private_quota_is_manual_default_off_and_no_schedule():
 
 def test_all_flag_combinations_isolate_private_read_from_other_provider_jobs():
     jobs = workflow()["jobs"]
-    names = ["observe_openrouter_quota", "diagnose_free_limits", "execute_free_smoke", "observe_public_research"]
-    for values in itertools.product((False, True), repeat=4):
+    names = ["observe_openrouter_quota", "diagnose_free_limits", "execute_free_smoke", "observe_public_research", "check_operational_providers"]
+    for values in itertools.product((False, True), repeat=len(names)):
         flags = dict(zip(names, values))
         for event in ("workflow_dispatch", "pull_request", "push", "schedule"):
             for trusted in (False, True):
                 active = {name: enabled(jobs[name]["if"], event=event, trusted=trusted, flags=flags)
-                          for name in ("private_openrouter_quota", "diagnose", "observe")}
-                expected = event == "workflow_dispatch" and trusted and values == (True, False, False, False)
+                          for name in ("private_openrouter_quota", "diagnose", "observe", "operational_providers")}
+                expected = event == "workflow_dispatch" and trusted and values == (True, False, False, False, False)
                 assert bool(active["private_openrouter_quota"]) == expected
                 if flags["observe_openrouter_quota"]:
-                    assert not active["diagnose"] and not active["observe"]
+                    assert not active["diagnose"] and not active["observe"] and not active["operational_providers"]
 
 
 def test_private_job_has_one_get_cli_no_artifact_and_ephemeral_private_output():
@@ -90,3 +90,18 @@ def test_observation_registry_does_not_change_legacy_routing_weights():
     assert record["lane_id"] not in {"quota-model", "quota-deploy", "quota-data"}
     assert "openrouter.key" not in quota_poll.LIVE
     assert all(fn.__module__ != provider_quota_service.__name__ for fn in quota_poll.MULTI)
+
+
+def test_operational_readiness_is_exclusive_in_every_flag_combination():
+    jobs = workflow()["jobs"]
+    names = ["observe_openrouter_quota", "diagnose_free_limits", "execute_free_smoke", "observe_public_research", "check_operational_providers"]
+    for values in itertools.product((False, True), repeat=len(names)):
+        flags = dict(zip(names, values))
+        for event in ("workflow_dispatch", "pull_request", "push", "schedule"):
+            for trusted in (False, True):
+                active = {name: enabled(jobs[name]["if"], event=event, trusted=trusted, flags=flags)
+                          for name in ("private_openrouter_quota", "diagnose", "observe", "operational_providers")}
+                expected = event == "workflow_dispatch" and trusted and values == (False, False, False, False, True)
+                assert bool(active["operational_providers"]) == expected
+                if flags["check_operational_providers"]:
+                    assert not any(active[name] for name in ("private_openrouter_quota", "diagnose", "observe"))

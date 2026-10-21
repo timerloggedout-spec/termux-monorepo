@@ -22,14 +22,15 @@ import urllib.request
 from urllib.parse import urlencode
 
 try:
-    from scripts import provider_catalog_protocols
+    from scripts import provider_catalog_protocols, provider_extension_catalogs
 except ImportError:
     import provider_catalog_protocols  # type: ignore
+    import provider_extension_catalogs  # type: ignore
 
 UA = "termux-monorepo-provider-catalog/5"
 # Catalog-only public GETs; ModelScope is verified by a current provider response,
 # not a published catalog specification. Inference still requires account admission.
-PUBLIC_CATALOGS = frozenset({"llm7", "ovhcloud", "modelscope"})
+PUBLIC_CATALOGS = frozenset({"llm7", "ovhcloud", "modelscope"}) | provider_extension_catalogs.PUBLIC_CATALOGS
 ENDPOINTS = {
     "openrouter": "https://openrouter.ai/api/v1/models",
     "felo": "https://openapi.felo.ai/api/v1/models",
@@ -69,6 +70,8 @@ SECRETS = {
 }
 ENDPOINTS.update(provider_catalog_protocols.ENDPOINTS)
 SECRETS.update({p: names[0] for p, names in provider_catalog_protocols.SECRET_ENV.items()})
+ENDPOINTS.update(provider_extension_catalogs.ENDPOINTS)
+SECRETS.update(provider_extension_catalogs.SECRETS)
 SECRET_ALIASES = {
     "huggingface": ("HUGGINGFACE_TOKEN", "HUGGING_FACE_HUB_TOKEN", "HF_API_TOKEN", "HF_TOKEN"),
     "cerebras": ("CEREBRAS_API_KEY",),
@@ -243,6 +246,8 @@ def _positive_int(value):
     return value if isinstance(value, int) and not isinstance(value, bool) and value > 0 else None
 
 def poll(provider: str, token: str) -> tuple[list[dict], dict]:
+    if provider in provider_extension_catalogs.ENDPOINTS:
+        return provider_extension_catalogs.poll(provider, token, get_json)
     if provider in provider_catalog_protocols.PROVIDERS:
         return provider_catalog_protocols.poll(provider, token, get_json, os.environ.get("CLOUDFLARE_ACCOUNT_ID"))
     payload, response_headers = _gemini_pages(token) if provider == "gemini" else get_json(ENDPOINTS[provider], token)

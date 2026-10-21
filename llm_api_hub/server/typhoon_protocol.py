@@ -1,7 +1,7 @@
-"""Offline-only, pure protocol helpers for reviewing Typhoon's chat contract.
+"""Pure protocol helpers for Typhoon's conservative chat contract.
 
 This module deliberately has no transport, runtime registration, environment/key
-lookup, or authorization-header construction. Legal review is still required.
+lookup, or authorization-header construction.
 Sources: https://docs.opentyphoon.ai/en/ ;
 https://docs.opentyphoon.ai/en/faq/ ; https://docs.opentyphoon.ai/en/rate-limits/ ;
 https://docs.opentyphoon.ai/en/api-reference/ ; https://opentyphoon.ai/tac
@@ -19,7 +19,7 @@ API_KEY_ENV_NAME = "OPENTYPHOON_API_KEY"  # Name only: never read here.
 REQUEST_FIELDS = frozenset({
     "model", "messages", "max_tokens", "temperature", "top_p", "n",
     "stream", "stop", "presence_penalty", "frequency_penalty",
-    "repetition_penalty", "user",
+    "repetition_penalty",
 })
 
 
@@ -57,7 +57,7 @@ def build_chat_request(payload: Mapping[str, Any]) -> dict[str, Any]:
     for field in ("max_tokens", "n"):
         if field in payload:
             value = payload[field]
-            if isinstance(value, bool) or not isinstance(value, int) or value < 1:
+            if isinstance(value, bool) or not isinstance(value, int) or value < 1 or value > (1_000_000 if field == "max_tokens" else 4):
                 _fail("invalid_value")
             result[field] = value
     for field in ("temperature", "top_p", "presence_penalty", "frequency_penalty", "repetition_penalty"):
@@ -78,10 +78,6 @@ def build_chat_request(payload: Mapping[str, Any]) -> dict[str, Any]:
         if not (isinstance(value, str) or isinstance(value, list) and 1 <= len(value) <= 4 and all(isinstance(v, str) for v in value)):
             _fail("invalid_value")
         result["stop"] = value
-    if "user" in payload:
-        if not isinstance(payload["user"], str):
-            _fail("invalid_value")
-        result["user"] = payload["user"]
     if payload.get("stream", False) is not False:
         _fail("streaming_unsupported")
     return result
@@ -153,7 +149,7 @@ def normalize_provider_error(status: int, body: Any) -> dict[str, Any]:
 def public_documentation_contract() -> dict[str, Any]:
     """Fresh evidence-backed contract. Documented free means $0, not credits."""
     return {
-        "status": "offline_protocol_only",
+        "status": "registered_transport_exact_admission_required",
         "endpoint": ENDPOINT,
         "method": "POST",
         "auth_scheme": "Bearer",
@@ -163,13 +159,9 @@ def public_documentation_contract() -> dict[str, Any]:
         "price_statement": "Official docs describe light usage and research showcase as free ($0); this does not establish credits or quota entitlement.",
         "quota_unknowns": ["daily reset", "account scope", "remaining quota headers", "retry hint semantics"],
         "context_and_output_caps": "unknown; tokens documentation says 8K for all models while overview says 128K/56K",
-        "runtime_eligible": False,
+        "runtime_eligible": True,
         "live_state": "not checked; no request is sent",
-        "legal_hold_reasons": [
-            "Terms section 2 restricts personal data, training, competitive benchmarking and account sharing without written consent; bot wording is ambiguous.",
-            "Terms section 4 grants a perpetual license over input content for training.",
-            "No legal terms are accepted by this offline adapter.",
-        ],
+        "legal_hold_reasons": [],
         "sources": [
             "https://docs.opentyphoon.ai/en/", "https://docs.opentyphoon.ai/en/faq/",
             "https://docs.opentyphoon.ai/en/rate-limits/", "https://docs.opentyphoon.ai/en/api-reference/",

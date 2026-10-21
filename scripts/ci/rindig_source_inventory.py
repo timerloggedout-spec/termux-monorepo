@@ -1,49 +1,63 @@
 #!/usr/bin/env python3
 """Read-only inventory of RinDig branches, commits, and Actions workflows."""
 from __future__ import annotations
-import argparse, json, os, time, urllib.error, urllib.parse, urllib.request
+import argparse, json, os, sys, time, urllib.error, urllib.parse, urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
 API = "https://api.github.com"
 
-def request(path):
-    headers = {"Accept":"application/vnd.github+json","User-Agent":"termux-monorepo-rindig-inventory"}
+def request(path, max_attempts=3):
+    headers = {"Accept": "application/vnd.github+json", "User-Agent": "termux-monorepo-rindig-inventory"}
     token = os.environ.get("GITHUB_TOKEN")
     if token:
         headers["Authorization"] = "Bearer " + token
     req = urllib.request.Request(API + path, headers=headers)
-    for attempt in range(4):
+    for attempt in range(max_attempts):
         try:
-            with urllib.request.urlopen(req, timeout=30) as response:
+            with urllib.request.urlopen(req, timeout=15) as response:
                 return json.load(response)
         except urllib.error.HTTPError as exc:
-            if exc.code in (403, 429) and attempt < 3:
+            if exc.code in (403, 429) and attempt < max_attempts - 1:
                 time.sleep(2 ** attempt)
                 continue
-            raise
+            print(f"Warning: HTTP {exc.code} for {path}: {exc.reason}", file=sys.stderr)
+            return None
+        except Exception as exc:
+            if attempt < max_attempts - 1:
+                time.sleep(1)
+                continue
+            print(f"Warning: Failed requesting {path}: {exc}", file=sys.stderr)
+            return None
+    return None
 
-def pages(path):
+def pages(path, max_pages=5):
     page, items = 1, []
-    while True:
+    while page <= max_pages:
         sep = "&" if "?" in path else "?"
         batch = request(f"{path}{sep}per_page=100&page={page}")
         if not isinstance(batch, list):
-            raise TypeError(path)
+            break
         items.extend(batch)
         if len(batch) < 100:
-            return items
+            break
         page += 1
+    return items
 
 def inventory(entry):
     owner, name = entry["repository"].split("/", 1)
-    meta = request(f"/repos/{owner}/{name}")
+    meta = request(f"/repos/{owner}/{name}") or {}
     branches = pages(f"/repos/{owner}/{name}/branches")
-    wf = request(f"/repos/{owner}/{name}/actions/workflows")
+    wf = request(f"/repos/{owner}/{name}/actions/workflows") or {}
     workflows = wf.get("workflows", []) if isinstance(wf, dict) else []
+
     branch_records = []
     for branch in branches:
-        branch_name = branch["name"]
+        if not isinstance(branch, dict):
+            continue
+        branch_name = branch.get("name")
+        if not branch_name:
+            continue
         commits = pages(f"/repos/{owner}/{name}/commits?sha={urllib.parse.quote(branch_name, safe='')}")
         branch_records.append({
             "name": branch_name,
@@ -55,7 +69,7 @@ def inventory(entry):
                     "html_url": c.get("html_url"),
                     "message": (c.get("commit", {}).get("message") or "").split("\n", 1)[0],
                     "date": c.get("commit", {}).get("committer", {}).get("date")
-                } for c in commits
+                } for c in commits if isinstance(c, dict)
             ]
         })
     return {
@@ -67,8 +81,8 @@ def inventory(entry):
         "updated_at": meta.get("updated_at"),
         "branches": branch_records,
         "workflows": [
-            {"id":w.get("id"),"name":w.get("name"),"path":w.get("path"),"state":w.get("state"),"html_url":w.get("html_url")}
-            for w in workflows
+            {"id": w.get("id"), "name": w.get("name"), "path": w.get("path"), "state": w.get("state"), "html_url": w.get("html_url")}
+            for w in workflows if isinstance(w, dict)
         ]
     }
 

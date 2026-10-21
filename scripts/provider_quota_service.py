@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Opt-in private quota-service observation; never imported by automatic collectors.
 
-Only Ollama's official balance endpoint is supported. USD pools and legacy
-percentages are not request counts, account identity, entitlement, or admission.
+Ollama balance and OpenRouter key observations are explicit opt-in only. USD pools
+and legacy percentages are not request counts, account identity, entitlement, or admission.
 """
 from __future__ import annotations
 
@@ -25,7 +25,7 @@ if str(ROOT) not in sys.path:
 
 from scripts.provider_quota_transport import (
     MAX_RESPONSE_BYTES, MAX_TIMEOUT_SECONDS, OLLAMA_BALANCE_URL,
-    observe_ollama_balance,
+    OPENROUTER_KEY_URL, observe_ollama_balance, observe_openrouter_key,
 )
 
 SERVICES = {
@@ -35,7 +35,14 @@ SERVICES = {
         "credential_env": "OLLAMA_API_KEY",
         "scope": "credential-selected user or shared Team; identity not returned by source",
         "activation": "explicit_private_observation_only",
-    }
+    },
+    "openrouter.key": {
+        "provider_family": "openrouter",
+        "source": OPENROUTER_KEY_URL,
+        "credential_env": "OPENROUTER_API_KEY",
+        "scope": "credential-selected key; account identity unverified",
+        "activation": "explicit_private_observation_only",
+    },
 }
 SCOPE_STATUS = "credential_selected_user_or_team_identity_unverified"
 FRESHNESS_SECONDS = 60
@@ -81,15 +88,17 @@ def https_request(*, method, url, headers, timeout, allow_redirects, max_respons
     Socket operations time out after the bounded timeout; this is not a whole-job
     deadline. Only a bounded body is read, including for chunked responses.
     """
-    if (method != "GET" or url != OLLAMA_BALANCE_URL or allow_redirects is not False
+    if (method != "GET" or url not in (OLLAMA_BALANCE_URL, OPENROUTER_KEY_URL) or allow_redirects is not False
             or isinstance(timeout, bool) or not isinstance(timeout, (int, float))
             or not 0 < timeout <= MAX_TIMEOUT_SECONDS
             or type(max_response_bytes) is not int or max_response_bytes != MAX_RESPONSE_BYTES
             or not isinstance(headers, dict) or set(headers) != {"Authorization"}):
         raise ValueError("invalid fixed-source transport contract")
-    conn = http.client.HTTPSConnection("ollama.com", timeout=timeout, context=ssl.create_default_context())
+    host, path = {OLLAMA_BALANCE_URL: ("ollama.com", "/api/balance"),
+                  OPENROUTER_KEY_URL: ("openrouter.ai", "/api/v1/key")}[url]
+    conn = http.client.HTTPSConnection(host, timeout=timeout, context=ssl.create_default_context())
     try:
-        conn.request("GET", "/api/balance", headers={**headers, "Accept": "application/json"})
+        conn.request("GET", path, headers={**headers, "Accept": "application/json"})
         response = conn.getresponse()
         if response.status != 200:
             # Neither the error body nor Retry-After is interpreted as quota.
@@ -121,18 +130,35 @@ def observe_service(service_id: str, api_key: str, *, scope: str,
         "schema": "provider-quota-service-observation/v1",
         "service_id": service_id, "provider_family": SERVICES[service_id]["provider_family"],
         "source": SERVICES[service_id]["source"], "observed_at": _iso(now),
-        "scope": scope, "scope_status": SCOPE_STATUS,
+        "scope": scope, "scope_status": ("credential_selected_key_account_identity_unverified"
+                                          if service_id == "openrouter.key" else SCOPE_STATUS),
         "status": "unknown", "reason": "source_unavailable_or_invalid",
         "signals": {}, "valid_until": None, "runtime_admission": "unchanged",
         "request_quota": "unknown", "entitlement": "unknown",
     }
-    observation = observe_ollama_balance(
+    adapter = observe_ollama_balance if service_id == "ollama.balance" else observe_openrouter_key
+    observation = adapter(
         api_key, https_request if request is None else request,
         observed_at=_iso(now), scope=scope,
     )
     if observation["status"] != "observed":
         return result
     signals = observation["signals"]
+    if service_id == "openrouter.key":
+        counters = {"free_model_daily_used", "free_model_daily_limit", "free_model_daily_remaining"}
+        result.update(status="observed", reason="sanitized_key_observation", signals=signals)
+        if counters <= signals.keys():
+            result["request_quota"] = "observed"
+        reset = signals.get("openrouter_effective_budget_resets_at")
+        if reset and _time(reset) <= now:
+            result.update(status="unknown", reason="source_reset_due_refresh_required", signals={},
+                          request_quota="unknown")
+            return result
+        validity = now + dt.timedelta(seconds=FRESHNESS_SECONDS)
+        if reset:
+            validity = min(validity, _time(reset))
+        result["valid_until"] = _iso(validity)
+        return result
     if "ollama_included_period_until" in signals:
         start = _time(signals["ollama_included_period_from"])
         end = _time(signals["ollama_included_period_until"])
@@ -157,9 +183,14 @@ def public_status(observation: dict[str, Any]) -> dict[str, Any]:
     sid = observation.get("service_id")
     if not isinstance(sid, str) or sid not in SERVICES:
         raise ValueError("unsupported quota service")
-    return {"service_id": sid, "provider_family": SERVICES[sid]["provider_family"],
-            "status": "observed" if observation.get("status") == "observed" else "unknown",
-            "observed_at": _iso(_time(observation["observed_at"]))}
+    public = {"service_id": sid, "provider_family": SERVICES[sid]["provider_family"],
+              "status": "observed" if observation.get("status") == "observed" else "unknown",
+              "observed_at": _iso(_time(observation["observed_at"]))}
+    if sid == "openrouter.key":
+        public["request_quota"] = (observation.get("request_quota")
+                                   if observation.get("request_quota") in ("observed", "unknown")
+                                   else "unknown")
+    return public
 
 
 def _open_private(path):

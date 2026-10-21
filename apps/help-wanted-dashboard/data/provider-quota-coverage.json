@@ -4,7 +4,7 @@
     "implemented_passive_adapters": 6,
     "missing_actual_quota_service_mappings": 17,
     "missing_static_adapter_mappings": 0,
-    "opt_in_private_service_managers": 1,
+    "opt_in_private_service_managers": 2,
     "provider_families": 20,
     "static_adapter_mappings": 20
   },
@@ -600,7 +600,7 @@
       "manager_metadata_state": "documented_only",
       "manager_status": "implemented_passive_adapter",
       "mapping_state": "documented_registry_mapping",
-      "observation_method": "opt_in_private_balance_service; live account validation not established",
+      "observation_method": "opt_in_private_quota_service; live account validation not established",
       "observed_reset": "unknown",
       "official_evidence": [
         "https://docs.ollama.com/api/balance"
@@ -714,12 +714,14 @@
       "manager_metadata_state": "documented_only",
       "manager_status": "implemented_passive_adapter",
       "mapping_state": "documented_registry_mapping",
-      "observation_method": "implemented_passive_parser; live account validation not established",
+      "observation_method": "opt_in_private_quota_service; live account validation not established",
       "observed_reset": "unknown",
       "official_evidence": [
         "https://openrouter.ai/docs/api_reference/limits"
       ],
-      "opt_in_private_service_ids": [],
+      "opt_in_private_service_ids": [
+        "openrouter.key"
+      ],
       "private_balance": "not_published",
       "provider_family": "openrouter",
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
@@ -733,10 +735,11 @@
         "openrouter.free_models"
       ],
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
-      "runtime_manager_state": "not_established_by_this_inventory",
+      "runtime_manager_state": "implemented_opt_in_private_service",
       "scope": "API key response; budgets retain explicit scope; free-model daily counter is account-level; rate-limit headers only on platform limit errors",
       "service_ids": [
-        "openrouter.free_models"
+        "openrouter.free_models",
+        "openrouter.key"
       ],
       "source_capability": "registered_service",
       "static_mapping_evidence": [
@@ -1073,6 +1076,13 @@
       "provider": "ollama",
       "quota_manager_owner": "Manager",
       "service_id": "ollama.balance"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "implemented_opt_in_private_service",
+      "provider": "openrouter",
+      "quota_manager_owner": "Manager",
+      "service_id": "openrouter.key"
     },
     {
       "freshness_owner": "ChronoMancer",

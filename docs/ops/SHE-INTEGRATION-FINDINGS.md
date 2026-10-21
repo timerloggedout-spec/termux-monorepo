@@ -1,8 +1,8 @@
 # SHE / Hex / Historical Corpus / Agent Throughput — Integration Findings
 
-**Status:** collaboration ledger for the current integration phase  
-**Tracking:** #522  
-**Canonical branch:** `master`  
+**Status:** collaboration ledger for the current integration phase
+**Tracking:** #522
+**Canonical branch:** `master`
 **Purpose:** consolidate what exists, what was verified, what was only proposed, and what automation now owns.
 
 ## 1. Executive finding

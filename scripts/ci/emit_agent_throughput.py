@@ -28,23 +28,30 @@ EVENTS = {
 }
 STATUSES = {"success", "failed", "error", "skipped"}
 SHA_LENGTH = 40
+# Bolt optimization: Pre-allocate hex character set for O(1) C-level superset validation
+HEX_CHARS = frozenset("0123456789abcdef")
 
 
-def _iso(value: Any) -> str:
-    """Require an explicit timezone-bearing ISO-8601 timestamp."""
+def _iso_dt(value: Any) -> tuple[str, datetime]:
+    """Require an explicit timezone-bearing ISO-8601 timestamp and return both ISO string and datetime."""
     if not isinstance(value, str) or not value:
         raise ValueError("timestamp must be a non-empty string")
     parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
     if parsed.tzinfo is None or parsed.utcoffset() is None:
         raise ValueError(f"timestamp must include a timezone: {value!r}")
-    return parsed.isoformat().replace("+00:00", "Z")
+    return parsed.isoformat().replace("+00:00", "Z"), parsed
+
+
+def _iso(value: Any) -> str:
+    """Require an explicit timezone-bearing ISO-8601 timestamp."""
+    return _iso_dt(value)[0]
 
 
 def _sha(value: Any) -> str:
     """Require a full lowercase Git SHA."""
     if not isinstance(value, str) or len(value) != SHA_LENGTH:
         raise ValueError("source_sha must be a 40-character lowercase SHA")
-    if any(ch not in "0123456789abcdef" for ch in value):
+    if not HEX_CHARS.issuperset(value):
         raise ValueError("source_sha must be hexadecimal")
     return value
 
@@ -52,7 +59,7 @@ def _sha(value: Any) -> str:
 def _sha256(value: Any, field: str) -> str:
     if not isinstance(value, str) or len(value) != 64:
         raise ValueError(f"{field} must be a 64-character SHA-256 digest")
-    if any(ch not in "0123456789abcdef" for ch in value):
+    if not HEX_CHARS.issuperset(value):
         raise ValueError(f"{field} must be lowercase hexadecimal")
     return value
 
@@ -84,10 +91,8 @@ def _status(conclusion: Any) -> str:
 
 def _event_id(event: Mapping[str, Any]) -> str:
     """Create a deterministic idempotency key without retaining arbitrary text."""
-    stable = "|".join(str(event.get(key, "")) for key in (
-        "source_sha", "gha_run_id", "gha_run_attempt", "agent_id",
-        "task_id", "event", "timestamp",
-    ))
+    # Bolt optimization: Fast f-string interpolation instead of generator join
+    stable = f"{event.get('source_sha', '')}|{event.get('gha_run_id', '')}|{event.get('gha_run_attempt', '')}|{event.get('agent_id', '')}|{event.get('task_id', '')}|{event.get('event', '')}|{event.get('timestamp', '')}"
     return hashlib.sha256(stable.encode("utf-8")).hexdigest()[:32]
 
 
@@ -246,8 +251,8 @@ def build_events(metadata: Mapping[str, Any]) -> list[dict[str, Any]]:
         if not started or not completed:
             continue
         task_id = f"gha:{run['id']}:{run.get('run_attempt', 1)}:job:{job_id}"
-        start = _iso(started)
-        finish = _iso(completed)
+        start, start_dt = _iso_dt(started)
+        finish, finish_dt = _iso_dt(completed)
         conclusion = str(job.get("conclusion") or "").lower()
         # A skipped job did not execute the agent task. Do not turn scheduler
         # control-flow into a fake completed task or throughput observation.
@@ -260,8 +265,7 @@ def build_events(metadata: Mapping[str, Any]) -> list[dict[str, Any]]:
         started_event["source_sha"] = source_sha
         events.append(started_event)
 
-        start_dt = datetime.fromisoformat(start.replace("Z", "+00:00"))
-        finish_dt = datetime.fromisoformat(finish.replace("Z", "+00:00"))
+        # Bolt optimization: Reuse parsed datetime objects from _iso_dt to avoid duplicate ISO parsing
         duration = max(0.0, (finish_dt - start_dt).total_seconds())
 
         active_event = _base(metadata, agent_id, task_id, job)

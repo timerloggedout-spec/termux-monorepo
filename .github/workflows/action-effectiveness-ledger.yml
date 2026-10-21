@@ -51,7 +51,21 @@ jobs:
           set -euo pipefail
           [[ "$PR_NUMBER" =~ ^[0-9]+$ ]] || { echo "invalid PR number" >&2; exit 1; }
 
-          pr_json="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}")"
+          gh_api_safe() {
+            local err_file="$RUNNER_TEMP/gh_api_err.txt"
+            if ! gh api "$@" 2>"$err_file"; then
+              if grep -qiE 'rate limit|HTTP 403' "$err_file"; then
+                echo "ledger skipped: GitHub API rate limit exceeded ($*)" >> "$GITHUB_STEP_SUMMARY"
+                cat "$err_file" >> "$GITHUB_STEP_SUMMARY"
+                echo "skipped=true" >> "$GITHUB_OUTPUT"
+                exit 0
+              fi
+              cat "$err_file" >&2
+              return 1
+            fi
+          }
+
+          pr_json="$(gh_api_safe "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}")"
           base_sha="$(jq -r '.base.sha' <<<"$pr_json")"
           head_sha="$(jq -r '.head.sha' <<<"$pr_json")"
           head_repo="$(jq -r '.head.repo.full_name // empty' <<<"$pr_json")"
@@ -119,11 +133,11 @@ jobs:
           # Write pages to files. Capturing them in shell variables and feeding
           # jq via here-strings still execs jq with an oversized argv
           # (run 37551434859 exit 126: /usr/bin/jq Argument list too long).
-          gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100" > "$RUNNER_TEMP/ledger-comments-pages.json"
-          gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/reviews?per_page=100" > "$RUNNER_TEMP/ledger-reviews-pages.json"
-          gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/comments?per_page=100" > "$RUNNER_TEMP/ledger-inline-pages.json"
-          gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/commits?per_page=100" > "$RUNNER_TEMP/ledger-commits-pages.json"
-          gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/commits/${head_sha}/check-runs?per_page=100" > "$RUNNER_TEMP/ledger-checks-pages.json"
+          gh_api_safe --paginate --slurp "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100" > "$RUNNER_TEMP/ledger-comments-pages.json"
+          gh_api_safe --paginate --slurp "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/reviews?per_page=100" > "$RUNNER_TEMP/ledger-reviews-pages.json"
+          gh_api_safe --paginate --slurp "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/comments?per_page=100" > "$RUNNER_TEMP/ledger-inline-pages.json"
+          gh_api_safe --paginate --slurp "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/commits?per_page=100" > "$RUNNER_TEMP/ledger-commits-pages.json"
+          gh_api_safe --paginate --slurp "repos/${GITHUB_REPOSITORY}/commits/${head_sha}/check-runs?per_page=100" > "$RUNNER_TEMP/ledger-checks-pages.json"
 
           jq -c 'add // []' "$RUNNER_TEMP/ledger-comments-pages.json" > "$RUNNER_TEMP/ledger-comments.json"
           jq -c 'add // []' "$RUNNER_TEMP/ledger-reviews-pages.json" > "$RUNNER_TEMP/ledger-reviews.json"
@@ -161,10 +175,10 @@ jobs:
             "$RUNNER_TEMP/ledger-correlation.json" > "$RUNNER_TEMP/ledger-recent-events.json"
 
           # Recover the previous v2 marker for longitudinal comparison. If absent, baseline is zero.
-          existing="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100" --jq '.[] | select((.body // "") | startswith("<!-- action-effectiveness-ledger:v2 ")) | .id' | head -n1 || true)"
+          existing="$(gh_api_safe --paginate "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100" --jq '.[] | select((.body // "") | startswith("<!-- action-effectiveness-ledger:v2 ")) | .id' | head -n1 || true)"
           previous_json='{}'
           if [[ -n "$existing" ]]; then
-            previous_body="$(gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${existing}" --jq .body)"
+            previous_body="$(gh_api_safe "repos/${GITHUB_REPOSITORY}/issues/comments/${existing}" --jq .body)"
             previous_json="$(grep -o '<!-- action-effectiveness-ledger:v2 {.*} -->' <<<"$previous_body" | head -n1 | sed 's/^<!-- action-effectiveness-ledger:v2 //; s/ -->$//' || echo '{}')"
           fi
 

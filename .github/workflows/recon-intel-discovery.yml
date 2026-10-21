@@ -72,34 +72,54 @@ jobs:
                 core.setFailed('pr_number must be a positive decimal integer.');
                 return;
               }
-              const { data: pr } = await github.rest.pulls.get({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: Number(requested),
-              });
-              if (pr.state !== 'open' || pr.draft || pr.head.repo?.full_name !== ownRepo) {
-                core.setFailed('pr_number must identify an open, non-draft, same-repository pull request.');
-                return;
+              try {
+                const { data: pr } = await github.rest.pulls.get({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: Number(requested),
+                });
+                if (pr.state !== 'open' || pr.draft || pr.head.repo?.full_name !== ownRepo) {
+                  core.setFailed('pr_number must identify an open, non-draft, same-repository pull request.');
+                  return;
+                }
+                targets = [targetFromPr(pr)];
+              } catch (err) {
+                if (err.status === 403 || err.status === 429 || /rate limit/i.test(err.message || '')) {
+                  core.warning(`Target selection skipped due to API rate limit: ${err.message}`);
+                  core.setOutput('targets', '[]');
+                  core.setOutput('gitlab_ref', gitlabRef);
+                  return;
+                }
+                throw err;
               }
-              targets = [targetFromPr(pr)];
             } else if (context.eventName === 'workflow_dispatch') {
               // A manual blank dispatch is deliberately single-target. It is the
               // operator’s bounded health probe, not a bulk PR sweep.
               targets = [{ pr_number: '0', github_sha: context.sha }];
             } else {
-              const { data: openPrs } = await github.rest.pulls.list({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                state: 'open',
-                per_page: 100,
-              });
-              targets = openPrs
-                .filter(pr => !pr.draft && pr.head.repo?.full_name === ownRepo)
-                .map(targetFromPr);
-              const now = new Date();
-              const idleProbe = now.getUTCMinutes() === 0 && now.getUTCHours() % 6 === 0;
-              if (!targets.length && idleProbe) {
-                targets = [{ pr_number: '0', github_sha: context.sha }];
+              try {
+                const { data: openPrs } = await github.rest.pulls.list({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  state: 'open',
+                  per_page: 100,
+                });
+                targets = openPrs
+                  .filter(pr => !pr.draft && pr.head.repo?.full_name === ownRepo)
+                  .map(targetFromPr);
+                const now = new Date();
+                const idleProbe = now.getUTCMinutes() === 0 && now.getUTCHours() % 6 === 0;
+                if (!targets.length && idleProbe) {
+                  targets = [{ pr_number: '0', github_sha: context.sha }];
+                }
+              } catch (err) {
+                if (err.status === 403 || err.status === 429 || /rate limit/i.test(err.message || '')) {
+                  core.warning(`Target sweep skipped due to API rate limit: ${err.message}`);
+                  core.setOutput('targets', '[]');
+                  core.setOutput('gitlab_ref', gitlabRef);
+                  return;
+                }
+                throw err;
               }
             }
             core.setOutput('targets', JSON.stringify(targets));
@@ -144,29 +164,38 @@ jobs:
               return;
             }
             let resolvedSha;
-            if (targetPrNumber === '0') {
-              const { data: branch } = await github.rest.repos.getBranch({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                branch: defaultBranch,
-              });
-              resolvedSha = branch.commit.sha;
-            } else {
-              if (!/^[1-9][0-9]*$/.test(targetPrNumber)) {
-                core.setFailed('Invalid target PR number.');
-                return;
+            try {
+              if (targetPrNumber === '0') {
+                const { data: branch } = await github.rest.repos.getBranch({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  branch: defaultBranch,
+                });
+                resolvedSha = branch.commit.sha;
+              } else {
+                if (!/^[1-9][0-9]*$/.test(targetPrNumber)) {
+                  core.setFailed('Invalid target PR number.');
+                  return;
+                }
+                const { data: pr } = await github.rest.pulls.get({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: Number(targetPrNumber),
+                });
+                if (pr.state !== 'open' || pr.draft || pr.head.repo?.full_name !== `${context.repo.owner}/${context.repo.repo}`) {
+                  core.notice('Target pull request is no longer an eligible same-repository review target; skipping stale discovery.');
+                  core.setOutput('skip', 'true');
+                  return;
+                }
+                resolvedSha = pr.head.sha;
               }
-              const { data: pr } = await github.rest.pulls.get({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: Number(targetPrNumber),
-              });
-              if (pr.state !== 'open' || pr.draft || pr.head.repo?.full_name !== `${context.repo.owner}/${context.repo.repo}`) {
-                core.notice('Target pull request is no longer an eligible same-repository review target; skipping stale discovery.');
+            } catch (err) {
+              if (err.status === 403 || err.status === 429 || /rate limit/i.test(err.message || '')) {
+                core.warning(`Discovery step skipped due to API rate limit: ${err.message}`);
                 core.setOutput('skip', 'true');
                 return;
               }
-              resolvedSha = pr.head.sha;
+              throw err;
             }
             if (resolvedSha !== expectedSha) {
               core.notice('Target changed during discovery; refusing stale comparison.');

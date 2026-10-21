@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "27db7a1da2a13d9fa4d05979ed8c526a1d1fbe16ae99a7b71e2803248de259e1",
-  "workflow_count": 148,
+  "source_fingerprint": "5fa30774d2de1951084b9844cc1c5185ec5e1f00fbcf38d5be7da94eda33c9d5",
+  "workflow_count": 150,
   "workflows": [
     {
       "action_pins": [
@@ -219,6 +219,23 @@
       "schedules": [],
       "triggers": [
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "handoff",
+        "mutation"
+      ],
+      "name": "Agent PR Jules Handoff",
+      "path": ".github/workflows/agent-pr-jules-handoff.yml",
+      "schedules": [],
+      "triggers": [
+        "issue_comment",
+        "pull_request"
       ]
     },
     {
@@ -1354,6 +1371,23 @@
       "schedules": [],
       "triggers": [
         "workflow_call"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: github-app-capability-probe cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "probe"
+      ],
+      "name": "GitHub App Capability Probe",
+      "path": ".github/workflows/github-app-capability-probe.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
       ]
     },
     {

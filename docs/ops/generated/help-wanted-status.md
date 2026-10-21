@@ -1,10 +1,9 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-20T23:49:34Z UTC · receipts=3268 · foreign_open=39 · tributes=111_
+_Generated 2026-10-21T00:39:03Z UTC · receipts=3307 · foreign_open=39 · tributes=111_
 
 ## Tributes (contributor ledger)
 
-- [C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge--Frontend-#971](https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge--Frontend-/pull/971) · state=open · help-wanted: stake + contribute for #901
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
 - [mangiapanejohn-dev/MOBIUS-Searcher#7](https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7) · state=open · help-wanted: stake + contribute for #6
@@ -40,10 +39,11 @@ _Generated 2026-10-20T23:49:34Z UTC · receipts=3268 · foreign_open=39 · tribu
 - [0xLizTech/stellarforge#614](https://github.com/0xLizTech/stellarforge/pull/614) · state=open · help-wanted: stake + contribute for #92
 - [SoroScan/soroscan#1690](https://github.com/SoroScan/soroscan/pull/1690) · state=open · help-wanted: stake + contribute for #1663
 - [sorolens/sorolens#753](https://github.com/sorolens/sorolens/pull/753) · state=open · help-wanted: stake + contribute for #538
-- [francordel/kdemos#27](https://github.com/francordel/kdemos/pull/27) · state=closed · help-wanted: stake + contribute for #26
 - [seleniumboot/selenium-boot#183](https://github.com/seleniumboot/selenium-boot/pull/183) · state=open · help-wanted: stake + contribute for #180
 - [use-assay/Assay#509](https://github.com/use-assay/Assay/pull/509) · state=open · help-wanted: stake + contribute for #305
 - [SO4-Markets/interface#1029](https://github.com/SO4-Markets/interface/pull/1029) · state=open · help-wanted: stake + contribute for #918
+- [C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge--Frontend-#971](https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge--Frontend-/pull/971) · state=open · help-wanted: stake + contribute for #901
+- [francordel/kdemos#27](https://github.com/francordel/kdemos/pull/27) · state=closed · help-wanted: stake + contribute for #26
 
 ## Foreign open PRs
 
@@ -87,6 +87,6 @@ _Generated 2026-10-20T23:49:34Z UTC · receipts=3268 · foreign_open=39 · tribu
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) — help-wanted: stake + contribute for #20
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Operational outcomes · actioned=189 skipped=3079 failed=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 3043, 'followup_reengage': 50, 'followup_stale_nudge': 125, 'followup_changes': 2}`
+## Operational outcomes · actioned=190 skipped=3117 failed=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 3081, 'followup_reengage': 50, 'followup_stale_nudge': 126, 'followup_changes': 2}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

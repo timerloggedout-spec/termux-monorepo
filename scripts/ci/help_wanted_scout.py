@@ -40,6 +40,10 @@ LABEL_SCORES = {
     "contributions welcome": 8,
 }
 
+# Bolt optimization: Pre-allocate static tuple constant at module scope to eliminate
+# per-body clarity allocation frames.
+CLARITY_KEYWORDS = ("acceptance", "expected", "steps to", "checklist", "- [ ]", "repro")
+
 
 def _headers() -> dict[str, str]:
     h = {
@@ -84,7 +88,7 @@ def body_clarity(body: str | None) -> int:
         return 0
     b = body.lower()
     score = 0
-    if any(k in b for k in ("acceptance", "expected", "steps to", "checklist", "- [ ]", "repro")):
+    if any(k in b for k in CLARITY_KEYWORDS):
         score += 10
     n = len(body)
     if 80 <= n <= 2000:
@@ -94,12 +98,16 @@ def body_clarity(body: str | None) -> int:
     return max(0, min(15, score))
 
 
-def freshness_score(updated_at: str | None) -> int:
+def freshness_score(updated_at: str | None, now: datetime | None = None) -> int:
     if not updated_at:
         return 0
     try:
-        dt = datetime.fromisoformat(updated_at.replace("Z", "+00:00"))
-        age = (datetime.now(timezone.utc) - dt).days
+        try:
+            dt = datetime.fromisoformat(updated_at)
+        except ValueError:
+            dt = datetime.fromisoformat(updated_at.replace("Z", "+00:00"))
+        ref_now = now or datetime.now(timezone.utc)
+        age = (ref_now - dt).days
     except Exception:
         return 0
     if age < 30:
@@ -128,7 +136,7 @@ def language_score(repo_url: str, preferred: set[str]) -> int:
     return 0
 
 
-def rank_issue(item: dict) -> dict:
+def rank_issue(item: dict, now: datetime | None = None) -> dict:
     labels = item.get("labels") or []
     body = item.get("body") or ""
     assignees = item.get("assignees") or []
@@ -144,13 +152,14 @@ def rank_issue(item: dict) -> dict:
         "label_fit": label_score(labels),
         "unassigned": 15 if not assignees else (5 if len(assignees) == 1 else 0),
         "body_clarity": body_clarity(body),
-        "freshness": freshness_score(updated),
+        "freshness": freshness_score(updated, now=now),
         "comment_signal": comment_score(comments),
         "repository_health": 0,
         "language_fit": language_score(repo, PREFERRED_LANGS),
         "competing_pr_absence": 0,
     }
     score = max(0, min(100, sum(components.values())))
+
 
     return {
         "score": score,
@@ -188,11 +197,12 @@ def main() -> int:
     query = " ".join(parts)
 
     items = search_issues(query, per_page=min(args.max, 50))
-    ranked = sorted((rank_issue(i) for i in items), key=lambda x: -x["score"])[: args.max]
+    now = datetime.now(timezone.utc)
+    ranked = sorted((rank_issue(i, now=now) for i in items), key=lambda x: -x["score"])[: args.max]
 
     catalog = {
         "schema_version": "help-wanted-catalog.v2",
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": now.isoformat(),
         "query": query,
         "count": len(ranked),
         "items": ranked,

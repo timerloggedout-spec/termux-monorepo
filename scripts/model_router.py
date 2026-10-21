@@ -387,6 +387,46 @@ def emit_decision(
     write_output("decision_summary", decision["summary"])
 
 
+
+def load_quota_multipliers():
+    """Read fresh 3L0 quota weights; unknown/stale data is neutral, zero is a hard deny."""
+    path = os.environ.get("QUOTA_WEIGHTS_PATH") or os.path.join(COUNTER_DIR, "routing-weights.json")
+    try:
+        with open(path, "r", encoding="utf-8") as handle:
+            payload = json.load(handle)
+        if payload.get("schema") != "3l0.quota-weights.v1":
+            return {}
+        generated = payload.get("generated_at")
+        if not generated:
+            return {}
+        from datetime import datetime, timezone
+        stamp = datetime.fromisoformat(generated.replace("Z", "+00:00"))
+        age = (datetime.now(timezone.utc) - stamp.astimezone(timezone.utc)).total_seconds()
+        max_age = int(os.environ.get("QUOTA_WEIGHTS_MAX_AGE_SEC", "21600"))
+        if age < -300 or age > max_age:
+            sys.stderr.write(f"Quota weights stale ({age:.0f}s); treating quota as unknown.\\n")
+            return {}
+        multipliers = payload.get("multipliers", {})
+        return {str(k).lower(): max(0.0, min(2.0, float(v))) for k, v in multipliers.items()}
+    except (OSError, ValueError, TypeError, json.JSONDecodeError):
+        return {}
+
+
+def is_in_cooldown(provider, model, now=None):
+    """Fail closed for a provider/model with a still-active rate-limit cooldown."""
+    path = os.path.join(COUNTER_DIR, "cooldowns.json")
+    try:
+        if os.path.islink(path):
+            sys.stderr.write("Cooldown file is a symlink; ignoring cooldown cache.\\n")
+            return False
+        with open(path, "r", encoding="utf-8") as handle:
+            data = json.load(handle)
+        until = float((data.get("cooldowns") or {}).get(f"{provider}/{model}", 0))
+        return until > (time.time() if now is None else now)
+    except (OSError, ValueError, TypeError, json.JSONDecodeError):
+        return False
+
+
 def main():
     role = os.environ.get("ROLE", "triage")
     has_omni = os.environ.get("HAS_OMNI", "false").lower() == "true"

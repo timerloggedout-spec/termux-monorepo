@@ -215,12 +215,13 @@ jobs:
               const cycleStartedAtIso = new Date(cycleStartedAt).toISOString();
 
               async function fetchEvidence() {
+                try {
                 const comments = await github.paginate(github.rest.issues.listComments, {
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: prNumber,
                   per_page: 100,
-                });
+                  });
                 const reviews = await github.paginate(github.rest.pulls.listReviews, {
                   owner: context.repo.owner,
                   repo: context.repo.repo,
@@ -243,6 +244,13 @@ jobs:
                   core.info(`Check lookup skipped: ${error.message}`);
                 }
                 return { comments, reviews, reviewComments, checks };
+                } catch (error) {
+                if (error.status === 403 || error.status === 429 || /rate limit/i.test(error.message || '')) {
+                  core.warning(`Evidence collection rate limited: ${error.message}`);
+                  return { comments: [], reviews: [], reviewComments: [], checks: [] };
+                }
+                throw error;
+                }
               }
 
               function controlEntries(comments) {

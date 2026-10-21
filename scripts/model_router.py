@@ -530,11 +530,11 @@ def main():
                 f"local_reserved={openrouter_quota['local_reserved']}; "
                 f"effective_used={openrouter_quota['effective_used']:.0f}; "
                 f"effective_remaining={openrouter_quota['effective_remaining']:.0f}; "
-                f"safe_limit={openrouter_quota['safe_limit']:.0f}\\n"
+                f"safe_limit={openrouter_quota['safe_limit']:.0f}\n"
             )
         else:
             sys.stderr.write(
-                "OpenRouter preflight: " + openrouter_quota.get("reason", "quota unknown") + "\\n"
+                "OpenRouter preflight: " + openrouter_quota.get("reason", "quota unknown") + "\n"
             )
 
     for provider, models in pools:
@@ -555,7 +555,7 @@ def main():
                 ):
                     reason = openrouter_quota.get("reason", "daily safety budget reached")
                     sys.stderr.write(
-                        f"Candidate denied by OpenRouter quota preflight ({model}): {reason}\\n"
+                        f"Candidate denied by OpenRouter quota preflight ({model}): {reason}\n"
                     )
                     continue
             seen.add(key)

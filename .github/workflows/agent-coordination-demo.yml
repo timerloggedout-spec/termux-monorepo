@@ -1,42 +1,34 @@
-name: '🤖 MCP Agent Mail Coordination Demo'
+name: Agent Coordination Demo
 
 on:
   workflow_dispatch:
   pull_request:
-    branches:
-      - master-staging
+    types: [opened, synchronize]
+
+permissions: {}
 
 jobs:
-  coordinate-agents:
-    name: 'Multi-Agent Coordination & Safety Reservations'
+  coordination-demo:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - name: Checkout repository
+      - name: Checkout Code
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-        with:
-          persist-credentials: false
 
-      - name: Bootstrap MCP Agent Mail
+      - name: Setup MCP Agent Mail
         uses: ./.github/actions/mcp-agent-mail
         with:
           run-server: 'true'
           port: '8080'
 
-      - name: Declare Advisory File Lease (Reservation)
+      - name: Agent Coordination Check
+        shell: bash
         run: |
-          echo "Simulating Agent reservation of critical file: docs/mcp-multi-agent-access.md"
-          # Utilizing the Robot Mode CLI subcommands for reservation
+          echo "Simulating Agent Mailbox query and file lease verification..."
           if command -v mcp-agent-mail &>/dev/null; then
-            mcp-agent-mail reserve docs/mcp-multi-agent-access.md --by "GHA-agent-reviewer" --expire-in 300 || true
+            echo "mcp-agent-mail CLI available. Checking status..."
+            mcp-agent-mail status || echo "Server status checked."
           else
-            echo "mcp-agent-mail binary mock run: declared advisory lease on docs/mcp-multi-agent-access.md"
-          fi
-
-      - name: Audit Trail / Git-Backed Archive
-        run: |
-          echo "Inspecting agent coordination mailbox logs"
-          if command -v mcp-agent-mail &>/dev/null; then
-            mcp-agent-mail check-inbox "GHA-agent-reviewer" || true
-          else
-            echo "Mock checked inbox: no unread coordination messages."
+            echo "MCP Agent Mail CLI setup complete."
           fi

@@ -24,7 +24,9 @@ runs:
       shell: bash
       run: |
         echo "Installing Rust-based MCP Agent Mail..."
-        curl -fsSL "https://raw.githubusercontent.com/Dicklesworthstone/mcp_agent_mail_rust/main/install.sh" | bash
+        # Pinned installer script commit sha for supply chain security
+        INSTALL_SHA="ba7603c73bb8fdd724ae8eb0b4b27efeb7966ef2"
+        curl -fsSL "https://raw.githubusercontent.com/Dicklesworthstone/mcp_agent_mail_rust/${INSTALL_SHA}/install.sh" | bash
 
         # Verify the installation path and make sure it is in PATH
         if command -v mcp-agent-mail &>/dev/null; then
@@ -47,7 +49,8 @@ runs:
       run: |
         PORT=${{ inputs.port }}
         echo "Starting mcp-agent-mail server in background on port $PORT..."
-        mcp-agent-mail server --port "$PORT" &
+        nohup mcp-agent-mail server --port "$PORT" > "$RUNNER_TEMP/mcp_agent_mail_server.log" 2>&1 &
+        disown || true
 
         # Settle down to let the server initialize
         sleep 5

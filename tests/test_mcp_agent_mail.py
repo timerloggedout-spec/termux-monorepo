@@ -29,6 +29,6 @@ def test_agent_coordination_demo_yaml():
     with open(workflow_path, "r") as f:
         content = f.read()
 
-    assert "name: '🤖 MCP Agent Mail Coordination Demo'" in content
+    assert "name: Agent Coordination Demo" in content
     assert "jobs:" in content
-    assert "coordinate-agents:" in content
+    assert "coordination-demo:" in content

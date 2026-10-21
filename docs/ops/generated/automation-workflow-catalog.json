@@ -27,7 +27,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "48f8b635dbeca16ada0b36581530f14c75bc224b406c471db5e36f2590e0165f",
+  "source_fingerprint": "573c06a639d7db8a15aa2143afcf020397230740b1779d30a1e7c7c31423e780",
   "workflow_count": 147,
   "workflows": [
     {
@@ -2727,7 +2727,7 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
-      "concurrency": "",
+      "concurrency": "group: tunnel-canary cancel-in-progress: true",
       "domain": "agentic-development",
       "jobs": [
         "ping"
@@ -2735,7 +2735,7 @@
       "name": "Tunnel Canary",
       "path": ".github/workflows/tunnel-canary.yml",
       "schedules": [
-        "*/30 * * * *"
+        "17 * * * *"
       ],
       "triggers": [
         "schedule",

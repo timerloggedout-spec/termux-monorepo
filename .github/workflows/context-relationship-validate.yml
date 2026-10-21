@@ -115,8 +115,8 @@ jobs:
         run: |
           set -euo pipefail
           cat > /tmp/crg-parity-input.jsonl <<'EOF'
-          {"id":"parity-a","level":"function","text":"fn repeated_fragment() { return 42; }","children":[],"bytes":38}
-          {"id":"parity-b","level":"function","text":"fn repeated_fragment() { return 42; }","children":[],"bytes":38}
+          {"id": "parity-a", "level": "function", "text": "fn repeated_fragment() { return compute_something_meaningful() + 42; } xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "children": [], "bytes": 256}
+          {"id": "parity-b", "level": "function", "text": "fn repeated_fragment() { return compute_something_meaningful() + 42; } xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "children": [], "bytes": 256}
           EOF
 
           ./target/release/crg-rust-accel < /tmp/crg-parity-input.jsonl > /tmp/crg-parity-output.json

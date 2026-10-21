@@ -3,7 +3,8 @@
 **Status:** RESEARCHED · METADATA-ONLY · INTEGRATION PR IN PROGRESS  
 **Upstream:** https://github.com/Dicklesworthstone/agentic_coding_flywheel_setup  
 **Methodology:** https://github.com/Dicklesworthstone/agentic_coding_flywheel_setup/blob/main/docs/methodology/THE_FLYWHEEL_CORE_LOOP.md  
-**Integration contract:** docs/ops/DICKLESWORTHSTONE-FLYWHEEL-INTEGRATION.md
+**Integration contract:** docs/ops/DICKLESWORTHSTONE-FLYWHEEL-INTEGRATION.md  
+**Machine-readable stack:** stack.json
 
 ## Why this slot exists
 

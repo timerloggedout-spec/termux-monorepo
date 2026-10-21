@@ -75,3 +75,10 @@ If a lease appears stale, begin a fresh discovery run rather than reusing a prio
 ## Validation
 
 The implementation is validated by deterministic policy, topology, workflow, provider-dispatch, and reconciliation tests. The repository gate, Termux smoke test, action pinning, workflow syntax validation, and generated workflow-catalog freshness check are required before review.
+
+
+## AI Engineering Ecosystem Recon
+
+The evidence-backed catalog of existing evaluation/security controls and candidate tools lives in [RECON INTEL — AI Engineering Ecosystem Map](RECON-INTEL-ECOSYSTEM-MAP.md). It is a research and planning index, not permission to install dependencies or promote checks.
+
+Use the [Research & Implementation Recon skill](../../.github/skills/research-implementation-recon/SKILL.md) before adding overlapping systems. Search paths and content, bind findings to the exact SHA, separate implementation from proposals, and review source/data/model/service licenses independently. Prefer one normalized evidence contract with optional adapters over parallel vendor-specific sources of truth.

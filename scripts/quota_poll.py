@@ -112,9 +112,19 @@ def openrouter_reader(now):
     d = _get("https://openrouter.ai/api/v1/key", {"Authorization": "Bearer " + key}).get("data", {})
     fm = d.get("free_model_daily_requests") or {}
     used, lim = fm.get("used", fm.get("count")), fm.get("limit")
-    if used is None:
+    if used is None or lim is None:
         return None
-    return {"used": used, "limit": lim, "elapsed": None, "reset": fm.get("reset") or fm.get("resets_at")}
+    return {
+        "used": used,
+        "limit": lim,
+        "remaining": fm.get("remaining", max(0, lim - used)),
+        "elapsed": None,
+        "reset": fm.get("reset") or fm.get("resets_at") or "UTC midnight",
+        "extra": {
+            "is_free_tier": d.get("is_free_tier"),
+            "source": "official OpenRouter GET /api/v1/key",
+        },
+    }
 
 
 LIVE = {"github.api.github_token": gh_rate, "github.actions.cache": gh_cache,

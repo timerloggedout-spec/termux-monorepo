@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "repository": "kyegomez/swarms",
+  "source_url": "https://github.com/kyegomez/swarms.git",
+  "revision": "8ec7948ce6e8ab28c4454d6c2c3187a735672067",
+  "target_path": "refTemplates/smods/swarms",
+  "version": "16.0.2",
+  "python": ">=3.10,<4.0",
+  "license": "Apache-2.0",
+  "reference_only": true,
+  "runtime_install_automatic": false,
+  "files": {
+    "pyproject.toml": {
+      "url": "https://raw.githubusercontent.com/kyegomez/swarms/8ec7948ce6e8ab28c4454d6c2c3187a735672067/pyproject.toml",
+      "sha256": "d7c472afae0823f39d5667245e6d624be21f77cc087bc2c2a3817b3bf2252f3a"
+    },
+    "LICENSE": {
+      "url": "https://raw.githubusercontent.com/kyegomez/swarms/8ec7948ce6e8ab28c4454d6c2c3187a735672067/LICENSE",
+      "sha256": "8f046d1264d68cbac4b2f141e9015d62cd9c11e64f44c763f9430e1643c5f3fd"
+    },
+    "swarms/structs/agent.py": {
+      "url": "https://raw.githubusercontent.com/kyegomez/swarms/8ec7948ce6e8ab28c4454d6c2c3187a735672067/swarms/structs/agent.py",
+      "sha256": "1667c35455adc1b4636b4a7085761ad381b3c17fe32ed74ec1fa6cc2f609bac0"
+    },
+    "swarms/structs/sequential_workflow.py": {
+      "url": "https://raw.githubusercontent.com/kyegomez/swarms/8ec7948ce6e8ab28c4454d6c2c3187a735672067/swarms/structs/sequential_workflow.py",
+      "sha256": "669c28157080971c201d2f51f9fdb622e570c2417f4e2f121a569198beb256dd"
+    },
+    "swarms/telemetry/otel.py": {
+      "url": "https://raw.githubusercontent.com/kyegomez/swarms/8ec7948ce6e8ab28c4454d6c2c3187a735672067/swarms/telemetry/otel.py",
+      "sha256": "3a7e13eff126fabe29f5bcbd80ec4a7d0a534a0da71f9c729cc32d4e5fcd86c1"
+    }
+  }
+}

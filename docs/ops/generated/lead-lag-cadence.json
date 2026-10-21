@@ -1,16 +1,16 @@
 {
   "schema": "lead-lag-cadence/v1",
-  "observed_at": "2026-10-21T13:43:16.254972Z",
+  "observed_at": "2026-10-21T20:05:56.808638Z",
   "sample_size": 1000,
   "counts": {
-    "lead_in_flight": 1,
-    "lag_success_badge": 355,
-    "lag_operational": 644
+    "lead_in_flight": 2,
+    "lag_success_badge": 420,
+    "lag_operational": 578
   },
   "rates": {
     "failure": 0.0,
-    "operational_skip_cancel": 0.644,
-    "success_badge": 0.355
+    "operational_skip_cancel": 0.578,
+    "success_badge": 0.42
   },
   "policy": {
     "correctness_gt_green_badges": true,
@@ -28,288 +28,207 @@
       "startup_failure"
     ]
   },
-  "dual_gate_runs": [
-    {
-      "id": 39609888541,
-      "name": "termux smoke",
-      "conclusion": "success",
-      "status": "completed",
-      "head_sha": "5a7a5d904821",
-      "class": "lag_success_badge",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39609888541",
-      "dual_gate": true
-    },
-    {
-      "id": 39609888472,
-      "name": "repo gate",
-      "conclusion": "success",
-      "status": "completed",
-      "head_sha": "5a7a5d904821",
-      "class": "lag_success_badge",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39609888472",
-      "dual_gate": true
-    },
-    {
-      "id": 39609041851,
-      "name": "repo gate",
-      "conclusion": "success",
-      "status": "completed",
-      "head_sha": "50a1252290da",
-      "class": "lag_success_badge",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39609041851",
-      "dual_gate": true
-    },
-    {
-      "id": 39609041804,
-      "name": "termux smoke",
-      "conclusion": "success",
-      "status": "completed",
-      "head_sha": "50a1252290da",
-      "class": "lag_success_badge",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39609041804",
-      "dual_gate": true
-    },
-    {
-      "id": 39608910367,
-      "name": "repo gate",
-      "conclusion": "success",
-      "status": "completed",
-      "head_sha": "fe459a0850e4",
-      "class": "lag_success_badge",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39608910367",
-      "dual_gate": true
-    },
-    {
-      "id": 39608910345,
-      "name": "termux smoke",
-      "conclusion": "success",
-      "status": "completed",
-      "head_sha": "fe459a0850e4",
-      "class": "lag_success_badge",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39608910345",
-      "dual_gate": true
-    },
-    {
-      "id": 39608439167,
-      "name": "termux smoke",
-      "conclusion": "success",
-      "status": "completed",
-      "head_sha": "808fbbc370df",
-      "class": "lag_success_badge",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39608439167",
-      "dual_gate": true
-    },
-    {
-      "id": 39608438971,
-      "name": "repo gate",
-      "conclusion": "success",
-      "status": "completed",
-      "head_sha": "808fbbc370df",
-      "class": "lag_success_badge",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39608438971",
-      "dual_gate": true
-    }
-  ],
+  "dual_gate_runs": [],
   "failures": [],
   "operational_sample": [
     {
-      "id": 39609934912,
-      "name": "hark enqueue on failure",
-      "conclusion": "skipped",
-      "status": "completed",
-      "head_sha": "5a7a5d904821",
-      "class": "lag_operational",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39609934912",
-      "dual_gate": false
-    },
-    {
-      "id": 39609926733,
-      "name": "n8n SHE bridge",
+      "id": 39667111274,
+      "name": "Context Relationship + Lead/Lag Audit",
       "conclusion": "cancelled",
       "status": "completed",
-      "head_sha": "5a7a5d904821",
+      "head_sha": "fe6a138df509",
       "class": "lag_operational",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39609926733",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39667111274",
       "dual_gate": false
     },
     {
-      "id": 39609926801,
-      "name": "hark enqueue on failure",
-      "conclusion": "skipped",
-      "status": "completed",
-      "head_sha": "5a7a5d904821",
-      "class": "lag_operational",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39609926801",
-      "dual_gate": false
-    },
-    {
-      "id": 39609589023,
+      "id": 39667100826,
       "name": "Fix-on-Failure Agent",
       "conclusion": "skipped",
       "status": "completed",
-      "head_sha": "32df28e76df9",
+      "head_sha": "fe6a138df509",
       "class": "lag_operational",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39609589023",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39667100826",
       "dual_gate": false
     },
     {
-      "id": 39609580505,
-      "name": "Action Effectiveness Ledger",
+      "id": 39667095649,
+      "name": "delphi-signal-bridge",
       "conclusion": "skipped",
       "status": "completed",
-      "head_sha": "32df28e76df9",
+      "head_sha": "fe6a138df509",
       "class": "lag_operational",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39609580505",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39667095649",
       "dual_gate": false
     },
     {
-      "id": 39609580563,
-      "name": "PR evidence evaluation",
-      "conclusion": "skipped",
-      "status": "completed",
-      "head_sha": "32df28e76df9",
-      "class": "lag_operational",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39609580563",
-      "dual_gate": false
-    },
-    {
-      "id": 39609580592,
-      "name": "Peer review orchestrator",
-      "conclusion": "skipped",
-      "status": "completed",
-      "head_sha": "32df28e76df9",
-      "class": "lag_operational",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39609580592",
-      "dual_gate": false
-    },
-    {
-      "id": 39609580506,
-      "name": "delphi-gate",
-      "conclusion": "skipped",
-      "status": "completed",
-      "head_sha": "32df28e76df9",
-      "class": "lag_operational",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39609580506",
-      "dual_gate": false
-    },
-    {
-      "id": 39609580613,
-      "name": "DeepSeek CI \u2013 Agentic Automation",
-      "conclusion": "skipped",
-      "status": "completed",
-      "head_sha": "32df28e76df9",
-      "class": "lag_operational",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39609580613",
-      "dual_gate": false
-    },
-    {
-      "id": 39609580514,
-      "name": "Jules on Issues (label / @jules)",
-      "conclusion": "skipped",
-      "status": "completed",
-      "head_sha": "32df28e76df9",
-      "class": "lag_operational",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39609580514",
-      "dual_gate": false
-    },
-    {
-      "id": 39609580606,
-      "name": "Model live canary",
-      "conclusion": "skipped",
-      "status": "completed",
-      "head_sha": "32df28e76df9",
-      "class": "lag_operational",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39609580606",
-      "dual_gate": false
-    },
-    {
-      "id": 39609580509,
-      "name": "DeepSeek Termux Agent",
-      "conclusion": "skipped",
-      "status": "completed",
-      "head_sha": "32df28e76df9",
-      "class": "lag_operational",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39609580509",
-      "dual_gate": false
-    },
-    {
-      "id": 39609580538,
-      "name": "Agent review \u2192 auto Jules",
-      "conclusion": "skipped",
-      "status": "completed",
-      "head_sha": "32df28e76df9",
-      "class": "lag_operational",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39609580538",
-      "dual_gate": false
-    },
-    {
-      "id": 39609580739,
-      "name": "Agent PR Jules Handoff",
-      "conclusion": "skipped",
-      "status": "completed",
-      "head_sha": "32df28e76df9",
-      "class": "lag_operational",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39609580739",
-      "dual_gate": false
-    },
-    {
-      "id": 39609580610,
-      "name": "\ud83d\udd00 Gemini Dispatch (free-tier agentic)",
-      "conclusion": "skipped",
-      "status": "completed",
-      "head_sha": "32df28e76df9",
-      "class": "lag_operational",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39609580610",
-      "dual_gate": false
-    },
-    {
-      "id": 39609580697,
+      "id": 39667086850,
       "name": "PR production ledger",
       "conclusion": "skipped",
       "status": "completed",
-      "head_sha": "32df28e76df9",
+      "head_sha": "fe6a138df509",
       "class": "lag_operational",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39609580697",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39667086850",
       "dual_gate": false
     },
     {
-      "id": 39609580558,
-      "name": "Sweep Accountability",
+      "id": 39667087213,
+      "name": "DeepSeek Termux Agent",
       "conclusion": "skipped",
       "status": "completed",
-      "head_sha": "32df28e76df9",
+      "head_sha": "fe6a138df509",
       "class": "lag_operational",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39609580558",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39667087213",
       "dual_gate": false
     },
     {
-      "id": 39609580522,
+      "id": 39667086961,
+      "name": "Action Effectiveness Ledger",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "fe6a138df509",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39667086961",
+      "dual_gate": false
+    },
+    {
+      "id": 39667087305,
+      "name": "delphi-gate",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "fe6a138df509",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39667087305",
+      "dual_gate": false
+    },
+    {
+      "id": 39667086796,
+      "name": "Agent PR Jules Handoff",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "fe6a138df509",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39667086796",
+      "dual_gate": false
+    },
+    {
+      "id": 39667086943,
+      "name": "Peer review orchestrator",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "fe6a138df509",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39667086943",
+      "dual_gate": false
+    },
+    {
+      "id": 39667086770,
       "name": "CellCog review",
       "conclusion": "skipped",
       "status": "completed",
-      "head_sha": "32df28e76df9",
+      "head_sha": "fe6a138df509",
       "class": "lag_operational",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39609580522",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39667086770",
       "dual_gate": false
     },
     {
-      "id": 39609580589,
-      "name": "ECC Tools comment-command ops",
+      "id": 39667087000,
+      "name": "Agent review \u2192 auto Jules",
       "conclusion": "skipped",
       "status": "completed",
-      "head_sha": "32df28e76df9",
+      "head_sha": "fe6a138df509",
       "class": "lag_operational",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39609580589",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39667087000",
       "dual_gate": false
     },
     {
-      "id": 39609473716,
-      "name": "Merge Promotion Queue v3",
+      "id": 39667087366,
+      "name": "\ud83d\udd00 Gemini Dispatch (free-tier agentic)",
       "conclusion": "skipped",
       "status": "completed",
-      "head_sha": "32df28e76df9",
+      "head_sha": "fe6a138df509",
       "class": "lag_operational",
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39609473716",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39667087366",
+      "dual_gate": false
+    },
+    {
+      "id": 39667086911,
+      "name": "DeepSeek CI \u2013 Agentic Automation",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "fe6a138df509",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39667086911",
+      "dual_gate": false
+    },
+    {
+      "id": 39667086803,
+      "name": "Model live canary",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "fe6a138df509",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39667086803",
+      "dual_gate": false
+    },
+    {
+      "id": 39667086680,
+      "name": "PR evidence evaluation",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "fe6a138df509",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39667086680",
+      "dual_gate": false
+    },
+    {
+      "id": 39667086579,
+      "name": "Sweep Accountability",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "fe6a138df509",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39667086579",
+      "dual_gate": false
+    },
+    {
+      "id": 39667086502,
+      "name": "Jules on Issues (label / @jules)",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "fe6a138df509",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39667086502",
+      "dual_gate": false
+    },
+    {
+      "id": 39667062200,
+      "name": "Context Relationship + Lead/Lag Audit",
+      "conclusion": "cancelled",
+      "status": "completed",
+      "head_sha": "fe6a138df509",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39667062200",
+      "dual_gate": false
+    },
+    {
+      "id": 39667056641,
+      "name": "delphi-signal-bridge",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "fe6a138df509",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39667056641",
+      "dual_gate": false
+    },
+    {
+      "id": 39667053337,
+      "name": "Context Relationship + Lead/Lag Audit",
+      "conclusion": "cancelled",
+      "status": "completed",
+      "head_sha": "fe6a138df509",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39667053337",
       "dual_gate": false
     }
   ],

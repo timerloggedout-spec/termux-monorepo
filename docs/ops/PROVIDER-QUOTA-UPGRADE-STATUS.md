@@ -1,5 +1,22 @@
 # Provider quota upgrade: shipped capability versus remaining gaps
 
+## Continuation batch: MSM-020 / MSM-021
+
+This batch starts from current `master` in a separate worktree, preserving the prior checkout and unrelated worktrees. It implements one newly supportable official remaining-balance contract rather than inventing quota counters for the other providers:
+
+- **Ollama:** [official Balance API](https://docs.ollama.com/api/balance), modern included/purchased USD pools and explicit UTC period bounds, or legacy session/weekly remaining percentages and reset timestamps. The uniform passive parser validates both variants and rejects malformed/mixed groups. `scripts.provider_quota_transport.observe_ollama_balance` supplies a fixed-URL GET interface with an explicitly injected trusted transport, bounded timeout/body contract, redirects disabled, sanitized errors, and no retries or default network client. All execution evidence is synthetic fixture testing, not live validation.
+- **All twenty static adapter links:** `ops/quota/static-service-mappings.json` cites existing in-repo endpoint rosters and feeds the existing coverage/dashboard path. Static roster links are not runtime quota resources. The dashboard separately displays static links, actual service mappings, parser implementation and unknown live account state.
+- **Official contract re-curation:** eleven families remain documentation-only and three unsupported. Cloudflare billing consumption, Kilo inference cost, Cerebras console exports, public ceilings and dynamic concurrency do not become fabricated remaining quota. See [source matrix](PROVIDER-QUOTA-MANAGERS.md).
+- **Attribution:** refreshed [capability evidence](PROVIDER-COLLABORATOR-CAPABILITY-MAP.md) separates the Cue profile, repo roles, adapters and GitHub actors. Account-attributable commits/comments are not provider-authored contributions, and Delphi remains rubric-only with no new independent ballots.
+
+**Exact gap accounting:** passive adapters increase **5 → 6**; documentation-only decreases **12 → 11**; unsupported stays **3**. Static adapter-link inventory becomes **20/20**, but actual quota-service mappings remain **2/20** and the **18 runtime service/account-manager gaps remain open**. This batch closes **zero live manager gaps**. The Ollama private transport is ready for a separately authorized integration, not registered as a live reader or fed into request-count admission. No account API call, inference request, paid fallback, credential mutation, router weight, production admission or schedule change occurred.
+
+The focused manager/transport/coverage/dashboard/poller/Delphi suite passed 98 tests. A separate read-only technical review found no additional actionable issues; transport context/key/method/body-contract hardening has dedicated regressions. Existing provider CI now includes the new transport and static mapping paths. Exact-head CI, merge and publication receipts belong to this batch's PR timeline; no earlier deployment certifies these changes.
+
+Existing router [PR #1441](https://github.com/timerloggedout-spec/termux-monorepo/pull/1441) remains open at observed head `cd95c44848f066ef2a32cf9984b4e36c1172c856` with the prior changes-requested review still recorded. Its owner reported fixes and requested renewed disposition. Consolidation [PR #1278](https://github.com/timerloggedout-spec/termux-monorepo/pull/1278), observed head `4eae2175c067664af67cb083e994080ef7863625`, remains a separate open lane explicitly marked review/do-not-auto-merge. Neither lane is duplicated, merged or activated here. Continue issues [#86](https://github.com/timerloggedout-spec/termux-monorepo/issues/86) and [#272](https://github.com/timerloggedout-spec/termux-monorepo/issues/272).
+
+## Prior merged batch: historical MSM-019 receipt
+
 Implementation and release receipts: [PR #1448](https://github.com/timerloggedout-spec/termux-monorepo/pull/1448). Its current-head checks, merge state and exact-source publication verification are authoritative; this checked-in snapshot is not a self-certifying release approval.
 
 ## What this upgrade supplies

@@ -1,4 +1,12 @@
 {
+  "coverage_counts": {
+    "actual_quota_service_mappings": 2,
+    "implemented_passive_adapters": 6,
+    "missing_actual_quota_service_mappings": 18,
+    "missing_static_adapter_mappings": 0,
+    "provider_families": 20,
+    "static_adapter_mappings": 20
+  },
   "live_inference_used": false,
   "manager_metadata_source": "ops/quota/provider-managers.json",
   "network_used": false,
@@ -31,7 +39,14 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "scope": "official product homepage found; quota counter/reset semantics unknown",
       "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability"
+      "source_capability": "no_provider_specific_quota_capability",
+      "static_mapping_evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "static_mapping_id": "adapter:aion",
+      "static_mapping_live_account_state": "unknown",
+      "static_mapping_state": "static_roster_link_only"
     },
     {
       "covered": false,
@@ -60,7 +75,14 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "scope": "organization and model, with project-level limits; separate uncached and total token buckets",
       "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability"
+      "source_capability": "no_provider_specific_quota_capability",
+      "static_mapping_evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "static_mapping_id": "adapter:cerebras",
+      "static_mapping_live_account_state": "unknown",
+      "static_mapping_state": "static_roster_link_only"
     },
     {
       "covered": false,
@@ -89,7 +111,14 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "scope": "account/model/task varies; documented ceilings are not observations",
       "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability"
+      "source_capability": "no_provider_specific_quota_capability",
+      "static_mapping_evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "static_mapping_id": "adapter:cloudflare",
+      "static_mapping_live_account_state": "unknown",
+      "static_mapping_state": "static_roster_link_only"
     },
     {
       "covered": false,
@@ -118,7 +147,14 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "scope": "key type and model/endpoint; no documented remaining-count header",
       "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability"
+      "source_capability": "no_provider_specific_quota_capability",
+      "static_mapping_evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "static_mapping_id": "adapter:cohere",
+      "static_mapping_live_account_state": "unknown",
+      "static_mapping_state": "static_roster_link_only"
     },
     {
       "covered": false,
@@ -147,7 +183,13 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "scope": "official OpenAPI getting-started docs; counter/reset schema not verified",
       "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability"
+      "source_capability": "no_provider_specific_quota_capability",
+      "static_mapping_evidence": [
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "static_mapping_id": "adapter:felo",
+      "static_mapping_live_account_state": "unknown",
+      "static_mapping_state": "static_roster_link_only"
     },
     {
       "covered": true,
@@ -178,7 +220,14 @@
       "service_ids": [
         "gemini.api_free"
       ],
-      "source_capability": "registered_service"
+      "source_capability": "registered_service",
+      "static_mapping_evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "static_mapping_id": "adapter:gemini",
+      "static_mapping_live_account_state": "unknown",
+      "static_mapping_state": "static_roster_link_only"
     },
     {
       "covered": false,
@@ -232,7 +281,14 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "scope": "organization/model and metric-specific",
       "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability"
+      "source_capability": "no_provider_specific_quota_capability",
+      "static_mapping_evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "static_mapping_id": "adapter:groq",
+      "static_mapping_live_account_state": "unknown",
+      "static_mapping_state": "static_roster_link_only"
     },
     {
       "covered": false,
@@ -266,7 +322,14 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "scope": "token user/org and request class (Hub API, Resolver, Pages); not necessarily inference",
       "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability"
+      "source_capability": "no_provider_specific_quota_capability",
+      "static_mapping_evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "static_mapping_id": "adapter:huggingface",
+      "static_mapping_live_account_state": "unknown",
+      "static_mapping_state": "static_roster_link_only"
     },
     {
       "covered": false,
@@ -295,7 +358,14 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "scope": "official docs state 200 req/hour/IP for free gateway tier; no counter/header/reset observation schema verified",
       "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability"
+      "source_capability": "no_provider_specific_quota_capability",
+      "static_mapping_evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "static_mapping_id": "adapter:kilo",
+      "static_mapping_live_account_state": "unknown",
+      "static_mapping_state": "static_roster_link_only"
     },
     {
       "covered": false,
@@ -324,7 +394,14 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "scope": "official product page documents free-tier token/request caps and rolling 24-hour token usage; no counter API/header schema verified",
       "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability"
+      "source_capability": "no_provider_specific_quota_capability",
+      "static_mapping_evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "static_mapping_id": "adapter:llm7",
+      "static_mapping_live_account_state": "unknown",
+      "static_mapping_state": "static_roster_link_only"
     },
     {
       "covered": false,
@@ -353,7 +430,14 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "scope": "organization/model/tier; remaining header mentioned but complete metric/reset schema not established",
       "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability"
+      "source_capability": "no_provider_specific_quota_capability",
+      "static_mapping_evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "static_mapping_id": "adapter:mistral",
+      "static_mapping_live_account_state": "unknown",
+      "static_mapping_state": "static_roster_link_only"
     },
     {
       "covered": false,
@@ -382,7 +466,14 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "scope": "official docs describe dynamically adjusted per-model concurrency and magicube costs; no usage counter/reset API schema verified",
       "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability"
+      "source_capability": "no_provider_specific_quota_capability",
+      "static_mapping_evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "static_mapping_id": "adapter:modelscope",
+      "static_mapping_live_account_state": "unknown",
+      "static_mapping_state": "static_roster_link_only"
     },
     {
       "covered": false,
@@ -411,23 +502,67 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "scope": "official API documentation index; quota counter/reset schema not verified",
       "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability"
+      "source_capability": "no_provider_specific_quota_capability",
+      "static_mapping_evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "static_mapping_id": "adapter:nvidia",
+      "static_mapping_live_account_state": "unknown",
+      "static_mapping_state": "static_roster_link_only"
     },
     {
       "covered": false,
       "documented_limit": null,
-      "documented_reset_semantics": "monthly on plan-start day or free-account signup day; account date and observed reset unknown; no rollover",
-      "documented_signals": [],
+      "documented_reset_semantics": "modern included period has documented inclusive from/exclusive until timestamps; legacy session and weekly reset timestamps; no account identity or entitlement inferred",
+      "documented_signals": [
+        {
+          "field": "ollama_included_balance_usd",
+          "path": "included.balance_usd"
+        },
+        {
+          "field": "ollama_included_allowance_usd",
+          "path": "included.allowance_usd"
+        },
+        {
+          "field": "ollama_included_period_from",
+          "path": "included.period.from"
+        },
+        {
+          "field": "ollama_included_period_until",
+          "path": "included.period.until"
+        },
+        {
+          "field": "ollama_purchased_balance_usd",
+          "path": "purchased.balance_usd"
+        },
+        {
+          "field": "ollama_session_remaining_percent",
+          "path": "included.session.remaining_percent"
+        },
+        {
+          "field": "ollama_session_resets_at",
+          "path": "included.session.resets_at"
+        },
+        {
+          "field": "ollama_weekly_remaining_percent",
+          "path": "included.weekly.remaining_percent"
+        },
+        {
+          "field": "ollama_weekly_resets_at",
+          "path": "included.weekly.resets_at"
+        }
+      ],
       "evidence_state": "unknown",
       "free_entitlement": null,
       "freshness_owner": "ChronoMancer",
       "manager_metadata_state": "documented_only",
-      "manager_status": "public_documentation_only",
+      "manager_status": "implemented_passive_adapter",
       "mapping_state": "missing_provider_registry_mapping",
-      "observation_method": "official_documentation_only; no passive parser",
+      "observation_method": "implemented_passive_parser; live account validation not established",
       "observed_reset": "unknown",
       "official_evidence": [
-        "https://ollama.com/blog/transparent-pricing"
+        "https://docs.ollama.com/api/balance"
       ],
       "private_balance": "not_published",
       "provider_family": "ollama",
@@ -438,9 +573,16 @@
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
-      "scope": "account monthly pool or shared Team pool; usage statistics are not remaining quota or free entitlement",
+      "scope": "private balance response; included and unexpired purchased USD pools or legacy session/weekly percentages; Team balances are shared",
       "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability"
+      "source_capability": "no_provider_specific_quota_capability",
+      "static_mapping_evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "static_mapping_id": "adapter:ollama",
+      "static_mapping_live_account_state": "unknown",
+      "static_mapping_state": "static_roster_link_only"
     },
     {
       "covered": false,
@@ -469,7 +611,13 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "scope": "official model listing endpoint only; no quota documentation or counter/reset contract verified",
       "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability"
+      "source_capability": "no_provider_specific_quota_capability",
+      "static_mapping_evidence": [
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "static_mapping_id": "adapter:omni",
+      "static_mapping_live_account_state": "unknown",
+      "static_mapping_state": "static_roster_link_only"
     },
     {
       "covered": true,
@@ -537,7 +685,13 @@
       "service_ids": [
         "openrouter.free_models"
       ],
-      "source_capability": "registered_service"
+      "source_capability": "registered_service",
+      "static_mapping_evidence": [
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "static_mapping_id": "adapter:openrouter",
+      "static_mapping_live_account_state": "unknown",
+      "static_mapping_state": "static_roster_link_only"
     },
     {
       "covered": false,
@@ -566,7 +720,14 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "scope": "official AI Endpoints docs describe limits by anonymous/authenticated scope; no account counter/header schema verified",
       "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability"
+      "source_capability": "no_provider_specific_quota_capability",
+      "static_mapping_evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "static_mapping_id": "adapter:ovhcloud",
+      "static_mapping_live_account_state": "unknown",
+      "static_mapping_state": "static_roster_link_only"
     },
     {
       "covered": false,
@@ -612,7 +773,14 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "scope": "user/API response; per metric RPM/RPD",
       "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability"
+      "source_capability": "no_provider_specific_quota_capability",
+      "static_mapping_evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "static_mapping_id": "adapter:sambanova",
+      "static_mapping_live_account_state": "unknown",
+      "static_mapping_state": "static_roster_link_only"
     },
     {
       "covered": false,
@@ -654,7 +822,14 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "scope": "private user monetary balance only, currency not assumed; account/model request quotas are separate and remain unknown",
       "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability"
+      "source_capability": "no_provider_specific_quota_capability",
+      "static_mapping_evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "static_mapping_id": "adapter:siliconflow",
+      "static_mapping_live_account_state": "unknown",
+      "static_mapping_state": "static_roster_link_only"
     },
     {
       "covered": false,
@@ -683,7 +858,13 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "scope": "official usage policy states plan-tier concurrency dynamically adjusts; no counter/reset response schema verified",
       "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability"
+      "source_capability": "no_provider_specific_quota_capability",
+      "static_mapping_evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS"
+      ],
+      "static_mapping_id": "adapter:zai",
+      "static_mapping_live_account_state": "unknown",
+      "static_mapping_state": "static_roster_link_only"
     }
   ],
   "schema": "provider-quota-coverage/v1",

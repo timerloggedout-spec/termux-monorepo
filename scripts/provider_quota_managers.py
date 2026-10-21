@@ -20,6 +20,9 @@ _NUMERIC_FIELDS = {
     "reset_after_tokens", "reset_after_requests_day", "limit_remaining",
     "free_model_daily_used", "free_model_daily_limit", "free_model_daily_remaining",
     "effective_budget_remaining_usd", "ratelimit_remaining", "ratelimit_reset_epoch",
+    "ollama_included_balance_usd", "ollama_included_allowance_usd",
+    "ollama_purchased_balance_usd", "ollama_session_remaining_percent",
+    "ollama_weekly_remaining_percent",
 }
 
 
@@ -56,6 +59,11 @@ def build_public_metadata(path: Path = REGISTRY) -> dict[str, Any]:
         "effective_budget_remaining_usd", "effective_budget_resets_at",
         "ratelimit_remaining", "ratelimit_reset_epoch", "ratelimit",
         "monetary_balance", "monetary_charge_balance", "monetary_total_balance",
+        "ollama_included_balance_usd", "ollama_included_allowance_usd",
+        "ollama_included_period_from", "ollama_included_period_until",
+        "ollama_purchased_balance_usd", "ollama_session_remaining_percent",
+        "ollama_session_resets_at", "ollama_weekly_remaining_percent",
+        "ollama_weekly_resets_at",
     }
     for name in sorted(rows):
         row = rows[name]
@@ -151,6 +159,8 @@ def normalize_observation(provider_family: str, headers: Mapping[str, Any] | Non
         raise ValueError("metadata must be a mapping")
     headers = headers or {}
     metadata = metadata or {}
+    if provider_family == "ollama":
+        return _normalize_ollama(metadata, observed_at, scope)
     normalized_headers = {str(k).lower(): v for k, v in headers.items()}
     values: dict[str, Any] = {}
     for signal in row.get("signals", []):
@@ -200,6 +210,53 @@ def normalize_observation(provider_family: str, headers: Mapping[str, Any] | Non
             "scope": scope.strip(), "scope_status": "caller_declared_unverified", "signals": values,
             "reset_semantics": row.get("reset", "unknown"),
             "status": "observed" if values else "unknown"}
+
+
+def _normalize_ollama(metadata: Mapping[str, Any], observed_at: str, scope: str) -> dict[str, Any]:
+    """Validate documented Ollama response variants and retain only private allowlisted signals."""
+    values: dict[str, Any] = {}
+    if not metadata:
+        return {"provider_family": "ollama", "observed_at": observed_at,
+                "scope": scope.strip(), "scope_status": "caller_declared_unverified",
+                "signals": values, "reset_semantics": load_managers()["ollama"].get("reset", "unknown"),
+                "status": "unknown"}
+    if not isinstance(metadata, Mapping) or set(metadata) != {"included", "purchased"}:
+        raise ValueError("invalid Ollama balance response shape")
+    included, purchased = metadata["included"], metadata["purchased"]
+    if not isinstance(included, Mapping) or not isinstance(purchased, Mapping) or set(purchased) != {"balance_usd"}:
+        raise ValueError("invalid Ollama balance response shape")
+    values["ollama_purchased_balance_usd"] = _number(purchased["balance_usd"])
+    modern = {"balance_usd", "allowance_usd", "period"}
+    legacy = {"session", "weekly"}
+    if modern <= set(included) and not legacy.intersection(included):
+        if set(included) != modern or not isinstance(included["period"], Mapping) or set(included["period"]) != {"from", "until"}:
+            raise ValueError("incomplete Ollama included balance")
+        values["ollama_included_balance_usd"] = _number(included["balance_usd"])
+        values["ollama_included_allowance_usd"] = _number(included["allowance_usd"])
+        start = _timestamp(included["period"]["from"])
+        end = _timestamp(included["period"]["until"])
+        if dt.datetime.fromisoformat(start.replace("Z", "+00:00")) >= dt.datetime.fromisoformat(end.replace("Z", "+00:00")):
+            raise ValueError("Ollama included period must have increasing timestamps")
+        values["ollama_included_period_from"] = start
+        values["ollama_included_period_until"] = end
+    elif legacy <= set(included) and not modern.intersection(included):
+        if set(included) != legacy:
+            raise ValueError("incomplete Ollama legacy balances")
+        for key in ("session", "weekly"):
+            item = included[key]
+            if not isinstance(item, Mapping) or set(item) != {"remaining_percent", "resets_at"}:
+                raise ValueError("incomplete Ollama legacy balance")
+            pct = _number(item["remaining_percent"])
+            if pct > 100:
+                raise ValueError("Ollama remaining percentage must be at most 100")
+            values[f"ollama_{key}_remaining_percent"] = pct
+            values[f"ollama_{key}_resets_at"] = _timestamp(item["resets_at"])
+    else:
+        raise ValueError("invalid or mixed Ollama included balance variants")
+    return {"provider_family": "ollama", "observed_at": observed_at,
+            "scope": scope.strip(), "scope_status": "caller_declared_unverified",
+            "signals": values, "reset_semantics": load_managers()["ollama"].get("reset", "unknown"),
+            "status": "observed"}
 
 
 if __name__ == "__main__":

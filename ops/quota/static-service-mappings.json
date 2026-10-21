@@ -1,0 +1,202 @@
+{
+  "schema": "provider-static-service-mappings/v1",
+  "contract": "Offline evidence links only; not quota services, account managers, runtime admission, or provider observations.",
+  "provider_families": [
+    {
+      "provider_family": "aion",
+      "mapping_id": "adapter:aion",
+      "evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "cerebras",
+      "mapping_id": "adapter:cerebras",
+      "evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "cloudflare",
+      "mapping_id": "adapter:cloudflare",
+      "evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "cohere",
+      "mapping_id": "adapter:cohere",
+      "evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "felo",
+      "mapping_id": "adapter:felo",
+      "evidence": [
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "gemini",
+      "mapping_id": "adapter:gemini",
+      "evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "groq",
+      "mapping_id": "adapter:groq",
+      "evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "huggingface",
+      "mapping_id": "adapter:huggingface",
+      "evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "kilo",
+      "mapping_id": "adapter:kilo",
+      "evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "llm7",
+      "mapping_id": "adapter:llm7",
+      "evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "mistral",
+      "mapping_id": "adapter:mistral",
+      "evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "modelscope",
+      "mapping_id": "adapter:modelscope",
+      "evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "nvidia",
+      "mapping_id": "adapter:nvidia",
+      "evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "ollama",
+      "mapping_id": "adapter:ollama",
+      "evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "omni",
+      "mapping_id": "adapter:omni",
+      "evidence": [
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "openrouter",
+      "mapping_id": "adapter:openrouter",
+      "evidence": [
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "ovhcloud",
+      "mapping_id": "adapter:ovhcloud",
+      "evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "sambanova",
+      "mapping_id": "adapter:sambanova",
+      "evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "siliconflow",
+      "mapping_id": "adapter:siliconflow",
+      "evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS",
+        "scripts/provider_model_catalog.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    },
+    {
+      "provider_family": "zai",
+      "mapping_id": "adapter:zai",
+      "evidence": [
+        "llm_api_hub/server/research_providers.py:ENDPOINTS"
+      ],
+      "status": "static_roster_link_only",
+      "live_account_state": "unknown"
+    }
+  ]
+}

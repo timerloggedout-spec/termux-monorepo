@@ -106,6 +106,20 @@ def test_web_panel_uses_evidence_helper_and_hides_balances():
     assert "Private balance" in html and "not published" in html
     assert "function coverageView" in (ROOT / "apps/help-wanted-dashboard/quota-evidence.js").read_text()
 
+def test_dashboard_does_not_equate_static_links_or_parsers_with_live_managers():
+    html = (ROOT / "apps/help-wanted-dashboard/quota.html").read_text()
+    assert "static adapter links" in html
+    assert "quota-service mappings" in html
+    assert "passive parsers · live accounts unknown" in html
+    assert "r.static_mapping_state==='static_roster_link_only'" in html
+    assert "r.mapping_state==='documented_registry_mapping'" in html
+    snapshot = json.loads((ROOT / "apps/help-wanted-dashboard/data/provider-quota-coverage.json").read_text())
+    counts = snapshot["coverage_counts"]
+    assert "live_account_managers" not in counts
+    assert counts["implemented_passive_adapters"] == 6
+    assert counts["missing_actual_quota_service_mappings"] == 18
+    assert all(row["evidence_state"] == "unknown" for row in snapshot["provider_families"])
+
 
 @pytest.mark.skipif(not shutil.which("node"), reason="Node required for browser syntax")
 def test_all_panel_javascript_parses(tmp_path):

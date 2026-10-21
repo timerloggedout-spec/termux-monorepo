@@ -22,6 +22,8 @@
 
 | MSM-019 | Official-source passive quota manager contracts for 20 canonical provider families | **done** | MSM-018 (free-provider prioritization) | Implementation validated in #1448; 5 passive parsers, 12 documentation-only, 3 unsupported; current-head promotion/publication receipts in that PR. No new polling/account validation/admission change; 18 live/service-mapping gaps remain explicit. |
 
+| MSM-020 | Official Ollama balance parser and bounded injectable private account transport | **executing** | MSM-019 | Official GET balance schema; modern USD pools and legacy percentages/reset timestamps remain distinct. Fixture-only validation; no account calls, inference, polling, paid fallback or runtime admission changes. |
+
 ## Runtime package
 
 ```text

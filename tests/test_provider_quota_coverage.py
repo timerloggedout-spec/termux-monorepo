@@ -22,6 +22,48 @@ def test_provider_families_exhaust_registry_and_no_alias_hiding():
     assert families["gemini"]["free_entitlement"] is None
 
 
+def test_static_mappings_exhaust_canonical_roster_without_claiming_quota_services():
+    result = coverage.build_coverage()
+    families = {r["provider_family"]: r for r in result["provider_families"]}
+    counts = result["coverage_counts"]
+    assert counts["provider_families"] == len(coverage._providers())
+    assert counts["static_adapter_mappings"] == len(families)
+    assert counts["missing_static_adapter_mappings"] == 0
+    # The 18 prior gaps are static adapter links, not invented quota services.
+    assert counts["actual_quota_service_mappings"] == 2
+    assert counts["missing_actual_quota_service_mappings"] == 18
+    assert counts["implemented_passive_adapters"] == sum(
+        row["manager_status"] == "implemented_passive_adapter" for row in families.values()
+    )
+    for family, row in families.items():
+        assert row["static_mapping_id"] == f"adapter:{family}"
+        assert row["static_mapping_state"] == "static_roster_link_only"
+        assert row["static_mapping_live_account_state"] == "unknown"
+        assert row["static_mapping_evidence"]
+        assert all(Path(ref.split(":")[0]).is_file() for ref in row["static_mapping_evidence"])
+        assert row["mapping_state"] == (
+            "documented_registry_mapping" if row["service_ids"] else "missing_provider_registry_mapping"
+        )
+
+
+def test_static_mapping_manifest_is_only_existing_in_repo_evidence():
+    manifest = json.loads(Path("ops/quota/static-service-mappings.json").read_text())
+    assert manifest["schema"] == "provider-static-service-mappings/v1"
+    assert "not quota services" in manifest["contract"]
+    for row in manifest["provider_families"]:
+        assert row["status"] == "static_roster_link_only"
+        assert row["live_account_state"] == "unknown"
+        assert row["evidence"]
+        assert all(Path(ref.split(":")[0]).is_file() for ref in row["evidence"])
+        family = row["provider_family"]
+        if "llm_api_hub/server/research_providers.py:ENDPOINTS" in row["evidence"]:
+            from llm_api_hub.server import research_providers
+            assert family in research_providers.ENDPOINTS
+        if "scripts/provider_model_catalog.py:ENDPOINTS" in row["evidence"]:
+            from scripts import provider_model_catalog
+            assert family in provider_model_catalog.ENDPOINTS
+
+
 def test_optional_manager_metadata_is_allowlisted_and_not_live(tmp_path, monkeypatch):
     (tmp_path / "ops/quota").mkdir(parents=True)
     (tmp_path / "ops/quota/registry.json").write_text(json.dumps({"services": []}))
@@ -87,7 +129,11 @@ def _valid_row(**changes):
 
 @pytest.fixture(autouse=True)
 def _known_provider(monkeypatch, request):
-    if request.node.name == "test_provider_families_exhaust_registry_and_no_alias_hiding":
+    if request.node.name in {
+        "test_provider_families_exhaust_registry_and_no_alias_hiding",
+        "test_static_mappings_exhaust_canonical_roster_without_claiming_quota_services",
+        "test_static_mapping_manifest_is_only_existing_in_repo_evidence",
+    }:
         return
     monkeypatch.setattr(coverage, "_providers", lambda: ["p"])
 

@@ -490,9 +490,14 @@ def is_in_cooldown(provider, model, now=None):
             return False
         with open(path, "r", encoding="utf-8") as handle:
             data = json.load(handle)
-        until = float((data.get("cooldowns") or {}).get(f"{provider}/{model}", 0))
+        if not isinstance(data, dict):
+            return False
+        cooldowns = data.get("cooldowns") or {}
+        if not isinstance(cooldowns, dict):
+            return False
+        until = float(cooldowns.get(f"{provider}/{model}", 0))
         return until > (time.time() if now is None else now)
-    except (OSError, ValueError, TypeError, json.JSONDecodeError):
+    except (OSError, ValueError, TypeError, OverflowError, json.JSONDecodeError):
         return False
 
 

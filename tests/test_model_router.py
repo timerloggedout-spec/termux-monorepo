@@ -368,6 +368,29 @@ def test_active_rate_limit_cooldown_excludes_model(tmp_path, monkeypatch):
     (tmp_path / "cooldowns.json").write_text(json.dumps({"cooldowns":{"openrouter/google/gemma-4-31b-it:free":time.time()+600}}))
     assert mr.is_in_cooldown("openrouter", "google/gemma-4-31b-it:free")
 
+
+@pytest.mark.parametrize("payload", [
+    [], None, True, 1, "invalid",
+    {"cooldowns": ["invalid"]}, {"cooldowns": True},
+    {"cooldowns": "invalid"},
+    {"cooldowns": {"openrouter/fixture:free": 10**400}},
+])
+def test_malformed_cooldown_cache_is_ignored(tmp_path, monkeypatch, payload):
+    monkeypatch.setattr(mr, "COUNTER_DIR", str(tmp_path))
+    (tmp_path / "cooldowns.json").write_text(json.dumps(payload))
+    assert mr.is_in_cooldown("openrouter", "fixture:free", now=1000) is False
+
+
+def test_valid_cooldown_only_blocks_matching_unexpired_model(tmp_path, monkeypatch):
+    monkeypatch.setattr(mr, "COUNTER_DIR", str(tmp_path))
+    (tmp_path / "cooldowns.json").write_text(json.dumps({
+        "cooldowns": {"openrouter/fixture:free": 1600},
+    }))
+    assert mr.is_in_cooldown("openrouter", "fixture:free", now=1000) is True
+    assert mr.is_in_cooldown("openrouter", "other:free", now=1000) is False
+    assert mr.is_in_cooldown("openrouter", "fixture:free", now=1600) is False
+
+
 def test_required_live_openrouter_quota_fails_closed(tmp_path, monkeypatch):
     from datetime import datetime, timezone
     monkeypatch.setenv("ROLE", "triage")

@@ -66,3 +66,15 @@ jobs:
 ```
 
 Consumers who want every award in one place should read the `delphi:board` issue (generated). Per-RFP ledger comments remain the record.
+
+## Shadow outcomes and new-surface alerts (2026-10-21)
+
+`.github/workflows/delphi-signal-bridge.yml` wires two real signals through `delphi-signal.yml`. It runs on events only, with no schedule and no keys:
+
+| Signal | Source | Emits |
+|---|---|---|
+| New-surface alert | a push to master that changes `data/foresight/resource-registry.jsonl` | `foresight-radar-hit`. The gate re-scans and lists surfaces with no RFP under **Radar** on the `delphi:board` issue, covering quota-registry services and ForeSight records. A new meter of a provider and lane that are already covered is not listed. |
+| Shadow confirmed | a workflow mapped in `ops/delphi/shadow-lanes.json` finishes, and its newest 3 success/failure runs on master are all success | `delphi-feedback` `confirmed`, sent once. The flywheel re-weights and adds `delphi:promoted`. |
+| Forecast miss | same mapping, when the newest run is failure right after a success | `hindsight-forecast-miss`, sent once per transition. The flywheel re-weights. |
+
+Current mapping: #1424 `github.native_ledger` → `delphi-gate`. Its signed ledger writes are that surface running for real. #1423 `turso.free` is not wired yet because no Turso lane exists, and adding a `TURSO_AUTH_TOKEN` secret needs user approval. Other lanes add a mapping line by PR.

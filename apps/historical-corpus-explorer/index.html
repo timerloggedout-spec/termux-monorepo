@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<meta name="description" content="Read-only, provenance-first historical context relationship explorer.">
+<title>Historical Corpus Explorer · SHE</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1118;--panel:#111b26;--panel2:#172433;--line:#293b4d;--text:#eef5fb;--muted:#a6b8c8;--accent:#7dd3c7;--warn:#f6c66a;--bad:#ff8b8b;--good:#7ed6a2;font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text)}a{color:var(--accent)}button,input{font:inherit}button,.file-button{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:.65rem .9rem;border-radius:.65rem;cursor:pointer}button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}.wrap{max-width:1200px;margin:auto;padding:1.2rem}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap}.eyebrow{color:var(--accent);font-size:.8rem;text-transform:uppercase;letter-spacing:.13em;font-weight:700}h1{font-size:clamp(1.7rem,4vw,2.6rem);line-height:1.1;margin:.4rem 0}h2{font-size:1.15rem;margin:0 0 .7rem}.muted{color:var(--muted)}.status{display:inline-flex;align-items:center;border:1px solid var(--warn);color:var(--warn);padding:.3rem .65rem;border-radius:99px;font-weight:700;font-size:.82rem}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.8rem;margin:1rem 0}.panel{background:var(--panel);border:1px solid var(--line);border-radius:1rem;padding:1rem;min-width:0}.metric{font-size:clamp(1.4rem,4vw,2rem);font-weight:750;overflow-wrap:anywhere}.label{font-size:.85rem;color:var(--muted)}.findings{display:grid;gap:.6rem}.finding{padding:.8rem;border-left:3px solid var(--warn);background:var(--panel2);border-radius:.3rem}.finding.error{border-color:var(--bad)}.finding strong{display:block}.tools{display:flex;flex-wrap:wrap;gap:.6rem;margin:.75rem 0}.tools input[type=search]{flex:1;min-width:210px;background:var(--bg);border:1px solid var(--line);border-radius:.6rem;padding:.65rem;color:var(--text)}.scroll{overflow:auto;max-height:440px}table{width:100%;border-collapse:collapse;font-size:.92rem}th,td{text-align:left;vertical-align:top;padding:.65rem;border-bottom:1px solid var(--line)}th{position:sticky;top:0;background:var(--panel2)}code{overflow-wrap:anywhere}.empty{padding:1rem;border:1px dashed var(--line);border-radius:.6rem;color:var(--muted)}.notice{border:1px solid var(--warn);padding:.8rem;border-radius:.7rem;color:var(--warn)}footer{margin:2rem 0;color:var(--muted);font-size:.85rem}details summary{cursor:pointer;font-weight:650} .sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header class="top">
+<div><div class="eyebrow">SHE · Evidence projection</div><h1>Historical Corpus Explorer</h1><p class="muted">Read-only inspection of temporal context relationships. Source records remain authoritative.</p></div>
+<div><span id="status" class="status" role="status" aria-live="polite">UNVERIFIED · awaiting snapshot</span></div>
+</header>
+<div id="load-note" class="notice">No published snapshot has been loaded. The interface will not infer zeroes or imply that history is complete.</div>
+<section class="grid" aria-label="Corpus summary">
+<div class="panel"><div class="label">Nodes</div><div id="nodes" class="metric">Unavailable</div><div class="label">Source manifest count</div></div>
+<div class="panel"><div class="label">Edges</div><div id="edges" class="metric">Unavailable</div><div class="label">Verified <span id="verified">—</span> · Candidate <span id="candidate">—</span></div></div>
+<div class="panel"><div class="label">Last observation</div><div id="observed" class="metric" style="font-size:1.15rem">Unavailable</div><div class="label">Source timestamp</div></div>
+<div class="panel"><div class="label">Continuation</div><div id="continuation" class="metric" style="font-size:1.15rem">Unverified</div><div class="label">Never inferred from graph size</div></div>
+</section>
+<section class="panel" aria-labelledby="prov-title">
+<h2 id="prov-title">Provenance</h2><div class="grid">
+<div><div class="label">Source ref</div><code id="ref">Unavailable</code></div>
+<div><div class="label">Source commit SHA</div><code id="sha">Unavailable</code></div>
+<div><div class="label">Manifest blob SHA</div><code id="manifest-sha">Unavailable</code></div>
+<div><div class="label">Snapshot ID</div><code id="snapshot-id">Unavailable</code></div>
+</div>
+<p id="prov-state" class="muted">Provenance has not been verified.</p>
+</section>
+<section class="panel" style="margin-top:1rem" aria-labelledby="findings-title">
+<h2 id="findings-title">Reconciliation findings</h2>
+<p class="muted">Warnings preserve conflicting source claims for human review; they do not rewrite coverage.</p>
+<div id="findings" class="findings"><div class="empty">Load a projection JSON file to inspect findings.</div></div>
+</section>
+<section class="panel" style="margin-top:1rem" aria-labelledby="search-title">
+<h2 id="search-title">Bounded record inspection</h2>
+<p class="muted">Optional local files only. Choose JSONL node and edge artifacts from an immutable temporal snapshot. Files are read in this browser session and are not uploaded.</p>
+<div class="tools"><label class="file-button">Choose nodes.jsonl <input id="node-file" type="file" accept=".jsonl,.ndjson,.txt" hidden></label><label class="file-button">Choose edges.jsonl <input id="edge-file" type="file" accept=".jsonl,.ndjson,.txt" hidden></label><input id="query" type="search" placeholder="Search IDs, titles, paths…" aria-label="Search loaded nodes"><button id="search-button" type="button">Search</button></div>
+<div id="record-note" class="muted" aria-live="polite">No node or edge records loaded.</div>
+<div class="scroll"><table><caption class="sr">Bounded search results</caption><thead><tr><th scope="col">Record</th><th scope="col">Type</th><th scope="col">Details</th><th scope="col">Connections</th></tr></thead><tbody id="results"><tr><td colspan="4">Load node records to search.</td></tr></tbody></table></div>
+</section>
+<div class="panel" style="margin-top:1rem"><h2>Load projection</h2><p class="muted">The deployed build may provide <code>data/snapshot.json</code>. You can also load a locally generated projection. Expected shape: <code>{ "projection": "historical_corpus_coverage", "provenance": {}, "coverage": {}, "counts": {}, "reconciliation": {} }</code>.</p><div class="tools"><label class="file-button">Choose projection JSON <input id="projection-file" type="file" accept=".json,application/json" hidden></label><button id="reload" type="button">Retry published snapshot</button></div><p id="input-error" role="alert" class="muted"></p></div>
+<footer>Read-only UI · No credentials · No write-back · Coverage is not synonymous with all-time completeness. Source data and provenance take precedence over this display.</footer>
+</main>
+<script src="./explorer.js" defer></script>
+</body></html>

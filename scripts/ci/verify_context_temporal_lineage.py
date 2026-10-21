@@ -56,6 +56,12 @@ def validate(lineage_path: Path, manifest_path: Path) -> dict:
             raise ValueError(f"record {index}: missing or duplicate snapshot_id")
         snapshots.add(snapshot)
 
+        expected_previous = rows[index - 2].get("snapshot_id") if index > 1 else None
+        if row.get("previous_snapshot_id") != expected_previous:
+            raise ValueError(
+                f"record {index}: previous_snapshot_id must link to the immediately prior event"
+            )
+
         source_sha = row.get("source_sha")
         if not isinstance(source_sha, str) or not SHA_RE.fullmatch(source_sha):
             raise ValueError(f"record {index}: source_sha must be a 40-character SHA")
@@ -71,8 +77,13 @@ def validate(lineage_path: Path, manifest_path: Path) -> dict:
         previous_next = previous[1]
         current_start = current[0]
         if previous_next is None:
-            raise ValueError("lineage continues after a complete event")
-        if current_start != previous_next:
+            # COMPLETE closes the prior pagination run, not the append-only observation
+            # history. A later explicit backfill may start a new run at page 1.
+            if current_start != 1:
+                raise ValueError(
+                    "a new history window after a complete event must restart at page 1"
+                )
+        elif current_start != previous_next:
             raise ValueError(
                 f"history window discontinuity: previous next_start_page={previous_next}, "
                 f"current start_page={current_start}"

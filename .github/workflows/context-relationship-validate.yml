@@ -10,6 +10,7 @@ on:
       - 'tests/test_context_temporal_query.py'
       - 'archwiz/context_relationships/temporal_query.py'
       - 'scripts/ci/verify_context_temporal_lineage.py'
+      - 'scripts/ci/validate_context_relationship_temporal.py'
       - 'tests/fixtures/context_relationships/**'
       - '.github/workflows/context-relationship-*.yml'
   workflow_dispatch:
@@ -50,7 +51,12 @@ jobs:
             tests/test_context_relationship_query.py \
             tests/test_context_temporal_query.py \
             tests/test_context_relationship_build_index.py \
+            tests/test_context_relationship_temporal_integrity.py \
+            tests/test_context_relationship_explorer_projection.py \
+            tests/test_historical_corpus_explorer_snapshot.py \
             -q
+          node --check apps/historical-corpus-explorer/explorer.js
+          python scripts/ci/build_historical_corpus_explorer_snapshot.py --check
           python -m archwiz.context_relationships.compiler \
             --input tests/fixtures/context_relationships/seed.json \
             --validate
@@ -64,6 +70,7 @@ jobs:
             python scripts/ci/verify_context_temporal_lineage.py \
               --lineage "$lineage" \
               --manifest "$manifest"
+            python scripts/ci/validate_context_relationship_temporal.py --format text
           else
             echo 'Temporal corpus lineage not present in this candidate; runtime corpus validation remains authoritative.'
           fi

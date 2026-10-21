@@ -68,3 +68,7 @@ Generated rubric scores (including role-labeled signatures) are not independent 
 - **Labels.** One `GET /labels` per run, and only missing labels are created. This replaces the 7 POSTs per run.
 - **Results board.** The `Delphi results board` issue (`delphi:board`) is regenerated each run, and only when its contents change. It has one row per open RFP: effective score, award, band and recheck date. Shadow awards come first. It is a read-only view; the ledger of record stays the signed comment on each RFP.
 - **Signal emitter.** Sibling workflows wake the gate through the reusable `.github/workflows/delphi-signal.yml` (`workflow_call`, `actions: write`). See the lane contract.
+
+## Radar and shadow-outcome bridge (2026-10-21)
+
+The board now also lists **Radar** candidates: surfaces with no RFP yet (`gate.radar_candidates`). Real shadow-lane runs feed the flywheel automatically through `delphi-signal-bridge.yml` and `scripts/delphi/signals.py`. See the lane contract, *Shadow outcomes and new-surface alerts*. The gate reads `data/foresight` in its sparse checkout. Nothing here selects or calls a model.

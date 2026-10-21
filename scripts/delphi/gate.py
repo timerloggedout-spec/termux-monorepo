@@ -17,6 +17,7 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 SURFACES = os.path.join(ROOT, "ops", "delphi", "surfaces.json")
 PANEL = os.path.join(ROOT, "ops", "delphi", "panel.json")
 REGISTRY = os.path.join(ROOT, "ops", "quota", "registry.json")
+FORESIGHT = os.path.join(ROOT, "data", "foresight", "resource-registry.jsonl")
 LEDGER_MARK = "<!-- delphi-ledger v1 -->"
 WEIGHTS_MARK = "<!-- delphi-weights v1 -->"
 WEIGHTS_TITLE = "Delphi panel weights ledger"
@@ -32,6 +33,7 @@ LABELS = {
     "delphi:needs-access": ("d93f0b", "Award blocked on an Actions credential (Access lane)"),
     "delphi:weights": ("c5def5", "Append-only Delphi role weights ledger"),
     "delphi:board": ("bfd4f2", "Generated Delphi results board"),
+    "delphi:outcomes": ("d4c5f9", "Append-only graded outcome ledger (tribute-outcome)"),
 }
 
 
@@ -314,7 +316,37 @@ def api_remaining(gh: "GH") -> int | None:
         return None
 
 
-def board_md(rows: list[dict], at: str) -> str:
+def radar_candidates(catalog: dict, registry: dict, rfp_surfaces: set, foresight_path: str = FORESIGHT) -> list[dict]:
+    """New-surface alert: quota-registry services and ForeSight records that no RFP covers yet.
+    Names and source URLs only; nothing is filed automatically (a human or lane files the RFP)."""
+    covered = set(rfp_surfaces)
+    for sid in rfp_surfaces:
+        rid = (catalog.get(sid) or {}).get("registry_id")
+        if rid:
+            covered.add(rid)
+    svcs = registry.get("services", [])
+    # a further meter of an already-covered provider+lane (e.g. render.bandwidth under render.free) is not a new surface
+    pairs = {(x.get("provider"), x.get("lane")) for x in svcs if x["id"] in covered}
+    out = []
+    for svc in svcs:
+        if svc["id"] not in covered and (svc.get("provider"), svc.get("lane")) not in pairs:
+            out.append({"id": svc["id"], "lane": svc.get("lane", "?"), "origin": "quota-registry", "source": svc.get("source", "")})
+    try:
+        with open(foresight_path) as f:
+            for line in f:
+                if not line.strip():
+                    continue
+                r = json.loads(line)
+                if r.get("lane_id") == "delphi-oracle" or r.get("resource_id") in covered:
+                    continue
+                out.append({"id": r.get("resource_id", "?"), "lane": r.get("category", "?"), "origin": "foresight",
+                            "source": r.get("canonical_source") or (r.get("source") or {}).get("url", "")})
+    except (OSError, ValueError):
+        pass
+    return sorted(out, key=lambda c: (c["origin"], c["id"]))
+
+
+def board_md(rows: list[dict], at: str, radar: list[dict] | None = None) -> str:
     """Results board: one row per open RFP, newest ledger state. Regenerated, never hand-edited."""
     order = {"shadow": 0, "parked": 1, "pending": 2}
     rows = sorted(rows, key=lambda r: (order.get(r["decision"], 3), -(r["effective"] or 0), r["number"]))
@@ -326,12 +358,21 @@ def board_md(rows: list[dict], at: str) -> str:
     sh = sum(r["decision"] == "shadow" for r in rows)
     lines += ["", f"{len(rows)} open RFPs · {sh} shadow · {sum(r['decision'] == 'parked' for r in rows)} parked · "
               f"{sum(r['decision'] == 'pending' for r in rows)} pending. Rubric-only panel (MSM-018); awards are advisory."]
+    if radar:
+        lines += ["", f"### Radar: {len(radar)} surfaces with no RFP yet",
+                  "File one with the Delphi Oracle RFP issue form to put a surface through the gate.", "",
+                  "| Surface | Lane | Seen in | Source |", "|---|---|---|---|"]
+        for c in radar[:40]:
+            src = f"[link]({c['source']})" if str(c["source"]).startswith("http") else (c["source"] or "-")
+            lines.append(f"| `{c['id']}` | {c['lane']} | {c['origin']} | {src} |")
+        if len(radar) > 40:
+            lines.append(f"| … | | | {len(radar) - 40} more |")
     return "\n".join(lines)
 
 
-def update_board(gh: "GH", rows: list[dict]) -> int | None:
+def update_board(gh: "GH", rows: list[dict], radar: list[dict] | None = None) -> int | None:
     found = gh.req("GET", "/issues?state=open&labels=delphi:board&per_page=5")
-    body = board_md(rows, now().strftime("%Y-%m-%d %H:%M UTC"))
+    body = board_md(rows, now().strftime("%Y-%m-%d %H:%M UTC"), radar)
     if not found:
         return gh.req("POST", "/issues", {"title": BOARD_TITLE, "labels": ["delphi:board"], "body": body}).get("number")
     n, old = found[0]["number"], found[0].get("body") or ""
@@ -373,9 +414,16 @@ def surface_from_issue(issue: dict, catalog: dict) -> dict:
             "card_required": "card" in (f.get("free_quota", "") + f.get("failure_modes", "")).lower(), "overage_autobill": False}
 
 
+def quantize_roles(roles: dict) -> dict:
+    """Weights enter the input hash quantized (gpr to 0.1, Elo to 25) so a stream of small graded
+    outcomes (tribute-outcome) re-scores the queue only when a weight moves materially."""
+    return {k: {"base": v.get("base"), "gpr": round(float(v.get("gate_pass_rate", 0.5)) * 10) / 10,
+                "elo": int(round(float(v.get("elo", 1500)) / 25.0) * 25)} for k, v in roles.items()}
+
+
 def input_hash(s: dict, roles: dict, registry: dict, readings: dict) -> str:
     reg = {x["id"]: x for x in registry.get("services", [])}.get(s.get("registry_id") or "", {})
-    blob = json.dumps([s, roles, reg, readings], sort_keys=True)
+    blob = json.dumps([s, quantize_roles(roles), reg, readings], sort_keys=True)
     return hashlib.sha256(blob.encode()).hexdigest()[:12]
 
 
@@ -504,12 +552,139 @@ def _run(args) -> int:
     for line in summary[:9]:
         print(f"::notice::{line}")
     if board:
-        print(f"::notice::delphi results board #{update_board(gh, board)}")
+        radar = radar_candidates(catalog, registry, {r["surface"] for r in board})
+        print(f"::notice::delphi radar uncovered={len(radar)} results board #{update_board(gh, board, radar)}")
     print(f"::notice::delphi processed={done} pending={pending} api_calls={gh.calls}")
     if pending and plan["mode"] == "accelerate":
         gh.req("POST", "/actions/workflows/delphi-gate.yml/dispatches",
                {"ref": os.environ.get("GITHUB_REF_NAME", "master"), "inputs": {"reason": "delphi-tick", "depth": str(args.depth + 1)}})
         print(f"::notice::delphi accelerate: chained tick depth={args.depth + 1}")
+    return 0
+
+
+# ---------------------------------------------------------------- graded outcomes (tribute-outcome)
+TRIBUTE_WEIGHTS = {"merged": 1.0, "approved": 0.5, "changes_requested": 0.1, "question_to_us": 0.0,
+                   "claimed_by_other": -0.3, "needs_human_skill": -0.4, "closed_already_assigned": -0.6,
+                   "low_effort_placeholder": -0.8, "hostile_spam_flag": -1.0}
+OUTCOMES_MARK = "<!-- delphi-outcomes v1 -->"
+OUTCOMES_TITLE = "Delphi outcome ledger"
+_REPO_RE = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
+_SURF_RE = re.compile(r"^[a-z0-9][a-z0-9._-]{0,63}$")
+
+
+def parse_signals(raw: str) -> list[dict]:
+    """Accept one delphi_signal object or a list (<= 50). Unknown keys dropped; invalid items skipped."""
+    raw = (raw or "").strip()
+    if not raw or raw == "null":
+        return []
+    data = json.loads(raw)
+    items = data if isinstance(data, list) else [data]
+    out = []
+    for it in items[:50]:
+        if not isinstance(it, dict):
+            continue
+        surf, repo, oc = str(it.get("surface", "")), str(it.get("repo") or ""), str(it.get("outcome", ""))
+        try:
+            w = float(it.get("weight"))
+        except (TypeError, ValueError):
+            w = TRIBUTE_WEIGHTS.get(oc)
+        if w is None or not _SURF_RE.match(surf) or (repo and not _REPO_RE.match(repo)) or not -1.0 <= w <= 1.0:
+            continue
+        out.append({"surface": surf, "repo": repo, "outcome": oc[:40], "weight": round(w, 3)})
+    return out
+
+
+def apply_outcomes(state: dict, signals: list[dict], alpha: float = 0.2, max_repos: int = 200) -> dict:
+    """Surface- and repo-level EWMA of graded weights (-1..+1). Pure; returns the new state."""
+    st = json.loads(json.dumps(state or {"surfaces": {}}))
+    for sg in signals:
+        srf = st["surfaces"].setdefault(sg["surface"], {"n": 0, "sum": 0.0, "ewma": 0.0, "by_outcome": {}, "repos": {}})
+        srf["n"] += 1
+        srf["sum"] = round(srf["sum"] + sg["weight"], 3)
+        srf["ewma"] = round((1 - alpha) * srf["ewma"] + alpha * sg["weight"], 4)
+        srf["by_outcome"][sg["outcome"]] = srf["by_outcome"].get(sg["outcome"], 0) + 1
+        if sg["repo"]:
+            r = srf["repos"].pop(sg["repo"], {"n": 0, "ewma": 0.0})
+            r["n"] += 1
+            r["ewma"] = round((1 - alpha) * r["ewma"] + alpha * sg["weight"], 4)
+            r["last"] = sg["outcome"]
+            srf["repos"][sg["repo"]] = r  # re-insert = most recent last
+            while len(srf["repos"]) > max_repos:
+                srf["repos"].pop(next(iter(srf["repos"])))
+    return st
+
+
+def feedback_graded(roles: dict, final_votes: list[dict], weight: float, panel: dict) -> dict:
+    """Graded flywheel: a role that predicted pass (score >= shadow bar) earns +weight, one that
+    predicted fail earns -weight. |weight| scales the EWMA step; Elo moves k x reward."""
+    a, k, bar = panel["flywheel"]["ewma_alpha"], panel["flywheel"]["elo_k"], panel["award"]["shadow_min"]
+    roles = json.loads(json.dumps(roles))
+    if weight == 0:
+        return roles
+    for v in final_votes:
+        r = roles[v["role"]]
+        reward = (1 if v["score"] >= bar else -1) * weight
+        step = a * abs(weight)
+        r["gate_pass_rate"] = round((1 - step) * r["gate_pass_rate"] + step * (1.0 if reward > 0 else 0.0), 4)
+        r["elo"] = round(r["elo"] + k * reward, 1)
+        r["hits" if reward > 0 else "misses"] += 1
+    return roles
+
+
+def latest_json(gh: GH, number: int, mark: str) -> dict | None:
+    for c in reversed(gh.req("GET", f"/issues/{number}/comments?per_page=100")):
+        if c.get("body", "").startswith(mark):
+            m = re.search(r"```json\n(.*?)\n```", c["body"], re.S)
+            if m:
+                return json.loads(m.group(1))
+    return None
+
+
+def cmd_tribute(args) -> int:
+    try:
+        return _tribute(args)
+    except RateLimited as e:
+        print(f"::warning::delphi tribute-outcome deferred on GitHub rate limit: {e}")
+        return 0
+
+
+def _tribute(args) -> int:
+    sigs = parse_signals(args.signal_json)
+    if not sigs:
+        print("::notice::delphi tribute-outcome: no valid signals")
+        return 0
+    gh = GH(os.environ["GITHUB_REPOSITORY"], os.environ["GITHUB_TOKEN"])
+    panel = load(PANEL)
+    found = gh.req("GET", "/issues?state=open&labels=delphi:outcomes&per_page=5")
+    n = found[0]["number"] if found else gh.req("POST", "/issues", {
+        "title": OUTCOMES_TITLE, "labels": ["delphi:outcomes"],
+        "body": "Append-only graded outcomes (tribute-outcome and future lanes). docs/ops/DELPHI-LANE-CONTRACT.md"})["number"]
+    state = apply_outcomes(latest_json(gh, n, OUTCOMES_MARK) or {"surfaces": {}}, sigs)
+    gh.req("POST", f"/issues/{n}/comments", {"body": f"{OUTCOMES_MARK}\n{len(sigs)} signal(s): "
+           + ", ".join(f"`{x['surface']}` {x['outcome']} {x['weight']:+}" for x in sigs[:10])
+           + f"\n```json\n{json.dumps(state, indent=1)}\n```"})
+    # graded role feedback, only against a surface that has a scored RFP (never inferred)
+    catalog = {x["id"]: x for x in load(SURFACES)["surfaces"]}
+    rfps = {surface_from_issue(i, catalog)["id"]: i["number"]
+            for i in gh.req("GET", "/issues?state=open&labels=delphi:rfp&per_page=100") if "pull_request" not in i}
+    wn, roles = weights_issue(gh, panel)
+    new, used = roles, []
+    for surf in sorted({x["surface"] for x in sigs}):
+        num = rfps.get(surf)
+        prev = last_ledger(gh, num) if num else None
+        if not prev:
+            print(f"::notice::delphi tribute-outcome: no scored RFP for {surf}; outcomes recorded, panel weights unchanged")
+            continue
+        for x in (y for y in sigs if y["surface"] == surf):
+            new = feedback_graded(new, prev["final_votes"], x["weight"], panel)
+        used.append(f"#{num}")
+    if used and new != roles:
+        if wn is None:
+            wn = gh.req("POST", "/issues", {"title": WEIGHTS_TITLE, "labels": ["delphi:weights"],
+                                            "body": "Append-only Delphi role weights (flywheel). docs/ops/DELPHI-WEIGHTING.md"})["number"]
+        gh.req("POST", f"/issues/{wn}/comments", {"body": f"{WEIGHTS_MARK}\nGraded tribute-outcome feedback via {', '.join(used)} "
+               f"({len(sigs)} signal(s))\n```json\n{json.dumps({'roles': new}, indent=1)}\n```"})
+    print(f"::notice::delphi tribute-outcome signals={len(sigs)} outcomes_issue=#{n} reweighted={bool(used)}")
     return 0
 
 
@@ -550,8 +725,9 @@ def main(argv=None) -> int:
     s = sub.add_parser("score"); s.add_argument("--surface", action="append"); s.add_argument("--rfp"); s.add_argument("--session", default="local")
     r = sub.add_parser("run"); r.add_argument("--reason", default="manual"); r.add_argument("--depth", type=int, default=0)
     f = sub.add_parser("feedback"); f.add_argument("--rfp", type=int, required=True); f.add_argument("--outcome", choices=["confirmed", "miss"], required=True)
+    t = sub.add_parser("tribute"); t.add_argument("--signal-json", required=True)
     a = p.parse_args(argv)
-    return {"score": cmd_score, "run": cmd_run, "feedback": cmd_feedback}[a.cmd](a)
+    return {"tribute": cmd_tribute, "score": cmd_score, "run": cmd_run, "feedback": cmd_feedback}[a.cmd](a)
 
 
 if __name__ == "__main__":

@@ -351,3 +351,25 @@ def test_active_rate_limit_cooldown_excludes_model(tmp_path, monkeypatch):
     monkeypatch.setattr(mr, "COUNTER_DIR", str(tmp_path))
     (tmp_path / "cooldowns.json").write_text(json.dumps({"cooldowns":{"openrouter/google/gemma-4-31b-it:free":time.time()+600}}))
     assert mr.is_in_cooldown("openrouter", "google/gemma-4-31b-it:free")
+
+def test_required_live_openrouter_quota_fails_closed(tmp_path, monkeypatch):
+    monkeypatch.setenv("ROLE", "triage")
+    monkeypatch.setenv("HAS_OMNI", "false")
+    monkeypatch.setenv("HAS_OPENROUTER", "true")
+    monkeypatch.setenv("HAS_GEMINI", "false")
+    monkeypatch.setenv("REQUIRE_LIVE_OPENROUTER_QUOTA", "true")
+    monkeypatch.setattr(mr, "COUNTER_DIR", str(tmp_path))
+    monkeypatch.setenv("COUNTER_DIR", str(tmp_path))
+    monkeypatch.setattr(
+        mr, "fetch_openrouter_free_models_cached_with_source",
+        lambda: (["google/gemma-4-31b-it:free"], "live"),
+    )
+    output_file = tmp_path / "github_output.txt"
+    monkeypatch.setenv("GITHUB_OUTPUT", str(output_file))
+
+    mr.main()
+
+    outputs = output_file.read_text()
+    assert "provider=none" in outputs
+    assert "skip=true" in outputs
+

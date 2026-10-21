@@ -12,12 +12,10 @@ name: tribute-vercel-prod
 # Additive: new workflow only. Triggers on dashboard source changes, not on the
 # generated status JSON bots refresh, to protect the Hobby deployment quota.
 
+# Push trigger retired 2026-10-20: every push spent 2 of Vercel Hobby's
+# 100 deployments/day. Routine deploys now go through vercel-batch-deploy.yml
+# (quota-aware, priority-ordered, changed projects only). This stays for manual use.
 on:
-  push:
-    branches: [master]
-    paths:
-      - "apps/help-wanted-dashboard/**"
-      - ".github/workflows/tribute-vercel-prod.yml"
   workflow_dispatch:
     inputs:
       projects:

@@ -22,5 +22,8 @@
       ]
     }
   ],
-  "ignoreCommand": "bash \"$(git rev-parse --show-toplevel)/scripts/ci/vercel_ignore_build.sh\" help-wanted-dashboard"
+  "ignoreCommand": "bash \"$(git rev-parse --show-toplevel)/scripts/ci/vercel_ignore_build.sh\" help-wanted-dashboard",
+  "git": {
+    "deploymentEnabled": false
+  }
 }

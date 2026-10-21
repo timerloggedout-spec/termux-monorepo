@@ -12,6 +12,7 @@ import session_store
 
 from prompt_system import build_system_prompt  # noqa
 
+from .worktree import hygiene_preflight, post_loop_cleanup
 from .runtime import _notify, _autosnapshot
 from .tools import TOOLS, execute, _maybe_continue, _auto_feedback
 from .retry import _record_retry, _retry_plan, _RATE_MARKERS
@@ -137,6 +138,10 @@ def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False
     _notify("run", "🤖 Agent starting",
             f"task: {task[:120]}\nsrc: {os.environ.get('AGENT_SOURCE','manual')}")
 
+    _hygiene = hygiene_preflight()
+    if not _hygiene["ok"]:
+        return "HYGIENE REFUSAL: " + "; ".join(_hygiene["reasons"])
+
     if fresh:
         session_store.forget(key)
         print(f"  [session] fresh (forced, key={key})")
@@ -245,6 +250,7 @@ def loop(task, dry_run=False, model="deepseek-chat", task_path=None, fresh=False
                 # cannot be scheduled without a running event loop; eager
                 # retain is deferred until a real async context exists (#914).
                 _autosnapshot("finish")
+                post_loop_cleanup()
                 _notify("run", "✅ Agent done",
                         f"sid={sid[:12] if sid else '?'}  elapsed={_elapsed}s\n{result.get('summary','')[:200]}",
                         priority="high")

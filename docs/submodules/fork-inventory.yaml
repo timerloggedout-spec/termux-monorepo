@@ -129,3 +129,19 @@ validation:
   - initialize only these modules, shallowly, in automated checks
   - scan each module before every pin update
   - require an explicit pull request for any pin advance
+  - id: swarms
+    repository: kyegomez/swarms
+    source_url: https://github.com/kyegomez/swarms.git
+    revision: 8ec7948ce6e8ab28c4454d6c2c3187a735672067
+    branch: master
+    target_path: refTemplates/smods/swarms
+    intended_role: optional_multi_agent_orchestration_reference
+    runtime: Python >=3.10; Termux native dependencies unverified
+    license: Apache-2.0
+    nested_submodules: false
+    status: reference_only
+    notes: >-
+      Upstream reference, not a user-owned fork. Existing monorepo checkout is
+      preserved; no separate prior Swarms checkout was found. The gitlink pins
+      source only, not transitive dependencies. Optional adapter keeps model
+      access behind llm_api_hub; the base repository gates never import Swarms.

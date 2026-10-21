@@ -474,6 +474,14 @@ def main():
     )
     models_dict = success_matrix.get("models", {})
     quota_multipliers = load_quota_multipliers()
+    require_live_openrouter_quota = (
+        os.environ.get("REQUIRE_LIVE_OPENROUTER_QUOTA", "false").lower() == "true"
+    )
+    if has_openrouter and "openrouter" not in quota_multipliers:
+        sys.stderr.write(
+            "OpenRouter preflight: official live quota unavailable; "
+            "local/model counters cannot establish account-wide remaining quota.\\n"
+        )
 
     for provider, models in pools:
         if not provider_flags.get(provider, False):
@@ -485,6 +493,13 @@ def main():
             if provider == "openrouter":
                 # The live free catalog is authoritative for zero-priced models, including IDs without :free.
                 if model not in permitted_openrouter_models:
+                    continue
+                # Preflight gate: never dispatch OpenRouter free-tier traffic on a
+                # stale/missing official account quota snapshot when policy requires it.
+                if require_live_openrouter_quota and "openrouter" not in quota_multipliers:
+                    sys.stderr.write(
+                        f"Candidate denied: official OpenRouter quota unknown ({model})\\n"
+                    )
                     continue
             seen.add(key)
             if is_in_cooldown(provider, model):

@@ -1,6 +1,6 @@
 # Optional Swarms sequential adapter
 
-This integration adds an explicit sequential analysis/review workflow without replacing the monorepo's orchestrator, provider hub, or device policy. Implements **THUB-009**, **THUB-010**, and **THUB-011**. The [research](../../docs/research/SWARMS-ECOSYSTEM.md) covers the official ecosystem and complete public repository inventory; the [architecture synthesis](../../docs/architecture/SWARMS-SYNTHESIS.md) explains the local boundaries.
+This integration adds an explicit sequential analysis/review workflow without replacing the monorepo's orchestrator, provider hub, or device policy. Implements **THUB-009**, **THUB-010**, and **THUB-011**, with corrected research provenance under **THUB-012**. The [research](../../docs/research/SWARMS-ECOSYSTEM.md) distinguishes Kye Gomez's 455-repository public listing from the historical 676-repository `timerloggedout-spec` inventory; neither is an all-code audit. The [architecture synthesis](../../docs/architecture/SWARMS-SYNTHESIS.md) explains local boundaries. Rust and remote services are valid alternatives; see the [pinned Swarms Rust assessment](../../docs/research/SWARMS-RUST.md).
 
 ## Try it offline
 
@@ -40,7 +40,7 @@ The workflow has researcher/reviewer roles (`--number-agents` selects 1 or 2). `
 
 ## State and diagnostics
 
-Execution sets `SWARMS_TELEMETRY_ON=false` before the lazy import and creates a temporary workspace outside the repository before SDK initialization. Both agent and workflow autosave are disabled. Upstream still writes internal memory, so workspace/cwd isolation and cleanup are intentional, including on exceptions. The adapter restores its original cwd and the two environment settings afterward. Upstream imports may change other process-global settings, and cached loggers may keep file handles until the process exits; cleanup is not a secure-erasure guarantee.
+Upstream telemetry is on by default when `SWARMS_TELEMETRY_ON` is absent. Execution sets `SWARMS_TELEMETRY_ON=false` before the lazy import and creates a temporary workspace outside the repository before SDK initialization. Both agent and workflow autosave are disabled. Upstream still writes internal memory, so workspace/cwd isolation and cleanup are intentional, including on exceptions. The adapter restores its original cwd and the two environment settings afterward. Upstream imports may change other process-global settings, and cached loggers may keep file handles until the process exits; cleanup is not a secure-erasure guarantee.
 
 Use the standalone CLI in a fresh process, not a concurrent embedded host: upstream uses process-global environment, working-directory, and logger state. Adapter executions are serialized, but other threads in a host are not controlled. Already-imported Swarms instances may have initialized telemetry before this adapter; the standalone CLI avoids that case. Environment loading occurs from the temporary cwd, not the repository's `.env`. Supply hub configuration through the environment.
 

@@ -279,3 +279,70 @@ def test_termux_activity_listener_scaffold_symlink_safety(tmp_path, monkeypatch)
     if os.name != "nt":
         assert (target_file.stat().st_mode & 0o777) == 0o644
         assert target_file.read_text() == "# sensitive scaffold target"
+
+
+def test_session_ssot_privileges_and_symlink_safety(tmp_path, monkeypatch):
+    import archwiz.session_ssot as ssot_mod
+
+    ssot_dir = tmp_path / "sessions"
+    ssot_dir.mkdir(parents=True, exist_ok=True)
+    monkeypatch.setattr(ssot_mod, "SSOT_DIR", ssot_dir)
+
+    # 1. Test path traversal prevention in parameters
+    invalid_params = ["../traversal", "/etc/passwd", "a/b/c", "..\\win"]
+    for param in invalid_params:
+        with pytest.raises(ValueError, match="Path traversal detected"):
+            ssot_mod.SessionSSOT(provider=param, session_id="sess123")
+        with pytest.raises(ValueError, match="Path traversal detected"):
+            ssot_mod.SessionSSOT(provider="openai", session_id=param)
+        with pytest.raises(ValueError, match="Path traversal detected"):
+            ssot_mod.SessionSSOT(provider="openai", session_id="sess123", account=param)
+
+    # 2. Test valid creation and 0o600 file permissions
+    ssot = ssot_mod.SessionSSOT(provider="openai", session_id="sess_valid", account="default")
+    ssot.upsert_manifest(title="Test Manifest")
+    ssot.append_message(role="user", content="Hello world")
+    ssot.emit_event(event_type="TestEvent", payload={"key": "value"})
+
+    assert ssot.manifest_path.exists()
+    assert ssot.messages_path.exists()
+    assert ssot.events_path.exists()
+
+    if os.name != "nt":
+        assert (ssot.manifest_path.stat().st_mode & 0o777) == 0o600
+        assert (ssot.messages_path.stat().st_mode & 0o777) == 0o600
+        assert (ssot.events_path.stat().st_mode & 0o777) == 0o600
+
+    # 3. Test symlink rejection for manifest, messages, and events files
+    sym_target = tmp_path / "sym_target.txt"
+    sym_target.write_text("sensitive")
+
+    sym_ssot_dir = ssot_dir / "openai" / "default" / "sess_symlink"
+    sym_ssot_dir.mkdir(parents=True, exist_ok=True)
+
+    manifest_sym = sym_ssot_dir / "manifest.json"
+    manifest_sym.symlink_to(sym_target)
+
+    messages_sym = sym_ssot_dir / "messages.jsonl"
+    messages_sym.symlink_to(sym_target)
+
+    events_sym = sym_ssot_dir / "events.jsonl"
+    events_sym.symlink_to(sym_target)
+
+    ssot_sym = ssot_mod.SessionSSOT(provider="openai", session_id="sess_symlink", account="default")
+
+    with pytest.raises(ValueError, match="Symlink manifest path rejected"):
+        ssot_sym.upsert_manifest(title="Unsafe")
+
+    with pytest.raises(ValueError, match="Symlink detected in target path or parent"):
+        ssot_sym.append_message(role="user", content="Unsafe message")
+
+    with pytest.raises(ValueError, match="Symlink detected in target path or parent"):
+        ssot_sym.emit_event(event_type="UnsafeEvent")
+
+    # 4. Test symlink rejection for SSOT_DIR and base_dir
+    sym_ssot_root = tmp_path / "sym_ssot_root"
+    sym_ssot_root.symlink_to(ssot_dir, target_is_directory=True)
+    monkeypatch.setattr(ssot_mod, "SSOT_DIR", sym_ssot_root)
+    with pytest.raises(ValueError, match="SSOT_DIR is a symlink"):
+        ssot_mod.SessionSSOT(provider="openai", session_id="sess_sym_root")

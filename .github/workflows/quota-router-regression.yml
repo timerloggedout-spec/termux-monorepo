@@ -42,7 +42,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install focused test runner
-        run: python -m pip install 'pytest>=8,<9'
+        run: python -m pip install pytest==8.4.2 PyYAML==6.0.3
       - name: Verify composite runtime prerequisite
         run: command -v jq
       - name: Run offline routing, privacy and action regressions

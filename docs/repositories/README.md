@@ -10,6 +10,7 @@ The Repository Observatory maintains a provenance-aware index of repositories ow
 - [`scripts/github/repository_observatory.py`](../../scripts/github/repository_observatory.py) — collector, normalizer, and deterministic classifier.
 - [`scripts/github/test_repository_observatory.py`](../../scripts/github/test_repository_observatory.py) — dependency-free unit tests.
 - [`.github/workflows/repository-observatory.yml`](../../.github/workflows/repository-observatory.yml) — scheduled/manual publisher and validation gate.
+- [`.github/workflows/repository-observatory-tests.yml`](../../.github/workflows/repository-observatory-tests.yml) — read-only unit-test gate for relevant pull requests and master changes.
 - [`GRAVITEE-RESEARCH-SEED.md`](./GRAVITEE-RESEARCH-SEED.md) — provenance-aware Gravitee API Management research seed and integration boundary.
 - [`research-seeds/gravitee-api-management.json`](./research-seeds/gravitee-api-management.json) — machine-readable Gravitee research record.
 
@@ -40,7 +41,7 @@ Classification is deliberately deterministic. It uses repository name, descripti
 - integration candidates
 - submodule-candidate signal
 
-These are **inferences**, not GitHub facts. They are intended as seeds for later context-relationship and research workflows rather than automatic adoption decisions.
+These are **inferences**, not GitHub facts. In particular, `submodule_candidate` means review/discussion candidate only; it never authorizes adding a submodule. They are intended as seeds for later context-relationship and research workflows rather than automatic adoption decisions.
 
 ## Security and credentials
 

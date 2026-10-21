@@ -160,9 +160,9 @@
     "question_to_us"
    ],
    "primary": "question_to_us",
-   "action": "escalate",
+   "action": "llm_review",
    "escalate": true,
-   "rung": "hitl",
+   "rung": "system2_llm",
    "reengage_allowed": false
   }
  },
@@ -200,9 +200,9 @@
     "hostile_spam_flag"
    ],
    "primary": "hostile_spam_flag",
-   "action": "escalate",
-   "escalate": true,
-   "rung": "hitl",
+   "action": "retire_lane_cooldown",
+   "escalate": false,
+   "rung": "system1",
    "reengage_allowed": false
   }
  },

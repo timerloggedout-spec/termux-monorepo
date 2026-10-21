@@ -12,6 +12,19 @@ The upstream project is a maintained, broad bootstrap stack (currently documente
 
 **This change:** adds a source-tracked metadata slot and a project-specific adoption contract. It deliberately does not run upstream installers, create a broken gitlink to a nonexistent project fork, or claim that the full stack is deployed. A custom fork and live gitlink remain a separate gated step.
 
+## Repository-wide Flywheel audit (2026-10-21)
+
+The repository search for `flywheel` surfaced two related but distinct systems. The ACFS reference stack must be integrated *with* these existing project control planes, not mistaken for them or allowed to replace them.
+
+| Existing surface found | What already exists | Required integration treatment |
+|---|---|---|
+| `scripts/delphi/gate.py`, `ops/delphi/panel.json`, `tests/test_delphi_gate.py`, `.github/workflows/delphi-gate.yml` | A real outcome-feedback flywheel: confirmed/missed outcomes update role `gate_pass_rate` (EWMA alpha 0.2) and Elo (K=16) in the append-only Delphi panel weights ledger; changed weights re-score pending RFPs. | Preserve this as the authoritative **decision-quality feedback loop**. Add no parallel weights ledger. Any ACFS evaluation should publish evidence through an explicitly versioned adapter/event only after a real task outcome; never fabricate outcomes or panel votes. |
+| `docs/ops/DELPHI-ORACLE-RFP-GATE.md` and `docs/ops/DELPHI-LANE-CONTRACT.md` | Event-driven RFP → oracle → blind rubric panel → shadow/parked decision → confirmed/miss feedback; HindSight misses and real-run outcomes can wake the gate. | Reuse the existing event and record contracts. An ACFS component evaluation is a candidate lane, not permission to bypass quota, cost veto, shadow traffic, or promotion rules. |
+| `docs/ops/ACTIONS-CADENCE-CACHE-CONTROL.md` | Camshaft/Flywheel, Cadence, and Gantt are already named as scheduling/control-plane owners; WAIT → WATCH → VALIDATE → RE-FETCH → COMPARE governs provider-facing work. | ACFS/NTM must not become a second scheduler or circumvent cooldowns, current-SHA evidence, or idempotency. Route any automation through existing cadence controls. |
+| `.deepcli/session_store/*` search matches | Session snapshots contain historical terminal transcripts mentioning a local `~/refTemplates/flywheel_intel.txt` inventory and selective-recon instructions. These are session records, not an authoritative repository implementation or a safe source artifact. | Preserve the useful design intent—selective, footprint-aware reconnaissance—but do not import raw session stores, credentials, histories, generated inventories, or machine-specific paths into the reference stack. Recreate only validated, portable findings as reviewed documentation. |
+
+**Key distinction:** Dicklesworthstone ACFS is the upstream bootstrap/composable-tool collection; the repository's Delphi flywheel is already an outcome-driven scoring loop. The integration target is a safe capability adapter between them, not a wholesale replacement or a second flywheel control plane.
+
 ## Stack layers and disposition
 
 | Layer | Upstream capability | Project disposition | Acceptance evidence before runtime adoption |

@@ -51,3 +51,7 @@ Driver recommendations, not ballots: use keyless public research where available
 - All implemented adapters are distinct from evidence of invoked models or free accounts. Existing OpenRouter/Felo/Omni routing weights remain unchanged; the user's authorized code work does not supply missing account-entitlement evidence.
 - Do not enter API keys, secret values, personal data, or unredacted account screenshots in ballots or repository files.
 - No consensus is claimed. Binding outcomes must be recorded through the proposal process and attributable votes; see [PROCESS](../../PROCESS.md) and [consensus tiers](../../CONSENSUS.md).
+
+## MSM-018 — current executor reconciliation (not an independent ballot)
+
+The current Cue-assisted implementation session curates [the quota/participation audit](../../../ops/PROVIDER-QUOTA-PARTICIPATION-AUDIT.md). Existing issues #86/#87/#88/#272 and rate-limit-rotation RL-09/RL-16 remain the historical owners; open #1441 owns triage quota integration. The separate [OpenRouter RFP ledger](https://github.com/timerloggedout-spec/termux-monorepo/issues/1426#issuecomment-6310432412) contains generated `via: rubric` scores, not independent provider-model votes. No new priority score, consensus or independent ballot is asserted. Coverage metadata, a private fail-closed quota check, existing dashboard repairs and rubric-only Delphi safeguards implement the authorized engineering slice; account quota integrations and independent ballots remain unresolved.

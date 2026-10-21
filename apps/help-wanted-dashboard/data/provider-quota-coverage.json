@@ -1,0 +1,498 @@
+{
+  "live_inference_used": false,
+  "network_used": false,
+  "policy": "Metadata only; no private balances, quota resets, free entitlement or runtime admission inferred.",
+  "provider_families": [
+    {
+      "covered": false,
+      "freshness_owner": "ChronoMancer",
+      "key_scope": "unknown; verify provider/model/project/account sharing before admission",
+      "observation_method": "manual_or_unknown",
+      "provider_family": "aion",
+      "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
+      "quota_manager_owner": "Manager",
+      "reader_service_ids": [],
+      "registry": "ops/quota/registry.json",
+      "reset": "unknown",
+      "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "service_ids": [],
+      "source_capability": "no_provider_specific_quota_capability"
+    },
+    {
+      "covered": false,
+      "freshness_owner": "ChronoMancer",
+      "key_scope": "unknown; verify provider/model/project/account sharing before admission",
+      "observation_method": "manual_or_unknown",
+      "provider_family": "cerebras",
+      "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
+      "quota_manager_owner": "Manager",
+      "reader_service_ids": [],
+      "registry": "ops/quota/registry.json",
+      "reset": "unknown",
+      "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "service_ids": [],
+      "source_capability": "no_provider_specific_quota_capability"
+    },
+    {
+      "covered": false,
+      "freshness_owner": "ChronoMancer",
+      "key_scope": "unknown; verify provider/model/project/account sharing before admission",
+      "observation_method": "manual_or_unknown",
+      "provider_family": "cloudflare",
+      "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
+      "quota_manager_owner": "Manager",
+      "reader_service_ids": [],
+      "registry": "ops/quota/registry.json",
+      "reset": "unknown",
+      "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "service_ids": [],
+      "source_capability": "no_provider_specific_quota_capability"
+    },
+    {
+      "covered": false,
+      "freshness_owner": "ChronoMancer",
+      "key_scope": "unknown; verify provider/model/project/account sharing before admission",
+      "observation_method": "manual_or_unknown",
+      "provider_family": "cohere",
+      "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
+      "quota_manager_owner": "Manager",
+      "reader_service_ids": [],
+      "registry": "ops/quota/registry.json",
+      "reset": "unknown",
+      "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "service_ids": [],
+      "source_capability": "no_provider_specific_quota_capability"
+    },
+    {
+      "covered": false,
+      "freshness_owner": "ChronoMancer",
+      "key_scope": "unknown; verify provider/model/project/account sharing before admission",
+      "observation_method": "manual_or_unknown",
+      "provider_family": "felo",
+      "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
+      "quota_manager_owner": "Manager",
+      "reader_service_ids": [],
+      "registry": "ops/quota/registry.json",
+      "reset": "unknown",
+      "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "service_ids": [],
+      "source_capability": "no_provider_specific_quota_capability"
+    },
+    {
+      "covered": true,
+      "freshness_owner": "ChronoMancer",
+      "key_scope": "per-project, per-model (gemini.api_free registry evidence)",
+      "observation_method": "manual_or_unknown",
+      "provider_family": "gemini",
+      "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
+      "quota_manager_owner": "Manager",
+      "reader_service_ids": [],
+      "registry": "ops/quota/registry.json",
+      "reset": "unknown",
+      "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "service_ids": [
+        "gemini.api_free"
+      ],
+      "source_capability": "registered_service"
+    },
+    {
+      "covered": false,
+      "freshness_owner": "ChronoMancer",
+      "key_scope": "unknown; verify provider/model/project/account sharing before admission",
+      "observation_method": "manual_or_unknown",
+      "provider_family": "groq",
+      "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
+      "quota_manager_owner": "Manager",
+      "reader_service_ids": [],
+      "registry": "ops/quota/registry.json",
+      "reset": "unknown",
+      "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "service_ids": [],
+      "source_capability": "no_provider_specific_quota_capability"
+    },
+    {
+      "covered": false,
+      "freshness_owner": "ChronoMancer",
+      "key_scope": "unknown; verify provider/model/project/account sharing before admission",
+      "observation_method": "manual_or_unknown",
+      "provider_family": "huggingface",
+      "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
+      "quota_manager_owner": "Manager",
+      "reader_service_ids": [],
+      "registry": "ops/quota/registry.json",
+      "reset": "unknown",
+      "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "service_ids": [],
+      "source_capability": "no_provider_specific_quota_capability"
+    },
+    {
+      "covered": false,
+      "freshness_owner": "ChronoMancer",
+      "key_scope": "unknown; verify provider/model/project/account sharing before admission",
+      "observation_method": "manual_or_unknown",
+      "provider_family": "kilo",
+      "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
+      "quota_manager_owner": "Manager",
+      "reader_service_ids": [],
+      "registry": "ops/quota/registry.json",
+      "reset": "unknown",
+      "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "service_ids": [],
+      "source_capability": "no_provider_specific_quota_capability"
+    },
+    {
+      "covered": false,
+      "freshness_owner": "ChronoMancer",
+      "key_scope": "unknown; verify provider/model/project/account sharing before admission",
+      "observation_method": "manual_or_unknown",
+      "provider_family": "llm7",
+      "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
+      "quota_manager_owner": "Manager",
+      "reader_service_ids": [],
+      "registry": "ops/quota/registry.json",
+      "reset": "unknown",
+      "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "service_ids": [],
+      "source_capability": "no_provider_specific_quota_capability"
+    },
+    {
+      "covered": false,
+      "freshness_owner": "ChronoMancer",
+      "key_scope": "unknown; verify provider/model/project/account sharing before admission",
+      "observation_method": "manual_or_unknown",
+      "provider_family": "mistral",
+      "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
+      "quota_manager_owner": "Manager",
+      "reader_service_ids": [],
+      "registry": "ops/quota/registry.json",
+      "reset": "unknown",
+      "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "service_ids": [],
+      "source_capability": "no_provider_specific_quota_capability"
+    },
+    {
+      "covered": false,
+      "freshness_owner": "ChronoMancer",
+      "key_scope": "unknown; verify provider/model/project/account sharing before admission",
+      "observation_method": "manual_or_unknown",
+      "provider_family": "modelscope",
+      "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
+      "quota_manager_owner": "Manager",
+      "reader_service_ids": [],
+      "registry": "ops/quota/registry.json",
+      "reset": "unknown",
+      "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "service_ids": [],
+      "source_capability": "no_provider_specific_quota_capability"
+    },
+    {
+      "covered": false,
+      "freshness_owner": "ChronoMancer",
+      "key_scope": "unknown; verify provider/model/project/account sharing before admission",
+      "observation_method": "manual_or_unknown",
+      "provider_family": "nvidia",
+      "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
+      "quota_manager_owner": "Manager",
+      "reader_service_ids": [],
+      "registry": "ops/quota/registry.json",
+      "reset": "unknown",
+      "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "service_ids": [],
+      "source_capability": "no_provider_specific_quota_capability"
+    },
+    {
+      "covered": false,
+      "freshness_owner": "ChronoMancer",
+      "key_scope": "unknown; verify provider/model/project/account sharing before admission",
+      "observation_method": "manual_or_unknown",
+      "provider_family": "ollama",
+      "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
+      "quota_manager_owner": "Manager",
+      "reader_service_ids": [],
+      "registry": "ops/quota/registry.json",
+      "reset": "unknown",
+      "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "service_ids": [],
+      "source_capability": "no_provider_specific_quota_capability"
+    },
+    {
+      "covered": false,
+      "freshness_owner": "ChronoMancer",
+      "key_scope": "unknown; verify provider/model/project/account sharing before admission",
+      "observation_method": "manual_or_unknown",
+      "provider_family": "omni",
+      "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
+      "quota_manager_owner": "Manager",
+      "reader_service_ids": [],
+      "registry": "ops/quota/registry.json",
+      "reset": "unknown",
+      "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "service_ids": [],
+      "source_capability": "no_provider_specific_quota_capability"
+    },
+    {
+      "covered": true,
+      "freshness_owner": "ChronoMancer",
+      "key_scope": "API-key scoped reading; cross-key/account sharing not established",
+      "observation_method": "implemented_read_only_reader",
+      "provider_family": "openrouter",
+      "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
+      "quota_manager_owner": "Manager",
+      "reader_service_ids": [
+        "openrouter.free_models"
+      ],
+      "registry": "ops/quota/registry.json",
+      "reset": "unknown",
+      "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "service_ids": [
+        "openrouter.free_models"
+      ],
+      "source_capability": "registered_service"
+    },
+    {
+      "covered": false,
+      "freshness_owner": "ChronoMancer",
+      "key_scope": "unknown; verify provider/model/project/account sharing before admission",
+      "observation_method": "manual_or_unknown",
+      "provider_family": "ovhcloud",
+      "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
+      "quota_manager_owner": "Manager",
+      "reader_service_ids": [],
+      "registry": "ops/quota/registry.json",
+      "reset": "unknown",
+      "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "service_ids": [],
+      "source_capability": "no_provider_specific_quota_capability"
+    },
+    {
+      "covered": false,
+      "freshness_owner": "ChronoMancer",
+      "key_scope": "unknown; verify provider/model/project/account sharing before admission",
+      "observation_method": "manual_or_unknown",
+      "provider_family": "sambanova",
+      "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
+      "quota_manager_owner": "Manager",
+      "reader_service_ids": [],
+      "registry": "ops/quota/registry.json",
+      "reset": "unknown",
+      "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "service_ids": [],
+      "source_capability": "no_provider_specific_quota_capability"
+    },
+    {
+      "covered": false,
+      "freshness_owner": "ChronoMancer",
+      "key_scope": "unknown; verify provider/model/project/account sharing before admission",
+      "observation_method": "manual_or_unknown",
+      "provider_family": "siliconflow",
+      "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
+      "quota_manager_owner": "Manager",
+      "reader_service_ids": [],
+      "registry": "ops/quota/registry.json",
+      "reset": "unknown",
+      "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "service_ids": [],
+      "source_capability": "no_provider_specific_quota_capability"
+    },
+    {
+      "covered": false,
+      "freshness_owner": "ChronoMancer",
+      "key_scope": "unknown; verify provider/model/project/account sharing before admission",
+      "observation_method": "manual_or_unknown",
+      "provider_family": "zai",
+      "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
+      "quota_manager_owner": "Manager",
+      "reader_service_ids": [],
+      "registry": "ops/quota/registry.json",
+      "reset": "unknown",
+      "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "service_ids": [],
+      "source_capability": "no_provider_specific_quota_capability"
+    }
+  ],
+  "schema": "provider-quota-coverage/v1",
+  "service_resources": [
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_manager_owner": "Manager",
+      "service_id": "github.actions.minutes"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "implemented_read_only_reader",
+      "provider": "github",
+      "quota_manager_owner": "Manager",
+      "service_id": "github.actions.cache"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "implemented_read_only_reader",
+      "provider": "github",
+      "quota_manager_owner": "Manager",
+      "service_id": "github.api.github_token"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_manager_owner": "Manager",
+      "service_id": "github.api.user_token"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_manager_owner": "Manager",
+      "service_id": "github.artifacts.retention"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_manager_owner": "Manager",
+      "service_id": "github.copilot.free"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "implemented_read_only_reader",
+      "provider": "vercel",
+      "quota_manager_owner": "Manager",
+      "service_id": "vercel.deployments"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "vercel",
+      "quota_manager_owner": "Manager",
+      "service_id": "vercel.build_time"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "implemented_read_only_reader",
+      "provider": "render",
+      "quota_manager_owner": "Manager",
+      "service_id": "render.pipeline_minutes"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "render",
+      "quota_manager_owner": "Manager",
+      "service_id": "render.instance_hours"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "implemented_read_only_reader",
+      "provider": "render",
+      "quota_manager_owner": "Manager",
+      "service_id": "render.bandwidth"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "render",
+      "quota_manager_owner": "Manager",
+      "service_id": "render.postgres_free"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "render",
+      "quota_manager_owner": "Manager",
+      "service_id": "render.keyvalue_free"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "implemented_read_only_reader",
+      "provider": "neon",
+      "quota_manager_owner": "Manager",
+      "service_id": "neon.compute"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "implemented_read_only_reader",
+      "provider": "neon",
+      "quota_manager_owner": "Manager",
+      "service_id": "neon.storage"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "neon",
+      "quota_manager_owner": "Manager",
+      "service_id": "neon.egress"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "neon",
+      "quota_manager_owner": "Manager",
+      "service_id": "neon.realtime"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "implemented_read_only_reader",
+      "provider": "openrouter",
+      "quota_manager_owner": "Manager",
+      "service_id": "openrouter.free_models"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "google",
+      "quota_manager_owner": "Manager",
+      "service_id": "gemini.api_free"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "gpt4free/CLIProxyAPI/Chapito/ai-manus",
+      "quota_manager_owner": "Manager",
+      "service_id": "g4f.vendors"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "grafana",
+      "quota_manager_owner": "Manager",
+      "service_id": "grafana.cloud_free"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "supabase",
+      "quota_manager_owner": "Manager",
+      "service_id": "supabase.free"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "turso",
+      "quota_manager_owner": "Manager",
+      "service_id": "turso.free"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "upstash",
+      "quota_manager_owner": "Manager",
+      "service_id": "upstash.free"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "cloudflare",
+      "quota_manager_owner": "Manager",
+      "service_id": "cloudflare.d1_queues"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "CellCog/Polsia/Manus",
+      "quota_manager_owner": "Manager",
+      "service_id": "partners.credits"
+    }
+  ]
+}

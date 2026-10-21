@@ -36,23 +36,33 @@ It never posts on third-party repos.
 | needs_human_skill | drop_candidate | no |
 | claimed_by_other | yield_lane | no |
 | low_effort_placeholder | retire_lane | no |
-| hostile_spam_flag (maintainer) | escalate (hitl) + repo cooldown | no |
-| question_to_us | escalate (hitl) | no |
+| hostile_spam_flag (maintainer) | retire_lane_cooldown | no |
+| question_to_us | llm_review (rung 2) | no |
 | changes_requested | revise_patch | yes |
 | approved | await_merge | yes |
 
 Every decision also emits a `lane_event` (shape of `scripts/ops/lane_event.py`),
 prefilter rules for scout/claim/contribute, and a Delphi reweighting signal.
 
-## Escalation ladder
-- **rung 0 `system1`**: a label ≥ `TRIBUTE_S1_CONFIDENT` (0.75) → auto-route.
-- **rung 1 `system2_llm`**: low confidence or an unlabelled human reply →
-  LLM pass (help-wanted-llm-assist). Pass its verdict back as
-  `route(thread, system2={...})`; a confident verdict returns to rung 0.
-- **rung 2 `hitl`**: LLM unsure, `question_to_us`, or a maintainer spam flag →
-  `hitl_control_plane` proposal in `AWAITING_APPROVAL` → `hark:queue` issue via
-  `hark-enqueue.yml` (enabled with repo variable `TRIBUTE_S1_ENQUEUE=true`).
-  Nothing is posted upstream without the user's OK.
+## Escalation ladder (no HITL)
+The Owner is the project's only human, so escalation means **re-planning, not a person**.
+- **rung 0 `programmatic`**: deterministic checks (state, merged, assignee, close
+  event, review state, diff size, claim timeline) settle the thread.
+- **rung 1 `system1`**: token/feature/semantic classifiers (lexicons, regex) with
+  confidence ≥ `TRIBUTE_S1_CONFIDENT` (0.75).
+- **rung 2 `system2_llm`**: only what System 1 can't settle (low confidence,
+  unlabelled human reply, `question_to_us`). Pass the verdict back as
+  `route(thread, system2={...})`.
+- **rung 3 `replan`**: the LLM is unsure → the system makes a new plan itself:
+  yield (someone else claimed/assigned), retire (closed), or park the lane, then
+  tighten scout/claim prefilters, reweight via Delphi, and pick the next candidate.
+
+Never `AWAITING_APPROVAL`, never a `hark:queue` entry for a human.
+`hitl_control_plane` gets an audit-only record (`state: RECORDED`). The only
+Owner stops are the standing ones: destructive actions, secrets/credentials,
+spending money, and posting on third-party repos. A drafted public reply is
+recorded as `owner_required: post_on_third_party_repo`, the lane is parked, and
+the system moves to the next candidate. That counts as HITL cost.
 
 ## Candidate preflight (before any claim comment or PR)
 `preflight_candidate(issue, comments)` excludes issues that are assigned to
@@ -71,7 +81,9 @@ blocks stake/placeholder-only PRs.
 
 ## Eval
 `python scripts/ci/tribute_system1_eval.py` reports per-class precision/recall,
-action accuracy, escalation rate and false re-engagements. CI fails on any false
-re-engagement, any misrouted real seed, or macro P/R below 0.9. Grow the set by
+action accuracy and the ladder costs: HITL rate (drive to zero), LLM-call rate,
+re-plan rate, programmatic rate, and false re-engagements. CI fails on any false
+re-engagement, HITL rate above 0, LLM-call rate above 0.35, any misrouted real
+seed, or macro P/R below 0.9. Grow the set by
 adding hydrated real threads (with an `expected` block) to the fixtures folder;
 backfill output on branch `tribute-s1/backfill` is the source for new labels.

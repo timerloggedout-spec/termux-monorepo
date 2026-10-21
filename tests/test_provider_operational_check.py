@@ -31,6 +31,29 @@ def test_default_check_has_no_network_and_does_not_read_key_values(monkeypatch):
     assert all(row["readiness"] == "missing_credential" for row in report["providers"])
 
 
+def test_quota_managers_consume_only_existing_catalog_responses(monkeypatch):
+    seen = []
+    calls = []
+    original = readiness.provider_quota_managers.catalog_quota_status
+
+    def status(provider, headers, *, observed_at, source=None):
+        calls.append((provider, bool(headers)))
+        return original(provider, headers, observed_at=observed_at, source=source)
+
+    def poll(provider, token):
+        seen.append(provider)
+        return [], {"x-ratelimit-remaining-requests": "private-canary"}
+
+    monkeypatch.setattr(readiness.provider_quota_managers, "catalog_quota_status", status)
+    monkeypatch.setattr(readiness.provider_model_catalog, "poll", poll)
+    report = readiness.check(catalogs=True)
+    assert set(seen) == {"routeway", "requesty", "xkiro"}
+    assert len(seen) == len(set(seen))
+    assert {p for p, has_headers in calls if has_headers} == set(seen)
+    assert all(row["quota_manager"]["status"] == "unknown" for row in report["providers"])
+    assert "private-canary" not in json.dumps(report)
+
+
 def test_typhoon_key_alias_configures_transport_but_not_entitlement(monkeypatch):
     monkeypatch.setenv("TYPHOON_API_KEY", "synthetic-never-reported")
     report = readiness.check()

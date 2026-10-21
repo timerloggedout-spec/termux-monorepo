@@ -49,22 +49,41 @@ class Ladder(unittest.TestCase):
     def setUp(self):
         self.cases = {c["case_id"]: c for c in load("synthetic_cases.json")}
 
-    def test_low_confidence_goes_to_llm_then_hitl_when_unsure(self):
+    def test_low_confidence_goes_to_llm_then_replans_when_unsure(self):
         c = self.cases["syn-ambiguous"]
         self.assertEqual(s1.route(c)["rung"], "system2_llm")
         d = s1.route(c, system2={"label": "question_to_us", "confidence": 0.4, "unsure": True})
-        self.assertEqual(d["rung"], "hitl")
-        self.assertEqual(d["hitl"]["state"], "AWAITING_APPROVAL")
-        self.assertTrue(d["hark_queue"]["key"].startswith("tribute-s1/"))
+        self.assertEqual(d["rung"], "replan")
+        self.assertEqual(d["action"], "park_lane")
+        self.assertIn("pick_next_candidate", d["plan"]["steps"])
+        self.assertIsNone(d["owner_required"])
+        self.assertNotIn("hark_queue", d)
+        self.assertNotIn("hitl", d)
+        self.assertEqual(d["audit"]["state"], "RECORDED")
 
-    def test_confident_llm_verdict_routes_back_to_system1(self):
+    def test_unsure_llm_on_claimed_thread_replans_to_yield(self):
+        d = s1.route(load("seed3_selenium_boot_issue180.json"), labels=[], system2={"unsure": True})
+        self.assertEqual(d["plan"]["steps"][0], "yield_lane")
+
+    def test_confident_llm_verdict_routes_without_human(self):
         d = s1.route(self.cases["syn-ambiguous"], system2={"label": "needs_human_skill", "confidence": 0.9})
-        self.assertEqual((d["rung"], d["action"]), ("system1", "drop_candidate"))
+        self.assertEqual((d["rung"], d["action"]), ("system2_llm", "drop_candidate"))
+        self.assertIsNone(d["owner_required"])
 
-    def test_question_to_us_is_hitl_and_never_reengages(self):
+    def test_public_reply_is_the_only_owner_stop(self):
+        d = s1.route(self.cases["syn-question"], system2={"label": "question_to_us", "confidence": 0.9, "needs_public_reply": True})
+        self.assertEqual(d["owner_required"], "post_on_third_party_repo")
+        self.assertEqual(d["action"], "park_lane")
+
+    def test_question_to_us_goes_to_llm_not_a_person(self):
         d = s1.route(self.cases["syn-question"])
-        self.assertEqual(d["rung"], "hitl")
+        self.assertEqual(d["rung"], "system2_llm")
         self.assertFalse(d["reengage_allowed"])
+
+    def test_maintainer_spam_retires_without_human(self):
+        d = s1.route(self.cases["syn-spam"])
+        self.assertEqual(d["action"], "retire_lane_cooldown")
+        self.assertFalse(d["escalate"])
 
     def test_reengage_gate(self):
         self.assertTrue(s1.reengage_allowed(self.cases["syn-changes"]))
@@ -130,6 +149,8 @@ class EvalGate(unittest.TestCase):
     def test_eval_passes_and_has_zero_false_reengage(self):
         r = ev.evaluate(ev.load_cases([FX]))
         self.assertEqual(r["false_reengage"], [])
+        self.assertEqual(r["hitl_rate"], 0.0)
+        self.assertLessEqual(r["llm_call_rate"], 0.35)
         self.assertEqual(r["seed_failures"], [])
         self.assertGreaterEqual(r["macro_precision"], 0.9)
         self.assertGreaterEqual(r["macro_recall"], 0.9)

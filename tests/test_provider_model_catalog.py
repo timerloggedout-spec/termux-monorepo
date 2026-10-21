@@ -165,6 +165,8 @@ def test_legacy_felo_trial_and_documentation_when_missing_from_catalog():
     trial = next(row for row in rows if row["id"] == "ox-alpha")
     assert trial["raw_source"] == "felo:/v1/models + documented-model-page"
     assert trial["access_classification"] == "free_trial"
+    assert trial["entitlement_verification"] == "unknown"
+    assert trial["access_source"] == provider_model_catalog.DOCUMENTED_TRIAL_MODELS[("felo", "ox-alpha")]["source"]
     assert any(row["id"] == "ox-alpha" for row in provider_model_catalog.DOCUMENTED_ENTITLEMENTS["felo"])
 
 

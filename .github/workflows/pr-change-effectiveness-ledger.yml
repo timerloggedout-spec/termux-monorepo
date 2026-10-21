@@ -47,8 +47,8 @@ jobs:
           gh_api_safe() {
             local err_file="$RUNNER_TEMP/gh_api_err.txt"
             if ! gh api "$@" 2>"$err_file"; then
-              if grep -qiE 'rate limit|HTTP 403' "$err_file"; then
-                echo "ledger skipped: GitHub API rate limit exceeded ($*)" >> "$GITHUB_STEP_SUMMARY"
+              if grep -qiE 'rate limit|HTTP 403|HTTP 502|HTTP 503|HTTP 504' "$err_file"; then
+                echo "change effectiveness ledger skipped: GitHub API unavailable ($*)" >> "$GITHUB_STEP_SUMMARY"
                 cat "$err_file" >> "$GITHUB_STEP_SUMMARY"
                 echo "skipped=true" >> "$GITHUB_OUTPUT"
                 exit 0

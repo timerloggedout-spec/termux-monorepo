@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "d51dc67a6e8d2a88cb6b798d9bf9f6c5273959d7dfa957a531bc21f423030a8c",
-  "workflow_count": 144,
+  "source_fingerprint": "26061151d3ce41caf9cd2960f075990c06d54888cde6da46c2e1d247ed8361b8",
+  "workflow_count": 145,
   "workflows": [
     {
       "action_pins": [
@@ -324,6 +324,24 @@
       "triggers": [
         "schedule",
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "deterministic-model"
+      ],
+      "name": "ArchWiz Markov Trellis Lab",
+      "path": ".github/workflows/archwiz-markov-trellis-lab.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push"
       ]
     },
     {

@@ -123,10 +123,3 @@ Executing 32 sequential `.sub()` regex passes unconditionally in `compress()` / 
 
 **Action:**
 Use C-level substring guards (`if phrase.lower() in text_lower:`) before running sequential regex phrase substitutions, pre-compute reverse pair tuples at module scope, and avoid pre-calling `.search()` prior to `.sub()` on document transformations.
-
-## 2026-10-19 - Non-Canonical Variant Pre-Search Guarding in Decode Codecs
-**Learning:**
-During document decompilation (`from_1337speak`), executing full regex substitution passes (`VARIANT_REGEX.sub`) over documents or prose blocks that contain zero mutated 1337speak variants (e.g. standard canonical terms like `h4x` or plain markdown prose) forces full regex scanning and match callback allocations. Pre-building a Trie regex pattern (`NON_CANONICAL_VARIANT_REGEX`) for only non-canonical variants (`variant.lower() != canonical.lower()`) allows `from_1337speak` to execute an `O(1)` pre-search short-circuit check (`if not NON_CANONICAL_VARIANT_REGEX.search(text): return text`), bypassing `VARIANT_REGEX.sub` on unmutated inputs and accelerating surface codec decoding by ~1.18x (~15% latency reduction).
-
-**Action:**
-When normalizing surface variants back to canonical representations, construct a pre-search regex targeting only non-canonical variants to short-circuit unmutated prose scanning.

@@ -77,7 +77,7 @@ def main() -> None:
             raise SystemExit(f"{args.input}:{line_number}: {exc}") from exc
         if event is not None:
             converted.append(event)
-    Path(args.output).write_text("".join(json.dumps(e, sort_keys=True, separators=(",", ":")) + "\\n" for e in converted), encoding="utf-8")
+    Path(args.output).write_text("".join(json.dumps(e, sort_keys=True, separators=(",", ":")) + "\n" for e in converted), encoding="utf-8")
     print(json.dumps({"converted": len(converted), "ignored": "unsupported span kinds omitted"}))
 
 

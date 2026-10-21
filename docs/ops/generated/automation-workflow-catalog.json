@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "fe1b0b8b878dcb79d913706b20620623f86ce6ba874e9bd320b76cd6830518a5",
-  "workflow_count": 146,
+  "source_fingerprint": "48f8b635dbeca16ada0b36581530f14c75bc224b406c471db5e36f2590e0165f",
+  "workflow_count": 147,
   "workflows": [
     {
       "action_pins": [
@@ -293,6 +293,26 @@
       "schedules": [],
       "triggers": [
         "workflow_run"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: agentic-auth-canary cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "check"
+      ],
+      "name": "Agentic Auth Canary",
+      "path": ".github/workflows/agentic-auth-canary.yml",
+      "schedules": [
+        "17 */6 * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
       ]
     },
     {

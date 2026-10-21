@@ -7,6 +7,8 @@ on:
   pull_request:
     paths:
       - "she/metrics/**"
+      - "she/observability/orchestrator_trace.py"
+      - "tests/test_orchestrator_trace.py"
       - "scripts/ci/emit_ates_run_receipt.py"
       - "scripts/ci/bridge_ates_trace_to_events.py"
       - "tests/test_emit_ates_run_receipt.py"
@@ -64,4 +66,4 @@ jobs:
         run: python -m json.tool docs/ops/AGENT-THROUGHPUT-EVENT.schema.json >/dev/null
 
       - name: Run focused ATES reducer and receipt tests
-        run: python -m unittest tests.test_she_agent_throughput tests.test_emit_ates_run_receipt tests.test_bridge_ates_trace_to_events -v
+        run: python -m unittest tests.test_she_agent_throughput tests.test_emit_ates_run_receipt tests.test_bridge_ates_trace_to_events tests.test_orchestrator_trace -v

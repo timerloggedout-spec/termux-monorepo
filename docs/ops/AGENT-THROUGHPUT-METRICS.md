@@ -123,9 +123,11 @@ The repository should measure the adapters against the same event schema, then r
 
 Land schema + pure reducer + fixtures + quality verification. No external telemetry dependency. This is the ATES foundation already present on the active integration branch.
 
-### Phase B — evidence emission **[NEXT]**
+### Phase B — evidence emission **[PARTIAL: WORKFLOW RECEIPT IMPLEMENTED]**
 
-Teach eligible agent workflows to emit sanitized JSONL and publish a receipt alongside existing Action artifacts. Every event must retain run/attempt/SHA linkage where available.
+`.github/workflows/ates-phase-b-run-receipt.yml` observes completed `Continuous agent ops` runs and publishes one metadata-only JSONL receipt as a 30-day Actions artifact. `scripts/ci/emit_ates_run_receipt.py` retains the observed run ID, attempt, source SHA, workflow label, completion timestamp, conclusion, and duration when both timestamps exist. It intentionally omits commit messages, run URLs, prompts, completions, and arbitrary payloads. Missing duration remains absent. The existing event schema is validated by the receipt workflow.
+
+`she/observability/orchestrator_trace.py` provides an opt-in span boundary, and `scripts/ci/bridge_ates_trace_to_events.py` converts only recognized span kinds into the canonical event schema. Raw trace metadata is not itself safe to publish: task, role, and tool strings can contain arbitrary input. The export bridge replaces all three with domain-separated SHA-256 identifiers (`ates-task:`, `ates-role:`, `ates-tool:`), preserving repeatable grouping without retaining the original labels. These fingerprints are pseudonyms, not anonymization or a substitute for access control; predictable labels can still be guessed. Exported groups do not join directly to pre-existing plaintext label cohorts. Timestamps are validated and normalized to UTC, non-finite durations are rejected, and arbitrary attributes and source payload fingerprints are omitted. Run/attempt/SHA linkage remains available. The bridge is a tested adapter, not a claim that every production orchestrator path is already instrumented or that raw trace artifacts are safe for publication or automatically ingested into the longitudinal corpus. Extend to other eligible workflows only after their event semantics and permissions are confirmed.
 
 ### Phase C — longitudinal correlation
 

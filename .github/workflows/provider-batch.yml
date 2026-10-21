@@ -18,6 +18,22 @@ on:
   pull_request:
     paths:
       - 'scripts/provider_model_catalog.py'
+      - 'scripts/provider_quota_coverage.py'
+      - 'scripts/provider_quota_managers.py'
+      - 'scripts/quota_poll.py'
+      - 'ops/quota/provider-managers.json'
+      - 'tests/test_provider_quota_managers.py'
+      - 'tests/test_quota_poll.py'
+      - '.github/workflows/vercel-quota-probe.yml'
+      - 'scripts/quota_tui.py'
+      - 'scripts/delphi/gate.py'
+      - 'tests/test_delphi_gate.py'
+      - '.github/workflows/delphi-gate.yml'
+      - 'ops/quota/registry.json'
+      - 'apps/help-wanted-dashboard/quota*'
+      - 'apps/help-wanted-dashboard/data/provider-quota-coverage.json'
+      - 'tests/test_provider_quota_coverage.py'
+      - 'tests/test_quota_dashboard.py'
       - 'scripts/model_selection_market/**'
       - 'llm_api_hub/**'
       - 'tests/test_provider_model_catalog.py'
@@ -51,6 +67,22 @@ on:
     branches: [master]
     paths:
       - 'scripts/provider_model_catalog.py'
+      - 'scripts/provider_quota_coverage.py'
+      - 'scripts/provider_quota_managers.py'
+      - 'scripts/quota_poll.py'
+      - 'ops/quota/provider-managers.json'
+      - 'tests/test_provider_quota_managers.py'
+      - 'tests/test_quota_poll.py'
+      - '.github/workflows/vercel-quota-probe.yml'
+      - 'scripts/quota_tui.py'
+      - 'scripts/delphi/gate.py'
+      - 'tests/test_delphi_gate.py'
+      - '.github/workflows/delphi-gate.yml'
+      - 'ops/quota/registry.json'
+      - 'apps/help-wanted-dashboard/quota*'
+      - 'apps/help-wanted-dashboard/data/provider-quota-coverage.json'
+      - 'tests/test_provider_quota_coverage.py'
+      - 'tests/test_quota_dashboard.py'
       - 'scripts/model_selection_market/**'
       - 'llm_api_hub/**'
       - 'scripts/ops/provider_free_smoke.py'
@@ -81,6 +113,9 @@ jobs:
           persist-credentials: false
       - name: Install contract test dependencies
         run: python3 -m pip install pytest==8.4.2 fastapi==0.143.3 pydantic==2.14.1 httpx==0.28.1 PyYAML==6.0.3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
       - name: Test active production entry points and reconciliation contracts
         run: |
           python3 -m pytest -q tests/test_provider_protocols.py tests/test_provider_family_completion.py tests/test_ovh_catalog.py tests/test_proposal_feedback_api.py tests/test_provider_next_batch.py tests/test_firecrawl_public_research.py
@@ -89,6 +124,8 @@ jobs:
           python3 -m pytest -q tests/test_provider_model_catalog.py tests/test_provider_batch.py tests/test_review_evidence.py tests/test_research_provider_hub.py tests/test_llm_api_hub_server.py
           python3 -m pytest -q tests/test_provider_recon.py tests/test_market_cadence.py tests/test_publish_provider_recon.py tests/test_resource_index.py tests/test_resource_registry.py
           python3 -m unittest scripts.model_selection_market.test_msm
+          python3 -m pytest -q tests/test_provider_quota_managers.py tests/test_provider_quota_coverage.py tests/test_quota_dashboard.py tests/test_quota_poll.py tests/test_delphi_gate.py
+          python3 scripts/provider_quota_coverage.py --check apps/help-wanted-dashboard/data/provider-quota-coverage.json
   diagnose:
     needs: contracts
     if: github.event_name == 'workflow_dispatch' && inputs.diagnose_free_limits && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)

@@ -35,6 +35,41 @@
       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1115",
       "source_type": "repository_issue",
       "authority": "termux-monorepo"
+    },
+    {
+      "source_id": "wikipedia-skos",
+      "title": "Simple Knowledge Organization System (Wikipedia overview)",
+      "url": "https://en.wikipedia.org/wiki/Simple_Knowledge_Organization_System",
+      "source_type": "encyclopedia_overview",
+      "authority": "Wikipedia (orientation only; verify normative claims against W3C)"
+    },
+    {
+      "source_id": "cwld-colloquial-ontology",
+      "title": "CWLD: Mapping colloquial wet lab language to ontologies",
+      "url": "https://europepmc.org/article/PPR/PPR570729",
+      "source_type": "research_preprint",
+      "authority": "Europe PMC / BioHackrXiv; Markham and McLaughlin (2022)"
+    },
+    {
+      "source_id": "dariah-controlled-vocabularies",
+      "title": "Controlled Vocabularies and SKOS",
+      "url": "https://campus.dariah.eu/resources/hosted/controlled-vocabularies-and-skos",
+      "source_type": "research_training_resource",
+      "authority": "DARIAH-Campus"
+    },
+    {
+      "source_id": "getty-cona-intro",
+      "title": "Cultural Objects Name Authority: Introduction to the Getty Vocabularies",
+      "url": "https://www.getty.edu/research/tools/vocabularies/cona_intro.pdf",
+      "source_type": "institutional_reference",
+      "authority": "J. Paul Getty Trust"
+    },
+    {
+      "source_id": "synonyms-near-synonyms-research",
+      "title": "On the Differentiation Between Synonyms and Near-synonyms",
+      "url": "https://doi.org/10.3969/j.issn.1000-5218.2002.05.013",
+      "source_type": "scholarly_article",
+      "authority": "Scholarly linguistic research; metadata discovered via SciSpace"
     }
   ],
   "concepts": [
@@ -80,6 +115,54 @@
       "version": 1,
       "source_ids": [
         "issue-320"
+      ]
+    },
+    {
+      "concept_id": "knowledge_organization.lexical_label",
+      "domain_id": "knowledge_organization",
+      "preferred_label": "lexical label",
+      "definition": "A language-tagged string used to name or refer to a concept; preferred, alternative, and hidden labels serve different presentation and retrieval roles.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "w3c-skos-reference",
+        "w3c-skos-primer"
+      ]
+    },
+    {
+      "concept_id": "knowledge_organization.controlled_vocabulary",
+      "domain_id": "knowledge_organization",
+      "preferred_label": "controlled vocabulary",
+      "definition": "A curated set of terms used consistently to describe, index, retrieve, or organize information; mappings between vocabularies require explicit relationship types.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "dariah-controlled-vocabularies",
+        "getty-cona-intro"
+      ]
+    },
+    {
+      "concept_id": "terminology.colloquial_to_formal_mapping",
+      "domain_id": "terminology_management",
+      "preferred_label": "colloquial-to-formal terminology mapping",
+      "definition": "A documented association between practitioner or community language and a formal vocabulary concept, preserving the source expression and the confidence and scope of the mapping.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "cwld-colloquial-ontology",
+        "w3c-skos-reference"
+      ]
+    },
+    {
+      "concept_id": "linguistics.near_synonymy",
+      "domain_id": "lexical_semantics",
+      "preferred_label": "near-synonymy",
+      "definition": "A relationship between expressions with similar but not necessarily identical meaning; context and sense must be checked before treating them as interchangeable.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "synonyms-near-synonyms-research",
+        "wolfram-worddata"
       ]
     }
   ],
@@ -160,6 +243,112 @@
       "status": "candidate",
       "source_ids": [
         "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-lexical-label-formal",
+      "concept_id": "knowledge_organization.lexical_label",
+      "text": "lexical label",
+      "label_type": "preferred_formal",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "w3c-skos-reference"
+      ]
+    },
+    {
+      "label_id": "lbl-lexical-label-plain",
+      "concept_id": "knowledge_organization.lexical_label",
+      "text": "the words used to name a concept",
+      "label_type": "preferred_plain_language",
+      "language": "en",
+      "audience": "general",
+      "register": "plain_language",
+      "status": "candidate",
+      "source_ids": [
+        "w3c-skos-primer"
+      ]
+    },
+    {
+      "label_id": "lbl-controlled-vocab-formal",
+      "concept_id": "knowledge_organization.controlled_vocabulary",
+      "text": "controlled vocabulary",
+      "label_type": "preferred_formal",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "dariah-controlled-vocabularies"
+      ]
+    },
+    {
+      "label_id": "lbl-controlled-vocab-plain",
+      "concept_id": "knowledge_organization.controlled_vocabulary",
+      "text": "a curated set of agreed terms",
+      "label_type": "preferred_plain_language",
+      "language": "en",
+      "audience": "general",
+      "register": "plain_language",
+      "status": "candidate",
+      "source_ids": [
+        "dariah-controlled-vocabularies",
+        "getty-cona-intro"
+      ]
+    },
+    {
+      "label_id": "lbl-colloquial-to-formal",
+      "concept_id": "terminology.colloquial_to_formal_mapping",
+      "text": "colloquial-to-formal terminology mapping",
+      "label_type": "preferred_formal",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "cwld-colloquial-ontology"
+      ]
+    },
+    {
+      "label_id": "lbl-colloquial-wetlab",
+      "concept_id": "terminology.colloquial_to_formal_mapping",
+      "text": "colloquial wet-lab language",
+      "label_type": "related_term",
+      "language": "en",
+      "audience": "practitioner",
+      "register": "colloquial",
+      "status": "candidate",
+      "source_ids": [
+        "cwld-colloquial-ontology"
+      ]
+    },
+    {
+      "label_id": "lbl-near-synonymy-formal",
+      "concept_id": "linguistics.near_synonymy",
+      "text": "near-synonymy",
+      "label_type": "preferred_formal",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "synonyms-near-synonyms-research"
+      ]
+    },
+    {
+      "label_id": "lbl-near-synonymy-plain",
+      "concept_id": "linguistics.near_synonymy",
+      "text": "words that mean almost the same thing, but not always",
+      "label_type": "preferred_plain_language",
+      "language": "en",
+      "audience": "general",
+      "register": "plain_language",
+      "status": "candidate",
+      "source_ids": [
+        "synonyms-near-synonyms-research",
+        "wolfram-worddata"
       ]
     }
   ],

@@ -540,6 +540,7 @@ def changed_paths(base: str) -> list[str]:
 
     A working-tree diff can hide a staged change when an unstaged edit restores
     the base contents. Conversely, unstaged-only edits are not gate inputs.
+    Type changes must stay in scope: they can introduce source or symlinks.
     """
     merge_base = base
     try:
@@ -547,7 +548,7 @@ def changed_paths(base: str) -> list[str]:
     except subprocess.CalledProcessError:
         pass
     raw = subprocess.run(
-        ["git", "diff", "--cached", "--name-only", "--diff-filter=ACMR", "-z", merge_base, "--"],
+        ["git", "diff", "--cached", "--name-only", "--diff-filter=ACMRT", "-z", merge_base, "--"],
         cwd=REPO_ROOT,
         check=True,
         capture_output=True,

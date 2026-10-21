@@ -128,6 +128,55 @@ class IndexScopeTests(unittest.TestCase):
         self.assertEqual(gate.changed_paths(self.base), ["renamed.py"])
         self.assertEqual(self.run_gate()[0], 1)
 
+    def test_regular_file_to_absolute_symlink_is_rejected_from_index(self):
+        self.source.unlink()
+        self.source.symlink_to("/outside/fixture.py")
+        self.git("add", "probe.py")
+        self.source.unlink()
+        self.source.write_text("answer = 42\n")
+        self.assertEqual(gate.changed_paths(self.base), ["probe.py"])
+        rc, output = self.run_gate()
+        self.assertEqual(rc, 1, output)
+        self.assertIn("portable-symlink", output)
+        self.assertIn("symlinks=1", output)
+
+    def test_regular_file_to_relative_symlink_remains_allowed(self):
+        self.source.unlink()
+        self.source.symlink_to("relative.py")
+        self.git("add", "probe.py")
+        self.source.unlink()
+        self.assertEqual(gate.changed_paths(self.base), ["probe.py"])
+        rc, output = self.run_gate()
+        self.assertEqual(rc, 0, output)
+        self.assertIn("symlinks=1", output)
+
+    def test_symlink_to_invalid_regular_file_is_rejected_from_index(self):
+        self.source.unlink()
+        self.source.symlink_to("relative.py")
+        self.git("add", "probe.py")
+        self.commit("symlink baseline")
+        self.base = self.git("rev-parse", "HEAD").strip()
+        self.source.unlink()
+        self.source.write_text("def broken(:\n")
+        self.git("add", "probe.py")
+        self.source.unlink()
+        self.source.symlink_to("relative.py")
+        self.assertEqual(gate.changed_paths(self.base), ["probe.py"])
+        rc, output = self.run_gate()
+        self.assertEqual(rc, 1, output)
+        self.assertIn("python-syntax", output)
+        self.assertIn("py=1", output)
+
+    def test_gitlink_to_regular_file_checks_blob_not_commit(self):
+        self.git("update-index", "--add", "--cacheinfo", "160000", self.base, "probe.py")
+        self.commit("gitlink baseline")
+        self.base = self.git("rev-parse", "HEAD").strip()
+        self.git("add", "probe.py")
+        self.assertEqual(gate.changed_paths(self.base), ["probe.py"])
+        rc, output = self.run_gate()
+        self.assertEqual(rc, 0, output)
+        self.assertIn("py=1", output)
+
 
 if __name__ == "__main__":
     unittest.main()

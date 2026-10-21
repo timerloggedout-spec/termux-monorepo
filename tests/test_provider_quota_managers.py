@@ -120,6 +120,76 @@ class ProviderQuotaManagerTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             managers.normalize_observation('groq', ['not-a-header-mapping'], observed_at='2026-10-21T09:00:00Z', scope='org')
 
+    def test_catalog_status_is_status_only_and_unknown_by_default_for_every_family(self):
+        for family in managers.load_managers():
+            result = managers.catalog_quota_status(family,
+                {'x-ratelimit-remaining-requests': 'secret-canary'}, observed_at='2026-10-21T09:00:00Z')
+            self.assertEqual(result['status'], 'unknown', family)
+            self.assertEqual(set(result), {'status', 'manager_status'})
+        self.assertEqual(managers.catalog_quota_status('unregistered', {}, observed_at='2026-10-21T09:00:00Z'),
+                         {'status': 'unknown', 'manager_status': 'unsupported'})
+        encoded = json.dumps(managers.catalog_quota_status('groq',
+            {'x-ratelimit-remaining-requests': 'secret-canary'}, observed_at='2026-10-21T09:00:00Z'))
+        self.assertNotIn('secret-canary', encoded)
+        self.assertNotIn('scope', encoded)
+
+    def test_catalog_status_accepts_only_applicable_documented_headers_and_fails_closed(self):
+        at = '2026-10-21T09:00:00Z'
+        groq = managers.catalog_quota_status('groq',
+            {'x-ratelimit-remaining-requests': '119'}, observed_at=at,
+            source='https://api.groq.com/openai/v1/models')
+        self.assertEqual(groq['status'], 'observed')
+        bad = managers.catalog_quota_status('groq',
+            {'x-ratelimit-remaining-requests': 'bearer-secret'}, observed_at=at,
+            source='https://api.groq.com/openai/v1/models')
+        self.assertEqual(bad['status'], 'unknown')
+        samba = managers.catalog_quota_status('sambanova',
+            {'x-ratelimit-remaining-requests': '19'}, observed_at=at,
+            source='https://api.sambanova.ai/v1/models')
+        self.assertEqual(samba['status'], 'observed')
+        # HF Hub RateLimit does not describe the Hugging Face inference router.
+        self.assertEqual(managers.catalog_quota_status('huggingface',
+            {'ratelimit': 'r=1;t=2'}, observed_at=at)['status'], 'unknown')
+
+    def test_catalog_status_rejects_missing_or_mismatched_origin(self):
+        for family in ('groq', 'sambanova'):
+            for source in (None, 'https://untrusted.invalid/v1/models',
+                           'https://openapi.felo.ai/api/v1/models'):
+                result = managers.catalog_quota_status(family,
+                    {'x-ratelimit-remaining-requests': '19'},
+                    observed_at='2026-10-21T09:00:00Z', source=source)
+                self.assertEqual(result['status'], 'unknown')
+
+    def test_catalog_logs_status_not_raw_header_values(self):
+        import contextlib
+        import io
+        from unittest.mock import patch
+        from scripts import provider_model_catalog as catalog
+        row = {'id': 'test', 'provider': 'groq', 'pricing_classification': 'paid',
+               'free_suffix': False, 'access_classification': 'catalog_pricing_only'}
+        log = io.StringIO()
+        with tempfile.TemporaryDirectory() as tmp, contextlib.redirect_stdout(log), \
+             patch.object(catalog, 'resolve_secret', return_value=('token-canary', 'GROQ_API_KEY')), \
+             patch.object(catalog, 'poll', return_value=([row], {'x-request-id': 'opaque-header-canary'})):
+            self.assertEqual(catalog.main(['--providers', 'groq', '--output', str(Path(tmp) / 'catalog.json')]), 0)
+        self.assertIn('QUOTA_STATUS groq:', log.getvalue())
+        self.assertNotIn('opaque-header-canary', log.getvalue())
+        self.assertNotIn('token-canary', log.getvalue())
+
+    def test_catalog_main_includes_projection_without_changing_catalog_fields(self):
+        from unittest.mock import patch
+        from scripts import provider_model_catalog as catalog
+        payload = {'data': [{'id': 'example'}]}
+        with tempfile.TemporaryDirectory() as tmp, patch.object(catalog, 'resolve_secret', return_value=('token-canary', 'GROQ_API_KEY')), \
+             patch.object(catalog, 'poll', return_value=([{'id': 'test', 'provider': 'groq', 'pricing_classification': 'paid', 'free_suffix': False, 'access_classification': 'catalog_pricing_only'}], {'x-ratelimit-remaining-requests': '5'})):
+            out = Path(tmp) / 'catalog.json'
+            self.assertEqual(catalog.main(['--providers', 'groq', '--output', str(out)]), 0)
+            data = json.loads(out.read_text())
+        observation = data['provider_observations']['groq']
+        self.assertEqual(observation['response_headers'], {'x-ratelimit-remaining-requests': '5'})
+        self.assertEqual(observation['quota_manager'], {'status': 'observed', 'manager_status': 'implemented_passive_adapter'})
+        self.assertNotIn('token-canary', json.dumps(observation['quota_manager']))
+
 
 if __name__ == '__main__':
     unittest.main()

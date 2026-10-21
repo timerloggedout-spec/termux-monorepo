@@ -1,5 +1,29 @@
 # Provider quota upgrade: shipped capability versus remaining gaps
 
+## Current batch: MSM-024 existing-response quota management
+
+The baseline master `77e1dd8d` already contains the seven-provider inference batch from [#1471](https://github.com/timerloggedout-spec/termux-monorepo/pull/1471), 27 canonical quota manager records, six passive parsers, and two opt-in private service managers. Only three families have actual quota-service mappings; 24 do not. This batch reuses existing catalog responses to execute endpoint-appropriate passive normalization and expose sanitized quota status, including explicit unknowns. It adds no poller, account request, inference, retry, schedule, routing or admission change. Implementation is not live account validation.
+
+### Felo: free Standard credits are not the OX Alpha preview
+
+The existing Felo integration remains `https://openapi.felo.ai/api/v1`, model `ox-alpha`, with Actions secret-name mapping `FELO_AI_API`. No second adapter or replacement model is introduced. Its legacy `free_trial` mapping records an older public claim, not current account entitlement.
+
+The [current official pricing page](https://openapi.felo.ai/pricing) confirms a Standard free plan: **200 free credits daily**, selected API models and tools, no credit card required. API, Playground and supported Felo tools share credits; this is not 200 requests or 200 tokens. Exact account eligibility, the included model list, paid-versus-free credit selection, remaining free credits, carryover, grant time and timezone are not established by this public claim. A key's existence does not establish these facts.
+
+The [OX Alpha model page](https://openapi.felo.ai/models/stealth/ox-alpha) explicitly says the free trial ended and identifies the model as GLM 5.3 Flash. The pricing page still lists `ox-alpha` as Free, and the [marketing page](https://felo.ai/tools/ox-alpha) retains old free-preview text below an ended-preview banner. These are contradictory current first-party representations, not proof that all Felo API access is paid or that this account can still call OX Alpha at zero cost. The replacement `glm-5.3-flash` has published nonzero rates; it is not selected or called here.
+
+### Endpoint-specific quota semantics
+
+For the existing `/api/v1/models` and `/api/v1/chat/completions` route, no complete machine-readable remaining request/token/free-credit and reset contract has been verified. The [LLM reference](https://openapi.felo.ai/docs/api-reference/llm) documents 402 for insufficient credits and 429 for rate limiting; the [completion schema](https://openapi.felo.ai/docs/model-api/operations/createChatCompletion) permits a variable provider `usage` object and describes 429 as a spending or request limit. Usage is not remaining quota, and 429 alone identifies neither the exhausted pool nor reset time. Felo model quota remains **unknown**, with no invented limits or resets.
+
+The separate [search Chat API `/v2/chat`](https://openapi.felo.ai/docs/api-reference/chat) does document `X-RateLimit-Limit`, `X-RateLimit-Remaining`, and `X-RateLimit-Reset` (Unix seconds), plus `Retry-After` seconds on 429. Scope includes per-key minute, per-user minute, and per-user hour windows; the header table ambiguously refers to two dimensions despite listing three. Those search headers cannot be transferred to the existing model API. No search adapter or call is added to manufacture quota coverage.
+
+### Validation and live-test boundary
+
+The task environment does not contain `FELO_AI_API`; the enabled GitHub connector returned HTTP 403 for names-only Actions secret inventory. Existing workflow source confirms the secret mapping but not token presence or account entitlement. No new credential, account, terms acceptance or permission grant was attempted. No live Felo inference is authorized by the contradictory public evidence: zero inference requests were made, and no paid/free-credit pool was consumed. Proceeding needs authoritative account/model entitlement and a verified free-only spend boundary using the existing authorized key path, not permission to buy credits.
+
+Existing owning issues #86 and #272, router PR #1441, consolidation PR #1278 and OX Alpha canary PR #386 remain separate; no duplicate proposal or issue is created. Exact-head tests, CI, review and merge receipts belong to this batch's PR; historical receipts below do not certify it.
+
 ## Current continuation: MSM-023 private OpenRouter current-key service
 
 Baseline `5d54d22f` includes merged Ollama [PR #1462](https://github.com/timerloggedout-spec/termux-monorepo/pull/1462), merge `b92c0c5d`. Current-source inspection found the OpenRouter passive parser, legacy daily-counter reader and boolean-only diagnostic, but no equivalent complete private current-key service wrapper. MSM-023 adds only that missing opt-in observation, using the [official GET /api/v1/key contract](https://openrouter.ai/docs/api/api-reference/api-keys/get-current-api-key) and [limits semantics](https://openrouter.ai/docs/api_reference/limits). See the [service operating contract](PROVIDER-QUOTA-MANAGERS.md#msm-023-private-openrouter-current-key-observation).

@@ -21,6 +21,17 @@ TERMINAL = {"complete"}
 PROJECT_DONE = "Done"
 SUCCESS_STATES = {"success", "successful", "completed", "neutral", "skipped"}
 
+_PHASE_ID_RE = re.compile(r"^[A-Z][A-Z0-9-]{2,63}$")
+_PHASE_PATTERN_CACHE: dict[str, re.Pattern[str]] = {}
+
+
+def _get_phase_pattern(phase_id: str) -> re.Pattern[str]:
+    pattern = _PHASE_PATTERN_CACHE.get(phase_id)
+    if pattern is None:
+        pattern = re.compile(rf"(?<![A-Z0-9-]){re.escape(phase_id)}(?![A-Z0-9-])")
+        _PHASE_PATTERN_CACHE[phase_id] = pattern
+    return pattern
+
 
 class PlanValidationError(ValueError):
     """Raised when a plan cannot be evaluated safely."""
@@ -140,7 +151,7 @@ def validate_plan(plan: dict[str, Any]) -> list[str]:
             errors.append(f"{prefix} must be an object")
             continue
         phase_id = phase.get("phase_id")
-        valid_phase_id = isinstance(phase_id, str) and re.fullmatch(r"[A-Z][A-Z0-9-]{2,63}", phase_id) is not None
+        valid_phase_id = isinstance(phase_id, str) and _PHASE_ID_RE.fullmatch(phase_id) is not None
         _require(valid_phase_id, f"{prefix}.phase_id must be an uppercase stable identifier", errors)
         if valid_phase_id:
             assert isinstance(phase_id, str)
@@ -201,14 +212,14 @@ def validate_plan(plan: dict[str, Any]) -> list[str]:
     return errors
 
 
-def compute_waves(phases: Iterable[dict[str, Any]]) -> dict[str, int]:
+def compute_waves(phases: Iterable[dict[str, Any]], topo_order: list[str] | None = None) -> dict[str, int]:
     """Assign deterministic parallel-wave numbers from the dependency DAG.
 
     Wave 0 contains phases with no prerequisites. A phase is placed one wave
     after its latest prerequisite. Runtime evidence still decides readiness.
     """
     phase_list = list(phases)
-    order = topological_order(phase_list)
+    order = topo_order if topo_order is not None else topological_order(phase_list)
     by_id = {phase["phase_id"]: phase for phase in phase_list}
     waves: dict[str, int] = {}
     for phase_id in order:
@@ -223,11 +234,22 @@ def require_valid_plan(plan: dict[str, Any]) -> None:
 
 
 def _phase_text_matches(phase_id: str, candidate: dict[str, Any]) -> bool:
-    text_parts = [str(candidate.get("title", "")), str(candidate.get("body", ""))]
+    pattern = _get_phase_pattern(phase_id)
+    title = str(candidate.get("title", ""))
+    if title and pattern.search(title):
+        return True
+    body = str(candidate.get("body", ""))
+    if body and pattern.search(body):
+        return True
     content = candidate.get("content")
     if isinstance(content, dict):
-        text_parts.extend([str(content.get("title", "")), str(content.get("body", ""))])
-    return re.search(rf"(?<![A-Z0-9-]){re.escape(phase_id)}(?![A-Z0-9-])", "\n".join(text_parts)) is not None
+        c_title = str(content.get("title", ""))
+        if c_title and pattern.search(c_title):
+            return True
+        c_body = str(content.get("body", ""))
+        if c_body and pattern.search(c_body):
+            return True
+    return False
 
 
 def _project_item_for_phase(phase_id: str, items: list[dict[str, Any]]) -> dict[str, Any] | None:
@@ -236,15 +258,18 @@ def _project_item_for_phase(phase_id: str, items: list[dict[str, Any]]) -> dict[
     Issue bodies may refer to prerequisite phases, so bodies are deliberately
     excluded from Project identity matching. They remain valid PR evidence.
     """
-    pattern = re.compile(rf"(?<![A-Z0-9-]){re.escape(phase_id)}(?![A-Z0-9-])")
+    pattern = _get_phase_pattern(phase_id)
     matches: list[dict[str, Any]] = []
     for item in items:
-        content = item.get("content")
-        titles = [str(item.get("title", ""))]
-        if isinstance(content, dict):
-            titles.append(str(content.get("title", "")))
-        if any(pattern.search(title) for title in titles):
+        title = str(item.get("title", ""))
+        if title and pattern.search(title):
             matches.append(item)
+            continue
+        content = item.get("content")
+        if isinstance(content, dict):
+            c_title = str(content.get("title", ""))
+            if c_title and pattern.search(c_title):
+                matches.append(item)
     if len(matches) > 1:
         raise PlanValidationError(f"multiple Project items found for {phase_id}")
     return matches[0] if matches else None
@@ -299,7 +324,8 @@ def evaluate_plan(plan: dict[str, Any], snapshot: dict[str, Any] | None = None) 
 
     by_id = {phase["phase_id"]: phase for phase in plan["phases"]}
     outcomes: dict[str, Evaluation] = {}
-    for phase_id in topological_order(plan["phases"]):
+    ordered = topological_order(plan["phases"])
+    for phase_id in ordered:
         phase = by_id[phase_id]
         dependencies = phase.get("depends_on", [])
         item = _project_item_for_phase(phase_id, items)
@@ -343,8 +369,7 @@ def evaluate_plan(plan: dict[str, Any], snapshot: dict[str, Any] | None = None) 
         outcomes[phase_id] = Evaluation(phase_id, "ready", "all prerequisites and current evidence permit a claim",
                                         item.get("id") if item else None, project_status, pr_numbers, key)
 
-    waves = compute_waves(plan["phases"])
-    ordered = topological_order(plan["phases"])
+    waves = compute_waves(plan["phases"], topo_order=ordered)
     evaluations = []
     for phase_id in ordered:
         entry = outcomes[phase_id].as_dict()

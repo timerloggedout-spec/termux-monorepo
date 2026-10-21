@@ -44,23 +44,29 @@ def _durations(phases: list[dict[str, Any]], default_days: int, mapping: dict[st
     return result
 
 
-def _critical_path(phases: list[dict[str, Any]], durations: dict[str, int]) -> set[str]:
+def _critical_path(phases: list[dict[str, Any]], durations: dict[str, int], topo_order: list[str] | None = None) -> set[str]:
     by_id = {str(p["phase_id"]): p for p in phases}
     best_end: dict[str, int] = {}
-    best_chain: dict[str, list[str]] = {}
-    for phase_id in topological_order(phases):
+    parents: dict[str, str | None] = {}
+    order = topo_order if topo_order is not None else topological_order(phases)
+    for phase_id in order:
         deps = [str(d) for d in by_id[phase_id].get("depends_on", [])]
         if not deps:
             best_end[phase_id] = durations[phase_id]
-            best_chain[phase_id] = [phase_id]
+            parents[phase_id] = None
             continue
         predecessor = max(deps, key=lambda dep: (best_end[dep], dep))
         best_end[phase_id] = best_end[predecessor] + durations[phase_id]
-        best_chain[phase_id] = best_chain[predecessor] + [phase_id]
-    if not best_chain:
+        parents[phase_id] = predecessor
+    if not best_end:
         return set()
-    sink = max(best_chain, key=lambda phase_id: (best_end[phase_id], phase_id))
-    return set(best_chain[sink])
+    sink = max(best_end, key=lambda phase_id: (best_end[phase_id], phase_id))
+    critical: set[str] = set()
+    curr: str | None = sink
+    while curr is not None:
+        critical.add(curr)
+        curr = parents[curr]
+    return critical
 
 
 def _validate_report(report: dict[str, Any], phases: list[dict[str, Any]], plan: dict[str, Any]) -> None:
@@ -84,8 +90,8 @@ def _validate_report(report: dict[str, Any], phases: list[dict[str, Any]], plan:
     for index, item in enumerate(evaluations):
         if not isinstance(item, dict):
             raise ValueError(f"report.evaluations[{index}] must be an object")
-        missing = sorted(required - set(item))
-        if missing:
+        if not required.issubset(item):
+            missing = sorted(required - set(item))
             raise ValueError(
                 f"report.evaluations[{index}] missing required fields: " + ", ".join(missing)
             )
@@ -129,9 +135,10 @@ def project(
         raise ValueError("plan validation failed:\n- " + "\n- ".join(errors))
 
     phases = plan["phases"]
-    waves = compute_waves(phases)
+    topo_order = topological_order(phases)
+    waves = compute_waves(phases, topo_order=topo_order)
     durations = _durations(phases, default_duration_days, duration_mapping)
-    critical = _critical_path(phases, durations)
+    critical = _critical_path(phases, durations, topo_order=topo_order)
 
     evaluation_by_id: dict[str, dict[str, Any]] = {}
     if report:
@@ -142,7 +149,7 @@ def project(
     tasks: list[dict[str, Any]] = []
     computed_end: dict[str, date] = {}
 
-    for phase_id in topological_order(phases):
+    for phase_id in topo_order:
         phase = by_id[phase_id]
         deps = [str(d) for d in phase.get("depends_on", [])]
         task: dict[str, Any] = {

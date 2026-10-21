@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "b69bb23a2631c517389493db33a6a4980738816df5303a302d4d66172189b016",
-  "workflow_count": 158,
+  "source_fingerprint": "2473378a9c066994c02aa070461aa6807aa9bd94f289349c04111255b9c964c2",
+  "workflow_count": 159,
   "workflows": [
     {
       "action_pins": [
@@ -90,11 +90,9 @@
       ]
     },
     {
-      "action_pins": [
-        "actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09"
-      ],
+      "action_pins": [],
       "authority": "bounded-state-write",
-      "concurrency": "# Stable incident identity serializes writes; queue all observations instead of replacing pending runs. group: actions-run-watcher-${{ github.event.workflow_run.name }}-${{ github.event.workflow_run.conclusion }} queue: max",
+      "concurrency": "group: actions-run-watcher-manual cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
         "observe-completion"
@@ -103,7 +101,7 @@
       "path": ".github/workflows/actions-run-watcher.yml",
       "schedules": [],
       "triggers": [
-        "workflow_run"
+        "workflow_dispatch"
       ]
     },
     {
@@ -513,7 +511,7 @@
       "name": "Cadence Lead/Lag",
       "path": ".github/workflows/cadence-lead-lag.yml",
       "schedules": [
-        "12 */2 * * *"
+        "12 */4 * * *"
       ],
       "triggers": [
         "schedule",
@@ -1821,6 +1819,21 @@
       "triggers": [
         "schedule",
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: issue-comment-router-${{ github.event.issue.number }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "route"
+      ],
+      "name": "Issue Comment Router — modular fan-out reduction",
+      "path": ".github/workflows/issue-comment-router.yml",
+      "schedules": [],
+      "triggers": [
+        "issue_comment"
       ]
     },
     {

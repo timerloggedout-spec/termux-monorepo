@@ -372,3 +372,54 @@ def test_session_ssot_privileges_and_symlink_safety(tmp_path, monkeypatch):
 
     if os.name != "nt":
         assert (permissive_file.stat().st_mode & 0o777) == 0o600
+
+
+def test_session_ssot_descriptor_race_and_fail_closed(tmp_path, monkeypatch):
+    import archwiz.session_ssot as ssot_mod
+    root = tmp_path / "sessions"
+    root.mkdir()
+    monkeypatch.setattr(ssot_mod, "SSOT_DIR", root)
+    ssot = ssot_mod.SessionSSOT("prov", "session")
+    victim = tmp_path / "victim"
+    victim.mkdir()
+    (victim / "messages.jsonl").write_text("untouched")
+    original_open = ssot_mod.os.open
+    swapped = False
+
+    def swap_at_leaf(name, flags, *args, **kwargs):
+        nonlocal swapped
+        if name == "session" and kwargs.get("dir_fd") is not None and not swapped:
+            swapped = True
+            parentfd = kwargs["dir_fd"]
+            # Swap the pathname after its parent descriptor has already been opened.
+            os.rename(root / "prov" / "default" / "session", root / "prov" / "default" / "old")
+            os.symlink(victim, root / "prov" / "default" / "session")
+        return original_open(name, flags, *args, **kwargs)
+
+    monkeypatch.setattr(ssot_mod.os, "open", swap_at_leaf)
+    with pytest.raises((ValueError, OSError)):
+        ssot.append_message("user", "bad")
+    assert (victim / "messages.jsonl").read_text() == "untouched"
+    monkeypatch.setattr(ssot_mod.os, "open", original_open)
+
+
+def test_session_ssot_chmod_errors_dot_and_hardlink(tmp_path, monkeypatch):
+    import archwiz.session_ssot as ssot_mod
+    root = tmp_path / "sessions"
+    root.mkdir()
+    monkeypatch.setattr(ssot_mod, "SSOT_DIR", root)
+    with pytest.raises(ValueError, match="Path traversal"):
+        ssot_mod.SessionSSOT(".", "s")
+    ssot = ssot_mod.SessionSSOT("prov", "s")
+    target = tmp_path / "linked-target"
+    target.write_text("keep me")
+    os.link(target, ssot.messages_path)
+    with pytest.raises(ValueError, match="single-link regular"):
+        ssot.append_message("user", "overwrite")
+    assert target.read_text() == "keep me"
+
+    original_fchmod = ssot_mod.os.fchmod
+    monkeypatch.setattr(ssot_mod.os, "fchmod", lambda *a: (_ for _ in ()).throw(OSError("denied")))
+    with pytest.raises(OSError, match="denied"):
+        ssot.emit_event("chmod-failure")
+    monkeypatch.setattr(ssot_mod.os, "fchmod", original_fchmod)

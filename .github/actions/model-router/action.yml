@@ -75,7 +75,7 @@ runs:
     - name: Pacific date key
       id: date
       shell: bash
-      run: echo "key=$(TZ=America/Los_Angeles date +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+      run: echo "key=$(TZ=UTC date +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
 
     - name: Restore versioned model-router capacity cache
       id: restore
@@ -85,7 +85,6 @@ runs:
         key: model-router-${{ inputs.cache-schema }}-${{ steps.date.outputs.key }}-${{ github.repository }}
         restore-keys: |
           model-router-${{ inputs.cache-schema }}-${{ steps.date.outputs.key }}-
-          model-router-${{ inputs.cache-schema }}-
         enableCrossOsArchive: true
 
     - name: Record cache authority boundary

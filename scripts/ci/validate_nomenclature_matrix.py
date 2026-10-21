@@ -10,7 +10,7 @@ LABEL_TYPES = {
     "preferred_formal", "preferred_plain_language", "alternative_synonym",
     "colloquial", "ad_hoc", "jargon", "abbreviation", "symbolic_notation",
     "historical", "deprecated", "misspelling", "translation", "analogy",
-    "near_synonym", "related_term", "external_identifier",
+    "near_synonym", "related_term", "external_identifier", "hidden_search_alias",
 }
 RELATIONS = {
     "same_concept_label", "exact_match", "close_match", "broad_match",

@@ -32,6 +32,22 @@ class NomenclatureMatrixTests(unittest.TestCase):
         bad["mappings"][0].update(relation="exact_match", status="accepted", source_ids=[])
         self.assertTrue(any("requires evidence" in e for e in MODULE.validate(bad)))
 
+    def test_hidden_search_alias_is_a_supported_label_type(self):
+        data = json.loads(json.dumps(self.data))
+        data["labels"][0]["label_type"] = "hidden_search_alias"
+        self.assertEqual([], MODULE.validate(data))
+
+    def test_schema_and_validator_agree_on_hidden_search_alias(self):
+        schema = (ROOT / "docs/proposals/active/notation-sets/nomenclature-matrix/schema.sql").read_text(encoding="utf-8")
+        self.assertIn("hidden_search_alias", schema)
+        self.assertIn("hidden_search_alias", MODULE.LABEL_TYPES)
+
+    def test_expanded_seed_covers_colloquial_mapping_and_near_synonymy(self):
+        concepts = {c["concept_id"] for c in self.data["concepts"]}
+        self.assertIn("terminology.colloquial_to_formal_mapping", concepts)
+        self.assertIn("linguistics.near_synonymy", concepts)
+        self.assertGreaterEqual(len(self.data["sources"]), 8)
+
     def test_unknown_label_type_rejected(self):
         bad = json.loads(json.dumps(self.data))
         bad["labels"][0]["label_type"] = "just-a-synonym"

@@ -24,6 +24,8 @@ REPOS = {
     "tashfeenahmed/freellmapi": {"license": "UNVERIFIED_UPSTREAM_LICENSE", "files": ("package.json", "server/src/providers/index.ts")},
 }
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
+MAX_PROVIDER_SOURCE_BYTES = 512 * 1024
+MAX_PROVIDER_TOKENS = 100_000
 
 class ReconError(ValueError):
     """Fail-closed input, transport, or schema error."""
@@ -106,18 +108,177 @@ def _key(value: str) -> str:
 def _claims_freellmapi(package: Any, source: str) -> list[dict[str, Any]]:
     if not isinstance(package, dict) or not isinstance(package.get("name"), str):
         raise ReconError("malformed freellmapi package.json")
-    # Extract only syntactic provider class references: import declarations and
-    # register(new XProvider()) calls. Never interpret/evaluate TypeScript.
-    imports = re.findall(r"^import\s*\{\s*([A-Za-z_$][\w$]*Provider)\s*\}\s*from\s*['\"]([^'\"]+)['\"]\s*;?\s*$", source, re.M)
-    registrations = set(re.findall(r"register\(new\s+([A-Za-z_$][\w$]*Provider)\(\)\)\s*;", source))
-    paths = {klass: path for klass, path in imports}
-    if not registrations or not registrations.issubset(paths):
+    if not isinstance(source, str) or len(source.encode("utf-8")) > MAX_PROVIDER_SOURCE_BYTES:
+        raise ReconError("provider index exceeds static parsing limit")
+
+    # Tokenize only the small TypeScript subset used by this registry. Comments
+    # disappear, string contents remain single opaque tokens, and no code runs.
+    token_re = re.compile(r"\s+|//[^\n]*|/\*[\s\S]*?\*/|(?:'(?:(?:\\.)|[^'\\])*'|\"(?:(?:\\.)|[^\"\\])*\")|[A-Za-z_$][\w$]*|[0-9]+(?:_[0-9]+)*|=>|[^\s]")
+    tokens = []
+    pos = 0
+    for match in token_re.finditer(source):
+        if match.start() != pos:
+            raise ReconError("unsupported provider index syntax")
+        pos = match.end()
+        text = match.group()
+        if text.isspace() or text.startswith("//") or text.startswith("/*"):
+            continue
+        if text.startswith("`"):
+            raise ReconError("template literals are unsupported")
+        tokens.append(text)
+        if len(tokens) > MAX_PROVIDER_TOKENS:
+            raise ReconError("provider index exceeds token limit")
+    if pos != len(source):
+        raise ReconError("unsupported provider index syntax")
+    if any(t.startswith("`") for t in tokens):
+        raise ReconError("template literals are unsupported")
+
+    def string_value(token: str) -> str | None:
+        if len(token) >= 2 and token[0] in "'\"" and token[-1] == token[0]:
+            # Only accept plain, unescaped literal strings; avoid interpreting escapes.
+            body = token[1:-1]
+            if "\\" not in body:
+                return body
+        return None
+
+    imports: dict[str, str] = {}
+    i = 0
+    while i < len(tokens):
+        if tokens[i] == "import":
+            j = i + 1
+            if j < len(tokens) and tokens[j] == "type": j += 1
+            if j < len(tokens) and tokens[j] == "{":
+                j += 1
+                while j < len(tokens) and tokens[j] != "}":
+                    if not re.fullmatch(r"[A-Za-z_$][\w$]*", tokens[j]):
+                        raise ReconError("unsupported provider import syntax")
+                    klass = tokens[j]; j += 1
+                    if j < len(tokens) and tokens[j] == "as":
+                        raise ReconError("aliased provider imports are unsupported")
+                    if klass.endswith("Provider"):
+                        if klass in imports: raise ReconError("duplicate provider import")
+                        imports[klass] = ""
+                    if j < len(tokens) and tokens[j] == ",": j += 1
+                    elif j < len(tokens) and tokens[j] != "}":
+                        raise ReconError("unsupported provider import syntax")
+                if j + 2 >= len(tokens) or tokens[j] != "}" or tokens[j + 1] != "from" or string_value(tokens[j + 2]) is None:
+                    raise ReconError("unsupported provider import syntax")
+                k = i + 1 + (1 if tokens[i + 1:i + 2] == ["type"] else 0)
+                for name in tokens[k + 1:j]:
+                    if re.fullmatch(r"[A-Za-z_$][\w$]*Provider", name): imports[name] = string_value(tokens[j + 2])
+        i += 1
+
+    def balanced_end(start: int, opening: str, closing: str) -> int:
+        depth = 0
+        pairs = {"(": ")", "{": "}", "[": "]"}
+        stack = []
+        for k in range(start, len(tokens)):
+            t = tokens[k]
+            if t in pairs:
+                stack.append(pairs[t])
+            elif t in {")", "}", "]"}:
+                if not stack or stack.pop() != t:
+                    raise ReconError("unbalanced provider index syntax")
+                if not stack: return k
+        raise ReconError("unbalanced provider index syntax")
+
+    nesting = []
+    top_level = []
+    expected = {"(": ")", "{": "}", "[": "]"}
+    for token in tokens:
+        top_level.append(not nesting)
+        if token in expected: nesting.append(expected[token])
+        elif token in {")", "}", "]"}:
+            if not nesting or nesting.pop() != token:
+                raise ReconError("unbalanced provider index syntax")
+    if nesting: raise ReconError("unbalanced provider index syntax")
+
+    # This is a syntax collector, not a JavaScript interpreter. Accept the
+    # upstream's one known helper declaration, but reject shadowed/reassigned
+    # helpers and member/conditional calls rather than crediting fake references.
+    helper = ["function", "register", "(", "provider", ":", "BaseProvider", ")", "{",
+              "providers", ".", "set", "(", "provider", ".", "platform", ",", "provider", ")", ";", "}"]
+    for k, token in enumerate(tokens):
+        if token != "register":
+            continue
+        if k and tokens[k - 1] in {"const", "let", "var", "class", "import", "as"}:
+            raise ReconError("shadowed provider registration helper")
+        if k and tokens[k - 1] == "function" and tokens[k - 1:k - 1 + len(helper)] != helper:
+            raise ReconError("unsupported provider registration helper")
+        if k + 1 < len(tokens) and tokens[k + 1] == "=":
+            raise ReconError("reassigned provider registration helper")
+
+    registrations: list[tuple[str, str, str]] = []
+    i = 0
+    while i < len(tokens):
+        if tokens[i] == "register" and top_level[i]:
+            if i + 2 >= len(tokens) or tokens[i + 1:i + 3] != ["(", "new"]:
+                i += 1
+                continue
+            if i and tokens[i - 1] not in {";", "}"}:
+                raise ReconError("provider registration must be a standalone statement")
+            klass = tokens[i + 3]
+            if not re.fullmatch(r"[A-Za-z_$][\w$]*Provider", klass) or i + 4 >= len(tokens) or tokens[i + 4] != "(":
+                raise ReconError("unsupported provider constructor")
+            ctor_end = balanced_end(i + 4, "(", ")")
+            args = tokens[i + 5:ctor_end]
+            if ctor_end + 2 >= len(tokens) or tokens[ctor_end + 1:ctor_end + 3] != [")", ";"]:
+                raise ReconError("unsupported register call shape")
+            if klass == "OpenAICompatProvider":
+                if not args or args[0] != "{" or balanced_end(i + 5, "{", "}") != ctor_end - 1:
+                    raise ReconError("OpenAI-compatible provider requires a literal options object")
+                props: dict[str, str] = {}
+                k = 1
+                while k < len(args) - 1:
+                    if k + 2 >= len(args) or not re.fullmatch(r"[A-Za-z_$][\w$]*", args[k]) or args[k + 1] != ":":
+                        raise ReconError("unsupported provider options syntax")
+                    key = args[k]
+                    if key in props: raise ReconError("duplicate provider option")
+                    value_start = k + 2
+                    value_end = value_start
+                    nested = []
+                    pairs = {"{": "}", "(": ")", "[": "]"}
+                    while value_end < len(args) - 1:
+                        token = args[value_end]
+                        if token in pairs: nested.append(pairs[token])
+                        elif token in {")", "}", "]"}:
+                            if not nested or nested.pop() != token:
+                                raise ReconError("unsupported provider options syntax")
+                        elif token == "," and not nested:
+                            break
+                        value_end += 1
+                    if value_start == value_end: raise ReconError("missing provider option value")
+                    props[key] = args[value_start] if value_end == value_start + 1 else ""
+                    k = value_end
+                    if k < len(args) - 1:
+                        if args[k] != ",": raise ReconError("unsupported provider options syntax")
+                        k += 1
+                platform, name = string_value(props.get("platform", "")), string_value(props.get("name", ""))
+                if platform is None or name is None or not platform or not name:
+                    raise ReconError("provider platform and name must be literal strings")
+                registrations.append((platform, name, klass))
+            else:
+                if args:
+                    if klass not in {"GoogleProvider", "ZhipuProvider"} or args[0] != "{" or balanced_end(i + 5, "{", "}") != ctor_end - 1:
+                        raise ReconError("unsupported provider constructor arguments")
+                    if len(args) != 5 or args[1:4] != ["timeoutMs", ":", "60_000"]:
+                        raise ReconError("unsupported dedicated provider options")
+                if klass not in imports:
+                    raise ReconError("provider constructor missing import")
+                registrations.append((klass[:-8], klass[:-8], klass))
+            i = ctor_end + 2
+        i += 1
+    if not registrations or any(klass not in imports for _, _, klass in registrations):
         raise ReconError("provider index references do not match safe import/register pattern")
-    rows = []
-    for klass in sorted(registrations):
-        name = klass[:-8]
-        pkey = _key(name)
-        rows.append({"provider_key": pkey, "provider_name": name, "model_key": "provider-catalog", "model_name": "provider catalog reference", "claims": {"context": None, "modality": None, "quota": None, "max_output": None}, "evidence_class": "THIRD_PARTY_CLAIM", "runtime_eligible": False, "quota_remaining": None, "blocked_reasons": ["source reference only; no model/quota verification", "third-party unverified claim"]})
+    rows, seen = [], set()
+    for name_key, display_name, klass in sorted(registrations):
+        pkey = _key(name_key)
+        if not pkey:
+            raise ReconError("invalid provider registration identity")
+        identity = (pkey, "provider-catalog")
+        if identity in seen: raise ReconError(f"duplicate provider registration {pkey}")
+        seen.add(identity)
+        rows.append({"provider_key": pkey, "provider_name": display_name, "model_key": "provider-catalog", "model_name": "provider catalog reference", "claims": {"context": None, "modality": None, "quota": None, "max_output": None}, "evidence_class": "THIRD_PARTY_CLAIM", "runtime_eligible": False, "quota_remaining": None, "blocked_reasons": ["source reference only; no model/quota verification", "third-party unverified claim"]})
     return rows
 
 

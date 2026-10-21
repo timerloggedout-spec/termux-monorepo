@@ -38,6 +38,22 @@ PROVIDER_MAP = {
     "ovhcloud-ai-endpoints": "ovhcloud",
 }
 NATIVE_CHAT_PROVIDERS = frozenset(CHAT_ENDPOINTS)
+# Source-local identities are reviewed aliases, not endpoint/configuration imports.
+# In particular, Zhipu's domestic console is not mapped to the global Z.ai key
+# namespace, and unknown gateways never inherit another provider's credentials.
+SOURCE_PROVIDER_MAP = {
+    "tashfeenahmed/freellmapi": {
+        "google": "gemini", "groq": "groq", "cerebras": "cerebras",
+        "nvidia": "nvidia", "mistral": "mistral", "openrouter": "openrouter",
+        "huggingface": "huggingface", "ollama": "ollama", "kilo": "kilo",
+        "llm7": "llm7", "ovh": "ovhcloud", "siliconflow": "siliconflow",
+        "aion": "aion", "cloudflare": "cloudflare", "cohere": "cohere",
+        "modelscope": "modelscope",
+    },
+}
+RESEARCH_SERVICE_MAP = {
+    ("tashfeenahmed/freellmapi", "firecrawl"): "firecrawl_fixed_public_research",
+}
 
 
 def reconcile(snapshot: dict, catalog: dict) -> dict:
@@ -61,7 +77,9 @@ def reconcile(snapshot: dict, catalog: dict) -> dict:
         if key in seen:
             raise ValueError("duplicate research identity")
         seen.add(key)
-        native = PROVIDER_MAP.get(candidate["provider_key"])
+        native = SOURCE_PROVIDER_MAP.get(candidate["source_repo"], {}).get(candidate["provider_key"])
+        if native is None:
+            native = PROVIDER_MAP.get(candidate["provider_key"])
         model_id = candidate.get("model_id")
         if model_id is not None and not isinstance(model_id, str):
             raise ValueError("research model_id must be a string")
@@ -94,6 +112,15 @@ def reconcile(snapshot: dict, catalog: dict) -> dict:
             "quota_remaining": None,
             "blocked_reasons": [*candidate["blocked_reasons"], "exact-model account admission required; catalog is not free entitlement"],
         })
+        if candidate["model_key"] == "provider-catalog":
+            service = RESEARCH_SERVICE_MAP.get((candidate["source_repo"], candidate["provider_key"]))
+            results[-1]["research_service_adapter"] = service
+            results[-1]["service_disposition"] = (
+                "custom_configuration_placeholder" if (candidate["source_repo"], candidate["provider_key"]) == ("tashfeenahmed/freellmapi", "custom")
+                else "chat_transport_available" if native == "openrouter" or native in NATIVE_CHAT_PROVIDERS
+                else "fixed_public_research_only" if service
+                else "unmapped_service_reference"
+            )
     results.sort(key=lambda row: (row["source_repo"], row["provider_key"], row["model_key"]))
     by_source = {}
     for source in sorted({row["source_repo"] for row in results}):
@@ -110,6 +137,11 @@ def reconcile(snapshot: dict, catalog: dict) -> dict:
             "legacy_openrouter_model_claims": sum(row["native_provider"] == "openrouter" for row in individual),
             "observed_model_claims": sum(row["status"] == "observed_in_catalog" for row in rows),
             "runtime_eligible": 0,
+        }
+        services = [row for row in rows if row["model_key"] == "provider-catalog"]
+        by_source[source]["service_reference_coverage"] = {
+            "total": len(services),
+            "by_disposition": dict(sorted(Counter(row["service_disposition"] for row in services).items())),
         }
     return {
         "schema_version": "msm-provider-batch-v1",

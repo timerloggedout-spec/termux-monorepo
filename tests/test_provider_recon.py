@@ -132,3 +132,85 @@ def test_metadata_token_workflow_scope_is_read_only_and_step_local():
     assert "PROVIDER_RECON_GITHUB_TOKEN: ${{ github.token }}" in collect
     assert workflow.count("PROVIDER_RECON_GITHUB_TOKEN:") == 1
     assert "pull_request_target" not in workflow
+
+
+def test_freellmapi_extracts_literal_compat_registrations_and_dedicated_constructor_args():
+    source = '''
+import { GoogleProvider } from './google.js';
+import { OpenAICompatProvider } from './openai-compat.js';
+import { ZhipuProvider } from './zhipu.js';
+register(new GoogleProvider({ timeoutMs: 60_000 }));
+register(new OpenAICompatProvider({ platform: 'groq', name: 'Groq', baseUrl: 'https://api.groq.com/openai/v1' }));
+register(new OpenAICompatProvider({ platform: "cerebras", name: "Cerebras", baseUrl: "https://api.cerebras.ai/v1" }));
+register(new ZhipuProvider({ timeoutMs: 60_000 }));
+'''
+    rows = recon._claims_freellmapi({"name": "demo"}, source)
+    assert {(r["provider_key"], r["provider_name"]) for r in rows} == {
+        ("google", "Google"), ("groq", "Groq"),
+        ("cerebras", "Cerebras"), ("zhipu", "Zhipu"),
+    }
+    assert all(r["model_key"] == "provider-catalog" and not r["runtime_eligible"] for r in rows)
+
+
+def test_freellmapi_ignores_comment_string_spoofs_and_nested_registration_text():
+    source = '''
+import { AlphaProvider } from './alpha.js';
+import { OpenAICompatProvider } from './compat.js';
+// register(new FakeProvider());
+const documentation = "register(new StringSpoofProvider());";
+function example() { register(new NestedProvider()); }
+register(new AlphaProvider());
+register(new OpenAICompatProvider({platform: 'a-provider', name: 'Real'}));
+'''
+    rows = recon._claims_freellmapi({"name": "demo"}, source)
+    assert {(r["provider_key"], r["provider_name"]) for r in rows} == {
+        ("alpha", "Alpha"), ("a-provider", "Real")
+    }
+
+
+def test_freellmapi_rejects_dynamic_platform_duplicate_identity_and_missing_import():
+    prefix = "import { OpenAICompatProvider } from './compat.js';\n"
+    for source in (
+        prefix + "register(new OpenAICompatProvider({platform: PLATFORM, name: 'x'}));",
+        prefix + "register(new OpenAICompatProvider({platform: 'x', name: 'X'}));\nregister(new OpenAICompatProvider({platform: 'x', name: 'Again'}));",
+        "register(new OpenAICompatProvider({platform: 'x', name: 'X'}));",
+    ):
+        with unittest.TestCase().assertRaises(recon.ReconError):
+            recon._claims_freellmapi({"name": "demo"}, source)
+
+
+def test_freellmapi_rejects_unsupported_dynamic_constructor_syntax_and_oversized_input():
+    prefix = "import { GoogleProvider } from './google.js';\n"
+    for source in (
+        prefix + "register(new GoogleProvider(options));",
+        prefix + "register(new GoogleProvider({ timeoutMs: timeout }));",
+        prefix + "register(new GoogleProvider({ timeoutMs: 60_000 }));\n`template`",
+        "x" * (recon.MAX_PROVIDER_SOURCE_BYTES + 1),
+    ):
+        with unittest.TestCase().assertRaises(recon.ReconError):
+            recon._claims_freellmapi({"name": "demo"}, source)
+
+
+def test_freellmapi_rejects_shadowed_helpers_and_non_standalone_calls():
+    prefix = "import { AlphaProvider } from './alpha.js';\n"
+    for text in (
+        "const register = () => {}; register(new AlphaProvider());",
+        "function register(provider) {} register(new AlphaProvider());",
+        "register = other; register(new AlphaProvider());",
+        "other.register(new AlphaProvider());",
+        "if (false) register(new AlphaProvider());",
+        "const result = register(new AlphaProvider());",
+    ):
+        with unittest.TestCase().assertRaises(recon.ReconError):
+            recon._claims_freellmapi({'name': 'demo'}, prefix + text)
+
+
+def test_freellmapi_accepts_actual_upstream_registration_helper():
+    source = """
+import { AlphaProvider } from './alpha.js';
+function register(provider: BaseProvider) {
+  providers.set(provider.platform, provider);
+}
+register(new AlphaProvider());
+"""
+    assert recon._claims_freellmapi({'name': 'demo'}, source)[0]['provider_key'] == 'alpha'

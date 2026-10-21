@@ -22,11 +22,11 @@ def catalog():
 def test_every_real_research_candidate_has_a_disposition_without_activation():
     source = research()
     report = batch.reconcile(source, catalog())
-    assert report['summary']['candidates'] == len(source['model_candidates']) == 160
+    assert report['summary']['candidates'] == len(source['model_candidates']) == 195
     assert report['sources'] == source['sources']
     assert len(report['research_sha256']) == 64
     assert all(row['runtime_eligible'] is False and row['quota_remaining'] is None for row in report['candidates'])
-    assert sum(report['summary']['by_status'].values()) == 160
+    assert sum(report['summary']['by_status'].values()) == 195
     assert 'adapter_not_implemented' not in report['summary']['by_status']
     assert report['summary']['by_status']['catalog_adapter_not_implemented'] == 3
     assert batch.reconcile(deepcopy(source), catalog()) == report
@@ -132,10 +132,10 @@ def test_per_source_denominators_do_not_count_provider_classes_as_models():
     assert len(directory['catalog_adapter_families']) == 15
     assert len(directory['chat_transport_families']) == 16
     proxy = summary['tashfeenahmed/freellmapi']
-    assert proxy['research_records'] == 37
+    assert proxy['research_records'] == 72
     assert proxy['individual_model_claims'] == 0
-    assert proxy['static_or_aggregate_references'] == 37
-    assert proxy['chat_transport_families'] == ['cloudflare', 'cohere', 'modelscope']
+    assert proxy['static_or_aggregate_references'] == 72
+    assert proxy['chat_transport_families'] == sorted(set(batch.SOURCE_PROVIDER_MAP['tashfeenahmed/freellmapi'].values()))
     assert proxy['runtime_eligible'] == directory['runtime_eligible'] == 0
 
 
@@ -154,3 +154,53 @@ def test_keyless_research_observation_is_explicit_and_has_no_secret_environment(
     assert not step.get('env')
     assert '--source awesome-free-llm-apis' in step['run']
     assert 'GH_TOKEN' not in step['run'] and 'API_KEY' not in step['run']
+
+
+def test_reviewed_freellmapi_aliases_do_not_execute_or_admit_services():
+    source = research()
+    template = next(c for c in source['model_candidates'] if c['source_repo'] == 'tashfeenahmed/freellmapi')
+    source['model_candidates'] = [dict(template, provider_key=key, provider_name=key)
+                                  for key in batch.SOURCE_PROVIDER_MAP['tashfeenahmed/freellmapi']]
+    report = batch.reconcile(source, catalog())
+    assert len(report['candidates']) == 16
+    for row in report['candidates']:
+        assert row['service_disposition'] == 'chat_transport_available'
+        assert row['runtime_eligible'] is False and row['quota_remaining'] is None
+        assert row['model_id'] is None
+        assert row['status'] == 'not_an_individual_model'
+    summary = report['summary']['by_source']['tashfeenahmed/freellmapi']
+    assert summary['individual_model_claims'] == summary['observed_model_claims'] == 0
+    assert summary['service_reference_coverage'] == {
+        'total': 16, 'by_disposition': {'chat_transport_available': 16}}
+
+
+def test_source_aliases_never_fuzzy_match_or_cross_key_namespaces():
+    source = research()
+    template = next(c for c in source['model_candidates'] if c['source_repo'] == 'tashfeenahmed/freellmapi')
+    source['model_candidates'] = [dict(template, provider_key=key, provider_name=key)
+                                  for key in ['zhipu', 'groq-proxy', 'custom', 'unknown', 'firecrawl']]
+    report = batch.reconcile(source, catalog())
+    rows = {r['provider_key']: r for r in report['candidates']}
+    assert rows['custom']['native_provider'] is None
+    assert rows['custom']['service_disposition'] == 'custom_configuration_placeholder'
+    for key in ['zhipu', 'groq-proxy', 'unknown']:
+        assert rows[key]['native_provider'] is None
+        assert rows[key]['service_disposition'] == 'unmapped_service_reference'
+    assert rows['firecrawl']['service_disposition'] == 'fixed_public_research_only'
+    assert rows['firecrawl']['native_chat_adapter'] is False
+    assert rows['firecrawl']['research_service_adapter'] == 'firecrawl_fixed_public_research'
+    source['model_candidates'] = [dict(template, source_repo='mnfst/awesome-free-llm-apis',
+                                       provider_key='google', provider_name='Google')]
+    assert batch.reconcile(source, catalog())['candidates'][0]['native_provider'] is None
+
+
+def test_service_gaps_remain_visible_instead_of_hiding_behind_non_model_status():
+    report = batch.reconcile(research(), catalog())
+    proxy = report['summary']['by_source']['tashfeenahmed/freellmapi']
+    coverage = proxy['service_reference_coverage']
+    assert coverage['total'] == proxy['static_or_aggregate_references']
+    assert sum(coverage['by_disposition'].values()) == coverage['total']
+    assert coverage['by_disposition']['unmapped_service_reference'] > 0
+    assert coverage['by_disposition']['fixed_public_research_only'] == 1
+    assert all('service_disposition' not in row for row in report['candidates']
+               if row['model_key'] != 'provider-catalog')

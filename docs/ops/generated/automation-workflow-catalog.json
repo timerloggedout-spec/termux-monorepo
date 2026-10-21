@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "4350bbdbac91070bed45e3c78def1adaa82368fc4cce961391c0f458c562e910",
+  "source_fingerprint": "8d02c17e8f5ba809398953fb7400e44866ba888efcc0a3e3a69bf8578d61f213",
   "workflow_count": 160,
   "workflows": [
     {
@@ -2319,7 +2319,8 @@
       "jobs": [
         "contracts",
         "diagnose",
-        "observe"
+        "observe",
+        "private_openrouter_quota"
       ],
       "name": "Provider batch production contracts",
       "path": ".github/workflows/provider-batch.yml",

@@ -331,18 +331,44 @@ def test_session_ssot_privileges_and_symlink_safety(tmp_path, monkeypatch):
 
     ssot_sym = ssot_mod.SessionSSOT(provider="openai", session_id="sess_symlink", account="default")
 
-    with pytest.raises(ValueError, match="Symlink manifest path rejected"):
+    with pytest.raises(ValueError, match="Symlink detected"):
         ssot_sym.upsert_manifest(title="Unsafe")
 
-    with pytest.raises(ValueError, match="Symlink detected in target path or parent"):
+    with pytest.raises(ValueError, match="Symlink detected"):
         ssot_sym.append_message(role="user", content="Unsafe message")
 
-    with pytest.raises(ValueError, match="Symlink detected in target path or parent"):
+    with pytest.raises(ValueError, match="Symlink detected"):
         ssot_sym.emit_event(event_type="UnsafeEvent")
 
-    # 4. Test symlink rejection for SSOT_DIR and base_dir
+    # 4. Test symlink rejection for SSOT_DIR, intermediate ancestor symlinks, and base_dir
     sym_ssot_root = tmp_path / "sym_ssot_root"
     sym_ssot_root.symlink_to(ssot_dir, target_is_directory=True)
     monkeypatch.setattr(ssot_mod, "SSOT_DIR", sym_ssot_root)
-    with pytest.raises(ValueError, match="SSOT_DIR is a symlink"):
+    with pytest.raises(ValueError, match="Base directory is a symlink"):
         ssot_mod.SessionSSOT(provider="openai", session_id="sess_sym_root")
+
+    monkeypatch.setattr(ssot_mod, "SSOT_DIR", ssot_dir)
+
+    # Intermediate ancestor symlink test: provider directory is a symlink
+    real_provider_dir = tmp_path / "real_provider"
+    real_provider_dir.mkdir(parents=True, exist_ok=True)
+    sym_provider_dir = ssot_dir / "sym_provider"
+    sym_provider_dir.symlink_to(real_provider_dir, target_is_directory=True)
+
+    with pytest.raises(ValueError, match="Symlink detected in path ancestry"):
+        ssot_mod.SessionSSOT(provider="sym_provider", session_id="sess_ancestry", account="default")
+
+    # 5. Test pre-existing permissive file mode repair to 0o600
+    permissive_dir = ssot_dir / "openai" / "default" / "sess_permissive"
+    permissive_dir.mkdir(parents=True, exist_ok=True)
+    permissive_file = permissive_dir / "manifest.json"
+    permissive_file.write_text("{}")
+    if os.name != "nt":
+        permissive_file.chmod(0o666)
+        assert (permissive_file.stat().st_mode & 0o777) == 0o666
+
+    ssot_perm = ssot_mod.SessionSSOT(provider="openai", session_id="sess_permissive", account="default")
+    ssot_perm.upsert_manifest(title="Repaired Manifest")
+
+    if os.name != "nt":
+        assert (permissive_file.stat().st_mode & 0o777) == 0o600

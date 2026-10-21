@@ -9,6 +9,9 @@
 | Adaptive wait / feedback | `.agents/skills/adaptive-feedback-cycle/SKILL.md` |
 | Admin ops | `.agents/skills/evidence-led-monorepo-ops/SKILL.md` |
 | ML keep-alive | `.agents/skills/ml-pipeline-ops/SKILL.md` |
+| ML command-center (#175) | `.agents/skills/ml-command-center/SKILL.md` |
+| Minesweeper peers | `.agents/skills/minesweeper-ops/SKILL.md` |
+| Operator hub #175 | `.agents/skills/operator-hub-175/SKILL.md` |
 | ICM-CCTV projection | `.agents/skills/icm-cctv-ops/SKILL.md` |
 | External contribute (help-wanted) | `.agents/skills/help-wanted-lane/SKILL.md` |
 | Production WAIT → VALIDATE | `.github/skills/production-reconciliation/SKILL.md` |
@@ -31,9 +34,10 @@ Every skill directory must contain a `SKILL.md`. Inventory lists **all** of them
 | Role | Load first |
 |------|------------|
 | Collaborator | `adaptive-feedback-cycle` → dual-gate |
-| Admin / Grok | `evidence-led-monorepo-ops` + `adaptive-wait` + `ml-pipeline-ops` |
+| Admin / Grok | `evidence-led-monorepo-ops` + `adaptive-wait` + `ml-pipeline-ops` + `ml-command-center` |
 | Oversight / external PR | `help-wanted-lane` |
 | Evaluation / DOE | `multivariate-doe` + `blind-agent-evaluation` |
+| Concurrent-agent collision | `minesweeper-ops` |
 
 Do not keep skill policy only in local `.grok/skills/` mirrors — **master is SSOT**.
 

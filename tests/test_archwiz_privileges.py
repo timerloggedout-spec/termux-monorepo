@@ -390,7 +390,6 @@ def test_session_ssot_descriptor_race_and_fail_closed(tmp_path, monkeypatch):
         nonlocal swapped
         if name == "session" and kwargs.get("dir_fd") is not None and not swapped:
             swapped = True
-            parentfd = kwargs["dir_fd"]
             # Swap the pathname after its parent descriptor has already been opened.
             os.rename(root / "prov" / "default" / "session", root / "prov" / "default" / "old")
             os.symlink(victim, root / "prov" / "default" / "session")
@@ -399,6 +398,7 @@ def test_session_ssot_descriptor_race_and_fail_closed(tmp_path, monkeypatch):
     monkeypatch.setattr(ssot_mod.os, "open", swap_at_leaf)
     with pytest.raises((ValueError, OSError)):
         ssot.append_message("user", "bad")
+    assert swapped, "the test must reach the component-open race window"
     assert (victim / "messages.jsonl").read_text() == "untouched"
     monkeypatch.setattr(ssot_mod.os, "open", original_open)
 
@@ -423,3 +423,74 @@ def test_session_ssot_chmod_errors_dot_and_hardlink(tmp_path, monkeypatch):
     with pytest.raises(OSError, match="denied"):
         ssot.emit_event("chmod-failure")
     monkeypatch.setattr(ssot_mod.os, "fchmod", original_fchmod)
+
+
+@pytest.mark.parametrize("operation,filename", [
+    ("upsert_manifest", "manifest.json"),
+    ("append_message", "messages.jsonl"),
+    ("emit_event", "events.jsonl"),
+])
+def test_session_ssot_leaf_swap_rejected(tmp_path, monkeypatch, operation, filename):
+    import archwiz.session_ssot as ssot_mod
+    monkeypatch.setattr(ssot_mod, "SSOT_DIR", tmp_path / "sessions")
+    ssot = ssot_mod.SessionSSOT("provider", "session")
+    victim = tmp_path / "victim.json"
+    victim.write_text('{"secret":"unchanged"}')
+    victim.chmod(0o644)
+    original_open = os.open
+    swapped = False
+
+    def swap(name, flags, *args, **kwargs):
+        nonlocal swapped
+        if name == filename and kwargs.get("dir_fd") is not None and not swapped:
+            swapped = True
+            (ssot.base_dir / filename).symlink_to(victim)
+        return original_open(name, flags, *args, **kwargs)
+
+    monkeypatch.setattr(ssot_mod.os, "open", swap)
+    args = {"upsert_manifest": (), "append_message": ("user", "unsafe"), "emit_event": ("unsafe",)}
+    with pytest.raises(ValueError, match="Symlink detected"):
+        getattr(ssot, operation)(*args[operation])
+    assert swapped
+    assert victim.read_text() == '{"secret":"unchanged"}'
+    assert victim.stat().st_mode & 0o777 == 0o644
+
+
+def test_session_ssot_repeated_operations_release_descriptors(tmp_path, monkeypatch):
+    import archwiz.session_ssot as ssot_mod
+    if not Path("/proc/self/fd").exists():
+        pytest.skip("descriptor count requires procfs")
+    monkeypatch.setattr(ssot_mod, "SSOT_DIR", tmp_path / "sessions")
+    before = len(list(Path("/proc/self/fd").iterdir()))
+    for _ in range(25):
+        ssot = ssot_mod.SessionSSOT("provider", "session")
+        ssot.upsert_manifest(title="updated")
+        ssot.append_message("user", "message")
+        ssot.emit_event("updated")
+    assert len(list(Path("/proc/self/fd").iterdir())) == before
+
+
+def test_session_ssot_repairs_existing_log_modes_and_rejects_fifo(tmp_path, monkeypatch):
+    import archwiz.session_ssot as ssot_mod
+    monkeypatch.setattr(ssot_mod, "SSOT_DIR", tmp_path / "sessions")
+    ssot = ssot_mod.SessionSSOT("provider", "session")
+    for path in (ssot.messages_path, ssot.events_path):
+        path.write_text('{"old":true}\n')
+        path.chmod(0o666)
+    ssot.append_message("user", "new")
+    ssot.emit_event("new")
+    for path in (ssot.messages_path, ssot.events_path):
+        assert path.stat().st_mode & 0o777 == 0o600
+        assert path.read_text().startswith('{"old":true}\n')
+    os.mkfifo(ssot.manifest_path)
+    with pytest.raises(ValueError, match="single-link regular"):
+        ssot.upsert_manifest()
+
+
+def test_session_ssot_unsupported_primitives_fail_closed(tmp_path, monkeypatch):
+    import archwiz.session_ssot as ssot_mod
+    monkeypatch.setattr(ssot_mod, "SSOT_DIR", tmp_path / "sessions")
+    monkeypatch.setattr(ssot_mod, "_HAS_DIR_FD", False)
+    with pytest.raises(ValueError, match="unavailable"):
+        ssot_mod.SessionSSOT("provider", "session")
+    assert not (tmp_path / "sessions").exists()

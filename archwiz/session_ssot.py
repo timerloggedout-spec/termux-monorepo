@@ -8,6 +8,7 @@ from typing import Any, Dict, List, Optional
 from archwiz.config import SSOT_DIR
 
 SCHEMA_VERSION = 1
+_HAS_DIR_FD = os.open in os.supports_dir_fd and os.mkdir in os.supports_dir_fd
 
 
 def _validate_ssot_param(name: str, value: str) -> None:
@@ -20,7 +21,7 @@ def _validate_ssot_param(name: str, value: str) -> None:
 
 def _dir_flags() -> int:
     required = ("O_DIRECTORY", "O_NOFOLLOW")
-    if os.name == "nt" or not all(hasattr(os, name) for name in required) or os.open not in os.supports_dir_fd:
+    if os.name == "nt" or not all(hasattr(os, name) for name in required) or not _HAS_DIR_FD:
         raise ValueError("Secure descriptor-relative directory operations are unavailable")
     return os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW
 
@@ -63,8 +64,7 @@ def _session_dir(path: Path, base: Path, create: bool = False) -> int:
         relative = path.relative_to(base)
     except ValueError as e:
         raise ValueError(f"Path is outside SSOT directory: {path}") from e
-    root_fd = _open_directory(base, create=create)
-    fd = root_fd
+    fd = _open_directory(base, create=create)
     try:
         for component in relative.parts:
             if component in ("", "."):
@@ -80,14 +80,11 @@ def _session_dir(path: Path, base: Path, create: bool = False) -> int:
                 if e.errno in (getattr(os, "ELOOP", 40), getattr(os, "ENOTDIR", 20)):
                     raise ValueError(f"Symlink detected in path ancestry: {component}") from e
                 raise
-            if fd != root_fd:
-                os.close(fd)
+            os.close(fd)
             fd = child
         return fd
     except Exception:
-        if fd != root_fd:
-            os.close(fd)
-        os.close(root_fd)
+        os.close(fd)
         raise
 
 

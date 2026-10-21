@@ -8,7 +8,7 @@ Private data (session archives, backups, large binaries) is **encrypted before i
 | Private key (decrypt) | Node: `~/.config/tmx-vault/age.key` (600). CI: secret `TMX_VAULT_AGE_KEY` (Actions + Codespaces) |
 | Ciphertext in Git | `vault/**/*.age`, stored via Git LFS (`.gitattributes`) |
 | Ciphertext mirrors | rclone remotes listed in `TMX_VAULT_REMOTES` (Box, Dropbox, others) |
-| Tool | `scripts/vault/vault.sh seal / open / mirror` |
+| Tool | `bash scripts/vault/vault.sh seal / open / mirror` |
 
 ## Use in a workflow
 
@@ -16,7 +16,7 @@ Private data (session archives, backups, large binaries) is **encrypted before i
 - uses: actions/checkout@v4
   with: { lfs: true }
 - run: sudo apt-get install -y age
-- run: scripts/vault/vault.sh open vault/example.age /tmp/example
+- run: bash scripts/vault/vault.sh open vault/example.age /tmp/example
   env: { TMX_VAULT_AGE_KEY: "${{ secrets.TMX_VAULT_AGE_KEY }}" }
 ```
 

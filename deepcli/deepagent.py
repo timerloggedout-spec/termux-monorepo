@@ -702,7 +702,16 @@ def _gh_worktree(a):
         if force: args.append("--force")
         r = _wt_git(args, str(HOME), timeout=60)
         if r.returncode != 0:
-            return {"error": f"worktree remove: {r.stderr[-300:]}"}
+            # A previous removal may have succeeded before config cleanup failed.
+            # Only retry cleanup once both the directory and Git registration are gone.
+            if path.exists():
+                return {"error": f"worktree remove: {r.stderr[-300:]}"}
+            inventory = _wt_git(["worktree", "list", "--porcelain"], str(HOME))
+            if inventory.returncode != 0 or any(
+                line.startswith("worktree ") and Path(line[9:]).resolve() == path.resolve()
+                for line in inventory.stdout.splitlines()
+            ):
+                return {"error": f"worktree remove: {r.stderr[-300:]}"}
         cleanup_error = _wt_base_unset(branch)
         if cleanup_error:
             return {"error": cleanup_error, "removed": True, "branch": branch,

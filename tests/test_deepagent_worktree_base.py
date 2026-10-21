@@ -149,3 +149,50 @@ def test_metadata_read_failure_precedes_git_add_but_explicit_base_bypasses(monke
     monkeypatch.setattr(deepagent, "_wt_git", real)
     monkeypatch.setattr(subprocess, "run", lambda cmd, **kwargs: subprocess.CompletedProcess(cmd, 0, "ok", "") if cmd[0] == "gh" else REAL_SUBPROCESS_RUN(cmd, **kwargs))
     assert deepagent.DISPATCH["gh_worktree"]({"action": "commit_push_pr", "branch": "feature/readfail", "repo": "owner/repo", "base": "explicit"})["pr_url"] == "ok"
+
+
+def test_remove_retries_metadata_cleanup_after_directory_and_registration_are_gone(monkeypatch, tmp_path):
+    local_remote(tmp_path, monkeypatch)
+    branch = "feature/cleanup-retry"
+    created = deepagent.DISPATCH["gh_worktree"]({"action": "create", "branch": branch, "base": "release/next"})
+    real = deepagent._wt_git
+
+    def fail_cleanup(args, cwd, timeout=60):
+        if args[:3] == ["config", "--local", "--unset-all"]:
+            return subprocess.CompletedProcess(args, 4, "", "config locked")
+        return real(args, cwd, timeout)
+
+    monkeypatch.setattr(deepagent, "_wt_git", fail_cleanup)
+    first = deepagent.DISPATCH["gh_worktree"]({"action": "remove", "branch": branch})
+    assert first["removed"] and first["base_recorded"] and "cleanup failed" in first["error"]
+    assert not Path(created["path"]).exists()
+    monkeypatch.setattr(deepagent, "_wt_git", real)
+    retry = deepagent.DISPATCH["gh_worktree"]({"action": "remove", "branch": branch})
+    assert retry == {"removed": True, "branch": branch, "base_recorded": False}
+    assert deepagent._wt_base_get(branch) == (None, None)
+
+
+def test_remove_failure_keeps_metadata_for_existing_or_registered_worktrees(monkeypatch, tmp_path):
+    local_remote(tmp_path, monkeypatch)
+    branch = "feature/cleanup-guard"
+    created = deepagent.DISPATCH["gh_worktree"]({"action": "create", "branch": branch, "base": "release/next"})
+    real = deepagent._wt_git
+    calls = []
+
+    def fail_remove(args, cwd, timeout=60):
+        calls.append(args)
+        if args[:2] == ["worktree", "remove"]:
+            return subprocess.CompletedProcess(args, 1, "", "worktree locked")
+        return real(args, cwd, timeout)
+
+    monkeypatch.setattr(deepagent, "_wt_git", fail_remove)
+    first = deepagent.DISPATCH["gh_worktree"]({"action": "remove", "branch": branch})
+    assert "worktree remove" in first["error"] and "removed" not in first
+    assert not any(args[:3] == ["config", "--local", "--unset-all"] for args in calls)
+    # A missing directory alone is insufficient: Git can still register a locked worktree.
+    Path(created["path"]).rename(tmp_path / "moved-worktree")
+    calls.clear()
+    second = deepagent.DISPATCH["gh_worktree"]({"action": "remove", "branch": branch})
+    assert "worktree remove" in second["error"] and "removed" not in second
+    assert not any(args[:3] == ["config", "--local", "--unset-all"] for args in calls)
+    assert deepagent._wt_base_get(branch) == ("release/next", None)

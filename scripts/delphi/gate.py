@@ -17,6 +17,7 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 SURFACES = os.path.join(ROOT, "ops", "delphi", "surfaces.json")
 PANEL = os.path.join(ROOT, "ops", "delphi", "panel.json")
 REGISTRY = os.path.join(ROOT, "ops", "quota", "registry.json")
+FORESIGHT = os.path.join(ROOT, "data", "foresight", "resource-registry.jsonl")
 LEDGER_MARK = "<!-- delphi-ledger v1 -->"
 WEIGHTS_MARK = "<!-- delphi-weights v1 -->"
 WEIGHTS_TITLE = "Delphi panel weights ledger"
@@ -314,7 +315,37 @@ def api_remaining(gh: "GH") -> int | None:
         return None
 
 
-def board_md(rows: list[dict], at: str) -> str:
+def radar_candidates(catalog: dict, registry: dict, rfp_surfaces: set, foresight_path: str = FORESIGHT) -> list[dict]:
+    """New-surface alert: quota-registry services and ForeSight records that no RFP covers yet.
+    Names and source URLs only; nothing is filed automatically (a human or lane files the RFP)."""
+    covered = set(rfp_surfaces)
+    for sid in rfp_surfaces:
+        rid = (catalog.get(sid) or {}).get("registry_id")
+        if rid:
+            covered.add(rid)
+    svcs = registry.get("services", [])
+    # a further meter of an already-covered provider+lane (e.g. render.bandwidth under render.free) is not a new surface
+    pairs = {(x.get("provider"), x.get("lane")) for x in svcs if x["id"] in covered}
+    out = []
+    for svc in svcs:
+        if svc["id"] not in covered and (svc.get("provider"), svc.get("lane")) not in pairs:
+            out.append({"id": svc["id"], "lane": svc.get("lane", "?"), "origin": "quota-registry", "source": svc.get("source", "")})
+    try:
+        with open(foresight_path) as f:
+            for line in f:
+                if not line.strip():
+                    continue
+                r = json.loads(line)
+                if r.get("lane_id") == "delphi-oracle" or r.get("resource_id") in covered:
+                    continue
+                out.append({"id": r.get("resource_id", "?"), "lane": r.get("category", "?"), "origin": "foresight",
+                            "source": r.get("canonical_source") or (r.get("source") or {}).get("url", "")})
+    except (OSError, ValueError):
+        pass
+    return sorted(out, key=lambda c: (c["origin"], c["id"]))
+
+
+def board_md(rows: list[dict], at: str, radar: list[dict] | None = None) -> str:
     """Results board: one row per open RFP, newest ledger state. Regenerated, never hand-edited."""
     order = {"shadow": 0, "parked": 1, "pending": 2}
     rows = sorted(rows, key=lambda r: (order.get(r["decision"], 3), -(r["effective"] or 0), r["number"]))
@@ -326,12 +357,21 @@ def board_md(rows: list[dict], at: str) -> str:
     sh = sum(r["decision"] == "shadow" for r in rows)
     lines += ["", f"{len(rows)} open RFPs · {sh} shadow · {sum(r['decision'] == 'parked' for r in rows)} parked · "
               f"{sum(r['decision'] == 'pending' for r in rows)} pending. Rubric-only panel (MSM-018); awards are advisory."]
+    if radar:
+        lines += ["", f"### Radar: {len(radar)} surfaces with no RFP yet",
+                  "File one with the Delphi Oracle RFP issue form to put a surface through the gate.", "",
+                  "| Surface | Lane | Seen in | Source |", "|---|---|---|---|"]
+        for c in radar[:40]:
+            src = f"[link]({c['source']})" if str(c["source"]).startswith("http") else (c["source"] or "-")
+            lines.append(f"| `{c['id']}` | {c['lane']} | {c['origin']} | {src} |")
+        if len(radar) > 40:
+            lines.append(f"| … | | | {len(radar) - 40} more |")
     return "\n".join(lines)
 
 
-def update_board(gh: "GH", rows: list[dict]) -> int | None:
+def update_board(gh: "GH", rows: list[dict], radar: list[dict] | None = None) -> int | None:
     found = gh.req("GET", "/issues?state=open&labels=delphi:board&per_page=5")
-    body = board_md(rows, now().strftime("%Y-%m-%d %H:%M UTC"))
+    body = board_md(rows, now().strftime("%Y-%m-%d %H:%M UTC"), radar)
     if not found:
         return gh.req("POST", "/issues", {"title": BOARD_TITLE, "labels": ["delphi:board"], "body": body}).get("number")
     n, old = found[0]["number"], found[0].get("body") or ""
@@ -504,7 +544,8 @@ def _run(args) -> int:
     for line in summary[:9]:
         print(f"::notice::{line}")
     if board:
-        print(f"::notice::delphi results board #{update_board(gh, board)}")
+        radar = radar_candidates(catalog, registry, {r["surface"] for r in board})
+        print(f"::notice::delphi radar uncovered={len(radar)} results board #{update_board(gh, board, radar)}")
     print(f"::notice::delphi processed={done} pending={pending} api_calls={gh.calls}")
     if pending and plan["mode"] == "accelerate":
         gh.req("POST", "/actions/workflows/delphi-gate.yml/dispatches",

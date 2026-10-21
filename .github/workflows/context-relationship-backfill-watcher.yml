@@ -96,7 +96,7 @@ jobs:
             echo "- Event: ${{ github.event.action }}"
             echo "- Status: ${{ github.event.workflow_run.status }}"
             echo "- Conclusion: ${{ github.event.workflow_run.conclusion || 'pending' }}"
-            echo "- SHA: '${{ github.event.workflow_run.head_sha }}'"
+            echo "- SHA: ${{ github.event.workflow_run.head_sha }}"
             echo "- Evidence: ${{ github.event.workflow_run.html_url }}"
             echo
             cat runtime-summary.json 2>/dev/null || true

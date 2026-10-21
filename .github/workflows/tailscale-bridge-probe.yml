@@ -1,0 +1,122 @@
+# tailscale-bridge-probe.yml: honest Tailscale reachability probe for the origin Termux node.
+# Joins tailnet tailf2ee94.ts.net as an ephemeral tag:ci node through GitHub OIDC
+# workload identity federation. The client ID and audience below are public
+# identifiers, not secrets. Writes ops/termux-bridge/tailscale.json (additive;
+# current.json stays owned by the device's Pinggy publisher).
+# It fails RED when the node is unreachable. A skip never shows green.
+# See docs/ops/DEVICE-ACCESS-DIRECTORY.md.
+name: tailscale-bridge-probe
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17,47 * * * *'
+
+permissions:
+  contents: write
+  id-token: write
+
+concurrency:
+  group: tailscale-bridge-probe
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Join tailnet (ephemeral, tag:ci)
+        timeout-minutes: 5
+        uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: Tgmyqv1iV921CNTRL-knEAyc5weC11CNTRL
+          audience: api.tailscale.com/Tgmyqv1iV921CNTRL-knEAyc5weC11CNTRL
+          tags: tag:ci
+          version: latest
+
+      - name: Probe origin node
+        id: probe
+        timeout-minutes: 3
+        run: |
+          set -u
+          NODE="b160v"
+          FQDN="b160v.tailf2ee94.ts.net"
+          status="offline"; tcp="false"; peer="false"
+          if tailscale status --json | python3 -c "import json,sys; d=json.load(sys.stdin); sys.exit(0 if any((p.get('HostName','').lower()=='b160v' or p.get('DNSName','').startswith('b160v.')) and p.get('Online') for p in (d.get('Peer') or {}).values()) else 1)"; then
+            peer="true"; status="online"
+          fi
+          TARGET="$(tailscale ip -4 "$NODE" 2>/dev/null | head -n1 || true)"
+          TARGET="${TARGET:-$FQDN}"
+          if timeout 60 tailscale ping -c 5 "$NODE" >/dev/null 2>&1; then status="reachable"; fi
+          if timeout 8 bash -c "exec 3<>/dev/tcp/$TARGET/8022" 2>/dev/null; then tcp="true"; status="active"; fi
+          {
+            echo "status=$status"
+            echo "tcp=$tcp"
+            echo "peer=$peer"
+          } >> "$GITHUB_OUTPUT"
+          echo "::notice::tailscale-bridge origin=tmx-node-primary status=$status peer_online=$peer sshd_tcp_8022=$tcp"
+
+      - name: Publish tailscale manifest
+        timeout-minutes: 2
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATUS: ${{ steps.probe.outputs.status }}
+          TCP: ${{ steps.probe.outputs.tcp }}
+        run: |
+          set -euo pipefail
+          P="ops/termux-bridge/tailscale.json"
+          old="$(gh api "repos/$GITHUB_REPOSITORY/contents/$P?ref=master" --jq '.content' 2>/dev/null | tr -d '\n' | base64 -d 2>/dev/null || echo '{}')"
+          sha="$(gh api "repos/$GITHUB_REPOSITORY/contents/$P?ref=master" --jq '.sha' 2>/dev/null || true)"
+          OLD="$old" python3 - <<'PY' > body.json
+          import json, os, base64
+          from datetime import datetime, timedelta, timezone
+          now = datetime.now(timezone.utc)
+          try:
+              old = json.loads(os.environ.get("OLD") or "{}")
+          except Exception:
+              old = {}
+          status = os.environ["STATUS"]
+          new = {
+              "schema_version": 1,
+              "transport": "tailscale",
+              "tailnet": "tailf2ee94.ts.net",
+              "node": "b160v",
+              "device_id": "tmx-node-primary",
+              "remote_target": "b160v.tailf2ee94.ts.net:8022",
+              "status": status,
+              "sshd_tcp": os.environ["TCP"] == "true",
+              "observed_at": now.isoformat().replace("+00:00", "Z"),
+              "expires_at": (now + timedelta(minutes=60)).isoformat().replace("+00:00", "Z"),
+              "source": "actions-runner-probe",
+              "run_id": int(os.environ["GITHUB_RUN_ID"]),
+              "note": "Runner-verified reachability over Tailscale. No secrets, IPs or hardware identifiers.",
+          }
+          stale = True
+          try:
+              exp = datetime.fromisoformat(old["expires_at"].replace("Z", "+00:00"))
+              stale = exp - now < timedelta(minutes=20)
+          except Exception:
+              pass
+          if old.get("status") == status and not stale:
+              print("")
+          else:
+              print(json.dumps({
+                  "message": f"ops(bridge): tailscale probe status={status} [skip render]",
+                  "content": base64.b64encode((json.dumps(new, indent=2) + "\n").encode()).decode(),
+                  "branch": "master",
+              }))
+          PY
+          if [ ! -s body.json ] || [ "$(tr -d '[:space:]' < body.json)" = "" ]; then
+            echo "::notice::tailscale.json unchanged (status ${STATUS}); no commit"
+            exit 0
+          fi
+          if [ -n "$sha" ]; then
+            python3 -c "import json;b=json.load(open('body.json'));b['sha']='$sha';json.dump(b,open('body.json','w'))"
+          fi
+          gh api -X PUT "repos/$GITHUB_REPOSITORY/contents/$P" --input body.json --jq '.commit.sha' | sed 's/^/::notice::tailscale.json commit /'
+
+      - name: Fail loudly when origin unreachable
+        if: steps.probe.outputs.status != 'active'
+        run: |
+          echo "::error::origin node not reachable over Tailscale (status=${{ steps.probe.outputs.status }}). Reconnect the Tailscale app on the device to tailnet tailf2ee94.ts.net."
+          exit 1

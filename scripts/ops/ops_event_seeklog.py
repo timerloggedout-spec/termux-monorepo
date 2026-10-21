@@ -82,7 +82,7 @@ def _parse_gource_line(line: str) -> Optional[OpsEvent]:
 
 def _parse_json_line(line: str) -> Optional[OpsEvent]:
     line = line.strip()
-    if not line:
+    if not line or not line.startswith("{"):
         return None
     try:
         obj = json.loads(line)

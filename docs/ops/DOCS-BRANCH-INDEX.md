@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-10-21T03:34:18Z` UTC  
+**Generated:** `2026-10-21T04:23:15Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 79 docs-lane branch(es)
+**Count:** 81 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -67,6 +67,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/pr-scope-discipline-67-rebased`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/pr-scope-discipline-67-rebased) | `f16fc1c6aa5f` | — | — | orphan lane |
 | [`docs/pr-scope-discipline-ce22`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/pr-scope-discipline-ce22) | `a68300477966` | — | — | orphan lane |
 | [`docs/preflight-remove-phantom-check-action`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/preflight-remove-phantom-check-action) | `b622610948b2` | — | — | orphan lane |
+| [`docs/project-status-provider-museai-2026-10-21`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/project-status-provider-museai-2026-10-21) | `8a965e78eba4` | [#1402](https://github.com/timerloggedout-spec/termux-monorepo/pull/1402)→`master` | — | PR without registry link |
 | [`docs/promote-archwiz-to-master`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/promote-archwiz-to-master) | `70bfdeff314a` | — | — | orphan lane |
 | [`docs/proposals/agentic-scoped-access-and-tier4-review`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/proposals/agentic-scoped-access-and-tier4-review) | `7f39e156f87f` | — | `agent-automation`, `agent-automation` | registered; no open PR |
 | [`docs/proposals/codespaces-enablement`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/proposals/codespaces-enablement) | `0dc0c23dbb15` | [#500](https://github.com/timerloggedout-spec/termux-monorepo/pull/500)→`master` | — | PR without registry link |
@@ -89,6 +90,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/she-p010-roadmap-catchup`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/she-p010-roadmap-catchup) | `231a3193d34f` | — | — | orphan lane |
 | [`docs/she-roadmap-p04-p05-status`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/she-roadmap-p04-p05-status) | `9c318f5c2307` | — | — | orphan lane |
 | [`docs/she-ui-ux-control-plane-rebased`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/she-ui-ux-control-plane-rebased) | `0f6db19e71b8` | — | — | orphan lane |
+| [`docs/stepie-mcp-runbook-818`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/stepie-mcp-runbook-818) | `12ec627a5495` | — | — | orphan lane |
 | [`docs/sync-agents-hum-md`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/sync-agents-hum-md) | `056fc8ac7d0f` | — | — | orphan lane |
 | [`docs/team-formation-roster-rebased`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/team-formation-roster-rebased) | `06d7b7f46a76` | — | — | orphan lane |
 | [`docs/termux-mcp-lean-template`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/termux-mcp-lean-template) | `b6487c77d8e0` | — | — | orphan lane |

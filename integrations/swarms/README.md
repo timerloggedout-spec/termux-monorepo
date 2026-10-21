@@ -2,6 +2,8 @@
 
 This integration adds an explicit sequential analysis/review workflow without replacing the monorepo's orchestrator, provider hub, or device policy. Implements **THUB-009**, **THUB-010**, and **THUB-011**, with corrected research provenance under **THUB-012**. The [research](../../docs/research/SWARMS-ECOSYSTEM.md) distinguishes Kye Gomez's 455-repository public listing from the historical 676-repository `timerloggedout-spec` inventory; neither is an all-code audit. The [architecture synthesis](../../docs/architecture/SWARMS-SYNTHESIS.md) explains local boundaries. Rust and remote services are valid alternatives; see the [pinned Swarms Rust assessment](../../docs/research/SWARMS-RUST.md).
 
+**Rust path implemented under THUB-013:** the [optional pinned Rust worker](rust/README.md) has its own offline-first CLI, `python3 scripts/swarms/run-rust.py --task 'Analyze supplied evidence'`. It does not require the Python Swarms SDK. Its single-agent, handoff, auth-error, deadline, and cleanup behavior is tested against the actual local hub with stub inference. The Python-specific instructions below remain unchanged; neither backend establishes native Android support or a deployed remote task service.
+
 ## Try it offline
 
 From the monorepo root:

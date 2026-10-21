@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "ce110c0ac26a63476dfc4a9d85d0fc32f79fc1477417d642886de7cb4f185fb3",
-  "workflow_count": 165,
+  "source_fingerprint": "37ef9e310dffc82c6be0f7cd09fe7681db6fd6fdad71eb6b83816525fc69b21a",
+  "workflow_count": 166,
   "workflows": [
     {
       "action_pins": [
@@ -991,6 +991,24 @@
         "repository_dispatch",
         "schedule",
         "workflow_dispatch",
+        "workflow_run"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: delphi-signal-bridge cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "emit",
+        "outcome",
+        "radar"
+      ],
+      "name": "delphi-signal-bridge",
+      "path": ".github/workflows/delphi-signal-bridge.yml",
+      "schedules": [],
+      "triggers": [
+        "push",
         "workflow_run"
       ]
     },

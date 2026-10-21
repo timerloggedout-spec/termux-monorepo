@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "2dbb6d9a4977829c46373e749b808caf12acd4ba6a60221037c2c75f0f4f5d44",
-  "workflow_count": 153,
+  "source_fingerprint": "3da21be75f8cf72ee931c44e1f94b0c3df45ad90ec73b35ddb590301a2184d22",
+  "workflow_count": 155,
   "workflows": [
     {
       "action_pins": [
@@ -2484,6 +2484,47 @@
       "triggers": [
         "pull_request",
         "push",
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: remote-gamut-evaluation cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "evaluate"
+      ],
+      "name": "Remote GAMUT evaluation",
+      "path": ".github/workflows/remote-gamut-evaluation.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: remote-knowledge-fabric-${{ github.repository_owner }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "inventory"
+      ],
+      "name": "Remote knowledge fabric",
+      "path": ".github/workflows/remote-knowledge-fabric.yml",
+      "schedules": [
+        "17 6 * * *"
+      ],
+      "triggers": [
         "schedule",
         "workflow_dispatch"
       ]

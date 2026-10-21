@@ -44,9 +44,23 @@ jobs:
             exit 1
           fi
 
+          gh_api_safe() {
+            local err_file="$RUNNER_TEMP/gh_api_err.txt"
+            if ! gh api "$@" 2>"$err_file"; then
+              if grep -qiE 'rate limit|HTTP 403' "$err_file"; then
+                echo "ledger skipped: GitHub API rate limit exceeded ($*)" >> "$GITHUB_STEP_SUMMARY"
+                cat "$err_file" >> "$GITHUB_STEP_SUMMARY"
+                echo "skipped=true" >> "$GITHUB_OUTPUT"
+                exit 0
+              fi
+              cat "$err_file" >&2
+              return 1
+            fi
+          }
+
           # Fetch PR objects only. Nothing from the PR is executed.
           git fetch --no-tags --prune origin "refs/pull/${PR_NUMBER}/head:refs/remotes/origin/pr-${PR_NUMBER}"
-          read -r BASE_SHA HEAD_SHA < <(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq '[.base.sha, .head.sha] | @tsv')
+          read -r BASE_SHA HEAD_SHA < <(gh_api_safe "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq '[.base.sha, .head.sha] | @tsv')
           # API head can move between fetch and measure (sweep receipt). Refetch once.
           if ! git cat-file -e "${HEAD_SHA}^{commit}" 2>/dev/null || ! git cat-file -e "${BASE_SHA}^{commit}" 2>/dev/null; then
             git fetch --no-tags origin "refs/pull/${PR_NUMBER}/head" "$BASE_SHA" || true
@@ -193,13 +207,15 @@ jobs:
           body+="**State:** ${state}; ${noop}${nl}${nl}"
           body+="Generated: ${generated}"
 
-          existing=$(gh api --paginate "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100" --jq '.[] | select(.body | contains("'"$marker"'")) | [.id,.body] | @tsv' | head -n1 || true)
+          set +e
+          existing=$(gh api --paginate "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100" --jq '.[] | select(.body | contains("'"$marker"'")) | [.id,.body] | @tsv' 2>/dev/null | head -n1 || true)
           if [[ -n "$existing" ]]; then
             id="${existing%%$'\t'*}"
-            gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/comments/${id}" -f body="$body" >/dev/null
+            gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/comments/${id}" -f body="$body" 2>/dev/null
           else
-            gh api --method POST "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" -f body="$body" >/dev/null
+            gh api --method POST "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" -f body="$body" 2>/dev/null
           fi
+          set -e
 
           # Hard-fail only a true empty PR. Equivalent tip trees with a unique
           # patch are absorbed-by-base, not a workflow defect (run 37166124171).

@@ -32,3 +32,16 @@ def test_agent_coordination_demo_yaml():
     assert "name: Agent Coordination Demo" in content
     assert "jobs:" in content
     assert "coordination-demo:" in content
+
+def test_recon_intel_discovery_yaml():
+    """
+    Validates that recon-intel-discovery.yml contains proper try/catch for lease check registration.
+    """
+    workflow_path = Path(".github/workflows/recon-intel-discovery.yml")
+    assert workflow_path.exists(), "Recon intel discovery workflow file must exist"
+
+    with open(workflow_path, "r") as f:
+        content = f.read()
+
+    assert "name: RECON INTEL discovery" in content
+    assert "Failed to record RECON INTEL lease check run due to API error" in content

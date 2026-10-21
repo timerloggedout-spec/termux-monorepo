@@ -256,31 +256,35 @@ jobs:
               ].join('\\n'),
               text: detail,
             };
-            const { data } = await github.rest.checks.listForRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: githubSha,
-              per_page: 100,
-            });
-            const existing = data.check_runs
-              .filter(check => check.name === 'RECON INTEL lease' && check.external_id?.startsWith('recon-intel:'))
-              .sort((left, right) => new Date(right.completed_at || right.started_at || 0) - new Date(left.completed_at || left.started_at || 0))[0];
-            const payload = {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              name: 'RECON INTEL lease',
-              head_sha: githubSha,
-              status: 'completed',
-              conclusion,
-              external_id: externalId,
-              output,
-            };
-            if (existing) {
-              await github.rest.checks.update({ ...payload, check_run_id: existing.id });
-              core.info(`Updated RECON INTEL lease check ${existing.id}.`);
-            } else {
-              const created = await github.rest.checks.create(payload);
-              core.info(`Created RECON INTEL lease check ${created.data.id}.`);
+            try {
+              const { data } = await github.rest.checks.listForRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: githubSha,
+                per_page: 100,
+              });
+              const existing = data.check_runs
+                .filter(check => check.name === 'RECON INTEL lease' && check.external_id?.startsWith('recon-intel:'))
+                .sort((left, right) => new Date(right.completed_at || right.started_at || 0) - new Date(left.completed_at || left.started_at || 0))[0];
+              const payload = {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: 'RECON INTEL lease',
+                head_sha: githubSha,
+                status: 'completed',
+                conclusion,
+                external_id: externalId,
+                output,
+              };
+              if (existing) {
+                await github.rest.checks.update({ ...payload, check_run_id: existing.id });
+                core.info(`Updated RECON INTEL lease check ${existing.id}.`);
+              } else {
+                const created = await github.rest.checks.create(payload);
+                core.info(`Created RECON INTEL lease check ${created.data.id}.`);
+              }
+            } catch (err) {
+              core.warning(`Failed to record RECON INTEL lease check run due to API error: ${err.message || err}`);
             }
 
       - name: Publish bounded metadata-only summary

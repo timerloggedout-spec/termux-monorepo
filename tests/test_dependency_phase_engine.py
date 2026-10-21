@@ -164,6 +164,46 @@ class DependencyPhaseEngineTests(unittest.TestCase):
         states = {entry["phase_id"]: entry["state"] for entry in report["evaluations"]}
         self.assertEqual("ready", states["DPH-100"])
 
+    def test_non_boolean_mapping_approvals_fail_closed(self) -> None:
+        invalid_values = (False, None, "false", "true", "pending", "", 0, 1, 1.0, [], [True], {})
+        for value in invalid_values:
+            for approval in (value, {"approved": value}):
+                with self.subTest(approval=approval):
+                    snapshot = completed_snapshot()
+                    snapshot["approvals"] = {"DPH-100": approval}
+                    report = evaluate_plan(plan_fixture(), snapshot)
+                    entry = next(entry for entry in report["evaluations"] if entry["phase_id"] == "DPH-100")
+                    self.assertEqual("blocked", entry["state"])
+                    self.assertEqual("human approval evidence is required", entry["reason"])
+
+    def test_explicit_approval_forms_remain_compatible(self) -> None:
+        for approvals in (
+            {"DPH-100": True},
+            {"DPH-100": {"approved": True, "by": "operator", "evidence": "review"}},
+            ["DPH-100"],
+        ):
+            with self.subTest(approvals=approvals):
+                snapshot = completed_snapshot()
+                snapshot["approvals"] = approvals
+                report = evaluate_plan(plan_fixture(), snapshot)
+                entry = next(entry for entry in report["evaluations"] if entry["phase_id"] == "DPH-100")
+                self.assertEqual("ready", entry["state"])
+
+    def test_non_boolean_approval_cannot_authorize_completion(self) -> None:
+        snapshot = completed_snapshot()
+        snapshot["project_items"][1]["status"] = "Done"
+        snapshot["pull_requests"].append({
+            "number": 11,
+            "title": "feat: DPH-100 dependent work",
+            "state": "closed",
+            "merged": True,
+            "checks": {"repo-gate": "SUCCESS", "termux-smoke": "SUCCESS"},
+        })
+        snapshot["approvals"] = {"DPH-100": {"approved": "false"}}
+        report = evaluate_plan(plan_fixture(), snapshot)
+        entry = next(entry for entry in report["evaluations"] if entry["phase_id"] == "DPH-100")
+        self.assertEqual("blocked", entry["state"])
+
     def test_active_claim_prevents_duplicate_dispatch(self) -> None:
         plan = plan_fixture()
         snapshot = completed_snapshot()

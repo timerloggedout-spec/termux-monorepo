@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from repository_observatory import build_records, build_payload, classify, snapshot_hash
+from repository_observatory import build_records, build_payload, classify, normalize, snapshot_hash
 
 
 BASE = {
@@ -54,6 +54,18 @@ class ObservatoryTests(unittest.TestCase):
         self.assertIn("kubernetes", result["domains"])
         self.assertEqual(result["research_value"], "high")
         self.assertIn("upstream-comparison", result["integration"])
+
+    def test_fork_upstream_identity_is_preserved(self):
+        repo = dict(BASE)
+        repo.update({
+            "full_name": "timerloggedout-spec/gravitee-api-management_fork",
+            "name": "gravitee-api-management_fork",
+            "fork": True,
+            "parent": {"full_name": "gravitee-io/gravitee-api-management"},
+        })
+        record = normalize(repo, ["owned"])
+        self.assertEqual(record["upstream"], "gravitee-io/gravitee-api-management")
+        self.assertIn("upstream-comparison", record["classification"]["integration"])
 
     def test_snapshot_hash_is_stable(self):
         records = build_records([], [BASE])

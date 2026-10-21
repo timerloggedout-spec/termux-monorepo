@@ -8,6 +8,7 @@ concern and is recorded as experiment metadata rather than encoded as provider r
 """
 
 import json
+import math
 import os
 import re
 import sys
@@ -404,7 +405,7 @@ def load_quota_multipliers():
         age = (datetime.now(timezone.utc) - stamp.astimezone(timezone.utc)).total_seconds()
         max_age = int(os.environ.get("QUOTA_WEIGHTS_MAX_AGE_SEC", "21600"))
         if age < -300 or age > max_age:
-            sys.stderr.write(f"Quota weights stale ({age:.0f}s); treating quota as unknown.\\n")
+            sys.stderr.write(f"Quota weights stale ({age:.0f}s); treating quota as unknown.\n")
             return {}
         multipliers = payload.get("multipliers", {})
         return {str(k).lower(): max(0.0, min(2.0, float(v))) for k, v in multipliers.items()}
@@ -431,7 +432,10 @@ def load_openrouter_quota_admission(now=None):
         if age < -60 or age > max_age:
             return {"known": False, "reason": f"official quota snapshot stale ({age:.0f}s)"}
         used, limit = state.get("used"), state.get("limit")
-        if not isinstance(used, (int, float)) or not isinstance(limit, (int, float)) or limit <= 0:
+        if (isinstance(used, bool) or isinstance(limit, bool)
+                or not isinstance(used, (int, float)) or not isinstance(limit, (int, float))
+                or not math.isfinite(float(used)) or not math.isfinite(float(limit))
+                or used < 0 or limit <= 0):
             return {"known": False, "reason": "official quota used/limit unavailable"}
         # The cache is scoped to the same UTC date as OpenRouter's daily reset.
         # Local selections are reservations, not proof of completed provider calls;
@@ -440,14 +444,20 @@ def load_openrouter_quota_admission(now=None):
                   for provider, model in peers if provider == "openrouter"}
         local_reserved = sum(get_usage("openrouter", model) for model in models)
         effective_used = max(float(used), float(local_reserved))
-        safety = float(os.environ.get("OPENROUTER_QUOTA_SAFETY", "0.90"))
-        safety = max(0.1, min(1.0, safety))
+        try:
+            safety = float(os.environ.get("OPENROUTER_QUOTA_SAFETY", "0.90"))
+        except ValueError:
+            return {"known": False, "reason": "invalid quota safety threshold"}
+        if not math.isfinite(safety) or not 0.1 <= safety <= 1.0:
+            return {"known": False, "reason": "invalid quota safety threshold"}
         safe_limit = float(limit) * safety
         return {
             "known": True, "used": float(used), "limit": float(limit),
             "official_remaining": state.get("remaining", max(0.0, float(limit) - float(used))),
             "local_reserved": local_reserved, "effective_used": effective_used,
             "effective_remaining": max(0.0, float(limit) - effective_used),
+            # 0.90 leaves a daily headroom margin; concurrent jobs still race
+            # because local reservation cache updates are not distributed-atomic.
             "safe_limit": safe_limit, "admit": effective_used < safe_limit,
             "observed_at": state.get("observed_at"),
         }
@@ -460,7 +470,7 @@ def is_in_cooldown(provider, model, now=None):
     path = os.path.join(COUNTER_DIR, "cooldowns.json")
     try:
         if os.path.islink(path):
-            sys.stderr.write("Cooldown file is a symlink; ignoring cooldown cache.\\n")
+            sys.stderr.write("Cooldown file is a symlink; ignoring cooldown cache.\n")
             return False
         with open(path, "r", encoding="utf-8") as handle:
             data = json.load(handle)
@@ -560,7 +570,7 @@ def main():
                     continue
             seen.add(key)
             if is_in_cooldown(provider, model):
-                sys.stderr.write(f"Candidate in rate-limit cooldown: {provider}/{model}\\n")
+                sys.stderr.write(f"Candidate in rate-limit cooldown: {provider}/{model}\n")
                 continue
             quota_multiplier = quota_multipliers.get(provider.lower(), 1.0)
             if quota_multiplier <= 0:

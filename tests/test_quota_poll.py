@@ -48,7 +48,7 @@ class QuotaPollTest(unittest.TestCase):
             try:
                 _qp.LIVE = {"openrouter.free_models": lambda now: {
                     "used": 70, "limit": 100, "remaining": 30, "elapsed": None,
-                    "reset": "UTC midnight", "extra": {"source": "official"},
+                    "reset": "UTC midnight", "extra": {"source": "official OpenRouter GET /api/v1/key"},
                 }}
                 _qp.MULTI = []
                 _qp.main(["--registry", registry, "--out", out])

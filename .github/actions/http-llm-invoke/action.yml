@@ -110,35 +110,35 @@ runs:
         if [ "$HTTP_STATUS" = "429" ]; then
           mkdir -p "$COOLDOWN_DIR"
           PROVIDER="$PROVIDER" MODEL="$MODEL" RETRY_AFTER="$RETRY_AFTER" COOLDOWN_DIR="$COOLDOWN_DIR" python3 - <<'PY'
-import datetime, email.utils, json, os, pathlib, time
-directory = pathlib.Path(os.environ["COOLDOWN_DIR"])
-path = directory / "cooldowns.json"
-key = f'{os.environ["PROVIDER"]}/{os.environ["MODEL"]}'
-raw = os.environ.get("RETRY_AFTER", "").strip()
-until = time.time() + 60
-if raw:
-    try:
-        until = time.time() + max(1, min(int(raw), 86400))
-    except ValueError:
-        try:
-            stamp = email.utils.parsedate_to_datetime(raw)
-            if stamp.tzinfo is None:
-                stamp = stamp.replace(tzinfo=datetime.timezone.utc)
-            until = max(time.time() + 1, min(stamp.timestamp(), time.time() + 86400))
-        except (TypeError, ValueError, OverflowError):
-            pass
-try:
-    data = json.loads(path.read_text()) if path.exists() and not path.is_symlink() else {}
-except (OSError, ValueError):
-    data = {}
-cooldowns = data.get("cooldowns") if isinstance(data.get("cooldowns"), dict) else {}
-cooldowns[key] = until
-tmp = path.with_suffix(".tmp")
-tmp.write_text(json.dumps({"schema":"3l0.model-router-cooldowns.v1","cooldowns":cooldowns}, sort_keys=True))
-os.chmod(tmp, 0o600)
-tmp.replace(path)
-print("Recorded model cooldown for " + key + " until " + datetime.datetime.fromtimestamp(until, datetime.timezone.utc).isoformat())
-PY
+          import datetime, email.utils, json, os, pathlib, time
+          directory = pathlib.Path(os.environ["COOLDOWN_DIR"])
+          path = directory / "cooldowns.json"
+          key = f'{os.environ["PROVIDER"]}/{os.environ["MODEL"]}'
+          raw = os.environ.get("RETRY_AFTER", "").strip()
+          until = time.time() + 60
+          if raw:
+              try:
+                  until = time.time() + max(1, min(int(raw), 86400))
+              except ValueError:
+                  try:
+                      stamp = email.utils.parsedate_to_datetime(raw)
+                      if stamp.tzinfo is None:
+                          stamp = stamp.replace(tzinfo=datetime.timezone.utc)
+                      until = max(time.time() + 1, min(stamp.timestamp(), time.time() + 86400))
+                  except (TypeError, ValueError, OverflowError):
+                      pass
+          try:
+              data = json.loads(path.read_text()) if path.exists() and not path.is_symlink() else {}
+          except (OSError, ValueError):
+              data = {}
+          cooldowns = data.get("cooldowns") if isinstance(data.get("cooldowns"), dict) else {}
+          cooldowns[key] = until
+          tmp = path.with_suffix(".tmp")
+          tmp.write_text(json.dumps({"schema":"3l0.model-router-cooldowns.v1","cooldowns":cooldowns}, sort_keys=True))
+          os.chmod(tmp, 0o600)
+          tmp.replace(path)
+          print("Recorded model cooldown for " + key + " until " + datetime.datetime.fromtimestamp(until, datetime.timezone.utc).isoformat())
+          PY
         fi
         END_NS=$(date +%s%N); LATENCY_MS=$(( (END_NS - START_NS) / 1000000 ))
         mkdir -p /tmp/model-performance

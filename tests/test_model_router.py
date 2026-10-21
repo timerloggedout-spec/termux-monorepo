@@ -332,7 +332,8 @@ def test_quota_multiplier_zero_excludes_provider(tmp_path, monkeypatch, capsys):
     monkeypatch.setenv("COUNTER_DIR", str(tmp_path))
     monkeypatch.setattr(mr, "COUNTER_DIR", str(tmp_path))
     matrix_file = tmp_path / "model-success-matrix.yaml"
-    matrix_file.write_text('models:\\n  "google/gemma-4-31b-it:free":\\n    elo: 1300\\n')
+    matrix_file.write_text('models:\
+  "google/gemma-4-31b-it:free":\n    elo: 1300\n')
     original_parse_yaml = mr.parse_yaml
     monkeypatch.setattr(mr, "parse_yaml", lambda path: original_parse_yaml(str(matrix_file)) if "success" in path else {})
     monkeypatch.setattr(mr, "fetch_openrouter_free_models_cached_with_source", lambda: (["google/gemma-4-31b-it:free"], "live"))

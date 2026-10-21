@@ -112,7 +112,10 @@ def openrouter_reader(now):
     d = _get("https://openrouter.ai/api/v1/key", {"Authorization": "Bearer " + key}).get("data", {})
     fm = d.get("free_model_daily_requests") or {}
     used, lim = fm.get("used", fm.get("count")), fm.get("limit")
-    if used is None or lim is None:
+    if (isinstance(used, bool) or isinstance(lim, bool)
+            or not isinstance(used, (int, float)) or not isinstance(lim, (int, float))
+            or not math.isfinite(float(used)) or not math.isfinite(float(lim))
+            or used < 0 or lim <= 0):
         return None
     return {
         "used": used,
@@ -227,7 +230,7 @@ def main(argv=None):
         json.dump(weights, handle, indent=2)
     # Keep a focused, machine-readable official OpenRouter snapshot for audit and
     # preflight policy. Never fill in unknown fields from the registry.
-    or_rec = next((r for r in recs if r["resource_id"] == "quota:openrouter.free_models"), None)
+    or_rec = next((r for r in recs if r["resource_id"] == "quota:openrouter.free_models" and r.get("horizon") == "H0" and r.get("evidence_status") == "confirmed" and r.get("extra", {}).get("source") == "official OpenRouter GET /api/v1/key"), None)
     snapshot = {
         "schema": "3l0.provider-quota-snapshot.v1",
         "observed_at": now.isoformat(),

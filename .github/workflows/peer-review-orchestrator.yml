@@ -133,11 +133,21 @@ jobs:
               return;
             }
 
-            const { data: pr } = await github.rest.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: prNumber,
-            });
+            let pr;
+            try {
+              const res = await github.rest.pulls.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber,
+              });
+              pr = res.data;
+            } catch (err) {
+              core.warning('Failed to fetch PR details due to rate limit or API error: ' + err.message);
+              core.setOutput('skipped', 'true');
+              core.setOutput('state', 'api_rate_limited');
+              return;
+            }
+
             if (pr.draft || !pr.head.repo || pr.head.repo.full_name !== `${context.repo.owner}/${context.repo.repo}`) {
               core.info('Draft or fork PR: no interactive agent actions requested');
               core.setOutput('skipped', 'true');
@@ -193,9 +203,15 @@ jobs:
             }
 
             const stateMarker = '<!-- agent-peer-response-state:v2 -->';
-            const initialComments = await github.paginate(github.rest.issues.listComments, {
-              owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, per_page: 100,
-            });
+            let initialComments = [];
+            try {
+              initialComments = await github.paginate(github.rest.issues.listComments, {
+                owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, per_page: 100,
+              });
+            } catch (err) {
+              core.info('Failed fetching initial comments: ' + err.message);
+            }
+
             const existingCycle = initialComments.filter(comment =>
               statePublisherLogins.has((comment.user?.login || '').toLowerCase()) &&
               comment.body?.includes(stateMarker) &&
@@ -214,25 +230,31 @@ jobs:
             const cycleStartedAtIso = new Date(cycleStartedAt).toISOString();
 
             async function fetchEvidence() {
-              const comments = await github.paginate(github.rest.issues.listComments, {
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: prNumber,
-                per_page: 100,
-              });
-              const reviews = await github.paginate(github.rest.pulls.listReviews, {
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: prNumber,
-                per_page: 100,
-              });
-              const reviewComments = await github.paginate(github.rest.pulls.listReviewComments, {
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: prNumber,
-                per_page: 100,
-              });
-              let checks = [];
+              let comments = [], reviews = [], reviewComments = [], checks = [];
+              try {
+                comments = await github.paginate(github.rest.issues.listComments, {
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  per_page: 100,
+                });
+              } catch (e) { core.info('Comments lookup skip: ' + e.message); }
+              try {
+                reviews = await github.paginate(github.rest.pulls.listReviews, {
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: prNumber,
+                  per_page: 100,
+                });
+              } catch (e) { core.info('Reviews lookup skip: ' + e.message); }
+              try {
+                reviewComments = await github.paginate(github.rest.pulls.listReviewComments, {
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: prNumber,
+                  per_page: 100,
+                });
+              } catch (e) { core.info('Review comments lookup skip: ' + e.message); }
               try {
                 const response = await github.rest.checks.listForRef({
                   owner: context.repo.owner, repo: context.repo.repo, ref: headSha, per_page: 100,
@@ -454,63 +476,67 @@ jobs:
           # repository's default Actions token is limited to read-only access.
           github-token: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
           script: |
-            const marker = '<!-- agent-peer-response-state:v2 -->';
-            const statePublisherLogins = new Set((process.env.PEER_STATE_PUBLISHER_LOGINS || '')
-              .split(',').map(value => value.trim().toLowerCase()).filter(Boolean));
-            const prNumber = Number(context.payload.pull_request?.number || context.payload.issue?.number);
-            if (!prNumber) return;
-            const body = [
-              marker,
-              `cycle_id: ${process.env.CYCLE_ID}`,
-              `head_sha: ${process.env.HEAD_SHA}`,
-              `cycle_started_at: ${process.env.CYCLE_STARTED_AT}`,
-              `state: ${process.env.STATE}`,
-              `ready: ${process.env.READY}`,
-              `required_providers: ${process.env.REQUIRED_PROVIDERS}`,
-              `enforce_provider_completion: ${process.env.ENFORCE_PROVIDER_COMPLETION}`,
-              '',
-              '### Agent peer response gate',
-              '',
-              '**Provider state:**',
-              process.env.PROVIDERS || '- none',
-              '',
-              '**Pending:**',
-              process.env.PENDING || 'none',
-              '',
-              '**Authorized interactive controls:**',
-              process.env.CONTROLS || '- none observed',
-              '',
-              'A provider-owned checkbox/button requires an authorized Operator Action Executor.',
-              'Do not copy control markup into a relay comment. After a permitted UI action, post:',
-              '```text',
-              '<!-- operator-action-ack:v1 -->',
-              `cycle_id: ${process.env.CYCLE_ID}`,
-              'provider: <provider>',
-              'control_id: <provider-control-id>',
-              'action: <allowed-action>',
-              '```',
-              'The second-pass reviewer remains blocked until matching provider completion evidence is ingested for this SHA.',
-              'A checked [x] control means the provider UI action occurred; it is not a completed review.',
-              'A provider cooldown is also non-completing: wait for the stated retry window, then retrigger through the authorized provider path.',
-              'Pending provider evidence is advisory unless PEER_ENFORCE_PROVIDER_COMPLETION is deliberately set to true for branch protection.',
-            ].join('\n');
-            const comments = await github.paginate(github.rest.issues.listComments, {
-              owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, per_page: 100,
-            });
-            const existing = comments.filter(comment =>
-              statePublisherLogins.has((comment.user?.login || '').toLowerCase()) &&
-              comment.body?.includes(marker) &&
-              comment.body.includes(`cycle_id: ${process.env.CYCLE_ID}`) &&
-              comment.body.includes(`head_sha: ${process.env.HEAD_SHA}`)
-            ).sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))[0];
-            if (existing) {
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner, repo: context.repo.repo, comment_id: existing.id, body,
+            try {
+              const marker = '<!-- agent-peer-response-state:v2 -->';
+              const statePublisherLogins = new Set((process.env.PEER_STATE_PUBLISHER_LOGINS || '')
+                .split(',').map(value => value.trim().toLowerCase()).filter(Boolean));
+              const prNumber = Number(context.payload.pull_request?.number || context.payload.issue?.number);
+              if (!prNumber) return;
+              const body = [
+                marker,
+                `cycle_id: ${process.env.CYCLE_ID}`,
+                `head_sha: ${process.env.HEAD_SHA}`,
+                `cycle_started_at: ${process.env.CYCLE_STARTED_AT}`,
+                `state: ${process.env.STATE}`,
+                `ready: ${process.env.READY}`,
+                `required_providers: ${process.env.REQUIRED_PROVIDERS}`,
+                `enforce_provider_completion: ${process.env.ENFORCE_PROVIDER_COMPLETION}`,
+                '',
+                '### Agent peer response gate',
+                '',
+                '**Provider state:**',
+                process.env.PROVIDERS || '- none',
+                '',
+                '**Pending:**',
+                process.env.PENDING || 'none',
+                '',
+                '**Authorized interactive controls:**',
+                process.env.CONTROLS || '- none observed',
+                '',
+                'A provider-owned checkbox/button requires an authorized Operator Action Executor.',
+                'Do not copy control markup into a relay comment. After a permitted UI action, post:',
+                '```text',
+                '<!-- operator-action-ack:v1 -->',
+                `cycle_id: ${process.env.CYCLE_ID}`,
+                'provider: <provider>',
+                'control_id: <provider-control-id>',
+                'action: <allowed-action>',
+                '```',
+                'The second-pass reviewer remains blocked until matching provider completion evidence is ingested for this SHA.',
+                'A checked [x] control means the provider UI action occurred; it is not a completed review.',
+                'A provider cooldown is also non-completing: wait for the stated retry window, then retrigger through the authorized provider path.',
+                'Pending provider evidence is advisory unless PEER_ENFORCE_PROVIDER_COMPLETION is deliberately set to true for branch protection.',
+              ].join('\n');
+              const comments = await github.paginate(github.rest.issues.listComments, {
+                owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, per_page: 100,
               });
-            } else {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, body,
-              });
+              const existing = comments.filter(comment =>
+                statePublisherLogins.has((comment.user?.login || '').toLowerCase()) &&
+                comment.body?.includes(marker) &&
+                comment.body.includes(`cycle_id: ${process.env.CYCLE_ID}`) &&
+                comment.body.includes(`head_sha: ${process.env.HEAD_SHA}`)
+              ).sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))[0];
+              if (existing) {
+                await github.rest.issues.updateComment({
+                  owner: context.repo.owner, repo: context.repo.repo, comment_id: existing.id, body,
+                });
+              } else {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, body,
+                });
+              }
+            } catch (err) {
+              core.warning('Failed to publish peer response state comment due to rate limit: ' + err.message);
             }
 
       - name: Dispatch verified second pass
@@ -529,20 +555,24 @@ jobs:
           # Keep dispatch authority aligned with the state publisher above.
           github-token: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
           script: |
-            const prNumber = Number(process.env.PR_NUMBER);
-            if (!prNumber) return;
-            await github.rest.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: 'gemini-after-peers.yml',
-              ref: context.payload.repository.default_branch,
-              inputs: {
-                pr_number: String(prNumber),
-                head_sha: process.env.HEAD_SHA,
-                cycle_id: process.env.CYCLE_ID,
-              },
-            });
-            core.info(`Dispatched verified second pass for ${process.env.CYCLE_ID}`);
+            try {
+              const prNumber = Number(process.env.PR_NUMBER);
+              if (!prNumber) return;
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'gemini-after-peers.yml',
+                ref: context.payload.repository.default_branch,
+                inputs: {
+                  pr_number: String(prNumber),
+                  head_sha: process.env.HEAD_SHA,
+                  cycle_id: process.env.CYCLE_ID,
+                },
+              });
+              core.info(`Dispatched verified second pass for ${process.env.CYCLE_ID}`);
+            } catch (err) {
+              core.warning('Failed workflow dispatch due to rate limit: ' + err.message);
+            }
 
       - name: Request supported provider reviews through OPERATOR
         if: |
@@ -561,70 +591,74 @@ jobs:
         with:
           github-token: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
           script: |
-            const prNumber = Number(process.env.PR_NUMBER);
-            const cycleId = process.env.CYCLE_ID;
-            const headSha = process.env.HEAD_SHA;
-            if (!prNumber || !cycleId || !headSha) return;
-            const marker = '<!-- operator-provider-review:v1 -->';
-            const providers = (process.env.REQUIRED_PROVIDERS || '')
-              .split(',').map(value => value.trim().toLowerCase()).filter(Boolean);
-            const allowed = new Set((process.env.OPERATOR_ALLOWED_ACTIONS || '')
-              .split(',').map(value => value.trim().toLowerCase()).filter(Boolean));
-            const executorLogins = new Set((process.env.OPERATOR_EXECUTOR_LOGINS || '')
-              .split(',').map(value => value.trim().toLowerCase()).filter(Boolean));
-            const authorizedAssociations = new Set(['OWNER', 'MEMBER', 'COLLABORATOR']);
-            const parseField = (body, name) =>
-              (body || '').match(new RegExp(`^${name}:\\s*(.+?)\\s*$`, 'm'))?.[1]?.trim() || '';
-            const commands = new Map([
-              ['coderabbit', '@coderabbitai full review'],
-              ['qodo', '/agentic_review'],
-              ['devin', '/devin review'],
-            ]);
-            const comments = await github.paginate(github.rest.issues.listComments, {
-              owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, per_page: 100,
-            });
-            for (const provider of providers) {
-              const command = commands.get(provider);
-              if (!command) {
-                core.info(`${provider}: no documented GitHub command is configured; leaving the provider pending.`);
-                continue;
-              }
-              if (!allowed.has(`${provider}:trigger_review`)) {
-                core.info(`${provider}: trigger_review is not in OPERATOR_ALLOWED_ACTIONS; leaving the provider pending.`);
-                continue;
-              }
-              const requested = comments.some(comment =>
-                comment.body?.includes(marker) &&
-                authorizedAssociations.has(comment.author_association) &&
-                executorLogins.has((comment.user?.login || '').toLowerCase()) &&
-                parseField(comment.body, 'cycle_id') === cycleId &&
-                parseField(comment.body, 'head_sha') === headSha &&
-                parseField(comment.body, 'provider').toLowerCase() === provider &&
-                parseField(comment.body, 'action').toLowerCase() === 'trigger_review'
-              );
-              if (requested) {
-                core.info(`${provider}: review already requested for ${cycleId}`);
-                continue;
-              }
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: prNumber,
-                body: [
-                  command,
-                  '',
-                  marker,
-                  `cycle_id: ${cycleId}`,
-                  `head_sha: ${headSha}`,
-                  `provider: ${provider}`,
-                  'action: trigger_review',
-                  'request_actor: OPERATOR',
-                  '',
-                  'Autonomous OPERATOR-token request for a current-SHA provider review. A command request is not review completion; await provider evidence.',
-                ].join('\n'),
+            try {
+              const prNumber = Number(process.env.PR_NUMBER);
+              const cycleId = process.env.CYCLE_ID;
+              const headSha = process.env.HEAD_SHA;
+              if (!prNumber || !cycleId || !headSha) return;
+              const marker = '<!-- operator-provider-review:v1 -->';
+              const providers = (process.env.REQUIRED_PROVIDERS || '')
+                .split(',').map(value => value.trim().toLowerCase()).filter(Boolean);
+              const allowed = new Set((process.env.OPERATOR_ALLOWED_ACTIONS || '')
+                .split(',').map(value => value.trim().toLowerCase()).filter(Boolean));
+              const executorLogins = new Set((process.env.OPERATOR_EXECUTOR_LOGINS || '')
+                .split(',').map(value => value.trim().toLowerCase()).filter(Boolean));
+              const authorizedAssociations = new Set(['OWNER', 'MEMBER', 'COLLABORATOR']);
+              const parseField = (body, name) =>
+                (body || '').match(new RegExp(`^${name}:\\s*(.+?)\\s*$`, 'm'))?.[1]?.trim() || '';
+              const commands = new Map([
+                ['coderabbit', '@coderabbitai full review'],
+                ['qodo', '/agentic_review'],
+                ['devin', '/devin review'],
+              ]);
+              const comments = await github.paginate(github.rest.issues.listComments, {
+                owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, per_page: 100,
               });
-              core.info(`${provider}: requested review for ${cycleId}`);
-              await new Promise(resolve => setTimeout(resolve, 1200));
+              for (const provider of providers) {
+                const command = commands.get(provider);
+                if (!command) {
+                  core.info(`${provider}: no documented GitHub command is configured; leaving the provider pending.`);
+                  continue;
+                }
+                if (!allowed.has(`${provider}:trigger_review`)) {
+                  core.info(`${provider}: trigger_review is not in OPERATOR_ALLOWED_ACTIONS; leaving the provider pending.`);
+                  continue;
+                }
+                const requested = comments.some(comment =>
+                  comment.body?.includes(marker) &&
+                  authorizedAssociations.has(comment.author_association) &&
+                  executorLogins.has((comment.user?.login || '').toLowerCase()) &&
+                  parseField(comment.body, 'cycle_id') === cycleId &&
+                  parseField(comment.body, 'head_sha') === headSha &&
+                  parseField(comment.body, 'provider').toLowerCase() === provider &&
+                  parseField(comment.body, 'action').toLowerCase() === 'trigger_review'
+                );
+                if (requested) {
+                  core.info(`${provider}: review already requested for ${cycleId}`);
+                  continue;
+                }
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  body: [
+                    command,
+                    '',
+                    marker,
+                    `cycle_id: ${cycleId}`,
+                    `head_sha: ${headSha}`,
+                    `provider: ${provider}`,
+                    'action: trigger_review',
+                    'request_actor: OPERATOR',
+                    '',
+                    'Autonomous OPERATOR-token request for a current-SHA provider review. A command request is not review completion; await provider evidence.',
+                  ].join('\n'),
+                });
+                core.info(`${provider}: requested review for ${cycleId}`);
+                await new Promise(resolve => setTimeout(resolve, 1200));
+              }
+            } catch (err) {
+              core.warning('Failed requesting provider review due to rate limit: ' + err.message);
             }
 
       - name: Record pending provider review policy

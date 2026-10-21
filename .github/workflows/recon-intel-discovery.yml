@@ -48,63 +48,66 @@ jobs:
           REQUESTED_GITLAB_REF: ${{ github.event.inputs.gitlab_ref || 'master' }}
         with:
           script: |
-            const requested = (process.env.REQUESTED_PR_NUMBER || '').trim();
-            const gitlabRef = (process.env.REQUESTED_GITLAB_REF || 'master').trim();
-            if (gitlabRef !== 'master') {
-              core.setFailed('RECON INTEL only permits the GitLab master ref.');
-              return;
-            }
-            const ownRepo = `${context.repo.owner}/${context.repo.repo}`;
-            const targetFromPr = pr => ({
-              pr_number: String(pr.number),
-              github_sha: pr.head.sha,
-            });
-            let targets = [];
-            if (context.payload.pull_request) {
-              const pr = context.payload.pull_request;
-              if (!pr.draft && pr.head.repo?.full_name === ownRepo) {
+            try {
+              const requested = (process.env.REQUESTED_PR_NUMBER || '').trim();
+              const gitlabRef = (process.env.REQUESTED_GITLAB_REF || 'master').trim();
+              if (gitlabRef !== 'master') {
+                core.setFailed('RECON INTEL only permits the GitLab master ref.');
+                return;
+              }
+              const ownRepo = `${context.repo.owner}/${context.repo.repo}`;
+              const targetFromPr = pr => ({
+                pr_number: String(pr.number),
+                github_sha: pr.head.sha,
+              });
+              let targets = [];
+              if (context.payload.pull_request) {
+                const pr = context.payload.pull_request;
+                if (!pr.draft && pr.head.repo?.full_name === ownRepo) {
+                  targets = [targetFromPr(pr)];
+                } else {
+                  core.info('Fork or draft pull request: RECON INTEL does not fetch an untrusted head.');
+                }
+              } else if (requested) {
+                if (!/^\d+$/.test(requested) || Number(requested) <= 0) {
+                  core.setFailed('pr_number must be a positive decimal integer.');
+                  return;
+                }
+                const { data: pr } = await github.rest.pulls.get({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: Number(requested),
+                });
+                if (pr.state !== 'open' || pr.draft || pr.head.repo?.full_name !== ownRepo) {
+                  core.setFailed('pr_number must identify an open, non-draft, same-repository pull request.');
+                  return;
+                }
                 targets = [targetFromPr(pr)];
-              } else {
-                core.info('Fork or draft pull request: RECON INTEL does not fetch an untrusted head.');
-              }
-            } else if (requested) {
-              if (!/^\d+$/.test(requested) || Number(requested) <= 0) {
-                core.setFailed('pr_number must be a positive decimal integer.');
-                return;
-              }
-              const { data: pr } = await github.rest.pulls.get({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: Number(requested),
-              });
-              if (pr.state !== 'open' || pr.draft || pr.head.repo?.full_name !== ownRepo) {
-                core.setFailed('pr_number must identify an open, non-draft, same-repository pull request.');
-                return;
-              }
-              targets = [targetFromPr(pr)];
-            } else if (context.eventName === 'workflow_dispatch') {
-              // A manual blank dispatch is deliberately single-target. It is the
-              // operator’s bounded health probe, not a bulk PR sweep.
-              targets = [{ pr_number: '0', github_sha: context.sha }];
-            } else {
-              const { data: openPrs } = await github.rest.pulls.list({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                state: 'open',
-                per_page: 100,
-              });
-              targets = openPrs
-                .filter(pr => !pr.draft && pr.head.repo?.full_name === ownRepo)
-                .map(targetFromPr);
-              const now = new Date();
-              const idleProbe = now.getUTCMinutes() === 0 && now.getUTCHours() % 6 === 0;
-              if (!targets.length && idleProbe) {
+              } else if (context.eventName === 'workflow_dispatch') {
                 targets = [{ pr_number: '0', github_sha: context.sha }];
+              } else {
+                const { data: openPrs } = await github.rest.pulls.list({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  state: 'open',
+                  per_page: 100,
+                });
+                targets = openPrs
+                  .filter(pr => !pr.draft && pr.head.repo?.full_name === ownRepo)
+                  .map(targetFromPr);
+                const now = new Date();
+                const idleProbe = now.getUTCMinutes() === 0 && now.getUTCHours() % 6 === 0;
+                if (!targets.length && idleProbe) {
+                  targets = [{ pr_number: '0', github_sha: context.sha }];
+                }
               }
+              core.setOutput('targets', JSON.stringify(targets));
+              core.setOutput('gitlab_ref', gitlabRef);
+              core.info(`Selected ${targets.length} bounded RECON INTEL target(s).`);
+            } catch (err) {
+              core.warning('Failed target selection due to rate limit or API error: ' + err.message);
+              core.setOutput('targets', '[]');
             }
-            core.setOutput('targets', JSON.stringify(targets));
-            core.setOutput('gitlab_ref', gitlabRef);
-            core.info(`Selected ${targets.length} bounded RECON INTEL target(s).`);
 
   discover:
     needs: select-targets
@@ -136,47 +139,50 @@ jobs:
           DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
         with:
           script: |
-            const targetPrNumber = (process.env.TARGET_PR_NUMBER || '').trim();
-            const expectedSha = (process.env.TARGET_GITHUB_SHA || '').trim();
-            const defaultBranch = (process.env.DEFAULT_BRANCH || '').trim();
-            if (!/^[0-9a-f]{7,64}$/i.test(expectedSha)) {
-              core.setFailed('Invalid target GitHub SHA.');
-              return;
-            }
-            let resolvedSha;
-            if (targetPrNumber === '0') {
-              const { data: branch } = await github.rest.repos.getBranch({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                branch: defaultBranch,
-              });
-              resolvedSha = branch.commit.sha;
-            } else {
-              if (!/^[1-9][0-9]*$/.test(targetPrNumber)) {
-                core.setFailed('Invalid target PR number.');
+            try {
+              const targetPrNumber = (process.env.TARGET_PR_NUMBER || '').trim();
+              const expectedSha = (process.env.TARGET_GITHUB_SHA || '').trim();
+              const defaultBranch = (process.env.DEFAULT_BRANCH || '').trim();
+              if (!/^[0-9a-f]{7,64}$/i.test(expectedSha)) {
+                core.setFailed('Invalid target GitHub SHA.');
                 return;
               }
-              const { data: pr } = await github.rest.pulls.get({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: Number(targetPrNumber),
-              });
-              if (pr.state !== 'open' || pr.draft || pr.head.repo?.full_name !== `${context.repo.owner}/${context.repo.repo}`) {
-                core.notice('Target pull request is no longer an eligible same-repository review target; skipping stale discovery.');
+              let resolvedSha;
+              if (targetPrNumber === '0') {
+                const { data: branch } = await github.rest.repos.getBranch({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  branch: defaultBranch,
+                });
+                resolvedSha = branch.commit.sha;
+              } else {
+                if (!/^[1-9][0-9]*$/.test(targetPrNumber)) {
+                  core.setFailed('Invalid target PR number.');
+                  return;
+                }
+                const { data: pr } = await github.rest.pulls.get({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: Number(targetPrNumber),
+                });
+                if (pr.state !== 'open' || pr.draft || pr.head.repo?.full_name !== `${context.repo.owner}/${context.repo.repo}`) {
+                  core.notice('Target pull request is no longer an eligible same-repository review target; skipping stale discovery.');
+                  core.setOutput('skip', 'true');
+                  return;
+                }
+                resolvedSha = pr.head.sha;
+              }
+              if (resolvedSha !== expectedSha) {
+                core.notice('Target changed during discovery; refusing stale comparison.');
                 core.setOutput('skip', 'true');
                 return;
               }
-              resolvedSha = pr.head.sha;
-            }
-            if (resolvedSha !== expectedSha) {
-              core.notice('Target changed during discovery; refusing stale comparison.');
-                // Evidence follow-up: bind gates to a non-receipt SHA (parent 11ec4e58).
-
+              core.setOutput('skip', 'false');
+              core.setOutput('github_sha', resolvedSha);
+            } catch (err) {
+              core.warning('Rate limit or API error during discovery resolution: ' + err.message);
               core.setOutput('skip', 'true');
-              return;
             }
-            core.setOutput('skip', 'false');
-            core.setOutput('github_sha', resolvedSha);
 
       - name: Classify GitHub–GitLab ancestry
         id: classify
@@ -203,55 +209,59 @@ jobs:
           DETAIL: ${{ steps.classify.outputs.detail }}
         with:
           script: |
-            const githubSha = process.env.GITHUB_SHA;
-            const gitlabSha = process.env.GITLAB_SHA || 'unavailable';
-            const gitlabRef = process.env.GITLAB_REF || 'master';
-            const state = process.env.STATE;
-            const lane = process.env.LANE;
-            const policyVersion = process.env.POLICY_VERSION;
-            const detail = process.env.DETAIL || 'No additional detail supplied.';
-            const externalId = `recon-intel:${policyVersion}:${gitlabRef}:${gitlabSha}`;
-            const conclusion = ['aligned', 'github-ahead', 'gitlab-ahead'].includes(state)
-              ? 'success'
-              : 'neutral';
-            const output = {
-              title: `RECON INTEL ${state}`,
-              summary: [
-                `state: ${state}`,
-                `lane: ${lane}`,
-                `github_sha: ${githubSha}`,
-                `gitlab_sha: ${gitlabSha}`,
-                `gitlab_ref: ${gitlabRef}`,
-                `policy_version: ${policyVersion}`,
-                'metadata_only: true',
-              ].join('\\n'),
-              text: detail,
-            };
-            const { data } = await github.rest.checks.listForRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: githubSha,
-              per_page: 100,
-            });
-            const existing = data.check_runs
-              .filter(check => check.name === 'RECON INTEL lease' && check.external_id?.startsWith('recon-intel:'))
-              .sort((left, right) => new Date(right.completed_at || right.started_at || 0) - new Date(left.completed_at || left.started_at || 0))[0];
-            const payload = {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              name: 'RECON INTEL lease',
-              head_sha: githubSha,
-              status: 'completed',
-              conclusion,
-              external_id: externalId,
-              output,
-            };
-            if (existing) {
-              await github.rest.checks.update({ ...payload, check_run_id: existing.id });
-              core.info(`Updated RECON INTEL lease check ${existing.id}.`);
-            } else {
-              const created = await github.rest.checks.create(payload);
-              core.info(`Created RECON INTEL lease check ${created.data.id}.`);
+            try {
+              const githubSha = process.env.GITHUB_SHA;
+              const gitlabSha = process.env.GITLAB_SHA || 'unavailable';
+              const gitlabRef = process.env.GITLAB_REF || 'master';
+              const state = process.env.STATE;
+              const lane = process.env.LANE;
+              const policyVersion = process.env.POLICY_VERSION;
+              const detail = process.env.DETAIL || 'No additional detail supplied.';
+              const externalId = `recon-intel:${policyVersion}:${gitlabRef}:${gitlabSha}`;
+              const conclusion = ['aligned', 'github-ahead', 'gitlab-ahead'].includes(state)
+                ? 'success'
+                : 'neutral';
+              const output = {
+                title: `RECON INTEL ${state}`,
+                summary: [
+                  `state: ${state}`,
+                  `lane: ${lane}`,
+                  `github_sha: ${githubSha}`,
+                  `gitlab_sha: ${gitlabSha}`,
+                  `gitlab_ref: ${gitlabRef}`,
+                  `policy_version: ${policyVersion}`,
+                  'metadata_only: true',
+                ].join('\\n'),
+                text: detail,
+              };
+              const { data } = await github.rest.checks.listForRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: githubSha,
+                per_page: 100,
+              });
+              const existing = data.check_runs
+                .filter(check => check.name === 'RECON INTEL lease' && check.external_id?.startsWith('recon-intel:'))
+                .sort((left, right) => new Date(right.completed_at || right.started_at || 0) - new Date(left.completed_at || left.started_at || 0))[0];
+              const payload = {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: 'RECON INTEL lease',
+                head_sha: githubSha,
+                status: 'completed',
+                conclusion,
+                external_id: externalId,
+                output,
+              };
+              if (existing) {
+                await github.rest.checks.update({ ...payload, check_run_id: existing.id });
+                core.info(`Updated RECON INTEL lease check ${existing.id}.`);
+              } else {
+                const created = await github.rest.checks.create(payload);
+                core.info(`Created RECON INTEL lease check ${created.data.id}.`);
+              }
+            } catch (err) {
+              core.warning('Failed to record lease check due to rate limit: ' + err.message);
             }
 
       - name: Publish bounded metadata-only summary

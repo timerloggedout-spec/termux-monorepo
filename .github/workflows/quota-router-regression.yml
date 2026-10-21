@@ -1,0 +1,52 @@
+name: Quota router regressions
+on:
+  pull_request:
+    paths:
+      - '.github/actions/http-llm-invoke/action.yml'
+      - '.github/actions/model-router/action.yml'
+      - '.github/workflows/quota-router-regression.yml'
+      - 'scripts/model_router.py'
+      - 'scripts/quota_poll.py'
+      - 'scripts/provider_quota_managers.py'
+      - 'scripts/provider_quota_coverage.py'
+      - 'tests/test_http_llm_invoke_action.py'
+      - 'tests/test_model_router.py'
+      - 'tests/test_quota_poll.py'
+      - 'tests/test_model_performance_index.py'
+      - 'tests/test_provider_quota_managers.py'
+      - 'tests/test_provider_quota_coverage.py'
+      - 'tests/test_quota_dashboard.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: quota-router-regressions-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  offline-regressions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
+        with:
+          python-version: '3.12'
+      - name: Install focused test runner
+        run: python -m pip install 'pytest>=8,<9'
+      - name: Verify composite runtime prerequisite
+        run: command -v jq
+      - name: Run offline routing, privacy and action regressions
+        env:
+          PYTHONPATH: .
+          COUNTER_DIR: ${{ runner.temp }}/quota-regression-counters
+        run: |
+          python -m pytest -q \
+            tests/test_http_llm_invoke_action.py \
+            tests/test_model_router.py \
+            tests/test_quota_poll.py \
+            tests/test_model_performance_index.py \
+            tests/test_provider_quota_managers.py \
+            tests/test_provider_quota_coverage.py \
+            tests/test_quota_dashboard.py

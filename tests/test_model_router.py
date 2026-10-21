@@ -2,11 +2,21 @@ import json
 import os
 import sys
 import urllib.request
+from datetime import datetime, timezone
 from unittest.mock import MagicMock
+
+import pytest
 
 # Add scripts to path so we can import model_router
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import scripts.model_router as mr
+
+
+@pytest.fixture(autouse=True)
+def offline_catalog_by_default(monkeypatch):
+    def unavailable(*args, **kwargs):
+        raise OSError("network disabled for router regressions")
+    monkeypatch.setattr(urllib.request, "urlopen", unavailable)
 
 
 def test_parse_yaml(tmp_path):
@@ -323,8 +333,7 @@ def test_secure_permissions_and_creation(tmp_path, monkeypatch):
 
 
 
-def test_quota_multiplier_zero_excludes_provider(tmp_path, monkeypatch, capsys):
-    import time
+def test_quota_multiplier_zero_excludes_provider(tmp_path, monkeypatch):
     monkeypatch.setenv("ROLE", "triage")
     monkeypatch.setenv("HAS_OMNI", "false")
     monkeypatch.setenv("HAS_OPENROUTER", "true")
@@ -340,7 +349,11 @@ def test_quota_multiplier_zero_excludes_provider(tmp_path, monkeypatch, capsys):
     monkeypatch.setattr(mr, "parse_yaml", lambda path: original_parse_yaml(str(matrix_file)) if "success" in path else {})
     monkeypatch.setattr(mr, "fetch_openrouter_free_models_cached_with_source", lambda: (["google/gemma-4-31b-it:free"], "live"))
     weights = tmp_path / "routing-weights.json"
-    weights.write_text(json.dumps({"schema":"3l0.quota-weights.v1","generated_at":__import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat(),"multipliers":{"openrouter":0}}))
+    weights.write_text(json.dumps({
+        "schema": "3l0.quota-weights.v1",
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "multipliers": {"openrouter": 0},
+    }))
     monkeypatch.setenv("QUOTA_WEIGHTS_PATH", str(weights))
     go_file = tmp_path / "github_output.txt"
     monkeypatch.setenv("GITHUB_OUTPUT", str(go_file))
@@ -453,7 +466,7 @@ def test_openrouter_quota_reconciliation_rejects_invalid_counters(tmp_path, monk
         assert admission["known"] is False, (field, value, admission)
 
 
-@__import__("pytest").mark.parametrize("safety", ["nan", "inf", "-inf", "0.09", "1.01"])
+@pytest.mark.parametrize("safety", ["nan", "inf", "-inf", "0.09", "1.01"])
 def test_openrouter_quota_rejects_nonfinite_or_out_of_range_safety(tmp_path, monkeypatch, safety):
     from datetime import datetime, timezone
     monkeypatch.setattr(mr, "COUNTER_DIR", str(tmp_path))

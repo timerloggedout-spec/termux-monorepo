@@ -95,6 +95,21 @@ runs:
         echo "Authoritative provider quota/rate-limit state must come from live observations."
         echo "cache_hit=${{ steps.restore.outputs.cache-hit || 'false' }}"
 
+    - name: Refresh live provider quota weights
+      if: inputs.has-openrouter == 'true' && inputs.openrouter-api-key != ''
+      shell: bash
+      env:
+        OPENROUTER_API_KEY: ${{ inputs.openrouter-api-key }}
+        COUNTER_DIR: /tmp/model-router
+      run: |
+        set -euo pipefail
+        python3 -m scripts.quota_poll --out /tmp/model-router
+        if [ -f /tmp/model-router/routing-weights.json ]; then
+          echo "Live quota weights refreshed for model admission."
+        else
+          echo "::warning::Quota poll produced no routing weights; router will treat quota as unknown."
+        fi
+
     - name: Pick provider + model (live catalog feed)
       id: pick
       shell: bash

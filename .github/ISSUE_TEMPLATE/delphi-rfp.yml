@@ -1,0 +1,73 @@
+name: Delphi Oracle RFP
+description: Bid a free-tier surface into the Delphi gate (docs/ops/DELPHI-ORACLE-RFP-GATE.md). Gantt proposal format.
+title: "[delphi:rfp] <surface-id>"
+labels: ["delphi:rfp"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Filing this issue wakes the gate (event trigger, no cron). The oracle attaches documented limits with source URLs,
+        live quota readings and HindSight/ForeSight evidence; a blind 5-role panel scores it; the result lands as a signed
+        ledger comment. Never paste secret values: name the Actions secret only.
+  - type: input
+    id: surface_id
+    attributes:
+      label: Surface id
+      description: An id from ops/delphi/surfaces.json (e.g. turso.free), or a new id. Unknown ids are scored as unsourced.
+    validations: { required: true }
+  - type: dropdown
+    id: lane
+    attributes:
+      label: Lane
+      options: [data, queue, model, deploy, observability, partner, other]
+    validations: { required: true }
+  - type: dropdown
+    id: filed_by
+    attributes:
+      label: Filed by (collaboration lane)
+      options: [planning-queue, deploy-quota, ops, hark-bridge, access-resilience, delphi, other]
+    validations: { required: true }
+  - type: textarea
+    id: gantt
+    attributes:
+      label: Gantt plan
+      description: One phase per line, "phase | start | end | depends-on". Shadow lanes start at a small traffic share.
+      value: |
+        oracle facts | T0 | T0 | -
+        panel rounds | T0 | T0 | oracle facts
+        shadow lane (5% traffic) | T0+1d | T0+7d | panel rounds
+        promote or park | T0+7d | T0+7d | shadow lane
+    validations: { required: true }
+  - type: textarea
+    id: free_quota
+    attributes:
+      label: Free quota
+      description: Metric, limit, unit, and the vendor page that states it (URL). Leave the limit blank if no page states a number.
+    validations: { required: true }
+  - type: input
+    id: reset_and_zone
+    attributes:
+      label: Reset and zone
+      description: e.g. "00:00 UTC daily", "midnight America/Los_Angeles", "1st of month UTC".
+    validations: { required: true }
+  - type: input
+    id: auth_from_actions
+    attributes:
+      label: Auth from Actions
+      description: Name of the Actions secret the lane would use (name only), or "none needed".
+  - type: dropdown
+    id: lock_in
+    attributes:
+      label: Lock-in
+      options: ["1 (portable)", "2", "3", "4", "5 (hard to leave)"]
+    validations: { required: true }
+  - type: textarea
+    id: failure_modes
+    attributes:
+      label: Failure modes
+      description: One per line. Say if it needs a card or auto-bills overages (the cost auditor vetoes those).
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence links
+      description: HindSight/ForeSight records, run URLs, prior evaluations.

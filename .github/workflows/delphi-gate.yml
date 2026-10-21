@@ -1,0 +1,116 @@
+# Delphi Oracle RFP gate (docs/ops/DELPHI-ORACLE-RFP-GATE.md).
+# Event-driven, quota-aware, flywheel-weighted. No daily cron: the only schedule
+# is a low-frequency liveness heartbeat that also re-checks parked RFPs whose
+# recheck date has passed. Every run processes ALL open delphi:rfp issues
+# idempotently (a concurrency group keeps only one pending run), skipping any
+# whose inputs hash is unchanged. Ledger = signed issue comments (no commits,
+# so no Vercel/Render builds). Additive file.
+name: delphi-gate
+
+on:
+  issues:
+    types: [opened, edited, labeled, reopened]
+  issue_comment:
+    types: [created]
+  repository_dispatch:
+    types: [delphi-rfp, delphi-tick, quota-registry-changed, foresight-radar-hit, hindsight-forecast-miss, delphi-feedback]
+  workflow_run:
+    workflows: [vercel-quota-probe]
+    types: [completed]
+  push:
+    branches: [master]
+    paths: [ops/quota/registry.json, ops/delphi/**]
+  schedule:
+    - cron: "23 11 */3 * *"   # liveness heartbeat only (every 3 days, 04:23 PDT / 11:23 UTC)
+  workflow_dispatch:
+    inputs:
+      reason: { description: "Why (manual | delphi-tick | ...)", required: false, default: "workflow_dispatch", type: string }
+      depth:  { description: "Acceleration chain depth (bounded)", required: false, default: "0", type: string }
+      feedback_rfp: { description: "Flywheel: RFP issue number with a real outcome", required: false, default: "", type: string }
+      outcome: { description: "confirmed | miss", required: false, default: "", type: string }
+
+permissions:
+  contents: read
+  issues: write
+  actions: write   # read quota-readings artifact + chain a bounded delphi-tick dispatch
+
+concurrency:
+  group: delphi-gate
+  cancel-in-progress: false
+
+jobs:
+  gate:
+    if: >-
+      (github.event_name != 'issues' || contains(github.event.issue.labels.*.name, 'delphi:rfp')) &&
+      (github.event_name != 'issue_comment' || (contains(github.event.issue.labels.*.name, 'delphi:rfp') && github.event.comment.user.type != 'Bot'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      GH_TOKEN: ${{ github.token }}
+      DELPHI_PANEL: ${{ (secrets.OPENROUTER_API_KEY != '' || secrets.GEMINI_API_KEY != '') && 'llm' || 'rubric' }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      DELPHI_LLM_MAX: "30"
+      QUOTA_WEIGHTS_PATH: quota-out/routing-weights.json
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts/delphi
+            ops/delphi
+            ops/quota
+          persist-credentials: false
+
+      - name: Live quota readings (best effort, names only)
+        continue-on-error: true
+        env:
+          WR_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          mkdir -p quota-out
+          id="${WR_ID:-$(gh run list -R "$GITHUB_REPOSITORY" -w vercel-quota-probe.yml -s success -L 1 --json databaseId -q '.[0].databaseId' || true)}"
+          if [ -n "$id" ]; then gh run download "$id" -R "$GITHUB_REPOSITORY" -n quota-readings -D quota-out || true; fi
+          ls quota-out || true
+
+      - name: Flywheel feedback
+        id: fb
+        env:
+          EV: ${{ github.event_name }}
+          IN_RFP: ${{ inputs.feedback_rfp }}
+          IN_OUT: ${{ inputs.outcome }}
+          RD_RFP: ${{ github.event.client_payload.rfp }}
+          RD_OUT: ${{ github.event.client_payload.outcome }}
+          RD_ACTION: ${{ github.event.action }}
+          C_BODY: ${{ github.event.comment.body }}
+          C_ASSOC: ${{ github.event.comment.author_association }}
+          C_ISSUE: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          rfp=""; out=""
+          if [ "$EV" = workflow_dispatch ] && [ -n "$IN_RFP" ]; then rfp="$IN_RFP"; out="$IN_OUT"; fi
+          if [ "$EV" = repository_dispatch ] && [ -n "$RD_RFP" ]; then
+            rfp="$RD_RFP"; out="${RD_OUT:-}"; [ "$RD_ACTION" = hindsight-forecast-miss ] && out=miss
+          fi
+          if [ "$EV" = issue_comment ] && printf '%s' "$C_BODY" | grep -Eq '^/delphi (confirmed|miss)'; then
+            case "$C_ASSOC" in OWNER|MEMBER|COLLABORATOR) rfp="$C_ISSUE"; out="$(printf '%s' "$C_BODY" | sed -nE 's#^/delphi (confirmed|miss).*#\1#p' | head -1)";; esac
+          fi
+          if [ -n "$rfp" ] && printf '%s' "$rfp" | grep -Eq '^[0-9]+$' && { [ "$out" = confirmed ] || [ "$out" = miss ]; }; then
+            python3 -m scripts.delphi.gate feedback --rfp "$rfp" --outcome "$out"
+          fi
+
+      - name: Oracle + blind panel + rounds (all open RFPs, idempotent)
+        env:
+          REASON: ${{ inputs.reason || github.event.action || github.event_name }}
+          DEPTH: ${{ inputs.depth || '0' }}
+        run: |
+          set -euo pipefail
+          case "$DEPTH" in ''|*[!0-9]*) DEPTH=0;; esac
+          python3 -m scripts.delphi.gate run --reason "$REASON" --depth "$DEPTH"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: delphi-records-${{ github.run_id }}
+          path: delphi-out.jsonl
+          retention-days: 7
+          if-no-files-found: ignore

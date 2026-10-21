@@ -1,0 +1,17 @@
+{
+  "schema": "delphi.panel.v1",
+  "doc": "docs/ops/DELPHI-WEIGHTING.md",
+  "formula": "effective_score = sum(w_i * score_i) / sum(w_i); w_i = base_i * (0.5 + gate_pass_rate_i) * (elo_i / 1500)",
+  "criteria": "docs/ops/DECISION-MATRIX.md: Impact 1-5 x Importance 1-5 = score 1-25; bands P0 20-25, High 15-19, Medium 9-14, Backlog <=8",
+  "rounds": {"max": 3, "converge_iqr": 4.0, "converge_range": 6.0, "pull_to_median": 0.5},
+  "award": {"shadow_min": 15.0, "shadow_traffic_share": 0.05, "park_recheck_days": {"medium": 14, "backlog": 30}, "promote_after_confirmed_runs": 3},
+  "flywheel": {"ewma_alpha": 0.2, "elo_k": 16},
+  "seed_note": "Initial weights are neutral defaults (gate_pass_rate 0.5, elo 1500). The live state is the newest JSON comment on the 'Delphi panel weights ledger' issue; this file is only the cold-start default.",
+  "roles": {
+    "OPERATOR":     {"base": 1.2, "gate_pass_rate": 0.5, "elo": 1500, "hits": 0, "misses": 0},
+    "builder":      {"base": 1.0, "gate_pass_rate": 0.5, "elo": 1500, "hits": 0, "misses": 0},
+    "reviewer":     {"base": 1.0, "gate_pass_rate": 0.5, "elo": 1500, "hits": 0, "misses": 0},
+    "Scout":        {"base": 0.8, "gate_pass_rate": 0.5, "elo": 1500, "hits": 0, "misses": 0},
+    "cost_auditor": {"base": 1.2, "gate_pass_rate": 0.5, "elo": 1500, "hits": 0, "misses": 0}
+  }
+}

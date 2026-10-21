@@ -3,13 +3,22 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import math
 import re
+from datetime import datetime, timezone
 from pathlib import Path
 
 _SHA = re.compile(r"^[0-9a-f]{40}$")
 _ALLOWED = {"task_started", "task_completed", "tool_call", "tool_retry", "handoff", "active_window"}
 _STATUS = {"ok": "success", "success": "success", "error": "error", "failed": "failed", "skipped": "skipped"}
+
+
+def _identifier(namespace: str, value: str) -> str:
+    """Retain stable grouping without exporting arbitrary source metadata text."""
+    digest = hashlib.sha256((namespace + "\0" + value).encode("utf-8")).hexdigest()
+    return f"ates-{namespace}:{digest}"
 
 
 def convert_record(record: dict, *, run_id: int | None = None, attempt: int | None = None, source_sha: str | None = None) -> dict | None:
@@ -21,25 +30,32 @@ def convert_record(record: dict, *, run_id: int | None = None, attempt: int | No
     timestamp = record.get(timestamp_key) or record.get("started_at") or record.get("ended_at")
     if not isinstance(timestamp, str) or not timestamp:
         raise ValueError("recognized span is missing a timestamp")
+    try:
+        parsed = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
+        if parsed.tzinfo is None:
+            raise ValueError("timezone required")
+        timestamp = parsed.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
+    except ValueError:
+        raise ValueError("recognized span requires a timezone-aware timestamp") from None
     status = _STATUS.get(record.get("status", "ok"))
     if status is None:
         raise ValueError("unrecognized span status")
     task_id = record.get("benchmark_case_id")
     if not isinstance(task_id, str) or not task_id:
         raise ValueError("recognized span is missing benchmark_case_id")
-    event = {"timestamp": timestamp, "event": kind, "task_id": task_id, "status": status}
+    event = {"timestamp": timestamp, "event": kind, "task_id": _identifier("task", task_id), "status": status}
     role = record.get("role")
     if isinstance(role, str) and role:
-        event["agent_id"] = role
+        event["agent_id"] = _identifier("role", role)
     if kind in {"tool_call", "tool_retry"}:
         tool = record.get("tool")
         if not isinstance(tool, str) or not tool:
             raise ValueError(f"{kind} span is missing tool label")
-        event["tool"] = tool
+        event["tool"] = _identifier("tool", tool)
     duration = record.get("duration_ms")
     if duration is not None:
-        if not isinstance(duration, (int, float)) or isinstance(duration, bool) or duration < 0:
-            raise ValueError("duration_ms must be a non-negative number")
+        if not isinstance(duration, (int, float)) or isinstance(duration, bool) or not math.isfinite(duration) or duration < 0:
+            raise ValueError("duration_ms must be a finite non-negative number")
         event["duration_ms"] = duration
     if run_id is not None:
         event["gha_run_id"] = run_id

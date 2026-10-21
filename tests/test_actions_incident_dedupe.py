@@ -6,17 +6,19 @@ from scripts.ci.actions_incident_dedupe import reconcile_incident
 
 
 class ActionsIncidentDedupeTests(unittest.TestCase):
-    def test_watcher_serializes_incident_updates_and_checks_out_helper(self):
+    def test_watcher_is_dispatch_only_after_spam_reduction(self):
         workflow = Path(".github/workflows/actions-run-watcher.yml").read_text(encoding="utf-8")
-        self.assertIn("queue: max", workflow)
-        self.assertIn("group: actions-run-watcher-${{ github.event.workflow_run.name }}-${{ github.event.workflow_run.conclusion }}", workflow)
-        self.assertIn("Checkout observer implementation", workflow)
-        ates = Path(".github/workflows/agent-throughput-evidence.yml").read_text(encoding="utf-8")
-        self.assertIn("actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02", ates)
-        self.assertIn('--paginate --slurp "repos/$REPOSITORY/issues?state=open&per_page=100"', workflow)
-        self.assertIn('if not row.get("pull_request")', workflow)
-        self.assertIn('r.get("title")==expected', workflow)
-        self.assertIn("actions-notified:${fp}", workflow)
+        # workflow_run trigger removed to eliminate skip-run listing spam.
+        self.assertNotIn("workflow_run:", workflow)
+        self.assertIn("workflow_dispatch:", workflow)
+        self.assertIn("group: actions-run-watcher-manual", workflow)
+        self.assertIn("if: github.event_name == 'workflow_dispatch'", workflow)
+
+    def test_cadence_emits_lag_failure_incidents(self):
+        cadence = Path(".github/workflows/cadence-lead-lag.yml").read_text(encoding="utf-8")
+        self.assertIn("Emit incidents for lag_failure", cadence)
+        self.assertIn("gh issue create", cadence)
+        self.assertIn("cron: \"12 */4 * * *\"", cadence)
 
     def test_first_fingerprint_requests_notification_and_records_run(self):
         result = reconcile_incident(

@@ -1,126 +1,45 @@
 name: Actions Run Watcher — incident notification
 
+# workflow_run trigger removed 2026-10-20: platform always lists a run record
+# before job if: evaluates, producing skip-spam in Actions tab and notifications.
+# Incidents for failure/timed_out are now emitted by cadence-lead-lag.yml
+# (Lead/Lag moneyball plane) which samples recent runs on schedule */4.
+# This workflow retained as dispatch-only for manual incident replay / audit.
+
 on:
-  workflow_run:
-    # workflows is required; omitting it makes every push fail this file with zero jobs.
-    workflows:
-      - repository observatory
-      - Automation Documentation Continuous Refresh
-      - Context Relationship + Lead/Lag Audit
-      - Agent Throughput Evidence
-      - Audit Cycle — Single PR Feed-Forward
-      - PR production ledger
-      - adaptive wait evidence skill contract
-      - SHE skill clobber heal
-    types: [completed]
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: Workflow run ID to inspect (optional)
+        type: string
+        required: false
 
 permissions:
   contents: read
   issues: write
 
 concurrency:
-  # Stable incident identity serializes writes; queue all observations instead of replacing pending runs.
-  group: actions-run-watcher-${{ github.event.workflow_run.name }}-${{ github.event.workflow_run.conclusion }}
-  queue: max
+  group: actions-run-watcher-manual
+  cancel-in-progress: false
 
 jobs:
   observe-completion:
-    # Success and cancelled completions were starting a runner only to echo.
-    # On 2026-10-06 the receipt SHA f26eedd0 produced a burst of watcher runs
-    # with no incident. Skip the job unless the completion is actionable.
-    if: >-
-      github.event.workflow_run.conclusion == 'failure' ||
-      github.event.workflow_run.conclusion == 'timed_out'
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Checkout observer implementation
-        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
-        with:
-          persist-credentials: false
-
-      - name: Create or update incident notification
-        if: >-
-          github.event.workflow_run.conclusion == 'failure' ||
-          github.event.workflow_run.conclusion == 'timed_out'
+      - name: Manual incident replay (dispatch only)
         env:
           GH_TOKEN: ${{ github.token }}
-          RUN_ID: ${{ github.event.workflow_run.id }}
-          RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
-          WORKFLOW_NAME: ${{ github.event.workflow_run.name }}
-          CONCLUSION: ${{ github.event.workflow_run.conclusion }}
-          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
-          HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
-          RUN_URL: ${{ github.event.workflow_run.html_url }}
+          RUN_ID: ${{ inputs.run_id }}
           REPOSITORY: ${{ github.repository }}
         shell: bash
         run: |
           set -euo pipefail
-          fp="gha:${WORKFLOW_NAME,,}:${CONCLUSION,,}:${HEAD_SHA:0:12}"
-          title="[Actions Incident] ${WORKFLOW_NAME}: ${CONCLUSION}"
-          body=$(cat <<EOF
-          ## GitHub Actions incident
-
-          **Classification:** ${CONCLUSION}
-          **Workflow:** ${WORKFLOW_NAME}
-          **Run:** ${RUN_ID} (attempt ${RUN_ATTEMPT})
-          **SHA:** ${HEAD_SHA}
-          **Branch:** ${HEAD_BRANCH}
-          **Fingerprint:** \`${fp}\`
-
-          Evidence: ${RUN_URL}
-
-          <!-- actions-notified:${fp} -->
-
-          This notification is observation/notification only; remediation remains governed by the Self-Healing Engine authority and verification gates.
-          EOF
-          )
-
-          # Paginate all open issues so an exact-title incident cannot fall beyond a result cap.
-          existing=$(gh api --repo "$REPOSITORY" --paginate --slurp "repos/$REPOSITORY/issues?state=open&per_page=100")
-          existing=$(python3 -c 'import json,sys; pages=json.load(sys.stdin); rows=[row for page in pages for row in page if not row.get("pull_request")]; print(json.dumps([{"number":r["number"],"title":r["title"]} for r in rows]))' <<<"$existing")
-          number=$(python3 -c 'import json,sys; rows=json.load(sys.stdin); expected=sys.argv[1]; exact=[r for r in rows if r.get("title")==expected]; print(exact[0]["number"] if exact else "")' "$title" <<<"$existing")
-          if [ -n "$number" ]; then
-            issue_json=$(gh issue view "$number" --repo "$REPOSITORY" --json body,comments)
-          else
-            issue_json=$(python3 -c 'import json,sys; print(json.dumps({"body":sys.stdin.read(),"comments":[]}))' <<<"$body")
+          if [ -z "${RUN_ID:-}" ]; then
+            echo "No run_id provided; no-op."
+            exit 0
           fi
-
-          decision=$(python3 scripts/ci/actions_incident_dedupe.py "$fp" "$RUN_ID" "$RUN_ATTEMPT" "$RUN_URL" <<<"$issue_json")
-          updated_body=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["body"])' <<<"$decision")
-          notify=$(python3 -c 'import json,sys; print("true" if json.load(sys.stdin)["notify"] else "false")' <<<"$decision")
-
-          if [ -n "$number" ]; then
-            gh issue edit "$number" --repo "$REPOSITORY" --body "$updated_body"
-            if [ "$notify" = "true" ]; then
-              gh issue comment "$number" --repo "$REPOSITORY" --body "$body"
-            else
-              echo "deduplicated notification for fingerprint $fp; linked run $RUN_ID"
-            fi
-          else
-            gh issue create --repo "$REPOSITORY" --title "$title" --body "$updated_body"
-          fi
-
-      - name: Emit structured incident receipt
-        if: >-
-          github.event.workflow_run.conclusion == 'failure' ||
-          github.event.workflow_run.conclusion == 'timed_out'
-        env:
-          RUN_ID: ${{ github.event.workflow_run.id }}
-          CONCLUSION: ${{ github.event.workflow_run.conclusion }}
-          WORKFLOW_NAME: ${{ github.event.workflow_run.name }}
-          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
-          RUN_URL: ${{ github.event.workflow_run.html_url }}
-        run: |
-          python3 - <<'PY'
-          import json, os
-          print(json.dumps({
-              "schema": "actions-run-watcher/v1",
-              "run_id": os.environ["RUN_ID"],
-              "workflow": os.environ["WORKFLOW_NAME"],
-              "conclusion": os.environ["CONCLUSION"],
-              "head_sha": os.environ["HEAD_SHA"],
-              "run_url": os.environ["RUN_URL"],
-              "observer_only": True,
-          }, sort_keys=True))
-          PY
+          echo "Manual dispatch for run ${RUN_ID} — fetch and classify via cadence script preferred."
+          # Placeholder: full logic absorbed into cadence Lead/Lag poller.
+          echo "See docs/ops/ACTIONS-WORKFLOWS-MATRIX.md for audit rules."

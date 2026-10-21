@@ -72,6 +72,54 @@ class ActionsIncidentDedupeTests(unittest.TestCase):
         self.assertFalse(result["notify"])
         self.assertIn("actions-run:103:2", result["body"])
 
+    def test_body_delivery_marker_does_not_access_comments(self):
+        class BodyMarkerIssue(dict):
+            def get(self, key, default=None):
+                if key == "comments":
+                    raise AssertionError("comments should not be accessed")
+                return super().get(key, default)
+
+        result = reconcile_incident(
+            BodyMarkerIssue(body="<!-- actions-notified:fp -->"),
+            fingerprint="fp",
+            run_id="103a",
+            run_attempt="1",
+            run_url="https://github.com/example/repo/actions/runs/103a",
+        )
+        self.assertFalse(result["notify"])
+
+    def test_comment_marker_stops_before_converting_later_bodies(self):
+        class ExplodingBody:
+            def __str__(self):
+                raise AssertionError("later comment body should not be converted")
+
+        result = reconcile_incident(
+            {
+                "body": "Incident body",
+                "comments": [
+                    {"body": "<!-- actions-notified:fp -->"},
+                    {"body": ExplodingBody()},
+                ],
+            },
+            fingerprint="fp",
+            run_id="103b",
+            run_attempt="1",
+            run_url="https://github.com/example/repo/actions/runs/103b",
+        )
+        self.assertFalse(result["notify"])
+
+    def test_malformed_and_non_list_comments_preserve_notify_behavior(self):
+        for comments in ("<!-- actions-notified:fp -->", [None, "text", {}]):
+            with self.subTest(comments=comments):
+                result = reconcile_incident(
+                    {"body": "Incident body", "comments": comments},
+                    fingerprint="fp",
+                    run_id="103c",
+                    run_attempt="1",
+                    run_url="https://github.com/example/repo/actions/runs/103c",
+                )
+                self.assertTrue(result["notify"])
+
     def test_reprocessing_same_run_does_not_duplicate_run_link(self):
         first = reconcile_incident(
             {},

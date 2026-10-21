@@ -44,6 +44,7 @@ import os
 import sys
 import textwrap
 import time
+from datetime import datetime, timezone
 from pathlib import Path
 
 # ---------------------------------------------------------------- ANSI
@@ -163,9 +164,49 @@ def wrap(text: str, width: int, indent: str = "  ") -> list[str]:
     ) or [indent + text]
 
 
+def public_readings(services: list[dict], readings: list[dict], now=None) -> list[dict]:
+    """Allowlist display metadata; never expose private account balances or notes."""
+    now = datetime.now(timezone.utc) if now is None else now
+    by_id, seen = {}, set()
+    lanes = {s.get("id"): s.get("lane") for s in services}
+    for raw in readings:
+        sid = raw.get("resource_id")
+        if not isinstance(sid, str):
+            continue
+        sid = sid.removeprefix("quota:")
+        row = {"resource_id": sid, "status": "unknown"}
+        if sid in seen:
+            by_id[sid] = row
+            continue
+        seen.add(sid)
+        if lanes.get(sid) == "model":
+            row["status"] = "private_preflight"
+        else:
+            try:
+                stamp = datetime.fromisoformat(raw["observed_at"].replace("Z", "+00:00"))
+                if stamp.tzinfo is None:
+                    raise ValueError("timezone required")
+                age = (now - stamp).total_seconds()
+                if age < 0:
+                    pass
+                elif age > 900:
+                    row["status"] = "stale"
+                elif raw.get("horizon") != "H0" or raw.get("evidence_status") != "confirmed":
+                    row["status"] = "reported"
+                elif raw.get("status") in {"ok", "watch", "exhausted", "cap_tripped"}:
+                    reset = raw.get("reset")
+                    if reset is None or datetime.fromisoformat(reset.replace("Z", "+00:00")) > now:
+                        row["status"] = raw["status"]
+            except (KeyError, ValueError, TypeError, AttributeError):
+                pass
+        by_id[sid] = row
+    return list(by_id.values())
+
+
 def render(services: list[dict], readings: list[dict], meta: dict,
            width: int, source_label: str) -> str:
     width = max(40, min(width, 200))
+    readings = public_readings(services, readings)
     by_id = {r.get("resource_id"): r for r in readings if r.get("resource_id")}
 
     # If we only got readings (no registry), synthesise service rows
@@ -198,10 +239,10 @@ def render(services: list[dict], readings: list[dict], meta: dict,
                  f"  ({len(services)} services)")
     gen = meta.get("generated_at")
     if gen:
-        lines.append(f" Readings generated: {gen}")
+        lines.append(f" Snapshot generated (not observation time): {gen}")
     lines.extend(wrap(f"Source: {source_label}", width, indent=" "))
     lines.append(" Limits are documented entitlements, not balances.")
-    lines.append(" A balance is shown only when a live reading exists.")
+    lines.append(" Private balances are hidden; unknown is not healthy or admitted.")
     lines.append(c(rule, CYAN))
 
     # ---- alerts first -------------------------------------------------
@@ -272,8 +313,8 @@ def render(services: list[dict], readings: list[dict], meta: dict,
                     # Reading exists but carries no used value: say so,
                     # do not synthesise a balance from the limit.
                     lines.extend(wrap(
-                        "live reading: status reported, no used value "
-                        "(no balance shown)", width, indent="    "))
+                        "Public evidence state only; no account balance or runtime "
+                        "admission implied.", width, indent="    "))
                 if r.get("note"):
                     lines.extend(wrap(f"note: {r['note']}", width,
                                       indent="    "))
@@ -283,6 +324,17 @@ def render(services: list[dict], readings: list[dict], meta: dict,
                 lines.extend(wrap(f"No live reading{suffix}", width,
                                   indent="    "))
         lines.append(thin)
+
+    families = meta.get("provider_quota_coverage", {}).get("provider_families", [])
+    if families:
+        lines.append(" PROVIDER QUOTA-MANAGER COVERAGE (metadata only)")
+        for family in families:
+            lines.extend(wrap(
+                f"{family['provider_family']}: {family['quota_manager_owner']} / "
+                f"{family['freshness_owner']}; {family['observation_method']}; "
+                f"registry: {', '.join(family['service_ids']) or 'MISSING — explicit gap'}",
+                width, indent="  "))
+        lines.append(" Coverage and quota checks do not grant runtime admission.")
 
     n_alert = len(alerts)
     n_live = len(by_id)
@@ -303,6 +355,8 @@ def main(argv: list[str] | None = None) -> int:
                     help="quota.json (readings, registry, or merged)")
     ap.add_argument("--registry", default=None,
                     help="registry JSON (3l0.quota-registry.v1)")
+    ap.add_argument("--coverage", default=None,
+                    help="public provider-quota-coverage/v1 metadata (default: repository snapshot)")
     ap.add_argument("--once", action="store_true",
                     help="print one frame and exit")
     ap.add_argument("--no-color", action="store_true",
@@ -370,10 +424,14 @@ def main(argv: list[str] | None = None) -> int:
                 meta = {**rd, **{k: v for k, v in meta.items() if v}}
                 sources.append(str(rd_path))
 
+    coverage_path = Path(args.coverage) if args.coverage else script_dir.parent / "apps/help-wanted-dashboard/data/provider-quota-coverage.json"
+    coverage = load_json(coverage_path) if coverage_path.is_file() else {}
+    if coverage.get("schema") != "provider-quota-coverage/v1":
+        coverage = {}
     source_label = " + ".join(sources)
 
     def frame() -> str:
-        return render(services, readings, meta, width, source_label)
+        return render(services, readings, {**meta, "provider_quota_coverage": coverage}, width, source_label)
 
     if args.once or not sys.stdout.isatty():
         sys.stdout.write(frame())

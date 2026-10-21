@@ -34,6 +34,13 @@ class KahnPlanTests(unittest.TestCase):
         self.assertEqual(first.graph_sha256, second.graph_sha256)
         self.assertEqual(first.topological_order, ("a", "b", "y", "z"))
 
+    def test_ready_frontiers_are_concurrent_waves_not_heap_pop_snapshots(self):
+        plan = plan_dag(["a", "b", "c", "d"], [("a", "b"), ("a", "c"), ("b", "d"), ("c", "d")])
+        self.assertEqual(plan.ready_frontiers, (("a",), ("b", "c"), ("d",)))
+
+        disconnected = plan_dag(["z", "b", "a", "y"], [("a", "y"), ("b", "z")])
+        self.assertEqual(disconnected.ready_frontiers, (("a", "b"), ("y", "z")))
+
     def test_duplicate_edges_are_deduplicated(self):
         plan = plan_dag(["a", "b"], [("a", "b"), ("a", "b")])
         self.assertEqual(plan.edge_count, 1)

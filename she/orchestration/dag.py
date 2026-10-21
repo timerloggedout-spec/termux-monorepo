@@ -67,8 +67,10 @@ def plan_dag(nodes: Iterable[str], edges: Iterable[tuple[str, str]]) -> DagPlan:
 
     adjacency = {node: set() for node in node_set}
     indegree = {node: 0 for node in node_set}
+    prerequisites = {node: set() for node in node_set}
     for source, target in edge_set:
         adjacency[source].add(target)
+        prerequisites[target].add(source)
         indegree[target] += 1
 
     graph_payload = {
@@ -84,10 +86,7 @@ def plan_dag(nodes: Iterable[str], edges: Iterable[tuple[str, str]]) -> DagPlan:
     ready = [node for node, degree in indegree.items() if degree == 0]
     heapq.heapify(ready)
     order: list[str] = []
-    frontiers: list[tuple[str, ...]] = []
     while ready:
-        frontier = tuple(sorted(ready))
-        frontiers.append(frontier)
         current = heapq.heappop(ready)
         order.append(current)
         for dependent in sorted(adjacency[current]):
@@ -96,6 +95,18 @@ def plan_dag(nodes: Iterable[str], edges: Iterable[tuple[str, str]]) -> DagPlan:
                 heapq.heappush(ready, dependent)
 
     residual = tuple(sorted(node for node, degree in indegree.items() if degree > 0))
+    # A frontier is a concurrent dependency wave, not the ready queue after
+    # each individual heap pop. Keep the lexical Kahn order above, then group
+    # emitted nodes by their longest prerequisite path.
+    depth: dict[str, int] = {}
+    for node in order:
+        depth[node] = max(
+            (depth[parent] + 1 for parent in prerequisites[node]), default=0
+        )
+    frontier_groups: dict[int, list[str]] = {}
+    for node, level in depth.items():
+        frontier_groups.setdefault(level, []).append(node)
+    frontiers = [tuple(sorted(frontier_groups[level])) for level in sorted(frontier_groups)]
     return DagPlan(
         algorithm_version=ALGORITHM_VERSION,
         graph_sha256=graph_hash,

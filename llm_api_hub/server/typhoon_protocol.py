@@ -50,7 +50,7 @@ def build_chat_request(payload: Mapping[str, Any]) -> dict[str, Any]:
     for message in messages:
         if not isinstance(message, Mapping) or set(message) != {"role", "content"}:
             _fail("invalid_message")
-        if message.get("role") not in {"system", "user", "assistant"} or not isinstance(message.get("content"), str):
+        if not isinstance(message.get("role"), str) or message["role"] not in {"system", "user", "assistant"} or not isinstance(message.get("content"), str):
             _fail("invalid_message")
         normalized.append({"role": message["role"], "content": message["content"]})
     result: dict[str, Any] = {"model": model, "messages": normalized, "stream": False}
@@ -63,14 +63,14 @@ def build_chat_request(payload: Mapping[str, Any]) -> dict[str, Any]:
     for field in ("temperature", "top_p", "presence_penalty", "frequency_penalty", "repetition_penalty"):
         if field in payload:
             value = payload[field]
-            if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+            if isinstance(value, bool) or not isinstance(value, (int, float)):
                 _fail("invalid_value")
             bounds = {
                 "temperature": (0, 2), "top_p": (0, 1),
                 "presence_penalty": (-2, 2), "frequency_penalty": (-2, 2),
                 "repetition_penalty": (1, 2),
             }[field]
-            if not bounds[0] <= value <= bounds[1]:
+            if not bounds[0] <= value <= bounds[1] or not math.isfinite(value):
                 _fail("invalid_value")
             result[field] = value
     if "stop" in payload:

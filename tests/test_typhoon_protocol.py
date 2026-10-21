@@ -22,10 +22,48 @@ def test_request_fixture_and_no_auth_material():
     assert "Authorization" not in out and "api_key" not in out
 
 
+@pytest.mark.parametrize("patch,code", [
+    ({"model": None}, "unsupported_model"),
+    ({"model": "openrouter/typhoon"}, "unsupported_model"),
+    ({"tools": []}, "unsupported_property"),
+    ({"base_url": "https://untrusted.invalid"}, "unsupported_property"),
+    ({"stream": True}, "streaming_unsupported"),
+    ({"stream": 1}, "streaming_unsupported"),
+    ({"messages": []}, "invalid_messages"),
+    ({"messages": [{"role": "developer", "content": "synthetic"}]}, "invalid_message"),
+    ({"messages": [{"role": "user", "content": [{"type": "image_url"}]}]}, "invalid_message"),
+    ({"max_tokens": True}, "invalid_value"),
+])
+def test_unsupported_or_malformed_request_fields(patch, code):
+    payload = fixture("chat_request.json")
+    payload.update(patch)
+    with pytest.raises(typhoon.TyphoonProtocolError) as error:
+        typhoon.build_chat_request(payload)
+    assert error.value.code == code
+
+
 def test_response_fixture_minimal_normalization():
     result = typhoon.normalize_chat_response(fixture("chat_response.json"), "typhoon-v2.5-30b-a3b-instruct")
     assert result["choices"][0]["message"]["content"] == "Hello."
     assert result["usage"]["total_tokens"] == 9
+
+
+def test_mismatched_response_model_is_not_accepted():
+    with pytest.raises(typhoon.TyphoonProtocolError, match="^response_model_mismatch$"):
+        typhoon.normalize_chat_response(fixture("chat_response.json"), "typhoon-v2.1-12b-instruct")
+
+
+def test_public_contract_is_fresh_and_does_not_invent_remaining_or_reset():
+    first = typhoon.public_documentation_contract()
+    first["models"].clear()
+    second = typhoon.public_documentation_contract()
+    assert second["models"] == list(typhoon.MODELS)
+    assert second["credential_env_name"] == "OPENTYPHOON_API_KEY"
+    assert second["documented_public_rate_caps"] == {"requests_per_second": 5, "requests_per_minute": 200}
+    assert second["quota_unknowns"] and second["legal_hold_reasons"]
+    assert "8K" in second["context_and_output_caps"]
+    assert "128K/56K" in second["context_and_output_caps"]
+    assert "quota_remaining" not in second and "reset_at" not in second
 
 
 def test_rate_limit_documented_timestamp_only():
@@ -39,10 +77,18 @@ def test_numeric_bounds(field, values):
         with pytest.raises(typhoon.TyphoonProtocolError): typhoon.build_chat_request(p)
 
 
-@pytest.mark.parametrize("value", [True, float("nan"), float("inf"), -float("inf")])
+@pytest.mark.parametrize("value", [True, float("nan"), float("inf"), -float("inf"), 10**1000])
 def test_numeric_nonfinite_and_bool_rejected(value):
     p=fixture("chat_request.json"); p["temperature"]=value
     with pytest.raises(typhoon.TyphoonProtocolError): typhoon.build_chat_request(p)
+
+
+@pytest.mark.parametrize("role", [[], {}, None, 123])
+def test_request_role_type_uses_fixed_protocol_error(role):
+    payload = fixture("chat_request.json")
+    payload["messages"][0]["role"] = role
+    with pytest.raises(typhoon.TyphoonProtocolError, match="^invalid_message$"):
+        typhoon.build_chat_request(payload)
 
 
 def test_stop_limit_and_no_invented_token_cap():

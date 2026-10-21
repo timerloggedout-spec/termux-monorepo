@@ -1,6 +1,6 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-21T10:04:03Z UTC · receipts=3382 · foreign_open=37 · tributes=111_
+_Generated 2026-10-21T13:48:01Z UTC · receipts=3419 · foreign_open=37 · tributes=111_
 
 ## Tributes (contributor ledger)
 
@@ -85,6 +85,6 @@ _Generated 2026-10-21T10:04:03Z UTC · receipts=3382 · foreign_open=37 · tribu
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) — help-wanted: stake + contribute for #20
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Operational outcomes · actioned=192 skipped=3190 failed=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 3154, 'followup_reengage': 50, 'followup_stale_nudge': 128, 'followup_changes': 2}`
+## Operational outcomes · actioned=192 skipped=3227 failed=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 3191, 'followup_reengage': 50, 'followup_stale_nudge': 128, 'followup_changes': 2}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

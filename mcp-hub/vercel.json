@@ -14,5 +14,8 @@
       "maxDuration": 60
     }
   },
-  "ignoreCommand": "bash \"$(git rev-parse --show-toplevel)/scripts/ci/vercel_ignore_build.sh\" mcp-hub"
+  "ignoreCommand": "bash \"$(git rev-parse --show-toplevel)/scripts/ci/vercel_ignore_build.sh\" mcp-hub",
+  "git": {
+    "deploymentEnabled": false
+  }
 }

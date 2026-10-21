@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "sources": [
+    {
+      "source_id": "w3c-skos-reference",
+      "title": "SKOS Simple Knowledge Organization System Reference",
+      "url": "https://www.w3.org/TR/skos-reference/",
+      "source_type": "standard",
+      "authority": "W3C"
+    },
+    {
+      "source_id": "w3c-skos-primer",
+      "title": "SKOS Primer",
+      "url": "https://www.w3.org/TR/skos-primer/",
+      "source_type": "standard",
+      "authority": "W3C"
+    },
+    {
+      "source_id": "wolfram-worddata",
+      "title": "Wolfram Language WordData",
+      "url": "https://reference.wolfram.com/language/ref/WordData.html",
+      "source_type": "technical_documentation",
+      "authority": "Wolfram"
+    },
+    {
+      "source_id": "issue-320",
+      "title": "Notation Sets",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/320",
+      "source_type": "repository_issue",
+      "authority": "termux-monorepo"
+    },
+    {
+      "source_id": "issue-1115",
+      "title": "Domain Composition Matrix",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1115",
+      "source_type": "repository_issue",
+      "authority": "termux-monorepo"
+    }
+  ],
+  "concepts": [
+    {
+      "concept_id": "category_theory.morphism",
+      "domain_id": "category_theory",
+      "preferred_label": "morphism",
+      "definition": "A morphism is an arrow in a category; exact formal properties depend on the category.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "category_theory.composition",
+      "domain_id": "category_theory",
+      "preferred_label": "morphism composition",
+      "definition": "Composition combines composable morphisms, with order conventions determined by notation.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "functional_programming.left_to_right_composition",
+      "domain_id": "functional_programming",
+      "preferred_label": "left-to-right function composition",
+      "definition": "A composition convention that presents the first operation before the next operation.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "haskell.monadic_bind",
+      "domain_id": "haskell",
+      "preferred_label": "monadic bind",
+      "definition": "The operation commonly written >>=, combining a monadic value with a function returning a monadic value.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "issue-320"
+      ]
+    }
+  ],
+  "labels": [
+    {
+      "label_id": "lbl-morphism-formal",
+      "concept_id": "category_theory.morphism",
+      "text": "morphism",
+      "label_type": "preferred_formal",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-morphism-arrow",
+      "concept_id": "category_theory.morphism",
+      "text": "arrow",
+      "label_type": "alternative_synonym",
+      "language": "en",
+      "audience": "learner",
+      "register": "technical",
+      "status": "candidate",
+      "source_ids": [
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-morphism-plain",
+      "concept_id": "category_theory.morphism",
+      "text": "a structure-respecting arrow",
+      "label_type": "preferred_plain_language",
+      "language": "en",
+      "audience": "general",
+      "register": "plain_language",
+      "status": "candidate",
+      "source_ids": [
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-compose-plain",
+      "concept_id": "category_theory.composition",
+      "text": "apply one mapping, then the next",
+      "label_type": "preferred_plain_language",
+      "language": "en",
+      "audience": "general",
+      "register": "plain_language",
+      "status": "candidate",
+      "source_ids": [
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-compose-ad-hoc",
+      "concept_id": "category_theory.composition",
+      "text": "glue the arrows together",
+      "label_type": "ad_hoc",
+      "language": "en",
+      "audience": "learner",
+      "register": "colloquial",
+      "status": "candidate",
+      "source_ids": [
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-bind-symbol",
+      "concept_id": "haskell.monadic_bind",
+      "text": ">>=",
+      "label_type": "symbolic_notation",
+      "language": "und",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "issue-320"
+      ]
+    }
+  ],
+  "mappings": [
+    {
+      "mapping_id": "map-morphism-arrow",
+      "source_concept_id": "category_theory.morphism",
+      "target_concept_id": "category_theory.morphism",
+      "relation": "same_concept_label",
+      "status": "candidate",
+      "confidence": 0.5,
+      "evidence_note": "Label-level candidate inherited from Issue #320; domain review required.",
+      "source_ids": [
+        "issue-320"
+      ]
+    },
+    {
+      "mapping_id": "map-bind-not-compose",
+      "source_concept_id": "haskell.monadic_bind",
+      "target_concept_id": "category_theory.composition",
+      "relation": "related_match",
+      "status": "candidate",
+      "confidence": 0.35,
+      "evidence_note": "Keep related rather than exact: typeclass/monadic semantics and ordinary composition differ.",
+      "source_ids": [
+        "issue-320"
+      ]
+    }
+  ]
+}

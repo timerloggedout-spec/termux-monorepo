@@ -5,6 +5,7 @@ on:
       - "scripts/laya_decision_stub.py"
       - "scripts/laya_sweep.py"
       - "tests/test_laya_sweep.py"
+      - "tests/test_laya_server.py"
       - "deploy/laya/**"
       - "render.yaml"
   workflow_dispatch:
@@ -22,6 +23,6 @@ jobs:
       - name: Syntax
         run: python -m py_compile scripts/laya_decision_stub.py scripts/laya_sweep.py deploy/laya/server.py
       - name: Tests
-        run: python -m unittest tests.test_laya_sweep -v
+        run: python -m unittest tests.test_laya_sweep tests.test_laya_server -v
       - name: Mock sweep
         run: python scripts/laya_sweep.py --output /tmp/laya.jsonl && test "$(wc -l < /tmp/laya.jsonl)" -eq 6

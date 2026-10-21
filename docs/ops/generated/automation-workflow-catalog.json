@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "439abc0a208eefb8cc02dee0e7ad2fc03616a509d5d44633cea4b1e7ba70235b",
-  "workflow_count": 149,
+  "source_fingerprint": "ffb2b6f6ac7345af9b3ca08cb4530741d3bb8da17012f6b4038c1ceb7845758c",
+  "workflow_count": 150,
   "workflows": [
     {
       "action_pins": [
@@ -1759,6 +1759,27 @@
         "0 */6 * * *"
       ],
       "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: issue-observatory cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "observe"
+      ],
+      "name": "Issue Observatory — similarity, refinement, lifecycle evidence",
+      "path": ".github/workflows/issue-observatory.yml",
+      "schedules": [
+        "37 * * * *"
+      ],
+      "triggers": [
+        "issue_comment",
+        "issues",
+        "pull_request",
         "schedule",
         "workflow_dispatch"
       ]

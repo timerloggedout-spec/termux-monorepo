@@ -1,9 +1,10 @@
 {
   "coverage_counts": {
-    "actual_quota_service_mappings": 2,
+    "actual_quota_service_mappings": 3,
     "implemented_passive_adapters": 6,
-    "missing_actual_quota_service_mappings": 18,
+    "missing_actual_quota_service_mappings": 17,
     "missing_static_adapter_mappings": 0,
+    "opt_in_private_service_managers": 1,
     "provider_families": 20,
     "static_adapter_mappings": 20
   },
@@ -20,6 +21,7 @@
       "evidence_state": "unknown",
       "free_entitlement": null,
       "freshness_owner": "ChronoMancer",
+      "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "unsupported",
       "mapping_state": "missing_provider_registry_mapping",
@@ -28,6 +30,7 @@
       "official_evidence": [
         "https://aionlabs.ai/"
       ],
+      "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "aion",
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
@@ -37,6 +40,7 @@
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "official product homepage found; quota counter/reset semantics unknown",
       "service_ids": [],
       "source_capability": "no_provider_specific_quota_capability",
@@ -56,6 +60,7 @@
       "evidence_state": "unknown",
       "free_entitlement": null,
       "freshness_owner": "ChronoMancer",
+      "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
       "mapping_state": "missing_provider_registry_mapping",
@@ -64,6 +69,7 @@
       "official_evidence": [
         "https://inference-docs.cerebras.ai/support/rate-limits"
       ],
+      "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "cerebras",
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
@@ -73,6 +79,7 @@
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "organization and model, with project-level limits; separate uncached and total token buckets",
       "service_ids": [],
       "source_capability": "no_provider_specific_quota_capability",
@@ -92,6 +99,7 @@
       "evidence_state": "unknown",
       "free_entitlement": null,
       "freshness_owner": "ChronoMancer",
+      "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
       "mapping_state": "missing_provider_registry_mapping",
@@ -100,6 +108,7 @@
       "official_evidence": [
         "https://developers.cloudflare.com/workers-ai/platform/limits/"
       ],
+      "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "cloudflare",
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
@@ -109,6 +118,7 @@
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "account/model/task varies; documented ceilings are not observations",
       "service_ids": [],
       "source_capability": "no_provider_specific_quota_capability",
@@ -128,6 +138,7 @@
       "evidence_state": "unknown",
       "free_entitlement": null,
       "freshness_owner": "ChronoMancer",
+      "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
       "mapping_state": "missing_provider_registry_mapping",
@@ -136,6 +147,7 @@
       "official_evidence": [
         "https://docs.cohere.com/docs/rate-limits"
       ],
+      "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "cohere",
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
@@ -145,6 +157,7 @@
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "key type and model/endpoint; no documented remaining-count header",
       "service_ids": [],
       "source_capability": "no_provider_specific_quota_capability",
@@ -164,6 +177,7 @@
       "evidence_state": "unknown",
       "free_entitlement": null,
       "freshness_owner": "ChronoMancer",
+      "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "unsupported",
       "mapping_state": "missing_provider_registry_mapping",
@@ -172,6 +186,7 @@
       "official_evidence": [
         "https://openapi.felo.ai/docs/getting-started"
       ],
+      "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "felo",
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
@@ -181,6 +196,7 @@
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "official OpenAPI getting-started docs; counter/reset schema not verified",
       "service_ids": [],
       "source_capability": "no_provider_specific_quota_capability",
@@ -199,6 +215,7 @@
       "evidence_state": "unknown",
       "free_entitlement": null,
       "freshness_owner": "ChronoMancer",
+      "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
       "mapping_state": "documented_registry_mapping",
@@ -207,6 +224,7 @@
       "official_evidence": [
         "https://ai.google.dev/gemini-api/docs/rate-limits"
       ],
+      "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "gemini",
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
@@ -216,6 +234,7 @@
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "project and model; UI limits are not response counters",
       "service_ids": [
         "gemini.api_free"
@@ -262,6 +281,7 @@
       "evidence_state": "unknown",
       "free_entitlement": null,
       "freshness_owner": "ChronoMancer",
+      "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "implemented_passive_adapter",
       "mapping_state": "missing_provider_registry_mapping",
@@ -270,6 +290,7 @@
       "official_evidence": [
         "https://console.groq.com/docs/rate-limits"
       ],
+      "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "groq",
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
@@ -279,6 +300,7 @@
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "organization/model and metric-specific",
       "service_ids": [],
       "source_capability": "no_provider_specific_quota_capability",
@@ -303,6 +325,7 @@
       "evidence_state": "unknown",
       "free_entitlement": null,
       "freshness_owner": "ChronoMancer",
+      "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "implemented_passive_adapter",
       "mapping_state": "missing_provider_registry_mapping",
@@ -311,6 +334,7 @@
       "official_evidence": [
         "https://huggingface.co/docs/hub/en/rate-limits"
       ],
+      "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "huggingface",
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
@@ -320,6 +344,7 @@
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "token user/org and request class (Hub API, Resolver, Pages); not necessarily inference",
       "service_ids": [],
       "source_capability": "no_provider_specific_quota_capability",
@@ -339,6 +364,7 @@
       "evidence_state": "unknown",
       "free_entitlement": null,
       "freshness_owner": "ChronoMancer",
+      "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
       "mapping_state": "missing_provider_registry_mapping",
@@ -347,6 +373,7 @@
       "official_evidence": [
         "https://kilo.ai/docs/getting-started/rate-limits-and-costs"
       ],
+      "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "kilo",
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
@@ -356,6 +383,7 @@
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "official docs state 200 req/hour/IP for free gateway tier; no counter/header/reset observation schema verified",
       "service_ids": [],
       "source_capability": "no_provider_specific_quota_capability",
@@ -375,6 +403,7 @@
       "evidence_state": "unknown",
       "free_entitlement": null,
       "freshness_owner": "ChronoMancer",
+      "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
       "mapping_state": "missing_provider_registry_mapping",
@@ -383,6 +412,7 @@
       "official_evidence": [
         "https://llm7.io/"
       ],
+      "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "llm7",
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
@@ -392,6 +422,7 @@
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "official product page documents free-tier token/request caps and rolling 24-hour token usage; no counter API/header schema verified",
       "service_ids": [],
       "source_capability": "no_provider_specific_quota_capability",
@@ -411,6 +442,7 @@
       "evidence_state": "unknown",
       "free_entitlement": null,
       "freshness_owner": "ChronoMancer",
+      "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
       "mapping_state": "missing_provider_registry_mapping",
@@ -419,6 +451,7 @@
       "official_evidence": [
         "https://docs.mistral.ai/resources/known-limitations"
       ],
+      "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "mistral",
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
@@ -428,6 +461,7 @@
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "organization/model/tier; remaining header mentioned but complete metric/reset schema not established",
       "service_ids": [],
       "source_capability": "no_provider_specific_quota_capability",
@@ -447,6 +481,7 @@
       "evidence_state": "unknown",
       "free_entitlement": null,
       "freshness_owner": "ChronoMancer",
+      "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
       "mapping_state": "missing_provider_registry_mapping",
@@ -455,6 +490,7 @@
       "official_evidence": [
         "https://www.modelscope.ai/docs/model-service/API-Inference/limits"
       ],
+      "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "modelscope",
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
@@ -464,6 +500,7 @@
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "official docs describe dynamically adjusted per-model concurrency and magicube costs; no usage counter/reset API schema verified",
       "service_ids": [],
       "source_capability": "no_provider_specific_quota_capability",
@@ -483,6 +520,7 @@
       "evidence_state": "unknown",
       "free_entitlement": null,
       "freshness_owner": "ChronoMancer",
+      "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
       "mapping_state": "missing_provider_registry_mapping",
@@ -491,6 +529,7 @@
       "official_evidence": [
         "https://docs.api.nvidia.com/"
       ],
+      "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "nvidia",
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
@@ -500,6 +539,7 @@
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "official API documentation index; quota counter/reset schema not verified",
       "service_ids": [],
       "source_capability": "no_provider_specific_quota_capability",
@@ -512,7 +552,7 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "modern included period has documented inclusive from/exclusive until timestamps; legacy session and weekly reset timestamps; no account identity or entitlement inferred",
       "documented_signals": [
@@ -556,13 +596,17 @@
       "evidence_state": "unknown",
       "free_entitlement": null,
       "freshness_owner": "ChronoMancer",
+      "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "implemented_passive_adapter",
-      "mapping_state": "missing_provider_registry_mapping",
-      "observation_method": "implemented_passive_parser; live account validation not established",
+      "mapping_state": "documented_registry_mapping",
+      "observation_method": "opt_in_private_balance_service; live account validation not established",
       "observed_reset": "unknown",
       "official_evidence": [
         "https://docs.ollama.com/api/balance"
+      ],
+      "opt_in_private_service_ids": [
+        "ollama.balance"
       ],
       "private_balance": "not_published",
       "provider_family": "ollama",
@@ -573,9 +617,12 @@
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "runtime_manager_state": "implemented_opt_in_private_service",
       "scope": "private balance response; included and unexpired purchased USD pools or legacy session/weekly percentages; Team balances are shared",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "ollama.balance"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -592,6 +639,7 @@
       "evidence_state": "unknown",
       "free_entitlement": null,
       "freshness_owner": "ChronoMancer",
+      "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "unsupported",
       "mapping_state": "missing_provider_registry_mapping",
@@ -600,6 +648,7 @@
       "official_evidence": [
         "https://cloud.omniroute.online/v1/models"
       ],
+      "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "omni",
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
@@ -609,6 +658,7 @@
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "official model listing endpoint only; no quota documentation or counter/reset contract verified",
       "service_ids": [],
       "source_capability": "no_provider_specific_quota_capability",
@@ -660,6 +710,7 @@
       "evidence_state": "unknown",
       "free_entitlement": null,
       "freshness_owner": "ChronoMancer",
+      "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "implemented_passive_adapter",
       "mapping_state": "documented_registry_mapping",
@@ -668,6 +719,7 @@
       "official_evidence": [
         "https://openrouter.ai/docs/api_reference/limits"
       ],
+      "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "openrouter",
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
@@ -681,6 +733,7 @@
         "openrouter.free_models"
       ],
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "API key response; budgets retain explicit scope; free-model daily counter is account-level; rate-limit headers only on platform limit errors",
       "service_ids": [
         "openrouter.free_models"
@@ -701,6 +754,7 @@
       "evidence_state": "unknown",
       "free_entitlement": null,
       "freshness_owner": "ChronoMancer",
+      "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
       "mapping_state": "missing_provider_registry_mapping",
@@ -709,6 +763,7 @@
       "official_evidence": [
         "https://docs.ovhcloud.com/en/guides/public-cloud/ai-machine-learning/ai-endpoints-capabilities"
       ],
+      "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "ovhcloud",
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
@@ -718,6 +773,7 @@
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "official AI Endpoints docs describe limits by anonymous/authenticated scope; no account counter/header schema verified",
       "service_ids": [],
       "source_capability": "no_provider_specific_quota_capability",
@@ -754,6 +810,7 @@
       "evidence_state": "unknown",
       "free_entitlement": null,
       "freshness_owner": "ChronoMancer",
+      "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "implemented_passive_adapter",
       "mapping_state": "missing_provider_registry_mapping",
@@ -762,6 +819,7 @@
       "official_evidence": [
         "https://docs.sambanova.ai/docs/en/models/rate-limits"
       ],
+      "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "sambanova",
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
@@ -771,6 +829,7 @@
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "user/API response; per metric RPM/RPD",
       "service_ids": [],
       "source_capability": "no_provider_specific_quota_capability",
@@ -803,6 +862,7 @@
       "evidence_state": "unknown",
       "free_entitlement": null,
       "freshness_owner": "ChronoMancer",
+      "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "implemented_passive_adapter",
       "mapping_state": "missing_provider_registry_mapping",
@@ -811,6 +871,7 @@
       "official_evidence": [
         "https://docs.siliconflow.com/en/api-reference/userinfo/get-user-info"
       ],
+      "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "siliconflow",
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
@@ -820,6 +881,7 @@
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "private user monetary balance only, currency not assumed; account/model request quotas are separate and remain unknown",
       "service_ids": [],
       "source_capability": "no_provider_specific_quota_capability",
@@ -839,6 +901,7 @@
       "evidence_state": "unknown",
       "free_entitlement": null,
       "freshness_owner": "ChronoMancer",
+      "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
       "mapping_state": "missing_provider_registry_mapping",
@@ -847,6 +910,7 @@
       "official_evidence": [
         "https://docs.z.ai/devpack/usage-policy"
       ],
+      "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "zai",
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
@@ -856,6 +920,7 @@
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
+      "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "official usage policy states plan-tier concurrency dynamically adjusts; no counter/reset response schema verified",
       "service_ids": [],
       "source_capability": "no_provider_specific_quota_capability",
@@ -1001,6 +1066,13 @@
       "provider": "google",
       "quota_manager_owner": "Manager",
       "service_id": "gemini.api_free"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "implemented_opt_in_private_service",
+      "provider": "ollama",
+      "quota_manager_owner": "Manager",
+      "service_id": "ollama.balance"
     },
     {
       "freshness_owner": "ChronoMancer",

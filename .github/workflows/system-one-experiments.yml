@@ -84,7 +84,7 @@ jobs:
           report = json.loads(Path("artifacts/system-one/tournament-report.json").read_text())
           assert report["schema_version"] == "system-one-tournament.v1"
           assert report["candidates"]["baseline-b"]["exact_match_accuracy"] == 1.0
-          assert report["pairwise"][0]["left_wins"] == 1
+          assert report["pairwise"][0]["right_wins"] == 1
           print("validated offline tournament scoring")
           PY
       - name: Publish experiment receipts

@@ -3,6 +3,7 @@ import datetime as dt
 import json
 
 import pytest
+from zoneinfo import ZoneInfoNotFoundError
 
 from scripts.provider_quota_gemini import normalize_gemini_evidence, evaluate_gemini_quota
 
@@ -109,6 +110,19 @@ def test_rpd_window_respects_pacific_dst_day_length():
     end = dt.datetime.fromisoformat(window["end"].replace("Z", "+00:00"))
     assert (end - start).total_seconds() == 23 * 3600
     assert normalized()["dimensions"]["rpd"]["window"]["end"] == window["end"].replace("+00:00", "Z")
+
+
+def test_evaluator_is_unknown_when_timezone_data_is_unavailable(monkeypatch):
+    from scripts import provider_quota_gemini as gemini
+
+    observation = normalized()
+    monkeypatch.setattr(gemini, "ZoneInfo", lambda name: (_ for _ in ()).throw(
+        ZoneInfoNotFoundError(name)))
+    decision = evaluate_gemini_quota(observation, now=NOW, model=observation["model"],
+                                     project_alias=SCOPE, input_tokens=1)
+    assert decision["status"] == "unknown"
+    assert decision["reason"] == "required_quota_unknown"
+    assert decision["eligible"] is False
 
 
 def test_parser_rejects_wrong_pacific_day_and_windows_not_covering_observation():

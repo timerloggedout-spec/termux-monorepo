@@ -144,7 +144,7 @@ def test_private_policy_input_rejected(tmp_path, unsafe):
         link.symlink_to(path)
         path = link
     elif unsafe == "public":
-        path.chmod(0o644)
+        path.chmod(0o640)
     elif unsafe == "directory":
         path = tmp_path
     else:

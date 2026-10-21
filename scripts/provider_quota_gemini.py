@@ -15,10 +15,14 @@ from typing import Any, Mapping
 from zoneinfo import ZoneInfo
 
 UTC = dt.timezone.utc
-PACIFIC = ZoneInfo("America/Los_Angeles")
 DIMENSIONS = ("rpm", "input_tpm", "rpd")
 TIERS = ("unknown", "free", "tier_1", "tier_2", "tier_3")
 ENTITLEMENTS = ("unknown", "eligible", "ineligible")
+
+
+def _pacific() -> ZoneInfo:
+    """Resolve reset timezone only when daily quota evidence is evaluated."""
+    return ZoneInfo("America/Los_Angeles")
 
 
 def _alias(value: Any, label: str) -> str:
@@ -74,9 +78,10 @@ def _dimensions(raw: Any, when: dt.datetime) -> dict[str, Any]:
             if kind != "explicit":
                 raise ValueError("minute quota requires explicit window evidence")
         else:
-            local = when.astimezone(PACIFIC)
-            day_start = dt.datetime.combine(local.date(), dt.time(), PACIFIC).astimezone(UTC)
-            day_end = dt.datetime.combine(local.date() + dt.timedelta(days=1), dt.time(), PACIFIC).astimezone(UTC)
+            pacific = _pacific()
+            local = when.astimezone(pacific)
+            day_start = dt.datetime.combine(local.date(), dt.time(), pacific).astimezone(UTC)
+            day_end = dt.datetime.combine(local.date() + dt.timedelta(days=1), dt.time(), pacific).astimezone(UTC)
             if kind != "pacific_day" or (start, end) != (day_start, day_end):
                 raise ValueError("daily quota must match current Pacific calendar day")
         safe[name] = {"limit": limit, "used": used, "remaining": remaining,

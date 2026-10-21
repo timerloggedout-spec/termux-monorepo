@@ -11,6 +11,7 @@ inputs:
   api_key: { description: 'Provider API key', required: true }
   base_url: { description: 'Optional OpenAI-compatible base URL', required: false, default: '' }
   github_token: { description: 'Token for gh comment API', required: true }
+  posting_login: { description: 'Verified GitHub login that this token posts comments as; leave empty to create without editing existing comments', required: false, default: '' }
   repository: { description: 'owner/repo', required: true }
   experiment_id: { description: 'Stable MVT experiment identity', required: false, default: '' }
   prompt_variant: { description: 'Prompt variant identifier', required: false, default: '' }
@@ -30,6 +31,7 @@ runs:
         API_KEY: ${{ inputs.api_key }}
         BASE_URL: ${{ inputs.base_url }}
         GH_TOKEN: ${{ inputs.github_token }}
+        POSTING_LOGIN: ${{ inputs.posting_login }}
         REPO: ${{ inputs.repository }}
         EXPERIMENT_ID: ${{ inputs.experiment_id }}
         PROMPT_VARIANT: ${{ inputs.prompt_variant }}
@@ -147,9 +149,8 @@ runs:
         if [ "$POST_COMMENT" = "true" ] && [ "$STATUS" = "succeeded" ]; then
           BODY=$(printf '%s\n%s\n%s\n\n%s\n\n%s\n%s\n' "$MARKER" "$HEAD" "$EGG" "$TEXT" '---' "_Peer router invocation: provider=$PROVIDER, requested=$MODEL, response=$RESPONSE_MODEL, role=$ROLE, experiment=$EXPERIMENT_ID, variant=$PROMPT_VARIANT, http=$HTTP_STATUS, finish=$FINISH_REASON, capped=$COMPLETION_CAPPED")
           COMMENTS=$(gh api "repos/$REPO/issues/$TARGET/comments?per_page=100" 2>/dev/null || echo '[]')
-          # If an installation token cannot resolve /user, create rather than
-          # guessing an author and risking an edit of somebody else's comment.
-          POSTING_LOGIN=$(gh api user --jq '.login // empty' 2>/dev/null || true)
+          # Installation tokens do not support GET /user. Only use the caller's
+          # explicitly verified token posting identity; never infer it from comments.
           EXISTING_ID=$(printf '%s' "$COMMENTS" | jq -r --arg marker "$MARKER" --arg author "$POSTING_LOGIN" '[.[] | select($author != "" and .user.login == $author) | select((.body // "") | startswith($marker))] | last | .id // empty')
           if [ -n "$EXISTING_ID" ]; then
             gh api "repos/$REPO/issues/comments/$EXISTING_ID" -X PATCH -f body="$BODY" >/dev/null || echo "::warning::Failed to update marker comment on #$TARGET"

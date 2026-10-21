@@ -4,6 +4,7 @@ import json
 from unittest.mock import patch
 
 import pytest
+from zoneinfo import ZoneInfoNotFoundError
 
 from scripts import provider_quota_coverage as coverage
 from scripts import provider_quota_managers as managers
@@ -86,3 +87,21 @@ def test_service_keeps_source_observation_time_not_wrapper_collection_time():
     assert result["observed_at"] == source_time.isoformat().replace("+00:00", "Z")
     assert result["status"] == "unknown"
     assert result["binding_status"] == "unknown"
+
+
+def test_project_service_returns_unknown_when_timezone_data_is_unavailable(monkeypatch):
+    from scripts import provider_quota_gemini as gemini
+
+    monkeypatch.setattr(gemini, "ZoneInfo", lambda name: (_ for _ in ()).throw(
+        ZoneInfoNotFoundError(name)))
+    result = service.observe_gemini_quota(
+        {"source_kind": "aistudio_project_quota", "project_alias": "fixture-project",
+         "credential_alias": "fixture-credential", "model": "gemini-synthetic-model",
+         "tier": "unknown", "entitlement": "unknown",
+         "dimensions": {"rpd": {"limit": 2, "used": 0, "remaining": 2,
+                                   "window": {"kind": "pacific_day", "start": "2026-10-21T07:00:00Z",
+                                              "end": "2026-10-22T07:00:00Z"}}}},
+        scope="fixture-project", now=NOW)
+    assert result["status"] == "unknown"
+    assert result["request_quota"] == "unknown"
+    assert result["runtime_admission"] == "unchanged"

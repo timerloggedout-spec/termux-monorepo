@@ -14,6 +14,13 @@ import scripts.model_router as mr
 
 @pytest.fixture(autouse=True)
 def offline_catalog_by_default(monkeypatch):
+    for name in (
+        "QUOTA_SNAPSHOT_DIR", "QUOTA_WEIGHTS_PATH", "QUOTA_WEIGHTS_MAX_AGE_SEC",
+        "REQUIRE_LIVE_OPENROUTER_QUOTA", "OPENROUTER_QUOTA_MAX_AGE_SEC",
+        "OPENROUTER_QUOTA_SAFETY", "GEMINI_CAP_POLICY_PATH",
+        "GEMINI_PROJECT_EVIDENCE_PATH", "GEMINI_CAP_LEDGER_DIR",
+    ):
+        monkeypatch.delenv(name, raising=False)
     def unavailable(*args, **kwargs):
         raise OSError("network disabled for router regressions")
     monkeypatch.setattr(urllib.request, "urlopen", unavailable)
@@ -508,3 +515,24 @@ def test_openrouter_quota_rejects_nonfinite_or_out_of_range_safety(tmp_path, mon
     admission = mr.load_openrouter_quota_admission()
     assert admission["known"] is False
     assert admission["reason"] == "invalid quota safety threshold"
+
+
+@pytest.mark.parametrize("require_live", ["false", "true"])
+@pytest.mark.parametrize("admit,expected", [(False, "none"), (True, "openrouter")])
+def test_known_exhaustion_is_independent_of_unknown_quota_policy(tmp_path, monkeypatch, require_live, admit, expected):
+    monkeypatch.setenv("ROLE", "triage")
+    monkeypatch.setenv("HAS_OPENROUTER", "true")
+    monkeypatch.setenv("HAS_OMNI", "false")
+    monkeypatch.setenv("HAS_GEMINI", "false")
+    monkeypatch.setenv("REQUIRE_LIVE_OPENROUTER_QUOTA", require_live)
+    monkeypatch.setattr(mr, "COUNTER_DIR", str(tmp_path))
+    monkeypatch.setattr(mr, "parse_yaml", lambda *args: {})
+    monkeypatch.setattr(mr, "emit_decision", lambda *args, **kwargs: None)
+    monkeypatch.setattr(mr, "ROLE_PEER_MODELS", {"triage": {"openrouter": ["offline:free"]}})
+    monkeypatch.setattr(mr, "fetch_openrouter_free_models_cached_with_source", lambda: (["offline:free"], "offline"))
+    monkeypatch.setattr(mr, "load_openrouter_quota_admission", lambda: {"known": True, "admit": admit})
+    output = tmp_path / "output"
+    monkeypatch.setenv("GITHUB_OUTPUT", str(output))
+    mr.main()
+    assert f"provider={expected}\n" in output.read_text()
+    assert f"skip={'true' if expected == 'none' else 'false'}\n" in output.read_text()

@@ -146,6 +146,7 @@ jobs:
           role: review
           target_number: ${{ inputs.target_number || '337' }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          posting_login: ${{ github.server_url == 'https://github.com' && 'github-actions[bot]' || '' }}
           repository: ${{ github.repository }}
           prompt: ${{ steps.lane.outputs.prompt }}
           experiment_id: ${{ steps.lane.outputs.experiment_id }}
@@ -163,6 +164,7 @@ jobs:
           role: review
           target_number: ${{ inputs.target_number || '337' }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          posting_login: ${{ github.server_url == 'https://github.com' && 'github-actions[bot]' || '' }}
           repository: ${{ github.repository }}
           prompt: ${{ steps.lane.outputs.prompt }}
           experiment_id: ${{ steps.lane.outputs.experiment_id }}
@@ -180,6 +182,7 @@ jobs:
           role: review
           target_number: ${{ inputs.target_number || '337' }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          posting_login: ${{ github.server_url == 'https://github.com' && 'github-actions[bot]' || '' }}
           repository: ${{ github.repository }}
           prompt: ${{ steps.lane.outputs.prompt }}
           experiment_id: ${{ steps.lane.outputs.experiment_id }}
@@ -197,6 +200,7 @@ jobs:
           role: review
           target_number: ${{ inputs.target_number || '337' }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          posting_login: ${{ github.server_url == 'https://github.com' && 'github-actions[bot]' || '' }}
           repository: ${{ github.repository }}
           prompt: ${{ steps.lane.outputs.prompt }}
           experiment_id: ${{ steps.lane.outputs.experiment_id }}

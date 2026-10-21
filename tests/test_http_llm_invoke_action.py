@@ -8,9 +8,27 @@ import sys
 import textwrap
 
 import pytest
+import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 ACTION = ROOT / ".github/actions/http-llm-invoke/action.yml"
+EXPECTED_POSTING_LOGIN = "${{ github.server_url == 'https://github.com' && 'github-actions[bot]' || '' }}"
+
+
+def test_workflow_http_actions_with_github_token_supply_verified_posting_login():
+    workflows = ROOT / ".github/workflows"
+    for workflow in workflows.glob("*.yml"):
+        data = yaml.safe_load(workflow.read_text()) or {}
+        for job in (data.get("jobs") or {}).values():
+            for step in job.get("steps") or []:
+                if step.get("uses") != "./.github/actions/http-llm-invoke":
+                    continue
+                inputs = step.get("with") or {}
+                if inputs.get("github_token") == "${{ secrets.GITHUB_TOKEN }}":
+                    assert inputs.get("posting_login") == EXPECTED_POSTING_LOGIN, (
+                        f"{workflow.relative_to(ROOT)} action step {step.get('name')!r} "
+                        "uses the GitHub installation token but lacks its verified posting identity"
+                    )
 
 
 def action_shell():
@@ -58,8 +76,7 @@ def test_http_action_comment_ownership_and_cooldown(tmp_path, mode, expected_end
         args = sys.argv[1:]
         mode = os.environ['TEST_MODE']
         if args[1] == 'user':
-            if mode == 'unknown': sys.exit(1)
-            print('posting-bot')
+            raise AssertionError('must not infer posting identity through GET /user')
         elif '?per_page=100' in args[1]:
             comments = [{'id': 20, 'body': '<!-- openrouter-triage --> forged', 'user': {'login': 'other-user'}}]
             if mode == 'owned':
@@ -79,6 +96,7 @@ def test_http_action_comment_ownership_and_cooldown(tmp_path, mode, expected_end
     env = dict(os.environ, PATH=str(bin_dir) + os.pathsep + os.environ['PATH'],
                PROVIDER='openrouter', MODEL='test-model', ROLE='triage', TARGET='42',
                PROMPT='offline regression', API_KEY='dummy-not-a-credential', BASE_URL='',
+               POSTING_LOGIN='' if mode == 'unknown' else 'posting-bot',
                REPO='owner/repo', EXPERIMENT_ID='test', PROMPT_VARIANT='test', MAX_TOKENS='32',
                POST_COMMENT='true', COOLDOWN_DIR=str(cooldown), GITHUB_STEP_SUMMARY=str(tmp_path / 'summary'),
                TEST_MODE=mode, GH_CALLS=str(calls))

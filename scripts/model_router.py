@@ -584,8 +584,9 @@ def main():
                     continue
                 # Preflight gate: never dispatch OpenRouter free-tier traffic on a
                 # stale/missing official account quota snapshot when policy requires it.
-                if require_live_openrouter_quota and (
-                    not openrouter_quota.get("known") or not openrouter_quota.get("admit")
+                if (
+                    (openrouter_quota.get("known") and not openrouter_quota.get("admit"))
+                    or (require_live_openrouter_quota and not openrouter_quota.get("known"))
                 ):
                     reason = openrouter_quota.get("reason", "daily safety budget reached")
                     sys.stderr.write(

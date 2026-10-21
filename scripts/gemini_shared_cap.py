@@ -18,11 +18,15 @@ from pathlib import Path
 from typing import Any, Mapping
 from zoneinfo import ZoneInfo
 
-PACIFIC = ZoneInfo("America/Los_Angeles")
 SCHEMA = "gemini-shared-cap-policy/v1"
 _LEDGER_SCHEMA = "gemini-shared-cap-ledger/v1"
 _MAX_VALUE = 10**15
 _ALIAS = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}\Z")
+
+
+def _pacific() -> ZoneInfo:
+    """Resolve the reset timezone lazily so imports remain safe without tzdata."""
+    return ZoneInfo("America/Los_Angeles")
 
 
 def _alias(value: Any) -> bool:
@@ -117,10 +121,11 @@ def _policy(policy: Any, now: dt.datetime) -> tuple[str, int, str]:
     if not isinstance(day, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", day):
         raise ValueError
     parsed_day = dt.date.fromisoformat(day)
-    local_now = now.astimezone(PACIFIC)
+    pacific = _pacific()
+    local_now = now.astimezone(pacific)
     if parsed_day != local_now.date():
         raise ValueError
-    midnight = dt.datetime.combine(parsed_day + dt.timedelta(days=1), dt.time(), PACIFIC)
+    midnight = dt.datetime.combine(parsed_day + dt.timedelta(days=1), dt.time(), pacific)
     expiry = policy.get("expires_at")
     if isinstance(expiry, str):
         expiry = dt.datetime.fromisoformat(expiry.replace("Z", "+00:00"))

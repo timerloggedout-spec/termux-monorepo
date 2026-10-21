@@ -229,7 +229,7 @@ def observe_gemini_quota(metadata=None, *, scope: str,
         unknown["observed_at"] = _iso(now)
         observation = normalize_gemini_evidence(
             {} if metadata is None else metadata, observed_at=_iso(now), scope=scope)
-    except (ValueError, TypeError, OverflowError, RecursionError):
+    except (ValueError, TypeError, KeyError, OverflowError, RecursionError):
         return unknown
     return {**observation, "service_id": "gemini.project_model",
             "reason": "project_binding_and_current_quota_unverified",

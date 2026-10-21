@@ -140,6 +140,7 @@ jobs:
           api_key: ${{ secrets.OMNI_API_KEY || secrets.OMNIROUTE_API_KEY }}
           base_url: ${{ secrets.OMNI_BASE_URL }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          posting_login: ${{ github.server_url == 'https://github.com' && 'github-actions[bot]' || '' }}
           repository: ${{ github.repository }}
           prompt: |
             You are the on-demand free-tier teammate for termux-monorepo. Concise. ONE response.
@@ -160,6 +161,7 @@ jobs:
           target_number: ${{ inputs.pr_number || inputs.issue_number || github.event.pull_request.number || github.event.issue.number }}
           api_key: ${{ secrets.OPENROUTER_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          posting_login: ${{ github.server_url == 'https://github.com' && 'github-actions[bot]' || '' }}
           repository: ${{ github.repository }}
           prompt: |
             You are the on-demand free-tier teammate for termux-monorepo. Concise. ONE response.

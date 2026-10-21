@@ -46,3 +46,11 @@ def test_regression_workflow_runs_new_offline_tests_and_tracks_files():
         assert path in text
     for path in [".github/actions/gemini-quota-gate/action.yml", ".github/workflows/gemini-invoke.yml", ".github/workflows/gemini-review.yml", ".github/workflows/gemini-triage.yml", ".github/workflows/gemini-after-peers.yml", "scripts/gemini_quota_gate.py", "scripts/gemini_shared_cap.py"]:
         assert path in text
+    assert "'scripts/model_performance_index.py'" in text
+
+
+def test_triage_postinvoke_cache_contains_cooldown_feedback_only():
+    doc = yaml.safe_load((ROOT / ".github/workflows/gemini-triage.yml").read_text())
+    steps = doc["jobs"]["triage"]["steps"]
+    feedback = next(step for step in steps if step.get("name") == "Persist rate-limit cooldown feedback")
+    assert feedback["with"]["path"] == "/tmp/model-router/cooldowns.json"

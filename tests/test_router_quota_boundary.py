@@ -211,8 +211,11 @@ def test_action_never_caches_private_quota_or_service_data():
     assert "QUOTA_WEIGHTS_PATH:" in action
 
 
-@pytest.mark.parametrize("state", [[], None, snapshot(remaining=95)])
-def test_strict_router_emits_explicit_skip_for_bad_snapshot(tmp_path, monkeypatch, state):
+@pytest.mark.parametrize("state,expected", [
+    ([], "none"), (None, "none"), (snapshot(remaining=95), "none"),
+    (snapshot(), "openrouter"),
+])
+def test_strict_router_validates_fresh_triplet_with_positive_control(tmp_path, monkeypatch, state, expected):
     monkeypatch.setenv("ROLE", "triage")
     monkeypatch.setenv("HAS_OPENROUTER", "true")
     monkeypatch.setenv("HAS_GEMINI", "false")
@@ -224,12 +227,14 @@ def test_strict_router_emits_explicit_skip_for_bad_snapshot(tmp_path, monkeypatc
     monkeypatch.setattr(router, "ROLE_PEER_MODELS", {"triage": {"openrouter": ["offline:free"]}})
     monkeypatch.setattr(router, "fetch_openrouter_free_models_cached_with_source",
                         lambda: (["offline:free"], "offline_fixture"))
+    if isinstance(state, dict):
+        state = {**state, "observed_at": datetime.now(timezone.utc).isoformat()}
     (tmp_path / "provider-quota-state.json").write_text(json.dumps(state))
     output = tmp_path / "output"
     monkeypatch.setenv("GITHUB_OUTPUT", str(output))
     router.main()
-    assert "provider=none" in output.read_text()
-    assert "skip=true" in output.read_text()
+    assert f"provider={expected}" in output.read_text()
+    assert f"skip={'true' if expected == 'none' else 'false'}" in output.read_text()
 
 
 def test_router_logs_withhold_official_quota_values(tmp_path, monkeypatch, capsys):

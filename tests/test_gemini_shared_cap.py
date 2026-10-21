@@ -6,16 +6,18 @@ import sys
 from pathlib import Path
 
 import pytest
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 import gemini_shared_cap as cap
 
 UTC = dt.timezone.utc
+PACIFIC = ZoneInfo("America/Los_Angeles")
 
 
 def policy(now, limit=2, scope="private-team"):
-    local_day = now.astimezone(cap.PACIFIC).date()
-    end = dt.datetime.combine(local_day + dt.timedelta(days=1), dt.time(), cap.PACIFIC)
+    local_day = now.astimezone(PACIFIC).date()
+    end = dt.datetime.combine(local_day + dt.timedelta(days=1), dt.time(), PACIFIC)
     return {"schema": cap.SCHEMA, "cap_kind": "operator_configured", "scope_alias": scope,
             "limit": limit, "pacific_day": local_day.isoformat(), "expires_at": end.isoformat(),
             "credentials": {"primary": {"project_alias": "proj-a"},
@@ -97,10 +99,10 @@ def test_malformed_existing_ledger_fails_closed(tmp_path, field, value):
 def test_invalid_ledger_directory_does_not_chmod_current_directory(tmp_path, monkeypatch):
     now = dt.datetime(2025, 1, 15, 20, tzinfo=UTC)
     monkeypatch.chdir(tmp_path)
-    os.chmod(tmp_path, 0o755)
+    os.chmod(tmp_path, 0o700)
     for path in ("", "relative", "../escape"):
         assert cap.check_cap(policy(now), path, model="m", now=now)["allowed"] is False
-        assert tmp_path.stat().st_mode & 0o777 == 0o755
+        assert tmp_path.stat().st_mode & 0o777 == 0o700
 
 
 def test_hardlinked_state_and_lock_denied(tmp_path):
@@ -123,8 +125,8 @@ def test_pacific_midnight_reset_across_dst_day_length(tmp_path):
     # DST starts March 9 2025; this Pacific calendar day lasts 23 hours.
     before = dt.datetime(2025, 3, 9, 7, 30, tzinfo=UTC)
     after = dt.datetime(2025, 3, 10, 7, 30, tzinfo=UTC)
-    assert (dt.datetime.combine(dt.date(2025, 3, 10), dt.time(), cap.PACIFIC).astimezone(UTC)
-            - dt.datetime.combine(dt.date(2025, 3, 9), dt.time(), cap.PACIFIC).astimezone(UTC)).total_seconds() == 23 * 3600
+    assert (dt.datetime.combine(dt.date(2025, 3, 10), dt.time(), PACIFIC).astimezone(UTC)
+            - dt.datetime.combine(dt.date(2025, 3, 9), dt.time(), PACIFIC).astimezone(UTC)).total_seconds() == 23 * 3600
     p1 = policy(before, limit=1)
     assert cap.check_cap(p1, tmp_path, model="m", reserve=True, now=before)["allowed"]
     assert cap.check_cap(policy(after, limit=1), tmp_path, model="m", reserve=True, now=after)["allowed"]
@@ -145,3 +147,13 @@ def test_atomic_concurrent_reservations_and_secure_modes(tmp_path):
     assert (tmp_path.stat().st_mode & 0o777) == 0o700
     assert (tmp_path / "state.json").stat().st_mode & 0o777 == 0o600
     assert (tmp_path / ".lock").stat().st_mode & 0o777 == 0o600
+
+
+def test_module_imports_without_zone_data_then_cap_denies(monkeypatch, tmp_path):
+    monkeypatch.setattr(cap, "ZoneInfo", lambda name: (_ for _ in ()).throw(
+        ZoneInfoNotFoundError(name)))
+    now = dt.datetime(2025, 1, 15, 20, tzinfo=UTC)
+    result = cap.check_cap(policy(now), tmp_path / "ledger", model="m", reserve=True, now=now)
+    assert result["allowed"] is False
+    assert result["reason"] == "invalid_policy_or_ledger"
+    assert not (tmp_path / "ledger").exists()

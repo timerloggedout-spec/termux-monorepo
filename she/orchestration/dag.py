@@ -37,16 +37,30 @@ class DagPlan:
 
 
 def plan_dag(nodes: Iterable[str], edges: Iterable[tuple[str, str]]) -> DagPlan:
-    """Return a stable Kahn plan; duplicate edges are ignored deterministically."""
-    node_set = set(nodes)
-    if any(not isinstance(node, str) or not node for node in node_set):
+    """Return a stable Kahn plan; duplicate edges are ignored deterministically.
+
+    Nodes may come from any iterable. Each edge must be a two-item tuple or
+    list; strings and other iterable edge shapes are not treated as pairs.
+    """
+    node_values = list(nodes)
+    if any(not isinstance(node, str) or not node for node in node_values):
         raise GraphValidationError("node identifiers must be non-empty strings")
+    node_set = set(node_values)
 
     edge_set: set[tuple[str, str]] = set()
     for edge in edges:
+        if not isinstance(edge, (tuple, list)):
+            raise GraphValidationError("each edge must be a (prerequisite, dependent) pair")
         if len(edge) != 2:
             raise GraphValidationError("each edge must be a (prerequisite, dependent) pair")
         source, target = edge
+        if (
+            not isinstance(source, str)
+            or not source
+            or not isinstance(target, str)
+            or not target
+        ):
+            raise GraphValidationError("edge endpoints must be non-empty strings")
         if source not in node_set or target not in node_set:
             raise GraphValidationError(f"edge endpoint is unknown: {source!r} -> {target!r}")
         edge_set.add((source, target))

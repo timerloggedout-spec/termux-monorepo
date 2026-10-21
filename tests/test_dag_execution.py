@@ -43,6 +43,22 @@ class KahnPlanTests(unittest.TestCase):
         with self.assertRaises(GraphValidationError):
             plan_dag(["a"], [("a", "missing")])
 
+    def test_malformed_nodes_are_rejected_before_hashing(self):
+        for nodes in ([[]], [None], [""]):
+            with self.subTest(nodes=nodes), self.assertRaises(GraphValidationError):
+                plan_dag(nodes, [])
+
+    def test_malformed_edge_shapes_and_endpoints_are_rejected(self):
+        for edge in ("ab", 7, ["a"], ("a", []), (None, "b"), ("", "b")):
+            with self.subTest(edge=edge), self.assertRaises(GraphValidationError):
+                plan_dag(["a", "b"], [edge])
+
+    def test_node_and_edge_iterables_preserve_valid_graph_behavior(self):
+        plan = plan_dag(iter(["a", "b", "a"]), iter([["a", "b"], ("a", "b")]))
+        self.assertEqual(plan.node_count, 2)
+        self.assertEqual(plan.edge_count, 1)
+        self.assertEqual(plan.topological_order, ("a", "b"))
+
     def test_cycle_reports_residual_including_downstream_blocked_node(self):
         plan = plan_dag(["a", "b", "c", "free"], [
             ("a", "b"), ("b", "a"), ("b", "c")

@@ -139,7 +139,11 @@ def llm_vote(role: str, s: dict, feedback: str, budget: dict) -> dict | None:
                 headers={"x-goog-api-key": os.environ["GEMINI_API_KEY"], "Content-Type": "application/json"})
             text = json.load(urllib.request.urlopen(req, timeout=60))["candidates"][0]["content"]["parts"][0]["text"]
     except Exception as e:  # noqa: BLE001 - any provider error falls back to the rubric
-        print(f"::notice::delphi llm vote fell back to rubric ({type(e).__name__})")
+        code = getattr(e, "code", "")
+        prov = "openrouter" if os.environ.get("OPENROUTER_API_KEY") else "gemini"
+        print(f"::notice::delphi llm vote fell back to rubric ({prov} {type(e).__name__} {code})")
+        if code in (401, 403, 404):
+            budget["llm"] = 0  # a dead key or model id will not recover inside this run
         return None
     finally:
         budget["llm"] = budget.get("llm", 0) - 1
@@ -302,6 +306,10 @@ def cadence(registry: dict, readings: dict, pending: int, depth: int, max_depth:
 
 
 # ---------------------------------------------------------------- GitHub (Actions mode)
+class RateLimited(Exception):
+    """GitHub 403/429 rate-limit wall: defer, never fail the gate (access-resilience: rate_limit)."""
+
+
 class GH:
     def __init__(self, repo: str, token: str):
         self.repo, self.token, self.calls = repo, token, 0
@@ -319,6 +327,10 @@ class GH:
         except urllib.error.HTTPError as e:
             if e.code == 422 and method == "POST" and path == "/labels":
                 return {}
+            if e.code in (403, 429):
+                h = e.headers or {}
+                raise RateLimited(f"{e.code} remaining={h.get('x-ratelimit-remaining')} reset={h.get('x-ratelimit-reset')} "
+                                  f"retry-after={h.get('retry-after')} on {method} {path.split('?')[0]}") from None
             raise
 
 
@@ -412,6 +424,15 @@ def load_readings() -> dict:
 
 
 def cmd_run(args) -> int:
+    try:
+        return _run(args)
+    except RateLimited as e:
+        # GITHUB_TOKEN budget is shared by every workflow in the repo; defer to the next event/heartbeat.
+        print(f"::warning::delphi deferred on GitHub rate limit: {e}")
+        return 0
+
+
+def _run(args) -> int:
     repo, token = os.environ["GITHUB_REPOSITORY"], os.environ["GITHUB_TOKEN"]
     gh = GH(repo, token)
     panel, registry, readings = load(PANEL), load(REGISTRY), load_readings()

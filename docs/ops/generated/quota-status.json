@@ -1,0 +1,34 @@
+{
+  "schema": "3l0.quota-readings.v1",
+  "generated_at": "2026-10-20T23:05:00Z",
+  "source": "seeded 2026-10-20 from operator reports (Hark) + registry; refreshed by quota poller outputs (scripts/quota_poll.py via vercel-quota-probe)",
+  "readings": [
+    {
+      "resource_id": "vercel.deployments",
+      "status": "cap_tripped",
+      "used": null,
+      "limit": 100,
+      "unit": "deployments/day",
+      "reset": null,
+      "note": "Daily deploy cap tripped overnight (Hark, 2026-10-20 21:15Z). Two preview deploys failed today (18:02Z, 19:03Z) on ops/actions-matrix-upgrade-2026-10-18. API count unavailable: deployments API undercounts enforcement by >=13 (registry observation 2026-10-19). Rolling 24h window; reset time unknown."
+    },
+    {
+      "resource_id": "openrouter.free_models",
+      "status": "exhausted",
+      "used": null,
+      "limit": null,
+      "unit": "requests/day",
+      "reset": "2026-10-21T00:00:00Z",
+      "note": "Free-tier quota exhausted (reported 2026-10-20 15:52Z). Daily window resets at UTC rollover; tier depends on credits purchased."
+    },
+    {
+      "resource_id": "github.actions.minutes",
+      "status": "watch",
+      "used": null,
+      "limit": null,
+      "unit": "minutes",
+      "reset": null,
+      "note": "Free for public repos; Actions quota pressure tracked in issues #1283 and #772."
+    }
+  ]
+}

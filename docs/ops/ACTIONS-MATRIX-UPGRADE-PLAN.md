@@ -14,7 +14,8 @@
 2. Repository operating contract is `RECON → CLASSIFY → PLAN → ACT → WAIT → VALIDATE → RE-FETCH → RECORD → REPEAT` in `.agents/skills/evidence-led-monorepo-ops/SKILL.md`.
 3. Adaptive asynchronous execution is governed by `.agents/skills/adaptive-wait/SKILL.md`: re-fetch after material changes, back off only on no-delta evidence, retry only when the attempt changes for an evidence-backed reason, and do not duplicate active work.
 4. The repository dual-gate is hygiene/portability plus agentic Termux smoke. Vercel is explicitly a non-gate in the canonical ops skill and issue #772. A Vercel quota failure must not be misreported as a code defect or CI gate failure.
-5. `docs/DEPLOYMENT-LANES.md` records the `termux-monorepo` and `mcp-hub` Vercel lanes as live. GitHub Pages is not enabled; Render and Cloudflare are candidates with no live deployment evidence in this repository. Do not silently claim or route production traffic to an unproven lane.
+5. `docs/DEPLOYMENT-LANES.md` records the `termux-monorepo` and `mcp-hub` Vercel lanes as live. The GitHub Pages workflow and `gh-pages` branch exist, but current publication/source-SHA proof was not available in this RECON pass; Pages is configured but unverified. Render and Cloudflare remain unproven candidates. Do not silently claim or route production traffic to an unproven lane.
+8. Vercel project checks on merge commit `fe617f7f8eff0aeaecac67e0964e139ae9ab9035` reported `build-rate-limit` for four connected projects. A separate live deployment inspection showed `termux-monorepo` at `5827176ea6ec3580c5050e275493f94baef4a9e8` READY, while three deployments on unrelated research commit `e3ff387c95b9f94ab789a2ba65b51a103e357012` were CANCELED with the provider's `ignored-build-step` help link. Keep these states separate: quota failures are capacity evidence; ignored-build-step cancellations are intentional skip outcomes.
 6. `docs/schemas/model-rotation.yaml` governs **LLM** free-tier rotation; it is not a Vercel deployment quota registry. Reuse its quota-first design principles, but do not conflate provider types or their budgets.
 7. The latest known PR #1242 head before this RECON correction was `4b569bc2c9a8e032fd8464636b2d0d9e6a6e2087`. Re-fetch the live PR head/base and checks before drawing any current-state conclusion.
 
@@ -87,6 +88,20 @@ flowchart TD
 | Current-SHA integration evidence | | | ■ | ■ | | |
 | Review, promotion, post-promotion watch | | | | ■ | ■ | ■ |
 
+## Implemented in the quota-resilience follow-up branch
+
+- The GitHub Actions publisher now uses `cancel-in-progress: false` so a later event cannot cancel an active publication after consuming work/capacity.
+- The Pages setup job is skipped for a Vercel-only manual request; it no longer performs an unrelated Pages configuration API call on that path.
+- Pages setup is idempotent: an already-correct `gh-pages:/` configuration exits without a write. API transport errors, unexpected statuses, and failed writes are no longer hidden with `|| true`.
+- Vercel ignored-build-step commands are now explicitly top-root path-scoped in:
+  - `mcp-hub/vercel.json` → `mcp-hub/`
+  - `apps/help-wanted-dashboard/vercel.json` → dashboard sources plus generated dashboard snapshots and status validation scripts
+  - `demo-portal/public/vercel.json` → static demo portal only
+- Missing previous/current SHAs and diff errors fail open to a build; unchanged source returns exit 0 to skip; relevant changes return nonzero to continue the build. This follows Vercel's documented ignored-build-step contract.
+- `tests/test_vercel_ignore_commands.py` adds regression coverage for unrelated changes, relevant changes, missing previous SHA, and project-path scoping.
+
+**Activation boundary:** PR #1310 is merged as `2194a62192dce89e3dedbb3142418aad06d6fab9`. The shared helper and project-scoped `vercel.json` settings are now on master, and the connected Vercel project settings for `mcp-hub`, `help-wanted-dash`, `help-wanted-oversight`, and `termux-monorepo` were updated to call the helper. This makes the selector configured, but the provider still returned `build-rate-limit` on the merge SHA and no deployment records were returned for that SHA; effectiveness is therefore not yet verified by a successful post-merge event. Source-path filters reduce unnecessary build attempts; they do not manufacture quota headroom, expose a remaining-quota counter, or provide cross-provider production failover.
+
 ## Quota resilience policy — act before exhaustion, never after a retry storm
 
 ### Correct classification
@@ -98,7 +113,7 @@ A Vercel `api-deployments-free-per-day` response is **provider capacity = constr
 1. **Spend only on meaningful deploy events.** Use change/path filtering, deduplication, stable concurrency, and no-op detection so duplicate or docs-only changes do not consume a deployment where the lane does not need one.
 2. **Use budget thresholds before exhaustion.** Track observed usage and reset time when the provider exposes them. At the configured safety threshold, stop optional/preview deployments and reserve capacity for production-critical work. Never invent an exact remaining quota when the provider does not expose it.
 3. **Classify before retry.** On a provider quota response, preserve the first response and timestamp; do not immediately repeat the same deploy. Re-fetch provider state once if useful, then wait for reset or select an eligible alternative.
-4. **Rotate only across verified lanes.** Candidate order is a policy input, not proof of readiness. An alternative must already have a concrete project/site, source/root boundary, required secrets, production branch, URL, and successful source-SHA verification. Do not automatically send live traffic to Render, Cloudflare, or GitHub Pages based only on their mention in the lane registry.
+4. **Rotate only across verified lanes.** Candidate order is a policy input, not proof of readiness. An alternative must already have a concrete project/site, source/root boundary, required secrets, production branch, URL, and successful source-SHA verification. GitHub Pages is configured for static publication but remains unverified as a current healthy publication; it cannot serve as a substitute for the MCP/application runtime. Do not automatically send live traffic to Render, Cloudflare, or Pages based only on their mention in the lane registry.
 5. **Fail open for CI, fail closed for promotion.** A Vercel quota failure does not fail unrelated CI. A release cannot claim deployment success until the intended source SHA is deployed and verified on the selected lane.
 6. **Circuit-break and recover.** Mark the exhausted provider/lane unavailable for the relevant quota window, avoid retry storms, continue independent work, re-check at the provider's reset or recovery signal, and restore preference only after a successful health/source-SHA probe.
 7. **Keep secrets and budgets separate.** Do not copy credentials between providers or infer quota availability from the LLM model-rotation registry. Provider-specific capacity and authorization are independent inputs.
@@ -109,11 +124,11 @@ A Vercel `api-deployments-free-per-day` response is **provider capacity = constr
 |---|---|---|
 | Vercel `termux-monorepo` | Live lane; Hobby plan observed in the connected Vercel team context | Defer noncritical deploys; preserve CI and source evidence; retry only after capacity recovery or a changed deployment input. |
 | Vercel `mcp-hub` | Live lane in deployment-lane SSOT | Manage independently by project; do not assume its deployment budget is a separate account-wide allowance without provider evidence. |
-| GitHub Pages | **LIVE for the static Help-Wanted dashboard and project hub** through the existing deploy workflow; this does not make it a live fallback for application/MCP services. The broader deployment-lane SSOT still records the optional generic Pages lane as not enabled. | Use the already-live canonical static dashboard for dashboard continuity. Do not route the Vercel-hosted MCP service to Pages; service failover needs a separately provisioned compatible lane. |
+| GitHub Pages | **Configured, publication unverified**: workflow configures `gh-pages`, mirrors static routes to `timerloggedout-spec.github.io`, and the `gh-pages` branch exists; current run/URL/source-SHA health evidence was not returned. | Verify the exact published URL and deployed source SHA before relying on it for static dashboard continuity. Never route the Vercel-hosted MCP service to Pages. |
 | Render | Candidate / unproven in this repository | Not an automatic fallback. Requires concrete project/service and source-SHA health proof. |
 | Cloudflare / Pages / Workers | Candidate / unproven in this repository | Not an automatic fallback. Establish the exact product, project, route/domain, source boundary, and verification first. |
 
-**Present limitation:** this RECON verified the connected Vercel team is on the Hobby plan. GitHub Pages is already a live canonical surface for the static Help-Wanted dashboard/project hub, but it is not a compatible replacement for the Vercel-hosted MCP application. The connected Vercel interface did not expose an authoritative remaining daily-deployment counter in this pass. The workflow change therefore removes automatic Vercel production deployments from ordinary pushes, defaults manual publication to the existing GitHub Pages lane, and preserves Vercel as an explicit manual target with quota/capacity classification. Automatic service failover remains gated on provisioning and verifying a compatible alternative lane.
+**Present limitation:** the connected Vercel team is on the Hobby plan and provider check URLs report `build-rate-limit`; no authoritative remaining daily-deployment counter was exposed. PR #1310 is merged, and the four connected projects' ignored-build settings now point to the shared path selector. The merge SHA still has provider-capacity failures and no deployment records, so skip/build behavior must be verified on the next provider-eligible event. GitHub Pages is configured for static publication, but current URL/source-SHA health is unverified. Automatic application/MCP failover remains gated on provisioning and verifying a compatible alternative lane.
 
 ## Acceptance checklist
 

@@ -1,0 +1,64 @@
+QUOTA PANEL - termux-monorepo (3l0.quota-registry.v1)
+Limits are documented entitlements, not balances. No live reading = no balance shown.
+Generated: 2026-10-20T23:05:00Z
+
+== ALERTS ==
+[CAP_TRIPPED] vercel.deployments: Daily deploy cap tripped overnight (Hark, 2026-10-20 21:15Z). Two preview deploys failed today (18:02Z, 19:03Z) on ops/actions-matrix-upgrade-2026-10-18. API count unavailable: deployments API undercounts enforcement by >=13 (registry observation 2026-10-19). Rolling 24h window; reset time unknown.
+[EXHAUSTED] openrouter.free_models: Free-tier quota exhausted (reported 2026-10-20 15:52Z). Daily window resets at UTC rollover; tier depends on credits purchased.
+[WATCH] github.actions.minutes: Free for public repos; Actions quota pressure tracked in issues #1283 and #772.
+
+== ALL SERVICES ==
+github.actions.minutes                    n/a minutes                window=monthly reset=n/a (free for public repos)
+                                   metric: standard-runner minutes (public repo) | live: none_needed
+github.actions.cache                       10 GB                     window=rolling reset=LRU eviction; entries unused 7 days removed
+                                   metric: cache storage per repo | live: GET /repos/{repo}/actions/cache/usage
+github.api.github_token                  1000 requests/hour/repo     window=hourly reset=x-ratelimit-reset header
+                                   metric: REST requests via GITHUB_TOKEN | live: GET /rate_limit
+github.api.user_token                    5000 requests/hour          window=hourly reset=x-ratelimit-reset header
+                                   metric: REST requests via user/OAuth token | live: GET /rate_limit (Hark connector)
+github.artifacts.retention                 90 days                   window=per-artifact reset=n/a
+                                   metric: artifact retention default | live: none
+github.copilot.free                       n/a requests/month         window=monthly reset=unverified
+                                   metric: Copilot Free allowance | live: none (no usage API for Free)
+vercel.deployments                        100 deployments/day        window=rolling 24h (observed: error says try again in 24 hours) reset=rolling
+                                   metric: deployments created | live: GET api.vercel.com/v6/deployments (VERCEL_TOKEN); undercounts vs enforcement by >=13 (2026-10-19)
+vercel.build_time                          45 minutes                window=per-build reset=n/a
+                                   metric: build step duration per deployment | live: none
+render.pipeline_minutes                   500 minutes/month          window=calendar month reset=1st of month
+                                   metric: Starter build pipeline minutes (Hobby) | live: dashboard only (billing#unbilled-charges); estimate from deploys API wall-clock
+render.instance_hours                     750 hours/month            window=calendar month reset=start of month, no rollover
+                                   metric: Free instance hours per workspace | live: dashboard only (billing#included-usage)
+render.bandwidth                            5 GB/month               window=calendar month reset=1st of month
+                                   metric: outbound bandwidth included (Hobby) | live: GET /v1/metrics/bandwidth?resource=srv-...
+render.postgres_free                        1 GB (1 instance/workspace) window=30 days from creation reset=expires; 14-day grace then deleted
+                                   metric: free Postgres | live: none
+render.keyvalue_free                        1 instance/workspace (in-memory only) window=n/a reset=data lost on restart
+                                   metric: free Key Value | live: none
+neon.compute                              100 CU-hours/project/month window=monthly reset=billing month
+                                   metric: compute | live: GET console.neon.tech/api/v2/projects (NEON_API_KEY)
+neon.storage                                1 GB/project (20 GB total) window=point-in-time reset=n/a
+                                   metric: Postgres storage | live: projects API synthetic_storage_size
+neon.egress                                 5 GB/month               window=monthly reset=billing month
+                                   metric: egress | live: none
+neon.realtime                             n/a free during beta       window=n/a reset=n/a
+                                   metric: Realtime (beta) | live: none
+openrouter.free_models                    n/a requests/day (tiered by credits purchased) window=daily reset=per GET /api/v1/key
+                                   metric: free-model (:free) requests | live: GET openrouter.ai/api/v1/key -> free_model_daily_requests (OPENROUTER_API_KEY)
+gemini.api_free                           n/a per-model              window=daily (RPD) reset=midnight
+                                   metric: RPM/TPM/RPD per model, per project | live: none; .github/actions/gemini-quota-gate soft budgets + 429s
+g4f.vendors                               n/a unmetered / unknown    window=unknown reset=unknown
+                                   metric: public/web-wrapped endpoints (multi-ai-cli/vendors) | live: none; observe 429/retry-after per call
+grafana.cloud_free                      10000 samples/s              window=instant reset=n/a
+                                   metric: ingestion_rate per series | live: none
+supabase.free                             n/a mixed                  window=monthly reset=billing month
+                                   metric: DB 500 MB; 2 active projects; pause after 1 week idle; Realtime 2M msgs/200 conns; 5 GB egress | live: none
+turso.free                                n/a mixed                  window=monthly reset=billing month
+                                   metric: 5 GB; 10M rows written/mo; 500M reads; 100 DBs | live: none
+upstash.free                              n/a mixed                  window=monthly/daily reset=billing period
+                                   metric: Redis 250 MB, 500K commands/mo, 10 GB bandwidth; QStash 1,000 msgs/day | live: none
+cloudflare.d1_queues                      n/a mixed                  window=daily reset=daily
+                                   metric: D1 100k rows written/day, 5M reads/day, 5 GB; Queues 10k ops/day, 24h retention | live: none
+partners.credits                          n/a one-time credits       window=one-time reset=none
+                                   metric: referral/bonus credits (docs/PARTNERS.md) | live: none
+
+Source: ops/quota/registry.json (termux-monorepo master). Refresh: scripts/quota_poll.py

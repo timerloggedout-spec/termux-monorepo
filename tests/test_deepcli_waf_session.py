@@ -181,6 +181,26 @@ class DeepSeekWafSessionTests(unittest.TestCase):
             if os.name != "nt":
                 self.assertEqual(target_file.stat().st_mode & 0o777, 0o644)
 
+    def test_ensure_session_rejects_path_traversal_and_symlink_dir(self):
+        with tempfile.TemporaryDirectory() as temp_dir, patch.dict(
+            os.environ,
+            {"DEEPSEEK_TOKEN": "test-token"},
+            clear=True,
+        ):
+            traversal_dir = os.path.join(temp_dir, "..", "test_traversal")
+            with self.assertRaises(ValueError) as ctx:
+                session_manager.ensure_session(traversal_dir, "primary")
+            self.assertIn("Path traversal", str(ctx.exception))
+
+            target_dir = Path(temp_dir) / "target_dir"
+            target_dir.mkdir()
+            symlink_dir = Path(temp_dir) / "primary"
+            symlink_dir.symlink_to(target_dir)
+
+            with self.assertRaises(ValueError) as ctx_sym:
+                session_manager.ensure_session(temp_dir, "primary")
+            self.assertIn("Symlink session cache directory", str(ctx_sym.exception))
+
 
 if __name__ == "__main__":
     unittest.main()

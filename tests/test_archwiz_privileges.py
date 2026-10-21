@@ -193,50 +193,89 @@ def test_live_view_symlink_safety(tmp_path, monkeypatch):
 def test_listener_control_symlink_safety(tmp_path, monkeypatch):
     import archwiz.listener_control as lc
 
-    target_pid = tmp_path / "target_pid.pid"
+    archwiz_dir = tmp_path / "archwiz"
+    archwiz_dir.mkdir(parents=True, exist_ok=True)
+
+    target_pid = tmp_path / "target.pid"
     target_pid.write_text("12345")
-    if os.name != "nt":
-        target_pid.chmod(0o644)
 
     target_listener = tmp_path / "target_listener.py"
-    target_listener.write_text("print('unsafe')")
-    if os.name != "nt":
-        target_listener.chmod(0o644)
+    target_listener.write_text("print('hello')")
 
-    symlink_pid = tmp_path / ".listener.pid"
+    symlink_pid = archwiz_dir / ".listener.pid"
     symlink_pid.symlink_to(target_pid)
 
-    symlink_listener = tmp_path / "activity_listener.py"
+    symlink_listener = archwiz_dir / "activity_listener.py"
     symlink_listener.symlink_to(target_listener)
 
-    # 1. Reject symlinked PID_FILE in start() and stop()
+    # Mock PID_FILE and LISTENER in lc module
     monkeypatch.setattr(lc, "PID_FILE", symlink_pid)
-    monkeypatch.setattr(lc, "LISTENER", target_listener)
+    monkeypatch.setattr(lc, "LISTENER", archwiz_dir / "activity_listener.py")
 
-    with pytest.raises(ValueError, match="Symlink PID_FILE rejected"):
-        lc.start()
-
-    with pytest.raises(ValueError, match="Symlink PID_FILE rejected"):
-        lc.stop()
-
-    # 2. Reject symlinked LISTENER in start()
-    real_pid = tmp_path / "real.pid"
-    monkeypatch.setattr(lc, "PID_FILE", real_pid)
-    monkeypatch.setattr(lc, "LISTENER", symlink_listener)
-
+    # start() should reject symlinked LISTENER
     with pytest.raises(ValueError, match="Symlink LISTENER rejected"):
         lc.start()
 
-    # 3. Test normal execution creates PID_FILE with 0o600 permissions
-    monkeypatch.setattr(lc, "LISTENER", target_listener)
+    # Use a real listener file
+    real_listener = archwiz_dir / "real_listener.py"
+    real_listener.write_text("print('real')")
+    monkeypatch.setattr(lc, "LISTENER", real_listener)
 
-    # Mock subprocess.Popen
-    class DummyProc:
+    # start() should reject symlinked PID_FILE
+    with pytest.raises(ValueError, match="Symlink PID_FILE rejected"):
+        lc.start()
+
+    # stop() should reject symlinked PID_FILE
+    with pytest.raises(ValueError, match="Symlink PID_FILE rejected"):
+        lc.stop()
+
+    # Now test valid start() and check 0o600 permissions
+    real_pid = archwiz_dir / ".real_listener.pid"
+    monkeypatch.setattr(lc, "PID_FILE", real_pid)
+
+    # Mock subprocess.Popen to prevent actually starting a background process
+    class MockPopen:
         pid = 99999
-    monkeypatch.setattr(lc.subprocess, "Popen", lambda *args, **kwargs: DummyProc())
+    monkeypatch.setattr(lc.subprocess, "Popen", lambda *args, **kwargs: MockPopen())
 
     lc.start()
     assert real_pid.exists()
     assert real_pid.read_text() == "99999"
     if os.name != "nt":
         assert (real_pid.stat().st_mode & 0o777) == 0o600
+
+    # Test stop() cleans up real PID file
+    lc.stop()
+    assert not real_pid.exists()
+
+
+def test_termux_activity_listener_scaffold_symlink_safety(tmp_path, monkeypatch):
+    target_file = tmp_path / "target_scaffold.py"
+    target_file.write_text("# sensitive scaffold target")
+    if os.name != "nt":
+        target_file.chmod(0o644)
+
+    pipeline_dir = tmp_path / "archwiz"
+    pipeline_dir.mkdir(parents=True, exist_ok=True)
+
+    symlink_scaffold = pipeline_dir / "bridge_scaffold.py"
+    symlink_scaffold.symlink_to(target_file)
+
+    al_path = Path("termux-multi-agent/workspace/activity_listener.py")
+    code_text = al_path.read_text()
+    idx = code_text.rfind("patterns = [")
+    if idx != -1:
+        code_text = code_text[:idx] + "patterns = []\n            return []\n\ndef main(): pass\n"
+
+    monkeypatch.setattr("pathlib.Path.home", lambda: tmp_path)
+
+    mod_namespace = {"__file__": str(al_path), "__name__": "tma_al"}
+    exec(code_text, mod_namespace)
+    bridge_cls = mod_namespace["DeepSeekBridge"]
+
+    with pytest.raises(ValueError, match="Symlink scaffold path rejected"):
+        bridge_cls()
+
+    if os.name != "nt":
+        assert (target_file.stat().st_mode & 0o777) == 0o644
+        assert target_file.read_text() == "# sensitive scaffold target"

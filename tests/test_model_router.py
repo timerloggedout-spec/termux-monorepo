@@ -242,3 +242,81 @@ def test_stale_target_sha_fails_closed_in_observe_decision_only(tmp_path, monkey
     assert '"exclusion":"current-SHA gate is missing or stale"' in outputs
     assert "provider=gemini" in outputs
     assert "skip=false" in outputs
+
+
+def test_path_traversal_prevention(tmp_path, monkeypatch):
+    import pytest
+    import scripts.openrouter_free_catalog as cat
+
+    bad_dir = str(tmp_path / ".." / "escaped")
+    monkeypatch.setattr(mr, "COUNTER_DIR", bad_dir)
+
+    with pytest.raises(ValueError, match="Path traversal detected"):
+        mr.get_usage("openrouter", "model")
+
+    with pytest.raises(ValueError, match="Path traversal detected"):
+        mr.increment_usage("openrouter", "model")
+
+    with pytest.raises(ValueError, match="Path traversal detected"):
+        mr.fetch_openrouter_free_models_cached_with_source()
+
+    with pytest.raises(ValueError, match="Path traversal detected"):
+        cat.resolve_free_catalog(bad_dir)
+
+
+def test_symlink_hijacking_prevention(tmp_path, monkeypatch):
+    import pytest
+    import scripts.openrouter_free_catalog as cat
+
+    target_file = tmp_path / "target.txt"
+    target_file.write_text("original")
+
+    symlink_dir = tmp_path / "symlink_dir"
+    symlink_dir.symlink_to(tmp_path, target_is_directory=True)
+
+    monkeypatch.setattr(mr, "COUNTER_DIR", str(symlink_dir))
+    with pytest.raises(ValueError, match="COUNTER_DIR is a symlink"):
+        mr.increment_usage("openrouter", "model")
+
+    real_dir = tmp_path / "counter_dir"
+    real_dir.mkdir()
+    monkeypatch.setattr(mr, "COUNTER_DIR", str(real_dir))
+
+    usage_symlink = real_dir / "openrouter_model.txt"
+    usage_symlink.symlink_to(target_file)
+
+    assert mr.get_usage("openrouter", "model") == 0
+
+    with pytest.raises(ValueError, match="Usage file is a symlink"):
+        mr.increment_usage("openrouter", "model")
+
+    cache_symlink = real_dir / "openrouter_models_cache.json"
+    cache_symlink.symlink_to(target_file)
+
+    monkeypatch.setattr(mr, "fetch_openrouter_free_models", lambda: ["model:free"])
+    mr.fetch_openrouter_free_models_cached_with_source()
+    assert target_file.read_text() == "original"
+
+    monkeypatch.setattr(cat, "fetch_live_free_ids", lambda: ["model:free"])
+    cat.resolve_free_catalog(str(real_dir))
+    assert target_file.read_text() == "original"
+
+
+def test_secure_permissions_and_creation(tmp_path, monkeypatch):
+    import stat
+
+    counter_dir = tmp_path / "secure_dir"
+    monkeypatch.setattr(mr, "COUNTER_DIR", str(counter_dir))
+
+    mr.increment_usage("openrouter", "model:free")
+    usage_file = counter_dir / "openrouter_model:free.txt"
+    assert usage_file.exists()
+    mode = os.stat(usage_file).st_mode
+    assert stat.S_IMODE(mode) == 0o600
+
+    monkeypatch.setattr(mr, "fetch_openrouter_free_models", lambda: ["model:free"])
+    mr.fetch_openrouter_free_models_cached_with_source()
+    cache_file = counter_dir / "openrouter_models_cache.json"
+    assert cache_file.exists()
+    mode = os.stat(cache_file).st_mode
+    assert stat.S_IMODE(mode) == 0o600

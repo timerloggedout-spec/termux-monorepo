@@ -42,3 +42,18 @@
 **Vulnerability:** High-level file creation (`open(path, "w")`) creates session cache files with default process umask permissions (`0o644`/`0o666`), briefly leaving sensitive message history world/group-readable before post-write `chmod(0o600)` executes.
 **Learning:** Standard `open()` does not allow specifying low-level file creation mode bits directly, resulting in a race window where created files inherit default umask permissions before explicit `chmod` calls.
 **Prevention:** Use `fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)` wrapped in `os.fdopen()` to guarantee atomic `0o600` permissions from the moment of file creation.
+
+## 2026-10-15 - Symlink Hijacking and Path Traversal Prevention in Session Cache Initialization
+**Vulnerability:** In `deepcli/session_manager.py`, `ensure_session` created cache directory structures using `mkdir(parents=True, exist_ok=True)` without validating path components for path traversal (`..`) or checking if `cache_dir_path` or `cache_dir_path.parent` was a symlink prior to creation and operations.
+**Learning:** Calling `mkdir` or operating on directory structures before checking whether any parent component or target directory is a symlink creates a race window where an attacker can redirect session credential writes or directory permissions to external folders.
+**Prevention:** Always validate `".." not in cache_dir_path.parts` and verify `not cache_dir_path.is_symlink() and not cache_dir_path.parent.is_symlink()` prior to directory creation and file operations.
+
+## 2026-09-22 - Path Traversal, Symlink Hijacking, and Atomic Permissions in Model Router Caches
+**Vulnerability:** Unsanitized cache/counter directory inputs (`COUNTER_DIR`/`counter_dir`) in `scripts/model_router.py` and `scripts/openrouter_free_catalog.py` allowed path traversal via `..` and symlink hijacking when writing cache JSON and usage counter files in shared temporary directories (`/tmp/model-router`), alongside umask permission exposure.
+**Learning:** Shared `/tmp` cache files and user-configurable counter directories can be pre-created by unprivileged local users as symlinks pointing to target files. Creating files with standard `open("w")` both follows symlinks and exposes files to default umask permissions (`0o644`/`0o666`).
+**Prevention:** Always validate `".." not in Path(dir).parts`, verify `not os.path.islink(path)` before reading/writing, and use `os.open(path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)` wrapped in `os.fdopen()` for atomic permission enforcement.
+
+## 2026-10-13 - Path Traversal and Symlink Validation in Hub Job CLI and State Stores
+**Vulnerability:** In `hub_mcp/cli.py` and `hub_mcp/runner.py`, command-line job envelope input files (`args.job`) and state directory arguments (`args.state_directory`) were parsed and read/written without path traversal (`..`) or symlink (`is_symlink()`) checks, allowing arbitrary file reading or local permission/file mutation outside intended worker boundaries.
+**Learning:** CLI entrypoints and payload executors accepting filesystem arguments must explicitly validate path components for traversal and verify symlinks on both target files and state parent directories before attempting file reads, directory creation, or permission adjustments.
+**Prevention:** Check `".." in path.parts` and `path.is_symlink()` / `path.parent.is_symlink()` prior to reading input JSON payloads or constructing replay stores.

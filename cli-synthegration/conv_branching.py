@@ -26,13 +26,23 @@ class ConversationRepo:
     
     def __init__(self, repo_path: Path = None):
         self.path = repo_path or Path.home() / 'cli-synthegration' / 'conv_repo'
+        if self.path.is_symlink():
+            raise ValueError("Symlink repository directory rejected for security")
         self.path.mkdir(parents=True, exist_ok=True)
+        try:
+            os.chmod(str(self.path), 0o700)
+        except OSError:
+            pass
         self.branches: Dict[str, BranchRef] = {}
         self.current_branch: Optional[str] = None
         self._load_refs()
     
     def _load_refs(self):
+        if self.path.is_symlink():
+            raise ValueError("Symlink repository directory rejected for security")
         refs_file = self.path / 'refs.json'
+        if refs_file.is_symlink():
+            raise ValueError("Symlink refs.json rejected for security")
         if refs_file.exists():
             data = json.loads(refs_file.read_text())
             for br_data in data.get('branches', []):
@@ -44,6 +54,11 @@ class ConversationRepo:
             self.current_branch = data.get('HEAD')
     
     def _save_refs(self):
+        if self.path.is_symlink():
+            raise ValueError("Symlink repository directory rejected for security")
+        refs_file = self.path / 'refs.json'
+        if refs_file.is_symlink():
+            raise ValueError("Symlink refs.json rejected for security")
         refs = {
             'HEAD': self.current_branch,
             'branches': [
@@ -53,7 +68,19 @@ class ConversationRepo:
                 for b in self.branches.values()
             ]
         }
-        (self.path / 'refs.json').write_text(json.dumps(refs, indent=2))
+        # Atomic low-level open with 0o600 permissions
+        fd = os.open(str(refs_file), os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+        try:
+            try:
+                os.fchmod(fd, 0o600)
+            except OSError:
+                pass
+            with os.fdopen(fd, 'w') as f:
+                f.write(json.dumps(refs, indent=2))
+                fd = -1
+        finally:
+            if fd >= 0:
+                os.close(fd)
     
     def create_branch(self, name: str, session_id: str, parent_branch: str = None) -> BranchRef:
         """Fork a new branch from an existing session."""

@@ -218,7 +218,16 @@ def cmd_export(args):
     fmt = args.format or "json"
     output = export_json(token, sid) if fmt == "json" else export_markdown(token, sid)
     if args.output:
-        Path(args.output).write_text(output)
+        out_path = Path(args.output)
+        if out_path.is_symlink():
+            console.print(f"[red]Export target '{args.output}' is a symlink. Rejected for security.[/]")
+            return
+        out_path.write_text(output, encoding="utf-8")
+        if not out_path.is_symlink():
+            try:
+                out_path.chmod(0o600)
+            except Exception:
+                pass
         console.print(f"[green]Exported to {args.output}[/]")
     else:
         console.print(output)

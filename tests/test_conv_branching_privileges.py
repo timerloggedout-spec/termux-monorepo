@@ -32,18 +32,30 @@ def test_conv_branching_input_validation(tmp_path):
 
 
 def test_conv_branching_symlink_safety(tmp_path):
-    # 1. Test symlink repo directory
+    # 1. Test symlink repo directory in __init__, _load_refs, _save_refs, and link_knowledge
     real_repo = tmp_path / "real_repo"
     real_repo.mkdir(parents=True, exist_ok=True)
 
     symlink_repo = tmp_path / "symlink_repo"
     symlink_repo.symlink_to(real_repo, target_is_directory=True)
 
-    repo_symlink = cb.ConversationRepo(repo_path=symlink_repo)
     with pytest.raises(ValueError, match="Symlink repository directory rejected"):
-        repo_symlink.link_knowledge("branchA", "branchB", "reference")
+        cb.ConversationRepo(repo_path=symlink_repo)
 
-    # 2. Test symlinked knowledge_links.jsonl file
+    # Instantiate repo on real dir first, then test _load_refs, _save_refs, and link_knowledge against symlinked repo
+    repo_real = cb.ConversationRepo(repo_path=real_repo)
+    repo_real.path = symlink_repo
+
+    with pytest.raises(ValueError, match="Symlink repository directory rejected"):
+        repo_real._load_refs()
+
+    with pytest.raises(ValueError, match="Symlink repository directory rejected"):
+        repo_real._save_refs()
+
+    with pytest.raises(ValueError, match="Symlink repository directory rejected"):
+        repo_real.link_knowledge("branchA", "branchB", "reference")
+
+    # 2. Test symlinked refs.json and knowledge_links.jsonl files
     repo_dir = tmp_path / "conv_repo_file_symlink"
     repo_dir.mkdir(parents=True, exist_ok=True)
 
@@ -52,12 +64,28 @@ def test_conv_branching_symlink_safety(tmp_path):
     if os.name != "nt":
         target_file.chmod(0o644)
 
+    symlink_refs = repo_dir / "refs.json"
+    symlink_refs.symlink_to(target_file)
+
     symlink_links = repo_dir / "knowledge_links.jsonl"
     symlink_links.symlink_to(target_file)
 
-    repo = cb.ConversationRepo(repo_path=repo_dir)
+    with pytest.raises(ValueError, match="Symlink refs.json rejected"):
+        cb.ConversationRepo(repo_path=repo_dir)
+
+    repo_uninitialized = cb.ConversationRepo.__new__(cb.ConversationRepo)
+    repo_uninitialized.path = repo_dir
+    repo_uninitialized.branches = {}
+    repo_uninitialized.current_branch = "master"
+
+    with pytest.raises(ValueError, match="Symlink refs.json rejected"):
+        repo_uninitialized._save_refs()
+
+    with pytest.raises(ValueError, match="Symlink refs.json rejected"):
+        repo_uninitialized._load_refs()
+
     with pytest.raises(ValueError, match="Symlink knowledge links file rejected"):
-        repo.link_knowledge("branchA", "branchB", "reference")
+        repo_uninitialized.link_knowledge("branchA", "branchB", "reference")
 
     if os.name != "nt":
         assert (target_file.stat().st_mode & 0o777) == 0o644
@@ -72,12 +100,18 @@ def test_conv_branching_privileges_and_link_creation(tmp_path):
     assert link["to"] == "branch2"
     assert link["type"] == "reference-back"
 
+    repo._save_refs()
+
     links_file = repo_dir / "knowledge_links.jsonl"
     assert links_file.exists()
+
+    refs_file = repo_dir / "refs.json"
+    assert refs_file.exists()
 
     if os.name != "nt":
         assert (repo_dir.stat().st_mode & 0o777) == 0o700
         assert (links_file.stat().st_mode & 0o777) == 0o600
+        assert (refs_file.stat().st_mode & 0o777) == 0o600
 
     content = links_file.read_text()
     assert "branch1" in content

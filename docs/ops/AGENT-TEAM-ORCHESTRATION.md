@@ -29,15 +29,15 @@ The custom 3L0 score is an inference matrix, not a claim of objective model inte
 
 Provider ecosystems are contributors to the ADE, but **contributor identity is not GitHub authorship**. The roster separates provider, agent, model, execution adapter, orchestration role, and research/evaluation lane.
 
-Required contributor lanes include:
+Required contributor coverage has two separate populations:
 
-- **Gemini / Gemini CLI** — review, triage, implementation, research, evaluation
-- **OpenRouter** — routing, live catalog, inference, evaluation, benchmark
-- **FELO** — research, inference, benchmark, evaluation, adapter
-- **Hugging Face** — model, dataset, benchmark, evaluation, inference, research
-- existing Jules, CodeRabbit, DeepSeek, Devin, Copilot, Mistral, and operator lanes
+**Agent / collaborator identities** — Gemini CLI, Jules, DeepSeek CI, Devin, CodeRabbit, Copilot, Tembo, Mistral Vibe, the manager/scout/orchestrator workflows, and the operator lane. These identities can review, implement, route, or coordinate only where their real invocation workflow exists. A provider API key is not an agent identity, and an agent's GitHub handle is not its model identity.
 
-Contributor provenance must retain the provider/model/adapter/role dimensions alongside workflow run/job/step, triggering event, PR/issue, SHA, and attribution confidence. A model response incorporated into a commit does not establish provider authorship.
+**Provider API and research-service lanes** — OpenRouter, FELO, Hugging Face, OmniRoute, Groq, Mistral API, Cerebras, NVIDIA NIM, Aion, LLM7, ModelScope, SiliconFlow, Kilo, OVHcloud, SambaNova, Cloudflare Workers AI, Cohere, and Ollama Cloud. The machine-readable contributor roster tracks these independently from agent roles. Z.ai remains a candidate with an unverified catalog contract, not a completed adapter. Firecrawl's fixed-URL keyless scrape is a public-research service, not an inference provider.
+
+The six-hour [provider availability workflow](../../.github/workflows/provider-availability.yml) follows the canonical catalog-adapter registry. It performs catalog-only probes for configured expanded providers and public LLM7/OVHcloud/ModelScope catalogs; only OpenRouter and Gemini retain inference probes. Unconfigured credentialed providers are not contacted. A passing catalog probe does not prove account entitlement, accepted terms, free quota, inference health, or routing admission. New provider lanes must not be inserted into the agent routing candidate pools unless a real execution adapter and explicit admission contract exist.
+
+Contributor provenance must retain the provider/model/adapter/role dimensions alongside workflow run/job/step, triggering event, PR/issue, SHA, and attribution confidence. A model response incorporated into a commit does not establish provider authorship. PAT owner, commit author, workflow actor, and model provider are separate fields.
 
 The display-moniker SSOT is `docs/ops/AGENT-MONIKERS.md`; capability/routing declarations are in `docs/schemas/agent-roster.yaml`. See Issue #921 for the continuing moniker/role expansion track.
 

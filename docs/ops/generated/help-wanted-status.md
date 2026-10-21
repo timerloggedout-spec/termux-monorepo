@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-21T04:36:14Z UTC · receipts=3307 · foreign_open=37 · tributes=110_
+_Generated 2026-10-21T05:20:07Z UTC · receipts=3307 · foreign_open=38 · tributes=111_
 
 ## Tributes (contributor ledger)
 
+- [Gautam-aman/ResQNet#53](https://github.com/Gautam-aman/ResQNet/pull/53) · state=open · help-wanted: stake + contribute for #50
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
 - [mangiapanejohn-dev/MOBIUS-Searcher#7](https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7) · state=open · help-wanted: stake + contribute for #6
@@ -43,10 +44,10 @@ _Generated 2026-10-21T04:36:14Z UTC · receipts=3307 · foreign_open=37 · tribu
 - [use-assay/Assay#509](https://github.com/use-assay/Assay/pull/509) · state=open · help-wanted: stake + contribute for #305
 - [SO4-Markets/interface#1029](https://github.com/SO4-Markets/interface/pull/1029) · state=open · help-wanted: stake + contribute for #918
 - [C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge--Frontend-#971](https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge--Frontend-/pull/971) · state=open · help-wanted: stake + contribute for #901
-- [francordel/kdemos#27](https://github.com/francordel/kdemos/pull/27) · state=closed · help-wanted: stake + contribute for #26
 
 ## Foreign open PRs
 
+- [Gautam-aman/ResQNet#53](https://github.com/Gautam-aman/ResQNet/pull/53) — help-wanted: stake + contribute for #50
 - [C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge--Frontend-#971](https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge--Frontend-/pull/971) — help-wanted: stake + contribute for #901
 - [SO4-Markets/interface#1029](https://github.com/SO4-Markets/interface/pull/1029) — help-wanted: stake + contribute for #918
 - [use-assay/Assay#509](https://github.com/use-assay/Assay/pull/509) — help-wanted: stake + contribute for #305

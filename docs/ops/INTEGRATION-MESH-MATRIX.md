@@ -21,9 +21,12 @@ Two different GitHub lists exist and this matrix keeps them separate:
 **Authorized** apps (user granted the app account access — the #184 lists) vs
 **Installed/Active** apps (installed on the account/repos and actually emitting
 checks/reviews/comments — the LIVE-API census). An app can be in either list
-without the other (§5 is exactly that gap). The Settings → Installations UI is
-the union view; it is **not yet re-read live** (browser sign-in pending at
-compile time) — §3/§4 + §5 together are its evidence-based reconstruction.
+without the other (§5 is exactly that gap). The Settings → Installations UI
+would be the union view, but it is **closed as NOT ESTABLISHED by design**
+(fleet credential rule, 2026-10-21): all GitHub access runs through the PAT
+helper, `/user/installations` refuses PATs (403) by GitHub's design, and no
+browser sign-in route is used for GitHub access. §3/§4 + §5 together are the
+standing answer — an evidence-based reconstruction, not a placeholder.
 
 **Names-only discipline:** secret and token *names* only, never values. Webhook
 destinations are hosts only. This follows the standing credential caution:
@@ -277,10 +280,11 @@ is refreshed by hand from a poll diff, with the vintage line updated.
 ## NOT ESTABLISHED — stated, not filled in
 
 - **Settings → Installations union list** (which apps are installed on which
-  repos, All vs Select) — needs the owner's signed-in browser session; the
-  2026-10-21 browser attempt stalled at GitHub's login page (session not
-  established). §3+§4+§5 reconstruct it from evidence; the UI read remains
-  the one open verification.
+  repos, All vs Select) — **closed as NOT ESTABLISHED by design** (fleet
+  credential rule, 2026-10-21): the PAT helper is the only GitHub route and
+  `/user/installations` refuses PATs by GitHub's design. §3+§4+§5 are the
+  answer of record. This is a closed item, not an open verification, and it
+  is not a step the owner is asked to perform.
 - **#184 vintage risk:** last-used labels are 2026-08-13. Anything marked
   "Never" there may have activated since (several did — §4). Treat #184 as
   the authorization *floor*, the LIVE-API census as current *activity*.

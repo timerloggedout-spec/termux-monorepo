@@ -1,64 +1,233 @@
-QUOTA PANEL - termux-monorepo (3l0.quota-registry.v1)
-Limits are documented entitlements, not balances. No live reading = no balance shown.
-Generated: 2026-10-20T23:05:00Z
+================================================================================
+ QUOTA  termux-monorepo  (26 services)
+ Snapshot generated (not observation time): 2026-10-20T23:05:00Z
+ Source: docs/ops/generated/quota-status.json + ops/quota/registry.json
+ Limits are documented entitlements, not balances.
+ Private balances are hidden; unknown is not healthy or admitted.
+================================================================================
 
-== ALERTS ==
-[CAP_TRIPPED] vercel.deployments: Daily deploy cap tripped overnight (Hark, 2026-10-20 21:15Z). Two preview deploys failed today (18:02Z, 19:03Z) on ops/actions-matrix-upgrade-2026-10-18. API count unavailable: deployments API undercounts enforcement by >=13 (registry observation 2026-10-19). Rolling 24h window; reset time unknown.
-[EXHAUSTED] openrouter.free_models: Free-tier quota exhausted (reported 2026-10-20 15:52Z). Daily window resets at UTC rollover; tier depends on credits purchased.
-[WATCH] github.actions.minutes: Free for public repos; Actions quota pressure tracked in issues #1283 and #772.
+ ALERTS
+--------------------------------------------------------------------------------
+  No services are reporting a problem state.
 
-== ALL SERVICES ==
-github.actions.minutes                    n/a minutes                window=monthly reset=n/a (free for public repos)
-                                   metric: standard-runner minutes (public repo) | live: none_needed
-github.actions.cache                       10 GB                     window=rolling reset=LRU eviction; entries unused 7 days removed
-                                   metric: cache storage per repo | live: GET /repos/{repo}/actions/cache/usage
-github.api.github_token                  1000 requests/hour/repo     window=hourly reset=x-ratelimit-reset header
-                                   metric: REST requests via GITHUB_TOKEN | live: GET /rate_limit
-github.api.user_token                    5000 requests/hour          window=hourly reset=x-ratelimit-reset header
-                                   metric: REST requests via user/OAuth token | live: GET /rate_limit (Hark connector)
-github.artifacts.retention                 90 days                   window=per-artifact reset=n/a
-                                   metric: artifact retention default | live: none
-github.copilot.free                       n/a requests/month         window=monthly reset=unverified
-                                   metric: Copilot Free allowance | live: none (no usage API for Free)
-vercel.deployments                        100 deployments/day        window=rolling 24h (observed: error says try again in 24 hours) reset=rolling
-                                   metric: deployments created | live: GET api.vercel.com/v6/deployments (VERCEL_TOKEN); undercounts vs enforcement by >=13 (2026-10-19)
-vercel.build_time                          45 minutes                window=per-build reset=n/a
-                                   metric: build step duration per deployment | live: none
-render.pipeline_minutes                   500 minutes/month          window=calendar month reset=1st of month
-                                   metric: Starter build pipeline minutes (Hobby) | live: dashboard only (billing#unbilled-charges); estimate from deploys API wall-clock
-render.instance_hours                     750 hours/month            window=calendar month reset=start of month, no rollover
-                                   metric: Free instance hours per workspace | live: dashboard only (billing#included-usage)
-render.bandwidth                            5 GB/month               window=calendar month reset=1st of month
-                                   metric: outbound bandwidth included (Hobby) | live: GET /v1/metrics/bandwidth?resource=srv-...
-render.postgres_free                        1 GB (1 instance/workspace) window=30 days from creation reset=expires; 14-day grace then deleted
-                                   metric: free Postgres | live: none
-render.keyvalue_free                        1 instance/workspace (in-memory only) window=n/a reset=data lost on restart
-                                   metric: free Key Value | live: none
-neon.compute                              100 CU-hours/project/month window=monthly reset=billing month
-                                   metric: compute | live: GET console.neon.tech/api/v2/projects (NEON_API_KEY)
-neon.storage                                1 GB/project (20 GB total) window=point-in-time reset=n/a
-                                   metric: Postgres storage | live: projects API synthetic_storage_size
-neon.egress                                 5 GB/month               window=monthly reset=billing month
-                                   metric: egress | live: none
-neon.realtime                             n/a free during beta       window=n/a reset=n/a
-                                   metric: Realtime (beta) | live: none
-openrouter.free_models                    n/a requests/day (tiered by credits purchased) window=daily reset=per GET /api/v1/key
-                                   metric: free-model (:free) requests | live: GET openrouter.ai/api/v1/key -> free_model_daily_requests (OPENROUTER_API_KEY)
-gemini.api_free                           n/a per-model              window=daily (RPD) reset=midnight
-                                   metric: RPM/TPM/RPD per model, per project | live: none; .github/actions/gemini-quota-gate soft budgets + 429s
-g4f.vendors                               n/a unmetered / unknown    window=unknown reset=unknown
-                                   metric: public/web-wrapped endpoints (multi-ai-cli/vendors) | live: none; observe 429/retry-after per call
-grafana.cloud_free                      10000 samples/s              window=instant reset=n/a
-                                   metric: ingestion_rate per series | live: none
-supabase.free                             n/a mixed                  window=monthly reset=billing month
-                                   metric: DB 500 MB; 2 active projects; pause after 1 week idle; Realtime 2M msgs/200 conns; 5 GB egress | live: none
-turso.free                                n/a mixed                  window=monthly reset=billing month
-                                   metric: 5 GB; 10M rows written/mo; 500M reads; 100 DBs | live: none
-upstash.free                              n/a mixed                  window=monthly/daily reset=billing period
-                                   metric: Redis 250 MB, 500K commands/mo, 10 GB bandwidth; QStash 1,000 msgs/day | live: none
-cloudflare.d1_queues                      n/a mixed                  window=daily reset=daily
-                                   metric: D1 100k rows written/day, 5M reads/day, 5 GB; Queues 10k ops/day, 24h retention | live: none
-partners.credits                          n/a one-time credits       window=one-time reset=none
-                                   metric: referral/bonus credits (docs/PARTNERS.md) | live: none
-
-Source: ops/quota/registry.json (termux-monorepo master). Refresh: scripts/quota_poll.py
+ ALL SERVICES
+--------------------------------------------------------------------------------
+ CellCog/Polsia/Manus (1)
+  partners.credits
+    status: No live reading
+    limit (documented): n/a one-time credits
+    metric: referral/bonus credits (docs/PARTNERS.md) | window: one-time |
+    reset: none
+    No live reading (live source: none)
+--------------------------------------------------------------------------------
+ cloudflare (1)
+  cloudflare.d1_queues
+    status: No live reading
+    limit (documented): n/a mixed
+    metric: D1 100k rows written/day, 5M reads/day, 5 GB; Queues 10k ops/day,
+    24h retention | window: daily | reset: daily
+    No live reading (live source: none)
+--------------------------------------------------------------------------------
+ github (6)
+  github.actions.cache
+    status: No live reading
+    limit (documented): 10 GB
+    metric: cache storage per repo | window: rolling | reset: LRU eviction;
+    entries unused 7 days removed
+    No live reading (live source: GET /repos/{repo}/actions/cache/usage)
+  github.actions.minutes
+    status: UNKNOWN
+    limit (documented): n/a minutes
+    metric: standard-runner minutes (public repo) | window: monthly | reset: n/a
+    (free for public repos)
+    Public evidence state only; no account balance or runtime admission implied.
+  github.api.github_token
+    status: No live reading
+    limit (documented): 1000 requests/hour/repo
+    metric: REST requests via GITHUB_TOKEN | window: hourly | reset:
+    x-ratelimit-reset header
+    No live reading (live source: GET /rate_limit)
+  github.api.user_token
+    status: No live reading
+    limit (documented): 5000 requests/hour
+    metric: REST requests via user/OAuth token | window: hourly | reset:
+    x-ratelimit-reset header
+    No live reading (live source: GET /rate_limit (Hark connector))
+  github.artifacts.retention
+    status: No live reading
+    limit (documented): 90 days
+    metric: artifact retention default | window: per-artifact | reset: n/a
+    No live reading (live source: none)
+  github.copilot.free
+    status: No live reading
+    limit (documented): n/a requests/month
+    metric: Copilot Free allowance | window: monthly | reset: unverified
+    No live reading (live source: none (no usage API for Free))
+--------------------------------------------------------------------------------
+ google (1)
+  gemini.api_free
+    status: No live reading
+    limit (documented): n/a per-model
+    metric: RPM/TPM/RPD per model, per project | window: daily (RPD) | reset:
+    midnight
+    No live reading (live source: none; .github/actions/gemini-quota-gate soft
+    budgets + 429s)
+--------------------------------------------------------------------------------
+ gpt4free/CLIProxyAPI/Chapito/ai-manus (1)
+  g4f.vendors
+    status: No live reading
+    limit (documented): n/a unmetered / unknown
+    metric: public/web-wrapped endpoints (multi-ai-cli/vendors) | window:
+    unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call)
+--------------------------------------------------------------------------------
+ grafana (1)
+  grafana.cloud_free
+    status: No live reading
+    limit (documented): 10000 samples/s
+    metric: ingestion_rate per series | window: instant | reset: n/a
+    No live reading (live source: none)
+--------------------------------------------------------------------------------
+ neon (4)
+  neon.compute
+    status: No live reading
+    limit (documented): 100 CU-hours/project/month
+    metric: compute | window: monthly | reset: billing month
+    No live reading (live source: GET console.neon.tech/api/v2/projects
+    (NEON_API_KEY))
+  neon.egress
+    status: No live reading
+    limit (documented): 5 GB/month
+    metric: egress | window: monthly | reset: billing month
+    No live reading (live source: none)
+  neon.realtime
+    status: No live reading
+    limit (documented): n/a free during beta
+    metric: Realtime (beta) | window: n/a | reset: n/a
+    No live reading (live source: none)
+  neon.storage
+    status: No live reading
+    limit (documented): 1 GB/project (20 GB total)
+    metric: Postgres storage | window: point-in-time | reset: n/a
+    No live reading (live source: projects API synthetic_storage_size)
+--------------------------------------------------------------------------------
+ openrouter (1)
+  openrouter.free_models
+    status: PRIVATE_PREFLIGHT
+    limit (documented): n/a requests/day (tiered by credits purchased)
+    metric: free-model (:free) requests | window: daily | reset: per GET
+    /api/v1/key
+    Public evidence state only; no account balance or runtime admission implied.
+--------------------------------------------------------------------------------
+ render (5)
+  render.bandwidth
+    status: No live reading
+    limit (documented): 5 GB/month
+    metric: outbound bandwidth included (Hobby) | window: calendar month |
+    reset: 1st of month
+    No live reading (live source: GET /v1/metrics/bandwidth?resource=srv-...)
+  render.instance_hours
+    status: No live reading
+    limit (documented): 750 hours/month
+    metric: Free instance hours per workspace | window: calendar month | reset:
+    start of month, no rollover
+    No live reading (live source: dashboard only (billing#included-usage))
+  render.keyvalue_free
+    status: No live reading
+    limit (documented): 1 instance/workspace (in-memory only)
+    metric: free Key Value | window: n/a | reset: data lost on restart
+    No live reading (live source: none)
+  render.pipeline_minutes
+    status: No live reading
+    limit (documented): 500 minutes/month
+    metric: Starter build pipeline minutes (Hobby) | window: calendar month |
+    reset: 1st of month
+    No live reading (live source: dashboard only (billing#unbilled-charges);
+    estimate from deploys API wall-clock)
+  render.postgres_free
+    status: No live reading
+    limit (documented): 1 GB (1 instance/workspace)
+    metric: free Postgres | window: 30 days from creation | reset: expires;
+    14-day grace then deleted
+    No live reading (live source: none)
+--------------------------------------------------------------------------------
+ supabase (1)
+  supabase.free
+    status: No live reading
+    limit (documented): n/a mixed
+    metric: DB 500 MB; 2 active projects; pause after 1 week idle; Realtime 2M
+    msgs/200 conns; 5 GB egress | window: monthly | reset: billing month
+    No live reading (live source: none)
+--------------------------------------------------------------------------------
+ turso (1)
+  turso.free
+    status: No live reading
+    limit (documented): n/a mixed
+    metric: 5 GB; 10M rows written/mo; 500M reads; 100 DBs | window: monthly |
+    reset: billing month
+    No live reading (live source: none)
+--------------------------------------------------------------------------------
+ upstash (1)
+  upstash.free
+    status: No live reading
+    limit (documented): n/a mixed
+    metric: Redis 250 MB, 500K commands/mo, 10 GB bandwidth; QStash 1,000
+    msgs/day | window: monthly/daily | reset: billing period
+    No live reading (live source: none)
+--------------------------------------------------------------------------------
+ vercel (2)
+  vercel.build_time
+    status: No live reading
+    limit (documented): 45 minutes
+    metric: build step duration per deployment | window: per-build | reset: n/a
+    No live reading (live source: none)
+  vercel.deployments
+    status: UNKNOWN
+    limit (documented): 100 deployments/day
+    metric: deployments created | window: rolling 24h (observed: error says try
+    again in 24 hours) | reset: rolling
+    Public evidence state only; no account balance or runtime admission implied.
+--------------------------------------------------------------------------------
+ PROVIDER QUOTA-MANAGER COVERAGE (metadata only)
+  aion: Manager / ChronoMancer; manual_or_unknown; registry: MISSING — explicit
+  gap
+  cerebras: Manager / ChronoMancer; manual_or_unknown; registry: MISSING —
+  explicit gap
+  cloudflare: Manager / ChronoMancer; manual_or_unknown; registry: MISSING —
+  explicit gap
+  cohere: Manager / ChronoMancer; manual_or_unknown; registry: MISSING —
+  explicit gap
+  felo: Manager / ChronoMancer; manual_or_unknown; registry: MISSING — explicit
+  gap
+  gemini: Manager / ChronoMancer; manual_or_unknown; registry: gemini.api_free
+  groq: Manager / ChronoMancer; manual_or_unknown; registry: MISSING — explicit
+  gap
+  huggingface: Manager / ChronoMancer; manual_or_unknown; registry: MISSING —
+  explicit gap
+  kilo: Manager / ChronoMancer; manual_or_unknown; registry: MISSING — explicit
+  gap
+  llm7: Manager / ChronoMancer; manual_or_unknown; registry: MISSING — explicit
+  gap
+  mistral: Manager / ChronoMancer; manual_or_unknown; registry: MISSING —
+  explicit gap
+  modelscope: Manager / ChronoMancer; manual_or_unknown; registry: MISSING —
+  explicit gap
+  nvidia: Manager / ChronoMancer; manual_or_unknown; registry: MISSING —
+  explicit gap
+  ollama: Manager / ChronoMancer; manual_or_unknown; registry: MISSING —
+  explicit gap
+  omni: Manager / ChronoMancer; manual_or_unknown; registry: MISSING — explicit
+  gap
+  openrouter: Manager / ChronoMancer; implemented_read_only_reader; registry:
+  openrouter.free_models
+  ovhcloud: Manager / ChronoMancer; manual_or_unknown; registry: MISSING —
+  explicit gap
+  sambanova: Manager / ChronoMancer; manual_or_unknown; registry: MISSING —
+  explicit gap
+  siliconflow: Manager / ChronoMancer; manual_or_unknown; registry: MISSING —
+  explicit gap
+  zai: Manager / ChronoMancer; manual_or_unknown; registry: MISSING — explicit
+  gap
+ Coverage and quota checks do not grant runtime admission.
+ 26 services | 0 alert(s) | 3 with a reported reading | 23 with No live reading
+================================================================================

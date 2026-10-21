@@ -17,43 +17,52 @@ section{margin-top:1.8rem}.head{display:flex;justify-content:space-between;gap:1
 </style>
 </head>
 <body>
-<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/help-wanted/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="/quota" aria-current="page">Quota</a><a href="https://help-wanted-oversight-8w13bl125-timerloggedout-5184s-projects.vercel.app/">Vercel deployment</a><a href="/sitemap.xml">Sitemap</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></nav>
-<header><div class="hero"><div><div class="eyebrow">Ops · quota · entitlements + live readings</div><h1>Quota <span>Panel</span></h1><p class="lede">Every service the monorepo runs on, with its documented limit and window. Documented limits are entitlements, not balances — a remaining value is shown only when a live reading exists.</p><div class="links" style="margin-top:1rem"><a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/quota/registry.json">Quota registry</a><a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/FREE-QUOTA-WINDOWS.md">Free quota windows</a><a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/vercel-quota-probe.yml">Quota probe</a><a class="button" href="/quota.txt">Plain text (TUI / eReader)</a></div></div><div class="fresh" aria-live="polite"><strong id="freshness">Loading…</strong><small id="generated">Fetching registry + readings.</small></div></div></header>
+<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/help-wanted/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="./quota.html" aria-current="page">Quota</a><a href="https://help-wanted-oversight-8w13bl125-timerloggedout-5184s-projects.vercel.app/">Vercel deployment</a><a href="/sitemap.xml">Sitemap</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></nav>
+<header><div class="hero"><div><div class="eyebrow">Ops · quota · entitlements + live readings</div><h1>Quota <span>Panel</span></h1><p class="lede">Every service the monorepo runs on, with its documented limit and window. Documented limits are entitlements, not balances — Private account balances are not published here; coverage metadata never grants runtime admission.</p><div class="links" style="margin-top:1rem"><a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/quota/registry.json">Quota registry</a><a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/FREE-QUOTA-WINDOWS.md">Free quota windows</a><a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/vercel-quota-probe.yml">Quota probe</a><a class="button" href="./quota.txt">Plain text (TUI / eReader)</a></div></div><div class="fresh" aria-live="polite"><strong id="freshness">Loading…</strong><small id="generated">Fetching registry + readings.</small></div></div></header>
 <main>
 <section aria-labelledby="alerts"><div class="head"><h2 id="alerts">Needs attention</h2><span class="note" id="alert-note">Services with a live or reported state</span></div><div class="grid" id="alert-cards"></div></section>
+<section aria-labelledby="coverage"><div class="head"><h2 id="coverage">Provider quota-manager coverage</h2><span class="note" id="coverage-summary">Loading coverage metadata…</span></div><p class="note">Coverage is a control inventory, not proof of live quota, model participation, free entitlement or runtime eligibility.</p><div id="provider-coverage"></div></section>
 <section aria-labelledby="all"><div class="head"><h2 id="all">All services</h2><span class="note" id="summary">—</span></div><div class="toolbar"><input id="search" type="search" placeholder="Filter service, provider, metric"></div><div id="groups"></div></section>
-<footer>Quota Panel · source: <a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/quota/registry.json">ops/quota/registry.json</a> (schema 3l0.quota-registry.v1) · readings: docs/ops/generated/quota-status.json, refreshed by <a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/scripts/quota_poll.py">scripts/quota_poll.py</a> · limits are documented entitlements, not balances</footer>
+<footer>Quota Panel · source: <a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/quota/registry.json">ops/quota/registry.json</a> (schema 3l0.quota-registry.v1) · public historical snapshot: docs/ops/generated/quota-status.json (not automatically refreshed by the private poller); private readings: workflow artifact, refreshed by <a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/scripts/quota_poll.py">scripts/quota_poll.py</a> · limits are documented entitlements, not balances</footer>
 </main>
+<script src="./quota-evidence.js"></script>
 <script>
-const $=id=>document.getElementById(id),AMP='&'+'amp;',LT='&'+'lt;',GT='&'+'gt;',QUOT='&'+'quot;',APOS='&#39;',esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':AMP,'<':LT,'>':GT,'\"':QUOT,\"'\":APOS}[c]));
+const $=id=>document.getElementById(id),esc=v=>String(v??'').replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
 const rel=iso=>{if(!iso)return'—';const m=Math.max(0,Math.floor((Date.now()-new Date(iso).getTime())/60000));if(m<1)return'just now';if(m<60)return m+'m ago';const h=Math.floor(m/60);if(h<24)return h+'h ago';return Math.floor(h/24)+'d ago'};
-let services=[],readings={};
-const STATUS={cap_tripped:['CAP TRIPPED','bad'],exhausted:['EXHAUSTED','bad'],watch:['WATCH','gold'],ok:['OK','ok']};
-function pill(st){if(!st)return'<span class="pill">No live reading</span>';const s=STATUS[st]||[st,''];return'<span class="pill '+s[1]+'">'+esc(s[0])+'</span>'}
+let services=[],readings={},coverage=null;
+const STATUS={cap_tripped:['CAP TRIPPED','bad'],exhausted:['EXHAUSTED','bad'],watch:['WATCH','gold'],ok:['OK','ok'],stale:['STALE','gold'],reported:['REPORTED','gold'],unknown:['UNKNOWN',''],private:['PRIVATE PREFLIGHT','']};
+function pill(st){const s=STATUS[st]||STATUS.unknown;return '<span class="pill '+s[1]+'">'+esc(s[0])+'</span>'}
 function render(){
   const q=$('search').value.trim().toLowerCase();
-  const alerts=services.filter(s=>readings[s.id]&&readings[s.id].status&&readings[s.id].status!=='ok');
-  $('alert-cards').innerHTML=alerts.length?alerts.map(s=>{const r=readings[s.id];return'<div class="card"><div class="label">'+esc(s.provider)+' · '+esc(s.id)+'</div><div class="value '+(STATUS[r.status]?STATUS[r.status][1]:'')+'">'+esc(STATUS[r.status]?STATUS[r.status][0]:r.status)+'</div><p class="muted">'+esc(r.note||'')+'</p><p class="muted">Limit '+(r.limit??s.limit??'n/a')+' '+esc(s.unit||'')+(r.reset?' · resets '+esc(rel(r.reset))+' ('+esc(r.reset)+')':' · reset unknown')+'</p></div>'}).join(''):'<div class="card empty">No services are reporting a problem state.</div>';
+  const view=s=>QuotaEvidence.readingView(s,readings[s.id]);
+  const alerts=services.filter(s=>['cap_tripped','exhausted','watch','stale','reported'].includes(view(s).status));
+  $('alert-cards').innerHTML=alerts.length?alerts.map(s=>{const v=view(s);return '<div class="card"><div class="label">'+esc(s.provider)+' · '+esc(s.id)+'</div>'+pill(v.status)+'<p class="muted">'+esc(v.note)+'</p></div>'}).join(''):'<div class="card empty">No current public problem evidence. Unknown is not healthy; private preflight still applies.</div>';
   const groups={};services.forEach(s=>{(groups[s.provider]=groups[s.provider]||[]).push(s)});
   $('groups').innerHTML=Object.keys(groups).sort().map(p=>{
     const rows=groups[p].filter(s=>!q||[s.id,s.provider,s.metric,s.lane].join(' ').toLowerCase().includes(q));
-    if(!rows.length)return'';
-    return'<section><div class="head"><h2>'+esc(p)+'</h2><span class="note">'+rows.length+' service'+(rows.length===1?'':'s')+'</span></div><div class="card table-wrap"><table class="table"><thead><tr><th>Service</th><th>Metric</th><th>Documented limit</th><th>Window</th><th>Live source</th><th>Status</th></tr></thead><tbody>'+rows.map(s=>{const r=readings[s.id];const bal=r&&r.used!=null&&r.limit!=null?' · used '+esc(r.used)+' / '+esc(r.limit):'';return'<tr><td>'+esc(s.id)+'</td><td>'+esc(s.metric||'—')+'</td><td>'+(s.limit==null?'n/a':esc(s.limit))+' '+esc(s.unit||'')+'</td><td class="muted">'+esc(s.window||'—')+(s.reset?'<br>reset: '+esc(s.reset):'')+'</td><td class="muted">'+esc(s.live||'none')+'</td><td>'+pill(r&&r.status)+(bal?'<div class="muted">'+bal+'</div>':'')+'</td></tr>'}).join('')+'</tbody></table></div></section>'}).join('')||'<div class="empty">No services match this filter.</div>';
-  $('summary').textContent=services.length+' services · '+alerts.length+' need attention';
+    if(!rows.length)return '';
+    return '<section><div class="head"><h2>'+esc(p)+'</h2></div><div class="card table-wrap"><table class="table"><thead><tr><th>Service</th><th>Metric</th><th>Documented limit</th><th>Window</th><th>Observation method</th><th>Evidence state</th></tr></thead><tbody>'+rows.map(s=>{const v=view(s);return '<tr><td>'+esc(s.id)+'</td><td>'+esc(s.metric||'—')+'</td><td>'+esc(s.limit??'unknown')+' '+esc(s.unit||'')+'</td><td class="muted">'+esc(s.window||'unknown')+'<br>Documented reset: '+esc(s.reset||'unknown')+'</td><td class="muted">'+esc(s.live||'none')+'</td><td>'+pill(v.status)+'<div class="muted">'+esc(v.note)+'</div></td></tr>'}).join('')+'</tbody></table></div></section>';
+  }).join('')||'<div class="empty">No services match this filter.</div>';
+  $('summary').textContent=services.length+' registered services · '+alerts.length+' public evidence alerts';
+  // Use allowlisted metadata only; never render arbitrary private quota payloads.
+  const rows=coverage&&Array.isArray(coverage.provider_families)?coverage.provider_families:[];
+  $('coverage-summary').textContent=rows.length?rows.length+' provider families · metadata only':'Coverage metadata unavailable';
+  $('provider-coverage').innerHTML=rows.length?'<div class="card table-wrap"><table class="table"><thead><tr><th>Provider family</th><th>Responsible roles</th><th>Registry mapping</th><th>Observation capability</th><th>Quota scope / gap</th></tr></thead><tbody>'+rows.filter(r=>!q||String(r.provider_family).includes(q)).map(r=>'<tr><td>'+esc(r.provider_family)+'</td><td>'+esc(r.quota_manager_owner)+' / '+esc(r.freshness_owner)+'</td><td>'+esc((r.service_ids||[]).join(', ')||'MISSING — explicit gap')+'</td><td>'+esc(r.observation_method)+'</td><td>'+esc(r.key_scope)+'<br><span class="muted">'+esc(r.runtime_admission)+'</span></td></tr>').join('')+'</tbody></table></div>':'No coverage snapshot; do not infer a quota manager from catalog presence.';
 }
 async function getJSON(urls){for(const u of urls){try{const r=await fetch(u,{cache:'no-store'});if(r.ok)return await r.json()}catch(_){}}return null}
 async function load(){
   const bust=Date.now();
   const reg=await getJSON(['https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/ops/quota/registry.json?t='+bust]);
   const rd=await getJSON(['https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/docs/ops/generated/quota-status.json?t='+bust,'./data/quota.json?t='+bust]);
+  coverage=await getJSON(['./data/provider-quota-coverage.json?t='+bust]);
   if(!reg){$('freshness').textContent='Registry unavailable';$('generated').textContent='Could not fetch ops/quota/registry.json from master.';return}
   services=reg.services||[];
-  (rd&&rd.readings||[]).forEach(r=>readings[r.resource_id]=r);
-  $('generated').textContent='Readings generated '+(rd&&rd.generated_at||'—')+' · registry schema '+(reg.schema||'—');
-  $('freshness').textContent=rd&&rd.generated_at?('Readings '+rel(rd.generated_at)):'Registry loaded';
+  readings=QuotaEvidence.indexReadings(rd&&rd.readings);
+  $('generated').textContent='Snapshot generated '+(rd&&rd.generated_at||'—')+' · registry schema '+(reg.schema||'—');
+  $('freshness').textContent=rd&&rd.generated_at?('Snapshot '+rel(rd.generated_at)):'Registry loaded';
   render();
 }
-$('search').addEventListener('input',render);load();
+$('search').addEventListener('input',render);load();setInterval(render,60000);
 </script>
 </body>
 </html>

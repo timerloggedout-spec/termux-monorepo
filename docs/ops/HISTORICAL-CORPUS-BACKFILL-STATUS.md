@@ -113,3 +113,30 @@ The continuation control plane is now anchored to canonical `master`. `.github/w
 The builder now also emits an L2 temporal evidence layer under `workspace/llm_map/context_relationships/temporal/`: immutable snapshots, structural deltas, and append-only lineage. Snapshot identity includes source SHA/ref, observation/page bounds, and graph content hashes. The latest observation is exposed through `temporal-current.json` and summarized by `snapshot_id`, `previous_snapshot_id`, `coverage`, and `delta` in `build-summary.json`.
 
 The next collection window should therefore resume from the canonical manifest's current `history_window.next_start_page` (currently documented as page `2` in the historical evidence above), validate the new temporal artifacts, and continue until `next_start_page` is `null`. No claim of live completion is made by this documentation update.
+
+
+---
+
+## Reconciliation addendum — 2026-10-20
+
+The earlier tables above are dated snapshots, not current measurements. The latest inspected canonical `master` manifest is observed at `2026-10-15T19:16:02.945529Z` and reports:
+
+| Metric | Current manifest |
+| --- | ---: |
+| Nodes | 30,978 |
+| Edges | 52,624 |
+| Verified edges | 47,845 |
+| Candidate edges | 4,779 |
+| History start page | 13 |
+| Next start page | null |
+| Issues complete | true |
+| Pull requests complete | true |
+| Unresolved internal references | 1 |
+| Source parser failures | 14 |
+| Checkpoint eligible | false |
+
+This means **history pagination is exhausted, but checkpoint/promotion eligibility is still false**. The remaining validation debt is not to be hidden by the pagination-complete flags.
+
+The current collector is `.github/workflows/context-relationship-backfill.yml` and targets canonical `master`; the current observer is `.github/workflows/context-relationship-backfill-watcher.yml`. The legacy `historical-backfill-promotion-gate.yml` path is absent on current master, so no dedicated workflow-level final promotion gate should be claimed until one is implemented and observed.
+
+Next steps are tracked in [issue #522](https://github.com/timerloggedout-spec/termux-monorepo/issues/522): investigate each parser failure, resolve or disposition the unresolved internal reference, attach exact Actions run/attempt receipts, rerun corpus validation, and only then reconsider checkpoint eligibility. This addendum supplements rather than rewrites the historical measurements above.

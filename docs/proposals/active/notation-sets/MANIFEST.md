@@ -111,3 +111,14 @@ These additions remain governed by NSE-008 (evolution ledger). The proposal rema
 ## Nomenclature equivalency crosswalk
 
 The sourced nomenclature/label/mapping contract is documented in [`NOMENCLATURE-EQUIVALENCY-MATRIX.md`](./NOMENCLATURE-EQUIVALENCY-MATRIX.md). Treat formal terms, plain-language explanations, colloquial/ad hoc labels, abbreviations, and semantic matches as distinct typed records; do not infer equivalence from string similarity. The crosswalk is a research proposal and does not promote candidate mappings to runtime authority.
+
+
+## Nomenclature Equivalency Matrix (research lane)
+
+- Specification: [`NOMENCLATURE-EQUIVALENCY-MATRIX.md`](./NOMENCLATURE-EQUIVALENCY-MATRIX.md)
+- Candidate data seed: [`nomenclature-matrix/seed.json`](./nomenclature-matrix/seed.json)
+- Relational schema: [`nomenclature-matrix/schema.sql`](./nomenclature-matrix/schema.sql)
+- Validator: [`validate_nomenclature_matrix.py`](../../../../scripts/ci/validate_nomenclature_matrix.py)
+- Tests: [`test_nomenclature_matrix.py`](../../../../tests/test_nomenclature_matrix.py)
+
+This lane records concepts, audience/register-specific labels, evidence sources, and typed semantic mappings. All seed records remain candidates. Do not infer equivalence from matching strings; do not promote an exact mapping without source evidence and domain review. The validator and dedicated workflow enforce basic referential integrity and controlled vocabularies.

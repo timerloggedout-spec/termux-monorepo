@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Routing Execution Evidence",
+  "type": "object",
+  "required": [
+    "schema",
+    "topology",
+    "declared_participants",
+    "executed_participants",
+    "outputs",
+    "rounds",
+    "execution_status",
+    "observed_at",
+    "errors"
+  ],
+  "properties": {
+    "schema": {"const": "routing-execution/v1"},
+    "topology": {
+      "enum": ["single", "series", "dynamic", "parallel", "nested", "co-working", "volley"]
+    },
+    "declared_participants": {"type": "array", "items": {"type": "string"}},
+    "executed_participants": {"type": "array", "items": {"type": "string"}},
+    "outputs": {"type": "array"},
+    "rounds": {"type": "integer", "minimum": 0},
+    "execution_status": {"enum": ["NOT_EXECUTED", "EXECUTED", "PARTIAL", "FAILED"]},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["participant", "error_class"],
+        "properties": {
+          "participant": {"type": "string"},
+          "error_class": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -23,3 +23,6 @@
 | CE-19 | Four-plane architecture | P2 | | todo | |
 | CE-20 | Proposal process + nested registry | P0 | grok-archw1z | done | this tree |
 | CE-21 | CONSENSUS.md + promote process docs to master | P0 | grok-archw1z | doing | this PR |
+| CE-22 | Agentic CI/CD free-tier + PR scope discipline + positive language | P0 | grok | doing | docs/ops/PR-SCOPE-DISCIPLINE.md; docs/ops/POSITIVE-LANGUAGE.md; AGENTS.md |
+| CE-23 | Per-agent git author + GitHub App identity | P1 | grok | todo | docs/ops/AGENT-IDENTITY.md |
+| CE-24 | Review-thread auto-resolve (cooldown-aware GHA) | P1 | grok | todo | docs/ops/REVIEW-THREAD-AUTO-RESOLVE.md |

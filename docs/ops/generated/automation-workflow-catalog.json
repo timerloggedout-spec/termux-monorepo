@@ -27,8 +27,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "648450ab94613ccba99148244892c91736bd5258d8b85599e847249e036e4093",
-  "workflow_count": 142,
+  "source_fingerprint": "9b84561ab25720c4c2745231f19ab3f19a6b4343ddcd97f4342d92449484b1ce",
+  "workflow_count": 143,
   "workflows": [
     {
       "action_pins": [
@@ -1318,6 +1318,27 @@
       ],
       "triggers": [
         "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1"
+      ],
+      "authority": "writer",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "evaluate",
+        "request-review"
+      ],
+      "name": "Governed PR Auto-Merge Readiness",
+      "path": ".github/workflows/governed-pr-auto-merge-readiness.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "pull_request_review",
         "workflow_dispatch"
       ]
     },

@@ -1,0 +1,11 @@
+[package]
+name = "crg-rust-accel"
+version = "0.1.0"
+edition = "2021"
+description = "Optional Rust hot path for Context Relationship fragment fingerprinting and pointer policy"
+
+[dependencies]
+base64 = "0.22"
+blake3 = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"

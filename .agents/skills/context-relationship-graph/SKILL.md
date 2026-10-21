@@ -30,6 +30,20 @@ Its `manifest.json`, `nodes.jsonl`, `edges.jsonl`, `matrix.json`, reports, and c
 7. Cite evidence URLs or source locations for every material verified connection. State collection bounds, omissions, parser failures, unresolved references, and historical coverage when they matter.
 8. Update the central index only through the trusted publisher, the manual bounded reconciler, or the manual history-page backfill. Never write GitHub or Linear content merely because a graph query found a relationship.
 
+## Polyglot acceleration
+
+The canonical graph remains Python/schema-owned. An optional Rust accelerator may be used for CPU-dense fragment fingerprinting and cost analysis:
+
+- `archwiz/context_relationships/rust_accel/` owns the Rust hot path.
+- `archwiz/context_relationships/rust_accel.py` is the safe Python adapter.
+- `CRG_RUST_ACCEL=auto` degrades cleanly when no compiled binary exists.
+- `CRG_RUST_ACCEL=required` fails closed if the configured binary is unavailable or returns an invalid contract.
+- Full BLAKE3-256 remains canonical; compact 128-bit refs are not treated as collision-proof.
+- Zipf alpha is observational evidence only. Pointer selection uses frequency + explicit byte-cost savings.
+- Language-specific providers may feed normalized fragment records through the same JSONL boundary; they do not gain graph-write authority.
+
+Do not introduce a second graph datastore or bypass the existing compiler/schema/privacy checks merely to use the accelerator.
+
 ## Historical corpus contract
 
 The historical backfill is explicit and resumable. Start from page `1`; inspect `history_window.next_start_page`; continue only while it is non-null.

@@ -9,6 +9,9 @@ Stepie is the planning surface only. It does not confer merge authority.
 
 Promotion still requires current-SHA dual-gate (repo-gate + termux-smoke) plus task-outcome evidence. Vercel is non-gate (#772).
 
+Stepie plans. Sweep writes the board. Dual-gate promotes product PRs.
+Stepie must not emit session-pulse PRs or #175 comment floods.
+
 ## Session 2026-09-28 17:15 PDT
 
 - Live master `8daeeb72d71ecdefa2f9cde6698426131117e474`.
@@ -17,6 +20,28 @@ Promotion still requires current-SHA dual-gate (repo-gate + termux-smoke) plus t
 - Next plan: promote #899 after rebase + dual-gate on the new candidate SHA.
 - #903 HOLD. Do not pulse #175. #184 names-only.
 
+## Contract
+
+Full ops SSOT: `docs/ops/STEPIE-MCP.md`
+
+- External planner only (syworkshop.cn). No goal/step rows in git as product SSOT.
+- After every MCP write: re-search and assert IDs before claiming success.
+- Known failures: silent create, quota on retry-spam, `update_step` Conflict without `expectedUpdatedAt`.
+
+## Live bind (2026-09-24)
+
+| Goal | ID |
+|------|-----|
+| Custom Classifiers from Scratch | 2157 |
+| Termux Orchestration Hub | 2158 |
+| termux-monorepo development | 2087 |
+| Games Masters (primary) | 2149 |
+
+Tasks: 1223 TYPESAFE_API_KEY (UI); 1224 awesome-list handoff (NUI).
+
+## Session
+
+2026-09-24. Branch `feat/stepie-mcp-ops-20260924`. Tip base `95b19e4a`.
 Agent-Identity: Grok (Administrator)
 
 Session 2026-10-01 13:14 PDT / 2026-10-01 20:14 UTC:

@@ -30,10 +30,10 @@ def _load(path: Path, errors: list[str]) -> dict[str, Any] | None:
     except FileNotFoundError:
         errors.append(f"missing required schema: {path.as_posix()}")
     except (OSError, json.JSONDecodeError) as exc:
-        errors.append(f"cannot read valid JSON from {path.relative_to(ROOT)}: {exc}")
+        errors.append(f"cannot read valid JSON from {path.as_posix()}: {exc}")
     else:
         if not isinstance(value, dict):
-            errors.append(f"schema root must be an object: {path.relative_to(ROOT)}")
+            errors.append(f"schema root must be an object: {path.as_posix()}")
         else:
             return value
     return None
@@ -69,14 +69,16 @@ def validate_contracts(root: Path = ROOT) -> list[str]:
     if treatment is not None:
         _check_schema(TREATMENT, treatment, errors)
         props = treatment.get("properties", {})
-        if props.get("status", {}).get("enum") is None or set(props["status"]["enum"]) != EXPECTED_TREATMENT_STATUSES:
+        status = props.get("status")
+        status_enum = status.get("enum") if isinstance(status, dict) else None
+        if not isinstance(status_enum, list) or set(status_enum) != EXPECTED_TREATMENT_STATUSES:
             errors.append(f"{TREATMENT}: status lifecycle enum drifted")
         if "wait_policy" not in treatment.get("required", []):
             errors.append(f"{TREATMENT}: wait_policy must be required")
         if "evidence_contract" not in treatment.get("required", []):
             errors.append(f"{TREATMENT}: evidence_contract must be required")
         sha = props.get("source_sha", {})
-        if sha.get("pattern") != "^[0-9a-f]{40}$":
+        if not isinstance(sha, dict) or sha.get("pattern") != "^[0-9a-f]{40}$":
             errors.append(f"{TREATMENT}: source_sha must be a lowercase 40-character commit SHA")
 
     if receipt is not None:
@@ -87,7 +89,8 @@ def validate_contracts(root: Path = ROOT) -> list[str]:
             ("outcome", EXPECTED_OUTCOMES),
             ("promotion", EXPECTED_PROMOTIONS),
         ):
-            actual = props.get(field, {}).get("enum")
+            field_schema = props.get(field)
+            actual = field_schema.get("enum") if isinstance(field_schema, dict) else None
             if not isinstance(actual, list) or set(actual) != expected:
                 errors.append(f"{RECEIPT}: {field} enum drifted")
         required_ids = {
@@ -97,9 +100,11 @@ def validate_contracts(root: Path = ROOT) -> list[str]:
         missing_ids = sorted(required_ids - set(receipt.get("required", [])))
         if missing_ids:
             errors.append(f"{RECEIPT}: missing required identity/evidence fields: {', '.join(missing_ids)}")
-        if props.get("sha", {}).get("pattern") != "^[0-9a-f]{40}$":
+        sha = props.get("sha")
+        if not isinstance(sha, dict) or sha.get("pattern") != "^[0-9a-f]{40}$":
             errors.append(f"{RECEIPT}: sha must be a lowercase 40-character commit SHA")
-        if props.get("observed_at", {}).get("format") != "date-time":
+        observed_at = props.get("observed_at")
+        if not isinstance(observed_at, dict) or observed_at.get("format") != "date-time":
             errors.append(f"{RECEIPT}: observed_at must use date-time format")
 
     skill_path = root / ".agents" / "skills" / "orchestration-treatment-registry" / "SKILL.md"

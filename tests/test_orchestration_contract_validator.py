@@ -24,6 +24,23 @@ class OrchestrationContractValidatorTests(unittest.TestCase):
             errors = validate_contracts(root)
             self.assertTrue(any("ORCHESTRATION-RECEIPT.schema.json" in error for error in errors))
 
+    def test_malformed_nested_property_is_reported_without_crashing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            schema_dir = root / "docs" / "ops"
+            schema_dir.mkdir(parents=True)
+            treatment = json.loads((ROOT / "docs" / "ops" / "ORCHESTRATION-TREATMENT.schema.json").read_text())
+            treatment["properties"]["status"] = None
+            (schema_dir / "ORCHESTRATION-TREATMENT.schema.json").write_text(json.dumps(treatment))
+            (schema_dir / "ORCHESTRATION-RECEIPT.schema.json").write_text("not json")
+            skill_dir = root / ".agents" / "skills" / "orchestration-treatment-registry"
+            skill_dir.mkdir(parents=True)
+            (skill_dir / "SKILL.md").write_text("references")
+
+            errors = validate_contracts(root)
+            self.assertTrue(any("status lifecycle enum drifted" in error for error in errors))
+            self.assertTrue(any("cannot read valid JSON" in error for error in errors))
+
     def test_receipt_schema_rejects_state_outcome_conflation(self):
         receipt_path = ROOT / "docs" / "ops" / "ORCHESTRATION-RECEIPT.schema.json"
         schema = json.loads(receipt_path.read_text())

@@ -14,6 +14,10 @@ on:
       - "tests/fixtures/classifier-question-bank.json"
       - "docs/ops/SYSTEM-ONE-EXPERIMENT-PLAN.md"
       - "docs/ops/CLASSIFIER-REGISTRY-AND-EVALUATION.md"
+      - "docs/ops/REPO-TAXONOMY-AND-EVIDENCE-GOVERNANCE.md"
+      - "docs/ops/repository-taxonomy.v1.json"
+      - "scripts/eval_tournament.py"
+      - "tests/test_eval_tournament.py"
   workflow_dispatch:
 
 permissions:
@@ -32,7 +36,7 @@ jobs:
           python-version: "3.12"
       - name: Unit tests
         run: |
-          python -m unittest tests.test_system_one_experiment tests.test_system_one_adapters tests.test_classifier_question_bank -v
+          python -m unittest tests.test_system_one_experiment tests.test_system_one_adapters tests.test_classifier_question_bank tests.test_eval_tournament -v
       - name: Run normalized System One cohort
         run: |
           mkdir -p artifacts/system-one
@@ -65,9 +69,27 @@ jobs:
           assert all(r["correct"] is True for r in rows)
           print("validated", len(rows), "classifier receipts")
           PY
+      - name: Exercise offline pairwise tournament scorer
+        run: |
+          cat > artifacts/system-one/tournament-input.jsonl <<'JSONL'
+          {"candidate_id":"baseline-a","question_id":"q1","expected":"yes","prediction":"yes","latency_ms":12}
+          {"candidate_id":"baseline-a","question_id":"q2","expected":"no","prediction":"yes","latency_ms":22}
+          {"candidate_id":"baseline-b","question_id":"q1","expected":"yes","prediction":"yes","latency_ms":15}
+          {"candidate_id":"baseline-b","question_id":"q2","expected":"no","prediction":"no","latency_ms":25}
+          JSONL
+          python scripts/eval_tournament.py artifacts/system-one/tournament-input.jsonl --output artifacts/system-one/tournament-report.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path("artifacts/system-one/tournament-report.json").read_text())
+          assert report["schema_version"] == "system-one-tournament.v1"
+          assert report["candidates"]["baseline-b"]["exact_match_accuracy"] == 1.0
+          assert report["pairwise"][0]["left_wins"] == 1
+          print("validated offline tournament scoring")
+          PY
       - name: Publish experiment receipts
         uses: actions/upload-artifact@v4
         with:
           name: system-one-experiment-${{ github.run_id }}-${{ github.run_attempt }}
-          path: artifacts/system-one/*.jsonl
+          path: artifacts/system-one/*
           retention-days: 14

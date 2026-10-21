@@ -34,3 +34,14 @@ No silent write into `model-rotation.yaml` soft budgets.
 ## Implementation note
 
 Runtime extract is a **later** PR (MSM-004). This file is design-only for review.
+
+
+## ATES orchestrator benchmark integration
+
+MSM-004 arms may now consume deterministic results from the ATES orchestrator benchmark contract. The benchmark verdict is preserved as an observed metric set; DSPy does not replace the deterministic scorer. Factor values remain attached to the arm and optimizer artifacts remain subject to the existing dual-gate promotion path.
+
+Canonical surfaces:
+- docs/ops/ATES-ORCHESTRATOR-BENCHMARK-PROTOCOL.md
+- docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md
+- scripts/ci/evaluate_orchestrator_benchmark.py
+- she/metrics/ates_orchestrator.py

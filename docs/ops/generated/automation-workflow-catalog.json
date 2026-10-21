@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "0520fcbf3dba31d6083e3ffc9c488b93be037bffa5a976f1ad755f9e78ad4fcc",
-  "workflow_count": 156,
+  "source_fingerprint": "ef4f6db29b514399ea2b59ab30a5b7e7871c9096d04d8526828f96afa7073d4c",
+  "workflow_count": 157,
   "workflows": [
     {
       "action_pins": [
@@ -2886,7 +2886,6 @@
       "path": ".github/workflows/tribute-vercel-prod.yml",
       "schedules": [],
       "triggers": [
-        "push",
         "workflow_dispatch"
       ]
     },
@@ -2902,6 +2901,24 @@
       "path": ".github/workflows/tunnel-canary.yml",
       "schedules": [
         "17 * * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: vercel-batch-deploy cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "batch"
+      ],
+      "name": "vercel-batch-deploy",
+      "path": ".github/workflows/vercel-batch-deploy.yml",
+      "schedules": [
+        "23 * * * *"
       ],
       "triggers": [
         "schedule",

@@ -15,6 +15,12 @@ on:
       - "scripts/ci/tribute_system1.py"
       - "scripts/ci/tribute_system1_eval.py"
       - "tests/test_tribute_system1.py"
+      - "tests/test_tribute_system1_gates.py"
+      - "scripts/ci/help_wanted_followup.py"
+      - "scripts/ci/help_wanted_scout.py"
+      - "scripts/ci/help_wanted_claim.py"
+      - "scripts/ci/help_wanted_contribute.py"
+      - ".github/workflows/help-wanted-llm-assist.yml"
       - "tests/fixtures/tribute_system1/**"
   push:
     branches: [master]
@@ -23,6 +29,12 @@ on:
       - "scripts/ci/tribute_system1.py"
       - "scripts/ci/tribute_system1_eval.py"
       - "tests/test_tribute_system1.py"
+      - "tests/test_tribute_system1_gates.py"
+      - "scripts/ci/help_wanted_followup.py"
+      - "scripts/ci/help_wanted_scout.py"
+      - "scripts/ci/help_wanted_claim.py"
+      - "scripts/ci/help_wanted_contribute.py"
+      - ".github/workflows/help-wanted-llm-assist.yml"
       - "tests/fixtures/tribute_system1/**"
   schedule:
     - cron: "17 */3 * * *"
@@ -50,7 +62,7 @@ jobs:
       - name: Compile
         run: python -m py_compile scripts/ci/tribute_system1.py scripts/ci/tribute_system1_eval.py
       - name: Unit tests
-        run: python -m unittest -v tests.test_tribute_system1
+        run: python -m unittest -v tests.test_tribute_system1 tests.test_tribute_system1_gates
       - name: Eval gate (P/R, escalation rate, false re-engage)
         run: python scripts/ci/tribute_system1_eval.py --summary "$GITHUB_STEP_SUMMARY" --json tribute-s1-eval.json
       - uses: actions/upload-artifact@v4

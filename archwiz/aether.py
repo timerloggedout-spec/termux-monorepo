@@ -134,9 +134,9 @@ def cmd_reindex(args):
         elif s == "func":
             _, err, rc = run("python3 func_indexer.py", cwd=LLM_MAP)
         elif s == "manifest":
-            _, err, rc = run(f"python3 {ARCHWIZ}/build_data_flow_manifest.py")
+            _, err, rc = run(shlex.join(["python3", os.path.join(ARCHWIZ, "build_data_flow_manifest.py")]))
         elif s == "tools":
-            _, err, rc = run(f"python3 {ARCHWIZ}/build_tool_index.py")
+            _, err, rc = run(shlex.join(["python3", os.path.join(ARCHWIZ, "build_tool_index.py")]))
         elif s == "fts":
             db = os.path.join(HOME, "termux-multi-agent/local_repo.db")
             if os.path.exists(db):
@@ -144,7 +144,7 @@ def cmd_reindex(args):
         if rc != 0:
             print(f"❌ Stopped at {s}:", err)
             return rc
-    _, err, rc = run(f"python3 {ARCHWIZ}/build_reference_hub.py")
+    _, err, rc = run(shlex.join(["python3", os.path.join(ARCHWIZ, "build_reference_hub.py")]))
     if rc != 0:
         print("❌ Stopped at reference hub:", err)
         return rc

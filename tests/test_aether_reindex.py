@@ -2,6 +2,7 @@
 import importlib.util
 import os
 from pathlib import Path
+import shlex
 import subprocess
 import sys
 from unittest.mock import patch
@@ -34,6 +35,44 @@ def test_map_reports_success_only_after_all_generators(capsys):
         assert module.cmd_map([]) == 0
     assert run.call_count == 3
     assert "Map + func index ready" in capsys.readouterr().out
+
+
+@pytest.mark.parametrize("stage,script", [
+    ("manifest", "build_data_flow_manifest.py"),
+    ("tools", "build_tool_index.py"),
+])
+def test_reindex_quotes_archwiz_script_paths(stage, script):
+    module = load()
+    module.ARCHWIZ = "/tmp/archwiz path; touch injected"
+    with patch.object(module, "run", return_value=("", "", 0)) as run:
+        assert module.cmd_reindex([stage]) == 0
+    commands = [call.args[0] for call in run.call_args_list]
+    assert shlex.split(commands[0]) == ["python3", str(Path(module.ARCHWIZ) / script)]
+    assert shlex.split(commands[1]) == ["python3", str(Path(module.ARCHWIZ) / "build_reference_hub.py")]
+
+
+@pytest.mark.parametrize("stage,script", [
+    ("manifest", "build_data_flow_manifest.py"),
+    ("tools", "build_tool_index.py"),
+])
+def test_real_cli_keeps_installation_path_literal(tmp_path, stage, script):
+    home = tmp_path / "home space; touch injected; #"
+    archwiz = home / "archwiz"
+    archwiz.mkdir(parents=True)
+    for name, marker in [(script, "stage-ran"), ("build_reference_hub.py", "hub-ran")]:
+        (archwiz / name).write_text(
+            f"from pathlib import Path\nPath({str(tmp_path / marker)!r}).touch()\n"
+        )
+    result = subprocess.run(
+        [sys.executable, str(ROOT / "archwiz/aether.py"), "reindex", stage],
+        cwd=tmp_path, env=dict(os.environ, HOME=str(home)),
+        capture_output=True, text=True, check=False,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert (tmp_path / "stage-ran").exists()
+    assert (tmp_path / "hub-ran").exists()
+    assert not (tmp_path / "injected").exists()
+    assert "Full reindex complete" in result.stdout
 
 
 @pytest.mark.parametrize("stage", ["bloat", "func", "manifest", "tools", "fts"])

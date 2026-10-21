@@ -123,9 +123,11 @@ The repository should measure the adapters against the same event schema, then r
 
 Land schema + pure reducer + fixtures + quality verification. No external telemetry dependency. This is the ATES foundation already present on the active integration branch.
 
-### Phase B — evidence emission **[NEXT]**
+### Phase B — evidence emission **[PARTIAL: WORKFLOW RECEIPT IMPLEMENTED]**
 
-Teach eligible agent workflows to emit sanitized JSONL and publish a receipt alongside existing Action artifacts. Every event must retain run/attempt/SHA linkage where available.
+`.github/workflows/ates-phase-b-run-receipt.yml` observes completed `Continuous agent ops` runs and publishes one metadata-only JSONL receipt as a 30-day Actions artifact. `scripts/ci/emit_ates_run_receipt.py` retains the observed run ID, attempt, source SHA, workflow label, completion timestamp, conclusion, and duration when both timestamps exist. It intentionally omits commit messages, run URLs, prompts, completions, and arbitrary payloads. Missing duration remains absent. The existing event schema is validated by the receipt workflow.
+
+This is a bounded first emitter, not full span instrumentation: it does not yet emit per-agent/tool events or upload receipts into the longitudinal corpus. Extend to other eligible workflows only after their event semantics and permissions are confirmed.
 
 ### Phase C — longitudinal correlation
 

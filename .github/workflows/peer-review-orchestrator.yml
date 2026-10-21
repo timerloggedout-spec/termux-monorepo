@@ -194,9 +194,18 @@ jobs:
               }
 
               const stateMarker = '<!-- agent-peer-response-state:v2 -->';
-              const initialComments = await github.paginate(github.rest.issues.listComments, {
-                owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, per_page: 100,
-              });
+              let initialComments = [];
+              try {
+                initialComments = await github.paginate(github.rest.issues.listComments, {
+                  owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, per_page: 100,
+                });
+              } catch (error) {
+                if (error.status === 403 || error.status === 429 || /rate limit/i.test(error.message || '')) {
+                  core.warning(`Initial comments lookup rate limited: ${error.message}`);
+                } else {
+                  throw error;
+                }
+              }
               const existingCycle = initialComments.filter(comment =>
                 statePublisherLogins.has((comment.user?.login || '').toLowerCase()) &&
                 comment.body?.includes(stateMarker) &&
@@ -215,26 +224,34 @@ jobs:
               const cycleStartedAtIso = new Date(cycleStartedAt).toISOString();
 
               async function fetchEvidence() {
+                let comments = [], reviews = [], reviewComments = [], checks = [];
                 try {
-                const comments = await github.paginate(github.rest.issues.listComments, {
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: prNumber,
-                  per_page: 100,
+                  comments = await github.paginate(github.rest.issues.listComments, {
+                    owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, per_page: 100,
                   });
-                const reviews = await github.paginate(github.rest.pulls.listReviews, {
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  pull_number: prNumber,
-                  per_page: 100,
-                });
-                const reviewComments = await github.paginate(github.rest.pulls.listReviewComments, {
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  pull_number: prNumber,
-                  per_page: 100,
-                });
-                let checks = [];
+                } catch (error) {
+                  if (error.status === 403 || error.status === 429 || /rate limit/i.test(error.message || '')) {
+                    core.warning(`Comments fetch rate limited: ${error.message}`);
+                  } else { throw error; }
+                }
+                try {
+                  reviews = await github.paginate(github.rest.pulls.listReviews, {
+                    owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber, per_page: 100,
+                  });
+                } catch (error) {
+                  if (error.status === 403 || error.status === 429 || /rate limit/i.test(error.message || '')) {
+                    core.warning(`Reviews fetch rate limited: ${error.message}`);
+                  } else { throw error; }
+                }
+                try {
+                  reviewComments = await github.paginate(github.rest.pulls.listReviewComments, {
+                    owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber, per_page: 100,
+                  });
+                } catch (error) {
+                  if (error.status === 403 || error.status === 429 || /rate limit/i.test(error.message || '')) {
+                    core.warning(`Review comments fetch rate limited: ${error.message}`);
+                  } else { throw error; }
+                }
                 try {
                   const response = await github.rest.checks.listForRef({
                     owner: context.repo.owner, repo: context.repo.repo, ref: headSha, per_page: 100,
@@ -244,13 +261,6 @@ jobs:
                   core.info(`Check lookup skipped: ${error.message}`);
                 }
                 return { comments, reviews, reviewComments, checks };
-                } catch (error) {
-                if (error.status === 403 || error.status === 429 || /rate limit/i.test(error.message || '')) {
-                  core.warning(`Evidence collection rate limited: ${error.message}`);
-                  return { comments: [], reviews: [], reviewComments: [], checks: [] };
-                }
-                throw error;
-                }
               }
 
               function controlEntries(comments) {

@@ -29,9 +29,8 @@ def reconcile_incident(
 
     # Bolt optimization: Fast-path marker search on issue body before comment iteration
     # with early generator termination to eliminate intermediate list allocations.
-    comments = issue.get("comments")
     already_notified = notification_marker in body or (
-        isinstance(comments, list)
+        isinstance(comments := issue.get("comments"), list)
         and any(
             notification_marker in str(c.get("body") or "")
             for c in comments

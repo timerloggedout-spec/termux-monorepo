@@ -172,11 +172,15 @@ jobs:
             "$RUNNER_TEMP/ledger-correlation.json" > "$RUNNER_TEMP/ledger-recent-events.json"
 
           # Recover the previous v2 marker for longitudinal comparison. If absent, baseline is zero.
+          set +e
           existing="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100" --jq '.[] | select((.body // "") | startswith("<!-- action-effectiveness-ledger:v2 ")) | .id' 2>/dev/null | head -n1 || true)"
+          set -e
           previous_json='{}'
-          if [[ -n "$existing" ]]; then
+          if [[ -n "${existing:-}" ]]; then
+            set +e
             previous_body="$(gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${existing}" --jq .body 2>/dev/null || true)"
-            if [[ -n "$previous_body" ]]; then
+            set -e
+            if [[ -n "${previous_body:-}" ]]; then
               previous_json="$(grep -o '<!-- action-effectiveness-ledger:v2 {.*} -->' <<<"$previous_body" | head -n1 | sed 's/^<!-- action-effectiveness-ledger:v2 //; s/ -->$//' || echo '{}')"
             fi
           fi
@@ -229,7 +233,7 @@ jobs:
             > "$RUNNER_TEMP/ledger-state.json"
           {
             echo "state_path=$RUNNER_TEMP/ledger-state.json"
-            echo "existing_comment_id=$existing"
+            echo "existing_comment_id=${existing:-}"
           } >> "$GITHUB_OUTPUT"
 
       - name: Publish idempotent longitudinal ledger
@@ -274,11 +278,11 @@ jobs:
 
           # pull_request_target github.token sometimes returns 403
           # "Resource not accessible by integration" (runs 37551532077 and
-          # 37556718962) even with issues: write. Measurement already succeeded.
+          # 37556718962) or rate limit error. Measurement already succeeded.
           # Do not fail the named workflow on that token boundary; keep other
           # API errors fail-closed.
           set +e
-          if [[ -n "$EXISTING_COMMENT_ID" ]]; then
+          if [[ -n "${EXISTING_COMMENT_ID:-}" ]]; then
             err="$(gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/comments/${EXISTING_COMMENT_ID}" -f body="$body" 2>&1 >/dev/null)"
             rc=$?
           else
@@ -287,7 +291,7 @@ jobs:
           fi
           set -e
           if [[ "$rc" -ne 0 ]]; then
-            if grep -qE 'Resource not accessible by integration|API rate limit' <<<"$err"; then
+            if grep -qE 'Resource not accessible by integration|API rate limit|rate limit exceeded' <<<"$err"; then
               echo "ledger publish skipped: github.token limit/permission (HTTP 403)" >> "$GITHUB_STEP_SUMMARY"
               echo "$err" >> "$GITHUB_STEP_SUMMARY"
               exit 0

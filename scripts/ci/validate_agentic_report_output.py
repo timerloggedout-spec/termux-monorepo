@@ -11,7 +11,8 @@ from pathlib import Path
 from typing import Any
 
 
-DEFAULT_SCHEMA = Path("tests/fixtures/agentic-repo-report/output-schema.json")
+REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
+DEFAULT_SCHEMA = REPOSITORY_ROOT / "tests/fixtures/agentic-repo-report/output-schema.json"
 
 
 def load_json_object(path: Path) -> dict[str, Any]:
@@ -53,11 +54,12 @@ def validate_report_output(
 
     cursor = 0
     for heading in schema["required_headings"]:
-        location = body.find(heading, cursor)
-        if location < 0:
+        pattern = re.compile(rf"^{re.escape(heading)}[ \t]*\r?$", re.MULTILINE)
+        match = pattern.search(body, cursor)
+        if match is None:
             errors.append(f"missing or out-of-order heading: {heading}")
             continue
-        cursor = location + len(heading)
+        cursor = match.end()
     return errors
 
 

@@ -293,12 +293,13 @@ def _checks_passed(pull_requests: list[dict[str, Any]], required_checks: list[st
 
 
 def _is_approved(phase_id: str, snapshot: dict[str, Any]) -> bool:
+    """Accept explicit approval evidence, never truthy non-boolean values."""
     approvals = snapshot.get("approvals", {})
     if isinstance(approvals, dict):
         value = approvals.get(phase_id, False)
         if isinstance(value, dict):
-            return bool(value.get("approved"))
-        return bool(value)
+            return value.get("approved") is True
+        return value is True
     if isinstance(approvals, list):
         return phase_id in approvals
     return False

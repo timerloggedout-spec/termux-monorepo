@@ -13,9 +13,12 @@ tasks, mutate a graph, access FalkorDB, or propagate probabilities.
 - Duplicate edges are deduplicated. Unknown endpoints are rejected.
 - Disconnected components are valid; no edge is inferred between them.
 - A min-heap provides deterministic lexical tie-breaking among ready nodes.
-- The graph hash covers sorted nodes, deduplicated edges, edge semantics, and
-  algorithm version. The plan includes ready-frontier snapshots, ordered nodes,
-  residual nodes, and acyclicity.
+- `ready_frontiers` groups emitted nodes into concurrent dependency waves by
+  longest prerequisite path; it is not a snapshot after each individual heap
+  pop. The graph hash covers sorted nodes, deduplicated edges, edge semantics,
+  and algorithm version. The plan includes frontiers, ordered nodes, residual
+  nodes, and acyclicity. `kahn-reference-v2` distinguishes corrected wave plans
+  from the earlier heap-snapshot projection in provenance records.
 - If Kahn emits fewer nodes than supplied, the residual set contains nodes in
   cycles and any descendants still blocked behind those cycles. It is not a
   claim that every residual node is itself part of a cycle.

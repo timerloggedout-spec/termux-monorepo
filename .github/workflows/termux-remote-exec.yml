@@ -1,0 +1,71 @@
+name: Termux remote exec (Hark lane)
+
+# Lets Hark run a command on the Termux device over the live Pinggy TCP tunnel
+# without the user typing. Dispatch-only, owner-only. Output lands in the job log.
+on:
+  workflow_dispatch:
+    inputs:
+      endpoint:
+        description: Pinggy host (from the tcp:// line), e.g. xxxx.a.free.pinggy.link
+        required: true
+      port:
+        description: Pinggy port
+        required: true
+      ssh_user:
+        description: Termux user (whoami on device), e.g. u0_a123
+        required: true
+      command:
+        description: Shell command to run on the device
+        required: true
+        default: 'whoami; uname -a; pwd; git -C ~ branch --show-current; ls ~/scripts'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: termux-remote-exec
+  cancel-in-progress: false
+
+jobs:
+  exec:
+    if: github.actor == github.repository_owner
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Install SSH identity
+        env:
+          SSH_KEY: ${{ secrets.TERMUX_MCP_SSH_PRIVATE_KEY }}
+          KNOWN: ${{ secrets.TERMUX_MCP_KNOWN_HOSTS }}
+        run: |
+          install -d -m 700 ~/.ssh
+          if [ -z "$SSH_KEY" ]; then
+            echo "::error title=termux-remote-exec::secret TERMUX_MCP_SSH_PRIVATE_KEY is not set"
+            exit 1
+          fi
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/termux_mcp && chmod 600 ~/.ssh/termux_mcp
+          if [ -n "$KNOWN" ]; then
+            printf '%s\n' "$KNOWN" > ~/.ssh/known_hosts
+            echo "HOSTKEY_MODE=yes" >> "$GITHUB_ENV"
+          else
+            echo "::notice title=termux-remote-exec::no TERMUX_MCP_KNOWN_HOSTS; using accept-new (fingerprint logged)"
+            echo "HOSTKEY_MODE=accept-new" >> "$GITHUB_ENV"
+          fi
+      - name: Run on device
+        env:
+          EP: ${{ inputs.endpoint }}
+          PORT: ${{ inputs.port }}
+          U: ${{ inputs.ssh_user }}
+          CMD: ${{ inputs.command }}
+        run: |
+          EP="${EP#tcp://}"; EP="${EP%%:*}"
+          if ! timeout 10 bash -c "</dev/tcp/$EP/$PORT"; then
+            echo "::error title=termux-remote-exec::TCP $EP:$PORT unreachable"; exit 1
+          fi
+          ssh-keyscan -p "$PORT" "$EP" 2>/dev/null | ssh-keygen -lf - || true
+          set +e
+          ssh -i ~/.ssh/termux_mcp -o IdentitiesOnly=yes -o BatchMode=yes \
+            -o StrictHostKeyChecking="$HOSTKEY_MODE" -o ConnectTimeout=20 \
+            -o ServerAliveInterval=15 -p "$PORT" "$U@$EP" "$CMD" 2>&1 | tee out.txt
+          rc=${PIPESTATUS[0]}
+          echo "::notice title=termux-remote-exec::exit=$rc lines=$(wc -l < out.txt)"
+          exit $rc

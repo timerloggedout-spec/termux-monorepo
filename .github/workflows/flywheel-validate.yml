@@ -1,0 +1,63 @@
+name: Flywheel adapter validation
+
+on:
+  pull_request:
+    branches: [master]
+    paths:
+      - 'scripts/agentic/**'
+      - 'scripts/ci/repo_gate.py'
+      - 'scripts/ci/termux_smoke.py'
+      - 'tests/test_flywheel.py'
+      - 'tests/test_dependency_phase*.py'
+      - 'tests/fixtures/dependency_phases/**'
+      - 'docs/agentic/dependency-phases.json'
+      - 'docs/ops/FLYWHEEL-RUNTIME.md'
+      - '.github/workflows/flywheel-validate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: flywheel-validate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  core-loop:
+    name: Flywheel offline core loop
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Regression tests
+        run: |
+          python3 -m unittest discover -s tests -p 'test_dependency_phase*.py' -v
+          python3 -m unittest discover -s tests -p 'test_flywheel.py' -v
+      - name: Run local validation loop with explicitly synthetic coordination evidence
+        run: |
+          mkdir -p /tmp/flywheel-evidence
+          python3 scripts/agentic/flywheel.py \
+            --plan docs/agentic/dependency-phases.json \
+            --snapshot tests/fixtures/dependency_phases/ready.json \
+            --phase DPH-100 --execute > /tmp/flywheel-evidence/receipt.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          receipt = json.loads(Path('/tmp/flywheel-evidence/receipt.json').read_text())['receipt']
+          assert receipt['status'] == 'PASS', receipt
+          assert receipt['task_outcome'] == 'UNKNOWN', receipt
+          assert receipt['deployed'] is False, receipt
+          PY
+      - name: Retain validation receipt (not a deployment or phase-completion record)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: flywheel-validation-${{ github.sha }}
+          path: /tmp/flywheel-evidence/receipt.json
+          if-no-files-found: ignore
+          retention-days: 14

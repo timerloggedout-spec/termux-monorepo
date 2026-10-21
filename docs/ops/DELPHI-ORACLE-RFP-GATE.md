@@ -61,3 +61,10 @@ Signed-off-by: Hark (OPERATOR) delphi-gate-2026-10-20 / project-bbf883e1
 ## Quota and attribution reconciliation (MSM-018)
 
 Generated rubric scores (including role-labeled signatures) are not independent human or provider-model ballots. The existing OpenRouter [RFP ledger](https://github.com/timerloggedout-spec/termux-monorepo/issues/1426#issuecomment-6310432412) explicitly records `via: rubric`; its result establishes rubric processing, not OpenRouter inference. A shadow award is advisory and never opens runtime admission. Key presence, `:free` names and neutral unknown-quota multipliers cannot authorize model voting. This slice preserves event/cadence behavior while removing the implicit key-to-inference path; it does not cast or alter historical votes.
+
+## Live shared-token budget and results board (2026-10-21)
+
+- **Live GitHub budget.** Each run reads `GET /rate_limit` first. That read is free, and it covers the repo-wide `GITHUB_TOKEN` budget every workflow shares. The run keeps a reserve of `max(100, cap/10)` calls for the repo's other workflows. If remaining calls are inside the reserve, the mode is `defer_api`: nothing is scored and the next event or heartbeat resumes. Otherwise, RFPs per run are capped at `(remaining − reserve) / 6`. Acceleration chaining is off while the token is below half its budget. This closes the 2026-10-20 incident: run 39552711019 got a 403 after about 2,500 runs/day had drained the shared token.
+- **Labels.** One `GET /labels` per run, and only missing labels are created. This replaces the 7 POSTs per run.
+- **Results board.** The `Delphi results board` issue (`delphi:board`) is regenerated each run, and only when its contents change. It has one row per open RFP: effective score, award, band and recheck date. Shadow awards come first. It is a read-only view; the ledger of record stays the signed comment on each RFP.
+- **Signal emitter.** Sibling workflows wake the gate through the reusable `.github/workflows/delphi-signal.yml` (`workflow_call`, `actions: write`). See the lane contract.

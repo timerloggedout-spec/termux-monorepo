@@ -1,0 +1,42 @@
+# Reusable emitter for the Delphi lane contract (docs/ops/DELPHI-LANE-CONTRACT.md).
+# Sibling workflows call this to wake the Delphi gate on an event without
+# needing a PAT: workflow_dispatch from GITHUB_TOKEN is allowed to start runs.
+#   jobs:
+#     wake-delphi:
+#       uses: ./.github/workflows/delphi-signal.yml
+#       permissions: { actions: write }
+#       with: { event: foresight-radar-hit }
+# Additive file. No secrets, no model calls.
+name: delphi-signal
+
+on:
+  workflow_call:
+    inputs:
+      event:   { description: "quota-registry-changed | foresight-radar-hit | hindsight-forecast-miss | delphi-feedback | delphi-rfp", required: true, type: string }
+      rfp:     { description: "RFP issue number (feedback / forecast miss)", required: false, default: "", type: string }
+      outcome: { description: "confirmed | miss (delphi-feedback)", required: false, default: "", type: string }
+
+permissions:
+  actions: write
+
+jobs:
+  signal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    env:
+      GH_TOKEN: ${{ github.token }}
+      EVENT: ${{ inputs.event }}
+      RFP: ${{ inputs.rfp }}
+      OUTCOME: ${{ inputs.outcome }}
+    steps:
+      - name: Validate and dispatch delphi-gate
+        run: |
+          set -euo pipefail
+          case "$EVENT" in quota-registry-changed|foresight-radar-hit|hindsight-forecast-miss|delphi-feedback|delphi-rfp) ;; *) echo "::error::unknown delphi event"; exit 1;; esac
+          case "$RFP" in ''|*[!0-9]*) RFP="";; esac
+          [ "$EVENT" = hindsight-forecast-miss ] && OUTCOME=miss
+          case "$OUTCOME" in confirmed|miss) ;; *) OUTCOME="";; esac
+          args=(-f reason="$EVENT")
+          if [ -n "$RFP" ] && [ -n "$OUTCOME" ]; then args+=(-f feedback_rfp="$RFP" -f outcome="$OUTCOME"); fi
+          gh workflow run delphi-gate.yml -R "$GITHUB_REPOSITORY" --ref "${GITHUB_REF_NAME:-master}" "${args[@]}"
+          echo "::notice::delphi-signal event=$EVENT rfp=${RFP:-none} outcome=${OUTCOME:-none}"

@@ -104,3 +104,24 @@ def test_workflow_never_passes_provider_credentials_to_delphi():
     assert 'DELPHI_LLM_MAX: "0"' in text
     assert "secrets.OPENROUTER_API_KEY" not in text
     assert "secrets.GEMINI_API_KEY" not in text
+
+
+def test_cadence_reads_live_shared_token_budget():
+    _, reg, _ = _load()
+    assert gate.cadence(reg, {}, 3, 0, api_remaining=50)["mode"] == "defer_api"
+    tight = gate.cadence(reg, {}, 3, 0, api_remaining=130)
+    assert tight["mode"] == "steady" and tight["max_rfps_per_run"] == 5
+    assert gate.cadence(reg, {"neon": 1.8}, 3, 0, api_remaining=200)["mode"] == "steady"  # no chaining below half budget
+    assert gate.cadence(reg, {"neon": 1.8}, 3, 0, api_remaining=900)["mode"] == "accelerate"
+    assert gate.cadence(reg, {}, 3, 0, api_remaining=None)["mode"] == "steady"  # unreadable = neutral
+
+
+def test_results_board_orders_and_counts():
+    rows = [{"number": 2, "surface": "b", "effective": 9.0, "decision": "parked", "band": "Medium", "recheck": "x"},
+            {"number": 1, "surface": "a", "effective": 18.5, "decision": "shadow", "band": "High", "recheck": None},
+            {"number": 3, "surface": "c", "effective": None, "decision": "pending"}]
+    md = gate.board_md(rows, "t")
+    assert md.startswith(gate.BOARD_MARK)
+    body = md.splitlines()
+    assert body.index(next(l for l in body if "`a`" in l)) < body.index(next(l for l in body if "`b`" in l))
+    assert "1 shadow · 1 parked · 1 pending" in md

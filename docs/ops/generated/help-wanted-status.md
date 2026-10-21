@@ -1,6 +1,6 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-21T15:12:06Z UTC · receipts=3457 · foreign_open=38 · tributes=112_
+_Generated 2026-10-21T18:38:37Z UTC · receipts=3494 · foreign_open=37 · tributes=112_
 
 ## Tributes (contributor ledger)
 
@@ -13,7 +13,6 @@ _Generated 2026-10-21T15:12:06Z UTC · receipts=3457 · foreign_open=38 · tribu
 - [ThinkLikeAFounder/pulsartrack#898](https://github.com/ThinkLikeAFounder/pulsartrack/pull/898) · state=open · help-wanted: stake + contribute for #896
 - [MergeFi/contracts#374](https://github.com/MergeFi/contracts/pull/374) · state=open · help-wanted: stake + contribute for #345
 - [EF-CHAIN/SendAm#492](https://github.com/EF-CHAIN/SendAm/pull/492) · state=open · help-wanted: stake + contribute for #465
-- [Heliobond/frontend#614](https://github.com/Heliobond/frontend/pull/614) · state=open · help-wanted: stake + contribute for #587
 - [EF-CHAIN/SendAm#607](https://github.com/EF-CHAIN/SendAm/pull/607) · state=open · help-wanted: stake + contribute for #538
 - [SO4-Markets/so4-oracle#1143](https://github.com/SO4-Markets/so4-oracle/pull/1143) · state=open · help-wanted: stake + contribute for #906
 - [StellarLock/StellarLock#865](https://github.com/StellarLock/StellarLock/pull/865) · state=open · help-wanted: stake + contribute for #721
@@ -42,6 +41,7 @@ _Generated 2026-10-21T15:12:06Z UTC · receipts=3457 · foreign_open=38 · tribu
 - [SO4-Markets/interface#1029](https://github.com/SO4-Markets/interface/pull/1029) · state=open · help-wanted: stake + contribute for #918
 - [C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge--Frontend-#971](https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge--Frontend-/pull/971) · state=open · help-wanted: stake + contribute for #901
 - [zh-95/fronte-rivoluzionario#59](https://github.com/zh-95/fronte-rivoluzionario/pull/59) · state=open · help-wanted: stake + contribute for #9
+- [https://github.com/Heliobond/frontend/pull/614](https://github.com/Heliobond/frontend/pull/614) · state=? · 
 - [Gautam-aman/ResQNet#53](https://github.com/Gautam-aman/ResQNet/pull/53) · state=closed · help-wanted: stake + contribute for #50
 - [traceopt-ai/traceml#547](https://github.com/traceopt-ai/traceml/pull/547) · state=closed · help-wanted: stake + contribute for #128
 
@@ -75,7 +75,6 @@ _Generated 2026-10-21T15:12:06Z UTC · receipts=3457 · foreign_open=38 · tribu
 - [StellarLock/StellarLock#865](https://github.com/StellarLock/StellarLock/pull/865) — help-wanted: stake + contribute for #721
 - [SO4-Markets/so4-oracle#1143](https://github.com/SO4-Markets/so4-oracle/pull/1143) — help-wanted: stake + contribute for #906
 - [EF-CHAIN/SendAm#607](https://github.com/EF-CHAIN/SendAm/pull/607) — help-wanted: stake + contribute for #538
-- [Heliobond/frontend#614](https://github.com/Heliobond/frontend/pull/614) — help-wanted: stake + contribute for #587
 - [EF-CHAIN/SendAm#492](https://github.com/EF-CHAIN/SendAm/pull/492) — help-wanted: stake + contribute for #465
 - [MergeFi/contracts#374](https://github.com/MergeFi/contracts/pull/374) — help-wanted: stake + contribute for #345
 - [ThinkLikeAFounder/pulsartrack#898](https://github.com/ThinkLikeAFounder/pulsartrack/pull/898) — help-wanted: stake + contribute for #896
@@ -86,6 +85,6 @@ _Generated 2026-10-21T15:12:06Z UTC · receipts=3457 · foreign_open=38 · tribu
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) — help-wanted: stake + contribute for #20
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Operational outcomes · actioned=192 skipped=3265 failed=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 3229, 'followup_reengage': 50, 'followup_stale_nudge': 128, 'followup_changes': 2}`
+## Operational outcomes · actioned=193 skipped=3301 failed=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 3265, 'followup_reengage': 50, 'followup_stale_nudge': 129, 'followup_changes': 2}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

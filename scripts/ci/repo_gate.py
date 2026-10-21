@@ -536,13 +536,18 @@ def resolve_base(requested: str | None) -> str | None:
 
 
 def changed_paths(base: str) -> list[str]:
+    """Select index changes, matching the indexed blobs used by hard checks.
+
+    A working-tree diff can hide a staged change when an unstaged edit restores
+    the base contents. Conversely, unstaged-only edits are not gate inputs.
+    """
     merge_base = base
     try:
         merge_base = git("merge-base", base, "HEAD").strip() or base
     except subprocess.CalledProcessError:
         pass
     raw = subprocess.run(
-        ["git", "diff", "--name-only", "--diff-filter=ACMR", "-z", merge_base, "--"],
+        ["git", "diff", "--cached", "--name-only", "--diff-filter=ACMR", "-z", merge_base, "--"],
         cwd=REPO_ROOT,
         check=True,
         capture_output=True,

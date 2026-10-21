@@ -1,6 +1,6 @@
 # Portability: why a fresh clone of this monorepo does not work yet
 
-Measured on `master` @ `320c73b` (3410 tracked paths).
+Measured on `master` @ `2d78be6b` (approx 8023 tracked paths). Sample .bak retirement reduced tracked_backup_files 120→116.
 
 This is the single highest-leverage finding in the current repo state, and it is
 upstream of almost every open PR: **the tree on `master` cannot be reproduced from a

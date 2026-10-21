@@ -141,6 +141,12 @@ Manifest fields observed:
 
 Disposition each path as: valid source needing parser support; intentional/historical artifact to exclude with a documented reason; invalid source to repair in its own lane; or unsupported format. Do not blindly rewrite legacy source just to satisfy the collector. Record path, source SHA/ref, parser version, disposition, reason, and validation evidence. Investigate the single unresolved internal reference and retain it as unresolved until evidence closes it.
 
+### Initial source spot-check (current master, 2026-10-21)
+
+A targeted fetch of the listed files confirms that at least several manifest findings correspond to visibly malformed or non-source content in the current branch snapshot: multiple `yobitrageswap/api/*_api.py` files begin with module imports followed by indented method definitions without a visible enclosing class; `archwiz/dangle_detector.py` has an incorrectly nested `if`; `archwiz/manifest_to_cache.py` contains a multiline code-fence string written as an ordinary quoted f-string; `cli-synthegration/workspace/compression_sandbox/generate_loop.py` contains duplicated/nested fragments; `cli-synthegration/workspace/staging/reconstructed_msg596.py` contains a shell `grep` command rather than Python source; and `harmony_hub/utility_belt/recover-session.py` has a visibly misindented block.
+
+This is a targeted sample, not a full syntax audit. The manifest was collected on 2026-10-15, so each reported path must be re-read and parsed at the exact candidate SHA before its current disposition is decided. The spot-check does **not** authorize bulk repair: some paths may be generated, archival, intentionally incomplete, or outside the supported source scope.
+
 ## 5. Quota admission and scheduling
 
 PR #1441 describes reconciling OpenRouter's official daily free-model counter with local reservations, fail-closed handling of missing/stale daily evidence, cooldowns, and telemetry. Its stated limits are important: the endpoint does not expose all per-minute capacity; cache-backed reservations are not a distributed atomic lock; 429s can still occur; same-run fallback is not implemented in that change; and that change did not make live provider requests.

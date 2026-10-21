@@ -122,3 +122,10 @@ The sourced nomenclature/label/mapping contract is documented in [`NOMENCLATURE-
 - Tests: [`test_nomenclature_matrix.py`](../../../../tests/test_nomenclature_matrix.py)
 
 This lane records concepts, audience/register-specific labels, evidence sources, and typed semantic mappings. All seed records remain candidates. Do not infer equivalence from matching strings; do not promote an exact mapping without source evidence and domain review. The validator and dedicated workflow enforce basic referential integrity and controlled vocabularies.
+
+
+### Nomenclature research evidence expansion (2026-10-20)
+
+- Research source ledger: [`nomenclature-matrix/RESEARCH-SOURCES.md`](./nomenclature-matrix/RESEARCH-SOURCES.md).
+- Candidate seed expanded with lexical-label, controlled-vocabulary, colloquial-to-formal mapping, and near-synonymy concepts; sources include W3C SKOS, Wolfram, DARIAH-Campus, Getty, Europe PMC/BioHackrXiv, and scholarly mapping research.
+- Label and mapping semantics remain separate. Wikipedia is orientation-only; no source-discovery result independently promotes a candidate mapping.

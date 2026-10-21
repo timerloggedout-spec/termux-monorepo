@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "d7b46cf5dc2ca6228136732b5413100e9bea232cbac10fd7eb9258fd9e2f5ab0",
-  "workflow_count": 147,
+  "source_fingerprint": "ffb2b6f6ac7345af9b3ca08cb4530741d3bb8da17012f6b4038c1ceb7845758c",
+  "workflow_count": 150,
   "workflows": [
     {
       "action_pins": [
@@ -222,8 +222,25 @@
       ]
     },
     {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "handoff",
+        "mutation"
+      ],
+      "name": "Agent PR Jules Handoff",
+      "path": ".github/workflows/agent-pr-jules-handoff.yml",
+      "schedules": [],
+      "triggers": [
+        "issue_comment",
+        "pull_request"
+      ]
+    },
+    {
       "action_pins": [
-        "actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09"
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
       "authority": "read-only-or-advisory",
       "concurrency": "group: agent-quality-${{ github.event.pull_request.number || github.ref }} cancel-in-progress: true",
@@ -236,7 +253,6 @@
       "schedules": [],
       "triggers": [
         "pull_request",
-        "push",
         "workflow_dispatch"
       ]
     },
@@ -259,7 +275,10 @@
       ]
     },
     {
-      "action_pins": [],
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
       "authority": "read-only-or-advisory",
       "concurrency": "group: agent-runtime-stall-watch cancel-in-progress: false",
       "domain": "agentic-development",
@@ -1358,6 +1377,23 @@
     },
     {
       "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: github-app-capability-probe cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "probe"
+      ],
+      "name": "GitHub App Capability Probe",
+      "path": ".github/workflows/github-app-capability-probe.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
         "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
       ],
@@ -1415,6 +1451,22 @@
       "triggers": [
         "pull_request",
         "pull_request_review",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "grafana-authentication"
+      ],
+      "name": "Grafana MCP Smoke",
+      "path": ".github/workflows/grafana-mcp-smoke.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_call",
         "workflow_dispatch"
       ]
     },
@@ -1638,24 +1690,6 @@
     },
     {
       "action_pins": [
-        "actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09"
-      ],
-      "authority": "read-only-or-advisory",
-      "concurrency": "",
-      "domain": "agentic-development",
-      "jobs": [
-        "validate-backfill-migration-boundary"
-      ],
-      "name": "historical backfill promotion gate",
-      "path": ".github/workflows/historical-backfill-promotion-gate.yml",
-      "schedules": [],
-      "triggers": [
-        "pull_request",
-        "workflow_dispatch"
-      ]
-    },
-    {
-      "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
       "authority": "read-only-or-advisory",
@@ -1725,6 +1759,27 @@
         "0 */6 * * *"
       ],
       "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: issue-observatory cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "observe"
+      ],
+      "name": "Issue Observatory — similarity, refinement, lifecycle evidence",
+      "path": ".github/workflows/issue-observatory.yml",
+      "schedules": [
+        "37 * * * *"
+      ],
+      "triggers": [
+        "issue_comment",
+        "issues",
+        "pull_request",
         "schedule",
         "workflow_dispatch"
       ]

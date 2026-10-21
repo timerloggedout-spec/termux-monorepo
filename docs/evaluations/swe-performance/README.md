@@ -1,70 +1,34 @@
-# SWE Agent Evaluation
+# SWE Reference Adapter
 
 **Implements:** THUB-007  
-**Status:** External/reference evaluation family; repository-local development evidence remains primary.
+**Suite position:** Optional reference adapter for the [Repository Development Performance Suite](../development-performance/SUITE.md).
 
-This evaluation surface connects the user-owned `SWE-agent_fork` and `mini-swe-agent_fork` repositories to the Agent Evaluation Framework (AEF), without turning either fork or an external benchmark leaderboard into routing authority.
+The user-owned `SWE-agent_fork` and `mini-swe-agent_fork` are **reference implementations** that inform comparable agent-evaluation methodology. They are not the target of THUB-007 and their external SWE-bench scores do not measure `termux-monorepo` development performance by themselves.[1] [2]
 
-## Reference implementations
+> The suite’s primary subject is this repository’s development lifecycle: change delivery, validation health, review flow, automation response, and merge readiness. A SWE-reference result is an optional, separately labeled context signal.
 
-- [`timerloggedout-spec/SWE-agent_fork`](https://github.com/timerloggedout-spec/SWE-agent_fork) — full SWE-agent reference cohort.
-- [`timerloggedout-spec/mini-swe-agent_fork`](https://github.com/timerloggedout-spec/mini-swe-agent_fork) — lightweight SWE-agent reference cohort and existing bounded adapter.
-- Historical branch: `feat/swe-performance-evaluation` — retained as lineage evidence. It was 342 commits behind current `master` when reconciled; its useful evaluation implementation was integrated/reworked rather than merged wholesale.
+## Adapter Boundary
 
-See `docs/evaluations/swe-performance/COHORTS.md` for the cohort matrix and MoneyBall/3L0 treatment schema.
+| Property | Rule |
+|---|---|
+| Reference runtime | The first adapter pins `mini-swe-agent_fork` at `a83fcae82d2a08f0ee0c688f9d137b3566c097f8`. The larger SWE-agent fork remains a future adapter source. |
+| Invocation | Manual dispatch only. No schedule, fan-out, or automatic issue/PR trigger can invoke a provider model. |
+| Workload | Exactly one benchmark instance (`0:1`) with one worker; allowed suite aliases are `lite` and `verified`. |
+| Credential | A human-managed `SWE_EVALUATION_API_KEY` secret is required at runtime. The workflow neither creates nor changes it. |
+| Artifact | Only a redacted `manifest.json` is uploaded for 14 days. No prompt, trajectory, prediction patch, log, browser/session state, or credential is retained. |
+| Score semantics | `agent-run-complete` records a completed adapter run; it is **not** a confirmed benchmark resolution. Resolution remains `null` until a separately reviewed scorer adapter exists. |
 
-## Benchmark boundary
+## Result Contract
 
-SWE-bench is a benchmark for real-world software-engineering issues: an environment is prepared, an agent/model produces a patch, and the patch is evaluated against repository tests. The current public family includes Full, Lite, Verified, Multimodal, and Multilingual variants. SWE-bench-Live provides an additional live, multi-language/multi-OS research direction.
+The reference adapter uses `scripts/ci/swe_evaluation_contract.py`. Its manifest contains the fixed reference revision, bounded benchmark parameters, model identifier, timing, executor state, completed-instance count, and canonical SHA-256 digest. It rejects secret-shaped values, unknown fields, invalid state/count relationships, and unbounded slices.
 
-External benchmark results are **reference evidence**. They are not interchangeable with this repository's own correctness, review-resolution, coordination, regression, tool-boundary, or resource evidence.
+If a reviewed reference result becomes a durable repository record, commit only its redacted manifest under `docs/evaluations/swe-performance/results/`. The deterministic suite contract workflow validates it. Do not commit downloaded artifacts, `preds.json`, trajectories, patches, or raw logs.
 
-## Invocation boundary
+## Extension Rule
 
-The existing `swe-reference-evaluation.yml` remains a bounded reference adapter. It must pin the external implementation revision and emit a redacted manifest. A successful agent process means only that an evaluation artifact was produced; it does not mean the task was solved.
+A new reference adapter must document its pin, workload cap, credential boundary, output schema, and relationship to repository-development signals before use. It cannot replace the deterministic `repository-pr-lifecycle` adapter or cause automatic repository actions.
 
-The long-term direction is agentic/continuous evaluation through the AEF + BIUDL loop rather than a human-only benchmark switch. Any credential-bearing external run must remain explicitly isolated and fail closed when required credentials or evidence are absent.
+## References
 
-## Result handling
-
-Results must be reproducible and attributable:
-
-`source state → benchmark/task version → treatment assignment → agent/provider/model → execution → evidence freeze → evaluator → outcome → MoneyBall/3L0 update`
-
-Record task outcome separately from latency, token count, quota, cost, retries, and availability. Do not use a single aggregate percentage as the sole admission/culling criterion.
-
-## #390 is a case study, not the benchmark
-
-PR #390 is a quick repository-history scenario that exposed the **churn problem**. It is therefore a stress-test/use-case seed for context reconstruction, event-volume handling, relationship discovery, and change-effectiveness measurement—not a claim that a large PR/comment history is itself a SWE-bench task.
-
-The existing `benchmarks/repository-history/pr-390.yaml` is the bounded seed. Its evidence should remain linked to the source PR/SHA/run graph and should not be inflated into a quality score merely because the history is large.
-
-## BIUDL / MoneyBall
-
-```text
-BROAD → discover agents, forks, datasets, environments, tasks
-  ↓
-INTEGRATE → register/pin treatments and adapters
-  ↓
-VALIDATE → deterministic + blinded + trajectory + tool-boundary evidence
-  ↓
-DEVELOP → improve agent, prompt, manager, tools, orchestration
-  ↓
-LEARN → update MoneyBall/3L0, skills, SSOT, cohort registry
-  └────────────────────────────────────────────→ BROAD
-```
-
-Culling preserves provenance. Promotion requires replicated evidence where practical. New benchmark variants, agents, providers, or environments enter as new treatments/cohorts instead of overwriting historical observations.
-
-## Related artifacts
-
-- `docs/architecture/AGENT-EVALUATION-FRAMEWORK.md`
-- `docs/evaluations/swe-performance/COHORTS.md`
-- `docs/evaluations/development-performance/SUITE.md`
-- `.github/workflows/swe-reference-evaluation.yml`
-- `scripts/ci/swe_evaluation_contract.py`
-- `benchmarks/repository-history/pr-390.yaml`
-- `docs/ops/LEAD-LAG-INDEX.md`
-- `docs/ops/SCOUT-MISSIONS.md`
-- `docs/ops/SCOUT-ROSTER.md`
-- `.agents/skills/adaptive-feedback-cycle/SKILL.md`
+[1]: https://github.com/timerloggedout-spec/mini-swe-agent_fork "mini-SWE-agent fork"
+[2]: https://github.com/timerloggedout-spec/SWE-agent_fork "SWE-agent fork"

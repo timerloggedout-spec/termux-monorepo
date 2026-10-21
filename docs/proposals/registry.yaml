@@ -588,3 +588,20 @@ proposals:
     related_branches:
       - docs/archwiz-hyperforge-gemini-review-package
     gates_required: [repo-gate, termux-smoke]
+  - id: agent-team-formation
+    title: "Role-aware agent teams, game-player fleet, scoring, and controlled research"
+    author: Manus AI
+    status: draft
+    priority: P1
+    path: active/agent-team-formation/
+    reviewers:
+      - id: Manus AI
+        role: author
+        status: posted
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: awaiting_review
+    related_issues: [129, 236, 243]
+    related_prs: [131]
+    related_branches: [docs/agent-team-formation-draft]
+    gates_required: [repo-gate, termux-smoke]

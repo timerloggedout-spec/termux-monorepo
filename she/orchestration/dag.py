@@ -12,7 +12,7 @@ import json
 from dataclasses import asdict, dataclass
 from typing import Iterable, Mapping
 
-ALGORITHM_VERSION = "kahn-reference-v1"
+ALGORITHM_VERSION = "kahn-reference-v2"
 TERMINAL_STATES = frozenset({"succeeded", "skipped", "failed", "blocked"})
 
 

@@ -13,6 +13,8 @@ class KahnPlanTests(unittest.TestCase):
         self.assertTrue(plan.is_acyclic)
         self.assertEqual(plan.topological_order, ())
         self.assertEqual(plan.cycle_or_blocked_nodes, ())
+        self.assertEqual(plan.ready_frontiers, ())
+        self.assertEqual(plan.algorithm_version, "kahn-reference-v2")
 
     def test_chain_and_fan_in_fan_out(self):
         plan = plan_dag(
@@ -40,6 +42,7 @@ class KahnPlanTests(unittest.TestCase):
 
         disconnected = plan_dag(["z", "b", "a", "y"], [("a", "y"), ("b", "z")])
         self.assertEqual(disconnected.ready_frontiers, (("a", "b"), ("y", "z")))
+        self.assertEqual(plan_dag(["a", "b"], []).ready_frontiers, (("a", "b"),))
 
     def test_duplicate_edges_are_deduplicated(self):
         plan = plan_dag(["a", "b"], [("a", "b"), ("a", "b")])
@@ -73,6 +76,7 @@ class KahnPlanTests(unittest.TestCase):
         self.assertFalse(plan.is_acyclic)
         self.assertEqual(plan.cycle_or_blocked_nodes, ("a", "b", "c"))
         self.assertIn("free", plan.topological_order)
+        self.assertEqual(plan.ready_frontiers, (("free",),))
 
     def test_dependency_state_requires_success_by_default(self):
         deps = ["a", "b"]

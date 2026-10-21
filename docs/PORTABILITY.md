@@ -1,6 +1,15 @@
 # Portability: why a fresh clone of this monorepo does not work yet
 
-Measured on `master` @ `2d78be6b` (approx 8023 tracked paths). Sample .bak retirement reduced tracked_backup_files 120→116.
+Measured on `master` @ `0d314d7e` (live tip). Current ratchet counters from `scripts/ci/baseline.json`:
+
+| Symptom | Count | Class |
+|---|---:|---|
+| device_absolute_symlinks | 34 | A / B |
+| tracked_backup_files | 116 | D |
+| tracked_session_artifacts | 423 | E |
+| paths_with_spaces | 452 | F |
+| tracked_browser_credential_stores | 115 | — |
+| tracked_browser_profile_files | 607 | — |
 
 This is the single highest-leverage finding in the current repo state, and it is
 upstream of almost every open PR: **the tree on `master` cannot be reproduced from a
@@ -8,21 +17,12 @@ clone.** Not because of missing docs, but because a large share of what looks li
 source is either a dangling symlink into one specific Android device, a captured
 process-runtime artifact, or an editor backup.
 
-| Symptom | Count | Class |
-|---|---:|---|
-| Tracked symlinks | 45 | — |
-| …dangling in this clone | 42 | — |
-| …pointing at `/data/data/com.termux/...` | 34 | A / B |
-| Tracked `.bak*` / `.old` copies | 120 | D |
-| Tracked agent session-store artifacts | 423 | E |
-| Tracked paths containing spaces | 452 | F |
-
 `scripts/ci/repo_gate.py` turns each row into a ratchet counter, so the numbers can
-only go down. Nothing below has to be fixed in one pass.
+only go down. Nothing below has to be fixed in one pass. Every permanent reduction multiplies future clone, CI, and agent success on free capacity.
 
 ---
 
-## Class A — device links to real code and state (26 links)
+## Class A — device links to real code and state
 
 These are legitimate on-device wiring. They are just stored in the wrong medium.
 
@@ -82,7 +82,7 @@ therefore reviewable, but not runnable from a clone.
 3. **Then:** `git rm --cached` the Class A links whose real content got vendored, and
    lower the `device_absolute_symlinks` counter in `scripts/ci/baseline.json`.
 
-## Class B — process-runtime junk (14 links, remove outright)
+## Class B — process-runtime junk (remove outright)
 
 ```
 deepcli/browser-data/Singleton{Cookie,Lock,Socket}
@@ -104,22 +104,20 @@ git rm --cached -- \
   '.termux/shell'
 ```
 
-## Class C — relative links, already fine (3 links)
+## Class C — relative links, already fine
 
 `workspace/llm_map/4_51GH7_collect.py`, `4_51GH7_state.json`, and
 `_TOOL_TAXONOMY/delta/latest.json` are intra-repo relative links. Leave them. They
 are the pattern Class A should be migrated toward.
 
-## Class D — 120 tracked backup copies
+## Class D — tracked backup copies (current: 116)
 
-`archwiz/archwiz.py.bak.1782737822`, `.bak.20260628_225950`, `.bak.224047`, and one
-literal `archwiz/archwiz.py.bak.$(date +%H%M%S)` — an unexpanded command substitution
-that became a filename. Git already is the backup. The gate blocks *new* ones
-(`no-committed-backups`) and counts the existing pile.
+Git already is the backup. The gate blocks *new* ones
+(`no-committed-backups`) and counts the existing pile. Sample retirement previously reduced 120→116.
 
-## Class E — 423 tracked session-store artifacts
+## Class E — tracked session-store artifacts (current: 423)
 
-Already the subject of **PR #3** (`agent/repository-hygiene`, draft, −233 175 lines).
+Already the subject of **PR #3** (`agent/repository-hygiene`, draft).
 That PR is correct and should land. Two things to fix first:
 
 - `.gitignore` lists `.deepcli/session_store/`, but ignore rules never untrack
@@ -128,12 +126,9 @@ That PR is correct and should land. Two things to fix first:
   rotation comes first**, then a separately reviewed history rewrite. PR #3's own
   follow-up section says this; it should be a hard gate on merge, not a note.
 
-## Class F — 452 paths containing spaces
+## Class F — paths containing spaces (current: 452)
 
-Almost entirely session filenames like
-`.deepcli/session_store/Add export command to save session messages_1494fde3.json`.
-These break every unquoted `for f in $(...)` loop in `*.sh` — this repo has 214 shell
-scripts. Class E's removal takes most of this with it; that is why the two counters
+Almost entirely session filenames. These break every unquoted `for f in $(...)` loop in `*.sh`. Class E's removal takes most of this with it; that is why the two counters
 are tracked separately.
 
 ---
@@ -150,4 +145,6 @@ python3 scripts/ci/repo_gate.py --write-baseline
 
 The gate reads the git **index** and `git cat-file`, never the working tree, so it
 behaves identically in a sparse checkout, with submodules uninitialised, and in the
-presence of 42 dangling links.
+presence of dangling links.
+
+**Next highest-leverage opportunity:** retire a small batch of Class D `.bak` files (e.g. `deepcli-tui/tui.py.bak`, `workspace/maxc/*.bak`) to lower the tracked_backup_files counter permanently. Every reduction compounds clone and CI success on free-tier capacity.

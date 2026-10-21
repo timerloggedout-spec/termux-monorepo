@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "d10265b597756a74685c38602ae812302a34ea86df90b04d970bda7b4090fd7d",
-  "workflow_count": 150,
+  "source_fingerprint": "0270b7a6eca491dd147a1725fffa3d05e7e54349d8fddee539341851da4dabb0",
+  "workflow_count": 151,
   "workflows": [
     {
       "action_pins": [
@@ -538,6 +538,25 @@
       "triggers": [
         "push",
         "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
+      ],
+      "authority": "writer",
+      "concurrency": "group: cellcog-review-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "cellcog-review"
+      ],
+      "name": "CellCog review",
+      "path": ".github/workflows/cellcog-review.yml",
+      "schedules": [],
+      "triggers": [
+        "issue_comment",
+        "pull_request",
         "workflow_dispatch"
       ]
     },

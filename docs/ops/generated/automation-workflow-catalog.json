@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "97e946ad7be8aba3ac1f4d49e0a784322a8d889c14678f2476720467120aaa7f",
-  "workflow_count": 160,
+  "source_fingerprint": "23f74cc7d753d3dadfd2b319748c482e95700c59a9835255b54af513b4bbed5a",
+  "workflow_count": 161,
   "workflows": [
     {
       "action_pins": [
@@ -1242,6 +1242,22 @@
       "path": ".github/workflows/fly-ssh-diag.yml",
       "schedules": [],
       "triggers": []
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: flywheel-validate-${{ github.ref }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "core-loop"
+      ],
+      "name": "Flywheel adapter validation",
+      "path": ".github/workflows/flywheel-validate.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "workflow_dispatch"
+      ]
     },
     {
       "action_pins": [

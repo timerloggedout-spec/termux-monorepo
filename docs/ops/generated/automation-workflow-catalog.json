@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "b92fc4f0266e114911efdca46fe96b2ff07ed59ca782efeaa2a4225d72c6d688",
-  "workflow_count": 161,
+  "source_fingerprint": "2dea472887e23f19ec2ede3f790e0e5226d4ed74739bc437285e7350df783743",
+  "workflow_count": 162,
   "workflows": [
     {
       "action_pins": [
@@ -992,6 +992,21 @@
         "schedule",
         "workflow_dispatch",
         "workflow_run"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "signal"
+      ],
+      "name": "delphi-signal",
+      "path": ".github/workflows/delphi-signal.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_call"
       ]
     },
     {

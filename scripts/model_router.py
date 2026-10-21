@@ -16,6 +16,7 @@ import time
 from pathlib import Path
 
 from scripts import capability_spine
+from scripts import gemini_quota_gate
 
 COUNTER_DIR = os.environ.get("COUNTER_DIR", "/tmp/model-router")
 KEY_VAL_RE = re.compile(r'^("[^"]+"|\'[^\']+\'|[^:]+):\s*(.*)$')
@@ -569,6 +570,14 @@ def main():
             key = (provider, model)
             if key in seen:
                 continue
+            if provider == "gemini":
+                # Local per-model budgets are not shared provider headroom.
+                # The same boundary also guards the CLI dispatch step. It cannot
+                # enable admission without a separately reviewed live authority.
+                gemini_preflight = gemini_quota_gate.from_environment(model)
+                if not gemini_preflight.get("eligible"):
+                    sys.stderr.write("Gemini candidate denied by shared/project quota preflight; private values withheld.\n")
+                    continue
             if provider == "openrouter":
                 # The live free catalog is authoritative for zero-priced models, including IDs without :free.
                 if model not in permitted_openrouter_models:

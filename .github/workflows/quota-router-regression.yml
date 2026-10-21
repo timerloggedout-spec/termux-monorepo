@@ -27,6 +27,16 @@ on:
       - 'tests/test_provider_quota_private_workflow.py'
       - 'tests/test_provider_quota_gemini.py'
       - 'tests/test_provider_quota_gemini_service.py'
+      - '.github/actions/gemini-quota-gate/action.yml'
+      - '.github/workflows/gemini-invoke.yml'
+      - '.github/workflows/gemini-review.yml'
+      - '.github/workflows/gemini-triage.yml'
+      - '.github/workflows/gemini-after-peers.yml'
+      - 'scripts/gemini_quota_gate.py'
+      - 'scripts/gemini_shared_cap.py'
+      - 'tests/test_gemini_quota_wiring.py'
+      - 'tests/test_gemini_quota_gate.py'
+      - 'tests/test_gemini_shared_cap.py'
   workflow_dispatch:
 permissions:
   contents: read
@@ -67,4 +77,7 @@ jobs:
             tests/test_provider_quota_openrouter.py \
             tests/test_provider_quota_gemini.py \
             tests/test_provider_quota_gemini_service.py \
-            tests/test_provider_quota_private_workflow.py
+            tests/test_provider_quota_private_workflow.py \
+            tests/test_gemini_quota_wiring.py \
+            tests/test_gemini_quota_gate.py \
+            tests/test_gemini_shared_cap.py

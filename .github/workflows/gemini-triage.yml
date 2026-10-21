@@ -166,8 +166,14 @@ jobs:
             Classify (bug/feature/docs/question/security/duplicate/invalid).
             Suggest labels + priority. Link duplicates if any. Recommend jules for implementation.
 
-      - name: Gemini triage (PRIMARY)
+      - name: Gemini quota gate
+        id: gemini_quota
         if: steps.router.outputs.skip != 'true' && steps.router.outputs.provider == 'gemini'
+        uses: ./.github/actions/gemini-quota-gate
+        with:
+          model: ${{ steps.router.outputs.model }}
+      - name: Gemini triage (PRIMARY)
+        if: steps.router.outputs.skip != 'true' && steps.router.outputs.provider == 'gemini' && steps.gemini_quota.outputs.skip == 'false'
         uses: google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489 # v0.1.22
         continue-on-error: true
         env:

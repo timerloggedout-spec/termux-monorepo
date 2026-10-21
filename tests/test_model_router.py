@@ -229,8 +229,8 @@ def test_observe_feature_gate_keeps_execution_route_and_marks_decision_disabled(
 
     outputs = output_file.read_text()
     assert 'decision={"schema_version": 2, "mode": "disabled"}' in outputs
-    assert "provider=gemini" in outputs
-    assert "skip=false" in outputs
+    assert "provider=none" in outputs
+    assert "skip=true" in outputs
 
 
 def test_stale_target_sha_fails_closed_in_observe_decision_only(tmp_path, monkeypatch):
@@ -250,8 +250,8 @@ def test_stale_target_sha_fails_closed_in_observe_decision_only(tmp_path, monkey
     outputs = output_file.read_text()
     assert '"state":"no_eligible_specialist"' in outputs
     assert '"exclusion":"current-SHA gate is missing or stale"' in outputs
-    assert "provider=gemini" in outputs
-    assert "skip=false" in outputs
+    assert "provider=none" in outputs
+    assert "skip=true" in outputs
 
 
 def test_path_traversal_prevention(tmp_path, monkeypatch):

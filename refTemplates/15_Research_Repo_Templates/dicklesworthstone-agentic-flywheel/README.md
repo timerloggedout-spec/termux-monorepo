@@ -28,6 +28,16 @@ Supporting layers include command safety (DCG/SLB), multi-agent terminal orchest
 - Do not enable upstream “vibe” defaults, passwordless sudo, destructive-command bypasses, or agent-wide unsafe flags in project-controlled environments.
 - No secrets, session stores, provider credentials, or user configuration snapshots in this reference slot.
 
+## Existing repository flywheels and cadence controls
+
+This integration is explicitly **not** a greenfield flywheel implementation. The repository already has:
+
+- A Delphi outcome-feedback flywheel in `scripts/delphi/gate.py` and `.github/workflows/delphi-gate.yml`, which updates role weights from confirmed/missed outcomes using the append-only weights ledger.
+- The Delphi lane/event contract for shadow trials, real-run feedback, HindSight misses, and re-scoring pending candidates.
+- Camshaft/Flywheel, Cadence, and Gantt scheduling/control surfaces with current-SHA, cooldown, idempotency, and provider-evidence boundaries.
+
+ACFS capabilities must be evaluated as candidate adapters to these control planes. Do not add a second scheduler, task ledger, or scoring/weights ledger. See the repository-wide audit in `docs/ops/DICKLESWORTHSTONE-FLYWHEEL-INTEGRATION.md`.
+
 ## Relationship to the project
 
 This profile is a reference and integration map, not a new runtime control plane. Existing GitHub Actions, task tracking, agent telemetry, and current refTemplates/smods/ pins remain authoritative until a capability passes its own compatibility, security, and dual-gate checks.

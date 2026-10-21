@@ -470,12 +470,13 @@ def git_ok(*args: str) -> bool:
 
 
 class IndexEntry:
-    __slots__ = ("mode", "path", "sha")
+    __slots__ = ("mode", "path", "sha", "stage")
 
-    def __init__(self, mode: str, sha: str, path: str) -> None:
+    def __init__(self, mode: str, sha: str, path: str, stage: int = 0) -> None:
         self.mode = mode
         self.sha = sha
         self.path = path
+        self.stage = stage
 
     @property
     def is_symlink(self) -> bool:
@@ -503,7 +504,7 @@ def read_index() -> list[IndexEntry]:
         parts = meta.split()
         if len(parts) < 3 or not path:
             continue
-        entries.append(IndexEntry(parts[0], parts[1], path))
+        entries.append(IndexEntry(parts[0], parts[1], path, int(parts[2])))
     return entries
 
 
@@ -831,6 +832,14 @@ def main() -> int:
     args = parser.parse_args()
 
     index = read_index()
+    # Nonzero stages are competing merge versions, not a candidate snapshot.
+    # Reject them in every mode, including ratchet-only and baseline writes.
+    unmerged = sorted({entry.path for entry in index if entry.stage != 0})
+    if unmerged:
+        for path in unmerged:
+            print(f"{RED}FAIL{RESET}  unmerged-index: {path!r} — resolve and stage this path first")
+        print(f"\n{RED}{BOLD}{len(unmerged)} unresolved path(s){RESET}")
+        return 1
     by_path = {e.path: e for e in index}
     report = Report()
 

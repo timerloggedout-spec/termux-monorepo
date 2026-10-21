@@ -42,9 +42,10 @@ class IndexScopeTests(unittest.TestCase):
                  "-c", "commit.gpgsign=false", "-c", "core.hooksPath=/dev/null",
                  "commit", "-qm", message)
 
-    def run_gate(self):
+    def run_gate(self, *options):
         output = io.StringIO()
-        with patch.object(sys, "argv", ["repo_gate.py", "--base", self.base, "--hard-only"]):
+        args = options or ("--base", self.base, "--hard-only")
+        with patch.object(sys, "argv", ["repo_gate.py", *args]):
             with contextlib.redirect_stdout(output):
                 rc = gate.main()
         return rc, output.getvalue()
@@ -176,6 +177,76 @@ class IndexScopeTests(unittest.TestCase):
         rc, output = self.run_gate()
         self.assertEqual(rc, 0, output)
         self.assertIn("py=1", output)
+
+    def set_unmerged(self, path="probe.py", stages=(1, 2, 3)):
+        sha = self.git("rev-parse", "HEAD:probe.py").strip()
+        records = f"0 {'0' * len(sha)}\t{path}\0"
+        records += "".join(f"100644 {sha} {stage}\t{path}\0" for stage in stages)
+        subprocess.run(["git", "update-index", "-z", "--index-info"], cwd=self.root,
+                       input=records.encode(), check=True, capture_output=True)
+
+    def test_read_index_preserves_conflict_stages(self):
+        self.set_unmerged()
+        self.assertEqual([entry.stage for entry in gate.read_index()], [1, 2, 3])
+
+    def test_unmerged_index_is_rejected_even_with_valid_worktree(self):
+        self.set_unmerged()
+        self.assertEqual(gate.changed_paths(self.base), [])
+        rc, output = self.run_gate()
+        self.assertEqual(rc, 1, output)
+        self.assertIn("unmerged-index", output)
+        self.assertIn("probe.py", output)
+        self.assertEqual(output.count("unmerged-index"), 1)
+        self.assertNotIn("gate passed", output)
+
+    def test_unmerged_index_is_rejected_without_a_resolved_base(self):
+        self.set_unmerged()
+        with patch.object(gate, "resolve_base", return_value=None):
+            self.assertEqual(self.run_gate()[0], 1)
+
+    def test_unmerged_index_is_rejected_before_ratchet_or_baseline_write(self):
+        self.set_unmerged()
+        for options in (("--base", self.base), ("--ratchet-only",), ("--write-baseline",)):
+            with self.subTest(options=options), patch.object(gate, "measure") as measure:
+                with patch.object(gate, "write_baseline") as write, patch.object(
+                    gate, "BASELINE_PATH", self.root / "baseline.json"
+                ):
+                    rc, output = self.run_gate(*options)
+                self.assertEqual(rc, 1, output)
+                measure.assert_not_called()
+                write.assert_not_called()
+
+    def test_one_sided_delete_modify_conflicts_are_rejected(self):
+        for stage in (2, 3):
+            with self.subTest(stage=stage):
+                self.set_unmerged(stages=(1, stage))
+                self.assertEqual(self.run_gate()[0], 1)
+
+    def test_non_source_conflict_outside_changed_scope_is_rejected(self):
+        self.set_unmerged(path="notes.txt", stages=(2, 3))
+        (self.root / "notes.txt").unlink(missing_ok=True)
+        self.assertEqual(self.run_gate()[0], 1)
+
+    def test_conflict_paths_with_whitespace_are_reported_unambiguously(self):
+        path = "space and\nline\tbreak.txt"
+        self.set_unmerged(path=path, stages=(2, 3))
+        rc, output = self.run_gate()
+        self.assertEqual(rc, 1, output)
+        self.assertIn(repr(path), output)
+        self.assertEqual(output.count("unmerged-index"), 1)
+
+    def test_staging_resolution_restores_normal_gate_checks(self):
+        self.set_unmerged()
+        self.git("add", "probe.py")
+        self.assertEqual([entry.stage for entry in gate.read_index()], [0])
+        rc, output = self.run_gate()
+        self.assertEqual(rc, 0, output)
+        self.assertIn("gate passed", output)
+        self.source.write_text("def broken(:\n")
+        self.git("add", "probe.py")
+        rc, output = self.run_gate()
+        self.assertEqual(rc, 1, output)
+        self.assertIn("python-syntax", output)
 
 
 if __name__ == "__main__":

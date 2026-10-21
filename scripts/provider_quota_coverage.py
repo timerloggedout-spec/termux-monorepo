@@ -21,7 +21,14 @@ def _providers():
 
 def build_coverage(root: Path = ROOT) -> dict[str, Any]:
     from scripts import quota_poll
+    from scripts.provider_quota_service import SERVICES as private_services
     services = json.loads((root / "ops/quota/registry.json").read_text(encoding="utf-8"))["services"]
+    # This offline roster link is deliberately separate from quota-service
+    # registration and from provider manager/account observation state.
+    mappings_path = root / "ops/quota/static-service-mappings.json"
+    mapping_doc = json.loads(mappings_path.read_text(encoding="utf-8")) if mappings_path.is_file() else {}
+    mapping_rows = mapping_doc.get("provider_families", []) if isinstance(mapping_doc, dict) else []
+    mapping_by_family = {r.get("provider_family"): r for r in mapping_rows if isinstance(r, dict) and isinstance(r.get("provider_family"), str)}
     # Optional, independently curated public manager metadata. Its existence is
     # documentation, not proof that a mapping is deployed or live validated.
     managers_path = root / "ops/quota/provider-managers.json"
@@ -53,11 +60,13 @@ def build_coverage(root: Path = ROOT) -> dict[str, Any]:
     reader_ids = set(quota_poll.LIVE) | {"render.bandwidth", "render.pipeline_minutes", "neon.compute", "neon.storage"}
     rows = []
     for family in _providers():
-        matches = [svc for svc in services if svc.get("lane") == "model" and aliases.get(svc.get("provider", "").lower(), svc.get("provider", "").lower()) == family]
+        matches = [svc for svc in services if (svc.get("lane") == "model" or svc.get("id") in private_services) and aliases.get(svc.get("provider", "").lower(), svc.get("provider", "").lower()) == family]
         ids = sorted({svc["id"] for svc in matches})
         machine_ids = sorted(set(ids) & reader_ids)
+        opt_in_ids = sorted(set(ids) & set(private_services))
         raw_manager = manager_by_family.get(family, {})
         manager = public_manager_row(raw_manager)
+        static_mapping = mapping_by_family.get(family, {})
         scope = manager.get("scope") or "unknown; verify provider/model/project/account sharing"
         status = manager.get("status", "unknown")
         if status == "implemented_passive_adapter":
@@ -68,6 +77,8 @@ def build_coverage(root: Path = ROOT) -> dict[str, Any]:
             method = "unsupported_or_no_verified_official_counter"
         else:
             method = "unknown"
+        if opt_in_ids:
+            method = "opt_in_private_quota_service; live account validation not established"
         rows.append({
             "provider_family": family,
             "quota_manager_owner": "Manager",
@@ -78,6 +89,10 @@ def build_coverage(root: Path = ROOT) -> dict[str, Any]:
             "observation_method": method,
             "evidence_state": "unknown",
             "mapping_state": "documented_registry_mapping" if ids else "missing_provider_registry_mapping",
+            "static_mapping_id": static_mapping.get("mapping_id"),
+            "static_mapping_state": "static_roster_link_only" if static_mapping else "missing_static_mapping",
+            "static_mapping_evidence": static_mapping.get("evidence", []),
+            "static_mapping_live_account_state": "unknown",
             "quota_kind": "private_balance_not_publicly_observed",
             "documented_limit": None,
             "free_entitlement": None,
@@ -91,16 +106,28 @@ def build_coverage(root: Path = ROOT) -> dict[str, Any]:
             "manager_metadata_state": "documented_only" if manager else "unavailable",
             "reader_service_ids": machine_ids,
             "registry_reader_service_ids": machine_ids,
+            "opt_in_private_service_ids": opt_in_ids,
+            "runtime_manager_state": "implemented_opt_in_private_service" if opt_in_ids else "not_established_by_this_inventory",
+            "live_account_validation": "unknown",
             "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
             "covered": bool(matches),
             "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
         })
     resources = [{"service_id": svc["id"], "provider": svc["provider"],
                   "quota_manager_owner": "Manager", "freshness_owner": "ChronoMancer",
-                  "observation_method": "implemented_read_only_reader" if svc["id"] in reader_ids else "manual_or_unknown"}
+                  "observation_method": ("implemented_opt_in_private_service" if svc["id"] in private_services
+                                         else "implemented_read_only_reader" if svc["id"] in reader_ids else "manual_or_unknown")}
                  for svc in services]
+    static_mapped = sum(r["static_mapping_state"] == "static_roster_link_only" for r in rows)
+    registry_mapped = sum(r["mapping_state"] == "documented_registry_mapping" for r in rows)
     return {"schema": "provider-quota-coverage/v1", "provider_families": rows,
             "service_resources": resources, "network_used": False, "live_inference_used": False,
+            "coverage_counts": {"provider_families": len(rows), "actual_quota_service_mappings": registry_mapped,
+                                "static_adapter_mappings": static_mapped,
+                                "missing_actual_quota_service_mappings": len(rows) - registry_mapped,
+                                "missing_static_adapter_mappings": len(rows) - static_mapped,
+                                "opt_in_private_service_managers": sum(bool(r["opt_in_private_service_ids"]) for r in rows),
+                                "implemented_passive_adapters": sum(r.get("status") == "implemented_passive_adapter" for r in manager_rows)},
             "policy": "Metadata only; no private balances, quota resets, free entitlement or runtime admission inferred.",
             "manager_metadata_source": "ops/quota/provider-managers.json" if manager_rows else None}
 

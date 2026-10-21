@@ -13,9 +13,10 @@ reviewers:
   - id: Hark
     role: author+executor
     status: executing
-related_prs: [1244, 1274, 1277, 1278, 1280]
+related_prs: [1244, 1274, 1277, 1278, 1280, 1447]
 related_branches:
   - hark/lane-compounding
+  - docs/biudl-audit-refresh-20261021
 gates_required: [repo-gate]
 ---
 
@@ -31,6 +32,7 @@ BIUDL slice (broad → identify lane → thin slice → validate → broaden). T
 4. **ATES value-of-information.** Pick the next audit/scout by posterior uncertainty × DAG criticality (`dependency_phase_engine.py`, `gantt_projection.py`).
 5. **ForeSight → HindSight calibration.** ForeSight registers each forecast (append-only, `evidence_hash`); HindSight `retain/recall/reflect` scores it after outcome and recalibrates priors. HindSight's PostgreSQL + pgvector is the only role here that needs a hosted database.
 6. **Blind-graded treatments.** n8n (bridge wired, webhook unset), Bifrost (#611), Temporal (P1 observational), Neon (mirror / HindSight), Platform201 Solo (host only: 3 containers, 0 queue nodes), GitHub JSONL (control) are graded through `blind-agent-evaluation` and ranked by MoneyBall/3L0 after the evaluation boundary, replacing the earlier single-author 30-point scores.
+7. **DAG execution and corpus audit.** The DAG audit dossier documents the existing dependency-phase engine and corpus quality gates. It preserves the distinction between execution ordering, historical relationship evidence, and quota/decision policy.
 
 ## Non-goals
 

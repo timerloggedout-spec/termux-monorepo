@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS labels (
   label_id TEXT PRIMARY KEY,
   concept_id TEXT NOT NULL REFERENCES concepts(concept_id),
   text TEXT NOT NULL,
-  label_type TEXT NOT NULL CHECK(label_type IN ('preferred_formal','preferred_plain_language','alternative_synonym','colloquial','ad_hoc','jargon','abbreviation','symbolic_notation','historical','deprecated','misspelling','translation','analogy','near_synonym','related_term','external_identifier')),
+  label_type TEXT NOT NULL CHECK(label_type IN ('preferred_formal','preferred_plain_language','alternative_synonym','colloquial','ad_hoc','jargon','abbreviation','symbolic_notation','historical','deprecated','misspelling','translation','analogy','near_synonym','related_term','external_identifier','hidden_search_alias')),
   language TEXT NOT NULL,
   audience TEXT NOT NULL,
   register TEXT NOT NULL,

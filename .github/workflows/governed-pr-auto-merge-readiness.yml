@@ -68,6 +68,8 @@ jobs:
           persist-credentials: false
       - name: Test merge-readiness policy
         run: python3 tests/test_pr_merge_readiness.py
+      - name: Test PR merge snapshot collector
+        run: python3 tests/test_pr_merge_snapshot.py
       - name: Mint narrowly scoped GitHub App token
         id: app-token
         if: vars.GOVERNED_AUTO_MERGE_ENABLED == 'true'
@@ -95,7 +97,9 @@ jobs:
           [[ "$pr_number" =~ ^[1-9][0-9]*$ ]] || { echo "Invalid PR number"; exit 2; }
           pr_json="$(gh api "repos/$REPOSITORY/pulls/$pr_number")"
           base_branch="$(jq -r '.base.ref' <<<"$pr_json")"
-          protection="$(gh api "repos/$REPOSITORY/branches/$base_branch/protection" 2>/dev/null || printf '%s' '{"unavailable":true}')"
+          if ! protection="$(gh api "repos/$REPOSITORY/branches/$base_branch/protection" 2>/dev/null)"; then
+            protection='{"unavailable":true}'
+          fi
           reviews="$(gh api --paginate "repos/$REPOSITORY/pulls/$pr_number/reviews" | jq -s 'add // []')"
           labels="$(jq -c '[.labels[].name]' <<<"$pr_json")"
           state="$(jq -r '.state | ascii_upcase' <<<"$pr_json")"

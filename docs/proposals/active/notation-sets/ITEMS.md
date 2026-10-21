@@ -179,3 +179,7 @@ This is the first implementation slice for restoring the Linguist/CedrLang diasp
 - The proposal remains malleable by design (NSE-004 loop, NSE-008 ledger) — it is intended to be continuously modified as research and implementation evolve.
 - The phased diaspora implementation remains reversible, isolated, and test-backed; the 70% threshold is treated as an initial rollout control, not a universal optimum.
 - Execution work remains gated by proposal acceptance and `repo-gate` + `termux-smoke`.
+
+## TDQS-CI-001 — Read-only TDQS quality-lane coverage
+
+**Status:** executing. Extend the existing Agent Quality Lane to cover TDQS preparation/aggregation: implementation, focused tests, evidence schema, specification, and admission-matrix path filters; compile the focused test, validate schema JSON, and run the deterministic TDQS tests alongside the existing telemetry tests. Acceptance requires the focused commands, repository gate, and Termux smoke to pass. This item does not authorize external rubric evaluation, prompt/tool execution, or acceptance of the broader notation proposal.

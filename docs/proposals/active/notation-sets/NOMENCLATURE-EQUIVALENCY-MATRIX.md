@@ -181,3 +181,20 @@ Suggested lifecycle: `discovered → candidate → evidence-backed → reviewed 
 - Web/search snippets are discovery evidence; cite the underlying standard/page in any promoted record.
 - Scite connection in this session presented a credit-card-required seven-day trial. No trial was activated. Scite-derived claims are therefore not asserted in this document.
 - Scholarly search can expand the bibliography in a later pass; this initial version is grounded in W3C standards, Wolfram documentation, and the repository's own provenance.
+
+## Research expansion: colloquial, ad hoc, and near-equivalent terminology
+
+The candidate seed now adds explicit concepts for lexical labels, controlled vocabularies, colloquial-to-formal mapping, and near-synonymy. The seed also records source leads from W3C, Wolfram, DARIAH-Campus, the J. Paul Getty Trust, Europe PMC/BioHackrXiv, Wikipedia, and scholarly linguistic research. Wikipedia is orientation-only; normative claims should be verified against the standard or primary research source.
+
+### Terminology rule: label type is not mapping relation
+
+A label is a string attached to a concept. A mapping is an assertion connecting concepts or vocabularies. Do not represent colloquial language as an exact synonym merely because a practitioner uses it to discuss the same general topic. Store it as a candidate label or a scoped mapping, and preserve its register, audience, language, domain, source, and evidence.
+
+### Candidate vocabulary additions
+
+- `hidden_search_alias`: a retrieval-only spelling or form that should not ordinarily be displayed as the preferred user-facing label. This is aligned with the SKOS hidden-label use case for search indexing; it is not an endorsement of the spelling.
+- `preferred_plain_language`: a reviewed explanation for a specified audience, not necessarily a lexical synonym.
+- `colloquial` / `ad_hoc`: a community-used or locally coined expression. Keep provenance and local scope; do not silently globalize it.
+- `near_synonym` / `related_term`: useful for discovery but not sufficient evidence for interchangeability.
+
+The implementation remains candidate-only. Source discovery by Wolfram, Parallel Search, Liner, Firecrawl, or SciSpace is a provenance lead; it does not independently promote a row. Scite was not used because its trial gate required a payment card, and no subscription was activated.

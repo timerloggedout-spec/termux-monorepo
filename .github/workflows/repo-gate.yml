@@ -55,6 +55,11 @@ jobs:
       - name: workflow_run contract
         run: python3 scripts/ci/workflow_run_contract.py
 
+      - name: Native orchestration contracts
+        run: |
+          python3 scripts/ci/orchestration_contract_validator.py
+          python3 -m unittest discover -s tests -p 'test_orchestration_contract_validator.py' -v
+
       - name: Briefing and source provenance contracts
         run: |
           python3 -m unittest discover -s tests -p 'test_briefing_contract_validator.py' -v

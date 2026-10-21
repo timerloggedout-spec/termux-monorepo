@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "8477658db76001573d0b54243084e3a117a60360445d1f8b0ec83f6805bb49e8",
-  "workflow_count": 159,
+  "source_fingerprint": "8d02c17e8f5ba809398953fb7400e44866ba888efcc0a3e3a69bf8578d61f213",
+  "workflow_count": 160,
   "workflows": [
     {
       "action_pins": [
@@ -399,6 +399,24 @@
       "triggers": [
         "pull_request",
         "push"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/upload-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "emit-receipt"
+      ],
+      "name": "ATES Phase B Run Receipt",
+      "path": ".github/workflows/ates-phase-b-run-receipt.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_run"
       ]
     },
     {
@@ -2301,7 +2319,8 @@
       "jobs": [
         "contracts",
         "diagnose",
-        "observe"
+        "observe",
+        "private_openrouter_quota"
       ],
       "name": "Provider batch production contracts",
       "path": ".github/workflows/provider-batch.yml",

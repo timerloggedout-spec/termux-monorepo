@@ -1,16 +1,28 @@
 name: Agent Quality Lane
 
-# Read-only quality control for the agent telemetry implementation. This lane
-# validates documentation, policy invariants, schema shape, diff hygiene, and
-# focused reducer tests; it does not execute agent prompts or tool payloads.
+# Read-only quality control for agent telemetry and TDQS preparation/aggregation.
+# This lane validates policy invariants, schemas, diff hygiene, and deterministic
+# tests; it does not execute agent prompts or tool payloads.
 on:
   pull_request:
     paths:
       - "she/metrics/**"
+      - "she/observability/orchestrator_trace.py"
+      - "tests/test_orchestrator_trace.py"
+      - "tests/test_tdqs.py"
+      - "scripts/ci/emit_ates_run_receipt.py"
+      - "scripts/ci/bridge_ates_trace_to_events.py"
+      - "tests/test_emit_ates_run_receipt.py"
+      - "tests/test_bridge_ates_trace_to_events.py"
+      - ".github/workflows/ates-phase-b-run-receipt.yml"
       - "tests/test_she_agent_throughput.py"
       - "docs/ops/AGENT-THROUGHPUT-*.md"
       - "docs/ops/AGENT-OBSERVABILITY-PRIORITY-DECISION.md"
       - "docs/ops/AGENT-THROUGHPUT-EVENT.schema.json"
+      - "docs/ops/TDQS-EVIDENCE.schema.json"
+      - "docs/ops/TDQS-ADMISSION-MATRIX.md"
+      - "docs/architecture/TOOL-DEFINITION-QUALITY-SCORE.md"
+      - "docs/proposals/active/notation-sets/TDQS.md"
       - "scripts/ci/verify_agent_quality.py"
       - ".github/workflows/agent-quality-lane.yml"
   workflow_dispatch:
@@ -38,8 +50,8 @@ jobs:
 
       - name: Check source diff whitespace hygiene
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || format('origin/{0}', github.event.repository.default_branch) }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
           # Markdown hard-breaks intentionally use two trailing spaces. Keep the
           # strict diff check on executable/configuration surfaces instead of
@@ -52,11 +64,13 @@ jobs:
             ':(glob)**/*.toml' \
             ':(glob)**/*.sh'
 
-      - name: Compile telemetry Python sources
-        run: python -m compileall -q she/metrics scripts/ci tests/test_she_agent_throughput.py
+      - name: Compile telemetry and TDQS Python sources
+        run: python -m compileall -q she/metrics scripts/ci tests/test_she_agent_throughput.py tests/test_emit_ates_run_receipt.py tests/test_bridge_ates_trace_to_events.py tests/test_orchestrator_trace.py tests/test_tdqs.py
 
-      - name: Validate event schema JSON
-        run: python -m json.tool docs/ops/AGENT-THROUGHPUT-EVENT.schema.json >/dev/null
+      - name: Validate event and TDQS evidence schema JSON
+        run: |
+          python -m json.tool docs/ops/AGENT-THROUGHPUT-EVENT.schema.json >/dev/null
+          python -m json.tool docs/ops/TDQS-EVIDENCE.schema.json >/dev/null
 
-      - name: Run focused ATES reducer tests
-        run: python -m unittest tests.test_she_agent_throughput -v
+      - name: Run focused ATES, trace, and TDQS tests
+        run: python -m unittest tests.test_she_agent_throughput tests.test_emit_ates_run_receipt tests.test_bridge_ates_trace_to_events tests.test_orchestrator_trace tests.test_tdqs -v

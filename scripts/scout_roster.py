@@ -21,16 +21,20 @@ def classify(row: dict) -> str:
 
 def build(document: dict) -> dict:
     roster = []
+    candidate_count = 0
     for row in document.get("models", []):
         provider = row.get("provider")
         model = row.get("id")
         if not provider or not model:
             continue
+        status = classify(row)
+        if status == "candidate":
+            candidate_count += 1
         roster.append({
             "provider": provider,
             "model": model,
             "name": row.get("name"),
-            "status": classify(row),
+            "status": status,
             "pricing_classification": row.get("pricing_classification", "unknown"),
             "access_classification": row.get("access_classification", "unknown"),
             "access_source": row.get("access_source"),
@@ -46,6 +50,7 @@ def build(document: dict) -> dict:
         "source_schema": document.get("schema"),
         "policy": "observe_only",
         "candidates": roster,
+        "candidate_count": candidate_count,
         "errors": document.get("errors", []),
     }
 
@@ -60,7 +65,9 @@ def main() -> int:
     output = Path(args.output)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    candidates = sum(1 for row in result["candidates"] if row["status"] == "candidate")
+    candidates = result.get("candidate_count")
+    if candidates is None:
+        candidates = sum(1 for row in result["candidates"] if row["status"] == "candidate")
     print(f"scout_models={len(result['candidates'])} candidates={candidates} errors={len(result['errors'])}")
     return 0
 

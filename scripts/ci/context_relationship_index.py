@@ -236,7 +236,8 @@ def main(argv: list[str] | None = None) -> int:
         lag_time_str = lag.get("observed_at") or lag.get("completed_at") or lag.get("started_at")
         lag_dt = parse_time(lag_time_str)
         if lag_dt:
-            parsed_lags.append((lag, lag_time_str, lag_dt))
+            # Bolt optimization: Precompute epoch float timestamp to avoid datetime arithmetic in lead-lag loop
+            parsed_lags.append((lag, lag_time_str, lag_dt.timestamp()))
 
     pairs = []
     for lead in lead_events:
@@ -246,13 +247,14 @@ def main(argv: list[str] | None = None) -> int:
         lead_dt = parse_time(lead_time_str)
         if not lead_dt:
             continue
+        lead_ts = lead_dt.timestamp()
 
         best_delta = None
         best_lag = None
         best_lag_time_str = None
 
-        for lag, lag_time_str, lag_dt in parsed_lags:
-            delta = (lag_dt - lead_dt).total_seconds()
+        for lag, lag_time_str, lag_ts in parsed_lags:
+            delta = lag_ts - lead_ts
             if delta >= 0:
                 if best_delta is None or delta < best_delta:
                     best_delta = delta

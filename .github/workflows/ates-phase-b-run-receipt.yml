@@ -1,0 +1,43 @@
+name: ATES Phase B Run Receipt
+
+on:
+  workflow_run:
+    workflows: ["Continuous agent ops"]
+    types: [completed]
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  emit-receipt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Checkout default-branch receipt emitter
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+      - name: Emit metadata-only ATES receipt
+        env:
+          GITHUB_EVENT_PATH: ${{ github.event_path }}
+        run: |
+          python scripts/ci/emit_ates_run_receipt.py --output ates-run-receipt.jsonl
+          python -m json.tool docs/ops/AGENT-THROUGHPUT-EVENT.schema.json >/dev/null
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          row=json.loads(Path("ates-run-receipt.jsonl").read_text().splitlines()[0])
+          assert row["event"] == "task_completed"
+          assert row["gha_run_id"] > 0 and row["gha_run_attempt"] > 0
+          assert "head_commit" not in row and "html_url" not in row
+          print("ATES receipt contract: OK")
+          PY
+      - name: Publish receipt artifact
+        uses: actions/upload-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.6
+        with:
+          name: ates-run-receipt-${{ github.event.workflow_run.id }}-attempt-${{ github.event.workflow_run.run_attempt }}
+          path: ates-run-receipt.jsonl
+          if-no-files-found: error
+          retention-days: 30

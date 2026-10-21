@@ -75,7 +75,7 @@ class OrchestratorTracer:
                 "duration_ms": round((time.perf_counter() - started) * 1000, 3),
                 "status": state.get("status"),
             }
-            for key in ("role", "spawn_mode", "inherit_parent_context", "deterministic", "attributes"):
+            for key in ("role", "tool", "spawn_mode", "inherit_parent_context", "deterministic", "attributes"):
                 if key in meta:
                     record[key] = meta[key]
             if "context" in meta:

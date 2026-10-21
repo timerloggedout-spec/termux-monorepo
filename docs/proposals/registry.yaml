@@ -1,7 +1,7 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-10-01T01:58:00Z"
-updated_by: grok-administrator
+updated_at: "2026-10-19T20:55:00Z"
+updated_by: ChatGPT
 
 proposals:
   - id: agent-contributor-provenance
@@ -196,8 +196,8 @@ proposals:
       - id: Manus
         role: author-executor
         status: executing
-    related_prs: [232]
-    related_branches: [manus/context-relationship-graph]
+    related_prs: [232, 1286]
+    related_branches: [manus/context-relationship-graph, docs/historical-corpus-explorer-proposal]
     gates_required: [repo-gate, termux-smoke]
 
   - id: manus-critical-eval

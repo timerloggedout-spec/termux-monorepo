@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "ef4f6db29b514399ea2b59ab30a5b7e7871c9096d04d8526828f96afa7073d4c",
-  "workflow_count": 157,
+  "source_fingerprint": "b69bb23a2631c517389493db33a6a4980738816df5303a302d4d66172189b016",
+  "workflow_count": 158,
   "workflows": [
     {
       "action_pins": [
@@ -952,6 +952,30 @@
         "issues",
         "pull_request",
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "group: delphi-gate cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "gate"
+      ],
+      "name": "delphi-gate",
+      "path": ".github/workflows/delphi-gate.yml",
+      "schedules": [
+        "23 11 */3 * *",
+        "the only schedule\n"
+      ],
+      "triggers": [
+        "issue_comment",
+        "issues",
+        "push",
+        "repository_dispatch",
+        "schedule",
+        "workflow_dispatch",
+        "workflow_run"
       ]
     },
     {

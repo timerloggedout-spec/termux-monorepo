@@ -248,6 +248,54 @@ reconstructed from activity (§4/§5). `GH_PAT`, named as a stored secret in
 the name has drifted or moved since September; recorded as a names-drift
 finding, not used by the probe.
 
+## 5B. The personal account itself — `timerloggedout-spec` (LIVE-API, census v3)
+
+The personal-account counterpart to §5A, derived two ways: direct identity
+endpoints, and a **cross-repo check-suite census** — head commits of the 60
+most recently pushed personal repos. An app's suite on a repo's head proves
+the app receives and acts on events for that repo; the pattern across repos
+shows the apps' *effective reach*. (The installation *records* for the
+personal account remain behind the §5A proven boundary; this section is
+activity evidence, labeled as such.)
+
+**Cross-repo result:** only **10 of 60** repos show any app suites on their
+head commits; 3 of those show GitHub Actions only. The full cluster
+(19–23 apps) appears on exactly **7 repos**:
+
+| Repo | Apps on head | Notes |
+|---|---|---|
+| `termux-monorepo` | 23 | The hub (§5/§6) |
+| `timerloggedout-spec.github.io` | 23 | The user-site repo carries the same full cluster |
+| `gh-aw-mcpg_fork` | 22 | Missing github-pages vs hub |
+| `gh-aw_fork` | 22 | Same |
+| `agentos_fork` | 20 | |
+| `gpt4free_fork` | 20 | |
+| `zero` | 19 | |
+| `cubicle_fork`, `deepbiology-lab_fork`, `redamon_fork` | 1 each | GitHub Actions only |
+
+Per-app spread across those repos: the core 19 apps (Cursor, Gitar, CodeRabbit,
+Mistral, Devin, Vercel, Render, Travis, Sentry, LaunchDarkly, Codacy, Aikido,
+BlocksOrg, Tembo, Graphite, Mintlify, Kilo, Pulumi, Blacksmith) appear on all 7
+cluster repos; **Codecov on 5, Hark on 4, GitHub Pages on 2** (hub + user-site).
+Reading: the review/deploy app cluster's reach covers every actively pushed
+personal repo, not just the hub — consistent with all-repositories
+installations — while Codecov/Hark/Pages act only where their specific
+triggers fire. The other 50 repos' heads predate or never triggered the apps.
+**Webhooks:** among the top 15 pushed repos, only the hub has any (§6).
+
+**Sign-in & identity inventory (direct endpoints, 2026-10-21):**
+
+| Surface | Firsthand result |
+|---|---|
+| Account email | **1** — primary, verified, public (the account's Gmail address) |
+| SSH authentication keys | **1** — `DeepSeek_Account-1_ssh` |
+| GPG keys / SSH signing keys | 0 / 0 |
+| Social accounts | 1 — generic → `termux-monorepo.vercel.app` |
+| 2FA | **On** |
+| PATs | §2a — 2 fine-grained + 5 classic (#184) + `MUSE_ADMIN_GH` |
+| Authorized OAuth / GitHub Apps (current count) | NOT enumerable via API (§5A boundary) — #184 Aug-13 floor (31 / 38) + **29 distinct apps observed active** across personal repos in this census |
+| Login sessions / devices | **Not exposed by any GitHub API** — exists only in the web UI security log; no API record is claimed here |
+
 ## 6. Hub-repo wiring (LIVE-API, termux-monorepo)
 
 | Piece | State |

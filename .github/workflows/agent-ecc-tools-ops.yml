@@ -7,7 +7,7 @@ name: ECC Tools comment-command ops
 # Actions posts lean /ecc-tools comments; ECC Tools GitHub App executes.
 # Dual-gate remains merge authority. Never auto-merge App PRs.
 #
-# Surfaces: PR path audit | PR sweep | matrix #175 | any issue | PR operator | ecc-bot ack | check mirror (sweep)
+# Surfaces: PR path audit | PR sweep | matrix #175 | any issue | PR operator | ecc-bot ack | check mirror (inside sweep)
 # Token policy: marker + command(s) + one meta line; batch multi-cmd into one comment.
 # Saturated conversations (≥2500 comments): overflow to ONE thin tracking issue (idempotent — never duplicate).
 # Once overflowed, further sweeps skip the parent PR unless force=true.
@@ -171,6 +171,7 @@ jobs:
       contents: read
       pull-requests: write
       issues: write
+      checks: write
     steps:
       - name: Sweep harness PRs (lean /ecc-tools only)
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
@@ -299,6 +300,77 @@ jobs:
               await new Promise(r => setTimeout(r, 800));
             }
             core.summary.addHeading('ecc sweep').addRaw(`acted ${acted}`).addList(report.length ? report : ['none']).write();
+      # Evidence-only mirror, folded into this existing sweep execution (no
+      # separate job, no new triggers): the ECC Tools App publishes its
+      # per-commit audits as comments only — its own comments state check
+      # publication is denied, and the App's permission set contains no
+      # Checks entry — so its outcomes never appear in a PR's Checks list.
+      # This step republishes the latest audit outcome per audit kind for
+      # each swept PR's CURRENT head SHA as a check run on that SHA, using
+      # ECC's own stated conclusion verbatim. Idempotent per (SHA, kind,
+      # outcome title). Advisory evidence only: it never fails the sweep
+      # and gates nothing.
+      - name: Mirror ECC audit outcomes to check runs
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        env:
+          MAX_PRS: ${{ github.event.inputs.max_prs || '10' }}
+        with:
+          script: |
+            const markerRe = /<!-- ecc-tools:pr-audit:(ECC Tools \/ [^:]+):([0-9a-f]{40}) -->/;
+            const conclRe = /\*\*[^*\n]+\*\*\s*\((success|failure|action_required|neutral|cancelled|skipped|timed_out)\)/;
+            const titleRe = /\*\*([^\*\n]+)\*\*\s*\((?:success|failure|action_required|neutral|cancelled|skipped|timed_out)\)/;
+            const cap = Math.min(Number(process.env.MAX_PRS) || 10, 20);
+            const prs = await github.paginate(github.rest.pulls.list, {
+              owner: context.repo.owner, repo: context.repo.repo,
+              state: 'open', sort: 'updated', direction: 'desc', per_page: 100,
+            });
+            let mirrored = 0, skipped = 0;
+            for (const pr of prs.slice(0, cap)) {
+              try {
+                const headSha = pr.head.sha;
+                const comments = await github.paginate(github.rest.issues.listComments, {
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  issue_number: pr.number, per_page: 100,
+                });
+                const latest = new Map();
+                for (const c of comments) {
+                  if ((c.user?.login || '') !== 'ecc-tools[bot]') continue;
+                  const m = (c.body || '').match(markerRe);
+                  if (!m || m[2] !== headSha) continue;
+                  latest.set(m[1], c);
+                }
+                for (const [kind, c] of latest) {
+                  const body = c.body || '';
+                  const cm = body.match(conclRe);
+                  const tm = body.match(titleRe);
+                  if (!cm || !tm) { skipped++; continue; }
+                  const conclusion = cm[1];
+                  const title = `${tm[1]} (${conclusion})`;
+                  const name = `${kind} (mirror)`;
+                  const existing = await github.rest.checks.listForRef({
+                    owner: context.repo.owner, repo: context.repo.repo,
+                    ref: headSha, check_name: name, per_page: 100,
+                  });
+                  const dupe = (existing.data.check_runs || []).some(r =>
+                    r.status === 'completed' && r.conclusion === conclusion &&
+                    (r.output?.title || '') === title);
+                  if (dupe) { skipped++; continue; }
+                  const summary = body.replace(/<!--[^>]*-->/g, '').trim().slice(0, 1000) +
+                    `\n\nMirrored from ECC Tools comment: ${c.html_url}`;
+                  await github.rest.checks.create({
+                    owner: context.repo.owner, repo: context.repo.repo,
+                    name, head_sha: headSha, status: 'completed', conclusion,
+                    details_url: c.html_url,
+                    output: { title, summary },
+                  });
+                  mirrored++;
+                  core.info(`#${pr.number} ${name}: ${conclusion}`);
+                }
+              } catch (err) {
+                core.warning(`mirror #${pr.number}: ${err.message}`);
+              }
+            }
+            core.info(`ECC mirror: ${mirrored} check run(s) created, ${skipped} already current or unparseable`);
 
   matrix-cycle:
     if: github.event_name == 'schedule'
@@ -535,84 +607,3 @@ jobs:
             } catch (err) {
               core.warning(`ack #${prNumber}: ${err.message}`);
             }
-
-  mirror-checks:
-    # Evidence-only mirror. The ECC Tools App publishes its per-commit audits
-    # as comments only — its own comments state check publication is denied,
-    # and the App's permission set contains no Checks entry — so its audit
-    # outcomes never appear in a PR's Checks list. This job republishes the
-    # latest audit outcome per audit kind for each swept PR's CURRENT head
-    # SHA as a check run on that SHA, using ECC's own stated conclusion
-    # verbatim. Batched onto the existing sweep cadence: no new triggers,
-    # no new comments. Idempotent per (SHA, kind, outcome title). Advisory
-    # evidence only — this job never fails and gates nothing.
-    if: |
-      github.event_name == 'schedule' ||
-      (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'sweep-prs')
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    permissions:
-      contents: read
-      pull-requests: read
-      issues: read
-      checks: write
-    steps:
-      - name: Mirror ECC audit outcomes to check runs
-        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
-        with:
-          script: |
-            const markerRe = /<!-- ecc-tools:pr-audit:(ECC Tools \/ [^:]+):([0-9a-f]{40}) -->/;
-            const conclRe = /\*\*[^*\n]+\*\*\s*\((success|failure|action_required|neutral|cancelled|skipped|timed_out)\)/;
-            const titleRe = /\*\*([^\*\n]+)\*\*\s*\((?:success|failure|action_required|neutral|cancelled|skipped|timed_out)\)/;
-            const cap = Math.min(Number(context.payload.inputs?.max_prs) || 10, 20);
-            const prs = await github.paginate(github.rest.pulls.list, {
-              owner: context.repo.owner, repo: context.repo.repo,
-              state: 'open', sort: 'updated', direction: 'desc', per_page: 100,
-            });
-            let mirrored = 0, skipped = 0;
-            for (const pr of prs.slice(0, cap)) {
-              try {
-                const headSha = pr.head.sha;
-                const comments = await github.paginate(github.rest.issues.listComments, {
-                  owner: context.repo.owner, repo: context.repo.repo,
-                  issue_number: pr.number, per_page: 100,
-                });
-                const latest = new Map();
-                for (const c of comments) {
-                  if ((c.user?.login || '') !== 'ecc-tools[bot]') continue;
-                  const m = (c.body || '').match(markerRe);
-                  if (!m || m[2] !== headSha) continue;
-                  latest.set(m[1], c);
-                }
-                for (const [kind, c] of latest) {
-                  const body = c.body || '';
-                  const cm = body.match(conclRe);
-                  const tm = body.match(titleRe);
-                  if (!cm || !tm) { skipped++; continue; }
-                  const conclusion = cm[1];
-                  const title = `${tm[1]} (${conclusion})`;
-                  const name = `${kind} (mirror)`;
-                  const existing = await github.rest.checks.listForRef({
-                    owner: context.repo.owner, repo: context.repo.repo,
-                    ref: headSha, check_name: name, per_page: 100,
-                  });
-                  const dupe = (existing.data.check_runs || []).some(r =>
-                    r.status === 'completed' && r.conclusion === conclusion &&
-                    (r.output?.title || '') === title);
-                  if (dupe) { skipped++; continue; }
-                  const summary = body.replace(/<!--[^>]*-->/g, '').trim().slice(0, 1000) +
-                    `\n\nMirrored from ECC Tools comment: ${c.html_url}`;
-                  await github.rest.checks.create({
-                    owner: context.repo.owner, repo: context.repo.repo,
-                    name, head_sha: headSha, status: 'completed', conclusion,
-                    details_url: c.html_url,
-                    output: { title, summary },
-                  });
-                  mirrored++;
-                  core.info(`#${pr.number} ${name}: ${conclusion}`);
-                }
-              } catch (err) {
-                core.warning(`mirror #${pr.number}: ${err.message}`);
-              }
-            }
-            core.info(`ECC mirror: ${mirrored} check run(s) created, ${skipped} already current or unparseable`);

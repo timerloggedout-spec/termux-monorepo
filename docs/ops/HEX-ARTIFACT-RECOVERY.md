@@ -1,7 +1,7 @@
 # Hex Artifact Recovery & Relevance Register
 
-**Status:** active forensic register  
-**Tracking issue:** #522  
+**Status:** active forensic register
+**Tracking issue:** #522
 **Canonical Hex contract:** `3l0.moneyball.v1`
 
 ## Why this exists

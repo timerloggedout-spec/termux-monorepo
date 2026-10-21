@@ -13,6 +13,9 @@
 | Minesweeper peers | `.agents/skills/minesweeper-ops/SKILL.md` |
 | Operator hub #175 | `.agents/skills/operator-hub-175/SKILL.md` |
 | ICM-CCTV projection | `.agents/skills/icm-cctv-ops/SKILL.md` |
+| Admin / Termux stewardship | `.agents/skills/termux-mcp-project-steward/SKILL.md` |
+| Wingman reference/adaptation | `.agents/skills/wingman-project-integration/SKILL.md` |
+| Context relationship evidence | `.agents/skills/context-relationship-graph/SKILL.md` |
 | External contribute (help-wanted) | `.agents/skills/help-wanted-lane/SKILL.md` |
 | Production WAIT → VALIDATE | `.github/skills/production-reconciliation/SKILL.md` |
 
@@ -35,6 +38,9 @@ Every skill directory must contain a `SKILL.md`. Inventory lists **all** of them
 |------|------------|
 | Collaborator | `adaptive-feedback-cycle` → dual-gate |
 | Admin / Grok | `evidence-led-monorepo-ops` + `adaptive-wait` + `ml-pipeline-ops` + `ml-command-center` |
+| Admin / Grok | `evidence-led-monorepo-ops` + `adaptive-wait` |
+| Admin / Termux | `termux-mcp-project-steward` + `adaptive-wait` |
+| Wingman adaptation | `wingman-project-integration` + `context-relationship-graph` |
 | Oversight / external PR | `help-wanted-lane` |
 | Evaluation / DOE | `multivariate-doe` + `blind-agent-evaluation` |
 | Concurrent-agent collision | `minesweeper-ops` |
@@ -45,3 +51,11 @@ Do not keep skill policy only in local `.grok/skills/` mirrors — **master is S
 Fully Continuous Automated Development Evaluation Environment.  
 AVOID HITL YOLO MODE YEET AUTOAPPROVE.  
 Agent-Identity: Grok (Administrator)
+
+## Shared wait-loop invariant
+
+```text
+RECON → PLAN / MEASURE → ACT → COMMIT → WAIT → WATCH → VALIDATE → RE-FETCH → COMPARE → CLASSIFY → RECORD → REPEAT
+```
+
+Do not treat queued/in-progress as success. Preserve provenance and keep promotion separate from execution and validation.

@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-21T20:05:57Z UTC · receipts=3494 · foreign_open=36 · tributes=112_
+_Generated 2026-10-21T20:22:21Z UTC · receipts=3494 · foreign_open=37 · tributes=113_
 
 ## Tributes (contributor ledger)
 
+- [AmpedWasTaken/SML#18](https://github.com/AmpedWasTaken/SML/pull/18) · state=open · help-wanted: stake + contribute for #17
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
 - [mangiapanejohn-dev/MOBIUS-Searcher#7](https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7) · state=open · help-wanted: stake + contribute for #6
@@ -43,10 +44,10 @@ _Generated 2026-10-21T20:05:57Z UTC · receipts=3494 · foreign_open=36 · tribu
 - [zh-95/fronte-rivoluzionario#59](https://github.com/zh-95/fronte-rivoluzionario/pull/59) · state=closed · help-wanted: stake + contribute for #9
 - [https://github.com/Heliobond/frontend/pull/614](https://github.com/Heliobond/frontend/pull/614) · state=? · 
 - [Gautam-aman/ResQNet#53](https://github.com/Gautam-aman/ResQNet/pull/53) · state=closed · help-wanted: stake + contribute for #50
-- [traceopt-ai/traceml#547](https://github.com/traceopt-ai/traceml/pull/547) · state=closed · help-wanted: stake + contribute for #128
 
 ## Foreign open PRs
 
+- [AmpedWasTaken/SML#18](https://github.com/AmpedWasTaken/SML/pull/18) — help-wanted: stake + contribute for #17
 - [C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge--Frontend-#971](https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge--Frontend-/pull/971) — help-wanted: stake + contribute for #901
 - [SO4-Markets/interface#1029](https://github.com/SO4-Markets/interface/pull/1029) — help-wanted: stake + contribute for #918
 - [use-assay/Assay#509](https://github.com/use-assay/Assay/pull/509) — help-wanted: stake + contribute for #305

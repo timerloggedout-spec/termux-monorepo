@@ -13,10 +13,36 @@ def test_provider_families_exhaust_registry_and_no_alias_hiding():
     assert set(families) == set(coverage._providers())
     assert "gemini" in families and "google" not in families
     assert families["gemini"]["quota_manager_owner"] == "Manager"
-    assert families["gemini"]["observation_method"] == "manual_or_unknown"
+    assert families["gemini"]["observation_method"] == "official_documentation_only; no passive parser"
     assert families["ollama"]["covered"] is False
     assert families["cloudflare"]["covered"] is False  # D1/Queues is not an inference quota
     assert families["openrouter"]["reader_service_ids"] == ["openrouter.free_models"]
+    assert all(r["evidence_state"] == "unknown" for r in families.values())
+    assert all(r["private_balance"] == "not_published" for r in families.values())
+    assert families["gemini"]["free_entitlement"] is None
+
+
+def test_optional_manager_metadata_is_allowlisted_and_not_live(tmp_path, monkeypatch):
+    (tmp_path / "ops/quota").mkdir(parents=True)
+    (tmp_path / "ops/quota/registry.json").write_text(json.dumps({"services": []}))
+    (tmp_path / "ops/quota/provider-managers.json").write_text(json.dumps({"provider_families": [{
+        "provider_family": "p", "status": "implemented_passive_adapter",
+        "source": "https://docs.example.test/quota", "scope": "organization/model",
+        "reset": "unknown", "signals": [{"path": "data.remaining", "field": "remaining", "token": "nope"}],
+        "account_id": "private-value", "remaining": 4, "arbitrary": {"secret": "x"}
+    }]}))
+    monkeypatch.setattr(coverage, "_providers", lambda: ["p"])
+    row = coverage.build_coverage(tmp_path)["provider_families"][0]
+    assert row["mapping_state"] == "missing_provider_registry_mapping"
+    assert row["manager_status"] == "implemented_passive_adapter"
+    assert row["evidence_state"] == "unknown"
+    assert row["scope"] == "organization/model"
+    assert row["official_evidence"] == ["https://docs.example.test/quota"]
+    assert row["documented_signals"] == [{"path": "data.remaining", "field": "remaining"}]
+    encoded = json.dumps(row)
+    assert "private-value" not in encoded and '"account_id":' not in encoded and '"arbitrary":' not in encoded
+    assert '"remaining": 4' not in encoded
+    assert row["private_balance"] == "not_published"
 
 
 def test_unknown_provider_fails_closed():

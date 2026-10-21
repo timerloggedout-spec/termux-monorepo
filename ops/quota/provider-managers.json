@@ -1,0 +1,250 @@
+{
+  "schema": "provider-quota-managers/v1",
+  "contract": "Offline registry of documented passive observations; not a poller, account validation, entitlement assertion, or admission input.",
+  "provider_families": [
+    {
+      "provider_family": "aion",
+      "status": "unsupported",
+      "source": "https://aionlabs.ai/",
+      "scope": "official product homepage found; quota counter/reset semantics unknown",
+      "reset": "unknown",
+      "signals": []
+    },
+    {
+      "provider_family": "cerebras",
+      "status": "public_documentation_only",
+      "source": "https://inference-docs.cerebras.ai/support/rate-limits",
+      "scope": "organization and model, with project-level limits; separate uncached and total token buckets",
+      "reset": "continuous token-bucket replenishment, not a fixed reset; live capacity unknown",
+      "signals": []
+    },
+    {
+      "provider_family": "cloudflare",
+      "status": "public_documentation_only",
+      "source": "https://developers.cloudflare.com/workers-ai/platform/limits/",
+      "scope": "account/model/task varies; documented ceilings are not observations",
+      "reset": "unknown",
+      "signals": []
+    },
+    {
+      "provider_family": "cohere",
+      "status": "public_documentation_only",
+      "source": "https://docs.cohere.com/docs/rate-limits",
+      "scope": "key type and model/endpoint; no documented remaining-count header",
+      "reset": "unknown",
+      "signals": []
+    },
+    {
+      "provider_family": "felo",
+      "status": "unsupported",
+      "source": "https://openapi.felo.ai/docs/getting-started",
+      "scope": "official OpenAPI getting-started docs; counter/reset schema not verified",
+      "reset": "unknown",
+      "signals": []
+    },
+    {
+      "provider_family": "gemini",
+      "status": "public_documentation_only",
+      "source": "https://ai.google.dev/gemini-api/docs/rate-limits",
+      "scope": "project and model; UI limits are not response counters",
+      "reset": "RPD at midnight America/Los_Angeles; other windows unknown",
+      "signals": []
+    },
+    {
+      "provider_family": "groq",
+      "status": "implemented_passive_adapter",
+      "source": "https://console.groq.com/docs/rate-limits",
+      "scope": "organization/model and metric-specific",
+      "reset": "documented reset header is metric-specific duration; absolute reset unknown",
+      "signals": [
+        {
+          "header": "x-ratelimit-limit-requests",
+          "field": "limit_requests"
+        },
+        {
+          "header": "x-ratelimit-remaining-requests",
+          "field": "remaining_requests"
+        },
+        {
+          "header": "x-ratelimit-reset-requests",
+          "field": "reset_after_requests"
+        },
+        {
+          "header": "x-ratelimit-limit-tokens",
+          "field": "limit_tokens"
+        },
+        {
+          "header": "x-ratelimit-remaining-tokens",
+          "field": "remaining_tokens"
+        },
+        {
+          "header": "x-ratelimit-reset-tokens",
+          "field": "reset_after_tokens"
+        }
+      ]
+    },
+    {
+      "provider_family": "huggingface",
+      "status": "implemented_passive_adapter",
+      "source": "https://huggingface.co/docs/hub/en/rate-limits",
+      "scope": "token user/org and request class (Hub API, Resolver, Pages); not necessarily inference",
+      "reset": "5-minute fixed window; RateLimit t seconds remaining",
+      "signals": [
+        {
+          "header": "RateLimit",
+          "field": "ratelimit"
+        }
+      ]
+    },
+    {
+      "provider_family": "kilo",
+      "status": "public_documentation_only",
+      "source": "https://kilo.ai/docs/getting-started/rate-limits-and-costs",
+      "scope": "official docs state 200 req/hour/IP for free gateway tier; no counter/header/reset observation schema verified",
+      "reset": "unknown; source does not specify an API-observed quota reset",
+      "signals": []
+    },
+    {
+      "provider_family": "llm7",
+      "status": "public_documentation_only",
+      "source": "https://llm7.io/",
+      "scope": "official product page documents free-tier token/request caps and rolling 24-hour token usage; no counter API/header schema verified",
+      "reset": "unknown; source does not specify an API-observed quota reset",
+      "signals": []
+    },
+    {
+      "provider_family": "mistral",
+      "status": "public_documentation_only",
+      "source": "https://docs.mistral.ai/resources/known-limitations",
+      "scope": "organization/model/tier; remaining header mentioned but complete metric/reset schema not established",
+      "reset": "unknown",
+      "signals": []
+    },
+    {
+      "provider_family": "modelscope",
+      "status": "public_documentation_only",
+      "source": "https://www.modelscope.ai/docs/model-service/API-Inference/limits",
+      "scope": "official docs describe dynamically adjusted per-model concurrency and magicube costs; no usage counter/reset API schema verified",
+      "reset": "unknown; source does not specify an API-observed quota reset",
+      "signals": []
+    },
+    {
+      "provider_family": "nvidia",
+      "status": "public_documentation_only",
+      "source": "https://docs.api.nvidia.com/",
+      "scope": "official API documentation index; quota counter/reset schema not verified",
+      "reset": "unknown; source does not specify an API-observed quota reset",
+      "signals": []
+    },
+    {
+      "provider_family": "ollama",
+      "status": "public_documentation_only",
+      "source": "https://ollama.com/blog/transparent-pricing",
+      "scope": "account monthly pool or shared Team pool; usage statistics are not remaining quota or free entitlement",
+      "reset": "monthly on plan-start day or free-account signup day; account date and observed reset unknown; no rollover",
+      "signals": []
+    },
+    {
+      "provider_family": "omni",
+      "status": "unsupported",
+      "source": "https://cloud.omniroute.online/v1/models",
+      "scope": "official model listing endpoint only; no quota documentation or counter/reset contract verified",
+      "reset": "unknown",
+      "signals": []
+    },
+    {
+      "provider_family": "openrouter",
+      "status": "implemented_passive_adapter",
+      "source": "https://openrouter.ai/docs/api_reference/limits",
+      "scope": "API key response; budgets retain explicit scope; free-model daily counter is account-level; rate-limit headers only on platform limit errors",
+      "reset": "free_model_daily_requests policy is UTC daily; counter-specific reset instant unknown; budget reset fields are ISO timestamps/null",
+      "signals": [
+        {
+          "path": "data.limit_remaining",
+          "field": "limit_remaining"
+        },
+        {
+          "path": "data.free_model_daily_requests.used",
+          "field": "free_model_daily_used"
+        },
+        {
+          "path": "data.free_model_daily_requests.limit",
+          "field": "free_model_daily_limit"
+        },
+        {
+          "path": "data.free_model_daily_requests.remaining",
+          "field": "free_model_daily_remaining"
+        },
+        {
+          "path": "data.effective_budget.remaining_usd",
+          "field": "effective_budget_remaining_usd"
+        },
+        {
+          "path": "data.effective_budget.resets_at",
+          "field": "effective_budget_resets_at"
+        },
+        {
+          "header": "X-RateLimit-Remaining",
+          "field": "ratelimit_remaining"
+        },
+        {
+          "header": "X-RateLimit-Reset",
+          "field": "ratelimit_reset_epoch"
+        }
+      ]
+    },
+    {
+      "provider_family": "ovhcloud",
+      "status": "public_documentation_only",
+      "source": "https://docs.ovhcloud.com/en/guides/public-cloud/ai-machine-learning/ai-endpoints-capabilities",
+      "scope": "official AI Endpoints docs describe limits by anonymous/authenticated scope; no account counter/header schema verified",
+      "reset": "unknown; source does not specify an API-observed quota reset",
+      "signals": []
+    },
+    {
+      "provider_family": "sambanova",
+      "status": "implemented_passive_adapter",
+      "source": "https://docs.sambanova.ai/docs/en/models/rate-limits",
+      "scope": "user/API response; per metric RPM/RPD",
+      "reset": "reset headers describe time until reset, but wire encoding/units are unverified; no reset parser or instant inferred",
+      "signals": [
+        {
+          "header": "x-ratelimit-limit-requests",
+          "field": "limit_requests"
+        },
+        {
+          "header": "x-ratelimit-remaining-requests",
+          "field": "remaining_requests"
+        },
+        {
+          "header": "x-ratelimit-limit-requests-day",
+          "field": "limit_requests_day"
+        },
+        {
+          "header": "x-ratelimit-remaining-requests-day",
+          "field": "remaining_requests_day"
+        }
+      ]
+    },
+    {
+      "provider_family": "siliconflow",
+      "status": "implemented_passive_adapter",
+      "source": "https://docs.siliconflow.com/en/api-reference/userinfo/get-user-info",
+      "scope": "private user monetary balance only, currency not assumed; account/model request quotas are separate and remain unknown",
+      "reset": "unknown; balance endpoint supplies no quota/reset or free-account entitlement",
+      "signals": [
+        {"path": "data.balance", "field": "monetary_balance"},
+        {"path": "data.chargeBalance", "field": "monetary_charge_balance"},
+        {"path": "data.totalBalance", "field": "monetary_total_balance"}
+      ]
+    },
+    {
+      "provider_family": "zai",
+      "status": "public_documentation_only",
+      "source": "https://docs.z.ai/devpack/usage-policy",
+      "scope": "official usage policy states plan-tier concurrency dynamically adjusts; no counter/reset response schema verified",
+      "reset": "unknown; source does not specify an API-observed quota reset",
+      "signals": []
+    }
+  ]
+}

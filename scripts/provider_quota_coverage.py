@@ -22,6 +22,32 @@ def _providers():
 def build_coverage(root: Path = ROOT) -> dict[str, Any]:
     from scripts import quota_poll
     services = json.loads((root / "ops/quota/registry.json").read_text(encoding="utf-8"))["services"]
+    # Optional, independently curated public manager metadata. Its existence is
+    # documentation, not proof that a mapping is deployed or live validated.
+    managers_path = root / "ops/quota/provider-managers.json"
+    managers = json.loads(managers_path.read_text(encoding="utf-8")) if managers_path.is_file() else {}
+    manager_rows = managers.get("provider_families", []) if isinstance(managers, dict) else []
+    manager_by_family = {r.get("provider_family"): r for r in manager_rows if isinstance(r, dict) and isinstance(r.get("provider_family"), str)}
+    def public_manager_row(row: Mapping[str, Any]) -> dict[str, Any]:
+        """Copy only documented, non-account-specific display metadata."""
+        result: dict[str, Any] = {}
+        for field in ("scope", "reset", "status", "documented_limit", "free_entitlement"):
+            value = row.get(field)
+            if isinstance(value, str) or value is None:
+                result[field] = value
+        refs = row.get("official_evidence", [])
+        if not refs and isinstance(row.get("source"), str): refs = [row["source"]]
+        if isinstance(refs, list):
+            result["official_evidence"] = [ref for ref in refs if isinstance(ref, str) and ref.startswith(("https://", "http://"))]
+        signals = row.get("signals", [])
+        if isinstance(signals, list):
+            result["documented_signals"] = [
+                {key: signal[key] for key in ("header", "path", "field") if isinstance(signal.get(key), str)}
+                for signal in signals if isinstance(signal, dict)
+                and isinstance(signal.get("field"), str)
+                and (isinstance(signal.get("header"), str) or isinstance(signal.get("path"), str))
+            ]
+        return result
     aliases = {"google": "gemini"}
     # Existence of a URL in documentation is not an implemented live reader.
     reader_ids = set(quota_poll.LIVE) | {"render.bandwidth", "render.pipeline_minutes", "neon.compute", "neon.storage"}
@@ -30,12 +56,18 @@ def build_coverage(root: Path = ROOT) -> dict[str, Any]:
         matches = [svc for svc in services if svc.get("lane") == "model" and aliases.get(svc.get("provider", "").lower(), svc.get("provider", "").lower()) == family]
         ids = sorted({svc["id"] for svc in matches})
         machine_ids = sorted(set(ids) & reader_ids)
-        if family == "gemini":
-            scope = "per-project, per-model (gemini.api_free registry evidence)"
-        elif family == "openrouter":
-            scope = "API-key scoped reading; cross-key/account sharing not established"
+        raw_manager = manager_by_family.get(family, {})
+        manager = public_manager_row(raw_manager)
+        scope = manager.get("scope") or "unknown; verify provider/model/project/account sharing"
+        status = manager.get("status", "unknown")
+        if status == "implemented_passive_adapter":
+            method = "implemented_passive_parser; live account validation not established"
+        elif status == "public_documentation_only":
+            method = "official_documentation_only; no passive parser"
+        elif status == "unsupported":
+            method = "unsupported_or_no_verified_official_counter"
         else:
-            scope = "unknown; verify provider/model/project/account sharing before admission"
+            method = "unknown"
         rows.append({
             "provider_family": family,
             "quota_manager_owner": "Manager",
@@ -43,10 +75,22 @@ def build_coverage(root: Path = ROOT) -> dict[str, Any]:
             "registry": "ops/quota/registry.json",
             "service_ids": ids,
             "source_capability": "registered_service" if matches else "no_provider_specific_quota_capability",
-            "observation_method": "implemented_read_only_reader" if machine_ids else "manual_or_unknown",
+            "observation_method": method,
+            "evidence_state": "unknown",
+            "mapping_state": "documented_registry_mapping" if ids else "missing_provider_registry_mapping",
+            "quota_kind": "private_balance_not_publicly_observed",
+            "documented_limit": None,
+            "free_entitlement": None,
+            "private_balance": "not_published",
+            "scope": manager.get("scope", "unknown"),
+            "documented_reset_semantics": manager.get("reset", "unknown"),
+            "observed_reset": "unknown",
+            "official_evidence": manager.get("official_evidence", []),
+            "documented_signals": manager.get("documented_signals", []),
+            "manager_status": manager.get("status", "unknown"),
+            "manager_metadata_state": "documented_only" if manager else "unavailable",
             "reader_service_ids": machine_ids,
-            "reset": "unknown",
-            "key_scope": scope,
+            "registry_reader_service_ids": machine_ids,
             "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
             "covered": bool(matches),
             "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
@@ -57,7 +101,8 @@ def build_coverage(root: Path = ROOT) -> dict[str, Any]:
                  for svc in services]
     return {"schema": "provider-quota-coverage/v1", "provider_families": rows,
             "service_resources": resources, "network_used": False, "live_inference_used": False,
-            "policy": "Metadata only; no private balances, quota resets, free entitlement or runtime admission inferred."}
+            "policy": "Metadata only; no private balances, quota resets, free entitlement or runtime admission inferred.",
+            "manager_metadata_source": "ops/quota/provider-managers.json" if manager_rows else None}
 
 _PRIVATE = {"key", "api_key", "token", "secret", "prompt", "request", "used", "remaining", "account_id", "account"}
 def _safe_public(obj: Any) -> Any:

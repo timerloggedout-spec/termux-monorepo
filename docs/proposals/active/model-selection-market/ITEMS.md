@@ -20,6 +20,8 @@
 
 | MSM-013 | Diagnose existing Actions provider-secret mappings and execute only a verified no-cost bounded smoke | **done** | MSM-010 | #1321 merged; run 39432211461 verified existing OpenRouter free-tier and exact zero-price model, one synthetic request returned HTTP 429; inference remains unverified, no retry/paid fallback/admission change; 301 pytest + 9 unit contracts |
 
+| MSM-019 | Official-source passive quota manager contracts for 20 canonical provider families | **executing** | MSM-018 (free-provider prioritization) | Metadata + offline parsers only; no polling/account validation/admission change. |
+
 ## Runtime package
 
 ```text

@@ -88,6 +88,9 @@ assert.equal(q.indexReadings([r,r,r])['example.requests'],null);
 assert.equal(q.indexReadings([{resource_id:'__proto__'}]).__proto__.resource_id,'__proto__');
 const serialized=JSON.stringify(q.readingView(service,r,now));
 assert(!serialized.includes('714239')&&!serialized.includes('private-prompt-canary'));
+const cv=q.coverageView({mapping_state:'documented_mapping',evidence_state:'unknown',scope:'project/model',quota_kind:'private_balance_not_publicly_observed',documented_limit:null,free_entitlement:null,remaining:17,account_id:'private'});
+assert.equal(cv.evidence,'unknown');assert.equal(cv.scope,'project/model');assert.equal(cv.balance,'not published');
+assert(!JSON.stringify(cv).includes('account_id')&&!JSON.stringify(cv).includes('17'));
 """
     subprocess.run(["node", "-e", script, str(module)], check=True)
 
@@ -99,6 +102,9 @@ def test_web_panel_uses_evidence_helper_and_hides_balances():
     assert "provider-quota-coverage.json" in html
     assert "r.used" not in html and "r.note" not in html
     assert "setInterval(render,60000)" in html
+    assert "Public documented evidence" in html
+    assert "Private balance" in html and "not published" in html
+    assert "function coverageView" in (ROOT / "apps/help-wanted-dashboard/quota-evidence.js").read_text()
 
 
 @pytest.mark.skipif(not shutil.which("node"), reason="Node required for browser syntax")

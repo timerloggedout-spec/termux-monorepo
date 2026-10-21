@@ -23,18 +23,20 @@ def reconcile_incident(
     run_url: str,
 ) -> dict[str, Any]:
     body = str(issue.get("body") or "")
-    comments = issue.get("comments") or []
-    searchable = [body]
-    if isinstance(comments, list):
-        searchable.extend(
-            str(c.get("body") or "") for c in comments if isinstance(c, dict)
-        )
     notification_marker = f"{NOTIFIED_MARKER_PREFIX}{fingerprint} -->"
-    # A fingerprint in the issue body records an incident, not successful delivery.
-    # Only a marker in a successfully published notification proves notification.
-    already_notified = any(notification_marker in text for text in searchable)
     run_marker = f"actions-run:{run_id}:{run_attempt}"
     run_already_recorded = run_marker in body
+
+    # Bolt optimization: Fast-path marker search on issue body before comment iteration
+    # with early generator termination to eliminate intermediate list allocations.
+    already_notified = notification_marker in body or (
+        isinstance(comments := issue.get("comments"), list)
+        and any(
+            notification_marker in str(c.get("body") or "")
+            for c in comments
+            if isinstance(c, dict)
+        )
+    )
 
     if not run_already_recorded:
         entry = f"- [{run_id} (attempt {run_attempt})]({run_url}) — fingerprint `{fingerprint}`"

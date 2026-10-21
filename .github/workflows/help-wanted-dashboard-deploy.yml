@@ -133,6 +133,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Refresh offline provider quota coverage
+        run: python3 scripts/provider_quota_coverage.py --output apps/help-wanted-dashboard/data/provider-quota-coverage.json
       - name: Refresh provenance-aware dashboard snapshot
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -192,6 +194,8 @@ jobs:
     continue-on-error: true
     steps:
       - uses: actions/checkout@v4
+      - name: Refresh offline provider quota coverage
+        run: python3 scripts/provider_quota_coverage.py --output apps/help-wanted-dashboard/data/provider-quota-coverage.json
       - name: Refresh provenance-aware dashboard snapshot
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

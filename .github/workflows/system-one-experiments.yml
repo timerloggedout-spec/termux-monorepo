@@ -9,7 +9,11 @@ on:
       - "tests/test_system_one_experiment.py"
       - "scripts/system_one_adapters.py"
       - "tests/test_system_one_adapters.py"
+      - "scripts/classifier_eval.py"
+      - "tests/test_classifier_question_bank.py"
+      - "tests/fixtures/classifier-question-bank.json"
       - "docs/ops/SYSTEM-ONE-EXPERIMENT-PLAN.md"
+      - "docs/ops/CLASSIFIER-REGISTRY-AND-EVALUATION.md"
   workflow_dispatch:
 
 permissions:
@@ -27,12 +31,13 @@ jobs:
         with:
           python-version: "3.12"
       - name: Unit tests
-        run: python -m unittest tests.test_system_one_experiment tests.test_system_one_adapters -v
-      - name: Run normalized cohort
+        run: |
+          python -m unittest tests.test_system_one_experiment tests.test_system_one_adapters tests.test_classifier_question_bank -v
+      - name: Run normalized System One cohort
         run: |
           mkdir -p artifacts/system-one
           python scripts/system_one_experiment.py --cohort gha-${{ github.run_id }}-${{ github.run_attempt }} --output artifacts/system-one/decisions.jsonl
-      - name: Validate receipt contract
+      - name: Validate System One receipt contract
         run: |
           python - <<'PY'
           import json
@@ -43,11 +48,26 @@ jobs:
           assert all(r["experiment_id"].startswith("system-one:") for r in rows)
           assert {r["lane_id"] for r in rows} == {"A", "B", "C"}
           assert any(r["engine"] == "jev" and r["status"] == "UNAVAILABLE" for r in rows)
-          print("validated", len(rows), "receipts")
+          print("validated", len(rows), "System One receipts")
           PY
-      - name: Publish experiment receipt
+      - name: Run classifier question-bank smoke cohort
+        run: |
+          python scripts/classifier_eval.py --workers 4 --run-id gha-${{ github.run_id }}-${{ github.run_attempt }} --source-commit "${{ github.sha }}" --output artifacts/system-one/classifier-eval.jsonl
+      - name: Validate classifier receipt contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          rows = [json.loads(x) for x in Path("artifacts/system-one/classifier-eval.jsonl").read_text().splitlines()]
+          assert rows
+          assert all(r["schema_version"] == "classifier-eval.v1" for r in rows)
+          assert all(r["status"] == "OK" for r in rows)
+          assert all(r["correct"] is True for r in rows)
+          print("validated", len(rows), "classifier receipts")
+          PY
+      - name: Publish experiment receipts
         uses: actions/upload-artifact@v4
         with:
           name: system-one-experiment-${{ github.run_id }}-${{ github.run_attempt }}
-          path: artifacts/system-one/decisions.jsonl
+          path: artifacts/system-one/*.jsonl
           retention-days: 14

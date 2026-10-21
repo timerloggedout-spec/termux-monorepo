@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "ffb2b6f6ac7345af9b3ca08cb4530741d3bb8da17012f6b4038c1ceb7845758c",
+  "source_fingerprint": "d10265b597756a74685c38602ae812302a34ea86df90b04d970bda7b4090fd7d",
   "workflow_count": 150,
   "workflows": [
     {
@@ -1777,9 +1777,7 @@
         "37 * * * *"
       ],
       "triggers": [
-        "issue_comment",
         "issues",
-        "pull_request",
         "schedule",
         "workflow_dispatch"
       ]

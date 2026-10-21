@@ -112,13 +112,6 @@ VARIANT_INDEX = _build_variant_index(CANONICAL_TOKENS)
 # Build ASCII case-insensitive Trie regex without re.IGNORECASE to avoid Unicode case-folding overhead
 VARIANT_REGEX = re.compile(_build_trie_regex(VARIANT_INDEX.keys()))
 
-# Pre-compute index and Trie regex for non-canonical variants (variants that differ from canonical tokens)
-# Fast-path pre-search search guard in from_1337speak bypasses regex substitutions on invariant prose
-NON_CANONICAL_INDEX = {
-    v.lower(): c for v, c in VARIANT_INDEX.items() if v.lower() != c.lower()
-}
-NON_CANONICAL_VARIANT_REGEX = re.compile(_build_trie_regex(NON_CANONICAL_INDEX.keys()))
-
 # Module-level set of eligible leet characters
 ELIGIBLE_LEET_CHARS = set(LEET_MAP.keys())
 # Filter variant index to only tokens containing eligible leet substitution characters
@@ -214,9 +207,6 @@ def to_1337speak(
 def from_1337speak(text: str) -> str:
     """Normalize known randomized variants back to canonical compressed tokens."""
     if not text:
-        return text
-    # Pre-search guard for non-canonical variants bypasses full regex substitution passes on invariant text (~1.18x speedup)
-    if not NON_CANONICAL_VARIANT_REGEX.search(text):
         return text
     # Single-pass substitution avoids redundant double-scanning (.search + .sub) (~15.3% speedup)
     return VARIANT_REGEX.sub(_from_1337_replace, text)

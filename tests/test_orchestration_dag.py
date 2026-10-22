@@ -20,6 +20,7 @@ class AnalyzeDAGTests(unittest.TestCase):
         self.assertEqual(receipt["order"], [])
         self.assertEqual(receipt["node_count"], 0)
         self.assertEqual(receipt["edge_count"], 0)
+        self.assertIsNone(receipt["coverage"])
 
     def test_chain_and_fan_in_fan_out_preserve_prerequisite_order(self):
         nodes = ["a", "b", "c", "d", "e", "f"]
@@ -69,6 +70,7 @@ class AnalyzeDAGTests(unittest.TestCase):
         ])
         self.assertEqual(receipt["validation"], "CYCLE")
         self.assertEqual(receipt["cyclic_nodes"], ["a", "b"])
+        self.assertEqual(receipt["cycle_count"], 1)
         self.assertEqual(receipt["blocked_nodes"], ["c", "d"])
         self.assertEqual(receipt["unresolved_nodes"], ["a", "b", "c", "d"])
         self.assertEqual(receipt["order"], ["free"])
@@ -134,3 +136,10 @@ class ReadinessTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+    def test_cycle_count_counts_components_not_vertices(self):
+        receipt = self.analyze(["a", "b", "c", "d"], [
+            ("a", "b"), ("b", "a"), ("c", "d"), ("d", "c")
+        ])
+        self.assertEqual(receipt["cycle_count"], 2)
+        self.assertEqual(receipt["cyclic_nodes"], ["a", "b", "c", "d"])

@@ -39,6 +39,43 @@ class ClassifierQuestionBankTests(unittest.TestCase):
         self.assertTrue(all(row["status"] == "OK" for row in rows))
         self.assertTrue(all(row["correct"] is True for row in rows))
 
+    def test_candidate_matrix_is_parallel_bounded_and_deterministically_ordered(self) -> None:
+        completed = subprocess.run(
+            [
+                sys.executable, str(RUNNER), "--workers", "6",
+                "--per-candidate-workers", "2", "--run-id", "matrix-test",
+                "--candidates", "deterministic-baseline", "laya-mock", "jev",
+            ],
+            cwd=ROOT, capture_output=True, text=True, check=True,
+        )
+        rows = [json.loads(line) for line in completed.stdout.splitlines()]
+        bank = json.loads(BANK.read_text(encoding="utf-8"))
+        expected_order = [
+            (question["question_id"], candidate)
+            for question in bank["questions"]
+            for candidate in ("deterministic-baseline", "laya-mock", "jev")
+        ]
+        self.assertEqual([(row["question_id"], row["candidate_id"]) for row in rows], expected_order)
+        self.assertTrue(all(row["run_id"] == "matrix-test" for row in rows))
+        self.assertTrue(all(row["schema_version"] == "classifier-eval.v1" for row in rows))
+        self.assertTrue(all(row["correct"] is True for row in rows if row["candidate_id"] == "deterministic-baseline"))
+        self.assertTrue(all(row["status"] == "MOCK" for row in rows if row["candidate_id"] == "laya-mock" and row["task"] in {"text_classification", "typed_choice"}))
+        self.assertTrue(all(row["status"] == "UNAVAILABLE" for row in rows if row["candidate_id"] == "jev" and row["task"] in {"text_classification", "typed_choice"}))
+        self.assertTrue(all(row["status"] == "NOT_APPLICABLE" for row in rows if row["task"] in {"multilabel_classification", "span_extraction"} and row["candidate_id"] != "deterministic-baseline"))
+        self.assertTrue(all(row["correct"] is None for row in rows if row["candidate_id"] != "deterministic-baseline"))
+
+    def test_live_adapters_are_opt_in(self) -> None:
+        completed = subprocess.run(
+            [
+                sys.executable, str(RUNNER), "--run-id", "no-live-test",
+                "--candidates", "jev",
+            ],
+            cwd=ROOT, capture_output=True, text=True, check=True,
+        )
+        rows = [json.loads(line) for line in completed.stdout.splitlines()]
+        self.assertTrue(all(row["status"] in {"UNAVAILABLE", "NOT_APPLICABLE"} for row in rows))
+        self.assertTrue(all(row["correct"] is None for row in rows))
+
 
 if __name__ == "__main__":
     unittest.main()

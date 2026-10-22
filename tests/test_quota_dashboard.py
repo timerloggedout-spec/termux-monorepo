@@ -115,7 +115,7 @@ def test_dashboard_does_not_equate_static_links_or_parsers_with_live_managers():
     assert counts["implemented_passive_adapters"] == sum(
         r["quota_capability"]["parser_available"] for r in snapshot["provider_families"])
     assert counts["missing_actual_quota_service_mappings"] == counts["provider_families"] - counts["actual_quota_service_mappings"]
-    assert counts["opt_in_private_service_managers"] == 3
+    assert counts["opt_in_private_service_managers"] == 2
     assert "opt-in private services" in html
     assert all(row["evidence_state"] == "unknown" for row in snapshot["provider_families"])
 
@@ -152,6 +152,7 @@ def test_dashboard_uses_only_composite_and_local_visibility_config():
 
 
 
+@pytest.mark.skipif(not shutil.which("node"), reason="Node required for browser helper parity")
 def test_mapping_capability_counts_are_typed_and_unknowns_stay_unknown():
     html = (ROOT / "apps/help-wanted-dashboard/quota.html").read_text()
     js = (ROOT / "apps/help-wanted-dashboard/quota-evidence.js").read_text()

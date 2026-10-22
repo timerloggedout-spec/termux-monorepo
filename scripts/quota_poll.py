@@ -39,7 +39,8 @@ def gh_rate(now):
     except ModuleNotFoundError:  # direct script invocation from sparse checkout
         from github_quota_manager import QuotaError, observe
     try:
-        observation = observe(tok, token_class="unknown")
+        declared = os.environ.get("GITHUB_TOKEN_CLASS", "unknown")
+        observation = observe(tok, token_class="github_token" if declared == "github_token" else "unknown")
     except QuotaError:
         return None
     core = observation["resources"].get("core")

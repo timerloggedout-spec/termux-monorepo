@@ -28,6 +28,7 @@ jobs:
       - name: Poll quotas
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN_CLASS: github_token
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}

@@ -103,6 +103,7 @@ def _request(token, opener=_DEFAULT_OPENER, *, now=None, token_class="unknown", 
     except (OSError, TimeoutError, json.JSONDecodeError, http.client.HTTPException, ValueError): raise QuotaError("transport_or_json_error") from None
 
 def _backoff(headers, sleeper):
+    """Compute cooldown metadata without waiting; sleeper is a no-op compatibility hook."""
     value = headers.get("Retry-After") if headers else None
     try:
         delay = max(0, int(value)) if value is not None else None
@@ -122,7 +123,6 @@ def _backoff(headers, sleeper):
     if delay > 3600:
         error = QuotaError("retry_after_exceeds_local_wait_bound"); error.retry_after = delay
         raise error
-    sleeper(delay)
     return delay
 
 def _key(token, token_class="unknown"):

@@ -120,6 +120,7 @@ def test_github_quota_job_is_read_only_status_only_and_artifact_free():
     job = workflow()["jobs"]["github_quota"]
     assert job["permissions"] == {"contents": "read"}
     assert job["needs"] == "contracts"
+    assert job["timeout-minutes"] == 3
     text = str(job)
     assert "artifact" not in text.lower()
     assert "github_quota_manager.py --observe" in text

@@ -4,7 +4,7 @@
       "provider_families": 27
     },
     "mapping_capability_counts": {
-      "actual_mapping": 3,
+      "actual_mapping": 2,
       "documentation_only": 18,
       "passive_parser": 6,
       "unknown_or_unsupported": 3
@@ -495,18 +495,17 @@
         "manager_metadata_state": "documented_only",
         "manager_status": "implemented_passive_adapter",
         "mapping_state": "documented_registry_mapping",
-        "observation_method": "opt_in_private_quota_service; live account validation not established",
+        "observation_method": "unknown",
         "observed_reset": "unknown",
         "official_evidence": [],
         "provider_family": "siliconflow",
-        "quota_kind": "monetary_balance_only_not_request_quota",
+        "quota_kind": "historical_monetary_balance_only_not_request_quota",
         "quota_mapping": {
-          "dimensions": "monetary_balance_only_not_request_quota",
-          "source_kind": "official_endpoint_metadata",
+          "dimensions": "historical_monetary_balance_only_not_request_quota",
           "status": "implemented_passive_parser"
         },
         "remaining_state": "not_publicly_observed",
-        "runtime_manager_state": "implemented_opt_in_private_service",
+        "runtime_manager_state": "not_established_by_this_inventory",
         "source_capability": "registered_service",
         "static_mapping_evidence": [],
         "static_mapping_state": "static_roster_link_only"
@@ -1359,7 +1358,7 @@
       {
         "id": "siliconflow.balance",
         "lane": "model-balance",
-        "metric": "user monetary balance only; not request quota",
+        "metric": "historical monetary-balance parser only; not a live source",
         "provider": "siliconflow",
         "reset": "unknown",
         "unit": "unknown currency or decimal balance",

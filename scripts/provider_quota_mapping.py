@@ -15,7 +15,6 @@ SOURCES = {
     "huggingface": {"https://huggingface.co/api/models": ("hub_api_user_or_org", "hub_api_requests_only")},
     "ollama": {"https://ollama.com/api/balance": ("account_or_shared_team_pool", "monetary_balance_only")},
     "openrouter": {"https://openrouter.ai/api/v1/key": ("api_key_daily_counter_and_separate_monetary", "requests_and_monetary_separate")},
-    "siliconflow": {"https://api.siliconflow.com/v1/user/info": ("user_account", "monetary_balance_only_not_request_quota")},
 }
 PASSIVE = {"groq", "sambanova", "huggingface", "ollama", "openrouter"}
 
@@ -36,7 +35,10 @@ def _gemini_evidence_parser_available(manager: Mapping[str, Any]) -> bool:
 
 def capability(family: str, manager: Mapping[str, Any] | None = None) -> dict[str, Any]:
     manager = manager if isinstance(manager, Mapping) else {}
-    if family in SOURCES:
+    if family == "siliconflow":
+        status, dims, scope, source, parser = ("unsupported_live_source_historical_parser",
+            "historical_monetary_balance_only_not_request_quota", "unknown", "historical_response_parser_not_live_source", True)
+    elif family in SOURCES:
         status = "implemented_passive_parser" if family in PASSIVE else "opt_in_private_monetary_parser"
         dims = SOURCES[family][next(iter(SOURCES[family]))][1]
         scope = manager.get("scope") or next(iter(SOURCES[family].values()))[0]
@@ -70,6 +72,8 @@ def observe_family(family: str, *, source: str, observed_at: str,
                    scope: str | None = None, now: dt.datetime | None = None,
                    ttl_seconds: float = MAX_TTL_SECONDS) -> dict[str, Any]:
     """Normalize response metadata only if its origin, scope and timestamp are valid."""
+    if family == "siliconflow":
+        return _unknown(family, "no_documented_working_api")
     if not isinstance(family, str) or family not in SOURCES:
         return _unknown(family, "unsupported_source")
     if not isinstance(source, str) or source not in SOURCES[family]:
@@ -139,7 +143,6 @@ def service_capability(service: Mapping[str, Any]) -> dict[str, Any]:
                "openrouter.free_models": ("scripts.quota_poll.openrouter_reader", "daily free-model request counter; no monetary inference"),
                "ollama.balance": ("scripts.provider_quota_service.observe_service", "opt-in monetary or legacy percent; not requests"),
                "openrouter.key": ("scripts.provider_quota_service.observe_service", "opt-in key budget and daily request dimensions separate"),
-               "siliconflow.balance": ("scripts.provider_quota_service.observe_service", "opt-in monetary strings; currency/request quota unknown"),
                "github.api.github_token": ("scripts.github_quota_manager.observe", "REST resources; caller declares token class"),
                "github.api.user_token": ("scripts.github_quota_manager.observe", "REST resources; caller declares token class"),
                "github.api.graphql": ("scripts.github_quota_manager.observe", "GraphQL points/hour; separate from REST"),

@@ -879,14 +879,14 @@
       "id": "siliconflow.balance",
       "provider": "siliconflow",
       "lane": "model-balance",
-      "metric": "user monetary balance only; not request quota",
+      "metric": "historical monetary-balance parser only; not a live source",
       "limit": null,
       "unit": "unknown currency or decimal balance",
       "window": "source-defined/unknown",
       "reset": "unknown",
       "zone": "UTC",
-      "source": "https://api.siliconflow.com/v1/user/info",
-      "live": "explicit opt-in private observer only; no routing",
+      "source": "https://docs.siliconflow.cn/docs/release-notes/overview",
+      "live": "disabled; no documented working API",
       "planned_use": {
         "note": "balance does not establish model request entitlement or admissions"
       }

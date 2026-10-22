@@ -97,5 +97,48 @@ class QuotaPollTest(unittest.TestCase):
         self.assertNotIn("path: quota-out/\n", workflow)
 
 
+class GitHubTokenClassTest(unittest.TestCase):
+    def test_only_exact_explicit_actions_class_enables_reset_pacing(self):
+        from scripts import github_quota_manager as gm
+        for declared, expected in ((None, "unknown"), ("", "unknown"),
+                                   ("user_token", "unknown"), ("app_installation", "unknown"),
+                                   ("GITHUB_TOKEN", "unknown"), ("github_token ", "unknown"),
+                                   ("github_token", "github_token")):
+            env = {"GITHUB_TOKEN": "synthetic-token"}
+            if declared is not None:
+                env["GITHUB_TOKEN_CLASS"] = declared
+            def observation(token, *, token_class):
+                self.assertEqual(token, "synthetic-token")
+                self.assertEqual(token_class, expected)
+                return {"token_class": token_class, "resources": {"core": {
+                    "used": 100, "limit": 1000, "reset": 2800}}}
+            with self.subTest(declared=declared), patch.dict(os.environ, env, clear=True), \
+                 patch.object(gm, "observe", side_effect=observation) as read, \
+                 patch.object(_qp.time, "time", return_value=1000):
+                result = _qp.gh_rate(None)
+                read.assert_called_once()
+                self.assertEqual(result["elapsed"], 0.5 if expected == "github_token" else None)
+                self.assertEqual(result["used"], 100)
+                self.assertEqual(result["limit"], 1000)
+
+    def test_missing_credential_and_observation_errors_stay_unknown(self):
+        from scripts import github_quota_manager as gm
+        with patch.dict(os.environ, {"GITHUB_TOKEN_CLASS": "github_token"}, clear=True), \
+             patch.object(gm, "observe") as read:
+            self.assertIsNone(_qp.gh_rate(None))
+            read.assert_not_called()
+        with patch.dict(os.environ, {"GITHUB_TOKEN": "synthetic-token"}, clear=True), \
+             patch.object(gm, "observe", side_effect=gm.QuotaError("rate_limit_cooldown")):
+            self.assertIsNone(_qp.gh_rate(None))
+
+    def test_workflow_declares_actions_class_with_its_token(self):
+        from pathlib import Path
+        import yaml
+        doc = yaml.safe_load((Path(ROOT) / ".github/workflows/vercel-quota-probe.yml").read_text())
+        step = next(s for s in doc["jobs"]["probe"]["steps"] if s.get("name") == "Poll quotas")
+        self.assertEqual(step["env"]["GITHUB_TOKEN"], "${{ github.token }}")
+        self.assertEqual(step["env"]["GITHUB_TOKEN_CLASS"], "github_token")
+
+
 if __name__ == "__main__":
     unittest.main()

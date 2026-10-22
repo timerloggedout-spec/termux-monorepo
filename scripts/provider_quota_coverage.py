@@ -64,7 +64,7 @@ def build_coverage(root: Path = ROOT) -> dict[str, Any]:
         matches = [svc for svc in services if (svc.get("lane") in {"model", "model-observation"} or svc.get("id") in private_services) and aliases.get(svc.get("provider", "").lower(), svc.get("provider", "").lower()) == family]
         ids = sorted({svc["id"] for svc in matches})
         machine_ids = sorted(set(ids) & reader_ids)
-        opt_in_ids = sorted(set(ids) & set(private_services))
+        opt_in_ids = sorted(set(ids) & set(private_services) - ({"siliconflow.balance"} if family == "siliconflow" else set()))
         raw_manager = manager_by_family.get(family, {})
         manager = public_manager_row(raw_manager)
         quota_capability = capability(family, raw_manager)
@@ -111,7 +111,7 @@ def build_coverage(root: Path = ROOT) -> dict[str, Any]:
             "manager_status": manager.get("status", "unknown"),
             "manager_metadata_state": "documented_only" if manager else "unavailable",
             "quota_capability": quota_capability,
-            "quota_mapping": {"status": ("implemented_passive_parser" if quota_capability["status"] in {"implemented_passive_parser", "opt_in_private_monetary_parser"} else quota_capability["status"]), "dimensions": quota_capability["dimensions"], "source_kind": quota_capability["source_kind"]},
+            "quota_mapping": {"status": ("implemented_passive_parser" if quota_capability["status"] in {"implemented_passive_parser", "opt_in_private_monetary_parser", "unsupported_live_source_historical_parser"} else quota_capability["status"]), "dimensions": quota_capability["dimensions"], "source_kind": quota_capability["source_kind"]},
             "reader_service_ids": machine_ids,
             "registry_reader_service_ids": machine_ids,
             "opt_in_private_service_ids": opt_in_ids,

@@ -26,7 +26,6 @@ if str(ROOT) not in sys.path:
 from scripts.provider_quota_transport import (
     MAX_RESPONSE_BYTES, MAX_TIMEOUT_SECONDS, OLLAMA_BALANCE_URL,
     OPENROUTER_KEY_URL, observe_ollama_balance, observe_openrouter_key,
-    SILICONFLOW_BALANCE_URL, observe_siliconflow_balance,
 )
 
 SERVICES = {
@@ -46,10 +45,10 @@ SERVICES = {
     },
     "siliconflow.balance": {
         "provider_family": "siliconflow",
-        "source": SILICONFLOW_BALANCE_URL,
-        "credential_env": "SILICONFLOW_API_KEY",
-        "scope": "credential-selected user; monetary balance only, identity discarded",
-        "activation": "explicit_private_observation_only",
+        "source": None,
+        "credential_env": None,
+        "scope": "unknown; no documented working account API",
+        "activation": "disabled_until_documented_working_api",
     },
 }
 SCOPE_STATUS = "credential_selected_user_or_team_identity_unverified"
@@ -96,15 +95,14 @@ def https_request(*, method, url, headers, timeout, allow_redirects, max_respons
     Socket operations time out after the bounded timeout; this is not a whole-job
     deadline. Only a bounded body is read, including for chunked responses.
     """
-    if (method != "GET" or url not in (OLLAMA_BALANCE_URL, OPENROUTER_KEY_URL, SILICONFLOW_BALANCE_URL) or allow_redirects is not False
+    if (method != "GET" or url not in (OLLAMA_BALANCE_URL, OPENROUTER_KEY_URL) or allow_redirects is not False
             or isinstance(timeout, bool) or not isinstance(timeout, (int, float))
             or not 0 < timeout <= MAX_TIMEOUT_SECONDS
             or type(max_response_bytes) is not int or max_response_bytes != MAX_RESPONSE_BYTES
             or not isinstance(headers, dict) or set(headers) != {"Authorization"}):
         raise ValueError("invalid fixed-source transport contract")
     host, path = {OLLAMA_BALANCE_URL: ("ollama.com", "/api/balance"),
-                  OPENROUTER_KEY_URL: ("openrouter.ai", "/api/v1/key"),
-                  SILICONFLOW_BALANCE_URL: ("api.siliconflow.com", "/v1/user/info")}[url]
+                  OPENROUTER_KEY_URL: ("openrouter.ai", "/api/v1/key")}[url]
     conn = http.client.HTTPSConnection(host, timeout=timeout, context=ssl.create_default_context())
     try:
         conn.request("GET", path, headers={**headers, "Accept": "application/json"})
@@ -135,6 +133,12 @@ def observe_service(service_id: str, api_key: str, *, scope: str,
     """
     _context(service_id, scope)
     now = _utc(dt.datetime.now(dt.timezone.utc) if now is None else now)
+    if service_id == "siliconflow.balance":
+        return {"schema": "provider-quota-service-observation/v1", "service_id": service_id,
+                "provider_family": "siliconflow", "source": None, "observed_at": _iso(now),
+                "scope": scope, "scope_status": "unsupported_source", "status": "unknown",
+                "reason": "no_documented_working_api", "signals": {}, "valid_until": None,
+                "runtime_admission": "unchanged", "request_quota": "unknown", "entitlement": "unknown"}
     result = {
         "schema": "provider-quota-service-observation/v1",
         "service_id": service_id, "provider_family": SERVICES[service_id]["provider_family"],
@@ -146,8 +150,7 @@ def observe_service(service_id: str, api_key: str, *, scope: str,
         "request_quota": "unknown", "entitlement": "unknown",
     }
     adapter = {"ollama.balance": observe_ollama_balance,
-               "openrouter.key": observe_openrouter_key,
-               "siliconflow.balance": observe_siliconflow_balance}[service_id]
+               "openrouter.key": observe_openrouter_key}[service_id]
     observation = adapter(
         api_key, https_request if request is None else request,
         observed_at=_iso(now), scope=scope,
@@ -155,13 +158,6 @@ def observe_service(service_id: str, api_key: str, *, scope: str,
     if observation["status"] != "observed":
         return result
     signals = observation["signals"]
-    if service_id == "siliconflow.balance":
-        result.update(status="observed", reason="private_monetary_balance_only", signals=signals,
-                      scope_status="credential_selected_user_identity_discarded",
-                      balance_kind="monetary_strings_currency_unverified",
-                      valid_until=_iso(now + dt.timedelta(seconds=FRESHNESS_SECONDS)),
-                      reset="unknown", currency="unknown")
-        return result
     if service_id == "openrouter.key":
         counters = {"free_model_daily_used", "free_model_daily_limit", "free_model_daily_remaining"}
         result.update(status="observed", reason="sanitized_key_observation", signals=signals)
@@ -247,7 +243,9 @@ def main(argv=None):
         fd = _open_private(args.private_out)
     except (OSError, ValueError):
         parser.error("invalid context or private output destination")
-    observation = observe_service(args.service, os.environ.get(SERVICES[args.service]["credential_env"], ""), scope=args.scope)
+    credential_env = SERVICES[args.service]["credential_env"]
+    api_key = os.environ.get(credential_env, "") if credential_env else ""
+    observation = observe_service(args.service, api_key, scope=args.scope)
     _write_fd(fd, observation)
     print(json.dumps(public_status(observation), sort_keys=True))
     return 0 if observation["status"] == "observed" else 1

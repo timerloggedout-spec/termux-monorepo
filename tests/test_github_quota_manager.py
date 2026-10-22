@@ -51,11 +51,12 @@ def test_no_unverified_host_or_path():
 def test_http_error_backoff_honors_retry_after_and_no_retry():
     calls=[]; waits=[]
     def opener(*a,**k): calls.append(1); raise urllib.error.HTTPError(gm.API_URL,429,"private",{"Retry-After":"7"},None)
-    with pytest.raises(gm.QuotaError,match="secondary_or_http_limited"): gm._request("secret",opener,sleeper=waits.append)
-    assert calls==[1] and waits==[7]
-    waits.clear()
-    with pytest.raises(gm.QuotaError): gm._request(None,lambda *a,**k:(_ for _ in ()).throw(urllib.error.HTTPError(gm.API_URL,403,"x",{},None)),sleeper=waits.append)
-    assert waits==[60]
+    with pytest.raises(gm.QuotaError,match="secondary_or_http_limited") as exc:
+        gm._request("secret",opener,sleeper=waits.append)
+    assert calls==[1] and waits==[] and exc.value.retry_after==7
+    with pytest.raises(gm.QuotaError) as exc:
+        gm._request(None,lambda *a,**k:(_ for _ in ()).throw(urllib.error.HTTPError(gm.API_URL,403,"x",{},None)),sleeper=waits.append)
+    assert waits==[] and exc.value.retry_after==60
 def test_local_reserve_policy_is_explicit():
     assert gm.reserve_allows(1,100,10) and not gm.reserve_allows(1,10,10)
     assert not gm.reserve_allows(1,None,0)
@@ -135,10 +136,10 @@ def test_primary_reset_and_http_date_backoff_are_not_silently_shortened(monkeypa
     waits = []
     assert gm._backoff({'X-RateLimit-Remaining': '0', 'X-RateLimit-Reset': '1300'}, waits.append) == 300
     assert gm._backoff({'Retry-After': formatdate(1120, usegmt=True)}, waits.append) == 120
-    assert waits == [300, 120]
+    assert waits == []
     with pytest.raises(gm.QuotaError, match='retry_after_exceeds_local_wait_bound') as exc:
         gm._backoff({'Retry-After': '7200'}, waits.append)
-    assert exc.value.retry_after == 7200 and waits == [300, 120]
+    assert exc.value.retry_after == 7200 and waits == []
 
 
 def test_changing_declared_class_cannot_bypass_observed_credential_cooldown():
@@ -149,3 +150,38 @@ def test_changing_declared_class_cannot_bypass_observed_credential_cooldown():
     with pytest.raises(gm.QuotaError, match='rate_limit_cooldown'):
         gm.observe('cross-class-cooldown', token_class='app_installation',
                    opener=lambda *a, **k: pytest.fail('must not bypass cooldown'))
+
+
+@pytest.mark.parametrize('status', [403, 429])
+def test_returned_throttle_status_never_sleeps_or_retries(status):
+    calls = []; waits = []
+    def opener(*args, **kwargs):
+        calls.append(1)
+        response = Response()
+        response.status = status
+        response.headers = {'Retry-After': '3600'}
+        return response
+    with pytest.raises(gm.QuotaError, match='secondary_or_http_limited') as exc:
+        gm._request('synthetic', opener, sleeper=waits.append)
+    assert exc.value.retry_after == 3600
+    assert calls == [1] and waits == []
+
+
+def test_cooldown_starts_immediately_and_expires_once_without_sleep(monkeypatch):
+    moment = [100.0]; calls = []; waits = []
+    monkeypatch.setattr(gm.time, 'monotonic', lambda: moment[0])
+    def limited(*args, **kwargs):
+        calls.append(1)
+        raise urllib.error.HTTPError(gm.API_URL, 429, 'private', {'Retry-After': '7'}, None)
+    token = 'single-cooldown-clock-regression'
+    with pytest.raises(gm.QuotaError) as exc:
+        gm.observe(token, opener=limited, sleeper=waits.append)
+    assert exc.value.retry_after == 7 and waits == []
+    assert gm._cooldowns[gm._key(token)] == 107.0
+    moment[0] = 106.9
+    with pytest.raises(gm.QuotaError, match='rate_limit_cooldown'):
+        gm.observe(token, opener=limited)
+    assert calls == [1]
+    moment[0] = 107.0
+    result = gm.observe(token, opener=lambda *a, **k: Response(), cache_seconds=0)
+    assert result['status'] == 'observed'

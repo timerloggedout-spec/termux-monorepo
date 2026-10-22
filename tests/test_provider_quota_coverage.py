@@ -41,11 +41,11 @@ def test_static_mappings_exhaust_canonical_roster_without_claiming_quota_service
     assert counts["missing_static_adapter_mappings"] == 0
     # All 27 families have explicit registrations; only opt-in/read-only readers are executable.
     assert counts["registered_provider_family_mappings"] == 27
-    assert counts["actual_quota_service_mappings"] == 3
-    assert counts["executable_quota_service_mappings"] == 3
-    assert counts["missing_actual_quota_service_mappings"] == 24
+    assert counts["actual_quota_service_mappings"] == 2
+    assert counts["executable_quota_service_mappings"] == 2
+    assert counts["missing_actual_quota_service_mappings"] == 25
     assert counts["missing_registered_provider_family_mappings"] == 0
-    assert counts["opt_in_private_service_managers"] == 3
+    assert counts["opt_in_private_service_managers"] == 2
     expected_parsers = {"groq", "sambanova", "huggingface", "ollama", "openrouter", "siliconflow"}
     if families["gemini"]["quota_capability"]["parser_available"]:
         expected_parsers.add("gemini")
@@ -128,7 +128,7 @@ def test_gemini_parser_integration_reconciles_generated_and_public_counts(tmp_pa
         assert result["coverage_counts"]["implemented_passive_adapters"] == expected
         assert result["mapping_capability_counts"]["passive_parser"] == expected
         assert result["mapping_capability_counts"]["documentation_only"] == 24 - expected
-        assert result["coverage_counts"]["opt_in_private_service_managers"] == 3
+        assert result["coverage_counts"]["opt_in_private_service_managers"] == 2
         assert row["live_account_validation"] == "unknown"
         assert row["reader_service_ids"] == row["opt_in_private_service_ids"] == []
         public = build_payload(registry, result, {"readings": []})

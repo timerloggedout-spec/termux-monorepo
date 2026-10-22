@@ -1,13 +1,13 @@
 {
   "coverage_counts": {
-    "actual_quota_service_mappings": 3,
+    "actual_quota_service_mappings": 2,
     "documentation_only": 18,
-    "executable_quota_service_mappings": 3,
+    "executable_quota_service_mappings": 2,
     "implemented_passive_adapters": 6,
-    "missing_actual_quota_service_mappings": 24,
+    "missing_actual_quota_service_mappings": 25,
     "missing_registered_provider_family_mappings": 0,
     "missing_static_adapter_mappings": 0,
-    "opt_in_private_service_managers": 3,
+    "opt_in_private_service_managers": 2,
     "provider_families": 27,
     "quota_source_unknown_including_documentation": 21,
     "registered_provider_family_mappings": 27,
@@ -17,7 +17,7 @@
   "live_inference_used": false,
   "manager_metadata_source": "ops/quota/provider-managers.json",
   "mapping_capability_counts": {
-    "actual_mapping": 3,
+    "actual_mapping": 2,
     "documentation_only": 18,
     "passive_parser": 6,
     "unknown_or_unsupported": 3
@@ -1483,18 +1483,16 @@
       "manager_metadata_state": "documented_only",
       "manager_status": "implemented_passive_adapter",
       "mapping_state": "documented_registry_mapping",
-      "observation_method": "opt_in_private_quota_service; live account validation not established",
+      "observation_method": "unknown",
       "observed_reset": "unknown",
       "official_evidence": [
         "https://docs.siliconflow.com/en/api-reference/userinfo/get-user-info"
       ],
-      "opt_in_private_service_ids": [
-        "siliconflow.balance"
-      ],
+      "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "siliconflow",
       "quota_capability": {
-        "dimensions": "monetary_balance_only_not_request_quota",
+        "dimensions": "historical_monetary_balance_only_not_request_quota",
         "entitlement": "unknown; not inferred",
         "evidence": [
           "https://docs.siliconflow.com/en/api-reference/userinfo/get-user-info"
@@ -1503,16 +1501,16 @@
         "freshness": "unknown_until_timestamped_observation",
         "parser_available": true,
         "reset": "unknown; balance endpoint supplies no quota/reset or free-account entitlement",
-        "scope": "private user monetary balance only, currency not assumed; account/model request quotas are separate and remain unknown",
-        "source_kind": "official_endpoint_metadata",
-        "status": "opt_in_private_monetary_parser"
+        "scope": "unknown",
+        "source_kind": "historical_response_parser_not_live_source",
+        "status": "unsupported_live_source_historical_parser"
       },
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
-      "quota_kind": "monetary_balance_only_not_request_quota",
+      "quota_kind": "historical_monetary_balance_only_not_request_quota",
       "quota_manager_owner": "Manager",
       "quota_mapping": {
-        "dimensions": "monetary_balance_only_not_request_quota",
-        "source_kind": "official_endpoint_metadata",
+        "dimensions": "historical_monetary_balance_only_not_request_quota",
+        "source_kind": "historical_response_parser_not_live_source",
         "status": "implemented_passive_parser"
       },
       "reader_service_ids": [],
@@ -1520,7 +1518,7 @@
       "registry_reader_service_ids": [],
       "remaining_state": "not_publicly_observed",
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
-      "runtime_manager_state": "implemented_opt_in_private_service",
+      "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "private user monetary balance only, currency not assumed; account/model request quotas are separate and remain unknown",
       "service_ids": [
         "siliconflow.balance"
@@ -2767,15 +2765,15 @@
       "observation_method": "implemented_opt_in_private_service",
       "provider": "siliconflow",
       "quota_capability": {
-        "dimension": "opt-in monetary strings; currency/request quota unknown",
+        "dimension": "unknown currency or decimal balance",
         "entitlement": "registry_limit_is_documentation_not_account_entitlement",
         "fail_closed": true,
         "freshness": "unknown_until_timestamped_observation",
-        "reader": "scripts.provider_quota_service.observe_service",
-        "reader_dimensions": "opt-in monetary strings; currency/request quota unknown",
+        "reader": null,
+        "reader_dimensions": "unknown",
         "reset": "unknown",
         "scope": "model-balance",
-        "status": "typed_reader"
+        "status": "unknown_unless_explicit_reader_registered"
       },
       "quota_manager_owner": "Manager",
       "service_id": "siliconflow.balance"

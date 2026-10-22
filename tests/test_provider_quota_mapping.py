@@ -19,8 +19,8 @@ def test_mapping_classifies_runtime_passive_sources_and_unknowns_explicitly():
 
 def test_siliconflow_is_monetary_only():
     row = capability("siliconflow")
-    assert row["status"] == "opt_in_private_monetary_parser"
-    assert row["dimensions"] == "monetary_balance_only_not_request_quota"
+    assert row["status"] == "unsupported_live_source_historical_parser"
+    assert row["dimensions"] == "historical_monetary_balance_only_not_request_quota"
     assert row["remaining"] == "not_observed" and row["fail_closed"] is True
 
 

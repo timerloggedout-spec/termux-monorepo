@@ -116,7 +116,7 @@ def test_repository_registry_coverage_and_historical_readings_integrate():
     payload = build_payload(registry, coverage, readings, config)
     assert len(payload["coverage"]["provider_families"]) == 27
     assert payload["coverage"]["mapping_capability_counts"] == {
-        "actual_mapping": 3, "passive_parser": 6,
+        "actual_mapping": 2, "passive_parser": 6,
         "documentation_only": 18, "unknown_or_unsupported": 3,
     }
     public_ids = {service["id"] for service in payload["registry"]["services"]}

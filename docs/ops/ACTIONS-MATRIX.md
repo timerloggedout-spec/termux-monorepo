@@ -25,7 +25,7 @@ Recent completed runs on tip:
 
 | Issue Class | Workflows Affected | Root Cause | Current Handling | Recommended Fix / Consolidation | Status |
 |-------------|--------------------|------------|------------------|---------------------------------|--------|
-| Cascade Notification Spam | lane-events-recorder, agent-throughput-evidence, context-relationship-audit | Broad `workflow_run` on completed (all conclusions) | Individual runs + notices | Filter `if: github.event.workflow_run.conclusion == 'success'` or batch; narrow workflow lists; shared observer with concurrency group per-SHA; path/event filters | Open — high priority |
+| Cascade Notification Spam | lane-events-recorder, agent-throughput-evidence, context-relationship-audit | Broad `workflow_run` on completed (all conclusions) | Individual runs + notices | Filter `if: github.event.workflow_run.conclusion == 'success'` or batch; narrow workflow lists; shared observer with concurrency group per-SHA; path/event filters | **Implemented** on branch (filters added) |
 | Concurrency Cancel | help-wanted-*, others | Rapid triggers | cancel-in-progress | Granular groups (SHA or target); or false + queue; orchestrator | Ongoing |
 | Watcher Skip | actions-run-watcher | Pre-dispatch-only | Dispatch-only | Fixed; residual aging out | Fixed |
 | Device / Tunnel (Pinggy) | Device tests, bridges | BLU B160V#1 broken; #2 replication | Some skipped | Opaque `tmx-node-primary`; operational Pinggy/alt on #1; evidence #184 | Device-side |
@@ -56,7 +56,7 @@ flowchart TD
 
 - Adaptive-wait: continue disjoint work during in_progress
 - Dynamic telemetry: action-effectiveness-ledger + this matrix SSOT for 3L0 moneyball prioritization
-- Reduce cascades: conclusion filters + batching on observers
+- Reduce cascades: conclusion filters + batching on observers (**filters live on branch**)
 - Cache: actions/cache on lockfiles; path filters on push
 - Modular: reusable actions for status emit + device ID
 
@@ -68,7 +68,7 @@ flowchart TD
 
 ## Next Actions
 
-1. Implement conclusion filters + batching on high-volume observers (lane-events-recorder, agent-throughput-evidence)
+1. ~~Implement conclusion filters + batching on high-volume observers (lane-events-recorder, agent-throughput-evidence)~~ **DONE on branch**
 2. Rebase/promote PR #1483 once dual-gate green on updated tip
 3. Device-side Pinggy validation on tmx-node-primary
 4. Expand reaper + quota soft-class in ledger
@@ -87,7 +87,8 @@ Master functional, success-dominant. Primary remaining surface is cascade volume
 - Spam root cause identified (cascade observers)
 - Concrete filter recommendation added
 - Matrix updated for current state
+- **Conclusion filters implemented** on lane-events-recorder.yml and agent-throughput-evidence.yml (job-level if on success only)
 
-Next: apply YAML filters on branch, dual-gate, promote. Device validation parallel.
+Next: dual-gate revalidation on new head, then promote. Device validation parallel.
 
 Agent-Identity: Grok (Administrator)

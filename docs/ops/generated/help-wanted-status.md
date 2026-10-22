@@ -1,6 +1,6 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-22T11:52:13Z UTC · receipts=3733 · foreign_open=35 · tributes=114_
+_Generated 2026-10-22T14:07:17Z UTC · receipts=3733 · foreign_open=33 · tributes=102_
 
 ## Tributes (contributor ledger)
 
@@ -24,26 +24,26 @@ _Generated 2026-10-22T11:52:13Z UTC · receipts=3733 · foreign_open=35 · tribu
 - [laugh-tales/starpass-contracts#59](https://github.com/laugh-tales/starpass-contracts/pull/59) · state=open · help-wanted: stake + contribute for #28
 - [Saidur-droid/MergeEarn#76](https://github.com/Saidur-droid/MergeEarn/pull/76) · state=open · help-wanted: stake + contribute for #69
 - [https://github.com/uttrflow/uttrflow-swift/pull/3719](https://github.com/uttrflow/uttrflow-swift/pull/3719) · state=? · 
-- [qim-center/qim3d#273](https://github.com/qim-center/qim3d/pull/273) · state=closed · help-wanted: stake + contribute for #225
+- [https://github.com/qim-center/qim3d/pull/273](https://github.com/qim-center/qim3d/pull/273) · state=? · 
 - [fsr5-fhaachen/portals#948](https://github.com/fsr5-fhaachen/portals/pull/948) · state=open · help-wanted: stake + contribute for #928
 - [ROCm/rocm-libraries#13152](https://github.com/ROCm/rocm-libraries/pull/13152) · state=open · help-wanted: stake + contribute for #10586
 - [topoteretes/cognee#5439](https://github.com/topoteretes/cognee/pull/5439) · state=open · help-wanted: stake + contribute for #4757
-- [gabe-santana/saccade#27](https://github.com/gabe-santana/saccade/pull/27) · state=closed · help-wanted: stake + contribute for #25
+- [https://github.com/gabe-santana/saccade/pull/27](https://github.com/gabe-santana/saccade/pull/27) · state=? · 
 - [Suhas29wasnotavailable/blroad#12](https://github.com/Suhas29wasnotavailable/blroad/pull/12) · state=open · help-wanted: stake + contribute for #7
 - [MMALI3287/vibewatt#100](https://github.com/MMALI3287/vibewatt/pull/100) · state=open · help-wanted: stake + contribute for #95
 - [apache/hugegraph-computer#365](https://github.com/apache/hugegraph-computer/pull/365) · state=open · help-wanted: stake + contribute for #325
 - [ciaren-labs/Ciaren#234](https://github.com/ciaren-labs/Ciaren/pull/234) · state=open · help-wanted: stake + contribute for #96
-- [MyFanss/MyFans#2056](https://github.com/MyFanss/MyFans/pull/2056) · state=closed · help-wanted: stake + contribute for #2032
-- [finos/fluxnova-bpm-platform#352](https://github.com/finos/fluxnova-bpm-platform/pull/352) · state=open · help-wanted: stake + contribute for #152
+- [https://github.com/MyFanss/MyFans/pull/2056](https://github.com/MyFanss/MyFans/pull/2056) · state=? · 
+- [https://github.com/finos/fluxnova-bpm-platform/pull/352](https://github.com/finos/fluxnova-bpm-platform/pull/352) · state=? · 
 - [ShippedLabs/soroban-upgrade-safeguard#781](https://github.com/ShippedLabs/soroban-upgrade-safeguard/pull/781) · state=open · help-wanted: stake + contribute for #764
-- [Neziahtech/streampay#147](https://github.com/Neziahtech/streampay/pull/147) · state=closed · help-wanted: stake + contribute for #5
-- [ssupportme/support-me#316](https://github.com/ssupportme/support-me/pull/316) · state=closed · help-wanted: stake + contribute for #301
+- [https://github.com/Neziahtech/streampay/pull/147](https://github.com/Neziahtech/streampay/pull/147) · state=? · 
+- [https://github.com/ssupportme/support-me/pull/316](https://github.com/ssupportme/support-me/pull/316) · state=? · 
 - [stellar-compliance-kit/compliance-primitives#656](https://github.com/stellar-compliance-kit/compliance-primitives/pull/656) · state=open · help-wanted: stake + contribute for #180
 - [Health-watchers/health_watchers#1698](https://github.com/Health-watchers/health_watchers/pull/1698) · state=open · help-wanted: stake + contribute for #1519
-- [Nodal-stellar/Nodal-AI#853](https://github.com/Nodal-stellar/Nodal-AI/pull/853) · state=closed · help-wanted: stake + contribute for #769
-- [Nodal-stellar/Nodal-AI#857](https://github.com/Nodal-stellar/Nodal-AI/pull/857) · state=closed · help-wanted: stake + contribute for #811
+- [https://github.com/Nodal-stellar/Nodal-AI/pull/853](https://github.com/Nodal-stellar/Nodal-AI/pull/853) · state=? · 
+- [https://github.com/Nodal-stellar/Nodal-AI/pull/857](https://github.com/Nodal-stellar/Nodal-AI/pull/857) · state=? · 
 - [LabsCrypt/remitlend#1990](https://github.com/LabsCrypt/remitlend/pull/1990) · state=open · help-wanted: stake + contribute for #1503
-- [xtekky/gpt4free#3541](https://github.com/xtekky/gpt4free/pull/3541) · state=closed · Fix typo in README from 'Interference' to 'Inference'
+- [https://github.com/xtekky/gpt4free/pull/3541](https://github.com/xtekky/gpt4free/pull/3541) · state=? · 
 
 ## Foreign open PRs
 
@@ -51,14 +51,12 @@ _Generated 2026-10-22T11:52:13Z UTC · receipts=3733 · foreign_open=35 · tribu
 - [SO4-Markets/interface#1029](https://github.com/SO4-Markets/interface/pull/1029) — help-wanted: stake + contribute for #918
 - [use-assay/Assay#509](https://github.com/use-assay/Assay/pull/509) — help-wanted: stake + contribute for #305
 - [sorolens/sorolens#753](https://github.com/sorolens/sorolens/pull/753) — help-wanted: stake + contribute for #538
-- [SoroScan/soroscan#1690](https://github.com/SoroScan/soroscan/pull/1690) — help-wanted: stake + contribute for #1663
 - [0xLizTech/stellarforge#614](https://github.com/0xLizTech/stellarforge/pull/614) — help-wanted: stake + contribute for #92
 - [RetinaX-Org/RetinaX#352](https://github.com/RetinaX-Org/RetinaX/pull/352) — help-wanted: stake + contribute for #282
 - [LabsCrypt/remitlend#1990](https://github.com/LabsCrypt/remitlend/pull/1990) — help-wanted: stake + contribute for #1503
 - [Health-watchers/health_watchers#1698](https://github.com/Health-watchers/health_watchers/pull/1698) — help-wanted: stake + contribute for #1519
 - [stellar-compliance-kit/compliance-primitives#656](https://github.com/stellar-compliance-kit/compliance-primitives/pull/656) — help-wanted: stake + contribute for #180
 - [ShippedLabs/soroban-upgrade-safeguard#781](https://github.com/ShippedLabs/soroban-upgrade-safeguard/pull/781) — help-wanted: stake + contribute for #764
-- [finos/fluxnova-bpm-platform#352](https://github.com/finos/fluxnova-bpm-platform/pull/352) — help-wanted: stake + contribute for #152
 - [ciaren-labs/Ciaren#234](https://github.com/ciaren-labs/Ciaren/pull/234) — help-wanted: stake + contribute for #96
 - [apache/hugegraph-computer#365](https://github.com/apache/hugegraph-computer/pull/365) — help-wanted: stake + contribute for #325
 - [MMALI3287/vibewatt#100](https://github.com/MMALI3287/vibewatt/pull/100) — help-wanted: stake + contribute for #95

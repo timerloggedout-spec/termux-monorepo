@@ -1,18 +1,16 @@
 {
   "schema_version": "help-wanted.tribute-audit.v1",
-  "generated_at": "2026-10-22T11:52:46.106044+00:00",
-  "source_status_generated_at": "2026-10-22T11:52:13Z",
-  "source_tribute_count": 114,
-  "unique_pr_count": 114,
-  "audited_pr_count": 111,
+  "generated_at": "2026-10-22T14:07:48.248897+00:00",
+  "source_status_generated_at": "2026-10-22T14:07:17Z",
+  "source_tribute_count": 102,
+  "unique_pr_count": 102,
+  "audited_pr_count": 99,
   "audited_this_run_count": 22,
   "attempted_this_run_count": 25,
   "deferred_this_run_count": 0,
-  "unknown_this_run_count": 2,
-  "partial_this_run_count": 1,
+  "unknown_this_run_count": 3,
+  "partial_this_run_count": 0,
   "audited_this_run_pr_urls": [
-    "https://github.com/AmpedWasTaken/SML/pull/18",
-    "https://github.com/timerloggedout-spec/gh-aw-mcpg_fork/pull/1",
     "https://github.com/Octo-Protocol-org/Octo-frontend/pull/592",
     "https://github.com/TabularisDB/tabularis/pull/1074",
     "https://github.com/TricklePay/tricklepay-backend/pull/441",
@@ -29,23 +27,25 @@
     "https://github.com/CodeGirlsInc/FrieghtFlow/pull/1743",
     "https://github.com/TrustHire/hiresettle-backend/pull/518",
     "https://github.com/use-assay/Assay/pull/348",
-    "https://github.com/Loment-Lang/Loment/pull/428",
     "https://github.com/Dfunder/stellarAid-api/pull/968",
-    "https://github.com/Wayfare-labs/wayfare/pull/731",
-    "https://github.com/Nano-Collective/nanocoder/pull/1749"
+    "https://github.com/Nano-Collective/nanocoder/pull/1749",
+    "https://github.com/cubrid-lab/cubrid-mcp-server/pull/334",
+    "https://github.com/Lee-Dongwook/E2E-Self-Heal/pull/371",
+    "https://github.com/dereksantos/cortex/pull/274",
+    "https://github.com/rishiyaduwanshi/boiler/pull/101"
   ],
   "not_audited_count": 3,
-  "audit_window_start": 47,
+  "audit_window_start": 50,
   "audit_window_size": 25,
   "stages": {
-    "accepted": 16,
+    "accepted": 14,
     "stake_only": 34,
     "implementation_unproven": 1,
-    "closed_unmerged": 62,
+    "closed_unmerged": 52,
     "unknown": 1
   },
   "audit_statuses": {
-    "observed": 108,
+    "observed": 96,
     "partial": 2,
     "unknown": 4
   },
@@ -1602,7 +1602,7 @@
     },
     {
       "pr_url": "https://github.com/Octo-Protocol-org/Octo-frontend/pull/592",
-      "audited_at": "2026-10-22T11:52:18.366451+00:00",
+      "audited_at": "2026-10-22T14:07:17.814335+00:00",
       "stage": "accepted",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -1633,7 +1633,7 @@
     },
     {
       "pr_url": "https://github.com/TabularisDB/tabularis/pull/1074",
-      "audited_at": "2026-10-22T11:52:19.449616+00:00",
+      "audited_at": "2026-10-22T14:07:19.391676+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing"
@@ -1663,7 +1663,7 @@
     },
     {
       "pr_url": "https://github.com/TricklePay/tricklepay-backend/pull/441",
-      "audited_at": "2026-10-22T11:52:20.782285+00:00",
+      "audited_at": "2026-10-22T14:07:20.768399+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -1694,7 +1694,7 @@
     },
     {
       "pr_url": "https://github.com/OneBusAway/go-gtfs/pull/33",
-      "audited_at": "2026-10-22T11:52:22.100027+00:00",
+      "audited_at": "2026-10-22T14:07:22.233696+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -1725,7 +1725,7 @@
     },
     {
       "pr_url": "https://github.com/QuinCyMP/dense-melee-lab/pull/10",
-      "audited_at": "2026-10-22T11:52:23.412268+00:00",
+      "audited_at": "2026-10-22T14:07:23.665197+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -1756,7 +1756,7 @@
     },
     {
       "pr_url": "https://github.com/zh-95/fronte-rivoluzionario/pull/59",
-      "audited_at": "2026-10-22T11:52:24.728108+00:00",
+      "audited_at": "2026-10-22T14:07:25.002739+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -1787,7 +1787,7 @@
     },
     {
       "pr_url": "https://github.com/Heliobond/frontend/pull/614",
-      "audited_at": "2026-10-22T11:52:25.866142+00:00",
+      "audited_at": "2026-10-22T14:07:26.199563+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing"
@@ -1817,7 +1817,7 @@
     },
     {
       "pr_url": "https://github.com/Gautam-aman/ResQNet/pull/53",
-      "audited_at": "2026-10-22T11:52:27.044283+00:00",
+      "audited_at": "2026-10-22T14:07:27.501645+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing"
@@ -1847,7 +1847,7 @@
     },
     {
       "pr_url": "https://github.com/traceopt-ai/traceml/pull/547",
-      "audited_at": "2026-10-22T11:52:28.250313+00:00",
+      "audited_at": "2026-10-22T14:07:28.719122+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -1878,7 +1878,7 @@
     },
     {
       "pr_url": "https://github.com/seleniumboot/selenium-boot/pull/183",
-      "audited_at": "2026-10-22T11:52:29.585746+00:00",
+      "audited_at": "2026-10-22T14:07:29.951088+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -1909,7 +1909,7 @@
     },
     {
       "pr_url": "https://github.com/francordel/kdemos/pull/27",
-      "audited_at": "2026-10-22T11:52:30.660445+00:00",
+      "audited_at": "2026-10-22T14:07:31.120231+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -1940,7 +1940,7 @@
     },
     {
       "pr_url": "https://github.com/StellarFoundry/soroban-security-scanner/pull/200",
-      "audited_at": "2026-10-22T11:52:31.810475+00:00",
+      "audited_at": "2026-10-22T14:07:32.300469+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing"
@@ -1970,7 +1970,7 @@
     },
     {
       "pr_url": "https://github.com/kiinshuk/kinshow/pull/434",
-      "audited_at": "2026-10-22T11:52:33.041908+00:00",
+      "audited_at": "2026-10-22T14:07:33.594628+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -2001,7 +2001,7 @@
     },
     {
       "pr_url": "https://github.com/CodeGirlsInc/FrieghtFlow/pull/1743",
-      "audited_at": "2026-10-22T11:52:34.270619+00:00",
+      "audited_at": "2026-10-22T14:07:34.965095+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -2060,13 +2060,13 @@
       "checks_complete": false,
       "checks_pass": false,
       "realization_note": "requires a separately linked, independently verified effect receipt",
-      "last_attempt_at": "2026-10-22T11:52:35.654668+00:00",
+      "last_attempt_at": "2026-10-22T14:07:36.453485+00:00",
       "last_attempt_status": "unknown",
       "last_attempt_evidence_gaps": [
         "http_404"
       ],
       "last_audit_attempt": {
-        "audited_at": "2026-10-22T11:52:35.654668+00:00",
+        "audited_at": "2026-10-22T14:07:36.453485+00:00",
         "audit_status": "unknown",
         "evidence_gaps": [
           "http_404"
@@ -2102,13 +2102,13 @@
       "checks_complete": true,
       "checks_pass": true,
       "realization_note": "requires a separately linked, independently verified effect receipt",
-      "last_attempt_at": "2026-10-22T11:52:35.827169+00:00",
+      "last_attempt_at": "2026-10-22T14:07:36.607655+00:00",
       "last_attempt_status": "unknown",
       "last_attempt_evidence_gaps": [
         "http_404"
       ],
       "last_audit_attempt": {
-        "audited_at": "2026-10-22T11:52:35.827169+00:00",
+        "audited_at": "2026-10-22T14:07:36.607655+00:00",
         "audit_status": "unknown",
         "evidence_gaps": [
           "http_404"
@@ -2117,7 +2117,7 @@
     },
     {
       "pr_url": "https://github.com/TrustHire/hiresettle-backend/pull/518",
-      "audited_at": "2026-10-22T11:52:36.010593+00:00",
+      "audited_at": "2026-10-22T14:07:36.795629+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -2148,7 +2148,7 @@
     },
     {
       "pr_url": "https://github.com/use-assay/Assay/pull/348",
-      "audited_at": "2026-10-22T11:52:37.404714+00:00",
+      "audited_at": "2026-10-22T14:07:38.088232+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -2178,39 +2178,8 @@
       "realization_note": "requires a separately linked, independently verified effect receipt"
     },
     {
-      "pr_url": "https://github.com/Loment-Lang/Loment/pull/428",
-      "audited_at": "2026-10-22T11:52:38.778050+00:00",
-      "stage": "closed_unmerged",
-      "evidence_gaps": [
-        "solution_proof_missing",
-        "validation_not_verified"
-      ],
-      "realized_effect_verified": false,
-      "audit_status": "observed",
-      "state": "closed",
-      "merged": false,
-      "head_sha": "b4cfb663e09dc1243a1aa26c54ed6a6f87fd3672",
-      "contributor_login": "timerloggedout-spec",
-      "base_sha": "7c573f1569c71850419fca155dd5eb365f81553f",
-      "changed_file_count": 1,
-      "files_total_count": 1,
-      "files_observed_count": 1,
-      "files_truncated": false,
-      "files_complete": true,
-      "implementation_file_count": 0,
-      "stake_marker_present": true,
-      "stake_only": true,
-      "solution_proof_present": false,
-      "checks_observed": 1,
-      "checks_total_count": 1,
-      "checks_truncated": false,
-      "checks_complete": true,
-      "checks_pass": false,
-      "realization_note": "requires a separately linked, independently verified effect receipt"
-    },
-    {
       "pr_url": "https://github.com/Dfunder/stellarAid-api/pull/968",
-      "audited_at": "2026-10-22T11:52:41.853912+00:00",
+      "audited_at": "2026-10-22T14:07:39.510670+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -2240,39 +2209,8 @@
       "realization_note": "requires a separately linked, independently verified effect receipt"
     },
     {
-      "pr_url": "https://github.com/Wayfare-labs/wayfare/pull/731",
-      "audited_at": "2026-10-22T11:52:42.913778+00:00",
-      "stage": "closed_unmerged",
-      "evidence_gaps": [
-        "solution_proof_missing",
-        "validation_not_verified"
-      ],
-      "realized_effect_verified": false,
-      "audit_status": "observed",
-      "state": "closed",
-      "merged": false,
-      "head_sha": "f55c8488794379d5b4779129ebf73e2deba496d6",
-      "contributor_login": "timerloggedout-spec",
-      "base_sha": "6777ad056d312e93833b0b6459940b956ee2ec03",
-      "changed_file_count": 1,
-      "files_total_count": 1,
-      "files_observed_count": 1,
-      "files_truncated": false,
-      "files_complete": true,
-      "implementation_file_count": 0,
-      "stake_marker_present": true,
-      "stake_only": true,
-      "solution_proof_present": false,
-      "checks_observed": 8,
-      "checks_total_count": 8,
-      "checks_truncated": false,
-      "checks_complete": true,
-      "checks_pass": false,
-      "realization_note": "requires a separately linked, independently verified effect receipt"
-    },
-    {
       "pr_url": "https://github.com/Nano-Collective/nanocoder/pull/1749",
-      "audited_at": "2026-10-22T11:52:44.488480+00:00",
+      "audited_at": "2026-10-22T14:07:40.731022+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing"
@@ -2302,7 +2240,7 @@
     },
     {
       "pr_url": "https://github.com/cubrid-lab/cubrid-mcp-server/pull/334",
-      "audited_at": "2026-10-21T20:22:35.427097+00:00",
+      "audited_at": "2026-10-22T14:07:42.294882+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -2332,38 +2270,8 @@
       "realization_note": "requires a separately linked, independently verified effect receipt"
     },
     {
-      "pr_url": "https://github.com/LandSandBoat/server/pull/11771",
-      "audited_at": "2026-10-21T20:22:38.573160+00:00",
-      "stage": "closed_unmerged",
-      "evidence_gaps": [
-        "solution_proof_missing"
-      ],
-      "realized_effect_verified": false,
-      "audit_status": "observed",
-      "state": "closed",
-      "merged": false,
-      "head_sha": "c71c355e1c14b1a5c493aed921335a1fa55debab",
-      "contributor_login": "timerloggedout-spec",
-      "base_sha": "806e85932986c73c21389b5884c67c5e452b4e1a",
-      "changed_file_count": 1,
-      "files_total_count": 1,
-      "files_observed_count": 1,
-      "files_truncated": false,
-      "files_complete": true,
-      "implementation_file_count": 0,
-      "stake_marker_present": true,
-      "stake_only": true,
-      "solution_proof_present": false,
-      "checks_observed": 14,
-      "checks_total_count": 14,
-      "checks_truncated": false,
-      "checks_complete": true,
-      "checks_pass": true,
-      "realization_note": "requires a separately linked, independently verified effect receipt"
-    },
-    {
       "pr_url": "https://github.com/Lee-Dongwook/E2E-Self-Heal/pull/371",
-      "audited_at": "2026-10-21T20:22:41.982181+00:00",
+      "audited_at": "2026-10-22T14:07:43.866708+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing"
@@ -2392,37 +2300,6 @@
       "realization_note": "requires a separately linked, independently verified effect receipt"
     },
     {
-      "pr_url": "https://github.com/yakew7/Fair-Code/pull/940",
-      "audited_at": "2026-10-21T20:22:43.938363+00:00",
-      "stage": "closed_unmerged",
-      "evidence_gaps": [
-        "solution_proof_missing",
-        "validation_not_verified"
-      ],
-      "realized_effect_verified": false,
-      "audit_status": "observed",
-      "state": "closed",
-      "merged": false,
-      "head_sha": "7ea903e1a7aa85e166aa156d0319bf2a82e08b90",
-      "contributor_login": "timerloggedout-spec",
-      "base_sha": "2364d2738c2a04197e1bf1141d2fbc9085847e65",
-      "changed_file_count": 1,
-      "files_total_count": 1,
-      "files_observed_count": 1,
-      "files_truncated": false,
-      "files_complete": true,
-      "implementation_file_count": 0,
-      "stake_marker_present": true,
-      "stake_only": true,
-      "solution_proof_present": false,
-      "checks_observed": 17,
-      "checks_total_count": 17,
-      "checks_truncated": false,
-      "checks_complete": true,
-      "checks_pass": false,
-      "realization_note": "requires a separately linked, independently verified effect receipt"
-    },
-    {
       "pr_url": "https://github.com/Tanishq964/trail-kit./pull/6",
       "audited_at": "2026-10-19T15:33:16.065937+00:00",
       "stage": "unknown",
@@ -2431,13 +2308,13 @@
       ],
       "realized_effect_verified": false,
       "audit_status": "unknown",
-      "last_attempt_at": "2026-10-21T20:22:45.771512+00:00",
+      "last_attempt_at": "2026-10-22T14:07:45.346935+00:00",
       "last_attempt_status": "unknown",
       "last_attempt_evidence_gaps": [
         "http_404"
       ],
       "last_audit_attempt": {
-        "audited_at": "2026-10-21T20:22:45.771512+00:00",
+        "audited_at": "2026-10-22T14:07:45.346935+00:00",
         "audit_status": "unknown",
         "evidence_gaps": [
           "http_404"
@@ -2446,7 +2323,7 @@
     },
     {
       "pr_url": "https://github.com/dereksantos/cortex/pull/274",
-      "audited_at": "2026-10-21T20:22:45.904088+00:00",
+      "audited_at": "2026-10-22T14:07:45.524467+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing",
@@ -2476,39 +2353,8 @@
       "realization_note": "requires a separately linked, independently verified effect receipt"
     },
     {
-      "pr_url": "https://github.com/adharshramu12/Seetha_ai/pull/8",
-      "audited_at": "2026-10-21T20:22:48.706432+00:00",
-      "stage": "closed_unmerged",
-      "evidence_gaps": [
-        "solution_proof_missing",
-        "validation_not_verified"
-      ],
-      "realized_effect_verified": false,
-      "audit_status": "observed",
-      "state": "closed",
-      "merged": false,
-      "head_sha": "d9a3d63096447775df297dcc977caf029464fbb9",
-      "contributor_login": "timerloggedout-spec",
-      "base_sha": "6b00808428c3013717ed4d1fb4bb2af1f866417b",
-      "changed_file_count": 1,
-      "files_total_count": 1,
-      "files_observed_count": 1,
-      "files_truncated": false,
-      "files_complete": true,
-      "implementation_file_count": 0,
-      "stake_marker_present": true,
-      "stake_only": true,
-      "solution_proof_present": false,
-      "checks_observed": 0,
-      "checks_total_count": 0,
-      "checks_truncated": false,
-      "checks_complete": false,
-      "checks_pass": false,
-      "realization_note": "requires a separately linked, independently verified effect receipt"
-    },
-    {
       "pr_url": "https://github.com/rishiyaduwanshi/boiler/pull/101",
-      "audited_at": "2026-10-21T20:22:51.591725+00:00",
+      "audited_at": "2026-10-22T14:07:46.925149+00:00",
       "stage": "closed_unmerged",
       "evidence_gaps": [
         "solution_proof_missing"
@@ -2531,96 +2377,6 @@
       "solution_proof_present": false,
       "checks_observed": 1,
       "checks_total_count": 1,
-      "checks_truncated": false,
-      "checks_complete": true,
-      "checks_pass": true,
-      "realization_note": "requires a separately linked, independently verified effect receipt"
-    },
-    {
-      "pr_url": "https://github.com/marrabld/omazone/pull/72",
-      "audited_at": "2026-10-21T20:22:53.009596+00:00",
-      "stage": "closed_unmerged",
-      "evidence_gaps": [
-        "solution_proof_missing"
-      ],
-      "realized_effect_verified": false,
-      "audit_status": "observed",
-      "state": "closed",
-      "merged": false,
-      "head_sha": "5976f59dad15914b24a223983071954449c74a33",
-      "contributor_login": "timerloggedout-spec",
-      "base_sha": "b3354c69f62907b1a725c56eac6591682a6de16a",
-      "changed_file_count": 1,
-      "files_total_count": 1,
-      "files_observed_count": 1,
-      "files_truncated": false,
-      "files_complete": true,
-      "implementation_file_count": 0,
-      "stake_marker_present": true,
-      "stake_only": true,
-      "solution_proof_present": false,
-      "checks_observed": 1,
-      "checks_total_count": 1,
-      "checks_truncated": false,
-      "checks_complete": true,
-      "checks_pass": true,
-      "realization_note": "requires a separately linked, independently verified effect receipt"
-    },
-    {
-      "pr_url": "https://github.com/tusharmotwani1718/dropsend/pull/24",
-      "audited_at": "2026-10-21T20:22:55.397177+00:00",
-      "stage": "closed_unmerged",
-      "evidence_gaps": [
-        "solution_proof_missing"
-      ],
-      "realized_effect_verified": false,
-      "audit_status": "observed",
-      "state": "closed",
-      "merged": false,
-      "head_sha": "431d26f2304daf1b7acb3a50ac324c4909c75ca1",
-      "contributor_login": "timerloggedout-spec",
-      "base_sha": "0e3667d93f86ad737bc338732b0e16d78e605a58",
-      "changed_file_count": 1,
-      "files_total_count": 1,
-      "files_observed_count": 1,
-      "files_truncated": false,
-      "files_complete": true,
-      "implementation_file_count": 0,
-      "stake_marker_present": true,
-      "stake_only": true,
-      "solution_proof_present": false,
-      "checks_observed": 1,
-      "checks_total_count": 1,
-      "checks_truncated": false,
-      "checks_complete": true,
-      "checks_pass": true,
-      "realization_note": "requires a separately linked, independently verified effect receipt"
-    },
-    {
-      "pr_url": "https://github.com/P-r-e-m-i-u-m/open-source-starter-lab/pull/492",
-      "audited_at": "2026-10-21T18:39:49.463153+00:00",
-      "stage": "accepted",
-      "evidence_gaps": [
-        "solution_proof_missing"
-      ],
-      "realized_effect_verified": false,
-      "audit_status": "observed",
-      "state": "closed",
-      "merged": true,
-      "head_sha": "5661ffa9067c68c8d2eef67ee192eeb684c30d34",
-      "contributor_login": "timerloggedout-spec",
-      "base_sha": "85b5a38b017c15d36856acbfd97e073e3326564a",
-      "changed_file_count": 1,
-      "files_total_count": 1,
-      "files_observed_count": 1,
-      "files_truncated": false,
-      "files_complete": true,
-      "implementation_file_count": 0,
-      "stake_marker_present": true,
-      "stake_only": true,
-      "solution_proof_present": false,
-      "checks_observed": 5,
-      "checks_total_count": 5,
       "checks_truncated": false,
       "checks_complete": true,
       "checks_pass": true,
@@ -2655,36 +2411,6 @@
       "checks_truncated": false,
       "checks_complete": false,
       "checks_pass": false,
-      "realization_note": "requires a separately linked, independently verified effect receipt"
-    },
-    {
-      "pr_url": "https://github.com/Soneso/stellar-agent-wallet/pull/349",
-      "audited_at": "2026-10-21T18:39:51.557361+00:00",
-      "stage": "closed_unmerged",
-      "evidence_gaps": [
-        "solution_proof_missing"
-      ],
-      "realized_effect_verified": false,
-      "audit_status": "observed",
-      "state": "closed",
-      "merged": false,
-      "head_sha": "51249ab4b2df90982aa2f5d42ed7c8290e5f810c",
-      "contributor_login": "timerloggedout-spec",
-      "base_sha": "d6dfa969cb7b888613a46ea6778b81711335988f",
-      "changed_file_count": 1,
-      "files_total_count": 1,
-      "files_observed_count": 1,
-      "files_truncated": false,
-      "files_complete": true,
-      "implementation_file_count": 0,
-      "stake_marker_present": true,
-      "stake_only": true,
-      "solution_proof_present": false,
-      "checks_observed": 2,
-      "checks_total_count": 2,
-      "checks_truncated": false,
-      "checks_complete": true,
-      "checks_pass": true,
       "realization_note": "requires a separately linked, independently verified effect receipt"
     },
     {
@@ -2763,37 +2489,6 @@
       "head_sha": "802e9141399623b9773944fa0725fd0f115aaeb2",
       "contributor_login": "timerloggedout-spec",
       "base_sha": "7c2e5bd04c1c3cbe3d50221aa421ac445cc4f847",
-      "changed_file_count": 1,
-      "files_total_count": 1,
-      "files_observed_count": 1,
-      "files_truncated": false,
-      "files_complete": true,
-      "implementation_file_count": 0,
-      "stake_marker_present": true,
-      "stake_only": true,
-      "solution_proof_present": false,
-      "checks_observed": 0,
-      "checks_total_count": 0,
-      "checks_truncated": false,
-      "checks_complete": false,
-      "checks_pass": false,
-      "realization_note": "requires a separately linked, independently verified effect receipt"
-    },
-    {
-      "pr_url": "https://github.com/pulseaiclub/phi/pull/286",
-      "audited_at": "2026-10-21T18:39:56.877986+00:00",
-      "stage": "closed_unmerged",
-      "evidence_gaps": [
-        "solution_proof_missing",
-        "validation_not_verified"
-      ],
-      "realized_effect_verified": false,
-      "audit_status": "observed",
-      "state": "closed",
-      "merged": false,
-      "head_sha": "f8589a6673a3b854f4e29dfa684a5e1512950af8",
-      "contributor_login": "timerloggedout-spec",
-      "base_sha": "f9cafdeaf2427f9d9c115957d47ee713a2f49f58",
       "changed_file_count": 1,
       "files_total_count": 1,
       "files_observed_count": 1,
@@ -2903,37 +2598,6 @@
       "realization_note": "requires a separately linked, independently verified effect receipt"
     },
     {
-      "pr_url": "https://github.com/nesstyx/ChessHome/pull/81",
-      "audited_at": "2026-10-21T23:38:28.248047+00:00",
-      "stage": "closed_unmerged",
-      "evidence_gaps": [
-        "solution_proof_missing",
-        "validation_not_verified"
-      ],
-      "realized_effect_verified": false,
-      "audit_status": "observed",
-      "state": "closed",
-      "merged": false,
-      "head_sha": "8c5eee8e03e153ff757f23b62745f2f3eeb44f3f",
-      "contributor_login": "timerloggedout-spec",
-      "base_sha": "25282d9c7f7cddc9372520b0d5290186590f4008",
-      "changed_file_count": 1,
-      "files_total_count": 1,
-      "files_observed_count": 1,
-      "files_truncated": false,
-      "files_complete": true,
-      "implementation_file_count": 0,
-      "stake_marker_present": true,
-      "stake_only": true,
-      "solution_proof_present": false,
-      "checks_observed": 0,
-      "checks_total_count": 0,
-      "checks_truncated": false,
-      "checks_complete": false,
-      "checks_pass": false,
-      "realization_note": "requires a separately linked, independently verified effect receipt"
-    },
-    {
       "pr_url": "https://github.com/Magiclovekorean/unbloarchy/pull/5",
       "audited_at": "2026-10-21T23:38:29.585322+00:00",
       "stage": "closed_unmerged",
@@ -2962,36 +2626,6 @@
       "checks_truncated": false,
       "checks_complete": false,
       "checks_pass": false,
-      "realization_note": "requires a separately linked, independently verified effect receipt"
-    },
-    {
-      "pr_url": "https://github.com/GRITui/pixel-builder/pull/13",
-      "audited_at": "2026-10-21T23:38:30.957361+00:00",
-      "stage": "accepted",
-      "evidence_gaps": [
-        "solution_proof_missing"
-      ],
-      "realized_effect_verified": false,
-      "audit_status": "observed",
-      "state": "closed",
-      "merged": true,
-      "head_sha": "e88a3c89bec86892bd814f2229d5153648e4a4bf",
-      "contributor_login": "timerloggedout-spec",
-      "base_sha": "803fc262ae992cb4c8570a1f98ff74ca8cf7b350",
-      "changed_file_count": 1,
-      "files_total_count": 1,
-      "files_observed_count": 1,
-      "files_truncated": false,
-      "files_complete": true,
-      "implementation_file_count": 0,
-      "stake_marker_present": true,
-      "stake_only": true,
-      "solution_proof_present": false,
-      "checks_observed": 2,
-      "checks_total_count": 2,
-      "checks_truncated": false,
-      "checks_complete": true,
-      "checks_pass": true,
       "realization_note": "requires a separately linked, independently verified effect receipt"
     },
     {

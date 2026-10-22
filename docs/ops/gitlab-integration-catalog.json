@@ -1,0 +1,102 @@
+{
+  "schema_version": "gitlab-integration-catalog.v1",
+  "purpose": "Non-secret, declarative registry of GitLab integration candidates and existing provider complement surfaces; not a record of environment state.",
+  "reconciliation_authority": {
+    "document": "docs/ops/GITHUB-GITLAB-GOVERNED-RECONCILIATION.md",
+    "summary": "GitHub master is the canonical promotion spine. The governed workflow compares GitHub master with the selected GitLab branch; aligned or behind GitLab is a no-op, while ahead/diverged states may produce an ordinary merge and review PR against master. Conflicts stop; there is no GitLab write, force-push, or auto-merge. Review and promotion remain separate decisions. This catalog grants no authority."
+  },
+  "budget_policy": {
+    "pooling": false,
+    "quota_bypass": false,
+    "rule": "Track and enforce a separate budget/quota for every service and billing account. Unknown pricing/quota is recorded as cost_unknown; do not infer limits or use one provider to evade another service's cap."
+  },
+  "integrations": [
+    {
+      "id": "gitlab-mcp",
+      "kind": "mcp_server",
+      "endpoint": "https://gitlab.com/api/v4/mcp",
+      "status": "requires_auth_approval",
+      "auth": {"method": "OAuth 2.0", "scope": "mcp", "legacy_pat": "not_supported"},
+      "approval_required": true,
+      "enabled": false,
+      "cost_status": "cost_unknown",
+      "quota_policy": "Separate GitLab plan/credits and any client-side model/provider budget; no pooling or quota bypass.",
+      "source": "https://docs.gitlab.com/user/model_context_protocol/mcp_server/"
+    },
+    {
+      "id": "glab-cli",
+      "kind": "cli",
+      "command": "glab",
+      "status": "requires_auth_approval",
+      "auth": {"method": "User-configured GitLab authentication; supports OAuth and personal access tokens"},
+      "approval_required": true,
+      "enabled": false,
+      "cost_status": "cost_unknown",
+      "quota_policy": "GitLab API/service limits remain separate; no pooling or quota bypass.",
+      "source": "https://docs.gitlab.com/cli/"
+    },
+    {
+      "id": "gitlab-duo-cli",
+      "kind": "ai_cli",
+      "command": "duo",
+      "status": "requires_entitlement_auth_approval",
+      "entitlement": "unknown_for_this_account",
+      "auth": {"method": "Requires setup and authenticated GitLab account"},
+      "approval_required": true,
+      "enabled": false,
+      "cost_status": "cost_unknown",
+      "quota_policy": "Any GitLab Duo plan/credits and model consumption are separately budgeted; no pooling or quota bypass.",
+      "source": "https://docs.gitlab.com/user/gitlab_duo_cli/"
+    }
+  ],
+  "optional_quota_service_candidates": [
+    {
+      "id": "openrouter",
+      "role": "existing repository provider complement surface; not a new service or GitLab integration",
+      "catalog_state": "existing_repo_provider",
+      "status": "requires_auth_approval",
+      "enabled": false,
+      "cost_status": "cost_unknown",
+      "budget_boundary": "Any OpenRouter account has its own independent billing and quota. No pooled budget, assumed allowance, or cap bypass; live account limits are unknown.",
+      "source": "https://openrouter.ai/"
+    },
+    {
+      "id": "google-ai-studio-gemini",
+      "role": "existing Gemini integration/provider complement surface; not a new service or GitLab integration",
+      "catalog_state": "existing_repo_provider",
+      "status": "requires_auth_approval",
+      "enabled": false,
+      "cost_status": "cost_unknown",
+      "budget_boundary": "Any Google AI Studio/Gemini account has its own independent billing and quota. No pooled budget, assumed allowance, or cap bypass; live account limits are unknown.",
+      "source": "https://ai.google.dev/"
+    }
+  ],
+  "additional_capacity_options": [
+    {
+      "id": "cerebras",
+      "role": "existing documented candidate; not a new integration",
+      "catalog_state": "existing_documented_candidate_without_verified_account",
+      "status": "requires_account_verification_and_budget_approval",
+      "enabled": false,
+      "cost_status": "cost_unknown",
+      "actual_remaining": null,
+      "official_limit_reference": "Organization/model-scoped continuous token bucket with separate uncached-token and total-token limits; the account's actual limits are shown in Cerebras Cloud Console Limits. Trial access is time/credit bounded and is not a permanently renewing free allowance.",
+      "quota_policy": "Independent Cerebras account budget and quota; no pooling or cap bypass. Official limits describe policy only and do not establish this account's actual remaining quota.",
+      "validation_next_steps": "Zero-spend validation only: verify account access, actual limits and budget approval, then determine API access requirements. Do not enable service or add an invocation adapter.",
+      "source": "https://inference-docs.cerebras.ai/support/rate-limits"
+    },
+    {
+      "id": "cloudflare-workers-ai",
+      "role": "existing documented candidate; not a new integration",
+      "catalog_state": "existing_documented_candidate_without_verified_account",
+      "status": "requires_account_verification_and_budget_approval",
+      "enabled": false,
+      "cost_status": "cost_unknown",
+      "actual_remaining": null,
+      "official_limit_reference": "The published free allowance is 10,000 neurons per day and resets at 00:00 UTC; some models are paid-only. This describes published policy, not this account's actual remaining allowance or access.",
+      "quota_policy": "Independent Cloudflare account budget and quota; no pooling or cap bypass. Official limits describe policy only and do not establish this account's actual remaining quota.",
+      "validation_next_steps": "Zero-spend validation only: verify account access, model eligibility, actual allowance and budget approval, then determine API access requirements. Do not enable service or add an invocation adapter; no purchase or paid enablement.",
+      "source": "https://developers.cloudflare.com/workers-ai/platform/pricing/"
+    }
+  ]
+}

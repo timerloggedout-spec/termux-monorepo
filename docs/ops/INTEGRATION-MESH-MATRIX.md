@@ -28,8 +28,8 @@ Two different GitHub lists exist and this matrix keeps them separate:
 checks/reviews/comments — the LIVE-API census). An app can be in either list
 without the other (§5 is exactly that gap). The Settings → Installations UI
 would be the union view, but it is **closed as NOT ESTABLISHED by design**
-(fleet credential rule, 2026-10-21): all GitHub access runs through the PAT
-helper, `/user/installations` refuses PATs (403) by GitHub's design, and no
+(fleet credential rule, 2026-10-21): this fleet's owner-controlled GitHub
+access runs through the PAT helper, `/user/installations` refuses PATs (403) by GitHub's design, and no
 browser sign-in route is used for GitHub access. §3/§4 + §5 together are the
 standing answer — an evidence-based reconstruction, not a placeholder.
 **Live floor, counted 2026-10-21:** ≥29 distinct apps are active on the hub
@@ -88,7 +88,7 @@ Grouped by the service each name serves (the mesh's wiring diagram in one table)
 | PM / deploy / coverage | `LINEAR_API_KEY`, `VERCEL_TOKEN`, `VERCEL_GITHUB_AND_TANKA`, `FLY_IO_ORG_TOKEN`, `CODECOV_TOKEN` |
 | Vault | `TMX_VAULT_AGE_KEY` |
 
-### 2c. Every other secret store — enumerated, all empty (LIVE-API, 2026-10-21)
+### 2c. Every other secret store — enumerated; all empty except the 7 repo Codespaces secrets listed here (LIVE-API, 2026-10-21)
 
 | Store | Result |
 |---|---|
@@ -102,7 +102,9 @@ Grouped by the service each name serves (the mesh's wiring diagram in one table)
 | User Codespaces secrets | 0 |
 | Repo Actions variables | 2 — `TERMUX_MCP_ENDPOINT` (Pinggy tunnel to the device MCP, refreshed 2026-10-21), `TERMUX_MCP_ENDPOINT_UPDATED_AT` |
 
-**Reading:** the mesh's credentials are 100% repo-scoped today. The orgs and
+**Reading:** the mesh's *secret stores* are 100% repo-scoped today (the
+account-level PATs in §2a and the SSH key in §5B are separate account
+surfaces, not secret stores). The orgs and
 environments are named structure with nothing behind them yet — that is unused
 capacity, addressed in §9 (moves C3/C4), not a defect to fix by moving secrets
 around casually.
@@ -139,7 +141,7 @@ the repo's heavy automation mostly switched on after the snapshot.
 | PostHog | PostHog | Never | none | Dormant analytics |
 | Pulumi Cloud | pulumi | Never | via Pulumi App (§5) | OAuth twin; App active |
 | Qodo Git Connect | Codium-ai | Never | via Qodo Code Review App (§5) | OAuth twin; App active |
-| Qodo.ai | qodo-ai | Never | via Qodo Code Review App (§5) |
+| Qodo.ai | qodo-ai | Never | via Qodo Code Review App (§5) | OAuth twin; the App in §5 is the working surface |
 | Replit | replit-integrations | ≤2 wk | Muse-side connector also connected (MAP) | Paired surfaces: Replit apps lane |
 | Spck Editor | spck-io | Never | none | Mobile editor; device-side convenience |
 | Supermemory login [v3 prod] | Dhravya | Never | none | Dormant memory service |
@@ -277,10 +279,13 @@ Per-app spread across those repos: the core 19 apps (Cursor, Gitar, CodeRabbit,
 Mistral, Devin, Vercel, Render, Travis, Sentry, LaunchDarkly, Codacy, Aikido,
 BlocksOrg, Tembo, Graphite, Mintlify, Kilo, Pulumi, Blacksmith) appear on all 7
 cluster repos; **Codecov on 5, Hark on 4, GitHub Pages on 2** (hub + user-site).
-Reading: the review/deploy app cluster's reach covers every actively pushed
-personal repo, not just the hub — consistent with all-repositories
+Reading: the review/deploy app cluster's reach covers all seven cluster
+repos, not just the hub — consistent with all-repositories
 installations — while Codecov/Hark/Pages act only where their specific
-triggers fire. The other 50 repos' heads predate or never triggered the apps.
+triggers fire. The three other recently pushed repos in the sample
+(`cubicle_fork`, `deepbiology-lab_fork`, `redamon_fork`) show GitHub Actions
+only and sit outside the cluster; the other 50 repos' heads predate or never
+triggered the apps.
 **Webhooks:** among the top 15 pushed repos, only the hub has any (§6).
 
 **Sign-in & identity inventory (direct endpoints, 2026-10-21):**
@@ -301,7 +306,7 @@ triggers fire. The other 50 repos' heads predate or never triggered the apps.
 | Piece | State |
 |---|---|
 | Webhooks (3) | **Linear** — all events (`*`), last 200 OK · **GitLab mirror** — push+PR → `gitlab.com` project 85129320 mirror/pull, last **400** · **ZenHub** — 12 event types, last **422 misconfigured** |
-| Workflows | **192 total, 191 active.** Recent 100 runs: actors all `timerloggedout-spec` (PAT-fired surface); events workflow_run 40, push 22, issue_comment 22, issues 12 |
+| Workflows | **192 total, 191 active.** Recent 100 runs: actors all `timerloggedout-spec` (account-attributed surface — which specific token fired each run is NOT ESTABLISHED, see the closing list); events workflow_run 40, push 22, issue_comment 22, issues 12 |
 | PR / issue totals (v2, fully paginated) | **1,292 PRs** — authors: owner 993, Jules 279, CodeRabbit 9, Dependabot 3, ECC 3, github-actions 2, Devin 2, Tembo 1 · **193 true issues** (owner 175, github-actions 17, mehvvy 1) · requested-reviewer records sit almost entirely on the owner (10) — the peer bots are triggered by comments/orchestrator, not by review requests |
 | Submitted reviews (two frames — keep separate) | *Most-recently-updated 150 PRs:* 42 PRs carry 264 reviews — Devin 154 (all COMMENTED; 92 on #143 alone), CodeRabbit 61 (41 CHANGES_REQUESTED / 5 APPROVED), owner 27, Aikido 12, Qodo 5, GHAS 3, Codex 2. *Most-recently-created 150 PRs:* only 16 PRs carry reviews — CodeRabbit 18, owner 7, GHAS 3. Review weight lives on long-lived PRs |
 | Comment actors (2,000 newest) | Only **10 distinct actors**: ECC 901 (45%), owner 418, github-actions 254, CodeRabbit 174, Codex 84, BlocksOrg 54, Gitar 48, Qodo 45, Vercel 15, Jules 7 — **bots = 79% of volume** |

@@ -37,9 +37,10 @@ def test_static_mappings_exhaust_canonical_roster_without_claiming_quota_service
     assert counts["missing_static_adapter_mappings"] == 0
     # All 27 families have explicit registrations; only opt-in/read-only readers are executable.
     assert counts["registered_provider_family_mappings"] == 27
-    assert counts["actual_quota_service_mappings"] == 27
+    assert counts["actual_quota_service_mappings"] == 3
     assert counts["executable_quota_service_mappings"] == 3
-    assert counts["missing_actual_quota_service_mappings"] == 0
+    assert counts["missing_actual_quota_service_mappings"] == 24
+    assert counts["missing_registered_provider_family_mappings"] == 0
     assert counts["opt_in_private_service_managers"] == 3
     assert counts["implemented_passive_adapters"] == 6
     assert counts["documentation_only"] == 18

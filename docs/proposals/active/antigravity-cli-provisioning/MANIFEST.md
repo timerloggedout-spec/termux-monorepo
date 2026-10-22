@@ -8,8 +8,8 @@ status: executing
 priority: P2
 reviewers: []
 related_issues: [1497]
-related_prs: []
-related_branches: [cue/1497-antigravity-provisioning]
+related_prs: [1498, 1514]
+related_branches: [cue/1497-antigravity-provisioning, cue/1497-operational-device2]
 gates_required: [repo-gate, termux-smoke]
 ---
 # Antigravity CLI provisioning

@@ -49,3 +49,18 @@ Independent review found the first exact-byte check could accept a NUL suffix be
 The original issue checkout gained concurrent unrelated-to-this-follow-up edits while it was being inspected. They were preserved. This follow-up uses `/workspace/termux-agy-operational-1497` and branch `cue/1497-operational-device2`, based on #1498 head `d7b8022e`. It includes the original three proposal/readiness commits because they have not merged into staging. No shared worktree reset/clean, force push, merge or auto-merge was performed.
 
 Original PR #1498: CodeRabbit approved, no inline comments, applicable repository checks passed, four untriaged Vercel deployment status failures. Other unavailable bot reviews are not approvals. These statuses must not be silently reused as approval of the new follow-up commit. Linear remains unresolved under the recorded GitHub fallback. Keep the issue open for the native discovery/skill/verifier/full-workspace gaps and verbosity discrepancy.
+
+## Secondary recovery continuation — AGY-1497-09/10
+
+This supersedes the earlier saved-Low and no-Boot/no-service status only for the identity-verified secondary. See [SECONDARY-RECOVERY.md](SECONDARY-RECOVERY.md) for implementation, diagnosis, limits and rollback.
+
+- Strict pinned SSH verification and local canonical marker/account/model matched the secondary. Origin was not contacted; Tailscale settings and SSH keys were unchanged.
+- Installed termux-services 0.13-1 and runit 2.3.1; deployed dedicated recovery wrapper/logger, log rotation, WakeLock-first Boot hook and non-killing `reconnect` alias. Original manual listener remains alive; recovery wrapper waits for its exit. No live crash/reboot test.
+- Native syntax/config checks, fresh SSH, log/status checks, fresh-zsh alias, exact source hashes and idempotent reinstall passed. Reinstall preserved the complete `.zshrc` hash and manual listener PID.
+- Boot installation confirmed for Android user 0. First-launch activation/reboot delivery unverified; owner should open Boot once on the secondary if not already done.
+- High restored using the authorized AGY-1497-09 helper and strict controller-side JSON transformation. Whole post-write file matched the candidate; unrelated bytes and `always-proceed`/`agent-decides` unchanged. No new CLI/model prompt or pilot.
+- **78 focused Linux fixture tests PASS**, including 13 recovery tests. Proposal registry: 15 proposals PASS. Repo-gate against `origin/master-staging` PASS; Termux smoke PASS on Linux (`termux=False`); Bash syntax and whitespace checks PASS. Fixture tests are not native Android Python/model evidence.
+- Broader tests initially failed because the shared root filesystem could not allocate temporary files. Rerunning with `TMPDIR=/dev/shm/agy-1514-tests` passed. Shared-cache cleanup was canceled while waiting for another task's lock; no repository/worktree or in-use cache was deleted.
+- Self-review fixed installer-lock descriptor inheritance before deployment. No extra reviewer/model request, broad ADB access, merge, auto-merge, force push or shared reset/cleanup. Pre-existing untracked `.serena/` untouched.
+
+Current online/SSH-success evidence does not prove Tailscale never crashed earlier. Historical outage cause remains unestablished. Earlier native telemetry/discovery/verifier/full-provisioning gaps remain open. PR #1514 stays open and unmerged.

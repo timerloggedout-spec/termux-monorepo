@@ -26,6 +26,14 @@ The operational lane exists, but full provisioning is not done: saved verbosity 
 
 | ID | Work | Owner | Status | Acceptance |
 |---|---|---|---|---|
-| AGY-1497-09 | Passive full-diagnostics + three-line steering filter; restore High on pinned secondary only | Cue | in progress; device offline | Offline parser/capture/settings tests and gates; only verbosity changes; auto-approve preserved; raw stream retained; no model calls; device identity and deployment verified before completion |
+| AGY-1497-09 | Passive full-diagnostics + three-line steering filter; restore High on pinned secondary only | Cue | in progress; High restored, native telemetry still unverified | Strict pinned identity and exact candidate re-read verified High-only change; auto-approve preserved; no model calls; earlier offline filtering evidence remains valid but is not native telemetry proof |
 
 Operator explicitly approved correcting the low/High mismatch and selected programmatic filtering. Registration: https://github.com/timerloggedout-spec/termux-monorepo/issues/1497#issuecomment-6336367544 . Live PR #1514 head is `cue/1497-operational-device2`, not the original provisioning branch. [Filtering contract and current deployment boundary](FILTERING.md).
+
+## Approved secondary recovery continuation
+
+| ID | Work | Owner | Status | Acceptance |
+|---|---|---|---|---|
+| AGY-1497-10 | Secondary-only Boot + WakeLock, runit SSH recovery, non-killing reconnect alias | Cue | in progress; deployed, Boot activation/reboot unverified | Pinned key/local identity verified; native recovery wrapper/logger running, manual listener untouched; 13 fixture tests; reconnect/alias verified; Boot installed but first launch unknown; no Tailscale edits, Origin access, model prompts or merge |
+
+Operator explicitly requested crash recovery and a quick reconnect command after manually running `termux-wake-lock` and `sshd`. Registration: https://github.com/timerloggedout-spec/termux-monorepo/issues/1497#issuecomment-6339476940 . Work remains on PR #1514's actual branch using the existing section 8 GitHub fallback. All unrelated checkout changes preserved. Freshly observed Low was corrected under already-approved AGY-1497-09; High and unchanged auto-approve were reverified. [Runtime evidence, limitations and rollback](SECONDARY-RECOVERY.md).

@@ -44,17 +44,18 @@ def _normalise(nodes: Iterable[str], edges: Iterable[Sequence[str]]) -> tuple[li
     return sorted(node_list), sorted(edge_set)
 
 
-def _cyclic_nodes(remaining: set[str], adjacency: Mapping[str, set[str]]) -> list[str]:
-    """Return only vertices in cyclic strongly-connected components (including self-loops)."""
+def _cycle_report(remaining: set[str], adjacency: Mapping[str, set[str]]) -> tuple[list[str], int]:
+    """Return cyclic vertices and the number of cyclic strongly-connected components."""
     index = 0
     indexes: dict[str, int] = {}
     lowlinks: dict[str, int] = {}
     stack: list[str] = []
     on_stack: set[str] = set()
     cyclic: set[str] = set()
+    cycle_count = 0
 
     def visit(node: str) -> None:
-        nonlocal index
+        nonlocal index, cycle_count
         indexes[node] = lowlinks[node] = index
         index += 1
         stack.append(node)
@@ -74,12 +75,13 @@ def _cyclic_nodes(remaining: set[str], adjacency: Mapping[str, set[str]]) -> lis
                 if member == node:
                     break
             if len(component) > 1 or node in adjacency[node]:
+                cycle_count += 1
                 cyclic.update(component)
 
     for node in sorted(remaining):
         if node not in indexes:
             visit(node)
-    return sorted(cyclic)
+    return sorted(cyclic), cycle_count
 
 
 def analyze_dag(
@@ -128,7 +130,7 @@ def analyze_dag(
         })
 
     remaining = {node for node, degree in indegree.items() if degree > 0}
-    cyclic = _cyclic_nodes(remaining, adjacency)
+    cyclic, cycle_count = _cycle_report(remaining, adjacency)
     blocked = sorted(remaining - set(cyclic))
     return {
         "schema_version": RECEIPT_SCHEMA_VERSION,
@@ -138,10 +140,10 @@ def analyze_dag(
         "graph_sha256": graph_hash,
         "node_count": len(node_list),
         "edge_count": len(edge_list),
-        "coverage": 1.0 if not node_list else len(order) / len(node_list),
+        "coverage": None if not node_list else len(order) / len(node_list),
         "order": order,
         "frontier_transitions": transitions,
-        "cycle_count": len(cyclic),
+        "cycle_count": cycle_count,
         "cyclic_nodes": cyclic,
         "blocked_nodes": blocked,
         "unresolved_nodes": sorted(remaining),
@@ -179,7 +181,7 @@ def evaluate_readiness(
     result: dict[str, str] = {}
     for node in node_list:
         own = states.get(node, "PENDING")
-        if own in {"SUCCEEDED", "FAILED", "SKIPPED", "UNKNOWN", "BLOCKED"}:
+        if own in {"RUNNING", "SUCCEEDED", "FAILED", "SKIPPED", "UNKNOWN", "BLOCKED"}:
             result[node] = own
             continue
         prereq_states = [states.get(prerequisite, "PENDING") for prerequisite in predecessors[node]]

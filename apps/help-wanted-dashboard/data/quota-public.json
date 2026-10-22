@@ -1,0 +1,1925 @@
+{
+  "coverage": {
+    "coverage_counts": {
+      "provider_families": 27
+    },
+    "mapping_capability_counts": {
+      "actual_mapping": 3,
+      "documentation_only": 18,
+      "passive_parser": 6,
+      "unknown_or_unsupported": 3
+    },
+    "provider_families": [
+      {
+        "documented_reset_semantics": "unknown",
+        "evidence_state": "unknown",
+        "manager_metadata_state": "documented_only",
+        "manager_status": "unsupported",
+        "mapping_state": "documented_registry_mapping",
+        "observation_method": "unsupported_or_no_verified_official_counter",
+        "observed_reset": "unknown",
+        "official_evidence": [
+          "https://aionlabs.ai/"
+        ],
+        "provider_family": "aion",
+        "quota_kind": "unknown",
+        "quota_mapping": {
+          "dimensions": "unknown",
+          "source_kind": "none_verified",
+          "status": "unsupported_or_unknown"
+        },
+        "remaining_state": "not_publicly_observed",
+        "runtime_manager_state": "not_established_by_this_inventory",
+        "source_capability": "registered_service",
+        "static_mapping_evidence": [],
+        "static_mapping_state": "static_roster_link_only"
+      },
+      {
+        "documented_reset_semantics": "continuous token-bucket replenishment, not a fixed reset; live capacity unknown",
+        "evidence_state": "unknown",
+        "manager_metadata_state": "documented_only",
+        "manager_status": "public_documentation_only",
+        "mapping_state": "documented_registry_mapping",
+        "observation_method": "official_documentation_only; no passive parser",
+        "observed_reset": "unknown",
+        "official_evidence": [
+          "https://inference-docs.cerebras.ai/support/rate-limits"
+        ],
+        "provider_family": "cerebras",
+        "quota_kind": "unknown",
+        "quota_mapping": {
+          "dimensions": "unknown",
+          "source_kind": "official_documentation_only",
+          "status": "documentation_only"
+        },
+        "remaining_state": "not_publicly_observed",
+        "runtime_manager_state": "not_established_by_this_inventory",
+        "source_capability": "registered_service",
+        "static_mapping_evidence": [],
+        "static_mapping_state": "static_roster_link_only"
+      },
+      {
+        "documented_reset_semantics": "unknown",
+        "evidence_state": "unknown",
+        "manager_metadata_state": "documented_only",
+        "manager_status": "public_documentation_only",
+        "mapping_state": "documented_registry_mapping",
+        "observation_method": "official_documentation_only; no passive parser",
+        "observed_reset": "unknown",
+        "official_evidence": [],
+        "provider_family": "cloudflare",
+        "quota_kind": "unknown",
+        "quota_mapping": {
+          "dimensions": "unknown",
+          "source_kind": "official_documentation_only",
+          "status": "documentation_only"
+        },
+        "remaining_state": "not_publicly_observed",
+        "runtime_manager_state": "not_established_by_this_inventory",
+        "source_capability": "registered_service",
+        "static_mapping_evidence": [],
+        "static_mapping_state": "static_roster_link_only"
+      },
+      {
+        "documented_reset_semantics": "unknown",
+        "evidence_state": "unknown",
+        "manager_metadata_state": "documented_only",
+        "manager_status": "public_documentation_only",
+        "mapping_state": "documented_registry_mapping",
+        "observation_method": "official_documentation_only; no passive parser",
+        "observed_reset": "unknown",
+        "official_evidence": [
+          "https://docs.cohere.com/docs/rate-limits"
+        ],
+        "provider_family": "cohere",
+        "quota_kind": "unknown",
+        "quota_mapping": {
+          "dimensions": "unknown",
+          "source_kind": "official_documentation_only",
+          "status": "documentation_only"
+        },
+        "remaining_state": "not_publicly_observed",
+        "runtime_manager_state": "not_established_by_this_inventory",
+        "source_capability": "registered_service",
+        "static_mapping_evidence": [],
+        "static_mapping_state": "static_roster_link_only"
+      },
+      {
+        "documented_reset_semantics": "unknown for model API and daily-credit grant: no exact reset instant, timezone, carryover or machine-readable remaining-credit contract verified",
+        "evidence_state": "unknown",
+        "free_entitlement": "public Standard plan: 200 free credits daily for selected API models/tools, shared with Playground and supported Felo tools; exact account/model entitlement unknown; OX Alpha ended-trial notice conflicts with free pricing row",
+        "manager_metadata_state": "documented_only",
+        "manager_status": "unsupported",
+        "mapping_state": "documented_registry_mapping",
+        "observation_method": "unsupported_or_no_verified_official_counter",
+        "observed_reset": "unknown",
+        "official_evidence": [],
+        "provider_family": "felo",
+        "quota_kind": "unknown",
+        "quota_mapping": {
+          "dimensions": "unknown",
+          "source_kind": "none_verified",
+          "status": "unsupported_or_unknown"
+        },
+        "remaining_state": "not_publicly_observed",
+        "runtime_manager_state": "not_established_by_this_inventory",
+        "source_capability": "registered_service",
+        "static_mapping_evidence": [],
+        "static_mapping_state": "static_roster_link_only"
+      },
+      {
+        "documented_reset_semantics": "RPD at midnight America/Los_Angeles; other windows unknown",
+        "evidence_state": "unknown",
+        "manager_metadata_state": "documented_only",
+        "manager_status": "public_documentation_only",
+        "mapping_state": "documented_registry_mapping",
+        "observation_method": "official_documentation_only; no passive parser",
+        "observed_reset": "unknown",
+        "official_evidence": [
+          "https://ai.google.dev/gemini-api/docs/rate-limits"
+        ],
+        "provider_family": "gemini",
+        "quota_kind": "unknown",
+        "quota_mapping": {
+          "dimensions": "unknown",
+          "source_kind": "official_documentation_only",
+          "status": "documentation_only"
+        },
+        "remaining_state": "not_publicly_observed",
+        "runtime_manager_state": "not_established_by_this_inventory",
+        "source_capability": "registered_service",
+        "static_mapping_evidence": [],
+        "static_mapping_state": "static_roster_link_only"
+      },
+      {
+        "documented_reset_semantics": "documented reset header is metric-specific duration; absolute reset unknown",
+        "evidence_state": "unknown",
+        "manager_metadata_state": "documented_only",
+        "manager_status": "implemented_passive_adapter",
+        "mapping_state": "documented_registry_mapping",
+        "observation_method": "implemented_passive_parser; live account validation not established",
+        "observed_reset": "unknown",
+        "official_evidence": [
+          "https://console.groq.com/docs/rate-limits"
+        ],
+        "provider_family": "groq",
+        "quota_kind": "requests_and_tokens",
+        "quota_mapping": {
+          "dimensions": "requests_and_tokens",
+          "source_kind": "official_endpoint_metadata",
+          "status": "implemented_passive_parser"
+        },
+        "remaining_state": "not_publicly_observed",
+        "runtime_manager_state": "not_established_by_this_inventory",
+        "source_capability": "registered_service",
+        "static_mapping_evidence": [],
+        "static_mapping_state": "static_roster_link_only"
+      },
+      {
+        "documented_reset_semantics": "5-minute fixed window; RateLimit t seconds remaining",
+        "evidence_state": "unknown",
+        "manager_metadata_state": "documented_only",
+        "manager_status": "implemented_passive_adapter",
+        "mapping_state": "documented_registry_mapping",
+        "observation_method": "implemented_passive_parser; live account validation not established",
+        "observed_reset": "unknown",
+        "official_evidence": [
+          "https://huggingface.co/docs/hub/en/rate-limits"
+        ],
+        "provider_family": "huggingface",
+        "quota_kind": "hub_api_requests_only",
+        "quota_mapping": {
+          "dimensions": "hub_api_requests_only",
+          "source_kind": "official_endpoint_metadata",
+          "status": "implemented_passive_parser"
+        },
+        "remaining_state": "not_publicly_observed",
+        "runtime_manager_state": "not_established_by_this_inventory",
+        "source_capability": "registered_service",
+        "static_mapping_evidence": [],
+        "static_mapping_state": "static_roster_link_only"
+      },
+      {
+        "documented_reset_semantics": "unknown; source does not specify an API-observed quota reset",
+        "evidence_state": "unknown",
+        "manager_metadata_state": "documented_only",
+        "manager_status": "public_documentation_only",
+        "mapping_state": "documented_registry_mapping",
+        "observation_method": "official_documentation_only; no passive parser",
+        "observed_reset": "unknown",
+        "official_evidence": [],
+        "provider_family": "kilo",
+        "quota_kind": "unknown",
+        "quota_mapping": {
+          "dimensions": "unknown",
+          "source_kind": "official_documentation_only",
+          "status": "documentation_only"
+        },
+        "remaining_state": "not_publicly_observed",
+        "runtime_manager_state": "not_established_by_this_inventory",
+        "source_capability": "registered_service",
+        "static_mapping_evidence": [],
+        "static_mapping_state": "static_roster_link_only"
+      },
+      {
+        "documented_reset_semantics": "unknown; source does not specify an API-observed quota reset",
+        "evidence_state": "unknown",
+        "manager_metadata_state": "documented_only",
+        "manager_status": "public_documentation_only",
+        "mapping_state": "documented_registry_mapping",
+        "observation_method": "official_documentation_only; no passive parser",
+        "observed_reset": "unknown",
+        "official_evidence": [],
+        "provider_family": "llm7",
+        "quota_kind": "unknown",
+        "quota_mapping": {
+          "dimensions": "unknown",
+          "source_kind": "official_documentation_only",
+          "status": "documentation_only"
+        },
+        "remaining_state": "not_publicly_observed",
+        "runtime_manager_state": "not_established_by_this_inventory",
+        "source_capability": "registered_service",
+        "static_mapping_evidence": [],
+        "static_mapping_state": "static_roster_link_only"
+      },
+      {
+        "documented_reset_semantics": "unknown",
+        "evidence_state": "unknown",
+        "manager_metadata_state": "documented_only",
+        "manager_status": "public_documentation_only",
+        "mapping_state": "documented_registry_mapping",
+        "observation_method": "official_documentation_only; no passive parser",
+        "observed_reset": "unknown",
+        "official_evidence": [
+          "https://docs.mistral.ai/resources/known-limitations"
+        ],
+        "provider_family": "mistral",
+        "quota_kind": "unknown",
+        "quota_mapping": {
+          "dimensions": "unknown",
+          "source_kind": "official_documentation_only",
+          "status": "documentation_only"
+        },
+        "remaining_state": "not_publicly_observed",
+        "runtime_manager_state": "not_established_by_this_inventory",
+        "source_capability": "registered_service",
+        "static_mapping_evidence": [],
+        "static_mapping_state": "static_roster_link_only"
+      },
+      {
+        "documented_reset_semantics": "unknown; source does not specify an API-observed quota reset",
+        "evidence_state": "unknown",
+        "manager_metadata_state": "documented_only",
+        "manager_status": "public_documentation_only",
+        "mapping_state": "documented_registry_mapping",
+        "observation_method": "official_documentation_only; no passive parser",
+        "observed_reset": "unknown",
+        "official_evidence": [],
+        "provider_family": "modelscope",
+        "quota_kind": "unknown",
+        "quota_mapping": {
+          "dimensions": "unknown",
+          "source_kind": "official_documentation_only",
+          "status": "documentation_only"
+        },
+        "remaining_state": "not_publicly_observed",
+        "runtime_manager_state": "not_established_by_this_inventory",
+        "source_capability": "registered_service",
+        "static_mapping_evidence": [],
+        "static_mapping_state": "static_roster_link_only"
+      },
+      {
+        "documented_reset_semantics": "unknown; source does not specify an API-observed quota reset",
+        "evidence_state": "unknown",
+        "manager_metadata_state": "documented_only",
+        "manager_status": "public_documentation_only",
+        "mapping_state": "documented_registry_mapping",
+        "observation_method": "official_documentation_only; no passive parser",
+        "observed_reset": "unknown",
+        "official_evidence": [],
+        "provider_family": "nvidia",
+        "quota_kind": "unknown",
+        "quota_mapping": {
+          "dimensions": "unknown",
+          "source_kind": "official_documentation_only",
+          "status": "documentation_only"
+        },
+        "remaining_state": "not_publicly_observed",
+        "runtime_manager_state": "not_established_by_this_inventory",
+        "source_capability": "registered_service",
+        "static_mapping_evidence": [],
+        "static_mapping_state": "static_roster_link_only"
+      },
+      {
+        "documented_reset_semantics": "modern included period has documented inclusive from/exclusive until timestamps; legacy session and weekly reset timestamps; no account identity or entitlement inferred",
+        "evidence_state": "unknown",
+        "manager_metadata_state": "documented_only",
+        "manager_status": "implemented_passive_adapter",
+        "mapping_state": "documented_registry_mapping",
+        "observation_method": "opt_in_private_quota_service; live account validation not established",
+        "observed_reset": "unknown",
+        "official_evidence": [],
+        "provider_family": "ollama",
+        "quota_kind": "monetary_balance_only",
+        "quota_mapping": {
+          "dimensions": "monetary_balance_only",
+          "source_kind": "official_endpoint_metadata",
+          "status": "implemented_passive_parser"
+        },
+        "remaining_state": "not_publicly_observed",
+        "runtime_manager_state": "implemented_opt_in_private_service",
+        "source_capability": "registered_service",
+        "static_mapping_evidence": [],
+        "static_mapping_state": "static_roster_link_only"
+      },
+      {
+        "documented_reset_semantics": "unknown",
+        "evidence_state": "unknown",
+        "manager_metadata_state": "documented_only",
+        "manager_status": "unsupported",
+        "mapping_state": "documented_registry_mapping",
+        "observation_method": "unsupported_or_no_verified_official_counter",
+        "observed_reset": "unknown",
+        "official_evidence": [],
+        "provider_family": "omni",
+        "quota_kind": "unknown",
+        "quota_mapping": {
+          "dimensions": "unknown",
+          "source_kind": "none_verified",
+          "status": "unsupported_or_unknown"
+        },
+        "remaining_state": "not_publicly_observed",
+        "runtime_manager_state": "not_established_by_this_inventory",
+        "source_capability": "registered_service",
+        "static_mapping_evidence": [],
+        "static_mapping_state": "static_roster_link_only"
+      },
+      {
+        "documented_reset_semantics": "free_model_daily_requests policy is UTC daily; counter-specific reset instant unknown; budget reset fields are ISO timestamps/null",
+        "evidence_state": "unknown",
+        "manager_metadata_state": "documented_only",
+        "manager_status": "implemented_passive_adapter",
+        "mapping_state": "documented_registry_mapping",
+        "observation_method": "opt_in_private_quota_service; live account validation not established",
+        "observed_reset": "unknown",
+        "official_evidence": [
+          "https://openrouter.ai/docs/api_reference/limits"
+        ],
+        "provider_family": "openrouter",
+        "quota_kind": "requests_and_monetary_separate",
+        "quota_mapping": {
+          "dimensions": "requests_and_monetary_separate",
+          "source_kind": "official_endpoint_metadata",
+          "status": "implemented_passive_parser"
+        },
+        "remaining_state": "not_publicly_observed",
+        "runtime_manager_state": "implemented_opt_in_private_service",
+        "source_capability": "registered_service",
+        "static_mapping_evidence": [],
+        "static_mapping_state": "static_roster_link_only"
+      },
+      {
+        "documented_reset_semantics": "unknown; source does not specify an API-observed quota reset",
+        "evidence_state": "unknown",
+        "manager_metadata_state": "documented_only",
+        "manager_status": "public_documentation_only",
+        "mapping_state": "documented_registry_mapping",
+        "observation_method": "official_documentation_only; no passive parser",
+        "observed_reset": "unknown",
+        "official_evidence": [],
+        "provider_family": "ovhcloud",
+        "quota_kind": "unknown",
+        "quota_mapping": {
+          "dimensions": "unknown",
+          "source_kind": "official_documentation_only",
+          "status": "documentation_only"
+        },
+        "remaining_state": "not_publicly_observed",
+        "runtime_manager_state": "not_established_by_this_inventory",
+        "source_capability": "registered_service",
+        "static_mapping_evidence": [],
+        "static_mapping_state": "static_roster_link_only"
+      },
+      {
+        "documented_reset_semantics": "unknown",
+        "evidence_state": "unknown",
+        "manager_metadata_state": "documented_only",
+        "manager_status": "public_documentation_only",
+        "mapping_state": "documented_registry_mapping",
+        "observation_method": "official_documentation_only; no passive parser",
+        "observed_reset": "unknown",
+        "official_evidence": [],
+        "provider_family": "requesty",
+        "quota_kind": "unknown",
+        "quota_mapping": {
+          "dimensions": "unknown",
+          "source_kind": "official_documentation_only",
+          "status": "documentation_only"
+        },
+        "remaining_state": "not_publicly_observed",
+        "runtime_manager_state": "not_established_by_this_inventory",
+        "source_capability": "registered_service",
+        "static_mapping_evidence": [],
+        "static_mapping_state": "static_roster_link_only"
+      },
+      {
+        "documented_reset_semantics": "unknown",
+        "evidence_state": "unknown",
+        "manager_metadata_state": "documented_only",
+        "manager_status": "public_documentation_only",
+        "mapping_state": "documented_registry_mapping",
+        "observation_method": "official_documentation_only; no passive parser",
+        "observed_reset": "unknown",
+        "official_evidence": [],
+        "provider_family": "routeway",
+        "quota_kind": "unknown",
+        "quota_mapping": {
+          "dimensions": "unknown",
+          "source_kind": "official_documentation_only",
+          "status": "documentation_only"
+        },
+        "remaining_state": "not_publicly_observed",
+        "runtime_manager_state": "not_established_by_this_inventory",
+        "source_capability": "registered_service",
+        "static_mapping_evidence": [],
+        "static_mapping_state": "static_roster_link_only"
+      },
+      {
+        "documented_reset_semantics": "reset headers describe time until reset, but wire encoding/units are unverified; no reset parser or instant inferred",
+        "evidence_state": "unknown",
+        "manager_metadata_state": "documented_only",
+        "manager_status": "implemented_passive_adapter",
+        "mapping_state": "documented_registry_mapping",
+        "observation_method": "implemented_passive_parser; live account validation not established",
+        "observed_reset": "unknown",
+        "official_evidence": [],
+        "provider_family": "sambanova",
+        "quota_kind": "requests_only",
+        "quota_mapping": {
+          "dimensions": "requests_only",
+          "source_kind": "official_endpoint_metadata",
+          "status": "implemented_passive_parser"
+        },
+        "remaining_state": "not_publicly_observed",
+        "runtime_manager_state": "not_established_by_this_inventory",
+        "source_capability": "registered_service",
+        "static_mapping_evidence": [],
+        "static_mapping_state": "static_roster_link_only"
+      },
+      {
+        "documented_reset_semantics": "unknown",
+        "evidence_state": "unknown",
+        "manager_metadata_state": "documented_only",
+        "manager_status": "public_documentation_only",
+        "mapping_state": "documented_registry_mapping",
+        "observation_method": "official_documentation_only; no passive parser",
+        "observed_reset": "unknown",
+        "official_evidence": [],
+        "provider_family": "sealion",
+        "quota_kind": "unknown",
+        "quota_mapping": {
+          "dimensions": "unknown",
+          "source_kind": "official_documentation_only",
+          "status": "documentation_only"
+        },
+        "remaining_state": "not_publicly_observed",
+        "runtime_manager_state": "not_established_by_this_inventory",
+        "source_capability": "registered_service",
+        "static_mapping_evidence": [],
+        "static_mapping_state": "static_roster_link_only"
+      },
+      {
+        "documented_reset_semantics": "unknown; balance endpoint supplies no quota/reset or free-account entitlement",
+        "evidence_state": "unknown",
+        "manager_metadata_state": "documented_only",
+        "manager_status": "implemented_passive_adapter",
+        "mapping_state": "documented_registry_mapping",
+        "observation_method": "opt_in_private_quota_service; live account validation not established",
+        "observed_reset": "unknown",
+        "official_evidence": [],
+        "provider_family": "siliconflow",
+        "quota_kind": "monetary_balance_only_not_request_quota",
+        "quota_mapping": {
+          "dimensions": "monetary_balance_only_not_request_quota",
+          "source_kind": "official_endpoint_metadata",
+          "status": "implemented_passive_parser"
+        },
+        "remaining_state": "not_publicly_observed",
+        "runtime_manager_state": "implemented_opt_in_private_service",
+        "source_capability": "registered_service",
+        "static_mapping_evidence": [],
+        "static_mapping_state": "static_roster_link_only"
+      },
+      {
+        "documented_reset_semantics": "unknown",
+        "evidence_state": "unknown",
+        "manager_metadata_state": "documented_only",
+        "manager_status": "public_documentation_only",
+        "mapping_state": "documented_registry_mapping",
+        "observation_method": "official_documentation_only; no passive parser",
+        "observed_reset": "unknown",
+        "official_evidence": [],
+        "provider_family": "typhoon",
+        "quota_kind": "unknown",
+        "quota_mapping": {
+          "dimensions": "unknown",
+          "source_kind": "official_documentation_only",
+          "status": "documentation_only"
+        },
+        "remaining_state": "not_publicly_observed",
+        "runtime_manager_state": "not_established_by_this_inventory",
+        "source_capability": "registered_service",
+        "static_mapping_evidence": [],
+        "static_mapping_state": "static_roster_link_only"
+      },
+      {
+        "documented_reset_semantics": "unknown",
+        "evidence_state": "unknown",
+        "manager_metadata_state": "documented_only",
+        "manager_status": "public_documentation_only",
+        "mapping_state": "documented_registry_mapping",
+        "observation_method": "official_documentation_only; no passive parser",
+        "observed_reset": "unknown",
+        "official_evidence": [],
+        "provider_family": "unorouter",
+        "quota_kind": "unknown",
+        "quota_mapping": {
+          "dimensions": "unknown",
+          "source_kind": "official_documentation_only",
+          "status": "documentation_only"
+        },
+        "remaining_state": "not_publicly_observed",
+        "runtime_manager_state": "not_established_by_this_inventory",
+        "source_capability": "registered_service",
+        "static_mapping_evidence": [],
+        "static_mapping_state": "static_roster_link_only"
+      },
+      {
+        "documented_reset_semantics": "unknown",
+        "evidence_state": "unknown",
+        "manager_metadata_state": "documented_only",
+        "manager_status": "public_documentation_only",
+        "mapping_state": "documented_registry_mapping",
+        "observation_method": "official_documentation_only; no passive parser",
+        "observed_reset": "unknown",
+        "official_evidence": [],
+        "provider_family": "xfyun",
+        "quota_kind": "unknown",
+        "quota_mapping": {
+          "dimensions": "unknown",
+          "source_kind": "official_documentation_only",
+          "status": "documentation_only"
+        },
+        "remaining_state": "not_publicly_observed",
+        "runtime_manager_state": "not_established_by_this_inventory",
+        "source_capability": "registered_service",
+        "static_mapping_evidence": [],
+        "static_mapping_state": "static_roster_link_only"
+      },
+      {
+        "documented_reset_semantics": "unknown",
+        "evidence_state": "unknown",
+        "manager_metadata_state": "documented_only",
+        "manager_status": "public_documentation_only",
+        "mapping_state": "documented_registry_mapping",
+        "observation_method": "official_documentation_only; no passive parser",
+        "observed_reset": "unknown",
+        "official_evidence": [],
+        "provider_family": "xkiro",
+        "quota_kind": "unknown",
+        "quota_mapping": {
+          "dimensions": "unknown",
+          "source_kind": "official_documentation_only",
+          "status": "documentation_only"
+        },
+        "remaining_state": "not_publicly_observed",
+        "runtime_manager_state": "not_established_by_this_inventory",
+        "source_capability": "registered_service",
+        "static_mapping_evidence": [],
+        "static_mapping_state": "static_roster_link_only"
+      },
+      {
+        "documented_reset_semantics": "unknown; source does not specify an API-observed quota reset",
+        "evidence_state": "unknown",
+        "manager_metadata_state": "documented_only",
+        "manager_status": "public_documentation_only",
+        "mapping_state": "documented_registry_mapping",
+        "observation_method": "official_documentation_only; no passive parser",
+        "observed_reset": "unknown",
+        "official_evidence": [],
+        "provider_family": "zai",
+        "quota_kind": "unknown",
+        "quota_mapping": {
+          "dimensions": "unknown",
+          "source_kind": "official_documentation_only",
+          "status": "documentation_only"
+        },
+        "remaining_state": "not_publicly_observed",
+        "runtime_manager_state": "not_established_by_this_inventory",
+        "source_capability": "registered_service",
+        "static_mapping_evidence": [],
+        "static_mapping_state": "static_roster_link_only"
+      }
+    ]
+  },
+  "readings": {
+    "readings": [
+      {
+        "evidence_status": "attributed_claim",
+        "horizon": "H1",
+        "provider_family": "github",
+        "resource_id": "github.actions.minutes",
+        "status": "watch",
+        "unit": "minutes"
+      },
+      {
+        "evidence_status": "attributed_claim",
+        "horizon": "H1",
+        "provider_family": "openrouter",
+        "resource_id": "openrouter.free_models",
+        "status": "unknown"
+      },
+      {
+        "evidence_status": "attributed_claim",
+        "horizon": "H1",
+        "limit": 100,
+        "provider_family": "vercel",
+        "resource_id": "vercel.deployments",
+        "status": "cap_tripped"
+      }
+    ]
+  },
+  "registry": {
+    "services": [
+      {
+        "id": "aion.quota",
+        "lane": "model-observation",
+        "metric": "provider quota observation mapping; unknown until explicit supported source response",
+        "provider": "aion",
+        "reset": "unknown",
+        "unit": "unknown",
+        "window": "unknown",
+        "zone": "UTC"
+      },
+      {
+        "id": "partners.credits",
+        "lane": "partner",
+        "metric": "referral/bonus credits (docs/PARTNERS.md)",
+        "provider": "cellcog/polsia/manus",
+        "reset": "none",
+        "unit": "one-time credits",
+        "window": "one-time",
+        "zone": "UTC"
+      },
+      {
+        "id": "cerebras.quota",
+        "lane": "model-observation",
+        "metric": "provider quota observation mapping; unknown until explicit supported source response",
+        "provider": "cerebras",
+        "reset": "unknown",
+        "unit": "unknown",
+        "window": "unknown",
+        "zone": "UTC"
+      },
+      {
+        "id": "cloudflare.d1_queues",
+        "lane": "data",
+        "metric": "D1 100k rows written/day, 5M reads/day, 5 GB; Queues 10k ops/day, 24h retention",
+        "provider": "cloudflare",
+        "reset": "daily",
+        "unit": "mixed",
+        "window": "daily",
+        "zone": "UTC"
+      },
+      {
+        "id": "cloudflare.quota",
+        "lane": "model-observation",
+        "metric": "provider quota observation mapping; unknown until explicit supported source response",
+        "provider": "cloudflare",
+        "reset": "unknown",
+        "unit": "unknown",
+        "window": "unknown",
+        "zone": "UTC"
+      },
+      {
+        "id": "cohere.quota",
+        "lane": "model-observation",
+        "metric": "provider quota observation mapping; unknown until explicit supported source response",
+        "provider": "cohere",
+        "reset": "unknown",
+        "unit": "unknown",
+        "window": "unknown",
+        "zone": "UTC"
+      },
+      {
+        "id": "felo.quota",
+        "lane": "model-observation",
+        "metric": "provider quota observation mapping; unknown until explicit supported source response",
+        "provider": "felo",
+        "reset": "unknown",
+        "unit": "unknown",
+        "window": "unknown",
+        "zone": "UTC"
+      },
+      {
+        "id": "gemini.api_free",
+        "lane": "model",
+        "metric": "RPM/TPM/RPD per model, per project",
+        "provider": "gemini",
+        "reset": "midnight",
+        "source": "https://ai.google.dev/gemini-api/docs/rate-limits",
+        "unit": "per-model",
+        "window": "daily (RPD)",
+        "zone": "America/Los_Angeles"
+      },
+      {
+        "id": "github.actions.minutes",
+        "lane": "ci",
+        "metric": "standard-runner minutes (public repo)",
+        "provider": "github",
+        "reset": "n/a (free for public repos)",
+        "source": "https://docs.github.com/en/billing/concepts/product-billing/github-actions",
+        "unit": "minutes",
+        "window": "monthly",
+        "zone": "UTC"
+      },
+      {
+        "id": "github.actions.cache",
+        "lane": "ci",
+        "limit": 10,
+        "metric": "cache storage per repo",
+        "provider": "github",
+        "reset": "LRU eviction; entries unused 7 days removed",
+        "source": "https://docs.github.com/en/actions/reference/workflows-and-actions/dependency-caching",
+        "unit": "GB",
+        "window": "rolling",
+        "zone": "UTC"
+      },
+      {
+        "id": "github.api.github_token",
+        "lane": "ci",
+        "limit": 1000,
+        "metric": "REST GITHUB_TOKEN baseline 1,000/repository/hour; Enterprise Cloud resources may allow 15,000; live credential bucket authoritative",
+        "provider": "github",
+        "reset": "x-ratelimit-reset header",
+        "source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+        "unit": "requests/hour/repo",
+        "window": "hourly",
+        "zone": "UTC"
+      },
+      {
+        "id": "github.api.user_token",
+        "lane": "ops",
+        "limit": 5000,
+        "metric": "REST user/OAuth baseline 5,000/hour; eligible enterprise contexts differ; live credential bucket authoritative",
+        "provider": "github",
+        "reset": "x-ratelimit-reset header",
+        "source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+        "unit": "requests/hour",
+        "window": "hourly",
+        "zone": "UTC"
+      },
+      {
+        "id": "github.artifacts.retention",
+        "lane": "ci",
+        "limit": 90,
+        "metric": "artifact retention default",
+        "provider": "github",
+        "reset": "n/a",
+        "unit": "days",
+        "window": "per-artifact",
+        "zone": "UTC"
+      },
+      {
+        "id": "github.copilot.free",
+        "lane": "model",
+        "metric": "Copilot Free allowance",
+        "provider": "github",
+        "reset": "unverified",
+        "source": "https://docs.github.com/en/copilot/get-started/plans",
+        "unit": "requests/month",
+        "window": "monthly",
+        "zone": "UTC"
+      },
+      {
+        "id": "github.api.graphql",
+        "lane": "ci",
+        "metric": "GraphQL points budget, distinct from REST requests",
+        "provider": "github",
+        "reset": "x-ratelimit-reset from rate_limit resource",
+        "source": "https://docs.github.com/en/graphql/overview/resource-limitations",
+        "unit": "points/hour; token-class thresholds documented but unverified",
+        "window": "hourly",
+        "zone": "UTC"
+      },
+      {
+        "id": "github.api.app_installation",
+        "lane": "ci",
+        "metric": "REST resource limits for installation token",
+        "provider": "github",
+        "reset": "x-ratelimit-reset from rate_limit resource",
+        "source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+        "unit": "requests/hour, scaling rules are documentation only",
+        "window": "hourly",
+        "zone": "UTC"
+      },
+      {
+        "id": "github.actions.workflow_runtime",
+        "lane": "ci-policy",
+        "limit": 35,
+        "metric": "workflow run including waiting and approvals",
+        "provider": "github",
+        "remaining_state": "unknown",
+        "reset": "no recurring reset; new run is a new scope",
+        "source": "https://docs.github.com/en/actions/reference/limits",
+        "unit": "days/workflow run",
+        "window": "per-run",
+        "zone": "UTC"
+      },
+      {
+        "id": "github.actions.approval_wait",
+        "lane": "ci-policy",
+        "limit": 30,
+        "metric": "environment approval wait",
+        "provider": "github",
+        "remaining_state": "unknown",
+        "reset": "no recurring reset; new approval is a new scope",
+        "source": "https://docs.github.com/en/actions/reference/limits",
+        "unit": "days/approval wait",
+        "window": "per-approval",
+        "zone": "UTC"
+      },
+      {
+        "id": "github.actions.matrix_jobs",
+        "lane": "ci-policy",
+        "limit": 256,
+        "metric": "matrix-generated jobs on hosted or self-hosted runners",
+        "provider": "github",
+        "remaining_state": "unknown",
+        "reset": "new workflow run",
+        "source": "https://docs.github.com/en/actions/reference/limits",
+        "unit": "jobs/matrix",
+        "window": "per-workflow run",
+        "zone": "UTC"
+      },
+      {
+        "id": "github.actions.trigger_events",
+        "lane": "ci-policy",
+        "limit": 1500,
+        "metric": "repository workflow-trigger events",
+        "provider": "github",
+        "remaining_state": "unknown",
+        "reset": "source rate window; exact live reset unknown",
+        "source": "https://docs.github.com/en/actions/reference/limits",
+        "unit": "events/10 seconds/repository",
+        "window": "10-second rate window",
+        "zone": "UTC"
+      },
+      {
+        "id": "github.actions.queued_runs",
+        "lane": "ci-policy",
+        "limit": 500,
+        "metric": "queued workflow runs; reusable workflows count as one entity",
+        "provider": "github",
+        "remaining_state": "unknown",
+        "reset": "source rate window; exact live reset unknown",
+        "source": "https://docs.github.com/en/actions/reference/limits",
+        "unit": "workflow runs/10 seconds",
+        "window": "10-second rate window",
+        "zone": "UTC"
+      },
+      {
+        "id": "github.actions.concurrency_queue_max",
+        "lane": "ci-policy",
+        "limit": 100,
+        "metric": "only when concurrency queue: max is configured",
+        "provider": "github",
+        "remaining_state": "unknown",
+        "reset": "capacity released as queue drains; no clock reset",
+        "source": "https://docs.github.com/en/actions/reference/limits",
+        "unit": "queued jobs or runs/concurrency group",
+        "window": "instantaneous",
+        "zone": "UTC"
+      },
+      {
+        "id": "github.actions.hosted_job_runtime",
+        "lane": "ci-policy",
+        "limit": 6,
+        "metric": "GitHub-hosted runner job execution",
+        "provider": "github",
+        "remaining_state": "unknown",
+        "reset": "new job",
+        "source": "https://docs.github.com/en/actions/reference/limits",
+        "unit": "hours/job",
+        "window": "per-job",
+        "zone": "UTC"
+      },
+      {
+        "id": "github.actions.self_hosted_job_runtime",
+        "lane": "ci-policy",
+        "limit": 5,
+        "metric": "self-hosted runner job execution",
+        "provider": "github",
+        "remaining_state": "unknown",
+        "reset": "new job",
+        "source": "https://docs.github.com/en/actions/reference/limits",
+        "unit": "days/job",
+        "window": "per-job",
+        "zone": "UTC"
+      },
+      {
+        "id": "github.actions.self_hosted_queue_wait",
+        "lane": "ci-policy",
+        "limit": 24,
+        "metric": "self-hosted runner queued job",
+        "provider": "github",
+        "remaining_state": "unknown",
+        "reset": "job starts or is cancelled; no recurring reset",
+        "source": "https://docs.github.com/en/actions/reference/limits",
+        "unit": "hours/queued job",
+        "window": "per-job queue wait",
+        "zone": "UTC"
+      },
+      {
+        "id": "github.actions.hosted_concurrency",
+        "lane": "ci-policy",
+        "metric": "standard hosted jobs: Free 20, Pro 40, Team 60, Enterprise 500; macOS sublimits separate; actual account plan unknown",
+        "provider": "github",
+        "remaining_state": "unknown",
+        "reset": "capacity released when jobs end; no clock reset",
+        "source": "https://docs.github.com/en/actions/reference/limits",
+        "unit": "simultaneous jobs/account plan",
+        "window": "instantaneous",
+        "zone": "UTC"
+      },
+      {
+        "id": "github.actions.hosted_macos_concurrency",
+        "lane": "ci-policy",
+        "metric": "standard hosted macOS: Free/Pro/Team 5, Enterprise 50; shared with larger runner macOS; actual entitlement unknown",
+        "provider": "github",
+        "remaining_state": "unknown",
+        "reset": "capacity released when jobs end; no clock reset",
+        "source": "https://docs.github.com/en/actions/reference/limits",
+        "unit": "simultaneous macOS jobs/account plan",
+        "window": "instantaneous",
+        "zone": "UTC"
+      },
+      {
+        "id": "github.api.secondary.concurrent_requests",
+        "lane": "api-policy",
+        "limit": 100,
+        "metric": "shared REST and GraphQL concurrent requests",
+        "provider": "github",
+        "remaining_state": "unknown",
+        "reset": "unknown; secondary reset not exposed by /rate_limit",
+        "source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+        "unit": "concurrent requests",
+        "window": "instantaneous",
+        "zone": "UTC"
+      },
+      {
+        "id": "github.api.secondary.rest_points",
+        "lane": "api-policy",
+        "limit": 900,
+        "metric": "REST secondary points per endpoint; some endpoint costs undisclosed",
+        "provider": "github",
+        "remaining_state": "unknown",
+        "reset": "unknown; secondary reset not exposed by /rate_limit",
+        "source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+        "unit": "secondary points/endpoint/minute",
+        "window": "per-minute",
+        "zone": "UTC"
+      },
+      {
+        "id": "github.api.secondary.graphql_points",
+        "lane": "api-policy",
+        "limit": 2000,
+        "metric": "GraphQL secondary points; separate from primary query points",
+        "provider": "github",
+        "remaining_state": "unknown",
+        "reset": "unknown; secondary reset not exposed by /rate_limit",
+        "source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+        "unit": "secondary points/minute",
+        "window": "per-minute",
+        "zone": "UTC"
+      },
+      {
+        "id": "github.api.secondary.cpu_total",
+        "lane": "api-policy",
+        "limit": 90,
+        "metric": "shared CPU across REST and GraphQL; no authoritative remaining counter",
+        "provider": "github",
+        "remaining_state": "unknown",
+        "reset": "unknown; secondary reset not exposed by /rate_limit",
+        "source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+        "unit": "CPU seconds/60 real seconds",
+        "window": "60-second window",
+        "zone": "UTC"
+      },
+      {
+        "id": "github.api.secondary.cpu_graphql",
+        "lane": "api-policy",
+        "limit": 60,
+        "metric": "GraphQL share of total CPU; no authoritative remaining counter",
+        "provider": "github",
+        "remaining_state": "unknown",
+        "reset": "unknown; secondary reset not exposed by /rate_limit",
+        "source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+        "unit": "CPU seconds/60 real seconds",
+        "window": "60-second window",
+        "zone": "UTC"
+      },
+      {
+        "id": "github.api.secondary.content_minute",
+        "lane": "api-policy",
+        "limit": 80,
+        "metric": "general ceiling, endpoints may be lower; includes web and API actions",
+        "provider": "github",
+        "remaining_state": "unknown",
+        "reset": "unknown; secondary reset not exposed by /rate_limit",
+        "source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+        "unit": "content-generating requests/minute",
+        "window": "per-minute",
+        "zone": "UTC"
+      },
+      {
+        "id": "github.api.secondary.content_hour",
+        "lane": "api-policy",
+        "limit": 500,
+        "metric": "general ceiling, endpoints may be lower; includes web and API actions",
+        "provider": "github",
+        "remaining_state": "unknown",
+        "reset": "unknown; secondary reset not exposed by /rate_limit",
+        "source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+        "unit": "content-generating requests/hour",
+        "window": "per-hour",
+        "zone": "UTC"
+      },
+      {
+        "id": "github.api.secondary.oauth_token_requests",
+        "lane": "api-policy",
+        "limit": 2000,
+        "metric": "GitHub/OAuth app token-request secondary ceiling; no new grants requested",
+        "provider": "github",
+        "remaining_state": "unknown",
+        "reset": "unknown; secondary reset not exposed by /rate_limit",
+        "source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+        "unit": "OAuth access-token requests/hour",
+        "window": "per-hour",
+        "zone": "UTC"
+      },
+      {
+        "id": "g4f.vendors",
+        "lane": "model",
+        "metric": "public/web-wrapped endpoints (multi-ai-cli/vendors)",
+        "provider": "gpt4free/cliproxyapi/chapito/ai-manus",
+        "reset": "unknown",
+        "unit": "unmetered / unknown",
+        "window": "unknown",
+        "zone": "UTC"
+      },
+      {
+        "id": "grafana.cloud_free",
+        "lane": "observability",
+        "limit": 10000,
+        "metric": "ingestion_rate per series",
+        "provider": "grafana",
+        "reset": "n/a",
+        "unit": "samples/s",
+        "window": "instant",
+        "zone": "UTC"
+      },
+      {
+        "id": "groq.quota",
+        "lane": "model-observation",
+        "metric": "provider quota observation mapping; unknown until explicit supported source response",
+        "provider": "groq",
+        "reset": "unknown",
+        "unit": "unknown",
+        "window": "unknown",
+        "zone": "UTC"
+      },
+      {
+        "id": "huggingface.quota",
+        "lane": "model-observation",
+        "metric": "provider quota observation mapping; unknown until explicit supported source response",
+        "provider": "huggingface",
+        "reset": "unknown",
+        "source": "https://huggingface.co/api/models",
+        "unit": "unknown",
+        "window": "unknown",
+        "zone": "UTC"
+      },
+      {
+        "id": "kilo.quota",
+        "lane": "model-observation",
+        "metric": "provider quota observation mapping; unknown until explicit supported source response",
+        "provider": "kilo",
+        "reset": "unknown",
+        "unit": "unknown",
+        "window": "unknown",
+        "zone": "UTC"
+      },
+      {
+        "id": "llm7.quota",
+        "lane": "model-observation",
+        "metric": "provider quota observation mapping; unknown until explicit supported source response",
+        "provider": "llm7",
+        "reset": "unknown",
+        "unit": "unknown",
+        "window": "unknown",
+        "zone": "UTC"
+      },
+      {
+        "id": "mistral.quota",
+        "lane": "model-observation",
+        "metric": "provider quota observation mapping; unknown until explicit supported source response",
+        "provider": "mistral",
+        "reset": "unknown",
+        "unit": "unknown",
+        "window": "unknown",
+        "zone": "UTC"
+      },
+      {
+        "id": "modelscope.quota",
+        "lane": "model-observation",
+        "metric": "provider quota observation mapping; unknown until explicit supported source response",
+        "provider": "modelscope",
+        "reset": "unknown",
+        "unit": "unknown",
+        "window": "unknown",
+        "zone": "UTC"
+      },
+      {
+        "id": "neon.compute",
+        "lane": "data",
+        "limit": 100,
+        "metric": "compute",
+        "provider": "neon",
+        "reset": "billing month",
+        "unit": "CU-hours/project/month",
+        "window": "monthly",
+        "zone": "UTC"
+      },
+      {
+        "id": "neon.storage",
+        "lane": "data",
+        "limit": 1,
+        "metric": "Postgres storage",
+        "provider": "neon",
+        "reset": "n/a",
+        "unit": "GB/project (20 GB total)",
+        "window": "point-in-time",
+        "zone": "UTC"
+      },
+      {
+        "id": "neon.egress",
+        "lane": "data",
+        "limit": 5,
+        "metric": "egress",
+        "provider": "neon",
+        "reset": "billing month",
+        "unit": "GB/month",
+        "window": "monthly",
+        "zone": "UTC"
+      },
+      {
+        "id": "neon.realtime",
+        "lane": "data",
+        "metric": "Realtime (beta)",
+        "provider": "neon",
+        "reset": "n/a",
+        "unit": "free during beta",
+        "window": "n/a",
+        "zone": "UTC"
+      },
+      {
+        "id": "nvidia.quota",
+        "lane": "model-observation",
+        "metric": "provider quota observation mapping; unknown until explicit supported source response",
+        "provider": "nvidia",
+        "reset": "unknown",
+        "unit": "unknown",
+        "window": "unknown",
+        "zone": "UTC"
+      },
+      {
+        "id": "ollama.balance",
+        "lane": "model-balance",
+        "metric": "remaining included/purchased USD balance or legacy remaining percentages",
+        "provider": "ollama",
+        "reset": "unknown until authenticated source supplies period.until or legacy resets_at; purchased-credit reset unknown",
+        "unit": "variant-specific USD or percent; never requests/tokens",
+        "window": "source-supplied included period or legacy session/weekly",
+        "zone": "UTC"
+      },
+      {
+        "id": "omni.quota",
+        "lane": "model-observation",
+        "metric": "provider quota observation mapping; unknown until explicit supported source response",
+        "provider": "omni",
+        "reset": "unknown",
+        "unit": "unknown",
+        "window": "unknown",
+        "zone": "UTC"
+      },
+      {
+        "id": "openrouter.free_models",
+        "lane": "model",
+        "metric": "free-model (:free) daily request entitlement/counter",
+        "provider": "openrouter",
+        "reset": "UTC midnight; endpoint documents reset cadence but supplies no reset timestamp",
+        "source": "https://openrouter.ai/docs/api_reference/limits",
+        "unit": "requests/day (dynamic tier; endpoint supplies limit)",
+        "window": "daily UTC",
+        "zone": "UTC"
+      },
+      {
+        "id": "openrouter.key",
+        "lane": "model-observation",
+        "metric": "private request quota, monetary key limits and account tier kept separate",
+        "provider": "openrouter",
+        "reset": "daily request reset instant unknown; only explicit source budget reset retained",
+        "source": "https://openrouter.ai/docs/api/api-reference/api-keys/get-current-api-key",
+        "unit": "signal-specific requests or monetary credits; tier is not model price",
+        "window": "source daily counter; monetary budgets independently scoped",
+        "zone": "UTC"
+      },
+      {
+        "id": "ovhcloud.quota",
+        "lane": "model-observation",
+        "metric": "provider quota observation mapping; unknown until explicit supported source response",
+        "provider": "ovhcloud",
+        "reset": "unknown",
+        "unit": "unknown",
+        "window": "unknown",
+        "zone": "UTC"
+      },
+      {
+        "id": "render.pipeline_minutes",
+        "lane": "deploy",
+        "limit": 500,
+        "metric": "Starter build pipeline minutes (Hobby)",
+        "provider": "render",
+        "reset": "1st of month",
+        "source": "https://render.com/docs/build-pipeline",
+        "unit": "minutes/month",
+        "window": "calendar month",
+        "zone": "UTC (unverified; assumed)"
+      },
+      {
+        "id": "render.instance_hours",
+        "lane": "deploy",
+        "limit": 750,
+        "metric": "Free instance hours per workspace",
+        "provider": "render",
+        "reset": "start of month, no rollover",
+        "source": "https://render.com/docs/free",
+        "unit": "hours/month",
+        "window": "calendar month",
+        "zone": "UTC (unverified; assumed)"
+      },
+      {
+        "id": "render.bandwidth",
+        "lane": "deploy",
+        "limit": 5,
+        "metric": "outbound bandwidth included (Hobby)",
+        "provider": "render",
+        "reset": "1st of month",
+        "source": "https://render.com/pricing",
+        "unit": "GB/month",
+        "window": "calendar month",
+        "zone": "UTC (unverified; assumed)"
+      },
+      {
+        "id": "render.postgres_free",
+        "lane": "data",
+        "limit": 1,
+        "metric": "free Postgres",
+        "provider": "render",
+        "reset": "expires; 14-day grace then deleted",
+        "source": "https://render.com/docs/free",
+        "unit": "GB (1 instance/workspace)",
+        "window": "30 days from creation",
+        "zone": "UTC"
+      },
+      {
+        "id": "render.keyvalue_free",
+        "lane": "data",
+        "limit": 1,
+        "metric": "free Key Value",
+        "provider": "render",
+        "reset": "data lost on restart",
+        "source": "https://render.com/docs/free",
+        "unit": "instance/workspace (in-memory only)",
+        "window": "n/a",
+        "zone": "UTC"
+      },
+      {
+        "id": "requesty.quota",
+        "lane": "model-observation",
+        "metric": "provider quota observation mapping; unknown until explicit supported source response",
+        "provider": "requesty",
+        "reset": "unknown",
+        "unit": "unknown",
+        "window": "unknown",
+        "zone": "UTC"
+      },
+      {
+        "id": "routeway.quota",
+        "lane": "model-observation",
+        "metric": "provider quota observation mapping; unknown until explicit supported source response",
+        "provider": "routeway",
+        "reset": "unknown",
+        "unit": "unknown",
+        "window": "unknown",
+        "zone": "UTC"
+      },
+      {
+        "id": "sambanova.quota",
+        "lane": "model-observation",
+        "metric": "provider quota observation mapping; unknown until explicit supported source response",
+        "provider": "sambanova",
+        "reset": "unknown",
+        "unit": "unknown",
+        "window": "unknown",
+        "zone": "UTC"
+      },
+      {
+        "id": "sealion.quota",
+        "lane": "model-observation",
+        "metric": "provider quota observation mapping; unknown until explicit supported source response",
+        "provider": "sealion",
+        "reset": "unknown",
+        "unit": "unknown",
+        "window": "unknown",
+        "zone": "UTC"
+      },
+      {
+        "id": "siliconflow.balance",
+        "lane": "model-balance",
+        "metric": "user monetary balance only; not request quota",
+        "provider": "siliconflow",
+        "reset": "unknown",
+        "unit": "unknown currency or decimal balance",
+        "window": "source-defined/unknown",
+        "zone": "UTC"
+      },
+      {
+        "id": "supabase.free",
+        "lane": "data",
+        "metric": "DB 500 MB; 2 active projects; pause after 1 week idle; Realtime 2M msgs/200 conns; 5 GB egress",
+        "provider": "supabase",
+        "reset": "billing month",
+        "unit": "mixed",
+        "window": "monthly",
+        "zone": "UTC"
+      },
+      {
+        "id": "turso.free",
+        "lane": "data",
+        "metric": "5 GB; 10M rows written/mo; 500M reads; 100 DBs",
+        "provider": "turso",
+        "reset": "billing month",
+        "unit": "mixed",
+        "window": "monthly",
+        "zone": "UTC"
+      },
+      {
+        "id": "typhoon.quota",
+        "lane": "model-observation",
+        "metric": "provider quota observation mapping; unknown until explicit supported source response",
+        "provider": "typhoon",
+        "reset": "unknown",
+        "unit": "unknown",
+        "window": "unknown",
+        "zone": "UTC"
+      },
+      {
+        "id": "unorouter.quota",
+        "lane": "model-observation",
+        "metric": "provider quota observation mapping; unknown until explicit supported source response",
+        "provider": "unorouter",
+        "reset": "unknown",
+        "unit": "unknown",
+        "window": "unknown",
+        "zone": "UTC"
+      },
+      {
+        "id": "upstash.free",
+        "lane": "data",
+        "metric": "Redis 250 MB, 500K commands/mo, 10 GB bandwidth; QStash 1,000 msgs/day",
+        "provider": "upstash",
+        "reset": "billing period",
+        "unit": "mixed",
+        "window": "monthly/daily",
+        "zone": "UTC"
+      },
+      {
+        "id": "vercel.deployments",
+        "lane": "deploy",
+        "limit": 100,
+        "metric": "deployments created",
+        "provider": "vercel",
+        "reset": "rolling",
+        "source": "https://vercel.com/docs/limits",
+        "unit": "deployments/day",
+        "window": "rolling 24h (observed: error says try again in 24 hours)",
+        "zone": "UTC"
+      },
+      {
+        "id": "vercel.build_time",
+        "lane": "deploy",
+        "limit": 45,
+        "metric": "build step duration per deployment",
+        "provider": "vercel",
+        "reset": "n/a",
+        "source": "https://vercel.com/docs/limits",
+        "unit": "minutes",
+        "window": "per-build",
+        "zone": "UTC"
+      },
+      {
+        "id": "xfyun.quota",
+        "lane": "model-observation",
+        "metric": "provider quota observation mapping; unknown until explicit supported source response",
+        "provider": "xfyun",
+        "reset": "unknown",
+        "unit": "unknown",
+        "window": "unknown",
+        "zone": "UTC"
+      },
+      {
+        "id": "xkiro.quota",
+        "lane": "model-observation",
+        "metric": "provider quota observation mapping; unknown until explicit supported source response",
+        "provider": "xkiro",
+        "reset": "unknown",
+        "unit": "unknown",
+        "window": "unknown",
+        "zone": "UTC"
+      },
+      {
+        "id": "zai.quota",
+        "lane": "model-observation",
+        "metric": "provider quota observation mapping; unknown until explicit supported source response",
+        "provider": "zai",
+        "reset": "unknown",
+        "unit": "unknown",
+        "window": "unknown",
+        "zone": "UTC"
+      }
+    ]
+  },
+  "schema": "quota-publication/v1",
+  "visibility": {
+    "families": {
+      "aion": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "cellcog/polsia/manus": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "cerebras": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "cloudflare": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "cohere": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "felo": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "gemini": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "github": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "gpt4free/cliproxyapi/chapito/ai-manus": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "grafana": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "groq": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "huggingface": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "kilo": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "llm7": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "mistral": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "modelscope": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "neon": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "nvidia": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "ollama": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "omni": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "openrouter": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "ovhcloud": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "render": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "requesty": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "routeway": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "sambanova": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "sealion": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "siliconflow": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "supabase": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "turso": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "typhoon": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "unorouter": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "upstash": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "vercel": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "xfyun": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "xkiro": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      },
+      "zai": {
+        "fields": {
+          "availability": "public",
+          "entitlement": "public",
+          "limits": "public",
+          "reset": "public",
+          "scope": "public",
+          "sources": "public",
+          "usage": "public"
+        },
+        "visibility": "public"
+      }
+    },
+    "schema": "quota-visibility/v1"
+  }
+}

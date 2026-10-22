@@ -18,7 +18,8 @@ def test_provider_families_exhaust_registry_and_no_alias_hiding():
     assert families["ollama"]["opt_in_private_service_ids"] == ["ollama.balance"]
     assert families["ollama"]["reader_service_ids"] == []  # Not an automatic collector.
     assert families["ollama"]["live_account_validation"] == "unknown"
-    assert families["cloudflare"]["covered"] is False  # D1/Queues is not an inference quota
+    assert families["cloudflare"]["covered"] is True  # explicit family registry mapping; D1 is still not model quota evidence
+    assert families["cloudflare"]["evidence_state"] == "unknown"
     assert families["openrouter"]["reader_service_ids"] == ["openrouter.free_models"]
     assert families["openrouter"]["opt_in_private_service_ids"] == ["openrouter.key"]
     assert families["openrouter"]["live_account_validation"] == "unknown"
@@ -34,13 +35,15 @@ def test_static_mappings_exhaust_canonical_roster_without_claiming_quota_service
     assert counts["provider_families"] == len(coverage._providers())
     assert counts["static_adapter_mappings"] == len(families)
     assert counts["missing_static_adapter_mappings"] == 0
-    # Two opt-in services do not establish public live account validation.
-    assert counts["actual_quota_service_mappings"] == 3
-    assert counts["missing_actual_quota_service_mappings"] == counts["provider_families"] - counts["actual_quota_service_mappings"]
-    assert counts["opt_in_private_service_managers"] == 2
-    assert counts["implemented_passive_adapters"] == sum(
-        row["manager_status"] == "implemented_passive_adapter" for row in families.values()
-    )
+    # All 27 families have explicit registrations; only opt-in/read-only readers are executable.
+    assert counts["registered_provider_family_mappings"] == 27
+    assert counts["actual_quota_service_mappings"] == 27
+    assert counts["executable_quota_service_mappings"] == 3
+    assert counts["missing_actual_quota_service_mappings"] == 0
+    assert counts["opt_in_private_service_managers"] == 3
+    assert counts["implemented_passive_adapters"] == 6
+    assert counts["documentation_only"] == 18
+    assert counts["unknown_or_unsupported"] == 3
     for family, row in families.items():
         assert row["static_mapping_id"] == f"adapter:{family}"
         assert row["static_mapping_state"] == "static_roster_link_only"

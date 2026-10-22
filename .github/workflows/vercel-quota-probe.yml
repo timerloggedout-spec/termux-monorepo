@@ -20,6 +20,8 @@ jobs:
           sparse-checkout: |
             ops/quota
             scripts/quota_poll.py
+            scripts/github_quota_manager.py
+            scripts/__init__.py
             ml/pipelines/moneyball/quota_weights.py
           sparse-checkout-cone-mode: false
           fetch-depth: 1

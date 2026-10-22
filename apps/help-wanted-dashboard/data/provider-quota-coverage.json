@@ -1,20 +1,32 @@
 {
   "coverage_counts": {
-    "actual_quota_service_mappings": 3,
+    "actual_quota_service_mappings": 27,
+    "documentation_only": 18,
+    "executable_quota_service_mappings": 3,
     "implemented_passive_adapters": 6,
-    "missing_actual_quota_service_mappings": 24,
+    "missing_actual_quota_service_mappings": 0,
     "missing_static_adapter_mappings": 0,
-    "opt_in_private_service_managers": 2,
+    "opt_in_private_service_managers": 3,
     "provider_families": 27,
-    "static_adapter_mappings": 27
+    "quota_source_unknown_including_documentation": 21,
+    "registered_provider_family_mappings": 27,
+    "static_adapter_mappings": 27,
+    "unknown_or_unsupported": 3
   },
   "live_inference_used": false,
   "manager_metadata_source": "ops/quota/provider-managers.json",
+  "mapping_capability_counts": {
+    "actual_mapping": 3,
+    "documentation_only": 18,
+    "passive_parser": 6,
+    "unknown_or_unsupported": 3
+  },
   "network_used": false,
-  "policy": "Metadata only; no private balances, quota resets, free entitlement or runtime admission inferred.",
+  "policy": "Metadata only; remaining, resets, freshness and entitlement are unknown unless explicitly documented; fail closed; no private values or runtime admission inferred.",
   "provider_families": [
     {
-      "covered": false,
+      "account_entitlement_state": "unknown; public descriptions are not account validation",
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown",
       "documented_signals": [],
@@ -24,7 +36,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "unsupported",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "unsupported_or_no_verified_official_counter",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -33,17 +45,39 @@
       "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "aion",
+      "quota_capability": {
+        "dimensions": "unknown",
+        "entitlement": "unknown; not inferred",
+        "evidence": [
+          "https://aionlabs.ai/"
+        ],
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "parser_available": false,
+        "reset": "unknown",
+        "scope": "unknown",
+        "source_kind": "none_verified",
+        "status": "unsupported_or_unknown"
+      },
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
-      "quota_kind": "private_balance_not_publicly_observed",
+      "quota_kind": "unknown",
       "quota_manager_owner": "Manager",
+      "quota_mapping": {
+        "dimensions": "unknown",
+        "source_kind": "none_verified",
+        "status": "unsupported_or_unknown"
+      },
       "reader_service_ids": [],
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
+      "remaining_state": "not_publicly_observed",
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "official product homepage found; quota counter/reset semantics unknown",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "aion.quota"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -53,7 +87,8 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "account_entitlement_state": "unknown; public descriptions are not account validation",
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "continuous token-bucket replenishment, not a fixed reset; live capacity unknown",
       "documented_signals": [],
@@ -63,7 +98,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -72,17 +107,39 @@
       "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "cerebras",
+      "quota_capability": {
+        "dimensions": "unknown",
+        "entitlement": "unknown; not inferred",
+        "evidence": [
+          "https://inference-docs.cerebras.ai/support/rate-limits"
+        ],
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "parser_available": false,
+        "reset": "continuous token-bucket replenishment, not a fixed reset; live capacity unknown",
+        "scope": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
-      "quota_kind": "private_balance_not_publicly_observed",
+      "quota_kind": "unknown",
       "quota_manager_owner": "Manager",
+      "quota_mapping": {
+        "dimensions": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "reader_service_ids": [],
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
+      "remaining_state": "not_publicly_observed",
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "organization and model, with project-level limits; separate uncached and total token buckets",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "cerebras.quota"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -92,7 +149,8 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "account_entitlement_state": "unknown; public descriptions are not account validation",
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown",
       "documented_signals": [],
@@ -102,7 +160,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -111,17 +169,39 @@
       "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "cloudflare",
+      "quota_capability": {
+        "dimensions": "unknown",
+        "entitlement": "unknown; not inferred",
+        "evidence": [
+          "https://developers.cloudflare.com/workers-ai/platform/limits/"
+        ],
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "parser_available": false,
+        "reset": "unknown",
+        "scope": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
-      "quota_kind": "private_balance_not_publicly_observed",
+      "quota_kind": "unknown",
       "quota_manager_owner": "Manager",
+      "quota_mapping": {
+        "dimensions": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "reader_service_ids": [],
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
+      "remaining_state": "not_publicly_observed",
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "account/model/task varies; documented ceilings are not observations",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "cloudflare.quota"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -131,7 +211,8 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "account_entitlement_state": "unknown; public descriptions are not account validation",
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown",
       "documented_signals": [],
@@ -141,7 +222,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -150,17 +231,39 @@
       "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "cohere",
+      "quota_capability": {
+        "dimensions": "unknown",
+        "entitlement": "unknown; not inferred",
+        "evidence": [
+          "https://docs.cohere.com/docs/rate-limits"
+        ],
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "parser_available": false,
+        "reset": "unknown",
+        "scope": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
-      "quota_kind": "private_balance_not_publicly_observed",
+      "quota_kind": "unknown",
       "quota_manager_owner": "Manager",
+      "quota_mapping": {
+        "dimensions": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "reader_service_ids": [],
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
+      "remaining_state": "not_publicly_observed",
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "key type and model/endpoint; no documented remaining-count header",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "cohere.quota"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -170,17 +273,18 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "account_entitlement_state": "unknown; public descriptions are not account validation",
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown for model API and daily-credit grant: no exact reset instant, timezone, carryover or machine-readable remaining-credit contract verified",
       "documented_signals": [],
       "evidence_state": "unknown",
-      "free_entitlement": null,
+      "free_entitlement": "public Standard plan: 200 free credits daily for selected API models/tools, shared with Playground and supported Felo tools; exact account/model entitlement unknown; OX Alpha ended-trial notice conflicts with free pricing row",
       "freshness_owner": "ChronoMancer",
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "unsupported",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "unsupported_or_no_verified_official_counter",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -192,17 +296,43 @@
       "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "felo",
+      "quota_capability": {
+        "dimensions": "unknown",
+        "entitlement": "unknown; not inferred",
+        "evidence": [
+          "https://openapi.felo.ai/docs/api-reference/llm",
+          "https://openapi.felo.ai/pricing",
+          "https://openapi.felo.ai/models/stealth/ox-alpha",
+          "https://openapi.felo.ai/docs/model-api/operations/createChatCompletion",
+          "https://openapi.felo.ai/docs/api-reference/chat"
+        ],
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "parser_available": false,
+        "reset": "unknown for model API and daily-credit grant: no exact reset instant, timezone, carryover or machine-readable remaining-credit contract verified",
+        "scope": "unknown",
+        "source_kind": "none_verified",
+        "status": "unsupported_or_unknown"
+      },
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
-      "quota_kind": "private_balance_not_publicly_observed",
+      "quota_kind": "unknown",
       "quota_manager_owner": "Manager",
+      "quota_mapping": {
+        "dimensions": "unknown",
+        "source_kind": "none_verified",
+        "status": "unsupported_or_unknown"
+      },
       "reader_service_ids": [],
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
+      "remaining_state": "not_publicly_observed",
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "existing /api/v1 model API: account eligibility and request/token counters unknown; /v2/chat key/user search limits are a separate endpoint contract",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "felo.quota"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "scripts/provider_model_catalog.py:ENDPOINTS"
       ],
@@ -211,6 +341,7 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
+      "account_entitlement_state": "unknown; public descriptions are not account validation",
       "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "RPD at midnight America/Los_Angeles; other windows unknown",
@@ -230,12 +361,32 @@
       "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "gemini",
+      "quota_capability": {
+        "dimensions": "unknown",
+        "entitlement": "unknown; not inferred",
+        "evidence": [
+          "https://ai.google.dev/gemini-api/docs/rate-limits"
+        ],
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "parser_available": false,
+        "reset": "RPD at midnight America/Los_Angeles; other windows unknown",
+        "scope": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
-      "quota_kind": "private_balance_not_publicly_observed",
+      "quota_kind": "unknown",
       "quota_manager_owner": "Manager",
+      "quota_mapping": {
+        "dimensions": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "reader_service_ids": [],
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
+      "remaining_state": "not_publicly_observed",
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "project and model; UI limits are not response counters",
@@ -252,7 +403,8 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "account_entitlement_state": "unknown; public descriptions are not account validation",
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "documented reset header is metric-specific duration; absolute reset unknown",
       "documented_signals": [
@@ -287,7 +439,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "implemented_passive_adapter",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "implemented_passive_parser; live account validation not established",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -296,17 +448,39 @@
       "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "groq",
+      "quota_capability": {
+        "dimensions": "requests_and_tokens",
+        "entitlement": "unknown; not inferred",
+        "evidence": [
+          "https://console.groq.com/docs/rate-limits"
+        ],
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "parser_available": true,
+        "reset": "documented reset header is metric-specific duration; absolute reset unknown",
+        "scope": "organization/model and metric-specific",
+        "source_kind": "official_endpoint_metadata",
+        "status": "implemented_passive_parser"
+      },
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
-      "quota_kind": "private_balance_not_publicly_observed",
+      "quota_kind": "requests_and_tokens",
       "quota_manager_owner": "Manager",
+      "quota_mapping": {
+        "dimensions": "requests_and_tokens",
+        "source_kind": "official_endpoint_metadata",
+        "status": "implemented_passive_parser"
+      },
       "reader_service_ids": [],
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
+      "remaining_state": "not_publicly_observed",
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "organization/model and metric-specific",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "groq.quota"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -316,7 +490,8 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "account_entitlement_state": "unknown; public descriptions are not account validation",
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "5-minute fixed window; RateLimit t seconds remaining",
       "documented_signals": [
@@ -331,7 +506,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "implemented_passive_adapter",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "implemented_passive_parser; live account validation not established",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -340,17 +515,39 @@
       "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "huggingface",
+      "quota_capability": {
+        "dimensions": "hub_api_requests_only",
+        "entitlement": "unknown; not inferred",
+        "evidence": [
+          "https://huggingface.co/docs/hub/en/rate-limits"
+        ],
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "parser_available": true,
+        "reset": "5-minute fixed window; RateLimit t seconds remaining",
+        "scope": "token user/org and request class (Hub API, Resolver, Pages); not necessarily inference",
+        "source_kind": "official_endpoint_metadata",
+        "status": "implemented_passive_parser"
+      },
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
-      "quota_kind": "private_balance_not_publicly_observed",
+      "quota_kind": "hub_api_requests_only",
       "quota_manager_owner": "Manager",
+      "quota_mapping": {
+        "dimensions": "hub_api_requests_only",
+        "source_kind": "official_endpoint_metadata",
+        "status": "implemented_passive_parser"
+      },
       "reader_service_ids": [],
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
+      "remaining_state": "not_publicly_observed",
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "token user/org and request class (Hub API, Resolver, Pages); not necessarily inference",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "huggingface.quota"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -360,7 +557,8 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "account_entitlement_state": "unknown; public descriptions are not account validation",
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown; source does not specify an API-observed quota reset",
       "documented_signals": [],
@@ -370,7 +568,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -379,17 +577,39 @@
       "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "kilo",
+      "quota_capability": {
+        "dimensions": "unknown",
+        "entitlement": "unknown; not inferred",
+        "evidence": [
+          "https://kilo.ai/docs/getting-started/rate-limits-and-costs"
+        ],
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "parser_available": false,
+        "reset": "unknown; source does not specify an API-observed quota reset",
+        "scope": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
-      "quota_kind": "private_balance_not_publicly_observed",
+      "quota_kind": "unknown",
       "quota_manager_owner": "Manager",
+      "quota_mapping": {
+        "dimensions": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "reader_service_ids": [],
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
+      "remaining_state": "not_publicly_observed",
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "official docs state 200 req/hour/IP for free gateway tier; no counter/header/reset observation schema verified",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "kilo.quota"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -399,7 +619,8 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "account_entitlement_state": "unknown; public descriptions are not account validation",
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown; source does not specify an API-observed quota reset",
       "documented_signals": [],
@@ -409,7 +630,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -418,17 +639,39 @@
       "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "llm7",
+      "quota_capability": {
+        "dimensions": "unknown",
+        "entitlement": "unknown; not inferred",
+        "evidence": [
+          "https://llm7.io/"
+        ],
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "parser_available": false,
+        "reset": "unknown; source does not specify an API-observed quota reset",
+        "scope": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
-      "quota_kind": "private_balance_not_publicly_observed",
+      "quota_kind": "unknown",
       "quota_manager_owner": "Manager",
+      "quota_mapping": {
+        "dimensions": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "reader_service_ids": [],
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
+      "remaining_state": "not_publicly_observed",
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "official product page documents free-tier token/request caps and rolling 24-hour token usage; no counter API/header schema verified",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "llm7.quota"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -438,7 +681,8 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "account_entitlement_state": "unknown; public descriptions are not account validation",
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown",
       "documented_signals": [],
@@ -448,7 +692,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -457,17 +701,39 @@
       "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "mistral",
+      "quota_capability": {
+        "dimensions": "unknown",
+        "entitlement": "unknown; not inferred",
+        "evidence": [
+          "https://docs.mistral.ai/resources/known-limitations"
+        ],
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "parser_available": false,
+        "reset": "unknown",
+        "scope": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
-      "quota_kind": "private_balance_not_publicly_observed",
+      "quota_kind": "unknown",
       "quota_manager_owner": "Manager",
+      "quota_mapping": {
+        "dimensions": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "reader_service_ids": [],
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
+      "remaining_state": "not_publicly_observed",
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "organization/model/tier; remaining header mentioned but complete metric/reset schema not established",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "mistral.quota"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -477,7 +743,8 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "account_entitlement_state": "unknown; public descriptions are not account validation",
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown; source does not specify an API-observed quota reset",
       "documented_signals": [],
@@ -487,7 +754,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -496,17 +763,39 @@
       "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "modelscope",
+      "quota_capability": {
+        "dimensions": "unknown",
+        "entitlement": "unknown; not inferred",
+        "evidence": [
+          "https://www.modelscope.ai/docs/model-service/API-Inference/limits"
+        ],
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "parser_available": false,
+        "reset": "unknown; source does not specify an API-observed quota reset",
+        "scope": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
-      "quota_kind": "private_balance_not_publicly_observed",
+      "quota_kind": "unknown",
       "quota_manager_owner": "Manager",
+      "quota_mapping": {
+        "dimensions": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "reader_service_ids": [],
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
+      "remaining_state": "not_publicly_observed",
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "official docs describe dynamically adjusted per-model concurrency and magicube costs; no usage counter/reset API schema verified",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "modelscope.quota"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -516,7 +805,8 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "account_entitlement_state": "unknown; public descriptions are not account validation",
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown; source does not specify an API-observed quota reset",
       "documented_signals": [],
@@ -526,7 +816,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -535,17 +825,39 @@
       "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "nvidia",
+      "quota_capability": {
+        "dimensions": "unknown",
+        "entitlement": "unknown; not inferred",
+        "evidence": [
+          "https://docs.api.nvidia.com/"
+        ],
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "parser_available": false,
+        "reset": "unknown; source does not specify an API-observed quota reset",
+        "scope": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
-      "quota_kind": "private_balance_not_publicly_observed",
+      "quota_kind": "unknown",
       "quota_manager_owner": "Manager",
+      "quota_mapping": {
+        "dimensions": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "reader_service_ids": [],
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
+      "remaining_state": "not_publicly_observed",
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "official API documentation index; quota counter/reset schema not verified",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "nvidia.quota"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -555,6 +867,7 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
+      "account_entitlement_state": "unknown; public descriptions are not account validation",
       "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "modern included period has documented inclusive from/exclusive until timestamps; legacy session and weekly reset timestamps; no account identity or entitlement inferred",
@@ -613,12 +926,32 @@
       ],
       "private_balance": "not_published",
       "provider_family": "ollama",
+      "quota_capability": {
+        "dimensions": "monetary_balance_only",
+        "entitlement": "unknown; not inferred",
+        "evidence": [
+          "https://docs.ollama.com/api/balance"
+        ],
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "parser_available": true,
+        "reset": "modern included period has documented inclusive from/exclusive until timestamps; legacy session and weekly reset timestamps; no account identity or entitlement inferred",
+        "scope": "private balance response; included and unexpired purchased USD pools or legacy session/weekly percentages; Team balances are shared",
+        "source_kind": "official_endpoint_metadata",
+        "status": "implemented_passive_parser"
+      },
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
-      "quota_kind": "private_balance_not_publicly_observed",
+      "quota_kind": "monetary_balance_only",
       "quota_manager_owner": "Manager",
+      "quota_mapping": {
+        "dimensions": "monetary_balance_only",
+        "source_kind": "official_endpoint_metadata",
+        "status": "implemented_passive_parser"
+      },
       "reader_service_ids": [],
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
+      "remaining_state": "not_publicly_observed",
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "implemented_opt_in_private_service",
       "scope": "private balance response; included and unexpired purchased USD pools or legacy session/weekly percentages; Team balances are shared",
@@ -635,7 +968,8 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "account_entitlement_state": "unknown; public descriptions are not account validation",
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown",
       "documented_signals": [],
@@ -645,7 +979,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "unsupported",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "unsupported_or_no_verified_official_counter",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -654,17 +988,39 @@
       "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "omni",
+      "quota_capability": {
+        "dimensions": "unknown",
+        "entitlement": "unknown; not inferred",
+        "evidence": [
+          "https://cloud.omniroute.online/v1/models"
+        ],
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "parser_available": false,
+        "reset": "unknown",
+        "scope": "unknown",
+        "source_kind": "none_verified",
+        "status": "unsupported_or_unknown"
+      },
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
-      "quota_kind": "private_balance_not_publicly_observed",
+      "quota_kind": "unknown",
       "quota_manager_owner": "Manager",
+      "quota_mapping": {
+        "dimensions": "unknown",
+        "source_kind": "none_verified",
+        "status": "unsupported_or_unknown"
+      },
       "reader_service_ids": [],
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
+      "remaining_state": "not_publicly_observed",
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "official model listing endpoint only; no quota documentation or counter/reset contract verified",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "omni.quota"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "scripts/provider_model_catalog.py:ENDPOINTS"
       ],
@@ -673,6 +1029,7 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
+      "account_entitlement_state": "unknown; public descriptions are not account validation",
       "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "free_model_daily_requests policy is UTC daily; counter-specific reset instant unknown; budget reset fields are ISO timestamps/null",
@@ -727,9 +1084,28 @@
       ],
       "private_balance": "not_published",
       "provider_family": "openrouter",
+      "quota_capability": {
+        "dimensions": "requests_and_monetary_separate",
+        "entitlement": "unknown; not inferred",
+        "evidence": [
+          "https://openrouter.ai/docs/api_reference/limits"
+        ],
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "parser_available": true,
+        "reset": "free_model_daily_requests policy is UTC daily; counter-specific reset instant unknown; budget reset fields are ISO timestamps/null",
+        "scope": "API key response; budgets retain explicit scope; free-model daily counter is account-level; rate-limit headers only on platform limit errors",
+        "source_kind": "official_endpoint_metadata",
+        "status": "implemented_passive_parser"
+      },
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
-      "quota_kind": "private_balance_not_publicly_observed",
+      "quota_kind": "requests_and_monetary_separate",
       "quota_manager_owner": "Manager",
+      "quota_mapping": {
+        "dimensions": "requests_and_monetary_separate",
+        "source_kind": "official_endpoint_metadata",
+        "status": "implemented_passive_parser"
+      },
       "reader_service_ids": [
         "openrouter.free_models"
       ],
@@ -737,6 +1113,7 @@
       "registry_reader_service_ids": [
         "openrouter.free_models"
       ],
+      "remaining_state": "not_publicly_observed",
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "implemented_opt_in_private_service",
       "scope": "API key response; budgets retain explicit scope; free-model daily counter is account-level; rate-limit headers only on platform limit errors",
@@ -753,7 +1130,8 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "account_entitlement_state": "unknown; public descriptions are not account validation",
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown; source does not specify an API-observed quota reset",
       "documented_signals": [],
@@ -763,7 +1141,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -772,17 +1150,39 @@
       "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "ovhcloud",
+      "quota_capability": {
+        "dimensions": "unknown",
+        "entitlement": "unknown; not inferred",
+        "evidence": [
+          "https://docs.ovhcloud.com/en/guides/public-cloud/ai-machine-learning/ai-endpoints-capabilities"
+        ],
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "parser_available": false,
+        "reset": "unknown; source does not specify an API-observed quota reset",
+        "scope": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
-      "quota_kind": "private_balance_not_publicly_observed",
+      "quota_kind": "unknown",
       "quota_manager_owner": "Manager",
+      "quota_mapping": {
+        "dimensions": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "reader_service_ids": [],
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
+      "remaining_state": "not_publicly_observed",
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "official AI Endpoints docs describe limits by anonymous/authenticated scope; no account counter/header schema verified",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "ovhcloud.quota"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -792,7 +1192,8 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "account_entitlement_state": "unknown; public descriptions are not account validation",
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown",
       "documented_signals": [],
@@ -802,7 +1203,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -811,17 +1212,39 @@
       "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "requesty",
+      "quota_capability": {
+        "dimensions": "unknown",
+        "entitlement": "unknown; not inferred",
+        "evidence": [
+          "https://docs.requesty.ai/quickstart"
+        ],
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "parser_available": false,
+        "reset": "unknown",
+        "scope": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
-      "quota_kind": "private_balance_not_publicly_observed",
+      "quota_kind": "unknown",
       "quota_manager_owner": "Manager",
+      "quota_mapping": {
+        "dimensions": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "reader_service_ids": [],
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
+      "remaining_state": "not_publicly_observed",
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "public API/model documentation; account quota counter and scope not verified",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "requesty.quota"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -831,7 +1254,8 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "account_entitlement_state": "unknown; public descriptions are not account validation",
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown",
       "documented_signals": [],
@@ -841,7 +1265,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -850,17 +1274,39 @@
       "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "routeway",
+      "quota_capability": {
+        "dimensions": "unknown",
+        "entitlement": "unknown; not inferred",
+        "evidence": [
+          "https://docs.routeway.ai/getting-started/introduction"
+        ],
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "parser_available": false,
+        "reset": "unknown",
+        "scope": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
-      "quota_kind": "private_balance_not_publicly_observed",
+      "quota_kind": "unknown",
       "quota_manager_owner": "Manager",
+      "quota_mapping": {
+        "dimensions": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "reader_service_ids": [],
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
+      "remaining_state": "not_publicly_observed",
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "public API/model documentation; account quota counter and scope not verified",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "routeway.quota"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -870,7 +1316,8 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "account_entitlement_state": "unknown; public descriptions are not account validation",
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "reset headers describe time until reset, but wire encoding/units are unverified; no reset parser or instant inferred",
       "documented_signals": [
@@ -897,7 +1344,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "implemented_passive_adapter",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "implemented_passive_parser; live account validation not established",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -906,17 +1353,39 @@
       "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "sambanova",
+      "quota_capability": {
+        "dimensions": "requests_only",
+        "entitlement": "unknown; not inferred",
+        "evidence": [
+          "https://docs.sambanova.ai/docs/en/models/rate-limits"
+        ],
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "parser_available": true,
+        "reset": "reset headers describe time until reset, but wire encoding/units are unverified; no reset parser or instant inferred",
+        "scope": "user/API response; per metric RPM/RPD",
+        "source_kind": "official_endpoint_metadata",
+        "status": "implemented_passive_parser"
+      },
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
-      "quota_kind": "private_balance_not_publicly_observed",
+      "quota_kind": "requests_only",
       "quota_manager_owner": "Manager",
+      "quota_mapping": {
+        "dimensions": "requests_only",
+        "source_kind": "official_endpoint_metadata",
+        "status": "implemented_passive_parser"
+      },
       "reader_service_ids": [],
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
+      "remaining_state": "not_publicly_observed",
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "user/API response; per metric RPM/RPD",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "sambanova.quota"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -926,7 +1395,8 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "account_entitlement_state": "unknown; public descriptions are not account validation",
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown",
       "documented_signals": [],
@@ -936,7 +1406,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -945,17 +1415,39 @@
       "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "sealion",
+      "quota_capability": {
+        "dimensions": "unknown",
+        "entitlement": "unknown; not inferred",
+        "evidence": [
+          "https://docs.sea-lion.ai/guides/inferencing/api"
+        ],
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "parser_available": false,
+        "reset": "unknown",
+        "scope": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
-      "quota_kind": "private_balance_not_publicly_observed",
+      "quota_kind": "unknown",
       "quota_manager_owner": "Manager",
+      "quota_mapping": {
+        "dimensions": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "reader_service_ids": [],
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
+      "remaining_state": "not_publicly_observed",
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "public API/model documentation; account quota counter and scope not verified",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "sealion.quota"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -965,7 +1457,8 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "account_entitlement_state": "unknown; public descriptions are not account validation",
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown; balance endpoint supplies no quota/reset or free-account entitlement",
       "documented_signals": [
@@ -988,26 +1481,50 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "implemented_passive_adapter",
-      "mapping_state": "missing_provider_registry_mapping",
-      "observation_method": "implemented_passive_parser; live account validation not established",
+      "mapping_state": "documented_registry_mapping",
+      "observation_method": "opt_in_private_quota_service; live account validation not established",
       "observed_reset": "unknown",
       "official_evidence": [
         "https://docs.siliconflow.com/en/api-reference/userinfo/get-user-info"
       ],
-      "opt_in_private_service_ids": [],
+      "opt_in_private_service_ids": [
+        "siliconflow.balance"
+      ],
       "private_balance": "not_published",
       "provider_family": "siliconflow",
+      "quota_capability": {
+        "dimensions": "monetary_balance_only_not_request_quota",
+        "entitlement": "unknown; not inferred",
+        "evidence": [
+          "https://docs.siliconflow.com/en/api-reference/userinfo/get-user-info"
+        ],
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "parser_available": true,
+        "reset": "unknown; balance endpoint supplies no quota/reset or free-account entitlement",
+        "scope": "private user monetary balance only, currency not assumed; account/model request quotas are separate and remain unknown",
+        "source_kind": "official_endpoint_metadata",
+        "status": "opt_in_private_monetary_parser"
+      },
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
-      "quota_kind": "private_balance_not_publicly_observed",
+      "quota_kind": "monetary_balance_only_not_request_quota",
       "quota_manager_owner": "Manager",
+      "quota_mapping": {
+        "dimensions": "monetary_balance_only_not_request_quota",
+        "source_kind": "official_endpoint_metadata",
+        "status": "implemented_passive_parser"
+      },
       "reader_service_ids": [],
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
+      "remaining_state": "not_publicly_observed",
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
-      "runtime_manager_state": "not_established_by_this_inventory",
+      "runtime_manager_state": "implemented_opt_in_private_service",
       "scope": "private user monetary balance only, currency not assumed; account/model request quotas are separate and remain unknown",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "siliconflow.balance"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -1017,7 +1534,8 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "account_entitlement_state": "unknown; public descriptions are not account validation",
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown",
       "documented_signals": [],
@@ -1027,7 +1545,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -1036,17 +1554,39 @@
       "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "typhoon",
+      "quota_capability": {
+        "dimensions": "unknown",
+        "entitlement": "unknown; not inferred",
+        "evidence": [
+          "https://docs.opentyphoon.ai/en/api-reference/"
+        ],
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "parser_available": false,
+        "reset": "unknown",
+        "scope": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
-      "quota_kind": "private_balance_not_publicly_observed",
+      "quota_kind": "unknown",
       "quota_manager_owner": "Manager",
+      "quota_mapping": {
+        "dimensions": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "reader_service_ids": [],
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
+      "remaining_state": "not_publicly_observed",
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "public API/model documentation; account quota counter and scope not verified",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "typhoon.quota"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS"
       ],
@@ -1055,7 +1595,8 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "account_entitlement_state": "unknown; public descriptions are not account validation",
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown",
       "documented_signals": [],
@@ -1065,7 +1606,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -1074,17 +1615,39 @@
       "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "unorouter",
+      "quota_capability": {
+        "dimensions": "unknown",
+        "entitlement": "unknown; not inferred",
+        "evidence": [
+          "https://unorouter.com/en"
+        ],
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "parser_available": false,
+        "reset": "unknown",
+        "scope": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
-      "quota_kind": "private_balance_not_publicly_observed",
+      "quota_kind": "unknown",
       "quota_manager_owner": "Manager",
+      "quota_mapping": {
+        "dimensions": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "reader_service_ids": [],
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
+      "remaining_state": "not_publicly_observed",
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "public API/model documentation; account quota counter and scope not verified",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "unorouter.quota"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -1094,7 +1657,8 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "account_entitlement_state": "unknown; public descriptions are not account validation",
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown",
       "documented_signals": [],
@@ -1104,7 +1668,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -1113,17 +1677,39 @@
       "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "xfyun",
+      "quota_capability": {
+        "dimensions": "unknown",
+        "entitlement": "unknown; not inferred",
+        "evidence": [
+          "https://www.xfyun.cn/doc/spark/HTTP%E8%B0%83%E7%94%A8%E6%96%87%E6%A1%A3.html"
+        ],
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "parser_available": false,
+        "reset": "unknown",
+        "scope": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
-      "quota_kind": "private_balance_not_publicly_observed",
+      "quota_kind": "unknown",
       "quota_manager_owner": "Manager",
+      "quota_mapping": {
+        "dimensions": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "reader_service_ids": [],
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
+      "remaining_state": "not_publicly_observed",
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "public API/model documentation; account quota counter and scope not verified",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "xfyun.quota"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS"
       ],
@@ -1132,7 +1718,8 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "account_entitlement_state": "unknown; public descriptions are not account validation",
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown",
       "documented_signals": [],
@@ -1142,7 +1729,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -1151,17 +1738,39 @@
       "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "xkiro",
+      "quota_capability": {
+        "dimensions": "unknown",
+        "entitlement": "unknown; not inferred",
+        "evidence": [
+          "https://docs.xkiro.com/"
+        ],
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "parser_available": false,
+        "reset": "unknown",
+        "scope": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
-      "quota_kind": "private_balance_not_publicly_observed",
+      "quota_kind": "unknown",
       "quota_manager_owner": "Manager",
+      "quota_mapping": {
+        "dimensions": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "reader_service_ids": [],
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
+      "remaining_state": "not_publicly_observed",
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "public API/model documentation; account quota counter and scope not verified",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "xkiro.quota"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -1171,7 +1780,8 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "account_entitlement_state": "unknown; public descriptions are not account validation",
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown; source does not specify an API-observed quota reset",
       "documented_signals": [],
@@ -1181,7 +1791,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -1190,17 +1800,39 @@
       "opt_in_private_service_ids": [],
       "private_balance": "not_published",
       "provider_family": "zai",
+      "quota_capability": {
+        "dimensions": "unknown",
+        "entitlement": "unknown; not inferred",
+        "evidence": [
+          "https://docs.z.ai/devpack/usage-policy"
+        ],
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "parser_available": false,
+        "reset": "unknown; source does not specify an API-observed quota reset",
+        "scope": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "quota_check": "scripts/provider_quota_coverage.py:evaluate (not wired to runtime)",
-      "quota_kind": "private_balance_not_publicly_observed",
+      "quota_kind": "unknown",
       "quota_manager_owner": "Manager",
+      "quota_mapping": {
+        "dimensions": "unknown",
+        "source_kind": "official_documentation_only",
+        "status": "documentation_only"
+      },
       "reader_service_ids": [],
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [],
+      "remaining_state": "not_publicly_observed",
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "official usage policy states plan-tier concurrency dynamically adjusts; no counter/reset response schema verified",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "zai.quota"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS"
       ],
@@ -1209,12 +1841,23 @@
       "static_mapping_state": "static_roster_link_only"
     }
   ],
-  "schema": "provider-quota-coverage/v1",
+  "schema": "provider-quota-coverage/v2",
   "service_resources": [
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
       "provider": "github",
+      "quota_capability": {
+        "dimension": "minutes",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "n/a (free for public repos)",
+        "scope": "ci",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
       "quota_manager_owner": "Manager",
       "service_id": "github.actions.minutes"
     },
@@ -1222,6 +1865,17 @@
       "freshness_owner": "ChronoMancer",
       "observation_method": "implemented_read_only_reader",
       "provider": "github",
+      "quota_capability": {
+        "dimension": "repository cache bytes/count, not Actions billing or job capacity",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": "scripts.quota_poll.gh_cache",
+        "reader_dimensions": "repository cache bytes/count, not Actions billing or job capacity",
+        "reset": "LRU eviction; entries unused 7 days removed",
+        "scope": "ci",
+        "status": "typed_reader"
+      },
       "quota_manager_owner": "Manager",
       "service_id": "github.actions.cache"
     },
@@ -1229,6 +1883,17 @@
       "freshness_owner": "ChronoMancer",
       "observation_method": "implemented_read_only_reader",
       "provider": "github",
+      "quota_capability": {
+        "dimension": "REST resources; caller declares token class",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": "scripts.github_quota_manager.observe",
+        "reader_dimensions": "REST resources; caller declares token class",
+        "reset": "x-ratelimit-reset header",
+        "scope": "ci",
+        "status": "typed_reader"
+      },
       "quota_manager_owner": "Manager",
       "service_id": "github.api.github_token"
     },
@@ -1236,6 +1901,17 @@
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
       "provider": "github",
+      "quota_capability": {
+        "dimension": "REST resources; caller declares token class",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": "scripts.github_quota_manager.observe",
+        "reader_dimensions": "REST resources; caller declares token class",
+        "reset": "x-ratelimit-reset header",
+        "scope": "ops",
+        "status": "typed_reader"
+      },
       "quota_manager_owner": "Manager",
       "service_id": "github.api.user_token"
     },
@@ -1243,6 +1919,17 @@
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
       "provider": "github",
+      "quota_capability": {
+        "dimension": "days",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "n/a",
+        "scope": "ci",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
       "quota_manager_owner": "Manager",
       "service_id": "github.artifacts.retention"
     },
@@ -1250,6 +1937,17 @@
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
       "provider": "github",
+      "quota_capability": {
+        "dimension": "requests/month",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unverified",
+        "scope": "model",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
       "quota_manager_owner": "Manager",
       "service_id": "github.copilot.free"
     },
@@ -1257,6 +1955,17 @@
       "freshness_owner": "ChronoMancer",
       "observation_method": "implemented_read_only_reader",
       "provider": "vercel",
+      "quota_capability": {
+        "dimension": "rolling deployment listing; enforcement undercount possible",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": "scripts.quota_poll.vercel_deploys",
+        "reader_dimensions": "rolling deployment listing; enforcement undercount possible",
+        "reset": "rolling",
+        "scope": "deploy",
+        "status": "typed_reader"
+      },
       "quota_manager_owner": "Manager",
       "service_id": "vercel.deployments"
     },
@@ -1264,6 +1973,17 @@
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
       "provider": "vercel",
+      "quota_capability": {
+        "dimension": "minutes",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "n/a",
+        "scope": "deploy",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
       "quota_manager_owner": "Manager",
       "service_id": "vercel.build_time"
     },
@@ -1271,6 +1991,17 @@
       "freshness_owner": "ChronoMancer",
       "observation_method": "implemented_read_only_reader",
       "provider": "render",
+      "quota_capability": {
+        "dimension": "deploy wall-clock estimate, not authoritative billed minutes",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": "scripts.quota_poll.render_reader",
+        "reader_dimensions": "deploy wall-clock estimate, not authoritative billed minutes",
+        "reset": "1st of month",
+        "scope": "deploy",
+        "status": "typed_reader"
+      },
       "quota_manager_owner": "Manager",
       "service_id": "render.pipeline_minutes"
     },
@@ -1278,6 +2009,17 @@
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
       "provider": "render",
+      "quota_capability": {
+        "dimension": "hours/month",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "start of month, no rollover",
+        "scope": "deploy",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
       "quota_manager_owner": "Manager",
       "service_id": "render.instance_hours"
     },
@@ -1285,6 +2027,17 @@
       "freshness_owner": "ChronoMancer",
       "observation_method": "implemented_read_only_reader",
       "provider": "render",
+      "quota_capability": {
+        "dimension": "service outbound bandwidth",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": "scripts.quota_poll.render_reader",
+        "reader_dimensions": "service outbound bandwidth",
+        "reset": "1st of month",
+        "scope": "deploy",
+        "status": "typed_reader"
+      },
       "quota_manager_owner": "Manager",
       "service_id": "render.bandwidth"
     },
@@ -1292,6 +2045,17 @@
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
       "provider": "render",
+      "quota_capability": {
+        "dimension": "GB (1 instance/workspace)",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "expires; 14-day grace then deleted",
+        "scope": "data",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
       "quota_manager_owner": "Manager",
       "service_id": "render.postgres_free"
     },
@@ -1299,6 +2063,17 @@
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
       "provider": "render",
+      "quota_capability": {
+        "dimension": "instance/workspace (in-memory only)",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "data lost on restart",
+        "scope": "data",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
       "quota_manager_owner": "Manager",
       "service_id": "render.keyvalue_free"
     },
@@ -1306,6 +2081,17 @@
       "freshness_owner": "ChronoMancer",
       "observation_method": "implemented_read_only_reader",
       "provider": "neon",
+      "quota_capability": {
+        "dimension": "busiest returned project compute; not complete account usage",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": "scripts.quota_poll.neon_reader",
+        "reader_dimensions": "busiest returned project compute; not complete account usage",
+        "reset": "billing month",
+        "scope": "data",
+        "status": "typed_reader"
+      },
       "quota_manager_owner": "Manager",
       "service_id": "neon.compute"
     },
@@ -1313,6 +2099,17 @@
       "freshness_owner": "ChronoMancer",
       "observation_method": "implemented_read_only_reader",
       "provider": "neon",
+      "quota_capability": {
+        "dimension": "busiest returned project storage; not complete account usage",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": "scripts.quota_poll.neon_reader",
+        "reader_dimensions": "busiest returned project storage; not complete account usage",
+        "reset": "n/a",
+        "scope": "data",
+        "status": "typed_reader"
+      },
       "quota_manager_owner": "Manager",
       "service_id": "neon.storage"
     },
@@ -1320,6 +2117,17 @@
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
       "provider": "neon",
+      "quota_capability": {
+        "dimension": "GB/month",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "billing month",
+        "scope": "data",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
       "quota_manager_owner": "Manager",
       "service_id": "neon.egress"
     },
@@ -1327,6 +2135,17 @@
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
       "provider": "neon",
+      "quota_capability": {
+        "dimension": "free during beta",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "n/a",
+        "scope": "data",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
       "quota_manager_owner": "Manager",
       "service_id": "neon.realtime"
     },
@@ -1334,6 +2153,17 @@
       "freshness_owner": "ChronoMancer",
       "observation_method": "implemented_read_only_reader",
       "provider": "openrouter",
+      "quota_capability": {
+        "dimension": "daily free-model request counter; no monetary inference",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": "scripts.quota_poll.openrouter_reader",
+        "reader_dimensions": "daily free-model request counter; no monetary inference",
+        "reset": "UTC midnight; endpoint documents reset cadence but supplies no reset timestamp",
+        "scope": "model",
+        "status": "typed_reader"
+      },
       "quota_manager_owner": "Manager",
       "service_id": "openrouter.free_models"
     },
@@ -1341,6 +2171,17 @@
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
       "provider": "google",
+      "quota_capability": {
+        "dimension": "per-model",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "midnight",
+        "scope": "model",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
       "quota_manager_owner": "Manager",
       "service_id": "gemini.api_free"
     },
@@ -1348,6 +2189,17 @@
       "freshness_owner": "ChronoMancer",
       "observation_method": "implemented_opt_in_private_service",
       "provider": "ollama",
+      "quota_capability": {
+        "dimension": "opt-in monetary or legacy percent; not requests",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": "scripts.provider_quota_service.observe_service",
+        "reader_dimensions": "opt-in monetary or legacy percent; not requests",
+        "reset": "unknown until authenticated source supplies period.until or legacy resets_at; purchased-credit reset unknown",
+        "scope": "model-balance",
+        "status": "typed_reader"
+      },
       "quota_manager_owner": "Manager",
       "service_id": "ollama.balance"
     },
@@ -1355,6 +2207,17 @@
       "freshness_owner": "ChronoMancer",
       "observation_method": "implemented_opt_in_private_service",
       "provider": "openrouter",
+      "quota_capability": {
+        "dimension": "opt-in key budget and daily request dimensions separate",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": "scripts.provider_quota_service.observe_service",
+        "reader_dimensions": "opt-in key budget and daily request dimensions separate",
+        "reset": "daily request reset instant unknown; only explicit source budget reset retained",
+        "scope": "model-observation",
+        "status": "typed_reader"
+      },
       "quota_manager_owner": "Manager",
       "service_id": "openrouter.key"
     },
@@ -1362,6 +2225,17 @@
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
       "provider": "gpt4free/CLIProxyAPI/Chapito/ai-manus",
+      "quota_capability": {
+        "dimension": "unmetered / unknown",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown",
+        "scope": "model",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
       "quota_manager_owner": "Manager",
       "service_id": "g4f.vendors"
     },
@@ -1369,6 +2243,17 @@
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
       "provider": "grafana",
+      "quota_capability": {
+        "dimension": "samples/s",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "n/a",
+        "scope": "observability",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
       "quota_manager_owner": "Manager",
       "service_id": "grafana.cloud_free"
     },
@@ -1376,6 +2261,17 @@
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
       "provider": "supabase",
+      "quota_capability": {
+        "dimension": "mixed",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "billing month",
+        "scope": "data",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
       "quota_manager_owner": "Manager",
       "service_id": "supabase.free"
     },
@@ -1383,6 +2279,17 @@
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
       "provider": "turso",
+      "quota_capability": {
+        "dimension": "mixed",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "billing month",
+        "scope": "data",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
       "quota_manager_owner": "Manager",
       "service_id": "turso.free"
     },
@@ -1390,6 +2297,17 @@
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
       "provider": "upstash",
+      "quota_capability": {
+        "dimension": "mixed",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "billing period",
+        "scope": "data",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
       "quota_manager_owner": "Manager",
       "service_id": "upstash.free"
     },
@@ -1397,6 +2315,17 @@
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
       "provider": "cloudflare",
+      "quota_capability": {
+        "dimension": "mixed",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "daily",
+        "scope": "data",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
       "quota_manager_owner": "Manager",
       "service_id": "cloudflare.d1_queues"
     },
@@ -1404,8 +2333,829 @@
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
       "provider": "CellCog/Polsia/Manus",
+      "quota_capability": {
+        "dimension": "one-time credits",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "none",
+        "scope": "partner",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
       "quota_manager_owner": "Manager",
       "service_id": "partners.credits"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "aion",
+      "quota_capability": {
+        "dimension": "unknown",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown",
+        "scope": "model-observation",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "aion.quota"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "cerebras",
+      "quota_capability": {
+        "dimension": "unknown",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown",
+        "scope": "model-observation",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "cerebras.quota"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "cloudflare",
+      "quota_capability": {
+        "dimension": "unknown",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown",
+        "scope": "model-observation",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "cloudflare.quota"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "cohere",
+      "quota_capability": {
+        "dimension": "unknown",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown",
+        "scope": "model-observation",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "cohere.quota"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "felo",
+      "quota_capability": {
+        "dimension": "unknown",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown",
+        "scope": "model-observation",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "felo.quota"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "groq",
+      "quota_capability": {
+        "dimension": "unknown",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown",
+        "scope": "model-observation",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "groq.quota"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "huggingface",
+      "quota_capability": {
+        "dimension": "unknown",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown",
+        "scope": "model-observation",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "huggingface.quota"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "kilo",
+      "quota_capability": {
+        "dimension": "unknown",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown",
+        "scope": "model-observation",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "kilo.quota"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "llm7",
+      "quota_capability": {
+        "dimension": "unknown",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown",
+        "scope": "model-observation",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "llm7.quota"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "mistral",
+      "quota_capability": {
+        "dimension": "unknown",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown",
+        "scope": "model-observation",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "mistral.quota"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "modelscope",
+      "quota_capability": {
+        "dimension": "unknown",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown",
+        "scope": "model-observation",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "modelscope.quota"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "nvidia",
+      "quota_capability": {
+        "dimension": "unknown",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown",
+        "scope": "model-observation",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "nvidia.quota"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "omni",
+      "quota_capability": {
+        "dimension": "unknown",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown",
+        "scope": "model-observation",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "omni.quota"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "ovhcloud",
+      "quota_capability": {
+        "dimension": "unknown",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown",
+        "scope": "model-observation",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "ovhcloud.quota"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "sambanova",
+      "quota_capability": {
+        "dimension": "unknown",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown",
+        "scope": "model-observation",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "sambanova.quota"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "zai",
+      "quota_capability": {
+        "dimension": "unknown",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown",
+        "scope": "model-observation",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "zai.quota"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "requesty",
+      "quota_capability": {
+        "dimension": "unknown",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown",
+        "scope": "model-observation",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "requesty.quota"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "routeway",
+      "quota_capability": {
+        "dimension": "unknown",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown",
+        "scope": "model-observation",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "routeway.quota"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "sealion",
+      "quota_capability": {
+        "dimension": "unknown",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown",
+        "scope": "model-observation",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "sealion.quota"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "typhoon",
+      "quota_capability": {
+        "dimension": "unknown",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown",
+        "scope": "model-observation",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "typhoon.quota"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "unorouter",
+      "quota_capability": {
+        "dimension": "unknown",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown",
+        "scope": "model-observation",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "unorouter.quota"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "xfyun",
+      "quota_capability": {
+        "dimension": "unknown",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown",
+        "scope": "model-observation",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "xfyun.quota"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "xkiro",
+      "quota_capability": {
+        "dimension": "unknown",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown",
+        "scope": "model-observation",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "xkiro.quota"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "implemented_opt_in_private_service",
+      "provider": "siliconflow",
+      "quota_capability": {
+        "dimension": "opt-in monetary strings; currency/request quota unknown",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": "scripts.provider_quota_service.observe_service",
+        "reader_dimensions": "opt-in monetary strings; currency/request quota unknown",
+        "reset": "unknown",
+        "scope": "model-balance",
+        "status": "typed_reader"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "siliconflow.balance"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_capability": {
+        "dimension": "GraphQL points/hour; separate from REST",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": "scripts.github_quota_manager.observe",
+        "reader_dimensions": "GraphQL points/hour; separate from REST",
+        "reset": "x-ratelimit-reset from rate_limit resource",
+        "scope": "ci",
+        "status": "typed_reader"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "github.api.graphql"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_capability": {
+        "dimension": "REST installation token resources; thresholds not inferred",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": "scripts.github_quota_manager.observe",
+        "reader_dimensions": "REST installation token resources; thresholds not inferred",
+        "reset": "x-ratelimit-reset from rate_limit resource",
+        "scope": "ci",
+        "status": "typed_reader"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "github.api.app_installation"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_capability": {
+        "dimension": "days/workflow run",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "no recurring reset; new run is a new scope",
+        "scope": "ci-policy",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "github.actions.workflow_runtime"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_capability": {
+        "dimension": "days/approval wait",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "no recurring reset; new approval is a new scope",
+        "scope": "ci-policy",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "github.actions.approval_wait"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_capability": {
+        "dimension": "jobs/matrix",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "new workflow run",
+        "scope": "ci-policy",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "github.actions.matrix_jobs"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_capability": {
+        "dimension": "events/10 seconds/repository",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "source rate window; exact live reset unknown",
+        "scope": "ci-policy",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "github.actions.trigger_events"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_capability": {
+        "dimension": "workflow runs/10 seconds",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "source rate window; exact live reset unknown",
+        "scope": "ci-policy",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "github.actions.queued_runs"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_capability": {
+        "dimension": "queued jobs or runs/concurrency group",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "capacity released as queue drains; no clock reset",
+        "scope": "ci-policy",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "github.actions.concurrency_queue_max"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_capability": {
+        "dimension": "hours/job",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "new job",
+        "scope": "ci-policy",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "github.actions.hosted_job_runtime"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_capability": {
+        "dimension": "days/job",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "new job",
+        "scope": "ci-policy",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "github.actions.self_hosted_job_runtime"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_capability": {
+        "dimension": "hours/queued job",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "job starts or is cancelled; no recurring reset",
+        "scope": "ci-policy",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "github.actions.self_hosted_queue_wait"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_capability": {
+        "dimension": "simultaneous jobs/account plan",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "capacity released when jobs end; no clock reset",
+        "scope": "ci-policy",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "github.actions.hosted_concurrency"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_capability": {
+        "dimension": "simultaneous macOS jobs/account plan",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "capacity released when jobs end; no clock reset",
+        "scope": "ci-policy",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "github.actions.hosted_macos_concurrency"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_capability": {
+        "dimension": "concurrent requests",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown; secondary reset not exposed by /rate_limit",
+        "scope": "api-policy",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "github.api.secondary.concurrent_requests"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_capability": {
+        "dimension": "secondary points/endpoint/minute",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown; secondary reset not exposed by /rate_limit",
+        "scope": "api-policy",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "github.api.secondary.rest_points"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_capability": {
+        "dimension": "secondary points/minute",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown; secondary reset not exposed by /rate_limit",
+        "scope": "api-policy",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "github.api.secondary.graphql_points"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_capability": {
+        "dimension": "CPU seconds/60 real seconds",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown; secondary reset not exposed by /rate_limit",
+        "scope": "api-policy",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "github.api.secondary.cpu_total"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_capability": {
+        "dimension": "CPU seconds/60 real seconds",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown; secondary reset not exposed by /rate_limit",
+        "scope": "api-policy",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "github.api.secondary.cpu_graphql"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_capability": {
+        "dimension": "content-generating requests/minute",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown; secondary reset not exposed by /rate_limit",
+        "scope": "api-policy",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "github.api.secondary.content_minute"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_capability": {
+        "dimension": "content-generating requests/hour",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown; secondary reset not exposed by /rate_limit",
+        "scope": "api-policy",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "github.api.secondary.content_hour"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_capability": {
+        "dimension": "OAuth access-token requests/hour",
+        "entitlement": "registry_limit_is_documentation_not_account_entitlement",
+        "fail_closed": true,
+        "freshness": "unknown_until_timestamped_observation",
+        "reader": null,
+        "reader_dimensions": "unknown",
+        "reset": "unknown; secondary reset not exposed by /rate_limit",
+        "scope": "api-policy",
+        "status": "unknown_unless_explicit_reader_registered"
+      },
+      "quota_manager_owner": "Manager",
+      "service_id": "github.api.secondary.oauth_token_requests"
     }
   ]
 }

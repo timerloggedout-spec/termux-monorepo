@@ -2,38 +2,1321 @@
   "schema": "3l0.quota-registry.v1",
   "record_format": "foresight-evidence-spine contract v2 (docs/ops/FORESIGHT-EVIDENCE-SPINE.md) + hindsight retain payload (docs/ops/sessions/HINDSIGHT.md)",
   "rules": [
-    "Documented limits are entitlements, not balances (docs/ops/FREE-QUOTA-WINDOWS.md). Never invent a remaining value.",
+    "Documented limits are policy ceilings, not proof of account entitlement or balances. Never invent remaining capacity.",
     "planned_use: spend up to safety x limit, paced linearly over the window; routing multiplier = remaining-budget fraction / remaining-time fraction, capped at 2, 0 when exhausted, 1.0 when no live reading.",
-    "No secrets in records. Poller output is a workflow artifact, never a commit (commits would trigger Vercel/Render builds)."
+    "Private records stay outside Git and public artifacts; only explicit status-only projections may be published."
   ],
   "services": [
-    {"id": "github.actions.minutes", "provider": "github", "lane": "ci", "metric": "standard-runner minutes (public repo)", "limit": null, "unit": "minutes", "window": "monthly", "reset": "n/a (free for public repos)", "zone": "UTC", "source": "https://docs.github.com/en/billing/concepts/product-billing/github-actions", "doc_quote": "GitHub Actions usage is free for self-hosted runners and for public repositories that use standard GitHub-hosted runners.", "live": "none_needed", "planned_use": {"safety": 1.0, "note": "free; larger runners are always billed, so never use them"}},
-    {"id": "github.actions.cache", "provider": "github", "lane": "ci", "metric": "cache storage per repo", "limit": 10, "unit": "GB", "window": "rolling", "reset": "LRU eviction; entries unused 7 days removed", "zone": "UTC", "source": "https://docs.github.com/en/actions/reference/workflows-and-actions/dependency-caching", "live": "GET /repos/{repo}/actions/cache/usage", "planned_use": {"safety": 0.9}},
-    {"id": "github.api.github_token", "provider": "github", "lane": "ci", "metric": "REST requests via GITHUB_TOKEN", "limit": 1000, "unit": "requests/hour/repo", "window": "hourly", "reset": "x-ratelimit-reset header", "zone": "UTC", "source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api", "live": "GET /rate_limit", "planned_use": {"safety": 0.8}},
-    {"id": "github.api.user_token", "provider": "github", "lane": "ops", "metric": "REST requests via user/OAuth token", "limit": 5000, "unit": "requests/hour", "window": "hourly", "reset": "x-ratelimit-reset header", "zone": "UTC", "source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api", "live": "GET /rate_limit (Hark connector)", "planned_use": {"safety": 0.8}},
-    {"id": "github.artifacts.retention", "provider": "github", "lane": "ci", "metric": "artifact retention default", "limit": 90, "unit": "days", "window": "per-artifact", "reset": "n/a", "zone": "UTC", "source": "reported by Platform201 Planning Queue 2026-10-19 (not re-fetched)", "live": "none", "planned_use": {"note": "quota artifacts use retention-days: 7"}},
-    {"id": "github.copilot.free", "provider": "github", "lane": "model", "metric": "Copilot Free allowance", "limit": null, "unit": "requests/month", "window": "monthly", "reset": "unverified", "zone": "UTC", "source": "https://docs.github.com/en/copilot/get-started/plans", "doc_quote": "limited access to a selection of Copilot features", "live": "none (no usage API for Free)", "planned_use": {"note": "numeric caps not stated on the fetched page; treat as unknown"}},
-    {"id": "vercel.deployments", "provider": "vercel", "lane": "deploy", "metric": "deployments created", "limit": 100, "unit": "deployments/day", "window": "rolling 24h (observed: error says try again in 24 hours)", "reset": "rolling", "zone": "UTC", "source": "https://vercel.com/docs/limits", "live": "GET api.vercel.com/v6/deployments (VERCEL_TOKEN); undercounts vs enforcement by >=13 (2026-10-19)", "planned_use": {"safety": 0.9, "note": "deploy only when probe count <= 95"}},
-    {"id": "vercel.build_time", "provider": "vercel", "lane": "deploy", "metric": "build step duration per deployment", "limit": 45, "unit": "minutes", "window": "per-build", "reset": "n/a", "zone": "UTC", "source": "https://vercel.com/docs/limits", "live": "none", "planned_use": {"note": "Hobby uses Basic 2 vCPU/8 GB build machine (https://vercel.com/docs/builds/managing-builds); no monthly build-minute cap found on fetched pages"}},
-    {"id": "render.pipeline_minutes", "provider": "render", "lane": "deploy", "metric": "Starter build pipeline minutes (Hobby)", "limit": 500, "unit": "minutes/month", "window": "calendar month", "reset": "1st of month", "zone": "UTC (unverified; assumed)", "source": "https://render.com/docs/build-pipeline", "doc_quote": "Hobby: 500 minutes", "live": "dashboard only (billing#unbilled-charges); estimate from deploys API wall-clock", "planned_use": {"safety": 0.9, "note": "on exhaustion with no payment method or spend limit reached, new builds are disabled for the rest of the month; services stay active on existing build artifacts (https://render.com/docs/free)"}},
-    {"id": "render.instance_hours", "provider": "render", "lane": "deploy", "metric": "Free instance hours per workspace", "limit": 750, "unit": "hours/month", "window": "calendar month", "reset": "start of month, no rollover", "zone": "UTC (unverified; assumed)", "source": "https://render.com/docs/free", "live": "dashboard only (billing#included-usage)", "planned_use": {"safety": 0.95, "note": "spun-down services use none; spin-down after 15 min idle; exhaustion suspends all free web services"}},
-    {"id": "render.bandwidth", "provider": "render", "lane": "deploy", "metric": "outbound bandwidth included (Hobby)", "limit": 5, "unit": "GB/month", "window": "calendar month", "reset": "1st of month", "zone": "UTC (unverified; assumed)", "source": "https://render.com/pricing", "live": "GET /v1/metrics/bandwidth?resource=srv-...", "planned_use": {"safety": 0.9, "note": "without a payment method, exhaustion suspends all free services for the month (https://render.com/docs/free)"}},
-    {"id": "render.postgres_free", "provider": "render", "lane": "data", "metric": "free Postgres", "limit": 1, "unit": "GB (1 instance/workspace)", "window": "30 days from creation", "reset": "expires; 14-day grace then deleted", "zone": "UTC", "source": "https://render.com/docs/free", "live": "none", "planned_use": {"note": "not for durable data"}},
-    {"id": "render.keyvalue_free", "provider": "render", "lane": "data", "metric": "free Key Value", "limit": 1, "unit": "instance/workspace (in-memory only)", "window": "n/a", "reset": "data lost on restart", "zone": "UTC", "source": "https://render.com/docs/free", "live": "none", "planned_use": {"note": "cache only"}},
-    {"id": "neon.compute", "provider": "neon", "lane": "data", "metric": "compute", "limit": 100, "unit": "CU-hours/project/month", "window": "monthly", "reset": "billing month", "zone": "UTC", "source": "https://neon.com/docs/introduction/plans", "live": "GET console.neon.tech/api/v2/projects (NEON_API_KEY)", "planned_use": {"safety": 0.85, "note": "batch lane-ledger writes hourly (~15 CU-h/mo) not per event (~180 CU-h/mo), per Platform201 estimate"}},
-    {"id": "neon.storage", "provider": "neon", "lane": "data", "metric": "Postgres storage", "limit": 1, "unit": "GB/project (20 GB total)", "window": "point-in-time", "reset": "n/a", "zone": "UTC", "source": "https://neon.com/docs/introduction/plans", "live": "projects API synthetic_storage_size", "planned_use": {"safety": 0.8}},
-    {"id": "neon.egress", "provider": "neon", "lane": "data", "metric": "egress", "limit": 5, "unit": "GB/month", "window": "monthly", "reset": "billing month", "zone": "UTC", "source": "https://neon.com/docs/introduction/plans", "live": "none", "planned_use": {"safety": 0.8}},
-    {"id": "neon.realtime", "provider": "neon", "lane": "data", "metric": "Realtime (beta)", "limit": null, "unit": "free during beta", "window": "n/a", "reset": "n/a", "zone": "UTC", "source": "reported by Platform201 Planning Queue 2026-10-19 (not re-fetched)", "live": "none", "planned_use": {"note": "beta terms can change; re-check before relying"}},
-    {"id": "openrouter.free_models", "provider": "openrouter", "lane": "model", "metric": "free-model (:free) daily request entitlement/counter", "limit": null, "unit": "requests/day (dynamic tier; endpoint supplies limit)", "window": "daily UTC", "reset": "UTC midnight; endpoint documents reset cadence but supplies no reset timestamp", "zone": "UTC", "source": "https://openrouter.ai/docs/api_reference/limits", "doc_quote": "The free_model_daily_requests field ... reports the daily counter and ceiling ... The counter resets at UTC midnight.", "live": "GET /api/v1/key -> data.free_model_daily_requests {used, limit, remaining} (OPENROUTER_API_KEY); ignore private credit/budget fields and openrouter_metadata", "planned_use": {"safety": 0.9, "note": "Only the documented free-model request counter drives this record; daily tier ceiling depends on credits purchased. Credit balances and budgets are separate private monetary limits, not request counts."}},
-    {"id": "gemini.api_free", "provider": "google", "lane": "model", "metric": "RPM/TPM/RPD per model, per project", "limit": null, "unit": "per-model", "window": "daily (RPD)", "reset": "midnight", "zone": "America/Los_Angeles", "source": "https://ai.google.dev/gemini-api/docs/rate-limits", "doc_quote": "Requests per day (RPD) quotas reset at midnight Pacific time.", "live": "none; .github/actions/gemini-quota-gate soft budgets + 429s", "planned_use": {"safety": 0.9}},
-    {"id": "ollama.balance", "provider": "ollama", "lane": "model-balance", "metric": "remaining included/purchased USD balance or legacy remaining percentages", "limit": null, "unit": "variant-specific USD or percent; never requests/tokens", "window": "source-supplied included period or legacy session/weekly", "reset": "unknown until authenticated source supplies period.until or legacy resets_at; purchased-credit reset unknown", "zone": "UTC", "source": "https://docs.ollama.com/api/balance", "live": "opt-in only: python3 -m scripts.provider_quota_service --observe; GET https://ollama.com/api/balance (OLLAMA_API_KEY)", "planned_use": {"note": "Explicit private scope and mode-0700 output directory required. Not collected by quota_poll, no routing weights from balances, no account validation or reservation claimed."}},
-    {"id": "openrouter.key", "provider": "openrouter", "lane": "model-observation", "metric": "private request quota, monetary key limits and account tier kept separate", "limit": null, "unit": "signal-specific requests or monetary credits; tier is not model price", "window": "source daily counter; monetary budgets independently scoped", "reset": "daily request reset instant unknown; only explicit source budget reset retained", "zone": "UTC", "source": "https://openrouter.ai/docs/api/api-reference/api-keys/get-current-api-key", "live": "manual opt-in only: scripts/provider_quota_service.py --service openrouter.key --observe; fixed GET https://openrouter.ai/api/v1/key (OPENROUTER_API_KEY)", "planned_use": {"note": "Private mode-0600 output outside Git; status-only public projection. Not an automatic reader, routing input, entitlement or inference authorization. Trusted-master workflow defaults off; no private artifacts."}},
-    {"id": "g4f.vendors", "provider": "gpt4free/CLIProxyAPI/Chapito/ai-manus", "lane": "model", "metric": "public/web-wrapped endpoints (multi-ai-cli/vendors)", "limit": null, "unit": "unmetered / unknown", "window": "unknown", "reset": "unknown", "zone": "UTC", "source": "multi-ai-cli/vendors/README.md", "live": "none; observe 429/retry-after per call", "planned_use": {"note": "fallback pool only; experiment label required (FREE-QUOTA-WINDOWS router rule)"}},
-    {"id": "grafana.cloud_free", "provider": "grafana", "lane": "observability", "metric": "ingestion_rate per series", "limit": 10000, "unit": "samples/s", "window": "instant", "reset": "n/a", "zone": "UTC", "source": "https://grafana.com/docs/grafana-cloud/cost-management-and-billing/understand-your-invoice/usage-limits/", "live": "none", "planned_use": {"note": "free-tier monthly series/log/trace allowances not verified on a fetched page"}},
-    {"id": "supabase.free", "provider": "supabase", "lane": "data", "metric": "DB 500 MB; 2 active projects; pause after 1 week idle; Realtime 2M msgs/200 conns; 5 GB egress", "limit": null, "unit": "mixed", "window": "monthly", "reset": "billing month", "zone": "UTC", "source": "reported by Platform201 Planning Queue 2026-10-19 (vendor pricing page; not re-fetched)", "live": "none", "planned_use": {}},
-    {"id": "turso.free", "provider": "turso", "lane": "data", "metric": "5 GB; 10M rows written/mo; 500M reads; 100 DBs", "limit": null, "unit": "mixed", "window": "monthly", "reset": "billing month", "zone": "UTC", "source": "reported by Platform201 Planning Queue 2026-10-19 (not re-fetched)", "live": "none", "planned_use": {}},
-    {"id": "upstash.free", "provider": "upstash", "lane": "data", "metric": "Redis 250 MB, 500K commands/mo, 10 GB bandwidth; QStash 1,000 msgs/day", "limit": null, "unit": "mixed", "window": "monthly/daily", "reset": "billing period", "zone": "UTC", "source": "reported by Platform201 Planning Queue 2026-10-19 (not re-fetched)", "live": "none", "planned_use": {}},
-    {"id": "cloudflare.d1_queues", "provider": "cloudflare", "lane": "data", "metric": "D1 100k rows written/day, 5M reads/day, 5 GB; Queues 10k ops/day, 24h retention", "limit": null, "unit": "mixed", "window": "daily", "reset": "daily", "zone": "UTC", "source": "reported by Platform201 Planning Queue 2026-10-19 (not re-fetched)", "live": "none", "planned_use": {}},
-    {"id": "partners.credits", "provider": "CellCog/Polsia/Manus", "lane": "partner", "metric": "referral/bonus credits (docs/PARTNERS.md)", "limit": null, "unit": "one-time credits", "window": "one-time", "reset": "none", "zone": "UTC", "source": "docs/PARTNERS.md", "live": "none", "planned_use": {"note": "not a recurring quota; spend only via explicit experiment"}}
+    {
+      "id": "github.actions.minutes",
+      "provider": "github",
+      "lane": "ci",
+      "metric": "standard-runner minutes (public repo)",
+      "limit": null,
+      "unit": "minutes",
+      "window": "monthly",
+      "reset": "n/a (free for public repos)",
+      "zone": "UTC",
+      "source": "https://docs.github.com/en/billing/concepts/product-billing/github-actions",
+      "doc_quote": "GitHub Actions usage is free for self-hosted runners and for public repositories that use standard GitHub-hosted runners.",
+      "live": "none_needed",
+      "planned_use": {
+        "safety": 1.0,
+        "note": "free; larger runners are always billed, so never use them"
+      }
+    },
+    {
+      "id": "github.actions.cache",
+      "provider": "github",
+      "lane": "ci",
+      "metric": "cache storage per repo",
+      "limit": 10,
+      "unit": "GB",
+      "window": "rolling",
+      "reset": "LRU eviction; entries unused 7 days removed",
+      "zone": "UTC",
+      "source": "https://docs.github.com/en/actions/reference/workflows-and-actions/dependency-caching",
+      "live": "GET /repos/{repo}/actions/cache/usage",
+      "planned_use": {
+        "safety": 0.9
+      }
+    },
+    {
+      "id": "github.api.github_token",
+      "provider": "github",
+      "lane": "ci",
+      "metric": "REST GITHUB_TOKEN baseline 1,000/repository/hour; Enterprise Cloud resources may allow 15,000; live credential bucket authoritative",
+      "limit": 1000,
+      "unit": "requests/hour/repo",
+      "window": "hourly",
+      "reset": "x-ratelimit-reset header",
+      "zone": "UTC",
+      "source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+      "live": "GET /rate_limit",
+      "planned_use": {
+        "safety": 0.8
+      }
+    },
+    {
+      "id": "github.api.user_token",
+      "provider": "github",
+      "lane": "ops",
+      "metric": "REST user/OAuth baseline 5,000/hour; eligible enterprise contexts differ; live credential bucket authoritative",
+      "limit": 5000,
+      "unit": "requests/hour",
+      "window": "hourly",
+      "reset": "x-ratelimit-reset header",
+      "zone": "UTC",
+      "source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+      "live": "GET /rate_limit (Hark connector)",
+      "planned_use": {
+        "safety": 0.8
+      }
+    },
+    {
+      "id": "github.artifacts.retention",
+      "provider": "github",
+      "lane": "ci",
+      "metric": "artifact retention default",
+      "limit": 90,
+      "unit": "days",
+      "window": "per-artifact",
+      "reset": "n/a",
+      "zone": "UTC",
+      "source": "reported by Platform201 Planning Queue 2026-10-19 (not re-fetched)",
+      "live": "none",
+      "planned_use": {
+        "note": "quota artifacts use retention-days: 7"
+      }
+    },
+    {
+      "id": "github.copilot.free",
+      "provider": "github",
+      "lane": "model",
+      "metric": "Copilot Free allowance",
+      "limit": null,
+      "unit": "requests/month",
+      "window": "monthly",
+      "reset": "unverified",
+      "zone": "UTC",
+      "source": "https://docs.github.com/en/copilot/get-started/plans",
+      "doc_quote": "limited access to a selection of Copilot features",
+      "live": "none (no usage API for Free)",
+      "planned_use": {
+        "note": "numeric caps not stated on the fetched page; treat as unknown"
+      }
+    },
+    {
+      "id": "vercel.deployments",
+      "provider": "vercel",
+      "lane": "deploy",
+      "metric": "deployments created",
+      "limit": 100,
+      "unit": "deployments/day",
+      "window": "rolling 24h (observed: error says try again in 24 hours)",
+      "reset": "rolling",
+      "zone": "UTC",
+      "source": "https://vercel.com/docs/limits",
+      "live": "GET api.vercel.com/v6/deployments (VERCEL_TOKEN); undercounts vs enforcement by >=13 (2026-10-19)",
+      "planned_use": {
+        "safety": 0.9,
+        "note": "deploy only when probe count <= 95"
+      }
+    },
+    {
+      "id": "vercel.build_time",
+      "provider": "vercel",
+      "lane": "deploy",
+      "metric": "build step duration per deployment",
+      "limit": 45,
+      "unit": "minutes",
+      "window": "per-build",
+      "reset": "n/a",
+      "zone": "UTC",
+      "source": "https://vercel.com/docs/limits",
+      "live": "none",
+      "planned_use": {
+        "note": "Hobby uses Basic 2 vCPU/8 GB build machine (https://vercel.com/docs/builds/managing-builds); no monthly build-minute cap found on fetched pages"
+      }
+    },
+    {
+      "id": "render.pipeline_minutes",
+      "provider": "render",
+      "lane": "deploy",
+      "metric": "Starter build pipeline minutes (Hobby)",
+      "limit": 500,
+      "unit": "minutes/month",
+      "window": "calendar month",
+      "reset": "1st of month",
+      "zone": "UTC (unverified; assumed)",
+      "source": "https://render.com/docs/build-pipeline",
+      "doc_quote": "Hobby: 500 minutes",
+      "live": "dashboard only (billing#unbilled-charges); estimate from deploys API wall-clock",
+      "planned_use": {
+        "safety": 0.9,
+        "note": "on exhaustion with no payment method or spend limit reached, new builds are disabled for the rest of the month; services stay active on existing build artifacts (https://render.com/docs/free)"
+      }
+    },
+    {
+      "id": "render.instance_hours",
+      "provider": "render",
+      "lane": "deploy",
+      "metric": "Free instance hours per workspace",
+      "limit": 750,
+      "unit": "hours/month",
+      "window": "calendar month",
+      "reset": "start of month, no rollover",
+      "zone": "UTC (unverified; assumed)",
+      "source": "https://render.com/docs/free",
+      "live": "dashboard only (billing#included-usage)",
+      "planned_use": {
+        "safety": 0.95,
+        "note": "spun-down services use none; spin-down after 15 min idle; exhaustion suspends all free web services"
+      }
+    },
+    {
+      "id": "render.bandwidth",
+      "provider": "render",
+      "lane": "deploy",
+      "metric": "outbound bandwidth included (Hobby)",
+      "limit": 5,
+      "unit": "GB/month",
+      "window": "calendar month",
+      "reset": "1st of month",
+      "zone": "UTC (unverified; assumed)",
+      "source": "https://render.com/pricing",
+      "live": "GET /v1/metrics/bandwidth?resource=srv-...",
+      "planned_use": {
+        "safety": 0.9,
+        "note": "without a payment method, exhaustion suspends all free services for the month (https://render.com/docs/free)"
+      }
+    },
+    {
+      "id": "render.postgres_free",
+      "provider": "render",
+      "lane": "data",
+      "metric": "free Postgres",
+      "limit": 1,
+      "unit": "GB (1 instance/workspace)",
+      "window": "30 days from creation",
+      "reset": "expires; 14-day grace then deleted",
+      "zone": "UTC",
+      "source": "https://render.com/docs/free",
+      "live": "none",
+      "planned_use": {
+        "note": "not for durable data"
+      }
+    },
+    {
+      "id": "render.keyvalue_free",
+      "provider": "render",
+      "lane": "data",
+      "metric": "free Key Value",
+      "limit": 1,
+      "unit": "instance/workspace (in-memory only)",
+      "window": "n/a",
+      "reset": "data lost on restart",
+      "zone": "UTC",
+      "source": "https://render.com/docs/free",
+      "live": "none",
+      "planned_use": {
+        "note": "cache only"
+      }
+    },
+    {
+      "id": "neon.compute",
+      "provider": "neon",
+      "lane": "data",
+      "metric": "compute",
+      "limit": 100,
+      "unit": "CU-hours/project/month",
+      "window": "monthly",
+      "reset": "billing month",
+      "zone": "UTC",
+      "source": "https://neon.com/docs/introduction/plans",
+      "live": "GET console.neon.tech/api/v2/projects (NEON_API_KEY)",
+      "planned_use": {
+        "safety": 0.85,
+        "note": "batch lane-ledger writes hourly (~15 CU-h/mo) not per event (~180 CU-h/mo), per Platform201 estimate"
+      }
+    },
+    {
+      "id": "neon.storage",
+      "provider": "neon",
+      "lane": "data",
+      "metric": "Postgres storage",
+      "limit": 1,
+      "unit": "GB/project (20 GB total)",
+      "window": "point-in-time",
+      "reset": "n/a",
+      "zone": "UTC",
+      "source": "https://neon.com/docs/introduction/plans",
+      "live": "projects API synthetic_storage_size",
+      "planned_use": {
+        "safety": 0.8
+      }
+    },
+    {
+      "id": "neon.egress",
+      "provider": "neon",
+      "lane": "data",
+      "metric": "egress",
+      "limit": 5,
+      "unit": "GB/month",
+      "window": "monthly",
+      "reset": "billing month",
+      "zone": "UTC",
+      "source": "https://neon.com/docs/introduction/plans",
+      "live": "none",
+      "planned_use": {
+        "safety": 0.8
+      }
+    },
+    {
+      "id": "neon.realtime",
+      "provider": "neon",
+      "lane": "data",
+      "metric": "Realtime (beta)",
+      "limit": null,
+      "unit": "free during beta",
+      "window": "n/a",
+      "reset": "n/a",
+      "zone": "UTC",
+      "source": "reported by Platform201 Planning Queue 2026-10-19 (not re-fetched)",
+      "live": "none",
+      "planned_use": {
+        "note": "beta terms can change; re-check before relying"
+      }
+    },
+    {
+      "id": "openrouter.free_models",
+      "provider": "openrouter",
+      "lane": "model",
+      "metric": "free-model (:free) daily request entitlement/counter",
+      "limit": null,
+      "unit": "requests/day (dynamic tier; endpoint supplies limit)",
+      "window": "daily UTC",
+      "reset": "UTC midnight; endpoint documents reset cadence but supplies no reset timestamp",
+      "zone": "UTC",
+      "source": "https://openrouter.ai/docs/api_reference/limits",
+      "doc_quote": "The free_model_daily_requests field ... reports the daily counter and ceiling ... The counter resets at UTC midnight.",
+      "live": "GET /api/v1/key -> data.free_model_daily_requests {used, limit, remaining} (OPENROUTER_API_KEY); ignore private credit/budget fields and openrouter_metadata",
+      "planned_use": {
+        "safety": 0.9,
+        "note": "Only the documented free-model request counter drives this record; daily tier ceiling depends on credits purchased. Credit balances and budgets are separate private monetary limits, not request counts."
+      }
+    },
+    {
+      "id": "gemini.api_free",
+      "provider": "google",
+      "lane": "model",
+      "metric": "RPM/TPM/RPD per model, per project",
+      "limit": null,
+      "unit": "per-model",
+      "window": "daily (RPD)",
+      "reset": "midnight",
+      "zone": "America/Los_Angeles",
+      "source": "https://ai.google.dev/gemini-api/docs/rate-limits",
+      "doc_quote": "Requests per day (RPD) quotas reset at midnight Pacific time.",
+      "live": "none; .github/actions/gemini-quota-gate soft budgets + 429s",
+      "planned_use": {
+        "safety": 0.9
+      }
+    },
+    {
+      "id": "ollama.balance",
+      "provider": "ollama",
+      "lane": "model-balance",
+      "metric": "remaining included/purchased USD balance or legacy remaining percentages",
+      "limit": null,
+      "unit": "variant-specific USD or percent; never requests/tokens",
+      "window": "source-supplied included period or legacy session/weekly",
+      "reset": "unknown until authenticated source supplies period.until or legacy resets_at; purchased-credit reset unknown",
+      "zone": "UTC",
+      "source": "https://docs.ollama.com/api/balance",
+      "live": "opt-in only: python3 -m scripts.provider_quota_service --observe; GET https://ollama.com/api/balance (OLLAMA_API_KEY)",
+      "planned_use": {
+        "note": "Explicit private scope and mode-0700 output directory required. Not collected by quota_poll, no routing weights from balances, no account validation or reservation claimed."
+      }
+    },
+    {
+      "id": "openrouter.key",
+      "provider": "openrouter",
+      "lane": "model-observation",
+      "metric": "private request quota, monetary key limits and account tier kept separate",
+      "limit": null,
+      "unit": "signal-specific requests or monetary credits; tier is not model price",
+      "window": "source daily counter; monetary budgets independently scoped",
+      "reset": "daily request reset instant unknown; only explicit source budget reset retained",
+      "zone": "UTC",
+      "source": "https://openrouter.ai/docs/api/api-reference/api-keys/get-current-api-key",
+      "live": "manual opt-in only: scripts/provider_quota_service.py --service openrouter.key --observe; fixed GET https://openrouter.ai/api/v1/key (OPENROUTER_API_KEY)",
+      "planned_use": {
+        "note": "Private mode-0600 output outside Git; status-only public projection. Not an automatic reader, routing input, entitlement or inference authorization. Trusted-master workflow defaults off; no private artifacts."
+      },
+      "manager_entrypoint": "scripts.provider_quota_mapping.observe_family",
+      "unknown_reason": "unsupported_or_no_observation_yet"
+    },
+    {
+      "id": "g4f.vendors",
+      "provider": "gpt4free/CLIProxyAPI/Chapito/ai-manus",
+      "lane": "model",
+      "metric": "public/web-wrapped endpoints (multi-ai-cli/vendors)",
+      "limit": null,
+      "unit": "unmetered / unknown",
+      "window": "unknown",
+      "reset": "unknown",
+      "zone": "UTC",
+      "source": "multi-ai-cli/vendors/README.md",
+      "live": "none; observe 429/retry-after per call",
+      "planned_use": {
+        "note": "fallback pool only; experiment label required (FREE-QUOTA-WINDOWS router rule)"
+      }
+    },
+    {
+      "id": "grafana.cloud_free",
+      "provider": "grafana",
+      "lane": "observability",
+      "metric": "ingestion_rate per series",
+      "limit": 10000,
+      "unit": "samples/s",
+      "window": "instant",
+      "reset": "n/a",
+      "zone": "UTC",
+      "source": "https://grafana.com/docs/grafana-cloud/cost-management-and-billing/understand-your-invoice/usage-limits/",
+      "live": "none",
+      "planned_use": {
+        "note": "free-tier monthly series/log/trace allowances not verified on a fetched page"
+      }
+    },
+    {
+      "id": "supabase.free",
+      "provider": "supabase",
+      "lane": "data",
+      "metric": "DB 500 MB; 2 active projects; pause after 1 week idle; Realtime 2M msgs/200 conns; 5 GB egress",
+      "limit": null,
+      "unit": "mixed",
+      "window": "monthly",
+      "reset": "billing month",
+      "zone": "UTC",
+      "source": "reported by Platform201 Planning Queue 2026-10-19 (vendor pricing page; not re-fetched)",
+      "live": "none",
+      "planned_use": {}
+    },
+    {
+      "id": "turso.free",
+      "provider": "turso",
+      "lane": "data",
+      "metric": "5 GB; 10M rows written/mo; 500M reads; 100 DBs",
+      "limit": null,
+      "unit": "mixed",
+      "window": "monthly",
+      "reset": "billing month",
+      "zone": "UTC",
+      "source": "reported by Platform201 Planning Queue 2026-10-19 (not re-fetched)",
+      "live": "none",
+      "planned_use": {}
+    },
+    {
+      "id": "upstash.free",
+      "provider": "upstash",
+      "lane": "data",
+      "metric": "Redis 250 MB, 500K commands/mo, 10 GB bandwidth; QStash 1,000 msgs/day",
+      "limit": null,
+      "unit": "mixed",
+      "window": "monthly/daily",
+      "reset": "billing period",
+      "zone": "UTC",
+      "source": "reported by Platform201 Planning Queue 2026-10-19 (not re-fetched)",
+      "live": "none",
+      "planned_use": {}
+    },
+    {
+      "id": "cloudflare.d1_queues",
+      "provider": "cloudflare",
+      "lane": "data",
+      "metric": "D1 100k rows written/day, 5M reads/day, 5 GB; Queues 10k ops/day, 24h retention",
+      "limit": null,
+      "unit": "mixed",
+      "window": "daily",
+      "reset": "daily",
+      "zone": "UTC",
+      "source": "reported by Platform201 Planning Queue 2026-10-19 (not re-fetched)",
+      "live": "none",
+      "planned_use": {}
+    },
+    {
+      "id": "partners.credits",
+      "provider": "CellCog/Polsia/Manus",
+      "lane": "partner",
+      "metric": "referral/bonus credits (docs/PARTNERS.md)",
+      "limit": null,
+      "unit": "one-time credits",
+      "window": "one-time",
+      "reset": "none",
+      "zone": "UTC",
+      "source": "docs/PARTNERS.md",
+      "live": "none",
+      "planned_use": {
+        "note": "not a recurring quota; spend only via explicit experiment"
+      }
+    },
+    {
+      "id": "aion.quota",
+      "provider": "aion",
+      "lane": "model-observation",
+      "metric": "provider quota observation mapping; unknown until explicit supported source response",
+      "limit": null,
+      "unit": "unknown",
+      "window": "unknown",
+      "reset": "unknown",
+      "zone": "UTC",
+      "source": "none",
+      "live": "manual metadata mapping only; no polling or routing",
+      "manager_entrypoint": "scripts.provider_quota_mapping.observe_family",
+      "unknown_reason": "unsupported_or_no_observation_yet",
+      "planned_use": {
+        "note": "registration does not establish entitlement, remaining quota, live account validation, polling, or routing admission"
+      }
+    },
+    {
+      "id": "cerebras.quota",
+      "provider": "cerebras",
+      "lane": "model-observation",
+      "metric": "provider quota observation mapping; unknown until explicit supported source response",
+      "limit": null,
+      "unit": "unknown",
+      "window": "unknown",
+      "reset": "unknown",
+      "zone": "UTC",
+      "source": "none",
+      "live": "manual metadata mapping only; no polling or routing",
+      "manager_entrypoint": "scripts.provider_quota_mapping.observe_family",
+      "unknown_reason": "unsupported_or_no_observation_yet",
+      "planned_use": {
+        "note": "registration does not establish entitlement, remaining quota, live account validation, polling, or routing admission"
+      }
+    },
+    {
+      "id": "cloudflare.quota",
+      "provider": "cloudflare",
+      "lane": "model-observation",
+      "metric": "provider quota observation mapping; unknown until explicit supported source response",
+      "limit": null,
+      "unit": "unknown",
+      "window": "unknown",
+      "reset": "unknown",
+      "zone": "UTC",
+      "source": "none",
+      "live": "manual metadata mapping only; no polling or routing",
+      "manager_entrypoint": "scripts.provider_quota_mapping.observe_family",
+      "unknown_reason": "unsupported_or_no_observation_yet",
+      "planned_use": {
+        "note": "registration does not establish entitlement, remaining quota, live account validation, polling, or routing admission"
+      }
+    },
+    {
+      "id": "cohere.quota",
+      "provider": "cohere",
+      "lane": "model-observation",
+      "metric": "provider quota observation mapping; unknown until explicit supported source response",
+      "limit": null,
+      "unit": "unknown",
+      "window": "unknown",
+      "reset": "unknown",
+      "zone": "UTC",
+      "source": "none",
+      "live": "manual metadata mapping only; no polling or routing",
+      "manager_entrypoint": "scripts.provider_quota_mapping.observe_family",
+      "unknown_reason": "unsupported_or_no_observation_yet",
+      "planned_use": {
+        "note": "registration does not establish entitlement, remaining quota, live account validation, polling, or routing admission"
+      }
+    },
+    {
+      "id": "felo.quota",
+      "provider": "felo",
+      "lane": "model-observation",
+      "metric": "provider quota observation mapping; unknown until explicit supported source response",
+      "limit": null,
+      "unit": "unknown",
+      "window": "unknown",
+      "reset": "unknown",
+      "zone": "UTC",
+      "source": "none",
+      "live": "manual metadata mapping only; no polling or routing",
+      "manager_entrypoint": "scripts.provider_quota_mapping.observe_family",
+      "unknown_reason": "unsupported_or_no_observation_yet",
+      "planned_use": {
+        "note": "registration does not establish entitlement, remaining quota, live account validation, polling, or routing admission"
+      }
+    },
+    {
+      "id": "groq.quota",
+      "provider": "groq",
+      "lane": "model-observation",
+      "metric": "provider quota observation mapping; unknown until explicit supported source response",
+      "limit": null,
+      "unit": "unknown",
+      "window": "unknown",
+      "reset": "unknown",
+      "zone": "UTC",
+      "source": "https://api.groq.com/openai/v1/models",
+      "live": "manual metadata mapping only; no polling or routing",
+      "manager_entrypoint": "scripts.provider_quota_mapping.observe_family",
+      "unknown_reason": "unsupported_or_no_observation_yet",
+      "planned_use": {
+        "note": "registration does not establish entitlement, remaining quota, live account validation, polling, or routing admission"
+      }
+    },
+    {
+      "id": "huggingface.quota",
+      "provider": "huggingface",
+      "lane": "model-observation",
+      "metric": "provider quota observation mapping; unknown until explicit supported source response",
+      "limit": null,
+      "unit": "unknown",
+      "window": "unknown",
+      "reset": "unknown",
+      "zone": "UTC",
+      "source": "https://huggingface.co/api/models",
+      "live": "manual metadata mapping only; no polling or routing",
+      "manager_entrypoint": "scripts.provider_quota_mapping.observe_family",
+      "unknown_reason": "unsupported_or_no_observation_yet",
+      "planned_use": {
+        "note": "registration does not establish entitlement, remaining quota, live account validation, polling, or routing admission"
+      }
+    },
+    {
+      "id": "kilo.quota",
+      "provider": "kilo",
+      "lane": "model-observation",
+      "metric": "provider quota observation mapping; unknown until explicit supported source response",
+      "limit": null,
+      "unit": "unknown",
+      "window": "unknown",
+      "reset": "unknown",
+      "zone": "UTC",
+      "source": "none",
+      "live": "manual metadata mapping only; no polling or routing",
+      "manager_entrypoint": "scripts.provider_quota_mapping.observe_family",
+      "unknown_reason": "unsupported_or_no_observation_yet",
+      "planned_use": {
+        "note": "registration does not establish entitlement, remaining quota, live account validation, polling, or routing admission"
+      }
+    },
+    {
+      "id": "llm7.quota",
+      "provider": "llm7",
+      "lane": "model-observation",
+      "metric": "provider quota observation mapping; unknown until explicit supported source response",
+      "limit": null,
+      "unit": "unknown",
+      "window": "unknown",
+      "reset": "unknown",
+      "zone": "UTC",
+      "source": "none",
+      "live": "manual metadata mapping only; no polling or routing",
+      "manager_entrypoint": "scripts.provider_quota_mapping.observe_family",
+      "unknown_reason": "unsupported_or_no_observation_yet",
+      "planned_use": {
+        "note": "registration does not establish entitlement, remaining quota, live account validation, polling, or routing admission"
+      }
+    },
+    {
+      "id": "mistral.quota",
+      "provider": "mistral",
+      "lane": "model-observation",
+      "metric": "provider quota observation mapping; unknown until explicit supported source response",
+      "limit": null,
+      "unit": "unknown",
+      "window": "unknown",
+      "reset": "unknown",
+      "zone": "UTC",
+      "source": "none",
+      "live": "manual metadata mapping only; no polling or routing",
+      "manager_entrypoint": "scripts.provider_quota_mapping.observe_family",
+      "unknown_reason": "unsupported_or_no_observation_yet",
+      "planned_use": {
+        "note": "registration does not establish entitlement, remaining quota, live account validation, polling, or routing admission"
+      }
+    },
+    {
+      "id": "modelscope.quota",
+      "provider": "modelscope",
+      "lane": "model-observation",
+      "metric": "provider quota observation mapping; unknown until explicit supported source response",
+      "limit": null,
+      "unit": "unknown",
+      "window": "unknown",
+      "reset": "unknown",
+      "zone": "UTC",
+      "source": "none",
+      "live": "manual metadata mapping only; no polling or routing",
+      "manager_entrypoint": "scripts.provider_quota_mapping.observe_family",
+      "unknown_reason": "unsupported_or_no_observation_yet",
+      "planned_use": {
+        "note": "registration does not establish entitlement, remaining quota, live account validation, polling, or routing admission"
+      }
+    },
+    {
+      "id": "nvidia.quota",
+      "provider": "nvidia",
+      "lane": "model-observation",
+      "metric": "provider quota observation mapping; unknown until explicit supported source response",
+      "limit": null,
+      "unit": "unknown",
+      "window": "unknown",
+      "reset": "unknown",
+      "zone": "UTC",
+      "source": "none",
+      "live": "manual metadata mapping only; no polling or routing",
+      "manager_entrypoint": "scripts.provider_quota_mapping.observe_family",
+      "unknown_reason": "unsupported_or_no_observation_yet",
+      "planned_use": {
+        "note": "registration does not establish entitlement, remaining quota, live account validation, polling, or routing admission"
+      }
+    },
+    {
+      "id": "omni.quota",
+      "provider": "omni",
+      "lane": "model-observation",
+      "metric": "provider quota observation mapping; unknown until explicit supported source response",
+      "limit": null,
+      "unit": "unknown",
+      "window": "unknown",
+      "reset": "unknown",
+      "zone": "UTC",
+      "source": "none",
+      "live": "manual metadata mapping only; no polling or routing",
+      "manager_entrypoint": "scripts.provider_quota_mapping.observe_family",
+      "unknown_reason": "unsupported_or_no_observation_yet",
+      "planned_use": {
+        "note": "registration does not establish entitlement, remaining quota, live account validation, polling, or routing admission"
+      }
+    },
+    {
+      "id": "ovhcloud.quota",
+      "provider": "ovhcloud",
+      "lane": "model-observation",
+      "metric": "provider quota observation mapping; unknown until explicit supported source response",
+      "limit": null,
+      "unit": "unknown",
+      "window": "unknown",
+      "reset": "unknown",
+      "zone": "UTC",
+      "source": "none",
+      "live": "manual metadata mapping only; no polling or routing",
+      "manager_entrypoint": "scripts.provider_quota_mapping.observe_family",
+      "unknown_reason": "unsupported_or_no_observation_yet",
+      "planned_use": {
+        "note": "registration does not establish entitlement, remaining quota, live account validation, polling, or routing admission"
+      }
+    },
+    {
+      "id": "sambanova.quota",
+      "provider": "sambanova",
+      "lane": "model-observation",
+      "metric": "provider quota observation mapping; unknown until explicit supported source response",
+      "limit": null,
+      "unit": "unknown",
+      "window": "unknown",
+      "reset": "unknown",
+      "zone": "UTC",
+      "source": "https://api.sambanova.ai/v1/models",
+      "live": "manual metadata mapping only; no polling or routing",
+      "manager_entrypoint": "scripts.provider_quota_mapping.observe_family",
+      "unknown_reason": "unsupported_or_no_observation_yet",
+      "planned_use": {
+        "note": "registration does not establish entitlement, remaining quota, live account validation, polling, or routing admission"
+      }
+    },
+    {
+      "id": "zai.quota",
+      "provider": "zai",
+      "lane": "model-observation",
+      "metric": "provider quota observation mapping; unknown until explicit supported source response",
+      "limit": null,
+      "unit": "unknown",
+      "window": "unknown",
+      "reset": "unknown",
+      "zone": "UTC",
+      "source": "none",
+      "live": "manual metadata mapping only; no polling or routing",
+      "manager_entrypoint": "scripts.provider_quota_mapping.observe_family",
+      "unknown_reason": "unsupported_or_no_observation_yet",
+      "planned_use": {
+        "note": "registration does not establish entitlement, remaining quota, live account validation, polling, or routing admission"
+      }
+    },
+    {
+      "id": "requesty.quota",
+      "provider": "requesty",
+      "lane": "model-observation",
+      "metric": "provider quota observation mapping; unknown until explicit supported source response",
+      "limit": null,
+      "unit": "unknown",
+      "window": "unknown",
+      "reset": "unknown",
+      "zone": "UTC",
+      "source": "none",
+      "live": "manual metadata mapping only; no polling or routing",
+      "manager_entrypoint": "scripts.provider_quota_mapping.observe_family",
+      "unknown_reason": "unsupported_or_no_observation_yet",
+      "planned_use": {
+        "note": "registration does not establish entitlement, remaining quota, live account validation, polling, or routing admission"
+      }
+    },
+    {
+      "id": "routeway.quota",
+      "provider": "routeway",
+      "lane": "model-observation",
+      "metric": "provider quota observation mapping; unknown until explicit supported source response",
+      "limit": null,
+      "unit": "unknown",
+      "window": "unknown",
+      "reset": "unknown",
+      "zone": "UTC",
+      "source": "none",
+      "live": "manual metadata mapping only; no polling or routing",
+      "manager_entrypoint": "scripts.provider_quota_mapping.observe_family",
+      "unknown_reason": "unsupported_or_no_observation_yet",
+      "planned_use": {
+        "note": "registration does not establish entitlement, remaining quota, live account validation, polling, or routing admission"
+      }
+    },
+    {
+      "id": "sealion.quota",
+      "provider": "sealion",
+      "lane": "model-observation",
+      "metric": "provider quota observation mapping; unknown until explicit supported source response",
+      "limit": null,
+      "unit": "unknown",
+      "window": "unknown",
+      "reset": "unknown",
+      "zone": "UTC",
+      "source": "none",
+      "live": "manual metadata mapping only; no polling or routing",
+      "manager_entrypoint": "scripts.provider_quota_mapping.observe_family",
+      "unknown_reason": "unsupported_or_no_observation_yet",
+      "planned_use": {
+        "note": "registration does not establish entitlement, remaining quota, live account validation, polling, or routing admission"
+      }
+    },
+    {
+      "id": "typhoon.quota",
+      "provider": "typhoon",
+      "lane": "model-observation",
+      "metric": "provider quota observation mapping; unknown until explicit supported source response",
+      "limit": null,
+      "unit": "unknown",
+      "window": "unknown",
+      "reset": "unknown",
+      "zone": "UTC",
+      "source": "none",
+      "live": "manual metadata mapping only; no polling or routing",
+      "manager_entrypoint": "scripts.provider_quota_mapping.observe_family",
+      "unknown_reason": "unsupported_or_no_observation_yet",
+      "planned_use": {
+        "note": "registration does not establish entitlement, remaining quota, live account validation, polling, or routing admission"
+      }
+    },
+    {
+      "id": "unorouter.quota",
+      "provider": "unorouter",
+      "lane": "model-observation",
+      "metric": "provider quota observation mapping; unknown until explicit supported source response",
+      "limit": null,
+      "unit": "unknown",
+      "window": "unknown",
+      "reset": "unknown",
+      "zone": "UTC",
+      "source": "none",
+      "live": "manual metadata mapping only; no polling or routing",
+      "manager_entrypoint": "scripts.provider_quota_mapping.observe_family",
+      "unknown_reason": "unsupported_or_no_observation_yet",
+      "planned_use": {
+        "note": "registration does not establish entitlement, remaining quota, live account validation, polling, or routing admission"
+      }
+    },
+    {
+      "id": "xfyun.quota",
+      "provider": "xfyun",
+      "lane": "model-observation",
+      "metric": "provider quota observation mapping; unknown until explicit supported source response",
+      "limit": null,
+      "unit": "unknown",
+      "window": "unknown",
+      "reset": "unknown",
+      "zone": "UTC",
+      "source": "none",
+      "live": "manual metadata mapping only; no polling or routing",
+      "manager_entrypoint": "scripts.provider_quota_mapping.observe_family",
+      "unknown_reason": "unsupported_or_no_observation_yet",
+      "planned_use": {
+        "note": "registration does not establish entitlement, remaining quota, live account validation, polling, or routing admission"
+      }
+    },
+    {
+      "id": "xkiro.quota",
+      "provider": "xkiro",
+      "lane": "model-observation",
+      "metric": "provider quota observation mapping; unknown until explicit supported source response",
+      "limit": null,
+      "unit": "unknown",
+      "window": "unknown",
+      "reset": "unknown",
+      "zone": "UTC",
+      "source": "none",
+      "live": "manual metadata mapping only; no polling or routing",
+      "manager_entrypoint": "scripts.provider_quota_mapping.observe_family",
+      "unknown_reason": "unsupported_or_no_observation_yet",
+      "planned_use": {
+        "note": "registration does not establish entitlement, remaining quota, live account validation, polling, or routing admission"
+      }
+    },
+    {
+      "id": "siliconflow.balance",
+      "provider": "siliconflow",
+      "lane": "model-balance",
+      "metric": "user monetary balance only; not request quota",
+      "limit": null,
+      "unit": "unknown currency or decimal balance",
+      "window": "source-defined/unknown",
+      "reset": "unknown",
+      "zone": "UTC",
+      "source": "https://api.siliconflow.com/v1/user/info",
+      "live": "explicit opt-in private observer only; no routing",
+      "planned_use": {
+        "note": "balance does not establish model request entitlement or admissions"
+      }
+    },
+    {
+      "id": "github.api.graphql",
+      "provider": "github",
+      "lane": "ci",
+      "metric": "GraphQL points budget, distinct from REST requests",
+      "limit": null,
+      "unit": "points/hour; token-class thresholds documented but unverified",
+      "window": "hourly",
+      "reset": "x-ratelimit-reset from rate_limit resource",
+      "zone": "UTC",
+      "source": "https://docs.github.com/en/graphql/overview/resource-limitations",
+      "live": "GET https://api.github.com/rate_limit; threshold is documentation only",
+      "manager_entrypoint": "scripts.github_quota_manager.observe",
+      "unknown_reason": "graphql_resource_or_token_class_unavailable",
+      "planned_use": {
+        "note": "no global reservation or routing claim"
+      }
+    },
+    {
+      "id": "github.api.app_installation",
+      "provider": "github",
+      "lane": "ci",
+      "metric": "REST resource limits for installation token",
+      "limit": null,
+      "unit": "requests/hour, scaling rules are documentation only",
+      "window": "hourly",
+      "reset": "x-ratelimit-reset from rate_limit resource",
+      "zone": "UTC",
+      "source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+      "live": "GET https://api.github.com/rate_limit; token class explicitly caller-supplied",
+      "manager_entrypoint": "scripts.github_quota_manager.observe",
+      "unknown_reason": "token_class_or_resource_unavailable",
+      "planned_use": {
+        "note": "installation threshold not inferred; response does not verify credential class"
+      }
+    },
+    {
+      "id": "github.actions.workflow_runtime",
+      "provider": "github",
+      "lane": "ci-policy",
+      "metric": "workflow run including waiting and approvals",
+      "limit": 35,
+      "unit": "days/workflow run",
+      "window": "per-run",
+      "reset": "no recurring reset; new run is a new scope",
+      "zone": "UTC",
+      "source": "https://docs.github.com/en/actions/reference/limits",
+      "live": "none; no complete remaining-capacity API verified",
+      "manager_entrypoint": "scripts.provider_quota_mapping.service_capability",
+      "observation_state": "unknown",
+      "entitlement_state": "documented_ceiling_not_account_entitlement",
+      "remaining_state": "unknown",
+      "freshness": "unknown_until_authenticated_observation",
+      "planned_use": {
+        "note": "Documentation only; does not authorize jobs, paid runners, new schedules or dispatch. Workflow-local timeouts/concurrency may be stricter."
+      }
+    },
+    {
+      "id": "github.actions.approval_wait",
+      "provider": "github",
+      "lane": "ci-policy",
+      "metric": "environment approval wait",
+      "limit": 30,
+      "unit": "days/approval wait",
+      "window": "per-approval",
+      "reset": "no recurring reset; new approval is a new scope",
+      "zone": "UTC",
+      "source": "https://docs.github.com/en/actions/reference/limits",
+      "live": "none; no complete remaining-capacity API verified",
+      "manager_entrypoint": "scripts.provider_quota_mapping.service_capability",
+      "observation_state": "unknown",
+      "entitlement_state": "documented_ceiling_not_account_entitlement",
+      "remaining_state": "unknown",
+      "freshness": "unknown_until_authenticated_observation",
+      "planned_use": {
+        "note": "Documentation only; does not authorize jobs, paid runners, new schedules or dispatch. Workflow-local timeouts/concurrency may be stricter."
+      }
+    },
+    {
+      "id": "github.actions.matrix_jobs",
+      "provider": "github",
+      "lane": "ci-policy",
+      "metric": "matrix-generated jobs on hosted or self-hosted runners",
+      "limit": 256,
+      "unit": "jobs/matrix",
+      "window": "per-workflow run",
+      "reset": "new workflow run",
+      "zone": "UTC",
+      "source": "https://docs.github.com/en/actions/reference/limits",
+      "live": "none; no complete remaining-capacity API verified",
+      "manager_entrypoint": "scripts.provider_quota_mapping.service_capability",
+      "observation_state": "unknown",
+      "entitlement_state": "documented_ceiling_not_account_entitlement",
+      "remaining_state": "unknown",
+      "freshness": "unknown_until_authenticated_observation",
+      "planned_use": {
+        "note": "Documentation only; does not authorize jobs, paid runners, new schedules or dispatch. Workflow-local timeouts/concurrency may be stricter."
+      }
+    },
+    {
+      "id": "github.actions.trigger_events",
+      "provider": "github",
+      "lane": "ci-policy",
+      "metric": "repository workflow-trigger events",
+      "limit": 1500,
+      "unit": "events/10 seconds/repository",
+      "window": "10-second rate window",
+      "reset": "source rate window; exact live reset unknown",
+      "zone": "UTC",
+      "source": "https://docs.github.com/en/actions/reference/limits",
+      "live": "none; no complete remaining-capacity API verified",
+      "manager_entrypoint": "scripts.provider_quota_mapping.service_capability",
+      "observation_state": "unknown",
+      "entitlement_state": "documented_ceiling_not_account_entitlement",
+      "remaining_state": "unknown",
+      "freshness": "unknown_until_authenticated_observation",
+      "planned_use": {
+        "note": "Documentation only; does not authorize jobs, paid runners, new schedules or dispatch. Workflow-local timeouts/concurrency may be stricter."
+      }
+    },
+    {
+      "id": "github.actions.queued_runs",
+      "provider": "github",
+      "lane": "ci-policy",
+      "metric": "queued workflow runs; reusable workflows count as one entity",
+      "limit": 500,
+      "unit": "workflow runs/10 seconds",
+      "window": "10-second rate window",
+      "reset": "source rate window; exact live reset unknown",
+      "zone": "UTC",
+      "source": "https://docs.github.com/en/actions/reference/limits",
+      "live": "none; no complete remaining-capacity API verified",
+      "manager_entrypoint": "scripts.provider_quota_mapping.service_capability",
+      "observation_state": "unknown",
+      "entitlement_state": "documented_ceiling_not_account_entitlement",
+      "remaining_state": "unknown",
+      "freshness": "unknown_until_authenticated_observation",
+      "planned_use": {
+        "note": "Documentation only; does not authorize jobs, paid runners, new schedules or dispatch. Workflow-local timeouts/concurrency may be stricter."
+      }
+    },
+    {
+      "id": "github.actions.concurrency_queue_max",
+      "provider": "github",
+      "lane": "ci-policy",
+      "metric": "only when concurrency queue: max is configured",
+      "limit": 100,
+      "unit": "queued jobs or runs/concurrency group",
+      "window": "instantaneous",
+      "reset": "capacity released as queue drains; no clock reset",
+      "zone": "UTC",
+      "source": "https://docs.github.com/en/actions/reference/limits",
+      "live": "none; no complete remaining-capacity API verified",
+      "manager_entrypoint": "scripts.provider_quota_mapping.service_capability",
+      "observation_state": "unknown",
+      "entitlement_state": "documented_ceiling_not_account_entitlement",
+      "remaining_state": "unknown",
+      "freshness": "unknown_until_authenticated_observation",
+      "planned_use": {
+        "note": "Documentation only; does not authorize jobs, paid runners, new schedules or dispatch. Workflow-local timeouts/concurrency may be stricter."
+      }
+    },
+    {
+      "id": "github.actions.hosted_job_runtime",
+      "provider": "github",
+      "lane": "ci-policy",
+      "metric": "GitHub-hosted runner job execution",
+      "limit": 6,
+      "unit": "hours/job",
+      "window": "per-job",
+      "reset": "new job",
+      "zone": "UTC",
+      "source": "https://docs.github.com/en/actions/reference/limits",
+      "live": "none; no complete remaining-capacity API verified",
+      "manager_entrypoint": "scripts.provider_quota_mapping.service_capability",
+      "observation_state": "unknown",
+      "entitlement_state": "documented_ceiling_not_account_entitlement",
+      "remaining_state": "unknown",
+      "freshness": "unknown_until_authenticated_observation",
+      "planned_use": {
+        "note": "Documentation only; does not authorize jobs, paid runners, new schedules or dispatch. Workflow-local timeouts/concurrency may be stricter."
+      }
+    },
+    {
+      "id": "github.actions.self_hosted_job_runtime",
+      "provider": "github",
+      "lane": "ci-policy",
+      "metric": "self-hosted runner job execution",
+      "limit": 5,
+      "unit": "days/job",
+      "window": "per-job",
+      "reset": "new job",
+      "zone": "UTC",
+      "source": "https://docs.github.com/en/actions/reference/limits",
+      "live": "none; no complete remaining-capacity API verified",
+      "manager_entrypoint": "scripts.provider_quota_mapping.service_capability",
+      "observation_state": "unknown",
+      "entitlement_state": "documented_ceiling_not_account_entitlement",
+      "remaining_state": "unknown",
+      "freshness": "unknown_until_authenticated_observation",
+      "planned_use": {
+        "note": "Documentation only; does not authorize jobs, paid runners, new schedules or dispatch. Workflow-local timeouts/concurrency may be stricter."
+      }
+    },
+    {
+      "id": "github.actions.self_hosted_queue_wait",
+      "provider": "github",
+      "lane": "ci-policy",
+      "metric": "self-hosted runner queued job",
+      "limit": 24,
+      "unit": "hours/queued job",
+      "window": "per-job queue wait",
+      "reset": "job starts or is cancelled; no recurring reset",
+      "zone": "UTC",
+      "source": "https://docs.github.com/en/actions/reference/limits",
+      "live": "none; no complete remaining-capacity API verified",
+      "manager_entrypoint": "scripts.provider_quota_mapping.service_capability",
+      "observation_state": "unknown",
+      "entitlement_state": "documented_ceiling_not_account_entitlement",
+      "remaining_state": "unknown",
+      "freshness": "unknown_until_authenticated_observation",
+      "planned_use": {
+        "note": "Documentation only; does not authorize jobs, paid runners, new schedules or dispatch. Workflow-local timeouts/concurrency may be stricter."
+      }
+    },
+    {
+      "id": "github.actions.hosted_concurrency",
+      "provider": "github",
+      "lane": "ci-policy",
+      "metric": "standard hosted jobs: Free 20, Pro 40, Team 60, Enterprise 500; macOS sublimits separate; actual account plan unknown",
+      "limit": null,
+      "unit": "simultaneous jobs/account plan",
+      "window": "instantaneous",
+      "reset": "capacity released when jobs end; no clock reset",
+      "zone": "UTC",
+      "source": "https://docs.github.com/en/actions/reference/limits",
+      "live": "none; no complete remaining-capacity API verified",
+      "manager_entrypoint": "scripts.provider_quota_mapping.service_capability",
+      "observation_state": "unknown",
+      "entitlement_state": "documented_ceiling_not_account_entitlement",
+      "remaining_state": "unknown",
+      "freshness": "unknown_until_authenticated_observation",
+      "planned_use": {
+        "note": "Documentation only; does not authorize jobs, paid runners, new schedules or dispatch. Workflow-local timeouts/concurrency may be stricter."
+      }
+    },
+    {
+      "id": "github.actions.hosted_macos_concurrency",
+      "provider": "github",
+      "lane": "ci-policy",
+      "metric": "standard hosted macOS: Free/Pro/Team 5, Enterprise 50; shared with larger runner macOS; actual entitlement unknown",
+      "limit": null,
+      "unit": "simultaneous macOS jobs/account plan",
+      "window": "instantaneous",
+      "reset": "capacity released when jobs end; no clock reset",
+      "zone": "UTC",
+      "source": "https://docs.github.com/en/actions/reference/limits",
+      "live": "none; no complete remaining-capacity API verified",
+      "manager_entrypoint": "scripts.provider_quota_mapping.service_capability",
+      "observation_state": "unknown",
+      "entitlement_state": "documented_ceiling_not_account_entitlement",
+      "remaining_state": "unknown",
+      "freshness": "unknown_until_authenticated_observation",
+      "planned_use": {
+        "note": "Documentation only; does not authorize jobs, paid runners, new schedules or dispatch. Workflow-local timeouts/concurrency may be stricter."
+      }
+    },
+    {
+      "id": "github.api.secondary.concurrent_requests",
+      "provider": "github",
+      "lane": "api-policy",
+      "metric": "shared REST and GraphQL concurrent requests",
+      "limit": 100,
+      "unit": "concurrent requests",
+      "window": "instantaneous",
+      "reset": "unknown; secondary reset not exposed by /rate_limit",
+      "zone": "UTC",
+      "source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+      "live": "none; no complete secondary-limit remaining API",
+      "manager_entrypoint": "scripts.provider_quota_mapping.service_capability",
+      "remaining_state": "unknown",
+      "observation_state": "unknown",
+      "entitlement_state": "documented_policy_subject_to_change_not_account_entitlement",
+      "planned_use": {
+        "note": "Documentation only, not central enforcement. Honor observed Retry-After and primary reset; undisclosed secondary reasons may also apply. Most REST reads cost one secondary point, most mutations five; /rate_limit does not consume primary quota."
+      }
+    },
+    {
+      "id": "github.api.secondary.rest_points",
+      "provider": "github",
+      "lane": "api-policy",
+      "metric": "REST secondary points per endpoint; some endpoint costs undisclosed",
+      "limit": 900,
+      "unit": "secondary points/endpoint/minute",
+      "window": "per-minute",
+      "reset": "unknown; secondary reset not exposed by /rate_limit",
+      "zone": "UTC",
+      "source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+      "live": "none; no complete secondary-limit remaining API",
+      "manager_entrypoint": "scripts.provider_quota_mapping.service_capability",
+      "remaining_state": "unknown",
+      "observation_state": "unknown",
+      "entitlement_state": "documented_policy_subject_to_change_not_account_entitlement",
+      "planned_use": {
+        "note": "Documentation only, not central enforcement. Honor observed Retry-After and primary reset; undisclosed secondary reasons may also apply. Most REST reads cost one secondary point, most mutations five; /rate_limit does not consume primary quota."
+      }
+    },
+    {
+      "id": "github.api.secondary.graphql_points",
+      "provider": "github",
+      "lane": "api-policy",
+      "metric": "GraphQL secondary points; separate from primary query points",
+      "limit": 2000,
+      "unit": "secondary points/minute",
+      "window": "per-minute",
+      "reset": "unknown; secondary reset not exposed by /rate_limit",
+      "zone": "UTC",
+      "source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+      "live": "none; no complete secondary-limit remaining API",
+      "manager_entrypoint": "scripts.provider_quota_mapping.service_capability",
+      "remaining_state": "unknown",
+      "observation_state": "unknown",
+      "entitlement_state": "documented_policy_subject_to_change_not_account_entitlement",
+      "planned_use": {
+        "note": "Documentation only, not central enforcement. Honor observed Retry-After and primary reset; undisclosed secondary reasons may also apply. Most REST reads cost one secondary point, most mutations five; /rate_limit does not consume primary quota."
+      }
+    },
+    {
+      "id": "github.api.secondary.cpu_total",
+      "provider": "github",
+      "lane": "api-policy",
+      "metric": "shared CPU across REST and GraphQL; no authoritative remaining counter",
+      "limit": 90,
+      "unit": "CPU seconds/60 real seconds",
+      "window": "60-second window",
+      "reset": "unknown; secondary reset not exposed by /rate_limit",
+      "zone": "UTC",
+      "source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+      "live": "none; no complete secondary-limit remaining API",
+      "manager_entrypoint": "scripts.provider_quota_mapping.service_capability",
+      "remaining_state": "unknown",
+      "observation_state": "unknown",
+      "entitlement_state": "documented_policy_subject_to_change_not_account_entitlement",
+      "planned_use": {
+        "note": "Documentation only, not central enforcement. Honor observed Retry-After and primary reset; undisclosed secondary reasons may also apply. Most REST reads cost one secondary point, most mutations five; /rate_limit does not consume primary quota."
+      }
+    },
+    {
+      "id": "github.api.secondary.cpu_graphql",
+      "provider": "github",
+      "lane": "api-policy",
+      "metric": "GraphQL share of total CPU; no authoritative remaining counter",
+      "limit": 60,
+      "unit": "CPU seconds/60 real seconds",
+      "window": "60-second window",
+      "reset": "unknown; secondary reset not exposed by /rate_limit",
+      "zone": "UTC",
+      "source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+      "live": "none; no complete secondary-limit remaining API",
+      "manager_entrypoint": "scripts.provider_quota_mapping.service_capability",
+      "remaining_state": "unknown",
+      "observation_state": "unknown",
+      "entitlement_state": "documented_policy_subject_to_change_not_account_entitlement",
+      "planned_use": {
+        "note": "Documentation only, not central enforcement. Honor observed Retry-After and primary reset; undisclosed secondary reasons may also apply. Most REST reads cost one secondary point, most mutations five; /rate_limit does not consume primary quota."
+      }
+    },
+    {
+      "id": "github.api.secondary.content_minute",
+      "provider": "github",
+      "lane": "api-policy",
+      "metric": "general ceiling, endpoints may be lower; includes web and API actions",
+      "limit": 80,
+      "unit": "content-generating requests/minute",
+      "window": "per-minute",
+      "reset": "unknown; secondary reset not exposed by /rate_limit",
+      "zone": "UTC",
+      "source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+      "live": "none; no complete secondary-limit remaining API",
+      "manager_entrypoint": "scripts.provider_quota_mapping.service_capability",
+      "remaining_state": "unknown",
+      "observation_state": "unknown",
+      "entitlement_state": "documented_policy_subject_to_change_not_account_entitlement",
+      "planned_use": {
+        "note": "Documentation only, not central enforcement. Honor observed Retry-After and primary reset; undisclosed secondary reasons may also apply. Most REST reads cost one secondary point, most mutations five; /rate_limit does not consume primary quota."
+      }
+    },
+    {
+      "id": "github.api.secondary.content_hour",
+      "provider": "github",
+      "lane": "api-policy",
+      "metric": "general ceiling, endpoints may be lower; includes web and API actions",
+      "limit": 500,
+      "unit": "content-generating requests/hour",
+      "window": "per-hour",
+      "reset": "unknown; secondary reset not exposed by /rate_limit",
+      "zone": "UTC",
+      "source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+      "live": "none; no complete secondary-limit remaining API",
+      "manager_entrypoint": "scripts.provider_quota_mapping.service_capability",
+      "remaining_state": "unknown",
+      "observation_state": "unknown",
+      "entitlement_state": "documented_policy_subject_to_change_not_account_entitlement",
+      "planned_use": {
+        "note": "Documentation only, not central enforcement. Honor observed Retry-After and primary reset; undisclosed secondary reasons may also apply. Most REST reads cost one secondary point, most mutations five; /rate_limit does not consume primary quota."
+      }
+    },
+    {
+      "id": "github.api.secondary.oauth_token_requests",
+      "provider": "github",
+      "lane": "api-policy",
+      "metric": "GitHub/OAuth app token-request secondary ceiling; no new grants requested",
+      "limit": 2000,
+      "unit": "OAuth access-token requests/hour",
+      "window": "per-hour",
+      "reset": "unknown; secondary reset not exposed by /rate_limit",
+      "zone": "UTC",
+      "source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+      "live": "none; no complete secondary-limit remaining API",
+      "manager_entrypoint": "scripts.provider_quota_mapping.service_capability",
+      "remaining_state": "unknown",
+      "observation_state": "unknown",
+      "entitlement_state": "documented_policy_subject_to_change_not_account_entitlement",
+      "planned_use": {
+        "note": "Documentation only, not central enforcement. Honor observed Retry-After and primary reset; undisclosed secondary reasons may also apply. Most REST reads cost one secondary point, most mutations five; /rate_limit does not consume primary quota."
+      }
+    }
   ]
 }

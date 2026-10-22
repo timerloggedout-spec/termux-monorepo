@@ -8,7 +8,6 @@
     return Date.parse(value);
   }
   function readingView(service, reading, now = Date.now()) {
-    if (service.lane === 'model') return {status: 'private', note: 'Private quota preflight required; public metadata is not admission evidence.'};
     if (!reading) return {status: 'unknown', note: 'No observation supplied.'};
     const observed = timestamp(reading.observed_at);
     if (!Number.isFinite(observed) || observed > now) return {status: 'unknown', note: 'Missing or invalid observation time; snapshot generation is not an observation.'};
@@ -29,6 +28,31 @@
     }
     return index;
   }
+  function mappingCapabilityCounts(rows, supplied) {
+    const keys = ['actual_mapping', 'passive_parser', 'documentation_only', 'unknown_or_unsupported'];
+    const counts = Object.fromEntries(keys.map(key => [key, 0]));
+    for (const row of Array.isArray(rows) ? rows : []) {
+      const status = mappingCapability(row).status;
+      const key = status === 'actual_quota_service_mapping' ? 'actual_mapping' :
+        status === 'implemented_passive_parser' ? 'passive_parser' :
+        status === 'documentation_only' ? 'documentation_only' : 'unknown_or_unsupported';
+      counts[key] += 1;
+    }
+    // Trust source counts only when explicitly typed and non-negative; otherwise derive from rows.
+    if (supplied && typeof supplied === 'object') for (const key of keys)
+      if (Number.isInteger(supplied[key]) && supplied[key] >= 0) counts[key] = supplied[key];
+    return counts;
+  }
+  function mappingCapability(row) {
+    const raw = row && row.quota_mapping;
+    if (!raw || typeof raw !== 'object') return {status:'unknown_or_unsupported', dimensions:'unknown', source_kind:'none_verified'};
+    const allowed = new Set(['actual_quota_service_mapping','implemented_passive_parser','documentation_only','unsupported_or_unknown']);
+    return {
+      status: allowed.has(raw.status) ? raw.status : 'unknown_or_unsupported',
+      dimensions: typeof raw.dimensions === 'string' ? raw.dimensions : 'unknown',
+      source_kind: typeof raw.source_kind === 'string' ? raw.source_kind : 'none_verified'
+    };
+  }
   function coverageView(row) {
     if (!row || typeof row !== 'object') return {mapping: 'unknown', evidence: 'unknown', balance: 'not_published'};
     return {
@@ -38,10 +62,11 @@
       quotaKind: typeof row.quota_kind === 'string' ? row.quota_kind : 'unknown',
       documentedLimit: row.documented_limit ?? null,
       freeEntitlement: row.free_entitlement ?? null,
-      balance: 'not published'
+      balance: 'not published',
+      mappingCapability: mappingCapability(row)
     };
   }
-  const api = {MAX_AGE_MS, readingView, indexReadings, coverageView};
+  const api = {MAX_AGE_MS, readingView, indexReadings, coverageView, mappingCapability, mappingCapabilityCounts};
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.QuotaEvidence = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

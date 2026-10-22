@@ -21,6 +21,7 @@ def _providers():
 
 def build_coverage(root: Path = ROOT) -> dict[str, Any]:
     from scripts import quota_poll
+    from scripts.provider_quota_mapping import capability, service_capability
     from scripts.provider_quota_service import SERVICES as private_services
     services = json.loads((root / "ops/quota/registry.json").read_text(encoding="utf-8"))["services"]
     # This offline roster link is deliberately separate from quota-service
@@ -60,12 +61,13 @@ def build_coverage(root: Path = ROOT) -> dict[str, Any]:
     reader_ids = set(quota_poll.LIVE) | {"render.bandwidth", "render.pipeline_minutes", "neon.compute", "neon.storage"}
     rows = []
     for family in _providers():
-        matches = [svc for svc in services if (svc.get("lane") == "model" or svc.get("id") in private_services) and aliases.get(svc.get("provider", "").lower(), svc.get("provider", "").lower()) == family]
+        matches = [svc for svc in services if (svc.get("lane") in {"model", "model-observation"} or svc.get("id") in private_services) and aliases.get(svc.get("provider", "").lower(), svc.get("provider", "").lower()) == family]
         ids = sorted({svc["id"] for svc in matches})
         machine_ids = sorted(set(ids) & reader_ids)
         opt_in_ids = sorted(set(ids) & set(private_services))
         raw_manager = manager_by_family.get(family, {})
         manager = public_manager_row(raw_manager)
+        quota_capability = capability(family, raw_manager)
         static_mapping = mapping_by_family.get(family, {})
         scope = manager.get("scope") or "unknown; verify provider/model/project/account sharing"
         status = manager.get("status", "unknown")
@@ -93,9 +95,11 @@ def build_coverage(root: Path = ROOT) -> dict[str, Any]:
             "static_mapping_state": "static_roster_link_only" if static_mapping else "missing_static_mapping",
             "static_mapping_evidence": static_mapping.get("evidence", []),
             "static_mapping_live_account_state": "unknown",
-            "quota_kind": "private_balance_not_publicly_observed",
-            "documented_limit": None,
-            "free_entitlement": None,
+            "quota_kind": quota_capability["dimensions"],
+            "documented_limit": manager.get("documented_limit"),
+            "free_entitlement": manager.get("free_entitlement"),
+            "account_entitlement_state": "unknown; public descriptions are not account validation",
+            "remaining_state": "not_publicly_observed",
             "private_balance": "not_published",
             "scope": manager.get("scope", "unknown"),
             "documented_reset_semantics": manager.get("reset", "unknown"),
@@ -104,6 +108,8 @@ def build_coverage(root: Path = ROOT) -> dict[str, Any]:
             "documented_signals": manager.get("documented_signals", []),
             "manager_status": manager.get("status", "unknown"),
             "manager_metadata_state": "documented_only" if manager else "unavailable",
+            "quota_capability": quota_capability,
+            "quota_mapping": {"status": ("implemented_passive_parser" if quota_capability["status"] in {"implemented_passive_parser", "opt_in_private_monetary_parser"} else quota_capability["status"]), "dimensions": quota_capability["dimensions"], "source_kind": quota_capability["source_kind"]},
             "reader_service_ids": machine_ids,
             "registry_reader_service_ids": machine_ids,
             "opt_in_private_service_ids": opt_in_ids,
@@ -117,18 +123,25 @@ def build_coverage(root: Path = ROOT) -> dict[str, Any]:
                   "quota_manager_owner": "Manager", "freshness_owner": "ChronoMancer",
                   "observation_method": ("implemented_opt_in_private_service" if svc["id"] in private_services
                                          else "implemented_read_only_reader" if svc["id"] in reader_ids else "manual_or_unknown")}
+                  | {"quota_capability": service_capability(svc)}
                  for svc in services]
     static_mapped = sum(r["static_mapping_state"] == "static_roster_link_only" for r in rows)
     registry_mapped = sum(r["mapping_state"] == "documented_registry_mapping" for r in rows)
-    return {"schema": "provider-quota-coverage/v1", "provider_families": rows,
+    mapping_counts = {"actual_mapping": sum(bool(r["reader_service_ids"] or r["opt_in_private_service_ids"]) for r in rows), "passive_parser": sum(r["quota_mapping"]["status"] == "implemented_passive_parser" for r in rows), "documentation_only": sum(r["quota_mapping"]["status"] == "documentation_only" for r in rows), "unknown_or_unsupported": sum(r["quota_mapping"]["status"] == "unsupported_or_unknown" for r in rows)}
+    return {"schema": "provider-quota-coverage/v2", "provider_families": rows, "mapping_capability_counts": mapping_counts,
             "service_resources": resources, "network_used": False, "live_inference_used": False,
-            "coverage_counts": {"provider_families": len(rows), "actual_quota_service_mappings": registry_mapped,
+            "coverage_counts": {"provider_families": len(rows), "registered_provider_family_mappings": registry_mapped,
+                                "executable_quota_service_mappings": sum(bool(r["reader_service_ids"] or r["opt_in_private_service_ids"]) for r in rows),
+                                "actual_quota_service_mappings": registry_mapped,
                                 "static_adapter_mappings": static_mapped,
                                 "missing_actual_quota_service_mappings": len(rows) - registry_mapped,
                                 "missing_static_adapter_mappings": len(rows) - static_mapped,
                                 "opt_in_private_service_managers": sum(bool(r["opt_in_private_service_ids"]) for r in rows),
-                                "implemented_passive_adapters": sum(r.get("status") == "implemented_passive_adapter" for r in manager_rows)},
-            "policy": "Metadata only; no private balances, quota resets, free entitlement or runtime admission inferred.",
+                                "implemented_passive_adapters": sum(r["quota_capability"]["parser_available"] for r in rows),
+                                "documentation_only": sum(r["quota_capability"]["status"] == "documentation_only" for r in rows),
+                                "unknown_or_unsupported": sum(r["quota_capability"]["status"] == "unsupported_or_unknown" for r in rows),
+                                "quota_source_unknown_including_documentation": sum(r["quota_capability"]["status"] in {"unsupported_or_unknown", "documentation_only"} for r in rows)},
+            "policy": "Metadata only; remaining, resets, freshness and entitlement are unknown unless explicitly documented; fail closed; no private values or runtime admission inferred.",
             "manager_metadata_source": "ops/quota/provider-managers.json" if manager_rows else None}
 
 _PRIVATE = {"key", "api_key", "token", "secret", "prompt", "request", "used", "remaining", "account_id", "account"}

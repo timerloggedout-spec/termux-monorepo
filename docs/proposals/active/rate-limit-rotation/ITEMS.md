@@ -24,6 +24,8 @@
 
 | RL-20 | Verify PR #1239 path-safety parity and reconcile lane-consolidation claims against source | P1 | Runable | executing | PR #1239; tests/test_context_collector_lane_parity.py; docs/ops/LANE-CONSOLIDATION-VERIFICATION.md; no workflow timing or database mutation |
 
+| RL-21 | Exhaustive typed quota-manager mappings, source-bound passive dispatch, GitHub API safeguards, and public/private dashboard boundary | P1 | Cue | executing | Owner-authorized quota batch; scripts/provider_quota_mapping.py; scripts/github_quota_manager.py; no inference, new grants, or private Pages data |
+
 ### 2026-10 cadence/cache clarification
 
 - Model-router cache is versioned and explicitly advisory.
@@ -32,4 +34,3 @@
 - PR-scoped peer feedback is coalesced at the Actions concurrency boundary; source revisions remain idempotency evidence.
 - Qodo billing/trial exhaustion and other provider-capacity notices are not implementation-review input for Jules.
 - Obsidian remains a required correctness/security capability.
-

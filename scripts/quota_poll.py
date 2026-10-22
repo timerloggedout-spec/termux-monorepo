@@ -32,10 +32,26 @@ def gh_rate(now):
     tok = os.environ.get("GITHUB_TOKEN")
     if not tok:
         return None
-    d = _get("https://api.github.com/rate_limit", {"Authorization": "Bearer " + tok})["resources"]["core"]
-    left = max(d["reset"] - time.time(), 0)
-    return {"used": d["used"], "limit": d["limit"], "elapsed": 1 - left / 3600,
-            "reset": datetime.fromtimestamp(d["reset"], timezone.utc).isoformat()}
+    # Keep this legacy consumer's field shape, but use the hardened, coalesced
+    # observer and preserve unknown rather than treating zero limits as exhaustion.
+    try:
+        from scripts.github_quota_manager import QuotaError, observe
+    except ModuleNotFoundError:  # direct script invocation from sparse checkout
+        from github_quota_manager import QuotaError, observe
+    try:
+        observation = observe(tok, token_class="unknown")
+    except QuotaError:
+        return None
+    core = observation["resources"].get("core")
+    if not isinstance(core, dict):
+        return None
+    elapsed = None
+    # A percentage-of-hour assumption is only defensible when workflow context
+    # explicitly identifies GITHUB_TOKEN; an arbitrary env token is not enough.
+    if observation.get("token_class") == "github_token":
+        elapsed = max(0.0, min(1.0, 1 - max(core["reset"] - time.time(), 0) / 3600))
+    return {"used": core["used"], "limit": core["limit"], "elapsed": elapsed,
+            "reset": datetime.fromtimestamp(core["reset"], timezone.utc).isoformat()}
 
 
 def gh_cache(now):

@@ -76,6 +76,24 @@ jobs:
           assert all(r["correct"] is True for r in rows)
           print("validated", len(rows), "classifier receipts")
           PY
+      - name: Run bounded parallel candidate matrix
+        run: |
+          python scripts/classifier_eval.py --workers 8 --per-candidate-workers 2 --candidates deterministic-baseline laya-mock jev --run-id matrix-${{ github.run_id }}-${{ github.run_attempt }} --source-commit "${{ github.sha }}" --output artifacts/system-one/classifier-matrix.jsonl
+          python scripts/eval_tournament.py artifacts/system-one/classifier-matrix.jsonl --output artifacts/system-one/classifier-matrix-report.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          bank = json.loads(Path("tests/fixtures/classifier-question-bank.json").read_text())
+          rows = [json.loads(x) for x in Path("artifacts/system-one/classifier-matrix.jsonl").read_text().splitlines()]
+          expected = [(q["question_id"], candidate) for q in bank["questions"] for candidate in ("deterministic-baseline", "laya-mock", "jev")]
+          assert [(r["question_id"], r["candidate_id"]) for r in rows] == expected
+          assert all(r["status"] == "OK" and r["correct"] is True for r in rows if r["candidate_id"] == "deterministic-baseline")
+          assert all(r["status"] == "MOCK" for r in rows if r["candidate_id"] == "laya-mock" and r["task"] in {"text_classification", "typed_choice"})
+          assert all(r["status"] == "UNAVAILABLE" for r in rows if r["candidate_id"] == "jev" and r["task"] in {"text_classification", "typed_choice"})
+          report = json.loads(Path("artifacts/system-one/classifier-matrix-report.json").read_text())
+          assert report["candidates"]["deterministic-baseline"]["exact_match_accuracy"] == 1.0
+          print("validated bounded candidate matrix:", len(rows), "receipts; baseline accuracy is fixture-only")
+          PY
       - name: Exercise offline pairwise tournament scorer
         run: |
           cat > artifacts/system-one/tournament-input.jsonl <<'JSONL'

@@ -7,11 +7,11 @@
   "ttl_minutes": 60,
   "device_id": "tmx-node-primary",
   "device_role": "bridge",
-  "status": "active",
+  "status": "stale",
   "endpoint": "jzzqt-73-48-242-137.run.pinggy-free.link",
   "port": 35137,
   "observed_at": "2026-10-22T08:55:44.014778Z",
-  "expires_at": "2026-10-22T09:55:44.014778Z",
-  "stale_reason": null,
-  "note": "TCP-verified publish. device_id is an opaque operator token; no hardware identifiers."
+  "expires_at": null,
+  "stale_reason": "paused 2026-10-22 by Hark: bridge sync overwrote tracked files in the device checkout; resume after the sync target is moved out of the repo working tree",
+  "note": "Stale endpoint retained for diagnosis only."
 }

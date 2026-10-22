@@ -54,6 +54,19 @@ def load_rows(path: Path) -> list[dict[str, Any]]:
     return rows
 
 
+def _status_ok(row: dict[str, Any]) -> bool:
+    """Accept canonical success states independent of case; missing means legacy success."""
+    return str(row.get("status", "ok")).strip().lower() in {"ok", "success"}
+
+
+def _row_correct(row: dict[str, Any]) -> bool:
+    """Honor a receipt's validated correctness flag (e.g. acceptable-label sets)."""
+    correct = row.get("correct")
+    if isinstance(correct, bool):
+        return correct
+    return row.get("prediction") == row.get("expected")
+
+
 def _valid_latency(row: dict[str, Any]) -> float | None:
     value = row.get("latency_ms")
     if isinstance(value, bool) or not isinstance(value, (int, float)):
@@ -97,8 +110,8 @@ def score(rows: list[dict[str, Any]]) -> dict[str, Any]:
 
     for candidate in candidates:
         items = list(by_candidate[candidate].values())
-        comparable = [r for r in items if r.get("status", "ok") == "ok" and r.get("expected") is not None]
-        correct = sum(r.get("prediction") == r.get("expected") for r in comparable)
+        comparable = [r for r in items if _status_ok(r) and r.get("expected") is not None]
+        correct = sum(_row_correct(r) for r in comparable)
         latency = [v for r in items if (v := _valid_latency(r)) is not None]
         abstentions = sum(
             str(r.get("prediction", "")).upper() in {"ABSTAIN", "UNKNOWN", "UNSURE"}
@@ -114,7 +127,7 @@ def score(rows: list[dict[str, Any]]) -> dict[str, Any]:
             "abstention_count": abstentions,
             "abstention_rate": abstentions / len(items),
             "schema_invalid_count": invalid_schema,
-            "non_ok_status_count": sum(r.get("status", "ok") != "ok" for r in items),
+            "non_ok_status_count": sum(not _status_ok(r) for r in items),
             "latency_ms": {
                 "count": len(latency),
                 "mean": statistics.fmean(latency) if latency else None,
@@ -137,12 +150,12 @@ def score(rows: list[dict[str, Any]]) -> dict[str, Any]:
                     continue
                 if (
                     a.get("expected") is None
-                    or a.get("status", "ok") != "ok" or b.get("status", "ok") != "ok"
+                    or not _status_ok(a) or not _status_ok(b)
                 ):
                     non_comparable += 1
                     continue
-                a_ok = a["prediction"] == a["expected"]
-                b_ok = b["prediction"] == b["expected"]
+                a_ok = _row_correct(a)
+                b_ok = _row_correct(b)
                 if a_ok and b_ok:
                     ties_both_correct += 1
                 elif not a_ok and not b_ok:

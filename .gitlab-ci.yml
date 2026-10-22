@@ -1,0 +1,41 @@
+# Optional validation lane; GitHub master remains the production authority.
+# Enable only after review with TERMUX_GITLAB_CI_ENABLED=true in GitLab.
+workflow:
+  rules:
+    - if: '$TERMUX_GITLAB_CI_ENABLED != "true"'
+      when: never
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS && $CI_PIPELINE_SOURCE == "push"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH && $CI_PIPELINE_SOURCE == "push"'
+    - if: '$CI_COMMIT_BRANCH && $CI_PIPELINE_SOURCE == "web"'
+    - when: never
+
+stages:
+  - validate
+
+default:
+  image: python:3.12-bookworm
+  interruptible: true
+  timeout: 10 minutes
+
+variables:
+  GIT_DEPTH: "0"
+  GIT_SUBMODULE_STRATEGY: none
+  PYTHONDONTWRITEBYTECODE: "1"
+
+quality-gates:
+  stage: validate
+  script:
+    # Fetch a read-only public baseline, not code to execute or a write token.
+    - git fetch --no-tags https://github.com/timerloggedout-spec/termux-monorepo.git +refs/heads/master:refs/remotes/canonical/master
+    - mkdir -p gitlab-evidence
+    - printf 'gitlab_sha=%s\ncanonical_github_sha=%s\n' "$CI_COMMIT_SHA" "$(git rev-parse refs/remotes/canonical/master)" > gitlab-evidence/source-pair.txt
+    - python3 scripts/ci/repo_gate.py --base refs/remotes/canonical/master
+    - python3 scripts/ci/termux_smoke.py
+    - python3 -m unittest discover -s tests -p test_gitlab_reconciliation_workflow.py
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - gitlab-evidence/source-pair.txt

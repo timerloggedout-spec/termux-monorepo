@@ -36,7 +36,7 @@ python3 scripts/ci/repo_gate.py --base origin/master-staging
 python3 scripts/ci/termux_smoke.py
 ```
 
-The inventory uses only Python's standard library, local path metadata, and executable discovery on PATH. It never executes `agy`, reads configuration contents, scans the home directory, contacts services, or writes files. It accepts a `.git` directory or worktree marker file. JSON reports only booleans/counters: workspace/repository marker, CLI availability, and presence of project skills/agents/hooks. Presence is not validity or trusted containment. It does not follow or parse a gitdir reference and does not validate plugin/agent/hook schemas.
+The inventory uses only Python's standard library, local path metadata, and executable discovery on PATH. It never executes `agy`, reads configuration contents, scans the home directory, contacts services, or writes files. It accepts a `.git` directory or worktree marker file. JSON reports only booleans/counters: workspace/repository marker, CLI availability, and presence of project skills/agents/hooks (including legacy `.agent/skills`). Presence is not validity or trusted containment. It does not follow or parse a gitdir reference and does not validate plugin/agent/hook schemas.
 
 Exit **0** means repository marker and CLI executable are present; exit **2** means a prerequisite is missing. Neither means runtime functionality: `runtime_verified` remains false. An absent CLI is an actionable observation, not a reason to auto-install. Python runtimes may create import bytecode during tests; the inventory itself does not write.
 

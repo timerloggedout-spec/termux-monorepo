@@ -41,6 +41,13 @@ class ReadinessTests(unittest.TestCase):
         self.assertEqual(result["model_prompts_launched"], 0)
         self.assertNotIn("confidential", json.dumps(result))
 
+    def test_legacy_skills_directory(self):
+        with tempfile.TemporaryDirectory() as tmp, patch.object(
+                readiness.shutil, "which", return_value=None):
+            root = Path(tmp)
+            (root / ".agent/skills").mkdir(parents=True)
+            self.assertTrue(readiness.inventory(root)["project_skills_present"])
+
     def test_directory_git_marker(self):
         with tempfile.TemporaryDirectory() as tmp, patch.object(
                 readiness.shutil, "which", return_value="/fake/agy"):

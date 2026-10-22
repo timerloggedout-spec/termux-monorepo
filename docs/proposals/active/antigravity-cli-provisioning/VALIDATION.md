@@ -4,7 +4,7 @@ Base: freshly fetched `master-staging` at `1a5af217f3ef9815ce31068d547ad28b69dd8
 
 | Check | Observed result |
 |---|---|
-| `python3 -m unittest discover -s tests -p 'test_antigravity_readiness.py' -v` | PASS, 6 tests |
+| `python3 -m unittest discover -s tests -p 'test_antigravity_readiness.py' -v` | PASS, 7 tests |
 | `python3 scripts/proposals/validate_registry.py` | PASS, 15 proposals consistent |
 | `python3 scripts/ci/repo_gate.py --base origin/master-staging` | PASS; existing debt counters unchanged |
 | `python3 scripts/ci/termux_smoke.py` | PASS; `termux=False`, including connectors-suite |
@@ -15,3 +15,5 @@ Base: freshly fetched `master-staging` at `1a5af217f3ef9815ce31068d547ad28b69dd8
 The offline tool correctly reports `runtime_verified=false`, `settings_modified=false`, and `model_prompts_launched=0`. The CLI is not installed on this execution host. Nothing was installed to hide that fact. These results establish repository-deliverable validation, not an operational Antigravity connection, native Termux compatibility, sandbox containment, or on-device provisioning.
 
 No merge or auto-merge is authorized. Linear remains unresolved because its connector requires login; issue #1497 contains the documented fallback tracking entry. No unrelated shared-checkout changes are included.
+
+Independent review identified missing legacy `.agent/skills` detection. Fixed it and added a dedicated regression test; all 7 tests and both gates passed again. No other correctness issue was reported.

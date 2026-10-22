@@ -18,7 +18,9 @@ def inventory(workspace: Path) -> dict:
         "workspace_exists": exists,
         "repository_marker_present": bool(repository),
         "agy_on_path": cli,
-        "project_skills_present": exists and (workspace / ".agents/skills").is_dir(),
+        "project_skills_present": exists and any(
+            (workspace / path).is_dir() for path in (".agents/skills", ".agent/skills")
+        ),
         "project_agents_present": exists and (workspace / ".agents/agents").is_dir(),
         "project_hooks_present": exists and (workspace / ".agents/hooks.json").is_file(),
         "prerequisites_present": bool(repository and cli),

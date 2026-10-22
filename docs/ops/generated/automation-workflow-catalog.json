@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "8dae5fba29631837133dfe39e5335c799f08e3e7d4f8db8fb9c3d73d69fc22f7",
-  "workflow_count": 168,
+  "source_fingerprint": "85e0a132bcdb37d93f95dd90d2ace14c7c5473602e443a71d683e903e3c758ac",
+  "workflow_count": 169,
   "workflows": [
     {
       "action_pins": [
@@ -1155,6 +1155,21 @@
       ],
       "name": "Device Queue Enqueue",
       "path": ".github/workflows/device-queue-enqueue.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: device-queue-install cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "install"
+      ],
+      "name": "Device Queue Install",
+      "path": ".github/workflows/device-queue-install.yml",
       "schedules": [],
       "triggers": [
         "workflow_dispatch"

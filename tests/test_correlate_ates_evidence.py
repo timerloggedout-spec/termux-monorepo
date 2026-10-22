@@ -1,4 +1,9 @@
+import json
+import subprocess
+import sys
+import tempfile
 import unittest
+from pathlib import Path
 
 from scripts.ci.correlate_ates_evidence import correlate
 
@@ -66,6 +71,34 @@ class AtesCorrelationTests(unittest.TestCase):
         self.assertEqual(result["runs"][0]["sha_verification"], "unverified")
         self.assertEqual(result["runs"][0]["sha_unverified_event_count"], 1)
 
+
+
+    def test_cli_reads_jsonl_and_writes_parseable_aggregate_json(self):
+        root = Path(__file__).resolve().parents[1]
+        with tempfile.TemporaryDirectory() as directory:
+            tmp = Path(directory)
+            receipts_path = tmp / "receipts.jsonl"
+            events_path = tmp / "events.jsonl"
+            output_path = tmp / "correlation.json"
+            receipts_path.write_text(json.dumps(receipt()) + "\\n", encoding="utf-8")
+            events_path.write_text(json.dumps(event()) + "\\n", encoding="utf-8")
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(root / "scripts/ci/correlate_ates_evidence.py"),
+                    "--receipts", str(receipts_path),
+                    "--events", str(events_path),
+                    "--output", str(output_path),
+                ],
+                cwd=root,
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+            aggregate = json.loads(output_path.read_text(encoding="utf-8"))
+            self.assertEqual(aggregate["matched_event_count"], 1)
+            self.assertEqual(aggregate["runs"][0]["sha_verification"], "verified")
 
     def test_invalid_event_sha_is_rejected(self):
         with self.assertRaisesRegex(ValueError, "event source_sha"):

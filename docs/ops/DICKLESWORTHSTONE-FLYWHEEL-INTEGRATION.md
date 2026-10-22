@@ -1,6 +1,6 @@
 # Dicklesworthstone Flywheel Stack — Integration and Upgrade Plan
 
-**Status:** Active integration lane; reference metadata landed on feat/dicklesworthstone-flywheel-stack.
+**Status:** Reference integration merged in PR #1460; repository-native validation adapter merged in PR #1467. ACFS upstream runtime remains metadata-only pending component-specific adoption evidence.
 **Upstream checked:** 2026-10-21.
 **Primary sources:** https://github.com/Dicklesworthstone/agentic_coding_flywheel_setup and https://github.com/Dicklesworthstone/agentic_coding_flywheel_setup/blob/main/docs/methodology/THE_FLYWHEEL_CORE_LOOP.md.
 
@@ -10,9 +10,9 @@ The upstream project is a maintained, broad bootstrap stack (currently documente
 
 **Project status before this change:** refTemplates had continuous-evaluation scaffolding and several unrelated live smods pins, but no explicit ACFS/Flywheel source slot or integration contract. Search found no ACFS setup repository pin in .gitmodules.
 
-**This change:** adds a source-tracked metadata slot and a project-specific adoption contract. It deliberately does not run upstream installers, create a broken gitlink to a nonexistent project fork, or claim that the full stack is deployed. A custom fork and live gitlink remain a separate gated step.
+**PR #1460 (merged):** added a source-tracked metadata slot and a project-specific adoption contract. Its strict inventory, repository gate, and Termux smoke checks passed on the PR head. It deliberately does not run upstream installers, create a broken gitlink to a nonexistent project fork, or claim that the full stack is deployed. A custom fork and live gitlink remain a separate gated step.
 
-**Executable follow-up (THUB-010):** [`FLYWHEEL-RUNTIME.md`](FLYWHEEL-RUNTIME.md) documents `scripts/agentic/flywheel.py`: a repository-native dependency/triage/handoff/validation loop with versioned provenance receipts and CI coverage. This makes the local adoption lane executable while retaining all upstream adoption gates below. It does not install Agent Mail, br/bv or ACFS, post Delphi feedback, or deploy a live service.
+**Executable follow-up (THUB-010, PR #1467 merged):** [`FLYWHEEL-RUNTIME.md`](FLYWHEEL-RUNTIME.md) documents `scripts/agentic/flywheel.py`: a repository-native dependency/triage/handoff/validation loop with versioned provenance receipts and CI coverage. This makes the local adoption lane executable while retaining all upstream adoption gates below. It does not install Agent Mail, br/bv or ACFS, post Delphi feedback, or deploy a live service.
 
 ## Repository-wide Flywheel audit (2026-10-21)
 
@@ -73,11 +73,18 @@ The reference profile lives under refTemplates/15_Research_Repo_Templates/. Exec
 
 ## Verification checklist for this PR
 
-- [ ] Source metadata slot contains README.md and SOURCE.txt.
-- [ ] SOURCE-MAP.md and index point to the new slot.
-- [ ] python3 scripts/ci/refTemplates_inventory.py --strict passes.
-- [ ] python3 scripts/ci/repo_gate.py passes.
-- [ ] python3 scripts/ci/termux_smoke.py passes.
-- [ ] No upstream installer executed; no live gitlink added until a real customized fork exists.
+- [x] Source metadata slot contains README.md and SOURCE.txt.
+- [x] SOURCE-MAP.md and index point to the new slot.
+- [x] `python3 scripts/ci/refTemplates_inventory.py --strict` passes on PR #1460.
+- [x] `python3 scripts/ci/repo_gate.py` passes on PR #1460 and PR #1467.
+- [x] `python3 scripts/ci/termux_smoke.py` passes on PR #1460 and PR #1467.
+- [x] No upstream installer executed; no live gitlink added without a real customized fork. ACFS runtime remains not deployed.
 
 **Truthful completion boundary:** documentation/reference integration is not equivalent to a deployed Flywheel stack. Runtime adoption is gated on the evidence above.
+
+
+## Merge and validation ledger
+
+- PR #1460 (reference profile + repository Flywheel audit): merged at `8156e5d03679e8dd8ce7d5dc88b1891d410ac36c`.
+- PR #1467 (repository-native validation adapter): merged at `d3d3cef3bb109ce47f407d99acce8e3334e65d05`. The PR reported 11 adapter tests plus 28 planner/CLI/route regressions passing; Flywheel core-loop, hygiene/portability, and agentic Termux smoke checks all passed on its reviewed head.
+- This evidence validates the **local adapter and CI path only**. It does not establish native Android device compatibility, a production task outcome, deployment, or installation of upstream ACFS components.

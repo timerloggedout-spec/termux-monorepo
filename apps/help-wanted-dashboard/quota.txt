@@ -424,7 +424,7 @@
     metric: build step duration per deployment | window: per-build | reset: n/a
     No live reading (live source: none)
   vercel.deployments
-    status: UNKNOWN
+    status: STALE
     limit (documented): 100 deployments/day
     metric: deployments created | window: rolling 24h (observed: error says try
     again in 24 hours) | reset: rolling

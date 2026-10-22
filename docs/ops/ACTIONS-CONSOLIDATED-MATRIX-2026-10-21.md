@@ -1,74 +1,81 @@
-# Consolidated Actions Workflows Matrix — 2026-10-21 Upgrade
+# Consolidated Actions Workflows Matrix — 2026-10-22 Upgrade
 
-**Branch:** `ops/actions-matrix-upgrade-2026-10-18`
-**Authority:** Issue #631 13-phase process + evidence-led-monorepo-ops + adaptive-wait.
-**Goal:** Z3π Failures, 100% SUCCESS on required gates. Audit Skipped/Cancelled for validation. Reduce notification spam. Operational Pinggy/alternatives with device identification (obfuscated public IDs). Quota-aware caching & cadence. C.A.D.E. Continuously Autonomous Development Environment.
+**Branch:** `ops/actions-matrix-upgrade-2026-10-18` (PR #1483)
+**Authority:** Issue #631 13-phase + evidence-led-monorepo-ops + adaptive-wait.
+**Goal:** Z3π0 Failures, 100% SUCCESS on required gates. Attentive audit of Skipped/Cancelled. Reduce notification spam via modular consolidations. Operational Pinggy/Tailscale alternatives with public-obfuscated device identification. Quota-aware caching, cadence, 3L0 moneyball telemetry. C.A.D.E. Continuously Autonomous Development Environment.
 
-## Current State Recon (2026-10-21)
+## Current State Recon (2026-10-22 ~04:00 UTC)
 
-- Master tip ~ `4861e8a17ef900e59f918d33f8169796b717257f` (sweep receipts).
-- Recent master runs predominantly **skipped** on `issue_comment` from bots (vercel, blocksorg, coderabbit). These generate notification spam even when conclusion=skipped/cancelled.
-- Open failure class: `tribute-vercel-prod` (issues #1358, #1330, #1283) classified as `hark:blocked:rate_limit`. Vercel Hobby plan daily deploy cap. Non-gate per #772.
-- Quota telemetry: deployments API undercounts; rolling 24h; reset unknown. See `docs/ops/generated/quota-status.json`.
-- Pinggy / tunnel: required for device #1 (BLU B160V#1 broken screen; replicating on #2). Add public-obfuscated device ID in manifests.
-- Branch exists; prior plan in `docs/ops/ACTIONS-MATRIX-UPGRADE-PLAN.md`.
+- Master tip: `cce90d2258b36f3e63790d522cf3549bf8ca7709`. Recent schedule runs **success-dominant**. Dual-gate historical success.
+- Tunnel Canary (on master): hybrid honest check with **lag-as-notice (exit 0)** + `device_id=tmx-node-primary`. Future schedule runs will not fail on device lag (manifest stale / TCP unreachable / publisher not live). Historical run 39706556683 was pre-fix failure. Issue #1440 class remains operational/device-side.
+- Intentional skips/cancels: modular issue-comment-router active on master; bot issue_comment spam reduced. Concurrency cancels audited as non-failures. Residual requires ongoing validation.
+- Operational gaps (non-gate, device-side): Tailscale probe residual failures; agent-runtime-stall-watch class. Device #1 publisher not live; Tailscale preferred, Pinggy fallback.
+- User-cited historical runs (Oct 19): capacity/rate-limit class, not current correctness.
+- Vercel Hobby: non-gate per #772. Path-scoped ignore-build active.
+- Dual-gate (hygiene+portability + agentic termux smoke) remains promote authority. Features preserved.
+- Vercel Hobby: non-gate per #772. Path-scoped ignore-build active.
+- Dual-gate (hygiene+portability + agentic termux smoke) remains promote authority. Features preserved.
 
 ## Repeated Issue Classes & Disposition
 
 | Class | Examples | Root Cause | Fix / Disposition | Status |
 |-------|----------|------------|-------------------|--------|
-| Vercel rate-limit / deploy cap | tribute-vercel-prod runs, #1314, #772 | Hobby plan quota | Path-scoped ignore-build (PR #1310 merged), pre-exhaustion admission, failover only to verified lanes. Non-gate. | In progress |
-| Skipped/Cancelled spam | issue_comment from bots triggering many workflows | Broad event triggers without filters | Add `if:` conditions, concurrency groups with cancel-in-progress=false for critical, notification filters, modular consolidation. Audit for required validation. | Needs implementation |
-| Zero-job / queued ghosts | Historical Merge Promotion Queue | Schedule/workflow id issues | v3 live; ghost on disabled workflow. Reaper. | Historical |
-| Device tunnel (Pinggy) | BLU B160V#1/#2 | Need operational alternative + ID | Manifest opaque device IDs, TTL, role; public obfuscation. Live health UNKNOWN until proven. | Pending device proof |
-| Quota / capacity | Actions minutes free for public; Vercel constrained | Provider limits | Adaptive telemetry, cache dynamic, moneyball selection, cooldown. | Active |
-| Filename / YAML parse | Historical zero-job on ancestors | Not current-tree | Closed on tip. | Closed |
+| Vercel rate-limit / deploy cap | #1419, #1314 | Hobby plan daily cap | Path filters, admission, non-gate. Adaptive defer. | Active / non-gate |
+| Skipped/Cancelled spam | bot issue_comment | Broad triggers | Modular router + `if:` + concurrency. Cadence Lead/Lag owns incidents. Suppress pure skips. | Advancing on branch |
+| Zero-job / queued ghosts | Historical | Schedule/workflow id | v3 live; reaper active. | Historical |
+| Device tunnel (Pinggy / Tailscale) | Tunnel Canary 39706556683, #1440, BLU B160V#1/#2 | Publisher not live; stale endpoint | Opaque `device_id: tmx-node-primary`. Honest check + lag as notice (exit 0) on branch. Live proof required. Tailscale preferred. | Operational gap / device-side |
+| Quota / capacity | Actions free; Vercel constrained | Provider limits | Adaptive telemetry, dynamic cache, 3L0 moneyball. No blind retries. | Active |
+| Filename / YAML parse | Historical | Not current-tree | Closed. | Closed |
 
-## Cadence & Cache Improvements
+## Cadence & Cache Improvements (3L0 Moneyball)
 
-- Bounded sampling (1-100 runs), record API total/truncation.
-- Dynamic adaptive telemetry: backoff on no-delta, immediate re-fetch on material change.
-- Cache: provider capacity snapshots, workflow conclusions, device health.
-- Consolidate: merge redundant observers into fewer high-signal workflows; use `workflow_run` kicks carefully.
-- Notification reduction: only notify on actual failure/success of required gates; suppress skipped/cancelled for bot comments unless audit flag.
+- Adaptive WAIT: re-fetch on material delta; concurrent non-conflicting progress. Backoff only on QUIET.
+- Cache: SHA + path filters; provider capacity snapshots; device health.
+- Modular consolidations: issue-comment-router absorbs high-volume; fewer orchestrators.
+- Notification reduction: only actionable gates/failures/incidents. Suppress skipped/cancelled bot spam. Audit trail preserved.
+- Quota planning: soft classification; moneyball selection. Act before exhaustion.
 
 ## Flowchart: Consolidated Decision Path
 
 ```mermaid
 flowchart TD
   Event[Workflow Event] --> Filter{Relevant event?<br/>not pure bot comment spam}
-  Filter -->|No| Skip[Skip + no notify]
+  Filter -->|No| Skip[Skip + no notify + audit log]
   Filter -->|Yes| Classify{State: success/fail/skip/cancel/queued}
   Classify -->|Required gate fail| Alert[Notify + issue]
-  Classify -->|Capacity / rate-limit| Quota[Record + defer / rotate verified lane]
-  Classify -->|Skip/Cancel| Audit[Validation audit log; suppress notify]
+  Classify -->|Capacity / rate-limit| Quota[Record + defer / moneyball rotate]
+  Classify -->|Skip/Cancel| Audit[Validation audit; suppress notify]
   Classify -->|Success| Record[Evidence receipt]
-  Quota --> Wait[Adaptive WAIT]
+  Classify -->|Probe / tunnel lag| Device[Record notice + device reconnect #1; exit 0 if non-gate]
+  Quota --> Wait[Adaptive WAIT concurrent]
   Audit --> Matrix[Update consolidated matrix]
-  Record --> Promote[Dual-gate check]
+  Record --> Promote[Dual-gate auto-promote]
+  Device --> Matrix
 ```
 
-## Pinggy / Device Identification
+## Pinggy / Device Identification (Public Obfuscation)
 
-- Device #1 (original BLU B160V): must have operational tunnel or alternative.
-- Add to manifests: `device_id: obfuscated-public-hash` (never raw serial/username).
-- September tests on #1; now #2 for replication.
-- Proof required before claiming operational.
+- Device #1 (original BLU B160V, broken screen): operational tunnel or alternative required. Opaque public ID `tmx-node-primary`.
+- Device #2: replica/observer; do not overwrite origin manifest.
+- September tests on #1; dual-device now. Manifests report device_id + TTL + role.
+- Tailscale preferred; Pinggy emergency fallback. Credentials names-only in #184.
+- Branch tunnel-canary treats lag as notice (exit 0) to reduce spam while preserving visibility via step summary / issues.
 
 ## Quota Limit Planning
 
-- Vercel: act before exhaustion; path filters reduce waste; admission controller.
-- Actions: free for public; track minutes if private pressure.
-- Cache capacity observations; no blind retries.
-- See issue #1314 for pre-exhaustion work.
+- Vercel: non-gate, path-scoped ignore-build.
+- Actions: free for public; track pressure.
+- Cache dynamic adaptive; 3L0 moneyball.
+- No blind retries.
 
 ## Superceded / Combined Workflows Notes
 
-- Old Merge Promotion Queue v1/v2 superseded by v3.
-- Many DeepSeek/Gemini/Peer-review on issue_comment are candidates for consolidation or stricter `if:`.
-- Keep dual-gate (hygiene + termux smoke) as promote authority.
+- Merge Promotion Queue v1/v2 → v3.
+- High-volume issue_comment → modular router + filters.
+- Watcher dispatch-only; cadence owns incidents.
+- Dual-gate promote authority. Device probes non-gate when classified as lag.
 
-**Next:** Implement filter conditions on high-spam workflows, add device ID fields, update matrix on next cycle, verify dual-gate on any changes.
+**Next:** Promote PR #1483 when dual-gate green. Live device publisher on #1 (tmx-node-primary) or proven Tailscale. Expand router. Continue C.A.D.E. BIUDL.
 
 Agent-Identity: Grok (Administrator)
-**BIUDL** — Broad integrate validate develop learn.
+**BIUDL** — Broad → Integrate → Validate → Develop → Learn.

@@ -73,6 +73,22 @@ class TournamentTests(unittest.TestCase):
         self.assertEqual(item["scored_count"], 1)
         self.assertEqual(item["exact_match_accuracy"], 0.0)
 
+    def test_uppercase_success_status_and_acceptable_output_correctness(self):
+        rows = [
+            {"candidate_id": "a", "question_id": "q", "expected": "gather_evidence",
+             "prediction": "escalate", "acceptable_outputs": ["gather_evidence", "escalate"],
+             "correct": True, "status": "OK"},
+            {"candidate_id": "b", "question_id": "q", "expected": "gather_evidence",
+             "prediction": "gather_evidence", "correct": True, "status": "OK"},
+        ]
+        report = module.score(rows)
+        self.assertEqual(report["candidates"]["a"]["scored_count"], 1)
+        self.assertEqual(report["candidates"]["a"]["exact_match_accuracy"], 1.0)
+        pair = report["pairwise"][0]
+        self.assertEqual(pair["comparable_questions"], 1)
+        self.assertEqual(pair["ties_both_correct"], 1)
+        self.assertEqual(report["candidates"]["a"]["non_ok_status_count"], 0)
+
     def test_duplicate_question_per_candidate_fails_closed(self):
         rows = [
             {"candidate_id": "x", "question_id": "q", "expected": 1, "prediction": 1},

@@ -20,9 +20,7 @@
 
 - Live Pinggy tunnel on primary node must publish `status: active` (current seed is `unknown`). Alternatives documented (Cloudflare, secondary node, pure Actions).
 - Operator must set unique opaque `TERMUX_DEVICE_ID` per physical unit (primary broken screen → secondary or headless).
-- Dual-gate green on this branch + merge.
-- Broader workflow fan-out (context audit concurrency, high-volume schedule watchers) — next consolidation slices. ~159 workflows total; modular reduction of notification edges is ongoing.
-- help-wanted-dashboard-deploy status refresh script failures on master (concurrency cancels + python step); require script diagnostics.
+- Broader workflow fan-out (context audit concurrency, high-volume schedule/workflow_run watchers like lane-events-recorder, agent-throughput-evidence) — next consolidation slices via modular issue-comment / workflow_run router. ~196 workflows total; modular reduction of notification edges is ongoing.
 - Residual zero-job startup_failure on cadence-lead-lag when evaluated on push (despite no push trigger); platform observation, not functional failure.
 
 ## Opaque device identity (public)
@@ -52,8 +50,9 @@ GitHub still **lists** skipped runs in the Actions tab (platform limitation: `wo
 5. **Lead/Lag index** — correctness > latency; skipped route ≠ model failure (`docs/ops/LEAD-LAG-INDEX.md` + `cadence-lead-lag.yml`). Dynamic adaptive telemetry plane. Cadence */4.
 6. **Adaptive cache / WAIT** — re-fetch only on material delta; backoff on no-progress; disjoint work while quiet.
 7. **In-process queued/skipped** — concurrency groups + reaper + Lead/Lag classify as operational lag (no notification).
+8. **Modular router candidate** — central issue-comment / workflow_run classifier to early-exit unmatched bots and reduce high-volume skipped listings (lane-events-recorder, agent-throughput-evidence, fix-on-failure).
 
-Current master tip shows success + intentional skipped with no failure conclusions in latest window. Ghost queued residual on disabled workflow id remains platform observation only.
+Current master tip `3a56d75c` (2026-10-22T21:00Z window) shows success + intentional skipped with no failure conclusions. Ghost queued residual on disabled workflow id remains platform observation only.
 
 ## Validation audit rule (enforced)
 
@@ -80,9 +79,10 @@ Skipped / Cancelled / Stale / Timed out / Queued / Neutral require **attentive v
 | Ghost queued | Disabled workflow id still listed | Residual platform | Do not open new ids; reaper observes |
 | Dependabot unresolvable | Security update groups | Historical ignore-list | Closed by prior PR |
 | Catalog race | Historical correlation --check | Closed by repairs | Current success |
-| Skip/cancel spam | High-volume workflow_run | Reduced this branch | Audit + concurrency + Lead/Lag + dispatch-only watcher |
+| Skip/cancel spam | High-volume workflow_run | Reduced this branch | Audit + concurrency + Lead/Lag + dispatch-only watcher; further router next |
 | Dashboard deploy script fail | help-wanted-dashboard-deploy status refresh python | Open on master | Concurrency group + continue-on-error candidate; script harden next |
 | Zero-job on non-trigger | cadence-lead-lag event:push | Residual | Platform; no functional impact |
+| Quota / capacity | observatory 403 (39233561401), peer-review (39234979788), Vercel rate-limit | Historical non-gate | Lead/Lag + adaptive WAIT + cache; no retry storms |
 
 ## Cadence / cache / adaptive telemetry (3L0 moneyball equivalent)
 
@@ -95,6 +95,7 @@ Skipped / Cancelled / Stale / Timed out / Queued / Neutral require **attentive v
 | n8n SHE bridge | Optional emit; not correctness |
 | Queue reaper | Zero-job / long-queued cleanup |
 | Cache | Actions cache + agent-context-store for work context (auth ephemeral); Lead/Lag uses local file cache for delta detection |
+| Quota planning | Capacity lag classification; reset-aware cache; no silent failures |
 
 **Lead/Lag + AEF/DOE + Adaptive WAIT** is the moneyball/telemetry plane: measure outcome not activity, adaptive cadence, cache durable context.
 
@@ -124,7 +125,7 @@ flowchart TD
 
 ## Modular Consolidation Plan (notification reduction)
 
-Target: reduce effective notification edges by combining related schedules into orchestrators.
+Target: reduce effective notification edges by combining related schedules into orchestrators and early-exit routers.
 
 | Module | Current workflows (examples) | Proposed | Cadence |
 |--------|------------------------------|----------|---------|
@@ -134,6 +135,7 @@ Target: reduce effective notification edges by combining related schedules into 
 | Context graph | context-relationship-*.yml (many) | Single orchestrator with path filters | schedule + workflow_run limited |
 | Agent lanes | agent-*-ops, quality, throughput | Group under agent-continuous-ops | schedule staggered |
 | Help-wanted | help-wanted-* + dashboard-deploy | Concurrency group + if: on non-critical; script harden | dispatch + path |
+| Event router | lane-events-recorder, agent-throughput-evidence, fix-on-failure, many issue_comment | Central classifier early-exit unmatched | workflow_run / issue_comment |
 
 **Spam reduction levers already applied:**
 - n8n parents limited to dual-gate.
@@ -143,7 +145,7 @@ Target: reduce effective notification edges by combining related schedules into 
 - In-process queued classified as operational lag via adaptive WAIT.
 - Cadence */4 reduces schedule volume.
 
-Next slice: audit top 10 schedule workflows by run volume and apply concurrency + if-conditions for non-critical. Lead/Lag snapshot uses delta detection to avoid empty commits. Harden help-wanted status refresh to continue-on-error for non-gate paths.
+Next slice: modular event router for high-volume workflow_run / issue_comment to cut skipped listings further. Audit top schedule workflows by run volume. Harden help-wanted status refresh.
 
 ## Additional flowchart: skip/cancel audit
 
@@ -169,40 +171,24 @@ flowchart TD
 - Requirement: operator sets unique TERMUX_DEVICE_ID on physical units; publisher job updates status to active when tunnel verified.
 - Alternatives: Cloudflare tunnel, secondary node, pure Actions runners for non-device work. Redundant paths documented for broken-screen primary.
 
-Observed this session: 2026-10-20T04:00Z (branch refined; tests aligned; residual zero-job noted; master tip success + intentional skipped)
+Observed this session: 2026-10-22T21:05Z (master tip 3a56d75c green; residual high-volume skipped audited as intentional; quota capacity non-gate)
 Agent-Identity: Grok (Administrator)
 
-## Continuation (2026-10-20)
+## Continuation (2026-10-22)
 
-- Watcher reduced to dispatch-only; test contract updated (no queue:max).
-- Cadence */4 + incident emission for lag_failure only.
-- Zero-job startup_failure residual on cadence evaluation documented as platform non-functional.
-- Notification spam further cut; validation audits mandatory for skipped/cancelled.
-- Pinggy: opaque ID enforced; live publish still required on device #1.
-
-Agent-Identity: Grok (Administrator)
-
-## Continuation (2026-10-20 22:45Z)
-
-- PR #1292 head `4a7bb1e0` dual-gate green (termux smoke, historical promotion gate, repository development evaluation, audit cycle, sweep all success on pull_request).
-- Watcher file confirmed dispatch-only on branch; residual high-volume skipped Actions Run Watcher runs observed on master (workflow_run events from pre-merge state or other triggers). Merge of this PR eliminates the auto-trigger spam source.
-- Quota / capacity lag (observatory 403, registry runs) classified non-gate; caching + Lead/Lag adaptive cadence addresses volume.
-- In-process waiting and skipped/cancelled remain audit-only; no new incident issues from them.
-- Next: merge #1292 after final re-fetch; device-side Pinggy publish on #1 remains operator action.
+- Master tip `3a56d75c6b7b58049bc9265220b925cc3aab835f` post-#1547: recent completed runs success (ci-sweep, context-relationship-audit) or skipped (fix-on-failure, lane-events-recorder, agent-throughput-evidence). No conclusion=failure in latest window.
+- Specific notification runs: 39233561401 repository observatory conclusion=failure (historical capacity 403, non-gate); 39234979788 peer-review-orchestrator failure on quota-registry branch (capacity/non-gate). Current tip green.
+- High-volume skipped from workflow_run triggers remain audit-only; modular central router proposed to early-exit unmatched events and further cut notification surface.
+- Quota messages and capacity lag addressed via Lead/Lag classification, adaptive WAIT, reset-aware caching; no silent failures or retry storms.
+- Pinggy or alternative operational requirement on device #1 preserved with public-obfuscated device_id=`tmx-node-primary`; live status:active awaits device-side publish. Device #2 replication distinct.
+- Cadence */4, cache dynamic adaptive telemetry, concurrency groups refined and retained. C.A.D.E. continuous improvement.
+- Next: implement modular event router slice; confirm dual-gate on updated SHA; operator device tunnel publish.
 
 Agent-Identity: Grok (Administrator)
 
-## Continuation (2026-10-21 03:00Z)
+## Prior continuations retained (2026-10-20 / 2026-10-21)
 
-- Re-fetched PR #1292 head `d832c2f11d7090df7e2d8fa1ebf2866bb7ac67e9`. Combined status = failure solely from Vercel build-rate-limit on four projects (non-gate per #772 and ops skill). Dual-gate / code checks remain independent.
-- Actions Run Watcher still produces skipped runs on master because the workflow_run trigger removal is only on this branch; merge eliminates the spam source.
-- Quota messages (observatory 403, registry, Vercel) classified as capacity lag; Lead/Lag */4 + adaptive WAIT + delta cache prevent retry storms and empty commits.
-- Skipped/Cancelled/In-process remain validation-audit only; no incident emission. Notification edges further modularized via dispatch-only watcher + cadence ownership.
-- Pinggy / device #1: opaque ID `tmx-node-primary` preserved; live status:active still requires device-side publish. Alternatives (Cloudflare, secondary opaque node, pure Actions) documented and ready.
-- Next: confirm dual-gate terminal on current head, then merge to stop residual watcher spam. Operator action for device tunnel remains.
-
-Agent-Identity: Grok (Administrator)
-
+(See historical sections above for PR #1292 dual-gate evidence, watcher dispatch-only merge path, Vercel non-gate classification.)
 
 ## GitLab reconciliation lane — current integration proposal (2026-10-19)
 

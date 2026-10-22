@@ -44,22 +44,27 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: tribute-s1-decisions
-          path: tribute-in
+          path: ${{ runner.temp }}/tribute-in   # data only, kept outside the workspace (artifact-poisoning guard)
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ github.token }}
       - name: Read backfill branch
         if: github.event_name == 'workflow_dispatch'
+        env:
+          IN_DIR: ${{ runner.temp }}/tribute-in
         run: |
           set -euo pipefail
-          mkdir -p tribute-in
+          mkdir -p "$IN_DIR"
           if git ls-remote --exit-code origin refs/heads/tribute-s1/backfill >/dev/null; then
             git fetch -q --depth 1 origin tribute-s1/backfill
-            git archive FETCH_HEAD backfill | tar -x -C tribute-in
+            git archive FETCH_HEAD backfill | tar -x -C "$IN_DIR"
           fi
       - id: ingest
+        env:
+          IN_DIR: ${{ runner.temp }}/tribute-in
+        # The inputs are parsed as JSON data by the checked-out (trusted) script; nothing from them is executed.
         run: |
           set -euo pipefail
-          files=$(find tribute-in -name 'decisions*.jsonl' -o -path '*backfill/*.jsonl' 2>/dev/null | sort || true)
+          files=$(find "$IN_DIR" -name 'decisions*.jsonl' -o -path '*backfill/*.jsonl' 2>/dev/null | sort || true)
           # shellcheck disable=SC2086
           python3 -m scripts.delphi.tribute_ingest $files
 

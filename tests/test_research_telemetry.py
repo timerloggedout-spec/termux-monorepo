@@ -76,3 +76,26 @@ def test_openai_compat_forwards_only_correlation_allowlist(monkeypatch):
     assert headers["x-termux-request-id"] == "q"
     assert headers["x-termux-event"] == "request"
     assert "x-termux-prompt" not in headers and "x-termux-job-id" not in headers
+
+
+def test_full_checkout_legacy_src_exposes_adapters_and_one_logger(tmp_path):
+    import subprocess
+    import sys
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[1]
+    code = '''import json, pathlib, sys
+root = pathlib.Path(sys.argv[1])
+assert (root / 'termux-multi-agent/src/__init__.py').is_file()
+sys.path.insert(0, str(root / 'termux-multi-agent'))
+from src import telemetry
+from src.swarms_adapter import validate_config
+from src.swarms_rust_adapter import _HubBridge
+from src.advanced_research_adapter import PIN
+assert pathlib.Path(telemetry.__file__).resolve() == root / 'src' / 'telemetry.py'
+telemetry.TELEMETRY_LOG = sys.argv[2]
+telemetry.TermuxTelemetryLogger.notify('INFO', 'hub', 'static', context={'run_id':'legacy-root', 'event':'execution_complete', 'outcome':'UNKNOWN', 'prompt':'not-logged'})
+row = json.loads(pathlib.Path(sys.argv[2]).read_text())
+assert row['correlation']['run_id'] == 'legacy-root'
+assert 'not-logged' not in pathlib.Path(sys.argv[2]).read_text()
+'''
+    subprocess.run([sys.executable, '-c', code, str(root), str(tmp_path / 'shared.jsonl')], cwd=root, check=True, capture_output=True, text=True, timeout=10)

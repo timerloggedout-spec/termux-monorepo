@@ -94,6 +94,40 @@ def test_direct_http_allowlist_enforced_without_network():
     assert not out["ok"] and out["error"]["code"] == "not_allowlisted"
 
 
+def test_taxonomy_folds_both_candidate_sets_exactly_once():
+    tax = waf.load_taxonomy()
+    repos = [n["repo"].lower() for n in tax["nodes"]]
+    assert len(repos) == len(set(repos)) == 31
+    both = {n["repo"] for n in tax["nodes"] if len(n["sources"]) == 2}
+    assert both == {"greekr4/rever-browser", "jackwener/OpenCLI"}
+    for n in tax["nodes"]:
+        assert n["category_path"][0] == "web-reverse-engineering"
+        assert n["category_path"][1] in tax["categories"]
+    assert tax["umbrella"]["name"] == "connectors-tooling-abilities"
+    for transport in ("stdin-jsonl", "cdp-websocket", "sse", "websocket", "http", "mcp"):
+        assert transport in tax["transports"]
+
+
+def test_taxonomy_placement_examples():
+    tax = waf.load_taxonomy()
+    assert waf.taxonomy_node(tax, "lightpanda-io/browser")["category_path"][-2:] == ["engines", "thin-from-scratch"]
+    assert waf.taxonomy_node(tax, "h4ckf0r0day/obscura")["b160v_tier"].startswith("on-device")
+    assert waf.taxonomy_node(tax, "nope/nope") is None
+
+
+def test_sse_encode_and_event_bus():
+    frame = waf.sse_encode({"ok": True}, event="result", event_id=7)
+    assert frame.startswith("id: 7\nevent: result\ndata: ")
+    assert frame.endswith("\n\n")
+    bus = waf.EventBus()
+    q = bus.subscribe()
+    published = bus.publish({"n": 1}, event="result")
+    assert q.get_nowait() == published and "id: 1" in published
+    bus.unsubscribe(q)
+    bus.publish({"n": 2})
+    assert q.empty()
+
+
 def test_jsonl_round_trip_stdout_is_protocol_only():
     inp = io.StringIO(
         '{"id":"a","operation":"foundry.ping"}\n'

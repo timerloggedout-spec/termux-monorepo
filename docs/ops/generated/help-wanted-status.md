@@ -1,10 +1,9 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-22T05:22:35Z UTC · receipts=3643 · foreign_open=38 · tributes=114_
+_Generated 2026-10-22T10:05:38Z UTC · receipts=3681 · foreign_open=35 · tributes=114_
 
 ## Tributes (contributor ledger)
 
-- [OneBusAway/go-gtfs#33](https://github.com/OneBusAway/go-gtfs/pull/33) · state=open · help-wanted: stake + contribute for #22
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [Kilo-Org/agentic-path#26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=open · help-wanted: stake + contribute for #25
 - [mangiapanejohn-dev/MOBIUS-Searcher#7](https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7) · state=open · help-wanted: stake + contribute for #6
@@ -21,7 +20,7 @@ _Generated 2026-10-22T05:22:35Z UTC · receipts=3643 · foreign_open=38 · tribu
 - [TrusTrove/TrusTrove-contract#860](https://github.com/TrusTrove/TrusTrove-contract/pull/860) · state=open · help-wanted: stake + contribute for #836
 - [laugh-tales/starpass-contracts#59](https://github.com/laugh-tales/starpass-contracts/pull/59) · state=open · help-wanted: stake + contribute for #28
 - [Saidur-droid/MergeEarn#76](https://github.com/Saidur-droid/MergeEarn/pull/76) · state=open · help-wanted: stake + contribute for #69
-- [TricklePay/tricklepay-backend#441](https://github.com/TricklePay/tricklepay-backend/pull/441) · state=open · help-wanted: stake + contribute for #395
+- [TricklePay/tricklepay-backend#441](https://github.com/TricklePay/tricklepay-backend/pull/441) · state=closed · help-wanted: stake + contribute for #395
 - [fsr5-fhaachen/portals#948](https://github.com/fsr5-fhaachen/portals/pull/948) · state=open · help-wanted: stake + contribute for #928
 - [ROCm/rocm-libraries#13152](https://github.com/ROCm/rocm-libraries/pull/13152) · state=open · help-wanted: stake + contribute for #10586
 - [topoteretes/cognee#5439](https://github.com/topoteretes/cognee/pull/5439) · state=open · help-wanted: stake + contribute for #4757
@@ -40,16 +39,15 @@ _Generated 2026-10-22T05:22:35Z UTC · receipts=3643 · foreign_open=38 · tribu
 - [sorolens/sorolens#753](https://github.com/sorolens/sorolens/pull/753) · state=open · help-wanted: stake + contribute for #538
 - [use-assay/Assay#509](https://github.com/use-assay/Assay/pull/509) · state=open · help-wanted: stake + contribute for #305
 - [SO4-Markets/interface#1029](https://github.com/SO4-Markets/interface/pull/1029) · state=open · help-wanted: stake + contribute for #918
-- [C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge--Frontend-#971](https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge--Frontend-/pull/971) · state=open · help-wanted: stake + contribute for #901
+- [C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge--Frontend-#971](https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge--Frontend-/pull/971) · state=closed · help-wanted: stake + contribute for #901
 - [AmpedWasTaken/SML#18](https://github.com/AmpedWasTaken/SML/pull/18) · state=open · help-wanted: stake + contribute for #17
+- [OneBusAway/go-gtfs#33](https://github.com/OneBusAway/go-gtfs/pull/33) · state=closed · help-wanted: stake + contribute for #22
 - [QuinCyMP/dense-melee-lab#10](https://github.com/QuinCyMP/dense-melee-lab/pull/10) · state=closed · help-wanted: stake + contribute for #1
 - [zh-95/fronte-rivoluzionario#59](https://github.com/zh-95/fronte-rivoluzionario/pull/59) · state=closed · help-wanted: stake + contribute for #9
 
 ## Foreign open PRs
 
-- [OneBusAway/go-gtfs#33](https://github.com/OneBusAway/go-gtfs/pull/33) — help-wanted: stake + contribute for #22
 - [AmpedWasTaken/SML#18](https://github.com/AmpedWasTaken/SML/pull/18) — help-wanted: stake + contribute for #17
-- [C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge--Frontend-#971](https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge--Frontend-/pull/971) — help-wanted: stake + contribute for #901
 - [SO4-Markets/interface#1029](https://github.com/SO4-Markets/interface/pull/1029) — help-wanted: stake + contribute for #918
 - [use-assay/Assay#509](https://github.com/use-assay/Assay/pull/509) — help-wanted: stake + contribute for #305
 - [sorolens/sorolens#753](https://github.com/sorolens/sorolens/pull/753) — help-wanted: stake + contribute for #538
@@ -68,7 +66,6 @@ _Generated 2026-10-22T05:22:35Z UTC · receipts=3643 · foreign_open=38 · tribu
 - [topoteretes/cognee#5439](https://github.com/topoteretes/cognee/pull/5439) — help-wanted: stake + contribute for #4757
 - [ROCm/rocm-libraries#13152](https://github.com/ROCm/rocm-libraries/pull/13152) — help-wanted: stake + contribute for #10586
 - [fsr5-fhaachen/portals#948](https://github.com/fsr5-fhaachen/portals/pull/948) — help-wanted: stake + contribute for #928
-- [TricklePay/tricklepay-backend#441](https://github.com/TricklePay/tricklepay-backend/pull/441) — help-wanted: stake + contribute for #395
 - [Saidur-droid/MergeEarn#76](https://github.com/Saidur-droid/MergeEarn/pull/76) — help-wanted: stake + contribute for #69
 - [laugh-tales/starpass-contracts#59](https://github.com/laugh-tales/starpass-contracts/pull/59) — help-wanted: stake + contribute for #28
 - [TrusTrove/TrusTrove-contract#860](https://github.com/TrusTrove/TrusTrove-contract/pull/860) — help-wanted: stake + contribute for #836
@@ -86,6 +83,6 @@ _Generated 2026-10-22T05:22:35Z UTC · receipts=3643 · foreign_open=38 · tribu
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) — help-wanted: stake + contribute for #20
 - [OrionStarAI/EasyCode#53](https://github.com/OrionStarAI/EasyCode/pull/53) — Change project name from DeepV Code to Easy Code
 
-## Operational outcomes · actioned=202 skipped=3441 failed=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 3405, 'followup_reengage': 50, 'followup_stale_nudge': 138, 'followup_changes': 2}`
+## Operational outcomes · actioned=203 skipped=3478 failed=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 3442, 'followup_reengage': 51, 'followup_stale_nudge': 138, 'followup_changes': 2}`
 
 See docs/ops/HELP-WANTED-TRIBUTE.md

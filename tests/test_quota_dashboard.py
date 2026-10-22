@@ -101,7 +101,7 @@ def test_web_panel_uses_evidence_helper_and_hides_balances():
     assert "QuotaEvidence.readingView" in html and "QuotaEvidence.indexReadings" in html
     assert "provider-quota-coverage.json" in html
     assert "r.used" not in html and "r.note" not in html
-    assert "setInterval(render,60000)" in html
+    assert "setInterval(load,60000)" in html  # interval must refetch (load), not only re-render stale data
     assert "Public documented evidence" in html
     assert "Private balance" in html and "not published" in html
     assert "function coverageView" in (ROOT / "apps/help-wanted-dashboard/quota-evidence.js").read_text()

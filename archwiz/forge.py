@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """🪄 FORGE — Caveman Ecosystem Command Centre"""
 
-import sys, os, subprocess, json
+import sys, os, subprocess, json, shlex
 
 HOME = os.path.expanduser("~")
 LLM_MAP = os.path.join(HOME, "workspace/llm_map")
@@ -29,7 +29,7 @@ def cmd_dep(args):
         print("Usage: forge dep <file>")
         return
     target = args[0]
-    out, _, _ = run(f"bash {LLM_MAP}/depgraph.sh {target}")
+    out, _, _ = run(f"bash {shlex.quote(LLM_MAP + '/depgraph.sh')} {shlex.quote(target)}")
     print(out)
 
 def cmd_funcfind(args):
@@ -37,7 +37,9 @@ def cmd_funcfind(args):
         print("Usage: forge funcfind <file_pattern>")
         return
     pattern = args[0]
-    jq_cmd = f'''jq -r 'select(.file | test("{pattern}")) | "\\(.name) \t line \\(.line) \t \\(.sig[:60])"' {LLM_MAP}/func_index.jsonl'''
+    jq_filter = r'select(.file | test($pattern)) | "\(.name) \t line \(.line) \t \(.sig[:60])"'
+    jq_cmd = shlex.join(["jq", "-r", "--arg", "pattern", pattern,
+                         jq_filter, os.path.join(LLM_MAP, "func_index.jsonl")])
     out, _, _ = run(jq_cmd)
     print(out)
 

@@ -9,8 +9,8 @@
 #   Tembo:              platform credits; comment when exhausted
 #
 version: 2
-updated_at: "2026-09-29T20:37:00Z"
-updated_by: grok
+updated_at: "2026-10-20T12:40:01Z"
+updated_by: chatgpt_gpt6
 
 agents:
   - id: coderabbit
@@ -283,6 +283,162 @@ contributor_lanes:
     attribution_boundary: "Hugging Face Hub identity is separate from repository authorship and model identity."
     adapters: [huggingface-hub, huggingface-jobs]
     health_contract: {catalog: true, inference: false, cadence: "6h"}
+
+  # Catalog/inference API providers added in the October 2026 expansion.
+  # These are adapter/provider lanes, not GitHub actors or agent review identities.
+  # Availability checks below are catalog-only unless inference is explicitly true.
+  - id: omni
+    display_moniker: omniRoute
+    kind: provider_catalog
+    roles: [catalog, routing, evaluation]
+    callable_identity: "adapter-only"
+    attribution_boundary: "OmniRoute catalog data is not proof of an individual upstream model's entitlement or authorship."
+    adapters: [omni-http]
+    health_contract: {catalog: true, inference: false, cadence: "6h"}
+
+  - id: groq
+    display_moniker: groqForge
+    kind: provider_native_adapter
+    roles: [catalog, inference, evaluation, benchmark, adapter]
+    callable_identity: "adapter-only"
+    attribution_boundary: "Exact model and account admission remain separate; catalog health does not establish inference health."
+    adapters: [groq-http]
+    health_contract: {catalog: true, inference: false, cadence: "6h"}
+
+  - id: mistral
+    display_moniker: mistralForge
+    kind: provider_native_adapter
+    roles: [catalog, inference, evaluation, benchmark, adapter]
+    callable_identity: "adapter-only"
+    attribution_boundary: "Mistral Vibe agent identity and Mistral API-provider identity are distinct lanes."
+    adapters: [mistral-http]
+    health_contract: {catalog: true, inference: false, cadence: "6h"}
+
+  - id: cerebras
+    display_moniker: cerebrasCompute
+    kind: provider_native_adapter
+    roles: [catalog, inference, evaluation, benchmark, adapter]
+    callable_identity: "adapter-only"
+    attribution_boundary: "No exact snapshot claim is inferred from adapter availability; no account entitlement is implied."
+    adapters: [cerebras-http]
+    health_contract: {catalog: true, inference: false, cadence: "6h"}
+
+  - id: nvidia
+    display_moniker: nvidiaInference
+    kind: provider_native_adapter
+    roles: [catalog, inference, evaluation, benchmark, adapter]
+    callable_identity: "adapter-only"
+    attribution_boundary: "Hosted NVIDIA adapter support does not imply provider-specific routing or model admission."
+    adapters: [nvidia-nim-http]
+    health_contract: {catalog: true, inference: false, cadence: "6h"}
+
+  - id: aion
+    display_moniker: aionBridge
+    kind: provider_native_adapter
+    roles: [catalog, inference, evaluation, adapter]
+    callable_identity: "adapter-only"
+    attribution_boundary: "Exact-model identity and account entitlement must be evidenced separately."
+    adapters: [aion-http]
+    health_contract: {catalog: true, inference: false, cadence: "6h"}
+
+  - id: llm7
+    display_moniker: llm7Discovery
+    kind: provider_public_catalog
+    roles: [catalog, research, inference, adapter]
+    callable_identity: "adapter-only"
+    attribution_boundary: "Documented public catalog GET is not anonymous inference permission or account entitlement."
+    adapters: [llm7-public-catalog, llm7-http]
+    health_contract: {catalog: true, inference: false, cadence: "6h"}
+
+  - id: modelscope
+    display_moniker: modelScopeLens
+    kind: provider_public_catalog
+    roles: [catalog, research, inference, evaluation, adapter]
+    callable_identity: "adapter-only"
+    attribution_boundary: "Catalog route is a runtime observation; official inference may require account binding and identity verification."
+    adapters: [modelscope-public-catalog, modelscope-http]
+    health_contract: {catalog: true, inference: false, cadence: "6h"}
+
+  - id: siliconflow
+    display_moniker: siliconFlow
+    kind: provider_native_adapter
+    roles: [catalog, inference, evaluation, benchmark, adapter]
+    callable_identity: "adapter-only"
+    attribution_boundary: "Catalog discovery does not imply remaining quota, zero price, or permission to route."
+    adapters: [siliconflow-http]
+    health_contract: {catalog: true, inference: false, cadence: "6h"}
+
+  - id: kilo
+    display_moniker: kiloGateway
+    kind: provider_native_adapter
+    roles: [catalog, inference, evaluation, adapter]
+    callable_identity: "adapter-only"
+    attribution_boundary: "Gateway catalog presence is not a verified no-cost or exact-account admission."
+    adapters: [kilo-http]
+    health_contract: {catalog: true, inference: false, cadence: "6h"}
+
+  - id: ovhcloud
+    display_moniker: ovhCatalog
+    kind: provider_public_catalog
+    roles: [catalog, research, inference, evaluation, adapter]
+    callable_identity: "adapter-only"
+    attribution_boundary: "Public model discovery is unauthenticated; inference remains separately credentialed and admitted."
+    adapters: [ovhcloud-public-catalog, ovhcloud-http]
+    health_contract: {catalog: true, inference: false, cadence: "6h"}
+
+  - id: sambanova
+    display_moniker: sambaInference
+    kind: provider_native_adapter
+    roles: [catalog, inference, evaluation, benchmark, adapter]
+    callable_identity: "adapter-only"
+    attribution_boundary: "Public free-tier documentation does not establish a usable account or remaining quota."
+    adapters: [sambanova-http]
+    health_contract: {catalog: true, inference: false, cadence: "6h"}
+
+  - id: cloudflare
+    display_moniker: cloudflareEdge
+    kind: provider_native_adapter
+    roles: [catalog, inference, evaluation, adapter]
+    callable_identity: "adapter-only"
+    attribution_boundary: "Account-scoped route requires a validated account ID and token; catalog metadata never supplies routing URLs."
+    adapters: [cloudflare-account-catalog, cloudflare-account-chat]
+    health_contract: {catalog: true, inference: false, cadence: "6h"}
+
+  - id: cohere
+    display_moniker: cohereMessages
+    kind: provider_native_adapter
+    roles: [catalog, inference, evaluation, adapter]
+    callable_identity: "adapter-only"
+    attribution_boundary: "Cohere v2 message normalization is an adapter detail, not proof of model admission."
+    adapters: [cohere-v2-catalog, cohere-v2-chat]
+    health_contract: {catalog: true, inference: false, cadence: "6h"}
+
+  - id: ollama
+    display_moniker: ollamaCloud
+    kind: provider_native_adapter
+    roles: [catalog, inference, evaluation, adapter]
+    callable_identity: "adapter-only"
+    attribution_boundary: "Ollama Cloud API access is distinct from local Ollama runtime availability."
+    adapters: [ollama-cloud-http]
+    health_contract: {catalog: true, inference: false, cadence: "6h"}
+
+  - id: zai
+    display_moniker: zaiCandidate
+    kind: provider_candidate
+    roles: [research, catalog, admission]
+    callable_identity: "not-implemented"
+    attribution_boundary: "Z.ai model-list contract remains unverified; no catalog adapter or inference health is claimed."
+    adapters: []
+    health_contract: {catalog: false, inference: false, cadence: "manual"}
+
+  - id: firecrawl_public_research
+    display_moniker: firecrawlScout
+    kind: public_research_service
+    roles: [research, evidence, integration]
+    callable_identity: "adapter-only"
+    attribution_boundary: "Keyless public-source scrape is a research-service observation, not LLM inference or a provider-account entitlement."
+    adapters: [firecrawl-keyless-public-research]
+    health_contract: {catalog: false, inference: false, cadence: "manual"}
 
   - id: contributor_role_coordinator
     display_moniker: roleMesh

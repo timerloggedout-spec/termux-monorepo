@@ -13,7 +13,8 @@
     "permit_external_research_lanes": true,
     "require_canonical_source": true,
     "preserve_evidence_status": true,
-    "require_version_or_commit": true
+    "require_version_or_commit": true,
+    "last_evidence_snapshot": "2026-10-03"
   },
   "resource_families": [
     {
@@ -141,6 +142,72 @@
       "name": "ExecuTorch",
       "role": "on-device Android/ARM inference runtime",
       "url": "https://github.com/pytorch/executorch"
+    },
+    {
+      "id": "wso2_agent_manager",
+      "name": "WSO2 Agent Manager",
+      "role": "open agent control-plane adapter",
+      "url": "https://github.com/wso2/agent-manager"
+    },
+    {
+      "id": "llama_cpp_vulkan_deferred",
+      "name": "llama.cpp Vulkan deferred edge lane",
+      "role": "future local accelerator/backend research",
+      "url": "https://github.com/ggml-org/llama.cpp"
+    },
+    {
+      "id": "needle_3_cactus",
+      "name": "Needle 3",
+      "role": "tiny-device agent runtime candidate",
+      "url": "https://github.com/cactus-compute/needle"
+    },
+    {
+      "id": "mcp_interoperability",
+      "name": "Model Context Protocol",
+      "role": "open agent-tool interoperability and capability boundary",
+      "url": "https://modelcontextprotocol.io/"
+    },
+    {
+      "id": "a2a_interoperability",
+      "name": "Agent2Agent Protocol",
+      "role": "agent-to-agent delegation interoperability",
+      "url": "https://a2a-protocol.org/"
+    },
+    {
+      "id": "agent_judge_bench",
+      "name": "AgentJudgeBench",
+      "role": "tool-calling agent evaluator research",
+      "url": "https://arxiv.org/abs/2608.26623"
+    },
+    {
+      "id": "mcp_spec_2026_07_28",
+      "name": "Model Context Protocol 2026-07-28",
+      "role": "stateless tool/resource/prompt interoperability baseline",
+      "url": "https://blog.modelcontextprotocol.io/posts/2026-07-28/"
+    },
+    {
+      "id": "agent_harness_security",
+      "name": "AI coding-agent harness supply-chain research",
+      "role": "agent configuration admission and supply-chain security",
+      "url": "https://arxiv.org/abs/2609.07360"
+    },
+    {
+      "id": "agentcompass",
+      "name": "AgentCompass",
+      "role": "open agent evaluation infrastructure and manager-tournament substrate",
+      "url": "https://github.com/open-compass/AgentCompass"
+    },
+    {
+      "id": "codestruct",
+      "name": "CODESTRUCT",
+      "role": "structured AST action interfaces for code agents",
+      "url": "https://arxiv.org/abs/2604.05407"
+    },
+    {
+      "id": "photonic_ai_accelerators",
+      "name": "Photonic accelerators for AI",
+      "role": "accelerator/materials/energy foresight research",
+      "url": "https://www.nature.com/articles/s41566-026-01987-z"
     }
   ],
   "source_classes": [
@@ -158,5 +225,13 @@
   "lane_registry": "docs/research/RESEARCH-LANES.yaml",
   "provenance_contract": "docs/research/BRIEFING-INGEST.md",
   "procurement_contract": "docs/research/FOSS-PROCUREMENT-MATRIX.md",
-  "horizon_contract": "docs/research/FORESIGHT-RADAR.md"
+  "horizon_contract": "docs/research/FORESIGHT-RADAR.md",
+  "implementation_contracts": {
+    "agent_evidence": "docs/research/AGENT-EVIDENCE-CONTRACT.md",
+    "manager_tournament": "docs/research/MANAGER-TOURNAMENT-CONTRACT.md",
+    "edge_inference": "docs/research/EDGE-INFERENCE-CONFORMANCE.md",
+    "runtime_provenance": "docs/research/RUNTIME-PROVENANCE-AIBOM.md",
+    "implementation_status": "docs/research/FORESIGHT-IMPLEMENTATION-STATUS.md",
+    "edge_matrix": "config/edge_inference_matrix.json"
+  }
 }

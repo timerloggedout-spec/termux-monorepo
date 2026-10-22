@@ -6,26 +6,30 @@ lanes:
     orgs: [termux-monorepo, Research-Astute]
   - lane_id: agent-observability
     orgs: [termux-monorepo, Research-Astute]
-    inputs: [OpenTelemetry, Docker, Tree-sitter, Langfuse, Phoenix, Lizard, Radon, Codespaces]\n    contributors: [gemini, openrouter, felo, huggingface]
+    inputs: [OpenTelemetry, Docker, Tree-sitter, Langfuse, Phoenix, Lizard, Radon, Codespaces, WSO2-Agent-Manager, OpenShell]
+    contributors: [gemini, openrouter, felo, huggingface]
   - lane_id: multi-agent-evaluation
     orgs: [termux-monorepo, Research-Astute]
-    inputs: [MASEval, manager-tournaments, benchmark-suites]\n    contributors: [gemini, openrouter, felo, huggingface]
+    inputs: [MASEval, manager-tournaments, benchmark-suites]
+    contributors: [gemini, openrouter, felo, huggingface]
   - lane_id: reproducible-environments
     orgs: [termux-monorepo, Research-Astute]
     inputs: [Docker, devcontainers, Codespaces, environment-fingerprints]
   - lane_id: local-edge-arm-android
     orgs: [termux-monorepo, Research-Astute]
-    inputs: [open-weight-models, local-runtimes, ARM, Android, Termux]\n    contributors: [huggingface, felo, openrouter]
+    inputs: [open-weight-models, local-runtimes, ARM, Android, Termux]
+    contributors: [huggingface, felo, openrouter]
   - lane_id: agentic-security
     orgs: [termux-monorepo, Research-Astute]
-    inputs: [OTel, sandboxing, provenance, tool-permissions]\n    contributors: [gemini, openrouter, felo, huggingface]
+    inputs: [OTel, sandboxing, provenance, tool-permissions, OpenShell, WSO2-Agent-Manager]
+    contributors: [gemini, openrouter, felo, huggingface]
   - lane_id: malware-reverse-engineering
     orgs: [termux-monorepo, Research-Astute]
     issue_anchors: [236, 279, 306]
     labels: [Ghidra, FORENSICS, Reverse_Engineering, Search'n'Re-Search]
   - lane_id: provenance-supply-chain
     orgs: [termux-monorepo, Research-Astute]
-    inputs: [SBOM, signatures, reproducible-builds, dependency-analysis]
+    inputs: [SBOM, signatures, reproducible-builds, dependency-analysis, NIST-IR-8536]
   - lane_id: accelerators-materials-energy
     orgs: [termux-monorepo, Research-Astute]
     inputs: [memory, energy, photonics, in-memory-compute, accelerators]
@@ -38,7 +42,7 @@ lanes:
     inputs: [MCP, tool-schema-hashes, authorization, delegation, provenance, OpenTelemetry]
   - lane_id: manager-tournament-simulation
     orgs: [termux-monorepo, Research-Astute]
-    inputs: [OrchBench, MASEval, deterministic-cohorts, manager-policy-hashes]
+    inputs: [OrchBench, MASEval, deterministic-cohorts, manager-policy-hashes, WSO2-Agent-Manager]
   - lane_id: edge-inference-evidence
     orgs: [termux-monorepo, Research-Astute]
-    inputs: [ARM64, Android, Termux, llama.cpp, quantization, memory, thermal, energy]
+    inputs: [ARM64, Android, Termux, llama.cpp, llama.cpp-Vulkan-deferred, Needle, quantization, memory, thermal, energy]

@@ -115,6 +115,22 @@ def run_cmd(argv: list[str], timeout: float = 15.0) -> tuple[int, str, str]:
         return 1, "", str(exc)
 
 
+def compile_python(path: Path, timeout: float = 15.0) -> tuple[int, str, str]:
+    """Check syntax without executing source or creating bytecode caches.
+
+    Explicit py_compile writes .pyc files even with -B. Compile bytes in an
+    isolated process instead, preserving encoding-cookie handling and timeouts.
+    Pass the filename as data so spaces and quotes never become Python code.
+    """
+    return run_cmd(
+        [sys.executable, "-B", "-c",
+         "import pathlib, sys; p = pathlib.Path(sys.argv[1]); "
+         "compile(p.read_bytes(), str(p), 'exec')",
+         str(path)],
+        timeout=timeout,
+    )
+
+
 def check_python_runtime(report: SmokeReport) -> None:
     v = sys.version_info
     if v < (3, 9):
@@ -141,7 +157,7 @@ def check_repo_gate_importable(report: SmokeReport) -> None:
     if not path.exists():
         report.add(CheckResult("repo-gate-present", "FAIL", "scripts/ci/repo_gate.py missing"))
         return
-    rc, out, err = run_cmd([sys.executable, "-B", "-m", "py_compile", str(path)])
+    rc, out, err = compile_python(path)
     if rc != 0:
         report.add(CheckResult("repo-gate-compile", "FAIL", err or out or f"rc={rc}"))
     else:
@@ -150,7 +166,7 @@ def check_repo_gate_importable(report: SmokeReport) -> None:
 
 def check_self_compile(report: SmokeReport) -> None:
     path = REPO_ROOT / "scripts/ci/termux_smoke.py"
-    rc, out, err = run_cmd([sys.executable, "-B", "-m", "py_compile", str(path)])
+    rc, out, err = compile_python(path)
     if rc != 0:
         report.add(CheckResult("smoke-self-compile", "FAIL", err or out or f"rc={rc}"))
     else:
@@ -250,7 +266,7 @@ def check_deepcli_surface(report: SmokeReport) -> None:
     ok = True
     details = []
     for launcher in launchers[:5]:
-        rc, out, err = run_cmd([sys.executable, "-B", "-m", "py_compile", str(launcher)])
+        rc, out, err = compile_python(launcher)
         rel = str(launcher.relative_to(REPO_ROOT))
         if rc != 0:
             ok = False
@@ -280,7 +296,7 @@ def check_archwiz_surface(report: SmokeReport) -> None:
     sample = sorted(py_files, key=lambda p: len(p.parts))[:8]
     failures = []
     for path in sample:
-        rc, out, err = run_cmd([sys.executable, "-B", "-m", "py_compile", str(path)], timeout=10.0)
+        rc, out, err = compile_python(path, timeout=10.0)
         if rc != 0:
             failures.append(f"{path.relative_to(REPO_ROOT)}: {err or out or rc}")
     if failures:

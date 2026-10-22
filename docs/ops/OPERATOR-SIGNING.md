@@ -26,6 +26,7 @@ Non-OPERATOR bots (Jules, CodeRabbit, Devin, Tembo, …) use normal bot attribut
 | 2026-08-10 | Grok | session-2026-08-10 / msg-pr-146 | [PR #149](https://github.com/timerloggedout-spec/termux-monorepo/pull/149) | Opened #149 |
 | 2026-08-10 | Grok | session-2026-08-10 / msg-split-ledger-ctxops | [faa76e5](https://github.com/timerloggedout-spec/termux-monorepo/commit/faa76e547e845547ebe52bfb7eb6bf0e3684b164) | Clean matrix; ledger; continuous-ops context_key |
 | 2026-08-10 | Grok | session-2026-08-10 / msg-sync-146-ledger | *(this commit on #149 branch)* | Sync docs to signal-alignment branch |
+| 2026-10-21 | Hark | delphi-gate-2026-10-20 / project-bbf883e1 | *(Delphi gate PR)* | Activate DELPHI-WEIGHTING; Delphi Oracle RFP gate + lane contract |
 
 ## How to append
 

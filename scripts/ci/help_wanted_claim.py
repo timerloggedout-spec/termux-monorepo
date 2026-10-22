@@ -20,7 +20,14 @@ import subprocess
 import sys
 import urllib.error
 import urllib.request
+from pathlib import Path
 from typing import Any
+
+try:
+    from scripts.ci import tribute_system1
+except ImportError:  # pragma: no cover - Actions checkout root
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+    from scripts.ci import tribute_system1  # type: ignore
 
 CLAIM_MARKER = "### Claim — termux-monorepo help-wanted lane"
 CLAIM_BODY = f"""{CLAIM_MARKER}
@@ -101,7 +108,66 @@ def find_existing_claim(owner: str, repo: str, number: int) -> str | None:
     return None
 
 
-def post_claim(owner: str, repo: str, number: int, dry: bool) -> str:
+def get_comments(owner: str, repo: str, number: int) -> list[dict]:
+    out: list[dict] = []
+    for page in range(1, 6):
+        batch = _api("GET", f"https://api.github.com/repos/{owner}/{repo}/issues/{number}/comments?per_page=100&page={page}")
+        if not isinstance(batch, list) or not batch:
+            break
+        out += [
+            {"id": c.get("id"), "author": (c.get("user") or {}).get("login"),
+             "author_type": (c.get("user") or {}).get("type"), "association": c.get("author_association"),
+             "created_at": c.get("created_at"), "body": c.get("body") or ""}
+            for c in batch
+        ]
+        if len(batch) < 100:
+            break
+    return out
+
+
+def preflight(owner: str, repo: str, number: int, meta: dict, allow_closed: bool = False) -> dict:
+    """Tribute System 1 gate before any claim comment or fork."""
+    issue = {
+        "repo": f"{owner}/{repo}", "number": number, "url": meta.get("html_url"),
+        "state": meta.get("state"), "body": meta.get("body") or "",
+        "author": (meta.get("user") or {}).get("login"),
+        "assignees": [a.get("login") for a in meta.get("assignees") or []],
+        "labels": [l.get("name") for l in meta.get("labels") or [] if isinstance(l, dict)],
+    }
+    pf = tribute_system1.preflight_candidate(issue, get_comments(owner, repo, number))
+    if allow_closed:
+        reasons = [r for r in pf["reasons"] if r != "closed"]
+        pf = {"eligible": not reasons, "reasons": reasons}
+    return pf
+
+
+def label_matches(issue: dict, required_label: str) -> bool:
+    """Match a selected scout label against the current upstream issue labels."""
+    if not required_label.strip():
+        return True
+    normalize = lambda value: " ".join(str(value or "").lower().replace("-", " ").split())
+    expected = normalize(required_label)
+    return any(
+        normalize(label.get("name")) == expected
+        for label in (issue.get("labels") or [])
+        if isinstance(label, dict)
+    )
+
+
+def post_claim(
+    owner: str, repo: str, number: int, dry: bool, required_label: str = ""
+) -> str:
+    # Revalidate auto-selected candidates at the point of action. Explicit issue
+    # inputs keep their existing behavior because required_label is empty.
+    if required_label:
+        current = get_issue(owner, repo, number)
+        if (current.get("state") or "open").lower() != "open":
+            raise SystemExit(f"refusing claim: selected issue is no longer open: {owner}/{repo}#{number}")
+        if not label_matches(current, required_label):
+            raise SystemExit(
+                f"refusing claim: required scout label {required_label!r} is no longer present "
+                f"on {owner}/{repo}#{number}"
+            )
     existing = find_existing_claim(owner, repo, number)
     if existing is not None:
         print(f"claim already present — skipping post: {existing}")
@@ -150,6 +216,11 @@ def main() -> int:
         help="LOCAL DEBUG ONLY — Actions must never pass this",
     )
     ap.add_argument(
+        "--required-label",
+        default="",
+        help="label observed on an auto-selected scout candidate; revalidate before claiming",
+    )
+    ap.add_argument(
         "--allow-closed",
         action="store_true",
         help="Allow claim on closed issues (default: skip closed)",
@@ -172,7 +243,13 @@ def main() -> int:
         print("::notice::claim_skipped_closed=true")
         return 0
 
-    comment_url = post_claim(owner, repo, number, args.dry_run)
+    if find_existing_claim(owner, repo, number) is None:
+        pf = preflight(owner, repo, number, meta, allow_closed=args.allow_closed)
+        if not pf["eligible"]:
+            print(f"SKIP {owner}/{repo}#{number}: Tribute System 1 preflight {pf['reasons']}", file=sys.stderr)
+            print("::notice::claim_skipped_preflight=true")
+            return 0
+    comment_url = post_claim(owner, repo, number, args.dry_run, args.required_label)
     print(f"claim: {comment_url}")
     fork = ensure_fork(owner, repo, args.dry_run)
     print(f"fork: {fork}")

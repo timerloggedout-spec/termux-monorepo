@@ -79,3 +79,17 @@ In agent evolution simulation (`replay_simulator.py`), accessing `@property poli
 
 **Action:**
 Use `@functools.cached_property` for computed property hashes on immutable policy dataclasses, and maintain frequency maps for state counts in append-only ledgers to preserve $O(1)$ append performance.
+
+## 2026-10-18 - Module-Scope Regex Pre-Compilation and Generator Match Counting in CI Evaluators
+**Learning:**
+In CI evaluation scripts (`evaluate_skills.py`), inline regex calls (`re.search`, `re.findall`) inside per-item evaluation routines force Python to re-compile regex objects and allocate full match lists on every invocation. Pre-compiling structural search patterns at module scope and replacing `len(re.findall(...))` with `sum(1 for _ in PATTERN.finditer(text))` eliminates match list allocations and speeds up skill evaluation. In `calculate_lag_index.py` and `help_wanted_scout.py`, pre-allocating tuple constants at module scope and passing pre-evaluated `now` timestamps across batch items prevents redundant allocations and system clock syscalls.
+
+**Action:**
+Pre-compile all structural regex patterns at module scope, use `finditer` generators over `findall` list allocations when counting matches, and hoist constant tuples and timestamp evaluations to module/batch scope.
+
+## 2026-10-21 - Fast-Path Body Checks and Generator Early-Exit in Incident Notification Deduplication
+**Learning:**
+In Actions incident deduplication (`actions_incident_dedupe.py`), constructing intermediate list comprehensions over all issue comments before performing marker checks forced full list materialization and iteration even when the notification marker was already present in the issue body. Fast-pathing `notification_marker in body` and evaluating comments using short-circuiting `any()` generator expressions eliminates list allocations and short-circuits comment scanning on match.
+
+**Action:**
+Always fast-path primary content checks before iterating child collections, and use short-circuiting `any()` generator expressions instead of list materialization when checking presence across collection items.

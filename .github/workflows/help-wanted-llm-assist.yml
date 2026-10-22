@@ -53,25 +53,51 @@ jobs:
               )
               with urllib.request.urlopen(req, timeout=45) as r:
                   return json.loads(r.read().decode())
+          import sys
+          sys.path.insert(0, os.getcwd())
+          from scripts.ci import tribute_system1 as s1
+
+          def on_system2(owner, repo, num):
+              # Tribute System 1 gate: only rung system2_llm threads get an LLM pass.
+              try:
+                  r = s1.route(s1.hydrate(f"{owner}/{repo}", int(num)))
+              except Exception as e:  # unreadable thread = not ours to take
+                  print(f"system1 skip {owner}/{repo}#{num}: {e}")
+                  return False
+              print(f"system1 {owner}/{repo}#{num}: rung={r['rung']} primary={r['primary']} reason={r['reason']}")
+              return r["rung"] == "system2_llm"
+
+          def skip(msg):
+              open(os.environ["GITHUB_OUTPUT"], "a").write("skip=true\n")
+              print(msg)
+              raise SystemExit(0)
+
           pr = (os.environ.get("INPUT_PR") or "").strip()
           if pr:
               m = re.search(r"github\.com/([^/]+)/([^/]+)/pull/(\d+)", pr)
               if not m:
                   raise SystemExit(f"bad pr url: {pr}")
               owner, repo, num = m.group(1), m.group(2), m.group(3)
+              if not on_system2(owner, repo, num):
+                  skip(f"{pr} is not on rung system2_llm")
           else:
-              q = urllib.parse.quote("author:timerloggedout-spec is:pr is:open review:changes_requested -repo:timerloggedout-spec/termux-monorepo")
-              items = (api(f"/search/issues?q={q}&per_page=5").get("items") or [])
-              if not items:
-                  q2 = urllib.parse.quote("author:timerloggedout-spec is:pr is:open -repo:timerloggedout-spec/termux-monorepo")
-                  items = (api(f"/search/issues?q={q2}&per_page=5").get("items") or [])
-              if not items:
-                  open(os.environ["GITHUB_OUTPUT"], "a").write("skip=true\n")
-                  print("no foreign PR")
-                  raise SystemExit(0)
-              it = items[0]
-              parts = (it.get("repository_url") or "").rstrip("/").split("/")
-              owner, repo, num = parts[-2], parts[-1], str(it["number"])
+              seen, picked = set(), None
+              for qs in ("author:timerloggedout-spec is:pr is:open review:changes_requested -repo:timerloggedout-spec/termux-monorepo",
+                         "author:timerloggedout-spec is:pr is:open -repo:timerloggedout-spec/termux-monorepo"):
+                  for it in (api(f"/search/issues?q={urllib.parse.quote(qs)}&per_page=10").get("items") or []):
+                      parts = (it.get("repository_url") or "").rstrip("/").split("/")
+                      key = (parts[-2], parts[-1], str(it["number"]))
+                      if key in seen:
+                          continue
+                      seen.add(key)
+                      if on_system2(*key):
+                          picked = key
+                          break
+                  if picked:
+                      break
+              if not picked:
+                  skip("no foreign PR on rung system2_llm")
+              owner, repo, num = picked
           prd = api(f"/repos/{owner}/{repo}/pulls/{num}")
           reviews = api(f"/repos/{owner}/{repo}/pulls/{num}/reviews")
           review_bits = []

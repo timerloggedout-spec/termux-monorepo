@@ -2,11 +2,11 @@
 
 **Authority:** established 13-phase process in [Issue #631](https://github.com/timerloggedout-spec/termux-monorepo/issues/631). This document maps the Actions Matrix work into that process; it does not redefine the phases or establish a parallel methodology.
 
-**Implementation branch:** `ops/actions-matrix-upgrade-hardening-2026-10-18`  
-**Source branch at request:** `ops/actions-matrix-upgrade-2026-10-18` @ `0757583bcb5fad5ed247ea9a03d48ccb28df7c6a`  
-**Requested master comparison point:** `669c0d0bc81862c6fbab830b3521a82464031320`  
-**Base observed at prior PR fetch:** `c83ea89d92eb4f3176f8d3371e7701183527692c` — re-fetch before promotion.  
-**State:** RECON found existing governance, quota policy, and the canonical phase definitions. Current implementation and current-SHA validation remain distinct states.
+**Implementation branch:** `ops/actions-matrix-upgrade-2026-10-18`
+**Source branch at request:** `ops/actions-matrix-upgrade-2026-10-18` @ `0757583bcb5fad5ed247ea9a03d48ccb28df7c6a`
+**Requested master comparison point:** `669c0d0bc81862c6fbab830b3521a82464031320`
+**Base observed at prior PR fetch:** `c83ea89d92eb4f3176f8d3371e7701183527692c` — re-fetch before promotion.
+**State:** RECON found existing governance, quota policy, and the canonical phase definitions. Current implementation and current-SHA validation remain distinct states. Historical repository-observatory failure 39233561401 on 2026-10-19 resolved by subsequent success 39400597496. Vercel quota remains non-gate capacity noise (issues #1397/#1358/#1330/#1283).
 
 ## RECON findings — verified repository authority
 
@@ -14,9 +14,37 @@
 2. Repository operating contract is `RECON → CLASSIFY → PLAN → ACT → WAIT → VALIDATE → RE-FETCH → RECORD → REPEAT` in `.agents/skills/evidence-led-monorepo-ops/SKILL.md`.
 3. Adaptive asynchronous execution is governed by `.agents/skills/adaptive-wait/SKILL.md`: re-fetch after material changes, back off only on no-delta evidence, retry only when the attempt changes for an evidence-backed reason, and do not duplicate active work.
 4. The repository dual-gate is hygiene/portability plus agentic Termux smoke. Vercel is explicitly a non-gate in the canonical ops skill and issue #772. A Vercel quota failure must not be misreported as a code defect or CI gate failure.
-5. `docs/DEPLOYMENT-LANES.md` records the `termux-monorepo` and `mcp-hub` Vercel lanes as live. GitHub Pages is not enabled; Render and Cloudflare are candidates with no live deployment evidence in this repository. Do not silently claim or route production traffic to an unproven lane.
+5. `docs/DEPLOYMENT-LANES.md` records the `termux-monorepo` and `mcp-hub` Vercel lanes as live. The GitHub Pages workflow and `gh-pages` branch exist, but current publication/source-SHA proof was not available in this RECON pass; Pages is configured but unverified. Render and Cloudflare remain unproven candidates. Do not silently claim or route production traffic to an unproven lane.
+8. Vercel project checks on merge commit `fe617f7f8eff0aeaecac67e0964e139ae9ab9035` reported `build-rate-limit` for four connected projects. A separate live deployment inspection showed `termux-monorepo` at `5827176ea6ec3580c5050e275493f94baef4a9e8` READY, while three deployments on unrelated research commit `e3ff387c95b9f94ab789a2ba65b51a103e357012` were CANCELED with the provider's `ignored-build-step` help link. Keep these states separate: quota failures are capacity evidence; ignored-build-step cancellations are intentional skip outcomes.
 6. `docs/schemas/model-rotation.yaml` governs **LLM** free-tier rotation; it is not a Vercel deployment quota registry. Reuse its quota-first design principles, but do not conflate provider types or their budgets.
 7. The latest known PR #1242 head before this RECON correction was `4b569bc2c9a8e032fd8464636b2d0d9e6a6e2087`. Re-fetch the live PR head/base and checks before drawing any current-state conclusion.
+
+## Notification fan-out reduction — modularized consolidations
+
+Observed spam: dozens of `issue_comment` triggered workflows (peer-review-orchestrator, pr-production-ledger, cellcog-review, deepseek-ci, action-effectiveness-ledger, sweep-accountability, agent-review-auto-jules, jules-on-issues, gemini-dispatch, actions-run-watcher, etc.) start runs that immediately conclude `skipped` or `cancelled` (concurrency), generating notification noise even when no work occurs. Examples: runs 39541657xxx on 2026-10-21.
+
+**Implemented (2026-10-21):** Modular `.github/workflows/issue-comment-router.yml` on this branch. Triggers once, classifies early (bot/human, keywords, labels, PR vs issue), only proceeds to matching routes. Unmatched comments produce no downstream jobs. Starting point for full absorption of individual workflows; preserves coverage. Skipped/Cancelled are now more intentional and auditable.
+
+Superseded individual workflows retain their files as deprecated with notes pointing to the router; features are preserved via modular job extraction. Skipped/Cancelled require attentive validation audits — they are not silent failures; they must be classified as intentional no-op vs. missed trigger.
+
+## Pinggy / tunnel device identification (public obfuscation)
+
+Pinggy (or Cloudflare Tunnel / alternative) must remain operational on device #1 (original BLU B160V with broken screen) and be replicable on device #2. September tests targeted #1; now dual-device.
+
+**Public obfuscation requirement:** Never publish local usernames, raw serials, or private device fingerprints. Use opaque, stable identifiers:
+- SHA-256 of (device model + truncated serial last-4 + salt from secret) → `device_id: blu-b160v-1-a1b2c3d4`
+- Published in heartbeat manifests (`scripts/termux/check-gh-agentic-auth.sh --publish`) and tunnel-canary.
+- Roles: `primary` (#1), `replica` (#2).
+- TTL + status in the public manifest; live health remains UNKNOWN until independent probe confirms reachability.
+
+See `tunnel-canary.yml`, `agentic-auth-canary.yml`, `deepseek-termux-agent.yml`. Credentials in Issue #184 (names-only; do not paste values).
+
+## Adaptive cadence, cache, and 3L0 telemetry
+
+- Cadence: adaptive WAIT — immediate re-fetch on material delta, backoff on QUIET, stop on STALLED.
+- Cache: Actions cache keys must include SHA + path filters to avoid stale hits; dynamic adaptive based on quota remaining (observe before dispatch).
+- 3L0 moneyball: telemetry weights for provider selection (LLM free-tier, Actions minutes, Vercel deploys) driven by observed success/cost/latency. Quota registry (see quota-status.json, vercel-quota-probe) feeds the weights. Act before exhaustion.
+- Quota messages (Vercel daily deploy cap, OpenRouter free models) are capacity, not code FAIL. Track in dashboard and issues #772/#1314. Recent discover job hit GitHub installation rate limit — further consolidation reduces this pressure.
 
 ## Canonical 13 phases — retained verbatim in name and intent
 
@@ -48,8 +76,8 @@ These are workstreams inside the canonical phases, not replacement phases:
 | Bounded cadence collector | 3, 6, 8 | Workflow input and API contract | Single-page run sampling; validate 1–100; expose API total and truncation; deterministic tests. |
 | Snapshot writer correctness | 3, 6, 8 | Cadence collector output | No swallowed write/push errors; safe no-op; reconcile concurrent master movement; never cancel active writer. |
 | Classification and regression tests | 3, 8, 9 | Explicit operational-state contract | Distinguish workflow badge, task outcome, queued/in-flight, skipped/cancelled/neutral, and real failure. |
-| Notification/fan-out reduction | 4, 7, 11 | Verified trigger and consumer inventory | Remove only redundant fan-out; retain required downstream coverage; measure noise/volume before and after. |
-| Device bridge safety | 3, 4, 8 | Manifest schema and live device access | Validate opaque device IDs, roles, TTL; do not publish local usernames; live health remains UNKNOWN until independently proven. |
+| Notification/fan-out reduction | 4, 7, 11 | Verified trigger and consumer inventory | Remove only redundant fan-out; retain required downstream coverage; measure noise/volume before and after. **Router implemented as starting point.** |
+| Device bridge safety | 3, 4, 8 | Manifest schema and live device access | Validate opaque device IDs, roles, TTL; do not publish local usernames; live health remains UNKNOWN until independently proven. **Public obfuscation defined.** |
 | Quota and capacity management | 2, 5, 6, 8, 11 | Provider identity, observed limits, and configured alternatives | Classify provider-capacity failures independently; avoid retry storms; rotate only to a pre-provisioned, verified eligible lane. |
 | Promotion and post-promotion watch | 8–13 | Exact-SHA validation, reviews, current base | Dual-gate + task outcome on candidate; deliberate promotion; inspect first production cycle and record resulting SHA. |
 
@@ -64,6 +92,8 @@ flowchart TD
   CLASSIFY --> TEST
   RECON --> FANOUT[Phase 7: verify consumers and owners]
   FANOUT --> REDUCE[Phase 11: remove measured waste]
+  REDUCE --> ROUTER[Modular issue-comment router — implemented]
+  ROUTER --> DEVICE[Opaque device ID for Pinggy #1/#2]
   TEST --> EVIDENCE[Phase 9: verify task outcome]
   REDUCE --> EVIDENCE
   EVIDENCE --> REVIEW[Phase 12: review/disposition]
@@ -87,6 +117,20 @@ flowchart TD
 | Current-SHA integration evidence | | | ■ | ■ | | |
 | Review, promotion, post-promotion watch | | | | ■ | ■ | ■ |
 
+## Implemented in the quota-resilience follow-up branch
+
+- The GitHub Actions publisher now uses `cancel-in-progress: false` so a later event cannot cancel an active publication after consuming work/capacity.
+- The Pages setup job is skipped for a Vercel-only manual request; it no longer performs an unrelated Pages configuration API call on that path.
+- Pages setup is idempotent: an already-correct `gh-pages:/` configuration exits without a write. API transport errors, unexpected statuses, and failed writes are no longer hidden with `|| true`.
+- Vercel ignored-build-step commands are now explicitly top-root path-scoped in:
+  - `mcp-hub/vercel.json` → `mcp-hub/`
+  - `apps/help-wanted-dashboard/vercel.json` → dashboard sources plus generated dashboard snapshots and status validation scripts
+  - `demo-portal/public/vercel.json` → static demo portal only
+- Missing previous/current SHAs and diff errors fail open to a build; unchanged source returns exit 0 to skip; relevant changes return nonzero to continue the build. This follows Vercel's documented ignored-build-step contract.
+- `tests/test_vercel_ignore_commands.py` adds regression coverage for unrelated changes, relevant changes, missing previous SHA, and project-path scoping.
+
+**Activation boundary:** PR #1310 is merged as `2194a62192dce89e3dedbb3142418aad06d6fab9`. The shared helper and project-scoped `vercel.json` settings are now on master, and the connected Vercel project settings for `mcp-hub`, `help-wanted-dash`, `help-wanted-oversight`, and `termux-monorepo` were updated to call the helper. This makes the selector configured, but the provider still returned `build-rate-limit` on the merge SHA and no deployment records were returned for that SHA; effectiveness is therefore not yet verified by a successful post-merge event. Source-path filters reduce unnecessary build attempts; they do not manufacture quota headroom, expose a remaining-quota counter, or provide cross-provider production failover.
+
 ## Quota resilience policy — act before exhaustion, never after a retry storm
 
 ### Correct classification
@@ -98,7 +142,7 @@ A Vercel `api-deployments-free-per-day` response is **provider capacity = constr
 1. **Spend only on meaningful deploy events.** Use change/path filtering, deduplication, stable concurrency, and no-op detection so duplicate or docs-only changes do not consume a deployment where the lane does not need one.
 2. **Use budget thresholds before exhaustion.** Track observed usage and reset time when the provider exposes them. At the configured safety threshold, stop optional/preview deployments and reserve capacity for production-critical work. Never invent an exact remaining quota when the provider does not expose it.
 3. **Classify before retry.** On a provider quota response, preserve the first response and timestamp; do not immediately repeat the same deploy. Re-fetch provider state once if useful, then wait for reset or select an eligible alternative.
-4. **Rotate only across verified lanes.** Candidate order is a policy input, not proof of readiness. An alternative must already have a concrete project/site, source/root boundary, required secrets, production branch, URL, and successful source-SHA verification. Do not automatically send live traffic to Render, Cloudflare, or GitHub Pages based only on their mention in the lane registry.
+4. **Rotate only across verified lanes.** Candidate order is a policy input, not proof of readiness. An alternative must already have a concrete project/site, source/root boundary, required secrets, production branch, URL, and successful source-SHA verification. GitHub Pages is configured for static publication but remains unverified as a current healthy publication; it cannot serve as a substitute for the MCP/application runtime. Do not automatically send live traffic to Render, Cloudflare, or Pages based only on their mention in the lane registry.
 5. **Fail open for CI, fail closed for promotion.** A Vercel quota failure does not fail unrelated CI. A release cannot claim deployment success until the intended source SHA is deployed and verified on the selected lane.
 6. **Circuit-break and recover.** Mark the exhausted provider/lane unavailable for the relevant quota window, avoid retry storms, continue independent work, re-check at the provider's reset or recovery signal, and restore preference only after a successful health/source-SHA probe.
 7. **Keep secrets and budgets separate.** Do not copy credentials between providers or infer quota availability from the LLM model-rotation registry. Provider-specific capacity and authorization are independent inputs.
@@ -109,11 +153,11 @@ A Vercel `api-deployments-free-per-day` response is **provider capacity = constr
 |---|---|---|
 | Vercel `termux-monorepo` | Live lane; Hobby plan observed in the connected Vercel team context | Defer noncritical deploys; preserve CI and source evidence; retry only after capacity recovery or a changed deployment input. |
 | Vercel `mcp-hub` | Live lane in deployment-lane SSOT | Manage independently by project; do not assume its deployment budget is a separate account-wide allowance without provider evidence. |
-| GitHub Pages | **LIVE for the static Help-Wanted dashboard and project hub** through the existing deploy workflow; this does not make it a live fallback for application/MCP services. The broader deployment-lane SSOT still records the optional generic Pages lane as not enabled. | Use the already-live canonical static dashboard for dashboard continuity. Do not route the Vercel-hosted MCP service to Pages; service failover needs a separately provisioned compatible lane. |
+| GitHub Pages | **Configured, publication unverified**: workflow configures `gh-pages`, mirrors static routes to `timerloggedout-spec.github.io`, and the `gh-pages` branch exists; current run/URL/source-SHA health evidence was not returned. | Verify the exact published URL and deployed source SHA before relying on it for static dashboard continuity. Never route the Vercel-hosted MCP service to Pages. |
 | Render | Candidate / unproven in this repository | Not an automatic fallback. Requires concrete project/service and source-SHA health proof. |
 | Cloudflare / Pages / Workers | Candidate / unproven in this repository | Not an automatic fallback. Establish the exact product, project, route/domain, source boundary, and verification first. |
 
-**Present limitation:** this RECON verified the connected Vercel team is on the Hobby plan. GitHub Pages is already a live canonical surface for the static Help-Wanted dashboard/project hub, but it is not a compatible replacement for the Vercel-hosted MCP application. The connected Vercel interface did not expose an authoritative remaining daily-deployment counter in this pass. The workflow change therefore removes automatic Vercel production deployments from ordinary pushes, defaults manual publication to the existing GitHub Pages lane, and preserves Vercel as an explicit manual target with quota/capacity classification. Automatic service failover remains gated on provisioning and verifying a compatible alternative lane.
+**Present limitation:** the connected Vercel team is on the Hobby plan and provider check URLs report `build-rate-limit`; no authoritative remaining daily-deployment counter was exposed. PR #1310 is merged, and the four connected projects' ignored-build settings now point to the shared path selector. The merge SHA still has provider-capacity failures and no deployment records, so skip/build behavior must be verified on the next provider-eligible event. GitHub Pages is configured for static publication, but current URL/source-SHA health is unverified. Automatic application/MCP failover remains gated on provisioning and verifying a compatible alternative lane.
 
 ## Acceptance checklist
 
@@ -123,7 +167,7 @@ A Vercel `api-deployments-free-per-day` response is **provider capacity = constr
 - [ ] Cadence sampling is bounded and records API total/truncation.
 - [ ] Snapshot writes are concurrency-safe and do not mask push failures.
 - [ ] Classifier tests distinguish operational state from correctness/task outcome.
-- [ ] Fan-out changes preserve required downstream coverage.
+- [ ] Fan-out changes preserve required downstream coverage. **Router started.**
 - [ ] Provider capacity, CI correctness, deployment state, and task outcome are classified independently.
 - [ ] Quota responses do not trigger blind retry loops or incorrectly fail repository dual-gate.
 - [ ] No alternative deployment provider is labeled live or selected for production without source-SHA verification.
@@ -136,3 +180,5 @@ A Vercel `api-deployments-free-per-day` response is **provider capacity = constr
 Every material cycle should retain the repository's existing receipt fields: operation, repo, base SHA, head SHA, observed-at timestamp, evidence IDs, state/outcome, provenance/confidence, decision, reason, and remaining unproven work. Use the established RECON → CLASSIFY → PLAN → ACT → WAIT → VALIDATE → RE-FETCH → RECORD → REPEAT loop; do not create a parallel phase system.
 
 **Truth boundary:** this document is a reconstructed execution map, not proof that CI passed, a provider quota is available, a fallback deployment is live, a device is healthy, or production promotion occurred.
+
+**Update 2026-10-21:** Modular router landed on branch. Next: extract jobs, deprecate redundant workflows, measure notification reduction, validate Pinggy opaque IDs on device #1/#2.

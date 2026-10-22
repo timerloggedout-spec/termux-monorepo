@@ -1,0 +1,734 @@
+"""Delphi Oracle RFP gate (docs/ops/DELPHI-ORACLE-RFP-GATE.md).
+
+Stdlib only. Never prints secrets. Never picks a model for live routing: the
+panel uses transparent rubric scoring only. Model voting requires a separately
+validated no-cost and quota admission implementation; key presence is not enough.
+
+Subcommands
+  score   --surface ID [--surface ID ...]   offline: oracle + blind panel + rounds, JSON to stdout
+  run     [--reason R] [--depth N]          Actions: process every open delphi:rfp issue idempotently
+  feedback --rfp N --outcome confirmed|miss  flywheel: re-weight roles from a real outcome
+"""
+from __future__ import annotations
+
+import argparse, datetime as dt, hashlib, json, os, re, statistics, sys, urllib.request, urllib.error
+
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+SURFACES = os.path.join(ROOT, "ops", "delphi", "surfaces.json")
+PANEL = os.path.join(ROOT, "ops", "delphi", "panel.json")
+REGISTRY = os.path.join(ROOT, "ops", "quota", "registry.json")
+FORESIGHT = os.path.join(ROOT, "data", "foresight", "resource-registry.jsonl")
+LEDGER_MARK = "<!-- delphi-ledger v1 -->"
+WEIGHTS_MARK = "<!-- delphi-weights v1 -->"
+WEIGHTS_TITLE = "Delphi panel weights ledger"
+BOARD_MARK = "<!-- delphi-board v1 -->"
+BOARD_TITLE = "Delphi results board"
+ROLES = ["OPERATOR", "builder", "reviewer", "Scout", "cost_auditor"]
+LABELS = {
+    "delphi:rfp": ("1d76db", "Delphi Oracle RFP (docs/ops/DELPHI-ORACLE-RFP-GATE.md)"),
+    "delphi:converged": ("5319e7", "Delphi panel converged"),
+    "delphi:shadow": ("0e8a16", "Awarded a shadow lane (small traffic share)"),
+    "delphi:parked": ("fbca04", "Parked in ForeSight with a recheck date"),
+    "delphi:promoted": ("006b75", "Shadow lane confirmed by real runs"),
+    "delphi:needs-access": ("d93f0b", "Award blocked on an Actions credential (Access lane)"),
+    "delphi:weights": ("c5def5", "Append-only Delphi role weights ledger"),
+    "delphi:board": ("bfd4f2", "Generated Delphi results board"),
+    "delphi:outcomes": ("d4c5f9", "Append-only graded outcome ledger (tribute-outcome)"),
+}
+
+
+def now() -> dt.datetime:
+    return dt.datetime.now(dt.timezone.utc)
+
+
+def load(path: str) -> dict:
+    with open(path) as f:
+        return json.load(f)
+
+
+def clamp(v: float, lo: int = 1, hi: int = 5) -> int:
+    return int(max(lo, min(hi, round(v))))
+
+
+# ---------------------------------------------------------------- oracle
+def oracle(surface: dict, registry: dict | None = None, readings: dict | None = None) -> dict:
+    """Attach documented limits (with source URLs), live readings and evidence."""
+    reg = {s["id"]: s for s in (registry or {}).get("services", [])}
+    r = reg.get(surface.get("registry_id") or "")
+    q = surface.get("quota", {})
+    mult = (readings or {}).get((r or {}).get("provider", ""), None)
+    return {
+        "surface_id": surface["id"],
+        "documented": {k: q.get(k) for k in ("metric", "limit", "unit", "window", "reset", "zone", "source")},
+        "sourced": bool(surface.get("sourced")),
+        "registry_entry": (r or {}).get("id"),
+        "registry_source": (r or {}).get("source"),
+        "live_multiplier": mult,  # 3l0.quota-weights.v1; None = no live reading (neutral)
+        "auth": {k: v for k, v in surface.get("auth", {}).items() if k != "value"},
+        "evidence": {"foresight_horizon": surface.get("horizon"), "failure_modes": surface.get("failure_modes", [])},
+    }
+
+
+# ---------------------------------------------------------------- blind panel (rubric)
+def _auth_ready(s: dict) -> int:
+    p = s.get("auth", {}).get("present")
+    return 5 if p is True else (3 if p is None else 1)
+
+
+def _reset_clarity(s: dict) -> int:
+    q = s.get("quota", {})
+    known = q.get("reset") not in (None, "unknown", "n/a") and q.get("zone")
+    if s.get("sourced") and known and q.get("limit") is not None:
+        return 5
+    if known or q.get("limit") is not None:
+        return 3
+    return 1
+
+
+def rubric_vote(role: str, s: dict) -> dict:
+    fit, head, lock = s.get("fit", 3), s.get("headroom", 3), s.get("lock_in", 3)
+    fm, sourced = len(s.get("failure_modes", [])), bool(s.get("sourced"))
+    veto = False
+    if role == "OPERATOR":
+        imp, impt = fit, (_auth_ready(s) + (5 if sourced else 2) + (6 - lock)) / 3
+        why = "policy fit: sourced limits, Actions auth, low lock-in"
+    elif role == "builder":
+        imp, impt = (fit + head) / 2, _auth_ready(s)
+        why = "integration: credential reachable from Actions, room to build"
+    elif role == "reviewer":
+        imp, impt = fit, 5 - fm + (0 if sourced else -1)
+        why = f"{fm} failure modes; {'sourced' if sourced else 'unsourced'} limits"
+    elif role == "Scout":
+        imp, impt = {"H0": 3, "H1": 4, "H2": 5, "H3": 4}.get(s.get("horizon"), 3), fit
+        why = f"horizon {s.get('horizon')}: novelty vs fit"
+    elif role == "cost_auditor":
+        imp, impt = head, _reset_clarity(s)
+        veto = bool(s.get("card_required") or s.get("overage_autobill"))
+        why = "free headroom and a documented reset" + ("; VETO: needs money/card" if veto else "")
+    else:
+        raise ValueError(role)
+    imp, impt = clamp(imp), clamp(impt)
+    score = imp * impt
+    if veto:
+        score = min(score, 4)
+    return {"role": role, "impact": imp, "importance": impt, "score": score, "veto": veto, "reason": why, "via": "rubric"}
+
+
+def llm_vote(role: str, s: dict, feedback: str, budget: dict) -> dict | None:
+    """Model ballots are disabled pending separate no-cost and quota admission.
+
+    A key, :free suffix, role label or neutral multiplier is not admission.
+    Keep the callable for compatibility; callers use the transparent rubric.
+    """
+    return None
+
+
+def sign(vote: dict, rfp: str, rnd: int, session: str) -> dict:
+    canon = json.dumps({k: vote[k] for k in ("role", "impact", "importance", "score", "veto")}, sort_keys=True)
+    vote = dict(vote)
+    vote["sha256"] = hashlib.sha256(f"{rfp}|{rnd}|{canon}".encode()).hexdigest()[:16]
+    vote["signed"] = f"Signed-off-by: Delphi-{vote['role']} (OPERATOR) {session} / {rfp}#r{rnd}"
+    return vote
+
+
+# ---------------------------------------------------------------- weights + rounds
+def role_weight(r: dict) -> float:
+    return float(r.get("base", 1.0)) * (0.5 + float(r.get("gate_pass_rate", 0.5))) * (float(r.get("elo", 1500)) / 1500.0)
+
+
+def effective(votes: list[dict], roles: dict) -> float:
+    ws = [(role_weight(roles[v["role"]]), v["score"]) for v in votes]
+    return round(sum(w * s for w, s in ws) / sum(w for w, _ in ws), 2)
+
+
+def spread(scores: list[float]) -> tuple[float, float, float]:
+    med = statistics.median(scores)
+    q = statistics.quantiles(scores, n=4, method="inclusive") if len(scores) > 1 else [scores[0]] * 3
+    return med, q[0], q[2]
+
+
+def delphi(surface: dict, panel: dict, rfp: str = "local", session: str = "local", budget: dict | None = None) -> dict:
+    budget = budget if budget is not None else {"llm": int(os.environ.get("DELPHI_LLM_MAX", "30"))}
+    cfg, roles = panel["rounds"], panel["roles"]
+    votes = [sign(llm_vote(r, surface, "", budget) or rubric_vote(r, surface), rfp, 1, session) for r in ROLES]
+    history = []
+    for rnd in range(1, cfg["max"] + 1):
+        scores = [v["score"] for v in votes]
+        med, q1, q3 = spread(scores)
+        iqr = q3 - q1
+        outliers = [v["reason"] for v in votes if v["score"] < q1 or v["score"] > q3]
+        history.append({"round": rnd, "median": med, "iqr": round(iqr, 2), "range": max(scores) - min(scores),
+                        "effective": effective(votes, roles), "outlier_reasons": outliers, "votes": votes})
+        if iqr <= cfg["converge_iqr"] or (max(scores) - min(scores)) <= cfg["converge_range"] or rnd == cfg["max"]:
+            break
+        # next round: each role sees ONLY median, IQR and anonymous outlier reasons
+        fb = f"Round {rnd} panel median {med}, IQR {q1}-{q3}. Anonymous outlier reasons: {outliers}. Revise if persuaded.\n"
+        nxt = []
+        for v in votes:
+            alt = llm_vote(v["role"], surface, fb, budget)
+            if alt is None:
+                alt = dict(v)
+                if not v["veto"] and (v["score"] < q1 or v["score"] > q3):
+                    alt["score"] = round(v["score"] + cfg["pull_to_median"] * (med - v["score"]), 1)
+                    alt["reason"] = v["reason"] + " (moved toward median)"
+            nxt.append(sign(alt, rfp, rnd + 1, session))
+        votes = nxt
+    last = history[-1]
+    converged = last["iqr"] <= cfg["converge_iqr"] or last["range"] <= cfg["converge_range"]
+    return {"surface_id": surface["id"], "rounds": history, "converged": converged,
+            "effective_score": last["effective"], "veto": any(v["veto"] for v in last["votes"])}
+
+
+def award(result: dict, surface: dict, panel: dict, at: dt.datetime | None = None) -> dict:
+    at = at or now()
+    a, e = panel["award"], result["effective_score"]
+    band = "P0" if e >= 20 else "High" if e >= 15 else "Medium" if e >= 9 else "Backlog"
+    if result["veto"]:
+        days = a["park_recheck_days"]["backlog"]
+        out = {"decision": "parked", "why": "cost auditor veto: needs money or a card"}
+    elif e >= a["shadow_min"]:
+        out = {"decision": "shadow", "traffic_share": a["shadow_traffic_share"],
+               "promote_after_confirmed_runs": a["promote_after_confirmed_runs"], "why": f"effective {e} >= {a['shadow_min']}"}
+        if surface.get("auth", {}).get("present") is False:
+            out["blocked_on"] = f"Actions credential {surface['auth'].get('actions_secret') or '(none)'} (Access lane)"
+        days = None
+    else:
+        days = a["park_recheck_days"]["medium" if e >= 9 else "backlog"]
+        out = {"decision": "parked", "why": f"effective {e} below shadow bar {a['shadow_min']}"}
+    out["band"] = band
+    if days:
+        out["recheck_after"] = (at + dt.timedelta(days=days)).strftime("%Y-%m-%dT%H:%MZ")
+    return out
+
+
+def records(result: dict, aw: dict, surface: dict, oracle_facts: dict, rfp: str) -> dict:
+    """HindSight retain + ForeSight evidence (foresight/schema.json) + 3l0.moneyball.v1-shaped row."""
+    ts = now().strftime("%Y-%m-%dT%H:%M:%SZ")
+    src = surface["quota"]["source"]
+    fs = {"resource_id": surface["id"], "item_id": f"delphi:{rfp}", "lane_id": "delphi-oracle",
+          "title": surface["title"], "category": surface["lane"], "horizon": surface.get("horizon", "H1"),
+          "evidence_status": "confirmed" if surface.get("sourced") else "attributed_claim",
+          "summary": f"Delphi {aw['decision']} at effective {result['effective_score']} ({aw['band']})",
+          "source": {"url": src}, "canonical_source": src, "observed_at": ts,
+          "confidence": round(min(1.0, result["effective_score"] / 25.0), 2),
+          "procurement": {"decision": aw["decision"], "recheck_after": aw.get("recheck_after")}}
+    hs = {"bank_id": "deepagent::termux-monorepo",
+          "content": f"[delphi] {surface['id']} -> {aw['decision']} eff={result['effective_score']} band={aw['band']} rfp={rfp} "
+                     f"forecast={'pass' if aw['decision'] == 'shadow' else 'fail'} ts={ts}"}
+    mb = {"contract_version": "3l0.moneyball.v1", "task_id": f"delphi:{rfp}", "agent_id": "delphi-panel",
+          "terminal_state": aw["decision"], "status": "converged" if result["converged"] else "max_rounds",
+          "started_at": ts, "ended_at": ts, "trigger": os.environ.get("DELPHI_REASON", "manual")}
+    return {"foresight": fs, "hindsight": hs, "moneyball": mb, "oracle": oracle_facts}
+
+
+def score_surface(s: dict, panel: dict, registry: dict | None, readings: dict | None, rfp: str, session: str, budget=None) -> dict:
+    facts = oracle(s, registry, readings)
+    res = delphi(s, panel, rfp, session, budget)
+    aw = award(res, s, panel)
+    return {"rfp": rfp, "surface": s["id"], "title": s["title"], "result": res, "award": aw,
+            "records": records(res, aw, s, facts, rfp)}
+
+
+# ---------------------------------------------------------------- flywheel
+def feedback(roles: dict, final_votes: list[dict], outcome: str, panel: dict) -> dict:
+    """outcome 'confirmed' = shadow lane held up in real runs; 'miss' = forecast was wrong."""
+    a, k = panel["flywheel"]["ewma_alpha"], panel["flywheel"]["elo_k"]
+    bar = panel["award"]["shadow_min"]
+    truth = outcome == "confirmed"
+    roles = json.loads(json.dumps(roles))
+    for v in final_votes:
+        r = roles[v["role"]]
+        hit = (v["score"] >= bar) == truth
+        r["gate_pass_rate"] = round((1 - a) * r["gate_pass_rate"] + a * (1.0 if hit else 0.0), 4)
+        r["elo"] = round(r["elo"] + (k if hit else -k), 1)
+        r["hits" if hit else "misses"] += 1
+    return roles
+
+
+# ---------------------------------------------------------------- adaptive cadence
+def cadence(registry: dict, readings: dict, pending: int, depth: int, max_depth: int = 3,
+            api_remaining: int | None = None) -> dict:
+    """Quota-aware: accelerate when free quota sits unused before its reset, defer near caps.
+    Bounded by the GitHub API budget in the registry, the LIVE x-ratelimit-remaining of the
+    repo-wide GITHUB_TOKEN (shared with every workflow), and a chain-depth cap."""
+    reg = {s["id"]: s for s in registry.get("services", [])}
+    api = reg.get("github.api.github_token", {})
+    cap = int((api.get("limit") or 1000) * (api.get("planned_use", {}).get("safety", 0.8)))
+    per_rfp_calls = 6
+    max_rfps = max(1, cap // per_rfp_calls // 4)  # never spend more than a quarter of the hourly budget per run
+    reserve = max(100, cap // 10)  # leave headroom for the repo's other workflows
+    if api_remaining is not None:
+        usable = api_remaining - reserve
+        if usable < per_rfp_calls + 20:
+            return {"mode": "defer_api", "pace": None, "max_rfps_per_run": 0, "api_cap_per_hour": cap,
+                    "api_remaining": api_remaining, "depth": depth}
+        max_rfps = max(1, min(max_rfps, usable // per_rfp_calls))
+    mults = [float(v) for v in (readings or {}).values()]
+    pace = round(sum(mults) / len(mults), 2) if mults else 1.0
+    if pending and pace >= 1.2 and depth < max_depth:
+        mode = "accelerate"
+    elif pace < 0.5:
+        mode = "defer"
+    else:
+        mode = "steady"
+    if mode == "accelerate" and api_remaining is not None and api_remaining < cap // 2:
+        mode = "steady"  # never chain ticks while the shared token is below half its budget
+    return {"mode": mode, "pace": pace, "max_rfps_per_run": max_rfps, "api_cap_per_hour": cap,
+            "api_remaining": api_remaining, "depth": depth}
+
+
+# ---------------------------------------------------------------- GitHub (Actions mode)
+class RateLimited(Exception):
+    """GitHub 403/429 rate-limit wall: defer, never fail the gate (access-resilience: rate_limit)."""
+
+
+class GH:
+    def __init__(self, repo: str, token: str):
+        self.repo, self.token, self.calls = repo, token, 0
+
+    def req(self, method: str, path: str, body=None):
+        self.calls += 1
+        url = path if path.startswith("http") else f"https://api.github.com/repos/{self.repo}{path}"
+        r = urllib.request.Request(url, method=method, data=json.dumps(body).encode() if body is not None else None,
+                                   headers={"Authorization": f"Bearer {self.token}", "Accept": "application/vnd.github+json",
+                                            "X-GitHub-Api-Version": "2022-11-28"})
+        try:
+            with urllib.request.urlopen(r, timeout=30) as resp:
+                raw = resp.read()
+                return json.loads(raw) if raw else {}
+        except urllib.error.HTTPError as e:
+            if e.code == 422 and method == "POST" and path == "/labels":
+                return {}
+            if e.code in (403, 429):
+                h = e.headers or {}
+                raise RateLimited(f"{e.code} remaining={h.get('x-ratelimit-remaining')} reset={h.get('x-ratelimit-reset')} "
+                                  f"retry-after={h.get('retry-after')} on {method} {path.split('?')[0]}") from None
+            raise
+
+
+def api_remaining(gh: "GH") -> int | None:
+    """GET /rate_limit does not count against the limit. None = unreadable (stay neutral)."""
+    try:
+        core = gh.req("GET", "https://api.github.com/rate_limit")["resources"]["core"]
+        gh.calls -= 1
+        return int(core["remaining"])
+    except Exception:  # noqa: BLE001 - unreadable budget is neutral, never fatal
+        return None
+
+
+def radar_candidates(catalog: dict, registry: dict, rfp_surfaces: set, foresight_path: str = FORESIGHT) -> list[dict]:
+    """New-surface alert: quota-registry services and ForeSight records that no RFP covers yet.
+    Names and source URLs only; nothing is filed automatically (a human or lane files the RFP)."""
+    covered = set(rfp_surfaces)
+    for sid in rfp_surfaces:
+        rid = (catalog.get(sid) or {}).get("registry_id")
+        if rid:
+            covered.add(rid)
+    svcs = registry.get("services", [])
+    # a further meter of an already-covered provider+lane (e.g. render.bandwidth under render.free) is not a new surface
+    pairs = {(x.get("provider"), x.get("lane")) for x in svcs if x["id"] in covered}
+    out = []
+    for svc in svcs:
+        if svc["id"] not in covered and (svc.get("provider"), svc.get("lane")) not in pairs:
+            out.append({"id": svc["id"], "lane": svc.get("lane", "?"), "origin": "quota-registry", "source": svc.get("source", "")})
+    try:
+        with open(foresight_path) as f:
+            for line in f:
+                if not line.strip():
+                    continue
+                r = json.loads(line)
+                if r.get("lane_id") == "delphi-oracle" or r.get("resource_id") in covered:
+                    continue
+                out.append({"id": r.get("resource_id", "?"), "lane": r.get("category", "?"), "origin": "foresight",
+                            "source": r.get("canonical_source") or (r.get("source") or {}).get("url", "")})
+    except (OSError, ValueError):
+        pass
+    return sorted(out, key=lambda c: (c["origin"], c["id"]))
+
+
+def board_md(rows: list[dict], at: str, radar: list[dict] | None = None) -> str:
+    """Results board: one row per open RFP, newest ledger state. Regenerated, never hand-edited."""
+    order = {"shadow": 0, "parked": 1, "pending": 2}
+    rows = sorted(rows, key=lambda r: (order.get(r["decision"], 3), -(r["effective"] or 0), r["number"]))
+    lines = [BOARD_MARK, f"Generated by delphi-gate at {at}. Ledger of record: the newest `{LEDGER_MARK}` comment on each RFP.", "",
+             "| RFP | Surface | Effective /25 | Award | Band | Recheck |", "|---|---|---|---|---|---|"]
+    for r in rows:
+        lines.append(f"| #{r['number']} | `{r['surface']}` | {r['effective'] if r['effective'] is not None else '-'} | "
+                     f"{r['decision']} | {r.get('band') or '-'} | {r.get('recheck') or '-'} |")
+    sh = sum(r["decision"] == "shadow" for r in rows)
+    lines += ["", f"{len(rows)} open RFPs · {sh} shadow · {sum(r['decision'] == 'parked' for r in rows)} parked · "
+              f"{sum(r['decision'] == 'pending' for r in rows)} pending. Rubric-only panel (MSM-018); awards are advisory."]
+    if radar:
+        lines += ["", f"### Radar: {len(radar)} surfaces with no RFP yet",
+                  "File one with the Delphi Oracle RFP issue form to put a surface through the gate.", "",
+                  "| Surface | Lane | Seen in | Source |", "|---|---|---|---|"]
+        for c in radar[:40]:
+            src = f"[link]({c['source']})" if str(c["source"]).startswith("http") else (c["source"] or "-")
+            lines.append(f"| `{c['id']}` | {c['lane']} | {c['origin']} | {src} |")
+        if len(radar) > 40:
+            lines.append(f"| … | | | {len(radar) - 40} more |")
+    return "\n".join(lines)
+
+
+def update_board(gh: "GH", rows: list[dict], radar: list[dict] | None = None) -> int | None:
+    found = gh.req("GET", "/issues?state=open&labels=delphi:board&per_page=5")
+    body = board_md(rows, now().strftime("%Y-%m-%d %H:%M UTC"), radar)
+    if not found:
+        return gh.req("POST", "/issues", {"title": BOARD_TITLE, "labels": ["delphi:board"], "body": body}).get("number")
+    n, old = found[0]["number"], found[0].get("body") or ""
+    strip = lambda b: re.sub(r"Generated by delphi-gate at [^.]+\.", "", b)
+    if strip(old) != strip(body):
+        gh.req("PATCH", f"/issues/{n}", {"body": body})
+    return n
+
+
+def parse_form(body: str) -> dict:
+    out, key = {}, None
+    for line in (body or "").splitlines():
+        m = re.match(r"^###\s+(.+?)\s*$", line)
+        if m:
+            key = re.sub(r"[^a-z0-9]+", "_", m.group(1).lower()).strip("_")
+            out[key] = ""
+        elif key is not None:
+            out[key] = (out[key] + "\n" + line).strip()
+    return {k: ("" if v == "_No response_" else v) for k, v in out.items()}
+
+
+def surface_from_issue(issue: dict, catalog: dict) -> dict:
+    f = parse_form(issue.get("body", ""))
+    sid = (f.get("surface_id") or "").strip()
+    if sid in catalog:
+        return catalog[sid]
+    m = re.search(r"\[delphi:rfp\]\s*([a-z0-9._-]+)", issue.get("title", ""))
+    if m and m.group(1) in catalog:
+        return catalog[m.group(1)]
+    # unknown surface: oracle has no sourced facts, rubric scores from the form only
+    lock = re.search(r"\d", f.get("lock_in", "") or "3")
+    return {"id": sid or f"issue-{issue['number']}", "title": issue["title"], "lane": f.get("lane", "unknown"),
+            "horizon": "H2", "registry_id": None, "sourced": False,
+            "quota": {"metric": f.get("free_quota", ""), "limit": None, "unit": "", "window": "", "reset": f.get("reset_and_zone", ""),
+                      "zone": "", "source": issue["html_url"]},
+            "auth": {"actions_secret": f.get("auth_from_actions") or None, "present": None},
+            "lock_in": int(lock.group(0)) if lock else 3, "fit": 3, "headroom": 3,
+            "failure_modes": [x.strip("-* ") for x in (f.get("failure_modes") or "").splitlines() if x.strip()],
+            "card_required": "card" in (f.get("free_quota", "") + f.get("failure_modes", "")).lower(), "overage_autobill": False}
+
+
+def quantize_roles(roles: dict) -> dict:
+    """Weights enter the input hash quantized (gpr to 0.1, Elo to 25) so a stream of small graded
+    outcomes (tribute-outcome) re-scores the queue only when a weight moves materially."""
+    return {k: {"base": v.get("base"), "gpr": round(float(v.get("gate_pass_rate", 0.5)) * 10) / 10,
+                "elo": int(round(float(v.get("elo", 1500)) / 25.0) * 25)} for k, v in roles.items()}
+
+
+def input_hash(s: dict, roles: dict, registry: dict, readings: dict) -> str:
+    reg = {x["id"]: x for x in registry.get("services", [])}.get(s.get("registry_id") or "", {})
+    blob = json.dumps([s, quantize_roles(roles), reg, readings], sort_keys=True)
+    return hashlib.sha256(blob.encode()).hexdigest()[:12]
+
+
+def comment_md(out: dict, ih: str, reason: str) -> str:
+    r, a = out["result"], out["award"]
+    lines = [LEDGER_MARK, f"### Delphi round result: `{out['surface']}`", "",
+             f"**Award:** {a['decision']}" + (f" at {int(a['traffic_share']*100)}% traffic share" if a.get("traffic_share") else "")
+             + (f", recheck after {a['recheck_after']}" if a.get("recheck_after") else "")
+             + (f". Blocked on {a['blocked_on']}" if a.get("blocked_on") else "") + f". Band {a['band']}.",
+             f"**effective_score** {r['effective_score']} / 25 · converged {r['converged']} after {len(r['rounds'])} round(s) · trigger `{reason}`", "",
+             "| Round | Median | IQR | Effective |", "|---|---|---|---|"]
+    lines += [f"| {h['round']} | {h['median']} | {h['iqr']} | {h['effective']} |" for h in r["rounds"]]
+    o = out["records"]["oracle"]["documented"]
+    lines += ["", f"Oracle: {o['metric']} = {o['limit']} {o['unit']}, reset {o['reset']} {o['zone']} ([source]({o['source']}))", "",
+              "<details><summary>Signed votes + HindSight/ForeSight/3l0.moneyball.v1 records</summary>", "", "```json",
+              json.dumps({"input_hash": ih, "effective_score": r["effective_score"], "final_votes": r["rounds"][-1]["votes"], "award": a,
+                          "records": {k: v for k, v in out["records"].items() if k != "oracle"}}, indent=1), "```", "</details>"]
+    return "\n".join(lines)
+
+
+def last_ledger(gh: GH, number: int) -> dict | None:
+    comments = gh.req("GET", f"/issues/{number}/comments?per_page=100")
+    for c in reversed(comments):
+        if c.get("body", "").startswith(LEDGER_MARK):
+            m = re.search(r"```json\n(.*?)\n```", c["body"], re.S)
+            if m:
+                try:
+                    j = json.loads(m.group(1))
+                except ValueError:
+                    return None
+                if "effective_score" not in j:  # ledgers written before the board existed
+                    e = re.search(r"\*\*effective_score\*\* ([\d.]+)", c["body"])
+                    j["effective_score"] = float(e.group(1)) if e else None
+                return j
+    return None
+
+
+def weights_issue(gh: GH, panel: dict) -> tuple[int | None, dict]:
+    found = gh.req("GET", "/issues?state=open&labels=delphi:weights&per_page=5")
+    if not found:
+        return None, panel["roles"]
+    n = found[0]["number"]
+    for c in reversed(gh.req("GET", f"/issues/{n}/comments?per_page=100")):
+        if c.get("body", "").startswith(WEIGHTS_MARK):
+            m = re.search(r"```json\n(.*?)\n```", c["body"], re.S)
+            if m:
+                return n, json.loads(m.group(1))["roles"]
+    return n, panel["roles"]
+
+
+def load_readings() -> dict:
+    p = os.environ.get("QUOTA_WEIGHTS_PATH", "quota-out/routing-weights.json")
+    try:
+        return load(p).get("multipliers", {})
+    except (OSError, ValueError):
+        return {}
+
+
+def cmd_run(args) -> int:
+    try:
+        return _run(args)
+    except RateLimited as e:
+        # GITHUB_TOKEN budget is shared by every workflow in the repo; defer to the next event/heartbeat.
+        print(f"::warning::delphi deferred on GitHub rate limit: {e}")
+        return 0
+
+
+def _run(args) -> int:
+    repo, token = os.environ["GITHUB_REPOSITORY"], os.environ["GITHUB_TOKEN"]
+    gh = GH(repo, token)
+    panel, registry, readings = load(PANEL), load(REGISTRY), load_readings()
+    catalog = {s["id"]: s for s in load(SURFACES)["surfaces"]}
+    remaining = api_remaining(gh)
+    early = cadence(registry, readings, 1, args.depth, api_remaining=remaining)
+    if early["mode"] == "defer_api":
+        print(f"::warning::delphi deferred: shared GITHUB_TOKEN remaining={remaining} is inside the reserve; next event or heartbeat resumes")
+        return 0
+    have = {l["name"] for l in gh.req("GET", "/labels?per_page=100")}
+    for name, (color, desc) in LABELS.items():
+        if name not in have:
+            gh.req("POST", "/labels", {"name": name, "color": color, "description": desc})
+    _, roles = weights_issue(gh, panel)
+    panel = dict(panel, roles=roles)
+    issues = [i for i in gh.req("GET", "/issues?state=open&labels=delphi:rfp&per_page=100") if "pull_request" not in i]
+    plan = cadence(registry, readings, len(issues), args.depth, api_remaining=remaining)
+    print(f"::notice::delphi cadence mode={plan['mode']} pace={plan['pace']} open_rfps={len(issues)} "
+          f"cap={plan['max_rfps_per_run']} api_remaining={remaining}")
+    if plan["mode"] == "defer" and args.reason not in ("issues", "issue_comment", "workflow_dispatch"):
+        print("::notice::delphi deferred: free quotas near cap; waiting for reset or an explicit event")
+        return 0
+    budget, done, pending = {"llm": int(os.environ.get("DELPHI_LLM_MAX", "30"))}, 0, 0
+    session = f"run-{os.environ.get('GITHUB_RUN_ID', 'local')}"
+    os.environ["DELPHI_REASON"] = args.reason
+    summary, board = [], []
+    for issue in sorted(issues, key=lambda i: i["number"]):
+        s = surface_from_issue(issue, catalog)
+        if done >= plan["max_rfps_per_run"]:
+            pending += 1
+            board.append({"number": issue["number"], "surface": s["id"], "effective": None, "decision": "pending"})
+            continue
+        ih = input_hash(s, roles, registry, readings)
+        prev = last_ledger(gh, issue["number"])
+        due = prev and prev.get("award", {}).get("recheck_after") and prev["award"]["recheck_after"] <= now().strftime("%Y-%m-%dT%H:%MZ")
+        if prev and prev.get("input_hash") == ih and not due:
+            summary.append(f"#{issue['number']} {s['id']}: unchanged")
+            a = prev.get("award", {})
+            board.append({"number": issue["number"], "surface": s["id"], "effective": prev.get("effective_score"),
+                          "decision": a.get("decision", "pending"), "band": a.get("band"), "recheck": a.get("recheck_after")})
+            continue
+        out = score_surface(s, panel, registry, readings, f"#{issue['number']}", session, budget)
+        gh.req("POST", f"/issues/{issue['number']}/comments", {"body": comment_md(out, ih, args.reason)})
+        labels = {l["name"] for l in issue.get("labels", [])} - {"delphi:shadow", "delphi:parked", "delphi:converged", "delphi:needs-access"}
+        labels.add("delphi:" + out["award"]["decision"])
+        if out["result"]["converged"]:
+            labels.add("delphi:converged")
+        if out["award"].get("blocked_on"):
+            labels.add("delphi:needs-access")
+        gh.req("PUT", f"/issues/{issue['number']}/labels", {"labels": sorted(labels)})
+        with open(os.environ.get("DELPHI_OUT", "delphi-out.jsonl"), "a") as f:
+            f.write(json.dumps(out) + "\n")
+        summary.append(f"#{issue['number']} {s['id']}: {out['award']['decision']} eff={out['result']['effective_score']}")
+        a = out["award"]
+        board.append({"number": issue["number"], "surface": s["id"], "effective": out["result"]["effective_score"],
+                      "decision": a["decision"], "band": a.get("band"), "recheck": a.get("recheck_after")})
+        done += 1
+    for line in summary[:9]:
+        print(f"::notice::{line}")
+    if board:
+        radar = radar_candidates(catalog, registry, {r["surface"] for r in board})
+        print(f"::notice::delphi radar uncovered={len(radar)} results board #{update_board(gh, board, radar)}")
+    print(f"::notice::delphi processed={done} pending={pending} api_calls={gh.calls}")
+    if pending and plan["mode"] == "accelerate":
+        gh.req("POST", "/actions/workflows/delphi-gate.yml/dispatches",
+               {"ref": os.environ.get("GITHUB_REF_NAME", "master"), "inputs": {"reason": "delphi-tick", "depth": str(args.depth + 1)}})
+        print(f"::notice::delphi accelerate: chained tick depth={args.depth + 1}")
+    return 0
+
+
+# ---------------------------------------------------------------- graded outcomes (tribute-outcome)
+TRIBUTE_WEIGHTS = {"merged": 1.0, "approved": 0.5, "changes_requested": 0.1, "question_to_us": 0.0,
+                   "claimed_by_other": -0.3, "needs_human_skill": -0.4, "closed_already_assigned": -0.6,
+                   "low_effort_placeholder": -0.8, "hostile_spam_flag": -1.0}
+OUTCOMES_MARK = "<!-- delphi-outcomes v1 -->"
+OUTCOMES_TITLE = "Delphi outcome ledger"
+_REPO_RE = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
+_SURF_RE = re.compile(r"^[a-z0-9][a-z0-9._-]{0,63}$")
+
+
+def parse_signals(raw: str) -> list[dict]:
+    """Accept one delphi_signal object or a list (<= 50). Unknown keys dropped; invalid items skipped."""
+    raw = (raw or "").strip()
+    if not raw or raw == "null":
+        return []
+    data = json.loads(raw)
+    items = data if isinstance(data, list) else [data]
+    out = []
+    for it in items[:50]:
+        if not isinstance(it, dict):
+            continue
+        surf, repo, oc = str(it.get("surface", "")), str(it.get("repo") or ""), str(it.get("outcome", ""))
+        try:
+            w = float(it.get("weight"))
+        except (TypeError, ValueError):
+            w = TRIBUTE_WEIGHTS.get(oc)
+        if w is None or not _SURF_RE.match(surf) or (repo and not _REPO_RE.match(repo)) or not -1.0 <= w <= 1.0:
+            continue
+        out.append({"surface": surf, "repo": repo, "outcome": oc[:40], "weight": round(w, 3)})
+    return out
+
+
+def apply_outcomes(state: dict, signals: list[dict], alpha: float = 0.2, max_repos: int = 200) -> dict:
+    """Surface- and repo-level EWMA of graded weights (-1..+1). Pure; returns the new state."""
+    st = json.loads(json.dumps(state or {"surfaces": {}}))
+    for sg in signals:
+        srf = st["surfaces"].setdefault(sg["surface"], {"n": 0, "sum": 0.0, "ewma": 0.0, "by_outcome": {}, "repos": {}})
+        srf["n"] += 1
+        srf["sum"] = round(srf["sum"] + sg["weight"], 3)
+        srf["ewma"] = round((1 - alpha) * srf["ewma"] + alpha * sg["weight"], 4)
+        srf["by_outcome"][sg["outcome"]] = srf["by_outcome"].get(sg["outcome"], 0) + 1
+        if sg["repo"]:
+            r = srf["repos"].pop(sg["repo"], {"n": 0, "ewma": 0.0})
+            r["n"] += 1
+            r["ewma"] = round((1 - alpha) * r["ewma"] + alpha * sg["weight"], 4)
+            r["last"] = sg["outcome"]
+            srf["repos"][sg["repo"]] = r  # re-insert = most recent last
+            while len(srf["repos"]) > max_repos:
+                srf["repos"].pop(next(iter(srf["repos"])))
+    return st
+
+
+def feedback_graded(roles: dict, final_votes: list[dict], weight: float, panel: dict) -> dict:
+    """Graded flywheel: a role that predicted pass (score >= shadow bar) earns +weight, one that
+    predicted fail earns -weight. |weight| scales the EWMA step; Elo moves k x reward."""
+    a, k, bar = panel["flywheel"]["ewma_alpha"], panel["flywheel"]["elo_k"], panel["award"]["shadow_min"]
+    roles = json.loads(json.dumps(roles))
+    if weight == 0:
+        return roles
+    for v in final_votes:
+        r = roles[v["role"]]
+        reward = (1 if v["score"] >= bar else -1) * weight
+        step = a * abs(weight)
+        r["gate_pass_rate"] = round((1 - step) * r["gate_pass_rate"] + step * (1.0 if reward > 0 else 0.0), 4)
+        r["elo"] = round(r["elo"] + k * reward, 1)
+        r["hits" if reward > 0 else "misses"] += 1
+    return roles
+
+
+def latest_json(gh: GH, number: int, mark: str) -> dict | None:
+    for c in reversed(gh.req("GET", f"/issues/{number}/comments?per_page=100")):
+        if c.get("body", "").startswith(mark):
+            m = re.search(r"```json\n(.*?)\n```", c["body"], re.S)
+            if m:
+                return json.loads(m.group(1))
+    return None
+
+
+def cmd_tribute(args) -> int:
+    try:
+        return _tribute(args)
+    except RateLimited as e:
+        print(f"::warning::delphi tribute-outcome deferred on GitHub rate limit: {e}")
+        return 0
+
+
+def _tribute(args) -> int:
+    sigs = parse_signals(args.signal_json)
+    if not sigs:
+        print("::notice::delphi tribute-outcome: no valid signals")
+        return 0
+    gh = GH(os.environ["GITHUB_REPOSITORY"], os.environ["GITHUB_TOKEN"])
+    panel = load(PANEL)
+    found = gh.req("GET", "/issues?state=open&labels=delphi:outcomes&per_page=5")
+    n = found[0]["number"] if found else gh.req("POST", "/issues", {
+        "title": OUTCOMES_TITLE, "labels": ["delphi:outcomes"],
+        "body": "Append-only graded outcomes (tribute-outcome and future lanes). docs/ops/DELPHI-LANE-CONTRACT.md"})["number"]
+    state = apply_outcomes(latest_json(gh, n, OUTCOMES_MARK) or {"surfaces": {}}, sigs)
+    gh.req("POST", f"/issues/{n}/comments", {"body": f"{OUTCOMES_MARK}\n{len(sigs)} signal(s): "
+           + ", ".join(f"`{x['surface']}` {x['outcome']} {x['weight']:+}" for x in sigs[:10])
+           + f"\n```json\n{json.dumps(state, indent=1)}\n```"})
+    # graded role feedback, only against a surface that has a scored RFP (never inferred)
+    catalog = {x["id"]: x for x in load(SURFACES)["surfaces"]}
+    rfps = {surface_from_issue(i, catalog)["id"]: i["number"]
+            for i in gh.req("GET", "/issues?state=open&labels=delphi:rfp&per_page=100") if "pull_request" not in i}
+    wn, roles = weights_issue(gh, panel)
+    new, used = roles, []
+    for surf in sorted({x["surface"] for x in sigs}):
+        num = rfps.get(surf)
+        prev = last_ledger(gh, num) if num else None
+        if not prev:
+            print(f"::notice::delphi tribute-outcome: no scored RFP for {surf}; outcomes recorded, panel weights unchanged")
+            continue
+        for x in (y for y in sigs if y["surface"] == surf):
+            new = feedback_graded(new, prev["final_votes"], x["weight"], panel)
+        used.append(f"#{num}")
+    if used and new != roles:
+        if wn is None:
+            wn = gh.req("POST", "/issues", {"title": WEIGHTS_TITLE, "labels": ["delphi:weights"],
+                                            "body": "Append-only Delphi role weights (flywheel). docs/ops/DELPHI-WEIGHTING.md"})["number"]
+        gh.req("POST", f"/issues/{wn}/comments", {"body": f"{WEIGHTS_MARK}\nGraded tribute-outcome feedback via {', '.join(used)} "
+               f"({len(sigs)} signal(s))\n```json\n{json.dumps({'roles': new}, indent=1)}\n```"})
+    print(f"::notice::delphi tribute-outcome signals={len(sigs)} outcomes_issue=#{n} reweighted={bool(used)}")
+    return 0
+
+
+def cmd_feedback(args) -> int:
+    """Flywheel: needs GITHUB_TOKEN; reads the RFP's last ledger, re-weights roles, appends to the weights ledger issue."""
+    gh = GH(os.environ["GITHUB_REPOSITORY"], os.environ["GITHUB_TOKEN"])
+    panel = load(PANEL)
+    n, roles = weights_issue(gh, panel)
+    prev = last_ledger(gh, args.rfp)
+    if not prev:
+        print("::error::no delphi ledger on that issue")
+        return 1
+    new = feedback(roles, prev["final_votes"], args.outcome, panel)
+    if n is None:
+        n = gh.req("POST", "/issues", {"title": WEIGHTS_TITLE, "labels": ["delphi:weights"],
+                                       "body": "Append-only Delphi role weights (flywheel). docs/ops/DELPHI-WEIGHTING.md"})["number"]
+    body = f"{WEIGHTS_MARK}\nFeedback from #{args.rfp}: outcome **{args.outcome}**\n```json\n{json.dumps({'roles': new}, indent=1)}\n```"
+    gh.req("POST", f"/issues/{n}/comments", {"body": body})
+    if args.outcome == "confirmed":
+        gh.req("POST", f"/issues/{args.rfp}/labels", {"labels": ["delphi:promoted"]})
+    print(f"::notice::delphi feedback rfp=#{args.rfp} outcome={args.outcome} weights_issue=#{n}")
+    return 0
+
+
+def cmd_score(args) -> int:
+    panel, registry = load(PANEL), load(REGISTRY)
+    catalog = {s["id"]: s for s in load(SURFACES)["surfaces"]}
+    ids = args.surface or list(catalog)
+    budget = {"llm": int(os.environ.get("DELPHI_LLM_MAX", "30"))}
+    outs = [score_surface(catalog[i], panel, registry, load_readings(), args.rfp or i, args.session, budget) for i in ids]
+    json.dump(outs, sys.stdout, indent=1)
+    return 0
+
+
+def main(argv=None) -> int:
+    p = argparse.ArgumentParser(prog="delphi-gate")
+    sub = p.add_subparsers(dest="cmd", required=True)
+    s = sub.add_parser("score"); s.add_argument("--surface", action="append"); s.add_argument("--rfp"); s.add_argument("--session", default="local")
+    r = sub.add_parser("run"); r.add_argument("--reason", default="manual"); r.add_argument("--depth", type=int, default=0)
+    f = sub.add_parser("feedback"); f.add_argument("--rfp", type=int, required=True); f.add_argument("--outcome", choices=["confirmed", "miss"], required=True)
+    t = sub.add_parser("tribute"); t.add_argument("--signal-json", required=True)
+    a = p.parse_args(argv)
+    return {"tribute": cmd_tribute, "score": cmd_score, "run": cmd_run, "feedback": cmd_feedback}[a.cmd](a)
+
+
+if __name__ == "__main__":
+    sys.exit(main())

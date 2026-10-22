@@ -14,6 +14,7 @@ from dependency_phase_engine import (  # noqa: E402
     compute_waves,
     evaluate_plan,
     render_mermaid,
+    topological_order,
     validate_plan,
 )
 
@@ -80,6 +81,49 @@ def completed_snapshot() -> dict:
 
 
 class DependencyPhaseEngineTests(unittest.TestCase):
+    def test_topological_order_respects_prerequisites_and_is_repeatable(self) -> None:
+        phases = [
+            {"phase_id": "A", "depends_on": []},
+            {"phase_id": "B", "depends_on": ["A"]},
+            {"phase_id": "C", "depends_on": ["A"]},
+            {"phase_id": "D", "depends_on": ["B", "C"]},
+            {"phase_id": "E", "depends_on": []},
+            {"phase_id": "F", "depends_on": ["E"]},
+        ]
+        order = topological_order(phases)
+        self.assertEqual(order, topological_order(deepcopy(phases)))
+        self.assertEqual(set("ABCDEF"), set(order))
+        positions = {phase_id: index for index, phase_id in enumerate(order)}
+        for phase in phases:
+            for prerequisite in phase["depends_on"]:
+                self.assertLess(positions[prerequisite], positions[phase["phase_id"]])
+
+    def test_topological_order_reports_cycle_residual_nodes(self) -> None:
+        phases = [
+            {"phase_id": "A", "depends_on": ["B"]},
+            {"phase_id": "B", "depends_on": ["A"]},
+            {"phase_id": "C", "depends_on": ["B"]},
+            {"phase_id": "D", "depends_on": []},
+        ]
+        with self.assertRaisesRegex(PlanValidationError, "dependency cycle detected: A, B, C"):
+            topological_order(phases)
+
+    def test_unknown_dependency_fails_closed(self) -> None:
+        plan = plan_fixture()
+        plan["phases"][1]["depends_on"] = ["DPH-999"]
+        errors = validate_plan(plan)
+        self.assertTrue(any("depends on unknown phase DPH-999" in error for error in errors))
+        with self.assertRaises(PlanValidationError):
+            evaluate_plan(plan, {})
+
+    def test_duplicate_dependency_fails_closed(self) -> None:
+        plan = plan_fixture()
+        plan["phases"][1]["depends_on"] = ["DPH-000", "DPH-000"]
+        errors = validate_plan(plan)
+        self.assertTrue(any("depends_on contains duplicates" in error for error in errors))
+        with self.assertRaises(PlanValidationError):
+            evaluate_plan(plan, {})
+
     def test_compute_deterministic_waves(self) -> None:
         plan = plan_fixture()
         plan["phases"].append({
@@ -119,6 +163,46 @@ class DependencyPhaseEngineTests(unittest.TestCase):
         report = evaluate_plan(plan_fixture(), snapshot)
         states = {entry["phase_id"]: entry["state"] for entry in report["evaluations"]}
         self.assertEqual("ready", states["DPH-100"])
+
+    def test_non_boolean_mapping_approvals_fail_closed(self) -> None:
+        invalid_values = (False, None, "false", "true", "pending", "", 0, 1, 1.0, [], [True], {})
+        for value in invalid_values:
+            for approval in (value, {"approved": value}):
+                with self.subTest(approval=approval):
+                    snapshot = completed_snapshot()
+                    snapshot["approvals"] = {"DPH-100": approval}
+                    report = evaluate_plan(plan_fixture(), snapshot)
+                    entry = next(entry for entry in report["evaluations"] if entry["phase_id"] == "DPH-100")
+                    self.assertEqual("blocked", entry["state"])
+                    self.assertEqual("human approval evidence is required", entry["reason"])
+
+    def test_explicit_approval_forms_remain_compatible(self) -> None:
+        for approvals in (
+            {"DPH-100": True},
+            {"DPH-100": {"approved": True, "by": "operator", "evidence": "review"}},
+            ["DPH-100"],
+        ):
+            with self.subTest(approvals=approvals):
+                snapshot = completed_snapshot()
+                snapshot["approvals"] = approvals
+                report = evaluate_plan(plan_fixture(), snapshot)
+                entry = next(entry for entry in report["evaluations"] if entry["phase_id"] == "DPH-100")
+                self.assertEqual("ready", entry["state"])
+
+    def test_non_boolean_approval_cannot_authorize_completion(self) -> None:
+        snapshot = completed_snapshot()
+        snapshot["project_items"][1]["status"] = "Done"
+        snapshot["pull_requests"].append({
+            "number": 11,
+            "title": "feat: DPH-100 dependent work",
+            "state": "closed",
+            "merged": True,
+            "checks": {"repo-gate": "SUCCESS", "termux-smoke": "SUCCESS"},
+        })
+        snapshot["approvals"] = {"DPH-100": {"approved": "false"}}
+        report = evaluate_plan(plan_fixture(), snapshot)
+        entry = next(entry for entry in report["evaluations"] if entry["phase_id"] == "DPH-100")
+        self.assertEqual("blocked", entry["state"])
 
     def test_active_claim_prevents_duplicate_dispatch(self) -> None:
         plan = plan_fixture()

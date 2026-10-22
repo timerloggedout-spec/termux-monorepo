@@ -46,19 +46,31 @@ jobs:
           git fetch --no-tags origin "+refs/heads/${BASE_REF}:refs/remotes/origin/${BASE_REF}"
           echo "ref=origin/${BASE_REF}" >> "$GITHUB_OUTPUT"
 
+      - name: Index-only scope regressions
+        run: python3 -B -m unittest discover -s tests -p 'test_repo_gate_index_scope.py' -v
+
       - name: Run gate
         run: python3 scripts/ci/repo_gate.py --base "${{ steps.base.outputs.ref }}"
 
       - name: workflow_run contract
         run: python3 scripts/ci/workflow_run_contract.py
 
+      - name: Native orchestration contracts
+        run: |
+          python3 scripts/ci/orchestration_contract_validator.py
+          python3 -m unittest discover -s tests -p 'test_orchestration_contract_validator.py' -v
+          python3 -m unittest discover -s tests -p 'test_dag_execution.py' -v
+
       - name: Briefing and source provenance contracts
         run: |
           python3 -m unittest discover -s tests -p 'test_briefing_contract_validator.py' -v
           python3 -m unittest discover -s tests -p 'test_curate_briefing_sources.py' -v
           python3 -m unittest discover -s tests -p 'test_emit_agent_throughput.py' -v
+          python3 -m unittest discover -s tests -p 'test_procurement_edge_contracts.py' -v
+          python3 -m unittest discover -s tests -p 'test_vercel_ignore_commands.py' -v
           python3 scripts/ci/briefing_contract_validator.py --briefing data/briefing/briefings/2026-09-30.json --registry config/foresight_digest_sources.json
           python3 scripts/ci/curate_briefing_sources.py --output source-citations.jsonl
+          python3 scripts/ci/procurement_edge_contract_validator.py
 
       - name: Upload curated source citation ledger
         if: always()

@@ -36,7 +36,10 @@ DOCUMENTED_TRIAL = {
     ("felo", "ox-alpha"): "free_trial",
 }
 ZERO_PRICE_IDS = frozenset({"stealth/ox-alpha", "ox-alpha"})
+ZERO_PRICING = frozenset({"0", "0.0", 0, 0.0})
 PREFER_KEYWORDS = ("coder", "code", "qwen", "deepseek", "ox-alpha", "llama", "gemma")
+# Precomputed (keyword, score) pairs to avoid per-evaluation index math in peer_score
+PREFER_KEYWORD_SCORES = tuple((k, 100 - i * 5) for i, k in enumerate(PREFER_KEYWORDS))
 REVIEW_KEYWORDS = ("coder", "code", "deepseek", "r1")
 CODE_ROLES = frozenset({"review", "code", "implement"})
 PROVIDER_SCORE = {"felo": 12, "openrouter": 10, "omni": 8}
@@ -90,8 +93,13 @@ def _is_free(model_id: str, pricing: dict | None, access: str | None = None) -> 
         return True
     if not pricing:
         return model_id in ZERO_PRICE_IDS
+    prompt = pricing.get("prompt")
+    completion = pricing.get("completion")
+    # Fast-path string/numeric zero checks before float conversion
+    if prompt in ZERO_PRICING and completion in ZERO_PRICING:
+        return True
     try:
-        return float(pricing.get("prompt", 1)) == 0.0 and float(pricing.get("completion", 1)) == 0.0
+        return float(prompt if prompt is not None else 1) == 0.0 and float(completion if completion is not None else 1) == 0.0
     except (TypeError, ValueError):
         return False
 
@@ -120,9 +128,9 @@ def _row(provider: str, mid: str, free: bool, access: str | None, context_length
 def peer_score(role: str, row: dict[str, Any]) -> int:
     mid = (row.get("id") or "").lower()
     s = 0
-    for i, k in enumerate(PREFER_KEYWORDS):
+    for k, score in PREFER_KEYWORD_SCORES:
         if k in mid:
-            s += 100 - i * 5
+            s += score
     if role in CODE_ROLES and any(k in mid for k in REVIEW_KEYWORDS):
         s += 30
     s += PROVIDER_SCORE.get(row.get("provider") or "", 0)

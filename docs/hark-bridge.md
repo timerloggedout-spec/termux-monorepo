@@ -53,7 +53,7 @@ A human can also queue a job by hand: open an issue with the YAML body above and
 
 ### Project slugs
 
-`hark-bridge` (default, small jobs) · `monorepo-ops` (Actions health / fix PRs) · `deploy-quota` (Vercel, Render) · `bot-triage` (bot PRs and issues) · `device` (BLU View 5 / Termux provisioning) · `access-resilience` (credentials and access paths) · `platform201-queue` (Platform201 planning) · `main`.
+`hark-bridge` (default, small jobs) · `monorepo-ops` (Actions health / fix PRs) · `deploy-quota` (Vercel, Render) · `bot-triage` (bot PRs and issues) · `device` (BLU View 5 / Termux provisioning) · `access-resilience` (credentials and access paths) · `platform201-queue` (Platform201 planning) · `delphi` (Delphi Oracle RFP gate; docs/ops/DELPHI-LANE-CONTRACT.md) · `main`.
 
 ## Calling it from a workflow
 

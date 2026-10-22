@@ -10,15 +10,26 @@ response_data = None
 response_event = threading.Event()
 token_file = Path.home() / ".multi-ai-tokens" / "mistral_token.txt"
 
-def _write_token_securely(token: str) -> None:
-    if token_file.is_symlink() or (token_file.parent.exists() and token_file.parent.is_symlink()):
-        raise ValueError("Symlink token path rejected for security")
-    token_file.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
-    if os.name != "nt":
-        os.chmod(token_file.parent, 0o700)
-    fd = os.open(token_file, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+def _write_token_securely(token: str, target_path: Path = None):
+    p = target_path or token_file
+    if p.parent.is_symlink():
+        raise ValueError(f"Symlink directory rejected for security: {p.parent}")
+    os.makedirs(p.parent, exist_ok=True)
+    if not p.parent.is_symlink():
+        try:
+            os.chmod(p.parent, 0o700)
+        except Exception:
+            pass
+    if p.is_symlink():
+        raise ValueError(f"Symlink token path rejected for security: {p}")
+    fd = os.open(p, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
     with os.fdopen(fd, "w", encoding="utf-8") as f:
         f.write(token)
+    if not p.is_symlink():
+        try:
+            os.chmod(p, 0o600)
+        except Exception:
+            pass
 
 class BridgeHandler(BaseHTTPRequestHandler):
     def do_POST(self):
@@ -37,6 +48,10 @@ class BridgeHandler(BaseHTTPRequestHandler):
                 self.send_response(400)
                 self.end_headers()
                 self.wfile.write(str(e).encode())
+            except Exception as e:
+                self.send_response(500)
+                self.end_headers()
+                self.wfile.write(f"Error: {e}".encode())
         elif data.get("type") == "prompt":
             prompt_queue = data["text"]
             response_event.clear()

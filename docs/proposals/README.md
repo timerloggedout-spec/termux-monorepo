@@ -16,6 +16,7 @@
 | chatgpt-droidapp | P2 | posted | [active/chatgpt-droidapp/](active/chatgpt-droidapp/) |
 | agent-contributor-provenance | P1 | in_review | [active/agent-contributor-provenance/](active/agent-contributor-provenance/) |
 | notation-sets-evolution | P1 | posted | [active/notation-sets/](active/notation-sets/) |
+| context-relationship-graph | P1 | executing | [active/context-relationship-graph/](active/context-relationship-graph/) — includes proposed CRG-15 Historical Corpus Explorer |
 
 ## Large sources / debate branches
 

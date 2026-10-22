@@ -1,0 +1,53 @@
+# Reusable emitter for the Delphi lane contract (docs/ops/DELPHI-LANE-CONTRACT.md).
+# Sibling workflows call this to wake the Delphi gate on an event without
+# needing a PAT: workflow_dispatch from GITHUB_TOKEN is allowed to start runs.
+#   jobs:
+#     wake-delphi:
+#       uses: ./.github/workflows/delphi-signal.yml
+#       permissions: { actions: write }
+#       with: { event: foresight-radar-hit }
+# Additive file. No secrets, no model calls.
+name: delphi-signal
+
+on:
+  workflow_call:
+    inputs:
+      event:   { description: "quota-registry-changed | foresight-radar-hit | hindsight-forecast-miss | delphi-feedback | delphi-rfp | tribute-outcome", required: true, type: string }
+      rfp:     { description: "RFP issue number (feedback / forecast miss)", required: false, default: "", type: string }
+      outcome: { description: "confirmed | miss (delphi-feedback)", required: false, default: "", type: string }
+      signal:  { description: "tribute-outcome: one delphi_signal object or a JSON array (<=50) of {surface, repo, outcome, weight -1..+1}", required: false, default: "", type: string }
+
+permissions:
+  actions: write
+
+jobs:
+  signal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    env:
+      GH_TOKEN: ${{ github.token }}
+      EVENT: ${{ inputs.event }}
+      RFP: ${{ inputs.rfp }}
+      OUTCOME: ${{ inputs.outcome }}
+      SIGNAL: ${{ inputs.signal }}
+    steps:
+      - name: Validate and dispatch delphi-gate
+        run: |
+          set -euo pipefail
+          case "$EVENT" in quota-registry-changed|foresight-radar-hit|hindsight-forecast-miss|delphi-feedback|delphi-rfp|tribute-outcome) ;; *) echo "::error::unknown delphi event"; exit 1;; esac
+          case "$RFP" in ''|*[!0-9]*) RFP="";; esac
+          [ "$EVENT" = hindsight-forecast-miss ] && OUTCOME=miss
+          case "$OUTCOME" in confirmed|miss) ;; *) OUTCOME="";; esac
+          args=(-f reason="$EVENT")
+          if [ -n "$RFP" ] && [ -n "$OUTCOME" ]; then args+=(-f feedback_rfp="$RFP" -f outcome="$OUTCOME"); fi
+          if [ "$EVENT" = tribute-outcome ]; then
+            sig="$(printf '%s' "$SIGNAL" | jq -ce 'if type=="array" then . else [.] end
+              | select(length>0 and length<=50)
+              | select(all(.[]; type=="object" and (.surface|type=="string" and test("^[a-z0-9][a-z0-9._-]{0,63}$"))
+                  and ((.repo//"")|type=="string" and test("^([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)?$"))
+                  and (.weight|type=="number" and .>=-1 and .<=1)))
+              | map({surface, repo, outcome, weight})')" || { echo "::error::invalid tribute-outcome signal"; exit 1; }
+            args+=(-f signal_json="$sig")
+          fi
+          gh workflow run delphi-gate.yml -R "$GITHUB_REPOSITORY" --ref "${GITHUB_REF_NAME:-master}" "${args[@]}"
+          echo "::notice::delphi-signal event=$EVENT rfp=${RFP:-none} outcome=${OUTCOME:-none}"

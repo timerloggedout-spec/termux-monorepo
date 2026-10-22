@@ -17,6 +17,7 @@ on:
       - 'docs/ops/diagrams/**'
       - 'docs/proposals/active/actions-refinements/**'
       - 'docs/proposals/active/rate-limit-rotation/**'
+      - 'ops/n8n/**'
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
@@ -30,6 +31,7 @@ on:
       - 'docs/ops/diagrams/**'
       - 'docs/proposals/active/actions-refinements/**'
       - 'docs/proposals/active/rate-limit-rotation/**'
+      - 'ops/n8n/**'
 
 permissions:
   contents: read

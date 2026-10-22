@@ -55,22 +55,27 @@ class CentralMapper:
         self.state_file.write_text(json.dumps(self.state, indent=2))
 
     def check_ast_grep(self):
-        """Check if ast-grep is available, install if possible."""
-        if not shutil.which('ast-grep') and not shutil.which('sg'):
-            return False
-        try:
-            res = subprocess.run(['sg', '--version'], capture_output=True, text=True, timeout=5)
-            if res.returncode == 0 and ('ast-grep' in res.stdout or 'sg' in res.stdout):
-                return True
-            if shutil.which('ast-grep'):
-                return True
-            return False
-        except (FileNotFoundError, subprocess.CalledProcessError, subprocess.TimeoutExpired):
-            return bool(shutil.which('ast-grep'))
+        """Check if ast-grep is available and set self.ast_bin to valid executable."""
+        self.ast_bin = None
+        ast_grep_path = shutil.which('ast-grep')
+        if ast_grep_path:
+            self.ast_bin = ast_grep_path
+            return True
+        sg_path = shutil.which('sg')
+        if sg_path:
+            try:
+                res = subprocess.run([sg_path, '--version'], capture_output=True, text=True, timeout=5)
+                if res.returncode == 0 and 'ast-grep' in res.stdout:
+                    self.ast_bin = sg_path
+                    return True
+            except Exception:
+                pass
+        return False
 
     def get_ast_sig(self, filepath: Path, lang: str) -> dict:
         """Use ast-grep to extract a compact signature: funcs, classes, imports."""
-        if not hasattr(self, 'ast_available') or not self.ast_available:
+        ast_bin = getattr(self, 'ast_bin', None)
+        if not ast_bin or not getattr(self, 'ast_available', False):
             return {}
         try:
             # Extract function/method names (pattern depends on language)
@@ -83,7 +88,7 @@ class CentralMapper:
             if not pattern:
                 return {}
             # Run ast-grep
-            cmd = ['sg', '--pattern', pattern, '--lang', lang, '--json', str(filepath)]
+            cmd = [ast_bin, '--pattern', pattern, '--lang', lang, '--json', str(filepath)]
             res = subprocess.run(cmd, capture_output=True, text=True, timeout=10)
             if res.returncode == 0 and res.stdout.strip():
                 matches = json.loads(res.stdout)

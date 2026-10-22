@@ -41,10 +41,15 @@ async def analyze_yobit(client: 'AsyncYobitAPI', base: str, batch_size: int, liv
         dist[base.lower()] = 0
         pred = {coin: None for coin in coins}
         for _ in range(len(coins) - 1):
+            updated = False
             for u, v, w in graph:
-                if dist[u] + w < dist[v]:
-                    dist[v] = dist[u] + w
+                dist_u = dist[u]
+                if dist_u != float('inf') and dist_u + w < dist[v]:
+                    dist[v] = dist_u + w
                     pred[v] = u
+                    updated = True
+            if not updated:
+                break
         opps = []
         for u, v, w in graph:
             if dist[u] + w < dist[v]:
@@ -165,10 +170,15 @@ async def analyze_uniswap(client: 'AsyncUniswapAPI', base: str, batch_size: int,
         dist[base.lower()] = 0
         pred = {coin: None for coin in coins}
         for _ in range(len(coins) - 1):
+            updated = False
             for u, v, w in graph:
-                if dist[u] + w < dist[v]:
-                    dist[v] = dist[u] + w
+                dist_u = dist[u]
+                if dist_u != float('inf') and dist_u + w < dist[v]:
+                    dist[v] = dist_u + w
                     pred[v] = u
+                    updated = True
+            if not updated:
+                break
         opps = []
         for u, v, w in graph:
             if dist[u] + w < dist[v]:

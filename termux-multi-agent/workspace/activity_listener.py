@@ -76,9 +76,12 @@ class DeepSeekBridge:
         
         # 🏗️ Self‑building scaffold
         scaffold = PIPELINE_DIR / 'bridge_scaffold.py'
+        if scaffold.is_symlink():
+            raise ValueError(f"Symlink scaffold path rejected: {scaffold}")
         if not scaffold.exists():
             scaffold.write_text(self._generate_scaffold())
-            scaffold.chmod(0o755)
+            if not scaffold.is_symlink():
+                scaffold.chmod(0o755)
     
     def _generate_scaffold(self) -> str:
         """Generate the self‑building pipeline scaffold."""

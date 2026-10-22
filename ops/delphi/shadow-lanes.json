@@ -1,0 +1,16 @@
+{
+  "schema": "delphi.shadow-lanes.v1",
+  "doc": "docs/ops/DELPHI-LANE-CONTRACT.md#shadow-outcomes",
+  "rules": [
+    "Maps a shadow-awarded RFP to the workflows whose real runs exercise that surface on master.",
+    "confirmed: the newest promote_after_confirmed_runs (3) success/failure conclusions are all success, the RFP is labeled delphi:shadow and not yet delphi:promoted. Sent once.",
+    "miss: the newest conclusion is failure and the one before it was success (a transition), on a delphi:shadow RFP. Sent once per transition.",
+    "Skipped and cancelled runs are ignored. An empty workflows list means the shadow lane is not wired yet; nothing is ever inferred."
+  ],
+  "lanes": {
+    "1424": {"surface": "github.native_ledger", "workflows": ["delphi-gate"],
+             "why": "delphi-gate's own signed ledger comments, labels and board edits are the GitHub-native ledger running for real; a failed run (e.g. the 2026-10-20 shared-token 403) is that surface's documented failure mode"},
+    "1423": {"surface": "turso.free", "workflows": [],
+             "why": "no Turso-backed lane exists yet; wiring one needs a TURSO_AUTH_TOKEN repo secret (user approval, Access lane)"}
+  }
+}

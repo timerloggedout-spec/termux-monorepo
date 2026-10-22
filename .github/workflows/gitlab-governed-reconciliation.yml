@@ -1,0 +1,184 @@
+name: GitLab governed reconciliation
+
+# One-way admission lane: compare canonical GitHub master with a selected
+# GitLab branch, and propose GitLab-origin changes through a normal GitHub PR.
+# Never force-push, reset master, push to GitLab, or auto-merge.
+on:
+  workflow_dispatch:
+    inputs:
+      gitlab_ref:
+        description: GitLab branch to compare with canonical GitHub master
+        required: true
+        default: master
+        type: string
+  schedule:
+    - cron: '23 */6 * * *'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: gitlab-governed-reconciliation
+  cancel-in-progress: false
+
+env:
+  GITLAB_REMOTE: https://gitlab.com/a-group2180532/termux-monorepo.git
+  GITLAB_REF: ${{ inputs.gitlab_ref || 'master' }}
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout canonical GitHub repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: master
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Validate inputs and fetch canonical refs
+        id: refs
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "${GITLAB_TOKEN:-}" ]]; then
+            echo "::error::GITLAB_TOKEN is required; refusing an unauthenticated reconciliation."
+            exit 1
+          fi
+          if ! git check-ref-format "refs/heads/$GITLAB_REF"; then
+            echo "::error::Invalid GitLab branch name."
+            exit 1
+          fi
+          if [[ "$GITLAB_REF" == -* || "$GITLAB_REF" == *".."* ]]; then
+            echo "::error::Unsafe GitLab branch name."
+            exit 1
+          fi
+
+          git fetch --no-tags origin master
+          auth="$(printf 'oauth2:%s' "$GITLAB_TOKEN" | base64 -w 0)"
+          git -c http.extraheader="Authorization: Basic $auth" fetch --no-tags "$GITLAB_REMOTE" \
+            "+refs/heads/$GITLAB_REF:refs/remotes/gitlab/$GITLAB_REF"
+
+          gh_sha="$(git rev-parse refs/remotes/origin/master)"
+          gl_sha="$(git rev-parse "refs/remotes/gitlab/$GITLAB_REF")"
+          echo "github_sha=$gh_sha" >> "$GITHUB_OUTPUT"
+          echo "gitlab_sha=$gl_sha" >> "$GITHUB_OUTPUT"
+          echo "GitHub master: $gh_sha"
+          echo "GitLab $GITLAB_REF: $gl_sha"
+
+      - name: Classify canonical synchronization pair
+        id: classify
+        env:
+          GH_SHA: ${{ steps.refs.outputs.github_sha }}
+          GL_SHA: ${{ steps.refs.outputs.gitlab_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "$GH_SHA" == "$GL_SHA" ]]; then
+            state=aligned
+          elif git merge-base --is-ancestor "$GL_SHA" "$GH_SHA"; then
+            state=gitlab-behind
+          elif git merge-base --is-ancestor "$GH_SHA" "$GL_SHA"; then
+            state=gitlab-ahead
+          else
+            state=diverged
+          fi
+          echo "state=$state" >> "$GITHUB_OUTPUT"
+          echo "Synchronization state: $state"
+          git log --oneline --left-right "$GH_SHA...$GL_SHA" | sed -n '1,80p'
+
+      - name: Record no-op state
+        if: steps.classify.outputs.state == 'aligned' || steps.classify.outputs.state == 'gitlab-behind'
+        env:
+          STATE: ${{ steps.classify.outputs.state }}
+          GH_SHA: ${{ steps.refs.outputs.github_sha }}
+          GL_SHA: ${{ steps.refs.outputs.gitlab_sha }}
+        run: |
+          {
+            echo "### GitLab governed reconciliation"
+            echo
+            printf '%s\n' "- State: \`$STATE\`"
+            printf '%s\n' "- GitHub master: \`$GH_SHA\`"
+            printf '%s\n' "- GitLab \`$GITLAB_REF\`: \`$GL_SHA\`"
+            echo "- Action: no reconciliation PR required."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Prepare review branch
+        if: steps.classify.outputs.state == 'gitlab-ahead' || steps.classify.outputs.state == 'diverged'
+        id: branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_SHA: ${{ steps.refs.outputs.github_sha }}
+          GL_SHA: ${{ steps.refs.outputs.gitlab_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          branch="sync/gitlab/${GH_SHA:0:12}-${GL_SHA:0:12}"
+          echo "name=$branch" >> "$GITHUB_OUTPUT"
+
+          if git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then
+            git fetch origin "+refs/heads/$branch:refs/remotes/origin/$branch"
+            if ! git merge-base --is-ancestor "$GH_SHA" "origin/$branch" ||
+               ! git merge-base --is-ancestor "$GL_SHA" "origin/$branch"; then
+              echo "::error::Existing branch does not prove the expected GitHub/GitLab source pair; refusing to reuse it."
+              exit 1
+            fi
+            echo "Reusing verified branch $branch"
+          else
+            git checkout -b "$branch" "$GH_SHA"
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            if ! git merge --no-ff --no-edit "$GL_SHA"; then
+              git merge --abort || true
+              echo "::error::Git merge failed (conflict or other error). Reconciliation stopped for manual review; no branch or PR was published."
+              exit 1
+            fi
+            github_auth="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w 0)"
+            git -c http.extraheader="Authorization: Basic $github_auth" push origin "HEAD:refs/heads/$branch"
+          fi
+
+      - name: Open or reuse review PR
+        if: steps.classify.outputs.state == 'gitlab-ahead' || steps.classify.outputs.state == 'diverged'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATE: ${{ steps.classify.outputs.state }}
+          BRANCH: ${{ steps.branch.outputs.name }}
+          GH_SHA: ${{ steps.refs.outputs.github_sha }}
+          GL_SHA: ${{ steps.refs.outputs.gitlab_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          count="$(gh pr list --base master --head "$BRANCH" --state open --json number --jq 'length')"
+          if [[ "$count" == "0" ]]; then
+            gh pr create \
+              --base master \
+              --head "$BRANCH" \
+              --title "sync(gitlab): reconcile $STATE ${GL_SHA:0:12}" \
+              --body "$(cat <<EOF
+          ## Governed GitLab reconciliation
+
+          - **Relationship:** $STATE
+          - **GitHub master baseline:** $GH_SHA
+          - **GitLab ref:** $GITLAB_REF
+          - **GitLab source SHA:** $GL_SHA
+
+          This PR is generated from the canonical GitHub-master/GitLab-ref pair. It does not force-push, write to GitLab, bypass checks, or auto-merge. Review and merge through the normal GitHub promotion path.
+
+          If the merge required conflict resolution, this automation stops and requires a human-created resolution branch.
+          EOF
+          )"
+          else
+            echo "An open reconciliation PR already exists for $BRANCH."
+          fi
+          {
+            echo "### GitLab governed reconciliation"
+            echo
+            printf '%s\n' "- State: \`$STATE\`"
+            printf '%s\n' "- GitHub master: \`$GH_SHA\`"
+            printf '%s\n' "- GitLab \`$GITLAB_REF\`: \`$GL_SHA\`"
+            printf '%s\n' "- Review branch: \`$BRANCH\`"
+          } >> "$GITHUB_STEP_SUMMARY"

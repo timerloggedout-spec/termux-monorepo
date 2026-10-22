@@ -1,0 +1,490 @@
+================================================================================
+ QUOTA  termux-monorepo  (64 services)
+ Snapshot generated (not observation time): 2026-10-20T23:05:00Z
+ Source: apps/help-wanted-dashboard/data/quota.json + ops/quota/registry.json
+ Limits are documented entitlements, not balances.
+ Private balances are hidden; unknown is not healthy or admitted.
+================================================================================
+
+ ALERTS
+--------------------------------------------------------------------------------
+  No services are reporting a problem state.
+
+ ALL SERVICES
+--------------------------------------------------------------------------------
+ CellCog/Polsia/Manus (1)
+  partners.credits
+    status: No live reading
+    limit (documented): n/a one-time credits
+    metric: referral/bonus credits (docs/PARTNERS.md) | window: one-time |
+    reset: none
+    No live reading (live source: none)
+--------------------------------------------------------------------------------
+ aws (4)
+  aws.account_credits
+    status: No live reading
+    limit (documented): 200 USD
+    metric: new-account credits (post-2025-07-15 plan) | window: one-time (6
+    months) | reset: 6 months from signup or credit exhaustion
+    No live reading (live source: none)
+  aws.dynamodb_storage
+    status: No live reading
+    limit (documented): 25 GB
+    metric: DynamoDB storage (Always Free) | window: point-in-time | reset: n/a
+    No live reading (live source: none)
+  aws.lambda_compute
+    status: No live reading
+    limit (documented): 400000 GB-seconds/month
+    metric: Lambda compute (Always Free) | window: monthly | reset: calendar
+    month
+    No live reading (live source: none)
+  aws.lambda_requests
+    status: No live reading
+    limit (documented): 1000000 requests/month
+    metric: Lambda requests (Always Free) | window: monthly | reset: calendar
+    month
+    No live reading (live source: none)
+--------------------------------------------------------------------------------
+ azure (2)
+  azure.account_credit
+    status: No live reading
+    limit (documented): 200 USD
+    metric: free-account credit | window: one-time (30 days) | reset: 30 days
+    from signup
+    No live reading (live source: none)
+  azure.functions_executions
+    status: No live reading
+    limit (documented): 1000000 executions/month
+    metric: Azure Functions executions (always free) | window: monthly | reset:
+    calendar month
+    No live reading (live source: none)
+--------------------------------------------------------------------------------
+ cloudflare (7)
+  cloudflare.d1_rows_read
+    status: No live reading
+    limit (documented): 5000000 rows/day
+    metric: D1 rows read (Free) | window: daily | reset: 00:00 UTC
+    No live reading (live source: none)
+  cloudflare.d1_rows_written
+    status: No live reading
+    limit (documented): 100000 rows/day
+    metric: D1 rows written (Free) | window: daily | reset: 00:00 UTC
+    No live reading (live source: none)
+  cloudflare.d1_storage
+    status: No live reading
+    limit (documented): 5 GB
+    metric: D1 total storage (Free) | window: point-in-time | reset: n/a
+    No live reading (live source: none)
+  cloudflare.kv_writes
+    status: No live reading
+    limit (documented): 1000 writes/day
+    metric: Workers KV writes (Free) | window: daily | reset: 00:00 UTC
+    No live reading (live source: none)
+  cloudflare.queues_ops
+    status: No live reading
+    limit (documented): 10000 operations/day
+    metric: Queues operations (Free) | window: daily | reset: daily
+    No live reading (live source: none)
+  cloudflare.r2_storage
+    status: No live reading
+    limit (documented): 10 GB-month
+    metric: R2 storage (Free, Standard) | window: monthly | reset: calendar
+    month
+    No live reading (live source: none)
+  cloudflare.workers_requests
+    status: No live reading
+    limit (documented): 100000 requests/day
+    metric: Workers requests (Free plan) | window: daily | reset: 00:00 UTC
+    No live reading (live source: none)
+--------------------------------------------------------------------------------
+ deno (1)
+  deno.deploy_requests
+    status: No live reading
+    limit (documented): 1000000 requests/month
+    metric: Deno Deploy requests (Free) | window: monthly | reset: calendar
+    month
+    No live reading (live source: none)
+--------------------------------------------------------------------------------
+ digitalocean (2)
+  digitalocean.app_platform_static
+    status: No live reading
+    limit (documented): 3 apps
+    metric: App Platform static-site apps (Free Tier) | window: point-in-time |
+    reset: n/a
+    No live reading (live source: none)
+  digitalocean.trial_credit
+    status: No live reading
+    limit (documented): 200 USD
+    metric: new-account trial credit | window: one-time (60 days) | reset: 60
+    days from signup
+    No live reading (live source: none)
+--------------------------------------------------------------------------------
+ fly (1)
+  fly.free_tier
+    status: No live reading
+    limit (documented): 0 USD/month
+    metric: free allowance for new organizations | window: n/a | reset: n/a
+    No live reading (live source: none)
+--------------------------------------------------------------------------------
+ gcp (3)
+  gcp.cloud_functions_invocations
+    status: No live reading
+    limit (documented): 2000000 invocations/month
+    metric: Cloud Run functions invocations (Free Tier, always free) | window:
+    monthly | reset: calendar month
+    No live reading (live source: none)
+  gcp.cloud_run_requests
+    status: No live reading
+    limit (documented): 2000000 requests/month
+    metric: Cloud Run requests (Free Tier, always free) | window: monthly |
+    reset: calendar month
+    No live reading (live source: none)
+  gcp.compute_e2micro
+    status: No live reading
+    limit (documented): 1 instance/month
+    metric: Compute Engine e2-micro (Free Tier, always free) | window: monthly |
+    reset: calendar month
+    No live reading (live source: none)
+--------------------------------------------------------------------------------
+ github (8)
+  github.actions.cache
+    status: No live reading
+    limit (documented): 10 GB
+    metric: cache storage per repo | window: rolling | reset: LRU eviction;
+    entries unused 7 days removed
+    No live reading (live source: GET /repos/{repo}/actions/cache/usage)
+  github.actions.minutes
+    status: UNKNOWN
+    limit (documented): n/a minutes
+    metric: standard-runner minutes (public repo) | window: monthly | reset: n/a
+    (free for public repos)
+    Public evidence state only; no account balance or runtime admission implied.
+  github.api.github_token
+    status: No live reading
+    limit (documented): 1000 requests/hour/repo
+    metric: REST requests via GITHUB_TOKEN | window: hourly | reset:
+    x-ratelimit-reset header
+    No live reading (live source: GET /rate_limit)
+  github.api.user_token
+    status: No live reading
+    limit (documented): 5000 requests/hour
+    metric: REST requests via user/OAuth token | window: hourly | reset:
+    x-ratelimit-reset header
+    No live reading (live source: GET /rate_limit (Hark connector))
+  github.artifacts.retention
+    status: No live reading
+    limit (documented): 90 days
+    metric: artifact retention default | window: per-artifact | reset: n/a
+    No live reading (live source: none)
+  github.codespaces.core_hours
+    status: No live reading
+    limit (documented): 120 core-hours/month
+    metric: Codespaces compute, personal account (GitHub Free) | window: monthly
+    | reset: calendar month
+    No live reading (live source: GitHub Settings > Billing > Usage
+    (Codespaces))
+  github.codespaces.storage
+    status: No live reading
+    limit (documented): 15 GB-month
+    metric: Codespaces storage, personal account (GitHub Free) | window: monthly
+    | reset: calendar month
+    No live reading (live source: GitHub Settings > Billing > Usage
+    (Codespaces))
+  github.copilot.free
+    status: No live reading
+    limit (documented): n/a requests/month
+    metric: Copilot Free allowance | window: monthly | reset: unverified
+    No live reading (live source: none (no usage API for Free))
+--------------------------------------------------------------------------------
+ google (1)
+  gemini.api_free
+    status: No live reading
+    limit (documented): n/a per-model
+    metric: RPM/TPM/RPD per model, per project | window: daily (RPD) | reset:
+    midnight
+    No live reading (live source: none; .github/actions/gemini-quota-gate soft
+    budgets + 429s)
+--------------------------------------------------------------------------------
+ gpt4free/CLIProxyAPI/Chapito/ai-manus (1)
+  g4f.vendors
+    status: No live reading
+    limit (documented): n/a unmetered / unknown
+    metric: public/web-wrapped endpoints (multi-ai-cli/vendors) | window:
+    unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call)
+--------------------------------------------------------------------------------
+ grafana (1)
+  grafana.cloud_free
+    status: No live reading
+    limit (documented): 10000 samples/s
+    metric: ingestion_rate per series | window: instant | reset: n/a
+    No live reading (live source: none)
+--------------------------------------------------------------------------------
+ koyeb (1)
+  koyeb.free_instance
+    status: No live reading
+    limit (documented): 1 instance
+    metric: free web service instances | window: point-in-time | reset: n/a
+    No live reading (live source: none)
+--------------------------------------------------------------------------------
+ neon (4)
+  neon.compute
+    status: No live reading
+    limit (documented): 100 CU-hours/project/month
+    metric: compute | window: monthly | reset: billing month
+    No live reading (live source: GET console.neon.tech/api/v2/projects
+    (NEON_API_KEY))
+  neon.egress
+    status: No live reading
+    limit (documented): 5 GB/month
+    metric: egress | window: monthly | reset: billing month
+    No live reading (live source: none)
+  neon.realtime
+    status: No live reading
+    limit (documented): n/a free during beta
+    metric: Realtime (beta) | window: n/a | reset: n/a
+    No live reading (live source: none)
+  neon.storage
+    status: No live reading
+    limit (documented): 1 GB/project (20 GB total)
+    metric: Postgres storage | window: point-in-time | reset: n/a
+    No live reading (live source: projects API synthetic_storage_size)
+--------------------------------------------------------------------------------
+ netlify (1)
+  netlify.credits
+    status: No live reading
+    limit (documented): 300 credits/month
+    metric: Netlify credits (Free plan) | window: monthly | reset: calendar
+    month
+    No live reading (live source: none)
+--------------------------------------------------------------------------------
+ ollama (1)
+  ollama.balance
+    status: No live reading
+    limit (documented): n/a variant-specific USD or percent; never
+    requests/tokens
+    metric: remaining included/purchased USD balance or legacy remaining
+    percentages | window: source-supplied included period or legacy
+    session/weekly | reset: unknown until authenticated source supplies
+    period.until or legacy resets_at; purchased-credit reset unknown
+    No live reading (live source: opt-in only: python3 -m
+    scripts.provider_quota_service --observe; GET https://ollama.com/api/balance
+    (OLLAMA_API_KEY))
+--------------------------------------------------------------------------------
+ openrouter (2)
+  openrouter.free_models
+    status: PRIVATE_PREFLIGHT
+    limit (documented): n/a requests/day (dynamic tier; endpoint supplies limit)
+    metric: free-model (:free) daily request entitlement/counter | window: daily
+    UTC | reset: UTC midnight; endpoint documents reset cadence but supplies no
+    reset timestamp
+    Public evidence state only; no account balance or runtime admission implied.
+  openrouter.key
+    status: No live reading
+    limit (documented): n/a signal-specific requests or monetary credits; tier
+    is not model price
+    metric: private request quota, monetary key limits and account tier kept
+    separate | window: source daily counter; monetary budgets independently
+    scoped | reset: daily request reset instant unknown; only explicit source
+    budget reset retained
+    No live reading (live source: manual opt-in only:
+    scripts/provider_quota_service.py --service openrouter.key --observe; fixed
+    GET https://openrouter.ai/api/v1/key (OPENROUTER_API_KEY))
+--------------------------------------------------------------------------------
+ oracle (3)
+  oracle.ampere_gb_hours
+    status: No live reading
+    limit (documented): 9000 GB-hours/month
+    metric: Ampere A1 memory (Always Free) | window: monthly | reset: calendar
+    month
+    No live reading (live source: none)
+  oracle.ampere_ocpu_hours
+    status: No live reading
+    limit (documented): 1500 OCPU-hours/month
+    metric: Ampere A1 compute (Always Free) | window: monthly | reset: calendar
+    month
+    No live reading (live source: none)
+  oracle.block_storage
+    status: No live reading
+    limit (documented): 200 GB
+    metric: block volume storage (Always Free) | window: point-in-time | reset:
+    n/a
+    No live reading (live source: none)
+--------------------------------------------------------------------------------
+ render (5)
+  render.bandwidth
+    status: No live reading
+    limit (documented): 5 GB/month
+    metric: outbound bandwidth included (Hobby) | window: calendar month |
+    reset: 1st of month
+    No live reading (live source: GET /v1/metrics/bandwidth?resource=srv-...)
+  render.instance_hours
+    status: No live reading
+    limit (documented): 750 hours/month
+    metric: Free instance hours per workspace | window: calendar month | reset:
+    start of month, no rollover
+    No live reading (live source: dashboard only (billing#included-usage))
+  render.keyvalue_free
+    status: No live reading
+    limit (documented): 1 instance/workspace (in-memory only)
+    metric: free Key Value | window: n/a | reset: data lost on restart
+    No live reading (live source: none)
+  render.pipeline_minutes
+    status: No live reading
+    limit (documented): 500 minutes/month
+    metric: Starter build pipeline minutes (Hobby) | window: calendar month |
+    reset: 1st of month
+    No live reading (live source: dashboard only (billing#unbilled-charges);
+    estimate from deploys API wall-clock)
+  render.postgres_free
+    status: No live reading
+    limit (documented): 1 GB (1 instance/workspace)
+    metric: free Postgres | window: 30 days from creation | reset: expires;
+    14-day grace then deleted
+    No live reading (live source: none)
+--------------------------------------------------------------------------------
+ supabase (5)
+  supabase.db_storage
+    status: No live reading
+    limit (documented): 500 MB
+    metric: Postgres database size (Free plan) | window: point-in-time | reset:
+    n/a
+    No live reading (live source: none)
+  supabase.edge_functions
+    status: No live reading
+    limit (documented): 500000 invocations/month
+    metric: Edge Function invocations (Free plan) | window: monthly | reset:
+    billing month
+    No live reading (live source: none)
+  supabase.egress
+    status: No live reading
+    limit (documented): 5 GB/month
+    metric: bandwidth / egress (Free plan) | window: monthly | reset: billing
+    month
+    No live reading (live source: none)
+  supabase.file_storage
+    status: No live reading
+    limit (documented): 1 GB
+    metric: file storage (Free plan) | window: point-in-time | reset: n/a
+    No live reading (live source: none)
+  supabase.projects
+    status: No live reading
+    limit (documented): 2 projects
+    metric: active projects (Free plan) | window: point-in-time | reset: n/a
+    No live reading (live source: none)
+--------------------------------------------------------------------------------
+ turso (4)
+  turso.databases
+    status: No live reading
+    limit (documented): 100 databases
+    metric: databases (Free plan) | window: point-in-time | reset: n/a
+    No live reading (live source: none)
+  turso.rows_read
+    status: No live reading
+    limit (documented): 500000000 rows/month
+    metric: rows read (Free plan) | window: monthly | reset: billing month
+    No live reading (live source: none)
+  turso.rows_written
+    status: No live reading
+    limit (documented): 10000000 rows/month
+    metric: rows written (Free plan) | window: monthly | reset: billing month
+    No live reading (live source: none)
+  turso.storage
+    status: No live reading
+    limit (documented): 5 GB
+    metric: total storage (Free plan) | window: point-in-time | reset: n/a
+    No live reading (live source: none)
+--------------------------------------------------------------------------------
+ upstash (4)
+  upstash.qstash_messages
+    status: No live reading
+    limit (documented): 1000 messages/day
+    metric: QStash messages (Free) | window: daily | reset: daily
+    No live reading (live source: none)
+  upstash.redis_bandwidth
+    status: No live reading
+    limit (documented): 10 GB/month
+    metric: Redis bandwidth (Free) | window: monthly | reset: billing period
+    No live reading (live source: none)
+  upstash.redis_commands
+    status: No live reading
+    limit (documented): 500000 commands/month
+    metric: Redis commands (Free) | window: monthly | reset: billing period
+    No live reading (live source: none)
+  upstash.redis_storage
+    status: No live reading
+    limit (documented): 250 MB
+    metric: Redis data size (Free) | window: point-in-time | reset: n/a
+    No live reading (live source: none)
+--------------------------------------------------------------------------------
+ vercel (2)
+  vercel.build_time
+    status: No live reading
+    limit (documented): 45 minutes
+    metric: build step duration per deployment | window: per-build | reset: n/a
+    No live reading (live source: none)
+  vercel.deployments
+    status: STALE
+    limit (documented): 100 deployments/day
+    metric: deployments created | window: rolling 24h (observed: error says try
+    again in 24 hours) | reset: rolling
+    Public evidence state only; no account balance or runtime admission implied.
+--------------------------------------------------------------------------------
+ PROVIDER QUOTA-MANAGER COVERAGE (metadata only)
+  aion: Manager / ChronoMancer; unsupported_or_no_verified_official_counter;
+  registry: MISSING — explicit gap
+  cerebras: Manager / ChronoMancer; official_documentation_only; no passive
+  parser; registry: MISSING — explicit gap
+  cloudflare: Manager / ChronoMancer; official_documentation_only; no passive
+  parser; registry: MISSING — explicit gap
+  cohere: Manager / ChronoMancer; official_documentation_only; no passive
+  parser; registry: MISSING — explicit gap
+  felo: Manager / ChronoMancer; unsupported_or_no_verified_official_counter;
+  registry: MISSING — explicit gap
+  gemini: Manager / ChronoMancer; official_documentation_only; no passive
+  parser; registry: gemini.api_free
+  groq: Manager / ChronoMancer; implemented_passive_parser; live account
+  validation not established; registry: MISSING — explicit gap
+  huggingface: Manager / ChronoMancer; implemented_passive_parser; live account
+  validation not established; registry: MISSING — explicit gap
+  kilo: Manager / ChronoMancer; official_documentation_only; no passive parser;
+  registry: MISSING — explicit gap
+  llm7: Manager / ChronoMancer; official_documentation_only; no passive parser;
+  registry: MISSING — explicit gap
+  mistral: Manager / ChronoMancer; official_documentation_only; no passive
+  parser; registry: MISSING — explicit gap
+  modelscope: Manager / ChronoMancer; official_documentation_only; no passive
+  parser; registry: MISSING — explicit gap
+  nvidia: Manager / ChronoMancer; official_documentation_only; no passive
+  parser; registry: MISSING — explicit gap
+  ollama: Manager / ChronoMancer; opt_in_private_quota_service; live account
+  validation not established; registry: ollama.balance
+  omni: Manager / ChronoMancer; unsupported_or_no_verified_official_counter;
+  registry: MISSING — explicit gap
+  openrouter: Manager / ChronoMancer; opt_in_private_quota_service; live account
+  validation not established; registry: openrouter.free_models, openrouter.key
+  ovhcloud: Manager / ChronoMancer; official_documentation_only; no passive
+  parser; registry: MISSING — explicit gap
+  requesty: Manager / ChronoMancer; official_documentation_only; no passive
+  parser; registry: MISSING — explicit gap
+  routeway: Manager / ChronoMancer; official_documentation_only; no passive
+  parser; registry: MISSING — explicit gap
+  sambanova: Manager / ChronoMancer; implemented_passive_parser; live account
+  validation not established; registry: MISSING — explicit gap
+  sealion: Manager / ChronoMancer; official_documentation_only; no passive
+  parser; registry: MISSING — explicit gap
+  siliconflow: Manager / ChronoMancer; implemented_passive_parser; live account
+  validation not established; registry: MISSING — explicit gap
+  typhoon: Manager / ChronoMancer; official_documentation_only; no passive
+  parser; registry: MISSING — explicit gap
+  unorouter: Manager / ChronoMancer; official_documentation_only; no passive
+  parser; registry: MISSING — explicit gap
+  xfyun: Manager / ChronoMancer; official_documentation_only; no passive parser;
+  registry: MISSING — explicit gap
+  xkiro: Manager / ChronoMancer; official_documentation_only; no passive parser;
+  registry: MISSING — explicit gap
+  zai: Manager / ChronoMancer; official_documentation_only; no passive parser;
+  registry: MISSING — explicit gap
+ Coverage and quota checks do not grant runtime admission.
+ 64 services | 0 alert(s) | 3 with a reported reading | 61 with No live reading
+================================================================================

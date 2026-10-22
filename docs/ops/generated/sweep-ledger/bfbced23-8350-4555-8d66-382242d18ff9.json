@@ -1,0 +1,105 @@
+{
+  "schema_version": "sweep.accountability.v1",
+  "sweep_id": "bfbced23-8350-4555-8d66-382242d18ff9",
+  "parent_sweep_id": null,
+  "sweep_version": "v1",
+  "iteration": 0,
+  "mode": "CONTINUOUS",
+  "scope": {
+    "repository": "timerloggedout-spec/termux-monorepo",
+    "ref": "master",
+    "from": "",
+    "to": "2026-10-20T09:18:04Z",
+    "query": "event=issues; historical census when requested",
+    "cursor": null,
+    "sources": [
+      "git://repository",
+      "github://event/issues",
+      "github://actions/39399630760"
+    ]
+  },
+  "started_at": "2026-10-20T09:18:04Z",
+  "completed_at": "2026-10-20T09:18:04Z",
+  "status": "SUCCESS",
+  "coverage": {
+    "state": "COMPLETE",
+    "observed": 3788,
+    "expected": null,
+    "next_cursor": null,
+    "reason": "Git history is complete for the checked-out ref; external source census is explicit and retained when HISTORICAL mode is requested."
+  },
+  "provenance": {
+    "actor_type": "workflow",
+    "actor": "timerloggedout-spec",
+    "tool": "GitHub Actions",
+    "workflow": "Sweep Accountability",
+    "run_id": "39399630760",
+    "event": "issues",
+    "source_refs": [
+      "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39399630760"
+    ],
+    "source_shas": [
+      "d0d6063a37c686be14878403d8c80b3aee40430b",
+      "ebe3e0ca504cb35ef61832b0b1b1576a1a0d44fb"
+    ],
+    "input_sha256": "2e747d662be71d2c99872bb9330398ac26ea0d218cae8829f707f90faf32e7ad"
+  },
+  "findings": [
+    {
+      "id": "repository-head",
+      "classification": "OBSERVED",
+      "statement": "HEAD=d0d6063a37c686be14878403d8c80b3aee40430b",
+      "evidence_refs": [
+        "git://commit/d0d6063a37c686be14878403d8c80b3aee40430b"
+      ],
+      "confidence": 1
+    },
+    {
+      "id": "repository-commit-count",
+      "classification": "OBSERVED",
+      "statement": "reachable commits=3788",
+      "evidence_refs": [
+        "git://rev-list"
+      ],
+      "confidence": 1
+    },
+    {
+      "id": "trigger-event",
+      "classification": "OBSERVED",
+      "statement": "sweep trigger=issues",
+      "evidence_refs": [
+        "github://event"
+      ],
+      "confidence": 1
+    }
+  ],
+  "actions": [
+    {
+      "id": "sweep-39399630760",
+      "type": "accountability-sweep",
+      "status": "SUCCEEDED",
+      "actor": "timerloggedout-spec",
+      "tool": "GitHub Actions",
+      "target": "timerloggedout-spec/termux-monorepo"
+    }
+  ],
+  "effects": [
+    {
+      "id": "effect-39399630760",
+      "type": "accountability-receipt",
+      "after": {
+        "head_sha": "d0d6063a37c686be14878403d8c80b3aee40430b",
+        "reachable_commits": 3788,
+        "trigger_event": "issues",
+        "run_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39399630760"
+      }
+    }
+  ],
+  "errors": [],
+  "next": {
+    "sweep_version": "v1",
+    "iteration": 1,
+    "cursor": null,
+    "start": "2026-10-20T09:18:04Z"
+  }
+}

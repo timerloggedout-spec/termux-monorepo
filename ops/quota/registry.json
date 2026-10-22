@@ -1,0 +1,1060 @@
+{
+ "schema": "3l0.quota-registry.v1",
+ "record_format": "foresight-evidence-spine contract v2 (docs/ops/FORESIGHT-EVIDENCE-SPINE.md) + hindsight retain payload (docs/ops/sessions/HINDSIGHT.md)",
+ "rules": [
+  "Documented limits are entitlements, not balances (docs/ops/FREE-QUOTA-WINDOWS.md). Never invent a remaining value.",
+  "planned_use: spend up to safety x limit, paced linearly over the window; routing multiplier = remaining-budget fraction / remaining-time fraction, capped at 2, 0 when exhausted, 1.0 when no live reading.",
+  "No secrets in records. Poller output is a workflow artifact, never a commit (commits would trigger Vercel/Render builds)."
+ ],
+ "services": [
+  {
+   "id": "github.actions.minutes",
+   "provider": "github",
+   "lane": "ci",
+   "metric": "standard-runner minutes (public repo)",
+   "limit": null,
+   "unit": "minutes",
+   "window": "monthly",
+   "reset": "n/a (free for public repos)",
+   "zone": "UTC",
+   "source": "https://docs.github.com/en/billing/concepts/product-billing/github-actions",
+   "doc_quote": "GitHub Actions usage is free for self-hosted runners and for public repositories that use standard GitHub-hosted runners.",
+   "live": "none_needed",
+   "planned_use": {
+    "safety": 1.0,
+    "note": "free; larger runners are always billed, so never use them"
+   }
+  },
+  {
+   "id": "github.actions.cache",
+   "provider": "github",
+   "lane": "ci",
+   "metric": "cache storage per repo",
+   "limit": 10,
+   "unit": "GB",
+   "window": "rolling",
+   "reset": "LRU eviction; entries unused 7 days removed",
+   "zone": "UTC",
+   "source": "https://docs.github.com/en/actions/reference/workflows-and-actions/dependency-caching",
+   "live": "GET /repos/{repo}/actions/cache/usage",
+   "planned_use": {
+    "safety": 0.9
+   }
+  },
+  {
+   "id": "github.api.github_token",
+   "provider": "github",
+   "lane": "ci",
+   "metric": "REST requests via GITHUB_TOKEN",
+   "limit": 1000,
+   "unit": "requests/hour/repo",
+   "window": "hourly",
+   "reset": "x-ratelimit-reset header",
+   "zone": "UTC",
+   "source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+   "live": "GET /rate_limit",
+   "planned_use": {
+    "safety": 0.8
+   }
+  },
+  {
+   "id": "github.api.user_token",
+   "provider": "github",
+   "lane": "ops",
+   "metric": "REST requests via user/OAuth token",
+   "limit": 5000,
+   "unit": "requests/hour",
+   "window": "hourly",
+   "reset": "x-ratelimit-reset header",
+   "zone": "UTC",
+   "source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+   "live": "GET /rate_limit (Hark connector)",
+   "planned_use": {
+    "safety": 0.8
+   }
+  },
+  {
+   "id": "github.artifacts.retention",
+   "provider": "github",
+   "lane": "ci",
+   "metric": "artifact retention default",
+   "limit": 90,
+   "unit": "days",
+   "window": "per-artifact",
+   "reset": "n/a",
+   "zone": "UTC",
+   "source": "reported by Platform201 Planning Queue 2026-10-19 (not re-fetched)",
+   "live": "none",
+   "planned_use": {
+    "note": "quota artifacts use retention-days: 7"
+   }
+  },
+  {
+   "id": "github.copilot.free",
+   "provider": "github",
+   "lane": "model",
+   "metric": "Copilot Free allowance",
+   "limit": null,
+   "unit": "requests/month",
+   "window": "monthly",
+   "reset": "unverified",
+   "zone": "UTC",
+   "source": "https://docs.github.com/en/copilot/get-started/plans",
+   "doc_quote": "limited access to a selection of Copilot features",
+   "live": "none (no usage API for Free)",
+   "planned_use": {
+    "note": "numeric caps not stated on the fetched page; treat as unknown"
+   }
+  },
+  {
+   "id": "vercel.deployments",
+   "provider": "vercel",
+   "lane": "deploy",
+   "metric": "deployments created",
+   "limit": 100,
+   "unit": "deployments/day",
+   "window": "rolling 24h (observed: error says try again in 24 hours)",
+   "reset": "rolling",
+   "zone": "UTC",
+   "source": "https://vercel.com/docs/limits",
+   "live": "GET api.vercel.com/v6/deployments (VERCEL_TOKEN); undercounts vs enforcement by >=13 (2026-10-19)",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "deploy only when probe count <= 95"
+   }
+  },
+  {
+   "id": "vercel.build_time",
+   "provider": "vercel",
+   "lane": "deploy",
+   "metric": "build step duration per deployment",
+   "limit": 45,
+   "unit": "minutes",
+   "window": "per-build",
+   "reset": "n/a",
+   "zone": "UTC",
+   "source": "https://vercel.com/docs/limits",
+   "live": "none",
+   "planned_use": {
+    "note": "Hobby uses Basic 2 vCPU/8 GB build machine (https://vercel.com/docs/builds/managing-builds); no monthly build-minute cap found on fetched pages"
+   }
+  },
+  {
+   "id": "render.pipeline_minutes",
+   "provider": "render",
+   "lane": "deploy",
+   "metric": "Starter build pipeline minutes (Hobby)",
+   "limit": 500,
+   "unit": "minutes/month",
+   "window": "calendar month",
+   "reset": "1st of month",
+   "zone": "UTC (unverified; assumed)",
+   "source": "https://render.com/docs/build-pipeline",
+   "doc_quote": "Hobby: 500 minutes",
+   "live": "dashboard only (billing#unbilled-charges); estimate from deploys API wall-clock",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "on exhaustion with no payment method or spend limit reached, new builds are disabled for the rest of the month; services stay active on existing build artifacts (https://render.com/docs/free)"
+   }
+  },
+  {
+   "id": "render.instance_hours",
+   "provider": "render",
+   "lane": "deploy",
+   "metric": "Free instance hours per workspace",
+   "limit": 750,
+   "unit": "hours/month",
+   "window": "calendar month",
+   "reset": "start of month, no rollover",
+   "zone": "UTC (unverified; assumed)",
+   "source": "https://render.com/docs/free",
+   "live": "dashboard only (billing#included-usage)",
+   "planned_use": {
+    "safety": 0.95,
+    "note": "spun-down services use none; spin-down after 15 min idle; exhaustion suspends all free web services"
+   }
+  },
+  {
+   "id": "render.bandwidth",
+   "provider": "render",
+   "lane": "deploy",
+   "metric": "outbound bandwidth included (Hobby)",
+   "limit": 5,
+   "unit": "GB/month",
+   "window": "calendar month",
+   "reset": "1st of month",
+   "zone": "UTC (unverified; assumed)",
+   "source": "https://render.com/pricing",
+   "live": "GET /v1/metrics/bandwidth?resource=srv-...",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "without a payment method, exhaustion suspends all free services for the month (https://render.com/docs/free)"
+   }
+  },
+  {
+   "id": "render.postgres_free",
+   "provider": "render",
+   "lane": "data",
+   "metric": "free Postgres",
+   "limit": 1,
+   "unit": "GB (1 instance/workspace)",
+   "window": "30 days from creation",
+   "reset": "expires; 14-day grace then deleted",
+   "zone": "UTC",
+   "source": "https://render.com/docs/free",
+   "live": "none",
+   "planned_use": {
+    "note": "not for durable data"
+   }
+  },
+  {
+   "id": "render.keyvalue_free",
+   "provider": "render",
+   "lane": "data",
+   "metric": "free Key Value",
+   "limit": 1,
+   "unit": "instance/workspace (in-memory only)",
+   "window": "n/a",
+   "reset": "data lost on restart",
+   "zone": "UTC",
+   "source": "https://render.com/docs/free",
+   "live": "none",
+   "planned_use": {
+    "note": "cache only"
+   }
+  },
+  {
+   "id": "neon.compute",
+   "provider": "neon",
+   "lane": "data",
+   "metric": "compute",
+   "limit": 100,
+   "unit": "CU-hours/project/month",
+   "window": "monthly",
+   "reset": "billing month",
+   "zone": "UTC",
+   "source": "https://neon.com/docs/introduction/plans",
+   "live": "GET console.neon.tech/api/v2/projects (NEON_API_KEY)",
+   "planned_use": {
+    "safety": 0.85,
+    "note": "batch lane-ledger writes hourly (~15 CU-h/mo) not per event (~180 CU-h/mo), per Platform201 estimate"
+   }
+  },
+  {
+   "id": "neon.storage",
+   "provider": "neon",
+   "lane": "data",
+   "metric": "Postgres storage",
+   "limit": 1,
+   "unit": "GB/project (20 GB total)",
+   "window": "point-in-time",
+   "reset": "n/a",
+   "zone": "UTC",
+   "source": "https://neon.com/docs/introduction/plans",
+   "live": "projects API synthetic_storage_size",
+   "planned_use": {
+    "safety": 0.8
+   }
+  },
+  {
+   "id": "neon.egress",
+   "provider": "neon",
+   "lane": "data",
+   "metric": "egress",
+   "limit": 5,
+   "unit": "GB/month",
+   "window": "monthly",
+   "reset": "billing month",
+   "zone": "UTC",
+   "source": "https://neon.com/docs/introduction/plans",
+   "live": "none",
+   "planned_use": {
+    "safety": 0.8
+   }
+  },
+  {
+   "id": "neon.realtime",
+   "provider": "neon",
+   "lane": "data",
+   "metric": "Realtime (beta)",
+   "limit": null,
+   "unit": "free during beta",
+   "window": "n/a",
+   "reset": "n/a",
+   "zone": "UTC",
+   "source": "reported by Platform201 Planning Queue 2026-10-19 (not re-fetched)",
+   "live": "none",
+   "planned_use": {
+    "note": "beta terms can change; re-check before relying"
+   }
+  },
+  {
+   "id": "openrouter.free_models",
+   "provider": "openrouter",
+   "lane": "model",
+   "metric": "free-model (:free) daily request entitlement/counter",
+   "limit": null,
+   "unit": "requests/day (dynamic tier; endpoint supplies limit)",
+   "window": "daily UTC",
+   "reset": "UTC midnight; endpoint documents reset cadence but supplies no reset timestamp",
+   "zone": "UTC",
+   "source": "https://openrouter.ai/docs/api_reference/limits",
+   "doc_quote": "The free_model_daily_requests field ... reports the daily counter and ceiling ... The counter resets at UTC midnight.",
+   "live": "GET /api/v1/key -> data.free_model_daily_requests {used, limit, remaining} (OPENROUTER_API_KEY); ignore private credit/budget fields and openrouter_metadata",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "Only the documented free-model request counter drives this record; daily tier ceiling depends on credits purchased. Credit balances and budgets are separate private monetary limits, not request counts."
+   }
+  },
+  {
+   "id": "gemini.api_free",
+   "provider": "google",
+   "lane": "model",
+   "metric": "RPM/TPM/RPD per model, per project",
+   "limit": null,
+   "unit": "per-model",
+   "window": "daily (RPD)",
+   "reset": "midnight",
+   "zone": "America/Los_Angeles",
+   "source": "https://ai.google.dev/gemini-api/docs/rate-limits",
+   "doc_quote": "Requests per day (RPD) quotas reset at midnight Pacific time.",
+   "live": "none; .github/actions/gemini-quota-gate soft budgets + 429s",
+   "planned_use": {
+    "safety": 0.9
+   }
+  },
+  {
+   "id": "ollama.balance",
+   "provider": "ollama",
+   "lane": "model-balance",
+   "metric": "remaining included/purchased USD balance or legacy remaining percentages",
+   "limit": null,
+   "unit": "variant-specific USD or percent; never requests/tokens",
+   "window": "source-supplied included period or legacy session/weekly",
+   "reset": "unknown until authenticated source supplies period.until or legacy resets_at; purchased-credit reset unknown",
+   "zone": "UTC",
+   "source": "https://docs.ollama.com/api/balance",
+   "live": "opt-in only: python3 -m scripts.provider_quota_service --observe; GET https://ollama.com/api/balance (OLLAMA_API_KEY)",
+   "planned_use": {
+    "note": "Explicit private scope and mode-0700 output directory required. Not collected by quota_poll, no routing weights from balances, no account validation or reservation claimed."
+   }
+  },
+  {
+   "id": "openrouter.key",
+   "provider": "openrouter",
+   "lane": "model-observation",
+   "metric": "private request quota, monetary key limits and account tier kept separate",
+   "limit": null,
+   "unit": "signal-specific requests or monetary credits; tier is not model price",
+   "window": "source daily counter; monetary budgets independently scoped",
+   "reset": "daily request reset instant unknown; only explicit source budget reset retained",
+   "zone": "UTC",
+   "source": "https://openrouter.ai/docs/api/api-reference/api-keys/get-current-api-key",
+   "live": "manual opt-in only: scripts/provider_quota_service.py --service openrouter.key --observe; fixed GET https://openrouter.ai/api/v1/key (OPENROUTER_API_KEY)",
+   "planned_use": {
+    "note": "Private mode-0600 output outside Git; status-only public projection. Not an automatic reader, routing input, entitlement or inference authorization. Trusted-master workflow defaults off; no private artifacts."
+   }
+  },
+  {
+   "id": "g4f.vendors",
+   "provider": "gpt4free/CLIProxyAPI/Chapito/ai-manus",
+   "lane": "model",
+   "metric": "public/web-wrapped endpoints (multi-ai-cli/vendors)",
+   "limit": null,
+   "unit": "unmetered / unknown",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "multi-ai-cli/vendors/README.md",
+   "live": "none; observe 429/retry-after per call",
+   "planned_use": {
+    "note": "fallback pool only; experiment label required (FREE-QUOTA-WINDOWS router rule)"
+   }
+  },
+  {
+   "id": "grafana.cloud_free",
+   "provider": "grafana",
+   "lane": "observability",
+   "metric": "ingestion_rate per series",
+   "limit": 10000,
+   "unit": "samples/s",
+   "window": "instant",
+   "reset": "n/a",
+   "zone": "UTC",
+   "source": "https://grafana.com/docs/grafana-cloud/cost-management-and-billing/understand-your-invoice/usage-limits/",
+   "live": "none",
+   "planned_use": {
+    "note": "free-tier monthly series/log/trace allowances not verified on a fetched page"
+   }
+  },
+  {
+   "id": "partners.credits",
+   "provider": "CellCog/Polsia/Manus",
+   "lane": "partner",
+   "metric": "referral/bonus credits (docs/PARTNERS.md)",
+   "limit": null,
+   "unit": "one-time credits",
+   "window": "one-time",
+   "reset": "none",
+   "zone": "UTC",
+   "source": "docs/PARTNERS.md",
+   "live": "none",
+   "planned_use": {
+    "note": "not a recurring quota; spend only via explicit experiment"
+   }
+  },
+  {
+   "id": "supabase.db_storage",
+   "provider": "supabase",
+   "lane": "data",
+   "metric": "Postgres database size (Free plan)",
+   "limit": 500,
+   "unit": "MB",
+   "window": "point-in-time",
+   "reset": "n/a",
+   "zone": "UTC",
+   "source": "https://supabase.com/pricing",
+   "live": "none",
+   "planned_use": {
+    "note": "2 active projects on Free; projects pause after ~1 week of low activity (vendor pausing docs)"
+   }
+  },
+  {
+   "id": "supabase.projects",
+   "provider": "supabase",
+   "lane": "data",
+   "metric": "active projects (Free plan)",
+   "limit": 2,
+   "unit": "projects",
+   "window": "point-in-time",
+   "reset": "n/a",
+   "zone": "UTC",
+   "source": "https://supabase.com/pricing",
+   "live": "none",
+   "planned_use": {
+    "note": "a paused project still counts; restore is manual from the dashboard"
+   }
+  },
+  {
+   "id": "supabase.egress",
+   "provider": "supabase",
+   "lane": "data",
+   "metric": "bandwidth / egress (Free plan)",
+   "limit": 5,
+   "unit": "GB/month",
+   "window": "monthly",
+   "reset": "billing month",
+   "zone": "UTC",
+   "source": "https://supabase.com/pricing",
+   "live": "none",
+   "planned_use": {
+    "safety": 0.8
+   }
+  },
+  {
+   "id": "supabase.file_storage",
+   "provider": "supabase",
+   "lane": "data",
+   "metric": "file storage (Free plan)",
+   "limit": 1,
+   "unit": "GB",
+   "window": "point-in-time",
+   "reset": "n/a",
+   "zone": "UTC",
+   "source": "https://supabase.com/pricing",
+   "live": "none",
+   "planned_use": {}
+  },
+  {
+   "id": "supabase.edge_functions",
+   "provider": "supabase",
+   "lane": "deploy",
+   "metric": "Edge Function invocations (Free plan)",
+   "limit": 500000,
+   "unit": "invocations/month",
+   "window": "monthly",
+   "reset": "billing month",
+   "zone": "UTC",
+   "source": "https://supabase.com/pricing",
+   "live": "none",
+   "planned_use": {
+    "note": "Deno-based; separate from the Jules MCP lane, which is still open"
+   }
+  },
+  {
+   "id": "turso.storage",
+   "provider": "turso",
+   "lane": "data",
+   "metric": "total storage (Free plan)",
+   "limit": 5,
+   "unit": "GB",
+   "window": "point-in-time",
+   "reset": "n/a",
+   "zone": "UTC",
+   "source": "https://turso.tech/pricing",
+   "live": "none",
+   "planned_use": {
+    "note": "conservative figure kept from the 2026-10-19 registry stub; see LANDING-NOTE discrepancy flag"
+   }
+  },
+  {
+   "id": "turso.rows_read",
+   "provider": "turso",
+   "lane": "data",
+   "metric": "rows read (Free plan)",
+   "limit": 500000000,
+   "unit": "rows/month",
+   "window": "monthly",
+   "reset": "billing month",
+   "zone": "UTC",
+   "source": "https://turso.tech/pricing",
+   "live": "none",
+   "planned_use": {
+    "safety": 0.9
+   }
+  },
+  {
+   "id": "turso.rows_written",
+   "provider": "turso",
+   "lane": "data",
+   "metric": "rows written (Free plan)",
+   "limit": 10000000,
+   "unit": "rows/month",
+   "window": "monthly",
+   "reset": "billing month",
+   "zone": "UTC",
+   "source": "https://turso.tech/pricing",
+   "live": "none",
+   "planned_use": {
+    "safety": 0.9
+   }
+  },
+  {
+   "id": "turso.databases",
+   "provider": "turso",
+   "lane": "data",
+   "metric": "databases (Free plan)",
+   "limit": 100,
+   "unit": "databases",
+   "window": "point-in-time",
+   "reset": "n/a",
+   "zone": "UTC",
+   "source": "https://turso.tech/pricing",
+   "live": "none",
+   "planned_use": {}
+  },
+  {
+   "id": "upstash.redis_storage",
+   "provider": "upstash",
+   "lane": "data",
+   "metric": "Redis data size (Free)",
+   "limit": 250,
+   "unit": "MB",
+   "window": "point-in-time",
+   "reset": "n/a",
+   "zone": "UTC",
+   "source": "https://upstash.com/docs/redis/overall/billing",
+   "live": "none",
+   "planned_use": {
+    "note": "1 free database per account"
+   }
+  },
+  {
+   "id": "upstash.redis_commands",
+   "provider": "upstash",
+   "lane": "data",
+   "metric": "Redis commands (Free)",
+   "limit": 500000,
+   "unit": "commands/month",
+   "window": "monthly",
+   "reset": "billing period",
+   "zone": "UTC",
+   "source": "https://upstash.com/docs/redis/overall/billing",
+   "live": "none",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "~16k/day sustained; REST API makes it reachable from Workers/Termux without TCP"
+   }
+  },
+  {
+   "id": "upstash.redis_bandwidth",
+   "provider": "upstash",
+   "lane": "data",
+   "metric": "Redis bandwidth (Free)",
+   "limit": 10,
+   "unit": "GB/month",
+   "window": "monthly",
+   "reset": "billing period",
+   "zone": "UTC",
+   "source": "https://upstash.com/docs/redis/overall/billing",
+   "live": "none",
+   "planned_use": {
+    "safety": 0.8
+   }
+  },
+  {
+   "id": "upstash.qstash_messages",
+   "provider": "upstash",
+   "lane": "data",
+   "metric": "QStash messages (Free)",
+   "limit": 1000,
+   "unit": "messages/day",
+   "window": "daily",
+   "reset": "daily",
+   "zone": "UTC",
+   "source": "https://upstash.com/pricing",
+   "live": "none",
+   "planned_use": {
+    "note": "figure carried from the 2026-10-19 registry stub (Platform201 report, not re-fetched this pass)"
+   }
+  },
+  {
+   "id": "cloudflare.d1_rows_read",
+   "provider": "cloudflare",
+   "lane": "data",
+   "metric": "D1 rows read (Free)",
+   "limit": 5000000,
+   "unit": "rows/day",
+   "window": "daily",
+   "reset": "00:00 UTC",
+   "zone": "UTC",
+   "source": "https://developers.cloudflare.com/d1/platform/pricing/",
+   "live": "none",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "fleet: Cloudflare account state NOT ESTABLISHED chat-side; entitlement documented only"
+   }
+  },
+  {
+   "id": "cloudflare.d1_rows_written",
+   "provider": "cloudflare",
+   "lane": "data",
+   "metric": "D1 rows written (Free)",
+   "limit": 100000,
+   "unit": "rows/day",
+   "window": "daily",
+   "reset": "00:00 UTC",
+   "zone": "UTC",
+   "source": "https://developers.cloudflare.com/d1/platform/pricing/",
+   "live": "none",
+   "planned_use": {
+    "safety": 0.8,
+    "note": "the binding constraint for queue/receipt designs: budget ~10 row-writes per task event (P1 spec)"
+   }
+  },
+  {
+   "id": "cloudflare.d1_storage",
+   "provider": "cloudflare",
+   "lane": "data",
+   "metric": "D1 total storage (Free)",
+   "limit": 5,
+   "unit": "GB",
+   "window": "point-in-time",
+   "reset": "n/a",
+   "zone": "UTC",
+   "source": "https://developers.cloudflare.com/d1/platform/pricing/",
+   "live": "none",
+   "planned_use": {
+    "note": "10 databases, 500 MB each on Free"
+   }
+  },
+  {
+   "id": "cloudflare.queues_ops",
+   "provider": "cloudflare",
+   "lane": "data",
+   "metric": "Queues operations (Free)",
+   "limit": 10000,
+   "unit": "operations/day",
+   "window": "daily",
+   "reset": "daily",
+   "zone": "UTC",
+   "source": "https://developers.cloudflare.com/d1/platform/pricing/",
+   "live": "none",
+   "planned_use": {
+    "note": "figure carried from the 2026-10-19 registry stub (Platform201 report); 24h message retention on Free per the same stub"
+   }
+  },
+  {
+   "id": "github.codespaces.core_hours",
+   "provider": "github",
+   "lane": "ci",
+   "metric": "Codespaces compute, personal account (GitHub Free)",
+   "limit": 120,
+   "unit": "core-hours/month",
+   "window": "monthly",
+   "reset": "calendar month",
+   "zone": "UTC",
+   "source": "https://docs.github.com/en/billing/concepts/product-billing/github-codespaces",
+   "doc_quote": "All GitHub personal accounts include a quota of free compute time and storage for GitHub Codespaces.",
+   "live": "GitHub Settings > Billing > Usage (Codespaces)",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "= 60 h/mo on a 2-core machine; Pro plan = 180. Orgs get NO free quota. Fleet: 3 codespaces exist (census 2026-10-21); the heavy-build lane that offloads the B160V (mesh C2)"
+   }
+  },
+  {
+   "id": "github.codespaces.storage",
+   "provider": "github",
+   "lane": "ci",
+   "metric": "Codespaces storage, personal account (GitHub Free)",
+   "limit": 15,
+   "unit": "GB-month",
+   "window": "monthly",
+   "reset": "calendar month",
+   "zone": "UTC",
+   "source": "https://docs.github.com/en/billing/concepts/product-billing/github-codespaces",
+   "live": "GitHub Settings > Billing > Usage (Codespaces)",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "past quota: $0.07/GB-month storage, compute from $0.18/h (2-core); no payment method on file = hard block at quota, not a bill"
+   }
+  },
+  {
+   "id": "cloudflare.workers_requests",
+   "provider": "cloudflare",
+   "lane": "deploy",
+   "metric": "Workers requests (Free plan)",
+   "limit": 100000,
+   "unit": "requests/day",
+   "window": "daily",
+   "reset": "00:00 UTC",
+   "zone": "UTC",
+   "source": "https://developers.cloudflare.com/workers/platform/pricing/",
+   "live": "none",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "10 ms CPU per invocation on Free; static assets free and unmetered. The P1 pull-queue Worker budget (spec in this folder)"
+   }
+  },
+  {
+   "id": "cloudflare.r2_storage",
+   "provider": "cloudflare",
+   "lane": "data",
+   "metric": "R2 storage (Free, Standard)",
+   "limit": 10,
+   "unit": "GB-month",
+   "window": "monthly",
+   "reset": "calendar month",
+   "zone": "UTC",
+   "source": "https://developers.cloudflare.com/r2/pricing/",
+   "live": "none",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "includes 1M Class A + 10M Class B operations/mo; egress free. Artifact/receipt blob lane (GitHub artifacts retain only 90 days)"
+   }
+  },
+  {
+   "id": "cloudflare.kv_writes",
+   "provider": "cloudflare",
+   "lane": "data",
+   "metric": "Workers KV writes (Free)",
+   "limit": 1000,
+   "unit": "writes/day",
+   "window": "daily",
+   "reset": "00:00 UTC",
+   "zone": "UTC",
+   "source": "https://developers.cloudflare.com/kv/platform/pricing/",
+   "live": "none",
+   "planned_use": {
+    "safety": 0.8,
+    "note": "reads 100,000/day + 1 GB storage on Free; writes are the binding cap \u2014 manifest-mirror use only, never a queue"
+   }
+  },
+  {
+   "id": "fly.free_tier",
+   "provider": "fly",
+   "lane": "deploy",
+   "metric": "free allowance for new organizations",
+   "limit": 0,
+   "unit": "USD/month",
+   "window": "n/a",
+   "reset": "n/a",
+   "zone": "UTC",
+   "source": "https://fly.io/docs/about/pricing/",
+   "live": "none",
+   "planned_use": {
+    "note": "free allowances removed for NEW orgs Oct 2024 (short trial only). Fleet org billing state NOT ESTABLISHED \u2014 establish before HindSight plans lean on 'free Fly'"
+   }
+  },
+  {
+   "id": "koyeb.free_instance",
+   "provider": "koyeb",
+   "lane": "deploy",
+   "metric": "free web service instances",
+   "limit": 1,
+   "unit": "instance",
+   "window": "point-in-time",
+   "reset": "n/a",
+   "zone": "UTC",
+   "source": "https://www.koyeb.com/pricing",
+   "live": "none",
+   "planned_use": {
+    "note": "free shape since Feb 2024: single instance, sleeps after 1h idle; Feb 2026 added a $29 verification hold (dated survey) \u2014 REVALIDATE on vendor page before any revival. Fleet: app authorized, dormant; koyeb-hindsight-deploy.yml exists"
+   }
+  },
+  {
+   "id": "gcp.cloud_run_requests",
+   "provider": "gcp",
+   "lane": "deploy",
+   "metric": "Cloud Run requests (Free Tier, always free)",
+   "limit": 2000000,
+   "unit": "requests/month",
+   "window": "monthly",
+   "reset": "calendar month",
+   "zone": "UTC",
+   "source": "https://cloud.google.com/free/docs/free-cloud-features",
+   "live": "none",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); includes 180,000 vCPU-s + 360,000 GiB-s + 1 GB NA egress/mo; billing account required even for free tier"
+   }
+  },
+  {
+   "id": "gcp.cloud_functions_invocations",
+   "provider": "gcp",
+   "lane": "deploy",
+   "metric": "Cloud Run functions invocations (Free Tier, always free)",
+   "limit": 2000000,
+   "unit": "invocations/month",
+   "window": "monthly",
+   "reset": "calendar month",
+   "zone": "UTC",
+   "source": "https://cloud.google.com/free/docs/free-cloud-features",
+   "live": "none",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); includes 400,000 GB-s + 200,000 GHz-s + 5 GB egress/mo"
+   }
+  },
+  {
+   "id": "gcp.compute_e2micro",
+   "provider": "gcp",
+   "lane": "deploy",
+   "metric": "Compute Engine e2-micro (Free Tier, always free)",
+   "limit": 1,
+   "unit": "instance/month",
+   "window": "monthly",
+   "reset": "calendar month",
+   "zone": "UTC",
+   "source": "https://cloud.google.com/free/docs/free-cloud-features",
+   "live": "none",
+   "planned_use": {
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); US regions only, with 30 GB standard persistent disk; separate $300/90-day trial for new billing accounts"
+   }
+  },
+  {
+   "id": "aws.lambda_requests",
+   "provider": "aws",
+   "lane": "deploy",
+   "metric": "Lambda requests (Always Free)",
+   "limit": 1000000,
+   "unit": "requests/month",
+   "window": "monthly",
+   "reset": "calendar month",
+   "zone": "UTC",
+   "source": "https://aws.amazon.com/lambda/pricing/",
+   "doc_quote": "1 million free requests per month",
+   "live": "none",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); no free tier when Provisioned Concurrency is enabled"
+   }
+  },
+  {
+   "id": "aws.lambda_compute",
+   "provider": "aws",
+   "lane": "deploy",
+   "metric": "Lambda compute (Always Free)",
+   "limit": 400000,
+   "unit": "GB-seconds/month",
+   "window": "monthly",
+   "reset": "calendar month",
+   "zone": "UTC",
+   "source": "https://aws.amazon.com/lambda/pricing/",
+   "live": "none",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated)"
+   }
+  },
+  {
+   "id": "aws.dynamodb_storage",
+   "provider": "aws",
+   "lane": "data",
+   "metric": "DynamoDB storage (Always Free)",
+   "limit": 25,
+   "unit": "GB",
+   "window": "point-in-time",
+   "reset": "n/a",
+   "zone": "UTC",
+   "source": "https://aws.amazon.com/free/",
+   "live": "none",
+   "planned_use": {
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); includes 25 provisioned RCU + 25 WCU (Standard table class)"
+   }
+  },
+  {
+   "id": "aws.account_credits",
+   "provider": "aws",
+   "lane": "ops",
+   "metric": "new-account credits (post-2025-07-15 plan)",
+   "limit": 200,
+   "unit": "USD",
+   "window": "one-time (6 months)",
+   "reset": "6 months from signup or credit exhaustion",
+   "zone": "UTC",
+   "source": "https://aws.amazon.com/free/",
+   "live": "none",
+   "planned_use": {
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); $100 at signup + up to $100 for onboarding actions. FREE plan can never bill and AUTO-CLOSES at the end; PAID plan bills after credits. Replaces the pre-2025-07-15 12-month EC2 free year for new accounts"
+   }
+  },
+  {
+   "id": "azure.functions_executions",
+   "provider": "azure",
+   "lane": "deploy",
+   "metric": "Azure Functions executions (always free)",
+   "limit": 1000000,
+   "unit": "executions/month",
+   "window": "monthly",
+   "reset": "calendar month",
+   "zone": "UTC",
+   "source": "https://azure.microsoft.com/en-us/pricing/offers/ms-azr-0044p",
+   "live": "none",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); includes 400,000 GB-s/mo resource consumption on Consumption plan"
+   }
+  },
+  {
+   "id": "azure.account_credit",
+   "provider": "azure",
+   "lane": "ops",
+   "metric": "free-account credit",
+   "limit": 200,
+   "unit": "USD",
+   "window": "one-time (30 days)",
+   "reset": "30 days from signup",
+   "zone": "UTC",
+   "source": "https://azure.microsoft.com/en-us/pricing/offers/ms-azr-0044p",
+   "live": "none",
+   "planned_use": {
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); plus 12 months of popular services (B1S VM 750 h/mo, Blob 5 GB) that START BILLING in month 13 if upgraded and not deprovisioned; account disabled at day 30 without upgrade"
+   }
+  },
+  {
+   "id": "oracle.ampere_ocpu_hours",
+   "provider": "oracle",
+   "lane": "deploy",
+   "metric": "Ampere A1 compute (Always Free)",
+   "limit": 1500,
+   "unit": "OCPU-hours/month",
+   "window": "monthly",
+   "reset": "calendar month",
+   "zone": "UTC",
+   "source": "https://www.oracle.com/cloud/free/",
+   "live": "none",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); JUNE 2026 HALVING: was effectively 3,000 OCPU-h. 1,500 OCPU-h ~= 2 OCPU running 24/7. Home region chosen at signup is permanent; capacity errors routine; idle instances reclaimable on pure-free accounts"
+   }
+  },
+  {
+   "id": "oracle.ampere_gb_hours",
+   "provider": "oracle",
+   "lane": "deploy",
+   "metric": "Ampere A1 memory (Always Free)",
+   "limit": 9000,
+   "unit": "GB-hours/month",
+   "window": "monthly",
+   "reset": "calendar month",
+   "zone": "UTC",
+   "source": "https://www.oracle.com/cloud/free/",
+   "live": "none",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); 9,000 GB-h ~= 12 GB running 24/7 (halved Jun 2026 from ~24 GB continuous)"
+   }
+  },
+  {
+   "id": "oracle.block_storage",
+   "provider": "oracle",
+   "lane": "deploy",
+   "metric": "block volume storage (Always Free)",
+   "limit": 200,
+   "unit": "GB",
+   "window": "point-in-time",
+   "reset": "n/a",
+   "zone": "UTC",
+   "source": "https://www.oracle.com/cloud/free/",
+   "live": "none",
+   "planned_use": {
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated)"
+   }
+  },
+  {
+   "id": "digitalocean.trial_credit",
+   "provider": "digitalocean",
+   "lane": "ops",
+   "metric": "new-account trial credit",
+   "limit": 200,
+   "unit": "USD",
+   "window": "one-time (60 days)",
+   "reset": "60 days from signup",
+   "zone": "UTC",
+   "source": "https://www.digitalocean.com/pricing/app-platform",
+   "live": "none",
+   "planned_use": {
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); there is NO permanent DigitalOcean free tier \u2014 credit evaporates at day 61; Droplets start at $4/mo"
+   }
+  },
+  {
+   "id": "digitalocean.app_platform_static",
+   "provider": "digitalocean",
+   "lane": "deploy",
+   "metric": "App Platform static-site apps (Free Tier)",
+   "limit": 3,
+   "unit": "apps",
+   "window": "point-in-time",
+   "reset": "n/a",
+   "zone": "UTC",
+   "source": "https://www.digitalocean.com/pricing/app-platform",
+   "live": "none",
+   "planned_use": {
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); 1 GiB outbound transfer per app/mo included; web-service components have NO free tier (from $5/mo)"
+   }
+  },
+  {
+   "id": "deno.deploy_requests",
+   "provider": "deno",
+   "lane": "deploy",
+   "metric": "Deno Deploy requests (Free)",
+   "limit": 1000000,
+   "unit": "requests/month",
+   "window": "monthly",
+   "reset": "calendar month",
+   "zone": "UTC",
+   "source": "https://deno.com/deploy/pricing",
+   "live": "none",
+   "planned_use": {
+    "note": "no fleet account; entitlement per vendor pricing (survey cross-check 2026-10-21): 20 GiB egress, 10 CPU-hours, 5 custom domains on Free"
+   }
+  },
+  {
+   "id": "netlify.credits",
+   "provider": "netlify",
+   "lane": "deploy",
+   "metric": "Netlify credits (Free plan)",
+   "limit": 300,
+   "unit": "credits/month",
+   "window": "monthly",
+   "reset": "calendar month",
+   "zone": "UTC",
+   "source": "https://www.netlify.com/pricing/",
+   "live": "none",
+   "planned_use": {
+    "note": "no fleet account; credit model since Sep 2025 (legacy free tier closed) \u2014 a production deploy costs 15 credits; one project over limit pauses the account (dated survey, revalidate before use)"
+   }
+  }
+ ]
+}

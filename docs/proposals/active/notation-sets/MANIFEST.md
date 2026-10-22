@@ -106,3 +106,26 @@ These additions remain governed by NSE-008 (evolution ledger). The proposal rema
 - Issue #1115: https://github.com/timerloggedout-spec/termux-monorepo/issues/1115
 - PR #322: https://github.com/timerloggedout-spec/termux-monorepo/pull/322
 - PR #324: https://github.com/timerloggedout-spec/termux-monorepo/pull/324
+
+
+## Nomenclature equivalency crosswalk
+
+The sourced nomenclature/label/mapping contract is documented in [`NOMENCLATURE-EQUIVALENCY-MATRIX.md`](./NOMENCLATURE-EQUIVALENCY-MATRIX.md). Treat formal terms, plain-language explanations, colloquial/ad hoc labels, abbreviations, and semantic matches as distinct typed records; do not infer equivalence from string similarity. The crosswalk is a research proposal and does not promote candidate mappings to runtime authority.
+
+
+## Nomenclature Equivalency Matrix (research lane)
+
+- Specification: [`NOMENCLATURE-EQUIVALENCY-MATRIX.md`](./NOMENCLATURE-EQUIVALENCY-MATRIX.md)
+- Candidate data seed: [`nomenclature-matrix/seed.json`](./nomenclature-matrix/seed.json)
+- Relational schema: [`nomenclature-matrix/schema.sql`](./nomenclature-matrix/schema.sql)
+- Validator: [`validate_nomenclature_matrix.py`](../../../../scripts/ci/validate_nomenclature_matrix.py)
+- Tests: [`test_nomenclature_matrix.py`](../../../../tests/test_nomenclature_matrix.py)
+
+This lane records concepts, audience/register-specific labels, evidence sources, and typed semantic mappings. All seed records remain candidates. Do not infer equivalence from matching strings; do not promote an exact mapping without source evidence and domain review. The validator and dedicated workflow enforce basic referential integrity and controlled vocabularies.
+
+
+### Nomenclature research evidence expansion (2026-10-20)
+
+- Research source ledger: [`nomenclature-matrix/RESEARCH-SOURCES.md`](./nomenclature-matrix/RESEARCH-SOURCES.md).
+- Candidate seed expanded with lexical-label, controlled-vocabulary, colloquial-to-formal mapping, and near-synonymy concepts; sources include W3C SKOS, Wolfram, DARIAH-Campus, Getty, Europe PMC/BioHackrXiv, and scholarly mapping research.
+- Label and mapping semantics remain separate. Wikipedia is orientation-only; no source-discovery result independently promotes a candidate mapping.

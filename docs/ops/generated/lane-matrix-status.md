@@ -1,66 +1,66 @@
-# Lane matrix status (2026-10-19T04:33:59Z)
+# Lane matrix status (2026-10-22T17:06:39Z)
 
-- Master: `d128634f04096fd3d8add669cd3849fe169f2b96`
-- Open PRs: **174**
-- Oldest: #47 (74.53d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
+- Master: `16bc62815ab95adb3d3a7d84db913d1a9bd739cc`
+- Open PRs: **53**
+- Oldest: #47 (78.06d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
 | Lane | Count |
 |------|------:|
-| CANDIDATE | 59 |
-| EXTRACT | 5 |
-| NEED_EVIDENCE | 52 |
-| SUPERSEDE | 58 |
+| CANDIDATE | 23 |
+| EXTRACT | 1 |
+| NEED_EVIDENCE | 18 |
+| SUPERSEDE | 11 |
 
 | Age bucket | Count |
 |------------|------:|
-| ancient | 27 |
-| fresh | 28 |
-| mid | 79 |
-| stale | 40 |
+| ancient | 11 |
+| fresh | 26 |
+| mid | 1 |
+| stale | 15 |
 
 ## Tip lanes (EXTRACT / CANDIDATE / NEED_EVIDENCE first)
 
 | PR | Days | Lane | Reasons | Title |
 |---:|-----:|------|---------|-------|
-| #65 | 73.89 | EXTRACT | bot-no-auto-promote, minesweeper-title | 🎨 Palette: Add pulsing heartbeat and color-blind a |
-| #481 | 38.49 | EXTRACT | state:unknown, minesweeper-title | ops: make Jules PR handoffs observable |
-| #672 | 29.13 | EXTRACT | state:unknown, minesweeper-title | feat(ops): evolve Help-Wanted Tribute dashboard |
-| #750 | 26.27 | EXTRACT | bot-no-auto-promote, minesweeper-title | fix(core, dashboard): add fallback imports for req |
-| #1151 | 12.87 | EXTRACT | bot-no-auto-promote, minesweeper-title | 🎨 Palette: UX and accessibility improvements for d |
-| #500 | 36.32 | CANDIDATE | state:unknown | Gaps & Opportunities pass 1: capability checklist  |
-| #527 | 33.86 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
-| #540 | 33.4 | CANDIDATE | state:unknown | docs+ops: fail-closed image asset pipeline + ATES  |
-| #543 | 33.2 | CANDIDATE | state:unknown | feat(ops): add skill definition quality lane and d |
-| #583 | 31.32 | CANDIDATE | state:unknown | ci: integrate Grafana MCP service-account boundary |
-| #584 | 31.32 | CANDIDATE | state:unknown | fix(mvt): make live token budgets context-safe |
-| #605 | 30.44 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
-| #617 | 30.22 | CANDIDATE | state:unknown | fix(proposals): restore registry manifest gate |
-| #618 | 30.22 | CANDIDATE | state:unknown | docs: integrate Agentic-Agile wave governance |
-| #639 | 29.35 | CANDIDATE | state:unknown | fix(ci): mermaid-cli --no-sandbox on AppArmor GH r |
-| #684 | 28.42 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
-| #685 | 28.36 | CANDIDATE | state:unknown | feat(proposals): arrhythmic-zero-token-search — Mu |
-| #702 | 28.1 | CANDIDATE | state:unknown | feat(observatory): integrate Gravitee API Manageme |
-| #714 | 27.27 | CANDIDATE | state:unknown | feat(ops): stepie-stepwise-ops skill — production  |
-| #725 | 27.13 | CANDIDATE | state:unknown | feat(ops): evidence JSONL → SeekLog converter + re |
-| #739 | 26.65 | CANDIDATE | state:unknown | feat(ops): unify replay and HITL control plane P0- |
-| #753 | 26.24 | CANDIDATE | state:unknown | fix(help-wanted): publish Vercel master alias in s |
-| #769 | 25.87 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
-| #785 | 25.35 | CANDIDATE | state:unknown | feat: integrate Wingman_fork as pinned template an |
-| #806 | 24.66 | CANDIDATE | state:unknown | ops: harden evaluation lanes and GitHub App capabi |
-| #809 | 24.66 | CANDIDATE | state:unknown | feat: move GAMUT remote and extend all-repo wiki k |
-| #817 | 24.31 | CANDIDATE | state:unknown | feat(ml): keep-alive DAG re-extract onto 03ffb33b  |
-| #818 | 24.28 | CANDIDATE | state:unknown | feat(ops): Stepie MCP ops runbook + skill stamp +  |
-| #914 | 19.8 | CANDIDATE | state:unknown | refactor(deepagent): remove dead Hindsight code (l |
-| #928 | 19.22 | CANDIDATE | state:unknown | ops(ml): stamp MLP-KEEP items landed after #850 |
-| #953 | 18.25 | CANDIDATE | state:unknown | docs: formalize Gemini Hyper-Forge plan, matrix, m |
-| #963 | 17.83 | CANDIDATE | state:unknown | fix(ci): repair silent control-plane YAML breakage |
-| #967 | 17.78 | CANDIDATE | state:unknown | feat(experiment): ArchWiz Markov recombining trell |
-| #969 | 17.78 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |
-| #990 | 16.92 | CANDIDATE | state:unknown | feat(foresight): wire agent safety, orchestration, |
-| #999 | 16.17 | CANDIDATE | state:unknown | feat(research): implement foresight findings evide |
-| #1020 | 15.65 | CANDIDATE | state:unknown | feat: close provider continuity and executable rou |
-| #1021 | 15.65 | CANDIDATE | state:unknown | docs(ops): connect n8n adapter to Mermaid diagram  |
-| #1038 | 15.51 | CANDIDATE | state:unknown | feat(mergeable): PR-rollup merge classifier helper |
-| #1047 | 15.47 | CANDIDATE | state:unknown | feat(hindsight): recapitulation package + shims |
+| #1436 | 1.44 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): salvage operational Hindsight das |
+| #527 | 37.38 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
+| #605 | 33.97 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
+| #684 | 31.95 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
+| #769 | 29.4 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
+| #969 | 21.3 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |
+| #990 | 20.44 | CANDIDATE | state:unknown | feat(foresight): wire agent safety, orchestration, |
+| #1020 | 19.18 | CANDIDATE | state:unknown | feat: close provider continuity and executable rou |
+| #1274 | 3.33 | CANDIDATE | state:unknown | [draft reference] planning-queue: Platform201 queu |
+| #1278 | 3.31 | CANDIDATE | state:unknown | ops(quota): consolidate planning-lane crons (~50 s |
+| #1441 | 1.39 | CANDIDATE | state:unknown | feat(triage): reconcile official quota before disp |
+| #1469 | 1.17 | CANDIDATE | state:unknown | test(observatory): restore upstream provenance PR  |
+| #1470 | 1.16 | CANDIDATE | state:unknown | feat(swarms): publish Kye parity adapters, researc |
+| #1483 | 1.05 | CANDIDATE | state:unknown | ops(actions): consolidated matrix upgrade + modula |
+| #1495 | 0.61 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
+| #1513 | 0.37 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
+| #1515 | 0.37 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
+| #1516 | 0.36 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
+| #1517 | 0.36 | CANDIDATE | state:unknown | test(orchestration): strengthen DAG property and a |
+| #1518 | 0.36 | CANDIDATE | state:unknown | feat(hex): add checksum-backed artifact provenance |
+| #1519 | 0.36 | CANDIDATE | state:unknown | ci(context): validate historical corpus before bac |
+| #1531 | 0.35 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
+| #1533 | 0.34 | CANDIDATE | state:unknown | feat(delphi): ingest Tribute System 1 outcomes (ar |
+| #1537 | 0.34 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
+| #48 | 78.02 | NEED_EVIDENCE | wrong-base:master-staging | feat(llm-api-hub): OpenAI hub + standalone server  |
+| #286 | 61.93 | NEED_EVIDENCE | wrong-base:master-staging | feat(ops): evidence-gated autonomous staging progr |
+| #386 | 55.48 | NEED_EVIDENCE | draft | feat(ops): DeepSeek/OX Alpha evidence-first canary |
+| #578 | 35.36 | NEED_EVIDENCE | draft | feat(accounting): spreadsheet-first accounting/bid |
+| #740 | 30.17 | NEED_EVIDENCE | draft | feat: operationalize Laya runtime, CADENCE sweeps, |
+| #752 | 29.78 | NEED_EVIDENCE | draft | feat(ops): Termux MCP endpoint status workflow + P |
+| #761 | 29.57 | NEED_EVIDENCE | draft | lane: Desktop Commander fork + Android execution a |
+| #762 | 29.56 | NEED_EVIDENCE | draft | ops: map live plugin connector surface and parity  |
+| #764 | 29.56 | NEED_EVIDENCE | draft | lane: connect Termux hub over Tailscale + repeatab |
+| #829 | 27.67 | NEED_EVIDENCE | draft | feat(multi-ai-cli): DeepTerm integration with Ping |
+| #958 | 21.67 | NEED_EVIDENCE | draft | feat(multi-ai-cli): Complete Mistralai Vibe Code w |
+| #970 | 21.21 | NEED_EVIDENCE | draft | Add Antigravity integration with CLI, SDK, headles |
+| #1301 | 2.45 | NEED_EVIDENCE | draft | docs(telemetry): add equation registry and Wolfram |
+| #1498 | 0.44 | NEED_EVIDENCE | wrong-base:master-staging | Antigravity CLI: collaborative use cases, provisio |
+| #1514 | 0.37 | NEED_EVIDENCE | wrong-base:master-staging | feat(antigravity): isolated secondary operational  |
+| #1538 | 0.33 | NEED_EVIDENCE | draft | feat(tribute): GitLab-native discovery and bounded |
 
 Writer only: does not merge. Dual-gate remains promote authority. HOLD/WAIT/OBSERVE are invalid parking. Age alone ≠ promote.

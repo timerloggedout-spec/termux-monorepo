@@ -115,7 +115,7 @@ For an approval-required phase, make the smallest reviewed edit to `phase-approv
 }
 ```
 
-The lifecycle engine reads only the boolean `approved` as a gate. The `by` and `evidence` fields are audit context, not inferred approval.
+The lifecycle engine accepts only literal JSON boolean `true` in the `approved` field as an affirmative mapping-based gate. The direct form `{"DPH-100": true}` is also supported. Strings (including `"true"` and `"false"`), numbers, containers, missing fields, and `false` do not authorize a phase. The legacy snapshot list form `["DPH-100"]` remains an explicit phase-ID allowlist. The `by` and `evidence` fields are audit context, not inferred approval.
 
 ## Controlled dispatch
 

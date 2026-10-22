@@ -115,7 +115,8 @@ jobs:
               /\btrigger review\b/i.test(rawProviderBody);
             const automaticReviewNotice = /\bdoes not receive automatic reviews\b/i.test(rawProviderBody);
             const codeRabbitCooldown = /review limit reached|review rate limited|action not completed|couldn[’']t start this review|next (?:included )?review (?:will be )?available in/i.test(rawProviderBody);
-            if (checkboxTrigger || automaticReviewNotice || codeRabbitCooldown) {
+            const providerCapacityNotice = /qodo:billing-blocked|trial has ended|usage limits? for code reviews|quota(?:\\s|-)limit|rate[- ]limit|temporarily unavailable|capacity(?:\\s|-)limit|api-deployments-free-per-day|build-rate-limit/i.test(rawProviderBody);
+            if (checkboxTrigger || automaticReviewNotice || codeRabbitCooldown || providerCapacityNotice) {
               core.notice('Provider control or cooldown notice: keep in the authorized operator action path; do not relay to Jules.');
               core.setOutput('should_invoke', 'false');
               return;

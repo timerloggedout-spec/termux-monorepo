@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """🪄 AETHER — ArchWiz Ecosystem Command Engine"""
 
-import sys, os, subprocess, json
+import sys, os, subprocess, json, shlex
 
 HOME = os.path.expanduser("~")
 LLM_MAP = os.path.join(HOME, "workspace/llm_map")
@@ -16,20 +16,25 @@ def cmd_map(args):
     profile = os.environ.get("LLM_PROFILE", "default")
     print(f"⚡ Building map with profile [{profile}]...")
     out, err, rc = run("python3 build_final_all_profile.py", cwd=LLM_MAP)
-    if rc != 0: print("❌ Map build failed:", err); return
-    run("./generate_system_map.sh", cwd=LLM_MAP)
-    run("python3 func_indexer.py", cwd=LLM_MAP)
+    if rc != 0: print("❌ Map build failed:", err); return rc
+    _, err, rc = run("./generate_system_map.sh", cwd=LLM_MAP)
+    if rc != 0: print("❌ System map generation failed:", err); return rc
+    _, err, rc = run("python3 func_indexer.py", cwd=LLM_MAP)
+    if rc != 0: print("❌ Function index build failed:", err); return rc
     print("✅ Map + func index ready.")
+    return 0
 
 def cmd_dep(args):
     if not args: print("Usage: aether dep <file>"); return
-    out, _, _ = run(f"bash {LLM_MAP}/depgraph.sh {args[0]}")
+    out, _, _ = run(f"bash {shlex.quote(LLM_MAP + '/depgraph.sh')} {shlex.quote(args[0])}")
     print(out)
 
 def cmd_funcfind(args):
     if not args: print("Usage: aether funcfind <pattern>"); return
     pattern = args[0]
-    jq = f'''jq -r 'select(.file | test("{pattern}")) | "\\(.name) \t line \\(.line) \t \\(.sig[:60])"' {LLM_MAP}/func_index.jsonl'''
+    jq_filter = r'select(.file | test($pattern)) | "\(.name) \t line \(.line) \t \(.sig[:60])"'
+    jq = shlex.join(["jq", "-r", "--arg", "pattern", pattern,
+                     jq_filter, os.path.join(LLM_MAP, "func_index.jsonl")])
     out, _, _ = run(jq)
     print(out)
 
@@ -102,13 +107,13 @@ def cmd_xref(args):
     run(f"python3 {ARCHWIZ}/xref_exports.py")
 
 def cmd_bookmark(args):
-    run(f"python3 {ARCHWIZ}/lexicon_mark.py " + " ".join(args))
+    run(f"python3 {shlex.quote(ARCHWIZ + '/lexicon_mark.py')} " + " ".join(shlex.quote(a) for a in args))
 
 def cmd_timeline(args):
     run(f"python3 {ARCHWIZ}/timeline_editor.py")
 
 def cmd_lexicon(args):
-    run(f"python3 {HOME}/workspace/compression_sandbox/cedrlang/cid.py " + " ".join(args))
+    run(f"python3 {shlex.quote(HOME + '/workspace/compression_sandbox/cedrlang/cid.py')} " + " ".join(shlex.quote(a) for a in args))
 
 # ── NEW: Reindex pipeline ──
 def cmd_reindex(args):
@@ -120,26 +125,31 @@ def cmd_reindex(args):
         if s == "bloat":
             script = os.path.join(LLM_MAP, "discover_bloat.sh")
             if os.path.exists(script):
-                _, _, rc = run(f"bash {script}", cwd=LLM_MAP)
+                _, err, rc = run(f"bash {script}", cwd=LLM_MAP)
             else:
                 print("⚠️ discover_bloat.sh missing, skipping.")
         elif s == "map":
-            cmd_map([])
+            rc = cmd_map([])
+            err = ""
         elif s == "func":
-            _, _, rc = run("python3 func_indexer.py", cwd=LLM_MAP)
+            _, err, rc = run("python3 func_indexer.py", cwd=LLM_MAP)
         elif s == "manifest":
-            run(f"python3 {ARCHWIZ}/build_data_flow_manifest.py")
+            _, err, rc = run(shlex.join(["python3", os.path.join(ARCHWIZ, "build_data_flow_manifest.py")]))
         elif s == "tools":
-            run(f"python3 {ARCHWIZ}/build_tool_index.py")
+            _, err, rc = run(shlex.join(["python3", os.path.join(ARCHWIZ, "build_tool_index.py")]))
         elif s == "fts":
             db = os.path.join(HOME, "termux-multi-agent/local_repo.db")
             if os.path.exists(db):
-                _, _, rc = run(f"sqlite3 {db} \"INSERT INTO messages_fts(messages_fts) VALUES('rebuild');\"")
-        if rc != 0 and s != "bloat":
-            print(f"❌ Stopped at {s}")
-            return
-    run(f"python3 {ARCHWIZ}/build_reference_hub.py")
+                _, err, rc = run(f"sqlite3 {db} \"INSERT INTO messages_fts(messages_fts) VALUES('rebuild');\"")
+        if rc != 0:
+            print(f"❌ Stopped at {s}:", err)
+            return rc
+    _, err, rc = run(shlex.join(["python3", os.path.join(ARCHWIZ, "build_reference_hub.py")]))
+    if rc != 0:
+        print("❌ Stopped at reference hub:", err)
+        return rc
     print("✅ Full reindex complete. Reference Hub updated.")
+    return 0
 
 # ── Main ──
 HELP = """🪄 AETHER — ArchWiz Ecosystem Command Engine
@@ -184,9 +194,9 @@ def main():
         "reindex": cmd_reindex,
     }
     if cmd in cmds:
-        cmds[cmd](args)
+        return cmds[cmd](args)
     else:
         print(f"Unknown command: {cmd}. Run 'aether --help'.")
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

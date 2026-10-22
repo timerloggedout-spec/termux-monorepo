@@ -1,7 +1,7 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-10-01T01:58:00Z"
-updated_by: grok-administrator
+updated_at: "2026-10-21T09:45:00Z"
+updated_by: ChatGPT
 
 proposals:
   - id: agent-contributor-provenance
@@ -196,8 +196,8 @@ proposals:
       - id: Manus
         role: author-executor
         status: executing
-    related_prs: [232]
-    related_branches: [manus/context-relationship-graph]
+    related_prs: [232, 1286]
+    related_branches: [manus/context-relationship-graph, docs/historical-corpus-explorer-proposal]
     gates_required: [repo-gate, termux-smoke]
 
   - id: manus-critical-eval
@@ -519,3 +519,135 @@ proposals:
     related_prs: []
     related_branches: []
     gates_required: [repo-gate]
+
+  - id: lane-compounding
+    title: "Lane compounding: live dashboard data, Bayesian/Markov tribute qualification, ForeSight→HindSight calibration, blind-graded treatments"
+    author: Hark
+    status: posted
+    priority: P1
+    path: active/lane-compounding/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: Hark
+        role: author+executor
+        status: executing
+    related_prs: [1244, 1274, 1277, 1278, 1280]
+    related_branches: [hark/lane-compounding, docs/biudl-audit-refresh-20261021]
+    gates_required: [repo-gate]
+  - id: free-llm-provider-prioritization
+    title: "Free LLM provider research/RFP feedback prioritization and HITL"
+    author: Cue
+    status: in_review
+    priority: P1
+    path: active/free-llm-provider-prioritization/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: Cue
+        role: author+executor
+        status: executing
+    related_prs: []
+    related_branches: []
+    gates_required: [repo-gate, termux-smoke]
+  - id: archwiz-markov-trellis-lab
+    title: "ArchWiz Markov recombining tree/trellis visualization and evaluation sandbox"
+    author: ChatGPT
+    status: executing
+    priority: P1
+    path: active/archwiz-markov-trellis-lab/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_issues: [966]
+    related_prs: [967]
+    related_branches:
+      - experiment/archwiz-markov-trellis-lab
+    gates_required: [repo-gate, termux-smoke]
+  - id: archwiz-hyperforge-gemini-review
+    title: "ArchWiz Hyper-Forge — Gemini plan reconciliation and collaborative development"
+    author: ChatGPT
+    status: posted
+    priority: P1
+    path: active/archwiz-hyperforge-gemini-review/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: ChatGPT
+        role: author+executor
+        status: posted
+    related_issues: [943, 951, 952, 944, 945, 946, 947, 948, 949, 950]
+    related_prs: [937]
+    related_branches:
+      - docs/archwiz-hyperforge-gemini-review-package
+    gates_required: [repo-gate, termux-smoke]
+  - id: agent-team-formation
+    title: "Role-aware agent teams, game-player fleet, scoring, and controlled research"
+    author: Manus AI
+    status: draft
+    priority: P1
+    path: active/agent-team-formation/
+    reviewers:
+      - id: Manus AI
+        role: author
+        status: posted
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: awaiting_review
+    related_issues: [129, 236, 243]
+    related_prs: [131]
+    related_branches: [docs/agent-team-formation-draft]
+    gates_required: [repo-gate, termux-smoke]
+  - id: ops-hitl-control-plane
+    title: "OPS-EVENT HITL Control Plane"
+    author: timerloggedout-spec
+    status: posted
+    priority: P1
+    path: active/ops-hitl-control-plane/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: []
+    related_prs: [739]
+    related_branches:
+      - feat/hitl-control-plane-739
+  - id: arrhythmic-zero-token-search
+    title: "Arrhythmic Flow + Matrix Intersections for Zero-Token Web Search Wrappers"
+    author: grok
+    status: executing
+    priority: P1
+    path: active/arrhythmic-zero-token-search/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: grok
+        role: author+executor
+        status: executing
+    related_prs: [685]
+    related_issues: []
+    related_branches: [feat/arrhythmic-zero-token-search]
+  - id: codespaces-enablement
+    title: "Codespaces prebuilds (cost decision) + org-wide standard-piece gaps from the gaps-and-opportunities sweep"
+    author: gaps-and-opportunities-subagent
+    status: posted
+    priority: P2
+    path: active/codespaces-enablement/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: pending
+      - id: gaps-and-opportunities-subagent
+        role: author+driver
+        status: posted
+    related_prs: [499, 530, 531]
+    related_branches: [gaps-opps/add-devcontainer-codespaces, docs/proposals/codespaces-enablement]
+    gates_required: [repo-gate, termux-smoke]

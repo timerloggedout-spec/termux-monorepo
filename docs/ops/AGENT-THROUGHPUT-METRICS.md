@@ -7,7 +7,7 @@
 
 SHE already reconstructs durable GitHub Actions timing from run/job timestamps. This lane extends that reducer model to multi-agent execution telemetry without introducing a hosted observability dependency.
 
-ATES is **not a future/fancy add-on**: Phase A has already landed as a pure reducer and test contract. Phase B now adds runtime evidence emission; the remaining phases add longitudinal correlation, provider experiments, and manager-level use around that foundation.
+ATES is **not a future/fancy add-on**: Phase A has already landed as a pure reducer and test contract. The remaining phases add evidence emission, longitudinal correlation, provider experiments, and manager-level use around that foundation.
 
 The design accepts Gemini's ATES concepts, but makes three corrections:
 
@@ -112,9 +112,6 @@ The repository should measure the adapters against the same event schema, then r
 - Phase A reducer: `she/metrics/agent_throughput.py`
 - Phase A tests: `tests/test_she_agent_throughput.py`
 - Phase A quality gate: `.github/workflows/agent-quality-lane.yml` + `scripts/ci/verify_agent_quality.py`
-- Phase B emitter: `scripts/ci/emit_agent_throughput.py`
-- Phase B observer: `.github/workflows/agent-throughput-evidence.yml`
-- Phase B tests: `tests/test_emit_agent_throughput.py`
 - Hex-compatible sanitizer: `scripts/hex_moneyball_export.py`
 - Actions timing reducer: `she/metrics/job_timestamps.py`
 - Longitudinal corpus: `workspace/llm_map/context_relationships/`
@@ -126,9 +123,11 @@ The repository should measure the adapters against the same event schema, then r
 
 Land schema + pure reducer + fixtures + quality verification. No external telemetry dependency. This is the ATES foundation already present on the active integration branch.
 
-### Phase B — evidence emission **[IMPLEMENTED]**
+### Phase B — evidence emission **[PARTIAL: WORKFLOW RECEIPT IMPLEMENTED]**
 
-An observer workflow now watches eligible completed agent workflows, emits sanitized JSONL, and publishes a receipt alongside the reducer output. Every emitted event retains run/attempt/SHA linkage; ambiguous complexity and missing job timing remain absent.
+`.github/workflows/ates-phase-b-run-receipt.yml` observes completed `Continuous agent ops` runs and publishes one metadata-only JSONL receipt as a 30-day Actions artifact. `scripts/ci/emit_ates_run_receipt.py` retains the observed run ID, attempt, source SHA, workflow label, completion timestamp, conclusion, and duration when both timestamps exist. It intentionally omits commit messages, run URLs, prompts, completions, and arbitrary payloads. Missing duration remains absent. The existing event schema is validated by the receipt workflow.
+
+`she/observability/orchestrator_trace.py` provides an opt-in span boundary, and `scripts/ci/bridge_ates_trace_to_events.py` converts only recognized span kinds into the canonical event schema. Raw trace metadata is not itself safe to publish: task, role, and tool strings can contain arbitrary input. The export bridge replaces all three with domain-separated SHA-256 identifiers (`ates-task:`, `ates-role:`, `ates-tool:`), preserving repeatable grouping without retaining the original labels. These fingerprints are pseudonyms, not anonymization or a substitute for access control; predictable labels can still be guessed. Exported groups do not join directly to pre-existing plaintext label cohorts. Timestamps are validated and normalized to UTC, non-finite durations are rejected, and arbitrary attributes and source payload fingerprints are omitted. Run/attempt/SHA linkage remains available. The bridge is a tested adapter, not a claim that every production orchestrator path is already instrumented or that raw trace artifacts are safe for publication or automatically ingested into the longitudinal corpus. Extend to other eligible workflows only after their event semantics and permissions are confirmed.
 
 ### Phase C — longitudinal correlation
 

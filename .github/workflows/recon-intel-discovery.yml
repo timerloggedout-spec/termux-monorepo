@@ -46,6 +46,8 @@ jobs:
         env:
           REQUESTED_PR_NUMBER: ${{ github.event.inputs.pr_number || '' }}
           REQUESTED_GITLAB_REF: ${{ github.event.inputs.gitlab_ref || 'master' }}
+          RECON_SWEEP_WINDOW_HOURS: ${{ vars.RECON_SWEEP_WINDOW_HOURS || '2' }}
+          RECON_SWEEP_MAX_TARGETS: ${{ vars.RECON_SWEEP_MAX_TARGETS || '8' }}
         with:
           script: |
             const requested = (process.env.REQUESTED_PR_NUMBER || '').trim();
@@ -87,14 +89,25 @@ jobs:
               // operator’s bounded health probe, not a bulk PR sweep.
               targets = [{ pr_number: '0', github_sha: context.sha }];
             } else {
+              // Scheduled sweep is bounded: pull_request_target already probes
+              // every push, so the cron only catches PRs touched recently.
+              // An unbounded sweep over ~80 open PRs every 15 minutes exhausted
+              // the GITHUB_TOKEN installation rate limit (runs 39524739010 etc.).
+              const windowHours = Number(process.env.RECON_SWEEP_WINDOW_HOURS || '2');
+              const maxTargets = Number(process.env.RECON_SWEEP_MAX_TARGETS || '8');
+              const cutoff = Date.now() - windowHours * 3600 * 1000;
               const { data: openPrs } = await github.rest.pulls.list({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 state: 'open',
-                per_page: 100,
+                sort: 'updated',
+                direction: 'desc',
+                per_page: 50,
               });
               targets = openPrs
                 .filter(pr => !pr.draft && pr.head.repo?.full_name === ownRepo)
+                .filter(pr => Date.parse(pr.updated_at) >= cutoff)
+                .slice(0, maxTargets)
                 .map(targetFromPr);
               const now = new Date();
               const idleProbe = now.getUTCMinutes() === 0 && now.getUTCHours() % 6 === 0;
@@ -117,6 +130,7 @@ jobs:
       checks: write
     strategy:
       fail-fast: false
+      max-parallel: 4
       matrix:
         target: ${{ fromJSON(needs.select-targets.outputs.targets) }}
     steps:

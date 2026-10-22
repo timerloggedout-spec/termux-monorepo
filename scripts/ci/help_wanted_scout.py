@@ -21,7 +21,14 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any
+
+try:
+    from scripts.ci import tribute_system1
+except ImportError:  # pragma: no cover - Actions checkout root
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+    from scripts.ci import tribute_system1  # type: ignore
 
 PREFERRED_LANGS = {
     "python", "typescript", "javascript", "go", "rust", "shell", "markdown", "yaml", "bash"
@@ -39,6 +46,10 @@ LABEL_SCORES = {
     "hacktoberfest": 8,
     "contributions welcome": 8,
 }
+
+# Bolt optimization: Pre-allocate static tuple constant at module scope to eliminate
+# per-body clarity allocation frames.
+CLARITY_KEYWORDS = ("acceptance", "expected", "steps to", "checklist", "- [ ]", "repro")
 
 
 def _headers() -> dict[str, str]:
@@ -84,7 +95,7 @@ def body_clarity(body: str | None) -> int:
         return 0
     b = body.lower()
     score = 0
-    if any(k in b for k in ("acceptance", "expected", "steps to", "checklist", "- [ ]", "repro")):
+    if any(k in b for k in CLARITY_KEYWORDS):
         score += 10
     n = len(body)
     if 80 <= n <= 2000:
@@ -94,12 +105,16 @@ def body_clarity(body: str | None) -> int:
     return max(0, min(15, score))
 
 
-def freshness_score(updated_at: str | None) -> int:
+def freshness_score(updated_at: str | None, now: datetime | None = None) -> int:
     if not updated_at:
         return 0
     try:
-        dt = datetime.fromisoformat(updated_at.replace("Z", "+00:00"))
-        age = (datetime.now(timezone.utc) - dt).days
+        try:
+            dt = datetime.fromisoformat(updated_at)
+        except ValueError:
+            dt = datetime.fromisoformat(updated_at.replace("Z", "+00:00"))
+        ref_now = now or datetime.now(timezone.utc)
+        age = (ref_now - dt).days
     except Exception:
         return 0
     if age < 30:
@@ -123,12 +138,12 @@ def comment_score(n: int | None) -> int:
 
 
 def language_score(repo_url: str, preferred: set[str]) -> int:
-    # Search results do not always embed language; light heuristic from URL/path
-    # Full language requires secondary API; keep zero-cost for scout.
-    return 5  # neutral baseline; workflow can enrich later
+    """Return zero until repository language is actually fetched and verified."""
+    del repo_url, preferred
+    return 0
 
 
-def rank_issue(item: dict) -> dict:
+def rank_issue(item: dict, now: datetime | None = None) -> dict:
     labels = item.get("labels") or []
     body = item.get("body") or ""
     assignees = item.get("assignees") or []
@@ -138,19 +153,30 @@ def rank_issue(item: dict) -> dict:
     title = item.get("title") or ""
     repo = (item.get("repository_url") or "").replace("api.github.com/repos/", "github.com/")
 
-    score = 0
-    score += label_score(labels)
-    score += 15 if not assignees else (5 if len(assignees) == 1 else 0)
-    score += body_clarity(body)
-    score += freshness_score(updated)
-    score += comment_score(comments)
-    score += 8  # repo health baseline (search already filters active-ish)
-    score += language_score(repo, PREFERRED_LANGS)
-    score += 5  # assume no competing PR unless later enriched
-    score = max(0, min(100, score))
+    # Unknown repository health, language, and competing-PR status are not
+    # positive evidence. Keep every score component inspectable.
+    components = {
+        "label_fit": label_score(labels),
+        "unassigned": 15 if not assignees else (5 if len(assignees) == 1 else 0),
+        "body_clarity": body_clarity(body),
+        "freshness": freshness_score(updated, now=now),
+        "comment_signal": comment_score(comments),
+        "repository_health": 0,
+        "language_fit": language_score(repo, PREFERRED_LANGS),
+        "competing_pr_absence": 0,
+    }
+    score = max(0, min(100, sum(components.values())))
+
 
     return {
         "score": score,
+        "score_components": components,
+        "evidence_gaps": [
+            "repository_health_not_checked",
+            "repository_language_not_verified",
+            "competing_pr_status_not_checked",
+        ],
+        "ranking_status": "candidate_only",
         "title": title,
         "url": html,
         "repo": repo,
@@ -160,6 +186,41 @@ def rank_issue(item: dict) -> dict:
         "updated_at": updated,
         "number": item.get("number"),
     }
+
+
+def fetch_comments(item: dict) -> list[dict] | None:
+    """Issue comments in Tribute System 1 shape; None when the read fails."""
+    if not item.get("comments"):
+        return []
+    url = item.get("comments_url") or ""
+    if not url:
+        return None
+    try:
+        raw = _get(url + "?per_page=100")
+    except (urllib.error.URLError, ValueError) as e:
+        print(f"comments HTTP fail {url}: {e}", file=sys.stderr)
+        return None
+    return [
+        {"id": c.get("id"), "author": (c.get("user") or {}).get("login"),
+         "author_type": (c.get("user") or {}).get("type"), "association": c.get("author_association"),
+         "created_at": c.get("created_at"), "body": c.get("body") or ""}
+        for c in raw or []
+    ]
+
+
+def preflight(item: dict, comments: list[dict] | None) -> dict:
+    """Tribute System 1 candidate gate. Unreadable comments exclude the candidate."""
+    repo = (item.get("repository_url") or "").split("/repos/")[-1]
+    issue = {
+        "repo": repo, "number": item.get("number"), "url": item.get("html_url"),
+        "state": item.get("state"), "body": item.get("body") or "",
+        "author": (item.get("user") or {}).get("login"),
+        "assignees": [a.get("login") for a in item.get("assignees") or []],
+        "labels": [l.get("name") for l in item.get("labels") or []],
+    }
+    if comments is None:
+        return {"eligible": False, "reasons": ["comments_unreadable"]}
+    return tribute_system1.preflight_candidate(issue, comments)
 
 
 def main() -> int:
@@ -178,14 +239,30 @@ def main() -> int:
     query = " ".join(parts)
 
     items = search_issues(query, per_page=min(args.max, 50))
-    ranked = sorted((rank_issue(i) for i in items), key=lambda x: -x["score"])[: args.max]
+    now = datetime.now(timezone.utc)
+    eligible_items, excluded = [], []
+    for it in items:
+        pf = preflight(it, fetch_comments(it))
+        if pf["eligible"]:
+            eligible_items.append(it)
+        else:
+            excluded.append({"url": it.get("html_url"), "reasons": pf["reasons"]})
+    ranked = sorted((rank_issue(i, now=now) for i in eligible_items), key=lambda x: -x["score"])[: args.max]
 
     catalog = {
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "schema_version": "help-wanted-catalog.v2",
+        "generated_at": now.isoformat(),
         "query": query,
         "count": len(ranked),
         "items": ranked,
-        "heuristics": "CPPH v0 — see docs/ops/HELP-WANTED-LANE.md",
+        "excluded": excluded,
+        "preflight": "tribute_system1.preflight_candidate",
+        "ranking_contract": {
+            "heuristics": "CPPH v0 — see docs/ops/HELP-WANTED-LANE.md",
+            "meaning": "relative discovery priority, not eligibility or claim authorization",
+            "unknown_evidence_policy": "unknown signals earn zero points and are listed as evidence gaps",
+            "requires_fresh_validation_before_claim": True,
+        },
     }
 
     text = json.dumps(catalog, indent=2)

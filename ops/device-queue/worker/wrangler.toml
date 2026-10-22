@@ -1,0 +1,18 @@
+# tmx-device-queue — P1 device pull-queue Worker (see docs/ops/DEVICE-PULL-QUEUE.md)
+# Token values are NEVER stored in this file. They are Worker secrets, set at
+# deploy time with `wrangler secret put <NAME>` for each of:
+#   DEVICE_QUEUE_PRODUCER_TOKEN_ACTIONS
+#   DEVICE_QUEUE_PRODUCER_TOKEN_CLI
+#   DEVICE_QUEUE_DEVICE_TOKEN_PRIMARY
+#   DEVICE_QUEUE_DEVICE_TOKEN_SECONDARY
+name = "tmx-device-queue"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+workers_dev = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "tmx-device-queue"
+# Placeholder: the owner replaces this with the real id returned by
+# `wrangler d1 create tmx-device-queue` during the deploy step.
+database_id = "REPLACE_AT_DEPLOY"

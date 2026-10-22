@@ -42,6 +42,16 @@ class TournamentTests(unittest.TestCase):
         self.assertEqual(pair["decisive_questions"], 0)
         self.assertEqual(pair["comparable_questions"], 1)
 
+    def test_expected_mismatch_is_non_comparable_pairwise(self):
+        rows = [
+            {"candidate_id": "a", "question_id": "q", "expected": "yes", "prediction": "yes"},
+            {"candidate_id": "b", "question_id": "q", "expected": "no", "prediction": "no"},
+        ]
+        pair = module.score(rows)["pairwise"][0]
+        self.assertEqual(pair["expected_mismatch_questions"], 1)
+        self.assertEqual(pair["non_comparable_questions"], 1)
+        self.assertEqual(pair["decisive_questions"], 0)
+
     def test_non_ok_status_is_non_comparable_pairwise(self):
         rows = [
             {"candidate_id": "a", "question_id": "q", "expected": 1, "prediction": 1, "status": "timeout"},

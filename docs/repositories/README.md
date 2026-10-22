@@ -40,7 +40,7 @@ Classification is deliberately deterministic. It uses repository name, descripti
 - integration candidates
 - submodule-candidate signal
 
-These are **inferences**, not GitHub facts. They are intended as seeds for later context-relationship and research workflows rather than automatic adoption decisions.
+These are **inferences**, not GitHub facts. In particular, `submodule_candidate` is a review/discussion signal only and never authorizes adding a submodule. They are intended as seeds for later context-relationship and research workflows rather than automatic adoption decisions.
 
 ## Security and credentials
 

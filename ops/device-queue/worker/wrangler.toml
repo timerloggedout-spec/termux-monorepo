@@ -13,6 +13,6 @@ workers_dev = true
 [[d1_databases]]
 binding = "DB"
 database_name = "tmx-device-queue"
-# Placeholder: the owner replaces this with the real id returned by
-# `wrangler d1 create tmx-device-queue` during the deploy step.
-database_id = "REPLACE_AT_DEPLOY"
+# Live tmx-device-queue D1 database id, set at deploy on 2026-10-22
+# (returned by `wrangler d1 create tmx-device-queue`).
+database_id = "f3a8579c-cfc7-4c00-a706-930c9f0069e3"

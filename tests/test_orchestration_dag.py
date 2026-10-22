@@ -134,12 +134,13 @@ class ReadinessTests(unittest.TestCase):
             evaluate_readiness(["a"], [], {"a": "DONE"})
 
 
-if __name__ == "__main__":
-    unittest.main()
-
     def test_cycle_count_counts_components_not_vertices(self):
         receipt = self.analyze(["a", "b", "c", "d"], [
             ("a", "b"), ("b", "a"), ("c", "d"), ("d", "c")
         ])
         self.assertEqual(receipt["cycle_count"], 2)
         self.assertEqual(receipt["cyclic_nodes"], ["a", "b", "c", "d"])
+
+
+if __name__ == "__main__":
+    unittest.main()

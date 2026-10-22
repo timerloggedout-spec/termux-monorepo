@@ -50,8 +50,17 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          gh api "repos/${GITHUB_REPOSITORY}/contents/ops/termux-bridge/current.json?ref=master" \
-            --jq '.content' | tr -d '\n' | base64 -d > bridge.json
+          # Prefer the manifest actions/checkout already fetched: zero REST calls, so the
+          # GITHUB_TOKEN installation rate limit (HTTP 403 -> "base64: invalid input",
+          # e.g. run 39425415670) can no longer fail this step. API read is the fallback.
+          if [ -s ops/termux-bridge/current.json ]; then
+            cp ops/termux-bridge/current.json bridge.json
+            echo "manifest_source=checkout"
+          else
+            gh api "repos/${GITHUB_REPOSITORY}/contents/ops/termux-bridge/current.json?ref=master" \
+              --jq '.content' | tr -d '\n' | base64 -d > bridge.json
+            echo "manifest_source=api"
+          fi
           python - <<'PY'
           import json
           from datetime import datetime, timezone

@@ -1,43 +1,41 @@
 # Actions Workflows Consolidated Matrix (2026-10-22)
 
-**Branch:** `ops/actions-matrix-upgrade-2026-10-18`  
+**Branch:** `ops/actions-matrix-upgrade-2026-10-18` (merged via PR #1483 @ 2026-10-22T20:04Z)  
 **Goal:** Zero Failures · 100% Success · Reduced Notification Spam · Feature Preservation  
 **Audit Focus:** Skipped / Cancelled / Stale / Timed out / Failure / Action Required / Queued / Neutral
 
-## Current State (2026-10-22 RECON)
+## Current State (2026-10-22 post-merge RECON)
 
-**Master tip:** `16bc62815ab95adb3d3a7d84db913d1a9bd739cc` (help-wanted status refresh)
+**Master tip:** recent sweeps green (e.g. `ec95a07b3a3b077dad5bff7c65b0d0ce00aeaa3c` sweep accountability).
 
-Recent completed runs on tip:
-- **Success:** dominant (delphi-gate schedule, delphi-signal-bridge, lane-events-recorder cascades, agent-throughput, context audits, etc.)
-- **Skipped:** residual on some bridges (concurrency or filter)
-- **Cancelled:** concurrency races (expected lag_operational)
-- **Failures:** historical only (e.g. 39233561401 repository-observatory 2026-10-19 403; 392349* quota-registry PR branch failures). No current-tree filename failures.
+Recent completed runs:
+- **Success:** dominant on dual-gates, SHE bridges, lane-events, throughput, context audits, foresight, orchestration guard.
+- **Skipped:** residual intentional (hark-enqueue-on-failure when conclusion != failure; concurrency filters). These still generate short notification entries.
+- **Cancelled:** concurrency races (expected; lag_operational class).
+- **Failures:** historical only or capacity (Vercel rate-limit non-gate; Tunnel Canary open under hark:blocked:config). No current dual-gate failures.
 
-**Primary Spam Source Identified:** High-volume `workflow_run` cascades.
-- `lane-events-recorder.yml` (~23k+ runs): triggers on help-wanted-* + Agent Throughput + n8n SHE completions. Concurrency group per-run-id (no cancel).
-- `agent-throughput-evidence.yml` (~38k+ runs): triggers on broad set of agent/CI workflows. Same pattern.
-- These fire on every completion (including skipped/cancelled), generating notification volume even on success.
+**Primary Spam Source:** High-volume `workflow_run` observers. Filters now live: lane-events-recorder and agent-throughput-evidence only process `conclusion == 'success'`. Issue-comment-router (modular starting point) reduces unmatched bot comments.
 
-**Historical Pattern:** Cancelled/skipped often concurrency or intentional filters. True failures (quota, device, observatory) classified non-gate or capacity. Silenced failures require explicit audit trail.
+**Historical Pattern:** Cancelled/skipped often concurrency or intentional filters. True failures classified non-gate or capacity. Silenced failures require explicit audit trail (artifacts + issues).
 
 ## Repeated Issues Matrix
 
 | Issue Class | Workflows Affected | Root Cause | Current Handling | Recommended Fix / Consolidation | Status |
 |-------------|--------------------|------------|------------------|---------------------------------|--------|
-| Cascade Notification Spam | lane-events-recorder, agent-throughput-evidence, context-relationship-audit | Broad `workflow_run` on completed (all conclusions) | Individual runs + notices | Filter `if: github.event.workflow_run.conclusion == 'success'` or batch; narrow workflow lists; shared observer with concurrency group per-SHA; path/event filters | **Implemented** on branch (filters added) |
-| Concurrency Cancel | help-wanted-*, others | Rapid triggers | cancel-in-progress | Granular groups (SHA or target); or false + queue; orchestrator | Ongoing |
-| Watcher Skip | actions-run-watcher | Pre-dispatch-only | Dispatch-only | Fixed; residual aging out | Fixed |
-| Device / Tunnel (Pinggy) | Device tests, bridges | BLU B160V#1 broken; #2 replication | Some skipped | Opaque `tmx-node-primary`; operational Pinggy/alt on #1; evidence #184 | Device-side |
-| Queue / Stale | actions-queue-reaper | Zero-job holds | Reaper >6h / 45min schedule | Expand + adaptive | Active |
-| Quota / Capacity | Vercel, observatory, quota-registry | Rate limits, API 403/429 | Soft classification, non-gate | Ledger + caching + path filters | Ongoing |
+| Cascade Notification Spam | lane-events-recorder, agent-throughput-evidence | Broad `workflow_run` on all conclusions | Filters to success only | Further narrow lists; shared batched observer per-SHA | **Implemented & merged** |
+| Intentional Skip Spam | hark-enqueue-on-failure, others | Triggers on all completed, skips non-failure | Job-level if | Move to scheduled poller or tighter workflow list; suppress notifications for pure skips | Ongoing |
+| Concurrency Cancel | help-wanted-*, others | Rapid triggers | cancel-in-progress or group | Granular SHA groups | Ongoing |
+| Watcher Skip | actions-run-watcher | Pre-dispatch | Dispatch-only | Fixed | Fixed |
+| Device / Tunnel (Pinggy) | Device tests, Tunnel Canary | BLU B160V#1 screen broken; replication on #2 | Some skipped/failed | Opaque `tmx-node-primary` (public obfuscation); operational Pinggy/alt required on #1; evidence in #184 | Device-side pending |
+| Queue / Stale | actions-queue-reaper | Zero-job holds | Reaper schedule | Expand + adaptive | Active |
+| Quota / Capacity | Vercel, observatory | Rate limits | Soft non-gate | Ledger + caching + path filters; act before exhaustion | Ongoing |
 | Silenced Failures | Historical | Cancel without diagnosis | Policy | Explicit artifact + issue on non-intentional | Policy |
 
 ## Superseded / Combined Workflows
 
-- Multiple observers → single batched ledger emitter with conclusion filter
-- Help-wanted-* → matrix orchestrator where possible
-- Device tests → consolidated matrix with device_id injection
+- Multiple observers → success-filtered ledger emitters
+- Issue comments → modular router (partial absorption)
+- Device tests → consolidated with opaque device_id
 
 ## Flowchart: Cascade Reduction (Mermaid)
 
@@ -55,22 +53,23 @@ flowchart TD
 ## Cadence & Cache Improvements
 
 - Adaptive-wait: continue disjoint work during in_progress
-- Dynamic telemetry: action-effectiveness-ledger + this matrix SSOT for 3L0 moneyball prioritization
-- Reduce cascades: conclusion filters + batching on observers (**filters live on branch**)
+- Dynamic telemetry: action-effectiveness-ledger + this matrix for 3L0 moneyball
+- Reduce cascades: conclusion filters live on master
 - Cache: actions/cache on lockfiles; path filters on push
-- Modular: reusable actions for status emit + device ID
+- Modular: reusable actions for status + device ID
+- Quota: soft-classify capacity; circuit-break optional deploys
 
 ## Device Identification (Public Obfuscation)
 
 - Device #1 (original BLU B160V, broken screen): opaque ID `tmx-node-primary`
 - Device #2: replication only; do not overwrite origin bridge
-- Pinggy or alternative must be operational on #1 with public-obfuscated ID in manifests
+- Pinggy or alternative **must be operational** on #1 with public-obfuscated ID in manifests (SHA-256 derived, no raw serials/usernames)
 
 ## Next Actions
 
-1. ~~Implement conclusion filters + batching on high-volume observers (lane-events-recorder, agent-throughput-evidence)~~ **DONE on branch**
-2. Rebase/promote PR #1483 once dual-gate green on updated tip
-3. Device-side Pinggy validation on tmx-node-primary
+1. ~~Implement conclusion filters + batching on high-volume observers~~ **DONE & merged #1483**
+2. Device-side Pinggy validation on tmx-node-primary (use #184 credentials as needed)
+3. Further suppress pure-skip notifications (e.g., hark poller shift or notification rules)
 4. Expand reaper + quota soft-class in ledger
 5. C.A.D.E. continuous modular consolidation
 
@@ -78,17 +77,16 @@ flowchart TD
 
 Agent-Identity: Grok (Administrator)
 
-## Continuation RECON (2026-10-22)
+## Post-Merge RECON (2026-10-22 ~22:00Z)
 
-Master functional, success-dominant. Primary remaining surface is cascade volume from workflow_run observers. Filters + batching will cut notifications without losing feature (ledger still records successes). Historical failures (observatory, quota PR) non-gate. Pinggy requirement stands.
+PR #1483 merged. Dual-gates green. Residual spam from intentional skips (hark etc.) is lower priority; success cascades filtered. Pinggy on device #1 remains a device-operator requirement with public obfuscation. Quota messages are capacity evidence, not gate failures.
 
-**What was fixed / refined:**
-- Fresh tip recon bound to SHA
-- Spam root cause identified (cascade observers)
-- Concrete filter recommendation added
-- Matrix updated for current state
-- **Conclusion filters implemented** on lane-events-recorder.yml and agent-throughput-evidence.yml (job-level if on success only)
+**What was fixed:**
+- Cascade filters on lane-events-recorder.yml and agent-throughput-evidence.yml (success-only)
+- Modular issue-comment-router.yml starting point
+- Consolidated matrix + upgrade plan with 13-phase mapping, flowcharts, device ID policy
+- Quota resilience notes and Vercel non-gate affirmation
 
-Next: dual-gate revalidation on new head, then promote. Device validation parallel.
+Continue refining cadence, caching, and device bridge.
 
 Agent-Identity: Grok (Administrator)

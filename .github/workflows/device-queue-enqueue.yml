@@ -1,0 +1,95 @@
+name: Device Queue Enqueue
+
+# P1 Phase 3 (docs/ops/P1-PULL-QUEUE-SPEC.md): Actions as a queue producer.
+# Manual dispatch ONLY — no schedule. Migrating the nightly pair onto this
+# producer (and retiring the SSH push in deepagent-task.yml, which this
+# workflow deliberately does not touch) is a later owner decision.
+on:
+  workflow_dispatch:
+    inputs:
+      kind:
+        description: "Task kind (queue allowlist)"
+        type: choice
+        required: true
+        default: heartbeat-only
+        options:
+          - deepagent-run
+          - git-commit-push
+          - git-sync
+          - shell-allowlisted
+          - heartbeat-only
+      role:
+        description: "Queue role the task is addressed to"
+        type: string
+        required: true
+        default: engineer
+      payload:
+        description: "Task payload as a JSON object string"
+        type: string
+        required: false
+        default: "{}"
+      dedupe_key:
+        description: "Idempotency key (empty = none; the Worker rejects duplicates with 409)"
+        type: string
+        required: false
+        default: ""
+      ttl_hours:
+        description: "Hours until the task expires unclaimed"
+        type: number
+        required: true
+        default: 6
+
+permissions: {}
+
+jobs:
+  enqueue:
+    runs-on: ubuntu-latest
+    env:
+      DEVICE_QUEUE_URL: ${{ vars.DEVICE_QUEUE_URL || 'https://tmx-device-queue.timerloggedout.workers.dev' }}
+      DEVICE_QUEUE_TOKEN: ${{ secrets.DEVICE_QUEUE_PRODUCER_TOKEN_ACTIONS }}
+      IN_KIND: ${{ inputs.kind }}
+      IN_ROLE: ${{ inputs.role }}
+      IN_PAYLOAD: ${{ inputs.payload }}
+      IN_DEDUPE: ${{ inputs.dedupe_key }}
+      IN_TTL: ${{ inputs.ttl_hours }}
+    steps:
+      - name: Enqueue task
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${DEVICE_QUEUE_TOKEN}" ]; then
+            echo "::error::DEVICE_QUEUE_PRODUCER_TOKEN_ACTIONS secret is not provisioned" >&2
+            exit 1
+          fi
+          BODY="$(python3 - <<'PY'
+          import json, os, sys
+          from datetime import datetime, timedelta, timezone
+          try:
+              payload = json.loads(os.environ.get("IN_PAYLOAD") or "{}")
+          except Exception as e:
+              print(f"::error::payload input is not valid JSON: {e}", file=sys.stderr)
+              sys.exit(1)
+          if not isinstance(payload, dict):
+              print("::error::payload input must be a JSON object", file=sys.stderr)
+              sys.exit(1)
+          body = {"kind": os.environ["IN_KIND"], "role": os.environ["IN_ROLE"],
+                  "payload": payload,
+                  "expires_at": (datetime.now(timezone.utc)
+                                 + timedelta(hours=float(os.environ["IN_TTL"]))).strftime("%Y-%m-%dT%H:%M:%SZ")}
+          if os.environ.get("IN_DEDUPE"):
+              body["dedupe_key"] = os.environ["IN_DEDUPE"]
+          print(json.dumps(body))
+          PY
+          )"
+          RESP="$(mktemp)"
+          CODE="$(curl -sS -o "$RESP" -w '%{http_code}' --max-time 30 \
+            -X POST "$DEVICE_QUEUE_URL/tasks" \
+            -H "Authorization: Bearer $DEVICE_QUEUE_TOKEN" \
+            -H 'Content-Type: application/json' \
+            --data-binary "$BODY")"
+          cat "$RESP"; echo
+          if [ "${CODE:0:1}" != "2" ]; then
+            echo "::error::enqueue failed with HTTP $CODE" >&2
+            exit 1
+          fi
+          echo "enqueued: HTTP $CODE"

@@ -1,0 +1,39 @@
+name: Context backfill contract
+
+on:
+  pull_request:
+    paths:
+      - 'archwiz/context_relationships/temporal.py'
+      - 'scripts/ci/validate_context_relationship_backfill.py'
+      - 'tests/test_context_relationship_backfill_validation.py'
+      - '.github/workflows/context-relationship-backfill.yml'
+      - '.github/workflows/context-backfill-contract.yml'
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/ci/validate_context_relationship_backfill.py'
+      - 'tests/test_context_relationship_backfill_validation.py'
+      - '.github/workflows/context-relationship-backfill.yml'
+      - '.github/workflows/context-backfill-contract.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: context-backfill-contract-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Backfill validation contract tests
+        run: python3 -B -m unittest -v tests/test_context_relationship_backfill_validation.py

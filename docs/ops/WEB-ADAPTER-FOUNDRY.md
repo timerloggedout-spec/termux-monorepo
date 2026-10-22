@@ -14,6 +14,7 @@ prose.
 | Upstream catalog (machine-readable) | `ops/web_adapter_foundry/catalog.json` |
 | Registry schema | `ops/web_adapter_foundry/registry.schema.json` |
 | Example registry | `ops/web_adapter_foundry/examples/example.registry.json` |
+| Campaign + reconciled taxonomy | `docs/ops/WEB-REVERSE-ENGINEERING-CAMPAIGN.md` · `ops/web_adapter_foundry/taxonomy.json` |
 | Tests | `tests/test_web_adapter_foundry.py` |
 
 ---

@@ -117,6 +117,66 @@ def load_catalog() -> dict:
     return json.loads((HERE / "catalog.json").read_text(encoding="utf-8"))
 
 
+def load_taxonomy() -> dict:
+    """The reconciled umbrella taxonomy: Foundry catalog + browser-lane
+    imports folded into one nested placement (taxonomy.json)."""
+    return json.loads((HERE / "taxonomy.json").read_text(encoding="utf-8"))
+
+
+def taxonomy_node(taxonomy: dict, repo: str) -> dict | None:
+    for n in taxonomy.get("nodes", []):
+        if n["repo"].lower() == repo.lower():
+            return n
+    return None
+
+
+# ------------------------------------------------------- streaming (SSE)
+
+def sse_encode(data, event: str | None = None, event_id: int | None = None) -> str:
+    """Encode one Server-Sent Events frame. `data` may be a dict (JSON) or
+    a string; multi-line strings are split into repeated data: lines, per
+    the SSE spec. SSE is the one-way streaming facade for Foundry results
+    (poller/queue patterns); bidirectional control belongs to WebSocket /
+    CDP-over-WebSocket. See taxonomy.json `transports`."""
+    lines = []
+    if event_id is not None:
+        lines.append(f"id: {event_id}")
+    if event:
+        lines.append(f"event: {event}")
+    payload = data if isinstance(data, str) else json.dumps(data, sort_keys=True)
+    for line in payload.splitlines() or [""]:
+        lines.append(f"data: {line}")
+    return "\n".join(lines) + "\n\n"
+
+
+class EventBus:
+    """Minimal in-process pub/sub for streaming facades: invoke results are
+    published once and every SSE/WebSocket subscriber receives the same
+    frame — streaming never re-executes the operation."""
+
+    def __init__(self) -> None:
+        import queue as _queue
+        self._queue = _queue
+        self._subs: list = []
+        self._seq = 0
+
+    def subscribe(self):
+        q = self._queue.Queue()
+        self._subs.append(q)
+        return q
+
+    def unsubscribe(self, q) -> None:
+        if q in self._subs:
+            self._subs.remove(q)
+
+    def publish(self, data, event: str | None = None) -> str:
+        self._seq += 1
+        frame = sse_encode(data, event=event, event_id=self._seq)
+        for q in list(self._subs):
+            q.put(frame)
+        return frame
+
+
 # ---------------------------------------------------------------- probes
 
 def plan_probes(op: dict) -> list[dict]:
@@ -288,6 +348,8 @@ def main(argv: list[str]) -> int:
     ap = argparse.ArgumentParser(prog="waf", description="Web Adapter Foundry core")
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("catalog", help="print the verified upstream catalog")
+    p_tx = sub.add_parser("taxonomy", help="print the reconciled umbrella taxonomy (or one repo's placement)")
+    p_tx.add_argument("repo", nargs="?")
     p_val = sub.add_parser("validate", help="validate a registry file")
     p_val.add_argument("registry")
     p_pr = sub.add_parser("plan-probes", help="probe plan for an operation in a registry")
@@ -297,6 +359,13 @@ def main(argv: list[str]) -> int:
     a = ap.parse_args(argv)
     if a.cmd == "catalog":
         print(json.dumps(load_catalog(), indent=1)); return 0
+    if a.cmd == "taxonomy":
+        tax = load_taxonomy()
+        if a.repo:
+            node = taxonomy_node(tax, a.repo)
+            print(json.dumps(node, indent=1) if node else json.dumps({"error": "not in taxonomy"}))
+            return 0 if node else 1
+        print(json.dumps(tax, indent=1)); return 0
     if a.cmd == "validate":
         errs = validate_registry(json.loads(Path(a.registry).read_text()))
         print(json.dumps({"valid": not errs, "errors": errs}, indent=1))

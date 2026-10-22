@@ -10,6 +10,11 @@ on:
       - "apps/project-pages-hub/**"
       - "docs/ops/generated/help-wanted-status.json"
       - "docs/ops/generated/lane-matrix-status.json"
+      - "docs/ops/generated/quota-status.json"
+      - "ops/quota/**"
+      - "scripts/provider_quota_*.py"
+      - "scripts/github_quota_manager.py"
+      - "scripts/quota_publication.py"
       - ".github/workflows/help-wanted-dashboard-deploy.yml"
   workflow_dispatch:
     inputs:
@@ -143,9 +148,20 @@ jobs:
           python3 scripts/ci/help_wanted_status.py
           python3 scripts/ci/verify_help_wanted_dashboard.py
       - name: Prepare Tribute subtree
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          set -euo pipefail
           mkdir -p _tribute/data
           cp -a apps/help-wanted-dashboard/. _tribute/
+          python3 scripts/quota_publication.py \
+            --registry ops/quota/registry.json \
+            --coverage apps/help-wanted-dashboard/data/provider-quota-coverage.json \
+            --readings docs/ops/generated/quota-status.json \
+            --config ops/quota/public-visibility.json \
+            --observe-github --output _tribute/data/quota-public.json
+          # Never leave an alternate unfiltered quota route in the published tree.
+          rm -f _tribute/data/quota.json _tribute/data/provider-quota-coverage.json _tribute/quota.txt
           if [ -f docs/ops/generated/help-wanted-status.json ]; then
             cp docs/ops/generated/help-wanted-status.json _tribute/data/status.json
           fi
@@ -158,7 +174,8 @@ jobs:
           publish_dir: _tribute
           destination_dir: help-wanted
           publish_branch: main
-          keep_files: true
+          # Replace this generated subtree so old unfiltered quota assets disappear.
+          keep_files: false
           user_name: github-actions[bot]
           user_email: github-actions[bot]@users.noreply.github.com
           commit_message: "deploy(help-wanted): ${{ github.sha }}"
@@ -212,6 +229,18 @@ jobs:
           if [ -f docs/ops/generated/lane-matrix-status.json ]; then
             cp docs/ops/generated/lane-matrix-status.json apps/help-wanted-dashboard/data/lane-matrix-status.json
           fi
+      - name: Apply quota visibility before optional Vercel publication
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          python3 scripts/quota_publication.py \
+            --registry ops/quota/registry.json \
+            --coverage apps/help-wanted-dashboard/data/provider-quota-coverage.json \
+            --readings docs/ops/generated/quota-status.json \
+            --config ops/quota/public-visibility.json \
+            --observe-github --output apps/help-wanted-dashboard/data/quota-public.json
+          rm -f apps/help-wanted-dashboard/data/quota.json apps/help-wanted-dashboard/data/provider-quota-coverage.json apps/help-wanted-dashboard/quota.txt
       - name: Install Vercel CLI
         run: npm i -g vercel@latest
       - name: Deploy to Vercel (production)

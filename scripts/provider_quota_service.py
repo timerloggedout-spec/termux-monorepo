@@ -43,6 +43,13 @@ SERVICES = {
         "scope": "credential-selected key; account identity unverified",
         "activation": "explicit_private_observation_only",
     },
+    "siliconflow.balance": {
+        "provider_family": "siliconflow",
+        "source": None,
+        "credential_env": None,
+        "scope": "unknown; no documented working account API",
+        "activation": "disabled_until_documented_working_api",
+    },
 }
 SCOPE_STATUS = "credential_selected_user_or_team_identity_unverified"
 FRESHNESS_SECONDS = 60
@@ -126,6 +133,12 @@ def observe_service(service_id: str, api_key: str, *, scope: str,
     """
     _context(service_id, scope)
     now = _utc(dt.datetime.now(dt.timezone.utc) if now is None else now)
+    if service_id == "siliconflow.balance":
+        return {"schema": "provider-quota-service-observation/v1", "service_id": service_id,
+                "provider_family": "siliconflow", "source": None, "observed_at": _iso(now),
+                "scope": scope, "scope_status": "unsupported_source", "status": "unknown",
+                "reason": "no_documented_working_api", "signals": {}, "valid_until": None,
+                "runtime_admission": "unchanged", "request_quota": "unknown", "entitlement": "unknown"}
     result = {
         "schema": "provider-quota-service-observation/v1",
         "service_id": service_id, "provider_family": SERVICES[service_id]["provider_family"],
@@ -136,7 +149,8 @@ def observe_service(service_id: str, api_key: str, *, scope: str,
         "signals": {}, "valid_until": None, "runtime_admission": "unchanged",
         "request_quota": "unknown", "entitlement": "unknown",
     }
-    adapter = observe_ollama_balance if service_id == "ollama.balance" else observe_openrouter_key
+    adapter = {"ollama.balance": observe_ollama_balance,
+               "openrouter.key": observe_openrouter_key}[service_id]
     observation = adapter(
         api_key, https_request if request is None else request,
         observed_at=_iso(now), scope=scope,
@@ -229,7 +243,9 @@ def main(argv=None):
         fd = _open_private(args.private_out)
     except (OSError, ValueError):
         parser.error("invalid context or private output destination")
-    observation = observe_service(args.service, os.environ.get(SERVICES[args.service]["credential_env"], ""), scope=args.scope)
+    credential_env = SERVICES[args.service]["credential_env"]
+    api_key = os.environ.get(credential_env, "") if credential_env else ""
+    observation = observe_service(args.service, api_key, scope=args.scope)
     _write_fd(fd, observation)
     print(json.dumps(public_status(observation), sort_keys=True))
     return 0 if observation["status"] == "observed" else 1

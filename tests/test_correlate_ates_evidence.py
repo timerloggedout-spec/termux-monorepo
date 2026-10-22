@@ -63,7 +63,13 @@ class AtesCorrelationTests(unittest.TestCase):
     def test_missing_event_sha_is_joined_but_verification_is_not_overstated(self):
         result = correlate([receipt()], [event(sha=None)])
         self.assertEqual(result["matched_event_count"], 1)
-        self.assertEqual(result["runs"][0]["sha_verification"], "verified")
+        self.assertEqual(result["runs"][0]["sha_verification"], "unverified")
+        self.assertEqual(result["runs"][0]["sha_unverified_event_count"], 1)
+
+
+    def test_invalid_event_sha_is_rejected(self):
+        with self.assertRaisesRegex(ValueError, "event source_sha"):
+            correlate([receipt()], [event(sha="bad")])
 
     def test_duplicate_receipt_identity_is_rejected(self):
         with self.assertRaisesRegex(ValueError, "duplicate receipt"):

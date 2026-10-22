@@ -28,7 +28,7 @@ on:
       depth:  { description: "Acceleration chain depth (bounded)", required: false, default: "0", type: string }
       feedback_rfp: { description: "Flywheel: RFP issue number with a real outcome", required: false, default: "", type: string }
       outcome: { description: "confirmed | miss", required: false, default: "", type: string }
-      signal_json: { description: "tribute-outcome: delphi_signal object or array (<=50) {surface,repo,outcome,weight -1..+1}", required: false, default: "", type: string }
+      signal_json: { description: "tribute-outcome: delphi_signal object or array (<=200) {surface,repo,outcome,weight -1..+1}", required: false, default: "", type: string }
 
 permissions:
   contents: read

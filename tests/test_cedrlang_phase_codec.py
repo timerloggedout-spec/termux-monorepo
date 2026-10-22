@@ -2,7 +2,10 @@ import random
 
 from workspace.compression_sandbox.cedrlang.phase_codec import (
     INITIAL_SUBSTITUTION_PROBABILITY,
+    ConversationalSteganographyCipher,
     from_1337speak,
+    steganography_decode,
+    steganography_encode,
     to_1337speak,
 )
 
@@ -46,3 +49,28 @@ def test_probability_validation():
             pass
         else:
             raise AssertionError("invalid probability was accepted")
+
+
+def test_conversational_steganography_cipher_roundtrip():
+    cipher = ConversationalSteganographyCipher(key="secret_grimoire_key_123")
+    text = "h4x pr0b3 gr1m01r3 l1ngu15t"
+    encoded = cipher.steganography_encode(text)
+    assert encoded != text
+    decoded = cipher.steganography_decode(encoded)
+    assert decoded == text
+
+
+def test_conversational_steganography_functional_interface():
+    text = "h4x pr0b3 gr1m01r3"
+    key = "agent2agent_lane4"
+    encoded = steganography_encode(text, key=key)
+    assert encoded != text
+    decoded = steganography_decode(encoded, key=key)
+    assert decoded == text
+
+
+def test_conversational_steganography_different_keys_produce_different_ciphers():
+    text = "h4x pr0b3 gr1m01r3"
+    encoded_a = steganography_encode(text, key="key_alpha")
+    encoded_b = steganography_encode(text, key="key_beta")
+    assert encoded_a != encoded_b

@@ -220,3 +220,73 @@ def compile_phase(text: str, canonical_compiler) -> str:
 def decompile_phase(text: str, canonical_decompiler) -> str:
     """Normalize diaspora variants, then use the existing canonical decompiler."""
     return canonical_decompiler(from_1337speak(text))
+
+
+class ConversationalSteganographyCipher:
+    """4th development lane for pre-LLM pre-parser steganographic obfuscation & private mapping.
+
+    Implements cipher encryption/decryption with key-based private token/symbol mappings
+    prior to sending payloads to LLM pre-parsers.
+    """
+
+    def __init__(self, key: str = "default_grimoire_key", custom_mappings: Optional[Dict[str, str]] = None):
+        self.key = key
+        self._encode_map: Dict[str, str] = {}
+        self._decode_map: Dict[str, str] = {}
+        self._encode_regex: Optional[re.Pattern[str]] = None
+        self._decode_regex: Optional[re.Pattern[str]] = None
+        self._build_mapping(custom_mappings)
+
+    def _build_mapping(self, custom_mappings: Optional[Dict[str, str]] = None) -> None:
+        seed_val = sum(ord(c) * (i + 1) for i, c in enumerate(self.key))
+        rng = random.Random(seed_val)
+
+        tokens = list(CANONICAL_TOKENS)
+        shuffled = list(tokens)
+        rng.shuffle(shuffled)
+
+        for orig, sub in zip(tokens, shuffled):
+            self._encode_map[orig] = f"§{sub}§"
+            self._decode_map[f"§{sub}§"] = orig
+
+        if custom_mappings:
+            for k, v in custom_mappings.items():
+                self._encode_map[k] = v
+                self._decode_map[v] = k
+
+        self._encode_regex = re.compile(_build_trie_regex(self._encode_map.keys()))
+        decode_keys_escaped = sorted([re.escape(k) for k in self._decode_map.keys()], key=len, reverse=True)
+        self._decode_regex = re.compile("|".join(decode_keys_escaped)) if decode_keys_escaped else None
+
+    def steganography_encode(self, text: str) -> str:
+        """Encode canonical tokens using the private key mapping prior to LLM pre-parsing."""
+        if not text or not self._encode_map or not self._encode_regex:
+            return text
+
+        def _enc_cb(m: re.Match[str]) -> str:
+            val = m.group(0).lower()
+            return self._encode_map.get(val, m.group(0))
+
+        return self._encode_regex.sub(_enc_cb, text)
+
+    def steganography_decode(self, text: str) -> str:
+        """Decode steganographically encoded private mappings back to canonical form."""
+        if not text or not self._decode_map or not self._decode_regex:
+            return text
+
+        def _dec_cb(m: re.Match[str]) -> str:
+            return self._decode_map.get(m.group(0), m.group(0))
+
+        return self._decode_regex.sub(_dec_cb, text)
+
+
+def steganography_encode(text: str, key: str = "default_grimoire_key") -> str:
+    """Convenience functional interface for steganographic encoding."""
+    cipher = ConversationalSteganographyCipher(key=key)
+    return cipher.steganography_encode(text)
+
+
+def steganography_decode(text: str, key: str = "default_grimoire_key") -> str:
+    """Convenience functional interface for steganographic decoding."""
+    cipher = ConversationalSteganographyCipher(key=key)
+    return cipher.steganography_decode(text)

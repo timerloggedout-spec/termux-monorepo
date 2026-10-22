@@ -10,7 +10,6 @@ import hashlib
 import heapq
 import json
 import re
-from collections import defaultdict
 from collections.abc import Iterable, Mapping, Sequence
 from typing import Any
 
@@ -34,9 +33,11 @@ def _normalise(nodes: Iterable[str], edges: Iterable[Sequence[str]]) -> tuple[li
     node_set = set(node_list)
     edge_set: set[tuple[str, str]] = set()
     for edge in edges:
-        if isinstance(edge, (str, bytes)) or len(edge) != 2:
+        if not isinstance(edge, Sequence) or isinstance(edge, (str, bytes)) or len(edge) != 2:
             raise DAGInputError("each edge must be a two-item prerequisite/dependent pair")
         prerequisite, dependent = edge
+        if not isinstance(prerequisite, str) or not isinstance(dependent, str):
+            raise DAGInputError("edge endpoints must be node-ID strings")
         if prerequisite not in node_set or dependent not in node_set:
             raise DAGInputError(f"unknown edge endpoint: {prerequisite!r} -> {dependent!r}")
         edge_set.add((prerequisite, dependent))
@@ -98,9 +99,8 @@ def analyze_dag(
     adjacency: dict[str, set[str]] = {node: set() for node in node_list}
     indegree = {node: 0 for node in node_list}
     for prerequisite, dependent in edge_list:
-        if dependent not in adjacency[prerequisite]:
-            adjacency[prerequisite].add(dependent)
-            indegree[dependent] += 1
+        adjacency[prerequisite].add(dependent)
+        indegree[dependent] += 1
 
     graph_document = {"nodes": node_list, "edges": [list(edge) for edge in edge_list]}
     graph_json = json.dumps(graph_document, ensure_ascii=False, separators=(",", ":"), sort_keys=True)

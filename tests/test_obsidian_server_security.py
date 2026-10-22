@@ -42,6 +42,27 @@ def test_obsidian_server_unauthorized_token_missing(tmp_path, monkeypatch):
     handler.send_response.assert_called_with(500)
     assert b"Server Error: Token missing" in handler.wfile.data
 
+def test_obsidian_server_token_parent_symlink_rejected(tmp_path, monkeypatch):
+    real_dir = tmp_path / "real_dir"
+    real_dir.mkdir()
+    target_file = real_dir / "token.txt"
+    target_file.write_text("secret_token")
+
+    symlink_dir = tmp_path / "symlink_dir"
+    symlink_dir.symlink_to(real_dir)
+
+    token_file = symlink_dir / "token.txt"
+    monkeypatch.setattr(obsidian_server, "TOKEN_FILE", str(token_file))
+
+    token = obsidian_server.get_token()
+    assert token is None
+
+    handler = create_handler()
+    handler.do_POST()
+
+    handler.send_response.assert_called_with(500)
+    assert b"Server Error: Token missing" in handler.wfile.data
+
 def test_obsidian_server_path_traversal_prevention(tmp_path, monkeypatch):
     token_file = tmp_path / "token.txt"
     token_file.write_text("secret_token")

@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "b7b1737f630d3535f092f8360bb056623dce11eb594ddea390c6205d011f4797",
-  "workflow_count": 167,
+  "source_fingerprint": "7fceb9d7c3f6c8761fc27a8424564ba400727b6b64d9db51c3fb0a75a4410202",
+  "workflow_count": 168,
   "workflows": [
     {
       "action_pins": [
@@ -1142,6 +1142,21 @@
       "schedules": [],
       "triggers": [
         "pull_request",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "enqueue"
+      ],
+      "name": "Device Queue Enqueue",
+      "path": ".github/workflows/device-queue-enqueue.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },

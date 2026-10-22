@@ -134,11 +134,24 @@ jobs:
                 return;
               }
 
-              const { data: pr } = await github.rest.pulls.get({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: prNumber,
-              });
+              let pr;
+              try {
+                const response = await github.rest.pulls.get({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: prNumber,
+                });
+                pr = response.data;
+              } catch (err) {
+                if (err.status === 403 || err.status === 429 || /rate limit/i.test(err.message || '')) {
+                  core.warning(`Peer review collector skipped due to API rate limit during PR fetch: ${err.message}`);
+                  core.setOutput('skipped', 'true');
+                  core.setOutput('state', 'rate_limited');
+                  core.setOutput('ready', 'false');
+                  return;
+                }
+                throw err;
+              }
               if (pr.draft || !pr.head.repo || pr.head.repo.full_name !== `${context.repo.owner}/${context.repo.repo}`) {
                 core.info('Draft or fork PR: no interactive agent actions requested');
                 core.setOutput('skipped', 'true');

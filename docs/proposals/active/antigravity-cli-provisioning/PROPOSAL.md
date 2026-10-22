@@ -2,6 +2,8 @@
 
 Issue [#1497](https://github.com/timerloggedout-spec/termux-monorepo/issues/1497) now has a versioned research baseline and a non-mutating readiness tool. This is initial repository provisioning, not a claim that Antigravity has been installed or configured on a device.
 
+**Operational follow-up:** the operator subsequently authorized Device 2 setup, conditional on pinned identity verification. The [full operational plan and review status](OPERATIONAL-PLAN.md) supersede the original blanket Device 2 exclusion below only for that verified secondary phone. Origin and its backup remain excluded. SSH currently closes before host-key exchange; no device changes or live provisioning are claimed. Original stages and handoff below describe the initial repository-only scope.
+
 Keep the user's existing **high verbosity and auto-approve**. Do not apply the seed's conservative settings example. No model prompt is needed to prepare this lane. [Source checks and corrections](source.md) distinguish documented capabilities, user-reported observations, and proposals.
 
 ## Useful collaboration first

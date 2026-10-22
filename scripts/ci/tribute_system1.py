@@ -33,16 +33,16 @@ from typing import Any, Iterable
 
 SELF_LOGIN = os.environ.get("HELP_WANTED_AUTHOR", "timerloggedout-spec")
 CONFIDENT = float(os.environ.get("TRIBUTE_S1_CONFIDENT", "0.75"))
-SCHEMA = "tribute-system1/v1"
+SCHEMA = "tribute-system1/v2"
 
 LABELS = (
     "closed_already_assigned", "claimed_by_other", "needs_human_skill",
     "low_effort_placeholder", "changes_requested", "approved", "merged",
-    "question_to_us", "hostile_spam_flag",
+    "question_to_us", "hostile_spam_flag", "closed_resolved",
 )
 # Highest-priority terminal label wins the primary slot.
 PRIORITY = (
-    "merged", "closed_already_assigned", "needs_human_skill", "claimed_by_other",
+    "merged", "closed_already_assigned", "needs_human_skill", "claimed_by_other", "closed_resolved",
     "low_effort_placeholder", "hostile_spam_flag", "question_to_us",
     "changes_requested", "approved",
 )
@@ -56,10 +56,13 @@ ACTIONS = {
     "question_to_us": "escalate",
     "changes_requested": "revise_patch",
     "approved": "await_merge",
+    "closed_resolved": "retire_lane",
 }
 # Classes after which a public re-engagement comment is never appropriate.
 NO_REENGAGE = {"closed_already_assigned", "needs_human_skill", "claimed_by_other",
-               "low_effort_placeholder", "hostile_spam_flag", "merged"}
+               "low_effort_placeholder", "hostile_spam_flag", "merged", "closed_resolved"}
+# Our own follow-up comments in a row (no external human reply in between) before the gate shuts.
+FOLLOWUP_CAP = int(os.environ.get("TRIBUTE_S1_FOLLOWUP_CAP", "2"))
 
 MAINTAINER_ASSOC = {"OWNER", "MEMBER", "COLLABORATOR"}
 LANGUAGES = (
@@ -80,10 +83,12 @@ RX = {
     "claim": re.compile(
         r"\b(i['’]?d|i\s+would)\s+(like|love|want)\s+to\s+(work|take|pick)\b|\bassign\s+(this|it)\s+to\s+me\b|"
         r"\bi['’]?m\s+(actively\s+)?working\s+on\s+(this|it)\b|\bi\s+(have\s+)?claimed\b|\bplease\s+yield\b|"
-        r"^\s*/assign\b|\bcan\s+i\s+(work|take)\b|\bi['’]?ve\s+(completed|pushed|opened)\b", re.I | re.M),
+        r"^\s*/assign\b|\bcan\s+i\s+(work|take)\b|\bi['’]?ve\s+(completed|pushed|opened)\b|"
+        r"\bhas\s+applied\s+to\s+work\s+on\s+this\s+issue\b|\btaking\s+a\s+look\s+at\s+this\s+and\s+working\b|"
+        r"\bi\s+confirmed\b.*\bi['’]?ll\s+work\s+on\s+this\b|\bhappy\s+to\s+tackle\s+this\b", re.I | re.M),
     "yield_demand": re.compile(r"\bplease\s+yield\b|\bclaimed\s+it\b.*\bbefore\s+you\b|\balready\s+working\b", re.I),
     "lang_skill": re.compile(
-        rf"\b(fluent|native)\s+({_LANG})?\s*(speaker|speakers)?\b.*?|\b({_LANG})\s+speakers?\b|\bspeak\s+({_LANG})\b|\b(fluent|native)\s+in\s+({_LANG})\b", re.I),
+        rf"\b(fluent|native)\s+(?:({_LANG})\s+)?speakers?\b|\b(fluent|native)\s+(in\s+)?({_LANG})\b|\b({_LANG})\s+speakers?\b|\bspeak\s+({_LANG})\b", re.I),
     "human_only": re.compile(
         r"\bnot\s+(be\s+)?assign\w*\s+(it\s+|this\s+)?to\s+(an?\s+)?(automated|bot|ai|agent)\b|\bhuman\s+contributor\b|\bnot\s+a\s+code\s+change\b|\bmarketing\s+copy\b|\bno\s+(bots|ai)\b", re.I),
     "changes": re.compile(
@@ -91,7 +96,12 @@ RX = {
     "approve": re.compile(r"\blgtm\b|\blooks\s+good\b|\bapproved?\b|\bship\s+it\b|\bthanks\s+for\s+the\s+(fix|pr)\b", re.I),
     "merged_txt": re.compile(r"\bmerged\b", re.I),
     "spam": re.compile(
-        r"\bspam(my)?\b|\bai[- ]generated\b|\bslop\b|\bstop\s+(spamming|opening|posting)\b|\bbanned?\b|\bblock(ed)?\b|\breported\b|\bseems\s+to\s+be\s+a\s+bot\b|\bis\s+a\s+bot\b|\bdon['’]?t\s+mind\s+it\b", re.I),
+        r"\bspam(my|ming)?\b|\bai[- ]generated\b|\bslop\b|\bstop\s+(spamming|opening|posting)\b|"
+        r"\b(repo)?ban(ned)?\s+(this|that|the)?\s*(bot|account|user)\b|\brepoban\b|\bblock(ed)?\s+(this|that|the)\s+(bot|account)\b|"
+        r"\breport(ed)?\s+(it\s+|this\s+)?(as\s+)?(spam|abuse)\b|\bseems\s+to\s+be\s+a\s+bot\b|\bis\s+a\s+bot\b|\bthat\s+bot\b|\bdon['’]?t\s+mind\s+it\b", re.I),
+    "ban_request": re.compile(r"\b(repo)?ban\b|\bblock\s+(this|that|the)\s+(bot|account)\b", re.I),
+    "wave_accepted": re.compile(r"congratulations,?\s+@([\w-]+)!?.{0,40}application\s+was\s+accepted", re.I | re.S),
+    "wave_completed": re.compile(r"this\s+issue\s+has\s+been\s+completed\s+by\s+@([\w-]+)", re.I),
     "question": re.compile(r"\?\s*$|\?\s|\b(can|could|would|will)\s+you\b", re.I | re.M),
 }
 PLACEHOLDER_PATHS = re.compile(r"(^|/)(help-wanted-lane-stake\.md|placeholder[^/]*|stake[^/]*\.md|TODO[^/]*)$", re.I)
@@ -173,7 +183,7 @@ def skill_requirement(text: str) -> str | None:
         for lang in LANGUAGES:  # language may sit just outside the match window
             if re.search(rf"\b(fluent|native|speak)\w*\s+(in\s+)?{lang}\b|\b{lang}\s+speaker", text, re.I):
                 return f"language:{lang}"
-        return "language:unspecified"
+        return "language:unspecified" if re.search(r"speakers?\b", m.group(0), re.I) else None
     return None
 
 
@@ -195,6 +205,70 @@ def our_marker_ts(comments: list[dict]) -> datetime | None:
     return min(ts) if ts else None
 
 
+
+# ---------------------------------------------------------------- semantic layer
+# Tiny bag-of-stems cosine against class prototypes: no model download, no LLM.
+PROTOTYPES = {
+    "closed_already_assigned": ["closing this because the issue is already assigned to another contributor",
+                                "this issue was assigned to someone else please check assignment before opening a pr",
+                                "reserved for a cohort we are not taking outside pull requests for it"],
+    "claimed_by_other": ["i am already working on this issue please yield", "i would like to work on this please assign it to me",
+                         "someone else already claimed this and is working on it"],
+    "needs_human_skill": ["this needs a fluent native speaker human contributor not an automated agent",
+                          "requires design or translation skills a person must do this"],
+    "low_effort_placeholder": ["this pr only contains a placeholder stub not the actual implementation",
+                               "we do not accept placeholder stake pull requests a pr should contain the actual change"],
+    "closed_resolved": ["closing this the bug shipped in the release and the rest is tracked elsewhere",
+                        "closed by pr merge into main"],
+    "hostile_spam_flag": ["stop opening ai generated spam pull requests", "can you repoban that bot it is spam"],
+    "changes_requested": ["please add tests and update the implementation before we can merge",
+                          "could you change this and rebase on main"],
+    "approved": ["looks good to me approved", "lgtm thanks for the fix"],
+    "question_to_us": ["can you explain why you made this change", "did you test this locally how does it work"],
+}
+DECLINE_CLASSES = ("closed_already_assigned", "claimed_by_other", "needs_human_skill", "low_effort_placeholder",
+                   "closed_resolved", "hostile_spam_flag")
+SEMANTIC_MIN = float(os.environ.get("TRIBUTE_S1_SEMANTIC_MIN", "0.34"))
+_STOP = set("the a an to of and or is it this that for on in be we you i are was with not as at by our your so its if".split())
+
+
+def _stems(text: str) -> dict:
+    out: dict[str, int] = {}
+    text = re.sub(r"```.*?```|<!--.*?-->|https?://\S+", " ", (text or "").lower(), flags=re.S).replace("’", "'")
+    for w in re.findall(r"[a-z]+", text):
+        if w in _STOP or len(w) < 3:
+            continue
+        w = w[:5]
+        out[w] = out.get(w, 0) + 1
+    return out
+
+
+def _cos(a: dict, b: dict) -> float:
+    if not a or not b:
+        return 0.0
+    dot = sum(v * b.get(k, 0) for k, v in a.items())
+    na = sum(v * v for v in a.values()) ** 0.5
+    nb = sum(v * v for v in b.values()) ** 0.5
+    return dot / (na * nb) if na and nb else 0.0
+
+
+_PROTO = {k: [_stems(t) for t in v] for k, v in PROTOTYPES.items()}
+
+
+def semantic_scores(text: str) -> dict:
+    """Cosine of the text against each class prototype (max over prototypes)."""
+    v = _stems(text)
+    if len(v) > 120:  # long technical bodies dilute; score the first part only
+        v = _stems(" ".join((text or "").split()[:160]))
+    return {k: round(max(_cos(v, p) for p in ps), 3) for k, ps in _PROTO.items()}
+
+
+def semantic_decline(text: str) -> tuple[str, float] | None:
+    sc = semantic_scores(text)
+    best = max(DECLINE_CLASSES, key=lambda k: sc[k])
+    return (best, sc[best]) if sc[best] >= SEMANTIC_MIN else None
+
+
 # ---------------------------------------------------------------- features
 def extract_features(thread: dict) -> dict:
     subject = thread.get("subject") or {}
@@ -210,6 +284,25 @@ def extract_features(thread: dict) -> dict:
     claims_before_us = [c for c in claims if marker and _ts(c["at"]) and _ts(c["at"]) <= marker]
     assignees = [a for a in (subject.get("assignees") or []) + (linked.get("assignees") or []) if a.lower() != me]
     skill_txt = " ".join([subject.get("body") or ""] + [c.get("body") or "" for c in maint])
+    wave_accepted, wave_completed = [], []
+    for c in claim_src:
+        b = c.get("body") or ""
+        for rx, bucket in ((RX["wave_accepted"], wave_accepted), (RX["wave_completed"], wave_completed)):
+            m = rx.search(b)
+            if m and m.group(1).lower() != me:
+                bucket.append(m.group(1))
+    closed_at = _ts(subject.get("closed_at"))
+    claimed_after_close = bool(closed_at and marker and marker > closed_at)
+    # Our consecutive comments at the tail of the thread (follow-up spam guard).
+    tail_self = 0
+    for c, r in zip(reversed(comments), reversed(roles)):
+        if r == "self":
+            tail_self += 1
+        elif r == "bot":
+            continue
+        else:
+            break
+    last_ext = next((c for c, r in zip(reversed(comments), reversed(roles)) if r not in ("self", "bot")), None)
     return {
         "kind": subject.get("kind"),
         "state": subject.get("state"),
@@ -221,6 +314,7 @@ def extract_features(thread: dict) -> dict:
         "n_external_human": len(human_ext),
         "n_maintainer": len(maint),
         "maintainer_mentions_us": any(f"@{me}" in (c.get("body") or "").lower() for c in maint),
+        "anyone_mentions_us": any(f"@{me}" in (c.get("body") or "").lower() for c in human_ext),
         "claims": claims,
         "claims_before_us": claims_before_us,
         "skill": skill_requirement(skill_txt) or (
@@ -230,6 +324,11 @@ def extract_features(thread: dict) -> dict:
         "reviews": [r.get("state") for r in thread.get("reviews") or []],
         "bots": sorted({c.get("author") for c, r in zip(comments, roles) if r == "bot"}),
         "our_marker_at": marker.isoformat() if marker else None,
+        "wave_accepted": wave_accepted,
+        "wave_completed": wave_completed,
+        "claimed_after_close": claimed_after_close,
+        "self_tail_comments": tail_self,
+        "last_external_semantic": semantic_decline(last_ext.get("body") or "") if last_ext else None,
     }
 
 
@@ -274,10 +373,12 @@ def classify(thread: dict, feats: dict | None = None) -> list[dict]:
             conf = 0.7 + (0.15 if sk else 0) + (0.12 if RX["human_only"].search(body) else 0)
             _add(s, "needs_human_skill", conf * w, f"text:skill:{sk or 'human_only'}@{cid}")
         if RX["claim"].search(body) and not trusted:
-            conf = 0.7 + (0.15 if RX["yield_demand"].search(body) else 0) + (0.1 if f["claims_before_us"] else 0)
+            # Any human competing claim is enough to yield: we never race a person for an issue.
+            conf = 0.76 + (0.12 if RX["yield_demand"].search(body) else 0) + (0.07 if f["claims_before_us"] else 0)
             _add(s, "claimed_by_other", conf, f"text:claim:{c.get('author')}@{cid}")
         if RX["spam"].search(body):
-            _add(s, "hostile_spam_flag", 0.85 if trusted else 0.5, f"text:spam_or_bot:{role}@{cid}")
+            conf = 0.85 if trusted else (0.8 if RX["ban_request"].search(body) else 0.5)
+            _add(s, "hostile_spam_flag", conf, f"text:spam_or_bot:{role}@{cid}")
         if trusted and RX["changes"].search(body) and f["state"] != "closed":
             _add(s, "changes_requested", 0.78, f"text:changes@{cid}")
         if trusted and RX["approve"].search(body) and f["state"] != "closed" and not RX["changes"].search(body):
@@ -286,10 +387,31 @@ def classify(thread: dict, feats: dict | None = None) -> list[dict]:
             _add(s, "merged", 0.98, f"text:merged@{cid}")
         if trusted and f["maintainer_mentions_us"] and RX["question"].search(body) and f["state"] != "closed":
             _add(s, "question_to_us", 0.8, f"text:question@{cid}")
+        # Semantic layer: corroborates a token hit, or proposes a sub-threshold label for the LLM rung.
+        sc = semantic_scores(body)
+        best = max(sc, key=sc.get)
+        if sc[best] >= SEMANTIC_MIN:
+            if best in s:
+                s[best]["confidence"] = round(min(s[best]["confidence"] + 0.03, 0.99), 2)
+                s[best]["evidence"].append(f"semantic:{sc[best]}@{cid}")
+            elif trusted and best != "question_to_us":
+                _add(s, best, min(0.45 + 0.4 * sc[best], 0.7), f"semantic:{best}:{sc[best]}@{cid}")
 
     # Structural evidence (no text needed)
-    if f["closed_by_other"] and not f["merged"] and f["assigned_to_other"]:
-        _add(s, "closed_already_assigned", 0.72, f"state:closed+assigned:{','.join(f['assigned_to_other'])}")
+    owner = (subject.get("repo") or "/").split("/")[0].lower()
+    closer_only = (f["assigned_to_other"] and {a.lower() for a in f["assigned_to_other"]}
+                   <= {(subject.get("closed_by") or "").lower(), owner})
+    if f["closed_by_other"] and not f["merged"] and f["assigned_to_other"] and not closer_only:
+        _add(s, "closed_already_assigned", 0.82, f"state:closed+assigned:{','.join(f['assigned_to_other'])}")
+    if f["wave_completed"]:
+        _add(s, "closed_already_assigned" if f["state"] == "closed" else "claimed_by_other", 0.95,
+             f"timeline:completed_by:{f['wave_completed'][0]}")
+    if f["wave_accepted"]:
+        _add(s, "claimed_by_other", 0.93, f"timeline:accepted:{f['wave_accepted'][0]}")
+    if (f["kind"] == "issue" and f["state"] == "closed" and f["closed_by_other"]
+            and (not f["assigned_to_other"] or closer_only) and not f["wave_completed"]):
+        _add(s, "closed_resolved", 0.95 if f["claimed_after_close"] else 0.85,
+             "state:closed_by_maintainer" + ("+timeline:claimed_after_close" if f["claimed_after_close"] else ""))
     if f["placeholder"]["is_placeholder"]:
         _add(s, "low_effort_placeholder", 0.6 + 0.3 * f["placeholder"]["score"], "diff:" + "+".join(f["placeholder"]["reasons"]))
     if f["state"] == "open" and f["assigned_to_other"] and f["kind"] == "issue":
@@ -321,13 +443,23 @@ def prefilter_rules(labels: dict, feats: dict) -> list[dict]:
         rules.append({"rule": "yield_to_prior_claim", "stage": "claim", "effect": "exclude if a human claimed first or is assigned"})
     if "hostile_spam_flag" in labels:
         rules.append({"rule": "repo_cooldown", "stage": "scout", "effect": "skip repo 30d"})
+    if "closed_resolved" in labels or feats.get("claimed_after_close"):
+        rules.append({"rule": "require_open_issue", "stage": "scout+claim", "effect": "never claim a closed issue"})
+    if feats.get("wave_accepted") or feats.get("wave_completed"):
+        rules.append({"rule": "skip_bounty_program_issue", "stage": "scout", "effect": "issues run by an application program (e.g. Drips Wave) are assigned by the program"})
+    if feats.get("self_tail_comments", 0) >= FOLLOWUP_CAP:
+        rules.append({"rule": "followup_cap", "stage": "followup", "effect": f"no more than {FOLLOWUP_CAP} unanswered follow-ups"})
     return rules
 
 
-def delphi_signal(primary: str | None, subject: dict) -> dict | None:
+def delphi_signal(primary: str | None, subject: dict, placeholder_merge: bool = False) -> dict | None:
     if not primary:
         return None
-    weight = {"merged": 1.0, "approved": 0.5, "changes_requested": 0.1, "question_to_us": 0.0,
+    if primary == "merged" and placeholder_merge:
+        # A maintainer merged a stake/placeholder file: not a contribution, never a +1.
+        return {"surface": "tribute-lane", "repo": subject.get("repo"), "outcome": "merged", "weight": 0.0,
+                "lesson": "placeholder_merge_not_a_win"}
+    weight = {"closed_resolved": -0.2, "merged": 1.0, "approved": 0.5, "changes_requested": 0.1, "question_to_us": 0.0,
               "claimed_by_other": -0.3, "needs_human_skill": -0.4, "closed_already_assigned": -0.6,
               "low_effort_placeholder": -0.8, "hostile_spam_flag": -1.0}[primary]
     return {"surface": "tribute-lane", "repo": subject.get("repo"), "outcome": primary, "weight": weight,
@@ -375,6 +507,9 @@ def route(thread: dict, labels: list[dict] | None = None, feats: dict | None = N
         rung, reason = "programmatic", "deterministic_signal"
     elif confident:
         rung, reason = "system1", "confident"
+    elif not labels and not feats["n_maintainer"] and not feats.get("anyone_mentions_us"):
+        # Programmatic: nobody with access spoke and nobody addressed us -> nothing to route.
+        rung, reason = "programmatic", "no_signal_for_us"
     elif feats["n_external_human"]:
         rung, reason = "system2_llm", "low_confidence" if labels else "no_label"
     else:
@@ -400,12 +535,23 @@ def route(thread: dict, labels: list[dict] | None = None, feats: dict | None = N
         action = plan["steps"][0]
     elif rung == "system2_llm" and system2 is None:
         action = "llm_review"
-    elif reason == "no_external_activity":
+    elif reason in ("no_external_activity", "no_signal_for_us"):
         action = "noop"
     else:
         action = ACTIONS.get(primary, "noop")
         if action == "escalate":
             action = "park_lane"
+    placeholder_merge = primary == "merged" and "low_effort_placeholder" in by
+    if placeholder_merge:
+        action = "record_placeholder_merge"
+    sem_decline = feats.get("last_external_semantic")
+    reengage = (not (set(by) & NO_REENGAGE) and rung in ("programmatic", "system1")
+                and primary in (None, "changes_requested", "approved")
+                and feats.get("self_tail_comments", 0) < FOLLOWUP_CAP
+                and not sem_decline
+                and subject.get("state") != "closed"
+                and not (reason == "no_signal_for_us" and feats["n_external_human"])
+                and feats.get("kind") != "issue")  # we only follow up our own PRs, never issue threads
     out = {
         "schema": SCHEMA,
         "subject": {k: subject.get(k) for k in ("repo", "number", "kind", "url", "state")},
@@ -418,11 +564,15 @@ def route(thread: dict, labels: list[dict] | None = None, feats: dict | None = N
         "llm_call": rung == "system2_llm" or (system2 is not None),
         "owner_required": owner_required,
         "plan": plan,
-        "reengage_allowed": (not (set(by) & NO_REENGAGE) and rung in ("programmatic", "system1")
-                             and primary in (None, "changes_requested", "approved")),
+        "reengage_allowed": reengage,
+        "reengage_block": None if reengage else (
+            "class" if set(by) & NO_REENGAGE else "followup_cap" if feats.get("self_tail_comments", 0) >= FOLLOWUP_CAP
+            else "semantic_decline" if sem_decline else "closed" if subject.get("state") == "closed"
+            else "not_addressed_to_us" if reason == "no_signal_for_us"
+            else "issue_thread" if feats.get("kind") == "issue" else "rung"),
         "prefilter_rules": prefilter_rules(by, feats),
         "features": feats,
-        "delphi_signal": delphi_signal(primary, subject),
+        "delphi_signal": delphi_signal(primary, subject, placeholder_merge),
     }
     out["lane_event"] = {
         "lane": "tribute", "workflow": "tribute-system1", "event_type": f"s1:{action}",
@@ -459,6 +609,13 @@ def preflight_candidate(issue: dict, comments: list[dict] | None = None, self_lo
         reasons.append(f"needs_human_skill:{sk}")
     elif RX["human_only"].search(text):
         reasons.append("needs_human_skill:human_only")
+    for c in comments:
+        for key in ("wave_accepted", "wave_completed"):
+            m = RX[key].search(c.get("body") or "")
+            if m and m.group(1).lower() != me:
+                reasons.append(f"{key}:{m.group(1)}")
+    if any(RX["spam"].search(c.get("body") or "") and author_role(c, subject) not in ("self", "bot") for c in comments):
+        reasons.append("hostile_spam_flag")
     if issue.get("state") == "closed":
         reasons.append("closed")
     return {"eligible": not reasons, "reasons": reasons}
@@ -516,7 +673,8 @@ def hydrate(repo: str, number: int) -> dict:
     subj = {"repo": repo, "number": number, "kind": kind, "url": iss["html_url"], "title": iss.get("title"),
             "state": iss.get("state"), "state_reason": iss.get("state_reason"), "author": iss["user"]["login"],
             "assignees": [a["login"] for a in iss.get("assignees") or []], "labels": [l["name"] for l in iss.get("labels") or []],
-            "body": (iss.get("body") or "")[:1500], "closed_by": (iss.get("closed_by") or {}).get("login")}
+            "body": (iss.get("body") or "")[:1500], "closed_by": (iss.get("closed_by") or {}).get("login"),
+            "created_at": iss.get("created_at"), "closed_at": iss.get("closed_at")}
     cm = [{"id": c["id"], "author": c["user"]["login"], "author_type": c["user"]["type"], "association": c["author_association"],
            "created_at": c["created_at"], "body": c["body"]} for c in _gh(f"/repos/{repo}/issues/{number}/comments?per_page=100")]
     thread = {"self_login": SELF_LOGIN, "subject": subj, "comments": cm}

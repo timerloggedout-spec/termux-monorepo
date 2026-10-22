@@ -78,6 +78,32 @@ class ObservatoryTests(unittest.TestCase):
             self.assertEqual(json.loads(path.read_text())["observed_at"], "old")
 
 
+    def test_watching_provenance_merges_across_all_three(self):
+        records = build_records([BASE], [dict(BASE)], [dict(BASE)])
+        self.assertEqual(len(records), 1)
+        self.assertEqual(records[0]["provenance"], ["owned", "starred", "watching"])
+        payload = build_payload("example", "example", records, "2026-09-15T00:00:00Z")
+        self.assertEqual(payload["counts"]["watching"], 1)
+        self.assertEqual(payload["counts"]["stars_received_on_owned"], 12)
+
+    def test_watching_only_repo_is_reference(self):
+        records = build_records([], [], [BASE])
+        self.assertEqual(records[0]["provenance"], ["watching"])
+        self.assertIn("reference", records[0]["classification"]["role"])
+
+    def test_browser_domain_classification(self):
+        repo = dict(BASE)
+        repo.update({"name": "obscura", "description": "The headless browser for AI agents",
+                     "topics": ["headless-browser", "browser-automation"]})
+        self.assertIn("browser", classify(repo, ["starred"])["domains"])
+
+    def test_owned_forks_counted(self):
+        repo = dict(BASE)
+        repo["fork"] = True
+        payload = build_payload("example", "example", build_records([repo], []), "2026-09-15T00:00:00Z")
+        self.assertEqual(payload["counts"]["owned_forks"], 1)
+        self.assertEqual(payload["counts"]["forks_received_on_owned"], 3)
+
     def test_actions_token_403_falls_back_to_declared_owner(self):
         def fetch(path, token, params=None):
             if path == "/user":

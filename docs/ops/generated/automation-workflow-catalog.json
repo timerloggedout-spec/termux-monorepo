@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "4b02366473d7ba5311c5e56fb30f7db8d1d613be3bb2d49ed12304bd9096fbb1",
-  "workflow_count": 166,
+  "source_fingerprint": "0b94d8a6d1fe9afabf6bfcd638e2fc550a730e82bf2e2706038ce3cf0685ce47",
+  "workflow_count": 167,
   "workflows": [
     {
       "action_pins": [
@@ -3081,6 +3081,25 @@
         "23 * * * *"
       ],
       "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: vercel-ignore-guard cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "guard"
+      ],
+      "name": "vercel-ignore-guard",
+      "path": ".github/workflows/vercel-ignore-guard.yml",
+      "schedules": [
+        "17 4 * * 2"
+      ],
+      "triggers": [
+        "push",
         "schedule",
         "workflow_dispatch"
       ]

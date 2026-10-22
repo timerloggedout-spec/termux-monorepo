@@ -70,12 +70,14 @@ def build_coverage(root: Path = ROOT) -> dict[str, Any]:
         quota_capability = capability(family, raw_manager)
         static_mapping = mapping_by_family.get(family, {})
         scope = manager.get("scope") or "unknown; verify provider/model/project/account sharing"
-        status = manager.get("status", "unknown")
-        if status == "implemented_passive_adapter":
+        status = quota_capability["status"]
+        if quota_capability["source_kind"] == "caller_supplied_private_evidence":
+            method = "offline_caller_supplied_evidence_parser; live account validation not established"
+        elif status == "implemented_passive_parser":
             method = "implemented_passive_parser; live account validation not established"
-        elif status == "public_documentation_only":
+        elif status == "documentation_only":
             method = "official_documentation_only; no passive parser"
-        elif status == "unsupported":
+        elif status == "unsupported_or_unknown":
             method = "unsupported_or_no_verified_official_counter"
         else:
             method = "unknown"

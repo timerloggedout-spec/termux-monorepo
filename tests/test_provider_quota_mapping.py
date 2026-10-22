@@ -1,4 +1,6 @@
 import datetime as dt
+import sys
+import types
 from scripts.provider_quota_mapping import capability, observe_family, service_capability
 
 
@@ -20,6 +22,27 @@ def test_siliconflow_is_monetary_only():
     assert row["status"] == "opt_in_private_monetary_parser"
     assert row["dimensions"] == "monetary_balance_only_not_request_quota"
     assert row["remaining"] == "not_observed" and row["fail_closed"] is True
+
+
+def test_gemini_requires_both_registered_manager_and_callable_parser(monkeypatch):
+    registered = {"status": "implemented_passive_adapter"}
+    monkeypatch.setitem(sys.modules, "scripts.provider_quota_gemini", None)
+    assert capability("gemini", registered)["status"] == "documentation_only"
+    module = types.ModuleType("scripts.provider_quota_gemini")
+    monkeypatch.setitem(sys.modules, module.__name__, module)
+    assert capability("gemini", registered)["parser_available"] is False
+    module.normalize_gemini_evidence = lambda **kwargs: {}
+    assert capability("gemini", {"status": "public_documentation_only"})["parser_available"] is False
+    row = capability("gemini", registered)
+    assert row["status"] == "implemented_passive_parser"
+    assert row["source_kind"] == "caller_supplied_private_evidence"
+    assert row["dimensions"] == "project_model_rpm_input_tpm_rpd"
+    assert row["parser_available"] is True and row["remaining"] == "not_observed"
+    # This internal envelope is not a provider endpoint response contract.
+    result = observe_family("gemini", source="https://ai.google.dev/gemini-api/docs/rate-limits",
+                            observed_at="2025-01-01T00:00:00Z", scope="synthetic")
+    assert result["status"] == "unknown" and result["reason"] == "unsupported_source"
+    assert result["runtime_admission"] == "unchanged"
 
 
 def test_nonmodel_services_get_typed_unknown_contract():

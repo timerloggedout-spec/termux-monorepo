@@ -13,7 +13,11 @@ def test_provider_families_exhaust_registry_and_no_alias_hiding():
     assert set(families) == set(coverage._providers())
     assert "gemini" in families and "google" not in families
     assert families["gemini"]["quota_manager_owner"] == "Manager"
-    assert families["gemini"]["observation_method"] == "official_documentation_only; no passive parser"
+    gemini = families["gemini"]
+    assert gemini["observation_method"] == (
+        "offline_caller_supplied_evidence_parser; live account validation not established"
+        if gemini["quota_capability"]["parser_available"]
+        else "official_documentation_only; no passive parser")
     assert families["ollama"]["covered"] is True
     assert families["ollama"]["opt_in_private_service_ids"] == ["ollama.balance"]
     assert families["ollama"]["reader_service_ids"] == []  # Not an automatic collector.
@@ -42,8 +46,12 @@ def test_static_mappings_exhaust_canonical_roster_without_claiming_quota_service
     assert counts["missing_actual_quota_service_mappings"] == 24
     assert counts["missing_registered_provider_family_mappings"] == 0
     assert counts["opt_in_private_service_managers"] == 3
-    assert counts["implemented_passive_adapters"] == 6
-    assert counts["documentation_only"] == 18
+    expected_parsers = {"groq", "sambanova", "huggingface", "ollama", "openrouter", "siliconflow"}
+    if families["gemini"]["quota_capability"]["parser_available"]:
+        expected_parsers.add("gemini")
+    assert {name for name, row in families.items() if row["quota_capability"]["parser_available"]} == expected_parsers
+    assert counts["implemented_passive_adapters"] == len(expected_parsers)
+    assert counts["documentation_only"] == len(families) - len(expected_parsers) - 3
     assert counts["unknown_or_unsupported"] == 3
     for family, row in families.items():
         assert row["static_mapping_id"] == f"adapter:{family}"
@@ -95,6 +103,42 @@ def test_optional_manager_metadata_is_allowlisted_and_not_live(tmp_path, monkeyp
     assert "private-value" not in encoded and '"account_id":' not in encoded and '"arbitrary":' not in encoded
     assert '"remaining": 4' not in encoded
     assert row["private_balance"] == "not_published"
+
+
+def test_gemini_parser_integration_reconciles_generated_and_public_counts(tmp_path, monkeypatch):
+    import sys
+    import types
+    from scripts.quota_publication import build_payload
+    registry = json.loads(Path("ops/quota/registry.json").read_text())
+    managers = json.loads(Path("ops/quota/provider-managers.json").read_text())
+    roster = json.loads(Path("apps/help-wanted-dashboard/data/provider-quota-coverage.json").read_text())
+    monkeypatch.setattr(coverage, "_providers", lambda: [r["provider_family"] for r in roster["provider_families"]])
+    directory = tmp_path / "ops/quota"
+    directory.mkdir(parents=True)
+    (directory / "registry.json").write_text(json.dumps(registry))
+    gemini = next(r for r in managers["provider_families"] if r["provider_family"] == "gemini")
+    module = types.ModuleType("scripts.provider_quota_gemini")
+    module.normalize_gemini_evidence = lambda **kwargs: {}
+    for registered, installed, expected in ((False, False, 6), (True, False, 6), (False, True, 6), (True, True, 7)):
+        gemini["status"] = "implemented_passive_adapter" if registered else "public_documentation_only"
+        (directory / "provider-managers.json").write_text(json.dumps(managers))
+        monkeypatch.setitem(sys.modules, module.__name__, module if installed else None)
+        result = coverage.build_coverage(tmp_path)
+        row = next(r for r in result["provider_families"] if r["provider_family"] == "gemini")
+        assert result["coverage_counts"]["implemented_passive_adapters"] == expected
+        assert result["mapping_capability_counts"]["passive_parser"] == expected
+        assert result["mapping_capability_counts"]["documentation_only"] == 24 - expected
+        assert result["coverage_counts"]["opt_in_private_service_managers"] == 3
+        assert row["live_account_validation"] == "unknown"
+        assert row["reader_service_ids"] == row["opt_in_private_service_ids"] == []
+        public = build_payload(registry, result, {"readings": []})
+        assert public["coverage"]["mapping_capability_counts"]["passive_parser"] == expected
+        published = next(r for r in public["coverage"]["provider_families"] if r["provider_family"] == "gemini")
+        assert published["quota_mapping"]["source_kind"] == (
+            "caller_supplied_private_evidence" if expected == 7 else "official_documentation_only")
+        assert row["observation_method"] == (
+            "offline_caller_supplied_evidence_parser; live account validation not established"
+            if expected == 7 else "official_documentation_only; no passive parser")
 
 
 def test_unknown_provider_fails_closed():

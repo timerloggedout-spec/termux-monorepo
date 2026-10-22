@@ -8,6 +8,12 @@ There are six passive parser families: Groq, SambaNova, Hugging Face, Ollama, Op
 
 Hugging Face Hub counters do not describe inference-router capacity. SiliconFlow monetary balances do not establish currency, token/request capacity or a reset. Ollama USD pools/legacy percentages are not request counts. Groq request/token windows and OpenRouter daily-request/monetary dimensions stay separate. Gemini documentation does not establish an account's tier; PR #1441 remains a separate unresolved review.
 
+### Gemini reconciliation with the separate PR
+
+At #1441 head `e17f7db4a0a05480f0a267b91344522837e00a3c`, Gemini's new `scripts/provider_quota_gemini.py:normalize_gemini_evidence` validates an internal caller-supplied private project/model envelope (RPM, input TPM and RPD), not a Google HTTP response schema. That PR also registers the manager as an implemented passive adapter and dispatches to the new normalizer. It always leaves live binding unverified and runtime admission unchanged. None of that parser or broader gate work is copied here.
+
+This branch does not contain that module, so its generated totals remain six parser families, eighteen documentation-only and three unsupported/unknown. Coverage recognizes Gemini as the seventh parser only when both its implemented manager registration and callable normalizer are present. A manager-status edit alone cannot increase the count. In that combined state the totals become seven/seventeen/three; the three private service readers and unknown live-account validation do not change. Gemini's source kind is explicitly `caller_supplied_private_evidence`, and the endpoint dispatcher still rejects Gemini rather than inventing an HTTP collector. Regenerate both coverage and filtered publication snapshots after any future integration. #1441's review state and broader quota/gate changes remain independent; this compatibility handling is not merge approval.
+
 ## Read-only sources and storage
 
 Balance observers use fixed HTTPS GET sources, verified TLS, no redirects, bounded responses and no fallback. SiliconFlow's official [GET /v1/user/info](https://docs.siliconflow.com/en/api-reference/userinfo/get-user-info) adapter discards identity/email and retains only documented balance fields. Its changes were fixture-tested without an account call.

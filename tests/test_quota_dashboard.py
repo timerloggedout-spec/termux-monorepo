@@ -112,7 +112,8 @@ def test_dashboard_does_not_equate_static_links_or_parsers_with_live_managers():
     snapshot = json.loads((ROOT / "apps/help-wanted-dashboard/data/provider-quota-coverage.json").read_text())
     counts = snapshot["coverage_counts"]
     assert "live_account_managers" not in counts
-    assert counts["implemented_passive_adapters"] == 6
+    assert counts["implemented_passive_adapters"] == sum(
+        r["quota_capability"]["parser_available"] for r in snapshot["provider_families"])
     assert counts["missing_actual_quota_service_mappings"] == counts["provider_families"] - counts["actual_quota_service_mappings"]
     assert counts["opt_in_private_service_managers"] == 3
     assert "opt-in private services" in html
@@ -159,9 +160,13 @@ def test_mapping_capability_counts_are_typed_and_unknowns_stay_unknown():
     assert "all providers are live" in html
     snapshot = json.loads((ROOT / "apps/help-wanted-dashboard/data/provider-quota-coverage.json").read_text())
     assert all("quota_mapping" in row for row in snapshot["provider_families"])
-    assert snapshot["mapping_capability_counts"]["passive_parser"] == 6
-    assert snapshot["mapping_capability_counts"]["documentation_only"] == 18
-    assert snapshot["mapping_capability_counts"]["unknown_or_unsupported"] == 3
+    for key, status in (("passive_parser", "implemented_passive_parser"),
+                        ("documentation_only", "documentation_only"),
+                        ("unknown_or_unsupported", "unsupported_or_unknown")):
+        assert snapshot["mapping_capability_counts"][key] == sum(
+            row["quota_mapping"]["status"] == status for row in snapshot["provider_families"])
+    from scripts.provider_quota_coverage import build_coverage, _safe_public
+    assert snapshot == _safe_public(build_coverage())
     script = "const q=require('./apps/help-wanted-dashboard/quota-evidence.js');console.log(JSON.stringify(q.mappingCapability({})))"
     result = subprocess.run(["node", "-e", script], cwd=ROOT, capture_output=True, text=True, check=True)
     assert json.loads(result.stdout)["status"] == "unknown_or_unsupported"

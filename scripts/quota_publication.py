@@ -32,7 +32,7 @@ SECRET_EXACT = {"account_id", "project_id", "user_id", "api_key", "authorization
 ENUMS = {
     "status": {"ok", "watch", "exhausted", "cap_tripped", "unknown", "stale", "reported", "documented", "implemented_passive_parser", "unsupported_or_unknown", "actual_quota_service_mapping", "documentation_only"},
     "evidence_status": {"confirmed", "attributed_claim", "unknown"}, "horizon": {"H0", "H1", "H2"},
-    "source_kind": {"official_endpoint_metadata", "official_documentation_only", "none_verified", "static_registry", "public_registry"},
+    "source_kind": {"official_endpoint_metadata", "caller_supplied_private_evidence", "official_documentation_only", "none_verified", "static_registry", "public_registry"},
     "mapping_state": {"documented_registry_mapping", "static_roster_link_only", "unknown"},
     "static_mapping_state": {"static_roster_link_only", "unknown"},
     "manager_status": {"implemented_passive_adapter", "public_documentation_only", "unsupported", "implemented_opt_in_private_service", "unknown"},

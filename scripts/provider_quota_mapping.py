@@ -5,6 +5,7 @@ No networking, polling, entitlement inference, or admission decision occurs here
 """
 from __future__ import annotations
 import datetime as dt
+import importlib
 from typing import Any, Mapping
 
 MAX_TTL_SECONDS = 60
@@ -19,6 +20,20 @@ SOURCES = {
 PASSIVE = {"groq", "sambanova", "huggingface", "ollama", "openrouter"}
 
 
+def _gemini_evidence_parser_available(manager: Mapping[str, Any]) -> bool:
+    # PR #1441 owns this internal PRIVATE evidence contract, not an HTTP reader.
+    # A metadata status alone must not turn absent code into parser coverage.
+    if manager.get("status") != "implemented_passive_adapter":
+        return False
+    try:
+        module = importlib.import_module("scripts.provider_quota_gemini")
+    except ModuleNotFoundError as exc:
+        if exc.name != "scripts.provider_quota_gemini":
+            raise
+        return False
+    return callable(getattr(module, "normalize_gemini_evidence", None))
+
+
 def capability(family: str, manager: Mapping[str, Any] | None = None) -> dict[str, Any]:
     manager = manager if isinstance(manager, Mapping) else {}
     if family in SOURCES:
@@ -27,6 +42,10 @@ def capability(family: str, manager: Mapping[str, Any] | None = None) -> dict[st
         scope = manager.get("scope") or next(iter(SOURCES[family].values()))[0]
         source = "official_endpoint_metadata"
         parser = True
+    elif family == "gemini" and _gemini_evidence_parser_available(manager):
+        status, dims = "implemented_passive_parser", "project_model_rpm_input_tpm_rpd"
+        scope = manager.get("scope") or "project_and_exact_model"
+        source, parser = "caller_supplied_private_evidence", True
     elif family == "gemini" or manager.get("status") == "public_documentation_only":
         status, dims, scope, source, parser = "documentation_only", "unknown", "unknown", "official_documentation_only", False
     else:

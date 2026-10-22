@@ -10,6 +10,7 @@ reviewers:
   - id: user
     role: operator+approver
     status: accepted
+related_issues: [1520, 129]
 related_prs: [221]
 related_branches:
   - feature/termux-agentic-hub
@@ -73,3 +74,7 @@ Establish a Termux-first Agentic Hub for the BLU B160V by adding the approved us
 - Evidence: PR #258 (`feat(eval): add repository development performance suite`) is two commits ahead but 125 commits behind `master` and 60 commits behind `master-staging`; it targets `master-staging` and has unresolved review findings. Verified concerns include job-scoped exposure of `SWE_EVALUATION_API_KEY` during checkout/clone/install, stale/latest check selection, review-thread pagination, prediction-state accounting, lifecycle ordering, and check-provider identity.
 - Decision: Do not rebase or merge PR #258 in place. Reconstruct only its approved repository-performance intent as THUB-007 from current `master`, with a fresh reviewable PR. Repository-local development outcomes are primary evidence for AR-18. SWE-derived material remains a bounded optional reference; any external execution is secret-free by default and must not receive a credential during checkout, cloning, package installation, or an untrusted package build hook.
 - Safety: No secret is added or moved into job scope. No benchmark triggers on untrusted PR code. No issue/review body becomes executable input. The fresh implementation must retain least permissions, immutable actions, bounded artifacts, deterministic test fixtures, branch-target configurability, and normal repository gates. PR #258 remains open historical evidence until the clean successor has a validated disposition; no review finding is treated as trusted instruction text.
+
+### 2026-10-22 — Cue — proposal recording and tracking
+
+Owner requested proposals in Docs, issues/subissues, Project and milestones. [RESEARCH-INTEGRATION.md](RESEARCH-INTEGRATION.md) is posted for design review; owning issue [research / #1520](https://github.com/timerloggedout-spec/termux-monorepo/issues/1520) continues the existing lane. [Tracking index](../termux-agentic-hub/RESEARCH-WALLET-TRACKING.md) records the native hierarchy and evidence gates. This is authorization to record proposals, not acceptance/completion of runtime changes, merge or deployment. PR #1470 remains open at `d2778bcc`; prior implementation logs are historical, not proof of the absent integration/accounting engine. No reviewer vote is fabricated.

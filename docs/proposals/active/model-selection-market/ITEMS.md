@@ -18,6 +18,8 @@
 | MSM-010 | Official provider catalog + explicit native hub adapters for harvested models | **done** | MSM-006, MSM-009 | Q; Groq, Mistral and Gemini official endpoints; exact-model opt-in admission, no inferred free entitlement or routing-weight mutation; real production-contract regressions |
 | MSM-011 | Evidence-backed matrix review attribution and reconciliation tests | **done** | MSM-008 | Q; distinguish submitted reviews, conversation, inline comments, claimed local roles, and authenticated actors; preserve provenance |
 
+| MSM-012 | Paper-only CSV wallet projection from market snapshots | **in_review** | MSM-005 | Read-only projection of observational stakes, offers, and cards; no chain adapter, spendable balances, or real settlement |
+
 | MSM-013 | Diagnose existing Actions provider-secret mappings and execute only a verified no-cost bounded smoke | **done** | MSM-010 | #1321 merged; run 39432211461 verified existing OpenRouter free-tier and exact zero-price model, one synthetic request returned HTTP 429; inference remains unverified, no retry/paid fallback/admission change; 301 pytest + 9 unit contracts |
 
 | MSM-019 | Official-source passive quota manager contracts for 20 canonical provider families | **done** | MSM-018 (free-provider prioritization) | Implementation validated in #1448; 5 passive parsers, 12 documentation-only, 3 unsupported; current-head promotion/publication receipts in that PR. No new polling/account validation/admission change; 18 live/service-mapping gaps remain explicit. |
@@ -40,8 +42,17 @@ scripts/model_selection_market/
   selector.py       # MSM-003
   dspy_doe.py       # MSM-004
   market.py         # MSM-005
+  paper_wallet.py  # MSM-012 — CSV projection only
   cli.py
   test_msm.py
+```
+
+MSM-012 projects an existing MarketGraph JSON snapshot to a paper-only CSV; it
+does not create balances or settle anything:
+
+```bash
+python3 -m scripts.model_selection_market.paper_wallet export snapshot.json paper-wallet.csv
+python3 -m scripts.model_selection_market.paper_wallet view paper-wallet.csv
 ```
 
 ```bash

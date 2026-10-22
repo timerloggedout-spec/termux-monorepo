@@ -1,0 +1,13 @@
+[package]
+name = "termux-swarms-rs-worker"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.88"
+description = "Optional bounded Swarms Rust worker for the Termux Agentic Hub"
+
+[dependencies]
+swarms-rs = { git = "https://github.com/The-Swarm-Corporation/swarms-rs", rev = "ee1e74cb6e2c94775db88dddb311f2235e3fe9e3" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "time"] }
+url = "2"

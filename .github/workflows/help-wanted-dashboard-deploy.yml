@@ -96,6 +96,7 @@ jobs:
           mkdir -p _site/data
           cp apps/project-pages-hub/index.html _site/index.html
           cp apps/help-wanted-dashboard/matrix.html _site/matrix.html
+          cp apps/help-wanted-dashboard/dashboard.css _site/dashboard.css
           if [ -f docs/ops/generated/lane-matrix-status.json ]; then
             cp docs/ops/generated/lane-matrix-status.json _site/data/lane-matrix-status.json
           fi
@@ -166,6 +167,7 @@ jobs:
         run: |
           mkdir -p _matrix/data
           cp apps/help-wanted-dashboard/matrix.html _matrix/index.html
+          cp apps/help-wanted-dashboard/dashboard.css _matrix/dashboard.css
           if [ -f docs/ops/generated/lane-matrix-status.json ]; then
             cp docs/ops/generated/lane-matrix-status.json _matrix/data/lane-matrix-status.json
           fi

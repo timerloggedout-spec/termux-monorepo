@@ -9,6 +9,7 @@ semantics and the write-budget guard.
 """
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -311,7 +312,10 @@ def test_schema_and_wrangler_static_contract():
     assert 'name = "tmx-device-queue"' in wrangler
     assert "workers_dev = true" in wrangler
     assert 'binding = "DB"' in wrangler
-    assert 'database_id = "REPLACE_AT_DEPLOY"' in wrangler
+    # Placeholder was replaced by the live D1 id at deploy (PR #1547); the
+    # contract is now "a real UUID", not the placeholder string.
+    assert re.search(r'database_id = "[0-9a-f]{8}-[0-9a-f-]{27,}"', wrangler), \
+        "wrangler.toml must carry the live D1 database_id (UUID)"
 
 
 def test_no_secret_values_in_worker_files():

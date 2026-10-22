@@ -3,6 +3,8 @@
 # Additive: observes completions via workflow_run; never edits or blocks the
 # watched workflows. No-ops (notice only) until a repo secret exists:
 #   LANE_EVENTS_DATABASE_URL (Postgres URL) or NEON_API_KEY (Neon free tier).
+# Filter: only record successful completions to reduce notification spam from
+# skipped/cancelled cascades. Failures still visible in source workflow.
 name: lane events recorder
 
 on:
@@ -33,6 +35,7 @@ concurrency:
 
 jobs:
   record:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     continue-on-error: true

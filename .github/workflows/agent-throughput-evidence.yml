@@ -6,6 +6,8 @@ name: Agent Throughput Evidence
 # or executes the triggering workflow's SHA and never writes source/repository
 # state. workflow_run intentionally runs from the default branch; keep this file
 # on master before expecting live completion events.
+# Filter: only process successful conclusions to cut notification volume from
+# non-success cascades while preserving evidence for successes.
 on:
   workflow_run:
     workflows:
@@ -33,6 +35,7 @@ concurrency:
 
 jobs:
   emit:
+    if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:

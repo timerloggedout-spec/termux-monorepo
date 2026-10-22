@@ -39,6 +39,7 @@ jobs:
           set -euo pipefail
           python scripts/github/repository_observatory.py \
             --owner "$GITHUB_REPOSITORY_OWNER" \
+            --watching \
             --output workspace/llm_map/repositories/repository-index.json \
             --markdown docs/repositories/matrix.md
 

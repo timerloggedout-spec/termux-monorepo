@@ -11,9 +11,9 @@
 | MSM-004 | DSPy-DoE consideration stub | **done** | MSM-000 | `dspy_doe.py` — not default router |
 | MSM-005 | Cards + bets + graph stub | **done** | MSM-002, MSM-003 | `market.py` |
 | MSM-005.A | Versioned integer paper-point account/event contract | **in_review** | MSM-005 | #1526; `PAPER-ACCOUNTING-CONTRACT.md`; extension of the existing market, not stub completion |
-| MSM-005.B | Atomic paper reserve/settle/release on market events | **executing** | MSM-005.A | #1527; opt-in local event stream, no money/chain/provider operations |
-| MSM-005.C | Rebuildable MSM-012 accounting projections | **executing** | MSM-005.B, MSM-012 | #1528; CSV never writes balances or authorizes settlement |
-| MSM-005.D | Offline invariant, contention, replay and recovery evidence | **executing** | MSM-005.A, MSM-005.B, MSM-005.C | #1529; exact candidate evidence in implementation PR; no merge/deploy claim |
+| MSM-005.B | Atomic paper reserve/settle/release on market events | **in_review** | MSM-005.A | #1527; `market.py` + `accounting.py`, opt-in unified CLI, one local event stream; no money/chain/provider operations |
+| MSM-005.C | Rebuildable MSM-012 accounting projections | **in_review** | MSM-005.B, MSM-012 | #1528; `paper_wallet.py` authoritative-event export + checked view; CSV never writes balances or authorizes settlement |
+| MSM-005.D | Offline invariant, contention, replay and recovery evidence | **in_review** | MSM-005.A, MSM-005.B, MSM-005.C | #1529; `tests/test_paper_accounting*.py`; exact candidate evidence in implementation PR; no merge/deploy claim |
 | MSM-006 | Provenance-pinned provider research ingestion + deterministic refresh PR lane | **done** | MSM-000, MSM-002 | Q; implementation #1294, generated data #1295 merged; deployed run 39373733705 passed; no runtime activation |
 | MSM-007 | Evidence-gated Bayesian/Delphi advisory ranking + dependency-aware Cadence plan | **done** | MSM-006 | Q; #1294 merged; deployed six-task plan verified; 63 focused/workflow tests + 9 legacy tests pass; production weights unchanged |
 | MSM-008 | Complete supplied resource matrix + deterministic aggregate implementation search | **done** | MSM-006 | Q; preserve all supplied links as canonical references, reviewed resource registry, offline searchable provider/resource index and existing workflow artifacts; no account activation or expanded publication authority |

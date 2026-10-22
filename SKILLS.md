@@ -17,6 +17,7 @@
 | Wingman reference/adaptation | `.agents/skills/wingman-project-integration/SKILL.md` |
 | Context relationship evidence | `.agents/skills/context-relationship-graph/SKILL.md` |
 | External contribute (help-wanted) | `.agents/skills/help-wanted-lane/SKILL.md` |
+| Web operation -> API/CLI adapter (foundry) | `.agents/skills/web-adapter-foundry/SKILL.md` |
 | Production WAIT → VALIDATE | `.github/skills/production-reconciliation/SKILL.md` |
 
 Root `AGENTS.md` is **deprecated** (Linguist / Jules redirect only). Load `CLAUDE.md` first.

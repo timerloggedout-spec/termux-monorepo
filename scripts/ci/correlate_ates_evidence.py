@@ -157,7 +157,7 @@ def main() -> None:
         result = correlate(receipts, events)
     except ValueError as exc:
         parser.error(str(exc))
-    Path(args.output).write_text(json.dumps(result, sort_keys=True, indent=2) + "\\n", encoding="utf-8")
+    Path(args.output).write_text(json.dumps(result, sort_keys=True, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({key: result[key] for key in (
         "receipt_count", "input_event_count", "matched_event_count",
         "unmatched_event_count", "sha_mismatch_event_count"

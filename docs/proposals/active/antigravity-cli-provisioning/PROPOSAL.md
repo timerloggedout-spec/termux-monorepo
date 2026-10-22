@@ -1,5 +1,7 @@
 # Antigravity CLI: collaborative utilization and initial provisioning
 
+**Operational follow-up:** the operator subsequently authorized identity-verified secondary work. See [full operational plan](OPERATIONAL.md) and [actual device results and limits](OPERATIONAL-VALIDATION.md). That authorization supersedes the earlier Device 2 exclusion below, not the Origin exclusion or no-merge/settings boundaries. The original stages below describe #1498's historical delivery, not the follow-up's current runtime status.
+
 Issue [#1497](https://github.com/timerloggedout-spec/termux-monorepo/issues/1497) now has a versioned research baseline and a non-mutating readiness tool. This is initial repository provisioning, not a claim that Antigravity has been installed or configured on a device.
 
 Keep the user's existing **high verbosity and auto-approve**. Do not apply the seed's conservative settings example. No model prompt is needed to prepare this lane. [Source checks and corrections](source.md) distinguish documented capabilities, user-reported observations, and proposals.

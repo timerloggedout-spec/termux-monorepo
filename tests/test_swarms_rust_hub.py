@@ -33,7 +33,9 @@ def live_hub(monkeypatch, tmp_path):
     monkeypatch.syspath_prepend(str(ROOT))
     hub = importlib.import_module("llm_api_hub.server.app")
     monkeypatch.setattr(hub, "admission", seed_quota(tmp_path / "quota.json", ["wrapper/deepseek"]))
-    monkeypatch.setattr(telemetry, "TELEMETRY_LOG", str(tmp_path / "telemetry.jsonl"))
+    destination = str(tmp_path / "telemetry.jsonl")
+    monkeypatch.setenv("TERMUX_TELEMETRY_LOG", destination)
+    monkeypatch.setitem(telemetry.TermuxTelemetryLogger.notify.__globals__, "TELEMETRY_LOG", destination)
     calls: list[dict] = []
     requests: list[str] = []
 

@@ -149,3 +149,18 @@ def test_cancel_kills_worker(tmp_path):
 
 def test_import_has_no_execution_side_effects():
     assert mod.PIN and not hasattr(mod, "upstream")
+
+
+def test_large_utf8_result_is_drained_before_process_exit():
+    def infer(model, messages, max_tokens, *, correlation):
+        if correlation['request_id'].endswith('request-0'):
+            return '{"queries":["one"]}'
+        return '\u20ac' * 7000
+
+    result = mod.execute(query='topic', enabled=True, agents=1, tokens=64,
+        deadline_seconds=3, source_root=SOURCE, inference=infer,
+        search=lambda q: 'live-sized UTF-8 evidence', correlation_id='utf8-result',
+        model='wrapper/deepseek')
+    assert result['status'] == 'completed'
+    assert len(result['result']) <= mod.MAX_OUTPUT
+    assert '\u20ac' in result['result']

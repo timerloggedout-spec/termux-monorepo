@@ -25,7 +25,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, Iterator, List, Optional
 from urllib.error import HTTPError, URLError
 from urllib.request import Request as UrlRequest
-from urllib.request import urlopen
+from urllib.request import HTTPRedirectHandler, build_opener
 
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, StreamingResponse
@@ -244,6 +244,22 @@ def message_to_dict(message: ChatMessage) -> Dict[str, Any]:
     return result
 
 
+def quota_token_budget(request: ChatCompletionRequest) -> int:
+    """Bound token use conservatively using UTF-8 JSON bytes plus framing.
+
+    Byte-fallback tokenizers cannot emit more tokens than input bytes; reserving
+    all serialized message bytes also covers structured text parts and metadata.
+    """
+    serialized = json.dumps(
+        [message_to_dict(message) for message in request.messages],
+        ensure_ascii=False,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    prompt_bound = len(serialized) + 128 * len(request.messages)
+    output_bound = request.max_tokens if request.max_tokens is not None else 2048
+    return prompt_bound + output_bound
+
+
 def messages_to_prompt(messages: Iterable[ChatMessage]) -> str:
     """Render a multi-turn OpenAI conversation for legacy wrapper backends."""
     rendered: List[str] = []
@@ -257,6 +273,11 @@ def messages_to_prompt(messages: Iterable[ChatMessage]) -> str:
     return "\n\n".join(rendered) + "\n\n[assistant]"
 
 
+class _NoUpstreamRedirect(HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
 def http_json(url: str, payload: Dict[str, Any], *, headers: Dict[str, str], timeout: float) -> Dict[str, Any]:
     body = json.dumps(payload).encode("utf-8")
     request = UrlRequest(
@@ -266,8 +287,11 @@ def http_json(url: str, payload: Dict[str, Any], *, headers: Dict[str, str], tim
         method="POST",
     )
     try:
-        with urlopen(request, timeout=timeout) as response:
-            decoded = json.loads(response.read().decode("utf-8"))
+        with build_opener(_NoUpstreamRedirect).open(request, timeout=timeout) as response:
+            raw = response.read(2 * 1024 * 1024 + 1)
+            if len(raw) > 2 * 1024 * 1024:
+                raise HubError(502, "upstream response is too large", code="upstream_invalid_response")
+            decoded = json.loads(raw.decode("utf-8"))
     except HTTPError as exc:
         retry = exc.headers.get("Retry-After", "60") if exc.headers else "60"
         retry = retry if retry.isdigit() and len(retry) <= 6 else "60"
@@ -276,7 +300,7 @@ def http_json(url: str, payload: Dict[str, Any], *, headers: Dict[str, str], tim
                        headers={"Retry-After": retry} if exc.code == 429 else None) from None
     except (URLError, TimeoutError) as exc:
         raise HubError(502, "upstream is unreachable", code="upstream_unreachable") from None
-    except json.JSONDecodeError as exc:
+    except (json.JSONDecodeError, UnicodeDecodeError) as exc:
         raise HubError(502, "upstream returned invalid JSON", code="upstream_invalid_json") from exc
     if not isinstance(decoded, dict):
         raise HubError(502, "upstream returned a non-object response", code="upstream_invalid_response")
@@ -382,6 +406,8 @@ def models(request: Request) -> Dict[str, Any]:
 @app.post("/v1/chat/completions")
 def chat_completions(request: ChatCompletionRequest, raw_request: Request) -> Any:
     validate_auth(raw_request)
+    if request.max_tokens is None:
+        request = request.model_copy(update={"max_tokens": 2048})
     model = request.model.strip()
     if model.startswith("wrapper/") and request.session_id:
         sid = str(request.session_id)
@@ -456,7 +482,7 @@ def chat_completions(request: ChatCompletionRequest, raw_request: Request) -> An
 
     try:
         reservation = admission.reserve(provider, model, attempt_id=correlation["attempt_id"],
-                                        token_budget=request.max_tokens or 2048)
+                                        token_budget=quota_token_budget(request))
     except AdmissionDenied:
         emit("admission_denied", "DENIED")
         raise HubError(429, "provider quota admission denied", code="quota_denied") from None

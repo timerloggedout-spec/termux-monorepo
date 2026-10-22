@@ -33,6 +33,12 @@ def sanitize_correlation(context):
 
 class TermuxTelemetryLogger:
     @staticmethod
+    def configure(destination):
+        """Set the operator-owned destination on this shared logger implementation."""
+        global TELEMETRY_LOG
+        TELEMETRY_LOG = os.path.abspath(os.fspath(destination))
+
+    @staticmethod
     def notify(level, agent_id, message, target_file=None, attempt=None, *, context=None):
         # Messages are for static operational text only. Callers must not put upstream
         # exceptions, prompts, or response bodies here.

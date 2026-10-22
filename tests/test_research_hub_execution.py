@@ -71,6 +71,24 @@ def test_deny_causes_no_inference_then_admit_reconcile_and_retry_no_dispatch(bou
     assert "sensitive prompt" not in log.read_text()
 
 
+def test_prompt_cost_prevents_known_token_quota_overspend(boundary, tmp_path, monkeypatch):
+    client, manager, log = boundary
+    records = json.loads(manager.records_path.read_text())
+    records["records"][0]["remaining_tokens"] = 100
+    manager.records_path.write_text(json.dumps(records))
+    bounded = QuotaAdmission(manager.records_path, tmp_path / "prompt-cost.sqlite")
+    monkeypatch.setattr(hub, "admission", bounded)
+    calls = []
+    monkeypatch.setattr(hub.runtime, "complete_wrapper", lambda *a: calls.append(1) or "ok")
+    request = body()
+    assert hub.quota_token_budget(hub.ChatCompletionRequest(**request)) > 100
+    response = client.post("/v1/chat/completions", json=request)
+    assert response.status_code == 429
+    assert calls == []
+    assert states(bounded) == []
+    assert events(log)[-1]["outcome"] == "DENIED"
+
+
 def test_429_persists_cooldown_and_unknown_usage_across_restart(boundary, monkeypatch):
     client, manager, log = boundary
     calls = []

@@ -19,6 +19,17 @@ on:
         default: free-capacity-first
         type: choice
         options: [baseline-peer-first, free-capacity-first, parallel-then-integrate]
+      live_mode:
+        description: 'Existing catalog evaluation, or quota-admitted real development/Tribute task preflight/pilot'
+        required: false
+        default: catalog
+        type: choice
+        options: [catalog, preflight, pilot]
+      task_pairs:
+        description: 'Prespecified paired task units per context for the exploratory live pilot; not significance evidence'
+        required: false
+        default: 2
+        type: number
   schedule:
     - cron: '*/15 * * * *'
   push:
@@ -49,9 +60,12 @@ jobs:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           FELO_AI_API: ${{ secrets.FELO_AI_API }}
           OMNI_API_KEY: ${{ secrets.OMNI_API_KEY }}
+          LIVE_MODE: ${{ inputs.live_mode }}
         run: |
           set -euo pipefail
-          python3 scripts/provider_model_catalog.py --providers openrouter,felo,omni --output /tmp/model-catalog.json
+          PROVIDERS=openrouter,felo,omni
+          if [ "$LIVE_MODE" = preflight ] || [ "$LIVE_MODE" = pilot ]; then PROVIDERS=openrouter; fi
+          python3 scripts/provider_model_catalog.py --providers "$PROVIDERS" --output /tmp/model-catalog.json
           echo '### Live provider catalog' >> "$GITHUB_STEP_SUMMARY"
           python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
           import json
@@ -114,6 +128,7 @@ jobs:
 
   experiment:
     needs: discover
+    if: ${{ inputs.live_mode != 'preflight' && inputs.live_mode != 'pilot' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -300,3 +315,54 @@ jobs:
             /tmp/evaluation
             /tmp/model-performance/observations.ndjson
           if-no-files-found: ignore
+
+  live-task-experiment:
+    needs: discover
+    if: ${{ github.event_name == 'workflow_dispatch' && (inputs.live_mode == 'preflight' || inputs.live_mode == 'pilot') }}
+    permissions:
+      contents: read
+      pull-requests: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b
+        with:
+          python-version: '3.12'
+      - name: Install hub runtime dependencies, without provider credentials
+        run: python3 -m pip install fastapi==0.143.3 uvicorn==0.54.0
+      - name: Freeze real task cohorts and perform quota-admitted paired evaluation
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          LIVE_MODE: ${{ inputs.live_mode }}
+          TASK_PAIRS: ${{ inputs.task_pairs }}
+          TARGET_NUMBER: ${{ inputs.target_number }}
+        run: |
+          set -euo pipefail
+          python3 scripts/provider_model_catalog.py --providers openrouter --output /tmp/live-task-catalog.json
+          python3 -m scripts.model_selection_market.live_task_experiment \
+            --mode "$LIVE_MODE" --catalog /tmp/live-task-catalog.json \
+            --output /tmp/live-task-evidence --pairs-per-context "$TASK_PAIRS" \
+            --exclude-pr "$TARGET_NUMBER"
+      - name: Bind real-task evidence to candidate and workflow
+        if: always()
+        env:
+          LIVE_MODE: ${{ inputs.live_mode }}
+        run: |
+          mkdir -p /tmp/live-task-evidence
+          python3 scripts/ci/research_paper_receipt.py \
+            --output /tmp/live-task-evidence/receipt.json \
+            --evidence-kind "live-$LIVE_MODE" \
+            $(find /tmp/live-task-evidence -maxdepth 1 -type f ! -name receipt.json -printf ' --artifact %p')
+      - name: Upload public task and sanitized experiment evidence only
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: live-task-${{ inputs.live_mode }}-${{ github.sha }}-${{ github.run_id }}
+          path: /tmp/live-task-evidence
+          if-no-files-found: error
+          retention-days: 14

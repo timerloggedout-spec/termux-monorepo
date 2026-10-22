@@ -24,6 +24,7 @@ def chat_completions(
     stream: bool = False,
     timeout: float = 120.0,
     correlation: Optional[Dict[str, str]] = None,
+    max_tokens: Optional[int] = None,
 ) -> Dict[str, Any]:
     """POST /chat/completions — OpenAI shape."""
     if stream:
@@ -36,6 +37,10 @@ def chat_completions(
         "temperature": temperature,
         "stream": False,
     }
+    if max_tokens is not None:
+        if type(max_tokens) is not int or max_tokens < 1:
+            raise ValueError("max_tokens must be a positive integer")
+        body["max_tokens"] = max_tokens
     data = json.dumps(body).encode("utf-8")
     headers = {
         "Content-Type": "application/json",

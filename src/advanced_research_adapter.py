@@ -12,6 +12,7 @@ import tempfile
 import threading
 import time
 from pathlib import Path
+from queue import Empty
 from typing import Any, Callable
 
 PIN = "a262cb9d9703681c5a5066f03eb9fb89ad4d9cae"
@@ -235,16 +236,23 @@ def execute(*, query: str, enabled: bool = False, agents: int = 1,
         try:
             process.start()
             deadline = started + deadline_seconds
+            data = None
             while process.is_alive() and time.monotonic() < deadline:
                 if cancel and cancel.is_set():
                     raise InterruptedError("cancelled")
-                process.join(min(0.05, max(0, deadline - time.monotonic())))
-            if process.is_alive():
+                try:
+                    data = queue.get(timeout=min(0.05, max(0, deadline - time.monotonic())))
+                    break
+                except Empty:
+                    pass
+            if data is None and process.is_alive():
                 raise TimeoutError("research process exceeded deadline and was terminated")
-            try:
-                data = queue.get(timeout=0.2)
-            except Exception:
-                raise RuntimeError("isolated pinned runtime failed") from None
+            if data is None:
+                try:
+                    data = queue.get(timeout=0.2)
+                except Exception:
+                    raise RuntimeError("isolated pinned runtime failed") from None
+            process.join(min(0.05, max(0, deadline - time.monotonic())))
             if not data.get("ok"):
                 raise RuntimeError("isolated pinned runtime failed")
             return {"status": "completed", "correlation_id": correlation_id,

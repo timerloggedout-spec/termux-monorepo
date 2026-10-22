@@ -4,6 +4,17 @@ updated_at: "2026-09-11T19:00:00Z"
 updated_by: timerloggedout-spec
 
 proposals:
+  - id: antigravity-cli-provisioning
+    title: "Antigravity CLI collaborative use cases and initial provisioning"
+    author: Cue
+    status: executing
+    priority: P2
+    path: active/antigravity-cli-provisioning/
+    reviewers: []
+    related_issues: [1497]
+    related_prs: []
+    related_branches: [cue/1497-antigravity-provisioning]
+    gates_required: [repo-gate, termux-smoke]
   - id: context-relationship-graph
     title: "GitHub-native context relationship graph and scope index"
     author: Manus

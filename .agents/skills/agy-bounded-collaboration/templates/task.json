@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "task_id": "REPLACE-unique-task-id",
+  "issue": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1497",
+  "item_id": "AGY-1497-05",
+  "objective": "REPLACE-one-bounded-objective",
+  "base_sha": "REPLACE-full-40-character-commit",
+  "workspace": "REPLACE-private-local-worktree-path",
+  "owner": "implementer",
+  "verifier": "independent-verifier",
+  "allowed_paths": ["REPLACE-explicit-task-path"],
+  "allowed_actions": ["scoped repository reads", "scoped edits", "offline checks", "issue-branch commit and push when authorized"],
+  "excluded": ["Origin and backup access", "unverified device access", "global settings changes", "authentication changes", "model readiness prompts", "merge", "auto-merge", "unrelated pushes"],
+  "posture": {"verbosity": "preserve existing High", "approval": "preserve existing auto-approve"},
+  "acceptance": ["minimal diff", "focused tests", "repo-gate", "termux-smoke", "independent review"],
+  "result": {
+    "outcome": "UNKNOWN",
+    "commit": null,
+    "changed_paths": [],
+    "checks": [],
+    "runtime_verified": false,
+    "unresolved": [],
+    "rollback": "REPLACE-owned-worktree-cleanup-or-follow-up-revert"
+  }
+}

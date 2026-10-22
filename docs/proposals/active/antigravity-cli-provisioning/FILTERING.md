@@ -1,6 +1,6 @@
 # Full diagnostics, concise steering — #1497
 
-The owner chose a programmatic filtering layer, not low CLI verbosity. The desired saved setting is `verbosity: high`, with the existing `toolPermission: always-proceed` and `artifactReviewPolicy: agent-decides` unchanged. The filter is a passive consumer: it never launches the CLI, spends model quota, changes permissions, switches models, or schedules work.
+The owner chose a programmatic filtering layer, not low CLI verbosity. The verified saved setting is `verbosity: high`, with the existing `toolPermission: always-proceed` and `artifactReviewPolicy: agent-decides` unchanged. `capture.py` and `telemetry.py` are passive consumers: they never launch the CLI. The separate opt-in `run.py` wrapper launches only an explicitly supplied command once; it has no default producer, retries, settings changes, model switching, quota probes or scheduler.
 
 ## Three separate outputs
 
@@ -32,6 +32,38 @@ Optional manual `/usage` observations require `source: manual:/usage`, exact mod
 
 The parser limits each event candidate to 1 MiB and metadata strings to bounded lengths. The capture layer continues preserving oversized events while dropping them from parsing; invalid UTF-8/JSON events are counted, never echoed to the steering view. Memory is bounded by the event limit plus small read buffers; disk capture is deliberately complete, not size-bounded.
 
+## One end-to-end command for a future authorized task
+
+**Do not execute this example as a test.** The wrapper is not authorization to spend quota or send a prompt to a device. Use it only after the owner authorizes that particular task. Run on the controller with Python 3, an existing private parent outside Git, a fresh run ID, sufficient disk space, and the existing pinned `termux-device2` SSH alias. `AUTHORIZED_PROMPT_FILE` contains only the approved task; it stays on the controller and is sent on SSH stdin, not copied to a phone file. The remote shell reads it into the CLI argument without evaluating its content. It strips trailing newlines, so this lane is for task text, not exact-byte prompt transport.
+
+```bash
+python3 scripts/antigravity/run.py \
+  --capture-dir "$PRIVATE_PARENT/$RUN_ID" --run-id "$RUN_ID" \
+  --account-scope secondary-owner -- \
+  ssh -T -o BatchMode=yes -o StrictHostKeyChecking=yes termux-device2 '
+    set -eu
+    cd "$HOME/.local/share/agy-1497-secondary/worktree"
+    test -f .git && test ! -L .git
+    test -f .agy-secondary-id && test ! -L .agy-secondary-id
+    test "$(cat .agy-secondary-id)" = tmx-node-55619bd5
+    test "$(whoami)" = u0_a243
+    test "$(getprop ro.product.model)" = B160V
+    prompt=$(cat)
+    test -n "$prompt"
+    export AGY_CLI_DISABLE_AUTO_UPDATE=true
+    exec "$HOME/.local/bin/agy" --agent agy-implementer \
+      --print-timeout 90s --output-format stream-json --print "$prompt"
+  ' < "$AUTHORIZED_PROMPT_FILE"
+```
+
+The alias already pins the known host key, account, identity file and existing SOCKS route. Do not recreate it from an IP, bypass host-key checking, or substitute Origin. Local marker/account/model guards corroborate that pin; they are not a sandbox or replacement for host authentication. No Python or filter source is installed on the phone. No permission or verbosity flags are supplied, so the saved High and approval policies remain intact. No new model choice is made: model identity remains UNKNOWN unless actually emitted in `init` or supplied as observed metadata with the wrapper's `--model` (that option does **not** change the producer's model).
+
+`run.py` creates the same four private artifacts, with stderr captured directly from process start to a file rather than a pipe or terminal. It consumes stdout while the producer runs and emits exactly three steering lines after completion. Raw stdout is never forwarded. `record.json` additionally retains `producer_exit_code` (negative for a signal), or a bounded launch-error class and null exit code when launch failed. The first steering line shows the reported CLI status **and** process exit separately; a SUCCESS event followed by SSH failure is not reported as overall success.
+
+Runner exit policy: nonzero producer exit is preserved (signals map to 128 + signal); producer exit 0 plus SUCCESS returns 0; exit 0 without a result returns 2; exit 0 with any other status returns 1; launch/archive failure returns 3. These codes can overlap producer codes: use the private record to distinguish them. On archive failure/interruption, the local producer group is stopped without retry; partial archives are not completion proof. Stopping local SSH cannot guarantee cancellation of an already-started remote task. Inspect before any later retry. The wrapper does not impose a new timer; the example uses the documented CLI timeout.
+
+The [official headless documentation](https://antigravity.google/docs/cli/headless/) confirms stdout/stderr separation, `--print`, NDJSON `init` / `step_update` / `result`, final `result.usage`, optional model identity and settings-based permissions. Multi-turn stdin mode exists in the current docs, but is not required by this command or claimed tested on installed 1.4.5. Its usage counters are cumulative: the adapter retains the **last** result, never sums snapshots or repeated results. Manual `/usage` is a separate observation (not a stream prompt); router invocation counters are neither populated nor modified. No dollars or remaining quota are inferred from tokens.
+
 ## Device 2 correction and deployment
 
 Only the pinned secondary `tmx-node-55619bd5` is authorized. Origin (`tmx-node-primary`) and its backup remain excluded. Verify the existing pinned SSH host key and canonical mapping **before any transfer or write**. A copied marker alone is not authentication.
@@ -61,4 +93,4 @@ The secondary's previous inspection found no Python on PATH. The Python filter m
 
 Repository integration is authorized in open PR #1514, whose live head is `cue/1497-operational-device2`, targeting `master-staging`. The older `cue/1497-antigravity-provisioning` branch is not the live PR head. No merge is authorized.
 
-Device 2 is currently offline on the existing tailnet route. No fresh device identity or settings read, settings write, source transfer, native filter run, or actual-device capture replay has succeeded in this follow-up. The settings discrepancy remains unresolved until that connection is restored. Offline tests are not evidence of device deployment. See [FILTERING-VALIDATION.md](FILTERING-VALIDATION.md) for executed checks and the exact remaining handoff.
+The later [secondary recovery receipt](SECONDARY-RECOVERY.md) supersedes the earlier offline/Low observations: pinned secondary identity, High restoration, unchanged auto-approve, a supervised SSH-child restart and fresh pinned reconnect were verified. This controller-only continuation made no phone connection or settings change and no model request. The end-to-end command above is documentation plus offline fixture proof, not a completed live stream-json run. Boot first-launch activation, boot delivery/reboot, actual-device stream capture, native agent/verifier/discovery/delegation and full-provisioning readiness remain separate gaps. See [FILTERING-VALIDATION.md](FILTERING-VALIDATION.md) for executed checks; PR stays open and unmerged.

@@ -69,6 +69,11 @@ def capture(source, destination, *, diagnostics=None, model=None, quota=None,
         with open(diagnostics, "rb") as source_stderr:
             with private_file(destination / "diagnostics.stderr") as target_stderr:
                 shutil.copyfileobj(source_stderr, target_stderr, length=65536)
+    return write_outputs(record, destination)
+
+
+def write_outputs(record, destination):
+    """Write allowlisted metadata and steering after capture/process completion."""
     with private_file(destination / "record.json") as output:
         output.write((json.dumps(record, allow_nan=False) + "\n").encode("utf-8"))
     summary = steering(record) + "\n"

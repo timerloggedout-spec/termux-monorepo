@@ -152,10 +152,18 @@ def steering(record):
         return '?' if value is None else str(value)
     qtext = 'UNKNOWN; inspect /usage' if quota['status'] == 'unknown' else (
         f"{quota['remaining']} {quota['unit']} remaining [{quota['status']}; manual]")
+    process = ''
+    next_action = 'refresh /usage' if quota['status'] != 'observed' else 'owner decides; no auto-switch'
+    if 'producer_exit_code' in record:
+        process = f" | EXIT {val(record['producer_exit_code'])}"
+        if record.get('producer_launch_error'):
+            process += ' | LAUNCH FAILED'
+        if record['producer_exit_code'] != 0 or record['status'] != 'SUCCESS':
+            next_action = 'inspect private diagnostics; no automatic retry'
     return '\n'.join((
-        f"MODEL {record['model'] or 'UNKNOWN'} | RUN {record['status']}",
+        f"MODEL {record['model'] or 'UNKNOWN'} | RUN {record['status']}{process}",
         f"TOKENS in={val(usage['input_tokens'])} out={val(usage['output_tokens'])} total={val(usage['total_tokens'])} | USD unknown",
-        f"QUOTA {qtext} | NEXT {'refresh /usage' if quota['status'] != 'observed' else 'owner decides; no auto-switch'}"))
+        f"QUOTA {qtext} | NEXT {next_action}"))
 
 
 def main():

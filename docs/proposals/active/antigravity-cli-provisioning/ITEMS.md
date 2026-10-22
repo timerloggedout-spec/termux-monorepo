@@ -20,13 +20,13 @@ Original repository delivery evidence: [VALIDATION.md](VALIDATION.md). Those thr
 
 Operator's operational request supersedes the earlier Device 2 exclusion only for the identity-verified secondary. Origin stays excluded. Registration: https://github.com/timerloggedout-spec/termux-monorepo/issues/1497#issuecomment-6336022930 . Linear remains unavailable; use section 8 GitHub fallback; no invented TER ID.
 
-The operational lane exists, but full provisioning is not done: saved verbosity is low rather than requested High; skill/UI enumeration, native verifier execution, nested delegation and full-repository readiness remain unverified. No hook, plugin, MCP, recurring task or telemetry deployment is claimed. See [the complete plan and modified considerations](OPERATIONAL.md).
+The operational lane exists, but full provisioning is not done. The later AGY-1497-09/10 receipt supersedes the original Low setting: High is restored with auto-approve unchanged, and secondary SSH recovery is deployed with a supervised-child restart verified. Skill/UI enumeration, native verifier execution, nested delegation, live stream filtering and full-repository readiness remain unverified. Boot activation/reboot remain unverified; no agent scheduler, plugin or MCP deployment is claimed. See [the complete plan and modified considerations](OPERATIONAL.md) and [current recovery receipt](SECONDARY-RECOVERY.md).
 
 ## Approved filtering continuation
 
 | ID | Work | Owner | Status | Acceptance |
 |---|---|---|---|---|
-| AGY-1497-09 | Passive full-diagnostics + three-line steering filter; restore High on pinned secondary only | Cue | in progress; High restored, native telemetry still unverified | Strict pinned identity and exact candidate re-read verified High-only change; auto-approve preserved; no model calls; earlier offline filtering evidence remains valid but is not native telemetry proof |
+| AGY-1497-09 | Passive full-diagnostics + three-line steering filter, explicit controller runner; restore High on pinned secondary only | Cue | in progress; High restored, controller runner fixture-verified; live stream unverified | Strict pinned identity and exact candidate re-read verified High-only change; auto-approve preserved; private full stdout/stderr and separate producer exit; official docs + offline fixtures only; no model calls or native telemetry claim |
 
 Operator explicitly approved correcting the low/High mismatch and selected programmatic filtering. Registration: https://github.com/timerloggedout-spec/termux-monorepo/issues/1497#issuecomment-6336367544 . Live PR #1514 head is `cue/1497-operational-device2`, not the original provisioning branch. [Filtering contract and current deployment boundary](FILTERING.md).
 

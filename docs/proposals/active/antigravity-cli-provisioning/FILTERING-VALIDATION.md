@@ -1,5 +1,34 @@
 # Filtering validation — AGY-1497-09
 
+## Current controller-runner receipt
+
+`scripts/antigravity/run.py` now makes the filter callable around one **explicitly supplied, separately authorized** producer command. It has no default task and no retries. Complete stdout and stderr are archived privately while the producer runs; normalized final usage and three-line steering stay separate. Process exit is retained independently of the reported CLI status, including SUCCESS followed by transport failure. `capture.py` and `telemetry.py` remain passive. [The complete end-to-end command](FILTERING.md#one-end-to-end-command-for-a-future-authorized-task) uses only the existing pinned secondary SSH alias and shell/CLI on the phone; Python stays on the controller.
+
+The [official headless docs](https://antigravity.google/docs/cli/headless/) were opened and checked for `--print`, output formats, stdout/stderr separation, `init` / `step_update` / `result`, optional model identity, settings-based permissions and cumulative session counters. The example stays with flags recorded in the installed 1.4.5 help; no newer multi-turn input flag is assumed. The last `result.usage` is retained, never summed with step snapshots. Per-run tokens, explicit manual `/usage` observations and unrelated router invocation counters remain distinct; no quota, cost, or default model is invented.
+
+| Current check | Result |
+|---|---|
+| `TMPDIR=/dev/shm PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_agy*.py'` | PASS: 87 tests, including 16 new one-shot runner fixtures |
+| Readiness suite (`test_antigravity_readiness.py`) | PASS: 7 tests |
+| `python3 scripts/ci/repo_gate.py --base origin/master-staging` | PASS: 35 changed paths across the complete PR, refreshed staging ref |
+| `python3 scripts/ci/termux_smoke.py` | PASS on controller Linux, not native Android |
+| `python3 scripts/proposals/validate_registry.py` | PASS: 15 proposals |
+| Documented Bash examples / `git diff --check` | PASS: syntax only; no example producer was executed |
+
+Fixtures launch only local Python test producers. Coverage includes full binary stdout/stderr, permissions, oversized output, large stderr without pipe deadlock, zero/nonzero/signal exits, contradictory SUCCESS/transport failure, launch failure, missing final result, exclusive directory/symlink rejection before launch, literal argv, stdin forwarding, no retries, invalid quota before launch, cumulative result handling, and stopping the local producer on archive failure. A small read-only boundary review identified the same failure/argv/privacy cases; no external model API or device was used. The shared root disk was near capacity, so temporary fixtures and gate logs used memory-backed `/dev/shm`; no unrelated work was removed.
+
+This continuation made **no `agy` invocation, model request, phone connection, runtime installation, settings edit or Origin access**. Existing High/auto-approve and the unrelated untracked `.serena/` were preserved. Issue registration: https://github.com/timerloggedout-spec/termux-monorepo/issues/1497#issuecomment-6340211852 . PR #1514 remains open/unmerged.
+
+### Exact remaining operational gaps
+
+1. The wrapper has not consumed a real secondary stream-json task; only synthetic fixtures were used. A future particular model task needs owner authorization. Its stream/transport behavior on installed 1.4.5 is unproven; the previous pilot used JSON, not stream-json. Do not replay it or manufacture real telemetry from that pilot.
+2. Termux:Boot is installed, but first-launch activation and boot delivery remain unconfirmed. The owner may need to open Termux:Boot once on **Device 2**; a reboot test has not occurred. Whole-app/Android force-stop recovery is not guaranteed.
+3. Native agent enumeration/skill UI discovery, native verifier execution, nested delegation and full-repository provisioning remain unverified. Explicit implementer invocation previously succeeded; it does not prove all these surfaces.
+
+The earlier offline/Low handoff below is historical. [SECONDARY-RECOVERY.md](SECONDARY-RECOVERY.md) supersedes it: the pinned secondary was reconnected; High restored with auto-approve byte-preserved; runit replaced its supervised SSH child after controlled `sv term`; fresh pinned SSH and `reconnect` were verified. Neither a new phone check nor a reboot is claimed here.
+
+## Historical passive-filter receipt
+
 ## What is implemented
 
 The no-model prototype is integrated as `scripts/antigravity/telemetry.py` plus a passive `capture.py` entry point. Full input bytes and optional stderr remain in private files; normalized metadata and the three-line steering view are separate. Adversarial events, malformed/manual quota, oversized lines and private output permissions have offline coverage. Controller-side `settings.py` prepares a strictly JSON-validated, byte-preserving High candidate; the narrowly guarded `secondary_settings.sh` helper applies only that exact hash-pinned candidate. These are tested against mocked identity and settings, not against a live phone.

@@ -20,7 +20,14 @@ import subprocess
 import sys
 import urllib.error
 import urllib.request
+from pathlib import Path
 from typing import Any
+
+try:
+    from scripts.ci import tribute_system1
+except ImportError:  # pragma: no cover - Actions checkout root
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+    from scripts.ci import tribute_system1  # type: ignore
 
 CLAIM_MARKER = "### Claim — termux-monorepo help-wanted lane"
 CLAIM_BODY = f"""{CLAIM_MARKER}
@@ -99,6 +106,39 @@ def find_existing_claim(owner: str, repo: str, number: int) -> str | None:
             break
         page += 1
     return None
+
+
+def get_comments(owner: str, repo: str, number: int) -> list[dict]:
+    out: list[dict] = []
+    for page in range(1, 6):
+        batch = _api("GET", f"https://api.github.com/repos/{owner}/{repo}/issues/{number}/comments?per_page=100&page={page}")
+        if not isinstance(batch, list) or not batch:
+            break
+        out += [
+            {"id": c.get("id"), "author": (c.get("user") or {}).get("login"),
+             "author_type": (c.get("user") or {}).get("type"), "association": c.get("author_association"),
+             "created_at": c.get("created_at"), "body": c.get("body") or ""}
+            for c in batch
+        ]
+        if len(batch) < 100:
+            break
+    return out
+
+
+def preflight(owner: str, repo: str, number: int, meta: dict, allow_closed: bool = False) -> dict:
+    """Tribute System 1 gate before any claim comment or fork."""
+    issue = {
+        "repo": f"{owner}/{repo}", "number": number, "url": meta.get("html_url"),
+        "state": meta.get("state"), "body": meta.get("body") or "",
+        "author": (meta.get("user") or {}).get("login"),
+        "assignees": [a.get("login") for a in meta.get("assignees") or []],
+        "labels": [l.get("name") for l in meta.get("labels") or [] if isinstance(l, dict)],
+    }
+    pf = tribute_system1.preflight_candidate(issue, get_comments(owner, repo, number))
+    if allow_closed:
+        reasons = [r for r in pf["reasons"] if r != "closed"]
+        pf = {"eligible": not reasons, "reasons": reasons}
+    return pf
 
 
 def label_matches(issue: dict, required_label: str) -> bool:
@@ -203,6 +243,12 @@ def main() -> int:
         print("::notice::claim_skipped_closed=true")
         return 0
 
+    if find_existing_claim(owner, repo, number) is None:
+        pf = preflight(owner, repo, number, meta, allow_closed=args.allow_closed)
+        if not pf["eligible"]:
+            print(f"SKIP {owner}/{repo}#{number}: Tribute System 1 preflight {pf['reasons']}", file=sys.stderr)
+            print("::notice::claim_skipped_preflight=true")
+            return 0
     comment_url = post_claim(owner, repo, number, args.dry_run, args.required_label)
     print(f"claim: {comment_url}")
     fork = ensure_fork(owner, repo, args.dry_run)

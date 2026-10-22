@@ -37,3 +37,15 @@ The surface remains read-only: operator buttons navigate to GitHub Actions/evide
 ## Verification
 
 Run the status generator after checkout to refresh the machine snapshot, then inspect `control_surface.history_complete`, `control_surface.source_sha`, and `evolution`. Deployment must preserve those fields.
+
+## Design system
+
+`dashboard.css` is the shared stylesheet of record for every page in this app
+(tokens, nav, hero, cards, tables, pills, freshness card — see the token table
+in `docs/ops/WEB-DESIGN-ASSESSMENT-2026-10-21.md`). Pages link it and keep only
+page-specific rules in a small local `<style>`. Accent rule: blue = links and
+navigation, gold = eyebrows / headings / freshness, ok/bad = evidence states
+only. All pages carry the same primary nav (brand, Marketing, Ops · Tribute,
+Lane matrix, Quota, Vercel deployment, Sitemap, Monorepo); the deploy workflow
+copies `dashboard.css` alongside `matrix.html` wherever the matrix page is
+published standalone.

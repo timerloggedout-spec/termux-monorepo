@@ -101,9 +101,9 @@ jobs:
           {
             echo "### GitLab governed reconciliation"
             echo
-            echo "- State: `$STATE`"
-            echo "- GitHub master: `$GH_SHA`"
-            echo "- GitLab `$GITLAB_REF`: `$GL_SHA`"
+            printf '%s\n' "- State: \`$STATE\`"
+            printf '%s\n' "- GitHub master: \`$GH_SHA\`"
+            printf '%s\n' "- GitLab \`$GITLAB_REF\`: \`$GL_SHA\`"
             echo "- Action: no reconciliation PR required."
           } >> "$GITHUB_STEP_SUMMARY"
 
@@ -121,7 +121,7 @@ jobs:
           echo "name=$branch" >> "$GITHUB_OUTPUT"
 
           if git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then
-            git fetch origin "$branch"
+            git fetch origin "+refs/heads/$branch:refs/remotes/origin/$branch"
             if ! git merge-base --is-ancestor "$GH_SHA" "origin/$branch" ||
                ! git merge-base --is-ancestor "$GL_SHA" "origin/$branch"; then
               echo "::error::Existing branch does not prove the expected GitHub/GitLab source pair; refusing to reuse it."
@@ -130,9 +130,11 @@ jobs:
             echo "Reusing verified branch $branch"
           else
             git checkout -b "$branch" "$GH_SHA"
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             if ! git merge --no-ff --no-edit "$GL_SHA"; then
               git merge --abort || true
-              echo "::error::Histories conflict. Reconciliation stopped for manual review; no branch or PR was published."
+              echo "::error::Git merge failed (conflict or other error). Reconciliation stopped for manual review; no branch or PR was published."
               exit 1
             fi
             github_auth="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w 0)"
@@ -175,8 +177,8 @@ jobs:
           {
             echo "### GitLab governed reconciliation"
             echo
-            echo "- State: `$STATE`"
-            echo "- GitHub master: `$GH_SHA`"
-            echo "- GitLab `$GITLAB_REF`: `$GL_SHA`"
-            echo "- Review branch: `$BRANCH`"
+            printf '%s\n' "- State: \`$STATE\`"
+            printf '%s\n' "- GitHub master: \`$GH_SHA\`"
+            printf '%s\n' "- GitLab \`$GITLAB_REF\`: \`$GL_SHA\`"
+            printf '%s\n' "- Review branch: \`$BRANCH\`"
           } >> "$GITHUB_STEP_SUMMARY"

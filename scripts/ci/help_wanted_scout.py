@@ -21,7 +21,14 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any
+
+try:
+    from scripts.ci import tribute_system1
+except ImportError:  # pragma: no cover - Actions checkout root
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+    from scripts.ci import tribute_system1  # type: ignore
 
 PREFERRED_LANGS = {
     "python", "typescript", "javascript", "go", "rust", "shell", "markdown", "yaml", "bash"
@@ -181,6 +188,41 @@ def rank_issue(item: dict, now: datetime | None = None) -> dict:
     }
 
 
+def fetch_comments(item: dict) -> list[dict] | None:
+    """Issue comments in Tribute System 1 shape; None when the read fails."""
+    if not item.get("comments"):
+        return []
+    url = item.get("comments_url") or ""
+    if not url:
+        return None
+    try:
+        raw = _get(url + "?per_page=100")
+    except (urllib.error.URLError, ValueError) as e:
+        print(f"comments HTTP fail {url}: {e}", file=sys.stderr)
+        return None
+    return [
+        {"id": c.get("id"), "author": (c.get("user") or {}).get("login"),
+         "author_type": (c.get("user") or {}).get("type"), "association": c.get("author_association"),
+         "created_at": c.get("created_at"), "body": c.get("body") or ""}
+        for c in raw or []
+    ]
+
+
+def preflight(item: dict, comments: list[dict] | None) -> dict:
+    """Tribute System 1 candidate gate. Unreadable comments exclude the candidate."""
+    repo = (item.get("repository_url") or "").split("/repos/")[-1]
+    issue = {
+        "repo": repo, "number": item.get("number"), "url": item.get("html_url"),
+        "state": item.get("state"), "body": item.get("body") or "",
+        "author": (item.get("user") or {}).get("login"),
+        "assignees": [a.get("login") for a in item.get("assignees") or []],
+        "labels": [l.get("name") for l in item.get("labels") or []],
+    }
+    if comments is None:
+        return {"eligible": False, "reasons": ["comments_unreadable"]}
+    return tribute_system1.preflight_candidate(issue, comments)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Help-wanted scout + CPPH ranking")
     ap.add_argument("--max", type=int, default=25, help="max issues to rank")
@@ -198,7 +240,14 @@ def main() -> int:
 
     items = search_issues(query, per_page=min(args.max, 50))
     now = datetime.now(timezone.utc)
-    ranked = sorted((rank_issue(i, now=now) for i in items), key=lambda x: -x["score"])[: args.max]
+    eligible_items, excluded = [], []
+    for it in items:
+        pf = preflight(it, fetch_comments(it))
+        if pf["eligible"]:
+            eligible_items.append(it)
+        else:
+            excluded.append({"url": it.get("html_url"), "reasons": pf["reasons"]})
+    ranked = sorted((rank_issue(i, now=now) for i in eligible_items), key=lambda x: -x["score"])[: args.max]
 
     catalog = {
         "schema_version": "help-wanted-catalog.v2",
@@ -206,6 +255,8 @@ def main() -> int:
         "query": query,
         "count": len(ranked),
         "items": ranked,
+        "excluded": excluded,
+        "preflight": "tribute_system1.preflight_candidate",
         "ranking_contract": {
             "heuristics": "CPPH v0 — see docs/ops/HELP-WANTED-LANE.md",
             "meaning": "relative discovery priority, not eligibility or claim authorization",

@@ -65,3 +65,7 @@ The optional SDK test skips when Swarms is not installed. Native Termux installa
 ## Remote-first and research lanes
 
 The Python pin is the Kye Gomez behavioral parity origin; Rust is a separate primary/parallel evaluation backend, not an assumption of API equivalence. [Remote validation and Workspace operation](REMOTE.md) keep Termux as the control surface. The [pinned research/wallet registry](research-lanes.json) and `python3 scripts/swarms/research-plan.py --lane research --task "Compare supplied evidence"` produce offline plans only: AdvancedResearch is not yet a live adapted research runtime. [Research and wallet findings](../../docs/research/SWARMS-RESEARCH-WALLETS.md) map to existing MSM-005 bids/wagers/cards rather than a second ledger.
+
+## Current wiring and paper-wallet scope
+
+See [Operating status](OPERATING-STATUS.md) for invocation, hub routing and the unconnected quota/3L0 boundaries. Research framework runtime integration remains open; the planner is not an implementation of AdvancedResearch. Wallet work means paper CSV accounting under MSM-005/MSM-012, not a chain adapter or swarm deployment.

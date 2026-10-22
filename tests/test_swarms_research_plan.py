@@ -31,7 +31,8 @@ def test_research_wallet_sources_registered():
     assert research["sources"][0]["revision"] == "a262cb9d9703681c5a5066f03eb9fb89ad4d9cae"
     revisions = {source["revision"] for source in wallets["sources"] if "revision" in source}
     assert revisions == {"fc4940f145f38529b9acf5c9e79b0435ab769b7f", "25e66b156d70a6ff32735449876609a2ec91b3c0"}
-    assert "RPC chain" in " ".join(wallets["evidence_requirements"])
+    assert "Paper-only CSV" in " ".join(wallets["evidence_requirements"])
+    assert "No RPC" in " ".join(wallets["evidence_requirements"])
 
 
 def test_cli_emits_json_and_rejects_invalid_input():

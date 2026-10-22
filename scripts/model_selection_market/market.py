@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Literal
@@ -102,6 +103,8 @@ class MarketGraph:
     def place_bet(self, bet: BetEntry) -> dict[str, Any]:
         if bet.unit_kind not in ("observational", "soft_quota_token"):
             raise ValueError("invalid stake unit")
+        if isinstance(bet.units, bool) or not isinstance(bet.units, (int, float)) or not math.isfinite(bet.units) or bet.units <= 0:
+            raise ValueError("stake units must be a finite positive number")
         d = bet.to_dict()
         self.bets.append(d)
         self.edges.append(

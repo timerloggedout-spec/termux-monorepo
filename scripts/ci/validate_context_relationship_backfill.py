@@ -121,8 +121,11 @@ def validate_backfill(root: Path, expected_repo: str, expected_ref: str) -> dict
     for field, actual in counts.items():
         if manifest.get(field) != actual:
             raise ValidationError(f"manifest.{field} mismatch: expected {actual}, found {manifest.get(field)!r}")
-        if temporal.get(field) != actual:
-            raise ValidationError(f"temporal.{field} mismatch: expected {actual}, found {temporal.get(field)!r}")
+    for field in ("node_count", "edge_count"):
+        if temporal.get(field) != counts[field]:
+            raise ValidationError(
+                f"temporal.{field} mismatch: expected {counts[field]}, found {temporal.get(field)!r}"
+            )
 
     if counts["verified_edge_count"] + counts["candidate_edge_count"] != counts["edge_count"]:
         raise ValidationError("edge classification counts do not reconcile")

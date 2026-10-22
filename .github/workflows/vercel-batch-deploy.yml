@@ -121,7 +121,10 @@ jobs:
             SRC=$(printf '%s\n' "$PLAN" | awk -F'|' -v p="$P" '$1==p{print $2}')
             W="$RUNNER_TEMP/deploy-$P"; rm -rf "$W"; mkdir -p "$W"; cd "$W"
             vercel link --yes --project "$P" --scope "$SCOPE" --token "$VERCEL_TOKEN" >/dev/null
-            ROOT=$(jq -r '.settings.rootDirectory // empty' .vercel/project.json 2>/dev/null || true)
+            # rootDirectory is a project setting; .vercel/project.json doesn't always carry it, so ask the API.
+            ROOT=$(curl -fsS -H "Authorization: Bearer $VERCEL_TOKEN" "https://api.vercel.com/v9/projects/$P?teamId=$SCOPE" | jq -r '.rootDirectory // empty' 2>/dev/null || true)
+            [ -n "$ROOT" ] || ROOT=$(jq -r '.settings.rootDirectory // empty' .vercel/project.json 2>/dev/null || true)
+            echo "::notice title=vercel-batch-root::$P rootDirectory=${ROOT:-.}"
             DEST="$W/${ROOT:-.}"; mkdir -p "$DEST"; cp -a "$GITHUB_WORKSPACE/$SRC/." "$DEST/"
             if [ "$SRC" = "apps/help-wanted-dashboard" ]; then
               mkdir -p "$DEST/data"; G="$GITHUB_WORKSPACE/docs/ops/generated"

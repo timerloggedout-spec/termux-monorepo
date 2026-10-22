@@ -33,3 +33,10 @@ See [ITEMS.md](ITEMS.md), [source.md](source.md), and [PROPOSAL.md](PROPOSAL.md)
 - Isolated follow-up branch `cue/1497-operational-device2` preserves concurrent edits in the original issue checkout and the unrelated shared checkout.
 - One secondary CLI 1.4.5 pilot succeeded and exact output was independently verified. Native agent enumeration is inconclusive, native verifier/nested dispatch remain untested, and saved low verbosity differs from requested High.
 - Full plan, reviews, changed surfaces and rollback: [OPERATIONAL.md](OPERATIONAL.md). Executed checks and runtime evidence: [OPERATIONAL-VALIDATION.md](OPERATIONAL-VALIDATION.md). Full provisioning is not claimed.
+
+## Approved High-verbosity filtering continuation
+
+- Operator's “Fix it; we decided on programmatic filtering layer” authorizes the narrow saved `low` → `high` correction on freshly identity-verified Device 2, superseding the earlier no-settings-write restriction only for that key. Existing enabled auto-approve and all unrelated settings must remain unchanged. Origin and its backup are still excluded.
+- AGY-1497-09 is registered on GitHub #1497; live PR #1514 head confirmed as `cue/1497-operational-device2`, base `master-staging`. Do not push this work to the older provisioning branch by mistake. Do not merge.
+- Integrate the existing no-model telemetry prototype as a passive full-private-capture plus concise-steering layer. No additional model prompts or pilot runs are authorized.
+- Device 2's existing pinned route is currently offline. Device deployment and the High correction are blocked, not completed. [Contract](FILTERING.md) and [validation](FILTERING-VALIDATION.md) separate offline repository evidence from device claims.

@@ -1,5 +1,9 @@
 # Operational plan and status — Antigravity #1497
 
+## Latest approved continuation
+
+The owner approved restoring High verbosity and chose a programmatic filter rather than reducing diagnostics. [FILTERING.md](FILTERING.md) records this newer authorization, passive capture/steering contract and current offline-device blocker. The sections below retain the earlier pilot evidence: their no-global-write policy applied to that pilot, not to the subsequently authorized single-key correction. No High-setting or device-filter deployment success is claimed while the secondary is unreachable.
+
 ## What was actually delivered before this follow-up
 
 PR #1498 delivered three repository items: immutable research/provenance, a staged collaboration proposal, and a metadata-only readiness utility with seven tests. It did not modify the installed CLI, settings, skills, flows, tasks, native agents, hooks, plugins, or either device. Three of three registered repository items are delivered; that is not 100% of live provisioning.

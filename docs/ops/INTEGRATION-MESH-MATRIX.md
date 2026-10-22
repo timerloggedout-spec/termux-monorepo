@@ -9,6 +9,11 @@ its two orgs, and `timerloggedout-spec/termux-monorepo` as the hub repo.
 **Companion docs:** `TOOLING-REACH-MAP.md` (reach paths across all agent surfaces),
 `docs/ops/ACTIONS-WORKFLOWS-MATRIX.md` (workflow layer), Issue #184 (credential
 authorizations & last-used evidence).
+**Refreshed 2026-10-22:** §4B added — the owner's firsthand Installed GitHub Apps
+list (OWNER-UI screenshot, A–H portion) reconciled against §4/§5, incl. the four
+"Permission updates requested" flags; §9 I8 + §10 + closing list updated to match.
+This matrix is the **integration** inventory; Issue #184 remains the **credential**
+inventory of record — the Settings app lists are app integrations, not credentials.
 
 ## Evidence classes — read this first
 
@@ -19,6 +24,7 @@ Every row carries one of these. Do not merge them; they are different GitHub obj
 | **LIVE-API** | Firsthand REST census via the owner PAT (`custom.github-pat`), 2026-10-22, third pass, fully paginated: check suites across the 30 most recent master heads, 2,000 newest issue comments, **all 1,327 PRs** (authors), submitted reviews in two frames (150 most recently *updated* PRs; 150 most recently *created* PRs), 300 newest deployments, hooks/secrets/environments/workflows/org-installations listings | 2026-10-22 |
 | **PROBE** | Installations probe workflow run 39639440245 (2026-10-21): exercised the stored GitHub tokens from inside Actions against `/user/installations` and `/orgs/{org}/installations`; results posted to Issue #184 (comment 6321665538). Token values never printed | 2026-10-21 |
 | **#184** | Issue #184 — the owner's paste of GitHub's own Settings → Credentials pages (Authorized OAuth Apps, Authorized GitHub Apps, PATs, SSH keys) with GitHub's last-used labels | 2026-08-13 snapshot |
+| **OWNER-UI** | Owner-firsthand screenshot of Settings → Applications → **Installed GitHub Apps** (github.com/settings/installations), visible **A–H portion only** — 24 apps; the list continues past Hex and the remainder was not captured. Transcribed + reconciled on Issue #184 (comment 6335646953) | 2026-10-22 |
 | **REPO** | Files/config on master (`.github/connectors/`, `.coderabbit.yaml`, `dependabot.yml`, agent roster) | current master |
 | **MAP** | `TOOLING-REACH-MAP.md` cross-surface facts (Muse connectors, Jules-side MCPs) | 2026-10-20/21 |
 
@@ -27,18 +33,24 @@ Two different GitHub lists exist and this matrix keeps them separate:
 **Installed/Active** apps (installed on the account/repos and actually emitting
 checks/reviews/comments — the LIVE-API census). An app can be in either list
 without the other (§5 is exactly that gap). The Settings → Installations UI
-would be the union view, but it is **closed as NOT ESTABLISHED by design**
-(fleet credential rule, 2026-10-21): this fleet's owner-controlled GitHub
-access runs through the PAT helper, `/user/installations` refuses PATs (403) by GitHub's design, and no
-browser sign-in route is used for GitHub access. §3/§4 + §5 together are the
-standing answer — an evidence-based reconstruction, not a placeholder.
+is the union view: its API route stays a **proven boundary** (fleet credential
+rule, 2026-10-21 — this fleet's owner-controlled GitHub access runs through
+the PAT helper, `/user/installations` refuses PATs (403) by GitHub's design,
+and no browser sign-in route is used for GitHub access), but the **Installed
+tab's A–H portion is now evidenced owner-firsthand** (§4B, OWNER-UI
+2026-10-22); the remainder past H and the per-app repository scope remain
+NOT ESTABLISHED (closing list). §3/§4 + §4B + §5 together are the standing
+answer — an evidence-based reconstruction, not a placeholder.
 **Live floor, counted 2026-10-21:** ≥29 distinct apps are active on the hub
 repo alone (23 check-suite apps across 30 master heads + ECC, Qodo, Codex,
 Jules, Dependabot, GHAS surfaces). The #184 counts (31 OAuth / 38 GitHub Apps)
 are the **Aug-13 floor, not current totals** — the owner states the account
 now has way more than 38 GitHub Apps, and the account-level total (677 repos
-+ 2 orgs) is NOT ESTABLISHED via API. The org slice of the installations
-picture *was* retrieved live — see §5A.
++ 2 orgs) is NOT ESTABLISHED via API. **Reconciled 2026-10-22:** 38 Aug-13
+authorized GitHub Apps + 8 installed-only newcomers visible in §4B's A–H
+window = **46 distinct GitHub App names evidenced** across sources; the true
+total is larger (the Installed list continues past H). The org slice of the
+installations picture *was* retrieved live — see §5A.
 
 **Names-only discipline:** secret and token *names* only, never values. Webhook
 destinations are hosts only. This follows the standing credential caution:
@@ -193,10 +205,65 @@ the repo's heavy automation mostly switched on after the snapshot.
 | Vercel | vercel | Never | **Active, primary deploy** — suites on 30/30 heads, 76/300 deployments, 15/2,000 comments | Deploy lane (quota-capped — §9 I5) |
 | Zed Industries | zed-industries | Never | none | Dormant editor grant |
 
+## 4B. Installed GitHub Apps — owner-firsthand (OWNER-UI, 2026-10-22)
+
+The **Installed** tab of Settings → Applications is a different list from the
+**Authorized** tab §4 transcribes: an app can be installed without appearing
+in the Aug-13 authorized list, and vice versa. The owner captured the
+Installed list firsthand on 2026-10-22; the visible portion runs **A–H
+(24 apps)** and the list continues past Hex — so the installed total exceeds
+24 by an uncounted remainder (NOT ESTABLISHED, closing list). Display names
+are GitHub's; slug forms are given where the census uses them.
+
+| App (as listed) | In Aug-13 authorized (§4)? | Live activity (Oct-21 census) | Notes |
+|---|---|---|---|
+| Aikido PR Checks | No — its sibling Aikido Security is | **Active** — `aikido-pr-checks` check suites on hub heads; Aikido submitted 12 reviews (150-updated frame) | The PR-checks half of Aikido's pair; §4's Aikido Security row is the other half |
+| Aikido Security | Yes ("Never") | No direct activity observed | The active Aikido surface is the sibling above |
+| AskSolo.ai | Yes | none | Dormant (§9 C6) |
+| blacksmith.sh | **No — installed-only** | **Active** — `blacksmith-sh` suites on 30/30 heads (§5) | Also installed on both orgs (§5A) |
+| BlocksOrg | Yes | **Active** — suites 30/30, 54/2,000 comments | — |
+| ChatGPT Codex Connector | Yes | **Active, low volume** — 84/2,000 comments | — |
+| Codacy Production | Yes | **Active** — suites 30/30 | — |
+| Codecov | **No — installed-only** | **Active** — suites 30/30 + `CODECOV_TOKEN` (§5); reaches 5 of the 7 cluster repos (§5B) | Also installed on Research-Astute (§5A) |
+| coderabbitai | Yes | **Active, primary reviewer** | ⚠ **Permission update requested** — owner-UI item of record (§9 I8) |
+| cto.new | Yes | none | Dormant (§9 C6) |
+| Cursor | Yes | **Active** — suites 30/30 | ⚠ **Permission update requested** (§9 I8) |
+| Devin.ai Integration | Yes | **Active, top submitted reviewer** — 154 reviews (150-updated frame) | ⚠ **Permission update requested** (§9 I8) |
+| ECC Tools | Yes | **Active, comment-lane only** — 901/2,000 comments, zero check runs | **No** permission update is flagged for ECC — consistent with §4's mechanism: the vendor app requests no Checks permission in its own configuration, so there is nothing pending to approve. A different state from the four flagged apps |
+| endor-labs-github-agenthq | **No — installed-only** | No activity under this name in the census | Possibly the installation behind §5's `launchdarkly-agent` suites (AgentHQ) — identity NOT ESTABLISHED; carried as its own row until a slug-level join exists |
+| Factory Droid | Yes | none | ⚠ **Permission update requested** — a dormant app asking for expanded scope is a deliberate-decision item, not a rubber stamp (§9 I8) |
+| FalconerAI | **No — installed-only** | none observed | New to the matrix with this screenshot; no GitHub-side activity in the Oct-21 census and no assigned role yet — assign-or-park (§9 C6 pattern) |
+| Gitar Bot | Yes | **Active** — suites 30/30, 54/2,000 comments (as `gitar-bot`) | — |
+| GitHub Copilot for Linear | **No — installed-only** | none observed on the hub repo | New to the matrix; by name a Copilot↔Linear bridge — no check/comment/review footprint in the census, so any use is off-hub or not yet exercised |
+| Google Labs Jules | Yes | **Active, primary coding agent** — authored 279 of 1,292 PRs | Also installed on Research-Astute (§5A) |
+| Graphite App | Yes | **Active** — suites 30/30 | — |
+| Grok (by xAI) | Yes | none via App | Works in its own app; lands via owner PAT (§4) |
+| HackerOne Code | Yes | none | Dormant (§9 C6) |
+| Hark | **No — installed-only** | **Active** — `hark` suites on hub heads; reaches 4 of the 7 cluster repos (§5B) | The App is one face of the Hark agent surface (MAP §B7) |
+| Hex - GitHub sync | **No — installed-only** | none observed | New to the matrix. Distinct from the "Hex" in the `HEX_ALSO_USEDBY_CELLCOG` secret name (§2b/§8) — that is a CellCog-side reference; no join between the two is established |
+
+**Reconciliation:** the 8 installed-only names in just the A–H window
+(Aikido PR Checks, blacksmith.sh, Codecov, endor-labs-github-agenthq,
+FalconerAI, GitHub Copilot for Linear, Hark, Hex - GitHub sync) bring the
+evidenced GitHub App total to **46 distinct names** (38 Aug-13 authorized +
+8). The installed list's remainder past H is expected to add more of §5's
+actives (LaunchDarkly, Mintlify, Pulumi, Qodo sort past H) — stated as an
+expectation, not a count.
+
+**Permission updates requested (4):** coderabbitai, Cursor, Devin.ai
+Integration, Factory Droid show "Permission updates requested" in Settings.
+Approving an update is an owner-UI act; the four are recorded here as
+owner-UI items of record (§9 I8) so the state is not lost — they do not block
+any fleet work, and no chat will park on them.
+
 ## 5. Installed & active but NOT in the #184 authorized lists (LIVE-API)
 
 These prove installation/activity in October that the August authorization
 snapshot cannot show — the strongest argument for the §10 polling.
+Cross-checked against §4B (2026-10-22): Blacksmith, Codecov and Hark now also
+carry firsthand installation evidence there; this section holds their
+activity evidence. The remaining §5 apps sort past §4B's A–H window, so their
+absence from the screenshot portion is expected, not contradictory.
 
 | App | Slug / owner | Evidence | Role |
 |---|---|---|---|
@@ -365,6 +432,7 @@ parallel quota threads, each reconciling its own cap before its own dispatch.
 | I5 | Keep Vercel moves quota-first | Daily deploy cap already tripped once (2026-10-20); Mintlify (186) + Vercel (76) dominate deployment volume | Batching cooldown (vercel-batch-deploy, 6h) + ignore-step guard; no new deploy-producing integrations until cap behaviour is measured |
 | I6 | Finish Dependabot wiring | `dependabot.yml` exists, secrets 0, automated security fixes disabled | Enable security fixes; keep Dependabot in the peer-cadence (batched, SHA-bound) |
 | I7 | Enforce the review-cadence matrix | 9+ review bots, ECC flooding documented (#1441: 207 comments) | peer-review-orchestrator: required = CodeRabbit; Qodo/Devin/Copilot tracked opt-in; Gemini only after peers (quota save); ECC via its 6h-debounced ops workflow for commands — the App's per-push audits stay, threaded not muted |
+| I8 | Disposition the four **permission-update requests** (§4B, OWNER-UI 2026-10-22) | coderabbitai, Cursor, Devin.ai Integration — the three most active review/agent lanes — plus Factory Droid have updates awaiting owner approval in Settings → Installed GitHub Apps; unapproved updates can cap the lanes' newer features at their old permission sets | Owner-UI items of record: approve the three active lanes' updates after reading the requested deltas; read Factory Droid's request deliberately first (dormant app, expanded scope). Recorded here so the state is tracked — not a blocker for any fleet work, and never escalated to a browser session |
 
 **Capacity unlocks (build next):**
 
@@ -383,20 +451,26 @@ A 6-hourly census poll (`github-integration-matrix-poll`, alongside
 `jules-census-6h`) re-runs the LIVE-API census and diffs it against the previous
 workspace snapshot: new/removed check-apps on master heads, bot-actor changes,
 hook health (last response codes), secret-name additions/removals (names
-only), environment/workflow counts, deployment-creator mix. Changes are
-reported; **no change = no report**. Snapshots stay in
-`~/workspace/github-integration-census/` — never committed (rule 4). This doc
-is refreshed by hand from a poll diff, with the vintage line updated.
+only), environment/workflow counts, deployment-creator mix. Per the owner
+order of 2026-10-22, findings land **on GitHub**: material diffs are posted
+as `[MUSEai]` comments on the standing thread (Issue #1505), and when a diff
+materially stales this doc the poll opens a doc-refresh PR and merges it
+through the repo gates — no staging, no per-step asks. **No change = no
+comment, no report.** Snapshots stay in
+`~/workspace/github-integration-census/` — never committed (rule 4).
 
 ## NOT ESTABLISHED — stated, not filled in
 
 - **Personal-account installation records** (the per-app All vs Select list
   for the user account itself) — the *org* slice is now ESTABLISHED (§5A,
-  retrieved live four ways). The personal slice is a **proven boundary**:
-  `/user/installations` refused all five credential classes the fleet holds
-  (PROBE receipts, §5A) because GitHub reserves it to App-authorized tokens.
-  §3+§4+§5 remain its answer of record. Closed item; not a step the owner is
-  asked to perform.
+  retrieved live four ways), and the Installed tab's **A–H portion is now
+  evidenced owner-firsthand** (§4B, 2026-10-22). What remains NOT
+  ESTABLISHED: the Installed list's remainder past H, the per-app All-vs-Select
+  repository scope for the personal account, and the API route itself — a
+  **proven boundary**: `/user/installations` refused all five credential
+  classes the fleet holds (PROBE receipts, §5A) because GitHub reserves it to
+  App-authorized tokens. §3+§4+§4B+§5 remain its answer of record. Closed
+  item; not a step the owner is asked to perform.
 - **#184 vintage risk:** last-used labels are 2026-08-13. Anything marked
   "Never" there may have activated since (several did — §4). Treat #184 as
   the authorization *floor*, the LIVE-API census as current *activity*.

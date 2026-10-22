@@ -8,11 +8,11 @@ Installed `termux-services` 0.13-1 and dependency `runit` 2.3.1 from the configu
 
 In a new Termux zsh, run `reconnect`. In an already-open shell, run `~/.local/bin/tmx-reconnect`. This requests WakeLock, validates SSH configuration, sources the official service-start profile, raises the dedicated service with `sv-enable`, and reports state. It never kills processes, restarts all services, regenerates keys, edits Tailscale, or invokes a model. The installer preserved `.zshrc` and appended one marked alias block.
 
-## Recovery is armed; manual SSH was not killed
+## SSH listener now runs under runit supervision
 
 A foreground runit wrapper waits for existing same-account processes named exactly `sshd` to exit, checking every five seconds. It excludes `sshd-session` children and sends no signals. When the manual listener exits, it validates configuration and execs `sshd -D -e`; runit subsequently restarts that foreground child after exit, with a five-second finish backoff.
 
-Observed: wrapper and logger running, original manual listener PID unchanged, repeated reconnect successful, fresh pinned SSH connection successful. The log states **“Manual sshd present; non-killing recovery armed (not yet a supervised listener).”** No deliberate live crash, listener termination, or reboot was performed. Mocked Linux takeover tests are not an Android live-crash test.
+Observed: wrapper and logger running; the manual `sshd` was initially left intact while the wrapper waited. A controlled `sv term` then terminated the supervised child; runit restarted it as a new `sshd -D -e` PID, its log showed listeners on IPv6 and IPv4, and a fresh connection passed the pinned key and secondary-device identity checks. This verifies one supervised-child restart, not recovery after Termux is force-stopped or Android reboots; those remain untested.
 
 Logs: `$PREFIX/var/log/sv/tmx-secondary-sshd/current`. `svlogd` rotates near 64 KiB and keeps at most two archived files; this is a threshold, not an absolute byte ceiling. State: `~/.local/state/tmx-secondary-recovery/listener-state`. Check `sv status "$PREFIX/var/service/tmx-secondary-sshd"` and a fresh SSH connection; state text alone is not listener proof.
 

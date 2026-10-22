@@ -138,3 +138,15 @@ def test_complete_terminal_render_never_calls_old_ok_current():
     assert "STALE" in output
     assert "status: OK" not in output
     assert "status reported" not in output
+
+
+def test_quota_txt_matches_registry_count_and_lists_every_service():
+    """Guard against the 2026-10-21 drift (assessment P1-7): quota.txt said
+    26 services while the registry had already grown. The text lane must be
+    regenerated in the same change that grows the registry."""
+    registry = json.loads((ROOT / "ops/quota/registry.json").read_text())
+    services = registry["services"]
+    txt = (ROOT / "apps/help-wanted-dashboard/quota.txt").read_text()
+    assert f"({len(services)} services)" in txt.splitlines()[1]
+    missing = [s["id"] for s in services if s["id"] not in txt]
+    assert missing == [], f"quota.txt is stale; missing services: {missing}"

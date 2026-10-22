@@ -80,8 +80,8 @@ class AtesCorrelationTests(unittest.TestCase):
             receipts_path = tmp / "receipts.jsonl"
             events_path = tmp / "events.jsonl"
             output_path = tmp / "correlation.json"
-            receipts_path.write_text(json.dumps(receipt()) + "\\n", encoding="utf-8")
-            events_path.write_text(json.dumps(event()) + "\\n", encoding="utf-8")
+            receipts_path.write_text(json.dumps(receipt()) + "\n", encoding="utf-8")
+            events_path.write_text(json.dumps(event()) + "\n", encoding="utf-8")
             result = subprocess.run(
                 [
                     sys.executable,

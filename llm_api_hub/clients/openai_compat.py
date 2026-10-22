@@ -23,6 +23,7 @@ def chat_completions(
     temperature: float = 0.7,
     stream: bool = False,
     timeout: float = 120.0,
+    correlation: Optional[Dict[str, str]] = None,
 ) -> Dict[str, Any]:
     """POST /chat/completions — OpenAI shape."""
     if stream:
@@ -40,6 +41,13 @@ def chat_completions(
         "Content-Type": "application/json",
         "Authorization": f"Bearer {api_key or os.environ.get('LLM_API_HUB_KEY', 'local')}",
     }
+    if isinstance(correlation, dict):
+        allowed = {"run_id", "job_id", "request_id", "attempt_id", "parent_id", "adapter", "source_revision", "model", "provider", "outcome", "event"}
+        # Dedicated headers carry only bounded scalar identifiers; never serialize arbitrary metadata.
+        for key in allowed:
+            value = correlation.get(key)
+            if isinstance(value, str) and 0 < len(value) <= 160 and value.isascii() and value.isprintable() and not any(c in value for c in "\r\n"):
+                headers["X-Termux-" + "-".join(part.title() for part in key.split("_"))] = value
     req = urllib.request.Request(url, data=data, headers=headers, method="POST")
     try:
         with urllib.request.urlopen(req, timeout=timeout) as resp:

@@ -6,15 +6,22 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import pytest
-from fastapi.testclient import TestClient
+from hub_quota_fixture import SeededQuotaClient
+from src import telemetry
 
 app_module = importlib.import_module("llm_api_hub.server.app")
 providers = importlib.import_module("llm_api_hub.server.research_providers")
 
 
 @pytest.fixture
-def client():
-    return TestClient(app_module.app)
+def client(tmp_path, monkeypatch):
+    monkeypatch.setattr(telemetry, "TELEMETRY_LOG", str(tmp_path / "telemetry.jsonl"))
+    previous = app_module.admission
+    result = SeededQuotaClient(app_module, tmp_path)
+    try:
+        yield result
+    finally:
+        app_module.admission = previous
 
 
 def entry(**updates):

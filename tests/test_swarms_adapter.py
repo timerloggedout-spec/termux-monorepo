@@ -15,6 +15,12 @@ sys.modules[spec.name] = adapter
 spec.loader.exec_module(adapter)
 
 
+@pytest.fixture(autouse=True)
+def isolated_telemetry(tmp_path, monkeypatch):
+    from src import telemetry
+    monkeypatch.setattr(telemetry, "TELEMETRY_LOG", str(tmp_path / "telemetry.jsonl"))
+
+
 def test_dry_run_does_not_import_or_call_swarms(monkeypatch):
     def forbidden():
         raise AssertionError("network/upstream work during dry run")
@@ -56,7 +62,7 @@ def test_fake_upstream_forwarding_and_hub_contract(monkeypatch, tmp_path):
     monkeypatch.setenv("WORKSPACE_DIR", str(tmp_path / "state"))
     monkeypatch.setenv("SWARMS_TELEMETRY_ON", "true")
     import llm_api_hub.clients.openai_compat as hub
-    def chat(messages, model):
+    def chat(messages, model, **kwargs):
         assert messages == [{"role": "user", "content": "task"}]
         assert model == "provider/model"
         return {"choices": [{"message": {"content": "response"}}]}
@@ -99,7 +105,7 @@ def test_sdk_conversation_messages_are_forwarded_not_null_task(monkeypatch):
     messages = [{"role": "system", "content": "Review supplied evidence."},
                 {"role": "user", "content": "The actual task."}]
     seen = []
-    def chat(payload, model):
+    def chat(payload, model, **kwargs):
         seen.append(payload)
         return {"choices": [{"message": {"content": "reviewed"}}]}
     monkeypatch.setattr(hub, "chat_completions", chat)

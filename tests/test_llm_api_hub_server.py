@@ -6,6 +6,10 @@ import os
 import sys
 from pathlib import Path
 import unittest
+import tempfile
+from unittest.mock import patch
+from hub_quota_fixture import SeededQuotaClient
+from src import telemetry
 
 from fastapi.testclient import TestClient
 
@@ -24,9 +28,19 @@ def load_app():
 
 
 class HubServerTests(unittest.TestCase):
+    def setUp(self):
+        self.directory = tempfile.TemporaryDirectory(prefix="hub-test-")
+        self.addCleanup(self.directory.cleanup)
+        self.log_patch = patch.object(telemetry, "TELEMETRY_LOG", str(Path(self.directory.name) / "telemetry.jsonl"))
+        self.log_patch.start()
+        self.addCleanup(self.log_patch.stop)
+
+    def client(self, module):
+        return SeededQuotaClient(module, self.directory.name)
+
     def test_health_and_models_are_available_without_provider_calls(self):
         module = load_app()
-        client = TestClient(module.app)
+        client = self.client(module)
 
         health = client.get("/health")
         self.assertEqual(health.status_code, 200)
@@ -39,7 +53,7 @@ class HubServerTests(unittest.TestCase):
     def test_wrapper_request_is_normalized_to_openai_shape(self):
         module = load_app()
         module.runtime.complete_wrapper = lambda provider, request: f"{provider}:ok"
-        client = TestClient(module.app)
+        client = self.client(module)
 
         response = client.post(
             "/v1/chat/completions",
@@ -64,7 +78,7 @@ class HubServerTests(unittest.TestCase):
     def test_stream_request_emits_terminal_done_event(self):
         module = load_app()
         module.runtime.complete_wrapper = lambda provider, request: "streamed"
-        client = TestClient(module.app)
+        client = self.client(module)
 
         response = client.post(
             "/v1/chat/completions",
@@ -80,7 +94,7 @@ class HubServerTests(unittest.TestCase):
 
     def test_session_id_path_traversal_is_rejected(self):
         module = load_app()
-        client = TestClient(module.app)
+        client = self.client(module)
 
         for invalid_sid in ["../etc/passwd", "..\\boot.ini", "/absolute/path", "subdir/file"]:
             response = client.post(
@@ -96,7 +110,7 @@ class HubServerTests(unittest.TestCase):
 
     def test_optional_bearer_auth_is_enforced(self):
         module = load_app()
-        client = TestClient(module.app)
+        client = self.client(module)
         original = os.environ.get("LLM_API_HUB_KEY")
         os.environ["LLM_API_HUB_KEY"] = "test-key"
         try:

@@ -91,7 +91,7 @@ def score(rows: list[dict[str, Any]]) -> dict[str, Any]:
             "Peer/judge verdicts are not ground truth and are not used in accuracy.",
             "Latency is descriptive and must be measured under matched hardware/load conditions.",
             "Missing question IDs are not silently imputed; pairwise comparison uses intersection only.",
-            "Pairwise ties and non-comparable infrastructure failures are reported separately."
+            "Pairwise ties, inconsistent ground truth, and non-comparable infrastructure failures are reported separately."
         ]
     }
 
@@ -127,12 +127,16 @@ def score(rows: list[dict[str, Any]]) -> dict[str, Any]:
     for i, left in enumerate(candidates):
         for right in candidates[i + 1:]:
             shared = sorted(set(by_candidate[left]) & set(by_candidate[right]))
-            left_wins = right_wins = ties_both_correct = ties_both_incorrect = non_comparable = 0
+            left_wins = right_wins = ties_both_correct = ties_both_incorrect = non_comparable = expected_mismatches = 0
             for qid in shared:
                 a = by_candidate[left][qid]
                 b = by_candidate[right][qid]
+                if a.get("expected") != b.get("expected"):
+                    non_comparable += 1
+                    expected_mismatches += 1
+                    continue
                 if (
-                    a.get("expected") is None or b.get("expected") is None
+                    a.get("expected") is None
                     or a.get("status", "ok") != "ok" or b.get("status", "ok") != "ok"
                 ):
                     non_comparable += 1
@@ -153,6 +157,7 @@ def score(rows: list[dict[str, Any]]) -> dict[str, Any]:
                 "shared_questions": len(shared),
                 "comparable_questions": len(shared) - non_comparable,
                 "non_comparable_questions": non_comparable,
+                "expected_mismatch_questions": expected_mismatches,
                 "decisive_questions": decisive,
                 "left_wins": left_wins, "right_wins": right_wins,
                 "ties_both_correct": ties_both_correct,

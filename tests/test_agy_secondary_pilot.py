@@ -14,12 +14,16 @@ class SecondaryPilotTests(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.home = Path(self.temp.name)
         self.workspace = self.home / ".local/share/agy-1497-secondary/worktree"
-        self.workspace.mkdir(parents=True)
-        (self.workspace / ".git").write_text("gitdir: ../repo.git/worktrees/worktree\n", encoding="utf-8")
+        self.workspace.parent.mkdir(parents=True)
+        repo = self.home / "source-repo"
+        repo.mkdir()
+        subprocess.run(["git", "init", "-q", str(repo)], check=True)
+        subprocess.run(["git", "-C", str(repo), "-c", "user.name=Test", "-c", "user.email=test@example.invalid", "commit", "--allow-empty", "-qm", "initial"], check=True)
+        subprocess.run(["git", "-C", str(repo), "worktree", "add", "-q", str(self.workspace), "-b", "secondary"], check=True)
         (self.workspace / ".agy-secondary-id").write_text("tmx-node-55619bd5\n", encoding="utf-8")
         cli = self.home / ".local/bin/agy"
         cli.parent.mkdir(parents=True)
-        cli.write_text("#!/bin/sh\necho MOCK_DISCOVERY\n", encoding="utf-8")
+        cli.write_text("#!/bin/sh\necho MOCK_DISCOVERY\nexit \"${MOCK_AGY_STATUS:-0}\"\n", encoding="utf-8")
         cli.chmod(0o700)
 
     def run_mode(self, mode, cwd=None):
@@ -57,6 +61,22 @@ class SecondaryPilotTests(unittest.TestCase):
         target.write_bytes(b"AGY1497_OK\n")
         (self.workspace / "pilot-result.txt").symlink_to(target)
         self.assertEqual(self.run_mode("verify").returncode, 25)
+
+    def test_stale_git_file_rejected(self):
+        (self.workspace / ".git").write_text("gitdir: /missing/worktree\n", encoding="utf-8")
+        result = self.run_mode("preflight")
+        self.assertEqual(result.returncode, 22)
+        self.assertNotIn("PREFLIGHT_OK", result.stdout)
+
+    def test_failed_pilot_reserves_attempt_and_cannot_replay(self):
+        first = subprocess.run(["bash", str(RUNNER), "pilot"], cwd=self.workspace,
+                               env={**os.environ, "HOME": str(self.home), "MOCK_AGY_STATUS": "1"},
+                               text=True, capture_output=True, timeout=5)
+        self.assertEqual(first.returncode, 1)
+        self.assertTrue((self.workspace / ".pilot-attempted").is_file())
+        second = self.run_mode("pilot")
+        self.assertEqual(second.returncode, 24)
+        self.assertNotIn("MOCK_DISCOVERY", second.stdout)
 
     def test_result_prevents_model_replay(self):
         (self.workspace / "pilot-result.txt").write_bytes(b"AGY1497_OK\n")

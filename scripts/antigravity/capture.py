@@ -93,16 +93,18 @@ def main():
     args = parser.parse_args()
     quota = None
     if args.quota:
-        with open(args.quota, "rb") as source:
-            data = source.read(MAX_EVENT_BYTES + 1)
-        if len(data) > MAX_EVENT_BYTES:
-            parser.error("quota observation exceeds size limit")
         try:
-            quota = json.loads(data, parse_constant=lambda value: None)
-        except (ValueError, UnicodeDecodeError):
-            parser.error("invalid quota JSON")
+            with open(args.quota, "rb") as source:
+                data = source.read(MAX_EVENT_BYTES + 1)
+            if len(data) > MAX_EVENT_BYTES:
+                raise ValueError("quota observation exceeds size limit")
+            quota = json.loads(data, parse_constant=lambda value: (_ for _ in ()).throw(ValueError(value)))
+        except (OSError, ValueError, UnicodeDecodeError, RecursionError) as error:
+            print(f"Invalid quota observation: {error}", file=sys.stderr)
+            return 64
         if not isinstance(quota, dict):
-            parser.error("quota must be a JSON object")
+            print("Invalid quota observation: expected a JSON object", file=sys.stderr)
+            return 64
     try:
         record, summary = capture(sys.stdin.buffer, args.capture_dir,
                                   diagnostics=args.diagnostics, model=args.model,

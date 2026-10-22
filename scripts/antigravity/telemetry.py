@@ -146,6 +146,31 @@ def normalize(lines, model=None, quota=None, run_id=None, account_scope=None):
     return record
 
 
+def bounded_lines(source):
+    """Read bounded chunks and yield one bounded candidate per input line."""
+    pending = bytearray()
+    oversized = False
+    too_large = b'\x00' * (MAX_EVENT_BYTES + 1)
+    while True:
+        chunk = source.read(65536)
+        if not chunk:
+            break
+        parts = chunk.split(b'\n')
+        for index, part in enumerate(parts):
+            if not oversized:
+                if len(pending) + len(part) > MAX_EVENT_BYTES:
+                    pending.clear()
+                    oversized = True
+                else:
+                    pending.extend(part)
+            if index < len(parts) - 1:
+                yield too_large if oversized else bytes(pending)
+                pending.clear()
+                oversized = False
+    if pending or oversized:
+        yield too_large if oversized else bytes(pending)
+
+
 def steering(record):
     usage, quota = record['usage'], record['quota']
     def val(value):
@@ -181,7 +206,7 @@ def main():
                 quota = json.load(stream, parse_constant=lambda value: (_ for _ in ()).throw(ValueError(value)))
         except (OSError, ValueError):
             quota = None
-    record = normalize(sys.stdin.buffer, args.model, quota, args.run_id, args.account_scope)
+    record = normalize(bounded_lines(sys.stdin.buffer), args.model, quota, args.run_id, args.account_scope)
     print(json.dumps(record, allow_nan=False))
     if args.steering:
         print(steering(record), file=sys.stderr)

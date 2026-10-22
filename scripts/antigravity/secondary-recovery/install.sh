@@ -7,7 +7,7 @@ marker="$HOME/.local/share/agy-1497-secondary/worktree/.agy-secondary-id"
 [[ -f "$marker" && ! -L "$marker" && "$(cat "$marker")" == tmx-node-55619bd5 ]] || exit 21
 [[ "$(whoami)" == u0_a243 && "$(getprop ro.product.model)" == B160V ]] || exit 23
 [[ "$PREFIX" == /data/data/com.termux/files/usr ]] || exit 24
-for cmd in flock sv sv-enable pgrep termux-wake-lock; do command -v "$cmd" >/dev/null; done
+for cmd in flock sv sv-enable pgrep termux-wake-lock zsh; do command -v "$cmd" >/dev/null || { echo "STOP: required command missing: $cmd" >&2; exit 30; }; done
 [[ -f "$PREFIX/etc/profile.d/start-services.sh" ]] || exit 25
 "$PREFIX/bin/sshd" -t
 state="$HOME/.local/state/tmx-secondary-recovery"
@@ -20,6 +20,11 @@ flock -n 9 || exit 27
 # Do not compete with a separately enabled native sshd service.
 [[ ! -d "$PREFIX/var/service/sshd" || -f "$PREFIX/var/service/sshd/down" ]] || { echo 'STOP: native sshd service enabled' >&2; exit 28; }
 backup=$(mktemp -d "$state/install-before.XXXXXX")
+rollback_notice() {
+  status=$?
+  if (( status != 0 )); then printf 'Private rollback snapshot (installation incomplete): %s\n' "$backup" >&2; fi
+}
+trap rollback_notice EXIT
 put() {
   local source=$1 target=$2 label=$3
   [[ ! -L "$target" && ( ! -e "$target" || -f "$target" ) ]] || exit 29
@@ -54,7 +59,12 @@ put "$src/10-tmx-secondary-services" "$HOME/.termux/boot/10-tmx-secondary-servic
 zshrc="$HOME/.zshrc"
 [[ ! -L "$zshrc" && ( ! -e "$zshrc" || -f "$zshrc" ) ]] || exit 29
 if ! grep -Fqx '# BEGIN tmx-secondary-reconnect' "$zshrc" 2>/dev/null; then
-  [[ ! -e "$zshrc" ]] || cp -p "$zshrc" "$backup/zshrc"
+  if [[ -e "$zshrc" ]]; then
+    cp -p "$zshrc" "$backup/zshrc"
+    zsh -n "$zshrc"
+  else
+    printf '%s\n' "$zshrc" >> "$backup/created-paths"
+  fi
   cat >> "$zshrc" <<'ALIAS'
 
 # BEGIN tmx-secondary-reconnect
@@ -67,4 +77,5 @@ zsh -n "$zshrc"
 flock -u 9
 exec 9>&-
 "$HOME/.local/bin/tmx-reconnect"
+trap - EXIT
 printf 'Private rollback snapshot: %s\n' "$backup"

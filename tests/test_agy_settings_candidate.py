@@ -61,9 +61,9 @@ class PrepareTests(unittest.TestCase):
 
 class CliTests(unittest.TestCase):
     def test_cli_outputs_only_hash_receipt_and_creates_private_exclusive_file(self):
-        secret = "private-setting-value-never-print"
+        sentinel = "preservation-sentinel-value-never-print"
         raw = ('{"verbosity":"low","toolPermission":"always-proceed",'
-               '"artifactReviewPolicy":"agent-decides","private":"' + secret + '"}').encode()
+               '"artifactReviewPolicy":"agent-decides","private":"' + sentinel + '"}').encode()
         expected = raw.replace(b'"low"', b'"high"', 1)
         with tempfile.TemporaryDirectory() as temp:
             source = Path(temp) / "source.json"
@@ -75,7 +75,7 @@ class CliTests(unittest.TestCase):
             self.assertEqual(dest.read_bytes(), expected)
             self.assertEqual(stat.S_IMODE(dest.stat().st_mode), 0o600)
             self.assertEqual(result.stdout, f"BEFORE_SHA256={hashlib.sha256(raw).hexdigest()} AFTER_SHA256={hashlib.sha256(expected).hexdigest()}\n")
-            self.assertNotIn(secret, result.stdout + result.stderr)
+            self.assertNotIn(sentinel, result.stdout + result.stderr)
             again = subprocess.run([sys.executable, str(MODULE_PATH), "--input", str(source), "--output", str(dest)],
                                    capture_output=True, text=True, check=False)
             self.assertNotEqual(again.returncode, 0)

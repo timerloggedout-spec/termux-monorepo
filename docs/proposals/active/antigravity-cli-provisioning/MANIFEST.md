@@ -14,7 +14,7 @@ gates_required: [repo-gate, termux-smoke]
 ---
 # Antigravity CLI provisioning
 
-Deliver the issue-scoped research baseline, collaborative utilization proposal, and offline readiness inventory. Live device provisioning is not claimed.
+Deliver the issue-scoped research baseline, collaborative utilization proposal, and readiness inventory. Secondary-only project files and SSH recovery are deployed; full provisioning and production-task success are not claimed.
 
 ## Authorization and review log
 
@@ -31,12 +31,12 @@ See [ITEMS.md](ITEMS.md), [source.md](source.md), and [PROPOSAL.md](PROPOSAL.md)
 - Operator requested operational secondary provisioning; earlier blanket Device 2 exclusion is superseded only after pinned identity verification. Origin remains excluded; no merge or global settings changes.
 - AGY-1497-07/08 registered in issue #1497 before implementation; Linear still unavailable, documented GitHub fallback retained.
 - Isolated follow-up branch `cue/1497-operational-device2` preserves concurrent edits in the original issue checkout and the unrelated shared checkout.
-- One secondary CLI 1.4.5 pilot succeeded and exact output was independently verified. Native agent enumeration is inconclusive, native verifier/nested dispatch remain untested, and saved low verbosity differs from requested High.
+- One secondary CLI 1.4.5 pilot succeeded and exact output was independently verified. Native enumeration remains inconclusive. The later recovery restored High; the later bounded implementer/verifier continuation is recorded separately in [FILTERING-VALIDATION.md](FILTERING-VALIDATION.md). Nested dispatch remains unverified.
 - Full plan, reviews, changed surfaces and rollback: [OPERATIONAL.md](OPERATIONAL.md). Executed checks and runtime evidence: [OPERATIONAL-VALIDATION.md](OPERATIONAL-VALIDATION.md). Full provisioning is not claimed.
 
 ## Approved High-verbosity filtering continuation
 
 - Operator's “Fix it; we decided on programmatic filtering layer” authorizes the narrow saved `low` → `high` correction on freshly identity-verified Device 2, superseding the earlier no-settings-write restriction only for that key. Existing enabled auto-approve and all unrelated settings must remain unchanged. Origin and its backup are still excluded.
 - AGY-1497-09 is registered on GitHub #1497; live PR #1514 head confirmed as `cue/1497-operational-device2`, base `master-staging`. Do not push this work to the older provisioning branch by mistake. Do not merge.
-- Integrate the existing no-model telemetry prototype as a passive full-private-capture plus concise-steering layer. No additional model prompts or pilot runs are authorized.
-- Device 2's existing pinned route is currently offline. Device deployment and the High correction are blocked, not completed. [Contract](FILTERING.md) and [validation](FILTERING-VALIDATION.md) separate offline repository evidence from device claims.
+- Integrate the existing no-model telemetry prototype as a passive full-private-capture plus concise-steering layer. The owner subsequently authorized exactly one bounded implementer and one sequential verifier; both have run. No additional model prompts or pilot replays are authorized.
+- The earlier offline blocker is superseded by [secondary recovery](SECONDARY-RECOVERY.md): pinned SSH recovered and High was restored with approval settings preserved. Project files are live at `~/.local/share/agy-1497-secondary/worktree`. The implementer stream ended INCOMPLETE at transport exit 255, with unknown model/token totals; the verifier's PASS was contradicted by the deterministic quota regression. [Contract](FILTERING.md) and [validation](FILTERING-VALIDATION.md) separate device evidence from production success claims.

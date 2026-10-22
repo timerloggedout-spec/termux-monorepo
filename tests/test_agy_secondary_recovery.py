@@ -11,7 +11,7 @@ TERMUX_PREFIX = '/data/data/com.termux/files/usr'
 
 class RecoveryTests(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory()
+        self.tmp = tempfile.TemporaryDirectory(dir='/dev/shm')
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
         self.home = self.root / 'home'
@@ -133,9 +133,27 @@ class RecoveryTests(unittest.TestCase):
         self.assertEqual(zshrc.read_text().count('# BEGIN tmx-secondary-reconnect'), 1)
         self.assertEqual((self.prefix / 'var/log/sv/tmx-secondary-sshd/config').read_text(), 's65536\nn2\n')
 
+    def test_new_zshrc_is_recorded_for_rollback(self):
+        result = self.run_script('install.sh')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        backups = list((self.home / '.local/state/tmx-secondary-recovery').glob('install-before.*'))
+        self.assertEqual(len(backups), 1)
+        self.assertIn(str(self.home / '.zshrc'), (backups[0] / 'created-paths').read_text())
+
+    def test_missing_zsh_rejected_before_mutation(self):
+        zsh = self.bin / 'zsh'
+        zsh.unlink()
+        result = self.run_script('install.sh')
+        self.assertEqual(result.returncode, 30)
+        self.assertIn('zsh', result.stderr)
+        self.assertFalse((self.home / '.zshrc').exists())
+        self.assertFalse((self.service / 'down').exists())
+
     def test_installer_refuses_enabled_stock_sshd(self):
         (self.prefix / 'var/service/sshd').mkdir()
-        self.assertEqual(self.run_script('install.sh').returncode, 28)
+        result = self.run_script('install.sh')
+        self.assertEqual(result.returncode, 28)
+        self.assertNotIn('rollback snapshot', result.stderr)
 
     def test_installer_refuses_symlink_target(self):
         (self.service / 'run').unlink()

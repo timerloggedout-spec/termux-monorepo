@@ -30,7 +30,7 @@ At recheck, the known secondary peer was online, the controller's Tailscale back
 
 ## High restored; approval unchanged
 
-Fresh inspection still found Low. The already-authorized AGY-1497-09 helper strictly validated the settings on the controller, prepared a candidate changing only the top-level verbosity value, and installed it with before/after hash checks and a private rollback snapshot. Re-reading the whole file matched the candidate exactly. Values now: `verbosity: high`, `toolPermission: always-proceed`, `artifactReviewPolicy: agent-decides`. All unrelated bytes were preserved. No CLI/model prompt was run. This supersedes older Low-status observations; telemetry/discovery and other earlier gaps remain unresolved.
+Fresh inspection during recovery still found Low. The already-authorized AGY-1497-09 helper strictly validated the settings on the controller, prepared a candidate changing only the top-level verbosity value, and installed it with before/after hash checks and a private rollback snapshot. Re-reading the whole file matched the candidate exactly. Values now: `verbosity: high`, `toolPermission: always-proceed`, `artifactReviewPolicy: agent-decides`. All unrelated bytes were preserved. No CLI/model prompt was run during that recovery. This supersedes older Low-status observations. The later owner-authorized implementer/verifier pair consumed real streams through the controller filter, but the implementer ended INCOMPLETE at transport exit 255 with unknown model/token totals; see [FILTERING-VALIDATION.md](FILTERING-VALIDATION.md). Discovery, nested delegation and full provisioning remain unresolved. The controller repair leaves these settings unchanged.
 
 ## Tests and review
 

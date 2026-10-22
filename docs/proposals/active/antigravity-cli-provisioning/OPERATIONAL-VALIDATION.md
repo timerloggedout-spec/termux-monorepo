@@ -24,9 +24,9 @@ Independent shell verification confirmed a regular, non-symlink file containing 
 
 ### What this does not prove
 
-`agy agents` returned exit 0 but no names, including under a terminal. Native enumeration is **inconclusive**. Successful explicit `--agent agy-implementer` execution is concrete invocation evidence, but does not independently prove which manifest/tool restrictions were loaded internally. The verifier definition is deployed and statically validated, but has not run as a model agent; independent verification here was deterministic shell execution. No nested subagent dispatch, skill reload/discovery UI, hook, plugin, MCP connection, scheduler, background service, telemetry or entire-monorepo workflow was validated.
+At the initial pilot checkpoint, `agy agents` returned exit 0 but no names, including under a terminal. Native enumeration remains **inconclusive**. Explicit `--agent agy-implementer` invocation does not independently prove which manifest/tool restrictions were loaded internally. The later authorized implementer/verifier continuation used real stream-json: the implementer ended INCOMPLETE at transport exit 255 with unknown model/token totals; the verifier completed but missed the deterministic quota regression. See [FILTERING-VALIDATION.md](FILTERING-VALIDATION.md). Nested dispatch, skill reload/discovery UI and entire-monorepo workflows remain unverified. The separate recovery receipt below covers the SSH background service, not production agent success.
 
-Saved verbosity is **low**, not requested High; auto-approve remains `always-proceed` with `artifactReviewPolicy: agent-decides`. No global settings were changed. The earlier separate scout receipt accounts for the pre-existing verbosity change; #1498 and this follow-up do not. Do not describe High as restored or the full provisioning request as complete.
+Saved verbosity was historically **low** during initial pilot inspection, not requested High; auto-approve was `always-proceed` with `artifactReviewPolicy: agent-decides`. Under the subsequent continuation, live controller inspection verified `verbosity: high`, `toolPermission: always-proceed`, and `artifactReviewPolicy: agent-decides` (settings SHA256 `51edacf50944bcc14bd37aea4e1f38e10f90eb0ff8321b7ee7185a6ea48175ff`), superseding the earlier offline/Low handoff.
 
 ## Repository validation
 
@@ -48,7 +48,7 @@ Independent review found the first exact-byte check could accept a NUL suffix be
 
 The original issue checkout gained concurrent unrelated-to-this-follow-up edits while it was being inspected. They were preserved. This follow-up uses `/workspace/termux-agy-operational-1497` and branch `cue/1497-operational-device2`, based on #1498 head `d7b8022e`. It includes the original three proposal/readiness commits because they have not merged into staging. No shared worktree reset/clean, force push, merge or auto-merge was performed.
 
-Original PR #1498: CodeRabbit approved, no inline comments, applicable repository checks passed, four untriaged Vercel deployment status failures. Other unavailable bot reviews are not approvals. These statuses must not be silently reused as approval of the new follow-up commit. Linear remains unresolved under the recorded GitHub fallback. Keep the issue open for the native discovery/skill/verifier/full-workspace gaps and verbosity discrepancy.
+Original PR #1498: CodeRabbit approved, no inline comments, applicable repository checks passed, four untriaged Vercel deployment status failures. Other unavailable bot reviews are not approvals. These statuses must not be silently reused as approval of the new follow-up commit. Linear remains unresolved under the recorded GitHub fallback. Keep the issue open for native discovery/skill/full-workspace and reliable production-completion gaps; High restoration and explicit verifier invocation supersede the older pending claims.
 
 ## Secondary recovery continuation — AGY-1497-09/10
 
@@ -63,4 +63,4 @@ This supersedes the earlier saved-Low and no-Boot/no-service status only for the
 - Broader tests initially failed because the shared root filesystem could not allocate temporary files. Rerunning with `TMPDIR=/dev/shm/agy-1514-tests` passed. Shared-cache cleanup was canceled while waiting for another task's lock; no repository/worktree or in-use cache was deleted.
 - Self-review fixed installer-lock descriptor inheritance before deployment. No extra reviewer/model request, broad ADB access, merge, auto-merge, force push or shared reset/cleanup. Pre-existing untracked `.serena/` untouched.
 
-Current online/SSH-success evidence does not prove Tailscale never crashed earlier. Historical outage cause remains unestablished. Earlier native telemetry/discovery/verifier/full-provisioning gaps remain open. PR #1514 stays open and unmerged.
+Recorded online/SSH-success evidence does not prove Tailscale never crashed earlier. Historical outage cause remains unestablished. Real filtered stream consumption and explicit verifier invocation are now evidenced, but the implementer stream was incomplete and the verifier PASS missed a deterministic failure. Discovery, internal restrictions, nested dispatch and full provisioning remain open. No additional phone connection, model prompt or settings change was made for the controller repair. PR #1514 stays open and unmerged.

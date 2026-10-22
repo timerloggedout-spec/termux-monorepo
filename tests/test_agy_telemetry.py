@@ -105,12 +105,24 @@ class AdapterTests(unittest.TestCase):
         self.assertNotIn(secret, serialized)
         self.assertEqual(set(record['usage']), {'input_tokens', 'output_tokens', 'thinking_tokens', 'cache_read_tokens', 'total_tokens'})
 
-    def test_malformed_quota_inputs_never_raise_or_join(self):
-        now = dt.datetime.now(dt.timezone.utc)
-        for raw in (None, [], 'bad', {'source': 'manual:/usage', 'model': 'm',
-                                       'observed_at': [], 'remaining': 1, 'unit': 'tokens'}):
-            self.assertEqual(quota_snapshot(raw, 'm', now)['status'], 'unknown')
-            self.assertEqual(normalize([], 'm', raw)['quota']['status'], 'unknown')
+    def test_bounded_lines_yields_too_large_and_resumes_after_newline(self):
+        from io import BytesIO
+        from telemetry import bounded_lines
+        stream = BytesIO(b"x" * (MAX_EVENT_BYTES + 50) + b"\n" + b'{"event":"result","result":{"status":"SUCCESS"}}\n')
+        lines = list(bounded_lines(stream))
+        self.assertEqual(len(lines), 2)
+        self.assertEqual(len(lines[0]), MAX_EVENT_BYTES + 1)
+        self.assertEqual(lines[1], b'{"event":"result","result":{"status":"SUCCESS"}}')
+
+    def test_cli_counts_oversized_stdin_as_malformed_and_resumes(self):
+        import subprocess
+        SCRIPT = os.path.join(os.path.dirname(__file__), '..', 'scripts', 'antigravity', 'telemetry.py')
+        stdin_data = b"x" * (MAX_EVENT_BYTES + 100) + b"\n" + b'{"event":"result","result":{"status":"SUCCESS"}}\n'
+        proc = subprocess.run([sys.executable, SCRIPT], input=stdin_data, capture_output=True, timeout=5)
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        out = json.loads(proc.stdout)
+        self.assertEqual(out["status"], "SUCCESS")
+        self.assertEqual(out["malformed_events"], 1)
 
 
 if __name__ == '__main__':

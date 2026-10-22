@@ -107,6 +107,30 @@ class CaptureTests(unittest.TestCase):
             self.assertFalse(any("subprocess" in ast.unparse(node) for node in imports))
             self.assertNotIn("settings.json", (SCRIPT_DIR / name).read_text())
 
+    def test_cli_quota_read_errors_oversize_deep_nesting_and_non_object_fail_fast_64(self):
+        cases = [
+            ("missing", self.root / "nonexistent.json", None),
+            ("oversize", self.root / "huge.json", b"{" + b'"a":' * 200000 + b"1" + b"}" * 200000),
+            ("deep_nesting", self.root / "deep.json", b"[" * 3000 + b"0" + b"]" * 3000),
+            ("non_object", self.root / "array.json", b"[1, 2, 3]"),
+            ("unsupported_constant", self.root / "const.json", b'{"x": NaN}'),
+            ("positive_infinity", self.root / "infinity.json", b'{"x": Infinity}'),
+            ("negative_infinity", self.root / "negative-infinity.json", b'{"x": -Infinity}'),
+        ]
+        for name, path, content in cases:
+            with self.subTest(name=name):
+                if content is not None:
+                    path.write_bytes(content)
+                target = self.root / f"run_{name}"
+                proc = subprocess.run([
+                    sys.executable, str(SCRIPT_DIR / "capture.py"),
+                    "--capture-dir", str(target),
+                    "--quota", str(path),
+                ], input=b"line1\nline2\n", capture_output=True, timeout=5)
+                self.assertEqual(proc.returncode, 64, proc.stderr)
+                self.assertIn("Invalid quota observation", proc.stderr.decode())
+                self.assertFalse(target.exists(), f"Capture directory {target} must not be created on quota error")
+
 
 if __name__ == "__main__":
     unittest.main()

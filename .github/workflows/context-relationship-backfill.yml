@@ -97,6 +97,29 @@ jobs:
             --max-cochange-pairs-per-commit 100 \
             --full-refresh
 
+      - name: Validate backfill corpus before promotion
+        if: steps.continuation.outputs.continue == 'true'
+        env:
+          EXPECTED_REPOSITORY: ${{ github.repository }}
+          EXPECTED_REF: master
+        run: |
+          set -euo pipefail
+          python3 -m unittest -q tests/test_context_relationship_backfill_validation.py
+          receipt="$(python3 scripts/ci/validate_context_relationship_backfill.py \\
+            --root workspace/llm_map/context_relationships \\
+            --expected-repo "$EXPECTED_REPOSITORY" \\
+            --expected-ref "$EXPECTED_REF")"
+          printf '%s\n' "$receipt" | tee /tmp/context-backfill-validation.json
+          {
+            echo '## Backfill validation receipt'
+            echo
+            echo 'Validation is required before a corpus delta can be committed.'
+            echo
+            echo '```json'
+            cat /tmp/context-backfill-validation.json
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Publish backfill coverage summary
         if: steps.continuation.outputs.continue == 'true'
         run: |

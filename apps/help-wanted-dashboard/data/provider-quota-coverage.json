@@ -1375,37 +1375,289 @@
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
+      "provider": "CellCog/Polsia/Manus",
+      "quota_manager_owner": "Manager",
+      "service_id": "partners.credits"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
       "provider": "supabase",
       "quota_manager_owner": "Manager",
-      "service_id": "supabase.free"
+      "service_id": "supabase.db_storage"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "supabase",
+      "quota_manager_owner": "Manager",
+      "service_id": "supabase.projects"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "supabase",
+      "quota_manager_owner": "Manager",
+      "service_id": "supabase.egress"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "supabase",
+      "quota_manager_owner": "Manager",
+      "service_id": "supabase.file_storage"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "supabase",
+      "quota_manager_owner": "Manager",
+      "service_id": "supabase.edge_functions"
     },
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
       "provider": "turso",
       "quota_manager_owner": "Manager",
-      "service_id": "turso.free"
+      "service_id": "turso.storage"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "turso",
+      "quota_manager_owner": "Manager",
+      "service_id": "turso.rows_read"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "turso",
+      "quota_manager_owner": "Manager",
+      "service_id": "turso.rows_written"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "turso",
+      "quota_manager_owner": "Manager",
+      "service_id": "turso.databases"
     },
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
       "provider": "upstash",
       "quota_manager_owner": "Manager",
-      "service_id": "upstash.free"
+      "service_id": "upstash.redis_storage"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "upstash",
+      "quota_manager_owner": "Manager",
+      "service_id": "upstash.redis_commands"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "upstash",
+      "quota_manager_owner": "Manager",
+      "service_id": "upstash.redis_bandwidth"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "upstash",
+      "quota_manager_owner": "Manager",
+      "service_id": "upstash.qstash_messages"
     },
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
       "provider": "cloudflare",
       "quota_manager_owner": "Manager",
-      "service_id": "cloudflare.d1_queues"
+      "service_id": "cloudflare.d1_rows_read"
     },
     {
       "freshness_owner": "ChronoMancer",
       "observation_method": "manual_or_unknown",
-      "provider": "CellCog/Polsia/Manus",
+      "provider": "cloudflare",
       "quota_manager_owner": "Manager",
-      "service_id": "partners.credits"
+      "service_id": "cloudflare.d1_rows_written"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "cloudflare",
+      "quota_manager_owner": "Manager",
+      "service_id": "cloudflare.d1_storage"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "cloudflare",
+      "quota_manager_owner": "Manager",
+      "service_id": "cloudflare.queues_ops"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_manager_owner": "Manager",
+      "service_id": "github.codespaces.core_hours"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "github",
+      "quota_manager_owner": "Manager",
+      "service_id": "github.codespaces.storage"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "cloudflare",
+      "quota_manager_owner": "Manager",
+      "service_id": "cloudflare.workers_requests"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "cloudflare",
+      "quota_manager_owner": "Manager",
+      "service_id": "cloudflare.r2_storage"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "cloudflare",
+      "quota_manager_owner": "Manager",
+      "service_id": "cloudflare.kv_writes"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "fly",
+      "quota_manager_owner": "Manager",
+      "service_id": "fly.free_tier"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "koyeb",
+      "quota_manager_owner": "Manager",
+      "service_id": "koyeb.free_instance"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "gcp",
+      "quota_manager_owner": "Manager",
+      "service_id": "gcp.cloud_run_requests"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "gcp",
+      "quota_manager_owner": "Manager",
+      "service_id": "gcp.cloud_functions_invocations"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "gcp",
+      "quota_manager_owner": "Manager",
+      "service_id": "gcp.compute_e2micro"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "aws",
+      "quota_manager_owner": "Manager",
+      "service_id": "aws.lambda_requests"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "aws",
+      "quota_manager_owner": "Manager",
+      "service_id": "aws.lambda_compute"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "aws",
+      "quota_manager_owner": "Manager",
+      "service_id": "aws.dynamodb_storage"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "aws",
+      "quota_manager_owner": "Manager",
+      "service_id": "aws.account_credits"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "azure",
+      "quota_manager_owner": "Manager",
+      "service_id": "azure.functions_executions"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "azure",
+      "quota_manager_owner": "Manager",
+      "service_id": "azure.account_credit"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "oracle",
+      "quota_manager_owner": "Manager",
+      "service_id": "oracle.ampere_ocpu_hours"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "oracle",
+      "quota_manager_owner": "Manager",
+      "service_id": "oracle.ampere_gb_hours"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "oracle",
+      "quota_manager_owner": "Manager",
+      "service_id": "oracle.block_storage"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "digitalocean",
+      "quota_manager_owner": "Manager",
+      "service_id": "digitalocean.trial_credit"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "digitalocean",
+      "quota_manager_owner": "Manager",
+      "service_id": "digitalocean.app_platform_static"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "deno",
+      "quota_manager_owner": "Manager",
+      "service_id": "deno.deploy_requests"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "netlify",
+      "quota_manager_owner": "Manager",
+      "service_id": "netlify.credits"
     }
   ]
 }

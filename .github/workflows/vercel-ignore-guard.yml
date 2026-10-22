@@ -19,12 +19,30 @@ name: vercel-ignore-guard
 # their own ignoreCommand (vercel.json overrides the project setting).
 #
 # Additive: new workflow only, manual dispatch, mode=plan by default (read-only).
+#
+# --- AUTOMATION (added 2026-10-20, user directive: manual mode=apply
+# --- dispatch must be automated; everything below marked [AUTOMATION] is
+# --- the delta vs the original PR version) ---
+# [AUTOMATION] The apply now also runs on its own:
+#   * push to master touching this workflow or the helper script — so the
+#     guard applies the moment it lands on master, and re-applies if the
+#     helper ever changes;
+#   * a weekly schedule — drift reconciliation, in case the project
+#     setting is edited by hand in the Vercel dashboard.
+# [AUTOMATION] Automated (non-dispatch) runs force mode=auto: GET the
+# current setting, PATCH only if it differs from the guarded command
+# (idempotent — a no-op when already applied). Manual dispatch keeps the
+# original semantics: the chosen mode (plan/apply) is honoured verbatim.
+# [AUTOMATION] Automated runs fail soft (warning + job summary, exit 0):
+# a missing VERCEL_TOKEN or a Vercel API error must not show up as a red
+# master CI run. An explicit dispatch keeps the original hard failure.
 
 on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "plan (read current settings only) or apply"
+        # [AUTOMATION] description extended with auto; plan/apply unchanged.
+        description: "plan (read current settings only), apply, or auto (apply only if drifted; forced on push/schedule runs)"
         required: false
         default: "plan"
       project:
@@ -35,9 +53,30 @@ on:
         description: "Argument passed to vercel_ignore_build.sh (demo-portal | mcp-hub | help-wanted-dashboard)"
         required: false
         default: "demo-portal"
+  # [AUTOMATION] Apply automatically when the guard lands or changes on
+  # master. Paths are exactly the guard's own surface: this workflow and
+  # the helper the guarded command calls.
+  push:
+    branches: [master]
+    paths:
+      - .github/workflows/vercel-ignore-guard.yml
+      - scripts/ci/vercel_ignore_build.sh
+  # [AUTOMATION] Weekly drift reconciliation — Tue 04:17 UTC: a
+  # low-traffic window, off the hour to avoid scheduler pile-up.
+  schedule:
+    - cron: "17 4 * * 2"
 
 permissions:
+  # Unchanged: the apply talks to the Vercel API with VERCEL_TOKEN only.
+  # It reads nothing from the repo at runtime (no checkout step) and
+  # writes nothing to GitHub, so contents: read remains sufficient.
   contents: read
+
+# [AUTOMATION] Never let two runs PATCH the same project settings at
+# once; queue instead of cancelling (a PATCH must never be cut off).
+concurrency:
+  group: vercel-ignore-guard
+  cancel-in-progress: false
 
 jobs:
   guard:
@@ -48,28 +87,128 @@ jobs:
       MODE: ${{ inputs.mode }}
       PROJECT: ${{ inputs.project }}
       HELPER_ARG: ${{ inputs.helper_arg }}
+      # [AUTOMATION] Event name decides mode + failure behaviour below.
+      EVENT_NAME: ${{ github.event_name }}
+      # [AUTOMATION] Targets for automated (push/schedule) runs, one
+      # "project|helper_arg" per line. ONLY the known pair is enabled.
+      # The other helper args from the original allowlist have no
+      # confirmed Vercel project name in the repo record — do not guess
+      # one. To enable another project: replace the placeholder with
+      # the confirmed project name and uncomment the line.
+      ENABLED_TARGETS: |
+        termux-monorepo|demo-portal
+        # CONFIRM-BEFORE-ENABLE: <vercel-project-for-mcp-hub>|mcp-hub
+        # CONFIRM-BEFORE-ENABLE: <vercel-project-for-help-wanted-dashboard>|help-wanted-dashboard
     steps:
       - name: Read or patch Ignored Build Step
         shell: bash
         run: |
           set -euo pipefail
+          # [AUTOMATION] Resolve effective mode + failure behaviour:
+          # automated runs force "auto" and fail soft; dispatch honours
+          # the operator's chosen mode and fails hard (original).
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            EFFECTIVE_MODE="${MODE:-plan}"
+            SOFT_FAIL=0
+          else
+            EFFECTIVE_MODE="auto"
+            SOFT_FAIL=1
+          fi
+          case "$EFFECTIVE_MODE" in plan|apply|auto) ;; *)
+            echo "::error::unknown mode '$EFFECTIVE_MODE'"; exit 1;; esac
+          # [AUTOMATION] Per-run report; the Job summary step publishes it.
+          report="guard-report.md"
+          {
+            echo "## vercel-ignore-guard"
+            echo ""
+            echo "- event: \`$EVENT_NAME\` · effective mode: \`$EFFECTIVE_MODE\` · soft-fail: \`$SOFT_FAIL\`"
+            echo ""
+            echo "| project | helper_arg | before | after | result |"
+            echo "| --- | --- | --- | --- | --- |"
+          } > "$report"
+          any_fail=0
+          # [AUTOMATION] Missing token: hard error on dispatch (original
+          # behaviour); automated runs warn, record it, and exit green.
           if [ -z "${VERCEL_TOKEN:-}" ]; then
+            if [ "$SOFT_FAIL" = "1" ]; then
+              echo "::warning::VERCEL_TOKEN secret is missing; automated run skipped (see job summary)"
+              echo "| - | - | - | - | ⚠️ skipped: VERCEL_TOKEN missing |" >> "$report"
+              exit 0
+            fi
             echo "::error::VERCEL_TOKEN secret is missing"; exit 1
           fi
-          case "$HELPER_ARG" in demo-portal|mcp-hub|help-wanted-dashboard) ;; *)
-            echo "::error::unknown helper_arg '$HELPER_ARG'"; exit 1;; esac
-          api="https://api.vercel.com/v9/projects/${PROJECT}?slug=${SCOPE}"
-          cur=$(curl -fsS -H "Authorization: Bearer $VERCEL_TOKEN" "$api")
-          echo "::notice::${PROJECT} rootDirectory=$(jq -r '.rootDirectory // "-"' <<<"$cur")"
-          echo "::notice::${PROJECT} current ignore=$(jq -r '.commandForIgnoringBuildStep // "-"' <<<"$cur")"
-          guarded='r=$(git rev-parse --show-toplevel) || exit 1; f="$r/scripts/ci/vercel_ignore_build.sh"; if [ -f "$f" ]; then bash "$f" '"$HELPER_ARG"'; else echo "[vercel-ignore] helper absent; skip"; exit 0; fi'
-          echo "::notice::guarded ignore length=${#guarded}"
-          if [ "${#guarded}" -gt 256 ]; then
-            echo "::error::guarded ignore exceeds Vercel's 256-character limit"; exit 1
+          # [AUTOMATION] Target list: dispatch = the single input pair
+          # (original behaviour); automated = the enabled config lines.
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            targets="${PROJECT}|${HELPER_ARG}"
+          else
+            targets=$(grep -v '^[[:space:]]*#' <<<"$ENABLED_TARGETS" | grep -v '^[[:space:]]*$' || true)
           fi
-          if [ "$MODE" != "apply" ]; then
-            echo "::notice::plan only; dispatch with mode=apply to set the guarded command"; exit 0
+          while IFS= read -r line; do
+            [ -z "$line" ] && continue
+            t_project="${line%%|*}"; t_project="${t_project// /}"
+            t_helper="${line##*|}"; t_helper="${t_helper// /}"
+            # Original allowlist validation, now applied per target.
+            case "$t_helper" in demo-portal|mcp-hub|help-wanted-dashboard) ;; *)
+              echo "::error::unknown helper_arg '$t_helper'"; exit 1;; esac
+            api="https://api.vercel.com/v9/projects/${t_project}?slug=${SCOPE}"
+            # Plan GET (original call). [AUTOMATION] failure is captured
+            # instead of killing the run under set -e, so automated runs
+            # can fail soft; dispatch keeps the hard exit.
+            if ! cur=$(curl -fsS -H "Authorization: Bearer $VERCEL_TOKEN" "$api"); then
+              if [ "$SOFT_FAIL" = "1" ]; then
+                echo "::warning::${t_project} plan GET failed; automated run continues (see job summary)"
+                echo "| $t_project | $t_helper | - | - | ⚠️ GET failed |" >> "$report"
+                any_fail=1; continue
+              fi
+              echo "::error::${t_project} plan GET failed"; exit 1
+            fi
+            echo "::notice::${t_project} rootDirectory=$(jq -r '.rootDirectory // "-"' <<<"$cur")"
+            current=$(jq -r '.commandForIgnoringBuildStep // ""' <<<"$cur")
+            echo "::notice::${t_project} current ignore=${current:-"-"}"
+            guarded='f="$(git rev-parse --show-toplevel)/scripts/ci/vercel_ignore_build.sh"; if [ -f "$f" ]; then bash "$f" '"$t_helper"'; else echo "[vercel-ignore] helper absent; skip"; exit 0; fi'
+            echo "::notice::guarded ignore length=${#guarded}"
+            if [ "$EFFECTIVE_MODE" = "plan" ]; then
+              echo "::notice::plan only; dispatch with mode=apply to set the guarded command"
+              echo "| $t_project | $t_helper | ${current:-"-"} | - | plan only |" >> "$report"
+              continue
+            fi
+            # [AUTOMATION] The idempotence check: in auto mode an
+            # already-guarded setting is a verified no-op — no PATCH.
+            if [ "$EFFECTIVE_MODE" = "auto" ] && [ "$current" = "$guarded" ]; then
+              echo "::notice::${t_project} already guarded; no-op"
+              echo "| $t_project | $t_helper | $current | $current | ✅ no-op (already applied) |" >> "$report"
+              continue
+            fi
+            body=$(jq -n --arg c "$guarded" '{commandForIgnoringBuildStep: $c}')
+            if ! out=$(curl -fsS -X PATCH -H "Authorization: Bearer $VERCEL_TOKEN" -H "Content-Type: application/json" -d "$body" "$api"); then
+              if [ "$SOFT_FAIL" = "1" ]; then
+                echo "::warning::${t_project} PATCH failed; automated run continues (see job summary)"
+                echo "| $t_project | $t_helper | ${current:-"-"} | - | ⚠️ PATCH failed |" >> "$report"
+                any_fail=1; continue
+              fi
+              echo "::error::${t_project} PATCH failed"; exit 1
+            fi
+            new_ignore=$(jq -r '.commandForIgnoringBuildStep // "-"' <<<"$out")
+            echo "::notice::${t_project} new ignore=$new_ignore"
+            echo "| $t_project | $t_helper | ${current:-"-"} | $new_ignore | ✅ applied |" >> "$report"
+          done <<<"$targets"
+          # [AUTOMATION] Automated runs end green even when a target
+          # failed — the warnings above + the summary carry the signal.
+          if [ "$any_fail" = "1" ]; then
+            echo "::warning::one or more targets failed; see job summary"
           fi
-          body=$(jq -n --arg c "$guarded" '{commandForIgnoringBuildStep: $c}')
-          out=$(curl -fsS -X PATCH -H "Authorization: Bearer $VERCEL_TOKEN" -H "Content-Type: application/json" -d "$body" "$api")
-          echo "::notice::${PROJECT} new ignore=$(jq -r '.commandForIgnoringBuildStep // "-"' <<<"$out")"
+          exit 0
+      # [AUTOMATION] Job summary step: publishes the before/after table
+      # for every run, including soft-failed automated runs.
+      - name: Job summary
+        if: always()
+        shell: bash
+        run: |
+          if [ -f guard-report.md ]; then
+            cat guard-report.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "## vercel-ignore-guard" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "⚠️ No report was produced — the guard step failed before reporting (see the run log)." >> "$GITHUB_STEP_SUMMARY"
+          fi

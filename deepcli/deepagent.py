@@ -559,6 +559,26 @@ def _wt_git(args, cwd, timeout=60):
                    timeout=timeout, env=env)
 
 
+def _wt_base_get(branch):
+    """Return (base, error); missing config is distinct from config failure."""
+    r = _wt_git(["config", "--local", "--get", f"branch.{branch}.deepagent-base"], str(HOME))
+    if r.returncode == 1:
+        return None, None
+    if r.returncode != 0:
+        return None, f"git config read failed: {r.stderr[-300:]}"
+    return r.stdout.strip(), None
+
+
+def _wt_base_set(branch, base):
+    return _wt_git(["config", "--local", f"branch.{branch}.deepagent-base", base], str(HOME))
+
+
+def _wt_base_unset(branch):
+    r = _wt_git(["config", "--local", "--unset-all", f"branch.{branch}.deepagent-base"], str(HOME))
+    # Git returns 5 when the key does not exist; that is already clean.
+    return None if r.returncode in (0, 5) else f"git config cleanup failed: {r.stderr[-300:]}"
+
+
 def _wt_default_repo() -> str | None:
     """Parse origin URL in $HOME to get owner/name."""
     r = _wt_git(["config", "--get", "remote.origin.url"], str(HOME))
@@ -610,8 +630,13 @@ def _gh_worktree(a):
                     str(HOME), timeout=120)
         if r.returncode != 0:
             return {"error": f"worktree add failed: {r.stderr[-300:]}"}
+        recorded = _wt_base_set(branch, base)
+        if recorded.returncode != 0:
+            return {"error": f"worktree created but base metadata write failed: {recorded.stderr[-300:]}",
+                    "created": True, "path": str(path), "base": base,
+                    "base_recorded": False}
         return {"path": str(path), "branch": branch, "base": base,
-                "created": True}
+                "created": True, "base_recorded": True}
 
     if action == "commit_push_pr":
         branch = a.get("branch") or ""
@@ -626,6 +651,15 @@ def _gh_worktree(a):
         path = WORKTREE_ROOT / safe
         if not path.exists():
             return {"error": f"worktree not found: {path}"}
+
+        # Resolve provenance before any mutation. Explicit base intentionally bypasses metadata.
+        if a.get("base"):
+            base = a["base"]
+        else:
+            base, base_error = _wt_base_get(branch)
+            if base_error:
+                return {"error": base_error}
+            base = base or "master"
 
         # stage and commit
         r = _wt_git(["add", "-A"], str(path))
@@ -646,7 +680,7 @@ def _gh_worktree(a):
         # create PR via gh
         import subprocess as _sp
         pr_cmd = ["gh", "pr", "create", "--repo", repo,
-                  "--base", a.get("base") or "master",
+                  "--base", base,
                   "--head", branch,
                   "--title", title, "--body", body]
         if draft: pr_cmd.append("--draft")
@@ -668,9 +702,21 @@ def _gh_worktree(a):
         if force: args.append("--force")
         r = _wt_git(args, str(HOME), timeout=60)
         if r.returncode != 0:
-            return {"error": f"worktree remove: {r.stderr[-300:]}"}
-        # also delete the local branch reference if it was merged
-        return {"removed": True, "branch": branch}
+            # A previous removal may have succeeded before config cleanup failed.
+            # Only retry cleanup once both the directory and Git registration are gone.
+            if path.exists():
+                return {"error": f"worktree remove: {r.stderr[-300:]}"}
+            inventory = _wt_git(["worktree", "list", "--porcelain"], str(HOME))
+            if inventory.returncode != 0 or any(
+                line.startswith("worktree ") and Path(line[9:]).resolve() == path.resolve()
+                for line in inventory.stdout.splitlines()
+            ):
+                return {"error": f"worktree remove: {r.stderr[-300:]}"}
+        cleanup_error = _wt_base_unset(branch)
+        if cleanup_error:
+            return {"error": cleanup_error, "removed": True, "branch": branch,
+                    "base_recorded": True}
+        return {"removed": True, "branch": branch, "base_recorded": False}
 
     return {"error": f"unknown action: {action}. Use create|commit_push_pr|remove|list"}
 

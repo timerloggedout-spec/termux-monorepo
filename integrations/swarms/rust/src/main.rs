@@ -19,6 +19,14 @@ struct Config {
     execute: bool,
     max_tokens: Option<u64>,
     timeout_seconds: Option<u64>,
+    run_id: Option<String>,
+    job_id: Option<String>,
+    request_id: Option<String>,
+    attempt_id: Option<String>,
+    parent_id: Option<String>,
+    source_revision: Option<String>,
+    provider: Option<String>,
+    adapter: Option<String>,
 }
 
 #[derive(Serialize)]

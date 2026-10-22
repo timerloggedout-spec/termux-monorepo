@@ -1,5 +1,14 @@
 # Swarms: what runs and what is still missing
 
+## THUB-017 / MSM-005 implementation continuation (unmerged, undeployed)
+
+The candidate now implements the gaps described in the historical snapshot below: genuine hash-verified AdvancedResearch orchestration with bounded injected dependencies, shared durable hub quota admission/reservation/reconciliation, correlated Python/Rust child requests and existing 3L0 evidence ingestion, and integer paper accounting in the existing MarketGraph event journal. See [the implemented runtime](ADVANCED-RESEARCH.md) and [shared hub contract](../../llm_api_hub/RESEARCH-CORRELATION-CONTRACT.md). The offline planner remains a planner. Deterministic tests use fake inference/search only. Linux validation is not native Android evidence; no live provider, paid fallback, merge or deployment is claimed. Exact-candidate Actions receipts are the remote evidence surface, not this status text.
+
+The foundation is explicitly #1470 at `d2778bcc25966533ccd2f5bc1991aab672fb9cbe`, still unmerged. #1531 records proposals. Native tracking is #1520/#1522–#1525 and #1521/#1526–#1529. The MSM-005 journal stores existing market events plus paper issuance/reserve/settle/release/void/expiry; MSM-012 remains a rebuildable CSV, never authority. Restart, contention, idempotency, conservation, four wager/offer scopes and stale/edited CSV are tested. CSV cannot authorize settlement or create points.
+
+## Historical foundation snapshot
+
+
 ## The short answer
 
 The Python and Rust Swarms entry points can explicitly execute agent workflows through the existing model hub. Neither is an automatically deployed service. **AdvancedResearch is registered for investigation, not integrated or running. Quota Management and 3L0 do not yet receive correlated Swarms execution evidence through these adapters.** Paper wallets are CSV projections of MSM-005, not blockchain wallets.

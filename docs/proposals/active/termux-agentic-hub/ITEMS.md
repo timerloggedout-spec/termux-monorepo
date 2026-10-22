@@ -20,3 +20,14 @@
 | THUB-016 | P1 | executing | Publish the Swarms extract on current master, retain Kye Python parity authority, register pinned AdvancedResearch/wallet research against existing MSM-005, and add remote offline validation. | No duplicate market ledger; deterministic offline research planning and CI; no live settlement, provider calls, deployment or merge; pushed review PR and attributable tests. |
 
 | THUB-017 | P1 | executing | Continue Kye Gomez Research/framework integration and quota/3L0 wiring; retain paper/CSV wallets inside MSM-005, not a chain adapter. | Record actual adapter/hub/ingestion boundaries; paper CSV is a projection only; Research runtime, shared quota admission and correlated telemetry require end-to-end evidence before any completion/deployment claim. |
+
+## THUB-017 implementation continuation (unmerged and undeployed)
+
+| Native issue | Candidate implementation | Validation boundary |
+|---|---|---|
+| #1522 / THUB-017.A | Hash-verified genuine pinned AdvancedResearch orchestration, dependency facades, explicit model and opt-in, bounded killable worker | Deterministic fake search/inference, not full Swarms SDK parity |
+| #1523 / THUB-017.B | Shared canonical-observation publication, account/provider/scope quota windows, atomic durable reserve/send/reconcile and cooldown | Unknown/stale/unverified quotas deny; no live provider or paid fallback |
+| #1524 / THUB-017.C | Python/Rust child lineage through actual hub, sanitized existing logger and existing 3L0 ledger ingestion | Null task dimensions, zero task confidence, no routing-weight changes |
+| #1525 / THUB-017.D | Genuine pinned source through real hub admission with deterministic fakes; replay/concurrency/reset/cooldown/cancel tests and exact-SHA Actions receipts | Linux only; native Android and deployment are not claimed |
+
+The offline planner remains a planner. Implementation is stacked on #1470 at `d2778bcc25966533ccd2f5bc1991aab672fb9cbe`; the foundation is not assumed merged. #1531 records proposals only. Native issues stay open until implementation review and attributable candidate evidence are accepted.

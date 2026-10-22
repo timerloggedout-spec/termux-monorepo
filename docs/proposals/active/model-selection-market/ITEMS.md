@@ -20,6 +20,8 @@
 
 | MSM-012 | Paper-only CSV wallet projection from market snapshots | **in_review** | MSM-005 | Read-only projection of observational stakes, offers, and cards; no chain adapter, spendable balances, or real settlement |
 
+| MSM-005.A-D | Integer paper-point accounting on the MSM market event journal | **implemented (unmerged; tests passing)** | MSM-005 | One versioned hash-chained journal stores market card/bet/offer events and accounting; `MarketGraph(journal=...)` replays both without caller reconstruction. Lock-serialized appends/readers, durable directory creation, strict replay/schema/idempotency/overflow validation, deterministic explicit-clock expiry, reserve/settle/release/void, conservation, and CSV balance/reserve/available/head validation. CSV is a disposable view only. Covered by `tests/test_paper_accounting.py`; paper-only, no monetary/provider authority. |
+
 | MSM-013 | Diagnose existing Actions provider-secret mappings and execute only a verified no-cost bounded smoke | **done** | MSM-010 | #1321 merged; run 39432211461 verified existing OpenRouter free-tier and exact zero-price model, one synthetic request returned HTTP 429; inference remains unverified, no retry/paid fallback/admission change; 301 pytest + 9 unit contracts |
 
 | MSM-019 | Official-source passive quota manager contracts for 20 canonical provider families | **done** | MSM-018 (free-provider prioritization) | Implementation validated in #1448; 5 passive parsers, 12 documentation-only, 3 unsupported; current-head promotion/publication receipts in that PR. No new polling/account validation/admission change; 18 live/service-mapping gaps remain explicit. |
@@ -40,7 +42,8 @@ scripts/model_selection_market/
   selector.py       # MSM-003
   dspy_doe.py       # MSM-004
   market.py         # MSM-005
-  paper_wallet.py  # MSM-012 — CSV projection only
+  paper_wallet.py  # MSM-012 — observational snapshot CSV projection
+  accounting.py    # MSM-005 journal engine used through MarketGraph
   cli.py
   test_msm.py
 ```

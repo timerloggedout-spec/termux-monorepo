@@ -25,7 +25,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, Iterator, List, Optional
 from urllib.error import HTTPError, URLError
 from urllib.request import Request as UrlRequest
-from urllib.request import urlopen
+from urllib.request import HTTPRedirectHandler, build_opener
 
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, StreamingResponse
@@ -33,8 +33,10 @@ from pydantic import BaseModel, ConfigDict, Field
 
 try:
     from llm_api_hub.server import research_providers
+    from llm_api_hub.server.admission import admission, AdmissionDenied
 except ImportError:  # direct ``uvicorn app:app`` launch from server directory
     import research_providers  # type: ignore
+    from admission import admission, AdmissionDenied  # type: ignore
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -119,9 +121,9 @@ class HubRuntime:
         except Exception as exc:
             raise HubError(
                 503,
-                f"wrapper backend '{provider}' failed: {exc}",
+                f"wrapper backend '{provider}' failed",
                 code="provider_unavailable",
-            ) from exc
+            ) from None
 
     def complete_upstream(self, provider: str, request: ChatCompletionRequest) -> Dict[str, Any]:
         if provider == "anthropic":
@@ -242,6 +244,22 @@ def message_to_dict(message: ChatMessage) -> Dict[str, Any]:
     return result
 
 
+def quota_token_budget(request: ChatCompletionRequest) -> int:
+    """Bound token use conservatively using UTF-8 JSON bytes plus framing.
+
+    Byte-fallback tokenizers cannot emit more tokens than input bytes; reserving
+    all serialized message bytes also covers structured text parts and metadata.
+    """
+    serialized = json.dumps(
+        [message_to_dict(message) for message in request.messages],
+        ensure_ascii=False,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    prompt_bound = len(serialized) + 128 * len(request.messages)
+    output_bound = request.max_tokens if request.max_tokens is not None else 2048
+    return prompt_bound + output_bound
+
+
 def messages_to_prompt(messages: Iterable[ChatMessage]) -> str:
     """Render a multi-turn OpenAI conversation for legacy wrapper backends."""
     rendered: List[str] = []
@@ -255,6 +273,11 @@ def messages_to_prompt(messages: Iterable[ChatMessage]) -> str:
     return "\n\n".join(rendered) + "\n\n[assistant]"
 
 
+class _NoUpstreamRedirect(HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
 def http_json(url: str, payload: Dict[str, Any], *, headers: Dict[str, str], timeout: float) -> Dict[str, Any]:
     body = json.dumps(payload).encode("utf-8")
     request = UrlRequest(
@@ -264,14 +287,20 @@ def http_json(url: str, payload: Dict[str, Any], *, headers: Dict[str, str], tim
         method="POST",
     )
     try:
-        with urlopen(request, timeout=timeout) as response:
-            decoded = json.loads(response.read().decode("utf-8"))
+        with build_opener(_NoUpstreamRedirect).open(request, timeout=timeout) as response:
+            raw = response.read(2 * 1024 * 1024 + 1)
+            if len(raw) > 2 * 1024 * 1024:
+                raise HubError(502, "upstream response is too large", code="upstream_invalid_response")
+            decoded = json.loads(raw.decode("utf-8"))
     except HTTPError as exc:
-        detail = exc.read().decode("utf-8", errors="replace")[:4000]
-        raise HubError(502, f"upstream returned HTTP {exc.code}: {detail}", code="upstream_error") from exc
+        retry = exc.headers.get("Retry-After", "60") if exc.headers else "60"
+        retry = retry if retry.isdigit() and len(retry) <= 6 else "60"
+        raise HubError(429 if exc.code == 429 else 502,
+                       f"upstream returned HTTP {exc.code}", code="upstream_error",
+                       headers={"Retry-After": retry} if exc.code == 429 else None) from None
     except (URLError, TimeoutError) as exc:
-        raise HubError(502, f"upstream is unreachable: {exc}", code="upstream_unreachable") from exc
-    except json.JSONDecodeError as exc:
+        raise HubError(502, "upstream is unreachable", code="upstream_unreachable") from None
+    except (json.JSONDecodeError, UnicodeDecodeError) as exc:
         raise HubError(502, "upstream returned invalid JSON", code="upstream_invalid_json") from exc
     if not isinstance(decoded, dict):
         raise HubError(502, "upstream returned a non-object response", code="upstream_invalid_response")
@@ -377,19 +406,46 @@ def models(request: Request) -> Dict[str, Any]:
 @app.post("/v1/chat/completions")
 def chat_completions(request: ChatCompletionRequest, raw_request: Request) -> Any:
     validate_auth(raw_request)
+    if request.max_tokens is None:
+        request = request.model_copy(update={"max_tokens": 2048})
     model = request.model.strip()
+    if model.startswith("wrapper/") and request.session_id:
+        sid = str(request.session_id)
+        if ".." in sid or "/" in sid or "\\" in sid or os.path.isabs(sid):
+            raise HubError(400, "invalid session_id: path traversal forbidden", code="invalid_session_id")
+    provider = model.split("/", 1)[0] if "/" in model else "openrouter"
+    extra = getattr(request, "model_extra", {}) or {}
+    correlation = {}
+    for key in ("run_id", "job_id", "request_id", "attempt_id", "parent_id", "adapter", "source_revision"):
+        value = extra.get(key)
+        header = raw_request.headers.get("x-termux-" + key.replace("_", "-"))
+        if value is not None and header is not None and value != header:
+            raise HubError(400, "conflicting correlation identifiers", code="invalid_correlation")
+        value = value if value is not None else header
+        if value is not None:
+            if (not isinstance(value, str) or not 1 <= len(value) <= 160
+                    or any(not (c.isascii() and (c.isalnum() or c in "_.:-")) for c in value)):
+                raise HubError(400, "invalid correlation identifier", code="invalid_correlation")
+            correlation[key] = value
+    correlation.setdefault("request_id", uuid.uuid4().hex)
+    correlation.setdefault("attempt_id", uuid.uuid4().hex)
+    correlation.setdefault("run_id", correlation["request_id"])
+    correlation.setdefault("job_id", correlation["run_id"])
+    correlation.setdefault("adapter", "hub-direct")
+    correlation.update(model=model, provider=provider)
+
+    # Validate and authorize before reserving; this phase cannot make inference.
+    # Each request has exactly one selected route. There is no fallback or retry.
     if model.startswith("wrapper/"):
-        provider = model.split("/", 1)[1]
-        if provider not in {"deepseek", "mistral", "claude", "gemini", "colab"}:
+        wrapper = model.split("/", 1)[1]
+        if wrapper not in {"deepseek", "mistral", "claude", "gemini", "colab"}:
             raise HubError(400, f"unknown wrapper model '{model}'", code="unknown_model")
-        text = runtime.complete_wrapper(provider, request)
-        response = completion_response(model, text)
-    elif model.startswith("openrouter/"):
-        response = runtime.complete_upstream("openrouter", request)
-    elif model.startswith("openai/"):
-        response = runtime.complete_upstream("openai", request)
-    elif model.startswith("anthropic/"):
-        response = runtime.complete_upstream("anthropic", request)
+        messages_to_prompt(request.messages)
+        def dispatch():
+            return completion_response(model, runtime.complete_wrapper(wrapper, request))
+    elif provider in {"openrouter", "openai", "anthropic"} and "/" in model:
+        def dispatch():
+            return runtime.complete_upstream(provider, request)
     elif model.partition("/")[0] in research_providers.ENDPOINTS and "/" in model:
         provider, exact_model = model.split("/", 1)
         if any(not isinstance(message.content, str) for message in request.messages) or any(
@@ -397,6 +453,7 @@ def chat_completions(request: ChatCompletionRequest, raw_request: Request) -> An
             for key in ("tools", "tool_choice", "functions", "function_call", "modalities", "audio", "image", "video")
         ):
             raise HubError(400, "native research providers accept text-only messages without multimodal or tool inputs", code="invalid_messages")
+        research_providers.authorize(provider, exact_model)
         upstream_payload: Dict[str, Any] = {
             "model": exact_model,
             "messages": [message_to_dict(message) for message in request.messages],
@@ -406,9 +463,11 @@ def chat_completions(request: ChatCompletionRequest, raw_request: Request) -> An
             value = getattr(request, key)
             if value is not None:
                 upstream_payload[key] = value
-        response = research_providers.complete(provider, exact_model, upstream_payload, REQUEST_TIMEOUT)
+        def dispatch():
+            return research_providers.complete(provider, exact_model, upstream_payload, REQUEST_TIMEOUT)
     elif "/" not in model and os.environ.get("OPENROUTER_API_KEY"):
-        response = runtime.complete_upstream("openrouter", request)
+        def dispatch():
+            return runtime.complete_upstream("openrouter", request)
     else:
         raise HubError(
             400,
@@ -416,6 +475,51 @@ def chat_completions(request: ChatCompletionRequest, raw_request: Request) -> An
             code="unknown_model",
         )
 
+    def emit(event: str, outcome: str = "UNKNOWN") -> None:
+        from src.telemetry import TermuxTelemetryLogger
+        TermuxTelemetryLogger.notify("INFO", "llm_api_hub", "bounded hub execution event",
+                                     context={**correlation, "event": event, "outcome": outcome})
+
+    try:
+        reservation = admission.reserve(provider, model, attempt_id=correlation["attempt_id"],
+                                        token_budget=quota_token_budget(request))
+    except AdmissionDenied:
+        emit("admission_denied", "DENIED")
+        raise HubError(429, "provider quota admission denied", code="quota_denied") from None
+    emit("admission_reserved")
+    sent = False
+    try:
+        # Durable send intent precedes inference. A crash/timeout after this point
+        # is ambiguous and must never release quota or dispatch the same attempt.
+        admission.mark_sent(reservation)
+        sent = True
+        response = dispatch()
+        usage = response.get("usage") or {}
+        actual_tokens = usage.get("total_tokens")
+        if actual_tokens is None and "input_tokens" in usage and "output_tokens" in usage:
+            actual_tokens = usage["input_tokens"] + usage["output_tokens"]
+        admission.reconcile(reservation, actual=1, actual_tokens=actual_tokens)
+    except BaseException as exc:
+        status = getattr(exc, "status", getattr(exc, "status_code", None))
+        bookkeeping_failed = False
+        try:
+            if status == 429:
+                retry = getattr(exc, "retry_after", None) or (getattr(exc, "headers", {}) or {}).get("Retry-After")
+                seconds = int(retry) if isinstance(retry, str) and retry.isdigit() and len(retry) <= 6 else 60
+                admission.add_cooldown(reservation, min(max(seconds, 1), 86400))
+        except Exception:
+            bookkeeping_failed = True
+        try:
+            admission.reconcile(reservation, actual=0 if not sent else None, ambiguous=sent)
+        except Exception:
+            # The durable send intent remains reserved; never release on error.
+            bookkeeping_failed = True
+        cancelled = isinstance(exc, (InterruptedError, KeyboardInterrupt))
+        emit("execution_cancelled" if cancelled else "execution_failed", "CANCELLED" if cancelled else "UNKNOWN")
+        if bookkeeping_failed:
+            raise HubError(503, "quota bookkeeping unavailable; execution remains ambiguous", code="quota_state_unavailable") from None
+        raise
+    emit("execution_complete")
     if not request.stream:
         return response
     return StreamingResponse(sse_events(response), media_type="text/event-stream")

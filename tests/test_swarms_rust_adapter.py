@@ -1,7 +1,9 @@
 """Offline process-boundary contracts; does not compile or import swarms-rs."""
 import json
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import os
 from pathlib import Path
+import threading
 import subprocess
 import sys
 
@@ -12,6 +14,12 @@ sys.path.insert(0, str(ROOT))
 from src import swarms_rust_adapter as adapter
 
 CONFIG = {"task": "fixture-input", "model": "wrapper/deepseek", "execute": True}
+
+
+@pytest.fixture(autouse=True)
+def isolated_telemetry(tmp_path, monkeypatch):
+    from src import telemetry
+    monkeypatch.setattr(telemetry, "TELEMETRY_LOG", str(tmp_path / "telemetry.jsonl"))
 
 
 def worker(tmp_path, body):
@@ -100,14 +108,56 @@ print('upstream diagnostic on stderr', file=sys.stderr)
     assert result["status"] == "complete"
     captured = capsys.readouterr()
     assert captured.out == ""
-    assert "on stdout" in captured.err and "on stderr" in captured.err
+    assert "on stdout" not in captured.err and "on stderr" not in captured.err
     assert not Path(json.loads(record.read_text())["cwd"]).exists()
     assert Path.cwd() == original_cwd
 
 
+def test_sdk_requests_are_bridged_with_parent_and_unique_child_correlation(tmp_path, monkeypatch):
+    seen = []
+    class Hub(BaseHTTPRequestHandler):
+        def do_POST(self):
+            seen.append((self.path, dict(self.headers)))
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+            self.wfile.write(b'{"choices":[{"message":{"content":"ok"}}]}')
+        def log_message(self, *_args):
+            pass
+    server = ThreadingHTTPServer(("127.0.0.1", 0), Hub)
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    monkeypatch.setenv("LLM_API_HUB_BASE", f"http://127.0.0.1:{server.server_port}/v1")
+    monkeypatch.setenv("LLM_API_HUB_KEY", "fixture-secret")
+    executable = worker(tmp_path, '''import json, os, pathlib, urllib.request
+url = os.environ['LLM_API_HUB_BASE'] + 'chat/completions'
+for _ in range(2):
+ req = urllib.request.Request(url, data=b'{"model":"fixture"}', headers={'Authorization':'Bearer fixture-secret','Content-Type':'application/json'}, method='POST')
+ with urllib.request.urlopen(req, timeout=4) as r: assert r.status == 200
+pathlib.Path('result.json').write_text(json.dumps({'status':'complete','backend':'swarms-rs','output':'ok'}))
+''')
+    try:
+        cfg = {**CONFIG, "run_id": "run-a", "job_id": "job-b", "request_id": "parent-request",
+               "attempt_id": "parent-attempt", "source_revision": "rev-c"}
+        result = adapter.run(cfg, binary=executable)
+        assert result["status"] == "complete"
+        assert [path for path, _ in seen] == ["/v1/chat/completions"] * 2
+        assert {h["X-Termux-Run-Id"] for _, h in seen} == {"run-a"}
+        assert {h["X-Termux-Job-Id"] for _, h in seen} == {"job-b"}
+        assert {h["X-Termux-Source-Revision"] for _, h in seen} == {"ee1e74cb6e2c94775db88dddb311f2235e3fe9e3"}
+        assert {h["X-Termux-Parent-Id"] for _, h in seen} == {"parent-request"}
+        assert len({h["X-Termux-Request-Id"] for _, h in seen}) == 2
+        assert len({h["X-Termux-Attempt-Id"] for _, h in seen}) == 2
+        assert all(h["Authorization"] == "Bearer fixture-secret" for _, h in seen)
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=2)
+
+
 @pytest.mark.parametrize("payload,code,match", [
     ("not json", 0, "no valid JSON"), ("[]", 0, "invalid result object"),
-    ('{"status":"error","error":"hub HTTP 401"}', 2, "hub HTTP 401"),
+    ('{"status":"error","error":"hub HTTP 401"}', 2, "Rust worker execution failed"),
     ('{"status":"complete","backend":"swarms-rs","output":"x"}', 2, "failed"),
     ('{"status":"complete"}', 0, "incomplete success"),
 ])

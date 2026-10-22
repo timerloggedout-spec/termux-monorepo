@@ -4,8 +4,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import math
-from collections import Counter
 from pathlib import Path
 from typing import Any
 
@@ -78,7 +76,10 @@ def correlate(receipts: list[dict[str, Any]], events: list[dict[str, Any]]) -> d
             "task_completed_count": 0,
             "tool_call_count": 0,
             "tool_retry_count": 0,
-            "sha_verification": "receipt_sha_missing" if not receipt.get("source_sha") else "verified_when_event_sha_present",
+            "sha_verification": "receipt_sha_missing" if not receipt.get("source_sha") else "pending",
+            "sha_verified_event_count": 0,
+            "sha_unverified_event_count": 0,
+            "sha_mismatch_event_count": 0,
         }
 
     unmatched_events = 0
@@ -99,9 +100,14 @@ def correlate(receipts: list[dict[str, Any]], events: list[dict[str, Any]]) -> d
             raise ValueError("event source_sha must be a 40-character lowercase Git SHA")
         if receipt_sha and event_sha and receipt_sha != event_sha:
             sha_mismatches += 1
+            aggregates[key]["sha_mismatch_event_count"] += 1
             continue
         aggregate = aggregates[key]
         matched_events += 1
+        if receipt_sha and event_sha:
+            aggregate["sha_verified_event_count"] += 1
+        else:
+            aggregate["sha_unverified_event_count"] += 1
         aggregate["event_count"] += 1
         event_name = event.get("event")
         if isinstance(event_name, str):
@@ -119,8 +125,14 @@ def correlate(receipts: list[dict[str, Any]], events: list[dict[str, Any]]) -> d
     for aggregate in aggregates.values():
         aggregate["event_counts"] = dict(sorted(aggregate["event_counts"].items()))
         aggregate["status_counts"] = dict(sorted(aggregate["status_counts"].items()))
-        if aggregate["source_sha"]:
-            aggregate["sha_verification"] = "verified" if aggregate["event_count"] else "receipt_sha_present_no_events"
+        if aggregate["sha_mismatch_event_count"]:
+            aggregate["sha_verification"] = "mismatch_quarantined"
+        elif aggregate["event_count"] == 0:
+            aggregate["sha_verification"] = "receipt_sha_present_no_events" if aggregate["source_sha"] else "receipt_sha_missing"
+        elif aggregate["sha_unverified_event_count"]:
+            aggregate["sha_verification"] = "partially_unverified" if aggregate["sha_verified_event_count"] else "unverified"
+        else:
+            aggregate["sha_verification"] = "verified"
     runs = sorted(aggregates.values(), key=lambda row: (row["gha_run_id"], row["gha_run_attempt"]))
     return {
         "schema_version": "ates.correlation.v1",

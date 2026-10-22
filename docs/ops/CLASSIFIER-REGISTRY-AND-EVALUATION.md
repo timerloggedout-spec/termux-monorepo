@@ -137,3 +137,32 @@ Do not collapse these into one winner score without publishing the formula and c
 ## Current caveats
 
 The existing System One experiment plan already says unavailable Jev is not a model failure, raw receipts are canonical, missing evidence is null, and active routing requires multiple comparable cohorts and human promotion. Preserve these invariants. The current Jev HTTP path and Laya inference path have not been independently demonstrated as successful live inference in this lane; contract/mock tests must not be presented as model-quality evidence.
+
+
+## Executable candidate-matrix mode
+
+The evaluator now supports a bounded cross-product of question-bank items and candidate adapters. The default remains the deterministic baseline for backward-compatible smoke checks. To compare adapters against the same bank, run:
+
+```bash
+python scripts/classifier_eval.py \
+  --bank tests/fixtures/classifier-question-bank.json \
+  --candidates deterministic-baseline laya-mock jev \
+  --workers 8 --per-candidate-workers 2 \
+  --run-id local-matrix-001 \
+  --output artifacts/system-one/classifier-matrix.jsonl
+python scripts/eval_tournament.py \
+  artifacts/system-one/classifier-matrix.jsonl \
+  --output artifacts/system-one/classifier-matrix-report.json
+```
+
+Add `laya-live` and `--live` only for an intentional live run. The Jev adapter is also attempted only with `--live`; without it, eligible questions are recorded as `UNAVAILABLE`. The runner never treats mock output or unavailable adapters as correctness evidence.
+
+Concurrency contract:
+- global jobs are bounded by `--workers` (1–64);
+- each candidate has its own semaphore bounded by `--per-candidate-workers` (1–16);
+- jobs are submitted concurrently but receipts are emitted in stable question-bank order, then candidate argument order;
+- `NOT_APPLICABLE`, `UNAVAILABLE`, `MOCK`, `ERROR`, and `OK` remain distinct states;
+- only `OK` predictions are marked with a correctness value; other states use null rather than zero or false;
+- candidate compatibility currently maps text classification and typed Choice questions. Multilabel and span-extraction tasks are explicitly `NOT_APPLICABLE` for these Choice-only adapters rather than silently mis-scored.
+
+This is a bounded adapter comparison surface, not a claim that every registered ecosystem model is integrated. Add new adapters behind the same receipt contract, verify their primary API/runtime, and use the same bank version and held-out split before comparing quality.

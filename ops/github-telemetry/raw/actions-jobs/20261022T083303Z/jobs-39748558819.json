@@ -1,0 +1,67 @@
+{
+  "collected_at": "2026-10-22T08:33:21.304578+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 39748558819,
+    "endpoint": ".../runs/39748558819/jobs"
+  },
+  "data": {
+    "total_count": 2,
+    "jobs": [
+      {
+        "id": 119723046790,
+        "run_id": 39748558819,
+        "workflow_name": "Agent PR Jules Handoff",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/39748558819",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAb4Ay3hg",
+        "head_sha": "373fb420ecffce0a4025c8eac14c59b46fd5c4c7",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/119723046790",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39748558819/job/119723046790",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-10-22T08:32:58Z",
+        "started_at": "2026-10-22T08:32:58Z",
+        "completed_at": "2026-10-22T08:32:57Z",
+        "name": "mutation",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/119723046790",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      },
+      {
+        "id": 119723115750,
+        "run_id": 39748558819,
+        "workflow_name": "Agent PR Jules Handoff",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/39748558819",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAb4A3E5g",
+        "head_sha": "373fb420ecffce0a4025c8eac14c59b46fd5c4c7",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/119723115750",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39748558819/job/119723115750",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-10-22T08:33:07Z",
+        "started_at": "2026-10-22T08:33:07Z",
+        "completed_at": "2026-10-22T08:32:57Z",
+        "name": "handoff",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/119723115750",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      }
+    ]
+  }
+}

@@ -5,29 +5,17 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>LANE-MATRIX</title>
 <meta name="description" content="LANE-MATRIX live board — monorepo PR lanes. Not nested under Tribute.">
-<style>
-:root{--bg:#080b10;--panel:#10161f;--line:#243140;--text:#edf3f8;--muted:#93a4b8;--blue:#65c7ff;--gold:#e9c779}
-*{box-sizing:border-box}body{margin:0;background:#080b10;color:var(--text);font:15px/1.5 system-ui,sans-serif}a{color:var(--blue);text-decoration:none}
-nav{display:flex;gap:1rem;align-items:center;padding:.7rem 1.2rem;border-bottom:1px solid var(--line)}nav .brand{margin-right:auto;font-weight:750;color:var(--text)}nav a{color:var(--muted);font-size:.84rem}
-main{max-width:1180px;margin:auto;padding:1.5rem 1.2rem 4rem}h1{margin:.2rem 0}.lede{color:var(--muted)}
-.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.7rem;margin:1.2rem 0}.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:1rem}.label{color:var(--muted);font-size:.68rem;text-transform:uppercase}.value{font-size:1.4rem;font-weight:800}
-.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}table{width:100%;border-collapse:collapse;min-width:760px}th,td{text-align:left;padding:.6rem .5rem;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-size:.68rem;text-transform:uppercase}.pill{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:.12rem .45rem;font-size:.72rem}
-@media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}}
-</style>
+<link rel="stylesheet" href="./dashboard.css">
+<style>main{padding-top:1.5rem}.table-wrap{border:1px solid var(--line);border-radius:12px}.table{min-width:760px}</style>
 </head>
 <body>
-<nav>
-  <span class="brand">LANE-MATRIX</span>
-  <a href="https://timerloggedout-spec.github.io/help-wanted/">Tribute dashboard</a>
-  <a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/LANE-MATRIX.md">Policy</a>
-  <a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a>
-</nav>
+<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/help-wanted/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/" aria-current="page">Lane matrix</a><a href="https://timerloggedout-spec.github.io/help-wanted/quota.html">Quota</a><a href="https://help-wanted-oversight.vercel.app/">Vercel deployment</a><a href="https://timerloggedout-spec.github.io/help-wanted/sitemap.xml">Sitemap</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></nav>
 <main>
   <p class="label">Live board · not a PR · not Tribute</p>
   <h1>LANE-MATRIX</h1>
   <p class="lede" id="meta">Loading matrix…</p>
   <div class="grid" id="kpis"></div>
-  <div class="table-wrap"><table><thead><tr><th>PR</th><th>Lane</th><th>Days</th><th>Reason</th><th>Title</th></tr></thead><tbody id="rows"></tbody></table></div>
+  <div class="table-wrap"><table class="table"><thead><tr><th>PR</th><th>Lane</th><th>Days</th><th>Reason</th><th>Title</th></tr></thead><tbody id="rows"></tbody></table></div>
 </main>
 <script>
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

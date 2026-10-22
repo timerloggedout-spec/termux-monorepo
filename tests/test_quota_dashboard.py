@@ -122,7 +122,7 @@ def test_dashboard_does_not_equate_static_links_or_parsers_with_live_managers():
 @pytest.mark.skipif(not shutil.which("node"), reason="Node required for browser syntax")
 def test_all_panel_javascript_parses(tmp_path):
     html = (ROOT / "apps/help-wanted-dashboard/quota.html").read_text()
-    for index, script in enumerate(re.findall(r"<script>(.*?)</script>", html, re.S)):
+    for index, script in enumerate(re.findall(r"<script>(.*?)</script>", html, re.S | re.I)):
         path = tmp_path / f"panel-{index}.js"
         path.write_text(script)
         subprocess.run(["node", "--check", str(path)], check=True)
@@ -170,7 +170,7 @@ def test_mapping_capability_counts_are_typed_and_unknowns_stay_unknown():
 @pytest.mark.skipif(not shutil.which('node'), reason='Node required for local admin controls')
 def test_nested_private_selection_does_not_hide_the_entire_family(tmp_path):
     html = (ROOT / 'apps/help-wanted-dashboard/quota.html').read_text()
-    source = '\n'.join(re.findall(r'<script>(.*?)</script>', html, re.S))
+    source = '\n'.join(re.findall(r'<script>(.*?)</script>', html, re.S | re.I))
     helper = str(ROOT / 'apps/help-wanted-dashboard/quota-evidence.js')
     script = f"""
 const vm=require('node:vm'), assert=require('node:assert/strict');

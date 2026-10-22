@@ -1,7 +1,7 @@
 #!/data/data/com.termux/files/usr/bin/bash
 # Schedule this node's tmx jobs (idempotent; existing jobs 43107-43109 are left untouched).
 #   --role secondary : 43110 heartbeat + 43111 origin-status notification
-#   --role origin    : 43110 heartbeat only (origin keeps its own 43107-43109 jobs)
+#   --role origin    : 43110 heartbeat + 43112 queue-poll (origin keeps its own 43107-43109 jobs)
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 # shellcheck source=lib.sh
@@ -30,6 +30,9 @@ sched() {
 sched "$TMX_JOB_HEARTBEAT" "$(wrap "$SCRIPT_DIR/publish-device-heartbeat.sh")"
 if [ "$role" = secondary ]; then
   sched "$TMX_JOB_ORIGIN_STATUS" "$(wrap "$SCRIPT_DIR/origin-status-notify.sh")"
+fi
+if [ "$role" = origin ]; then
+  sched "$TMX_JOB_QUEUE_POLL" "$(wrap "$SCRIPT_DIR/queue-poll.sh")"
 fi
 bash "$SCRIPT_DIR/publish-device-heartbeat.sh" || true
 if [ "$role" = secondary ]; then bash "$SCRIPT_DIR/origin-status-notify.sh" || true; fi

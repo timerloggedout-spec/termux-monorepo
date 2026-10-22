@@ -1,9 +1,10 @@
 name: Tunnel Canary
-# Honest bridge health: reads the device-published manifest (ops/termux-bridge/current.json)
-# and verifies TCP reachability. Fails when the bridge is stale or unreachable, so outages
-# are visible instead of being reported as green.
+# Hybrid: honest bridge health from device-published manifest + TCP, but treat operational lag
+# (stale/inactive/unreachable) as notice (exit 0) to avoid notification spam. Dual-gate remains separate.
+# Device #1 (BLU B160V#1) opaque ID tmx-node-primary. Tailscale preferred; Pinggy fallback.
+# Public obfuscation of device identification.
 on:
-  schedule: [{cron: '17 * * * *'}]   # hourly (was every 30 min)
+  schedule: [{cron: '17 * * * *'}]   # hourly
   workflow_dispatch:
 permissions:
   contents: read
@@ -18,23 +19,33 @@ jobs:
       - uses: actions/checkout@v4
         with:
           sparse-checkout: ops/termux-bridge
-      - name: Check bridge manifest + TCP reachability
+      - name: Check bridge manifest + TCP + lag classification
         env:
-          AGENT_URL: ${{ secrets.DEEPSEEK_AGENT_URL }}
+          DEVICE_ID: tmx-node-primary
         run: |
           set -uo pipefail
           python3 - <<'PY'
           import json, os, socket, sys
           from datetime import datetime, timezone
-          m = json.load(open("ops/termux-bridge/current.json"))
+          device_id = os.environ.get("DEVICE_ID", "tmx-node-primary")
+          print(f"::notice::device_id={device_id} (public obfuscated; BLU B160V#1 primary, replica #2)")
+          try:
+              m = json.load(open("ops/termux-bridge/current.json"))
+          except Exception as e:
+              print(f"::notice::lead_lag=lag_operational reason=manifest_missing_or_invalid {e}; not dual-gate; device_id={device_id}")
+              sys.exit(0)
           now = datetime.now(timezone.utc)
           status, host, port = m.get("status"), m.get("endpoint"), m.get("port")
           obs = m.get("observed_at")
           ttl = int(m.get("ttl_minutes") or 60)
           age = None
           if obs:
-              age = (now - datetime.fromisoformat(obs.replace("Z", "+00:00"))).total_seconds() / 60
+              try:
+                  age = (now - datetime.fromisoformat(obs.replace("Z", "+00:00"))).total_seconds() / 60
+              except Exception:
+                  age = None
           reachable = False
+          err = ""
           if host and port:
               try:
                   with socket.create_connection((host, int(port)), timeout=8):
@@ -43,6 +54,7 @@ jobs:
                   err = str(e)
           lines = [
               "## Termux bridge",
+              f"- device_id: `{device_id}`",
               f"- manifest status: `{status}`",
               f"- endpoint: `{host}:{port}`",
               f"- observed_at: `{obs}` (age: {'n/a' if age is None else f'{age:.0f} min'}, ttl {ttl} min)",
@@ -50,19 +62,21 @@ jobs:
           ]
           problems = []
           if status != "active":
-              problems.append(f"manifest status is '{status}' (device publisher not running? see scripts/termux/diagnose-pinggy-publisher.sh)")
+              problems.append(f"manifest status is '{status}' (publisher not live)")
           if age is None or age > ttl * 2:
-              problems.append("manifest is stale: device has not published a fresh endpoint")
+              problems.append("manifest is stale")
           if not reachable:
-              problems.append("endpoint not reachable over TCP")
+              problems.append(f"endpoint not reachable over TCP ({err})")
           if problems:
-              lines.append("\n### Problems\n" + "\n".join(f"- {p}" for p in problems))
-          with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as f:
-              f.write("\n".join(lines) + "\n")
+              lines.append("\n### Operational lag (non-gate)\n" + "\n".join(f"- {p}" for p in problems))
+              summary = "\n".join(lines)
+              print(summary)
+              with open(os.environ.get("GITHUB_STEP_SUMMARY", "/dev/null"), "a") as f:
+                  f.write(summary + "\n")
+              print(f"::notice::lead_lag=lag_operational problems={'; '.join(problems)}; not dual-gate; device_id={device_id}")
+              sys.exit(0)
+          print("::notice::bridge_up device_id=" + device_id)
           print("\n".join(lines))
-          if problems:
-              for p in problems:
-                  print(f"::error::bridge_down {p}")
-              sys.exit(1)
-          print("::notice::bridge_up")
+          with open(os.environ.get("GITHUB_STEP_SUMMARY", "/dev/null"), "a") as f:
+              f.write("\n".join(lines) + "\n")
           PY

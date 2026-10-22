@@ -1,7 +1,7 @@
 # INTEGRATION MESH MATRIX — every GitHub-listed integration for `timerloggedout-spec`, mapped
 
-**Compiled:** 2026-10-21 ~10:00 PDT. **Amended same day (second pass):** census v2. **Refreshed 2026-10-22 (third pass):** secrets 31→33, PRs 1,292→1,327, issues 193→206, workflows 192→195 — all live figures re-taken; see #1505.
-(full pagination, no samples — 1,327 PRs, 206 issues, 2,000 comments, check suites
+**Compiled:** 2026-10-21 ~10:00 PDT. **Amended same day (second pass):** census v2. **Refreshed 2026-10-22 (third pass):** secrets 31→33, PRs 1,292→1,327, issues 193→206, workflows 192→195 — all live figures re-taken; see #1505. **Refreshed 2026-10-22 (fourth pass, ~09:48 PDT):** PRs 1,327→1,330, workflows 195→196 (+1 "Research and paper accounting validation"), issues steady at 206 — see #1505.
+(full pagination, no samples — 1,330 PRs, 206 issues, 2,000 comments, check suites
 across 30 master heads, submitted reviews in two labeled frames) + the installations
 probe (stored-token exercise from inside Actions, Issue #184 comment 6321665538),
 which retrieved the org installation records in §5A. **Scope:** the GitHub account `timerloggedout-spec`,
@@ -21,7 +21,7 @@ Every row carries one of these. Do not merge them; they are different GitHub obj
 
 | Class | Source | Vintage |
 |---|---|---|
-| **LIVE-API** | Firsthand REST census via the owner PAT (`custom.github-pat`), 2026-10-22, third pass, fully paginated: check suites across the 30 most recent master heads, 2,000 newest issue comments, **all 1,327 PRs** (authors), submitted reviews in two frames (150 most recently *updated* PRs; 150 most recently *created* PRs), 300 newest deployments, hooks/secrets/environments/workflows/org-installations listings | 2026-10-22 |
+| **LIVE-API** | Firsthand REST census via the owner PAT (`custom.github-pat`), 2026-10-22, fourth pass, fully paginated: check suites across the 30 most recent master heads, 2,000 newest issue comments, **all 1,330 PRs** (authors), submitted reviews in two frames (150 most recently *updated* PRs; 150 most recently *created* PRs), 300 newest deployments, hooks/secrets/environments/workflows/org-installations listings | 2026-10-22 |
 | **PROBE** | Installations probe workflow run 39639440245 (2026-10-21): exercised the stored GitHub tokens from inside Actions against `/user/installations` and `/orgs/{org}/installations`; results posted to Issue #184 (comment 6321665538). Token values never printed | 2026-10-21 |
 | **#184** | Issue #184 — the owner's paste of GitHub's own Settings → Credentials pages (Authorized OAuth Apps, Authorized GitHub Apps, PATs, SSH keys) with GitHub's last-used labels | 2026-08-13 snapshot |
 | **OWNER-UI** | Owner-firsthand screenshot of Settings → Applications → **Installed GitHub Apps** (github.com/settings/installations), visible **A–H portion only** — 24 apps; the list continues past Hex and the remainder was not captured. Transcribed + reconciled on Issue #184 (comment 6335646953) | 2026-10-22 |
@@ -183,7 +183,7 @@ the repo's heavy automation mostly switched on after the snapshot.
 | Factory Droid | Factory-AI | Never | none | Dormant coding agent |
 | Gitar Bot | gitarcode | ≤5 mo | **Active** — suites on 30/30 heads, 54/2,000 comments | Review + validated-fix lane |
 | GitHub Codespaces | github | Never | 3 codespaces exist (§1) | Off-device compute lane (§9 C2) |
-| Google Labs Jules | google-labs-code | ≤1 wk | **Active, primary coding agent** — **283 of all 1,327 PRs authored**, 239 contributions, 7/2,000 comments | Bolt ⚡ lane; Muse steers via `custom.jules` no-HITL (MAP §B1) |
+| Google Labs Jules | google-labs-code | ≤1 wk | **Active, primary coding agent** — **283 of all 1,330 PRs authored**, 239 contributions, 7/2,000 comments | Bolt ⚡ lane; Muse steers via `custom.jules` no-HITL (MAP §B1) |
 | Graphite App | withgraphite | ≤1 wk | **Active** — suites on 30/30 heads | Stacked-PR lane |
 | Grok (by xAI) | xai-org | ≤1 wk | none via App — Grok works in its own app, lands via owner PAT (MAP §B5) | App is a sign-in grant; work lane is PAT-based |
 | HackerOne Code | PullRequestInc | Never | none | Dormant security review |
@@ -374,10 +374,10 @@ triggered the apps.
 | Piece | State |
 |---|---|
 | Webhooks (3) | **Linear** — all events (`*`), last 200 OK · **GitLab mirror** — push+PR → `gitlab.com` project 85129320 mirror/pull, last **400** · **ZenHub** — 12 event types, last **422 misconfigured** |
-| Workflows | **195 total, 194 active.** Recent 100 runs: actors coderabbitai[bot] 34, `timerloggedout-spec` 29, gitar-bot[bot] 26, ecc-tools[bot] 5, blocksorg[bot] 3, github-pages[bot] 1, github-advanced-security[bot] 1, qodo-code-review[bot] 1 (account-attributed surface — which specific token fired each run is NOT ESTABLISHED, see the closing list); events workflow_run 73, issue_comment 15, schedule 10, dynamic 1, workflow_dispatch 1 |
-| PR / issue totals (v2, fully paginated) | **1,327 PRs** — authors: owner 1023, Jules 283, CodeRabbit 9, github-actions 3, Dependabot 3, ECC 3, Devin 2, Tembo 1 · **206 true issues** (owner 187, github-actions 18, mehvvy 1) · requested-reviewer records sit almost entirely on the owner (10) — the peer bots are triggered by comments/orchestrator, not by review requests |
-| Submitted reviews (two frames — keep separate) | *Most-recently-updated 150 PRs:* 41 PRs carry 276 reviews — Devin 147 (all COMMENTED; 92 on #143 alone), CodeRabbit 78 (53 CHANGES_REQUESTED / 5 APPROVED / 19 COMMENTED / 1 DISMISSED), owner 28, Aikido 12, GHAS 8, Qodo 3. *Most-recently-created 150 PRs:* only 18 PRs carry reviews — CodeRabbit 31, owner 17, GHAS 7. Review weight lives on long-lived PRs |
-| Comment actors (2,000 newest) | Only **10 distinct actors**: ECC 920 (46%), owner 409, github-actions 263, CodeRabbit 182, Codex 69, BlocksOrg 59, Gitar 39, Qodo 37, Vercel 17, Jules 5 — **bots ≈ 80% of volume** |
+| Workflows | **196 total, 195 active** (+1 since third pass: "Research and paper accounting validation", landed 2026-10-22 ~04:43 PDT). Recent 100 runs: actors coderabbitai[bot] 88, `timerloggedout-spec` 12 (account-attributed surface — which specific token fired each run is NOT ESTABLISHED, see the closing list); events workflow_run 47, pull_request_review_comment 24, issue_comment 15, pull_request_review 12, schedule 2 — peer-review-orchestrator cadence now visible in the run window |
+| PR / issue totals (v2, fully paginated) | **1,330 PRs** — authors: owner 1026 (+3), Jules 283, CodeRabbit 9, github-actions 3, Dependabot 3, ECC 3, Devin 2, Tembo 1 · **206 true issues** (owner 187, github-actions 18, mehvvy 1) · requested-reviewer records sit almost entirely on the owner (10) — the peer bots are triggered by comments/orchestrator, not by review requests |
+| Submitted reviews (two frames — keep separate) | *Most-recently-updated 150 PRs:* 42 PRs carry 280 reviews — Devin 147 (all COMMENTED; 92 on #143 alone), CodeRabbit 82 (57 CHANGES_REQUESTED / 5 APPROVED / 19 COMMENTED / 1 DISMISSED), owner 28, Aikido 12, GHAS 8, Qodo 3. *Most-recently-created 150 PRs:* only 18 PRs carry reviews — CodeRabbit 34, owner 17, GHAS 7. Review weight lives on long-lived PRs |
+| Comment actors (2,000 newest) | Only **10 distinct actors**: ECC 976 (49%), owner 452, github-actions 223, CodeRabbit 159, Codex 60, BlocksOrg 48, Gitar 32, Qodo 31, Vercel 13, Jules 6 — **bots ≈ 77% of volume** |
 | Actions permissions | Enabled, allowed_actions = all, SHA pinning not required. Default workflow permissions = **write**; workflows **can approve PR reviews** (`can_approve_pull_request_reviews: true`) — a real mesh capability: the repo's own automation can act as an approver |
 | Deploy keys / autolinks / collaborators | **0 / 0 / owner only** — no deploy-key or autolink integrations exist on the hub repo |
 | Pages | Legacy build from `gh-pages` branch, https enforced, `timerloggedout-spec.github.io/termux-monorepo/` |
@@ -402,7 +402,7 @@ triggered the apps.
 |---|---|---|---|
 | Coding (write code) | Jules (Bolt ⚡) | Cursor, Devin, Copilot SWE (unused), Kilo, Factory (dormant) | No — one primary, rest review-weighted |
 | PR review | CodeRabbit (required) | Devin (top volume), Qodo, Gitar, ECC (comments), Codex, Copilot Reviewer, Mistral, Aikido, Codacy | **Yes — 9+ reviewers/PR** → cadence problem, §9 I7 |
-| CI / checks | GitHub Actions (192 workflows) | Blacksmith runners, Travis (duplicate signal) | Travis duplication, §9 I4 |
+| CI / checks | GitHub Actions (196 workflows) | Blacksmith runners, Travis (duplicate signal) | Travis duplication, §9 I4 |
 | Deploy / preview | Vercel (apps) | Render (previews), Mintlify (docs), Pages, Fly.io (token only), Koyeb (dormant) | Vercel daily cap is the binding constraint, §9 I5 |
 | PM / planning | Linear (webhook + API + Jules MCP + Muse connector — 4 faces, one spine) | ZenHub (broken), GitHub Projects (enabled, unused visibly) | ZenHub decision, §9 I3 |
 | Memory / telemetry | HindSight (secrets ×5, env `hindsight-prod`) | Hex (via CellCog secret), Supermemory (dormant) | OK |

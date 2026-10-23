@@ -1,0 +1,24 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# AGY-1497-10: no keys reset, daemon stop/restart, model call, or network edit.
+set -euo pipefail
+marker="$HOME/.local/share/agy-1497-secondary/worktree/.agy-secondary-id"
+[[ -f "$marker" && ! -L "$marker" && "$(cat "$marker")" == tmx-node-55619bd5 ]] || exit 21
+[[ "$(whoami)" == u0_a243 && "$(getprop ro.product.model)" == B160V ]] || exit 23
+[[ "$PREFIX" == /data/data/com.termux/files/usr ]] || exit 24
+termux-wake-lock
+"$PREFIX/bin/sshd" -t
+source "$PREFIX/etc/profile.d/start-services.sh"
+service="$PREFIX/var/service/tmx-secondary-sshd"
+[[ -x "$service/run" && ! -L "$service" ]] || exit 25
+# start-services starts the daemon asynchronously; wait at most ten seconds.
+for ((i=0; i<10; i++)); do
+  [[ -p "$service/supervise/ok" ]] && break
+  sleep 1
+done
+sv-enable tmx-secondary-sshd
+sv status "$service"
+if [[ -f "$HOME/.local/state/tmx-secondary-recovery/listener-state" ]]; then
+  cat "$HOME/.local/state/tmx-secondary-recovery/listener-state"
+fi
+printf '%s\n' 'SSH port: 8022; log: $PREFIX/var/log/sv/tmx-secondary-sshd/current' \
+  'WakeLock requested. Android force-stop/process killing can still stop all Termux services.'

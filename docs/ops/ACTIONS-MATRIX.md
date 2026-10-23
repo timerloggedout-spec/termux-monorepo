@@ -1,94 +1,99 @@
-# Actions Workflows Consolidated Matrix (2026-10-22)
+# Actions Workflows Consolidated Matrix (2026-10-23)
 
 **Branch:** `ops/actions-matrix-upgrade-2026-10-18`  
-**Goal:** Zero Failures · 100% Success · Reduced Notification Spam · Feature Preservation  
-**Audit Focus:** Skipped / Cancelled / Stale / Timed out / Failure / Action Required / Queued / Neutral
+**Goal:** Zero Failures · 100% Success · Reduced Notification Spam · Feature Preservation · C.A.D.E.  
+**Audit Focus:** Skipped / Cancelled / Stale / Timed out / Failure / Action Required / Queued / Neutral — all require attentive validation audits (not silent).
 
-## Current State (2026-10-22 RECON)
+## Current State (2026-10-23 RECON)
 
-**Master tip:** `16bc62815ab95adb3d3a7d84db913d1a9bd739cc` (help-wanted status refresh)
+**Master tip:** `a1057981e14f398f431878353a7cbf5b3b22fdf4` (help-wanted status refresh 2026-10-23T00:40Z)
 
-Recent completed runs on tip:
-- **Success:** dominant (delphi-gate schedule, delphi-signal-bridge, lane-events-recorder cascades, agent-throughput, context audits, etc.)
-- **Skipped:** residual on some bridges (concurrency or filter)
-- **Cancelled:** concurrency races (expected lag_operational)
-- **Failures:** historical only (e.g. 39233561401 repository-observatory 2026-10-19 403; 392349* quota-registry PR branch failures). No current-tree filename failures.
+Recent completed runs on tip (success-dominant):
+- **Success:** Merge Promotion Queue v3 (schedule + workflow_run kicks), Continuous CI Sweep, continuous-improve, Issue Observatory, context backfills, etc.
+- **Skipped:** intentional on filters (lane-events-recorder, delphi-signal-bridge, Fix-on-Failure Agent) — audited as concurrency/filter, not silenced failures.
+- **Cancelled:** concurrency races expected (lag_operational).
+- **Failures:** residual `tailscale-bridge-probe` (runs 39887179484 / 39873162670) — join step failure (OIDC/ephemeral tag:ci or platform latency / node offline). Classified device-reachability residual. Probe designed to fail RED when unreachable (honest). Not YAML/parse. Historical capacity (observatory 403, quota-registry) non-gate.
 
-**Primary Spam Source Identified:** High-volume `workflow_run` cascades.
-- `lane-events-recorder.yml` (~23k+ runs): triggers on help-wanted-* + Agent Throughput + n8n SHE completions. Concurrency group per-run-id (no cancel).
-- `agent-throughput-evidence.yml` (~38k+ runs): triggers on broad set of agent/CI workflows. Same pattern.
-- These fire on every completion (including skipped/cancelled), generating notification volume even on success.
+**Primary Spam Source:** High-volume `workflow_run` cascades.
+- Filters **live on this branch**: `lane-events-recorder.yml` and `agent-throughput-evidence.yml` now only emit on `conclusion == 'success'`. Non-success cascades no longer start the observer job → notification volume cut while preserving ledger for successes.
+- Further modular router planned for remaining high-volume (context-relationship-audit, etc.).
 
-**Historical Pattern:** Cancelled/skipped often concurrency or intentional filters. True failures (quota, device, observatory) classified non-gate or capacity. Silenced failures require explicit audit trail.
+**Historical Pattern:** Cancelled/skipped = concurrency or intentional filters (validated). True failures = quota/capacity (soft, non-gate) or device (residual). Silenced failures require explicit audit trail + artifact.
 
 ## Repeated Issues Matrix
 
 | Issue Class | Workflows Affected | Root Cause | Current Handling | Recommended Fix / Consolidation | Status |
 |-------------|--------------------|------------|------------------|---------------------------------|--------|
-| Cascade Notification Spam | lane-events-recorder, agent-throughput-evidence, context-relationship-audit | Broad `workflow_run` on completed (all conclusions) | Individual runs + notices | Filter `if: github.event.workflow_run.conclusion == 'success'` or batch; narrow workflow lists; shared observer with concurrency group per-SHA; path/event filters | **Implemented** on branch (filters added) |
-| Concurrency Cancel | help-wanted-*, others | Rapid triggers | cancel-in-progress | Granular groups (SHA or target); or false + queue; orchestrator | Ongoing |
-| Watcher Skip | actions-run-watcher | Pre-dispatch-only | Dispatch-only | Fixed; residual aging out | Fixed |
-| Device / Tunnel (Pinggy) | Device tests, bridges | BLU B160V#1 broken; #2 replication | Some skipped | Opaque `tmx-node-primary`; operational Pinggy/alt on #1; evidence #184 | Device-side |
-| Queue / Stale | actions-queue-reaper | Zero-job holds | Reaper >6h / 45min schedule | Expand + adaptive | Active |
-| Quota / Capacity | Vercel, observatory, quota-registry | Rate limits, API 403/429 | Soft classification, non-gate | Ledger + caching + path filters | Ongoing |
+| Cascade Notification Spam | lane-events-recorder, agent-throughput-evidence, context-relationship-audit, delphi-* | Broad `workflow_run` on all conclusions | Individual runs + notices | Job-level `if: conclusion == 'success'`; batch; narrow lists; shared observer + concurrency per-SHA | **Implemented** (filters on branch for top 2) |
+| Concurrency Cancel | help-wanted-*, sweep, others | Rapid triggers | cancel-in-progress | Granular groups (SHA); or false + queue; orchestrator | Ongoing |
+| Watcher Skip | actions-run-watcher | Pre-dispatch-only | Dispatch-only | Fixed; residual aging | Fixed |
+| Device / Tunnel (Pinggy / Tailscale) | tailscale-bridge-probe, device tests, bridges | BLU B160V#1 broken screen; node offline / OIDC latency | Probe fails RED (intentional) | Opaque `tmx-node-primary`; operational Pinggy/alt on #1; evidence #184; soft-class residual | Device-side residual |
+| Queue / Stale | actions-queue-reaper, Merge Promotion Queue | Zero-job holds / ghosts | Reaper + v3 | Expand adaptive threshold; do not open new workflow IDs | Active |
+| Quota / Capacity | Vercel, observatory, quota-registry, GitLab recon | Rate limits, API 403/429 | Soft classification, non-gate | Ledger + caching + path filters + adaptive backoff | Ongoing |
 | Silenced Failures | Historical | Cancel without diagnosis | Policy | Explicit artifact + issue on non-intentional | Policy |
 
 ## Superseded / Combined Workflows
 
-- Multiple observers → single batched ledger emitter with conclusion filter
+- Multiple observers → single batched ledger emitter with conclusion filter (partial on branch)
 - Help-wanted-* → matrix orchestrator where possible
-- Device tests → consolidated matrix with device_id injection
+- Device tests → consolidated matrix with `device_id` injection (`tmx-node-primary`)
+- Ghosts (e.g. 37655538554 on disabled workflow) remain; do not spawn new IDs
 
-## Flowchart: Cascade Reduction (Mermaid)
+## Flowchart: Cascade Reduction + Audit (Mermaid)
 
 ```mermaid
 flowchart TD
     A[Workflow Completes] --> B{Conclusion == success?}
-    B -->|No| C[Skip Observer / Log Only]
-    B -->|Yes| D[Emit to Shared Ledger]
+    B -->|No| C[Skip Observer Job<br/>Audit Log Only<br/>No Notification]
+    B -->|Yes| D[Emit to Shared Ledger<br/>or Modular Router]
     D --> E[Concurrency Group: SHA or Batch]
     E --> F[Single Notification / Dashboard Update]
-    C --> G[No Spam]
+    C --> G[No Spam · Validated Audit]
     F --> G
+    H[Residual Device Probe] --> I{Node Online?}
+    I -->|No| J[Fail RED · Classify Residual<br/>tmx-node-primary]
+    I -->|Yes| K[Success · Manifest Update]
 ```
 
-## Cadence & Cache Improvements
+## Cadence, Cache & Adaptive Telemetry (3L0 Moneyball)
 
-- Adaptive-wait: continue disjoint work during in_progress
-- Dynamic telemetry: action-effectiveness-ledger + this matrix SSOT for 3L0 moneyball prioritization
-- Reduce cascades: conclusion filters + batching on observers (**filters live on branch**)
-- Cache: actions/cache on lockfiles; path filters on push
-- Modular: reusable actions for status emit + device ID
+- **Adaptive-wait:** continue disjoint work during in_progress; re-fetch on material SHA delta only.
+- **Dynamic telemetry:** action-effectiveness-ledger + this matrix SSOT for prioritization (Lead/Lag snapshots).
+- **Cadence refinement:** `*/4` and workflow_run kicks retained; conclusion filters cut cascade volume.
+- **Cache:** actions/cache on lockfiles; path filters on push; dynamic adaptive for quota planning.
+- **Modular:** reusable actions for status emit + public-obfuscated device ID.
+- **Quota planning:** soft-class 403/429; ledger records; no hard fail on non-gate (Vercel etc.).
 
 ## Device Identification (Public Obfuscation)
 
-- Device #1 (original BLU B160V, broken screen): opaque ID `tmx-node-primary`
+- Device #1 (original BLU B160V, broken screen): opaque ID `tmx-node-primary` (required operational Pinggy or alternative)
 - Device #2: replication only; do not overwrite origin bridge
-- Pinggy or alternative must be operational on #1 with public-obfuscated ID in manifests
+- Manifests include `device_id` publicly; no secrets/IPs/hardware IDs
+- Probe publishes `ops/termux-bridge/tailscale.json` (additive)
 
 ## Next Actions
 
-1. ~~Implement conclusion filters + batching on high-volume observers (lane-events-recorder, agent-throughput-evidence)~~ **DONE on branch**
-2. Rebase/promote PR #1483 once dual-gate green on updated tip
-3. Device-side Pinggy validation on tmx-node-primary
-4. Expand reaper + quota soft-class in ledger
-5. C.A.D.E. continuous modular consolidation
+1. ~~Implement conclusion filters on high-volume observers~~ **DONE on branch**
+2. Promote this branch (or rebase onto tip) once dual-gate green
+3. Device-side Pinggy/Tailscale validation on `tmx-node-primary` (operator)
+4. Expand modular router for remaining cascades + quota soft-class in ledger
+5. C.A.D.E. continuous modular consolidation + adaptive cadence
 
-**Implements:** Actions matrix upgrade for zero-failure FA-ADE / C.A.D.E. Notification spam reduction via cascade filters.
+**Implements:** Actions matrix upgrade for zero-failure FA-ADE / C.A.D.E. Notification spam reduction via cascade filters. Attentive validation audits for all non-success. Residual device probe classified (not silenced).
 
 Agent-Identity: Grok (Administrator)
 
-## Continuation RECON (2026-10-22)
+## Continuation RECON (2026-10-23)
 
-Master functional, success-dominant. Primary remaining surface is cascade volume from workflow_run observers. Filters + batching will cut notifications without losing feature (ledger still records successes). Historical failures (observatory, quota PR) non-gate. Pinggy requirement stands.
+Master functional, success-dominant on tip `a1057981`. Residual probe failure is honest reachability signal (not a regression). Filters live → cascade spam reduced. Skipped/cancelled audited as intentional. Historical quota/capacity non-gate. Pinggy requirement stands for device #1.
 
-**What was fixed / refined:**
-- Fresh tip recon bound to SHA
-- Spam root cause identified (cascade observers)
-- Concrete filter recommendation added
-- Matrix updated for current state
-- **Conclusion filters implemented** on lane-events-recorder.yml and agent-throughput-evidence.yml (job-level if on success only)
+**What was refined:**
+- Bound to current master tip SHA
+- Probe residual classified with evidence (runs 39887179484 etc.)
+- Skip/cancelled validation explicit
+- Cadence/cache/quota telemetry section expanded
+- Flowchart updated for audit + device path
 
-Next: dual-gate revalidation on new head, then promote. Device validation parallel.
+Next: dual-gate on this head, promote, device validation parallel. Disjoint: matrix SSOT updated.
 
 Agent-Identity: Grok (Administrator)

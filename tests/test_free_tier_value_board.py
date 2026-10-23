@@ -26,7 +26,18 @@ class FreeTierValueBoardContractTests(unittest.TestCase):
             self.assertGreaterEqual(row["input_usd_per_million"], 0)
             self.assertGreaterEqual(row["output_usd_per_million"], 0)
             self.assertTrue(row["source_url"].startswith("https://"))
+            self.assertTrue(row["source_url"].startswith("https://"))
             self.assertTrue(row["price_observed_at"])
+            self.assertIsInstance(row["input_usd_per_million"], (int, float))
+            self.assertIsInstance(row["output_usd_per_million"], (int, float))
+            self.assertGreaterEqual(row["input_usd_per_million"], 0)
+            self.assertGreaterEqual(row["output_usd_per_million"], 0)
+
+    def test_openai_price_basis_matches_standard_rates(self):
+        row = next(p for p in self.data["pricing"] if p["pricing_id"] == "openai-gpt-5.3-codex-standard")
+        self.assertEqual(row["price_basis"], "Standard API list price")
+        self.assertEqual(row["input_usd_per_million"], 1.75)
+        self.assertEqual(row["output_usd_per_million"], 14)
 
     def test_missing_session_feed_is_explicit_not_synthesized(self):
         self.assertEqual(self.data["sessions"], [])
@@ -40,6 +51,14 @@ class FreeTierValueBoardContractTests(unittest.TestCase):
         self.assertIn("PASS", self.page)
         self.assertIn("PUBLIC_SAFE", self.page)
         self.assertIn("VERIFIED_NO_COST", self.page)
+        self.assertIn("SUCCESS_OUTCOMES", self.page)
+        self.assertIn("SUCCESS", self.page)
+        self.assertIn("SUCCEEDED", self.page)
+        self.assertIn("Number.isFinite(p.input_usd_per_million)", self.page)
+        self.assertIn("Number.isFinite(p.output_usd_per_million)", self.page)
+        self.assertIn("SESSION_KEYS", self.page)
+        self.assertIn("safeHref(p.source_url)", self.page)
+        self.assertIn("unavailable??", self.page)
         self.assertIn("safeHref", self.page)
         self.assertIn("u.protocol==='https:'", self.page)
 

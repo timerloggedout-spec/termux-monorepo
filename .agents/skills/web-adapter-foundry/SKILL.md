@@ -107,6 +107,47 @@ CLI + JSONL; HTTP/MCP are facades over the same `handle_request`).
 - Secrets stay names/references only — vault route, never in registries,
   captures, or commits. Sanitise evidence before it lands in the repo.
 
+## How collaborators use this — the Target 🎯 workflow
+
+You have a target and a purpose `x`. Do not start by picking a tool.
+
+1. **Load in order:** `CLAUDE.md` → `SKILLS.md` → this skill →
+   `docs/ops/WEB-REVERSE-ENGINEERING-CAMPAIGN.md` (placement + B160V law).
+2. **Write a Target Brief** (template:
+   `ops/web_adapter_foundry/examples/target-brief.example.json`):
+   `target_id`, `target` (URL/domain), `purpose`, `authorization`
+   (basis + `scope_domains` + `state_changing` for writes),
+   `side_effect`, `probe_budget`, `device_class`
+   (`b160v-on-device | remote-service | ci | local`).
+   Purposes: `api-extraction · cli-adapter · data-extraction ·
+   session-reuse · deobfuscation · monitoring · full-reverse`.
+3. **Run intake** — it validates authorisation/scope and deterministically
+   maps purpose → taxonomy categories → stack, with an execution site per
+   tool (B160V law applied automatically) plus a registry skeleton:
+
+   ```bash
+   python3 -m ops.web_adapter_foundry.waf intake brief.json
+   # or over JSONL: {"operation": "foundry.intake", "input": {"brief": {...}}}
+   ```
+
+4. **Execute the six pipeline stages** with the planned stack only.
+   Engines run where the plan says: Tier-1 thin on-device, everything
+   Chromium/Firefox-class on a remote service (GitHub Actions, HF, Colab)
+   driven over CDP-WebSocket/SSE/JSONL.
+5. **Land artifacts where the plan says** (`artifact_placement`):
+   registry + sanitised evidence under
+   `ops/web_adapter_foundry/providers/<target_id>/`, notes in `docs/ops/`,
+   coordination on GitHub (PR + `[MUSEai]@{role:{moniker}}` comments).
+   Promote operations through the state machine; a starred candidate is a
+   research signal, never adoption.
+
+Worked shape: purpose `api-extraction` on an authorised shop →
+capture-and-recon (rever-browser) + contract-synthesis
+(mitmproxy2swagger, curlconverter) + verification (Schemathesis);
+purpose `data-extraction` → extraction-and-discovery first
+(firecrawl/crawl4ai class, remote) with engines only if a page truly
+needs rendering.
+
 ## First milestone (acceptance)
 
 One authorised site, three read-only operations (list, get one, paginate

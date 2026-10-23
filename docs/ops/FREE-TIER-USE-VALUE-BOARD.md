@@ -12,7 +12,7 @@ This is a SHE/Moneyball projection over repository-owned evidence, not a new sou
 
 - The provider-call contract in [HEX-MONEYBALL-INTEGRATION.md](HEX-MONEYBALL-INTEGRATION.md) defines provider/model, input/output token counts, cost, latency, and attempt linkage.
 - The initial public data file contains a pricing snapshot and zero session rows. The public session feed is not yet wired to a validated export; this does not mean zero sessions or zero usage.
-- A row contributes to the public headline only when validation_status=VALIDATED, basksweep_status=PASS, and publication_status=PUBLIC_SAFE.
+- A row contributes to paid-equivalent totals only when validation_status=VALIDATED, basksweep_status=PASS, and publication_status=PUBLIC_SAFE. A row contributes to verified free-tier value only when it additionally has billing_status=VERIFIED_NO_COST.
 - Public exports must omit prompts, completions, tool payloads, credentials, private balances, and personal identifiers.
 
 ## Formula
@@ -42,7 +42,7 @@ Price comparisons do not imply quality equivalence, free-tier availability, or t
 
 ## Session row contract
 
-Each public row is bounded metadata only: opaque session/run ID; workflow and source ref/SHA; observed UTC time; provider/model; input/output tokens; elapsed seconds; outcome; evidence URL; validation status; Basksweep status; publication status; and pricing ID.
+Each public row is bounded metadata only: opaque session/run ID; workflow and source ref/SHA; observed UTC time; provider/model; input/output tokens; elapsed seconds; outcome; evidence URL; validation status; Basksweep status; publication status; billing status; and pricing ID.
 
 The upstream export/filter step must validate attribution, token fields, source identity, privacy, and Basksweep result. The browser is a projection and defensive filter, not a replacement for that validator. Unvalidated rows may be displayed only if they already passed the public-safety export gate; they never contribute to headline totals.
 

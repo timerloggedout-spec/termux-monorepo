@@ -514,20 +514,81 @@ def handle_request(req: dict, registry: dict | None = None) -> dict:
                  meta={"executor": executor})
 
 
+def _host_is_public(host: str) -> bool:
+    """SSRF guard: every address the host resolves to must be public.
+    (TOCTOU/DNS-rebinding between this check and connect remains a known
+    residual — the allowlist is the primary barrier; this stops the
+    allowlisted-name -> internal-address pivot.)"""
+    import ipaddress
+    import socket
+    try:
+        infos = socket.getaddrinfo(host, None)
+    except Exception:
+        return False
+    for info in infos:
+        try:
+            ip = ipaddress.ip_address(info[4][0])
+        except ValueError:
+            return False
+        if (ip.is_private or ip.is_loopback or ip.is_link_local
+                or ip.is_reserved or ip.is_multicast or ip.is_unspecified):
+            return False
+    return True
+
+
+def _validate_fetch_url(url, allow) -> str | None:
+    """None when the fetch may proceed, else the refusal reason. Barrier
+    chain: http(s) scheme only -> host present -> host in the operation's
+    declared allowlist -> host resolves only to public addresses."""
+    if not url or not isinstance(url, str):
+        return "url: required string"
+    parts = urllib.parse.urlparse(url)
+    if parts.scheme not in ("http", "https"):
+        return f"scheme {parts.scheme!r} refused (http/https only)"
+    host = parts.hostname
+    if not host:
+        return "url: no host"
+    if host not in (allow or []):
+        return f"url host {host!r} not in allowlist {allow}"
+    if not _host_is_public(host):
+        return f"url host {host!r} resolves to a non-public address"
+    return None
+
+
+class _AllowlistRedirectHandler(urllib.request.HTTPRedirectHandler):
+    """Re-validate every redirect hop against the same barrier chain —
+    an allowlisted URL must not 30x the fetch somewhere internal."""
+
+    def __init__(self, allow):
+        super().__init__()
+        self._allow = allow
+        self._hops = 0
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        self._hops += 1
+        if self._hops > 3:
+            raise urllib.error.URLError("too many redirects")
+        problem = _validate_fetch_url(newurl, self._allow)
+        if problem:
+            raise urllib.error.URLError(f"redirect refused: {problem}")
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
 def _direct_http(rid, op, inp, req):
     if op["side_effect"] != "read":
         return _resp(rid, False, error={"code": "write_via_core_refused",
                                         "message": "core direct-http executor is read-only"})
     url = inp.get("url")
     allow = op.get("allowlist") or []
-    host = urllib.parse.urlparse(url).hostname if url else None
-    if not url or host not in allow:
+    problem = _validate_fetch_url(url, allow)
+    if problem:
         return _resp(rid, False, error={"code": "not_allowlisted",
-                                        "message": f"url host {host!r} not in allowlist {allow}"})
+                                        "message": problem})
     deadline = ((req.get("execution") or {}).get("deadline_ms") or 15000) / 1000
     request = urllib.request.Request(url, headers={"User-Agent": f"waf/{VERSION}"})
+    opener = urllib.request.build_opener(_AllowlistRedirectHandler(allow))
     try:
-        with urllib.request.urlopen(request, timeout=deadline) as r:
+        with opener.open(request, timeout=deadline) as r:
             body = r.read(1_000_000).decode(errors="replace")
             try:
                 data = json.loads(body)

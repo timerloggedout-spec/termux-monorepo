@@ -118,6 +118,7 @@ every surface converges on `validate_brief` → `plan_from_brief`:
 | **CLI** | `python3 -m ops.web_adapter_foundry.waf intake brief.json` |
 | **JSONL** | `{"operation": "foundry.intake", "input": {"brief": {...}}}` to `waf serve` |
 | **Chat / A2A** | State target + purpose + authorisation in plain words; the receiving agent writes the brief JSON and runs intake. |
+| **HTTP/SSE** | Run the facade (`python3 -m ops.web_adapter_foundry.facade [--registry R] [--port 8787]`): `POST /invoke` takes one envelope, `GET /events` is the SSE fan-out of every invoke response (publish-once), `GET /health` lists operations. Same envelope rules — credential bodies refused. |
 
 The phone's role in this design is *remote orchestrator*: briefs are filed
 from any surface, plans resolve against the taxonomy, and execution is

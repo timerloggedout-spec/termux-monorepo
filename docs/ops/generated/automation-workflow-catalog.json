@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "fb2f1b87ccfc7658f69b501b85d19a058f5c9cb403371d8f4bd276c878733636",
-  "workflow_count": 177,
+  "source_fingerprint": "32e5ff949b725dd2c728b7021a715e0ebb13b9b8feed75928df451c629ce1fd6",
+  "workflow_count": 178,
   "workflows": [
     {
       "action_pins": [
@@ -1215,6 +1215,23 @@
       "triggers": [
         "pull_request",
         "push"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: facade-smoke cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "smoke"
+      ],
+      "name": "facade smoke",
+      "path": ".github/workflows/facade-smoke.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
       ]
     },
     {

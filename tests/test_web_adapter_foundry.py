@@ -128,6 +128,49 @@ def test_sse_encode_and_event_bus():
     assert q.empty()
 
 
+BRIEF = {
+    "target_id": "example-shop", "target": "https://shop.example.com/catalog",
+    "purpose": "api-extraction", "side_effect": "read", "probe_budget": 24,
+    "device_class": "b160v-on-device",
+    "authorization": {"basis": "operator account", "scope_domains": ["shop.example.com"],
+                      "state_changing": False},
+}
+
+
+def test_intake_validates_authorization_and_scope():
+    assert waf.validate_brief(BRIEF) == []
+    bad = dict(BRIEF, authorization={"basis": "x", "scope_domains": ["other.example"]})
+    assert any("outside authorization.scope_domains" in e for e in waf.validate_brief(bad))
+    nobasis = dict(BRIEF, authorization={"scope_domains": ["shop.example.com"]})
+    assert any("basis" in e for e in waf.validate_brief(nobasis))
+    write = dict(BRIEF, side_effect="write")
+    assert any("state_changing" in e for e in waf.validate_brief(write))
+
+
+def test_intake_plan_maps_purpose_to_taxonomy_and_b160v_law():
+    tax = waf.load_taxonomy()
+    plan = waf.plan_from_brief(BRIEF, tax)
+    cats = {s["category"].split("/")[0] for s in plan["stack"]}
+    assert cats == {"capture-and-recon", "contract-synthesis", "verification"}
+    assert plan["registry_skeleton"]["operations"][0]["operation_id"] == "example-shop.discover"
+    assert plan["transports"][:2] == ["cli", "stdin-jsonl"]
+    # B160V law: nothing Chromium-class is assigned on-device in a data-extraction plan
+    plan2 = waf.plan_from_brief(dict(BRIEF, purpose="data-extraction"), tax)
+    sites = {s["repo"]: s["execution_site"] for s in plan2["stack"]}
+    assert sites["fathyb/carbonyl"].startswith("remote-service")
+    remote = waf.plan_from_brief(dict(BRIEF, purpose="monitoring", device_class="remote-service"), tax)
+    assert "sse" in remote["transports"]
+
+
+def test_intake_via_jsonl_builtin():
+    out = waf.handle_request({"id": "9", "operation": "foundry.intake",
+                              "input": {"brief": BRIEF}}, reg())
+    assert out["ok"] and out["data"]["target_id"] == "example-shop"
+    out = waf.handle_request({"id": "10", "operation": "foundry.intake",
+                              "input": {"brief": {"target_id": "x"}}}, reg())
+    assert not out["ok"] and out["error"]["code"] == "bad_brief"
+
+
 def test_jsonl_round_trip_stdout_is_protocol_only():
     inp = io.StringIO(
         '{"id":"a","operation":"foundry.ping"}\n'

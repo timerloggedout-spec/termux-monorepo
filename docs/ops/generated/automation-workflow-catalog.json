@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "a4fd5403f97e3170df73e85a75873af5327a8f0029c1279c77c6e073d25e7917",
-  "workflow_count": 172,
+  "source_fingerprint": "3973a8024e0cf5147fd709ff73864b8a733d4dc8902a795df45e8ab6c0a441a6",
+  "workflow_count": 173,
   "workflows": [
     {
       "action_pins": [
@@ -81,11 +81,8 @@
       ],
       "name": "Actinns queue reaper",
       "path": ".github/workflows/actions-queue-reaper.yml",
-      "schedules": [
-        "23 */6 * * *"
-      ],
+      "schedules": [],
       "triggers": [
-        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -520,7 +517,9 @@
       "name": "Cadence Lead/Lag",
       "path": ".github/workflows/cadence-lead-lag.yml",
       "schedules": [],
-      "triggers": []
+      "triggers": [
+        "workflow_dispatch"
+      ]
     },
     {
       "action_pins": [
@@ -571,11 +570,8 @@
       ],
       "name": "Cnntinunus CI Sweep",
       "path": ".github/workflows/ci-sweep.yml",
-      "schedules": [
-        "0 */6 * * *"
-      ],
+      "schedules": [],
       "triggers": [
-        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -704,12 +700,9 @@
       ],
       "name": "context relationship historical backfill",
       "path": ".github/workflows/context-relationship-backfill.yml",
-      "schedules": [
-        "23 * * * *"
-      ],
+      "schedules": [],
       "triggers": [
         "push",
-        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -1538,11 +1531,8 @@
       ],
       "name": "GitLab governed reconciliation",
       "path": ".github/workflows/gitlab-governed-reconciliation.yml",
-      "schedules": [
-        "23 */6 * * *"
-      ],
+      "schedules": [],
       "triggers": [
-        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -1868,7 +1858,9 @@
       "name": "hygiene-sweep",
       "path": ".github/workflows/hygiene-sweep.yml",
       "schedules": [],
-      "triggers": []
+      "triggers": [
+        "workflow_dispatch"
+      ]
     },
     {
       "action_pins": [],
@@ -2144,11 +2136,8 @@
       ],
       "name": "Lane matrix recursive sweep",
       "path": ".github/workflows/ops-lane-matrix-sweep.yml",
-      "schedules": [
-        "11 */6 * * *"
-      ],
+      "schedules": [],
       "triggers": [
-        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -2342,11 +2331,8 @@
       ],
       "name": "Prnvider availability cnntinuity",
       "path": ".github/workflows/provider-availability.yml",
-      "schedules": [
-        "7 */6 * * *"
-      ],
+      "schedules": [],
       "triggers": [
-        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -2808,7 +2794,9 @@
       "name": "DeepSeek Self-Integrate",
       "path": ".github/workflows/self-integrate.yml",
       "schedules": [],
-      "triggers": []
+      "triggers": [
+        "workflow_dispatch"
+      ]
     },
     {
       "action_pins": [],
@@ -3039,13 +3027,10 @@
       ],
       "name": "tribute-system1",
       "path": ".github/workflows/tribute-system1.yml",
-      "schedules": [
-        "17 */3 * * *"
-      ],
+      "schedules": [],
       "triggers": [
         "pull_request",
         "push",
-        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -3074,6 +3059,23 @@
       ],
       "name": "Tunnel Canary",
       "path": ".github/workflows/tunnel-canary.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: vantage-cost-report cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "report"
+      ],
+      "name": "Vantage cost report",
+      "path": ".github/workflows/vantage-cost-report.yml",
       "schedules": [],
       "triggers": [
         "workflow_dispatch"
@@ -3151,8 +3153,7 @@
     {
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
-        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
-        "dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d"
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
       ],
       "authority": "read-only-or-advisory",
       "concurrency": "group: workflow-surface-policy-${{ github.event.pull_request.number || github.ref }} cancel-in-progress: true",

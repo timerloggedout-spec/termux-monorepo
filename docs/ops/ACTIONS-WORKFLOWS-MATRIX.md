@@ -15,6 +15,7 @@
 | Help-wanted dashboard concurrency | Manual dispatch storms cancel previous; script fail on status refresh | Documented class; concurrency group preserved; next: continue-on-error on non-critical refresh or script harden |
 | Watcher skip-spam | workflow_run trigger always listed runs | **Dispatch-only**; incidents emitted by cadence Lead/Lag */4 |
 | Test contract | Asserted old queue:max | Aligned to dispatch-only + cadence emission |
+| High-volume observers | Always emit on any conclusion | Conclusion filters (`if: success`) on lane-events-recorder + agent-throughput-evidence (branch) |
 
 **Still open (not fixed until device-side + dual-gate promote):**
 
@@ -22,6 +23,7 @@
 - Operator must set unique opaque `TERMUX_DEVICE_ID` per physical unit (primary broken screen → secondary or headless).
 - Broader workflow fan-out (context audit concurrency, high-volume schedule/workflow_run watchers like lane-events-recorder, agent-throughput-evidence) — next consolidation slices via modular issue-comment / workflow_run router. ~196 workflows total; modular reduction of notification edges is ongoing.
 - Residual zero-job startup_failure on cadence-lead-lag when evaluated on push (despite no push trigger); platform observation, not functional failure.
+- Tailscale-bridge-probe join failures (e.g. run 39873162670 on tip e9e236b5): OIDC/ephemeral or platform latency; fails red by design when origin unreachable. Device-side Tailscale app reconnect required for tmx-node-primary.
 
 ## Opaque device identity (public)
 
@@ -51,8 +53,9 @@ GitHub still **lists** skipped runs in the Actions tab (platform limitation: `wo
 6. **Adaptive cache / WAIT** — re-fetch only on material delta; backoff on no-progress; disjoint work while quiet.
 7. **In-process queued/skipped** — concurrency groups + reaper + Lead/Lag classify as operational lag (no notification).
 8. **Modular router candidate** — central issue-comment / workflow_run classifier to early-exit unmatched bots and reduce high-volume skipped listings (lane-events-recorder, agent-throughput-evidence, fix-on-failure).
+9. **Conclusion filters** — observers emit only on success (implemented on branch for high-volume).
 
-Current master tip `3a56d75c` (2026-10-22T21:00Z window) shows success + intentional skipped with no failure conclusions. Ghost queued residual on disabled workflow id remains platform observation only.
+Current master tip `e9e236b5` (2026-10-22T23:45Z window) shows success + intentional skipped/cancelled with one residual probe failure (device reachability).
 
 ## Validation audit rule (enforced)
 
@@ -67,6 +70,7 @@ Skipped / Cancelled / Stale / Timed out / Queued / Neutral require **attentive v
 | Queued (zero-job) | Reaper or concurrency cancel; not silent fail |
 | In-process waiting | Adaptive WAIT + Lead/Lag lag_operational; no spam |
 | Zero-job startup_failure | Platform evaluation residual; no jobs created; audit as non-functional |
+| Probe join failure | Device-side Tailscale reconnect or OIDC tag permission; not silent |
 
 ## Repeated-issue classes (historical → current)
 
@@ -79,10 +83,11 @@ Skipped / Cancelled / Stale / Timed out / Queued / Neutral require **attentive v
 | Ghost queued | Disabled workflow id still listed | Residual platform | Do not open new ids; reaper observes |
 | Dependabot unresolvable | Security update groups | Historical ignore-list | Closed by prior PR |
 | Catalog race | Historical correlation --check | Closed by repairs | Current success |
-| Skip/cancel spam | High-volume workflow_run | Reduced this branch | Audit + concurrency + Lead/Lag + dispatch-only watcher; further router next |
+| Skip/cancel spam | High-volume workflow_run | Reduced this branch | Audit + concurrency + Lead/Lag + dispatch-only watcher + conclusion filters; further router next |
 | Dashboard deploy script fail | help-wanted-dashboard-deploy status refresh python | Open on master | Concurrency group + continue-on-error candidate; script harden next |
 | Zero-job on non-trigger | cadence-lead-lag event:push | Residual | Platform; no functional impact |
 | Quota / capacity | observatory 403 (39233561401), peer-review (39234979788), Vercel rate-limit | Historical non-gate | Lead/Lag + adaptive WAIT + cache; no retry storms |
+| Tailscale probe join | 39873162670 on e9e236b5 | Residual device | Operator reconnect Tailscale on tmx-node-primary; audit as reachability |
 
 ## Cadence / cache / adaptive telemetry (3L0 moneyball equivalent)
 
@@ -131,11 +136,11 @@ Target: reduce effective notification edges by combining related schedules into 
 |--------|------------------------------|----------|---------|
 | Dual-gate core | repo-gate.yml, termux-smoke.yml | Keep as authority | push + PR |
 | Observability | actions-run-watcher (dispatch), cadence-lead-lag | Lead/Lag owns incidents | schedule */4 |
-| Bridge/Tunnel | n8n-she-bridge, tunnel-canary, termux-bridge-connect | Keep separate; canary is inventory only | */30 or dispatch |
+| Bridge/Tunnel | n8n-she-bridge, tunnel-canary, termux-bridge-connect, tailscale-bridge-probe | Keep separate; canary is inventory only; probe fails red on unreachable | */30 or schedule |
 | Context graph | context-relationship-*.yml (many) | Single orchestrator with path filters | schedule + workflow_run limited |
 | Agent lanes | agent-*-ops, quality, throughput | Group under agent-continuous-ops | schedule staggered |
 | Help-wanted | help-wanted-* + dashboard-deploy | Concurrency group + if: on non-critical; script harden | dispatch + path |
-| Event router | lane-events-recorder, agent-throughput-evidence, fix-on-failure, many issue_comment | Central classifier early-exit unmatched | workflow_run / issue_comment |
+| Event router | lane-events-recorder, agent-throughput-evidence, fix-on-failure, many issue_comment | Central classifier early-exit unmatched + conclusion filters | workflow_run / issue_comment |
 
 **Spam reduction levers already applied:**
 - n8n parents limited to dual-gate.
@@ -144,8 +149,9 @@ Target: reduce effective notification edges by combining related schedules into 
 - Lead/Lag classifies skipped as lag_operational (no incident).
 - In-process queued classified as operational lag via adaptive WAIT.
 - Cadence */4 reduces schedule volume.
+- Conclusion filters on high-volume observers (branch).
 
-Next slice: modular event router for high-volume workflow_run / issue_comment to cut skipped listings further. Audit top schedule workflows by run volume. Harden help-wanted status refresh.
+Next slice: modular event router for high-volume workflow_run / issue_comment to cut skipped listings further. Audit top schedule workflows by run volume. Harden help-wanted status refresh. Device-side Tailscale/Pinggy publish.
 
 ## Additional flowchart: skip/cancel audit
 
@@ -170,19 +176,20 @@ flowchart TD
 - Status: unknown (no live publish this session). Pinggy or alternative must be operational; publish status:active when verified.
 - Requirement: operator sets unique TERMUX_DEVICE_ID on physical units; publisher job updates status to active when tunnel verified.
 - Alternatives: Cloudflare tunnel, secondary node, pure Actions runners for non-device work. Redundant paths documented for broken-screen primary.
+- Tailscale probe residual: join failure on latest schedule; reconnect app on device.
 
-Observed this session: 2026-10-22T21:05Z (master tip 3a56d75c green; residual high-volume skipped audited as intentional; quota capacity non-gate)
+Observed this session: 2026-10-22T23:45Z (master tip e9e236b5 green-dominant; residual probe failure device-reachability; high-volume skipped audited as intentional; quota capacity non-gate)
 Agent-Identity: Grok (Administrator)
 
-## Continuation (2026-10-22)
+## Continuation (2026-10-22T23:45Z)
 
-- Master tip `3a56d75c6b7b58049bc9265220b925cc3aab835f` post-#1547: recent completed runs success (ci-sweep, context-relationship-audit) or skipped (fix-on-failure, lane-events-recorder, agent-throughput-evidence). No conclusion=failure in latest window.
-- Specific notification runs: 39233561401 repository observatory conclusion=failure (historical capacity 403, non-gate); 39234979788 peer-review-orchestrator failure on quota-registry branch (capacity/non-gate). Current tip green.
-- High-volume skipped from workflow_run triggers remain audit-only; modular central router proposed to early-exit unmatched events and further cut notification surface.
+- Master tip `e9e236b5a0ee69a7c3c31fe60b9290d66107dc59` (help-wanted live status refresh): recent completed runs success or skipped/cancelled (intentional concurrency/filter). Residual failure: tailscale-bridge-probe run 39873162670 (join step failure at OIDC/ephemeral).
+- Specific notification runs from prior: 39233561401 repository observatory conclusion=failure (historical capacity 403, non-gate); 39234979788 peer-review-orchestrator failure on quota-registry branch (capacity/non-gate). Current tip green-dominant.
+- High-volume skipped from workflow_run triggers remain audit-only; modular central router + conclusion filters proposed/implemented on branch to early-exit unmatched events and further cut notification surface.
 - Quota messages and capacity lag addressed via Lead/Lag classification, adaptive WAIT, reset-aware caching; no silent failures or retry storms.
-- Pinggy or alternative operational requirement on device #1 preserved with public-obfuscated device_id=`tmx-node-primary`; live status:active awaits device-side publish. Device #2 replication distinct.
+- Pinggy or alternative operational requirement on device #1 preserved with public-obfuscated device_id=`tmx-node-primary`; live status:active awaits device-side publish. Device #2 replication distinct. Tailscale probe is the current reachability signal.
 - Cadence */4, cache dynamic adaptive telemetry, concurrency groups refined and retained. C.A.D.E. continuous improvement.
-- Next: implement modular event router slice; confirm dual-gate on updated SHA; operator device tunnel publish.
+- Next: implement modular event router slice; confirm dual-gate on updated SHA; operator device tunnel + Tailscale reconnect; promote branch once gates green.
 
 Agent-Identity: Grok (Administrator)
 

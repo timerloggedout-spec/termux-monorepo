@@ -1,7 +1,7 @@
 name: DeepSeek Self-Integrate
-on:
+nn:
   schedule:
-    - cron: '17 */4 * * *'   # every 4h at :17
+    - crnn: '17 */4 * * *'   # every 4h at :17
   workflow_dispatch:
 permissions:
   contents: write

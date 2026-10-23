@@ -1,6 +1,6 @@
-name: Actions queue reaper
+name: Actinns queue reaper
 
-# Stale queued runs with zero jobs (issue_comment fan-out, abandoned PR events)
+# Stale queued runs with zern jobs (issue_comment fan-out, abandoned PR events)
 # hold the Actions queue. Cancel those; if cancel returns 409, delete the ghost.
 # Never touch in-progress jobs.
 on:

@@ -1,9 +1,9 @@
 name: Operator Variable Provision
 
-# Operator lane: upsert non-secret repository variables from the Actions UI
-# without the gh CLI (issue #184, secrets-variables-registry.md).
+# Operator lane: upsert non-secret repository variables without the gh CLI
+# (issue #184, docs/ops/secrets-and-variables-registry.md).
 # Secrets can never be set here — only the allowlisted variable names below.
-# No schedule trigger: cadence is operator-driven workflow_dispatch only.
+# No schedule trigger: cadence is operator-driven only (issue #1573).
 
 on:
   workflow_dispatch:
@@ -12,6 +12,8 @@ on:
         description: 'One or more NAME=value lines (allowlisted non-secret variables only)'
         required: true
         type: string
+  issue_comment:
+    types: [created]
 
 permissions:
   actions: write
@@ -23,13 +25,19 @@ concurrency:
 
 jobs:
   provision:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'issue_comment' && !github.event.issue.pull_request &&
+       github.event.sender.type == 'User' &&
+       contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association) &&
+       contains(github.event.comment.body, '<!-- request-variable-provision -->'))
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - name: Upsert allowlisted repository variables
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b
         env:
-          ASSIGNMENTS: ${{ github.event.inputs.assignments }}
+          ASSIGNMENTS: ${{ github.event.inputs.assignments || github.event.comment.body }}
         with:
           script: |
             // Non-secret configuration only. Names must match the registry
@@ -43,8 +51,11 @@ jobs:
               'RECON_SWEEP_WINDOW_HOURS',
               'RECON_SWEEP_MAX_TARGETS'
             ]);
-            const lines = (process.env.ASSIGNMENTS || '')
+            // Comment mode: only lines after the marker, of the form NAME=value.
+            const raw = process.env.ASSIGNMENTS || '';
+            const lines = raw
               .split(/\r?\n/)
+              .filter(l => /^[A-Z0-9_]+=/.test(l.trim()))
               .map(l => l.trim())
               .filter(Boolean);
             if (!lines.length) {
@@ -66,7 +77,7 @@ jobs:
                 );
                 return;
               }
-              if (/['\"\s]/.test(value) === false && value.length === 0) {
+              if (value.length === 0) {
                 core.setFailed(`Empty value for ${name}.`);
                 return;
               }
@@ -96,3 +107,19 @@ jobs:
               .addHeading('Operator variable provision')
               .addList(results)
               .write();
+            if (context.eventName === 'issue_comment') {
+              try {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.issue.number,
+                  body: [
+                    '<!-- variable-provision-result -->',
+                    'Variable provision results:',
+                    ...results.map(r => `- ${r}`)
+                  ].join('\n')
+                });
+              } catch (err) {
+                core.warning(`Result comment failed: ${err.message}`);
+              }
+            }

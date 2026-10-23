@@ -104,3 +104,34 @@ repo Settings -> Secrets and variables -> Actions.
   degrades cleanly if the secret is removed. MCP connector token invalid —
   re-provision the connector before MCP-side provisioning (workspaces,
   dashboards, budgets, alerts).
+
+
+## 6. Snapshot validation (2026-10-23, Settings -> Secrets and variables -> Actions)
+
+Validated against the repository settings snapshot (issue #184) and the
+public-code scan:
+
+- Security model confirmed: secrets are encrypted by GitHub, readable only to
+  workflows run by collaborators, and never passed to workflows triggered by
+  pull requests from forks. Variables are plain text by design — non-secret
+  configuration only. Use (read) availability in Actions runs is therefore the
+  default for every listed name; fork PRs get none of them.
+- Secrets present in settings but not in the earlier code-scan inventory
+  (reserved or consumed by non-workflow surfaces): CODECOV_TOKEN,
+  DEEPSEEK_AWS_WEB... (DEEPSEEK_AWS_* family), DEVICE_QUEUE_DATABASE_URL,
+  FLY_IO_ORG_TOKEN, GITLAB_ADMIN_TOKEN, HEX_ALSO_USEDB...,
+  HINDSIGHT_API_KEY / HINDSIGHT_BANK... / HINDSIGHT_BASE... /
+  HINDSIGHT_TENANT... (HINDSIGHT_* family), LIKECLAW_A2A_G...,
+  TMX_VAULT_AGE_..., VANTAGE_PAT_GH... (added recently; exact full name to be
+  confirmed against settings), VERCEL_GITHUB_..., TERMUX_MCP_SSH...
+  (TERMUX_MCP_* family), ARCHWIZ_GITHUB_TOKEN, CELLCOG_API_KEY,
+  CLOUDFLARE_ACC... / CLOUDFLARE_API... (CLOUDFLARE_* family).
+- Repository variables confirmed present: only three at snapshot time
+  (DEVICE_QUEUE_* / TERMUX_* family values). SUPABASE_URL was absent at
+  snapshot time and is the first variable to provision through the
+  operator-variable-provision lane (workflow_dispatch or the gated
+  issue-comment request on #184).
+- Quota program status: QUOTA_EVAL_WATERMARK is created automatically by the
+  quota-dispatch-tree on first advance; SUPABASE_URL provisioning is pending;
+  SUPABASE_SERVICE_ROLE_KEY (secret) remains a manual Settings/gh-CLI action —
+  no lane or agent can place secret values, by design.

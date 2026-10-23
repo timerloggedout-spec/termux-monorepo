@@ -1,0 +1,107 @@
+name: Target 🎯 Brief
+description: Aim the Web Adapter Foundry stack at one target with one purpose — filing wakes intake (event trigger, no cron), which validates scope/authorisation and comments back the taxonomy-mapped dispatch plan.
+title: "[target] <target-id>: <purpose>"
+labels: ["target-brief"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        One target, one purpose. Intake (`ops/web_adapter_foundry`) validates this brief —
+        out-of-scope domains and unflagged write briefs are refused — then maps the purpose
+        through the nested taxonomy (`ops/web_adapter_foundry/taxonomy.json`) to the best
+        tools/skills for the job and posts the dispatch package as a comment on this issue.
+        The same brief schema works from every surface: this form, `waf intake brief.json`,
+        the JSONL `foundry.intake` operation, or a chat message. Never paste secret values.
+  - type: input
+    id: target_id
+    attributes:
+      label: Target ID
+      description: Short slug for this target (used for registry + artifact paths).
+      placeholder: example-shop
+    validations:
+      required: true
+  - type: input
+    id: target
+    attributes:
+      label: Target URL or domain
+      description: The site or surface to reverse-engineer/adapt.
+      placeholder: https://shop.example.com/catalog
+    validations:
+      required: true
+  - type: dropdown
+    id: purpose
+    attributes:
+      label: Purpose
+      description: What reverse-engineering outcome this target needs (x).
+      options:
+        - api-extraction
+        - cli-adapter
+        - data-extraction
+        - session-reuse
+        - deobfuscation
+        - monitoring
+        - full-reverse
+    validations:
+      required: true
+  - type: textarea
+    id: basis
+    attributes:
+      label: Authorization basis
+      description: Why this target may be automated (own account, public API, written permission…).
+      placeholder: Operator owns this account; read-only catalogue access for price monitoring.
+    validations:
+      required: true
+  - type: input
+    id: scope_domains
+    attributes:
+      label: Scope domains
+      description: Comma-separated domains the automation may touch. The target domain must be in this list.
+      placeholder: shop.example.com
+    validations:
+      required: true
+  - type: dropdown
+    id: side_effect
+    attributes:
+      label: Side effect
+      options:
+        - read
+        - write
+      default: 0
+    validations:
+      required: true
+  - type: checkboxes
+    id: state_changing
+    attributes:
+      label: State-changing authorization
+      description: Required only for write briefs.
+      options:
+        - label: This brief authorizes state-changing (write) operations on the target
+          required: false
+  - type: input
+    id: probe_budget
+    attributes:
+      label: Probe budget
+      description: Max bounded probes for this target (1–200).
+      placeholder: "24"
+    validations:
+      required: false
+  - type: dropdown
+    id: device_class
+    attributes:
+      label: Execution venue
+      description: Where the stack runs. The phone orchestrates; heavy engines run on remote services (B160V law applies automatically in the plan).
+      options:
+        - remote-service
+        - ci
+        - b160v-on-device
+        - local
+      default: 0
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes for the dispatcher
+      description: Anything else the dispatch package should know (known endpoints, prior recon, deadlines). Not parsed by intake.
+    validations:
+      required: false

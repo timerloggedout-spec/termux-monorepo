@@ -45,10 +45,6 @@ RECON_SWEEP_MAX_TARGETS, RECON_SWEEP_WINDOW_HOURS,
 SWE_REFERENCE_EVALUATION_ENABLED, plus QUOTA_EVAL_WATERMARK (created by the
 quota dispatch tree).
 
-Note (from ledger #184): credentials named with API keys (CELLCOG_API_KEY,
-CLOUDFLARE_API_TOKEN, OLLAMA_API_KEY, GRAFANA_*) are referenced via `vars.` in
-some lanes — that is a leak-by-classification. They should be migrated to
-secrets; track in #184.
 
 ## 3. New names required by the quota program
 
@@ -103,6 +99,3 @@ repo Settings -> Secrets and variables -> Actions.
   names above.
 - Vantage: connector token invalid — re-provision the connector, then add
   VANTAGE_API_TOKEN for cost-telemetry lanes.
-- Cloudflare: connector deprecated (docs only); CLOUDFLARE_ACCOUNT_ID /
-  CLOUDFLARE_API_TOKEN variables exist in lanes — no new work until a
-  replacement connector is provisioned.

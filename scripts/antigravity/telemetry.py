@@ -1,14 +1,22 @@
 #!/usr/bin/env python3
-"""Normalize one existing stream-json invocation; this module never launches agy."""
+"""Normalize Antigravity stream-json without retaining prompt or tool payloads."""
 import argparse
 import datetime as dt
 import json
 import math
+import re
 import sys
 import uuid
 
 MAX_EVENT_BYTES = 1048576
 FIELDS = ('input_tokens', 'output_tokens', 'thinking_tokens', 'cache_read_tokens', 'total_tokens')
+RECORD_SCHEMA_VERSION = 1
+EVENT_SCHEMA_VERSION = 1
+EVENT_RECORD_TYPE = 'telemetry_event'
+EVENT_NAME_RE = re.compile(r'[A-Za-z0-9][A-Za-z0-9_.:/+\-]{0,127}\Z')
+EVENT_TYPES = {'init', 'step_update', 'result'}
+STEP_TYPES = {'user_input', 'agent_response', 'tool', 'checkpoint'}
+STEP_STATES = {'ACTIVE', 'DONE'}
 
 
 def stamp():
@@ -24,6 +32,134 @@ def _safe_string(value, limit=256):
         return None
     text = ''.join(ch if ch.isprintable() else '?' for ch in value)
     return text[:limit] or None
+
+
+def _safe_identifier(value, limit=128):
+    if not isinstance(value, str) or len(value) > limit or not EVENT_NAME_RE.fullmatch(value):
+        return None
+    return value
+
+
+def _finite_number(value):
+    return (type(value) in (int, float) and 0 <= value <= (2**63 - 1)
+            and math.isfinite(value))
+
+
+def _usage(value):
+    if not isinstance(value, dict):
+        return None
+    return {key: count(value.get(key)) for key in FIELDS}
+
+
+def _usage_status(value):
+    return 'SUCCESS' if value == 'SUCCESS' else ('INCOMPLETE' if value == 'INCOMPLETE' else 'FAILED')
+
+
+def malformed_event(run_id, sequence, reason):
+    return {'schema_version': EVENT_SCHEMA_VERSION, 'record_type': EVENT_RECORD_TYPE,
+            'run_id': run_id, 'sequence': sequence, 'observed_at': stamp(),
+            'event_type': 'malformed', 'reason': reason}
+
+
+def project_event(event, run_id, sequence):
+    """Project one source envelope to a strict allowlist; never copy source subtrees."""
+    event_type = event.get('event')
+    kind = event_type if isinstance(event_type, str) and event_type in EVENT_TYPES else 'other'
+    projected = {'schema_version': EVENT_SCHEMA_VERSION,
+                 'record_type': EVENT_RECORD_TYPE,
+                 'run_id': run_id,
+                 'sequence': sequence,
+                 'observed_at': stamp(),
+                 'event_type': kind}
+    if kind == 'init':
+        init = event.get('init')
+        if isinstance(init, dict):
+            model = _safe_identifier(init.get('model'))
+            if model:
+                projected['model'] = model
+    elif kind == 'step_update':
+        step = event.get('step_update')
+        if not isinstance(step, dict):
+            return projected
+        index = count(step.get('step_index'))
+        if index is not None:
+            projected['step_index'] = index
+        step_type = step.get('step_type')
+        projected['step_type'] = step_type if isinstance(step_type, str) and step_type in STEP_TYPES else 'other'
+        state = step.get('state')
+        projected['state'] = state if isinstance(state, str) and state in STEP_STATES else 'other'
+        duration = step.get('duration_seconds')
+        if _finite_number(duration):
+            projected['duration_seconds'] = duration
+        if projected['step_type'] == 'tool':
+            name = _safe_identifier(step.get('tool_name'))
+            tool_info = step.get('tool_info')
+            if name is None and isinstance(tool_info, dict):
+                name = _safe_identifier(tool_info.get('name'))
+            if name:
+                projected['tool_name'] = name
+        snapshot = _usage(step.get('usage'))
+        if snapshot is not None:
+            projected['usage_snapshot'] = snapshot
+            projected['usage_role'] = 'non_authoritative_step_snapshot'
+    elif kind == 'result':
+        result = event.get('result')
+        if not isinstance(result, dict):
+            return projected
+        projected['run_status'] = _usage_status(result.get('status'))
+        duration = result.get('duration_seconds')
+        if _finite_number(duration):
+            projected['duration_seconds'] = duration
+        turns = count(result.get('num_turns'))
+        if turns is not None:
+            projected['num_turns'] = turns
+        final = _usage(result.get('usage'))
+        if final is not None:
+            projected['final_usage'] = final
+            projected['usage_role'] = 'authoritative_result_usage'
+    return projected
+
+
+def run_summary_event(record, sequence):
+    """Append a sanitized terminal aggregate, distinct from source step snapshots."""
+    producer_code = record.get('producer_exit_code')
+    if producer_code is None:
+        producer_state = 'not_observed'
+    elif type(producer_code) is int and producer_code == 0:
+        producer_state = 'success'
+    elif type(producer_code) is int and producer_code < 0:
+        producer_state = 'signaled'
+    else:
+        producer_state = 'failed'
+    usage = record.get('usage')
+    safe_usage = {key: count(usage.get(key)) for key in FIELDS} if isinstance(usage, dict) else dict.fromkeys(FIELDS)
+    duration = record.get('duration_seconds')
+    summary = {'schema_version': EVENT_SCHEMA_VERSION,
+               'record_type': 'run_summary',
+               'run_id': _safe_string(record.get('run_id')) or str(uuid.uuid4()),
+               'sequence': sequence,
+               'observed_at': stamp(),
+               'event_type': 'run_summary',
+               'run_status': _usage_status(record.get('status')),
+               'producer_state': producer_state,
+               'usage_source': 'stream-json:result.usage' if record.get('usage_source') == 'stream-json:result.usage' else 'unavailable',
+               'final_usage': safe_usage,
+               'usage_role': 'authoritative_run_total',
+               'event_count': count(record.get('event_count')) or 0,
+               'tool_step_count': count(record.get('tool_step_count')) or 0,
+               'malformed_event_count': count(record.get('malformed_events')) or 0}
+    if _finite_number(duration):
+        summary['duration_seconds'] = duration
+    return summary
+
+
+def migrate_source_event(source_event, run_id, sequence, source_schema_version=0):
+    """Migrate a legacy unversioned CLI envelope to the current sanitized event shape."""
+    if source_schema_version != 0:
+        raise ValueError('unsupported source event schema version')
+    if not isinstance(source_event, dict):
+        raise ValueError('source event must be an object')
+    return project_event(source_event, _safe_string(run_id) or str(uuid.uuid4()), sequence)
 
 
 def quota_snapshot(raw, model, now=None):
@@ -84,45 +220,90 @@ def _json_object(line):
     return event
 
 
-def normalize(lines, model=None, quota=None, run_id=None, account_scope=None):
+def normalize(lines, model=None, quota=None, run_id=None, account_scope=None, *, event_sink=None):
     initial_model = _safe_string(model)
     safe_run_id = _safe_string(run_id) or str(uuid.uuid4())
     safe_scope = _safe_string(account_scope)
-    record = {'schema_version': 1, 'provider': 'antigravity',
-              'run_id': safe_run_id, 'conversation_id': None,
+    record = {'schema_version': RECORD_SCHEMA_VERSION, 'telemetry_schema_version': EVENT_SCHEMA_VERSION,
+              'provider': 'antigravity', 'run_id': safe_run_id, 'conversation_id': None,
               'account_scope': safe_scope, 'model': initial_model,
               'observed_at': stamp(), 'status': 'INCOMPLETE',
               'usage_source': 'unavailable', 'usage_scope': 'run',
               'usage': dict.fromkeys(FIELDS), 'duration_seconds': None,
-              'cost_usd': None, 'malformed_events': 0}
+              'cost_usd': None, 'malformed_events': 0, 'event_count': 0,
+              'source_event_count': 0, 'tool_step_count': 0}
     result = None
+    sequence = 0
     for line in lines:
+        reason = None
+        if line == 'INVALID_OVERSIZED_EVENT':
+            reason = 'oversized'
+        elif line == 'INVALID_UTF8_EVENT':
+            reason = 'invalid_utf8'
+        if reason:
+            record['malformed_events'] += 1
+            record['source_event_count'] += 1
+            if event_sink is not None:
+                event_sink(malformed_event(safe_run_id, sequence, reason))
+            sequence += 1
+            continue
         if isinstance(line, bytes):
             if len(line) > MAX_EVENT_BYTES:
                 record['malformed_events'] += 1
+                record['source_event_count'] += 1
+                if event_sink is not None:
+                    event_sink(malformed_event(safe_run_id, sequence, 'oversized'))
+                sequence += 1
                 continue
             try:
                 line = line.decode('utf-8', errors='strict')
             except UnicodeDecodeError:
                 record['malformed_events'] += 1
+                record['source_event_count'] += 1
+                if event_sink is not None:
+                    event_sink(malformed_event(safe_run_id, sequence, 'invalid_utf8'))
+                sequence += 1
                 continue
         if not isinstance(line, str):
             record['malformed_events'] += 1
+            record['source_event_count'] += 1
+            if event_sink is not None:
+                event_sink(malformed_event(safe_run_id, sequence, 'invalid_type'))
+            sequence += 1
             continue
         try:
             if len(line.encode('utf-8')) > MAX_EVENT_BYTES:
                 record['malformed_events'] += 1
+                record['source_event_count'] += 1
+                if event_sink is not None:
+                    event_sink(malformed_event(safe_run_id, sequence, 'oversized'))
+                sequence += 1
                 continue
         except UnicodeError:
             record['malformed_events'] += 1
+            record['source_event_count'] += 1
+            if event_sink is not None:
+                event_sink(malformed_event(safe_run_id, sequence, 'invalid_unicode'))
+            sequence += 1
             continue
         if not line.strip():
             continue
+        record['source_event_count'] += 1
         try:
             event = _json_object(line)
         except (ValueError, TypeError, UnicodeError, RecursionError):
             record['malformed_events'] += 1
+            if event_sink is not None:
+                event_sink(malformed_event(safe_run_id, sequence, 'invalid_json'))
+            sequence += 1
             continue
+        projected = project_event(event, safe_run_id, sequence)
+        if event_sink is not None:
+            event_sink(projected)
+        sequence += 1
+        record['event_count'] += 1
+        if projected['event_type'] == 'step_update' and projected.get('step_type') == 'tool':
+            record['tool_step_count'] += 1
         if event.get('event') == 'init':
             record['conversation_id'] = _safe_string(event.get('conversation_id'))
             init = event.get('init')
@@ -134,8 +315,7 @@ def normalize(lines, model=None, quota=None, run_id=None, account_scope=None):
         record['conversation_id'] = _safe_string(result.get('conversation_id')) or record['conversation_id']
         record['status'] = _safe_string(result.get('status'), 100) or 'UNKNOWN'
         duration = result.get('duration_seconds')
-        if (type(duration) in (int, float) and 0 <= duration <= (2**63 - 1)
-                and math.isfinite(duration)):
+        if _finite_number(duration):
             record['duration_seconds'] = duration
         usage = result.get('usage')
         if isinstance(usage, dict):

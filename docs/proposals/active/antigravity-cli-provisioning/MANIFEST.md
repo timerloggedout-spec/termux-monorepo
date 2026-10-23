@@ -40,3 +40,11 @@ See [ITEMS.md](ITEMS.md), [source.md](source.md), and [PROPOSAL.md](PROPOSAL.md)
 - AGY-1497-09 is registered on GitHub #1497; live PR #1514 head confirmed as `cue/1497-operational-device2`, base `master-staging`. Do not push this work to the older provisioning branch by mistake. Do not merge.
 - Integrate the existing no-model telemetry prototype as a passive full-private-capture plus concise-steering layer. The owner subsequently authorized exactly one bounded implementer and one sequential verifier; both have run. No additional model prompts or pilot replays are authorized.
 - The earlier offline blocker is superseded by [secondary recovery](SECONDARY-RECOVERY.md): pinned SSH recovered and High was restored with approval settings preserved. Project files are live at `~/.local/share/agy-1497-secondary/worktree`. The implementer stream ended INCOMPLETE at transport exit 255, with unknown model/token totals; the verifier's PASS was contradicted by the deterministic quota regression. [Contract](FILTERING.md) and [validation](FILTERING-VALIDATION.md) separate device evidence from production success claims.
+
+## Controller telemetry and archive follow-up
+
+- The owner requested controller-side implementation of immediate sanitized event telemetry, an encrypted archive/JIT path, and an opt-in Hindsight-related outbox; `agy` is not the implementer.
+- Scope is limited to code, JSON schemas, synthetic tests, and operational/status documentation on PR #1514. Do not connect to Device 2 or Origin, issue an AGY prompt, use Remote, replay the incomplete stream, or contact Hindsight.
+- Hindsight remains disabled by default, with no endpoint or API credential configured. Real archive activation is blocked until an externally supplied age recipient/identity setup is available. No runtime archive, key, payload, transcript, tool data, or session log belongs in Git.
+- Recheck PR head/reviews/checks before a scoped push. Keep the PR open and unmerged; do not update the issue body until repository checks pass.
+- See [TELEMETRY-PIPELINE.md](TELEMETRY-PIPELINE.md) for the status map, schemas, API/privacy boundary, and remaining activation gates.

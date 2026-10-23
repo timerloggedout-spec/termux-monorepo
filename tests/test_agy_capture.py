@@ -110,7 +110,7 @@ class CaptureTests(unittest.TestCase):
     def test_cli_quota_read_errors_oversize_deep_nesting_and_non_object_fail_fast_64(self):
         cases = [
             ("missing", self.root / "nonexistent.json", None),
-            ("oversize", self.root / "huge.json", b"{" + b'"a":' * 200000 + b"1" + b"}" * 200000),
+            ("oversize", self.root / "huge.json", b'{"a":"' + b"x" * (MAX_EVENT_BYTES + 1) + b'"}'),
             ("deep_nesting", self.root / "deep.json", b"[" * 3000 + b"0" + b"]" * 3000),
             ("non_object", self.root / "array.json", b"[1, 2, 3]"),
             ("unsupported_constant", self.root / "const.json", b'{"x": NaN}'),

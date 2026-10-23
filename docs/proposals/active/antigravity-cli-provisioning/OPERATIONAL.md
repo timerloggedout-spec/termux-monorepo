@@ -4,6 +4,8 @@
 
 The owner approved restoring High verbosity and chose a programmatic filter rather than reducing diagnostics. [SECONDARY-RECOVERY.md](SECONDARY-RECOVERY.md) records completed High restoration and pinned SSH recovery, superseding the offline blocker. The dedicated project is live at `~/.local/share/agy-1497-secondary/worktree`. The later authorized implementer/verifier pair consumed real stream-json through the controller filter: the implementer stream ended INCOMPLETE at transport exit 255, with unknown model/token totals; the verifier completed but missed a deterministic quota regression. [FILTERING-VALIDATION.md](FILTERING-VALIDATION.md) separates those receipts from production-task success, which is not claimed. No additional model prompt is authorized. Earlier pilot boundaries below are historical, not current outage claims.
 
+The controller-side event telemetry, encrypted archive, and opt-in Hindsight design are tracked separately in [TELEMETRY-PIPELINE.md](TELEMETRY-PIPELINE.md). Those additions are repository code and synthetic tests only; they do not establish continuous telemetry on Device 2 or authorize a new SSH/model run.
+
 ## What was actually delivered before this follow-up
 
 PR #1498 delivered three repository items: immutable research/provenance, a staged collaboration proposal, and a metadata-only readiness utility with seven tests. It did not modify the installed CLI, settings, skills, flows, tasks, native agents, hooks, plugins, or either device. Three of three registered repository items are delivered; that is not 100% of live provisioning.

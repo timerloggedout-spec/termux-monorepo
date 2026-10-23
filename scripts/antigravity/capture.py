@@ -10,7 +10,7 @@ from pathlib import Path
 import shutil
 import sys
 
-from telemetry import MAX_EVENT_BYTES, normalize, steering
+from telemetry import MAX_EVENT_BYTES, normalize, run_summary_event, steering
 
 
 def private_file(path):
@@ -18,11 +18,21 @@ def private_file(path):
     return os.fdopen(os.open(path, flags, 0o600), "wb")
 
 
+def private_append_file(path):
+    flags = os.O_WRONLY | os.O_APPEND | getattr(os, "O_NOFOLLOW", 0)
+    return os.fdopen(os.open(path, flags), "ab")
+
+
+def emit_event(output, event):
+    output.write((json.dumps(event, allow_nan=False, separators=(",", ":")) + "\n").encode("utf-8"))
+    output.flush()
+
+
 def captured_lines(source, raw):
     """Archive every byte; bound each parse candidate independently of line size."""
     pending = bytearray()
     oversized = False
-    read = getattr(source, "read1", source.read)
+    read = getattr(source, "read1", None) or source.read
     while True:
         chunk = read(65536)
         if not chunk:
@@ -64,7 +74,10 @@ def capture(source, destination, *, diagnostics=None, model=None, quota=None,
     destination.mkdir(mode=0o700)
     os.chmod(destination, 0o700)
     with private_file(destination / "stream.ndjson") as raw:
-        record = normalize(captured_lines(source, raw), model, quota, run_id, account_scope)
+        with private_file(destination / "events.ndjson") as events:
+            record = normalize(captured_lines(source, raw), model, quota, run_id,
+                               account_scope,
+                               event_sink=lambda event: emit_event(events, event))
     if diagnostics is not None:
         with open(diagnostics, "rb") as source_stderr:
             with private_file(destination / "diagnostics.stderr") as target_stderr:
@@ -73,7 +86,10 @@ def capture(source, destination, *, diagnostics=None, model=None, quota=None,
 
 
 def write_outputs(record, destination):
-    """Write allowlisted metadata and steering after capture/process completion."""
+    """Append a sanitized terminal aggregate, then write metadata and steering."""
+    destination = Path(destination)
+    with private_append_file(destination / "events.ndjson") as events:
+        emit_event(events, run_summary_event(record, record.get("source_event_count", 0)))
     with private_file(destination / "record.json") as output:
         output.write((json.dumps(record, allow_nan=False) + "\n").encode("utf-8"))
     summary = steering(record) + "\n"

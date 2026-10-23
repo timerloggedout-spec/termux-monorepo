@@ -2,16 +2,19 @@
 
 The owner chose a programmatic filtering layer, not low CLI verbosity. The verified saved setting is `verbosity: high`, with the existing `toolPermission: always-proceed` and `artifactReviewPolicy: agent-decides` unchanged. `capture.py` and `telemetry.py` are passive consumers: they never launch the CLI. The separate opt-in `run.py` wrapper launches only an explicitly supplied command once; it has no default producer, retries, settings changes, model switching, quota probes or scheduler.
 
-## Three separate outputs
+## Private capture artifacts
 
 `scripts/antigravity/capture.py` reads an existing stream-json capture or a producer's already-authorized stdout. It creates a **new** private run directory (0700), with files restricted to 0600:
 
 - `stream.ndjson`: every input byte verbatim, including malformed and oversized events.
 - `record.json`: allowlisted final-result metadata and usage, without prompt/response/tool payloads.
+- `events.ndjson`: schema-versioned allowlisted events flushed as source lines arrive, followed by a terminal run summary.
 - `steering.txt`: exactly three lines for the collaborator view. The same view is printed to stdout.
 - `diagnostics.stderr`: optional verbatim copy of an existing producer stderr file supplied with `--diagnostics`.
 
 Raw diagnostics remain available privately. Never replace them with the lossy normalized record or publish them in GitHub. Use an existing private parent directory outside the repository, and normal local retention/storage controls; this utility does not rotate, truncate or delete raw captures. Archiving requires enough disk space. An I/O error stops with exit 3 rather than claiming a complete capture.
+
+`events.ndjson` contains only the v1 allowlisted projection; it excludes prompt/response text, paths, conversation IDs, tool arguments/results, and unknown source fields. Each record is flushed before the reader requests the next source chunk. Step usage is explicitly non-authoritative and never summed; the final summary uses terminal `result.usage`. See [TELEMETRY-PIPELINE.md](TELEMETRY-PIPELINE.md) for schema versions, the disabled-by-default Hindsight outbox, encrypted archives, and current issue mapping.
 
 ## Replay existing data only
 
@@ -58,9 +61,9 @@ python3 scripts/antigravity/run.py \
 
 The alias already pins the known host key, account, identity file and existing SOCKS route. Do not recreate it from an IP, bypass host-key checking, or substitute Origin. Local marker/account/model guards corroborate that pin; they are not a sandbox or replacement for host authentication. No Python or filter source is installed on the phone. No permission or verbosity flags are supplied, so the saved High and approval policies remain intact. No new model choice is made: model identity remains UNKNOWN unless actually emitted in `init` or supplied as observed metadata with the wrapper's `--model` (that option does **not** change the producer's model).
 
-`run.py` creates the same four private artifacts, with stderr captured directly from process start to a file rather than a pipe or terminal. It consumes stdout while the producer runs and emits exactly three steering lines after completion. Raw stdout is never forwarded. `record.json` additionally retains `producer_exit_code` (negative for a signal), or a bounded launch-error class and null exit code when launch failed. The first steering line shows the reported CLI status **and** process exit separately; a SUCCESS event followed by SSH failure is not reported as overall success.
+`run.py` creates the private raw stream, stderr, event, final-record, and steering artifacts; stderr is captured directly from process start to a file rather than a pipe or terminal. It consumes stdout while the producer runs and emits exactly three steering lines after completion. Raw stdout is never forwarded. `record.json` additionally retains `producer_exit_code` (negative for a signal), or a bounded launch-error class and null exit code when launch failed. The first steering line shows the reported CLI status **and** process exit separately; a SUCCESS event followed by SSH failure is not reported as overall success.
 
-Runner exit policy: nonzero producer exit is preserved (signals map to 128 + signal); producer exit 0 plus SUCCESS returns 0; exit 0 without a result returns 2; exit 0 with any other status returns 1; launch/archive failure returns 3. These codes can overlap producer codes: use the private record to distinguish them. On archive failure/interruption, the local producer group is stopped without retry; partial archives are not completion proof. Stopping local SSH cannot guarantee cancellation of an already-started remote task. Inspect before any later retry. The wrapper does not impose a new timer; the example uses the documented CLI timeout.
+Runner exit policy: invalid, unreadable, oversized, deeply nested, non-object or non-finite quota JSON is rejected before producer launch/capture with exit 64; nonzero producer exit is preserved (signals map to 128 + signal); producer exit 0 plus SUCCESS returns 0; exit 0 without a result returns 2; exit 0 with any other status returns 1; launch/archive failure returns 3. These codes can overlap producer codes: use the private record to distinguish them. On archive failure/interruption, the local producer group is stopped without retry; partial archives are not completion proof. Stopping local SSH cannot guarantee cancellation of an already-started remote task. Inspect before any later retry. The wrapper does not impose a new timer; the example uses the documented CLI timeout.
 
 The [official headless documentation](https://antigravity.google/docs/cli/headless/) confirms stdout/stderr separation, `--print`, NDJSON `init` / `step_update` / `result`, final `result.usage`, optional model identity and settings-based permissions. Multi-turn stdin mode exists in the current docs, but is not required by this command or claimed tested on installed 1.4.5. Its usage counters are cumulative: the adapter retains the **last** result, never sums snapshots or repeated results. Manual `/usage` is a separate observation (not a stream prompt); router invocation counters are neither populated nor modified. No dollars or remaining quota are inferred from tokens.
 

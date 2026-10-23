@@ -149,8 +149,21 @@ class RunnerTests(unittest.TestCase):
         quota = self.root / "quota.json"
         quota.write_text("[]")
         result = self.cli("--quota", str(quota), "--", sys.executable, "-c", "pass")
-        self.assertEqual(result.returncode, 2)
+        self.assertEqual(result.returncode, 64)
         self.assertFalse(self.destination.exists())
+
+    def test_nonfinite_and_oversized_quota_prevent_launch(self):
+        values = [b'{"remaining":NaN}', b'{"remaining":Infinity}',
+                  b'{"remaining":-Infinity}',
+                  b'{"value":"' + b'x' * (MAX_EVENT_BYTES + 1) + b'"}']
+        for index, value in enumerate(values):
+            with self.subTest(index=index):
+                quota = self.root / f"quota_{index}.json"
+                quota.write_bytes(value)
+                result = self.cli("--quota", str(quota), "--", sys.executable, "-c", "pass")
+                self.assertEqual(result.returncode, 64, result.stderr)
+                self.assertIn(b"Invalid existing quota observation", result.stderr)
+                self.assertFalse(self.destination.exists())
 
     def test_archive_failure_stops_producer_and_leaves_no_completion_record(self):
         processes = []

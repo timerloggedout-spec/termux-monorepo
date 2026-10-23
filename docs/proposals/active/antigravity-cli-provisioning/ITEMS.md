@@ -30,6 +30,14 @@ The operational lane exists, but full provisioning is not done. The later AGY-14
 
 Operator explicitly approved correcting the low/High mismatch and selected programmatic filtering. Registration: https://github.com/timerloggedout-spec/termux-monorepo/issues/1497#issuecomment-6336367544 . Live PR #1514 head is `cue/1497-operational-device2`, not the original provisioning branch. [Filtering contract and current deployment boundary](FILTERING.md).
 
+## Controller telemetry and archive follow-up
+
+| ID | Work | Owner | Status | Acceptance |
+|---|---|---|---|---|
+| Local follow-up (not separately registered) | Incremental schema-v1 event telemetry, encrypted archive/JIT comparison, and reviewed Hindsight outbox | Cue | in progress; code and synthetic fixtures on PR branch only | Immediate allowlisted event emission; final usage remains authoritative; fake-age round trip; Hindsight disabled by default/no live sends; no Device 2 or Origin changes |
+
+This is a repository implementation follow-up to AGY-1497-09, not a claim of continuous telemetry deployment. The explicit status map, activation gates, and sources are in [TELEMETRY-PIPELINE.md](TELEMETRY-PIPELINE.md). Keep the issue open and PR unmerged until the owner reviews the resulting branch and decides whether to activate any external service.
+
 ## Approved secondary recovery continuation
 
 | ID | Work | Owner | Status | Acceptance |

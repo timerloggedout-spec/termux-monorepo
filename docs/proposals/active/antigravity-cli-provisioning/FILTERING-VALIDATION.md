@@ -1,5 +1,22 @@
 # Filtering validation — AGY-1497-09
 
+## Controller telemetry/archive follow-up
+
+This follow-up adds schema-v1 event rows flushed as source lines arrive, keeps step usage separate from authoritative terminal usage, and adds an age archive/JIT comparison utility plus a disabled-by-default reviewed Hindsight outbox. It is controller repository code only. No Device 2/Origin connection, AGY invocation, model request, Hindsight network request, real archive, or key was used.
+
+| Check | Result |
+|---|---|
+| Focused AGY fixtures (`python3 -m unittest discover -s tests -p 'test_agy*.py'`) | PASS: 142 tests, including immediate emission, allowlist, malformed/oversized/repeated events, snapshot/final semantics, schema migration, fake-age round trip/no plaintext file, outbox append/idempotency/ambiguous ack/restart recovery, external-only output paths, and no-network-by-default |
+| Readiness tests (`test_antigravity_readiness.py`) | PASS: 7 tests |
+| Changed Python compilation | PASS: all five production modules and three focused fixture files |
+| `python3 scripts/proposals/validate_registry.py` | PASS: 15 proposals |
+| `python3 scripts/ci/termux_smoke.py` | PASS on controller Linux/Python 3.12.3 (`termux=False`); not native Android validation |
+| `python3 scripts/ci/repo_gate.py --base origin/master-staging` | PASS: 45 complete-PR paths; `py=19`, `sh=3`, `json=3`, no symlinks; refreshed base `1a5af217f3ef9815ce31068d547ad28b69dd8ac7` |
+| Complete `python3 -m unittest discover -s tests` | BLOCKED by unrelated missing imports: `curl_cffi` for `test_multi_ai_ci` and `dashboard` for `test_telemetry_optimized`; 197 tests ran with those two module-import errors. No packages were installed. |
+| Real age binary/runtime encryption | BLOCKED: `age` is not installed in this controller; only a synthetic fake-age fixture ran. |
+
+The archive helper requires an externally supplied recipient and private identity for real use. The Hindsight adapter requires separate owner consent, endpoint/bank/model and retention/privacy review; all tests use stubs, and no live send is available by default. See [TELEMETRY-PIPELINE.md](TELEMETRY-PIPELINE.md) for the detailed status map and sources. This branch has not deployed continuous telemetry on Device 2.
+
 ## Current bounded delegated execution receipt
 
 The owner's subsequent authorization permitted exactly one `agy-implementer` run and one sequential `agy-verifier` run on verified secondary `tmx-node-55619bd5`. Both ran from the live project at `~/.local/share/agy-1497-secondary/worktree`, using the controller-side private stream runner. No additional prompt or pilot replay is authorized. Existing High and approval settings were preserved; Origin was excluded.

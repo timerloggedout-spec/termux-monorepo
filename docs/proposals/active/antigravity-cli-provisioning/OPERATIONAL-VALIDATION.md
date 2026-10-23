@@ -1,5 +1,9 @@
 # Operational validation — #1497
 
+## Controller pipeline follow-up
+
+The current repository-side event telemetry, encrypted-archive, and opt-in Hindsight outbox checks are recorded in [FILTERING-VALIDATION.md](FILTERING-VALIDATION.md). They are synthetic/controller-only tests; they do not change the Device 2 receipts below or establish live continuous telemetry.
+
 ## Proven on the secondary
 
 The existing pinned SSH route recovered after transient closures. The SSH server public-key fingerprint matched the pre-existing known-host entry; the earlier trusted account/scout context matched. The lineage map distinguishes secondary `tmx-node-55619bd5` from damaged-screen Origin `tmx-node-primary`. No connection to Origin was made.

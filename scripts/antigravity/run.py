@@ -12,7 +12,7 @@ import signal
 import subprocess
 import sys
 
-from capture import captured_lines, private_file, write_outputs
+from capture import captured_lines, emit_event, private_file, write_outputs
 from telemetry import MAX_EVENT_BYTES, normalize
 
 
@@ -40,27 +40,30 @@ def run(command, destination, *, model=None, quota=None, run_id=None,
     destination = Path(destination)
     destination.mkdir(mode=0o700)
     os.chmod(destination, 0o700)
-    # Open both private destinations BEFORE launch. Stderr goes straight to disk,
-    # not a second pipe that could deadlock or an unbounded in-memory buffer.
+    # Open private destinations BEFORE launch. Stderr goes straight to disk,
+    # stdout is archived verbatim, and the allowlisted event file flushes per event.
     with private_file(destination / "diagnostics.stderr") as diagnostics:
         with private_file(destination / "stream.ndjson") as raw:
-            try:
-                process = subprocess.Popen(command, stdout=subprocess.PIPE,
-                                           stderr=diagnostics, start_new_session=True)
-            except OSError as error:
-                record = normalize([], model, quota, run_id, account_scope)
-                record["producer_exit_code"] = None
-                record["producer_launch_error"] = error.__class__.__name__
-                record, summary = write_outputs(record, destination)
-                return record, summary, 3
-            try:
-                with process.stdout as source:
-                    record = normalize(captured_lines(source, raw), model, quota,
-                                       run_id, account_scope)
-                code = process.wait()
-            except BaseException:
-                stop_producer(process)
-                raise
+            with private_file(destination / "events.ndjson") as events:
+                event_sink = lambda event: emit_event(events, event)
+                try:
+                    process = subprocess.Popen(command, stdout=subprocess.PIPE,
+                                               stderr=diagnostics, start_new_session=True)
+                except OSError as error:
+                    record = normalize([], model, quota, run_id, account_scope,
+                                       event_sink=event_sink)
+                    record["producer_exit_code"] = None
+                    record["producer_launch_error"] = error.__class__.__name__
+                    record, summary = write_outputs(record, destination)
+                    return record, summary, 3
+                try:
+                    with process.stdout as source:
+                        record = normalize(captured_lines(source, raw), model, quota,
+                                           run_id, account_scope, event_sink=event_sink)
+                    code = process.wait()
+                except BaseException:
+                    stop_producer(process)
+                    raise
     record["producer_exit_code"] = code
     record, summary = write_outputs(record, destination)
     # Preserve real process failures, but do not turn an incomplete/failed result
@@ -97,11 +100,12 @@ def main():
                 data = source.read(MAX_EVENT_BYTES + 1)
             if len(data) > MAX_EVENT_BYTES:
                 raise ValueError("oversized quota")
-            quota = json.loads(data, parse_constant=lambda value: None)
+            quota = json.loads(data, parse_constant=lambda value: (_ for _ in ()).throw(ValueError(value)))
             if not isinstance(quota, dict):
                 raise ValueError("quota must be an object")
         except (OSError, ValueError, UnicodeDecodeError, RecursionError):
-            parser.error("invalid existing quota observation; no producer was launched")
+            print("Invalid existing quota observation; no producer was launched", file=sys.stderr)
+            return 64
     try:
         _, summary, code = run(command, args.capture_dir, model=args.model,
                                quota=quota, run_id=args.run_id,

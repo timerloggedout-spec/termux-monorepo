@@ -1,0 +1,113 @@
+{
+  "collected_at": "2026-10-23T08:29:10.831054+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 39924047643,
+    "endpoint": ".../runs/39924047643/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 120316100843,
+        "run_id": 39924047643,
+        "workflow_name": "delphi-gate",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/39924047643",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAcA2YA6w",
+        "head_sha": "c0b819e3e664ed6403db90965ebc7f1638e9fac1",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/120316100843",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39924047643/job/120316100843",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-23T08:21:42Z",
+        "started_at": "2026-10-23T08:21:45Z",
+        "completed_at": "2026-10-23T08:22:39Z",
+        "name": "gate",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-23T08:21:46Z",
+            "completed_at": "2026-10-23T08:21:47Z"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-23T08:21:47Z",
+            "completed_at": "2026-10-23T08:21:48Z"
+          },
+          {
+            "name": "Live quota readings (best effort, names only)",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-23T08:21:48Z",
+            "completed_at": "2026-10-23T08:21:51Z"
+          },
+          {
+            "name": "Flywheel feedback",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-23T08:21:51Z",
+            "completed_at": "2026-10-23T08:21:51Z"
+          },
+          {
+            "name": "Graded outcomes (tribute-outcome)",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 5,
+            "started_at": "2026-10-23T08:21:51Z",
+            "completed_at": "2026-10-23T08:21:51Z"
+          },
+          {
+            "name": "Oracle + blind panel + rounds (all open RFPs, idempotent)",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-23T08:21:51Z",
+            "completed_at": "2026-10-23T08:22:35Z"
+          },
+          {
+            "name": "Run actions/upload-artifact@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-23T08:22:35Z",
+            "completed_at": "2026-10-23T08:22:36Z"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 14,
+            "started_at": "2026-10-23T08:22:36Z",
+            "completed_at": "2026-10-23T08:22:37Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 15,
+            "started_at": "2026-10-23T08:22:37Z",
+            "completed_at": "2026-10-23T08:22:37Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/120316100843",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000347974,
+        "runner_name": "GitHub Actions 1000347974",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

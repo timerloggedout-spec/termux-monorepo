@@ -32,8 +32,8 @@ OPERATOR_GITLAB_TOKEN, OPERATOR_MATRIX_PROJECT_URL, OPERATOR_TOKEN,
 PEER_STATE_PUBLISHER_LOGINS, RECON_INTEL_GITLAB_READ_TOKEN, RENDER_API_KEY,
 REPOSITORY_OBSERVATORY_TOKEN, SWE_EVALUATION_API_KEY,
 TERMUX_MCP_KNOWN_HOSTS, TERMUX_MCP_SSH_PRIVATE_KEY, TRIBUTE_VERCEL_PROJECTS,
-VANTAGE_PAT_GH_SECRETS, VERCEL_ORG_ID, VERCEL_TOKEN. GITHUB
-_TOKEN is the built-in per-run token.
+VANTAGE_PAT_GH_SECRETS, VERCEL_ORG_ID, VERCEL_TOKEN. GITHUB_TOKEN is the
+built-in per-run token.
 
 Variables in current use include: AUTOMATION_MARKER_PUBLISHER_LOGINS,
 CELLCOG_API_KEY, CELLCOG_CHAT_TIER, CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN,
@@ -59,8 +59,7 @@ quota dispatch tree).
 | BUILDKITE_ORG_SLUG | variable | `founders-are-found-to-implement` | future cross-platform dispatch lane |
 | BUILDKITE_PIPELINE_SLUG | variable | `termux-monorepo` | future cross-platform dispatch lane |
 | BUILDKITE_API_TOKEN | secret | Buildkite API token (read/write builds) | future cross-platform dispatch lane |
-| VANTAGE_PAT_GH_SECRETS | secret | Vantage access token, read scope (console.vantage.sh -> Settings -> API Access Tokens); provisioned 2026-10-23 via repo Settings -> Secrets and variables -> Actions 
-| vantage-cost-report lane: cost telemetry probe (woken 2x/day by dispatcher Node H) |
+| VANTAGE_PAT_GH_SECRETS | secret | Vantage access token, read scope (console.vantage.sh -> Settings -> API Access Tokens); provisioned 2026-10-23 via repo Settings -> Secrets and variables -> Actions | vantage-cost-report lane: cost telemetry probe (woken 2x/day by dispatcher Node H) |
 
 Provision with the CLI:
 
@@ -104,9 +103,8 @@ repo Settings -> Secrets and variables -> Actions.
   SUPABASE_SERVICE_ROLE_KEY secret; persistence is dormant until both exist.
 - BigQuery: define BIGQUERY_PROJECT_ID variable + GCP_BIGQUERY_SA_KEY secret
   when the telemetry dataset from the RFP (#1576) is chosen.
-- Buildkite: cross-platform dispatch per RFP; needs the three BUILDKITE_*
-  names
- above.
+- Buildkite: cross-platform dispatch per RFP; needs the three BUILDKITE_* names
+  above.
 - Vantage: GitHub-side lane delivered — vantage-cost-report.yml
   (workflow_dispatch-only; woken 2x/day by dispatcher Node H, hour % 12 == 1).
   VANTAGE_PAT_GH_SECRETS was provisioned 2026-10-23 via repo Settings -> Secrets

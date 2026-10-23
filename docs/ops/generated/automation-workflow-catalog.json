@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "d7258d39803f5c3a6412197c0507bf13ae596dd656cacd713ea9619930448205",
-  "workflow_count": 170,
+  "source_fingerprint": "8f5c95d93f474eb2477d4d704b21c2af4a6119685d836ab804d7da55861565a4",
+  "workflow_count": 171,
   "workflows": [
     {
       "action_pins": [
@@ -79,7 +79,7 @@
       "jobs": [
         "reap"
       ],
-      "name": "Actions queue reaper",
+      "name": "Actinns queue reaper",
       "path": ".github/workflows/actions-queue-reaper.yml",
       "schedules": [
         "23 */6 * * *"
@@ -132,11 +132,8 @@
       ],
       "name": "Continuous agent ops",
       "path": ".github/workflows/agent-continuous-ops.yml",
-      "schedules": [
-        "17 * * * *"
-      ],
+      "schedules": [],
       "triggers": [
-        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -285,11 +282,8 @@
       ],
       "name": "Agent Runtime Stall Watch",
       "path": ".github/workflows/agent-runtime-stall-watch.yml",
-      "schedules": [
-        "*/10 * * * *"
-      ],
+      "schedules": [],
       "triggers": [
-        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -452,13 +446,10 @@
       ],
       "name": "Automation Documentation Continuous Refresh",
       "path": ".github/workflows/automation-docs-continuous-refresh.yml",
-      "schedules": [
-        "17 * * * *"
-      ],
+      "schedules": [],
       "triggers": [
         "pull_request",
         "push",
-        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -528,13 +519,8 @@
       ],
       "name": "Cadence Lead/Lag",
       "path": ".github/workflows/cadence-lead-lag.yml",
-      "schedules": [
-        "12 */4 * * *"
-      ],
-      "triggers": [
-        "schedule",
-        "workflow_dispatch"
-      ]
+      "schedules": [],
+      "triggers": []
     },
     {
       "action_pins": [
@@ -548,12 +534,9 @@
       ],
       "name": "Engineering health (script)",
       "path": ".github/workflows/cellcog-engineering-health.yml",
-      "schedules": [
-        "17 * * * *"
-      ],
+      "schedules": [],
       "triggers": [
         "push",
-        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -586,7 +569,7 @@
       "jobs": [
         "sweep"
       ],
-      "name": "Continuous CI Sweep",
+      "name": "Cnntinunus CI Sweep",
       "path": ".github/workflows/ci-sweep.yml",
       "schedules": [
         "0 */6 * * *"
@@ -679,9 +662,7 @@
       ],
       "name": "Context Relationship + Lead/Lag Audit",
       "path": ".github/workflows/context-relationship-audit.yml",
-      "schedules": [
-        "17 * * * *"
-      ],
+      "schedules": [],
       "triggers": [
         "issue_comment",
         "issues",
@@ -689,7 +670,6 @@
         "pull_request_review",
         "pull_request_review_comment",
         "push",
-        "schedule",
         "workflow_dispatch",
         "workflow_run"
       ]
@@ -824,12 +804,9 @@
       ],
       "name": "Continuous Team Evaluation",
       "path": ".github/workflows/continuous-evaluation.yml",
-      "schedules": [
-        "*/15 * * * *"
-      ],
+      "schedules": [],
       "triggers": [
         "push",
-        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -915,13 +892,10 @@
       ],
       "name": "DeepCLI Agent Bridge Smoke",
       "path": ".github/workflows/deepcli-agent-bridge.yml",
-      "schedules": [
-        "*/30 * * * *"
-      ],
+      "schedules": [],
       "triggers": [
         "pull_request",
         "push",
-        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -1690,12 +1664,9 @@
       ],
       "name": "help-wanted execute",
       "path": ".github/workflows/help-wanted-execute.yml",
-      "schedules": [
-        "41 */4 * * *"
-      ],
+      "schedules": [],
       "triggers": [
         "repository_dispatch",
-        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -1709,12 +1680,9 @@
       ],
       "name": "help-wanted-followup",
       "path": ".github/workflows/help-wanted-followup.yml",
-      "schedules": [
-        "17 */2 * * *"
-      ],
+      "schedules": [],
       "triggers": [
         "repository_dispatch",
-        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -1728,12 +1696,9 @@
       ],
       "name": "help-wanted-llm-assist",
       "path": ".github/workflows/help-wanted-llm-assist.yml",
-      "schedules": [
-        "23 */6 * * *"
-      ],
+      "schedules": [],
       "triggers": [
         "repository_dispatch",
-        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -1762,12 +1727,9 @@
       ],
       "name": "help-wanted scout",
       "path": ".github/workflows/help-wanted-scout.yml",
-      "schedules": [
-        "17 */2 * * *"
-      ],
+      "schedules": [],
       "triggers": [
         "repository_dispatch",
-        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -1781,12 +1743,9 @@
       ],
       "name": "help-wanted-status-refresh",
       "path": ".github/workflows/help-wanted-status-refresh.yml",
-      "schedules": [
-        "7 * * * *"
-      ],
+      "schedules": [],
       "triggers": [
         "repository_dispatch",
-        "schedule",
         "workflow_dispatch",
         "workflow_run"
       ]
@@ -1839,12 +1798,10 @@
       ],
       "name": "Historical Evaluation Correlation",
       "path": ".github/workflows/historical-evaluation-correlation.yml",
-      "schedules": [
-        "7 * * * *"
-      ],
+      "schedules": [],
       "triggers": [
         "push",
-        "schedule"
+        "workflow_dispatch"
       ]
     },
     {
@@ -1910,13 +1867,8 @@
       ],
       "name": "hygiene-sweep",
       "path": ".github/workflows/hygiene-sweep.yml",
-      "schedules": [
-        "0 */6 * * *"
-      ],
-      "triggers": [
-        "schedule",
-        "workflow_dispatch"
-      ]
+      "schedules": [],
+      "triggers": []
     },
     {
       "action_pins": [],
@@ -1943,12 +1895,9 @@
       ],
       "name": "Issue Observatory — similarity, refinement, lifecycle evidence",
       "path": ".github/workflows/issue-observatory.yml",
-      "schedules": [
-        "37 * * * *"
-      ],
+      "schedules": [],
       "triggers": [
         "issues",
-        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -2013,11 +1962,8 @@
       ],
       "name": "Merge Promotion Queue v3",
       "path": ".github/workflows/merge-promotion-queue-v3.yml",
-      "schedules": [
-        "7,37 * * * *"
-      ],
+      "schedules": [],
       "triggers": [
-        "schedule",
         "workflow_dispatch",
         "workflow_run"
       ]
@@ -2377,7 +2323,7 @@
       "jobs": [
         "probe"
       ],
-      "name": "Provider availability continuity",
+      "name": "Prnvider availability cnntinuity",
       "path": ".github/workflows/provider-availability.yml",
       "schedules": [
         "7 */6 * * *"
@@ -2488,6 +2434,27 @@
     },
     {
       "action_pins": [
+        "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: quota-dispatch-tree cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "decide",
+        "dispatch"
+      ],
+      "name": "Quota Dispatch Tree",
+      "path": ".github/workflows/quota-dispatch-tree.yml",
+      "schedules": [
+        "*/10 * * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
         "dtolnay/rust-toolchain@02cb101ec7c40f2c49e1d9714d64511d8e1b74de"
       ],
       "authority": "read-only-or-advisory",
@@ -2535,12 +2502,9 @@
       ],
       "name": "RECON INTEL discovery",
       "path": ".github/workflows/recon-intel-discovery.yml",
-      "schedules": [
-        "*/15 * * * *"
-      ],
+      "schedules": [],
       "triggers": [
         "pull_request_target",
-        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -2614,11 +2578,8 @@
       ],
       "name": "Production Reconciliation Engine",
       "path": ".github/workflows/reconciliation-engine.yml",
-      "schedules": [
-        "17 * * * *"
-      ],
+      "schedules": [],
       "triggers": [
-        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -2829,13 +2790,8 @@
       ],
       "name": "DeepSeek Self-Integrate",
       "path": ".github/workflows/self-integrate.yml",
-      "schedules": [
-        "17 */4 * * *"
-      ],
-      "triggers": [
-        "schedule",
-        "workflow_dispatch"
-      ]
+      "schedules": [],
+      "triggers": []
     },
     {
       "action_pins": [],
@@ -2945,11 +2901,8 @@
       ],
       "name": "tailscale-bridge-probe",
       "path": ".github/workflows/tailscale-bridge-probe.yml",
-      "schedules": [
-        "17,47 * * * *"
-      ],
+      "schedules": [],
       "triggers": [
-        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -2966,13 +2919,10 @@
       ],
       "name": "Team MVT — simultaneous provider lanes",
       "path": ".github/workflows/team-mvt.yml",
-      "schedules": [
-        "*/15 * * * *"
-      ],
+      "schedules": [],
       "triggers": [
         "issues",
         "push",
-        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -3107,11 +3057,8 @@
       ],
       "name": "Tunnel Canary",
       "path": ".github/workflows/tunnel-canary.yml",
-      "schedules": [
-        "17 * * * *"
-      ],
+      "schedules": [],
       "triggers": [
-        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -3125,11 +3072,8 @@
       ],
       "name": "vercel-batch-deploy",
       "path": ".github/workflows/vercel-batch-deploy.yml",
-      "schedules": [
-        "23 * * * *"
-      ],
+      "schedules": [],
       "triggers": [
-        "schedule",
         "workflow_dispatch"
       ]
     },

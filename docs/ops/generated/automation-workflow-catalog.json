@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "0d27822bb592672c06e3a72da7dbbf6e88c23c9e713d278df3f24d6aebf604fd",
+  "source_fingerprint": "2e9eb393ef1bd45fe05e20d7c8fe3c0a4981685f7983b8825e8b4dbd922bf8d6",
   "workflow_count": 173,
   "workflows": [
     {
@@ -2102,6 +2102,7 @@
       "path": ".github/workflows/operator-variable-provision.yml",
       "schedules": [],
       "triggers": [
+        "issue_comment",
         "workflow_dispatch"
       ]
     },

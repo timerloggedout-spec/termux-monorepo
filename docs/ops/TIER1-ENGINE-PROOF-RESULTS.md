@@ -24,15 +24,34 @@ depth (below) and on-device execution itself (gated on the queue installer).
 Local x86_64 corroboration of the same pinned binaries (same script, this
 workstation): Obscura 32,976 kB, Lightpanda 12,616 kB — same class, no surprises.
 
+## Navigation depth — PROVEN (round 3, run 40040338046, proof v3 / PR #1603)
+
+`GET /json/new` is refused by both engines, so v3 drives the real WS protocol
+with a stdlib-only probe (`proof/cdp_probe.py`): WS connect →
+`Target.createTarget` → attach (flatten) → `Page.navigate` → load event →
+`Runtime.evaluate` extraction of the fixture's 25 JS-generated items +
+status text + embedded JSON. **Both engines pass the full round trip on
+both architectures**, and RSS is now measured genuinely loaded:
+
+| Engine | Arch | Idle RSS | Loaded RSS (after extraction) | Items extracted |
+|---|---|---|---|---|
+| Obscura v0.2.5 | aarch64 | 31,924 kB | **38,224 kB** | 25/25 |
+| Lightpanda 1.0.1 | aarch64 | 17,016 kB | **25,980 kB** | 25/25 |
+| Obscura v0.2.5 | x86_64 | 34,784 kB | 42,760 kB | 25/25 |
+| Lightpanda 1.0.1 | x86_64 | 17,628 kB | 26,244 kB | 25/25 |
+
 ## What is NOT yet proven
 
-- **Navigation/extraction depth.** `GET /json/new?<url>` is refused by both engines
-  (newer CDP expects PUT or WS-level `Target.createTarget`). The post-navigation RSS
-  sample therefore equals idle. The follow-up probe drives a real WS CDP session:
-  create target → navigate the fixture → extract the 25 JS-generated items →
-  sample RSS under load.
 - **On-device execution.** These are arm64-runner numbers, not B160V numbers. The
-  on-device run stays gated on the device pull-queue's on-origin installer.
+  on-device run stays gated on the device lanes stabilising (owner, 2026-10-23)
+  and the pull-queue's on-origin installer.
+- **Authenticated sessions.** The Foundry never ingests cookies itself (the
+  envelope validator refuses `cookie:` bodies; operations carry `account_ref`
+  only). Cookie/session ingestion is the separate origin-device lane
+  (`deepseek-cli/inject-cookies.cjs`, `multi-ai-cli/harvesters/`,
+  `cli-synthegration/extract_bearer_from_cookies.js`, the deepcli browser
+  profile) — the Foundry's `session-reuse` purpose consumes that lane's
+  output by reference once its infrastructure lands.
 
 ## Round 1 — failed, diagnosed, fixed (the loop working as intended)
 

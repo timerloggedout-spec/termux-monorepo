@@ -5,7 +5,8 @@ name: help-wanted-status-refresh
 
 on:
   schedule:
-    - cron: "7 * * * *"
+    # quota: workflow_run (execute, followup, scout) covers every change; cron is a 6h fallback only.
+    - cron: "7 */6 * * *"
   workflow_dispatch:
   repository_dispatch:
     types: [help-wanted-status-refresh, help-wanted-followup]

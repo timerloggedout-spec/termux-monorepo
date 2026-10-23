@@ -36,7 +36,7 @@ The checked-in pricing examples are source-linked and dated 2026-10-23. Re-verif
 - OpenAI API gpt-5.3-codex standard rate card: https://developers.openai.com/api/docs/pricing
 - Google Gemini API gemini-3.8-flash standard paid tier through 2026-12-31: https://ai.google.dev/gemini-api/docs/pricing
 - Anthropic Claude API Claude Opus 4.8 global standard: https://platform.claude.com/docs/en/about-claude/pricing
-- DeepSeek API DeepSeek-V4.1-Flash off-peak, cache-miss input: https://deepseek.ai/pricing
+- DeepSeek API DeepSeek-V4.1-Flash off-peak, cache-miss input: https://api-docs.deepseek.com/quick_start/pricing/
 
 Price comparisons do not imply quality equivalence, free-tier availability, or that any listed model executed a repository session.
 

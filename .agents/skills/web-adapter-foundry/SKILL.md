@@ -33,7 +33,7 @@ a generated wrapper.
 | JS recovery | webcrack (`j4k0xb`) | deobfuscate obfuscator.io, unminify, unpack webpack/browserify |
 | Contract draft | mitmproxy2swagger (`alufers`) | captured traffic -> draft OpenAPI 3.0 |
 | Code seed | curlconverter | captured request -> code in the target language |
-| Browser facade | playwright-mcp (`microsoft`) | agent-accessible browser via MCP |
+| Browser facade | ~~playwright-mcp (`microsoft`)~~ Alternatives Research Integrations | agent-accessible browser via MCP |
 | Verify | Schemathesis | schema-driven boundary + workflow tests |
 | Broad/native | REA (`morluto`) | only when the target warrants it (Electron/native/.NET) |
 

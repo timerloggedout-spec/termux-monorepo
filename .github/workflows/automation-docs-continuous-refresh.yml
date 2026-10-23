@@ -1,8 +1,7 @@
 name: Automation Documentation Continuous Refresh
 
 on:
-  schedule:
-    - cron: '17 * * * *'
+  # Cadence owned by quota-dispatch-tree.yml (Tier 3 tranche, issue #1573).
   workflow_dispatch:
   push:
     branches: [master]

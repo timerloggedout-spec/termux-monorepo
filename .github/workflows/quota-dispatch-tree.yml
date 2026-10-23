@@ -39,6 +39,8 @@ jobs:
       dispatch_hw_pair: ${{ steps.tree.outputs.dispatch_hw_pair }}
       dispatch_hw_execute: ${{ steps.tree.outputs.dispatch_hw_execute }}
       dispatch_hw_assist: ${{ steps.tree.outputs.dispatch_hw_assist }}
+      dispatch_hourly: ${{ steps.tree.outputs.dispatch_hourly }}
+      dispatch_repochange: ${{ steps.tree.outputs.dispatch_repochange }}
     steps:
       - name: Decision tree — one cheap call per concern
         id: tree
@@ -117,6 +119,11 @@ jobs:
             core.setOutput('dispatch_hw_pair', (((firstCycle && hour % 2 === 1) && !paused) || force) ? 'true' : 'false');
             core.setOutput('dispatch_hw_execute', (((firstCycle && hour % 4 === 3) && !paused) || force) ? 'true' : 'false');
             core.setOutput('dispatch_hw_assist', (((firstCycle && hour % 6 === 5) && !paused) || force) ? 'true' : 'false');
+            // Node G: Tier 3 tranche (issue #1573). Hourly lanes reuse Node F's
+            // firstCycle arithmetic; repo-state lanes reuse Node E's watermark
+            // check. Zero additional API calls.
+            core.setOutput('dispatch_hourly', ((firstCycle && !paused) || force) ? 'true' : 'false');
+            core.setOutput('dispatch_repochange', ((repoChanged && slow && !paused) || force) ? 'true' : 'false');
             core.summary
               .addHeading('Decision tree verdicts')
               .addTable([
@@ -131,9 +138,47 @@ jobs:
                 ['F hw-refresh', 'hourly cycle', String(firstCycle)],
                 ['F hw-pair', 'odd hours', String(firstCycle && hour % 2 === 1)],
                 ['F hw-execute', 'hour % 4 == 3', String(firstCycle && hour % 4 === 3)],
-                ['F hw-assist', 'hour % 6 == 5', String(firstCycle && hour % 6 === 5)]
+                ['F hw-assist', 'hour % 6 == 5', String(firstCycle && hour % 6 === 5)],
+                ['G tier3-hourly', 'hourly cycle && admission open', String(firstCycle && !paused)],
+                ['G tier3-repochange', 'commits since watermark && slow-cycle', String(repoChanged && slow && !paused)]
               ])
               .write();
+
+      - name: Persist verdicts to Supabase lane-state (optional)
+        # Fires only when SUPABASE_URL (repo variable) and
+        # SUPABASE_SERVICE_ROLE_KEY (secret) exist; otherwise skipped.
+        # Project: termux-monorepo-lane-state, table dispatch_verdicts.
+        if: env.SUPABASE_URL != '' && env.SUPABASE_SERVICE_ROLE_KEY != ''
+        env:
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          V_STALL: ${{ steps.tree.outputs.dispatch_stall_watch }}
+          V_BRIDGE: ${{ steps.tree.outputs.dispatch_bridge }}
+          V_PROBE: ${{ steps.tree.outputs.dispatch_probe }}
+          V_EVAL: ${{ steps.tree.outputs.dispatch_eval }}
+          V_RECON: ${{ steps.tree.outputs.dispatch_recon }}
+          V_HOURLY: ${{ steps.tree.outputs.dispatch_hourly }}
+          V_REPOCHANGE: ${{ steps.tree.outputs.dispatch_repochange }}
+        run: |
+          set -euo pipefail
+          rows='[]'
+          add() {
+            rows=$(printf '%s' "$rows" | jq --arg lane "$1" --arg node "$2" --arg fired "$3" \
+              '. += [{lane:$lane,node:$node,fired:($fired=="true")}]')
+          }
+          add agent-runtime-stall-watch A "$V_STALL"
+          add bridge-lanes B "$V_BRIDGE"
+          add tailscale-bridge-probe C "$V_PROBE"
+          add eval-lanes E "$V_EVAL"
+          add recon-intel-discovery E "$V_RECON"
+          add tier3-hourly G "$V_HOURLY"
+          add tier3-repochange G "$V_REPOCHANGE"
+          curl -fsS -X POST "$SUPABASE_URL/rest/v1/dispatch_verdicts" \
+            -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" \
+            -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" \
+            -H "Content-Type: application/json" \
+            -H "Prefer: return=minimal" \
+            -d "$(jq -n --argjson rows "$rows" '$rows')"
 
   dispatch:
     needs: decide
@@ -189,6 +234,42 @@ jobs:
             advance_watermark: 'false'
           - lane: help-wanted-llm-assist
             run: ${{ needs.decide.outputs.dispatch_hw_assist }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: merge-promotion-queue-v3
+            run: ${{ needs.decide.outputs.dispatch_hourly }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: agent-continuous-ops
+            run: ${{ needs.decide.outputs.dispatch_hourly }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: cellcog-engineering-health
+            run: ${{ needs.decide.outputs.dispatch_hourly }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: issue-observatory
+            run: ${{ needs.decide.outputs.dispatch_hourly }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: reconciliation-engine
+            run: ${{ needs.decide.outputs.dispatch_hourly }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: historical-evaluation-correlation
+            run: ${{ needs.decide.outputs.dispatch_hourly }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: vercel-batch-deploy
+            run: ${{ needs.decide.outputs.dispatch_hourly }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: automation-docs-continuous-refresh
+            run: ${{ needs.decide.outputs.dispatch_repochange }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: context-relationship-audit
+            run: ${{ needs.decide.outputs.dispatch_repochange }}
             sweep: 'false'
             advance_watermark: 'false'
     steps:

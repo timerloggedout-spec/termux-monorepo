@@ -7,8 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       target_ref:
-        description: 'Candidate branch, tag, or SHA to reconcile against base_ref'
-        required: true
+        description: 'Candidate branch, tag, or SHA to reconcile against base_ref (blank = master; dispatcher takeover)'
+        required: false
+        default: ''
         type: string
       base_ref:
         description: 'Baseline branch, tag, or SHA'
@@ -21,8 +22,8 @@ on:
         default: observe
         type: choice
         options: [observe]
-  schedule:
-    - cron: '17 * * * *'
+
+  # Cadence owned by quota-dispatch-tree.yml (Tier 3 tranche, issue #1573).
 
 permissions:
   contents: read

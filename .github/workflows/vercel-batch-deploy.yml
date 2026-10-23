@@ -17,8 +17,7 @@ name: vercel-batch-deploy
 #   and at most once per COOLDOWN_H hours (Tribute first). Deferred work is retried
 #   the hour room opens, using next_free_at (oldest deployment in window + 24 h).
 on:
-  schedule:
-    - cron: "23 * * * *"
+  # Cadence owned by quota-dispatch-tree.yml (Tier 3 tranche, issue #1573).
   workflow_dispatch:
     inputs:
       force:

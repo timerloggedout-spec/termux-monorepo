@@ -421,8 +421,8 @@ triggered the apps.
 quota-aware cadence. (2) No credential purge/rotation/revocation without
 redundancy + owner clone/archive + dependency evaluation. (3) Names-only for
 all credential work. (4) Poller output is never committed (commits burn
-Vercel/Render quota) — census snapshots live in the workspace, this doc is
-hand-refreshed. (5) Provider-neutral early dispatch layer; per-provider
+Vercel/Render quota) — census snapshots persist in the poll workflow's
+Actions cache + run artifacts, this doc is refreshed via PR. (5) Provider-neutral early dispatch layer; per-provider
 parallel quota threads, each reconciling its own cap before its own dispatch.
 
 **Immediate (owner-actionable this week):**
@@ -451,17 +451,30 @@ parallel quota threads, each reconciling its own cap before its own dispatch.
 
 ## 10. Active polling
 
-A 6-hourly census poll (`github-integration-matrix-poll`, alongside
-`jules-census-6h`) re-runs the LIVE-API census and diffs it against the previous
-workspace snapshot: new/removed check-apps on master heads, bot-actor changes,
-hook health (last response codes), secret-name additions/removals (names
-only), environment/workflow counts, deployment-creator mix. Per the owner
-order of 2026-10-22, findings land **on GitHub**: material diffs are posted
-as `[MUSEai]` comments on the standing thread (Issue #1505), and when a diff
-materially stales this doc the poll opens a doc-refresh PR and merges it
-through the repo gates — no staging, no per-step asks. **No change = no
-comment, no report.** Snapshots stay in
-`~/workspace/github-integration-census/` — never committed (rule 4).
+The poll is a **repo-native GitHub Actions workflow** —
+`.github/workflows/integration-mesh-poll.yml` running
+`scripts/github/integration_mesh_poll.py` on a 6-hourly schedule
+(`41 */6 * * *` UTC) plus `workflow_dispatch`. (Owner order 2026-10-23: the
+poll must live in Actions; the Muse cron of the same name is retired.)
+It re-runs the LIVE-API census — the port of the former chat-side
+`census.py`/`census2.py`/`census3.py`/`secrets_plus.py`/`reviews_updated.py` —
+with the provisioned `OPERATOR_GITHUB_TOKEN` (fallback `GITHUB_TOKEN`,
+per-section graceful degradation recorded, never read as removals) and
+diffs it against the previous snapshot: new/removed check-apps on master
+heads and cross-repo, org installations, bot-actor changes, hook health
+(last response codes), secret-name additions/removals in every store
+(names only), environment/variable/workflow sets, deployment-creator mix,
+and a §9 plan-state check (rows claiming open/pending for closed/merged
+items are flagged stale — the I1 failure mode). A verify pass re-runs any
+headline total that drops or zeroes before anything is published.
+Findings land **on GitHub**: material diffs post as one `[MUSEai]`
+comment on the standing thread (Issue #1505); **structural changes — or
+four accumulated figure-only polls — also open/update a labeled
+`mesh-refresh` issue**, so a finding becomes tracked work with a refresh
+checklist instead of looping as comments. **No change = no comment.**
+Snapshots persist in the Actions cache + 30-day run artifacts — never
+committed (rule 4). Doc refresh PRs still land through the repo gates,
+driven by the `mesh-refresh` issue's diff.
 
 ## NOT ESTABLISHED — stated, not filled in
 

@@ -275,6 +275,7 @@ absence from the screenshot portion is expected, not contradictory.
 | Qodo Code Review | `qodo-code-review` / qodo-ai | 41/2,000 comments + reviews | Peer reviewer (orchestrator tracked opt-in) |
 | GitHub Advanced Security | `github-advanced-security` / github | submitted reviews in sample; check runs on PR heads | Code scanning lane |
 | Blacksmith.sh | `blacksmith-sh` / useblacksmith | suites on 30/30 heads | Hosted Actions runners (speed/cost lane) |
+| Buildkite | `buildkite` / buildkite | **NEW 2026-10-23** — 2 check suites in the 30-head window (1 success, 1 failure; first seen 2026-10-23 ~02:59 PDT) + new repo webhook (id 702058218, all events, last 200 OK) | External CI lane — arrived with no repo-side workflow; who set it up NOT ESTABLISHED from API evidence |
 | Codecov | `codecov` / codecov | suites on 30/30 heads + `CODECOV_TOKEN` secret | Coverage lane |
 | Hark | `hark` / Adcock-AGI-Inc | suites on 30/30 heads | Agent surface (MAP §B7); its GitHub App is one of its connections |
 | LaunchDarkly agent | `launchdarkly-agent` / launchdarkly | suites on 30/30 heads | AgentHQ flag/agent-task lane — no visible task use yet (§9 C6) |
@@ -332,12 +333,12 @@ activity evidence, labeled as such.)
 
 **Cross-repo result:** only **10 of 60** repos show any app suites on their
 head commits; 3 of those show GitHub Actions only. The full cluster
-(19–23 apps) appears on exactly **7 repos**:
+(19–24 apps) appears on exactly **7 repos**:
 
 | Repo | Apps on head | Notes |
 |---|---|---|
-| `termux-monorepo` | 23 | The hub (§5/§6) |
-| `timerloggedout-spec.github.io` | 23 | The user-site repo carries the same full cluster |
+| `termux-monorepo` | 24 | The hub (§5/§6) — **+Buildkite this poll** |
+| `timerloggedout-spec.github.io` | 24 | The user-site repo carries the same full cluster — **+Buildkite this poll** |
 | `gh-aw-mcpg_fork` | 22 | Missing github-pages vs hub |
 | `gh-aw_fork` | 22 | Same |
 | `agentos_fork` | 20 | |
@@ -348,7 +349,8 @@ head commits; 3 of those show GitHub Actions only. The full cluster
 Per-app spread across those repos: the core 19 apps (Cursor, Gitar, CodeRabbit,
 Mistral, Devin, Vercel, Render, Travis, Sentry, LaunchDarkly, Codacy, Aikido,
 BlocksOrg, Tembo, Graphite, Mintlify, Kilo, Pulumi, Blacksmith) appear on all 7
-cluster repos; **Codecov on 5, Hark on 4, GitHub Pages on 2** (hub + user-site).
+cluster repos; **Codecov on 5, Hark on 4, GitHub Pages on 2** (hub + user-site),
+**Buildkite on 2** (hub + user-site — new 2026-10-23).
 Reading: the review/deploy app cluster's reach covers all seven cluster
 repos, not just the hub — consistent with all-repositories
 installations — while Codecov/Hark/Pages act only where their specific
@@ -375,16 +377,16 @@ triggered the apps.
 
 | Piece | State |
 |---|---|
-| Webhooks (3) | **Linear** — all events (`*`), last 200 OK · **GitLab mirror** — push+PR → `gitlab.com` project 85129320 mirror/pull, last **400** · **ZenHub** — 12 event types, last **422 misconfigured** |
-| Workflows | **198 total, 197 active** (+2 since the 2026-10-22 ~09:48 PDT poll). Recent 100 runs: actors `timerloggedout-spec` 100 (owner-attributed burst — schedule + dispatch surface; account-attributed surface — which specific token fired each run is NOT ESTABLISHED, see the closing list), coderabbitai[bot] 0 in this window; events workflow_run 44, issue_comment 54, schedule 2 — window composition swung fully to owner-driven runs this poll; CodeRabbit review activity continues in both review frames, so no lane outage |
-| PR / issue totals (v2, fully paginated) | **1,342 PRs** — authors: owner 1,036 (+10), Jules 284 (+1), CodeRabbit 9, github-actions 4 (+1), Dependabot 3, ECC 3, Devin 2, Tembo 1 · **207 true issues** (owner 187, github-actions 19 (+1), mehvvy 1) · requested-reviewer records sit almost entirely on the owner (10) — the peer bots are triggered by comments/orchestrator, not by review requests |
-| Submitted reviews (two frames — keep separate) | *Most-recently-updated 150 PRs:* 42 PRs carry 279 reviews — Devin 147 (all COMMENTED; 92 on #143 alone), CodeRabbit 83 (57 CHANGES_REQUESTED / 6 APPROVED / 19 COMMENTED / 1 DISMISSED), owner 27, Aikido 12, GHAS 8, Qodo 2. *Most-recently-created 150 PRs:* only 19 PRs carry reviews — CodeRabbit 35, owner 17, GHAS 7. Review weight lives on long-lived PRs |
-| Comment actors (2,000 newest) | Only **10 distinct actors**: ECC 915 (46%), owner 466, github-actions 223, CodeRabbit 155, Codex 80, BlocksOrg 60, Gitar 42, Qodo 41, Vercel 12, Jules 6 — **bots ≈ 77% of volume** |
+| Webhooks (4) | **Linear** — all events (`*`), last 200 OK · **GitLab mirror** — push+PR → `gitlab.com` project 85129320 mirror/pull, last **400** · **ZenHub** — 12 event types, last **422 misconfigured** · **Buildkite (NEW 2026-10-23)** — all events (`*`), last 200 OK (id 702058218) |
+| Workflows | **200 total, 199 active** (+2 since the 2026-10-22 21:48 PDT poll; no repo-side Buildkite workflow — the new Buildkite lane is webhook/check-app only). Recent 100 runs: actors coderabbitai[bot] 43, ecc-tools[bot] 43, `timerloggedout-spec` 12 (owner-attributed — schedule + dispatch surface; which specific token fired each run is NOT ESTABLISHED, see the closing list), gitar-bot[bot] 2; events workflow_run 55, issue_comment 44, schedule 1 — bot-dispatch runs back in the majority this window; CodeRabbit review activity continues in both review frames, so no lane outage |
+| PR / issue totals (v2, fully paginated) | **1,358 PRs** — authors: owner 1,049 (+13), Jules 287 (+3), CodeRabbit 9, github-actions 4, Dependabot 3, ECC 3, Devin 2, Tembo 1 · **213 true issues** (owner 191 (+4), github-actions 21, mehvvy 1) · requested-reviewer records sit almost entirely on the owner (10) — the peer bots are triggered by comments/orchestrator, not by review requests |
+| Submitted reviews (two frames — keep separate) | *Most-recently-updated 150 PRs:* 41 PRs carry 277 reviews — Devin 146 (all COMMENTED; 92 on #143 alone), CodeRabbit 82 (56 CHANGES_REQUESTED / 6 APPROVED / 19 COMMENTED / 1 DISMISSED), owner 28, Aikido 12, GHAS 7, Qodo 2. *Most-recently-created 150 PRs:* 22 PRs carry reviews — CodeRabbit 37 (23 CHANGES_REQUESTED / 10 COMMENTED / 4 APPROVED), owner 18 (all COMMENTED), GHAS 7. Review weight lives on long-lived PRs |
+| Comment actors (2,000 newest) | Only **10 distinct actors**: ECC 792 (40%), owner 475, github-actions 263, CodeRabbit 155, Codex 105, BlocksOrg 81, Gitar 54, Qodo 54, Vercel 13, Jules 8 — **bots ≈ 76% of volume** |
 | Actions permissions | Enabled, allowed_actions = all, SHA pinning not required. Default workflow permissions = **write**; workflows **can approve PR reviews** (`can_approve_pull_request_reviews: true`) — a real mesh capability: the repo's own automation can act as an approver |
 | Deploy keys / autolinks / collaborators | **0 / 0 / owner only** — no deploy-key or autolink integrations exist on the hub repo |
 | Pages | Legacy build from `gh-pages` branch, https enforced, `timerloggedout-spec.github.io/termux-monorepo/` |
 | Environments | 14 (listed §2c) — deployment targets exist for help-wanted-dash / oversight / mcp-hub / termux-monorepo in Preview + Production pairs |
-| Deployments (300 sampled) | Mintlify 161 (staging/docs) · Vercel 91 (Preview/Production per app) · GitHub Pages 48 |
+| Deployments (300 sampled) | Mintlify 153 (staging/docs) · Vercel 96 (Preview/Production per app) · GitHub Pages 51 |
 | Branch governance | Ruleset `master-no-rewind` **active** (deletion + non-fast-forward blocked). Classic branch protection on master: **none** (404) — the repo gate + ruleset carry governance instead |
 | Vulnerability alerts | endpoint live (204) · Automated security fixes **disabled** |
 | Root config signals | `.coderabbit.yaml` (assertive, auto-review+autofix on), `.devin/`, `.Jules/`, `.claude/`, `.codex/`, `.github/dependabot.yml`, `docs.json` (Mintlify), `vercel.json` lane via apps |
@@ -404,7 +406,7 @@ triggered the apps.
 |---|---|---|---|
 | Coding (write code) | Jules (Bolt ⚡) | Cursor, Devin, Copilot SWE (unused), Kilo, Factory (dormant) | No — one primary, rest review-weighted |
 | PR review | CodeRabbit (required) | Devin (top volume), Qodo, Gitar, ECC (comments), Codex, Copilot Reviewer, Mistral, Aikido, Codacy | **Yes — 9+ reviewers/PR** → cadence problem, §9 I7 |
-| CI / checks | GitHub Actions (198 workflows) | Blacksmith runners, Travis (duplicate signal) | Travis duplication, §9 I4 |
+| CI / checks | GitHub Actions (200 workflows) | Blacksmith runners, Travis (duplicate signal), Buildkite (new 2026-10-23, external CI — webhook/check-app only) | Travis duplication, §9 I4 |
 | Deploy / preview | Vercel (apps) | Render (previews), Mintlify (docs), Pages, Fly.io (token only), Koyeb (dormant) | Vercel daily cap is the binding constraint, §9 I5 |
 | PM / planning | Linear (webhook + API + Jules MCP + Muse connector — 4 faces, one spine) | ZenHub (broken), GitHub Projects (enabled, unused visibly) | ZenHub decision, §9 I3 |
 | Memory / telemetry | HindSight (secrets ×5, env `hindsight-prod`) | Hex (via CellCog secret), Supermemory (dormant) | OK |

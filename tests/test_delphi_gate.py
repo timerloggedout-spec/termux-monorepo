@@ -51,7 +51,8 @@ def test_votes_are_signed():
     panel, reg, cat = _load()
     res = gate.delphi(cat["turso.free"], panel, "#1", "s1")
     for v in res["rounds"][-1]["votes"]:
-        assert v["signed"].startswith("Signed-off-by: Delphi-") and "(OPERATOR) s1 / #1#r" in v["signed"]
+        assert v["signed"].startswith("Signed-off-
+by: Delphi-") and "(OPERATOR) s1 / #1#r" in v["signed"]
         assert len(v["sha256"]) == 16
 
 
@@ -92,7 +93,8 @@ def test_model_ballots_disabled_even_with_keys_and_legacy_opt_in(monkeypatch):
     panel, reg, cat = _load()
     budget = {"llm": 30}
     assert gate.llm_vote("Scout", cat["openrouter.free"], "", budget) is None
-    assert budget == {"llm": 30}
+    assert budget == {"
+llm": 30}
     result = gate.delphi(cat["openrouter.free"], panel, budget=budget)
     assert all(v["via"] == "rubric" for r in result["rounds"] for v in r["votes"])
 
@@ -131,7 +133,8 @@ def test_radar_lists_only_uncovered_surfaces(tmp_path):
     _, reg, cat = _load()
     fs = tmp_path / "fs.jsonl"
     fs.write_text(json.dumps({"resource_id": "new-thing", "category": "data", "canonical_source": "https://example.com"}) + "\n")
-    radar = gate.radar_candidates(cat, reg, set(cat), str(fs))
+    
+radar = gate.radar_candidates(cat, reg, set(cat), str(fs))
     ids = {c["id"] for c in radar}
     assert "new-thing" in ids
     covered = {s["registry_id"] for s in cat.values() if s.get("registry_id")}
@@ -168,7 +171,8 @@ def test_tribute_signals_parse_and_ewma():
     sigs = gate.parse_signals(raw)
     assert len(sigs) == 2
     assert gate.parse_signals(json.dumps({"surface": "tribute-lane", "repo": "x/y", "outcome": "approved"}))[0]["weight"] == 0.5
-    assert gate.parse_signals("null") == [] and gate.parse_signals("") == []
+    as
+sert gate.parse_signals("null") == [] and gate.parse_signals("") == []
     st = gate.apply_outcomes({"surfaces": {}}, sigs)
     t = st["surfaces"]["tribute-lane"]
     assert t["n"] == 2 and t["sum"] == 0 and t["repos"]["a/b"]["n"] == 2 and t["repos"]["a/b"]["last"] == "hostile_spam_flag"
@@ -186,3 +190,48 @@ def test_graded_feedback_and_quantized_hash():
     s = cat["turso.free"]
     assert gate.input_hash(s, tiny, reg, {}) == gate.input_hash(s, panel["roles"], reg, {})
     assert "tribute-lane" in cat
+
+
+def test_run_defers_single_issue_on_rate_limit_and_still_updates_board(monkeypatch, tmp_path):
+    """A 403/429 on one issue defers only that issue; the board is still regenerated before exit."""
+    for k, v in {"GITHUB_REPOSITORY": "o/r", "GITHUB_TOKEN": "t", "GITHUB_REF_NAME": "master",
+                 "DELPHI_OUT": str(tmp_path / "out.jsonl")}.items():
+        monkeypatch.setenv(k, v)
+    patched = []
+
+    class FakeGH:
+        def __init__(self, repo, token):
+            self.calls = 0
+
+        def req(self, method, path, body=None):
+            self.calls += 1
+            if path.startswith("https://api.github.com/rate_limit"):
+                return {"resources": {"core": {"remaining": 5000}}}
+            if method == "GET" and "labels=delphi:rfp" in path:
+                mk = lambda n, sid: {"number": n, "title": f"[delphi:rfp] {sid}",
+                                     "body": f"### Surface id\n\n{sid}", "html_url": "https://x",
+                                     "labels": [{"name": "delphi:rfp"}]}
+                return [mk(11, "turso.free"), mk(12, "render.free")]
+            if method == "GET" and path == "/issues/11/comments?per_page=100":
+                return []
+            if method == "POST" and path == "/issues/11/comments":
+                raise gate.RateLimited("403 remaining=90 on POST /issues/11/comments")
+            if method == "GET" and "labels=delphi:board" in path:
+                return [{"number": 1474, "body": ""}]
+            if method == "PATCH" and path == "/issues/1474":
+                patched.append(body)
+                return {}
+            return {}
+
+    monkeypatch.setattr(gate, "GH", FakeGH)
+
+    class Args:
+        reason = "test"
+        depth = 0
+
+    assert gate.cmd_run(Args()) == 0
+    assert patched, "board must be regenerated even when a per-issue call rate-limits"
+    body = patched[0]["body"]
+    assert body.startswith(gate.BOARD_MARK)
+    rows = [l for l in body.splitlines() if l.startswith("| #")]
+    assert len(rows) == 2  # the deferred issue and the processed one both appear

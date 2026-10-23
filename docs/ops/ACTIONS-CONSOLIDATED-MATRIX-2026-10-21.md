@@ -1,30 +1,29 @@
-# Consolidated Actions Workflows Matrix — 2026-10-22 Upgrade (live refresh)
+# Consolidated Actions Workflows Matrix — 2026-10-23 Upgrade (live refresh)
 
-**Branch:** `ops/actions-matrix-upgrade-2026-10-18` (PR #1483)
+**Branch:** `ops/actions-matrix-upgrade-2026-10-23`
 **Authority:** Issue #631 13-phase + evidence-led-monorepo-ops + adaptive-wait.
 **Goal:** Z3π0 Failures, 100% SUCCESS on required gates. Attentive audit of Skipped/Cancelled. Reduce notification spam via modular consolidations. Operational Pinggy/Tailscale alternatives with public-obfuscated device identification. Quota-aware caching, cadence, 3L0 moneyball telemetry. C.A.D.E. Continuously Autonomous Development Environment.
 
-## Current State Recon (2026-10-22 ~19:00 UTC)
+## Current State Recon (2026-10-23 ~05:00 UTC)
 
-- Master tip recent: success-dominant on core gates. Residual failures are mostly capacity, device probes, or high-volume cascades (not true logic fails).
-- High-volume cascades identified: lane-events-recorder (~23k runs), agent-throughput (~38k), issue_comment fan-out from bots (CodeRabbit, etc.) producing massive Skipped/Cancelled.
-- Modular `issue-comment-router.yml` live as early classifier (bots skipped unless matched; jules/ledger/gemini only on explicit). Reduces downstream starts.
-- Watcher: dispatch-only. Cadence Lead/Lag (`*/4`) owns true lag_failure incidents.
-- Device tunnel/auth (Pinggy / Tailscale on BLU B160V #1/#2): lag classified as notice (prefer exit 0). Opaque public `device_id=tmx-node-primary`. Live publisher still pending on #1 (broken screen origin).
+- Master tip `0e4eb9ca` : success-dominant on core dual-gate / schedule / workflow_run. Residual schedule failures: tribute-system1 (scan step), Agentic Auth Canary (missing heartbeat).
+- High-volume cascades: lane-events-recorder, agent-throughput, issue_comment fan-out still present; modular router + cadence ownership advancing.
+- Device tunnel/auth (Pinggy / Tailscale on BLU B160V #1/#2): lag classified as notice (exit 0). Opaque public `device_id=tmx-node-primary`. Live publisher pending on #1 (broken screen origin). Auth canary updated to warning + exit 0.
 - Stall-watch resilient to API capacity (403/5xx → notice + exit 0).
-- Dual-gate preserved. Vercel Hobby non-gate. Intentional concurrency cancels audited as non-failures.
+- Dual-gate preserved. Vercel Hobby non-gate. Intentional concurrency cancels audited as non-failures. Skipped/Cancelled require validation audit (documented condition or successor).
 
 ## Repeated Issue Classes & Disposition
 
 | Class | Examples | Root Cause | Fix / Disposition | Status |
 |-------|----------|------------|-------------------|--------|
 | Vercel rate-limit / deploy cap | #1419, #1314 | Hobby plan daily cap | Path filters, admission, non-gate. Adaptive defer. | Active / non-gate |
-| Skipped/Cancelled spam | bot issue_comment, concurrency, workflow_run cascades | Broad triggers + high volume | Modular router + `if:` + concurrency groups + cadence ownership. Suppress pure skips in notifications. | Advancing (router live; expand extraction) |
+| Skipped/Cancelled spam | bot issue_comment, concurrency, workflow_run cascades | Broad triggers + high volume | Modular router + `if:` + concurrency groups + cadence ownership. Suppress pure skips in notifications. | Advancing |
 | Zero-job / queued ghosts | Historical | Schedule/workflow id | v3 live; reaper active. | Historical |
-| Device tunnel / auth (Pinggy / Tailscale) | Auth Canary, Tunnel Canary, #1440, BLU B160V#1/#2 | Publisher not live; stale heartbeat | Opaque `device_id: tmx-node-primary`. Lag as notice (exit 0). Tailscale preferred; Pinggy fallback. | Operational gap / device-side |
-| API pressure / stall watch | Runtime Stall Watch, observatory 403 | High Actions volume | Resilient collection: capacity lag → exit 0 + receipt. | Fixed on branch |
+| Device tunnel / auth (Pinggy / Tailscale) | Auth Canary, Tunnel Canary, BLU B160V#1/#2 | Publisher not live; stale heartbeat | Opaque `device_id: tmx-node-primary`. Lag as notice (exit 0). Tailscale preferred; Pinggy fallback. | Soft-fail live |
+| API pressure / stall watch | Runtime Stall Watch, observatory 403 | High Actions volume | Resilient collection: capacity lag → exit 0 + receipt. | Fixed |
 | Quota / capacity | Actions free; Vercel constrained | Provider limits | Adaptive telemetry, dynamic cache, 3L0 moneyball. No blind retries. | Active |
 | Filename / YAML parse | Historical | Not current-tree | Closed. | Closed |
+| Tribute scan residual | tribute-system1 schedule | API pressure or empty results | Soft classification as lag; continue + artifact. | In progress |
 
 ## Cadence & Cache Improvements (3L0 Moneyball)
 
@@ -58,7 +57,7 @@ flowchart TD
 - Device #2: replica/observer; do not overwrite origin manifest.
 - September tests on #1; dual-device now. Manifests report device_id + TTL + role.
 - Tailscale preferred; Pinggy emergency fallback (ssh -R0:localhost:port free.pinggy.io). Credentials names-only in #184.
-- Branch tunnel-canary + intended probes treat lag as notice (exit 0) to reduce spam while preserving visibility via step summary / issues.
+- Auth canary + tunnel probes treat lag as notice (exit 0) to reduce spam while preserving visibility via step summary / issues.
 
 ## Quota Limit Planning
 
@@ -75,7 +74,7 @@ flowchart TD
 - Stall-watch resilient to API capacity.
 - Dual-gate promote authority. Device probes non-gate when classified as lag.
 
-**Next:** Promote PR #1483 once dual-gate green. Expand router to full job extraction / deprecate redundant workflows. Live device publisher on #1 (tmx-node-primary) or proven Tailscale. Continue C.A.D.E. BIUDL.
+**Next:** Soften remaining schedule residuals (tribute). Expand router to full job extraction / deprecate redundant workflows. Live device publisher on #1 (tmx-node-primary) or proven Tailscale. Continue C.A.D.E. BIUDL.
 
 Agent-Identity: Grok (Administrator)
 **BIUDL** — Broad → Integrate → Validate → Develop → Learn.

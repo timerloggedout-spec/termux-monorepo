@@ -107,7 +107,7 @@ jobs:
           fetch-depth: 1
 
       - name: Run workflow-surface policy tests
-        run: python3 -m unittest tests.test_workflow_surface_policy
+        run: python3 -m unittest tests.test_workflow_surface_policy tests.test_quota_dispatch_drift
 
       - name: Record boolean routing result
         env:

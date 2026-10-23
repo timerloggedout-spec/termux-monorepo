@@ -28,14 +28,15 @@ concurrency:
 
 jobs:
   route:
-    # Buildkite PR builds (github-actions plugin) cap GITHUB_TOKEN at contents:read;
-    # dorny/paths-filter needs pull-requests:read to evaluate PR diffs, so skip
-    # the classification step there (step-level env guard; env is not a valid
-    # context in job-level if). verify (always()) still runs with contents:read.
+    # Classification is git-diff based: no pulls-API call, no scopes beyond
+    # contents:read, and no action token-input defaults. The job therefore
+    # compiles and runs identically on GitHub and on Buildkite PR builds
+    # (github-actions plugin caps GITHUB_TOKEN at contents:read and previously
+    # hard-failed dorny/paths-filter's static token validation, which also broke
+    # verify and automation-documentation as broken dependencies).
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: read
     outputs:
       automation: ${{ steps.changes.outputs.automation }}
       source: ${{ steps.changes.outputs.source }}
@@ -44,60 +45,105 @@ jobs:
       automation_docs: ${{ steps.changes.outputs.automation_docs }}
       high_impact_control_plane: ${{ steps.changes.outputs.high_impact_control_plane }}
     steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+
       - name: Classify changed surfaces
         id: changes
-        if: env.BUILDKITE_BUILD_NUMBER == ''
-        uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4.0.3
-        with:
-          filters: |
-            automation:
-              - '.github/workflows/**'
-              - '.github/actions/**'
-              - 'scripts/ci/workflow_surface_policy.py'
-              - 'tests/test_workflow_surface_policy.py'
-            high_impact_control_plane:
-              - '.github/workflows/**'
-              - '.github/actions/**'
-              - 'scripts/model_router.py'
-              - 'docs/schemas/model-success-matrix.yaml'
-              - 'docs/schemas/llm-leaderboard-matrix.yaml'
-              - 'docs/schemas/model-rotation.yaml'
-              - 'docs/schemas/routing-priority.yaml'
-              - 'docs/ops/OPERATOR_INTERACTIVE_ACTIONS.md'
-            automation_docs:
-              - '.github/workflows/**'
-              - '.github/actions/**'
-              - 'scripts/model_router.py'
-              - 'scripts/ci/automation_docs.py'
-              - 'tests/test_automation_docs.py'
-              - 'docs/ops/automation-decision-tree.md'
-              - 'docs/ops/diagrams/**'
-              - 'docs/ops/generated/**'
-              - 'docs/schemas/model-success-matrix.yaml'
-              - 'docs/schemas/llm-leaderboard-matrix.yaml'
-              - 'docs/schemas/model-rotation.yaml'
-              - 'docs/schemas/routing-priority.yaml'
-              - 'docs/ops/OPERATOR_INTERACTIVE_ACTIONS.md'
-              - 'docs/proposals/active/actions-refinements/**'
-              - 'docs/proposals/active/rate-limit-rotation/**'
-            source:
-              - '**/*.py'
-              - '**/*.sh'
-              - '**/*.js'
-              - '**/*.mjs'
-              - '**/*.c'
-              - '**/*.h'
-              - '!tests/**'
-              - '!scripts/ci/**'
-            tests:
-              - 'tests/**'
-            docs:
-              - 'docs/**'
-              - '.github/ISSUE_TEMPLATE/**'
-              - '**/README*'
-              - 'CONTRIBUTING.md'
-              - 'SECURITY.md'
-              - 'CODE_OF_CONDUCT.md'
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin master
+          BASE_HINT="${{ github.event.pull_request.base.sha }}"
+          BASE="origin/master"
+          if [ -n "${BASE_HINT}" ]; then
+            if git fetch --no-tags --depth=1 origin "$BASE_HINT" 2>/dev/null; then
+              BASE="$BASE_HINT"
+            else
+              echo "::notice::base sha $BASE_HINT unavailable; classifying against origin/master tip"
+            fi
+          fi
+          git diff --name-only "$BASE" > changed_paths.txt
+          echo "classification base: $BASE"
+          python3 - <<'PY'
+          import fnmatch, os
+
+          with open("changed_paths.txt") as f:
+              paths = [line.strip() for line in f if line.strip()]
+
+          FILTERS = {
+              "automation": [
+                  ".github/workflows/**",
+                  ".github/actions/**",
+                  "scripts/ci/workflow_surface_policy.py",
+                  "tests/test_workflow_surface_policy.py",
+              ],
+              "high_impact_control_plane": [
+                  ".github/workflows/**",
+                  ".github/actions/**",
+                  "scripts/model_router.py",
+                  "docs/schemas/model-success-matrix.yaml",
+                  "docs/schemas/llm-leaderboard-matrix.yaml",
+                  "docs/schemas/model-rotation.yaml",
+                  "docs/schemas/routing-priority.yaml",
+                  "docs/ops/OPERATOR_INTERACTIVE_ACTIONS.md",
+              ],
+              "automation_docs": [
+                  ".github/workflows/**",
+                  ".github/actions/**",
+                  "scripts/model_router.py",
+                  "scripts/ci/automation_docs.py",
+                  "tests/test_automation_docs.py",
+                  "docs/ops/automation-decision-tree.md",
+                  "docs/ops/diagrams/**",
+                  "docs/ops/generated/**",
+                  "docs/schemas/model-success-matrix.yaml",
+                  "docs/schemas/llm-leaderboard-matrix.yaml",
+                  "docs/schemas/model-rotation.yaml",
+                  "docs/schemas/routing-priority.yaml",
+                  "docs/ops/OPERATOR_INTERACTIVE_ACTIONS.md",
+                  "docs/proposals/active/actions-refinements/**",
+                  "docs/proposals/active/rate-limit-rotation/**",
+              ],
+              "source": [
+                  "**/*.py",
+                  "**/*.sh",
+                  "**/*.js",
+                  "**/*.mjs",
+                  "**/*.c",
+                  "**/*.h",
+                  "!tests/**",
+                  "!scripts/ci/**",
+              ],
+              "tests": ["tests/**"],
+              "docs": [
+                  "docs/**",
+                  ".github/ISSUE_TEMPLATE/**",
+                  "**/README*",
+                  "CONTRIBUTING.md",
+                  "SECURITY.md",
+                  "CODE_OF_CONDUCT.md",
+              ],
+          }
+
+          def match(path, pattern):
+              if pattern.startswith("**/"):
+                  return fnmatch.fnmatch(path, pattern) or fnmatch.fnmatch(path, pattern[3:])
+              return fnmatch.fnmatch(path, pattern)
+
+          def changed(patterns):
+              positive = [p for p in patterns if not p.startswith("!")]
+              negative = [p[1:] for p in patterns if p.startswith("!")]
+              hits = [p for p in paths if any(match(p, pat) for pat in positive)]
+              hits = [p for p in hits if not any(match(p, pat) for pat in negative)]
+              return bool(hits)
+
+          with open(os.environ["GITHUB_OUTPUT"], "a") as out:
+              for name, patterns in FILTERS.items():
+                  out.write("%s=%s\\n" % (name, "true" if changed(patterns) else "false"))
+          PY
+
 
   verify:
     needs: route

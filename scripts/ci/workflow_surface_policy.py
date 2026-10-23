@@ -3,8 +3,9 @@
 
 The classifier accepts path strings as data only. It emits stable boolean category
 flags and never invokes a shell, expands a path, or returns a filename for workflow
-interpolation. The GitHub workflow uses dorny/paths-filter only for its boolean
-outputs; this helper supplies deterministic fixture coverage for the same policy.
+interpolation. The GitHub route job computes its boolean outputs from a git diff against the
+pull-request base; this helper supplies the same policy as a deterministic,
+test-covered classifier.
 """
 
 from __future__ import annotations

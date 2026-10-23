@@ -3,11 +3,11 @@ name: Vantage cost report
 # Cost-telemetry lane for Vantage SH (ledger #184; RFP #1576 telemetry plane).
 # Observer only: read-only probes against https://api.vantage.sh/v2. It never
 # posts, mutates, or buys; the token is never printed, committed, or artifacted.
-# Degrades cleanly while VANTAGE_API_TOKEN is absent (registry section 3:
+# Degrades cleanly while VANTAGE_PAT_GH_SECRETS is absent (registry section 3:
 # secrets are structurally impossible via operator-variable-provision.yml).
 #
 # Semantics:
-#   token_present = VANTAGE_API_TOKEN secret is configured
+#   token_present = VANTAGE_PAT_GH_SECRETS secret is configured
 #   api_ok        = workspaces probe answered 2xx (token valid)
 #   probes        = per-endpoint best-effort status (cost reports, budgets,
 #                   budget alerts); 403/404 recorded, never fatal unless strict
@@ -36,7 +36,7 @@ jobs:
     steps:
       - name: Probe Vantage cost telemetry
         env:
-          VANTAGE_API_TOKEN: ${{ secrets.VANTAGE_API_TOKEN }}
+          VANTAGE_API_TOKEN: ${{ secrets.VANTAGE_PAT_GH_SECRETS }}
           STRICT: ${{ inputs.strict || 'false' }}
         run: |
           set -uo pipefail
@@ -74,11 +74,11 @@ jobs:
                   "phase": "dormant",
                   "reason": "vantage-token-absent",
                   "api_ok": False,
-                  "note": "set VANTAGE_API_TOKEN (docs/ops/secrets-and-variables-registry.md)",
+                  "note": "set VANTAGE_PAT_GH_SECRETS (docs/ops/secrets-and-variables-registry.md)",
               })
               with open(receipt_path, "w") as f:
                   json.dump(receipt, f, indent=2, sort_keys=True)
-              print("::notice::VANTAGE_API_TOKEN not set; lane dormant.")
+              print("::notice::VANTAGE_PAT_GH_SECRETS not set; lane dormant.")
               raise SystemExit(0)
 
           ws_code, ws_body = get("/workspaces")

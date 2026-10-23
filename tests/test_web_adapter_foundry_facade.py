@@ -74,6 +74,42 @@ def test_bad_inputs(base):
     assert status == 413
 
 
+def _fake_dns(monkeypatch, mapping):
+    import socket as socket_mod
+
+    def fake(host, port, *a, **k):
+        ip = mapping[host]
+        return [(socket_mod.AF_INET, socket_mod.SOCK_STREAM, 6, "", (ip, 0))]
+
+    monkeypatch.setattr(socket_mod, "getaddrinfo", fake)
+
+
+def test_fetch_url_barrier_chain(monkeypatch):
+    from ops.web_adapter_foundry import waf
+    _fake_dns(monkeypatch, {"ok.example": "93.184.216.34",
+                            "sneaky.example": "10.0.0.5"})
+    allow = ["ok.example", "sneaky.example"]
+    assert waf._validate_fetch_url("https://ok.example/x", allow) is None
+    assert "not in allowlist" in waf._validate_fetch_url("https://other.example/x", allow)
+    assert "non-public" in waf._validate_fetch_url("https://sneaky.example/x", allow)
+    assert "scheme" in waf._validate_fetch_url("file:///etc/passwd", allow)
+    assert waf._validate_fetch_url(None, allow)
+
+
+def test_redirect_hop_revalidated(monkeypatch):
+    import urllib.error
+    import urllib.request as urlreq
+
+    from ops.web_adapter_foundry import waf
+    _fake_dns(monkeypatch, {"ok.example": "93.184.216.34"})
+    handler = waf._AllowlistRedirectHandler(["ok.example"])
+    req = urlreq.Request("http://ok.example/start")
+    with pytest.raises(urllib.error.URLError):
+        handler.redirect_request(req, None, 302, "Found", {}, "http://169.254.169.254/latest")
+    with pytest.raises(urllib.error.URLError):
+        handler.redirect_request(req, None, 302, "Found", {}, "http://not-allowed.example/")
+
+
 def test_sse_fanout_receives_invoke(base):
     req = urllib.request.Request(base + "/events")
     with urllib.request.urlopen(req, timeout=10) as resp:

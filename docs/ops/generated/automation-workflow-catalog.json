@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "8f5c95d93f474eb2477d4d704b21c2af4a6119685d836ab804d7da55861565a4",
-  "workflow_count": 171,
+  "source_fingerprint": "a4fd5403f97e3170df73e85a75873af5327a8f0029c1279c77c6e073d25e7917",
+  "workflow_count": 172,
   "workflows": [
     {
       "action_pins": [
@@ -2093,6 +2093,23 @@
         "pull_request",
         "push",
         "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: operator-variable-provision cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "provision"
+      ],
+      "name": "Operator Variable Provision",
+      "path": ".github/workflows/operator-variable-provision.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },

@@ -3,15 +3,16 @@ name: Agentic Auth Canary
 # Validates the path that actually carries PR throughput: the operator/DeepAgent
 # gh+git CLI auth on the Termux device. The device publishes a heartbeat with
 # scripts/termux/check-gh-agentic-auth.sh --publish (branch ops/agentic-auth-heartbeat);
-# this job fails when the heartbeat is missing, stale, or degraded.
+# this job records notice (exit 0) when the heartbeat is missing, stale, or degraded.
 # Complements, not replaces, the Pinggy transport canary (PR #1249).
+# Device lag is non-gate; live publisher pending on BLU B160V#1 (opaque device_id=tmx-node-primary).
 on:
   schedule:
     - cron: "17 */6 * * *"
   workflow_dispatch:
     inputs:
       max_age_hours:
-        description: "Maximum heartbeat age before failing"
+        description: "Maximum heartbeat age before notice"
         required: false
         default: "26"
 
@@ -62,6 +63,9 @@ jobs:
               .addHeading('Agentic auth canary')
               .addRaw(`- heartbeat: ${hb ? `${hb.status} @ ${hb.observed_at} (device ${hb.device_id}, ${ageH.toFixed(1)}h old)` : 'missing'}\n`)
               .addRaw(`- last non-bot master commit: ${lastPush ? `${lastPush.sha.slice(0,7)} by ${lastPush.commit.author.name} @ ${lastPush.commit.author.date}` : 'n/a'}\n`)
-              .addRaw(problems.length ? `\n❌ ${problems.join('\n❌ ')}\n` : '\n✅ gh/git agentic auth path healthy\n')
+              .addRaw(problems.length ? `\n⚠️ NOTICE (device lag, non-gate): ${problems.join('\n⚠️ ')}\n` : '\n✅ gh/git agentic auth path healthy\n')
               .write();
-            if (problems.length) core.setFailed(problems.join(' | '));
+            if (problems.length) {
+              core.warning(problems.join(' | '));
+              // exit 0: device-side lag is known operational gap; do not spam failure notifications
+            }

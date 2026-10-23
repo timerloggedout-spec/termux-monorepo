@@ -1,8 +1,8 @@
 name: Cadence Lead/Lag
 
-on:
+nn:
   schedule:
-    - cron: "12 */4 * * *"
+    - crnn: "12 */4 * * *"
   workflow_dispatch:
     inputs:
       per_page:

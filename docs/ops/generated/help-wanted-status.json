@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-23T00:40:31Z",
+  "generated_at": "2026-10-23T04:40:10Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
   "receipts": 3894,
@@ -41682,7 +41682,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "8214e99caeaa661c185d3ad4e9dfbae2ca1f21c0",
+    "source_sha": "cdfe785220e4ec97b4f8cfe40d5a8df15e38762f",
     "source_ref": "master",
     "history_complete": false,
     "history_coverage": "lane-local-complete; repository-wide historical accountability requires sweep-accountability backfill",
@@ -41716,12 +41716,12 @@
   },
   "evolution": [
     {
-      "sha": "8214e99caeaa661c185d3ad4e9dfbae2ca1f21c0",
-      "short_sha": "8214e99caeaa",
-      "date": "2026-10-23T00:40:08Z",
+      "sha": "cdfe785220e4ec97b4f8cfe40d5a8df15e38762f",
+      "short_sha": "cdfe785220e4",
+      "date": "2026-10-23T04:39:21Z",
       "author": "github-actions[bot]",
-      "subject": "ops(help-wanted): follow-up evidence 2026-10-23T00:40Z",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/8214e99caeaa661c185d3ad4e9dfbae2ca1f21c0"
+      "subject": "chore(cadence): Lead/Lag moneyball snapshot",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/cdfe785220e4ec97b4f8cfe40d5a8df15e38762f"
     }
   ],
   "pipeline": [
@@ -41735,17 +41735,31 @@
   ],
   "tribute_audit": {
     "schema_version": "help-wanted.tribute-audit.v1",
-    "generated_at": "2026-10-23T00:40:57.431952+00:00",
-    "source_status_generated_at": "2026-10-23T00:40:31Z",
+    "generated_at": "2026-10-23T04:40:51.467580+00:00",
+    "source_status_generated_at": "2026-10-23T04:40:10Z",
     "source_tribute_count": 114,
     "unique_pr_count": 114,
     "audited_pr_count": 111,
-    "audited_this_run_count": 24,
+    "audited_this_run_count": 25,
     "attempted_this_run_count": 25,
     "deferred_this_run_count": 0,
     "unknown_this_run_count": 0,
-    "partial_this_run_count": 1,
+    "partial_this_run_count": 0,
     "audited_this_run_pr_urls": [
+      "https://github.com/fsr5-fhaachen/portals/pull/948",
+      "https://github.com/ROCm/rocm-libraries/pull/13152",
+      "https://github.com/topoteretes/cognee/pull/5439",
+      "https://github.com/Suhas29wasnotavailable/blroad/pull/12",
+      "https://github.com/MMALI3287/vibewatt/pull/100",
+      "https://github.com/apache/hugegraph-computer/pull/365",
+      "https://github.com/ciaren-labs/Ciaren/pull/234",
+      "https://github.com/finos/fluxnova-bpm-platform/pull/352",
+      "https://github.com/ShippedLabs/soroban-upgrade-safeguard/pull/781",
+      "https://github.com/stellar-compliance-kit/compliance-primitives/pull/656",
+      "https://github.com/Health-watchers/health_watchers/pull/1698",
+      "https://github.com/LabsCrypt/remitlend/pull/1990",
+      "https://github.com/RetinaX-Org/RetinaX/pull/352",
+      "https://github.com/0xLizTech/stellarforge/pull/614",
       "https://github.com/SoroScan/soroscan/pull/1690",
       "https://github.com/sorolens/sorolens/pull/753",
       "https://github.com/use-assay/Assay/pull/509",
@@ -41756,23 +41770,10 @@
       "https://github.com/Vikram-sardiwal/react-open-source/pull/50",
       "https://github.com/uttrflow/uttrflow-swift/pull/3719",
       "https://github.com/qim-center/qim3d/pull/273",
-      "https://github.com/gabe-santana/saccade/pull/27",
-      "https://github.com/MyFanss/MyFans/pull/2056",
-      "https://github.com/Neziahtech/streampay/pull/147",
-      "https://github.com/ssupportme/support-me/pull/316",
-      "https://github.com/Nodal-stellar/Nodal-AI/pull/853",
-      "https://github.com/Nodal-stellar/Nodal-AI/pull/857",
-      "https://github.com/xtekky/gpt4free/pull/3541",
-      "https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge--Frontend-/pull/971",
-      "https://github.com/timerloggedout-spec/gh-aw-mcpg_fork/pull/1",
-      "https://github.com/Octo-Protocol-org/Octo-frontend/pull/592",
-      "https://github.com/TabularisDB/tabularis/pull/1074",
-      "https://github.com/TricklePay/tricklepay-backend/pull/441",
-      "https://github.com/OneBusAway/go-gtfs/pull/33",
-      "https://github.com/QuinCyMP/dense-melee-lab/pull/10"
+      "https://github.com/gabe-santana/saccade/pull/27"
     ],
     "not_audited_count": 3,
-    "audit_window_start": 30,
+    "audit_window_start": 16,
     "audit_window_size": 25,
     "stages": {
       "stake_only": 33,
@@ -42291,7 +42292,7 @@
       },
       {
         "pr_url": "https://github.com/fsr5-fhaachen/portals/pull/948",
-        "audited_at": "2026-10-22T23:37:30.875788+00:00",
+        "audited_at": "2026-10-23T04:40:10.276817+00:00",
         "stage": "stake_only",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42322,7 +42323,7 @@
       },
       {
         "pr_url": "https://github.com/ROCm/rocm-libraries/pull/13152",
-        "audited_at": "2026-10-22T23:37:32.031605+00:00",
+        "audited_at": "2026-10-23T04:40:12.079689+00:00",
         "stage": "stake_only",
         "evidence_gaps": [
           "solution_proof_missing"
@@ -42352,7 +42353,7 @@
       },
       {
         "pr_url": "https://github.com/topoteretes/cognee/pull/5439",
-        "audited_at": "2026-10-22T23:37:33.504781+00:00",
+        "audited_at": "2026-10-23T04:40:13.904013+00:00",
         "stage": "stake_only",
         "evidence_gaps": [
           "solution_proof_missing"
@@ -42382,7 +42383,7 @@
       },
       {
         "pr_url": "https://github.com/Suhas29wasnotavailable/blroad/pull/12",
-        "audited_at": "2026-10-22T23:37:34.835159+00:00",
+        "audited_at": "2026-10-23T04:40:15.651232+00:00",
         "stage": "stake_only",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42413,7 +42414,7 @@
       },
       {
         "pr_url": "https://github.com/MMALI3287/vibewatt/pull/100",
-        "audited_at": "2026-10-22T23:37:35.856404+00:00",
+        "audited_at": "2026-10-23T04:40:17.149224+00:00",
         "stage": "stake_only",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42444,7 +42445,7 @@
       },
       {
         "pr_url": "https://github.com/apache/hugegraph-computer/pull/365",
-        "audited_at": "2026-10-22T23:37:37.094888+00:00",
+        "audited_at": "2026-10-23T04:40:19.042754+00:00",
         "stage": "stake_only",
         "evidence_gaps": [
           "solution_proof_missing"
@@ -42474,7 +42475,7 @@
       },
       {
         "pr_url": "https://github.com/ciaren-labs/Ciaren/pull/234",
-        "audited_at": "2026-10-22T23:37:38.432167+00:00",
+        "audited_at": "2026-10-23T04:40:20.843378+00:00",
         "stage": "stake_only",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42505,7 +42506,7 @@
       },
       {
         "pr_url": "https://github.com/finos/fluxnova-bpm-platform/pull/352",
-        "audited_at": "2026-10-22T23:37:39.799967+00:00",
+        "audited_at": "2026-10-23T04:40:22.499192+00:00",
         "stage": "stake_only",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42536,7 +42537,7 @@
       },
       {
         "pr_url": "https://github.com/ShippedLabs/soroban-upgrade-safeguard/pull/781",
-        "audited_at": "2026-10-22T23:37:41.367562+00:00",
+        "audited_at": "2026-10-23T04:40:24.780797+00:00",
         "stage": "stake_only",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42567,7 +42568,7 @@
       },
       {
         "pr_url": "https://github.com/stellar-compliance-kit/compliance-primitives/pull/656",
-        "audited_at": "2026-10-22T23:37:42.822824+00:00",
+        "audited_at": "2026-10-23T04:40:26.452162+00:00",
         "stage": "stake_only",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42598,7 +42599,7 @@
       },
       {
         "pr_url": "https://github.com/Health-watchers/health_watchers/pull/1698",
-        "audited_at": "2026-10-22T23:37:43.957311+00:00",
+        "audited_at": "2026-10-23T04:40:27.963423+00:00",
         "stage": "stake_only",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42629,7 +42630,7 @@
       },
       {
         "pr_url": "https://github.com/LabsCrypt/remitlend/pull/1990",
-        "audited_at": "2026-10-22T23:37:45.211739+00:00",
+        "audited_at": "2026-10-23T04:40:29.545622+00:00",
         "stage": "stake_only",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42660,7 +42661,7 @@
       },
       {
         "pr_url": "https://github.com/RetinaX-Org/RetinaX/pull/352",
-        "audited_at": "2026-10-22T23:37:46.545684+00:00",
+        "audited_at": "2026-10-23T04:40:31.125683+00:00",
         "stage": "stake_only",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42691,7 +42692,7 @@
       },
       {
         "pr_url": "https://github.com/0xLizTech/stellarforge/pull/614",
-        "audited_at": "2026-10-22T23:37:47.848477+00:00",
+        "audited_at": "2026-10-23T04:40:32.725376+00:00",
         "stage": "stake_only",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42722,7 +42723,7 @@
       },
       {
         "pr_url": "https://github.com/SoroScan/soroscan/pull/1690",
-        "audited_at": "2026-10-23T00:40:31.879454+00:00",
+        "audited_at": "2026-10-23T04:40:34.183286+00:00",
         "stage": "stake_only",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42753,7 +42754,7 @@
       },
       {
         "pr_url": "https://github.com/sorolens/sorolens/pull/753",
-        "audited_at": "2026-10-23T00:40:32.893919+00:00",
+        "audited_at": "2026-10-23T04:40:35.525948+00:00",
         "stage": "stake_only",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42784,7 +42785,7 @@
       },
       {
         "pr_url": "https://github.com/use-assay/Assay/pull/509",
-        "audited_at": "2026-10-23T00:40:34.148897+00:00",
+        "audited_at": "2026-10-23T04:40:37.272947+00:00",
         "stage": "stake_only",
         "evidence_gaps": [
           "solution_proof_missing"
@@ -42814,7 +42815,7 @@
       },
       {
         "pr_url": "https://github.com/SO4-Markets/interface/pull/1029",
-        "audited_at": "2026-10-23T00:40:35.323499+00:00",
+        "audited_at": "2026-10-23T04:40:38.972691+00:00",
         "stage": "stake_only",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42845,7 +42846,7 @@
       },
       {
         "pr_url": "https://github.com/AmpedWasTaken/SML/pull/18",
-        "audited_at": "2026-10-23T00:40:36.322266+00:00",
+        "audited_at": "2026-10-23T04:40:40.472795+00:00",
         "stage": "accepted",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42876,7 +42877,7 @@
       },
       {
         "pr_url": "https://github.com/vedantnimbarte/zero/pull/81",
-        "audited_at": "2026-10-23T00:40:37.286868+00:00",
+        "audited_at": "2026-10-23T04:40:42.108541+00:00",
         "stage": "accepted",
         "evidence_gaps": [
           "solution_proof_missing"
@@ -42906,7 +42907,7 @@
       },
       {
         "pr_url": "https://github.com/prime-radiant-inc/evener/pull/2661",
-        "audited_at": "2026-10-23T00:40:38.284670+00:00",
+        "audited_at": "2026-10-23T04:40:43.476201+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42937,7 +42938,7 @@
       },
       {
         "pr_url": "https://github.com/Vikram-sardiwal/react-open-source/pull/50",
-        "audited_at": "2026-10-23T00:40:39.390786+00:00",
+        "audited_at": "2026-10-23T04:40:45.177543+00:00",
         "stage": "accepted",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42968,7 +42969,7 @@
       },
       {
         "pr_url": "https://github.com/uttrflow/uttrflow-swift/pull/3719",
-        "audited_at": "2026-10-23T00:40:40.402819+00:00",
+        "audited_at": "2026-10-23T04:40:46.515064+00:00",
         "stage": "accepted",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42999,7 +43000,7 @@
       },
       {
         "pr_url": "https://github.com/qim-center/qim3d/pull/273",
-        "audited_at": "2026-10-23T00:40:41.293598+00:00",
+        "audited_at": "2026-10-23T04:40:47.815664+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -43030,7 +43031,7 @@
       },
       {
         "pr_url": "https://github.com/gabe-santana/saccade/pull/27",
-        "audited_at": "2026-10-23T00:40:42.493920+00:00",
+        "audited_at": "2026-10-23T04:40:50.011222+00:00",
         "stage": "accepted",
         "evidence_gaps": [
           "solution_proof_missing"

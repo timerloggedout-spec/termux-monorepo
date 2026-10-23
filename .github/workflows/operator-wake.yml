@@ -2,17 +2,21 @@ name: Operator wake
 
 # Agent/operator plane (docs/ops/CODESPACE-CREDENTIALS-SSOT.md): repo Actions
 # secrets carry the credentials; agents never hold raw token values. This lane
-# exposes two allowlisted operator duties:
+# exposes three allowlisted operator duties:
 #   inventory — full Actions secret NAME list via scripts/ops/provider_secret_inventory.py
 #               (provider-batch.yml observe pattern; names only, never values)
+#   variables — full Actions repository variable NAME list via the GitHub API
+#               (names only, never values; provisioning-status observability
+#               over the #184 plane — is SUPABASE_URL etc. provisioned yet?)
 #   wake      — gh workflow run for the allowlisted vantage-cost-report lane
 #               (optional strict=true), then poll the run and republish its
 #               receipt-v1 artifact (token-free by construction)
 # Comment trigger (marker-gated, action-effectiveness-ledger precedent):
 #   <!-- request-operator-wake -->
 #   inventory
+#   variables
 #   wake vantage-cost-report strict=true
-# Results post back to the triggering issue. workflow_dispatch mirrors both
+# Results post back to the triggering issue. workflow_dispatch mirrors all
 # commands for the Actions UI. No schedule: cadence stays with callers.
 
 on:
@@ -21,11 +25,11 @@ on:
   workflow_dispatch:
     inputs:
       command:
-        description: 'inventory | wake-vantage-strict'
+        description: 'inventory | variables | wake-vantage-strict'
         required: true
         default: 'inventory'
         type: choice
-        options: [inventory, wake-vantage-strict]
+        options: [inventory, variables, wake-vantage-strict]
 
 concurrency:
   group: operator-wake-${{ github.event.issue.number || github.event.inputs.command || github.run_id }}
@@ -64,16 +68,21 @@ jobs:
           set -uo pipefail
           report="### Operator wake report"
           want_inventory=false
+          want_variables=false
           want_wake=false
           wake_strict=false
           if [ "${GITHUB_EVENT_NAME:-}" = "workflow_dispatch" ]; then
             case "$DISPATCH_COMMAND" in
               inventory) want_inventory=true ;;
+              variables) want_variables=true ;;
               wake-vantage-strict) want_wake=true; wake_strict=true ;;
             esac
           else
             if printf '%s' "$COMMENT_BODY" | grep -Eq '(^|[^A-Za-z0-9_-])inventory([^A-Za-z0-9_-]|$)'; then
               want_inventory=true
+            fi
+            if printf '%s' "$COMMENT_BODY" | grep -Eq '(^|[^A-Za-z0-9_-])variables([^A-Za-z0-9_-]|$)'; then
+              want_variables=true
             fi
             if printf '%s' "$COMMENT_BODY" | grep -Eq 'wake[[:space:]]+vantage-cost-report([^A-Za-z0-9_.-]|$)'; then
               want_wake=true
@@ -96,6 +105,19 @@ jobs:
               fi
             else
               report="${report}"$'\n'"- secret-name inventory: script failed (see run log)"
+            fi
+          fi
+
+          if [ "$want_variables" = true ]; then
+            if var_names=$(gh api --paginate "repos/${GITHUB_REPOSITORY}/actions/variables" --jq '.variables[].name' 2>/dev/null | sort -u); then
+              var_count=$(printf '%s\n' "$var_names" | grep -c . || true)
+              report="${report}"$'\n'"- repo-variable inventory: observed (${var_count} names)"
+              if [ "$var_count" -gt 0 ]; then
+                var_list=$(printf '%s\n' "$var_names" | paste -sd, -)
+                report="${report}"$'\n'"- variable names: ${var_list}"
+              fi
+            else
+              report="${report}"$'\n'"- repo-variable inventory: unavailable (credential chain lacks admin variable-list scope; see run log)"
             fi
           fi
 
@@ -139,8 +161,8 @@ jobs:
             fi
           fi
 
-          if [ "$want_inventory" = false ] && [ "$want_wake" = false ]; then
-            report="${report}"$'\n'"- no allowlisted command found (supported: inventory; wake vantage-cost-report [strict=true])"
+          if [ "$want_inventory" = false ] && [ "$want_variables" = false ] && [ "$want_wake" = false ]; then
+            report="${report}"$'\n'"- no allowlisted command found (supported: inventory; variables; wake vantage-cost-report [strict=true])"
           fi
           {
             echo "report<<REPORT_EOF"

@@ -51,6 +51,7 @@ jobs:
                 echo "change effectiveness ledger skipped: GitHub API unavailable ($*)" >> "$GITHUB_STEP_SUMMARY"
                 cat "$err_file" >> "$GITHUB_STEP_SUMMARY"
                 echo "skipped=true" >> "$GITHUB_OUTPUT"
+                touch "$RUNNER_TEMP/gh_api_skipped.txt"
                 exit 0
               fi
               cat "$err_file" >&2
@@ -61,6 +62,7 @@ jobs:
           # Fetch PR objects only. Nothing from the PR is executed.
           git fetch --no-tags --prune origin "refs/pull/${PR_NUMBER}/head:refs/remotes/origin/pr-${PR_NUMBER}"
           pr_shas="$(gh_api_safe "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq '[.base.sha, .head.sha] | @tsv')"
+          if [[ -f "$RUNNER_TEMP/gh_api_skipped.txt" ]]; then exit 0; fi
           read -r BASE_SHA HEAD_SHA <<< "$pr_shas"
           # API head can move between fetch and measure (sweep receipt). Refetch once.
           if ! git cat-file -e "${HEAD_SHA}^{commit}" 2>/dev/null || ! git cat-file -e "${BASE_SHA}^{commit}" 2>/dev/null; then

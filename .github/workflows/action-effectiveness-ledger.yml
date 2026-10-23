@@ -58,6 +58,7 @@ jobs:
                 echo "ledger skipped: GitHub API unavailable ($*)" >> "$GITHUB_STEP_SUMMARY"
                 cat "$err_file" >> "$GITHUB_STEP_SUMMARY"
                 echo "skipped=true" >> "$GITHUB_OUTPUT"
+                touch "$RUNNER_TEMP/gh_api_skipped.txt"
                 exit 0
               fi
               cat "$err_file" >&2
@@ -66,6 +67,7 @@ jobs:
           }
 
           pr_json="$(gh_api_safe "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}")"
+          if [[ -f "$RUNNER_TEMP/gh_api_skipped.txt" ]]; then exit 0; fi
           base_sha="$(jq -r '.base.sha' <<<"$pr_json")"
           head_sha="$(jq -r '.head.sha' <<<"$pr_json")"
           head_repo="$(jq -r '.head.repo.full_name // empty' <<<"$pr_json")"
@@ -176,9 +178,11 @@ jobs:
 
           # Recover the previous v2 marker for longitudinal comparison. If absent, baseline is zero.
           existing="$(gh_api_safe --paginate "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100" --jq '.[] | select((.body // "") | startswith("<!-- action-effectiveness-ledger:v2 ")) | .id' | head -n1 || true)"
+          if [[ -f "$RUNNER_TEMP/gh_api_skipped.txt" ]]; then exit 0; fi
           previous_json='{}'
           if [[ -n "$existing" ]]; then
             previous_body="$(gh_api_safe "repos/${GITHUB_REPOSITORY}/issues/comments/${existing}" --jq .body)"
+            if [[ -f "$RUNNER_TEMP/gh_api_skipped.txt" ]]; then exit 0; fi
             previous_json="$(grep -o '<!-- action-effectiveness-ledger:v2 {.*} -->' <<<"$previous_body" | head -n1 | sed 's/^<!-- action-effectiveness-ledger:v2 //; s/ -->$//' || echo '{}')"
           fi
 

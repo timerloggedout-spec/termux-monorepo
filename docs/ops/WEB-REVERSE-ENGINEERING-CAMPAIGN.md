@@ -88,15 +88,16 @@ SSE / JSONL. See `docs/repositories/STARS-FORKS-WATCH.md` §3.
 
 1. ✅ Foundry core + iDEAL doc (#1550) · ✅ Stars|Forks|Watch consolidation
    + Observatory v2.2 (#1551) · ✅ this reconciliation + taxonomy SSOT.
-   Observatory verification run (2026-10-22, workflow_dispatch): SUCCESS,
-   refresh committed (matrix gains the Watching + Owned-forks tables), but
-   the Watching table is **empty in workflow output** — diagnosed: no
-   `REPOSITORY_OBSERVATORY_TOKEN` secret exists among the repo's Actions
-   secrets, so the run fell back to `github.token`, which cannot read
-   `/user/subscriptions`; graceful degradation worked exactly as designed.
-   The PAT-side evaluation (128 watching) remains the count of record
-   until a user-token secret is provisioned under that name (owner-side
-   provisioning item; token values never transit chat).
+   Observatory verification (2026-10-22): first workflow_dispatch run left
+   the Watching table empty — diagnosed: no `REPOSITORY_OBSERVATORY_TOKEN`
+   secret exists, so the run fell back to `github.token`, which cannot
+   read `/user/subscriptions` (and the public `/users/{owner}/subscriptions`
+   route is a proven 204 — watch lists are not public). **Fixed the same
+   day, no new provisioning:** PR #1560 added the repo's existing stored
+   user token (`OPERATOR_GITHUB_TOKEN`, per the Issue #184 inventory) as
+   the fallback before `github.token`; the next dispatch run succeeded
+   and the committed matrix's Watching table holds **128 rows** — exactly
+   the PAT-side evaluation count. Watching is now live in the daily run.
 2. Next: Tier-1 engine proof on-device (Lightpanda or Obscura aarch64
    under Termux, memory-capped, CDP ping via chromedp-class driver) —
    a *measured* run, not an install-and-hope.

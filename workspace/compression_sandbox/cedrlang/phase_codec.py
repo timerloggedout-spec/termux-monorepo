@@ -44,7 +44,9 @@ CANONICAL_TOKENS: Tuple[str, ...] = (
     "gr1m01r3", "b1dd3r", "w4g3r", "chr0n0", "l1ngu15t", "sc0ut",
     "h4rv35t3r", "em_t3chs", "em_t3ch", "pr0cur3s", "pr0cur3", "cur473s",
     "cur473", "s0urc3s", "s0urc3", "4cqs", "4cq", "c0mp1s", "c0mp1",
-    "r3534rchs", "r3534rch", "c0nc3p7s", "c0nc3p7",
+    "r3534rchs", "r3534rch", "c0nc3p7s", "c0nc3p7", "c47_7h30ry",
+    "n47_7r4n5", "h0m0m0rph", "150m0rph", "m0n_b1nd", "3xp_0bj",
+    "m0rph", "func70r",
 )
 
 
@@ -220,3 +222,82 @@ def compile_phase(text: str, canonical_compiler) -> str:
 def decompile_phase(text: str, canonical_decompiler) -> str:
     """Normalize diaspora variants, then use the existing canonical decompiler."""
     return canonical_decompiler(from_1337speak(text))
+
+
+# 4th Development Lane: Conversational Steganography Cipher with Private Mapping
+# Implements pre-LLM pre-parser steganographic obfuscation with key-derived mappings.
+# Uses zero-width unicode character markers (\u200b, \u200c, \u200d, \ufeff) to encode
+# private mappings invisibly into natural-sounding conversational cover text or 1337 Grimoire text.
+
+import hashlib
+
+ZW_MAP = ("\u200b", "\u200c", "\u200d", "\ufeff")
+REV_ZW_MAP = {v: i for i, v in enumerate(ZW_MAP)}
+
+
+class ConversationalSteganographyCipher:
+    """4th Lane Steganography Cipher with private key mapping for pre-LLM pre-parser protection."""
+    __slots__ = ("key", "_derived_key")
+
+    def __init__(self, key: str):
+        if not key:
+            raise ValueError("key cannot be empty")
+        self.key = key
+        self._derived_key = hashlib.sha256(key.encode("utf-8")).digest()
+
+    def _xor_bytes(self, data: bytes) -> bytes:
+        klen = len(self._derived_key)
+        return bytes(b ^ self._derived_key[i % klen] for i, b in enumerate(data))
+
+    def encode(self, text: str, cover_text: str = "Query processed successfully.") -> str:
+        """Encode plaintext into a steganographic cover text using private key mapping."""
+        if not text:
+            return cover_text
+        raw_bytes = text.encode("utf-8")
+        xored = self._xor_bytes(raw_bytes)
+        zw_seq = []
+        for byte in xored:
+            q0 = (byte >> 6) & 3
+            q1 = (byte >> 4) & 3
+            q2 = (byte >> 2) & 3
+            q3 = byte & 3
+            zw_seq.extend((ZW_MAP[q0], ZW_MAP[q1], ZW_MAP[q2], ZW_MAP[q3]))
+        stego_payload = "".join(zw_seq)
+        if cover_text:
+            return cover_text + stego_payload
+        return stego_payload
+
+    def decode(self, stego_text: str) -> str:
+        """Decode steganographic payload from stego text using private key mapping."""
+        if not stego_text:
+            return ""
+        payload_chars = [c for c in stego_text if c in REV_ZW_MAP]
+        if not payload_chars:
+            return ""
+        if len(payload_chars) % 4 != 0:
+            raise ValueError("Corrupted or invalid steganographic payload")
+        byte_list = []
+        for i in range(0, len(payload_chars), 4):
+            q0 = REV_ZW_MAP[payload_chars[i]]
+            q1 = REV_ZW_MAP[payload_chars[i + 1]]
+            q2 = REV_ZW_MAP[payload_chars[i + 2]]
+            q3 = REV_ZW_MAP[payload_chars[i + 3]]
+            byte_val = (q0 << 6) | (q1 << 4) | (q2 << 2) | q3
+            byte_list.append(byte_val)
+        decrypted_bytes = self._xor_bytes(bytes(byte_list))
+        try:
+            return decrypted_bytes.decode("utf-8")
+        except UnicodeDecodeError as err:
+            raise ValueError("Invalid private key or corrupted steganographic payload") from err
+
+
+def steganography_encode(text: str, key: str, cover_text: str = "Query processed successfully.") -> str:
+    """Convenience helper for 4th development lane steganographic encoding."""
+    cipher = ConversationalSteganographyCipher(key)
+    return cipher.encode(text, cover_text=cover_text)
+
+
+def steganography_decode(stego_text: str, key: str) -> str:
+    """Convenience helper for 4th development lane steganographic decoding."""
+    cipher = ConversationalSteganographyCipher(key)
+    return cipher.decode(stego_text)

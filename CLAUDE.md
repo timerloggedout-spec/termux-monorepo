@@ -105,7 +105,7 @@ Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
 | FA-ADE / auto-promote | `docs/ops/REFTEMPLATES-CONSOLIDATION.md` |
 | Session SSOT schema | `docs/schemas/session-ssot.md` |
 | Provider caps | `docs/schemas/provider-capabilities.md` |
-| Linguist / CedrLang / Jules stub only | `AGENTS.md` (deprecated redirect) |
+| Linguist / CedrLang / Jules surface | `CLAUDE.md` (AGENTS.md folded into CLAUDE.md; human twin `AGENTS.hum.md`) |
 
 ## ICM + RinDig reference pins (smods)
 

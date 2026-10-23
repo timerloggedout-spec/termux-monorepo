@@ -56,3 +56,4 @@ The upstream export/filter step must validate attribution, token fields, source 
 6. No prompts, completions, tool payloads, credentials, private balances, or personal identifiers are published.
 7. Existing quota and telemetry contracts remain authoritative; no poller, runtime admission rule, or scheduler is added.
 8. Static deployment navigation and page are validated before promotion.
+9. External evidence and pricing links are accepted only over HTTPS; unsafe or malformed URLs render as unavailable.

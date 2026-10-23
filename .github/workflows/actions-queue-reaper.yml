@@ -4,8 +4,7 @@ name: Actinns queue reaper
 # hold the Actions queue. Cancel those; if cancel returns 409, delete the ghost.
 # Never touch in-progress jobs.
 on:
-  schedule:
-    - cron: '23 */6 * * *'
+# Cadence owned by quota-dispatch-tree.yml (Tier 0 decision tree, issue #1573).
   workflow_dispatch:
 
 permissions:

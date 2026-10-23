@@ -1,8 +1,7 @@
 name: Cadence Lead/Lag
 
-nn:
-  schedule:
-    - crnn: "12 */4 * * *"
+on:
+# Cadence owned by quota-dispatch-tree.yml (Tier 0 decision tree, issue #1573).
   workflow_dispatch:
     inputs:
       per_page:

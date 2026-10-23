@@ -37,7 +37,7 @@ def test_typhoon_reference_links_actual_transport_without_fabricating_account():
 def test_new_families_preserve_model_denominators_and_unknown_execution():
     result = batch.reconcile(*inputs())
     proxy = result["summary"]["by_source"][SOURCE]
-    assert proxy["research_records"] == 72
+    assert proxy["research_records"] == 73
     assert proxy["individual_model_claims"] == proxy["runtime_eligible"] == 0
     assert len(proxy["chat_transport_families"]) == len(batch.SOURCE_PROVIDER_MAP[SOURCE])
     assert NEW_FAMILIES <= set(proxy["chat_transport_families"])

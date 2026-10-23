@@ -29,6 +29,7 @@ Stdlib only — runs on Termux, CI, and any Python 3.10+.
 from __future__ import annotations
 
 import json
+import re
 import sys
 import urllib.request
 import urllib.error
@@ -297,6 +298,91 @@ def plan_from_brief(brief: dict, taxonomy: dict) -> dict:
     }
 
 
+# ------------------------------------------------------- issue-form input
+# One brief schema, many surfaces (T.A.K. input layer): a GitHub Issue filed
+# from .github/ISSUE_TEMPLATE/target-brief.yml renders as markdown sections;
+# this parses that body back into the exact brief `validate_brief` expects,
+# so an issue, a CLI file, a JSONL call and a chat message all converge on
+# the same intake. Nothing surface-specific leaks past this function.
+
+_FORM_FIELDS = {
+    "target id": "target_id",
+    "target url or domain": "target",
+    "purpose": "purpose",
+    "authorization basis": "basis",
+    "scope domains": "scope_domains",
+    "side effect": "side_effect",
+    "probe budget": "probe_budget",
+    "execution venue": "device_class",
+    "state-changing authorization": "state_changing",
+}
+
+
+def parse_issue_form(body: str) -> dict:
+    sections: dict[str, str] = {}
+    current: str | None = None
+    for line in (body or "").splitlines():
+        if line.startswith("### "):
+            current = line[4:].strip().lower()
+            sections[current] = ""
+        elif current is not None:
+            sections[current] += line + "\n"
+
+    def val(key: str) -> str:
+        raw = ""
+        for heading, field in _FORM_FIELDS.items():
+            if field == key and heading in sections:
+                raw = sections[heading].strip()
+                break
+        return "" if raw in ("_No response_", "None") else raw
+
+    brief: dict = {}
+    if val("target_id"):
+        brief["target_id"] = val("target_id").split()[0]
+    if val("target"):
+        brief["target"] = val("target").split()[0]
+    if val("purpose"):
+        brief["purpose"] = val("purpose").strip()
+    if val("side_effect"):
+        brief["side_effect"] = val("side_effect").strip().lower()
+    if val("device_class"):
+        brief["device_class"] = val("device_class").strip()
+    budget = val("probe_budget")
+    if budget:
+        try:
+            brief["probe_budget"] = int(budget.split()[0])
+        except ValueError:
+            brief["probe_budget"] = budget  # validate_brief will flag it
+    scope = [s.strip().strip(",") for s in re.split(r"[,\s]+", val("scope_domains")) if s.strip()]
+    checked = bool(re.search(r"-\s*\[x\]", val("state_changing"), re.IGNORECASE))
+    brief["authorization"] = {"basis": val("basis"), "scope_domains": scope,
+                              "state_changing": checked}
+    return brief
+
+
+def render_plan_markdown(plan: dict) -> str:
+    lines = [f"## 🎯 Target plan — `{plan['target_id']}`", "",
+             f"- **Purpose:** {plan['purpose']} · **Domain:** {plan['domain']} · "
+             f"**Venue:** {plan['device_class']} · **Side effect:** {plan['side_effect']} · "
+             f"**Probe budget:** {plan['probe_budget']}",
+             f"- **Transports:** {', '.join(plan['transports'])}",
+             f"- **Stages:** {' → '.join(plan['stages'])}", "", "**Stack (taxonomy-mapped):**"]
+    by_cat: dict[str, list[dict]] = {}
+    for node in plan["stack"]:
+        by_cat.setdefault(node["category"], []).append(node)
+    for cat, nodes in by_cat.items():
+        lines.append(f"- `{cat}`")
+        for n in nodes:
+            lines.append(f"  - `{n['repo']}` → {n['execution_site']}")
+    lines += ["", "**Registry skeleton:** " +
+              ", ".join(f"`{op['operation_id']}` ({op['status']})"
+                        for op in plan["registry_skeleton"]["operations"]),
+              "", "**Artifact placement:**"]
+    for k, v in plan["artifact_placement"].items():
+        lines.append(f"- {k}: `{v}`" if k != "coordination" else f"- {k}: {v}")
+    return "\n".join(lines) + "\n"
+
+
 # ---------------------------------------------------------------- probes
 
 def plan_probes(op: dict) -> list[dict]:
@@ -488,6 +574,9 @@ def main(argv: list[str]) -> int:
     p_sv.add_argument("--registry")
     p_in = sub.add_parser("intake", help="validate a Target Brief and print its stack plan")
     p_in.add_argument("brief")
+    p_ii = sub.add_parser("issue-intake", help="parse a GitHub issue-form body into a brief, then plan it")
+    p_ii.add_argument("body")
+    p_ii.add_argument("--markdown", action="store_true", help="emit the plan (or errors) as markdown")
     a = ap.parse_args(argv)
     if a.cmd == "catalog":
         print(json.dumps(load_catalog(), indent=1)); return 0
@@ -514,6 +603,20 @@ def main(argv: list[str]) -> int:
         if errs:
             print(json.dumps({"valid": False, "errors": errs}, indent=1)); return 1
         print(json.dumps(plan_from_brief(brief, load_taxonomy()), indent=1)); return 0
+    if a.cmd == "issue-intake":
+        brief = parse_issue_form(Path(a.body).read_text())
+        errs = validate_brief(brief)
+        if errs:
+            if a.markdown:
+                print("## 🎯 Target brief — needs fixes\n\n" +
+                      "\n".join(f"- {e}" for e in errs) +
+                      "\n\nEdit the issue to correct the fields above; intake re-runs on edit.")
+            else:
+                print(json.dumps({"valid": False, "errors": errs, "brief": brief}, indent=1))
+            return 1
+        plan = plan_from_brief(brief, load_taxonomy())
+        print(render_plan_markdown(plan) if a.markdown else json.dumps(plan, indent=1))
+        return 0
     if a.cmd == "serve":
         reg = load_registry(a.registry) if a.registry else None
         serve(reg, sys.stdin, sys.stdout); return 0

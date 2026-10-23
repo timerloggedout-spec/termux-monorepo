@@ -82,7 +82,7 @@ class FreeTierValueBoardContractTests(unittest.TestCase):
         self.assertIn("outcome_status", self.doc)
         self.assertTrue({"run_uid", "outcome_status"}.issubset(allowed))
         for forbidden in ("prompt_text", "messages", "tool_payload", "private_balance"):
-            self.assertNotIn(forbidden, allowed)
+            self.assertFalse(({"run_uid", "outcome_status"} | {forbidden}).issubset(allowed))
 
     def test_public_payload_has_no_prompt_or_completion_fields(self):
         encoded = json.dumps(self.data).lower()

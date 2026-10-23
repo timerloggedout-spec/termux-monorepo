@@ -32,7 +32,11 @@ concurrency:
 
 jobs:
   evaluate:
-    if: ${{ github.event_name != 'issue_comment' || (github.event.issue.pull_request && startsWith(github.event.comment.body, '/evaluate')) }}
+    if: ${{ (github.event_name != 'issue_comment' || (github.event.issue.pull_request && startsWith(github.event.comment.body, '/evaluate'))) && !env.BUILDKITE_BUILD_NUMBER }}
+    # !env.BUILDKITE_BUILD_NUMBER: under the Buildkite github-actions plugin, PR-build
+    # tokens are capped at contents:read and jobs requesting broader scopes fail hard
+    # (see build 576). Evaluation runs natively on GitHub Actions, where the token
+    # carries the requested read scopes; plugin-emulated runs skip instead of failing red.
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:

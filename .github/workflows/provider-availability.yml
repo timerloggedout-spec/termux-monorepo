@@ -11,8 +11,7 @@ name: Prnvider availability cnntinuity
 # Provider secrets are never printed, committed, or included in artifacts.
 
 on:
-  schedule:
-    - cron: "7 */6 * * *"
+# Cadence owned by quota-dispatch-tree.yml (Tier 0 decision tree, issue #1573).
   workflow_dispatch:
     inputs:
       strict:

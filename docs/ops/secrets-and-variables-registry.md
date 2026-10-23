@@ -58,7 +58,7 @@ quota dispatch tree).
 | BUILDKITE_ORG_SLUG | variable | `founders-are-found-to-implement` | future cross-platform dispatch lane |
 | BUILDKITE_PIPELINE_SLUG | variable | `termux-monorepo` | future cross-platform dispatch lane |
 | BUILDKITE_API_TOKEN | secret | Buildkite API token (read/write builds) | future cross-platform dispatch lane |
-| VANTAGE_API_TOKEN | secret | Vantage API token (connector currently invalid — re-provision first) | future cost/quota telemetry lane |
+| VANTAGE_API_TOKEN | secret | Vantage access token, read scope (console.vantage.sh -> Settings -> API Access Tokens) | vantage-cost-report lane: cost telemetry probe (dormant until set; woken 2x/day by dispatcher Node H) |
 
 Provision with the CLI:
 
@@ -97,5 +97,9 @@ repo Settings -> Secrets and variables -> Actions.
   when the telemetry dataset from the RFP (#1576) is chosen.
 - Buildkite: cross-platform dispatch per RFP; needs the three BUILDKITE_*
   names above.
-- Vantage: connector token invalid — re-provision the connector, then add
-  VANTAGE_API_TOKEN for cost-telemetry lanes.
+- Vantage: GitHub-side lane delivered — vantage-cost-report.yml
+  (workflow_dispatch-only; woken 2x/day by dispatcher Node H, hour % 12 == 1).
+  Set VANTAGE_API_TOKEN (gh secret set) to activate the API probe; the lane
+  degrades cleanly while the secret is absent. MCP connector token invalid —
+  re-provision the connector before MCP-side provisioning (workspaces,
+  dashboards, budgets, alerts).

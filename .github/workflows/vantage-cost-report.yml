@@ -1,0 +1,146 @@
+name: Vantage cost report
+
+# Cost-telemetry lane for Vantage SH (ledger #184; RFP #1576 telemetry plane).
+# Observer only: read-only probes against https://api.vantage.sh/v2. It never
+# posts, mutates, or buys; the token is never printed, committed, or artifacted.
+# Degrades cleanly while VANTAGE_API_TOKEN is absent (registry section 3:
+# secrets are structurally impossible via operator-variable-provision.yml).
+#
+# Semantics:
+#   token_present = VANTAGE_API_TOKEN secret is configured
+#   api_ok        = workspaces probe answered 2xx (token valid)
+#   probes        = per-endpoint best-effort status (cost reports, budgets,
+#                   budget alerts); 403/404 recorded, never fatal unless strict
+
+on:
+# # Cadence owned by quota-dispatch-tree.yml (Tier 0 decision tree, issue #1573).
+  workflow_dispatch:
+    inputs:
+      strict:
+        description: 'Fail red when the token is present but the API probe errors'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vantage-cost-report
+  cancel-in-progress: false
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Probe Vantage cost telemetry
+        env:
+          VANTAGE_API_TOKEN: ${{ secrets.VANTAGE_API_TOKEN }}
+          STRICT: ${{ inputs.strict || 'false' }}
+        run: |
+          set -uo pipefail
+          python3 - <<'PY'
+          import json, os, time, urllib.request, urllib.error
+
+          out_dir = os.path.join(os.environ["RUNNER_TEMP"], "vantage")
+          os.makedirs(out_dir, exist_ok=True)
+          receipt_path = os.path.join(out_dir, "vantage-cost-report.json")
+          token = os.environ.get("VANTAGE_API_TOKEN", "")
+          strict = os.environ.get("STRICT", "false").lower() == "true"
+          base = "https://api.vantage.sh/v2"
+
+          def get(path):
+              req = urllib.request.Request(base + path, headers={
+                  "Authorization": "Bearer " + token,
+                  "Accept": "application/json",
+                  "User-Agent": "termux-monorepo-vantage-cost-report",
+              })
+              try:
+                  with urllib.request.urlopen(req, timeout=30) as r:
+                      return r.status, r.read().decode(errors="replace")
+              except urllib.error.HTTPError as e:
+                  return e.code, e.read().decode(errors="replace")
+              except Exception:
+                  return 0, ""
+
+          receipt = {
+              "schema": "vantage-cost-report/receipt-v1",
+              "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+              "observer_only": True,
+          }
+          if not token:
+              receipt.update({
+                  "phase": "dormant",
+                  "reason": "vantage-token-absent",
+                  "api_ok": False,
+                  "note": "set VANTAGE_API_TOKEN (docs/ops/secrets-and-variables-registry.md)",
+              })
+              with open(receipt_path, "w") as f:
+                  json.dump(receipt, f, indent=2, sort_keys=True)
+              print("::notice::VANTAGE_API_TOKEN not set; lane dormant.")
+              raise SystemExit(0)
+
+          ws_code, ws_body = get("/workspaces")
+          receipt["workspaces_status"] = ws_code
+          workspaces = []
+          if ws_code == 200:
+              try:
+                  workspaces = json.loads(ws_body).get("workspaces") or []
+              except Exception:
+                  pass
+          receipt["api_ok"] = ws_code == 200
+          receipt["workspace_count"] = len(workspaces)
+          workspace_token = ""
+          for w in workspaces:
+              if isinstance(w, dict) and str(w.get("token") or "").strip():
+                  workspace_token = str(w["token"]).strip()
+                  break
+          probes = []
+          if workspace_token:
+              for label, path in (
+                  ("cost_reports", "/cost_reports?workspace_token=" + workspace_token),
+                  ("budgets", "/budgets?workspace_token=" + workspace_token),
+                  ("budget_alerts", "/budget_alerts?workspace_token=" + workspace_token),
+              ):
+                  code, body = get(path)
+                  count = None
+                  try:
+                      data = json.loads(body)
+                      if isinstance(data, dict) and isinstance(data.get(label), list):
+                          count = len(data[label])
+                      elif isinstance(data, list):
+                          count = len(data)
+                  except Exception:
+                      pass
+                  probes.append({"endpoint": label, "status": code, "count": count})
+          receipt["probes"] = probes
+          receipt["phase"] = "observed" if receipt["api_ok"] else "api-error"
+          with open(receipt_path, "w") as f:
+              json.dump(receipt, f, indent=2, sort_keys=True)
+
+          lines = ["### Vantage cost report", ""]
+          if not receipt["api_ok"]:
+              lines.append("- API probe: FAIL (HTTP %s)" % ws_code)
+              print("::warning::Vantage API probe failed (HTTP %s)." % ws_code)
+          else:
+              lines.append("- API probe: OK (workspaces: %d)" % len(workspaces))
+              for p in probes:
+                  count = "n/a" if p["count"] is None else str(p["count"])
+                  lines.append("- %s: HTTP %s, count %s" % (p["endpoint"], p["status"], count))
+          summary = os.environ.get("GITHUB_STEP_SUMMARY")
+          if summary:
+              with open(summary, "a") as f:
+                  f.write("\n".join(lines) + "\n")
+          if not receipt["api_ok"] and strict:
+              raise SystemExit("strict mode: Vantage API probe failed (HTTP %s)" % ws_code)
+          PY
+
+      - name: Publish immutable telemetry receipt
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: vantage-cost-report-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/vantage/vantage-cost-report.json
+          if-no-files-found: error
+          retention-days: 30

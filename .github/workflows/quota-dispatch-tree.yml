@@ -44,6 +44,7 @@ jobs:
       dispatch_q3: ${{ steps.tree.outputs.dispatch_q3 }}
       dispatch_q4: ${{ steps.tree.outputs.dispatch_q4 }}
       dispatch_q6: ${{ steps.tree.outputs.dispatch_q6 }}
+      dispatch_vantage: ${{ steps.tree.outputs.dispatch_vantage }}
     steps:
       - name: Decision tree — one cheap call per concern
         id: tree
@@ -132,6 +133,9 @@ jobs:
             core.setOutput('dispatch_q3', (((firstCycle && hour % 3 === 1) && !paused) || force) ? 'true' : 'false');
             core.setOutput('dispatch_q4', (((firstCycle && hour % 4 === 1) && !paused) || force) ? 'true' : 'false');
             core.setOutput('dispatch_q6', (((firstCycle && hour % 6 === 1) && !paused) || force) ? 'true' : 'false');
+            // Node H: Vantage cost telemetry (ledger #184; RFP #1576 telemetry plane).
+            // Slow lane: twice daily at the firstCycle of hour % 12 == 1.
+            core.setOutput('dispatch_vantage', (((firstCycle && hour % 12 === 1) && !paused) || force) ? 'true' : 'false');
             core.summary
               .addHeading('Decision tree verdicts')
               .addTable([
@@ -151,7 +155,8 @@ jobs:
                 ['G tier3-repochange', 'commits since watermark && slow-cycle', String(repoChanged && slow && !paused)],
                 ['G q3', 'firstCycle && hour % 3 == 1', String(firstCycle && hour % 3 === 1 && !paused)],
                 ['G q4', 'firstCycle && hour % 4 == 1', String(firstCycle && hour % 4 === 1 && !paused)],
-                ['G q6', 'firstCycle && hour % 6 == 1', String(firstCycle && hour % 6 === 1 && !paused)]
+                ['G q6', 'firstCycle && hour % 6 == 1', String(firstCycle && hour % 6 === 1 && !paused)],
+                ['H vantage', 'firstCycle && hour % 12 == 1', String(firstCycle && hour % 12 === 1 && !paused)]
               ])
               .write();
 
@@ -170,6 +175,7 @@ jobs:
           V_RECON: ${{ steps.tree.outputs.dispatch_recon }}
           V_HOURLY: ${{ steps.tree.outputs.dispatch_hourly }}
           V_REPOCHANGE: ${{ steps.tree.outputs.dispatch_repochange }}
+          V_VANTAGE: ${{ steps.tree.outputs.dispatch_vantage }}
         run: |
           set -euo pipefail
           rows='[]'
@@ -184,6 +190,7 @@ jobs:
           add recon-intel-discovery E "$V_RECON"
           add tier3-hourly G "$V_HOURLY"
           add tier3-repochange G "$V_REPOCHANGE"
+          add vantage-cost-report H "$V_VANTAGE"
           curl -fsS -X POST "$SUPABASE_URL/rest/v1/dispatch_verdicts" \
             -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" \
             -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" \
@@ -322,6 +329,10 @@ jobs:
           - lane: gitlab-governed-reconciliation
             run: ${{ needs.decide.outputs.dispatch_q6 }}
             inputs_json: '{"gitlab_ref":"master"}'
+            advance_watermark: 'false'
+          - lane: vantage-cost-report
+            run: ${{ needs.decide.outputs.dispatch_vantage }}
+            inputs_json: ''
             advance_watermark: 'false'
     steps:
       - name: Wake lane

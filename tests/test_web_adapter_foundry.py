@@ -171,6 +171,76 @@ def test_intake_via_jsonl_builtin():
     assert not out["ok"] and out["error"]["code"] == "bad_brief"
 
 
+ISSUE_BODY = """### Target ID
+
+example-shop
+
+### Target URL or domain
+
+https://shop.example.com/catalog
+
+### Purpose
+
+api-extraction
+
+### Authorization basis
+
+operator account
+
+### Scope domains
+
+shop.example.com
+
+### Side effect
+
+read
+
+### State-changing authorization
+
+- [ ] This brief authorizes state-changing (write) operations on the target
+
+### Probe budget
+
+24
+
+### Execution venue
+
+b160v-on-device
+
+### Notes for the dispatcher
+
+_No response_
+"""
+
+
+def test_issue_form_parses_into_the_same_brief():
+    brief = waf.parse_issue_form(ISSUE_BODY)
+    assert brief == BRIEF  # identical to the hand-written JSON brief
+    assert waf.validate_brief(brief) == []
+
+
+def test_issue_form_write_requires_checked_box():
+    body = ISSUE_BODY.replace("### Side effect\n\nread", "### Side effect\n\nwrite")
+    brief = waf.parse_issue_form(body)
+    assert brief["authorization"]["state_changing"] is False
+    assert any("state_changing" in e for e in waf.validate_brief(brief))
+    checked = body.replace("- [ ] This brief authorizes", "- [X] This brief authorizes")
+    assert waf.parse_issue_form(checked)["authorization"]["state_changing"] is True
+    assert waf.validate_brief(waf.parse_issue_form(checked)) == []
+
+
+def test_issue_form_out_of_scope_domain_is_refused():
+    body = ISSUE_BODY.replace("### Scope domains\n\nshop.example.com",
+                               "### Scope domains\n\nother.example")
+    assert any("outside authorization.scope_domains" in e
+               for e in waf.validate_brief(waf.parse_issue_form(body)))
+
+
+def test_render_plan_markdown_names_the_stack():
+    md = waf.render_plan_markdown(waf.plan_from_brief(BRIEF, waf.load_taxonomy()))
+    assert "example-shop" in md and "rever-browser" in md and "schemathesis" in md.lower()
+
+
 def test_jsonl_round_trip_stdout_is_protocol_only():
     inp = io.StringIO(
         '{"id":"a","operation":"foundry.ping"}\n'

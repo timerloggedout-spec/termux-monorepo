@@ -112,6 +112,16 @@ SSE / JSONL. See `docs/repositories/STARS-FORKS-WATCH.md` §3.
    and on-device execution itself, gated on the pull-queue installer.
    Collaborator entry point for any Target 🎯: the Target Brief +
    `waf intake` flow in `.agents/skills/web-adapter-foundry/SKILL.md`.
+   **Input surfaces landed (T.A.K. input layer):** the brief is filable as
+   a GitHub Issue (`.github/ISSUE_TEMPLATE/target-brief.yml`, label
+   `target-brief`) — filing/editing wakes `target-intake.yml` (event
+   trigger, no cron), which parses the form back into the brief schema
+   (`waf issue-intake`) and comments the dispatch plan onto the issue.
+   CLI, JSONL and chat briefs converge on the same validation + planner.
+   Per the owner (2026-10-23): the phone is a remote orchestrator for
+   these dispatches; the dual B160V device surfaces are owned by their
+   existing lanes and this campaign waits for them to stabilise before
+   anything dispatches on-device.
 3. Then: HTTP/SSE facade server over `handle_request` using the landed
    primitives; first real adapter (one authorised site, three read-only
    operations, Foundry milestone).

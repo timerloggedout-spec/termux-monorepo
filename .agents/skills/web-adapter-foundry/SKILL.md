@@ -107,6 +107,24 @@ CLI + JSONL; HTTP/MCP are facades over the same `handle_request`).
 - Secrets stay names/references only — vault route, never in registries,
   captures, or commits. Sanitise evidence before it lands in the repo.
 
+## Input surfaces — one brief, many doors (T.A.K. input layer)
+
+The Target Brief is the single intake schema for the whole nested stack;
+every surface converges on `validate_brief` → `plan_from_brief`:
+
+| Surface | How |
+|---|---|
+| **GitHub Issue** | File the **Target 🎯 Brief** template (`.github/ISSUE_TEMPLATE/target-brief.yml`, label `target-brief`). Filing/editing wakes `target-intake.yml` (event trigger, no cron), which parses the form body (`waf issue-intake --markdown`) and comments the validated dispatch plan back onto the issue. |
+| **CLI** | `python3 -m ops.web_adapter_foundry.waf intake brief.json` |
+| **JSONL** | `{"operation": "foundry.intake", "input": {"brief": {...}}}` to `waf serve` |
+| **Chat / A2A** | State target + purpose + authorisation in plain words; the receiving agent writes the brief JSON and runs intake. |
+
+The phone's role in this design is *remote orchestrator*: briefs are filed
+from any surface, plans resolve against the taxonomy, and execution is
+dispatched to the venue the plan names (remote services today; the dual
+B160V surfaces join when their lanes stabilise — planning labels them
+`b160v-on-device`, nothing dispatches there yet).
+
 ## How collaborators use this — the Target 🎯 workflow
 
 You have a target and a purpose `x`. Do not start by picking a tool.

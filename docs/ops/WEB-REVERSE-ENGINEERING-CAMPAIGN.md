@@ -74,8 +74,9 @@ python3 -m ops.web_adapter_foundry.waf taxonomy h4ckf0r0day/obscura
 | JSONL stdin/stdout | implemented (`waf serve`) | one envelope/line, protocol-only stdout |
 | CLI | implemented (`waf`) | same `handle_request` |
 | CDP over WebSocket | native to Tier-1 engines/drivers | browser control + event streaming |
-| **SSE** | **primitives landed this PR** (`sse_encode`, `EventBus`) | one-way result/event streams; publish-once, subscribers never re-execute |
-| WebSocket / HTTP / MCP | designed facades | over the same `handle_request`; MCP is its own protocol, never a JSONL label |
+| **SSE** | **implemented** (`ops/web_adapter_foundry/facade.py`: `GET /events` over the landed `sse_encode`/`EventBus`) | one-way result/event streams; publish-once, subscribers never re-execute |
+| HTTP | **implemented** (same facade: `POST /invoke`, `GET /health`) | one envelope over HTTP -> one response, also published to `/events` |
+| WebSocket / MCP | designed facades | over the same `handle_request`; MCP is its own protocol, never a JSONL label |
 
 ## B160V law (applies to every fold)
 

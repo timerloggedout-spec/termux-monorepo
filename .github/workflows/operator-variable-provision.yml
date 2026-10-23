@@ -1,0 +1,98 @@
+name: Operator Variable Provision
+
+# Operator lane: upsert non-secret repository variables from the Actions UI
+# without the gh CLI (issue #184, secrets-variables-registry.md).
+# Secrets can never be set here — only the allowlisted variable names below.
+# No schedule trigger: cadence is operator-driven workflow_dispatch only.
+
+on:
+  workflow_dispatch:
+    inputs:
+      assignments:
+        description: 'One or more NAME=value lines (allowlisted non-secret variables only)'
+        required: true
+        type: string
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency:
+  group: operator-variable-provision
+  cancel-in-progress: false
+
+jobs:
+  provision:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Upsert allowlisted repository variables
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b
+        env:
+          ASSIGNMENTS: ${{ github.event.inputs.assignments }}
+        with:
+          script: |
+            // Non-secret configuration only. Names must match the registry
+            // allowlist (docs/ops/secrets-and-variables-registry.md).
+            const allowlist = new Set([
+              'SUPABASE_URL',
+              'BUILDKITE_ORG_SLUG',
+              'BUILDKITE_PIPELINE_SLUG',
+              'BIGQUERY_PROJECT_ID',
+              'QUOTA_DISPATCH_MAX_BUSY',
+              'RECON_SWEEP_WINDOW_HOURS',
+              'RECON_SWEEP_MAX_TARGETS'
+            ]);
+            const lines = (process.env.ASSIGNMENTS || '')
+              .split(/\r?\n/)
+              .map(l => l.trim())
+              .filter(Boolean);
+            if (!lines.length) {
+              core.setFailed('No NAME=value assignments supplied.');
+              return;
+            }
+            const results = [];
+            for (const line of lines) {
+              const m = line.match(/^([A-Z0-9_]+)=(.*)$/);
+              if (!m) {
+                core.setFailed(`Malformed assignment: ${line}`);
+                return;
+              }
+              const [, name, value] = m;
+              if (!allowlist.has(name)) {
+                core.setFailed(
+                  `Variable ${name} is not allowlisted. Secrets are never set here; ` +
+                  `extend the allowlist in the registry review first.`
+                );
+                return;
+              }
+              if (/['\"\s]/.test(value) === false && value.length === 0) {
+                core.setFailed(`Empty value for ${name}.`);
+                return;
+              }
+              try {
+                await github.rest.actions.updateRepoVariable({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name,
+                  value
+                });
+                results.push(`${name}: updated`);
+              } catch (err) {
+                if (err.status === 404) {
+                  await github.rest.actions.createRepoVariable({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    name,
+                    value
+                  });
+                  results.push(`${name}: created`);
+                } else {
+                  throw err;
+                }
+              }
+            }
+            core.summary
+              .addHeading('Operator variable provision')
+              .addList(results)
+              .write();

@@ -28,6 +28,10 @@ concurrency:
 
 jobs:
   route:
+    # Buildkite PR builds (github-actions plugin) cap GITHUB_TOKEN at contents:read;
+    # dorny/paths-filter needs pull-requests:read to evaluate PR diffs, so skip
+    # routing there. The verify job (always()) still runs with contents:read.
+    if: ${{ !env.BUILDKITE_BUILD_NUMBER }}
     runs-on: ubuntu-latest
     permissions:
       contents: read

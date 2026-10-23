@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "2acabc3b5ca82b67cf15c61da2a5036fe53fe5911e97b8a8d922bffa668ec3e3",
-  "workflow_count": 174,
+  "source_fingerprint": "df5d53f75a089d5cf40fe8e060c57efcb1db704ad7ef836ecd6831df73c7dda5",
+  "workflow_count": 175,
   "workflows": [
     {
       "action_pins": [
@@ -959,6 +959,24 @@
         "schedule",
         "workflow_dispatch",
         "workflow_run"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "bounded-state-write",
+      "concurrency": "group: delphi-intake-${{ github.event.issue.number || github.event.inputs.surface_id || github.run_id }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "intake"
+      ],
+      "name": "Delphi conversational intake",
+      "path": ".github/workflows/delphi-intake.yml",
+      "schedules": [],
+      "triggers": [
+        "issue_comment",
+        "workflow_dispatch"
       ]
     },
     {

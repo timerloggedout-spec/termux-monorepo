@@ -40,6 +40,8 @@ class FreeTierValueBoardContractTests(unittest.TestCase):
         self.assertIn("PASS", self.page)
         self.assertIn("PUBLIC_SAFE", self.page)
         self.assertIn("VERIFIED_NO_COST", self.page)
+        self.assertIn("safeHref", self.page)
+        self.assertIn("u.protocol==='https:'", self.page)
 
     def test_public_page_and_methodology_are_linked(self):
         self.assertIn("free-tier-value.json", self.page)

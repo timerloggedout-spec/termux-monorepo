@@ -2,8 +2,8 @@ name: Quota Dispatch Tree
 
 # Tier 0 dispatcher (issue #1573): single scheduled entry point for the fast lane.
 # Cheap read-only probes form a decision tree; lanes are woken via workflow_dispatch
-# only when their condition node fires. Replaces 7 independent crons
-# (~576 scheduled runs/day) with 1 decision run per 10 min + conditional fan-out.
+# only when their condition node fires. Replaces 12 independent crons
+# (~610 scheduled runs/day) with 1 decision run per 10 min + conditional fan-out.
 # Lanes keep their own authorities, guards, and concurrency groups.
 # material_change_rules: this file owns cadence for the migrated lanes.
 
@@ -35,6 +35,10 @@ jobs:
       dispatch_probe: ${{ steps.tree.outputs.dispatch_probe }}
       dispatch_eval: ${{ steps.tree.outputs.dispatch_eval }}
       dispatch_recon: ${{ steps.tree.outputs.dispatch_recon }}
+      dispatch_hw_refresh: ${{ steps.tree.outputs.dispatch_hw_refresh }}
+      dispatch_hw_pair: ${{ steps.tree.outputs.dispatch_hw_pair }}
+      dispatch_hw_execute: ${{ steps.tree.outputs.dispatch_hw_execute }}
+      dispatch_hw_assist: ${{ steps.tree.outputs.dispatch_hw_assist }}
     steps:
       - name: Decision tree — one cheap call per concern
         id: tree
@@ -70,11 +74,33 @@ jobs:
             } catch (_) {}
             // Node D: cycle phase throttles sub-15-min lanes to 30 min (no API call)
             const slow = (new Date().getUTCMinutes() % 30) < 10;
+            // Node F: help-wanted lane — cadence takeover (1 call on the hour cycle)
+            const hour = new Date().getUTCHours();
+            const firstCycle = new Date().getUTCMinutes() < 10;
+            let catalogAgeMin = 1e9;
+            if (firstCycle) {
+              try {
+                const cat = await github.rest.repos.getContent({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  path: 'docs/ops/generated/help-wanted-catalog.json'
+                });
+                let stampCat = cat.data.last_modified;
+                try {
+                  const catParsed = JSON.parse(Buffer.from(cat.data.content, 'base64').toString());
+                  if (catParsed.generated_at) stampCat = catParsed.generated_at;
+                } catch (_) {}
+                catalogAgeMin = (Date.now() - new Date(stampCat).getTime()) / 60000;
+              } catch (_) { /* missing catalog = stale */ }
+            }
             core.setOutput('dispatch_stall_watch', (queued.length > 0 || force) ? 'true' : 'false');
             core.setOutput('dispatch_bridge', (bridgeStaleMin > 30 || force) ? 'true' : 'false');
             core.setOutput('dispatch_probe', ((bridgeStaleMin > 45 && slow) || force) ? 'true' : 'false');
             core.setOutput('dispatch_eval', ((repoChanged && slow) || force) ? 'true' : 'false');
             core.setOutput('dispatch_recon', (slow || force) ? 'true' : 'false');
+            core.setOutput('dispatch_hw_refresh', (firstCycle || force) ? 'true' : 'false');
+            core.setOutput('dispatch_hw_pair', ((firstCycle && hour % 2 === 1) || force) ? 'true' : 'false');
+            core.setOutput('dispatch_hw_execute', ((firstCycle && hour % 4 === 3) || force) ? 'true' : 'false');
+            core.setOutput('dispatch_hw_assist', ((firstCycle && hour % 6 === 5) || force) ? 'true' : 'false');
             core.summary
               .addHeading('Decision tree verdicts')
               .addTable([
@@ -83,7 +109,11 @@ jobs:
                 ['B bridge', `manifest stale ${Math.round(bridgeStaleMin)}m`, String(bridgeStaleMin > 30)],
                 ['C probe', `stale ${Math.round(bridgeStaleMin)}m && slow-cycle`, String(bridgeStaleMin > 45 && slow)],
                 ['D eval', 'repo changed && slow-cycle', String(repoChanged && slow)],
-                ['E recon', 'slow-cycle', String(slow)]
+                ['E recon', 'slow-cycle', String(slow)],
+                ['F hw-refresh', 'hourly cycle', String(firstCycle)],
+                ['F hw-pair', 'odd hours, catalog last built ' + Math.round(catalogAgeMin) + 'm ago', String(firstCycle && hour % 2 === 1)],
+                ['F hw-execute', 'hour % 4 == 3', String(firstCycle && hour % 4 === 3)],
+                ['F hw-assist', 'hour % 6 == 5', String(firstCycle && hour % 6 === 5)]
               ])
               .write();
 
@@ -109,6 +139,16 @@ jobs:
             run: ${{ needs.decide.outputs.dispatch_eval }}
           - lane: recon-intel-discovery
             run: ${{ needs.decide.outputs.dispatch_recon }}
+          - lane: help-wanted-status-refresh
+            run: ${{ needs.decide.outputs.dispatch_hw_refresh }}
+          - lane: help-wanted-followup
+            run: ${{ needs.decide.outputs.dispatch_hw_pair }}
+          - lane: help-wanted-scout
+            run: ${{ needs.decide.outputs.dispatch_hw_pair }}
+          - lane: help-wanted-execute
+            run: ${{ needs.decide.outputs.dispatch_hw_execute }}
+          - lane: help-wanted-llm-assist
+            run: ${{ needs.decide.outputs.dispatch_hw_assist }}
     if: matrix.run == 'true'
     steps:
       - name: Wake lane
@@ -117,6 +157,5 @@ jobs:
           script: |
             await github.rest.actions.createWorkflowDispatch({
               owner: context.repo.owner, repo: context.repo.repo,
-              workflow_id: '${{ matrix.lane }}.yml',
-              ref: 'master'
+              workflow_id: '${{ matrix.lane }}.yml', ref: 'master'
             });

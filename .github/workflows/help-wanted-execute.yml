@@ -6,8 +6,7 @@ name: help-wanted execute
 # Foreign: accepts repository_dispatch help-wanted-execute.
 
 on:
-  schedule:
-    - cron: "41 */4 * * *"
+# Cadence owned by quota-dispatch-tree.yml (Tier 0 decision tree, issue #1573).
   workflow_dispatch:
     inputs:
       issue:

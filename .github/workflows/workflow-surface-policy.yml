@@ -28,6 +28,10 @@ concurrency:
 
 jobs:
   route:
+    # Buildkite PR builds (github-actions plugin) cap GITHUB_TOKEN at contents:read;
+    # dorny/paths-filter needs pull-requests:read to evaluate PR diffs, so skip
+    # the classification step there (step-level env guard; env is not a valid
+    # context in job-level if). verify (always()) still runs with contents:read.
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -42,6 +46,7 @@ jobs:
     steps:
       - name: Classify changed surfaces
         id: changes
+        if: env.BUILDKITE_BUILD_NUMBER == ''
         uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4.0.3
         with:
           filters: |

@@ -21,6 +21,11 @@ on:
         default: master
         type: choice
         options: [master]
+      sweep:
+        description: 'When true, run the scheduled-equivalent bounded sweep instead of the single-probe health check (set automatically by quota-dispatch-tree).'
+        required: false
+        default: false
+        type: boolean
 
 concurrency:
   group: recon-intel-${{ github.event.pull_request.number || github.event.inputs.pr_number || github.ref }}
@@ -44,6 +49,7 @@ jobs:
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
           REQUESTED_PR_NUMBER: ${{ github.event.inputs.pr_number || '' }}
+          REQUESTED_SWEEP: ${{ github.event.inputs.sweep || false }}
           REQUESTED_GITLAB_REF: ${{ github.event.inputs.gitlab_ref || 'master' }}
           RECON_SWEEP_WINDOW_HOURS: ${{ vars.RECON_SWEEP_WINDOW_HOURS || '2' }}
           RECON_SWEEP_MAX_TARGETS: ${{ vars.RECON_SWEEP_MAX_TARGETS || '8' }}
@@ -83,9 +89,11 @@ jobs:
                 return;
               }
               targets = [targetFromPr(pr)];
-            } else if (context.eventName === 'workflow_dispatch') {
-              // A manual blank dispatch is deliberately single-target. It is the
-              // operator’s bounded health probe, not a bulk PR sweep.
+            } else if (context.eventName === 'workflow_dispatch' && process.env.REQUESTED_SWEEP !== 'true') {
+              // A manual blank dispatch (sweep not requested) is deliberately
+              // single-target. It is the operator’s bounded health probe, not a
+              // bulk PR sweep. With sweep=true (quota-dispatch-tree takeover),
+              // fall through to the bounded scheduled-equivalent sweep below.
               targets = [{ pr_number: '0', github_sha: context.sha }];
             } else {
               // Scheduled sweep is bounded: pull_request_target already probes

@@ -46,11 +46,20 @@ jobs:
         with:
           script: |
             const force = (context.payload.inputs && context.payload.inputs.force_lane) === 'all';
-            // Node A: any queued runs? (1 call)
-            const queued = await github.paginate(github.rest.actions.listWorkflowRunsForRepo, {
+            // Node A: queued / in-progress runs? (2 existence calls, per_page 1)
+            const queued = await github.rest.actions.listWorkflowRunsForRepo({
               owner: context.repo.owner, repo: context.repo.repo,
-              status: 'queued', per_page: 5
+              status: 'queued', per_page: 1
             });
+            const inProgress = await github.rest.actions.listWorkflowRunsForRepo({
+              owner: context.repo.owner, repo: context.repo.repo,
+              status: 'in_progress', per_page: 1
+            });
+            const busy = queued.data.total_count + inProgress.data.total_count;
+            // Global admission guard: when too many lane runs are already live,
+            // suppress non-critical dispatches this cycle (per review finding:
+            // matrix max-parallel limits dispatch steps, not downstream runs).
+            const paused = busy >= 6 && !force;
             // Node B: bridge manifest freshness? (1 call)
             let bridgeStaleMin = 1e9;
             try {
@@ -59,59 +68,68 @@ jobs:
                 path: 'ops/termux-bridge/current.json'
               });
               const parsed = JSON.parse(Buffer.from(bridge.data.content, 'base64').toString());
-              const stamp = parsed.published_at || parsed.updated_at || parsed.ts;
+              const stamp = parsed.observed_at || parsed.published_at || parsed.updated_at || parsed.ts;
               if (stamp) bridgeStaleMin = (Date.now() - new Date(stamp).getTime()) / 60000;
             } catch (_) { /* missing manifest = stale */ }
-            // Node C: repo activity since last evaluation window? (1 call)
+            // Node C: Tailscale probe has its own manifest; run the probe when
+            // tailscale.json (not current.json) is stale, so probe cadence is
+            // independent of bridge freshness. (1 call)
+            let probeStaleMin = 1e9;
+            try {
+              const probe = await github.rest.repos.getContent({
+                owner: context.repo.owner, repo: context.repo.repo,
+                path: 'ops/termux-bridge/tailscale.json'
+              });
+              const parsed = JSON.parse(Buffer.from(probe.data.content, 'base64').toString());
+              const stamp = parsed.observed_at || parsed.generated_at || parsed.updated_at || parsed.ts;
+              if (stamp) probeStaleMin = (Date.now() - new Date(stamp).getTime()) / 60000;
+            } catch (_) { /* missing manifest = stale */ }
+            // Node D: cycle phase throttles sub-15-min lanes to 30 min (no API call)
+            const slow = (new Date().getUTCMinutes() % 30) < 10;
+            // Node E: repo activity since the persisted evaluation watermark, so
+            // each change wakes continuous-evaluation / team-mvt exactly once.
+            // (1 variable read + 1 commit list call)
+            let watermark = new Date(Date.now() - 3 * 3600 * 1000).toISOString();
+            try {
+              const v = await github.rest.actions.getRepoVariable({
+                owner: context.repo.owner, repo: context.repo.repo,
+                name: 'QUOTA_EVAL_WATERMARK'
+              });
+              if (v.data.value) watermark = v.data.value;
+            } catch (_) { /* variable missing: fall back to 3h window */ }
             let repoChanged = false;
             try {
               const pushes = await github.rest.repos.listCommits({
                 owner: context.repo.owner, repo: context.repo.repo,
-                per_page: 1,
-                since: new Date(Date.now() - 3 * 3600 * 1000).toISOString()
+                per_page: 1, since: watermark
               });
               repoChanged = pushes.data.length > 0;
             } catch (_) {}
-            // Node D: cycle phase throttles sub-15-min lanes to 30 min (no API call)
-            const slow = (new Date().getUTCMinutes() % 30) < 10;
-            // Node F: help-wanted lane — cadence takeover (1 call on the hour cycle)
+            // Node F: help-wanted lane cadences (no extra calls)
             const hour = new Date().getUTCHours();
             const firstCycle = new Date().getUTCMinutes() < 10;
-            let catalogAgeMin = 1e9;
-            if (firstCycle) {
-              try {
-                const cat = await github.rest.repos.getContent({
-                  owner: context.repo.owner, repo: context.repo.repo,
-                  path: 'docs/ops/generated/help-wanted-catalog.json'
-                });
-                let stampCat = cat.data.last_modified;
-                try {
-                  const catParsed = JSON.parse(Buffer.from(cat.data.content, 'base64').toString());
-                  if (catParsed.generated_at) stampCat = catParsed.generated_at;
-                } catch (_) {}
-                catalogAgeMin = (Date.now() - new Date(stampCat).getTime()) / 60000;
-              } catch (_) { /* missing catalog = stale */ }
-            }
-            core.setOutput('dispatch_stall_watch', (queued.length > 0 || force) ? 'true' : 'false');
-            core.setOutput('dispatch_bridge', (bridgeStaleMin > 30 || force) ? 'true' : 'false');
-            core.setOutput('dispatch_probe', ((bridgeStaleMin > 45 && slow) || force) ? 'true' : 'false');
-            core.setOutput('dispatch_eval', ((repoChanged && slow) || force) ? 'true' : 'false');
-            core.setOutput('dispatch_recon', (slow || force) ? 'true' : 'false');
+            core.setOutput('dispatch_stall_watch', (busy > 0 || force) ? 'true' : 'false');
+            core.setOutput('dispatch_bridge', ((bridgeStaleMin > 30 && !paused) || force) ? 'true' : 'false');
+            core.setOutput('dispatch_probe', (((probeStaleMin > 45 || bridgeStaleMin > 45) && slow && !paused) || force) ? 'true' : 'false');
+            core.setOutput('dispatch_eval', ((repoChanged && slow && !paused) || force) ? 'true' : 'false');
+            core.setOutput('dispatch_recon', ((slow && !paused) || force) ? 'true' : 'false');
             core.setOutput('dispatch_hw_refresh', (firstCycle || force) ? 'true' : 'false');
-            core.setOutput('dispatch_hw_pair', ((firstCycle && hour % 2 === 1) || force) ? 'true' : 'false');
-            core.setOutput('dispatch_hw_execute', ((firstCycle && hour % 4 === 3) || force) ? 'true' : 'false');
-            core.setOutput('dispatch_hw_assist', ((firstCycle && hour % 6 === 5) || force) ? 'true' : 'false');
+            core.setOutput('dispatch_hw_pair', (((firstCycle && hour % 2 === 1) && !paused) || force) ? 'true' : 'false');
+            core.setOutput('dispatch_hw_execute', (((firstCycle && hour % 4 === 3) && !paused) || force) ? 'true' : 'false');
+            core.setOutput('dispatch_hw_assist', (((firstCycle && hour % 6 === 5) && !paused) || force) ? 'true' : 'false');
             core.summary
               .addHeading('Decision tree verdicts')
               .addTable([
                 ['Node', 'Condition', 'Fired'],
-                ['A stall-watch', 'queued runs > 0', String(queued.length > 0)],
+                ['A stall-watch', 'queued + in-progress runs > 0', String(busy > 0)],
+                ['— admission', 'live runs < 6', String(!paused)],
                 ['B bridge', `manifest stale ${Math.round(bridgeStaleMin)}m`, String(bridgeStaleMin > 30)],
-                ['C probe', `stale ${Math.round(bridgeStaleMin)}m && slow-cycle`, String(bridgeStaleMin > 45 && slow)],
-                ['D eval', 'repo changed && slow-cycle', String(repoChanged && slow)],
+                ['C probe', `probe manifest stale ${Math.round(probeStaleMin)}m && slow-cycle`, String(probeStaleMin > 45 && slow)],
+                ['E eval', 'commits since watermark && slow-cycle', String(repoChanged && slow)],
+                ['E watermark', watermark, repoChanged ? 'advance' : 'hold'],
                 ['E recon', 'slow-cycle', String(slow)],
                 ['F hw-refresh', 'hourly cycle', String(firstCycle)],
-                ['F hw-pair', 'odd hours, catalog last built ' + Math.round(catalogAgeMin) + 'm ago', String(firstCycle && hour % 2 === 1)],
+                ['F hw-pair', 'odd hours', String(firstCycle && hour % 2 === 1)],
                 ['F hw-execute', 'hour % 4 == 3', String(firstCycle && hour % 4 === 3)],
                 ['F hw-assist', 'hour % 6 == 5', String(firstCycle && hour % 6 === 5)]
               ])
@@ -127,35 +145,81 @@ jobs:
         include:
           - lane: agent-runtime-stall-watch
             run: ${{ needs.decide.outputs.dispatch_stall_watch }}
+            sweep: 'false'
+            advance_watermark: 'false'
           - lane: tunnel-canary
             run: ${{ needs.decide.outputs.dispatch_bridge }}
+            sweep: 'false'
+            advance_watermark: 'false'
           - lane: deepcli-agent-bridge
             run: ${{ needs.decide.outputs.dispatch_bridge }}
+            sweep: 'false'
+            advance_watermark: 'false'
           - lane: tailscale-bridge-probe
             run: ${{ needs.decide.outputs.dispatch_probe }}
+            sweep: 'false'
+            advance_watermark: 'false'
           - lane: continuous-evaluation
             run: ${{ needs.decide.outputs.dispatch_eval }}
+            sweep: 'false'
+            advance_watermark: 'true'
           - lane: team-mvt
             run: ${{ needs.decide.outputs.dispatch_eval }}
+            sweep: 'false'
+            advance_watermark: 'true'
           - lane: recon-intel-discovery
             run: ${{ needs.decide.outputs.dispatch_recon }}
+            sweep: 'true'
+            advance_watermark: 'false'
           - lane: help-wanted-status-refresh
             run: ${{ needs.decide.outputs.dispatch_hw_refresh }}
+            sweep: 'false'
+            advance_watermark: 'false'
           - lane: help-wanted-followup
             run: ${{ needs.decide.outputs.dispatch_hw_pair }}
+            sweep: 'false'
+            advance_watermark: 'false'
           - lane: help-wanted-scout
             run: ${{ needs.decide.outputs.dispatch_hw_pair }}
+            sweep: 'false'
+            advance_watermark: 'false'
           - lane: help-wanted-execute
             run: ${{ needs.decide.outputs.dispatch_hw_execute }}
+            sweep: 'false'
+            advance_watermark: 'false'
           - lane: help-wanted-llm-assist
             run: ${{ needs.decide.outputs.dispatch_hw_assist }}
-    if: matrix.run == 'true'
+            sweep: 'false'
+            advance_watermark: 'false'
     steps:
       - name: Wake lane
+        # Gated at step level (not job level) so the matrix context is available.
+        if: matrix.run == 'true'
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b
+        env:
+          LANE_SWEEP: ${{ matrix.sweep }}
+          ADVANCE_WATERMARK: ${{ matrix.advance_watermark }}
         with:
           script: |
+            const inputs = {};
+            if (process.env.LANE_SWEEP === 'true') inputs.sweep = true;
             await github.rest.actions.createWorkflowDispatch({
               owner: context.repo.owner, repo: context.repo.repo,
-              workflow_id: '${{ matrix.lane }}.yml', ref: 'master'
+              workflow_id: '${{ matrix.lane }}.yml', ref: 'master', inputs
             });
+            // Advance the evaluation watermark only after an evaluation lane was
+            // actually woken, so each repo change wakes the lanes exactly once.
+            if (process.env.ADVANCE_WATERMARK === 'true') {
+              const now = new Date().toISOString();
+              try {
+                await github.rest.actions.updateRepoVariable({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  name: 'QUOTA_EVAL_WATERMARK', value: now
+                });
+              } catch (_) {
+                await github.rest.actions.createRepoVariable({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  name: 'QUOTA_EVAL_WATERMARK', value: now
+                });
+              }
+            }

@@ -12,7 +12,7 @@ This is a SHE/Moneyball projection over repository-owned evidence, not a new sou
 
 - The provider-call contract in [HEX-MONEYBALL-INTEGRATION.md](HEX-MONEYBALL-INTEGRATION.md) defines provider/model, input/output token counts, cost, latency, and attempt linkage.
 - The initial public data file contains a pricing snapshot and zero session rows. The public session feed is not yet wired to a validated export; this does not mean zero sessions or zero usage.
-- A row contributes to paid-equivalent totals only when validation_status=VALIDATED, basksweep_status=PASS, and publication_status=PUBLIC_SAFE. A row contributes to verified free-tier value only when it additionally has billing_status=VERIFIED_NO_COST.
+- A row contributes to paid-equivalent totals only when validation_status=VALIDATED, basksweep_status=PASS, publication_status=PUBLIC_SAFE, and outcome_status is SUCCESS or SUCCEEDED. The browser enforces an explicit public session-field allowlist and ignores price rows with missing, non-numeric, negative, or non-finite rates. A row contributes to verified free-tier value only when it additionally has billing_status=VERIFIED_NO_COST.
 - Public exports must omit prompts, completions, tool payloads, credentials, private balances, and personal identifiers.
 
 ## Formula
@@ -33,7 +33,7 @@ Time saved is a scenario input until established against a comparable baseline. 
 
 The checked-in pricing examples are source-linked and dated 2026-10-23. Re-verify official rate cards before use. These are model/API-specific, not generic provider-wide rates:
 
-- OpenAI API gpt-5.3-codex standard rate card: https://developers.openai.com/api/docs/pricing
+- OpenAI API gpt-5.3-codex standard rate card: $1.75 input / $14 output per million tokens in this snapshot: https://developers.openai.com/api/docs/pricing
 - Google Gemini API gemini-3.8-flash standard paid tier through 2026-12-31: https://ai.google.dev/gemini-api/docs/pricing
 - Anthropic Claude API Claude Opus 4.8 global standard: https://platform.claude.com/docs/en/about-claude/pricing
 - DeepSeek API DeepSeek-V4.1-Flash off-peak, cache-miss input: https://api-docs.deepseek.com/quick_start/pricing/
@@ -48,7 +48,7 @@ The upstream export/filter step must validate attribution, token fields, source 
 
 ## Acceptance criteria
 
-1. Missing session feed is labeled clearly and never rendered as zero realized savings.
+1. Missing session feed is labeled clearly and headline KPIs remain unavailable until at least one validated successful session exists; missing evidence is never rendered as zero realized savings.
 2. Identical input/output token counts are used across all price rows.
 3. Price sources, snapshot date, model identity, price basis, and assumptions are visible.
 4. Human time and provider-equivalent costs are separate.

@@ -1,0 +1,158 @@
+name: Operator wake
+
+# Agent/operator plane (docs/ops/CODESPACE-CREDENTIALS-SSOT.md): repo Actions
+# secrets carry the credentials; agents never hold raw token values. This lane
+# exposes two allowlisted operator duties:
+#   inventory — full Actions secret NAME list via scripts/ops/provider_secret_inventory.py
+#               (provider-batch.yml observe pattern; names only, never values)
+#   wake      — gh workflow run for the allowlisted vantage-cost-report lane
+#               (optional strict=true), then poll the run and republish its
+#               receipt-v1 artifact (token-free by construction)
+# Comment trigger (marker-gated, action-effectiveness-ledger precedent):
+#   <!-- request-operator-wake -->
+#   inventory
+#   wake vantage-cost-report strict=true
+# Results post back to the triggering issue. workflow_dispatch mirrors both
+# commands for the Actions UI. No schedule: cadence stays with callers.
+
+on:
+  issue_comment:
+    types: [created]
+  workflow_dispatch:
+    inputs:
+      command:
+        description: 'inventory | wake-vantage-strict'
+        required: true
+        default: 'inventory'
+        type: choice
+        options: [inventory, wake-vantage-strict]
+
+concurrency:
+  group: operator-wake-${{ github.event.issue.number || github.event.inputs.command || github.run_id }}
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  operate:
+    if: >-
+      (github.event_name == 'issue_comment' &&
+       contains(github.event.comment.body || '', '<!-- request-operator-wake -->')) ||
+      github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+      issues: write
+      actions: write
+    env:
+      GH_TOKEN: ${{ secrets.OPERATOR || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
+      ISSUE_NUMBER: ${{ github.event.issue.number || '' }}
+      DISPATCH_COMMAND: ${{ github.event.inputs.command || '' }}
+      COMMENT_BODY: ${{ github.event.comment.body || '' }}
+    steps:
+      - name: Checkout trusted control-plane
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+
+      - name: Execute allowlisted operator commands
+        id: exec
+        env:
+          ALLOWED_WORKFLOW: vantage-cost-report.yml
+        run: |
+          set -uo pipefail
+          report="### Operator wake report"
+          want_inventory=false
+          want_wake=false
+          wake_strict=false
+          if [ "${GITHUB_EVENT_NAME:-}" = "workflow_dispatch" ]; then
+            case "$DISPATCH_COMMAND" in
+              inventory) want_inventory=true ;;
+              wake-vantage-strict) want_wake=true; wake_strict=true ;;
+            esac
+          else
+            if printf '%s' "$COMMENT_BODY" | grep -Eq '(^|[^A-Za-z0-9_-])inventory([^A-Za-z0-9_-]|$)'; then
+              want_inventory=true
+            fi
+            if printf '%s' "$COMMENT_BODY" | grep -Eq 'wake[[:space:]]+vantage-cost-report([^A-Za-z0-9_.-]|$)'; then
+              want_wake=true
+              if printf '%s' "$COMMENT_BODY" | grep -q 'strict=true'; then wake_strict=true; fi
+            fi
+          fi
+
+          if [ "$want_inventory" = true ]; then
+            mkdir -p "$RUNNER_TEMP/operator-wake"
+            if python3 scripts/ops/provider_secret_inventory.py --output "$RUNNER_TEMP/operator-wake/credential-names.json"; then
+              inv_status=$(jq -r '.status' "$RUNNER_TEMP/operator-wake/credential-names.json")
+              inv_count=$(jq -r '.names | length' "$RUNNER_TEMP/operator-wake/credential-names.json")
+              report="${report}"$'\n'"- secret-name inventory: ${inv_status} (${inv_count} names)"
+              if [ "$inv_status" = "observed" ]; then
+                inv_names=$(jq -r '.names | join(", ")' "$RUNNER_TEMP/operator-wake/credential-names.json")
+                report="${report}"$'\n'"- names: ${inv_names}"
+              else
+                inv_reason=$(jq -r '.reason' "$RUNNER_TEMP/operator-wake/credential-names.json")
+                report="${report}"$'\n'"- reason: ${inv_reason}"
+              fi
+            else
+              report="${report}"$'\n'"- secret-name inventory: script failed (see run log)"
+            fi
+          fi
+
+          if [ "$want_wake" = true ]; then
+            report="${report}"$'\n'"- wake ${ALLOWED_WORKFLOW} strict=${wake_strict}"
+            since=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+            if ! gh workflow run "$ALLOWED_WORKFLOW" -R "$GITHUB_REPOSITORY" --ref master -f strict="$wake_strict"; then
+              report="${report}"$'\n'"- dispatch: FAILED (see run log)"
+            else
+              run_id=""
+              for _ in $(seq 1 12); do
+                sleep 5
+                run_id=$(gh run list -R "$GITHUB_REPOSITORY" --workflow "$ALLOWED_WORKFLOW" --event workflow_dispatch --limit 5 --json databaseId,createdAt --jq "[.[] | select(.createdAt >= \"${since}\")][0].databaseId // empty" 2>/dev/null || true)
+                [ -n "$run_id" ] && break
+              done
+              if [ -z "$run_id" ]; then
+                report="${report}"$'\n'"- dispatch: accepted but run not located within polling window"
+              else
+                conclusion=""
+                for _ in $(seq 1 40); do
+                  sleep 10
+                  pair=$(gh run view "$run_id" -R "$GITHUB_REPOSITORY" --json status,conclusion --jq '.status + "/" + (.conclusion // "pending")' 2>/dev/null || true)
+                  case "$pair" in completed/*) conclusion="${pair#completed/}"; break ;; esac
+                done
+                if [ -z "$conclusion" ]; then
+                  report="${report}"$'\n'"- run ${run_id}: still running at poll deadline (conclusion pending)"
+                else
+                  report="${report}"$'\n'"- run ${run_id}: ${conclusion}"
+                  art_id=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}/artifacts" --jq '.artifacts[0].id // empty' 2>/dev/null || true)
+                  if [ -n "$art_id" ]; then
+                    if gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${art_id}/zip" > "$RUNNER_TEMP/operator-wake/receipt.zip" 2>/dev/null; then
+                      rm -rf "$RUNNER_TEMP/operator-wake/receipt" && mkdir -p "$RUNNER_TEMP/operator-wake/receipt"
+                      if unzip -o -q "$RUNNER_TEMP/operator-wake/receipt.zip" -d "$RUNNER_TEMP/operator-wake/receipt"; then
+                        receipt=$(cat "$RUNNER_TEMP/operator-wake/receipt"/*.json 2>/dev/null | jq -c . || true)
+                        [ -n "$receipt" ] && report="${report}"$'\n'"- receipt: ${receipt}"
+                      fi
+                    fi
+                  fi
+                fi
+              fi
+            fi
+          fi
+
+          if [ "$want_inventory" = false ] && [ "$want_wake" = false ]; then
+            report="${report}"$'\n'"- no allowlisted command found (supported: inventory; wake vantage-cost-report [strict=true])"
+          fi
+          {
+            echo "report<<REPORT_EOF"
+            printf '%s\n' "$report"
+            echo "REPORT_EOF"
+          } >> "$GITHUB_OUTPUT"
+          printf '%s\n' "$report" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Post report back to the triggering issue
+        if: env.ISSUE_NUMBER != ''
+        env:
+          REPORT: ${{ steps.exec.outputs.report }}
+        run: |
+          set -euo pipefail
+          gh issue comment "$ISSUE_NUMBER" -R "$GITHUB_REPOSITORY" --body "${REPORT}"$'\n'"<!-- meta:gha operator-wake run=${GITHUB_RUN_ID} -->"

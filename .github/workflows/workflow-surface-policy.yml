@@ -2,23 +2,6 @@ name: Workflow Surface Policy
 
 on:
   pull_request:
-    paths:
-      - '.github/workflows/**'
-      - '.github/actions/**'
-      - 'scripts/ci/workflow_surface_policy.py'
-      - 'tests/test_workflow_surface_policy.py'
-      - 'scripts/ci/automation_docs.py'
-      - 'tests/test_automation_docs.py'
-      - 'docs/ops/automation-decision-tree.md'
-      - 'docs/ops/diagrams/**'
-      - 'docs/ops/generated/**'
-      - 'docs/schemas/model-success-matrix.yaml'
-      - 'docs/schemas/llm-leaderboard-matrix.yaml'
-      - 'docs/schemas/model-rotation.yaml'
-      - 'docs/schemas/routing-priority.yaml'
-      - 'docs/ops/OPERATOR_INTERACTIVE_ACTIONS.md'
-      - 'docs/proposals/active/actions-refinements/**'
-      - 'docs/proposals/active/rate-limit-rotation/**'
 
 permissions: {}
 

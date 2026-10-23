@@ -1,6 +1,6 @@
 # INTEGRATION MESH MATRIX — every GitHub-listed integration for `timerloggedout-spec`, mapped
 
-**Compiled:** 2026-10-21 ~10:00 PDT. **Amended same day (second pass):** census v2. **Refreshed 2026-10-22 (third pass):** secrets 31→33, PRs 1,292→1,327, issues 193→206, workflows 192→195 — all live figures re-taken; see #1505. **Refreshed 2026-10-22 (fourth pass, ~09:48 PDT):** PRs 1,327→1,330, workflows 195→196 (+1 "Research and paper accounting validation"), issues steady at 206 — see #1505. **Refreshed 2026-10-22 (fifth pass, ~15:48 PDT):** secrets 33→37 (+4: 2 Cloudflare deploy, 2 device-queue), workflows 196→198, variables 2→3 (+`DEVICE_QUEUE_URL`), PRs 1,330→1,342, issues 206→207 — see #1505.
+**Compiled:** 2026-10-21 ~10:00 PDT. **Amended same day (second pass):** census v2. **Refreshed 2026-10-22 (third pass):** secrets 31→33, PRs 1,292→1,327, issues 193→206, workflows 192→195 — all live figures re-taken; see #1505. **Refreshed 2026-10-22 (fourth pass, ~09:48 PDT):** PRs 1,327→1,330, workflows 195→196 (+1 "Research and paper accounting validation"), issues steady at 206 — see #1505. **Refreshed 2026-10-22 (fifth pass, ~15:48 PDT):** secrets 33→37 (+4: 2 Cloudflare deploy, 2 device-queue), workflows 196→198, variables 2→3 (+`DEVICE_QUEUE_URL`), PRs 1,330→1,342, issues 206→207 — see #1505. **Refreshed 2026-10-23 (sixth pass, ~09:48 PDT):** github-advanced-security first check suites in the 30-head window (5 suites, CodeQL, on `547f54e7`), workflows 200→201 (+`operator-variable-provision`), secrets steady at 37 names, PRs 1,358→1,362, issues steady at 213 — see #1505.
 (full pagination, no samples — 1,342 PRs, 207 issues, 2,000 comments, check suites
 across 30 master heads, submitted reviews in two labeled frames) + the installations
 probe (stored-token exercise from inside Actions, Issue #184 comment 6321665538),
@@ -41,9 +41,8 @@ tab's A–H portion is now evidenced owner-firsthand** (§4B, OWNER-UI
 2026-10-22); the remainder past H and the per-app repository scope remain
 NOT ESTABLISHED (closing list). §3/§4 + §4B + §5 together are the standing
 answer — an evidence-based reconstruction, not a placeholder.
-**Live floor, counted 2026-10-21:** ≥29 distinct apps are active on the hub
-repo alone (23 check-suite apps across 30 master heads + ECC, Qodo, Codex,
-Jules, Dependabot, GHAS surfaces). The #184 counts (31 OAuth / 38 GitHub Apps)
+**Live floor, recounted 2026-10-23:** ≥30 distinct apps are active on the hub
+repo alone (25 check-suite apps across 30 master heads — +Buildkite ~03:00 PDT, +github-advanced-security ~04:05 PDT — + ECC, Qodo, Codex, Jules, Dependabot). The #184 counts (31 OAuth / 38 GitHub Apps)
 are the **Aug-13 floor, not current totals** — the owner states the account
 now has way more than 38 GitHub Apps, and the account-level total (677 repos
 + 2 orgs) is NOT ESTABLISHED via API. **Reconciled 2026-10-22:** 38 Aug-13
@@ -269,11 +268,11 @@ absence from the screenshot portion is expected, not contradictory.
 
 | App | Slug / owner | Evidence | Role |
 |---|---|---|---|
-| GitHub Actions | `github-actions` / github | **970 check suites across 30 master heads** (320 success / 534 skipped / 112 cancelled / 4 failure); 1,299 contributions | The execution substrate (198 workflows, §6) |
+| GitHub Actions | `github-actions` / github | **970 check suites across 30 master heads** (320 success / 534 skipped / 112 cancelled / 4 failure); 1,299 contributions | The execution substrate (201 workflows, §6) |
 | GitHub Pages | `github-pages` / github | suites + 48/300 deployments | Docs/site deploy |
 | Mintlify | `mintlify` / mintlify | suites + **161/300 deployments** (all `staging` = docs previews) | Docs platform; biggest deployment producer |
 | Qodo Code Review | `qodo-code-review` / qodo-ai | 41/2,000 comments + reviews | Peer reviewer (orchestrator tracked opt-in) |
-| GitHub Advanced Security | `github-advanced-security` / github | submitted reviews in sample; check runs on PR heads | Code scanning lane |
+| GitHub Advanced Security | `github-advanced-security` / github | **NEW 2026-10-23** — 5 check suites in the 30-head window (4 success / 1 neutral, CodeQL; first seen 2026-10-23 ~04:05 PDT on `547f54e7`); submitted reviews in sample | Code scanning lane |
 | Blacksmith.sh | `blacksmith-sh` / useblacksmith | suites on 30/30 heads | Hosted Actions runners (speed/cost lane) |
 | Buildkite | `buildkite` / buildkite | **NEW 2026-10-23** — 2 check suites in the 30-head window (1 success, 1 failure; first seen 2026-10-23 ~02:59 PDT) + new repo webhook (id 702058218, all events, last 200 OK) | External CI lane — arrived with no repo-side workflow; who set it up NOT ESTABLISHED from API evidence |
 | Codecov | `codecov` / codecov | suites on 30/30 heads + `CODECOV_TOKEN` secret | Coverage lane |
@@ -378,7 +377,7 @@ triggered the apps.
 | Piece | State |
 |---|---|
 | Webhooks (4) | **Linear** — all events (`*`), last 200 OK · **GitLab mirror** — push+PR → `gitlab.com` project 85129320 mirror/pull, last **400** · **ZenHub** — 12 event types, last **422 misconfigured** · **Buildkite (NEW 2026-10-23)** — all events (`*`), last 200 OK (id 702058218) |
-| Workflows | **200 total, 199 active** (+2 since the 2026-10-22 21:48 PDT poll; no repo-side Buildkite workflow — the new Buildkite lane is webhook/check-app only). Recent 100 runs: actors coderabbitai[bot] 43, ecc-tools[bot] 43, `timerloggedout-spec` 12 (owner-attributed — schedule + dispatch surface; which specific token fired each run is NOT ESTABLISHED, see the closing list), gitar-bot[bot] 2; events workflow_run 55, issue_comment 44, schedule 1 — bot-dispatch runs back in the majority this window; CodeRabbit review activity continues in both review frames, so no lane outage |
+| Workflows | **201 total, 199 active** (+1 since the 2026-10-23 03:48 PDT poll: `operator-variable-provision.yml` — workflow_dispatch operator tool for allowlisted non-secret repo variables; still no repo-side Buildkite workflow — the Buildkite lane is webhook/check-app only). Recent 100 runs: actors coderabbitai[bot] 43, ecc-tools[bot] 43, `timerloggedout-spec` 12 (owner-attributed — schedule + dispatch surface; which specific token fired each run is NOT ESTABLISHED, see the closing list), gitar-bot[bot] 2; events workflow_run 55, issue_comment 44, schedule 1 — bot-dispatch runs back in the majority this window; CodeRabbit review activity continues in both review frames, so no lane outage |
 | PR / issue totals (v2, fully paginated) | **1,358 PRs** — authors: owner 1,049 (+13), Jules 287 (+3), CodeRabbit 9, github-actions 4, Dependabot 3, ECC 3, Devin 2, Tembo 1 · **213 true issues** (owner 191 (+4), github-actions 21, mehvvy 1) · requested-reviewer records sit almost entirely on the owner (10) — the peer bots are triggered by comments/orchestrator, not by review requests |
 | Submitted reviews (two frames — keep separate) | *Most-recently-updated 150 PRs:* 41 PRs carry 277 reviews — Devin 146 (all COMMENTED; 92 on #143 alone), CodeRabbit 82 (56 CHANGES_REQUESTED / 6 APPROVED / 19 COMMENTED / 1 DISMISSED), owner 28, Aikido 12, GHAS 7, Qodo 2. *Most-recently-created 150 PRs:* 22 PRs carry reviews — CodeRabbit 37 (23 CHANGES_REQUESTED / 10 COMMENTED / 4 APPROVED), owner 18 (all COMMENTED), GHAS 7. Review weight lives on long-lived PRs |
 | Comment actors (2,000 newest) | Only **10 distinct actors**: ECC 792 (40%), owner 475, github-actions 263, CodeRabbit 155, Codex 105, BlocksOrg 81, Gitar 54, Qodo 54, Vercel 13, Jules 8 — **bots ≈ 76% of volume** |
@@ -406,7 +405,7 @@ triggered the apps.
 |---|---|---|---|
 | Coding (write code) | Jules (Bolt ⚡) | Cursor, Devin, Copilot SWE (unused), Kilo, Factory (dormant) | No — one primary, rest review-weighted |
 | PR review | CodeRabbit (required) | Devin (top volume), Qodo, Gitar, ECC (comments), Codex, Copilot Reviewer, Mistral, Aikido, Codacy | **Yes — 9+ reviewers/PR** → cadence problem, §9 I7 |
-| CI / checks | GitHub Actions (200 workflows) | Blacksmith runners, Travis (duplicate signal), Buildkite (new 2026-10-23, external CI — webhook/check-app only) | Travis duplication, §9 I4 |
+| CI / checks | GitHub Actions (201 workflows) | Blacksmith runners, Travis (duplicate signal), Buildkite (new 2026-10-23, external CI — webhook/check-app only), github-advanced-security CodeQL suites (new 2026-10-23, code scanning) | Travis duplication, §9 I4 |
 | Deploy / preview | Vercel (apps) | Render (previews), Mintlify (docs), Pages, Fly.io (token only), Koyeb (dormant) | Vercel daily cap is the binding constraint, §9 I5 |
 | PM / planning | Linear (webhook + API + Jules MCP + Muse connector — 4 faces, one spine) | ZenHub (broken), GitHub Projects (enabled, unused visibly) | ZenHub decision, §9 I3 |
 | Memory / telemetry | HindSight (secrets ×5, env `hindsight-prod`) | Hex (via CellCog secret), Supermemory (dormant) | OK |

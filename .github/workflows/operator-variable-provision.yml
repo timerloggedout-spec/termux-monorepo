@@ -3,6 +3,10 @@ name: Operator Variable Provision
 # Operator lane: upsert non-secret repository variables without the gh CLI
 # (issue #184, docs/ops/secrets-and-variables-registry.md).
 # Secrets can never be set here — only the allowlisted variable names below.
+# Channel rule (registry section 4): values carried on public surfaces (issue
+# comments, workflow_dispatch inputs) must already be public. Private-valued
+# names (SUPABASE_URL, BUILDKITE_*, BIGQUERY_PROJECT_ID) are Settings-UI /
+# gh-CLI only, referenced publicly by name.
 # No schedule trigger: cadence is operator-driven only (issue #1573).
 
 on:
@@ -51,8 +55,16 @@ jobs:
               'RECON_SWEEP_WINDOW_HOURS',
               'RECON_SWEEP_MAX_TARGETS'
             ]);
+            // Already-public values only may transit this lane's public channels;
+            // private-valued names go through Settings UI / gh CLI (registry section 4).
+            const publicValueAllowlist = new Set([
+              'QUOTA_DISPATCH_MAX_BUSY',
+              'RECON_SWEEP_WINDOW_HOURS',
+              'RECON_SWEEP_MAX_TARGETS'
+            ]);
             // Comment mode: only lines after the marker, of the form NAME=value.
-            const raw = process.env.ASSIGNMENTS || '';
+            const raw = process.env.ASSIGN
+MENTS || '';
             const lines = raw
               .split(/\r?\n/)
               .filter(l => /^[A-Z0-9_]+=/.test(l.trim()))
@@ -74,6 +86,15 @@ jobs:
                 core.setFailed(
                   `Variable ${name} is not allowlisted. Secrets are never set here; ` +
                   `extend the allowlist in the registry review first.`
+                );
+                return;
+              }
+              if (!publicValueAllowlist.has(name)) {
+                core.setFailed(
+                  `Variable ${name} carries a non-public value: this lane accepts only ` +
+                  `already-public values. Provision ${name} via repo Settings -> Secrets ` +
+                  `and variables -> Actions -> Variables tab, or gh variable set ` +
+                  `(registry section 4). Values are never carried on public surfaces.`
                 );
                 return;
               }
@@ -107,7 +128,8 @@ jobs:
               .addHeading('Operator variable provision')
               .addList(results)
               .write();
-            if (context.eventName === 'issue_comment') {
+            if (context.eventName === 'issue_com
+ment') {
               try {
                 await github.rest.issues.createComment({
                   owner: context.repo.owner,

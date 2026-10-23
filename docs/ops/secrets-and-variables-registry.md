@@ -32,7 +32,8 @@ OPERATOR_GITLAB_TOKEN, OPERATOR_MATRIX_PROJECT_URL, OPERATOR_TOKEN,
 PEER_STATE_PUBLISHER_LOGINS, RECON_INTEL_GITLAB_READ_TOKEN, RENDER_API_KEY,
 REPOSITORY_OBSERVATORY_TOKEN, SWE_EVALUATION_API_KEY,
 TERMUX_MCP_KNOWN_HOSTS, TERMUX_MCP_SSH_PRIVATE_KEY, TRIBUTE_VERCEL_PROJECTS,
-VANTAGE_PAT_GH_SECRETS, VERCEL_ORG_ID, VERCEL_TOKEN. GITHUB_TOKEN is the built-in per-run token.
+VANTAGE_PAT_GH_SECRETS, VERCEL_ORG_ID, VERCEL_TOKEN. GITHUB
+_TOKEN is the built-in per-run token.
 
 Variables in current use include: AUTOMATION_MARKER_PUBLISHER_LOGINS,
 CELLCOG_API_KEY, CELLCOG_CHAT_TIER, CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN,
@@ -50,7 +51,7 @@ quota dispatch tree).
 
 | Name | Class | Value / source | Consumer |
 |---|---|---|---|
-| SUPABASE_URL | variable | `https://rtcthvahpdrykjlghnhe.supabase.co` (project termux-monorepo-lane-state, us-west-1, ref rtcthvahpdrykjlghnhe) | quota-dispatch-tree: verdict persistence to dispatch_verdicts |
+| SUPABASE_URL | variable | lane-state project endpoint (project termux-monorepo-lane-state, us-west-1); value passed out-of-band only — Settings UI (Secrets and variables -> Actions -> Variables tab) or `gh variable set` by a collaborator; never written into public surfaces | quota-dispatch-tree: verdict persistence to dispatch_verdicts |
 | SUPABASE_SERVICE_ROLE_KEY | secret | Supabase dashboard -> Project Settings -> API -> service_role key | quota-dispatch-tree: service-role writes (RLS enabled; no anon policies) |
 | QUOTA_EVAL_WATERMARK | variable | created/advanced automatically | quota-dispatch-tree: Node E watermark |
 | BIGQUERY_PROJECT_ID | variable | TBD when BigQuery project is chosen | future quota telemetry lane |
@@ -58,12 +59,13 @@ quota dispatch tree).
 | BUILDKITE_ORG_SLUG | variable | `founders-are-found-to-implement` | future cross-platform dispatch lane |
 | BUILDKITE_PIPELINE_SLUG | variable | `termux-monorepo` | future cross-platform dispatch lane |
 | BUILDKITE_API_TOKEN | secret | Buildkite API token (read/write builds) | future cross-platform dispatch lane |
-| VANTAGE_PAT_GH_SECRETS | secret | Vantage access token, read scope (console.vantage.sh -> Settings -> API Access Tokens); provisioned 2026-10-23 via repo Settings -> Secrets and variables -> Actions | vantage-cost-report lane: cost telemetry probe (woken 2x/day by dispatcher Node H) |
+| VANTAGE_PAT_GH_SECRETS | secret | Vantage access token, read scope (console.vantage.sh -> Settings -> API Access Tokens); provisioned 2026-10-23 via repo Settings -> Secrets and variables -> Actions 
+| vantage-cost-report lane: cost telemetry probe (woken 2x/day by dispatcher Node H) |
 
 Provision with the CLI:
 
 ```
-gh variable set SUPABASE_URL        --body 'https://rtcthvahpdrykjlghnhe.supabase.co' -R timerloggedout-spec/termux-monorepo
+gh variable set SUPABASE_URL        --body '<lane-state endpoint>' -R timerloggedout-spec/termux-monorepo   # value passed out-of-band; never into issues/PRs/comments/docs/code
 gh secret   set SUPABASE_SERVICE_ROLE_KEY -R timerloggedout-spec/termux-monorepo   # paste service_role key
 gh variable set BUILDKITE_ORG_SLUG  --body 'founders-are-found-to-implement' -R timerloggedout-spec/termux-monorepo
 gh variable set BUILDKITE_PIPELINE_SLUG --body 'termux-monorepo' -R timerloggedout-spec/termux-monorepo
@@ -85,6 +87,13 @@ repo Settings -> Secrets and variables -> Actions.
 - One name, one meaning: no alias families (DEEPSEEK_TOKEN vs
   DEEPSEEK_TOKEN_PRIMARY already exist — new work must not add more aliases;
   consolidate in #184 instead).
+- Values are private even when the name is public. Private configuration values are
+  passed only through the access methods — repo Settings -> Secrets and variables ->
+  Actions (Variables tab) or the `gh` CLI — by collaborators, and referenced in
+  issues, PRs, comments, docs, and code by name only (pattern proven with
+  VANTAGE_PAT_GH_SECRETS, 2026-10-23). The operator-variable-provision lane
+  accepts only already-public values; SUPABASE_URL and the other cross-platform
+  endpoint variables go through the access methods.
 - Optional integrations must degrade: consumers read
   `secrets.X || ''` / `vars.Y || ''` and skip cleanly when absent
   (pattern proven in quota-dispatch-tree Supabase persistence).
@@ -96,7 +105,8 @@ repo Settings -> Secrets and variables -> Actions.
 - BigQuery: define BIGQUERY_PROJECT_ID variable + GCP_BIGQUERY_SA_KEY secret
   when the telemetry dataset from the RFP (#1576) is chosen.
 - Buildkite: cross-platform dispatch per RFP; needs the three BUILDKITE_*
-  names above.
+  names
+ above.
 - Vantage: GitHub-side lane delivered — vantage-cost-report.yml
   (workflow_dispatch-only; woken 2x/day by dispatcher Node H, hour % 12 == 1).
   VANTAGE_PAT_GH_SECRETS was provisioned 2026-10-23 via repo Settings -> Secrets
@@ -128,9 +138,10 @@ public-code scan:
   CLOUDFLARE_ACC... / CLOUDFLARE_API... (CLOUDFLARE_* family).
 - Repository variables confirmed present: only three at snapshot time
   (DEVICE_QUEUE_* / TERMUX_* family values). SUPABASE_URL was absent at
-  snapshot time and is the first variable to provision through the
-  operator-variable-provision lane (workflow_dispatch or the gated
-  issue-comment request on #184).
+  snapshot time and is the first variable to provision; after a value-disclosure
+  correction on #184 (2026-10-23) its route is Settings UI / `gh variable set`
+  only — the operator-variable-provision lane is now restricted to already-public
+  values (registry section 4).
 - Quota program status: QUOTA_EVAL_WATERMARK is created automatically by the
   quota-dispatch-tree on first advance; SUPABASE_URL provisioning is pending;
   SUPABASE_SERVICE_ROLE_KEY (secret) remains a manual Settings/gh-CLI action —

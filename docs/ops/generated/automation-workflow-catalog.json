@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "6e35766d21593e7a8f5effaddc70646e3839c65b4edb57934b660da0481a2d4b",
-  "workflow_count": 169,
+  "source_fingerprint": "da2e402cf504e3e596a0aab25e1fa1a95eb8dba418c6b2fdc101b794a438ae71",
+  "workflow_count": 170,
   "workflows": [
     {
       "action_pins": [
@@ -3040,6 +3040,24 @@
       "triggers": [
         "pull_request",
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: tier1-engine-proof cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "proof"
+      ],
+      "name": "tier1 engine proof",
+      "path": ".github/workflows/tier1-engine-proof.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },

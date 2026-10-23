@@ -177,6 +177,126 @@ class EventBus:
         return frame
 
 
+# ---------------------------------------------------------------- intake
+# A Target Brief is how a collaborator aims the stack at one target with one
+# purpose. Intake validates authorisation/scope and deterministically maps
+# purpose -> taxonomy categories -> a stack plan with execution sites.
+
+PURPOSES = {
+    "api-extraction": ["capture-and-recon", "contract-synthesis", "verification"],
+    "cli-adapter": ["adapter-systems", "drivers-and-clients", "verification"],
+    "data-extraction": ["extraction-and-discovery", "engines", "verification"],
+    "session-reuse": ["adapter-systems", "capture-and-recon"],
+    "deobfuscation": ["code-recovery", "capture-and-recon"],
+    "monitoring": ["extraction-and-discovery", "engines"],
+    "full-reverse": ["engines", "drivers-and-clients", "capture-and-recon",
+                     "code-recovery", "contract-synthesis", "adapter-systems",
+                     "verification", "agent-layers", "extraction-and-discovery",
+                     "substrate"],
+}
+DEVICE_CLASSES = ("b160v-on-device", "remote-service", "ci", "local")
+
+
+def _brief_domain(brief: dict) -> str | None:
+    target = brief.get("target") or ""
+    host = urllib.parse.urlparse(target if "://" in target else f"//{target}").hostname
+    return host.lower() if host else None
+
+
+def validate_brief(brief: dict) -> list[str]:
+    errs: list[str] = []
+    if not isinstance(brief, dict):
+        return ["brief must be a JSON object"]
+    if not isinstance(brief.get("target_id"), str) or not brief["target_id"]:
+        errs.append("target_id: required non-empty string")
+    domain = _brief_domain(brief)
+    if not domain:
+        errs.append("target: required URL or domain")
+    if brief.get("purpose") not in PURPOSES:
+        errs.append(f"purpose must be one of {sorted(PURPOSES)}")
+    auth = brief.get("authorization") or {}
+    if not isinstance(auth, dict) or not auth.get("basis"):
+        errs.append("authorization.basis: required (why this target may be automated)")
+    scope = auth.get("scope_domains") or []
+    if domain and scope and domain not in [s.lower() for s in scope]:
+        errs.append(f"target domain {domain} is outside authorization.scope_domains {scope}")
+    if not scope:
+        errs.append("authorization.scope_domains: required non-empty list")
+    if brief.get("side_effect", "read") not in SIDE_EFFECTS:
+        errs.append("side_effect must be read|write")
+    if brief.get("side_effect") == "write" and auth.get("state_changing") is not True:
+        errs.append("write briefs require authorization.state_changing: true")
+    budget = brief.get("probe_budget", 24)
+    if not isinstance(budget, int) or not (1 <= budget <= 200):
+        errs.append("probe_budget must be an integer in 1..200")
+    if brief.get("device_class", "remote-service") not in DEVICE_CLASSES:
+        errs.append(f"device_class must be one of {DEVICE_CLASSES}")
+    return errs
+
+
+def _execution_site(node: dict, device_class: str) -> str:
+    tier = node.get("b160v_tier") or ""
+    if device_class != "b160v-on-device":
+        return device_class
+    if tier.startswith(("on-device", "substrate", "thin client")):
+        return "b160v-on-device"
+    if tier.startswith("handset"):
+        return "b160v-gui"
+    if tier.startswith("offload"):
+        return "remote-service (offload — B160V law)"
+    return "remote-service (default for unassessed)"
+
+
+def plan_from_brief(brief: dict, taxonomy: dict) -> dict:
+    errs = validate_brief(brief)
+    if errs:
+        raise ValueError("invalid brief: " + "; ".join(errs))
+    cats = PURPOSES[brief["purpose"]]
+    device_class = brief.get("device_class", "remote-service")
+    stack = []
+    for node in taxonomy.get("nodes", []):
+        if node["category_path"][1] in cats:
+            stack.append({"repo": node["repo"], "category": "/".join(node["category_path"][1:]),
+                          "execution_site": _execution_site(node, device_class),
+                          "sources": node["sources"]})
+    transports = ["cli", "stdin-jsonl"]
+    if any(n["category"].startswith(("engines", "drivers")) for n in stack):
+        transports.append("cdp-websocket")
+    if brief["purpose"] == "monitoring":
+        transports.append("sse")
+    slug = brief["target_id"]
+    return {
+        "target_id": slug, "purpose": brief["purpose"],
+        "domain": _brief_domain(brief),
+        "side_effect": brief.get("side_effect", "read"),
+        "probe_budget": brief.get("probe_budget", 24),
+        "device_class": device_class,
+        "stages": ["scope-and-capture", "recover-semantics", "bounded-probes",
+                   "synthesize-contract", "generate-and-verify", "promote-monitor-repair"],
+        "stack": stack,
+        "transports": transports,
+        "probes": [p["id"] for p in PROBES],
+        "registry_skeleton": {
+            "provider": slug,
+            "operations": [
+                {"operation_id": f"{slug}.discover", "status": "discovered",
+                 "side_effect": "read", "executor": "browser-context-request",
+                 "evidence_label": "unknown", "fallback": {"allowed": []}},
+                {"operation_id": f"{slug}.primary", "status": "discovered",
+                 "side_effect": brief.get("side_effect", "read"),
+                 "executor": "browser-context-request",
+                 "evidence_label": "unknown", "fallback": {"allowed": []}},
+            ],
+        },
+        "artifact_placement": {
+            "registry": f"ops/web_adapter_foundry/providers/{slug}/registry.json",
+            "evidence_sanitized": f"ops/web_adapter_foundry/providers/{slug}/evidence/",
+            "notes": "docs/ops/ (campaign doc section or target note)",
+            "coordination": "GitHub: PR + [MUSEai]@{role:{moniker}} comments",
+        },
+    }
+
+
 # ---------------------------------------------------------------- probes
 
 def plan_probes(op: dict) -> list[dict]:
@@ -270,6 +390,16 @@ def handle_request(req: dict, registry: dict | None = None) -> dict:
             return _resp(rid, False, error={"code": "unknown_operation",
                                             "message": f"no such operation: {target!r}"})
         return _resp(rid, True, {"operation_id": target, "probes": plan_probes(ops[target])})
+    if op_name == "foundry.intake":
+        try:
+            tax = load_taxonomy()
+        except Exception:
+            return _resp(rid, False, error={"code": "no_taxonomy",
+                                            "message": "taxonomy.json not available"})
+        errs = validate_brief(inp.get("brief") or {})
+        if errs:
+            return _resp(rid, False, error={"code": "bad_brief", "message": "; ".join(errs)})
+        return _resp(rid, True, plan_from_brief(inp["brief"], tax))
     if op_name == "foundry.promote":
         ok, why = can_promote(inp.get("from", ""), inp.get("to", ""))
         return _resp(rid, ok, {"from": inp.get("from"), "to": inp.get("to"), "rule": why}
@@ -356,6 +486,8 @@ def main(argv: list[str]) -> int:
     p_pr.add_argument("registry"); p_pr.add_argument("operation_id")
     p_sv = sub.add_parser("serve", help="JSONL stdin/stdout transport")
     p_sv.add_argument("--registry")
+    p_in = sub.add_parser("intake", help="validate a Target Brief and print its stack plan")
+    p_in.add_argument("brief")
     a = ap.parse_args(argv)
     if a.cmd == "catalog":
         print(json.dumps(load_catalog(), indent=1)); return 0
@@ -376,6 +508,12 @@ def main(argv: list[str]) -> int:
         if op is None:
             print(json.dumps({"error": "unknown operation"})); return 1
         print(json.dumps(plan_probes(op), indent=1)); return 0
+    if a.cmd == "intake":
+        brief = json.loads(Path(a.brief).read_text())
+        errs = validate_brief(brief)
+        if errs:
+            print(json.dumps({"valid": False, "errors": errs}, indent=1)); return 1
+        print(json.dumps(plan_from_brief(brief, load_taxonomy()), indent=1)); return 0
     if a.cmd == "serve":
         reg = load_registry(a.registry) if a.registry else None
         serve(reg, sys.stdin, sys.stdout); return 0

@@ -6,17 +6,18 @@
 
 ## Current State (2026-10-23 RECON)
 
-**Master tip:** `a1057981e14f398f431878353a7cbf5b3b22fdf4` (help-wanted status refresh 2026-10-23T00:40Z)
+**Master tip:** `e60c16986ddc2daab83a3d5a316dfeeefae2b1e0` (sweep receipt)
 
 Recent completed runs on tip (success-dominant):
-- **Success:** Merge Promotion Queue v3 (schedule + workflow_run kicks), Continuous CI Sweep, continuous-improve, Issue Observatory, context backfills, hygiene-sweep, DeepCLI, etc.
-- **Skipped:** intentional on job-level `if: conclusion == 'success'` (lane-events-recorder, delphi-signal-bridge, Fix-on-Failure Agent, agent-throughput-evidence) — audited as filter/concurrency, not silenced failures. Notification volume cut.
-- **Cancelled:** concurrency races expected (lag_operational).
-- **Failures:** residual `tailscale-bridge-probe` (39887179484): Tailscale github-action join fails with JWT exchange 403 Unauthorized ("Unauthorized. Visit https://login.tailscale.com/admin/settings/trust-credentials/view/Tgmyqv1iV921CNTRL-knEAyc5weC11CNTRL"). Classified device-reachability / OIDC trust residual. Probe designed to fail RED when unreachable (honest). Not YAML/parse. Historical capacity (observatory 403, quota-registry) non-gate.
+- **Success:** Merge Promotion Queue v3, Continuous CI Sweep, continuous-improve, Issue Observatory, context backfills, hygiene-sweep, DeepCLI, lane-events on success, etc.
+- **Skipped:** intentional on job-level `if: conclusion == 'success'` (lane-events-recorder, agent-throughput-evidence, etc.) — audited as filter/concurrency, not silenced failures. Notification volume cut by not starting observer jobs on non-success.
+- **Cancelled:** concurrency races expected (lag_operational). Suppress pure cancel notices.
+- **Failures:** residual device probes (Tailscale OIDC 403 on tmx-node-primary) classified honest RED when unreachable. Not YAML. Quota/capacity soft non-gate.
 
 **Primary Spam Source:** High-volume `workflow_run` cascades — **mitigated on this branch**.
-- Filters live: `lane-events-recorder.yml` and `agent-throughput-evidence.yml` jobs only run on `conclusion == 'success'`. Non-success no longer start observer jobs → spam reduced while preserving success ledger.
-- Further modular router for remaining (context-relationship-audit etc.) planned.
+- Filters live: jobs only run on `conclusion == 'success'`. Non-success no longer start observer jobs → spam reduced while preserving success ledger.
+- Modular `issue-comment-router` early-classifies bot comments.
+- Further expansions for remaining cascades planned.
 
 **Historical Pattern:** Cancelled/skipped = concurrency or intentional filters (validated). True failures = quota/capacity (soft, non-gate) or device (residual). Silenced failures require explicit audit trail + artifact.
 
@@ -24,7 +25,7 @@ Recent completed runs on tip (success-dominant):
 
 | Issue Class | Workflows Affected | Root Cause | Current Handling | Recommended Fix / Consolidation | Status |
 |-------------|--------------------|------------|------------------|---------------------------------|--------|
-| Cascade Notification Spam | lane-events-recorder, agent-throughput-evidence, context-relationship-audit, delphi-* | Broad `workflow_run` on all conclusions | Individual runs + notices | Job-level `if: conclusion == 'success'`; batch; narrow lists; shared observer + concurrency per-SHA | **Implemented** (filters on branch for top 2) |
+| Cascade Notification Spam | lane-events-recorder, agent-throughput-evidence, context-relationship-audit, delphi-* | Broad `workflow_run` on all conclusions | Individual runs + notices | Job-level `if: conclusion == 'success'`; batch; narrow lists; shared observer + concurrency per-SHA | **Implemented** (filters on branch) |
 | Concurrency Cancel | help-wanted-*, sweep, others | Rapid triggers | cancel-in-progress | Granular groups (SHA); or false + queue; orchestrator | Ongoing |
 | Watcher Skip | actions-run-watcher | Pre-dispatch-only | Dispatch-only | Fixed; residual aging | Fixed |
 | Device / Tunnel (Pinggy / Tailscale) | tailscale-bridge-probe, device tests, bridges | BLU B160V#1 broken screen; node offline / OIDC 403 trust | Probe fails RED (intentional) | Opaque `tmx-node-primary`; operational Pinggy/alt on #1; evidence #184; soft-class residual | Device-side residual |
@@ -58,11 +59,11 @@ flowchart TD
 ## Cadence, Cache & Adaptive Telemetry (3L0 Moneyball)
 
 - **Adaptive-wait:** continue disjoint work during in_progress; re-fetch on material SHA delta only.
-- **Dynamic telemetry:** action-effectiveness-ledger + this matrix SSOT for prioritization (Lead/Lag snapshots).
-- **Cadence refinement:** `*/4` and workflow_run kicks retained; conclusion filters cut cascade volume.
-- **Cache:** actions/cache on lockfiles; path filters on push; dynamic adaptive for quota planning.
-- **Modular:** reusable actions for status emit + public-obfuscated device ID.
-- **Quota planning:** soft-class 403/429; ledger records; no hard fail on non-gate (Vercel etc.).
+- **Dynamic telemetry:** action-effectiveness-ledger + this matrix SSOT for prioritization (Lead/Lag snapshots). Moneyball selects high-value low-cost actions.
+- **Cadence refinement:** `*/4` and workflow_run kicks retained; conclusion filters + modular router cut cascade volume significantly.
+- **Cache:** actions/cache on lockfiles; path filters on push; dynamic adaptive for quota planning. Cache hit never skips current-SHA validation.
+- **Modular:** reusable actions for status emit + public-obfuscated device ID. Issue-comment-router absorbs bot spam early.
+- **Quota planning:** soft-class 403/429; ledger records; no hard fail on non-gate (Vercel etc.). Act before exhaustion via adaptive backoff.
 
 ## Device Identification (Public Obfuscation)
 
@@ -83,17 +84,17 @@ flowchart TD
 
 Agent-Identity: Grok (Administrator)
 
-## Continuation RECON (2026-10-23T04:00Z)
+## Continuation RECON (2026-10-23T17:00Z)
 
-Master functional, success-dominant on tip `a1057981`. Residual probe 39887179484 is honest OIDC/trust residual (403 Unauthorized on JWT exchange for public client ID). Filters confirmed live on branch → cascade spam reduced. Skipped/cancelled audited as intentional. Historical quota/capacity non-gate. Pinggy requirement stands for device #1 (`tmx-node-primary`).
+Master tip `e60c16986ddc2daab83a3d5a316dfeeefae2b1e0`. Success-dominant. High-volume skipped on master (pre-promote); filters on this branch will suppress observer starts on non-success. Residual device probe classified. Quota soft. Pinggy/alt operational requirement on #1 (`tmx-node-primary`) unchanged. Notification spam from Skipped/Cancelled in process waiting reduced by not dispatching full jobs + modular router.
 
-**What was refined:**
-- Bound to current master tip SHA
-- Probe residual classified with exact 403 evidence
-- Skip/cancelled validation explicit
-- Cadence/cache/quota telemetry section expanded
-- Flowchart updated for audit + device path
+**What was refined this cycle:**
+- Updated master tip binding
+- Emphasized modular router + conclusion filters for spam cut
+- Cadence/cache/telemetry (3L0 moneyball) section strengthened for adaptive quota planning
+- Explicit validation audits for all non-success states
 
-Next: dual-gate on this head, promote, device validation parallel. Disjoint: matrix SSOT updated.
+Next: create/promote PR once dual-gate green on head. Device validation parallel. Disjoint: matrix SSOT refined.
 
 Agent-Identity: Grok (Administrator)
+**BIUDL** — Broad → Integrate → Validate → Develop → Learn.

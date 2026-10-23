@@ -63,8 +63,7 @@ jobs:
               'RECON_SWEEP_MAX_TARGETS'
             ]);
             // Comment mode: only lines after the marker, of the form NAME=value.
-            const raw = process.env.ASSIGN
-MENTS || '';
+            const raw = process.env.ASSIGNMENTS || '';
             const lines = raw
               .split(/\r?\n/)
               .filter(l => /^[A-Z0-9_]+=/.test(l.trim()))
@@ -128,8 +127,7 @@ MENTS || '';
               .addHeading('Operator variable provision')
               .addList(results)
               .write();
-            if (context.eventName === 'issue_com
-ment') {
+            if (context.eventName === 'issue_comment') {
               try {
                 await github.rest.issues.createComment({
                   owner: context.repo.owner,

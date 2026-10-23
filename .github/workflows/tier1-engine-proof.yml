@@ -10,11 +10,6 @@ name: tier1 engine proof
 
 on:
   workflow_dispatch:
-    inputs:
-      mem_cap_mb:
-        description: "Address-space cap per engine (MB) approximating the B160V budget"
-        required: false
-        default: "512"
 
 permissions:
   contents: read
@@ -54,14 +49,11 @@ jobs:
           curl -fsSL -o /tmp/engines/lightpanda \
             "https://github.com/lightpanda-io/browser/releases/download/1.0.1/${{ matrix.lightpanda_asset }}"
           tar -xzf /tmp/engines/obscura.tar.gz -C /tmp/engines
-          chmod +x /tmp/engines/lightpanda
-          find /tmp/engines -maxdepth 3 -type f -name 'obscura*' -exec chmod +x {} +
+          chmod +x /tmp/engines/lightpanda /tmp/engines/obscura /tmp/engines/obscura-worker 2>/dev/null || true
           ls -laR /tmp/engines | head -40
           uname -m
 
       - name: Serve fixture and run proof
-        env:
-          MEM_CAP_MB: ${{ inputs.mem_cap_mb }}
         run: |
           set -euo pipefail
           python3 -m http.server 8901 --directory ops/web_adapter_foundry/proof >/tmp/http.log 2>&1 &

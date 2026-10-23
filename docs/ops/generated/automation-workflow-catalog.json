@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "6944a956a147597685749159390a8fea699d17d957dfd03eb34abf6272fddb66",
-  "workflow_count": 176,
+  "source_fingerprint": "8b45e5d741d4c2a0ea6151d003b44d40f31c2d42bd4f78731844cb3116043c3e",
+  "workflow_count": 177,
   "workflows": [
     {
       "action_pins": [
@@ -1877,6 +1877,30 @@
       "path": ".github/workflows/hygiene-sweep.yml",
       "schedules": [],
       "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830",
+        "actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830",
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b",
+        "actions/upload-artifact@ea165f8d65b6cb411bff43eea0b33f7d36d5e12c"
+      ],
+      "authority": "bounded-state-write",
+      "concurrency": "group: integration-mesh-poll cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "poll"
+      ],
+      "name": "integration mesh poll",
+      "path": ".github/workflows/integration-mesh-poll.yml",
+      "schedules": [
+        "41 */6 * * *"
+      ],
+      "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },

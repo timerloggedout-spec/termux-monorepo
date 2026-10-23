@@ -98,16 +98,18 @@ SSE / JSONL. See `docs/repositories/STARS-FORKS-WATCH.md` §3.
    the fallback before `github.token`; the next dispatch run succeeded
    and the committed matrix's Watching table holds **128 rows** — exactly
    the PAT-side evaluation count. Watching is now live in the daily run.
-2. Next: Tier-1 engine proof — **remote-first** (owner correction,
-   2026-10-22). Muse's paired-device channel to the B160V exposes only
-   alarms/calendar/contacts/notifications/network/battery — **no Termux
-   shell** — and the device pull-queue's on-origin installer has not been
-   run yet, so nothing in this chat can execute on the phone today.
-   Proofs therefore run on remote free services: GitHub Actions
-   (incl. arm64 runners / QEMU aarch64 + memory caps approximating the
-   B160V), Hugging Face / Colab-class instances as x86 reference points.
-   The B160V runs adapters *later*, via the queue, once its installer
-   lands; measured remote numbers gate that step.
+2. ✅ Tier-1 engine proof — **remote-first** (owner correction,
+   2026-10-22), executed on GitHub Actions arm64 + x86_64
+   (`tier1-engine-proof.yml`, dispatch-only; PRs #1563/#1564).
+   **Measured** (`docs/ops/TIER1-ENGINE-PROOF-RESULTS.md`): both engines
+   run natively on aarch64 and answer CDP — Obscura v0.2.5 (Chrome/145)
+   at **32,052 kB** idle RSS, Lightpanda 1.0.1 at **17,008 kB** — phone-class
+   footprints, an order of magnitude under Chromium-class. Round 1 failed
+   (glob picked the tarball; a VA-space cap broke serve startup) and was
+   diagnosed locally + fixed, which is the loop working as intended.
+   Still open from this step: WS-level navigation/extraction depth
+   (`/json/new` GET is refused; drive `Target.createTarget` over WS next)
+   and on-device execution itself, gated on the pull-queue installer.
    Collaborator entry point for any Target 🎯: the Target Brief +
    `waf intake` flow in `.agents/skills/web-adapter-foundry/SKILL.md`.
 3. Then: HTTP/SSE facade server over `handle_request` using the landed

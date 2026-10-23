@@ -154,6 +154,20 @@ def test_caveman_six_lines():
     res4 = caveman("the quick brown fox", max_up=True)
     assert res4 == "QUICK BROWN FOX"
 
+def test_notation_sets_compilation_and_decompilation():
+    orig = "category theory uses morphism and functor along with monadic bind and exponential object."
+    expected = "c47_7h30ry uses m0rph and func70r along with m0n_b1nd and 3xp_0bj."
+    compiled = compile_doc(orig)
+    assert compiled == expected
+    assert decompile_doc(compiled) == orig
+
+    # Test Casing preservation on notation terms
+    assert compile_doc("Category Theory") == "C47_7h30ry"
+    assert decompile_doc("C47_7h30ry") == "Category Theory"
+
+    assert compile_doc("Morphism") == "M0rph"
+    assert decompile_doc("M0rph") == "Morphism"
+
 def test_non_string_and_empty_inputs():
     assert compile_doc("") == ""
     assert decompile_doc("") == ""

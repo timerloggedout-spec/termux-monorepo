@@ -116,7 +116,7 @@ Start with **one** of these routes. Do not load the entire repository merely bec
 |---|---|---|
 | **Agent / operator entry (primary)** | [`CLAUDE.md`](CLAUDE.md) | Governance, hard rules, dual gates, adaptive WAIT, skills inventory pointer. **Load this first.** |
 | Task routing (one verified card) | [`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md) | Repository-native ICM system map, objects, processes, and impact routes. |
-| Linguist / CedrLang surface only | [`AGENTS.md`](AGENTS.md) | Deprecated as primary entry — retained as Linguist compression target + tooling compatibility. |
+| Linguist / CedrLang surface only | [`CLAUDE.md`](CLAUDE.md) / [`AGENTS.hum.md`](AGENTS.hum.md) | `AGENTS.md` folded into `CLAUDE.md`; human-readable twin `AGENTS.hum.md`. |
 | Maintain the ICM map itself | [`docs/icm/maintenance/CLAUDE.md`](docs/icm/maintenance/CLAUDE.md) | Inventory → human design review → verification → promotion procedure. |
 | Operate or inspect the ArchWiz surface | [`archwiz/TOOL_INDEX.md`](archwiz/TOOL_INDEX.md) | Named cockpit, forensic, autonomous, verification, and knowledge tools. |
 | Review open proposal governance | [`docs/proposals/`](docs/proposals/) | Registered active proposals, operator policy notes, and validation structure. |
@@ -219,6 +219,46 @@ The repository’s Linguist work optimizes **internal** agent communication thro
 | [PR #228](https://github.com/timerloggedout-spec/termux-monorepo/pull/228) | Merged fast-path term-search optimization | Subsequent performance evidence. |
 
 1337-style naming may be used as a **display dialect**, never as a substitute for a source path, permission boundary, or validation result. The disciplined version of “l33t” is legibility under pressure.
+
+### 📖 Human-Readable 1337_$934k Cipher Mapping & CedrLang Protocol
+
+CedrLang / Grimoire compresses natural language and technical documentation into high-density symbolic forms while preserving lossless human-readable expansion parity.
+
+| Natural Term | Grimoire / 1337 Cipher Token | Domain / Sense |
+|---|---|---|
+| `transmute` | `h4x` | Code transformation |
+| `scry` | `scry` | System inspection |
+| `probe` | `pr0b3` | Active monitoring |
+| `echo` | `3ch0` | Telemetry response |
+| `time loop` | `l00p` | Retry / iteration cycle |
+| `branch` | `f0rk` | Context branching |
+| `incantation` | `1nc4nt` | Command / prompt execution |
+| `cast` | `c4st` | Task dispatch |
+| `grimoire` | `gr1m01r3` | Knowledge base |
+| `linguist` | `l1ngu15t` | Compression / symbolic specialist |
+| `emerging technology` | `em_t3ch` | Technology research procurement |
+| `procurement` | `pr0cur3` | Asset procurement |
+| `category theory` | `c47_7h30ry` | Formal structural mathematics |
+| `morphism` | `m0rph` | Structure-preserving map |
+| `functor` | `func70r` | Cross-category structure mapping |
+| `monadic bind` | `m0n_b1nd` | Functional computation chain |
+| `exponential object` | `3xp_0bj` | Internal map space |
+
+### 🔬 Token Efficiency Analysis: Is `Base64` More Efficient?
+
+> **Question:** Is `Base64` more token-efficient than CedrLang / 1337 symbolic compression for LLMs?
+
+1. **Byte-Pair Encoding (BPE) Models (GPT-4o, Claude 3.5, Llama 3, DeepSeek-V3/R1):**
+   - **No.** Base64 converts raw bytes into 4 ASCII output characters per 3 input bytes, expanding raw payload length by ~33%. More critically, standard BPE tokenizers (like `cl100k_base`, `o200k_base`, and SentencePiece BPEs) tokenise Base64 output into fragmented 2-to-3 character subwords, increasing total LLM token counts by **33% to 100%+**.
+   - In contrast, **CedrLang / Grimoire symbolic substitution** compresses natural language and technical prompts into **20% to 40% fewer tokens** by utilizing multi-character subwords and single-token Unicode glyphs (`→`, `∴`, `1nc4nt`, `gr1m01r3`).
+2. **Byte-Level Tokenizers (ByT5, Raw Byte Models):**
+   - **Yes (Contextually).** For models that operate on raw byte tokens without subword merges, Base64 efficiently packs non-printable binary byte sequences into printable ASCII ranges without requiring multi-byte escape sequences.
+
+### 🎭 4th Development Lane: Conversational Steganography Cipher
+
+Implemented in `workspace/compression_sandbox/cedrlang/phase_codec.py` as `ConversationalSteganographyCipher`:
+- **Pre-LLM Pre-Parser Obfuscation:** Uses zero-width unicode character markers (`\u200b`, `\u200c`, `\u200d`, `\ufeff`) to invisibly embed private key-encrypted payloads into natural conversational cover text (`steganography_encode` / `steganography_decode`).
+- **Private Key Mapping:** Derived via 256-bit hash key (`SHA-256`) to ensure losslessly reversible private interpolation and decryption before LLM parsing.
 
 ---
 

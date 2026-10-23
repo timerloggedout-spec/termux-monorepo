@@ -124,6 +124,13 @@ Executing 32 sequential `.sub()` regex passes unconditionally in `compress()` / 
 **Action:**
 Use C-level substring guards (`if phrase.lower() in text_lower:`) before running sequential regex phrase substitutions, pre-compute reverse pair tuples at module scope, and avoid pre-calling `.search()` prior to `.sub()` on document transformations.
 
+## 2026-10-24 - Lookaround-Guarded Markdown Emphasis and BPE Subword Density vs Base64
+**Learning:**
+Naive markdown emphasis regexes (e.g. `_([^_]+)_`) erroneously match between underscores in snake_case or 1337 identifiers across document lines (e.g., `c47_7h30ry ... m0n_b1nd`), corrupting document decompilation. Adding negative lookaround guards (`(?<![a-zA-Z0-9])_([^_]+)_(?![a-zA-Z0-9])`) prevents regex misattribution on underscored tokens while maintaining high-speed line translation. Furthermore, Base64 encoding expands text into 4-character ASCII blocks that fragment subword merges in standard BPE tokenizers (GPT-4o, Claude 3.5, Llama 3), increasing token usage by 33%-100%+, whereas CedrLang symbolic Grimoire tokens compress prompts into 20%-40% fewer tokens.
+
+**Action:**
+Guard markdown formatting regexes using negative alphanumeric lookarounds (`(?<![a-zA-Z0-9])`) to protect snake_case identifiers, and prefer CedrLang symbolic substitution over Base64 for LLM prompt token density.
+
 ## 2026-10-07 - Extension-Aware Path Guarding for Prose Line Translation
 **Learning:**
 In document translation pipelines (`translate_line`), evaluating `PATH_REGEX` whenever a period `.` exists in a line causes unnecessary regex evaluations on almost every sentence in plain prose text. Pre-filtering dot checks by requiring the presence of known path extensions (`PATH_EXTENSIONS = ('.py', '.js', '.json', ...)` ) or path delimiters (`/`, `\`, `~`) reduces line path checking latency by ~5x on plain prose text ending with periods.

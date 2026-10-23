@@ -4,9 +4,11 @@ adapter synthesis. See docs/ops/WEB-ADAPTER-FOUNDRY.md and
 from .waf import (VERSION, EVIDENCE_LABELS, EXECUTORS, PROMOTION, PROBES,
                   validate_registry, validate_envelope, plan_probes,
                   can_promote, handle_request, load_catalog, load_registry,
-                  load_taxonomy, taxonomy_node, sse_encode, EventBus)
+                  load_taxonomy, taxonomy_node, sse_encode, EventBus,
+                  PURPOSES, validate_brief, plan_from_brief)
 
 __all__ = ["VERSION", "EVIDENCE_LABELS", "EXECUTORS", "PROMOTION", "PROBES",
            "validate_registry", "validate_envelope", "plan_probes",
            "can_promote", "handle_request", "load_catalog", "load_registry",
-           "load_taxonomy", "taxonomy_node", "sse_encode", "EventBus"]
+           "load_taxonomy", "taxonomy_node", "sse_encode", "EventBus",
+           "PURPOSES", "validate_brief", "plan_from_brief"]

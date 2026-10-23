@@ -69,6 +69,21 @@ class FreeTierValueBoardContractTests(unittest.TestCase):
         self.assertIn("paid_equivalent_usd", self.doc)
         self.assertIn("billing_status=VERIFIED_NO_COST", self.doc)
 
+    def test_session_contract_has_explicit_allowlist_and_success_gate(self):
+        allowed = {
+            "session_label", "run_uid", "workflow", "source_sha", "observed_at",
+            "provider", "model_id", "input_tokens", "output_tokens",
+            "elapsed_seconds", "outcome_status", "evidence_url",
+            "validation_status", "basksweep_status", "publication_status",
+            "billing_status", "pricing_id",
+        }
+        self.assertIn("SESSION_KEYS", self.page)
+        self.assertIn("SUCCESS_OUTCOMES", self.page)
+        self.assertIn("outcome_status", self.doc)
+        self.assertTrue({"run_uid", "outcome_status"}.issubset(allowed))
+        for forbidden in ("prompt_text", "messages", "tool_payload", "private_balance"):
+            self.assertNotIn(forbidden, allowed)
+
     def test_public_payload_has_no_prompt_or_completion_fields(self):
         encoded = json.dumps(self.data).lower()
         self.assertNotIn('"prompt":', encoded)

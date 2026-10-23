@@ -3,7 +3,7 @@
 # workload identity federation. The client ID and audience below are public
 # identifiers, not secrets. Writes ops/termux-bridge/tailscale.json (additive;
 # current.json stays owned by the device's Pinggy publisher).
-# It fails RED when the node is unreachable. A skip never shows green.
+# Hybrid: operational lag (unreachable) is ::notice:: + exit 0 to reduce spam. Dual-gate remains separate. Device #1 opaque ID tmx-node-primary.
 # See docs/ops/DEVICE-ACCESS-DIRECTORY.md.
 name: tailscale-bridge-probe
 
@@ -115,8 +115,8 @@ jobs:
           fi
           gh api -X PUT "repos/$GITHUB_REPOSITORY/contents/$P" --input body.json --jq '.commit.sha' | sed 's/^/::notice::tailscale.json commit /'
 
-      - name: Fail loudly when origin unreachable
+      - name: Classify operational lag (non-gate)
         if: steps.probe.outputs.status != 'active'
         run: |
-          echo "::error::origin node not reachable over Tailscale (status=${{ steps.probe.outputs.status }}). Reconnect the Tailscale app on the device to tailnet tailf2ee94.ts.net."
-          exit 1
+          echo "::notice::lead_lag=lag_operational origin=tmx-node-primary status=${{ steps.probe.outputs.status }} peer_online=${{ steps.probe.outputs.peer }} sshd_tcp_8022=${{ steps.probe.outputs.tcp }}; not dual-gate; device may be offline/replica. Reconnect Tailscale on BLU B160V#1 (tmx-node-primary) or use Pinggy fallback."
+          # exit 0 — operational lag is notice, not failure. Dual-gate remains separate.

@@ -1,0 +1,78 @@
+# Feeds Tribute System 1 outcomes into the Delphi gate as graded tribute-outcome signals
+# (docs/ops/DELPHI-LANE-CONTRACT.md § tribute-outcome). Event-driven: runs when a Tribute
+# System 1 scan finishes (its tribute-s1-decisions artifact), or on dispatch to ingest the
+# tribute-s1/backfill branch. Read-only on Tribute data; the gate dedupes by thread+outcome,
+# so overlapping scans never double count. No schedule, no secrets, no model calls. Additive.
+name: delphi-tribute-ingest
+
+on:
+  workflow_run:
+    workflows: [tribute-system1]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      source: { description: "backfill = read branch tribute-s1/backfill", required: false, default: "backfill", type: string }
+
+permissions:
+  contents: read
+
+concurrency:
+  group: delphi-tribute-ingest
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.event == 'schedule' || github.event.workflow_run.event == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      actions: read
+    outputs:
+      n: ${{ steps.ingest.outputs.n }}
+      signal: ${{ steps.ingest.outputs.signal }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: scripts/delphi
+          persist-credentials: false
+      - name: Download scan decisions
+        if: github.event_name == 'workflow_run'
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          name: tribute-s1-decisions
+          path: ${{ runner.temp }}/tribute-in   # data only, kept outside the workspace (artifact-poisoning guard)
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+      - name: Read backfill branch
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          IN_DIR: ${{ runner.temp }}/tribute-in
+        run: |
+          set -euo pipefail
+          mkdir -p "$IN_DIR"
+          if git ls-remote --exit-code origin refs/heads/tribute-s1/backfill >/dev/null; then
+            git fetch -q --depth 1 origin tribute-s1/backfill
+            git archive FETCH_HEAD backfill | tar -x -C "$IN_DIR"
+          fi
+      - id: ingest
+        env:
+          IN_DIR: ${{ runner.temp }}/tribute-in
+        # The inputs are parsed as JSON data by the checked-out (trusted) script; nothing from them is executed.
+        run: |
+          set -euo pipefail
+          files=$(find "$IN_DIR" -name 'decisions*.jsonl' -o -path '*backfill/*.jsonl' 2>/dev/null | sort || true)
+          # shellcheck disable=SC2086
+          python3 -m scripts.delphi.tribute_ingest $files
+
+  emit:
+    needs: collect
+    if: needs.collect.outputs.n != '' && needs.collect.outputs.n != '0'
+    uses: ./.github/workflows/delphi-signal.yml
+    permissions: { actions: write }
+    with:
+      event: tribute-outcome
+      signal: ${{ needs.collect.outputs.signal }}

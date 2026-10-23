@@ -101,3 +101,12 @@ Validation: `surface` must match `^[a-z0-9][a-z0-9._-]{0,63}$`. `repo` must be `
 The gate does two things with each signal:
 1. **Outcome ledger.** The `Delphi outcome ledger` issue (`delphi:outcomes`) gets an append-only JSON comment per run. It holds per-surface `n`, `sum`, `ewma` (α 0.2) and `by_outcome`, plus a per-repo `ewma`, `n` and `last`, capped at the 200 most recent repos. Tribute can read the newest `<!-- delphi-outcomes v1 -->` comment to re-rank upstream repos.
 2. **Graded panel reweighting.** This needs a scored RFP for the surface (`tribute-lane` is in `ops/delphi/surfaces.json`). Each role that predicted pass (score ≥ 15) earns `+weight`, and each role that predicted fail earns `−weight`. The EWMA step is `α·|weight|` and Elo moves `16·reward`. A weight of 0 changes nothing. Weights enter the RFP input hash quantized (gpr to 0.1, Elo to 25), so a stream of small signals re-scores the queue only when a weight moves materially. Rate-limit walls defer; they never fail the gate.
+
+### Tribute ingest and dedupe (2026-10-22)
+
+`.github/workflows/delphi-tribute-ingest.yml` sends Tribute outcomes to the gate without a change in the Tribute lane. It runs when a `tribute-system1` scan (schedule/dispatch) finishes, by reading that run's `tribute-s1-decisions` artifact. On `workflow_dispatch` it reads the `tribute-s1/backfill` branch instead. `scripts/delphi/tribute_ingest.py` keeps each row's `delphi_signal`, keys it by the thread URL, and sends up to 200 per run through `delphi-signal.yml`.
+
+- **Dedupe.** The gate hashes `key` (or `subject_url`) plus the outcome. It remembers the last 2000 digests per surface in the outcome ledger, so re-scans and overlapping backfills apply nothing twice. If a thread's outcome changes (for example claimed → merged), that counts as a new signal.
+- **Damping.** Graded panel reweighting is applied once per batch per surface with the batch's mean weight. A large backfill therefore moves the panel like one outcome, not N.
+- Ledger reads page from the newest comments, so busy RFP and ledger issues no longer read stale state.
+- A direct emitter in `tribute-system1.yml` is still welcome; keyed duplicates are harmless.

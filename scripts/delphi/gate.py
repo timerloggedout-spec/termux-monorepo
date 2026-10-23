@@ -444,8 +444,18 @@ def comment_md(out: dict, ih: str, reason: str) -> str:
     return "\n".join(lines)
 
 
+def newest_comments(gh: "GH", number: int, pages: int = 2) -> list[dict]:
+    """Comments oldest->newest from the LAST `pages` pages (a busy issue outgrows one page of 100)."""
+    total = int(gh.req("GET", f"/issues/{number}").get("comments", 0) or 0)
+    last = max(1, -(-total // 100))
+    out: list[dict] = []
+    for page in range(max(1, last - pages + 1), last + 1):
+        out += gh.req("GET", f"/issues/{number}/comments?per_page=100&page={page}")
+    return out
+
+
 def last_ledger(gh: GH, number: int) -> dict | None:
-    comments = gh.req("GET", f"/issues/{number}/comments?per_page=100")
+    comments = newest_comments(gh, number)
     for c in reversed(comments):
         if c.get("body", "").startswith(LEDGER_MARK):
             m = re.search(r"```json\n(.*?)\n```", c["body"], re.S)
@@ -570,6 +580,15 @@ OUTCOMES_MARK = "<!-- delphi-outcomes v1 -->"
 OUTCOMES_TITLE = "Delphi outcome ledger"
 _REPO_RE = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
 _SURF_RE = re.compile(r"^[a-z0-9][a-z0-9._-]{0,63}$")
+MAX_SIGNALS = 200   # one Tribute scan or backfill fits one dispatch (< 64 KB inputs)
+MAX_SEEN = 2000     # dedupe memory per surface, stored as 10-hex digests
+
+
+def signal_key(it: dict) -> str:
+    """Stable dedupe key: caller's `key`, else subject url, plus the outcome (a thread whose
+    outcome changes, e.g. claimed -> merged, is a new signal; a re-scan of the same one is not)."""
+    base = str(it.get("key") or it.get("subject_url") or "")[:200]
+    return hashlib.sha1(f"{base}#{it.get('outcome', '')}".encode()).hexdigest()[:10] if base else ""
 
 
 def parse_signals(raw: str) -> list[dict]:
@@ -580,7 +599,7 @@ def parse_signals(raw: str) -> list[dict]:
     data = json.loads(raw)
     items = data if isinstance(data, list) else [data]
     out = []
-    for it in items[:50]:
+    for it in items[:MAX_SIGNALS]:
         if not isinstance(it, dict):
             continue
         surf, repo, oc = str(it.get("surface", "")), str(it.get("repo") or ""), str(it.get("outcome", ""))
@@ -590,15 +609,28 @@ def parse_signals(raw: str) -> list[dict]:
             w = TRIBUTE_WEIGHTS.get(oc)
         if w is None or not _SURF_RE.match(surf) or (repo and not _REPO_RE.match(repo)) or not -1.0 <= w <= 1.0:
             continue
-        out.append({"surface": surf, "repo": repo, "outcome": oc[:40], "weight": round(w, 3)})
+        sg = {"surface": surf, "repo": repo, "outcome": oc[:40], "weight": round(w, 3)}
+        k = signal_key(it)
+        if k:
+            sg["key"] = k
+        out.append(sg)
     return out
 
 
-def apply_outcomes(state: dict, signals: list[dict], alpha: float = 0.2, max_repos: int = 200) -> dict:
-    """Surface- and repo-level EWMA of graded weights (-1..+1). Pure; returns the new state."""
+def apply_outcomes(state: dict, signals: list[dict], alpha: float = 0.2, max_repos: int = 200) -> tuple[dict, list[dict]]:
+    """Surface- and repo-level EWMA of graded weights (-1..+1). Pure; returns (new state, signals
+    actually applied). Keyed signals already seen for that surface are skipped (idempotent re-scans)."""
     st = json.loads(json.dumps(state or {"surfaces": {}}))
+    applied = []
     for sg in signals:
         srf = st["surfaces"].setdefault(sg["surface"], {"n": 0, "sum": 0.0, "ewma": 0.0, "by_outcome": {}, "repos": {}})
+        seen = srf.setdefault("seen", [])
+        if sg.get("key"):
+            if sg["key"] in seen:
+                continue
+            seen.append(sg["key"])
+            del seen[:-MAX_SEEN]
+        applied.append(sg)
         srf["n"] += 1
         srf["sum"] = round(srf["sum"] + sg["weight"], 3)
         srf["ewma"] = round((1 - alpha) * srf["ewma"] + alpha * sg["weight"], 4)
@@ -611,7 +643,7 @@ def apply_outcomes(state: dict, signals: list[dict], alpha: float = 0.2, max_rep
             srf["repos"][sg["repo"]] = r  # re-insert = most recent last
             while len(srf["repos"]) > max_repos:
                 srf["repos"].pop(next(iter(srf["repos"])))
-    return st
+    return st, applied
 
 
 def feedback_graded(roles: dict, final_votes: list[dict], weight: float, panel: dict) -> dict:
@@ -632,7 +664,7 @@ def feedback_graded(roles: dict, final_votes: list[dict], weight: float, panel: 
 
 
 def latest_json(gh: GH, number: int, mark: str) -> dict | None:
-    for c in reversed(gh.req("GET", f"/issues/{number}/comments?per_page=100")):
+    for c in reversed(newest_comments(gh, number)):
         if c.get("body", "").startswith(mark):
             m = re.search(r"```json\n(.*?)\n```", c["body"], re.S)
             if m:
@@ -659,10 +691,17 @@ def _tribute(args) -> int:
     n = found[0]["number"] if found else gh.req("POST", "/issues", {
         "title": OUTCOMES_TITLE, "labels": ["delphi:outcomes"],
         "body": "Append-only graded outcomes (tribute-outcome and future lanes). docs/ops/DELPHI-LANE-CONTRACT.md"})["number"]
-    state = apply_outcomes(latest_json(gh, n, OUTCOMES_MARK) or {"surfaces": {}}, sigs)
-    gh.req("POST", f"/issues/{n}/comments", {"body": f"{OUTCOMES_MARK}\n{len(sigs)} signal(s): "
-           + ", ".join(f"`{x['surface']}` {x['outcome']} {x['weight']:+}" for x in sigs[:10])
-           + f"\n```json\n{json.dumps(state, indent=1)}\n```"})
+    state, fresh = apply_outcomes(latest_json(gh, n, OUTCOMES_MARK) or {"surfaces": {}}, sigs)
+    if not fresh:
+        print(f"::notice::delphi tribute-outcome: all {len(sigs)} signal(s) already in ledger #{n}; nothing to apply")
+        return 0
+    counts: dict = {}
+    for x in fresh:
+        counts[(x["surface"], x["outcome"], x["weight"])] = counts.get((x["surface"], x["outcome"], x["weight"]), 0) + 1
+    gh.req("POST", f"/issues/{n}/comments", {"body": f"{OUTCOMES_MARK}\n{len(fresh)} new signal(s) ({len(sigs) - len(fresh)} duplicate): "
+           + ", ".join(f"`{s_}` {o} {w:+} x{c}" for (s_, o, w), c in sorted(counts.items(), key=lambda kv: -kv[1])[:12])
+           + f"\n```json\n{json.dumps(state, separators=(',', ':'))}\n```"})
+    sigs = fresh
     # graded role feedback, only against a surface that has a scored RFP (never inferred)
     catalog = {x["id"]: x for x in load(SURFACES)["surfaces"]}
     rfps = {surface_from_issue(i, catalog)["id"]: i["number"]
@@ -675,9 +714,11 @@ def _tribute(args) -> int:
         if not prev:
             print(f"::notice::delphi tribute-outcome: no scored RFP for {surf}; outcomes recorded, panel weights unchanged")
             continue
-        for x in (y for y in sigs if y["surface"] == surf):
-            new = feedback_graded(new, prev["final_votes"], x["weight"], panel)
-        used.append(f"#{num}")
+        ws = [y["weight"] for y in sigs if y["surface"] == surf]
+        mean = round(sum(ws) / len(ws), 3)
+        # one damped step per batch: a 169-signal backfill moves weights like one strong outcome, not 169
+        new = feedback_graded(new, prev["final_votes"], mean, panel)
+        used.append(f"#{num} (n={len(ws)}, mean {mean:+})")
     if used and new != roles:
         if wn is None:
             wn = gh.req("POST", "/issues", {"title": WEIGHTS_TITLE, "labels": ["delphi:weights"],

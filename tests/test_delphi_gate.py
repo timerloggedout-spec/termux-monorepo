@@ -169,7 +169,8 @@ def test_tribute_signals_parse_and_ewma():
     assert len(sigs) == 2
     assert gate.parse_signals(json.dumps({"surface": "tribute-lane", "repo": "x/y", "outcome": "approved"}))[0]["weight"] == 0.5
     assert gate.parse_signals("null") == [] and gate.parse_signals("") == []
-    st = gate.apply_outcomes({"surfaces": {}}, sigs)
+    st, applied = gate.apply_outcomes({"surfaces": {}}, sigs)
+    assert len(applied) == 2
     t = st["surfaces"]["tribute-lane"]
     assert t["n"] == 2 and t["sum"] == 0 and t["repos"]["a/b"]["n"] == 2 and t["repos"]["a/b"]["last"] == "hostile_spam_flag"
 
@@ -186,3 +187,35 @@ def test_graded_feedback_and_quantized_hash():
     s = cat["turso.free"]
     assert gate.input_hash(s, tiny, reg, {}) == gate.input_hash(s, panel["roles"], reg, {})
     assert "tribute-lane" in cat
+
+
+def test_tribute_dedupe_and_ingest(tmp_path):
+    from scripts.delphi import tribute_ingest
+    rows = [{"subject": {"url": "https://github.com/a/b/issues/1"},
+             "delphi_signal": {"surface": "tribute-lane", "repo": "a/b", "outcome": "claimed_by_other", "weight": -0.3, "lesson": "reweight"}},
+            {"subject": {"url": "https://github.com/a/b/issues/1"},
+             "delphi_signal": {"surface": "tribute-lane", "repo": "a/b", "outcome": "claimed_by_other", "weight": -0.3}},
+            {"subject": {"url": "https://github.com/a/b/pull/2"},
+             "delphi_signal": {"surface": "tribute-lane", "repo": "a/b", "outcome": "merged", "weight": 1}},
+            {"subject": {"url": "https://github.com/a/b/pull/3"}, "delphi_signal": None}]
+    f = tmp_path / "decisions.jsonl"
+    f.write_text("\n".join(json.dumps(r) for r in rows) + "\n")
+    sigs = tribute_ingest.collect([str(f)])
+    assert len(sigs) == 2 and all("key" in x and "lesson" not in x for x in sigs)
+    parsed = gate.parse_signals(json.dumps(sigs))
+    st, first = gate.apply_outcomes({"surfaces": {}}, parsed)
+    assert len(first) == 2
+    st2, again = gate.apply_outcomes(st, parsed)  # a re-scan of the same threads applies nothing
+    assert again == [] and st2["surfaces"]["tribute-lane"]["n"] == 2
+    # same thread, new outcome = new signal
+    later = gate.parse_signals(json.dumps([{"surface": "tribute-lane", "repo": "a/b", "outcome": "merged",
+                                            "weight": 1, "key": "https://github.com/a/b/issues/1"}]))
+    assert len(gate.apply_outcomes(st2, later)[1]) == 1
+    assert len(gate.parse_signals(json.dumps([sigs[0]] * 300))) == gate.MAX_SIGNALS
+
+
+def test_ingest_workflow_is_event_driven_and_keyless():
+    from pathlib import Path
+    text = (Path(ROOT) / ".github/workflows/delphi-tribute-ingest.yml").read_text()
+    assert "schedule:" not in text and "${{ secrets" not in text
+    assert "./.github/workflows/delphi-signal.yml" in text and "event: tribute-outcome" in text

@@ -4,7 +4,7 @@ name: Tunnel Canary
 # Device #1 (BLU B160V#1) opaque ID tmx-node-primary. Tailscale preferred; Pinggy fallback.
 # Public obfuscation of device identification.
 on:
-  schedule: [{cron: '17 * * * *'}]   # hourly
+# Cadence owned by quota-dispatch-tree.yml (Tier 0 decision tree, issue #1573).
   workflow_dispatch:
 permissions:
   contents: read
@@ -80,3 +80,4 @@ jobs:
           with open(os.environ.get("GITHUB_STEP_SUMMARY", "/dev/null"), "a") as f:
               f.write("\n".join(lines) + "\n")
           PY
+

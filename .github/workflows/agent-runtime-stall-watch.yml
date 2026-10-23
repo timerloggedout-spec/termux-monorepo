@@ -6,8 +6,7 @@ name: Agent Runtime Stall Watch
 # into explicit, reviewable evidence.
 # Resilience: API rate-limit / capacity pressure classified as lag (exit 0) to avoid false failure spam.
 on:
-  schedule:
-    - cron: '*/10 * * * *'
+# Cadence owned by quota-dispatch-tree.yml (Tier 0 decision tree, issue #1573).
   workflow_dispatch:
 
 permissions:
@@ -170,3 +169,4 @@ jobs:
           path: runtime-stall-observation.json
           if-no-files-found: ignore
           retention-days: 14
+

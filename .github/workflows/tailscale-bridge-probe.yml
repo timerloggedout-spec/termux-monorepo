@@ -8,9 +8,8 @@
 name: tailscale-bridge-probe
 
 on:
+# Cadence owned by quota-dispatch-tree.yml (Tier 0 decision tree, issue #1573).
   workflow_dispatch:
-  schedule:
-    - cron: '17,47 * * * *'
 
 permissions:
   contents: write
@@ -120,3 +119,4 @@ jobs:
         run: |
           echo "::error::origin node not reachable over Tailscale (status=${{ steps.probe.outputs.status }}). Reconnect the Tailscale app on the device to tailnet tailf2ee94.ts.net."
           exit 1
+

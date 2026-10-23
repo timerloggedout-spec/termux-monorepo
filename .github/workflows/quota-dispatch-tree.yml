@@ -1,0 +1,122 @@
+name: Quota Dispatch Tree
+
+# Tier 0 dispatcher (issue #1573): single scheduled entry point for the fast lane.
+# Cheap read-only probes form a decision tree; lanes are woken via workflow_dispatch
+# only when their condition node fires. Replaces 7 independent crons
+# (~576 scheduled runs/day) with 1 decision run per 10 min + conditional fan-out.
+# Lanes keep their own authorities, guards, and concurrency groups.
+# material_change_rules: this file owns cadence for the migrated lanes.
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+    inputs:
+      force_lane:
+        description: 'Set to "all" to wake every lane regardless of decision-tree verdicts (emergency)'
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency:
+  group: quota-dispatch-tree
+  cancel-in-progress: false
+
+jobs:
+  decide:
+    runs-on: ubuntu-latest
+    outputs:
+      dispatch_stall_watch: ${{ steps.tree.outputs.dispatch_stall_watch }}
+      dispatch_bridge: ${{ steps.tree.outputs.dispatch_bridge }}
+      dispatch_probe: ${{ steps.tree.outputs.dispatch_probe }}
+      dispatch_eval: ${{ steps.tree.outputs.dispatch_eval }}
+      dispatch_recon: ${{ steps.tree.outputs.dispatch_recon }}
+    steps:
+      - name: Decision tree — one cheap call per concern
+        id: tree
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b
+        with:
+          script: |
+            const force = (context.payload.inputs && context.payload.inputs.force_lane) === 'all';
+            // Node A: any queued runs? (1 call)
+            const queued = await github.paginate(github.rest.actions.listWorkflowRunsForRepo, {
+              owner: context.repo.owner, repo: context.repo.repo,
+              status: 'queued', per_page: 5
+            });
+            // Node B: bridge manifest freshness? (1 call)
+            let bridgeStaleMin = 1e9;
+            try {
+              const bridge = await github.rest.repos.getContent({
+                owner: context.repo.owner, repo: context.repo.repo,
+                path: 'ops/termux-bridge/current.json'
+              });
+              const parsed = JSON.parse(Buffer.from(bridge.data.content, 'base64').toString());
+              const stamp = parsed.published_at || parsed.updated_at || parsed.ts;
+              if (stamp) bridgeStaleMin = (Date.now() - new Date(stamp).getTime()) / 60000;
+            } catch (_) { /* missing manifest = stale */ }
+            // Node C: repo activity since last evaluation window? (1 call)
+            let repoChanged = false;
+            try {
+              const pushes = await github.rest.repos.listCommits({
+                owner: context.repo.owner, repo: context.repo.repo,
+                per_page: 1,
+                since: new Date(Date.now() - 3 * 3600 * 1000).toISOString()
+              });
+              repoChanged = pushes.data.length > 0;
+            } catch (_) {}
+            // Node D: cycle phase throttles sub-15-min lanes to 30 min (no API call)
+            const slow = (new Date().getUTCMinutes() % 30) < 10;
+            core.setOutput('dispatch_stall_watch', (queued.length > 0 || force) ? 'true' : 'false');
+            core.setOutput('dispatch_bridge', (bridgeStaleMin > 30 || force) ? 'true' : 'false');
+            core.setOutput('dispatch_probe', ((bridgeStaleMin > 45 && slow) || force) ? 'true' : 'false');
+            core.setOutput('dispatch_eval', ((repoChanged && slow) || force) ? 'true' : 'false');
+            core.setOutput('dispatch_recon', (slow || force) ? 'true' : 'false');
+            core.summary
+              .addHeading('Decision tree verdicts')
+              .addTable([
+                ['Node', 'Condition', 'Fired'],
+                ['A stall-watch', 'queued runs > 0', String(queued.length > 0)],
+                ['B bridge', `manifest stale ${Math.round(bridgeStaleMin)}m`, String(bridgeStaleMin > 30)],
+                ['C probe', `stale ${Math.round(bridgeStaleMin)}m && slow-cycle`, String(bridgeStaleMin > 45 && slow)],
+                ['D eval', 'repo changed && slow-cycle', String(repoChanged && slow)],
+                ['E recon', 'slow-cycle', String(slow)]
+              ])
+              .write();
+
+  dispatch:
+    needs: decide
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        include:
+          - lane: agent-runtime-stall-watch
+            run: ${{ needs.decide.outputs.dispatch_stall_watch }}
+          - lane: tunnel-canary
+            run: ${{ needs.decide.outputs.dispatch_bridge }}
+          - lane: deepcli-agent-bridge
+            run: ${{ needs.decide.outputs.dispatch_bridge }}
+          - lane: tailscale-bridge-probe
+            run: ${{ needs.decide.outputs.dispatch_probe }}
+          - lane: continuous-evaluation
+            run: ${{ needs.decide.outputs.dispatch_eval }}
+          - lane: team-mvt
+            run: ${{ needs.decide.outputs.dispatch_eval }}
+          - lane: recon-intel-discovery
+            run: ${{ needs.decide.outputs.dispatch_recon }}
+    if: matrix.run == 'true'
+    steps:
+      - name: Wake lane
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b
+        with:
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner, repo: context.repo.repo,
+              workflow_id: '${{ matrix.lane }}.yml',
+              ref: 'master'
+            });

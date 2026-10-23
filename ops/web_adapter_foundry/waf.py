@@ -584,6 +584,22 @@ def _direct_http(rid, op, inp, req):
     if problem:
         return _resp(rid, False, error={"code": "not_allowlisted",
                                         "message": problem})
+    # Full-URL barrier, inline at the sink: when the operation declares
+    # url_prefixes, the fetch target must begin with one of them — the
+    # target is then chosen from an author-declared set, not free-form
+    # caller input (the canonical full-SSRF remediation). Without
+    # prefixes, the host-allowlist + public-address chain above is the
+    # barrier, and the URL is rebuilt from its validated components.
+    prefixes = op.get("url_prefixes") or []
+    if prefixes and not any(url.startswith(p) for p in prefixes):
+        return _resp(rid, False, error={"code": "not_allowlisted",
+                                        "message": f"url {url!r} matches no declared url_prefix"})
+    parts = urllib.parse.urlparse(url)
+    if parts.hostname not in allow:
+        return _resp(rid, False, error={"code": "not_allowlisted",
+                                        "message": f"url host {parts.hostname!r} not in allowlist {allow}"})
+    url = urllib.parse.urlunparse((parts.scheme, parts.netloc, parts.path,
+                                   "", parts.query, ""))
     deadline = ((req.get("execution") or {}).get("deadline_ms") or 15000) / 1000
     request = urllib.request.Request(url, headers={"User-Agent": f"waf/{VERSION}"})
     opener = urllib.request.build_opener(_AllowlistRedirectHandler(allow))

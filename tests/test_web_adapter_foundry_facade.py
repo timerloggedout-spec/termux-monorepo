@@ -110,6 +110,34 @@ def test_redirect_hop_revalidated(monkeypatch):
         handler.redirect_request(req, None, 302, "Found", {}, "http://not-allowed.example/")
 
 
+def test_direct_http_url_prefix_barrier(monkeypatch):
+    from ops.web_adapter_foundry import waf
+    _fake_dns(monkeypatch, {"ok.example": "93.184.216.34"})
+    op = {"operation_id": "docs.get", "side_effect": "read", "status": "verified",
+          "executor": "direct-http", "allowlist": ["ok.example"],
+          "url_prefixes": ["https://ok.example/docs/"]}
+    reg = {"provider": "t", "operations": [op]}
+    out = waf.handle_request({"id": "p1", "operation": "docs.get",
+                              "input": {"url": "https://ok.example/admin"}}, reg)
+    assert not out["ok"] and out["error"]["code"] == "not_allowlisted"
+    assert "url_prefix" in out["error"]["message"]
+    # Stub the opener so NO real network happens: reaching the stub proves
+    # the request passed every barrier and arrived at the network step.
+    import urllib.error
+    import urllib.request as urlreq
+
+    class _StubOpener:
+        def open(self, request, timeout=None):
+            raise urllib.error.URLError("offline-stub")
+
+    monkeypatch.setattr(urlreq, "build_opener", lambda *a, **k: _StubOpener())
+    out = waf.handle_request({"id": "p2", "operation": "docs.get",
+                              "input": {"url": "https://ok.example/docs/x"}},
+                             reg)
+    assert not out["ok"] and out["error"]["code"] == "upstream"
+    assert "offline-stub" in out["error"]["message"]
+
+
 def test_sse_fanout_receives_invoke(base):
     req = urllib.request.Request(base + "/events")
     with urllib.request.urlopen(req, timeout=10) as resp:

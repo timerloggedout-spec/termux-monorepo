@@ -1,0 +1,84 @@
+name: tier1 engine proof
+
+# Remote Tier-1 proof for the Web Adapter Foundry (campaign step 2).
+# Manual dispatch ONLY — no schedule, no PR triggers (trigger budget law).
+# Runs the two Tier-1 thin engines (Obscura, Lightpanda) natively on an
+# arm64 runner (B160V arch analogue) and on x86_64 as a reference point,
+# against a local fixture, and uploads measured evidence as an artifact.
+# Results are read back and landed as a doc by a collaborator — this
+# workflow never commits.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mem_cap_mb:
+        description: "Address-space cap per engine (MB) approximating the B160V budget"
+        required: false
+        default: "512"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tier1-engine-proof
+  cancel-in-progress: false
+
+jobs:
+  proof:
+    name: proof (${{ matrix.label }})
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: arm64
+            runner: ubuntu-24.04-arm
+            obscura_asset: obscura-aarch64-linux.tar.gz
+            lightpanda_asset: lightpanda-aarch64-linux
+          - label: x86_64
+            runner: ubuntu-latest
+            obscura_asset: obscura-x86_64-linux.tar.gz
+            lightpanda_asset: lightpanda-x86_64-linux
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 1
+
+      - name: Download pinned Tier-1 engines
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/engines
+          curl -fsSL -o /tmp/engines/obscura.tar.gz \
+            "https://github.com/h4ckf0r0day/obscura/releases/download/v0.2.5/${{ matrix.obscura_asset }}"
+          curl -fsSL -o /tmp/engines/lightpanda \
+            "https://github.com/lightpanda-io/browser/releases/download/1.0.1/${{ matrix.lightpanda_asset }}"
+          tar -xzf /tmp/engines/obscura.tar.gz -C /tmp/engines
+          chmod +x /tmp/engines/lightpanda
+          find /tmp/engines -maxdepth 3 -type f -name 'obscura*' -exec chmod +x {} +
+          ls -laR /tmp/engines | head -40
+          uname -m
+
+      - name: Serve fixture and run proof
+        env:
+          MEM_CAP_MB: ${{ inputs.mem_cap_mb }}
+        run: |
+          set -euo pipefail
+          python3 -m http.server 8901 --directory ops/web_adapter_foundry/proof >/tmp/http.log 2>&1 &
+          sleep 1
+          curl -sf http://127.0.0.1:8901/fixture.html | head -3
+          bash ops/web_adapter_foundry/proof/run_proof.sh \
+            /tmp/engines "http://127.0.0.1:8901/fixture.html" "proof-${{ matrix.label }}.json"
+          {
+            echo "## Tier-1 proof — ${{ matrix.label }}"
+            echo '```json'
+            cat "proof-${{ matrix.label }}.json"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload proof evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: tier1-proof-${{ matrix.label }}
+          path: proof-${{ matrix.label }}.json
+          if-no-files-found: error

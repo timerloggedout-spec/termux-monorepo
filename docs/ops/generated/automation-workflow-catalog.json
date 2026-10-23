@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "df5d53f75a089d5cf40fe8e060c57efcb1db704ad7ef836ecd6831df73c7dda5",
-  "workflow_count": 175,
+  "source_fingerprint": "6944a956a147597685749159390a8fea699d17d957dfd03eb34abf6272fddb66",
+  "workflow_count": 176,
   "workflows": [
     {
       "action_pins": [
@@ -2946,6 +2946,23 @@
       "schedules": [],
       "triggers": [
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "bounded-state-write",
+      "concurrency": "group: target-intake-${{ github.event.issue.number }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "intake"
+      ],
+      "name": "target intake",
+      "path": ".github/workflows/target-intake.yml",
+      "schedules": [],
+      "triggers": [
+        "issues"
       ]
     },
     {

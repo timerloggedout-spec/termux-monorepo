@@ -39,12 +39,14 @@ class FreeTierValueBoardContractTests(unittest.TestCase):
         self.assertIn("VALIDATED", self.page)
         self.assertIn("PASS", self.page)
         self.assertIn("PUBLIC_SAFE", self.page)
+        self.assertIn("VERIFIED_NO_COST", self.page)
 
     def test_public_page_and_methodology_are_linked(self):
         self.assertIn("free-tier-value.json", self.page)
         self.assertIn("FREE-TIER-USE-VALUE-BOARD.md", self.page)
         self.assertIn("time_invested_value", self.doc)
         self.assertIn("paid_equivalent_usd", self.doc)
+        self.assertIn("billing_status=VERIFIED_NO_COST", self.doc)
 
     def test_public_payload_has_no_prompt_or_completion_fields(self):
         encoded = json.dumps(self.data).lower()

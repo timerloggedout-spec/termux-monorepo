@@ -2,7 +2,7 @@
 
 > Generated from GitHub repository and starring metadata. JSON is canonical; this file is a navigation projection.
 
-Observed: `2026-10-23T05:17:03.747282Z`
+Observed: `2026-10-23T09:23:13.185214Z`
 
 ## Navigation
 
@@ -558,6 +558,7 @@ Observed: `2026-10-23T05:17:03.747282Z`
 | [timerloggedout-spec/ImageSegmentation_fork](https://github.com/timerloggedout-spec/ImageSegmentation_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/Info-extract_fork-HBC_Human-Bahavioral-Change](https://github.com/timerloggedout-spec/Info-extract_fork-HBC_Human-Bahavioral-Change) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/interface](https://github.com/timerloggedout-spec/interface) | owned | unclassified | medium | upstream-comparison |
+| [timerloggedout-spec/interledger.org-v5](https://github.com/timerloggedout-spec/interledger.org-v5) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/invoicr](https://github.com/timerloggedout-spec/invoicr) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/js-solution-vault_fork](https://github.com/timerloggedout-spec/js-solution-vault_fork) | owned, starred | unclassified | medium | dependency-candidate, upstream-comparison |
 | [timerloggedout-spec/jSQL_fork](https://github.com/timerloggedout-spec/jSQL_fork) | owned, starred | unclassified | medium | upstream-comparison |
@@ -1899,6 +1900,7 @@ Observed: `2026-10-23T05:17:03.747282Z`
 | [dreamzyd/gemini-cli-api](https://github.com/dreamzyd/gemini-cli-api) | starred | ai, developer-tools, kubernetes | high | — |
 | [gitpod-io/gitpod](https://github.com/gitpod-io/gitpod) | starred | ai, developer-tools, platform | high | — |
 | [google-github-actions/run-gemini-cli](https://github.com/google-github-actions/run-gemini-cli) | starred | ai, developer-tools, platform | high | workflow-candidate |
+| [n8n-io/n8n](https://github.com/n8n-io/n8n) | starred | ai, developer-tools, platform | high | dependency-candidate, workflow-candidate |
 | [wavetermdev/waveterm](https://github.com/wavetermdev/waveterm) | starred | ai, developer-tools, platform | high | workflow-candidate |
 | [genular/pandora](https://github.com/genular/pandora) | starred | ai, developer-tools, research | high | — |
 | [kjhall01/xcast](https://github.com/kjhall01/xcast) | starred | ai, developer-tools, research | high | — |
@@ -4481,6 +4483,7 @@ Observed: `2026-10-23T05:17:03.747282Z`
 | [timerloggedout-spec/ImageSegmentation_fork](https://github.com/timerloggedout-spec/ImageSegmentation_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/Info-extract_fork-HBC_Human-Bahavioral-Change](https://github.com/timerloggedout-spec/Info-extract_fork-HBC_Human-Bahavioral-Change) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/interface](https://github.com/timerloggedout-spec/interface) | owned | unclassified | medium | upstream-comparison |
+| [timerloggedout-spec/interledger.org-v5](https://github.com/timerloggedout-spec/interledger.org-v5) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/invoicr](https://github.com/timerloggedout-spec/invoicr) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/js-solution-vault_fork](https://github.com/timerloggedout-spec/js-solution-vault_fork) | owned, starred | unclassified | medium | dependency-candidate, upstream-comparison |
 | [timerloggedout-spec/jSQL_fork](https://github.com/timerloggedout-spec/jSQL_fork) | owned, starred | unclassified | medium | upstream-comparison |
@@ -4933,6 +4936,7 @@ Observed: `2026-10-23T05:17:03.747282Z`
 | [dreamzyd/gemini-cli-api](https://github.com/dreamzyd/gemini-cli-api) | starred | ai, developer-tools, kubernetes | high | — |
 | [gitpod-io/gitpod](https://github.com/gitpod-io/gitpod) | starred | ai, developer-tools, platform | high | — |
 | [google-github-actions/run-gemini-cli](https://github.com/google-github-actions/run-gemini-cli) | starred | ai, developer-tools, platform | high | workflow-candidate |
+| [n8n-io/n8n](https://github.com/n8n-io/n8n) | starred | ai, developer-tools, platform | high | dependency-candidate, workflow-candidate |
 | [timerloggedout-spec/OBLIQ-Website](https://github.com/timerloggedout-spec/OBLIQ-Website) | owned | ai, developer-tools, platform | high | upstream-comparison, workflow-candidate |
 | [wavetermdev/waveterm](https://github.com/wavetermdev/waveterm) | starred | ai, developer-tools, platform | high | workflow-candidate |
 | [genular/pandora](https://github.com/genular/pandora) | starred | ai, developer-tools, research | high | — |
@@ -5790,6 +5794,7 @@ Observed: `2026-10-23T05:17:03.747282Z`
 | [timerloggedout-spec/OmniRoute_fork](https://github.com/timerloggedout-spec/OmniRoute_fork) | owned, starred | ai, developer-tools, api-management | high | upstream-comparison |
 | [timerloggedout-spec/AIstudioProxyAPIClient_fork](https://github.com/timerloggedout-spec/AIstudioProxyAPIClient_fork) | owned | ai, developer-tools, browser | medium | upstream-comparison |
 | [google-github-actions/run-gemini-cli](https://github.com/google-github-actions/run-gemini-cli) | starred | ai, developer-tools, platform | high | workflow-candidate |
+| [n8n-io/n8n](https://github.com/n8n-io/n8n) | starred | ai, developer-tools, platform | high | dependency-candidate, workflow-candidate |
 | [timerloggedout-spec/OBLIQ-Website](https://github.com/timerloggedout-spec/OBLIQ-Website) | owned | ai, developer-tools, platform | high | upstream-comparison, workflow-candidate |
 | [wavetermdev/waveterm](https://github.com/wavetermdev/waveterm) | starred | ai, developer-tools, platform | high | workflow-candidate |
 | [LFDT-web3j/web3j](https://github.com/LFDT-web3j/web3j) | starred | ai, developer-tools, termux | medium | dependency-candidate |
@@ -6270,6 +6275,7 @@ Observed: `2026-10-23T05:17:03.747282Z`
 | [timerloggedout-spec/ImageSegmentation_fork](https://github.com/timerloggedout-spec/ImageSegmentation_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/Info-extract_fork-HBC_Human-Bahavioral-Change](https://github.com/timerloggedout-spec/Info-extract_fork-HBC_Human-Bahavioral-Change) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/interface](https://github.com/timerloggedout-spec/interface) | owned | unclassified | medium | upstream-comparison |
+| [timerloggedout-spec/interledger.org-v5](https://github.com/timerloggedout-spec/interledger.org-v5) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/invoicr](https://github.com/timerloggedout-spec/invoicr) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/js-solution-vault_fork](https://github.com/timerloggedout-spec/js-solution-vault_fork) | owned, starred | unclassified | medium | dependency-candidate, upstream-comparison |
 | [timerloggedout-spec/jSQL_fork](https://github.com/timerloggedout-spec/jSQL_fork) | owned, starred | unclassified | medium | upstream-comparison |

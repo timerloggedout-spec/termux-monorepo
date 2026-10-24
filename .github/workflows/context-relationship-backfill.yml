@@ -69,12 +69,14 @@ jobs:
               print('start_page=1')
           else:
               data = json.loads(manifest.read_text(encoding='utf-8'))
-              next_page = data.get('history_window', {}).get('next_start_page')
-              if next_page is None:
+              coverage = data.get('history_coverage', {})
+              status = coverage.get('status')
+              next_page = coverage.get('next_start_page')
+              if status == 'COMPLETE' and next_page is None:
                   print('continue=false')
               else:
                   print('continue=true')
-                  print(f'start_page={next_page}')
+                  print(f"start_page={next_page if isinstance(next_page, int) else 1}")
           PY
       - name: Build one historical relationship-index window
         if: steps.continuation.outputs.continue == 'true'

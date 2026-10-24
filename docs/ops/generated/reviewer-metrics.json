@@ -1,6 +1,48 @@
 {
  "cycles": [
   {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "code": 1,
+    "docs": 1,
+    "generated": 1,
+    "tests": 1,
+    "workflows": 2
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1633-597fb348312e",
+   "cycle_started_at": "2026-10-24T11:03:44.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "597fb348312e86de7deaf2a08ceff1577c6793f2",
+   "issue_comment_volume": {
+    "ecc": 6,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1633,
+   "primary_class": "mixed",
+   "providers": {
+    "coderabbit": {
+     "cooldown": false,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "action_acknowledged"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 2581,
+    "deletions": 285,
+    "files": 6
+   },
+   "state": "awaiting_provider_response",
+   "verdicts": {}
+  },
+  {
    "author": "google-labs-jules[bot]",
    "author_class": "bot",
    "classes": {
@@ -5816,81 +5858,43 @@
    },
    "state": "provider_cooldown",
    "verdicts": {}
-  },
-  {
-   "author": "google-labs-jules[bot]",
-   "author_class": "bot",
-   "classes": {
-    "code": 1
-   },
-   "coderabbit_skipped_notice": true,
-   "cycle_id": "pr-1510-559607ff3932",
-   "cycle_started_at": "2026-10-22T13:57:41.000Z",
-   "docs_only": false,
-   "generated_only": false,
-   "head_sha": "559607ff3932b0655d871922fb5d311a689654b9",
-   "issue_comment_volume": {
-    "coderabbit": 2,
-    "ecc": 12
-   },
-   "labels": [],
-   "pr": 1510,
-   "primary_class": "code",
-   "providers": {
-    "coderabbit": {
-     "cooldown": true,
-     "delivered": false,
-     "latency_sec": null,
-     "required": true,
-     "state": "provider_cooldown"
-    }
-   },
-   "ready": "false",
-   "review_comment_counts": {},
-   "size": {
-    "additions": 41,
-    "deletions": 27,
-    "files": 1
-   },
-   "state": "provider_cooldown",
-   "verdicts": {}
   }
  ],
- "generated_at": "2026-10-24T11:02:41.899232+00:00",
+ "generated_at": "2026-10-24T11:09:14.224259+00:00",
  "providers": {
   "coderabbit": {
    "by_author_class": {
     "bot": {
-     "cooldown_cycles": 8,
-     "cycles": 10,
+     "cooldown_cycles": 7,
+     "cycles": 9,
      "delivered": 0,
      "delivery_rate": 0.0,
      "latencies_sec": 0,
      "median_latency_sec": null,
      "not_required_cycles": 0,
-     "required_cycles": 10
+     "required_cycles": 9
     },
     "user": {
      "cooldown_cycles": 39,
-     "cycles": 123,
+     "cycles": 124,
      "delivered": 23,
-     "delivery_rate": 0.187,
+     "delivery_rate": 0.1855,
      "latencies_sec": 23,
      "median_latency_sec": 473.0,
      "not_required_cycles": 0,
-     "required_cycles": 123
+     "required_cycles": 124
     }
    },
    "by_context": {
     "bot/code": {
-     "cooldown_cycles": 2,
-     "cycles": 2,
+     "cooldown_cycles": 1,
+     "cycles": 1,
      "delivered": 0,
      "delivery_rate": 0.0,
      "latencies_sec": 0,
      "median_latency_sec": null,
      "not_required_cycles": 0,
-     "required_cycles": 2
+     "required_cycles": 1
     },
     "bot/data": {
      "cooldown_cycles": 1,
@@ -5974,13 +5978,13 @@
     },
     "user/mixed": {
      "cooldown_cycles": 18,
-     "cycles": 58,
+     "cycles": 59,
      "delivered": 8,
-     "delivery_rate": 0.1379,
+     "delivery_rate": 0.1356,
      "latencies_sec": 8,
      "median_latency_sec": 657.5,
      "not_required_cycles": 0,
-     "required_cycles": 58
+     "required_cycles": 59
     },
     "user/other": {
      "cooldown_cycles": 1,
@@ -6003,9 +6007,9 @@
      "required_cycles": 33
     }
    },
-   "issue_comments": 212,
+   "issue_comments": 210,
    "issue_comments_by_context": {
-    "bot/code": 4,
+    "bot/code": 2,
     "bot/data": 2,
     "bot/docs": 2,
     "bot/mixed": 8,
@@ -6020,7 +6024,7 @@
    },
    "review_comments": 213,
    "totals": {
-    "cooldown_cycles": 47,
+    "cooldown_cycles": 46,
     "cycles": 133,
     "delivered": 23,
     "delivery_rate": 0.1729,
@@ -6083,42 +6087,42 @@
    "by_author_class": {},
    "by_context": {},
    "findings": {
-    "audit_comments": 1234,
+    "audit_comments": 1228,
     "current_head_findings": 1,
     "findings_action_required": 14,
     "findings_on_closed_prs": 2,
     "findings_on_open_prs": 12,
     "gates": {
      "ECC Tools / Hosted Promotion Readiness": {
-      "audits": 240,
+      "audits": 238,
       "findings_action_required": 0
      },
      "ECC Tools / PR Config Audit": {
-      "audits": 134,
+      "audits": 135,
       "findings_action_required": 6
      },
      "ECC Tools / PR Harness Audit": {
-      "audits": 134,
+      "audits": 135,
       "findings_action_required": 0
      },
      "ECC Tools / PR Risk Taxonomy": {
-      "audits": 242,
+      "audits": 240,
       "findings_action_required": 0
      },
      "ECC Tools / Reference Set Readiness": {
-      "audits": 241,
+      "audits": 239,
       "findings_action_required": 0
      },
      "ECC Tools / Security Evidence": {
-      "audits": 243,
+      "audits": 241,
       "findings_action_required": 8
      }
     },
     "prs_with_findings": 3
    },
-   "issue_comments": 964,
+   "issue_comments": 958,
    "issue_comments_by_context": {
-    "bot/code": 24,
+    "bot/code": 12,
     "bot/data": 8,
     "bot/docs": 10,
     "bot/mixed": 18,
@@ -6127,7 +6131,7 @@
     "user/code": 4,
     "user/config": 8,
     "user/docs": 146,
-    "user/mixed": 468,
+    "user/mixed": 474,
     "user/other": 8,
     "user/workflows": 254
    },
@@ -6169,12 +6173,12 @@
      "required_cycles": 1
     }
    },
-   "issue_comments": 74,
+   "issue_comments": 75,
    "issue_comments_by_context": {
     "user/code": 1,
     "user/config": 2,
     "user/docs": 23,
-    "user/mixed": 29,
+    "user/mixed": 30,
     "user/other": 2,
     "user/workflows": 17
    },

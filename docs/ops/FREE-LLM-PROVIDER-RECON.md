@@ -110,3 +110,44 @@ The [Free-Tier Backend Recon (2026-10-21)](FREE-TIER-BACKEND-RECON-2026-10-21.md
 - **Value telemetry** is based on real authorized invocation/session records and validated attribution. Do not turn free-tier limits, catalog counts, missing sessions or zero dispatched requests into savings, balance or model-quality claims.
 
 The [resource implementation matrix](RESOURCE-IMPLEMENTATION-MATRIX.md) tracks the two newly identified catalogs as separate discovery-only resource identities. Canonical ingestion still requires source-specific adapters and offline schema-drift tests; no automatic provider calls, account creation, or routing-policy change is implied.
+
+
+## Implementation archaeology: existing provider work predates this catalog delta
+
+**Correction to any reading of this recon as “only two providers exist” or “the providers are offline.”** The two newly registered entries above are only *new discovery-source identities*. They are not a count of implemented providers. The repository already contains a substantial live-capable remote-inference stack; the new catalogs must be reconciled with that stack rather than creating a parallel one.
+
+### Merged implementation lineage
+
+| PR | Status / scope evidenced by PR record | What it means for this recon |
+|---|---|---|
+| [#1321](https://github.com/timerloggedout-spec/termux-monorepo/pull/1321) and [#1325](https://github.com/timerloggedout-spec/termux-monorepo/pull/1325) | Merged: existing-token no-cost admission check and a bounded OpenRouter synthetic smoke attempt; the documented run received HTTP 429, so inference was **not** verified. | There is a real remote invocation path and a recorded provider-capacity failure; do not equate “attempted” with successful inference. |
+| [#1463](https://github.com/timerloggedout-spec/termux-monorepo/pull/1463) | Merged: opt-in private OpenRouter current-key quota observation. | Account quota is a separate, privacy-sensitive observation; public catalog counts are not balances. |
+| [#1466](https://github.com/timerloggedout-spec/termux-monorepo/pull/1466) | Merged: repairs 35 omitted source registrations; FreeLLMAPI static references 37 → 72, combined research records 160 → 195; 117 exact model claims unchanged; 54 service references initially unmapped in that repair. | Existing source ingestion and provider identity reconciliation already exist. Do not restart from a two-source/two-provider mental model. |
+| [#1471](https://github.com/timerloggedout-spec/termux-monorepo/pull/1471) | Merged: seven additional fixed HTTP transports (Typhoon, UnoRouter, Routeway, Requesty, xKiro, xfyun Spark Lite, SEA-LION), five catalog adapters, plus default-off Gemini readiness checks; existing Felo/Gemini/Groq/OpenRouter preserved. | These are remote-capable adapters behind exact-model admission—not offline inference. A credential/readiness check or catalog GET is not itself a completion. |
+| [#1481](https://github.com/timerloggedout-spec/termux-monorepo/pull/1481) | Merged: passive quota observation from supported catalog-response headers, status-only output, and Felo evidence reconciliation. | Existing quota readers and telemetry need reuse; unknown counters must remain unknown. |
+| [#1504](https://github.com/timerloggedout-spec/termux-monorepo/pull/1504) and [#1511](https://github.com/timerloggedout-spec/termux-monorepo/pull/1511) | Merged: backend quota registry 28 → 64 service/metric records and publication of the dated free-tier backend recon. | Backend free-tier capacity has its own inventory. It is not the inference-provider catalog and cannot prove a model call is free or available. |
+| [#1541](https://github.com/timerloggedout-spec/termux-monorepo/pull/1541) | Open, stacked on open #1470 at its recorded head; THUB-017 runtime/quota/telemetry implementation is not yet a merged production capability. | Keep this as a separate gated integration, not proof of a completed end-to-end research/inference loop. |
+
+Further existing lineage includes the native provider batch and service-expansion contracts in [Provider Batch Implementation](PROVIDER-BATCH-IMPLEMENTATION.md) and [Provider Service Expansion](PROVIDER-SERVICE-EXPANSION.md). Their recorded baseline is 117 exact pinned directory model claims across 16 families, 23 source-mapped FreeLLMAPI chat-transport families, and 47 remaining unmapped service references (the later inventory's classification; not all 72 are free inference APIs). These counts have different denominators and must not be added together.
+
+### What “offline” means—and what it does not
+
+- **Offline tests/fixtures:** deterministic unit and regression tests exercise parsing, schema drift, identity mapping, quota normalization, request construction, admission-denial paths, and response handling without spending provider quota or transmitting prompts. This is deliberate test isolation.
+- **Live catalog/readiness observations:** the existing provider-batch and operational-check workflows can make remote, bounded HTTPS requests to documented provider catalog/readiness endpoints when explicitly run in the authorized context. A catalog GET proves only that endpoint's observed response at that time.
+- **Remote inference:** a completion/chat request is a distinct action. It requires an explicit approved execution path, an existing authorized credential where required, exact provider/model identity, verified no-cost terms/account admission, public-data eligibility, current quota/cooldown admission, bounded request/response handling, and sanitized outcome evidence. Do not run it merely to test a parser, and do not call a provider “operational” from a catalog GET.
+- **Production proof:** a successful CI run against fixtures is not remote service proof; a successful catalog GET is not inference proof; an HTTP 429 is an observed capacity/rate-limit blocker, not a model-quality failure. Record each evidence class separately.
+
+Thus “offline schema fixtures” means **test the new catalog adapters offline before enabling their ingestion**, not “run inference offline.” Once an adapter is validated, its catalog source may be fetched remotely under the existing trusted workflow controls; remote inference remains governed by the existing hub/admission and quota contracts.
+
+### Actions consolidation chronology and risk
+
+The Actions consolidation lineage is also already committed: [#1574](https://github.com/timerloggedout-spec/termux-monorepo/pull/1574) introduced the Tier-0 quota dispatch tree; [#1577](https://github.com/timerloggedout-spec/termux-monorepo/pull/1577) migrated nine more lanes to its decision structure; [#1579](https://github.com/timerloggedout-spec/termux-monorepo/pull/1579) added static drift enforcement; and [#1581](https://github.com/timerloggedout-spec/termux-monorepo/pull/1581) added the Vantage observer/Node H and repaired cadence drift. These changes centralize **when a lane is woken**, not the lane's provider credentials, endpoint contract, model admission, or invocation semantics. The consolidation must preserve those contracts and dispatch authority; the mere presence of a lane in a decision tree does not mean it has been dispatched or that a remote call happened.
+
+### Required reconciliation before further provider additions
+
+1. Reuse the existing 72-reference source ingestion, 195-record reconciliation, 117-model denominator, 23 transport mappings, exact-model hub routes, and canonical quota/admission readers. Do not create duplicate provider adapters or another scheduler.
+2. For each of the two new catalogs, record the immutable source revision/content hash, schema, source-specific model/provider identity, access method and account/terms requirements. Keep the upstream directory's aggregate counts as claims.
+3. Run offline fixtures for parser/schema and negative-admission behavior. Separately run a bounded authorized catalog fetch to validate the remote source. Neither step sends inference.
+4. Only run remote synthetic inference through the already-reviewed operational gate, after no-cost account/model admission and quota reservation are proved. Capture run/job/request/attempt IDs and sanitized provider/model/status/usage evidence; never persist prompts, completions, keys, cookies, or raw private quota payloads.
+5. Reconcile actual evidence into the existing provider-batch report and THUB-017/3L0/Free-Tier Value Board contracts. If there is no successful invocation record, report **not proved**, not “offline,” “zero usage,” “zero savings,” or “provider broken.”
+

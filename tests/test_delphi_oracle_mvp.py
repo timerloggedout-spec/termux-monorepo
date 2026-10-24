@@ -49,6 +49,9 @@ class DelphiOracleMVPTests(unittest.TestCase):
         self.assertEqual(receipt["aws_invocations"], 0)
         self.assertIsNone(receipt["measured_cloud_cost_usd"])
         self.assertFalse(receipt["state"]["PROMOTED"])
+        self.assertEqual(receipt["tlm_receipt"]["receipt_schema"], "tlm-run-receipt/v1")
+        self.assertEqual(receipt["tlm_receipt"]["authorization"]["allowed_action_categories"], [])
+        self.assertIsNone(receipt["economic_accounting"]["actual_provider_cost_usd"])
         validate_receipt(receipt)
 
     def test_bad_url_scheme_is_rejected(self):

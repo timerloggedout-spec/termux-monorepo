@@ -1,0 +1,141 @@
+{
+  "schema": "delphi.research-silos.v1",
+  "doc": "docs/ops/RESEARCH-SILO-DELPHI.md",
+  "status": "ACTIVE",
+  "intent": "Each research-repo template under refTemplates/15_Research_Repo_Templates runs its own siloed Proposal → Delphi → cycle stovepipe for independent outcome comparison of validated outputs, feature extractions, and consensus implementations. No cross-silo score leakage.",
+  "baseline_cycle": {
+    "name": "RFP{1st_improve_request_cycle on RFP itself}→Delphi→cycle",
+    "stages": [
+      "RFP (improve-request on the RFP schema / surface itself)",
+      "oracle + blind panel (5 roles)",
+      "award shadow|parked",
+      "validated output comparison",
+      "feature extraction",
+      "consensus implementation",
+      "flywheel confirmed|miss → reweight"
+    ],
+    "comparison_axes": [
+      "produced_output_results_validated",
+      "feature_extractions",
+      "consensus_implementation"
+    ]
+  },
+  "evolutionary_extension": {
+    "name": "feature 🧬 evolutionary selections & mixes",
+    "variants": ["rnd", "specifically_selected", "control"],
+    "note": "After baseline silo comparison, each silo may spawn variant RFPs (rnd / selected / control) for evolutionary feature mixes. Attribution remains per-silo + variant."
+  },
+  "expected_independent_results": {
+    "baseline": 12,
+    "attribution": "one result stream per research silo (slot)",
+    "with_evolutionary": "12 × (1 + N_variants); N starts at 3 (rnd, selected, control) → up to 48 independent streams when fully extended",
+    "current_schema_note": "Delphi Oracle RFP gate currently scores free-tier surfaces (ops/delphi/surfaces.json). Research silos are parallel metadata + RFP lanes that reuse the same gate, panel, and flywheel; each silo files its own delphi:rfp with surface_id = research.<slot>."
+  },
+  "silos": [
+    {
+      "id": "research.jogyo-research-lab",
+      "slot": "jogyo-research-lab",
+      "path": "refTemplates/15_Research_Repo_Templates/jogyo-research-lab",
+      "upstream": "https://github.com/Yeachan-Heo/My-Jogyo",
+      "role": "primary_exemplar",
+      "tier": "A"
+    },
+    {
+      "id": "research.docxology-template",
+      "slot": "docxology-template",
+      "path": "refTemplates/15_Research_Repo_Templates/docxology-template",
+      "upstream": "https://github.com/docxology/template",
+      "role": "reproducible_monorepo_pipeline",
+      "tier": "A"
+    },
+    {
+      "id": "research.yy-project-template",
+      "slot": "yy-project-template",
+      "path": "refTemplates/15_Research_Repo_Templates/yy-project-template",
+      "upstream": "https://github.com/yy/project-template",
+      "role": "classic_research_layout_uv",
+      "tier": "A"
+    },
+    {
+      "id": "research.buoyancy99-research-template",
+      "slot": "buoyancy99-research-template",
+      "path": "refTemplates/15_Research_Repo_Templates/buoyancy99-research-template",
+      "upstream": "https://github.com/buoyancy99/research-template",
+      "role": "ml_research_template",
+      "tier": "A"
+    },
+    {
+      "id": "research.yp-edu-research-project-template",
+      "slot": "yp-edu-research-project-template",
+      "path": "refTemplates/15_Research_Repo_Templates/yp-edu-research-project-template",
+      "upstream": "https://github.com/yp-edu/research-project-template",
+      "role": "kiss_agent_ready",
+      "tier": "A"
+    },
+    {
+      "id": "research.seunghyukoh-research-template",
+      "slot": "seunghyukoh-research-template",
+      "path": "refTemplates/15_Research_Repo_Templates/seunghyukoh-research-template",
+      "upstream": "https://github.com/seunghyukoh/research-template",
+      "role": "ai_research_batteries",
+      "tier": "A"
+    },
+    {
+      "id": "research.irudik-repo-template",
+      "slot": "irudik-repo-template",
+      "path": "refTemplates/15_Research_Repo_Templates/irudik-repo-template",
+      "upstream": "https://github.com/irudik/repo-template",
+      "role": "academic_make_multilang",
+      "tier": "A"
+    },
+    {
+      "id": "research.jdingel-projecttemplate",
+      "slot": "jdingel-projecttemplate",
+      "path": "refTemplates/15_Research_Repo_Templates/jdingel-projecttemplate",
+      "upstream": "https://github.com/jdingel/projecttemplate",
+      "role": "task_based_research_logbook",
+      "tier": "A"
+    },
+    {
+      "id": "research.3rdCore-Research_Project_Template",
+      "slot": "3rdCore-Research_Project_Template",
+      "path": "refTemplates/15_Research_Repo_Templates/3rdCore-Research_Project_Template",
+      "upstream": "https://github.com/3rdCore/Research_Project_Template",
+      "role": "lightning_hydra_wandb",
+      "tier": "A"
+    },
+    {
+      "id": "research.dicklesworthstone-agentic-flywheel",
+      "slot": "dicklesworthstone-agentic-flywheel",
+      "path": "refTemplates/15_Research_Repo_Templates/dicklesworthstone-agentic-flywheel",
+      "upstream": "https://github.com/Dicklesworthstone/agentic_coding_flywheel_setup",
+      "role": "agentic_flywheel_stack_profile",
+      "tier": "A",
+      "note": "metadata-only; do not run upstream installer"
+    },
+    {
+      "id": "research.opencode-research-papers",
+      "slot": "opencode-research-papers",
+      "path": "refTemplates/15_Research_Repo_Templates/opencode-research-papers",
+      "upstream": "https://github.com/saim-x/opencode-research-papers",
+      "role": "opencode_research_papers",
+      "tier": "A"
+    },
+    {
+      "id": "research.cactus-needle",
+      "slot": "cactus-needle",
+      "path": "refTemplates/15_Research_Repo_Templates/cactus-needle",
+      "upstream": "https://github.com/cactus-compute/needle",
+      "role": "needle_research",
+      "tier": "A"
+    }
+  ],
+  "rules": [
+    "One RFP per silo for the baseline improve-cycle; surface_id must match silo.id",
+    "No shared score aggregation across silos; comparison is post-hoc on ledger outcomes",
+    "Validated outputs, feature extractions, and consensus impls are recorded in the RFP ledger comment + delphi:outcomes",
+    "Evolutionary variants append .rnd | .selected | .control to the silo id",
+    "Dual-gate + evidence-led still govern any live pin under refTemplates/smods/",
+    "Reuse existing panel.json roles, gate.py, and flywheel; do not fork the scoring engine"
+  ]
+}

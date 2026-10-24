@@ -34,7 +34,11 @@ jobs:
             const cs = await github.paginate(github.rest.issues.listComments,{owner:context.repo.owner,repo:context.repo.repo,issue_number:n,per_page:100});
             if (cs.some(c => c.user?.login === 'github-actions[bot]' && (c.body||'').includes(marker))) return;
             const ref = (pr.head.ref||'head').replace(/[^a-zA-Z0-9-_]/g,'').slice(0,40);
-            await github.rest.issues.createComment({owner:context.repo.owner,repo:context.repo.repo,issue_number:n,body:[marker,'## Jules handoff receipt','- state: **DISPATCHED**','- target_agent: **jules**',`- initiated_by: **${source.user?.login||context.actor}**`,`- context_key: \`pr-${n}-${ref}\``,`- branch: \`${pr.head.ref}\``,`- baseline_head_sha: \`${pr.head.sha}\``,`- base_sha: \`${pr.base.sha}\``,`- source_comment_id: \`${id}\``,'','Delegation is not completion. Require a later head mutation, fresh exact-SHA gates, review disposition, and independent verification.'].join('\n')});
+            try {
+              await github.rest.issues.createComment({owner:context.repo.owner,repo:context.repo.repo,issue_number:n,body:[marker,'## Jules handoff receipt','- state: **DISPATCHED**','- target_agent: **jules**',`- initiated_by: **${source.user?.login||context.actor}**`,`- context_key: \`pr-${n}-${ref}\``,`- branch: \`${pr.head.ref}\``,`- baseline_head_sha: \`${pr.head.sha}\``,`- base_sha: \`${pr.base.sha}\``,`- source_comment_id: \`${id}\``,'','Delegation is not completion. Require a later head mutation, fresh exact-SHA gates, review disposition, and independent verification.'].join('\n')});
+            } catch (err) {
+              core.warning('Failed creating handoff receipt comment: ' + err.message);
+            }
   mutation:
     if: github.event_name == 'pull_request' && github.event.action == 'synchronize'
     runs-on: ubuntu-latest
@@ -60,4 +64,8 @@ jobs:
             if(!base||base===pr.head.sha)return;
             const marker=`<!-- agent-pr-jules-mutation:${pr.head.sha} -->`;
             if(cs.some(c=>c.user?.login === 'github-actions[bot]' && (c.body||'').includes(marker)))return;
-            await github.rest.issues.createComment({owner:context.repo.owner,repo:context.repo.repo,issue_number:pr.number,body:[marker,'## Jules handoff cross-check','- state: **MUTATION_OBSERVED**',`- initiated_by: **${initiator}**`,`- baseline_head_sha: \`${base}\``,`- observed_head_sha: \`${pr.head.sha}\``,`- head_actor: **${pr.user?.login||'unknown'}**`,'','Delegation remains open until fresh exact-SHA gates and independent verification succeed.'].join('\n')});
+            try {
+              await github.rest.issues.createComment({owner:context.repo.owner,repo:context.repo.repo,issue_number:pr.number,body:[marker,'## Jules handoff cross-check','- state: **MUTATION_OBSERVED**',`- initiated_by: **${initiator}**`,`- baseline_head_sha: \`${base}\``,`- observed_head_sha: \`${pr.head.sha}\``,`- head_actor: **${pr.user?.login||'unknown'}**`,'','Delegation remains open until fresh exact-SHA gates and independent verification succeed.'].join('\n')});
+            } catch (err) {
+              core.warning('Failed creating handoff mutation comment: ' + err.message);
+            }

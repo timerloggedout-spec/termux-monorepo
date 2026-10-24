@@ -56,9 +56,18 @@ jobs:
               core.setOutput('reason', 'cycle ID does not bind the dispatched PR and SHA');
               return;
             }
-            const { data: pr } = await github.rest.pulls.get({
-              owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber,
-            });
+            let pr, comments = [];
+            try {
+              const res = await github.rest.pulls.get({
+                owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber,
+              });
+              pr = res.data;
+            } catch (err) {
+              core.warning('Failed reading PR in gemini-after-peers: ' + err.message);
+              core.setOutput('skip', 'true');
+              core.setOutput('reason', 'API error fetching PR details');
+              return;
+            }
             if (pr.head.repo.full_name !== `${context.repo.owner}/${context.repo.repo}` || pr.draft) {
               core.info('Fork or draft — skip second pass');
               core.setOutput('skip', 'true');
@@ -70,12 +79,16 @@ jobs:
               core.setOutput('reason', 'peer gate SHA is stale');
               return;
             }
-            const comments = await github.paginate(github.rest.issues.listComments, {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              per_page: 100,
-            });
+            try {
+              comments = await github.paginate(github.rest.issues.listComments, {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                per_page: 100,
+              });
+            } catch (err) {
+              core.warning('Failed fetching comments in gemini-after-peers: ' + err.message);
+            }
             const stateComment = comments
               .filter(comment =>
                 statePublisherLogins.has((comment.user?.login || '').toLowerCase()) &&
@@ -241,13 +254,17 @@ jobs:
             const n = Number(process.env.PR_NUMBER);
             if (!n) return;
             const marker = '<!-- after-peers-quota-skip -->';
-            const comments = await github.paginate(github.rest.issues.listComments, {
-              owner: context.repo.owner, repo: context.repo.repo, issue_number: n, per_page: 100,
-            });
-            if (comments.some(c => c.body && c.body.includes(marker))) return;
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: n,
-              body: `${marker}\n⚠️ Second-pass skipped after peer gate — ${process.env.REASON || 'quota'}. Peers + Autofix still applied.`,
-            });
+            try {
+              const comments = await github.paginate(github.rest.issues.listComments, {
+                owner: context.repo.owner, repo: context.repo.repo, issue_number: n, per_page: 100,
+              });
+              if (comments.some(c => c.body && c.body.includes(marker))) return;
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: n,
+                body: `${marker}\n⚠️ Second-pass skipped after peer gate — ${process.env.REASON || 'quota'}. Peers + Autofix still applied.`,
+              });
+            } catch (err) {
+              core.warning('Failed creating skip comment in gemini-after-peers: ' + err.message);
+            }

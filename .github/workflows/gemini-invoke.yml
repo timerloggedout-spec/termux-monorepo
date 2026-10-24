@@ -113,20 +113,24 @@ jobs:
             const n = Number(process.env.ISSUE_NUMBER);
             if (!n) return;
             const marker = '<!-- invoke-quota-skip -->';
-            const comments = await github.paginate(github.rest.issues.listComments, {
-              owner: context.repo.owner, repo: context.repo.repo, issue_number: n, per_page: 100,
-            });
-            if (comments.some(c => c.body && c.body.includes(marker))) return;
-            await github.rest.issues.createComment({
-              owner: context.repo.owner, repo: context.repo.repo, issue_number: n,
-              body: [
-                marker,
-                '⚠️ **Invoke** skipped — Gemini primary + Omni/OpenRouter secondary soft budgets exhausted.',
-                `Reason: ${process.env.REASON || 'unknown'}`,
-                '',
-                'Try `@jules` for async Cloud VM work, or wait for Pacific midnight reset.',
-              ].join('\n'),
-            });
+            try {
+              const comments = await github.paginate(github.rest.issues.listComments, {
+                owner: context.repo.owner, repo: context.repo.repo, issue_number: n, per_page: 100,
+              });
+              if (comments.some(c => c.body && c.body.includes(marker))) return;
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo, issue_number: n,
+                body: [
+                  marker,
+                  '⚠️ **Invoke** skipped — Gemini primary + Omni/OpenRouter secondary soft budgets exhausted.',
+                  `Reason: ${process.env.REASON || 'unknown'}`,
+                  '',
+                  'Try `@jules` for async Cloud VM work, or wait for Pacific midnight reset.',
+                ].join('\n'),
+              });
+            } catch (err) {
+              core.warning('Failed creating skip comment in gemini-invoke: ' + err.message);
+            }
 
       - name: OmniRoute invoke (peer)
         if: steps.router.outputs.skip != 'true' && steps.router.outputs.provider == 'omni'

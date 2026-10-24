@@ -126,5 +126,9 @@ jobs:
             core.summary.addRaw(summary).write();
             core.info(summary);
             if (context.eventName === 'issue_comment' && context.payload.comment?.body?.startsWith('/evaluate')) {
-              await github.rest.issues.createComment({ owner, repo, issue_number: prNumber, body: summary });
+              try {
+                await github.rest.issues.createComment({ owner, repo, issue_number: prNumber, body: summary });
+              } catch (err) {
+                core.warning('Failed creating evaluation comment: ' + err.message);
+              }
             }

@@ -536,7 +536,7 @@ jobs:
                 });
               }
             } catch (err) {
-              core.warning('Failed to publish peer response state comment due to rate limit: ' + err.message);
+              core.warning('Failed to publish peer response state comment: ' + err.message);
             }
 
       - name: Dispatch verified second pass
@@ -658,7 +658,7 @@ jobs:
                 await new Promise(resolve => setTimeout(resolve, 1200));
               }
             } catch (err) {
-              core.warning('Failed requesting provider review due to rate limit: ' + err.message);
+              core.warning('Failed requesting provider review: ' + err.message);
             }
 
       - name: Record pending provider review policy

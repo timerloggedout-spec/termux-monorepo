@@ -232,28 +232,32 @@ jobs:
             }
 
             if (result.mode === 'documented_command' && command.documented_command) {
-              const { data: receipt } = await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: prNumber,
-                body: [
-                  command.documented_command,
-                  '',
-                  marker,
-                  'dispatch_receipt: true',
-                  `head_sha: ${requestedSha}`,
-                  `provider: ${provider}`,
-                  `action: ${action}`,
-                  `effect: ${command.effect}`,
-                  'request_actor: OPERATOR',
-                  'execution: documented_command',
-                  'control_id: none',
-                  'source_comment_id: none',
-                  '',
-                  'Autonomous allowlisted provider-command request and receipt. Provider completion remains independently verifiable.',
-                ].join('\n'),
-              });
-              result.source_comment_id = receipt.id;
+              try {
+                const { data: receipt } = await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  body: [
+                    command.documented_command,
+                    '',
+                    marker,
+                    'dispatch_receipt: true',
+                    `head_sha: ${requestedSha}`,
+                    `provider: ${provider}`,
+                    `action: ${action}`,
+                    `effect: ${command.effect}`,
+                    'request_actor: OPERATOR',
+                    'execution: documented_command',
+                    'control_id: none',
+                    'source_comment_id: none',
+                    '',
+                    'Autonomous allowlisted provider-command request and receipt. Provider completion remains independently verifiable.',
+                  ].join('\n'),
+                });
+                result.source_comment_id = receipt.id;
+              } catch (err) {
+                core.warning('Failed creating provider command receipt comment: ' + err.message);
+              }
             } else if (result.mode === 'documented_command') {
               core.setFailed(`${provider}:${action} requires provider configuration and has no GitHub command fallback.`);
               return;

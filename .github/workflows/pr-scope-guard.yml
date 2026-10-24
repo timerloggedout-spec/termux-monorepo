@@ -82,12 +82,16 @@ jobs:
               per_page: 100,
             });
             if (!comments.some(c => String(c.body || '').includes(marker))) {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: pr.number,
-                body: message,
-              });
+              try {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: pr.number,
+                  body: message,
+                });
+              } catch (err) {
+                core.warning('Failed creating scope guard comment: ' + err.message);
+              }
             }
 
             await github.rest.issues.update({

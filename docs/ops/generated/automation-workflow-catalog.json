@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "0b9fc1e7c69d39bb216fa8defc493f2265ec6515b4bdf03ca19dce7f3d35e448",
-  "workflow_count": 180,
+  "source_fingerprint": "6a94d959dff5e531e0a57a1d03ef6df9f0937f6210b1ce1e3323a250e0a8cbc5",
+  "workflow_count": 181,
   "workflows": [
     {
       "action_pins": [
@@ -2307,6 +2307,24 @@
         "issue_comment",
         "pull_request_review",
         "pull_request_target"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: phantom-secrets-audit cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "audit"
+      ],
+      "name": "Phantom secrets audit",
+      "path": ".github/workflows/phantom-secrets-audit.yml",
+      "schedules": [
+        "23 6 * * 3"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
       ]
     },
     {

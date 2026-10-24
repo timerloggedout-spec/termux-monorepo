@@ -50,7 +50,7 @@ jobs:
           set -euo pipefail
           if [ "$EVENT_NAME" = workflow_dispatch ]; then
             python3 scripts/proposals/delphi_trigger_receipt.py --proposal-id "$MANUAL_ID" --source-sha "$GITHUB_SHA" --output "$RUNNER_TEMP/receipt.json" >/dev/null
-            printf '{"include":[{"proposal_id":"%s"}]}' "$MANUAL_ID" > "$RUNNER_TEMP/matrix.json"
+            MANUAL_ID="$MANUAL_ID" python3 -c 'import json, os; print(json.dumps({"include": [{"proposal_id": os.environ["MANUAL_ID"]}]}))' > "$RUNNER_TEMP/matrix.json"
           else
             base="$PR_BASE"
             [ -n "$base" ] || base="$PUSH_BEFORE"

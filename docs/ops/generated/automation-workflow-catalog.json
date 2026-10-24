@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "c0cf709507ec582e16ead751f31dbc611280e260dcf27251a3b4c7a59217c891",
+  "source_fingerprint": "0b9fc1e7c69d39bb216fa8defc493f2265ec6515b4bdf03ca19dce7f3d35e448",
   "workflow_count": 180,
   "workflows": [
     {
@@ -2817,8 +2817,8 @@
     },
     {
       "action_pins": [],
-      "authority": "read-only-or-advisory",
-      "concurrency": "group: reviewer-metrics-collect cancel-in-progress: false",
+      "authority": "writer",
+      "concurrency": "group: reviewer-metrics-collect cancel-in-progress: false # The refresh-PR step pushes a branch and opens a PR, so this job needs # write on contents + pull-requests (the first dispatched run failed at # that step on read-only permissions; collection itself is read-only).",
       "domain": "agentic-development",
       "jobs": [
         "collect"

@@ -20,6 +20,7 @@ import time
 from pathlib import Path
 from typing import Any
 
+MVP_VERSION = "0.1.0"
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_FIXTURES = ROOT / "tests" / "fixtures" / "delphi_oracle_mvp.json"
 CONSEQUENTIAL_ACTIONS = {
@@ -318,6 +319,7 @@ def run_experiments(fixture_path: Path, source_sha: str | None) -> dict[str, Any
     }
     receipt = {
         "schema_version": "delphi-oracle-mvp-receipt/v1",
+        "product_version": MVP_VERSION,
         "term_id": fixtures.get("term_id"),
         "run_id": run_id,
         "generated_at": ended_at,
@@ -365,6 +367,7 @@ def run_experiments(fixture_path: Path, source_sha: str | None) -> dict[str, Any
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--version", action="version", version=f"Delphi Oracle MVP {MVP_VERSION}")
     parser.add_argument("--fixtures", type=Path, default=DEFAULT_FIXTURES)
     parser.add_argument("--output", type=Path, help="write a sanitized JSON receipt to this path")
     parser.add_argument("--source-sha", default=os.environ.get("GITHUB_SHA"))

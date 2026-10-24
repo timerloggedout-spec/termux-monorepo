@@ -50,7 +50,7 @@ jobs:
       issues: write
       actions: write
     env:
-      GH_TOKEN: ${{ secrets.OPERATOR || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
+      GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
       ISSUE_NUMBER: ${{ github.event.issue.number || '' }}
       DISPATCH_COMMAND: ${{ github.event.inputs.command || '' }}
       COMMENT_BODY: ${{ github.event.comment.body || '' }}

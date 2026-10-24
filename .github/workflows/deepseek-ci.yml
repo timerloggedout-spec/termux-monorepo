@@ -67,8 +67,8 @@ jobs:
       # Model auth — names from docs/ops/DEEPSEEK-CI.md + Issue #184 catalog.
       # First non-empty wins inside session_manager._token_from_env.
       # Cookies are primary auth path for the webWrapper (WASM + 🍪).
-      DEEPSEEK_TOKEN_PRIMARY: ${{ secrets.DEEPSEEK_TOKEN_PRIMARY || secrets.DEEPSEEK_TOKEN_ACCOUNT_1 || secrets.DEEPSEEK_TOKEN || secrets.DEEPSEEK_API_KEY || secrets.DEEPSEEK_AUTH_TOKEN || secrets.NEXUSCLI_TOKEN }}
-      DEEPSEEK_TOKEN: ${{ secrets.DEEPSEEK_TOKEN || secrets.DEEPSEEK_API_KEY || secrets.DEEPSEEK_AUTH_TOKEN || secrets.NEXUSCLI_TOKEN }}
+      DEEPSEEK_TOKEN_PRIMARY: ${{ secrets.DEEPSEEK_API_KEY }}
+      DEEPSEEK_TOKEN: ${{ secrets.DEEPSEEK_API_KEY }}
       DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
       DEEPSEEK_AUTH_TOKEN: ${{ secrets.DEEPSEEK_AUTH_TOKEN }}
       NEXUSCLI_TOKEN: ${{ secrets.NEXUSCLI_TOKEN }}
@@ -79,7 +79,7 @@ jobs:
       # Captured browser sessions include aws-waf-token alongside ds_session_id.
       # The value is consumed only by session_manager and persists in the existing
       # permission-restricted session cache; it is never logged or uploaded.
-      DEEPSEEK_AWS_WAF_TOKEN: ${{ secrets.DEEPSEEK_AWS_WAF_TOKEN || secrets.DEEPSEEK_WAF_TOKEN || secrets.AWS_WAF_TOKEN || secrets.WAF_AWS_TOKEN }}
+      DEEPSEEK_AWS_WAF_TOKEN: ${{ secrets.DEEPSEEK_AWS_WAF_TOKEN }}
       DEEPSEEK_THINKING: "true"
       DEEPSEEK_EXPERT: "true"
       DEEPSEEK_CONNECT_TIMEOUT: "30"

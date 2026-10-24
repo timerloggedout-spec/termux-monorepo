@@ -74,7 +74,7 @@ jobs:
       contents: read
       issues: write
     env:
-      GH_TOKEN: ${{ secrets.OPERATOR || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
+      GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
       ISSUE_NUMBER: ${{ github.event.issue.number || '' }}
       COMMENT_ID: ${{ github.event.comment.id || '' }}
       COMMENT_BODY: ${{ github.event.comment.body || '' }}

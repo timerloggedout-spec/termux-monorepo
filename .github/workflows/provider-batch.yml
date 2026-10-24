@@ -234,7 +234,7 @@ jobs:
           persist-credentials: false
       - name: Inventory credential names with existing issue-184 authorization
         env:
-          GH_TOKEN: ${{ secrets.OPERATOR || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
+          GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
         run: python3 scripts/ops/provider_secret_inventory.py --output /tmp/provider-batch/credential-names.json
       - name: Observe official catalogs without inference or routing changes
         env:
@@ -246,7 +246,7 @@ jobs:
           MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
           CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY }}
           NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY || secrets.NVIDIA_NIM_API_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GOOGLE_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           AION_API_KEY: ${{ secrets.AION_API_KEY }}
           LLM7_API_TOKEN: ${{ secrets.LLM7_API_TOKEN }}
           KILO_API_KEY: ${{ secrets.KILO_API_KEY }}
@@ -278,8 +278,8 @@ jobs:
           test -s /tmp/provider-batch/public-research-service.json
       - name: Collect paginated matrix-review evidence with authorized feedback credentials
         env:
-          GH_TOKEN: ${{ secrets.OPERATOR || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
-          FEEDBACK_AUTH_CONTEXT: ${{ (secrets.OPERATOR || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN) && 'configured_operator_credential' || 'actions_job_token' }}
+          GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
+          FEEDBACK_AUTH_CONTEXT: ${{ (secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN) && 'configured_operator_credential' || 'actions_job_token' }}
         run: |
           set -euo pipefail
           mkdir -p /tmp/matrix-review

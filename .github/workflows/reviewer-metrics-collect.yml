@@ -25,9 +25,12 @@ concurrency:
   group: reviewer-metrics-collect
   cancel-in-progress: false
 
+# The refresh-PR step pushes a branch and opens a PR, so this job needs
+# write on contents + pull-requests (the first dispatched run failed at
+# that step on read-only permissions; collection itself is read-only).
 permissions:
-  contents: read
-  pull-requests: read
+  contents: write
+  pull-requests: write
   issues: read
 
 jobs:

@@ -56,7 +56,7 @@ class ContextBackfillValidationTests(unittest.TestCase):
         with TemporaryDirectory() as tmp:
             root = Path(tmp)
             self._fixture(root)
-            receipt = validate_backfill(root, "owner/repo", "master")
+            receipt = validate_backfill(root, "owner/repo", "master", "a" * 40)
             self.assertEqual(receipt["validation_status"], "VALIDATED")
             self.assertEqual(receipt["history_window"], {"start_page": 4, "next_start_page": 5})
             self.assertEqual(receipt["coverage"], "PARTIAL_CONTINUATION_REQUIRED")
@@ -70,7 +70,7 @@ class ContextBackfillValidationTests(unittest.TestCase):
             with (root / "edges.jsonl").open("a", encoding="utf-8") as stream:
                 stream.write(json.dumps({"id": "edge:bad", "source": "node:missing", "target": "node:b", "classification": "verified"}) + "\n")
             with self.assertRaisesRegex(ValidationError, "missing source or target"):
-                validate_backfill(root, "owner/repo", "master")
+                validate_backfill(root, "owner/repo", "master", "a" * 40)
 
     def test_rejects_coverage_that_hides_continuation(self):
         with TemporaryDirectory() as tmp:
@@ -82,12 +82,32 @@ class ContextBackfillValidationTests(unittest.TestCase):
             with self.assertRaisesRegex(ValidationError, "coverage state contradicts"):
                 validate_backfill(root, "owner/repo", "master")
 
+    def test_rejects_self_consistent_stale_source_sha_for_same_repo_and_ref(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self._fixture(root)
+            temporal = json.loads((root / "temporal-current.json").read_text(encoding="utf-8"))
+            temporal["source_sha"] = "e" * 40
+            temporal["snapshot_id"] = snapshot_id(
+                "owner/repo",
+                "master",
+                temporal["source_sha"],
+                temporal["observed_at"],
+                4,
+                5,
+                temporal["nodes_hash"],
+                temporal["edges_hash"],
+            )
+            (root / "temporal-current.json").write_text(json.dumps(temporal), encoding="utf-8")
+            with self.assertRaisesRegex(ValidationError, "independently captured expected source SHA"):
+                validate_backfill(root, "owner/repo", "master", "a" * 40)
+
     def test_rejects_stale_or_wrong_ref(self):
         with TemporaryDirectory() as tmp:
             root = Path(tmp)
             self._fixture(root)
             with self.assertRaisesRegex(ValidationError, "source ref"):
-                validate_backfill(root, "owner/repo", "master-staging")
+                validate_backfill(root, "owner/repo", "master-staging", "a" * 40)
 
 
 if __name__ == "__main__":

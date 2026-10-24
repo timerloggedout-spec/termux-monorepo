@@ -20,7 +20,7 @@
 | `duration_ms` | Measured elapsed time, or null if unavailable |
 | `resources` | CPU/memory/disk/network/quota observations only when available; unknown stays null |
 | `assertions` | Expected result, observed result, pass/fail/unknown and test reference |
-| `retries`, `timeouts` | Explicit numeric counts and timeout state |
+| `retries` | Numeric retry count, or null when unknown |\n| `timeout_count`, `timed_out` | Numeric timeout count and a separate boolean timeout state; use null when unknown |
 | `state_changes` | Before/after hashes or redacted diff refs where relevant |
 | `recovery` | Not-needed / succeeded / failed / unknown, with evidence ref |
 | `evidence` | Stable links or artifact identifiers, plus integrity hashes when available |
@@ -51,11 +51,11 @@ This is a **schema illustration only**, not a real execution receipt. Null value
   "environment": {
     "platform": "REPLACE_WITH_PLATFORM",
     "os_version": null,
-    "runtime_versions": {},
-    "capabilities": {}
+    "runtime_versions": null,
+    "capabilities": null
   },
   "scenario_id": "SCENARIO-001",
-  "fixture_ids": [],
+  "fixture_ids": ["REPLACE_WITH_FIXTURE_ID"],
   "authorization": {
     "scope_reference": "REPLACE_WITH_APPROVAL_OR_EXISTING_SCOPE_REFERENCE",
     "target_class": "REPLACE_WITH_TARGET",
@@ -82,8 +82,9 @@ This is a **schema illustration only**, not a real execution receipt. Null value
       "evidence_ref": null
     }
   ],
-  "retries": 0,
-  "timeouts": 0,
+  "retries": null,
+  "timeout_count": null,
+  "timed_out": null,
   "state_changes": [],
   "recovery": {
     "status": "unknown",

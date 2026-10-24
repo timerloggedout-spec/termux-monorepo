@@ -14,7 +14,9 @@ import hashlib
 import json
 import os
 import re
+import subprocess
 import sys
+import time
 from pathlib import Path
 from typing import Any
 
@@ -40,6 +42,24 @@ class ContractError(ValueError):
 
 def sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
+
+
+def git_blob_sha(revision: str | None, relative_path: str) -> str | None:
+    """Read a local Git blob ID without network access; null when unavailable."""
+    ref = revision or "HEAD"
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", f"{ref}:{relative_path}"],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=3,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return None
+    value = result.stdout.strip().lower()
+    return value if re.fullmatch(r"[0-9a-f]{40}", value) else None
 
 
 def canonical_json(value: Any) -> bytes:
@@ -113,6 +133,15 @@ def validate_receipt(receipt: dict[str, Any]) -> None:
         raise ContractError("synthetic local results must not be represented as independent ballots/results")
     if receipt.get("state", {}).get("PROMOTED") is not False:
         raise ContractError("local MVP must not claim production promotion")
+    tlm = receipt.get("tlm_receipt")
+    if not isinstance(tlm, dict) or tlm.get("receipt_schema") != "tlm-run-receipt/v1":
+        raise ContractError("a TLM-compatible receipt is required")
+    if tlm.get("result") not in {"PASS", "FAIL"} or tlm.get("timed_out") is not False:
+        raise ContractError("TLM run state/timeout state is invalid")
+    if tlm.get("authorization", {}).get("allowed_action_categories") != []:
+        raise ContractError("offline MVP cannot authorize action execution")
+    if receipt.get("economic_accounting", {}).get("actual_provider_cost_usd") is not None:
+        raise ContractError("provider cost must remain unknown when no provider calls occurred")
     experiments = receipt.get("experiments")
     if not isinstance(experiments, list) or {e.get("id") for e in experiments} != {"E-01", "E-03", "E-05"}:
         raise ContractError("receipt must report E-01, E-03, and E-05")
@@ -124,11 +153,12 @@ def validate_receipt(receipt: dict[str, Any]) -> None:
 
 
 def run_experiments(fixture_path: Path, source_sha: str | None) -> dict[str, Any]:
+    started_clock = time.monotonic()
+    started_at = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
     fixtures, raw = load_fixtures(fixture_path)
     cases = fixtures["cases"]
     fixture_hash = sha256_bytes(raw)
     policy_hash = sha256_bytes(POLICY_SPEC.encode("utf-8"))
-    now = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
     pinned = bool(source_sha and re.fullmatch(r"[0-9a-fA-F]{40}", source_sha))
     source_sha = source_sha.lower() if pinned else None
 
@@ -231,12 +261,69 @@ def run_experiments(fixture_path: Path, source_sha: str | None) -> dict[str, Any
             "result": "PASS" if adversarial and adversarial_oracle_unsafe == 0 else "FAIL",
         },
     ]
+    ended_at = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+    duration_ms = max(0, round((time.monotonic() - started_clock) * 1000))
     run_id = hashlib.sha256(f"{source_sha or 'UNPINNED_LOCAL'}:{fixture_hash}:{policy_hash}".encode()).hexdigest()[:24]
+    all_pass = all(item["result"] == "PASS" for item in experiments)
+    tlm_receipt = {
+        "receipt_schema": "tlm-run-receipt/v1",
+        "trial_id": run_id,
+        "candidate_id": "LOCAL-ORACLE-MVP",
+        "candidate_version": fixtures.get("policy_version", "unknown"),
+        "source": {
+            "commit_sha": source_sha,
+            "files": [
+                {"path": "scripts/delphi/strands_oracle_mvp.py", "blob_sha": git_blob_sha(source_sha, "scripts/delphi/strands_oracle_mvp.py")},
+                {"path": "tests/fixtures/delphi_oracle_mvp.json", "blob_sha": git_blob_sha(source_sha, "tests/fixtures/delphi_oracle_mvp.json")},
+            ],
+        },
+        "environment": {
+            "platform": "local-or-github-actions",
+            "os_version": None,
+            "runtime_versions": {"python": sys.version.split()[0]},
+            "capabilities": {"network_calls": False, "aws_calls": False, "action_execution": False},
+        },
+        "scenario_id": fixtures.get("term_id"),
+        "fixture_ids": [case["id"] for case in cases],
+        "authorization": {
+            "scope_reference": "offline-mvp-no-external-actions",
+            "target_class": "synthetic-fixture-corpus",
+            "allowed_action_categories": [],
+        },
+        "started_at": started_at,
+        "ended_at": ended_at,
+        "action_category": "deterministic-policy-evaluation-only",
+        "result": "PASS" if all_pass else "FAIL",
+        "process_exit_code": 0 if all_pass else 1,
+        "duration_ms": duration_ms,
+        "resources": {"quota": None, "cpu": None, "memory_bytes": None, "disk_bytes": None},
+        "assertions": [
+            {"id": item["id"], "expected": "PASS", "observed": item["result"], "status": "pass" if item["result"] == "PASS" else "fail", "evidence_ref": fixture_hash}
+            for item in experiments
+        ],
+        "retries": 0,
+        "timeout_count": 0,
+        "timed_out": False,
+        "state_changes": [],
+        "recovery": {"status": "not-needed", "evidence_ref": None},
+        "evidence": [
+            {"kind": "fixture_sha256", "value": fixture_hash},
+            {"kind": "policy_sha256", "value": policy_hash},
+        ],
+        "limitations": [
+            "Offline synthetic fixture run only; no device or cloud experiment was executed.",
+            "No independent provider/model or human ballot is represented.",
+        ],
+        "review": {"reviewer_role": None, "confidence": "low", "objection": "Independent review has not been collected.", "reviewed_at": None},
+    }
     receipt = {
         "schema_version": "delphi-oracle-mvp-receipt/v1",
         "term_id": fixtures.get("term_id"),
         "run_id": run_id,
-        "generated_at": now,
+        "generated_at": ended_at,
+        "started_at": started_at,
+        "duration_ms": duration_ms,
+        "tlm_receipt": tlm_receipt,
         "source_class": "LOCAL_BASELINE",
         "source_commit": source_sha,
         "source_commit_state": "PINNED" if pinned else "UNPINNED_LOCAL",
@@ -251,6 +338,12 @@ def run_experiments(fixture_path: Path, source_sha: str | None) -> dict[str, Any
         "external_calls": 0,
         "aws_invocations": 0,
         "measured_cloud_cost_usd": None,
+        "economic_accounting": {
+            "actual_provider_cost_usd": None,
+            "counterfactual_paid_equivalent_usd": None,
+            "verified_no_cost_entitlement": False,
+            "interpretation": "No provider calls occurred; local execution does not prove account entitlement or paid-equivalent value.",
+        },
         "state": {
             "DESIGNED": True,
             "COMMITTED": bool(pinned),

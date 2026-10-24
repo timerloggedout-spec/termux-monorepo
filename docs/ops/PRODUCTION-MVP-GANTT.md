@@ -15,10 +15,10 @@
 | T+60–100 min | P1 — Gantt / RFP lifecycle | Keep proposal items, dependency order, acceptance criteria, owner gates and status linked | Versioned Gantt + item ledger; links to issue/PR/CI evidence | This plan committed with MVP branch |
 | T+60–120 min | P1 — EPS / Moneyball value board | Reuse existing Basksweep-approved evidence; separate actual cost, counterfactual list-price value and verified no-cost execution | Deterministic projector tests, reconciled source manifest, explicit stale/unknown state | #1592 open; not complete |
 | T+60–120 min | P1 — Adaptive quota awareness | Extend the existing quota panel/readers, not a parallel poller or registry | Freshness/authority distinctions, safe public projection, private fields excluded | #1593 open; not complete |
-| After explicit approval | P2 — AWS adapter | Re-check current eligibility, account-specific credits, region, IAM/OIDC, budget caps, kill switch and teardown; only then enable a minimal adapter | Explicit owner approval + deployment/usage/cost/teardown receipts | Blocked; no AWS calls/resources claimed |
-| After verified connector state | P2 — Hex consumer | Re-check provider cooldown and native connector access; use only sanitized artifact and read-only projection | Fresh connector result, confirmed import/export receipt, no assumption from Actions ZIP | Unverified; connector query on 2026-10-24 returned a Team/Enterprise access-tier requirement, not a cooldown timestamp; expiry unknown |
+| When code is deploy-ready | P2 — AWS account + adapter | Finish and test the repository code first; then create/verify the AWS account and eligibility, region, IAM/OIDC, budget caps, kill switch and teardown plan before the first cloud action | Deploy-ready commit, owner-approved account/budget gates, deployment/usage/cost/teardown receipts | Deferred until code is ready; no AWS account or resources claimed |
+| Optional, after cooldown | P2 — Hex consumer | Keep Hex as a deferred optional consumer; continue repo work without it. When cooldown clears, verify native connector access and test a sanitized read-only import/export | Fresh connector result and confirmed import/export receipt; Actions ZIP alone is not native Hex evidence | Non-blocking/deferred; prior query returned a Team/Enterprise access-tier requirement, not a cooldown timestamp; no expiry known |
 
-Time windows are planning estimates, not deadlines or evidence of elapsed work. Independent reviewers may work in parallel after the frozen fixture contract is published.
+Time windows are planning estimates, not deadlines or evidence of elapsed work. Independent reviewers may work in parallel after the frozen fixture contract is published. Human ballots are a later, separate evidence lane: evaluate Typeform, Google Sheets, Airtable and other suitable capture surfaces, with explicit sync boundaries to GitHub and the repo's web/control surfaces. Do not fabricate ballots or block the offline MVP on that tooling.
 
 ## Lanes and dependencies
 
@@ -44,7 +44,7 @@ Time windows are planning estimates, not deadlines or evidence of elapsed work. 
                                  |
                       READ-ONLY DASHBOARD / HEX
                                  |
-                     OWNER-GATED CLOUD EXPERIMENT
+                     CODE-READY → AWS ACCOUNT → OWNER-GATED CLOUD EXPERIMENT
 ```
 
 ## Release rules — master must remain functional
@@ -66,8 +66,9 @@ Time windows are planning estimates, not deadlines or evidence of elapsed work. 
 
 - [ ] MVP branch checks and artifact inspected on the final SHA.
 - [ ] #1567/#1569 evidence and independent collaborator reviews reconciled.
-- [ ] #1611 term registrar and ballot deadline assigned; real ballots/provider runs collected, or their absence explicitly reported.
+- [ ] Later: design a distinct human-ballot registrar/capture toolchain (e.g. Typeform, Google Sheets, Airtable) with explicit sync contracts to GitHub and existing web/control surfaces; keep human ballots distinct from model results and CI.
 - [ ] #1592 deterministic projector built and validated against Basksweep-approved fixtures.
 - [ ] #1593 integrated into the existing quota surface with safe public/private separation.
-- [ ] Hex connector cooldown/access state fetched from an authoritative current source; do not infer an expiry. The current tool response is an access-tier error and does not establish cooldown duration.
-- [ ] AWS eligibility and budget gates rechecked; explicit owner approval recorded before any cloud action.
+- [ ] Hex remains optional and non-blocking during cooldown; verify native connector access only when the cooldown has cleared.
+- [ ] Prepare the separate repo-specific mesh-resiliency RFP: compare free compute/instance services, redundancy/failover, service fit, quota/credit limits, and rotation/allocation policy. This RFP is in preparation and is not yet committed; it is distinct from the hackathon-focused Delphi RFP.
+- [ ] When the code is deploy-ready, then create/verify AWS account eligibility and budget gates and record explicit owner approval before any cloud action.

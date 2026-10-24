@@ -1,0 +1,100 @@
+name: proposal-delphi-trigger
+
+# One matrix job per changed proposal identity. This is an identity/trigger receipt,
+# not a human vote and not a call to providers or cloud resources.
+on:
+  pull_request:
+    paths:
+      - "docs/proposals/**"
+      - "scripts/proposals/delphi_trigger_receipt.py"
+      - ".github/workflows/proposal-delphi-trigger.yml"
+  push:
+    branches: [master]
+    paths:
+      - "docs/proposals/**"
+      - "scripts/proposals/delphi_trigger_receipt.py"
+      - ".github/workflows/proposal-delphi-trigger.yml"
+  workflow_dispatch:
+    inputs:
+      proposal_id:
+        description: "Registered proposal ID to audit"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: proposal-delphi-trigger-${{ github.event.pull_request.number || inputs.proposal_id || github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.proposals.outputs.matrix }}
+      has_proposals: ${{ steps.proposals.outputs.has_proposals }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - id: proposals
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PR_BASE: ${{ github.event.pull_request.base.sha || '' }}
+          PR_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+          PUSH_BEFORE: ${{ github.event.before || '' }}
+          MANUAL_ID: ${{ inputs.proposal_id || '' }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT_NAME" = workflow_dispatch ]; then
+            python3 scripts/proposals/delphi_trigger_receipt.py --proposal-id "$MANUAL_ID" --source-sha "$GITHUB_SHA" --output "$RUNNER_TEMP/receipt.json" >/dev/null
+            printf '{"include":[{"proposal_id":"%s"}]}' "$MANUAL_ID" > "$RUNNER_TEMP/matrix.json"
+          else
+            base="$PR_BASE"
+            [ -n "$base" ] || base="$PUSH_BEFORE"
+            if [ -z "$base" ] || [ "$base" = "0000000000000000000000000000000000000000" ]; then
+              base="$(git rev-parse "$PR_HEAD^" 2>/dev/null || git rev-list --max-parents=0 "$PR_HEAD" | tail -1)"
+            fi
+            python3 scripts/proposals/delphi_trigger_receipt.py --list-changed "$base" "$PR_HEAD" > "$RUNNER_TEMP/matrix.json"
+          fi
+          cat "$RUNNER_TEMP/matrix.json"
+          matrix="$(cat "$RUNNER_TEMP/matrix.json")"
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+          if echo "$matrix" | grep -q '"proposal_id"'; then echo "has_proposals=true" >> "$GITHUB_OUTPUT"; else echo "has_proposals=false" >> "$GITHUB_OUTPUT"; fi
+
+  proposal-receipt:
+    needs: discover
+    if: needs.discover.outputs.has_proposals == 'true'
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.discover.outputs.matrix) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml
+      - name: Build proposal-scoped trigger receipt
+        id: receipt
+        env:
+          PROPOSAL_ID: ${{ matrix.proposal_id }}
+          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          mkdir -p "receipts/$PROPOSAL_ID"
+          python3 scripts/proposals/delphi_trigger_receipt.py --proposal-id "$PROPOSAL_ID" --source-sha "$SOURCE_SHA" --output "receipts/$PROPOSAL_ID/receipt.json"
+          cat "receipts/$PROPOSAL_ID/receipt.json" >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: proposal-delphi-receipt-${{ matrix.proposal_id }}-${{ github.run_id }}
+          path: receipts/${{ matrix.proposal_id }}/receipt.json
+          retention-days: 30
+          if-no-files-found: error

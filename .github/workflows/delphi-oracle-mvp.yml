@@ -1,0 +1,68 @@
+name: Delphi Oracle offline MVP
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/delphi/strands_oracle_mvp.py'
+      - 'tests/test_delphi_oracle_mvp.py'
+      - 'tests/fixtures/delphi_oracle_mvp.json'
+      - 'docs/proposals/active/aws-free-tier-strands-delphi-oracle/**'
+      - 'docs/ops/PRODUCTION-MVP-GANTT.md'
+      - '.github/workflows/delphi-oracle-mvp.yml'
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/delphi/strands_oracle_mvp.py'
+      - 'tests/test_delphi_oracle_mvp.py'
+      - 'tests/fixtures/delphi_oracle_mvp.json'
+      - 'docs/proposals/active/aws-free-tier-strands-delphi-oracle/**'
+      - 'docs/ops/PRODUCTION-MVP-GANTT.md'
+      - '.github/workflows/delphi-oracle-mvp.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: delphi-oracle-mvp-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  offline-mvp:
+    name: offline decision contract and evidence receipt
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run offline unit and regression tests
+        run: |
+          python3 -B -m unittest -v tests/test_delphi_oracle_mvp.py
+          python3 -B -m unittest -v tests/test_delphi_gate.py
+      - name: Generate sanitized deterministic receipt
+        env:
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/delphi-oracle-mvp
+          python3 -B scripts/delphi/strands_oracle_mvp.py \
+            --source-sha "$SOURCE_SHA" \
+            --output build/delphi-oracle-mvp/receipt.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          receipt = json.loads(Path("build/delphi-oracle-mvp/receipt.json").read_text())
+          assert receipt["source_commit"] == __import__("os").environ["SOURCE_SHA"]
+          assert receipt["external_calls"] == 0
+          assert receipt["deployment"] is False
+          assert receipt["state"]["PROMOTED"] is False
+          assert {item["id"] for item in receipt["experiments"]} == {"E-01", "E-03", "E-05"}
+          assert all(item["result"] == "PASS" for item in receipt["experiments"])
+          print("receipt contract: PASS")
+          PY
+      - name: Upload sanitized experiment receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: delphi-oracle-mvp-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/delphi-oracle-mvp/receipt.json
+          if-no-files-found: error
+          retention-days: 14

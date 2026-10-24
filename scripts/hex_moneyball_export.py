@@ -43,33 +43,43 @@ def sha256_text(value: str) -> str:
 
 
 def sanitize(event: dict[str, Any], snapshot_id: str | None = None) -> dict[str, Any]:
-    message = event.get("message")
-    msg_present = isinstance(message, str)
-    out: dict[str, Any] = {
-        "contract_version": CONTRACT,
-        "message_present": msg_present,
-    }
-    if snapshot_id is not None:
-        out["snapshot_id"] = snapshot_id
+    # Bolt Optimization: Construct keys in deterministic alphabetical order
+    # (agent_id, attempt_no, contract_version, level, message_present,
+    # message_sha256, snapshot_id, target, timestamp) so json.dumps without sort_keys
+    # produces output identical to sort_keys=True while avoiding sorting overhead.
+    out: dict[str, Any] = {}
 
-    ts = event.get("timestamp")
-    if ts is not None:
-        out["timestamp"] = ts
-    lvl = event.get("level")
-    if lvl is not None:
-        out["level"] = lvl
     ag = event.get("agent")
     if ag is not None:
         out["agent_id"] = ag
-    tgt = event.get("target")
-    if tgt is not None:
-        out["target"] = tgt
+
     att = event.get("attempt")
     if att is not None:
         out["attempt_no"] = att
 
+    out["contract_version"] = CONTRACT
+
+    lvl = event.get("level")
+    if lvl is not None:
+        out["level"] = lvl
+
+    message = event.get("message")
+    msg_present = isinstance(message, str)
+    out["message_present"] = msg_present
+
     if msg_present:
         out["message_sha256"] = sha256_text(message)  # type: ignore[arg-type]
+
+    if snapshot_id is not None:
+        out["snapshot_id"] = snapshot_id
+
+    tgt = event.get("target")
+    if tgt is not None:
+        out["target"] = tgt
+
+    ts = event.get("timestamp")
+    if ts is not None:
+        out["timestamp"] = ts
 
     return out
 
@@ -133,7 +143,8 @@ def main() -> int:
                 if not FORBIDDEN_FIELDS.isdisjoint(record):
                     raise ValueError("forbidden raw-content field reached sanitized record")
 
-                dst.write(json.dumps(record, separators=(",", ":"), sort_keys=True) + "\n")
+                # Bolt Optimization: sort_keys=False because sanitize() populates keys in alphabetical order
+                dst.write(json.dumps(record, separators=(",", ":")) + "\n")
                 count += 1
 
                 if csv_writer is not None:

@@ -130,3 +130,10 @@ In document translation pipelines (`translate_line`), evaluating `PATH_REGEX` wh
 
 **Action:**
 Guard file/path regex evaluations in line translation pipelines by checking for known file extension tokens (`any(ext in line for ext in PATH_EXTENSIONS)`) alongside path separators (`/`, `\`, `~`) when periods are present.
+
+## 2026-10-24 - Deterministic Dictionary Key Order to Omit `sort_keys=True` in JSON Serializers
+**Learning:**
+In high-throughput NDJSON event processing pipelines (`scripts/hex_moneyball_export.py`), calling `json.dumps(record, sort_keys=True)` on every event forces Python's JSON encoder to build key lists and perform sorting routines on every record. Because Python 3.7+ guarantees dict key insertion order preservation, building dictionary keys in alphabetical order inside record-sanitizing factories (`sanitize()`) ensures `json.dumps(record)` output is identical byte-for-byte to `sort_keys=True` while bypassing sorting overhead during stream serialization.
+
+**Action:**
+In stream-serialization routines, construct dictionary keys in alphabetical order during dictionary creation and omit `sort_keys=True` in `json.dumps`.

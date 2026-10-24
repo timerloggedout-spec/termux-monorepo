@@ -98,3 +98,15 @@ The counts above are deliberately recorded as **upstream claims**, not canonical
 - [Hex × Agent Team Moneyball integration contract](HEX-MONEYBALL-INTEGRATION.md)
 
 **Disposition:** source discovery added to the research map; canonical source ingestion, live entitlement, provider invocation, and value-board feed remain separate acceptance gates. This is not a routing-policy change and does not authorize any new provider, secret, workflow dispatch, or deployment.
+
+
+## Crosswalk: inference discovery vs. backend capacity
+
+The [Free-Tier Backend Recon (2026-10-21)](FREE-TIER-BACKEND-RECON-2026-10-21.md) answers a different question: which compute, workspace, storage, queue and edge entitlements may support the mesh, and which are actually present or measured. This document answers which upstream model/provider claims deserve research. Keep these dimensions orthogonal:
+
+- **Backend capacity** is a provider/resource entitlement with its own cadence, expiry, account presence and live-reading method.
+- **Inference catalog** is a candidate claim with source commit/content hash, access method, provider/model identity and freshness.
+- **Runtime admission** requires both relevant backend/provider access evidence and task-specific policy/capability/data gates; neither recon grants it.
+- **Value telemetry** is based on real authorized invocation/session records and validated attribution. Do not turn free-tier limits, catalog counts, missing sessions or zero dispatched requests into savings, balance or model-quality claims.
+
+The [resource implementation matrix](RESOURCE-IMPLEMENTATION-MATRIX.md) tracks the two newly identified catalogs as separate discovery-only resource identities. Canonical ingestion still requires source-specific adapters and offline schema-drift tests; no automatic provider calls, account creation, or routing-policy change is implied.

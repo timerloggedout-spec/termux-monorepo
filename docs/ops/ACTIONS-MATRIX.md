@@ -102,3 +102,34 @@ Next: dual-gate on head → promote. Device validation parallel. Disjoint: matri
 
 Agent-Identity: Grok (Administrator)
 **BIUDL** — Broad → Integrate → Validate → Develop → Learn.
+
+## Live Refresh (2026-10-24 05:00 UTC / 2026-10-23 22:00 PDT)
+
+**Master tip observed:** `c8c162e5` (sweep accountability receipt).  
+**Branch head:** `bc176ad5` (this matrix upgrade).
+
+### Recent Run Classification (sampled via `gh run list`)
+
+- **Skipped (high volume residual):** `lane events recorder`, `Agent Throughput Evidence`, `Merge Promotion Queue v3` — job-level `if` filters still emit workflow run records. Audited as intentional concurrency/filter, not silenced failures. Notification spam remains for run-start events.
+- **Failures (sampled):** Peer review orchestrator, Agentic Auth Canary, Action Effectiveness Ledger, RECON INTEL — predominantly on feature branches (e.g. `feat/delphi-oracle-mvp-gantt-20261024`, `docs/agy-mvt-doe-v0-20261023`). Master residual is device/auth canary class (honest RED when heartbeat/publisher lag).
+- **Success-dominant on master:** continuous-improve, hygiene-sweep, n8n SHE bridge, DeepCLI, promotion queue kicks.
+
+### Consolidation Upgrade (spam reduction)
+
+1. **Shared Scheduled Poller Pattern:** Convert residual high-volume `workflow_run` observers (`lane-events-recorder`, `agent-throughput-evidence`) to a single batched schedule (e.g. every 15-30 min) that queries recent successful runs via API and emits consolidated evidence. Eliminates per-event run records.
+2. **Concurrency Groups + Path Filters:** Strengthen `concurrency: group: ${{ github.workflow }}-${{ github.sha }}` + `cancel-in-progress: true` across observer lanes.
+3. **Early Exit in Router:** Expand `issue-comment-router` style early classification to more comment/PR event workflows so unmatched events never start jobs.
+4. **Notification Suppression:** Use `if: always() && !cancelled()` carefully, or workflow-level `continue-on-error` only where audited; prefer step summaries + JSONL artifacts over GitHub notifications for lag/skip.
+
+### Pinggy / Device #1 Enforcement
+
+- Tunnel Canary (`tunnel-canary.yml`): hourly schedule, opaque `DEVICE_ID: tmx-node-primary` (public obfuscation for BLU B160V#1 primary; #2 replica noted). Lag (stale manifest, TCP unreachable, inactive publisher) classified as `::notice::` + exit 0 (non-gate). Tailscale preferred; Pinggy as required fallback.
+- Auth Canary complements heartbeat from device-side `check-gh-agentic-auth.sh --publish`.
+- Next: ensure device #1 publisher is live; replica #2 for screen-broken original.
+
+### Quota / 3L0 Moneyball
+
+Capacity lag (observatory 39233561401 class, Vercel rate-limits, free-tier Actions pressure) remains soft non-gate. Adaptive telemetry selects high-value paths; no blind retries. Cache keyed by SHA + path filters; dynamic TTL based on provider headroom.
+
+**Decision:** Residual skip/cancel records require further modular extraction to scheduled pollers for true notification reduction. Device tunnel operational gap is device-side, not YAML. Master remains functional for dual-gate promote path.
+

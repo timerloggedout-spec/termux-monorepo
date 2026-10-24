@@ -181,19 +181,19 @@ flowchart TD
 Observed this session: 2026-10-22T23:45Z (master tip e9e236b5 green-dominant; residual probe failure device-reachability; high-volume skipped audited as intentional; quota capacity non-gate)
 Agent-Identity: Grok (Administrator)
 
-## Continuation (2026-10-22T23:45Z)
+## Continuation (2026-10-24T17:00Z)
 
-- Master tip `e9e236b5a0ee69a7c3c31fe60b9290d66107dc59` (help-wanted live status refresh): recent completed runs success or skipped/cancelled (intentional concurrency/filter). Residual failure: tailscale-bridge-probe run 39873162670 (join step failure at OIDC/ephemeral).
-- Specific notification runs from prior: 39233561401 repository observatory conclusion=failure (historical capacity 403, non-gate); 39234979788 peer-review-orchestrator failure on quota-registry branch (capacity/non-gate). Current tip green-dominant.
-- High-volume skipped from workflow_run triggers remain audit-only; modular central router + conclusion filters proposed/implemented on branch to early-exit unmatched events and further cut notification surface.
-- Quota messages and capacity lag addressed via Lead/Lag classification, adaptive WAIT, reset-aware caching; no silent failures or retry storms.
-- Pinggy or alternative operational requirement on device #1 preserved with public-obfuscated device_id=`tmx-node-primary`; live status:active awaits device-side publish. Device #2 replication distinct. Tailscale probe is the current reachability signal.
-- Cadence */4, cache dynamic adaptive telemetry, concurrency groups refined and retained. C.A.D.E. continuous improvement.
-- Next: implement modular event router slice; confirm dual-gate on updated SHA; operator device tunnel + Tailscale reconnect; promote branch once gates green.
+- Branch tip `3f132a87d874cb419f749c97676779c2b9c9b81e` (PR #1624). Conclusion filters confirmed live on lane-events-recorder and agent-throughput-evidence: jobs `if: ... conclusion == 'success'` → intentional skips for non-success; runs still listed (platform) but no further emit/spam.
+- Recent master window (d24620cd): predominantly success or intentional skipped from bot-triggered workflow_run / issue_comment. No new failure class beyond residual device probes and historical quota (non-gate).
+- Quota capacity (observatory, peer-review, Vercel) classified as lag_operational; adaptive WAIT + Lead/Lag prevent retry storms and notification edges.
+- Pinggy / tunnel canary on device #1 (tmx-node-primary) remains requirement; seed unknown until device publish. Tailscale probe is current reachability signal (reconnect needed).
+- Cadence */4, dynamic adaptive telemetry, cache delta detection retained and refined. Modular router next for further skip-listing reduction.
+- Dual-gate pending promote on this SHA; advisory reviews (CodeRabbit rate-limit, Devin trial) non-gate.
+- C.A.D.E. continuous: next implement central event classifier to early-exit unmatched before job start where possible; operator device tunnel active publish.
 
 Agent-Identity: Grok (Administrator)
 
-## Prior continuations retained (2026-10-20 / 2026-10-21)
+## Prior continuations retained (2026-10-22T23:45Z / 2026-10-20 / 2026-10-21)
 
 (See historical sections above for PR #1292 dual-gate evidence, watcher dispatch-only merge path, Vercel non-gate classification.)
 

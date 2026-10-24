@@ -665,3 +665,39 @@ The primary work now is not another lane-specific narrative. It is to make the w
 8. promotion isolation.
 
 **Status after this RECON:** architecture and source surfaces mapped at a substantial breadth; static findings recorded; runtime-wide completeness not established. Treat the report as a baseline for a machine-generated inventory and validation pass, not as certification that all telemetry paths are currently healthy.
+
+
+---
+
+## 17. Follow-up validation: proposal-to-Delphi workflow trigger boundary (2026-10-24)
+
+This section records a targeted source audit performed after the repository-wide inventory. It is a concrete trigger-path finding, not a claim of a runtime execution.
+
+### Declared workflow evidence
+
+| Surface | Declared trigger | Observed responsibility | What it does not establish |
+|---|---|---|---|
+| `.github/workflows/proposal-lifecycle.yml` | `pull_request` for `docs/proposals/**`, `scripts/proposals/**`, and itself; `push` to `master`/`master-staging` for proposal/script paths; `workflow_dispatch` | Runs `scripts/proposals/validate_registry.py`; on PRs, performs advisory VOTE-line scan and may post proposal checklist | Does not itself dispatch a Delphi/RFP run or prove proposal-specific participation |
+| `.github/workflows/delphi-gate.yml` | `issues`, `issue_comment`, typed `repository_dispatch`, completion of `vercel-quota-probe`, restricted `push` paths under `ops/quota` and `ops/delphi`, schedule, `workflow_dispatch` | Evaluates open issues labeled `delphi:rfp`, idempotently, and accepts bounded signal/feedback inputs | Does not declare `docs/proposals/**` as a direct pull-request or push trigger; a generic gate run is not evidence that each independent proposal was handled |
+| `.github/workflows/delphi-signal.yml` | Reusable `workflow_call` | Validates a small event vocabulary and calls `gh workflow run delphi-gate.yml` | Emits a wake-up, not proof that a particular proposal identity was processed or that participation/consensus occurred |
+| `.github/workflows/delphi-signal-bridge.yml` | ForeSight registry push and `delphi-gate` workflow completion | Bridges a specific registry signal and selected shadow-lane outcomes | No proposal-file trigger is declared here either |
+
+### Gap classification
+
+- **Confirmed from workflow source:** proposal lifecycle and Delphi gate have different event/path scopes. Proposal lifecycle validation alone is not a proposal-to-Delphi execution bridge.
+- **Confirmed from workflow source:** Delphi gate's core evaluation command is invoked over open RFPs and its concurrency group is the shared `delphi-gate`; its current declared inputs do not constitute a proposal-specific run identity.
+- **Not established by this static check:** whether an external automation or an uninspected downstream component creates equivalent runs; whether every independent DelphicAnonymityMethod contributor-participation proposal has a canonical registry entry; whether any qualifying run occurred for the latest candidate SHA.
+- **Not inferred:** workflow execution does not prove contributor participation, anonymity, a vote, consensus, or a successful outcome.
+
+### Required acceptance evidence
+
+1. Identify canonical proposal IDs and paths from the registry and proposal manifests; do not substitute the AWS Strands proposal merely because PR #1611 is a useful merged lifecycle regression fixture.
+2. For each eligible proposal identity, prove the exact event/path filter causes an Actions run on the candidate PR/commit SHA.
+3. Preserve proposal ID/path, source PR or commit SHA, workflow/run ID, trigger event, conclusion, and a sanitized evidence receipt as distinct fields.
+4. Add deterministic fixtures for at least two independent proposal IDs. Verify that changing A does not alias or suppress B and that retries remain idempotent without collapsing identity.
+5. Keep this repository-only trigger test separate from paid provider inference or cloud-resource provisioning.
+6. Report `triggered`, `queued`, `in_progress`, `success`, `failure`, `skipped`, `cancelled`, and `not_triggered` distinctly. Never convert absence of a run into a pass.
+
+### Current determination
+
+The static source audit supports a **proposal-to-Delphi trigger/identity gap** in the declared workflow graph. The next implementation step is a narrowly scoped, identity-preserving bridge plus deterministic tests and a real safe Actions run. This follow-up does not claim that implementation or runtime verification has already occurred.

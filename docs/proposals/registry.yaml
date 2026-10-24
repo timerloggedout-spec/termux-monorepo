@@ -35,6 +35,7 @@ proposals:
       - id: timerloggedout-spec
         role: operator-authorizer
         status: requested
+    related_issues: [1521, 129]
     related_prs: []
     related_branches:
       - docs/model-selection-market-3l0-20261001
@@ -241,6 +242,7 @@ proposals:
       - id: Manus
         role: author+executor
         status: executing
+    related_issues: [1520, 129]
     related_prs: []
     related_branches: [feature/termux-agentic-hub]
     gates_required: [repo-gate, termux-smoke]

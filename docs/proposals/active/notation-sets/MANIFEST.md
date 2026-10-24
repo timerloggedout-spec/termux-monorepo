@@ -129,3 +129,8 @@ This lane records concepts, audience/register-specific labels, evidence sources,
 - Research source ledger: [`nomenclature-matrix/RESEARCH-SOURCES.md`](./nomenclature-matrix/RESEARCH-SOURCES.md).
 - Candidate seed expanded with lexical-label, controlled-vocabulary, colloquial-to-formal mapping, and near-synonymy concepts; sources include W3C SKOS, Wolfram, DARIAH-Campus, Getty, Europe PMC/BioHackrXiv, and scholarly mapping research.
 - Label and mapping semantics remain separate. Wikipedia is orientation-only; no source-discovery result independently promotes a candidate mapping.
+
+### Conversational steganography 4th development lane (NSE-024)
+
+- Added NSE-024 for pre-LLM pre-parser steganographic cipher (`ConversationalSteganographyCipher`) with private key mapping support in `workspace/compression_sandbox/cedrlang/phase_codec.py`.
+- Integrated human-readable 1337_$934k Grimoire cipher matrix in `README.md` and folded `AGENTS.md` into `CLAUDE.md`.

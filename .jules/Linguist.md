@@ -130,3 +130,10 @@ In document translation pipelines (`translate_line`), evaluating `PATH_REGEX` wh
 
 **Action:**
 Guard file/path regex evaluations in line translation pipelines by checking for known file extension tokens (`any(ext in line for ext in PATH_EXTENSIONS)`) alongside path separators (`/`, `\`, `~`) when periods are present.
+
+## 2026-10-21 - Conversational Steganography Pre-Parser Pipeline and Base64 Token Density Analysis
+**Learning:**
+Implementing pre-LLM steganographic obfuscation (`ConversationalSteganographyCipher`) with single-pass Trie regex compilation and O(1) private key mapping lookup preserves lossless round-trip semantic parity while preventing token expansion. When evaluating `Base64` vs symbolic CedrLang/Grimoire compression for LLM communications: Base64 expands 3 raw bytes into 4 ASCII characters (+33% character expansion), and standard BPE tokenizers (cl100k, o200k) fragment Base64 strings into multiple 2-3 char tokens (high token overhead). Base64 is only token-efficient for models with native byte-level tokenizers (e.g. ByT5). In contrast, CedrLang/Grimoire symbolic compression increases data information density by 30-70% by substituting multi-word concepts with single BPE tokens while maintaining full human-readable and private-key expansion forms.
+
+**Action:**
+For Agent2Agent comms, prefer symbolic CedrLang/Grimoire compression over Base64 to maximize token density. Build pre-LLM steganographic pre-parsers with Trie-structured regex matchers (`_build_trie_regex`) and fast-path substring existence guards (`encode_regex.search(text)`) to achieve zero-allocation pass-through on unencoded prose.

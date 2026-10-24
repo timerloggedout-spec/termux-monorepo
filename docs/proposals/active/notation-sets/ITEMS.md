@@ -183,3 +183,7 @@ This is the first implementation slice for restoring the Linguist/CedrLang diasp
 ## TDQS-CI-001 — Read-only TDQS quality-lane coverage
 
 **Status:** executing. Extend the existing Agent Quality Lane to cover TDQS preparation/aggregation: implementation, focused tests, evidence schema, specification, and admission-matrix path filters; compile the focused test, validate schema JSON, and run the deterministic TDQS tests alongside the existing telemetry tests. Acceptance requires the focused commands, repository gate, and Termux smoke to pass. This item does not authorize external rubric evaluation, prompt/tool execution, or acceptance of the broader notation proposal.
+
+## NSE-024 — Conversational steganography 4th development lane & pre-LLM cipher
+
+**Status:** executing. Implement the 4th development lane as a pre-LLM pre-parser `ConversationalSteganographyCipher` with private key mapping support in `workspace/compression_sandbox/cedrlang/phase_codec.py`. Provide `steganography_encode` and `steganography_decode` functions, fast-path single-pass Trie regex matching, and zero-allocation short-circuit guards. Integrate human-readable 1337_$934k Grimoire cipher matrix in `README.md` and fold root `AGENTS.md` into `CLAUDE.md` with `AGENTS.hum.md` as human-readable twin.

@@ -43,6 +43,7 @@ class DelphiOracleMVPTests(unittest.TestCase):
 
     def test_receipt_is_explicit_about_absent_votes_and_cloud_execution(self):
         receipt = run_experiments(DEFAULT_FIXTURES, "d" * 40)
+        self.assertEqual(receipt["product_version"], "0.1.0")
         self.assertEqual(receipt["human_ballots_received"], 0)
         self.assertEqual(receipt["provider_results_received"], 0)
         self.assertFalse(receipt["deployment"])

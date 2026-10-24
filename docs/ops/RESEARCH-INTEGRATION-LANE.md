@@ -1,6 +1,6 @@
 # Research Integration Lane
 
-**Status:** ACTIVE (feat/refTemplates-research-consolidate / PR #688)  
+**Status:** ACTIVE (feat/refTemplates-research-consolidate / PR #688 + feat/research-silo-delphi-stovepipes)  
 **Locator term:** “Jogyo” / research-lab class = the **entire** research-reference set, not a single upstream.
 
 ---
@@ -16,6 +16,7 @@
 | **Decisions / voting** | help-wanted claims, dual-gate green/hold, PR disposition; research quality gates (coverage, provenance, adversarial review) inform promote/hold |
 | **Project direction** | `15_Research_Repo_Templates` + SOURCE-MAP are inputs to Repository-development priority; Org phase board gates Enterprise promotion |
 | **Improvements** | integrity checklist + inventory jobs; pattern harvest from 489+ forks / starred set → new slots under `15_*` |
+| **Siloed Delphi** | Each tier-A slot has its own Proposal → Delphi → cycle stovepipe for independent outcome comparison — see `RESEARCH-SILO-DELPHI.md` + `ops/delphi/research-silos.json` |
 
 They do **not** auto-vote or auto-merge. They supply structure, quality criteria, and evidence shape so humans + agents decide with better signal.
 
@@ -29,8 +30,9 @@ They do **not** auto-vote or auto-merge. They supply structure, quality criteria
 4. **Proposals** — new research-shaped work should cite a `15_*` slot when adopting a layout (docxology pipeline, jogyo markers, yy layout, etc.).
 5. **Codespace agent lane** — preferred smoke path before any new live `smods/` pin of a research template.
 6. **credential-router** — research agents use free-first routing only (no hardcoded keys in templates).
+7. **Research Silo Delphi** — 12 independent stovepipes (one per tier-A slot). Baseline cycle: RFP{1st_improve_request_cycle on RFP itself} → Delphi → validated output / feature extraction / consensus comparison. Evolutionary 🧬 variants (`rnd` · `selected` · `control`) extend per silo. Config: `ops/delphi/research-silos.json`. Spec: `docs/ops/RESEARCH-SILO-DELPHI.md`.
 
-See also: `REFTEMPLATES-WORKFLOW-HOOKS.md`, `REFTEMPLATES-CONSOLIDATION.md`.
+See also: `REFTEMPLATES-WORKFLOW-HOOKS.md`, `REFTEMPLATES-CONSOLIDATION.md`, `DELPHI-ORACLE-RFP-GATE.md`.
 
 ---
 
@@ -45,7 +47,7 @@ See also: `REFTEMPLATES-WORKFLOW-HOOKS.md`, `REFTEMPLATES-CONSOLIDATION.md`.
 | **C — Pattern only** | Single idea (marker style, gate, pipeline stage) without full scaffold | Document pattern in CONSOLIDATION or ops notes; no full slot |
 | **D — Out of scope** | Unrelated product, pure app, or secret-heavy | Skip |
 
-**Already tier-A on this branch:**
+**Already tier-A (full 12):**
 
 - jogyo-research-lab (Yeachan-Heo/My-Jogyo) — locator exemplar
 - docxology-template
@@ -56,33 +58,49 @@ See also: `REFTEMPLATES-WORKFLOW-HOOKS.md`, `REFTEMPLATES-CONSOLIDATION.md`.
 - irudik-repo-template
 - jdingel-projecttemplate
 - 3rdCore-Research_Project_Template
+- dicklesworthstone-agentic-flywheel (metadata-only)
+- opencode-research-papers
+- cactus-needle
 
 **Next harvest (B → A):** score starred agent/research runtimes and `_fork` research-adjacent repos (pyrite, CodeWiki_fork, alphadesk-terminal, MOBIUS-Searcher, etc.) against layout + Actions fitness; promote winners into `15_*`.
 
 ---
 
-## 4. What “all” means
+## 4. Expected independent results (current schema)
+
+| Layer | Count | Attribution |
+|-------|-------|-------------|
+| Baseline research silo RFPs | **12** | One stream per `research.<slot>` |
+| Existing free-tier surfaces | ~18 | Orthogonal (quota/deploy/model) |
+| With evolutionary 🧬 variants | up to 48 | 12 × (1 + rnd/selected/control) |
+
+Research silos reuse the Delphi gate/panel/flywheel; they do not share scores across silos.
+
+---
+
+## 5. What “all” means
 
 Operator said **yes…all** — meaning the full research-reference class, not only one upstream. Jogyo is the **example framework / locator**, not the exclusive integration.
 
-Tree target (this PR):
+Tree target:
 
 ```text
 refTemplates/
 ├── 00_Index/                 # SSOT + recovery + SOURCE-MAP
 ├── 01 … 14/                  # category stubs from skeleton
-├── 15_Research_Repo_Templates/  # full research class
+├── 15_Research_Repo_Templates/  # full research class (12 silos)
 ├── 16_Org_Phased/            # org phase gates
 └── smods/                    # live custom-adapted pins only
 ```
 
 ---
 
-## 5. Non-goals
+## 6. Non-goals
 
 - Auto-merge research pins without dual-gate
 - Treating every star as mandatory clone
 - Research agents overriding dual-gate or credential policy
 - Full recursive submodule on every CI run
+- Cross-silo score aggregation that collapses attribution
 
 **Agent-Identity:** Grok (Administrator) CXO  

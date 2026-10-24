@@ -54,3 +54,47 @@ Existing integration anchors reinforce this separation: [`scripts/provider_model
 ## Complete supplied-resource follow-through
 
 The subsequent [resource implementation matrix](RESOURCE-IMPLEMENTATION-MATRIX.md) now registers all supplied resources, including general awesome lists, search/topic/discussion links and provider pages previously excluded from this narrow brief. Those references remain discovery inputs, not evidence of free access or runtime eligibility. The native offline aggregate search and existing-workflow artifact generation are tracked as MSM-008.
+
+
+## 2026-10-23 source delta: newer free-inference catalogs and telemetry wiring
+
+This update adds two newer discovery sources to the research map; it does **not** assert that their claims have been ingested into the canonical provider-recon dataset or that any newly listed model is eligible to run.
+
+### Newly identified sources
+
+| Source | Current upstream claim (observed 2026-10-23) | Useful signal | Required treatment |
+|---|---|---|---|
+| [open-free-llm-api/awesome-freellm-apis](https://github.com/open-free-llm-api/awesome-freellm-apis) | README says 526+ free LLM APIs and daily refresh; repository About says 134+ APIs and 40+ providers. | Provider/model discovery, config examples, and provider-level onboarding friction such as card/phone requirements. | **Source-internal denominator mismatch.** Capture exact commit, file hash, source timestamp, and source-specific record counts before normalizing. Do not copy promotional counts into canonical totals. |
+| [surendranb/free-inference](https://github.com/surendranb/free-inference) and [freeinference.dev](https://www.freeinference.dev/) | The live directory reports 36 providers and 108–109 free models across pages/snapshots; it exposes machine-readable `data/providers.json` and a JSON schema. | Distinguishes API-key, CLI-login, and bundled coding-tool access; calls out limited-time promotions, account requirements, and data-use risks. | Treat counts as source snapshots, not truth. Validate the JSON against the upstream schema, retain retrieval time and immutable source revision where available, and preserve each provider's access class. |
+
+The counts above are deliberately recorded as **upstream claims**, not canonical repository counts. The observed disagreement within the first source and the 108/109 variation in the second are reasons to keep source provenance and raw counts, not to average or silently reconcile them.
+
+### Wiring status against existing systems
+
+| Layer | Existing implementation / contract | Gap exposed by this source delta | Safe completion criterion |
+|---|---|---|---|
+| Discovery evidence | `data/model-selection-market/provider-recon.json`, `scripts/model_selection_market/resource_index.py`, and the provider-batch workflow already support source-pinned research records and source-aware reconciliation. | The new upstream repositories are not yet established as distinct, pinned source entries in the canonical model-research snapshot. The existing `awesome-free-llm-apis` label must not be assumed to mean both GitHub repositories. | Add explicit source identity, immutable commit or content digest, license, retrieval timestamp, and parser/schema version; keep the current source separate from the newly discovered fork/catalog. |
+| Provider catalog | `scripts/provider_model_catalog.py` polls fixed provider catalog endpoints and keeps catalog evidence separate from routing policy. | A directory's free-tier claim is not a native catalog observation; new provider aliases must not inherit credentials or endpoint configuration through fuzzy matching. | Reconcile exact provider/model identities only. Unsupported aliases stay `adapter_not_implemented` or `catalog_adapter_not_implemented`; never guess endpoints or credential names. |
+| Capability spine | AR-18 / PR #605 adds dynamic observed candidates and capability-surface joins in observe mode. | New discovery must not create a capability declaration, validated status, or routing authority. PR #605 is open and its latest fetched metadata reports non-mergeable state. | Preserve observe-only behavior; promote only after current-head CI, two bounded observation cycles, and the ledger decision required by AR-18. |
+| Runtime quota and entitlement | Provider-batch and the quota-admission work distinguish catalog visibility, account binding, terms, exact-model entitlement, and observed remaining quota. | Neither directory's public label establishes that this account can invoke the model for this use case at zero cost. | Require exact provider/account/model admission, current official quota evidence, terms/data-policy review, and expiry. Unknown remains blocked. |
+| Systems telemetry | `docs/ops/HEX-MONEYBALL-INTEGRATION.md` defines run-attempt, agent-attempt, provider-call, outcome-score, and manager-decision grains. PR #1541 describes wiring actual hub calls into existing TermuxTelemetryLogger and 3L0 ingestion. | A discovered candidate is not an invocation. The current PR #1541 pilot evidence records a quota-admission block and zero dispatched inference requests; it cannot supply live performance observations. | Every real call must bind run attempt, full source SHA, experiment/arm, provider/model, call/attempt IDs, status, latency, token/cost fields when actually available, and provenance confidence. Preserve blocked/skipped/unknown states distinctly. |
+| Free-tier value projection | PR #1589 adds a board with validated-session filtering and missing-feed semantics. | Its PR body says there are no public session rows yet and references a separate session-feed wiring gap. | Do not display zero usage or savings. Populate only from validated, privacy-filtered invocation evidence with confirmed no-cost status; keep estimates separate from actual spend. |
+
+### Next bounded implementation sequence
+
+1. Register each new upstream as a **separate, pinned research source**; do not replace the existing `mnfst/awesome-free-llm-apis` or `tashfeenahmed/freellmapi` evidence.
+2. Add offline fixtures for each source's actual published shape, schema drift, duplicate model IDs, missing timestamps, and source-count discrepancies.
+3. Extend source-specific provider alias mappings only from observed source keys. Keep unknown providers unmapped and never derive an endpoint or secret name from README text.
+4. Feed the normalized candidates through the existing provider-batch reconciliation and AR-18 observe envelope; assert that discovery alone leaves `runtime_eligible=false`, `quota_remaining=null`, and no new capability declaration.
+5. Validate the exact commit through repository CI. Separately verify the real invocation path and artifact linkage; an offline test or green workflow is not a model-quality result.
+6. Connect only privacy-reviewed, validated provider-call records to the existing 3L0/Hex-compatible evidence contract and Free-Tier Use Value Board. Never export prompts, completions, tool payloads, keys, cookies, or arbitrary logs.
+
+### Related integration surfaces
+
+- [AR-18 Capability–Scope–Specialist spine / PR #605](https://github.com/timerloggedout-spec/termux-monorepo/pull/605)
+- [THUB-017 research orchestration and telemetry / PR #1541](https://github.com/timerloggedout-spec/termux-monorepo/pull/1541)
+- [Free-Tier Use Value Board / PR #1589](https://github.com/timerloggedout-spec/termux-monorepo/pull/1589)
+- [Provider batch implementation](PROVIDER-BATCH-IMPLEMENTATION.md)
+- [Hex × Agent Team Moneyball integration contract](HEX-MONEYBALL-INTEGRATION.md)
+
+**Disposition:** source discovery added to the research map; canonical source ingestion, live entitlement, provider invocation, and value-board feed remain separate acceptance gates. This is not a routing-policy change and does not authorize any new provider, secret, workflow dispatch, or deployment.

@@ -20,7 +20,8 @@
 | `duration_ms` | Measured elapsed time, or null if unavailable |
 | `resources` | CPU/memory/disk/network/quota observations only when available; unknown stays null |
 | `assertions` | Expected result, observed result, pass/fail/unknown and test reference |
-| `retries` | Numeric retry count, or null when unknown |\n| `timeout_count`, `timed_out` | Numeric timeout count and a separate boolean timeout state; use null when unknown |
+| `retries` | Numeric retry count, or null when unknown |
+| `timeout_count`, `timed_out` | Numeric timeout count and a separate boolean timeout state; use null when unknown |
 | `state_changes` | Before/after hashes or redacted diff refs where relevant |
 | `recovery` | Not-needed / succeeded / failed / unknown, with evidence ref |
 | `evidence` | Stable links or artifact identifiers, plus integrity hashes when available |

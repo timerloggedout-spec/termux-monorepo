@@ -79,3 +79,21 @@ flowchart TD
 
 Agent-Identity: Grok (Administrator)
 **BIUDL** — Broad → Integrate → Validate → Develop → Learn.
+
+## Continuation — 2026-10-24 Recon (master `7bfd678d`)
+
+**Observed:** Master tip `7bfd678d90c0188999560eb361d334a9a2a08a12`. Recent completed runs are success or intentional skipped (lane-events-recorder and Agent Throughput Evidence cascades on workflow_run completed). No new conclusion=failure on master in latest window. Historical Oct-19 quota-registry failures (39234979788 etc.) remain capacity/non-gate on that branch.
+
+**Spam residual:** lane-events-recorder still generates many skipped runs because workflow_run fires for every completion of watched workflows (including high-volume Agent Throughput Evidence), then the job `if:` skips. The run object still exists and notifies.
+
+**Next modular consolidation (this branch):** Convert lane-events-recorder from per-run workflow_run trigger to a low-frequency schedule (e.g. `*/15` or hourly) that polls recent successful runs via API and records only new successes. This eliminates the cascade of skipped runs while preserving the ledger function. Feature preserved; notification volume drops sharply.
+
+**Pinggy/device #1:** Still operational requirement. Opaque `tmx-node-primary` documented. Live publisher on broken-screen device remains device-side action. Alternatives (Tailscale) preferred.
+
+**Quota / cadence:** Adaptive WAIT + moneyball continues. No blind retries. Vercel remains non-gate. Cache keys SHA-bound.
+
+**What was fixed previously:** PR #1483 (merged 2026-10-22) delivered the modular issue-comment-router, cadence-lead-lag ownership, dispatch-only watcher, stall-watch resilience, and the consolidated matrix. Skipped/Cancelled now more intentional and auditable.
+
+**BIUDL next:** Promote this scheduled aggregator after dual-gate. Expand router extraction. Live device probe on #1.
+
+Agent-Identity: Grok (Administrator)

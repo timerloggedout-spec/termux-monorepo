@@ -111,6 +111,17 @@ per-cycle records are included for drill-down. Metric definitions:
 - **verdicts / review_comments / issue_comments** — PR-level data,
   counted **once per PR** (they are carried on every cycle record of
   that PR; summing per cycle double-counts).
+- **by_author_class** (round 2) — the same bucket fields rolled up per
+  author class (`bot` / `user`) across all contexts. Per-context keys
+  fragment author-class-wide failure modes; the rollup sees them whole.
+- **ECC findings** (round 2) — ECC is comment-only, so delivery rate is
+  the wrong axis for it. The collector parses its pr-audit comments
+  (marker `ecc-tools:pr-audit:<gate>:<sha>`, verdict line carrying a
+  check-vocabulary conclusion) and reports `providers.ecc.findings`:
+  audit volume, `action_required` findings split by PR state (open =
+  undispositioned; closed = dispositioned or moot — PR state is the
+  proxy), findings bound to the PR's current head, and a per-gate
+  breakdown.
 - All figures are derived from live API responses at collection time.
   Nothing is copied forward from earlier snapshots.
 
@@ -143,7 +154,21 @@ commit):
    and cycle count in the note. This is the general form of rule 1: it
    fires only on total non-delivery in context, never on low-but-nonzero
    delivery.
-3. The OPERATOR request step consumes the effective set, so exempted
+2b. **Author-class rollup evaluation (round 2).** When the per-context
+   bucket does not qualify, the rule also evaluates the provider's
+   `by_author_class` rollup for the cycle's author class under the same
+   threshold (≥10 required, 0 delivered), and exempts with a rollup note.
+   Motivated by the widened map: bot contexts held 10 required cycles
+   across 6 keys with zero deliveries — total non-delivery no single
+   context key could see.
+4. **Cooldown-aware triggering (round 2).** When a provider's cooldown
+   notice states a retry duration, collect computes the window end
+   (notice time + duration), records it in the state comment
+   (`cooldown_until=`) and in the `provider_cooldowns` output. The
+   OPERATOR request step defers a provider's trigger request while its
+   recorded window is still in the future — requests inside a known-dead
+   window are deferred, not spent. Unknown windows change nothing.
+5. The OPERATOR request step consumes the effective set, so exempted
    providers are not trigger-requested either.
 
 **Refuted during design (kept for the record):** a docs-only exemption
@@ -178,6 +203,18 @@ PRs) and will thicken now that every cycle records its context.
   `auto_pause_after_reviewed_commits: 5`; collector + weekly refresh
   workflow; first metrics map (§8). Owner review of test metrics is the
   gate for the next adaptation round.
+- **2026-10-24** — Round 2 (owner-selected A+B+C after reviewing the
+  widened 150-PR map: delivery rate stable at ~0.173 across windows,
+  cooldown ~35% of cycles, bot contexts 10 required / 0 delivered over
+  6 keys, Devin + Qodo first tracked, ECC 964 comments / 0 reviews):
+  (A) cooldown-aware triggering (§7 rule 4); (B) author-class rollups
+  in the map + rollup evaluation in the zero-delivery rule (§7 rule
+  2b); (C) ECC findings metric (§5). No thresholds changed; no new
+  exemptions for user contexts — none qualified. Also fixed: the
+  collector workflow's permissions were read-only, so its first
+  dispatched run (2026-10-24) failed at the refresh-PR step after a
+  successful collect; the job now carries contents + pull-requests
+  write, which the push + PR-create steps require.
 
 ## 10. NOT ESTABLISHED / open
 

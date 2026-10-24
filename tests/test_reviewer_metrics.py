@@ -101,3 +101,81 @@ def test_aggregate_delivery_rate():
     assert out["providers"]["coderabbit"]["by_context"]["user/code"]["cycles"] == 1
     # JSON-serializable end to end.
     json.dumps(out)
+
+
+def _rec(pr, author_class, primary, delivered):
+    return {
+        "pr": pr, "cycle_id": f"pr-{pr}-aaa", "head_sha": "aaa",
+        "cycle_started_at": "2026-10-23T00:00:00Z", "state": "awaiting_provider_response",
+        "ready": "false", "author": "x", "author_class": author_class,
+        "primary_class": primary, "classes": {primary: 1}, "docs_only": False,
+        "generated_only": False,
+        "size": {"files": 1, "additions": 1, "deletions": 0}, "labels": [],
+        "providers": {"coderabbit": {
+            "state": "provider_completed" if delivered else "awaiting_provider_response",
+            "required": True, "delivered": delivered, "cooldown": False,
+            "latency_sec": 120 if delivered else None}},
+        "verdicts": {}, "review_comment_counts": {}, "issue_comment_volume": {},
+        "coderabbit_skipped_notice": False,
+    }
+
+
+def test_aggregate_author_class_rollups():
+    out = collect.aggregate(
+        [_rec(1, "bot", "code", False), _rec(2, "bot", "tests", False),
+         _rec(3, "user", "docs", True)],
+        prs_examined=3, warnings=[])
+    roll = out["providers"]["coderabbit"]["by_author_class"]
+    assert roll["bot"]["required_cycles"] == 2 and roll["bot"]["delivered"] == 0
+    assert roll["bot"]["delivery_rate"] == 0.0
+    assert roll["user"]["required_cycles"] == 1 and roll["user"]["delivered"] == 1
+    # Per-context buckets still populated alongside the rollups.
+    assert out["providers"]["coderabbit"]["by_context"]["bot/code"]["cycles"] == 1
+    json.dumps(out)
+
+
+_HEAD = "a1" * 20
+_OLD = "b2" * 20
+
+
+def _ecc_comment(gate, sha, summary, conclusion):
+    return {
+        "user": {"login": "ecc-tools[bot]", "type": "Bot"},
+        "created_at": "2026-10-23T00:00:00Z",
+        "body": (f"<!-- ecc-tools:pr-audit:{gate}:{sha} -->\n"
+                 f"## ECC Tools / {gate}\n\n**{summary}** ({conclusion})\n"),
+    }
+
+
+def test_ecc_findings():
+    open_comments = [
+        _ecc_comment("ECC Tools / Security Evidence", _HEAD,
+                     "Security evidence gate passed", "success"),
+        _ecc_comment("ECC Tools / Config", _HEAD,
+                     "Changed-config issues detected", "action_required"),
+        # Marker text from a non-ECC login is not an audit.
+        {"user": {"login": "timerloggedout-spec"},
+         "body": _ecc_comment("ECC Tools / Config", _HEAD, "x", "action_required")["body"]},
+        # An ECC comment without the audit marker is not an audit.
+        {"user": {"login": "ecc-tools[bot]"}, "body": "sweep note, no marker"},
+    ]
+    closed_comments = [
+        _ecc_comment("ECC Tools / Config", _OLD,
+                     "Changed-config issues detected", "action_required"),
+    ]
+    extras = [
+        {"pr": 1, "pr_state": "open", "head_sha": _HEAD,
+         "ecc_audits": collect.parse_ecc_audits(open_comments)},
+        {"pr": 2, "pr_state": "closed", "head_sha": _HEAD,
+         "ecc_audits": collect.parse_ecc_audits(closed_comments)},
+    ]
+    out = collect.aggregate([], prs_examined=2, warnings=[], pr_extras=extras)
+    f = out["providers"]["ecc"]["findings"]
+    assert f["audit_comments"] == 3
+    assert f["findings_action_required"] == 2
+    assert f["findings_on_open_prs"] == 1
+    assert f["findings_on_closed_prs"] == 1
+    assert f["current_head_findings"] == 1
+    assert f["prs_with_findings"] == 2
+    assert f["gates"]["ECC Tools / Config"]["findings_action_required"] == 2
+    json.dumps(out)

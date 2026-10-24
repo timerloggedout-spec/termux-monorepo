@@ -55,6 +55,34 @@ PROVIDER_STATES = {
 FIELD_RE = re.compile(r"^([a-z_]+):\s*(.+?)\s*$")
 PROVIDER_LINE_RE = re.compile(r"^- ([a-z0-9_-]+): ([a-z_]+)(;.*)?$")
 
+# ECC Tools pr-audit comments (real format, verified on PR #1441):
+#   <!-- ecc-tools:pr-audit:<Gate Name>:<40-hex commit sha> -->
+#   ## ECC Tools / <Gate Name>
+#   **<summary>** (<conclusion>)   conclusion in the check-run vocabulary
+ECC_AUDIT_MARKER_RE = re.compile(r"<!--\s*ecc-tools:pr-audit:(.+?):([0-9a-f]{40})\s*-->")
+ECC_VERDICT_RE = re.compile(r"\*\*([^*]+)\*\*\s*\(([a-z_]+)\)")
+
+
+def parse_ecc_audits(comments):
+    """Pure: ECC Tools audit comments -> audit records with conclusions."""
+    audits = []
+    for c in comments:
+        if provider_for(c.get("user", {}).get("login")) != "ecc":
+            continue
+        body = c.get("body") or ""
+        m = ECC_AUDIT_MARKER_RE.search(body)
+        if not m:
+            continue
+        v = ECC_VERDICT_RE.search(body)
+        audits.append({
+            "gate": m.group(1).strip(),
+            "commit": m.group(2),
+            "conclusion": v.group(2) if v else "",
+            "summary": v.group(1).strip() if v else "",
+            "created_at": c.get("created_at"),
+        })
+    return audits
+
 
 def provider_for(login):
     return PROVIDER_LOGINS.get((login or "").lower(), "")
@@ -254,11 +282,14 @@ def _blank_bucket():
     }
 
 
-def aggregate(records, prs_examined, warnings):
+def aggregate(records, prs_examined, warnings, pr_extras=None):
     providers = {}
 
-    def bucket(provider, ctx_key=None):
-        entry = providers.setdefault(provider, {"totals": _blank_bucket(), "by_context": {}})
+    def bucket(provider, ctx_key=None, author=None):
+        entry = providers.setdefault(
+            provider, {"totals": _blank_bucket(), "by_context": {}, "by_author_class": {}})
+        if author is not None:
+            return entry["by_author_class"].setdefault(author, _blank_bucket())
         if ctx_key is None:
             return entry["totals"]
         return entry["by_context"].setdefault(ctx_key, _blank_bucket())
@@ -269,7 +300,7 @@ def aggregate(records, prs_examined, warnings):
     for rec in records:
         ctx_key = f"{rec['author_class']}/{rec['primary_class']}"
         for name, prec in rec["providers"].items():
-            for b in (bucket(name), bucket(name, ctx_key)):
+            for b in (bucket(name), bucket(name, ctx_key), bucket(name, author=rec["author_class"])):
                 b["cycles"] += 1
                 if prec["required"]:
                     b["required_cycles"] += 1
@@ -304,8 +335,9 @@ def aggregate(records, prs_examined, warnings):
         k for k in volume_by_provider_ctx if "|" not in k
     }:
         bucket(p)
+    bucket("ecc")  # the findings section below always attaches to this entry
     for name, entry in providers.items():
-        for b in [entry["totals"], *entry["by_context"].values()]:
+        for b in [entry["totals"], *entry["by_context"].values(), *entry["by_author_class"].values()]:
             if b["required_cycles"]:
                 b["delivery_rate"] = round(b["delivered"] / b["required_cycles"], 4)
             if b["latencies_sec"]:
@@ -317,6 +349,38 @@ def aggregate(records, prs_examined, warnings):
         entry["issue_comments_by_context"] = {
             k.split("|", 1)[1]: v for k, v in volume_by_provider_ctx.items() if k.startswith(name + "|")
         }
+    # ECC findings (round 2, option C): ECC is comment-only, so delivery
+    # rate is the wrong axis for it. Count its pr-audit conclusions instead:
+    # action_required audits are findings; a finding leaves the "open"
+    # bucket when its PR closes (dispositioned or moot — the PR state is
+    # the proxy, stated here so nobody reads more into it than that).
+    findings = {
+        "audit_comments": 0, "findings_action_required": 0,
+        "findings_on_open_prs": 0, "findings_on_closed_prs": 0,
+        "current_head_findings": 0, "prs_with_findings": 0, "gates": {},
+    }
+    for ex in (pr_extras or []):
+        audits = ex.get("ecc_audits") or []
+        if not audits:
+            continue
+        findings["audit_comments"] += len(audits)
+        flagged = [a for a in audits if a.get("conclusion") == "action_required"]
+        for a in audits:
+            g = findings["gates"].setdefault(
+                a["gate"], {"audits": 0, "findings_action_required": 0})
+            g["audits"] += 1
+            if a.get("conclusion") == "action_required":
+                g["findings_action_required"] += 1
+        if flagged:
+            findings["prs_with_findings"] += 1
+            findings["findings_action_required"] += len(flagged)
+            if ex.get("pr_state") == "open":
+                findings["findings_on_open_prs"] += len(flagged)
+            else:
+                findings["findings_on_closed_prs"] += len(flagged)
+            findings["current_head_findings"] += sum(
+                1 for a in flagged if a.get("commit") == ex.get("head_sha"))
+    providers["ecc"]["findings"] = findings
     return {
         "schema": "reviewer-metrics/v1",
         "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -349,12 +413,19 @@ def collect(client, limit):
     warnings = []
     prs = client.get(f"/pulls?state=all&sort=updated&direction=desc&per_page={min(limit, 100)}")
     records = []
+    pr_extras = []
     examined = 0
     for stub in prs[:limit]:
         number = stub["number"]
         try:
             pr = client.get(f"/pulls/{number}")
             comments = client.get(f"/issues/{number}/comments?per_page=100")
+            pr_extras.append({
+                "pr": number,
+                "pr_state": pr.get("state"),
+                "head_sha": (pr.get("head") or {}).get("sha", ""),
+                "ecc_audits": parse_ecc_audits(comments),
+            })
             if not any(STATE_MARKER in (c.get("body") or "") for c in comments):
                 examined += 1
                 continue
@@ -366,7 +437,7 @@ def collect(client, limit):
             examined += 1
         except Exception as exc:  # partial collection beats no collection
             warnings.append(f"pr {number}: {exc}")
-    return aggregate(records, examined, warnings)
+    return aggregate(records, examined, warnings, pr_extras)
 
 
 def main():

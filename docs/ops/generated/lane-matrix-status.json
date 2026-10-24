@@ -1,26 +1,25 @@
 {
   "schema": "lane-matrix-sweep/v2",
-  "observed_at": "2026-10-22T17:06:39Z",
+  "observed_at": "2026-10-23T17:01:55Z",
   "repository": "timerloggedout-spec/termux-monorepo",
-  "master_sha": "16bc62815ab95adb3d3a7d84db913d1a9bd739cc",
+  "master_sha": "e60c16986ddc2daab83a3d5a316dfeeefae2b1e0",
   "counts": {
-    "open_prs": 53,
+    "open_prs": 60,
     "by_lane": {
-      "SUPERSEDE": 11,
-      "NEED_EVIDENCE": 18,
-      "CANDIDATE": 23,
+      "SUPERSEDE": 16,
+      "NEED_EVIDENCE": 19,
+      "CANDIDATE": 24,
       "EXTRACT": 1
     },
     "by_age": {
       "ancient": 11,
-      "stale": 15,
-      "mid": 1,
-      "fresh": 26
+      "stale": 16,
+      "fresh": 33
     }
   },
   "oldest": {
     "number": 47,
-    "days_open": 78.06,
+    "days_open": 79.05,
     "title": "feat(refTemplates): restore metadata-only skeleton (Option B recovery)",
     "lane": "SUPERSEDE"
   },
@@ -38,8 +37,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-08-05T15:44:30Z",
-      "updated_at": "2026-10-21T22:27:04Z",
-      "days_open": 78.06,
+      "updated_at": "2026-10-23T13:34:06Z",
+      "days_open": 79.05,
       "age_bucket": "ancient",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -60,8 +59,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-08-05T16:39:27Z",
-      "updated_at": "2026-10-22T12:01:04Z",
-      "days_open": 78.02,
+      "updated_at": "2026-10-23T13:33:28Z",
+      "days_open": 79.02,
       "age_bucket": "ancient",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -82,8 +81,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-08-07T21:52:05Z",
-      "updated_at": "2026-10-22T13:53:51Z",
-      "days_open": 75.8,
+      "updated_at": "2026-10-22T22:25:52Z",
+      "days_open": 76.8,
       "age_bucket": "ancient",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -105,7 +104,7 @@
       "changed_files": -1,
       "created_at": "2026-08-08T14:48:06Z",
       "updated_at": "2026-10-21T04:40:31Z",
-      "days_open": 75.1,
+      "days_open": 76.09,
       "age_bucket": "ancient",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -126,8 +125,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-08-09T01:01:40Z",
-      "updated_at": "2026-10-22T12:01:10Z",
-      "days_open": 74.67,
+      "updated_at": "2026-10-23T11:47:26Z",
+      "days_open": 75.67,
       "age_bucket": "ancient",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -144,12 +143,12 @@
       "base_ref": "master",
       "base_sha": "aec8efbe9891",
       "head_ref": "jules-12292744322971487197-f3d564f8",
-      "head_sha": "6d4e79408c1d",
+      "head_sha": "2f32c642e962",
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-08-09T22:42:25Z",
-      "updated_at": "2026-10-22T15:05:18Z",
-      "days_open": 73.77,
+      "updated_at": "2026-10-23T17:00:57Z",
+      "days_open": 74.76,
       "age_bucket": "ancient",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -166,12 +165,12 @@
       "base_ref": "master",
       "base_sha": "d1cdb35584f4",
       "head_ref": "jules-14387055473036742921-a1c3cf6d",
-      "head_sha": "ae2db8a1f49b",
+      "head_sha": "3d1ef5b9d8f7",
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-08-10T15:24:47Z",
-      "updated_at": "2026-10-22T15:09:11Z",
-      "days_open": 73.07,
+      "updated_at": "2026-10-23T12:36:59Z",
+      "days_open": 74.07,
       "age_bucket": "ancient",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -193,7 +192,7 @@
       "changed_files": -1,
       "created_at": "2026-08-21T18:47:02Z",
       "updated_at": "2026-10-21T03:23:04Z",
-      "days_open": 61.93,
+      "days_open": 62.93,
       "age_bucket": "ancient",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -215,7 +214,7 @@
       "changed_files": -1,
       "created_at": "2026-08-28T05:37:08Z",
       "updated_at": "2026-08-30T11:56:02Z",
-      "days_open": 55.48,
+      "days_open": 56.48,
       "age_bucket": "ancient",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -237,7 +236,7 @@
       "changed_files": -1,
       "created_at": "2026-08-28T06:20:05Z",
       "updated_at": "2026-09-03T22:51:06Z",
-      "days_open": 55.45,
+      "days_open": 56.45,
       "age_bucket": "ancient",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -259,7 +258,7 @@
       "changed_files": -1,
       "created_at": "2026-08-30T08:03:36Z",
       "updated_at": "2026-09-03T20:03:43Z",
-      "days_open": 53.38,
+      "days_open": 54.37,
       "age_bucket": "ancient",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -280,8 +279,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-09-15T07:56:20Z",
-      "updated_at": "2026-10-22T12:01:07Z",
-      "days_open": 37.38,
+      "updated_at": "2026-10-23T11:47:38Z",
+      "days_open": 38.38,
       "age_bucket": "stale",
       "lane": "CANDIDATE",
       "reasons": [
@@ -303,7 +302,7 @@
       "changed_files": -1,
       "created_at": "2026-09-17T08:34:24Z",
       "updated_at": "2026-10-06T07:08:10Z",
-      "days_open": 35.36,
+      "days_open": 36.35,
       "age_bucket": "stale",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -324,8 +323,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-09-18T17:54:07Z",
-      "updated_at": "2026-10-22T01:36:00Z",
-      "days_open": 33.97,
+      "updated_at": "2026-10-23T07:40:01Z",
+      "days_open": 34.96,
       "age_bucket": "stale",
       "lane": "CANDIDATE",
       "reasons": [
@@ -346,8 +345,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-09-20T18:25:04Z",
-      "updated_at": "2026-10-22T13:53:46Z",
-      "days_open": 31.95,
+      "updated_at": "2026-10-23T13:34:16Z",
+      "days_open": 32.94,
       "age_bucket": "stale",
       "lane": "CANDIDATE",
       "reasons": [
@@ -369,7 +368,7 @@
       "changed_files": -1,
       "created_at": "2026-09-22T13:05:01Z",
       "updated_at": "2026-10-22T08:24:36Z",
-      "days_open": 30.17,
+      "days_open": 31.16,
       "age_bucket": "stale",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -391,7 +390,7 @@
       "changed_files": -1,
       "created_at": "2026-09-22T22:21:54Z",
       "updated_at": "2026-09-22T22:22:38Z",
-      "days_open": 29.78,
+      "days_open": 30.78,
       "age_bucket": "stale",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -413,7 +412,7 @@
       "changed_files": -1,
       "created_at": "2026-09-23T03:23:38Z",
       "updated_at": "2026-09-23T03:24:12Z",
-      "days_open": 29.57,
+      "days_open": 30.57,
       "age_bucket": "stale",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -435,7 +434,7 @@
       "changed_files": -1,
       "created_at": "2026-09-23T03:33:34Z",
       "updated_at": "2026-09-23T09:26:30Z",
-      "days_open": 29.56,
+      "days_open": 30.56,
       "age_bucket": "stale",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -457,7 +456,7 @@
       "changed_files": -1,
       "created_at": "2026-09-23T03:42:32Z",
       "updated_at": "2026-09-23T04:00:16Z",
-      "days_open": 29.56,
+      "days_open": 30.56,
       "age_bucket": "stale",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -478,8 +477,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-09-23T07:36:29Z",
-      "updated_at": "2026-10-22T01:35:55Z",
-      "days_open": 29.4,
+      "updated_at": "2026-10-22T22:26:28Z",
+      "days_open": 30.39,
       "age_bucket": "stale",
       "lane": "CANDIDATE",
       "reasons": [
@@ -501,7 +500,7 @@
       "changed_files": -1,
       "created_at": "2026-09-25T01:06:46Z",
       "updated_at": "2026-09-25T01:08:41Z",
-      "days_open": 27.67,
+      "days_open": 28.66,
       "age_bucket": "stale",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -523,7 +522,7 @@
       "changed_files": -1,
       "created_at": "2026-10-01T01:04:39Z",
       "updated_at": "2026-10-01T01:05:40Z",
-      "days_open": 21.67,
+      "days_open": 22.66,
       "age_bucket": "stale",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -545,7 +544,7 @@
       "changed_files": -1,
       "created_at": "2026-10-01T09:53:01Z",
       "updated_at": "2026-10-21T04:40:59Z",
-      "days_open": 21.3,
+      "days_open": 22.3,
       "age_bucket": "stale",
       "lane": "CANDIDATE",
       "reasons": [
@@ -567,7 +566,7 @@
       "changed_files": -1,
       "created_at": "2026-10-01T12:03:18Z",
       "updated_at": "2026-10-01T12:22:22Z",
-      "days_open": 21.21,
+      "days_open": 22.21,
       "age_bucket": "stale",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -588,8 +587,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-02T06:35:56Z",
-      "updated_at": "2026-10-22T07:43:03Z",
-      "days_open": 20.44,
+      "updated_at": "2026-10-23T07:40:13Z",
+      "days_open": 21.43,
       "age_bucket": "stale",
       "lane": "CANDIDATE",
       "reasons": [
@@ -610,9 +609,9 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-03T12:53:32Z",
-      "updated_at": "2026-10-22T07:42:59Z",
-      "days_open": 19.18,
-      "age_bucket": "mid",
+      "updated_at": "2026-10-23T07:40:17Z",
+      "days_open": 20.17,
+      "age_bucket": "stale",
       "lane": "CANDIDATE",
       "reasons": [
         "state:unknown"
@@ -632,8 +631,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-19T09:18:06Z",
-      "updated_at": "2026-10-22T07:42:48Z",
-      "days_open": 3.33,
+      "updated_at": "2026-10-23T07:40:35Z",
+      "days_open": 4.32,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -648,14 +647,14 @@
       "bot": false,
       "draft": false,
       "base_ref": "master",
-      "base_sha": "c9d923ab89e7",
+      "base_sha": "b17afad0c3d2",
       "head_ref": "hark/quota-consolidation",
-      "head_sha": "4eae2175c067",
+      "head_sha": "e650476044b3",
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-19T09:43:58Z",
-      "updated_at": "2026-10-22T12:05:07Z",
-      "days_open": 3.31,
+      "updated_at": "2026-10-23T07:40:09Z",
+      "days_open": 4.3,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -677,7 +676,7 @@
       "changed_files": -1,
       "created_at": "2026-10-20T06:16:16Z",
       "updated_at": "2026-10-20T07:17:41Z",
-      "days_open": 2.45,
+      "days_open": 3.45,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -699,7 +698,7 @@
       "changed_files": -1,
       "created_at": "2026-10-21T06:36:50Z",
       "updated_at": "2026-10-21T10:53:39Z",
-      "days_open": 1.44,
+      "days_open": 2.43,
       "age_bucket": "fresh",
       "lane": "EXTRACT",
       "reasons": [
@@ -721,8 +720,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-21T07:48:16Z",
-      "updated_at": "2026-10-22T07:42:55Z",
-      "days_open": 1.39,
+      "updated_at": "2026-10-23T07:40:23Z",
+      "days_open": 2.38,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -743,8 +742,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-21T13:05:14Z",
-      "updated_at": "2026-10-21T22:26:42Z",
-      "days_open": 1.17,
+      "updated_at": "2026-10-23T13:34:01Z",
+      "days_open": 2.16,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -765,36 +764,14 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-21T13:13:33Z",
-      "updated_at": "2026-10-22T13:53:08Z",
-      "days_open": 1.16,
+      "updated_at": "2026-10-23T13:34:11Z",
+      "days_open": 2.16,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
         "state:unknown"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1470"
-    },
-    {
-      "number": 1483,
-      "title": "ops(actions): consolidated matrix upgrade + modular issue-comment router for spam/quota reduction",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "cce90d2258b3",
-      "head_ref": "ops/actions-matrix-upgrade-2026-10-18",
-      "head_sha": "2d1c44f0746f",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-10-21T16:01:32Z",
-      "updated_at": "2026-10-22T16:11:09Z",
-      "days_open": 1.05,
-      "age_bucket": "fresh",
-      "lane": "CANDIDATE",
-      "reasons": [
-        "state:unknown"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1483"
     },
     {
       "number": 1494,
@@ -809,8 +786,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-21T23:38:29Z",
-      "updated_at": "2026-10-22T12:00:29Z",
-      "days_open": 0.73,
+      "updated_at": "2026-10-23T11:47:28Z",
+      "days_open": 1.72,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -831,8 +808,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-22T02:25:01Z",
-      "updated_at": "2026-10-22T07:42:26Z",
-      "days_open": 0.61,
+      "updated_at": "2026-10-23T07:40:43Z",
+      "days_open": 1.61,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -853,8 +830,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-22T06:38:59Z",
-      "updated_at": "2026-10-22T13:53:24Z",
-      "days_open": 0.44,
+      "updated_at": "2026-10-23T13:33:35Z",
+      "days_open": 1.43,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -876,7 +853,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T07:32:45Z",
       "updated_at": "2026-10-22T07:33:38Z",
-      "days_open": 0.4,
+      "days_open": 1.4,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -898,7 +875,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T08:00:00Z",
       "updated_at": "2026-10-22T13:58:29Z",
-      "days_open": 0.38,
+      "days_open": 1.38,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -919,8 +896,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-22T08:16:12Z",
-      "updated_at": "2026-10-22T13:53:37Z",
-      "days_open": 0.37,
+      "updated_at": "2026-10-22T22:26:02Z",
+      "days_open": 1.37,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -937,12 +914,12 @@
       "base_ref": "master-staging",
       "base_sha": "1a5af217f3ef",
       "head_ref": "cue/1497-operational-device2",
-      "head_sha": "486dfa9f6037",
+      "head_sha": "dbb302b5aa4a",
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-22T08:18:59Z",
-      "updated_at": "2026-10-22T14:21:36Z",
-      "days_open": 0.37,
+      "updated_at": "2026-10-23T11:46:23Z",
+      "days_open": 1.36,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -964,7 +941,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T08:20:11Z",
       "updated_at": "2026-10-22T08:23:49Z",
-      "days_open": 0.37,
+      "days_open": 1.36,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -986,7 +963,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T08:23:03Z",
       "updated_at": "2026-10-22T08:24:30Z",
-      "days_open": 0.36,
+      "days_open": 1.36,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1008,7 +985,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T08:24:53Z",
       "updated_at": "2026-10-22T08:26:29Z",
-      "days_open": 0.36,
+      "days_open": 1.36,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1030,7 +1007,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T08:27:01Z",
       "updated_at": "2026-10-22T08:29:08Z",
-      "days_open": 0.36,
+      "days_open": 1.36,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1051,8 +1028,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-22T08:30:59Z",
-      "updated_at": "2026-10-22T08:33:02Z",
-      "days_open": 0.36,
+      "updated_at": "2026-10-23T13:33:43Z",
+      "days_open": 1.35,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1074,7 +1051,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T08:38:15Z",
       "updated_at": "2026-10-22T12:32:13Z",
-      "days_open": 0.35,
+      "days_open": 1.35,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1096,7 +1073,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T08:56:42Z",
       "updated_at": "2026-10-22T09:22:22Z",
-      "days_open": 0.34,
+      "days_open": 1.34,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1118,7 +1095,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T09:00:52Z",
       "updated_at": "2026-10-22T09:02:48Z",
-      "days_open": 0.34,
+      "days_open": 1.33,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1140,7 +1117,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T09:04:40Z",
       "updated_at": "2026-10-22T09:07:25Z",
-      "days_open": 0.33,
+      "days_open": 1.33,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -1162,7 +1139,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T11:36:17Z",
       "updated_at": "2026-10-22T11:38:12Z",
-      "days_open": 0.23,
+      "days_open": 1.23,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -1184,13 +1161,189 @@
       "changed_files": -1,
       "created_at": "2026-10-22T11:44:27Z",
       "updated_at": "2026-10-22T12:50:29Z",
-      "days_open": 0.22,
+      "days_open": 1.22,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
         "wrong-base:cue/swarms-research-remote-20261021"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1541"
+    },
+    {
+      "number": 1543,
+      "title": "chore(recon): refresh pinned free-provider research",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "9ac20e633ceb",
+      "head_ref": "q/provider-recon-5e50403a78e8006b73c4",
+      "head_sha": "d55580f915a0",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-10-22T17:16:26Z",
+      "updated_at": "2026-10-22T22:08:16Z",
+      "days_open": 0.99,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1543"
+    },
+    {
+      "number": 1553,
+      "title": "Consolidate upgrades for provider quota & PR merge readiness",
+      "user": "google-labs-jules[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "2c58c8fcc8f0",
+      "head_ref": "jules-1764467388719756573-616fbf44",
+      "head_sha": "519c656f2940",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-10-22T22:18:51Z",
+      "updated_at": "2026-10-22T22:19:32Z",
+      "days_open": 0.78,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1553"
+    },
+    {
+      "number": 1556,
+      "title": "\ud83d\udcd6 Linguist: implement steganographic cipher lane and token efficiency analysis",
+      "user": "google-labs-jules[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "2ee078816ba3",
+      "head_ref": "linguist-steganography-token-efficiency-2271010324036240790",
+      "head_sha": "2177e62206b4",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-10-22T23:21:39Z",
+      "updated_at": "2026-10-23T11:46:14Z",
+      "days_open": 0.74,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1556"
+    },
+    {
+      "number": 1557,
+      "title": "ops(actions): hybrid lag-as-notice Tailscale + consolidated matrix upgrade",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "a1057981e14f",
+      "head_ref": "ops/actions-matrix-upgrade-continue-2026-10-23",
+      "head_sha": "e2354dea86eb",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-10-23T01:03:39Z",
+      "updated_at": "2026-10-23T16:22:10Z",
+      "days_open": 0.67,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1557"
+    },
+    {
+      "number": 1568,
+      "title": "\ud83d\udee1\ufe0f Sentinel: Harden DeepCLI export target symlink validation",
+      "user": "google-labs-jules[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "3d5334eaed2a",
+      "head_ref": "jules-11206864685571712188-de95f8b3",
+      "head_sha": "bd3a7aa6c52b",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-10-23T07:32:36Z",
+      "updated_at": "2026-10-23T07:33:19Z",
+      "days_open": 0.4,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1568"
+    },
+    {
+      "number": 1569,
+      "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master-staging",
+      "base_sha": "1a5af217f3ef",
+      "head_ref": "docs/agy-mvt-doe-v0-20261023",
+      "head_sha": "b9bbcd85b2c4",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-10-23T07:49:25Z",
+      "updated_at": "2026-10-23T13:33:48Z",
+      "days_open": 0.38,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "wrong-base:master-staging"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1569"
+    },
+    {
+      "number": 1570,
+      "title": "\u26a1 Bolt: optimize decision engine selection and provider catalog secret lookup",
+      "user": "google-labs-jules[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "e91ab3ee6115",
+      "head_ref": "bolt/perf-opt-decision-engines-catalog-8004031453981077157",
+      "head_sha": "c851d9a5753d",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-10-23T08:06:51Z",
+      "updated_at": "2026-10-23T08:07:29Z",
+      "days_open": 0.37,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1570"
+    },
+    {
+      "number": 1581,
+      "title": "Vantage cost telemetry (dispatcher Node H) + Tier 3 cadence drift repair (10 lanes)",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "e60c16986ddc",
+      "head_ref": "vantage-cost-telemetry",
+      "head_sha": "c25f82feb999",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-10-23T16:59:51Z",
+      "updated_at": "2026-10-23T17:00:41Z",
+      "days_open": 0.0,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1581"
     }
   ],
   "rules": {

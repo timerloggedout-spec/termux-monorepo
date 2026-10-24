@@ -60,6 +60,7 @@ jobs:
           python3 scripts/ci/orchestration_contract_validator.py
           python3 -m unittest discover -s tests -p 'test_orchestration_contract_validator.py' -v
           python3 -m unittest discover -s tests -p 'test_dag_execution.py' -v
+          python3 -m unittest discover -s tests -p 'test_dag_properties.py' -v
 
       - name: Briefing and source provenance contracts
         run: |

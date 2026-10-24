@@ -1,7 +1,6 @@
 name: DeepSeek Self-Integrate
 on:
-  schedule:
-    - cron: '17 */4 * * *'   # every 4h at :17
+# Cadence owned by quota-dispatch-tree.yml (Tier 0 decision tree, issue #1573).
   workflow_dispatch:
 permissions:
   contents: write

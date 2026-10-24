@@ -11,8 +11,7 @@ on:
         required: true
         default: master
         type: string
-  schedule:
-    - cron: '23 */6 * * *'
+  # # Cadence owned by quota-dispatch-tree.yml (Tier 0 decision tree, issue #1573).
 
 permissions:
   contents: write

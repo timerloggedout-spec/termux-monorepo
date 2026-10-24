@@ -48,6 +48,7 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 | review-loop | `.agents/skills/review-loop/SKILL.md` |
 | **stepie-stepwise-ops** | `.agents/skills/stepie-stepwise-ops/SKILL.md` |
 | termux-monorepo | `.agents/skills/termux-monorepo/SKILL.md` |
+| web-adapter-foundry | `.agents/skills/web-adapter-foundry/SKILL.md` |
 | termux-monorepo-agentic-governance | `.agents/skills/termux-monorepo-agentic-governance/SKILL.md` |
 | termux-mcp-project-steward | `.agents/skills/termux-mcp-project-steward/SKILL.md` |
 | wingman-project-integration | `.agents/skills/wingman-project-integration/SKILL.md` |

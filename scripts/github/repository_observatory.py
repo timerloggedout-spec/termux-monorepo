@@ -24,7 +24,7 @@ class GitHubHttpError(RuntimeError):
         super().__init__(f"HTTP {code} for {path}")
         self.code = code
         self.path = path
-UA = "termux-monorepo-repository-observatory/2.1"
+UA = "termux-monorepo-repository-observatory/2.2"
 SCHEMA_VERSION = "1.1"
 MAX_PAGES = 100
 RETRIES = 3
@@ -76,6 +76,7 @@ DOMAIN_TERMS: dict[str, tuple[str, ...]] = {
     "api-management": ("api-management", "api management", "api-gateway", "api gateway", "gateway", "openapi", "asyncapi"),
     "platform": ("platform", "developer-portal", "portal"),
     "kubernetes": ("kubernetes", "helm", "operator", "container"),
+    "browser": ("headless browser", "browser automation", "browser-automation", "playwright", "puppeteer", "selenium", "webdriver", "chromium", "headless"),
 }
 WORKFLOW_TERMS: tuple[str, ...] = ("github-action", "github-actions", "workflow")
 DEPENDENCY_TERMS: tuple[str, ...] = ("library", "framework", "sdk")
@@ -99,7 +100,7 @@ def classify(repo: dict[str, Any], provenance: list[str], repo_topics: list[str]
     if not domains:
         domains = ["unclassified"]
 
-    role = ["reference"] if "starred" in provenance else ["owned"]
+    role = ["reference"] if ("starred" in provenance or "watching" in provenance) else ["owned"]
     if repo.get("fork"):
         role.append("fork")
     if repo.get("is_template"):
@@ -139,6 +140,7 @@ def normalize(repo: dict[str, Any], provenance: list[str]) -> dict[str, Any]:
         "owner": owner.get("login"), "visibility": repo.get("visibility"), "private": bool(repo.get("private")),
         "fork": bool(repo.get("fork")), "archived": bool(repo.get("archived")), "is_template": bool(repo.get("is_template")),
         "language": repo.get("language"), "topics": t_list, "stars": repo.get("stargazers_count", 0), "forks": repo.get("forks_count", 0),
+        "watchers": repo.get("watchers_count", 0), "subscribers": repo.get("subscribers_count"),
         "updated_at": repo.get("updated_at"), "pushed_at": repo.get("pushed_at"), "created_at": repo.get("created_at"),
         "upstream": upstream.get("full_name"), "provenance": sorted(set(provenance)), "classification": classify(repo, provenance, repo_topics=t_list),
     }
@@ -147,10 +149,13 @@ def normalize(repo: dict[str, Any], provenance: list[str]) -> dict[str, Any]:
 def markdown(records: list[dict[str, Any]], observed_at: str) -> str:
     lines = ["# Repository Observatory", "", "> Generated from GitHub repository and starring metadata. JSON is canonical; this file is a navigation projection.", "",
              f"Observed: `{observed_at}`", "", "## Navigation", "", "- [Owned repositories](#owned)", "- [Starred repositories](#starred)",
+             "- [Watching repositories](#watching)", "- [Owned forks](#owned-forks)",
              "- [Research seeds](#research-seeds)", "- [Integration candidates](#integration-candidates)", ""]
 
     owned_rows: list[dict[str, Any]] = []
     starred_rows: list[dict[str, Any]] = []
+    watching_rows: list[dict[str, Any]] = []
+    fork_rows: list[dict[str, Any]] = []
     research_rows: list[dict[str, Any]] = []
     integration_rows: list[dict[str, Any]] = []
 
@@ -158,8 +163,12 @@ def markdown(records: list[dict[str, Any]], observed_at: str) -> str:
         prov = r["provenance"]
         if "owned" in prov:
             owned_rows.append(r)
+            if r.get("fork"):
+                fork_rows.append(r)
         if "starred" in prov:
             starred_rows.append(r)
+        if "watching" in prov:
+            watching_rows.append(r)
         c = r["classification"]
         if c["research_value"] == "high":
             research_rows.append(r)
@@ -175,29 +184,34 @@ def markdown(records: list[dict[str, Any]], observed_at: str) -> str:
 
     table("Owned", owned_rows)
     table("Starred", starred_rows)
+    table("Watching", watching_rows)
+    table("Owned forks", fork_rows)
     table("Research seeds", research_rows)
     table("Integration candidates", integration_rows)
     return "\n".join(lines) + "\n"
 
 
-def build_records(owned: list[dict[str, Any]], starred: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def build_records(owned: list[dict[str, Any]], starred: list[dict[str, Any]],
+                  watching: list[dict[str, Any]] | None = None) -> list[dict[str, Any]]:
+    """Consolidated Stars|Forks|Watch merge. Provenance is a set union across
+    owned / starred / watching; forks stay a role on owned records (with
+    upstream), so one canonical record carries every signal."""
     merged: dict[str, dict[str, Any]] = {}
     for repo in owned:
         full_name = repo.get("full_name")
         if full_name:
             merged[full_name] = normalize(repo, ["owned"])
-    for repo in starred:
-        full_name = repo.get("full_name")
-        if not full_name:
-            continue
-        if full_name in merged:
-            # Bolt optimization: Owned repo present in starred list gets direct
-            # sorted provenance ["owned", "starred"], eliminating set() and sorted() allocations.
-            provenance = ["owned", "starred"]
-            merged[full_name]["provenance"] = provenance
-            merged[full_name]["classification"] = classify(merged[full_name], provenance, repo_topics=merged[full_name].get("topics"))
-        else:
-            merged[full_name] = normalize(repo, ["starred"])
+    for provenance_name, rows in (("starred", starred), ("watching", watching or [])):
+        for repo in rows:
+            full_name = repo.get("full_name")
+            if not full_name:
+                continue
+            if full_name in merged:
+                provenance = sorted(set(merged[full_name]["provenance"]) | {provenance_name})
+                merged[full_name]["provenance"] = provenance
+                merged[full_name]["classification"] = classify(merged[full_name], provenance, repo_topics=merged[full_name].get("topics"))
+            else:
+                merged[full_name] = normalize(repo, [provenance_name])
     return sorted(merged.values(), key=lambda r: (tuple(r["classification"]["domains"]), r["full_name"].lower()))
 
 
@@ -212,6 +226,10 @@ def build_payload(owner: str, login: str, records: list[dict[str, Any]], observe
     c_both = 0
     c_research = 0
     c_integration = 0
+    c_watching = 0
+    c_owned_forks = 0
+    stars_received = 0
+    forks_received = 0
 
     for r in records:
         # Bolt optimization: Direct list membership on pre-sorted provenance list
@@ -221,8 +239,14 @@ def build_payload(owner: str, login: str, records: list[dict[str, Any]], observe
         has_starred = "starred" in prov
         if has_owned:
             c_owned += 1
+            stars_received += r.get("stars") or 0
+            forks_received += r.get("forks") or 0
+            if r.get("fork"):
+                c_owned_forks += 1
         if has_starred:
             c_starred += 1
+        if "watching" in prov:
+            c_watching += 1
         if has_owned and has_starred:
             c_both += 1
 
@@ -233,9 +257,12 @@ def build_payload(owner: str, login: str, records: list[dict[str, Any]], observe
             c_integration += 1
 
     return {
-        "schema_version": SCHEMA_VERSION, "builder": "termux-monorepo.repository_observatory@2.1", "repository": f"{owner}/termux-monorepo",
+        "schema_version": SCHEMA_VERSION, "builder": "termux-monorepo.repository_observatory@2.2", "repository": f"{owner}/termux-monorepo",
         "observed_at": observed_at, "authenticated_user": login, "snapshot_hash": snapshot_hash(records),
         "counts": {"owned": c_owned, "starred": c_starred, "both": c_both,
+                   "watching": c_watching, "owned_forks": c_owned_forks,
+                   "stars_received_on_owned": stars_received,
+                   "forks_received_on_owned": forks_received,
                    "research_seeds": c_research, "integration_candidates": c_integration},
         "repositories": records,
     }
@@ -271,6 +298,8 @@ def main(argv: list[str] | None = None, fetch: Callable[..., Any] = get_json) ->
     parser = argparse.ArgumentParser()
     parser.add_argument("--owner", required=True); parser.add_argument("--output", type=Path, required=True); parser.add_argument("--markdown", type=Path, required=True)
     parser.add_argument("--token-env", default="REPOSITORY_OBSERVATORY_TOKEN")
+    parser.add_argument("--watching", action="store_true",
+                        help="also merge /user/subscriptions (watching) provenance; requires a user token")
     args = parser.parse_args(argv)
     token = os.environ.get(args.token_env) or os.environ.get("GITHUB_TOKEN")
     if not token: print(f"missing {args.token_env} or GITHUB_TOKEN", file=sys.stderr); return 2
@@ -286,7 +315,15 @@ def main(argv: list[str] | None = None, fetch: Callable[..., Any] = get_json) ->
         raise RuntimeError(f"pagination exceeded {MAX_PAGES} pages for {path}")
     owned = [r for r in pages(f"/users/{owner_path}/repos", {"type": "owner", "sort": "updated", "direction": "desc"}) if r.get("owner", {}).get("login") == args.owner]
     starred = pages(f"/users/{owner_path}/starred", {"sort": "updated", "direction": "desc"})
-    records = build_records(owned, starred)
+    watching: list[dict[str, Any]] = []
+    if args.watching:
+        try:
+            watching = pages("/user/subscriptions", {"sort": "updated", "direction": "desc"})
+        except (GitHubHttpError, urllib.error.HTTPError) as exc:
+            # Watching needs a user token; an app/token fallback must never
+            # break the daily owned+starred index. Degrade to no watching.
+            print(f"watching unavailable ({exc}); continuing without it", file=sys.stderr)
+    records = build_records(owned, starred, watching)
     previous: dict[str, Any] = {}
     if args.output.exists():
         try: previous = json.loads(args.output.read_text(encoding="utf-8"))

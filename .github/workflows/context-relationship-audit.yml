@@ -19,8 +19,7 @@ on:
   workflow_run:
     workflows: ["Audit Cycle — Single PR Feed-Forward", "Repository development evaluation", "Continuous Evaluation — MoneyBall MVT"]
     types: [completed]
-  schedule:
-    - cron: "17 * * * *"
+  # Cadence owned by quota-dispatch-tree.yml (Tier 3 tranche, issue #1573).
   workflow_dispatch:
     inputs:
       pr_number:

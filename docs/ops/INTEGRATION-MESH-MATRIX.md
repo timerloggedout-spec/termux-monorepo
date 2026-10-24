@@ -1,7 +1,7 @@
 # INTEGRATION MESH MATRIX — every GitHub-listed integration for `timerloggedout-spec`, mapped
 
-**Compiled:** 2026-10-21 ~10:00 PDT. **Amended same day (second pass):** census v2. **Refreshed 2026-10-22 (third pass):** secrets 31→33, PRs 1,292→1,327, issues 193→206, workflows 192→195 — all live figures re-taken; see #1505. **Refreshed 2026-10-22 (fourth pass, ~09:48 PDT):** PRs 1,327→1,330, workflows 195→196 (+1 "Research and paper accounting validation"), issues steady at 206 — see #1505.
-(full pagination, no samples — 1,330 PRs, 206 issues, 2,000 comments, check suites
+**Compiled:** 2026-10-21 ~10:00 PDT. **Amended same day (second pass):** census v2. **Refreshed 2026-10-22 (third pass):** secrets 31→33, PRs 1,292→1,327, issues 193→206, workflows 192→195 — all live figures re-taken; see #1505. **Refreshed 2026-10-22 (fourth pass, ~09:48 PDT):** PRs 1,327→1,330, workflows 195→196 (+1 "Research and paper accounting validation"), issues steady at 206 — see #1505. **Refreshed 2026-10-22 (fifth pass, ~15:48 PDT):** secrets 33→37 (+4: 2 Cloudflare deploy, 2 device-queue), workflows 196→198, variables 2→3 (+`DEVICE_QUEUE_URL`), PRs 1,330→1,342, issues 206→207 — see #1505. **Refreshed 2026-10-23 (sixth pass, ~09:48 PDT):** github-advanced-security first check suites in the 30-head window (5 suites, CodeQL, on `547f54e7`), workflows 200→201 (+`operator-variable-provision`), secrets steady at 37 names, PRs 1,358→1,362, issues steady at 213 — see #1505. **Refreshed 2026-10-23 (seventh pass, ~15:48 PDT):** secrets 37→38 (+`VANTAGE_PAT_GH_SECRETS` — Vantage cost-report lane), workflows 201→205 (+4 verified new files: `vantage-cost-report`, `operator-wake`, `delphi-intake`, `target-intake`), PRs 1,362→1,374, issues 213→220 — see #1505.
+(full pagination, no samples — 1,342 PRs, 207 issues, 2,000 comments, check suites
 across 30 master heads, submitted reviews in two labeled frames) + the installations
 probe (stored-token exercise from inside Actions, Issue #184 comment 6321665538),
 which retrieved the org installation records in §5A. **Scope:** the GitHub account `timerloggedout-spec`,
@@ -21,7 +21,7 @@ Every row carries one of these. Do not merge them; they are different GitHub obj
 
 | Class | Source | Vintage |
 |---|---|---|
-| **LIVE-API** | Firsthand REST census via the owner PAT (`custom.github-pat`), 2026-10-22, fourth pass, fully paginated: check suites across the 30 most recent master heads, 2,000 newest issue comments, **all 1,330 PRs** (authors), submitted reviews in two frames (150 most recently *updated* PRs; 150 most recently *created* PRs), 300 newest deployments, hooks/secrets/environments/workflows/org-installations listings | 2026-10-22 |
+| **LIVE-API** | Firsthand REST census via the owner PAT (`custom.github-pat`), 2026-10-22, fifth pass, fully paginated: check suites across the 30 most recent master heads, 2,000 newest issue comments, **all 1,342 PRs** (authors), submitted reviews in two frames (150 most recently *updated* PRs; 150 most recently *created* PRs), 300 newest deployments, hooks/secrets/environments/workflows/org-installations listings | 2026-10-22 |
 | **PROBE** | Installations probe workflow run 39639440245 (2026-10-21): exercised the stored GitHub tokens from inside Actions against `/user/installations` and `/orgs/{org}/installations`; results posted to Issue #184 (comment 6321665538). Token values never printed | 2026-10-21 |
 | **#184** | Issue #184 — the owner's paste of GitHub's own Settings → Credentials pages (Authorized OAuth Apps, Authorized GitHub Apps, PATs, SSH keys) with GitHub's last-used labels | 2026-08-13 snapshot |
 | **OWNER-UI** | Owner-firsthand screenshot of Settings → Applications → **Installed GitHub Apps** (github.com/settings/installations), visible **A–H portion only** — 24 apps; the list continues past Hex and the remainder was not captured. Transcribed + reconciled on Issue #184 (comment 6335646953) | 2026-10-22 |
@@ -41,9 +41,8 @@ tab's A–H portion is now evidenced owner-firsthand** (§4B, OWNER-UI
 2026-10-22); the remainder past H and the per-app repository scope remain
 NOT ESTABLISHED (closing list). §3/§4 + §4B + §5 together are the standing
 answer — an evidence-based reconstruction, not a placeholder.
-**Live floor, counted 2026-10-21:** ≥29 distinct apps are active on the hub
-repo alone (23 check-suite apps across 30 master heads + ECC, Qodo, Codex,
-Jules, Dependabot, GHAS surfaces). The #184 counts (31 OAuth / 38 GitHub Apps)
+**Live floor, recounted 2026-10-23:** ≥30 distinct apps are active on the hub
+repo alone (25 check-suite apps across 30 master heads — +Buildkite ~03:00 PDT, +github-advanced-security ~04:05 PDT — + ECC, Qodo, Codex, Jules, Dependabot). The #184 counts (31 OAuth / 38 GitHub Apps)
 are the **Aug-13 floor, not current totals** — the owner states the account
 now has way more than 38 GitHub Apps, and the account-level total (677 repos
 + 2 orgs) is NOT ESTABLISHED via API. **Reconciled 2026-10-22:** 38 Aug-13
@@ -86,7 +85,7 @@ nothing here proposes a purge, rotation, or revocation — see §9 rules.
 | `timers-full+accessPAT` | Classic | Never used | Full-admin scope set, no expiration |
 | `MUSE_ADMIN_GH` | Classic | Live daily | Created 2026-10-20, **post-dates #184**. Muse's only GitHub route (`custom.github-pat`, Secure Vault, no per-call approval cards) |
 
-### 2b. Repository Actions secrets — termux-monorepo (LIVE-API, 33 names)
+### 2b. Repository Actions secrets — termux-monorepo (LIVE-API, 38 names)
 
 Grouped by the service each name serves (the mesh's wiring diagram in one table):
 
@@ -99,7 +98,10 @@ Grouped by the service each name serves (the mesh's wiring diagram in one table)
 | Telemetry / memory | `HINDSIGHT_API_KEY`, `HINDSIGHT_BANK_ID`, `HINDSIGHT_BASE_URL`, `HINDSIGHT_TENANT_ID`, `HEX_ALSO_USEDBY_CELLCOG` |
 | PM / deploy / coverage | `LINEAR_API_KEY`, `VERCEL_TOKEN`, `VERCEL_GITHUB_AND_TANKA`, `FLY_IO_ORG_TOKEN`, `CODECOV_TOKEN` |
 | Vault | `TMX_VAULT_AGE_KEY` |
+| Cloudflare | `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN` |
+| Device queue | `DEVICE_QUEUE_PRODUCER_TOKEN_ACTIONS`, `DEVICE_QUEUE_DEVICE_TOKEN_PRIMARY` |
 | Termux device MCP | `TERMUX_MCP_KNOWN_HOSTS`, `TERMUX_MCP_SSH_PRIVATE_KEY` |
+| Cost reporting | `VANTAGE_PAT_GH_SECRETS` |
 
 ### 2c. Every other secret store — enumerated; all empty except the 7 repo Codespaces secrets listed here (LIVE-API, 2026-10-22)
 
@@ -113,7 +115,7 @@ Grouped by the service each name serves (the mesh's wiring diagram in one table)
 | Org Codespaces secrets (both orgs) | endpoint 404 (not available on Free orgs) |
 | Org Actions variables / org webhooks | 0 / 0 |
 | User Codespaces secrets | 0 |
-| Repo Actions variables | 2 — `TERMUX_MCP_ENDPOINT` (Pinggy tunnel to the device MCP, refreshed 2026-10-22), `TERMUX_MCP_ENDPOINT_UPDATED_AT` |
+| Repo Actions variables | 3 — `TERMUX_MCP_ENDPOINT` (Pinggy tunnel to the device MCP, refreshed 2026-10-22), `TERMUX_MCP_ENDPOINT_UPDATED_AT`, `DEVICE_QUEUE_URL` |
 
 **Reading:** the mesh's *secret stores* are 100% repo-scoped today (the
 account-level PATs in §2a and the SSH key in §5B are separate account
@@ -168,22 +170,22 @@ the repo's heavy automation mostly switched on after the snapshot.
 |---|---|---|---|---|
 | Aikido Security | AikidoSec | Never | Sibling app `aikido-pr-checks` active (§5) | Security PR checks |
 | AskSolo.ai | AskSolo-ai | Never | none | Dormant |
-| BlocksOrg | BlocksOrg | Never | **Active** — check suites on 30/30 master heads, 54/2,000 comments | Slack-assignable agent marketplace. ⚠ Broadest permission set in the mesh (incl. `administration`, org hooks) — breadth noted, not changed (§9 rules) |
-| ChatGPT Codex Connector | openai | ≤5 mo | **Active, low volume** — 84/2,000 comments | Codex review lane (peer set, opt-in per orchestrator) |
+| BlocksOrg | BlocksOrg | Never | **Active** — check suites on 30/30 master heads, 60/2,000 comments | Slack-assignable agent marketplace. ⚠ Broadest permission set in the mesh (incl. `administration`, org hooks) — breadth noted, not changed (§9 rules) |
+| ChatGPT Codex Connector | openai | ≤5 mo | **Active, low volume** — 80/2,000 comments | Codex review lane (peer set, opt-in per orchestrator) |
 | Claude | anthropics | Never | none via App — Claude-authored work lands via owner PAT (MAP §B3) | App dormant; collaborator lane is PAT-based |
 | Codacy Production | codacy | Never | **Active** — check suites on 30/30 heads | Code-quality checks |
-| coderabbitai | coderabbitai | Never | **Active, primary reviewer** — suites on 30/30 heads, 174/2,000 comments, **61 submitted reviews** (150 most-recently-updated frame: 41 CHANGES_REQUESTED, 5 APPROVED); also authored 9 PRs | Required peer reviewer (orchestrator default) |
+| coderabbitai | coderabbitai | Never | **Active, primary reviewer** — suites on 30/30 heads, 155/2,000 comments, **83 submitted reviews** (150 most-recently-updated frame: 57 CHANGES_REQUESTED, 6 APPROVED, 19 COMMENTED, 1 DISMISSED); also authored 9 PRs | Required peer reviewer (orchestrator default) |
 | Copilot Chat App | github | ≤1 wk | account-level only | Chat surface, no repo footprint |
 | Copilot Pull Request Reviewer | github | Never | no submitted reviews in 50-PR sample | Tracked opt-in peer (orchestrator); staged use |
 | Copilot SWE Agent | github | ≤2 wk | no PRs authored in sample | Coding-agent lane, unused on hub repo |
 | cto.new | Engine-Labs | Never | none | Dormant |
 | Cursor | cursor | ≤1 wk | **Active** — check suites on 30/30 heads | Background coding agents. ⚠ `administration` permission |
-| Devin.ai Integration | usacognition | Never | **Active, top submitted reviewer** — suites on 30/30 heads, **154 submitted reviews** (150 most-recently-updated frame, all COMMENTED; 92 on PR #143 alone); authored 2 PRs | Review+fix lane. ⚠ Org-admin/repo-creation permissions |
-| ECC Tools | ECC-Tools | Never | **Active, comment-lane only** — **901 of the 2,000 newest issue comments (45%, top actor)**, **zero check runs**. Mechanism established via `GET /apps/ecc-tools`: the vendor app's own configuration requests only contents/issues/pull_requests write + metadata read — **it carries no Checks permission at all** (contrast coderabbitai checks:write, qodo checks:read), so no installation-owner approval exists or is pending; only the vendor can add it | Agent-harness audits (6 kinds). Repo-side fix = Actions mirror, PR #1491 (§9 I1) |
+| Devin.ai Integration | usacognition | Never | **Active, top submitted reviewer** — suites on 30/30 heads, **147 submitted reviews** (150 most-recently-updated frame, all COMMENTED; 92 on PR #143 alone); authored 2 PRs | Review+fix lane. ⚠ Org-admin/repo-creation permissions |
+| ECC Tools | ECC-Tools | Never | **Active, comment-lane only** — **915 of the 2,000 newest issue comments (46%, top actor)**, **zero check runs**. Mechanism established via `GET /apps/ecc-tools`: the vendor app's own configuration requests only contents/issues/pull_requests write + metadata read — **it carries no Checks permission at all** (contrast coderabbitai checks:write, qodo checks:read), so no installation-owner approval exists or is pending; only the vendor can add it | Agent-harness audits (6 kinds). Repo-side fix = Actions mirror, PR #1491 (§9 I1) |
 | Factory Droid | Factory-AI | Never | none | Dormant coding agent |
-| Gitar Bot | gitarcode | ≤5 mo | **Active** — suites on 30/30 heads, 54/2,000 comments | Review + validated-fix lane |
+| Gitar Bot | gitarcode | ≤5 mo | **Active** — suites on 30/30 heads, 42/2,000 comments | Review + validated-fix lane |
 | GitHub Codespaces | github | Never | 3 codespaces exist (§1) | Off-device compute lane (§9 C2) |
-| Google Labs Jules | google-labs-code | ≤1 wk | **Active, primary coding agent** — **283 of all 1,330 PRs authored**, 239 contributions, 7/2,000 comments | Bolt ⚡ lane; Muse steers via `custom.jules` no-HITL (MAP §B1) |
+| Google Labs Jules | google-labs-code | ≤1 wk | **Active, primary coding agent** — **284 of all 1,342 PRs authored**, 240 contributions, 6/2,000 comments | Bolt ⚡ lane; Muse steers via `custom.jules` no-HITL (MAP §B1) |
 | Graphite App | withgraphite | ≤1 wk | **Active** — suites on 30/30 heads | Stacked-PR lane |
 | Grok (by xAI) | xai-org | ≤1 wk | none via App — Grok works in its own app, lands via owner PAT (MAP §B5) | App is a sign-in grant; work lane is PAT-based |
 | HackerOne Code | PullRequestInc | Never | none | Dormant security review |
@@ -202,7 +204,7 @@ the repo's heavy automation mostly switched on after the snapshot.
 | SonarQubeCloud | SonarSource | Never | none | Dormant |
 | Tembo | tembo | Never | **Active** — suites on 30/30 heads | Agent orchestration; nests Linear/MCP/sub-agents (REPO roster) |
 | Travis CI | travis-ci | Never | **Active** — check suites on 30/30 master heads | Legacy CI signal duplicating Actions (§9 I4) |
-| Vercel | vercel | Never | **Active, primary deploy** — suites on 30/30 heads, 76/300 deployments, 15/2,000 comments | Deploy lane (quota-capped — §9 I5) |
+| Vercel | vercel | Never | **Active, primary deploy** — suites on 30/30 heads, 91/300 deployments, 12/2,000 comments | Deploy lane (quota-capped — §9 I5) |
 | Zed Industries | zed-industries | Never | none | Dormant editor grant |
 
 ## 4B. Installed GitHub Apps — owner-firsthand (OWNER-UI, 2026-10-22)
@@ -221,19 +223,19 @@ are GitHub's; slug forms are given where the census uses them.
 | Aikido Security | Yes ("Never") | No direct activity observed | The active Aikido surface is the sibling above |
 | AskSolo.ai | Yes | none | Dormant (§9 C6) |
 | blacksmith.sh | **No — installed-only** | **Active** — `blacksmith-sh` suites on 30/30 heads (§5) | Also installed on both orgs (§5A) |
-| BlocksOrg | Yes | **Active** — suites 30/30, 54/2,000 comments | — |
-| ChatGPT Codex Connector | Yes | **Active, low volume** — 84/2,000 comments | — |
+| BlocksOrg | Yes | **Active** — suites 30/30, 60/2,000 comments | — |
+| ChatGPT Codex Connector | Yes | **Active, low volume** — 80/2,000 comments | — |
 | Codacy Production | Yes | **Active** — suites 30/30 | — |
 | Codecov | **No — installed-only** | **Active** — suites 30/30 + `CODECOV_TOKEN` (§5); reaches 5 of the 7 cluster repos (§5B) | Also installed on Research-Astute (§5A) |
 | coderabbitai | Yes | **Active, primary reviewer** | ⚠ **Permission update requested** — owner-UI item of record (§9 I8) |
 | cto.new | Yes | none | Dormant (§9 C6) |
 | Cursor | Yes | **Active** — suites 30/30 | ⚠ **Permission update requested** (§9 I8) |
-| Devin.ai Integration | Yes | **Active, top submitted reviewer** — 154 reviews (150-updated frame) | ⚠ **Permission update requested** (§9 I8) |
-| ECC Tools | Yes | **Active, comment-lane only** — 901/2,000 comments, zero check runs | **No** permission update is flagged for ECC — consistent with §4's mechanism: the vendor app requests no Checks permission in its own configuration, so there is nothing pending to approve. A different state from the four flagged apps |
+| Devin.ai Integration | Yes | **Active, top submitted reviewer** — 147 reviews (150-updated frame) | ⚠ **Permission update requested** (§9 I8) |
+| ECC Tools | Yes | **Active, comment-lane only** — 915/2,000 comments, zero check runs | **No** permission update is flagged for ECC — consistent with §4's mechanism: the vendor app requests no Checks permission in its own configuration, so there is nothing pending to approve. A different state from the four flagged apps |
 | endor-labs-github-agenthq | **No — installed-only** | No activity under this name in the census | Possibly the installation behind §5's `launchdarkly-agent` suites (AgentHQ) — identity NOT ESTABLISHED; carried as its own row until a slug-level join exists |
 | Factory Droid | Yes | none | ⚠ **Permission update requested** — a dormant app asking for expanded scope is a deliberate-decision item, not a rubber stamp (§9 I8) |
 | FalconerAI | **No — installed-only** | none observed | New to the matrix with this screenshot; no GitHub-side activity in the Oct-21 census and no assigned role yet — assign-or-park (§9 C6 pattern) |
-| Gitar Bot | Yes | **Active** — suites 30/30, 54/2,000 comments (as `gitar-bot`) | — |
+| Gitar Bot | Yes | **Active** — suites 30/30, 42/2,000 comments (as `gitar-bot`) | — |
 | GitHub Copilot for Linear | **No — installed-only** | none observed on the hub repo | New to the matrix; by name a Copilot↔Linear bridge — no check/comment/review footprint in the census, so any use is off-hub or not yet exercised |
 | Google Labs Jules | Yes | **Active, primary coding agent** — authored 279 of 1,292 PRs | Also installed on Research-Astute (§5A) |
 | Graphite App | Yes | **Active** — suites 30/30 | — |
@@ -267,12 +269,13 @@ absence from the screenshot portion is expected, not contradictory.
 
 | App | Slug / owner | Evidence | Role |
 |---|---|---|---|
-| GitHub Actions | `github-actions` / github | **1,446 check suites across 30 master heads** (632 success / 635 skipped / 176 cancelled / 3 failure); 1,238 contributions | The execution substrate (192 workflows, §6) |
-| GitHub Pages | `github-pages` / github | suites + 38/300 deployments | Docs/site deploy |
-| Mintlify | `mintlify` / mintlify | suites + **186/300 deployments** (all `staging` = docs previews) | Docs platform; biggest deployment producer |
-| Qodo Code Review | `qodo-code-review` / qodo-ai | 54/2,000 comments + reviews | Peer reviewer (orchestrator tracked opt-in) |
-| GitHub Advanced Security | `github-advanced-security` / github | submitted reviews in sample; check runs on PR heads | Code scanning lane |
+| GitHub Actions | `github-actions` / github | **970 check suites across 30 master heads** (320 success / 534 skipped / 112 cancelled / 4 failure); 1,299 contributions | The execution substrate (201 workflows, §6) |
+| GitHub Pages | `github-pages` / github | suites + 48/300 deployments | Docs/site deploy |
+| Mintlify | `mintlify` / mintlify | suites + **161/300 deployments** (all `staging` = docs previews) | Docs platform; biggest deployment producer |
+| Qodo Code Review | `qodo-code-review` / qodo-ai | 41/2,000 comments + reviews | Peer reviewer (orchestrator tracked opt-in) |
+| GitHub Advanced Security | `github-advanced-security` / github | **NEW 2026-10-23** — 5 check suites in the 30-head window (4 success / 1 neutral, CodeQL; first seen 2026-10-23 ~04:05 PDT on `547f54e7`); submitted reviews in sample | Code scanning lane |
 | Blacksmith.sh | `blacksmith-sh` / useblacksmith | suites on 30/30 heads | Hosted Actions runners (speed/cost lane) |
+| Buildkite | `buildkite` / buildkite | **NEW 2026-10-23** — 2 check suites in the 30-head window (1 success, 1 failure; first seen 2026-10-23 ~02:59 PDT) + new repo webhook (id 702058218, all events, last 200 OK) | External CI lane — arrived with no repo-side workflow; who set it up NOT ESTABLISHED from API evidence |
 | Codecov | `codecov` / codecov | suites on 30/30 heads + `CODECOV_TOKEN` secret | Coverage lane |
 | Hark | `hark` / Adcock-AGI-Inc | suites on 30/30 heads | Agent surface (MAP §B7); its GitHub App is one of its connections |
 | LaunchDarkly agent | `launchdarkly-agent` / launchdarkly | suites on 30/30 heads | AgentHQ flag/agent-task lane — no visible task use yet (§9 C6) |
@@ -314,7 +317,7 @@ account's* installation list is refused to every credential class the fleet
 holds — GitHub reserves it to access tokens authorized to a GitHub App. The
 org slice above is fully enumerable and now enumerated; the personal slice is
 reconstructed from activity (§4/§5). `GH_PAT`, named as a stored secret in
-#184's comments (2026-09-24), is **not** in the live 33-name repo secret list —
+#184's comments (2026-09-24), is **not** in the live 37-name repo secret list —
 the name has drifted or moved since September; recorded as a names-drift
 finding, not used by the probe.
 
@@ -330,12 +333,12 @@ activity evidence, labeled as such.)
 
 **Cross-repo result:** only **10 of 60** repos show any app suites on their
 head commits; 3 of those show GitHub Actions only. The full cluster
-(19–23 apps) appears on exactly **7 repos**:
+(19–24 apps) appears on exactly **7 repos**:
 
 | Repo | Apps on head | Notes |
 |---|---|---|
-| `termux-monorepo` | 23 | The hub (§5/§6) |
-| `timerloggedout-spec.github.io` | 23 | The user-site repo carries the same full cluster |
+| `termux-monorepo` | 24 | The hub (§5/§6) — **+Buildkite this poll** |
+| `timerloggedout-spec.github.io` | 24 | The user-site repo carries the same full cluster — **+Buildkite this poll** |
 | `gh-aw-mcpg_fork` | 22 | Missing github-pages vs hub |
 | `gh-aw_fork` | 22 | Same |
 | `agentos_fork` | 20 | |
@@ -346,7 +349,8 @@ head commits; 3 of those show GitHub Actions only. The full cluster
 Per-app spread across those repos: the core 19 apps (Cursor, Gitar, CodeRabbit,
 Mistral, Devin, Vercel, Render, Travis, Sentry, LaunchDarkly, Codacy, Aikido,
 BlocksOrg, Tembo, Graphite, Mintlify, Kilo, Pulumi, Blacksmith) appear on all 7
-cluster repos; **Codecov on 5, Hark on 4, GitHub Pages on 2** (hub + user-site).
+cluster repos; **Codecov on 5, Hark on 4, GitHub Pages on 2** (hub + user-site),
+**Buildkite on 2** (hub + user-site — new 2026-10-23).
 Reading: the review/deploy app cluster's reach covers all seven cluster
 repos, not just the hub — consistent with all-repositories
 installations — while Codecov/Hark/Pages act only where their specific
@@ -373,16 +377,16 @@ triggered the apps.
 
 | Piece | State |
 |---|---|
-| Webhooks (3) | **Linear** — all events (`*`), last 200 OK · **GitLab mirror** — push+PR → `gitlab.com` project 85129320 mirror/pull, last **400** · **ZenHub** — 12 event types, last **422 misconfigured** |
-| Workflows | **196 total, 195 active** (+1 since third pass: "Research and paper accounting validation", landed 2026-10-22 ~04:43 PDT). Recent 100 runs: actors coderabbitai[bot] 88, `timerloggedout-spec` 12 (account-attributed surface — which specific token fired each run is NOT ESTABLISHED, see the closing list); events workflow_run 47, pull_request_review_comment 24, issue_comment 15, pull_request_review 12, schedule 2 — peer-review-orchestrator cadence now visible in the run window |
-| PR / issue totals (v2, fully paginated) | **1,330 PRs** — authors: owner 1026 (+3), Jules 283, CodeRabbit 9, github-actions 3, Dependabot 3, ECC 3, Devin 2, Tembo 1 · **206 true issues** (owner 187, github-actions 18, mehvvy 1) · requested-reviewer records sit almost entirely on the owner (10) — the peer bots are triggered by comments/orchestrator, not by review requests |
-| Submitted reviews (two frames — keep separate) | *Most-recently-updated 150 PRs:* 42 PRs carry 280 reviews — Devin 147 (all COMMENTED; 92 on #143 alone), CodeRabbit 82 (57 CHANGES_REQUESTED / 5 APPROVED / 19 COMMENTED / 1 DISMISSED), owner 28, Aikido 12, GHAS 8, Qodo 3. *Most-recently-created 150 PRs:* only 18 PRs carry reviews — CodeRabbit 34, owner 17, GHAS 7. Review weight lives on long-lived PRs |
-| Comment actors (2,000 newest) | Only **10 distinct actors**: ECC 976 (49%), owner 452, github-actions 223, CodeRabbit 159, Codex 60, BlocksOrg 48, Gitar 32, Qodo 31, Vercel 13, Jules 6 — **bots ≈ 77% of volume** |
+| Webhooks (4) | **Linear** — all events (`*`), last 200 OK · **GitLab mirror** — push+PR → `gitlab.com` project 85129320 mirror/pull, last **400** · **ZenHub** — 12 event types, last **422 misconfigured** · **Buildkite (NEW 2026-10-23)** — all events (`*`), last 200 OK (id 702058218) |
+| Workflows | **205 total, 204 active, 1 manually disabled** (+4 since the 2026-10-23 09:48 PDT poll, all verified as live files on master: `vantage-cost-report.yml` (Vantage cost report, created 10:30 PDT), `operator-wake.yml` (Operator wake, 12:21 PDT), `delphi-intake.yml` (Delphi conversational intake, 13:37 PDT), `target-intake.yml` (target intake — T.A.K. input layer, PR #1597, 14:36 PDT); the one disabled workflow is Merge Promotion Queue (disabled_manually); note the API registry total also carries phantom entries for deleted workflow files — 176 workflow files are actually on master; still no repo-side Buildkite workflow — the Buildkite lane is webhook/check-app only). Recent 100 runs: actors `timerloggedout-spec` 62 (owner-attributed — schedule + dispatch surface; which specific token fired each run is NOT ESTABLISHED, see the closing list), vercel[bot] 29, ecc-tools[bot] 9; events workflow_run 40, issue_comment 60 — owner-attributed + Vercel deploy runs dominate this window; CodeRabbit review activity continues in the updated-PR frame, so no lane outage |
+| PR / issue totals (v2, fully paginated) | **1,374 PRs** — authors: owner 1,063 (+10 since the 09:48 PDT poll), Jules 288 (+1), CodeRabbit 9, github-actions 5 (+1), Dependabot 3, ECC 3, Devin 2, Tembo 1 · **220 true issues** (owner 198 (+7), github-actions 21, mehvvy 1) · requested-reviewer records sit almost entirely on the owner (10) — the peer bots are triggered by comments/orchestrator, not by review requests |
+| Submitted reviews (two frames — keep separate) | *Most-recently-updated 150 PRs:* 35 PRs carry 251 reviews — Devin 139 (all COMMENTED; 92 still on #143), CodeRabbit 66 (42 CHANGES_REQUESTED / 6 APPROVED / 17 COMMENTED / 1 DISMISSED), owner 26 (24 COMMENTED / 2 APPROVED), Aikido 12, GHAS 7, Qodo 1. *Most-recently-created 150 PRs:* 22 PRs carry reviews — CodeRabbit 37 (23 CHANGES_REQUESTED / 10 COMMENTED / 4 APPROVED), owner 18 (all COMMENTED), GHAS 7. Review weight lives on long-lived PRs |
+| Comment actors (2,000 newest) | Only **10 distinct actors**: ECC 792 (40%), owner 475, github-actions 263, CodeRabbit 155, Codex 105, BlocksOrg 81, Gitar 54, Qodo 54, Vercel 13, Jules 8 — **bots ≈ 76% of volume** |
 | Actions permissions | Enabled, allowed_actions = all, SHA pinning not required. Default workflow permissions = **write**; workflows **can approve PR reviews** (`can_approve_pull_request_reviews: true`) — a real mesh capability: the repo's own automation can act as an approver |
 | Deploy keys / autolinks / collaborators | **0 / 0 / owner only** — no deploy-key or autolink integrations exist on the hub repo |
 | Pages | Legacy build from `gh-pages` branch, https enforced, `timerloggedout-spec.github.io/termux-monorepo/` |
 | Environments | 14 (listed §2c) — deployment targets exist for help-wanted-dash / oversight / mcp-hub / termux-monorepo in Preview + Production pairs |
-| Deployments (300 sampled) | Mintlify 186 (staging/docs) · Vercel 76 (Preview/Production per app) · GitHub Pages 38 |
+| Deployments (300 sampled) | Mintlify 153 (staging/docs) · Vercel 96 (Preview/Production per app) · GitHub Pages 51 |
 | Branch governance | Ruleset `master-no-rewind` **active** (deletion + non-fast-forward blocked). Classic branch protection on master: **none** (404) — the repo gate + ruleset carry governance instead |
 | Vulnerability alerts | endpoint live (204) · Automated security fixes **disabled** |
 | Root config signals | `.coderabbit.yaml` (assertive, auto-review+autofix on), `.devin/`, `.Jules/`, `.claude/`, `.codex/`, `.github/dependabot.yml`, `docs.json` (Mintlify), `vercel.json` lane via apps |
@@ -402,7 +406,7 @@ triggered the apps.
 |---|---|---|---|
 | Coding (write code) | Jules (Bolt ⚡) | Cursor, Devin, Copilot SWE (unused), Kilo, Factory (dormant) | No — one primary, rest review-weighted |
 | PR review | CodeRabbit (required) | Devin (top volume), Qodo, Gitar, ECC (comments), Codex, Copilot Reviewer, Mistral, Aikido, Codacy | **Yes — 9+ reviewers/PR** → cadence problem, §9 I7 |
-| CI / checks | GitHub Actions (196 workflows) | Blacksmith runners, Travis (duplicate signal) | Travis duplication, §9 I4 |
+| CI / checks | GitHub Actions (201 workflows) | Blacksmith runners, Travis (duplicate signal), Buildkite (new 2026-10-23, external CI — webhook/check-app only), github-advanced-security CodeQL suites (new 2026-10-23, code scanning) | Travis duplication, §9 I4 |
 | Deploy / preview | Vercel (apps) | Render (previews), Mintlify (docs), Pages, Fly.io (token only), Koyeb (dormant) | Vercel daily cap is the binding constraint, §9 I5 |
 | PM / planning | Linear (webhook + API + Jules MCP + Muse connector — 4 faces, one spine) | ZenHub (broken), GitHub Projects (enabled, unused visibly) | ZenHub decision, §9 I3 |
 | Memory / telemetry | HindSight (secrets ×5, env `hindsight-prod`) | Hex (via CellCog secret), Supermemory (dormant) | OK |
@@ -417,19 +421,19 @@ triggered the apps.
 quota-aware cadence. (2) No credential purge/rotation/revocation without
 redundancy + owner clone/archive + dependency evaluation. (3) Names-only for
 all credential work. (4) Poller output is never committed (commits burn
-Vercel/Render quota) — census snapshots live in the workspace, this doc is
-hand-refreshed. (5) Provider-neutral early dispatch layer; per-provider
+Vercel/Render quota) — census snapshots persist in the poll workflow's
+Actions cache + run artifacts, this doc is refreshed via PR. (5) Provider-neutral early dispatch layer; per-provider
 parallel quota threads, each reconciling its own cap before its own dispatch.
 
 **Immediate (owner-actionable this week):**
 
 | # | Move | Why / evidence | Route |
 |---|---|---|---|
-| I1 | ECC check runs come from the repo-side mirror, not from any settings approval | ECC is the top bot actor (**901/2,000 comments, 45%**) but publishes **zero** check runs because the vendor app requests **no Checks permission in its own configuration** (`GET /apps/ecc-tools`) — no owner approval exists to give, in any UI. **Done as build, not as an ask — MERGED 2026-10-22 (PR #1491, e6c4d342):** a `Mirror ECC audit outcomes to check runs` **step** folded into the existing `sweep-prs` job of `agent-ecc-tools-ops.yml` (+ `checks: write` on that job only — zero new jobs, zero new executions; trigger accounting per the owner's rule), republishing ECC's own audit conclusions as evidence-only check runs on the existing sweep cadence (06:23/18:23 UTC) | Landed and verified on master (step + `checks: write` present, no standalone job). First execution on the next regular ecc-ops sweep; vendor adding Checks app-side would supersede the mirror |
+| I1 | ECC check runs come from the repo-side mirror, not from any settings approval | ECC is the top bot actor (**915/2,000 comments, 46%**) but publishes **zero** check runs because the vendor app requests **no Checks permission in its own configuration** (`GET /apps/ecc-tools`) — no owner approval exists to give, in any UI. **Done as build, not as an ask — MERGED 2026-10-22 (PR #1491, e6c4d342):** a `Mirror ECC audit outcomes to check runs` **step** folded into the existing `sweep-prs` job of `agent-ecc-tools-ops.yml` (+ `checks: write` on that job only — zero new jobs, zero new executions; trigger accounting per the owner's rule), republishing ECC's own audit conclusions as evidence-only check runs on the existing sweep cadence (06:23/18:23 UTC) | Landed and verified on master (step + `checks: write` present, no standalone job). First execution on the next regular ecc-ops sweep; vendor adding Checks app-side would supersede the mirror |
 | I2 | Repair the GitLab mirror webhook (400) | Mirror is the redundancy lane for the whole repo; 3 GitLab secrets exist to support it | Check GitLab project 85129320 mirror state; re-ping hook via API |
 | I3 | ZenHub: repair the 422 webhook **or** retire the lane deliberately | Board duplicates Linear (the working spine). A dead webhook firing 12 event types is pure noise | Owner decision; either fix config in ZenHub or remove hook + OAuth in one recorded move |
 | I4 | Resolve Travis CI duplication | Travis suites on every master head while Actions is the real CI — double signal, double noise in the gate | Verify whether Travis runs any unique job; if not, park it as a recorded decision (not a silent clearing) |
-| I5 | Keep Vercel moves quota-first | Daily deploy cap already tripped once (2026-10-20); Mintlify (186) + Vercel (76) dominate deployment volume | Batching cooldown (vercel-batch-deploy, 6h) + ignore-step guard; no new deploy-producing integrations until cap behaviour is measured |
+| I5 | Keep Vercel moves quota-first | Daily deploy cap already tripped once (2026-10-20); Mintlify (161) + Vercel (91) dominate deployment volume | Batching cooldown (vercel-batch-deploy, 6h) + ignore-step guard; no new deploy-producing integrations until cap behaviour is measured |
 | I6 | Finish Dependabot wiring | `dependabot.yml` exists, secrets 0, automated security fixes disabled | Enable security fixes; keep Dependabot in the peer-cadence (batched, SHA-bound) |
 | I7 | Enforce the review-cadence matrix | 9+ review bots, ECC flooding documented (#1441: 207 comments) | peer-review-orchestrator: required = CodeRabbit; Qodo/Devin/Copilot tracked opt-in; Gemini only after peers (quota save); ECC via its 6h-debounced ops workflow for commands — the App's per-push audits stay, threaded not muted |
 | I8 | Disposition the four **permission-update requests** (§4B, OWNER-UI 2026-10-22) | coderabbitai, Cursor, Devin.ai Integration — the three most active review/agent lanes — plus Factory Droid have updates awaiting owner approval in Settings → Installed GitHub Apps; unapproved updates can cap the lanes' newer features at their old permission sets | Owner-UI items of record: approve the three active lanes' updates after reading the requested deltas; read Factory Droid's request deliberately first (dormant app, expanded scope). Recorded here so the state is tracked — not a blocker for any fleet work, and never escalated to a browser session |
@@ -447,17 +451,30 @@ parallel quota threads, each reconciling its own cap before its own dispatch.
 
 ## 10. Active polling
 
-A 6-hourly census poll (`github-integration-matrix-poll`, alongside
-`jules-census-6h`) re-runs the LIVE-API census and diffs it against the previous
-workspace snapshot: new/removed check-apps on master heads, bot-actor changes,
-hook health (last response codes), secret-name additions/removals (names
-only), environment/workflow counts, deployment-creator mix. Per the owner
-order of 2026-10-22, findings land **on GitHub**: material diffs are posted
-as `[MUSEai]` comments on the standing thread (Issue #1505), and when a diff
-materially stales this doc the poll opens a doc-refresh PR and merges it
-through the repo gates — no staging, no per-step asks. **No change = no
-comment, no report.** Snapshots stay in
-`~/workspace/github-integration-census/` — never committed (rule 4).
+The poll is a **repo-native GitHub Actions workflow** —
+`.github/workflows/integration-mesh-poll.yml` running
+`scripts/github/integration_mesh_poll.py` on a 6-hourly schedule
+(`41 */6 * * *` UTC) plus `workflow_dispatch`. (Owner order 2026-10-23: the
+poll must live in Actions; the Muse cron of the same name is retired.)
+It re-runs the LIVE-API census — the port of the former chat-side
+`census.py`/`census2.py`/`census3.py`/`secrets_plus.py`/`reviews_updated.py` —
+with the provisioned `OPERATOR_GITHUB_TOKEN` (fallback `GITHUB_TOKEN`,
+per-section graceful degradation recorded, never read as removals) and
+diffs it against the previous snapshot: new/removed check-apps on master
+heads and cross-repo, org installations, bot-actor changes, hook health
+(last response codes), secret-name additions/removals in every store
+(names only), environment/variable/workflow sets, deployment-creator mix,
+and a §9 plan-state check (rows claiming open/pending for closed/merged
+items are flagged stale — the I1 failure mode). A verify pass re-runs any
+headline total that drops or zeroes before anything is published.
+Findings land **on GitHub**: material diffs post as one `[MUSEai]`
+comment on the standing thread (Issue #1505); **structural changes — or
+four accumulated figure-only polls — also open/update a labeled
+`mesh-refresh` issue**, so a finding becomes tracked work with a refresh
+checklist instead of looping as comments. **No change = no comment.**
+Snapshots persist in the Actions cache + 30-day run artifacts — never
+committed (rule 4). Doc refresh PRs still land through the repo gates,
+driven by the `mesh-refresh` issue's diff.
 
 ## NOT ESTABLISHED — stated, not filled in
 

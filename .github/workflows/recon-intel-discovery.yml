@@ -6,10 +6,9 @@ name: RECON INTEL discovery
 # provider state.
 
 on:
+# Cadence owned by quota-dispatch-tree.yml (Tier 0 decision tree, issue #1573).
   pull_request_target:
     types: [opened, synchronize, ready_for_review, reopened]
-  schedule:
-    - cron: '*/15 * * * *'
   workflow_dispatch:
     inputs:
       pr_number:
@@ -22,6 +21,11 @@ on:
         default: master
         type: choice
         options: [master]
+      sweep:
+        description: 'When true, run the scheduled-equivalent bounded sweep instead of the single-probe health check (set automatically by quota-dispatch-tree).'
+        required: false
+        default: false
+        type: boolean
 
 concurrency:
   group: recon-intel-${{ github.event.pull_request.number || github.event.inputs.pr_number || github.ref }}
@@ -45,6 +49,7 @@ jobs:
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
           REQUESTED_PR_NUMBER: ${{ github.event.inputs.pr_number || '' }}
+          REQUESTED_SWEEP: ${{ github.event.inputs.sweep || false }}
           REQUESTED_GITLAB_REF: ${{ github.event.inputs.gitlab_ref || 'master' }}
           RECON_SWEEP_WINDOW_HOURS: ${{ vars.RECON_SWEEP_WINDOW_HOURS || '2' }}
           RECON_SWEEP_MAX_TARGETS: ${{ vars.RECON_SWEEP_MAX_TARGETS || '8' }}
@@ -84,9 +89,11 @@ jobs:
                 return;
               }
               targets = [targetFromPr(pr)];
-            } else if (context.eventName === 'workflow_dispatch') {
-              // A manual blank dispatch is deliberately single-target. It is the
-              // operator’s bounded health probe, not a bulk PR sweep.
+            } else if (context.eventName === 'workflow_dispatch' && process.env.REQUESTED_SWEEP !== 'true') {
+              // A manual blank dispatch (sweep not requested) is deliberately
+              // single-target. It is the operator’s bounded health probe, not a
+              // bulk PR sweep. With sweep=true (quota-dispatch-tree takeover),
+              // fall through to the bounded scheduled-equivalent sweep below.
               targets = [{ pr_number: '0', github_sha: context.sha }];
             } else {
               // Scheduled sweep is bounded: pull_request_target already probes
@@ -196,7 +203,7 @@ jobs:
         id: classify
         if: steps.github-target.outputs.skip != 'true'
         env:
-          RECON_INTEL_GITLAB_READ_TOKEN: ${{ secrets.RECON_INTEL_GITLAB_READ_TOKEN || secrets.GITLAB_TOKEN || secrets.OPERATOR_GITLAB_TOKEN }}
+          RECON_INTEL_GITLAB_READ_TOKEN: ${{ secrets.GITLAB_TOKEN || secrets.OPERATOR_GITLAB_TOKEN }}
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
@@ -297,3 +304,4 @@ jobs:
             echo
             echo "This workflow is read-only: it does not create branches, pull requests, labels, comments, provider requests, or GitLab writes."
           } >> "$GITHUB_STEP_SUMMARY"
+

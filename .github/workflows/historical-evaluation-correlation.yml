@@ -1,8 +1,8 @@
 name: Historical Evaluation Correlation
 
 on:
-  schedule:
-    - cron: '7 * * * *'
+  workflow_dispatch:
+  # Cadence owned by quota-dispatch-tree.yml (Tier 3 tranche, issue #1573).
   push:
     branches: [master]
     paths:

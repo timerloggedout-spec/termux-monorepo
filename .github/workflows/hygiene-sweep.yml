@@ -1,8 +1,7 @@
 name: hygiene-sweep
 
 on:
-  schedule:
-    - cron: "0 */6 * * *"   # every 6 hours
+# Cadence owned by quota-dispatch-tree.yml (Tier 0 decision tree, issue #1573).
   workflow_dispatch:
 
 permissions:

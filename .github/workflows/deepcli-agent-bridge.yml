@@ -1,9 +1,8 @@
 name: DeepCLI Agent Bridge Smoke
 
 on:
+# Cadence owned by quota-dispatch-tree.yml (Tier 0 decision tree, issue #1573).
   workflow_dispatch:
-  schedule:
-    - cron: '*/30 * * * *'
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
@@ -185,3 +184,4 @@ jobs:
           path: deepcli-agent-bridge-receipt.json
           if-no-files-found: error
           retention-days: 14
+

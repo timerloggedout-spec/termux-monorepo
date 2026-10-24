@@ -1,6 +1,6 @@
 # Repository Observatory
 
-The Repository Observatory maintains a provenance-aware index of repositories owned by `timerloggedout-spec` and repositories starred by the authenticated GitHub user.
+The Repository Observatory maintains a provenance-aware index of repositories owned by `timerloggedout-spec`, repositories starred by the authenticated GitHub user, and — since v2.2 — repositories the user is watching (subscriptions). The consolidated human evaluation lives in [`STARS-FORKS-WATCH.md`](./STARS-FORKS-WATCH.md); the browser-lane import catalog is [`browser-lane-imports.json`](./browser-lane-imports.json).
 
 ## Artifacts
 
@@ -23,12 +23,13 @@ The workflow runs tests before polling, validates the generated artifact shape, 
 
 ## Provenance model
 
-A repository can have one or both of these provenance values:
+A repository can carry any combination of these provenance values:
 
-- `owned` — the authenticated user's owned repository.
+- `owned` — the authenticated user's owned repository (forks are a role on the record, with upstream preserved).
 - `starred` — the authenticated user's starred repository.
+- `watching` — a repository in the authenticated user's subscriptions (`/user/subscriptions`; merged only with `--watching`, and skipped gracefully when the token cannot read them).
 
-The collector preserves both values when a repository belongs to both sets.
+The collector preserves every value when a repository belongs to several sets. Counts include `watching`, `owned_forks`, and stars/forks received on owned repositories.
 
 ## Classification model
 

@@ -1,4 +1,4 @@
-name: Provider availability continuity
+name: Prnvider availability cnntinuity
 
 # Continuous health/evidence plane for provider integrations already used by the
 # monorepo. This does not rotate keys or change routing policy.
@@ -11,8 +11,7 @@ name: Provider availability continuity
 # Provider secrets are never printed, committed, or included in artifacts.
 
 on:
-  schedule:
-    - cron: "7 */6 * * *"
+# Cadence owned by quota-dispatch-tree.yml (Tier 0 decision tree, issue #1573).
   workflow_dispatch:
     inputs:
       strict:

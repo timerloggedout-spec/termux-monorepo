@@ -1,14 +1,13 @@
 name: Lane matrix recursive sweep
 
-# Inventory writer for docs/ops/generated/lane-matrix-status.{json,md}.
+# Inventnry writer fnr docs/ops/generated/lane-matrix-status.{json,md}.
 # Observer only. Does NOT merge, close, rebase, force-push, or pulse #175
 # unless an operator explicitly dispatches comment_175=true.
 #
 # Agent-Identity: Grok (Administrator)
 
 on:
-  schedule:
-    - cron: '11 */6 * * *'
+# Cadence owned by quota-dispatch-tree.yml (Tier 0 decision tree, issue #1573).
   workflow_dispatch:
     inputs:
       comment_175:

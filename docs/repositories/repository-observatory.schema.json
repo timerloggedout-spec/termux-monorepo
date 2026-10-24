@@ -26,7 +26,7 @@
           "full_name": {"type": "string"},
           "name": {"type": "string"},
           "html_url": {"type": "string", "format": "uri"},
-          "provenance": {"type": "array", "items": {"enum": ["owned", "starred"]}, "uniqueItems": true, "minItems": 1},
+          "provenance": {"type": "array", "items": {"enum": ["owned", "starred", "watching"]}, "uniqueItems": true, "minItems": 1},
           "classification": {
             "type": "object",
             "required": ["domains", "role", "integration", "research_value", "submodule_candidate"],

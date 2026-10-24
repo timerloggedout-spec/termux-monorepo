@@ -36,8 +36,7 @@ on:
       - "scripts/ci/help_wanted_contribute.py"
       - ".github/workflows/help-wanted-llm-assist.yml"
       - "tests/fixtures/tribute_system1/**"
-  schedule:
-    - cron: "17 */3 * * *"
+# Cadence owned by quota-dispatch-tree.yml (Tier 0 decision tree, issue #1573).
   workflow_dispatch:
     inputs:
       since:    { description: "Scan threads updated on/after (YYYY-MM-DD). Old date = backfill.", required: false, default: "", type: string }

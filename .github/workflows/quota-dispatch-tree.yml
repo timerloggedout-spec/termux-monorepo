@@ -1,0 +1,368 @@
+name: Quota Dispatch Tree
+
+# Tier 0 dispatcher (issue #1573): single scheduled entry point for the fast lane.
+# Cheap read-only probes form a decision tree; lanes are woken via workflow_dispatch
+# only when their condition node fires. Replaces 12 independent crons
+# (~610 scheduled runs/day) with 1 decision run per 10 min + conditional fan-out.
+# Lanes keep their own authorities, guards, and concurrency groups.
+# material_change_rules: this file owns cadence for the migrated lanes.
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+    inputs:
+      force_lane:
+        description: 'Set to "all" to wake every lane regardless of decision-tree verdicts (emergency)'
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency:
+  group: quota-dispatch-tree
+  cancel-in-progress: false
+
+jobs:
+  decide:
+    runs-on: ubuntu-latest
+    outputs:
+      dispatch_stall_watch: ${{ steps.tree.outputs.dispatch_stall_watch }}
+      dispatch_bridge: ${{ steps.tree.outputs.dispatch_bridge }}
+      dispatch_probe: ${{ steps.tree.outputs.dispatch_probe }}
+      dispatch_eval: ${{ steps.tree.outputs.dispatch_eval }}
+      dispatch_recon: ${{ steps.tree.outputs.dispatch_recon }}
+      dispatch_hw_refresh: ${{ steps.tree.outputs.dispatch_hw_refresh }}
+      dispatch_hw_pair: ${{ steps.tree.outputs.dispatch_hw_pair }}
+      dispatch_hw_execute: ${{ steps.tree.outputs.dispatch_hw_execute }}
+      dispatch_hw_assist: ${{ steps.tree.outputs.dispatch_hw_assist }}
+      dispatch_hourly: ${{ steps.tree.outputs.dispatch_hourly }}
+      dispatch_repochange: ${{ steps.tree.outputs.dispatch_repochange }}
+      dispatch_q3: ${{ steps.tree.outputs.dispatch_q3 }}
+      dispatch_q4: ${{ steps.tree.outputs.dispatch_q4 }}
+      dispatch_q6: ${{ steps.tree.outputs.dispatch_q6 }}
+      dispatch_vantage: ${{ steps.tree.outputs.dispatch_vantage }}
+    steps:
+      - name: Decision tree — one cheap call per concern
+        id: tree
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b
+        with:
+          script: |
+            const force = (context.payload.inputs && context.payload.inputs.force_lane) === 'all';
+            // Node A: queued / in-progress runs? (2 existence calls, per_page 1)
+            const queued = await github.rest.actions.listWorkflowRunsForRepo({
+              owner: context.repo.owner, repo: context.repo.repo,
+              status: 'queued', per_page: 1
+            });
+            const inProgress = await github.rest.actions.listWorkflowRunsForRepo({
+              owner: context.repo.owner, repo: context.repo.repo,
+              status: 'in_progress', per_page: 1
+            });
+            const busy = queued.data.total_count + inProgress.data.total_count;
+            // Global admission guard: when too many lane runs are already live,
+            // suppress non-critical dispatches this cycle (per review finding:
+            // matrix max-parallel limits dispatch steps, not downstream runs).
+            const paused = busy >= 6 && !force;
+            // Node B: bridge manifest freshness? (1 call)
+            let bridgeStaleMin = 1e9;
+            try {
+              const bridge = await github.rest.repos.getContent({
+                owner: context.repo.owner, repo: context.repo.repo,
+                path: 'ops/termux-bridge/current.json'
+              });
+              const parsed = JSON.parse(Buffer.from(bridge.data.content, 'base64').toString());
+              const stamp = parsed.observed_at || parsed.published_at || parsed.updated_at || parsed.ts;
+              if (stamp) bridgeStaleMin = (Date.now() - new Date(stamp).getTime()) / 60000;
+            } catch (_) { /* missing manifest = stale */ }
+            // Node C: Tailscale probe has its own manifest; run the probe when
+            // tailscale.json (not current.json) is stale, so probe cadence is
+            // independent of bridge freshness. (1 call)
+            let probeStaleMin = 1e9;
+            try {
+              const probe = await github.rest.repos.getContent({
+                owner: context.repo.owner, repo: context.repo.repo,
+                path: 'ops/termux-bridge/tailscale.json'
+              });
+              const parsed = JSON.parse(Buffer.from(probe.data.content, 'base64').toString());
+              const stamp = parsed.observed_at || parsed.generated_at || parsed.updated_at || parsed.ts;
+              if (stamp) probeStaleMin = (Date.now() - new Date(stamp).getTime()) / 60000;
+            } catch (_) { /* missing manifest = stale */ }
+            // Node D: cycle phase throttles sub-15-min lanes to 30 min (no API call)
+            const slow = (new Date().getUTCMinutes() % 30) < 10;
+            // Node E: repo activity since the persisted evaluation watermark, so
+            // each change wakes continuous-evaluation / team-mvt exactly once.
+            // (1 variable read + 1 commit list call)
+            let watermark = new Date(Date.now() - 3 * 3600 * 1000).toISOString();
+            try {
+              const v = await github.rest.actions.getRepoVariable({
+                owner: context.repo.owner, repo: context.repo.repo,
+                name: 'QUOTA_EVAL_WATERMARK'
+              });
+              if (v.data.value) watermark = v.data.value;
+            } catch (_) { /* variable missing: fall back to 3h window */ }
+            let repoChanged = false;
+            try {
+              const pushes = await github.rest.repos.listCommits({
+                owner: context.repo.owner, repo: context.repo.repo,
+                per_page: 1, since: watermark
+              });
+              repoChanged = pushes.data.length > 0;
+            } catch (_) {}
+            // Node F: help-wanted lane cadences (no extra calls)
+            const hour = new Date().getUTCHours();
+            const firstCycle = new Date().getUTCMinutes() < 10;
+            core.setOutput('dispatch_stall_watch', (busy > 0 || force) ? 'true' : 'false');
+            core.setOutput('dispatch_bridge', ((bridgeStaleMin > 30 && !paused) || force) ? 'true' : 'false');
+            core.setOutput('dispatch_probe', (((probeStaleMin > 45 || bridgeStaleMin > 45) && slow && !paused) || force) ? 'true' : 'false');
+            core.setOutput('dispatch_eval', ((repoChanged && slow && !paused) || force) ? 'true' : 'false');
+            core.setOutput('dispatch_recon', ((slow && !paused) || force) ? 'true' : 'false');
+            core.setOutput('dispatch_hw_refresh', (firstCycle || force) ? 'true' : 'false');
+            core.setOutput('dispatch_hw_pair', (((firstCycle && hour % 2 === 1) && !paused) || force) ? 'true' : 'false');
+            core.setOutput('dispatch_hw_execute', (((firstCycle && hour % 4 === 3) && !paused) || force) ? 'true' : 'false');
+            core.setOutput('dispatch_hw_assist', (((firstCycle && hour % 6 === 5) && !paused) || force) ? 'true' : 'false');
+            // Node G: Tier 3 tranche (issue #1573). Hourly lanes reuse Node F's
+            // firstCycle arithmetic; repo-state lanes reuse Node E's watermark
+            // check. Zero additional API calls.
+            core.setOutput('dispatch_hourly', ((firstCycle && !paused) || force) ? 'true' : 'false');
+            core.setOutput('dispatch_repochange', ((repoChanged && slow && !paused) || force) ? 'true' : 'false');
+            // Tranche 2 (Tier 3, issue #1573): hour-mod cadences at firstCycle.
+            // Same firstCycle arithmetic as Node F, different modulus offsets.
+            core.setOutput('dispatch_q3', (((firstCycle && hour % 3 === 1) && !paused) || force) ? 'true' : 'false');
+            core.setOutput('dispatch_q4', (((firstCycle && hour % 4 === 1) && !paused) || force) ? 'true' : 'false');
+            core.setOutput('dispatch_q6', (((firstCycle && hour % 6 === 1) && !paused) || force) ? 'true' : 'false');
+            // Node H: Vantage cost telemetry (ledger #184; RFP #1576 telemetry plane).
+            // Slow lane: twice daily at the firstCycle of hour % 12 == 1.
+            core.setOutput('dispatch_vantage', (((firstCycle && hour % 12 === 1) && !paused) || force) ? 'true' : 'false');
+            core.summary
+              .addHeading('Decision tree verdicts')
+              .addTable([
+                ['Node', 'Condition', 'Fired'],
+                ['A stall-watch', 'queued + in-progress runs > 0', String(busy > 0)],
+                ['— admission', 'live runs < 6', String(!paused)],
+                ['B bridge', `manifest stale ${Math.round(bridgeStaleMin)}m`, String(bridgeStaleMin > 30)],
+                ['C probe', `probe manifest stale ${Math.round(probeStaleMin)}m && slow-cycle`, String(probeStaleMin > 45 && slow)],
+                ['E eval', 'commits since watermark && slow-cycle', String(repoChanged && slow)],
+                ['E watermark', watermark, repoChanged ? 'advance' : 'hold'],
+                ['E recon', 'slow-cycle', String(slow)],
+                ['F hw-refresh', 'hourly cycle', String(firstCycle)],
+                ['F hw-pair', 'odd hours', String(firstCycle && hour % 2 === 1)],
+                ['F hw-execute', 'hour % 4 == 3', String(firstCycle && hour % 4 === 3)],
+                ['F hw-assist', 'hour % 6 == 5', String(firstCycle && hour % 6 === 5)],
+                ['G tier3-hourly', 'hourly cycle && admission open', String(firstCycle && !paused)],
+                ['G tier3-repochange', 'commits since watermark && slow-cycle', String(repoChanged && slow && !paused)],
+                ['G q3', 'firstCycle && hour % 3 == 1', String(firstCycle && hour % 3 === 1 && !paused)],
+                ['G q4', 'firstCycle && hour % 4 == 1', String(firstCycle && hour % 4 === 1 && !paused)],
+                ['G q6', 'firstCycle && hour % 6 == 1', String(firstCycle && hour % 6 === 1 && !paused)],
+                ['H vantage', 'firstCycle && hour % 12 == 1', String(firstCycle && hour % 12 === 1 && !paused)]
+              ])
+              .write();
+
+      - name: Persist verdicts to Supabase lane-state (optional)
+        # Fires only when SUPABASE_URL (repo variable) and
+        # SUPABASE_SERVICE_ROLE_KEY (secret) exist; otherwise skipped.
+        # Project: termux-monorepo-lane-state, table dispatch_verdicts.
+        if: env.SUPABASE_URL != '' && env.SUPABASE_SERVICE_ROLE_KEY != ''
+        env:
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          V_STALL: ${{ steps.tree.outputs.dispatch_stall_watch }}
+          V_BRIDGE: ${{ steps.tree.outputs.dispatch_bridge }}
+          V_PROBE: ${{ steps.tree.outputs.dispatch_probe }}
+          V_EVAL: ${{ steps.tree.outputs.dispatch_eval }}
+          V_RECON: ${{ steps.tree.outputs.dispatch_recon }}
+          V_HOURLY: ${{ steps.tree.outputs.dispatch_hourly }}
+          V_REPOCHANGE: ${{ steps.tree.outputs.dispatch_repochange }}
+          V_VANTAGE: ${{ steps.tree.outputs.dispatch_vantage }}
+        run: |
+          set -euo pipefail
+          rows='[]'
+          add() {
+            rows=$(printf '%s' "$rows" | jq --arg lane "$1" --arg node "$2" --arg fired "$3" \
+              '. += [{lane:$lane,node:$node,fired:($fired=="true")}]')
+          }
+          add agent-runtime-stall-watch A "$V_STALL"
+          add bridge-lanes B "$V_BRIDGE"
+          add tailscale-bridge-probe C "$V_PROBE"
+          add eval-lanes E "$V_EVAL"
+          add recon-intel-discovery E "$V_RECON"
+          add tier3-hourly G "$V_HOURLY"
+          add tier3-repochange G "$V_REPOCHANGE"
+          add vantage-cost-report H "$V_VANTAGE"
+          curl -fsS -X POST "$SUPABASE_URL/rest/v1/dispatch_verdicts" \
+            -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" \
+            -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" \
+            -H "Content-Type: application/json" \
+            -H "Prefer: return=minimal" \
+            -d "$(jq -n --argjson rows "$rows" '$rows')"
+
+  dispatch:
+    needs: decide
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        include:
+          - lane: agent-runtime-stall-watch
+            run: ${{ needs.decide.outputs.dispatch_stall_watch }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: tunnel-canary
+            run: ${{ needs.decide.outputs.dispatch_bridge }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: deepcli-agent-bridge
+            run: ${{ needs.decide.outputs.dispatch_bridge }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: tailscale-bridge-probe
+            run: ${{ needs.decide.outputs.dispatch_probe }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: continuous-evaluation
+            run: ${{ needs.decide.outputs.dispatch_eval }}
+            sweep: 'false'
+            advance_watermark: 'true'
+          - lane: team-mvt
+            run: ${{ needs.decide.outputs.dispatch_eval }}
+            sweep: 'false'
+            advance_watermark: 'true'
+          - lane: recon-intel-discovery
+            run: ${{ needs.decide.outputs.dispatch_recon }}
+            inputs_json: '{"sweep":true}'
+            advance_watermark: 'false'
+          - lane: help-wanted-status-refresh
+            run: ${{ needs.decide.outputs.dispatch_hw_refresh }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: help-wanted-followup
+            run: ${{ needs.decide.outputs.dispatch_hw_pair }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: help-wanted-scout
+            run: ${{ needs.decide.outputs.dispatch_hw_pair }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: help-wanted-execute
+            run: ${{ needs.decide.outputs.dispatch_hw_execute }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: help-wanted-llm-assist
+            run: ${{ needs.decide.outputs.dispatch_hw_assist }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: merge-promotion-queue-v3
+            run: ${{ needs.decide.outputs.dispatch_hourly }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: agent-continuous-ops
+            run: ${{ needs.decide.outputs.dispatch_hourly }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: cellcog-engineering-health
+            run: ${{ needs.decide.outputs.dispatch_hourly }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: issue-observatory
+            run: ${{ needs.decide.outputs.dispatch_hourly }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: reconciliation-engine
+            run: ${{ needs.decide.outputs.dispatch_hourly }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: historical-evaluation-correlation
+            run: ${{ needs.decide.outputs.dispatch_hourly }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: vercel-batch-deploy
+            run: ${{ needs.decide.outputs.dispatch_hourly }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: automation-docs-continuous-refresh
+            run: ${{ needs.decide.outputs.dispatch_repochange }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: context-relationship-audit
+            run: ${{ needs.decide.outputs.dispatch_repochange }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: context-relationship-backfill
+            run: ${{ needs.decide.outputs.dispatch_hourly }}
+            inputs_json: ''
+            advance_watermark: 'false'
+          - lane: tribute-system1
+            run: ${{ needs.decide.outputs.dispatch_q3 }}
+            inputs_json: ''
+            advance_watermark: 'false'
+          - lane: cadence-lead-lag
+            run: ${{ needs.decide.outputs.dispatch_q4 }}
+            inputs_json: '{"per_page":50}'
+            advance_watermark: 'false'
+          - lane: self-integrate
+            run: ${{ needs.decide.outputs.dispatch_q4 }}
+            inputs_json: ''
+            advance_watermark: 'false'
+          - lane: ci-sweep
+            run: ${{ needs.decide.outputs.dispatch_q6 }}
+            inputs_json: ''
+            advance_watermark: 'false'
+          - lane: hygiene-sweep
+            run: ${{ needs.decide.outputs.dispatch_q6 }}
+            inputs_json: ''
+            advance_watermark: 'false'
+          - lane: ops-lane-matrix-sweep
+            run: ${{ needs.decide.outputs.dispatch_q6 }}
+            inputs_json: '{"commit_artifacts":true}'
+            advance_watermark: 'false'
+          - lane: provider-availability
+            run: ${{ needs.decide.outputs.dispatch_q6 }}
+            inputs_json: ''
+            advance_watermark: 'false'
+          - lane: actions-queue-reaper
+            run: ${{ needs.decide.outputs.dispatch_q6 }}
+            inputs_json: ''
+            advance_watermark: 'false'
+          - lane: gitlab-governed-reconciliation
+            run: ${{ needs.decide.outputs.dispatch_q6 }}
+            inputs_json: '{"gitlab_ref":"master"}'
+            advance_watermark: 'false'
+          - lane: vantage-cost-report
+            run: ${{ needs.decide.outputs.dispatch_vantage }}
+            inputs_json: ''
+            advance_watermark: 'false'
+    steps:
+      - name: Wake lane
+        # Gated at step level (not job level) so the matrix context is available.
+        if: matrix.run == 'true'
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b
+        env:
+          LANE_INPUTS: ${{ matrix.inputs_json }}
+          ADVANCE_WATERMARK: ${{ matrix.advance_watermark }}
+        with:
+          script: |
+            let inputs = {};
+            try { inputs = JSON.parse(process.env.LANE_INPUTS || '{}'); } catch (_) { inputs = {}; }
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner, repo: context.repo.repo,
+              workflow_id: '${{ matrix.lane }}.yml', ref: 'master', inputs
+            });
+            // Advance the evaluation watermark only after an evaluation lane was
+            // actually woken, so each repo change wakes the lanes exactly once.
+            if (process.env.ADVANCE_WATERMARK === 'true') {
+              const now = new Date().toISOString();
+              try {
+                await github.rest.actions.updateRepoVariable({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  name: 'QUOTA_EVAL_WATERMARK', value: now
+                });
+              } catch (_) {
+                await github.rest.actions.createRepoVariable({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  name: 'QUOTA_EVAL_WATERMARK', value: now
+                });
+              }
+            }

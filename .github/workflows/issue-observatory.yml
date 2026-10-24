@@ -1,8 +1,7 @@
 name: Issue Observatory — similarity, refinement, lifecycle evidence
 
 on:
-  schedule:
-    - cron: '37 * * * *'
+  # Cadence owned by quota-dispatch-tree.yml (Tier 3 tranche, issue #1573).
   workflow_dispatch:
   issues:
     types: [opened, edited, labeled, unlabeled, closed, reopened]

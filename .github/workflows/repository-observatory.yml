@@ -34,11 +34,12 @@ jobs:
 
       - name: Build repository index
         env:
-          REPOSITORY_OBSERVATORY_TOKEN: ${{ secrets.REPOSITORY_OBSERVATORY_TOKEN || github.token }}
+          REPOSITORY_OBSERVATORY_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || github.token }}
         run: |
           set -euo pipefail
           python scripts/github/repository_observatory.py \
             --owner "$GITHUB_REPOSITORY_OWNER" \
+            --watching \
             --output workspace/llm_map/repositories/repository-index.json \
             --markdown docs/repositories/matrix.md
 

@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: Start codespace
         env:
-          GH_TOKEN: ${{ secrets.CODESPACE_CREATE_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
+          GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
           CS_NAME: ${{ inputs.name }}
         run: |
           set -euo pipefail
@@ -44,7 +44,7 @@ jobs:
 
       - name: List codespaces
         env:
-          GH_TOKEN: ${{ secrets.CODESPACE_CREATE_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
+          GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
         run: |
           curl -sS \
             -H "Accept: application/vnd.github+json" \

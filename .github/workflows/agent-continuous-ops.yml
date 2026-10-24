@@ -11,8 +11,7 @@ name: Continuous agent ops
 # Requires: Jules GitHub App. Optional: OPERATOR_GITHUB_TOKEN for privileged comments.
 
 on:
-  schedule:
-    - cron: '17 * * * *'
+  # Cadence owned by quota-dispatch-tree.yml (Tier 3 tranche, issue #1573).
   workflow_dispatch:
     inputs:
       force_all:

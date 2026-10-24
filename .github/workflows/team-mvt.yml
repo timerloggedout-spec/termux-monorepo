@@ -1,6 +1,7 @@
 name: Team MVT — simultaneous provider lanes
 
 on:
+# Cadence owned by quota-dispatch-tree.yml (Tier 0 decision tree, issue #1573).
   workflow_dispatch:
     inputs:
       target_number:
@@ -18,8 +19,6 @@ on:
         required: false
         default: 'ox-alpha'
         type: string
-  schedule:
-    - cron: '*/15 * * * *'
   issues:
     types: [edited]
   push:
@@ -289,3 +288,4 @@ jobs:
         with:
           name: team-mvt-${{ github.run_id }}-evaluation
           path: /tmp/evaluation/summary.json
+

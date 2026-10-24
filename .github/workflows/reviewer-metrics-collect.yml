@@ -1,0 +1,96 @@
+name: Reviewer metrics collect
+
+# Aggregates the peer-review orchestrator's SHA-bound state comments plus
+# the reviews/comments APIs into docs/ops/generated/reviewer-metrics.json
+# (schema reviewer-metrics/v1) — the measurement layer of the reviewer JIT
+# system (docs/ops/REVIEWER-JIT-DESIGN.md). The regenerated map is proposed
+# as a refresh PR, never committed directly: the orchestrator consumes the
+# map from master and fails open when it is missing or stale (>14 days),
+# so a lagging refresh degrades to structural rules only.
+#
+# Trigger accounting: one weekly scheduled run plus manual dispatch. The
+# collector is read-only against the API until the refresh-PR step.
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'Most-recently-updated PRs to examine'
+        required: false
+        default: '60'
+  schedule:
+    - cron: '17 5 * * 1'
+
+concurrency:
+  group: reviewer-metrics-collect
+  cancel-in-progress: false
+
+# The refresh-PR step pushes a branch and opens a PR, so this job needs
+# write on contents + pull-requests (the first dispatched run failed at
+# that step on read-only permissions; collection itself is read-only).
+permissions:
+  contents: write
+  pull-requests: write
+  issues: read
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out master
+        uses: actions/checkout@v4
+        with:
+          ref: master
+
+      - name: Collect reviewer metrics
+        env:
+          GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+          LIMIT: ${{ inputs.limit || '60' }}
+        run: |
+          python3 scripts/reviewer_metrics/collect.py \
+            --repo "${{ github.repository }}" \
+            --limit "$LIMIT" \
+            --out reviewer-metrics.json
+          python3 - <<'PY'
+          import json
+          d = json.load(open('reviewer-metrics.json'))
+          print('window:', d['window'])
+          for name, e in sorted(d['providers'].items()):
+              t = e['totals']
+              print(f"{name}: cycles={t['cycles']} required={t['required_cycles']} "
+                    f"delivered={t['delivered']} rate={t['delivery_rate']} "
+                    f"cooldown={t['cooldown_cycles']} median_latency={t['median_latency_sec']}")
+          PY
+
+      - name: Upload metrics artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: reviewer-metrics
+          path: reviewer-metrics.json
+          retention-days: 30
+
+      - name: Open or update the metrics refresh PR
+        env:
+          GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if cmp -s reviewer-metrics.json docs/ops/generated/reviewer-metrics.json; then
+            echo "Metrics map unchanged; no refresh PR needed."
+            exit 0
+          fi
+          branch="reviewer-metrics/refresh"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$branch"
+          cp reviewer-metrics.json docs/ops/generated/reviewer-metrics.json
+          git add docs/ops/generated/reviewer-metrics.json
+          git commit -m "chore(reviewer-metrics): regenerate provider x context map"
+          git push --force-with-lease origin "$branch"
+          if gh pr list --head "$branch" --state open --json number --jq '.[0].number' | grep -q .; then
+            echo "Refresh PR already open for $branch; branch updated in place."
+          else
+            gh pr create --base master --head "$branch" \
+              --title "chore(reviewer-metrics): regenerate provider x context map" \
+              --body "Automated regeneration of \`docs/ops/generated/reviewer-metrics.json\` by the reviewer-metrics-collect workflow (schema reviewer-metrics/v1). Figures are derived from live API data at collection time: orchestrator state comments plus the reviews/comments APIs. Merging refreshes the map the peer-review orchestrator's JIT metrics rule consumes; the rule fails open on a stale (>14d) map."
+          fi

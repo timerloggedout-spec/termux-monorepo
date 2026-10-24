@@ -179,3 +179,20 @@ The connected repository metadata reports `admin=true`, `maintain=true`, `push=t
 ### Release acceptance
 
 The candidate is **not production-validated** until the current-head required gates are green, proposal registry validation passes, the state/provenance negative tests pass, and the current dispatch graph has been reconciled. Report the exact SHA, run URLs, passed/failed/skipped/cancelled states, and remaining blockers. No live AWS/provider inference is needed to validate offline lifecycle and evidence contracts; any separately approved remote experiment must have its own cost/security approval and sanitized execution receipt.
+
+## Architecture correction: RFP is the telemetry plane
+
+The RFP is **not merely a workflow trigger, scheduler, or static proposal checklist**. Treat it as the telemetry plane that observes proposal participation and execution across the independent DelphicAnonymityMethod contributor-participation proposals.
+
+- **Control plane:** eligibility, policy, permissions, and dispatch decisions.
+- **Execution plane:** proposal-specific Actions workflows and the actual validation/experiment jobs.
+- **RFP telemetry plane:** lifecycle/event contracts, correlation across proposal → event → dispatch → run/job → result, and explicit missing/blocked/skipped/failure states.
+- **Evidence plane:** immutable or content-addressed receipts sufficient to audit claims, with sensitive payloads excluded.
+
+Each independent proposal needs a stable proposal ID and its own correlation identity. Telemetry should include originating proposal ID, event type, repository/ref/commit SHA, workflow/run/job IDs and URLs when available, timestamps, actor/contributor pseudonymous reference where appropriate, state transition, result classification, and a sanitized evidence/receipt reference. Record trigger requested, trigger accepted, run queued, started, completed, failed, skipped, cancelled, and no-run/blocked outcomes as distinct states. Idempotency/deduplication and retry lineage must prevent retries from masquerading as independent participation.
+
+The RFP must not infer contributor participation from workflow dispatch alone, anonymity from a pseudonym alone, votes/consensus from model output, or experiment success from a green CI check. Keep contributor identity/privacy policy separate from public run provenance; avoid collecting unnecessary identifying data. Preserve independent proposal boundaries and do not merge their event streams without explicit linkage.
+
+**Acceptance:** demonstrate a traceable event path for each independent DelphicAnonymityMethod contributor-participation proposal, then use merged PR #1611 as a separate regression fixture for RFP lifecycle telemetry. Assert that the telemetry can report actual runs and gaps accurately. A green workflow with no experiment receipt is “workflow passed; experiment not evidenced,” not an experimental result.
+
+This section specifies the telemetry contract and does not by itself assert that the existing workflows are already wired or that any proposal-specific run has occurred.

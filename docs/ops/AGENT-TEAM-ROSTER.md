@@ -15,7 +15,8 @@ This roster distinguishes **observed repository collaborators** from merely conf
 | Manus | replay/recon/automation specialist | #265 + `manus/*` branches | evidence/recon and specialized automation; not a generic reviewer |
 | Blocks | GitHub collaboration integration | observed `blocksorg[bot]` issue comments | treat generated onboarding/command responses as external collaboration signals, not correctness evidence |
 | Dependabot | dependency/security automation | existing issue/workflow governance in #175 | autonomous security/dependency signal; do not duplicate as a permanent model role |
-| Mintlify | documentation publication integration | docs/Mintlify branches and setup work | documentation pipeline, not an engineering correctness judge |
+| Context7 | current technical documentation retrieval | configured in `.codex/config.toml`; actual use must be observed per task | research assistant for version-aware API/framework claims; not a test runner or correctness judge |
+| Mintlify | documentation authoring/publication integration | Git-tracked docs surface plus deployment/connector capabilities where available | inspect/search/edit docs and validate navigation/preview within granted scope; not an engineering correctness judge |
 
 ## Quota / cooldown contract
 
@@ -40,3 +41,5 @@ The Lead/Lag monitor independently records whether those decisions produced obse
 ## Steering / continuation
 
 Long-running work is governed by progress, not a fixed wall-clock budget. A task can continue while producing new evidence. The monitor escalates `STALLED` / `LOOP_SUSPECTED` conditions and can request a Continue-style next attempt. Each attempt receives a new immutable event/attempt identity; successful consolidation promotes a winning trunk without rewriting prior evidence.
+
+See [Context7 + Mintlify MCP operating contract](CONTEXT7-MINTLIFY-INTEGRATION.md) for technical-doc research, operator editing, discoverability, and publication-state rules.

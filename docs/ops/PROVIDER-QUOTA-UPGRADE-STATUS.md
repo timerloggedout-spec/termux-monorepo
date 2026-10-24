@@ -1,6 +1,28 @@
 # Provider quota upgrade: shipped capability versus remaining gaps
 
-## Current batch: MSM-024 existing-response quota management
+## Current continuation: MSM-025 Gemini project evidence and shared policy cap
+
+Continue existing [PR #1441](https://github.com/timerloggedout-spec/termux-monorepo/pull/1441) after integrating merged [#1481](https://github.com/timerloggedout-spec/termux-monorepo/pull/1481). Gemini adds one passive adapter: six to seven. The combined registry/dashboard now inventories 27 families and static mappings, three actual quota-service mappings, 24 missing service mappings, two opt-in private service implementations and seven passive adapters. This is not seven validated accounts or new inference capacity. Earlier twenty-family/six-parser figures below describe historical batches only.
+
+The Gemini continuation reuses the project/model tier parser, keeps request/input-token dimensions separate, adds an explicit aggregate local operator-policy cap across model and primary/backup aliases, and strictly gates all four CLI workflows. There is no 1450 live-tier default or production-enabling flag. Runtime dispatch stays disabled pending exact credential/project binding, authenticated current quotas and entitlement, durable cross-runner accounting, refreshed formal review and all exact-head named gates. A bot comment/check is not formal approval; existing `CHANGES_REQUESTED` is not dismissed by implementation receipts. See the [Gemini contract](GEMINI-QUOTA-CONTRACT.md).
+
+## Historical PR #1441 router hardening (earlier MSM-024 working label)
+
+Continue [PR #1441](https://github.com/timerloggedout-spec/termux-monorepo/pull/1441), not a replacement PR. Inspection at head `cd95c448` found all nine inline review threads resolved but the older formal `CHANGES_REQUESTED` review still outstanding. Later `COMMENTED` reviews and bot success statuses are not approval. Reconcile the same branch with merged [#1463](https://github.com/timerloggedout-spec/termux-monorepo/pull/1463), then validate the exact new head; do not promote while that formal disposition, failing checks or policy blocks remain.
+
+The remaining hardening is a strict complete integer request triplet, official source/provider/metric/window binding, malformed-root/timestamp handling, and stale/future/cross-UTC-day rejection. Unknown request quota is never filled from monetary balance, tier, registry entitlement or a derived reset. The legacy daily window is not an observed reset timestamp. The private service observation schema is deliberately not a router snapshot and supplies no independent account identity or admission authority.
+
+The proposed action previously printed raw account counters and cached quota files. It now separates quota preflight into an ephemeral mode-0700 runner directory with mode-0600 files, suppresses reader stdout/stderr, logs status only, removes private files even on failure, and allowlists only local reservation/catalog/cooldown cache paths in a new namespace. Private observations and quota weights are not saved in shared Actions caches. This does not erase historical caches or logs, and does not claim distributed-atomic reservations: the existing conservative reservation heuristic still races across concurrent jobs and cannot guarantee zero overshoot.
+
+**Coverage delta: zero new service mappings, passive adapters or live-account validations.** Totals remain twenty family inventories/static links, three actual mapped families, seventeen mapping gaps, two opt-in private service implementations, six passive parsers, eleven documentation-only and three unsupported contracts. Dashboard/registry artifacts and the separate default-off private services remain unchanged. No account request or inference is made during this continuation; no production merge, paid fallback, router-weight activation, admission deployment or schedule change is authorized by these tests.
+
+Existing [issues #86](https://github.com/timerloggedout-spec/termux-monorepo/issues/86) and [#272](https://github.com/timerloggedout-spec/termux-monorepo/issues/272) retain the remaining mappings, authenticated account-scope/reservation and contributor-evidence gaps. Roles, monikers, context delivery and connector/MCP claims remain curated in the [capability map](PROVIDER-COLLABORATOR-CAPABILITY-MAP.md); app comments are not provider identity, and no independent Delphi ballots were established by this hardening. Exact-head validation and review-disposition receipts belong to #1441.
+
+Local validation: 236 focused offline quota/router/action/service/dashboard tests, nine market unit tests, both repository gates, the unchanged quota projection and the 39-proposal registry passed. Independent diff review found no blocking findings; its additional failure-cleanup suggestion was implemented and tested. These local results are not a formal GitHub approval or current-head CI/promotion evidence.
+
+First remote validation at `c5841b57` passed both gates, provider contracts and action lint, but [offline regression run 39600431034](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39600431034) failed collection because the expanded workflow-contract tests import `yaml` and the lane installed only pytest. The fix pins the same `PyYAML==6.0.3` used by the provider contract lane, alongside `pytest==8.4.2`. All 236 tests pass in a newly created clean virtual environment with only those declared dependencies. A new exact-head CI result is still required; the failed run is not erased or represented as success.
+
+## Integrated batch: MSM-024 existing-response quota management (#1481)
 
 The baseline master `77e1dd8d` already contains the seven-provider inference batch from [#1471](https://github.com/timerloggedout-spec/termux-monorepo/pull/1471), 27 canonical quota manager records, six passive parsers, and two opt-in private service managers. Only three families have actual quota-service mappings; 24 do not. This batch reuses existing catalog responses to execute endpoint-appropriate passive normalization and expose sanitized quota status, including explicit unknowns. It adds no poller, account request, inference, retry, schedule, routing or admission change. Implementation is not live account validation.
 
@@ -24,7 +46,7 @@ The task environment does not contain `FELO_AI_API`; the enabled GitHub connecto
 
 Existing owning issues #86 and #272, router PR #1441, consolidation PR #1278 and OX Alpha canary PR #386 remain separate; no duplicate proposal or issue is created. Exact-head tests, CI, review and merge receipts belong to this batch's PR; historical receipts below do not certify it.
 
-## Current continuation: MSM-023 private OpenRouter current-key service
+## Historical continuation: MSM-023 private OpenRouter current-key service
 
 Baseline `5d54d22f` includes merged Ollama [PR #1462](https://github.com/timerloggedout-spec/termux-monorepo/pull/1462), merge `b92c0c5d`. Current-source inspection found the OpenRouter passive parser, legacy daily-counter reader and boolean-only diagnostic, but no equivalent complete private current-key service wrapper. MSM-023 adds only that missing opt-in observation, using the [official GET /api/v1/key contract](https://openrouter.ai/docs/api/api-reference/api-keys/get-current-api-key) and [limits semantics](https://openrouter.ai/docs/api_reference/limits). See the [service operating contract](PROVIDER-QUOTA-MANAGERS.md#msm-023-private-openrouter-current-key-observation).
 

@@ -11,7 +11,7 @@ from collections import defaultdict
 
 VALID_STATUS = {"attempted", "failed", "succeeded", "skipped"}
 VALID_EVALUATED_STATUSES = {"attempted", "failed", "succeeded"}
-PROVIDER_ERROR_CLASSES = {"auth", "rate_limit", "provider", "transport"}
+PROVIDER_ERROR_CLASSES = {"auth", "rate_limit", "quota", "provider", "transport", "timeout_partial"}
 VALID_OUTCOME = {"PASS", "FAIL", "UNKNOWN", None}
 
 

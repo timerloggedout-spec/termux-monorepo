@@ -181,6 +181,16 @@ def observe_service(service_id: str, api_key: str, *, scope: str,
 def public_status(observation: dict[str, Any]) -> dict[str, Any]:
     """Status-only allowlist. Never publish scopes, values, resets or private hashes."""
     sid = observation.get("service_id")
+    if sid == "gemini.project_model":
+        # No trusted live Gemini collector exists; never publish caller claims
+        # as verified project/account quota, tier, entitlement or billing state.
+        public = {"service_id": sid, "provider_family": "gemini",
+                  "status": "unknown", "request_quota": "unknown"}
+        try:
+            public["observed_at"] = _iso(_time(observation.get("observed_at")))
+        except (TypeError, ValueError, AttributeError, OverflowError):
+            public["observed_at"] = None
+        return public
     if not isinstance(sid, str) or sid not in SERVICES:
         raise ValueError("unsupported quota service")
     public = {"service_id": sid, "provider_family": SERVICES[sid]["provider_family"],
@@ -191,6 +201,40 @@ def public_status(observation: dict[str, Any]) -> dict[str, Any]:
                                    if observation.get("request_quota") in ("observed", "unknown")
                                    else "unknown")
     return public
+
+
+def observe_gemini_quota(metadata=None, *, scope: str,
+                         now: dt.datetime | None = None) -> dict[str, Any]:
+    """Normalize PRIVATE caller-supplied Gemini evidence, without any API call.
+
+    This is not a Google response schema or authenticated collector. No endpoint
+    exposing actual project/model quotas is implemented, so supplied evidence
+    cannot verify the active credential's project or grant runtime admission.
+    No credentials, billing state, account observations or counts are logged.
+    """
+    from scripts.provider_quota_gemini import normalize_gemini_evidence
+
+    unknown = {
+        "schema": "provider-quota-service-observation/v1",
+        "service_id": "gemini.project_model", "provider_family": "gemini",
+        "source": "https://ai.google.dev/gemini-api/docs/rate-limits",
+        "observed_at": None, "status": "unknown",
+        "reason": "project_binding_and_current_quota_unverified",
+        "request_quota": "unknown", "entitlement": "unknown",
+        "tier": "unknown", "signals": {}, "valid_until": None,
+        "runtime_admission": "unchanged",
+    }
+    try:
+        now = _utc(dt.datetime.now(dt.timezone.utc) if now is None else now)
+        unknown["observed_at"] = _iso(now)
+        observation = normalize_gemini_evidence(
+            {} if metadata is None else metadata, observed_at=_iso(now), scope=scope)
+    except (ValueError, TypeError, KeyError, OverflowError, RecursionError):
+        return unknown
+    return {**observation, "service_id": "gemini.project_model",
+            "reason": "project_binding_and_current_quota_unverified",
+            "request_quota": "unknown", "valid_until": None,
+            "runtime_admission": "unchanged"}
 
 
 def _open_private(path):

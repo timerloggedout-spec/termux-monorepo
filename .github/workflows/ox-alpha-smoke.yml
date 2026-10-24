@@ -119,6 +119,7 @@ jobs:
           target_number: ${{ steps.selection.outputs.target }}
           api_key: ${{ steps.selection.outputs.provider == 'felo' && secrets.FELO_AI_API || secrets.OPENROUTER_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          posting_login: ${{ github.server_url == 'https://github.com' && 'github-actions[bot]' || '' }}
           repository: ${{ github.repository }}
           prompt: ${{ steps.prompt.outputs.prompt }}
 

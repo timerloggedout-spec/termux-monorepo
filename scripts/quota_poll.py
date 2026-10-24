@@ -8,7 +8,7 @@ routing-weights.json, and one QUOTA line per live reading on stdout.
 """
 from __future__ import annotations
 
-import argparse, contextlib, hashlib, json, os, sys, time, urllib.request, urllib.parse
+import argparse, contextlib, hashlib, json, math, os, sys, time, urllib.request, urllib.parse
 from datetime import datetime, timezone
 
 UA = {"User-Agent": "termux-monorepo-quota-poll"}
@@ -105,6 +105,27 @@ def neon_reader(now):
             "neon.storage": {"used": round(st, 3), "elapsed": None}}
 
 
+def _valid_counters(used, limit):
+    if (isinstance(used, bool) or isinstance(limit, bool)
+            or not isinstance(used, (int, float)) or not isinstance(limit, (int, float))):
+        return False
+    try:
+        return math.isfinite(used) and math.isfinite(limit) and used >= 0 and limit > 0
+    except OverflowError:
+        return False
+
+
+def _valid_openrouter_reading(reading):
+    """Only a complete official integer request triplet is admission evidence."""
+    if not isinstance(reading, dict):
+        return False
+    values = [reading.get(key) for key in ("used", "limit", "remaining")]
+    return (all(type(value) is int and value >= 0 for value in values)
+            and values[1] > 0 and values[0] + values[2] == values[1]
+            and isinstance(reading.get("extra"), dict)
+            and reading["extra"].get("source") == "official OpenRouter GET /api/v1/key")
+
+
 def openrouter_reader(now):
     key = os.environ.get("OPENROUTER_API_KEY")
     if not key:
@@ -122,9 +143,10 @@ def openrouter_reader(now):
     used, limit, remaining = values
     if used > limit or remaining > limit or used + remaining != limit:
         return None
-    # Docs define the daily counter as UTC-day and say it resets at UTC midnight;
-    # the endpoint does not return a per-counter reset timestamp.
-    return {"used": used, "limit": limit, "elapsed": None, "reset": "UTC midnight"}
+    # A UTC-day window does not supply an observed per-counter reset timestamp.
+    return {"used": used, "limit": limit, "remaining": remaining, "elapsed": None,
+            "reset": None,
+            "extra": {"source": "official OpenRouter GET /api/v1/key"}}
 
 
 LIVE = {"github.api.github_token": gh_rate, "github.actions.cache": gh_cache,
@@ -160,6 +182,7 @@ def record(svc, reading, now):
         "provider": svc["provider"], "metric": svc["metric"], "unit": svc["unit"],
         "limit": (reading or {}).get("limit", svc.get("limit")),
         "used": (reading or {}).get("used"),
+        "remaining": (reading or {}).get("remaining"),
         "window": svc["window"], "reset": (reading or {}).get("reset", svc["reset"]), "reset_zone": svc["zone"],
         "planned_use": svc.get("planned_use", {}),
         "extra": (reading or {}).get("extra", {}),
@@ -233,12 +256,48 @@ def main(argv=None):
                 f.write(json.dumps({"op": "retain", "bank_id": "deepagent::termux-monorepo",
                                     "content": f"{now.date()} quota {r['resource_id']}: used {r['used']} of {r['limit']} {r['unit']}; reset {r['reset']} ({r['reset_zone']}); multiplier {r['routing_multiplier']}",
                                     "evidence_hash": r["evidence_hash"]}) + "\n")
+    # Only publish a routing weight when it is backed by a live numeric usage
+    # and limit. A documented entitlement or a failed poll is not a live balance.
     prov = {}
     for r in recs:
-        if r["lane_id"] in ("quota-model", "quota-deploy", "quota-data"):
-            prov[r["provider"]] = min(prov.get(r["provider"], 2.0), r["routing_multiplier"])
-    json.dump({"schema": "3l0.quota-weights.v1", "generated_at": now.isoformat(), "multipliers": prov},
-              open(os.path.join(a.out, "routing-weights.json"), "w"), indent=2)
+        raw = readings.get("openrouter.free_models") or {}
+        if r["resource_id"] == "quota:openrouter.free_models" and not _valid_openrouter_reading(raw):
+            continue
+        if (r["lane_id"] in ("quota-model", "quota-deploy", "quota-data")
+                and r["horizon"] == "H0"
+                and _valid_counters(r.get("used"), r.get("limit"))):
+            prov[r["provider"].lower()] = min(
+                prov.get(r["provider"].lower(), 2.0), r["routing_multiplier"]
+            )
+    weights = {
+        "schema": "3l0.quota-weights.v1",
+        "generated_at": now.isoformat(),
+        "multipliers": prov,
+        "authority": "live-only; absent provider means quota unknown, not unlimited",
+    }
+    weights_path = os.path.join(a.out, "routing-weights.json")
+    with open(weights_path, "w", encoding="utf-8") as handle:
+        json.dump(weights, handle, indent=2)
+    # Keep a focused, machine-readable official OpenRouter snapshot for audit and
+    # preflight policy. Never fill in unknown fields from the registry.
+    or_rec = readings.get("openrouter.free_models")
+    if not _valid_openrouter_reading(or_rec):
+        or_rec = None
+    snapshot = {
+        "schema": "3l0.provider-quota-snapshot.v1",
+        "observed_at": now.isoformat(),
+        "provider": "openrouter",
+        "source": "https://openrouter.ai/api/v1/key",
+        "metric": "free_model_daily_requests",
+        "window": "UTC day",
+        "status": "live" if or_rec else "unknown",
+        "used": or_rec.get("used") if or_rec else None,
+        "limit": or_rec.get("limit") if or_rec else None,
+        "remaining": or_rec.get("remaining") if or_rec else None,
+        "reset": or_rec.get("reset") if or_rec else None,
+    }
+    with open(os.path.join(a.out, "provider-quota-state.json"), "w", encoding="utf-8") as handle:
+        json.dump(snapshot, handle, indent=2)
     for r in recs:
         if r["used"] is not None:
             print(f"QUOTA {r['resource_id']} used={r['used']} limit={r['limit']} mult={r['routing_multiplier']} reset={r['reset']}")

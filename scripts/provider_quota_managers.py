@@ -165,6 +165,9 @@ def normalize_observation(provider_family: str, headers: Mapping[str, Any] | Non
     metadata = metadata or {}
     if provider_family == "ollama":
         return _normalize_ollama(metadata, observed_at, scope)
+    if provider_family == "gemini":
+        from scripts.provider_quota_gemini import normalize_gemini_evidence
+        return normalize_gemini_evidence(metadata, observed_at=observed_at, scope=scope)
     normalized_headers = {str(k).lower(): v for k, v in headers.items()}
     values: dict[str, Any] = {}
     for signal in row.get("signals", []):

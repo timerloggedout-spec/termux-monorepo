@@ -102,3 +102,21 @@ def test_invalid_outcome(monkeypatch):
     with pytest.raises(SystemExit) as exc:
         model_performance_index.main()
     assert "invalid task_outcome" in str(exc.value)
+
+
+
+@pytest.mark.parametrize("error_class", ["quota", "timeout_partial"])
+def test_quota_and_partial_timeout_count_as_provider_failures(monkeypatch, capsys, error_class):
+    sample = json.dumps({
+        "experiment_id": "failure-" + error_class,
+        "route_status": "failed",
+        "task_outcome": "UNKNOWN",
+        "provider": "openrouter",
+        "requested_model": "model:free",
+        "role": "triage",
+        "error_class": error_class
+    })
+    monkeypatch.setattr("sys.stdin", io.StringIO(sample))
+    model_performance_index.main()
+    data = json.loads(capsys.readouterr().out)
+    assert data["models"][0]["provider_failures"] == 1

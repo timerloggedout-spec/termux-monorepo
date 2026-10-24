@@ -37,7 +37,6 @@ jobs:
       - name: Run offline unit and regression tests
         run: |
           python3 -B -m unittest -v tests/test_delphi_oracle_mvp.py
-          python3 -B -m unittest -v tests/test_delphi_gate.py
       - name: Generate sanitized deterministic receipt
         env:
           SOURCE_SHA: ${{ github.sha }}

@@ -33,35 +33,59 @@ terminal labels. The default admission policy accepts only `succeeded`; callers
 may explicitly allow `skipped` where their task contract permits it. An
 in-progress or other nonterminal state blocks admission. Missing/`unknown`
 states return `unknown` unless another prerequisite already proves the node
-blocked.
+blocked. The seeded state matrix tests this precedence and the opt-in skipped
+policy; this is an admission classifier, not a persisted execution state machine.
 
-Planning and execution remain separate: the caller must record actual execution
-outcomes and re-evaluate dependent nodes. This primitive does not implement
-retry policy, cancellation propagation, persistence, or incremental graph
-updates.
+## Validation
+
+`tests/test_dag_execution.py` covers deterministic examples and malformed
+inputs. `tests/test_dag_properties.py` adds seeded graph-property checks,
+input-order/hash invariance, dependency-order invariants, and a state admission
+matrix. When NetworkX is installed, the test suite additionally compares
+lexicographical Kahn order against `networkx.lexicographical_topological_sort`.
+The required test path remains standard-library-only for Termux and works
+offline; therefore the oracle test is explicitly skipped when NetworkX is not
+installed. To run the oracle lane locally, install a repository-approved
+NetworkX version in a disposable development environment and run:
+
+```sh
+python3 -m unittest discover -s tests -p 'test_dag_properties.py' -v
+```
+
+## Benchmark and database decision
+
+A reproducible Python/optional-NetworkX microbenchmark is available:
+
+```sh
+python3 scripts/benchmarks/benchmark_dag_planner.py --nodes 500 --edge-probability 0.004 --seed 1443 --repeats 5
+```
+
+The JSON receipt records the graph hash, algorithm version, graph size, seed,
+median timings, and whether the NetworkX order matched. It explicitly reports
+FalkorDB measurement as `not_run`; it does not fabricate a database result.
+Before choosing a production execution authority, run the same pinned graph
+fixtures against the repository's FalkorDB fork and record server version,
+dataset hash, mutation rate, query shape, network placement, warm/cold cache,
+p50/p95 latency, and resource use. No database connection or representative
+FalkorDB service is assumed by this offline harness, so that comparison remains
+an environment-dependent promotion gate.
 
 ## Complexity and limitations
 
 The algorithm is O(V + E) for graph traversal, with deterministic sorting and
 heap operations adding ordering overhead. This small reference is intended for
 correctness and contract tests, not a claim that Python beats database-side
-frontier queries. Benchmark realistic graph sizes and mutation rates against
-the repository's FalkorDB fork and a NetworkX oracle before selecting a
-production execution authority.
+frontier queries. NetworkX is an independent test oracle, not a production
+execution authority by default.
 
-## Probability and corpus safety
+## Probability, provenance, and corpus safety
 
 A topological order expresses prerequisite ordering only. It does not imply
 conditional independence, multiply branch probabilities, or recalculate beliefs.
 Probability propagation requires a separate model, explicit assumptions, and
 independent tests. Likewise, a corpus checkpoint must pass its own provenance
 and validation gates; successful topological sorting alone never makes data
-eligible for promotion.
-
-## Tests
-
-`tests/test_dag_execution.py` covers empty graphs, chains, fan-in/fan-out,
-disconnected components, deterministic tie-breaking, duplicate edges, unknown
-endpoints, cycles with downstream residual nodes, and prerequisite admission.
-NetworkX comparison/property tests and database benchmarks remain follow-up
-work; they are not represented as completed here.
+eligible for promotion. The plan records graph SHA-256 and algorithm version;
+source SHA, run identity, probability-model provenance, and corpus promotion
+receipts belong to the eventual execution/observability layer rather than this
+pure planner.

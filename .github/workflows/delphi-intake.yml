@@ -153,59 +153,8 @@ jobs:
           if [ -n "$ISSUE_NUMBER" ] && [ -n "$COMMENT_ID" ]; then
             existing=$(gh issue list -R "$GITHUB_REPOSITORY" --state all --label delphi:rfp --limit 1000 --json number,body --jq ".[] | select(.body | contains(\"$source_marker\")) | .number" | head -n1)
             if [ -n "$existing" ]; then
-              report="### Delphi conversational intake"            echo
-            echo '### Surface id'
-            echo "$surface"
-            echo
-            echo '### Lane'
-            echo "$lane"
-            echo
-            echo '### Filed by (collaboration lane)'
-            echo "$filed_by"
-            echo
-            echo '### Gantt plan'
-            echo 'oracle facts | T0 | T0 | -'
-            echo 'panel rounds | T0 | T0 | oracle facts'
-            echo 'shadow lane (5% traffic) | T0+1d | T0+7d | panel rounds'
-            echo 'promote or park | T0+7d | T0+7d | shadow lane'
-            echo
-            echo '### Free quota'
-            echo "$quota"
-            echo
-            echo '### Reset and zone'
-            echo "$reset"
-            echo
-            echo '### Auth from Actions'
-            echo "$auth"
-            echo
-            echo '### Lock-in'
-            echo "$lock_in"
-            echo
-            echo '### Failure modes'
-            echo "$failure_modes"
-            echo
-            echo '### Evidence links'
-            echo "$evidence"
-          } > "$body_file"
-          new_url=$(gh issue create -R "$GITHUB_REPOSITORY" --title "[delphi:rfp] ${surface}" --label "delphi:rfp" --body-file "$body_file")
-          new_number=$(printf '%s' "$new_url" | sed -n 's#.*/issues/\([0-9][0-9]*\)$#\1#p')
-          report="### Delphi conversational intake"
-          report="${report}"$'\n'"- filed #${new_number} ${new_url} (delphi:rfp; gate wakes on the label)"
-          {
-            echo "report<<REPORT_EOF"
-            printf '%s\n' "$report"
-            echo "REPORT_EOF"
-          } >> "$GITHUB_OUTPUT"
-          printf '%s\n' "$report" >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Post result back to the triggering issue
-        if: env.ISSUE_NUMBER != ''
-        env:
-          REPORT: ${{ steps.file.outputs.report }}
-        run: |
-          set -euo pipefail
-          gh issue comment "$ISSUE_NUMBER" -R "$GITHUB_REPOSITORY" --body "${REPORT}"$'\n'"<!-- meta:gha delphi-intake run=${GITHUB_RUN_ID} -->"
-\n'"- duplicate source comment already filed as #${existing}; no new RFP created"
+              report="### Delphi conversational intake"
+              report="${report}"$'\n'"- duplicate source comment already filed as #${existing}; no new RFP created"
               {
                 echo "report<<REPORT_EOF"
                 printf '%s\n' "$report"

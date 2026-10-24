@@ -1,4 +1,5 @@
 import json
+import math
 import unittest
 from pathlib import Path
 
@@ -26,12 +27,13 @@ class FreeTierValueBoardContractTests(unittest.TestCase):
             self.assertGreaterEqual(row["input_usd_per_million"], 0)
             self.assertGreaterEqual(row["output_usd_per_million"], 0)
             self.assertTrue(row["source_url"].startswith("https://"))
-            self.assertTrue(row["source_url"].startswith("https://"))
             self.assertTrue(row["price_observed_at"])
-            self.assertIsInstance(row["input_usd_per_million"], (int, float))
-            self.assertIsInstance(row["output_usd_per_million"], (int, float))
-            self.assertGreaterEqual(row["input_usd_per_million"], 0)
-            self.assertGreaterEqual(row["output_usd_per_million"], 0)
+            for field in ("input_usd_per_million", "output_usd_per_million"):
+                rate = row[field]
+                self.assertIsInstance(rate, (int, float))
+                self.assertNotIsInstance(rate, bool)
+                self.assertTrue(math.isfinite(rate))
+                self.assertGreaterEqual(rate, 0)
 
     def test_openai_price_basis_matches_standard_rates(self):
         row = next(p for p in self.data["pricing"] if p["pricing_id"] == "openai-gpt-5.3-codex-standard")

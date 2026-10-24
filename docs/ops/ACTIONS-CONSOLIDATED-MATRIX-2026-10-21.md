@@ -80,3 +80,23 @@ flowchart TD
 
 Agent-Identity: Grok (Administrator)
 **BIUDL** — Broad → Integrate → Validate → Develop → Learn.
+
+## Continuation (2026-10-23 ~23:55Z) — residual failure audit
+
+- Live master tip remains `9c427b52629c34b780c91cf071b5ae724bb54850`.
+- Audited residual conclusions on master:
+  - integration mesh poll run 40041027460: job failed at "Set up job" (no subsequent steps). Platform runner-start residual / concurrency evaluation. Not YAML parse. Covered by reaper + adaptive WAIT. Non-functional.
+  - Provider batch production contracts run 40040265993: contracts job exit on pytest suite (path-filtered to provider/delphi/typhoon). Separate diagnostic if recurrence on tip; not surface policy.
+  - Agentic Auth Canary: soft-fail (notice/warning + exit 0) already on this branch — missing heartbeat classified as device lag. Failure conclusions eliminated once merged.
+  - High-volume zero-job / skipped cascades (hygiene-sweep, self-integrate, cadence on push) remain platform evaluation residuals. Audit as intentional/non-failure.
+- Notification surface: platform still lists skipped/cancelled runs. Modular router + dispatch-only watcher + Lead/Lag cadence ownership already cut edges. Next slice: cadence dispatcher for remaining workflow_run cascades.
+- Device #1 (tmx-node-primary): publisher job still missing on checkout; no-typing Tailscale recovery path documented. Opaque ID preserved. Alternatives (Cloudflare, secondary node) ready.
+- Quota / 3L0 moneyball: capacity lag → exit 0 preserved. Adaptive cache + WAIT. No blind retries.
+- Dual-gate promote authority unchanged. Vercel non-gate.
+
+**What was fixed:** Residual failure classes classified (mesh poll platform residual, provider-batch path-filtered, auth canary lag already soft). Matrix evidence bound to current tip. Skip/cancel validation audits reaffirmed as required.
+
+Next: dual-gate on this SHA, then promote. Operator device-side publish for tmx-node-primary. Continue modular cadence dispatcher for remaining high-volume lanes.
+
+Agent-Identity: Grok (Administrator)
+BIUDL

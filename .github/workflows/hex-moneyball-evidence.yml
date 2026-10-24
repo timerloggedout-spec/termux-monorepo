@@ -14,6 +14,8 @@ on:
       - 'agent_telemetry_stream.json'
       - 'scripts/hex_moneyball_export.py'
       - 'tests/test_hex_moneyball_export.py'
+      - 'scripts/hex_moneyball_artifact_provenance.py'
+      - 'tests/test_hex_moneyball_artifact_provenance.py'
       - 'docs/ops/HEX-MONEYBALL-INTEGRATION.md'
   pull_request:
     types: [opened, synchronize, reopened]
@@ -21,6 +23,8 @@ on:
       - 'agent_telemetry_stream.json'
       - 'scripts/hex_moneyball_export.py'
       - 'tests/test_hex_moneyball_export.py'
+      - 'scripts/hex_moneyball_artifact_provenance.py'
+      - 'tests/test_hex_moneyball_artifact_provenance.py'
       - 'docs/ops/HEX-MONEYBALL-INTEGRATION.md'
 
 permissions:
@@ -132,6 +136,32 @@ jobs:
           for row in csv_rows:
               assert None not in row
               assert_safe_object(row, 'evidence.csv')
+          PY
+
+      - name: Register artifact provenance
+        env:
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          SOURCE_REF: ${{ github.head_ref || github.ref_name }}
+          SOURCE_PATH: ${{ inputs.source || 'agent_telemetry_stream.json' }}
+        run: |
+          set -euo pipefail
+          python3 -m unittest -q tests/test_hex_moneyball_artifact_provenance.py
+          python3 scripts/hex_moneyball_artifact_provenance.py /tmp/hex-moneyball \
+            --run-id "$RUN_ID" \
+            --run-attempt "$RUN_ATTEMPT" \
+            --source-sha "$SOURCE_SHA" \
+            --source-ref "$SOURCE_REF" \
+            --source-path "$SOURCE_PATH"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          inventory = json.loads(Path('/tmp/hex-moneyball/artifact-provenance.json').read_text(encoding='utf-8'))
+          assert inventory['native_hex_export'] is False
+          assert inventory['hex_import_confirmed'] is False
+          assert len(inventory['contents']) == 3
+          assert all(len(item['sha256']) == 64 for item in inventory['contents'])
           PY
 
       - name: Publish evidence artifact

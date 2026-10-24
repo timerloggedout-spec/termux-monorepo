@@ -111,6 +111,9 @@ The repository should measure the adapters against the same event schema, then r
 
 - Phase A reducer: `she/metrics/agent_throughput.py`
 - Phase A tests: `tests/test_she_agent_throughput.py`
+- Phase B receipt emitter: `scripts/ci/emit_ates_run_receipt.py`
+- Phase B runtime bridge: `scripts/ci/bridge_ates_trace_to_events.py`
+- Phase C correlation: `scripts/ci/correlate_ates_evidence.py` + `tests/test_correlate_ates_evidence.py`
 - Phase A quality gate: `.github/workflows/agent-quality-lane.yml` + `scripts/ci/verify_agent_quality.py`
 - Hex-compatible sanitizer: `scripts/hex_moneyball_export.py`
 - Actions timing reducer: `she/metrics/job_timestamps.py`
@@ -129,9 +132,11 @@ Land schema + pure reducer + fixtures + quality verification. No external teleme
 
 `she/observability/orchestrator_trace.py` provides an opt-in span boundary, and `scripts/ci/bridge_ates_trace_to_events.py` converts only recognized span kinds into the canonical event schema. Raw trace metadata is not itself safe to publish: task, role, and tool strings can contain arbitrary input. The export bridge replaces all three with domain-separated SHA-256 identifiers (`ates-task:`, `ates-role:`, `ates-tool:`), preserving repeatable grouping without retaining the original labels. These fingerprints are pseudonyms, not anonymization or a substitute for access control; predictable labels can still be guessed. Exported groups do not join directly to pre-existing plaintext label cohorts. Timestamps are validated and normalized to UTC, non-finite durations are rejected, and arbitrary attributes and source payload fingerprints are omitted. Run/attempt/SHA linkage remains available. The bridge is a tested adapter, not a claim that every production orchestrator path is already instrumented or that raw trace artifacts are safe for publication or automatically ingested into the longitudinal corpus. Extend to other eligible workflows only after their event semantics and permissions are confirmed.
 
-### Phase C — longitudinal correlation
+### Phase C — longitudinal correlation **[PARTIAL: RUN/ATTEMPT JOIN IMPLEMENTED]**
 
-Join execution events to GitHub run attempts, SHAs, PRs, Action→Effect events, and corpus observations.
+`scripts/ci/correlate_ates_evidence.py` joins workflow receipts to sanitized event rows by the exact `(gha_run_id, gha_run_attempt)` pair. It verifies `source_sha` when both sides provide one; mismatches are quarantined and counted instead of being attached to a run. Missing run linkage remains unmatched, duplicate receipt identities are rejected, and the output contains aggregate counts rather than raw event rows.
+
+SHA status is explicit: `verified`, `unverified`, `partially_unverified`, `mismatch_quarantined`, `receipt_sha_present_no_events`, or `receipt_sha_missing`. A run with any SHA mismatch is marked quarantined even if other events match. A missing event SHA can be joined by run/attempt but cannot be represented as SHA-verified. This utility does not yet join PR review outcomes, Action→Effect records, or context-relationship corpus observations; those remain subsequent correlation adapters.
 
 ### Phase D — multi-provider experiment
 

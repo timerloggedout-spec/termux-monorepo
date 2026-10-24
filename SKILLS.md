@@ -6,6 +6,7 @@
 |------|------|
 | **Full inventory + role load matrix** | [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md) |
 | **Primary agent entry (BIUDL)** | [`CLAUDE.md`](CLAUDE.md) |
+| **DO phrasing / framing guide** | [`docs/ops/DO-PHRASING-FRAMING-FRAMEWORK.md`](docs/ops/DO-PHRASING-FRAMING-FRAMEWORK.md) |
 | Adaptive wait / feedback | `.agents/skills/adaptive-feedback-cycle/SKILL.md` |
 | Admin ops | `.agents/skills/evidence-led-monorepo-ops/SKILL.md` |
 | ML keep-alive | `.agents/skills/ml-pipeline-ops/SKILL.md` |
@@ -26,7 +27,7 @@ Root `AGENTS.md` is **deprecated** (Linguist / Jules redirect only). Load `CLAUD
 
 ```text
 .agents/skills/<name>/SKILL.md     # agent / collaborator loadable skills
-.github/skills/<name>/SKILL.md      # CI / production reconciliation skills
+.github/skills/<name>/SKILL.md     # CI / production reconciliation skills
 docs/ops/SKILLS-INVENTORY.md        # SSOT navigator + role matrix
 SKILLS.md                           # this file — short collaborator entry
 ```

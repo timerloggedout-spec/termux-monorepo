@@ -4,7 +4,9 @@ on:
   pull_request:
     paths:
       - 'archwiz/context_relationships/temporal.py'
+      - 'archwiz/context_relationships/build_index.py'
       - 'scripts/ci/validate_context_relationship_backfill.py'
+      - 'tests/test_context_history_coverage.py'
       - 'tests/test_context_relationship_backfill_validation.py'
       - '.github/workflows/context-relationship-backfill.yml'
       - '.github/workflows/context-backfill-contract.yml'
@@ -36,4 +38,6 @@ jobs:
         with:
           python-version: '3.12'
       - name: Backfill validation contract tests
-        run: python3 -B -m unittest -v tests/test_context_relationship_backfill_validation.py
+        run: |
+          python3 -B -m unittest -v tests/test_context_relationship_backfill_validation.py
+          python3 -B -m unittest -v tests/test_context_history_coverage.py

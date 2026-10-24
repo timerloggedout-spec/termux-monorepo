@@ -24,10 +24,11 @@ CONSEQUENTIAL_ACTIONS = {
     "merge", "release", "credential_mutation", "delete", "deploy",
     "provision", "paid_fallback",
 }
-ALLOWED_ACTIONS = CONSEQUENTIAl_ACTIONS = CONSEQUENT_ACTIONS = {
-    "inspect", "draft", "test", "merge", "release", "credential_mutation",
-    "delete", "deploy", "provision", "paid_fallback",
+CONSEQUENTIAL_ACTIONS = {
+    "merge", "release", "credential_mutation", "delete", "deploy",
+    "provision", "paid_fallback",
 }
+ALLOWED_ACTIONS = {"inspect", "draft", "test"} | CONSEQUENTIAL_ACTIONS
 EXPECTED_DECISIONS = {"ALLOW_RECOMMENDATION", "ABSTAIN", "ESCALATE"}
 POLICY_SPEC = (
     "deterministic-evidence-gate/v1|"

@@ -91,7 +91,7 @@ Each reviewer evaluates each candidate in isolation and records:
 - smallest next experiment that could change the assessment;
 - recommendation and explicit unknowns.
 
-Reviewers should submit ratings before viewing other candidates' scores or the facilitator's ranking. A missing reviewer response is not a positive vote.
+These five Round 1 ratings are qualitative and are **excluded from the weighted score in §6**. They are not mapped one-to-one to the nine §6 dimensions: for example, project value has no corresponding §6 dimension. If a future analysis wants a weighted composite from Round 1 ratings, it must publish a separate mapping and weights before candidate scores are reviewed; do not retrospectively blend the two rubrics.\n\nReviewers should submit ratings before viewing other candidates' scores or the facilitator's ranking. A missing reviewer response is not a positive vote.
 
 ## 8. Evidence freeze
 
@@ -119,7 +119,7 @@ Each candidate receives one disposition:
 - **Reject** — fails requirements or is dominated without a justified context-specific benefit.
 - **Blocked by safety gate** — a mandatory safety or authorization condition failed.
 
-A single winner is optional. Different candidates may be best for different contexts. If evidence is incomparable, disposition is **inconclusive / design a better experiment** rather than forcing a ranking.
+A single winner is optional. Different candidates may be best for different contexts. If evidence is incomparable, use the explicit **Inconclusive / design a better experiment** disposition rather than forcing a ranking.
 
 ## 10. Promotion and handoff
 

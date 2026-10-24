@@ -216,6 +216,13 @@ def validate_backfill(
     last_window = windows[-1]
     if last_window.get("start_page") != start_page or last_window.get("next_start_page") != next_page:
         raise ValidationError("latest history coverage window differs from manifest.history_window")
+    for field in ("limit_per_family", "issue_count", "pull_request_count", "issues_complete", "pull_requests_complete"):
+        if last_window.get(field) != history.get(field):
+            raise ValidationError(f"latest history coverage {field} differs from manifest.history_window")
+    github_report = manifest.get("github_report", {})
+    if isinstance(github_report, dict) and isinstance(github_report.get("history_window"), dict):
+        if github_report["history_window"] != history:
+            raise ValidationError("manifest.github_report history window differs from manifest.history_window")
     if last_window.get("source_sha") != source_sha or last_window.get("observed_at") != observed_at:
         raise ValidationError("latest history coverage provenance differs from temporal source identity")
     if coverage_status == "COMPLETE":

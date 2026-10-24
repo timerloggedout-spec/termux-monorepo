@@ -1,0 +1,33 @@
+<!-- agent-peer-response-state:v2 -->
+cycle_id: pr-1607-a7609cd0d1c0
+head_sha: a7609cd0d1c08ea8ca18eeeca6fb1448f91b486e
+cycle_started_at: 2026-10-23T23:37:01.000Z
+state: awaiting_provider_response
+ready: false
+required_providers: coderabbit
+enforce_provider_completion: false
+
+### Agent peer response gate
+
+**Provider state:**
+- coderabbit: awaiting_provider_response
+
+**Pending:**
+coderabbit:awaiting_provider_response
+
+**Authorized interactive controls:**
+- none observed
+
+A provider-owned checkbox/button requires an authorized Operator Action Executor.
+Do not copy control markup into a relay comment. After a permitted UI action, post:
+```text
+<!-- operator-action-ack:v1 -->
+cycle_id: pr-1607-a7609cd0d1c0
+provider: <provider>
+control_id: <provider-control-id>
+action: <allowed-action>
+```
+The second-pass reviewer remains blocked until matching provider completion evidence is ingested for this SHA.
+A checked [x] control means the provider UI action occurred; it is not a completed review.
+A provider cooldown is also non-completing: wait for the stated retry window, then retrigger through the authorized provider path.
+Pending provider evidence is advisory unless PEER_ENFORCE_PROVIDER_COMPLETION is deliberately set to true for branch protection.

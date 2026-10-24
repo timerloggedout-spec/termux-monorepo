@@ -17,6 +17,16 @@ name: Peer review orchestrator
 # (2026-10-23) and accepted bot-authored PRs proceeding without CodeRabbit,
 # so the collect step drops 'coderabbit' from the effective required set
 # when the PR author is a bot. Other providers are unaffected.
+#
+# Reviewer JIT (docs/ops/REVIEWER-JIT-DESIGN.md): the collect step derives
+# the PR's context (author class, changed-file classes, size, labels),
+# records it in the state comment, and adapts the effective required set
+# just-in-time: the structural bot-author rule above, plus a metrics rule
+# driven by docs/ops/generated/reviewer-metrics.json (a provider with zero
+# deliveries over >=10 required cycles in this cycle's context is exempted
+# for the cycle). The metrics map is fail-open: missing/stale/unparsable
+# disables the metrics rule only. Every adaptation is recorded in the
+# state comment for audit and for the metrics collector to measure.
 
 on:
   pull_request_target:
@@ -65,6 +75,9 @@ jobs:
       ready: ${{ steps.collect.outputs.ready }}
       skipped: ${{ steps.collect.outputs.skipped }}
       pending: ${{ steps.collect.outputs.pending }}
+      context_author_class: ${{ steps.collect.outputs.context_author_class }}
+      context_primary_class: ${{ steps.collect.outputs.context_primary_class }}
+      metrics_map: ${{ steps.collect.outputs.metrics_map }}
     steps:
       - name: Collect controls and provider response evidence
         id: collect
@@ -151,21 +164,8 @@ jobs:
               return;
             }
 
-            // CodeRabbit skips bot-authored PRs unless a review seat is
-            // assigned to the bot; the owner declined seat assignment
-            // (2026-10-23) and accepted bot-authored PRs proceeding without
-            // CodeRabbit. Drop 'coderabbit' from this PR's effective
-            // required set so the peer gate reflects that decision instead
-            // of waiting on a review that will never be delivered.
             const authorLogin = (pr.user?.login || '').toLowerCase();
             const authorIsBot = pr.user?.type === 'Bot' || authorLogin.endsWith('[bot]');
-            const effectiveProviders = authorIsBot
-              ? requiredProviders.filter(provider => provider !== 'coderabbit')
-              : requiredProviders;
-            const exemptedProviders = requiredProviders.filter(provider => !effectiveProviders.includes(provider));
-            if (exemptedProviders.length) {
-              core.info(`Bot-authored PR (${authorLogin}): exempting ${exemptedProviders.join(', ')} from the required provider set.`);
-            }
 
             const headSha = pr.head.sha;
             const cycleId = `pr-${prNumber}-${headSha.slice(0, 12)}`;
@@ -212,6 +212,107 @@ jobs:
               core.setOutput('skipped', 'true');
               core.setOutput('state', 'unrelated_event');
               return;
+            }
+
+            // --- Reviewer JIT: context derivation (P1) ---
+            // Record the context this cycle's policy is derived from, so the
+            // metrics collector (reviewer-metrics/v1) can join provider
+            // performance by context. classifyFilePath MUST stay in sync
+            // with classify_file in scripts/reviewer_metrics/collect.py.
+            function classifyFilePath(path) {
+              const base = path.split('/').pop();
+              if (path.startsWith('docs/ops/generated/') || path.includes('/generated/')) return 'generated';
+              if (path.startsWith('.github/workflows/')) return 'workflows';
+              if (path.startsWith('docs/') || base.endsWith('.md') || base.endsWith('.rst')) return 'docs';
+              if (path.startsWith('tests/') || path.includes('/tests/') || base.startsWith('test_') ||
+                  base.endsWith('_test.py') || base.endsWith('.test.js') || base.endsWith('.spec.js')) return 'tests';
+              const ext = base.includes('.') ? base.split('.').pop().toLowerCase() : '';
+              if (['toml', 'yaml', 'yml'].includes(ext)) return 'config';
+              if (['py', 'js', 'ts', 'tsx', 'jsx', 'go', 'rs', 'sh', 'bash', 'c', 'h', 'cpp', 'java', 'rb'].includes(ext)) return 'code';
+              if (['json', 'jsonl', 'csv'].includes(ext)) return 'data';
+              return 'other';
+            }
+            let filePaths = [];
+            try {
+              const files = await github.paginate(github.rest.pulls.listFiles, {
+                owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber, per_page: 100,
+              });
+              filePaths = files.map(f => f.filename);
+            } catch (error) {
+              core.info(`Changed-file lookup skipped: ${error.message}`);
+            }
+            const classCounts = {};
+            for (const p of filePaths) {
+              const c = classifyFilePath(p);
+              classCounts[c] = (classCounts[c] || 0) + 1;
+            }
+            const classNames = Object.keys(classCounts);
+            let primaryClass = 'unknown';
+            if (classNames.length === 1) {
+              primaryClass = classNames[0];
+            } else if (classNames.length > 1) {
+              const top = classNames.reduce((a, b) => (classCounts[a] >= classCounts[b] ? a : b));
+              primaryClass = classCounts[top] * 2 > filePaths.length ? top : 'mixed';
+            }
+            const contextKey = `${authorIsBot ? 'bot' : 'user'}/${primaryClass}`;
+            const labelNames = (pr.labels || [])
+              .map(l => (typeof l === 'string' ? l : l.name)).filter(Boolean).sort();
+
+            // --- Reviewer JIT: metrics map (P3 input, fail-open) ---
+            let metricsGeneratedAt = '';
+            let metricsByContext = {};
+            try {
+              const { data: mapFile } = await github.rest.repos.getContent({
+                owner: context.repo.owner, repo: context.repo.repo,
+                path: 'docs/ops/generated/reviewer-metrics.json',
+                ref: context.payload.repository.default_branch,
+              });
+              const map = JSON.parse(Buffer.from(mapFile.content, 'base64').toString('utf8'));
+              const ageMs = Date.now() - Date.parse(map.generated_at || '');
+              if (map.schema === 'reviewer-metrics/v1' && Number.isFinite(ageMs) && ageMs >= 0 && ageMs < 14 * 24 * 3600 * 1000) {
+                metricsGeneratedAt = map.generated_at;
+                for (const [provider, entry] of Object.entries(map.providers || {})) {
+                  metricsByContext[provider] = entry.by_context || {};
+                }
+              } else {
+                core.info('Reviewer metrics map stale or unknown schema; metrics rule disabled for this cycle.');
+              }
+            } catch (error) {
+              core.info(`Reviewer metrics map unavailable (${error.message}); metrics rule disabled for this cycle.`);
+            }
+
+            // --- Reviewer JIT: effective required set (P3 rules) ---
+            let effectiveProviders = [...requiredProviders];
+            const exemptions = [];
+            // Structural rule: CodeRabbit skips bot-authored PRs unless a
+            // review seat is assigned to the bot; the owner declined seat
+            // assignment (2026-10-23) and accepted bot-authored PRs
+            // proceeding without CodeRabbit.
+            if (authorIsBot && effectiveProviders.includes('coderabbit')) {
+              effectiveProviders = effectiveProviders.filter(p => p !== 'coderabbit');
+              exemptions.push({
+                provider: 'coderabbit',
+                state: 'not_required_bot_authored_pr',
+                note: 'CodeRabbit review seat not assigned; owner decision 2026-10-23',
+              });
+              core.info(`Bot-authored PR (${authorLogin}): exempting coderabbit from the required provider set.`);
+            }
+            // Metrics rule: a provider with zero deliveries over >=10
+            // required cycles in this exact context is not actually
+            // reviewing this kind of PR; stop gating on it for the cycle.
+            if (metricsGeneratedAt) {
+              for (const provider of [...effectiveProviders]) {
+                const b = metricsByContext[provider]?.[contextKey];
+                if (b && (b.required_cycles || 0) >= 10 && (b.delivered || 0) === 0) {
+                  effectiveProviders = effectiveProviders.filter(p => p !== provider);
+                  exemptions.push({
+                    provider,
+                    state: 'not_required_zero_delivery_in_context',
+                    note: `metrics map ${metricsGeneratedAt}: zero deliveries in context ${contextKey} over ${b.required_cycles} required cycles`,
+                  });
+                  core.info(`Metrics rule: exempting ${provider} in context ${contextKey} (zero deliveries over ${b.required_cycles} required cycles).`);
+                }
+              }
             }
 
             const stateMarker = '<!-- agent-peer-response-state:v2 -->';
@@ -427,8 +528,8 @@ jobs:
             const deliveryLines = providerStates.map(item =>
               `- ${item.provider}: ${item.state}${item.delivered.url ? `; evidence=${item.delivered.url}` : ''}${item.cooldown?.active ? `; cooldown=${item.cooldown.detail}; source=${item.cooldown.url}` : ''}`
             );
-            for (const provider of exemptedProviders) {
-              deliveryLines.push(`- ${provider}: not_required_bot_authored_pr (CodeRabbit review seat not assigned; owner decision 2026-10-23)`);
+            for (const exemption of exemptions) {
+              deliveryLines.push(`- ${exemption.provider}: ${exemption.state} (${exemption.note})`);
             }
 
             core.setOutput('skipped', 'false');
@@ -437,6 +538,13 @@ jobs:
             core.setOutput('pending', pending);
             core.setOutput('required_providers', effectiveProviders.join(',') || 'none');
             core.setOutput('required_providers_effective', effectiveProviders.join(','));
+            core.setOutput('context_author', authorLogin);
+            core.setOutput('context_author_class', authorIsBot ? 'bot' : 'user');
+            core.setOutput('context_primary_class', primaryClass);
+            core.setOutput('context_classes', classNames.map(c => `${c}:${classCounts[c]}`).join(',') || 'none');
+            core.setOutput('context_size', `files=${pr.changed_files ?? 0},additions=${pr.additions ?? 0},deletions=${pr.deletions ?? 0}`);
+            core.setOutput('context_labels', labelNames.join(',') || 'none');
+            core.setOutput('metrics_map', metricsGeneratedAt || 'unavailable');
             core.setOutput('enforce_provider_completion', enforceProviderCompletion ? 'true' : 'false');
             core.setOutput('cycle_started_at', cycleStartedAtIso);
             core.setOutput('provider_lines', deliveryLines.join('\n'));
@@ -474,6 +582,13 @@ jobs:
           CONTROLS: ${{ steps.collect.outputs.control_lines }}
           REQUIRED_PROVIDERS: ${{ steps.collect.outputs.required_providers || vars.PEER_REQUIRED_PROVIDERS || 'coderabbit' }}
           ENFORCE_PROVIDER_COMPLETION: ${{ steps.collect.outputs.enforce_provider_completion }}
+          CONTEXT_AUTHOR: ${{ steps.collect.outputs.context_author }}
+          CONTEXT_AUTHOR_CLASS: ${{ steps.collect.outputs.context_author_class }}
+          CONTEXT_PRIMARY_CLASS: ${{ steps.collect.outputs.context_primary_class }}
+          CONTEXT_CLASSES: ${{ steps.collect.outputs.context_classes }}
+          CONTEXT_SIZE: ${{ steps.collect.outputs.context_size }}
+          CONTEXT_LABELS: ${{ steps.collect.outputs.context_labels }}
+          METRICS_MAP: ${{ steps.collect.outputs.metrics_map }}
           PEER_STATE_PUBLISHER_LOGINS: ${{ vars.PEER_STATE_PUBLISHER_LOGINS || github.repository_owner }}
         with:
           # The base-repository workflow never executes PR code. Prefer an existing
@@ -495,6 +610,13 @@ jobs:
               `ready: ${process.env.READY}`,
               `required_providers: ${process.env.REQUIRED_PROVIDERS}`,
               `enforce_provider_completion: ${process.env.ENFORCE_PROVIDER_COMPLETION}`,
+              `context_author: ${process.env.CONTEXT_AUTHOR}`,
+              `context_author_class: ${process.env.CONTEXT_AUTHOR_CLASS}`,
+              `context_primary_class: ${process.env.CONTEXT_PRIMARY_CLASS}`,
+              `context_classes: ${process.env.CONTEXT_CLASSES}`,
+              `context_size: ${process.env.CONTEXT_SIZE}`,
+              `context_labels: ${process.env.CONTEXT_LABELS}`,
+              `metrics_map: ${process.env.METRICS_MAP}`,
               '',
               '### Agent peer response gate',
               '',

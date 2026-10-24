@@ -1,14 +1,51 @@
 # yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
 # Agent: Grok — autofix enabled so CodeRabbit applies without manual loops.
+# Reviewer JIT (docs/ops/REVIEWER-JIT-DESIGN.md): this file is the static
+# layer of the JIT system. Per-PR adaptation lives in the peer-review
+# orchestrator; this file carries the context axes CodeRabbit itself
+# supports (path filters / path instructions), tuned from the measured
+# provider x context metrics in docs/ops/generated/reviewer-metrics.json.
 reviews:
   profile: assertive
   high_level_summary: true
   request_changes_workflow: true
   review_status: false
+  # Machine-generated trees are evidence, not review surface: the sweep
+  # ledger and generated maps under docs/ops/generated/ are regenerated
+  # by their lanes and would only add review noise.
+  path_filters:
+    - "!docs/ops/generated/**"
+  path_instructions:
+    - path: ".github/workflows/**"
+      instructions: >-
+        These workflows are the repo's control plane. Flag: references to
+        secrets that are not provisioned repo Actions secrets (only
+        verified-provisioned names may be referenced); new scheduled
+        triggers or jobs, whose executions count against the shared
+        Actions quota; conflict markers; and YAML structure faults.
+        Counts or statistics stated in comments must be derivable from
+        live API responses, never copied forward from dated documents.
+    - path: "docs/**"
+      instructions: >-
+        Documentation here carries operational state (integration
+        matrices, quota registries, runbooks). Verify counts, dates and
+        SHAs against the change itself; flag statistics copied forward
+        from dated snapshots and claims of merges or landings that the
+        pull request does not itself evidence.
+    - path: "deepcli/**"
+      instructions: >-
+        DeepAgent runs on a resource-constrained Android device (BLU
+        B160V, Termux). Flag hardcoded resource ceilings where adaptive,
+        measured-pressure-derived gates are required; any deletion of
+        telemetry or ML training data (prohibited); and heavyweight
+        dependencies that would execute on-device.
   auto_review:
     enabled: true
     drafts: true
     auto_incremental_review: true
+    # Explicit baseline (vendor default 5): batch rapid pushes instead of
+    # burning a review per commit. Tuned by the JIT metrics review.
+    auto_pause_after_reviewed_commits: 5
     base_branches:
       - master
       - master-staging

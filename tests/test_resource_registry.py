@@ -54,7 +54,7 @@ def test_human_matrix_documents_all_canonical_references():
     for row in registry()["resources"]:
         assert row["url"] in matrix, row["id"]
     assert "20 supplied links" in matrix
-    assert "26 resources" in matrix
+    assert "28 resources" in matrix
 
 
 def test_existing_cadence_generates_search_index_without_expanding_publication():
@@ -79,3 +79,19 @@ def test_real_aggregate_preserves_provider_integration_and_blocking_evidence():
     assert index["provider_blocked_reasons"] == providers["blocked_reasons"]
     assert index["sources"] == sorted(providers["sources"], key=lambda row: row["repo"])
     assert len(index["source_inputs"]) == 20
+
+
+def test_new_free_inference_catalogs_are_registered_without_runtime_authority():
+    rows = {row["id"]: row for row in registry()["resources"]}
+    expected = {
+        "awesome-freellm-apis-open-free-llm-api": "https://github.com/open-free-llm-api/awesome-freellm-apis",
+        "free-inference": "https://github.com/surendranb/free-inference",
+    }
+    for resource_id, url in expected.items():
+        row = rows[resource_id]
+        assert row["url"] == url
+        assert row["runtime_eligible"] is False
+        assert row["evidence_class"] == "REFERENCE_ONLY"
+        assert row["status"] == "discovery-only"
+        assert "scripts/model_selection_market/provider_recon.py" in row["implementation_paths"]
+        assert row["next_action"].strip()

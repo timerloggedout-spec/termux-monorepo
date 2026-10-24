@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "f5643063e544e130fa8d9c06c40981b54509a25707dd79f0af6e39a4f6ab3dce",
-  "workflow_count": 179,
+  "source_fingerprint": "c0cf709507ec582e16ead751f31dbc611280e260dcf27251a3b4c7a59217c891",
+  "workflow_count": 180,
   "workflows": [
     {
       "action_pins": [
@@ -2813,6 +2813,24 @@
       "triggers": [
         "pull_request",
         "push"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: reviewer-metrics-collect cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "collect"
+      ],
+      "name": "Reviewer metrics collect",
+      "path": ".github/workflows/reviewer-metrics-collect.yml",
+      "schedules": [
+        "17 5 * * 1"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
       ]
     },
     {

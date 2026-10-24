@@ -151,3 +151,31 @@ The Actions consolidation lineage is also already committed: [#1574](https://git
 4. Only run remote synthetic inference through the already-reviewed operational gate, after no-cost account/model admission and quota reservation are proved. Capture run/job/request/attempt IDs and sanitized provider/model/status/usage evidence; never persist prompts, completions, keys, cookies, or raw private quota payloads.
 5. Reconcile actual evidence into the existing provider-batch report and THUB-017/3L0/Free-Tier Value Board contracts. If there is no successful invocation record, report **not proved**, not “offline,” “zero usage,” “zero savings,” or “provider broken.”
 
+## Priority validation extension: merged PR #1611 as an applied-science target
+
+**Required target:** [PR #1611](https://github.com/timerloggedout-spec/termux-monorepo/pull/1611), merged to `master` at `e9319891c8dcde5963b1b4d80a1a3103e7ef56cd`. This is not just a historical citation: the merged AWS Free Tier + Strands Delphi Oracle proposal is a production-shaped test case for whether our evidence and workflow system distinguishes an experiment proposal from an executed experiment.
+
+### Evidence observed at audit time
+
+- PR #1611 is merged; its changed files include the active proposal's `RFP.md`, `EXPERIMENT-MATRIX.md`, `DEBATE.md`, `MANIFEST.md`, `ITEMS.md`, the proposal registry, and lifecycle metadata for `quota-aware-cadence-rfp`.
+- Its experiment matrix explicitly says hypotheses only and no experiment has run. The PR states no AWS account/resources were created, no AWS invocation occurred, and no hackathon submission is claimed.
+- The merged SHA's GitHub Actions check-runs endpoint returned 17 check runs. Observed checks include successes, skipped jobs, and a cancelled optional evidence-emission job; do not flatten that mixed result into “all checks passed.” Re-query the current merged SHA and current required checks immediately before release.
+- The proposal-lifecycle workflow validates `scripts/proposals/validate_registry.py` on proposal-path pull requests and master pushes. Its `vote-hygiene` job is a PR-only advisory checklist and must not be treated as a binding vote or experiment result.
+
+### Required test matrix (run on the current candidate SHA)
+
+1. **Merged production regression:** run proposal registry/lifecycle validation against current `master`; assert PR #1611's proposal directory is registered, `MANIFEST.md` and `ITEMS.md` exist, and the pre-existing `quota-aware-cadence-rfp` entry remains valid.
+2. **Applied-science provenance:** validate that the ten experiment IDs E-01 through E-10 have falsifiable hypotheses, methods, metrics, and rejection criteria; all results remain absent until actual receipts exist. Human ballots, model/provider observations, deterministic baselines, CI checks, and driver synthesis must remain distinct evidence classes.
+3. **State-transition integrity:** reject any claim that `DESIGNED`, `COMMITTED`, `DEPLOYED`, `EXECUTED`, `VALIDATED`, or `PROMOTED` follows automatically from an earlier state. Require source SHA/config hash, fixture/cohort identity, timestamp/environment, result and failure classification, and sanitized receipt for each claimed transition.
+4. **Safety negative tests:** assert that CI/proposal validation does not create AWS accounts/resources, dispatch cloud inference, submit the hackathon entry, infer consensus, or convert a model/provider run into a human vote. Paid or external execution remains behind its explicit approval/cost/security gate.
+5. **Actions dispatch integration:** evaluate the current dispatch tree and its actual enabled workflow paths. Verify proposal-lifecycle validation is triggered by proposal path changes and master pushes; separately record skipped, disabled, unreachable, cancelled, and failed jobs. A scheduler node or successful workflow is not proof that an experiment or provider call ran.
+6. **Provider evidence boundary:** keep offline fixtures, live catalog/readiness GETs, and remote inference as separate test lanes. Only an approved invocation receipt may count as inference evidence; catalog status, secret-name presence, CI success, or an HTTP 429 must not be upgraded into successful inference.
+7. **Current-head verification:** pin every result to the candidate commit SHA, collect the current check-runs/workflow-run receipts, and re-check the head before publishing the verdict. The historical #1611 run is regression context, not a substitute for testing the current candidate.
+
+### Full available repository scope and permission boundary
+
+The connected repository metadata reports `admin=true`, `maintain=true`, `push=true`, `pull=true`, and `triage=true`; repository settings also report auto-merge and merge/squash/rebase methods enabled. This confirms repository-level connector scope, not every external provider entitlement or cloud account permission. Workflow job permissions are independently defined per workflow and remain least-privilege; do not widen them merely because the connector can administer the repository. GitHub Actions secret values are not retrievable through the supported secret APIs and must never be printed or copied into evidence.
+
+### Release acceptance
+
+The candidate is **not production-validated** until the current-head required gates are green, proposal registry validation passes, the state/provenance negative tests pass, and the current dispatch graph has been reconciled. Report the exact SHA, run URLs, passed/failed/skipped/cancelled states, and remaining blockers. No live AWS/provider inference is needed to validate offline lifecycle and evidence contracts; any separately approved remote experiment must have its own cost/security approval and sanitized execution receipt.

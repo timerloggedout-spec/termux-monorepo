@@ -16,6 +16,8 @@ on:
       - 'tests/test_context_relationship_backfill_validation.py'
       - 'tests/test_context_history_coverage.py'
       - '.github/workflows/context-relationship-backfill.yml'
+      # One-time bootstrap trigger document; its merge wakes the page-one ledger rebuild.
+      - 'docs/ops/CONTEXT-HISTORY-COVERAGE-BOOTSTRAP.md'
   # # Cadence owned by quota-dispatch-tree.yml (Tier 0 decision tree, issue #1573).
   workflow_dispatch:
     inputs:

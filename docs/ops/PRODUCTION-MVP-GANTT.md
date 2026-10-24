@@ -16,7 +16,7 @@
 | T+60–120 min | P1 — EPS / Moneyball value board | Reuse existing Basksweep-approved evidence; separate actual cost, counterfactual list-price value and verified no-cost execution | Deterministic projector tests, reconciled source manifest, explicit stale/unknown state | #1592 open; not complete |
 | T+60–120 min | P1 — Adaptive quota awareness | Extend the existing quota panel/readers, not a parallel poller or registry | Freshness/authority distinctions, safe public projection, private fields excluded | #1593 open; not complete |
 | After explicit approval | P2 — AWS adapter | Re-check current eligibility, account-specific credits, region, IAM/OIDC, budget caps, kill switch and teardown; only then enable a minimal adapter | Explicit owner approval + deployment/usage/cost/teardown receipts | Blocked; no AWS calls/resources claimed |
-| After verified connector state | P2 — Hex consumer | Re-check provider cooldown and native connector access; use only sanitized artifact and read-only projection | Fresh connector result, confirmed import/export receipt, no assumption from Actions ZIP | Unverified; no cooldown expiry guessed |
+| After verified connector state | P2 — Hex consumer | Re-check provider cooldown and native connector access; use only sanitized artifact and read-only projection | Fresh connector result, confirmed import/export receipt, no assumption from Actions ZIP | Unverified; connector query on 2026-10-24 returned a Team/Enterprise access-tier requirement, not a cooldown timestamp; expiry unknown |
 
 Time windows are planning estimates, not deadlines or evidence of elapsed work. Independent reviewers may work in parallel after the frozen fixture contract is published.
 
@@ -69,5 +69,5 @@ Time windows are planning estimates, not deadlines or evidence of elapsed work. 
 - [ ] #1611 term registrar and ballot deadline assigned; real ballots/provider runs collected, or their absence explicitly reported.
 - [ ] #1592 deterministic projector built and validated against Basksweep-approved fixtures.
 - [ ] #1593 integrated into the existing quota surface with safe public/private separation.
-- [ ] Hex connector cooldown/access state fetched from an authoritative current source; do not infer an expiry.
+- [ ] Hex connector cooldown/access state fetched from an authoritative current source; do not infer an expiry. The current tool response is an access-tier error and does not establish cooldown duration.
 - [ ] AWS eligibility and budget gates rechecked; explicit owner approval recorded before any cloud action.

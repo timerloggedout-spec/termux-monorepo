@@ -90,7 +90,7 @@ class ContextBackfillValidationTests(unittest.TestCase):
             temporal = json.loads((root / "temporal-current.json").read_text(encoding="utf-8"))
             temporal["coverage"] = "COMPLETE"
             (root / "temporal-current.json").write_text(json.dumps(temporal), encoding="utf-8")
-            with self.assertRaisesRegex(ValidationError, "coverage state contradicts"):
+            with self.assertRaisesRegex(ValidationError, "temporal coverage differs"):
                 validate_backfill(root, "owner/repo", "master", "a" * 40)
 
     def test_rejects_self_consistent_stale_source_sha_for_same_repo_and_ref(self):

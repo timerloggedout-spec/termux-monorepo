@@ -128,13 +128,34 @@ jobs:
           # Write pages to files. Capturing them in shell variables and feeding
           # jq via here-strings still execs jq with an oversized argv
           # (run 37551434859 exit 126: /usr/bin/jq Argument list too long).
-          set +e
-          gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100" > "$RUNNER_TEMP/ledger-comments-pages.json" 2>/dev/null || echo "[]" > "$RUNNER_TEMP/ledger-comments-pages.json"
-          gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/reviews?per_page=100" > "$RUNNER_TEMP/ledger-reviews-pages.json" 2>/dev/null || echo "[]" > "$RUNNER_TEMP/ledger-reviews-pages.json"
-          gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/comments?per_page=100" > "$RUNNER_TEMP/ledger-inline-pages.json" 2>/dev/null || echo "[]" > "$RUNNER_TEMP/ledger-inline-pages.json"
-          gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/commits?per_page=100" > "$RUNNER_TEMP/ledger-commits-pages.json" 2>/dev/null || echo "[]" > "$RUNNER_TEMP/ledger-commits-pages.json"
-          gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/commits/${head_sha}/check-runs?per_page=100" > "$RUNNER_TEMP/ledger-checks-pages.json" 2>/dev/null || echo "[]" > "$RUNNER_TEMP/ledger-checks-pages.json"
-          set -e
+          gh_api_safe() {
+            local endpoint="$1"
+            local outfile="$2"
+            set +e
+            local err
+            err="$(gh api --paginate --slurp "$endpoint" 2>&1 >"$outfile")"
+            local rc=$?
+            set -e
+            if [[ $rc -ne 0 ]]; then
+              if grep -qE 'API rate limit exceeded|rate limit|Resource not accessible|HTTP 403' <<<"$err"; then
+                echo "api_rate_limited" > "$RUNNER_TEMP/gh_api_skipped.txt"
+              fi
+              echo "[]" > "$outfile"
+            fi
+          }
+
+          rm -f "$RUNNER_TEMP/gh_api_skipped.txt"
+          gh_api_safe "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100" "$RUNNER_TEMP/ledger-comments-pages.json"
+          gh_api_safe "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/reviews?per_page=100" "$RUNNER_TEMP/ledger-reviews-pages.json"
+          gh_api_safe "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/comments?per_page=100" "$RUNNER_TEMP/ledger-inline-pages.json"
+          gh_api_safe "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/commits?per_page=100" "$RUNNER_TEMP/ledger-commits-pages.json"
+          gh_api_safe "repos/${GITHUB_REPOSITORY}/commits/${head_sha}/check-runs?per_page=100" "$RUNNER_TEMP/ledger-checks-pages.json"
+
+          if [[ -f "$RUNNER_TEMP/gh_api_skipped.txt" ]]; then
+            echo "API rate limit encountered during ledger fetch; skipping measure cleanly." >&2
+            echo "skipped=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
 
           jq -c 'add // []' "$RUNNER_TEMP/ledger-comments-pages.json" > "$RUNNER_TEMP/ledger-comments.json"
           jq -c 'add // []' "$RUNNER_TEMP/ledger-reviews-pages.json" > "$RUNNER_TEMP/ledger-reviews.json"

@@ -6,7 +6,7 @@
   ],
   "integration_references": [
     {
-      "count": 73,
+      "count": 75,
       "kind": "static provider import/register references only",
       "path": "server/src/providers/index.ts",
       "source_repo": "tashfeenahmed/freellmapi"
@@ -1492,6 +1492,46 @@
       "model_name": "provider catalog reference",
       "provider_key": "inferbase",
       "provider_name": "Inferbase",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "iteracompute",
+      "provider_name": "IteraCompute",
+      "quota_remaining": null,
+      "runtime_eligible": false,
+      "source_repo": "tashfeenahmed/freellmapi"
+    },
+    {
+      "blocked_reasons": [
+        "source reference only; no model/quota verification",
+        "third-party unverified claim"
+      ],
+      "claims": {
+        "context": null,
+        "max_output": null,
+        "modality": null,
+        "quota": null
+      },
+      "evidence_class": "THIRD_PARTY_CLAIM",
+      "model_key": "provider-catalog",
+      "model_name": "provider catalog reference",
+      "provider_key": "keenable",
+      "provider_name": "Keenable",
       "quota_remaining": null,
       "runtime_eligible": false,
       "source_repo": "tashfeenahmed/freellmapi"
@@ -4060,26 +4100,26 @@
   "schema_version": "msm-provider-recon-v1",
   "sources": [
     {
-      "commit_sha": "cf97c32fec1b2e96e9936746e2731a81bd5ea33f",
+      "commit_sha": "15bcfde01b825be7d0151999b8ddb1488cdec8a7",
       "files": {
         "data.json": {
           "sha256": "b69cda36116ac76bc24b1a0951f51199b09879bda4e8ef05b55f25c530c34bd6",
-          "url": "https://raw.githubusercontent.com/mnfst/awesome-free-llm-apis/cf97c32fec1b2e96e9936746e2731a81bd5ea33f/data.json"
+          "url": "https://raw.githubusercontent.com/mnfst/awesome-free-llm-apis/15bcfde01b825be7d0151999b8ddb1488cdec8a7/data.json"
         }
       },
       "license_designation": "UNVERIFIED_UPSTREAM_LICENSE",
       "repo": "mnfst/awesome-free-llm-apis"
     },
     {
-      "commit_sha": "ecdc9cbe27aa3db5e3d8935be13a5a17b9a513b1",
+      "commit_sha": "2359d30bc2d72347dcea4276ada38ebef204d7ca",
       "files": {
         "package.json": {
           "sha256": "d3121c43f3c5eabb4fd0a7a2efc2e46586232b628fbd2f333626e8c7ab94c631",
-          "url": "https://raw.githubusercontent.com/tashfeenahmed/freellmapi/ecdc9cbe27aa3db5e3d8935be13a5a17b9a513b1/package.json"
+          "url": "https://raw.githubusercontent.com/tashfeenahmed/freellmapi/2359d30bc2d72347dcea4276ada38ebef204d7ca/package.json"
         },
         "server/src/providers/index.ts": {
-          "sha256": "e54e7951a8679782a6b8ed27a79993bbc55bd1efaa03aec5ee48481238b4bf4e",
-          "url": "https://raw.githubusercontent.com/tashfeenahmed/freellmapi/ecdc9cbe27aa3db5e3d8935be13a5a17b9a513b1/server/src/providers/index.ts"
+          "sha256": "fcbc0b6990f77916845cdf63bb93b9b8d66d3bb12a818c57ad67ffde92298a53",
+          "url": "https://raw.githubusercontent.com/tashfeenahmed/freellmapi/2359d30bc2d72347dcea4276ada38ebef204d7ca/server/src/providers/index.ts"
         }
       },
       "license_designation": "UNVERIFIED_UPSTREAM_LICENSE",

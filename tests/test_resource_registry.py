@@ -33,8 +33,8 @@ def test_every_supplied_link_has_a_canonical_resource_and_input_fingerprint():
         else:
             assert not parsed.query
     assert len(covered) == 19  # FreeLLMAPI is supplied twice, not two projects.
-    assert len(resources) == 26
-    assert set(resources) - covered == {"hex", "neon", "supabase", "codespaces", "digitalocean", "gpt4free", "omnirouter-fork"}
+    assert len(resources) == 28
+    assert set(resources) - covered == {"hex", "neon", "supabase", "codespaces", "digitalocean", "gpt4free", "omnirouter-fork", "awesome-freellm-apis-open-free-llm-api", "free-inference"}
 
 
 def test_resource_matrix_preserves_native_anchors_and_research_boundary():

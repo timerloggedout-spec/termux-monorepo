@@ -192,9 +192,9 @@ jobs:
                 }
               }
             } catch (err) {
-              const msg = err.message || '';
-              if (msg.includes('usage limit exceeded') || msg.includes('USAGE_LIMIT_EXCEEDED')) {
-                core.warning('Linear workspace limit exceeded — skipping sync cleanly: ' + msg);
+              const msg = String(err.message || err).toLowerCase();
+              if (msg.includes('usage limit exceeded') || msg.includes('usage_limit_exceeded') || msg.includes('issue limit')) {
+                core.warning('Linear workspace limit exceeded — skipping sync cleanly: ' + err.message);
               } else {
                 throw err;
               }

@@ -666,3 +666,18 @@ proposals:
     related_branches:
       - proposal/aws-free-tier-strands-delphi-oracle
     gates_required: [proposal-lifecycle, repo-gate]
+
+  - id: quota-aware-cadence-rfp
+    title: "Quota-aware adaptive cadence system — full-thread evaluation"
+    author: timerloggedout-spec
+    status: posted
+    priority: P1
+    path: active/quota-aware-cadence-rfp/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: [1573]
+    related_prs: [1574, 1575, 1576]
+    related_branches: []
+    gates_required: [proposal-lifecycle]

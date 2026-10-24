@@ -159,9 +159,82 @@ def validate_backfill(
     if temporal_history.get("start_page") != start_page or temporal_history.get("next_start_page") != next_page:
         raise ValidationError("temporal history window does not match corpus manifest")
 
-    expected_coverage = "COMPLETE" if next_page is None else "PARTIAL_CONTINUATION_REQUIRED"
-    if temporal.get("coverage") != expected_coverage:
-        raise ValidationError("coverage state contradicts history continuation metadata")
+    coverage = manifest.get("history_coverage")
+    if not isinstance(coverage, dict) or coverage.get("schema_version") != "1.0":
+        raise ValidationError("manifest.history_coverage with schema_version 1.0 is required")
+    coverage_status = coverage.get("status")
+    coverage_next_page = coverage.get("next_start_page")
+    windows = coverage.get("windows")
+    if not isinstance(windows, list) or not windows:
+        raise ValidationError("history coverage must include at least one page-window receipt")
+
+    previous_next = None
+    for index, item in enumerate(windows):
+        if not isinstance(item, dict):
+            raise ValidationError("history coverage windows must be objects")
+        item_start = item.get("start_page")
+        item_next = item.get("next_start_page")
+        if not isinstance(item_start, int) or isinstance(item_start, bool) or item_start < 1:
+            raise ValidationError("history coverage start_page must be a positive integer")
+        if index == 0 and item_start != 1 and coverage_status != "UNVERIFIED":
+            raise ValidationError("history coverage cannot prove COMPLETE without starting at page one")
+        if index > 0 and item_start != previous_next:
+            raise ValidationError("history coverage page windows are not contiguous")
+        if item_next is not None and (
+            not isinstance(item_next, int) or isinstance(item_next, bool) or item_next <= item_start
+        ):
+            raise ValidationError("history coverage next_start_page must advance beyond start_page")
+        require_sha(item.get("source_sha"), HEX_40, f"history_coverage.windows[{index}].source_sha")
+        item_observed = item.get("observed_at")
+        if not isinstance(item_observed, str):
+            raise ValidationError("history coverage window observed_at is required")
+        try:
+            parsed_item_observed = datetime.fromisoformat(item_observed.replace("Z", "+00:00"))
+        except ValueError as exc:
+            raise ValidationError("history coverage window observed_at must be ISO-8601") from exc
+        if parsed_item_observed.tzinfo is None:
+            raise ValidationError("history coverage window observed_at must include a timezone")
+        limit = item.get("limit_per_family")
+        if not isinstance(limit, int) or isinstance(limit, bool) or limit < 1:
+            raise ValidationError("history coverage limit_per_family must be a positive integer")
+        for count_field in ("issue_count", "pull_request_count"):
+            count = item.get(count_field)
+            if not isinstance(count, int) or isinstance(count, bool) or count < 0:
+                raise ValidationError(f"history coverage {count_field} must be a non-negative integer")
+        if not isinstance(item.get("issues_complete"), bool) or not isinstance(item.get("pull_requests_complete"), bool):
+            raise ValidationError("history coverage completion flags must be booleans")
+        if item.get("issues_complete") != (item["issue_count"] < limit):
+            raise ValidationError("issue completion flag contradicts the collected window count")
+        if item.get("pull_requests_complete") != (item["pull_request_count"] < limit):
+            raise ValidationError("pull-request completion flag contradicts the collected window count")
+        if item_next is None and not (item["issues_complete"] and item["pull_requests_complete"]):
+            raise ValidationError("a terminal page window requires both resource families to be complete")
+        if item_next is not None and item["issues_complete"] and item["pull_requests_complete"]:
+            raise ValidationError("a continuation page cannot follow a window marked complete for both families")
+        previous_next = item_next
+
+    last_window = windows[-1]
+    if last_window.get("start_page") != start_page or last_window.get("next_start_page") != next_page:
+        raise ValidationError("latest history coverage window differs from manifest.history_window")
+    if last_window.get("source_sha") != source_sha or last_window.get("observed_at") != observed_at:
+        raise ValidationError("latest history coverage provenance differs from temporal source identity")
+    if coverage_status == "COMPLETE":
+        if next_page is not None or last_window.get("next_start_page") is not None:
+            raise ValidationError("COMPLETE coverage requires the final page window to have no continuation")
+        if coverage_next_page is not None:
+            raise ValidationError("COMPLETE history coverage must have null next_start_page")
+    elif coverage_status == "PARTIAL_CONTINUATION_REQUIRED":
+        if not isinstance(coverage_next_page, int) or isinstance(coverage_next_page, bool):
+            raise ValidationError("partial history coverage requires a next_start_page")
+        if coverage_next_page != next_page or next_page is None:
+            raise ValidationError("history coverage continuation differs from latest window")
+    elif coverage_status == "UNVERIFIED":
+        if coverage_next_page != 1:
+            raise ValidationError("unverified history coverage must restart from page one")
+    else:
+        raise ValidationError("unsupported history coverage status")
+    if temporal.get("coverage") != coverage_status:
+        raise ValidationError("temporal coverage differs from manifest.history_coverage status")
     expected_snapshot_id = snapshot_id(
         expected_repo,
         expected_ref,
@@ -188,7 +261,8 @@ def validate_backfill(
         "snapshot_id": expected_snapshot_id,
         "input_sha256": input_sha,
         "history_window": {"start_page": start_page, "next_start_page": next_page},
-        "coverage": expected_coverage,
+        "history_coverage": {"status": coverage_status, "next_start_page": coverage_next_page, "window_count": len(windows)},
+        "coverage": coverage_status,
         "counts": counts,
         "nodes_hash": nodes_hash,
         "edges_hash": edges_hash,

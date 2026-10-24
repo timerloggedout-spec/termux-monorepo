@@ -37,6 +37,8 @@ def baseline_predict(question: dict[str, Any]) -> tuple[Any, str, bool]:
     if task == "text_classification":
         if any(token in text for token in ("invoice", "charged twice", "refund", "cobraron", "reembolso")):
             return "billing", "deterministic_keyword_rule", False
+        if any(token in text for token in ("lost access", "my account", "changing my phone", "account access")):
+            return "account_access", "deterministic_keyword_rule", False
         if any(token in text for token in ("ignore all policy", "print the stored api key")):
             return "prompt_injection_attempt", "deterministic_keyword_rule", False
         if text == "it stopped working yesterday.":

@@ -1,3 +1,9 @@
+# RFP/Delphi Lane Telemetry Notes — Narrow-Scope Supplement
+
+> **Scope correction (2026-10-23):** this document covers only the RFP/Delphi lane. It is not the repository-wide telemetry audit and must not be read as the whole telemetry surface. The comprehensive cross-repository audit is [REPOSITORY-WIDE-TELEMETRY-SURFACES-INTENT-TRIGGERS-GAPS-AUDIT-2026-10-23.md](./REPOSITORY-WIDE-TELEMETRY-SURFACES-INTENT-TRIGGERS-GAPS-AUDIT-2026-10-23.md). That report maps the broader GitHub, Actions, EPS, ATES, evidence/provenance, action-effect, context-relationship, SHE, lane-events, Help-Wanted, quota/provider, historical-correlation, analytics and visualization surfaces. RFP/Delphi is one domain-specific lane within that ecosystem.
+
+---
+
 # RFP Telemetry Surfaces, Intent Mappings, Triggers, and Gaps — RECON / Validation Audit
 
 **Audit date:** 2026-10-23 (Pacific; GitHub API observations may appear on 2026-10-24 UTC)  

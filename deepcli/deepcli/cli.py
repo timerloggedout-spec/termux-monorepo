@@ -1,16 +1,25 @@
 #!/usr/bin/env python3
 """DeepCLI – command-line interface."""
-import argparse, subprocess
+import argparse, subprocess, os
 from pathlib import Path
-from rich.console import Console
+try:
+    from rich.console import Console
+    console = Console()
+except ModuleNotFoundError:
+    class DummyConsole:
+        def print(self, *args, **kwargs):
+            if args:
+                import re
+                text = re.sub(r"\[/?\w+\]", "", str(args[0]))
+                print(text)
+    console = DummyConsole()
+
 from deepcli.core import (
     get_token, create_session, fetch_sessions, get_history,
     stream_completion, upload_file, wait_for_file,
     branch_conversation, export_markdown, export_json,
     load_config, save_config, _set_last_session,
 )
-
-console = Console()
 
 def secure_permissions_recursively(root_path: Path):
     """
@@ -219,15 +228,12 @@ def cmd_export(args):
     output = export_json(token, sid) if fmt == "json" else export_markdown(token, sid)
     if args.output:
         out_path = Path(args.output)
-        if out_path.is_symlink():
+        if out_path.is_symlink() or any(p.is_symlink() for p in out_path.parents):
             console.print(f"[red]Export target '{args.output}' is a symlink. Rejected for security.[/]")
             return
-        out_path.write_text(output, encoding="utf-8")
-        if not out_path.is_symlink():
-            try:
-                out_path.chmod(0o600)
-            except Exception:
-                pass
+        fd = os.open(out_path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            f.write(output)
         console.print(f"[green]Exported to {args.output}[/]")
     else:
         console.print(output)

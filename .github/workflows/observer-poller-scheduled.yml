@@ -1,0 +1,86 @@
+name: Observer Poller Scheduled
+
+# Shared batched scheduled poller for residual high-volume observers.
+# Replaces per-event workflow_run triggers that create skip-run notification records
+# even when jobs are filtered to success-only.
+# Queries recent successful runs via API every 15-30 min and emits consolidated evidence.
+# Feature preservation: success ledger continues; non-success never creates run records here.
+# Expand with additional lanes (throughput, context, delphi) once dual-gate proven.
+
+on:
+  schedule:
+    - cron: '*/20 * * * *'  # every 20 min; adjust via cadence matrix
+  workflow_dispatch:
+    inputs:
+      lookback_minutes:
+        description: 'Lookback window in minutes'
+        default: '30'
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: observer-poller-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            .github/actions/lane-event
+            scripts/ops/lane_event.py
+            ops/lane-events
+          sparse-checkout-cone-mode: false
+
+      - name: Query recent successful runs and emit batched ledger
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LOOKBACK: ${{ inputs.lookback_minutes || '30' }}
+          DATABASE_URL: ${{ secrets.LANE_EVENTS_DATABASE_URL }}
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+        run: |
+          set -uo pipefail
+          echo "::notice::Observer poller: querying successful runs in last ${LOOKBACK}m"
+          # Placeholder: expand with gh api pagination for target workflows
+          # (lane events, throughput, context, etc.) and call lane-event action.
+          # Current: self-test emission to prove schedule path without spam.
+          python3 - <<'PY'
+          import json, os, datetime
+          from pathlib import Path
+          lookback = int(os.environ.get("LOOKBACK", "30"))
+          events = [{
+              "lane": "observer-poller",
+              "workflow": "observer-poller-scheduled",
+              "event_type": "poll_cycle",
+              "occurred_at": datetime.datetime.utcnow().isoformat() + "Z",
+              "payload": {"lookback_minutes": lookback, "status": "initiated", "note": "replaces residual workflow_run skip records"}
+          }]
+          Path("poller-events.jsonl").write_text("\n".join(json.dumps(e) for e in events) + "\n")
+          print(f"::notice::Emitted {len(events)} poller event(s)")
+          PY
+
+      - name: Write to ledger (if configured)
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/lane-event
+        with:
+          lane: from-file
+          workflow: observer-poller-scheduled
+          events-file: poller-events.jsonl
+          database-url: ${{ secrets.LANE_EVENTS_DATABASE_URL }}
+          neon-api-key: ${{ secrets.NEON_API_KEY }}
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Observer Poller Cycle" >> $GITHUB_STEP_SUMMARY
+          echo "- Lookback: ${{ inputs.lookback_minutes || '30' }} min" >> $GITHUB_STEP_SUMMARY
+          echo "- Purpose: eliminate residual skip-run notification spam from high-volume observers" >> $GITHUB_STEP_SUMMARY
+          echo "- Next: expand query to lane-events / throughput / context targets; retire their workflow_run triggers" >> $GITHUB_STEP_SUMMARY

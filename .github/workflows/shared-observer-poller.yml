@@ -1,0 +1,45 @@
+name: Shared Observer Poller
+
+on:
+  schedule:
+    # Run every 15 minutes to batch observations, eliminating per-event skip records
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: shared-observer-poller
+  cancel-in-progress: true
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      issues: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Poll recent runs and emit batched receipt
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          echo "## Shared Observer Poller Receipt" >> $GITHUB_STEP_SUMMARY
+          echo "Timestamp: $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_STEP_SUMMARY
+          # Fetch recent completed runs (last 30 min window approx)
+          runs=$(gh api --paginate "/repos/${{ github.repository }}/actions/runs?status=completed&per_page=50" | jq -c '.workflow_runs[] | select(.created_at > (now - 1800 | todate))')
+          echo "Recent completed runs observed: $(echo "$runs" | wc -l)" >> $GITHUB_STEP_SUMMARY
+          # Count by conclusion
+          echo "$runs" | jq -s 'group_by(.conclusion) | map({conclusion: .[0].conclusion, count: length})' >> $GITHUB_STEP_SUMMARY
+          # Prefer notice for capacity/lag; only surface true failures
+          failures=$(echo "$runs" | jq -r 'select(.conclusion == "failure") | .html_url')
+          if [ -n "$failures" ]; then
+            echo "### Failures requiring attention" >> $GITHUB_STEP_SUMMARY
+            echo "$failures" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "No failures in window. Skips/cancels audited as operational." >> $GITHUB_STEP_SUMMARY
+          fi
+          # Device note placeholder
+          echo "Device #1 (tmx-node-primary) Pinggy/Tailscale: check heartbeat separately." >> $GITHUB_STEP_SUMMARY

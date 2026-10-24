@@ -11,6 +11,12 @@ name: Peer review orchestrator
 # The workflow never handles browser cookies or attempts undocumented UI/API
 # requests. It runs API-only and never checks out pull-request code, including
 # under pull_request_target. See docs/ops/OPERATOR_INTERACTIVE_ACTIONS.md.
+#
+# Bot-authored PRs: CodeRabbit does not review PRs authored by bots unless a
+# review seat is assigned to the bot. The owner declined the seat assignment
+# (2026-10-23) and accepted bot-authored PRs proceeding without CodeRabbit,
+# so the collect step drops 'coderabbit' from the effective required set
+# when the PR author is a bot. Other providers are unaffected.
 
 on:
   pull_request_target:
@@ -143,6 +149,22 @@ jobs:
               core.setOutput('skipped', 'true');
               core.setOutput('state', 'out_of_scope_pr');
               return;
+            }
+
+            // CodeRabbit skips bot-authored PRs unless a review seat is
+            // assigned to the bot; the owner declined seat assignment
+            // (2026-10-23) and accepted bot-authored PRs proceeding without
+            // CodeRabbit. Drop 'coderabbit' from this PR's effective
+            // required set so the peer gate reflects that decision instead
+            // of waiting on a review that will never be delivered.
+            const authorLogin = (pr.user?.login || '').toLowerCase();
+            const authorIsBot = pr.user?.type === 'Bot' || authorLogin.endsWith('[bot]');
+            const effectiveProviders = authorIsBot
+              ? requiredProviders.filter(provider => provider !== 'coderabbit')
+              : requiredProviders;
+            const exemptedProviders = requiredProviders.filter(provider => !effectiveProviders.includes(provider));
+            if (exemptedProviders.length) {
+              core.info(`Bot-authored PR (${authorLogin}): exempting ${exemptedProviders.join(', ')} from the required provider set.`);
             }
 
             const headSha = pr.head.sha;
@@ -359,7 +381,7 @@ jobs:
               const controls = controlEntries(evidence.comments);
               const acknowledgements = acknowledgedControls(evidence.comments, controls);
               const codeRabbitCommandRequested = operatorReviewRequested(evidence.comments);
-              const providerStates = requiredProviders.map(provider => {
+              const providerStates = effectiveProviders.map(provider => {
                 const providerControls = controls.filter(control => control.provider === provider);
                 const delivered = deliveredProvider(provider, evidence);
                 const cooldown = cooldownNotice(provider, evidence);
@@ -405,11 +427,16 @@ jobs:
             const deliveryLines = providerStates.map(item =>
               `- ${item.provider}: ${item.state}${item.delivered.url ? `; evidence=${item.delivered.url}` : ''}${item.cooldown?.active ? `; cooldown=${item.cooldown.detail}; source=${item.cooldown.url}` : ''}`
             );
+            for (const provider of exemptedProviders) {
+              deliveryLines.push(`- ${provider}: not_required_bot_authored_pr (CodeRabbit review seat not assigned; owner decision 2026-10-23)`);
+            }
 
             core.setOutput('skipped', 'false');
             core.setOutput('state', state);
             core.setOutput('ready', complete ? 'true' : 'false');
             core.setOutput('pending', pending);
+            core.setOutput('required_providers', effectiveProviders.join(',') || 'none');
+            core.setOutput('required_providers_effective', effectiveProviders.join(','));
             core.setOutput('enforce_provider_completion', enforceProviderCompletion ? 'true' : 'false');
             core.setOutput('cycle_started_at', cycleStartedAtIso);
             core.setOutput('provider_lines', deliveryLines.join('\n'));
@@ -445,7 +472,7 @@ jobs:
           CYCLE_STARTED_AT: ${{ steps.collect.outputs.cycle_started_at }}
           PROVIDERS: ${{ steps.collect.outputs.provider_lines }}
           CONTROLS: ${{ steps.collect.outputs.control_lines }}
-          REQUIRED_PROVIDERS: ${{ vars.PEER_REQUIRED_PROVIDERS || 'coderabbit' }}
+          REQUIRED_PROVIDERS: ${{ steps.collect.outputs.required_providers || vars.PEER_REQUIRED_PROVIDERS || 'coderabbit' }}
           ENFORCE_PROVIDER_COMPLETION: ${{ steps.collect.outputs.enforce_provider_completion }}
           PEER_STATE_PUBLISHER_LOGINS: ${{ vars.PEER_STATE_PUBLISHER_LOGINS || github.repository_owner }}
         with:
@@ -555,7 +582,7 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number }}
           CYCLE_ID: ${{ steps.collect.outputs.cycle_id }}
           HEAD_SHA: ${{ steps.collect.outputs.head_sha }}
-          REQUIRED_PROVIDERS: ${{ vars.PEER_REQUIRED_PROVIDERS || 'coderabbit' }}
+          REQUIRED_PROVIDERS: ${{ steps.collect.outputs.required_providers_effective }}
           OPERATOR_ALLOWED_ACTIONS: ${{ vars.OPERATOR_ALLOWED_ACTIONS || 'coderabbit:trigger_review,qodo:trigger_review,devin:trigger_review' }}
           OPERATOR_EXECUTOR_LOGINS: ${{ vars.OPERATOR_EXECUTOR_LOGINS || github.repository_owner }}
         with:

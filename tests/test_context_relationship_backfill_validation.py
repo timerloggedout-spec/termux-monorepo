@@ -45,7 +45,11 @@ class ContextBackfillValidationTests(unittest.TestCase):
             "scope_registry_sha256": "d" * 64, "latest_observed_at": observed,
             "node_count": 2, "edge_count": 1, "verified_edge_count": 1,
             "candidate_edge_count": 0,
-            "history_window": {"start_page": 1, "next_start_page": 2},
+            "history_window": {
+                "start_page": 1, "next_start_page": 2, "limit_per_family": 100,
+                "issue_count": 100, "pull_request_count": 100,
+                "issues_complete": False, "pull_requests_complete": False,
+            },
             "history_coverage": {
                 "schema_version": "1.0", "status": "PARTIAL_CONTINUATION_REQUIRED",
                 "next_start_page": 2,

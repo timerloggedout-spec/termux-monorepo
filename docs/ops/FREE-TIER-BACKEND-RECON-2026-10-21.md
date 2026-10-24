@@ -207,3 +207,8 @@ figures are marked "(survey)" in-line.
 
 *End of recon. Signups, registry edits, and builds are separate, scoped orders —
 this file only updates the fleet's knowledge.*
+
+
+## 8. Relationship to free-LLM provider discovery
+
+This backend recon is the **capacity and entitlement** side of the mesh, not a catalog of inference models. Pair it with the [Free LLM Provider Recon](FREE-LLM-PROVIDER-RECON.md) and [resource implementation matrix](RESOURCE-IMPLEMENTATION-MATRIX.md): a backend free tier does not establish a free inference entitlement, and a model directory does not establish a usable backend, account quota, or remaining balance. Keep source discovery, entitlement evidence, runtime admission, actual-call telemetry, and value-board attribution as separate acceptance gates.

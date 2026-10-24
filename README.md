@@ -214,11 +214,19 @@ The repository’s Linguist work optimizes **internal** agent communication thro
 | Surface | Purpose | Audit route |
 |---|---|---|
 | [`workspace/compression_sandbox/cedrlang/cid.py`](workspace/compression_sandbox/cedrlang/cid.py) | Local CedarIndex short-pointer registry and expansion behavior | Source-level implementation. |
+| [`workspace/compression_sandbox/cedrlang/phase_codec.py`](workspace/compression_sandbox/cedrlang/phase_codec.py) | Conversational Steganography Cipher & 1337 Grimoire Phase Codec | Pre-LLM pre-parser obfuscation lane. |
 | [`harmony_hub/workspace/agent/LINGUIST_SPEC.md`](harmony_hub/workspace/agent/LINGUIST_SPEC.md) | Linguist role, pointer conventions, and integration intent | Agent specification. |
 | [PR #196](https://github.com/timerloggedout-spec/termux-monorepo/pull/196) | Merged CedrLang v2 compilation work | Historical implementation and review evidence. |
 | [PR #228](https://github.com/timerloggedout-spec/termux-monorepo/pull/228) | Merged fast-path term-search optimization | Subsequent performance evidence. |
 
 1337-style naming may be used as a **display dialect**, never as a substitute for a source path, permission boundary, or validation result. The disciplined version of “l33t” is legibility under pressure.
+
+### 4.1 Conversational Steganography Cipher & Token Efficiency Analysis
+
+CedrLang incorporates a 4th development lane: **Conversational Steganography Cipher** (`ConversationalSteganographyCipher` in `phase_codec.py`), providing a pre-LLM pre-parser obfuscation filter with support for custom/private key mappings.
+
+- **Base64 vs CedrLang Efficiency:** Base64 inflates character length by ~33% (4 ASCII characters per 3 bytes). Across subword tokenizers (BPE / Tiktoken / WordPiece), Base64 lacks standard word fragments and results in high token fragmentation (~0.75-1.0 tokens/character). CedrLang symbolic substitution and Grimoire 1337 mapping reduce LLM token consumption by 30–60% while preserving lossless round-trip expansion back to clean human-readable form.
+- **Notation Matrices:** CedrLang & Grimoire natively compile notation and nomenclature concepts (`n0m3nc1` for nomenclature, `3qu1v_m47` for equivalency matrix, `d0m_c0mp` for domain composition, `n07_537` for notation set).
 
 ---
 

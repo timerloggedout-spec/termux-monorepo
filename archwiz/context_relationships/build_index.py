@@ -39,6 +39,77 @@ except ImportError:  # Supports direct script use.
 BUILDER_ID = "archwiz.context_relationships.build_index@1.0"
 
 
+def advance_history_coverage(
+    previous: Any, window: dict[str, Any], source_sha: str, observed_at: str
+) -> dict[str, Any]:
+    """Record page-window evidence and prove continuity from page one before claiming COMPLETE."""
+    start_page = window.get("start_page")
+    next_page = window.get("next_start_page")
+    entry = {
+        "start_page": start_page,
+        "next_start_page": next_page,
+        "limit_per_family": window.get("limit_per_family"),
+        "issue_count": window.get("issue_count"),
+        "pull_request_count": window.get("pull_request_count"),
+        "issues_complete": window.get("issues_complete"),
+        "pull_requests_complete": window.get("pull_requests_complete"),
+        "source_sha": source_sha,
+        "observed_at": observed_at,
+    }
+
+    def unverified(windows: list[dict[str, Any]]) -> dict[str, Any]:
+        return {
+            "schema_version": "1.0",
+            "status": "UNVERIFIED",
+            "next_start_page": 1,
+            "windows": windows,
+            "reason": "historical_prefix_not_proven_restart_from_page_one",
+        }
+
+    if not isinstance(start_page, int) or isinstance(start_page, bool) or start_page < 1:
+        return unverified([])
+    if next_page is not None and (
+        not isinstance(next_page, int) or isinstance(next_page, bool) or next_page <= start_page
+    ):
+        return unverified([entry])
+    if start_page == 1:
+        windows = [entry]
+    elif (
+        isinstance(previous, dict)
+        and previous.get("status") == "PARTIAL_CONTINUATION_REQUIRED"
+        and previous.get("next_start_page") == start_page
+        and isinstance(previous.get("windows"), list)
+        and previous["windows"]
+    ):
+        windows = [*previous["windows"], entry]
+    else:
+        return unverified([entry])
+
+    expected_start = 1
+    for index, item in enumerate(windows):
+        if not isinstance(item, dict) or item.get("start_page") != expected_start:
+            return unverified(windows)
+        item_next = item.get("next_start_page")
+        if item_next is not None and (
+            not isinstance(item_next, int) or isinstance(item_next, bool) or item_next <= expected_start
+        ):
+            return unverified(windows)
+        expected_start = item_next
+        if index < len(windows) - 1 and expected_start is None:
+            return unverified(windows)
+    last = windows[-1]
+    if last.get("next_start_page") is None:
+        if last.get("issues_complete") is not True or last.get("pull_requests_complete") is not True:
+            return unverified(windows)
+        return {"schema_version": "1.0", "status": "COMPLETE", "next_start_page": None, "windows": windows}
+    return {
+        "schema_version": "1.0",
+        "status": "PARTIAL_CONTINUATION_REQUIRED",
+        "next_start_page": last["next_start_page"],
+        "windows": windows,
+    }
+
+
 def write_json(path: Path, value: Any) -> None:
     path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
@@ -159,6 +230,15 @@ def build_index(
     checkpoint_path = output / "checkpoint.json"
     since = None if full_refresh else load_checkpoint(checkpoint_path, owner, repo, ref)
     historical_seed = load_canonical_history(output, owner, repo, ref)
+    previous_history_coverage = None
+    prior_manifest_path = output / "manifest.json"
+    if prior_manifest_path.exists():
+        try:
+            prior_manifest = json.loads(prior_manifest_path.read_text(encoding="utf-8"))
+            if isinstance(prior_manifest, dict):
+                previous_history_coverage = prior_manifest.get("history_coverage")
+        except (OSError, json.JSONDecodeError):
+            previous_history_coverage = None
     bootstrap_backfill = historical_seed is None
     collection_max_items = max(max_items, 100) if bootstrap_backfill else max_items
     collection_max_commits = max(max_commits, 100) if bootstrap_backfill else max_commits
@@ -190,7 +270,10 @@ def build_index(
     source_sha = os.environ.get("GITHUB_SHA", f"local:{ref}")
     observed_at = str(github_report.get("collected_at") or manifest.get("generated_at") or "")
     next_start_page = history_window.get("next_start_page")
-    coverage = "COMPLETE" if next_start_page is None else "PARTIAL_CONTINUATION_REQUIRED"
+    history_coverage = advance_history_coverage(
+        previous_history_coverage, history_window, source_sha, observed_at
+    )
+    coverage = history_coverage["status"]
     previous_snapshot = None
     previous_snapshot_id = None
     temporal_current_path = output / "temporal-current.json"
@@ -227,6 +310,7 @@ def build_index(
             "retained_history": historical_seed is not None,
             "bootstrap_backfill": bootstrap_backfill,
             "history_window": history_window,
+            "history_coverage": history_coverage,
         }
     )
 
@@ -257,6 +341,7 @@ def build_index(
             "retained_history": historical_seed is not None,
             "bootstrap_backfill": bootstrap_backfill,
             "history_window": history_window,
+            "history_coverage": history_coverage,
             "checkpoint_eligible": checkpoint_eligible,
             "github_requests": github_report["request_count"],
             "github_retries": github_report["retry_count"],

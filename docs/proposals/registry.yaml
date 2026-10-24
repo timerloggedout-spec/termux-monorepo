@@ -651,3 +651,18 @@ proposals:
     related_prs: [499, 530, 531]
     related_branches: [gaps-opps/add-devcontainer-codespaces, docs/proposals/codespaces-enablement]
     gates_required: [repo-gate, termux-smoke]
+
+  - id: aws-free-tier-strands-delphi-oracle
+    title: "AWS Free Tier integration and Strands Decider Delphi Oracle"
+    author: ChatGPT
+    status: in_review
+    priority: P1
+    path: active/aws-free-tier-strands-delphi-oracle/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_prs: [1611]
+    related_branches:
+      - proposal/aws-free-tier-strands-delphi-oracle
+    gates_required: [proposal-lifecycle, repo-gate]

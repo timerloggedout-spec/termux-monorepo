@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "05fa92f0f851404e4148d1ab3fd0dabc2e40134ace477748aee62dc728ac27b0",
-  "workflow_count": 178,
+  "source_fingerprint": "8299ac96ad8d3e6ab1f4cceabe651d0ccc306b7e7d4c9f6aac3a63da8f621d83",
+  "workflow_count": 179,
   "workflows": [
     {
       "action_pins": [
@@ -642,6 +642,22 @@
       "path": ".github/workflows/commit-diff-watcher.yml",
       "schedules": [],
       "triggers": [
+        "push"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: context-backfill-contract-${{ github.ref }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "validate"
+      ],
+      "name": "Context backfill contract",
+      "path": ".github/workflows/context-backfill-contract.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
         "push"
       ]
     },

@@ -20,9 +20,21 @@ V0 preserves the rollout as it was found for fair comparison. It is not approved
 | PR head SHA | `dbb302b5aa4ac21d27de9e34bf16b22914076109` | Historical recorded head; verify current PR head before using it as an immutable source ref |
 | Tracking issue | [#1497](https://github.com/timerloggedout-spec/termux-monorepo/issues/1497) | Operational history and evidence |
 | Research/decision lane | [#1567](https://github.com/timerloggedout-spec/termux-monorepo/issues/1567) | MVT / DoE / TLM / Moneyball / Delphi protocol |
-| Evidence files on PR branch | `MANIFEST.md`, `OPERATIONAL-VALIDATION.md`, `FILTERING-VALIDATION.md`, `SECONDARY-RECOVERY.md`, `FILTERING.md` | Primary local records to re-read before trials |
+| Evidence files at historical PR #1514 head | See immutable path/blob ledger below | Blob SHAs are anchored to historical head `dbb302b5aa4ac21d27de9e34bf16b22914076109`, not current branch names |
 
 **Provenance caveat:** these refs and statuses were recorded in the available issue/PR material. This documentation commit does not assert that the PR head is unchanged now. Before a trial, record the current API-returned head SHA and content hashes for every source file actually used.
+
+### Immutable evidence-file identity ledger
+
+The following paths and blob SHAs were fetched at historical PR #1514 head `dbb302b5aa4ac21d27de9e34bf16b22914076109`. Use these exact identities when reconstructing the recorded baseline; if a future trial uses different content, record the new commit/blob identity separately.
+
+| Repository-relative path | Blob SHA at historical head |
+|---|---|
+| `docs/proposals/active/antigravity-cli-provisioning/MANIFEST.md` | `eb299d4b860e7a5e41651cb3e3f2df06f695ff65` |
+| `docs/proposals/active/antigravity-cli-provisioning/OPERATIONAL-VALIDATION.md` | `6f6e62473273dd02cb9e81a082127e15195b998f` |
+| `docs/proposals/active/antigravity-cli-provisioning/FILTERING-VALIDATION.md` | `bd63f421cd25ff2ec46bc3a330ceafbc04d9d7a6` |
+| `docs/proposals/active/antigravity-cli-provisioning/SECONDARY-RECOVERY.md` | `46c2d0d2d4e34838cfc53388e410884514d25dc4` |
+| `docs/proposals/active/antigravity-cli-provisioning/FILTERING.md` | `3f02060d3f2313d2dd8ed9c1673661f06d2618f4` |
 
 ## Environment and authorization context
 

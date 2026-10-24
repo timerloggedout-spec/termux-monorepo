@@ -1,6 +1,300 @@
 {
  "cycles": [
   {
+   "author": "google-labs-jules[bot]",
+   "author_class": "bot",
+   "classes": {
+    "code": 1,
+    "docs": 2
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1632-11ad92065202",
+   "cycle_started_at": "2026-10-24T08:12:31.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "11ad920652029064463b0f3231f2fd8f3ff6dd0b",
+   "issue_comment_volume": {
+    "ecc": 4
+   },
+   "labels": [],
+   "pr": 1632,
+   "primary_class": "docs",
+   "providers": {},
+   "ready": "true",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 43,
+    "deletions": 18,
+    "files": 3
+   },
+   "state": "responses_collected",
+   "verdicts": {}
+  },
+  {
+   "author": "google-labs-jules[bot]",
+   "author_class": "bot",
+   "classes": {
+    "code": 1
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1631-1e2f3c751056",
+   "cycle_started_at": "2026-10-24T07:18:38.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "1e2f3c751056e3d51bc3aadd4ee5b2ef898afdf0",
+   "issue_comment_volume": {
+    "ecc": 8
+   },
+   "labels": [],
+   "pr": 1631,
+   "primary_class": "code",
+   "providers": {},
+   "ready": "true",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 17,
+    "deletions": 11,
+    "files": 1
+   },
+   "state": "responses_collected",
+   "verdicts": {}
+  },
+  {
+   "author": "google-labs-jules[bot]",
+   "author_class": "bot",
+   "classes": {
+    "code": 1
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1631-9c4fb929ce8c",
+   "cycle_started_at": "2026-10-24T07:21:57.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "9c4fb929ce8c655b1790f38e0dc3252d4f89f395",
+   "issue_comment_volume": {
+    "ecc": 8
+   },
+   "labels": [],
+   "pr": 1631,
+   "primary_class": "code",
+   "providers": {},
+   "ready": "true",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 17,
+    "deletions": 11,
+    "files": 1
+   },
+   "state": "responses_collected",
+   "verdicts": {}
+  },
+  {
+   "author": "google-labs-jules[bot]",
+   "author_class": "bot",
+   "classes": {
+    "code": 2,
+    "docs": 4,
+    "tests": 2
+   },
+   "coderabbit_skipped_notice": true,
+   "cycle_id": "pr-1607-a7609cd0d1c0",
+   "cycle_started_at": "2026-10-23T23:37:01.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "a7609cd0d1c08ea8ca18eeeca6fb1448f91b486e",
+   "issue_comment_volume": {
+    "coderabbit": 6,
+    "ecc": 12
+   },
+   "labels": [],
+   "pr": 1607,
+   "primary_class": "mixed",
+   "providers": {
+    "coderabbit": {
+     "cooldown": false,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "awaiting_provider_response"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 201,
+    "deletions": 36,
+    "files": 8
+   },
+   "state": "awaiting_provider_response",
+   "verdicts": {}
+  },
+  {
+   "author": "google-labs-jules[bot]",
+   "author_class": "bot",
+   "classes": {
+    "code": 2,
+    "docs": 4,
+    "tests": 2
+   },
+   "coderabbit_skipped_notice": true,
+   "cycle_id": "pr-1607-04a137355f22",
+   "cycle_started_at": "2026-10-24T06:43:51.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "04a137355f2290eaf970b4e20eedb0c4d00dfbb7",
+   "issue_comment_volume": {
+    "coderabbit": 6,
+    "ecc": 12
+   },
+   "labels": [],
+   "pr": 1607,
+   "primary_class": "mixed",
+   "providers": {},
+   "ready": "true",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 201,
+    "deletions": 36,
+    "files": 8
+   },
+   "state": "responses_collected",
+   "verdicts": {}
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "code": 1,
+    "config": 1,
+    "docs": 2,
+    "generated": 1,
+    "tests": 2,
+    "workflows": 2
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1629-954e956a83bf",
+   "cycle_started_at": "2026-10-24T06:36:17.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "954e956a83bfbcb3dccab9e1634fd67c3d25fc51",
+   "issue_comment_volume": {
+    "coderabbit": 2,
+    "ecc": 6,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1629,
+   "primary_class": "mixed",
+   "providers": {
+    "coderabbit": {
+     "cooldown": true,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "provider_cooldown"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 5319,
+    "deletions": 15,
+    "files": 9
+   },
+   "state": "provider_cooldown",
+   "verdicts": {}
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "docs": 2
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1626-fd5434f18e0f",
+   "cycle_started_at": "2026-10-24T06:10:56.000Z",
+   "docs_only": true,
+   "generated_only": false,
+   "head_sha": "fd5434f18e0f7e653a7f617d3621a2c349758e36",
+   "issue_comment_volume": {
+    "coderabbit": 3,
+    "ecc": 8,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1626,
+   "primary_class": "docs",
+   "providers": {
+    "coderabbit": {
+     "cooldown": false,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "awaiting_provider_response"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {
+    "coderabbit": 4
+   },
+   "size": {
+    "additions": 48,
+    "deletions": 27,
+    "files": 2
+   },
+   "state": "awaiting_provider_response",
+   "verdicts": {
+    "coderabbit": {
+     "CHANGES_REQUESTED": 1
+    }
+   }
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "docs": 2
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1626-72884472130b",
+   "cycle_started_at": "2026-10-24T06:14:03.000Z",
+   "docs_only": true,
+   "generated_only": false,
+   "head_sha": "72884472130bef3d0b7186ed0a256a2a6d85eb29",
+   "issue_comment_volume": {
+    "coderabbit": 3,
+    "ecc": 8,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1626,
+   "primary_class": "docs",
+   "providers": {
+    "coderabbit": {
+     "cooldown": false,
+     "delivered": true,
+     "latency_sec": 412.0,
+     "required": true,
+     "state": "provider_completed"
+    }
+   },
+   "ready": "true",
+   "review_comment_counts": {
+    "coderabbit": 4
+   },
+   "size": {
+    "additions": 48,
+    "deletions": 27,
+    "files": 2
+   },
+   "state": "responses_collected",
+   "verdicts": {
+    "coderabbit": {
+     "CHANGES_REQUESTED": 1
+    }
+   }
+  },
+  {
    "author": "timerloggedout-spec",
    "author_class": "user",
    "classes": {
@@ -722,96 +1016,6 @@
    "verdicts": {
     "coderabbit": {
      "CHANGES_REQUESTED": 6
-    }
-   }
-  },
-  {
-   "author": "timerloggedout-spec",
-   "author_class": "user",
-   "classes": {
-    "docs": 2
-   },
-   "coderabbit_skipped_notice": false,
-   "cycle_id": "pr-1626-fd5434f18e0f",
-   "cycle_started_at": "2026-10-24T06:10:56.000Z",
-   "docs_only": true,
-   "generated_only": false,
-   "head_sha": "fd5434f18e0f7e653a7f617d3621a2c349758e36",
-   "issue_comment_volume": {
-    "coderabbit": 3,
-    "ecc": 8,
-    "qodo": 1
-   },
-   "labels": [],
-   "pr": 1626,
-   "primary_class": "docs",
-   "providers": {
-    "coderabbit": {
-     "cooldown": false,
-     "delivered": false,
-     "latency_sec": null,
-     "required": true,
-     "state": "awaiting_provider_response"
-    }
-   },
-   "ready": "false",
-   "review_comment_counts": {
-    "coderabbit": 4
-   },
-   "size": {
-    "additions": 48,
-    "deletions": 27,
-    "files": 2
-   },
-   "state": "awaiting_provider_response",
-   "verdicts": {
-    "coderabbit": {
-     "CHANGES_REQUESTED": 1
-    }
-   }
-  },
-  {
-   "author": "timerloggedout-spec",
-   "author_class": "user",
-   "classes": {
-    "docs": 2
-   },
-   "coderabbit_skipped_notice": false,
-   "cycle_id": "pr-1626-72884472130b",
-   "cycle_started_at": "2026-10-24T06:14:03.000Z",
-   "docs_only": true,
-   "generated_only": false,
-   "head_sha": "72884472130bef3d0b7186ed0a256a2a6d85eb29",
-   "issue_comment_volume": {
-    "coderabbit": 3,
-    "ecc": 8,
-    "qodo": 1
-   },
-   "labels": [],
-   "pr": 1626,
-   "primary_class": "docs",
-   "providers": {
-    "coderabbit": {
-     "cooldown": false,
-     "delivered": true,
-     "latency_sec": 412.0,
-     "required": true,
-     "state": "provider_completed"
-    }
-   },
-   "ready": "true",
-   "review_comment_counts": {
-    "coderabbit": 4
-   },
-   "size": {
-    "additions": 48,
-    "deletions": 27,
-    "files": 2
-   },
-   "state": "responses_collected",
-   "verdicts": {
-    "coderabbit": {
-     "CHANGES_REQUESTED": 1
     }
    }
   },
@@ -1819,46 +2023,6 @@
     "additions": 135,
     "deletions": 16,
     "files": 4
-   },
-   "state": "awaiting_provider_response",
-   "verdicts": {}
-  },
-  {
-   "author": "google-labs-jules[bot]",
-   "author_class": "bot",
-   "classes": {
-    "code": 2,
-    "docs": 4,
-    "tests": 2
-   },
-   "coderabbit_skipped_notice": true,
-   "cycle_id": "pr-1607-a7609cd0d1c0",
-   "cycle_started_at": "2026-10-23T23:37:01.000Z",
-   "docs_only": false,
-   "generated_only": false,
-   "head_sha": "a7609cd0d1c08ea8ca18eeeca6fb1448f91b486e",
-   "issue_comment_volume": {
-    "coderabbit": 3,
-    "ecc": 12
-   },
-   "labels": [],
-   "pr": 1607,
-   "primary_class": "mixed",
-   "providers": {
-    "coderabbit": {
-     "cooldown": false,
-     "delivered": false,
-     "latency_sec": null,
-     "required": true,
-     "state": "awaiting_provider_response"
-    }
-   },
-   "ready": "false",
-   "review_comment_counts": {},
-   "size": {
-    "additions": 201,
-    "deletions": 36,
-    "files": 8
    },
    "state": "awaiting_provider_response",
    "verdicts": {}
@@ -3967,14 +4131,1769 @@
      "APPROVED": 1
     }
    }
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "code": 4,
+    "data": 1,
+    "docs": 14,
+    "tests": 3,
+    "workflows": 5
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-527-60fc3e697b89",
+   "cycle_started_at": "2026-09-15T23:50:26.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "60fc3e697b89f56c540318dcf2faa3442fd254cd",
+   "issue_comment_volume": {
+    "coderabbit": 3,
+    "ecc": 6,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 527,
+   "primary_class": "docs",
+   "providers": {
+    "coderabbit": {
+     "cooldown": true,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "provider_cooldown"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 2261,
+    "deletions": 61,
+    "files": 27
+   },
+   "state": "provider_cooldown",
+   "verdicts": {}
+  },
+  {
+   "author": "google-labs-jules[bot]",
+   "author_class": "bot",
+   "classes": {
+    "code": 2,
+    "docs": 4,
+    "tests": 2
+   },
+   "coderabbit_skipped_notice": true,
+   "cycle_id": "pr-1494-8464945ec49b",
+   "cycle_started_at": "2026-10-21T23:38:29.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "8464945ec49ba7a61dd3bdde522886fd72d74167",
+   "issue_comment_volume": {
+    "coderabbit": 2,
+    "ecc": 6
+   },
+   "labels": [],
+   "pr": 1494,
+   "primary_class": "mixed",
+   "providers": {
+    "coderabbit": {
+     "cooldown": true,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "provider_cooldown"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 196,
+    "deletions": 31,
+    "files": 8
+   },
+   "state": "provider_cooldown",
+   "verdicts": {}
+  },
+  {
+   "author": "google-labs-jules[bot]",
+   "author_class": "bot",
+   "classes": {
+    "code": 1,
+    "docs": 4,
+    "tests": 1
+   },
+   "coderabbit_skipped_notice": true,
+   "cycle_id": "pr-1556-2177e62206b4",
+   "cycle_started_at": "2026-10-22T23:21:39.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "2177e62206b4be4c5efa0e01d2e72fd4a22f2c24",
+   "issue_comment_volume": {
+    "coderabbit": 2,
+    "ecc": 6
+   },
+   "labels": [],
+   "pr": 1556,
+   "primary_class": "docs",
+   "providers": {
+    "coderabbit": {
+     "cooldown": true,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "provider_cooldown"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 151,
+    "deletions": 27,
+    "files": 6
+   },
+   "state": "provider_cooldown",
+   "verdicts": {}
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "docs": 1
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1578-bffa965f9f14",
+   "cycle_started_at": "2026-10-23T11:01:12.000Z",
+   "docs_only": true,
+   "generated_only": false,
+   "head_sha": "bffa965f9f14245fc2ba639e04e0cf71850618a7",
+   "issue_comment_volume": {
+    "coderabbit": 2,
+    "ecc": 4,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1578,
+   "primary_class": "docs",
+   "providers": {
+    "coderabbit": {
+     "cooldown": true,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "provider_cooldown"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 13,
+    "deletions": 11,
+    "files": 1
+   },
+   "state": "provider_cooldown",
+   "verdicts": {}
+  },
+  {
+   "author": "google-labs-jules[bot]",
+   "author_class": "bot",
+   "classes": {},
+   "coderabbit_skipped_notice": true,
+   "cycle_id": "pr-1570-c851d9a5753d",
+   "cycle_started_at": "2026-10-23T08:06:51.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "c851d9a5753d58dc10846e47a3193aaa8a8c0032",
+   "issue_comment_volume": {
+    "coderabbit": 2,
+    "ecc": 4
+   },
+   "labels": [],
+   "pr": 1570,
+   "primary_class": "unknown",
+   "providers": {
+    "coderabbit": {
+     "cooldown": true,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "provider_cooldown"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+   },
+   "state": "provider_cooldown",
+   "verdicts": {}
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "code": 7,
+    "data": 4,
+    "docs": 2,
+    "other": 1,
+    "tests": 9,
+    "workflows": 3
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1495-bf46aa1e80d6",
+   "cycle_started_at": "2026-10-22T02:25:01.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "bf46aa1e80d6d520473d0fd6a97e63ccd0623d36",
+   "issue_comment_volume": {
+    "coderabbit": 7,
+    "ecc": 30,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1495,
+   "primary_class": "mixed",
+   "providers": {
+    "coderabbit": {
+     "cooldown": true,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "provider_cooldown"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {
+    "coderabbit": 10
+   },
+   "size": {
+    "additions": 6855,
+    "deletions": 256,
+    "files": 26
+   },
+   "state": "provider_cooldown",
+   "verdicts": {
+    "coderabbit": {
+     "CHANGES_REQUESTED": 1,
+     "COMMENTED": 5
+    }
+   }
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "code": 7,
+    "data": 4,
+    "docs": 2,
+    "other": 1,
+    "tests": 9,
+    "workflows": 3
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1495-9a98ab96e9e8",
+   "cycle_started_at": "2026-10-22T02:27:25.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "9a98ab96e9e8c4f3352023fc838439b04622005c",
+   "issue_comment_volume": {
+    "coderabbit": 7,
+    "ecc": 30,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1495,
+   "primary_class": "mixed",
+   "providers": {
+    "coderabbit": {
+     "cooldown": true,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "provider_cooldown"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {
+    "coderabbit": 10
+   },
+   "size": {
+    "additions": 6855,
+    "deletions": 256,
+    "files": 26
+   },
+   "state": "provider_cooldown",
+   "verdicts": {
+    "coderabbit": {
+     "CHANGES_REQUESTED": 1,
+     "COMMENTED": 5
+    }
+   }
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "code": 7,
+    "data": 4,
+    "docs": 2,
+    "other": 1,
+    "tests": 9,
+    "workflows": 3
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1495-dc86995a9073",
+   "cycle_started_at": "2026-10-22T02:28:44.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "dc86995a9073ba54b5e42a9e888c80c87ccb83db",
+   "issue_comment_volume": {
+    "coderabbit": 7,
+    "ecc": 30,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1495,
+   "primary_class": "mixed",
+   "providers": {
+    "coderabbit": {
+     "cooldown": false,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "pending_operator_action"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {
+    "coderabbit": 10
+   },
+   "size": {
+    "additions": 6855,
+    "deletions": 256,
+    "files": 26
+   },
+   "state": "pending_operator_action",
+   "verdicts": {
+    "coderabbit": {
+     "CHANGES_REQUESTED": 1,
+     "COMMENTED": 5
+    }
+   }
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "code": 7,
+    "data": 4,
+    "docs": 2,
+    "other": 1,
+    "tests": 9,
+    "workflows": 3
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1495-0ea47cf28cc7",
+   "cycle_started_at": "2026-10-22T03:27:57.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "0ea47cf28cc793fa210e3bdd1f7385db475e09c7",
+   "issue_comment_volume": {
+    "coderabbit": 7,
+    "ecc": 30,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1495,
+   "primary_class": "mixed",
+   "providers": {
+    "coderabbit": {
+     "cooldown": false,
+     "delivered": true,
+     "latency_sec": 511.0,
+     "required": true,
+     "state": "provider_completed"
+    }
+   },
+   "ready": "true",
+   "review_comment_counts": {
+    "coderabbit": 10
+   },
+   "size": {
+    "additions": 6855,
+    "deletions": 256,
+    "files": 26
+   },
+   "state": "responses_collected",
+   "verdicts": {
+    "coderabbit": {
+     "CHANGES_REQUESTED": 1,
+     "COMMENTED": 5
+    }
+   }
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "code": 7,
+    "data": 4,
+    "docs": 2,
+    "other": 1,
+    "tests": 9,
+    "workflows": 3
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1495-8c8c2f3078f3",
+   "cycle_started_at": "2026-10-22T03:45:56.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "8c8c2f3078f3dd7460d2119ef52ac540b10acc23",
+   "issue_comment_volume": {
+    "coderabbit": 7,
+    "ecc": 30,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1495,
+   "primary_class": "mixed",
+   "providers": {
+    "coderabbit": {
+     "cooldown": false,
+     "delivered": true,
+     "latency_sec": 62.0,
+     "required": true,
+     "state": "provider_completed"
+    }
+   },
+   "ready": "true",
+   "review_comment_counts": {
+    "coderabbit": 10
+   },
+   "size": {
+    "additions": 6855,
+    "deletions": 256,
+    "files": 26
+   },
+   "state": "responses_collected",
+   "verdicts": {
+    "coderabbit": {
+     "CHANGES_REQUESTED": 1,
+     "COMMENTED": 5
+    }
+   }
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "code": 4,
+    "data": 4,
+    "docs": 1,
+    "other": 7
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1274-4fcddce0edc5",
+   "cycle_started_at": "2026-10-19T09:18:08.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "4fcddce0edc536b27aa80cb3693c2bdc14967e76",
+   "issue_comment_volume": {
+    "coderabbit": 5,
+    "ecc": 12,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1274,
+   "primary_class": "mixed",
+   "providers": {
+    "coderabbit": {
+     "cooldown": false,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "awaiting_provider_response"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {
+    "coderabbit": 47
+   },
+   "size": {
+    "additions": 474,
+    "deletions": 0,
+    "files": 16
+   },
+   "state": "awaiting_provider_response",
+   "verdicts": {
+    "coderabbit": {
+     "CHANGES_REQUESTED": 6
+    }
+   }
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "code": 4,
+    "data": 4,
+    "docs": 1,
+    "other": 7
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1274-a6dbf0c90afb",
+   "cycle_started_at": "2026-10-19T09:19:01.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "a6dbf0c90afb71ca545a2dab6b04487493659386",
+   "issue_comment_volume": {
+    "coderabbit": 5,
+    "ecc": 12,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1274,
+   "primary_class": "mixed",
+   "providers": {
+    "coderabbit": {
+     "cooldown": false,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "action_acknowledged"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {
+    "coderabbit": 47
+   },
+   "size": {
+    "additions": 474,
+    "deletions": 0,
+    "files": 16
+   },
+   "state": "awaiting_provider_response",
+   "verdicts": {
+    "coderabbit": {
+     "CHANGES_REQUESTED": 6
+    }
+   }
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "code": 4,
+    "data": 4,
+    "docs": 1,
+    "other": 7
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1274-61b2d94eb265",
+   "cycle_started_at": "2026-10-19T09:25:39.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "61b2d94eb265d470da87f50b5ad4b3d48092c035",
+   "issue_comment_volume": {
+    "coderabbit": 5,
+    "ecc": 12,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1274,
+   "primary_class": "mixed",
+   "providers": {
+    "coderabbit": {
+     "cooldown": false,
+     "delivered": true,
+     "latency_sec": 3859.0,
+     "required": true,
+     "state": "provider_completed"
+    }
+   },
+   "ready": "true",
+   "review_comment_counts": {
+    "coderabbit": 47
+   },
+   "size": {
+    "additions": 474,
+    "deletions": 0,
+    "files": 16
+   },
+   "state": "responses_collected",
+   "verdicts": {
+    "coderabbit": {
+     "CHANGES_REQUESTED": 6
+    }
+   }
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "code": 3,
+    "docs": 3,
+    "generated": 6,
+    "tests": 3
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1020-957faf1d1f30",
+   "cycle_started_at": "2026-10-05T12:07:56.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "957faf1d1f30ba53a8df76f84fae80a534a85bf8",
+   "issue_comment_volume": {
+    "coderabbit": 2,
+    "ecc": 28,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1020,
+   "primary_class": "mixed",
+   "providers": {
+    "coderabbit": {
+     "cooldown": false,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "pending_operator_action"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 1073,
+    "deletions": 17,
+    "files": 15
+   },
+   "state": "pending_operator_action",
+   "verdicts": {}
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "docs": 1,
+    "workflows": 3
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1278-4eae2175c067",
+   "cycle_started_at": "2026-10-19T09:43:58.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "4eae2175c067664af67cb083e994080ef7863625",
+   "issue_comment_volume": {
+    "coderabbit": 3,
+    "ecc": 12,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1278,
+   "primary_class": "workflows",
+   "providers": {
+    "coderabbit": {
+     "cooldown": true,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "provider_cooldown"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {
+    "coderabbit": 1
+   },
+   "size": {
+    "additions": 23,
+    "deletions": 3,
+    "files": 4
+   },
+   "state": "provider_cooldown",
+   "verdicts": {
+    "coderabbit": {
+     "CHANGES_REQUESTED": 1
+    }
+   }
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "docs": 1,
+    "workflows": 3
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1278-e650476044b3",
+   "cycle_started_at": "2026-10-22T17:07:55.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "e650476044b3c64f498ea73bfa3e48df2ddfae1f",
+   "issue_comment_volume": {
+    "coderabbit": 3,
+    "ecc": 12,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1278,
+   "primary_class": "workflows",
+   "providers": {
+    "coderabbit": {
+     "cooldown": false,
+     "delivered": true,
+     "latency_sec": 440.0,
+     "required": true,
+     "state": "provider_completed"
+    }
+   },
+   "ready": "true",
+   "review_comment_counts": {
+    "coderabbit": 1
+   },
+   "size": {
+    "additions": 23,
+    "deletions": 3,
+    "files": 4
+   },
+   "state": "responses_collected",
+   "verdicts": {
+    "coderabbit": {
+     "CHANGES_REQUESTED": 1
+    }
+   }
+  },
+  {
+   "author": "google-labs-jules[bot]",
+   "author_class": "bot",
+   "classes": {
+    "code": 1
+   },
+   "coderabbit_skipped_notice": true,
+   "cycle_id": "pr-1568-bd3a7aa6c52b",
+   "cycle_started_at": "2026-10-23T07:32:37.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "bd3a7aa6c52ba47d6b1c9fe1948d7920b52510a0",
+   "issue_comment_volume": {
+    "coderabbit": 2,
+    "ecc": 4
+   },
+   "labels": [],
+   "pr": 1568,
+   "primary_class": "code",
+   "providers": {
+    "coderabbit": {
+     "cooldown": true,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "provider_cooldown"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 12,
+    "deletions": 5,
+    "files": 1
+   },
+   "state": "provider_cooldown",
+   "verdicts": {}
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "docs": 2
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1566-f03f7102d37e",
+   "cycle_started_at": "2026-10-23T06:13:12.000Z",
+   "docs_only": true,
+   "generated_only": false,
+   "head_sha": "f03f7102d37e6904bf91f1aa36697a02278c6484",
+   "issue_comment_volume": {
+    "coderabbit": 1,
+    "ecc": 4,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1566,
+   "primary_class": "docs",
+   "providers": {
+    "coderabbit": {
+     "cooldown": false,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "awaiting_provider_response"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 69,
+    "deletions": 10,
+    "files": 2
+   },
+   "state": "awaiting_provider_response",
+   "verdicts": {}
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "code": 1,
+    "workflows": 1
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1564-498e1c633cdf",
+   "cycle_started_at": "2026-10-23T06:07:17.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "498e1c633cdfcf9d3537d3e9c4665fe18c326648",
+   "issue_comment_volume": {
+    "coderabbit": 1,
+    "ecc": 6,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1564,
+   "primary_class": "mixed",
+   "providers": {
+    "coderabbit": {
+     "cooldown": false,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "action_acknowledged"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 47,
+    "deletions": 55,
+    "files": 2
+   },
+   "state": "awaiting_provider_response",
+   "verdicts": {}
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "docs": 1
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1565-27792087bad7",
+   "cycle_started_at": "2026-10-23T06:11:05.000Z",
+   "docs_only": true,
+   "generated_only": false,
+   "head_sha": "27792087bad7002086caee7979544f8ee58312d1",
+   "issue_comment_volume": {
+    "coderabbit": 2,
+    "ecc": 4,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1565,
+   "primary_class": "docs",
+   "providers": {
+    "coderabbit": {
+     "cooldown": true,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "provider_cooldown"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 125,
+    "deletions": 0,
+    "files": 1
+   },
+   "state": "provider_cooldown",
+   "verdicts": {}
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "code": 1,
+    "other": 1,
+    "workflows": 1
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1563-8e8a465178d6",
+   "cycle_started_at": "2026-10-23T05:50:09.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "8e8a465178d6e443c6cc061f3fa9f42a847fc381",
+   "issue_comment_volume": {
+    "coderabbit": 1,
+    "ecc": 6,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1563,
+   "primary_class": "mixed",
+   "providers": {
+    "coderabbit": {
+     "cooldown": false,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "awaiting_provider_response"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 179,
+    "deletions": 0,
+    "files": 3
+   },
+   "state": "awaiting_provider_response",
+   "verdicts": {}
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "code": 2,
+    "data": 1,
+    "docs": 2,
+    "tests": 1
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1562-5dc0c8cfbdcd",
+   "cycle_started_at": "2026-10-23T05:46:05.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "5dc0c8cfbdcdfe8e83224356429459fc66981097",
+   "issue_comment_volume": {
+    "coderabbit": 1,
+    "ecc": 6,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1562,
+   "primary_class": "mixed",
+   "providers": {
+    "coderabbit": {
+     "cooldown": false,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "action_acknowledged"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 239,
+    "deletions": 5,
+    "files": 6
+   },
+   "state": "awaiting_provider_response",
+   "verdicts": {}
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "docs": 1
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1561-7cf55d05bacb",
+   "cycle_started_at": "2026-10-23T05:17:56.000Z",
+   "docs_only": true,
+   "generated_only": false,
+   "head_sha": "7cf55d05bacbadb47be9f043830212e0a5c233cd",
+   "issue_comment_volume": {
+    "coderabbit": 1,
+    "ecc": 4,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1561,
+   "primary_class": "docs",
+   "providers": {
+    "coderabbit": {
+     "cooldown": false,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "awaiting_provider_response"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 10,
+    "deletions": 9,
+    "files": 1
+   },
+   "state": "awaiting_provider_response",
+   "verdicts": {}
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "workflows": 1
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1560-df4de2af13e5",
+   "cycle_started_at": "2026-10-23T05:12:34.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "df4de2af13e5373d7365f34e4008613c1c82c073",
+   "issue_comment_volume": {
+    "coderabbit": 1,
+    "ecc": 6,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1560,
+   "primary_class": "workflows",
+   "providers": {
+    "coderabbit": {
+     "cooldown": false,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "action_acknowledged"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 1,
+    "deletions": 1,
+    "files": 1
+   },
+   "state": "awaiting_provider_response",
+   "verdicts": {}
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "docs": 1
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1555-9011fa7fb5a4",
+   "cycle_started_at": "2026-10-22T23:10:01.000Z",
+   "docs_only": true,
+   "generated_only": false,
+   "head_sha": "9011fa7fb5a4de9f862939735647ad6a435cafc4",
+   "issue_comment_volume": {
+    "coderabbit": 1,
+    "ecc": 4,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1555,
+   "primary_class": "docs",
+   "providers": {
+    "coderabbit": {
+     "cooldown": false,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "awaiting_provider_response"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 33,
+    "deletions": 31,
+    "files": 1
+   },
+   "state": "awaiting_provider_response",
+   "verdicts": {}
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "code": 1,
+    "docs": 49,
+    "other": 50
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-47-11b61f8139c2",
+   "cycle_started_at": "2026-08-21T06:00:33.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "11b61f8139c2e4689eebfbfa20d0678133d476b3",
+   "issue_comment_volume": {
+    "coderabbit": 5,
+    "devin": 1,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 47,
+   "primary_class": "mixed",
+   "providers": {
+    "coderabbit": {
+     "cooldown": false,
+     "delivered": true,
+     "latency_sec": 511.0,
+     "required": true,
+     "state": "provider_completed"
+    },
+    "devin": {
+     "cooldown": false,
+     "delivered": true,
+     "latency_sec": null,
+     "required": true,
+     "state": "provider_completed"
+    },
+    "qodo": {
+     "cooldown": false,
+     "delivered": true,
+     "latency_sec": 307.0,
+     "required": true,
+     "state": "provider_completed"
+    }
+   },
+   "ready": "true",
+   "review_comment_counts": {
+    "coderabbit": 27,
+    "devin": 6,
+    "qodo": 4
+   },
+   "size": {
+    "additions": 1132,
+    "deletions": 18,
+    "files": 100
+   },
+   "state": "responses_collected",
+   "verdicts": {
+    "coderabbit": {
+     "COMMENTED": 2
+    },
+    "devin": {
+     "COMMENTED": 2
+    },
+    "qodo": {
+     "COMMENTED": 1
+    }
+   }
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "config": 1,
+    "workflows": 4
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-81-f1d2eef16b75",
+   "cycle_started_at": "2026-09-19T22:59:11.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "f1d2eef16b75d73f90e7f94759740e805b50d991",
+   "issue_comment_volume": {
+    "coderabbit": 11
+   },
+   "labels": [],
+   "pr": 81,
+   "primary_class": "workflows",
+   "providers": {
+    "coderabbit": {
+     "cooldown": false,
+     "delivered": true,
+     "latency_sec": 449.0,
+     "required": true,
+     "state": "provider_completed"
+    }
+   },
+   "ready": "true",
+   "review_comment_counts": {
+    "coderabbit": 13,
+    "devin": 36
+   },
+   "size": {
+    "additions": 395,
+    "deletions": 59,
+    "files": 5
+   },
+   "state": "responses_collected",
+   "verdicts": {
+    "coderabbit": {
+     "CHANGES_REQUESTED": 2,
+     "COMMENTED": 2
+    },
+    "devin": {
+     "COMMENTED": 13
+    }
+   }
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "workflows": 1
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1554-ddc32b641813",
+   "cycle_started_at": "2026-10-22T22:20:38.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "ddc32b641813b985e943a77f31aa3a4de2841544",
+   "issue_comment_volume": {
+    "coderabbit": 1,
+    "ecc": 6,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1554,
+   "primary_class": "workflows",
+   "providers": {
+    "coderabbit": {
+     "cooldown": false,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "awaiting_provider_response"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 311,
+    "deletions": 0,
+    "files": 1
+   },
+   "state": "awaiting_provider_response",
+   "verdicts": {}
+  },
+  {
+   "author": "google-labs-jules[bot]",
+   "author_class": "bot",
+   "classes": {},
+   "coderabbit_skipped_notice": true,
+   "cycle_id": "pr-1553-519c656f2940",
+   "cycle_started_at": "2026-10-22T22:18:53.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "519c656f2940d1e0075ea19a8efa06250b62cef5",
+   "issue_comment_volume": {
+    "coderabbit": 2,
+    "ecc": 4
+   },
+   "labels": [],
+   "pr": 1553,
+   "primary_class": "unknown",
+   "providers": {
+    "coderabbit": {
+     "cooldown": true,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "provider_cooldown"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+   },
+   "state": "provider_cooldown",
+   "verdicts": {}
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "code": 2,
+    "data": 1,
+    "docs": 2,
+    "tests": 1
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1552-73572bb30f96",
+   "cycle_started_at": "2026-10-22T22:10:01.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "73572bb30f96ef52d9b7580c2ea993ffd2b8f498",
+   "issue_comment_volume": {
+    "coderabbit": 1,
+    "ecc": 4,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1552,
+   "primary_class": "mixed",
+   "providers": {
+    "coderabbit": {
+     "cooldown": false,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "awaiting_provider_response"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 786,
+    "deletions": 2,
+    "files": 6
+   },
+   "state": "awaiting_provider_response",
+   "verdicts": {}
+  },
+  {
+   "author": "github-actions[bot]",
+   "author_class": "bot",
+   "classes": {
+    "data": 1
+   },
+   "coderabbit_skipped_notice": true,
+   "cycle_id": "pr-1543-d55580f915a0",
+   "cycle_started_at": "2026-10-22T22:07:40.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "d55580f915a0b8228fa9af59e9db99d5f247478d",
+   "issue_comment_volume": {
+    "coderabbit": 2,
+    "ecc": 8
+   },
+   "labels": [],
+   "pr": 1543,
+   "primary_class": "data",
+   "providers": {
+    "coderabbit": {
+     "cooldown": true,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "provider_cooldown"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 47,
+    "deletions": 7,
+    "files": 1
+   },
+   "state": "provider_cooldown",
+   "verdicts": {}
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "code": 1,
+    "docs": 4,
+    "tests": 1,
+    "workflows": 1
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1551-8ed6e82bb45e",
+   "cycle_started_at": "2026-10-22T21:56:17.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "8ed6e82bb45e7c70aefb644c35e68e72eba5d291",
+   "issue_comment_volume": {
+    "coderabbit": 1,
+    "ecc": 6,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1551,
+   "primary_class": "docs",
+   "providers": {
+    "coderabbit": {
+     "cooldown": false,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "awaiting_provider_response"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 235,
+    "deletions": 22,
+    "files": 7
+   },
+   "state": "awaiting_provider_response",
+   "verdicts": {}
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "code": 2,
+    "data": 3,
+    "docs": 5,
+    "tests": 1
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1550-2ab0966f171e",
+   "cycle_started_at": "2026-10-22T21:32:28.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "2ab0966f171e2c17205b6793e61b4d569b072285",
+   "issue_comment_volume": {
+    "coderabbit": 1,
+    "ecc": 6,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1550,
+   "primary_class": "mixed",
+   "providers": {
+    "coderabbit": {
+     "cooldown": false,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "awaiting_provider_response"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 814,
+    "deletions": 0,
+    "files": 11
+   },
+   "state": "awaiting_provider_response",
+   "verdicts": {}
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "workflows": 1
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1549-522f3ba46dfd",
+   "cycle_started_at": "2026-10-22T21:18:36.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "522f3ba46dfd1603005d34c77b2be7878e434895",
+   "issue_comment_volume": {
+    "coderabbit": 1,
+    "ecc": 6,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1549,
+   "primary_class": "workflows",
+   "providers": {
+    "coderabbit": {
+     "cooldown": false,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "action_acknowledged"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 95,
+    "deletions": 0,
+    "files": 1
+   },
+   "state": "awaiting_provider_response",
+   "verdicts": {}
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "code": 3,
+    "other": 2,
+    "tests": 2
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1548-851e046c6316",
+   "cycle_started_at": "2026-10-22T21:14:57.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "851e046c6316a6af81299e3eb29722d921fea623",
+   "issue_comment_volume": {
+    "coderabbit": 1,
+    "ecc": 4,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1548,
+   "primary_class": "mixed",
+   "providers": {
+    "coderabbit": {
+     "cooldown": false,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "awaiting_provider_response"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 387,
+    "deletions": 2,
+    "files": 7
+   },
+   "state": "awaiting_provider_response",
+   "verdicts": {}
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "config": 1
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1547-d7d55afd6354",
+   "cycle_started_at": "2026-10-22T20:57:30.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "d7d55afd6354483b0df3909c37aad12cfb1ee17a",
+   "issue_comment_volume": {
+    "coderabbit": 1,
+    "ecc": 4,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1547,
+   "primary_class": "config",
+   "providers": {
+    "coderabbit": {
+     "cooldown": false,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "awaiting_provider_response"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 3,
+    "deletions": 3,
+    "files": 1
+   },
+   "state": "awaiting_provider_response",
+   "verdicts": {}
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "data": 1,
+    "other": 4
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1544-60e2135735e6",
+   "cycle_started_at": "2026-10-22T18:08:27.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "60e2135735e659098c2f7f67940cccde306df76b",
+   "issue_comment_volume": {
+    "coderabbit": 2,
+    "ecc": 4,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1544,
+   "primary_class": "other",
+   "providers": {
+    "coderabbit": {
+     "cooldown": false,
+     "delivered": true,
+     "latency_sec": 260.0,
+     "required": true,
+     "state": "provider_completed"
+    }
+   },
+   "ready": "true",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 1,
+    "deletions": 480,
+    "files": 5
+   },
+   "state": "responses_collected",
+   "verdicts": {
+    "coderabbit": {
+     "APPROVED": 1
+    }
+   }
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "docs": 1
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1545-8f013a7efdbe",
+   "cycle_started_at": "2026-10-22T18:09:07.000Z",
+   "docs_only": true,
+   "generated_only": false,
+   "head_sha": "8f013a7efdbecf534d8b92cff5336adfbf913258",
+   "issue_comment_volume": {
+    "coderabbit": 2,
+    "ecc": 4,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1545,
+   "primary_class": "docs",
+   "providers": {
+    "coderabbit": {
+     "cooldown": true,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "provider_cooldown"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 1,
+    "deletions": 1,
+    "files": 1
+   },
+   "state": "provider_cooldown",
+   "verdicts": {}
+  },
+  {
+   "author": "timerloggedout-spec",
+   "author_class": "user",
+   "classes": {
+    "docs": 1
+   },
+   "coderabbit_skipped_notice": false,
+   "cycle_id": "pr-1542-446edba39e3d",
+   "cycle_started_at": "2026-10-22T17:08:55.000Z",
+   "docs_only": true,
+   "generated_only": false,
+   "head_sha": "446edba39e3d805fbb605651570ce65068ccb2f6",
+   "issue_comment_volume": {
+    "coderabbit": 2,
+    "ecc": 4,
+    "qodo": 1
+   },
+   "labels": [],
+   "pr": 1542,
+   "primary_class": "docs",
+   "providers": {
+    "coderabbit": {
+     "cooldown": true,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "provider_cooldown"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 9,
+    "deletions": 9,
+    "files": 1
+   },
+   "state": "provider_cooldown",
+   "verdicts": {}
+  },
+  {
+   "author": "google-labs-jules[bot]",
+   "author_class": "bot",
+   "classes": {
+    "code": 1
+   },
+   "coderabbit_skipped_notice": true,
+   "cycle_id": "pr-1510-559607ff3932",
+   "cycle_started_at": "2026-10-22T13:57:41.000Z",
+   "docs_only": false,
+   "generated_only": false,
+   "head_sha": "559607ff3932b0655d871922fb5d311a689654b9",
+   "issue_comment_volume": {
+    "coderabbit": 2,
+    "ecc": 12
+   },
+   "labels": [],
+   "pr": 1510,
+   "primary_class": "code",
+   "providers": {
+    "coderabbit": {
+     "cooldown": true,
+     "delivered": false,
+     "latency_sec": null,
+     "required": true,
+     "state": "provider_cooldown"
+    }
+   },
+   "ready": "false",
+   "review_comment_counts": {},
+   "size": {
+    "additions": 41,
+    "deletions": 27,
+    "files": 1
+   },
+   "state": "provider_cooldown",
+   "verdicts": {}
   }
  ],
- "generated_at": "2026-10-24T06:35:19.548351+00:00",
+ "generated_at": "2026-10-24T11:02:41.899232+00:00",
  "providers": {
   "coderabbit": {
+   "by_author_class": {
+    "bot": {
+     "cooldown_cycles": 8,
+     "cycles": 10,
+     "delivered": 0,
+     "delivery_rate": 0.0,
+     "latencies_sec": 0,
+     "median_latency_sec": null,
+     "not_required_cycles": 0,
+     "required_cycles": 10
+    },
+    "user": {
+     "cooldown_cycles": 39,
+     "cycles": 123,
+     "delivered": 23,
+     "delivery_rate": 0.187,
+     "latencies_sec": 23,
+     "median_latency_sec": 473.0,
+     "not_required_cycles": 0,
+     "required_cycles": 123
+    }
+   },
    "by_context": {
-    "bot/mixed": {
-     "cooldown_cycles": 0,
+    "bot/code": {
+     "cooldown_cycles": 2,
+     "cycles": 2,
+     "delivered": 0,
+     "delivery_rate": 0.0,
+     "latencies_sec": 0,
+     "median_latency_sec": null,
+     "not_required_cycles": 0,
+     "required_cycles": 2
+    },
+    "bot/data": {
+     "cooldown_cycles": 1,
      "cycles": 1,
      "delivered": 0,
      "delivery_rate": 0.0,
@@ -3983,8 +5902,38 @@
      "not_required_cycles": 0,
      "required_cycles": 1
     },
+    "bot/docs": {
+     "cooldown_cycles": 1,
+     "cycles": 1,
+     "delivered": 0,
+     "delivery_rate": 0.0,
+     "latencies_sec": 0,
+     "median_latency_sec": null,
+     "not_required_cycles": 0,
+     "required_cycles": 1
+    },
+    "bot/mixed": {
+     "cooldown_cycles": 1,
+     "cycles": 2,
+     "delivered": 0,
+     "delivery_rate": 0.0,
+     "latencies_sec": 0,
+     "median_latency_sec": null,
+     "not_required_cycles": 0,
+     "required_cycles": 2
+    },
     "bot/tests": {
      "cooldown_cycles": 1,
+     "cycles": 2,
+     "delivered": 0,
+     "delivery_rate": 0.0,
+     "latencies_sec": 0,
+     "median_latency_sec": null,
+     "not_required_cycles": 0,
+     "required_cycles": 2
+    },
+    "bot/unknown": {
+     "cooldown_cycles": 2,
      "cycles": 2,
      "delivered": 0,
      "delivery_rate": 0.0,
@@ -4005,95 +5954,182 @@
     },
     "user/config": {
      "cooldown_cycles": 0,
-     "cycles": 1,
+     "cycles": 2,
      "delivered": 0,
      "delivery_rate": 0.0,
      "latencies_sec": 0,
      "median_latency_sec": null,
      "not_required_cycles": 0,
-     "required_cycles": 1
+     "required_cycles": 2
     },
     "user/docs": {
-     "cooldown_cycles": 3,
-     "cycles": 18,
+     "cooldown_cycles": 8,
+     "cycles": 27,
      "delivered": 7,
-     "delivery_rate": 0.3889,
+     "delivery_rate": 0.2593,
      "latencies_sec": 7,
      "median_latency_sec": 461.0,
      "not_required_cycles": 0,
-     "required_cycles": 18
+     "required_cycles": 27
     },
     "user/mixed": {
-     "cooldown_cycles": 15,
-     "cycles": 41,
-     "delivered": 4,
-     "delivery_rate": 0.0976,
-     "latencies_sec": 4,
-     "median_latency_sec": 702.0,
+     "cooldown_cycles": 18,
+     "cycles": 58,
+     "delivered": 8,
+     "delivery_rate": 0.1379,
+     "latencies_sec": 8,
+     "median_latency_sec": 657.5,
      "not_required_cycles": 0,
-     "required_cycles": 41
+     "required_cycles": 58
     },
     "user/other": {
      "cooldown_cycles": 1,
+     "cycles": 2,
+     "delivered": 1,
+     "delivery_rate": 0.5,
+     "latencies_sec": 1,
+     "median_latency_sec": 260.0,
+     "not_required_cycles": 0,
+     "required_cycles": 2
+    },
+    "user/workflows": {
+     "cooldown_cycles": 12,
+     "cycles": 33,
+     "delivered": 7,
+     "delivery_rate": 0.2121,
+     "latencies_sec": 7,
+     "median_latency_sec": 447.0,
+     "not_required_cycles": 0,
+     "required_cycles": 33
+    }
+   },
+   "issue_comments": 212,
+   "issue_comments_by_context": {
+    "bot/code": 4,
+    "bot/data": 2,
+    "bot/docs": 2,
+    "bot/mixed": 8,
+    "bot/tests": 3,
+    "bot/unknown": 4,
+    "user/code": 2,
+    "user/config": 3,
+    "user/docs": 46,
+    "user/mixed": 81,
+    "user/other": 4,
+    "user/workflows": 53
+   },
+   "review_comments": 213,
+   "totals": {
+    "cooldown_cycles": 47,
+    "cycles": 133,
+    "delivered": 23,
+    "delivery_rate": 0.1729,
+    "latencies_sec": 23,
+    "median_latency_sec": 473.0,
+    "not_required_cycles": 0,
+    "required_cycles": 133
+   },
+   "verdicts": {
+    "APPROVED": 2,
+    "CHANGES_REQUESTED": 33,
+    "COMMENTED": 10
+   }
+  },
+  "devin": {
+   "by_author_class": {
+    "user": {
+     "cooldown_cycles": 0,
      "cycles": 1,
-     "delivered": 0,
-     "delivery_rate": 0.0,
+     "delivered": 1,
+     "delivery_rate": 1.0,
      "latencies_sec": 0,
      "median_latency_sec": null,
      "not_required_cycles": 0,
      "required_cycles": 1
-    },
-    "user/workflows": {
-     "cooldown_cycles": 11,
-     "cycles": 27,
-     "delivered": 5,
-     "delivery_rate": 0.1852,
-     "latencies_sec": 5,
-     "median_latency_sec": 447.0,
-     "not_required_cycles": 0,
-     "required_cycles": 27
     }
    },
-   "issue_comments": 133,
-   "issue_comments_by_context": {
-    "bot/mixed": 3,
-    "bot/tests": 3,
-    "user/code": 2,
-    "user/config": 2,
-    "user/docs": 31,
-    "user/mixed": 54,
-    "user/other": 2,
-    "user/workflows": 36
+   "by_context": {
+    "user/mixed": {
+     "cooldown_cycles": 0,
+     "cycles": 1,
+     "delivered": 1,
+     "delivery_rate": 1.0,
+     "latencies_sec": 0,
+     "median_latency_sec": null,
+     "not_required_cycles": 0,
+     "required_cycles": 1
+    }
    },
-   "review_comments": 115,
+   "issue_comments": 1,
+   "issue_comments_by_context": {
+    "user/mixed": 1
+   },
+   "review_comments": 42,
    "totals": {
-    "cooldown_cycles": 31,
-    "cycles": 92,
-    "delivered": 16,
-    "delivery_rate": 0.1739,
-    "latencies_sec": 16,
-    "median_latency_sec": 475.5,
+    "cooldown_cycles": 0,
+    "cycles": 1,
+    "delivered": 1,
+    "delivery_rate": 1.0,
+    "latencies_sec": 0,
+    "median_latency_sec": null,
     "not_required_cycles": 0,
-    "required_cycles": 92
+    "required_cycles": 1
    },
    "verdicts": {
-    "APPROVED": 1,
-    "CHANGES_REQUESTED": 23,
-    "COMMENTED": 1
+    "COMMENTED": 15
    }
   },
   "ecc": {
+   "by_author_class": {},
    "by_context": {},
-   "issue_comments": 722,
+   "findings": {
+    "audit_comments": 1234,
+    "current_head_findings": 1,
+    "findings_action_required": 14,
+    "findings_on_closed_prs": 2,
+    "findings_on_open_prs": 12,
+    "gates": {
+     "ECC Tools / Hosted Promotion Readiness": {
+      "audits": 240,
+      "findings_action_required": 0
+     },
+     "ECC Tools / PR Config Audit": {
+      "audits": 134,
+      "findings_action_required": 6
+     },
+     "ECC Tools / PR Harness Audit": {
+      "audits": 134,
+      "findings_action_required": 0
+     },
+     "ECC Tools / PR Risk Taxonomy": {
+      "audits": 242,
+      "findings_action_required": 0
+     },
+     "ECC Tools / Reference Set Readiness": {
+      "audits": 241,
+      "findings_action_required": 0
+     },
+     "ECC Tools / Security Evidence": {
+      "audits": 243,
+      "findings_action_required": 8
+     }
+    },
+    "prs_with_findings": 3
+   },
+   "issue_comments": 964,
    "issue_comments_by_context": {
-    "bot/mixed": 12,
+    "bot/code": 24,
+    "bot/data": 8,
+    "bot/docs": 10,
+    "bot/mixed": 18,
     "bot/tests": 8,
+    "bot/unknown": 8,
     "user/code": 4,
-    "user/config": 4,
-    "user/docs": 106,
-    "user/mixed": 360,
-    "user/other": 4,
-    "user/workflows": 224
+    "user/config": 8,
+    "user/docs": 146,
+    "user/mixed": 468,
+    "user/other": 8,
+    "user/workflows": 254
    },
    "review_comments": 0,
    "totals": {
@@ -4109,34 +6145,59 @@
    "verdicts": {}
   },
   "qodo": {
-   "by_context": {},
-   "issue_comments": 48,
+   "by_author_class": {
+    "user": {
+     "cooldown_cycles": 0,
+     "cycles": 1,
+     "delivered": 1,
+     "delivery_rate": 1.0,
+     "latencies_sec": 1,
+     "median_latency_sec": 307.0,
+     "not_required_cycles": 0,
+     "required_cycles": 1
+    }
+   },
+   "by_context": {
+    "user/mixed": {
+     "cooldown_cycles": 0,
+     "cycles": 1,
+     "delivered": 1,
+     "delivery_rate": 1.0,
+     "latencies_sec": 1,
+     "median_latency_sec": 307.0,
+     "not_required_cycles": 0,
+     "required_cycles": 1
+    }
+   },
+   "issue_comments": 74,
    "issue_comments_by_context": {
     "user/code": 1,
-    "user/config": 1,
-    "user/docs": 14,
-    "user/mixed": 18,
-    "user/other": 1,
-    "user/workflows": 13
+    "user/config": 2,
+    "user/docs": 23,
+    "user/mixed": 29,
+    "user/other": 2,
+    "user/workflows": 17
    },
-   "review_comments": 0,
+   "review_comments": 4,
    "totals": {
     "cooldown_cycles": 0,
-    "cycles": 0,
-    "delivered": 0,
-    "delivery_rate": null,
-    "latencies_sec": 0,
-    "median_latency_sec": null,
+    "cycles": 1,
+    "delivered": 1,
+    "delivery_rate": 1.0,
+    "latencies_sec": 1,
+    "median_latency_sec": 307.0,
     "not_required_cycles": 0,
-    "required_cycles": 0
+    "required_cycles": 1
    },
-   "verdicts": {}
+   "verdicts": {
+    "COMMENTED": 1
+   }
   }
  },
  "schema": "reviewer-metrics/v1",
  "warnings": [],
  "window": {
-  "cycles": 92,
-  "prs_examined": 60
+  "cycles": 137,
+  "prs_examined": 100
  }
 }

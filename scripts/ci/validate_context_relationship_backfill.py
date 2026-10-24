@@ -65,7 +65,9 @@ def require_sha(value: Any, pattern: re.Pattern[str], label: str) -> str:
     return value
 
 
-def validate_backfill(root: Path, expected_repo: str, expected_ref: str) -> dict[str, Any]:
+def validate_backfill(
+    root: Path, expected_repo: str, expected_ref: str, expected_source_sha: str
+) -> dict[str, Any]:
     manifest = load_json(root / "manifest.json")
     temporal = load_json(root / "temporal-current.json")
     nodes = load_jsonl(root / "nodes.jsonl")
@@ -82,6 +84,11 @@ def validate_backfill(root: Path, expected_repo: str, expected_ref: str) -> dict
     require_sha(manifest.get("schema_sha256"), HEX_64, "manifest.schema_sha256")
     require_sha(manifest.get("scope_registry_sha256"), HEX_64, "manifest.scope_registry_sha256")
     source_sha = require_sha(temporal.get("source_sha"), HEX_40, "temporal.source_sha")
+    expected_source_sha = require_sha(expected_source_sha, HEX_40, "expected_source_sha")
+    if source_sha != expected_source_sha:
+        raise ValidationError(
+            "temporal.source_sha does not match the independently captured expected source SHA"
+        )
 
     observed_at = temporal.get("observed_at")
     if not isinstance(observed_at, str):
@@ -174,7 +181,9 @@ def validate_backfill(root: Path, expected_repo: str, expected_ref: str) -> dict
         "validation_status": "VALIDATED",
         "repository": expected_repo,
         "source_ref": expected_ref,
+        "expected_source_sha": expected_source_sha,
         "source_sha": source_sha,
+        "source_identity_match": source_sha == expected_source_sha,
         "observed_at": observed_at,
         "snapshot_id": expected_snapshot_id,
         "input_sha256": input_sha,
@@ -192,9 +201,12 @@ def main() -> int:
     parser.add_argument("--root", type=Path, required=True)
     parser.add_argument("--expected-repo", required=True)
     parser.add_argument("--expected-ref", required=True)
+    parser.add_argument("--expected-source-sha", required=True)
     args = parser.parse_args()
     try:
-        receipt = validate_backfill(args.root, args.expected_repo, args.expected_ref)
+        receipt = validate_backfill(
+            args.root, args.expected_repo, args.expected_ref, args.expected_source_sha
+        )
     except ValidationError as exc:
         print(json.dumps({"validation_status": "FAILED", "reason": str(exc)}, sort_keys=True), file=sys.stderr)
         return 2

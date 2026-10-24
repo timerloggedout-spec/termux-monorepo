@@ -78,6 +78,7 @@ jobs:
       context_author_class: ${{ steps.collect.outputs.context_author_class }}
       context_primary_class: ${{ steps.collect.outputs.context_primary_class }}
       metrics_map: ${{ steps.collect.outputs.metrics_map }}
+      provider_cooldowns: ${{ steps.collect.outputs.provider_cooldowns }}
     steps:
       - name: Collect controls and provider response evidence
         id: collect
@@ -261,6 +262,7 @@ jobs:
             // --- Reviewer JIT: metrics map (P3 input, fail-open) ---
             let metricsGeneratedAt = '';
             let metricsByContext = {};
+            let metricsByAuthorClass = {};
             try {
               const { data: mapFile } = await github.rest.repos.getContent({
                 owner: context.repo.owner, repo: context.repo.repo,
@@ -273,6 +275,7 @@ jobs:
                 metricsGeneratedAt = map.generated_at;
                 for (const [provider, entry] of Object.entries(map.providers || {})) {
                   metricsByContext[provider] = entry.by_context || {};
+                  metricsByAuthorClass[provider] = entry.by_author_class || {};
                 }
               } else {
                 core.info('Reviewer metrics map stale or unknown schema; metrics rule disabled for this cycle.');
@@ -311,6 +314,22 @@ jobs:
                     note: `metrics map ${metricsGeneratedAt}: zero deliveries in context ${contextKey} over ${b.required_cycles} required cycles`,
                   });
                   core.info(`Metrics rule: exempting ${provider} in context ${contextKey} (zero deliveries over ${b.required_cycles} required cycles).`);
+                }
+                // Round 2: author-class rollup. Per-context keys fragment
+                // author-class-wide failure modes (widened map: bot
+                // contexts held 10 required cycles across 6 keys, zero
+                // delivered — no single key reached the threshold).
+                if (effectiveProviders.includes(provider)) {
+                  const roll = metricsByAuthorClass[provider]?.[authorIsBot ? 'bot' : 'user'];
+                  if (roll && (roll.required_cycles || 0) >= 10 && (roll.delivered || 0) === 0) {
+                    effectiveProviders = effectiveProviders.filter(p => p !== provider);
+                    exemptions.push({
+                      provider,
+                      state: 'not_required_zero_delivery_in_context',
+                      note: `metrics map ${metricsGeneratedAt}: zero deliveries in author-class rollup ${authorIsBot ? 'bot' : 'user'}/* over ${roll.required_cycles} required cycles`,
+                    });
+                    core.info(`Metrics rule (rollup): exempting ${provider} for author class ${authorIsBot ? 'bot' : 'user'} (zero deliveries over ${roll.required_cycles} required cycles).`);
+                  }
                 }
               }
             }
@@ -431,7 +450,7 @@ jobs:
             }
 
             function cooldownNotice(provider, evidence) {
-              if (provider !== 'coderabbit') return { active: false, url: '', detail: '' };
+              if (provider !== 'coderabbit') return { active: false, url: '', detail: '', until: '' };
               // CodeRabbit may issue the cooldown as an issue comment, inline review
               // comment, or a pull-request review body. Review-bound evidence must
               // correspond to the active head; issue comments have no commit_id.
@@ -442,9 +461,20 @@ jobs:
                 Date.parse(item.created_at || item.submitted_at || '') >= cycleStartedAt &&
                 codeRabbitCooldownPattern.test(item.body || '')
               );
-              if (!notice) return { active: false, url: '', detail: '' };
+              if (!notice) return { active: false, url: '', detail: '', until: '' };
               const retry = (notice.body || '').match(/next (?:included )?review (?:will be )?available in:?\s*\**\s*(\d+\s*(?:minutes?|hours?))\**/i)?.[1]?.trim() || 'provider cooldown';
-              return { active: true, url: notice.html_url || notice.url || '', detail: retry };
+              // JIT round 2 (cooldown-aware triggering): turn the stated
+              // retry duration into an absolute window end, so the OPERATOR
+              // request step can defer requests that would land inside a
+              // known-dead window instead of spending trigger attempts.
+              const noticeAt = Date.parse(notice.created_at || notice.submitted_at || '');
+              const duration = retry.match(/(\d+)\s*(minutes?|hours?)/i);
+              let until = '';
+              if (duration && Number.isFinite(noticeAt)) {
+                const ms = Number(duration[1]) * (duration[2].toLowerCase().startsWith('hour') ? 3600000 : 60000);
+                until = new Date(noticeAt + ms).toISOString();
+              }
+              return { active: true, url: notice.html_url || notice.url || '', detail: retry, until };
             }
 
             function deliveredProvider(provider, evidence) {
@@ -526,7 +556,7 @@ jobs:
               `- ${item.provider}: control_id=${control.checkboxId}; source=${control.url}; selected=${control.selected}; updated_at=${control.updatedAt}`
             ));
             const deliveryLines = providerStates.map(item =>
-              `- ${item.provider}: ${item.state}${item.delivered.url ? `; evidence=${item.delivered.url}` : ''}${item.cooldown?.active ? `; cooldown=${item.cooldown.detail}; source=${item.cooldown.url}` : ''}`
+              `- ${item.provider}: ${item.state}${item.delivered.url ? `; evidence=${item.delivered.url}` : ''}${item.cooldown?.active ? `; cooldown=${item.cooldown.detail}; source=${item.cooldown.url}` : ''}${item.cooldown?.until ? `; cooldown_until=${item.cooldown.until}` : ''}`
             );
             for (const exemption of exemptions) {
               deliveryLines.push(`- ${exemption.provider}: ${exemption.state} (${exemption.note})`);
@@ -547,6 +577,9 @@ jobs:
             core.setOutput('metrics_map', metricsGeneratedAt || 'unavailable');
             core.setOutput('enforce_provider_completion', enforceProviderCompletion ? 'true' : 'false');
             core.setOutput('cycle_started_at', cycleStartedAtIso);
+            core.setOutput('provider_cooldowns', providerStates
+              .filter(item => item.cooldown?.active && item.cooldown.until)
+              .map(item => `${item.provider}=${item.cooldown.until}`).join(','));
             core.setOutput('provider_lines', deliveryLines.join('\n'));
             core.setOutput('control_lines', operatorControls.join('\n') || '- none observed');
 
@@ -705,6 +738,7 @@ jobs:
           CYCLE_ID: ${{ steps.collect.outputs.cycle_id }}
           HEAD_SHA: ${{ steps.collect.outputs.head_sha }}
           REQUIRED_PROVIDERS: ${{ steps.collect.outputs.required_providers_effective }}
+          PROVIDER_COOLDOWNS: ${{ steps.collect.outputs.provider_cooldowns }}
           OPERATOR_ALLOWED_ACTIONS: ${{ vars.OPERATOR_ALLOWED_ACTIONS || 'coderabbit:trigger_review,qodo:trigger_review,devin:trigger_review' }}
           OPERATOR_EXECUTOR_LOGINS: ${{ vars.OPERATOR_EXECUTOR_LOGINS || github.repository_owner }}
         with:
@@ -729,6 +763,13 @@ jobs:
               ['qodo', '/agentic_review'],
               ['devin', '/devin review'],
             ]);
+            // JIT round 2: cooldown windows recorded by the collect step
+            // (provider=ISO pairs). A request inside a known window is
+            // deferred, not spent; the next cycle event after the window
+            // ends re-evaluates from fresh evidence.
+            const cooldownWindows = new Map((process.env.PROVIDER_COOLDOWNS || '')
+              .split(',').map(pair => pair.trim()).filter(Boolean)
+              .map(pair => { const i = pair.indexOf('='); return [pair.slice(0, i), pair.slice(i + 1)]; }));
             const comments = await github.paginate(github.rest.issues.listComments, {
               owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, per_page: 100,
             });
@@ -753,6 +794,11 @@ jobs:
               );
               if (requested) {
                 core.info(`${provider}: review already requested for ${cycleId}`);
+                continue;
+              }
+              const cooldownUntil = cooldownWindows.get(provider);
+              if (cooldownUntil && Date.parse(cooldownUntil) > Date.now()) {
+                core.info(`${provider}: deferring review request; recorded cooldown window runs until ${cooldownUntil}.`);
                 continue;
               }
               await github.rest.issues.createComment({

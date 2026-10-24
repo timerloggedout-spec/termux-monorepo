@@ -46,7 +46,16 @@ jobs:
 
           # Fetch PR objects only. Nothing from the PR is executed.
           git fetch --no-tags --prune origin "refs/pull/${PR_NUMBER}/head:refs/remotes/origin/pr-${PR_NUMBER}"
-          read -r BASE_SHA HEAD_SHA < <(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq '[.base.sha, .head.sha] | @tsv')
+          set +e
+          pr_info="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq '[.base.sha, .head.sha] | @tsv' 2>/dev/null)"
+          rc=$?
+          set -e
+          if [[ $rc -ne 0 || -z "$pr_info" ]]; then
+            echo "API rate limit or access error when fetching PR #${PR_NUMBER}; skipping measure cleanly." >&2
+            echo "skipped=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          read -r BASE_SHA HEAD_SHA <<<"$pr_info"
           # API head can move between fetch and measure (sweep receipt). Refetch once.
           if ! git cat-file -e "${HEAD_SHA}^{commit}" 2>/dev/null || ! git cat-file -e "${BASE_SHA}^{commit}" 2>/dev/null; then
             git fetch --no-tags origin "refs/pull/${PR_NUMBER}/head" "$BASE_SHA" || true
@@ -193,12 +202,29 @@ jobs:
           body+="**State:** ${state}; ${noop}${nl}${nl}"
           body+="Generated: ${generated}"
 
-          existing=$(gh api --paginate "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100" --jq '.[] | select(.body | contains("'"$marker"'")) | [.id,.body] | @tsv' | head -n1 || true)
+          set +e
+          existing=$(gh api --paginate "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100" 2>/dev/null | jq -r '.[] | select(.body | contains("'"$marker"'")) | [.id,.body] | @tsv' | head -n1 || true)
+          set -e
           if [[ -n "$existing" ]]; then
             id="${existing%%$'\t'*}"
-            gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/comments/${id}" -f body="$body" >/dev/null
+            set +e
+            err=$(gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/comments/${id}" -f body="$body" 2>&1 >/dev/null)
+            rc=$?
+            set -e
           else
-            gh api --method POST "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" -f body="$body" >/dev/null
+            set +e
+            err=$(gh api --method POST "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" -f body="$body" 2>&1 >/dev/null)
+            rc=$?
+            set -e
+          fi
+
+          if [[ "$rc" -ne 0 ]]; then
+            if grep -qE 'Resource not accessible by integration|API rate limit|rate limit exceeded' <<<"$err"; then
+              echo "pr-change-effectiveness-ledger publish skipped: github.token limit/permission (HTTP 403)" >> "$GITHUB_STEP_SUMMARY"
+              echo "$err" >> "$GITHUB_STEP_SUMMARY"
+            else
+              echo "$err" >&2
+            fi
           fi
 
           # Hard-fail only a true empty PR. Equivalent tip trees with a unique

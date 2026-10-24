@@ -49,10 +49,6 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Capture immutable checkout revision
-        id: source_revision
-        run: echo "source_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-
       - name: Determine historical continuation
         id: continuation
         env:
@@ -106,7 +102,8 @@ jobs:
         env:
           EXPECTED_REPOSITORY: ${{ github.repository }}
           EXPECTED_REF: master
-          EXPECTED_SOURCE_SHA: ${{ steps.source_revision.outputs.source_sha }}
+          # The builder binds temporal.source_sha to the immutable event SHA.
+          EXPECTED_SOURCE_SHA: ${{ github.sha }}
         run: |
           set -euo pipefail
           python3 -m unittest -q tests/test_context_relationship_backfill_validation.py

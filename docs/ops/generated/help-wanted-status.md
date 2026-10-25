@@ -1,6 +1,6 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-23T23:08:59Z UTC · receipts=3962 · foreign_open=33 · tributes=114_
+_Generated 2026-10-25T05:09:03Z UTC · receipts=3962 · foreign_open=32 · tributes=114_
 
 ## Tributes (contributor ledger)
 
@@ -37,7 +37,7 @@ _Generated 2026-10-23T23:08:59Z UTC · receipts=3962 · foreign_open=33 · tribu
 - [SoroScan/soroscan#1690](https://github.com/SoroScan/soroscan/pull/1690) · state=open · help-wanted: stake + contribute for #1663
 - [sorolens/sorolens#753](https://github.com/sorolens/sorolens/pull/753) · state=open · help-wanted: stake + contribute for #538
 - [use-assay/Assay#509](https://github.com/use-assay/Assay/pull/509) · state=open · help-wanted: stake + contribute for #305
-- [SO4-Markets/interface#1029](https://github.com/SO4-Markets/interface/pull/1029) · state=open · help-wanted: stake + contribute for #918
+- [https://github.com/SO4-Markets/interface/pull/1029](https://github.com/SO4-Markets/interface/pull/1029) · state=? · 
 - [AmpedWasTaken/SML#18](https://github.com/AmpedWasTaken/SML/pull/18) · state=closed · help-wanted: stake + contribute for #17
 - [https://github.com/vedantnimbarte/zero/pull/81](https://github.com/vedantnimbarte/zero/pull/81) · state=? · 
 - [https://github.com/prime-radiant-inc/evener/pull/2661](https://github.com/prime-radiant-inc/evener/pull/2661) · state=? · 
@@ -47,7 +47,6 @@ _Generated 2026-10-23T23:08:59Z UTC · receipts=3962 · foreign_open=33 · tribu
 
 ## Foreign open PRs
 
-- [SO4-Markets/interface#1029](https://github.com/SO4-Markets/interface/pull/1029) — help-wanted: stake + contribute for #918
 - [use-assay/Assay#509](https://github.com/use-assay/Assay/pull/509) — help-wanted: stake + contribute for #305
 - [sorolens/sorolens#753](https://github.com/sorolens/sorolens/pull/753) — help-wanted: stake + contribute for #538
 - [SoroScan/soroscan#1690](https://github.com/SoroScan/soroscan/pull/1690) — help-wanted: stake + contribute for #1663

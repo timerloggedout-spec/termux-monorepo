@@ -354,7 +354,9 @@ def parse_issue_form(body: str) -> dict:
         except ValueError:
             brief["probe_budget"] = budget  # validate_brief will flag it
     scope = [s.strip().strip(",") for s in re.split(r"[,\s]+", val("scope_domains")) if s.strip()]
-    checked = bool(re.search(r"-\s*\[x\]", val("state_changing"), re.IGNORECASE))
+    sc_raw = val("state_changing")
+    checked = (bool(re.search(r"-\s*\[x\]", sc_raw, re.IGNORECASE))
+               or sc_raw.strip().lower() == "yes")
     brief["authorization"] = {"basis": val("basis"), "scope_domains": scope,
                               "state_changing": checked}
     return brief

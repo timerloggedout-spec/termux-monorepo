@@ -161,14 +161,15 @@ jobs:
               .write();
 
       - name: Persist verdicts to Supabase lane-state (optional)
-        # Fires only when SUPABASE_URL (repo variable) and the Supabase service
-        # secret exist (SUPABASE_KEY, with a fallback to the legacy
-        # SUPABASE_SERVICE_ROLE_KEY name); otherwise skipped.
+        # Fires when SUPABASE_URL and SUPABASE_ANON_KEY repo variables exist.
+        # The anon key is public-by-design (Supabase browser credential);
+        # writes are gated by RLS: anon INSERT on dispatch_verdicts only,
+        # with lane allowlist and rate-limit guards (registry section 4).
         # Project: termux-monorepo-lane-state, table dispatch_verdicts.
-        if: env.SUPABASE_URL != '' && env.SUPABASE_SERVICE_ROLE_KEY != ''
+        if: env.SUPABASE_URL != '' && env.SUPABASE_ANON_KEY != ''
         env:
           SUPABASE_URL: ${{ vars.SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_KEY || secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SUPABASE_ANON_KEY: ${{ vars.SUPABASE_ANON_KEY }}
           V_STALL: ${{ steps.tree.outputs.dispatch_stall_watch }}
           V_BRIDGE: ${{ steps.tree.outputs.dispatch_bridge }}
           V_PROBE: ${{ steps.tree.outputs.dispatch_probe }}
@@ -193,8 +194,8 @@ jobs:
           add tier3-repochange G "$V_REPOCHANGE"
           add vantage-cost-report H "$V_VANTAGE"
           curl -fsS -X POST "$SUPABASE_URL/rest/v1/dispatch_verdicts" \
-            -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" \
-            -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
             -H "Content-Type: application/json" \
             -H "Prefer: return=minimal" \
             -d "$(jq -n --argjson rows "$rows" '$rows')"

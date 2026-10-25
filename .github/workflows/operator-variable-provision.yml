@@ -130,21 +130,31 @@ jobs:
                   ref = sb ? sb[1] : '';
                 }
                 if (!ref) {
-                  // Fuzzy last resort: a 20-char lowercase-alnum run between
-                  // delimiters (Supabase project refs). Verified below before use,
-                  // so a false positive can never be written as the variable.
-                  const sb2 = key.match(/(?:^|[_-])([a-z0-9]{20})(?:[_-]|$)/);
-                  ref = sb2 ? sb2[1] : '';
-                  if (ref) {
+                  // Fuzzy last resort (v3): experimental keys may embed the ref
+                  // without delimiters or in mixed case. Collect 20-char
+                  // lowercase-alnum windows over a lowercased copy of the key and
+                  // verify each candidate against https://<cand>.supabase.co before
+                  // use, so a false positive can never be written as the variable.
+                  const lowered = key.toLowerCase();
+                  const runs = lowered.match(/[a-z0-9]+/g) || [];
+                  const cands = [];
+                  const seen = new Set();
+                  for (const run of runs) {
+                    for (let i = 0; i + 20 <= run.length && cands.length < 12; i++) {
+                      const cand = run.slice(i, i + 20);
+                      if (!seen.has(cand)) { seen.add(cand); cands.push(cand); }
+                    }
+                  }
+                  for (const cand of cands) {
                     try {
-                      const probe = await fetch(`https://${ref}.supabase.co/rest/v1/`, {
+                      const probe = await fetch(`https://${cand}.supabase.co/rest/v1/`, {
                         headers: { apikey: key, Authorization: `Bearer ${key}` }
                       });
                       // any HTTP response proves the project host resolves; auth
                       // status is irrelevant (we only need the endpoint)
-                    } catch (_) {
-                      ref = '';
-                    }
+                      ref = cand;
+                      break;
+                    } catch (_) { /* candidate does not resolve */ }
                   }
                 }
                 if (!ref) {

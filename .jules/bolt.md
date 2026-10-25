@@ -94,9 +94,9 @@ In Actions incident deduplication (`actions_incident_dedupe.py`), constructing i
 **Action:**
 Always fast-path primary content checks before iterating child collections, and use short-circuiting `any()` generator expressions instead of list materialization when checking presence across collection items.
 
-## 2026-10-25 - Registry LRU Caching and Single-Pass Item Matching in Provider Quota Evaluators
+## 2026-10-25 - Single-Pass Item Matching and Constant Hoisting in Provider Quota Evaluators
 **Learning:**
-In provider quota evaluators (`scripts/provider_quota_coverage.py`), calling `_providers()` inside the `evaluate()` quota check routine re-imported module endpoints, initialized set unions, and sorted provider lists on every evaluation call. Memoizing `_providers()` with `@functools.lru_cache(maxsize=1)` avoids redundant import overhead and set/list allocations. Furthermore, replacing intermediate list comprehensions (`matched = [e for e in evidence if ...]`) with a single-pass loop and early exit on duplicate evidence eliminates intermediate list allocations, accelerating `evaluate()` by ~2.3x (~56% runtime reduction).
+In provider quota evaluators (`scripts/provider_quota_coverage.py`), constructing intermediate list comprehensions (`matched = [e for e in evidence if ...]`) during evidence matching forced full list materialization even when duplicate evidence was present. Replacing list comprehensions with a single-pass loop that early-exits upon detecting duplicate evidence avoids temporary list allocations and short-circuits collection scanning. Furthermore, hoisting recursive substring filtering tuples (`_SENSITIVE_SUBSTRINGS`) to module scope eliminates tuple re-allocation per item frame.
 
 **Action:**
-Use `@functools.lru_cache(maxsize=1)` on static provider registry loaders and replace list comprehensions in collection matching loops with single-pass iteration and early exits.
+Replace list comprehensions in collection matching loops with single-pass iteration and early exits, and hoist immutable filter tuples to module scope.

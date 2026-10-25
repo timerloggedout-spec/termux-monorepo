@@ -3,7 +3,6 @@
 from __future__ import annotations
 import argparse
 import datetime as dt
-import functools
 import json
 import math
 import sys
@@ -141,13 +140,6 @@ def _safe_public(obj: Any) -> Any:
     if isinstance(obj, list): return [_safe_public(x) for x in obj]
     return obj
 
-@functools.lru_cache(maxsize=128)
-def _is_known_provider(provider: str) -> bool:
-    try:
-        return provider in _providers()
-    except Exception:
-        return False
-
 def evaluate(provider: str, model: str, evidence: list[Mapping[str, Any]], *, now: dt.datetime | None = None, safety: float = 0.9, cooldown_seconds: float = 0, max_age_seconds: float = 300) -> dict[str, str]:
     """Reason-only private quota CHECK; ``admit`` is quota-only, not authorization.
 
@@ -169,7 +161,11 @@ def evaluate(provider: str, model: str, evidence: list[Mapping[str, Any]], *, no
             or any(c in model for c in "*?#\\")
             or any(part in ("", ".", "..") for part in model.split("/"))):
         return result("invalid_provider_or_model")
-    if not _is_known_provider(provider):
+    try:
+        known = _providers()
+    except Exception:
+        return result("unknown_provider")
+    if provider not in known:
         return result("unknown_provider")
     if not finite_number(safety) or not 0 < safety <= 1:
         return result("invalid_safety_margin")

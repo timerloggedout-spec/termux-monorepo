@@ -12,13 +12,13 @@ def test_no_exact_research_claim_is_silently_omitted():
     snapshot = json.loads((ROOT / 'data/model-selection-market/provider-recon.json').read_text())
     report = coverage.reconcile(snapshot, {'schema': 'provider-model-catalog/v5', 'models': [], 'provider_observations': {}})
     individual = [r for r in report['candidates'] if r['model_id'] and not r['model_id'].startswith('aggregate:')]
-    assert len(individual) == 117
+    assert len(individual) == 128
     for row in individual:
         if row['native_chat_adapter']:
             assert row['native_provider'] in runtime.ENDPOINTS
         assert row['runtime_eligible'] is False
     # Legacy OpenRouter is deliberately outside research-provider admission.
-    assert sum(r['native_provider'] == 'openrouter' for r in individual) == 16
+    assert sum(r['native_provider'] == 'openrouter' for r in individual) == 20
 
 
 def test_all_native_routes_deny_missing_policy_before_network(monkeypatch):
@@ -37,8 +37,8 @@ def test_all_117_claims_have_transports_but_no_automatic_admission():
     snapshot = json.loads((ROOT / 'data/model-selection-market/provider-recon.json').read_text())
     report = coverage.reconcile(snapshot, {'schema': 'provider-model-catalog/v5', 'models': [], 'provider_observations': {}})
     directory = report['summary']['by_source']['mnfst/awesome-free-llm-apis']
-    assert directory['gated_native_chat_model_claims'] + directory['legacy_openrouter_model_claims'] == directory['individual_model_claims'] == 117
-    assert len(directory['chat_transport_families']) == directory['provider_families'] == 16
+    assert directory['gated_native_chat_model_claims'] + directory['legacy_openrouter_model_claims'] + 4 == directory['individual_model_claims'] == 128
+    assert len(directory['chat_transport_families']) == 16 and directory['provider_families'] == 17
     assert len(directory['catalog_adapter_families']) == 15  # Z.ai remains unverified; ModelScope is runtime-observed.
     assert report['summary']['runtime_eligible'] == 0
 

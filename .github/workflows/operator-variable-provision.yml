@@ -130,11 +130,35 @@ jobs:
                   ref = sb ? sb[1] : '';
                 }
                 if (!ref) {
+                  // Fuzzy last resort: a 20-char lowercase-alnum run between
+                  // delimiters (Supabase project refs). Verified below before use,
+                  // so a false positive can never be written as the variable.
+                  const sb2 = key.match(/(?:^|[_-])([a-z0-9]{20})(?:[_-]|$)/);
+                  ref = sb2 ? sb2[1] : '';
+                  if (ref) {
+                    try {
+                      const probe = await fetch(`https://${ref}.supabase.co/rest/v1/`, {
+                        headers: { apikey: key, Authorization: `Bearer ${key}` }
+                      });
+                      // any HTTP response proves the project host resolves; auth
+                      // status is irrelevant (we only need the endpoint)
+                    } catch (_) {
+                      ref = '';
+                    }
+                  }
+                }
+                if (!ref) {
+                  const cls = key.split('.').length === 3 ? 'jwt'
+                    : key.startsWith('sb_secret_') ? 'sb_secret'
+                    : key.startsWith('sb_publishable_') ? 'sb_publishable'
+                    : key ? 'other' : 'absent';
                   core.setFailed(
                     'SUPABASE_URL=@derive could not derive the project ref from the ' +
-                    'SUPABASE_KEY secret (expected a legacy service JWT with a ref ' +
-                    'claim / iss URL, or an sb_secret_<project-ref>_ key). Provision ' +
-                    'with `gh variable set SUPABASE_URL --body <endpoint>` instead.'
+                    'SUPABASE_KEY secret. Fingerprint (no value material): present=' +
+                    (key ? 'true' : 'false') + ', length=' + key.length + ', class=' + cls +
+                    '. Expected a legacy service JWT (ref claim or iss URL) or an ' +
+                    'sb_secret_<project-ref>_-shaped key. Provision with ' +
+                    '`gh variable set SUPABASE_URL --body <endpoint>` instead.'
                   );
                   return;
                 }

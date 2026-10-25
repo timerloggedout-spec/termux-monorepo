@@ -93,3 +93,10 @@ In Actions incident deduplication (`actions_incident_dedupe.py`), constructing i
 
 **Action:**
 Always fast-path primary content checks before iterating child collections, and use short-circuiting `any()` generator expressions instead of list materialization when checking presence across collection items.
+
+## 2026-10-24 - Deterministic Key Insertion Order over `json.dumps(..., sort_keys=True)`
+**Learning:**
+In high-throughput NDJSON event pipelines (`scripts/hex_moneyball_export.py`), using `json.dumps(record, sort_keys=True)` forces Python's JSON encoder to extract key lists and run sorting comparisons on every single record. By explicitly inserting dictionary keys in alphabetical order during record creation in `sanitize()`, Python 3.7+'s insertion-order preservation guarantees that `json.dumps(record, sort_keys=False)` yields output identical byte-for-byte to `sort_keys=True` while completely bypassing sorting overhead during stream serialization.
+
+**Action:**
+Populate dictionary keys in deterministic alphabetical order during record construction and set `sort_keys=False` in `json.dumps()` for high-frequency stream exporters.

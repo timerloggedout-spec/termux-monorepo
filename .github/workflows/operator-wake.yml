@@ -14,13 +14,16 @@ name: Operator wake
 #   provision-supabase-url — dispatch operator-variable-provision with
 #               assignments=SUPABASE_URL=@derive (the lane derives the value
 #               in-run from the SUPABASE_KEY secret; no value transits any
-#               surface), then poll the run's conclusion
+#               surface), then poll the run's conclusion. Optional
+#               provision-ref=<branch> dispatches the lane's copy from that
+#               ref instead of master (ephemeral one-shot provisioning acts;
+#               the branch workflow self-deletes after success).
 # Comment trigger (marker-gated, action-effectiveness-ledger precedent):
 #   <!-- request-operator-wake -->
 #   inventory
 #   variables
 #   wake vantage-cost-report strict=true
-#   provision-supabase-url
+#   provision-supabase-url provision-ref=<branch>
 # Results post back to the triggering issue. workflow_dispatch mirrors all
 # commands for the Actions UI. No schedule: cadence stays with callers.
 
@@ -77,6 +80,7 @@ jobs:
           want_wake=false
           want_provision=false
           wake_strict=false
+          PROVISION_REF="master"
           if [ "${GITHUB_EVENT_NAME:-}" = "workflow_dispatch" ]; then
             case "$DISPATCH_COMMAND" in
               inventory) want_inventory=true ;;
@@ -97,6 +101,10 @@ jobs:
             fi
             if printf '%s' "$COMMENT_BODY" | grep -Eq 'provision-supabase-url'; then
               want_provision=true
+              prov_ref_line=$(printf '%s' "$COMMENT_BODY" | grep -oE 'provision-ref=[A-Za-z0-9._/-]+' | head -1 || true)
+              if [ -n "$prov_ref_line" ]; then
+                PROVISION_REF="${prov_ref_line#provision-ref=}"
+              fi
             fi
           fi
 
@@ -172,9 +180,9 @@ jobs:
           fi
 
           if [ "$want_provision" = true ]; then
-            report="${report}"$'\n'"- provision SUPABASE_URL=@derive via operator-variable-provision"
+            report="${report}"$'\n'"- provision SUPABASE_URL=@derive via operator-variable-provision (ref: ${PROVISION_REF})"
             since_prov=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-            if ! gh workflow run operator-variable-provision.yml -R "$GITHUB_REPOSITORY" --ref master -f 'assignments=SUPABASE_URL=@derive'; then
+            if ! gh workflow run operator-variable-provision.yml -R "$GITHUB_REPOSITORY" --ref "$PROVISION_REF" -f 'assignments=SUPABASE_URL=@derive'; then
               report="${report}"$'\n'"- provision dispatch: FAILED (see run log)"
             else
               prov_run=""
@@ -202,7 +210,7 @@ jobs:
           fi
 
           if [ "$want_inventory" = false ] && [ "$want_variables" = false ] && [ "$want_wake" = false ] && [ "$want_provision" = false ]; then
-            report="${report}"$'\n'"- no allowlisted command found (supported: inventory; variables; wake vantage-cost-report [strict=true]; provision-supabase-url)"
+            report="${report}"$'\n'"- no allowlisted command found (supported: inventory; variables; wake vantage-cost-report [strict=true]; provision-supabase-url [provision-ref=<branch>])"
           fi
           {
             echo "report<<REPORT_EOF"

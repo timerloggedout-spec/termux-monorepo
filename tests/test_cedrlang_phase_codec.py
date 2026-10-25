@@ -2,7 +2,10 @@ import random
 
 from workspace.compression_sandbox.cedrlang.phase_codec import (
     INITIAL_SUBSTITUTION_PROBABILITY,
+    ConversationalSteganographyCipher,
     from_1337speak,
+    steganography_decode,
+    steganography_encode,
     to_1337speak,
 )
 
@@ -36,6 +39,28 @@ def test_unknown_prose_and_numbers_are_untouched():
     encoded = to_1337speak(source, probability=1.0, rng=random.Random(1))
     assert "plain prose 123.45 /tmp/file.py" in encoded
     assert from_1337speak(encoded) == source
+
+
+def test_steganography_cipher_roundtrip():
+    canonical = "h4x pr0b3 gr1m01r3 n0m3nc1 3qu1v_m47"
+    encoded = steganography_encode(canonical)
+    assert "[transmute-arcane-flux]" in encoded
+    assert "[nomenclature-standard-entry]" in encoded
+
+    decoded = steganography_decode(encoded)
+    assert decoded == canonical
+
+
+def test_steganography_cipher_custom_private_mapping():
+    private_map = {"h4x": "custom-cipher-alpha", "pr0b3": "custom-cipher-beta"}
+    cipher = ConversationalSteganographyCipher(private_mapping=private_map)
+
+    canonical = "h4x pr0b3"
+    encoded = cipher.encode(canonical)
+    assert "[custom-cipher-alpha] [custom-cipher-beta]" == encoded
+
+    decoded = cipher.decode(encoded)
+    assert decoded == canonical
 
 
 def test_probability_validation():

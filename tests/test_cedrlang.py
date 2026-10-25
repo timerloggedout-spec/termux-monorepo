@@ -154,6 +154,16 @@ def test_caveman_six_lines():
     res4 = caveman("the quick brown fox", max_up=True)
     assert res4 == "QUICK BROWN FOX"
 
+def test_notation_mappings_compile_decompile():
+    orig = "Review the nomenclature and equivalency matrix for domain composition in notation sets."
+    expected = "Review the n0m3nc1 and 3qu1v_m47 for d0m_c0mp in n07_537s."
+
+    compiled = compile_doc(orig)
+    assert compiled == expected
+
+    decompiled = decompile_doc(compiled)
+    assert decompiled == orig
+
 def test_non_string_and_empty_inputs():
     assert compile_doc("") == ""
     assert decompile_doc("") == ""

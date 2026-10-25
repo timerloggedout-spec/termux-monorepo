@@ -41,7 +41,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Upsert allowlisted repository variables
+      - name: Resolve allowlisted variable assignments
+        id: resolve
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b
         env:
           ASSIGNMENTS: ${{ github.event.inputs.assignments || github.event.comment.body }}
@@ -81,6 +82,7 @@ jobs:
               return;
             }
             const results = [];
+            const resolved = [];
             for (const line of lines) {
               const m = line.match(/^([A-Z0-9_]+)=(.*)$/);
               if (!m) {
@@ -178,28 +180,14 @@ jobs:
                 core.setFailed(`Empty value for ${name}.`);
                 return;
               }
-              try {
-                await github.rest.actions.updateRepoVariable({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  name,
-                  value: val
-                });
-                results.push(`${name}: updated`);
-              } catch (err) {
-                if (err.status === 404) {
-                  await github.rest.actions.createRepoVariable({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    name,
-                    value: val
-                  });
-                  results.push(`${name}: created`);
-                } else {
-                  throw err;
-                }
-              }
+              // The App installation token cannot write repo variables
+              // ("Resource not accessible by integration", proven live
+              // 2026-10-25 in run 40153957375); the CLI upsert step performs
+              // the write with the operator token chain.
+              resolved.push(`${name}=${val}`);
+              results.push(`${name}: resolved for upsert`);
             }
+            core.setOutput('resolved', resolved.join('\n'));
             core.summary
               .addHeading('Operator variable provision')
               .addList(results)
@@ -220,3 +208,21 @@ jobs:
                 core.warning(`Result comment failed: ${err.message}`);
               }
             }
+
+      - name: Upsert resolved variables via gh CLI (operator token)
+        if: steps.resolve.outputs.resolved != ''
+        env:
+          GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
+          RESOLVED: ${{ steps.resolve.outputs.resolved }}
+        run: |
+          set -euo pipefail
+          while IFS='=' read -r name value; do
+            [ -z "$name" ] && continue
+            if gh api "repos/${GITHUB_REPOSITORY}/actions/variables/${name}" >/dev/null 2>&1; then
+              gh api --method PATCH "repos/${GITHUB_REPOSITORY}/actions/variables/${name}" -f value="$value" >/dev/null
+              echo "${name}: updated"
+            else
+              gh api --method POST "repos/${GITHUB_REPOSITORY}/actions/variables" -f name="$name" -f value="$value" >/dev/null
+              echo "${name}: created"
+            fi
+          done <<< "$RESOLVED"

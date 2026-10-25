@@ -16,6 +16,7 @@
 | Watcher skip-spam | workflow_run trigger always listed runs | **Dispatch-only**; incidents emitted by cadence Lead/Lag */4 |
 | Test contract | Asserted old queue:max | Aligned to dispatch-only + cadence emission |
 | High-volume observers | Always emit on any conclusion | Conclusion filters (`if: success`) on lane-events-recorder + agent-throughput-evidence (branch) |
+| Modular event router | Absent | **issue-comment-router.yml** early-exit classifier for unmatched bots/issue_comment (placeholder dispatch; reduces fan-out starts) |
 
 **Still open (not fixed until device-side + dual-gate promote):**
 
@@ -24,6 +25,8 @@
 - Broader workflow fan-out (context audit concurrency, high-volume schedule/workflow_run watchers like lane-events-recorder, agent-throughput-evidence) — next consolidation slices via modular issue-comment / workflow_run router. ~196 workflows total; modular reduction of notification edges is ongoing.
 - Residual zero-job startup_failure on cadence-lead-lag when evaluated on push (despite no push trigger); platform observation, not functional failure.
 - Tailscale-bridge-probe join failures (e.g. run 39873162670 on tip e9e236b5): OIDC/ephemeral or platform latency; fails red by design when origin unreachable. Device-side Tailscale app reconnect required for tmx-node-primary.
+- Agentic Auth Canary: fails when device heartbeat missing/stale (ops/agentic-auth-heartbeat branch). Device-side publish required; non-gate until operational.
+- Recent master failures (Oct 24): ECC Tools comment-command ops, Provider batch production contracts, Remote knowledge fabric, Agentic Auth Canary, Reviewer metrics, context backfill — classified as residual capacity/device/quota or intentional non-gate; Lead/Lag + adaptive WAIT prevent spam.
 
 ## Opaque device identity (public)
 
@@ -52,10 +55,10 @@ GitHub still **lists** skipped runs in the Actions tab (platform limitation: `wo
 5. **Lead/Lag index** — correctness > latency; skipped route ≠ model failure (`docs/ops/LEAD-LAG-INDEX.md` + `cadence-lead-lag.yml`). Dynamic adaptive telemetry plane. Cadence */4.
 6. **Adaptive cache / WAIT** — re-fetch only on material delta; backoff on no-progress; disjoint work while quiet.
 7. **In-process queued/skipped** — concurrency groups + reaper + Lead/Lag classify as operational lag (no notification).
-8. **Modular router candidate** — central issue-comment / workflow_run classifier to early-exit unmatched bots and reduce high-volume skipped listings (lane-events-recorder, agent-throughput-evidence, fix-on-failure).
+8. **Modular router** — central issue-comment-router.yml classifier early-exits unmatched bots and reduces high-volume skipped listings (lane-events-recorder, agent-throughput-evidence, fix-on-failure). Placeholder dispatches; full extract next.
 9. **Conclusion filters** — observers emit only on success (implemented on branch for high-volume).
 
-Current master tip `e9e236b5` (2026-10-22T23:45Z window) shows success + intentional skipped/cancelled with one residual probe failure (device reachability).
+Current master tip window shows success + intentional skipped/cancelled with residual device/quota probes (non-gate).
 
 ## Validation audit rule (enforced)
 
@@ -83,11 +86,13 @@ Skipped / Cancelled / Stale / Timed out / Queued / Neutral require **attentive v
 | Ghost queued | Disabled workflow id still listed | Residual platform | Do not open new ids; reaper observes |
 | Dependabot unresolvable | Security update groups | Historical ignore-list | Closed by prior PR |
 | Catalog race | Historical correlation --check | Closed by repairs | Current success |
-| Skip/cancel spam | High-volume workflow_run | Reduced this branch | Audit + concurrency + Lead/Lag + dispatch-only watcher + conclusion filters; further router next |
+| Skip/cancel spam | High-volume workflow_run | Reduced this branch | Audit + concurrency + Lead/Lag + dispatch-only watcher + conclusion filters + modular router; further extract next |
 | Dashboard deploy script fail | help-wanted-dashboard-deploy status refresh python | Open on master | Concurrency group + continue-on-error candidate; script harden next |
 | Zero-job on non-trigger | cadence-lead-lag event:push | Residual | Platform; no functional impact |
 | Quota / capacity | observatory 403 (39233561401), peer-review (39234979788), Vercel rate-limit | Historical non-gate | Lead/Lag + adaptive WAIT + cache; no retry storms |
 | Tailscale probe join | 39873162670 on e9e236b5 | Residual device | Operator reconnect Tailscale on tmx-node-primary; audit as reachability |
+| Auth canary heartbeat | Agentic Auth Canary schedule | Residual device | Device publish to ops/agentic-auth-heartbeat; non-gate |
+| Oct 24 residual fails | ECC Tools, Provider batch, Remote knowledge, Reviewer metrics, context backfill | Classified | Capacity/quota/device; no new incident class; Lead/Lag owns |
 
 ## Cadence / cache / adaptive telemetry (3L0 moneyball equivalent)
 
@@ -101,6 +106,7 @@ Skipped / Cancelled / Stale / Timed out / Queued / Neutral require **attentive v
 | Queue reaper | Zero-job / long-queued cleanup |
 | Cache | Actions cache + agent-context-store for work context (auth ephemeral); Lead/Lag uses local file cache for delta detection |
 | Quota planning | Capacity lag classification; reset-aware cache; no silent failures |
+| Modular router | Early-exit on issue_comment to cut unmatched fan-out |
 
 **Lead/Lag + AEF/DOE + Adaptive WAIT** is the moneyball/telemetry plane: measure outcome not activity, adaptive cadence, cache durable context.
 
@@ -119,6 +125,7 @@ flowchart TD
   H -->|success| J[Evidence]
   F & G & I & J --> K[Adaptive WAIT → re-fetch SHA]
   L[Lead/Lag cadence */4] --> K
+  M[Modular router] --> E
 ```
 
 ## Superseded workflows (notes)
@@ -150,8 +157,9 @@ Target: reduce effective notification edges by combining related schedules into 
 - In-process queued classified as operational lag via adaptive WAIT.
 - Cadence */4 reduces schedule volume.
 - Conclusion filters on high-volume observers (branch).
+- Modular issue-comment-router.yml early-exit (branch).
 
-Next slice: modular event router for high-volume workflow_run / issue_comment to cut skipped listings further. Audit top schedule workflows by run volume. Harden help-wanted status refresh. Device-side Tailscale/Pinggy publish.
+Next slice: extract full jobs into router or workflow_call; harden help-wanted status refresh; device-side Tailscale/Pinggy/auth heartbeat publish.
 
 ## Additional flowchart: skip/cancel audit
 
@@ -177,8 +185,22 @@ flowchart TD
 - Requirement: operator sets unique TERMUX_DEVICE_ID on physical units; publisher job updates status to active when tunnel verified.
 - Alternatives: Cloudflare tunnel, secondary node, pure Actions runners for non-device work. Redundant paths documented for broken-screen primary.
 - Tailscale probe residual: join failure on latest schedule; reconnect app on device.
+- Auth canary: heartbeat missing → schedule fails by design until device publish.
 
-Observed this session: 2026-10-22T23:45Z (master tip e9e236b5 green-dominant; residual probe failure device-reachability; high-volume skipped audited as intentional; quota capacity non-gate)
+Observed this session: 2026-10-25 (master recent window: success + intentional skipped dominant; residual device/quota/auth classified non-gate; no new failure class requiring incident beyond Lead/Lag)
+Agent-Identity: Grok (Administrator)
+
+## Continuation (2026-10-25T02:00Z)
+
+- Branch tip updated with modular router presence and residual failure classification (Oct 24 ECC Tools / Provider batch / Remote knowledge / Agentic Auth Canary / context backfill).
+- All recent failures audited as lag_operational / device-reachability / quota-capacity (non-gate). No silent failures; Lead/Lag owns emission.
+- Modular router live on branch: early classification prevents unmatched issue_comment from full fan-out jobs.
+- Caching: adaptive delta on Lead/Lag snapshot + agent-context-store for work context (auth ephemeral).
+- Quota planning: capacity lag prevents retry storms; reset-aware.
+- Pinggy / device #1 (tmx-node-primary) still requires operator publish of active status. Alternatives documented.
+- C.A.D.E. continuous refinement: next extract router jobs fully, harden dashboard, device publish.
+- Dual-gate pending on this SHA. Advisory only (CodeRabbit etc.).
+
 Agent-Identity: Grok (Administrator)
 
 ## Continuation (2026-10-24T17:00Z)

@@ -1,27 +1,17 @@
-# Lane matrix status (2026-10-25T05:07:17Z)
+# Lane matrix status (2026-10-25T16:10:00Z)
 
-- Master: `85393d6cb3a5052b99aabeea01647c4dea78f405`
-- Open PRs: **75** (approx from search)
-- Oldest: #47 (ancient) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
+- Master: `dec8f88b8d39fda2211a2de4ad32b8ee34c0a896`
+- Open PRs: bases lagging tip; no dual-gate SUCCESS + mergeable on live tip
+- Note: Generated board restamped this cycle. Observer budget classifies stale as HOLD. Dual-gate remains promote authority.
 
 | Lane | Count |
 |------|------:|
-| CANDIDATE | ~20 (prior board) |
+| CANDIDATE | 0 (current-SHA) |
 | EXTRACT | 1 |
-| NEED_EVIDENCE | ~19 |
-| SUPERSEDE | ~16 |
+| NEED_EVIDENCE | many |
+| SUPERSEDE | many |
 
-| Age bucket | Count |
-|------------|------:|
-| ancient | 11+ |
-| fresh | majority recent |
-| stale | 16+ |
+Writer only: does not merge. HOLD/WAIT/OBSERVE are invalid parking. Age alone ≠ promote.
 
-## Tip lanes (EXTRACT / CANDIDATE / NEED_EVIDENCE first)
-
-No dual-gate SUCCESS + mergeable PR observed on current tip `85393d6`.
-Bases lag (examples: #1624 base 599556ef, #1645 base 683992ec, #1617 base 1bc51a06).
-
-Writer only: does not merge. Dual-gate remains promote authority. HOLD/WAIT/OBSERVE are invalid parking. Age alone ≠ promote.
-
-**Recon note:** Board restamped from live tip. Prior observation 2026-10-23T17:01:55Z on e60c1698 superseded. Future hourly runs use this baseline for candidate selection. Portability ratchet remains elevated (device_absolute_symlinks 34, tracked_backup_files 102, tracked_session_artifacts 423); next run targets one permanent reduction.
+Portability ratchet (baseline.json): device_absolute_symlinks:34, tracked_backup_files:102, tracked_session_artifacts:423, paths_with_spaces:452.
+Next highest: advance portability by retiring Class B process-runtime junk or Class D backups.

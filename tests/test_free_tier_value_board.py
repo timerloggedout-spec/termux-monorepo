@@ -73,7 +73,7 @@ class FreeTierValueBoardContractTests(unittest.TestCase):
         self.assertIn("billing_status=VERIFIED_NO_COST", self.doc)
 
     def test_session_contract_has_explicit_allowlist_and_success_gate(self):
-        match = re.search(r"const SESSION_KEYS=new Set\\(\\[(.*?)\\]\\);", self.page)
+        match = re.search(r"const SESSION_KEYS=new Set\(\[(.*?)\]\);", self.page)
         self.assertIsNotNone(match, "browser must declare an explicit session-field allowlist")
         allowed = set(re.findall(r"'([^']+)'", match.group(1)))
         expected = {

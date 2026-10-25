@@ -65,6 +65,13 @@ def evaluate(snapshot: dict[str, Any]) -> dict[str, Any]:
         prior = latest_by_reviewer.get(login)
         if prior is None or _parse_time(review.get("submitted_at")) >= _parse_time(prior.get("submitted_at")):
             latest_by_reviewer[login] = review
+    for review in reviews:
+        if review.get("state") == "DISMISSED":
+            justification = str(review.get("dismissal_justification") or review.get("justification") or "").strip()
+            if not justification:
+                reasons.append("dismissed review missing justification")
+                break
+
     current_reviews = list(latest_by_reviewer.values())
     if any(review.get("state") == "CHANGES_REQUESTED" for review in current_reviews):
         reasons.append("a current-head human review requests changes")

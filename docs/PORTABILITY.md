@@ -1,6 +1,6 @@
 # Portability: why a fresh clone of this monorepo does not work yet
 
-Measured on `master` @ `2d78be6b` (approx 8023 tracked paths). Sample .bak retirement reduced tracked_backup_files 120→116.
+Measured on `master` @ `2d78be6b` (approx 8023 tracked paths). Sample .bak retirement reduced tracked_backup_files 120→116. Subsequent Class D retires (2026-10-25) bring the live baseline to tracked_backup_files=100, paths_with_spaces=451.
 
 This is the single highest-leverage finding in the current repo state, and it is
 upstream of almost every open PR: **the tree on `master` cannot be reproduced from a
@@ -13,9 +13,9 @@ process-runtime artifact, or an editor backup.
 | Tracked symlinks | 45 | — |
 | …dangling in this clone | 42 | — |
 | …pointing at `/data/data/com.termux/...` | 34 | A / B |
-| Tracked `.bak*` / `.old` copies | 120 | D |
+| Tracked `.bak*` / `.old` copies | 100 | D |
 | Tracked agent session-store artifacts | 423 | E |
-| Tracked paths containing spaces | 452 | F |
+| Tracked paths containing spaces | 451 | F |
 
 `scripts/ci/repo_gate.py` turns each row into a ratchet counter, so the numbers can
 only go down. Nothing below has to be fixed in one pass.
@@ -110,12 +110,12 @@ git rm --cached -- \
 `_TOOL_TAXONOMY/delta/latest.json` are intra-repo relative links. Leave them. They
 are the pattern Class A should be migrated toward.
 
-## Class D — 120 tracked backup copies
+## Class D — 100 tracked backup copies
 
 `archwiz/archwiz.py.bak.1782737822`, `.bak.20260628_225950`, `.bak.224047`, and one
 literal `archwiz/archwiz.py.bak.$(date +%H%M%S)` — an unexpanded command substitution
 that became a filename. Git already is the backup. The gate blocks *new* ones
-(`no-committed-backups`) and counts the existing pile.
+(`no-committed-backups`) and counts the existing pile. Live baseline now 100 after 2026-10-25 retires of deepcli-tui/tui.py.bak*.
 
 ## Class E — 423 tracked session-store artifacts
 
@@ -128,7 +128,7 @@ That PR is correct and should land. Two things to fix first:
   rotation comes first**, then a separately reviewed history rewrite. PR #3's own
   follow-up section says this; it should be a hard gate on merge, not a note.
 
-## Class F — 452 paths containing spaces
+## Class F — 451 paths containing spaces
 
 Almost entirely session filenames like
 `.deepcli/session_store/Add export command to save session messages_1494fde3.json`.

@@ -314,3 +314,75 @@ These are explicit design decisions, not reasons to invent defaults.
 - [Routing & Orchestration Map](../ops/ROUTING-ORCHESTRATION-MAP.md)
 - [Evidence Projection Surface](../ops/EVIDENCE-PROJECTION-SURFACE.md)
 - [BIUDL Execution and Provenance](../ops/BIUDL-EXECUTION-AND-PROVENANCE.md)
+
+
+## 15. Required capability coverage: CMDB plus reconciliation
+
+The CMDB framing is the umbrella inventory and relationship model. “IDRR” is an optional name for the reconciliation capability, not a mandate to create a second database or competing system of record. The design must explicitly cover all five capability areas below; current coverage is architectural, not proof that each registry is implemented.
+
+| Capability area | Required inventory / behavior | Existing evidence to reuse first | Initial gap / validation question |
+|---|---|---|---|
+| **Service & Dependency Catalog** | Canonical references for APIs, services, projects, deployments, workflows, data stores, owners, environments, and typed dependencies | Provider capability registry; provider batch implementation; routing/orchestration map; workflow definitions; evidence projection; repository and skill inventories | Build a field-level source-of-truth matrix and enumerate actual repository paths before asserting completeness |
+| **Conflict Matrix / Resource Ownership Registry** | Identify duplicate provisioning, competing writers, ownership ambiguity, incompatible configuration, overlapping project/research lanes, shared-resource collisions, and resource contention | Workflow writer/concurrency configuration; repository/project manifests; quota/resource registries; integration mesh and campaign taxonomies; existing governance/ownership docs | Add explicit owner, writer, scope, collision key, evidence, severity, and disposition only where sources support them; report unknown ownership as unknown |
+| **Service Health & SLO Registry** | Keep upstream status separate from our own reachability checks, latency, availability objectives, incident history, and last-known-good observations | Provider-availability workflow; existing SLO/freshness/incident documents where present; Actions runs, artifacts, and evidence projection | Inventory existing signals and per-signal freshness policies; do not invent SLO targets or treat a successful probe as end-to-end health |
+| **Secrets & Configuration Inventory** | Record credential references/names, owning secret manager or configuration authority, requiredness, consumers, scope, rotation requirements, and verification state—never secret values | Provider credential-name metadata; quota registry/poller; workflow secret references; existing credential-name inventory and secret-safe evidence contracts | Separate declared reference, authorized presence observation, authentication test, rotation policy, and expiry evidence; absent observation is not proof of absence |
+| **Configuration Reconciliation & Drift Ledger** | Compare desired configuration with scoped observed reality; preserve diffs, provenance, affected owner, severity, recommended correction, disposition, and resolution evidence | Existing reconciliation workflows, BIUDL provenance, runtime observations, manifests, generated registries, and immutable workflow/artifact references | Determine whether an existing ledger already owns each finding class; consume it rather than creating a parallel event/history store |
+
+### Cross-cutting entity fields
+
+Where supported by the source, normalize: stable ID; entity type; canonical locator; display name/aliases; owning team/person or unknown; environment/tenant scope; authoritative source and source version; configured/documented/observed/derived/asserted truth class; observation time and freshness policy; dependencies/consumers/writers; lifecycle state; sensitivity/projection class; and evidence references. Do not require every source to provide every field. Missing values remain explicit unknowns.
+
+### Conflict and ownership semantics
+
+A conflict record should identify the subject/resource, competing claims or writers, each claim's authority and scope, evidence references, impact, confidence, owner/disposition, and last checked time. Detecting two references is not by itself proof of duplicate provisioning; distinguish confirmed collisions from candidates and inferred overlap. The registry reports and links evidence; it does not terminate writers, change permissions, or delete resources in the first slice.
+
+### Health, SLO, and last-known-good semantics
+
+Keep these distinct: upstream-declared status; our reachability observation; authenticated request; capability-specific test; end-to-end success; and business outcome. An SLO is a policy/objective with a defined service, measurement method, window, target, exclusions, and owner—not merely a latency field. Last-known-good must carry timestamp, scope, source/version, and age, and must not mask newer failure, inaccessible source, or stale evidence.
+
+### Credential/configuration lifecycle
+
+Track only safe metadata: reference/name, consumer, owning configuration system, environment scope, required/optional status, rotation interval or policy reference, last rotation/verification evidence when authorized, and status such as declared, presence_observed, auth_verified, rotation_due, unknown, or inaccessible. Never ingest values, tokens, cookies, private keys, authorization headers, or hashes of low-entropy secrets. A reference existing does not prove presence, validity, successful authentication, least privilege, or rotation compliance.
+
+## 16. Inventory sweep: repositories, skills, research lanes, and toolkits
+
+Phase 0 must be a real repository census, not a hand-picked list of obvious infrastructure files. Start from tracked files and existing machine-readable inventories; classify each result as canonical source, generated projection, reference-only, experimental/research, external dependency, or unknown. Preserve source URL/SHA, branch/ref, observed-at time, and the limits of each sweep. Do not infer “complete” from code-search results alone.
+
+The first sweep must include, at minimum:
+
+- **Infrastructure and operations:** ops/, ops/quota/, provider registries/manifests, deployment/configuration files, .github/workflows/, schemas, scripts that poll or write state, freshness/SLO/incident docs, and all reconciliation/evidence workflows.
+- **Skills as managed assets:** .agents/skills/**/SKILL.md, .github/skills/**/SKILL.md, SKILLS.md, CLAUDE.md, docs/ops/SKILLS-INVENTORY.md, and relevant skill manifests, pins, test/fixture directories, and source/upstream references. Check that the inventory reflects actual tracked skill directories; do not treat local mirrors as canonical where repository policy says otherwise.
+- **Approxination:** .agents/skills/approxination-lane/SKILL.md, docs/ops/APPROXINATION-LANE.md, docs/evaluations/approxination/COHORT.md, and docs/proposals/active/approxination-integration/. The current lane document says the skill/cohort are live and the gitlink pin is optional backlog (APPROX-005); preserve that status and verify the exact pin/evidence rather than claiming the external benchmark is vendored.
+- **AntiGravityCLI / Google Antigravity:** inspect existing tracking record [issue #1497](https://github.com/timerloggedout-spec/termux-monorepo/issues/1497), any associated PRs, source references, skills, agent/hook/permission integrations, and import/pin proposals. Treat issue text as a research proposal unless source code, merged records, or run evidence establish implementation. A code search with no result is not proof that no associated PR or external resource exists.
+- **Awesome lists and external skill catalogs:** locate existing curation/ingestion tasks and canonical indexes (including any awesome-list handoff); record upstream repository, license, exact commit/tag, imported paths, provenance, trust review, and update mechanism. Do not copy entire lists or silently turn a reference into an enabled dependency.
+- **Reverse-engineering toolkit:** reconcile docs/ops/WEB-ADAPTER-FOUNDRY.md, docs/ops/WEB-REVERSE-ENGINEERING-CAMPAIGN.md, ops/web_adapter_foundry/ machine registries, .agents/skills/web-adapter-foundry/SKILL.md, tests, and docs/repositories/browser-lane-imports.json. Preserve the existing taxonomy's single-primary-placement rule and cross-membership facets; do not create duplicate catalog entries for Foundry/browser-lane overlaps.
+- **Other resource catalogs:** integration mesh, device pull queue, repository observatory, context-relationship indexes, tool/command registries, and other tracked resource directories discovered by the census.
+
+### Sweep deliverable
+
+Produce a source-backed inventory table with: canonical path/URL; resource class; entity types represented; source owner/authority; update mechanism; stable identity; relationships/dependencies; observed/configured/documented status; freshness/evidence; secrets/privacy class; overlaps/conflicts; and unresolved questions. Include excluded and inaccessible surfaces with reasons. Record counts and the exact ref/SHA for reproducibility. The first sweep is a baseline snapshot, not a claim of exhaustiveness until a tracked-file census and reconciliation against relevant indexes are complete.
+
+## 17. Compounding implementation priorities (P0–P4)
+
+Prioritize the lowest-risk work that improves every later phase. These are proposed sequence gates, not claims of existing implementation.
+
+| Priority | Deliverable | Why it compounds | Exit evidence / guardrail |
+|---|---|---|---|
+| **P0 — Reconnaissance and authority map** | Reproducible tracked-file/source sweep; field-level source-of-truth matrix; owners, writers, scopes, existing registries, skills, and evidence lanes | Prevents duplicate registries and establishes the actual boundary | Inventory cites exact paths and source refs/SHA; overlaps and unknowns recorded; current authorities reviewed |
+| **P1 — Canonical CMDB model and fixtures** | Stable entity IDs, typed relationships, ownership/scope, source provenance, sensitivity labels, closed schema, adversarial fixtures | Gives every catalog and reconciliation lane a common contract | Deterministic validation covers duplicate IDs, aliases, unresolved edges, scope mismatch, unknown owner, secret leakage, and provenance |
+| **P2 — Read-only projections and conflict/drift findings** | Normalize existing manifests and observations; derive resource collision candidates and desired-vs-observed differences | Creates useful operational visibility without new writers or pollers | Rebuildable snapshot and receipt; deterministic classifications; every finding links evidence; no automatic remediation |
+| **P3 — Health/SLO and credential lifecycle views** | Integrate existing probes, latency/availability evidence, incident history, last-known-good, credential references and rotation/verification metadata | Adds time-sensitive operational value once identity and provenance are stable | Per-signal freshness and SLO source defined; auth vs reachability distinguished; private/public projection tests pass |
+| **P4 — Cockpit integration and governed action proposals** | Navigable graph, ownership/conflict queues, health/drift views, action recommendations and audit links; separately scoped future write workflows only if justified | Turns inventory into a management cockpit without silently becoming a control plane | Unknown/stale/conflicting states remain visible; read-only default; any mutation requires separate permissions, threat model, tests, rollback, approval, and promotion decision |
+
+**Compounding order:** P0 → P1 → P2 → P3 → P4. Do not start with a dashboard, new poller, new database, automatic repair, or broad vendor integration before P0/P1 establish that it is necessary.
+
+## 18. Expanded acceptance checklist
+
+- [ ] All five capability areas in §15 are covered or explicitly marked as an evidence-backed gap.
+- [ ] P0 sweep includes operations, skills, Approxination, Antigravity/issue #1497, awesome-list intake, reverse-engineering toolkit, and other discovered resource catalogs.
+- [ ] Field-level source-of-truth matrix distinguishes source authority from freshness and observed state.
+- [ ] Conflict findings distinguish confirmed collisions from candidates/inferences and include owner/disposition.
+- [ ] Health/SLO semantics separate upstream status, reachability, capability checks, end-to-end outcomes, and last-known-good age.
+- [ ] Credential/config inventory contains references and safe lifecycle metadata only, never values or secret-derived hashes.
+- [ ] Drift ledger reuses existing reconciliation/evidence ownership where available and preserves history/provenance.
+- [ ] P0–P4 exit evidence is defined and promotion remains separate from design/commit/check success.

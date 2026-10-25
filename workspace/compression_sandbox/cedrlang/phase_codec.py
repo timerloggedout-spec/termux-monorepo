@@ -220,3 +220,98 @@ def compile_phase(text: str, canonical_compiler) -> str:
 def decompile_phase(text: str, canonical_decompiler) -> str:
     """Normalize diaspora variants, then use the existing canonical decompiler."""
     return canonical_decompiler(from_1337speak(text))
+
+
+DEFAULT_STEGANOGRAPHY_MAP: Mapping[str, str] = {
+    "h4x": "whisper",
+    "scry": "observe",
+    "pr0b3": "sample",
+    "3ch0": "resonate",
+    "l00p": "cycle",
+    "f0rk": "diverge",
+    "1nc4nt": "recite",
+    "c4st": "invoke",
+    "gr1m01r3": "codex",
+    "b1dd3r": "market",
+    "w4g3r": "stake",
+    "chr0n0": "timeline",
+    "l1ngu15t": "dialectic",
+    "sc0ut": "recon",
+    "h4rv35t3r": "collector",
+    "em_t3chs": "frontier_techs",
+    "em_t3ch": "frontier_tech",
+    "pr0cur3s": "acquisitions",
+    "pr0cur3": "acquisition",
+    "cur473s": "selections",
+    "cur473": "selection",
+    "s0urc3s": "sources",
+    "s0urc3": "source",
+    "4cqs": "assets",
+    "4cq": "asset",
+    "c0mp1s": "verifications",
+    "c0mp1": "verification",
+    "r3534rchs": "studies",
+    "r3534rch": "study",
+    "c0nc3p7s": "patterns",
+    "c0nc3p7": "pattern",
+}
+
+
+class ConversationalSteganographyCipher:
+    """4th Development Lane: Steganographic Obfuscation Cipher prior to LLM Pre-Parser.
+
+    Encodes canonical CedrLang/Grimoire tokens into conversational cover words
+    and decodes them back using private mapping definitions for zero-loss
+    round-trip parity and private Agent2Agent communication.
+    """
+
+    def __init__(self, key_map: Optional[Mapping[str, str]] = None) -> None:
+        self.key_map: Mapping[str, str] = key_map if key_map is not None else DEFAULT_STEGANOGRAPHY_MAP
+        self.reverse_map: Dict[str, str] = {
+            v.lower(): k for k, v in self.key_map.items()
+        }
+        self.encode_regex = re.compile(_build_trie_regex(self.key_map.keys())) if self.key_map else None
+        self.decode_regex = re.compile(_build_trie_regex(self.reverse_map.keys())) if self.reverse_map else None
+
+    def encode(self, text: str) -> str:
+        """Encode canonical tokens to conversational cover words."""
+        if not text or not self.encode_regex:
+            return text
+        if not self.encode_regex.search(text):
+            return text
+
+        def _encode_cb(m: re.Match[str]) -> str:
+            val = m.group(0).lower()
+            return self.key_map.get(val, m.group(0))
+
+        return self.encode_regex.sub(_encode_cb, text)
+
+    def decode(self, text: str) -> str:
+        """Decode conversational cover words back to canonical tokens."""
+        if not text or not self.decode_regex:
+            return text
+        if not self.decode_regex.search(text):
+            return text
+
+        def _decode_cb(m: re.Match[str]) -> str:
+            val = m.group(0).lower()
+            return self.reverse_map.get(val, m.group(0))
+
+        return self.decode_regex.sub(_decode_cb, text)
+
+
+_DEFAULT_CIPHER = ConversationalSteganographyCipher()
+
+
+def steganography_encode(text: str, key_map: Optional[Mapping[str, str]] = None) -> str:
+    """Convenience helper to encode text into conversational cover words."""
+    if key_map is None:
+        return _DEFAULT_CIPHER.encode(text)
+    return ConversationalSteganographyCipher(key_map).encode(text)
+
+
+def steganography_decode(text: str, key_map: Optional[Mapping[str, str]] = None) -> str:
+    """Convenience helper to decode text back from conversational cover words."""
+    if key_map is None:
+        return _DEFAULT_CIPHER.decode(text)
+    return ConversationalSteganographyCipher(key_map).decode(text)

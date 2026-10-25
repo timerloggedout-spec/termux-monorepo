@@ -116,7 +116,7 @@ Start with **one** of these routes. Do not load the entire repository merely bec
 |---|---|---|
 | **Agent / operator entry (primary)** | [`CLAUDE.md`](CLAUDE.md) | Governance, hard rules, dual gates, adaptive WAIT, skills inventory pointer. **Load this first.** |
 | Task routing (one verified card) | [`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md) | Repository-native ICM system map, objects, processes, and impact routes. |
-| Linguist / CedrLang surface only | [`AGENTS.md`](AGENTS.md) | Deprecated as primary entry — retained as Linguist compression target + tooling compatibility. |
+| Human readable twin | [`AGENTS.hum.md`](AGENTS.hum.md) | Human-readable twin of repository guidance. |
 | Maintain the ICM map itself | [`docs/icm/maintenance/CLAUDE.md`](docs/icm/maintenance/CLAUDE.md) | Inventory → human design review → verification → promotion procedure. |
 | Operate or inspect the ArchWiz surface | [`archwiz/TOOL_INDEX.md`](archwiz/TOOL_INDEX.md) | Named cockpit, forensic, autonomous, verification, and knowledge tools. |
 | Review open proposal governance | [`docs/proposals/`](docs/proposals/) | Registered active proposals, operator policy notes, and validation structure. |
@@ -217,6 +217,45 @@ The repository’s Linguist work optimizes **internal** agent communication thro
 | [`harmony_hub/workspace/agent/LINGUIST_SPEC.md`](harmony_hub/workspace/agent/LINGUIST_SPEC.md) | Linguist role, pointer conventions, and integration intent | Agent specification. |
 | [PR #196](https://github.com/timerloggedout-spec/termux-monorepo/pull/196) | Merged CedrLang v2 compilation work | Historical implementation and review evidence. |
 | [PR #228](https://github.com/timerloggedout-spec/termux-monorepo/pull/228) | Merged fast-path term-search optimization | Subsequent performance evidence. |
+
+### Human Readable 1337_$934k Grimoire Cipher Mapping Matrix
+
+The symbolic substitution cipher map enables lossless compression and expansion between human prose and Agent2Agent Grimoire tokens:
+
+| Human Term / Concept | 1337_$934k Symbol / Token | Category |
+|---|---|---|
+| transmute | `h4x` | Action |
+| scry | `scry` | Inspection |
+| probe | `pr0b3` | Validation |
+| echo | `3ch0` | Telemetry |
+| time loop | `l00p` | Control |
+| branch | `f0rk` | Forking |
+| incantation | `1nc4nt` | Prompt / Script |
+| cast | `c4st` | Execution |
+| grimoire | `gr1m01r3` | Knowledge Base |
+| bidder | `b1dd3r` | Market Agent |
+| wager | `w4g3r` | Stake / Priority |
+| chronomancer | `chr0n0` | Time Agent |
+| linguist | `l1ngu15t` | Compression Agent |
+| scout | `sc0ut` | Recon Agent |
+| harvester | `h4rv35t3r` | Data Collector |
+| emerging technologies | `em_t3chs` | Domain |
+| procurements | `pr0cur3s` | Sourcing |
+| curations | `cur473s` | Selection |
+| sourcings | `s0urc3s` | Procurement |
+| acquisitions | `4cqs` | Asset Ingestion |
+| compliances | `c0mp1s` | Verification |
+| researches | `r3534rchs` | Research |
+| concepts | `c0nc3p7s` | Abstract Units |
+| leads to / results in / implies | `→` | Relation |
+| because / since | `←` | Reason |
+| therefore | `∴` | Inference |
+| compare / versus | `vs` | Comparison |
+| create / delete / update | `+` / `-` / `~` | Mutation |
+| read / write / execute | `>` / `<` / `!` | I/O Ops |
+| if / then / else | `?` / `⇒` / `\|` | Conditional |
+| true / false | `T` / `F` | Truth Value |
+| success / fail / pending / error | `✓` / `✗` / `…` / `⚠` | Status |
 
 1337-style naming may be used as a **display dialect**, never as a substitute for a source path, permission boundary, or validation result. The disciplined version of “l33t” is legibility under pressure.
 

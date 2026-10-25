@@ -2,7 +2,10 @@ import random
 
 from workspace.compression_sandbox.cedrlang.phase_codec import (
     INITIAL_SUBSTITUTION_PROBABILITY,
+    ConversationalSteganographyCipher,
     from_1337speak,
+    steganography_decode,
+    steganography_encode,
     to_1337speak,
 )
 
@@ -46,3 +49,33 @@ def test_probability_validation():
             pass
         else:
             raise AssertionError("invalid probability was accepted")
+
+
+def test_conversational_steganography_default_roundtrip():
+    source = "h4x pr0b3 gr1m01r3 l1ngu15t chr0n0"
+    encoded = steganography_encode(source)
+    assert encoded == "whisper sample codex dialectic timeline"
+    decoded = steganography_decode(encoded)
+    assert decoded == source
+
+
+def test_conversational_steganography_custom_private_map():
+    custom_map = {
+        "h4x": "shadow",
+        "scry": "vision",
+        "gr1m01r3": "tome",
+    }
+    cipher = ConversationalSteganographyCipher(key_map=custom_map)
+    source = "h4x scry gr1m01r3"
+    encoded = cipher.encode(source)
+    assert encoded == "shadow vision tome"
+    decoded = cipher.decode(encoded)
+    assert decoded == source
+
+
+def test_conversational_steganography_passthrough_and_empty():
+    assert steganography_encode("") == ""
+    assert steganography_decode("") == ""
+    source = "unrelated plain prose without matching tokens"
+    assert steganography_encode(source) == source
+    assert steganography_decode(source) == source

@@ -2,7 +2,7 @@
 
 **Primary Collaborator entry for this repository.** Load this first.
 
-Root `AGENTS.md` is **deprecated** (Linguist / CedrLang / Jules compression stub only). Do not start from it. All hard rules and routing live here and in the governance sequence below.
+Root `AGENTS.md` has been folded into this file and deleted. Human readable twin: [`AGENTS.hum.md`](AGENTS.hum.md). All hard rules and routing live here and in the governance sequence below.
 
 Collaborators are addressed by **Role**, **Name**, and **Moniker** — not by a generic `AGENTS.md` catalog.
 
@@ -105,7 +105,7 @@ Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
 | FA-ADE / auto-promote | `docs/ops/REFTEMPLATES-CONSOLIDATION.md` |
 | Session SSOT schema | `docs/schemas/session-ssot.md` |
 | Provider caps | `docs/schemas/provider-capabilities.md` |
-| Linguist / CedrLang / Jules stub only | `AGENTS.md` (deprecated redirect) |
+| Human readable twin | [`AGENTS.hum.md`](AGENTS.hum.md) |
 
 ## ICM + RinDig reference pins (smods)
 

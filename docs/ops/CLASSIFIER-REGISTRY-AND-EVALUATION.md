@@ -139,6 +139,18 @@ Do not collapse these into one winner score without publishing the formula and c
 The existing System One experiment plan already says unavailable Jev is not a model failure, raw receipts are canonical, missing evidence is null, and active routing requires multiple comparable cohorts and human promotion. Preserve these invariants. The current Jev HTTP path and Laya inference path have not been independently demonstrated as successful live inference in this lane; contract/mock tests must not be presented as model-quality evidence.
 
 
+## Compute plane and code ownership
+
+The canonical shared classifier evaluator for this lane is `scripts/classifier_eval.py`; the versioned question bank is `tests/fixtures/classifier-question-bank.json`; regression tests are in `tests/test_classifier_question_bank.py`. Keep cross-project evaluation contracts, receipts, and promotion gates here rather than silently making a product-specific CLI package the source of truth.
+
+The System One workflow (`.github/workflows/system-one-experiments.yml`) runs on GitHub-hosted `ubuntu-latest` runners. Its unit tests, fixture smoke cohort, bounded candidate matrix, scorer, and receipt validation execute in that remote Actions job; local commands in this document are developer reproduction instructions, not the production execution plane. Outputs are uploaded as run-scoped Actions artifacts with finite retention.
+
+**Important distinction:** a hosted runner is remote compute, but it does not automatically mean inference ran on a remote model service. The current default smoke run uses the deterministic baseline; the matrix uses the deterministic baseline, a mock adapter, and a Jev adapter that is expected to report `UNAVAILABLE` when live mode/credentials are absent. These are wiring/contract checks, not live service or model-quality evidence. Any live cohort must be a deliberate, separately permissioned workflow run with provider credentials stored as GitHub Actions secrets/environment secrets, never exposed to untrusted pull-request code. Record the provider/runtime, model revision or digest, source SHA, service region where available, timeout, concurrency, and receipt artifact for each live run.
+
+### Tier-1 placement rule
+
+The phrase “Tier 1” must be resolved against the repository's actual tier taxonomy; it is not inferred from a folder name or a label in a comment. Before moving or duplicating code under `deepcli/`, verify the owning package, import paths, tests, deployment consumer, and issue/PR provenance. `deepcli/` is a distinct terminal/chat application surface; it is not the canonical location for this shared evaluation harness merely because both projects use Python. If Tier-1 classifier logic is genuinely a runtime dependency of DeepCLI, keep a thin, tested adapter there and retain the shared schema, question bank, runner, and evidence contract in the System One evaluation plane. Avoid copying the implementation into both places; define one owner and test the integration boundary.
+
 ## Executable candidate-matrix mode
 
 The evaluator now supports a bounded cross-product of question-bank items and candidate adapters. The default remains the deterministic baseline for backward-compatible smoke checks. To compare adapters against the same bank, run:

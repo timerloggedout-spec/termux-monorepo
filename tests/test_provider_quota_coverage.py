@@ -181,6 +181,11 @@ def test_invalid_cooldown_denied(value):
     assert coverage.evaluate("p", "m", [_valid_row()], now=_now(), cooldown_seconds=value)["admit"] == "deny"
 
 
+def test_cooldown_and_safety_bounds():
+    assert coverage.evaluate("p", "m", [_valid_row()], now=_now(), safety=0.0)["reason"] == "invalid_safety_margin"
+    assert coverage.evaluate("p", "m", [_valid_row()], now=_now(), cooldown_seconds=120)["reason"] == "cooldown_active"
+
+
 @pytest.mark.parametrize("ttl", [0, -1, 901, True, math.inf, math.nan])
 def test_invalid_ttl_denied(ttl):
     assert coverage.evaluate("p", "m", [_valid_row()], now=_now(), max_age_seconds=ttl)["admit"] == "deny"

@@ -77,5 +77,29 @@ class MergeReadinessTests(unittest.TestCase):
         snapshot = eligible_snapshot(); snapshot["pr"]["labels"] = []
         self.assertEqual(evaluate(snapshot)["decision"], "wait")
 
+    def test_dismissed_review_with_justification_allowed(self):
+        snapshot = eligible_snapshot()
+        snapshot["reviews"].append({
+            "user": {"login": "other_reviewer", "type": "User"},
+            "state": "DISMISSED",
+            "dismissal_justification": "Addressed in head commit abc123",
+            "submitted_at": "2026-10-19T11:00:00Z",
+            "commit_id": "abc123",
+        })
+        result = evaluate(snapshot)
+        self.assertEqual(result["decision"], "enable_auto_merge")
+
+    def test_dismissed_review_without_justification_blocks(self):
+        snapshot = eligible_snapshot()
+        snapshot["reviews"].append({
+            "user": {"login": "other_reviewer", "type": "User"},
+            "state": "DISMISSED",
+            "submitted_at": "2026-10-19T11:00:00Z",
+            "commit_id": "abc123",
+        })
+        result = evaluate(snapshot)
+        self.assertEqual(result["decision"], "wait")
+        self.assertTrue(any("dismissed review missing justification" in reason for reason in result["reasons"]))
+
 if __name__ == "__main__":
     unittest.main()

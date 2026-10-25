@@ -21,6 +21,10 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+# Script execution sets sys.path[0] to scripts/, so add the repository root for
+# package-qualified adapter imports (for example, scripts.laya_decision_stub).
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 DEFAULT_BANK = ROOT / "tests/fixtures/classifier-question-bank.json"
 CANDIDATES = ("deterministic-baseline", "laya-mock", "laya-live", "jev")
 MODEL_REFS = {

@@ -53,6 +53,8 @@ jobs:
             // allowlist (docs/ops/secrets-and-variables-registry.md).
             const allowlist = new Set([
               'SUPABASE_URL',
+              'SUPABASE_ANON_KEY',
+              'SUPABASE_PUBLISHABLE_KEY',
               'BUILDKITE_ORG_SLUG',
               'BUILDKITE_PIPELINE_SLUG',
               'BIGQUERY_PROJECT_ID',
@@ -63,10 +65,18 @@ jobs:
             // Already-public values only may transit this lane's public channels;
             // private-valued names go through Settings UI / gh CLI (registry section 4).
             const publicValueAllowlist = new Set([
+              'SUPABASE_ANON_KEY',
+              'SUPABASE_PUBLISHABLE_KEY',
               'QUOTA_DISPATCH_MAX_BUSY',
               'RECON_SWEEP_WINDOW_HOURS',
               'RECON_SWEEP_MAX_TARGETS'
             ]);
+            // Public-by-design Supabase credentials (owner rule 2026-10-25:
+            // keys carry scope-reflecting names — SUPABASE_ANON_KEY for the
+            // browser/anon JWT, SUPABASE_PUBLISHABLE_KEY for the publishable
+            // management-plane key; distinct names per scope, no overwrites of
+            // the legacy SUPABASE_KEY secret name). Supabase publishes both
+            // values to browser clients by design; table access is gated by RLS.
             // Dispatch-only names whose value is derived in-run from a secret
             // (2026-10-25): the literal value never appears on any surface.
             const deriveOnlyAllowlist = new Set(['SUPABASE_URL']);

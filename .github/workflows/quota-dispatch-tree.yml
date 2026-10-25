@@ -161,13 +161,14 @@ jobs:
               .write();
 
       - name: Persist verdicts to Supabase lane-state (optional)
-        # Fires only when SUPABASE_URL (repo variable) and
-        # SUPABASE_SERVICE_ROLE_KEY (secret) exist; otherwise skipped.
+        # Fires only when SUPABASE_URL (repo variable) and the Supabase service
+        # secret exist (SUPABASE_KEY, with a fallback to the legacy
+        # SUPABASE_SERVICE_ROLE_KEY name); otherwise skipped.
         # Project: termux-monorepo-lane-state, table dispatch_verdicts.
         if: env.SUPABASE_URL != '' && env.SUPABASE_SERVICE_ROLE_KEY != ''
         env:
           SUPABASE_URL: ${{ vars.SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_KEY || secrets.SUPABASE_SERVICE_ROLE_KEY }}
           V_STALL: ${{ steps.tree.outputs.dispatch_stall_watch }}
           V_BRIDGE: ${{ steps.tree.outputs.dispatch_bridge }}
           V_PROBE: ${{ steps.tree.outputs.dispatch_probe }}

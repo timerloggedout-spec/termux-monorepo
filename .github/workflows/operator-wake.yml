@@ -2,7 +2,7 @@ name: Operator wake
 
 # Agent/operator plane (docs/ops/CODESPACE-CREDENTIALS-SSOT.md): repo Actions
 # secrets carry the credentials; agents never hold raw token values. This lane
-# exposes three allowlisted operator duties:
+# exposes four allowlisted operator duties:
 #   inventory — full Actions secret NAME list via scripts/ops/provider_secret_inventory.py
 #               (provider-batch.yml observe pattern; names only, never values)
 #   variables — full Actions repository variable NAME list via the GitHub API
@@ -11,11 +11,16 @@ name: Operator wake
 #   wake      — gh workflow run for the allowlisted vantage-cost-report lane
 #               (optional strict=true), then poll the run and republish its
 #               receipt-v1 artifact (token-free by construction)
+#   provision-supabase-url — dispatch operator-variable-provision with
+#               assignments=SUPABASE_URL=@derive (the lane derives the value
+#               in-run from the SUPABASE_KEY secret; no value transits any
+#               surface), then poll the run's conclusion
 # Comment trigger (marker-gated, action-effectiveness-ledger precedent):
 #   <!-- request-operator-wake -->
 #   inventory
 #   variables
 #   wake vantage-cost-report strict=true
+#   provision-supabase-url
 # Results post back to the triggering issue. workflow_dispatch mirrors all
 # commands for the Actions UI. No schedule: cadence stays with callers.
 
@@ -25,11 +30,11 @@ on:
   workflow_dispatch:
     inputs:
       command:
-        description: 'inventory | variables | wake-vantage-strict'
+        description: 'inventory | variables | wake-vantage-strict | provision-supabase-url'
         required: true
         default: 'inventory'
         type: choice
-        options: [inventory, variables, wake-vantage-strict]
+        options: [inventory, variables, wake-vantage-strict, provision-supabase-url]
 
 concurrency:
   group: operator-wake-${{ github.event.issue.number || github.event.inputs.command || github.run_id }}
@@ -70,12 +75,14 @@ jobs:
           want_inventory=false
           want_variables=false
           want_wake=false
+          want_provision=false
           wake_strict=false
           if [ "${GITHUB_EVENT_NAME:-}" = "workflow_dispatch" ]; then
             case "$DISPATCH_COMMAND" in
               inventory) want_inventory=true ;;
               variables) want_variables=true ;;
               wake-vantage-strict) want_wake=true; wake_strict=true ;;
+              provision-supabase-url) want_provision=true ;;
             esac
           else
             if printf '%s' "$COMMENT_BODY" | grep -Eq '(^|[^A-Za-z0-9_-])inventory([^A-Za-z0-9_-]|$)'; then
@@ -87,6 +94,9 @@ jobs:
             if printf '%s' "$COMMENT_BODY" | grep -Eq 'wake[[:space:]]+vantage-cost-report([^A-Za-z0-9_.-]|$)'; then
               want_wake=true
               if printf '%s' "$COMMENT_BODY" | grep -q 'strict=true'; then wake_strict=true; fi
+            fi
+            if printf '%s' "$COMMENT_BODY" | grep -Eq 'provision-supabase-url'; then
+              want_provision=true
             fi
           fi
 
@@ -161,8 +171,38 @@ jobs:
             fi
           fi
 
-          if [ "$want_inventory" = false ] && [ "$want_variables" = false ] && [ "$want_wake" = false ]; then
-            report="${report}"$'\n'"- no allowlisted command found (supported: inventory; variables; wake vantage-cost-report [strict=true])"
+          if [ "$want_provision" = true ]; then
+            report="${report}"$'\n'"- provision SUPABASE_URL=@derive via operator-variable-provision"
+            since_prov=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+            if ! gh workflow run operator-variable-provision.yml -R "$GITHUB_REPOSITORY" --ref master -f 'assignments=SUPABASE_URL=@derive'; then
+              report="${report}"$'\n'"- provision dispatch: FAILED (see run log)"
+            else
+              prov_run=""
+              for _ in $(seq 1 12); do
+                sleep 5
+                prov_run=$(gh run list -R "$GITHUB_REPOSITORY" --workflow operator-variable-provision.yml --event workflow_dispatch --limit 5 --json databaseId,createdAt --jq "[.[] | select(.createdAt >= \"${since_prov}\")][0].databaseId // empty" 2>/dev/null || true)
+                [ -n "$prov_run" ] && break
+              done
+              if [ -z "$prov_run" ]; then
+                report="${report}"$'\n'"- provision dispatch: accepted but run not located within polling window"
+              else
+                prov_conclusion=""
+                for _ in $(seq 1 30); do
+                  sleep 10
+                  prov_pair=$(gh run view "$prov_run" -R "$GITHUB_REPOSITORY" --json status,conclusion --jq '.status + "/" + (.conclusion // "pending")' 2>/dev/null || true)
+                  case "$prov_pair" in completed/*) prov_conclusion="${prov_pair#completed/}"; break ;; esac
+                done
+                if [ -z "$prov_conclusion" ]; then
+                  report="${report}"$'\n'"- provision run ${prov_run}: still running at poll deadline (conclusion pending)"
+                else
+                  report="${report}"$'\n'"- provision run ${prov_run}: ${prov_conclusion}"
+                fi
+              fi
+            fi
+          fi
+
+          if [ "$want_inventory" = false ] && [ "$want_variables" = false ] && [ "$want_wake" = false ] && [ "$want_provision" = false ]; then
+            report="${report}"$'\n'"- no allowlisted command found (supported: inventory; variables; wake vantage-cost-report [strict=true]; provision-supabase-url)"
           fi
           {
             echo "report<<REPORT_EOF"

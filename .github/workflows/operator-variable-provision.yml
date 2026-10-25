@@ -5,15 +5,18 @@ name: Operator Variable Provision
 # Secrets can never be set here — only the allowlisted variable names below.
 # Channel rule (registry section 4): values carried on public surfaces (issue
 # comments, workflow_dispatch inputs) must already be public. Private-valued
-# names (SUPABASE_URL, BUILDKITE_*, BIGQUERY_PROJECT_ID) are Settings-UI /
-# gh-CLI only, referenced publicly by name.
+# names (BUILDKITE_*, BIGQUERY_PROJECT_ID) are Settings-UI / gh-CLI only,
+# referenced publicly by name.
+# Exception (2026-10-25): SUPABASE_URL=@derive on workflow_dispatch derives
+# the value in-run from the SUPABASE_KEY secret (project ref from the key's
+# JWT ref claim or sb_secret_<ref>_ body). No value ever transits a surface.
 # No schedule trigger: cadence is operator-driven only (issue #1573).
 
 on:
   workflow_dispatch:
     inputs:
       assignments:
-        description: 'One or more NAME=value lines (allowlisted non-secret variables only)'
+        description: 'One or more NAME=value lines (allowlisted non-secret variables only; SUPABASE_URL=@derive derives from the secret)'
         required: true
         type: string
   issue_comment:
@@ -42,6 +45,7 @@ jobs:
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b
         env:
           ASSIGNMENTS: ${{ github.event.inputs.assignments || github.event.comment.body }}
+          SUPABASE_KEY_DERIVE: ${{ secrets.SUPABASE_KEY }}
         with:
           script: |
             // Non-secret configuration only. Names must match the registry
@@ -62,6 +66,9 @@ jobs:
               'RECON_SWEEP_WINDOW_HOURS',
               'RECON_SWEEP_MAX_TARGETS'
             ]);
+            // Dispatch-only names whose value is derived in-run from a secret
+            // (2026-10-25): the literal value never appears on any surface.
+            const deriveOnlyAllowlist = new Set(['SUPABASE_URL']);
             // Comment mode: only lines after the marker, of the form NAME=value.
             const raw = process.env.ASSIGNMENTS || '';
             const lines = raw
@@ -88,7 +95,8 @@ jobs:
                 );
                 return;
               }
-              if (!publicValueAllowlist.has(name)) {
+              const deriveOnly = context.eventName === 'workflow_dispatch' && deriveOnlyAllowlist.has(name);
+              if (!publicValueAllowlist.has(name) && !deriveOnly) {
                 core.setFailed(
                   `Variable ${name} carries a non-public value: this lane accepts only ` +
                   `already-public values. Provision ${name} via repo Settings -> Secrets ` +
@@ -97,7 +105,42 @@ jobs:
                 );
                 return;
               }
-              if (value.length === 0) {
+              let val = value;
+              if (val === '@derive') {
+                if (name !== 'SUPABASE_URL') {
+                  core.setFailed('@derive is only supported for SUPABASE_URL.');
+                  return;
+                }
+                const key = process.env.SUPABASE_KEY_DERIVE || '';
+                let ref = '';
+                const segs = key.split('.');
+                if (segs.length === 3) {
+                  try {
+                    const pad = segs[1].replace(/-/g, '+').replace(/_/g, '/');
+                    const payload = JSON.parse(Buffer.from(pad, 'base64').toString('utf8'));
+                    ref = payload.ref || '';
+                    if (!ref && payload.iss) {
+                      const iss = String(payload.iss).match(/^https:\/\/([a-z0-9]{20})\.supabase\.co/);
+                      ref = iss ? iss[1] : '';
+                    }
+                  } catch (_) { /* not a decodable JWT */ }
+                }
+                if (!ref) {
+                  const sb = key.match(/^sb_(?:secret|publishable)_([a-z0-9]{20})(?:_|$)/);
+                  ref = sb ? sb[1] : '';
+                }
+                if (!ref) {
+                  core.setFailed(
+                    'SUPABASE_URL=@derive could not derive the project ref from the ' +
+                    'SUPABASE_KEY secret (expected a legacy service JWT with a ref ' +
+                    'claim / iss URL, or an sb_secret_<project-ref>_ key). Provision ' +
+                    'with `gh variable set SUPABASE_URL --body <endpoint>` instead.'
+                  );
+                  return;
+                }
+                val = `https://${ref}.supabase.co`;
+              }
+              if (val.length === 0) {
                 core.setFailed(`Empty value for ${name}.`);
                 return;
               }
@@ -106,7 +149,7 @@ jobs:
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   name,
-                  value
+                  value: val
                 });
                 results.push(`${name}: updated`);
               } catch (err) {
@@ -115,7 +158,7 @@ jobs:
                     owner: context.repo.owner,
                     repo: context.repo.repo,
                     name,
-                    value
+                    value: val
                   });
                   results.push(`${name}: created`);
                 } else {

@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "f7630f24a97afecd1bceec077ebed9c8a1248f92af51b19db58075d51e1d50f7",
-  "workflow_count": 182,
+  "source_fingerprint": "17de33c424d22fca2f8e3f4d4f3ef13b48370e8b8b0ed292f342e0360790c5eb",
+  "workflow_count": 184,
   "workflows": [
     {
       "action_pins": [
@@ -2136,6 +2136,24 @@
       ]
     },
     {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: observer-poller-${{ github.workflow }}-${{ github.ref }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "poll"
+      ],
+      "name": "Observer Poller Scheduled",
+      "path": ".github/workflows/observer-poller-scheduled.yml",
+      "schedules": [
+        "*/20 * * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
@@ -2941,6 +2959,24 @@
       "path": ".github/workflows/self-integrate.yml",
       "schedules": [],
       "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "group: shared-observer-poller cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "poll"
+      ],
+      "name": "Shared Observer Poller",
+      "path": ".github/workflows/shared-observer-poller.yml",
+      "schedules": [
+        "*/15 * * * *"
+      ],
+      "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },

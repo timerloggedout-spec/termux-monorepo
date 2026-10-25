@@ -2,7 +2,7 @@ name: Operator wake
 
 # Agent/operator plane (docs/ops/CODESPACE-CREDENTIALS-SSOT.md): repo Actions
 # secrets carry the credentials; agents never hold raw token values. This lane
-# exposes four allowlisted operator duties:
+# exposes five allowlisted operator duties:
 #   inventory — full Actions secret NAME list via scripts/ops/provider_secret_inventory.py
 #               (provider-batch.yml observe pattern; names only, never values)
 #   variables — full Actions repository variable NAME list via the GitHub API
@@ -18,12 +18,18 @@ name: Operator wake
 #               provision-ref=<branch> dispatches the lane's copy from that
 #               ref instead of master (ephemeral one-shot provisioning acts;
 #               the branch workflow self-deletes after success).
+#   audit-phantom-secrets — dispatch phantom-secrets-audit.yml with
+#               mode=full via workflow_dispatch (the proven path; the audit
+#               workflow's own comment marker gate is kept but the wake duty
+#               is the primary route), then poll the run and report its
+#               conclusion. The audit posts its own ledger comment on #184.
 # Comment trigger (marker-gated, action-effectiveness-ledger precedent):
 #   <!-- request-operator-wake -->
 #   inventory
 #   variables
 #   wake vantage-cost-report strict=true
 #   provision-supabase-url provision-ref=<branch>
+#   audit-phantom-secrets
 # Results post back to the triggering issue. workflow_dispatch mirrors all
 # commands for the Actions UI. No schedule: cadence stays with callers.
 
@@ -33,11 +39,11 @@ on:
   workflow_dispatch:
     inputs:
       command:
-        description: 'inventory | variables | wake-vantage-strict | provision-supabase-url'
+        description: 'inventory | variables | wake-vantage-strict | provision-supabase-url | audit-phantom-secrets'
         required: true
         default: 'inventory'
         type: choice
-        options: [inventory, variables, wake-vantage-strict, provision-supabase-url]
+        options: [inventory, variables, wake-vantage-strict, provision-supabase-url, audit-phantom-secrets]
 
 concurrency:
   group: operator-wake-${{ github.event.issue.number || github.event.inputs.command || github.run_id }}
@@ -79,6 +85,7 @@ jobs:
           want_variables=false
           want_wake=false
           want_provision=false
+          want_audit=false
           wake_strict=false
           PROVISION_REF="master"
           if [ "${GITHUB_EVENT_NAME:-}" = "workflow_dispatch" ]; then
@@ -87,6 +94,7 @@ jobs:
               variables) want_variables=true ;;
               wake-vantage-strict) want_wake=true; wake_strict=true ;;
               provision-supabase-url) want_provision=true ;;
+              audit-phantom-secrets) want_audit=true ;;
             esac
           else
             if printf '%s' "$COMMENT_BODY" | grep -Eq '(^|[^A-Za-z0-9_-])inventory([^A-Za-z0-9_-]|$)'; then
@@ -105,6 +113,9 @@ jobs:
               if [ -n "$prov_ref_line" ]; then
                 PROVISION_REF="${prov_ref_line#provision-ref=}"
               fi
+            fi
+            if printf '%s' "$COMMENT_BODY" | grep -Eq 'audit-phantom-secrets'; then
+              want_audit=true
             fi
           fi
 
@@ -209,8 +220,38 @@ jobs:
             fi
           fi
 
-          if [ "$want_inventory" = false ] && [ "$want_variables" = false ] && [ "$want_wake" = false ] && [ "$want_provision" = false ]; then
-            report="${report}"$'\n'"- no allowlisted command found (supported: inventory; variables; wake vantage-cost-report [strict=true]; provision-supabase-url [provision-ref=<branch>])"
+          if [ "$want_audit" = true ]; then
+            report="${report}"$'\n'"- phantom-secrets-audit dispatch (mode=full)"
+            since_audit=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+            if ! gh workflow run phantom-secrets-audit.yml -R "$GITHUB_REPOSITORY" --ref master -f mode=full; then
+              report="${report}"$'\n'"- audit dispatch: FAILED (see run log)"
+            else
+              audit_run=""
+              for _ in $(seq 1 12); do
+                sleep 5
+                audit_run=$(gh run list -R "$GITHUB_REPOSITORY" --workflow phantom-secrets-audit.yml --event workflow_dispatch --limit 5 --json databaseId,createdAt --jq "[.[] | select(.createdAt >= \"${since_audit}\")][0].databaseId // empty" 2>/dev/null || true)
+                [ -n "$audit_run" ] && break
+              done
+              if [ -z "$audit_run" ]; then
+                report="${report}"$'\n'"- audit dispatch: accepted but run not located within polling window"
+              else
+                audit_conclusion=""
+                for _ in $(seq 1 30); do
+                  sleep 10
+                  audit_pair=$(gh run view "$audit_run" -R "$GITHUB_REPOSITORY" --json status,conclusion --jq '.status + "/" + (.conclusion // "pending")' 2>/dev/null || true)
+                  case "$audit_pair" in completed/*) audit_conclusion="${audit_pair#completed/}"; break ;; esac
+                done
+                if [ -z "$audit_conclusion" ]; then
+                  report="${report}"$'\n'"- audit run ${audit_run}: still running at poll deadline (conclusion pending)"
+                else
+                  report="${report}"$'\n'"- audit run ${audit_run}: ${audit_conclusion} (ledger comment posts to #184)"
+                fi
+              fi
+            fi
+          fi
+
+          if [ "$want_inventory" = false ] && [ "$want_variables" = false ] && [ "$want_wake" = false ] && [ "$want_provision" = false ] && [ "$want_audit" = false ]; then
+            report="${report}"$'\n'"- no allowlisted command found (supported: inventory; variables; wake vantage-cost-report [strict=true]; provision-supabase-url [provision-ref=<branch>]; audit-phantom-secrets)"
           fi
           {
             echo "report<<REPORT_EOF"

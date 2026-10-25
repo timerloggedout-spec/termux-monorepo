@@ -2,7 +2,7 @@
 
 > Generated from GitHub repository and starring metadata. JSON is canonical; this file is a navigation projection.
 
-Observed: `2026-10-24T08:54:39.681398Z`
+Observed: `2026-10-25T09:11:04.112851Z`
 
 ## Navigation
 
@@ -746,6 +746,7 @@ Observed: `2026-10-24T08:54:39.681398Z`
 | [live-swe-agent/live-swe-agent.github.io](https://github.com/live-swe-agent/live-swe-agent.github.io) | starred | agent | medium | — |
 | [mainframecomputer/orchestra](https://github.com/mainframecomputer/orchestra) | starred | agent | medium | — |
 | [martijnschouwe/jules-action](https://github.com/martijnschouwe/jules-action) | starred | agent | medium | upstream-comparison, workflow-candidate |
+| [melonjs/melonJS](https://github.com/melonjs/melonJS) | starred | agent | medium | dependency-candidate |
 | [mesa/mesa-examples](https://github.com/mesa/mesa-examples) | starred | agent | medium | — |
 | [mesa/mesa-frames](https://github.com/mesa/mesa-frames) | starred | agent | medium | dependency-candidate |
 | [mesa/mesa-geo](https://github.com/mesa/mesa-geo) | starred | agent | medium | — |
@@ -2619,6 +2620,7 @@ Observed: `2026-10-24T08:54:39.681398Z`
 | [bokeh/bokeh](https://github.com/bokeh/bokeh) | starred | unclassified | medium | — |
 | [boostorg/boost](https://github.com/boostorg/boost) | starred | unclassified | medium | — |
 | [bootandy/dust](https://github.com/bootandy/dust) | starred | unclassified | medium | — |
+| [borncode-app/reverse-api-engineer](https://github.com/borncode-app/reverse-api-engineer) | starred | unclassified | medium | — |
 | [boson-php/boson](https://github.com/boson-php/boson) | starred | unclassified | medium | — |
 | [brandonhimpfen/awesome-github-actions](https://github.com/brandonhimpfen/awesome-github-actions) | starred | unclassified | medium | workflow-candidate |
 | [BraveGroup/LAW](https://github.com/BraveGroup/LAW) | starred | unclassified | medium | — |
@@ -2679,7 +2681,6 @@ Observed: `2026-10-24T08:54:39.681398Z`
 | [Correia-jpv/fucking-awesome-python](https://github.com/Correia-jpv/fucking-awesome-python) | starred | unclassified | medium | dependency-candidate |
 | [Correia-jpv/fucking-awesome-rust](https://github.com/Correia-jpv/fucking-awesome-rust) | starred | unclassified | medium | dependency-candidate |
 | [corylanou/oss-helpwanted](https://github.com/corylanou/oss-helpwanted) | starred | unclassified | medium | — |
-| [Cracked5pider/Ekko](https://github.com/Cracked5pider/Ekko) | starred | unclassified | medium | — |
 | [cruxopen/openISP](https://github.com/cruxopen/openISP) | starred | unclassified | medium | — |
 | [cruzlxyz/hermes-spotify-desktop](https://github.com/cruzlxyz/hermes-spotify-desktop) | starred | unclassified | medium | — |
 | [CSejersen/Tournament_bracket_generator](https://github.com/CSejersen/Tournament_bracket_generator) | starred | unclassified | medium | — |
@@ -3123,7 +3124,6 @@ Observed: `2026-10-24T08:54:39.681398Z`
 | [md-abu-kayser/P3](https://github.com/md-abu-kayser/P3) | starred | unclassified | medium | — |
 | [mdaines/viz-js](https://github.com/mdaines/viz-js) | starred | unclassified | medium | — |
 | [meafrenchdude/Wand-Enhancer](https://github.com/meafrenchdude/Wand-Enhancer) | starred | unclassified | medium | upstream-comparison |
-| [melonjs/melonJS](https://github.com/melonjs/melonJS) | starred | unclassified | medium | — |
 | [Menkos/inventory-forge](https://github.com/Menkos/inventory-forge) | starred | unclassified | medium | — |
 | [Metaculus/metac-bot-template](https://github.com/Metaculus/metac-bot-template) | starred | unclassified | medium | — |
 | [methusalah/OpenRTS](https://github.com/methusalah/OpenRTS) | starred | unclassified | medium | — |
@@ -3277,7 +3277,6 @@ Observed: `2026-10-24T08:54:39.681398Z`
 | [pi-hole/pi-hole](https://github.com/pi-hole/pi-hole) | starred | unclassified | medium | — |
 | [pingidentity/pingidentity-devops-getting-started](https://github.com/pingidentity/pingidentity-devops-getting-started) | starred | unclassified | medium | — |
 | [pinojs/pino](https://github.com/pinojs/pino) | starred, watching | unclassified | medium | — |
-| [Piyabordee/reverse-api-engineer](https://github.com/Piyabordee/reverse-api-engineer) | starred | unclassified | medium | — |
 | [pjf/anki-deck-scraper](https://github.com/pjf/anki-deck-scraper) | starred | unclassified | medium | — |
 | [pjho/Elo-Score-Board](https://github.com/pjho/Elo-Score-Board) | starred | unclassified | medium | — |
 | [pk-fr/yakpro-po](https://github.com/pk-fr/yakpro-po) | starred | unclassified | medium | — |
@@ -5303,6 +5302,7 @@ Observed: `2026-10-24T08:54:39.681398Z`
 | [lawve-ai/awesome-legal-skills](https://github.com/lawve-ai/awesome-legal-skills) | starred | agent | medium | workflow-candidate |
 | [linear/claude-managed-agents-demo](https://github.com/linear/claude-managed-agents-demo) | starred | agent | medium | dependency-candidate |
 | [martijnschouwe/jules-action](https://github.com/martijnschouwe/jules-action) | starred | agent | medium | upstream-comparison, workflow-candidate |
+| [melonjs/melonJS](https://github.com/melonjs/melonJS) | starred | agent | medium | dependency-candidate |
 | [mesa/mesa-frames](https://github.com/mesa/mesa-frames) | starred | agent | medium | dependency-candidate |
 | [oldwinter/obsidian-skills](https://github.com/oldwinter/obsidian-skills) | starred | agent | medium | upstream-comparison |
 | [OpenRouterTeam/typescript-agent](https://github.com/OpenRouterTeam/typescript-agent) | starred | agent | medium | dependency-candidate |

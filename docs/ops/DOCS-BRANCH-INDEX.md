@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-10-24T11:00:04Z` UTC  
+**Generated:** `2026-10-25T11:28:28Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 101 docs-lane branch(es)
+**Count:** 104 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -42,10 +42,11 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/claude-md-primary-entry`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/claude-md-primary-entry) | `ad716d0c806e` | — | — | orphan lane |
 | [`docs/codespace-bifrost-006-run`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/codespace-bifrost-006-run) | `3edb2bd66392` | — | — | orphan lane |
 | [`docs/connected-platform-recon-20261021`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/connected-platform-recon-20261021) | `b94d64c04931` | — | — | orphan lane |
-| [`docs/context7-mintlify-agent-discoverability`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/context7-mintlify-agent-discoverability) | `d78fc4e13a0f` | [#1617](https://github.com/timerloggedout-spec/termux-monorepo/pull/1617)→`master` | — | PR without registry link |
+| [`docs/context7-mintlify-agent-discoverability`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/context7-mintlify-agent-discoverability) | `35c1f2bd5bbe` | [#1617](https://github.com/timerloggedout-spec/termux-monorepo/pull/1617)→`master` | — | PR without registry link |
 | [`docs/context7-mintlify-mcp-workflow`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/context7-mintlify-mcp-workflow) | `4b9a610cf9de` | — | — | orphan lane |
 | [`docs/deepseek-capture-pipeline`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/deepseek-capture-pipeline) | `c70fb1bbd9f8` | — | — | orphan lane |
 | [`docs/device-access-opaque-ids`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/device-access-opaque-ids) | `c245e05aaaa4` | — | — | orphan lane |
+| [`docs/do-phrasing-framing-framework-20261024`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/do-phrasing-framing-framework-20261024) | `78b162ae8c77` | — | — | orphan lane |
 | [`docs/fail-closed-image-pipeline-rebased`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/fail-closed-image-pipeline-rebased) | `738974c47a22` | — | — | orphan lane |
 | [`docs/flywheel-capability-overlap-audit`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/flywheel-capability-overlap-audit) | `f4ddde780d56` | [#1616](https://github.com/timerloggedout-spec/termux-monorepo/pull/1616)→`master` | — | PR without registry link |
 | [`docs/foresight-evidence-spine-2026-10-03-rebased`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/foresight-evidence-spine-2026-10-03-rebased) | `0b9bbffb143f` | — | — | orphan lane |
@@ -57,6 +58,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/historical-corpus-explorer-proposal`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/historical-corpus-explorer-proposal) | `63ed3f22745c` | — | `Manus` | registered; no open PR |
 | [`docs/hyperforge-gemini-plan-rebased`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/hyperforge-gemini-plan-rebased) | `424d83bc01b7` | — | — | orphan lane |
 | [`docs/image-asset-pipeline-ates-placeholder`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/image-asset-pipeline-ates-placeholder) | `b25d07a9b9ab` | — | — | orphan lane |
+| [`docs/infrastructure-registry-design-1654`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/infrastructure-registry-design-1654) | `9be9a95f60c1` | [#1655](https://github.com/timerloggedout-spec/termux-monorepo/pull/1655)→`master` (draft) | — | PR without registry link |
 | [`docs/integration-graph-matrix-tensor`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/integration-graph-matrix-tensor) | `f243ed561efd` | — | — | orphan lane |
 | [`docs/integration-mesh-matrix-poll-refresh-2026-10-22`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/integration-mesh-matrix-poll-refresh-2026-10-22) | `851d029b1571` | — | — | orphan lane |
 | [`docs/integration-mesh-matrix-refresh-2026-10-23`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/integration-mesh-matrix-refresh-2026-10-23) | `bffa965f9f14` | — | — | orphan lane |
@@ -100,6 +102,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/readme-ates-image-polish`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/readme-ates-image-polish) | `ee0ffc2540b8` | — | — | orphan lane |
 | [`docs/readme-upgrade-claude-entry-ates-deploy`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/readme-upgrade-claude-entry-ates-deploy) | `e1d997a85cac` | — | — | orphan lane |
 | [`docs/record-issue-192-promotion`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/record-issue-192-promotion) | `64f2a4139a83` | — | — | orphan lane |
+| [`docs/refocus-do-framing-rfp-1643`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/refocus-do-framing-rfp-1643) | `30433bacf793` | — | — | orphan lane |
 | [`docs/research-paper-wallet-proposals-20261022`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/research-paper-wallet-proposals-20261022) | `7f18ff5b20e9` | [#1531](https://github.com/timerloggedout-spec/termux-monorepo/pull/1531)→`master` | — | PR without registry link |
 | [`docs/retroactive-automation-review-pr390`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/retroactive-automation-review-pr390) | `366215c87a6b` | — | — | orphan lane |
 | [`docs/rl-05-status-2026-08-09`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/rl-05-status-2026-08-09) | `736a459ba488` | — | — | orphan lane |

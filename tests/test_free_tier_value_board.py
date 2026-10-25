@@ -1,5 +1,6 @@
 import json
 import math
+import re
 import unittest
 from pathlib import Path
 
@@ -72,19 +73,31 @@ class FreeTierValueBoardContractTests(unittest.TestCase):
         self.assertIn("billing_status=VERIFIED_NO_COST", self.doc)
 
     def test_session_contract_has_explicit_allowlist_and_success_gate(self):
-        allowed = {
+        match = re.search(r"const SESSION_KEYS=new Set\\(\\[(.*?)\\]\\);", self.page)
+        self.assertIsNotNone(match, "browser must declare an explicit session-field allowlist")
+        allowed = set(re.findall(r"'([^']+)'", match.group(1)))
+        expected = {
             "session_label", "run_uid", "workflow", "source_sha", "observed_at",
             "provider", "model_id", "input_tokens", "output_tokens",
             "elapsed_seconds", "outcome_status", "evidence_url",
             "validation_status", "basksweep_status", "publication_status",
             "billing_status", "pricing_id",
         }
-        self.assertIn("SESSION_KEYS", self.page)
+        self.assertEqual(allowed, expected)
+        self.assertIn("Object.keys(s).every(k=>SESSION_KEYS.has(k))", self.page)
         self.assertIn("SUCCESS_OUTCOMES", self.page)
         self.assertIn("outcome_status", self.doc)
         self.assertTrue({"run_uid", "outcome_status"}.issubset(allowed))
-        for forbidden in ("prompt_text", "messages", "tool_payload", "private_balance"):
-            self.assertFalse(({"run_uid", "outcome_status"} | {forbidden}).issubset(allowed))
+        forbidden = {"prompt_text", "messages", "tool_payload", "private_balance", "prompt", "completion"}
+        self.assertTrue(allowed.isdisjoint(forbidden))
+
+    def test_session_value_requires_provenance_and_safe_evidence(self):
+        self.assertIn("typeof s.run_uid==='string'&&s.run_uid.trim().length>0", self.page)
+        self.assertIn("typeof s.workflow==='string'&&s.workflow.trim().length>0", self.page)
+        self.assertIn("typeof s.source_sha==='string'&&/^[0-9a-f]{40}$/i.test(s.source_sha)", self.page)
+        self.assertIn("Number.isFinite(Date.parse(s.observed_at))&&/Z$/.test(s.observed_at)", self.page)
+        self.assertIn("!!safeHref(s.evidence_url)", self.page)
+        self.assertIn("Number.isFinite(s.elapsed_seconds)&&s.elapsed_seconds>=0", self.page)
 
     def test_public_payload_has_no_prompt_or_completion_fields(self):
         encoded = json.dumps(self.data).lower()

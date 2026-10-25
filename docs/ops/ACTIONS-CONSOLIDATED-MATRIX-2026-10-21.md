@@ -1,38 +1,40 @@
-# Consolidated Actions Workflows Matrix — 2026-10-22 Upgrade (live refresh)
+# Consolidated Actions Workflows Matrix — 2026-10-24 Upgrade (live refresh)
 
-**Branch:** `ops/actions-matrix-upgrade-2026-10-18` (PR #1483)
+**Branch:** `ops/actions-matrix-upgrade-2026-10-18` (PR #1483 merged 2026-10-22; subsequent refinements on branch)
 **Authority:** Issue #631 13-phase + evidence-led-monorepo-ops + adaptive-wait.
-**Goal:** Z3π0 Failures, 100% SUCCESS on required gates. Attentive audit of Skipped/Cancelled. Reduce notification spam via modular consolidations. Operational Pinggy/Tailscale alternatives with public-obfuscated device identification. Quota-aware caching, cadence, 3L0 moneyball telemetry. C.A.D.E. Continuously Autonomous Development Environment.
+**Goal:** Z3π0 Failures, 100% SUCCESS on required gates. Attentive validation audits of Skipped/Cancelled/Action Required (not silenced). Reduce notification spam via modular consolidations. Operational Pinggy/Tailscale alternatives with public-obfuscated device identification. Quota-aware caching, cadence, 3L0 moneyball telemetry. C.A.D.E. Continuously Autonomous Development Environment.
 
-## Current State Recon (2026-10-22 ~19:00 UTC)
+## Current State Recon (2026-10-24T21:00Z)
 
-- Master tip recent: success-dominant on core gates. Residual failures are mostly capacity, device probes, or high-volume cascades (not true logic fails).
-- High-volume cascades identified: lane-events-recorder (~23k runs), agent-throughput (~38k), issue_comment fan-out from bots (CodeRabbit, etc.) producing massive Skipped/Cancelled.
-- Modular `issue-comment-router.yml` live as early classifier (bots skipped unless matched; jules/ledger/gemini only on explicit). Reduces downstream starts.
-- Watcher: dispatch-only. Cadence Lead/Lag (`*/4`) owns true lag_failure incidents.
-- Device tunnel/auth (Pinggy / Tailscale on BLU B160V #1/#2): lag classified as notice (prefer exit 0). Opaque public `device_id=tmx-node-primary`. Live publisher still pending on #1 (broken screen origin).
-- Stall-watch resilient to API capacity (403/5xx → notice + exit 0).
-- Dual-gate preserved. Vercel Hobby non-gate. Intentional concurrency cancels audited as non-failures.
+- Master tip recent: success-dominant on dual-gates. Residual non-success audited:
+  - Agentic Auth Canary runs (e.g. #40131513325 schedule, prior #40109282071): conclusion=failure. Root: `ops/agentic-auth/heartbeat.json` 404 on branch `ops/agentic-auth-heartbeat`. Classified **device lag / operational gap** (requires device #1 BLU B160V to run `scripts/termux/check-gh-agentic-auth.sh --publish` with opaque `device_id=tmx-node-primary`). Not correctness failure. Prefer notice + exit 0 path for spam reduction while retaining step summary audit. Credentials names-only in #184.
+  - Action Required / failures on PR workflows (Sweep, Peer review, etc.): typical for pending reviews, rate limits, or non-gate; audited as non-failure when dual-gate green.
+- High-volume residual: lane-events-recorder, agent-throughput-evidence, bot issue_comment producing Skipped/Cancelled. Modular `issue-comment-router.yml` + conclusion filters + concurrency groups suppress cascade starts. Pure skips/cancels audited (validation required) but notifications suppressed.
+- Historical cited runs (39233561401 observatory 403, 392349* quota): capacity/API pressure, superseded by resilient exit 0 + notice.
+- Device tunnel (Pinggy / Tailscale on BLU B160V #1/#2): **operational requirement stands**. Opaque public `device_id=tmx-node-primary` for #1 (broken screen origin). Lag classified as notice (exit 0). Live publisher device-side. #2 distinct. Pinggy fallback required until Tailscale proven.
+- Stall-watch / observatory resilient. Vercel non-gate. Dual-gate promote authority.
+- No current filename/YAML failures. Ghost queued historical.
+- Cadence Lead/Lag */4 owns true lag_failure incidents; adaptive delta cache avoids empty commits.
 
 ## Repeated Issue Classes & Disposition
 
 | Class | Examples | Root Cause | Fix / Disposition | Status |
 |-------|----------|------------|-------------------|--------|
-| Vercel rate-limit / deploy cap | #1419, #1314 | Hobby plan daily cap | Path filters, admission, non-gate. Adaptive defer. | Active / non-gate |
-| Skipped/Cancelled spam | bot issue_comment, concurrency, workflow_run cascades | Broad triggers + high volume | Modular router + `if:` + concurrency groups + cadence ownership. Suppress pure skips in notifications. | Advancing (router live; expand extraction) |
+| Vercel rate-limit / deploy cap | #772 | Hobby plan daily cap | Path filters, admission, non-gate. Adaptive defer. | Active / non-gate |
+| Skipped/Cancelled/Action Required spam | bot issue_comment, workflow_run cascades, concurrency, PR checks | Broad triggers + high volume | Modular router + conclusion filters + concurrency + cadence ownership. Suppress pure skips in notifications. Validation audit for every non-success. | Advancing |
 | Zero-job / queued ghosts | Historical | Schedule/workflow id | v3 live; reaper active. | Historical |
-| Device tunnel / auth (Pinggy / Tailscale) | Auth Canary, Tunnel Canary, #1440, BLU B160V#1/#2 | Publisher not live; stale heartbeat | Opaque `device_id: tmx-node-primary`. Lag as notice (exit 0). Tailscale preferred; Pinggy fallback. | Operational gap / device-side |
-| API pressure / stall watch | Runtime Stall Watch, observatory 403 | High Actions volume | Resilient collection: capacity lag → exit 0 + receipt. | Fixed on branch |
-| Quota / capacity | Actions free; Vercel constrained | Provider limits | Adaptive telemetry, dynamic cache, 3L0 moneyball. No blind retries. | Active |
+| Device tunnel / auth (Pinggy / Tailscale / Auth Canary) | #40131513325, Tunnel Canary, BLU B160V#1/#2 | Publisher not live; heartbeat 404 / stale | Opaque `device_id: tmx-node-primary`. Lag as notice (exit 0). Tailscale preferred; Pinggy fallback **required**. Device-side publish. | Operational gap / device-side |
+| API pressure / stall watch / observatory | 39233561401 | High Actions volume / 403 | Resilient collection: capacity lag → exit 0 + receipt. | Fixed |
+| Quota / capacity | Actions free; Vercel constrained | Provider limits | Adaptive telemetry, dynamic cache, 3L0 moneyball. No blind retries. Capacity ≠ failure. | Active |
 | Filename / YAML parse | Historical | Not current-tree | Closed. | Closed |
 
 ## Cadence & Cache Improvements (3L0 Moneyball)
 
-- Adaptive WAIT: re-fetch on material delta; concurrent non-conflicting progress. Backoff only on QUIET.
-- Cache: SHA + path filters; provider capacity snapshots; device health. Dynamic adaptive for quota headroom.
-- Modular consolidations: issue-comment-router absorbs unmatched bot comments; fewer full orchestrators. Expand to full job extraction.
-- Notification reduction: only actionable gates/failures/incidents. Suppress skipped/cancelled bot spam + pure lag notices. Audit trail in step summary / JSONL.
-- Quota planning: soft classification; moneyball selection. Act before exhaustion.
+- Adaptive WAIT: re-fetch on material delta only; concurrent non-conflicting progress. Backoff on QUIET. Dynamic cadence from evidence.
+- Cache: SHA + path filters; provider capacity snapshots; device health TTL. Dynamic adaptive for quota headroom; reset-aware.
+- Modular consolidations: issue-comment-router early classify (unmatched bots skip early); expand to full job extraction and deprecate redundant high-volume workflows. Fewer full orchestrators = less skip spam.
+- Notification reduction: only actionable gates/failures/incidents. Suppress skipped/cancelled bot spam + pure lag notices + action_required when non-blocking. Audit trail in step summary / JSONL. Batched by SHA.
+- Quota planning: soft classification; moneyball selection of high-value paths. Act before exhaustion. Capacity lag ≠ correctness failure.
 
 ## Flowchart: Consolidated Decision Path
 
@@ -40,12 +42,12 @@
 flowchart TD
   Event[Workflow Event] --> Filter{Relevant event?<br/>not pure bot comment spam}
   Filter -->|No| Skip[Skip + no notify + audit log]
-  Filter -->|Yes| Classify{State: success/fail/skip/cancel/queued}
+  Filter -->|Yes| Classify{State: success/fail/skip/cancel/queued/action_required}
   Classify -->|Required gate fail| Alert[Notify + issue]
   Classify -->|Capacity / rate-limit / API pressure| Quota[Record + defer / moneyball rotate; exit 0 if non-gate]
-  Classify -->|Skip/Cancel| Audit[Validation audit; suppress notify]
+  Classify -->|Skip/Cancel/ActionRequired| Audit[Validation audit; suppress notify]
   Classify -->|Success| Record[Evidence receipt]
-  Classify -->|Probe / tunnel / auth lag| Device[Record notice + device reconnect #1; exit 0 if non-gate]
+  Classify -->|Probe / tunnel / auth lag / heartbeat missing| Device[Record notice + device reconnect #1 tmx-node-primary; exit 0 if non-gate]
   Quota --> Wait[Adaptive WAIT concurrent]
   Audit --> Matrix[Update consolidated matrix]
   Record --> Promote[Dual-gate auto-promote]
@@ -54,28 +56,34 @@ flowchart TD
 
 ## Pinggy / Device Identification (Public Obfuscation)
 
-- Device #1 (original BLU B160V, broken screen): operational tunnel or alternative required. Opaque public ID `tmx-node-primary`.
-- Device #2: replica/observer; do not overwrite origin manifest.
+- Device #1 (original BLU B160V, broken screen): operational tunnel or alternative **required**. Opaque public ID `tmx-node-primary`.
+- Device #2: replica/observer; do not overwrite origin manifest. Distinct opaque ID.
 - September tests on #1; dual-device now. Manifests report device_id + TTL + role.
 - Tailscale preferred; Pinggy emergency fallback (ssh -R0:localhost:port free.pinggy.io). Credentials names-only in #184.
-- Branch tunnel-canary + intended probes treat lag as notice (exit 0) to reduce spam while preserving visibility via step summary / issues.
+- Probes (tunnel-canary, agentic-auth-canary) treat lag/missing heartbeat as notice (exit 0 preferred) to reduce spam while preserving visibility via step summary / issues.
+- Live status:active awaits device-side publish of heartbeat.json and tunnel manifests. Operator reconnect required for residual probes.
 
 ## Quota Limit Planning
 
 - Vercel: non-gate, path-scoped ignore-build.
-- Actions: free for public; track pressure (stall-watch resilience added).
+- Actions: free for public; track pressure (stall-watch / observatory resilience).
 - Cache dynamic adaptive; 3L0 moneyball.
-- No blind retries.
+- No blind retries. Capacity classified separately from correctness failure.
 
 ## Superceded / Combined Workflows Notes
 
 - Merge Promotion Queue v1/v2 → v3.
 - High-volume issue_comment → modular router + filters (early classify, no fan-out on bot spam).
 - Watcher dispatch-only; cadence owns incidents.
-- Stall-watch resilient to API capacity.
+- Stall-watch / observatory resilient to API capacity.
 - Dual-gate promote authority. Device probes non-gate when classified as lag.
+- Conclusion filters on high-volume observers (lane-events-recorder, agent-throughput-evidence).
 
-**Next:** Promote PR #1483 once dual-gate green. Expand router to full job extraction / deprecate redundant workflows. Live device publisher on #1 (tmx-node-primary) or proven Tailscale. Continue C.A.D.E. BIUDL.
+**Next:** Expand router to full job extraction / deprecate redundant workflows. Live device publisher on #1 (tmx-node-primary) for heartbeat + Pinggy/Tailscale. Soften auth-canary to notice+exit 0 on missing heartbeat (audit retained in summary). Confirm zero required-gate failures on tip. Continue C.A.D.E. BIUDL.
 
 Agent-Identity: Grok (Administrator)
 **BIUDL** — Broad → Integrate → Validate → Develop → Learn.
+
+## Prior recon retained
+
+(See previous sections; PR #1483 evidence: modular router + dispatch-only watcher + cadence ownership. Historical runs classified as capacity/non-gate. Latest canary #40131513325 confirms device-side gap.)

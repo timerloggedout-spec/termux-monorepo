@@ -197,7 +197,7 @@ read
 
 ### State-changing authorization
 
-- [ ] This brief authorizes state-changing (write) operations on the target
+no
 
 ### Probe budget
 
@@ -224,9 +224,15 @@ def test_issue_form_write_requires_checked_box():
     brief = waf.parse_issue_form(body)
     assert brief["authorization"]["state_changing"] is False
     assert any("state_changing" in e for e in waf.validate_brief(brief))
-    checked = body.replace("- [ ] This brief authorizes", "- [X] This brief authorizes")
-    assert waf.parse_issue_form(checked)["authorization"]["state_changing"] is True
-    assert waf.validate_brief(waf.parse_issue_form(checked)) == []
+    yes = body.replace("### State-changing authorization\n\nno",
+                       "### State-changing authorization\n\nyes")
+    assert waf.parse_issue_form(yes)["authorization"]["state_changing"] is True
+    assert waf.validate_brief(waf.parse_issue_form(yes)) == []
+    # Legacy v1 checkbox rendering still parses (issues filed from it exist).
+    legacy = body.replace("### State-changing authorization\n\nno",
+                          "### State-changing authorization\n\n"
+                          "- [X] This brief authorizes state-changing (write) operations on the target")
+    assert waf.parse_issue_form(legacy)["authorization"]["state_changing"] is True
 
 
 def test_issue_form_out_of_scope_domain_is_refused():

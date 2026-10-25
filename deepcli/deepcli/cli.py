@@ -1,8 +1,17 @@
 #!/usr/bin/env python3
 """DeepCLI – command-line interface."""
-import argparse, subprocess
+import argparse, os, subprocess
 from pathlib import Path
-from rich.console import Console
+try:
+    from rich.console import Console
+except ModuleNotFoundError:
+    class DummyConsole:
+        def print(self, *args, **kwargs):
+            import re
+            text = " ".join(str(a) for a in args)
+            clean_text = re.sub(r'\[/?[a-z\s_]+\]', '', text)
+            print(clean_text)
+    Console = DummyConsole
 from deepcli.core import (
     get_token, create_session, fetch_sessions, get_history,
     stream_completion, upload_file, wait_for_file,
@@ -219,15 +228,12 @@ def cmd_export(args):
     output = export_json(token, sid) if fmt == "json" else export_markdown(token, sid)
     if args.output:
         out_path = Path(args.output)
-        if out_path.is_symlink():
-            console.print(f"[red]Export target '{args.output}' is a symlink. Rejected for security.[/]")
+        if out_path.is_symlink() or any(p.is_symlink() for p in out_path.parents):
+            console.print(f"[red]Export target '{args.output}' is or traverses a symlink. Rejected for security.[/]")
             return
-        out_path.write_text(output, encoding="utf-8")
-        if not out_path.is_symlink():
-            try:
-                out_path.chmod(0o600)
-            except Exception:
-                pass
+        fd = os.open(str(out_path), os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            f.write(output)
         console.print(f"[green]Exported to {args.output}[/]")
     else:
         console.print(output)

@@ -2,7 +2,7 @@
 
 **Status:** Evidence-backed historical and operational reference  
 **Scope:** Git history, repository configuration, documentation publication surfaces  
-**Last verified:** 2026-10-23  
+**Last verified:** 2026-10-24  
 **Repository:** `timerloggedout-spec/termux-monorepo`
 
 ## Executive finding
@@ -57,6 +57,13 @@ These are separate surfaces and need separate checks:
 - Mintlify deployment status: confirms whether a particular commit is live.
 
 Do not claim these endpoints are available just because the config contains the relevant feature or the operator MCP is connected.
+
+## Validation update (2026-10-24)
+
+- Parsed the proposed `docs.json` as valid JSON after the navigation update.
+- Compared the existing sidebar page paths against the repository tree; the existing navigation paths resolve to tracked documentation pages.
+- Added this reconnaissance page to the `Reference` navigation group so the operational record is discoverable from the docs site.
+- Mintlify CLI/schema validation and live `/llms.txt` / `/llms-full.txt` inspection remain outstanding; the deployment connector reported a queued/building deployment, not a confirmed live commit.
 
 ## Remaining verification checklist
 

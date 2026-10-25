@@ -66,3 +66,40 @@ The diagram is explanatory, not an executable state machine. Every real transiti
 ## 6. Maintenance
 
 Update this note only when the linked canonical contracts or the concept mapping materially change. Keep normative operational details in their canonical skills and process documents; keep request-writing rules in the DO framework.
+
+## 7. Evidence and state discipline
+
+The repository's existing contracts distinguish these states; the concept map does not weaken them:
+
+- A plan is not an implementation.
+- A commit is not execution evidence.
+- A queued or running workflow is not success.
+- A successful workflow is not automatically proof of the intended effect.
+- A resolved inline review thread is not a formal review approval.
+- A recommendation is not authorization.
+- Missing evidence is unknown, not zero and not success.
+- A failure or cancellation remains an observation; it is not rewritten as success.
+
+For operational work, the repository loop is:
+
+`RECON → PLAN/MEASURE → ACT → COMMIT → WAIT → WATCH → VALIDATE → RE-FETCH → COMPARE → CLASSIFY → RECORD → REPEAT`
+
+Do not create a parallel lifecycle engine, telemetry store, or competing source of truth to implement the phrasing standard.
+
+## 8. Documentation-review context and limits
+
+The original guide's review recorded the following existing strengths:
+1. Agentic-Agile defines bounded work units, dependencies, ownership, acceptance evidence, and review gates.
+2. The Agent Evaluation Framework separates task outcome from latency and other operational signals.
+3. Production Reconciliation requires fresh runtime observation, re-fetch, comparison, classification, and recording.
+4. BIUDL execution/provenance rules distinguish observed identity from inferred attribution and protect sensitive context.
+
+The motivating gaps were:
+1. No authoritative expansion/origin definition for “DO” had been established; this remains unresolved rather than invented.
+2. Prompt composition was distributed across several contracts, motivating a compact action-first writing guide.
+3. Broad commands such as “everything,” “upgrade,” “continue,” and “production-ready” can be underspecified without outcome, boundaries, evidence, and stop conditions.
+4. Research, recommendation, implementation, and proof of effect can be conflated.
+5. Acceptance evidence can be implicit.
+6. “Continue” can degrade into status narration unless it triggers fresh-state reconciliation and a useful bounded action.
+
+These are findings from the earlier documentation review, not proof that every prompt or workflow has these defects. This change does not establish repository-wide adoption; that would require separate inventory and measured validation.

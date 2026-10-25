@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "d96d0ba07a6a7d32a8da351e7fc959fd4fbc403f3527d6ba6bbac320bcf0c481",
-  "workflow_count": 181,
+  "source_fingerprint": "f7ba7ca5a8f4fcb843c9687ac5b993c5817fcccf96bdd640e9bdf9052648298c",
+  "workflow_count": 182,
   "workflows": [
     {
       "action_pins": [
@@ -834,6 +834,21 @@
       ],
       "triggers": [
         "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "probe"
+      ],
+      "name": "Credential family probe",
+      "path": ".github/workflows/credential-family-probe.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },

@@ -386,3 +386,20 @@ Prioritize the lowest-risk work that improves every later phase. These are propo
 - [ ] Credential/config inventory contains references and safe lifecycle metadata only, never values or secret-derived hashes.
 - [ ] Drift ledger reuses existing reconciliation/evidence ownership where available and preserves history/provenance.
 - [ ] P0–P4 exit evidence is defined and promotion remains separate from design/commit/check success.
+
+
+## 19. P0 baseline artifact and current evidence boundary
+
+The first tracked-path census and field-level source map are recorded in [Infrastructure CMDB P0 Inventory Baseline](INFRASTRUCTURE-CMDB-P0-INVENTORY.md). It records the master tree SHA, tracked-path counts, initial authority map, scope limits, and unresolved work. It is a baseline snapshot—not P0 completion and not a complete semantic inventory.
+
+The baseline found existing assets for skills, provider/quota metadata, credential-name inventory, integration mesh, reconciliation workflows, evidence provenance, relationship graph, repository observatory, research resources, and the Web Adapter Foundry. These are candidates to compose, not a reason to duplicate them.
+
+Repository archaeology also surfaced:
+- [Issue #1497](https://github.com/timerloggedout-spec/termux-monorepo/issues/1497) for AntigravityCLI research/provisioning.
+- [PR #1514](https://github.com/timerloggedout-spec/termux-monorepo/pull/1514), whose description calls the Antigravity pilot partial and says “DO NOT MERGE”; its base is reported as `master-staging`, so it must not be presented as a merged `master` capability without checking current PR state and refs.
+- [Issue #1450](https://github.com/timerloggedout-spec/termux-monorepo/issues/1450) referencing an awesome decision-models catalog.
+- [PR #1612](https://github.com/timerloggedout-spec/termux-monorepo/pull/1612), whose description records two free-LLM catalogs as discovery-only / reference-only and explicitly ineligible for runtime use.
+
+These results demonstrate why the inventory must include issues and PRs as evidence surfaces alongside tracked paths. They do not establish that all external skill catalogs, awesome lists, or Antigravity integrations are installed, canonical, or production-ready.
+
+**Next gate:** finish source/PR state verification and field-level authority reconciliation; only then design a canonical entity/relationship schema and fixtures. Do not implement a second ledger, new poller, or write path before the P0 exit criteria in the baseline are met.

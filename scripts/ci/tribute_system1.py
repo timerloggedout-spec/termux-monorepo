@@ -71,6 +71,15 @@ LANGUAGES = (
 ).split()
 _LANG = "|".join(LANGUAGES)
 
+# Bolt optimization: Pre-compile language regexes and priority map at module scope
+# to avoid re-compiling regexes and instantiating order dicts inside iteration loops.
+LANG_EXACT_RE = {lang: re.compile(rf"\b{lang}\b", re.I) for lang in LANGUAGES}
+LANG_FULL_RE = {
+    lang: re.compile(rf"\b(fluent|native|speak)\w*\s+(in\s+)?{lang}\b|\b{lang}\s+speaker", re.I)
+    for lang in LANGUAGES
+}
+PRIORITY_ORDER = {l: i for i, l in enumerate(PRIORITY)}
+
 RX = {
     "already_assigned": re.compile(
         r"\b(already|is|been|was)\s+(been\s+)?assigned\b|\bassigned\s+to\s+(another|someone|a different|other)\b", re.I),
@@ -165,13 +174,16 @@ def placeholder_diff(files: Iterable[dict] | None) -> dict:
 
 
 def skill_requirement(text: str) -> str | None:
-    m = RX["lang_skill"].search(text or "")
+    if not text:
+        return None
+    m = RX["lang_skill"].search(text)
     if m:
+        matched = m.group(0)
         for lang in LANGUAGES:
-            if re.search(rf"\b{lang}\b", m.group(0), re.I):
+            if LANG_EXACT_RE[lang].search(matched):
                 return f"language:{lang}"
         for lang in LANGUAGES:  # language may sit just outside the match window
-            if re.search(rf"\b(fluent|native|speak)\w*\s+(in\s+)?{lang}\b|\b{lang}\s+speaker", text, re.I):
+            if LANG_FULL_RE[lang].search(text):
                 return f"language:{lang}"
         return "language:unspecified"
     return None
@@ -299,8 +311,7 @@ def classify(thread: dict, feats: dict | None = None) -> list[dict]:
     if f["skill"] and f["kind"] == "issue":
         _add(s, "needs_human_skill", 0.7, f"body:skill:{f['skill']}")
 
-    order = {l: i for i, l in enumerate(PRIORITY)}
-    return sorted(s.values(), key=lambda x: (order[x["label"]], -x["confidence"]))
+    return sorted(s.values(), key=lambda x: (PRIORITY_ORDER[x["label"]], -x["confidence"]))
 
 
 # ---------------------------------------------------------------- route

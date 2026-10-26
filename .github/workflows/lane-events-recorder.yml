@@ -1,22 +1,27 @@
 # Record completed runs of the help-wanted (Tribute) and SHE lanes into the
 # Neon lane_events ledger (ops/lane-events/schema.sql, scripts/ops/lane_event.py).
-# Additive: observes completions via workflow_run; never edits or blocks the
-# watched workflows. No-ops (notice only) until a repo secret exists:
+# Additive: observes completions via shared poller (not per-event workflow_run).
+# No-ops (notice only) until a repo secret exists:
 #   LANE_EVENTS_DATABASE_URL (Postgres URL) or NEON_API_KEY (Neon free tier).
 # Filter: only record successful completions to reduce notification spam from
 # skipped/cancelled cascades. Failures still visible in source workflow.
+# SUPERSEDED per-event triggers: replaced by observer-poller-scheduled.yml
+# which queries success-only via API every 20m. Residual workflow_run removed
+# to eliminate skip-run notification records. Restore only if poller fails dual-gate.
 name: lane events recorder
 
 on:
-  workflow_run:
-    workflows:
-      - help-wanted scout
-      - help-wanted execute
-      - help-wanted-followup
-      - help-wanted-status-refresh
-      - Agent Throughput Evidence
-      - n8n SHE bridge
-    types: [completed]
+  # workflow_run triggers disabled to cut residual skip spam (dozens/min).
+  # Success ledger now via shared observer-poller-scheduled.yml.
+  # workflow_run:
+  #   workflows:
+  #     - help-wanted scout
+  #     - help-wanted execute
+  #     - help-wanted-followup
+  #     - help-wanted-status-refresh
+  #     - Agent Throughput Evidence
+  #     - n8n SHE bridge
+  #   types: [completed]
   workflow_dispatch:
     inputs:
       command:

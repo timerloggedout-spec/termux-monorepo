@@ -10,6 +10,8 @@
 **P1 authority/writer analysis:** [INFRASTRUCTURE-CMDB-P1-AUTHORITY-WRITER-MATRIX.md](INFRASTRUCTURE-CMDB-P1-AUTHORITY-WRITER-MATRIX.md) records field-level authority, evidence semantics, writer-conflict candidates, reconciliation boundaries, and remaining proof requirements.  
 **Method:** GitHub recursive Git tree API plus focused reads of the source documents listed below. Counts are path-pattern counts from this snapshot, not counts of unique live services or semantic entities.
 
+**Freshness gate (2026-10-26):** the current `master` comparison resolves to `2f682bbacb0dbac8beee6678abf8bf30e217f6d8`, while this census is pinned to `b8adaa2e05f3ebc246e90945d199fd1b9c0c15da`. Treat the manifest and all counts below as a reproducible **historical baseline**, not a current-base inventory. Re-run the recursive tree census and update the manifest before merge; do not roll the source SHA forward without regenerating and validating the complete sorted path set.
+
 ## 1. What the census confirms
 
 | Surface | Snapshot count / evidence | Interpretation and boundary |

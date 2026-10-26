@@ -7,6 +7,7 @@
 **Git tree SHA:** `b8adaa2e05f3ebc246e90945d199fd1b9c0c15da`  
 **Census result:** 9,738 recursive tree entries, 8,785 tracked blob paths, tree API reported `truncated=false`.  
 **Machine-readable receipt:** [infra-cmdb-sweep-manifest.json](infra-cmdb-sweep-manifest.json) stores the sorted tracked paths, prefix counts, exact source SHA, method, and limitations.  
+**P1 authority/writer analysis:** [INFRASTRUCTURE-CMDB-P1-AUTHORITY-WRITER-MATRIX.md](INFRASTRUCTURE-CMDB-P1-AUTHORITY-WRITER-MATRIX.md) records field-level authority, evidence semantics, writer-conflict candidates, reconciliation boundaries, and remaining proof requirements.  
 **Method:** GitHub recursive Git tree API plus focused reads of the source documents listed below. Counts are path-pattern counts from this snapshot, not counts of unique live services or semantic entities.
 
 ## 1. What the census confirms

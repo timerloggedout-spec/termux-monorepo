@@ -8,6 +8,7 @@ concern and is recorded as experiment metadata rather than encoded as provider r
 """
 
 import json
+import math
 import os
 import re
 import sys
@@ -15,6 +16,7 @@ import time
 from pathlib import Path
 
 from scripts import capability_spine
+from scripts import gemini_quota_gate
 
 COUNTER_DIR = os.environ.get("COUNTER_DIR", "/tmp/model-router")
 KEY_VAL_RE = re.compile(r'^("[^"]+"|\'[^\']+\'|[^:]+):\s*(.*)$')
@@ -387,6 +389,119 @@ def emit_decision(
     write_output("decision_summary", decision["summary"])
 
 
+
+def load_quota_multipliers():
+    """Read fresh 3L0 quota weights; unknown/stale data is neutral, zero is a hard deny."""
+    path = os.environ.get("QUOTA_WEIGHTS_PATH") or os.path.join(COUNTER_DIR, "routing-weights.json")
+    try:
+        if os.path.islink(path):
+            return {}
+        with open(path, "r", encoding="utf-8") as handle:
+            payload = json.load(handle)
+        if not isinstance(payload, dict) or payload.get("schema") != "3l0.quota-weights.v1":
+            return {}
+        generated = payload.get("generated_at")
+        if not isinstance(generated, str) or not generated:
+            return {}
+        from datetime import datetime, timezone
+        stamp = datetime.fromisoformat(generated.replace("Z", "+00:00"))
+        if stamp.tzinfo is None:
+            return {}
+        age = (datetime.now(timezone.utc) - stamp.astimezone(timezone.utc)).total_seconds()
+        max_age = int(os.environ.get("QUOTA_WEIGHTS_MAX_AGE_SEC", "21600"))
+        if age < 0 or age > max_age:
+            sys.stderr.write(f"Quota weights stale ({age:.0f}s); treating quota as unknown.\n")
+            return {}
+        multipliers = payload.get("multipliers", {})
+        if (not isinstance(multipliers, dict)
+                or any(isinstance(value, bool) or not isinstance(value, (int, float))
+                       or not math.isfinite(value) for value in multipliers.values())):
+            return {}
+        return {str(k).lower(): max(0.0, min(2.0, float(v))) for k, v in multipliers.items()}
+    except (OSError, ValueError, TypeError, OverflowError, json.JSONDecodeError):
+        return {}
+
+
+
+def load_openrouter_quota_admission(now=None):
+    """Compare official UTC-day quota with our conservative local reservations."""
+    path = os.path.join(os.environ.get("QUOTA_SNAPSHOT_DIR") or COUNTER_DIR,
+                        "provider-quota-state.json")
+    try:
+        if os.path.islink(path):
+            return {"known": False, "reason": "quota snapshot is a symlink"}
+        with open(path, "r", encoding="utf-8") as handle:
+            state = json.load(handle)
+        if not isinstance(state, dict) or state.get("schema") != "3l0.provider-quota-snapshot.v1" or state.get("status") != "live":
+            return {"known": False, "reason": "official quota snapshot is not live"}
+        expected = {"provider": "openrouter", "source": "https://openrouter.ai/api/v1/key",
+                    "metric": "free_model_daily_requests", "window": "UTC day"}
+        if any(state.get(key) != value for key, value in expected.items()):
+            return {"known": False, "reason": "official quota snapshot source or metric mismatch"}
+        from datetime import datetime, timezone
+        if not isinstance(state.get("observed_at"), str):
+            return {"known": False, "reason": "official quota timestamp unavailable"}
+        observed = datetime.fromisoformat(state["observed_at"].replace("Z", "+00:00"))
+        current = datetime.now(timezone.utc) if now is None else now
+        if observed.tzinfo is None or current.tzinfo is None:
+            return {"known": False, "reason": "official quota timestamp requires timezone"}
+        observed, current = observed.astimezone(timezone.utc), current.astimezone(timezone.utc)
+        age = (current - observed).total_seconds()
+        max_age = int(os.environ.get("OPENROUTER_QUOTA_MAX_AGE_SEC", "900"))
+        if age < 0 or age > max_age or observed.date() != current.date():
+            return {"known": False, "reason": "official quota snapshot stale or future-dated"}
+        used, limit, remaining = (state.get(key) for key in ("used", "limit", "remaining"))
+        if (any(type(value) is not int or value < 0 for value in (used, limit, remaining))
+                or limit <= 0 or used + remaining != limit):
+            return {"known": False, "reason": "official quota request triplet unavailable or inconsistent"}
+        # The cache is scoped to the same UTC date as OpenRouter's daily reset.
+        # Local selections are reservations, not proof of completed provider calls;
+        # using max() avoids double-counting requests already reflected by OpenRouter.
+        models = {model for peers in ROLE_PEERS.values()
+                  for provider, model in peers if provider == "openrouter"}
+        local_reserved = sum(get_usage("openrouter", model) for model in models)
+        effective_used = max(float(used), float(local_reserved))
+        try:
+            safety = float(os.environ.get("OPENROUTER_QUOTA_SAFETY", "0.90"))
+        except ValueError:
+            return {"known": False, "reason": "invalid quota safety threshold"}
+        if not math.isfinite(safety) or not 0.1 <= safety <= 1.0:
+            return {"known": False, "reason": "invalid quota safety threshold"}
+        safe_limit = float(limit) * safety
+        return {
+            "known": True, "used": float(used), "limit": float(limit),
+            "official_remaining": remaining,
+            "local_reserved": local_reserved, "effective_used": effective_used,
+            "effective_remaining": max(0.0, float(limit) - effective_used),
+            # 0.90 leaves a daily headroom margin; concurrent jobs still race
+            # because local reservation cache updates are not distributed-atomic.
+            "safe_limit": safe_limit, "admit": effective_used < safe_limit,
+            "observed_at": state.get("observed_at"),
+        }
+    except (OSError, ValueError, TypeError, KeyError, OverflowError, json.JSONDecodeError) as error:
+        return {"known": False, "reason": f"official quota snapshot unavailable ({type(error).__name__})"}
+
+
+def is_in_cooldown(provider, model, now=None):
+    """Fail closed for a provider/model with a still-active rate-limit cooldown."""
+    path = os.path.join(COUNTER_DIR, "cooldowns.json")
+    try:
+        if os.path.islink(path):
+            sys.stderr.write("Cooldown file is a symlink; ignoring cooldown cache.\n")
+            return False
+        with open(path, "r", encoding="utf-8") as handle:
+            data = json.load(handle)
+        if not isinstance(data, dict):
+            return False
+        cooldowns = data.get("cooldowns") or {}
+        if not isinstance(cooldowns, dict):
+            return False
+        until = float(cooldowns.get(f"{provider}/{model}", 0))
+        return until > (time.time() if now is None else now)
+    except (OSError, ValueError, TypeError, OverflowError, json.JSONDecodeError):
+        return False
+
+
 def main():
     role = os.environ.get("ROLE", "triage")
     has_omni = os.environ.get("HAS_OMNI", "false").lower() == "true"
@@ -433,6 +548,20 @@ def main():
         set(polled_free_models) if polled_free_models is not None else LEGACY_MODELS
     )
     models_dict = success_matrix.get("models", {})
+    quota_multipliers = load_quota_multipliers()
+    require_live_openrouter_quota = (
+        os.environ.get("REQUIRE_LIVE_OPENROUTER_QUOTA", "false").lower() == "true"
+    )
+    openrouter_quota = load_openrouter_quota_admission()
+    if has_openrouter:
+        if openrouter_quota.get("known"):
+            sys.stderr.write(
+                "OpenRouter quota preflight: live request evidence; private values withheld.\n"
+            )
+        else:
+            sys.stderr.write(
+                "OpenRouter preflight: " + openrouter_quota.get("reason", "quota unknown") + "\n"
+            )
 
     for provider, models in pools:
         if not provider_flags.get(provider, False):
@@ -441,14 +570,40 @@ def main():
             key = (provider, model)
             if key in seen:
                 continue
+            if provider == "gemini":
+                # Local per-model budgets are not shared provider headroom.
+                # The same boundary also guards the CLI dispatch step. It cannot
+                # enable admission without a separately reviewed live authority.
+                gemini_preflight = gemini_quota_gate.from_environment(model)
+                if not gemini_preflight.get("eligible"):
+                    sys.stderr.write("Gemini candidate denied by shared/project quota preflight; private values withheld.\n")
+                    continue
             if provider == "openrouter":
                 # The live free catalog is authoritative for zero-priced models, including IDs without :free.
                 if model not in permitted_openrouter_models:
                     continue
+                # Preflight gate: never dispatch OpenRouter free-tier traffic on a
+                # stale/missing official account quota snapshot when policy requires it.
+                if (
+                    (openrouter_quota.get("known") and not openrouter_quota.get("admit"))
+                    or (require_live_openrouter_quota and not openrouter_quota.get("known"))
+                ):
+                    reason = openrouter_quota.get("reason", "daily safety budget reached")
+                    sys.stderr.write(
+                        f"Candidate denied by OpenRouter quota preflight ({model}): {reason}\n"
+                    )
+                    continue
             seen.add(key)
+            if is_in_cooldown(provider, model):
+                sys.stderr.write(f"Candidate in rate-limit cooldown: {provider}/{model}\n")
+                continue
+            quota_multiplier = quota_multipliers.get(provider.lower(), 1.0)
+            if quota_multiplier <= 0:
+                sys.stderr.write(f"Candidate provider quota exhausted: {provider}/{model}\n")
+                continue
             model_entry = models_dict.get(model) or {}
             role_suitability = model_entry.get("role_suitability") or {}
-            score = model_entry.get("elo", 1000) * role_suitability.get(role, 1.0)
+            score = model_entry.get("elo", 1000) * role_suitability.get(role, 1.0) * quota_multiplier
             limit_entry = LIMITS.get(model if provider == "gemini" else f"{provider}/{model}") or {}
             limit = limit_entry.get(role, 40)
             used = get_usage(provider, model)

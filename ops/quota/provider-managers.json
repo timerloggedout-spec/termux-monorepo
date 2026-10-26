@@ -51,9 +51,9 @@
     },
     {
       "provider_family": "gemini",
-      "status": "public_documentation_only",
+      "status": "implemented_passive_adapter",
       "source": "https://ai.google.dev/gemini-api/docs/rate-limits",
-      "scope": "project and model; UI limits are not response counters",
+      "scope": "project and exact model quota; tier inherited from billing account; offline evidence only, binding unverified",
       "reset": "RPD at midnight America/Los_Angeles; other windows unknown",
       "signals": []
     },

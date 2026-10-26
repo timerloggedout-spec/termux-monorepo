@@ -13,7 +13,7 @@ def test_provider_families_exhaust_registry_and_no_alias_hiding():
     assert set(families) == set(coverage._providers())
     assert "gemini" in families and "google" not in families
     assert families["gemini"]["quota_manager_owner"] == "Manager"
-    assert families["gemini"]["observation_method"] == "official_documentation_only; no passive parser"
+    assert families["gemini"]["observation_method"] == "implemented_passive_parser; live account validation not established"
     assert families["ollama"]["covered"] is True
     assert families["ollama"]["opt_in_private_service_ids"] == ["ollama.balance"]
     assert families["ollama"]["reader_service_ids"] == []  # Not an automatic collector.

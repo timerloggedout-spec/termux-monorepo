@@ -167,6 +167,10 @@ def evaluate(provider: str, model: str, evidence: list[Mapping[str, Any]], *, no
         return result("unknown_provider")
     if provider not in known:
         return result("unknown_provider")
+    if provider == "gemini":
+        # Flat counters cannot establish exact credential/project binding, input
+        # token headroom or model entitlement. No trusted live bridge exists.
+        return result("gemini_project_binding_and_current_quota_unverified")
     if not finite_number(safety) or not 0 < safety <= 1:
         return result("invalid_safety_margin")
     if not finite_number(max_age_seconds) or not 0 < max_age_seconds <= 900:

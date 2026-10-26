@@ -83,6 +83,14 @@ def test_missing_or_truncated_patch_fails_closed():
     assert r["implementation_diff_gaps"]
 
 
+def test_pending_or_failed_validation_cannot_pass():
+    for result in ("python -m pytest tests/test_docs.py — pending CI",
+                   "python -m pytest tests/test_docs.py — failed"):
+        r = gate.classify(pr(solution_body(validation=result)), [file("docs/checklist.md", 20)], "solution")
+        assert not r["gate_pass"]
+        assert not r["validation_evidence_specific"]
+
+
 def test_regression_sendam_pr_492_stake_only():
     # Historical upstream PR #492 only added the lane-stake placeholder for issue #465.
     body = "Stake only for https://github.com/EF-CHAIN/SendAm/issues/465"

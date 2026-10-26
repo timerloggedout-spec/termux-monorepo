@@ -55,7 +55,7 @@ def parse_pr(ref: str):
 
 def all_files(owner, repo, number):
     rows = []
-    for page in range(1, 11):
+    for page in range(1, 31):
         batch = api(f"https://api.github.com/repos/{owner}/{repo}/pulls/{number}/files?per_page=100&page={page}")
         if not isinstance(batch, list):
             raise RuntimeError("GitHub returned an invalid changed-files payload")
@@ -63,7 +63,7 @@ def all_files(owner, repo, number):
         if len(batch) < 100:
             return rows
     # GitHub PRs above 1,000 changed files cannot be fully enumerated through this endpoint.
-    raise RuntimeError("changed-file listing exceeded the 1,000-file safety limit; refusing to infer a pass")
+    raise RuntimeError("changed-file listing exceeded the 3,000-file safety limit; refusing to infer a pass")
 
 
 def proof_values(body: str):

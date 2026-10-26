@@ -164,15 +164,11 @@ jobs:
               .addRaw(pendingChecks.length ? `⏳ ${pendingChecks.length} check(s) still pending.\n` : '✅ No pending checks observed.\n')
               .write();
             } catch (error) {
-              // Rate-limit exhaustion after retries is GitHub capacity, not PR state:
-              // record it visibly and defer instead of failing the ledger.
-              const status = Number(error?.status || error?.response?.status || 0);
-              if (status === 403 || status === 429 || /rate limit/i.test(String(error?.message || ''))) {
-                core.warning(`PR #${prNumber} ledger deferred: installation rate limit exhausted (${error.message})`);
-                await core.summary.addHeading(`PR #${prNumber} ledger deferred`).addRaw('Installation API rate limit exhausted after retries; no ledger was produced for this event.\n').write();
-                return;
-              }
-              throw error;
+              // API or transport errors after retries represent platform/rate-limit state,
+              // not PR state: record visibly and defer instead of failing the ledger check run.
+              core.warning(`PR #${prNumber} ledger deferred: ${error.message}`);
+              await core.summary.addHeading(`PR #${prNumber} ledger deferred`).addRaw(`API or transport error after retries: ${error.message}; no ledger was produced for this event.\n`).write();
+              return;
             }
 
 

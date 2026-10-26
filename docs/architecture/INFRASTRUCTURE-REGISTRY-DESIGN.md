@@ -57,6 +57,9 @@ The initial reconnaissance identified these relevant sources. This is a starting
 | Routing topology | [Routing & Orchestration Map](../ops/ROUTING-ORCHESTRATION-MAP.md) | Link runtime/component relationships without becoming the routing authority |
 | Execution evidence | [Evidence Projection Surface](../ops/EVIDENCE-PROJECTION-SURFACE.md) | Reference run/artifact/SHA evidence; do not create a second event ledger |
 | Provenance rules | [BIUDL Execution and Provenance](../ops/BIUDL-EXECUTION-AND-PROVENANCE.md) | Preserve source identity, attribution confidence, and separate COMMITTED / EXECUTED / VALIDATED / PROMOTED states |
+| Secret-reference reconciliation | [Phantom-Secrets Audit](../ops/PHANTOM-SECRETS-AUDIT.md), `scripts/secrets_audit/`, phantom-secrets-audit workflow | Consume the live provisioned-names inventory and its per-reference classification; do not build a second secrets reconciler |
+| Reviewer delivery metrics | [Reviewer JIT Design](../ops/REVIEWER-JIT-DESIGN.md), `docs/ops/generated/reviewer-metrics.json` | Reference pattern for derived projections published via refresh PRs; consume the map, do not re-collect it |
+| Integration mesh census | [Integration Mesh Matrix](../ops/INTEGRATION-MESH-MATRIX.md), integration-mesh-poll workflow | Consume the poll's census artifacts; the matrix document is a snapshot, the poll is the living source |
 
 Before adding any new field, the implementation must check whether an existing source already owns it. Where two sources legitimately describe different aspects of the same entity, retain both facts with their scopes instead of forcing a false single winner.
 
@@ -89,6 +92,7 @@ These examples are proposed conventions, not assertions that every corresponding
 4. Retire IDs with a status and superseding ID; do not reuse retired IDs or erase historical references.
 5. Keep environment and tenant/account scope explicit where it materially changes the fact.
 6. A missing entity reference is an unresolved relationship, not permission to invent a record.
+7. Repository identity follows the same rule: if the canonical repository changes (org transfer, renamed successor), record the new ID and link it with `supersedes`; historical references keep the ID they were observed under.
 
 ## 5. Relationship model
 
@@ -133,6 +137,7 @@ An authority map must be field-specific. A source can be authoritative for confi
   "source_id": "evidence:github.actions.run",
   "source_ref": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/123456",
   "observed_at": "2026-10-25T00:00:00Z",
+  "fresh_until": "2026-10-25T06:00:00Z",
   "scope": {
     "repository": "timerloggedout-spec/termux-monorepo",
     "run_id": "123456",
@@ -146,13 +151,16 @@ An authority map must be field-specific. A source can be authoritative for confi
 
 This is illustrative only. Do not emit fabricated timestamps, run IDs, SHAs, or values in real records. The schema and exact enums require review and fixture-backed validation before implementation.
 
+The envelope carries `fresh_until` — or a `freshness_policy_ref` naming the signal's documented freshness policy — so the reconciliation classifier can judge staleness per signal without any global TTL.
+
 ### State vocabulary
 
 At minimum, distinguish:
 
 - `observed`, `documented_only`, `configured_only`;
 - `unknown`, `stale`, `inaccessible`, `error`;
-- `conflicting`, `unsupported`, `not_applicable`.
+- `conflicting`, `unsupported`, `not_applicable`;
+- `superseded` — replaced by a newer observation or finding; retained for history, never silently deleted.
 
 A missing value is never silently converted to zero, healthy, absent, or success. Every freshness policy must be signal-specific and documented; no global TTL should be invented for all sources.
 
@@ -192,6 +200,8 @@ Never include:
 
 Sanitize at the producer boundary, use explicit allowlists, and validate public projections against a closed schema. Private observations must remain in their authorized evidence plane; a dashboard should receive a safe projection, not raw records.
 
+The fleet's credential inventory of record is Issue #184 (names and last-used only). The registry references it as an authority for credential names; it never duplicates its contents into a second inventory.
+
 ## 9. Reconciliation model
 
 A reconciliation run compares a bounded subject set across explicit authorities. It should emit findings, not silently “fix” state.
@@ -199,12 +209,14 @@ A reconciliation run compares a bounded subject set across explicit authorities.
 Proposed finding fields:
 
 - `finding_id`, `rule_id`, `subject_id`;
-- `classification` (e.g. `consistent`, `missing_reference`, `conflict`, `stale_observation`, `unobserved`, `unsupported_claim`);
+- `classification` (e.g. `consistent`, `missing_reference`, `conflict`, `stale_observation`, `unobserved`, `unsupported_claim`, `incomparable_scope`);
 - `severity` and rationale;
 - evidence observation IDs / source refs;
 - `evaluated_at`, rule version, source freshness and scope;
 - recommended next action and whether that action is read-only or mutating;
 - resolution state and superseding finding link, preserving history.
+
+An *evidence set* is the named, immutable list of observation IDs cited by one finding evaluation. Its `evidence_set_id` is assigned at evaluation time and derived deterministically from the sorted cited observation IDs; the full list travels with the finding record, so a finding is never separated from the exact evidence it was computed from.
 
 A “consistent” result is permitted only when all required sources for that rule are present, fresh enough for that signal, in compatible scopes, and semantically comparable. Otherwise report unknown/insufficient evidence rather than green.
 
@@ -220,6 +232,8 @@ Different consumers require different disclosure boundaries:
 4. **Evidence links:** point to immutable run/artifact/SHA references; do not copy large raw payloads into the registry.
 
 A projection is derived and rebuildable. It is never the authoritative place to edit the underlying provider, quota, workflow, or deployment configuration.
+
+**Repository boundary:** this repository is public. The private operator tier never lands in it — private observations remain in their authorized evidence planes (Actions artifacts, private stores), and only closed-schema public projections may be committed here.
 
 ## 11. Phased implementation
 
@@ -343,6 +357,8 @@ Keep these distinct: upstream-declared status; our reachability observation; aut
 ### Credential/configuration lifecycle
 
 Track only safe metadata: reference/name, consumer, owning configuration system, environment scope, required/optional status, rotation interval or policy reference, last rotation/verification evidence when authorized, and status such as declared, presence_observed, auth_verified, rotation_due, unknown, or inaccessible. Never ingest values, tokens, cookies, private keys, authorization headers, or hashes of low-entropy secrets. A reference existing does not prove presence, validity, successful authentication, least privilege, or rotation compliance.
+
+Names are not identities. A reference name may encode the consumer route rather than the credential's issuer family (fleet ruling, 2026-10-24 — e.g. a GitHub-access route for DeepSeek CLI Termux agents stored under a consumer-lane name, probe-verified via PR #1646 and recorded on Issue #184). Credential records therefore carry `name_semantics` (issuer_named | route_named | unknown) and, where a probe or owner ruling establishes it, the backing credential family as facts separate from the reference name.
 
 ## 16. Inventory sweep: repositories, skills, research lanes, and toolkits
 

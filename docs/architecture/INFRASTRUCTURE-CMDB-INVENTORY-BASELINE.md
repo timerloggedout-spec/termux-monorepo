@@ -4,6 +4,7 @@
 **Snapshot ref:** master  
 **Snapshot commit:** b8adaa2e05f3ebc246e90945d199fd1b9c0c15da  
 **Observed:** 2026-10-26  
+**Machine-readable tracked-path receipt:** [infra-cmdb-sweep-manifest.json](infra-cmdb-sweep-manifest.json) (8,785 paths; sorted; exact tree SHA recorded inside).  
 **Parent design:** [Infrastructure Registry Design](INFRASTRUCTURE-REGISTRY-DESIGN.md) · Issue [#1654](https://github.com/timerloggedout-spec/termux-monorepo/issues/1654) · Draft PR [#1655](https://github.com/timerloggedout-spec/termux-monorepo/pull/1655)
 
 ## 1. Snapshot method and limits

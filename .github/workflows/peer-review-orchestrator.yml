@@ -531,8 +531,8 @@ jobs:
                 });
               }
             } catch (err) {
-              if (err.status === 403 || err.status === 429 || /rate limit/i.test(err.message || '')) {
-                core.warning(`Publish peer response state skipped due to API rate limit: ${err.message}`);
+              if (err.status === 403 || err.status === 429 || /rate limit|disabled|comment/i.test(err.message || '')) {
+                core.warning(`Publish peer response state skipped: ${err.message}`);
                 return;
               }
               throw err;

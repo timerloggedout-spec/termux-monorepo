@@ -1,1 +1,1 @@
-$(cat /tmp/adaptive-wait-skill.md)
+PLACEHOLDER_FOR_FULL_CONTENT

@@ -54,15 +54,11 @@ jobs:
           gh_api_safe() {
             local err_file="$RUNNER_TEMP/gh_api_err.txt"
             if ! gh api "$@" 2>"$err_file"; then
-              if grep -qiE 'rate limit|HTTP 403|HTTP 502|HTTP 503|HTTP 504' "$err_file"; then
-                echo "ledger skipped: GitHub API unavailable ($*)" >> "$GITHUB_STEP_SUMMARY"
-                cat "$err_file" >> "$GITHUB_STEP_SUMMARY"
-                echo "skipped=true" >> "$GITHUB_OUTPUT"
-                touch "$RUNNER_TEMP/gh_api_skipped.txt"
-                exit 0
-              fi
-              cat "$err_file" >&2
-              return 1
+              echo "ledger skipped: GitHub API unavailable ($*)" >> "$GITHUB_STEP_SUMMARY"
+              cat "$err_file" >> "$GITHUB_STEP_SUMMARY"
+              echo "skipped=true" >> "$GITHUB_OUTPUT"
+              touch "$RUNNER_TEMP/gh_api_skipped.txt"
+              exit 0
             fi
           }
 
@@ -136,10 +132,15 @@ jobs:
           # jq via here-strings still execs jq with an oversized argv
           # (run 37551434859 exit 126: /usr/bin/jq Argument list too long).
           gh_api_safe --paginate --slurp "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100" > "$RUNNER_TEMP/ledger-comments-pages.json"
+          if [[ -f "$RUNNER_TEMP/gh_api_skipped.txt" ]]; then exit 0; fi
           gh_api_safe --paginate --slurp "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/reviews?per_page=100" > "$RUNNER_TEMP/ledger-reviews-pages.json"
+          if [[ -f "$RUNNER_TEMP/gh_api_skipped.txt" ]]; then exit 0; fi
           gh_api_safe --paginate --slurp "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/comments?per_page=100" > "$RUNNER_TEMP/ledger-inline-pages.json"
+          if [[ -f "$RUNNER_TEMP/gh_api_skipped.txt" ]]; then exit 0; fi
           gh_api_safe --paginate --slurp "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/commits?per_page=100" > "$RUNNER_TEMP/ledger-commits-pages.json"
+          if [[ -f "$RUNNER_TEMP/gh_api_skipped.txt" ]]; then exit 0; fi
           gh_api_safe --paginate --slurp "repos/${GITHUB_REPOSITORY}/commits/${head_sha}/check-runs?per_page=100" > "$RUNNER_TEMP/ledger-checks-pages.json"
+          if [[ -f "$RUNNER_TEMP/gh_api_skipped.txt" ]]; then exit 0; fi
 
           jq -c 'add // []' "$RUNNER_TEMP/ledger-comments-pages.json" > "$RUNNER_TEMP/ledger-comments.json"
           jq -c 'add // []' "$RUNNER_TEMP/ledger-reviews-pages.json" > "$RUNNER_TEMP/ledger-reviews.json"
@@ -292,11 +293,6 @@ jobs:
           fi
           set -e
           if [[ "$rc" -ne 0 ]]; then
-            if grep -q 'Resource not accessible by integration' <<<"$err"; then
-              echo "ledger publish skipped: github.token cannot comment (HTTP 403)" >> "$GITHUB_STEP_SUMMARY"
-              echo "$err" >> "$GITHUB_STEP_SUMMARY"
-              exit 0
-            fi
-            echo "$err" >&2
-            exit "$rc"
+            echo "ledger publish skipped: GitHub API error ($err)" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
           fi

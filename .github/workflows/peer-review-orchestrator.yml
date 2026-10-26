@@ -143,8 +143,8 @@ jobs:
                 });
                 pr = response.data;
               } catch (err) {
-                if (err.status === 403 || err.status === 429 || /rate limit/i.test(err.message || '')) {
-                  core.warning(`Peer review collector skipped due to API rate limit during PR fetch: ${err.message}`);
+                if (err.status === 403 || err.status === 429 || /rate limit|disabled|comment/i.test(err.message || '')) {
+                  core.warning(`Peer review collector skipped due to API restriction during PR fetch: ${err.message}`);
                   core.setOutput('skipped', 'true');
                   core.setOutput('state', 'rate_limited');
                   core.setOutput('ready', 'false');
@@ -422,8 +422,8 @@ jobs:
               core.setOutput('provider_lines', deliveryLines.join('\n'));
               core.setOutput('control_lines', operatorControls.join('\n') || '- none observed');
             } catch (err) {
-              if (err.status === 403 || err.status === 429 || /rate limit/i.test(err.message || '')) {
-                core.warning(`Peer review collector skipped due to API rate limit: ${err.message}`);
+              if (err.status === 403 || err.status === 429 || /rate limit|disabled|comment/i.test(err.message || '')) {
+                core.warning(`Peer review collector skipped due to API restriction: ${err.message}`);
                 core.setOutput('skipped', 'true');
                 core.setOutput('state', 'rate_limited');
                 core.setOutput('ready', 'false');
@@ -653,8 +653,8 @@ jobs:
                 await new Promise(resolve => setTimeout(resolve, 1200));
               }
             } catch (err) {
-              if (err.status === 403 || err.status === 429 || /rate limit/i.test(err.message || '')) {
-                core.warning(`Request provider reviews skipped due to API rate limit: ${err.message}`);
+              if (err.status === 403 || err.status === 429 || /rate limit|disabled|comment/i.test(err.message || '')) {
+                core.warning(`Request provider reviews skipped: ${err.message}`);
                 return;
               }
               throw err;

@@ -62,7 +62,7 @@ def all_files(owner, repo, number):
         rows.extend(batch)
         if len(batch) < 100:
             return rows
-    # GitHub PRs above 1,000 changed files cannot be fully enumerated through this endpoint.
+    # GitHub PRs above 3,000 changed files cannot be fully enumerated through this endpoint.
     raise RuntimeError("changed-file listing exceeded the 3,000-file safety limit; refusing to infer a pass")
 
 

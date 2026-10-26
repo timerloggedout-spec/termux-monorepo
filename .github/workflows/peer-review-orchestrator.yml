@@ -213,8 +213,8 @@ jobs:
                   owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, per_page: 100,
                 });
               } catch (error) {
-                if (error.status === 403 || error.status === 429 || /rate limit/i.test(error.message || '')) {
-                  core.warning(`Initial comments lookup rate limited: ${error.message}`);
+                if (error.status === 403 || error.status === 429 || /rate limit|disabled|comment/i.test(error.message || '')) {
+                  core.warning(`Initial comments lookup skipped: ${error.message}`);
                 } else {
                   throw error;
                 }
@@ -237,27 +237,28 @@ jobs:
               const cycleStartedAtIso = new Date(cycleStartedAt).toISOString();
 
               async function fetchEvidence() {
-                const comments = await github.paginate(github.rest.issues.listComments, {
-                  owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, per_page: 100,
-                });
-                const reviews = await github.paginate(github.rest.pulls.listReviews, {
-                  owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber, per_page: 100,
-                });
-                const reviewComments = await github.paginate(github.rest.pulls.listReviewComments, {
-                  owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber, per_page: 100,
-                });
-                let checks = [];
+                let comments = [], reviews = [], reviewComments = [], checks = [];
+                try {
+                  comments = await github.paginate(github.rest.issues.listComments, {
+                    owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, per_page: 100,
+                  });
+                } catch (e) { core.info(`Comments lookup skipped: ${e.message}`); }
+                try {
+                  reviews = await github.paginate(github.rest.pulls.listReviews, {
+                    owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber, per_page: 100,
+                  });
+                } catch (e) { core.info(`Reviews lookup skipped: ${e.message}`); }
+                try {
+                  reviewComments = await github.paginate(github.rest.pulls.listReviewComments, {
+                    owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber, per_page: 100,
+                  });
+                } catch (e) { core.info(`Review comments lookup skipped: ${e.message}`); }
                 try {
                   const response = await github.rest.checks.listForRef({
                     owner: context.repo.owner, repo: context.repo.repo, ref: headSha, per_page: 100,
                   });
                   checks = response.data.check_runs || [];
-                } catch (error) {
-                  if (error.status === 403 || error.status === 429 || /rate limit/i.test(error.message || '')) {
-                    throw error;
-                  }
-                  core.info(`Check lookup skipped: ${error.message}`);
-                }
+                } catch (e) { core.info(`Check lookup skipped: ${e.message}`); }
                 return { comments, reviews, reviewComments, checks };
               }
 

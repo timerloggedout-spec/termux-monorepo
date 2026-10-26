@@ -6,6 +6,7 @@
 **Ref inspected:** `master`  
 **Git tree SHA:** `b8adaa2e05f3ebc246e90945d199fd1b9c0c15da`  
 **Census result:** 9,738 recursive tree entries, 8,785 tracked blob paths, tree API reported `truncated=false`.  
+**Machine-readable receipt:** [infra-cmdb-sweep-manifest.json](infra-cmdb-sweep-manifest.json) stores the sorted tracked paths, prefix counts, exact source SHA, method, and limitations.  
 **Method:** GitHub recursive Git tree API plus focused reads of the source documents listed below. Counts are path-pattern counts from this snapshot, not counts of unique live services or semantic entities.
 
 ## 1. What the census confirms
@@ -25,7 +26,7 @@
 | Paths matching Foundry, reverse-engineering, or browser-lane import names | 18 | Foundry/campaign/import surface; overlapping taxonomies must be reconciled, not duplicated |
 | Paths containing `resource-registry` | 5 | Research/resource registry family; not automatically the canonical service CMDB |
 
-These counts are reproducible only against the recorded tree SHA. They should be regenerated when the baseline ref changes.
+These counts are reproducible only against the recorded tree SHA. The complete path list is persisted in [infra-cmdb-sweep-manifest.json](infra-cmdb-sweep-manifest.json). It is a path-only receipt; it does not establish semantic ownership, runtime state, or health. Regenerate it when the baseline ref changes.
 
 ## 2. Field-level source-of-truth map (initial)
 

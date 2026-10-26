@@ -109,8 +109,8 @@ def classify(pr, files, expected):
     validation_ok = (
         len(validation) >= 12
         and validation.lower() not in GENERIC_PROOF
-        and bool(re.search(r"\b(pass(?:ed)?|verified|checked|success|clean|fail(?:ed)?|not run)\b", validation, re.I)
-                 or re.search(r"\b(pytest|unittest|npm|pnpm|yarn|bun|cargo|go test|ruff|mypy|markdownlint|git diff --check)\b", validation, re.I))
+        and bool(re.search(r"\b(pass(?:ed)?|verified|checked|success(?:ful)?|clean)\b", validation, re.I))
+        and not re.search(r"\b(fail(?:ed|ure)?|pending|not run|not executed|skipped)\b", validation, re.I)
         and not PLACEHOLDER_RE.search(validation)
     )
     proof_complete = proof and diff_proof_ok and validation_ok

@@ -2,7 +2,7 @@
 
 > Generated from GitHub repository and starring metadata. JSON is canonical; this file is a navigation projection.
 
-Observed: `2026-10-25T09:11:04.112851Z`
+Observed: `2026-10-26T10:10:00.643732Z`
 
 ## Navigation
 
@@ -854,7 +854,6 @@ Observed: `2026-10-25T09:11:04.112851Z`
 | [deepseek-ai/awesome-deepseek-agent](https://github.com/deepseek-ai/awesome-deepseek-agent) | starred | agent, ai | medium | — |
 | [dfinity/agent-rs](https://github.com/dfinity/agent-rs) | starred, watching | agent, ai | medium | — |
 | [Dicklesworthstone/agentic_coding_flywheel_setup](https://github.com/Dicklesworthstone/agentic_coding_flywheel_setup) | starred | agent, ai | medium | workflow-candidate |
-| [Dicklesworthstone/frankenterm](https://github.com/Dicklesworthstone/frankenterm) | starred | agent, ai | medium | — |
 | [Dicklesworthstone/llm-tournament](https://github.com/Dicklesworthstone/llm-tournament) | starred | agent, ai | medium | — |
 | [Dicklesworthstone/mcp_agent_mail](https://github.com/Dicklesworthstone/mcp_agent_mail) | starred | agent, ai | medium | — |
 | [Dicklesworthstone/mcp_agent_mail_rust](https://github.com/Dicklesworthstone/mcp_agent_mail_rust) | starred, watching | agent, ai | medium | — |
@@ -1186,6 +1185,7 @@ Observed: `2026-10-25T09:11:04.112851Z`
 | [Observal/Observal](https://github.com/Observal/Observal) | starred | agent, ai, developer-tools | medium | — |
 | [OpenHands/OpenHands](https://github.com/OpenHands/OpenHands) | starred | agent, ai, developer-tools | medium | — |
 | [paperclipai/paperclip](https://github.com/paperclipai/paperclip) | starred | agent, ai, developer-tools | medium | workflow-candidate |
+| [ParadevAI/Paradev](https://github.com/ParadevAI/Paradev) | starred | agent, ai, developer-tools | medium | — |
 | [RAIT-09/obsidian-agent-client](https://github.com/RAIT-09/obsidian-agent-client) | starred | agent, ai, developer-tools | medium | — |
 | [retentioneering/retentioneering-tools](https://github.com/retentioneering/retentioneering-tools) | starred | agent, ai, developer-tools | medium | — |
 | [rtk-ai/rtk](https://github.com/rtk-ai/rtk) | starred | agent, ai, developer-tools | medium | — |
@@ -1195,7 +1195,6 @@ Observed: `2026-10-25T09:11:04.112851Z`
 | [slopus/happy](https://github.com/slopus/happy) | starred | agent, ai, developer-tools | medium | — |
 | [smtg-ai/claude-squad](https://github.com/smtg-ai/claude-squad) | starred | agent, ai, developer-tools | medium | — |
 | [superagent-ai/grok-cli](https://github.com/superagent-ai/grok-cli) | starred | agent, ai, developer-tools | medium | — |
-| [superset-sh/superset](https://github.com/superset-sh/superset) | starred | agent, ai, developer-tools | medium | — |
 | [SWE-agent/mini-swe-agent](https://github.com/SWE-agent/mini-swe-agent) | starred | agent, ai, developer-tools | medium | — |
 | [tamzidraihan-qq/claude-brain](https://github.com/tamzidraihan-qq/claude-brain) | starred | agent, ai, developer-tools | medium | — |
 | [timerloggedout-spec/claude-brain_fork](https://github.com/timerloggedout-spec/claude-brain_fork) | owned, starred | agent, ai, developer-tools | medium | upstream-comparison |
@@ -1224,6 +1223,7 @@ Observed: `2026-10-25T09:11:04.112851Z`
 | [kubewall/kubewall](https://github.com/kubewall/kubewall) | starred | agent, ai, developer-tools, kubernetes | high | — |
 | [Manitchahar/gemini-claw](https://github.com/Manitchahar/gemini-claw) | starred | agent, ai, developer-tools, kubernetes | high | — |
 | [bradAGI/awesome-cli-coding-agents](https://github.com/bradAGI/awesome-cli-coding-agents) | starred | agent, ai, developer-tools, platform | high | — |
+| [Dicklesworthstone/frankenterm](https://github.com/Dicklesworthstone/frankenterm) | starred | agent, ai, developer-tools, platform | high | — |
 | [Dicklesworthstone/meta_skill](https://github.com/Dicklesworthstone/meta_skill) | starred | agent, ai, developer-tools, platform | high | — |
 | [google/agents-cli](https://github.com/google/agents-cli) | starred | agent, ai, developer-tools, platform | high | — |
 | [Kilo-Org/kilocode](https://github.com/Kilo-Org/kilocode) | starred | agent, ai, developer-tools, platform | high | — |
@@ -1436,6 +1436,7 @@ Observed: `2026-10-25T09:11:04.112851Z`
 | [Dicklesworthstone/ascii_art_mini_transformer](https://github.com/Dicklesworthstone/ascii_art_mini_transformer) | starred | ai | medium | — |
 | [Dicklesworthstone/bio_inspired_nanochat](https://github.com/Dicklesworthstone/bio_inspired_nanochat) | starred, watching | ai | medium | — |
 | [Dicklesworthstone/cmaes_explainer](https://github.com/Dicklesworthstone/cmaes_explainer) | starred | ai | medium | — |
+| [Dicklesworthstone/franken_networkx](https://github.com/Dicklesworthstone/franken_networkx) | starred | ai | medium | dependency-candidate |
 | [Dicklesworthstone/frankentui](https://github.com/Dicklesworthstone/frankentui) | starred | ai | medium | dependency-candidate |
 | [Dicklesworthstone/raptorq_article](https://github.com/Dicklesworthstone/raptorq_article) | starred | ai | medium | — |
 | [Dicklesworthstone/rust_proxy](https://github.com/Dicklesworthstone/rust_proxy) | starred | ai | medium | — |
@@ -1992,11 +1993,11 @@ Observed: `2026-10-25T09:11:04.112851Z`
 | [randyridgley/awesome-aws-research](https://github.com/randyridgley/awesome-aws-research) | starred | ai, research, kubernetes | high | — |
 | [kfrural/dashboard_agro](https://github.com/kfrural/dashboard_agro) | starred | ai, research, platform | high | — |
 | [ScottfreeLLC/AlphaPy](https://github.com/ScottfreeLLC/AlphaPy) | starred | ai, research, platform | high | — |
+| [Dicklesworthstone/franken_engine](https://github.com/Dicklesworthstone/franken_engine) | starred | ai, research, security | high | — |
 | [Solaree/pairipcore](https://github.com/Solaree/pairipcore) | starred | ai, research, termux | high | — |
 | [2022it0489-hub/NeuroSploit-v2-Penetration-Testing-](https://github.com/2022it0489-hub/NeuroSploit-v2-Penetration-Testing-) | starred, watching | ai, security | medium | — |
 | [2022it0489-hub/RedAmon-AI-Powered-Red-Team-Reconnaissance-Framework](https://github.com/2022it0489-hub/RedAmon-AI-Powered-Red-Team-Reconnaissance-Framework) | starred, watching | ai, security | medium | dependency-candidate |
 | [ARM-software/speculation-barrier](https://github.com/ARM-software/speculation-barrier) | starred | ai, security | medium | — |
-| [Dicklesworthstone/franken_engine](https://github.com/Dicklesworthstone/franken_engine) | starred | ai, security | medium | — |
 | [Digital-Forensics-Discord-Server/ArtifactParsers](https://github.com/Digital-Forensics-Discord-Server/ArtifactParsers) | starred | ai, security | medium | — |
 | [MicroAIInc/MicroAI-Security-and-Monitoring](https://github.com/MicroAIInc/MicroAI-Security-and-Monitoring) | starred | ai, security | medium | — |
 | [PentesterFlow/OffensiveSET](https://github.com/PentesterFlow/OffensiveSET) | starred, watching | ai, security | medium | — |
@@ -2310,6 +2311,7 @@ Observed: `2026-10-25T09:11:04.112851Z`
 | [d35ha/CallObfuscator](https://github.com/d35ha/CallObfuscator) | starred | research | high | — |
 | [dalinvip/Awesome-Law-NLP-Research-Work](https://github.com/dalinvip/Awesome-Law-NLP-Research-Work) | starred | research | high | — |
 | [davidmrau/mixture-of-experts](https://github.com/davidmrau/mixture-of-experts) | starred | research | high | — |
+| [Dicklesworthstone/frankensqlite](https://github.com/Dicklesworthstone/frankensqlite) | starred | research | high | — |
 | [dwmkerr/hacker-laws](https://github.com/dwmkerr/hacker-laws) | starred | research | high | — |
 | [ECSIM/pem-dataset1](https://github.com/ECSIM/pem-dataset1) | starred | research | high | — |
 | [facebookresearch/mae](https://github.com/facebookresearch/mae) | starred | research | high | — |
@@ -2730,13 +2732,11 @@ Observed: `2026-10-25T09:11:04.112851Z`
 | [denji/awesome-http-benchmark](https://github.com/denji/awesome-http-benchmark) | starred | unclassified | medium | — |
 | [derekvincent/action-awesome-list-updater](https://github.com/derekvincent/action-awesome-list-updater) | starred | unclassified | medium | workflow-candidate |
 | [dhadka/DGantt](https://github.com/dhadka/DGantt) | starred | unclassified | medium | dependency-candidate |
-| [Dicklesworthstone/franken_networkx](https://github.com/Dicklesworthstone/franken_networkx) | starred | unclassified | medium | — |
 | [Dicklesworthstone/franken_numpy](https://github.com/Dicklesworthstone/franken_numpy) | starred | unclassified | medium | — |
 | [Dicklesworthstone/frankenlibc](https://github.com/Dicklesworthstone/frankenlibc) | starred | unclassified | medium | dependency-candidate |
 | [Dicklesworthstone/frankenpandas](https://github.com/Dicklesworthstone/frankenpandas) | starred | unclassified | medium | — |
 | [Dicklesworthstone/frankenscipy](https://github.com/Dicklesworthstone/frankenscipy) | starred | unclassified | medium | — |
 | [Dicklesworthstone/frankensearch](https://github.com/Dicklesworthstone/frankensearch) | starred | unclassified | medium | — |
-| [Dicklesworthstone/frankensqlite](https://github.com/Dicklesworthstone/frankensqlite) | starred | unclassified | medium | — |
 | [Dicklesworthstone/phage_explorer](https://github.com/Dicklesworthstone/phage_explorer) | starred | unclassified | medium | — |
 | [Dicklesworthstone/system_resource_protection_script](https://github.com/Dicklesworthstone/system_resource_protection_script) | starred | unclassified | medium | — |
 | [Digital-Forensics-Discord-Server/DFIRGlossary](https://github.com/Digital-Forensics-Discord-Server/DFIRGlossary) | starred | unclassified | medium | — |
@@ -4793,6 +4793,7 @@ Observed: `2026-10-25T09:11:04.112851Z`
 | [kubewall/kubewall](https://github.com/kubewall/kubewall) | starred | agent, ai, developer-tools, kubernetes | high | — |
 | [Manitchahar/gemini-claw](https://github.com/Manitchahar/gemini-claw) | starred | agent, ai, developer-tools, kubernetes | high | — |
 | [bradAGI/awesome-cli-coding-agents](https://github.com/bradAGI/awesome-cli-coding-agents) | starred | agent, ai, developer-tools, platform | high | — |
+| [Dicklesworthstone/frankenterm](https://github.com/Dicklesworthstone/frankenterm) | starred | agent, ai, developer-tools, platform | high | — |
 | [Dicklesworthstone/meta_skill](https://github.com/Dicklesworthstone/meta_skill) | starred | agent, ai, developer-tools, platform | high | — |
 | [google/agents-cli](https://github.com/google/agents-cli) | starred | agent, ai, developer-tools, platform | high | — |
 | [Kilo-Org/kilocode](https://github.com/Kilo-Org/kilocode) | starred | agent, ai, developer-tools, platform | high | — |
@@ -5053,6 +5054,7 @@ Observed: `2026-10-25T09:11:04.112851Z`
 | [kfrural/dashboard_agro](https://github.com/kfrural/dashboard_agro) | starred | ai, research, platform | high | — |
 | [ScottfreeLLC/AlphaPy](https://github.com/ScottfreeLLC/AlphaPy) | starred | ai, research, platform | high | — |
 | [timerloggedout-spec/alphadesk-terminal](https://github.com/timerloggedout-spec/alphadesk-terminal) | owned | ai, research, platform | high | upstream-comparison |
+| [Dicklesworthstone/franken_engine](https://github.com/Dicklesworthstone/franken_engine) | starred | ai, research, security | high | — |
 | [Solaree/pairipcore](https://github.com/Solaree/pairipcore) | starred | ai, research, termux | high | — |
 | [SimonSchubert/Kai](https://github.com/SimonSchubert/Kai) | starred | ai, termux, platform | high | — |
 | [Dicklesworthstone/fastapi_rust](https://github.com/Dicklesworthstone/fastapi_rust) | starred | api-management | high | dependency-candidate |
@@ -5208,6 +5210,7 @@ Observed: `2026-10-25T09:11:04.112851Z`
 | [d35ha/CallObfuscator](https://github.com/d35ha/CallObfuscator) | starred | research | high | — |
 | [dalinvip/Awesome-Law-NLP-Research-Work](https://github.com/dalinvip/Awesome-Law-NLP-Research-Work) | starred | research | high | — |
 | [davidmrau/mixture-of-experts](https://github.com/davidmrau/mixture-of-experts) | starred | research | high | — |
+| [Dicklesworthstone/frankensqlite](https://github.com/Dicklesworthstone/frankensqlite) | starred | research | high | — |
 | [dwmkerr/hacker-laws](https://github.com/dwmkerr/hacker-laws) | starred | research | high | — |
 | [ECSIM/pem-dataset1](https://github.com/ECSIM/pem-dataset1) | starred | research | high | — |
 | [facebookresearch/mae](https://github.com/facebookresearch/mae) | starred | research | high | — |
@@ -5599,6 +5602,7 @@ Observed: `2026-10-25T09:11:04.112851Z`
 | [CharlesCreativeContent/toolhouse-examples](https://github.com/CharlesCreativeContent/toolhouse-examples) | starred | ai | medium | dependency-candidate |
 | [cogwheel0/open-webui](https://github.com/cogwheel0/open-webui) | starred | ai | medium | upstream-comparison |
 | [debpalash/VoiceStudio](https://github.com/debpalash/VoiceStudio) | starred | ai | medium | workflow-candidate |
+| [Dicklesworthstone/franken_networkx](https://github.com/Dicklesworthstone/franken_networkx) | starred | ai | medium | dependency-candidate |
 | [Dicklesworthstone/frankentui](https://github.com/Dicklesworthstone/frankentui) | starred | ai | medium | dependency-candidate |
 | [diekaiju/duckAssist](https://github.com/diekaiju/duckAssist) | starred | ai | medium | upstream-comparison |
 | [dmlc/xgboost](https://github.com/dmlc/xgboost) | starred | ai | medium | dependency-candidate |

@@ -240,3 +240,122 @@ def compile_phase(text: str, canonical_compiler) -> str:
 def decompile_phase(text: str, canonical_decompiler) -> str:
     """Normalize diaspora variants, then use the existing canonical decompiler."""
     return canonical_decompiler(from_1337speak(text))
+
+
+# -----------------------------------------------------------------------------
+# 4th Development Lane: Conversational Steganography Cipher & Private Mapping
+# Implemented prior to the LLM Pre-Parser layer for agent-to-agent privacy
+# and lossless human-readable expansion parity.
+# -----------------------------------------------------------------------------
+
+# Fixed Base-4 Zero-Width Character Alphabet for Deterministic Unambiguous Payload Encoding
+BASE4_ZERO_WIDTH: Tuple[str, ...] = ("\u200b", "\u200c", "\u200d", "\ufeff")
+REV_BASE4_ZERO_WIDTH: Dict[str, int] = {c: i for i, c in enumerate(BASE4_ZERO_WIDTH)}
+ZERO_WIDTH_REGEX = re.compile(r"[\u200b\u200c\u200d\ufeff]+")
+
+
+class ConversationalSteganographyCipher:
+    """4th Development Lane: Cipher encryption with private key mapping for LLM Pre-Parser.
+
+    Provides steganographic obfuscation of agentic directives into innocent cover text
+    with optional private mapping keys. Ensures lossless parity and full human-readable expansion.
+    """
+
+    __slots__ = ("private_map", "reverse_map", "_rev_trie_regex")
+
+    def __init__(self, private_mapping: Optional[Mapping[str, str]] = None):
+        self.private_map: Dict[str, str] = dict(private_mapping) if private_mapping else {}
+        self.reverse_map: Dict[str, str] = {v.lower(): k for k, v in self.private_map.items()}
+        if self.reverse_map:
+            self._rev_trie_regex: Optional[re.Pattern[str]] = re.compile(
+                _build_trie_regex(self.reverse_map.keys())
+            )
+        else:
+            self._rev_trie_regex = None
+
+    def encode(self, plaintext: str, cover_text: str = "Greetings agent. Execution proceeds nominally.") -> str:
+        """Encode plaintext into stegotext using private mapping and zero-width payload embedding."""
+        if not plaintext:
+            return cover_text
+
+        # 1. Apply private token key substitution if available
+        processed = plaintext
+        for src, dst in self.private_map.items():
+            processed = re.sub(r"\b" + re.escape(src) + r"\b", dst, processed, flags=re.IGNORECASE)
+
+        # 2. Encode binary bytes to fixed base-4 zero-width character quadruplets (4 chars per byte)
+        raw_bytes = processed.encode("utf-8")
+        zw_chunks = []
+        for byte in raw_bytes:
+            zw_chunks.append(BASE4_ZERO_WIDTH[(byte >> 6) & 3])
+            zw_chunks.append(BASE4_ZERO_WIDTH[(byte >> 4) & 3])
+            zw_chunks.append(BASE4_ZERO_WIDTH[(byte >> 2) & 3])
+            zw_chunks.append(BASE4_ZERO_WIDTH[byte & 3])
+        zw_payload = "".join(zw_chunks)
+
+        # 3. Embed zero-width payload into cover text
+        if " " in cover_text:
+            parts = cover_text.split(" ", 1)
+            return parts[0] + zw_payload + " " + parts[1]
+        return cover_text + zw_payload
+
+    def decode(self, stegotext: str) -> str:
+        """Extract steganographic payload and reverse private key mapping to restore plaintext."""
+        if not stegotext:
+            return ""
+
+        # 1. Extract zero-width payload sequence
+        match = ZERO_WIDTH_REGEX.search(stegotext)
+        if not match:
+            return stegotext
+
+        zw_str = match.group(0)
+        # Parse base-4 zero-width character quadruplets back to bytes
+        chars = list(zw_str)
+        byte_arr = bytearray()
+        for i in range(0, len(chars) - 3, 4):
+            c0, c1, c2, c3 = chars[i], chars[i + 1], chars[i + 2], chars[i + 3]
+            if c0 in REV_BASE4_ZERO_WIDTH and c1 in REV_BASE4_ZERO_WIDTH and c2 in REV_BASE4_ZERO_WIDTH and c3 in REV_BASE4_ZERO_WIDTH:
+                byte_val = (
+                    (REV_BASE4_ZERO_WIDTH[c0] << 6)
+                    | (REV_BASE4_ZERO_WIDTH[c1] << 4)
+                    | (REV_BASE4_ZERO_WIDTH[c2] << 2)
+                    | REV_BASE4_ZERO_WIDTH[c3]
+                )
+                byte_arr.append(byte_val)
+
+        if not byte_arr:
+            return stegotext
+
+        try:
+            decoded_text = byte_arr.decode("utf-8")
+        except UnicodeDecodeError:
+            return stegotext
+
+        # 2. Reverse private key mapping using single-pass Trie regex callback
+        if self.reverse_map and self._rev_trie_regex:
+            def _rev_cb(m: re.Match[str]) -> str:
+                val = m.group(0)
+                return self.reverse_map.get(val.lower(), val)
+            decoded_text = self._rev_trie_regex.sub(_rev_cb, decoded_text)
+
+        return decoded_text
+
+
+def steganography_encode(
+    text: str,
+    private_mapping: Optional[Mapping[str, str]] = None,
+    cover_text: str = "Greetings agent. Execution proceeds nominally.",
+) -> str:
+    """Convenience top-level function to steganographically encode text."""
+    cipher = ConversationalSteganographyCipher(private_mapping)
+    return cipher.encode(text, cover_text=cover_text)
+
+
+def steganography_decode(
+    stegotext: str,
+    private_mapping: Optional[Mapping[str, str]] = None,
+) -> str:
+    """Convenience top-level function to steganographically decode stegotext."""
+    cipher = ConversationalSteganographyCipher(private_mapping)
+    return cipher.decode(stegotext)

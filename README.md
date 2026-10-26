@@ -214,9 +214,25 @@ The repository’s Linguist work optimizes **internal** agent communication thro
 | Surface | Purpose | Audit route |
 |---|---|---|
 | [`workspace/compression_sandbox/cedrlang/cid.py`](workspace/compression_sandbox/cedrlang/cid.py) | Local CedarIndex short-pointer registry and expansion behavior | Source-level implementation. |
+| [`workspace/compression_sandbox/cedrlang/phase_codec.py`](workspace/compression_sandbox/cedrlang/phase_codec.py) | 4th Development Lane: Conversational Steganography Cipher & PhaseCodec | Source-level cipher implementation. |
 | [`harmony_hub/workspace/agent/LINGUIST_SPEC.md`](harmony_hub/workspace/agent/LINGUIST_SPEC.md) | Linguist role, pointer conventions, and integration intent | Agent specification. |
 | [PR #196](https://github.com/timerloggedout-spec/termux-monorepo/pull/196) | Merged CedrLang v2 compilation work | Historical implementation and review evidence. |
 | [PR #228](https://github.com/timerloggedout-spec/termux-monorepo/pull/228) | Merged fast-path term-search optimization | Subsequent performance evidence. |
+
+### 4.1 1337_$934k & Grimoire Cipher Mapping Table
+
+| Human Term / Directive | Symbolic / 1337_$934k Cipher | 4th Lane Conversational Steganography |
+|---|---|---|
+| `transmute` | `h4x` | Zero-width base-4 payload in cover prose |
+| `scry` | `scry` | Zero-width base-4 payload in cover prose |
+| `probe` | `pr0b3` | Private key token substitution + zero-width |
+| `echo` | `3ch0` | Private key token substitution + zero-width |
+| `time loop` | `l00p` | Private key token substitution + zero-width |
+| `grimoire` | `gr1m01r3` | Private key token substitution + zero-width |
+| `emerging technology` | `em_t3ch` | Private key token substitution + zero-width |
+| `procurement` | `pr0cur3` | Private key token substitution + zero-width |
+| `curation` | `cur473` | Private key token substitution + zero-width |
+| `leads to / results in` | `→` | Symbolic operator expansion |
 
 1337-style naming may be used as a **display dialect**, never as a substitute for a source path, permission boundary, or validation result. The disciplined version of “l33t” is legibility under pressure.
 

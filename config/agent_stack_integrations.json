@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "integration_id": "foresight-agent-stack-2026-10-01",
-  "observed_at": "2026-10-01T00:00:00Z",
+  "observed_at": "2026-10-26T00:00:00Z",
   "canonicality": {
     "evidence_store": "repository-owned JSONL/receipts",
     "telemetry_boundary": "OpenTelemetry",
@@ -121,6 +121,35 @@
       "required_measurements": ["memory", "latency", "tool-call reliability", "structured-output reliability", "offline behavior", "energy proxy"],
       "hard_gate": "No active routing until independent device measurements and provenance are recorded.",
       "unresolved_questions": ["Current release/model artifact pin.", "Android/Termux build path.", "Tool-call and structured-output behavior under constrained memory."]
+    },
+    {
+      "id": "witness-attestation",
+      "project": "Witness (in-toto)",
+      "source": "https://github.com/in-toto/witness",
+      "version": "v0.12.0",
+      "role": "build-provenance-attestation-engine",
+      "status": "INVESTIGATE",
+      "horizon": "H1",
+      "evidence_status": "confirmed",
+      "capabilities": [
+        "in-toto attestation of command, materials, and products",
+        "embedded OPA Rego policy verification",
+        "Sigstore keyless and SPIFFE/SPIRE signing",
+        "CI verify gate that exits non-zero with a stated reason on policy failure"
+      ],
+      "integration_mode": "attestation producer and verify gate; attestations are referenced from evidence records, never a replacement evidence store",
+      "required_exports": [
+        "in-toto attestation JSON per build or run",
+        "attestation digest for evidence-envelope reference",
+        "verify outcome with the stated failure reason",
+        "signer identity reference (OIDC subject or key name only)"
+      ],
+      "hard_gate": "Canonical evidence remains repository-owned JSONL/receipts and the evidence envelope. Signing keys are credentials: names only, values never in repo, telemetry, or artifacts.",
+      "unresolved_questions": [
+        "Fleet target test outstanding: GitHub Actions runner, ARM64 Linux, Termux (no Android release asset exists).",
+        "Key custody decision: Sigstore keyless via OIDC versus local or KMS keys for offline verification.",
+        "Upstream choice at pilot time: in-toto/witness community mainline versus aflock-ai/rookery hardened line."
+      ]
     }
   ],
   "wiring_rules": [

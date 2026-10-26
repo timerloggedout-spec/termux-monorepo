@@ -19,6 +19,16 @@ and generated_at.
 The manifest is compatible with SBOM/provenance ecosystems such as SPDX, CycloneDX
 and SLSA, but remains a repository-level open JSON contract.
 
+Build provenance for the manifest is an attestation problem, not a logging
+problem: the recorded engine option is Witness (in-toto), which wraps the
+build command and emits signed attestations of command, materials, and
+products that a CI verify step can gate on. It is recorded in the
+supply-chain-provenance category of
+`docs/ops/FOSS-FORESIGHT-PROCUREMENT-REGISTRY.json` and wired as
+`witness-attestation` in `config/agent_stack_integrations.json`. Attestations
+complement this manifest; they do not replace the repository-owned evidence
+envelope as the canonical evidence record.
+
 ## Drift
 
 A new observation is appended rather than overwriting an older observation.

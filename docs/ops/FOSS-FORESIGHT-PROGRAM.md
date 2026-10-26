@@ -34,7 +34,7 @@ Research-Astute and other organizations may publish evidence records. The manage
 scripts/ci/verify_foss_registry.py validates JSON, required fields, vocabulary, HTTPS primary sources, unique IDs, procurement dimensions, and secret absence. The workflow emits an immutable receipt linked to the source SHA and run ID.
 
 ## Research lanes
-local/edge inference; ARM/Android measurements; MCP conformance; Docker/Codespaces/Nix parity; Tree-sitter/Lizard/Radon labeled complexity; Langfuse/Phoenix identical-cohort comparison; MASEval manager tournaments; Sigstore/SLSA provenance; Firecracker/gVisor sandbox experiments; NIST traceability implementation tracking.
+local/edge inference; ARM/Android measurements; MCP conformance; Docker/Codespaces/Nix parity; Tree-sitter/Lizard/Radon labeled complexity; Langfuse/Phoenix identical-cohort comparison; MASEval manager tournaments; Sigstore/SLSA/Witness provenance; Firecracker/gVisor sandbox experiments; NIST traceability implementation tracking.
 
 
 ## 2026-09-29 upgrade bindings

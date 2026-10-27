@@ -64,7 +64,9 @@ def test_promotion_state_machine():
 def test_probe_plan_is_ordered_and_write_annotated():
     ops = {o["operation_id"]: o for o in reg()["operations"]}
     plan = waf.plan_probes(ops["reports.list"])
-    assert plan[0]["id"] == "exact-replay"
+    # Probing = finding the DOMs from the request: discovery leads.
+    assert [p["id"] for p in plan[:3]] == ["request-inventory", "dom-attribution",
+                                           "dom-data-source"]
     assert plan[-1]["id"] == "controlled-error"
     write_plan = waf.plan_probes(ops["reports.export"])
     assert all("note" in p for p in write_plan)

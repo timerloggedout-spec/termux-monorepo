@@ -115,5 +115,17 @@ class FreeTierValueBoardContractTests(unittest.TestCase):
         self.assertNotIn('"private_balance":', encoded)
 
 
+class DedupeTest(unittest.TestCase):
+    def test_headline_deduplicates_by_stable_row_identity(self):
+        html = PAGE.read_text()
+        self.assertIn("function rowIdentity(s)", html)
+        self.assertIn("function dedupe(rows)", html)
+        # identity must distinguish multiple rows from the same run
+        ident = html.split("function rowIdentity(s)")[1].split("}")[0]
+        for field in ("run_uid", "session_label", "observed_at", "source_sha"):
+            self.assertIn(field, ident)
+        self.assertIn("const rows=dedupe(d.sessions.filter(valid))", html)
+
+
 if __name__ == "__main__":
     unittest.main()

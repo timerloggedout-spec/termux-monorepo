@@ -58,10 +58,22 @@ PASS_META = {"pass_id": "pass-1", "n": 2,
 R1 = {"ranked_outcome": ["cand-a", "cand-b"],
       "ballots_by_class": {"HUMAN_COLLABORATOR": 0, "MODEL_PROVIDER": 0,
                            "LOCAL_BASELINE": 5},
+      "per_class": {"LOCAL_BASELINE": {"ballots": 5,
+                                       "scores": {"cand-a": 30.0, "cand-b": 20.0}},
+                    "HUMAN_COLLABORATOR": {"ballots": 0, "scores": {}}},
       "classes_absent": ["HUMAN_COLLABORATOR", "MODEL_PROVIDER"]}
 R2 = {"ranked_outcome": ["cand-a", "cand-b"], "evidence_set_sha256": "ab12",
       "ballots_by_class": {"HUMAN_COLLABORATOR": 0, "MODEL_PROVIDER": 0,
-                           "LOCAL_BASELINE": 5}}
+                           "LOCAL_BASELINE": 5},
+      "per_class": {"LOCAL_BASELINE": {"ballots": 5,
+                                        "scores": {"cand-a": 31.5, "cand-b": 19.5}}}}
+EXP = {"pass_id": "pass-1", "recorded_before_implementation": True,
+       "expectations": {"LOCAL_BASELINE": {
+           "cand-a": {"expected_rank": 1, "expected_score": 28.5, "tolerance": 2.0},
+           "cand-b": {"expected_rank": 2, "expected_score": 20.0, "tolerance": 2.0}}}}
+IMPL_A = {"candidate_id": "cand-a",
+          "suites": [{"name": "s1", "passed": 1, "failed": 0},
+                     {"name": "s2", "passed": 1, "failed": 0}]}
 CAL = {"candidates": {"LOCAL_BASELINE": {
     "cand-a": {"rank_delta": 0, "score_delta": 1.5, "within_tolerance": True,
                "moved_on_evidence": ["full test pass"]},
@@ -92,8 +104,11 @@ def _root(tmp_path):
     (pdir / "cycle").mkdir(parents=True)
     (pdir / "pass.json").write_text(json.dumps(PASS_META))
     for name, obj in (("BALLOT-round1.json", R1), ("BALLOT-round2.json", R2),
-                      ("CALIBRATION.json", CAL), ("CYCLE.json", CYCLE)):
+                      ("CALIBRATION.json", CAL), ("CYCLE.json", CYCLE),
+                      ("EXPECTATIONS.json", EXP)):
         (pdir / "cycle" / name).write_text(json.dumps(obj))
+    (pdir / "implementation").mkdir()
+    (pdir / "implementation" / "cand-a.json").write_text(json.dumps(IMPL_A))
     return active, passes
 
 
@@ -108,7 +123,16 @@ def test_feed_carries_only_what_the_record_holds(tmp_path):
     a = feed["proposals"][0]
     assert a["unverified_points"] == ["A thing nobody has checked. "
                                       "(evidence refs unresolved at generation time)"]
+    assert feed["sources"]["registry_updated_at"] == "2026-10-27T00:00:00Z"
     assert a["rounds"]["round_1"]["rank_of_this"] == 1
+    assert a["rounds"]["round_1"]["scores_by_class"]["LOCAL_BASELINE"] == 30.0
+    assert a["rounds"]["round_2"]["scores_by_class"]["LOCAL_BASELINE"] == 31.5
+    assert a["expectations"]["LOCAL_BASELINE"] == {
+        "expected_rank": 1, "expected_score": 28.5, "tolerance": 2.0}
+    assert a["expectations_recorded_before_implementation"] is True
+    assert a["implementation"]["passed"] == 2
+    assert a["implementation"]["suites_total"] == 2
+    assert a["implementation"]["suites_passed"] == 2
     assert a["rounds"]["round_1"]["ballots_by_class"]["HUMAN_COLLABORATOR"] == 0
     assert a["rounds"]["round_1"]["classes_absent"] == ["HUMAN_COLLABORATOR",
                                                         "MODEL_PROVIDER"]

@@ -1,9 +1,10 @@
 {
   "schema": "oracle-panel-feed/v1",
-  "generated_at": "2026-10-27T09:03:17Z",
+  "generated_at": "2026-10-27T09:07:36Z",
   "generator": "scripts/delphi/oracle_panel_feed.py",
   "sources": {
     "registry": "docs/proposals/registry.yaml",
+    "registry_updated_at": "2026-10-27T08:52:00Z",
     "registry_proposals_total": 45,
     "oracle_method_proposals": 4,
     "ledger_issue": 1487,
@@ -32,6 +33,8 @@
         "Publishing a public Clips demo needs no Builder account. (evidence refs unresolved at generation time)"
       ],
       "rounds": null,
+      "expectations": null,
+      "implementation": null,
       "calibration": null,
       "specified_not_run": [],
       "ledger": null,
@@ -63,6 +66,11 @@
             "MODEL_PROVIDER": 0,
             "LOCAL_BASELINE": 5
           },
+          "scores_by_class": {
+            "HUMAN_COLLABORATOR": null,
+            "MODEL_PROVIDER": null,
+            "LOCAL_BASELINE": 23.269
+          },
           "classes_absent": [
             "HUMAN_COLLABORATOR",
             "MODEL_PROVIDER"
@@ -80,8 +88,47 @@
             "MODEL_PROVIDER": 0,
             "LOCAL_BASELINE": 5
           },
+          "scores_by_class": {
+            "HUMAN_COLLABORATOR": null,
+            "MODEL_PROVIDER": null,
+            "LOCAL_BASELINE": 25.0
+          },
           "evidence_set_sha256": "620b67b3eee6a70bb4c290d944a76e1bef2597788fc8c5cdd8d39e9000ba6c48"
         }
+      },
+      "expectations": {
+        "LOCAL_BASELINE": {
+          "expected_rank": 2,
+          "expected_score": 23.269,
+          "tolerance": 2.0
+        },
+        "BRIEF:delphi-lane": {
+          "expected_rank": 1,
+          "expected_score": 19
+        }
+      },
+      "implementation": {
+        "suites": [
+          {
+            "suite": "e05_adversarial_firewall",
+            "passed": 1,
+            "failed": 0
+          },
+          {
+            "suite": "e01_evidence_gate_delta",
+            "passed": 1,
+            "failed": 0
+          },
+          {
+            "suite": "e03_counterfactual_replay",
+            "passed": 1,
+            "failed": 0
+          }
+        ],
+        "passed": 3,
+        "failed": 0,
+        "suites_total": 3,
+        "suites_passed": 3
       },
       "calibration": {
         "LOCAL_BASELINE": {
@@ -116,7 +163,8 @@
         "calibration_comment_id": 6437672608,
         "verified": true
       },
-      "live": true
+      "live": true,
+      "expectations_recorded_before_implementation": false
     },
     {
       "id": "strands-rfp-response-collection-first",
@@ -144,6 +192,11 @@
             "MODEL_PROVIDER": 0,
             "LOCAL_BASELINE": 5
           },
+          "scores_by_class": {
+            "HUMAN_COLLABORATOR": null,
+            "MODEL_PROVIDER": null,
+            "LOCAL_BASELINE": 23.269
+          },
           "classes_absent": [
             "HUMAN_COLLABORATOR",
             "MODEL_PROVIDER"
@@ -161,8 +214,47 @@
             "MODEL_PROVIDER": 0,
             "LOCAL_BASELINE": 5
           },
+          "scores_by_class": {
+            "HUMAN_COLLABORATOR": null,
+            "MODEL_PROVIDER": null,
+            "LOCAL_BASELINE": 25.0
+          },
           "evidence_set_sha256": "620b67b3eee6a70bb4c290d944a76e1bef2597788fc8c5cdd8d39e9000ba6c48"
         }
+      },
+      "expectations": {
+        "LOCAL_BASELINE": {
+          "expected_rank": 1,
+          "expected_score": 23.269,
+          "tolerance": 2.0
+        },
+        "BRIEF:delphi-lane": {
+          "expected_rank": 2,
+          "expected_score": 16
+        }
+      },
+      "implementation": {
+        "suites": [
+          {
+            "suite": "collector_intake_validation",
+            "passed": 1,
+            "failed": 0
+          },
+          {
+            "suite": "collector_dedupe",
+            "passed": 1,
+            "failed": 0
+          },
+          {
+            "suite": "e06_receipt_completeness",
+            "passed": 1,
+            "failed": 0
+          }
+        ],
+        "passed": 3,
+        "failed": 0,
+        "suites_total": 3,
+        "suites_passed": 3
       },
       "calibration": {
         "LOCAL_BASELINE": {
@@ -197,7 +289,8 @@
         "calibration_comment_id": 6437672608,
         "verified": true
       },
-      "live": true
+      "live": true,
+      "expectations_recorded_before_implementation": false
     },
     {
       "id": "strands-rfp-response-packaging-first",
@@ -225,6 +318,11 @@
             "MODEL_PROVIDER": 0,
             "LOCAL_BASELINE": 5
           },
+          "scores_by_class": {
+            "HUMAN_COLLABORATOR": null,
+            "MODEL_PROVIDER": null,
+            "LOCAL_BASELINE": 23.269
+          },
           "classes_absent": [
             "HUMAN_COLLABORATOR",
             "MODEL_PROVIDER"
@@ -242,8 +340,47 @@
             "MODEL_PROVIDER": 0,
             "LOCAL_BASELINE": 5
           },
+          "scores_by_class": {
+            "HUMAN_COLLABORATOR": null,
+            "MODEL_PROVIDER": null,
+            "LOCAL_BASELINE": 25.0
+          },
           "evidence_set_sha256": "620b67b3eee6a70bb4c290d944a76e1bef2597788fc8c5cdd8d39e9000ba6c48"
         }
+      },
+      "expectations": {
+        "LOCAL_BASELINE": {
+          "expected_rank": 3,
+          "expected_score": 23.269,
+          "tolerance": 2.0
+        },
+        "BRIEF:delphi-lane": {
+          "expected_rank": 3,
+          "expected_score": 13
+        }
+      },
+      "implementation": {
+        "suites": [
+          {
+            "suite": "handler_conformance",
+            "passed": 1,
+            "failed": 0
+          },
+          {
+            "suite": "e08_budget_breaker",
+            "passed": 1,
+            "failed": 0
+          },
+          {
+            "suite": "no_deploy_claim",
+            "passed": 1,
+            "failed": 0
+          }
+        ],
+        "passed": 3,
+        "failed": 0,
+        "suites_total": 3,
+        "suites_passed": 3
       },
       "calibration": {
         "LOCAL_BASELINE": {
@@ -278,7 +415,8 @@
         "calibration_comment_id": 6437672608,
         "verified": true
       },
-      "live": true
+      "live": true,
+      "expectations_recorded_before_implementation": false
     }
   ],
   "passes": [

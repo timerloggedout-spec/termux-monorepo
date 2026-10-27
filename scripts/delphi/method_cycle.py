@@ -118,13 +118,20 @@ def run_cycle(pass_meta: dict, panel_roles_cfg: dict, weights_source: str,
                    "detail": f"ballots_by_class={round1['ballots_by_class']}"})
     artifacts["round1"] = round1
 
-    expectations = recorded_expectations or derive_expectations(
-        round1, config.get("expectation_tolerance", 2.0))
+    # Expectations coexist by source: the round-1-derived priors per
+    # voting class, plus any brief-supplied priors — recorded under
+    # their author's name as their own source (a brief author's priors
+    # are not a ballot class and never pose as one).
+    exp_map = dict(derive_expectations(
+        round1, config.get("expectation_tolerance", 2.0))["expectations"])
     if recorded_expectations:
-        expectations = {"schema": "oracle-method-expectations/v1",
-                        "recorded_before": "implementation",
-                        "basis": "recorded expectations supplied with the brief",
-                        "expectations": recorded_expectations}
+        author = recorded_expectations.get("author", "brief")
+        exp_map[f"BRIEF:{author}"] = recorded_expectations["expectations"]
+    expectations = {"schema": "oracle-method-expectations/v1",
+                    "recorded_before": "implementation",
+                    "basis": "round-1 cross-vote per class, plus brief-supplied "
+                             "priors where recorded",
+                    "expectations": exp_map}
     artifacts["expectations"] = expectations
     stages.append({"stage": "expectations_recorded", "status": "ran",
                    "detail": "priors on record before implementation"})
@@ -203,8 +210,12 @@ def run_cycle(pass_meta: dict, panel_roles_cfg: dict, weights_source: str,
     # Stage 6: calibration vs the recorded expectations.
     calibration = {"schema": "oracle-method-calibration/v1",
                    "evidence_set_sha256": evidence_sha, "candidates": {}}
+    primary_cls = present[0] if present else None
     for cls, expected in expectations["expectations"].items():
-        actual = round2["per_class"].get(cls) or {}
+        # Brief-supplied priors calibrate against the primary round-2
+        # outcome; class priors against their own class.
+        actual = (round2["per_class"].get(primary_cls) or {}) \
+            if cls.startswith("BRIEF:") else (round2["per_class"].get(cls) or {})
         if not actual.get("ballots"):
             calibration["candidates"].setdefault(cls, "class_absent_round_2")
             continue
@@ -218,6 +229,7 @@ def run_cycle(pass_meta: dict, panel_roles_cfg: dict, weights_source: str,
                                 "implementation round")
             if rec["pass_rate"] == 1.0:
                 moved_on.append("full test pass in the implementation round")
+            tol = exp.get("tolerance", config.get("expectation_tolerance", 2.0))
             per_cand[cand] = {
                 "expected_rank": exp["expected_rank"], "actual_rank": pos + 1,
                 "rank_delta": (pos + 1) - exp["expected_rank"],
@@ -226,7 +238,7 @@ def run_cycle(pass_meta: dict, panel_roles_cfg: dict, weights_source: str,
                 "score_delta": round(actual["scores"][cand]
                                      - exp["expected_score"], 3),
                 "within_tolerance": abs(actual["scores"][cand]
-                                        - exp["expected_score"]) <= exp["tolerance"],
+                                        - exp["expected_score"]) <= tol,
                 "moved_on_evidence": moved_on or ["no discriminating test evidence"],
             }
         calibration["candidates"][cls] = per_cand
@@ -286,6 +298,9 @@ def main(argv: list[str] | None = None) -> int:
     recorded = None
     if args.expectations_file:
         recorded = json.loads(Path(args.expectations_file).read_text())
+        if "expectations" not in recorded:
+            recorded = {"author": recorded.get("author", "brief"),
+                        "expectations": recorded}
 
     cycle = run_cycle(pass_meta, roles_cfg, source, config,
                       round1_ballots=load_ballots(args.round1_ballots),

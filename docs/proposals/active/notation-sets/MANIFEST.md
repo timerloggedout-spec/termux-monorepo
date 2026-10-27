@@ -134,3 +134,11 @@ This lane records concepts, audience/register-specific labels, evidence sources,
 ### Claim-level nomenclature evidence (research lane)
 
 `nomenclature-matrix/seed.json` now carries `evidence_records`: assertion-level provenance for specific concept, label, and mapping claims. Each record stores a source, locator, short excerpt, retrieval date, claim boundary, reviewer, and status. The validator checks assertion references and required provenance fields. This is distinct from the source bibliography and from the Domain Composition Matrix database; candidate evidence does not promote a notation or mapping to runtime authority.
+
+
+### Deterministic nomenclature crosswalk projection
+
+- Generator: [build_nomenclature_crosswalk.py](../../../../scripts/ci/build_nomenclature_crosswalk.py).
+- Generated view: [CROSSWALK.md](./nomenclature-matrix/CROSSWALK.md).
+- The projection groups labels by concept, lists semantic mapping candidates separately, and includes claim-level evidence with reviewer/status.
+- Regenerate with `python scripts/ci/build_nomenclature_crosswalk.py`. Output is deterministic and must not be edited manually.

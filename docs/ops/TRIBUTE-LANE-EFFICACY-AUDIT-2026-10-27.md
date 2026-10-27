@@ -194,3 +194,28 @@ Open lane PRs after batch 1: 11 of the original 28 — the 3 converted
 fixes awaiting upstream review, ROCm (held), and the 7 batch-2 items
 (portals, KayStcx, MOBIUS, agentic-path, MergeEarn, EasyCode,
 hugegraph).
+
+## Automation (owner order 2026-10-27: "This entire process is required Automations")
+
+The process above now runs as a required automation, not a chat pass:
+
+- **Workflow** `.github/workflows/tribute-participation.yml` — daily
+  07:23 UTC + workflow/repository dispatch. Each run rebuilds the lane
+  status and tribute audit, then runs the participation loop.
+- **Loop** `scripts/ci/tribute_participation.py` — classifies every
+  upstream PR live: `held_surface` (a maintainer's question is open —
+  the automation never posts; replies stay owner-gated),
+  `withdraw_nonconversion`, `withdraw_yield` (the two classes apply
+  mode executes, capped per run, each verified after acting),
+  `convert_candidate` (stake-only on an open unclaimed issue —
+  dispatched to the engineering lanes, never auto-filled),
+  `active_ok`, `accepted_record`, `nonconversion_record`,
+  `reopen_candidate`. It also builds the claim ledger (G3) as a
+  labeled search floor.
+- **Record** `docs/ops/generated/tribute-participation.json`, landed
+  via the lane's `tribute-participation/auto-refresh` PR — generated
+  files only, never a direct commit. This also closes G4: the audit
+  ledger is rebuilt every run instead of going stale.
+- **Tests** `tests/test_tribute_participation.py` — the classifier's
+  batch-1 cases (zombie, both yields, the ROCm hold, convert/active,
+  reopen rules, action cap) as fixtures.

@@ -1,0 +1,85 @@
+name: tribute-participation
+
+# The Tribute lane's participation loop as required automation
+# (owner order 2026-10-27). Design + manual batch 1:
+# docs/ops/TRIBUTE-LANE-EFFICACY-AUDIT-2026-10-27.md.
+#
+# Each run rebuilds the lane status + tribute audit, then classifies
+# every upstream PR live (scripts/ci/tribute_participation.py):
+# zombies and yields are withdrawn (apply mode), stake-only PRs on
+# open unclaimed issues become convert candidates for the contribute
+# lane, and any thread where a maintainer's question is open is
+# HELD — the automation never posts there (owner-gated replies).
+# Generated records land via a refresh PR, never a direct commit.
+
+on:
+  schedule:
+    - cron: "23 7 * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "report = classify only; apply = also execute withdrawals"
+        type: choice
+        options: [report, apply]
+        default: report
+  repository_dispatch:
+    types: [tribute-participation]
+
+concurrency:
+  group: tribute-participation
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  participate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Rebuild lane status
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+        run: python3 scripts/ci/help_wanted_status.py
+
+      - name: Rebuild tribute audit
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+        run: python3 scripts/ci/help_wanted_tribute_audit.py
+
+      - name: Run participation loop
+        env:
+          OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MODE: ${{ inputs.mode || 'apply' }}
+        run: python3 scripts/ci/tribute_participation.py --mode "$MODE"
+
+      - name: Open or update the refresh PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/ops/generated/help-wanted-tribute-audit.json \
+                  docs/ops/generated/tribute-participation.json || true
+          if git diff --staged --quiet; then
+            echo "no participation delta"
+            exit 0
+          fi
+          branch="tribute-participation/auto-refresh"
+          git checkout -B "$branch"
+          git commit -m "ops(tribute): participation refresh $(date -u +%FT%TZ)"
+          git push -f origin "$branch"
+          if gh pr list --head "$branch" --state open --json number --jq -e '.[0]' >/dev/null; then
+            echo "refresh PR already open for $branch"
+          else
+            gh pr create --title "ops(tribute): participation refresh" \
+              --body "Automated refresh from the tribute-participation loop: audit ledger + participation record (classifications, withdrawals executed, convert candidates, claim ledger). Generated files only." \
+              --head "$branch" --base master
+          fi

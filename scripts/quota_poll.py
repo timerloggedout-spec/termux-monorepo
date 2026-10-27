@@ -193,14 +193,55 @@ def collect_readings(now):
     return readings
 
 
+def _public_status(svc, reading):
+    """Coarse panel status derived from a live reading, in the dashboard
+    contract's own vocabulary (quota-evidence.js STATUS: ok / watch /
+    exhausted / cap_tripped). Derived in-memory only: the reading's used /
+    limit / reset values are never exported. A live reading whose usage
+    cannot be compared with a documented limit is observed but
+    unclassifiable, so it stays "unknown" rather than inventing "ok".
+    Exhaustion is claimed only at the documented limit itself; pressure
+    inside the registry safety factor is "watch" (the multiplier's own
+    throttle zone), never a vendor cap claim."""
+    if svc.get("lane") == "model":
+        return "private_preflight"
+    used, limit = reading.get("used"), reading.get("limit", svc.get("limit"))
+    if isinstance(used, bool) or isinstance(limit, bool):
+        return "unknown"
+    if not isinstance(used, (int, float)) or not isinstance(limit, (int, float)) or limit <= 0:
+        return "unknown"
+    if used >= limit:
+        return "cap_tripped" if svc["id"] == "vercel.deployments" else "exhausted"
+    safety = svc.get("planned_use", {}).get("safety", 0.9)
+    if multiplier(limit, used, reading.get("elapsed"), safety) < 1:
+        return "watch"
+    return "ok"
+
+
 def public_snapshot(services, readings, now):
-    """Allowlist status metadata only; never export values or hashes of private data."""
-    return {"schema": "quota-public-status/v1", "generated_at": now.isoformat(),
-            "policy": "Private observations withheld; status is not remaining quota or admission.",
-            "readings": [{"resource_id": svc["id"], "provider": svc["provider"],
-                          "status": "private_preflight" if svc["id"] in readings else "unknown",
-                          "observed_at": now.isoformat() if svc["id"] in readings else None}
-                         for svc in services]}
+    """Allowlist status metadata only; never export values or hashes of private data.
+
+    Rows carry the dashboard readings contract shape (observed_at / horizon /
+    evidence_status, quota-evidence.js) so a publisher can feed the panel
+    without a hand-seeded file: a live read is an H0 confirmed observation
+    stamped at poll time; an unobserved service carries observed_at null /
+    H1, exactly as record() stamps private records. Statuses are the coarse
+    derived states from _public_status, never the underlying values."""
+    rows = []
+    for svc in services:
+        reading = readings.get(svc["id"])
+        if reading is None:
+            rows.append({"resource_id": svc["id"], "provider": svc["provider"],
+                         "status": "unknown", "observed_at": None, "horizon": "H1",
+                         "evidence_status": "attributed_claim" if svc["source"].startswith("http") else "early_signal"})
+        else:
+            rows.append({"resource_id": svc["id"], "provider": svc["provider"],
+                         "status": _public_status(svc, reading),
+                         "observed_at": now.isoformat(), "horizon": "H0",
+                         "evidence_status": "confirmed"})
+    return {"schema": "quota-public-status/v2", "generated_at": now.isoformat(),
+            "policy": "Private values withheld; coarse derived status + evidence shape only; status is not remaining quota or admission.",
+            "readings": rows}
 
 
 def main(argv=None):

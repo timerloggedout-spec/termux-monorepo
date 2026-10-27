@@ -1,13 +1,12 @@
 {
  "schema": "dashboard-surface-feed/v1",
  "surface": "doe",
- "generated_at": "2026-10-27T12:32:29Z",
+ "generated_at": "2026-10-27T12:43:27Z",
  "sources": [
   "deepcli/deepcli/observatory/doe.py",
   ".agents/skills/multivariate-doe/SKILL.md",
   "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md (\u00a7DoE)",
-  "docs/proposals/active/model-selection-market/DSPY-DOE-LANE.md",
-  "docs/proposals/passes/strands-rfp-response/cycle/IMPLEMENTATION.json (citation only \u2014 Delphi-owned record)"
+  "docs/proposals/active/model-selection-market/DSPY-DOE-LANE.md + docs/proposals/passes/strands-rfp-response/cycle/IMPLEMENTATION.json (executed comparison \u2014 Delphi-owned, labeled)"
  ],
  "honesty_rules": [
   "Show only what the record holds; a value the record does not hold renders as absent, never synthesized.",
@@ -99,17 +98,53 @@
    "state": "design_only",
    "note": "Consideration/optimization lane (MSM-004 design): DSPy arms feed the APPROX-006 A/B/C/D cohort entry; optimizer artifacts never silently mutate production routing weights and stay on the dual-gate promotion path. The design doc records the runtime extract as a later PR \u2014 the lane is defined, not run."
   },
+  "executed_comparisons": {
+   "owner_surface": "delphi",
+   "record": "docs/proposals/passes/strands-rfp-response/cycle/IMPLEMENTATION.json \u2014 the Delphi Oracle Method cycle's implementation parallel-comparisons: the same suite discipline applied per candidate, on an equalized evidence base",
+   "candidates": {
+    "strands-rfp-response-kernel-first": {
+     "suites": [
+      "e05_adversarial_firewall",
+      "e01_evidence_gate_delta",
+      "e03_counterfactual_replay"
+     ],
+     "passed": 3,
+     "failed": 0,
+     "pass_rate": 1.0
+    },
+    "strands-rfp-response-collection-first": {
+     "suites": [
+      "collector_intake_validation",
+      "collector_dedupe",
+      "e06_receipt_completeness"
+     ],
+     "passed": 3,
+     "failed": 0,
+     "pass_rate": 1.0
+    },
+    "strands-rfp-response-packaging-first": {
+     "suites": [
+      "handler_conformance",
+      "e08_budget_breaker",
+      "no_deploy_claim"
+     ],
+     "passed": 3,
+     "failed": 0,
+     "pass_rate": 1.0
+    }
+   },
+   "note": "REQUIRED on this surface (owner ruling, 2026-10-27): the repo's one executed per-candidate comparison, presented with its full payload and labeled as a Delphi record \u2014 it is also rendered on the Oracle Panel. It is not a standalone DoE campaign, and DoE claims no campaign results from it."
+  },
   "citations": [
    {
     "surface": "delphi",
     "record": "docs/proposals/passes/strands-rfp-response/cycle/IMPLEMENTATION.json",
     "label": "Delphi Oracle Method cycle \u2014 implementation round",
-    "note": "The repo's one executed per-candidate comparison record, owned by the Delphi surface and rendered on the Oracle Panel. Cited so the comparison is findable from here; it is not a DoE campaign and contributes no DoE results to this feed."
+    "note": "Owner of the executed comparison presented above under executed_comparisons; the Delphi surface's home rendering is the Oracle Panel."
    }
   ]
  },
  "gaps": [
-  "No standalone committed DoE campaign records exist in the repo: the methods library, skill and factorial slice are defined; the DSPy optimizer lane is design-only. Campaigns defined-but-not-run render as exactly that.",
-  "DoE results: none. The only executed per-candidate comparison in the repo is a Delphi record (see citations) \u2014 this surface claims no results from it."
+  "No standalone committed DoE campaign records exist in the repo: the methods library, skill and factorial slice are defined; the DSPy optimizer lane is design-only. Campaigns defined-but-not-run render as exactly that."
  ]
 }

@@ -359,6 +359,12 @@ def collect_doe() -> dict:
                 "signature": f"{node.name}({', '.join(a.arg for a in node.args.args)})",
                 "doc": (ast.get_docstring(node) or "").strip(),
             })
+    impl = _read_json("docs/proposals/passes/strands-rfp-response/cycle/IMPLEMENTATION.json")
+    impl_summary = {
+        cid: {"suites": [s.get("name") for s in v.get("suites", [])],
+              "passed": v.get("passed"), "failed": v.get("failed"), "pass_rate": v.get("pass_rate")}
+        for cid, v in impl.items()
+    }
     payload = {
         "methods_library": {
             "file": "deepcli/deepcli/observatory/doe.py — DoE helpers for MVT campaigns",
@@ -395,25 +401,29 @@ def collect_doe() -> dict:
             "state": "design_only",
             "note": "Consideration/optimization lane (MSM-004 design): DSPy arms feed the APPROX-006 A/B/C/D cohort entry; optimizer artifacts never silently mutate production routing weights and stay on the dual-gate promotion path. The design doc records the runtime extract as a later PR — the lane is defined, not run.",
         },
+        "executed_comparisons": {
+            "owner_surface": "delphi",
+            "record": "docs/proposals/passes/strands-rfp-response/cycle/IMPLEMENTATION.json — the Delphi Oracle Method cycle's implementation parallel-comparisons: the same suite discipline applied per candidate, on an equalized evidence base",
+            "candidates": impl_summary,
+            "note": "REQUIRED on this surface (owner ruling, 2026-10-27): the repo's one executed per-candidate comparison, presented with its full payload and labeled as a Delphi record — it is also rendered on the Oracle Panel. It is not a standalone DoE campaign, and DoE claims no campaign results from it.",
+        },
         "citations": [
             {
                 "surface": "delphi",
                 "record": "docs/proposals/passes/strands-rfp-response/cycle/IMPLEMENTATION.json",
                 "label": "Delphi Oracle Method cycle — implementation round",
-                "note": "The repo's one executed per-candidate comparison record, owned by the Delphi surface and rendered on the Oracle Panel. Cited so the comparison is findable from here; it is not a DoE campaign and contributes no DoE results to this feed.",
+                "note": "Owner of the executed comparison presented above under executed_comparisons; the Delphi surface's home rendering is the Oracle Panel.",
             },
         ],
     }
     gaps = [
         "No standalone committed DoE campaign records exist in the repo: the methods library, skill and factorial slice are defined; the DSPy optimizer lane is design-only. Campaigns defined-but-not-run render as exactly that.",
-        "DoE results: none. The only executed per-candidate comparison in the repo is a Delphi record (see citations) — this surface claims no results from it.",
     ]
     sources = [
         "deepcli/deepcli/observatory/doe.py",
         ".agents/skills/multivariate-doe/SKILL.md",
         "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md (§DoE)",
-        "docs/proposals/active/model-selection-market/DSPY-DOE-LANE.md",
-        "docs/proposals/passes/strands-rfp-response/cycle/IMPLEMENTATION.json (citation only — Delphi-owned record)",
+        "docs/proposals/active/model-selection-market/DSPY-DOE-LANE.md + docs/proposals/passes/strands-rfp-response/cycle/IMPLEMENTATION.json (executed comparison — Delphi-owned, labeled)",
     ]
     return _feed("doe", sources, payload, gaps)
 

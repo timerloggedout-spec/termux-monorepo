@@ -1,6 +1,6 @@
 ================================================================================
  QUOTA  termux-monorepo  (64 registry records)
- Snapshot generated (not observation time): 2026-10-20T23:05:00Z
+ Snapshot generated (not observation time): 2026-10-27T12:33:41Z
  Source: apps/help-wanted-dashboard/data/quota.json + ops/quota/registry.json
  Limits are documented entitlements, not balances.
  Private balances are hidden; unknown is not healthy or admitted.
@@ -148,11 +148,11 @@
 --------------------------------------------------------------------------------
  github (8)
   github.actions.cache
-    status: No live reading
+    status: OK
     limit (documented): 10 GB
     metric: cache storage per repo | window: rolling | reset: LRU eviction;
     entries unused 7 days removed
-    No live reading (live source: GET /repos/{repo}/actions/cache/usage)
+    Public evidence state only; no account balance or runtime admission implied.
   github.actions.minutes
     status: UNKNOWN
     limit (documented): n/a minutes
@@ -166,11 +166,11 @@
     x-ratelimit-reset header
     No live reading (live source: GET /rate_limit)
   github.api.user_token
-    status: No live reading
+    status: OK
     limit (documented): 5000 requests/hour
     metric: REST requests via user/OAuth token | window: hourly | reset:
     x-ratelimit-reset header
-    No live reading (live source: GET /rate_limit (Hark connector))
+    Public evidence state only; no account balance or runtime admission implied.
   github.artifacts.retention
     status: No live reading
     limit (documented): 90 days
@@ -486,6 +486,6 @@
   zai: Manager / ChronoMancer; official_documentation_only; no passive parser;
   registry: MISSING — explicit gap
  Coverage and quota checks do not grant runtime admission.
- 64 registry records | 0 alert(s) | 3 with a reported reading | 61 with No live
+ 64 registry records | 0 alert(s) | 5 with a reported reading | 59 with No live
  reading
 ================================================================================

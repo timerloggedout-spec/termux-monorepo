@@ -177,3 +177,20 @@ Tooling: `scripts/delphi/method_cycle.py` (writes CYCLE.json +
 BALLOT-round1 / EXPECTATIONS / IMPLEMENTATION / ROUND2-EVIDENCE /
 BALLOT-round2 / CALIBRATION records); the generate workflow runs the
 cycle in pass mode. The D4 Kiroween first live run follows this cycle.
+
+## Self-application (owner, 2026-10-27)
+
+The method applies to itself. Method versions and configurations are
+themselves the "proposals" of a pass: a method-variant brief names
+n candidate versions (a config change, a rubric change, a weighting
+change), and the pass runs the full cycle on them — generated,
+cross-voted, implemented and tested in parallel, evidence-equalized
+re-vote, calibration against the recorded expectations — with
+receipts and ledger records like any other pass. This is how the
+method improves: by its own evidence, not by editorial drift.
+Status: **specified_not_run** (`ops/delphi/panel.json` →
+`generation.self_application`) until the first self-comparison pass
+is briefed and executed; `method_cycle.py` runs it unchanged when it
+is. Provenance for every method element — and the divergences from
+the historical record, flagged rather than overwritten — lives in
+DELPHI-STATUS-AND-CROSSOVER.md, "Method provenance".

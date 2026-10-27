@@ -40,6 +40,9 @@ from pathlib import Path
 SCHEMA = "delphi-cross-vote/v1"
 CLASSES = ("HUMAN_COLLABORATOR", "MODEL_PROVIDER", "LOCAL_BASELINE")
 DEPENDENCY_WORDS = ("account", "payment", "api key", "card", "billing")
+# The gate's money veto (DELPHI-ORACLE-RFP-GATE.md): a candidate that
+# needs a card / auto-bills is capped at 4 by the cost auditor.
+MONEY_VETO_WORDS = ("card", "billing", "payment", "auto-bill")
 
 
 def _sha(value) -> str:
@@ -60,10 +63,11 @@ def candidate_profile(candidate_id: str, docs: dict[str, str],
     sources = {it["provenance"]["path"] for ev in evidence_sets
                for it in ev.get("items", [])}
     items = brief.get("items", [])
-    dependency_items = sum(
-        1 for it in items
-        if any(w in (it.get("item", "") + it.get("evidence", "")).lower()
-               for w in DEPENDENCY_WORDS))
+    item_texts = [(it.get("item", "") + " " + it.get("evidence", "")).lower()
+                  for it in items]
+    dependency_items = sum(1 for t in item_texts
+                           if any(w in t for w in DEPENDENCY_WORDS))
+    money_veto = any(any(w in t for w in MONEY_VETO_WORDS) for t in item_texts)
     return {
         "candidate": candidate_id,
         "points": len(points),
@@ -73,6 +77,7 @@ def candidate_profile(candidate_id: str, docs: dict[str, str],
         "items": len(items),
         "evidence_sources": len(sources),
         "dependency_items": dependency_items,
+        "money_veto": money_veto,
         "docs_sha256": _sha(docs),
     }
 
@@ -104,12 +109,46 @@ def rubric_ballots(profiles: list[dict], roles: list[str]) -> list[dict]:
                 s = 25 * (0.5 * er + 0.5 * (p["evidence_sources"] / max_sources))
             elif role == "cost_auditor":
                 s = 25 * (er - 0.25 * p["dependency_items"])
+                if p.get("money_veto"):
+                    s = min(s, 4)  # the gate's money veto, applied as scored
             else:
                 s = 25 * er
             scores[p["candidate"]] = clamp(s)
         ballots.append({"voter": f"rubric:{role}", "source_class": "LOCAL_BASELINE",
                         "scores": scores})
     return ballots
+
+
+def validate_ballots(ballots: list[dict]) -> None:
+    """DEBATE protocol intake rules for supplied ballots.
+
+    Every ballot names its voter. A MODEL_PROVIDER ballot is an
+    experimental observation, admissible only with its run record —
+    provider, model/version, run ID, response hash — and an
+    entitlement basis (history: model ballots stay disabled until a
+    no-cost entitlement + quota admission are validated; the basis is
+    recorded, never assumed). Ballots deduplicate on
+    (source_class, voter, run_id): a second ballot under the same key
+    is a duplicate submission, refused.
+    """
+    seen: set[tuple] = set()
+    for ballot in ballots:
+        voter = ballot.get("voter")
+        if not voter:
+            raise ValueError("ballot without a voter identity")
+        run = ballot.get("run") or {}
+        if ballot.get("source_class") == "MODEL_PROVIDER":
+            missing = [k for k in ("provider", "model", "run_id",
+                                   "response_hash", "entitlement")
+                       if not run.get(k)]
+            if missing:
+                raise ValueError(
+                    f"MODEL_PROVIDER ballot from {voter!r} lacks run record "
+                    f"fields: {missing}")
+        key = (ballot.get("source_class"), voter, run.get("run_id"))
+        if key in seen:
+            raise ValueError(f"duplicate ballot (dedupe key): {key}")
+        seen.add(key)
 
 
 def role_weight(role_cfg: dict) -> float:
@@ -151,6 +190,7 @@ def cross_vote(candidates: list[dict], panel_roles_cfg: dict,
                              f"{ballot.get('source_class')!r} "
                              f"(DRIVER_SYNTHESIS is not a ballot)")
 
+    validate_ballots(extra_ballots)
     profiles = [c["profile"] for c in candidates]
     roles = list(panel_roles_cfg.keys())
     baseline = rubric_ballots(profiles, roles)

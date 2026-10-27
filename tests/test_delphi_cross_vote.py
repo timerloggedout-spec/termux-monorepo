@@ -119,3 +119,37 @@ def test_role_weight_formula_and_ledger_loader():
                          "\"gate_pass_rate\": 0.68, \"elo\": 1532}}}\n```"}]
     weights = load_ledger_weights(comments)
     assert weights["roles"]["OPERATOR"]["elo"] == 1532
+
+
+def test_model_ballots_require_the_debate_run_record():
+    bad = [{"voter": "someone", "source_class": "MODEL_PROVIDER",
+            "scores": {"rehearsal-strong": 20}}]
+    try:
+        _run(extra=bad)
+    except ValueError as exc:
+        assert "run record" in str(exc)
+    else:
+        raise AssertionError("MODEL_PROVIDER without a run record must be refused")
+    good = [{"voter": "provider-runner", "source_class": "MODEL_PROVIDER",
+             "run": {"provider": "p", "model": "m/1", "run_id": "r1",
+                     "response_hash": "h", "entitlement": "no-cost validated"},
+             "scores": {"rehearsal-strong": 20, "rehearsal-weak": 12,
+                        "rehearsal-empty": 3}}]
+    _, _, receipt = _run(extra=good)
+    assert receipt["ballots_by_class"]["MODEL_PROVIDER"] == 1
+    dup = good + [dict(good[0])]
+    try:
+        _run(extra=dup)
+    except ValueError as exc:
+        assert "duplicate" in str(exc)
+        return
+    raise AssertionError("duplicate ballots (same source + run) must be refused")
+
+
+def test_money_veto_caps_the_cost_auditor():
+    docs_by_dir, meta, receipt = _run()
+    profiles = {c["id"]: c["profile"] for c in meta["candidates"]}
+    assert profiles["rehearsal-weak"]["money_veto"] is True
+    assert profiles["rehearsal-strong"]["money_veto"] is False
+    cost = next(b for b in receipt["ballots"] if b["voter"] == "rubric:cost_auditor")
+    assert cost["scores"]["rehearsal-weak"] <= 4

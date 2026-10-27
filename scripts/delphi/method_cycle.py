@@ -36,7 +36,8 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-from cross_vote import CLASSES, aggregate, cross_vote, rank, role_weight, _sha
+from cross_vote import (CLASSES, aggregate, cross_vote, rank, role_weight,
+                        validate_ballots, _sha)
 
 SCHEMA = "oracle-method-cycle/v1"
 
@@ -165,6 +166,7 @@ def run_cycle(pass_meta: dict, panel_roles_cfg: dict, weights_source: str,
     # must carry the bundle hash (stage gate); the rubric comparator
     # is constructed from the bundle itself, so its equality is
     # structural.
+    validate_ballots(round2_ballots or [])
     for ballot in (round2_ballots or []):
         if ballot.get("evidence_set_sha256") != evidence_sha:
             raise ValueError(

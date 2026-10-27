@@ -64,6 +64,58 @@ cycle records the remaining stages specified_not_run. Full spec:
 DELPHI-LANE-CONTRACT.md, "The Oracle Method cycle". The D4 run is
 structured to this cycle.
 
+## Method provenance — reconciled against the repo's Delphi history (2026-10-27)
+
+The Oracle Method was not invented on 2026-10-27; it was assembled
+from this repo's own Delphi research/recon lineage. Each element,
+with its source:
+
+| Method element | Historical source |
+|---|---|
+| Panel of 5 blind roles; Impact × Importance 1–25 | `DELPHI-ORACLE-RFP-GATE.md`; `ops/delphi/panel.json` (criteria) |
+| Weighting `w = base × (0.5 + gate_pass_rate) × (elo/1500)`; EWMA α 0.2; elo ±16 | `DELPHI-WEIGHTING.md` (activation 2026-10-20, signed Grok/Hark); `scripts/delphi/gate.py` (`gate.effective`) |
+| Weights as append-only ledger JSON; panel.json = cold start only | weights ledger issue #1489 (live since #1424 feedback, 2026-10-21) |
+| Ballot source classes; never collapse; rubric scores are not votes | Strands proposal `DEBATE.md` (source classes); MSM-018 reconciliation in `DELPHI-ORACLE-RFP-GATE.md` — implemented here as the `LOCAL_BASELINE` class |
+| Ballot intake: voter identity, provider run record, dedupe by source + run | `DEBATE.md` independent ballot protocol — validation added to `cross_vote.py` in this reconciliation |
+| Cost auditor's money veto (card / auto-bills caps at 4) | `DELPHI-ORACLE-RFP-GATE.md` panel stage — applied in the rubric comparator in this reconciliation |
+| Implementation comparisons on one frozen, identical basis; labels frozen before runs; blind reviewers | Strands proposal `EXPERIMENT-MATRIX.md` shared protocol — the ancestor of the cycle's equalized round-2 evidence |
+| Expectations vs outcomes feeding reweighting | the flywheel: gate forecasts confirmed/missed by real shadow runs (`scripts/delphi/signals.py`, shadow-lanes.json; issues #1424/#1487) — generalized here as recorded input vote expectations + calibration |
+| Receipts with provenance + hashes as the signing substrate | `OPERATOR-SIGNING.md` pattern via the gate doc (signed ledger comments); the generation path signs with PROVENANCE hashes + git history instead |
+
+**Divergences — flagged, not overwritten:**
+
+1. **Authorship.** Historically Delphi judged *externally authored*
+   RFPs (issue-form intake `delphi-rfp.yml`; the Strands RFP authored
+   by ChatGPT). Generation-first reverses the authorship side per the
+   owner's 2026-10-27 correction; the evaluation machinery is the
+   historical one, unchanged in formula and ledgers.
+2. **Round semantics.** The gate's rounds 2–3 are *feedback* rounds
+   (median / IQR / anonymous outlier reasons; stop at IQR ≤ 4 or
+   range ≤ 6, max 3) over RFP scores. The method cycle's round 2 is an
+   *evidence* round on implementation results — owner-specified at
+   exactly 2 rounds. Both coexist: convergence parameters govern the
+   gate panel; `generation.cycle.rounds` governs method passes.
+3. **Ledger surface.** Calibration records are a new outcome type on
+   the existing append-only ledgers (`delphi-generation-ballot v1` /
+   calibration feed), extending — not replacing — the
+   `delphi-outcomes v1` tribute format and the `delphi-weights v1`
+   state format.
+
+**Named input dependency — chat-session research (pending
+ingestion).** Part of the Delphi research/recon history lives in
+chat sessions and awaits HindSight→ForeSight ingestion. That
+material is a named dependency of this record: its contents are NOT
+invented here, and its absence is NOT a gap in the method. When the
+ingestions land, this provenance section and the cycle spec get a
+reconciliation pass against the newly available record.
+
+**Self-application.** The method applies to itself: method
+versions/configurations run as versioned comparison passes through
+the same cycle (contract: "Self-application"). Status:
+`specified_not_run` — specified in `panel.json`
+(`generation.self_application`), executable by `method_cycle.py`
+unchanged, awaiting its first briefed pass.
+
 ## Operational status (verified 2026-10-27)
 
 | Component | State | Evidence |

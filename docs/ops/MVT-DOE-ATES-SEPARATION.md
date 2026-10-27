@@ -72,7 +72,10 @@ The design discipline: which arms, which factors, which rules. Records:
 2. **Cross-surface = citation.** References travel in a feed's
    `citations` array: `{surface, record, label, note}` — where the
    record lives and why it matters here. The cited surface's data
-   payload never appears in the citing feed.
+   payload never appears in the citing feed — with one exception: a
+   record whose presentation on another surface is explicitly required
+   (the Delphi record, below) travels with its full payload AND its
+   owner label, and never counts as the presenting surface's results.
 3. **Joint files split by section, not by copy.** The ATES doc is one
    file holding two surfaces' records: §MVT (invariants) belongs to
    ATES, §DoE (the factorial slice) belongs to DoE. `EXPERIMENT.schema.json`
@@ -85,13 +88,21 @@ The design discipline: which arms, which factors, which rules. Records:
    `gaps`. Defined-but-not-run renders as exactly that, on the surface
    that owns the definition.
 
-## The Delphi record
+## The Delphi record — required presentation
 
 `docs/proposals/passes/strands-rfp-response/cycle/IMPLEMENTATION.json`
-is owned by the Delphi surface and rendered on the Oracle Panel. The
-DoE feed no longer inlines its per-candidate results as
-`executed_comparisons`; it carries one citation entry, labeled as a
-Delphi record. It is not a DoE campaign and contributes no DoE results.
+is owned by the Delphi surface and rendered on the Oracle Panel. Its
+presentation on the DoE surface is REQUIRED (owner ruling, 2026-10-27):
+everything flows through these pipelines, and this cycle record is the
+repo's one executed per-candidate comparison — the DoE surface is
+where executed comparisons are read. The DoE feed therefore carries
+`executed_comparisons` with the full per-candidate payload and an
+explicit `owner_surface: delphi` label. The labeling discipline is the
+whole point: it is presented as a Delphi record, never as a DoE
+campaign, and DoE claims no campaign results from it. (The first
+version of this spec, PR #1756, reduced it to a citation only; the
+owner corrected that the same day — payload + owner label is the
+rule.)
 
 ## Feed shapes after separation
 
@@ -99,7 +110,7 @@ Delphi record. It is not a DoE campaign and contributes no DoE results.
 |---|---|
 | `ates-feed.json` (new) | doc, invariants, invariant_note, workflows (benchmark / run-receipt / experiment-loop vehicle), fixtures, trace_schema, citations → MVT, DoE |
 | `mvt-feed.json` | method, experiment_record_schema, experiment_loop, team_mvt, citations → ATES, DoE |
-| `doe-feed.json` | methods_library, skill, first_factorial_slice (with executor citation), dspy_lane, citations → Delphi |
+| `doe-feed.json` | methods_library, skill, first_factorial_slice (with executor citation), dspy_lane, executed_comparisons (full payload, owner_surface: delphi — required), citations → Delphi |
 
 Collector: `scripts/dashboards/surface_feeds.py`
 (`collect_ates` / `collect_mvt` / `collect_doe`). Contract:
@@ -113,9 +124,10 @@ The feeds land first, against this spec; the pages re-render from them:
 - `mvt.html` drops its harness and fixtures sections — they move to a
   new `ates.html` consuming `ates-feed.json` (unified nav + sitemap
   gain ATES).
-- `doe.html`'s executed-comparisons table becomes a citation card
-  pointing at the Delphi record on the Oracle Panel.
+- `doe.html`'s executed-comparisons section STAYS — it renders the
+  labeled Delphi record (`executed_comparisons`, owner_surface:
+  delphi) as before.
 
-Until that re-render lands, those two sections cannot render from the
-separated feeds. That is the known, intended handoff state of this
+Until that re-render lands, the mvt.html sections cannot render from
+the separated feeds. That is the known, intended handoff state of this
 spec — not a defect in the feeds.

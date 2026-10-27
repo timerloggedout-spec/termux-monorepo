@@ -18,6 +18,7 @@
   .round ol{margin:.4rem 0;padding-left:1.2rem}
   .round li.self{color:var(--gold);font-weight:600}
   .unverified{border-left:3px solid var(--bad);padding:.4rem .8rem;margin:.5rem 0}
+  .tie{border:1px dashed var(--gold);border-radius:.6rem;padding:.7rem .8rem;margin:.5rem 0}
   .notrun{border-left:3px solid var(--gold);padding:.4rem .8rem;margin:.5rem 0}
   .absent{border:1px dashed var(--line);border-radius:.6rem;padding:.7rem .8rem;color:var(--muted)}
   .chips{display:flex;flex-wrap:wrap;gap:.4rem;margin:.4rem 0}
@@ -29,7 +30,7 @@
 <div class="hero">
 <p class="eyebrow">Oracle Panel · Delphic Oracle Method</p>
 <h1>Delphi proposal results</h1>
-<p class="sub">Every proposal the Oracle Method has generated — what it proposes, its evidence basis, its pass, round rankings, what its implementation round did, calibration deltas, and honest statuses. This panel consumes the Delphi lane's feed (<code>data/oracle-panel-feed.json</code>, contract <code>docs/ops/ORACLE-PANEL-FEED.md</code>) and nothing else: a value the record doesn't hold renders as absent, never synthesized.</p>
+<p class="sub">Every proposal the Oracle Method has generated — what it proposes, its evidence basis, what produced each result, its pass, round rankings with their recorded basis (ties stated as ties), what its implementation round did, calibration deltas, and honest statuses. This panel consumes the Delphi lane's feed (<code>data/oracle-panel-feed.json</code>, contract <code>docs/ops/ORACLE-PANEL-FEED.md</code>) and nothing else: a value the record doesn't hold renders as absent, never synthesized.</p>
 </div>
 </header>
 <main>
@@ -51,6 +52,10 @@
 <div id="proposals"><p class="muted">Loading the feed…</p></div>
 </section>
 
+<section>
+<h2>How the panel scores</h2>
+<div id="settings"><p class="muted">Loading…</p></div>
+</section>
 <section>
 <h2>Passes</h2>
 <div id="passes"><p class="muted">Loading…</p></div>
@@ -84,6 +89,15 @@ function roundBlock(label,round,selfId){
   let h='<div class="round"><h4>'+esc(label)+' — this proposal ranked #'+esc(round.rank_of_this)+'</h4>'+rankingList(round,selfId)+ballotsChips(round);
   if(round.scores_by_class){h+='<p class="meta">Scores by class: '+Object.keys(round.scores_by_class).sort().map(c=>{const v=round.scores_by_class[c];return esc(c)+': '+(v==null?'no ballots (absent)':esc(v))}).join(' · ')+'</p>';}
   if(round.evidence_set_sha256) h+='<p class="meta">Equalized evidence set sha256 <code>'+esc(String(round.evidence_set_sha256).slice(0,16))+'…</code></p>';
+  if(round.ranking_basis){
+    const rb=round.ranking_basis;
+    h+='<div class="tie"><strong>The ranking basis, as recorded:</strong> scores tied: '+esc(rb.scores_tied?'yes':'no')+' · score spread: '+esc(rb.score_spread)+'<br>'+esc(rb.decided_by)+'</div>';
+  }
+  if(Array.isArray(round.ballots)){
+    h+='<h5>Recorded ballots</h5><ul class="feed-list">'+round.ballots.map(b=>'<li><span><strong>'+esc(b.voter)+'</strong> <span class="meta">('+esc(b.source_class)+')</span><br><span class="meta">scores: '+Object.keys(b.scores||{}).sort().map(k=>esc(k.replace('strands-rfp-response-',''))+': '+esc(b.scores[k])).join(' · ')+'</span></span><span>this: '+esc(b.score_of_this)+'</span></li>').join('')+'</ul>';
+  } else if(round.ballots===null){
+    h+='<p class="meta">Recorded ballots: not in the feed for this round — aggregates only.</p>';
+  }
   return h+'</div>';
 }
 function renderProposal(p){
@@ -107,10 +121,54 @@ function renderProposal(p){
       h+='<div class="chips">'+Object.keys(eb.claim_areas).sort().map(k=>pill(k+': '+eb.claim_areas[k])).join('')+'</div>';
     }
   }
+  if(p.approach!=null){
+    const a=p.approach;
+    h+='<h4>Approach</h4><p>'+esc(a.executive_request||'')+'</p>';
+    const extra=[['Concept',a.concept],['Planned suites',a.planned_suites],['Surface',a.surface],['Deadline',a.deadline]].filter(x=>x[1]!=null&&x[1]!=='');
+    if(extra.length) h+='<ul class="feed-list">'+extra.map(x=>'<li><span>'+esc(x[0])+'</span><span>'+esc(Array.isArray(x[1])?x[1].join(', '):x[1])+'</span></li>').join('')+'</ul>';
+    if(a.source) h+='<p class="meta">Source: '+esc(a.source)+'</p>';
+  }
+  if(Array.isArray(p.summary_points)&&p.summary_points.length){
+    h+='<h4>Summary points (with the record\'s evidence refs)</h4><ul>'+p.summary_points.map(sp=>'<li>'+esc(sp.text)+(Array.isArray(sp.evidence_refs)&&sp.evidence_refs.length?'<br><span class="meta">evidence: '+sp.evidence_refs.map(r=>'<code>'+esc(r)+'</code>').join(' ')+'</span>':'')+'</li>').join('')+'</ul>';
+  }
+  if(Array.isArray(p.work_items)&&p.work_items.length){
+    h+='<h4>Work items</h4><ul class="feed-list">'+p.work_items.map(w=>'<li><span><code>'+esc(w.id)+'</code> — '+esc(w.item)+'<br><span class="meta">'+esc(w.exit||'')+'</span></span>'+pill(w.state)+'</li>').join('')+'</ul>';
+  }
+  if(p.documents!=null){
+    h+='<h4>Documents</h4><div class="chips">'+Object.keys(p.documents).sort().map(k=>'<a class="pill" href="'+GH+'/blob/master/'+esc(p.documents[k])+'">'+esc(k)+'</a>').join('')+'</div>';
+  }
   if(Array.isArray(p.unverified_points)&&p.unverified_points.length){
     h+='<div class="unverified"><strong>UNVERIFIED points (first-class status, from the record):</strong><ul>'+p.unverified_points.map(u=>'<li>'+esc(u)+'</li>').join('')+'</ul></div>';
   } else {
     h+='<p class="meta">UNVERIFIED points: none recorded.</p>';
+  }
+  if(p.producers!=null){
+    const pr=p.producers;
+    h+='<h4>What produced this</h4>';
+    if(pr.generation){
+      const g=pr.generation;
+      h+='<p><strong>Generation</strong> — '+esc(g.kind)+': <code>'+esc(g.producer)+'</code> · generated '+esc(g.generated_at)+'</p>';
+    }
+    const rounds=pr.rounds||{};
+    for(const rk of Object.keys(rounds).sort()){
+      h+='<p class="meta"><strong>'+esc(rk.replace('_',' '))+'</strong></p><ul class="feed-list">';
+      for(const ck of Object.keys(rounds[rk]).sort()){
+        const c=rounds[rk][ck];
+        if(c.kind==='none_recorded'){
+          h+='<li><span><strong>'+esc(ck)+'</strong> — none recorded</span></li>';
+          if(c.reason) h+='<li><span class="meta">'+esc(c.reason)+'</span></li>';
+        } else {
+          h+='<li><span><strong>'+esc(ck)+'</strong> — '+esc(c.kind)+'<br><span class="meta">'+esc(c.producer||'')+'</span></span><span>'+esc(c.ballots)+' ballots</span></li>';
+          if(Array.isArray(c.voters)&&c.voters.length) h+='<li><span class="meta">voters: '+c.voters.map(v=>esc(v)).join(', ')+'</span></li>';
+          if(c.weights) h+='<li><span class="meta">weights: '+esc(c.weights.source)+' (ledger #'+esc(c.weights.ledger_issue)+') — '+Object.keys(c.weights.role_weights||{}).sort().map(r=>esc(r)+' '+esc(c.weights.role_weights[r])).join(' · ')+'</span></li>';
+        }
+      }
+      h+='</ul>';
+    }
+  }
+  if(p.evidence_profile!=null){
+    const ep=p.evidence_profile;
+    h+='<h4>Evidence profile (the comparator\'s input, as recorded)</h4><ul class="feed-list">'+[['points',ep.points],['evidenced',ep.evidenced],['unverified',ep.unverified],['evidenced ratio',ep.evidenced_ratio],['items',ep.items],['evidence sources',ep.evidence_sources],['dependency items',ep.dependency_items],['money veto',ep.money_veto]].map(x=>'<li><span>'+esc(x[0])+'</span><span>'+esc(x[1])+'</span></li>').join('')+'<li><span>documents sha256</span><span><code>'+esc((ep.docs_sha256||'').slice(0,12))+'…</code></span></li></ul>';
   }
   if(p.rounds==null){
     h+='<div class="absent"><strong>No cycle ran for this proposal.</strong> Rounds and calibration are absent from the record — shown as absent, not as zero. '+(p.kind==='single'?'It was generated singly, outside a pass.':'')+'</div>';
@@ -158,7 +216,23 @@ async function load(){
     $('foot-stamp').textContent='schema '+f.schema+' · generated '+f.generated_at+' · '+f.generator;
     $('honesty').innerHTML=(f.honesty_rules||[]).map(r=>'<li>'+esc(r)+'</li>').join('');
     $('proposals').innerHTML=(f.proposals||[]).map(renderProposal).join('');
-    $('passes').innerHTML=(f.passes||[]).map(ps=>'<article class="prop"><h3><code>'+esc(ps.pass_id)+'</code></h3><p class="meta">n = '+esc(ps.n)+' candidates · <a href="'+GH+'/tree/master/'+esc(ps.record)+'">pass record</a></p><p>Ranked outcome:</p><ol>'+(ps.ranked_outcome||[]).map(id=>'<li><code>'+esc(id)+'</code></li>').join('')+'</ol></article>').join('')||'<p class="muted">No passes in the feed.</p>';
+    if(f.settings){
+      const s=f.settings, g2=s.generation||{};
+      $('settings').innerHTML='<ul class="feed-list">'
+      +'<li><span>Weighting formula</span><span><code>'+esc(s.formula)+'</code></span></li>'
+      +'<li><span>Score scale</span><span>'+esc(s.score_scale)+'</span></li>'
+      +'<li><span>Criteria</span><span>'+esc(s.criteria)+'</span></li>'
+      +'<li><span>Weights source</span><span>'+esc(s.weights_source)+'</span></li>'
+      +'<li><span>Generation</span><span>n = '+esc(g2.proposals_per_pass)+' proposals per pass · '+esc(g2.cycle_rounds)+' cycle rounds · expectation tolerance '+esc(g2.expectation_tolerance)+'</span></li>'
+      +'<li><span>Panel settings</span><span><code>'+esc(s.panel)+'</code></span></li>'
+      +'</ul><p class="meta">'+esc(s.seed_note)+'</p>';
+    }
+    $('passes').innerHTML=(f.passes||[]).map(ps=>{
+      let ph='<article class="prop"><h3><code>'+esc(ps.pass_id)+'</code></h3><div class="chips">'+pill('status: '+(ps.status||'recorded'),ps.status==='recorded'?'ok':'gold')+'</div><p class="meta">n = '+esc(ps.n)+' candidates · <a href="'+GH+'/tree/master/'+esc(ps.record)+'">pass record</a></p>';
+      if(Array.isArray(ps.ranked_outcome)&&ps.ranked_outcome.length){ ph+='<p>Ranked outcome:</p><ol>'+ps.ranked_outcome.map(id=>'<li><code>'+esc(id)+'</code></li>').join('')+'</ol>'; }
+      else { ph+='<p class="meta">No ranked outcome — this pass is stated, not run; nothing here is a result.</p>'; }
+      return ph+'</article>';
+    }).join('')||'<p class="muted">No passes in the feed.</p>';
     $('excluded').innerHTML=(f.excluded||[]).map(x=>'<div class="notrun"><strong>'+esc(x.what)+'</strong> — labeled <em>'+esc(x.label)+'</em>. '+esc(x.reason)+'</div>').join('')||'<p class="muted">Nothing excluded in the feed.</p>';
   }catch(e){
     $('feed-state').textContent='UNVERIFIED — feed could not be fetched';

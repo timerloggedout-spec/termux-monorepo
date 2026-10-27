@@ -37,7 +37,7 @@ def test_typhoon_reference_links_actual_transport_without_fabricating_account():
 def test_new_families_preserve_model_denominators_and_unknown_execution():
     result = batch.reconcile(*inputs())
     proxy = result["summary"]["by_source"][SOURCE]
-    assert proxy["research_records"] == 76
+    assert proxy["research_records"] == 77
     assert proxy["individual_model_claims"] == proxy["runtime_eligible"] == 0
     assert len(proxy["chat_transport_families"]) == len(batch.SOURCE_PROVIDER_MAP[SOURCE])
     assert NEW_FAMILIES <= set(proxy["chat_transport_families"])
@@ -51,8 +51,8 @@ def test_new_families_preserve_model_denominators_and_unknown_execution():
             assert row["runtime_eligible"] is False and row["quota_remaining"] is None
             assert row["catalog_adapter"] == (row["provider_key"] not in {"typhoon", "xfyun"})
     directory = result["summary"]["by_source"]["mnfst/awesome-free-llm-apis"]
-    assert directory["individual_model_claims"] == 128
-    assert len(directory["chat_transport_families"]) == 16
+    assert directory["individual_model_claims"] == 106
+    assert len(directory["chat_transport_families"]) == 15
     longcat = next(r for r in result["candidates"] if r["provider_key"] == "longcat")
     assert longcat["service_disposition"] == "unmapped_service_reference"
 

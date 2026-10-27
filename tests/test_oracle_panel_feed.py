@@ -125,6 +125,11 @@ def _root(tmp_path):
     (pdir / "evidence.json").write_text(json.dumps(EVIDENCE_DOC))
     (pdir / "implementation").mkdir()
     (pdir / "implementation" / "cand-a.json").write_text(json.dumps(IMPL_A))
+    stated = passes / "pass-2"
+    stated.mkdir()
+    (stated / "pass.json").write_text(json.dumps({
+        "pass_id": "pass-2", "status": "stated_not_run",
+        "n": {"source": "panel.json", "value": 3}, "candidates": []}))
     return active, passes
 
 
@@ -169,6 +174,14 @@ def test_feed_carries_only_what_the_record_holds(tmp_path):
     assert ("aws_deployment", "card rule") in snr
     assert a["ledger"]["ballot_comment_id"] == 4242
     assert feed["excluded"][0]["label"] == "ideation drafts imagining readiness"
+    by_pass = {p["pass_id"]: p for p in feed["passes"]}
+    assert by_pass["pass-1"]["status"] == "recorded"
+    assert by_pass["pass-1"]["n"] == 2
+    # a stated, not-run pass record enters labeled, never as a run pass
+    assert by_pass["pass-2"]["status"] == "stated_not_run"
+    assert by_pass["pass-2"]["n"] == 3
+    assert by_pass["pass-2"]["ranked_outcome"] is None
+    assert by_pass["pass-2"]["candidates"] == []
 
 
 def test_registry_parser_fails_loudly_without_ids():

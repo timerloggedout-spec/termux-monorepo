@@ -25,6 +25,12 @@ registrations, submissions, and prepared candidates — for
   ruling landed (D0–D3, and D2) complete on their existing plans. First
   generated artifact coordinated with this lane: the D4 Kiroween concept
   proposal (rules publish Oct 30; build after Nov 8; deadline Dec 4).
+- **Eligibility rules are ENFORCED, not noted (owner ruling, 2026-10-27):**
+  every packet records its contest's eligibility rules as enforceable checks
+  with named evidence, owned by the producing lane — a mechanical gate where
+  one exists (a refused start, a captured timestamp, a blocked submission
+  step), never a remark. A check that fails halts the packet at that step and
+  surfaces; it is never worked around.
 - Sweep cadence: weekly (Mondays, America/Los_Angeles) — a scheduled lane
   check re-scans the sources in §5, refreshes this log by PR when something
   changed, and reports new candidates. Log last verified 2026-10-26.
@@ -218,6 +224,10 @@ a submission path reaches an owner-account step.
   material evidence → **ESCALATE**. Verified on master by this lane
   (history scan + package content read, 2026-10-27). Completed two days
   ahead of the set date; D1 inherits the agent + tool as scheduled.
+- **Eligibility enforcement (owner ruling, 2026-10-27):** this packet's rule
+  was temporal — a post-window completion is a completion record, never a
+  submission — and it was enforced in the record itself: the verified
+  submission count (§2) was never adjusted for D0.
 
 ### D1 — for C1, Workshop to Ship — IN PROGRESS (owner already joined)
 
@@ -244,6 +254,11 @@ a submission path reaches an owner-account step.
 - **Submission class:** submission itself happens under the owner's Builder
   account → prepared packet surfaces to the owner when ready; not
   auto-submittable.
+- **Eligibility check (enforced):** the workshop-completion evidence must be
+  dated inside the window (Oct 28–Nov 4) and sit on the owner's Builder
+  account. No in-window completion evidence → the entry does not submit,
+  whatever else is ready; the checklist item above is the gate, not a
+  reminder.
 
 ### D2 — for C2, Vultr Agent Rush (Foundry entry) — IN PROGRESS
 
@@ -266,6 +281,11 @@ a submission path reaches an owner-account step.
 - **Submission class:** approved by owner; submission follows the standing
   boundary — any step needing a card or an owner-only verification is surfaced,
   never worked around.
+- **Eligibility check (enforced):** participation proceeds only on the
+  no-card path (lablab registration + Discord + the published Vultr sandbox
+  credits). Any step that requires a payment instrument halts the packet at
+  that step and surfaces — the card rule is the gate, and the halt is the
+  evidence it fired.
 
 ### D3 — for C3, Builder.io Agent-Native Hackathon — IN PROGRESS (scoped 2026-10-26)
 
@@ -308,6 +328,11 @@ a submission path reaches an owner-account step.
   Builder's own publish docs describe editor publishing inside a Builder
   Space/plan, which suggests the Builder-hosted path involves an account —
   but the hackathon's Clips flow itself is still unverified.
+- **Eligibility check (enforced):** the submission step is blocked until the
+  Clips/account question resolves — either a verified no-account publish path
+  or the owner-gated account step surfaced and completed. Unresolved at build
+  end → no submission and no silent workaround; the block is recorded here
+  (and in the generated proposal's ITEMS DD-005).
 - **Source packet:** `docs/proposals/active/aws-free-tier-strands-delphi-oracle/`
   (DEBATE.md envelope, EXPERIMENT-MATRIX), `scripts/delphi/strands_oracle_mvp.py`
   (receipt pattern), PR #1655 CMDB design (conflict matrix / reconciliation).
@@ -326,6 +351,17 @@ a submission path reaches an owner-account step.
 - **Sequencing rules (owner, 2026-10-26):** register now; do NOT create the
   project or start building before the window; the build itself waits until
   after Nov 8 (D1/D2/D3 windows first).
+- **Eligibility rule (official page, verified 2026-10-26):** only new
+  projects created during the submission period — **Fri Oct 30, 2026,
+  1:00 PM PDT to Dec 4, 2026, 2:00 PM PST** — are eligible; the page's own
+  instruction: "Do not start building your project yet."
+- **Mechanical gate (owner ruling, 2026-10-27):** the D4 brief/intake REFUSES
+  any build start before Fri Oct 30, 2026, 1:00 PM PDT — no project creation,
+  no building, no exceptions. At project creation, the creation timestamp is
+  captured into this packet as eligibility evidence; a timestamp before the
+  window voids the entry. The generated concept proposal is not the project
+  and does not trip the gate. (Owner confirmed 2026-10-27: D4's build waits
+  for its window.)
 - **Registration status:** ATTEMPTED 2026-10-26, stopped at the account gate
   exactly as briefed. Verified flow: Join hackathon → Cloudflare human check →
   redirect to Devpost sign-up ("Please sign up or log in to continue" /

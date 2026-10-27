@@ -129,9 +129,6 @@ def merge_audit_history(
             }
         else:
             merged[url] = row
-            if status == "observed":
-                merged[url]["last_observed_at"] = row.get("audited_at")
-                merged[url]["last_observed_head_sha"] = row.get("head_sha")
     return [merged[url] for url in current_urls if url in merged]
 
 

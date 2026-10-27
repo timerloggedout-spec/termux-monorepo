@@ -1,14 +1,14 @@
-# Consolidated Actions Workflows Matrix — 2026-10-26 Live Refresh (tip 8d904097 + current session)
+# Consolidated Actions Workflows Matrix — 2026-10-26 Live Refresh (tip 2f682bb + current session)
 
 **Branch:** `ops/actions-matrix-upgrade-2026-10-18` (continued BIUDL cycle)
 **Authority:** Issue #631 13-phase + evidence-led-monorepo-ops + adaptive-wait + C.A.D.E.
 **Goal:** Z3π0 Failures, 100% SUCCESS on required dual-gates. Attentive validation audits of Skipped/Cancelled/Stale/Timed-out/Action Required (never silenced). Reduce notification spam via modular consolidations + shared scheduled poller. Operational Pinggy or alternative on device #1 (`tmx-node-primary`, BLU B160V#1). Quota-aware caching, cadence, 3L0 moneyball adaptive telemetry.
 
-## Current State Recon (2026-10-26 ~22:00Z / master tip `8d904097bdf0039c730fab113d0513d72bf94bac`)
+## Current State Recon (2026-10-26 ~23:50Z / master tip `2f682bbacb0dbac8beee6678abf8bf30e217f6d8`)
 
-- Master tip: `8d904097bdf0039c730fab113d0513d72bf94bac` (sweep accountability receipt after #1670 Sentinel CLI hardening). Dual-gate success on prior SHA `f5c70390` (repo gate 40402230482, termux smoke 40402230205) and recent pushes. Recent completed runs: Shared Observer Poller 40407774021 success, Quota Dispatch Tree success, no new required-gate hard failures.
-- **Residual high-volume skipped** (notification spam source): lane-events-recorder still has `workflow_run` on master (run records created even when job `if: conclusion == 'success'` skips). agent-throughput-evidence, delphi-*, issue_comment bot cascades. Concurrency cancels (e.g. n8n SHE bridge 40402288290).
-- **Spam reduction prepared:** Branch `ops/actions-spam-reduction-2026-10-26` (head `89c8db15`) retired the `workflow_run` trigger on lane-events-recorder; relies on Shared Observer Poller (every 15m, success 40407774021) for success ledger. Push sweep success. Ready for dual-gate promote to eliminate residual skip-run spam.
+- Master tip: `2f682bbacb0dbac8beee6678abf8bf30e217f6d8` (sweep accountability receipt). Dual-gate success on recent pushes (e.g. #1675 repo gate / termux smoke success). Recent completed runs: no conclusion=failure in latest window; high-volume skipped/cancelled residual from workflow_run triggers (lane-events-recorder, agent-throughput-evidence, etc.). Concurrency cancels operational.
+- **Residual high-volume skipped** (notification spam source): lane-events-recorder still has `workflow_run` on master (run records created even when job `if: conclusion == 'success'` skips). agent-throughput-evidence, delphi-*, issue_comment bot cascades.
+- **Spam reduction prepared:** Branch `ops/actions-spam-reduction-2026-10-26` (head `89c8db15`) retired the `workflow_run` trigger on lane-events-recorder; relies on Shared Observer Poller (every 15m) for success ledger. Ready for dual-gate promote to eliminate residual skip-run spam.
 - Pure skips audited as operational (filters working); volume of run records is the spam vector. Path: shared scheduled poller + modular router + retire residual triggers post dual-gate.
 - Tunnel / Agentic Auth Canary: lag treated as ::notice:: exit 0. Device #1 opaque public ID `tmx-node-primary`. **Pinggy or Tailscale MUST be operational** on BLU B160V#1 (broken screen; device-side publisher required). Device #2 is replica/observer only. September tests on original #1; continuity now dual-device.
 - Credentials: names-only in issue #184 (extend connectors as needed; no values in docs).
@@ -70,8 +70,8 @@ flowchart TD
 - Historical Phantom secrets / Auth Canary / observatory 403 / quota runs classified as lag/capacity, not gate failures.
 
 **What was refined this cycle (2026-10-26 session):**
-- Live recon bound to tip `8d904097` + current completed runs (dual-gate success, poller success, no required-gate failures).
-- Residual skip spam quantified; spam-reduction branch (`ops/actions-spam-reduction-2026-10-26`) prepared and push-successful, retiring high-volume lane-events-recorder workflow_run.
+- Live recon bound to tip `2f682bb` + current completed runs (dual-gate success on recent pushes, no required-gate failures).
+- Residual skip spam quantified and audited as operational; spam-reduction branch (`ops/actions-spam-reduction-2026-10-26`) prepared, retiring high-volume lane-events-recorder workflow_run.
 - Poller cadence confirmed 15m; router path active.
 - Pinggy/Tailscale operational requirement on device #1 reaffirmed with public obfuscation (`tmx-node-primary`).
 - Cadence/cache/3L0 moneyball tightened; notification reduction via poller + trigger retirement.

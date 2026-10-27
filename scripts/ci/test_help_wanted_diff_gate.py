@@ -69,6 +69,22 @@ def test_non_stake_placeholder_file_cannot_pass():
     assert r["substantive_implementation_files"] == []
 
 
+def test_meaningful_deletion_cannot_launder_placeholder_additions():
+    r = gate.classify(pr(solution_body()), [
+        file("docs/checklist.md", 2, 4,
+             patch="-Previously documented deployment behavior.\n-Troubleshooting details.\n+TODO: implementation goes here\n+Replace this file with a real fix")
+    ], "solution")
+    assert not r["gate_pass"]
+    assert r["substantive_implementation_files"] == []
+
+
+def test_diff_proof_must_name_exact_changed_path():
+    body = solution_body(diff="docs/checklist.md.backup describes an unrelated change")
+    r = gate.classify(pr(body), [file("docs/checklist.md", 20)], "solution")
+    assert not r["gate_pass"]
+    assert not r["diff_proof_specific"]
+
+
 def test_generic_diff_proof_and_validation_are_rejected():
     body = solution_body(diff="docs checklist", validation="CI")
     r = gate.classify(pr(body), [file("docs/checklist.md", 20)], "solution")

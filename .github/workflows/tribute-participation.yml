@@ -76,10 +76,19 @@ jobs:
           git checkout -B "$branch"
           git commit -m "ops(tribute): participation refresh $(date -u +%FT%TZ)"
           git push -f origin "$branch"
-          if gh pr list --head "$branch" --state open --json number --jq -e '.[0]' >/dev/null; then
-            echo "refresh PR already open for $branch"
+          # Tolerate probe failures: a failed list must not turn a
+          # landed refresh into a failed run via a duplicate create.
+          existing=$(gh pr list --head "$branch" --state open --json number --jq '.[0].number' 2>/dev/null || echo "")
+          if [ -n "$existing" ]; then
+            echo "refresh PR #$existing already open for $branch"
           else
             gh pr create --title "ops(tribute): participation refresh" \
               --body "Automated refresh from the tribute-participation loop: audit ledger + participation record (classifications, withdrawals executed, convert candidates, claim ledger). Generated files only." \
-              --head "$branch" --base master
+              --head "$branch" --base master || echo "create reported an error (likely already exists)"
+            confirm=$(gh pr list --head "$branch" --state open --json number --jq '.[0].number' 2>/dev/null || echo "")
+            if [ -z "$confirm" ]; then
+              echo "ERROR: no refresh PR could be confirmed for $branch"
+              exit 1
+            fi
+            echo "refresh PR #$confirm open for $branch"
           fi

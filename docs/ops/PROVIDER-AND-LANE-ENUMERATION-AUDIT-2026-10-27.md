@@ -287,3 +287,50 @@ by this audit** — candidates with evidence grades:
 
 *Addendum counts and claims derived live at writing time (2026-10-27). Search-derived
 items are graded as stated; only source-verified items would enter the registry.*
+
+---
+
+## Addendum 2 (2026-10-27, later still) — mailbox evidence; the adaptive threshold
+
+### Account creation WAS started — the mailbox is the record (owner direction)
+
+The owner directed a mailbox check (fleet Gmail) for the account-creation sweep behind
+the wiring claims. Email evidence, 2026:
+
+**Accounts that exist (mail-proven):**
+- **Hugging Face — `timerloggedout-hf`** (display "LoggedOut Timer"). Five "new login"
+  notices on **2026-10-20** (first 02:23 UTC, US/Manteca) — the wiring-claims day —
+  plus logins 2026-09-07 and 2026-09-23. The account is real and was being actively
+  used by fleet surfaces; no token from it ever reached the secret store.
+- **Mistral AI** — account in active use since mid-2026 (included-usage limit notices
+  2026-07-31, 2026-08-01, Vibe Code usage 2026-08-06, support threads Jun–Aug). This is
+  the consumer account; a La Plateforme API key is NOT ESTABLISHED.
+- **You.com** — account created 2026-10-22 ("Welcome to You.com"), **API key created by
+  2026-10-23** ("You've created your API key!"). You.com is not among the 27 families
+  and no workflow references a You.com secret — the key lives only in that account.
+- **Langfuse** — account created 2026-10-21 (welcome + tracing follow-ups); the
+  evaluation registry's observational surface has a real account behind it.
+- The same Oct 20–24 sweep created accounts at Vantage, Apify, Turso, Upstash, Queued,
+  Roboflow and others — creation happened broadly; **harvest into the fleet's stores
+  happened for none of the provider-API keys.**
+
+**Never started (zero mailbox trace in 2026):** Groq, Cerebras, SambaNova, SiliconFlow,
+OmniRoute. For these families there is no account to harvest from — creation itself is
+the first step.
+
+**Canonical HF name — RESOLVED by the codebase (queue item 3):** the catalog already
+chose it — `provider_model_catalog.SECRETS["huggingface"] = HUGGINGFACE_TOKEN`, and the
+probe resolves `HUGGINGFACE_TOKEN → HUGGING_FACE_HUB_TOKEN → HF_API_TOKEN → HF_TOKEN`.
+Provision exactly `HUGGINGFACE_TOKEN`; the other three names are fallbacks, not peers.
+
+### The 6-hour threshold is no longer a constant (owner challenge)
+
+The G-03 fix as first landed used a fixed 360-minute staleness threshold — a constant
+sitting inside a system whose other parameters (weights, elo, quota multipliers) are
+all measured. Corrected in the same day's follow-up: the tree now re-derives the
+threshold on every run from the lane's own delivered cadence — **1.5 × the median gap
+between the lane's 5 most recent runs, clamped to [120, 720] minutes**, falling back to
+the designed 6h only when history is too thin to measure, and logging age + threshold
+on every run. If the delivered cadence changes, the threshold follows it; a starved
+lane still self-heals within 12h. (Node F0's 75-minute hw-refresh threshold predates
+this change and remains a constant — noted for the tree's owner as the same pattern.)

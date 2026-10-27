@@ -8,6 +8,9 @@ ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location("nomenclature_validator", ROOT / "scripts/ci/validate_nomenclature_matrix.py")
 MODULE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(MODULE)
+CROSSWALK_SPEC = importlib.util.spec_from_file_location("nomenclature_crosswalk", ROOT / "scripts/ci/build_nomenclature_crosswalk.py")
+CROSSWALK = importlib.util.module_from_spec(CROSSWALK_SPEC)
+CROSSWALK_SPEC.loader.exec_module(CROSSWALK)
 SEED = ROOT / "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json"
 
 class NomenclatureMatrixTests(unittest.TestCase):
@@ -76,6 +79,16 @@ class NomenclatureMatrixTests(unittest.TestCase):
         bad = json.loads(json.dumps(self.data))
         bad["evidence_records"][0].update(status="accepted", reviewer=None)
         self.assertTrue(any("requires reviewer" in e for e in MODULE.validate(bad)))
+
+    def test_crosswalk_is_deterministic_and_covers_seed_labels(self):
+        first = CROSSWALK.render_crosswalk(self.data)
+        second = CROSSWALK.render_crosswalk(self.data)
+        self.assertEqual(first, second)
+        for label in self.data["labels"]:
+            self.assertIn(label["text"].replace("|", r"\|"), first)
+        self.assertIn("Semantic mapping candidates", first)
+        self.assertIn("Claim-level evidence", first)
+        self.assertIn("Candidate status is preserved", first)
 
     def test_unknown_label_type_rejected(self):
         bad = json.loads(json.dumps(self.data))

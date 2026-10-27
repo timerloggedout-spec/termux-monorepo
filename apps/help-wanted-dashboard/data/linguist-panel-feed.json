@@ -1,0 +1,4658 @@
+{
+ "schema": "linguist-panel-feed/v1",
+ "generated_at": "2026-10-27T23:46:38Z",
+ "generator": "scripts/linguist/linguist_panel_feed.py",
+ "contract": "docs/ops/LINGUIST-PANEL-FEED.md",
+ "sources": {
+  "cedrlang": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+  "phase_codec": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+  "cid": "workspace/compression_sandbox/cedrlang/cid.py",
+  "grimoire_1337": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+  "grimoire_dict": "harmony_hub/config/GRIMOIRE_DICTIONARY.md",
+  "nomenclature_seed": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+  "routing_notation": "docs/schemas/routing-notation.yaml",
+  "archwiz_pointer_index": "archwiz/pointer_index.json"
+ },
+ "counts": {
+  "families": 15,
+  "entries_total": 7575,
+  "entries_included": 288,
+  "per_family": {
+   "cedrlang-symbol": 32,
+   "cedrlang-compression": 31,
+   "cedrlang-stopwords": 29,
+   "phase-codec-leet-chars": 6,
+   "phase-codec-canonical-tokens": 31,
+   "grimoire-char-variants": 26,
+   "grimoire-core-castings": 14,
+   "grimoire-protocol-terms": 11,
+   "grimoire-orchestra-crosswalk": 16,
+   "cedar-pointer-commands": 45,
+   "nomenclature-concepts": 8,
+   "nomenclature-labels": 14,
+   "nomenclature-mappings": 2,
+   "routing-notation": 23,
+   "archwiz-pointer-index": 7287
+  }
+ },
+ "families": [
+  {
+   "id": "cedrlang-symbol",
+   "name": "CedrLang symbol substitution",
+   "kind": "symbol-map",
+   "source_path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+   "direction": "bidirectional",
+   "canonical_source": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+   "entry_count": 32,
+   "entries_included": true,
+   "round_trip": {
+    "verified": 25,
+    "failed": 7,
+    "not_applicable": 0
+   }
+  },
+  {
+   "id": "cedrlang-compression",
+   "name": "CedrLang compression mappings",
+   "kind": "word-map",
+   "source_path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+   "direction": "bidirectional",
+   "canonical_source": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+   "entry_count": 31,
+   "entries_included": true,
+   "round_trip": {
+    "verified": 31,
+    "failed": 0,
+    "not_applicable": 0
+   }
+  },
+  {
+   "id": "cedrlang-stopwords",
+   "name": "CedrLang stopword elision",
+   "kind": "elision-list",
+   "source_path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+   "direction": "encode-only",
+   "canonical_source": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+   "entry_count": 29,
+   "entries_included": true,
+   "round_trip": {
+    "verified": 0,
+    "failed": 29,
+    "not_applicable": 0
+   }
+  },
+  {
+   "id": "phase-codec-leet-chars",
+   "name": "Phase codec leet character map (PR #154, p=0.70)",
+   "kind": "char-map",
+   "source_path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+   "direction": "encode-only",
+   "canonical_source": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+   "entry_count": 6,
+   "entries_included": true,
+   "round_trip": {
+    "verified": 0,
+    "failed": 0,
+    "not_applicable": 6
+   }
+  },
+  {
+   "id": "phase-codec-canonical-tokens",
+   "name": "Phase codec canonical tokens + leet variants",
+   "kind": "token-variants",
+   "source_path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+   "direction": "bidirectional",
+   "canonical_source": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+   "entry_count": 31,
+   "entries_included": true,
+   "round_trip": {
+    "verified": 31,
+    "failed": 0,
+    "not_applicable": 0
+   },
+   "note": "variant index: 61 forms, 30 non-canonical"
+  },
+  {
+   "id": "grimoire-char-variants",
+   "name": "Grimoire 1337 character variants (prose)",
+   "kind": "char-map",
+   "source_path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+   "direction": "encode-only",
+   "canonical_source": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+   "entry_count": 26,
+   "entries_included": true,
+   "round_trip": {
+    "verified": 0,
+    "failed": 0,
+    "not_applicable": 26
+   },
+   "note": "canonical runtime map is phase_codec.LEET_MAP"
+  },
+  {
+   "id": "grimoire-core-castings",
+   "name": "Grimoire core castings (1337 term -> meaning)",
+   "kind": "glossary",
+   "source_path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+   "direction": "decode-only",
+   "canonical_source": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+   "entry_count": 14,
+   "entries_included": true,
+   "round_trip": {
+    "verified": 0,
+    "failed": 0,
+    "not_applicable": 14
+   }
+  },
+  {
+   "id": "grimoire-protocol-terms",
+   "name": "Grimoire protocol terms (term <-> leet variant)",
+   "kind": "glossary",
+   "source_path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+   "direction": "bidirectional",
+   "canonical_source": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+   "entry_count": 11,
+   "entries_included": true,
+   "round_trip": {
+    "verified": 3,
+    "failed": 0,
+    "not_applicable": 8
+   }
+  },
+  {
+   "id": "grimoire-orchestra-crosswalk",
+   "name": "Grimoire dictionary crosswalk (1337/Grimoire/Orchestra)",
+   "kind": "crosswalk",
+   "source_path": "harmony_hub/config/GRIMOIRE_DICTIONARY.md",
+   "direction": "bidirectional",
+   "canonical_source": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+   "entry_count": 16,
+   "entries_included": true,
+   "round_trip": {
+    "verified": 15,
+    "failed": 0,
+    "not_applicable": 1
+   }
+  },
+  {
+   "id": "cedar-pointer-commands",
+   "name": "CedarIndex pointer seed commands (cid.py)",
+   "kind": "hash-pointer",
+   "source_path": "workspace/compression_sandbox/cedrlang/cid.py",
+   "direction": "bidirectional",
+   "canonical_source": "workspace/compression_sandbox/cedrlang/cid.py",
+   "entry_count": 45,
+   "entries_included": true,
+   "round_trip": {
+    "verified": 45,
+    "failed": 0,
+    "not_applicable": 0
+   },
+   "note": "pointers are sha256/base36 4-char hashes prefixed →; live registry is runtime-local, never in-repo"
+  },
+  {
+   "id": "nomenclature-concepts",
+   "name": "Nomenclature matrix concepts",
+   "kind": "concept-registry",
+   "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+   "direction": "definitional",
+   "canonical_source": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+   "entry_count": 8,
+   "entries_included": true,
+   "round_trip": {
+    "verified": 0,
+    "failed": 0,
+    "not_applicable": 8
+   },
+   "note": "candidate-status research data (SKOS-aligned); not runtime authority"
+  },
+  {
+   "id": "nomenclature-labels",
+   "name": "Nomenclature matrix labels",
+   "kind": "label-registry",
+   "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+   "direction": "definitional",
+   "canonical_source": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+   "entry_count": 14,
+   "entries_included": true,
+   "round_trip": {
+    "verified": 0,
+    "failed": 0,
+    "not_applicable": 14
+   }
+  },
+  {
+   "id": "nomenclature-mappings",
+   "name": "Nomenclature matrix concept mappings (SKOS relations)",
+   "kind": "concept-map",
+   "source_path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+   "direction": "definitional",
+   "canonical_source": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+   "entry_count": 2,
+   "entries_included": true,
+   "round_trip": {
+    "verified": 0,
+    "failed": 0,
+    "not_applicable": 2
+   }
+  },
+  {
+   "id": "routing-notation",
+   "name": "Routing notation vocabulary",
+   "kind": "vocabulary",
+   "source_path": "docs/schemas/routing-notation.yaml",
+   "direction": "definitional",
+   "canonical_source": "docs/schemas/routing-notation.yaml",
+   "entry_count": 23,
+   "entries_included": true,
+   "round_trip": {
+    "verified": 0,
+    "failed": 0,
+    "not_applicable": 23
+   }
+  },
+  {
+   "id": "archwiz-pointer-index",
+   "name": "ArchWiz pointer index (hash -> session/manifest)",
+   "kind": "hash-pointer",
+   "source_path": "archwiz/pointer_index.json",
+   "direction": "decode-only",
+   "canonical_source": "archwiz/pointer_index.json",
+   "entry_count": 7287,
+   "entries_included": false,
+   "round_trip": {
+    "verified": 0,
+    "failed": 0,
+    "not_applicable": 0
+   },
+   "note": "entries are session/manifest data, not lexical mappings; counted, not enumerated in the feed"
+  }
+ ],
+ "entries": [
+  {
+   "id": "cedrlang-symbol:leads-to",
+   "family": "cedrlang-symbol",
+   "source": "leads to",
+   "variants": [
+    "→"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 26
+   },
+   "round_trip_verified": false,
+   "note": "lossy decode: expand() of the symbol yields 'x implies y' here (many-to-one symbol and/or symbol-pair substring collision in REV_MAP)"
+  },
+  {
+   "id": "cedrlang-symbol:results-in",
+   "family": "cedrlang-symbol",
+   "source": "results in",
+   "variants": [
+    "→"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 27
+   },
+   "round_trip_verified": false,
+   "note": "lossy decode: expand() of the symbol yields 'x implies y' here (many-to-one symbol and/or symbol-pair substring collision in REV_MAP)"
+  },
+  {
+   "id": "cedrlang-symbol:implies",
+   "family": "cedrlang-symbol",
+   "source": "implies",
+   "variants": [
+    "→"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 28
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-symbol:because",
+   "family": "cedrlang-symbol",
+   "source": "because",
+   "variants": [
+    "←"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 29
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-symbol:therefore",
+   "family": "cedrlang-symbol",
+   "source": "therefore",
+   "variants": [
+    "∴"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 30
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-symbol:since",
+   "family": "cedrlang-symbol",
+   "source": "since",
+   "variants": [
+    "∵"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 31
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-symbol:and-then",
+   "family": "cedrlang-symbol",
+   "source": "and then",
+   "variants": [
+    "⇒"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 32
+   },
+   "round_trip_verified": false,
+   "note": "lossy decode: expand() of the symbol yields 'x then y' here (many-to-one symbol and/or symbol-pair substring collision in REV_MAP)"
+  },
+  {
+   "id": "cedrlang-symbol:compare",
+   "family": "cedrlang-symbol",
+   "source": "compare",
+   "variants": [
+    "vs"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 33
+   },
+   "round_trip_verified": false,
+   "note": "lossy decode: expand() of the symbol yields 'x versus y' here (many-to-one symbol and/or symbol-pair substring collision in REV_MAP)"
+  },
+  {
+   "id": "cedrlang-symbol:versus",
+   "family": "cedrlang-symbol",
+   "source": "versus",
+   "variants": [
+    "vs"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 34
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-symbol:create",
+   "family": "cedrlang-symbol",
+   "source": "create",
+   "variants": [
+    "+"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 35
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-symbol:delete",
+   "family": "cedrlang-symbol",
+   "source": "delete",
+   "variants": [
+    "-"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 36
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-symbol:update",
+   "family": "cedrlang-symbol",
+   "source": "update",
+   "variants": [
+    "~"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 37
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-symbol:read",
+   "family": "cedrlang-symbol",
+   "source": "read",
+   "variants": [
+    ">"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 38
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-symbol:write",
+   "family": "cedrlang-symbol",
+   "source": "write",
+   "variants": [
+    "<"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 39
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-symbol:execute",
+   "family": "cedrlang-symbol",
+   "source": "execute",
+   "variants": [
+    "!"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 40
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-symbol:query",
+   "family": "cedrlang-symbol",
+   "source": "query",
+   "variants": [
+    "?"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 41
+   },
+   "round_trip_verified": false,
+   "note": "lossy decode: expand() of the symbol yields 'x if y' here (many-to-one symbol and/or symbol-pair substring collision in REV_MAP)"
+  },
+  {
+   "id": "cedrlang-symbol:answer",
+   "family": "cedrlang-symbol",
+   "source": "answer",
+   "variants": [
+    "="
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 42
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-symbol:set",
+   "family": "cedrlang-symbol",
+   "source": "set",
+   "variants": [
+    ":="
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 43
+   },
+   "round_trip_verified": false,
+   "note": "lossy decode: expand() of the symbol yields 'x : answer y' here (many-to-one symbol and/or symbol-pair substring collision in REV_MAP)"
+  },
+  {
+   "id": "cedrlang-symbol:get",
+   "family": "cedrlang-symbol",
+   "source": "get",
+   "variants": [
+    "."
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 44
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-symbol:if",
+   "family": "cedrlang-symbol",
+   "source": "if",
+   "variants": [
+    "?"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 45
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-symbol:then",
+   "family": "cedrlang-symbol",
+   "source": "then",
+   "variants": [
+    "⇒"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 46
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-symbol:else",
+   "family": "cedrlang-symbol",
+   "source": "else",
+   "variants": [
+    "|"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 47
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-symbol:and",
+   "family": "cedrlang-symbol",
+   "source": "and",
+   "variants": [
+    "∧"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 48
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-symbol:or",
+   "family": "cedrlang-symbol",
+   "source": "or",
+   "variants": [
+    "∨"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 49
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-symbol:not",
+   "family": "cedrlang-symbol",
+   "source": "not",
+   "variants": [
+    "¬"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 50
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-symbol:true",
+   "family": "cedrlang-symbol",
+   "source": "true",
+   "variants": [
+    "T"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 51
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-symbol:false",
+   "family": "cedrlang-symbol",
+   "source": "false",
+   "variants": [
+    "F"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 52
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-symbol:success",
+   "family": "cedrlang-symbol",
+   "source": "success",
+   "variants": [
+    "✓"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 53
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-symbol:fail",
+   "family": "cedrlang-symbol",
+   "source": "fail",
+   "variants": [
+    "✗"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 54
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-symbol:pending",
+   "family": "cedrlang-symbol",
+   "source": "pending",
+   "variants": [
+    "…"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 55
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-symbol:error",
+   "family": "cedrlang-symbol",
+   "source": "error",
+   "variants": [
+    "⚠"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 56
+   },
+   "round_trip_verified": false,
+   "note": "lossy decode: expand() of the symbol yields 'x warning y' here (many-to-one symbol and/or symbol-pair substring collision in REV_MAP)"
+  },
+  {
+   "id": "cedrlang-symbol:warning",
+   "family": "cedrlang-symbol",
+   "source": "warning",
+   "variants": [
+    "⚠"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 57
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:transmute",
+   "family": "cedrlang-compression",
+   "source": "transmute",
+   "variants": [
+    "h4x"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 67
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:scry",
+   "family": "cedrlang-compression",
+   "source": "scry",
+   "variants": [
+    "scry"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 68
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:probe",
+   "family": "cedrlang-compression",
+   "source": "probe",
+   "variants": [
+    "pr0b3"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 69
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:echo",
+   "family": "cedrlang-compression",
+   "source": "echo",
+   "variants": [
+    "3ch0"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 70
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:time-loop",
+   "family": "cedrlang-compression",
+   "source": "time loop",
+   "variants": [
+    "l00p"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 71
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:branch",
+   "family": "cedrlang-compression",
+   "source": "branch",
+   "variants": [
+    "f0rk"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 72
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:incantation",
+   "family": "cedrlang-compression",
+   "source": "incantation",
+   "variants": [
+    "1nc4nt"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 73
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:cast",
+   "family": "cedrlang-compression",
+   "source": "cast",
+   "variants": [
+    "c4st"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 74
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:grimoire",
+   "family": "cedrlang-compression",
+   "source": "grimoire",
+   "variants": [
+    "gr1m01r3"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 75
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:bidder",
+   "family": "cedrlang-compression",
+   "source": "bidder",
+   "variants": [
+    "b1dd3r"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 76
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:wager",
+   "family": "cedrlang-compression",
+   "source": "wager",
+   "variants": [
+    "w4g3r"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 77
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:chronomancer",
+   "family": "cedrlang-compression",
+   "source": "chronomancer",
+   "variants": [
+    "chr0n0"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 78
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:linguist",
+   "family": "cedrlang-compression",
+   "source": "linguist",
+   "variants": [
+    "l1ngu15t"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 79
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:scout",
+   "family": "cedrlang-compression",
+   "source": "scout",
+   "variants": [
+    "sc0ut"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 80
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:harvester",
+   "family": "cedrlang-compression",
+   "source": "harvester",
+   "variants": [
+    "h4rv35t3r"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 81
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:emerging-technologies",
+   "family": "cedrlang-compression",
+   "source": "emerging technologies",
+   "variants": [
+    "em_t3chs"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 82
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:emerging-technology",
+   "family": "cedrlang-compression",
+   "source": "emerging technology",
+   "variants": [
+    "em_t3ch"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 83
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:procurements",
+   "family": "cedrlang-compression",
+   "source": "procurements",
+   "variants": [
+    "pr0cur3s"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 84
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:procurement",
+   "family": "cedrlang-compression",
+   "source": "procurement",
+   "variants": [
+    "pr0cur3"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 85
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:curations",
+   "family": "cedrlang-compression",
+   "source": "curations",
+   "variants": [
+    "cur473s"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 86
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:curation",
+   "family": "cedrlang-compression",
+   "source": "curation",
+   "variants": [
+    "cur473"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 87
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:sourcings",
+   "family": "cedrlang-compression",
+   "source": "sourcings",
+   "variants": [
+    "s0urc3s"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 88
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:sourcing",
+   "family": "cedrlang-compression",
+   "source": "sourcing",
+   "variants": [
+    "s0urc3"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 89
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:acquisitions",
+   "family": "cedrlang-compression",
+   "source": "acquisitions",
+   "variants": [
+    "4cqs"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 90
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:acquisition",
+   "family": "cedrlang-compression",
+   "source": "acquisition",
+   "variants": [
+    "4cq"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 91
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:compliances",
+   "family": "cedrlang-compression",
+   "source": "compliances",
+   "variants": [
+    "c0mp1s"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 92
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:compliance",
+   "family": "cedrlang-compression",
+   "source": "compliance",
+   "variants": [
+    "c0mp1"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 93
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:researches",
+   "family": "cedrlang-compression",
+   "source": "researches",
+   "variants": [
+    "r3534rchs"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 94
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:research",
+   "family": "cedrlang-compression",
+   "source": "research",
+   "variants": [
+    "r3534rch"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 95
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:concepts",
+   "family": "cedrlang-compression",
+   "source": "concepts",
+   "variants": [
+    "c0nc3p7s"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 96
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-compression:concept",
+   "family": "cedrlang-compression",
+   "source": "concept",
+   "variants": [
+    "c0nc3p7"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 97
+   },
+   "round_trip_verified": true
+  },
+  {
+   "id": "cedrlang-stopwords:a",
+   "family": "cedrlang-stopwords",
+   "source": "a",
+   "variants": [],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 61
+   },
+   "round_trip_verified": false,
+   "note": "elided by compress()/caveman(); lossy by design"
+  },
+  {
+   "id": "cedrlang-stopwords:an",
+   "family": "cedrlang-stopwords",
+   "source": "an",
+   "variants": [],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 61
+   },
+   "round_trip_verified": false,
+   "note": "elided by compress()/caveman(); lossy by design"
+  },
+  {
+   "id": "cedrlang-stopwords:and",
+   "family": "cedrlang-stopwords",
+   "source": "and",
+   "variants": [],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 62
+   },
+   "round_trip_verified": false,
+   "note": "elided by compress()/caveman(); lossy by design"
+  },
+  {
+   "id": "cedrlang-stopwords:are",
+   "family": "cedrlang-stopwords",
+   "source": "are",
+   "variants": [],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 61
+   },
+   "round_trip_verified": false,
+   "note": "elided by compress()/caveman(); lossy by design"
+  },
+  {
+   "id": "cedrlang-stopwords:at",
+   "family": "cedrlang-stopwords",
+   "source": "at",
+   "variants": [],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 62
+   },
+   "round_trip_verified": false,
+   "note": "elided by compress()/caveman(); lossy by design"
+  },
+  {
+   "id": "cedrlang-stopwords:be",
+   "family": "cedrlang-stopwords",
+   "source": "be",
+   "variants": [],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 61
+   },
+   "round_trip_verified": false,
+   "note": "elided by compress()/caveman(); lossy by design"
+  },
+  {
+   "id": "cedrlang-stopwords:been",
+   "family": "cedrlang-stopwords",
+   "source": "been",
+   "variants": [],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 61
+   },
+   "round_trip_verified": false,
+   "note": "elided by compress()/caveman(); lossy by design"
+  },
+  {
+   "id": "cedrlang-stopwords:being",
+   "family": "cedrlang-stopwords",
+   "source": "being",
+   "variants": [],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 61
+   },
+   "round_trip_verified": false,
+   "note": "elided by compress()/caveman(); lossy by design"
+  },
+  {
+   "id": "cedrlang-stopwords:by",
+   "family": "cedrlang-stopwords",
+   "source": "by",
+   "variants": [],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 62
+   },
+   "round_trip_verified": false,
+   "note": "elided by compress()/caveman(); lossy by design"
+  },
+  {
+   "id": "cedrlang-stopwords:for",
+   "family": "cedrlang-stopwords",
+   "source": "for",
+   "variants": [],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 62
+   },
+   "round_trip_verified": false,
+   "note": "elided by compress()/caveman(); lossy by design"
+  },
+  {
+   "id": "cedrlang-stopwords:he",
+   "family": "cedrlang-stopwords",
+   "source": "he",
+   "variants": [],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 63
+   },
+   "round_trip_verified": false,
+   "note": "elided by compress()/caveman(); lossy by design"
+  },
+  {
+   "id": "cedrlang-stopwords:in",
+   "family": "cedrlang-stopwords",
+   "source": "in",
+   "variants": [],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 62
+   },
+   "round_trip_verified": false,
+   "note": "elided by compress()/caveman(); lossy by design"
+  },
+  {
+   "id": "cedrlang-stopwords:is",
+   "family": "cedrlang-stopwords",
+   "source": "is",
+   "variants": [],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 61
+   },
+   "round_trip_verified": false,
+   "note": "elided by compress()/caveman(); lossy by design"
+  },
+  {
+   "id": "cedrlang-stopwords:it",
+   "family": "cedrlang-stopwords",
+   "source": "it",
+   "variants": [],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 63
+   },
+   "round_trip_verified": false,
+   "note": "elided by compress()/caveman(); lossy by design"
+  },
+  {
+   "id": "cedrlang-stopwords:of",
+   "family": "cedrlang-stopwords",
+   "source": "of",
+   "variants": [],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 62
+   },
+   "round_trip_verified": false,
+   "note": "elided by compress()/caveman(); lossy by design"
+  },
+  {
+   "id": "cedrlang-stopwords:on",
+   "family": "cedrlang-stopwords",
+   "source": "on",
+   "variants": [],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 62
+   },
+   "round_trip_verified": false,
+   "note": "elided by compress()/caveman(); lossy by design"
+  },
+  {
+   "id": "cedrlang-stopwords:she",
+   "family": "cedrlang-stopwords",
+   "source": "she",
+   "variants": [],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 63
+   },
+   "round_trip_verified": false,
+   "note": "elided by compress()/caveman(); lossy by design"
+  },
+  {
+   "id": "cedrlang-stopwords:that",
+   "family": "cedrlang-stopwords",
+   "source": "that",
+   "variants": [],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 62
+   },
+   "round_trip_verified": false,
+   "note": "elided by compress()/caveman(); lossy by design"
+  },
+  {
+   "id": "cedrlang-stopwords:the",
+   "family": "cedrlang-stopwords",
+   "source": "the",
+   "variants": [],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 61
+   },
+   "round_trip_verified": false,
+   "note": "elided by compress()/caveman(); lossy by design"
+  },
+  {
+   "id": "cedrlang-stopwords:these",
+   "family": "cedrlang-stopwords",
+   "source": "these",
+   "variants": [],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 63
+   },
+   "round_trip_verified": false,
+   "note": "elided by compress()/caveman(); lossy by design"
+  },
+  {
+   "id": "cedrlang-stopwords:they",
+   "family": "cedrlang-stopwords",
+   "source": "they",
+   "variants": [],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 63
+   },
+   "round_trip_verified": false,
+   "note": "elided by compress()/caveman(); lossy by design"
+  },
+  {
+   "id": "cedrlang-stopwords:this",
+   "family": "cedrlang-stopwords",
+   "source": "this",
+   "variants": [],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 63
+   },
+   "round_trip_verified": false,
+   "note": "elided by compress()/caveman(); lossy by design"
+  },
+  {
+   "id": "cedrlang-stopwords:those",
+   "family": "cedrlang-stopwords",
+   "source": "those",
+   "variants": [],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 63
+   },
+   "round_trip_verified": false,
+   "note": "elided by compress()/caveman(); lossy by design"
+  },
+  {
+   "id": "cedrlang-stopwords:to",
+   "family": "cedrlang-stopwords",
+   "source": "to",
+   "variants": [],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 62
+   },
+   "round_trip_verified": false,
+   "note": "elided by compress()/caveman(); lossy by design"
+  },
+  {
+   "id": "cedrlang-stopwords:was",
+   "family": "cedrlang-stopwords",
+   "source": "was",
+   "variants": [],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 61
+   },
+   "round_trip_verified": false,
+   "note": "elided by compress()/caveman(); lossy by design"
+  },
+  {
+   "id": "cedrlang-stopwords:we",
+   "family": "cedrlang-stopwords",
+   "source": "we",
+   "variants": [],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 63
+   },
+   "round_trip_verified": false,
+   "note": "elided by compress()/caveman(); lossy by design"
+  },
+  {
+   "id": "cedrlang-stopwords:were",
+   "family": "cedrlang-stopwords",
+   "source": "were",
+   "variants": [],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 61
+   },
+   "round_trip_verified": false,
+   "note": "elided by compress()/caveman(); lossy by design"
+  },
+  {
+   "id": "cedrlang-stopwords:with",
+   "family": "cedrlang-stopwords",
+   "source": "with",
+   "variants": [],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 62
+   },
+   "round_trip_verified": false,
+   "note": "elided by compress()/caveman(); lossy by design"
+  },
+  {
+   "id": "cedrlang-stopwords:you",
+   "family": "cedrlang-stopwords",
+   "source": "you",
+   "variants": [],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "line": 63
+   },
+   "round_trip_verified": false,
+   "note": "elided by compress()/caveman(); lossy by design"
+  },
+  {
+   "id": "phase-codec-leet-chars:a",
+   "family": "phase-codec-leet-chars",
+   "source": "a",
+   "variants": [
+    "4"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 28
+   },
+   "round_trip_verified": null,
+   "note": "char substitution is ambiguous alone (e.g. 4 = a); reversibility exists only at canonical-token level"
+  },
+  {
+   "id": "phase-codec-leet-chars:e",
+   "family": "phase-codec-leet-chars",
+   "source": "e",
+   "variants": [
+    "3"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 29
+   },
+   "round_trip_verified": null,
+   "note": "char substitution is ambiguous alone (e.g. 4 = a); reversibility exists only at canonical-token level"
+  },
+  {
+   "id": "phase-codec-leet-chars:i",
+   "family": "phase-codec-leet-chars",
+   "source": "i",
+   "variants": [
+    "1"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 30
+   },
+   "round_trip_verified": null,
+   "note": "char substitution is ambiguous alone (e.g. 4 = a); reversibility exists only at canonical-token level"
+  },
+  {
+   "id": "phase-codec-leet-chars:o",
+   "family": "phase-codec-leet-chars",
+   "source": "o",
+   "variants": [
+    "0"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 31
+   },
+   "round_trip_verified": null,
+   "note": "char substitution is ambiguous alone (e.g. 4 = a); reversibility exists only at canonical-token level"
+  },
+  {
+   "id": "phase-codec-leet-chars:s",
+   "family": "phase-codec-leet-chars",
+   "source": "s",
+   "variants": [
+    "5"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 32
+   },
+   "round_trip_verified": null,
+   "note": "char substitution is ambiguous alone (e.g. 4 = a); reversibility exists only at canonical-token level"
+  },
+  {
+   "id": "phase-codec-leet-chars:t",
+   "family": "phase-codec-leet-chars",
+   "source": "t",
+   "variants": [
+    "7"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 33
+   },
+   "round_trip_verified": null,
+   "note": "char substitution is ambiguous alone (e.g. 4 = a); reversibility exists only at canonical-token level"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:h4x",
+   "family": "phase-codec-canonical-tokens",
+   "source": "h4x",
+   "variants": [
+    "h4x"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 43
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:scry",
+   "family": "phase-codec-canonical-tokens",
+   "source": "scry",
+   "variants": [
+    "5cry",
+    "scry"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 43
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:pr0b3",
+   "family": "phase-codec-canonical-tokens",
+   "source": "pr0b3",
+   "variants": [
+    "pr0b3"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 43
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:3ch0",
+   "family": "phase-codec-canonical-tokens",
+   "source": "3ch0",
+   "variants": [
+    "3ch0"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 43
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:l00p",
+   "family": "phase-codec-canonical-tokens",
+   "source": "l00p",
+   "variants": [
+    "l00p"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 43
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:f0rk",
+   "family": "phase-codec-canonical-tokens",
+   "source": "f0rk",
+   "variants": [
+    "f0rk"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 43
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:1nc4nt",
+   "family": "phase-codec-canonical-tokens",
+   "source": "1nc4nt",
+   "variants": [
+    "1nc4n7",
+    "1nc4nt"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 43
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:c4st",
+   "family": "phase-codec-canonical-tokens",
+   "source": "c4st",
+   "variants": [
+    "c457",
+    "c45t",
+    "c4s7",
+    "c4st"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 43
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:gr1m01r3",
+   "family": "phase-codec-canonical-tokens",
+   "source": "gr1m01r3",
+   "variants": [
+    "gr1m01r3"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 44
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:b1dd3r",
+   "family": "phase-codec-canonical-tokens",
+   "source": "b1dd3r",
+   "variants": [
+    "b1dd3r"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 44
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:w4g3r",
+   "family": "phase-codec-canonical-tokens",
+   "source": "w4g3r",
+   "variants": [
+    "w4g3r"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 44
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:chr0n0",
+   "family": "phase-codec-canonical-tokens",
+   "source": "chr0n0",
+   "variants": [
+    "chr0n0"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 44
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:l1ngu15t",
+   "family": "phase-codec-canonical-tokens",
+   "source": "l1ngu15t",
+   "variants": [
+    "l1ngu157",
+    "l1ngu15t"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 44
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:sc0ut",
+   "family": "phase-codec-canonical-tokens",
+   "source": "sc0ut",
+   "variants": [
+    "5c0u7",
+    "5c0ut",
+    "sc0u7",
+    "sc0ut"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 44
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:h4rv35t3r",
+   "family": "phase-codec-canonical-tokens",
+   "source": "h4rv35t3r",
+   "variants": [
+    "h4rv3573r",
+    "h4rv35t3r"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 45
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:em-t3chs",
+   "family": "phase-codec-canonical-tokens",
+   "source": "em_t3chs",
+   "variants": [
+    "3m_73ch5",
+    "3m_73chs",
+    "3m_t3ch5",
+    "3m_t3chs",
+    "em_73ch5",
+    "em_73chs",
+    "em_t3ch5",
+    "em_t3chs"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 45
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:em-t3ch",
+   "family": "phase-codec-canonical-tokens",
+   "source": "em_t3ch",
+   "variants": [
+    "3m_73ch",
+    "3m_t3ch",
+    "em_73ch",
+    "em_t3ch"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 45
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:pr0cur3s",
+   "family": "phase-codec-canonical-tokens",
+   "source": "pr0cur3s",
+   "variants": [
+    "pr0cur35",
+    "pr0cur3s"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 45
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:pr0cur3",
+   "family": "phase-codec-canonical-tokens",
+   "source": "pr0cur3",
+   "variants": [
+    "pr0cur3"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 45
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:cur473s",
+   "family": "phase-codec-canonical-tokens",
+   "source": "cur473s",
+   "variants": [
+    "cur4735",
+    "cur473s"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 45
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:cur473",
+   "family": "phase-codec-canonical-tokens",
+   "source": "cur473",
+   "variants": [
+    "cur473"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 46
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:s0urc3s",
+   "family": "phase-codec-canonical-tokens",
+   "source": "s0urc3s",
+   "variants": [
+    "50urc35",
+    "50urc3s",
+    "s0urc35",
+    "s0urc3s"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 46
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:s0urc3",
+   "family": "phase-codec-canonical-tokens",
+   "source": "s0urc3",
+   "variants": [
+    "50urc3",
+    "s0urc3"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 46
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:4cqs",
+   "family": "phase-codec-canonical-tokens",
+   "source": "4cqs",
+   "variants": [
+    "4cq5",
+    "4cqs"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 46
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:4cq",
+   "family": "phase-codec-canonical-tokens",
+   "source": "4cq",
+   "variants": [
+    "4cq"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 46
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:c0mp1s",
+   "family": "phase-codec-canonical-tokens",
+   "source": "c0mp1s",
+   "variants": [
+    "c0mp15",
+    "c0mp1s"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 46
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:c0mp1",
+   "family": "phase-codec-canonical-tokens",
+   "source": "c0mp1",
+   "variants": [
+    "c0mp1"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 46
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:r3534rchs",
+   "family": "phase-codec-canonical-tokens",
+   "source": "r3534rchs",
+   "variants": [
+    "r3534rch5",
+    "r3534rchs"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 47
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:r3534rch",
+   "family": "phase-codec-canonical-tokens",
+   "source": "r3534rch",
+   "variants": [
+    "r3534rch"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 47
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:c0nc3p7s",
+   "family": "phase-codec-canonical-tokens",
+   "source": "c0nc3p7s",
+   "variants": [
+    "c0nc3p75",
+    "c0nc3p7s"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 47
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "phase-codec-canonical-tokens:c0nc3p7",
+   "family": "phase-codec-canonical-tokens",
+   "source": "c0nc3p7",
+   "variants": [
+    "c0nc3p7"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "line": 47
+   },
+   "round_trip_verified": true,
+   "note": "round-trip case-insensitive: from_1337speak may normalize casing (FAST_CASING table)"
+  },
+  {
+   "id": "grimoire-char-variants:a",
+   "family": "grimoire-char-variants",
+   "source": "A",
+   "variants": [
+    "4",
+    "/-\\",
+    "@",
+    "/\\"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 7
+   },
+   "round_trip_verified": null,
+   "note": "prose dictionary; superset of phase-codec LEET_MAP, not runtime authority"
+  },
+  {
+   "id": "grimoire-char-variants:b",
+   "family": "grimoire-char-variants",
+   "source": "B",
+   "variants": [
+    "8",
+    "6",
+    "|3"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 8
+   },
+   "round_trip_verified": null,
+   "note": "prose dictionary; superset of phase-codec LEET_MAP, not runtime authority"
+  },
+  {
+   "id": "grimoire-char-variants:c",
+   "family": "grimoire-char-variants",
+   "source": "C",
+   "variants": [
+    "(",
+    "<",
+    "{",
+    "©",
+    "["
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 9
+   },
+   "round_trip_verified": null,
+   "note": "prose dictionary; superset of phase-codec LEET_MAP, not runtime authority"
+  },
+  {
+   "id": "grimoire-char-variants:d",
+   "family": "grimoire-char-variants",
+   "source": "D",
+   "variants": [
+    "|)",
+    "|]",
+    "?"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 10
+   },
+   "round_trip_verified": null,
+   "note": "prose dictionary; superset of phase-codec LEET_MAP, not runtime authority"
+  },
+  {
+   "id": "grimoire-char-variants:e",
+   "family": "grimoire-char-variants",
+   "source": "E",
+   "variants": [
+    "3",
+    "&",
+    "€",
+    "£"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 11
+   },
+   "round_trip_verified": null,
+   "note": "prose dictionary; superset of phase-codec LEET_MAP, not runtime authority"
+  },
+  {
+   "id": "grimoire-char-variants:f",
+   "family": "grimoire-char-variants",
+   "source": "F",
+   "variants": [
+    "|=",
+    "ph",
+    "#"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 12
+   },
+   "round_trip_verified": null,
+   "note": "prose dictionary; superset of phase-codec LEET_MAP, not runtime authority"
+  },
+  {
+   "id": "grimoire-char-variants:g",
+   "family": "grimoire-char-variants",
+   "source": "G",
+   "variants": [
+    "6",
+    "9",
+    "&"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 13
+   },
+   "round_trip_verified": null,
+   "note": "prose dictionary; superset of phase-codec LEET_MAP, not runtime authority"
+  },
+  {
+   "id": "grimoire-char-variants:h",
+   "family": "grimoire-char-variants",
+   "source": "H",
+   "variants": [
+    "#",
+    "|-|",
+    "}{"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 14
+   },
+   "round_trip_verified": null,
+   "note": "prose dictionary; superset of phase-codec LEET_MAP, not runtime authority"
+  },
+  {
+   "id": "grimoire-char-variants:i",
+   "family": "grimoire-char-variants",
+   "source": "I",
+   "variants": [
+    "1",
+    "!",
+    "|"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 15
+   },
+   "round_trip_verified": null,
+   "note": "prose dictionary; superset of phase-codec LEET_MAP, not runtime authority"
+  },
+  {
+   "id": "grimoire-char-variants:j",
+   "family": "grimoire-char-variants",
+   "source": "J",
+   "variants": [
+    "_|",
+    "_/"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 16
+   },
+   "round_trip_verified": null,
+   "note": "prose dictionary; superset of phase-codec LEET_MAP, not runtime authority"
+  },
+  {
+   "id": "grimoire-char-variants:k",
+   "family": "grimoire-char-variants",
+   "source": "K",
+   "variants": [
+    "|{",
+    "|<"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 17
+   },
+   "round_trip_verified": null,
+   "note": "prose dictionary; superset of phase-codec LEET_MAP, not runtime authority"
+  },
+  {
+   "id": "grimoire-char-variants:l",
+   "family": "grimoire-char-variants",
+   "source": "L",
+   "variants": [
+    "1",
+    "|_",
+    "£"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 18
+   },
+   "round_trip_verified": null,
+   "note": "prose dictionary; superset of phase-codec LEET_MAP, not runtime authority"
+  },
+  {
+   "id": "grimoire-char-variants:m",
+   "family": "grimoire-char-variants",
+   "source": "M",
+   "variants": [
+    "/\\/\\",
+    "|\\/|"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 19
+   },
+   "round_trip_verified": null,
+   "note": "prose dictionary; superset of phase-codec LEET_MAP, not runtime authority"
+  },
+  {
+   "id": "grimoire-char-variants:n",
+   "family": "grimoire-char-variants",
+   "source": "N",
+   "variants": [
+    "/\\/",
+    "|\\|"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 20
+   },
+   "round_trip_verified": null,
+   "note": "prose dictionary; superset of phase-codec LEET_MAP, not runtime authority"
+  },
+  {
+   "id": "grimoire-char-variants:o",
+   "family": "grimoire-char-variants",
+   "source": "O",
+   "variants": [
+    "0",
+    "()",
+    "[]",
+    "<>"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 21
+   },
+   "round_trip_verified": null,
+   "note": "prose dictionary; superset of phase-codec LEET_MAP, not runtime authority"
+  },
+  {
+   "id": "grimoire-char-variants:p",
+   "family": "grimoire-char-variants",
+   "source": "P",
+   "variants": [
+    "|*",
+    "|o",
+    "|>"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 22
+   },
+   "round_trip_verified": null,
+   "note": "prose dictionary; superset of phase-codec LEET_MAP, not runtime authority"
+  },
+  {
+   "id": "grimoire-char-variants:q",
+   "family": "grimoire-char-variants",
+   "source": "Q",
+   "variants": [
+    "(",
+    ")",
+    "0",
+    ""
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 23
+   },
+   "round_trip_verified": null,
+   "note": "prose dictionary; superset of phase-codec LEET_MAP, not runtime authority"
+  },
+  {
+   "id": "grimoire-char-variants:r",
+   "family": "grimoire-char-variants",
+   "source": "R",
+   "variants": [
+    "|2",
+    "|?",
+    "|~"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 24
+   },
+   "round_trip_verified": null,
+   "note": "prose dictionary; superset of phase-codec LEET_MAP, not runtime authority"
+  },
+  {
+   "id": "grimoire-char-variants:s",
+   "family": "grimoire-char-variants",
+   "source": "S",
+   "variants": [
+    "5",
+    "$",
+    "z",
+    "§"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 25
+   },
+   "round_trip_verified": null,
+   "note": "prose dictionary; superset of phase-codec LEET_MAP, not runtime authority"
+  },
+  {
+   "id": "grimoire-char-variants:t",
+   "family": "grimoire-char-variants",
+   "source": "T",
+   "variants": [
+    "7",
+    "+",
+    "†"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 26
+   },
+   "round_trip_verified": null,
+   "note": "prose dictionary; superset of phase-codec LEET_MAP, not runtime authority"
+  },
+  {
+   "id": "grimoire-char-variants:u",
+   "family": "grimoire-char-variants",
+   "source": "U",
+   "variants": [
+    "|_|",
+    "µ"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 27
+   },
+   "round_trip_verified": null,
+   "note": "prose dictionary; superset of phase-codec LEET_MAP, not runtime authority"
+  },
+  {
+   "id": "grimoire-char-variants:v",
+   "family": "grimoire-char-variants",
+   "source": "V",
+   "variants": [
+    "\\/",
+    "\\\\\\\\/"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 28
+   },
+   "round_trip_verified": null,
+   "note": "prose dictionary; superset of phase-codec LEET_MAP, not runtime authority"
+  },
+  {
+   "id": "grimoire-char-variants:w",
+   "family": "grimoire-char-variants",
+   "source": "W",
+   "variants": [
+    "\\/\\/",
+    "vv",
+    "\\^/"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 29
+   },
+   "round_trip_verified": null,
+   "note": "prose dictionary; superset of phase-codec LEET_MAP, not runtime authority"
+  },
+  {
+   "id": "grimoire-char-variants:x",
+   "family": "grimoire-char-variants",
+   "source": "X",
+   "variants": [
+    "%",
+    "><",
+    "}{",
+    "×"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 30
+   },
+   "round_trip_verified": null,
+   "note": "prose dictionary; superset of phase-codec LEET_MAP, not runtime authority"
+  },
+  {
+   "id": "grimoire-char-variants:y",
+   "family": "grimoire-char-variants",
+   "source": "Y",
+   "variants": [
+    "`/",
+    "¥",
+    "-/"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 31
+   },
+   "round_trip_verified": null,
+   "note": "prose dictionary; superset of phase-codec LEET_MAP, not runtime authority"
+  },
+  {
+   "id": "grimoire-char-variants:z",
+   "family": "grimoire-char-variants",
+   "source": "Z",
+   "variants": [
+    "2",
+    "~/_",
+    "%"
+   ],
+   "direction": "encode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 32
+   },
+   "round_trip_verified": null,
+   "note": "prose dictionary; superset of phase-codec LEET_MAP, not runtime authority"
+  },
+  {
+   "id": "grimoire-core-castings:1337",
+   "family": "grimoire-core-castings",
+   "source": "1337",
+   "variants": [
+    "leet / elite"
+   ],
+   "direction": "decode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 37
+   },
+   "round_trip_verified": null
+  },
+  {
+   "id": "grimoire-core-castings:h4x",
+   "family": "grimoire-core-castings",
+   "source": "h4x",
+   "variants": [
+    "hacks"
+   ],
+   "direction": "decode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 38
+   },
+   "round_trip_verified": null
+  },
+  {
+   "id": "grimoire-core-castings:h4x0r",
+   "family": "grimoire-core-castings",
+   "source": "h4x0r",
+   "variants": [
+    "hacker"
+   ],
+   "direction": "decode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 39
+   },
+   "round_trip_verified": null
+  },
+  {
+   "id": "grimoire-core-castings:pwn",
+   "family": "grimoire-core-castings",
+   "source": "pwn",
+   "variants": [
+    "own (defeat)"
+   ],
+   "direction": "decode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 40
+   },
+   "round_trip_verified": null
+  },
+  {
+   "id": "grimoire-core-castings:n00b",
+   "family": "grimoire-core-castings",
+   "source": "n00b",
+   "variants": [
+    "newbie"
+   ],
+   "direction": "decode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 41
+   },
+   "round_trip_verified": null
+  },
+  {
+   "id": "grimoire-core-castings:w00t",
+   "family": "grimoire-core-castings",
+   "source": "w00t",
+   "variants": [
+    "excitement"
+   ],
+   "direction": "decode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 42
+   },
+   "round_trip_verified": null
+  },
+  {
+   "id": "grimoire-core-castings:sk1llz",
+   "family": "grimoire-core-castings",
+   "source": "sk1llz",
+   "variants": [
+    "skills"
+   ],
+   "direction": "decode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 43
+   },
+   "round_trip_verified": null
+  },
+  {
+   "id": "grimoire-core-castings:r00t",
+   "family": "grimoire-core-castings",
+   "source": "r00t",
+   "variants": [
+    "root / admin"
+   ],
+   "direction": "decode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 44
+   },
+   "round_trip_verified": null
+  },
+  {
+   "id": "grimoire-core-castings:warez",
+   "family": "grimoire-core-castings",
+   "source": "warez",
+   "variants": [
+    "pirated software"
+   ],
+   "direction": "decode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 45
+   },
+   "round_trip_verified": null
+  },
+  {
+   "id": "grimoire-core-castings:0day",
+   "family": "grimoire-core-castings",
+   "source": "0day",
+   "variants": [
+    "zero-day exploit"
+   ],
+   "direction": "decode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 46
+   },
+   "round_trip_verified": null
+  },
+  {
+   "id": "grimoire-core-castings:spl01t",
+   "family": "grimoire-core-castings",
+   "source": "spl01t",
+   "variants": [
+    "exploit"
+   ],
+   "direction": "decode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 47
+   },
+   "round_trip_verified": null
+  },
+  {
+   "id": "grimoire-core-castings:sh3llc0d3",
+   "family": "grimoire-core-castings",
+   "source": "sh3llc0d3",
+   "variants": [
+    "shellcode"
+   ],
+   "direction": "decode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 48
+   },
+   "round_trip_verified": null
+  },
+  {
+   "id": "grimoire-core-castings:cr4ck",
+   "family": "grimoire-core-castings",
+   "source": "cr4ck",
+   "variants": [
+    "crack"
+   ],
+   "direction": "decode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 49
+   },
+   "round_trip_verified": null
+  },
+  {
+   "id": "grimoire-core-castings:phr34k",
+   "family": "grimoire-core-castings",
+   "source": "phr34k",
+   "variants": [
+    "phreak"
+   ],
+   "direction": "decode-only",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 50
+   },
+   "round_trip_verified": null
+  },
+  {
+   "id": "grimoire-protocol-terms:archwizard",
+   "family": "grimoire-protocol-terms",
+   "source": "ArchWizard",
+   "variants": [
+    "4rchW1z4rd"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 2
+   },
+   "round_trip_verified": null,
+   "note": "leet variant not a cedrlang canonical token",
+   "meaning": "Manager Agent"
+  },
+  {
+   "id": "grimoire-protocol-terms:caster",
+   "family": "grimoire-protocol-terms",
+   "source": "Caster",
+   "variants": [
+    "C4573r"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 56
+   },
+   "round_trip_verified": null,
+   "note": "leet variant not a cedrlang canonical token",
+   "meaning": "Agent"
+  },
+  {
+   "id": "grimoire-protocol-terms:mana",
+   "family": "grimoire-protocol-terms",
+   "source": "Mana",
+   "variants": [
+    "M4n4"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 55
+   },
+   "round_trip_verified": null,
+   "note": "leet variant not a cedrlang canonical token",
+   "meaning": "ELO Score"
+  },
+  {
+   "id": "grimoire-protocol-terms:spellbook",
+   "family": "grimoire-protocol-terms",
+   "source": "Spellbook",
+   "variants": [
+    "Sp3llb00k"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 58
+   },
+   "round_trip_verified": null,
+   "note": "leet variant not a cedrlang canonical token",
+   "meaning": "Task Queue"
+  },
+  {
+   "id": "grimoire-protocol-terms:rune",
+   "family": "grimoire-protocol-terms",
+   "source": "Rune",
+   "variants": [
+    "Run3"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 59
+   },
+   "round_trip_verified": null,
+   "note": "leet variant not a cedrlang canonical token",
+   "meaning": "Prompt Template"
+  },
+  {
+   "id": "grimoire-protocol-terms:transmute",
+   "family": "grimoire-protocol-terms",
+   "source": "Transmute",
+   "variants": [
+    "Tr4n5mu73"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 60
+   },
+   "round_trip_verified": null,
+   "note": "leet variant not a cedrlang canonical token",
+   "meaning": "Refactor"
+  },
+  {
+   "id": "grimoire-protocol-terms:scry",
+   "family": "grimoire-protocol-terms",
+   "source": "Scry",
+   "variants": [
+    "5cry"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 61
+   },
+   "round_trip_verified": null,
+   "note": "leet variant not a cedrlang canonical token",
+   "meaning": "Review/Inspect"
+  },
+  {
+   "id": "grimoire-protocol-terms:probe",
+   "family": "grimoire-protocol-terms",
+   "source": "Probe",
+   "variants": [
+    "Pr0b3"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 62
+   },
+   "round_trip_verified": true,
+   "meaning": "Test"
+  },
+  {
+   "id": "grimoire-protocol-terms:echo",
+   "family": "grimoire-protocol-terms",
+   "source": "Echo",
+   "variants": [
+    "3ch0"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 63
+   },
+   "round_trip_verified": true,
+   "meaning": "Fragment Match"
+  },
+  {
+   "id": "grimoire-protocol-terms:grimoire",
+   "family": "grimoire-protocol-terms",
+   "source": "Grimoire",
+   "variants": [
+    "Gr1m01r3"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 52
+   },
+   "round_trip_verified": true,
+   "meaning": "Run History"
+  },
+  {
+   "id": "grimoire-protocol-terms:phylactery",
+   "family": "grimoire-protocol-terms",
+   "source": "Phylactery",
+   "variants": [
+    "Phyl4c73ry"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+    "line": 65
+   },
+   "round_trip_verified": null,
+   "note": "leet variant not a cedrlang canonical token",
+   "meaning": "Backup"
+  },
+  {
+   "id": "grimoire-orchestra-crosswalk:h4x",
+   "family": "grimoire-orchestra-crosswalk",
+   "source": "h4x",
+   "variants": [
+    "Transmute",
+    "Score"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "harmony_hub/config/GRIMOIRE_DICTIONARY.md",
+    "line": 6
+   },
+   "round_trip_verified": true,
+   "grimoire": "Transmute",
+   "orchestra": "Score"
+  },
+  {
+   "id": "grimoire-orchestra-crosswalk:scry",
+   "family": "grimoire-orchestra-crosswalk",
+   "source": "scry",
+   "variants": [
+    "Scry",
+    "Inspect"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "harmony_hub/config/GRIMOIRE_DICTIONARY.md",
+    "line": 7
+   },
+   "round_trip_verified": true,
+   "grimoire": "Scry",
+   "orchestra": "Inspect"
+  },
+  {
+   "id": "grimoire-orchestra-crosswalk:pr0b3",
+   "family": "grimoire-orchestra-crosswalk",
+   "source": "pr0b3",
+   "variants": [
+    "Probe",
+    "Test"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "harmony_hub/config/GRIMOIRE_DICTIONARY.md",
+    "line": 8
+   },
+   "round_trip_verified": true,
+   "grimoire": "Probe",
+   "orchestra": "Test"
+  },
+  {
+   "id": "grimoire-orchestra-crosswalk:3ch0",
+   "family": "grimoire-orchestra-crosswalk",
+   "source": "3ch0",
+   "variants": [
+    "Echo",
+    "Resonance"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "harmony_hub/config/GRIMOIRE_DICTIONARY.md",
+    "line": 9
+   },
+   "round_trip_verified": true,
+   "grimoire": "Echo",
+   "orchestra": "Resonance"
+  },
+  {
+   "id": "grimoire-orchestra-crosswalk:l00p",
+   "family": "grimoire-orchestra-crosswalk",
+   "source": "l00p",
+   "variants": [
+    "Time Loop",
+    "Recapitulation"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "harmony_hub/config/GRIMOIRE_DICTIONARY.md",
+    "line": 10
+   },
+   "round_trip_verified": true,
+   "grimoire": "Time Loop",
+   "orchestra": "Recapitulation"
+  },
+  {
+   "id": "grimoire-orchestra-crosswalk:f0rk",
+   "family": "grimoire-orchestra-crosswalk",
+   "source": "f0rk",
+   "variants": [
+    "Branch 🌿",
+    "Cadenza"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "harmony_hub/config/GRIMOIRE_DICTIONARY.md",
+    "line": 11
+   },
+   "round_trip_verified": null,
+   "note": "no matching cedrlang canonical pair",
+   "grimoire": "Branch 🌿",
+   "orchestra": "Cadenza"
+  },
+  {
+   "id": "grimoire-orchestra-crosswalk:1nc4nt",
+   "family": "grimoire-orchestra-crosswalk",
+   "source": "1nc4nt",
+   "variants": [
+    "Incantation",
+    "Phrase"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "harmony_hub/config/GRIMOIRE_DICTIONARY.md",
+    "line": 12
+   },
+   "round_trip_verified": true,
+   "grimoire": "Incantation",
+   "orchestra": "Phrase"
+  },
+  {
+   "id": "grimoire-orchestra-crosswalk:c4st",
+   "family": "grimoire-orchestra-crosswalk",
+   "source": "c4st",
+   "variants": [
+    "Cast",
+    "Perform"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "harmony_hub/config/GRIMOIRE_DICTIONARY.md",
+    "line": 13
+   },
+   "round_trip_verified": true,
+   "grimoire": "Cast",
+   "orchestra": "Perform"
+  },
+  {
+   "id": "grimoire-orchestra-crosswalk:gr1m01r3",
+   "family": "grimoire-orchestra-crosswalk",
+   "source": "gr1m01r3",
+   "variants": [
+    "Grimoire",
+    "Scorebook"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "harmony_hub/config/GRIMOIRE_DICTIONARY.md",
+    "line": 14
+   },
+   "round_trip_verified": true,
+   "grimoire": "Grimoire",
+   "orchestra": "Scorebook"
+  },
+  {
+   "id": "grimoire-orchestra-crosswalk:b1dd3r",
+   "family": "grimoire-orchestra-crosswalk",
+   "source": "b1dd3r",
+   "variants": [
+    "Bidder",
+    "Impresario"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "harmony_hub/config/GRIMOIRE_DICTIONARY.md",
+    "line": 15
+   },
+   "round_trip_verified": true,
+   "grimoire": "Bidder",
+   "orchestra": "Impresario"
+  },
+  {
+   "id": "grimoire-orchestra-crosswalk:w4g3r",
+   "family": "grimoire-orchestra-crosswalk",
+   "source": "w4g3r",
+   "variants": [
+    "Wager",
+    "Bet"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "harmony_hub/config/GRIMOIRE_DICTIONARY.md",
+    "line": 16
+   },
+   "round_trip_verified": true,
+   "grimoire": "Wager",
+   "orchestra": "Bet"
+  },
+  {
+   "id": "grimoire-orchestra-crosswalk:chr0n0",
+   "family": "grimoire-orchestra-crosswalk",
+   "source": "chr0n0",
+   "variants": [
+    "Chronomancer",
+    "Timekeeper"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "harmony_hub/config/GRIMOIRE_DICTIONARY.md",
+    "line": 22
+   },
+   "round_trip_verified": true,
+   "grimoire": "Chronomancer",
+   "orchestra": "Timekeeper"
+  },
+  {
+   "id": "grimoire-orchestra-crosswalk:l1ngu15t",
+   "family": "grimoire-orchestra-crosswalk",
+   "source": "l1ngu15t",
+   "variants": [
+    "Linguist",
+    "Translator"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "harmony_hub/config/GRIMOIRE_DICTIONARY.md",
+    "line": 23
+   },
+   "round_trip_verified": true,
+   "grimoire": "Linguist",
+   "orchestra": "Translator"
+  },
+  {
+   "id": "grimoire-orchestra-crosswalk:b1dd3r",
+   "family": "grimoire-orchestra-crosswalk",
+   "source": "b1dd3r",
+   "variants": [
+    "Bidder",
+    "Impresario"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "harmony_hub/config/GRIMOIRE_DICTIONARY.md",
+    "line": 15
+   },
+   "round_trip_verified": true,
+   "grimoire": "Bidder",
+   "orchestra": "Impresario"
+  },
+  {
+   "id": "grimoire-orchestra-crosswalk:sc0ut",
+   "family": "grimoire-orchestra-crosswalk",
+   "source": "sc0ut",
+   "variants": [
+    "Scout",
+    "Explorer"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "harmony_hub/config/GRIMOIRE_DICTIONARY.md",
+    "line": 25
+   },
+   "round_trip_verified": true,
+   "grimoire": "Scout",
+   "orchestra": "Explorer"
+  },
+  {
+   "id": "grimoire-orchestra-crosswalk:h4rv35t3r",
+   "family": "grimoire-orchestra-crosswalk",
+   "source": "h4rv35t3r",
+   "variants": [
+    "Harvester",
+    "Collector"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "harmony_hub/config/GRIMOIRE_DICTIONARY.md",
+    "line": 26
+   },
+   "round_trip_verified": true,
+   "grimoire": "Harvester",
+   "orchestra": "Collector"
+  },
+  {
+   "id": "cedar-pointer-commands:create-file-path-with-content",
+   "family": "cedar-pointer-commands",
+   "source": "CREATE FILE path WITH content",
+   "variants": [
+    "→1lxh"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 66
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:update-file-path-end-update",
+   "family": "cedar-pointer-commands",
+   "source": "UPDATE FILE path ... END UPDATE",
+   "variants": [
+    "→1tn6"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 67
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:insert-at-beginning-of-file-path-content-content",
+   "family": "cedar-pointer-commands",
+   "source": "INSERT AT BEGINNING OF FILE path CONTENT content",
+   "variants": [
+    "→1u1i"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 68
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:insert-at-end-of-file-path-content-content",
+   "family": "cedar-pointer-commands",
+   "source": "INSERT AT END OF FILE path CONTENT content",
+   "variants": [
+    "→no12"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 69
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:insert-at-line-line-of-file-path-content-content",
+   "family": "cedar-pointer-commands",
+   "source": "INSERT AT LINE line OF FILE path CONTENT content",
+   "variants": [
+    "→2m4q"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 70
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:delete-file-path",
+   "family": "cedar-pointer-commands",
+   "source": "DELETE FILE path",
+   "variants": [
+    "→nxbz"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 71
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:move-file-src-to-dst",
+   "family": "cedar-pointer-commands",
+   "source": "MOVE FILE src TO dst",
+   "variants": [
+    "→bhnp"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 72
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:create-function-name-end-function",
+   "family": "cedar-pointer-commands",
+   "source": "CREATE FUNCTION name ... END FUNCTION",
+   "variants": [
+    "→2cv1"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 73
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:update-function-name-end-update",
+   "family": "cedar-pointer-commands",
+   "source": "UPDATE FUNCTION name ... END UPDATE",
+   "variants": [
+    "→1xzl"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 74
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:insert-before-function-name-content-code",
+   "family": "cedar-pointer-commands",
+   "source": "INSERT BEFORE FUNCTION name CONTENT code",
+   "variants": [
+    "→189o"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 75
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:insert-after-function-name-content-code",
+   "family": "cedar-pointer-commands",
+   "source": "INSERT AFTER FUNCTION name CONTENT code",
+   "variants": [
+    "→fui1"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 76
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:insert-at-beginning-of-function-name-content-code",
+   "family": "cedar-pointer-commands",
+   "source": "INSERT AT BEGINNING OF FUNCTION name CONTENT code",
+   "variants": [
+    "→2mo2"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 77
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:insert-at-end-of-function-name-content-code",
+   "family": "cedar-pointer-commands",
+   "source": "INSERT AT END OF FUNCTION name CONTENT code",
+   "variants": [
+    "→37in"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 78
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:insert-at-line-line-of-function-name-content-code",
+   "family": "cedar-pointer-commands",
+   "source": "INSERT AT LINE line OF FUNCTION name CONTENT code",
+   "variants": [
+    "→1etq"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 79
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:delete-function-name",
+   "family": "cedar-pointer-commands",
+   "source": "DELETE FUNCTION name",
+   "variants": [
+    "→2y7t"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 80
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:move-function-name-before-function-target",
+   "family": "cedar-pointer-commands",
+   "source": "MOVE FUNCTION name BEFORE FUNCTION target",
+   "variants": [
+    "→16at"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 81
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:move-function-name-after-function-target",
+   "family": "cedar-pointer-commands",
+   "source": "MOVE FUNCTION name AFTER FUNCTION target",
+   "variants": [
+    "→1sb5"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 82
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:create-class-name-end-class",
+   "family": "cedar-pointer-commands",
+   "source": "CREATE CLASS name ... END CLASS",
+   "variants": [
+    "→2b68"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 83
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:update-class-name-end-update",
+   "family": "cedar-pointer-commands",
+   "source": "UPDATE CLASS name ... END UPDATE",
+   "variants": [
+    "→1jip"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 84
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:create-method-method-in-class-class-end-method",
+   "family": "cedar-pointer-commands",
+   "source": "CREATE METHOD method IN CLASS class ... END METHOD",
+   "variants": [
+    "→2bgz"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 85
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:update-method-method-in-class-class-end-update",
+   "family": "cedar-pointer-commands",
+   "source": "UPDATE METHOD method IN CLASS class ... END UPDATE",
+   "variants": [
+    "→w2th"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 86
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:insert-before-method-method-in-class-class-content-code",
+   "family": "cedar-pointer-commands",
+   "source": "INSERT BEFORE METHOD method IN CLASS class CONTENT code",
+   "variants": [
+    "→2lm2"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 87
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:insert-after-method-method-in-class-class-content-code",
+   "family": "cedar-pointer-commands",
+   "source": "INSERT AFTER METHOD method IN CLASS class CONTENT code",
+   "variants": [
+    "→1eia"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 88
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:delete-method-method-in-class-class",
+   "family": "cedar-pointer-commands",
+   "source": "DELETE METHOD method IN CLASS class",
+   "variants": [
+    "→3cem"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 89
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:move-method-method-in-class-class-before-method-target",
+   "family": "cedar-pointer-commands",
+   "source": "MOVE METHOD method IN CLASS class BEFORE METHOD target",
+   "variants": [
+    "→2y73"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 90
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:select-location-of-function-name",
+   "family": "cedar-pointer-commands",
+   "source": "SELECT LOCATION OF FUNCTION name",
+   "variants": [
+    "→2ha2"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 91
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:select-location-of-class-name",
+   "family": "cedar-pointer-commands",
+   "source": "SELECT LOCATION OF CLASS name",
+   "variants": [
+    "→3c1i"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 92
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:select-location-of-method-method-in-class-class",
+   "family": "cedar-pointer-commands",
+   "source": "SELECT LOCATION OF METHOD method IN CLASS class",
+   "variants": [
+    "→ewcm"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 93
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:select-location-of-identifier-name",
+   "family": "cedar-pointer-commands",
+   "source": "SELECT LOCATION OF IDENTIFIER name",
+   "variants": [
+    "→2any"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 94
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:select-calls-of-function-name",
+   "family": "cedar-pointer-commands",
+   "source": "SELECT CALLS OF FUNCTION name",
+   "variants": [
+    "→3bhx"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 95
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:select-references-of-identifier-name",
+   "family": "cedar-pointer-commands",
+   "source": "SELECT REFERENCES OF IDENTIFIER name",
+   "variants": [
+    "→1lza"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 96
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:select-definition-of-identifier-name",
+   "family": "cedar-pointer-commands",
+   "source": "SELECT DEFINITION OF IDENTIFIER name",
+   "variants": [
+    "→lifz"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 97
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:select-all-functions-in-file-path",
+   "family": "cedar-pointer-commands",
+   "source": "SELECT ALL FUNCTIONS IN FILE path",
+   "variants": [
+    "→260l"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 98
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:select-all-classes-in-file-path",
+   "family": "cedar-pointer-commands",
+   "source": "SELECT ALL CLASSES IN FILE path",
+   "variants": [
+    "→19ns"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 99
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:select-all-methods-in-class-class",
+   "family": "cedar-pointer-commands",
+   "source": "SELECT ALL METHODS IN CLASS class",
+   "variants": [
+    "→oscz"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 100
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:select-all-variables-in-file-path",
+   "family": "cedar-pointer-commands",
+   "source": "SELECT ALL VARIABLES IN FILE path",
+   "variants": [
+    "→qk59"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 101
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:select-all-imports-in-file-path",
+   "family": "cedar-pointer-commands",
+   "source": "SELECT ALL IMPORTS IN FILE path",
+   "variants": [
+    "→3bo3"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 102
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:rename-function-old-to-new",
+   "family": "cedar-pointer-commands",
+   "source": "RENAME FUNCTION old TO new",
+   "variants": [
+    "→pdwl"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 103
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:rename-class-old-to-new",
+   "family": "cedar-pointer-commands",
+   "source": "RENAME CLASS old TO new",
+   "variants": [
+    "→2vr1"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 104
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:rename-method-old-to-new-in-class-class",
+   "family": "cedar-pointer-commands",
+   "source": "RENAME METHOD old TO new IN CLASS class",
+   "variants": [
+    "→lw02"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 105
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:rename-variable-old-to-new-in-scope-file",
+   "family": "cedar-pointer-commands",
+   "source": "RENAME VARIABLE old TO new IN SCOPE file",
+   "variants": [
+    "→2zzi"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 106
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:extract-code-from-start-to-end-into-function-new",
+   "family": "cedar-pointer-commands",
+   "source": "EXTRACT CODE FROM start TO end INTO FUNCTION new",
+   "variants": [
+    "→69bo"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 107
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:inline-function-call",
+   "family": "cedar-pointer-commands",
+   "source": "INLINE FUNCTION call",
+   "variants": [
+    "→30qr"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 108
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:add-parameter-param-to-function-func",
+   "family": "cedar-pointer-commands",
+   "source": "ADD PARAMETER param TO FUNCTION func",
+   "variants": [
+    "→2joo"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 109
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "cedar-pointer-commands:remove-parameter-param-from-function-func",
+   "family": "cedar-pointer-commands",
+   "source": "REMOVE PARAMETER param FROM FUNCTION func",
+   "variants": [
+    "→3djq"
+   ],
+   "direction": "bidirectional",
+   "provenance": {
+    "path": "workspace/compression_sandbox/cedrlang/cid.py",
+    "line": 110
+   },
+   "round_trip_verified": true,
+   "note": "decode requires the runtime registry (~/.cedar/cedar_index.json), not committed"
+  },
+  {
+   "id": "nomenclature-concepts:morphism",
+   "family": "nomenclature-concepts",
+   "source": "morphism",
+   "variants": [
+    "category_theory.morphism"
+   ],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "line": 77
+   },
+   "round_trip_verified": null,
+   "concept_id": "category_theory.morphism",
+   "domain_id": "category_theory",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-concepts:morphism-composition",
+   "family": "nomenclature-concepts",
+   "source": "morphism composition",
+   "variants": [
+    "category_theory.composition"
+   ],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "line": 88
+   },
+   "round_trip_verified": null,
+   "concept_id": "category_theory.composition",
+   "domain_id": "category_theory",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-concepts:left-to-right-function-composition",
+   "family": "nomenclature-concepts",
+   "source": "left-to-right function composition",
+   "variants": [
+    "functional_programming.left_to_right_composition"
+   ],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "line": 99
+   },
+   "round_trip_verified": null,
+   "concept_id": "functional_programming.left_to_right_composition",
+   "domain_id": "functional_programming",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-concepts:monadic-bind",
+   "family": "nomenclature-concepts",
+   "source": "monadic bind",
+   "variants": [
+    "haskell.monadic_bind"
+   ],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "line": 110
+   },
+   "round_trip_verified": null,
+   "concept_id": "haskell.monadic_bind",
+   "domain_id": "haskell",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-concepts:lexical-label",
+   "family": "nomenclature-concepts",
+   "source": "lexical label",
+   "variants": [
+    "knowledge_organization.lexical_label"
+   ],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "line": 121
+   },
+   "round_trip_verified": null,
+   "concept_id": "knowledge_organization.lexical_label",
+   "domain_id": "knowledge_organization",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-concepts:controlled-vocabulary",
+   "family": "nomenclature-concepts",
+   "source": "controlled vocabulary",
+   "variants": [
+    "knowledge_organization.controlled_vocabulary"
+   ],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "line": 133
+   },
+   "round_trip_verified": null,
+   "concept_id": "knowledge_organization.controlled_vocabulary",
+   "domain_id": "knowledge_organization",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-concepts:colloquial-to-formal-terminology-mapping",
+   "family": "nomenclature-concepts",
+   "source": "colloquial-to-formal terminology mapping",
+   "variants": [
+    "terminology.colloquial_to_formal_mapping"
+   ],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "line": 145
+   },
+   "round_trip_verified": null,
+   "concept_id": "terminology.colloquial_to_formal_mapping",
+   "domain_id": "terminology_management",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-concepts:near-synonymy",
+   "family": "nomenclature-concepts",
+   "source": "near-synonymy",
+   "variants": [
+    "linguistics.near_synonymy"
+   ],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "line": 157
+   },
+   "round_trip_verified": null,
+   "concept_id": "linguistics.near_synonymy",
+   "domain_id": "lexical_semantics",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-labels:morphism",
+   "family": "nomenclature-labels",
+   "source": "morphism",
+   "variants": [
+    "lbl-morphism-formal"
+   ],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "line": 171
+   },
+   "round_trip_verified": null,
+   "label_id": "lbl-morphism-formal",
+   "concept_id": "category_theory.morphism",
+   "label_type": "preferred_formal",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-labels:arrow",
+   "family": "nomenclature-labels",
+   "source": "arrow",
+   "variants": [
+    "lbl-morphism-arrow"
+   ],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "line": 184
+   },
+   "round_trip_verified": null,
+   "label_id": "lbl-morphism-arrow",
+   "concept_id": "category_theory.morphism",
+   "label_type": "alternative_synonym",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-labels:a-structure-respecting-arrow",
+   "family": "nomenclature-labels",
+   "source": "a structure-respecting arrow",
+   "variants": [
+    "lbl-morphism-plain"
+   ],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "line": 197
+   },
+   "round_trip_verified": null,
+   "label_id": "lbl-morphism-plain",
+   "concept_id": "category_theory.morphism",
+   "label_type": "preferred_plain_language",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-labels:apply-one-mapping-then-the-next",
+   "family": "nomenclature-labels",
+   "source": "apply one mapping, then the next",
+   "variants": [
+    "lbl-compose-plain"
+   ],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "line": 210
+   },
+   "round_trip_verified": null,
+   "label_id": "lbl-compose-plain",
+   "concept_id": "category_theory.composition",
+   "label_type": "preferred_plain_language",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-labels:glue-the-arrows-together",
+   "family": "nomenclature-labels",
+   "source": "glue the arrows together",
+   "variants": [
+    "lbl-compose-ad-hoc"
+   ],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "line": 223
+   },
+   "round_trip_verified": null,
+   "label_id": "lbl-compose-ad-hoc",
+   "concept_id": "category_theory.composition",
+   "label_type": "ad_hoc",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-labels:x",
+   "family": "nomenclature-labels",
+   "source": ">>=",
+   "variants": [
+    "lbl-bind-symbol"
+   ],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "line": 236
+   },
+   "round_trip_verified": null,
+   "label_id": "lbl-bind-symbol",
+   "concept_id": "haskell.monadic_bind",
+   "label_type": "symbolic_notation",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-labels:lexical-label",
+   "family": "nomenclature-labels",
+   "source": "lexical label",
+   "variants": [
+    "lbl-lexical-label-formal"
+   ],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "line": 249
+   },
+   "round_trip_verified": null,
+   "label_id": "lbl-lexical-label-formal",
+   "concept_id": "knowledge_organization.lexical_label",
+   "label_type": "preferred_formal",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-labels:the-words-used-to-name-a-concept",
+   "family": "nomenclature-labels",
+   "source": "the words used to name a concept",
+   "variants": [
+    "lbl-lexical-label-plain"
+   ],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "line": 262
+   },
+   "round_trip_verified": null,
+   "label_id": "lbl-lexical-label-plain",
+   "concept_id": "knowledge_organization.lexical_label",
+   "label_type": "preferred_plain_language",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-labels:controlled-vocabulary",
+   "family": "nomenclature-labels",
+   "source": "controlled vocabulary",
+   "variants": [
+    "lbl-controlled-vocab-formal"
+   ],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "line": 275
+   },
+   "round_trip_verified": null,
+   "label_id": "lbl-controlled-vocab-formal",
+   "concept_id": "knowledge_organization.controlled_vocabulary",
+   "label_type": "preferred_formal",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-labels:a-curated-set-of-agreed-terms",
+   "family": "nomenclature-labels",
+   "source": "a curated set of agreed terms",
+   "variants": [
+    "lbl-controlled-vocab-plain"
+   ],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "line": 288
+   },
+   "round_trip_verified": null,
+   "label_id": "lbl-controlled-vocab-plain",
+   "concept_id": "knowledge_organization.controlled_vocabulary",
+   "label_type": "preferred_plain_language",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-labels:colloquial-to-formal-terminology-mapping",
+   "family": "nomenclature-labels",
+   "source": "colloquial-to-formal terminology mapping",
+   "variants": [
+    "lbl-colloquial-to-formal"
+   ],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "line": 302
+   },
+   "round_trip_verified": null,
+   "label_id": "lbl-colloquial-to-formal",
+   "concept_id": "terminology.colloquial_to_formal_mapping",
+   "label_type": "preferred_formal",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-labels:colloquial-wet-lab-language",
+   "family": "nomenclature-labels",
+   "source": "colloquial wet-lab language",
+   "variants": [
+    "lbl-colloquial-wetlab"
+   ],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "line": 315
+   },
+   "round_trip_verified": null,
+   "label_id": "lbl-colloquial-wetlab",
+   "concept_id": "terminology.colloquial_to_formal_mapping",
+   "label_type": "related_term",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-labels:near-synonymy",
+   "family": "nomenclature-labels",
+   "source": "near-synonymy",
+   "variants": [
+    "lbl-near-synonymy-formal"
+   ],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "line": 328
+   },
+   "round_trip_verified": null,
+   "label_id": "lbl-near-synonymy-formal",
+   "concept_id": "linguistics.near_synonymy",
+   "label_type": "preferred_formal",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-labels:words-that-mean-almost-the-same-thing-but-not-always",
+   "family": "nomenclature-labels",
+   "source": "words that mean almost the same thing, but not always",
+   "variants": [
+    "lbl-near-synonymy-plain"
+   ],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "line": 341
+   },
+   "round_trip_verified": null,
+   "label_id": "lbl-near-synonymy-plain",
+   "concept_id": "linguistics.near_synonymy",
+   "label_type": "preferred_plain_language",
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-mappings:category-theory-morphism",
+   "family": "nomenclature-mappings",
+   "source": "category_theory.morphism",
+   "variants": [
+    "category_theory.morphism"
+   ],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "line": 357
+   },
+   "round_trip_verified": null,
+   "mapping_id": "map-morphism-arrow",
+   "relation": "same_concept_label",
+   "confidence": 0.5,
+   "status": "candidate"
+  },
+  {
+   "id": "nomenclature-mappings:haskell-monadic-bind",
+   "family": "nomenclature-mappings",
+   "source": "haskell.monadic_bind",
+   "variants": [
+    "category_theory.composition"
+   ],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "line": 369
+   },
+   "round_trip_verified": null,
+   "mapping_id": "map-bind-not-compose",
+   "relation": "related_match",
+   "confidence": 0.35,
+   "status": "candidate"
+  },
+  {
+   "id": "routing-notation:single",
+   "family": "routing-notation",
+   "source": "single",
+   "variants": [],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/schemas/routing-notation.yaml",
+    "line": 7
+   },
+   "round_trip_verified": null,
+   "section": "topology",
+   "definition": "one selected execution participant"
+  },
+  {
+   "id": "routing-notation:series",
+   "family": "routing-notation",
+   "source": "series",
+   "variants": [],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/schemas/routing-notation.yaml",
+    "line": 8
+   },
+   "round_trip_verified": null,
+   "section": "topology",
+   "definition": "ordered stages where downstream context depends on upstream output"
+  },
+  {
+   "id": "routing-notation:dynamic",
+   "family": "routing-notation",
+   "source": "dynamic",
+   "variants": [],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/schemas/routing-notation.yaml",
+    "line": 9
+   },
+   "round_trip_verified": null,
+   "section": "topology",
+   "definition": "recompute admission/selection as evidence changes"
+  },
+  {
+   "id": "routing-notation:parallel",
+   "family": "routing-notation",
+   "source": "parallel",
+   "variants": [],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/schemas/routing-notation.yaml",
+    "line": 10
+   },
+   "round_trip_verified": null,
+   "section": "topology",
+   "definition": "independent treatments execute concurrently"
+  },
+  {
+   "id": "routing-notation:nested",
+   "family": "routing-notation",
+   "source": "nested",
+   "variants": [],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/schemas/routing-notation.yaml",
+    "line": 11
+   },
+   "round_trip_verified": null,
+   "section": "topology",
+   "definition": "a route invokes a bounded sub-orchestrator with its own policy"
+  },
+  {
+   "id": "routing-notation:co-working",
+   "family": "routing-notation",
+   "source": "co-working",
+   "variants": [],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/schemas/routing-notation.yaml",
+    "line": 12
+   },
+   "round_trip_verified": null,
+   "section": "topology",
+   "definition": "multiple participants collaborate on one shared task with explicit ownership boundaries"
+  },
+  {
+   "id": "routing-notation:volley",
+   "family": "routing-notation",
+   "source": "volley",
+   "variants": [],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/schemas/routing-notation.yaml",
+    "line": 13
+   },
+   "round_trip_verified": null,
+   "section": "topology",
+   "definition": "bounded alternating passes between participants until a stop/evidence condition"
+  },
+  {
+   "id": "routing-notation:operator",
+   "family": "routing-notation",
+   "source": "OPERATOR",
+   "variants": [],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/schemas/routing-notation.yaml",
+    "line": 15
+   },
+   "round_trip_verified": null,
+   "section": "operators",
+   "definition": "human-authorized control boundary; may set objective, constraints, acceptance, or stop conditions"
+  },
+  {
+   "id": "routing-notation:orchestrator",
+   "family": "routing-notation",
+   "source": "Orchestrator",
+   "variants": [],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/schemas/routing-notation.yaml",
+    "line": 16
+   },
+   "round_trip_verified": null,
+   "section": "operators",
+   "definition": "plans topology, partitions work, schedules participants, integrates evidence"
+  },
+  {
+   "id": "routing-notation:scout",
+   "family": "routing-notation",
+   "source": "Scout",
+   "variants": [],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/schemas/routing-notation.yaml",
+    "line": 17
+   },
+   "round_trip_verified": null,
+   "section": "operators",
+   "definition": "discovers candidates, context, dependencies, and available evidence"
+  },
+  {
+   "id": "routing-notation:manager",
+   "family": "routing-notation",
+   "source": "manager",
+   "variants": [],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/schemas/routing-notation.yaml",
+    "line": 18
+   },
+   "round_trip_verified": null,
+   "section": "operators",
+   "definition": "optimizes policy over task/cohort observations; controls admission, sequencing, concurrency, and culling"
+  },
+  {
+   "id": "routing-notation:classifier",
+   "family": "routing-notation",
+   "source": "classifier",
+   "variants": [],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/schemas/routing-notation.yaml",
+    "line": 19
+   },
+   "round_trip_verified": null,
+   "section": "operators",
+   "definition": "maps task/context to capabilities, risk, task family, and candidate eligibility"
+  },
+  {
+   "id": "routing-notation:mev",
+   "family": "routing-notation",
+   "source": "mev",
+   "variants": [],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/schemas/routing-notation.yaml",
+    "line": 20
+   },
+   "round_trip_verified": null,
+   "section": "operators",
+   "definition": "measurement/evaluation vector; records outcome, effort, evidence, and attribution dimensions"
+  },
+  {
+   "id": "routing-notation:jev",
+   "family": "routing-notation",
+   "source": "Jev",
+   "variants": [],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/schemas/routing-notation.yaml",
+    "line": 21
+   },
+   "round_trip_verified": null,
+   "section": "operators",
+   "definition": "joint evaluation vector across cooperating participants"
+  },
+  {
+   "id": "routing-notation:kev",
+   "family": "routing-notation",
+   "source": "Kev",
+   "variants": [],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/schemas/routing-notation.yaml",
+    "line": 22
+   },
+   "round_trip_verified": null,
+   "section": "operators",
+   "definition": "knowledge/evidence vector used for context and decision provenance"
+  },
+  {
+   "id": "routing-notation:laya",
+   "family": "routing-notation",
+   "source": "LAYA",
+   "variants": [],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/schemas/routing-notation.yaml",
+    "line": 23
+   },
+   "round_trip_verified": null,
+   "section": "operators",
+   "definition": "lane-aware yield/allocation signal; implementation may define concrete dimensions per experiment"
+  },
+  {
+   "id": "routing-notation:doe",
+   "family": "routing-notation",
+   "source": "DoE",
+   "variants": [],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/schemas/routing-notation.yaml",
+    "line": 25
+   },
+   "round_trip_verified": null,
+   "section": "experiment_axes",
+   "definition": ""
+  },
+  {
+   "id": "routing-notation:mvt",
+   "family": "routing-notation",
+   "source": "MVT",
+   "variants": [],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/schemas/routing-notation.yaml",
+    "line": 28
+   },
+   "round_trip_verified": null,
+   "section": "experiment_axes",
+   "definition": ""
+  },
+  {
+   "id": "routing-notation:hard-gate",
+   "family": "routing-notation",
+   "source": "hard_gate",
+   "variants": [],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/schemas/routing-notation.yaml",
+    "line": 32
+   },
+   "round_trip_verified": null,
+   "section": "evidence",
+   "definition": "excludes a candidate; never converted into a compensating score"
+  },
+  {
+   "id": "routing-notation:observation",
+   "family": "routing-notation",
+   "source": "observation",
+   "variants": [],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/schemas/routing-notation.yaml",
+    "line": 33
+   },
+   "round_trip_verified": null,
+   "section": "evidence",
+   "definition": "records what actually happened"
+  },
+  {
+   "id": "routing-notation:outcome",
+   "family": "routing-notation",
+   "source": "outcome",
+   "variants": [],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/schemas/routing-notation.yaml",
+    "line": 34
+   },
+   "round_trip_verified": null,
+   "section": "evidence",
+   "definition": "records integrated task result"
+  },
+  {
+   "id": "routing-notation:attribution",
+   "family": "routing-notation",
+   "source": "attribution",
+   "variants": [],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/schemas/routing-notation.yaml",
+    "line": 35
+   },
+   "round_trip_verified": null,
+   "section": "evidence",
+   "definition": "records participant/provider/model/adapter confidence"
+  },
+  {
+   "id": "routing-notation:decision",
+   "family": "routing-notation",
+   "source": "decision",
+   "variants": [],
+   "direction": "definitional",
+   "provenance": {
+    "path": "docs/schemas/routing-notation.yaml",
+    "line": 36
+   },
+   "round_trip_verified": null,
+   "section": "evidence",
+   "definition": "records why a topology/candidate was admitted or selected"
+  }
+ ],
+ "gaps": [
+  {
+   "id": "mapping-pointer-index-missing",
+   "detail": "archwiz/mapping_pointer_index.py is cited as the mapping-pointer-index/v1 contract by docs/linguist/ACTIONS-MAPPING-RECOVERY.md, docs/proposals/active/notation-sets/NSE-020-MAPPING-POINTER-ROUNDTRIP.md, ROUNDTRIP-IMPLEMENTATION.md and scripts/linguist/index_alignment.py, but the file does not exist on master. NOT ESTABLISHED as implemented."
+  },
+  {
+   "id": "rev-grimoire-map-missing",
+   "detail": "REV_GRIMOIRE_MAP / REV_SYMBOL_MAP are named in ACTIONS-MAPPING-RECOVERY.md as historical reverse tables; on master only REV_MAP (derived from SYMBOL_MAP) exists in cedrlang.py."
+  },
+  {
+   "id": "linguist-machine-parity-placeholder",
+   "detail": "docs/proposals/active/linguist-machine-parity/ holds LMP-01 as a posted placeholder only: zero mapping entries, implementation not authorized there. No family emitted."
+  },
+  {
+   "id": "cedar-live-registry-not-in-repo",
+   "detail": "CedarIndex live registrations live in ~/.cedar/cedar_index.json (runtime-local). The feed carries only the 45 seed commands from cid.py ALL_COMMANDS."
+  },
+  {
+   "id": "encrypted-pointer-store-proposed",
+   "detail": "PR #154's encrypted private mapping-pointer store and Actions obfuscation hooks are proposed in ACTIONS-MAPPING-RECOVERY.md, not verified as deployed. No family emitted."
+  }
+ ],
+ "excluded": [
+  "harmony_hub/config/prompts/profiles/1337.json — prompt profile that *uses* leet surface, defines no mappings",
+  "archwiz/vision_1337.py — prose/vision text, no mappings",
+  "docs/proposals/active/notation-sets/ NSE-001..NSE-023 — proposal items governing the families above, not mapping entries themselves",
+  ".deepcli/session_store/* — session artifacts, not mappings"
+ ]
+}

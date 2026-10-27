@@ -9,21 +9,21 @@ state changes only on firsthand verification (SC-006).
 | ID | Item | State | Evidence / exit condition |
 |---|---|---|---|
 | SC-001 | Register this census as a proposal (this package) | executing | exit: registry entry + package merged; validator green |
-| SC-002 | W1: fold census entries into the Tier-1 classifier map + provider catalogs with layer (model/adapter/runtime) and source URL per entry | proposed | exit: catalog/map diff merged; no double-count across layers |
-| SC-003 | W2: evaluate self-hostable namesakes (Kev, Laya, Lev, Tev1, Strands Decider 2B, Nimble) as observatory trial candidates where a free route exists | proposed | exit: trial records via classifier-trial-dispatch, or a recorded no-free-route finding per candidate |
+| SC-002 | W1: fold census entries into the Tier-1 classifier map + provider catalogs with layer (model/adapter/runtime) and source URL per entry | executing | exit: catalog/map diff merged; no double-count across layers |
+| SC-003 | W2: evaluate self-hostable namesakes (Kev, Laya, Lev, Tev1, Strands Decider 2B, Nimble) as observatory trial candidates where a free route exists | executing | exit: trial records via classifier-trial-dispatch, or a recorded no-free-route finding per candidate |
 | SC-004 | W2: hosted/paid entries (Jev/TypeSafe et al.) remain referenced until the owner allows a paid route | proposed | exit: owner ruling recorded; no paid call before it |
-| SC-005 | W3: track adapters/runtimes/directories as infrastructure options (Ollaya, simple-jev, laya.cpp, sys1, classifier.dev) | proposed | exit: options recorded in the Tier-1 map with layer tags |
+| SC-005 | W3: track adapters/runtimes/directories as infrastructure options (Ollaya, simple-jev, laya.cpp, sys1, classifier.dev) | executing | exit: options recorded in the Tier-1 map with layer tags |
 | SC-006 | Verify directory-level entries firsthand before any state promotion beyond `referenced` | proposed | exit: per-entry firsthand check recorded in ITEMS.md |
 
 ## S1 — Namesakes (the fleet's observatory names)
 
 | ID | Item | State | Source |
 |---|---|---|---|
-| S1-01 | Jev — TypeSafe AI — Hosted native typed decision model (Choice/Score/Noul); OpenRouter lists 1.13/1.14 | referenced | https://typesafe.ai/blog/introducing-system-one-models-and-jev |
-| S1-02 | Kev — Jared Palmer — Open Jev-like family on Qwen (0.8B/4B/9B/27B); self-hosted, TypeSafe-compatible serving | referenced | https://github.com/jaredpalmer/kev |
-| S1-03 | Laya — ConvAI Innovations — Non-autoregressive encoder decision family; English + multilingual checkpoints; open weights | referenced | https://github.com/NandhaKishorM/laya |
-| S1-04 | Mev (recruiting) — Zhilin Wang — ~0.4B bidirectional encoder + decision head, fine-tuned from Laya for job-candidate matching | referenced | https://x.com/i/article/2101962974898397246 |
-| S1-05 | mev — Mellow AI — Qwen3.5-4B LoRA selecting among 2-24 options; Apache-2.0; standard next-token head | referenced | https://huggingface.co/stay-mellow-ai/mev |
+| S1-01 | Jev — TypeSafe AI — Hosted native typed decision model (Choice/Score/Noul); OpenRouter lists 1.13/1.14 | referenced (blocked-paid, TRIALS.md) | https://typesafe.ai/blog/introducing-system-one-models-and-jev |
+| S1-02 | Kev — Jared Palmer — Open Jev-like family on Qwen (0.8B/4B/9B/27B); self-hosted, TypeSafe-compatible serving | trial_candidate | https://github.com/jaredpalmer/kev |
+| S1-03 | Laya — ConvAI Innovations — Non-autoregressive encoder decision family; English + multilingual checkpoints; open weights | evaluated | https://github.com/NandhaKishorM/laya |
+| S1-04 | Mev (recruiting) — Zhilin Wang — ~0.4B bidirectional encoder + decision head, fine-tuned from Laya for job-candidate matching | referenced (not-runnable: no release, TRIALS.md) | https://x.com/i/article/2101962974898397246 |
+| S1-05 | mev — Mellow AI — Qwen3.5-4B LoRA selecting among 2-24 options; Apache-2.0; standard next-token head | trial_candidate | https://huggingface.co/stay-mellow-ai/mev |
 
 ## S2 — Commercial, company, and laboratory families
 
@@ -99,7 +99,7 @@ state changes only on firsthand verification (SC-006).
 | S4-02 | AnyJev / Tacit — Nokia Applied Research — Training-free decision method + self-distilled Tacit models | referenced | https://github.com/nokia-applied-research/AnyJev |
 | S4-03 | LitJev — Decision serving from existing Qwen models without training; adapter | referenced | https://github.com/AnotiaWang/awesome-decision-models |
 | S4-04 | TetraJev — Combines multiple frozen-model decision readings + confidence gates; pipeline | referenced | https://github.com/AnotiaWang/awesome-decision-models |
-| S4-05 | simple-jev — featherless-ai — Turns compatible open models into classification endpoints; incl. Laya backend | referenced | https://github.com/featherless-ai/simple-jev |
+| S4-05 | simple-jev — featherless-ai — Turns compatible open models into classification endpoints; incl. Laya backend | evaluated | https://github.com/featherless-ai/simple-jev |
 | S4-06 | jevmlx — Parallel constrained decisions with MLX models; Apple Silicon | referenced | https://github.com/AnotiaWang/awesome-decision-models |
 | S4-07 | JEVfire — Parallel decisions using CUDA LLMs + vLLM; inference implementation | referenced | https://github.com/AnotiaWang/awesome-decision-models |
 | S4-08 | PocketJev — iPhone visual decisions with MLX + option logits; on-device app/technique | referenced | https://github.com/AnotiaWang/awesome-decision-models |

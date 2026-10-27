@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-10-27T08:56:24Z` UTC  
+**Generated:** `2026-10-27T12:11:15Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 123 docs-lane branch(es)
+**Count:** 129 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -57,6 +57,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/connected-platform-recon-20261021`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/connected-platform-recon-20261021) | `b94d64c04931` | — | — | orphan lane |
 | [`docs/context7-mintlify-agent-discoverability`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/context7-mintlify-agent-discoverability) | `35c1f2bd5bbe` | [#1617](https://github.com/timerloggedout-spec/termux-monorepo/pull/1617)→`master` | — | PR without registry link |
 | [`docs/context7-mintlify-mcp-workflow`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/context7-mintlify-mcp-workflow) | `4b9a610cf9de` | — | — | orphan lane |
+| [`docs/copilot-metrics-opencode-fork-check`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/copilot-metrics-opencode-fork-check) | `71ce79f73c7a` | — | — | orphan lane |
 | [`docs/copilot-usage-metrics-comparison`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/copilot-usage-metrics-comparison) | `3f696397b130` | — | — | orphan lane |
 | [`docs/deepseek-capture-pipeline`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/deepseek-capture-pipeline) | `c70fb1bbd9f8` | — | — | orphan lane |
 | [`docs/deepseek-inference-buried-tech-2026-10-26`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/deepseek-inference-buried-tech-2026-10-26) | `2257d78aec56` | — | — | orphan lane |
@@ -95,7 +96,9 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/n8n-mermaid-provenance-rebased`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/n8n-mermaid-provenance-rebased) | `2eb68422aebd` | — | — | orphan lane |
 | [`docs/notation-sets-evolution`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/notation-sets-evolution) | `25dbe5778683` | — | `timerloggedout-spec` | registered; no open PR |
 | [`docs/nse-022-023-lambda-lean-extract`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/nse-022-023-lambda-lean-extract) | `e588a84c04bf` | — | — | orphan lane |
+| [`docs/opencode-fork-integration`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/opencode-fork-integration) | `dfbabaddfb4a` | — | — | orphan lane |
 | [`docs/ops-docs-branch-index-automation`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/ops-docs-branch-index-automation) | `17961df7b0c5` | — | — | orphan lane |
+| [`docs/ops-maintenance-status-2026-10-27`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/ops-maintenance-status-2026-10-27) | `fccaa4b49a3a` | [#1735](https://github.com/timerloggedout-spec/termux-monorepo/pull/1735)→`master` | — | PR without registry link |
 | [`docs/paper2agent-scientific-factory-proposal-2026-09-29`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/paper2agent-scientific-factory-proposal-2026-09-29) | `f9923fd7bdfa` | — | `timerloggedout-spec` | registered; no open PR |
 | [`docs/phantom-secrets-audit`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/phantom-secrets-audit) | `27792087bad7` | — | — | orphan lane |
 | [`docs/portability-ratchet-proposal-20261026`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/portability-ratchet-proposal-20261026) | `d5cd0ef01b2c` | — | — | orphan lane |
@@ -103,6 +106,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/pr-scope-discipline-67-rebased`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/pr-scope-discipline-67-rebased) | `f16fc1c6aa5f` | — | — | orphan lane |
 | [`docs/pr-scope-discipline-ce22`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/pr-scope-discipline-ce22) | `a68300477966` | — | — | orphan lane |
 | [`docs/preflight-remove-phantom-check-action`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/preflight-remove-phantom-check-action) | `b622610948b2` | — | — | orphan lane |
+| [`docs/probing-means-finding-doms`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/probing-means-finding-doms) | `e0a3262a087c` | — | — | orphan lane |
 | [`docs/profile-registry`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/profile-registry) | `639f2fceed23` | — | — | orphan lane |
 | [`docs/project-status-provider-museai-2026-10-21`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/project-status-provider-museai-2026-10-21) | `8a965e78eba4` | — | — | orphan lane |
 | [`docs/promote-archwiz-to-master`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/promote-archwiz-to-master) | `70bfdeff314a` | — | — | orphan lane |
@@ -136,6 +140,8 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/termux-ssh-tunnel`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/termux-ssh-tunnel) | `41f5d318cd60` | [#1537](https://github.com/timerloggedout-spec/termux-monorepo/pull/1537)→`master` | — | PR without registry link |
 | [`docs/tier1-nav-proven`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/tier1-nav-proven) | `bfe043222ce0` | — | — | orphan lane |
 | [`docs/tier1-proof-results`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/tier1-proof-results) | `f03f7102d37e` | — | — | orphan lane |
+| [`docs/tribute-audit-phase2-batch1`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/tribute-audit-phase2-batch1) | `4d6620e8e65e` | — | — | orphan lane |
+| [`docs/tribute-lane-efficacy-audit-2026-10-27`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/tribute-lane-efficacy-audit-2026-10-27) | `7e1ec3029a52` | — | — | orphan lane |
 
 <!-- END:docs-branch-index -->
 

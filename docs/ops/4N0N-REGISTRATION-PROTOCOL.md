@@ -68,36 +68,66 @@ of record. Tooling: `scripts/registration_monikers/registry.py`
 
 | Platform | Role{Moniker} | Profile (Profile Registry heading) | Status | Registrations | Owning lane |
 |---|---|---|---|---|---|
-| AWS Builder Center | `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]` | AWS Builder Center | active | R1, R2, D0, R3, D1 | challenge-entries |
-| BOINC | `entrant{entrantBoinc}[platform:boinc]` | BOINC | registering | — | boinc |
-| Builder.io | `entrant{entrantBuilderIo}[platform:builder-io]` | Builder.io / Clips | active | D3 | challenge-entries |
-| Devpost | `entrant{entrantDevpost}[platform:devpost]` | Devpost | blocked-owner-gate | D4 | challenge-entries |
-| Kiro | `entrant{entrantKiro}[platform:kiro]` | Kiro | blocked-owner-gate | D4 | challenge-entries |
-| lablab.ai | `entrant{entrantLablabAi}[platform:lablab-ai]` | lablab.ai | registering | D2 | challenge-entries |
-| Vultr | `entrant{entrantVultr}[platform:vultr]` | Vultr | pending | D2 | challenge-entries |
+| Aion | `account{n0nAion}[platform:aion]` | — (pending: account-creation) | pending | — | account-creation |
+| AWS Builder Center | `entrant{n0nAwsBuilder}[platform:aws-builder-center]` | AWS Builder Center | active | R1, R2, D0, R3, D1 | challenge-entries |
+| BOINC | `entrant{n0nBoinc}[platform:boinc]` | BOINC | registering | — | boinc |
+| Builder.io | `entrant{n0nBuilder}[platform:builder-io]` | Builder.io / Clips | active | D3 | challenge-entries |
+| Cohere | `account{n0nCohere}[platform:cohere]` | — (pending: account-creation) | registering | — | account-creation |
+| Devpost | `entrant{n0nDevpost}[platform:devpost]` | Devpost | blocked-owner-gate | D4 | challenge-entries |
+| iFlytek | `account{n0nIflytek}[platform:iflytek]` | — (pending: account-creation) | pending | — | account-creation |
+| Kilo | `account{n0nKilo}[platform:kilo]` | — (pending: account-creation) | pending | — | account-creation |
+| Kiro | `entrant{n0nKiro}[platform:kiro]` | Kiro | blocked-owner-gate | D4 | challenge-entries |
+| lablab.ai | `entrant{n0nLablab}[platform:lablab-ai]` | lablab.ai | registering | D2 | challenge-entries |
+| LLM7 | `account{n0nLlm7}[platform:llm7]` | — (pending: account-creation) | pending | — | account-creation |
+| ModelScope | `account{n0nModelScope}[platform:model-scope]` | — (pending: account-creation) | pending | — | account-creation |
+| Requesty | `account{n0nRequesty}[platform:requesty]` | — (pending: account-creation) | pending | — | account-creation |
+| Routeway | `account{n0nRouteway}[platform:routeway]` | — (pending: account-creation) | pending | — | account-creation |
+| SeaLion | `account{n0nSeaLion}[platform:sea-lion]` | — (pending: account-creation) | pending | — | account-creation |
+| SiliconFlow | `account{n0nSiliconFlow}[platform:silicon-flow]` | — (pending: account-creation) | pending | — | account-creation |
+| UnoRouter | `account{n0nUnoRouter}[platform:uno-router]` | — (pending: account-creation) | pending | — | account-creation |
+| Vultr | `entrant{n0nVultr}[platform:vultr]` | Vultr | pending | D2 | challenge-entries |
+| xKiro | `account{n0nXkiro}[platform:xkiro]` | — (pending: account-creation) | pending | — | account-creation |
+| ZAI | `account{n0nZai}[platform:zai]` | — (pending: account-creation) | pending | — | account-creation |
 
 <!-- registry:end -->
 
 Registry of record: `config/registration_monikers.json` (schema
-`registration-monikers/2`). The table above is rendered from it by
+`registration-monikers/3`). The table above is rendered from it by
 `registry.py render`; edit the JSON, never the table. The Profile
 column names the entry's heading in `docs/ops/PROFILE-REGISTRY.md`,
 where the profile itself lives.
 
-## 3. Assignment rule
+## 3. Assignment rule (v2)
 
-Deterministic, so the registry grows by rule rather than by taste:
+Deterministic, so the registry grows by rule rather than by taste —
+and the output is a **username**, not a class name: when a signup form
+asks for one, the assigned moniker is what goes in the field.
 
 - Entries are processed in `platform_id` sort order.
-- `moniker = "entrant" + ` the platform_id's words capitalized and
-  joined — `aws-builder-center` → `entrantAwsBuilderCenter`.
+- `moniker = "n0n" + ` the platform_id's words capitalized and joined,
+  dropping filler words (`ai`, `io`, `center`) in non-first positions —
+  `aws-builder-center` → `n0nAwsBuilder`, `lablab-ai` → `n0nLablab`,
+  `builder-io` → `n0nBuilder`, `uno-router` → `n0nUnoRouter`. The `n0n`
+  stem is the 4n0n mark: short, letter-led, alphanumeric, ≤ 30 chars on
+  every current platform — valid username shape on the surfaces the
+  fleet signs up for.
 - On collision with a *different* platform, append the smallest integer
   ≥ 2 that frees the token.
-- Canonical form: `entrant{<moniker>}[platform:<platform_id>]`, e.g.
-  `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]`.
+- Canonical form: `<role>{<moniker>}[platform:<platform_id>]` — role
+  `entrant` for challenge platforms, `account` for provider accounts —
+  e.g. `entrant{n0nAwsBuilder}[platform:aws-builder-center]`,
+  `account{n0nCohere}[platform:cohere]`.
 - A packet (log §4) may be claimed by more than one entry — D2 is
   claimed by `lablab-ai` (event host) and `vultr` (sandbox) — with the
   `aspect` field saying why.
+
+**Migration (2026-10-27, owner directive):** rule v1 (`entrant` +
+full platform words — `entrantAwsBuilderCenter`, `entrantLablabAi`, …)
+is retired; all existing entries were renamed to v2 forms in place.
+Artifacts carrying v1 forms predate the rename. The one rename with a
+possible platform-side footprint is BOINC's: if any BOINC project
+account already carries `entrantBoinc`, that name is a profile fact for
+the Profile Registry and the moniker of record is `n0nBoinc` regardless.
 
 ## 4. Orchestration routes
 
@@ -154,6 +184,33 @@ registry. It runs `registry.py check`; the auto-fixable drift class is
   It assigns the fleet-side moniker and routing only; every
   platform-side step stays inside the standing boundaries.
 
+**Fleet-class platforms + the account-creation contract.** The
+vocabulary has two classes. *Log-class* platforms are detected in the
+challenge log as above. *Fleet-class* platforms (provider accounts,
+BOINC-style participations) are registered by their owning lane —
+they are never log-detected and never stale-checked against the log.
+For the account-creation lane specifically:
+
+- **The registry is the username source.** Whenever a signup needs a
+  username, that lane uses the platform's assigned moniker verbatim —
+  it never invents one at the form. Batch H (Cohere) and Batch C
+  (Aion, LLM7, Requesty, Routeway, UnoRouter, SeaLion, Kilo, ZAI,
+  ModelScope, SiliconFlow, iFlytek, xKiro) are pre-assigned in the
+  registry with role `account`.
+- **Instant lookup:** `registry.py derive --platform-id <slug>` prints
+  the assignment — the registry entry if one exists, else the rule-v2
+  result (collision-aware against the current registry). A derived
+  value is authoritative; it is ratified into the registry by PR
+  afterwards, and check guarantees the ratified value matches the rule.
+- **Taken/invalid username at a form:** the lane stops and surfaces
+  it; the registry assigns the collision variant (smallest free
+  integer ≥ 2) by rule. No improvised alternatives.
+- **Profiles:** fleet-class entries carry `profile_ref: null` plus
+  `profile_pending: <lane>` until the owning lane registers the
+  platform's profile in the Profile Registry under its own section;
+  check accepts the null only while a pending owner is named, and any
+  non-null ref must resolve.
+
 ## 6. Owner-gated items the current registry surfaces
 
 Full detail for each lives with its profile in
@@ -168,7 +225,7 @@ registry's escalation routes depend on them:
 Resolved since first listing: **Builder.io Clips** — the open question
 (account needed for a public demo?) closed 2026-10-27: the hosted
 Clips account exists (owner-approved; state in the Profile Registry),
-and demo publishing proceeds under `entrant{entrantBuilderIo}`.
+and demo publishing proceeds under `entrant{n0nBuilder}`.
 
 ## 7. Proposed challenge-log template change
 

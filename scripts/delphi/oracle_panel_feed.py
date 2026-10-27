@@ -336,10 +336,24 @@ def build_feed(registry_text: str, active_dir: Path, passes_dir: Path,
     pass_summaries = []
     for pass_id, data in passes.items():
         r1 = data["cycle"].get("BALLOT-round1.json") or {}
+        raw_n = data["meta"].get("n")
+        if isinstance(raw_n, dict):
+            n_val = raw_n.get("value")
+            n_val = n_val if isinstance(n_val, int) else None
+        elif isinstance(raw_n, int):
+            n_val = raw_n
+        else:
+            n_val = None
         pass_summaries.append({
             "pass_id": pass_id,
-            "n": data["meta"].get("n"),
-            "candidates": [c["id"] for c in data["meta"].get("candidates", [])],
+            # A stated record carries its status verbatim (e.g.
+            # stated_not_run); a generator pass record has none and
+            # reads "recorded". The panel must never present a
+            # stated pass as a run one.
+            "status": data["meta"].get("status") or "recorded",
+            "n": n_val,
+            "candidates": [c["id"] if isinstance(c, dict) else c
+                           for c in data["meta"].get("candidates", [])],
             "ranked_outcome": r1.get("ranked_outcome"),
             "record": f"docs/proposals/passes/{pass_id}/",
         })

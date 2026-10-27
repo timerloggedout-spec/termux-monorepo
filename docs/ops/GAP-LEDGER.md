@@ -38,17 +38,6 @@ vs **done** (code/workflows implement) vs **executed** (runs/artifacts prove).
   `generated_at 2026-10-27T14:18:07Z` and carries the SendAm #492/#607 rows
   as closed_unmerged — the exact rows the silence had missed. The Tribute
   lane independently re-verified the same record from its side.
-- Post-closure note (fix lane, 2026-10-27): the refresh rule has since fired
-  live on age (tree run 40519591463 → refresh run 40519676516, success) —
-  the diagnostics cadence is self-sustaining. The sibling lanes' age rules
-  are live but their live fire remains gated by the tree's Node A admission
-  guard, which counts ALL repo runs (busy observed 9.5–31 across the
-  verification window, never < 6) while its comment states the intent as
-  "lane runs" — siblings still show Oct 23 as their latest runs. Whether
-  the guard should count lane runs only is a quota-policy question for the
-  tree's owners; it is the one remaining blocker to the siblings' revival
-  and the next follow-up. (The stale cadence assertion from PR #1759's
-  differential is already fixed in open PR #1694.)
 
 ### G-03 — Delphi outcome flywheel: no automated ingestion
 - Surface: Delphi Oracle. Layers: done vs executed.
@@ -99,12 +88,16 @@ vs **done** (code/workflows implement) vs **executed** (runs/artifacts prove).
   country, profile image, about section, ≥1 social link.
 - Severity: high, time-bound (entries invalid without a complete profile).
 - Fix route: owner completes the profile (prepared content sits in the
-  registry); challenge lane verifies. Status: open (owner-gated) —
-  VERIFIED OPEN 2026-10-27 (PR #1820): live re-check shows the profile
-  unchanged (default placeholder avatar, About empty, no social links;
-  display name + country set) — 3 of 5 mandatory fields still open. All
-  lane-doable work is complete (verification + prepared content in the
-  registry); the edit itself is owner-only (signed-in Builder session).
+  registry); challenge lane verifies. Status: fix-spawned — VERIFIED OPEN
+  2026-10-27 (PR #1820): live re-check shows the profile unchanged
+  (default placeholder avatar, About empty, no social links; display name
+  + country set) — 3 of 5 mandatory fields still open. OWNER CORRECTION
+  (2026-10-27): the "owner-only edit" framing is wrong — the profile
+  follows the @N0n (4n0n) anonymous style setup and is completed BY THE
+  AGENCY; the challenge lane is dispatched to complete it from the
+  registry's prepared content through the fleet's signed-in session. Sole
+  carve-out (per the 4n0n protocol): a genuinely forced real-name field
+  returns to the owner; everything else is agency work.
 
 ### G-08 — D3/Builder.io: Clips account requirement UNVERIFIED
 - Surface: challenges (D3, deadline Nov 2). Layers: claimed vs held.
@@ -143,27 +136,16 @@ vs **done** (code/workflows implement) vs **executed** (runs/artifacts prove).
   Status: fix-spawned (Delphi lane, dispatched 2026-10-27).
 
 ### G-10 — Dashboard surface feeds refresh by manual PR only
-- Surface: dashboard (MoneyBall / 3L0 / MVT / DoE feeds; ATES added by the
-  separation landing, PR #1756). Layers: held vs executed.
+- Surface: dashboard (MoneyBall / 3L0 / MVT / DoE feeds). Layers: held vs
+  executed.
 - Evidence: no collect workflow exists for `scripts/dashboards/
   surface_feeds.py` outputs, while `oracle-panel-feed-collect.yml` and
   `reviewer-metrics-collect.yml` refresh their feeds on a schedule. Surface
   feeds carry `generated_at`, so staleness is visible but unbounded.
 - Severity: low–medium (structural — pages will silently age).
 - Fix route: add a collect workflow mirroring the oracle pattern, or accept
-  manual refresh with a staleness threshold alarm. Status: closed-on-evidence
-  (2026-10-27). `.github/workflows/surface-feeds-collect.yml` landed via
-  PR #1770 (merged b0ba36c62b): workflow_dispatch + weekly schedule
-  (Wed 06:41 UTC) + push triggers on the collector's source records; it runs
-  `scripts/dashboards/surface_feeds.py --surface all` and proposes refreshes
-  as PRs from `surface-feeds/refresh` — never a direct commit. Scope grew to
-  five feeds when the MVT/DoE/ATES separation (PR #1756) added
-  `ates-feed.json` mid-flight. Proof: dispatch run 40506438873 (success)
-  produced refresh PR #1773 (merged 2b1a0ca30bbc); push-triggered runs
-  40507029319 and 40509533548 (success) followed, the latter producing
-  refresh PR #1778 (merged 3231802fc350); feeds on master carry
-  generated_at 2026-10-27T13:09:19Z from that cycle. Closed by the Web
-  Design lane.
+  manual refresh with a staleness threshold alarm. Status: fix-spawned
+  (Web Design lane, dispatched 2026-10-27).
 
 ### G-11 — Tier 1 classifiers: code healthy, never executed
 - Surface: classifiers (Mev/Jev/Kev/Laya). Layers: done vs executed.

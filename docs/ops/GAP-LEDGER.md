@@ -29,9 +29,15 @@ vs **done** (code/workflows implement) vs **executed** (runs/artifacts prove).
   `.github/workflows/help-wanted-status-refresh.yml` exists on master.
 - Severity: high (fleet decisions read these diagnostics as current).
 - Fix route: repo-automation fix chat — diagnose the refresh schedule, restore
-  it, add a staleness alarm. Status: fix-spawned (Tribute lane efficacy
-  audit lane, dispatched 2026-10-27; the run-history re-check folded into
-  its recon).
+  it, add a staleness alarm. **Status: closed-on-evidence (2026-10-27).**
+  Closure verified firsthand by the Gap Finder: PR #1759 merged 12:39Z
+  (staleness rule + `help-wanted-audit-staleness.yml` watchdog, on master),
+  PR #1767 merged 12:43Z (ledger closure), PR #1815 merged 14:16Z
+  (age-based firing for the four sibling lanes starved by the
+  quota-dispatch-tree cadence move, #1573). Master's generated audit reads
+  `generated_at 2026-10-27T14:18:07Z` and carries the SendAm #492/#607 rows
+  as closed_unmerged — the exact rows the silence had missed. The Tribute
+  lane independently re-verified the same record from its side.
 
 ### G-03 — Delphi outcome flywheel: no automated ingestion
 - Surface: Delphi Oracle. Layers: done vs executed.

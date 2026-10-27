@@ -1,10 +1,17 @@
 # Phantom-Secret Remediation
 
-Generated 2026-10-25T08:04:13.087072+00:00 by the phantom-secrets audit (repo-native, repeatable: `.github/workflows/phantom-secrets-audit.yml`). Counts are derived live at generation time. Names only — no secret values exist in this document.
+Generated 2026-10-27T13:12:10.655738+00:00 by the phantom-secrets audit (repo-native, repeatable: `.github/workflows/phantom-secrets-audit.yml`). Counts are derived live at generation time. Names only — no secret values exist in this document.
 
-- Phantom names: **71** across **160** references
+- Phantom names: **73** across **165** references
 - compiled: 20 references
-- provisioning: 140 references
+- dead-branch: 3 references
+- provisioning: 142 references
+
+## Retired — dead fallback branches (PR #1787)
+
+Each reference below was one branch of a `||` fallback chain that also names a provisioned secret; the branch could never resolve and was removed. Behavior is unchanged — the chains resolve exactly as they did before, now without the phantom name.
+
+- `secrets.GH_TOKEN` — reconcile-devin-wiki-access.yml
 
 ## Owner provisioning checklist
 
@@ -28,6 +35,7 @@ No verified provisioned replacement exists for these names. Each is an explicit 
 - [ ] `secrets.DEEPSEEK_TOKEN_SECONDARY` — deepseek-ci.yml
 - [ ] `secrets.DEEPWIKI_LLM_API_KEY` — remote-knowledge-fabric.yml
 - [ ] `secrets.DEEPWIKI_TOKEN` — remote-knowledge-fabric.yml
+- [ ] `secrets.DEVIN_API_KEY` — reconcile-devin-wiki-access.yml
 - [ ] `secrets.GAMUT_JUDGE_API_KEY` — remote-gamut-evaluation.yml
 - [ ] `secrets.GH_ACTIONS` — provision-secrets.yml — provisioning catalog entry (by design)
 - [ ] `secrets.GH_AW_AGENT_TOKEN` — provision-secrets.yml — provisioning catalog entry (by design)

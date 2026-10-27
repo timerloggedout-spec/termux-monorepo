@@ -377,5 +377,55 @@
         "issue-320"
       ]
     }
+  ],
+  "evidence_records": [
+    {
+      "evidence_id": "ev-morphism-formal-issue320",
+      "source_id": "issue-320",
+      "assertion_type": "label",
+      "assertion_id": "lbl-morphism-formal",
+      "claim": "Issue #320 names morphism notation as a core category-theory item; this supports discovery of the formal label, not external mathematical verification.",
+      "evidence_locator": "Issue body > Core Category Theory Notation > Morphism Assignment",
+      "evidence_excerpt": "Morphism Assignment: f: A → B",
+      "retrieved_on": "2026-10-27",
+      "reviewer": null,
+      "status": "candidate"
+    },
+    {
+      "evidence_id": "ev-morphism-arrow-issue320",
+      "source_id": "issue-320",
+      "assertion_type": "label",
+      "assertion_id": "lbl-morphism-arrow",
+      "claim": "Issue #320 explicitly describes morphisms as arrows; retain this as a source-backed alternate label candidate pending domain review.",
+      "evidence_locator": "Issue body > Core Category Theory Notation > opening paragraph",
+      "evidence_excerpt": "objects (A, B, C) and morphisms (arrows) between them",
+      "retrieved_on": "2026-10-27",
+      "reviewer": null,
+      "status": "candidate"
+    },
+    {
+      "evidence_id": "ev-morphism-mapping-issue320",
+      "source_id": "issue-320",
+      "assertion_type": "mapping",
+      "assertion_id": "map-morphism-arrow",
+      "claim": "The source uses “morphisms (arrows)” parenthetically; this supports a candidate same-concept label relationship, but does not itself constitute independent peer-reviewed evidence.",
+      "evidence_locator": "Issue body > Core Category Theory Notation > opening paragraph",
+      "evidence_excerpt": "morphisms (arrows) between them",
+      "retrieved_on": "2026-10-27",
+      "reviewer": null,
+      "status": "candidate"
+    },
+    {
+      "evidence_id": "ev-bind-related-issue320",
+      "source_id": "issue-320",
+      "assertion_type": "mapping",
+      "assertion_id": "map-bind-not-compose",
+      "claim": "Issue #320 places >>= in an alternative-composition discussion. This is a discovery lead only; the seed intentionally retains a low-confidence related_match rather than asserting equivalence.",
+      "evidence_locator": "Issue body > Core Category Theory Notation > Composition; and Type Theory & Functional Prog. row",
+      "evidence_excerpt": "Alternative Diagrammatic Composition: f ; g or f >>= g",
+      "retrieved_on": "2026-10-27",
+      "reviewer": null,
+      "status": "candidate"
+    }
   ]
 }

@@ -358,3 +358,30 @@ CLOSED by this addendum; item 5's HF remainder is done with it.
 In flight at writing: Groq account creation + Mistral La Plateforme key (the two
 halves of queue item 1), under the owner's "create whatever is required" direction.
 Outcomes land as a further addendum.
+
+---
+
+## Addendum 4 (2026-10-27) — second harvest landed: provisioned 5 → 6
+
+The Groq half of queue item 1 is complete. The Groq account under the fleet Gmail
+(`timerloggedout@gmail.com`, shown as "LoggedOut Timer", Personal / Default Project)
+already existed — the mailbox recon found no creation mail because sign-up ran
+through Google — and it already held a key named `termux-monorepo` (created
+2026-10-20, left untouched): the same unharvested-credential pattern as HF. A new
+key named `fleet` (no expiration) was created 2026-10-27 and provisioned
+immediately under the canonical name **`GROQ_API_KEY`** (store-verified: created
+2026-10-27T13:27:20Z; store total 40 → 41 secrets).
+
+Verification is behavioral: availability run **40512185380** (dispatched after
+provisioning) reports groq `credential_present=true`, `catalog_ok=true`, no error
+class. Full recount from that observation against the pinned 2026-10-23 snapshot:
+exactly two rows changed — groq and huggingface flipped from absent to
+present/catalog-ok; every other row is unchanged. **Provisioned is now 6**
+(cloudflare, felo, gemini, groq, huggingface, openrouter);
+`credential_present` 6 of 24 callable, `catalog_ok` 12 of 24 (the other six are
+public catalogs: llm7, modelscope, ovhcloud, requesty, routeway, xkiro),
+`inference_ok` still 0 everywhere.
+
+Queue item 1: the Groq half is DONE. The Mistral half is still in flight (the
+account's sign-in step is the current gate); its outcome lands as a further
+addendum.

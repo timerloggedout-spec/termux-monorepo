@@ -76,6 +76,49 @@ def test_3l0_reviewer_aggregates_match_record():
         assert head in doc.lower(), component
 
 
+def test_3l0_delphi_weights_observed_matches_ledger_snapshot():
+    """The feed's observed weighting must be the ledger read, verbatim —
+    and visibly distinct from the panel.json cold-start seeds."""
+    snap = json.loads((ROOT / "scripts" / "dashboards" / "delphi_weights_observation.json").read_text())
+    panel = json.loads((ROOT / "ops" / "delphi" / "panel.json").read_text())
+    dw = _feed("3l0-feed.json")["data"]["delphi_weights"]
+    # Seeds stay seeds, labeled as such, and equal panel.json.
+    assert dw["panel_defaults"] == panel["roles"]
+    assert dw["panel_defaults_kind"] == "cold_start_seed"
+    # Observed block is the newest ledger state from the snapshot.
+    assert dw["state"] == "observed_live"
+    obs = dw["observed"]
+    assert obs["kind"] == "observed_live"
+    assert obs["read_at"] == snap["read_at"]
+    assert obs["observed_at"] == snap["source"]["newest_comment_created_at"]
+    for role, values in snap["roles"].items():
+        carried = {k: obs["roles"][role][k] for k in values}
+        assert carried == values, role
+    prov = obs["provenance"]
+    assert prov["issue"] == snap["source"]["issue"] == 1489
+    assert prov["newest_comment_id"] == snap["source"]["newest_comment_id"]
+    assert prov["newest_comment_url"] == snap["source"]["newest_comment_url"]
+    assert prov["weights_comment_count"] == len(snap["history"])
+    assert [h["comment_id"] for h in prov["history"]] == [e["comment_id"] for e in snap["history"]]
+    newest = snap["history"][-1]
+    assert prov["feedback"] == newest["feedback"]
+    # The observed values are NOT the seeds (this is the backfill).
+    for role in snap["roles"]:
+        assert obs["roles"][role]["gate_pass_rate"] != panel["roles"][role]["gate_pass_rate"], role
+        assert obs["roles"][role]["elo"] != panel["roles"][role]["elo"], role
+
+
+def test_3l0_delphi_weights_effective_weights_follow_panel_formula():
+    dw = _feed("3l0-feed.json")["data"]["delphi_weights"]
+    obs_roles = dw["observed"]["roles"]
+    total = 0.0
+    for role, r in obs_roles.items():
+        expected = r["base"] * (0.5 + r["gate_pass_rate"]) * (r["elo"] / 1500)
+        assert abs(r["effective_weight"] - round(expected, 6)) < 1e-9, role
+        total += r["weight_share"]
+    assert abs(total - 1.0) < 1e-5
+
+
 def test_static_narratives_match_sources():
     ates = (ROOT / "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md").read_text()
     mvt = _feed("mvt-feed.json")

@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "4865a6115fca6404776821e1bae7d58765d990f6d091cb1f3e0dc4893398bd42",
-  "workflow_count": 194,
+  "source_fingerprint": "ae86390b0070f34475b2228dd8399ce9db7d65b3e4ce5cfa3b451be0bacb90bc",
+  "workflow_count": 195,
   "workflows": [
     {
       "action_pins": [
@@ -2116,6 +2116,25 @@
       "triggers": [
         "workflow_dispatch",
         "workflow_run"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: linguist-panel-feed-collect cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "collect"
+      ],
+      "name": "linguist-panel-feed-collect",
+      "path": ".github/workflows/linguist-panel-feed-collect.yml",
+      "schedules": [
+        "53 6 * * 2"
+      ],
+      "triggers": [
+        "push",
+        "schedule",
+        "workflow_dispatch"
       ]
     },
     {

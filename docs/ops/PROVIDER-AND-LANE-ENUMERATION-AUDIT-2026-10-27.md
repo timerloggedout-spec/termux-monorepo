@@ -212,3 +212,78 @@ stop counting it as an active surface.
 *Counts derived live at audit time (2026-10-27). Credential facts are names-only,
 cross-checked across three sources that agree: the live secret store, the phantom
 remediation checklist, and the 2026-10-23 observation artifact.*
+
+---
+
+## Addendum 2026-10-27 (later) — claims audit, G-03 fix, extension scan
+
+### Who kept the credentials? — claims audit (owner question)
+
+The owner asked whether Cue or Hark kept the provider credentials after login, behind
+the claims of wiring. Verdicts from the record:
+
+- **Cue — no credential custody anywhere in the record.** What exists: a *Cue-assisted
+  documentation worker* attribution (PROVIDER-QUOTA-PARTICIPATION-AUDIT.md, 2026-10-21:
+  the label "labels the work session, not an LLM/model identity or GitHub account"), a
+  Scout evidence brief *for* "Cue Agent Q" (FREE-LLM-PROVIDER-RECON.md), and the
+  capability map's four-identity separation (Cue profile ≠ repo roles ≠ adapter monikers
+  ≠ GitHub actor). The Cue-attributed upgrade batch's own accounting states it "closes
+  **zero live manager gaps**" and that "No account API call, inference request, paid
+  fallback, **credential mutation**, router weight, production admission or schedule
+  change occurred." The wiring claims were documentation claims; the credentials were
+  never in Cue's hands because they were never provisioned at all.
+- **Hark — no provider-credential role found.** Repo mentions are the device/bridge and
+  Delphi surfaces only. NOT ESTABLISHED.
+- **The one real "kept" pattern:** the implemented balance readers
+  (`scripts/provider_quota_service.py`: `ollama.balance`, the OpenRouter key observer,
+  the private account transport) exist as code but were "ready for a separately
+  authorized integration, **not registered as a live reader**" (upgrade-status doc).
+  Implemented ≠ switched on — the same shape as the quartet's missing adapter layer.
+- **Fix posture going forward:** a wiring claim is only as good as a store-verified
+  secret name. This dossier's per-family credential column (live store × phantom
+  checklist × observation artifact) is the reconciliation; any future claim of wiring
+  should cite it or be treated as unproven.
+
+### Correction + FIX — the availability cadence (queue item 2, taken over)
+
+Correction to this doc's earlier wording: the availability workflow did not lose its
+schedule by accident — **cadence is owned by `quota-dispatch-tree.yml`** (Tier 0 tree,
+issue #1573), and provider-availability is its q6-tranche lane. The failure is one level
+up: `dispatch_q6` required `firstCycle && hour % 6 === 1` (firstCycle = minute < 10),
+and GitHub delivers the tree's */10 schedule at jittered minutes (~6 runs/day), so the
+phase window effectively never opened — availability last ran **2026-10-23** while every
+tree run concluded success. The tree's own comments document this exact failure for the
+hw-refresh lane (gap G-02, starved 2026-10-25..27) and fixed that lane with a
+staleness condition; the q6 tranche never got the same treatment. Recorded here as
+**gap G-03**.
+
+**Fix landed with this addendum:** the tree now measures provider-availability's real
+age (one `listWorkflowRuns` call, mirroring Node F0) and fires the q6 tranche when
+`paStaleMin > 360` (its 6h cadence) as well as on the phase window — a missed window
+self-heals on the next delivered tree run. Cost: +1 API call per tree run; the tranche's
+other lanes (ci-sweep, hygiene-sweep, ops-lane-matrix-sweep, actions-queue-reaper,
+gitlab-governed-reconciliation) share the tranche cadence by design. Also landed: the
+2026-10-23 observation pinned in-repo at `ops/quota/availability-observation-2026-10-23.json`
+(data re-serialized verbatim from run 39991236049's artifact, which expires 2026-11-22),
+so the executed-count evidence no longer rides on an expiring artifact.
+
+What the fix does **not** do: provision any key. Queue items 1, 3, 4, 5 remain
+provisioning acts against provider accounts (exact secret names in the queue) — no chat
+or surface can mint those keys, and per the claims audit above, none ever did.
+
+### Extension scan — services / compute / developer resources / models, 2026-10-22 → 27
+
+Web scan at audit time; entry route for any adopted candidate is the extension-catalog
+pattern (`scripts/provider_extension_catalogs.py`) plus a registry row. **None adopted
+by this audit** — candidates with evidence grades:
+
+| Candidate | What | Date | Fleet shape |
+|---|---|---|---|
+| Moonshot **Kimi K3.1 Pro** | new flagship model, API live (kimi-k3.1-pro / -highspeed), weights promised by Nov 4 | released Oct 23–24 | candidate NEW family (Moonshot is not among the 27); flagship tier unlocks only after a ≥$1 top-up → a payment step, **owner-gated** under the card rule |
+| Hugging Face Inference Providers | free-tier source wording **changed 2026-10-27**; re-verification in progress at the tracking source (free account ≈ $0.10/mo credit) | Oct 27 | watch item on the existing huggingface family — terms in flux today; relevant to queue item 3 (canonical HF name) |
+| Inception Labs (Mercury) | one-time free grant raised 10M → **100M tokens** per new account/key, no payment details; one-time, not recurring | Oct 19 (edge of window; surfaced in this window's roundups) | candidate family; one-time grants fund trials, never setup (freemium-prep doctrine) |
+| IteraCompute / BazaarLink | young OpenAI-compatible aggregators with recurring no-card free tiers, per the free-llm.com roundup (updated ~Oct 21) | launch dates NOT ESTABLISHED | unverified candidates — directory evidence only; verify at source before any registry row |
+| Compute / GPU credits | **no new no-card, fleet-shaped compute offer found in the window** — in-window results were startup programs (funding/eligibility-gated) and standing notebook tiers (Kaggle/Colab, unchanged) | — | nothing to adopt; BOINC remains the fleet's free-compute lane |
+
+*Addendum counts and claims derived live at writing time (2026-10-27). Search-derived
+items are graded as stated; only source-verified items would enter the registry.*

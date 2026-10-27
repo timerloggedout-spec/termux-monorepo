@@ -67,7 +67,7 @@ jobs:
           APPLY: ${{ github.event_name == 'schedule' && 'true' || inputs.apply || 'false' }}
           # The selected token must be an existing classic PAT with repo scope
           # when GitHub App assignment is required. No new credential is minted.
-          GH_TOKEN: ${{ secrets.GH_TOKEN || secrets.OPERATOR_TOKEN }}
+          GH_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
           OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
         run: |
           set -euo pipefail
@@ -94,7 +94,7 @@ jobs:
         env:
           # Existing operator-token precedence; used only to list this
           # repository's branches and open pull requests.
-          GH_TOKEN: ${{ secrets.GH_TOKEN || secrets.OPERATOR_TOKEN }}
+          GH_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
           OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
           # Devin v3 indexing credential (names only). The token is a Devin
           # service-user token with IndexOrgRepositories, NOT a GitHub PAT.
@@ -201,7 +201,7 @@ jobs:
 
       - name: Index the created branch
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN || secrets.OPERATOR_TOKEN }}
+          GH_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
           OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
           DEVIN_API_KEY: ${{ secrets.DEVIN_API_KEY }}
           DEVIN_ORG_ID: ${{ vars.DEVIN_ORG_ID }}

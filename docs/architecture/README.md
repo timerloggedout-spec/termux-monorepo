@@ -3,7 +3,7 @@
 **Status:** living index
 **Owner/lane:** Infrastructure Architecture (organization | documentation | specification)
 **Canonical for:** where the canonical architecture spec for each domain lives
-**Last verified:** 2026-10-26, against the live master tree (docs/ = 2,043 files; docs/ops root = 238 Markdown files; docs/ops/generated = 1,334 files; docs/architecture = 10 Markdown + 3 Mermaid files, pre-#1655)
+**Last verified:** 2026-10-26, against the live master tree (docs/ = 2,043 files; docs/ops root = 238 Markdown files; docs/ops/generated = 1,334 files; docs/architecture = 13 Markdown + 3 Mermaid + 1 JSON receipt, post-#1678)
 
 ## How this surface is organized
 
@@ -26,8 +26,10 @@
 | [SELF-HEALING-ENGINE-ROADMAP.md](SELF-HEALING-ENGINE-ROADMAP.md) | Delivery roadmap | Stated per slice (implemented / in progress) | P0 delivery slices for the Self-Healing Engine; companion to the proposal above, not a duplicate |
 | [termux-agentic-hub.md](termux-agentic-hub.md) | Architecture spec | Not stated — backfill tracked below | Termux Agentic Hub runtime topology on the BLU B160V; capability-envelope execution, no free-form commands |
 | [transport-and-identity-decision.md](transport-and-identity-decision.md) | Decision record | Stated: Accepted for version one | Local Termux execution + GitHub-backed structured jobs; direct interactive transport deferred |
+| [INFRASTRUCTURE-REGISTRY-DESIGN.md](INFRASTRUCTURE-REGISTRY-DESIGN.md) | Design spec | Stated: design proposal; not a runtime contract | CMDB / IDRR — infrastructure inventory, identity, ownership, health, and reconciliation architecture (issue #1654; landed via PR #1678). Canonical pointer for this domain |
+| [INFRASTRUCTURE-CMDB-P0-INVENTORY.md](INFRASTRUCTURE-CMDB-P0-INVENTORY.md) · [INFRASTRUCTURE-CMDB-P1-AUTHORITY-WRITER-MATRIX.md](INFRASTRUCTURE-CMDB-P1-AUTHORITY-WRITER-MATRIX.md) · [infra-cmdb-sweep-manifest.json](infra-cmdb-sweep-manifest.json) | Baseline + matrix + census receipt | Stated per document | Companions to the registry design: P0 tracked-path census and authority map, P1 field-level authority/writer matrix, machine-readable sweep receipt |
 
-**Incoming (not yet on master):** the CMDB / IDRR family in draft PR #1655 — `INFRASTRUCTURE-REGISTRY-DESIGN.md`, `INFRASTRUCTURE-CMDB-P0-INVENTORY.md`, `INFRASTRUCTURE-CMDB-P1-AUTHORITY-WRITER-MATRIX.md`, `infra-cmdb-sweep-manifest.json`. When it merges, the design becomes this index's canonical pointer for infrastructure inventory, ownership, and reconciliation architecture (issue #1654).
+**Landed 2026-10-26:** the CMDB / IDRR family (PR #1678, superseding draft PR #1655) — see the residents table above. Issue #1654 closed on landing; the design's implementation phases remain separate decisions under its own phase gates.
 
 ## Domain pointers — canonical spec lives elsewhere
 

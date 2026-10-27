@@ -1,6 +1,6 @@
 {
-  "version": "0.3.2",
-  "updated": "2026-09-18T21:34:00Z",
+  "version": "0.4.1",
+  "updated": "2026-10-27T01:06:27Z",
   "note": "github-remote is the LIVE GitHub-hosted MCP URL for URL-only agents. github-docker is optional self-host only. termux/android stay on Vercel hub — do not mix. bifrost is evaluation gateway (chat+MCP), not a replacement for github-remote.",
   "hosts": [
     {
@@ -25,8 +25,8 @@
         "mcp": "/mcp/termux"
       },
       "tools": ["termux_status", "termux_run", "termux_pkg"],
-      "status": "live_standalone_pending_hub_root_directory_switch",
-      "note": "Currently live and responding at https://termux-mcp.vercel.app/mcp on its own standalone project. Will move to the relative path above once this hub becomes the deployment's Root Directory."
+      "status": "on_hold_superseded",
+      "note": "Alternative route to Termux local, placed ON HOLD and SUPERSEDED (owner ruling, 2026-10-26). The fleet device route is the pull-queue lane (docs/ops/DEVICE-PULL-QUEUE.md): the device pulls tasks; no inbound MCP server is the operating path. The standalone endpoint may still respond - responding is not operating. The hub root-directory switch no longer applies to this host."
     },
     {
       "id": "android-mcp",
@@ -76,6 +76,22 @@
       "status": "evaluation",
       "auth": "Provider keys held by Bifrost; callers use OpenAI-compat or MCP clients",
       "note": "High-perf AI + MCP gateway candidate. NOT a replacement for github-remote. Measure with bifrost-benchmarking_fork (mocker + benchmark.go) vs OpenRouter/OX Alpha/llm_api_hub before any production promote. See docs/proposals/active/bifrost-gateway-integration/ and docs/ops/ROUTING-ORCHESTRATION-MAP.md."
+    },
+    {
+      "id": "google-data-agent-kit",
+      "repo": "https://github.com/GoogleCloudPlatform/data-agent-kit-plugin",
+      "upstream": "https://github.com/GoogleCloudPlatform/data-agent-kit-plugin",
+      "transport": "stdio proxy (plugin bundle) to Google-hosted streamable-http MCP endpoints",
+      "endpoints": {
+        "bigquery": "https://bigquery.googleapis.com/mcp",
+        "gcs": "https://storage.googleapis.com/storage/mcp",
+        "knowledge_catalog": "https://dataplex.googleapis.com/mcp"
+      },
+      "tools": ["dak-bigquery", "dak-gcs", "dak-kc"],
+      "status": "wired_readonly_pending_gcp_project",
+      "auth": "ADC with impersonation of the dedicated read-only service account named in ops/data_agent_kit/guardrail-policy.yaml; no service-account keys; agent data work never runs on the owner's user credentials",
+      "client_config": "mcp-hub/client-configs/data-agent-kit.json",
+      "note": "Google Data Agent Kit (GA 2026-09-30, Apache-2.0, plugin v1.1.0). FIRST COHORT is read-only: BigQuery + Cloud Storage + Knowledge Catalog, for telemetry / MVT-DoE analysis. The kit's other servers (alloydb, cloudsql, spanner, bigtable, spark, notebook, viz) are NOT wired - the fleet has no data on them; phase-2 candidates in docs/ops/DATA-AGENT-KIT-WIRING.md. Enforcement is IAM-tier only (read-only SA + IAM deny policy on non-read-only tools); the kit's 37 skills are advisory, never enforcement. Exit: delete this entry + the client config, uninstall the plugin, delete the SA - no fleet pipeline depends on this path."
     }
   ],
   "client_snippets": {

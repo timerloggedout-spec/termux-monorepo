@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "5682cf62f5c4d0722d2c7375636a076667eb20945c5ec41c174b71f3562c3863",
-  "workflow_count": 188,
+  "source_fingerprint": "68abf959f8ffd185e956ecbd06b04a21a9a0d50a75bfb211de1085bfd1674e92",
+  "workflow_count": 190,
   "workflows": [
     {
       "action_pins": [
@@ -570,6 +570,21 @@
       ],
       "name": "Cnntinunus CI Sweep",
       "path": ".github/workflows/ci-sweep.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "trial"
+      ],
+      "name": "classifier-trial-dispatch",
+      "path": ".github/workflows/classifier-trial-dispatch.yml",
       "schedules": [],
       "triggers": [
         "workflow_dispatch"
@@ -3284,6 +3299,25 @@
       "path": ".github/workflows/tier1-engine-proof.yml",
       "schedules": [],
       "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: tribute-participation cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "participate"
+      ],
+      "name": "tribute-participation",
+      "path": ".github/workflows/tribute-participation.yml",
+      "schedules": [
+        "23 7 * * *"
+      ],
+      "triggers": [
+        "repository_dispatch",
+        "schedule",
         "workflow_dispatch"
       ]
     },

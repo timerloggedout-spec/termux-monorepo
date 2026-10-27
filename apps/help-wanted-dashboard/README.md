@@ -9,6 +9,16 @@ See `docs/ops/HELP-WANTED-DASHBOARD.md` and workflow `help-wanted-dashboard-depl
 - **Vercel:** Actions job uses `secrets.VERCEL_TOKEN`
 - **GitHub Pages:** `gh-pages` branch → `https://timerloggedout-spec.github.io/termux-monorepo/`
 
+## Pages
+
+`index.html` (Tribute control surface), `quota.html` (quota & limits),
+`matrix.html` (lane matrix), and `admin.html` — the admin control panel over
+the whole web inventory: Delphic Oracle Method (live `ops/delphi/panel.json`
+config, cycle stages, ledger/dispatch links), systems inventory, privileged
+admin surfaces, and a live review queue fetched from the public GitHub API.
+The admin panel follows the dashboard contract: read-only projection, no
+embedded credentials, actions navigate to the owning admin surface.
+
 ## Local
 
 Open `index.html` or serve the folder. Data: `data/status.json` (synced from `docs/ops/generated/help-wanted-status.json` on deploy).

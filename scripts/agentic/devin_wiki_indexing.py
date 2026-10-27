@@ -44,6 +44,14 @@ idempotent endpoint: the workflow's daily run re-indexes the active set
 (default branch + open PR head branches), a branch-created job indexes each
 new branch once, and a manual dispatch can run the full additive backfill.
 Indexing is additive only; this controller never removes a branch index.
+
+Account scope (--all-repos): the target set is the access reconciler's
+credential-scoped inventory — every repository the operator token can reach
+(owner, organization-member, collaborator), archived repositories skipped.
+The owner's policy is full use of Devin's free offerings: at the low effort
+level wiki generation is free, so account-wide runs proceed at low with no
+approval; at medium/high the counted cost gate refuses account-wide runs
+without the per-run approval, exactly as for a single-repo bulk backfill.
 """
 
 from __future__ import annotations
@@ -59,6 +67,7 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Protocol
 
+from reconcile_devin_wiki_access import list_accessible_repositories
 from reconcile_repository_surface import GhClient, LIVE_READ_ATTEMPTS, ReconcilerError, SAFE_REPOSITORY
 
 DEVIN_API_BASE = "https://api.devin.ai/v3"
@@ -174,6 +183,7 @@ def check_gates(
     scope: str,
     approve_nonlow_effort: bool,
     branch_count: int,
+    account_wide: bool = False,
 ) -> str:
     """Validate provisioning + cost gates. Returns the normalized effort."""
     missing = [
@@ -208,7 +218,8 @@ def check_gates(
             "Actions variable DEVIN_WIKI_EFFORT to the value seen before any indexing run.",
         )
     normalized = effort.lower()
-    if scope == "all" and normalized != "low" and not approve_nonlow_effort:
+    bulk = scope == "all" or account_wide
+    if bulk and normalized != "low" and not approve_nonlow_effort:
         low_acu, high_acu = projected_acu_range(normalized, branch_count)
         raise GateRefusal(
             "cost_gate",
@@ -338,6 +349,119 @@ def index_branches(
     return results
 
 
+def index_account(
+    devin: DevinClient | None,
+    github: GitHubBranches,
+    *,
+    org_id: str,
+    scope: str,
+    effort: str | None,
+    pre_index_hook: Any = None,
+) -> dict[str, Any]:
+    """Index every accessible repository's selected branches, account-wide.
+
+    The inventory is the access reconciler's credential-scoped list (owner,
+    organization-member, and collaborator repositories). Archived repositories
+    are skipped. Selection happens for every repository before any Devin call
+    so the report — and the caller's counted cost gate — sees true totals.
+    A failure in one repository is recorded and never stops the others.
+    """
+    if scope == "single":
+        raise IndexingError("scope 'single' names branches of one repository; it is not supported account-wide")
+    inventory = list_accessible_repositories(github)  # type: ignore[arg-type]
+    selections: list[tuple[str, list[str], list[str]]] = []
+    selection_errors: list[dict[str, Any]] = []
+    for record in inventory:
+        if record.archived:
+            continue
+        try:
+            selected, skipped = select_branches(github, record.full_name, scope=scope)
+        except (IndexingError, ReconcilerError) as error:
+            selection_errors.append({"repository": record.full_name, "error": str(error)})
+            continue
+        selections.append((record.full_name, selected, skipped))
+    total_branches = sum(len(selected) for _, selected, _ in selections)
+    if pre_index_hook is not None:
+        pre_index_hook(total_branches)
+
+    repositories: list[dict[str, Any]] = []
+    status_counts: dict[str, int] = {}
+    failed = 0
+    for full_name, selected, skipped in selections:
+        entry: dict[str, Any] = {
+            "repository": full_name,
+            "branch_count": len(selected),
+            "skipped_branches": skipped,
+            "status_counts": {},
+            "branches": [],
+            "error": None,
+        }
+        if devin is not None and selected:
+            try:
+                results = index_branches(devin, org_id=org_id, repository=full_name, branches=selected)
+                entry["branches"] = [asdict(result) for result in results]
+                for result in results:
+                    entry["status_counts"][result.status] = entry["status_counts"].get(result.status, 0) + 1
+                    status_counts[result.status] = status_counts.get(result.status, 0) + 1
+            except IndexingError as error:
+                entry["error"] = str(error)
+                failed += 1
+        repositories.append(entry)
+    for error_entry in selection_errors:
+        repositories.append(
+            {
+                "repository": error_entry["repository"],
+                "branch_count": 0,
+                "skipped_branches": [],
+                "status_counts": {},
+                "branches": [],
+                "error": error_entry["error"],
+            }
+        )
+        failed += 1
+    acu = projected_acu_range(effort, total_branches) if effort in EFFORT_ACU_PER_WIKI else None
+    return {
+        "schema_version": 1,
+        "provider": "Devin Wiki indexing (v3 API)",
+        "account_wide": True,
+        "scope": scope,
+        "mode": "apply" if devin is not None else "dry_run",
+        "state": "partial" if failed else "indexed",
+        "effort": effort,
+        "projected_acu_range": list(acu) if acu else None,
+        "repository_count": len(repositories),
+        "failed_repository_count": failed,
+        "branch_count": total_branches,
+        "status_counts": status_counts,
+        "repositories": repositories,
+        "additive_only": True,
+    }
+
+
+def _account_summary_report(report: dict[str, Any]) -> dict[str, Any]:
+    """Artifact-safe account projection: counts only, no repository names.
+
+    The account inventory can include private repositories, so — as with the
+    access reconciler's summary — names, commits, and job IDs stay out.
+    """
+    return {
+        "schema_version": report.get("schema_version"),
+        "provider": report.get("provider"),
+        "account_wide": True,
+        "scope": report.get("scope"),
+        "mode": report.get("mode"),
+        "state": report.get("state"),
+        "effort": report.get("effort"),
+        "projected_acu_range": report.get("projected_acu_range"),
+        "repository_count": report.get("repository_count"),
+        "failed_repository_count": report.get("failed_repository_count"),
+        "branch_count": report.get("branch_count"),
+        "status_counts": report.get("status_counts", {}),
+        "additive_only": True,
+        "redaction": "Repository names, Devin org ID, API token, per-branch commits and job IDs are intentionally omitted.",
+    }
+
+
 def _report(
     *,
     repository: str,
@@ -391,19 +515,29 @@ def _summary_report(report: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _write_reports(report: dict[str, Any], report_path: str, summary_path: str | None) -> None:
+def _write_reports(
+    report: dict[str, Any],
+    report_path: str,
+    summary_path: str | None,
+    summary_builder: Any = _summary_report,
+) -> None:
     path = Path(report_path)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     if summary_path:
         summary = Path(summary_path)
         summary.parent.mkdir(parents=True, exist_ok=True)
-        summary.write_text(json.dumps(_summary_report(report), indent=2) + "\n", encoding="utf-8")
+        summary.write_text(json.dumps(summary_builder(report), indent=2) + "\n", encoding="utf-8")
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--repo", required=True, help="Repository, OWNER/REPO.")
+    parser.add_argument("--repo", help="Repository, OWNER/REPO. Mutually exclusive with --all-repos.")
+    parser.add_argument(
+        "--all-repos",
+        action="store_true",
+        help="Index every repository in the access reconciler's credential-scoped inventory.",
+    )
     parser.add_argument(
         "--scope",
         choices=["first-pass", "all", "single"],
@@ -426,8 +560,133 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
+def _account_gate_report(args: argparse.Namespace, effort_raw: str | None, refusal: GateRefusal, branch_count: int) -> dict[str, Any]:
+    return {
+        "schema_version": 1,
+        "provider": "Devin Wiki indexing (v3 API)",
+        "account_wide": True,
+        "scope": str(args.scope),
+        "mode": "apply",
+        "state": refusal.state,
+        "detail": refusal.detail,
+        "effort": effort_raw.lower() if effort_raw else None,
+        "projected_acu_range": None,
+        "repository_count": 0,
+        "failed_repository_count": 0,
+        "branch_count": branch_count,
+        "status_counts": {},
+        "repositories": [],
+        "additive_only": True,
+    }
+
+
+def _main_account(args: argparse.Namespace) -> int:
+    api_key = os.environ.get("DEVIN_INDEXING_API_KEY")
+    org_id = os.environ.get("DEVIN_ORG_ID")
+    effort_raw = os.environ.get("DEVIN_WIKI_EFFORT")
+    github = GhClient()
+    effort_hint = (effort_raw or "").lower()
+    if args.dry_run:
+        report = index_account(
+            None,
+            github,
+            org_id="",
+            scope=str(args.scope),
+            effort=effort_hint if effort_hint in EFFORT_ACU_PER_WIKI else None,
+        )
+        report["state"] = "planned"
+        report["detail"] = "Dry run: account-wide branch selection only; no Devin API call was made."
+        _write_reports(report, args.report, args.summary_report, _account_summary_report)
+        print(
+            json.dumps(
+                {
+                    "mode": "dry_run",
+                    "scope": args.scope,
+                    "account_wide": True,
+                    "repository_count": report["repository_count"],
+                    "branch_count": report["branch_count"],
+                }
+            )
+        )
+        return 0
+
+    try:
+        effort = check_gates(
+            api_key=api_key,
+            org_id=org_id,
+            effort=effort_raw,
+            scope=str(args.scope),
+            approve_nonlow_effort=True,  # cost gate deferred to the counted check in the hook
+            branch_count=0,
+            account_wide=True,
+        )
+    except GateRefusal as refusal:
+        report = _account_gate_report(args, effort_raw, refusal, 0)
+        _write_reports(report, args.report, args.summary_report, _account_summary_report)
+        print(f"::error title=Devin Wiki indexing gated::{refusal.detail}")
+        print(json.dumps({"mode": "apply", "state": refusal.state, "account_wide": True}))
+        return 0
+
+    assert api_key is not None and org_id is not None
+    if not api_key.startswith("cog_"):
+        print(
+            "::warning title=Devin Wiki indexing::DEVIN_INDEXING_API_KEY does not carry the "
+            "expected cog_ service-user/personal-token prefix; the API call will surface any "
+            "resulting authentication failure."
+        )
+    counted: list[int] = []
+
+    def counted_gate(total: int) -> None:
+        counted.append(total)
+        check_gates(
+            api_key=api_key,
+            org_id=org_id,
+            effort=effort_raw,
+            scope=str(args.scope),
+            approve_nonlow_effort=bool(args.approve_nonlow_effort),
+            branch_count=total,
+            account_wide=True,
+        )
+
+    try:
+        report = index_account(
+            DevinClient(api_key),
+            github,
+            org_id=org_id,
+            scope=str(args.scope),
+            effort=effort,
+            pre_index_hook=counted_gate,
+        )
+    except GateRefusal as refusal:
+        report = _account_gate_report(args, effort_raw, refusal, counted[0] if counted else 0)
+        _write_reports(report, args.report, args.summary_report, _account_summary_report)
+        print(f"::error title=Devin Wiki indexing gated::{refusal.detail}")
+        print(json.dumps({"mode": "apply", "state": refusal.state, "account_wide": True}))
+        return 0
+    _write_reports(report, args.report, args.summary_report, _account_summary_report)
+    print(
+        json.dumps(
+            {
+                "mode": "apply",
+                "scope": args.scope,
+                "account_wide": True,
+                "repository_count": report["repository_count"],
+                "failed_repository_count": report["failed_repository_count"],
+                "branch_count": report["branch_count"],
+                "status_counts": report["status_counts"],
+            },
+            sort_keys=True,
+        )
+    )
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv or [])
+    if bool(args.all_repos) == bool(args.repo):
+        raise IndexingError("exactly one of --repo or --all-repos is required")
+    if args.all_repos:
+        return _main_account(args)
     repository = str(args.repo)
     if not SAFE_REPOSITORY.fullmatch(repository):
         raise IndexingError(f"unsafe repository name: {repository!r}")

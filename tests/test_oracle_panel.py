@@ -76,7 +76,9 @@ def test_page_wiring_and_no_credentials():
     link = 'href="https://timerloggedout-spec.github.io/help-wanted/oracle.html"'
     for page in ("index.html", "quota.html", "matrix.html", "admin.html"):
         assert link in (APP / page).read_text(), page
-    assert link in (APP / "sitemap.xml").read_text()
+    assert "https://timerloggedout-spec.github.io/help-wanted/oracle.html" in (
+        APP / "sitemap.xml"
+    ).read_text()
     lowered = html.lower()
     for forbidden in ("ghp_", "github_pat_", "bearer ", "authorization",
                       "method:'post'", 'method:"post"', "method: 'post'"):

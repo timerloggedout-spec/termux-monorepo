@@ -1,0 +1,101 @@
+{
+ "schema": "dashboard-surface-feed/v1",
+ "surface": "mvt",
+ "generated_at": "2026-10-27T11:38:22Z",
+ "sources": [
+  "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md",
+  "docs/ops/corpus/EXPERIMENT.schema.json",
+  ".github/workflows/agent-mvt-experiment.yml + .github/workflows/team-mvt.yml",
+  "scripts/dashboards/workflow_observations.json (Actions API read)"
+ ],
+ "honesty_rules": [
+  "Show only what the record holds; a value the record does not hold renders as absent, never synthesized.",
+  "Defined-but-not-run experiments render as exactly that.",
+  "Weights and scores are read from the code and records at collection time, never transcribed from prose claims.",
+  "Workflow run counts are API observations stamped with their read time, not live claims."
+ ],
+ "data": {
+  "harness": {
+   "doc": "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md",
+   "invariants": [
+    "abstention availability",
+    "wrong-commit penalty",
+    "required-fragment preservation",
+    "distractor isolation",
+    "deterministic execution failure",
+    "isolated SPAWN behavior",
+    "actor/critic private-context isolation"
+   ],
+   "note": "The minimum viable test cohort covers seven hard invariants. Failed experiments remain evidence and are not automatically rerun merely to improve dashboards."
+  },
+  "experiment_record_schema": {
+   "file": "docs/ops/corpus/EXPERIMENT.schema.json",
+   "required": [
+    "schema_version",
+    "experiment_id",
+    "observed_at",
+    "baseline_sha",
+    "candidate_sha",
+    "suite",
+    "treatment",
+    "status",
+    "provenance",
+    "confidence"
+   ],
+   "status_enum": [
+    "observed",
+    "running",
+    "passed",
+    "failed",
+    "skipped",
+    "blocked",
+    "superseded"
+   ],
+   "identity": "canonical row identity is cohort x task x arm x repetition; each row retains task fingerprint, environment fingerprint, benchmark version, arm-factor hash, trace id, deterministic verdict, ATES metrics, and optional judge score"
+  },
+  "experiment_loop": {
+   "file": ".github/workflows/agent-mvt-experiment.yml",
+   "mode": "workflow_dispatch only; candidate and baseline refs are checked out independently, measured and recorded; it NEVER mutates refs",
+   "inputs": [
+    "candidate_ref",
+    "baseline_ref",
+    "experiment_id",
+    "suite",
+    "compare_only"
+   ],
+   "observed_runs": {
+    "total_runs": 0,
+    "latest": []
+   },
+   "state": "defined_not_run"
+  },
+  "team_mvt": {
+   "file": ".github/workflows/team-mvt.yml",
+   "mode": "simultaneous provider lanes over an issue/PR target; dispatched, issue-edited and master-push triggered; cadence owned by quota-dispatch-tree.yml (issue #1573)",
+   "observed_runs": {
+    "total_runs": 528,
+    "latest": [
+     {
+      "created_at": "2026-10-26T17:15:46Z",
+      "conclusion": "failure",
+      "event": "issues"
+     },
+     {
+      "created_at": "2026-10-25T02:27:13Z",
+      "conclusion": "failure",
+      "event": "issues"
+     },
+     {
+      "created_at": "2026-10-23T16:44:31Z",
+      "conclusion": "success",
+      "event": "push"
+     }
+    ]
+   }
+  },
+  "fixtures": "tests/fixtures/ates/orchestrator_mvt.json holds synthetic MVT boundary cases (pass / leak) used by the test suite. They are fixtures \u2014 test data \u2014 not recorded experiment results, and are labeled as such wherever referenced."
+ },
+ "gaps": [
+  "No committed experiment records conforming to EXPERIMENT.schema.json exist in the repo: the experiment loop has never been dispatched (0 runs observed), so there are no recorded MVT experiment results to rank or chart. Defined-but-not-run renders as exactly that."
+ ]
+}

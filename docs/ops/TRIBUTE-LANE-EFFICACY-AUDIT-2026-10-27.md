@@ -195,6 +195,54 @@ fixes awaiting upstream review, ROCm (held), and the 7 batch-2 items
 (portals, KayStcx, MOBIUS, agentic-path, MergeEarn, EasyCode,
 hugegraph).
 
+### Phase 2, batch 2 (2026-10-27, later) — the automation's convert queue, worked
+
+The participation automation's first runs filed five `convert_candidate`s and
+executed one withdrawal the manual queue had missed; all six are now
+dispositioned:
+
+- **KayStcx/KayStcx #104 — withdrawn by the automation itself** (apply run,
+  2026-10-27 12:43 UTC). Two human claims with implementation plans
+  (2026-09-15 and 2026-09-27) predated ours; the comment-level preflight
+  caught what the manual pass's assignee-only check had not.
+- **fsr5-fhaachen/portals #948 — converted.** Root cause for #928:
+  `ApiController::courseStatistics` used each form answer directly as an
+  array key; a multi-select answer is a list, and PHP throws
+  `Illegal offset type` — the statistics endpoint 500s for the whole event.
+  The demo seeders never produce a multi-select answer, which fits the
+  maintainer's could-not-reproduce. Counting now lives in
+  `App\Helpers\FormResponseStatistics` (each selected option counted,
+  nulls skipped, scalar behavior unchanged) with unit tests incl. the
+  regression case; verified locally with PHP 8.3 + the repo's PHPUnit
+  (4 tests pass).
+- **mangiapanejohn-dev/MOBIUS-Searcher #7 — converted.** Implements #6 as
+  proposed: versioned `ReportMetadata` block (`mobius-report-metadata/1`)
+  attached to the benchmark report JSON — commit SHA, version, OS/arch,
+  scheduler mode, duration, RPC host identifier, Jupiter tier, timestamp.
+  URLs reduced to `scheme://host` so userinfo/query keys can never reach
+  a report. 38 telemetry tests pass and the app crate checks clean,
+  verified on the PR branch (the fix was built on the branch's own head;
+  the compare against current main shows the feature only, no drift).
+- **Saidur-droid/MergeEarn #76 — converted.** Three screenshots captured
+  from the live deployed app (mergeearn.vercel.app, 2026-10-27, public
+  no-login views): landing entry points, the public proof board (live
+  counters + the PAID bounty card), and the verified lifecycle panel.
+  README gained a compact "See it live" section linking the live app and
+  `docs/JUDGE_PROOF.md`. Docs only, per the issue's constraints.
+- **Kilo-Org/agentic-path #26 — withdrawn (category error).** #25 is a
+  product report ("path.kilo.ai does not exist?"); no change in that
+  repository can resolve it. The issue stands; the PR was the wrong
+  instrument.
+- **apache/hugegraph-computer #365 — withdrawn (already covered).** The
+  umbrella's functional-test task is done upstream: `vermeer_test.go`
+  exercises 16 algorithms, past the requested 3; the remaining open
+  items are operator walkthroughs, not PR-carried changes.
+
+**Open lane PRs after batch 2: 4** — the three converted fixes awaiting
+upstream review (Sail-CLI #23, Focusflow #15, vibewatt #100) plus
+OrionStarAI/EasyCode #53, which the automation's live pass found to be
+already substantive. ROCm #13152 remains held for the owner's reply.
+
 ## Automation (owner order 2026-10-27: "This entire process is required Automations")
 
 The process above now runs as a required automation, not a chat pass:

@@ -29,8 +29,33 @@ vs **done** (code/workflows implement) vs **executed** (runs/artifacts prove).
   `.github/workflows/help-wanted-status-refresh.yml` exists on master.
 - Severity: high (fleet decisions read these diagnostics as current).
 - Fix route: repo-automation fix chat — diagnose the refresh schedule, restore
-  it, add a staleness alarm. Status: open. (Run-history re-check deferred:
-  API rate limit hit during this sweep.)
+  it, add a staleness alarm. Status: fix-spawned 2026-10-27.
+- **Root cause (diagnosed 2026-10-27, run-id evidence):** commit e0f661b29d
+  (2026-10-23, Tier 2 cadence takeover, #1573) removed the lane's own schedule;
+  sole cadence owner `quota-dispatch-tree.yml` set
+  `dispatch_hw_refresh = (UTC minutes < 10)` — a phase window assuming its
+  */10 cron lands hourly in minutes 0–9. GitHub delivers that schedule
+  ~6×/day at jittered minutes: the refresh's only two post-takeover
+  dispatches (runs 40037960621, 40164462301) each landed ~30s after the only
+  two tree runs at minute 08; all 13 tree runs after 2026-10-25T05:08Z landed
+  at minutes 11–59, so the refresh never fired and no run could fail (the
+  audit step is `continue-on-error`; no staleness check existed).
+- **Resolution: closed-on-evidence 2026-10-27.** PR #1759 merged
+  `f81e659d96c6` (master-history + landed-content verified): (1) tree Node F0
+  measures the lane's real age and fires when stale > 75m, phase-independent;
+  (2) the refresh workflow fails red if the committed audit's `generated_at`
+  is > 20m old after a run; (3) new watchdog
+  `help-wanted-audit-staleness.yml` (every 2h at :41) fails red and dispatches
+  a recovery refresh when audit age > 180m. Proof: refresh dispatch run
+  40505526019 success; audit regenerated `generated_at`
+  2026-10-27T12:41:17Z with EF-CHAIN/SendAm #492/#607 recorded
+  `closed_unmerged`, `realized_effect_verified: false` (the missed closures,
+  now captured as non-conversions); first watchdog run 40505822630 success.
+- Follow-up (not part of this gap): the sibling lanes' tree nodes
+  (execute/followup/scout/assist, silent since Oct 23) carry the same
+  firstCycle∧hour-mod starvation pattern, and
+  `tests.test_actions_incident_dedupe.test_cadence_emits_lag_failure_incidents`
+  still asserts the pre-takeover cadence cron — both recorded on PR #1759.
 
 ### G-03 — Delphi outcome flywheel: no automated ingestion
 - Surface: Delphi Oracle. Layers: done vs executed.

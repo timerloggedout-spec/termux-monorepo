@@ -1,7 +1,7 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-10-21T09:45:00Z"
-updated_by: ChatGPT
+updated_at: "2026-10-27T08:18:26Z"
+updated_by: oracle-method
 
 proposals:
   - id: agent-contributor-provenance
@@ -681,3 +681,18 @@ proposals:
     related_prs: [1574, 1575, 1576]
     related_branches: []
     gates_required: [proposal-lifecycle]
+
+  - id: delphi-desk-builder-io
+    title: "Delphi Desk — decision-review cockpit for the Builder.io Agent-Native Hackathon"
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: active/delphi-desk-builder-io/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: []
+    related_prs: [1620, 1655, 1701, 1702]
+    related_branches: []
+    gates_required: [proposal-lifecycle, repo-gate]

@@ -119,16 +119,27 @@ vs **done** (code/workflows implement) vs **executed** (runs/artifacts prove).
   Status: fix-spawned (Delphi lane, dispatched 2026-10-27).
 
 ### G-10 — Dashboard surface feeds refresh by manual PR only
-- Surface: dashboard (MoneyBall / 3L0 / MVT / DoE feeds). Layers: held vs
-  executed.
+- Surface: dashboard (MoneyBall / 3L0 / MVT / DoE feeds; ATES added by the
+  separation landing, PR #1756). Layers: held vs executed.
 - Evidence: no collect workflow exists for `scripts/dashboards/
   surface_feeds.py` outputs, while `oracle-panel-feed-collect.yml` and
   `reviewer-metrics-collect.yml` refresh their feeds on a schedule. Surface
   feeds carry `generated_at`, so staleness is visible but unbounded.
 - Severity: low–medium (structural — pages will silently age).
 - Fix route: add a collect workflow mirroring the oracle pattern, or accept
-  manual refresh with a staleness threshold alarm. Status: fix-spawned
-  (Web Design lane, dispatched 2026-10-27).
+  manual refresh with a staleness threshold alarm. Status: closed-on-evidence
+  (2026-10-27). `.github/workflows/surface-feeds-collect.yml` landed via
+  PR #1770 (merged b0ba36c62b): workflow_dispatch + weekly schedule
+  (Wed 06:41 UTC) + push triggers on the collector's source records; it runs
+  `scripts/dashboards/surface_feeds.py --surface all` and proposes refreshes
+  as PRs from `surface-feeds/refresh` — never a direct commit. Scope grew to
+  five feeds when the MVT/DoE/ATES separation (PR #1756) added
+  `ates-feed.json` mid-flight. Proof: dispatch run 40506438873 (success)
+  produced refresh PR #1773 (merged 2b1a0ca30bbc); push-triggered runs
+  40507029319 and 40509533548 (success) followed, the latter producing
+  refresh PR #1778 (merged 3231802fc350); feeds on master carry
+  generated_at 2026-10-27T13:09:19Z from that cycle. Closed by the Web
+  Design lane.
 
 ### G-11 — Tier 1 classifiers: code healthy, never executed
 - Surface: classifiers (Mev/Jev/Kev/Laya). Layers: done vs executed.

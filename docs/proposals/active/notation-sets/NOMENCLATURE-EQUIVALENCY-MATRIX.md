@@ -198,3 +198,17 @@ A label is a string attached to a concept. A mapping is an assertion connecting 
 - `near_synonym` / `related_term`: useful for discovery but not sufficient evidence for interchangeability.
 
 The implementation remains candidate-only. Source discovery by Wolfram, Parallel Search, Liner, Firecrawl, or SciSpace is a provenance lead; it does not independently promote a row. Scite was not used because its trial gate required a payment card, and no subscription was activated.
+
+
+## Claim-level evidence records
+
+The seed now supports `evidence_records` separate from the source bibliography. Each record ties a bounded claim to one concept, label, or mapping and captures the source, source locator, short excerpt, retrieval date, reviewer, and lifecycle status. A source's existence is not treated as proof of every assertion that cites it.
+
+- `evidence_locator` should identify a section, heading, page, paragraph, DOI section, or repository discussion location sufficiently for another reviewer to find the passage.
+- `evidence_excerpt` should be a short, faithful excerpt when available. If a source has no stable text excerpt, record a precise locator and describe the limitation in the claim.
+- `claim` must state what the cited passage supports and what it does not support.
+- `retrieved_on` records when the source was checked; it is not the source publication date.
+- `reviewer` remains empty until a human/domain review actually occurs.
+- `accepted` evidence requires a reviewer. Seed examples remain `candidate` and must not be read as independently verified mathematical claims.
+
+The first four records anchor the current morphism/arrow and bind/composition candidates to Issue #320. The latter is explicitly documented as a discovery lead, not proof of equivalence.

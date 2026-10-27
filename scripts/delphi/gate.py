@@ -444,9 +444,27 @@ def comment_md(out: dict, ih: str, reason: str) -> str:
     return "\n".join(lines)
 
 
+def comments_newest(gh: GH, number: int, max_pages: int = 20) -> list[dict]:
+    """Issue comments newest-first, paged from the END of the list.
+
+    The ledgers are append-only and read for their LATEST entries; a
+    plain per_page=100 read returns the OLDEST page, so readers went
+    stale once a ledger passed 100 comments (issue #1533). Pages are
+    fetched until a short page; the result is newest-first."""
+    all_comments: list[dict] = []
+    for page in range(1, max_pages + 1):
+        batch = gh.req("GET", f"/issues/{number}/comments?per_page=100&page={page}")
+        if not batch:
+            break
+        all_comments.extend(batch)
+        if len(batch) < 100:
+            break
+    return list(reversed(all_comments))
+
+
 def last_ledger(gh: GH, number: int) -> dict | None:
-    comments = gh.req("GET", f"/issues/{number}/comments?per_page=100")
-    for c in reversed(comments):
+    comments = comments_newest(gh, number)
+    for c in comments:
         if c.get("body", "").startswith(LEDGER_MARK):
             m = re.search(r"```json\n(.*?)\n```", c["body"], re.S)
             if m:
@@ -466,7 +484,7 @@ def weights_issue(gh: GH, panel: dict) -> tuple[int | None, dict]:
     if not found:
         return None, panel["roles"]
     n = found[0]["number"]
-    for c in reversed(gh.req("GET", f"/issues/{n}/comments?per_page=100")):
+    for c in comments_newest(gh, n):
         if c.get("body", "").startswith(WEIGHTS_MARK):
             m = re.search(r"```json\n(.*?)\n```", c["body"], re.S)
             if m:
@@ -589,14 +607,16 @@ _SURF_RE = re.compile(r"^[a-z0-9][a-z0-9._-]{0,63}$")
 
 
 def parse_signals(raw: str) -> list[dict]:
-    """Accept one delphi_signal object or a list (<= 50). Unknown keys dropped; invalid items skipped."""
+    """Accept one delphi_signal object or a list (<= 200). Unknown keys
+    dropped; invalid items skipped. An optional string `key` (the
+    thread URL for tribute outcomes) passes through for dedupe."""
     raw = (raw or "").strip()
     if not raw or raw == "null":
         return []
     data = json.loads(raw)
     items = data if isinstance(data, list) else [data]
     out = []
-    for it in items[:50]:
+    for it in items[:200]:
         if not isinstance(it, dict):
             continue
         surf, repo, oc = str(it.get("surface", "")), str(it.get("repo") or ""), str(it.get("outcome", ""))
@@ -606,25 +626,80 @@ def parse_signals(raw: str) -> list[dict]:
             w = TRIBUTE_WEIGHTS.get(oc)
         if w is None or not _SURF_RE.match(surf) or (repo and not _REPO_RE.match(repo)) or not -1.0 <= w <= 1.0:
             continue
-        out.append({"surface": surf, "repo": repo, "outcome": oc[:40], "weight": round(w, 3)})
+        sig = {"surface": surf, "repo": repo, "outcome": oc[:40], "weight": round(w, 3)}
+        key = it.get("key")
+        if isinstance(key, str) and key.strip():
+            sig["key"] = key.strip()[:300]
+        out.append(sig)
     return out
+
+
+def signal_digest(sig: dict) -> str | None:
+    """Idempotency digest for a keyed signal: key + outcome. A changed
+    outcome under the same key digests differently and is recorded as
+    a new signal; the same key+outcome never applies twice."""
+    key = sig.get("key")
+    if not key:
+        return None
+    return hashlib.sha256(f"{key}|{sig.get('outcome', '')}".encode()).hexdigest()[:16]
+
+
+def dedupe_signals(state: dict, signals: list[dict],
+                   max_digests: int = 2000) -> tuple[list[dict], list[dict], dict]:
+    """Split signals into (kept, skipped) against the digest sets the
+    outcome ledger keeps per surface (last 2000 per surface, carried
+    inside the outcome state). Unkeyed signals are never deduped.
+    Returns (kept, skipped, new_state) — new_state's digest sets are
+    updated with the kept signals' digests, trimmed to the newest
+    max_digests per surface."""
+    st = json.loads(json.dumps(state or {"surfaces": {}}))
+    digests: dict[str, list[str]] = st.setdefault("digests", {})
+    kept, skipped = [], []
+    for sig in signals:
+        d = signal_digest(sig)
+        if d is None:
+            kept.append(sig)
+            continue
+        seen = digests.setdefault(sig["surface"], [])
+        if d in seen:
+            skipped.append(sig)
+            continue
+        seen.append(d)
+        del seen[:-max_digests]  # keep the newest max_digests
+        kept.append(sig)
+    st["digests"] = digests
+    return kept, skipped, st
 
 
 def apply_outcomes(state: dict, signals: list[dict], alpha: float = 0.2, max_repos: int = 200) -> dict:
     """Surface- and repo-level EWMA of graded weights (-1..+1). Pure; returns the new state."""
     st = json.loads(json.dumps(state or {"surfaces": {}}))
+    # Counts, sums and outcome tallies accumulate per signal (facts).
+    # The EWMA is DAMPED (issue #1533): one step per batch, taken at
+    # the batch mean — a 169-signal backfill moves the panel like one
+    # outcome, not 169 steps toward it.
+    by_surface: dict[str, list[dict]] = {}
     for sg in signals:
-        srf = st["surfaces"].setdefault(sg["surface"], {"n": 0, "sum": 0.0, "ewma": 0.0, "by_outcome": {}, "repos": {}})
-        srf["n"] += 1
-        srf["sum"] = round(srf["sum"] + sg["weight"], 3)
-        srf["ewma"] = round((1 - alpha) * srf["ewma"] + alpha * sg["weight"], 4)
-        srf["by_outcome"][sg["outcome"]] = srf["by_outcome"].get(sg["outcome"], 0) + 1
-        if sg["repo"]:
-            r = srf["repos"].pop(sg["repo"], {"n": 0, "ewma": 0.0})
-            r["n"] += 1
-            r["ewma"] = round((1 - alpha) * r["ewma"] + alpha * sg["weight"], 4)
-            r["last"] = sg["outcome"]
-            srf["repos"][sg["repo"]] = r  # re-insert = most recent last
+        by_surface.setdefault(sg["surface"], []).append(sg)
+    for surf, batch in by_surface.items():
+        srf = st["surfaces"].setdefault(surf, {"n": 0, "sum": 0.0, "ewma": 0.0, "by_outcome": {}, "repos": {}})
+        for sg in batch:
+            srf["n"] += 1
+            srf["sum"] = round(srf["sum"] + sg["weight"], 3)
+            srf["by_outcome"][sg["outcome"]] = srf["by_outcome"].get(sg["outcome"], 0) + 1
+        mean_w = sum(sg["weight"] for sg in batch) / len(batch)
+        srf["ewma"] = round((1 - alpha) * srf["ewma"] + alpha * mean_w, 4)
+        by_repo: dict[str, list[dict]] = {}
+        for sg in batch:
+            if sg["repo"]:
+                by_repo.setdefault(sg["repo"], []).append(sg)
+        for repo, rbatch in by_repo.items():
+            r = srf["repos"].pop(repo, {"n": 0, "ewma": 0.0})
+            r["n"] += len(rbatch)
+            rmean = sum(sg["weight"] for sg in rbatch) / len(rbatch)
+            r["ewma"] = round((1 - alpha) * r["ewma"] + alpha * rmean, 4)
+            r["last"] = rbatch[-1]["outcome"]
+            srf["repos"][repo] = r  # re-insert = most recent last
             while len(srf["repos"]) > max_repos:
                 srf["repos"].pop(next(iter(srf["repos"])))
     return st
@@ -648,7 +723,7 @@ def feedback_graded(roles: dict, final_votes: list[dict], weight: float, panel: 
 
 
 def latest_json(gh: GH, number: int, mark: str) -> dict | None:
-    for c in reversed(gh.req("GET", f"/issues/{number}/comments?per_page=100")):
+    for c in comments_newest(gh, number):
         if c.get("body", "").startswith(mark):
             m = re.search(r"```json\n(.*?)\n```", c["body"], re.S)
             if m:
@@ -675,7 +750,15 @@ def _tribute(args) -> int:
     n = found[0]["number"] if found else gh.req("POST", "/issues", {
         "title": OUTCOMES_TITLE, "labels": ["delphi:outcomes"],
         "body": "Append-only graded outcomes (tribute-outcome and future lanes). docs/ops/DELPHI-LANE-CONTRACT.md"})["number"]
-    state = apply_outcomes(latest_json(gh, n, OUTCOMES_MARK) or {"surfaces": {}}, sigs)
+    prev_state = latest_json(gh, n, OUTCOMES_MARK) or {"surfaces": {}}
+    sigs, skipped, prev_state = dedupe_signals(prev_state, sigs)
+    if skipped:
+        print(f"::notice::delphi tribute-outcome: {len(skipped)} duplicate "
+              "key+outcome signal(s) skipped (idempotent re-delivery)")
+    if not sigs:
+        print("::notice::delphi tribute-outcome: all signals already recorded; nothing new")
+        return 0
+    state = apply_outcomes(prev_state, sigs)
     gh.req("POST", f"/issues/{n}/comments", {"body": f"{OUTCOMES_MARK}\n{len(sigs)} signal(s): "
            + ", ".join(f"`{x['surface']}` {x['outcome']} {x['weight']:+}" for x in sigs[:10])
            + f"\n```json\n{json.dumps(state, indent=1)}\n```"})
@@ -691,8 +774,11 @@ def _tribute(args) -> int:
         if not prev:
             print(f"::notice::delphi tribute-outcome: no scored RFP for {surf}; outcomes recorded, panel weights unchanged")
             continue
-        for x in (y for y in sigs if y["surface"] == surf):
-            new = feedback_graded(new, prev["final_votes"], x["weight"], panel)
+        # Damped (issue #1533): the batch moves the roles in ONE
+        # graded step, taken at the surface batch's mean weight.
+        batch = [y for y in sigs if y["surface"] == surf]
+        mean_w = round(sum(y["weight"] for y in batch) / len(batch), 3)
+        new = feedback_graded(new, prev["final_votes"], mean_w, panel)
         used.append(f"#{num}")
     if used and new != roles:
         if wn is None:

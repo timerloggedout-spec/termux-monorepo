@@ -1,0 +1,67 @@
+# Tribute System 1 -> Delphi outcome ingestion (issue #1533).
+# Event-driven and keyless: when a tribute-system1 scan finishes, its
+# decisions artifact is ingested; on manual dispatch, the backfill
+# branch's JSONL is ingested instead. Signals go out as ONE
+# tribute-outcome dispatch via the reusable delphi-signal emitter —
+# the gate dedupes on key+outcome, so re-delivery is harmless.
+# No schedule. Additive file. No secrets, no model calls.
+name: delphi-tribute-ingest
+
+on:
+  workflow_run:
+    workflows: ["tribute-system1"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  collect:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      signal: ${{ steps.ingest.outputs.signal }}
+      count: ${{ steps.ingest.outputs.count }}
+    steps:
+      - name: Check out master (ingest tooling)
+        uses: actions/checkout@v4
+
+      - name: Check out the backfill branch (dispatch path)
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/checkout@v4
+        with:
+          ref: tribute-s1/backfill
+          path: backfill-data
+
+      - name: Download the scan's decisions artifact (scan path)
+        if: github.event_name == 'workflow_run'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh run download "${{ github.event.workflow_run.id }}" -n tribute-s1-decisions -D decisions-in
+
+      - name: Extract delphi signals
+        id: ingest
+        run: |
+          set -euo pipefail
+          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
+            files=$(ls backfill-data/backfill/*.jsonl)
+          else
+            files=$(ls decisions-in/*.jsonl)
+          fi
+          echo "ingesting: $files"
+          python3 scripts/delphi/tribute_ingest.py --summary $files > signal.json
+          echo "count=$(jq 'length' signal.json)" >> "$GITHUB_OUTPUT"
+          echo "signal=$(jq -c . signal.json)" >> "$GITHUB_OUTPUT"
+
+  signal:
+    needs: collect
+    if: needs.collect.outputs.count != '' && needs.collect.outputs.count != '0'
+    uses: ./.github/workflows/delphi-signal.yml
+    permissions:
+      actions: write
+    with:
+      event: tribute-outcome
+      signal: ${{ needs.collect.outputs.signal }}

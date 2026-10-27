@@ -165,29 +165,35 @@ jobs:
               return;
             }
             let resolvedSha;
-            if (targetPrNumber === '0') {
-              const { data: branch } = await github.rest.repos.getBranch({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                branch: defaultBranch,
-              });
-              resolvedSha = branch.commit.sha;
-            } else {
-              if (!/^[1-9][0-9]*$/.test(targetPrNumber)) {
-                core.setFailed('Invalid target PR number.');
-                return;
+            try {
+              if (targetPrNumber === '0') {
+                const { data: branch } = await github.rest.repos.getBranch({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  branch: defaultBranch,
+                });
+                resolvedSha = branch.commit.sha;
+              } else {
+                if (!/^[1-9][0-9]*$/.test(targetPrNumber)) {
+                  core.setFailed('Invalid target PR number.');
+                  return;
+                }
+                const { data: pr } = await github.rest.pulls.get({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: Number(targetPrNumber),
+                });
+                if (pr.state !== 'open' || pr.draft || pr.head.repo?.full_name !== `${context.repo.owner}/${context.repo.repo}`) {
+                  core.notice('Target pull request is no longer an eligible same-repository review target; skipping stale discovery.');
+                  core.setOutput('skip', 'true');
+                  return;
+                }
+                resolvedSha = pr.head.sha;
               }
-              const { data: pr } = await github.rest.pulls.get({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: Number(targetPrNumber),
-              });
-              if (pr.state !== 'open' || pr.draft || pr.head.repo?.full_name !== `${context.repo.owner}/${context.repo.repo}`) {
-                core.notice('Target pull request is no longer an eligible same-repository review target; skipping stale discovery.');
-                core.setOutput('skip', 'true');
-                return;
-              }
-              resolvedSha = pr.head.sha;
+            } catch (error) {
+              core.warning(`GitHub API lookup error: ${error.message}`);
+              core.setOutput('skip', 'true');
+              return;
             }
             if (resolvedSha !== expectedSha) {
               core.notice('Target changed during discovery; refusing stale comparison.');

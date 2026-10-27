@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "68abf959f8ffd185e956ecbd06b04a21a9a0d50a75bfb211de1085bfd1674e92",
-  "workflow_count": 190,
+  "source_fingerprint": "bc33e34b05fb34355d8c7a44758a7467b7764289ed344c2199a3a6ef3f045e8a",
+  "workflow_count": 192,
   "workflows": [
     {
       "action_pins": [
@@ -1720,6 +1720,24 @@
     },
     {
       "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: help-wanted-audit-staleness cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "check"
+      ],
+      "name": "help-wanted-audit-staleness",
+      "path": ".github/workflows/help-wanted-audit-staleness.yml",
+      "schedules": [
+        "41 */2 * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
       "authority": "writer",
       "concurrency": "group: help-wanted-dashboard-deploy cancel-in-progress: false",
       "domain": "agentic-development",
@@ -3121,6 +3139,25 @@
       "triggers": [
         "pull_request",
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: surface-feeds-collect cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "collect"
+      ],
+      "name": "surface-feeds-collect",
+      "path": ".github/workflows/surface-feeds-collect.yml",
+      "schedules": [
+        "41 6 * * 3"
+      ],
+      "triggers": [
+        "push",
+        "schedule",
         "workflow_dispatch"
       ]
     },

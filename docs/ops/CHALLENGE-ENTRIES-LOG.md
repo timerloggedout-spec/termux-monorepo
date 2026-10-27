@@ -321,18 +321,26 @@ a submission path reaches an owner-account step.
   entry). Its ITEMS DD-001..006 mirror the build plan above. Verified on
   master by this lane (proposal tree + registry entry + ITEMS read,
   2026-10-27).
-- **Open risk to verify during prep:** whether publishing a public Clips demo
-  requires a Builder account — if it does, that step is owner-gated and gets
-  surfaced immediately, not at the deadline. The generated proposal marks
-  the same point **UNVERIFIED by design**. First-pass check (2026-10-27):
-  Builder's own publish docs describe editor publishing inside a Builder
-  Space/plan, which suggests the Builder-hosted path involves an account —
-  but the hackathon's Clips flow itself is still unverified.
-- **Eligibility check (enforced):** the submission step is blocked until the
-  Clips/account question resolves — either a verified no-account publish path
-  or the owner-gated account step surfaced and completed. Unresolved at build
-  end → no submission and no silent workaround; the block is recorded here
-  (and in the generated proposal's ITEMS DD-005).
+- **Clips account question — RESOLVED (2026-10-27, gap G-08):** verified
+  from the Official Rules, the submission form, the Clips template docs,
+  and a live trial of the hosted app. (1) The rules require the recording
+  to be *viewable without a login or access request* — trial confirms a
+  public share link loads the full viewer signed out. (2) The submission
+  form (builder.io/hackathon/submit) is a plain web form — name, email,
+  project details, public Clips recording URL — no account. (3) **Recording
+  on the hosted Clips instance (clips.agent-native.com) requires a free
+  Clips account**: the landing is a sign-in wall (Google or email; no guest
+  path — the trial stopped at the wall; no account created). It is NOT a
+  Builder.io CMS Space/plan account — the earlier first-pass read pointed
+  at the wrong surface and is corrected here. (4) Account-free alternative:
+  self-host the open-source Clips template (needs a video storage backend —
+  Builder.io or an S3-compatible bucket).
+- **Eligibility check (enforced, updated):** the submission step is blocked
+  until one demo path exists — the owner-approved free Clips account
+  (surfaced to the owner 2026-10-27; needed by the Oct 30–Nov 1 build
+  weekend) or a stood-up self-hosted Clips instance. Neither in place at
+  build end → no submission and no silent workaround. This resolution
+  propagates to the generated proposal's ITEMS DD-005 via the Delphi lane.
 - **Source packet:** `docs/proposals/active/aws-free-tier-strands-delphi-oracle/`
   (DEBATE.md envelope, EXPERIMENT-MATRIX), `scripts/delphi/strands_oracle_mvp.py`
   (receipt pattern), PR #1655 CMDB design (conflict matrix / reconciliation).

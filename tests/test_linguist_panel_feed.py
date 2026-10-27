@@ -99,6 +99,32 @@ def test_span_anchors_resolve():
             path.read_text(encoding="utf-8", errors="replace").splitlines())
 
 
+def test_panel_alignment_fields():
+    feed = _feed()
+    assert feed["honesty_rules"] and feed["sample_texts"]
+    for s in feed["sample_texts"]:
+        lines = (ROOT / s["provenance"]["path"]).read_text(
+            encoding="utf-8", errors="replace").splitlines()
+        assert s["text"] in lines[s["provenance"]["line"] - 1]
+    for fam in feed["families"]:
+        assert fam["label"] == fam["name"]
+        assert fam["kind"] in ("cipher", "leet", "compression",
+                               "notation", "other")
+        assert fam["kind_detail"] and fam["description"]
+        assert fam["granularity"] in ("char", "token", "phrase")
+        assert fam["provenance"]["source_path"] == fam["source_path"]
+        if fam["granularity"] == "char":
+            assert fam["table"] and all(
+                set(r) == {"from", "to"} for r in fam["table"])
+    for e in feed["entries"]:
+        assert e["family_id"] == e["family"]
+        assert e["match"] == e["source"] and e["match_type"] == "literal"
+        assert e["match_variants"] == e["variants"]
+        assert e["granularity"] in ("char", "token", "phrase")
+        assert "round_trip_verified" in e  # present even when null
+        assert e["provenance"]["source_path"] == e["provenance"]["path"]
+
+
 def test_gaps_and_count_only_family_named():
     feed = _feed()
     gap_ids = {g["id"] for g in feed["gaps"]}

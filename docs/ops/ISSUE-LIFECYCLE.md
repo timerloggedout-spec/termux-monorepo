@@ -262,6 +262,27 @@ the URL.
 | G7 | Close-as-fixed evidence inconsistent | closed-set sample §7 | **Convention set:** C1; lane audits closures in the weekly pass |
 | G8 | Findings loop as comments on standing threads (#1505 pattern) | §6 anti-pattern | **Convention set:** C2 |
 
-_Landing record for this map, its fixes, and the first triage pass is
-appended below by the lane once the introducing PR is merged and verified
-on master (history-scan + landed content)._
+## Landing record (appended 2026-10-27, post-merge)
+
+- **Introducing PR #1855 MERGED** — merge commit
+  `a2e0237bcebf84d85e9d99c714912f1d06599eca`, found in a master-history
+  scan and confirmed by landed content on master (this file present, no
+  conflict markers); checks at merge: 35 success / 0 failure. All G1/G3
+  files from §10 landed in that PR: the lifecycle map, the deterministic
+  triage-labels script + tests, the triage workflow, the `proposal` and
+  `bug` issue forms, and the regenerated automation catalog.
+- **Automation proven live:** first dispatch of
+  `issue-lifecycle-triage.yml` (report mode) — run `40592755434`,
+  completed **success**, 2026-10-27T22:10Z. The weekly apply run is
+  scheduled Tue 07:17 UTC per §9.
+- **First triage pass (2026-10-27, after the map landed — no history was
+  relabelled before it):** 7 issues labelled, each with a signed
+  `[MUSEai]@{role:{issue-lifecycle}}` comment —
+  #1811, #1812, #1813, #1821, #1822 → `proposal` + `research`
+  (comments 6454851170, 6454851473, 6454851769, 6454852096, 6454852438);
+  #1505 → `Integrations` (comment 6454852741); #1241 → `BIUDL`
+  (comment 6454853081).
+- **Post-pass census (search API, same day):** unlabelled open issues
+  **52 → 45**; open issues still 225; `proposal`-labelled open issues
+  24 → 29. The remaining 45 unlabelled are older history and are worked
+  oldest-first in the weekly lane pass (§9), not in bulk.

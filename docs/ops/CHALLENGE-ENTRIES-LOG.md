@@ -293,9 +293,21 @@ a submission path reaches an owner-account step.
   (deterministic panel locally, so the demo never depends on an API key);
   Oct 30–Nov 1 concentrated build (review flows, ledger, agent revision loop);
   Nov 2 polish, Clips demo, submit.
+- **Citable basis (generated):** `docs/proposals/active/delphi-desk-builder-io/`
+  — the Oracle Method's first generated proposal (PR #1708, merged 7a7a5888;
+  proposal registry #42, the registry's first `author: oracle-method`;
+  generated from a live-fetched 117-item evidence set including this
+  packet, the Delphi status doc, the CMDB design, PR #1620, and the D0
+  entry). Its ITEMS DD-001..006 mirror the build plan above. Verified on
+  master by this lane (proposal tree + registry entry + ITEMS read,
+  2026-10-27).
 - **Open risk to verify during prep:** whether publishing a public Clips demo
   requires a Builder account — if it does, that step is owner-gated and gets
-  surfaced immediately, not at the deadline.
+  surfaced immediately, not at the deadline. The generated proposal marks
+  the same point **UNVERIFIED by design**. First-pass check (2026-10-27):
+  Builder's own publish docs describe editor publishing inside a Builder
+  Space/plan, which suggests the Builder-hosted path involves an account —
+  but the hackathon's Clips flow itself is still unverified.
 - **Source packet:** `docs/proposals/active/aws-free-tier-strands-delphi-oracle/`
   (DEBATE.md envelope, EXPERIMENT-MATRIX), `scripts/delphi/strands_oracle_mvp.py`
   (receipt pattern), PR #1655 CMDB design (conflict matrix / reconciliation).

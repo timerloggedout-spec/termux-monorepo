@@ -94,7 +94,85 @@ class QuotaPollTest(unittest.TestCase):
                 self.assertNotIn(private, combined)
             row = next(r for r in json.loads(text)["readings"] if r["resource_id"] == "openrouter.free_models")
             self.assertEqual(row["status"], "private_preflight")
-            self.assertEqual(set(row), {"resource_id", "provider", "status", "observed_at"})
+            self.assertEqual(set(row), {"resource_id", "provider", "status", "observed_at", "horizon", "evidence_status"})
+            # Convergence with the readings contract: a genuine live read is
+            # H0/confirmed evidence even though its status stays withheld.
+            self.assertEqual((row["horizon"], row["evidence_status"]), ("H0", "confirmed"))
+            self.assertIsNotNone(row["observed_at"])
+            unobserved = next(r for r in json.loads(text)["readings"] if r["resource_id"] == "vercel.deployments")
+            self.assertEqual(unobserved["status"], "unknown")
+            self.assertIsNone(unobserved["observed_at"])
+            self.assertEqual((unobserved["horizon"], unobserved["evidence_status"]), ("H1", "attributed_claim"))
+
+    def test_readings_snapshot_converts_projection_to_dashboard_contract(self):
+        services = [
+            {"id": "openrouter.free_models", "provider": "openrouter", "lane": "model",
+             "source": "https://openrouter.ai/docs", "limit": None, "unit": "requests/day"},
+            {"id": "example.requests", "provider": "example", "lane": "ops",
+             "source": "https://example.com/docs", "limit": 100, "unit": "requests"},
+            {"id": "plain.requests", "provider": "plain", "lane": "ops",
+             "source": "internal-note", "limit": 5, "unit": "requests"},
+        ]
+        now = datetime(2026, 10, 27, 12, 0, tzinfo=timezone.utc)
+        public = _qp.public_snapshot(services, {"openrouter.free_models": {"used": 714239}}, now)
+        snap = _qp.readings_snapshot(public, services)
+        self.assertEqual(snap["schema"], "3l0.quota-readings.v1")
+        self.assertEqual(snap["generated_at"], public["generated_at"])
+        self.assertIn("not a live quota feed", snap["source"])
+        self.assertNotIn("714239", json.dumps(snap))
+        rows = {r["resource_id"]: r for r in snap["readings"]}
+        # The projection withholds real statuses: no row may gain one, and no
+        # used/reset value may be invented (openrouter pin included).
+        for r in rows.values():
+            self.assertEqual(r["status"], "unknown")
+            self.assertIsNone(r["used"])
+            self.assertIsNone(r["reset"])
+            self.assertIn("observed_at", r)
+        live = rows["openrouter.free_models"]
+        self.assertEqual((live["horizon"], live["evidence_status"]), ("H0", "confirmed"))
+        self.assertEqual(live["observed_at"], now.isoformat())
+        self.assertIsNone(live["limit"])  # registry documents no limit; none inferred
+        unobserved = rows["example.requests"]
+        self.assertEqual((unobserved["horizon"], unobserved["evidence_status"]), ("H1", "attributed_claim"))
+        self.assertIsNone(unobserved["observed_at"])
+        self.assertEqual(unobserved["limit"], 100)  # documented entitlement, not a balance
+        self.assertEqual(rows["plain.requests"]["evidence_status"], "early_signal")
+
+    def test_readings_snapshot_rederives_evidence_for_pre_convergence_artifacts(self):
+        services = [{"id": "example.requests", "provider": "example", "lane": "ops",
+                     "source": "https://example.com/docs", "limit": 100, "unit": "requests"}]
+        legacy = {"schema": "quota-public-status/v1", "generated_at": "2026-10-22T00:00:00+00:00",
+                  "readings": [{"resource_id": "example.requests", "provider": "example",
+                                "status": "private_preflight", "observed_at": "2026-10-22T00:00:00+00:00"}]}
+        row = _qp.readings_snapshot(legacy, services)["readings"][0]
+        self.assertEqual((row["horizon"], row["evidence_status"]), ("H0", "confirmed"))
+
+    def test_readings_snapshot_rejects_non_projection_input(self):
+        with self.assertRaises(ValueError):
+            _qp.readings_snapshot({"schema": "3l0.quota-readings.v1", "readings": []}, [])
+        with self.assertRaises(ValueError):
+            _qp.readings_snapshot(["not-a-dict"], [])
+
+    def test_from_public_cli_writes_only_the_readings_snapshot(self):
+        artifact = {"schema": "quota-public-status/v1", "generated_at": "2026-10-27T12:00:00+00:00",
+                    "readings": [{"resource_id": "openrouter.free_models", "provider": "openrouter",
+                                  "status": "private_preflight", "observed_at": "2026-10-27T12:00:00+00:00",
+                                  "horizon": "H0", "evidence_status": "confirmed", "used": 714239}]}
+        with tempfile.TemporaryDirectory() as d:
+            src = os.path.join(d, "quota-public-status.json")
+            with open(src, "w") as f:
+                json.dump(artifact, f)
+            output = os.path.join(d, "converted")
+            stdout = io.StringIO()
+            with contextlib.redirect_stdout(stdout):
+                self.assertEqual(_qp.main(["--from-public", src, "--registry",
+                                           os.path.join(ROOT, "ops/quota/registry.json"), "--out", output]), 0)
+            self.assertEqual(os.listdir(output), ["quota-status.json"])
+            text = open(os.path.join(output, "quota-status.json")).read()
+            self.assertNotIn("714239", text + stdout.getvalue())
+            snap = json.loads(text)
+            row = next(r for r in snap["readings"] if r["resource_id"] == "openrouter.free_models")
+            self.assertEqual((row["status"], row["used"], row["reset"]), ("unknown", None, None))
 
     def test_public_mode_refuses_stale_private_output_directory(self):
         with tempfile.TemporaryDirectory() as d:

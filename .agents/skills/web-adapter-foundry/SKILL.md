@@ -52,11 +52,15 @@ live before relying on it; catalog metadata is a dated snapshot.
    rever-browser for runtime/crypto/WASM. **Every conclusion is labelled**
    `observed | inferred | reproduced | contradicted | unknown`. A string in
    a bundle is never automatically a verified endpoint.
-3. **Bounded differential probes** — in order: exact replay, single-field
-   change, header removal, fresh authorised session, expiry, pagination
-   boundary, browser-vs-direct, controlled error. Within the authorised
-   workflow only. Never auto-enable broad vuln scanning, account-boundary
-   exploration, or state-changing fuzzing.
+3. **Bounded probes** — probing means *finding the DOMs from the request*
+   (owner definition, 2026-10-27): first request inventory, DOM
+   attribution, DOM data source — which DOMs a captured request produces
+   or feeds, which endpoint serves them, which fields/headers select them.
+   Then the differential probes over the DOMs found: exact replay,
+   single-field change, header removal, fresh authorised session, expiry,
+   pagination boundary, browser-vs-direct, controlled error. Within the
+   authorised workflow only. Never auto-enable broad vuln scanning,
+   account-boundary exploration, or state-changing fuzzing.
 4. **Synthesise the contract** — mitmproxy2swagger draft reconciled against
    observed workflows (manual review is part of its workflow). Store rich
    metadata beside the schema: operation_id, status, side_effect, executor,

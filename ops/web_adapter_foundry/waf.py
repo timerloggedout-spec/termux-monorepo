@@ -47,14 +47,24 @@ DEGRADED = "degraded"
 SIDE_EFFECTS = ("read", "write")
 
 # Bounded differential probes (iDEAL doc stage 3), in safe order.
+# Probing, in this stack's reverse-engineering sense (owner definition,
+# 2026-10-27): finding the DOMs from the request. A probe starts from a
+# captured request and attributes the DOMs behind it — the response
+# structures and rendered trees it produces or feeds, plus the endpoint
+# and fields that select them. The first three probes ARE that discovery;
+# the differential probes after them operate on DOMs already found and
+# never substitute for finding them.
 PROBES = (
+    {"id": "request-inventory", "question": "Which requests does the surface actually make?"},
+    {"id": "dom-attribution", "question": "For this request, which DOMs does it produce or feed?"},
+    {"id": "dom-data-source", "question": "Which endpoint serves each DOM, and which request fields/headers select it?"},
     {"id": "exact-replay", "question": "Does the captured operation still work?"},
-    {"id": "single-field-change", "question": "Which input controls the behaviour?"},
+    {"id": "single-field-change", "question": "Which input controls which DOM?"},
     {"id": "header-removal", "question": "Which headers are actually required?"},
     {"id": "fresh-session", "question": "Is the behaviour tied to one session?"},
     {"id": "expiry", "question": "What must be refreshed, and when?"},
     {"id": "pagination-boundary", "question": "How does traversal terminate?"},
-    {"id": "browser-vs-direct", "question": "Can this operation leave the browser?"},
+    {"id": "browser-vs-direct", "question": "Can this DOM be reached without the browser?"},
     {"id": "controlled-error", "question": "What failure contract should the adapter expose?"},
 )
 WRITE_UNSAFE_PROBES = ()  # all probes above are read-safe progressions; state-
@@ -420,7 +430,9 @@ def render_plan_markdown(plan: dict) -> str:
 # ---------------------------------------------------------------- probes
 
 def plan_probes(op: dict) -> list[dict]:
-    """Ordered bounded probe plan for one operation."""
+    """Ordered bounded probe plan for one operation. Probing = finding the
+    DOMs from the request: discovery (inventory, attribution, data source)
+    first, then the differential probes over the DOMs found."""
     plan = [dict(p) for p in PROBES]
     if op.get("executor") == "direct-http":
         plan = [p for p in plan if p["id"] != "browser-vs-direct"]

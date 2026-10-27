@@ -3,10 +3,31 @@ name: Reconcile Devin Wiki access
 on:
   schedule:
     - cron: "41 5 * * *"
+  create:
   workflow_dispatch:
     inputs:
       apply:
         description: "Grant missing selected-repository Devin GitHub App access through the documented GitHub endpoint"
+        required: true
+        default: false
+        type: boolean
+      index:
+        description: "Devin Wiki branch indexing scope for this run (schedule runs always use first-pass)"
+        required: true
+        default: skip
+        type: choice
+        options:
+          - skip
+          - first-pass
+          - all
+          - single
+      index_branch:
+        description: "Branch name when index = single"
+        required: false
+        default: ""
+        type: string
+      approve_nonlow_effort:
+        description: "Approve a bulk index=all run at medium/high DeepWiki effort (projected ACUs are reported by the indexer)"
         required: true
         default: false
         type: boolean
@@ -21,6 +42,7 @@ concurrency:
 jobs:
   reconcile:
     name: Discover Devin Wiki indexing eligibility for accessible repositories
+    if: github.event_name != 'create'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -37,8 +59,8 @@ jobs:
           APPLY: ${{ github.event_name == 'schedule' && 'true' || inputs.apply || 'false' }}
           # The selected token must be an existing classic PAT with repo scope
           # when GitHub App assignment is required. No new credential is minted.
-          GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
-          OPERATOR_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN || secrets.OPERATOR_TOKEN }}
+          OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
         run: |
           set -euo pipefail
           arguments=(
@@ -57,5 +79,149 @@ jobs:
         with:
           name: devin-wiki-access-${{ github.run_id }}
           path: reports/devin-wiki-access-summary.json
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Index Devin Wiki branches
+        env:
+          # Existing operator-token precedence; used only to list this
+          # repository's branches and open pull requests.
+          GH_TOKEN: ${{ secrets.GH_TOKEN || secrets.OPERATOR_TOKEN }}
+          OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
+          # Devin v3 indexing credential (names only). The token is a Devin
+          # service-user token with IndexOrgRepositories, NOT a GitHub PAT.
+          DEVIN_INDEXING_API_KEY: ${{ secrets.DEVIN_INDEXING_API_KEY }}
+          DEVIN_ORG_ID: ${{ vars.DEVIN_ORG_ID }}
+          DEVIN_WIKI_EFFORT: ${{ vars.DEVIN_WIKI_EFFORT }}
+          INDEX_REQUEST: ${{ inputs.index || 'skip' }}
+          INDEX_BRANCH_INPUT: ${{ inputs.index_branch || '' }}
+          APPROVE_NONLOW_EFFORT: ${{ inputs.approve_nonlow_effort || 'false' }}
+        run: |
+          set -euo pipefail
+          mkdir -p reports
+          summary="reports/devin-wiki-indexing-summary.json"
+          write_summary() {
+            python3 - "${summary}" "$1" "$2" <<'PY'
+          import json, sys
+          path, state, detail = sys.argv[1], sys.argv[2], sys.argv[3]
+          payload = {
+              "schema_version": 1,
+              "provider": "Devin Wiki indexing (v3 API)",
+              "state": state,
+              "detail": detail,
+              "additive_only": True,
+              "redaction": "Devin org ID, API token, per-branch commits and job IDs are intentionally omitted.",
+          }
+          with open(path, "w", encoding="utf-8") as handle:
+              json.dump(payload, handle, indent=2)
+              handle.write("\n")
+          PY
+          }
+          scope=""
+          extra=()
+          if [[ "${GITHUB_EVENT_NAME}" == "schedule" ]]; then
+            scope="first-pass"
+          elif [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then
+            case "${INDEX_REQUEST}" in
+              first-pass|all) scope="${INDEX_REQUEST}" ;;
+              single)
+                scope="single"
+                if [[ -z "${INDEX_BRANCH_INPUT}" ]]; then
+                  write_summary "invalid_input" "index=single requires the index_branch input."
+                  echo "::error title=Devin Wiki indexing::index=single requires the index_branch input."
+                  exit 0
+                fi
+                extra+=(--branch "${INDEX_BRANCH_INPUT}")
+                ;;
+              *) scope="" ;;
+            esac
+          fi
+          if [[ -z "${scope}" ]]; then
+            write_summary "skipped" "No indexing scope selected for this run."
+            exit 0
+          fi
+          if [[ -z "${DEVIN_INDEXING_API_KEY}" || -z "${DEVIN_ORG_ID}" ]]; then
+            write_summary "not_provisioned" "Missing DEVIN_INDEXING_API_KEY secret and/or DEVIN_ORG_ID variable (names only)."
+            echo "::warning title=Devin Wiki indexing not provisioned::Set the DEVIN_INDEXING_API_KEY Actions secret (Devin service-user token with IndexOrgRepositories) and the DEVIN_ORG_ID Actions variable (org-... ID from Devin Settings)."
+            exit 0
+          fi
+          arguments=(
+            --repo "${GITHUB_REPOSITORY}"
+            --scope "${scope}"
+            --report "reports/devin-wiki-indexing-detail.json"
+            --summary-report "${summary}"
+          )
+          if [[ ${#extra[@]} -gt 0 ]]; then
+            arguments+=("${extra[@]}")
+          fi
+          if [[ "${APPROVE_NONLOW_EFFORT}" == "true" ]]; then
+            arguments+=(--approve-nonlow-effort)
+          fi
+          python3 scripts/agentic/devin_wiki_indexing.py "${arguments[@]}"
+          rm -f reports/devin-wiki-indexing-detail.json
+
+      - name: Upload redacted Devin Wiki indexing summary
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: devin-wiki-indexing-${{ github.run_id }}
+          path: reports/devin-wiki-indexing-summary.json
+          if-no-files-found: error
+          retention-days: 14
+
+  index-created-branch:
+    name: Index a newly created branch in Devin Wiki
+    if: github.event_name == 'create' && github.event.ref_type == 'branch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout control-plane source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Index the created branch
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN || secrets.OPERATOR_TOKEN }}
+          OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
+          DEVIN_INDEXING_API_KEY: ${{ secrets.DEVIN_INDEXING_API_KEY }}
+          DEVIN_ORG_ID: ${{ vars.DEVIN_ORG_ID }}
+          DEVIN_WIKI_EFFORT: ${{ vars.DEVIN_WIKI_EFFORT }}
+          NEW_BRANCH: ${{ github.event.ref }}
+        run: |
+          set -euo pipefail
+          mkdir -p reports
+          summary="reports/devin-wiki-indexing-summary.json"
+          if [[ -z "${DEVIN_INDEXING_API_KEY}" || -z "${DEVIN_ORG_ID}" ]]; then
+            python3 - "${summary}" <<'PY'
+          import json, sys
+          payload = {
+              "schema_version": 1,
+              "provider": "Devin Wiki indexing (v3 API)",
+              "state": "not_provisioned",
+              "detail": "Missing DEVIN_INDEXING_API_KEY secret and/or DEVIN_ORG_ID variable (names only).",
+              "additive_only": True,
+              "redaction": "Devin org ID, API token, per-branch commits and job IDs are intentionally omitted.",
+          }
+          with open(sys.argv[1], "w", encoding="utf-8") as handle:
+              json.dump(payload, handle, indent=2)
+              handle.write("\n")
+          PY
+            echo "::warning title=Devin Wiki indexing not provisioned::Set the DEVIN_INDEXING_API_KEY Actions secret (Devin service-user token with IndexOrgRepositories) and the DEVIN_ORG_ID Actions variable (org-... ID from Devin Settings)."
+            exit 0
+          fi
+          python3 scripts/agentic/devin_wiki_indexing.py \
+            --repo "${GITHUB_REPOSITORY}" \
+            --scope single \
+            --branch "${NEW_BRANCH}" \
+            --report "reports/devin-wiki-indexing-detail.json" \
+            --summary-report "${summary}"
+          rm -f reports/devin-wiki-indexing-detail.json
+
+      - name: Upload redacted Devin Wiki indexing summary
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: devin-wiki-indexing-${{ github.run_id }}
+          path: reports/devin-wiki-indexing-summary.json
           if-no-files-found: error
           retention-days: 14

@@ -43,8 +43,10 @@ panel weighting into a ranked outcome with receipts
 append). Machinery proven by a rehearsal pass on a synthetic fixture
 (3 candidates ranked by evidence profile under the real ledger
 weights; HUMAN/MODEL classes honestly at zero — no provider panel is
-enabled, `DELPHI_LLM_MAX=0`). The first live run is the D4 Kiroween
-pass, on the challenge lane's brief after the rules publish 2026-10-30.
+enabled, `DELPHI_LLM_MAX=0`). Label of record for all tonight's
+rehearsals (owner, 2026-10-27): **ideation drafts imagining
+readiness** — synthetic fixtures, no real ballots, not registered.
+Real ballots begin with the first live pass (below).
 
 **Full cycle (owner spec, 2026-10-27 01:20; built same night):** the
 cross-vote above is round 1 of a six-stage cycle — generate →
@@ -57,12 +59,31 @@ moving evidence; the ledgers' feed). Parameters live in
 `ops/delphi/panel.json` (`generation.cycle`), stage gates validate
 each stage, and a stage that cannot execute is recorded
 `specified_not_run` — never dropped, never fabricated. Tooling:
-`scripts/delphi/method_cycle.py`. Rehearsed end-to-end on the fixture:
-with implementation results all seven stages ran and calibration
-caught a failing candidate at −2.77 vs expectation; without them the
-cycle records the remaining stages specified_not_run. Full spec:
-DELPHI-LANE-CONTRACT.md, "The Oracle Method cycle". The D4 run is
-structured to this cycle.
+`scripts/delphi/method_cycle.py`. Rehearsed end-to-end on the fixture
+(an ideation draft imagining readiness — synthetic fixture, no real
+ballots, not registered): with implementation results all seven
+stages ran and calibration caught a failing candidate at −2.77 vs
+expectation; without them the cycle records the remaining stages
+specified_not_run. Full spec: DELPHI-LANE-CONTRACT.md, "The Oracle
+Method cycle". The D4 run is structured to this cycle.
+
+**First live pass — the AWS Strands RFP (2026-10-27; owner
+sequencing: this pass precedes D4).** Pass `strands-rfp-response`
+(record: `docs/proposals/passes/strands-rfp-response/`): n=3
+candidate response strategies generated against the RFP's open items
+(kernel-first / collection-first / packaging-first; registered
+#43–#45, `author: oracle-method`), cross-voted round 1
+(**collection-first > kernel-first > packaging-first**; LOCAL_BASELINE
+ballots only — HUMAN/MODEL at zero, stated), expectations recorded
+before implementation (derived priors + `BRIEF:delphi-lane` priors),
+implementation round as real offline in-repo builds (9 suites, 9
+passed), equalized round 2 (ranking held), calibration recorded —
+including the brief author's priors missing the top two (expected
+kernel-first first; the evidence ranked collection-first first).
+Ranked outcome + calibration appended to the outcome ledger (#1487).
+Blocked by rule and recorded `specified_not_run`: the AWS deployment
+(ITEMS-007, card rule) and the model panel (ITEMS-006,
+`DELPHI_LLM_MAX=0`). The D4 Kiroween pass is the second live run.
 
 ## Method provenance — reconciled against the repo's Delphi history (2026-10-27)
 

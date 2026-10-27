@@ -71,6 +71,8 @@ checked:
   These challenges require a complete profile (image, country, About) for an
   entry to be valid, so even an unlisted submission would not have qualified
   as-is. **Owner item:** complete the profile before the next entry window.
+  Profile state and prepared field content (avatar asset, paste-ready bio,
+  social link) are tracked in `docs/ops/PROFILE-REGISTRY.md`.
 
 **Discrepancy note.** The working assumption entering this log was "a few
 entries." The evidence supports exactly three *registrations* and zero

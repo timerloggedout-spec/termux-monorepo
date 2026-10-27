@@ -140,7 +140,21 @@ vs **done** (code/workflows implement) vs **executed** (runs/artifacts prove).
   feeds carry `generated_at`, so staleness is visible but unbounded.
 - Severity: low–medium (structural — pages will silently age).
 - Fix route: add a collect workflow mirroring the oracle pattern, or accept
-  manual refresh with a staleness threshold alarm. Status: open.
+  manual refresh with a staleness threshold alarm.
+- **Resolution: closed-on-evidence 2026-10-27.** PR #1770 merged
+  `b0ba36c62b3b` (master-history + landed-content verified):
+  `.github/workflows/surface-feeds-collect.yml` mirrors the oracle pattern
+  — `workflow_dispatch`, weekly schedule (Wed 06:41 UTC), and a
+  master-push trigger on the collector's source paths; it invokes
+  `scripts/dashboards/surface_feeds.py --surface all` and proposes the
+  refresh as a PR from `surface-feeds/refresh`, never committing
+  directly. One workflow covers all five feeds (the separation lane
+  added ATES mid-fix; the workflow and contract were extended to it).
+  Proof: dispatch run 40506438873 success; the run opened refresh PR
+  #1773, merged `2b1a0ca30bbc` — the five feeds regenerated from current
+  records, the 3L0 feed now carrying the separation collector's shape.
+  (First filing #1758 was closed unmerged by a branch reset during
+  rebase-by-content; nothing landed from it — state record on that PR.)
 
 ### G-11 — Tier 1 classifiers: code healthy, never executed
 - Surface: classifiers (Mev/Jev/Kev/Laya). Layers: done vs executed.

@@ -101,3 +101,9 @@ Validation: `surface` must match `^[a-z0-9][a-z0-9._-]{0,63}$`. `repo` must be `
 The gate does two things with each signal:
 1. **Outcome ledger.** The `Delphi outcome ledger` issue (`delphi:outcomes`) gets an append-only JSON comment per run. It holds per-surface `n`, `sum`, `ewma` (α 0.2) and `by_outcome`, plus a per-repo `ewma`, `n` and `last`, capped at the 200 most recent repos. Tribute can read the newest `<!-- delphi-outcomes v1 -->` comment to re-rank upstream repos.
 2. **Graded panel reweighting.** This needs a scored RFP for the surface (`tribute-lane` is in `ops/delphi/surfaces.json`). Each role that predicted pass (score ≥ 15) earns `+weight`, and each role that predicted fail earns `−weight`. The EWMA step is `α·|weight|` and Elo moves `16·reward`. A weight of 0 changes nothing. Weights enter the RFP input hash quantized (gpr to 0.1, Elo to 25), so a stream of small signals re-scores the queue only when a weight moves materially. Rate-limit walls defer; they never fail the gate.
+
+## Status & crossover record
+
+Live operational status (with run/ledger evidence), the crossover record,
+and the current entry angle live in
+`docs/ops/DELPHI-STATUS-AND-CROSSOVER.md` (verified 2026-10-27).

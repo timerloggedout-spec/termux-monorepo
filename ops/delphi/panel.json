@@ -3,16 +3,62 @@
   "doc": "docs/ops/DELPHI-WEIGHTING.md",
   "formula": "effective_score = sum(w_i * score_i) / sum(w_i); w_i = base_i * (0.5 + gate_pass_rate_i) * (elo_i / 1500)",
   "criteria": "docs/ops/DECISION-MATRIX.md: Impact 1-5 x Importance 1-5 = score 1-25; bands P0 20-25, High 15-19, Medium 9-14, Backlog <=8",
-  "rounds": {"max": 3, "converge_iqr": 4.0, "converge_range": 6.0, "pull_to_median": 0.5},
-  "award": {"shadow_min": 15.0, "shadow_traffic_share": 0.05, "park_recheck_days": {"medium": 14, "backlog": 30}, "promote_after_confirmed_runs": 3},
-  "flywheel": {"ewma_alpha": 0.2, "elo_k": 16},
+  "rounds": {
+    "max": 3,
+    "converge_iqr": 4.0,
+    "converge_range": 6.0,
+    "pull_to_median": 0.5
+  },
+  "award": {
+    "shadow_min": 15.0,
+    "shadow_traffic_share": 0.05,
+    "park_recheck_days": {
+      "medium": 14,
+      "backlog": 30
+    },
+    "promote_after_confirmed_runs": 3
+  },
+  "flywheel": {
+    "ewma_alpha": 0.2,
+    "elo_k": 16
+  },
   "seed_note": "Initial weights are neutral defaults (gate_pass_rate 0.5, elo 1500). The live state is the newest JSON comment on the 'Delphi panel weights ledger' issue; this file is only the cold-start default.",
   "roles": {
-    "OPERATOR":     {"base": 1.2, "gate_pass_rate": 0.5, "elo": 1500, "hits": 0, "misses": 0},
-    "builder":      {"base": 1.0, "gate_pass_rate": 0.5, "elo": 1500, "hits": 0, "misses": 0},
-    "reviewer":     {"base": 1.0, "gate_pass_rate": 0.5, "elo": 1500, "hits": 0, "misses": 0},
-    "Scout":        {"base": 0.8, "gate_pass_rate": 0.5, "elo": 1500, "hits": 0, "misses": 0},
-    "cost_auditor": {"base": 1.2, "gate_pass_rate": 0.5, "elo": 1500, "hits": 0, "misses": 0}
+    "OPERATOR": {
+      "base": 1.2,
+      "gate_pass_rate": 0.5,
+      "elo": 1500,
+      "hits": 0,
+      "misses": 0
+    },
+    "builder": {
+      "base": 1.0,
+      "gate_pass_rate": 0.5,
+      "elo": 1500,
+      "hits": 0,
+      "misses": 0
+    },
+    "reviewer": {
+      "base": 1.0,
+      "gate_pass_rate": 0.5,
+      "elo": 1500,
+      "hits": 0,
+      "misses": 0
+    },
+    "Scout": {
+      "base": 0.8,
+      "gate_pass_rate": 0.5,
+      "elo": 1500,
+      "hits": 0,
+      "misses": 0
+    },
+    "cost_auditor": {
+      "base": 1.2,
+      "gate_pass_rate": 0.5,
+      "elo": 1500,
+      "hits": 0,
+      "misses": 0
+    }
   },
   "generation": {
     "proposals_per_pass": 3,
@@ -23,12 +69,24 @@
       "implementation": "parallel per-proposal implementations; tests run per individual proposal; their results are the round-2 evidence base",
       "evidence_equalization": "the round-2 evidence set is identical for every voter; its sha256 is stamped on the round-2 receipt and required on every round-2 ballot",
       "calibration": "round-2 outcome vs the recorded input expectations; deltas with the evidence that moved them; the feed for the weights (#1489) and outcome (#1487) ledgers",
-      "stage_gates": ["generation contract", "ballot contract", "evidence-set equality before round 2", "calibration record"],
-      "not_run_rule": "a stage that cannot execute is recorded specified_not_run in the cycle record - never dropped, never fabricated"
+      "stage_gates": [
+        "generation contract",
+        "ballot contract",
+        "evidence-set equality before round 2",
+        "calibration record"
+      ],
+      "not_run_rule": "a stage that cannot execute is recorded specified_not_run in the cycle record - never dropped, never fabricated",
+      "require_suite_receipts": true,
+      "facilitator_feedback": "after round 1 the facilitator issues an anonymous synthesis from the ballots\u2019 own rationales; a DEBATE / revision round is callable on it (revised ballots carry rationale, cited sources, revision_reason); uncalled = specified_not_run",
+      "ballot_reasons": "every ballot carries rationale + evidence_refs; supplied ballots without them are refused at intake"
     },
     "cross_vote": {
       "score_scale": "1-25 (DECISION-MATRIX Impact x Importance)",
-      "source_classes": ["HUMAN_COLLABORATOR", "MODEL_PROVIDER", "LOCAL_BASELINE"],
+      "source_classes": [
+        "HUMAN_COLLABORATOR",
+        "MODEL_PROVIDER",
+        "LOCAL_BASELINE"
+      ],
       "class_rule": "Classes are tallied and reported separately, never merged (DEBATE protocol). DRIVER_SYNTHESIS is not a ballot. A class with no ballots is reported as zero.",
       "weights_source": "Newest JSON state on the Delphi panel weights ledger issue (#1489); this file's role values are cold-start defaults.",
       "ballot_record": "Ranked outcome is appended to the outcome ledger (#1487) as a delphi-generation-ballot v1 JSON comment, with the full receipt in the pass record."
@@ -37,6 +95,7 @@
       "status": "specified_not_run",
       "mode": "Versioned comparison runs: method versions/configurations are the variants of a pass - generated, cross-voted, implemented/tested in parallel, evidence-equalized re-vote, calibration vs expectations; receipts and ledger records like any pass.",
       "first_run": "Not yet executed. Runs when a method-variant brief is filed; method_cycle.py executes it unchanged."
-    }
+    },
+    "require_plan": "briefs may declare require_plan: generation then refuses any candidate without a substantive plan (steps, risks, alternatives), rendered verbatim into the RFP"
   }
 }

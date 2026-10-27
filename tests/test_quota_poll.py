@@ -94,7 +94,54 @@ class QuotaPollTest(unittest.TestCase):
                 self.assertNotIn(private, combined)
             row = next(r for r in json.loads(text)["readings"] if r["resource_id"] == "openrouter.free_models")
             self.assertEqual(row["status"], "private_preflight")
-            self.assertEqual(set(row), {"resource_id", "provider", "status", "observed_at"})
+            self.assertEqual(set(row), {"resource_id", "provider", "status", "observed_at", "horizon", "evidence_status"})
+            self.assertEqual(row["horizon"], "H0")
+            self.assertEqual(row["evidence_status"], "confirmed")
+            self.assertIsNotNone(row["observed_at"])
+
+    def test_public_snapshot_speaks_the_dashboard_evidence_contract(self):
+        """G-12c (1): the poller's published projection must be consumable by
+        quota-evidence.js readingView — observed_at / horizon H0 /
+        evidence_status confirmed plus a status from the panel's own set —
+        or Needs attention stays unreachable from the poller path. Values
+        (used/limit/reset) are never exported; exhaustion is claimed only
+        at the documented limit, safety-zone pressure is watch."""
+        def svc(sid, lane="ops", limit=100):
+            return {"id": sid, "provider": "example", "lane": lane,
+                    "source": "https://example.com/docs", "limit": limit,
+                    "planned_use": {"safety": 0.9}}
+        services = [svc("example.ok"), svc("example.watch"), svc("example.full"),
+                    svc("vercel.deployments"), svc("example.nolimit", limit=None),
+                    svc("example.model", lane="model"), svc("example.unseen")]
+        readings = {"example.ok": {"used": 10, "limit": 100},
+                    "example.watch": {"used": 85, "limit": 100},
+                    "example.full": {"used": 100, "limit": 100},
+                    "vercel.deployments": {"used": 100},
+                    "example.nolimit": {"used": 3},
+                    "example.model": {"used": 714239, "limit": 714240}}
+        now = datetime(2026, 10, 27, 12, 0, tzinfo=timezone.utc)
+        snap = _qp.public_snapshot(services, readings, now)
+        self.assertEqual(snap["schema"], "quota-public-status/v2")
+        rows = {r["resource_id"]: r for r in snap["readings"]}
+        self.assertEqual(rows["example.ok"]["status"], "ok")
+        self.assertEqual(rows["example.watch"]["status"], "watch")
+        self.assertEqual(rows["example.full"]["status"], "exhausted")
+        self.assertEqual(rows["vercel.deployments"]["status"], "cap_tripped")
+        # observed but unclassifiable: honest unknown, still H0/confirmed
+        self.assertEqual(rows["example.nolimit"]["status"], "unknown")
+        self.assertEqual(rows["example.model"]["status"], "private_preflight")
+        for sid in ("example.ok", "example.watch", "example.full",
+                    "vercel.deployments", "example.nolimit", "example.model"):
+            self.assertEqual(rows[sid]["observed_at"], now.isoformat())
+            self.assertEqual(rows[sid]["horizon"], "H0")
+            self.assertEqual(rows[sid]["evidence_status"], "confirmed")
+        unseen = rows["example.unseen"]
+        self.assertEqual(unseen["status"], "unknown")
+        self.assertIsNone(unseen["observed_at"])
+        self.assertEqual(unseen["horizon"], "H1")
+        text = json.dumps(snap)
+        for private in ("714239", "714240", '"used"', '"limit"', '"reset"'):
+            self.assertNotIn(private, text)
 
     def test_public_mode_refuses_stale_private_output_directory(self):
         with tempfile.TemporaryDirectory() as d:

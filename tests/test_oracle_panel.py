@@ -18,7 +18,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-APP = ROOT / "apps-help-wanted-dashboard"
+APP = ROOT / "apps" / "help-wanted-dashboard"
 FEED = APP / "data/oracle-panel-feed.json"
 FEED_URL = "./data/oracle-panel-feed.json"
 

@@ -33,7 +33,7 @@ def _check_page(page: str, feed_name: str) -> str:
     assert "nothing is shown rather than anything guessed" in html
     assert "sk-" not in html and "ghp_" not in html and "BEGIN" not in html
     link = f'href="{BASE}{page}"'
-    for other in ("index.html", "quota.html", "matrix.html", "admin.html", "oracle.html"):
+    for other in ("index.html", "quota.html", "matrix.html", "admin.html", "oracle.html", "moneyball.html", "3l0.html"):
         assert link in _html(other), f"{other} nav missing {page}"
     assert f"{BASE}{page}" in (APP / "sitemap.xml").read_text()
     return html
@@ -62,3 +62,11 @@ def test_3l0_page():
         for h in tail:
             assert h["cycle_id"] not in html
     assert feed["gaps"]  # the no-rankings-table gap must be named in the feed
+
+
+def test_mvt_page():
+    html = _check_page("mvt.html", "mvt-feed.json")
+    feed = _feed("mvt-feed.json")
+    assert feed["data"]["experiment_loop"]["state"] == "defined_not_run"
+    assert "Defined — not run" in html  # the not-run state is rendered, not hidden
+    assert feed["gaps"]  # no committed experiment records — named in the feed

@@ -1,5 +1,6 @@
 import importlib.util
 import json
+import sqlite3
 from pathlib import Path
 import unittest
 
@@ -41,6 +42,16 @@ class NomenclatureMatrixTests(unittest.TestCase):
         schema = (ROOT / "docs/proposals/active/notation-sets/nomenclature-matrix/schema.sql").read_text(encoding="utf-8")
         self.assertIn("hidden_search_alias", schema)
         self.assertIn("hidden_search_alias", MODULE.LABEL_TYPES)
+
+    def test_sqlite_schema_executes_and_has_evidence_table(self):
+        schema = (ROOT / "docs/proposals/active/notation-sets/nomenclature-matrix/schema.sql").read_text(encoding="utf-8")
+        connection = sqlite3.connect(":memory:")
+        try:
+            connection.executescript(schema)
+            columns = {row[1] for row in connection.execute("PRAGMA table_info(evidence_records)")}
+            self.assertTrue({"evidence_id", "source_id", "assertion_type", "assertion_id", "claim", "evidence_locator", "evidence_excerpt", "retrieved_on", "reviewer", "status"} <= columns)
+        finally:
+            connection.close()
 
     def test_expanded_seed_covers_colloquial_mapping_and_near_synonymy(self):
         concepts = {c["concept_id"] for c in self.data["concepts"]}

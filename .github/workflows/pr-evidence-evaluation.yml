@@ -5,6 +5,8 @@ name: PR evidence evaluation
 # raw commit/file counts. This workflow never checks out or executes PR code.
 
 on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
   pull_request_target:
     types: [opened, synchronize, reopened, ready_for_review]
   pull_request_review:

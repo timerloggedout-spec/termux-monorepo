@@ -252,7 +252,8 @@
       "unresolved_questions": [
         "NOT APPLICABLE to this account today (verified live 2026-10-26 via the PAT helper): both orgs (Research-Astute, search-astute-ly) report Copilot seat_breakdown total 0 with seat management unconfigured, /copilot/metrics returns 404 for both, and the personal account (plan free) has no report scope in this API.",
         "Access role is not the blocker (timerloggedout-spec is admin of both orgs); the Copilot usage metrics policy must additionally be enabled per org/enterprise before reports populate.",
-        "Revisit trigger: any fleet org holds Copilot Business/Enterprise seats with the usage metrics policy enabled - re-test the report endpoints and reassess as a weighting input."
+        "Revisit trigger: any fleet org holds Copilot Business/Enterprise seats with the usage metrics policy enabled - re-test the report endpoints and reassess as a weighting input.",
+        "Fork check 2026-10-26: no fork of the OpenCode agent CLI exists on this account (repository search across user and both orgs = 0; 671 owned forks scanned by name). The fleet OpenCode presence is plugin/template-side: the refTemplates opencode-research-papers plugin template and the Jogyo lane OpenCode surfaces (PR #688). OpenCode connects Copilot via /connect device-code OAuth against an existing subscription, so its traffic attributes to that subscription billing scope - personal-scope traffic appears in no report this API exposes."
       ]
     },
     {

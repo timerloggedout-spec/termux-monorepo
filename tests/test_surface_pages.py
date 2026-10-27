@@ -47,3 +47,18 @@ def test_moneyball_page():
         assert signal not in html or signal in ("fresh", "draft", "dirty"), signal
     assert 'aria-current="page"' in html
     assert "gaps" in html  # honest-gap block is rendered
+
+
+def test_3l0_page():
+    html = _check_page("3l0.html", "3l0-feed.json")
+    feed = _feed("3l0-feed.json")
+    ranked = feed["data"]["response_history"]["providers_ranked"]
+    assert ranked  # the feed carries a ranked provider record
+    # record values are rendered from the feed at runtime, never hardcoded
+    for p in ranked:
+        if p["delivery_rate"] is not None:
+            assert str(p["delivery_rate"]) not in html, p["provider"]
+    for tail in feed["data"]["response_history"]["history_tail"].values():
+        for h in tail:
+            assert h["cycle_id"] not in html
+    assert feed["gaps"]  # the no-rankings-table gap must be named in the feed

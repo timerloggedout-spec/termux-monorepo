@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3L0 — Rankings & Response History</title>
+<link rel="stylesheet" href="./dashboard.css">
+<style>
+  .feed-list{list-style:none;margin:0;padding:0}
+  .feed-list li{display:flex;justify-content:space-between;gap:1rem;padding:.35rem 0;border-bottom:1px solid var(--line)}
+  .feed-list li:last-child{border-bottom:none}
+  .meta{color:var(--muted);font-size:.8rem}
+  .gap{border-left:3px solid var(--gold);padding:.4rem .8rem;margin:.5rem 0}
+  table.rank{width:100%;border-collapse:collapse}
+  table.rank td,table.rank th{padding:.35rem .5rem;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  .chips{display:flex;flex-wrap:wrap;gap:.4rem;margin:.4rem 0}
+  .hist{display:flex;gap:2px;flex-wrap:wrap;margin:.3rem 0}
+  .hist span{width:10px;height:10px;border-radius:2px;background:var(--line)}
+  .hist span.ok{background:var(--gold)}
+  .hist span.cool{background:var(--bad)}
+</style>
+</head>
+<body>
+<header>
+<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/help-wanted/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="https://timerloggedout-spec.github.io/help-wanted/quota.html">Quota</a><a href="https://timerloggedout-spec.github.io/help-wanted/admin.html">Admin</a><a href="https://timerloggedout-spec.github.io/help-wanted/oracle.html">Oracle</a><a href="https://timerloggedout-spec.github.io/help-wanted/3l0.html" aria-current="page">3L0</a><a href="https://timerloggedout-spec.github.io/help-wanted/moneyball.html">MoneyBall</a><a href="https://help-wanted-oversight.vercel.app/">Vercel deployment</a><a href="https://timerloggedout-spec.github.io/help-wanted/sitemap.xml">Sitemap</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></nav>
+<div class="hero">
+<p class="eyebrow">3L0 · MoneyBall / 3L0 weighting plane</p>
+<h1>3L0 rankings &amp; response history</h1>
+<p class="sub">The 3L0 layer's ranked surfaces and per-response scoring history, exactly as the records hold them. This page consumes <code>data/3l0-feed.json</code> (collector <code>scripts/dashboards/surface_feeds.py</code>, contract <code>docs/ops/DASHBOARD-SURFACE-FEEDS.md</code>) and nothing else: a value the record doesn't hold renders as absent, never synthesized.</p>
+</div>
+</header>
+<main>
+<section class="card">
+<h2>Feed</h2>
+<ul class="feed-list">
+<li><span>Feed (<code>data/3l0-feed.json</code>, generated, served with this page)</span><span class="pill gold" id="feed-state">…</span></li>
+<li><span>Generated</span><span id="feed-generated">—</span></li>
+</ul>
+<div id="feed-error" class="gap" hidden>The feed could not be loaded, so nothing is shown rather than anything guessed.</div>
+</section>
+<div id="content"></div>
+<section class="card" id="gaps-card" hidden>
+<h2>What the record does not hold</h2>
+<div id="gaps"></div>
+</section>
+<section class="card">
+<h2>Sources</h2>
+<ul id="sources" class="feed-list"></ul>
+</section>
+</main>
+<script>
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+async function load(){
+  let f;
+  try{
+    const r = await fetch("./data/3l0-feed.json");
+    if(!r.ok) throw new Error(r.status);
+    f = await r.json();
+  }catch(e){
+    document.getElementById("feed-state").textContent = "unavailable";
+    document.getElementById("feed-error").hidden = false;
+    return;
+  }
+  document.getElementById("feed-state").textContent = "live · " + f.schema;
+  document.getElementById("feed-generated").textContent = f.generated_at;
+  const d = f.data, out = [];
+  out.push(`<section class="card"><h2>The 3L0 score</h2><p>${esc(d.definition)}</p>
+  <div class="chips">${d.components.map(c => `<span class="pill">${esc(c)}</span>`).join("")}</div>
+  <p class="meta">${esc(d.pipeline)}</p></section>`);
+  const rh = d.response_history;
+  const rows = rh.providers_ranked.map((p, i) => {
+    const rate = p.delivery_rate === null ? "no cycles in window" : (p.delivery_rate * 100).toFixed(1) + "%";
+    const tail = (rh.history_tail[p.provider] || []).map(h =>
+      `<span class="${h.cooldown ? "cool" : h.delivered ? "ok" : ""}" title="${esc(h.cycle_id)} · PR ${esc(h.pr)} · ${h.delivered ? "delivered" : h.cooldown ? "cooldown" : "not delivered"}"></span>`).join("");
+    return `<tr><td>${i + 1}</td><td><code>${esc(p.provider)}</code><div class="hist">${tail}</div><span class="meta">last ${esc((rh.history_tail[p.provider] || []).length)} cycles: gold = delivered, red = cooldown, grey = not delivered</span></td>
+    <td>${esc(rate)}</td><td>${esc(p.delivered)} / ${esc(p.cycles)}</td><td>${esc(p.contexts)}</td></tr>`;
+  }).join("");
+  out.push(`<section class="card"><h2>Response history — ranked by recorded delivery rate</h2>
+  <p>${esc(rh.record)}</p>
+  <table class="rank"><tr><th>#</th><th>Provider · recent cycles</th><th>Delivery rate</th><th>Delivered / cycles</th><th>Contexts</th></tr>${rows}</table>
+  <p class="meta">Record generated ${esc(rh.generated_at)} · window: ${esc(rh.window.cycles)} cycles over ${esc(rh.window.prs_examined)} PRs. Sample sizes differ by orders of magnitude — read the cycles column with the rate.</p></section>`);
+  const peerRows = d.router.peers.map(p => `<tr><td><code>${esc(p.provider)}</code></td><td>${p.models.map(m =>
+    `<div><code>${esc(m.id)}</code> <span class="meta">${esc((m.roles || []).join(", "))}${m.soft_limits ? " · soft limits " + esc(JSON.stringify(m.soft_limits)) : ""}</span></div>`).join("")}</td></tr>`).join("");
+  out.push(`<section class="card"><h2>Routing surface</h2><p>${esc(d.router.mechanic)}</p>
+  <table class="rank"><tr><th>Peer</th><th>Models · roles · soft budgets (RPD)</th></tr>${peerRows}</table>
+  <p class="meta">${esc(d.router.peers_source)}</p></section>`);
+  const roles = Object.entries(d.delphi_weights.panel_defaults || {}).map(([r, v]) =>
+    `<tr><td><code>${esc(r)}</code></td><td>${esc(v.base)}</td><td>${esc(v.gate_pass_rate)}</td><td>${esc(v.elo)}</td></tr>`).join("");
+  out.push(`<section class="card"><h2>Delphi panel weights — defaults</h2>
+  <table class="rank"><tr><th>Role</th><th>Base</th><th>Gate pass rate (seed)</th><th>Elo (seed)</th></tr>${roles}</table>
+  <p class="meta">Formula: ${esc(d.delphi_weights.formula || "")} ${esc(d.delphi_weights.seed_note || "")}</p>
+  <p>${esc(d.delphi_weights.live_source)}</p></section>`);
+  document.getElementById("content").innerHTML = out.join("");
+  if((f.gaps || []).length){
+    document.getElementById("gaps-card").hidden = false;
+    document.getElementById("gaps").innerHTML = f.gaps.map(g => `<div class="gap">${esc(g)}</div>`).join("");
+  }
+  document.getElementById("sources").innerHTML = f.sources.map(s => `<li><span>${esc(s)}</span></li>`).join("");
+}
+load();
+</script>
+</body>
+</html>

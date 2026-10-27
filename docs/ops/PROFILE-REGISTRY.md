@@ -89,17 +89,24 @@ is its at-a-glance view and is refreshed from here.
 - Account needed for sandbox credits; $200 participant credit offsets the
   sandbox. **No-card path only** — the card is a BLOCK.
 
-#### Builder.io / Clips — no account yet (owner decision surfaced 2026-10-27)
+#### Builder.io / Clips — account CREATED 2026-10-27
 
 - The Agent-Native Hackathon needs no registration, and its submission form
   is account-free (official page + form, verified 2026-10-26/27).
-- **Clips, hosted (clips.agent-native.com): recording requires a free
-  account** — Google or email sign-in; verified by live trial 2026-10-27
-  (gap G-08): the landing is a sign-in wall with no guest path. Viewing a
-  public clip requires no login (the rules' acceptance criterion). No fleet
-  account exists yet; creating one is an owner decision (surfaced
-  2026-10-27, needed by the Oct 30–Nov 1 build weekend). Account-free
-  alternative: self-host the open-source Clips template with an
-  S3-compatible storage backend.
+- **Clips, hosted (clips.agent-native.com): account exists.** Created
+  2026-10-27 via the Google route on the fleet Google identity
+  (owner-approved 2026-10-27; recording there requires the account —
+  sign-in wall verified by live trial, gap G-08). The app displays the
+  account under the Google identity's name with a personal workspace
+  ("… 's workspace"); signed-in library reached and verified empty.
+  No username/handle field was offered at sign-up, so **no handle exists
+  on this surface** — nothing is recorded here as a handle; the packet is
+  fronted by the registration moniker. No personal-name field was forced
+  and no payment method was requested. Viewing a public clip requires no
+  login (the rules' acceptance criterion, trial-confirmed).
+- Remaining setup (build weekend, in-app on this account): connect clip
+  storage — the record flow shows a "Connect storage" step; recordings
+  need a Builder.io or S3-compatible backend before uploads work
+  (template docs).
 - A Builder.io CMS Space/plan account is NOT required for this packet
   (earlier first-pass concern; resolved 2026-10-27).

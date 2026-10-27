@@ -91,7 +91,7 @@ Tribute System 1 routing (`scripts/ci/tribute_system1.py`) attaches `delphi_sign
     permissions: { actions: write }
     with:
       event: tribute-outcome
-      signal: ${{ needs.route.outputs.delphi_signal }}   # one object, or a JSON array of up to 50 (batch per run)
+      signal: ${{ needs.route.outputs.delphi_signal }}   # one object, or a JSON array of up to 200 (batch per run)
 ```
 
 Outside Actions, use `repository_dispatch` with `event_type: tribute-outcome` and `client_payload: {"signal": <object or array>}`.
@@ -101,6 +101,8 @@ Validation: `surface` must match `^[a-z0-9][a-z0-9._-]{0,63}$`. `repo` must be `
 The gate does two things with each signal:
 1. **Outcome ledger.** The `Delphi outcome ledger` issue (`delphi:outcomes`) gets an append-only JSON comment per run. It holds per-surface `n`, `sum`, `ewma` (α 0.2) and `by_outcome`, plus a per-repo `ewma`, `n` and `last`, capped at the 200 most recent repos. Tribute can read the newest `<!-- delphi-outcomes v1 -->` comment to re-rank upstream repos.
 2. **Graded panel reweighting.** This needs a scored RFP for the surface (`tribute-lane` is in `ops/delphi/surfaces.json`). Each role that predicted pass (score ≥ 15) earns `+weight`, and each role that predicted fail earns `−weight`. The EWMA step is `α·|weight|` and Elo moves `16·reward`. A weight of 0 changes nothing. Weights enter the RFP input hash quantized (gpr to 0.1, Elo to 25), so a stream of small signals re-scores the queue only when a weight moves materially. Rate-limit walls defer; they never fail the gate.
+
+**Ingestion (issue #1533, landed 2026-10-27).** Outcomes now flow without a human posting them: `.github/workflows/delphi-tribute-ingest.yml` runs when a `tribute-system1` scan completes (reading that run's `tribute-s1-decisions` artifact) or on manual dispatch (reading the `tribute-s1/backfill` branch), and `scripts/delphi/tribute_ingest.py` extracts each decision's `delphi_signal`, **keyed by the thread URL** (`subject.url`). Signals carry the optional `key` end-to-end (`delphi-signal.yml` passes it through; batches up to 200). The gate **dedupes idempotently on key+outcome**: the outcome state keeps the last 2000 digests per surface; a re-delivered key+outcome is skipped, while a *changed* outcome under the same key digests differently and records as a new signal. **Reweighting is damped**: per batch, the surface/repo EWMAs and the graded role feedback each take ONE step at the batch mean — a 169-signal backfill moves the panel like one outcome, not 169. (Dry run on the 2026-10-21 backfill: 169 keyed signals, sum −76.0, mean −0.45.) Ledger readers page from the newest comments, so ledgers past 100 comments no longer read stale.
 
 ## Status & crossover record
 

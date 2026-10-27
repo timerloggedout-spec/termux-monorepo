@@ -7,6 +7,8 @@ name: RECON INTEL discovery
 
 on:
 # Cadence owned by quota-dispatch-tree.yml (Tier 0 decision tree, issue #1573).
+  pull_request:
+    types: [opened, synchronize, ready_for_review, reopened]
   pull_request_target:
     types: [opened, synchronize, ready_for_review, reopened]
   workflow_dispatch:

@@ -1,19 +1,19 @@
 {
   "schema": "3l0.quota-readings.v1",
-  "generated_at": "2026-10-27T12:33:41Z",
-  "source": "Attributed public reports plus poller-confirmed observations promoted through the generated-file path (2026-10-27); not a live quota feed. Private quota_poll.py artifacts are not automatically published here.",
+  "generated_at": "2026-10-27T14:31:57Z",
+  "source": "Poller-confirmed observations promoted through the generated-file path (2026-10-27: vercel-quota-probe run 40521927734, quota-public-status/v2 artifact) plus retained attributed reports; not a live quota feed. Private quota_poll.py values are withheld by the poller's public mode and are not published here.",
   "readings": [
     {
       "resource_id": "vercel.deployments",
-      "status": "cap_tripped",
+      "status": "ok",
       "used": null,
       "limit": 100,
       "unit": "deployments/day",
       "reset": null,
-      "note": "Daily deploy cap tripped overnight (Hark, 2026-10-20 21:15Z). Two preview deploys failed today (18:02Z, 19:03Z) on ops/actions-matrix-upgrade-2026-10-18. API count unavailable: deployments API undercounts enforcement by >=13 (registry observation 2026-10-19). Rolling 24h window; reset time unknown.",
-      "evidence_status": "attributed_claim",
-      "horizon": "H1",
-      "observed_at": "2026-10-20T21:15:00Z"
+      "note": "Fresh poller status from vercel-quota-probe run 40521927734 (scripts/quota_poll.py vercel_deploys under VERCEL_TOKEN): coarse status ok at observation time; the deployment count itself is withheld by poller public mode and is not published here (the deployments listing undercounts enforcement by >=13, registry observation 2026-10-19). Supersedes the attributed cap_tripped report of 2026-10-20T21:15Z (Hark), retained in git history and docs/ops/QUOTA-READINGS-GAPS-2026-10-27.md.",
+      "evidence_status": "confirmed",
+      "horizon": "H0",
+      "observed_at": "2026-10-27T14:31:57Z"
     },
     {
       "resource_id": "openrouter.free_models",
@@ -50,6 +50,18 @@
       "evidence_status": "confirmed",
       "horizon": "H0",
       "observed_at": "2026-10-27T12:33:41Z"
+    },
+    {
+      "resource_id": "github.api.github_token",
+      "status": "ok",
+      "used": null,
+      "limit": 1000,
+      "unit": "requests/hour/repo",
+      "reset": null,
+      "note": "Status-only promotion from vercel-quota-probe run 40521927734 (scripts/quota_poll.py gh_rate under the Actions GITHUB_TOKEN, GET /rate_limit): coarse status ok at observation time; the count is withheld by poller public mode and is not published here. Limit is the documented registry entitlement, not a measured balance.",
+      "evidence_status": "confirmed",
+      "horizon": "H0",
+      "observed_at": "2026-10-27T14:31:57Z"
     },
     {
       "resource_id": "github.actions.cache",

@@ -27,7 +27,7 @@ rule. Full wiring ≠ full permission — enforcement remains IAM-tier only.
 | Read-only pattern is the vendor's own GA shape | GA blog: read-only Data Agents "can inspect schemas and query data, but… cannot alter or drop tables," via dedicated service accounts, IAM deny policy `tool.isReadOnly` check, row/column security inheritance |
 | Hooks ship with the plugin — incl. telemetry | `hooks.json` read upstream: `dak-setup-sync` (SessionStart config sync) and `dak-telemetry` (PreToolUse, matcher `*`, runs `.agents/hooks/telemetry_hook.js` on every tool call) — see "Telemetry hook" below |
 | Install routes | Plugin README: Claude Code / Codex / Antigravity CLI commands; VS Code-family IDE extension on Marketplace/Open VSX; `dak-setup` skill drives project/region/service configuration |
-| GCP freemium terms | Free trial: $300 credit / 90 days, card for identity verification, no auto-charge or auto-upgrade at end (resources stop; 30-day grace). Always Free: BigQuery 1 TiB queries/mo + 10 GiB storage; Cloud Storage 5 GiB — multiple sources incl. Google's program pages, cross-checked 2026-10-26 |
+| GCP freemium terms | Free trial: $300 credit / 90 days, card for identity verification, no auto-charge or auto-upgrade at end (resources stop; 30-day grace). Always Free: BigQuery 1 TiB queries/mo + 10 GiB storage; Cloud Storage 5 GiB — cross-checked 2026-10-26. **No-card route (verified same day): a project with no billing account runs BigQuery in sandbox mode — 1 TiB/mo queries, 10 GiB storage lifetime, 60-day table expiration, no streaming/DML/Data Transfer Service. Cloud Storage requires billing (Firebase Spark lost Storage 2026-02-03); Dataplex requires billing.** |
 | Read-only IAM roles per service | Google IAM docs, cross-checked 2026-10-26: `bigquery.dataViewer` + `bigquery.jobUser`; `storage.objectViewer`; `datacatalog.viewer`; `alloydb.viewer`; `cloudsql.viewer`; `spanner.viewer` + `spanner.databaseReader`; `bigtable.reader`; `dataproc.viewer`; `dataform.viewer` |
 | Fleet latent GCP surfaces in-repo | Code search over master: BigQuery appears in `ml/pipelines/recon09/connectors.py` (registry entry), the quota-cadence RFP, and the secrets registry; Firebase is referenced in architecture docs. Zero hits for Dataform/Dataplex/AlloyDB/Spanner/Bigtable — honest "no fleet data there yet," which under the new doctrine changes the timing (wire now), not the roles (read-only when instances exist) |
 | No fleet GCP presence exists | PR #1511 (merged 2026-10-22) recon: no GCP project/billing on file → activation needs owner signup (card-gated) |
@@ -103,7 +103,9 @@ This wiring is the template for future freemium services:
 1. Recon real surfaces + guardrail tiers from the vendor's own material.
 2. Land the FULL wiring in the repo first — catalog/config, skill, policy,
    provisioning commands, activation runbook.
-3. Signup only when the wiring is complete; trial credits fund usage and
+3. Recon the card gate in round one and name the no-card route (sandbox /
+   free plan) before wiring; signup only when the wiring is complete, and
+   let trial credits — when a card route exists at all — fund usage and
    evaluation, never setup.
 4. Activate with run evidence; flip the recorded status only on proof.
 5. Write the exit before the first credit is spent.
@@ -112,11 +114,13 @@ This wiring is the template for future freemium services:
 
 - **Live now:** the complete wiring in this repo; the kit's public
   endpoints; per-surface plugin availability.
-- **Pending (owner items, unchanged):** (1) GCP project + free-trial
-  billing — card-gated, no fleet GCP presence; (2) the gcloud sign-in
-  session — prompts land on the broken-screen B160V; plan it as its own
-  session. (3) Telemetry-hook review, whenever convenient (installs stay
-  disabled until then).
+- **Pending (owner items, reshaped by the card ruling):** the credit card
+  is a BLOCK (owner, 2026-10-26) — the trial/billing route is closed.
+  (1) Create the GCP project WITHOUT billing — activates the BigQuery
+  sandbox (Route A in the runbook); GCS and Knowledge Catalog stay
+  pending-billing. (2) The gcloud sign-in session — prompts land on the
+  broken-screen B160V; plan it as its own session. (3) Telemetry-hook
+  review, whenever convenient (installs stay disabled until then).
 - The catalog entry flips to `live_readonly` only with activation evidence
   (runbook step 8), in a follow-up PR.
 

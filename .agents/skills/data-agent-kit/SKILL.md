@@ -49,6 +49,13 @@ reports tool use. In fleet installs it stays DISABLED (install-layer control
 in the policy) until the owner reviews it. Verify after install; the
 SessionStart setup-sync hook may stay.
 
+**Card block (owner, 2026-10-26):** the credit card is a block — the GCP
+trial and all billing-enabled surfaces are closed. Activation runs the
+no-card route: a billing-less project puts `dak-bigquery` in sandbox mode
+(1 TiB/mo queries, 10 GiB lifetime storage, 60-day table expiry, batch
+loads only) — see the activation runbook, Route A. `dak-gcs` and `dak-kc`
+stay pending-billing; never report them live.
+
 Not wired: Jules (cloud agent; MCPs live in Jules' own settings, kit targets
 local agents) and on-device Termux agents (remote-first; device consumes
 results, not the kit).

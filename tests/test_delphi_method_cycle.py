@@ -94,3 +94,22 @@ def test_partial_implementation_results_fail_loudly():
         assert "missing" in str(exc)
         return
     raise AssertionError("missing per-proposal results must fail, not default")
+
+
+def test_brief_priors_coexist_with_derived_and_calibrate():
+    brief_priors = {"author": "challenge-entries-lane",
+                    "expectations": {
+                        "rehearsal-strong": {"expected_rank": 1, "expected_score": 19},
+                        "rehearsal-weak": {"expected_rank": 2, "expected_score": 17},
+                        "rehearsal-empty": {"expected_rank": 3, "expected_score": 14}}}
+    cycle = run_cycle(_meta(), PANEL["roles"], "test", CONFIG,
+                      impl_results=IMPL, recorded_expectations=brief_priors,
+                      generated_at="2026-10-27T00:00:00Z")
+    exp = cycle["artifacts"]["expectations"]["expectations"]
+    assert "LOCAL_BASELINE" in exp            # derived priors still recorded
+    assert "BRIEF:challenge-entries-lane" in exp
+    cal = cycle["artifacts"]["calibration"]["candidates"]
+    assert "BRIEF:challenge-entries-lane" in cal
+    assert "LOCAL_BASELINE" in cal
+    brief_cal = cal["BRIEF:challenge-entries-lane"]
+    assert brief_cal["rehearsal-weak"]["score_delta"] < 0  # priors vs round-2 reality

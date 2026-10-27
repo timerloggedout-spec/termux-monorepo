@@ -1,0 +1,893 @@
+{
+ "schema": "system-one-catalog/1",
+ "generated_from": "docs/proposals/active/system-one-classifier-census (CENSUS.md, inventory as of 2026-10-21)",
+ "registered": "2026-10-27 via PR #1806",
+ "state_vocabulary": [
+  "referenced",
+  "catalogued",
+  "trial_candidate",
+  "evaluated"
+ ],
+ "entries": [
+  {
+   "id": "S1-01",
+   "name": "Jev",
+   "developer": "TypeSafe AI",
+   "layer": "model",
+   "section": "S1",
+   "note": "Hosted native typed decision model (Choice/Score/Noul); OpenRouter lists 1.13/1.14",
+   "source_url": "https://typesafe.ai/blog/introducing-system-one-models-and-jev",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S1-02",
+   "name": "Kev",
+   "developer": "Jared Palmer",
+   "layer": "model",
+   "section": "S1",
+   "note": "Open Jev-like family on Qwen (0.8B/4B/9B/27B); self-hosted, TypeSafe-compatible serving",
+   "source_url": "https://github.com/jaredpalmer/kev",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S1-03",
+   "name": "Laya",
+   "developer": "ConvAI Innovations",
+   "layer": "model",
+   "section": "S1",
+   "note": "Non-autoregressive encoder decision family; English + multilingual checkpoints; open weights",
+   "source_url": "https://github.com/NandhaKishorM/laya",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S1-04",
+   "name": "Mev (recruiting)",
+   "developer": "Zhilin Wang",
+   "layer": "model",
+   "section": "S1",
+   "note": "~0.4B bidirectional encoder + decision head, fine-tuned from Laya for job-candidate matching",
+   "source_url": "https://x.com/i/article/2101962974898397246",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S1-05",
+   "name": "mev",
+   "developer": "Mellow AI",
+   "layer": "model",
+   "section": "S1",
+   "note": "Qwen3.5-4B LoRA selecting among 2-24 options; Apache-2.0; standard next-token head",
+   "source_url": "https://huggingface.co/stay-mellow-ai/mev",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S2-01",
+   "name": "Clef",
+   "developer": "Cloudflare",
+   "layer": "model",
+   "section": "S2",
+   "note": "Decision family (Clef, Flash, omni); open-weight + hosted via Workers AI",
+   "source_url": "https://www.forbes.com/sites/ronschmelzer/2026/10/12/decisions-decisions-a-guide-to-the-new-wave-of-ai-decision-models-besides-jev/",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S2-02",
+   "name": "pplx-decider",
+   "developer": "Perplexity",
+   "layer": "model",
+   "section": "S2",
+   "note": "Multimodal decision family; 27B + Flash; v1.1/v1.2; open weights + hosted",
+   "source_url": "https://openrouter.ai/rankings/decisions",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S2-03",
+   "name": "d1",
+   "developer": "Liquid AI",
+   "layer": "model",
+   "section": "S2",
+   "note": "Hosted d1/d1-ultra; open d1-3B, d1-omni-600M",
+   "source_url": "https://www.marktechpost.com/2026/10/17/20-jev-alternatives-the-decision-models-taking-on-typesafe-in-2026/",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S2-04",
+   "name": "GPT-6 Luna Decisions",
+   "developer": "OpenAI",
+   "layer": "model",
+   "section": "S2",
+   "note": "Typed predicates/choices/scores over text+images; hosted Decisions API",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S2-05",
+   "name": "Microsoft-Decision-1",
+   "developer": "Microsoft",
+   "layer": "model",
+   "section": "S2",
+   "note": "Classification, agent routing, verification, workflow decisions; Foundry + OpenRouter",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S2-06",
+   "name": "Decider 1 / sd-1",
+   "developer": "meraGPT",
+   "layer": "model",
+   "section": "S2",
+   "note": "Hosted Choice/Score/Noul; closed weights; TypeSafe-compatible endpoint",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S2-07",
+   "name": "Trio-Spark",
+   "developer": "MachineFi",
+   "layer": "model",
+   "section": "S2",
+   "note": "Decisions over text, images, sampled video frames; hosted, closed",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S2-08",
+   "name": "Solar Decide",
+   "developer": "Upstage",
+   "layer": "model",
+   "section": "S2",
+   "note": "Long-context classification/scoring/routing; hosted beta, 512K context reported",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S2-09",
+   "name": "Mercury Decide",
+   "developer": "Inception",
+   "layer": "model",
+   "section": "S2",
+   "note": "Structured choices/scores/yes-no; hosted; free rate-limited OpenRouter route reported",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S2-10",
+   "name": "Drex",
+   "developer": "Nace.AI",
+   "layer": "model",
+   "section": "S2",
+   "note": "Enterprise decision family; OpenRouter v1.5/v2.0",
+   "source_url": "https://openrouter.ai/rankings/decisions",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S2-11",
+   "name": "Span-01",
+   "developer": "Respan",
+   "layer": "model",
+   "section": "S2",
+   "note": "Behavior detection in AI traces (present/absent/not observable); specialized",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S2-12",
+   "name": "Tazo",
+   "developer": "Tazo Labs",
+   "layer": "model",
+   "section": "S2",
+   "note": "Audio-native decisions for live voice agents; API by request",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S2-13",
+   "name": "djev",
+   "developer": "Maisa",
+   "layer": "model",
+   "section": "S2",
+   "note": "Hosted typed decisions over text+images; invite/recovery-key access",
+   "source_url": "https://api.djev.dev",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S2-14",
+   "name": "Tev1",
+   "developer": "Together AI",
+   "layer": "model",
+   "section": "S2",
+   "note": "Experimental Qwen 4B/0.8B decision fine-tunes + published training recipe",
+   "source_url": "https://github.com/togethercomputer/tev1",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S2-15",
+   "name": "Strands Decider 2B",
+   "developer": "AWS Strands Labs",
+   "layer": "model",
+   "section": "S2",
+   "note": "Qwen-based decision model, pointer head + LoRA; open weights/data/scripts",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S2-16",
+   "name": "Nimble",
+   "developer": "Bespoke Labs",
+   "layer": "model",
+   "section": "S2",
+   "note": "Qwen3.5-9B LoRA on contrastively curated data; open model + recipe",
+   "source_url": "https://github.com/bespokelabsai/nimble",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S2-17",
+   "name": "GLiNER2.5-Decide",
+   "developer": "Fastino",
+   "layer": "model",
+   "section": "S2",
+   "note": "Encoder caller-defined classification/routing/scoring; Apache-2.0; CPU/GPU",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S2-18",
+   "name": "Standard One",
+   "developer": "Standard Thinking",
+   "layer": "model",
+   "section": "S2",
+   "note": "3B/8B text+image decision models; open + hosted; GGUF builds reported",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S2-19",
+   "name": "StartLux-Decision",
+   "developer": "StartLux",
+   "layer": "model",
+   "section": "S2",
+   "note": "Dense + MoE typed decision models with image support; CC BY-NC weights",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S2-20",
+   "name": "Decision 2.0",
+   "developer": "vLLM Semantic Router",
+   "layer": "model",
+   "section": "S2",
+   "note": "Decision models 0.6B-27B; multiple questions per forward pass; Apache-2.0",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S2-21",
+   "name": "Intern-Decision",
+   "developer": "InternLM",
+   "layer": "model",
+   "section": "S2",
+   "note": "Multimodal 0.8B/2B/4B decision models with calibration tooling",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S2-22",
+   "name": "Security-One 27B",
+   "developer": "Superagent",
+   "layer": "model",
+   "section": "S2",
+   "note": "Security triage: prompt injection, tool calls, code changes, alerts; Apache-2.0",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S2-23",
+   "name": "Jeeves",
+   "developer": "PostHog",
+   "layer": "model",
+   "section": "S2",
+   "note": "9B Jev-like; reasoning training + pointer head + diffusion drafter",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S2-24",
+   "name": "Phocinae-Largha-150M",
+   "developer": "Phocinae",
+   "layer": "model",
+   "section": "S2",
+   "note": "Small EN/ZH typed decision encoder with confidence gating; Apache-2.0",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S2-25",
+   "name": "VideoJev",
+   "developer": "VideoJev project",
+   "layer": "model",
+   "section": "S2",
+   "note": "Video grounding + multiple-choice QA, shared video context; 4B + 35B-A3B",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S2-26",
+   "name": "OpenThai-SystemOne",
+   "developer": "iApp / OpenThai",
+   "layer": "model",
+   "section": "S2",
+   "note": "Thai/English 0.8B typed decision model; Apache-2.0; pip + Ollama",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S2-27",
+   "name": "Dwight 4B",
+   "developer": "Zime AI",
+   "layer": "model",
+   "section": "S2",
+   "note": "Decision model for EN B2B sales-call transcripts; Apache-2.0; specialized",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S3-01",
+   "name": "CLM",
+   "developer": "Contrastive-LM",
+   "layer": "model",
+   "section": "S3",
+   "note": "System One models trained with a contrastive state-action objective",
+   "source_url": "https://github.com/Contrastive-LM/CLM",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S3-02",
+   "name": "Lev",
+   "developer": "Interfaze",
+   "layer": "model",
+   "section": "S3",
+   "note": "Qwen3.5-4B LoRA with zero-output-token decisions; compatible server",
+   "source_url": "https://huggingface.co/interfaze-ai/lev",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S3-03",
+   "name": "Von",
+   "developer": "wfzyx",
+   "layer": "model",
+   "section": "S3",
+   "note": "Small ModernBERT non-autoregressive decision model; repo archived in index",
+   "source_url": "https://github.com/wfzyx/von",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S3-04",
+   "name": "NanoJev",
+   "developer": "TianyuCodings",
+   "layer": "model",
+   "section": "S3",
+   "note": "0.6B parallel decision model; game demos + training pipeline",
+   "source_url": "https://github.com/TianyuCodings/NanoJev",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S3-05",
+   "name": "jevlike",
+   "developer": "vinnylarouge",
+   "layer": "model",
+   "section": "S3",
+   "note": "One-pass context+options scorer; explicitly not TypeSafe's architecture",
+   "source_url": "https://github.com/vinnylarouge/jevlike",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S3-06",
+   "name": "decider family",
+   "developer": "Mapika",
+   "layer": "model",
+   "section": "S3",
+   "note": "Qwen/Gemma family, multiple sizes + vision variant; compatible endpoint",
+   "source_url": "https://www.marktechpost.com/2026/10/17/20-jev-alternatives-the-decision-models-taking-on-typesafe-in-2026/",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S3-07",
+   "name": "RSI-Jev",
+   "developer": "RSI-Jev project",
+   "layer": "model",
+   "section": "S3",
+   "note": "Recursively developed decision models; selectable effort; vision variants",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S3-08",
+   "name": "jev-style",
+   "developer": "jev-style project",
+   "layer": "model",
+   "section": "S3",
+   "note": "Local 0.8B decision model; PyTorch/MLX; compatible + MCP servers, guard hook",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S3-09",
+   "name": "PlayJev",
+   "developer": "PlayJev project",
+   "layer": "model",
+   "section": "S3",
+   "note": "Small vision decision model for browser games; weights + browser demo",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S3-10",
+   "name": "OneJev",
+   "developer": "OmniJev team",
+   "layer": "model",
+   "section": "S3",
+   "note": "Multimodal typed decision family 0.8B-27B; open weights reported",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S3-11",
+   "name": "jevos",
+   "developer": "feder-cr",
+   "layer": "model",
+   "section": "S3",
+   "note": "Small CPU MiniCPM-derived model; directory documents Noul-only serving",
+   "source_url": "https://github.com/feder-cr/jev",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S3-12",
+   "name": "WebJev",
+   "developer": "WebJev project",
+   "layer": "model",
+   "section": "S3",
+   "note": "Browser-action and target selection model; Apache-2.0 weights/data/recipe",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S3-13",
+   "name": "Vev",
+   "developer": "Vev project",
+   "layer": "model",
+   "section": "S3",
+   "note": "Vision-enabled Qwen 4B/9B decision models; noncommercial weights",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S3-14",
+   "name": "JEV-27B / JEV-9B",
+   "developer": "AutoTrust",
+   "layer": "model",
+   "section": "S3",
+   "note": "Distilled from Jev; combined decision + generation serving; Apache-2.0 reported",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S3-15",
+   "name": "Winnow",
+   "developer": "Winnow project",
+   "layer": "model",
+   "section": "S3",
+   "note": "Gemma-based 12B/E4B typed decision models; llama.cpp serving",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S3-16",
+   "name": "JevK5",
+   "developer": "allebee",
+   "layer": "model",
+   "section": "S3",
+   "note": "Qwen-based 2B/4B/9B family; Apache-2.0; CUDA + GGUF",
+   "source_url": "https://github.com/allebee/jevk5",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S3-17",
+   "name": "JevAlt (Deem/Karar/Wahler)",
+   "developer": "Mert Kaya",
+   "layer": "model",
+   "section": "S3",
+   "note": "English/Turkish/German 4B decision models; GGUF + local serving",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S3-18",
+   "name": "reflex",
+   "developer": "kshetrajna12",
+   "layer": "model",
+   "section": "S3",
+   "note": "Small decision model on a frozen Qwen backbone; local server; WebGPU build",
+   "source_url": "https://github.com/kshetrajna12/reflex",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S3-19",
+   "name": "imajev",
+   "developer": "imajev project",
+   "layer": "model",
+   "section": "S3",
+   "note": "Photo comparison / record-checking decisions incl. unknown option; MLX + PyTorch",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S3-20",
+   "name": "NeoHorse-Jev-4B",
+   "developer": "TokenRhythm",
+   "layer": "model",
+   "section": "S3",
+   "note": "Text/single-image decision model, prefill-only inference; Apache-2.0",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S3-21",
+   "name": "WaterSheep",
+   "developer": "WaterSheep project",
+   "layer": "model",
+   "section": "S3",
+   "note": "Text decisions incl. Choice/Score/Noul/multilabel; Apache-2.0",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S3-22",
+   "name": "Wald-4B",
+   "developer": "Wald project",
+   "layer": "model",
+   "section": "S3",
+   "note": "Fully trained Qwen decoder; optional thinking; calibrated option probabilities",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S3-23",
+   "name": "Valen",
+   "developer": "Valen-Team",
+   "layer": "model",
+   "section": "S3",
+   "note": "Multimodal 0.8B/2B/4B System One models; code/data/demo; Apache-2.0",
+   "source_url": "https://github.com/Valen-Team/Valen",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S3-24",
+   "name": "OpenJev (weight project)",
+   "developer": "community directory listing",
+   "layer": "model",
+   "section": "S3",
+   "note": "Trained single-pass decision model with calibration + serving; CC BY-NC weights",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S3-25",
+   "name": "Open-Jev",
+   "developer": "Zefan Cai",
+   "layer": "model",
+   "section": "S3",
+   "note": "Trained decision-head adapters 2B/9B/27B; check code/weight licenses separately",
+   "source_url": "https://github.com/Zefan-Cai/Open-Jev",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S3-26",
+   "name": "InnerJev",
+   "developer": "Fudan / Tongji / King's College London",
+   "layer": "model",
+   "section": "S3",
+   "note": "4B/27B single-pass decision models distilled from reasoning; academic",
+   "source_url": "https://www.marktechpost.com/2026/10/17/20-jev-alternatives-the-decision-models-taking-on-typesafe-in-2026/",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S3-27",
+   "name": "Rizzo Flow",
+   "developer": "Rizzo AI Academy",
+   "layer": "model",
+   "section": "S3",
+   "note": "Small family with native + Jev-compatible endpoints; Apache-2.0 reported",
+   "source_url": "https://www.marktechpost.com/2026/10/17/20-jev-alternatives-the-decision-models-taking-on-typesafe-in-2026/",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S3-28",
+   "name": "AgentJev-0.6B",
+   "developer": "malevrigns",
+   "layer": "model",
+   "section": "S3",
+   "note": "Small candidate-head model for agent-state decisions",
+   "source_url": "https://github.com/malevrigns/agent-jev",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S3-29",
+   "name": "openJev-verdict 2.0",
+   "developer": "Heman10x-NGU",
+   "layer": "model",
+   "section": "S3",
+   "note": "~151M non-autoregressive calibrated decision engine; experimental",
+   "source_url": "https://github.com/Heman10x-NGU/openJev-verdict-2.0",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S4-01",
+   "name": "SemIf (formerly OpenJev)",
+   "developer": "TheoLeeCJ",
+   "layer": "adapter",
+   "section": "S4",
+   "note": "Typed decisions from option logits of existing open models; inference technique",
+   "source_url": "https://github.com/TheoLeeCJ/SemIf-OpenJev",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S4-02",
+   "name": "AnyJev / Tacit",
+   "developer": "Nokia Applied Research",
+   "layer": "adapter",
+   "section": "S4",
+   "note": "Training-free decision method + self-distilled Tacit models",
+   "source_url": "https://github.com/nokia-applied-research/AnyJev",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S4-03",
+   "name": "LitJev",
+   "developer": "LitJev project",
+   "layer": "adapter",
+   "section": "S4",
+   "note": "Decision serving from existing Qwen models without training; adapter",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S4-04",
+   "name": "TetraJev",
+   "developer": "TetraJev project",
+   "layer": "adapter",
+   "section": "S4",
+   "note": "Combines multiple frozen-model decision readings + confidence gates; pipeline",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S4-05",
+   "name": "simple-jev",
+   "developer": "featherless-ai",
+   "layer": "adapter",
+   "section": "S4",
+   "note": "Turns compatible open models into classification endpoints; incl. Laya backend",
+   "source_url": "https://github.com/featherless-ai/simple-jev",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S4-06",
+   "name": "jevmlx",
+   "developer": "jevmlx project",
+   "layer": "adapter",
+   "section": "S4",
+   "note": "Parallel constrained decisions with MLX models; Apple Silicon",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S4-07",
+   "name": "JEVfire",
+   "developer": "JEVfire project",
+   "layer": "adapter",
+   "section": "S4",
+   "note": "Parallel decisions using CUDA LLMs + vLLM; inference implementation",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S4-08",
+   "name": "PocketJev",
+   "developer": "PocketJev project",
+   "layer": "adapter",
+   "section": "S4",
+   "note": "iPhone visual decisions with MLX + option logits; on-device app/technique",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S4-09",
+   "name": "jev-visual",
+   "developer": "hr98w",
+   "layer": "adapter",
+   "section": "S4",
+   "note": "Educational shared-context visual candidate scoring; experimental",
+   "source_url": "https://github.com/hr98w/jev-visual",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S4-10",
+   "name": "OpenJev (DiffusionGemma server)",
+   "developer": "razorback16",
+   "layer": "adapter",
+   "section": "S4",
+   "note": "Decision API over DiffusionGemma + other backends; server, not weights",
+   "source_url": "https://github.com/razorback16/openjev",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S4-11",
+   "name": "openjev-sglang",
+   "developer": "ekzhang",
+   "layer": "adapter",
+   "section": "S4",
+   "note": "Prefill-only compatible endpoint over open models; indexed archived",
+   "source_url": "https://github.com/ekzhang/openjev-sglang",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S4-12",
+   "name": "LocalJev",
+   "developer": "githubnext",
+   "layer": "adapter",
+   "section": "S4",
+   "note": "Local Jev-compatible API; unique trained family not established",
+   "source_url": "https://github.com/githubnext/localjev",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S4-13",
+   "name": "jeff",
+   "developer": "logan-markewich",
+   "layer": "adapter",
+   "section": "S4",
+   "note": "Self-hosted Jev replacement powered by GLiFormer; adapter/serving",
+   "source_url": "https://github.com/logan-markewich/jeff",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S4-14",
+   "name": "TypeAR / TypeLLM",
+   "developer": "TypeLLM",
+   "layer": "adapter",
+   "section": "S4",
+   "note": "Jev-inspired type-safe decoding; related approach, not a direct substitute",
+   "source_url": "https://github.com/TypeLLM/TypeLLM",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S4-15",
+   "name": "daseinlabs/open-jev",
+   "developer": "daseinlabs",
+   "layer": "adapter",
+   "section": "S4",
+   "note": "MLX implementation with custom fine-tuning; checkpoint status unestablished",
+   "source_url": "https://github.com/daseinlabs/open-jev",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S4-16",
+   "name": "JevForge",
+   "developer": "zwliJay",
+   "layer": "adapter",
+   "section": "S4",
+   "note": "Data synthesis + training + candidate-branch scoring stack; toolchain",
+   "source_url": "https://github.com/zwliJay/jev-forge",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S5-01",
+   "name": "Ollaya",
+   "developer": "ollaya-dev",
+   "layer": "runtime",
+   "section": "S5",
+   "note": "Local model manager/server for Laya, Kev, Von, Decider, Nimble + others",
+   "source_url": "https://github.com/ollaya-dev/ollaya",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S5-02",
+   "name": "Laya-MLX",
+   "developer": "mizorewww",
+   "layer": "runtime",
+   "section": "S5",
+   "note": "Native Apple Silicon port of Laya",
+   "source_url": "https://github.com/mizorewww/laya-mlx",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S5-03",
+   "name": "Laya-CoreML",
+   "developer": "mizorewww",
+   "layer": "runtime",
+   "section": "S5",
+   "note": "Core ML / Neural Engine port of Laya",
+   "source_url": "https://github.com/mizorewww/laya-coreml",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S5-04",
+   "name": "laya.cpp",
+   "developer": "laya.cpp project",
+   "layer": "runtime",
+   "section": "S5",
+   "note": "Native C++/ggml Laya inference + compatible server",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S5-05",
+   "name": "sys1",
+   "developer": "sys1 project",
+   "layer": "runtime",
+   "section": "S5",
+   "note": "Rust/Candle decision-model server",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S5-06",
+   "name": "Bud Decision Studio",
+   "developer": "Bud Decision Studio project",
+   "layer": "runtime",
+   "section": "S5",
+   "note": "Desktop environment to run, evaluate, and train decision models",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S5-07",
+   "name": "TurinTech compressed models",
+   "developer": "TurinTech",
+   "layer": "runtime",
+   "section": "S5",
+   "note": "Converted/compressed builds of existing families; not separate families",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S5-08",
+   "name": "classifier.dev",
+   "developer": "classifier.dev",
+   "layer": "directory",
+   "section": "S5",
+   "note": "Shared interface for Jev, Laya, and Kev",
+   "source_url": "https://classifier.dev/",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S5-09",
+   "name": "Awesome Decision Models",
+   "developer": "AnotiaWang",
+   "layer": "directory",
+   "section": "S5",
+   "note": "Directory separating hosted APIs, open models, techniques, runtimes, SDKs, apps, papers",
+   "source_url": "https://github.com/AnotiaWang/awesome-decision-models",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S5-10",
+   "name": "Jevland repository index",
+   "developer": "Jevland",
+   "layer": "directory",
+   "section": "S5",
+   "note": "Ecosystem index; hundreds of repos incl. apps/integrations/demos, not distinct models",
+   "source_url": "https://jevland.mnimiy.com/repos/",
+   "fleet_state": "catalogued"
+  },
+  {
+   "id": "S5-11",
+   "name": "OpenRouter decision rankings",
+   "developer": "OpenRouter",
+   "layer": "directory",
+   "section": "S5",
+   "note": "Hosted versions + routed usage tracking; usage is not an accuracy leaderboard",
+   "source_url": "https://openrouter.ai/rankings/decisions",
+   "fleet_state": "catalogued"
+  }
+ ]
+}

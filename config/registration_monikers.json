@@ -1,193 +1,216 @@
 {
-  "assignment_rule": "entrant + platform_id words capitalized and joined, platform_ids processed in sort order; collision appends the smallest integer >= 2 that frees the token. Canonical form: entrant{<moniker>}[platform:<platform_id>].",
-  "entries": [
+ "assignment_rule": "entrant + platform_id words capitalized and joined, platform_ids processed in sort order; collision appends the smallest integer >= 2 that frees the token. Canonical form: entrant{<moniker>}[platform:<platform_id>].",
+ "entries": [
+  {
+   "handling": {
+    "escalation": [
+     "Builder profile completion (avatar + bio) is an owner item and gates D1 entry validity - first blocker surfaced on this platform.",
+     "Workshop completion in-window (Oct 28 - Nov 4) is an owner account step."
+    ],
+    "owner_lane": "challenge-entries",
+    "receipts_route": "Platform confirmations land in the owner's Gmail from notifications@builder.aws.com; the owning lane cites message IDs into docs/ops/CHALLENGE-ENTRIES-LOG.md (sections 1/2) by PR and syncs this registry in the same PR.",
+    "submission_authority": "Submissions happen under the owner's Builder account: the owning lane prepares the packet (article draft, repo, video script) and the owner submits. The moniker fronts all public artifacts (article byline, project pages)."
+   },
+   "kind": "platform",
+   "moniker": "entrantAwsBuilderCenter",
+   "notes": [],
+   "platform": "AWS Builder Center",
+   "platform_id": "aws-builder-center",
+   "profile_ref": "AWS Builder Center",
+   "registrations": [
     {
-      "handling": {
-        "escalation": [
-          "Builder profile completion (avatar + bio) is an owner item and gates D1 entry validity - first blocker surfaced on this platform.",
-          "Workshop completion in-window (Oct 28 - Nov 4) is an owner account step."
-        ],
-        "owner_lane": "challenge-entries",
-        "receipts_route": "Platform confirmations land in the owner's Gmail from notifications@builder.aws.com; the owning lane cites message IDs into docs/ops/CHALLENGE-ENTRIES-LOG.md (sections 1/2) by PR and syncs this registry in the same PR.",
-        "submission_authority": "Submissions happen under the owner's Builder account: the owning lane prepares the packet (article draft, repo, video script) and the owner submits. The moniker fronts all public artifacts (article byline, project pages)."
-      },
-      "kind": "platform",
-      "moniker": "entrantAwsBuilderCenter",
-      "notes": [],
-      "platform": "AWS Builder Center",
-      "platform_id": "aws-builder-center",
-      "profile_ref": "AWS Builder Center",
-      "registrations": [
-        {
-          "aspect": "platform",
-          "event": "Agent Experience Hackathon: Strands Decider",
-          "ref": "R1",
-          "status": "registered - window closed 2026-10-23"
-        },
-        {
-          "aspect": "platform",
-          "event": "Weekend Challenge: Give your Agent a Tool",
-          "ref": "R2",
-          "status": "registered - window closed 2026-10-26"
-        },
-        {
-          "aspect": "platform",
-          "event": "Strands SDK: Workshop to Ship",
-          "ref": "R3",
-          "status": "registered"
-        },
-        {
-          "aspect": "platform",
-          "event": "Workshop to Ship entry (packet D1 for C1)",
-          "ref": "D1",
-          "status": "in-progress"
-        }
-      ],
-      "role": "entrant",
-      "status": "active"
+     "aspect": "platform",
+     "event": "Agent Experience Hackathon: Strands Decider",
+     "ref": "R1",
+     "status": "registered - window closed 2026-10-23"
     },
     {
-      "handling": {
-        "escalation": [
-          "Open risk from packet D3: if publishing the public Clips demo requires a Builder account, that step is owner-gated and surfaces immediately, not at the deadline."
-        ],
-        "owner_lane": "challenge-entries",
-        "receipts_route": "No registration and no confirmation email exists for this venue (verified from the official page, 2026-10-26); submission evidence is recorded into docs/ops/CHALLENGE-ENTRIES-LOG.md section 4 by PR when filed.",
-        "submission_authority": "Owning lane builds and prepares the entry under the moniker; submission follows the challenge log's standing boundary."
-      },
-      "kind": "platform",
-      "moniker": "entrantBuilderIo",
-      "notes": [],
-      "platform": "Builder.io",
-      "platform_id": "builder-io",
-      "profile_ref": "Builder.io / Clips",
-      "registrations": [
-        {
-          "aspect": "platform",
-          "event": "Builder.io Agent-Native Hackathon entry (packet D3 for C3)",
-          "ref": "D3",
-          "status": "in-progress"
-        }
-      ],
-      "role": "entrant",
-      "status": "active"
+     "aspect": "platform",
+     "event": "Weekend Challenge: Give your Agent a Tool",
+     "ref": "R2",
+     "status": "registered - window closed 2026-10-26"
     },
     {
-      "handling": {
-        "escalation": [
-          "Devpost account sign-in/creation is an owner item (no signed-in Devpost session exists; sign-up offers GitHub/Facebook/Google/LinkedIn/email).",
-          "Team info is not a gate (solo entry allowed); nothing to escalate there."
-        ],
-        "owner_lane": "challenge-entries",
-        "receipts_route": "Registration cannot proceed past the sign-up gate, so no confirmation exists; the attempt and its stop point are recorded in docs/ops/CHALLENGE-ENTRIES-LOG.md section 4 (packet D4).",
-        "submission_authority": "None until the account exists. After owner sign-in, the owning lane may complete registration under the moniker within the standing boundary."
-      },
-      "kind": "platform",
-      "moniker": "entrantDevpost",
-      "notes": [
-        "Future candidate C5 (PayPal AI Hackathon) is also Devpost-hosted and attaches to this entry if it becomes a registration."
-      ],
-      "platform": "Devpost",
-      "platform_id": "devpost",
-      "profile_ref": "Devpost",
-      "registrations": [
-        {
-          "aspect": "event-host",
-          "event": "Kiroween 2026 entry (packet D4 for C4)",
-          "ref": "D4",
-          "status": "registering - stopped at the Devpost sign-up gate 2026-10-26"
-        }
-      ],
-      "role": "entrant",
-      "status": "blocked-owner-gate"
+     "aspect": "platform",
+     "event": "Strands SDK: Workshop to Ship",
+     "ref": "R3",
+     "status": "registered"
     },
     {
-      "handling": {
-        "escalation": [
-          "A valid Kiro user ID (or AWS account ID) is required to register for Kiroween - owner item. Kiro sign-in (app.kiro.dev) offers Google, GitHub, Builder ID, or organization - no email/password."
-        ],
-        "owner_lane": "challenge-entries",
-        "receipts_route": "No receipt exists; the requirement is recorded in docs/ops/CHALLENGE-ENTRIES-LOG.md section 4 (packet D4).",
-        "submission_authority": "None; this entry fronts an identity dependency, not a submission surface."
-      },
-      "kind": "identity-provider",
-      "moniker": "entrantKiro",
-      "notes": [
-        "Identity-provider entry: Kiroween registration consumes a Kiro identity; the moniker keeps that dependency inside the same routing/escalation surface as the Devpost entry it pairs with."
-      ],
-      "platform": "Kiro",
-      "platform_id": "kiro",
-      "profile_ref": "Kiro",
-      "registrations": [
-        {
-          "aspect": "identity-provider",
-          "event": "Kiroween 2026 entry (packet D4 for C4)",
-          "ref": "D4",
-          "status": "blocked - Kiro user ID is an owner item"
-        }
-      ],
-      "role": "entrant",
-      "status": "blocked-owner-gate"
-    },
-    {
-      "handling": {
-        "escalation": [
-          "Any owner-only verification step in lablab.ai registration or the Discord join surfaces to main chat instead of being worked around."
-        ],
-        "owner_lane": "challenge-entries",
-        "receipts_route": "Registration confirmation will land in the owner's Gmail; the owning lane cites it into docs/ops/CHALLENGE-ENTRIES-LOG.md by PR and records the issued handle here (never before it exists).",
-        "submission_authority": "Registration + Discord join are owner-approved (2026-10-26); the owning lane executes them within the standing boundary and surfaces any verification gate it hits."
-      },
-      "kind": "platform",
-      "moniker": "entrantLablabAi",
-      "notes": [],
-      "platform": "lablab.ai",
-      "platform_id": "lablab-ai",
-      "profile_ref": "lablab.ai",
-      "registrations": [
-        {
-          "aspect": "event-host",
-          "event": "Vultr Agent Rush Hackathon entry (packet D2 for C2)",
-          "ref": "D2",
-          "status": "in-progress"
-        }
-      ],
-      "role": "entrant",
-      "status": "registering"
-    },
-    {
-      "handling": {
-        "escalation": [
-          "The credit card is a BLOCK (owner rule, 2026-10-26): if the Vultr account flow demands a card, it stops and surfaces as an owner item - it is never supplied by a lane."
-        ],
-        "owner_lane": "challenge-entries",
-        "receipts_route": "Sandbox credit confirmation will land in the owner's Gmail; the owning lane cites it into docs/ops/CHALLENGE-ENTRIES-LOG.md by PR and records the account handle here once it exists.",
-        "submission_authority": "Account is for sandbox credits only ($200 participant credit; no card spend to compete online, per the log). The owning lane proceeds on the no-card path only."
-      },
-      "kind": "platform",
-      "moniker": "entrantVultr",
-      "notes": [
-        "Sandbox dependency of packet D2; the event itself is hosted on lablab.ai (separate entry)."
-      ],
-      "platform": "Vultr",
-      "platform_id": "vultr",
-      "profile_ref": "Vultr",
-      "registrations": [
-        {
-          "aspect": "sandbox",
-          "event": "Vultr Agent Rush Hackathon entry (packet D2 for C2)",
-          "ref": "D2",
-          "status": "in-progress"
-        }
-      ],
-      "role": "entrant",
-      "status": "pending"
+     "aspect": "platform",
+     "event": "Workshop to Ship entry (packet D1 for C1)",
+     "ref": "D1",
+     "status": "in-progress"
     }
-  ],
-  "moniker_ssot": "docs/ops/AGENT-MONIKERS.md",
-  "profile_data_home": "Handles, display names, and profile completeness live ONLY in docs/ops/PROFILE-REGISTRY.md (source of truth for platform identities). Entries here carry a profile_ref pointer and no profile data.",
-  "profile_registry": "docs/ops/PROFILE-REGISTRY.md",
-  "protocol": "docs/ops/4N0N-REGISTRATION-PROTOCOL.md",
-  "schema": "registration-monikers/2",
-  "source_of_registrations": "docs/ops/CHALLENGE-ENTRIES-LOG.md"
+   ],
+   "role": "entrant",
+   "status": "active"
+  },
+  {
+   "handling": {
+    "escalation": [
+     "Burn activation: BOINC runs on GitHub Actions quota (leftover-only, owner rule 2026-10-27); the burn workflow needs one owner-provisioned Actions secret holding the project authenticators - until it exists no workflow references it. Codespaces is EXCLUDED by the owner (interim TBD; a past setup error burned a month's allocation in an afternoon). The agent VM cannot substitute: its egress proxy hangs scheduler POSTs (verified 2026-10-27).",
+     "Einstein@Home account creation is web-only by project policy (RPC creation refused); any forced personal field on a future platform is owner-gated, never worked around."
+    ],
+    "owner_lane": "boinc",
+    "receipts_route": "No email receipts for RPC-created accounts; standings are read from project stats and recorded firsthand into docs/ops/BOINC-FLEET-COMPUTE.md by PR. Einstein@Home registration confirmation landed in the owner's Gmail (2026-10-27).",
+    "submission_authority": "Participation management (attach/detach, project mix, preferences, team) is the owning lane's, under the moniker, within the standing account-creation authorization. No challenge submissions exist on this platform."
+   },
+   "kind": "platform",
+   "moniker": "entrantBoinc",
+   "notes": [
+    "Non-challenge platform: this entry extends the registry beyond its challenge-log source under the BOINC lane's brief; registrations is empty because the registry check binds registration refs to the challenge log - per-project accounts are recorded in docs/ops/BOINC-FLEET-COMPUTE.md and the Profile Registry instead.",
+    "Science United not used (its shared anonymous account erases ranking identity); all project accounts are individual under the moniker on one email (one cross-project ID)."
+   ],
+   "platform": "BOINC",
+   "platform_id": "boinc",
+   "profile_ref": "BOINC",
+   "registrations": [],
+   "role": "entrant",
+   "status": "registering"
+  },
+  {
+   "handling": {
+    "escalation": [
+     "Open risk from packet D3: if publishing the public Clips demo requires a Builder account, that step is owner-gated and surfaces immediately, not at the deadline."
+    ],
+    "owner_lane": "challenge-entries",
+    "receipts_route": "No registration and no confirmation email exists for this venue (verified from the official page, 2026-10-26); submission evidence is recorded into docs/ops/CHALLENGE-ENTRIES-LOG.md section 4 by PR when filed.",
+    "submission_authority": "Owning lane builds and prepares the entry under the moniker; submission follows the challenge log's standing boundary."
+   },
+   "kind": "platform",
+   "moniker": "entrantBuilderIo",
+   "notes": [],
+   "platform": "Builder.io",
+   "platform_id": "builder-io",
+   "profile_ref": "Builder.io / Clips",
+   "registrations": [
+    {
+     "aspect": "platform",
+     "event": "Builder.io Agent-Native Hackathon entry (packet D3 for C3)",
+     "ref": "D3",
+     "status": "in-progress"
+    }
+   ],
+   "role": "entrant",
+   "status": "active"
+  },
+  {
+   "handling": {
+    "escalation": [
+     "Devpost account sign-in/creation is an owner item (no signed-in Devpost session exists; sign-up offers GitHub/Facebook/Google/LinkedIn/email).",
+     "Team info is not a gate (solo entry allowed); nothing to escalate there."
+    ],
+    "owner_lane": "challenge-entries",
+    "receipts_route": "Registration cannot proceed past the sign-up gate, so no confirmation exists; the attempt and its stop point are recorded in docs/ops/CHALLENGE-ENTRIES-LOG.md section 4 (packet D4).",
+    "submission_authority": "None until the account exists. After owner sign-in, the owning lane may complete registration under the moniker within the standing boundary."
+   },
+   "kind": "platform",
+   "moniker": "entrantDevpost",
+   "notes": [
+    "Future candidate C5 (PayPal AI Hackathon) is also Devpost-hosted and attaches to this entry if it becomes a registration."
+   ],
+   "platform": "Devpost",
+   "platform_id": "devpost",
+   "profile_ref": "Devpost",
+   "registrations": [
+    {
+     "aspect": "event-host",
+     "event": "Kiroween 2026 entry (packet D4 for C4)",
+     "ref": "D4",
+     "status": "registering - stopped at the Devpost sign-up gate 2026-10-26"
+    }
+   ],
+   "role": "entrant",
+   "status": "blocked-owner-gate"
+  },
+  {
+   "handling": {
+    "escalation": [
+     "A valid Kiro user ID (or AWS account ID) is required to register for Kiroween - owner item. Kiro sign-in (app.kiro.dev) offers Google, GitHub, Builder ID, or organization - no email/password."
+    ],
+    "owner_lane": "challenge-entries",
+    "receipts_route": "No receipt exists; the requirement is recorded in docs/ops/CHALLENGE-ENTRIES-LOG.md section 4 (packet D4).",
+    "submission_authority": "None; this entry fronts an identity dependency, not a submission surface."
+   },
+   "kind": "identity-provider",
+   "moniker": "entrantKiro",
+   "notes": [
+    "Identity-provider entry: Kiroween registration consumes a Kiro identity; the moniker keeps that dependency inside the same routing/escalation surface as the Devpost entry it pairs with."
+   ],
+   "platform": "Kiro",
+   "platform_id": "kiro",
+   "profile_ref": "Kiro",
+   "registrations": [
+    {
+     "aspect": "identity-provider",
+     "event": "Kiroween 2026 entry (packet D4 for C4)",
+     "ref": "D4",
+     "status": "blocked - Kiro user ID is an owner item"
+    }
+   ],
+   "role": "entrant",
+   "status": "blocked-owner-gate"
+  },
+  {
+   "handling": {
+    "escalation": [
+     "Any owner-only verification step in lablab.ai registration or the Discord join surfaces to main chat instead of being worked around."
+    ],
+    "owner_lane": "challenge-entries",
+    "receipts_route": "Registration confirmation will land in the owner's Gmail; the owning lane cites it into docs/ops/CHALLENGE-ENTRIES-LOG.md by PR and records the issued handle here (never before it exists).",
+    "submission_authority": "Registration + Discord join are owner-approved (2026-10-26); the owning lane executes them within the standing boundary and surfaces any verification gate it hits."
+   },
+   "kind": "platform",
+   "moniker": "entrantLablabAi",
+   "notes": [],
+   "platform": "lablab.ai",
+   "platform_id": "lablab-ai",
+   "profile_ref": "lablab.ai",
+   "registrations": [
+    {
+     "aspect": "event-host",
+     "event": "Vultr Agent Rush Hackathon entry (packet D2 for C2)",
+     "ref": "D2",
+     "status": "in-progress"
+    }
+   ],
+   "role": "entrant",
+   "status": "registering"
+  },
+  {
+   "handling": {
+    "escalation": [
+     "The credit card is a BLOCK (owner rule, 2026-10-26): if the Vultr account flow demands a card, it stops and surfaces as an owner item - it is never supplied by a lane."
+    ],
+    "owner_lane": "challenge-entries",
+    "receipts_route": "Sandbox credit confirmation will land in the owner's Gmail; the owning lane cites it into docs/ops/CHALLENGE-ENTRIES-LOG.md by PR and records the account handle here once it exists.",
+    "submission_authority": "Account is for sandbox credits only ($200 participant credit; no card spend to compete online, per the log). The owning lane proceeds on the no-card path only."
+   },
+   "kind": "platform",
+   "moniker": "entrantVultr",
+   "notes": [
+    "Sandbox dependency of packet D2; the event itself is hosted on lablab.ai (separate entry)."
+   ],
+   "platform": "Vultr",
+   "platform_id": "vultr",
+   "profile_ref": "Vultr",
+   "registrations": [
+    {
+     "aspect": "sandbox",
+     "event": "Vultr Agent Rush Hackathon entry (packet D2 for C2)",
+     "ref": "D2",
+     "status": "in-progress"
+    }
+   ],
+   "role": "entrant",
+   "status": "pending"
+  }
+ ],
+ "moniker_ssot": "docs/ops/AGENT-MONIKERS.md",
+ "profile_data_home": "Handles, display names, and profile completeness live ONLY in docs/ops/PROFILE-REGISTRY.md (source of truth for platform identities). Entries here carry a profile_ref pointer and no profile data.",
+ "profile_registry": "docs/ops/PROFILE-REGISTRY.md",
+ "protocol": "docs/ops/4N0N-REGISTRATION-PROTOCOL.md",
+ "schema": "registration-monikers/2",
+ "source_of_registrations": "docs/ops/CHALLENGE-ENTRIES-LOG.md"
 }

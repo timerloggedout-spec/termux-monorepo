@@ -77,6 +77,99 @@ def _slug(text: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-") or "x"
 
 
+# Panel alignment (viz lane contract, 2026-10-27): the panel keys on a
+# coarse kind vocabulary and needs per-family granularity + a plain
+# description. Substrate detail stays in `kind_detail`.
+PANEL_KIND = {
+    "cedrlang-symbol": "cipher",
+    "cedrlang-compression": "compression",
+    "cedrlang-stopwords": "compression",
+    "phase-codec-leet-chars": "leet",
+    "phase-codec-canonical-tokens": "leet",
+    "grimoire-char-variants": "leet",
+    "grimoire-core-castings": "leet",
+    "grimoire-protocol-terms": "leet",
+    "grimoire-orchestra-crosswalk": "other",
+    "cedar-pointer-commands": "other",
+    "nomenclature-concepts": "notation",
+    "nomenclature-labels": "notation",
+    "nomenclature-mappings": "notation",
+    "routing-notation": "notation",
+    "archwiz-pointer-index": "other",
+}
+
+FAMILY_GRANULARITY = {
+    "cedrlang-symbol": "token",
+    "cedrlang-compression": "token",
+    "cedrlang-stopwords": "token",
+    "phase-codec-leet-chars": "char",
+    "phase-codec-canonical-tokens": "token",
+    "grimoire-char-variants": "char",
+    "grimoire-core-castings": "token",
+    "grimoire-protocol-terms": "token",
+    "grimoire-orchestra-crosswalk": "token",
+    "cedar-pointer-commands": "phrase",
+    "nomenclature-concepts": "phrase",
+    "nomenclature-labels": "phrase",
+    "nomenclature-mappings": "phrase",
+    "routing-notation": "token",
+    "archwiz-pointer-index": "token",
+}
+
+FAMILY_DESCRIPTION = {
+    "cedrlang-symbol": "CedrLang phrase-to-symbol substitution (SYMBOL_MAP in cedrlang.py); decode via REV_MAP is last-wins, so duplicate-symbol phrases are lossy.",
+    "cedrlang-compression": "CedrLang human-word to compressed-token mappings (MAPPINGS in cedrlang.py), applied by compile_doc/decompile_doc.",
+    "cedrlang-stopwords": "Words elided by CedrLang compress()/caveman() (STOPWORDS in cedrlang.py); lossy by design.",
+    "phase-codec-leet-chars": "Phase codec (PR #154 diaspora, p=0.70) letter-to-digit substitutions (LEET_MAP in phase_codec.py); reversible only at token level.",
+    "phase-codec-canonical-tokens": "Canonical compressed tokens and all their reversible leet variant forms (CANONICAL_TOKENS / VARIANT_INDEX in phase_codec.py).",
+    "grimoire-char-variants": "Grimoire 1337 dictionary character substitution table (prose superset of LEET_MAP; not runtime authority).",
+    "grimoire-core-castings": "Grimoire 1337 core castings glossary: leet term to plain meaning.",
+    "grimoire-protocol-terms": "Grimoire protocol terms with their full-word leet renderings; checked against cedrlang canonical tokens.",
+    "grimoire-orchestra-crosswalk": "Three-way crosswalk 1337 / Grimoire / Orchestra terminology (GRIMOIRE_DICTIONARY.md); checked against cedrlang canonical pairs.",
+    "cedar-pointer-commands": "CedarIndex seed commands and their sha256/base36 short pointers (cid.py ALL_COMMANDS); live registry is runtime-local.",
+    "nomenclature-concepts": "Nomenclature Equivalency Matrix concepts (SKOS-aligned seed; candidate research data, not runtime authority).",
+    "nomenclature-labels": "Labels for nomenclature concepts, typed by label_type (formal/plain/colloquial/symbolic/...).",
+    "nomenclature-mappings": "Concept-to-concept mappings with SKOS-style relations and confidence.",
+    "routing-notation": "Canonical routing/experiment notation vocabulary (topology, operators, evidence, experiment axes).",
+    "archwiz-pointer-index": "ArchWiz pointer index: 16-hex hash to session/manifest references. Count-only in this feed — session data, not lexical mappings.",
+}
+
+DIRECTION_PANEL = {
+    "bidirectional": "both",
+    "encode-only": "forward",
+    "decode-only": "reverse",
+    "definitional": None,
+}
+
+HONESTY_RULES = [
+    "Show only what the record holds; a value the record does not hold renders as absent/null, never synthesized.",
+    "Round-trip flags are computed by running the live codecs at collection time, never transcribed from prose.",
+    "Lossy-by-design entries (stopword elision, duplicate-symbol decode) carry round_trip_verified=false with the reason in note.",
+    "Count-only families carry entries_included=false and the reason; their entries are never enumerated or sampled.",
+    "Sample texts are verbatim repo texts with provenance; the panel does not invent samples.",
+]
+
+# Verbatim repo texts for threading demos (provenance = file + line).
+SAMPLE_TEXTS = [
+    {"id": "sample-cedrlang-prose",
+     "text": "We need to transmute the code and scry the output, then cast a spell from the grimoire.",
+     "note": "Human form; threads cedrlang-compression + cedrlang-stopwords families.",
+     "provenance": {"path": "tests/test_cedrlang.py", "line": 12}},
+    {"id": "sample-cedrlang-compiled",
+     "text": "We need to h4x the code and scry the output, then c4st a spell from the gr1m01r3.",
+     "note": "Compiled form of sample-cedrlang-prose (compile_doc); threads compression + phase-token families in reverse.",
+     "provenance": {"path": "tests/test_cedrlang.py", "line": 13}},
+    {"id": "sample-phase-tokens",
+     "text": "h4x pr0b3 gr1m01r3 l1ngu15t r3534rch c0nc3p7",
+     "note": "Canonical-token string from the phase codec tests; threads phase-codec-canonical-tokens.",
+     "provenance": {"path": "tests/test_cedrlang_phase_codec.py", "line": 20}},
+    {"id": "sample-cedar-pointer",
+     "text": "→cmd:build",
+     "note": "Cedar pointer example from the Linguist spec; expands to 'Build the Future Now. Make it so.' per that spec.",
+     "provenance": {"path": "harmony_hub/workspace/agent/LINGUIST_SPEC.md", "line": 15}},
+]
+
+
 class Feed:
     def __init__(self, root: Path):
         self.root = root
@@ -93,11 +186,25 @@ class Feed:
     def family(self, fid, name, kind, source, direction, canonical,
                entry_count, included=True, rt=None, note=None):
         fam = {
-            "id": fid, "name": name, "kind": kind, "source_path": source,
-            "direction": direction, "canonical_source": canonical,
+            "id": fid, "name": name, "label": name,
+            "kind": PANEL_KIND[fid], "kind_detail": kind,
+            "description": FAMILY_DESCRIPTION[fid],
+            "granularity": FAMILY_GRANULARITY[fid],
+            "source_path": source,
+            "provenance": {"source_path": source,
+                           "canonical_source": canonical},
+            "direction": direction,
+            "direction_panel": DIRECTION_PANEL[direction],
+            "canonical_source": canonical,
             "entry_count": entry_count, "entries_included": included,
             "round_trip": rt or {"verified": 0, "failed": 0, "not_applicable": 0},
         }
+        if FAMILY_GRANULARITY[fid] == "char":
+            fam["table"] = [
+                {"from": e["source"],
+                 "to": e["variants"][0] if len(e["variants"]) == 1
+                 else e["variants"]}
+                for e in self.entries if e["family"] == fid]
         if note:
             fam["note"] = note
         self.families.append(fam)
@@ -105,14 +212,28 @@ class Feed:
 
     def entry(self, family, source, variants, direction, prov_path,
               needle, rt_verified, note=None, extra=None):
+        if FAMILY_GRANULARITY[family] == "char":
+            granularity = "char"
+        elif " " in source.strip():
+            granularity = "phrase"
+        else:
+            granularity = "token"
         e = {
             "id": f"{family}:{_slug(source)}",
             "family": family,
+            "family_id": family,
             "source": source,
             "variants": variants,
             "direction": direction,
+            "direction_panel": DIRECTION_PANEL[direction],
+            "match": source,
+            "match_type": "literal",
+            "match_variants": variants,
+            "granularity": granularity,
             "provenance": {
                 "path": prov_path,
+                "source_path": prov_path,
+                "detail": f"line {_anchor(self.lines(prov_path), needle)}",
                 "line": _anchor(self.lines(prov_path), needle),
             },
             "round_trip_verified": rt_verified,
@@ -399,6 +520,8 @@ def build(root: Path) -> dict:
         "generator": "scripts/linguist/linguist_panel_feed.py",
         "contract": "docs/ops/LINGUIST-PANEL-FEED.md",
         "sources": SOURCES,
+        "honesty_rules": HONESTY_RULES,
+        "sample_texts": SAMPLE_TEXTS,
         "counts": {
             "families": len(feed.families),
             "entries_total": sum(counts.values()),

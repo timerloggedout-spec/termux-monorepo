@@ -503,7 +503,8 @@ proposals:
         status: requested
     related_issues: [621]
     related_prs: [695]
-    related_branches: [docs/paper2agent-scientific-factory-proposal-2026-09-29]
+    related_branches:
+      - docs/paper2agent-scientific-factory-proposal-2026-09-29
     gates_required: [repo-gate, termux-smoke]
 
   - id: domain-composition-matrix
@@ -752,3 +753,18 @@ proposals:
     related_prs: [1754, 1782, 1786]
     related_branches: []
     gates_required: [proposal-lifecycle, repo-gate]
+
+  - id: doe-live-method-competition
+    title: "DOE/MVT live method-competition framework — repo-wide, sandbox-free"
+    author: timerloggedout-spec
+    status: posted
+    priority: P1
+    path: active/doe-live-method-competition/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: [1573, 1595, 1596]
+    related_prs: [1848]
+    related_branches: [doe-live-method-competition]
+    gates_required: [proposal-lifecycle]

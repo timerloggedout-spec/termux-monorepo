@@ -91,6 +91,20 @@ def test_pending_or_failed_validation_cannot_pass():
         assert not r["validation_evidence_specific"]
 
 
+def test_success_claim_without_recognized_check_is_rejected():
+    r = gate.classify(pr(solution_body(validation="Everything checked and passed successfully")),
+                      [file("docs/checklist.md", 20)], "solution")
+    assert not r["gate_pass"]
+    assert not r["validation_evidence_specific"]
+
+
+def test_recognized_check_with_successful_result_passes():
+    r = gate.classify(pr(solution_body(validation="python -m pytest tests/test_docs.py — passed")),
+                      [file("docs/checklist.md", 20)], "solution")
+    assert r["gate_pass"]
+    assert r["validation_evidence_specific"]
+
+
 def test_regression_sendam_pr_492_stake_only():
     # Historical upstream PR #492 only added the lane-stake placeholder for issue #465.
     body = "Stake only for https://github.com/EF-CHAIN/SendAm/issues/465"

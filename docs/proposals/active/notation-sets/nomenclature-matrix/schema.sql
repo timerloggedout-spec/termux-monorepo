@@ -52,3 +52,19 @@ CREATE INDEX IF NOT EXISTS idx_labels_concept ON labels(concept_id);
 CREATE INDEX IF NOT EXISTS idx_labels_text ON labels(text);
 CREATE INDEX IF NOT EXISTS idx_mappings_source ON mappings(source_concept_id);
 CREATE INDEX IF NOT EXISTS idx_mappings_target ON mappings(target_concept_id);
+
+CREATE TABLE IF NOT EXISTS evidence_records (
+  evidence_id TEXT PRIMARY KEY,
+  source_id TEXT NOT NULL REFERENCES sources(source_id),
+  assertion_type TEXT NOT NULL CHECK(assertion_type IN ('concept','label','mapping')),
+  assertion_id TEXT NOT NULL,
+  claim TEXT NOT NULL,
+  evidence_locator TEXT NOT NULL,
+  evidence_excerpt TEXT NOT NULL,
+  retrieved_on TEXT NOT NULL CHECK(retrieved_on GLOB '????-??-??'),
+  reviewer TEXT,
+  status TEXT NOT NULL CHECK(status IN ('discovered','candidate','evidence_backed','reviewed','accepted','rejected','deprecated','superseded')),
+  CHECK(status != 'accepted' OR (reviewer IS NOT NULL AND length(trim(reviewer)) > 0 AND length(trim(evidence_excerpt)) > 0))
+);
+CREATE INDEX IF NOT EXISTS idx_evidence_assertion ON evidence_records(assertion_type, assertion_id);
+CREATE INDEX IF NOT EXISTS idx_evidence_source ON evidence_records(source_id);

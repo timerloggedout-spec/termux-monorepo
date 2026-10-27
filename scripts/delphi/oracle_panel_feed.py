@@ -81,6 +81,11 @@ def parse_registry(text: str) -> list[dict]:
     return proposals
 
 
+def registry_updated_at(text: str) -> str | None:
+    m = re.search(r"^updated_at:\s*\"?([^\"\n]+)\"?\s*$", text, re.M)
+    return m.group(1).strip() if m else None
+
+
 def unverified_points(manifest_text: str) -> list[str]:
     points = []
     in_section = False
@@ -138,12 +143,18 @@ def build_feed(registry_text: str, active_dir: Path, passes_dir: Path,
             cycle_dir = pass_dir / "cycle"
             cycle = {}
             for name in ("BALLOT-round1.json", "BALLOT-round2.json",
-                         "CALIBRATION.json", "CYCLE.json"):
+                         "CALIBRATION.json", "CYCLE.json",
+                         "EXPECTATIONS.json"):
                 f = cycle_dir / name
                 if f.exists():
                     cycle[name] = json.loads(f.read_text())
+            impl = {}
+            impl_dir = pass_dir / "implementation"
+            if impl_dir.is_dir():
+                for f in impl_dir.glob("*.json"):
+                    impl[f.stem] = json.loads(f.read_text())
             passes[meta["pass_id"]] = {"meta": meta, "cycle": cycle,
-                                       "dir": pass_dir}
+                                       "impl": impl, "dir": pass_dir}
 
     proposals = []
     for entry in oracle_entries:
@@ -171,6 +182,8 @@ def build_feed(registry_text: str, active_dir: Path, passes_dir: Path,
                                   for s in prov.get("evidence_sets", [])),
             "unverified_points": unverified,
             "rounds": None,
+            "expectations": None,
+            "implementation": None,
             "calibration": None,
             "specified_not_run": [],
             "ledger": None,
@@ -180,18 +193,44 @@ def build_feed(registry_text: str, active_dir: Path, passes_dir: Path,
             cyc = passes[pass_id]["cycle"]
             r1 = cyc.get("BALLOT-round1.json") or {}
             r2 = cyc.get("BALLOT-round2.json") or {}
+            def scores(ballot: dict) -> dict:
+                return {cls: (data.get("scores") or {}).get(pid)
+                        for cls, data in (ballot.get("per_class") or {}).items()}
             item["rounds"] = {
                 "round_1": {"ranking": r1.get("ranked_outcome"),
                             "rank_of_this": (r1.get("ranked_outcome") or []).index(pid) + 1
                             if pid in (r1.get("ranked_outcome") or []) else None,
                             "ballots_by_class": r1.get("ballots_by_class"),
+                            "scores_by_class": scores(r1),
                             "classes_absent": r1.get("classes_absent")},
                 "round_2": {"ranking": r2.get("ranked_outcome"),
                             "rank_of_this": (r2.get("ranked_outcome") or []).index(pid) + 1
                             if pid in (r2.get("ranked_outcome") or []) else None,
                             "ballots_by_class": r2.get("ballots_by_class"),
+                            "scores_by_class": scores(r2),
                             "evidence_set_sha256": r2.get("evidence_set_sha256")},
             }
+            exp_doc = cyc.get("EXPECTATIONS.json") or {}
+            priors = exp_doc.get("expectations") or {}
+            item["expectations"] = {
+                source: per[pid] for source, per in priors.items()
+                if isinstance(per, dict) and pid in per} or None
+            item["expectations_recorded_before_implementation"] = bool(
+                exp_doc.get("recorded_before_implementation"))
+            impl = passes[pass_id]["impl"].get(pid)
+            if impl:
+                suites = impl.get("suites") or []
+                item["implementation"] = {
+                    "suites": [{"suite": s.get("name"),
+                                "passed": s.get("passed"),
+                                "failed": s.get("failed")} for s in suites],
+                    "passed": sum(s.get("passed") or 0 for s in suites),
+                    "failed": sum(s.get("failed") or 0 for s in suites),
+                    "suites_total": len(suites),
+                    "suites_passed": sum(
+                        1 for s in suites
+                        if (s.get("failed") or 0) == 0
+                        and (s.get("passed") or 0) > 0)}
             cal = (cyc.get("CALIBRATION.json") or {}).get("candidates") or {}
             item["calibration"] = {
                 source: {"rank_delta": per[pid]["rank_delta"],
@@ -233,6 +272,7 @@ def build_feed(registry_text: str, active_dir: Path, passes_dir: Path,
         "generator": "scripts/delphi/oracle_panel_feed.py",
         "sources": {
             "registry": "docs/proposals/registry.yaml",
+            "registry_updated_at": registry_updated_at(registry_text),
             "registry_proposals_total": len(entries),
             "oracle_method_proposals": len(oracle_entries),
             "ledger_issue": 1487,

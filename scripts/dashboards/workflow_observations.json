@@ -1,7 +1,7 @@
 {
  "schema": "dashboard-workflow-observations/v1",
- "read_at": "2026-10-27T11:40:00Z",
- "source": "GitHub Actions API (workflow runs list), read firsthand by the web-design lane at collection time",
+ "read_at": "2026-10-27T12:29:50Z",
+ "source": "GitHub Actions API (workflow runs list), read firsthand at collection time",
  "workflows": {
   "agent-mvt-experiment.yml": {
    "total_runs": 0,
@@ -44,6 +44,46 @@
      "created_at": "2026-10-22T08:27:36Z",
      "conclusion": "success",
      "event": "pull_request"
+    }
+   ]
+  },
+  "ates-orchestrator-benchmark.yml": {
+   "total_runs": 13,
+   "latest": [
+    {
+     "created_at": "2026-10-22T12:25:12Z",
+     "conclusion": "success",
+     "event": "pull_request"
+    },
+    {
+     "created_at": "2026-10-22T12:20:26Z",
+     "conclusion": "success",
+     "event": "pull_request"
+    },
+    {
+     "created_at": "2026-10-22T12:20:22Z",
+     "conclusion": "success",
+     "event": "push"
+    }
+   ]
+  },
+  "ates-phase-b-run-receipt.yml": {
+   "total_runs": 9,
+   "latest": [
+    {
+     "created_at": "2026-10-23T13:34:25Z",
+     "conclusion": "success",
+     "event": "workflow_run"
+    },
+    {
+     "created_at": "2026-10-23T07:40:57Z",
+     "conclusion": "success",
+     "event": "workflow_run"
+    },
+    {
+     "created_at": "2026-10-23T01:37:40Z",
+     "conclusion": "success",
+     "event": "workflow_run"
     }
    ]
   }

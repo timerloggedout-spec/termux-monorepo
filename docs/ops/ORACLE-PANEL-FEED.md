@@ -53,7 +53,12 @@ must consume this feed and nothing else.
    ballots, not registered). They are named in the feed's
    `excluded` block so the exclusion itself is auditable; they are
    never results.
-5. **Ledger verification is stated.** `sources.ledger_verified`
+5. **Stated passes are labeled.** A pass record that declares a
+   status (e.g. `stated_not_run` — stated, not yet run) carries it
+   verbatim in `passes[].status`; the panel renders that label and
+   never presents a stated pass as a run one. Generator-produced
+   records carry no status and read `recorded`.
+6. **Ledger verification is stated.** `sources.ledger_verified`
    says whether this refresh read the ledger; per-proposal
    `ledger.verified` carries the same fact down. An unverified
    refresh shows repo-record values and says so.
@@ -114,7 +119,8 @@ the records, and discrepancies are resolved in favor of the records.
                       "calibration_comment_id": 0, "verified": true},
     "live": true
   }],
-  "passes": [{"pass_id": "...", "n": 3, "candidates": [],
+  "passes": [{"pass_id": "...", "status": "recorded",
+              "n": 3, "candidates": [],
               "ranked_outcome": [], "record": "docs/proposals/passes/.../"}],
   "excluded": [{"what": "...", "label": "ideation drafts imagining readiness",
                 "reason": "..."}]

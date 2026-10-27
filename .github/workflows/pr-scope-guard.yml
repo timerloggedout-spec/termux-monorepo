@@ -6,6 +6,8 @@ name: PR scope guard
 # cannot turn every evaluation epoch or live-master observation into another PR.
 
 on:
+  pull_request:
+    types: [opened, reopened, synchronize]
   pull_request_target:
     types: [opened, reopened, synchronize]
 

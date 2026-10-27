@@ -53,6 +53,12 @@ promoted into the readings file through the generated-file path, as here.
 Fully converging the probe projection with the dashboard readings contract
 (the #1504 ask) remains open.
 
+**Follow-up (2026-10-27):** that convergence has landed — see
+`QUOTA-PROJECTION-CONVERGENCE-2026-10-27.md`. The projection now carries
+the contract's evidence fields and a `--from-public` converter produces
+the readings snapshot from a probe artifact; no hand-seeded file is
+needed.
+
 ## Per-service gap table (all 64 registry records)
 
 | Service | Provider | Read path | State after this fill |

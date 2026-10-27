@@ -196,6 +196,12 @@ PURPOSES = {
                      "substrate"],
 }
 DEVICE_CLASSES = ("b160v-on-device", "remote-service", "ci", "local")
+# The submission surfaces one canonical brief template converges from.
+SURFACES = ("github-issue", "cli", "jsonl", "chat", "http-facade")
+# What evidence a submission expects the dispatch to bring back.
+EVIDENCE_EXPECTATIONS = ("observed", "reproduced", "verified")
+# Submitter identity: Role{Moniker} (fleet coordination format).
+SUBMITTER_RE = re.compile(r"^[a-z][a-z0-9-]*\{[A-Za-z0-9_-]+\}$")
 
 
 def _brief_domain(brief: dict) -> str | None:
@@ -232,6 +238,16 @@ def validate_brief(brief: dict) -> list[str]:
         errs.append("probe_budget must be an integer in 1..200")
     if brief.get("device_class", "remote-service") not in DEVICE_CLASSES:
         errs.append(f"device_class must be one of {DEVICE_CLASSES}")
+    surfaces = brief.get("surfaces")
+    if surfaces is not None:
+        if (not isinstance(surfaces, list) or not surfaces
+                or any(s not in SURFACES for s in surfaces)):
+            errs.append(f"surfaces must be a non-empty list drawn from {SURFACES}")
+    if brief.get("evidence_expectation", "reproduced") not in EVIDENCE_EXPECTATIONS:
+        errs.append(f"evidence_expectation must be one of {EVIDENCE_EXPECTATIONS}")
+    submitter = brief.get("submitter")
+    if submitter is not None and not (isinstance(submitter, str) and SUBMITTER_RE.match(submitter)):
+        errs.append("submitter must be Role{Moniker}, e.g. inventory{atlas}")
     return errs
 
 
@@ -272,6 +288,9 @@ def plan_from_brief(brief: dict, taxonomy: dict) -> dict:
         "side_effect": brief.get("side_effect", "read"),
         "probe_budget": brief.get("probe_budget", 24),
         "device_class": device_class,
+        "surfaces": brief.get("surfaces") or list(SURFACES),
+        "evidence_expectation": brief.get("evidence_expectation", "reproduced"),
+        "submitter": brief.get("submitter"),
         "stages": ["scope-and-capture", "recover-semantics", "bounded-probes",
                    "synthesize-contract", "generate-and-verify", "promote-monitor-repair"],
         "stack": stack,
@@ -315,6 +334,9 @@ _FORM_FIELDS = {
     "probe budget": "probe_budget",
     "execution venue": "device_class",
     "state-changing authorization": "state_changing",
+    "surfaces requested": "surfaces",
+    "evidence expectation": "evidence_expectation",
+    "submitter role{moniker}": "submitter",
 }
 
 
@@ -359,6 +381,13 @@ def parse_issue_form(body: str) -> dict:
                or sc_raw.strip().lower() == "yes")
     brief["authorization"] = {"basis": val("basis"), "scope_domains": scope,
                               "state_changing": checked}
+    if val("surfaces"):
+        brief["surfaces"] = [s.strip().strip(",") for s in
+                             re.split(r"[,\s]+", val("surfaces")) if s.strip()]
+    if val("evidence_expectation"):
+        brief["evidence_expectation"] = val("evidence_expectation").strip().lower()
+    if val("submitter"):
+        brief["submitter"] = val("submitter").split()[0]
     return brief
 
 
@@ -367,6 +396,9 @@ def render_plan_markdown(plan: dict) -> str:
              f"- **Purpose:** {plan['purpose']} · **Domain:** {plan['domain']} · "
              f"**Venue:** {plan['device_class']} · **Side effect:** {plan['side_effect']} · "
              f"**Probe budget:** {plan['probe_budget']}",
+             (f"- **Surfaces:** {', '.join(plan.get('surfaces', []))} · "
+              f"**Evidence expected:** {plan.get('evidence_expectation', 'reproduced')}"
+              + (f" · **Submitter:** {plan['submitter']}" if plan.get("submitter") else "")),
              f"- **Transports:** {', '.join(plan['transports'])}",
              f"- **Stages:** {' → '.join(plan['stages'])}", "", "**Stack (taxonomy-mapped):**"]
     by_cat: dict[str, list[dict]] = {}

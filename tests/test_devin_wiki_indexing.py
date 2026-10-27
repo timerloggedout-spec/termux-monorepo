@@ -3,6 +3,7 @@ from __future__ import annotations
 import sys
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts" / "agentic"))
@@ -12,14 +13,18 @@ from devin_wiki_indexing import (  # noqa: E402
     DevinClient,
     GateRefusal,
     IndexingError,
+    _account_summary_report,
     _report,
     _summary_report,
     check_gates,
+    index_account,
     index_branches,
+    main,
     parse_branch_statuses,
     projected_acu_range,
     select_branches,
 )
+from reconcile_devin_wiki_access import Repository as AccessibleRepository  # noqa: E402
 
 REPO = "timerloggedout-spec/termux-monorepo"
 
@@ -235,6 +240,94 @@ class IndexingTests(unittest.TestCase):
         self.assertNotIn("abc123", serialized)
         self.assertNotIn("job-1", serialized)
         self.assertTrue(summary["additive_only"])
+
+
+class AccountGateTests(unittest.TestCase):
+    def test_account_wide_at_medium_needs_approval_even_for_first_pass(self) -> None:
+        with self.assertRaises(GateRefusal) as caught:
+            check_gates(
+                api_key="cog_test", org_id="org-123", effort="medium",
+                scope="first-pass", approve_nonlow_effort=False, branch_count=1400,
+                account_wide=True,
+            )
+        self.assertEqual("cost_gate", caught.exception.state)
+        self.assertIn("7000-14000 ACUs", caught.exception.detail)
+
+    def test_account_wide_at_low_is_free_and_passes(self) -> None:
+        self.assertEqual(
+            "low",
+            check_gates(
+                api_key="cog_test", org_id="org-123", effort="low",
+                scope="all", approve_nonlow_effort=False, branch_count=5000,
+                account_wide=True,
+            ),
+        )
+
+
+class FakeGitHubGeneric:
+    def __init__(self, branches_by_repo: dict[str, list[str]]) -> None:
+        self.branches_by_repo = branches_by_repo
+
+    def request(self, method: str, endpoint: str, **_: object) -> object:
+        for full_name, branches in self.branches_by_repo.items():
+            if endpoint.startswith(f"repos/{full_name}/branches"):
+                return [{"name": name} for name in branches]
+            if endpoint == f"repos/{full_name}":
+                return {"default_branch": branches[0]}
+            if endpoint.startswith(f"repos/{full_name}/pulls"):
+                return []
+        raise AssertionError(f"unexpected endpoint {endpoint}")
+
+
+class SelectiveDevin(FakeDevin):
+    def index_repository(self, org_id: str, repository: str, branch_names: list[str]) -> dict:
+        if repository == "owner/broken":
+            raise IndexingError("Devin indexing request failed: http 403: denied")
+        return super().index_repository(org_id, repository, branch_names)
+
+
+class AccountIndexingTests(unittest.TestCase):
+    def test_account_indexes_all_repos_skips_archived_and_isolates_failures(self) -> None:
+        inventory = [
+            AccessibleRepository(1, "owner/one", "master", False),
+            AccessibleRepository(2, "owner/broken", "master", False),
+            AccessibleRepository(3, "owner/old", "master", True),
+        ]
+        github = FakeGitHubGeneric({"owner/one": ["master", "lane/a"], "owner/broken": ["master"]})
+        devin = SelectiveDevin()
+        with patch("devin_wiki_indexing.list_accessible_repositories", return_value=inventory):
+            report = index_account(devin, github, org_id="org-123", scope="all", effort="low")  # type: ignore[arg-type]
+        self.assertTrue(report["account_wide"])
+        self.assertEqual(2, report["repository_count"])
+        self.assertEqual(1, report["failed_repository_count"])
+        self.assertEqual(3, report["branch_count"])
+        self.assertEqual({"completed": 2}, report["status_counts"])
+        self.assertEqual("partial", report["state"])
+
+    def test_account_dry_run_selects_without_devin_calls(self) -> None:
+        inventory = [AccessibleRepository(1, "owner/one", "master", False)]
+        github = FakeGitHubGeneric({"owner/one": ["master", "lane/a"]})
+        with patch("devin_wiki_indexing.list_accessible_repositories", return_value=inventory):
+            report = index_account(None, github, org_id="", scope="all", effort="low")  # type: ignore[arg-type]
+        self.assertEqual("dry_run", report["mode"])
+        self.assertEqual(2, report["branch_count"])
+
+    def test_account_summary_redacts_repository_names(self) -> None:
+        inventory = [AccessibleRepository(1, "owner/secret-project", "master", False)]
+        github = FakeGitHubGeneric({"owner/secret-project": ["master"]})
+        devin = FakeDevin()
+        with patch("devin_wiki_indexing.list_accessible_repositories", return_value=inventory):
+            report = index_account(devin, github, org_id="org-123", scope="all", effort="low")  # type: ignore[arg-type]
+        summary = _account_summary_report(report)
+        self.assertNotIn("secret-project", str(summary))
+        self.assertEqual(1, summary["repository_count"])
+        self.assertEqual(1, summary["branch_count"])
+
+    def test_cli_requires_exactly_one_target(self) -> None:
+        with self.assertRaises(IndexingError):
+            main(["--report", "unused.json"])
+        with self.assertRaises(IndexingError):
+            main(["--repo", REPO, "--all-repos", "--report", "unused.json"])
 
 
 if __name__ == "__main__":

@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-10-27T13:44:07Z` UTC  
+**Generated:** `2026-10-27T16:01:18Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 136 docs-lane branch(es)
+**Count:** 142 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -43,6 +43,8 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/campaign-watching-fixed`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/campaign-watching-fixed) | `7cf55d05bacb` | — | — | orphan lane |
 | [`docs/cedrlang-obfuscation-boundary`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/cedrlang-obfuscation-boundary) | `d6aaf4691d45` | — | — | orphan lane |
 | [`docs/certifications-roles-lane`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/certifications-roles-lane) | `f86e45ac2ae7` | — | — | orphan lane |
+| [`docs/challenge-entries-clips-account-created`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/challenge-entries-clips-account-created) | `bed2673cb317` | — | — | orphan lane |
+| [`docs/challenge-entries-g07-g08-resolutions`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/challenge-entries-g07-g08-resolutions) | `6c1f74d2e067` | — | — | orphan lane |
 | [`docs/challenge-entries-log`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/challenge-entries-log) | `b2b4cb5181c4` | — | — | orphan lane |
 | [`docs/challenge-entries-log-d0-completed`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/challenge-entries-log-d0-completed) | `8e7f3afefa5b` | — | — | orphan lane |
 | [`docs/challenge-entries-log-d0-completion`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/challenge-entries-log-d0-completion) | `13bfc0f239b8` | — | — | orphan lane |
@@ -62,6 +64,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/copilot-usage-metrics-comparison`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/copilot-usage-metrics-comparison) | `3f696397b130` | — | — | orphan lane |
 | [`docs/deepseek-capture-pipeline`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/deepseek-capture-pipeline) | `c70fb1bbd9f8` | — | — | orphan lane |
 | [`docs/deepseek-inference-buried-tech-2026-10-26`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/deepseek-inference-buried-tech-2026-10-26) | `2257d78aec56` | — | — | orphan lane |
+| [`docs/delphi-desk-dd005-account-satisfied`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/delphi-desk-dd005-account-satisfied) | `b6c3cdf93946` | — | — | orphan lane |
 | [`docs/delphi-status-crossover`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/delphi-status-crossover) | `05870344d952` | — | — | orphan lane |
 | [`docs/delphi-tie-correction`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/delphi-tie-correction) | `d376a1ccb38f` | — | — | orphan lane |
 | [`docs/device-access-opaque-ids`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/device-access-opaque-ids) | `c245e05aaaa4` | — | — | orphan lane |
@@ -72,6 +75,9 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/free-inference-production-receipt`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/free-inference-production-receipt) | `7422b87bc9d6` | — | — | orphan lane |
 | [`docs/gantt-dependency-phases-upgrade-20260925`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/gantt-dependency-phases-upgrade-20260925) | `1fe39c044994` | — | — | orphan lane |
 | [`docs/gap-g02-closed-20261027`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/gap-g02-closed-20261027) | `d6b1b9414e39` | — | — | orphan lane |
+| [`docs/gap-g02-guard-note-20261027`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/gap-g02-guard-note-20261027) | `b90b5d0dd3ce` | — | — | orphan lane |
+| [`docs/gap-ledger-g10-close`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/gap-ledger-g10-close) | `bd98fe718dca` | — | — | orphan lane |
+| [`docs/gap-ledger-g12a-close`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/gap-ledger-g12a-close) | `149371a83a4a` | — | — | orphan lane |
 | [`docs/gaps-opportunities-pass1-500`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/gaps-opportunities-pass1-500) | `48f5013741a5` | — | — | orphan lane |
 | [`docs/github-mcp-url-only-clients`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/github-mcp-url-only-clients) | `54f17f18989f` | — | — | orphan lane |
 | [`docs/hex-non-ai-trial-lane`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/hex-non-ai-trial-lane) | `252dae071c8d` | — | — | orphan lane |

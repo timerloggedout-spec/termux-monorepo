@@ -136,6 +136,29 @@ def run_cycle(pass_meta: dict, panel_roles_cfg: dict, weights_source: str,
     stages.append({"stage": "expectations_recorded", "status": "ran",
                    "detail": "priors on record before implementation"})
 
+    # Eligibility gate (owner ruling, 2026-10-27): where a brief
+    # carries one, the implementation stage may not run before the
+    # window opens — the cycle refuses it mechanically and records
+    # the gate as the reason. Generation and round 1 are not the
+    # gated activity (a proposal is not the project).
+    gate = pass_meta.get("eligibility_gate") or {}
+    if impl_results and gate.get("window_open"):
+        opens = datetime.fromisoformat(
+            str(gate["window_open"]).replace("Z", "+00:00"))
+        now = datetime.fromisoformat(str(generated_at).replace("Z", "+00:00"))
+        if now.tzinfo is None:
+            now = now.replace(tzinfo=timezone.utc)
+        if now < opens:
+            for name in ("implementation", "evidence_equalization",
+                         "cross_vote_round_2", "calibration"):
+                stages.append({
+                    "stage": name, "status": "specified_not_run",
+                    "detail": f"eligibility gate: build window opens "
+                              f"{gate['window_open']}; implementation "
+                              f"refused before the window"})
+            return _cycle(pass_meta, config, stages, artifacts, None,
+                          generated_at)
+
     # Stage 3: implementation parallel-comparisons round.
     if not impl_results:
         for name in ("implementation", "evidence_equalization",

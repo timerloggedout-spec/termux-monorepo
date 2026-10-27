@@ -150,6 +150,45 @@ def test_complete_terminal_render_never_calls_old_ok_current():
     assert "status reported" not in output
 
 
+def test_quota_txt_is_the_deterministic_snapshot_render(monkeypatch):
+    """Regeneration wiring (G-12c (2)): quota.txt must be byte-identical to
+    the renderer's --snapshot output (as of the readings generated_at).
+    Any registry or readings change — count, limit, unit, window, status —
+    that is not followed by regeneration fails here, and provider-batch
+    runs this test on every PR touching ops/quota/registry.json. Before
+    --snapshot existed, regeneration depended on wall-clock freshness, so
+    no exact guard was possible and drift was caught only for counts."""
+    registry = json.loads((ROOT / "ops/quota/registry.json").read_text())
+    readings_file = json.loads((ROOT / "apps/help-wanted-dashboard/data/quota.json").read_text())
+    coverage = json.loads((ROOT / "apps/help-wanted-dashboard/data/provider-quota-coverage.json").read_text())
+    meta = {**readings_file, "provider_quota_coverage": coverage}
+    now = datetime.fromisoformat(readings_file["generated_at"].replace("Z", "+00:00"))
+    monkeypatch.setattr(tui, "USE_COLOR", False)
+    rendered = tui.render(registry["services"], readings_file["readings"], meta, 80,
+                          "apps/help-wanted-dashboard/data/quota.json + ops/quota/registry.json",
+                          now=now)
+    committed = (ROOT / "apps/help-wanted-dashboard/quota.txt").read_text()
+    assert rendered == committed, (
+        "quota.txt is stale; regenerate with: python3 scripts/quota_tui.py "
+        "--once --snapshot apps/help-wanted-dashboard/data/quota.json "
+        "--registry ops/quota/registry.json > apps/help-wanted-dashboard/quota.txt")
+
+
+def test_terminal_alerts_surface_stale_and_reported_like_the_web_panel():
+    """The seeded vercel cap_tripped row (H1, days old) can never render as
+    a live cap_tripped — but the text lane must still surface it, labelled
+    stale, exactly as the web panel's Needs attention does, instead of
+    printing 'No services are reporting a problem state.'"""
+    stale = reading(observed_at="2026-10-20T08:59:00Z", status="cap_tripped",
+                    horizon="H1", evidence_status="attributed_claim")
+    output = tui.render([SERVICE], [stale], {}, 80, "test", now=NOW)
+    assert "[STALE]" in output
+    assert "No services are reporting a problem state" not in output
+    reported = reading(evidence_status="attributed_claim")
+    output = tui.render([SERVICE], [reported], {}, 80, "test", now=NOW)
+    assert "[REPORTED]" in output
+
+
 def test_quota_txt_matches_registry_count_and_lists_every_service():
     """Guard against the 2026-10-21 drift (assessment P1-7): quota.txt said
     26 services while the registry had already grown. The text lane must be

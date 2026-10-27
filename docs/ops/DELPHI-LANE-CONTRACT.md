@@ -143,3 +143,37 @@ a full receipt (`BALLOT.json` in the pass record) and appended to the
 outcome ledger (#1487) as a `delphi-generation-ballot v1` JSON
 comment. Tooling: `scripts/delphi/cross_vote.py`; the generate
 workflow runs both halves when dispatched in pass mode.
+
+## The Oracle Method cycle (owner spec, 2026-10-27)
+
+A pass is a cycle, not a single vote:
+
+1. **Generate** — the pass emits n proposals.
+2. **Cross-vote, round 1** — comparative ballots across the set, and
+   each candidate's **input vote expectations** are recorded (expected
+   rank + expected weighted score per source class) — priors on record
+   *before* any implementation exists.
+3. **Implementation parallel-comparisons round** — the candidates are
+   implemented in parallel; tests run per individual proposal.
+4. **Evidence equalization** — round 2 opens on NEW evidence, and the
+   evidence base is **identical for every voter**: the per-proposal
+   test results bundle. Its sha256 is stamped on the round-2 receipt,
+   and every round-2 ballot must carry that hash — a ballot on
+   different evidence is rejected (stage gate).
+5. **Re-vote, round 2** — ballots on the common evidence.
+6. **Calibration** — round 2 vs the recorded expectations: rank/score
+   deltas per candidate, with the evidence that moved them. The
+   calibration record is the feed for the weighting / elo ledgers.
+
+Parameters are per-context config (`ops/delphi/panel.json` →
+`generation.cycle`: n, rounds, expectation format + tolerance,
+convergence) — not hardcoded. Stage gates validate each stage:
+generation contract, ballot contract, evidence-set equality before
+round 2, calibration record. **A stage that cannot execute yet (e.g.
+model ballots while `DELPHI_LLM_MAX=0`, or an implementation round
+with no results supplied) is recorded `specified_not_run` in the
+cycle record — never silently dropped, never fabricated.**
+Tooling: `scripts/delphi/method_cycle.py` (writes CYCLE.json +
+BALLOT-round1 / EXPECTATIONS / IMPLEMENTATION / ROUND2-EVIDENCE /
+BALLOT-round2 / CALIBRATION records); the generate workflow runs the
+cycle in pass mode. The D4 Kiroween first live run follows this cycle.

@@ -1,6 +1,6 @@
 {
-  "version": "0.4.1",
-  "updated": "2026-10-27T01:06:27Z",
+  "version": "0.5.0",
+  "updated": "2026-10-27T01:10:29Z",
   "note": "github-remote is the LIVE GitHub-hosted MCP URL for URL-only agents. github-docker is optional self-host only. termux/android stay on Vercel hub — do not mix. bifrost is evaluation gateway (chat+MCP), not a replacement for github-remote.",
   "hosts": [
     {
@@ -81,17 +81,25 @@
       "id": "google-data-agent-kit",
       "repo": "https://github.com/GoogleCloudPlatform/data-agent-kit-plugin",
       "upstream": "https://github.com/GoogleCloudPlatform/data-agent-kit-plugin",
-      "transport": "stdio proxy (plugin bundle) to Google-hosted streamable-http MCP endpoints",
+      "transport": "stdio proxy (plugin bundle) to Google-hosted streamable-http MCP endpoints (+ 2 local plugin servers)",
       "endpoints": {
         "bigquery": "https://bigquery.googleapis.com/mcp",
         "gcs": "https://storage.googleapis.com/storage/mcp",
-        "knowledge_catalog": "https://dataplex.googleapis.com/mcp"
+        "knowledge_catalog": "https://dataplex.googleapis.com/mcp",
+        "alloydb": "https://alloydb.googleapis.com/mcp",
+        "cloudsql": "https://sqladmin.googleapis.com/mcp",
+        "spanner": "https://spanner.googleapis.com/mcp",
+        "bigtable_data": "https://bigtable.googleapis.com/mcp",
+        "bigtable_admin": "https://bigtableadmin.googleapis.com/mcp",
+        "spark": "https://dataproc-$GCP_REGION.googleapis.com/mcp",
+        "notebook": "local (plugin mcp/dist/index.js --mode=notebook)",
+        "viz": "local (plugin mcp/dist/index.js --mode=visualization)"
       },
-      "tools": ["dak-bigquery", "dak-gcs", "dak-kc"],
-      "status": "wired_readonly_pending_gcp_project",
+      "tools": ["dak-bigquery", "dak-gcs", "dak-kc", "dak-alloydb", "dak-cloudsql", "dak-spanner", "dak-bigtable-data", "dak-bigtable", "dak-spark", "dak-notebook", "dak-viz"],
+      "status": "wired_full_pending_gcp_project",
       "auth": "ADC with impersonation of the dedicated read-only service account named in ops/data_agent_kit/guardrail-policy.yaml; no service-account keys; agent data work never runs on the owner's user credentials",
       "client_config": "mcp-hub/client-configs/data-agent-kit.json",
-      "note": "Google Data Agent Kit (GA 2026-09-30, Apache-2.0, plugin v1.1.0). FIRST COHORT is read-only: BigQuery + Cloud Storage + Knowledge Catalog, for telemetry / MVT-DoE analysis. The kit's other servers (alloydb, cloudsql, spanner, bigtable, spark, notebook, viz) are NOT wired - the fleet has no data on them; phase-2 candidates in docs/ops/DATA-AGENT-KIT-WIRING.md. Enforcement is IAM-tier only (read-only SA + IAM deny policy on non-read-only tools); the kit's 37 skills are advisory, never enforcement. Exit: delete this entry + the client config, uninstall the plugin, delete the SA - no fleet pipeline depends on this path."
+      "note": "Google Data Agent Kit (GA 2026-09-30, Apache-2.0, plugin v1.1.0). FULL WIRING landed pre-signup per the freemium-prep doctrine (owner, 2026-10-26): all 11 servers configured before any GCP account exists, so signup-day is activation, not setup - the $300/90-day trial clock funds usage, not wiring. Readiness classes: day-one = bigquery/gcs/knowledge-catalog; instance-required = alloydb/cloudsql/spanner/bigtable-data/spark; local = notebook/viz; wired-but-IAM-denied for agents = bigtable admin plane. Enforcement is IAM-tier only (read-only SA + deny policy on non-read-only tools); the kit's 37 skills are advisory. The plugin's telemetry hook ships DISABLED in fleet installs (owner review pending). Exit: delete this entry + client config, uninstall plugin, delete the SA - no fleet pipeline depends on this path. Activation: docs/ops/DATA-AGENT-KIT-ACTIVATION.md."
     }
   ],
   "client_snippets": {

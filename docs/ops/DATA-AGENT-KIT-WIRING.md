@@ -1,146 +1,156 @@
-# Data Agent Kit — Wiring Design (iDEAL)
+# Data Agent Kit — Fleet Wiring (full, pre-signup)
 
-**Status:** wired in repo, READ-ONLY, pending fleet GCP project (owner items below)
-**Upstream:** Google Data Agent Kit — https://github.com/GoogleCloudPlatform/data-agent-kit-plugin
-**Machine-readable policy:** `ops/data_agent_kit/guardrail-policy.yaml`
-**Catalog SSOT for wiring state:** `mcp-hub/catalog.json`, host `google-data-agent-kit` (`status` field)
-**Fleet skill:** `.agents/skills/data-agent-kit/SKILL.md`
-**Client config:** `mcp-hub/client-configs/data-agent-kit.json`
+Status: **wired in repo** — full wiring landed before any GCP account exists
+(catalog `google-data-agent-kit`, status `wired_full_pending_gcp_project`).
+NOT live against data; activation is a runbook, not a design task:
+`docs/ops/DATA-AGENT-KIT-ACTIVATION.md`. Owner items: GCP project + billing
+and the gcloud sign-in session.
 
-## 1. What the kit is (verified from upstream, 2026-10-27)
+## Why this round rewrote the first-cohort wiring
 
-- Google's Data Agent Kit reached GA on 2026-09-30 (Google Cloud blog, "Data
-  Agent Kit is now GA"). Free; standard pricing applies only to the Google
-  Cloud services used. Plugin repo is Apache-2.0, v1.1.0.
-- It connects coding agents (Antigravity CLI, Claude Code, Codex CLI, any
-  Agent Plugins-compatible client; IDE extension for VS Code-family editors)
-  to 15+ Google Data Cloud services through MCP, plus 37 Google-authored
-  open-source skills.
-- Verified server map (from the plugin's own `mcp_config.json`): the data
-  servers are Google-hosted remote MCP endpoints, reached through a small
-  local stdio proxy bundled with the plugin — `dak-bigquery`
-  (bigquery.googleapis.com/mcp), `dak-alloydb`, `dak-cloudsql` (sqladmin),
-  `dak-spanner`, `dak-bigtable-data`, `dak-bigtable` (admin), `dak-gcs`
-  (storage.googleapis.com/storage/mcp), `dak-kc` (dataplex.googleapis.com/mcp,
-  Knowledge Catalog), `dak-spark` (dataproc), plus local `dak-notebook` and
-  `dak-viz` servers.
-- Auth model: the agent connects as you, or as a service account you
-  impersonate, via gcloud ADC — so IAM, row/column security, and deny
-  policies apply to everything the agent does.
-- Prerequisites: Node.js, gcloud CLI authenticated + ADC login. Setup
-  (`/dak:dak-setup`) selects a project, enables APIs, installs matching
-  skills, and writes the MCP configuration.
+PR #1684 wired three servers and deliberately left eight out ("no fleet data
+on them"). The owner corrected the posture the same day: for freemium
+services like GCP, **everything gets wired before signup** — *"We'll have
+free credits on sign up; we're getting EVERYTHING ready before."* The trial
+clock starts at signup; wiring after signup spends credit on setup. This
+document (plus the policy at schema v2, the full client config, and the
+activation runbook) is that complete wiring. What did NOT change: the tier
+rule. Full wiring ≠ full permission — enforcement remains IAM-tier only.
 
-## 2. The design lesson, adopted as a fleet rule
+## What was verified, and how (recon, two rounds)
 
-The kit ships two control tiers and is explicit that they are not
-equivalent:
-
-- Its **skills ask** — e.g. `accidental-data-loss-prevention` instructs the
-  agent it MUST obtain explicit consent before DROP TABLE, TRUNCATE, or a
-  DELETE without a WHERE clause. This is advisory: an agent can ignore,
-  misread, or be prompt-injected past it.
-- Its **IAM policy blocks** — Google's own GA guidance for read-only agents
-  is a dedicated read-only service account (impersonated), or an IAM deny
-  policy that blocks any MCP tool where `tool.isReadOnly` is false.
-
-Fleet rule, now recorded in the guardrail policy: **a destructive-action
-rule that lives only in an agent's instructions is not a guardrail.**
-Enforcement sits at the credential/permission layer. Skills are for behavior
-quality; they are never cited as enforcement in documentation, admission
-evidence, or reports. This matches the fleet's existing posture elsewhere
-(hub_mcp capability tiers; MCP admission evidence) and extends it to data
-access.
-
-## 3. Surface recon — where fleet agents touch data today
-
-- **MCP plane:** `mcp-hub/` (catalog + client-configs; github-remote is the
-  live primary for URL-only agents), `hub_mcp/` (governed signed-envelope
-  model, no public endpoint), `docs/ops/MCP-ADMISSION-EVIDENCE.schema.json`
-  governs MCP admission. The kit enters through the same plane: a catalog
-  host entry + a client-config file, not a side door.
-- **Agent surfaces:** Claude Code, Codex, Gemini-family (Antigravity),
-  Grok, ChatGPT, Manus work the repo through the owner PAT; Jules works
-  cloud-side with its own MCP settings (Linear, v0, Render connected;
-  Neon/Supabase contested/open); DeepSeek CLI agents run on the origin
-  device under route-named GitHub access.
-- **Data lanes that would use this:** telemetry (HindSight/Provenance),
-  reviewer metrics, quota/provider observations, evidence artifacts — today
-  these live in repo files and Actions artifacts. The kit's first job is a
-  real query surface over that class of data (MVT/DoE analysis), not a new
-  store for it.
-- **Data services reality:** the fleet's operational databases are
-  Neon/Supabase/Turso/Upstash — none are Google services. Fleet recon
-  (2026-10-21, PR #1511) established **no fleet GCP account presence**.
-
-## 4. Wiring decision
-
-**Surfaces (plugin-supported, fleet-used):** Claude Code, Codex CLI,
-Antigravity CLI.
-
-**Not wired:** Jules (cloud agent; the kit targets local coding agents and
-Jules' MCPs are configured in its own settings — a separate owner decision),
-and on-device Termux agents (kit requires Node + gcloud + interactive Google
-sign-in; origin-device constraints are remote-first — the device consumes
-results, it does not host the kit).
-
-**First-cohort services (3 of 11 servers), all read-only:**
-
-| Server | Why this one |
+| Claim | Evidence |
 |---|---|
-| `dak-bigquery` | The telemetry/analytics fit: provenance, HindSight, reviewer-metrics, and quota observations are the fleet's MVT/DoE data; BigQuery is the query surface for them. |
-| `dak-gcs` | Evidence/artifact storage adjunct to Actions artifacts; read-only object access. |
-| `dak-kc` (Dataplex / Knowledge Catalog) | Discovery and lineage over the two above; read-only by role. |
+| Kit is real, GA, Apache-2.0, free | Google Cloud blog 2026-09-30 ("Introducing Data Agent Kit…"); `LICENSE` (Apache-2.0) in `GoogleCloudPlatform/data-agent-kit-plugin`; plugin version 1.1.0 from `plugin.json` |
+| Server set + endpoints | `mcp_config.json` read from upstream `main`: 11 servers, exact endpoints; client config mirrors it verbatim |
+| Skills: 37, all read from upstream tree | `skills/*/SKILL.md` frontmatter (names + descriptions); `accidental-data-loss-prevention` body read in full — consent language, i.e. advisory |
+| Read-only pattern is the vendor's own GA shape | GA blog: read-only Data Agents "can inspect schemas and query data, but… cannot alter or drop tables," via dedicated service accounts, IAM deny policy `tool.isReadOnly` check, row/column security inheritance |
+| Hooks ship with the plugin — incl. telemetry | `hooks.json` read upstream: `dak-setup-sync` (SessionStart config sync) and `dak-telemetry` (PreToolUse, matcher `*`, runs `.agents/hooks/telemetry_hook.js` on every tool call) — see "Telemetry hook" below |
+| Install routes | Plugin README: Claude Code / Codex / Antigravity CLI commands; VS Code-family IDE extension on Marketplace/Open VSX; `dak-setup` skill drives project/region/service configuration |
+| GCP freemium terms | Free trial: $300 credit / 90 days, card for identity verification, no auto-charge or auto-upgrade at end (resources stop; 30-day grace). Always Free: BigQuery 1 TiB queries/mo + 10 GiB storage; Cloud Storage 5 GiB — multiple sources incl. Google's program pages, cross-checked 2026-10-26 |
+| Read-only IAM roles per service | Google IAM docs, cross-checked 2026-10-26: `bigquery.dataViewer` + `bigquery.jobUser`; `storage.objectViewer`; `datacatalog.viewer`; `alloydb.viewer`; `cloudsql.viewer`; `spanner.viewer` + `spanner.databaseReader`; `bigtable.reader`; `dataproc.viewer`; `dataform.viewer` |
+| Fleet latent GCP surfaces in-repo | Code search over master: BigQuery appears in `ml/pipelines/recon09/connectors.py` (registry entry), the quota-cadence RFP, and the secrets registry; Firebase is referenced in architecture docs. Zero hits for Dataform/Dataplex/AlloyDB/Spanner/Bigtable — honest "no fleet data there yet," which under the new doctrine changes the timing (wire now), not the roles (read-only when instances exist) |
+| No fleet GCP presence exists | PR #1511 (merged 2026-10-22) recon: no GCP project/billing on file → activation needs owner signup (card-gated) |
 
-**Deferred, with reasons (do not wire because they exist):** AlloyDB, Cloud
-SQL, Spanner, Bigtable (data + admin), Spark — the fleet has no data on any
-of them. The Bigtable *admin* server stays excluded even if Bigtable is ever
-adopted, under the read-only posture. Notebook/viz are per-surface local
-tooling, adoptable later without a fleet decision.
+Not verified / not claimed: per-server tool-list behavior against a live
+project (needs the project); whether `dak-kc` requires `dataplex.viewer`
+instead of `datacatalog.viewer` (substitution noted in the policy, resolved
+at provisioning); exact write-permission delta for AlloyDB database-level
+access (metadata role wired; data access is per-instance provisioning).
 
-## 5. Guardrail tier map (summary; policy YAML is the SSOT)
+## The wiring (what landed)
 
-| Action class | Tier | Mechanism |
+| Piece | Path | Content |
 |---|---|---|
-| Read schemas/catalogs/job history; SELECT and dry-run queries | Enforced allow | `dak-readonly` SA bindings: `bigquery.dataViewer` (telemetry dataset scope only), `bigquery.jobUser` (project), `storage.objectViewer` (evidence bucket only), `datacatalog.viewer` |
-| CREATE / INSERT / UPDATE / DELETE / DROP / TRUNCATE | Enforced deny | No write role exists on the identity; second layer: IAM deny policy on MCP tools where `tool.isReadOnly == false` |
-| Credential handling | Enforced | ADC impersonation only; SA keys forbidden; agent data work on owner user credentials forbidden |
-| Row/column-level access | Enforced (inherited) | BigQuery policies apply automatically via the impersonated identity |
-| Consent before destructive actions; dry-run-first; partition/cost discipline | Advisory | Kit skills (37, incl. `accidental-data-loss-prevention`) + fleet skill — behavior steering, never enforcement |
-| Writes via any future identity | Out of scope | Requires a separate design + separate SA + owner approval; skill consent language does not authorize it |
+| Catalog entry | `mcp-hub/catalog.json` → host `google-data-agent-kit` | All 11 servers, endpoints, full client-config pointer, tier summary, exit |
+| Client config | `mcp-hub/client-configs/data-agent-kit.json` | Complete `mcpServers` map mirroring upstream `mcp_config.json` verbatim, with readiness classes |
+| Fleet skill | `.agents/skills/data-agent-kit/SKILL.md` | Server table, install per surface, tier rule, working rules |
+| Guardrail policy | `ops/data_agent_kit/guardrail-policy.yaml` (schema v2) | Freemium block, per-server roles + readiness, enforced vs advisory tiers, telemetry-hook control, provisioning commands, owner items, exit |
+| Activation runbook | `docs/ops/DATA-AGENT-KIT-ACTIVATION.md` | Pre-signup checklist, signup-day sequence, 90-day plan, general freemium pattern |
 
-Available hardening recorded in the policy for later: Model Armor MCP
-screening, VPC Service Controls, Principal Access Boundary, and BigQuery
-`maximum_bytes_billed` (the enforced version of the cost rule).
+## Readiness classes
 
-## 6. Live vs pending — read this before citing the wiring as live
+- **Day-one** (answers as soon as the project exists): `dak-bigquery`,
+  `dak-gcs`, `dak-kc` — the telemetry/MVT-DoE data class (HindSight
+  telemetry exports, provenance receipts, quota observations; first dataset
+  `fleet_telemetry`, first bucket `<project>-evidence`).
+- **Instance-required** (wired; answers when a fleet instance exists):
+  `dak-alloydb`, `dak-cloudsql`, `dak-spanner`, `dak-bigtable-data`,
+  `dak-spark`. Fleet databases today are Neon/Supabase; these are ready the
+  day any workload lands on GCP, with read-only roles already assigned.
+- **Local**: `dak-notebook`, `dak-viz` — plugin-local servers on the agent's
+  machine.
+- **IAM-denied**: `dak-bigtable` (Bigtable **admin** plane) — wired for
+  completeness; the fleet identity holds no role for it and the deny policy
+  blocks its non-read-only tools. Wiring is not permission.
+- **Skills-only surfaces**: Dataform/dbt pipelines and Managed Airflow have
+  no MCP servers in the kit; their skills are wired through the plugin, and
+  the policy records the read posture (no `composer.user` grant — it can
+  trigger DAGs).
 
-**Wired now (in this repo):** catalog host entry, client config (first
-cohort), fleet skill, this design doc, and the machine-readable guardrail
-policy with the full IAM binding spec + provisioning commands.
+## Guardrail tier map (the rule that doesn't change)
 
-**Pending (owner items — nothing below is faked as done):**
+> A destructive-action rule that lives only in agent instructions is NOT a
+> guardrail.
 
-1. **GCP project + billing.** Create the fleet GCP project and attach a
-   billing account (card-gated). No fleet GCP presence exists today; this is
-   the single step that makes the wiring live.
-2. **Sign-in path.** gcloud auth / ADC for the owner Google account lands
-   prompts on the origin B160V (broken screen) — plan that session; do not
-   improvise it inside another flow.
+**ENFORCED (IAM / install layer)** — full detail in the policy:
+impersonated `dak-readonly` service account (ADC, no keys, never owner
+credentials) holding only the per-server read-only roles; IAM deny policy on
+MCP tools where `tool.isReadOnly == false`; `maximum_bytes_billed` on the
+telemetry dataset; row/column policies inherited automatically because the
+agent connects as the SA; **plugin telemetry hook disabled** at install.
 
-Once the project exists, an agent session with project access runs the
-provisioning commands in `ops/data_agent_kit/guardrail-policy.yaml`
-(enable APIs → create `dak-readonly` → grant the four bindings → apply the
-deny policy; creates no keys, grants no write roles), then flips the catalog
-`status` to `live_readonly` with the run evidence.
+**ADVISORY (guidance only)**: all 37 kit skills + the fleet skill. Consent
+wording like "Confirm Deletion: yes" is phrasing an LLM — it is not an
+approval card, a permission, or a check run, and is never cited as
+enforcement in fleet documentation or admission evidence.
 
-## 7. Mortality / exit
+## The telemetry hook (recon round-2 finding)
 
-Per the fleet free-tier rule, no critical lane single-homes here: the kit is
-an additional read path over telemetry-class data; HindSight/Provenance and
-the evidence lanes run unchanged without it, and nothing is stored only in
-GCP (BigQuery datasets export to GCS as JSONL/Parquet and back into repo
-artifacts). The kit itself is Apache-2.0 and its configuration is portable
-JSON kept in this repo. Exit: remove the catalog entry + client config,
-uninstall the plugin per surface, delete the `dak-readonly` service account
-(one action revokes all agent data access). One session, end to end.
+The plugin ships a PreToolUse hook that reports tool use
+(`.agents/hooks/telemetry_hook.js`, matcher `*`). Nothing in the fleet's
+telemetry posture (HindSight/Provenance, retention red lines) was written
+for a vendor plugin phoning tool-call data out of every session, so the
+fleet default is **disabled at install**, recorded as an enforced-tier
+(install-layer) control in the policy, with an owner item to review what it
+sends and where before any surface enables it. The SessionStart
+`dak-setup-sync` hook is config sync and may stay.
+
+## The freemium-prep doctrine (generalized)
+
+This wiring is the template for future freemium services:
+
+1. Recon real surfaces + guardrail tiers from the vendor's own material.
+2. Land the FULL wiring in the repo first — catalog/config, skill, policy,
+   provisioning commands, activation runbook.
+3. Signup only when the wiring is complete; trial credits fund usage and
+   evaluation, never setup.
+4. Activate with run evidence; flip the recorded status only on proof.
+5. Write the exit before the first credit is spent.
+
+## Live vs. pending
+
+- **Live now:** the complete wiring in this repo; the kit's public
+  endpoints; per-surface plugin availability.
+- **Pending (owner items, unchanged):** (1) GCP project + free-trial
+  billing — card-gated, no fleet GCP presence; (2) the gcloud sign-in
+  session — prompts land on the broken-screen B160V; plan it as its own
+  session. (3) Telemetry-hook review, whenever convenient (installs stay
+  disabled until then).
+- The catalog entry flips to `live_readonly` only with activation evidence
+  (runbook step 8), in a follow-up PR.
+
+## Exit
+
+No critical lane may single-home on this path (mortality rule, PR #1511).
+HindSight/Provenance and the evidence lanes run unchanged without it; the
+kit is an additional read path, never the only copy. Data exits BigQuery
+via GCS export (JSONL/Parquet) back into repo artifacts. Exit steps: remove
+the catalog entry + client config, uninstall the plugin per surface, delete
+the `dak-readonly` service account (revokes all agent data access at once).
+One session.
+
+## Appendix — the 37 kit skills (grouped; advisory tier)
+
+- **BigQuery & modeling (10):** bigquery-sql, bigquery-ai-ml,
+  bigquery-bigframes, bigquery-data-transfer-service, bigquery-graph-author,
+  bigquery-graph-query, dataform-bigquery, dbt-bigquery, data-autocleaning,
+  schema-mapping
+- **Bigtable (1):** bigtable-basics
+- **Storage (4):** google-cloud-storage-basics,
+  google-cloud-storage-bucket-architect, google-cloud-storage-fuse,
+  gcs-security-assessment
+- **Pipelines & orchestration (8):** gcp-data-pipelines,
+  gcp-pipeline-orchestration, gcp-pipeline-resource-provisioning,
+  gcp-managed-airflow-dag-authoring, gcp-managed-airflow-migrations,
+  gcp-managed-airflow-recommendations, gcp-composer-troubleshooting,
+  gcp-dataflow
+- **Spark (3):** gcp-spark, gcp-spark-troubleshooting,
+  gcp-managed-spark-upgrades
+- **Lakehouse & catalog (2):** federate-lakehouse-catalog,
+  discovering-gcp-data-assets
+- **ML, notebooks & data apps (4):** ml-best-practices, notebook-guidance,
+  building-data-apps, managing-python-dependencies
+- **Safety, auth & setup (5):** accidental-data-loss-prevention, dak-setup,
+  google-cloud-auth-verification, enforcing-resource-attribution,
+  resolving-mcp-region-configs

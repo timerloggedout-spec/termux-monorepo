@@ -73,13 +73,23 @@ sequencing: this pass precedes D4).** Pass `strands-rfp-response`
 candidate response strategies generated against the RFP's open items
 (kernel-first / collection-first / packaging-first; registered
 #43–#45, `author: oracle-method`), cross-voted round 1
-(**collection-first > kernel-first > packaging-first**; LOCAL_BASELINE
+(**the rubric scores TIED — 23.269 for all three candidates in round
+1, 25.0 for all three in round 2; the recorded order
+collection-first > kernel-first > packaging-first is the comparator's
+deterministic alphabetical tie-break** (`cross_vote.py rank()` sorts
+by `(-score, candidate_id)`), not a score difference; LOCAL_BASELINE
 ballots only — HUMAN/MODEL at zero, stated), expectations recorded
 before implementation (derived priors + `BRIEF:delphi-lane` priors),
 implementation round as real offline in-repo builds (9 suites, 9
-passed), equalized round 2 (ranking held), calibration recorded —
-including the brief author's priors missing the top two (expected
-kernel-first first; the evidence ranked collection-first first).
+passed), equalized round 2 (tie held), calibration recorded —
+the brief author's strict prior order missed under the tie (any
+strict order does); the LOCAL_BASELINE priors held within tolerance.
+*Correction (2026-10-27): an earlier version of this paragraph read
+the tie-break order as an evidence preference ("collection-first won
+on the broadest evidence base"). That reading is withdrawn — the
+profiles were numerically identical on every scored dimension. The
+panel feed now carries `ranking_basis` per round stating the tie and
+the deciding rule (contract honesty rule 7).*
 Ranked outcome + calibration appended to the outcome ledger (#1487).
 Blocked by rule and recorded `specified_not_run`: the AWS deployment
 (ITEMS-007, card rule) and the model panel (ITEMS-006,

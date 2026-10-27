@@ -42,6 +42,18 @@ and are registered in `docs/proposals/registry.yaml`
   kernel-first first; the evidence ranked collection-first first) —
   rank deltas recorded in `cycle/CALIBRATION.json`, feeding the
   weighting/elo ledgers as designed.
+- **Correction (2026-10-27):** the rankings above are a
+  **tie-break order, not a score result**. The LOCAL_BASELINE scores
+  tied exactly in both rounds (round 1: 23.269 for all three
+  candidates; round 2: 25.0 for all three), with numerically
+  identical evidence profiles on every scored dimension; the
+  recorded order is `cross_vote.py rank()` sorting by
+  `(-score, candidate_id)` over tied scores. Any reading of the
+  order as an evidence preference (e.g. "broadest evidence base
+  won") is withdrawn. The calibration rank deltas stand as
+  arithmetic against the recorded order; under a tie, any strict
+  prior order misses. The panel feed carries `ranking_basis`
+  stating this per round.
 
 ## Specified not run
 

@@ -1,0 +1,120 @@
+{
+ "schema": "dashboard-surface-feed/v1",
+ "surface": "ates",
+ "generated_at": "2026-10-27T12:32:29Z",
+ "sources": [
+  "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md",
+  ".github/workflows/ates-orchestrator-benchmark.yml + .github/workflows/ates-phase-b-run-receipt.yml + .github/workflows/agent-mvt-experiment.yml",
+  "tests/fixtures/ates/orchestrator_mvt.json",
+  "scripts/dashboards/workflow_observations.json (Actions API read)"
+ ],
+ "honesty_rules": [
+  "Show only what the record holds; a value the record does not hold renders as absent, never synthesized.",
+  "Defined-but-not-run experiments render as exactly that.",
+  "Weights and scores are read from the code and records at collection time, never transcribed from prose claims.",
+  "Workflow run counts are API observations stamped with their read time, not live claims."
+ ],
+ "data": {
+  "doc": "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md",
+  "invariants": [
+   "abstention availability",
+   "wrong-commit penalty",
+   "required-fragment preservation",
+   "distractor isolation",
+   "deterministic execution failure",
+   "isolated SPAWN behavior",
+   "actor/critic private-context isolation"
+  ],
+  "invariant_note": "The minimum viable test cohort covers seven hard invariants. Failed experiments remain evidence and are not automatically rerun merely to improve dashboards.",
+  "workflows": [
+   {
+    "file": ".github/workflows/ates-orchestrator-benchmark.yml",
+    "name": "ATES Orchestrator Benchmark",
+    "role": "Deterministic benchmark: on changes to the evaluator, the fixtures or the ATES docs, runs the orchestrator suites and evaluates scripts/ci/evaluate_orchestrator_benchmark.py over the fixtures, asserting the deterministic verdicts (pass case PASS; leak case FAIL_DETERMINISTIC with net_score 0.0).",
+    "observed_runs": {
+     "total_runs": 13,
+     "latest": [
+      {
+       "created_at": "2026-10-22T12:25:12Z",
+       "conclusion": "success",
+       "event": "pull_request"
+      },
+      {
+       "created_at": "2026-10-22T12:20:26Z",
+       "conclusion": "success",
+       "event": "pull_request"
+      },
+      {
+       "created_at": "2026-10-22T12:20:22Z",
+       "conclusion": "success",
+       "event": "push"
+      }
+     ]
+    }
+   },
+   {
+    "file": ".github/workflows/ates-phase-b-run-receipt.yml",
+    "name": "ATES Phase B Run Receipt",
+    "role": "Run receipts: on completion of 'Continuous agent ops', emits a metadata-only receipt (scripts/ci/emit_ates_run_receipt.py \u2014 event + run id/attempt; no head_commit, no html_url) and publishes it as a 30-day Actions artifact.",
+    "observed_runs": {
+     "total_runs": 9,
+     "latest": [
+      {
+       "created_at": "2026-10-23T13:34:25Z",
+       "conclusion": "success",
+       "event": "workflow_run"
+      },
+      {
+       "created_at": "2026-10-23T07:40:57Z",
+       "conclusion": "success",
+       "event": "workflow_run"
+      },
+      {
+       "created_at": "2026-10-23T01:37:40Z",
+       "conclusion": "success",
+       "event": "workflow_run"
+      }
+     ]
+    }
+   },
+   {
+    "file": ".github/workflows/agent-mvt-experiment.yml",
+    "name": "Agent MVT experiment loop",
+    "role": "Execution vehicle for the MVT surface's schema-conforming experiments: checks out candidate and baseline refs independently, measures, records.",
+    "discipline": "permissions are contents:read only; the workflow header states it NEVER mutates refs \u2014 branch switching never becomes history rewriting.",
+    "observed_runs": {
+     "total_runs": 0,
+     "latest": []
+    },
+    "state": "defined_not_run"
+   }
+  ],
+  "fixtures": {
+   "file": "tests/fixtures/ates/orchestrator_mvt.json",
+   "label": "Synthetic boundary cases for the benchmark suite \u2014 fixtures, not recorded experiment results.",
+   "cases": [
+    "mvt-boundary-pass",
+    "mvt-boundary-leak"
+   ]
+  },
+  "trace_schema": "docs/ops/ATES-ORCHESTRATOR-TRACE.schema.json \u2014 validated by the benchmark workflow on every run.",
+  "citations": [
+   {
+    "surface": "mvt",
+    "record": "docs/ops/corpus/EXPERIMENT.schema.json + apps/help-wanted-dashboard/data/mvt-feed.json",
+    "label": "MVT \u2014 experiment records and practice",
+    "note": "Experiments the harness executes are recorded in the EXPERIMENT schema and owned by the MVT surface."
+   },
+   {
+    "surface": "doe",
+    "record": "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md (\u00a7DoE) + apps/help-wanted-dashboard/data/doe-feed.json",
+    "label": "DoE \u2014 first factorial slice",
+    "note": "The factorial design for ATES-cohort arms is defined in \u00a7DoE of the harness doc and owned by the DoE surface."
+   }
+  ]
+ },
+ "gaps": [
+  "No committed ATES results ledger exists: benchmark verdicts are asserted inside the workflow run and run receipts publish as 30-day Actions artifacts; this feed observes run counts and latest receipts from the API snapshot only.",
+  "The experiment loop has never been dispatched (0 runs observed): the harness's execution vehicle is defined, not yet exercised."
+ ]
+}

@@ -152,9 +152,28 @@ A pass is a cycle, not a single vote:
 2. **Cross-vote, round 1** — comparative ballots across the set, and
    each candidate's **input vote expectations** are recorded (expected
    rank + expected weighted score per source class) — priors on record
-   *before* any implementation exists.
+   *before* any implementation exists. **Every ballot carries its
+   reasons**: a `rationale` and cited `evidence_refs` — the rubric
+   comparator states the profile values behind each score, and a
+   supplied ballot without reasons or citations is refused at intake.
+   A score without its research is not a Delphi response.
+2b. **Facilitator feedback** — the classical Delphi step: the
+   facilitator synthesizes round 1 into an anonymous controlled-
+   feedback packet (`SYNTHESIS.json` — score distributions and the
+   arguments for/against each candidate in the voters' own stated
+   reasons, attributed to class + role only; disagreement reported,
+   never averaged away). A **DEBATE / revision round is callable**
+   here: panelists answer the synthesis with revised ballots, each
+   carrying a `revision_reason` (a deliberate retain must say why,
+   too). No ballots supplied = the revision round records
+   `specified_not_run`; the synthesis is issued either way.
 3. **Implementation parallel-comparisons round** — the candidates are
-   implemented in parallel; tests run per individual proposal.
+   implemented in parallel; tests run per individual proposal. **Every
+   suite result carries a run receipt** (command, exit code, output
+   sha256, the code paths it ran): an unreceipted suite is credited
+   **zero passes** and flagged unverified — round 2 never votes on
+   tests whose execution is not evidenced (the phantom-test rule;
+   `generation.cycle.require_suite_receipts`, default on).
 4. **Evidence equalization** — round 2 opens on NEW evidence, and the
    evidence base is **identical for every voter**: the per-proposal
    test results bundle. Its sha256 is stamped on the round-2 receipt,
@@ -173,10 +192,16 @@ round 2, calibration record. **A stage that cannot execute yet (e.g.
 model ballots while `DELPHI_LLM_MAX=0`, or an implementation round
 with no results supplied) is recorded `specified_not_run` in the
 cycle record — never silently dropped, never fabricated.**
+**Proposal robustness floor:** a brief that declares `require_plan`
+refuses generation unless every candidate carries a substantive plan
+(steps, risks, alternatives considered), rendered verbatim into the
+generated RFP as its Plan section — a generated skeleton without a
+plan is not a proposal. (Owner, 2026-10-27.)
 Tooling: `scripts/delphi/method_cycle.py` (writes CYCLE.json +
-BALLOT-round1 / EXPECTATIONS / IMPLEMENTATION / ROUND2-EVIDENCE /
-BALLOT-round2 / CALIBRATION records); the generate workflow runs the
-cycle in pass mode. The D4 Kiroween first live run follows this cycle.
+BALLOT-round1 / EXPECTATIONS / SYNTHESIS / FEEDBACK / IMPLEMENTATION /
+ROUND2-EVIDENCE / BALLOT-round2 / CALIBRATION records); the generate
+workflow runs the cycle in pass mode. The D4 Kiroween first live run
+follows this cycle.
 
 ## Self-application (owner, 2026-10-27)
 

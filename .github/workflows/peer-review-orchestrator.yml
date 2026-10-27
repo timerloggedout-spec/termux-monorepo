@@ -29,6 +29,8 @@ name: Peer review orchestrator
 # state comment for audit and for the metrics collector to measure.
 
 on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review, reopened]
   pull_request_target:
     types: [opened, synchronize, ready_for_review, reopened]
   issue_comment:

@@ -163,8 +163,11 @@ registry's escalation routes depend on them:
 - **Devpost account sign-in/creation** — D4 stopped at this gate.
 - **A Kiro user ID (or AWS account ID)** — completes D4 registration.
 - **Vultr account flow** — no-card path only (standing card BLOCK).
-- **Builder.io Clips publishing** — if a public demo needs a Builder
-  account, the step is owner-gated and surfaces immediately.
+
+Resolved since first listing: **Builder.io Clips** — the open question
+(account needed for a public demo?) closed 2026-10-27: the hosted
+Clips account exists (owner-approved; state in the Profile Registry),
+and demo publishing proceeds under `entrant{entrantBuilderIo}`.
 
 ## 7. Proposed challenge-log template change
 

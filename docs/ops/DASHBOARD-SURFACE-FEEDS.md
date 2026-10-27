@@ -51,11 +51,27 @@ Workflow run counts come from `scripts/dashboards/workflow_observations.json`,
 an Actions-API read stamped with its own `read_at`; refresh it by re-reading
 the API and updating that file in the same PR as the feed refresh.
 
+## Refresh automation
+
+`.github/workflows/surface-feeds-collect.yml` mirrors the Oracle Panel
+collect pattern: a weekly scheduled run (Wed 06:41 UTC) plus
+`workflow_dispatch`, and a master-push trigger on the collector's
+source paths (the collector script, the checked-in API snapshot, and
+the per-surface source records enumerated under Collector above), so a
+landed source or collector change proposes a refresh promptly. One
+workflow covers all five feeds because they share one collector
+invocation (`--surface all`), one output directory, and one refresh
+branch (`surface-feeds/refresh`). The workflow invokes the collector —
+it carries no collection logic of its own — and proposes the refreshed
+feeds as a refresh PR; it never commits to master directly. (Closes
+GAP-LEDGER G-10.)
+
 ## Rules
 
 - Pages consume their feed and nothing else (pinned by
   `tests/test_surface_pages.py`); feed content is never hand-edited —
-  refresh by re-running the collector and landing the result by PR.
+  refresh by re-running the collector (by hand or via the collect
+  workflow above) and landing the result by PR.
 - A value the record does not hold renders as absent; the feed names the
   gap in its `gaps` list and the page renders the gap as a first-class
   block. Defined-but-not-run renders as exactly that.

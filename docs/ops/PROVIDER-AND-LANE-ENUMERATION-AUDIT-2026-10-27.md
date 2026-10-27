@@ -110,6 +110,78 @@ quartet:
 | Team MVT provider lanes (`geminiMesh`, `routeMesh`, `feloForge`, `hfFoundry`, + 14 roster-only provider lanes) | `docs/ops/AGENT-MONIKERS.md`, PROVIDER-COLLABORATOR-CAPABILITY-MAP.md, `team-mvt.yml` (528 observed runs per the MVT page feed) | workflows exist | display identities, explicitly **non-callable**; "Do not promote these into callable collaborators… just because an adapter, public catalog, secret-name reference, or moniker exists" |
 | External Laya project (ConvAI Innovations) | catalogued reference (`refTemplates/16_Org_Phased/laya`) | external project's code/HF surfaces | not a fleet lane; source of the "multilingual encoder" description |
 
+## Appendix — classifier census extension (steward map, verified + extended 2026-10-27)
+
+The Tier 1 Classifiers steward's corrected census puts the observatory quartet at **4 of
+~30+ classifier surfaces** in seven groups (A quartet — steward-owned, above; G substrate —
+the 27 families, this doc's main body). Groups B–F below carry per-item execution states
+verified firsthand for this audit: workflow run totals from the Actions API at audit time,
+file/importer checks at master `dac6ec2`. **The "Tier 1" boundary across these groups is
+the owner's to draw** (the steward's open question); these states are the evidence for it,
+not a drawing of it.
+
+**Group B — ml/pipelines stack** (68 test files reference the package; production wiring
+is the exception, not the rule):
+
+| Surface | Location | Execution state |
+|---|---|---|
+| PR classifier (vocab v2: EXTRACT / SUPERSEDE / NEED_EVIDENCE / CANDIDATE) | `ml/pipelines/lanes/classify.py` | test-covered; only workflows referencing ml.pipelines are `ml-pipelines-keepalive.yml` (20 runs, last 2026-10-21, success) and `vercel-quota-probe.yml` — never classifies a live PR |
+| Moneyball scorer | `ml/pipelines/moneyball/weights.py` | computes live at read time for dashboard/command-center consumers; no committed per-PR score outputs |
+| Peers collaborator-output classification | `ml/pipelines/peers/` | test-only; never executed in production |
+| Eval lanes (incl. a gamut.py) | `ml/pipelines/eval_lanes/` | test-only; never executed |
+| ATES actor-critic harness | `ml/pipelines/ates/` | its workflow `agent-mvt-experiment.yml` has **0 runs ever** |
+| Recon rule catalogs, 4 generations | `ml/pipelines/recon08…11/catalog` | catalogs; no live consumer found |
+
+**Group C — model selection & routing:**
+
+| Surface | Location | Execution state |
+|---|---|---|
+| Model-selection market (selector + market + ledger + DSPy DoE + cadence) | `scripts/model_selection_market/` | executes through provider-batch/catalog jobs — see the live signal below |
+| Model router | `scripts/model_router_bootstrap.py`, routing surface in `ops/delphi/panel.json` | read at routing time; no committed rankings table exists |
+| Decision engines / performance index | `scripts/decision_engines.py` | code present; no dedicated workflow evidence |
+
+**⚠ Live signal — provider-batch.yml: 18 consecutive failed runs, all on 2026-10-27**
+(preceded by a cancelled run at 01:32 UTC; the workflow fires on push/PR, so the streak
+tracks today's merge traffic — but no success is interleaved). Cause NOT established in
+this audit; root-cause belongs to the provider/model-selection lane. Treat every
+batch-derived count as provisional until it lands.
+
+**Group D — repo-native gates (the live end of the census):**
+
+| Surface | Location | Execution state |
+|---|---|---|
+| Delphi gate | `scripts/delphi/gate.py` + `delphi-gate.yml` | LIVE — 7,985 total runs; 41 successes in the latest success sample |
+| Tribute scorer | `scripts/ci/tribute_system1.py` (placeholder scoring, ~lines 152–160) | LIVE in the tribute workflows; the "CPPH ranker" name appears nowhere in code |
+| Reviewer-metrics collector | reviewer-metrics/v1 | LIVE — the 150-PR delivery map is its output |
+| Secrets-audit classifier | `scripts/secrets_audit/audit.py` + `phantom-secrets-audit.yml` | LIVE — 2,416 runs (label-gated skips are by design) |
+| Repo gate | `scripts/ci/repo_gate.py` | LIVE — gates PRs |
+| Claim preflight | `scripts/ci/help_wanted_claim.py` (`preflight_candidate`) | LIVE in the help-wanted lane |
+| v1 triage classifiers | `deepcli/deepcli/_v1_pr_rollup.py`, `_v1_mergeable.py` (+ tests) | dormant — test-covered, no production importer found |
+
+**Group E — workflow triage / review:**
+
+| Surface | Execution state |
+|---|---|
+| peer-review-orchestrator | LIVE — 40,000 runs, active today |
+| gemini-after-peers | LIVE — 1,219 runs, success today |
+| cellcog-review | LIVE (skip-gated) — 8,741 runs, active today |
+| continuous-evaluation | recent — 469 runs, last 2026-10-23 success |
+| gemini-triage | 0 direct runs — it is a reusable `workflow_call` invoked by `gemini-dispatch.yml`; it executes inside dispatch runs |
+| gemini-review | STALE — 26 runs, last 2026-08-20 (failure) |
+| remote-gamut-evaluation | **0 runs ever** (judge key phantom — queue item 7) |
+| agent-mvt-experiment | **0 runs ever** — distinct from `team-mvt.yml` (528 runs, last 2026-10-26, conclusion failure), whose runs the MVT page reports |
+
+**Group F — external surfaces, delivery-measured by reviewer-metrics** (not fleet code):
+CodeRabbit 23/133 delivered (17.3%), Devin 1/1, Qodo 1/1, ECC no cycles in the window,
+plus Gemini second pass, CellCog, and Jules — sample sizes printed beside every rate in
+the source map; small-n rates are not rankings.
+
+Queue additions from this census: **(9)** root-cause the provider-batch failure streak
+before citing batch-derived numbers; **(10)** gemini-review — restore or retire (silent
+since 2026-08-20); **(11)** the ml/pipelines stack is a library, not a running lane —
+either wire `classify.py` to a consumer or record it as library-only so future censuses
+stop counting it as an active surface.
+
 ## Improvement queue — ordered by compounding benefit
 
 1. **Provision GROQ_API_KEY, then MISTRAL_API_KEY.** Groq is the only passive-adapter

@@ -13,6 +13,9 @@ ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location("quota_tui", ROOT / "scripts/quota_tui.py")
 tui = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(tui)
+QP_SPEC = importlib.util.spec_from_file_location("quota_poll", ROOT / "scripts/quota_poll.py")
+qp = importlib.util.module_from_spec(QP_SPEC)
+QP_SPEC.loader.exec_module(qp)
 NOW = datetime(2026, 10, 21, 9, 0, tzinfo=timezone.utc)
 SERVICE = {"id": "example.requests", "lane": "ops", "provider": "example"}
 
@@ -93,6 +96,57 @@ assert.equal(cv.evidence,'unknown');assert.equal(cv.scope,'project/model');asser
 assert(!JSON.stringify(cv).includes('account_id')&&!JSON.stringify(cv).includes('17'));
 """
     subprocess.run(["node", "-e", script, str(module)], check=True)
+
+
+CONV_SERVICES = [
+    {"id": "example.requests", "provider": "example", "lane": "ops",
+     "source": "https://example.com/docs", "limit": 100, "unit": "requests"},
+    {"id": "openrouter.free_models", "provider": "openrouter", "lane": "model",
+     "source": "https://openrouter.ai/docs", "limit": None, "unit": "requests/day"},
+    {"id": "plain.requests", "provider": "plain", "lane": "ops",
+     "source": "https://plain.example/docs", "limit": 5, "unit": "requests"},
+]
+CONV_NOW = datetime(2026, 10, 27, 12, 0, tzinfo=timezone.utc)
+
+
+def converted_rows():
+    public = qp.public_snapshot(CONV_SERVICES, {"example.requests": {"used": 3},
+                                                 "openrouter.free_models": {"used": 9}}, CONV_NOW)
+    return qp.readings_snapshot(public, CONV_SERVICES)["readings"]
+
+
+def test_converted_projection_classifies_fail_closed_in_terminal():
+    """The publisher path (probe artifact -> readings_snapshot) must feed
+    the panel without a hand-seeded file, and the fail-closed gate must
+    classify every converted row unknown/private — never a live status,
+    because the projection withholds real statuses by design."""
+    rows = converted_rows()
+    view = {r["resource_id"]: r["status"] for r in tui.public_readings(CONV_SERVICES, rows, CONV_NOW)}
+    assert view == {"example.requests": "unknown",
+                    "openrouter.free_models": "private_preflight",
+                    "plain.requests": "unknown"}
+    later = datetime(2026, 10, 27, 12, 16, tzinfo=timezone.utc)
+    stale = {r["resource_id"]: r["status"] for r in tui.public_readings(CONV_SERVICES, rows, later)}
+    assert stale["example.requests"] == "stale"
+    assert stale["plain.requests"] == "unknown"  # unobserved rows never go stale/fresh
+
+
+@pytest.mark.skipif(not shutil.which("node"), reason="Node required for browser helper parity")
+def test_converted_projection_classifies_fail_closed_in_browser(tmp_path):
+    rows_file = tmp_path / "converted.json"
+    rows_file.write_text(json.dumps(converted_rows()))
+    module = ROOT / "apps/help-wanted-dashboard/quota-evidence.js"
+    script = r"""
+const assert=require('node:assert/strict'), q=require(process.argv[1]);
+const rows=require(process.argv[2]);
+const now=Date.parse('2026-10-27T12:00:00Z');
+const byId=Object.fromEntries(rows.map(r=>[r.resource_id,r]));
+assert.equal(q.readingView({lane:'ops'},byId['example.requests'],now).status,'unknown');
+assert.equal(q.readingView({lane:'model'},byId['openrouter.free_models'],now).status,'private');
+assert.equal(q.readingView({lane:'ops'},byId['plain.requests'],now).status,'unknown');
+assert.equal(q.readingView({lane:'ops'},byId['example.requests'],now+16*60*1000).status,'stale');
+"""
+    subprocess.run(["node", "-e", script, str(module), str(rows_file)], check=True)
 
 
 def test_snapshot_rows_all_carry_observed_at_key():

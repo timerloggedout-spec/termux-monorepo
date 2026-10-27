@@ -1,4 +1,5 @@
 import contextlib, io, json, os, subprocess, sys, tempfile, unittest
+from datetime import datetime, timezone
 from unittest.mock import patch
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -59,6 +60,20 @@ class QuotaPollTest(unittest.TestCase):
                 self.assertEqual(r["canonical_source"], r["source"]["url"])
             self.assertEqual(quota_multiplier("nope", {}), 1.0)
 
+
+    def test_unobserved_records_carry_no_observation_time(self):
+        svc = {"id": "example.requests", "provider": "example", "lane": "ops",
+               "metric": "requests", "unit": "requests", "window": "daily",
+               "reset": "n/a", "zone": "UTC", "source": "https://example.com/docs",
+               "limit": 100, "planned_use": {"safety": 0.9}}
+        now = datetime(2026, 10, 27, 12, 0, tzinfo=timezone.utc)
+        rec = _qp.record(svc, None, now)
+        self.assertIsNone(rec["observed_at"])
+        self.assertEqual(rec["horizon"], "H1")
+        live = _qp.record(svc, {"used": 3, "limit": 100}, now)
+        self.assertEqual(live["observed_at"], now.isoformat())
+        self.assertEqual(live["horizon"], "H0")
+        self.assertEqual(live["evidence_status"], "confirmed")
 
     def test_public_mode_never_exports_private_values_or_reader_logs(self):
         def private_reader(now):

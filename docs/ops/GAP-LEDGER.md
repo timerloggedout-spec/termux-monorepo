@@ -114,10 +114,14 @@ vs **done** (code/workflows implement) vs **executed** (runs/artifacts prove).
   while viewing a public clip needs no login — satisfying the Official
   Rules' criterion — and the submission form is account-free. Correction
   to the earlier lean: the account is a free Clips app account, NOT a
-  Builder.io CMS Space/plan. Successor item (owner act, surfaced to main):
-  approve the free Clips account creation (needed by the Oct 30–Nov 1
-  build weekend) or direct self-hosting the open-source template instead;
-  D3's enforced eligibility check blocks submission until one path exists.
+  Builder.io CMS Space/plan. Successor item — DONE (2026-10-27): the
+  owner approved the free Clips account and it was created the same day
+  via the Google route on the fleet Google identity (registry record,
+  PR #1835 merged 264c5d9771: account CREATED; no handle exists on this
+  surface — none offered at sign-up; no personal-name field forced; no
+  payment requested). D3's enforced check now shows the account branch
+  satisfied. One in-app setup item remains for the build weekend:
+  connect clip storage before recording.
 
 ### G-09 — Oracle feed: two substrate thin spots
 - Surface: Oracle Panel. Layers: held vs claimed.

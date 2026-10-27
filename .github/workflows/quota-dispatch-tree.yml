@@ -149,7 +149,23 @@ jobs:
             // Same firstCycle arithmetic as Node F, different modulus offsets.
             core.setOutput('dispatch_q3', (((firstCycle && hour % 3 === 1) && !paused) || force) ? 'true' : 'false');
             core.setOutput('dispatch_q4', (((firstCycle && hour % 4 === 1) && !paused) || force) ? 'true' : 'false');
-            core.setOutput('dispatch_q6', (((firstCycle && hour % 6 === 1) && !paused) || force) ? 'true' : 'false');
+            // Node G1: provider-availability staleness (1 call). The q6
+            // tranche rides the same firstCycle phase window that starved
+            // hw-refresh (gap G-02): availability last ran 2026-10-23 while
+            // every tree run concluded success (gap G-03, found by the
+            // 2026-10-27 enumeration audit). Fire the tranche on the lane's
+            // real age (>360 min = its 6h cadence) so a missed phase window
+            // self-heals on the next delivered tree run.
+            let paStaleMin = 1e9;
+            try {
+              const lastPa = await github.rest.actions.listWorkflowRuns({
+                owner: context.repo.owner, repo: context.repo.repo,
+                workflow_id: 'provider-availability.yml', per_page: 1
+              });
+              const latestPa = lastPa.data.workflow_runs[0];
+              if (latestPa) paStaleMin = (Date.now() - new Date(latestPa.created_at).getTime()) / 60000;
+            } catch (_) { /* unreadable run history = treat as stale */ }
+            core.setOutput('dispatch_q6', ((((firstCycle && hour % 6 === 1) || paStaleMin > 360) && !paused) || force) ? 'true' : 'false');
             // Node H: Vantage cost telemetry (ledger #184; RFP #1576 telemetry plane).
             // Slow lane: twice daily at the firstCycle of hour % 12 == 1.
             core.setOutput('dispatch_vantage', (((firstCycle && hour % 12 === 1) && !paused) || force) ? 'true' : 'false');

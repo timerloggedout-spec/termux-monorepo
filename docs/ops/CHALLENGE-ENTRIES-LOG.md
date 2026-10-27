@@ -379,6 +379,14 @@ a submission path reaches an owner-account step.
   packet's basis. This lane's hand-noted input for the generator: spec-first
   build in Kiro — a CMDB/reconciliation viewer (asset D) under Skeleton Crew
   or Frankenstein.
+- **Pass record:** the generation above is the second live Oracle
+  Method pass (owner sequencing 2026-10-27: Strands RFP pass first,
+  D4 second), recorded stated-not-run at
+  `docs/proposals/passes/kiroween-concept/` (first pass:
+  `docs/proposals/passes/strands-rfp-response/`). The brief this
+  lane supplies at the Oct 30 rules publish is that pass's intake:
+  base fields + `variants` + optional `expectations` + per-variant
+  `test_suites`.
 
 ## 5. Sweep sources
 

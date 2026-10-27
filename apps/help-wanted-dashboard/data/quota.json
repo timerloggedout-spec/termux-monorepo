@@ -1,7 +1,7 @@
 {
   "schema": "3l0.quota-readings.v1",
-  "generated_at": "2026-10-20T23:05:00Z",
-  "source": "Historical attributed public reports; not a live quota feed. Private quota_poll.py artifacts are not automatically published here.",
+  "generated_at": "2026-10-27T12:33:41Z",
+  "source": "Attributed public reports plus poller-confirmed observations promoted through the generated-file path (2026-10-27); not a live quota feed. Private quota_poll.py artifacts are not automatically published here.",
   "readings": [
     {
       "resource_id": "vercel.deployments",
@@ -24,7 +24,8 @@
       "reset": null,
       "note": "Private authoritative preflight required. No current account state or reset is published.",
       "evidence_status": "attributed_claim",
-      "horizon": "H1"
+      "horizon": "H1",
+      "observed_at": null
     },
     {
       "resource_id": "github.actions.minutes",
@@ -35,7 +36,32 @@
       "reset": null,
       "note": "Free for public repos; Actions quota pressure tracked in issues #1283 and #772.",
       "evidence_status": "attributed_claim",
-      "horizon": "H1"
+      "horizon": "H1",
+      "observed_at": null
+    },
+    {
+      "resource_id": "github.api.user_token",
+      "status": "ok",
+      "used": 378,
+      "limit": 5000,
+      "unit": "requests/hour",
+      "reset": "2026-10-27T13:30:42Z",
+      "note": "Core API rate limit read with the fleet PAT via GET /rate_limit (the endpoint scripts/quota_poll.py gh_rate polls; in Actions the same reader runs under GITHUB_TOKEN and measures github.api.github_token instead). This reading is the PAT user-token budget, recorded under the registry record it actually measured.",
+      "evidence_status": "confirmed",
+      "horizon": "H0",
+      "observed_at": "2026-10-27T12:33:41Z"
+    },
+    {
+      "resource_id": "github.actions.cache",
+      "status": "ok",
+      "used": 0.08,
+      "limit": 10,
+      "unit": "GB",
+      "reset": null,
+      "note": "Active Actions cache size for timerloggedout-spec/termux-monorepo via GET /repos/{repo}/actions/cache/usage (the endpoint scripts/quota_poll.py gh_cache polls); 459 active caches at read time. Rolling window; GitHub evicts above the 10 GB entitlement.",
+      "evidence_status": "confirmed",
+      "horizon": "H0",
+      "observed_at": "2026-10-27T12:33:41Z"
     }
   ]
 }

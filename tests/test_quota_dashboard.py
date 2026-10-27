@@ -95,6 +95,16 @@ assert(!JSON.stringify(cv).includes('account_id')&&!JSON.stringify(cv).includes(
     subprocess.run(["node", "-e", script, str(module)], check=True)
 
 
+def test_snapshot_rows_all_carry_observed_at_key():
+    """Shape pin for the 2026-10-27 gap fill: a row may be unobserved
+    (observed_at null) but must never omit the field — before the fill, 2 of
+    3 seed rows omitted it and rendered unknown for shape, not evidence."""
+    for p in ("docs/ops/generated/quota-status.json", "apps/help-wanted-dashboard/data/quota.json"):
+        snap = json.loads((ROOT / p).read_text())
+        for row in snap["readings"]:
+            assert "observed_at" in row, f"{p}: {row['resource_id']} omits observed_at"
+
+
 def test_web_panel_uses_evidence_helper_and_hides_balances():
     html = (ROOT / "apps/help-wanted-dashboard/quota.html").read_text()
     assert 'src="./quota-evidence.js"' in html

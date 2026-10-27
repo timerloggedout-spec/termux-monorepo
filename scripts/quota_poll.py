@@ -154,7 +154,11 @@ def record(svc, reading, now):
         "category": "quota",
         "canonical_source": svc["source"],
         "source": {"url": svc["source"], "live_endpoint": svc.get("live")},
-        "observed_at": now.isoformat(),
+        # observed_at is the read time for live reads only. An unobserved
+        # registry projection is not an observation (quota-evidence.js:
+        # "snapshot generation is not an observation"), so it carries null
+        # and downstream consumers classify it unknown instead of fresh.
+        "observed_at": now.isoformat() if live else None,
         "horizon": "H0" if live else "H1",
         "evidence_status": "confirmed" if live else ("attributed_claim" if svc["source"].startswith("http") else "early_signal"),
         "provider": svc["provider"], "metric": svc["metric"], "unit": svc["unit"],

@@ -80,13 +80,23 @@ def patch_quality(file_row):
     patch = file_row.get("patch")
     if not isinstance(patch, str) or not patch.strip():
         return False, "missing patch (truncated/binary diffs fail closed)"
-    changed_lines = [
+    added_lines = [
         line[1:].strip()
         for line in patch.splitlines()
-        if line.startswith(("+", "-")) and not line.startswith(("+++", "---"))
+        if line.startswith("+") and not line.startswith("+++")
     ]
-    meaningful = [line for line in changed_lines if line and not PLACEHOLDER_RE.search(line)]
-    if not meaningful:
+    removed_lines = [
+        line[1:].strip()
+        for line in patch.splitlines()
+        if line.startswith("-") and not line.startswith("---")
+    ]
+    meaningful_additions = [line for line in added_lines if line and not PLACEHOLDER_RE.search(line)]
+    meaningful_deletions = [line for line in removed_lines if line and not PLACEHOLDER_RE.search(line)]
+    # If a patch adds content, that added content must itself be substantive.
+    # A meaningful deletion cannot launder placeholder-only replacement content.
+    if added_lines and not meaningful_additions:
+        return False, "added diff lines contain only blank or placeholder boilerplate"
+    if not added_lines and not meaningful_deletions:
         return False, "diff contains only blank or placeholder boilerplate"
     return True, "substantive textual diff present"
 
@@ -103,7 +113,10 @@ def classify(pr, files, expected):
     diff_proof_ok = (
         len(diff_proof) >= 20
         and diff_proof.lower() not in GENERIC_PROOF
-        and any(name in diff_proof for name in non_stake_names)
+        and any(
+            re.search(rf"(?<![A-Za-z0-9._/-]){re.escape(name)}(?![A-Za-z0-9._/-])", diff_proof)
+            for name in non_stake_names
+        )
         and not PLACEHOLDER_RE.search(diff_proof)
     )
     validation_ok = (

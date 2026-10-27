@@ -46,8 +46,19 @@ vs **done** (code/workflows implement) vs **executed** (runs/artifacts prove).
   hand through the cycle tooling). Ingestion build is open issue #1533
   ("ingest Tribute System 1 outcomes"), state open at sweep time.
 - Severity: medium (the method improves only when outcomes flow).
-- Fix route: Delphi lane builds #1533. Status: fix-spawned (Delphi lane,
-  dispatched 2026-10-27).
+- Fix route: Delphi lane builds #1533.
+- **Status: closed-on-evidence (2026-10-27).** Built as specced: PR #1824
+  merged 89579fd8; the dry run reproduced the sweep's numbers exactly
+  (169 keyed signals, sum -76.0, mean -0.45); the first live flow posted
+  the 169 outcomes; a second dispatch deduped all 169 and posted nothing.
+  Issue #1533 closed with the full record. Addition from the build: the
+  first run exposed a pre-existing ledger-resolution bug (label-order
+  found[0] sent outcome state to #1567 and a from-defaults weights update
+  to #1784) — fixed by title resolution in PR #1833 merged 93859300, state
+  migrated onto #1487, misdirected postings marked superseded, the batch's
+  role-feedback step recorded as consumed-not-replayed. Current read for
+  any future sweep: outcome ledger #1487's newest state (n=170 folded,
+  169 digests).
 
 ### G-04 — Devin Wiki indexer built and gated, credential never provisioned
 - Surface: Devin Wiki indexing. Layers: done vs executed.
@@ -137,7 +148,14 @@ vs **done** (code/workflows implement) vs **executed** (runs/artifacts prove).
   shared 123-item set) and is not a gap.
 - Severity: medium. Fix route: Delphi-lane collector extension — commit or
   reference the Delphi Desk evidence set; carry per-candidate scores.
-  Status: fix-spawned (Delphi lane, dispatched 2026-10-27).
+- **Status: closed-on-evidence (2026-10-27).** (a) Desk composition landed
+  via PR #1774 (merged before the dispatch crossed it): the master feed
+  carries `sources {github-api: 115, challenge-log-packet-d3: 2}` over the
+  117-item set with sha + assembled_at. (b) PR #1827 merged e1992587: each
+  candidate's round now carries a distinct per-candidate `score` field
+  read from the BALLOT records, with a distinctness test on non-tied
+  fixtures (the Strands values themselves remain honestly tied at 23.269).
+  Both halves re-verified firsthand in the master feed by the Gap Finder.
 
 ### G-10 — Dashboard surface feeds refresh by manual PR only
 - Surface: dashboard (MoneyBall / 3L0 / MVT / DoE feeds). Layers: held vs

@@ -1,0 +1,57 @@
+# Delphi — operational status & crossover record
+
+Verified live 2026-10-27 via the GitHub API (PAT helper); run counts and
+ledger values are live-derived at check time, not copied from older docs.
+This file is the running record: status evidence first, then where Delphi
+material has crossed over, then the current entry angle.
+
+## Operational status (verified 2026-10-27)
+
+| Component | State | Evidence |
+|---|---|---|
+| Gate core loop (`delphi-gate.yml`) | **Operational** | 37 successful runs. Heartbeat schedule successes 2026-10-22 + 2026-10-25 (cron every 3 days); RFP `issue_comment` processing successes 2026-10-24 (e.g. #1572); on-demand dispatch run **40465047131** (2026-10-27, reason `delphi-tick`) completed success with the "Oracle + blind panel + rounds" step executed. The thousands of `skipped` conclusions are `issues`/`issue_comment` triggers on non-Delphi issues stopped by the job-level label gate — trigger noise, not failures. |
+| Intake (`delphi-intake.yml`) | Operational, condition-gated | 3,352 runs, concluding skipped when no intake payload is present — by design. |
+| Signal emitter (`delphi-signal.yml`) | Operational, by design | `workflow_call` reusable only — it has no standalone triggers, so its "0 runs" is a metric artifact, not a failure. It validates events and dispatches `delphi-gate`. The bridge (`delphi-signal-bridge.yml`, 4,270 runs) emits on ForeSight-registry pushes (radar-hit) and shadow-outcome patterns from gate completions; no shadow pattern has qualified yet. |
+| Panel weights ledger (issue #1489) | **Live** | Newest `delphi-weights v1` comment 2026-10-21, from real feedback on #1424 (outcome confirmed): all roles at gate_pass_rate **0.68**, elo **1532** — moved off the `ops/delphi/panel.json` cold-start seeds (0.5 / 1500). `panel.json` is the cold-start default only. No new feedback since 2026-10-21: the flywheel is input-starved, not broken. |
+| Outcome ledger (issue #1487) | Live, quiet | Exists with append-only outcome comments; last updated 2026-10-21, same starvation as the weights ledger. |
+| Offline Oracle MVP (`scripts/delphi/strands_oracle_mvp.py`) | **Operational (offline scope)** | Merged via PR #1620 → `81a0d77be3ae` (2026-10-26). CI run **40464053263** on the merge commit: success, receipt artifact `delphi-oracle-mvp-40464053263-1` uploaded. Independent rerun against master `173e6f1af3`: 7 unit tests pass; receipt shows experiments E-01 / E-03 / E-05 = PASS, `external_calls` 0, `deployment` false, `PROMOTED` false, human ballots 0, provider results 0, measured cloud cost $0 (none). |
+| AWS / Strands deployment | **Does not exist** | PR #1611 (merged 2026-10-24) is an RFP-stage proposal; its MANIFEST claims no AWS account, resources, invocation, or submission, and no ballot or provider result. The owner's card rule (2026-10-26) closes card-gated account creation fleet-wide; AWS stays closed unless the owner explicitly lifts it. |
+
+The MVP receipt's own limitations stand as the honest boundary of the
+"operational" claim: the baseline is a synthetic deterministic control,
+not a model/provider result; the oracle emits decisions only and never
+executes actions; a PASS means the fixture contract passed.
+
+### What "not operational" actually was
+
+1. The MVP sat unmerged 2026-10-24 → 2026-10-26. Fixed by the #1620 merge.
+2. Flywheel inputs starved: last feedback 2026-10-21. The Tribute-outcome
+   ingestion build is open issue **#1533** — that is the next real build
+   item, not a gate defect.
+3. Two misleading metrics: `delphi-signal`'s 0 runs (reusable by design)
+   and the gate's skipped conclusions (label-gated trigger noise).
+
+## Crossover record
+
+| Destination | What crossed over | Pointer |
+|---|---|---|
+| Tribute System 1 | The `tribute-outcome` graded-signal contract: outcome ledger (#1487) + graded panel reweighting in the gate | `docs/ops/TRIBUTE-SYSTEM1.md`, `scripts/ci/tribute_system1.py`, lane contract §"Graded outcomes" |
+| Challenge packet D0 — AWS Weekend Challenge completion (owner ruling 2026-10-27) | The offline Oracle MVP + a read-only `fetch_evidence` tool, packaged as the finished entry (platform ended; the package is the completion record) | Challenge entries log, PR #1699 |
+| Challenge packet D1 — Workshop to Ship (due Nov 4) | Decider-gated agent reusing the Delphi panel/rounds pattern | Challenge entries log §4 |
+| Challenge packet D3 — "Delphi Desk" (Builder.io, due Nov 2) | Decision-review cockpit mirroring the Delphi envelope + the CMDB conflict matrix; one `defineAction()` shared by the human UI and the agent | Challenge entries log §4 |
+| Fleet weighting schemas | The lane contract binds Delphi payloads to the existing `3l0.moneyball.v1` and `3l0.quota-weights.v1` schemas — no Delphi-private formats | `docs/ops/DELPHI-LANE-CONTRACT.md` (head) |
+
+## The angle (current entry framing)
+
+> Delphi is a working decision layer in a public repo: a flywheel-weighted
+> panel whose ledger is a public issue, an RFP gate that processes real
+> proposals, and an offline Oracle MVP that emits deterministic evidence
+> receipts — zero external calls, zero cloud cost, zero ballots claimed.
+> The AWS/Strands deployment remains a proposal (no account exists); the
+> decision machinery is the deliverable, and it is already running.
+
+This replaces the proposal-stage framing ("Delphi Oracle on AWS Free
+Tier"), which described the unbuilt deployment rather than the system.
+Use this framing for D0/D1/D3 copy and future entries.
+
+— [MUSEai]@{role:{delphi-lane}} · 2026-10-27

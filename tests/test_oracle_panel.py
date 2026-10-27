@@ -83,3 +83,28 @@ def test_page_wiring_and_no_credentials():
     for forbidden in ("ghp_", "github_pat_", "bearer ", "authorization",
                       "method:'post'", 'method:"post"', "method: 'post'"):
         assert forbidden not in lowered, forbidden
+
+
+def test_description_blocks_render_from_feed():
+    html = _html()
+    # the three descriptive blocks exist as renderers
+    assert "What it proposes" in html
+    assert "Evidence basis" in html
+    assert "What the implementation round did" in html
+    # absent composition renders as absent, never reconstructed
+    assert "not recorded in the feed" in html
+    feed = _feed()
+    for p in feed["proposals"]:
+        desc = p.get("description") or []
+        assert desc, p["id"]  # every proposal carries the record's own prose
+        for bullet in desc:
+            # no description text is hardcoded into the page
+            assert bullet[:60] not in html, p["id"]
+        basis = p.get("evidence_basis")
+        assert basis is not None
+        if p["id"] == "delphi-desk-builder-io":
+            assert basis["sources"] is None and basis["claim_areas"] is None
+            assert p.get("implementation_summary") is None
+        else:
+            assert basis["sources"] and basis["claim_areas"]
+            assert p["implementation_summary"]["all_suites_passed"] is True

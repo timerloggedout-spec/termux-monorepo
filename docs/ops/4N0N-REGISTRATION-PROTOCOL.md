@@ -13,7 +13,12 @@ Display discipline is inherited from the moniker SSOT,
 backticks, **never `@`-mentioned** — they are not GitHub usernames, and
 if one ever collides with a real username it stays non-`@` permanently.
 
-The registration source of truth is `docs/ops/CHALLENGE-ENTRIES-LOG.md`.
+The registration source of truth is `docs/ops/CHALLENGE-ENTRIES-LOG.md`;
+the source of truth for the platform identities themselves (handles,
+display names, profile completeness) is
+`docs/ops/PROFILE-REGISTRY.md`. One home per fact: this registry holds
+the monikers and the routing, and references each profile by pointer
+(`profile_ref`) — it never restates profile data.
 This file is the protocol + rendered registry; the JSON is the registry
 of record. Tooling: `scripts/registration_monikers/registry.py`
 (check / assign / render), kept current by
@@ -25,8 +30,8 @@ of record. Tooling: `scripts/registration_monikers/registry.py`
    submissions, demos, project pages, articles, public posts — carry
    the entry's Role{Moniker}, not the person's name or personal handle.
    Where a platform itself displays the account handle, that handle is
-   the moniker's public face: it is recorded in the registry as a
-   provisioning fact, never improvised per artifact.
+   the moniker's public face: it is recorded in the Profile Registry as
+   a provisioning fact, never improvised per artifact.
 2. **One platform, one moniker.** A moniker is never reused across
    platforms, so no moniker string can link the fleet's presence on two
    platforms together.
@@ -37,12 +42,17 @@ of record. Tooling: `scripts/registration_monikers/registry.py`
 4. **No personal identifiers in the record.** Legal names, personal
    email addresses, personal social accounts, and location beyond what
    a platform itself requires never appear in this repo, in entry
-   packets, in submissions, or in demos. The registry records public
-   handles that already exist — nothing else about a person.
-5. **Handles are provisioning facts.** A `public_handle` is recorded
-   only after the platform issues it. Auto-assignment always leaves it
-   null (`unknown-verify`) until a lane verifies the platform-side
-   fact. Inventing a handle "to fill the field" is a protocol breach.
+   packets, in submissions, or in demos. The Profile Registry records
+   public handles that already exist; this registry records nothing
+   about a person at all.
+5. **Profiles have one home.** Handles, display names, and profile
+   completeness live only in `docs/ops/PROFILE-REGISTRY.md`, recorded
+   there only after the platform issues them (a handle is a
+   provisioning fact — inventing one is a protocol breach). An entry
+   here carries a `profile_ref` pointer to that profile's heading and
+   nothing else about the profile; `registry.py check` fails any entry
+   that restates profile data, and fails a `profile_ref` that does not
+   resolve to a heading in the Profile Registry.
 6. **Forced personal fields are owner-gated.** Legal-name fields,
    identity verification, profile completion, and payment instruments
    (the credit card is a standing BLOCK) are surfaced to the owner as
@@ -56,20 +66,22 @@ of record. Tooling: `scripts/registration_monikers/registry.py`
 
 <!-- registry:begin -->
 
-| Platform | Role{Moniker} | Public handle | Status | Registrations | Owning lane |
+| Platform | Role{Moniker} | Profile (Profile Registry heading) | Status | Registrations | Owning lane |
 |---|---|---|---|---|---|
-| AWS Builder Center | `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]` | @1337dia590r1c8u1ldr | active | R1, R2, R3, D1 | challenge-entries |
-| Builder.io | `entrant{entrantBuilderIo}[platform:builder-io]` | — (none-exists) | active | D3 | challenge-entries |
-| Devpost | `entrant{entrantDevpost}[platform:devpost]` | — (blocked-owner-gate) | blocked-owner-gate | D4 | challenge-entries |
-| Kiro | `entrant{entrantKiro}[platform:kiro]` | — (blocked-owner-gate) | blocked-owner-gate | D4 | challenge-entries |
-| lablab.ai | `entrant{entrantLablabAi}[platform:lablab-ai]` | — (pending-registration) | registering | D2 | challenge-entries |
-| Vultr | `entrant{entrantVultr}[platform:vultr]` | — (pending-registration) | pending | D2 | challenge-entries |
+| AWS Builder Center | `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]` | AWS Builder Center | active | R1, R2, R3, D1 | challenge-entries |
+| Builder.io | `entrant{entrantBuilderIo}[platform:builder-io]` | Builder.io / Clips | active | D3 | challenge-entries |
+| Devpost | `entrant{entrantDevpost}[platform:devpost]` | Devpost | blocked-owner-gate | D4 | challenge-entries |
+| Kiro | `entrant{entrantKiro}[platform:kiro]` | Kiro | blocked-owner-gate | D4 | challenge-entries |
+| lablab.ai | `entrant{entrantLablabAi}[platform:lablab-ai]` | lablab.ai | registering | D2 | challenge-entries |
+| Vultr | `entrant{entrantVultr}[platform:vultr]` | Vultr | pending | D2 | challenge-entries |
 
 <!-- registry:end -->
 
 Registry of record: `config/registration_monikers.json` (schema
-`registration-monikers/1`). The table above is rendered from it by
-`registry.py render`; edit the JSON, never the table.
+`registration-monikers/2`). The table above is rendered from it by
+`registry.py render`; edit the JSON, never the table. The Profile
+column names the entry's heading in `docs/ops/PROFILE-REGISTRY.md`,
+where the profile itself lives.
 
 ## 3. Assignment rule
 
@@ -121,11 +133,15 @@ registry. It runs `registry.py check`; the auto-fixable drift class is
   log's §1 (verified registrations) or §4 (entry packets). A candidate
   in §3 alone never activates — candidates are not registrations.
 - On activation without an entry, `registry.py assign` appends the
-  entry: moniker by the §3 rule, routing defaults, `public_handle`
-  null, registration claims attributed by which platform names appear
-  in each packet's text. `render` refreshes §2's table, and the
-  workflow opens (or updates) a single PR from
-  `registration-monikers/auto-extend`.
+  entry: moniker by the §3 rule, routing defaults, `profile_ref` set
+  by convention to the platform's Profile Registry heading, and
+  registration claims attributed by which platform names appear in
+  each packet's text. `render` refreshes §2's table, and the workflow
+  opens (or updates) a single PR from
+  `registration-monikers/auto-extend`. If the platform has no profile
+  in the Profile Registry yet, check fails on the unresolved
+  `profile_ref` until the owning lane registers the profile there —
+  that failure is the coordination signal, not an error to silence.
 - The detection vocabulary (platform name → platform_id) is the
   `ALIASES` table in `registry.py`. It is curated: a platform outside
   the vocabulary gets no auto-assignment, and adding its line is a
@@ -139,17 +155,16 @@ registry. It runs `registry.py check`; the auto-fixable drift class is
 
 ## 6. Owner-gated items the current registry surfaces
 
-- **AWS Builder Center profile completion** (avatar + bio) — gates the
-  D1 entry's validity; first blocker on that platform.
-- **Devpost account sign-in/creation** — D4 registration stopped at
-  this gate on 2026-10-26.
-- **A Kiro user ID (or AWS account ID)** — required to complete the
-  Kiroween registration.
-- **Vultr account flow** — proceeds on the no-card path only; any card
-  demand stops it (standing card BLOCK).
-- **Builder.io Clips publishing** — open question from packet D3:
-  whether a public Clips demo needs a Builder account. If it does, the
-  step is owner-gated and surfaces immediately.
+Full detail for each lives with its profile in
+`docs/ops/PROFILE-REGISTRY.md`; they are listed here because the
+registry's escalation routes depend on them:
+
+- **AWS Builder Center profile completion** — gates D1 validity.
+- **Devpost account sign-in/creation** — D4 stopped at this gate.
+- **A Kiro user ID (or AWS account ID)** — completes D4 registration.
+- **Vultr account flow** — no-card path only (standing card BLOCK).
+- **Builder.io Clips publishing** — if a public demo needs a Builder
+  account, the step is owner-gated and surfaces immediately.
 
 ## 7. Proposed challenge-log template change
 

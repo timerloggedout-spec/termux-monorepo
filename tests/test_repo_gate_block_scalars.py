@@ -175,6 +175,74 @@ class BlockScalarFaultTests(unittest.TestCase):
 class BlockScalarScanTests(unittest.TestCase):
     """The scan itself, so a regression names the property it broke."""
 
+    def test_empty_scalar_leading_blanks_preserve_whitespace(self) -> None:
+        # Dedent erases whitespace-only lines, so pass these raw to both scanners.
+        for header in ("|", ">-", "|2"):
+            source = f"description: {header}\n    \ntype: object\n"
+            with self.subTest(header=header):
+                self.assertEqual(repo_gate.yaml_structure_faults(source), [])
+                if yaml is not None:
+                    self.assertEqual(yaml.safe_load(source)["type"], "object")
+
+    def test_quotes_inside_plain_scalars_do_not_mask_later_faults(self) -> None:
+        for value in ("owner's workflow", 'say "hello', "a 'quoted word", 'a - "word'):
+            source = f"name: {value}\nif: !(false)\n"
+            with self.subTest(value=value):
+                found = repo_gate.yaml_structure_faults(source)
+                self.assertEqual(len(found), 1, found)
+                self.assertIn("scans as a tag", found[0])
+                if yaml is not None:
+                    with self.assertRaises(yaml.YAMLError):
+                        yaml.safe_load(source)
+
+    def test_plain_scalar_quotes_do_not_hide_literal_escapes(self) -> None:
+        for value in ("owner's workflow", 'say "hello'):
+            source = f"name: {value}\\n trailing\n"
+            with self.subTest(value=value):
+                found = repo_gate.yaml_structure_faults(source)
+                self.assertEqual(len(found), 1, found)
+                self.assertIn("escape in an unquoted scalar", found[0])
+
+    def test_scalar_start_quotes_keep_multiline_state(self) -> None:
+        for source in (
+            'value: "first\n  second\\n more"\n',
+            "value: 'first\n  second\\n more'\n",
+            'items:\n  - "first\n    second\\n more"\n',
+            'value: ["first\n  second\\n more"]\n',
+            'value: [plain, "first\n  second\\n more"]\n',
+            'value: {key: "first\n  second\\n more"}\n',
+            'value: &anchor "first\n  second\\n more"\n',
+            'value: !!str "first\n  second\\n more"\n',
+            '"value": "first\n  second\\n more"\n',
+        ):
+            with self.subTest(source=source):
+                self.assertEqual(repo_gate.yaml_structure_faults(source), [])
+                if yaml is not None:
+                    yaml.safe_load(source)
+                found = repo_gate.yaml_structure_faults(source + "if: !(false)\n")
+                self.assertEqual(len(found), 1, found)
+                self.assertIn("scans as a tag", found[0])
+
+    def test_crlf_block_scalars_match_lf(self) -> None:
+        for source in (
+            "run: |\n  rollback: set flag: false\n",
+            "run: >-\n  rollback: set flag: false\n",
+            "run: |2\n  rollback: set flag: false\n",
+            "run: |\n    first\n  second\n",
+        ):
+            with self.subTest(source=source):
+                crlf = source.replace("\n", "\r\n")
+                self.assertEqual(
+                    repo_gate.yaml_structure_faults(crlf),
+                    repo_gate.yaml_structure_faults(source),
+                )
+                if yaml is not None and "second" not in source:
+                    self.assertIsInstance(yaml.safe_load(crlf)["run"], str)
+
+    def test_lone_carriage_return_is_not_a_new_structural_line(self) -> None:
+        source = "run: |\n  echo first\rnot-a-mapping\n"
+        self.assertEqual(repo_gate.yaml_structure_faults(source), [])
+
     def test_over_indented_leading_blank_is_rejected(self) -> None:
         # Do not dedent: textwrap strips whitespace-only lines, erasing the defect.
         source = "run: |\n    \n  echo ok\n"

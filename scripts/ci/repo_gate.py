@@ -207,6 +207,8 @@ def literal_escape_fault(line: str, quote_state: list[bool] | None = None) -> st
     """
     index = 0
     in_single, in_double = quote_state if quote_state is not None else (False, False)
+    scalar_start = not (in_single or in_double)
+    flow_depth = 0
     while index < len(line):
         char = line[index]
         if in_double:
@@ -215,15 +217,17 @@ def literal_escape_fault(line: str, quote_state: list[bool] | None = None) -> st
                 continue
             if char == '"':
                 in_double = False
+                scalar_start = False
         elif in_single:
             if char == "'":
                 if line[index + 1 : index + 2] == "'":
                     index += 2
                     continue
                 in_single = False
-        elif char == '"':
+                scalar_start = False
+        elif char == '"' and scalar_start:
             in_double = True
-        elif char == "'":
+        elif char == "'" and scalar_start:
             in_single = True
         elif char == "#" and (index == 0 or line[index - 1] in " \t"):
             break
@@ -239,6 +243,26 @@ def literal_escape_fault(line: str, quote_state: list[bool] | None = None) -> st
                 after == "" or after.isspace() or before in ("]", "}", ",")
             ):
                 return line[index : index + 2]
+        elif char == ":" and (
+            line[index + 1 : index + 2] in ("", " ", "\t") or flow_depth
+        ):
+            scalar_start = True
+        elif scalar_start and char == "-" and line[index + 1 : index + 2] in (" ", "\t"):
+            pass  # sequence-entry indicator, not plain scalar content
+        elif scalar_start and char in "[{":
+            flow_depth += 1
+        elif flow_depth and char in "]}":
+            flow_depth -= 1
+            scalar_start = False
+        elif flow_depth and char == ",":
+            scalar_start = True
+        elif scalar_start and char in "!&":
+            # A tag or anchor is a node property before the scalar, not its value.
+            while index + 1 < len(line) and line[index + 1] not in " \t":
+                index += 1
+        elif char not in " \t":
+            # Apostrophes/quotes embedded in plain values are ordinary characters.
+            scalar_start = False
         index += 1
     if quote_state is not None:
         quote_state[:] = [in_single, in_double]
@@ -301,7 +325,7 @@ def block_scalar_scan(lines: list[str]) -> tuple[set[int], list[str]]:
         first_indent = indent_of(line)[0]
         content_indent = declared if declared is not None else first_indent
 
-        if declared is None:
+        if declared is None and first_indent > header_indent:
             for leading in range(index + 1, cursor):
                 if indent_of(lines[leading])[0] > content_indent:
                     faults.append(
@@ -370,7 +394,9 @@ def yaml_structure_faults(text: str) -> list[str]:
     authoritative lint remains the advisory actionlint lane.
     """
     faults: list[str] = []
-    lines = text.split("\n")
+    # CRLF is a line ending, but splitlines() also splits payload characters such
+    # as lone CR, form feed, and Unicode separators into synthetic YAML entries.
+    lines = text.replace("\r\n", "\n").split("\n")
     inside_block, block_faults = block_scalar_scan(lines)
     quote_state = [False, False]
 

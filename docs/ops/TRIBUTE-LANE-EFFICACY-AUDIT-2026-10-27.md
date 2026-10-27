@@ -190,7 +190,7 @@ answer-and-withdraw or withdraw-only.
   preflights sit on every audited issue; the claim ledger build is
   queued behind batch 2.
 
-Open upstream PRs after batch 1: 11 → 8 lane PRs (3 converted fixes
-awaiting upstream review; ROCm held; 7 batch-2 items minus EasyCode
-recount: portals, KayStcx, MOBIUS, agentic-path, MergeEarn, EasyCode,
-hugegraph = 7, plus ROCm = 8).
+Open lane PRs after batch 1: 11 of the original 28 — the 3 converted
+fixes awaiting upstream review, ROCm (held), and the 7 batch-2 items
+(portals, KayStcx, MOBIUS, agentic-path, MergeEarn, EasyCode,
+hugegraph).

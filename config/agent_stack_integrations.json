@@ -33,11 +33,28 @@
       "status": "INVESTIGATE",
       "horizon": "H1",
       "evidence_status": "confirmed",
-      "capabilities": ["agent lifecycle", "identity/security", "governance", "OpenTelemetry observability", "MCP", "A2A"],
+      "capabilities": [
+        "agent lifecycle",
+        "identity/security",
+        "governance",
+        "OpenTelemetry observability",
+        "MCP",
+        "A2A"
+      ],
       "integration_mode": "adapter-only",
-      "required_exports": ["agent identity", "policy decisions", "trace/span linkage", "deployment/version", "evaluation results"],
+      "required_exports": [
+        "agent identity",
+        "policy decisions",
+        "trace/span linkage",
+        "deployment/version",
+        "evaluation results"
+      ],
       "hard_gate": "Must preserve repository-owned evidence and operate without making WSO2 persistence canonical.",
-      "unresolved_questions": ["Minimum self-hosted footprint for the monorepo lab.", "Termux/Android-adjacent interoperability.", "Exact export/API contract to canonical JSONL."]
+      "unresolved_questions": [
+        "Minimum self-hosted footprint for the monorepo lab.",
+        "Termux/Android-adjacent interoperability.",
+        "Exact export/API contract to canonical JSONL."
+      ]
     },
     {
       "id": "nvidia-openshell",
@@ -49,10 +66,20 @@
       "horizon": "H1",
       "evidence_status": "confirmed",
       "integration_mode": "reference implementation + bounded sandbox experiment",
-      "required_exports": ["policy decision", "agent identity", "tool/network/filesystem boundary", "runtime event linkage", "policy bundle hash"],
+      "required_exports": [
+        "policy decision",
+        "agent identity",
+        "tool/network/filesystem boundary",
+        "runtime event linkage",
+        "policy bundle hash"
+      ],
       "hardware_note": "Sentry/BlueField-4 hardware enforcement is optional research infrastructure, not a monorepo dependency.",
       "hard_gate": "Do not require NVIDIA hardware for the canonical security/evidence contract.",
-      "unresolved_questions": ["Non-NVIDIA portability.", "Android/Termux applicability.", "Exact upstream license/release pin and policy artifact format."]
+      "unresolved_questions": [
+        "Non-NVIDIA portability.",
+        "Android/Termux applicability.",
+        "Exact upstream license/release pin and policy artifact format."
+      ]
     },
     {
       "id": "orchbench-preflight",
@@ -64,10 +91,25 @@
       "horizon": "H1",
       "evidence_status": "research",
       "integration_mode": "simulation-before-live-execution",
-      "required_inputs": ["task DAG", "manager policy hash", "agent budget", "context limit", "cohort id"],
-      "required_outputs": ["simulated quality", "simulated makespan", "simulated token cost", "policy diagnostics"],
+      "required_inputs": [
+        "task DAG",
+        "manager policy hash",
+        "agent budget",
+        "context limit",
+        "cohort id"
+      ],
+      "required_outputs": [
+        "simulated quality",
+        "simulated makespan",
+        "simulated token cost",
+        "policy diagnostics"
+      ],
       "hard_gate": "Simulation evidence must remain distinct from live execution evidence.",
-      "unresolved_questions": ["Coding-task transfer.", "Artifact/implementation availability.", "ARM/Android reproducibility."]
+      "unresolved_questions": [
+        "Coding-task transfer.",
+        "Artifact/implementation availability.",
+        "ARM/Android reproducibility."
+      ]
     },
     {
       "id": "nist-ir8536-provenance",
@@ -79,9 +121,18 @@
       "horizon": "H0",
       "evidence_status": "confirmed",
       "integration_mode": "schema mapping / policy reference",
-      "mapping_targets": ["resource identity", "artifact pedigree", "cryptographic linkage", "provenance chain", "selective disclosure"],
+      "mapping_targets": [
+        "resource identity",
+        "artifact pedigree",
+        "cryptographic linkage",
+        "provenance chain",
+        "selective disclosure"
+      ],
       "hard_gate": "Reference model is not compliance certification.",
-      "unresolved_questions": ["Software/model/agent mapping.", "Reference implementation public-release state."]
+      "unresolved_questions": [
+        "Software/model/agent mapping.",
+        "Reference implementation public-release state."
+      ]
     },
     {
       "id": "llama-cpp-cpu-android",
@@ -94,7 +145,15 @@
       "evidence_status": "confirmed",
       "target": "Android arm64 CPU",
       "contract": "docs/ops/EDGE-INFERENCE-EVIDENCE.schema.json",
-      "required_measurements": ["latency_p50_ms", "latency_p95_ms", "peak_memory_mb", "thermal_state", "energy_proxy", "device_abi", "environment_fingerprint"],
+      "required_measurements": [
+        "latency_p50_ms",
+        "latency_p95_ms",
+        "peak_memory_mb",
+        "thermal_state",
+        "energy_proxy",
+        "device_abi",
+        "environment_fingerprint"
+      ],
       "constraint": "Do not assume local execution is currently suitable for the user's device; collect evidence before admission."
     },
     {
@@ -106,7 +165,14 @@
       "horizon": "H1",
       "evidence_status": "confirmed",
       "reason": "Upstream provides Vulkan builds on Linux arm64/x86_64, but current device/resource constraints make immediate device integration unjustified.",
-      "future_gate": ["device Vulkan support", "memory headroom", "thermal stability", "driver/backend compatibility", "reproducible build", "energy-per-completed-task"],
+      "future_gate": [
+        "device Vulkan support",
+        "memory headroom",
+        "thermal stability",
+        "driver/backend compatibility",
+        "reproducible build",
+        "energy-per-completed-task"
+      ],
       "documentation_requirement": "Retain as a future integration lane; do not add to active routing or assume availability on Android/Termux."
     },
     {
@@ -118,9 +184,20 @@
       "horizon": "H1",
       "evidence_status": "signal",
       "integration_mode": "bounded ARM/Android candidate evaluation",
-      "required_measurements": ["memory", "latency", "tool-call reliability", "structured-output reliability", "offline behavior", "energy proxy"],
+      "required_measurements": [
+        "memory",
+        "latency",
+        "tool-call reliability",
+        "structured-output reliability",
+        "offline behavior",
+        "energy proxy"
+      ],
       "hard_gate": "No active routing until independent device measurements and provenance are recorded.",
-      "unresolved_questions": ["Current release/model artifact pin.", "Android/Termux build path.", "Tool-call and structured-output behavior under constrained memory."]
+      "unresolved_questions": [
+        "Current release/model artifact pin.",
+        "Android/Termux build path.",
+        "Tool-call and structured-output behavior under constrained memory."
+      ]
     },
     {
       "id": "witness-attestation",
@@ -176,6 +253,36 @@
         "NOT APPLICABLE to this account today (verified live 2026-10-26 via the PAT helper): both orgs (Research-Astute, search-astute-ly) report Copilot seat_breakdown total 0 with seat management unconfigured, /copilot/metrics returns 404 for both, and the personal account (plan free) has no report scope in this API.",
         "Access role is not the blocker (timerloggedout-spec is admin of both orgs); the Copilot usage metrics policy must additionally be enabled per org/enterprise before reports populate.",
         "Revisit trigger: any fleet org holds Copilot Business/Enterprise seats with the usage metrics policy enabled - re-test the report endpoints and reassess as a weighting input."
+      ]
+    },
+    {
+      "id": "google-agent-compute-engine",
+      "project": "Google Cloud Agent Compute Engine (ACE) + Agent Gateway",
+      "source": "https://cloud.google.com/blog/topics/ai-infrastructure/agent-compute-engine-deep-dive",
+      "version": "announced 2026-10-22; preview in coming months (not available)",
+      "role": "credential-free-agent-sandbox-architecture-reference",
+      "status": "WATCH",
+      "horizon": "H1",
+      "evidence_status": "confirmed",
+      "capabilities": [
+        "one hardware-isolated microVM (Cloud Hypervisor, own guest kernel, root) per agent session on Titan/Titanium IPU hosts",
+        "zero secrets in the sandbox: no credentials, API keys, OAuth refresh tokens or SA keys in memory or on disk; no metadata-server access",
+        "Agent Gateway in-flight token swap: validates user delegation + agent identity + node identity, evaluates egress/DLP policy, inserts the backend credential on the wire outside the microVM",
+        "four identities kept distinct (user, delegated on-behalf-of, SPIFFE Agent Workload Identity, Agent Workforce Identity); attestation keys held in the Titanium IPU outside the guest",
+        "no standard NIC/default gateway/VPC access in the microVM; all traffic via virtio-vsock to a local proxy then the off-node gateway",
+        "application-aware idle checkpoint/pause at near-zero active cost, CoW/DAX memory deduplication, per-microVM Hyperdisk persistence, snapshot/fork for eval sweeps",
+        "open-source sibling Agent Substrate on GKE available today with the same design (microVM/gVisor + credential-injecting egress proxies)"
+      ],
+      "integration_mode": "comparison + design-pattern reference only; no deployment (announced-only, no fleet GCP project). Full comparison: docs/ops/AGENT-COMPUTE-ENGINE-COMPARISON-2026-10-26.md",
+      "required_exports": [
+        "if ever piloted: per-session SPIFFE workload identity + Agent Gateway audit logs into Provenance/HindSight as attested evidence"
+      ],
+      "hard_gate": "ACE removes credential theft from the sandbox; it does not remove policy-breadth risk - a compromised agent can still act through the gateway within its delegated scope and egress policy. Scoped grants remain the control, as with the Data Agent Kit IAM tier.",
+      "unresolved_questions": [
+        "Availability: Google states preview 'in the coming months' (announcement 2026-10-22); no console/API/pricing exists today - revisit when the preview opens.",
+        "Requires a fleet GCP project + billing, which does not exist; this is the same owner-pending item gating Data Agent Kit activation (card-gated signup + gcloud sign-in session).",
+        "Cannot touch GitHub Actions lanes, the PAT-helper route, on-device Termux/B160V lanes, or vendor-hosted agent surfaces (Jules/Grok/Manus) - it hosts only the execution half of a fleet-built, GCP-hosted agent, of which the fleet currently has none.",
+        "Mirror proposals (fleet-native, owner/lane decision, not implemented by the comparison): prefer short-lived per-workflow credentials over new long-lived Actions secrets; put a credential-swap proxy in any future agent tool-egress path instead of injecting secrets into the agent environment."
       ]
     }
   ],

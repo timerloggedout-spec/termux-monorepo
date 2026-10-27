@@ -124,6 +124,20 @@ This wiring is the template for future freemium services:
 - The catalog entry flips to `live_readonly` only with activation evidence
   (runbook step 8), in a follow-up PR.
 
+## Related — Agent Compute Engine (credential-free sandboxes)
+
+Google Cloud's Agent Compute Engine (announced 2026-10-22, preview in
+the coming months — not available today) is the vendor-hardware version
+of this doc's tier rule: credentials never enter the execution sandbox
+at all, and an Agent Gateway swaps the real credential onto the wire
+only after validating user delegation, agent (SPIFFE) identity, and
+node identity. Full comparison against the fleet's credential
+architecture (PAT helper, Issue #184 inventory, Foundry `account_ref`,
+this policy): `docs/ops/AGENT-COMPUTE-ENGINE-COMPARISON-2026-10-26.md`
+(posture WATCH + design-pattern-to-mirror; catalog entry
+`google-agent-compute-engine`). It queues behind the same GCP-project
+owner item as this kit's activation — it does not create a second one.
+
 ## Exit
 
 No critical lane may single-home on this path (mortality rule, PR #1511).

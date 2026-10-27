@@ -113,3 +113,28 @@ def test_brief_priors_coexist_with_derived_and_calibrate():
     assert "LOCAL_BASELINE" in cal
     brief_cal = cal["BRIEF:challenge-entries-lane"]
     assert brief_cal["rehearsal-weak"]["score_delta"] < 0  # priors vs round-2 reality
+
+
+def test_eligibility_gate_refuses_early_implementation():
+    gated = dict(PASS_BRIEF, eligibility_gate={
+        "rule": "only in-period projects eligible",
+        "window_open": "2026-10-30T13:00:00-07:00"})
+    docs_by_dir, meta = generate_pass(gated, EVIDENCE,
+                                      generated_at="2026-10-27T00:00:00Z")
+    assert meta["eligibility_gate"]["window_open"] == "2026-10-30T13:00:00-07:00"
+    import json as _json
+    prov = _json.loads(docs_by_dir["rehearsal-strong"]["PROVENANCE.json"])
+    assert prov["eligibility_gate"]["window_open"].startswith("2026-10-30")
+
+    early = run_cycle(meta, PANEL["roles"], "test", CONFIG,
+                      impl_results=IMPL, generated_at="2026-10-29T00:00:00Z")
+    st = _statuses(early)
+    detail = next(s["detail"] for s in early["stages"]
+                  if s["stage"] == "implementation")
+    assert st["implementation"] == "specified_not_run"
+    assert "eligibility gate" in detail
+    assert st["cross_vote_round_1"] == "ran"  # generation + vote are not gated
+
+    after = run_cycle(meta, PANEL["roles"], "test", CONFIG,
+                      impl_results=IMPL, generated_at="2026-10-31T00:00:00Z")
+    assert _statuses(after)["implementation"] == "ran"

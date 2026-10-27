@@ -1,0 +1,97 @@
+{
+  "collected_at": "2026-10-27T08:55:45.391647+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 40476872543,
+    "endpoint": ".../runs/40476872543/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 122097155990,
+        "run_id": 40476872543,
+        "workflow_name": "Issue Comment Router \u2014 modular fan-out reduction",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/40476872543",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAcbY6_lg",
+        "head_sha": "5923a31a086b7408fc352da5e08c17e70b13b2ea",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/122097155990",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40476872543/job/122097155990",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-27T08:54:59Z",
+        "started_at": "2026-10-27T08:55:02Z",
+        "completed_at": "2026-10-27T08:55:06Z",
+        "name": "route",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-27T08:55:03Z",
+            "completed_at": "2026-10-27T08:55:04Z"
+          },
+          {
+            "name": "Classify comment for routing",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-27T08:55:04Z",
+            "completed_at": "2026-10-27T08:55:04Z"
+          },
+          {
+            "name": "Route to Jules (if matched)",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 3,
+            "started_at": "2026-10-27T08:55:04Z",
+            "completed_at": "2026-10-27T08:55:04Z"
+          },
+          {
+            "name": "Route to Ledger (if matched)",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 4,
+            "started_at": "2026-10-27T08:55:04Z",
+            "completed_at": "2026-10-27T08:55:04Z"
+          },
+          {
+            "name": "Route to Gemini (if matched)",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 5,
+            "started_at": "2026-10-27T08:55:04Z",
+            "completed_at": "2026-10-27T08:55:04Z"
+          },
+          {
+            "name": "Emit routing receipt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-27T08:55:04Z",
+            "completed_at": "2026-10-27T08:55:04Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-27T08:55:04Z",
+            "completed_at": "2026-10-27T08:55:04Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/122097155990",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000379693,
+        "runner_name": "GitHub Actions 1000379693",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

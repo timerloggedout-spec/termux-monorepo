@@ -5,6 +5,11 @@ on:
     paths:
       - "scripts/ci/help_wanted_diff_gate.py"
       - "scripts/ci/test_help_wanted_diff_gate.py"
+      - "scripts/ci/help_wanted_contribute.py"
+      - "scripts/ci/tribute_system1.py"
+      - "scripts/ci/help_wanted_claim.py"
+      - "tests/test_tribute_system1_gates.py"
+      - "tests/fixtures/tribute_system1/**"
       - ".github/workflows/help-wanted-diff-gate.yml"
       - ".github/workflows/help-wanted-diff-gate-tests.yml"
   push:
@@ -12,6 +17,11 @@ on:
     paths:
       - "scripts/ci/help_wanted_diff_gate.py"
       - "scripts/ci/test_help_wanted_diff_gate.py"
+      - "scripts/ci/help_wanted_contribute.py"
+      - "scripts/ci/tribute_system1.py"
+      - "scripts/ci/help_wanted_claim.py"
+      - "tests/test_tribute_system1_gates.py"
+      - "tests/fixtures/tribute_system1/**"
       - ".github/workflows/help-wanted-diff-gate.yml"
       - ".github/workflows/help-wanted-diff-gate-tests.yml"
 
@@ -21,7 +31,7 @@ permissions:
 jobs:
   regression-tests:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -29,5 +39,5 @@ jobs:
           python-version: "3.x"
       - name: Install test runner
         run: python -m pip install pytest
-      - name: Run Help-Wanted diff-gate regressions
-        run: python -m pytest -q scripts/ci/test_help_wanted_diff_gate.py
+      - name: Run Help-Wanted diff-gate and Tribute System 1 regressions
+        run: python -m pytest -q scripts/ci/test_help_wanted_diff_gate.py tests/test_tribute_system1_gates.py

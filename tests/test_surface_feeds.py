@@ -107,14 +107,19 @@ def test_separation_boundaries():
     mvt = _feed("mvt-feed.json")
     assert "harness" not in mvt["data"] and "fixtures" not in mvt["data"]
     assert {c["surface"] for c in mvt["data"]["citations"]} == {"ates", "doe"}
-    # DoE carries no Delphi payload: the cycle record is a citation, and
-    # none of its candidate ids appear anywhere in the DoE feed.
+    # DoE carries the Delphi cycle record as a REQUIRED presentation:
+    # full candidate payload, explicitly labeled Delphi-owned, agreeing
+    # with the record file — never dressed as a DoE campaign.
     doe = _feed("doe-feed.json")
-    assert "executed_comparisons" not in doe["data"]
+    ec = doe["data"]["executed_comparisons"]
+    assert ec["owner_surface"] == "delphi"
     assert [c["surface"] for c in doe["data"]["citations"]] == ["delphi"]
-    doe_blob = json.dumps(doe)
-    for cid in ("kernel-first", "collection-first", "packaging-first"):
-        assert cid not in doe_blob.replace("strands-rfp-response/cycle", ""), cid
+    impl = json.loads((ROOT / "docs/proposals/passes/strands-rfp-response/cycle/IMPLEMENTATION.json").read_text())
+    assert set(ec["candidates"]) == set(impl)
+    for cid, v in impl.items():
+        got = ec["candidates"][cid]
+        assert got["passed"] == v["passed"] and got["failed"] == v["failed"], cid
+        assert got["suites"] == [s["name"] for s in v["suites"]], cid
     # The invariants payload exists verbatim on exactly one surface.
     ates = _feed("ates-feed.json")
     inv = json.dumps(ates["data"]["invariants"])

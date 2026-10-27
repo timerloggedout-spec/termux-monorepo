@@ -38,6 +38,17 @@ vs **done** (code/workflows implement) vs **executed** (runs/artifacts prove).
   `generated_at 2026-10-27T14:18:07Z` and carries the SendAm #492/#607 rows
   as closed_unmerged — the exact rows the silence had missed. The Tribute
   lane independently re-verified the same record from its side.
+- Post-closure note (fix lane, 2026-10-27): the refresh rule has since fired
+  live on age (tree run 40519591463 → refresh run 40519676516, success) —
+  the diagnostics cadence is self-sustaining. The sibling lanes' age rules
+  are live but their live fire remains gated by the tree's Node A admission
+  guard, which counts ALL repo runs (busy observed 9.5–31 across the
+  verification window, never < 6) while its comment states the intent as
+  "lane runs" — siblings still show Oct 23 as their latest runs. Whether
+  the guard should count lane runs only is a quota-policy question for the
+  tree's owners; it is the one remaining blocker to the siblings' revival
+  and the next follow-up. (The stale cadence assertion from PR #1759's
+  differential is already fixed in open PR #1694.)
 
 ### G-03 — Delphi outcome flywheel: no automated ingestion
 - Surface: Delphi Oracle. Layers: done vs executed.

@@ -94,7 +94,13 @@ def test_doe_page():
     assert "Design only — not run" in html
     fns = feed["data"]["methods_library"]["functions"]
     assert [f["name"] for f in fns] == ["full_factorial", "taguchi_l9", "mvt_shuffle"]
-    # separation (PR #1756): executed comparisons are a citation, never a payload
-    assert "executed_comparisons" not in html and "executed_comparisons" not in feed["data"]
-    assert "DoE results: none" in html
-    assert feed["data"]["citations"][0]["surface"] == "delphi"
+    # owner ruling (PR #1768, supersedes the #1766 citation card for this
+    # section): the Delphi cycle comparison renders WITH its full payload,
+    # labeled as a Delphi record — never as a DoE campaign or DoE results.
+    ec = feed["data"]["executed_comparisons"]
+    assert ec["owner_surface"] == "delphi"
+    assert sum(v["passed"] for v in ec["candidates"].values()) == 9
+    assert all(v["failed"] == 0 for v in ec["candidates"].values())
+    assert "executed_comparisons" in html and "owner surface" in html
+    assert "owner ruling, 2026-10-27" in ec["note"]
+    assert "owner ruling, 2026-10-27" not in html  # the note renders from the feed

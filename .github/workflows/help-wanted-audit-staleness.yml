@@ -1,0 +1,68 @@
+name: help-wanted-audit-staleness
+
+# Watchdog for the tribute diagnostics refresh (gap G-02).
+# The refresh cadence is owned by quota-dispatch-tree.yml, whose */10
+# schedule GitHub delivers at jittered minutes (~6 runs/day on this
+# repo); a phase-window miss froze the generated audit for 2+ days in
+# Oct 2026 while every run concluded success. This watchdog checks the
+# artifact's AGE, not any schedule's phase: if the generated audit is
+# older than the window it dispatches a recovery refresh and fails
+# loudly, so staleness is a visible red run instead of silent drift.
+# Adds 12 short scheduled runs/day (offset minute, <1 min each).
+
+on:
+  schedule:
+    - cron: '41 */2 * * *'
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency:
+  group: help-wanted-audit-staleness
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Audit age check
+        id: age
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          d = json.load(open('docs/ops/generated/help-wanted-tribute-audit.json'))
+          gen = datetime.fromisoformat(d['generated_at'])
+          if gen.tzinfo is None:
+              gen = gen.replace(tzinfo=timezone.utc)
+          age_min = (datetime.now(timezone.utc) - gen).total_seconds() / 60
+          print(f"tribute audit generated_at={d['generated_at']} age={age_min:.0f}m")
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+              fh.write(f"age_min={age_min:.0f}\n")
+              fh.write(f"stale={'true' if age_min > 180 else 'false'}\n")
+          PY
+
+      - name: Dispatch recovery refresh
+        if: steps.age.outputs.stale == 'true'
+        env:
+          TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          curl -sS -X POST \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/help-wanted-status-refresh.yml/dispatches" \
+            -d '{"ref":"master"}'
+          echo "recovery refresh dispatched"
+
+      - name: Fail loudly when stale
+        if: steps.age.outputs.stale == 'true'
+        run: |
+          echo "::error::tribute audit STALE: age ${{ steps.age.outputs.age_min }}m exceeds the 180m window (gap G-02 watchdog). A recovery refresh has been dispatched; if this recurs, the dispatch tree Node F staleness rule is not firing."
+          exit 1

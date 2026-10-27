@@ -87,6 +87,27 @@ jobs:
           echo "push still raced after 5 attempts; next refresh will land it"
           exit 0
 
+      - name: Verify tribute audit actually refreshed
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, sys
+          from datetime import datetime, timezone
+          try:
+              d = json.load(open('docs/ops/generated/help-wanted-tribute-audit.json'))
+              gen = datetime.fromisoformat(d['generated_at'])
+              if gen.tzinfo is None:
+                  gen = gen.replace(tzinfo=timezone.utc)
+          except Exception as e:
+              print(f'::error::tribute audit unreadable after refresh: {e}')
+              sys.exit(1)
+          age_min = (datetime.now(timezone.utc) - gen).total_seconds() / 60
+          print(f"tribute audit generated_at={d['generated_at']} age={age_min:.1f}m")
+          if age_min > 20:
+              print(f'::error::tribute audit STALE after refresh (age {age_min:.0f}m > 20m): the audit step failed silently under continue-on-error; diagnostics are out of date (gap G-02)')
+              sys.exit(1)
+          PY
+
       - name: Deploy dashboard mirror
         env:
           TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}

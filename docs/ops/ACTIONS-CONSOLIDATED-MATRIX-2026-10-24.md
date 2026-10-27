@@ -1,31 +1,28 @@
-# Consolidated Actions Workflows Matrix — 2026-10-25 Live Refresh
+# Consolidated Actions Workflows Matrix — 2026-10-27 Live Refresh
 
-**Branch:** `ops/actions-matrix-upgrade-2026-10-18` (PR #1624)
+**Branch:** `ops/actions-matrix-upgrade-2026-10-18`
 **Authority:** Issue #631 13-phase + evidence-led-monorepo-ops + adaptive-wait + C.A.D.E.
 **Goal:** Z3π0 Failures, 100% SUCCESS on required dual-gates. Attentive validation audits of Skipped/Cancelled/Action Required (not silenced). Reduce notification spam via modular consolidations + shared scheduled poller. Operational Pinggy/Tailscale on device #1 (tmx-node-primary, BLU B160V#1). Quota-aware caching, cadence, 3L0 moneyball.
 
-## Current State Recon (2026-10-25T01:00Z / master tip ~91e1ba20)
+## Current State Recon (2026-10-27T06:00Z / master tip 57989ea1a0009a77b89dd6a5e8f5257cdea14f02)
 
-- Master tip: `91e1ba20d481258fd88c31d94b6ca513ba2770b1` (sweep receipt). Dual-gate success dominant on required paths. No recent hard failures on master.
-- Residual high-volume **skipped/cancelled** persists: lane-events-recorder (~33k runs), agent-throughput-evidence, delphi-signal-bridge, bot issue_comment triggers on #184 etc. Pure skips generate notification entries — audited via pollers, not silenced. Volume remains high (thousands of workflow_run skips per hour class).
-- PR #1624 head `d312a2fa` base is stale vs live master (599556ef → 91e1ba20). Needs rebase before promote.
-- Active residual classes:
-  - Agentic Auth Canary: heartbeat 404 / device lag → notice + exit 0 path present on branch.
-  - ECC Tools / rate-limit 403 capacity pressure → prefer warning + exit 0.
-  - Provider capacity intermittent.
-- Device tunnel: Pinggy or Tailscale **must** be operational on device #1. Opaque public `device_id=tmx-node-primary`. #2 replica. Live publisher required device-side.
+- Master tip: `57989ea1a0009a77b89dd6a5e8f5257cdea14f02` (sweep accountability receipt). Dual-gate success dominant on required paths. No recent hard failures on master.
+- **Shared Observer Poller** (workflow id 395684261, cron */15): latest runs 40457782060, 40429654248, 40407774021 **success**. Batches recent completed runs; surfaces only true failures; skips audited as operational.
+- Residual high-volume **skipped/cancelled** persists on lane-events-recorder (~41k+ runs) and agent-throughput-evidence: intentional early-exit on non-material conclusions. Platform notification surface reduced by conclusion filters + concurrency + poller batching. Further modular router extraction recommended.
+- Agentic Auth Canary: recent schedule runs (40453224708, 40414160473) **success**. Heartbeat/device lag path soft-classed as notice + exit 0.
+- Device tunnel: Pinggy or Tailscale **must** remain operational on device #1. Opaque public `device_id=tmx-node-primary`. #2 replica for continuity. Live publisher required device-side (manifest status:active).
 - Credentials: names-only in issue #184.
-- Quota / rate-limits: caching + adaptive cadence + moneyball required. 212 active workflows drive volume.
+- Quota / rate-limits: caching + adaptive cadence + moneyball required. High workflow count drives volume; poller + filters mitigate.
 
 ## Repeated Issue Classes & Disposition
 
 | Class | Examples | Root Cause | Fix / Disposition | Status |
 |-------|----------|------------|-------------------|--------|
-| Skip/Cancel/ActionRequired spam | lane-events-recorder (high run count), agent-throughput-evidence, bot comments | Broad `workflow_run` / `issue_comment` on all conclusions | Shared scheduled poller batches; modular router + conclusion filters; concurrency groups. Suppress pure skips in notifications; audit in step summary. Expand poller coverage. | **Advanced** (needs rebase + promote + further filter tightening) |
-| Device tunnel / auth lag | Agentic Auth Canary, Tunnel Canary | Publisher not live; heartbeat missing | Opaque device_id. Lag as notice (exit 0). Pinggy fallback required. | Operational gap / device-side |
-| Rate-limit / capacity | ECC Tools 403, historical | High volume API | Resilient exit 0 + ::warning::. Moneyball. | Active |
+| Skip/Cancel/ActionRequired spam | lane-events-recorder (high run count), agent-throughput-evidence | Broad `workflow_run` on all conclusions | Shared scheduled poller batches; modular router + conclusion filters; concurrency groups. Suppress pure skips in notifications; audit in step summary. | **Operational** (poller live; residual volume audited) |
+| Device tunnel / auth lag | Agentic Auth Canary, Tunnel Canary | Publisher not live; heartbeat missing | Opaque device_id. Lag as notice (exit 0). Pinggy fallback required. | Soft residual / device-side (canary success) |
+| Rate-limit / capacity | ECC Tools 403, historical | High volume API | Resilient exit 0 + ::warning::. Moneyball. | Active / mitigated |
 | Vercel rate-limit | #772 | Hobby plan | Non-gate. Path filters. | Active / non-gate |
-| Quota / caching | Free Actions; 212 workflows | Provider limits | Dynamic adaptive cache, SHA+path filters, 3L0. Capacity ≠ failure. | Active |
+| Quota / caching | Free Actions; high workflow count | Provider limits | Dynamic adaptive cache, SHA+path filters, 3L0. Capacity ≠ failure. | Active |
 
 ## Cadence & Cache Improvements
 
@@ -57,17 +54,17 @@ flowchart TD
 - **Required:** Pinggy or alternative operational on BLU B160V#1 (`tmx-node-primary`).
 - Public obfuscation: never expose raw device identifiers.
 - Fallback: `ssh -R0:localhost:port free.pinggy.io` until Tailscale proven.
-- Probes treat missing heartbeat as notice, not failure.
+- Probes treat missing heartbeat as notice, not failure. Recent canary success confirms soft path.
 
 ## Superceded Notes
 
-- Per-event observers partially superseded by shared poller.
+- Per-event observers partially superseded by shared poller (live and succeeding).
 - High-volume workflow_run cascades reduced via filters + concurrency.
 - Dual-gate remains sole promote authority. Vercel non-gate.
 - Historical skipped/cancelled audited; not rolled back erroneously.
-- PR base drift: rebase required before merge.
+- Previous PR #1624 merged; this branch continues refinement.
 
-**Next:** Rebase PR #1624 onto live master tip. Promote on dual-gate. Device-side heartbeat publish for #1. Further consolidate high-volume observers (lane-events-recorder, agent-throughput-evidence). Expand poller. Target workflow count reduction. Zero residual required-gate failures.
+**Next:** Further consolidate high-volume observers (lane-events-recorder, agent-throughput-evidence) into poller. Expand poller coverage. Target workflow count reduction. Zero residual required-gate failures. Device-side heartbeat publish for #1. Quota planning continued.
 
 Agent-Identity: Grok (Administrator)
 **BIUDL** — Broad → Integrate → Validate → Develop → Learn.

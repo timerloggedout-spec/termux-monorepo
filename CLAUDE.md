@@ -131,4 +131,17 @@ Credential rotation and history rewrite require Operator (human) authorization. 
 **Style:** BIUDL · Continuous Fully Automated Agentic Development (FA-ADE) · agent auto-promote on dual-gate + task outcome · adaptive-wait · evidence-led  
 **Status change (2026-09-24):** FA-ADE realign — agents execute to completion; dual-gate is automated evidence; HITL only on AGENTIC-PERMISSIONS edges.  
 **Status change (2026-09-25):** Collaborator / Role / Name / Moniker vocabulary affirmed; dependency-phase nav + #184 Projects note linked from `docs/agentic/`.  
-**Prior (2026-09-21):** Root `AGENTS.md` folded into this file and marked deprecated.
+**Prior (2026-09-21):** Root `AGENTS.md` folded into this file and marked deprecated (`AGENTS.hum.md` remains as the human-readable twin).
+
+## Technical System Architecture & Key Projects (Folded from AGENTS.md)
+
+This is a **Termux-based multi-agent automation monorepo** running on Android. It orchestrates AI-powered development workflows through multiple specialized CLI tools and autonomous agents.
+
+### Core Projects & Subsystems
+1. **DeepCLI (`deepcli/`):** DeepSeek-oriented CLI with session management, streaming, thinking mode, and export capabilities.
+2. **Termux Multi-Agent (`termux-multi-agent/`):** Multi-agent orchestration system for provisioning, running, and managing autonomous agents.
+3. **CLI Synthegration (`cli-synthegration/`):** Conversation synthesis with branching, export, account/token management, and metrics.
+4. **ArchWiz (`archwiz/`):** Central automation cockpit with 28 tools across 7 categories (cockpit, forensic, autonomous, verification, knowledge).
+5. **Central Mapper (`central_mapper_v420.py`, `workspace/llm_map/`):** Codebase indexing and dependency graph analysis.
+6. **Harmonizer (`harmonizer-prod_cli/`):** Production Harmonizer CLI providing unified DeepSeek automation.
+7. **CedrLang / Linguist (`workspace/compression_sandbox/cedrlang/`):** Agentic compression protocol with 4 development lanes (symbolic, document compilation, 1337speak diaspora, and ConversationalSteganographyCipher).

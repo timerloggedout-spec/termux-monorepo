@@ -222,6 +222,30 @@ The repository’s Linguist work optimizes **internal** agent communication thro
 
 1337-style naming may be used as a **display dialect**, never as a substitute for a source path, permission boundary, or validation result. The disciplined version of “l33t” is legibility under pressure.
 
+### 4.1 Grimoire 1337_$934k Cipher & Steganography Mapping
+
+The CedrLang pipeline operates across 4 coordinated development lanes:
+
+1. **Symbolic Substitution (Lane 1):** Replaces verbose natural language operators with single unicode tokens (`leads to` → `→`, `delete` → `-`, `true` → `T`).
+2. **Document Compilation (Lane 2):** Line-by-line translation protecting markdown structure (code fences, links, URLs, filenames, decimals) using fast-path regex contexts.
+3. **Phased 1337speak Diaspora (Lane 3):** Reversible Grimoire dictionary substitutions (`transmute` → `h4x`, `probe` → `pr0b3`, `echo` → `3ch0`, `grimoire` → `gr1m01r3`) with configurable mutation probability (`p=0.70`).
+4. **Conversational Steganography Cipher (Lane 4):** Pre-LLM pre-parser steganographic obfuscation (`ConversationalSteganographyCipher`). Embeds arbitrary payload strings into deterministic Base-4 zero-width character quadruplets (`\u200b`, `\u200c`, `\u200d`, `\ufeff`) inside normal conversational host text with optional key-stream XOR encryption.
+
+#### Grimoire Dictionary Cipher Mapping
+
+| Human Term | 1337_$934k Cipher | Human Term | 1337_$934k Cipher |
+|---|---|---|---|
+| `transmute` | `h4x` | `time loop` | `l00p` |
+| `probe` | `pr0b3` | `branch` | `f0rk` |
+| `echo` | `3ch0` | `incantation` | `1nc4nt` |
+| `cast` | `c4st` | `grimoire` | `gr1m01r3` |
+| `bidder` | `b1dd3r` | `wager` | `w4g3r` |
+| `chronomancer` | `chr0n0` | `linguist` | `l1ngu15t` |
+| `scout` | `sc0ut` | `harvester` | `h4rv35t3r` |
+| `emerging technology` | `em_t3ch` | `procurement` | `pr0cur3` |
+| `curation` | `cur473` | `research` | `r3534rch` |
+| `concept` | `c0nc3p7` | `compliance` | `c0mp1` |
+
 ---
 
 ## 5. Visual review / CCTV — cards first, renderer later

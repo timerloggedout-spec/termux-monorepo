@@ -46,3 +46,43 @@ def test_probability_validation():
             pass
         else:
             raise AssertionError("invalid probability was accepted")
+
+
+from workspace.compression_sandbox.cedrlang.phase_codec import ConversationalSteganographyCipher
+
+
+def test_conversational_steganography_encode_decode_roundtrip():
+    payload = "Agent2Agent confidential command: +h4x ~pr0b3 !scry"
+    stego = ConversationalSteganographyCipher.encode(payload)
+    assert ConversationalSteganographyCipher.has_stego(stego)
+    recovered = ConversationalSteganographyCipher.decode(stego)
+    assert recovered == payload
+
+
+def test_conversational_steganography_with_host_text():
+    payload = "Secret CedrLang payload"
+    host = "Hello world, this is a normal conversational message."
+    stego_text = ConversationalSteganographyCipher.encode(payload, host_text=host)
+    assert ConversationalSteganographyCipher.has_stego(stego_text)
+    # The host text should still be readable in plain text
+    assert "Hello" in stego_text and "world" in stego_text
+    recovered = ConversationalSteganographyCipher.decode(stego_text)
+    assert recovered == payload
+
+
+def test_conversational_steganography_with_secret_key():
+    payload = "Encrypted private mapping payload"
+    key = "gr1m01r3_53cr37_k3y"
+    stego_text = ConversationalSteganographyCipher.encode(payload, host_text="Public text", secret_key=key)
+    assert ConversationalSteganographyCipher.has_stego(stego_text)
+
+    # Decoding without key or with wrong key fails to produce original payload
+    assert ConversationalSteganographyCipher.decode(stego_text, secret_key="wrong_key") != payload
+    # Decoding with correct key succeeds losslessly
+    assert ConversationalSteganographyCipher.decode(stego_text, secret_key=key) == payload
+
+
+def test_conversational_steganography_has_stego_fastpath():
+    assert not ConversationalSteganographyCipher.has_stego("Plain text without zero-width chars")
+    assert not ConversationalSteganographyCipher.has_stego("")
+    assert ConversationalSteganographyCipher.decode("Plain text without stego") == ""

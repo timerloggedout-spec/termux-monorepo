@@ -62,6 +62,7 @@ Then route the task with **[`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md)** — one 
 - **No** wholesale merge of NO-GO mega-PRs (#2, #6) — extract-only.
 - **No** Class 3/4 artifacts in git (session stores, browser profiles, tokens).
 - Unposted chat is not consensus — write Review log or `DEBATE.md`.
+- **Recon before relay/build** (owner order, 2026-10-27): do recon so you know what you're touching & building. Verify decisive claims against the live record (repo contents, API, run/issue records) before relaying a report or amending a mission from it — a lane's report is an input, not evidence.
 - **Agent auto-promote** when dual-gate green **and** task outcome verified. Do not block the loop on operator CLI steps that Actions / Codespaces / self-host surfaces can run.
 - Credential inventory is **names-only** in issues (see #184). Never paste secret values.
 

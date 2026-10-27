@@ -43,6 +43,7 @@ MANIFEST = """# MANIFEST — cand-a
 ## Summary
 
 - A point. (evidence: `x`)
+- A second point, also cited. (evidence: `y`)
 
 ## Unverified / open
 
@@ -51,7 +52,9 @@ MANIFEST = """# MANIFEST — cand-a
 
 PROV = {"proposal_id": "cand-a", "author": "oracle-method",
         "generated_at": "2026-10-27T00:00:00Z", "generator": "gen/v1",
-        "pass_id": "pass-1", "evidence_sets": [{"items": 7}]}
+        "pass_id": "pass-1",
+        "evidence_sets": [{"sha256": "ab12cd", "items": 3,
+                           "assembled_at": "2026-10-27T00:00:00Z"}]}
 
 PASS_META = {"pass_id": "pass-1", "n": 2,
              "candidates": [{"id": "cand-a"}, {"id": "cand-b"}]}
@@ -82,6 +85,17 @@ CAL = {"candidates": {"LOCAL_BASELINE": {
 CYCLE = {"stages": [{"stage": "implementation", "status": "ran", "detail": "ok"},
                     {"stage": "model_panel", "status": "specified_not_run",
                      "detail": "gated"}]}
+IMPL_STAGE = {"cand-a": {"suites": [{"name": "s1", "passed": 1, "failed": 0},
+                                    {"name": "s2", "passed": 1, "failed": 0}],
+                         "passed": 2, "failed": 0, "pass_rate": 1.0},
+              "cand-b": {"suites": [], "passed": 0, "failed": 0,
+                         "pass_rate": None}}
+R1_PROFILES = {"cand-a": {"evidenced_ratio": 1.0},
+               "cand-b": {"evidenced_ratio": 0.5}}
+EVIDENCE_DOC = {"items": [
+    {"claim": "rfp:file.exists", "provenance": {"source": "github-api"}},
+    {"claim": "rfp:file.sha", "provenance": {"source": "github-api"}},
+    {"claim": "items.open", "provenance": {"source": "manual-record"}}]}
 
 LEDGER_COMMENTS = [{
     "id": 4242,
@@ -103,10 +117,12 @@ def _root(tmp_path):
     pdir = passes / "pass-1"
     (pdir / "cycle").mkdir(parents=True)
     (pdir / "pass.json").write_text(json.dumps(PASS_META))
+    R1["profiles"] = R1_PROFILES
     for name, obj in (("BALLOT-round1.json", R1), ("BALLOT-round2.json", R2),
                       ("CALIBRATION.json", CAL), ("CYCLE.json", CYCLE),
-                      ("EXPECTATIONS.json", EXP)):
+                      ("EXPECTATIONS.json", EXP), ("IMPLEMENTATION.json", IMPL_STAGE)):
         (pdir / "cycle" / name).write_text(json.dumps(obj))
+    (pdir / "evidence.json").write_text(json.dumps(EVIDENCE_DOC))
     (pdir / "implementation").mkdir()
     (pdir / "implementation" / "cand-a.json").write_text(json.dumps(IMPL_A))
     return active, passes
@@ -123,6 +139,17 @@ def test_feed_carries_only_what_the_record_holds(tmp_path):
     a = feed["proposals"][0]
     assert a["unverified_points"] == ["A thing nobody has checked. "
                                       "(evidence refs unresolved at generation time)"]
+    assert a["description"] == ["A point. (evidence: `x`)",
+                                 "A second point, also cited. (evidence: `y`)"]
+    basis = a["evidence_basis"]
+    assert basis["items"] == 3 and basis["sets"][0]["sha256"] == "ab12cd"
+    assert basis["sources"] == {"github-api": 2, "manual-record": 1}
+    assert basis["claim_areas"] == {"rfp": 2, "items": 1}
+    summary = a["implementation_summary"]
+    assert summary["suites"] == ["s1", "s2"]
+    assert summary["pass_rate"] == 1.0
+    assert summary["evidenced_ratio"] == 1.0
+    assert summary["all_suites_passed"] is True
     assert feed["sources"]["registry_updated_at"] == "2026-10-27T00:00:00Z"
     assert a["rounds"]["round_1"]["rank_of_this"] == 1
     assert a["rounds"]["round_1"]["scores_by_class"]["LOCAL_BASELINE"] == 30.0

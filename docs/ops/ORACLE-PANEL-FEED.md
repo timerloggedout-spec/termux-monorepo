@@ -26,6 +26,9 @@ must consume this feed and nothing else.
 |---|---|
 | Which proposals exist, titles, statuses | `docs/proposals/registry.yaml` — oracle-method entries only |
 | Generation provenance, evidence counts | `docs/proposals/active/<id>/PROVENANCE.json` |
+| Description | the `## Summary` bullets of each `MANIFEST.md`, verbatim (evidence citations retained) |
+| Evidence basis | `PROVENANCE.json` evidence sets (sha256 / items / assembled_at); source + claim-area composition only when the evidence set itself is committed (pass records) — otherwise those fields read null, never reconstructed |
+| Implementation summary | `docs/proposals/passes/<pass-id>/cycle/IMPLEMENTATION.json` (pass rate) + `cycle/BALLOT-round1.json` evidence profiles (evidenced ratio) + the per-candidate suite records |
 | UNVERIFIED points | the `## Unverified / open` section of each `MANIFEST.md` |
 | Round rankings, ballots by class, per-class scores, classes absent | `docs/proposals/passes/<pass-id>/cycle/BALLOT-round*.json` |
 | Expectations (priors, recorded before implementation) | `.../cycle/EXPECTATIONS.json` |
@@ -79,6 +82,15 @@ the records, and discrepancies are resolved in favor of the records.
     "status": "in_review", "priority": "P1", "path": "active/.../",
     "pass": "pass-id | null", "kind": "pass-candidate | single",
     "generated_at": "...", "generator": "...", "evidence_items": 0,
+    "description": ["MANIFEST Summary bullets, verbatim"] | null,
+    "evidence_basis": {"sets": [{"sha256": "...", "items": 0,
+                                 "assembled_at": "..."}],
+                       "items": 0,
+                       "sources": {"<source>": 0} | null,
+                       "claim_areas": {"<area>": 0} | null} | null,
+    "implementation_summary": {"suites": ["..."], "pass_rate": 1.0,
+                               "evidenced_ratio": 1.0,
+                               "all_suites_passed": true} | null,
     "unverified_points": ["..."],
     "rounds": null | {"round_1": {"ranking": [], "rank_of_this": 1,
                                   "ballots_by_class": {}, "scores_by_class": {},

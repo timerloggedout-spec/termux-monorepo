@@ -1,6 +1,6 @@
 {
   "schema": "oracle-panel-feed/v1",
-  "generated_at": "2026-10-27T09:07:36Z",
+  "generated_at": "2026-10-27T11:38:06Z",
   "generator": "scripts/delphi/oracle_panel_feed.py",
   "sources": {
     "registry": "docs/proposals/registry.yaml",
@@ -29,6 +29,25 @@
       "generated_at": "2026-10-27T08:18:26Z",
       "generator": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
       "evidence_items": 117,
+      "description": [
+        "Delphi Desk is a decision-review cockpit: a Delphi-style panel drafts proposals with evidence receipts, and every consequential action (approve / request changes / escalate / annotate) is one defineAction() shared by the human UI and the agent. (evidence: `d3.concept`, `delphistatus:file.blob_sha`)",
+        "The data model mirrors the repo's Delphi envelope and the CMDB conflict matrix (infrastructure registry design, 36 KB on master). (evidence: `cmdb:file.blob_sha`, `delphistatus:file.blob_sha`)",
+        "The starting machinery is operational and demonstrated: the offline Oracle MVP is merged (PR #1620) with a CI receipt, and the D0 package (agent + fetch_evidence tool) is its working seam, completed 2026-10-27. (evidence: `mvppr:pr.merged`, `d0entry:file.blob_sha`)",
+        "The panel runs deterministically and locally, so the demo never depends on an API key. (evidence: `delphistatus:file.blob_sha`, `d0entry:file.blob_sha`)"
+      ],
+      "evidence_basis": {
+        "sets": [
+          {
+            "sha256": "0327c452942eeca9480802300686030d9e9c1e8334e6be96acd24b7c5b4cf034",
+            "items": 117,
+            "assembled_at": "2026-10-27T08:18:19Z"
+          }
+        ],
+        "items": 117,
+        "sources": null,
+        "claim_areas": null
+      },
+      "implementation_summary": null,
       "unverified_points": [
         "Publishing a public Clips demo needs no Builder account. (evidence refs unresolved at generation time)"
       ],
@@ -52,6 +71,45 @@
       "generated_at": "2026-10-27T08:51:57Z",
       "generator": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
       "evidence_items": 123,
+      "description": [
+        "The deterministic baseline and frozen fixture corpus already exist and are merged (ITEMS-005 in review), and the kernel's receipt already reports E-01/E-03/E-05 metrics on that cohort. (evidence: `mvppr:pr.merged`, `items.open`)",
+        "The experiment matrix names E-05, E-01, E-03 as the recommended first three, all offline-runnable. (evidence: `matrix.first_three`)",
+        "This strategy closes the kernel side only: the model panel (ITEMS-006) and the deployment (ITEMS-007) stay blocked and are recorded specified_not_run. (evidence: `items.open`)"
+      ],
+      "evidence_basis": {
+        "sets": [
+          {
+            "sha256": "33b2e7ebbe746cbf788e9741eb4ef8b8debefc9fadc7ff3107774a660e0a3156",
+            "items": 123,
+            "assembled_at": "2026-10-27T08:51:39Z"
+          }
+        ],
+        "items": 123,
+        "sources": {
+          "github-api": 121,
+          "strands-proposal-record": 2
+        },
+        "claim_areas": {
+          "rfp": 3,
+          "itemsdoc": 3,
+          "debate": 3,
+          "matrix": 4,
+          "weighting": 3,
+          "d0entry": 3,
+          "mvppr": 103,
+          "items": 1
+        }
+      },
+      "implementation_summary": {
+        "suites": [
+          "e05_adversarial_firewall",
+          "e01_evidence_gate_delta",
+          "e03_counterfactual_replay"
+        ],
+        "pass_rate": 1.0,
+        "evidenced_ratio": 1.0,
+        "all_suites_passed": true
+      },
       "unverified_points": [],
       "rounds": {
         "round_1": {
@@ -178,6 +236,45 @@
       "generated_at": "2026-10-27T08:51:57Z",
       "generator": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
       "evidence_items": 123,
+      "description": [
+        "The collection contract (ITEMS-003) is defined in DEBATE.md \u2014 source classes, normalized envelope, workflow states \u2014 but no collector exists; intake is the missing piece. (evidence: `debate:file.blob_sha`, `items.open`)",
+        "A collector built now makes ITEMS-006 executable the moment a no-cost entitlement is validated, without enabling model voting today. (evidence: `debate:file.blob_sha`, `rfp:file.blob_sha`)",
+        "E-06 is its natural first test: tallies must be reconstructable from the collection receipt alone. (evidence: `matrix:file.blob_sha`)"
+      ],
+      "evidence_basis": {
+        "sets": [
+          {
+            "sha256": "33b2e7ebbe746cbf788e9741eb4ef8b8debefc9fadc7ff3107774a660e0a3156",
+            "items": 123,
+            "assembled_at": "2026-10-27T08:51:39Z"
+          }
+        ],
+        "items": 123,
+        "sources": {
+          "github-api": 121,
+          "strands-proposal-record": 2
+        },
+        "claim_areas": {
+          "rfp": 3,
+          "itemsdoc": 3,
+          "debate": 3,
+          "matrix": 4,
+          "weighting": 3,
+          "d0entry": 3,
+          "mvppr": 103,
+          "items": 1
+        }
+      },
+      "implementation_summary": {
+        "suites": [
+          "collector_intake_validation",
+          "collector_dedupe",
+          "e06_receipt_completeness"
+        ],
+        "pass_rate": 1.0,
+        "evidenced_ratio": 1.0,
+        "all_suites_passed": true
+      },
       "unverified_points": [],
       "rounds": {
         "round_1": {
@@ -304,6 +401,45 @@
       "generated_at": "2026-10-27T08:51:57Z",
       "generator": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
       "evidence_items": 123,
+      "description": [
+        "A working Lambda-shaped packaging of this oracle already exists and is completed (D0): handler, agent, evidence tool, demo receipts \u2014 with deployment claimed nowhere. (evidence: `d0entry:file.blob_sha`)",
+        "E-08 is simulable offline before any account exists, per the experiment matrix. (evidence: `matrix:file.blob_sha`)",
+        "The deployment step itself (ITEMS-007) stays specified_not_run under the card rule; this strategy builds everything up to that gate and nothing past it. (evidence: `items.open`, `rfp:file.blob_sha`)"
+      ],
+      "evidence_basis": {
+        "sets": [
+          {
+            "sha256": "33b2e7ebbe746cbf788e9741eb4ef8b8debefc9fadc7ff3107774a660e0a3156",
+            "items": 123,
+            "assembled_at": "2026-10-27T08:51:39Z"
+          }
+        ],
+        "items": 123,
+        "sources": {
+          "github-api": 121,
+          "strands-proposal-record": 2
+        },
+        "claim_areas": {
+          "rfp": 3,
+          "itemsdoc": 3,
+          "debate": 3,
+          "matrix": 4,
+          "weighting": 3,
+          "d0entry": 3,
+          "mvppr": 103,
+          "items": 1
+        }
+      },
+      "implementation_summary": {
+        "suites": [
+          "handler_conformance",
+          "e08_budget_breaker",
+          "no_deploy_claim"
+        ],
+        "pass_rate": 1.0,
+        "evidenced_ratio": 1.0,
+        "all_suites_passed": true
+      },
       "unverified_points": [],
       "rounds": {
         "round_1": {

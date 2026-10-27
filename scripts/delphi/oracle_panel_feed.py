@@ -86,16 +86,61 @@ def registry_updated_at(text: str) -> str | None:
     return m.group(1).strip() if m else None
 
 
-def unverified_points(manifest_text: str) -> list[str]:
-    points = []
+def _section_bullets(manifest_text: str, heading: str) -> list[str]:
+    bullets = []
     in_section = False
     for line in manifest_text.splitlines():
         if line.startswith("## "):
-            in_section = "Unverified" in line
+            in_section = heading in line
             continue
-        if in_section and line.strip().startswith("- UNVERIFIED:"):
-            points.append(line.strip()[2:].removeprefix("UNVERIFIED:").strip())
-    return points
+        if in_section and line.strip().startswith("- "):
+            bullets.append(line.strip()[2:])
+    return bullets
+
+
+def unverified_points(manifest_text: str) -> list[str]:
+    return [b.removeprefix("UNVERIFIED:").strip()
+            for b in _section_bullets(manifest_text, "Unverified")
+            if b.startswith("UNVERIFIED:")]
+
+
+def summary_bullets(manifest_text: str) -> list[str]:
+    """The MANIFEST ## Summary bullets, verbatim (evidence citations
+    retained) — the proposal's description as the record wrote it."""
+    return _section_bullets(manifest_text, "Summary")
+
+
+def evidence_basis(prov: dict, evidence_doc: dict | None) -> dict:
+    """What the proposal rests on, from the records only.
+
+    The per-set facts (sha256, item count, assembly time) come from
+    PROVENANCE. Source/claim-area composition is added only when
+    the evidence set itself is in the repo (pass records); for a
+    single generation whose set was not committed, those fields
+    read null — never reconstructed.
+    """
+    sets = prov.get("evidence_sets") or []
+    basis = {
+        "sets": [{"sha256": s.get("sha256"), "items": s.get("items"),
+                  "assembled_at": s.get("assembled_at")} for s in sets],
+        "items": sum(s.get("items") or 0 for s in sets),
+        "sources": None,
+        "claim_areas": None,
+    }
+    if evidence_doc:
+        items = evidence_doc.get("items") or []
+        sources: dict[str, int] = {}
+        areas: dict[str, int] = {}
+        for item in items:
+            src = (item.get("provenance") or {}).get("source") or "unknown"
+            sources[src] = sources.get(src, 0) + 1
+            claim = str(item.get("claim") or "")
+            area = claim.replace(":", ".").split(".")[0]
+            if area:
+                areas[area] = areas.get(area, 0) + 1
+        basis["sources"] = sources
+        basis["claim_areas"] = areas
+    return basis
 
 
 def ledger_payloads(comments: list[dict]) -> dict[str, dict]:
@@ -144,7 +189,7 @@ def build_feed(registry_text: str, active_dir: Path, passes_dir: Path,
             cycle = {}
             for name in ("BALLOT-round1.json", "BALLOT-round2.json",
                          "CALIBRATION.json", "CYCLE.json",
-                         "EXPECTATIONS.json"):
+                         "EXPECTATIONS.json", "IMPLEMENTATION.json"):
                 f = cycle_dir / name
                 if f.exists():
                     cycle[name] = json.loads(f.read_text())
@@ -153,8 +198,13 @@ def build_feed(registry_text: str, active_dir: Path, passes_dir: Path,
             if impl_dir.is_dir():
                 for f in impl_dir.glob("*.json"):
                     impl[f.stem] = json.loads(f.read_text())
+            evidence_doc = None
+            if (pass_dir / "evidence.json").exists():
+                evidence_doc = json.loads(
+                    (pass_dir / "evidence.json").read_text())
             passes[meta["pass_id"]] = {"meta": meta, "cycle": cycle,
-                                       "impl": impl, "dir": pass_dir}
+                                       "impl": impl, "evidence": evidence_doc,
+                                       "dir": pass_dir}
 
     proposals = []
     for entry in oracle_entries:
@@ -164,8 +214,11 @@ def build_feed(registry_text: str, active_dir: Path, passes_dir: Path,
         if (pdir / "PROVENANCE.json").exists():
             prov = json.loads((pdir / "PROVENANCE.json").read_text())
         unverified = []
+        description = []
         if (pdir / "MANIFEST.md").exists():
-            unverified = unverified_points((pdir / "MANIFEST.md").read_text())
+            manifest_text = (pdir / "MANIFEST.md").read_text()
+            unverified = unverified_points(manifest_text)
+            description = summary_bullets(manifest_text)
         pass_id = prov.get("pass_id")
         item = {
             "id": pid,
@@ -180,6 +233,9 @@ def build_feed(registry_text: str, active_dir: Path, passes_dir: Path,
             "generator": prov.get("generator"),
             "evidence_items": sum(s.get("items", 0)
                                   for s in prov.get("evidence_sets", [])),
+            "description": description or None,
+            "evidence_basis": None,
+            "implementation_summary": None,
             "unverified_points": unverified,
             "rounds": None,
             "expectations": None,
@@ -189,8 +245,30 @@ def build_feed(registry_text: str, active_dir: Path, passes_dir: Path,
             "ledger": None,
             "live": True,
         }
+        if prov.get("evidence_sets"):
+            doc = (passes.get(pass_id) or {}).get("evidence") if pass_id else None
+            item["evidence_basis"] = evidence_basis(prov, doc)
         if pass_id and pass_id in passes:
             cyc = passes[pass_id]["cycle"]
+            impl_stage = (cyc.get("IMPLEMENTATION.json") or {}).get(pid) or {}
+            impl_suites = (passes[pass_id]["impl"].get(pid) or {}).get("suites") or []
+            raw_profiles = (cyc.get("BALLOT-round1.json") or {}).get("profiles")
+            if isinstance(raw_profiles, list):
+                profiles = {(p.get("candidate") or p.get("id")): p
+                            for p in raw_profiles if isinstance(p, dict)}
+            elif isinstance(raw_profiles, dict):
+                profiles = raw_profiles
+            else:
+                profiles = {}
+            profile = profiles.get(pid) or {}
+            if impl_stage or impl_suites:
+                item["implementation_summary"] = {
+                    "suites": [s.get("name") for s in impl_suites],
+                    "pass_rate": impl_stage.get("pass_rate"),
+                    "evidenced_ratio": profile.get("evidenced_ratio"),
+                    "all_suites_passed": bool(impl_suites) and all(
+                        (s.get("failed") or 0) == 0 for s in impl_suites),
+                }
             r1 = cyc.get("BALLOT-round1.json") or {}
             r2 = cyc.get("BALLOT-round2.json") or {}
             def scores(ballot: dict) -> dict:

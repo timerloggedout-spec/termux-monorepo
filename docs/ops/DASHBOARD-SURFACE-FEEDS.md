@@ -39,7 +39,9 @@ sources, honesty_rules, data, gaps}`.
 - **DoE** — `deepcli/deepcli/observatory/doe.py` (AST: functions +
   docstrings), `.agents/skills/multivariate-doe/SKILL.md`, the ATES doc
   §DoE (first factorial slice), the DSPy lane design doc. The Delphi
-  cycle IMPLEMENTATION record is a citation only — no payload.
+  cycle IMPLEMENTATION record is presented in full as
+  `executed_comparisons`, labeled `owner_surface: delphi` (required
+  presentation — not DoE results).
 - **ATES** — `docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md` §MVT (the seven
   invariants), the benchmark and run-receipt workflows, the
   experiment-loop workflow as execution vehicle,

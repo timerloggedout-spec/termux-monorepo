@@ -29,7 +29,7 @@
 <div class="hero">
 <p class="eyebrow">Oracle Panel · Delphic Oracle Method</p>
 <h1>Delphi proposal results</h1>
-<p class="sub">Every proposal the Oracle Method has generated, with its pass, round rankings, calibration deltas, and honest statuses. This panel consumes the Delphi lane's feed (<code>data/oracle-panel-feed.json</code>, contract <code>docs/ops/ORACLE-PANEL-FEED.md</code>) and nothing else: a value the record doesn't hold renders as absent, never synthesized.</p>
+<p class="sub">Every proposal the Oracle Method has generated — what it proposes, its evidence basis, its pass, round rankings, what its implementation round did, calibration deltas, and honest statuses. This panel consumes the Delphi lane's feed (<code>data/oracle-panel-feed.json</code>, contract <code>docs/ops/ORACLE-PANEL-FEED.md</code>) and nothing else: a value the record doesn't hold renders as absent, never synthesized.</p>
 </div>
 </header>
 <main>
@@ -90,6 +90,23 @@ function renderProposal(p){
   let h='<article class="prop"><p class="eyebrow">'+esc(p.id)+'</p><h3>'+esc(p.title)+'</h3>';
   h+='<div class="chips">'+pill('status: '+p.status,'gold')+pill('priority: '+p.priority)+pill(p.kind==='single'?'generated singly':'pass candidate: '+p.pass)+pill(p.live?'live':'not live',p.live?'ok':'bad')+'</div>';
   h+='<p class="meta">Generated '+esc(p.generated_at)+' · evidence items: '+esc(p.evidence_items)+' · <a href="'+GH+'/tree/master/docs/proposals/'+esc(p.path)+'">proposal record</a></p>';
+  if(Array.isArray(p.description)&&p.description.length){
+    h+='<h4>What it proposes</h4><ul>'+p.description.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul><p class="meta">Verbatim from the proposal\'s MANIFEST summary — the record\'s own prose, evidence citations intact.</p>';
+  } else {
+    h+='<p class="meta">Description: none in the feed for this proposal.</p>';
+  }
+  if(p.evidence_basis!=null){
+    const eb=p.evidence_basis;
+    h+='<h4>Evidence basis</h4><ul class="feed-list">'+(eb.sets||[]).map(s=>'<li><span>evidence set <code>'+esc((s.sha256||'').slice(0,12))+'…</code> · assembled '+esc(s.assembled_at)+'</span><span>'+esc(s.items)+' items</span></li>').join('')+'</ul>';
+    if(eb.sources!=null){
+      h+='<p class="meta">Sources: '+Object.keys(eb.sources).sort().map(k=>esc(k)+' '+esc(eb.sources[k])).join(' · ')+'</p>';
+    } else {
+      h+='<p class="meta">Source composition: not recorded in the feed — the evidence set\'s contents were not committed for this proposal, so no composition is shown rather than a reconstructed one.</p>';
+    }
+    if(eb.claim_areas!=null){
+      h+='<div class="chips">'+Object.keys(eb.claim_areas).sort().map(k=>pill(k+': '+eb.claim_areas[k])).join('')+'</div>';
+    }
+  }
   if(Array.isArray(p.unverified_points)&&p.unverified_points.length){
     h+='<div class="unverified"><strong>UNVERIFIED points (first-class status, from the record):</strong><ul>'+p.unverified_points.map(u=>'<li>'+esc(u)+'</li>').join('')+'</ul></div>';
   } else {
@@ -103,6 +120,10 @@ function renderProposal(p){
   if(p.expectations!=null){
     h+='<h4>Expectations recorded for this proposal</h4><ul class="feed-list">'+Object.keys(p.expectations).sort().map(src=>{const e=p.expectations[src];return '<li><span><strong>'+esc(src)+'</strong> — expected rank '+esc(e.expected_rank)+' · expected score '+esc(e.expected_score)+(e.tolerance!=null?' · tolerance '+esc(e.tolerance):'')+'</span></li>'}).join('')+'</ul>';
     if('expectations_recorded_before_implementation' in p) h+='<p class="meta">Recorded before implementation (per feed): '+pill(p.expectations_recorded_before_implementation?'yes':'no',p.expectations_recorded_before_implementation?'ok':'gold')+'</p>';
+  }
+  if(p.implementation_summary!=null){
+    const is2=p.implementation_summary;
+    h+='<h4>What the implementation round did</h4><p>Built and exercised the candidate\'s own suites: '+(is2.suites||[]).map(s=>'<code>'+esc(s)+'</code>').join(', ')+'.</p><ul class="feed-list"><li><span>pass rate</span><span>'+esc(is2.pass_rate)+'</span></li><li><span>evidenced ratio</span><span>'+esc(is2.evidenced_ratio)+'</span></li><li><span>all suites passed</span>'+pill(is2.all_suites_passed?'yes':'no',is2.all_suites_passed?'ok':'bad')+'</li></ul>';
   }
   if(p.implementation!=null){
     const im=p.implementation;

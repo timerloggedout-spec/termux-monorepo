@@ -1,0 +1,82 @@
+name: classifier-trial-dispatch
+
+# First execution surface for the Tier 1 classifier quartet
+# (deepcli/deepcli/observatory: Mev -> Jev -> Kev -> Laya).
+# Dispatch-only by design: a run happens when an operator asks for one,
+# and the run fails unless a real trial produced a winning artifact.
+# Free-only by default (owner rule): the dispatch refuses non-free
+# routes unless free_only is explicitly turned off for the run.
+
+on:
+  workflow_dispatch:
+    inputs:
+      prompt:
+        description: "Trial prompt"
+        required: true
+        default: "In one sentence, what does a pull-request classifier do?"
+      provider:
+        description: "Producer endpoint prov:model"
+        required: true
+        default: "gemini:gemini-2.5-flash"
+      judge:
+        description: "Judge endpoint prov:model (must differ from the producer)"
+        required: true
+        default: "openrouter:openrouter/free"
+      rubric_json:
+        description: "Rubric JSON object (empty = quality + grounding default)"
+        required: false
+        default: ""
+      reference_text:
+        description: "Optional reference text for Kev token-F1 verification"
+        required: false
+        default: ""
+      task:
+        description: "Trial task label"
+        required: true
+        default: "classifier-smoke"
+      free_only:
+        description: "Refuse non-free routes (turn off only with explicit owner approval)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  trial:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run observatory trial (Mev -> Jev -> Kev -> Laya)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          HS_REMOTE_URL: ${{ secrets.HINDSIGHT_BASE_URL }}
+          HINDSIGHT_API_KEY: ${{ secrets.HINDSIGHT_API_KEY }}
+          HINDSIGHT_BANK_ID: ${{ secrets.HINDSIGHT_BANK_ID }}
+          TRIAL_PROMPT: ${{ inputs.prompt }}
+          TRIAL_PROVIDER: ${{ inputs.provider }}
+          TRIAL_JUDGE: ${{ inputs.judge }}
+          TRIAL_RUBRIC: ${{ inputs.rubric_json }}
+          TRIAL_REFERENCE: ${{ inputs.reference_text }}
+          TRIAL_TASK: ${{ inputs.task }}
+        working-directory: deepcli
+        run: |
+          python -m deepcli.observatory.dispatch \
+            --prompt "$TRIAL_PROMPT" \
+            --provider "$TRIAL_PROVIDER" \
+            --judge "$TRIAL_JUDGE" \
+            --rubric "$TRIAL_RUBRIC" \
+            --reference "$TRIAL_REFERENCE" \
+            --task "$TRIAL_TASK" \
+            --out "$GITHUB_WORKSPACE/trial-record.json" \
+            ${{ inputs.free_only && '' || '--allow-paid' }}
+      - name: Upload trial record
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: classifier-trial-record
+          path: trial-record.json

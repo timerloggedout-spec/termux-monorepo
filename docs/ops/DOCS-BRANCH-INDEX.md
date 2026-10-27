@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-10-27T08:21:44Z` UTC  
+**Generated:** `2026-10-27T08:56:24Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 120 docs-lane branch(es)
+**Count:** 123 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -46,10 +46,13 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/challenge-entries-log`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/challenge-entries-log) | `b2b4cb5181c4` | — | — | orphan lane |
 | [`docs/challenge-entries-log-d0-completed`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/challenge-entries-log-d0-completed) | `8e7f3afefa5b` | — | — | orphan lane |
 | [`docs/challenge-entries-log-d0-completion`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/challenge-entries-log-d0-completion) | `13bfc0f239b8` | — | — | orphan lane |
+| [`docs/challenge-entries-log-d3-generated-basis`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/challenge-entries-log-d3-generated-basis) | `2011b3ecc47e` | — | — | orphan lane |
+| [`docs/challenge-entries-log-eligibility-enforcement`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/challenge-entries-log-eligibility-enforcement) | `1d292a2877aa` | — | — | orphan lane |
 | [`docs/challenge-entries-log-generation-first`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/challenge-entries-log-generation-first) | `de0a9459a60a` | — | — | orphan lane |
 | [`docs/challenge-entries-log-owner-decision`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/challenge-entries-log-owner-decision) | `236f83aef98d` | — | — | orphan lane |
 | [`docs/citation-corpus-provider-expansion`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/citation-corpus-provider-expansion) | `0aeea3ec221a` | — | — | orphan lane |
 | [`docs/claude-md-primary-entry`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/claude-md-primary-entry) | `ad716d0c806e` | — | — | orphan lane |
+| [`docs/claude-recon-before-relay`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/claude-recon-before-relay) | `dbd492809a4b` | — | — | orphan lane |
 | [`docs/codespace-bifrost-006-run`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/codespace-bifrost-006-run) | `3edb2bd66392` | — | — | orphan lane |
 | [`docs/connected-platform-recon-20261021`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/connected-platform-recon-20261021) | `b94d64c04931` | — | — | orphan lane |
 | [`docs/context7-mintlify-agent-discoverability`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/context7-mintlify-agent-discoverability) | `35c1f2bd5bbe` | [#1617](https://github.com/timerloggedout-spec/termux-monorepo/pull/1617)→`master` | — | PR without registry link |

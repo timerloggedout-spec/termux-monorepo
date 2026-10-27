@@ -152,8 +152,12 @@ def render_rfp(brief: dict, evidence_sets: list[dict], generated_at: str) -> str
     ]
     for point in evidenced:
         lines.append(f"- {point['text']}{_cite(point, index)}")
+    plan = brief.get("plan")
+    if _plan_complete(plan):
+        lines += _render_plan(plan)
     if unverified:
-        lines += ["", "## 3. Unverified / open", ""]
+        num = "4" if _plan_complete(plan) else "3"
+        lines += ["", f"## {num}. Unverified / open", ""]
         for point in unverified:
             lines.append(f"- UNVERIFIED: {point['text']}")
     lines += [
@@ -170,10 +174,40 @@ def render_rfp(brief: dict, evidence_sets: list[dict], generated_at: str) -> str
     return "\n".join(lines)
 
 
+def _plan_complete(plan) -> bool:
+    return (isinstance(plan, dict)
+            and all(isinstance(plan.get(k), list) and plan[k]
+                    for k in ("steps", "risks", "alternatives")))
+
+
+def _check_plan(brief: dict) -> None:
+    """Robustness floor (owner, 2026-10-27): a brief that declares
+    require_plan refuses to generate a proposal without a substantive
+    plan — steps, risks, and alternatives considered, supplied by the
+    brief author and rendered verbatim. A generated skeleton with no
+    plan is not a proposal."""
+    if brief.get("require_plan") and not _plan_complete(brief.get("plan")):
+        raise ValueError(
+            f"brief {brief.get('id')!r} declares require_plan but its "
+            "plan is missing or incomplete (needs non-empty steps, "
+            "risks, alternatives) — generation refused")
+
+
+def _render_plan(plan: dict) -> list[str]:
+    lines = ["", "## 3. Plan", "", "**Steps:**", ""]
+    lines += [f"{i}. {s}" for i, s in enumerate(plan["steps"], 1)]
+    lines += ["", "**Risks:**", ""]
+    lines += [f"- {r}" for r in plan["risks"]]
+    lines += ["", "**Alternatives considered:**", ""]
+    lines += [f"- {a}" for a in plan["alternatives"]]
+    return lines
+
+
 def generate(brief: dict, evidence_sets: list[dict],
              generated_at: str | None = None) -> dict[str, str]:
     generated_at = generated_at or datetime.now(timezone.utc).strftime(
         "%Y-%m-%dT%H:%M:%SZ")
+    _check_plan(brief)
     docs = {
         "MANIFEST.md": render_manifest(brief, evidence_sets, generated_at),
         "ITEMS.md": render_items(brief),
@@ -230,7 +264,8 @@ def generate_pass(pass_brief: dict, evidence_sets: list[dict],
     for variant in variants:
         brief = {k: v for k, v in pass_brief.items() if k != "variants"}
         brief.update({k: variant[k] for k in
-                      ("summary_points", "items", "executive_request")
+                      ("summary_points", "items", "executive_request",
+                       "plan")
                       if k in variant})
         brief["id"] = f"{pass_brief['id']}-{variant['suffix']}"
         brief["title"] = variant.get("title") or (

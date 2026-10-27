@@ -1,7 +1,7 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-10-27T08:52:00Z"
-updated_by: oracle-method
+updated_at: "2026-10-27T13:52:00Z"
+updated_by: tier1-classifiers-steward
 
 proposals:
   - id: agent-contributor-provenance
@@ -736,5 +736,19 @@ proposals:
         status: requested
     related_issues: [1487, 1489]
     related_prs: [1611, 1620, 1702]
+    related_branches: []
+    gates_required: [proposal-lifecycle, repo-gate]
+  - id: system-one-classifier-census
+    title: "System One classifier census — the full decision-model ecosystem as the Tier-1 extension backlog"
+    author: Perplexity
+    status: posted
+    priority: P1
+    path: active/system-one-classifier-census/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: []
+    related_prs: [1754, 1782, 1786]
     related_branches: []
     gates_required: [proposal-lifecycle, repo-gate]

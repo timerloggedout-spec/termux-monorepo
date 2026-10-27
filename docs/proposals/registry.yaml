@@ -1,6 +1,6 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-10-27T08:18:26Z"
+updated_at: "2026-10-27T08:52:00Z"
 updated_by: oracle-method
 
 proposals:
@@ -694,5 +694,47 @@ proposals:
         status: requested
     related_issues: []
     related_prs: [1620, 1655, 1701, 1702]
+    related_branches: []
+    gates_required: [proposal-lifecycle, repo-gate]
+  - id: strands-rfp-response-kernel-first
+    title: "Strands RFP response — kernel-first: executable E-05/E-01/E-03 on the merged offline kernel"
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: active/strands-rfp-response-kernel-first/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: [1487, 1489]
+    related_prs: [1611, 1620, 1702]
+    related_branches: []
+    gates_required: [proposal-lifecycle, repo-gate]
+  - id: strands-rfp-response-collection-first
+    title: "Strands RFP response — collection-first: build the DEBATE collection plane (ITEMS-003)"
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: active/strands-rfp-response-collection-first/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: [1487, 1489]
+    related_prs: [1611, 1620, 1702]
+    related_branches: []
+    gates_required: [proposal-lifecycle, repo-gate]
+  - id: strands-rfp-response-packaging-first
+    title: "Strands RFP response — packaging-first: D0 Lambda shape as the deployment shape, to the account gate"
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: active/strands-rfp-response-packaging-first/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: [1487, 1489]
+    related_prs: [1611, 1620, 1702]
     related_branches: []
     gates_required: [proposal-lifecycle, repo-gate]

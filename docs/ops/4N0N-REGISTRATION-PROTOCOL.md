@@ -68,7 +68,8 @@ of record. Tooling: `scripts/registration_monikers/registry.py`
 
 | Platform | Role{Moniker} | Profile (Profile Registry heading) | Status | Registrations | Owning lane |
 |---|---|---|---|---|---|
-| AWS Builder Center | `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]` | AWS Builder Center | active | R1, R2, R3, D1 | challenge-entries |
+| AWS Builder Center | `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]` | AWS Builder Center | active | R1, R2, D0, R3, D1 | challenge-entries |
+| BOINC | `entrant{entrantBoinc}[platform:boinc]` | BOINC | registering | — | boinc |
 | Builder.io | `entrant{entrantBuilderIo}[platform:builder-io]` | Builder.io / Clips | active | D3 | challenge-entries |
 | Devpost | `entrant{entrantDevpost}[platform:devpost]` | Devpost | blocked-owner-gate | D4 | challenge-entries |
 | Kiro | `entrant{entrantKiro}[platform:kiro]` | Kiro | blocked-owner-gate | D4 | challenge-entries |
@@ -163,8 +164,11 @@ registry's escalation routes depend on them:
 - **Devpost account sign-in/creation** — D4 stopped at this gate.
 - **A Kiro user ID (or AWS account ID)** — completes D4 registration.
 - **Vultr account flow** — no-card path only (standing card BLOCK).
-- **Builder.io Clips publishing** — if a public demo needs a Builder
-  account, the step is owner-gated and surfaces immediately.
+
+Resolved since first listing: **Builder.io Clips** — the open question
+(account needed for a public demo?) closed 2026-10-27: the hosted
+Clips account exists (owner-approved; state in the Profile Registry),
+and demo publishing proceeds under `entrant{entrantBuilderIo}`.
 
 ## 7. Proposed challenge-log template change
 

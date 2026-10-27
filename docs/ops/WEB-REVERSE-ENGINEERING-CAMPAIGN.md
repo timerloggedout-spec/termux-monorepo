@@ -85,6 +85,19 @@ BLU B160V (crash / resource-exit Termux). Tier-1 thin engines on-device;
 everything Chromium/Firefox-class offloaded, driven over CDP-WebSocket /
 SSE / JSONL. See `docs/repositories/STARS-FORKS-WATCH.md` §3.
 
+## Registered environments
+
+Environments registered for RE / pentest work that are **not** taxonomy
+candidates. The taxonomy folds the Foundry catalog + browser-lane candidate
+sets exactly once (31 nodes, test-pinned in
+`tests/test_web_adapter_foundry.py`); an environment with no
+GitHub-canonical source has no fold, so it is registered here instead. If
+one ever enters a candidate set, it folds in through the normal pipeline.
+
+| Environment | Registered | Why it's here | Fleet fit |
+|---|---|---|---|
+| **Kali Linux** (kali.org · build scripts: gitlab.com/kalilinux) | 2026-10-26, at release 2026.3 | The lane's reference penetration-testing / RE environment, registered at the owner's direction as an *agentic environment* — a full toolset image an agent is given as its workbench, not another single-purpose adapter. | **Offload / container only.** 2026.3's refreshed build scripts each ship `build-in-container.sh` (auto-detects Docker/Podman, builds the official image inside a container; the full refresh is aimed at 2026.4), so images are built where containers run — never on the B160V. NetHunter is Kali's Android surface; it belongs to the device lanes and is not dispatched from here. New in 2026.3 and relevant to this campaign: `katana` (crawling/spidering), `dalfox` (XSS), `qsreplace`, `rustscan`, `snaffler-ng`. Status: registered reference environment — not a Foundry upstream, no fleet install yet. |
+
 ## Campaign order of operations
 
 1. ✅ Foundry core + iDEAL doc (#1550) · ✅ Stars|Forks|Watch consolidation

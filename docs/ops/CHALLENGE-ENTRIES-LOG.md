@@ -24,6 +24,11 @@ registrations, submissions, and prepared candidates — for
 Builder identity used throughout: AWS Builder Center profile
 [@1337dia590r1c8u1ldr](https://builder.aws.com/community/@1337dia590r1c8u1ldr),
 display name "'Founders' are 'found' to implement.", created 2026-10-23.
+Platform identities across all venues are fronted by Role{Moniker} monikers
+under the 4n0n protocol — registry of record:
+`config/registration_monikers.json`, protocol:
+`docs/ops/4N0N-REGISTRATION-PROTOCOL.md`. Each registration (§1) and packet
+(§4) carries its canonical moniker.
 
 ---
 
@@ -32,11 +37,11 @@ display name "'Founders' are 'found' to implement.", created 2026-10-23.
 Evidence for all three: platform confirmation emails to the owner's Gmail
 from `notifications@builder.aws.com` (message IDs cited).
 
-| # | Event | Window (PT) | Joined (PT) | Evidence |
-|---|-------|-------------|-------------|----------|
-| R1 | Agent Experience Hackathon: Strands Decider (AWS Builder Center) | Oct 16 12:00 AM – Oct 23 11:59 PM PDT | 2026-10-23 17:27 | Gmail msg `1a16b4e87bbf0c55`; platform ID `4f50957c-1d08-37ab-b11c-97516b9adeb4` |
-| R2 | Weekend Challenge: Give your Agent a Tool (AWS Builder Center) | Oct 23 12:00 AM – Oct 26 1:00 PM PDT | 2026-10-23 23:40 | Gmail msg `1a16ca3f96d0508c`; platform ID `2e275689-b202-316e-93b8-10cd6d6d1e4a` |
-| R3 | Strands SDK: Workshop to Ship (AWS Builder Center) | Oct 28 12:00 AM – Nov 4 11:59 PM PDT | 2026-10-23 23:40 | Gmail msg `1a16ca3fb608dcf9`; platform ID `8311dcb5-1ece-3d62-a441-2e1c2ad90b86` |
+| # | Event | Window (PT) | Joined (PT) | Role{Moniker} | Evidence |
+|---|-------|-------------|-------------|---------------|----------|
+| R1 | Agent Experience Hackathon: Strands Decider (AWS Builder Center) | Oct 16 12:00 AM – Oct 23 11:59 PM PDT | 2026-10-23 17:27 | `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]` | Gmail msg `1a16b4e87bbf0c55`; platform ID `4f50957c-1d08-37ab-b11c-97516b9adeb4` |
+| R2 | Weekend Challenge: Give your Agent a Tool (AWS Builder Center) | Oct 23 12:00 AM – Oct 26 1:00 PM PDT | 2026-10-23 23:40 | `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]` | Gmail msg `1a16ca3f96d0508c`; platform ID `2e275689-b202-316e-93b8-10cd6d6d1e4a` |
+| R3 | Strands SDK: Workshop to Ship (AWS Builder Center) | Oct 28 12:00 AM – Nov 4 11:59 PM PDT | 2026-10-23 23:40 | `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]` | Gmail msg `1a16ca3fb608dcf9`; platform ID `8311dcb5-1ece-3d62-a441-2e1c2ad90b86` |
 
 Account creation itself is also verified: "Welcome to the AWS Builder Center
 community", 2026-10-23 17:20 PT (Gmail msg `1a16b477c91e5b07`). The complete
@@ -78,9 +83,17 @@ checked:
 entries." The evidence supports exactly three *registrations* and zero
 *submissions*. If "entries" meant filed submissions, the verified count is 0,
 not a few. Prepared material did exist — the Delphi Oracle RFP (PR #1611,
-merged) and an offline Oracle MVP (PR #1620, open; intake hardening PR #1630,
-open draft) — but per the manifest it was never submitted, and it records zero
+merged) and an offline Oracle MVP (PR #1620, merged 2026-10-26 as
+81a0d77be3ae; intake hardening PR #1630, open draft) — but per the manifest it
+was never submitted, and it records zero
 external/AWS calls by design.
+
+**Owner ruling (2026-10-27 00:03 PT):** R2 is completed anyway — "we
+complete the entry even though its window has passed, because we entered it."
+The finished package is recorded as packet **D0** (§4) with a completion date
+of **Thu Oct 29, 2026**. A post-window completion is not a submission and does
+not change the verified count above; if the platform is ever found to accept
+the filing, that will be recorded here with its own evidence.
 
 ## 3. Candidate opportunities (deadline after 2026-10-26)
 
@@ -130,7 +143,7 @@ each other):
 
 | When (PT) | Focus |
 |-----------|-------|
-| Oct 27–29 | D3 scaffold + core actions (build window open since Oct 19); D1 agent drafted locally, published in-window; D2 registration/sandbox recon |
+| Oct 27–29 | **D0 Weekend Challenge completion package — due Thu Oct 29** (predecessor: D1 reuses this agent work); D3 scaffold + core actions (build window open since Oct 19); D1 agent drafted locally, published in-window; D2 registration/sandbox recon |
 | Oct 28 | D1 window opens — workshop completion (owner account) + agent repo goes public |
 | Oct 30–Nov 1 | **D3 build weekend (concentrated)**; Kiroween window opens Oct 30 — no project creation (owner sequencing) |
 | Nov 2 | D3 Clips demo + submit by 11:59 PM PT |
@@ -142,7 +155,49 @@ each other):
 profile (§2).** It gates D1 directly and is the first blocker surfaced wherever
 a submission path reaches an owner-account step.
 
+### D0 — for R2, Weekend Challenge: Give your Agent a Tool — COMPLETION (owner ruling 2026-10-27)
+
+`entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]`
+
+- **Completion date: Thu Oct 29, 2026** (owner ruling 2026-10-27 00:03 PT:
+  the entry is completed even though the window closed Oct 26, 1:00 PM PT,
+  because the fleet entered it — R2). D1 reuses this agent work, so D0 is the
+  predecessor in the schedule; it displaces nothing dated.
+- **Entry as it would have been submitted** (challenge format: starting agent
+  + one new tool + why + ≥1 AWS service + <3-min demo):
+  - *Starting agent:* the Delphi Oracle — the deterministic evidence-gate
+    oracle (offline MVP merged 2026-10-26, `scripts/delphi/strands_oracle_mvp.py`,
+    PR #1620 → 81a0d77be3ae). It judges a proposed consequential action against
+    an evidence set and returns ALLOW_RECOMMENDATION / ABSTAIN / ESCALATE with
+    a versioned receipt. Its limit: it can only judge evidence it is handed.
+  - *The one new tool:* `fetch_evidence` — given a decision request naming an
+    artifact (a PR, a file, a check run), the tool retrieves the artifact's
+    current state read-only and assembles a material evidence set with
+    provenance and freshness stamps for the oracle to judge. The agent stops
+    grading asserted evidence and starts grading fetched evidence.
+  - *Why:* the fleet's standing rule is evidence over claims; this is that
+    rule as a tool. It is also the exact seam between the Delphi material and
+    D1's Decider-gated agent.
+  - *AWS service:* the tool is packaged as an **AWS Lambda** handler behind a
+    Strands agent (the Decider pattern targets Amazon Bedrock). The
+    completion record runs it locally against this public repo — no AWS
+    account exists (card rule), and nothing in the package claims a live AWS
+    deployment.
+  - *Demo:* <3-minute scripted walkthrough (no-evidence request → ABSTAIN;
+    tool fetches the PR's real checks → ALLOW_RECOMMENDATION with receipt;
+    credential-mutation request → ESCALATE), with the real run output captured
+    as evidence.
+- **Package home:** `apps/weekend-challenge-delphi-oracle/` (agent + tool,
+  entry text, demo script, run evidence). Angle coordinated with the Delphi
+  lane, which owns the underlying material.
+- **Platform state:** window closed; the challenge page shows Ended — a late
+  filing is not accepted. The finished package stands as the completion
+  record. (Submission would additionally require the owner's signed-in
+  account and the completed profile, §2.)
+
 ### D1 — for C1, Workshop to Ship — IN PROGRESS (owner already joined)
+
+`entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]`
 
 - **Concept:** "Proof Before Help" — a climate-resilience agent (cooling-center
   / shelter router for extreme-heat events) whose consequential tool calls are
@@ -168,6 +223,8 @@ a submission path reaches an owner-account step.
 
 ### D2 — for C2, Vultr Agent Rush (Foundry entry) — IN PROGRESS
 
+`entrant{entrantLablabAi}[platform:lablab-ai]` + `entrant{entrantVultr}[platform:vultr]`
+
 - **Concept:** the Web Adapter Foundry as a sandboxed browser-operating agent:
   given a target brief, the agent plans a bounded adapter probe, executes it
   in the Vultr sandbox, and returns an evidence envelope (what was fetched,
@@ -187,6 +244,8 @@ a submission path reaches an owner-account step.
   never worked around.
 
 ### D3 — for C3, Builder.io Agent-Native Hackathon — IN PROGRESS (scoped 2026-10-26)
+
+`entrant{entrantBuilderIo}[platform:builder-io]`
 
 - **Verified from the official page (2026-10-26):** no registration required;
   build window open since Oct 19; final weekend Oct 30–Nov 1; submit by
@@ -218,6 +277,8 @@ a submission path reaches an owner-account step.
   (receipt pattern), PR #1655 CMDB design (conflict matrix / reconciliation).
 
 ### D4 — for C4, Kiroween 2026 — REGISTERING (build sequenced after Nov 8)
+
+`entrant{entrantDevpost}[platform:devpost]` + `entrant{entrantKiro}[platform:kiro]` — account creation owned by the dedicated Devpost + Kiro ID creation chat (owner order 2026-10-27, fleet Google identity route); registration completes with this lane on its handoff.
 
 - **Verified from the official page (2026-10-26):** registration open now;
   full rules publish and submissions open **Oct 30, 1:00 PM PDT**; deadline

@@ -16,6 +16,16 @@
   },
   "generation": {
     "proposals_per_pass": 3,
+    "cycle": {
+      "rounds": 2,
+      "expectation_format": "per-candidate expected rank + expected weighted score per source class, recorded before implementation; brief-supplied human expectations take precedence for their class",
+      "expectation_tolerance": 2.0,
+      "implementation": "parallel per-proposal implementations; tests run per individual proposal; their results are the round-2 evidence base",
+      "evidence_equalization": "the round-2 evidence set is identical for every voter; its sha256 is stamped on the round-2 receipt and required on every round-2 ballot",
+      "calibration": "round-2 outcome vs the recorded input expectations; deltas with the evidence that moved them; the feed for the weights (#1489) and outcome (#1487) ledgers",
+      "stage_gates": ["generation contract", "ballot contract", "evidence-set equality before round 2", "calibration record"],
+      "not_run_rule": "a stage that cannot execute is recorded specified_not_run in the cycle record - never dropped, never fabricated"
+    },
     "cross_vote": {
       "score_scale": "1-25 (DECISION-MATRIX Impact x Importance)",
       "source_classes": ["HUMAN_COLLABORATOR", "MODEL_PROVIDER", "LOCAL_BASELINE"],

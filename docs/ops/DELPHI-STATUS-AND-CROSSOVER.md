@@ -46,6 +46,24 @@ weights; HUMAN/MODEL classes honestly at zero — no provider panel is
 enabled, `DELPHI_LLM_MAX=0`). The first live run is the D4 Kiroween
 pass, on the challenge lane's brief after the rules publish 2026-10-30.
 
+**Full cycle (owner spec, 2026-10-27 01:20; built same night):** the
+cross-vote above is round 1 of a six-stage cycle — generate →
+round-1 vote **with input vote expectations recorded** → implementation
+parallel-comparisons (tests per proposal) → **evidence equalization**
+(round 2's evidence base is the identical per-proposal test-results
+bundle for every voter, hash-stamped and hash-gated) → round-2 re-vote
+→ **calibration** (round 2 vs the recorded expectations; deltas + the
+moving evidence; the ledgers' feed). Parameters live in
+`ops/delphi/panel.json` (`generation.cycle`), stage gates validate
+each stage, and a stage that cannot execute is recorded
+`specified_not_run` — never dropped, never fabricated. Tooling:
+`scripts/delphi/method_cycle.py`. Rehearsed end-to-end on the fixture:
+with implementation results all seven stages ran and calibration
+caught a failing candidate at −2.77 vs expectation; without them the
+cycle records the remaining stages specified_not_run. Full spec:
+DELPHI-LANE-CONTRACT.md, "The Oracle Method cycle". The D4 run is
+structured to this cycle.
+
 ## Operational status (verified 2026-10-27)
 
 | Component | State | Evidence |

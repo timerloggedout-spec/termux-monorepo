@@ -244,16 +244,100 @@ def public_snapshot(services, readings, now):
             "readings": rows}
 
 
+DISPLAY_STATUSES = {"ok", "watch", "exhausted", "cap_tripped"}
+
+
+def readings_snapshot(public, services):
+    """Convert a quota-public-status/v1|v2 projection into the dashboard
+    readings contract (3l0.quota-readings.v1).
+
+    This is the publisher step of the generated-file path: a human/agent
+    downloads the probe workflow's artifact, runs this conversion, reviews
+    the result and lands it as docs/ops/generated/quota-status.json ==
+    apps/help-wanted-dashboard/data/quota.json through a PR. The poller
+    itself still never commits anything.
+
+    Honesty rules: the projection exports no account values, so every
+    converted row carries used null and reset null (no inferred reset,
+    ever). Documented limit/unit come from the public registry —
+    entitlements, not balances. A coarse display status is carried only
+    when the projection row carries it on genuine live evidence
+    (H0 + confirmed + an observation time) — exactly what the consumers'
+    fail-closed gate would require anyway; private_preflight and unknown
+    rows stay unknown (the panel derives "private" from the model lane
+    itself). horizon/evidence_status/observed_at are copied from the
+    projection, never upgraded; v1 artifacts that predate the evidence
+    fields are re-derived by record()'s own rule from the row's status
+    and observation time.
+    """
+    if not isinstance(public, dict) or public.get("schema") not in ("quota-public-status/v1", "quota-public-status/v2"):
+        raise ValueError("expected a quota-public-status/v1 or quota-public-status/v2 projection")
+    by_id = {svc["id"]: svc for svc in services}
+    rows = []
+    for row in public.get("readings") or []:
+        svc = by_id.get(row.get("resource_id"), {})
+        horizon, evidence_status = row.get("horizon"), row.get("evidence_status")
+        if horizon is None or evidence_status is None:
+            observed = row.get("status") not in (None, "unknown") and row.get("observed_at") is not None
+            horizon, evidence_status = ("H0", "confirmed") if observed else (
+                "H1", "attributed_claim" if str(svc.get("source", "")).startswith("http") else "early_signal")
+        status = row.get("status")
+        if status not in DISPLAY_STATUSES or horizon != "H0" or evidence_status != "confirmed" \
+                or row.get("observed_at") is None:
+            status = "unknown"
+        rows.append({
+            "resource_id": row.get("resource_id"),
+            "status": status,
+            "used": None,
+            "limit": svc.get("limit"),
+            "unit": svc.get("unit"),
+            "reset": None,
+            "note": ("Probe-derived status from a private live read; account values are withheld "
+                     "from the public projection. Converted through the generated-file path."
+                     if status != "unknown" else
+                     "Probe run observed this service privately (private_preflight); account values "
+                     "and the real status are withheld from the public projection, so the public "
+                     "row is unknown. Private authoritative preflight required."
+                     if row.get("status") == "private_preflight" else
+                     "Probe run did not observe this service; no account state is published."),
+            "evidence_status": evidence_status,
+            "horizon": horizon,
+            "observed_at": row.get("observed_at"),
+        })
+    return {"schema": "3l0.quota-readings.v1", "generated_at": public.get("generated_at"),
+            "source": ("Converted from the quota probe's status-only public projection "
+                       "(quota-public-status) through the generated-file path; not a live quota "
+                       "feed. The projection withholds account values by design, so every "
+                       "converted row carries used null and reset null."),
+            "readings": rows}
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--registry", default="ops/quota/registry.json")
     ap.add_argument("--out", default="quota-out")
     ap.add_argument("--offline", action="store_true", help="skip all network reads")
     ap.add_argument("--public", action="store_true", help="publish status metadata only; suppress private reader logs and artifacts")
+    ap.add_argument("--from-public", metavar="PATH", help="convert a quota-public-status.json artifact into a readings-contract quota-status.json under --out; no network reads, nothing is committed")
     a = ap.parse_args(argv)
+    if a.public and a.from_public:
+        ap.error("--public and --from-public are separate modes")
     if a.public and os.path.exists(a.out) and os.listdir(a.out):
         ap.error("--public requires a new or empty output directory")
     reg = json.load(open(a.registry))
+    if a.from_public:
+        with open(a.from_public) as f:
+            public = json.load(f)
+        try:
+            snap = readings_snapshot(public, reg["services"])
+        except ValueError as e:
+            ap.error(str(e))
+        os.makedirs(a.out, exist_ok=True)
+        with open(os.path.join(a.out, "quota-status.json"), "w") as f:
+            json.dump(snap, f, indent=2)
+            f.write("\n")
+        print(f"QUOTA readings snapshot written from public projection; {len(snap['readings'])} rows (values withheld by design)")
+        return 0
     now = datetime.now(timezone.utc)
     readings = {}
     if not a.offline:

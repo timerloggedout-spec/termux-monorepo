@@ -196,8 +196,16 @@ vs **done** (code/workflows implement) vs **executed** (runs/artifacts prove).
 - (c) Quota readings lack `observed_at` (evidence gate H0/confirmed/≤15 min
   can never pass on the published readings) — evidence dated 2026-10-21
   (web-design assessment); current readings not re-read this sweep (API rate
-  limit). Severity: medium. Route: quota gaps chat spawned 2026-10-27;
-  re-verify readings first.
+  limit). Severity: medium. **Status: closed-on-evidence (2026-10-27).**
+  Filled by the quota gaps lane: PR #1826 merged 7151beb977cc (public
+  projection rebuilt as quota-public-status/v2 at the source; no values
+  exported), PR #1829 merged 6019e239baac (deterministic quota.txt
+  regeneration + byte-exact guard; TUI/web alert parity), PR #1841 merged
+  146f34e65701 (probe run 40521927734 promoted via the generated-file
+  path). Live readings now carry 6 rows (github.api.github_token added,
+  vercel.deployments refreshed H0); H0/confirmed 2→4. Residual stated
+  honestly, not closed over: 58 of 64 registry records still have no row —
+  enumerated in docs/ops/QUOTA-READINGS-GAPS-2026-10-27.md.
 
 ## Sweep 1 dispatches (2026-10-27, owner-approved)
 

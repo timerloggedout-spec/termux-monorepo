@@ -28,7 +28,13 @@ sources, honesty_rules, data, gaps}`.
 - **3L0** — `docs/ops/AGENT-TEAM-ORCHESTRATION.md`,
   `docs/ops/SCOUT-ROSTER.md`, `scripts/model_router.py`,
   `.github/connectors/llm-peers.yaml`, `docs/ops/generated/reviewer-metrics.json`,
-  `ops/delphi/panel.json` (defaults only; live weights live on ledger #1489).
+  `ops/delphi/panel.json` (cold-start seed defaults), plus the **observed
+  live Delphi weighting** from ledger #1489 via the observation snapshot
+  below. In the feed, seeds and observed values are separate blocks
+  (`panel_defaults`, labeled `cold_start_seed`, vs `observed`, labeled
+  `observed_live`); the observed block carries per-role effective weights
+  derived from the panel formula and full provenance (source issue,
+  newest weights comment, feedback issue/outcome, append history).
 - **MVT** — `docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md`,
   `docs/ops/corpus/EXPERIMENT.schema.json`, the two MVT workflows.
 - **DoE** — `deepcli/deepcli/observatory/doe.py` (AST: functions +
@@ -38,6 +44,16 @@ sources, honesty_rules, data, gaps}`.
 Workflow run counts come from `scripts/dashboards/workflow_observations.json`,
 an Actions-API read stamped with its own `read_at`; refresh it by re-reading
 the API and updating that file in the same PR as the feed refresh.
+
+Delphi weights come from `scripts/dashboards/delphi_weights_observation.json`,
+an issue-comments API read of the append-only weights ledger (issue #1489)
+stamped with its own `read_at`. The ledger issue is the source of record —
+the collector never calls the network and never forks the ledger; the
+snapshot is its only route into the feeds. Refresh it the same way: re-read
+the issue's `delphi-weights v1` comments, replace the snapshot, re-run the
+collector, land both in one PR. `tests/test_surface_feeds.py` pins the
+feed's observed block against this snapshot, so a feed cannot drift from
+the ledger read silently.
 
 ## Rules
 

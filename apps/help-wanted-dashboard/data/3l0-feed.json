@@ -1,12 +1,12 @@
 {
  "schema": "dashboard-surface-feed/v1",
  "surface": "3l0",
- "generated_at": "2026-10-27T11:38:21Z",
+ "generated_at": "2026-10-27T12:28:59Z",
  "sources": [
   "docs/ops/AGENT-TEAM-ORCHESTRATION.md + docs/ops/SCOUT-ROSTER.md + docs/ops/ROUTING-LOGIC-CHAIN.md",
   "scripts/model_router.py + .github/connectors/llm-peers.yaml",
   "docs/ops/generated/reviewer-metrics.json",
-  "ops/delphi/panel.json (defaults) + weighting ledger issue #1489 (live values)"
+  "ops/delphi/panel.json (seed defaults) + weighting ledger issue #1489 via scripts/dashboards/delphi_weights_observation.json (observed live values)"
  ],
  "honesty_rules": [
   "Show only what the record holds; a value the record does not hold renders as absent, never synthesized.",
@@ -525,6 +525,7 @@
    }
   },
   "delphi_weights": {
+   "state": "observed_live",
    "panel_defaults": {
     "OPERATOR": {
      "base": 1.2,
@@ -562,9 +563,170 @@
      "misses": 0
     }
    },
+   "panel_defaults_kind": "cold_start_seed",
+   "observed": {
+    "kind": "observed_live",
+    "read_at": "2026-10-27T12:27:44Z",
+    "observed_at": "2026-10-21T16:39:26Z",
+    "roles": {
+     "OPERATOR": {
+      "base": 1.2,
+      "gate_pass_rate": 0.68,
+      "elo": 1532,
+      "hits": 2,
+      "misses": 0,
+      "effective_weight": 1.446208,
+      "weight_share": 0.230769
+     },
+     "builder": {
+      "base": 1.0,
+      "gate_pass_rate": 0.68,
+      "elo": 1532,
+      "hits": 2,
+      "misses": 0,
+      "effective_weight": 1.205173,
+      "weight_share": 0.192308
+     },
+     "reviewer": {
+      "base": 1.0,
+      "gate_pass_rate": 0.68,
+      "elo": 1532,
+      "hits": 2,
+      "misses": 0,
+      "effective_weight": 1.205173,
+      "weight_share": 0.192308
+     },
+     "Scout": {
+      "base": 0.8,
+      "gate_pass_rate": 0.68,
+      "elo": 1532,
+      "hits": 2,
+      "misses": 0,
+      "effective_weight": 0.964139,
+      "weight_share": 0.153846
+     },
+     "cost_auditor": {
+      "base": 1.2,
+      "gate_pass_rate": 0.68,
+      "elo": 1532,
+      "hits": 2,
+      "misses": 0,
+      "effective_weight": 1.446208,
+      "weight_share": 0.230769
+     }
+    },
+    "provenance": {
+     "source_type": "github_issue_comments",
+     "repo": "timerloggedout-spec/termux-monorepo",
+     "issue": 1489,
+     "issue_title": "Delphi panel weights ledger",
+     "issue_url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1489",
+     "marker": "<!-- delphi-weights v1 -->",
+     "snapshot": "scripts/dashboards/delphi_weights_observation.json",
+     "newest_comment_id": 6321265454,
+     "newest_comment_url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1489#issuecomment-6321265454",
+     "newest_comment_author": "github-actions[bot]",
+     "feedback": {
+      "issue": 1424,
+      "outcome": "confirmed"
+     },
+     "weights_comment_count": 2,
+     "history": [
+      {
+       "comment_id": 6321256851,
+       "created_at": "2026-10-21T16:39:01Z",
+       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1489#issuecomment-6321256851",
+       "feedback": {
+        "issue": 1424,
+        "outcome": "confirmed"
+       },
+       "roles": {
+        "OPERATOR": {
+         "gate_pass_rate": 0.6,
+         "elo": 1516,
+         "hits": 1,
+         "misses": 0
+        },
+        "builder": {
+         "gate_pass_rate": 0.6,
+         "elo": 1516,
+         "hits": 1,
+         "misses": 0
+        },
+        "reviewer": {
+         "gate_pass_rate": 0.6,
+         "elo": 1516,
+         "hits": 1,
+         "misses": 0
+        },
+        "Scout": {
+         "gate_pass_rate": 0.6,
+         "elo": 1516,
+         "hits": 1,
+         "misses": 0
+        },
+        "cost_auditor": {
+         "gate_pass_rate": 0.6,
+         "elo": 1516,
+         "hits": 1,
+         "misses": 0
+        }
+       }
+      },
+      {
+       "comment_id": 6321265454,
+       "created_at": "2026-10-21T16:39:26Z",
+       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1489#issuecomment-6321265454",
+       "feedback": {
+        "issue": 1424,
+        "outcome": "confirmed"
+       },
+       "roles": {
+        "OPERATOR": {
+         "gate_pass_rate": 0.68,
+         "elo": 1532,
+         "hits": 2,
+         "misses": 0
+        },
+        "builder": {
+         "gate_pass_rate": 0.68,
+         "elo": 1532,
+         "hits": 2,
+         "misses": 0
+        },
+        "reviewer": {
+         "gate_pass_rate": 0.68,
+         "elo": 1532,
+         "hits": 2,
+         "misses": 0
+        },
+        "Scout": {
+         "gate_pass_rate": 0.68,
+         "elo": 1532,
+         "hits": 2,
+         "misses": 0
+        },
+        "cost_auditor": {
+         "gate_pass_rate": 0.68,
+         "elo": 1532,
+         "hits": 2,
+         "misses": 0
+        }
+       }
+      }
+     ]
+    }
+   },
    "formula": "effective_score = sum(w_i * score_i) / sum(w_i); w_i = base_i * (0.5 + gate_pass_rate_i) * (elo_i / 1500)",
+   "update_rule": {
+    "flywheel": {
+     "ewma_alpha": 0.2,
+     "elo_k": 16
+    },
+    "source": "ops/delphi/panel.json flywheel config; gate_pass_rate is an EWMA (alpha above) of whether the role's pass/fail call matched real outcomes, elo moves +/-k per confirmed/missed call (docs/ops/DELPHI-WEIGHTING.md)."
+   },
    "seed_note": "Initial weights are neutral defaults (gate_pass_rate 0.5, elo 1500). The live state is the newest JSON comment on the 'Delphi panel weights ledger' issue; this file is only the cold-start default.",
-   "live_source": "The live weights live on the Delphi weighting ledger, issue #1489 (EWMA/elo lineage); panel.json carries the defaults/seeds, not the live values."
+   "live_source": "Live values are carried in the observed block above, read from the Delphi panel weights ledger, issue #1489 (newest delphi-weights v1 JSON comment, via the checked-in observation snapshot); the ledger issue remains the source of record and panel.json carries only the cold-start seeds."
   }
  },
  "gaps": [

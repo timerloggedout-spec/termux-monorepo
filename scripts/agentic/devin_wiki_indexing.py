@@ -14,7 +14,7 @@ detail report so a run proves what Devin accepted, per branch.
 Credential contract (names only; values never enter the repository, the
 reports, or the logs):
 
-  DEVIN_INDEXING_API_KEY  Actions secret. A Devin service-user or personal
+  DEVIN_API_KEY  Actions secret. A Devin service-user or personal
                           token with the org-level ``IndexOrgRepositories``
                           permission, or the narrower combination of org
                           ``Read`` plus ``repo.use_read`` and ``repo.index``
@@ -112,7 +112,7 @@ class DevinClient:
 
     def __init__(self, token: str, *, base: str = DEVIN_API_BASE, timeout: int = 60) -> None:
         if not token:
-            raise IndexingError("DEVIN_INDEXING_API_KEY is empty")
+            raise IndexingError("DEVIN_API_KEY is empty")
         self._token = token
         self._base = base.rstrip("/")
         self._timeout = timeout
@@ -189,7 +189,7 @@ def check_gates(
     missing = [
         name
         for name, value in (
-            ("DEVIN_INDEXING_API_KEY", api_key),
+            ("DEVIN_API_KEY", api_key),
             ("DEVIN_ORG_ID", org_id),
         )
         if not value
@@ -199,7 +199,7 @@ def check_gates(
             "not_provisioned",
             "Missing provisioning (names only): " + ", ".join(missing) + ". "
             "Create the Devin service-user token with IndexOrgRepositories and store it as the "
-            "Actions secret DEVIN_INDEXING_API_KEY; copy the org-... ID from Devin Settings -> "
+            "Actions secret DEVIN_API_KEY; copy the org-... ID from Devin Settings -> "
             "General or Settings -> Devin API into the Actions variable DEVIN_ORG_ID.",
         )
     assert org_id is not None
@@ -581,7 +581,7 @@ def _account_gate_report(args: argparse.Namespace, effort_raw: str | None, refus
 
 
 def _main_account(args: argparse.Namespace) -> int:
-    api_key = os.environ.get("DEVIN_INDEXING_API_KEY")
+    api_key = os.environ.get("DEVIN_API_KEY")
     org_id = os.environ.get("DEVIN_ORG_ID")
     effort_raw = os.environ.get("DEVIN_WIKI_EFFORT")
     github = GhClient()
@@ -630,7 +630,7 @@ def _main_account(args: argparse.Namespace) -> int:
     assert api_key is not None and org_id is not None
     if not api_key.startswith("cog_"):
         print(
-            "::warning title=Devin Wiki indexing::DEVIN_INDEXING_API_KEY does not carry the "
+            "::warning title=Devin Wiki indexing::DEVIN_API_KEY does not carry the "
             "expected cog_ service-user/personal-token prefix; the API call will surface any "
             "resulting authentication failure."
         )
@@ -690,7 +690,7 @@ def main(argv: list[str] | None = None) -> int:
     repository = str(args.repo)
     if not SAFE_REPOSITORY.fullmatch(repository):
         raise IndexingError(f"unsafe repository name: {repository!r}")
-    api_key = os.environ.get("DEVIN_INDEXING_API_KEY")
+    api_key = os.environ.get("DEVIN_API_KEY")
     org_id = os.environ.get("DEVIN_ORG_ID")
     effort_raw = os.environ.get("DEVIN_WIKI_EFFORT")
     if not args.dry_run:
@@ -771,7 +771,7 @@ def main(argv: list[str] | None = None) -> int:
     assert api_key is not None and org_id is not None
     if not api_key.startswith("cog_"):
         print(
-            "::warning title=Devin Wiki indexing::DEVIN_INDEXING_API_KEY does not carry the "
+            "::warning title=Devin Wiki indexing::DEVIN_API_KEY does not carry the "
             "expected cog_ service-user/personal-token prefix; the API call will surface any "
             "resulting authentication failure."
         )

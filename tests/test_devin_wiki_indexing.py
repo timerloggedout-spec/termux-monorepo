@@ -104,7 +104,7 @@ class GateTests(unittest.TestCase):
                 scope="first-pass", approve_nonlow_effort=False, branch_count=1,
             )
         self.assertEqual("not_provisioned", caught.exception.state)
-        self.assertIn("DEVIN_INDEXING_API_KEY", caught.exception.detail)
+        self.assertIn("DEVIN_API_KEY", caught.exception.detail)
         self.assertIn("DEVIN_ORG_ID", caught.exception.detail)
 
     def test_slug_org_id_is_refused_with_copy_guidance(self) -> None:

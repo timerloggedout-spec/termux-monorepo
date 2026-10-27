@@ -98,7 +98,7 @@ jobs:
           OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
           # Devin v3 indexing credential (names only). The token is a Devin
           # service-user token with IndexOrgRepositories, NOT a GitHub PAT.
-          DEVIN_INDEXING_API_KEY: ${{ secrets.DEVIN_INDEXING_API_KEY }}
+          DEVIN_API_KEY: ${{ secrets.DEVIN_API_KEY }}
           DEVIN_ORG_ID: ${{ vars.DEVIN_ORG_ID }}
           DEVIN_WIKI_EFFORT: ${{ vars.DEVIN_WIKI_EFFORT }}
           INDEX_REQUEST: ${{ inputs.index || 'skip' }}
@@ -159,9 +159,9 @@ jobs:
             write_summary "skipped" "No indexing scope selected for this run."
             exit 0
           fi
-          if [[ -z "${DEVIN_INDEXING_API_KEY}" || -z "${DEVIN_ORG_ID}" ]]; then
-            write_summary "not_provisioned" "Missing DEVIN_INDEXING_API_KEY secret and/or DEVIN_ORG_ID variable (names only)."
-            echo "::warning title=Devin Wiki indexing not provisioned::Set the DEVIN_INDEXING_API_KEY Actions secret (Devin service-user token with IndexOrgRepositories) and the DEVIN_ORG_ID Actions variable (org-... ID from Devin Settings)."
+          if [[ -z "${DEVIN_API_KEY}" || -z "${DEVIN_ORG_ID}" ]]; then
+            write_summary "not_provisioned" "Missing DEVIN_API_KEY secret and/or DEVIN_ORG_ID variable (names only)."
+            echo "::warning title=Devin Wiki indexing not provisioned::Set the DEVIN_API_KEY Actions secret (Devin service-user token with IndexOrgRepositories) and the DEVIN_ORG_ID Actions variable (org-... ID from Devin Settings)."
             exit 0
           fi
           arguments=(
@@ -203,7 +203,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN || secrets.OPERATOR_TOKEN }}
           OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
-          DEVIN_INDEXING_API_KEY: ${{ secrets.DEVIN_INDEXING_API_KEY }}
+          DEVIN_API_KEY: ${{ secrets.DEVIN_API_KEY }}
           DEVIN_ORG_ID: ${{ vars.DEVIN_ORG_ID }}
           DEVIN_WIKI_EFFORT: ${{ vars.DEVIN_WIKI_EFFORT }}
           NEW_BRANCH: ${{ github.event.ref }}
@@ -211,14 +211,14 @@ jobs:
           set -euo pipefail
           mkdir -p reports
           summary="reports/devin-wiki-indexing-summary.json"
-          if [[ -z "${DEVIN_INDEXING_API_KEY}" || -z "${DEVIN_ORG_ID}" ]]; then
+          if [[ -z "${DEVIN_API_KEY}" || -z "${DEVIN_ORG_ID}" ]]; then
             python3 - "${summary}" <<'PY'
           import json, sys
           payload = {
               "schema_version": 1,
               "provider": "Devin Wiki indexing (v3 API)",
               "state": "not_provisioned",
-              "detail": "Missing DEVIN_INDEXING_API_KEY secret and/or DEVIN_ORG_ID variable (names only).",
+              "detail": "Missing DEVIN_API_KEY secret and/or DEVIN_ORG_ID variable (names only).",
               "additive_only": True,
               "redaction": "Devin org ID, API token, per-branch commits and job IDs are intentionally omitted.",
           }
@@ -226,7 +226,7 @@ jobs:
               json.dump(payload, handle, indent=2)
               handle.write("\n")
           PY
-            echo "::warning title=Devin Wiki indexing not provisioned::Set the DEVIN_INDEXING_API_KEY Actions secret (Devin service-user token with IndexOrgRepositories) and the DEVIN_ORG_ID Actions variable (org-... ID from Devin Settings)."
+            echo "::warning title=Devin Wiki indexing not provisioned::Set the DEVIN_API_KEY Actions secret (Devin service-user token with IndexOrgRepositories) and the DEVIN_ORG_ID Actions variable (org-... ID from Devin Settings)."
             exit 0
           fi
           python3 scripts/agentic/devin_wiki_indexing.py \

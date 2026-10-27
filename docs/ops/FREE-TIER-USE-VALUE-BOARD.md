@@ -42,7 +42,7 @@ Price comparisons do not imply quality equivalence, free-tier availability, or t
 
 ## Session row contract
 
-Each public row is bounded metadata only: opaque session/run ID; workflow and source ref/SHA; observed UTC time; provider/model; input/output tokens; elapsed seconds; outcome; evidence URL; validation status; Basksweep status; publication status; billing status; and pricing ID.
+Each public row is bounded metadata only: opaque session/run ID; workflow and source ref/SHA; observed UTC time; provider/model display labels plus a stable `canonical_model_id`; input/output tokens; elapsed seconds; outcome; evidence URL; validation status; Basksweep status; publication status; billing status; and pricing ID. Every pricing record must also declare a unique `canonical_model_id`. A session contributes only when its `canonical_model_id` exactly matches the canonical ID on the valid pricing record referenced by `pricing_id`; raw provider strings are not identity keys.
 
 The upstream export/filter step must validate attribution, token fields, source identity, privacy, and Basksweep result. The browser is a projection and defensive filter, not a replacement for that validator. Unvalidated rows may be displayed only if they already passed the public-safety export gate; they never contribute to headline totals.
 

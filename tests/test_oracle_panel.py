@@ -103,7 +103,11 @@ def test_description_blocks_render_from_feed():
         basis = p.get("evidence_basis")
         assert basis is not None
         if p["id"] == "delphi-desk-builder-io":
-            assert basis["sources"] is None and basis["claim_areas"] is None
+            # The D3 collector fallback landed with the substrate feed:
+            # the Desk's own evidence.json is committed, so its composition
+            # is present and sums to its evidence set (117 items).
+            assert sum(basis["sources"].values()) == p["evidence_items"]
+            assert sum(basis["claim_areas"].values()) == p["evidence_items"]
             assert p.get("implementation_summary") is None
         else:
             assert basis["sources"] and basis["claim_areas"]
@@ -140,7 +144,7 @@ def test_the_tie_is_recorded_as_a_tie():
         for rnd in ("round_1", "round_2"):
             rb = p["rounds"][rnd]["ranking_basis"]
             assert rb["scores_tied"] is True and rb["score_spread"] == 0
-            assert "rank()" in rb["decided_by"]
+            assert "(-score, candidate_id)" in rb["decided_by"]
             assert rb["decided_by"] not in html
 
 
@@ -152,7 +156,8 @@ def test_recorded_ballots_round1_only():
 
 def test_evidence_profiles_are_identical_as_recorded():
     profiles = [{k: v for k, v in p["evidence_profile"].items()
-                 if k != "docs_sha256"} for p in _cands(_feed())]
+                 if k not in ("docs_sha256", "candidate")}
+                for p in _cands(_feed())]
     assert all(x == profiles[0] for x in profiles)
     assert profiles[0]["evidenced_ratio"] == 1.0
 

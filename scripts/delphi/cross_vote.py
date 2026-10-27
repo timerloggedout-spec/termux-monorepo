@@ -114,8 +114,22 @@ def rubric_ballots(profiles: list[dict], roles: list[str]) -> list[dict]:
             else:
                 s = 25 * er
             scores[p["candidate"]] = clamp(s)
+        rationale = {}
+        for p in profiles:
+            bits = [f"evidenced_ratio {p['evidenced_ratio']} "
+                    f"({p['evidenced']}/{p['points']} points evidenced)",
+                    f"unverified {p['unverified']}",
+                    f"items {p['items']}",
+                    f"evidence_sources {p['evidence_sources']}",
+                    f"dependency_items {p['dependency_items']}"]
+            if p.get("money_veto"):
+                bits.append("money veto applied (score capped at 4)")
+            rationale[p["candidate"]] = "; ".join(bits)
         ballots.append({"voter": f"rubric:{role}", "source_class": "LOCAL_BASELINE",
-                        "scores": scores})
+                        "scores": scores, "rationale": rationale,
+                        "evidence_refs": ["generation profiles derived from "
+                                          "each candidate's PROVENANCE "
+                                          "evidence sets"]})
     return ballots
 
 
@@ -136,6 +150,18 @@ def validate_ballots(ballots: list[dict]) -> None:
         voter = ballot.get("voter")
         if not voter:
             raise ValueError("ballot without a voter identity")
+        rationale = ballot.get("rationale")
+        if not rationale or (isinstance(rationale, (str, dict, list))
+                              and not rationale):
+            raise ValueError(
+                f"ballot from {voter!r} carries no rationale — a Delphi "
+                "response is a judgment WITH its reasons; reason-less "
+                "scores are refused")
+        refs = ballot.get("evidence_refs")
+        if not refs or not isinstance(refs, list):
+            raise ValueError(
+                f"ballot from {voter!r} cites no evidence — every score "
+                "must name the sources it rests on (evidence_refs)")
         run = ballot.get("run") or {}
         if ballot.get("source_class") == "MODEL_PROVIDER":
             missing = [k for k in ("provider", "model", "run_id",

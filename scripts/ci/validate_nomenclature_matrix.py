@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Validate the candidate nomenclature equivalency seed without network access."""
 import json
+from datetime import date
 from pathlib import Path
 import sys
 
@@ -27,11 +28,13 @@ def validate(data):
     concepts = data.get("concepts", [])
     labels = data.get("labels", [])
     mappings = data.get("mappings", [])
+    evidence_records = data.get("evidence_records", [])
     source_ids = [x.get("source_id") for x in sources]
     concept_ids = [x.get("concept_id") for x in concepts]
     label_ids = [x.get("label_id") for x in labels]
     mapping_ids = [x.get("mapping_id") for x in mappings]
-    for name, ids in (("source", source_ids), ("concept", concept_ids), ("label", label_ids), ("mapping", mapping_ids)):
+    evidence_ids = [x.get("evidence_id") for x in evidence_records]
+    for name, ids in (("source", source_ids), ("concept", concept_ids), ("label", label_ids), ("mapping", mapping_ids), ("evidence", evidence_ids)):
         if None in ids or len(ids) != len(set(ids)):
             errors.append(f"{name} IDs must be present and unique")
     source_set, concept_set = set(source_ids), set(concept_ids)
@@ -65,6 +68,27 @@ def validate(data):
             errors.append(f"mapping {m.get('mapping_id')} needs evidence note and valid sources")
         if m.get("relation") == "exact_match" and m.get("status") == "accepted" and not m.get("source_ids"):
             errors.append(f"accepted exact mapping {m.get('mapping_id')} requires evidence")
+    assertion_ids = {
+        "concept": set(concept_ids),
+        "label": set(label_ids),
+        "mapping": set(mapping_ids),
+    }
+    for e in evidence_records:
+        if e.get("source_id") not in source_set:
+            errors.append(f"evidence {e.get('evidence_id')} references unknown source")
+        assertion_type = e.get("assertion_type")
+        if assertion_type not in assertion_ids or e.get("assertion_id") not in assertion_ids.get(assertion_type, set()):
+            errors.append(f"evidence {e.get('evidence_id')} references unknown assertion")
+        if not all(e.get(k) for k in ("claim", "evidence_locator", "evidence_excerpt", "retrieved_on")):
+            errors.append(f"evidence {e.get('evidence_id')} needs claim, locator, excerpt, and retrieval date")
+        try:
+            date.fromisoformat(e.get("retrieved_on", ""))
+        except (TypeError, ValueError):
+            errors.append(f"evidence {e.get('evidence_id')} has invalid retrieved_on date")
+        if e.get("status") not in STATUSES:
+            errors.append(f"evidence {e.get('evidence_id')} has invalid status")
+        if e.get("status") == "accepted" and not e.get("reviewer"):
+            errors.append(f"accepted evidence {e.get('evidence_id')} requires reviewer")
     return errors
 
 def main():

@@ -70,6 +70,14 @@ must consume this feed and nothing else.
    says whether this refresh read the ledger; per-proposal
    `ledger.verified` carries the same fact down. An unverified
    refresh shows repo-record values and says so.
+Per-candidate scores: each round entry carries `scores_by_class`
+(the deciding classes' scores **for this candidate**) and `score` —
+this candidate's own score under the class that produced the round's
+ranked outcome, held as a distinct field per candidate (null when no
+class cast ballots). Values are read from the cycle's BALLOT records;
+where candidates tie, every candidate's `score` shows the tied value
+and `ranking_basis` states the tie-break (rule 7).
+
 7. **Every score states its producer; ties render as ties.**
    Each result carries its `producers` block (class, tool,
    voters, applied weights, settings). Where the deciding
@@ -144,6 +152,7 @@ the records, and discrepancies are resolved in favor of the records.
     "unverified_points": ["..."],
     "rounds": null | {"round_1": {"ranking": [], "rank_of_this": 1,
                                   "ballots_by_class": {}, "scores_by_class": {},
+                                  "score": 0.0,
                                   "classes_absent": [],
                                   "ballots": [{"voter": "rubric:OPERATOR",
                                                "source_class": "LOCAL_BASELINE",
@@ -154,6 +163,7 @@ the records, and discrepancies are resolved in favor of the records.
                                                     "decided_by": "..."}},
                       "round_2": {"ranking": [], "rank_of_this": 1,
                                   "ballots_by_class": {}, "scores_by_class": {},
+                                  "score": 0.0,
                                   "evidence_set_sha256": "...",
                                   "ballots": null,
                                   "ranking_basis": {"scores_tied": true,

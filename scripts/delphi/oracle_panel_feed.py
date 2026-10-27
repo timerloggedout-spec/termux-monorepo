@@ -494,12 +494,24 @@ def build_feed(registry_text: str, active_dir: Path, passes_dir: Path,
             def scores(ballot: dict) -> dict:
                 return {cls: (data.get("scores") or {}).get(pid)
                         for cls, data in (ballot.get("per_class") or {}).items()}
+            def deciding_score(ballot: dict):
+                # THIS candidate's own score under the class that
+                # produced the round's ranked outcome — the scalar a
+                # reader means by "the candidate's score", held as a
+                # distinct per-candidate field (G-09). Null when no
+                # class cast ballots.
+                present = ballot.get("classes_present") or []
+                if not present:
+                    return None
+                return ((ballot.get("per_class") or {}).get(present[0], {})
+                        .get("scores") or {}).get(pid)
             item["rounds"] = {
                 "round_1": {"ranking": r1.get("ranked_outcome"),
                             "rank_of_this": (r1.get("ranked_outcome") or []).index(pid) + 1
                             if pid in (r1.get("ranked_outcome") or []) else None,
                             "ballots_by_class": r1.get("ballots_by_class"),
                             "scores_by_class": scores(r1),
+                            "score": deciding_score(r1),
                             "classes_absent": r1.get("classes_absent"),
                             "ballots": ballots_for(r1, pid),
                             "ranking_basis": ranking_basis(r1, candidate_ids, 1)},
@@ -508,6 +520,7 @@ def build_feed(registry_text: str, active_dir: Path, passes_dir: Path,
                             if pid in (r2.get("ranked_outcome") or []) else None,
                             "ballots_by_class": r2.get("ballots_by_class"),
                             "scores_by_class": scores(r2),
+                            "score": deciding_score(r2),
                             "evidence_set_sha256": r2.get("evidence_set_sha256"),
                             "ballots": ballots_for(r2, pid),
                             "ranking_basis": ranking_basis(r2, candidate_ids, 2)},

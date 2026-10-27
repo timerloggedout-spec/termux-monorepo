@@ -19,7 +19,7 @@
 </head>
 <body>
 <header>
-<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/help-wanted/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="https://timerloggedout-spec.github.io/help-wanted/quota.html">Quota</a><a href="https://timerloggedout-spec.github.io/help-wanted/admin.html">Admin</a><a href="https://timerloggedout-spec.github.io/help-wanted/oracle.html">Oracle</a><a href="https://timerloggedout-spec.github.io/help-wanted/3l0.html">3L0</a><a href="https://timerloggedout-spec.github.io/help-wanted/moneyball.html">MoneyBall</a><a href="https://timerloggedout-spec.github.io/help-wanted/mvt.html">MVT</a><a href="https://timerloggedout-spec.github.io/help-wanted/doe.html" aria-current="page">DoE</a><a href="https://timerloggedout-spec.github.io/help-wanted/free-tier-value.html">Free-tier value</a><a href="https://help-wanted-oversight.vercel.app/">Vercel deployment</a><a href="https://timerloggedout-spec.github.io/help-wanted/sitemap.xml">Sitemap</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></nav>
+<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/help-wanted/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="https://timerloggedout-spec.github.io/help-wanted/quota.html">Quota</a><a href="https://timerloggedout-spec.github.io/help-wanted/admin.html">Admin</a><a href="https://timerloggedout-spec.github.io/help-wanted/oracle.html">Oracle</a><a href="https://timerloggedout-spec.github.io/help-wanted/3l0.html">3L0</a><a href="https://timerloggedout-spec.github.io/help-wanted/moneyball.html">MoneyBall</a><a href="https://timerloggedout-spec.github.io/help-wanted/mvt.html">MVT</a><a href="https://timerloggedout-spec.github.io/help-wanted/doe.html" aria-current="page">DoE</a><a href="https://timerloggedout-spec.github.io/help-wanted/ates.html">ATES</a><a href="https://timerloggedout-spec.github.io/help-wanted/free-tier-value.html">Free-tier value</a><a href="https://help-wanted-oversight.vercel.app/">Vercel deployment</a><a href="https://timerloggedout-spec.github.io/help-wanted/sitemap.xml">Sitemap</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></nav>
 <div class="hero">
 <p class="eyebrow">DoE · Design of Experiments</p>
 <h1>Design-of-experiments surface</h1>
@@ -46,6 +46,7 @@
 </section>
 </main>
 <script>
+const GH = "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/";
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 async function load(){
   let f;
@@ -80,12 +81,11 @@ async function load(){
   out.push(`<section class="card"><h2>DSPy optimizer lane</h2>
   <div class="notrun"><strong>Design only — not run.</strong> ${esc(dl.note)}</div>
   <p class="meta">${esc(dl.file)}</p></section>`);
-  const ec = d.executed_comparisons;
-  const crows = Object.entries(ec.candidates).map(([cid, v]) =>
-    `<tr><td><code>${esc(cid)}</code></td><td>${esc((v.suites || []).join(", "))}</td><td>${esc(v.passed)} passed / ${esc(v.failed)} failed</td></tr>`).join("");
-  out.push(`<section class="card"><h2>Executed comparisons — the Delphi cycle implementation round</h2>
-  <table class="rank"><tr><th>Candidate</th><th>Suites</th><th>Result</th></tr>${crows}</table>
-  <p class="meta">${esc(ec.record)}</p><p>${esc(ec.note)}</p></section>`);
+  if((d.citations || []).length){
+    out.push(`<section class="card"><h2>Executed comparisons — cited, not claimed</h2>
+    <p><strong>DoE results: none.</strong> No DoE campaign has run, so this surface reports no results of its own. The repo's one executed per-candidate comparison is a Delphi record, cited here so it is findable — its payload renders on the Oracle Panel, not here:</p>` +
+    d.citations.map(c => `<p><strong>${esc(c.label)}</strong> — ${esc(c.note)}<br><span class="meta">Record: <a href="${GH}${esc(c.record)}">${esc(c.record)}</a> · rendered on the <a href="./oracle.html">Oracle Panel</a></span></p>`).join("") + `</section>`);
+  }
   document.getElementById("content").innerHTML = out.join("");
   if((f.gaps || []).length){
     document.getElementById("gaps-card").hidden = false;

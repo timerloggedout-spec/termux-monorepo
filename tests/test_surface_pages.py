@@ -33,7 +33,7 @@ def _check_page(page: str, feed_name: str) -> str:
     assert "nothing is shown rather than anything guessed" in html
     assert "sk-" not in html and "ghp_" not in html and "BEGIN" not in html
     link = f'href="{BASE}{page}"'
-    for other in ("index.html", "quota.html", "matrix.html", "admin.html", "oracle.html", "moneyball.html", "3l0.html", "mvt.html", "doe.html"):
+    for other in ("index.html", "quota.html", "matrix.html", "admin.html", "oracle.html", "moneyball.html", "3l0.html", "mvt.html", "doe.html", "ates.html", "free-tier-value.html"):
         assert link in _html(other), f"{other} nav missing {page}"
     assert f"{BASE}{page}" in (APP / "sitemap.xml").read_text()
     return html
@@ -70,6 +70,21 @@ def test_mvt_page():
     assert feed["data"]["experiment_loop"]["state"] == "defined_not_run"
     assert "Defined — not run" in html  # the not-run state is rendered, not hidden
     assert feed["gaps"]  # no committed experiment records — named in the feed
+    # separation (PR #1756): the harness and fixtures moved to the ATES page
+    assert "d.harness" not in html and "d.fixtures" not in html
+    assert "invariants" not in feed["data"] and "fixtures" not in feed["data"]
+    assert {c["surface"] for c in feed["data"]["citations"]} == {"ates", "doe"}
+
+
+def test_ates_page():
+    html = _check_page("ates.html", "ates-feed.json")
+    feed = _feed("ates-feed.json")
+    assert len(feed["data"]["invariants"]) == 7
+    runs = {w["name"]: w["observed_runs"]["total_runs"] for w in feed["data"]["workflows"]}
+    assert runs["ATES Orchestrator Benchmark"] > 0
+    assert runs["Agent MVT experiment loop"] == 0  # defined, not run — rendered as such
+    assert "Defined — not run" in html
+    assert {c["surface"] for c in feed["data"]["citations"]} == {"mvt", "doe"}
 
 
 def test_doe_page():
@@ -79,3 +94,7 @@ def test_doe_page():
     assert "Design only — not run" in html
     fns = feed["data"]["methods_library"]["functions"]
     assert [f["name"] for f in fns] == ["full_factorial", "taguchi_l9", "mvt_shuffle"]
+    # separation (PR #1756): executed comparisons are a citation, never a payload
+    assert "executed_comparisons" not in html and "executed_comparisons" not in feed["data"]
+    assert "DoE results: none" in html
+    assert feed["data"]["citations"][0]["surface"] == "delphi"

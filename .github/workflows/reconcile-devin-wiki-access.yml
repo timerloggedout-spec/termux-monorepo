@@ -12,7 +12,7 @@ on:
         default: false
         type: boolean
       index:
-        description: "Devin Wiki branch indexing scope for this run (schedule runs always use first-pass)"
+        description: "Devin Wiki branch indexing scope for this run (schedule runs always use first-pass, account-wide)"
         required: true
         default: skip
         type: choice
@@ -21,8 +21,16 @@ on:
           - first-pass
           - all
           - single
+      index_repos:
+        description: "Repositories to index: this repository only, or every accessible repository in the account"
+        required: true
+        default: this-repo
+        type: choice
+        options:
+          - this-repo
+          - all-repos
       index_branch:
-        description: "Branch name when index = single"
+        description: "Branch name when index = single (this-repo only)"
         required: false
         default: ""
         type: string
@@ -44,7 +52,7 @@ jobs:
     name: Discover Devin Wiki indexing eligibility for accessible repositories
     if: github.event_name != 'create'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 180
     steps:
       - name: Checkout control-plane source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -94,6 +102,7 @@ jobs:
           DEVIN_ORG_ID: ${{ vars.DEVIN_ORG_ID }}
           DEVIN_WIKI_EFFORT: ${{ vars.DEVIN_WIKI_EFFORT }}
           INDEX_REQUEST: ${{ inputs.index || 'skip' }}
+          INDEX_REPOS: ${{ inputs.index_repos || 'this-repo' }}
           INDEX_BRANCH_INPUT: ${{ inputs.index_branch || '' }}
           APPROVE_NONLOW_EFFORT: ${{ inputs.approve_nonlow_effort || 'false' }}
         run: |
@@ -119,13 +128,23 @@ jobs:
           }
           scope=""
           extra=()
+          repo_args=(--repo "${GITHUB_REPOSITORY}")
           if [[ "${GITHUB_EVENT_NAME}" == "schedule" ]]; then
             scope="first-pass"
+            repo_args=(--all-repos)
           elif [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then
+            if [[ "${INDEX_REPOS}" == "all-repos" ]]; then
+              repo_args=(--all-repos)
+            fi
             case "${INDEX_REQUEST}" in
               first-pass|all) scope="${INDEX_REQUEST}" ;;
               single)
                 scope="single"
+                if [[ "${INDEX_REPOS}" == "all-repos" ]]; then
+                  write_summary "invalid_input" "index=single applies to one repository; combine it with index_repos=this-repo."
+                  echo "::error title=Devin Wiki indexing::index=single requires index_repos=this-repo."
+                  exit 0
+                fi
                 if [[ -z "${INDEX_BRANCH_INPUT}" ]]; then
                   write_summary "invalid_input" "index=single requires the index_branch input."
                   echo "::error title=Devin Wiki indexing::index=single requires the index_branch input."
@@ -146,7 +165,7 @@ jobs:
             exit 0
           fi
           arguments=(
-            --repo "${GITHUB_REPOSITORY}"
+            "${repo_args[@]}"
             --scope "${scope}"
             --report "reports/devin-wiki-indexing-detail.json"
             --summary-report "${summary}"

@@ -144,8 +144,17 @@ vs **done** (code/workflows implement) vs **executed** (runs/artifacts prove).
   feeds carry `generated_at`, so staleness is visible but unbounded.
 - Severity: low–medium (structural — pages will silently age).
 - Fix route: add a collect workflow mirroring the oracle pattern, or accept
-  manual refresh with a staleness threshold alarm. Status: fix-spawned
-  (Web Design lane, dispatched 2026-10-27).
+  manual refresh with a staleness threshold alarm.
+- **Status: closed-on-evidence (2026-10-27).** Collect workflow landed via
+  PR #1770 merged b0ba36c62b (dispatch + Wed 06:41 UTC schedule + push
+  triggers on the collector's sources; refresh-by-PR only; five feeds incl.
+  ATES). Production proof: dispatch run 40506438873 → refresh PR #1773
+  merged; push runs → refresh PR #1778 merged; master feeds stamped
+  2026-10-27T13:09:19Z (moneyball feed stamp re-verified by the Gap
+  Finder). Closure first recorded by the Web Design lane in PR #1823
+  merged 3b01ebc6c613; that edit was inadvertently reverted by the Gap
+  Finder's whole-file publish in PR #1830 and is restored here — ledger
+  updates must henceforth rebase on current master content.
 
 ### G-11 — Tier 1 classifiers: code healthy, never executed
 - Surface: classifiers (Mev/Jev/Kev/Laya). Layers: done vs executed.

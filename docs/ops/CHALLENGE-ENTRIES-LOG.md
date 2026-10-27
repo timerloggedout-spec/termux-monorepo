@@ -120,9 +120,27 @@ credits each + 10 backpack draws (October pattern).
 - Anthropic "Built with Claude: Japan 2026" — applications close Oct 26,
   screened, Japan residents only.
 
-## 4. Draft entry packets (DRAFT — not submitted)
+## 4. Entry packets
 
-### D1 — for C1, Workshop to Ship (owner already joined)
+**Owner decision (2026-10-26 23:41 PT): "ALL of them"** — D1, D2, D3, and D4
+are all approved and in play. Integrated schedule (windows protected against
+each other):
+
+| When (PT) | Focus |
+|-----------|-------|
+| Oct 27–29 | D3 scaffold + core actions (build window open since Oct 19); D1 agent drafted locally, published in-window; D2 registration/sandbox recon |
+| Oct 28 | D1 window opens — workshop completion (owner account) + agent repo goes public |
+| Oct 30–Nov 1 | **D3 build weekend (concentrated)**; Kiroween window opens Oct 30 — no project creation (owner sequencing) |
+| Nov 2 | D3 Clips demo + submit by 11:59 PM PT |
+| Nov 3–4 | D1 finish: article, video, submission packet → owner submits by Nov 4 11:59 PM PDT; D2 registration + sandbox prep in parallel |
+| Nov 5–8 | D2 build (lablab online build is Nov 3–8) → submit by Nov 8, 3:00 PM PST |
+| After Nov 8 | D4 build (deadline Dec 4, 2:00 PM PST) |
+
+**Standing blocker for every platform submission: the incomplete Builder
+profile (§2).** It gates D1 directly and is the first blocker surfaced wherever
+a submission path reaches an owner-account step.
+
+### D1 — for C1, Workshop to Ship — IN PROGRESS (owner already joined)
 
 - **Concept:** "Proof Before Help" — a climate-resilience agent (cooling-center
   / shelter router for extreme-heat events) whose consequential tool calls are
@@ -137,14 +155,16 @@ credits each + 10 backpack draws (October pattern).
   `tests/fixtures/delphi_oracle_mvp.json` (PR #1620); free-tier recon
   `docs/ops/FREE-TIER-BACKEND-RECON-2026-10-21.md` (PR #1511).
 - **Requirement checklist:** ☐ complete the free Strands workshop in-window
-  (Oct 28–Nov 4) — hard qualifier; ☐ new Strands Agents SDK agent in a public
-  repo; ☐ Builder Center article; ☐ demo video < 3 min (needs recording —
-  owner-gated step); ☐ complete Builder profile (§2 owner item).
-- **Submission class:** owner already joined, but the packet needs a new build
-  + workshop completion + video → **surfaces to owner for a one-tap decision**;
-  not auto-submittable.
+  (Oct 28–Nov 4) — hard qualifier, **owner account step**; ☐ new Strands
+  Agents SDK agent in a public repo (build Oct 27–29, publish in-window);
+  ☐ Builder Center article (draft in repo, posted under owner account);
+  ☐ demo video < 3 min (script/storyboard in repo; recording is an owner
+  step); ☐ complete Builder profile (§2 — **first blocker**).
+- **Submission class:** submission itself happens under the owner's Builder
+  account → prepared packet surfaces to the owner when ready; not
+  auto-submittable.
 
-### D2 — for C2, Vultr Agent Rush (Foundry entry)
+### D2 — for C2, Vultr Agent Rush (Foundry entry) — IN PROGRESS
 
 - **Concept:** the Web Adapter Foundry as a sandboxed browser-operating agent:
   given a target brief, the agent plans a bounded adapter probe, executes it
@@ -155,11 +175,73 @@ credits each + 10 backpack draws (October pattern).
   validation, bounded probe planner, HTTP/SSE facade), taxonomy
   `ops/web_adapter_foundry/taxonomy.json`, `docs/ops/WEB-ADAPTER-FOUNDRY.md`,
   `.agents/skills/web-adapter-foundry/SKILL.md`.
-- **Requirement checklist:** ☐ lablab.ai registration + Discord join (new
-  accounts — owner decision); ☐ Vultr account for sandbox credits; ☐ sandbox
-  deployment of the facade; ☐ demo per lablab format.
-- **Submission class:** needs new accounts → **owner decision packet**, not
-  auto-submittable.
+- **Requirement checklist:** ☐ lablab.ai registration + Discord join (owner
+  approved 2026-10-26; account steps surfaced if they hit verification gates);
+  ☐ Vultr account for sandbox credits (no-card path only — the card is a
+  block); ☐ sandbox deployment of the facade (build Nov 5–8, prep earlier);
+  ☐ demo per lablab format.
+- **Submission class:** approved by owner; submission follows the standing
+  boundary — any step needing a card or an owner-only verification is surfaced,
+  never worked around.
+
+### D3 — for C3, Builder.io Agent-Native Hackathon — IN PROGRESS (scoped 2026-10-26)
+
+- **Verified from the official page (2026-10-26):** no registration required;
+  build window open since Oct 19; final weekend Oct 30–Nov 1; submit by
+  **Nov 2, 11:59 PM PT**; entry = working Agent-Native app + public Clips demo
+  + project details. Judged shape: "an agent with a purpose; an interface that
+  puts users in control; a connected experience" — UI and agent call the same
+  actions, defined once with `defineAction()` (`@agent-native/core`, zod
+  schemas, React UI).
+- **Concept:** "Delphi Desk" — a human-in-the-loop decision-review cockpit. A
+  Delphi-style agent panel drafts engineering decision proposals with evidence
+  receipts (the fleet's Delphi Oracle pattern); every consequential move —
+  approve, request changes, escalate, annotate, apply-with-conditions — is a
+  shared `defineAction()` action callable identically by the human in the UI
+  and by the agent. The human can edit a proposal, redirect the panel, and
+  watch the decision ledger update; the agent revises in response. Data model
+  mirrors the repo's own structures: proposals, evidence items, ballots, and a
+  reconciliation ledger (Delphi DEBATE envelope + CMDB conflict matrix, PR
+  #1655). This is a **new build** on the framework, seeded only with
+  synthetic/public fixture data — not repurposed material.
+- **Build plan:** Oct 27–29 scaffold, action set, seed fixtures, agent loop
+  (deterministic panel locally, so the demo never depends on an API key);
+  Oct 30–Nov 1 concentrated build (review flows, ledger, agent revision loop);
+  Nov 2 polish, Clips demo, submit.
+- **Open risk to verify during prep:** whether publishing a public Clips demo
+  requires a Builder account — if it does, that step is owner-gated and gets
+  surfaced immediately, not at the deadline.
+- **Source packet:** `docs/proposals/active/aws-free-tier-strands-delphi-oracle/`
+  (DEBATE.md envelope, EXPERIMENT-MATRIX), `scripts/delphi/strands_oracle_mvp.py`
+  (receipt pattern), PR #1655 CMDB design (conflict matrix / reconciliation).
+
+### D4 — for C4, Kiroween 2026 — REGISTERING (build sequenced after Nov 8)
+
+- **Verified from the official page (2026-10-26):** registration open now;
+  full rules publish and submissions open **Oct 30, 1:00 PM PDT**; deadline
+  **Dec 4, 2:00 PM PST**; **only new projects created during the submission
+  period are eligible** ("Do not start building your project yet"); themes:
+  Resurrection, Frankenstein, Skeleton Crew, Costume Contest; $100,000 pool.
+  Registration requires a valid **Kiro user ID or AWS account ID** (per the
+  official page: "Create or sign in to your Kiro account at kiro.dev").
+- **Sequencing rules (owner, 2026-10-26):** register now; do NOT create the
+  project or start building before the window; the build itself waits until
+  after Nov 8 (D1/D2/D3 windows first).
+- **Registration status:** ATTEMPTED 2026-10-26, stopped at the account gate
+  exactly as briefed. Verified flow: Join hackathon → Cloudflare human check →
+  redirect to Devpost sign-up ("Please sign up or log in to continue" /
+  "Join Devpost to register for Kiroween 2026"; options: GitHub, Facebook,
+  Google, LinkedIn, or email). No signed-in Devpost session exists. Past that
+  gate, registration needs a valid Kiro user ID or AWS account ID (official
+  overview; the ID form field itself sits past the gate — UNVERIFIED). Kiro
+  sign-in (app.kiro.dev) offers Google, GitHub, Builder ID, or organization —
+  no email/password. Team info is not a gate (solo entry allowed, team
+  decidable later). **Owner items: (1) Devpost account sign-in/creation;
+  (2) a Kiro user ID (or AWS account ID).** No credentials were entered and
+  nothing was submitted.
+- **Concept (to finalize after rules publish Oct 30):** spec-first build in
+  Kiro — leading candidate is a CMDB/reconciliation viewer (asset D) under
+  Skeleton Crew or Frankenstein; decided once full rules land.
 
 ## 5. Sweep sources
 

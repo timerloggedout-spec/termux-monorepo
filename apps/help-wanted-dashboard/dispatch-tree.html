@@ -5,51 +5,64 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dispatch Tree — Cadence &amp; Admission</title>
 <!--
-  Standalone prototype rendering ONLY data/dispatch-tree-feed.json
-  (schema dispatch-tree-feed/v1, contract docs/ops/DISPATCH-TREE-FEED.md).
-  Page integration (nav, shared styling) is owned by the Web Design
-  Specialist lane; this file is the visualization specialist's proof
-  that the feed carries everything the surface needs.
+  Renders ONLY data/dispatch-tree-feed.json (schema dispatch-tree-feed/v1,
+  contract docs/ops/DISPATCH-TREE-FEED.md). Prototype by the visualization
+  specialist lane (PR #1843); page integration (unified nav, sitemap,
+  shared dashboard styling) by the Web Design lane. Rendering logic is
+  the prototype's; values the feed does not hold render as absent.
 -->
+<link rel="stylesheet" href="./dashboard.css">
 <style>
-  :root { color-scheme: dark; --bg:#0d1117; --card:#161b22; --line:#30363d; --fg:#e6edf3; --dim:#8b949e; --red:#f85149; --green:#3fb950; --amber:#d29922; }
-  body { background:var(--bg); color:var(--fg); font:14px/1.5 system-ui, sans-serif; margin:0; padding:24px; }
-  h1 { font-size:20px; margin:0 0 4px; } h2 { font-size:16px; margin:28px 0 8px; }
-  .dim { color:var(--dim); } .card { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:16px; margin:12px 0; }
-  .big { font-size:44px; font-weight:700; } .red { color:var(--red); } .green { color:var(--green); } .amber { color:var(--amber); }
-  .bar { height:18px; background:#21262d; border-radius:4px; position:relative; margin:8px 0; }
-  .bar > div { height:100%; background:var(--red); border-radius:4px; }
-  .bar .mark { position:absolute; top:-3px; bottom:-3px; width:2px; background:var(--amber); }
-  table { border-collapse:collapse; width:100%; } th, td { text-align:left; padding:6px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
-  th { color:var(--dim); font-weight:600; } code { font-size:12px; color:var(--dim); word-break:break-all; }
-  .badge { display:inline-block; padding:1px 7px; border-radius:10px; font-size:12px; border:1px solid var(--line); }
-  .due { border-color:var(--red); color:var(--red); } .ok { border-color:var(--green); color:var(--green); }
-  .chip { display:inline-block; background:#21262d; border-radius:4px; padding:1px 6px; margin:2px 2px 2px 0; font-size:12px; }
-  .woken { border:1px solid var(--green); }
+  .big{font-size:44px;font-weight:700;line-height:1.1}
+  .red{color:var(--bad)} .green{color:var(--ok)} .amber{color:var(--gold)} .dim{color:var(--muted)}
+  .bar{height:18px;background:#21262d;border-radius:4px;position:relative;margin:8px 0}
+  .bar>div{height:100%;background:var(--bad);border-radius:4px}
+  .bar .mark{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--gold)}
+  .badge{display:inline-block;padding:1px 7px;border-radius:10px;font-size:12px;border:1px solid var(--line)}
+  .badge.due{border-color:var(--bad);color:var(--bad)} .badge.ok{border-color:var(--ok);color:var(--ok)}
+  .chip{display:inline-block;background:#21262d;border-radius:4px;padding:1px 6px;margin:2px 2px 2px 0;font-size:12px}
+  .chip.woken{border:1px solid var(--ok)}
+  #lanes td code{font-size:12px;color:var(--muted);word-break:break-all}
 </style>
 </head>
 <body>
+<header>
+<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/help-wanted/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="https://timerloggedout-spec.github.io/help-wanted/quota.html">Quota</a><a href="https://timerloggedout-spec.github.io/help-wanted/admin.html">Admin</a><a href="https://timerloggedout-spec.github.io/help-wanted/oracle.html">Oracle</a><a href="https://timerloggedout-spec.github.io/help-wanted/3l0.html">3L0</a><a href="https://timerloggedout-spec.github.io/help-wanted/moneyball.html">MoneyBall</a><a href="https://timerloggedout-spec.github.io/help-wanted/mvt.html">MVT</a><a href="https://timerloggedout-spec.github.io/help-wanted/doe.html">DoE</a><a href="https://timerloggedout-spec.github.io/help-wanted/ates.html">ATES</a><a href="https://timerloggedout-spec.github.io/help-wanted/free-tier-value.html">Free-tier value</a><a href="https://timerloggedout-spec.github.io/help-wanted/dispatch-tree.html" aria-current="page">Dispatch Tree</a><a href="https://help-wanted-oversight.vercel.app/">Vercel deployment</a><a href="https://timerloggedout-spec.github.io/help-wanted/sitemap.xml">Sitemap</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></nav>
+<div class="hero">
+<p class="eyebrow">Dispatch Tree · Cadence &amp; Admission</p>
 <h1>Quota Dispatch Tree — cadence &amp; admission state</h1>
-<p class="dim" id="meta">Loading feed…</p>
+<p class="lede">The quota dispatch tree's guard and its 32 lanes: what "busy" actually counts, which lanes are due against their staleness thresholds, and which tree runs woke which lanes. This page consumes <code>data/dispatch-tree-feed.json</code> (schema <code>dispatch-tree-feed/v1</code>, contract <code>docs/ops/DISPATCH-TREE-FEED.md</code>) and nothing else — a value the record doesn't hold renders as absent, never synthesized.</p>
+</div>
+</header>
+<main>
+<p class="muted" id="meta">Loading feed…</p>
 
-<h2>Node A — admission guard</h2>
+<section>
+<div class="head"><h2>Node A — admission guard</h2></div>
 <div class="card" id="admission"></div>
-<div class="card" id="busy-breakdown"></div>
+<div class="card" id="busy-breakdown" style="margin-top:.7rem"></div>
+</section>
 
-<h2>Lanes — cadence state</h2>
-<div class="card"><table id="lanes"><thead><tr>
+<section>
+<div class="head"><h2>Lanes — cadence state</h2></div>
+<div class="card"><div class="table-wrap"><table class="table" id="lanes"><thead><tr>
   <th>Lane</th><th>Latest run (UTC)</th><th>Age</th><th>Firing rule</th><th>Staleness</th><th>Due?</th>
-</tr></thead><tbody></tbody></table></div>
+</tr></thead><tbody></tbody></table></div></div>
+</section>
 
-<h2>Firing history — tree runs and the lanes they woke</h2>
+<section>
+<div class="head"><h2>Firing history — tree runs and the lanes they woke</h2></div>
 <div id="tree-runs"></div>
+</section>
 
-<h2>Recorded gaps</h2>
+<section>
+<div class="head"><h2>Recorded gaps</h2></div>
 <div class="card" id="gaps"></div>
-
+</section>
+</main>
 <script>
 const fmtAge = m => m == null ? "—" : m < 90 ? Math.round(m) + "m" : m < 2880 ? (m/60).toFixed(1) + "h" : (m/1440).toFixed(1) + "d";
-fetch("data/dispatch-tree-feed.json").then(r => r.json()).then(feed => {
+fetch("./data/dispatch-tree-feed.json").then(r => r.json()).then(feed => {
   const d = feed.data, adm = d.admission, now = adm.now;
   document.getElementById("meta").textContent =
     `Feed ${feed.schema} · generated ${feed.generated_at} · busy read at ${now.read_at} (snapshot, not live at view time)`;

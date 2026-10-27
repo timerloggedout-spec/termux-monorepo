@@ -344,3 +344,26 @@ def test_single_generation_uses_its_own_evidence_set(tmp_path):
                                        "evidence_refs": ["d3:deadline"]}]
     assert solo["work_items"][0]["id"] == "SR-001"
     assert solo["producers"]["generation"]["producer"] == "gen/v1"
+
+
+def test_per_candidate_scores_are_distinct_fields(tmp_path):
+    active, passes = _root(tmp_path)
+    pdir = passes / "pass-1"
+    for name, scores in (("BALLOT-round1.json", {"cand-a": 21.5, "cand-b": 17.25}),
+                         ("BALLOT-round2.json", {"cand-a": 22.0, "cand-b": 19.5})):
+        f = pdir / "cycle" / name
+        doc = json.loads(f.read_text())
+        doc["per_class"]["LOCAL_BASELINE"]["scores"] = scores
+        doc["classes_present"] = ["LOCAL_BASELINE"]  # as the real receipts carry
+        f.write_text(json.dumps(doc))
+    feed = build_feed(REGISTRY, active, passes, {}, False,
+                      "2026-10-27T00:00:00Z")
+    by_id = {p["id"]: p for p in feed["proposals"]}
+    # each candidate's rounds carry ITS OWN score as a distinct field,
+    # not only a rank inside a shared table
+    assert by_id["cand-a"]["rounds"]["round_1"]["score"] == 21.5
+    assert by_id["cand-b"]["rounds"]["round_1"]["score"] == 17.25
+    assert by_id["cand-a"]["rounds"]["round_2"]["score"] == 22.0
+    assert by_id["cand-b"]["rounds"]["round_2"]["score"] == 19.5
+    assert by_id["cand-a"]["rounds"]["round_1"]["scores_by_class"][
+        "LOCAL_BASELINE"] == 21.5

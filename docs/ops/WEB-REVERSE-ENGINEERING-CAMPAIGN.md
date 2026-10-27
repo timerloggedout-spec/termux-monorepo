@@ -132,6 +132,16 @@ one ever enters a candidate set, it folds in through the normal pipeline.
    trigger, no cron), which parses the form back into the brief schema
    (`waf issue-intake`) and comments the dispatch plan onto the issue.
    CLI, JSONL and chat briefs converge on the same validation + planner.
+   **Template submission method (2026-10-27):** one canonical submission
+   template for every RE surface — the brief itself, filled template at
+   `ops/web_adapter_foundry/examples/target-brief.example.json`, now
+   carrying `surfaces` (requested dispatch surfaces), `evidence_expectation`
+   (observed/reproduced/verified) and `submitter` (Role{Moniker}). The form
+   renders every field within the Delphi-proven construct subset (surfaces
+   as a comma-separated input — the recorded constraint from the v1/v2
+   chooser divergence); CLI/JSONL/HTTP file the JSON as-is; chat transcribes
+   field-for-field. One validator on every path; cross-surface identity is
+   test-proven (form rendering ↔ canonical JSON ↔ HTTP /invoke).
    Per the owner (2026-10-23): the phone is a remote orchestrator for
    these dispatches; the dual B160V device surfaces are owned by their
    existing lanes and this campaign waits for them to stabilise before

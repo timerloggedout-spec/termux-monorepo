@@ -239,6 +239,8 @@ def generate_pass(pass_brief: dict, evidence_sets: list[dict],
         prov = json.loads(docs["PROVENANCE.json"])
         prov["pass_id"] = pass_brief["id"]
         prov["concept"] = variant["concept"]
+        if pass_brief.get("eligibility_gate"):
+            prov["eligibility_gate"] = pass_brief["eligibility_gate"]
         prov["siblings"] = [f"{pass_brief['id']}-{v['suffix']}"
                             for v in variants if v is not variant]
         docs["PROVENANCE.json"] = json.dumps(prov, indent=2) + "\n"
@@ -255,6 +257,8 @@ def generate_pass(pass_brief: dict, evidence_sets: list[dict],
         "n": len(variants),
         "candidates": candidates,
     }
+    if pass_brief.get("eligibility_gate"):
+        pass_meta["eligibility_gate"] = pass_brief["eligibility_gate"]
     return out, pass_meta
 
 

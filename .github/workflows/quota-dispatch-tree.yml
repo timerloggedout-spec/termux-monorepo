@@ -154,18 +154,34 @@ jobs:
             // hw-refresh (gap G-02): availability last ran 2026-10-23 while
             // every tree run concluded success (gap G-03, found by the
             // 2026-10-27 enumeration audit). Fire the tranche on the lane's
-            // real age (>360 min = its 6h cadence) so a missed phase window
-            // self-heals on the next delivered tree run.
+            // real age so a missed phase window self-heals on the next
+            // delivered tree run. The threshold is NOT a constant: it is
+            // re-derived every run from the lane's own delivered cadence —
+            // 1.5x the median gap between its 5 most recent runs, clamped
+            // to [120, 720] minutes so a starved lane still self-heals
+            // within 12h and a healthy lane is not double-fired. With too
+            // little history it falls back to the designed 6h cadence.
             let paStaleMin = 1e9;
+            let paThresholdMin = 360;
             try {
               const lastPa = await github.rest.actions.listWorkflowRuns({
                 owner: context.repo.owner, repo: context.repo.repo,
-                workflow_id: 'provider-availability.yml', per_page: 1
+                workflow_id: 'provider-availability.yml', per_page: 5
               });
-              const latestPa = lastPa.data.workflow_runs[0];
-              if (latestPa) paStaleMin = (Date.now() - new Date(latestPa.created_at).getTime()) / 60000;
+              const paRuns = lastPa.data.workflow_runs || [];
+              if (paRuns.length) paStaleMin = (Date.now() - new Date(paRuns[0].created_at).getTime()) / 60000;
+              const gaps = [];
+              for (let i = 0; i + 1 < paRuns.length; i++) {
+                gaps.push((new Date(paRuns[i].created_at).getTime() - new Date(paRuns[i + 1].created_at).getTime()) / 60000);
+              }
+              if (gaps.length >= 2) {
+                gaps.sort((a, b) => a - b);
+                const med = gaps[Math.floor(gaps.length / 2)];
+                paThresholdMin = Math.min(720, Math.max(120, Math.round(1.5 * med)));
+              }
+              core.info(`provider-availability age=${Math.round(paStaleMin)}m threshold=${paThresholdMin}m (median of ${gaps.length} gaps)`);
             } catch (_) { /* unreadable run history = treat as stale */ }
-            core.setOutput('dispatch_q6', ((((firstCycle && hour % 6 === 1) || paStaleMin > 360) && !paused) || force) ? 'true' : 'false');
+            core.setOutput('dispatch_q6', ((((firstCycle && hour % 6 === 1) || paStaleMin > paThresholdMin) && !paused) || force) ? 'true' : 'false');
             // Node H: Vantage cost telemetry (ledger #184; RFP #1576 telemetry plane).
             // Slow lane: twice daily at the firstCycle of hour % 12 == 1.
             core.setOutput('dispatch_vantage', (((firstCycle && hour % 12 === 1) && !paused) || force) ? 'true' : 'false');

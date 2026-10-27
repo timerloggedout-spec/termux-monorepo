@@ -126,3 +126,20 @@ same RFP issues, same gate, same ledgers.
 Generator: `scripts/delphi/generate_proposal.py`; in-Actions path:
 `.github/workflows/delphi-generate.yml` (dispatch-only, artifact out,
 never commits).
+
+**Passes and the cross-vote (owner parameter, 2026-10-27).** A pass
+generates **n** candidate proposals — `generation.proposals_per_pass`
+in `ops/delphi/panel.json` (default 3); a brief carries that many
+`variants`. The candidates are then **cross-voted**: comparative
+ballots scoring every candidate in the set (1–25, DECISION-MATRIX
+scale), tallied **per source class and never merged** —
+`HUMAN_COLLABORATOR`, `MODEL_PROVIDER`, `LOCAL_BASELINE`
+(`DRIVER_SYNTHESIS` is not a ballot; a class with no ballots is
+reported as zero). The deterministic rubric comparator casts the
+LOCAL_BASELINE ballots, one per panel role; aggregation uses the
+panel weighting (ledger weights from #1489, panel formula) — the same
+weighting the gate already runs on. The ranked outcome is recorded as
+a full receipt (`BALLOT.json` in the pass record) and appended to the
+outcome ledger (#1487) as a `delphi-generation-ballot v1` JSON
+comment. Tooling: `scripts/delphi/cross_vote.py`; the generate
+workflow runs both halves when dispatched in pass mode.

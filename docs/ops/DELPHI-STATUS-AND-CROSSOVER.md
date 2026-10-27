@@ -32,6 +32,20 @@ UNVERIFIED — never asserted, never dropped. First generated artifact:
 `docs/proposals/active/delphi-desk-builder-io/` (competition proposal
 for challenge packet D3), registered with `author: oracle-method`.
 
+**Passes + cross-vote (owner parameter, 2026-10-27; wired the same
+night):** each pass generates **n** candidates (`proposals_per_pass: 3`
+in `ops/delphi/panel.json`) and the ballot layer votes across the set —
+comparative ballots, source classes separate per the DEBATE protocol
+(HUMAN_COLLABORATOR / MODEL_PROVIDER / LOCAL_BASELINE; never merged;
+zero-ballot classes reported as zero), aggregated with the existing
+panel weighting into a ranked outcome with receipts
+(`scripts/delphi/cross_vote.py`; BALLOT.json + an outcome-ledger
+append). Machinery proven by a rehearsal pass on a synthetic fixture
+(3 candidates ranked by evidence profile under the real ledger
+weights; HUMAN/MODEL classes honestly at zero — no provider panel is
+enabled, `DELPHI_LLM_MAX=0`). The first live run is the D4 Kiroween
+pass, on the challenge lane's brief after the rules publish 2026-10-30.
+
 ## Operational status (verified 2026-10-27)
 
 | Component | State | Evidence |

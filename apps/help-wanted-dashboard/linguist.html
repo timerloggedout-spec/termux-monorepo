@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Linguist — Mapping Panel</title>
+<!--
+  Prototype by the visualization lane. Renders ONLY
+  ./data/linguist-feed.json (canonical mapping feed, substrate lane;
+  requirements: docs/ops/LINGUIST-PANEL.md). Feed absent or a value the
+  feed does not hold renders as an explicit absent state, never
+  synthesized. Deploy/integration (nav, sitemap, shared styling) is
+  owned by the Web Design Specialist lane.
+-->
+<style>
+  :root { color-scheme: dark; --bg:#0d1117; --card:#161b22; --line:#30363d; --fg:#e6edf3; --dim:#8b949e; --acc:#58a6ff; --ok:#3fb950; --warn:#d29922; }
+  body { background:var(--bg); color:var(--fg); font:14px/1.5 system-ui, sans-serif; margin:0; padding:24px; }
+  h1 { font-size:20px; margin:0 0 4px; } h2 { font-size:16px; margin:26px 0 8px; }
+  .dim { color:var(--dim); } .card { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:14px; margin:10px 0; }
+  textarea, input[type=search] { width:100%; box-sizing:border-box; background:#0d1117; color:var(--fg); border:1px solid var(--line); border-radius:6px; padding:8px; }
+  .badge { display:inline-block; padding:0 7px; border-radius:10px; font-size:12px; border:1px solid var(--line); margin-left:6px; }
+  .hit { border-color:var(--ok); color:var(--ok); } .miss { color:var(--dim); }
+  .fam { display:inline-block; margin:4px 10px 4px 0; }
+  .cols { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:10px; }
+  .col h3 { margin:0 0 6px; font-size:13px; color:var(--acc); }
+  .col pre, .intext { white-space:pre-wrap; word-break:break-word; font:13px/1.6 ui-monospace, monospace; }
+  mark { border-radius:3px; padding:0 2px; cursor:pointer; color:#0d1117; }
+  mark sup { font-size:9px; font-weight:700; }
+  table { border-collapse:collapse; width:100%; } th, td { text-align:left; padding:5px 7px; border-bottom:1px solid var(--line); vertical-align:top; font-size:13px; }
+  th { color:var(--dim); } code { font-size:12px; color:var(--dim); word-break:break-all; }
+  .seg button { margin-right:6px; background:#21262d; color:var(--fg); border:1px solid var(--line); border-radius:6px; padding:4px 10px; cursor:pointer; }
+  .seg button.on { border-color:var(--acc); color:var(--acc); }
+  #span-detail { border-left:3px solid var(--acc); }
+</style>
+</head>
+<body>
+<h1>Linguist — mapping panel</h1>
+<p class="dim" id="meta">Loading feed…</p>
+
+<div class="card" id="feed-absent" hidden>
+  <strong>Canonical mapping feed not landed yet.</strong>
+  <p class="dim">This panel consumes <code>data/linguist-feed.json</code> from the substrate lane and nothing else.
+  Until it lands, no mappings are shown — none are invented here. Requirements: <code>docs/ops/LINGUIST-PANEL.md</code>.</p>
+</div>
+
+<div id="panel" hidden>
+  <h2>Text</h2>
+  <div class="card">
+    <textarea id="text" rows="4"></textarea>
+    <p class="dim" id="sample-note"></p>
+    <div id="families"></div>
+    <p class="seg">
+      <button id="mode-cols" class="on">Side-by-side columns</button>
+      <button id="mode-intext">In-text (highlighted + threaded)</button>
+    </p>
+  </div>
+
+  <div id="view-cols" class="cols"></div>
+  <div id="view-intext" hidden>
+    <div class="card intext" id="intext"></div>
+    <div class="card" id="span-detail"><span class="dim">Select a highlighted span to thread its mapped versions across families.</span></div>
+  </div>
+
+  <h2>Admin — all mappings</h2>
+  <div class="card">
+    <input type="search" id="q" placeholder="Search source, variant, family, provenance…">
+    <table><thead><tr><th>Family</th><th>Source</th><th>Variants</th><th>Direction</th><th>Round-trip</th><th>Provenance</th></tr></thead>
+    <tbody id="admin"></tbody></table>
+    <p class="dim" id="admin-count"></p>
+  </div>
+
+  <h2>Recorded gaps</h2>
+  <div class="card" id="gaps"></div>
+</div>
+
+<script>
+"use strict";
+/* ---- pure mapping logic (also exercised by tests under node) ---- */
+
+// Normalize one feed entry into {family_id, source, variants[], direction,
+// granularity, table|null, match_forms[], provenance, round_trip_verified}.
+function normEntry(e) {
+  const table = e.table && typeof e.table === "object" ? e.table : null;
+  const variants = Array.isArray(e.variants) ? e.variants.map(String)
+    : (e.variant != null ? [String(e.variant)] : (table ? Object.values(table) : []));
+  const matchForms = [];
+  if (e.match) matchForms.push(String(e.match));
+  if (e.source != null) matchForms.push(String(e.source));
+  if (table) for (const k of Object.keys(table)) matchForms.push(k);
+  return {
+    id: e.id ?? null, family_id: e.family_id ?? e.family ?? null,
+    source: e.source != null ? String(e.source) : (table ? Object.keys(table).join("") : ""),
+    variants, direction: e.direction ?? "both",
+    granularity: e.granularity ?? (table ? "char" : "phrase"),
+    table, match_forms: [...new Set(matchForms)],
+    provenance: e.provenance ?? null,
+    round_trip_verified: e.round_trip_verified ?? null,
+  };
+}
+
+// Apply one entry to text (forward direction). Char tables map per char;
+// phrase/token entries replace whole match forms, longest first.
+function applyEntry(text, e) {
+  if (e.direction === "reverse") return text;
+  if (e.table) {
+    return [...text].map(c => (c in e.table ? e.table[c] : c)).join("");
+  }
+  let out = text;
+  const pairs = [[e.source, e.variants[0]]].filter(([s, v]) => s && v != null);
+  pairs.sort((a, b) => b[0].length - a[0].length);
+  for (const [s, v] of pairs) out = out.split(s).join(v);
+  return out;
+}
+
+function applyFamily(text, entries) {
+  // char tables first (single pass per entry is fine), then phrases longest-first
+  const chars = entries.filter(e => e.table);
+  const phrases = entries.filter(e => !e.table).sort((a, b) => b.source.length - a.source.length);
+  let out = text;
+  for (const e of chars) out = applyEntry(out, e);
+  for (const e of phrases) out = applyEntry(out, e);
+  return out;
+}
+
+// Find spans of `text` where any enabled-family entry matches.
+// Returns non-overlapping spans [{start,end,text,hits:[{family_id,entry}]}],
+// longest match wins at each position.
+function findSpans(text, entriesByFamily, enabled) {
+  const forms = [];
+  for (const fid of enabled) {
+    for (const e of entriesByFamily[fid] ?? []) {
+      if (e.table) {
+        for (const k of Object.keys(e.table)) if (k) forms.push({ form: k, family_id: fid, entry: e });
+      } else {
+        for (const f of e.match_forms) if (f) forms.push({ form: f, family_id: fid, entry: e });
+      }
+    }
+  }
+  forms.sort((a, b) => b.form.length - a.form.length);
+  const spans = [];
+  let i = 0;
+  while (i < text.length) {
+    const hit = forms.find(f => text.startsWith(f.form, i));
+    if (hit) {
+      const all = forms.filter(f => f.form === hit.form);
+      spans.push({ start: i, end: i + hit.form.length, text: hit.form,
+                   hits: all.map(f => ({ family_id: f.family_id, entry: f.entry })) });
+      i += hit.form.length;
+    } else i++;
+  }
+  return spans;
+}
+
+// Per-family match counts in text ("mapping exists in this text" badges).
+function familyHits(text, entriesByFamily) {
+  const out = {};
+  for (const [fid, entries] of Object.entries(entriesByFamily)) {
+    out[fid] = findSpans(text, { [fid]: entries }, [fid]).length;
+  }
+  return out;
+}
+
+// All mapped versions of one span, across families (threading).
+function threadSpan(span, entriesByFamily) {
+  const rows = [];
+  for (const h of span.hits) {
+    const mapped = applyEntry(span.text, h.entry);
+    rows.push({ family_id: h.family_id, source: span.text, mapped,
+                direction: h.entry.direction, round_trip_verified: h.entry.round_trip_verified });
+  }
+  return rows;
+}
+
+if (typeof module !== "undefined") module.exports = { normEntry, applyEntry, applyFamily, findSpans, familyHits, threadSpan };
+
+/* ---- page wiring ---- */
+if (typeof document !== "undefined") {
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const FAM_COLORS = ["#f7df1e", "#79c0ff", "#ffa657", "#a5d6ff", "#d2a8ff", "#7ee787", "#ff7b72", "#56d4dd"];
+  let feed, entriesByFamily = {}, enabled = new Set(), mode = "cols";
+
+  function currentText() { return $("text").value; }
+
+  function render() {
+    const text = currentText();
+    const hits = familyHits(text, entriesByFamily);
+    // family toggles + badges
+    $("families").innerHTML = feed.data.families.map((f, i) => {
+      const n = hits[f.id] ?? 0;
+      return `<label class="fam"><input type="checkbox" data-fam="${esc(f.id)}" ${enabled.has(f.id) ? "checked" : ""}>
+        <span style="border-bottom:3px solid ${FAM_COLORS[i % FAM_COLORS.length]}">${esc(f.label ?? f.id)}</span>
+        <span class="badge ${n ? "hit" : "miss"}">${n} in text</span></label>`;
+    }).join("");
+    $("families").querySelectorAll("input[data-fam]").forEach(cb =>
+      cb.addEventListener("change", () => { cb.checked ? enabled.add(cb.dataset.fam) : enabled.delete(cb.dataset.fam); render(); }));
+    // columns mode
+    $("view-cols").innerHTML = [`<div class="card col"><h3>Original</h3><pre>${esc(text)}</pre></div>`]
+      .concat(feed.data.families.filter(f => enabled.has(f.id)).map(f =>
+        `<div class="card col"><h3>${esc(f.label ?? f.id)}</h3><pre>${esc(applyFamily(text, entriesByFamily[f.id] ?? []))}</pre></div>`)).join("");
+    // in-text mode
+    const spans = findSpans(text, entriesByFamily, [...enabled]);
+    const famIdx = Object.fromEntries(feed.data.families.map((f, i) => [f.id, i]));
+    let html = "", last = 0;
+    spans.forEach((s, k) => {
+      html += esc(text.slice(last, s.start));
+      const fams = [...new Set(s.hits.map(h => h.family_id))];
+      html += `<mark data-span="${k}" style="background:${FAM_COLORS[famIdx[fams[0]] % FAM_COLORS.length]}" title="${esc(fams.join(", "))}">${esc(s.text)}<sup>${fams.length}</sup></mark>`;
+      last = s.end;
+    });
+    html += esc(text.slice(last));
+    $("intext").innerHTML = html || '<span class="dim">No mapped spans in this text for the enabled families.</span>';
+    $("intext").querySelectorAll("mark").forEach(m => m.addEventListener("click", () => {
+      const s = spans[Number(m.dataset.span)];
+      const rows = threadSpan(s, entriesByFamily);
+      $("span-detail").innerHTML = `<strong>Span</strong> <code>${esc(s.text)}</code> [${s.start}–${s.end})<br>` +
+        rows.map(r => `${esc(r.family_id)}: <code>${esc(r.source)}</code> → <code>${esc(r.mapped)}</code>
+          <span class="badge">${esc(r.direction)}</span>
+          <span class="badge ${r.round_trip_verified ? "hit" : "miss"}">round-trip ${r.round_trip_verified == null ? "unverified" : r.round_trip_verified}</span>`).join("<br>");
+    }));
+    $("view-cols").hidden = mode !== "cols";
+    $("view-intext").hidden = mode !== "intext";
+  }
+
+  function renderAdmin() {
+    const q = $("q").value.toLowerCase();
+    const rows = [];
+    for (const f of feed.data.families) {
+      for (const e of entriesByFamily[f.id] ?? []) {
+        const prov = e.provenance ? [e.provenance.source_path, e.provenance.detail].filter(Boolean).join(" — ") : "";
+        const hay = [f.label, e.source, e.variants.join(" "), prov].join(" ").toLowerCase();
+        if (q && !hay.includes(q)) continue;
+        rows.push(`<tr><td>${esc(f.label ?? f.id)}</td><td><code>${esc(e.source)}</code></td>
+          <td><code>${esc(e.variants.join(" · "))}</code></td><td>${esc(e.direction)}</td>
+          <td>${e.round_trip_verified == null ? '<span class="miss">unverified</span>' : e.round_trip_verified}</td>
+          <td><code>${esc(prov || "— not in feed")}</code></td></tr>`);
+      }
+    }
+    $("admin").innerHTML = rows.join("");
+    $("admin-count").textContent = `${rows.length} mapping(s) shown`;
+  }
+
+  fetch("./data/linguist-feed.json").then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }).then(f => {
+    feed = f;
+    $("meta").textContent = `Feed ${feed.schema} · generated ${feed.generated_at ?? "—"} · ${feed.data.families.length} families · ${feed.data.entries.length} entries`;
+    for (const e of feed.data.entries) {
+      const n = normEntry(e);
+      (entriesByFamily[n.family_id] ??= []).push(n);
+    }
+    enabled = new Set(feed.data.families.map(x => x.id));
+    const sample = (feed.data.sample_texts ?? [])[0];
+    $("text").value = sample ? sample.text : "";
+    $("sample-note").textContent = sample ? `Sample: ${sample.id}${sample.note ? " — " + sample.note : ""} (from feed; edit freely)` : "No sample text in feed — paste text to analyze.";
+    $("gaps").innerHTML = (feed.gaps ?? []).map(g => `<p><code>${esc(g.id)}</code> — ${esc(g.detail)}</p>`).join("")
+      + (feed.honesty_rules ?? []).map(h => `<p class="dim">· ${esc(h)}</p>`).join("");
+    $("panel").hidden = false;
+    $("text").addEventListener("input", render);
+    $("q").addEventListener("input", renderAdmin);
+    $("mode-cols").addEventListener("click", () => { mode = "cols"; $("mode-cols").classList.add("on"); $("mode-intext").classList.remove("on"); render(); });
+    $("mode-intext").addEventListener("click", () => { mode = "intext"; $("mode-intext").classList.add("on"); $("mode-cols").classList.remove("on"); render(); });
+    render(); renderAdmin();
+  }).catch(() => { $("meta").textContent = "Feed absent."; $("feed-absent").hidden = false; });
+}
+</script>
+</body>
+</html>

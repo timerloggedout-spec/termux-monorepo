@@ -190,3 +190,157 @@ def test_registry_parser_fails_loudly_without_ids():
     except ValueError:
         return
     raise AssertionError("an id-less registry entry must stop the feed")
+
+
+ITEMS_MD = """# ITEMS — cand-a
+
+| ID | Item | State | Evidence / exit condition |
+|---|---|---|---|
+| SR-001 | Build the thing | proposed | exit: suites green |
+| SR-002 | Prove the property | proposed | exit: receipt complete |
+"""
+
+PASS_BRIEF = {"variants": [
+    {"suffix": "a", "concept": "Concept A",
+     "executive_request": "Do A, thoroughly.",
+     "summary_points": [{"text": "Point A.", "evidence_refs": ["x"]}],
+     "test_suites": ["s1"]},
+    {"suffix": "b", "concept": "Concept B",
+     "executive_request": "Do B instead.",
+     "summary_points": [{"text": "Point B.", "evidence_refs": ["y"]}],
+     "test_suites": ["s9"]}]}
+
+PANEL = {"formula": "effective_score = sum(w_i * score_i) / sum(w_i)",
+         "criteria": "DECISION-MATRIX 1-25", "seed_note": "seeds only",
+         "generation": {"proposals_per_pass": 2,
+                        "cross_vote": {"weights_source": "ledger #1489"},
+                        "cycle": {"rounds": 2,
+                                  "expectation_tolerance": 2.0}}}
+
+
+def _extend_root(tmp_path):
+    """_root plus the depth/provenance records: ITEMS.md per
+    candidate, the pass brief, and round-1 ballots + weights."""
+    active, passes = _root(tmp_path)
+    for cand in ("cand-a", "cand-b"):
+        (active / cand / "ITEMS.md").write_text(ITEMS_MD)
+    pdir = passes / "pass-1"
+    (pdir / "brief.json").write_text(json.dumps(PASS_BRIEF))
+    r1_file = pdir / "cycle" / "BALLOT-round1.json"
+    r1 = json.loads(r1_file.read_text())
+    r1["ballots"] = [{"voter": "rubric:OPERATOR",
+                      "source_class": "LOCAL_BASELINE",
+                      "scores": {"cand-a": 30, "cand-b": 20}}]
+    r1["weights"] = {"source": "ledger weights file ledger-weights.json",
+                     "role_weights": {"OPERATOR": 1.4462}}
+    r1_file.write_text(json.dumps(r1))
+    return active, passes
+
+
+def test_depth_producers_and_settings(tmp_path):
+    active, passes = _extend_root(tmp_path)
+    feed = build_feed(REGISTRY, active, passes, {}, False,
+                      "2026-10-27T00:00:00Z", panel=PANEL)
+    settings = feed["settings"]
+    assert settings["generation"]["proposals_per_pass"] == 2
+    assert settings["generation"]["expectation_tolerance"] == 2.0
+    assert settings["weights_source"] == "ledger #1489"
+    a = feed["proposals"][0]
+    assert a["approach"]["executive_request"] == "Do A, thoroughly."
+    assert a["approach"]["source"].endswith("passes/pass-1/brief.json")
+    assert a["summary_points"] == [{"text": "Point A.",
+                                     "evidence_refs": ["x"]}]
+    assert a["work_items"][0]["id"] == "SR-001"
+    assert a["work_items"][1]["state"] == "proposed"
+    assert a["documents"]["items"].endswith("active/cand-a/ITEMS.md")
+    assert a["evidence_profile"]["evidenced_ratio"] == 1.0
+    r1 = a["rounds"]["round_1"]
+    assert r1["ballots"][0]["voter"] == "rubric:OPERATOR"
+    assert r1["ballots"][0]["score_of_this"] == 30
+    assert a["rounds"]["round_2"]["ballots"] is None  # aggregates only
+    basis = r1["ranking_basis"]
+    assert basis["scores_tied"] is False
+    assert basis["score_spread"] == 10.0
+    prod = a["producers"]
+    assert prod["generation"]["producer"] == "gen/v1"
+    lb = prod["rounds"]["round_1"]["LOCAL_BASELINE"]
+    assert lb["kind"] == "deterministic_rubric_comparator"
+    assert lb["voters"] == ["rubric:OPERATOR"]
+    assert lb["weights"]["role_weights"] == {"OPERATOR": 1.4462}
+    assert lb["weights"]["ledger_issue"] == 1489
+    mp = prod["rounds"]["round_1"]["MODEL_PROVIDER"]
+    assert mp["kind"] == "none_recorded" and mp["ballots"] == 0
+    assert "DELPHI_LLM_MAX" in mp["reason"]
+    hc = prod["rounds"]["round_1"]["HUMAN_COLLABORATOR"]
+    assert hc["kind"] == "none_recorded"
+    srcs = prod["expectations_sources"]
+    assert srcs[0]["source"] == "LOCAL_BASELINE"
+    assert srcs[0]["kind"] == "derived_from_round_1"
+
+
+def test_tied_scores_state_the_tie_break(tmp_path):
+    active, passes = _root(tmp_path)
+    pdir = passes / "pass-1"
+    for name in ("BALLOT-round1.json", "BALLOT-round2.json"):
+        f = pdir / "cycle" / name
+        doc = json.loads(f.read_text())
+        doc["per_class"]["LOCAL_BASELINE"]["scores"] = {
+            "cand-a": 23.269, "cand-b": 23.269}
+        f.write_text(json.dumps(doc))
+    feed = build_feed(REGISTRY, active, passes, {}, False,
+                      "2026-10-27T00:00:00Z")
+    a = feed["proposals"][0]
+    b1 = a["rounds"]["round_1"]["ranking_basis"]
+    assert b1["scores_tied"] is True and b1["score_spread"] == 0
+    assert "rank()" in b1["decided_by"] and "candidate id" in b1["decided_by"]
+    b2 = a["rounds"]["round_2"]["ranking_basis"]
+    assert b2["scores_tied"] is True
+    assert "method_cycle" in b2["decided_by"]
+
+
+SOLO_REGISTRY = """version: 1
+updated_at: "2026-10-27T00:00:00Z"
+proposals:
+  - id: solo
+    title: A single generation
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: active/solo/
+"""
+
+
+def test_single_generation_uses_its_own_evidence_set(tmp_path):
+    active = tmp_path / "active"
+    passes = tmp_path / "passes"
+    passes.mkdir()
+    d = active / "solo"
+    d.mkdir(parents=True)
+    (d / "MANIFEST.md").write_text(MANIFEST)
+    (d / "PROVENANCE.json").write_text(json.dumps(
+        {"proposal_id": "solo", "author": "oracle-method",
+         "generated_at": "2026-10-27T00:00:00Z", "generator": "gen/v1",
+         "evidence_sets": [{"sha256": "cd34ef", "items": 2,
+                            "assembled_at": "2026-10-27T00:00:00Z"}]}))
+    (d / "evidence.json").write_text(json.dumps({"items": [
+        {"claim": "d3:deadline", "provenance": {"source": "github-api"}},
+        {"claim": "d3:shape", "provenance": {"source": "github-api"}}]}))
+    (d / "ITEMS.md").write_text(ITEMS_MD)
+    (d / "brief.json").write_text(json.dumps(
+        {"executive_request": "Build the solo thing.",
+         "summary_points": [{"text": "Solo point.",
+                             "evidence_refs": ["d3:deadline"]}]}))
+    feed = build_feed(SOLO_REGISTRY, active, passes, {}, False,
+                      "2026-10-27T00:00:00Z")
+    solo = feed["proposals"][0]
+    assert solo["kind"] == "single" and solo["rounds"] is None
+    # The composition comes from the proposal's OWN committed set —
+    # null only when no set is committed anywhere for the proposal.
+    assert solo["evidence_basis"]["sources"] == {"github-api": 2}
+    assert solo["evidence_basis"]["claim_areas"] == {"d3": 2}
+    assert solo["approach"]["executive_request"] == "Build the solo thing."
+    assert solo["approach"]["source"].endswith("active/solo/brief.json")
+    assert solo["summary_points"] == [{"text": "Solo point.",
+                                       "evidence_refs": ["d3:deadline"]}]
+    assert solo["work_items"][0]["id"] == "SR-001"
+    assert solo["producers"]["generation"]["producer"] == "gen/v1"

@@ -58,12 +58,19 @@ blocked-paid list for an owner ruling (proposal item SC-004).
   would misstate the evidence, so Kev is promoted only to
   trial_candidate with the composition recorded as the next step.
 
-## T1-MEV — mev (Mellow AI): TRIAL_CANDIDATE (trial in flight)
+## T1-MEV — mev (Mellow AI): TRIAL_CANDIDATE (local serve blocked on this host)
 
 - `stay-mellow-ai/mev` is a **full merged model** (2 safetensors shards,
   tokenizer, chat template) — directly servable via the simple-jev
-  transformers backend, unlike Kev. A local serve + decide trial was
-  started 2026-10-27; its record lands as a follow-up to this file.
+  transformers backend, unlike Kev.
+- Local serve attempted twice 2026-10-27 (55 min total): the weight
+  download never completed a shard — HF reads time out mid-shard on
+  this egress (`httpx2.ReadTimeout`) and partial blobs roll back; only
+  the 13 MB of small files landed. Host ceiling is a second blocker:
+  7 GB RAM vs a ~8 GB bf16 4B load. Disposition: trial_candidate,
+  blocked on host/egress — the realistic next route is serving it on a
+  GitHub Actions runner (16 GB RAM, fast egress) via a dispatch-mode
+  workflow, not this sandbox.
 - Mev (recruiting) (S1-04): no runnable release exists (a fine-tune
   described in a post only) — not-runnable; stays `referenced`.
 

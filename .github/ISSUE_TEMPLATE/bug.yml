@@ -1,0 +1,29 @@
+name: Bug Report
+description: Report something that is broken. Filing labels it bug so the lifecycle triage can route it.
+title: "bug: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Say what broke, what the evidence is, and what should happen
+        instead. Never paste secret values: name Actions secrets only.
+  - type: textarea
+    id: what_happened
+    attributes:
+      label: What happened
+      description: The failure, with the exact surface it happened on (workflow, script, page, device).
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Run ids, log excerpts, screenshots described in text, or steps to reproduce.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected instead
+      description: The behaviour that should have happened. Leave blank if unknown.

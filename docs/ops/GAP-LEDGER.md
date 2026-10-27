@@ -142,6 +142,29 @@ vs **done** (code/workflows implement) vs **executed** (runs/artifacts prove).
 - (a) MVT / DoE / ATES conflation — MVT page renders the ATES harness; DoE
   page cites a Delphi record as its executed comparison. Layers: claimed vs
   held. Severity: medium. Route: separation chat spawned 2026-10-27.
+- **Resolution (a): closed-on-evidence 2026-10-27.** Separation landed and
+  was verified firsthand on master by the separation lane (this entry's
+  fix chat): spec `docs/ops/MVT-DOE-ATES-SEPARATION.md` + separated feeds
+  (`collect_ates` / `collect_mvt` / `collect_doe` in
+  `scripts/dashboards/surface_feeds.py`, contract
+  `docs/ops/DASHBOARD-SURFACE-FEEDS.md`, new `ates-feed.json`) — PR #1756
+  merged `36d23555db58` (PR-numbered commit in master history, compare
+  ahead 0; landed content read back). Web Design page split followed on
+  the separated feeds: PR #1766 merged `6fe2c2280e34` (new `ates.html`
+  consuming `ates-feed.json`; `mvt.html` renders only the MVT feed — no
+  harness/fixtures payload). The Delphi implementation-round record
+  (`docs/proposals/passes/strands-rfp-response/cycle/IMPLEMENTATION.json`)
+  is a Delphi record: under the owner correction recorded in the spec
+  the same day, it is presented on the DoE surface in full under
+  `executed_comparisons` with `owner_surface: delphi` — labeled
+  Delphi-owned, never as a DoE campaign — PR #1768 merged
+  `9fe67c94e4f9`; the DoE page table was restored to match, PR #1777
+  merged `47e1cfda5e18` (both history + content verified the same way).
+  Honesty state unchanged: the MVT experiment loop remains
+  `defined_not_run` (0 runs observed; Team MVT 528), the DSPy lane
+  remains design-only, and the DoE feed's gaps state plainly that no
+  standalone DoE campaign records exist — no synthesized results
+  anywhere in the separated feeds.
 - (b) 3L0 weighting: page renders seed defaults and points at ledger #1489;
   the observed live values (0.68 / 1532 lineage) are not held in the feed.
   Severity: medium. Route: backfill chat spawned 2026-10-27.

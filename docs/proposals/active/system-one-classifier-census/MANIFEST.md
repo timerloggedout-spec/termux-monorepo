@@ -79,3 +79,17 @@ item (ITEMS.md) instead of remaining a chat-side reference.
 - API compatibility is not capability equivalence (question types,
   context, calibration differ); no cross-model performance ranking
   is asserted anywhere in this package.
+
+## Tranche-1 trials (2026-10-27)
+
+Executed under the owner's "Get them in our comparisons!" order with the
+free_only gate standing; records in TRIALS.md. Laya **evaluated** via a
+self-hosted simple-jev server calling the fleet dispatch's decide stage
+(quality 0.7139 / grounding 0.7692 on the trial state); simple-jev
+**evaluated** as the serving adapter (its hosted demo refuses datacenter
+egress — 403 from both the sandbox and GitHub Actions, run 40517046438).
+Kev is a LoRA-adapter + head family, not standalone models —
+trial_candidate pending its own serve stack. mev (Mellow AI) is a full
+merged model — trial_candidate, local trial in flight. Jev (TypeSafe)
+and the other paid-route rows are on the blocked-paid list in TRIALS.md
+for an owner ruling (SC-004).

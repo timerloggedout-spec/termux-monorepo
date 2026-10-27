@@ -111,6 +111,23 @@ jobs:
               });
               repoChanged = pushes.data.length > 0;
             } catch (_) {}
+            // Node F0: hw-refresh staleness (1 call). GitHub delivers this
+            // tree's */10 schedule at jittered minutes (~6 runs/day here),
+            // so the firstCycle phase window below is a cadence preference,
+            // never a guarantee: on 2026-10-25..27 every delivered run
+            // landed at minute >= 11 and the refresh lane starved for 2+
+            // days while all runs concluded success (gap G-02). Measure
+            // the lane's real age and fire on staleness so a missed phase
+            // window self-heals on the next tree run regardless of phase.
+            let hwRefreshStaleMin = 1e9;
+            try {
+              const lastRefresh = await github.rest.actions.listWorkflowRuns({
+                owner: context.repo.owner, repo: context.repo.repo,
+                workflow_id: 'help-wanted-status-refresh.yml', per_page: 1
+              });
+              const latestRefresh = lastRefresh.data.workflow_runs[0];
+              if (latestRefresh) hwRefreshStaleMin = (Date.now() - new Date(latestRefresh.created_at).getTime()) / 60000;
+            } catch (_) { /* unreadable run history = treat as stale */ }
             // Node F: help-wanted lane cadences (no extra calls)
             const hour = new Date().getUTCHours();
             const firstCycle = new Date().getUTCMinutes() < 10;
@@ -119,7 +136,7 @@ jobs:
             core.setOutput('dispatch_probe', (((probeStaleMin > 45 || bridgeStaleMin > 45) && slow && !paused) || force) ? 'true' : 'false');
             core.setOutput('dispatch_eval', ((repoChanged && slow && !paused) || force) ? 'true' : 'false');
             core.setOutput('dispatch_recon', ((slow && !paused) || force) ? 'true' : 'false');
-            core.setOutput('dispatch_hw_refresh', (firstCycle || force) ? 'true' : 'false');
+            core.setOutput('dispatch_hw_refresh', (firstCycle || hwRefreshStaleMin > 75 || force) ? 'true' : 'false');
             core.setOutput('dispatch_hw_pair', (((firstCycle && hour % 2 === 1) && !paused) || force) ? 'true' : 'false');
             core.setOutput('dispatch_hw_execute', (((firstCycle && hour % 4 === 3) && !paused) || force) ? 'true' : 'false');
             core.setOutput('dispatch_hw_assist', (((firstCycle && hour % 6 === 5) && !paused) || force) ? 'true' : 'false');
@@ -147,7 +164,7 @@ jobs:
                 ['E eval', 'commits since watermark && slow-cycle', String(repoChanged && slow)],
                 ['E watermark', watermark, repoChanged ? 'advance' : 'hold'],
                 ['E recon', 'slow-cycle', String(slow)],
-                ['F hw-refresh', 'hourly cycle', String(firstCycle)],
+                ['F hw-refresh', 'hourly cycle || refresh stale > 75m', String(firstCycle || hwRefreshStaleMin > 75)],
                 ['F hw-pair', 'odd hours', String(firstCycle && hour % 2 === 1)],
                 ['F hw-execute', 'hour % 4 == 3', String(firstCycle && hour % 4 === 3)],
                 ['F hw-assist', 'hour % 6 == 5', String(firstCycle && hour % 6 === 5)],

@@ -86,7 +86,7 @@ function rankingList(round,selfId){
 }
 function roundBlock(label,round,selfId){
   if(!round) return '<div class="round"><h4>'+esc(label)+'</h4><p class="absent">Absent from the record.</p></div>';
-  let h='<div class="round"><h4>'+esc(label)+' — this proposal ranked #'+esc(round.rank_of_this)+'</h4>'+rankingList(round,selfId)+ballotsChips(round);
+  let h='<div class="round"><h4>'+esc(label)+' — this proposal ranked #'+esc(round.rank_of_this)+(round.score!=null?' · score '+esc(round.score):'')+'</h4>'+rankingList(round,selfId)+ballotsChips(round);
   if(round.scores_by_class){h+='<p class="meta">Scores by class: '+Object.keys(round.scores_by_class).sort().map(c=>{const v=round.scores_by_class[c];return esc(c)+': '+(v==null?'no ballots (absent)':esc(v))}).join(' · ')+'</p>';}
   if(round.evidence_set_sha256) h+='<p class="meta">Equalized evidence set sha256 <code>'+esc(String(round.evidence_set_sha256).slice(0,16))+'…</code></p>';
   if(round.ranking_basis){
@@ -94,7 +94,11 @@ function roundBlock(label,round,selfId){
     h+='<div class="tie"><strong>The ranking basis, as recorded:</strong> scores tied: '+esc(rb.scores_tied?'yes':'no')+' · score spread: '+esc(rb.score_spread)+'<br>'+esc(rb.decided_by)+'</div>';
   }
   if(Array.isArray(round.ballots)){
-    h+='<h5>Recorded ballots</h5><ul class="feed-list">'+round.ballots.map(b=>'<li><span><strong>'+esc(b.voter)+'</strong> <span class="meta">('+esc(b.source_class)+')</span><br><span class="meta">scores: '+Object.keys(b.scores||{}).sort().map(k=>esc(k.replace('strands-rfp-response-',''))+': '+esc(b.scores[k])).join(' · ')+'</span></span><span>this: '+esc(b.score_of_this)+'</span></li>').join('')+'</ul>';
+    const keys=Object.keys((round.ballots[0]||{}).scores||{});
+    let pre=keys.length?keys[0]:''; for(const k of keys){let i=0; while(i<pre.length&&k[i]===pre[i])i++; pre=pre.slice(0,i);}
+    pre=pre.slice(0,Math.max(pre.lastIndexOf('-'),pre.lastIndexOf('/'))+1);
+    const short=id=>pre&&id.startsWith(pre)?id.slice(pre.length):id;
+    h+='<h5>Recorded ballots</h5><ul class="feed-list">'+round.ballots.map(b=>'<li><span><strong>'+esc(b.voter)+'</strong> <span class="meta">('+esc(b.source_class)+')</span><br><span class="meta">scores: '+Object.keys(b.scores||{}).sort().map(k=>esc(short(k))+': '+esc(b.scores[k])).join(' · ')+'</span></span><span>this: '+esc(b.score_of_this)+'</span></li>').join('')+'</ul>';
   } else if(round.ballots===null){
     h+='<p class="meta">Recorded ballots: not in the feed for this round — aggregates only.</p>';
   }

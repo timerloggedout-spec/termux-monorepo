@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "65fc8c3287e0f097c8689b0286d025d6417250cbca7b149f3257d4ee51167198",
-  "workflow_count": 192,
+  "source_fingerprint": "39f58b29966cac683d4be8e3a0abcfe4380e3c0fa7b67263756ce8dccdff4b5d",
+  "workflow_count": 193,
   "workflows": [
     {
       "action_pins": [
@@ -1088,6 +1088,23 @@
       "schedules": [],
       "triggers": [
         "workflow_call"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "collect",
+        "signal"
+      ],
+      "name": "delphi-tribute-ingest",
+      "path": ".github/workflows/delphi-tribute-ingest.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch",
+        "workflow_run"
       ]
     },
     {

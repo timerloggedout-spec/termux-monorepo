@@ -24,7 +24,6 @@ is its at-a-glance view and is refreshed from here.
 |------|--------|------|
 | Inventory — Connectors Tooling Abilities, All Surfaces | — (root) | GitHub root identity; this registry |
 | Challenge entries — log & automated search lane | Inventory | AWS Builder Center, Devpost, Kiro, lablab.ai, Vultr, Builder.io/Clips |
-| BOINC — free compute & rankings | Inventory | BOINC project accounts (Einstein@Home, NumberFields@Home, SRBase) |
 
 ## 2. Profiles
 
@@ -41,7 +40,10 @@ is its at-a-glance view and is refreshed from here.
 - URL: https://builder.aws.com/community/@1337dia590r1c8u1ldr
 - Display name: "'Founders' are 'found' to implement."
 - Status: **exists — INCOMPLETE** (observed live 2026-10-26: default avatar,
-  no bio).
+  no bio; **re-verified live 2026-10-27** (gap G-07), public view: profile
+  image still the default placeholder asset, About explicitly empty — the
+  page states the bio hasn't been added — and no social links shown;
+  display name + country set).
 - Mandatory fields (official AWS Builder Center Sweepstakes Terms, verified
   2026-10-26: "Your profile must include full name, country, profile image,
   about section, and at least one social media link"):
@@ -87,39 +89,17 @@ is its at-a-glance view and is refreshed from here.
 - Account needed for sandbox credits; $200 participant credit offsets the
   sandbox. **No-card path only** — the card is a BLOCK.
 
-#### Builder.io / Clips — status unknown
+#### Builder.io / Clips — no account yet (owner decision surfaced 2026-10-27)
 
-- The Agent-Native Hackathon itself needs no registration (official page,
-  verified 2026-10-26). Whether publishing a public Clips demo requires a
-  Builder account is UNVERIFIED — checked during D3 prep; if account-gated,
-  it becomes an owner item immediately.
-
-### BOINC lane — free compute & rankings
-
-#### BOINC — entrantBoinc
-
-- Platform: BOINC (Berkeley Open Infrastructure for Network Computing) —
-  one fleet identity across projects. Per-project accounts share the
-  moniker username `entrantBoinc` and the fleet Gmail (one cross-project
-  ID). Moniker record: `entrant{entrantBoinc}[platform:boinc]`
-  (`config/registration_monikers.json`).
-- Einstein@Home — account exists (Drupal user 337854, BOINC user ID
-  1066683; registered via the project's web flow 2026-10-27 — the
-  project refuses RPC account creation); fleet BOINC password set,
-  client attached via Web RPC lookup.
-- NumberFields@Home — account created 2026-10-27 via the project Web
-  RPC; fleet client attached.
-- SRBase — account created 2026-10-27 via the project Web RPC using the
-  invitation code the project publishes on its own homepage/FAQ
-  (anti-spam speedbump, not a secret); fleet client attached. Team
-  `entrantBoinc` founded 2026-10-27 via the project's create-team RPC
-  (team 323).
-- Credentials: passwords/authenticators live host-local only (BOINC
-  host data dir + key store, 0600); recovery via the fleet Gmail.
-  Never recorded here.
-- Compute status: no work fetched yet — the agent VM's egress proxy
-  hangs scheduler POSTs (verified 2026-10-27). First crunching host
-  awaits an open-egress surface; Oracle Cloud Always Free signup is
-  card-gated = owner item.
-- Used by: `docs/ops/BOINC-FLEET-COMPUTE.md` (host assessment, runbook,
-  standings).
+- The Agent-Native Hackathon needs no registration, and its submission form
+  is account-free (official page + form, verified 2026-10-26/27).
+- **Clips, hosted (clips.agent-native.com): recording requires a free
+  account** — Google or email sign-in; verified by live trial 2026-10-27
+  (gap G-08): the landing is a sign-in wall with no guest path. Viewing a
+  public clip requires no login (the rules' acceptance criterion). No fleet
+  account exists yet; creating one is an owner decision (surfaced
+  2026-10-27, needed by the Oct 30–Nov 1 build weekend). Account-free
+  alternative: self-host the open-source Clips template with an
+  S3-compatible storage backend.
+- A Builder.io CMS Space/plan account is NOT required for this packet
+  (earlier first-pass concern; resolved 2026-10-27).

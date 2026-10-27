@@ -1,6 +1,6 @@
 {
-  "version": "0.4.0",
-  "updated": "2026-10-27T00:53:37Z",
+  "version": "0.4.1",
+  "updated": "2026-10-27T01:06:27Z",
   "note": "github-remote is the LIVE GitHub-hosted MCP URL for URL-only agents. github-docker is optional self-host only. termux/android stay on Vercel hub — do not mix. bifrost is evaluation gateway (chat+MCP), not a replacement for github-remote.",
   "hosts": [
     {
@@ -25,8 +25,8 @@
         "mcp": "/mcp/termux"
       },
       "tools": ["termux_status", "termux_run", "termux_pkg"],
-      "status": "live_standalone_pending_hub_root_directory_switch",
-      "note": "Currently live and responding at https://termux-mcp.vercel.app/mcp on its own standalone project. Will move to the relative path above once this hub becomes the deployment's Root Directory."
+      "status": "on_hold_superseded",
+      "note": "Alternative route to Termux local, placed ON HOLD and SUPERSEDED (owner ruling, 2026-10-26). The fleet device route is the pull-queue lane (docs/ops/DEVICE-PULL-QUEUE.md): the device pulls tasks; no inbound MCP server is the operating path. The standalone endpoint may still respond - responding is not operating. The hub root-directory switch no longer applies to this host."
     },
     {
       "id": "android-mcp",

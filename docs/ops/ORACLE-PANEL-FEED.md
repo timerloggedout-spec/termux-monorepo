@@ -27,7 +27,15 @@ must consume this feed and nothing else.
 | Which proposals exist, titles, statuses | `docs/proposals/registry.yaml` — oracle-method entries only |
 | Generation provenance, evidence counts | `docs/proposals/active/<id>/PROVENANCE.json` |
 | Description | the `## Summary` bullets of each `MANIFEST.md`, verbatim (evidence citations retained) |
-| Evidence basis | `PROVENANCE.json` evidence sets (sha256 / items / assembled_at); source + claim-area composition only when the evidence set itself is committed (pass records) — otherwise those fields read null, never reconstructed |
+| Approach (what is actually proposed, verbatim) | the generation brief: `docs/proposals/passes/<pass-id>/brief.json` variant matched by suffix (pass candidates) or `docs/proposals/active/<id>/brief.json` (singles) — `executive_request`, plus `summary_points` WITH their structured evidence refs |
+| Work items | `docs/proposals/active/<id>/ITEMS.md` — the proposal's own item table (id / item / state / exit condition), parsed, never summarized |
+| Documents | the proposal's own record paths (`RFP.md` / `ITEMS.md` / `MANIFEST.md` / `PROVENANCE.json`) for files that exist |
+| Evidence basis | `PROVENANCE.json` evidence sets (sha256 / items / assembled_at); source + claim-area composition when the evidence set itself is committed — the pass record's `evidence.json`, or a single generation's own `docs/proposals/active/<id>/evidence.json` — otherwise those fields read null, never reconstructed |
+| Evidence profile | `cycle/BALLOT-round1.json` `profiles` — the generation profile the rubric comparator scored, verbatim |
+| Ballots | `cycle/BALLOT-round*.json` `ballots`, verbatim per voter (round 2's receipt carries per-class aggregates only, so its `ballots` read null — never reconstructed from aggregates) |
+| Ranking basis | computed from the round's per-class scores: spread + tie state; the deciding rule cited from `scripts/delphi/cross_vote.py` `rank()` (sorts by `(-score, candidate_id)`) / the round-2 re-vote |
+| Producers (who/what produced each result, under which settings) | `producers` per proposal: generation (the `PROVENANCE.json` generator string); per round per class — LOCAL_BASELINE = `cross_vote.py` rubric comparator (round 1) / `method_cycle.py` re-vote (round 2), with voters and the ballot record's applied weights (source verbatim; live weights live on ledger #1489); a class that cast nothing reads `none_recorded` with the recorded reason (MODEL_PROVIDER: model voting disabled, `DELPHI_LLM_MAX=0`, and the `validate_ballots` run-record + entitlement rule; HUMAN_COLLABORATOR: no recorded ballot file supplied). Expectations sources are named likewise (round-1-derived, or brief priors with their author) |
+| Settings | `ops/delphi/panel.json` — formula, criteria/score scale, weights source + seed note, generation parameters (proposals per pass, cycle rounds, expectation tolerance) |
 | Implementation summary | `docs/proposals/passes/<pass-id>/cycle/IMPLEMENTATION.json` (pass rate) + `cycle/BALLOT-round1.json` evidence profiles (evidenced ratio) + the per-candidate suite records |
 | UNVERIFIED points | the `## Unverified / open` section of each `MANIFEST.md` |
 | Round rankings, ballots by class, per-class scores, classes absent | `docs/proposals/passes/<pass-id>/cycle/BALLOT-round*.json` |
@@ -62,6 +70,15 @@ must consume this feed and nothing else.
    says whether this refresh read the ledger; per-proposal
    `ledger.verified` carries the same fact down. An unverified
    refresh shows repo-record values and says so.
+7. **Every score states its producer; ties render as ties.**
+   Each result carries its `producers` block (class, tool,
+   voters, applied weights, settings). Where the deciding
+   class's scores tie, `ranking_basis.scores_tied` is true and
+   the order is the recorded tie-break (`cross_vote.py rank()`
+   sorts by `(-score, candidate_id)`) — a ranking produced by
+   a tie-break is never rendered as a score difference, and
+   per-candidate scores are the record's values even when
+   they are identical.
 
 ## Validation duty
 
@@ -81,6 +98,12 @@ the records, and discrepancies are resolved in favor of the records.
               "registry_proposals_total": 45,
               "oracle_method_proposals": 4,
               "ledger_issue": 1487, "ledger_verified": true},
+  "settings": {"panel": "ops/delphi/panel.json", "formula": "...",
+               "criteria": "...", "score_scale": "1-25 ...",
+               "weights_source": "...", "seed_note": "...",
+               "generation": {"proposals_per_pass": 3,
+                              "cycle_rounds": 2,
+                              "expectation_tolerance": 2.0}} | null,
   "honesty_rules": ["..."],
   "proposals": [{
     "id": "...", "title": "...", "author": "oracle-method",
@@ -88,6 +111,28 @@ the records, and discrepancies are resolved in favor of the records.
     "pass": "pass-id | null", "kind": "pass-candidate | single",
     "generated_at": "...", "generator": "...", "evidence_items": 0,
     "description": ["MANIFEST Summary bullets, verbatim"] | null,
+    "approach": {"executive_request": "brief text, verbatim",
+                 "concept": "...", "surface": "...", "deadline": "...",
+                 "source": "docs/proposals/.../brief.json"} | null,
+    "summary_points": [{"text": "...", "evidence_refs": ["..."]}] | null,
+    "work_items": [{"id": "SR-001", "item": "...", "state": "proposed",
+                    "exit": "exit: ..."}] | null,
+    "documents": {"rfp": "docs/proposals/active/.../RFP.md",
+                  "items": "...", "manifest": "...",
+                  "provenance": "..."} | null,
+    "evidence_profile": {"points": 3, "evidenced": 3, "unverified": 0,
+                         "evidenced_ratio": 1.0, "items": 3,
+                         "evidence_sources": 10,
+                         "dependency_items": 0,
+                         "money_veto": false} | null,
+    "producers": {"generation": {"kind": "oracle_method_generator",
+                                 "producer": "...", "generated_at": "...",
+                                 "evidence_sets": []},
+                  "rounds": {"round_1": {"<class>": {"kind": "...", "...": "..."}},
+                             "round_2": {"<class>": {"kind": "...", "...": "..."}}},
+                  "expectations_sources": [{"source": "...",
+                                            "kind": "derived_from_round_1 | brief_prior",
+                                            "author": "..."}]} | null,
     "evidence_basis": {"sets": [{"sha256": "...", "items": 0,
                                  "assembled_at": "..."}],
                        "items": 0,
@@ -99,10 +144,21 @@ the records, and discrepancies are resolved in favor of the records.
     "unverified_points": ["..."],
     "rounds": null | {"round_1": {"ranking": [], "rank_of_this": 1,
                                   "ballots_by_class": {}, "scores_by_class": {},
-                                  "classes_absent": []},
+                                  "classes_absent": [],
+                                  "ballots": [{"voter": "rubric:OPERATOR",
+                                               "source_class": "LOCAL_BASELINE",
+                                               "score_of_this": 25,
+                                               "scores": {}}] | null,
+                                  "ranking_basis": {"scores_tied": true,
+                                                    "score_spread": 0,
+                                                    "decided_by": "..."}},
                       "round_2": {"ranking": [], "rank_of_this": 1,
                                   "ballots_by_class": {}, "scores_by_class": {},
-                                  "evidence_set_sha256": "..."}},
+                                  "evidence_set_sha256": "...",
+                                  "ballots": null,
+                                  "ranking_basis": {"scores_tied": true,
+                                                    "score_spread": 0,
+                                                    "decided_by": "..."}}},
     "expectations": null | {"<source>": {"expected_rank": 1,
                                          "expected_score": 0.0,
                                          "tolerance": 2.0}},

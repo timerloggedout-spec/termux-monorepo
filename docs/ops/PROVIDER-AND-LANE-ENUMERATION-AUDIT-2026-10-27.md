@@ -334,3 +334,27 @@ the designed 6h only when history is too thin to measure, and logging age + thre
 on every run. If the delivered cadence changes, the threshold follows it; a starved
 lane still self-heals within 12h. (Node F0's 75-minute hw-refresh threshold predates
 this change and remains a constant — noted for the tree's owner as the same pattern.)
+
+---
+
+## Addendum 3 (2026-10-27) — first harvest landed: provisioned 4 → 5
+
+The HF harvest ordered by the owner is complete. A new fine-grained read token
+(`fleet-read`) was minted on the existing `timerloggedout-hf` account and provisioned
+into the Actions secret store under the canonical name **`HUGGINGFACE_TOKEN`**
+(store-verified: created 2026-10-27T13:15Z; store total 39 → 40 secrets).
+
+Verification is behavioral, not clerical: availability run **40510433859** (dispatched
+after provisioning) reports huggingface `credential_present=true`, `catalog_ok=true`,
+no error class. **The provisioned count is now 5** (cloudflare, felo, gemini,
+huggingface, openrouter); catalog-executed stays 10, inference stays 0.
+
+Two pre-existing tokens were visible on the HF account (names only): `pi_agent_token`
+(invalidated) and `hermes_token-no_repo_org` — earlier surfaces minted tokens inside
+the account that never left it, which is the precise mechanism behind the phantom
+families: creation happened, harvest didn't. Queue item 3 (canonical HF name) is
+CLOSED by this addendum; item 5's HF remainder is done with it.
+
+In flight at writing: Groq account creation + Mistral La Plateforme key (the two
+halves of queue item 1), under the owner's "create whatever is required" direction.
+Outcomes land as a further addendum.

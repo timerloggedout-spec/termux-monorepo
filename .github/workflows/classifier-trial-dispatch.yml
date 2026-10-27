@@ -6,6 +6,10 @@ name: classifier-trial-dispatch
 # and the run fails unless a real trial produced a winning artifact.
 # Free-only by default (owner rule): the dispatch refuses non-free
 # routes unless free_only is explicitly turned off for the run.
+# Defaults are the fleet-verified free route (see
+# docs/ops/CLASSIFIER-TRIAL-DISPATCH.md "Execution evidence"): the
+# producer is the one allowlisted zero-price model from
+# docs/ops/PROVIDER-FREE-INFERENCE.md; the judge is the free router.
 
 on:
   workflow_dispatch:
@@ -15,9 +19,9 @@ on:
         required: true
         default: "In one sentence, what does a pull-request classifier do?"
       provider:
-        description: "Producer endpoint prov:model"
+        description: "Producer endpoint prov:model (default: fleet-allowlisted free model)"
         required: true
-        default: "gemini:gemini-2.5-flash"
+        default: "openrouter:liquid/lfm-2.5-2.6b:free"
       judge:
         description: "Judge endpoint prov:model (must differ from the producer)"
         required: true

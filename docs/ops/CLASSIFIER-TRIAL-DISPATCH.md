@@ -35,6 +35,47 @@ OpenRouter model makes the dispatch refuse before any call is made.
 `--allow-paid` / `free_only: false` is the explicit escape hatch and is
 owner-gated — Jev's paid use is never the default path.
 
+## Execution evidence (2026-10-27, steward verification runs)
+
+The adapter layer and dispatch were exercised against the real provider
+APIs from Actions (runs 40504965897–40506393011). Established state:
+
+- **The wiring works.** Run 40505817467 produced a real producer
+  artifact through the OpenRouter free router (2,119-byte trial record):
+  Mev called the API, parsed the completion, and the trial proceeded to
+  the judge stage. The failures below are provider-side states, not
+  code defects — each is recorded in the run's annotations and trial
+  record.
+- **Gemini route: blocked on entitlement, not code.** The provisioned
+  GEMINI_API_KEY resolves and its model catalog is observed (see
+  PROVIDER-FREE-INFERENCE.md), but generateContent returns HTTP 404 for
+  both gemini-2.5-flash and gemini-2.0-flash, and no account-specific
+  no-cost entitlement has been established. The fleet's own continuity
+  path is catalog-only for Gemini for the same reason. Do not treat the
+  Gemini adapter as verified until an entitlement is established and a
+  bounded smoke succeeds.
+- **OpenRouter specific `:free` model ids: not the verified path.**
+  Direct chat calls to catalog ids (llama-3.3-70b:free, qwen3-coder:free,
+  deepseek-r1:free) return HTTP 404. The fleet-verified path is the
+  exact allowlisted model below, requested with provider-routing
+  constraints (allow_fallbacks: false, zero max prices) — see
+  PROVIDER-FREE-INFERENCE.md.
+- **Allowlisted model: currently rate-limited.** The one allowlisted
+  zero-price model, `liquid/lfm-2.5-2.6b:free`, authenticates with
+  `is_free_tier: true` and verified zero pricing, but inference returns
+  HTTP 429 — the same result as the fleet's production smoke
+  (run 39432211461). Whether the limit is account-wide, daily,
+  model-specific, or upstream capacity is not established.
+- **Defaults.** The workflow defaults are now producer =
+  `openrouter:liquid/lfm-2.5-2.6b:free`, judge =
+  `openrouter:openrouter/free`. Acceptance condition for the first
+  completed trial: a dispatch at a time when the allowlisted route is
+  no longer rate-limited, preceded by the provider-batch workflow's
+  read-only `diagnose_free_limits` check (unblocked 2026-10-27 by
+  PR #1780, which repaired the contracts gate; diagnose run
+  40508502147 completed successfully). Repeated inference retries
+  against a 429 are not authorized by this evidence.
+
 ## Known follow-up
 
 `trial.run_trial` filters failed Jev/Kev entries before zipping them

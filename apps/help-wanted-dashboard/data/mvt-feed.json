@@ -1,9 +1,8 @@
 {
  "schema": "dashboard-surface-feed/v1",
  "surface": "mvt",
- "generated_at": "2026-10-27T11:38:22Z",
+ "generated_at": "2026-10-27T12:32:29Z",
  "sources": [
-  "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md",
   "docs/ops/corpus/EXPERIMENT.schema.json",
   ".github/workflows/agent-mvt-experiment.yml + .github/workflows/team-mvt.yml",
   "scripts/dashboards/workflow_observations.json (Actions API read)"
@@ -15,19 +14,7 @@
   "Workflow run counts are API observations stamped with their read time, not live claims."
  ],
  "data": {
-  "harness": {
-   "doc": "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md",
-   "invariants": [
-    "abstention availability",
-    "wrong-commit penalty",
-    "required-fragment preservation",
-    "distractor isolation",
-    "deterministic execution failure",
-    "isolated SPAWN behavior",
-    "actor/critic private-context isolation"
-   ],
-   "note": "The minimum viable test cohort covers seven hard invariants. Failed experiments remain evidence and are not automatically rerun merely to improve dashboards."
-  },
+  "method": "Multivariate testing as practiced: simultaneous provider lanes over a live target (Team MVT), and schema-conforming loop experiments comparing a candidate ref against a baseline ref (the experiment loop). Arm designs come from the DoE library and arms execute under the ATES invariants \u2014 both cited below, owned by their surfaces.",
   "experiment_record_schema": {
    "file": "docs/ops/corpus/EXPERIMENT.schema.json",
    "required": [
@@ -93,7 +80,20 @@
     ]
    }
   },
-  "fixtures": "tests/fixtures/ates/orchestrator_mvt.json holds synthetic MVT boundary cases (pass / leak) used by the test suite. They are fixtures \u2014 test data \u2014 not recorded experiment results, and are labeled as such wherever referenced."
+  "citations": [
+   {
+    "surface": "ates",
+    "record": "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md + apps/help-wanted-dashboard/data/ates-feed.json",
+    "label": "ATES harness \u2014 the seven hard invariants",
+    "note": "The invariants gate every arm MVT runs; they are ATES property, cited here, not copied."
+   },
+   {
+    "surface": "doe",
+    "record": "deepcli/deepcli/observatory/doe.py + apps/help-wanted-dashboard/data/doe-feed.json",
+    "label": "DoE design library",
+    "note": "full_factorial / taguchi_l9 / mvt_shuffle generate the arm designs MVT campaigns consume (doe.py: 'DoE helpers for MVT campaigns')."
+   }
+  ]
  },
  "gaps": [
   "No committed experiment records conforming to EXPERIMENT.schema.json exist in the repo: the experiment loop has never been dispatched (0 runs observed), so there are no recorded MVT experiment results to rank or chart. Defined-but-not-run renders as exactly that."

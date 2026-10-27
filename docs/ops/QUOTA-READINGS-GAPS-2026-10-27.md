@@ -53,6 +53,12 @@ promoted into the readings file through the generated-file path, as here.
 Fully converging the probe projection with the dashboard readings contract
 (the #1504 ask) remains open.
 
+**Follow-up (2026-10-27):** that convergence has landed in two steps —
+PR #1826 (the projection itself: `quota-public-status/v2` evidence shape
++ coarse statuses) and the publisher converter (`--from-public`) in
+`QUOTA-PROJECTION-CONVERGENCE-2026-10-27.md`. No hand-seeded file is
+needed.
+
 ## Per-service gap table (all 64 registry records)
 
 | Service | Provider | Read path | State after this fill |

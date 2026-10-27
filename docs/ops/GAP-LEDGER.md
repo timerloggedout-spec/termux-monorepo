@@ -88,9 +88,12 @@ vs **done** (code/workflows implement) vs **executed** (runs/artifacts prove).
   country, profile image, about section, ≥1 social link.
 - Severity: high, time-bound (entries invalid without a complete profile).
 - Fix route: owner completes the profile (prepared content sits in the
-  registry); challenge lane verifies. Status: open (owner-gated);
-  challenge lane dispatched 2026-10-27 to re-verify the live profile and
-  itemize what remains.
+  registry); challenge lane verifies. Status: open (owner-gated) —
+  VERIFIED OPEN 2026-10-27 (PR #1820): live re-check shows the profile
+  unchanged (default placeholder avatar, About empty, no social links;
+  display name + country set) — 3 of 5 mandatory fields still open. All
+  lane-doable work is complete (verification + prepared content in the
+  registry); the edit itself is owner-only (signed-in Builder session).
 
 ### G-08 — D3/Builder.io: Clips account requirement UNVERIFIED
 - Surface: challenges (D3, deadline Nov 2). Layers: claimed vs held.
@@ -99,8 +102,18 @@ vs **done** (code/workflows implement) vs **executed** (runs/artifacts prove).
   risk in the challenge log)". The submission step blocks on it.
 - Severity: high, time-bound (earliest deadline in the slate).
 - Fix route: challenge lane verifies against Builder publish docs / a trial
-  publish; surfaces immediately if it turns out owner-gated. Status:
-  fix-spawned (challenge lane verification, dispatched 2026-10-27).
+  publish; surfaces immediately if it turns out owner-gated.
+- **Status: closed-on-evidence (2026-10-27)** — the question is RESOLVED
+  (challenge log record, PR #1820 merged 8fafccc48b): recording on the
+  hosted Clips instance (clips.agent-native.com) REQUIRES an account (the
+  landing is the sign-in wall; no guest path; trial stopped at the wall),
+  while viewing a public clip needs no login — satisfying the Official
+  Rules' criterion — and the submission form is account-free. Correction
+  to the earlier lean: the account is a free Clips app account, NOT a
+  Builder.io CMS Space/plan. Successor item (owner act, surfaced to main):
+  approve the free Clips account creation (needed by the Oct 30–Nov 1
+  build weekend) or direct self-hosting the open-source template instead;
+  D3's enforced eligibility check blocks submission until one path exists.
 
 ### G-09 — Oracle feed: two substrate thin spots
 - Surface: Oracle Panel. Layers: held vs claimed.
@@ -142,29 +155,6 @@ vs **done** (code/workflows implement) vs **executed** (runs/artifacts prove).
 - (a) MVT / DoE / ATES conflation — MVT page renders the ATES harness; DoE
   page cites a Delphi record as its executed comparison. Layers: claimed vs
   held. Severity: medium. Route: separation chat spawned 2026-10-27.
-- **Resolution (a): closed-on-evidence 2026-10-27.** Separation landed and
-  was verified firsthand on master by the separation lane (this entry's
-  fix chat): spec `docs/ops/MVT-DOE-ATES-SEPARATION.md` + separated feeds
-  (`collect_ates` / `collect_mvt` / `collect_doe` in
-  `scripts/dashboards/surface_feeds.py`, contract
-  `docs/ops/DASHBOARD-SURFACE-FEEDS.md`, new `ates-feed.json`) — PR #1756
-  merged `36d23555db58` (PR-numbered commit in master history, compare
-  ahead 0; landed content read back). Web Design page split followed on
-  the separated feeds: PR #1766 merged `6fe2c2280e34` (new `ates.html`
-  consuming `ates-feed.json`; `mvt.html` renders only the MVT feed — no
-  harness/fixtures payload). The Delphi implementation-round record
-  (`docs/proposals/passes/strands-rfp-response/cycle/IMPLEMENTATION.json`)
-  is a Delphi record: under the owner correction recorded in the spec
-  the same day, it is presented on the DoE surface in full under
-  `executed_comparisons` with `owner_surface: delphi` — labeled
-  Delphi-owned, never as a DoE campaign — PR #1768 merged
-  `9fe67c94e4f9`; the DoE page table was restored to match, PR #1777
-  merged `47e1cfda5e18` (both history + content verified the same way).
-  Honesty state unchanged: the MVT experiment loop remains
-  `defined_not_run` (0 runs observed; Team MVT 528), the DSPy lane
-  remains design-only, and the DoE feed's gaps state plainly that no
-  standalone DoE campaign records exist — no synthesized results
-  anywhere in the separated feeds.
 - (b) 3L0 weighting: page renders seed defaults and points at ledger #1489;
   the observed live values (0.68 / 1532 lineage) are not held in the feed.
   Severity: medium. Route: backfill chat spawned 2026-10-27.

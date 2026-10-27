@@ -1,0 +1,141 @@
+{
+ "schema": "dashboard-surface-feed/v1",
+ "surface": "moneyball",
+ "generated_at": "2026-10-27T11:38:21Z",
+ "sources": [
+  "ml/pipelines/moneyball/{scorer,weights,normalize,explain,quota_weights}.py",
+  "docs/ops/HEX-MONEYBALL-INTEGRATION.md",
+  "scripts/hex_moneyball_export.py + .github/workflows/hex-moneyball-evidence.yml",
+  "scripts/dashboards/workflow_observations.json (Actions API read)"
+ ],
+ "honesty_rules": [
+  "Show only what the record holds; a value the record does not hold renders as absent, never synthesized.",
+  "Defined-but-not-run experiments render as exactly that.",
+  "Weights and scores are read from the code and records at collection time, never transcribed from prose claims.",
+  "Workflow run counts are API observations stamped with their read time, not live claims."
+ ],
+ "data": {
+  "what_it_scores": "Pull requests. score(pr) in ml/pipelines/moneyball/scorer.py sums transparent signal weights and clamps the total.",
+  "weights": {
+   "dual_gate_green": 40,
+   "on_master_base": 20,
+   "files_under_100": 15,
+   "has_tests": 10,
+   "fresh": 10,
+   "draft": -25,
+   "dirty": -40,
+   "wrong_base": -40,
+   "minesweeper": -30,
+   "wholesale": -50,
+   "stale_day": -1
+  },
+  "stale_cap": -20,
+  "stale_rule": "staleness adds age_days * stale_day, floored at stale_cap",
+  "clamp": {
+   "lo": 0.0,
+   "hi": 100.0
+  },
+  "signals": [
+   {
+    "signal": "dual_gate_green",
+    "condition": "gates repo-gate == success AND termux-smoke == success"
+   },
+   {
+    "signal": "on_master_base",
+    "condition": "base ref is master"
+   },
+   {
+    "signal": "files_under_100",
+    "condition": "changed_files <= 100"
+   },
+   {
+    "signal": "has_tests",
+    "condition": "pr.has_tests is true"
+   },
+   {
+    "signal": "fresh",
+    "condition": "age_days < 2"
+   },
+   {
+    "signal": "draft",
+    "condition": "pr is a draft (penalty)"
+   },
+   {
+    "signal": "dirty",
+    "condition": "mergeable_state == dirty (penalty)"
+   },
+   {
+    "signal": "wrong_base",
+    "condition": "base ref set and not master (penalty)"
+   },
+   {
+    "signal": "minesweeper",
+    "condition": "minesweeper_extract(pr) matches (penalty)"
+   },
+   {
+    "signal": "wholesale",
+    "condition": "pr.wholesale is true (penalty)"
+   },
+   {
+    "signal": "stale_day",
+    "condition": "per full day of age (penalty, floored at stale_cap)"
+   }
+  ],
+  "explain_output_keys": [
+   "number",
+   "score",
+   "lane",
+   "weights",
+   "why",
+   "title"
+  ],
+  "explain_note": "explain(pr) returns the score, the lane classification (ml.pipelines.lanes.classify), the full weights table, and the PR's recorded why.",
+  "consumers": [
+   "ml/pipelines/command_center/board.py \u2014 scores shaped PRs onto the command-center board",
+   "ml/pipelines/cli.py \u2014 CLI surface",
+   "ml/pipelines/stages/features.py \u2014 feature stage",
+   "ml/pipelines/viz/cctv.py \u2014 visualization"
+  ],
+  "quota_multiplier": "ml/pipelines/moneyball/quota_weights.py: quota_multiplier(provider) scales a candidate's 3L0/ELO x role score by remaining-budget fraction over remaining-time fraction, capped at 2.0; 0 when a quota is exhausted; 1.0 (neutral) when there is no evidence or no readings file.",
+  "hex_contract": {
+   "version": "3l0.moneyball.v1",
+   "role": "Hex is the analytics/evidence layer (docs/ops/HEX-MONEYBALL-INTEGRATION.md); GitHub Actions remains the execution plane and the durable ledger stays outside Hex.",
+   "datasets": [
+    "experiment_run",
+    "agent_task_attempt",
+    "provider_call",
+    "outcome_score",
+    "manager_decision"
+   ],
+   "identity": "records key on the Actions run attempt (run_id + run_attempt), not the run alone"
+  },
+  "evidence_workflow": {
+   "file": ".github/workflows/hex-moneyball-evidence.yml",
+   "does": "runs scripts/hex_moneyball_export.py \u2014 sanitizes an NDJSON agent telemetry stream into CSV records with a provenance manifest (scripts/hex_moneyball_artifact_provenance.py)",
+   "observed_runs": {
+    "total_runs": 23,
+    "latest": [
+     {
+      "created_at": "2026-10-24T08:12:33Z",
+      "conclusion": "success",
+      "event": "pull_request"
+     },
+     {
+      "created_at": "2026-10-24T03:14:20Z",
+      "conclusion": "success",
+      "event": "push"
+     },
+     {
+      "created_at": "2026-10-22T08:27:36Z",
+      "conclusion": "success",
+      "event": "pull_request"
+     }
+    ]
+   }
+  },
+  "test_evidence": "ml/pipelines/test_scorer.py: a clean candidate PR outscores a wholesale PR under the shipped weights; weights and clamp are unit-tested (test_weights.py, test_explain.py)."
+ },
+ "gaps": [
+  "No committed per-PR MoneyBall score outputs exist in the repo: scores are computed live by the board/CLI at runtime and the evidence workflow's exports land as Actions artifacts, not committed files. This page therefore shows the scoring system exactly as coded, not a fabricated scoreboard."
+ ]
+}

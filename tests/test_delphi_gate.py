@@ -279,3 +279,12 @@ def test_tribute_batch_reweighting_is_damped_to_one_step():
     # NOT ten steps converging toward the weights
     assert t["ewma"] == 0.16
     assert t["repos"]["a/b"]["ewma"] == 0.16 and t["repos"]["a/b"]["n"] == 10
+
+
+def test_ledger_issues_resolve_by_title_not_label_order():
+    found = [{"number": 1567, "title": "[delphi:rfp] MVT-DoE/TLM: validate"},
+             {"number": 1487, "title": "Delphi outcome ledger"},
+             {"number": 1500, "title": "something else"}]
+    assert gate.pick_ledger_issue(found, "Delphi outcome ledger") == 1487
+    assert gate.pick_ledger_issue(found, "Delphi panel weights ledger") == 1567  # bootstrap fallback
+    assert gate.pick_ledger_issue([], "Delphi outcome ledger") is None

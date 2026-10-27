@@ -119,15 +119,31 @@ jobs:
             // days while all runs concluded success (gap G-02). Measure
             // the lane's real age and fire on staleness so a missed phase
             // window self-heals on the next tree run regardless of phase.
-            let hwRefreshStaleMin = 1e9;
-            try {
-              const lastRefresh = await github.rest.actions.listWorkflowRuns({
-                owner: context.repo.owner, repo: context.repo.repo,
-                workflow_id: 'help-wanted-status-refresh.yml', per_page: 1
-              });
-              const latestRefresh = lastRefresh.data.workflow_runs[0];
-              if (latestRefresh) hwRefreshStaleMin = (Date.now() - new Date(latestRefresh.created_at).getTime()) / 60000;
-            } catch (_) { /* unreadable run history = treat as stale */ }
+            const laneAgeMin = async (workflowId) => {
+              try {
+                const r = await github.rest.actions.listWorkflowRuns({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  workflow_id: workflowId, per_page: 1
+                });
+                const latest = r.data.workflow_runs[0];
+                return latest ? (Date.now() - new Date(latest.created_at).getTime()) / 60000 : 1e9;
+              } catch (_) { return 1e9; /* unreadable run history = treat as stale */ }
+            };
+            const hwRefreshStaleMin = await laneAgeMin('help-wanted-status-refresh.yml');
+            // Node F1: sibling-lane staleness (4 calls) — G-02 follow-up.
+            // hw-pair / hw-execute / hw-assist carried the same phase
+            // defect in a rarer form (firstCycle AND an hour-mod
+            // conjunction) and have been silent since 2026-10-23.
+            // Thresholds are each lane's intended cadence + slack
+            // (pair 2h -> 150m, execute 4h -> 300m, assist 6h -> 450m);
+            // unlike the read-only refresh, these lanes spend, so
+            // their staleness branch keeps the Node A admission guard.
+            const hwPairStaleMin = Math.max(
+              await laneAgeMin('help-wanted-followup.yml'),
+              await laneAgeMin('help-wanted-scout.yml')
+            );
+            const hwExecuteStaleMin = await laneAgeMin('help-wanted-execute.yml');
+            const hwAssistStaleMin = await laneAgeMin('help-wanted-llm-assist.yml');
             // Node F: help-wanted lane cadences (no extra calls)
             const hour = new Date().getUTCHours();
             const firstCycle = new Date().getUTCMinutes() < 10;
@@ -137,9 +153,9 @@ jobs:
             core.setOutput('dispatch_eval', ((repoChanged && slow && !paused) || force) ? 'true' : 'false');
             core.setOutput('dispatch_recon', ((slow && !paused) || force) ? 'true' : 'false');
             core.setOutput('dispatch_hw_refresh', (firstCycle || hwRefreshStaleMin > 75 || force) ? 'true' : 'false');
-            core.setOutput('dispatch_hw_pair', (((firstCycle && hour % 2 === 1) && !paused) || force) ? 'true' : 'false');
-            core.setOutput('dispatch_hw_execute', (((firstCycle && hour % 4 === 3) && !paused) || force) ? 'true' : 'false');
-            core.setOutput('dispatch_hw_assist', (((firstCycle && hour % 6 === 5) && !paused) || force) ? 'true' : 'false');
+            core.setOutput('dispatch_hw_pair', ((((firstCycle && hour % 2 === 1) || hwPairStaleMin > 150) && !paused) || force) ? 'true' : 'false');
+            core.setOutput('dispatch_hw_execute', ((((firstCycle && hour % 4 === 3) || hwExecuteStaleMin > 300) && !paused) || force) ? 'true' : 'false');
+            core.setOutput('dispatch_hw_assist', ((((firstCycle && hour % 6 === 5) || hwAssistStaleMin > 450) && !paused) || force) ? 'true' : 'false');
             // Node G: Tier 3 tranche (issue #1573). Hourly lanes reuse Node F's
             // firstCycle arithmetic; repo-state lanes reuse Node E's watermark
             // check. Zero additional API calls.
@@ -197,9 +213,9 @@ jobs:
                 ['E watermark', watermark, repoChanged ? 'advance' : 'hold'],
                 ['E recon', 'slow-cycle', String(slow)],
                 ['F hw-refresh', 'hourly cycle || refresh stale > 75m', String(firstCycle || hwRefreshStaleMin > 75)],
-                ['F hw-pair', 'odd hours', String(firstCycle && hour % 2 === 1)],
-                ['F hw-execute', 'hour % 4 == 3', String(firstCycle && hour % 4 === 3)],
-                ['F hw-assist', 'hour % 6 == 5', String(firstCycle && hour % 6 === 5)],
+                ['F hw-pair', 'odd hours || stale > 150m', String((firstCycle && hour % 2 === 1) || hwPairStaleMin > 150)],
+                ['F hw-execute', 'hour % 4 == 3 || stale > 300m', String((firstCycle && hour % 4 === 3) || hwExecuteStaleMin > 300)],
+                ['F hw-assist', 'hour % 6 == 5 || stale > 450m', String((firstCycle && hour % 6 === 5) || hwAssistStaleMin > 450)],
                 ['G tier3-hourly', 'hourly cycle && admission open', String(firstCycle && !paused)],
                 ['G tier3-repochange', 'commits since watermark && slow-cycle', String(repoChanged && slow && !paused)],
                 ['G q3', 'firstCycle && hour % 3 == 1', String(firstCycle && hour % 3 === 1 && !paused)],

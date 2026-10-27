@@ -129,17 +129,25 @@ rules, pagination/retries/polling/errors. Every conclusion labelled
 `observed | inferred | reproduced | contradicted | unknown`. A string in a
 bundle is never automatically a verified endpoint.
 
-**Stage 3 — Bounded differential probes** (ordered, in `waf.PROBES`):
+**Stage 3 — Bounded probes** (ordered, in `waf.PROBES`). Probing, in this
+stack's reverse-engineering sense (owner definition, 2026-10-27): **finding
+the DOMs from the request** — starting from a captured request, attribute
+the DOMs behind it (the response structures and rendered trees it produces
+or feeds, and the endpoint + fields that select them). The differential
+probes verify DOMs already found; they never substitute for finding them:
 
 | Probe | Question |
 |---|---|
+| request-inventory | Which requests does the surface actually make? |
+| dom-attribution | For this request, which DOMs does it produce or feed? |
+| dom-data-source | Which endpoint serves each DOM, and which request fields/headers select it? |
 | exact-replay | Does the captured operation still work? |
-| single-field-change | Which input controls the behaviour? |
+| single-field-change | Which input controls which DOM? |
 | header-removal | Which headers are actually required? |
 | fresh-session | Is behaviour tied to one session? |
 | expiry | What must be refreshed, and when? |
 | pagination-boundary | How does traversal terminate? |
-| browser-vs-direct | Can this operation leave the browser? |
+| browser-vs-direct | Can this DOM be reached without the browser? |
 | controlled-error | What failure contract should the adapter expose? |
 
 Within the authorised workflow only — no automatic broad vuln scanning,

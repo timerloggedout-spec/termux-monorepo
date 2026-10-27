@@ -108,3 +108,67 @@ def test_description_blocks_render_from_feed():
         else:
             assert basis["sources"] and basis["claim_areas"]
             assert p["implementation_summary"]["all_suites_passed"] is True
+
+
+def _cands(feed):
+    return [x for x in feed["proposals"] if x["kind"] == "pass-candidate"]
+
+
+def test_settings_block_renders_from_feed():
+    feed, html = _feed(), _html()
+    s = feed["settings"]
+    assert "effective_score" in s["formula"]
+    assert s["generation"] == {"proposals_per_pass": 3, "cycle_rounds": 2,
+                               "expectation_tolerance": 2.0}
+    assert s["formula"] not in html  # rendered from the feed, never hardcoded
+
+
+def test_producers_state_what_made_each_score():
+    for p in _cands(_feed()):
+        lb = p["producers"]["rounds"]["round_1"]["LOCAL_BASELINE"]
+        assert lb["kind"] == "deterministic_rubric_comparator"
+        assert len(lb["voters"]) == 5
+        assert lb["weights"]["ledger_issue"] == 1489
+        for absent in ("HUMAN_COLLABORATOR", "MODEL_PROVIDER"):
+            entry = p["producers"]["rounds"]["round_1"][absent]
+            assert entry["kind"] == "none_recorded" and entry["reason"]
+
+
+def test_the_tie_is_recorded_as_a_tie():
+    html = _html()
+    for p in _cands(_feed()):
+        for rnd in ("round_1", "round_2"):
+            rb = p["rounds"][rnd]["ranking_basis"]
+            assert rb["scores_tied"] is True and rb["score_spread"] == 0
+            assert "rank()" in rb["decided_by"]
+            assert rb["decided_by"] not in html
+
+
+def test_recorded_ballots_round1_only():
+    for p in _cands(_feed()):
+        assert len(p["rounds"]["round_1"]["ballots"]) == 5
+        assert p["rounds"]["round_2"]["ballots"] is None
+
+
+def test_evidence_profiles_are_identical_as_recorded():
+    profiles = [{k: v for k, v in p["evidence_profile"].items()
+                 if k != "docs_sha256"} for p in _cands(_feed())]
+    assert all(x == profiles[0] for x in profiles)
+    assert profiles[0]["evidenced_ratio"] == 1.0
+
+
+def test_depth_fields_present_and_feed_rendered():
+    html = _html()
+    for p in _feed()["proposals"]:
+        assert p["approach"]["executive_request"]
+        assert p["summary_points"] and p["work_items"]
+        assert set(p["documents"]) == {"rfp", "items", "manifest", "provenance"}
+        assert p["approach"]["executive_request"] not in html
+
+
+def test_not_run_pass_has_no_outcome():
+    kiro = [x for x in _feed()["passes"]
+            if x["pass_id"] == "kiroween-delphi-concept"]
+    assert len(kiro) == 1
+    assert kiro[0]["status"] == "stated_not_run"
+    assert kiro[0]["ranked_outcome"] is None

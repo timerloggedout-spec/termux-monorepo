@@ -95,6 +95,26 @@ tables and the nomenclature `seed.json`/`schema.sql` vocabularies.
 }
 ```
 
+### Panel alignment fields (additive, schema string unchanged)
+
+Added for the viz lane's panel contract (2026-10-27); all v1 fields
+remain. Panel consumers should key on these:
+
+- Family: `label` (= `name`), `kind` ∈ `cipher|leet|compression|
+  notation|other` (substrate detail moved to `kind_detail`),
+  `description`, `granularity` (`char|token|phrase`),
+  `provenance: {source_path, canonical_source}`, `direction_panel`
+  (`forward|reverse|both|null`), and for `granularity: "char"`
+  families a derived `table: [{from, to}]` — the panel derives spans
+  from the table instead of per-entry matching.
+- Entry: `family_id` (= `family`), `match` (literal source string),
+  `match_type: "literal"` (no pattern entries exist in any family),
+  `match_variants` (= `variants`, the mapped forms to also locate),
+  `granularity`, `direction_panel`, and `provenance` gains
+  `source_path` + `detail` alongside `path` + `line`.
+- Feed: `honesty_rules[]` and `sample_texts[]` — verbatim repo texts
+  (tests + Linguist spec) with provenance, for threading demos.
+
 ### Entry semantics for the panel
 
 - **Threading:** join an in-text occurrence to its entry by

@@ -6,8 +6,13 @@ truth — and nothing else:
 
   - docs/proposals/registry.yaml        (which proposals exist)
   - docs/proposals/active/<id>/         (generation provenance,
-                                         UNVERIFIED points)
-  - docs/proposals/passes/<pass-id>/    (pass + cycle records)
+                                         UNVERIFIED points, ITEMS.md
+                                         work items, briefs, a single
+                                         generation's own evidence set)
+  - docs/proposals/passes/<pass-id>/    (pass + cycle records,
+                                         generation briefs)
+  - ops/delphi/panel.json               (the settings every result
+                                         was produced under)
   - outcome ledger issue comments       (delphi-generation-ballot /
                                          delphi-generation-calibration
                                          payloads, when fetchable)
@@ -143,6 +148,156 @@ def evidence_basis(prov: dict, evidence_doc: dict | None) -> dict:
     return basis
 
 
+CLASSES = ("HUMAN_COLLABORATOR", "MODEL_PROVIDER", "LOCAL_BASELINE")
+PANEL_REF = "ops/delphi/panel.json"
+SCORE_SCALE = "1-25 (DECISION-MATRIX Impact x Importance)"
+WEIGHT_FORMULA = "w = base * (0.5 + gate_pass_rate) * (elo / 1500)"
+
+
+def parse_items_md(text: str) -> list[dict]:
+    """The ITEMS.md pipe table — the proposal's own work items,
+    with states and exit conditions, as the record holds them."""
+    rows = []
+    for line in text.splitlines():
+        line = line.strip()
+        if not line.startswith("|"):
+            continue
+        cells = [c.strip() for c in line.strip("|").split("|")]
+        if len(cells) < 4 or cells[0] in ("ID", ""):
+            continue
+        if set(cells[0]) <= set("-: "):
+            continue
+        rows.append({"id": cells[0], "item": cells[1],
+                     "state": cells[2], "exit": cells[3]})
+    return rows
+
+
+def brief_points(brief_part: dict | None) -> list[dict] | None:
+    """Brief summary points WITH their structured evidence refs —
+    the generation brief is the record that carries them."""
+    points = (brief_part or {}).get("summary_points") or []
+    out = [{"text": p.get("text"),
+            "evidence_refs": p.get("evidence_refs") or []}
+           for p in points if isinstance(p, dict)]
+    return out or None
+
+
+def ballots_for(ballot: dict, pid: str) -> list[dict] | None:
+    """The recorded ballots of a round, verbatim (slim shape).
+
+    A round whose record carries no ballot list (the round-2
+    receipt holds per-class aggregates only) reads null — the
+    ballots are never reconstructed from aggregates."""
+    raw = ballot.get("ballots")
+    if not isinstance(raw, list):
+        return None
+    out = []
+    for b in raw:
+        scores = b.get("scores") or {}
+        out.append({"voter": b.get("voter"),
+                    "source_class": b.get("source_class"),
+                    "score_of_this": scores.get(pid),
+                    "scores": scores})
+    return out
+
+
+def ranking_basis(ballot: dict, candidate_ids: list[str],
+                  round_no: int = 1) -> dict | None:
+    """Why the ranked outcome is in the order it is — computed
+    from the record, with the deciding rule cited from the code.
+
+    cross_vote.rank() sorts by (-score, candidate_id): when the
+    deciding class's scores tie, the outcome order is the
+    tie-break, NOT a score difference, and the feed says so."""
+    per_class = ballot.get("per_class") or {}
+    if ballot.get("combined_ranking"):
+        return {"scores_tied": None, "score_spread": None,
+                "decided_by": "mean of per-class ranks across the "
+                              "classes that cast ballots "
+                              "(cross_vote.py combined ranking)"}
+    present = [c for c, d in per_class.items()
+               if isinstance(d, dict) and (d.get("ballots") or 0) > 0]
+    if len(present) != 1:
+        return None
+    cls = present[0]
+    scores = per_class[cls].get("scores") or {}
+    vals = [scores[c] for c in candidate_ids if c in scores]
+    if len(vals) < 2:
+        return None
+    spread = round(max(vals) - min(vals), 3)
+    if spread == 0:
+        ranker = ("cross_vote.py rank()" if round_no == 1 else
+                  "the round-2 re-vote ranking (method_cycle.py, "
+                  "delphi-cross-vote/v1 receipt)")
+        return {"scores_tied": True, "score_spread": 0,
+                "decided_by": f"scores tied across all candidates in "
+                              f"{cls}; the order is the recorded "
+                              f"ranked_outcome — {ranker} sorts by "
+                              f"(-score, candidate_id), so a tie "
+                              f"resolves by candidate id ascending"}
+    return {"scores_tied": False, "score_spread": spread,
+            "decided_by": f"weighted score order in {cls}"}
+
+
+def class_producer(cls: str, ballot: dict, round_no: int,
+                   evidence_sha: str | None = None) -> dict:
+    """Who/what produced a class's result in a round — or, for a
+    class that cast nothing, the recorded reason it could not."""
+    per = (ballot.get("per_class") or {}).get(cls) or {}
+    n = per.get("ballots") or 0
+    if n:
+        if cls == "LOCAL_BASELINE" and round_no == 1:
+            weights = ballot.get("weights") or {}
+            voters = [b.get("voter") for b in (ballot.get("ballots") or [])
+                      if b.get("source_class") == cls]
+            return {"source_class": cls,
+                    "kind": "deterministic_rubric_comparator",
+                    "producer": "scripts/delphi/cross_vote.py — "
+                                "deterministic rubric comparator: one "
+                                "ballot per panel role, each scored "
+                                "from the candidate's generation "
+                                "profile (evidenced ratio, unverified "
+                                "count, item shape, evidence-source "
+                                "spread, dependency signals)",
+                    "voters": voters,
+                    "weights": {"source": weights.get("source"),
+                                "ledger_issue": 1489,
+                                "role_weights": weights.get("role_weights")},
+                    "settings": {"panel": PANEL_REF,
+                                 "score_scale": SCORE_SCALE,
+                                 "formula": WEIGHT_FORMULA}}
+        if cls == "LOCAL_BASELINE":
+            return {"source_class": cls,
+                    "kind": "deterministic_rubric_comparator",
+                    "producer": "scripts/delphi/method_cycle.py — "
+                                "round-2 re-vote by the same rubric "
+                                "comparator over the equalized "
+                                "per-proposal test-results evidence set",
+                    "ballots": n,
+                    "evidence_set_sha256": evidence_sha,
+                    "settings": {"panel": PANEL_REF,
+                                 "score_scale": SCORE_SCALE}}
+        return {"source_class": cls, "kind": "recorded_ballots",
+                "ballots": n,
+                "producer": "recorded ballot files supplied to "
+                            "cross_vote.py (voter identity and, for "
+                            "MODEL_PROVIDER, the full run record are "
+                            "carried on each ballot)"}
+    reasons = {
+        "MODEL_PROVIDER": "model voting disabled (DELPHI_LLM_MAX=0); "
+                          "a MODEL_PROVIDER ballot is admissible only "
+                          "with a full run record (provider, model, "
+                          "run_id, response_hash) and an entitlement "
+                          "basis — cross_vote.py validate_ballots. "
+                          "None recorded.",
+        "HUMAN_COLLABORATOR": "no recorded human ballot file was "
+                              "supplied to the cross-vote; none "
+                              "recorded.",
+    }
+    return {"source_class": cls, "kind": "none_recorded", "ballots": 0,
+            "reason": reasons.get(cls, "no ballots recorded")}
+
+
 def ledger_payloads(comments: list[dict]) -> dict[str, dict]:
     """pass_id -> {ballot: payload, ballot_comment_id, calibration...}"""
     out: dict[str, dict] = {}
@@ -174,7 +329,7 @@ def fetch_ledger_comments(repo: str, issue: int, token: str) -> list[dict]:
 
 def build_feed(registry_text: str, active_dir: Path, passes_dir: Path,
                ledger: dict[str, dict], ledger_verified: bool,
-               generated_at: str) -> dict:
+               generated_at: str, panel: dict | None = None) -> dict:
     entries = parse_registry(registry_text)
     oracle_entries = [e for e in entries if e.get("author") == "oracle-method"]
 
@@ -202,8 +357,17 @@ def build_feed(registry_text: str, active_dir: Path, passes_dir: Path,
             if (pass_dir / "evidence.json").exists():
                 evidence_doc = json.loads(
                     (pass_dir / "evidence.json").read_text())
+            brief_doc = None
+            if (pass_dir / "brief.json").exists():
+                brief_doc = json.loads((pass_dir / "brief.json").read_text())
+            pass_exp = None
+            if (pass_dir / "expectations.json").exists():
+                pass_exp = json.loads(
+                    (pass_dir / "expectations.json").read_text())
             passes[meta["pass_id"]] = {"meta": meta, "cycle": cycle,
                                        "impl": impl, "evidence": evidence_doc,
+                                       "brief": brief_doc,
+                                       "pass_expectations": pass_exp,
                                        "dir": pass_dir}
 
     proposals = []
@@ -219,6 +383,18 @@ def build_feed(registry_text: str, active_dir: Path, passes_dir: Path,
             manifest_text = (pdir / "MANIFEST.md").read_text()
             unverified = unverified_points(manifest_text)
             description = summary_bullets(manifest_text)
+        work_items = []
+        if (pdir / "ITEMS.md").exists():
+            work_items = parse_items_md((pdir / "ITEMS.md").read_text())
+        documents = {name: f"docs/proposals/active/{pid}/{fname}"
+                     for name, fname in (("rfp", "RFP.md"),
+                                         ("items", "ITEMS.md"),
+                                         ("manifest", "MANIFEST.md"),
+                                         ("provenance", "PROVENANCE.json"))
+                     if (pdir / fname).exists()}
+        own_brief = None
+        if (pdir / "brief.json").exists():
+            own_brief = json.loads((pdir / "brief.json").read_text())
         pass_id = prov.get("pass_id")
         item = {
             "id": pid,
@@ -234,6 +410,12 @@ def build_feed(registry_text: str, active_dir: Path, passes_dir: Path,
             "evidence_items": sum(s.get("items", 0)
                                   for s in prov.get("evidence_sets", [])),
             "description": description or None,
+            "approach": None,
+            "summary_points": None,
+            "work_items": work_items or None,
+            "documents": documents or None,
+            "evidence_profile": None,
+            "producers": None,
             "evidence_basis": None,
             "implementation_summary": None,
             "unverified_points": unverified,
@@ -247,7 +429,26 @@ def build_feed(registry_text: str, active_dir: Path, passes_dir: Path,
         }
         if prov.get("evidence_sets"):
             doc = (passes.get(pass_id) or {}).get("evidence") if pass_id else None
+            if doc is None and (pdir / "evidence.json").exists():
+                # A single generation's own committed evidence set:
+                # same claim/provenance shape as a pass evidence doc.
+                doc = json.loads((pdir / "evidence.json").read_text())
             item["evidence_basis"] = evidence_basis(prov, doc)
+        if own_brief:
+            item["approach"] = {
+                "executive_request": own_brief.get("executive_request"),
+                "surface": own_brief.get("surface"),
+                "deadline": own_brief.get("deadline"),
+                "source": f"docs/proposals/active/{pid}/brief.json",
+            }
+            item["summary_points"] = brief_points(own_brief)
+        if prov:
+            item["producers"] = {"generation": {
+                "kind": "oracle_method_generator",
+                "producer": prov.get("generator"),
+                "generated_at": prov.get("generated_at"),
+                "evidence_sets": prov.get("evidence_sets") or [],
+            }}
         if pass_id and pass_id in passes:
             cyc = passes[pass_id]["cycle"]
             impl_stage = (cyc.get("IMPLEMENTATION.json") or {}).get(pid) or {}
@@ -261,6 +462,25 @@ def build_feed(registry_text: str, active_dir: Path, passes_dir: Path,
             else:
                 profiles = {}
             profile = profiles.get(pid) or {}
+            if profile:
+                item["evidence_profile"] = profile
+            pdata = passes[pass_id]
+            variant = None
+            for v in (pdata.get("brief") or {}).get("variants") or []:
+                suf = v.get("suffix")
+                if suf and pid.endswith(suf):
+                    variant = v
+                    break
+            if variant:
+                item["approach"] = {
+                    "executive_request": variant.get("executive_request"),
+                    "concept": variant.get("concept"),
+                    "planned_suites": variant.get("test_suites"),
+                    "source": f"docs/proposals/passes/{pass_id}/brief.json",
+                }
+                item["summary_points"] = brief_points(variant)
+            candidate_ids = [c.get("id")
+                             for c in pdata["meta"].get("candidates", [])]
             if impl_stage or impl_suites:
                 item["implementation_summary"] = {
                     "suites": [s.get("name") for s in impl_suites],
@@ -280,13 +500,17 @@ def build_feed(registry_text: str, active_dir: Path, passes_dir: Path,
                             if pid in (r1.get("ranked_outcome") or []) else None,
                             "ballots_by_class": r1.get("ballots_by_class"),
                             "scores_by_class": scores(r1),
-                            "classes_absent": r1.get("classes_absent")},
+                            "classes_absent": r1.get("classes_absent"),
+                            "ballots": ballots_for(r1, pid),
+                            "ranking_basis": ranking_basis(r1, candidate_ids, 1)},
                 "round_2": {"ranking": r2.get("ranked_outcome"),
                             "rank_of_this": (r2.get("ranked_outcome") or []).index(pid) + 1
                             if pid in (r2.get("ranked_outcome") or []) else None,
                             "ballots_by_class": r2.get("ballots_by_class"),
                             "scores_by_class": scores(r2),
-                            "evidence_set_sha256": r2.get("evidence_set_sha256")},
+                            "evidence_set_sha256": r2.get("evidence_set_sha256"),
+                            "ballots": ballots_for(r2, pid),
+                            "ranking_basis": ranking_basis(r2, candidate_ids, 2)},
             }
             exp_doc = cyc.get("EXPECTATIONS.json") or {}
             priors = exp_doc.get("expectations") or {}
@@ -317,6 +541,28 @@ def build_feed(registry_text: str, active_dir: Path, passes_dir: Path,
                          "moved_on_evidence": per[pid]["moved_on_evidence"]}
                 for source, per in cal.items() if isinstance(per, dict) and pid in per
             } or None
+            exp_sources = []
+            exp_basis = (cyc.get("EXPECTATIONS.json") or {}).get("basis")
+            pass_exp = pdata.get("pass_expectations") or {}
+            for source in (item["expectations"] or {}):
+                if source.startswith("BRIEF:"):
+                    exp_sources.append({"source": source,
+                                        "kind": "brief_prior",
+                                        "author": pass_exp.get("author")})
+                else:
+                    exp_sources.append({"source": source,
+                                        "kind": "derived_from_round_1",
+                                        "basis": exp_basis})
+            producers = dict(item["producers"] or {})
+            producers["rounds"] = {
+                "round_1": {cls: class_producer(cls, r1, 1)
+                            for cls in CLASSES},
+                "round_2": {cls: class_producer(
+                    cls, r2, 2, r2.get("evidence_set_sha256"))
+                    for cls in CLASSES},
+            }
+            producers["expectations_sources"] = exp_sources or None
+            item["producers"] = producers
             stages = (cyc.get("CYCLE.json") or {}).get("stages") or []
             item["specified_not_run"] = [
                 {"item": s["stage"], "reason": s.get("detail")}
@@ -358,6 +604,24 @@ def build_feed(registry_text: str, active_dir: Path, passes_dir: Path,
             "record": f"docs/proposals/passes/{pass_id}/",
         })
 
+    settings = None
+    if panel:
+        gen = panel.get("generation") or {}
+        cyc_cfg = gen.get("cycle") or {}
+        settings = {
+            "panel": PANEL_REF,
+            "formula": panel.get("formula"),
+            "criteria": panel.get("criteria"),
+            "score_scale": SCORE_SCALE,
+            "weights_source": (gen.get("cross_vote") or {}).get("weights_source"),
+            "seed_note": panel.get("seed_note"),
+            "generation": {
+                "proposals_per_pass": gen.get("proposals_per_pass"),
+                "cycle_rounds": cyc_cfg.get("rounds"),
+                "expectation_tolerance": cyc_cfg.get("expectation_tolerance"),
+            },
+        }
+
     return {
         "schema": SCHEMA,
         "generated_at": generated_at,
@@ -370,6 +634,7 @@ def build_feed(registry_text: str, active_dir: Path, passes_dir: Path,
             "ledger_issue": 1487,
             "ledger_verified": ledger_verified,
         },
+        "settings": settings,
         "honesty_rules": [
             "Show only what the record holds: a value absent from the "
             "registry, pass records, or ledger payloads is shown as "
@@ -381,6 +646,11 @@ def build_feed(registry_text: str, active_dir: Path, passes_dir: Path,
             "Rehearsals are ideation drafts imagining readiness "
             "(synthetic fixtures, no real ballots, not registered) "
             "and are excluded from results.",
+            "Every score states its producer (producers block): the "
+            "producing class, tool, voters and weight settings. Tied "
+            "scores render as tied, with the ranking basis stated — "
+            "an order produced by the cross_vote.py rank() "
+            "tie-break is never rendered as a score difference.",
         ],
         "proposals": proposals,
         "passes": pass_summaries,
@@ -425,11 +695,17 @@ def main(argv: list[str] | None = None) -> int:
             print("no token and no --ledger-comments: ledger read skipped",
                   file=sys.stderr)
 
+    panel = None
+    panel_file = root / PANEL_REF
+    if panel_file.exists():
+        panel = json.loads(panel_file.read_text())
+
     feed = build_feed(registry_text,
                       root / "docs/proposals/active",
                       root / "docs/proposals/passes",
                       ledger, verified,
-                      datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"))
+                      datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                      panel=panel)
     Path(args.out).write_text(json.dumps(feed, indent=2) + "\n")
     print(f"oracle-panel-feed: {len(feed['proposals'])} proposals, "
           f"{len(feed['passes'])} passes, ledger_verified={verified}")

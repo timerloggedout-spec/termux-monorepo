@@ -4,7 +4,9 @@ Implemented Help-Wanted graduation contract.
 
 STAKE != CLAIM != IMPLEMENTATION != SOLUTION != VALIDATED != ACCEPTED.
 
-See scripts/ci/help_wanted_diff_gate.py for the diff-proof gate.
+The lane must revalidate issue eligibility before claiming and again before opening an upstream PR. Closed issues, competing claims/assignments, human-only requirements, and unreadable eligibility evidence must fail closed. A claim comment is not evidence of implementation, and stake-only PRs are retired.
+
+See `scripts/ci/help_wanted_diff_gate.py` for the fail-closed diff-proof gate and `scripts/ci/test_help_wanted_diff_gate.py` for regression coverage. The gate verifies structural patch/evidence quality only; issue-specific acceptance, review resolution, maintainer acceptance, and independently verified downstream impact remain separate lifecycle states.
 
 
 ## Sweep accountability

@@ -157,3 +157,21 @@ def test_sse_fanout_receives_invoke(base):
                 break
         assert b"event: invoke" in seen
         assert b"sse-1" in seen
+
+
+def test_http_surface_submission_matches_direct_plan(base):
+    """The canonical template filed over HTTP /invoke produces the identical
+    plan as the same brief planned directly (CLI/JSON surface) — one
+    validator, many renderings."""
+    from ops.web_adapter_foundry import waf
+    brief = json.loads((ROOT / "ops" / "web_adapter_foundry" / "examples"
+                        / "target-brief.example.json").read_text())
+    status, resp = call(base, "/invoke", {"id": "sub1", "operation": "foundry.intake",
+                                          "input": {"brief": brief}})
+    assert status == 200 and resp["ok"] is True
+    assert resp["data"] == waf.plan_from_brief(brief, waf.load_taxonomy())
+    assert resp["data"]["submitter"] == "inventory{atlas}"
+    bad = dict(brief, surfaces=["smoke-signal"])
+    status, resp = call(base, "/invoke", {"id": "sub2", "operation": "foundry.intake",
+                                          "input": {"brief": bad}})
+    assert resp["ok"] is False and "surfaces" in resp["error"]["message"]

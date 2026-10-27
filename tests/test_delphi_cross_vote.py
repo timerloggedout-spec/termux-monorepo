@@ -90,6 +90,8 @@ def test_cross_vote_ranks_by_evidence_and_reports_absent_classes():
 
 def test_human_ballots_tallied_separately_and_combined_ranking_appears():
     human = [{"voter": "registrar:owner", "source_class": "HUMAN_COLLABORATOR",
+              "rationale": "weak's scope is the one I would fund first",
+              "evidence_refs": ["fixture evidence set"],
               "scores": {"rehearsal-strong": 10, "rehearsal-weak": 24,
                          "rehearsal-empty": 5}}]
     _, _, receipt = _run(extra=human)
@@ -123,6 +125,8 @@ def test_role_weight_formula_and_ledger_loader():
 
 def test_model_ballots_require_the_debate_run_record():
     bad = [{"voter": "someone", "source_class": "MODEL_PROVIDER",
+            "rationale": "score-only response with full-sounding reasons",
+            "evidence_refs": ["fixture evidence set"],
             "scores": {"rehearsal-strong": 20}}]
     try:
         _run(extra=bad)
@@ -133,6 +137,8 @@ def test_model_ballots_require_the_debate_run_record():
     good = [{"voter": "provider-runner", "source_class": "MODEL_PROVIDER",
              "run": {"provider": "p", "model": "m/1", "run_id": "r1",
                      "response_hash": "h", "entitlement": "no-cost validated"},
+             "rationale": "strong is evidenced end to end",
+             "evidence_refs": ["fixture evidence set"],
              "scores": {"rehearsal-strong": 20, "rehearsal-weak": 12,
                         "rehearsal-empty": 3}}]
     _, _, receipt = _run(extra=good)
@@ -153,3 +159,32 @@ def test_money_veto_caps_the_cost_auditor():
     assert profiles["rehearsal-strong"]["money_veto"] is False
     cost = next(b for b in receipt["ballots"] if b["voter"] == "rubric:cost_auditor")
     assert cost["scores"]["rehearsal-weak"] <= 4
+
+
+def test_reasonless_ballots_are_refused():
+    bare = [{"voter": "registrar:owner", "source_class": "HUMAN_COLLABORATOR",
+             "scores": {"rehearsal-strong": 20}}]
+    try:
+        _run(extra=bare)
+    except ValueError as exc:
+        assert "rationale" in str(exc)
+    else:
+        raise AssertionError("a ballot without reasons must be refused")
+    uncited = [{"voter": "registrar:owner", "source_class": "HUMAN_COLLABORATOR",
+                "rationale": "reasons given",
+                "scores": {"rehearsal-strong": 20}}]
+    try:
+        _run(extra=uncited)
+    except ValueError as exc:
+        assert "evidence" in str(exc)
+    else:
+        raise AssertionError("a ballot without cited sources must be refused")
+
+
+def test_rubric_ballots_carry_mechanical_rationales():
+    _, _, receipt = _run()
+    for ballot in receipt["ballots"]:
+        assert ballot["rationale"], ballot
+        assert ballot["evidence_refs"], ballot
+        for cand, text in ballot["rationale"].items():
+            assert "evidenced_ratio" in text

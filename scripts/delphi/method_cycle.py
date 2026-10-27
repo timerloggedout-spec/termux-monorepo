@@ -7,9 +7,23 @@ A pass is not a vote; it is a cycle:
    classes separate (cross_vote.py), AND each candidate's *input vote
    expectations* recorded: the priors on record BEFORE any
    implementation exists.
+2b. Facilitator feedback — the classical Delphi step: the facilitator
+   synthesizes round 1 (score distributions, the arguments FOR and
+   AGAINST each candidate drawn from the ballots' own rationales,
+   dissent preserved, nothing attributed) and issues it as anonymous
+   controlled feedback. A DEBATE / revision round is CALLABLE at this
+   point: panelists answer the synthesis with revised ballots (each
+   carrying rationale, cited sources, and a revision_reason), and the
+   revised outcome joins the expectations record. No ballots supplied
+   = the revision round is recorded specified_not_run; the synthesis
+   is issued either way.
 3. Implementation    — the candidates are implemented in parallel and
    compared; tests run per individual proposal. Results arrive as one
-   JSON record per candidate.
+   JSON record per candidate. Every suite result must carry a RUN
+   RECEIPT (command, exit code, output hash, the code paths it ran):
+   an unreceipted suite contributes ZERO passes and is flagged —
+   round 2 never votes on tests whose execution is not evidenced
+   (the phantom-test rule).
 4. Equalization      — round 2 opens on NEW evidence, and the evidence
    base is IDENTICAL for every voter: the per-proposal test results
    bundle. Its sha256 is stamped on the round-2 receipt, and any
@@ -37,7 +51,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from cross_vote import (CLASSES, aggregate, cross_vote, rank, role_weight,
-                        validate_ballots, _sha)
+                        rubric_ballots, validate_ballots, _sha)
 
 SCHEMA = "oracle-method-cycle/v1"
 
@@ -89,14 +103,69 @@ def rubric_ballots_round2(profiles: list[dict], impl: dict,
             else:
                 s = 25 * (0.5 * er + 0.5 * pr)
             scores[p["candidate"]] = clamp(s)
+        rationale = {p["candidate"]:
+                     f"evidenced_ratio {p['evidenced_ratio']}; implementation "
+                     f"pass_rate {impl[p['candidate']]['pass_rate']} "
+                     f"({impl[p['candidate']]['passed']} passed / "
+                     f"{impl[p['candidate']]['failed']} failed, receipted "
+                     f"suites only)"
+                     for p in profiles}
         ballots.append({"voter": f"rubric:{role}",
-                        "source_class": "LOCAL_BASELINE", "scores": scores})
+                        "source_class": "LOCAL_BASELINE", "scores": scores,
+                        "rationale": rationale,
+                        "evidence_refs": ["equalized round-2 evidence bundle "
+                                          "(sha256 on the receipt)"]})
     return ballots
+
+
+def build_synthesis(round1: dict, ballots_by_class_ballots: dict,
+                    tolerance: float) -> dict:
+    """The facilitator's controlled-feedback packet (classical Delphi
+    stage 6): per candidate, the score distribution per class and the
+    arguments as the voters themselves stated them (their ballot
+    rationales) — attributed to class only, never to a person.
+    Disagreement is reported, not averaged away."""
+    candidates = {}
+    all_ballots = [b for ballots in ballots_by_class_ballots.values()
+                   for b in ballots]
+    for cand in round1["ranked_outcome"] or []:
+        per_class = {}
+        for cls in CLASSES:
+            scores = [b["scores"][cand] for b in all_ballots
+                      if b.get("source_class") == cls and cand in b.get("scores", {})]
+            if scores:
+                per_class[cls] = {"n": len(scores), "min": min(scores),
+                                  "max": max(scores),
+                                  "spread": max(scores) - min(scores)}
+        arguments = []
+        for b in all_ballots:
+            r = b.get("rationale")
+            text = r.get(cand) if isinstance(r, dict) else r
+            if text:
+                arguments.append({"class": b.get("source_class"),
+                                  "voter": b.get("voter"),
+                                  "score": b["scores"].get(cand),
+                                  "rationale": text,
+                                  "evidence_refs": b.get("evidence_refs")})
+        spread = max((v["spread"] for v in per_class.values()), default=0)
+        candidates[cand] = {
+            "scores_by_class": per_class,
+            "arguments": arguments,
+            "dissent": ("stable disagreement recorded (spread "
+                        f"{spread} > tolerance {tolerance}); reported, "
+                        "not forced to consensus") if spread > tolerance
+                       else "no material disagreement in round 1",
+        }
+    return {"schema": "delphi-facilitator-synthesis/v1",
+            "basis": "round-1 ballots, verbatim rationales",
+            "attribution": "class + panel role only; no personal identity",
+            "candidates": candidates}
 
 
 def run_cycle(pass_meta: dict, panel_roles_cfg: dict, weights_source: str,
               config: dict,
               round1_ballots: list[dict] | None = None,
+              feedback_ballots: list[dict] | None = None,
               round2_ballots: list[dict] | None = None,
               impl_results: dict | None = None,
               recorded_expectations: dict | None = None,
@@ -136,6 +205,41 @@ def run_cycle(pass_meta: dict, panel_roles_cfg: dict, weights_source: str,
     stages.append({"stage": "expectations_recorded", "status": "ran",
                    "detail": "priors on record before implementation"})
 
+    # Stage 2b: facilitator synthesis + the callable DEBATE / revision
+    # round (classical controlled feedback). The synthesis is issued
+    # from round 1's own stated reasons; revised ballots must answer
+    # it (rationale + cited sources + revision_reason, enforced).
+    r1_ballots = {cls: [b for b in (round1_ballots or [])
+                        if b.get("source_class") == cls]
+                  for cls in CLASSES}
+    r1_ballots["LOCAL_BASELINE"] = rubric_ballots(
+        profiles, list(panel_roles_cfg))
+    synthesis = build_synthesis(
+        round1, r1_ballots, config.get("expectation_tolerance", 2.0))
+    artifacts["synthesis"] = synthesis
+    stages.append({"stage": "facilitator_feedback", "status": "ran",
+                   "detail": "synthesis issued from round-1 rationales; "
+                             "arguments unattributed beyond class + role"})
+    if feedback_ballots:
+        for b in feedback_ballots:
+            if not b.get("revision_reason"):
+                raise ValueError(
+                    f"feedback ballot from {b.get('voter')!r} carries no "
+                    "revision_reason — a revision (or a deliberate retain) "
+                    "must say why, against the synthesis")
+        feedback = cross_vote(candidates, panel_roles_cfg, weights_source,
+                              feedback_ballots, generated_at=generated_at)
+        artifacts["feedback"] = feedback
+        stages.append({"stage": "debate_revision", "status": "ran",
+                       "detail": f"revised ballots_by_class="
+                                 f"{feedback['ballots_by_class']}"})
+    else:
+        stages.append({"stage": "debate_revision",
+                       "status": "specified_not_run",
+                       "detail": "no DEBATE / revision ballots supplied "
+                                 "against the synthesis; the round is "
+                                 "callable, not automatic"})
+
     # Eligibility gate (owner ruling, 2026-10-27): where a brief
     # carries one, the implementation stage may not run before the
     # window opens — the cycle refuses it mechanically and records
@@ -172,17 +276,41 @@ def run_cycle(pass_meta: dict, panel_roles_cfg: dict, weights_source: str,
     missing = [c["id"] for c in candidates if c["id"] not in impl_results]
     if missing:
         raise ValueError(f"implementation results missing for: {missing}")
+    require_receipts = config.get("require_suite_receipts", True)
     impl = {}
+    unreceipted: list[str] = []
     for c in candidates:
         rec = impl_results[c["id"]]
-        passed = sum(s.get("passed", 0) for s in rec["suites"])
-        failed = sum(s.get("failed", 0) for s in rec["suites"])
-        impl[c["id"]] = {"suites": rec["suites"], "passed": passed,
+        suites = []
+        for s in rec["suites"]:
+            receipt = s.get("receipt") or {}
+            ok = all(receipt.get(k) for k in
+                     ("command", "output_sha256", "code_paths")) \
+                and receipt.get("exit_code") == 0
+            entry = dict(s)
+            if require_receipts and not ok:
+                # Phantom-test rule: no receipt, no passes. The suite
+                # is recorded as unverified with zero credited passes;
+                # its claimed passes never reach round 2.
+                entry = {**entry, "passed": 0,
+                         "failed": s.get("passed", 0) + s.get("failed", 0),
+                         "unverified": True,
+                         "receipt_state": "missing_or_invalid"}
+                unreceipted.append(f"{c['id']}:{s.get('name')}")
+            else:
+                entry["receipt_state"] = "verified" if ok else "not_required"
+            suites.append(entry)
+        passed = sum(s.get("passed", 0) for s in suites)
+        failed = sum(s.get("failed", 0) for s in suites)
+        impl[c["id"]] = {"suites": suites, "passed": passed,
                          "failed": failed,
                          "pass_rate": (passed / (passed + failed)) if (passed + failed) else 0.0}
     artifacts["implementation"] = impl
     stages.append({"stage": "implementation", "status": "ran",
-                   "detail": "parallel per-proposal test results recorded"})
+                   "detail": "parallel per-proposal test results recorded"
+                             + (f"; UNRECEIPTED suites credited zero passes: "
+                                f"{unreceipted}" if unreceipted else
+                                "; all suites receipt-verified")})
 
     # Stage 4: evidence equalization — one bundle, one hash, every voter.
     bundle = {"schema": "delphi-round2-evidence/v1",
@@ -286,6 +414,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--panel", required=True)
     parser.add_argument("--weights-file")
     parser.add_argument("--round1-ballots", action="append", default=[])
+    parser.add_argument("--feedback-ballots", action="append", default=[],
+                        help="DEBATE / revision ballots answering the "
+                             "facilitator synthesis")
     parser.add_argument("--round2-ballots", action="append", default=[])
     parser.add_argument("--implementation-dir",
                         help="dir with one <candidate-id>.json per candidate")
@@ -327,11 +458,13 @@ def main(argv: list[str] | None = None) -> int:
 
     cycle = run_cycle(pass_meta, roles_cfg, source, config,
                       round1_ballots=load_ballots(args.round1_ballots),
+                      feedback_ballots=load_ballots(args.feedback_ballots),
                       round2_ballots=load_ballots(args.round2_ballots),
                       impl_results=impl, recorded_expectations=recorded)
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     names = {"round1": "BALLOT-round1.json", "expectations": "EXPECTATIONS.json",
+             "synthesis": "SYNTHESIS.json", "feedback": "FEEDBACK.json",
              "implementation": "IMPLEMENTATION.json",
              "round2_evidence": "ROUND2-EVIDENCE.json",
              "round2": "BALLOT-round2.json", "calibration": "CALIBRATION.json"}

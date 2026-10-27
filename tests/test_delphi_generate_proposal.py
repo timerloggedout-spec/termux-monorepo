@@ -87,3 +87,29 @@ def test_deadline_renders_verified_only_with_resolved_ref():
 def test_items_table_rows():
     docs = generate(BRIEF, EVIDENCE, generated_at="2026-10-27T00:00:00Z")
     assert "| TP-001 | Build it | proposed | exit: done |" in docs["ITEMS.md"]
+
+
+def test_require_plan_refuses_a_planless_proposal():
+    brief = {"id": "planless", "title": "No plan", "kind": "research",
+             "require_plan": True,
+             "summary_points": [], "items": []}
+    try:
+        generate(brief, [], generated_at="2026-10-27T00:00:00Z")
+    except ValueError as exc:
+        assert "require_plan" in str(exc)
+    else:
+        raise AssertionError("a planless proposal under require_plan "
+                             "must be refused")
+
+
+def test_plan_renders_verbatim_in_the_rfp():
+    brief = {"id": "planned", "title": "With plan", "kind": "research",
+             "require_plan": True,
+             "plan": {"steps": ["step one", "step two"],
+                      "risks": ["risk one"],
+                      "alternatives": ["alt one"]},
+             "summary_points": [], "items": []}
+    docs = generate(brief, [], generated_at="2026-10-27T00:00:00Z")
+    rfp = docs["RFP.md"]
+    assert "## 3. Plan" in rfp and "step one" in rfp
+    assert "risk one" in rfp and "alt one" in rfp

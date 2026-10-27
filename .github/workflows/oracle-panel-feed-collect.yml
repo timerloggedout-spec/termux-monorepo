@@ -1,0 +1,52 @@
+# Oracle Panel feed refresh (contract: docs/ops/ORACLE-PANEL-FEED.md).
+# Regenerates docs/ops/generated/oracle-panel-feed.json from the
+# registry, the pass records, and the outcome ledger (#1487), and
+# proposes it as a refresh PR — never commits directly. Mirrors the
+# reviewer-metrics-collect pattern.
+name: oracle-panel-feed-collect
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 6 * * 2'
+
+concurrency:
+  group: oracle-panel-feed-collect
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: read
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Collect the feed
+        run: |
+          set -euo pipefail
+          python3 -B scripts/delphi/oracle_panel_feed.py \
+            --root . --out docs/ops/generated/oracle-panel-feed.json
+      - name: Propose the refresh as a PR
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- docs/ops/generated/oracle-panel-feed.json; then
+            echo "feed unchanged; no refresh PR"
+            exit 0
+          fi
+          branch="oracle-panel-feed/refresh"
+          git config user.name "oracle-panel-feed-collect"
+          git config user.email "actions@github.com"
+          git checkout -B "$branch"
+          git add docs/ops/generated/oracle-panel-feed.json
+          git commit -m "chore(delphi): refresh oracle-panel-feed.json"
+          git push -f origin "$branch"
+          gh pr create --base master --head "$branch" \
+            --title "chore(delphi): refresh oracle-panel-feed.json" \
+            --body "Automated Oracle Panel feed refresh (collector: scripts/delphi/oracle_panel_feed.py; contract: docs/ops/ORACLE-PANEL-FEED.md). Data is derived from the registry, pass records, and ledger #1487 at collection time; nothing is copied forward." \
+            || echo "refresh PR already open"

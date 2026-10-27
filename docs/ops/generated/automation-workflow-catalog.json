@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "39f58b29966cac683d4be8e3a0abcfe4380e3c0fa7b67263756ce8dccdff4b5d",
+  "source_fingerprint": "62cd379cf737ca7952994ff975de343a24eee418a0ee8b2f3f70145d47a5b9ae",
   "workflow_count": 193,
   "workflows": [
     {
@@ -46,6 +46,7 @@
       "schedules": [],
       "triggers": [
         "issue_comment",
+        "pull_request",
         "pull_request_target",
         "workflow_dispatch"
       ]
@@ -2364,6 +2365,7 @@
       "schedules": [],
       "triggers": [
         "issues",
+        "pull_request",
         "pull_request_target",
         "workflow_dispatch"
       ]
@@ -2439,6 +2441,7 @@
       "schedules": [],
       "triggers": [
         "issue_comment",
+        "pull_request",
         "pull_request_review",
         "pull_request_target"
       ]
@@ -2491,6 +2494,7 @@
       "path": ".github/workflows/pr-change-effectiveness-ledger.yml",
       "schedules": [],
       "triggers": [
+        "pull_request",
         "pull_request_target",
         "workflow_dispatch"
       ]
@@ -2508,6 +2512,7 @@
       "schedules": [],
       "triggers": [
         "issue_comment",
+        "pull_request",
         "pull_request_review",
         "pull_request_review_comment",
         "pull_request_target",
@@ -2529,6 +2534,7 @@
       "schedules": [],
       "triggers": [
         "issue_comment",
+        "pull_request",
         "pull_request_review",
         "pull_request_target"
       ]
@@ -2545,6 +2551,7 @@
       "path": ".github/workflows/pr-scope-guard.yml",
       "schedules": [],
       "triggers": [
+        "pull_request",
         "pull_request_target"
       ]
     },
@@ -2754,6 +2761,7 @@
       "path": ".github/workflows/recon-intel-discovery.yml",
       "schedules": [],
       "triggers": [
+        "pull_request",
         "pull_request_target",
         "workflow_dispatch"
       ]

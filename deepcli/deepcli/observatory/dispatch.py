@@ -20,6 +20,7 @@ import json
 import sys
 from pathlib import Path
 
+from .decide import decide_check
 from .trial import run_trial
 
 FREE_PROVIDERS = {"gemini", "openrouter"}
@@ -76,25 +77,43 @@ def failure_annotations(record: dict) -> list[str]:
     if not (record.get("winner") or {}):
         out.append("::error title=no winner::trial produced no winning "
                    "artifact (see producer/judge annotations above)")
+    dec = record.get("decide")
+    if isinstance(dec, dict) and not dec.get("ok"):
+        out.append(
+            f"::error title=systemone decide failed::"
+            f"{_esc(str(dec.get('error', 'no answers returned'))[:280])}")
     return out
 
 
 async def _run(args) -> dict:
+    rubric = json.loads(args.rubric) if args.rubric else DEFAULT_RUBRIC
+    if args.decide_only:
+        dec = await decide_check(args.prompt, rubric,
+                                 base_url=args.decide_url,
+                                 model=args.decide_model)
+        return {"task": args.task, "artifacts": [], "jevs": [],
+                "kevs": [], "winner": {}, "decide": dec}
     providers = [parse_endpoint(s) for s in args.provider]
     judge = parse_endpoint(args.judge)
     assert_free_only(providers, judge, args.allow_paid)
-    rubric = json.loads(args.rubric) if args.rubric else DEFAULT_RUBRIC
     reference = {"text": args.reference} if args.reference else None
-    return await run_trial(args.prompt, providers, rubric, judge,
-                           reference=reference, task=args.task)
+    record = await run_trial(args.prompt, providers, rubric, judge,
+                             reference=reference, task=args.task)
+    if args.decide_url or args.decide:
+        winner = record.get("winner") or {}
+        state = winner.get("text") or args.prompt
+        record["decide"] = await decide_check(
+            state, rubric, base_url=args.decide_url,
+            model=args.decide_model)
+    return record
 
 
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(prog="deepcli.observatory.dispatch")
     p.add_argument("--prompt", required=True)
-    p.add_argument("--provider", action="append", required=True,
+    p.add_argument("--provider", action="append", default=[],
                    help="producer endpoint prov:model (repeatable)")
-    p.add_argument("--judge", required=True,
+    p.add_argument("--judge", default="",
                    help="judge endpoint prov:model; must differ from producers")
     p.add_argument("--rubric", default="",
                    help="rubric JSON object (default: quality + grounding)")
@@ -104,10 +123,35 @@ def main(argv=None) -> int:
     p.add_argument("--out", default="trial-record.json")
     p.add_argument("--allow-paid", action="store_true",
                    help="allow non-free routes (owner-gated; default free-only)")
+    p.add_argument("--decide", action="store_true",
+                   help="also verify the winning text with a System One "
+                        "decide_check (endpoint from --decide-url or the "
+                        "SYSTEMONE_BASE_URL env / local default)")
+    p.add_argument("--decide-url", default="",
+                   help="System One server base URL (overrides env)")
+    p.add_argument("--decide-model", default="",
+                   help="System One model id (server default when empty)")
+    p.add_argument("--decide-only", action="store_true",
+                   help="run only the System One decide_check on the "
+                        "prompt (provider/judge not required)")
     args = p.parse_args(argv)
 
+    if not args.decide_only and (not args.provider or not args.judge):
+        p.error("--provider and --judge are required unless --decide-only")
     record = asyncio.run(_run(args))
     Path(args.out).write_text(json.dumps(record, indent=2, default=str))
+    dec = record.get("decide")
+    if args.decide_only:
+        print(f"task={record['task']} decide_ok={bool(dec and dec.get('ok'))} "
+              f"scores={(dec or {}).get('scores')} "
+              f"supported={(dec or {}).get('supported')}")
+        if not (dec and dec.get("ok")):
+            for line in failure_annotations(record):
+                print(line)
+            print("FAIL: System One decide_check returned no answers",
+                  file=sys.stderr)
+            return 1
+        return 0
     ok_artifacts = [a for a in record["artifacts"] if a.get("ok")]
     winner = record.get("winner") or {}
     print(f"task={record['task']} "
@@ -118,6 +162,11 @@ def main(argv=None) -> int:
         for line in failure_annotations(record):
             print(line)
         print("FAIL: trial produced no winning artifact", file=sys.stderr)
+        return 1
+    if isinstance(dec, dict) and not dec.get("ok"):
+        for line in failure_annotations(record):
+            print(line)
+        print("FAIL: System One decide_check failed", file=sys.stderr)
         return 1
     return 0
 

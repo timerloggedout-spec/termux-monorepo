@@ -33,7 +33,7 @@ def _check_page(page: str, feed_name: str) -> str:
     assert "nothing is shown rather than anything guessed" in html
     assert "sk-" not in html and "ghp_" not in html and "BEGIN" not in html
     link = f'href="{BASE}{page}"'
-    for other in ("index.html", "quota.html", "matrix.html", "admin.html", "oracle.html", "moneyball.html", "3l0.html"):
+    for other in ("index.html", "quota.html", "matrix.html", "admin.html", "oracle.html", "moneyball.html", "3l0.html", "mvt.html", "doe.html"):
         assert link in _html(other), f"{other} nav missing {page}"
     assert f"{BASE}{page}" in (APP / "sitemap.xml").read_text()
     return html
@@ -70,3 +70,12 @@ def test_mvt_page():
     assert feed["data"]["experiment_loop"]["state"] == "defined_not_run"
     assert "Defined — not run" in html  # the not-run state is rendered, not hidden
     assert feed["gaps"]  # no committed experiment records — named in the feed
+
+
+def test_doe_page():
+    html = _check_page("doe.html", "doe-feed.json")
+    feed = _feed("doe-feed.json")
+    assert feed["data"]["dspy_lane"]["state"] == "design_only"
+    assert "Design only — not run" in html
+    fns = feed["data"]["methods_library"]["functions"]
+    assert [f["name"] for f in fns] == ["full_factorial", "taguchi_l9", "mvt_shuffle"]

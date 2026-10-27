@@ -134,6 +134,8 @@ BRIEF = {
     "device_class": "b160v-on-device",
     "authorization": {"basis": "operator account", "scope_domains": ["shop.example.com"],
                       "state_changing": False},
+    "surfaces": ["github-issue", "cli"], "evidence_expectation": "reproduced",
+    "submitter": "inventory{atlas}",
 }
 
 
@@ -207,6 +209,18 @@ no
 
 b160v-on-device
 
+### Surfaces requested
+
+github-issue, cli
+
+### Evidence expectation
+
+reproduced
+
+### Submitter Role{Moniker}
+
+inventory{atlas}
+
 ### Notes for the dispatcher
 
 _No response_
@@ -260,3 +274,90 @@ def test_jsonl_round_trip_stdout_is_protocol_only():
     assert parsed[0]["ok"] and parsed[0]["id"] == "a"
     assert parsed[1]["error"]["code"] == "bad_json"
     assert "reports.list" in parsed[2]["data"]["operations"]
+
+
+# ------------------------------------------------- template submission (2026)
+
+CANONICAL_FORM_BODY = """### Target ID
+
+example-shop
+
+### Target URL or domain
+
+https://shop.example.com/catalog
+
+### Purpose
+
+api-extraction
+
+### Authorization basis
+
+Operator owns this storefront account; read-only catalogue access for price monitoring.
+
+### Scope domains
+
+shop.example.com
+
+### Side effect
+
+read
+
+### State-changing authorization
+
+no
+
+### Probe budget
+
+24
+
+### Execution venue
+
+remote-service
+
+### Surfaces requested
+
+github-issue, cli, jsonl, chat, http-facade
+
+### Evidence expectation
+
+reproduced
+
+### Submitter Role{Moniker}
+
+inventory{atlas}
+
+### Notes for the dispatcher
+
+_No response_
+"""
+
+
+def test_submission_template_fields_validate():
+    assert waf.validate_brief(BRIEF) == []
+    assert any("surfaces" in e for e in waf.validate_brief(dict(BRIEF, surfaces=["smoke-signal"])))
+    assert any("surfaces" in e for e in waf.validate_brief(dict(BRIEF, surfaces=[])))
+    assert any("evidence_expectation" in e for e in
+               waf.validate_brief(dict(BRIEF, evidence_expectation="vibes")))
+    assert any("submitter" in e for e in waf.validate_brief(dict(BRIEF, submitter="atlas")))
+    assert any("submitter" in e for e in waf.validate_brief(dict(BRIEF, submitter="{atlas}")))
+    minimal = {k: v for k, v in BRIEF.items()
+               if k not in ("surfaces", "evidence_expectation", "submitter")}
+    assert waf.validate_brief(minimal) == []  # optional on every surface
+    plan = waf.plan_from_brief(minimal, waf.load_taxonomy())
+    assert plan["surfaces"] == list(waf.SURFACES)
+    assert plan["evidence_expectation"] == "reproduced" and plan["submitter"] is None
+
+
+def test_canonical_template_same_brief_every_surface():
+    canonical = json.loads((ROOT / "ops" / "web_adapter_foundry" / "examples"
+                            / "target-brief.example.json").read_text())
+    assert waf.validate_brief(canonical) == []
+    parsed = waf.parse_issue_form(CANONICAL_FORM_BODY)  # GitHub-form rendering
+    assert parsed == canonical  # ... parses back to the exact canonical brief
+    assert (waf.plan_from_brief(parsed, waf.load_taxonomy())
+            == waf.plan_from_brief(canonical, waf.load_taxonomy()))
+
+
+def test_plan_markdown_carries_submission_fields():
+    md = waf.render_plan_markdown(waf.plan_from_brief(BRIEF, waf.load_taxonomy()))
+    assert "inventory{atlas}" in md and "github-issue" in md and "reproduced" in md

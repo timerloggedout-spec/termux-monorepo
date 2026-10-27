@@ -1,14 +1,14 @@
-"""Dashboard surface feeds — 3L0, MoneyBall, MVT, DoE.
+"""Dashboard surface feeds — 3L0, MoneyBall, MVT, DoE, ATES.
 
-Reads only repository records (plus the checked-in API observation
-snapshots — workflow runs and the Delphi weights ledger — each itself an
-API read with its own read_at stamp) and emits one feed JSON per surface
-into apps/help-wanted-dashboard/data/. The pages consume their feed and
-nothing else. Facts the records do not hold are emitted as named gaps,
-never synthesized. Refresh = re-run this collector and land the result by
-PR, exactly like the Oracle Panel feed.
+Reads only repository records (plus the checked-in workflow observations
+snapshot, itself an API read with its own read_at stamp) and emits one feed
+JSON per surface into apps/help-wanted-dashboard/data/. The pages consume
+their feed and nothing else. Facts the records do not hold are emitted as
+named gaps, never synthesized. Refresh = re-run this collector and land the
+result by PR, exactly like the Oracle Panel feed.
 
 Contract: docs/ops/DASHBOARD-SURFACE-FEEDS.md
+MVT/DoE/ATES separation: docs/ops/MVT-DOE-ATES-SEPARATION.md
 """
 from __future__ import annotations
 
@@ -43,37 +43,6 @@ def _observations() -> dict:
     if p.exists():
         return json.loads(p.read_text())
     return {"schema": "dashboard-workflow-observations/v1", "read_at": None, "workflows": {}}
-
-
-def _delphi_weights_observation() -> dict:
-    """Checked-in read of the Delphi panel weights ledger (issue #1489).
-
-    Same pattern as the workflow observations snapshot: an API read of the
-    append-only `delphi-weights v1` JSON comments, stamped with read_at.
-    The ledger issue is the source of record; this snapshot is its only
-    route into the feeds (the collector never calls the network). Refresh
-    it by re-reading the issue's comments and replacing this file in the
-    same PR as the feed refresh.
-    """
-    p = ROOT / "scripts" / "dashboards" / "delphi_weights_observation.json"
-    if p.exists():
-        return json.loads(p.read_text())
-    return {"schema": "dashboard-delphi-weights-observation/v1", "read_at": None,
-            "source": {}, "history": [], "roles": {}}
-
-
-def _effective_weights(roles: dict) -> dict:
-    """w_i = base_i * (0.5 + gate_pass_rate_i) * (elo_i / 1500), per the
-    panel formula (ops/delphi/panel.json, scripts/delphi/gate.py)."""
-    raw = {}
-    for name, r in roles.items():
-        raw[name] = (float(r.get("base", 1.0))
-                     * (0.5 + float(r.get("gate_pass_rate", 0.5)))
-                     * (float(r.get("elo", 1500)) / 1500.0))
-    total = sum(raw.values())
-    return {name: {"effective_weight": round(w, 6),
-                   "weight_share": round(w / total, 6) if total else None}
-            for name, w in raw.items()}
 
 
 def _feed(surface: str, sources: list, payload: dict, gaps: list) -> dict:
@@ -209,43 +178,6 @@ def collect_3l0() -> dict:
                   for m in (p.get("models") or [])]
         peers.append({"provider": pname, "models": models})
     panel = _read_json("ops/delphi/panel.json")
-    wobs = _delphi_weights_observation()
-    wsrc = wobs.get("source") or {}
-    observed_roles = {}
-    for name, r in (wobs.get("roles") or {}).items():
-        observed_roles[name] = dict(r)
-    for name, eff in _effective_weights(observed_roles).items():
-        observed_roles[name].update(eff)
-    newest_entry = (wobs.get("history") or [{}])[-1]
-    observed = {
-        "kind": "observed_live",
-        "read_at": wobs.get("read_at"),
-        "observed_at": wsrc.get("newest_comment_created_at"),
-        "roles": observed_roles,
-        "provenance": {
-            "source_type": wsrc.get("type"),
-            "repo": wsrc.get("repo"),
-            "issue": wsrc.get("issue"),
-            "issue_title": wsrc.get("issue_title"),
-            "issue_url": wsrc.get("issue_url"),
-            "marker": wsrc.get("marker"),
-            "snapshot": "scripts/dashboards/delphi_weights_observation.json",
-            "newest_comment_id": wsrc.get("newest_comment_id"),
-            "newest_comment_url": wsrc.get("newest_comment_url"),
-            "newest_comment_author": newest_entry.get("author"),
-            "feedback": newest_entry.get("feedback"),
-            "weights_comment_count": wsrc.get("weights_comment_count"),
-            "history": [
-                {"comment_id": e.get("comment_id"), "created_at": e.get("created_at"),
-                 "html_url": e.get("html_url"), "feedback": e.get("feedback"),
-                 "roles": {rn: {"gate_pass_rate": rv.get("gate_pass_rate"),
-                                "elo": rv.get("elo"), "hits": rv.get("hits"),
-                                "misses": rv.get("misses")}
-                           for rn, rv in (e.get("roles") or {}).items()}}
-                for e in (wobs.get("history") or [])
-            ],
-        },
-    } if observed_roles else None
     payload = {
         "definition": "The custom 3L0 score is an inference matrix, not a claim of objective model intelligence (docs/ops/AGENT-TEAM-ORCHESTRATION.md). MoneyBall/3L0 scores providers, agents and models AFTER repeated success, for admission and routing weight — it does not pick the next HTTP model for a single request.",
         "components": [
@@ -269,17 +201,10 @@ def collect_3l0() -> dict:
             "history_tail": history,
         },
         "delphi_weights": {
-            "state": "observed_live" if observed else "seed_only",
             "panel_defaults": panel.get("roles"),
-            "panel_defaults_kind": "cold_start_seed",
-            "observed": observed,
             "formula": panel.get("formula"),
-            "update_rule": {
-                "flywheel": panel.get("flywheel"),
-                "source": "ops/delphi/panel.json flywheel config; gate_pass_rate is an EWMA (alpha above) of whether the role's pass/fail call matched real outcomes, elo moves +/-k per confirmed/missed call (docs/ops/DELPHI-WEIGHTING.md).",
-            },
             "seed_note": panel.get("seed_note"),
-            "live_source": "Live values are carried in the observed block above, read from the Delphi panel weights ledger, issue #1489 (newest delphi-weights v1 JSON comment, via the checked-in observation snapshot); the ledger issue remains the source of record and panel.json carries only the cold-start seeds.",
+            "live_source": "The live weights live on the Delphi weighting ledger, issue #1489 (EWMA/elo lineage); panel.json carries the defaults/seeds, not the live values.",
         },
     }
     gaps = [
@@ -290,7 +215,7 @@ def collect_3l0() -> dict:
         "docs/ops/AGENT-TEAM-ORCHESTRATION.md + docs/ops/SCOUT-ROSTER.md + docs/ops/ROUTING-LOGIC-CHAIN.md",
         "scripts/model_router.py + .github/connectors/llm-peers.yaml",
         "docs/ops/generated/reviewer-metrics.json",
-        "ops/delphi/panel.json (seed defaults) + weighting ledger issue #1489 via scripts/dashboards/delphi_weights_observation.json (observed live values)",
+        "ops/delphi/panel.json (defaults) + weighting ledger issue #1489 (live values)",
     ]
     return _feed("3l0", sources, payload, gaps)
 
@@ -304,16 +229,9 @@ def collect_mvt() -> dict:
     inputs = list(((wf.get(True) or wf.get("on") or {}).get("workflow_dispatch") or {}).get("inputs", {}).keys()) \
         if isinstance(wf, dict) else []
     obs = _observations()["workflows"]
+    loop_obs = obs.get("agent-mvt-experiment.yml", {})
     payload = {
-        "harness": {
-            "doc": "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md",
-            "invariants": [
-                "abstention availability", "wrong-commit penalty", "required-fragment preservation",
-                "distractor isolation", "deterministic execution failure", "isolated SPAWN behavior",
-                "actor/critic private-context isolation",
-            ],
-            "note": "The minimum viable test cohort covers seven hard invariants. Failed experiments remain evidence and are not automatically rerun merely to improve dashboards.",
-        },
+        "method": "Multivariate testing as practiced: simultaneous provider lanes over a live target (Team MVT), and schema-conforming loop experiments comparing a candidate ref against a baseline ref (the experiment loop). Arm designs come from the DoE library and arms execute under the ATES invariants — both cited below, owned by their surfaces.",
         "experiment_record_schema": {
             "file": "docs/ops/corpus/EXPERIMENT.schema.json",
             "required": schema.get("required"),
@@ -324,26 +242,109 @@ def collect_mvt() -> dict:
             "file": ".github/workflows/agent-mvt-experiment.yml",
             "mode": "workflow_dispatch only; candidate and baseline refs are checked out independently, measured and recorded; it NEVER mutates refs",
             "inputs": inputs,
-            "observed_runs": obs.get("agent-mvt-experiment.yml", {}),
-            "state": "defined_not_run",
+            "observed_runs": loop_obs,
+            "state": "defined_not_run" if loop_obs.get("total_runs", 0) == 0 else "observed_runs",
         },
         "team_mvt": {
             "file": ".github/workflows/team-mvt.yml",
             "mode": "simultaneous provider lanes over an issue/PR target; dispatched, issue-edited and master-push triggered; cadence owned by quota-dispatch-tree.yml (issue #1573)",
             "observed_runs": obs.get("team-mvt.yml", {}),
         },
-        "fixtures": "tests/fixtures/ates/orchestrator_mvt.json holds synthetic MVT boundary cases (pass / leak) used by the test suite. They are fixtures — test data — not recorded experiment results, and are labeled as such wherever referenced.",
+        "citations": [
+            {
+                "surface": "ates",
+                "record": "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md + apps/help-wanted-dashboard/data/ates-feed.json",
+                "label": "ATES harness — the seven hard invariants",
+                "note": "The invariants gate every arm MVT runs; they are ATES property, cited here, not copied.",
+            },
+            {
+                "surface": "doe",
+                "record": "deepcli/deepcli/observatory/doe.py + apps/help-wanted-dashboard/data/doe-feed.json",
+                "label": "DoE design library",
+                "note": "full_factorial / taguchi_l9 / mvt_shuffle generate the arm designs MVT campaigns consume (doe.py: 'DoE helpers for MVT campaigns').",
+            },
+        ],
     }
     gaps = [
         "No committed experiment records conforming to EXPERIMENT.schema.json exist in the repo: the experiment loop has never been dispatched (0 runs observed), so there are no recorded MVT experiment results to rank or chart. Defined-but-not-run renders as exactly that.",
     ]
     sources = [
-        "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md",
         "docs/ops/corpus/EXPERIMENT.schema.json",
         ".github/workflows/agent-mvt-experiment.yml + .github/workflows/team-mvt.yml",
         "scripts/dashboards/workflow_observations.json (Actions API read)",
     ]
     return _feed("mvt", sources, payload, gaps)
+
+
+# -------------------------------------------------------------------- ATES
+
+def collect_ates() -> dict:
+    obs = _observations()["workflows"]
+    fixtures = _read_json("tests/fixtures/ates/orchestrator_mvt.json")
+    case_ids = [c.get("case", {}).get("case_id") for c in fixtures]
+    loop_obs = obs.get("agent-mvt-experiment.yml", {})
+    payload = {
+        "doc": "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md",
+        "invariants": [
+            "abstention availability", "wrong-commit penalty", "required-fragment preservation",
+            "distractor isolation", "deterministic execution failure", "isolated SPAWN behavior",
+            "actor/critic private-context isolation",
+        ],
+        "invariant_note": "The minimum viable test cohort covers seven hard invariants. Failed experiments remain evidence and are not automatically rerun merely to improve dashboards.",
+        "workflows": [
+            {
+                "file": ".github/workflows/ates-orchestrator-benchmark.yml",
+                "name": "ATES Orchestrator Benchmark",
+                "role": "Deterministic benchmark: on changes to the evaluator, the fixtures or the ATES docs, runs the orchestrator suites and evaluates scripts/ci/evaluate_orchestrator_benchmark.py over the fixtures, asserting the deterministic verdicts (pass case PASS; leak case FAIL_DETERMINISTIC with net_score 0.0).",
+                "observed_runs": obs.get("ates-orchestrator-benchmark.yml", {}),
+            },
+            {
+                "file": ".github/workflows/ates-phase-b-run-receipt.yml",
+                "name": "ATES Phase B Run Receipt",
+                "role": "Run receipts: on completion of 'Continuous agent ops', emits a metadata-only receipt (scripts/ci/emit_ates_run_receipt.py — event + run id/attempt; no head_commit, no html_url) and publishes it as a 30-day Actions artifact.",
+                "observed_runs": obs.get("ates-phase-b-run-receipt.yml", {}),
+            },
+            {
+                "file": ".github/workflows/agent-mvt-experiment.yml",
+                "name": "Agent MVT experiment loop",
+                "role": "Execution vehicle for the MVT surface's schema-conforming experiments: checks out candidate and baseline refs independently, measures, records.",
+                "discipline": "permissions are contents:read only; the workflow header states it NEVER mutates refs — branch switching never becomes history rewriting.",
+                "observed_runs": loop_obs,
+                "state": "defined_not_run" if loop_obs.get("total_runs", 0) == 0 else "observed_runs",
+            },
+        ],
+        "fixtures": {
+            "file": "tests/fixtures/ates/orchestrator_mvt.json",
+            "label": "Synthetic boundary cases for the benchmark suite — fixtures, not recorded experiment results.",
+            "cases": case_ids,
+        },
+        "trace_schema": "docs/ops/ATES-ORCHESTRATOR-TRACE.schema.json — validated by the benchmark workflow on every run.",
+        "citations": [
+            {
+                "surface": "mvt",
+                "record": "docs/ops/corpus/EXPERIMENT.schema.json + apps/help-wanted-dashboard/data/mvt-feed.json",
+                "label": "MVT — experiment records and practice",
+                "note": "Experiments the harness executes are recorded in the EXPERIMENT schema and owned by the MVT surface.",
+            },
+            {
+                "surface": "doe",
+                "record": "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md (§DoE) + apps/help-wanted-dashboard/data/doe-feed.json",
+                "label": "DoE — first factorial slice",
+                "note": "The factorial design for ATES-cohort arms is defined in §DoE of the harness doc and owned by the DoE surface.",
+            },
+        ],
+    }
+    gaps = [
+        "No committed ATES results ledger exists: benchmark verdicts are asserted inside the workflow run and run receipts publish as 30-day Actions artifacts; this feed observes run counts and latest receipts from the API snapshot only.",
+        "The experiment loop has never been dispatched (0 runs observed): the harness's execution vehicle is defined, not yet exercised.",
+    ]
+    sources = [
+        "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md",
+        ".github/workflows/ates-orchestrator-benchmark.yml + .github/workflows/ates-phase-b-run-receipt.yml + .github/workflows/agent-mvt-experiment.yml",
+        "tests/fixtures/ates/orchestrator_mvt.json",
+        "scripts/dashboards/workflow_observations.json (Actions API read)",
+    ]
+    return _feed("ates", sources, payload, gaps)
 
 
 # --------------------------------------------------------------------- DoE
@@ -358,12 +359,6 @@ def collect_doe() -> dict:
                 "signature": f"{node.name}({', '.join(a.arg for a in node.args.args)})",
                 "doc": (ast.get_docstring(node) or "").strip(),
             })
-    impl = _read_json("docs/proposals/passes/strands-rfp-response/cycle/IMPLEMENTATION.json")
-    impl_summary = {
-        cid: {"suites": [s.get("name") for s in v.get("suites", [])],
-              "passed": v.get("passed"), "failed": v.get("failed"), "pass_rate": v.get("pass_rate")}
-        for cid, v in impl.items()
-    }
     payload = {
         "methods_library": {
             "file": "deepcli/deepcli/observatory/doe.py — DoE helpers for MVT campaigns",
@@ -389,6 +384,7 @@ def collect_doe() -> dict:
         },
         "first_factorial_slice": {
             "source": "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md — an experiment arm varies declared factors while task contract hash, environment fingerprint, benchmark version and deterministic scorer remain fixed",
+            "executor": "ATES harness — this slice is the §DoE design inside the ATES doc; arms designed here execute under the ATES invariants and are recorded on the MVT surface.",
             "factors": {"routing": ["single", "delegated"], "actor_critic": ["off", "on"],
                         "abstention": ["required"], "spawn": ["isolated"], "judge": ["off", "inconclusive-only"]},
             "primary_outcomes": ["deterministic pass rate", "boundary leakage rate", "required-fragment omission rate", "deterministic execution success rate"],
@@ -399,26 +395,31 @@ def collect_doe() -> dict:
             "state": "design_only",
             "note": "Consideration/optimization lane (MSM-004 design): DSPy arms feed the APPROX-006 A/B/C/D cohort entry; optimizer artifacts never silently mutate production routing weights and stay on the dual-gate promotion path. The design doc records the runtime extract as a later PR — the lane is defined, not run.",
         },
-        "executed_comparisons": {
-            "record": "docs/proposals/passes/strands-rfp-response/cycle/IMPLEMENTATION.json — the Delphi Oracle Method cycle's implementation parallel-comparisons: the same suite discipline applied per candidate, on an equalized evidence base",
-            "candidates": impl_summary,
-            "note": "These are recorded implementation comparisons inside the Delphi cycle (also rendered on the Oracle Panel), cited here as the repo's executed comparison record — not as a standalone DoE campaign.",
-        },
+        "citations": [
+            {
+                "surface": "delphi",
+                "record": "docs/proposals/passes/strands-rfp-response/cycle/IMPLEMENTATION.json",
+                "label": "Delphi Oracle Method cycle — implementation round",
+                "note": "The repo's one executed per-candidate comparison record, owned by the Delphi surface and rendered on the Oracle Panel. Cited so the comparison is findable from here; it is not a DoE campaign and contributes no DoE results to this feed.",
+            },
+        ],
     }
     gaps = [
         "No standalone committed DoE campaign records exist in the repo: the methods library, skill and factorial slice are defined; the DSPy optimizer lane is design-only. Campaigns defined-but-not-run render as exactly that.",
+        "DoE results: none. The only executed per-candidate comparison in the repo is a Delphi record (see citations) — this surface claims no results from it.",
     ]
     sources = [
         "deepcli/deepcli/observatory/doe.py",
         ".agents/skills/multivariate-doe/SKILL.md",
-        "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md",
-        "docs/proposals/active/model-selection-market/DSPY-DOE-LANE.md + docs/proposals/passes/strands-rfp-response/cycle/IMPLEMENTATION.json",
+        "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md (§DoE)",
+        "docs/proposals/active/model-selection-market/DSPY-DOE-LANE.md",
+        "docs/proposals/passes/strands-rfp-response/cycle/IMPLEMENTATION.json (citation only — Delphi-owned record)",
     ]
     return _feed("doe", sources, payload, gaps)
 
 
-COLLECTORS = {"moneyball": collect_moneyball, "3l0": collect_3l0, "mvt": collect_mvt, "doe": collect_doe}
-FILENAMES = {"moneyball": "moneyball-feed.json", "3l0": "3l0-feed.json", "mvt": "mvt-feed.json", "doe": "doe-feed.json"}
+COLLECTORS = {"moneyball": collect_moneyball, "3l0": collect_3l0, "mvt": collect_mvt, "doe": collect_doe, "ates": collect_ates}
+FILENAMES = {"moneyball": "moneyball-feed.json", "3l0": "3l0-feed.json", "mvt": "mvt-feed.json", "doe": "doe-feed.json", "ates": "ates-feed.json"}
 
 
 def main() -> int:

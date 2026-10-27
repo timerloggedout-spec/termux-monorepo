@@ -1,11 +1,12 @@
 """Dashboard surface feeds — 3L0, MoneyBall, MVT, DoE.
 
-Reads only repository records (plus the checked-in workflow observations
-snapshot, itself an API read with its own read_at stamp) and emits one feed
-JSON per surface into apps/help-wanted-dashboard/data/. The pages consume
-their feed and nothing else. Facts the records do not hold are emitted as
-named gaps, never synthesized. Refresh = re-run this collector and land the
-result by PR, exactly like the Oracle Panel feed.
+Reads only repository records (plus the checked-in API observation
+snapshots — workflow runs and the Delphi weights ledger — each itself an
+API read with its own read_at stamp) and emits one feed JSON per surface
+into apps/help-wanted-dashboard/data/. The pages consume their feed and
+nothing else. Facts the records do not hold are emitted as named gaps,
+never synthesized. Refresh = re-run this collector and land the result by
+PR, exactly like the Oracle Panel feed.
 
 Contract: docs/ops/DASHBOARD-SURFACE-FEEDS.md
 """
@@ -42,6 +43,37 @@ def _observations() -> dict:
     if p.exists():
         return json.loads(p.read_text())
     return {"schema": "dashboard-workflow-observations/v1", "read_at": None, "workflows": {}}
+
+
+def _delphi_weights_observation() -> dict:
+    """Checked-in read of the Delphi panel weights ledger (issue #1489).
+
+    Same pattern as the workflow observations snapshot: an API read of the
+    append-only `delphi-weights v1` JSON comments, stamped with read_at.
+    The ledger issue is the source of record; this snapshot is its only
+    route into the feeds (the collector never calls the network). Refresh
+    it by re-reading the issue's comments and replacing this file in the
+    same PR as the feed refresh.
+    """
+    p = ROOT / "scripts" / "dashboards" / "delphi_weights_observation.json"
+    if p.exists():
+        return json.loads(p.read_text())
+    return {"schema": "dashboard-delphi-weights-observation/v1", "read_at": None,
+            "source": {}, "history": [], "roles": {}}
+
+
+def _effective_weights(roles: dict) -> dict:
+    """w_i = base_i * (0.5 + gate_pass_rate_i) * (elo_i / 1500), per the
+    panel formula (ops/delphi/panel.json, scripts/delphi/gate.py)."""
+    raw = {}
+    for name, r in roles.items():
+        raw[name] = (float(r.get("base", 1.0))
+                     * (0.5 + float(r.get("gate_pass_rate", 0.5)))
+                     * (float(r.get("elo", 1500)) / 1500.0))
+    total = sum(raw.values())
+    return {name: {"effective_weight": round(w, 6),
+                   "weight_share": round(w / total, 6) if total else None}
+            for name, w in raw.items()}
 
 
 def _feed(surface: str, sources: list, payload: dict, gaps: list) -> dict:
@@ -177,6 +209,43 @@ def collect_3l0() -> dict:
                   for m in (p.get("models") or [])]
         peers.append({"provider": pname, "models": models})
     panel = _read_json("ops/delphi/panel.json")
+    wobs = _delphi_weights_observation()
+    wsrc = wobs.get("source") or {}
+    observed_roles = {}
+    for name, r in (wobs.get("roles") or {}).items():
+        observed_roles[name] = dict(r)
+    for name, eff in _effective_weights(observed_roles).items():
+        observed_roles[name].update(eff)
+    newest_entry = (wobs.get("history") or [{}])[-1]
+    observed = {
+        "kind": "observed_live",
+        "read_at": wobs.get("read_at"),
+        "observed_at": wsrc.get("newest_comment_created_at"),
+        "roles": observed_roles,
+        "provenance": {
+            "source_type": wsrc.get("type"),
+            "repo": wsrc.get("repo"),
+            "issue": wsrc.get("issue"),
+            "issue_title": wsrc.get("issue_title"),
+            "issue_url": wsrc.get("issue_url"),
+            "marker": wsrc.get("marker"),
+            "snapshot": "scripts/dashboards/delphi_weights_observation.json",
+            "newest_comment_id": wsrc.get("newest_comment_id"),
+            "newest_comment_url": wsrc.get("newest_comment_url"),
+            "newest_comment_author": newest_entry.get("author"),
+            "feedback": newest_entry.get("feedback"),
+            "weights_comment_count": wsrc.get("weights_comment_count"),
+            "history": [
+                {"comment_id": e.get("comment_id"), "created_at": e.get("created_at"),
+                 "html_url": e.get("html_url"), "feedback": e.get("feedback"),
+                 "roles": {rn: {"gate_pass_rate": rv.get("gate_pass_rate"),
+                                "elo": rv.get("elo"), "hits": rv.get("hits"),
+                                "misses": rv.get("misses")}
+                           for rn, rv in (e.get("roles") or {}).items()}}
+                for e in (wobs.get("history") or [])
+            ],
+        },
+    } if observed_roles else None
     payload = {
         "definition": "The custom 3L0 score is an inference matrix, not a claim of objective model intelligence (docs/ops/AGENT-TEAM-ORCHESTRATION.md). MoneyBall/3L0 scores providers, agents and models AFTER repeated success, for admission and routing weight — it does not pick the next HTTP model for a single request.",
         "components": [
@@ -200,10 +269,17 @@ def collect_3l0() -> dict:
             "history_tail": history,
         },
         "delphi_weights": {
+            "state": "observed_live" if observed else "seed_only",
             "panel_defaults": panel.get("roles"),
+            "panel_defaults_kind": "cold_start_seed",
+            "observed": observed,
             "formula": panel.get("formula"),
+            "update_rule": {
+                "flywheel": panel.get("flywheel"),
+                "source": "ops/delphi/panel.json flywheel config; gate_pass_rate is an EWMA (alpha above) of whether the role's pass/fail call matched real outcomes, elo moves +/-k per confirmed/missed call (docs/ops/DELPHI-WEIGHTING.md).",
+            },
             "seed_note": panel.get("seed_note"),
-            "live_source": "The live weights live on the Delphi weighting ledger, issue #1489 (EWMA/elo lineage); panel.json carries the defaults/seeds, not the live values.",
+            "live_source": "Live values are carried in the observed block above, read from the Delphi panel weights ledger, issue #1489 (newest delphi-weights v1 JSON comment, via the checked-in observation snapshot); the ledger issue remains the source of record and panel.json carries only the cold-start seeds.",
         },
     }
     gaps = [
@@ -214,7 +290,7 @@ def collect_3l0() -> dict:
         "docs/ops/AGENT-TEAM-ORCHESTRATION.md + docs/ops/SCOUT-ROSTER.md + docs/ops/ROUTING-LOGIC-CHAIN.md",
         "scripts/model_router.py + .github/connectors/llm-peers.yaml",
         "docs/ops/generated/reviewer-metrics.json",
-        "ops/delphi/panel.json (defaults) + weighting ledger issue #1489 (live values)",
+        "ops/delphi/panel.json (seed defaults) + weighting ledger issue #1489 via scripts/dashboards/delphi_weights_observation.json (observed live values)",
     ]
     return _feed("3l0", sources, payload, gaps)
 

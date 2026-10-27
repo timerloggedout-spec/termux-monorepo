@@ -177,3 +177,12 @@ def test_not_run_pass_has_no_outcome():
     assert len(kiro) == 1
     assert kiro[0]["status"] == "stated_not_run"
     assert kiro[0]["ranked_outcome"] is None
+
+
+def test_round_scores_render_from_feed():
+    html = _html()
+    for p in _cands(_feed()):
+        for rnd in ("round_1", "round_2"):
+            score = p["rounds"][rnd]["score"]
+            assert isinstance(score, (int, float))
+            assert str(score) not in html  # rendered, never hardcoded

@@ -150,6 +150,90 @@ class QuotaPollTest(unittest.TestCase):
             with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
                 _qp.main(["--public", "--offline", "--out", d])
 
+    def test_readings_snapshot_converts_v2_projection_to_dashboard_contract(self):
+        def svc(sid, lane="ops", limit=100, source="https://example.com/docs"):
+            return {"id": sid, "provider": "example", "lane": lane, "source": source,
+                    "limit": limit, "unit": "requests", "planned_use": {"safety": 0.9}}
+        services = [svc("example.ok"), svc("example.canary", limit=714240),
+                    svc("openrouter.free_models", lane="model", limit=None,
+                        source="https://openrouter.ai/docs"),
+                    svc("example.unseen")]
+        readings = {"example.ok": {"used": 10, "limit": 100},
+                    "example.canary": {"used": 714239, "limit": 714240},
+                    "openrouter.free_models": {"used": 3, "limit": 50}}
+        now = datetime(2026, 10, 27, 12, 0, tzinfo=timezone.utc)
+        snap = _qp.readings_snapshot(_qp.public_snapshot(services, readings, now), services)
+        self.assertEqual(snap["schema"], "3l0.quota-readings.v1")
+        self.assertEqual(snap["generated_at"], now.isoformat())
+        self.assertIn("not a live quota feed", snap["source"])
+        self.assertNotIn("714239", json.dumps(snap))
+        rows = {r["resource_id"]: r for r in snap["readings"]}
+        for r in rows.values():
+            self.assertIsNone(r["used"])
+            self.assertIsNone(r["reset"])
+            self.assertIn("observed_at", r)
+        live = rows["example.ok"]
+        self.assertEqual(live["status"], "ok")  # coarse v2 status carried on H0/confirmed evidence
+        self.assertEqual((live["horizon"], live["evidence_status"]), ("H0", "confirmed"))
+        self.assertEqual(live["observed_at"], now.isoformat())
+        self.assertEqual(live["limit"], 100)  # documented entitlement, not a balance
+        self.assertEqual(rows["example.canary"]["status"], "watch")
+        self.assertEqual(rows["example.canary"]["limit"], 714240)
+        model = rows["openrouter.free_models"]
+        self.assertEqual(model["status"], "unknown")  # private_preflight is not a display status
+        self.assertEqual((model["horizon"], model["evidence_status"]), ("H0", "confirmed"))
+        self.assertIsNone(model["limit"])  # registry documents no limit; none inferred
+        unseen = rows["example.unseen"]
+        self.assertEqual((unseen["status"], unseen["horizon"], unseen["evidence_status"]),
+                         ("unknown", "H1", "attributed_claim"))
+        self.assertIsNone(unseen["observed_at"])
+
+    def test_readings_snapshot_never_carries_status_without_live_evidence(self):
+        services = [{"id": "example.requests", "provider": "example", "lane": "ops",
+                     "source": "https://example.com/docs", "limit": 100, "unit": "requests"}]
+        forged = {"schema": "quota-public-status/v2", "generated_at": "2026-10-27T12:00:00+00:00",
+                  "readings": [{"resource_id": "example.requests", "provider": "example",
+                                "status": "ok", "observed_at": None, "horizon": "H1",
+                                "evidence_status": "attributed_claim"}]}
+        row = _qp.readings_snapshot(forged, services)["readings"][0]
+        self.assertEqual(row["status"], "unknown")
+
+    def test_readings_snapshot_rederives_evidence_for_v1_artifacts(self):
+        services = [{"id": "example.requests", "provider": "example", "lane": "ops",
+                     "source": "https://example.com/docs", "limit": 100, "unit": "requests"}]
+        legacy = {"schema": "quota-public-status/v1", "generated_at": "2026-10-22T00:00:00+00:00",
+                  "readings": [{"resource_id": "example.requests", "provider": "example",
+                                "status": "private_preflight", "observed_at": "2026-10-22T00:00:00+00:00"}]}
+        row = _qp.readings_snapshot(legacy, services)["readings"][0]
+        self.assertEqual((row["status"], row["horizon"], row["evidence_status"]),
+                         ("unknown", "H0", "confirmed"))
+
+    def test_readings_snapshot_rejects_non_projection_input(self):
+        with self.assertRaises(ValueError):
+            _qp.readings_snapshot({"schema": "3l0.quota-readings.v1", "readings": []}, [])
+        with self.assertRaises(ValueError):
+            _qp.readings_snapshot(["not-a-dict"], [])
+
+    def test_from_public_cli_writes_only_the_readings_snapshot(self):
+        artifact = {"schema": "quota-public-status/v2", "generated_at": "2026-10-27T12:00:00+00:00",
+                    "readings": [{"resource_id": "openrouter.free_models", "provider": "openrouter",
+                                  "status": "private_preflight", "observed_at": "2026-10-27T12:00:00+00:00",
+                                  "horizon": "H0", "evidence_status": "confirmed", "used": 714239}]}
+        with tempfile.TemporaryDirectory() as d:
+            src = os.path.join(d, "quota-public-status.json")
+            with open(src, "w") as f:
+                json.dump(artifact, f)
+            output = os.path.join(d, "converted")
+            stdout = io.StringIO()
+            with contextlib.redirect_stdout(stdout):
+                self.assertEqual(_qp.main(["--from-public", src, "--registry",
+                                           os.path.join(ROOT, "ops/quota/registry.json"), "--out", output]), 0)
+            self.assertEqual(os.listdir(output), ["quota-status.json"])
+            text = open(os.path.join(output, "quota-status.json")).read()
+            self.assertNotIn("714239", text + stdout.getvalue())
+            row = next(r for r in json.loads(text)["readings"] if r["resource_id"] == "openrouter.free_models")
+            self.assertEqual((row["status"], row["used"], row["reset"]), ("unknown", None, None))
+
     def test_public_workflow_uploads_only_status_projection(self):
         from pathlib import Path
         workflow = (Path(ROOT) / ".github/workflows/vercel-quota-probe.yml").read_text()

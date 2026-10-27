@@ -1,0 +1,140 @@
+{
+ "schema": "dashboard-surface-feed/v1",
+ "surface": "doe",
+ "generated_at": "2026-10-27T11:38:21Z",
+ "sources": [
+  "deepcli/deepcli/observatory/doe.py",
+  ".agents/skills/multivariate-doe/SKILL.md",
+  "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md",
+  "docs/proposals/active/model-selection-market/DSPY-DOE-LANE.md + docs/proposals/passes/strands-rfp-response/cycle/IMPLEMENTATION.json"
+ ],
+ "honesty_rules": [
+  "Show only what the record holds; a value the record does not hold renders as absent, never synthesized.",
+  "Defined-but-not-run experiments render as exactly that.",
+  "Weights and scores are read from the code and records at collection time, never transcribed from prose claims.",
+  "Workflow run counts are API observations stamped with their read time, not live claims."
+ ],
+ "data": {
+  "methods_library": {
+   "file": "deepcli/deepcli/observatory/doe.py \u2014 DoE helpers for MVT campaigns",
+   "functions": [
+    {
+     "name": "full_factorial",
+     "signature": "full_factorial(factors)",
+     "doc": "All combinations of factor levels. 2^k growth; use only for small k."
+    },
+    {
+     "name": "taguchi_l9",
+     "signature": "taguchi_l9(factors)",
+     "doc": "L9 orthogonal array for up to 4 factors at 3 levels each."
+    },
+    {
+     "name": "mvt_shuffle",
+     "signature": "mvt_shuffle(variants, n, seed)",
+     "doc": "Randomized assignment for multi-variate testing. Duplicates allowed."
+    }
+   ]
+  },
+  "skill": {
+   "file": ".agents/skills/multivariate-doe/SKILL.md",
+   "factor_space": "provider x model x prompt x manager x cohort x sequencing (default agent-team factor space; extendable with task family, scope/ref, tool policy, context budget, concurrency, validation and recovery policy)",
+   "design_rules": [
+    "State the hypothesis before running treatments.",
+    "Define factor levels explicitly and preserve their provenance.",
+    "Separate the same-task treatment from adversarial/reviewer prompt variants.",
+    "Randomize or rotate treatment order where ordering can confound results.",
+    "Preserve a stable cohort/ref so code changes do not masquerade as model effects.",
+    "Record manager/policy version independently from provider/model identity.",
+    "Do not use latency as a correctness proxy.",
+    "Record resource/quota state as a capacity variable, not a quality score.",
+    "Repeat successful-looking treatments before promotion.",
+    "Preserve negative, skipped, unavailable, and censored observations.",
+    "Avoid p-hacking: do not select a design or metric after seeing the result.",
+    "If the design changes midstream, create a new cohort/version and retain the prior ledger."
+   ]
+  },
+  "first_factorial_slice": {
+   "source": "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md \u2014 an experiment arm varies declared factors while task contract hash, environment fingerprint, benchmark version and deterministic scorer remain fixed",
+   "factors": {
+    "routing": [
+     "single",
+     "delegated"
+    ],
+    "actor_critic": [
+     "off",
+     "on"
+    ],
+    "abstention": [
+     "required"
+    ],
+    "spawn": [
+     "isolated"
+    ],
+    "judge": [
+     "off",
+     "inconclusive-only"
+    ]
+   },
+   "primary_outcomes": [
+    "deterministic pass rate",
+    "boundary leakage rate",
+    "required-fragment omission rate",
+    "deterministic execution success rate"
+   ],
+   "secondary_outcomes": [
+    "net benchmark score",
+    "wrong-commit count",
+    "retry/error rate",
+    "ATES/WTCV",
+    "parallel yield",
+    "time-to-integration",
+    "human intervention",
+    "attribution confidence"
+   ]
+  },
+  "dspy_lane": {
+   "file": "docs/proposals/active/model-selection-market/DSPY-DOE-LANE.md + scripts/model_selection_market/dspy_doe.py",
+   "state": "design_only",
+   "note": "Consideration/optimization lane (MSM-004 design): DSPy arms feed the APPROX-006 A/B/C/D cohort entry; optimizer artifacts never silently mutate production routing weights and stay on the dual-gate promotion path. The design doc records the runtime extract as a later PR \u2014 the lane is defined, not run."
+  },
+  "executed_comparisons": {
+   "record": "docs/proposals/passes/strands-rfp-response/cycle/IMPLEMENTATION.json \u2014 the Delphi Oracle Method cycle's implementation parallel-comparisons: the same suite discipline applied per candidate, on an equalized evidence base",
+   "candidates": {
+    "strands-rfp-response-kernel-first": {
+     "suites": [
+      "e05_adversarial_firewall",
+      "e01_evidence_gate_delta",
+      "e03_counterfactual_replay"
+     ],
+     "passed": 3,
+     "failed": 0,
+     "pass_rate": 1.0
+    },
+    "strands-rfp-response-collection-first": {
+     "suites": [
+      "collector_intake_validation",
+      "collector_dedupe",
+      "e06_receipt_completeness"
+     ],
+     "passed": 3,
+     "failed": 0,
+     "pass_rate": 1.0
+    },
+    "strands-rfp-response-packaging-first": {
+     "suites": [
+      "handler_conformance",
+      "e08_budget_breaker",
+      "no_deploy_claim"
+     ],
+     "passed": 3,
+     "failed": 0,
+     "pass_rate": 1.0
+    }
+   },
+   "note": "These are recorded implementation comparisons inside the Delphi cycle (also rendered on the Oracle Panel), cited here as the repo's executed comparison record \u2014 not as a standalone DoE campaign."
+  }
+ },
+ "gaps": [
+  "No standalone committed DoE campaign records exist in the repo: the methods library, skill and factorial slice are defined; the DSPy optimizer lane is design-only. Campaigns defined-but-not-run render as exactly that."
+ ]
+}

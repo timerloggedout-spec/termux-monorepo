@@ -1,16 +1,19 @@
 # Google Data Agent Kit — fleet guardrail policy (machine-readable tier map)
 #
-# SSOT for which Data Agent Kit controls are ENFORCED (IAM / permission
-# layer) and which are only ADVISORY (agent instructions). Human design doc:
-# docs/ops/DATA-AGENT-KIT-WIRING.md. Catalog entry: mcp-hub/catalog.json
-# host id "google-data-agent-kit".
+# SSOT for which Data Agent Kit controls are ENFORCED (IAM / permission /
+# install layer) and which are only ADVISORY (agent instructions).
+# Human design doc: docs/ops/DATA-AGENT-KIT-WIRING.md
+# Activation runbook: docs/ops/DATA-AGENT-KIT-ACTIVATION.md
+# Catalog entry: mcp-hub/catalog.json host id "google-data-agent-kit".
 #
 # Fleet rule implemented here: a destructive-action rule that lives only in
 # an agent's instructions is NOT a guardrail. Enforcement sits at the
 # credential/permission layer; skills and prompts are guidance.
+# Second rule (owner, 2026-10-26): freemium-prep — wire EVERYTHING before
+# signup, so trial credits fund usage, never setup.
 
-schema: data-agent-kit-guardrail-policy/v1
-status: wired_readonly_pending_gcp_project
+schema: data-agent-kit-guardrail-policy/v2
+status: wired_full_pending_gcp_project
 updated: "2026-10-27"
 
 kit:
@@ -20,6 +23,25 @@ kit:
   license: Apache-2.0
   ga_date: "2026-09-30"
   cost: "Kit is free; standard pricing applies only to Google Cloud services used."
+  servers_total: 11
+  skills_total: 37
+
+freemium:
+  program: "Google Cloud Free Trial + Always Free"
+  trial: "$300 credit, 90 days from signup; card required for identity verification; no automatic charge or upgrade — resources stop at trial end, 30-day grace before deletion. Eligibility: account never a paying GCP customer, trial never used."
+  always_free_relevant:
+    - "BigQuery: 1 TiB query processing/month + 10 GiB storage"
+    - "Cloud Storage: 5 GiB regional storage (US regions)"
+    - "Firestore: 1 GiB storage + daily read/write allowances (not a kit server; noted for completeness)"
+  doctrine: >
+    Complete ALL wiring (repo config, policy, skills, provisioning commands,
+    runbook) BEFORE the owner creates the account. The 90-day trial clock
+    starts at signup; credits are spent on usage and evaluation, never on
+    setup. Budget alert is set on day 0 (alerts notify; they do not cap).
+  steady_state: >
+    After the trial, the read-only telemetry workload fits inside Always
+    Free allowances; nothing in this wiring requires a paid SKU to keep
+    operating at fleet scale.
 
 placeholders:
   project: "<GCP_PROJECT_ID>"        # no fleet GCP project exists yet (owner item)
@@ -37,125 +59,167 @@ identity:
   owner_user_credentials_for_agent_work: forbidden
   impersonation_grant: "roles/iam.serviceAccountTokenCreator, granted to operator identities only"
 
+readiness_classes:
+  day_one: "Server answers usefully the moment the project exists and the API is enabled."
+  instance_required: "Server is wired; it answers once a fleet instance of that service exists."
+  local: "Server runs inside the plugin on the agent's machine; no GCP resource needed."
+  iam_denied: "Server is wired for completeness; the fleet identity holds no role for it and the deny policy blocks its non-read-only tools."
+
+servers:
+  - server: dak-bigquery
+    endpoint: https://bigquery.googleapis.com/mcp
+    readiness: day_one
+    enforced_roles:
+      - { role: roles/bigquery.dataViewer, scope: "dataset <GCP_PROJECT_ID>.fleet_telemetry only" }
+      - { role: roles/bigquery.jobUser, scope: "project (run queries; grants no data write)" }
+    cost_guard: "Set maximum_bytes_billed on the telemetry dataset at creation (enforced version of the dry-run rule)."
+    fleet_use: "Telemetry / provenance / reviewer-metrics / quota analysis (MVT-DoE lane). A BigQuery connector entry already exists in the ML pipeline registry (ml/pipelines/recon09/connectors.py)."
+  - server: dak-gcs
+    endpoint: https://storage.googleapis.com/storage/mcp
+    readiness: day_one
+    enforced_roles:
+      - { role: roles/storage.objectViewer, scope: "bucket gs://<GCP_PROJECT_ID>-evidence only" }
+    fleet_use: "Evidence artifacts adjunct storage (read-only)."
+  - server: dak-kc
+    endpoint: https://dataplex.googleapis.com/mcp
+    readiness: day_one
+    enforced_roles:
+      - { role: roles/datacatalog.viewer, scope: "project (Knowledge Catalog read/discovery)" }
+    note: "If the Dataplex endpoint requires roles/dataplex.viewer instead, grant that at provisioning and record the substitution here."
+    fleet_use: "Knowledge Catalog discovery + lineage over the wired services."
+  - server: dak-alloydb
+    endpoint: https://alloydb.googleapis.com/mcp
+    readiness: instance_required
+    enforced_roles:
+      - { role: roles/alloydb.viewer, scope: "project (metadata read; database data access additionally requires AlloyDB user provisioning per instance)" }
+    fleet_use: "Future: only if a workload ever lands on AlloyDB (fleet Postgres today is Neon/Supabase)."
+  - server: dak-cloudsql
+    endpoint: https://sqladmin.googleapis.com/mcp
+    readiness: instance_required
+    enforced_roles:
+      - { role: roles/cloudsql.viewer, scope: "project (instance metadata read-only)" }
+    fleet_use: "Future: only if a Cloud SQL instance ever exists in the fleet."
+  - server: dak-spanner
+    endpoint: https://spanner.googleapis.com/mcp
+    readiness: instance_required
+    enforced_roles:
+      - { role: roles/spanner.viewer, scope: "project (metadata)" }
+      - { role: roles/spanner.databaseReader, scope: "per-database, granted only on databases in scope (read-only data)" }
+    fleet_use: "Future: only if a Spanner database ever exists in the fleet."
+  - server: dak-bigtable-data
+    endpoint: https://bigtable.googleapis.com/mcp
+    readiness: instance_required
+    enforced_roles:
+      - { role: roles/bigtable.reader, scope: "per-table where possible (read-only data access)" }
+    fleet_use: "Future: only if a Bigtable instance ever exists in the fleet."
+  - server: dak-bigtable
+    endpoint: https://bigtableadmin.googleapis.com/mcp
+    readiness: iam_denied
+    enforced_roles: []
+    note: "Admin plane. Wired for completeness; the fleet identity holds NO admin role and mcp-deny-nonreadonly-tools blocks its write tools. Granting any bigtable admin role requires a separate owner-approved design."
+  - server: dak-spark
+    endpoint: https://dataproc-$GCP_REGION.googleapis.com/mcp
+    readiness: instance_required
+    enforced_roles:
+      - { role: roles/dataproc.viewer, scope: "project (clusters/jobs metadata read-only; job submission is a write and stays denied)" }
+    fleet_use: "Future: lakehouse/Spark over Foundry/taxonomy exports if that lane ever moves to GCP."
+  - server: dak-notebook
+    endpoint: "local (plugin mcp/dist/index.js --mode=notebook)"
+    readiness: local
+    enforced_roles: []
+    note: "Runs on the agent's machine inside the plugin; inherits the identity above when it calls data services."
+  - server: dak-viz
+    endpoint: "local (plugin mcp/dist/index.js --mode=visualization)"
+    readiness: local
+    enforced_roles: []
+    note: "Runs on the agent's machine inside the plugin."
+
+pipeline_surfaces_without_mcp_servers:
+  - surface: "Dataform / dbt pipelines"
+    wiring: "Skills only (dataform-bigquery, dbt-bigquery, data-autocleaning); read posture via roles/dataform.viewer where Dataform resources exist."
+  - surface: "Managed Service for Apache Airflow / Composer"
+    wiring: "Skills only (dag authoring, migrations, recommendations, composer troubleshooting). No read-only predefined Composer role is wired; DAG/log inspection rides the BigQuery/GCS surfaces until a role is verified at provisioning. Do not grant composer.user (it can trigger DAGs) under this policy."
+
 enforced_tier:
   description: >
-    Controls that hold even if the agent ignores every instruction.
-    All are IAM / permission-layer mechanisms in the GCP project.
+    Controls that hold even if the agent ignores every instruction:
+    IAM/permission-layer mechanisms plus one install-layer control.
   controls:
     - id: readonly-service-account
-      mechanism: "Dedicated service account with read-only roles only; agents impersonate it via ADC."
-      bindings:
-        - role: roles/bigquery.dataViewer
-          scope: "dataset <GCP_PROJECT_ID>.fleet_telemetry only (not project-wide)"
-        - role: roles/bigquery.jobUser
-          scope: "project (required to run queries; grants no data write)"
-        - role: roles/storage.objectViewer
-          scope: "bucket gs://<GCP_PROJECT_ID>-evidence only"
-        - role: roles/datacatalog.viewer
-          scope: "project (Knowledge Catalog read/discovery)"
-      explicitly_not_granted:
-        - roles/bigquery.admin
-        - roles/bigquery.dataEditor
-        - roles/storage.objectAdmin
-        - roles/editor
-        - roles/owner
+      mechanism: "Dedicated service account with the per-server read-only roles listed under servers:; agents impersonate it via ADC. No write role exists on the identity."
     - id: mcp-deny-nonreadonly-tools
       mechanism: "IAM deny policy: deny MCP tool invocations where tool.isReadOnly == false for the dak-readonly principal."
       source: "Google GA guidance for Data Agent Kit (read-only agent pattern)."
     - id: no-service-account-keys
-      mechanism: "Do not create SA keys; recommended org/project policy iam.disableServiceAccountKeyCreation once an org exists."
+      mechanism: "No SA keys are created; recommended policy iam.disableServiceAccountKeyCreation once available."
     - id: row-column-security-inheritance
       mechanism: "BigQuery row/column policies apply automatically because the agent connects as the impersonated SA, never as the owner."
-  available_hardening_not_in_first_cohort:
-    - "Model Armor screening of MCP traffic"
-    - "VPC Service Controls perimeter around the data services"
-    - "Principal Access Boundary policies"
+    - id: plugin-telemetry-hook-disabled
+      mechanism: >
+        INSTALL-LAYER control. The upstream plugin ships a PreToolUse
+        telemetry hook (.agents/hooks/telemetry_hook.js, matcher *) that
+        reports tool use. Fleet installs ship with this hook DISABLED
+        until the owner reviews what it sends and where. The SessionStart
+        dak-setup-sync hook is configuration sync and may stay enabled.
+      verification: "Post-install, confirm the telemetry hook is absent/disabled in the surface's hooks config; record the check in the activation evidence."
 
 advisory_tier:
   description: >
-    Guidance an agent can ignore, misread, or have injected against it.
-    Valuable for behavior quality; NEVER counted as enforcement anywhere
-    in fleet documentation or admission evidence.
+    Guidance an agent can ignore, misread, or be injected against.
+    Never counted as enforcement in fleet documentation or admission
+    evidence.
   controls:
     - id: kit-skills
-      mechanism: "The kit's 37 open-source skills (Apache-2.0), incl. accidental-data-loss-prevention (MUST obtain explicit consent before DROP TABLE / TRUNCATE / DELETE without WHERE) and cost-aware skills (partition checks, BigQuery dry run before execution)."
+      mechanism: "All 37 upstream skills (Apache-2.0) — incl. accidental-data-loss-prevention (explicit consent before DROP TABLE / TRUNCATE / DELETE without WHERE), cost skills (partition checks, dry run first), and per-service authoring/troubleshooting skills. Full grouped inventory in docs/ops/DATA-AGENT-KIT-WIRING.md."
     - id: fleet-skill
-      mechanism: ".agents/skills/data-agent-kit/SKILL.md — fleet usage rules, consent gate, dry-run-first."
-    - id: plugin-hooks
-      mechanism: "Plugin-shipped hooks in the upstream repo (client-side, bypassable)."
+      mechanism: ".agents/skills/data-agent-kit/SKILL.md — fleet usage rules, readiness classes, consent gate."
 
 action_classes:
-  - action: "Read schemas, catalogs, job history; run SELECT / dry-run queries"
+  - action: "Read schemas, catalogs, job history; SELECT / dry-run queries on any wired server"
     tier: enforced_allow
-    via: "readonly-service-account bindings"
-  - action: "CREATE / INSERT / UPDATE / DELETE / DROP / TRUNCATE on any wired service"
+    via: "Per-server read-only bindings under servers:."
+  - action: "CREATE / INSERT / UPDATE / DELETE / DROP / TRUNCATE anywhere"
     tier: enforced_deny
-    via: "No write role exists on the identity; mcp-deny-nonreadonly-tools is the second layer."
-  - action: "Any write through a future write-capable identity"
-    tier: advisory_gate_until_separate_design
-    via: "Requires a separate owner-approved design + a separate service account; consent language in skills is NOT sufficient on its own."
-  - action: "Full-table scans / high-cost queries"
-    tier: advisory
-    via: "Kit cost skills + fleet skill dry-run rule. (BigQuery maximum_bytes_billed is the enforced upgrade path; set it on the telemetry dataset when the project lands.)"
+    via: "No write role on the identity; mcp-deny-nonreadonly-tools as second layer; bigtable admin plane has no role at all."
+  - action: "Writes via a future write-capable identity"
+    tier: out_of_scope
+    via: "Separate owner-approved design + separate service account. Skill consent language never authorizes writes."
+  - action: "High-cost queries"
+    tier: enforced_cap_on_bigquery
+    via: "maximum_bytes_billed on the telemetry dataset; advisory dry-run discipline elsewhere."
 
 surfaces:
   wired:
-    - surface: "Claude Code"
-      install: "claude plugin marketplace add https://github.com/GoogleCloudPlatform/data-agent-kit-plugin && claude plugin install dak@dak-marketplace"
-    - surface: "Codex CLI"
-      install: "codex plugin marketplace add GoogleCloudPlatform/data-agent-kit-plugin && codex plugin add dak@dak-marketplace"
-    - surface: "Antigravity CLI"
-      install: "agy plugin install https://github.com/GoogleCloudPlatform/data-agent-kit-plugin"
+    - { surface: "Claude Code", install: "claude plugin marketplace add https://github.com/GoogleCloudPlatform/data-agent-kit-plugin && claude plugin install dak@dak-marketplace" }
+    - { surface: "Codex CLI", install: "codex plugin marketplace add GoogleCloudPlatform/data-agent-kit-plugin && codex plugin add dak@dak-marketplace" }
+    - { surface: "Antigravity CLI", install: "agy plugin install https://github.com/GoogleCloudPlatform/data-agent-kit-plugin" }
+    - { surface: "VS Code-family IDEs", install: "Data Agent Kit extension (Marketplace / Open VSX) — same MCP configuration and identity rules apply." }
   not_wired:
-    - surface: "Jules"
-      reason: "Cloud agent; its MCPs are configured in Jules' own settings and the kit targets local coding agents. Separate owner decision if ever wanted."
-    - surface: "On-device Termux agents (origin B160V)"
-      reason: "Kit needs Node + gcloud and interactive Google sign-in; origin device constraints require remote-first. Device agents consume results, not the kit directly."
-
-first_cohort_servers:
-  - server: dak-bigquery
-    endpoint: https://bigquery.googleapis.com/mcp
-    fleet_use: "Telemetry / provenance / reviewer-metrics / quota observations analysis (MVT-DoE lane)."
-  - server: dak-gcs
-    endpoint: https://storage.googleapis.com/storage/mcp
-    fleet_use: "Evidence artifacts adjunct storage (read-only)."
-  - server: dak-kc
-    endpoint: https://dataplex.googleapis.com/mcp
-    fleet_use: "Knowledge Catalog discovery over the above."
-
-deferred_servers:
-  - server: dak-alloydb
-    reason: "Fleet operational DBs are Neon/Supabase/Turso; no AlloyDB data exists."
-  - server: dak-cloudsql
-    reason: "No Cloud SQL instances in the fleet."
-  - server: dak-spanner
-    reason: "No Spanner instances in the fleet."
-  - server: dak-bigtable-data
-    reason: "No Bigtable instances in the fleet."
-  - server: dak-bigtable
-    reason: "Admin-plane server; excluded by the read-only posture even if Bigtable is adopted later."
-  - server: dak-spark
-    reason: "No lakehouse/Spark workloads yet."
-  - server: dak-notebook
-    reason: "Local notebook tooling; adopt per-surface later if wanted."
-  - server: dak-viz
-    reason: "Local visualization tooling; adopt per-surface later if wanted."
+    - { surface: "Jules", reason: "Cloud agent; its MCPs are configured in Jules' own settings and the kit targets local coding agents. Separate owner decision if ever wanted." }
+    - { surface: "On-device Termux agents (origin B160V)", reason: "Kit needs Node + gcloud + interactive Google sign-in; origin-device constraints are remote-first. Device agents consume results, not the kit." }
 
 provisioning:
-  note: "Run ONLY after the owner items below are complete. Creates no keys, grants no write roles."
+  note: "Run ONLY after the owner items below are complete (see docs/ops/DATA-AGENT-KIT-ACTIVATION.md for the full sequence). Creates no keys, grants no write roles."
   commands:
-    - "gcloud services enable bigquery.googleapis.com storage.googleapis.com dataplex.googleapis.com iam.googleapis.com --project=<GCP_PROJECT_ID>"
+    - "gcloud services enable bigquery.googleapis.com storage.googleapis.com dataplex.googleapis.com datacatalog.googleapis.com alloydb.googleapis.com sqladmin.googleapis.com spanner.googleapis.com bigtable.googleapis.com bigtableadmin.googleapis.com dataproc.googleapis.com dataform.googleapis.com iam.googleapis.com --project=<GCP_PROJECT_ID>"
     - "gcloud iam service-accounts create dak-readonly --display-name='Data Agent Kit fleet read-only' --project=<GCP_PROJECT_ID>"
     - "gcloud projects add-iam-policy-binding <GCP_PROJECT_ID> --member='serviceAccount:dak-readonly@<GCP_PROJECT_ID>.iam.gserviceaccount.com' --role='roles/bigquery.jobUser'"
     - "gcloud projects add-iam-policy-binding <GCP_PROJECT_ID> --member='serviceAccount:dak-readonly@<GCP_PROJECT_ID>.iam.gserviceaccount.com' --role='roles/datacatalog.viewer'"
-    - "# Dataset- and bucket-scoped bindings (dataViewer / objectViewer) are applied at dataset/bucket creation, never project-wide."
-    - "# Then apply the mcp-deny-nonreadonly-tools IAM deny policy for the dak-readonly principal (see enforced_tier)."
+    - "gcloud projects add-iam-policy-binding <GCP_PROJECT_ID> --member='serviceAccount:dak-readonly@<GCP_PROJECT_ID>.iam.gserviceaccount.com' --role='roles/alloydb.viewer'"
+    - "gcloud projects add-iam-policy-binding <GCP_PROJECT_ID> --member='serviceAccount:dak-readonly@<GCP_PROJECT_ID>.iam.gserviceaccount.com' --role='roles/cloudsql.viewer'"
+    - "gcloud projects add-iam-policy-binding <GCP_PROJECT_ID> --member='serviceAccount:dak-readonly@<GCP_PROJECT_ID>.iam.gserviceaccount.com' --role='roles/spanner.viewer'"
+    - "gcloud projects add-iam-policy-binding <GCP_PROJECT_ID> --member='serviceAccount:dak-readonly@<GCP_PROJECT_ID>.iam.gserviceaccount.com' --role='roles/dataproc.viewer'"
+    - "# Dataset/bucket/table-scoped bindings (bigquery.dataViewer, storage.objectViewer, spanner.databaseReader, bigtable.reader) are applied when each resource is created — never widened to project scope."
+    - "# Create the telemetry dataset with a bytes-billed cap and the evidence bucket; set a billing budget alert for the project (day 0)."
+    - "# Apply the mcp-deny-nonreadonly-tools IAM deny policy for the dak-readonly principal."
 
 owner_items:
   - id: gcp-project-and-billing
-    item: "Create the fleet GCP project and attach a billing account (card-gated). Fleet recon 2026-10-21 (PR #1511): no fleet GCP presence exists."
+    item: "Create the fleet GCP project + free-trial billing account (card for identity verification; $300/90-day trial; no auto-charge). Fleet recon 2026-10-21 (PR #1511): no fleet GCP presence exists. EVERYTHING repo-side is already wired, so the trial clock funds usage only."
   - id: gcp-signin-path
-    item: "gcloud auth / ADC sign-in for the owner Google account — sign-in prompts land on the origin B160V (broken screen); plan the session accordingly."
+    item: "gcloud auth / ADC sign-in for the owner Google account — prompts land on the origin B160V (broken screen); plan the session."
+  - id: telemetry-hook-review
+    item: "Review the plugin's telemetry hook payload/destination when convenient; fleet installs keep it disabled until then (enforced_tier.plugin-telemetry-hook-disabled)."
 
 exit:
   mortality_rule: "No critical lane single-homes on this path. HindSight/Provenance and the evidence lanes run unchanged without it; the kit is an additional read path, never the only copy."

@@ -1,10 +1,13 @@
-# Pass record — kiroween-concept (second live Oracle Method pass — stated, not run)
+# Pass record — kiroween-delphi-concept (second live Oracle Method pass — stated, not run)
 
 **State:** `stated_not_run` — stated 2026-10-27 (owner sequencing +
 generation-first ruling); **not briefed, not generated, not run.**
 This record exists so the stated second test holds the same
 first-class home as the first. It asserts no run, no candidates, and
-no ballots. **Trigger:** Kiroween 2026 rules publish — Fri Oct 30,
+no ballots.
+**Pass id:** `kiroween-delphi-concept` — aligned to the challenge lane's brief id on 2026-10-27, because the generator keys the pass directory by brief id (Delphi lane review on PR #1749). This record originally landed as `kiroween-concept` in PR #1749 and was renamed the same day, so the Oct 30 run supersedes this record in place rather than stranding it as a phantom second directory.
+
+**Trigger:** Kiroween 2026 rules publish — Fri Oct 30,
 2026, 1:00 PM PDT. On the trigger, the challenge lane supplies the
 brief and the Delphi lane generates + runs the full cycle; the run's
 artifacts (`brief.json`, evidence set, `cycle/` records, registry

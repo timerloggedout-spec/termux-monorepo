@@ -88,7 +88,7 @@ Blocked by rule and recorded `specified_not_run`: the AWS deployment
 **Second live pass — D4 Kiroween (stated, not run).** The sentence
 above is prospective: at this record's date the D4 pass has not run,
 and until now it had no pass record of its own. It now does:
-`docs/proposals/passes/kiroween-concept/` (`pass.json` state
+`docs/proposals/passes/kiroween-delphi-concept/` (`pass.json` state
 `stated_not_run`). Stated parameters: n = `proposals_per_pass` (3),
 the full cycle, brief supplied by the challenge lane at the Oct 30
 rules publish (the first brief-supplied generation), implementation

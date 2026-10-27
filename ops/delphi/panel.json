@@ -32,6 +32,11 @@
       "class_rule": "Classes are tallied and reported separately, never merged (DEBATE protocol). DRIVER_SYNTHESIS is not a ballot. A class with no ballots is reported as zero.",
       "weights_source": "Newest JSON state on the Delphi panel weights ledger issue (#1489); this file's role values are cold-start defaults.",
       "ballot_record": "Ranked outcome is appended to the outcome ledger (#1487) as a delphi-generation-ballot v1 JSON comment, with the full receipt in the pass record."
+    },
+    "self_application": {
+      "status": "specified_not_run",
+      "mode": "Versioned comparison runs: method versions/configurations are the variants of a pass - generated, cross-voted, implemented/tested in parallel, evidence-equalized re-vote, calibration vs expectations; receipts and ledger records like any pass.",
+      "first_run": "Not yet executed. Runs when a method-variant brief is filed; method_cycle.py executes it unchanged."
     }
   }
 }

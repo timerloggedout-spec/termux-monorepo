@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "integration_id": "foresight-agent-stack-2026-10-01",
-  "observed_at": "2026-10-26T00:00:00Z",
+  "observed_at": "2026-10-27T00:00:00Z",
   "canonicality": {
     "evidence_store": "repository-owned JSONL/receipts",
     "telemetry_boundary": "OpenTelemetry",
@@ -149,6 +149,33 @@
         "Fleet target test outstanding: GitHub Actions runner, ARM64 Linux, Termux (no Android release asset exists).",
         "Key custody decision: Sigstore keyless via OIDC versus local or KMS keys for offline verification.",
         "Upstream choice at pilot time: in-toto/witness community mainline versus aflock-ai/rookery hardened line."
+      ]
+    },
+    {
+      "id": "copilot-usage-metrics-api",
+      "project": "GitHub Copilot usage metrics API (totals_by_client)",
+      "source": "https://github.blog/changelog/2026-10-23-usage-metrics-api-adds-usage-from-tools-like-opencode/",
+      "version": "2026-10-23 changelog",
+      "role": "per-client-copilot-usage-telemetry-source",
+      "status": "HOLD",
+      "horizon": "H1",
+      "evidence_status": "confirmed",
+      "capabilities": [
+        "per-client model traffic in totals_by_client: request_count, session_count, token_usage (prompt/output/average per request)",
+        "per-model breakdown (totals_by_model) with model_selection_mode: user_selected, auto, product_selected",
+        "clients include claude_code, codex, opencode, copilot_cli, cloud_agent, code_review, vscode, jetbrains; unrecognized clients grouped as other",
+        "enterprise, organization, enterprise-user and organization-user reports, 1-day and 28-day"
+      ],
+      "integration_mode": "read-only metrics pull into the MVT/DoE telemetry comparison as a cost/activity input signal; never a score, never a replacement for Provenance/HindSight delivered-work attribution",
+      "required_exports": [
+        "1-day or 28-day usage metrics report JSON per organization",
+        "totals_by_client entries with client, request_count, session_count, token_usage, totals_by_model"
+      ],
+      "hard_gate": "Usage volume is not work value: request_count counts model calls, not prompts or outcomes, and client labels are best-effort integration-ID groupings, not verified identities. Absence of the metric is never read as zero work.",
+      "unresolved_questions": [
+        "NOT APPLICABLE to this account today (verified live 2026-10-26 via the PAT helper): both orgs (Research-Astute, search-astute-ly) report Copilot seat_breakdown total 0 with seat management unconfigured, /copilot/metrics returns 404 for both, and the personal account (plan free) has no report scope in this API.",
+        "Access role is not the blocker (timerloggedout-spec is admin of both orgs); the Copilot usage metrics policy must additionally be enabled per org/enterprise before reports populate.",
+        "Revisit trigger: any fleet org holds Copilot Business/Enterprise seats with the usage metrics policy enabled - re-test the report endpoints and reassess as a weighting input."
       ]
     }
   ],

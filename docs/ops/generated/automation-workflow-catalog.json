@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "b76f3a72fa75565f460aa12b4e4a97f320219cf984fce75f745235775533e891",
-  "workflow_count": 184,
+  "source_fingerprint": "6a94edcb56bf7f050e7d3d3417734e3c42f14418325155f648496cfeb5367449",
+  "workflow_count": 185,
   "workflows": [
     {
       "action_pins": [
@@ -1007,6 +1007,23 @@
       "schedules": [],
       "triggers": [
         "issue_comment",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: delphi-oracle-mvp-${{ github.ref }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "offline-mvp"
+      ],
+      "name": "Delphi Oracle offline MVP",
+      "path": ".github/workflows/delphi-oracle-mvp.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push",
         "workflow_dispatch"
       ]
     },

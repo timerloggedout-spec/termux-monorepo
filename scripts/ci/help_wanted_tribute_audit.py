@@ -76,33 +76,62 @@ def merge_audit_history(
 ) -> list[dict[str, Any]]:
     """Keep the latest known evidence for every current PR across rotating runs."""
     allowed = set(current_urls)
-    merged = {
-        str(row.get("pr_url")): row
-        for row in previous_items
-        if isinstance(row, dict) and row.get("pr_url") in allowed
-    }
+    merged = {}
+    for row in previous_items:
+        if not isinstance(row, dict) or row.get("pr_url") not in allowed:
+            continue
+        url = str(row["pr_url"])
+        normalized = dict(row)
+        # Backfill coverage metadata for reports generated before this field existed.
+        if normalized.get("audit_status") == "observed":
+            normalized.setdefault("last_observed_at", normalized.get("audited_at"))
+            normalized.setdefault("last_observed_head_sha", normalized.get("head_sha"))
+        merged[url] = normalized
+
     for row in fresh_items:
         if not isinstance(row, dict) or row.get("pr_url") not in allowed:
             continue
         url = str(row["pr_url"])
         prior = merged.get(url)
-        if prior is not None and row.get("audit_status") in {"deferred", "unknown"}:
-            # A failed/unavailable attempt is not a new observation of the PR.
-            # Preserve the last known stage and attach the failed attempt for transparency.
+        status = row.get("audit_status")
+        if prior is not None and status in {"deferred", "unknown"}:
+            # An unavailable attempt is not a new observation of the PR.
+            # Preserve the last usable record and attach the failed attempt.
             attempt = {
                 "audited_at": row.get("audited_at"),
-                "audit_status": row.get("audit_status"),
+                "audit_status": status,
                 "evidence_gaps": row.get("evidence_gaps", []),
             }
             merged[url] = {
                 **prior,
                 "last_attempt_at": row.get("audited_at"),
-                "last_attempt_status": row.get("audit_status"),
+                "last_attempt_status": status,
                 "last_attempt_evidence_gaps": row.get("evidence_gaps", []),
                 "last_audit_attempt": attempt,
             }
+        elif status == "observed":
+            merged[url] = {
+                **row,
+                "last_observed_at": row.get("audited_at"),
+                "last_observed_head_sha": row.get("head_sha"),
+            }
+        elif status == "partial" and prior is not None:
+            # Keep current partial evidence visible without erasing proof that this
+            # PR was completely observed in an earlier run. Coverage is historical;
+            # current-batch completeness is reported separately.
+            merged[url] = {
+                **row,
+                "last_observed_at": prior.get("last_observed_at"),
+                "last_observed_head_sha": prior.get("last_observed_head_sha"),
+                "last_attempt_at": row.get("audited_at"),
+                "last_attempt_status": status,
+                "last_attempt_evidence_gaps": row.get("evidence_gaps", []),
+            }
         else:
             merged[url] = row
+            if status == "observed":
+                merged[url]["last_observed_at"] = row.get("audited_at")
+                merged[url]["last_observed_head_sha"] = row.get("head_sha")
     return [merged[url] for url in current_urls if url in merged]
 
 
@@ -334,8 +363,10 @@ def main() -> int:
     history_items = merge_audit_history(urls, previous_items, results)
     stages = Counter(row["stage"] for row in history_items)
     statuses = Counter(row.get("last_attempt_status", row.get("audit_status", "observed")) for row in history_items)
+    # Historical coverage persists after a later partial/unavailable attempt.
     observed_history_count = sum(
-        row.get("audit_status", "observed") == "observed"
+        bool(row.get("last_observed_at"))
+        or row.get("audit_status", "observed") == "observed"
         for row in history_items
     )
     observed_this_run_count = sum(

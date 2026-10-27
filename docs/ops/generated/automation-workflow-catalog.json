@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "6a94edcb56bf7f050e7d3d3417734e3c42f14418325155f648496cfeb5367449",
-  "workflow_count": 185,
+  "source_fingerprint": "cd67dc41014ec8e3b252cf7c95f2eb4a24031a762ebda33a76c30268ac0e620f",
+  "workflow_count": 187,
   "workflows": [
     {
       "action_pins": [
@@ -990,6 +990,21 @@
         "schedule",
         "workflow_dispatch",
         "workflow_run"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "generate"
+      ],
+      "name": "delphi-generate",
+      "path": ".github/workflows/delphi-generate.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
       ]
     },
     {
@@ -2764,6 +2779,25 @@
       ],
       "triggers": [
         "pull_request",
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: registration-monikers cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "registry"
+      ],
+      "name": "Registration monikers",
+      "path": ".github/workflows/registration-monikers.yml",
+      "schedules": [
+        "41 6 * * 2"
+      ],
+      "triggers": [
         "push",
         "schedule",
         "workflow_dispatch"

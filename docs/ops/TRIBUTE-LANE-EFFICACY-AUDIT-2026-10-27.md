@@ -133,3 +133,64 @@ itself G3.
 — [MUSEai]@{role:{tribute-efficacy-audit}} · 2026-10-27 · Sources: live
 GitHub API reads 2026-10-27; ledger snapshot 2026-10-25T05:09Z;
 PRs #1677/#1694/#1671 and TRIBUTE-SYSTEM1.md read at master.
+
+## Phase 2 — participation backfill (owner order 2026-10-27 04:43)
+
+The lane participates in everything: no stake stays a stake. Program:
+reopen/convert what we claimed, verify completion firsthand, record
+non-conversions honestly, and land real fix PRs where an issue is open
+and no human is engaged (preflight discipline unchanged). Batch 1,
+executed 2026-10-27 against the 28 open PRs:
+
+### Converted: stake → real fix (3)
+| PR | Fix | Evidence |
+|---|---|---|
+| E-Timileyin/Sail-CLI #23 (issue #20, assigned to us) | `internal/domain/types_test.go` (+142): Address/PortString/Validate, ImageRef, dual yaml+mapstructure tag guard, TrustPolicy zero value | Package coverage 0.0% → **100.0%**; full repo suite passes locally; stake file removed — diff is the test file only |
+| Vasudev-ai/Focusflow #15 (issue #2) | Medium badge drops `border-dashed`; all priority badges solid, colors unchanged | Diff +1/−2 in `TaskItem.jsx`; stake file removed |
+| MMALI3287/vibewatt #100 (issue #95) | CONTRIBUTING note: first-PR fork CI `action_required` hold + `ci-ok` aggregator | Diff +11/−0; stake file removed |
+
+Upstream check runs on all three: none reported yet at write time (fork
+PRs commonly wait on maintainer workflow approval).
+
+### Withdrawn (17)
+- **Issue closed, work done elsewhere (10)** — recorded non-conversions,
+  closed with a note: pulsartrack #898, MergeFi/contracts #374,
+  so4-oracle #1143, StellarLock #865, TrusTrove-contract #860,
+  health_watchers #1698, RetinaX #352, Assay #509, blroad #12,
+  fluxnova-bpm-platform #352.
+- **Yield — human engaged first (7)**: cognee #5439, remitlend #1990,
+  soroscan #1690 (all assigned); sorolens #753 (three Stellar Wave
+  applicants before our claim); starpass-contracts #59 (human asked
+  first, twice); Ciaren #234 (human implemented the same day);
+  open-stream-saver #3 (maintainer had already landed the checklist).
+
+### SendAm alternative: none welcome today
+Issues #465/#538 stand as non-conversions. Every unassigned open issue
+in EF-CHAIN/SendAm carries 4–8 Stellar Wave applications; claiming any
+of them means claiming over engaged humans. Preflight fails repo-wide
+until the wave clears; revisit then.
+
+### ROCm/rocm-libraries #13152 — flagged, untouched
+Per main's flag, nothing was posted. Proposed reply + plan surfaced to
+main chat for owner confirmation. Material fact for that decision:
+issue #10586 is now assigned to NikharAsthana, so no fix PR from us is
+possible without claiming over the assignee — the honest options are
+answer-and-withdraw or withdraw-only.
+
+### Remaining queue
+- Batch 2 (open, unassigned, needs work): portals #948 (export crash),
+  KayStcx #104 (roleRoutes refactor), MOBIUS-Searcher #7 (metadata
+  proposal), agentic-path #26 (unclear report), MergeEarn #76
+  (screenshots — capability check first), EasyCode #53 (no linked issue
+  parsed — investigate), hugegraph-computer #365 (umbrella issue).
+- Batch 3: the 63 closed-unmerged — reopen only where the maintainer
+  did not close as noise and the target issue is still open and
+  unclaimed, verified per item.
+- Claim-comment footprint (G3): claim comments found during batch-1
+  preflights sit on every audited issue; the claim ledger build is
+  queued behind batch 2.
+
+Open lane PRs after batch 1: 11 of the original 28 — the 3 converted
+fixes awaiting upstream review, ROCm (held), and the 7 batch-2 items
+(portals, KayStcx, MOBIUS, agentic-path, MergeEarn, EasyCode,
+hugegraph).

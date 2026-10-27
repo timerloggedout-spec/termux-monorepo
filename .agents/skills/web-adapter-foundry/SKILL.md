@@ -120,6 +120,38 @@ every surface converges on `validate_brief` → `plan_from_brief`:
 | **Chat / A2A** | State target + purpose + authorisation in plain words; the receiving agent writes the brief JSON and runs intake. |
 | **HTTP/SSE** | Run the facade (`python3 -m ops.web_adapter_foundry.facade [--registry R] [--port 8787]`): `POST /invoke` takes one envelope, `GET /events` is the SSE fan-out of every invoke response (publish-once), `GET /health` lists operations. Same envelope rules — credential bodies refused. |
 
+### The canonical submission template (one template, every surface)
+
+The submission template IS the brief. The canonical filled template lives
+at `ops/web_adapter_foundry/examples/target-brief.example.json` — copy it,
+fill every field, file it through any surface above. Fields beyond the
+core brief (all optional, validated identically on every path):
+
+| Field | Meaning |
+|---|---|
+| `surfaces` | Dispatch surfaces requested, drawn from `waf.SURFACES` (`github-issue`, `cli`, `jsonl`, `chat`, `http-facade`); absent = all surfaces. |
+| `evidence_expectation` | What the dispatch must bring back: `observed` · `reproduced` · `verified` (default `reproduced`). |
+| `submitter` | Who is filing, `Role{Moniker}` format (e.g. `inventory{atlas}`) — the fleet coordination identity. |
+
+How each surface renders the same template (the mapping is the method):
+
+- **GitHub Issue** — the form carries every template field. Recorded
+  constraint: the form stays inside the Delphi-proven construct subset
+  (the v1 form was silently dropped from the template chooser for using
+  constructs outside it — see PRs #1597/#1656), so `surfaces` is a
+  comma-separated **input**, not a multi-select, and state-changing is a
+  no/yes dropdown. `parse_issue_form` maps the rendered sections back to
+  the exact canonical brief (accepts the v1 checkbox rendering too).
+- **CLI / JSONL / HTTP** — the template JSON is filed as-is
+  (`waf intake`, `foundry.intake` over JSONL, `POST /invoke`).
+- **Chat** — the receiving agent transcribes the filer's words into the
+  template JSON field-for-field; no field is dropped or renamed.
+
+One validator (`validate_brief`), many renderings: the same submission
+filed from the form, as JSON, or over HTTP produces a byte-identical
+brief and plan — proven by `test_canonical_template_same_brief_every_surface`
+and `test_http_surface_submission_matches_direct_plan`.
+
 The phone's role in this design is *remote orchestrator*: briefs are filed
 from any surface, plans resolve against the taxonomy, and execution is
 dispatched to the venue the plan names (remote services today; the dual

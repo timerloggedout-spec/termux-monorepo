@@ -68,6 +68,22 @@ body:
       description: Where the stack runs. The phone orchestrates; heavy engines run on remote services (B160V law applies automatically in the plan).
       options: [remote-service, ci, b160v-on-device, local]
     validations: { required: true }
+  - type: input
+    id: surfaces
+    attributes:
+      label: Surfaces requested
+      description: Comma-separated dispatch surfaces for this submission, drawn from github-issue, cli, jsonl, chat, http-facade. Leave blank for all surfaces.
+  - type: dropdown
+    id: evidence_expectation
+    attributes:
+      label: Evidence expectation
+      description: What evidence the dispatch must bring back.
+      options: [observed, reproduced, verified]
+  - type: input
+    id: submitter
+    attributes:
+      label: Submitter Role{Moniker}
+      description: Who is filing, in fleet coordination format, e.g. inventory{atlas}.
   - type: textarea
     id: notes
     attributes:

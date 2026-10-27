@@ -96,6 +96,26 @@ def test_reopen_candidate_when_issue_open_and_unclaimed():
     assert d == "reopen_candidate"
 
 
+def test_withdrawn_record_when_lane_withdrew_it():
+    # Batch-1 yields must stay settled: our own withdrawal comment on
+    # the thread marks the PR as lane-withdrawn, never a reopen
+    # candidate — even though the issue is still open.
+    comments = [comment(tp.US, "Withdrawing this stake PR: a contributor is already engaged...", "2026-10-27T00:00:00Z")]
+    d, _ = tp.decide_disposition(pr(state="closed"), issue(), comments, STAKE)
+    assert d == "withdrawn_record"
+
+
+def test_no_reopen_when_issue_thread_shows_prior_claim():
+    # The claim evidence lives on the issue thread: a wave application
+    # there blocks reopen candidacy.
+    comments = [
+        comment("wave-dev", "@wave-dev has applied to work on this issue as part of the **Stellar Wave Program**", "2026-10-18T00:00:00Z"),
+        comment(tp.US, tp.CLAIM_MARKER, "2026-10-19T00:00:00Z"),
+    ]
+    d, _ = tp.decide_disposition(pr(state="closed"), issue(), comments, STAKE)
+    assert d == "nonconversion_record"
+
+
 def test_plan_actions_caps_and_only_withdraws():
     items = (
         [{"disposition": "withdraw_yield", "pr_url": f"u{i}"} for i in range(5)]

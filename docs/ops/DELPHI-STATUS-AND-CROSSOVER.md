@@ -85,6 +85,22 @@ Blocked by rule and recorded `specified_not_run`: the AWS deployment
 (ITEMS-007, card rule) and the model panel (ITEMS-006,
 `DELPHI_LLM_MAX=0`). The D4 Kiroween pass is the second live run.
 
+**Second live pass — D4 Kiroween (stated, not run).** The sentence
+above is prospective: at this record's date the D4 pass has not run,
+and until now it had no pass record of its own. It now does:
+`docs/proposals/passes/kiroween-concept/` (`pass.json` state
+`stated_not_run`). Stated parameters: n = `proposals_per_pass` (3),
+the full cycle, brief supplied by the challenge lane at the Oct 30
+rules publish (the first brief-supplied generation), implementation
+inside the post-Nov-8 D4 build sequence, deadline Dec 4. The
+eligibility gate (no project creation or build before Oct 30,
+1:00 PM PDT; creation timestamp captured as evidence) is recorded
+in the pass record and enforced in the D4 packet (challenge log
+§4). Not passes, for the record: the D3 Delphi Desk artifact (#42)
+is a single generation — no n-candidate set, no cross-vote, no
+cycle — and PayPal C5 is the named alternate if Kiroween's rules
+slip; neither is a second test.
+
 ## Method provenance — reconciled against the repo's Delphi history (2026-10-27)
 
 The Oracle Method was not invented on 2026-10-27; it was assembled

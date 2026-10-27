@@ -75,6 +75,13 @@ APIs from Actions (runs 40504965897–40506393011). Established state:
   PR #1780, which repaired the contracts gate; diagnose run
   40508502147 completed successfully). Repeated inference retries
   against a 429 are not authorized by this evidence.
+- **First completed trial — acceptance condition met.** Run
+  40509162104 (2026-10-27, after PR #1782 set the verified defaults)
+  completed successfully: producer `liquid/lfm-2.5-2.6b:free`, judge
+  `openrouter/free`; Mev → Jev → Kev → Laya all executed and Laya
+  ranked a winner (2,353-byte trial record). The route remains
+  rate-limit-prone, so a failed future dispatch should be read against
+  fresh diagnose evidence before any retry.
 
 ## Known follow-up
 

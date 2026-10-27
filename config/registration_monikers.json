@@ -49,6 +49,29 @@
     {
       "handling": {
         "escalation": [
+          "Burn activation: BOINC runs on GitHub Actions quota (leftover-only, owner rule 2026-10-27); the burn workflow needs one owner-provisioned Actions secret holding the project authenticators - until it exists no workflow references it. Codespaces is EXCLUDED by the owner (interim TBD; a past setup error burned a month's allocation in an afternoon). The agent VM cannot substitute: its egress proxy hangs scheduler POSTs (verified 2026-10-27).",
+          "Einstein@Home account creation is web-only by project policy (RPC creation refused); any forced personal field on a future platform is owner-gated, never worked around."
+        ],
+        "owner_lane": "boinc",
+        "receipts_route": "No email receipts for RPC-created accounts; standings are read from project stats and recorded firsthand into docs/ops/BOINC-FLEET-COMPUTE.md by PR. Einstein@Home registration confirmation landed in the owner's Gmail (2026-10-27).",
+        "submission_authority": "Participation management (attach/detach, project mix, preferences, team) is the owning lane's, under the moniker, within the standing account-creation authorization. No challenge submissions exist on this platform."
+      },
+      "kind": "platform",
+      "moniker": "entrantBoinc",
+      "notes": [
+        "Non-challenge platform: this entry extends the registry beyond its challenge-log source under the BOINC lane's brief; registrations is empty because the registry check binds registration refs to the challenge log - per-project accounts are recorded in docs/ops/BOINC-FLEET-COMPUTE.md and the Profile Registry instead.",
+        "Science United not used (its shared anonymous account erases ranking identity); all project accounts are individual under the moniker on one email (one cross-project ID)."
+      ],
+      "platform": "BOINC",
+      "platform_id": "boinc",
+      "profile_ref": "BOINC",
+      "registrations": [],
+      "role": "entrant",
+      "status": "registering"
+    },
+    {
+      "handling": {
+        "escalation": [
           "Open risk from packet D3: if publishing the public Clips demo requires a Builder account, that step is owner-gated and surfaces immediately, not at the deadline."
         ],
         "owner_lane": "challenge-entries",

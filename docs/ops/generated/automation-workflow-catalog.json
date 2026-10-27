@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "7de7ffc3117a798f0e63ad444a81434ae3f635a737b13fb47a50f41cb7890d16",
-  "workflow_count": 187,
+  "source_fingerprint": "513d372b7d1d6b53a98a8d5fe9a557b82720f7d80a61b95829fcef7d53cc5d95",
+  "workflow_count": 188,
   "workflows": [
     {
       "action_pins": [
@@ -2315,6 +2315,24 @@
       "triggers": [
         "issues",
         "pull_request_target",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: oracle-panel-feed-collect cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "collect"
+      ],
+      "name": "oracle-panel-feed-collect",
+      "path": ".github/workflows/oracle-panel-feed-collect.yml",
+      "schedules": [
+        "23 6 * * 2"
+      ],
+      "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },

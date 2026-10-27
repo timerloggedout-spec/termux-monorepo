@@ -236,7 +236,7 @@ def render(services: list[dict], readings: list[dict], meta: dict,
     thin = "-" * width
     lines.append(c(rule, CYAN))
     lines.append(c(" QUOTA  termux-monorepo", BOLD) +
-                 f"  ({len(services)} services)")
+                 f"  ({len(services)} registry records)")
     gen = meta.get("generated_at")
     if gen:
         lines.append(f" Snapshot generated (not observation time): {gen}")
@@ -339,7 +339,7 @@ def render(services: list[dict], readings: list[dict], meta: dict,
     n_alert = len(alerts)
     n_live = len(by_id)
     lines.extend(wrap(
-        f"{len(services)} services | {n_alert} alert(s) | "
+        f"{len(services)} registry records | {n_alert} alert(s) | "
         f"{n_live} with a reported reading | "
         f"{len(services) - n_live} with No live reading",
         width, indent=" "))

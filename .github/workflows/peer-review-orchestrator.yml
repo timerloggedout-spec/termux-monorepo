@@ -344,9 +344,14 @@ jobs:
             }
 
             const stateMarker = '<!-- agent-peer-response-state:v2 -->';
-            const initialComments = await github.paginate(github.rest.issues.listComments, {
-              owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, per_page: 100,
-            });
+            let initialComments = [];
+            try {
+              initialComments = await github.paginate(github.rest.issues.listComments, {
+                owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, per_page: 100,
+              });
+            } catch (error) {
+              core.warning(`Initial comments lookup skipped: ${error.message}`);
+            }
             const existingCycle = initialComments.filter(comment =>
               statePublisherLogins.has((comment.user?.login || '').toLowerCase()) &&
               comment.body?.includes(stateMarker) &&

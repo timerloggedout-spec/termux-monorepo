@@ -84,6 +84,8 @@ class NomenclatureMatrixTests(unittest.TestCase):
         first = CROSSWALK.render_crosswalk(self.data)
         second = CROSSWALK.render_crosswalk(self.data)
         self.assertEqual(first, second)
+        checked_in = (ROOT / "docs/proposals/active/notation-sets/nomenclature-matrix/CROSSWALK.md").read_text(encoding="utf-8")
+        self.assertEqual(first, checked_in)
         for label in self.data["labels"]:
             self.assertIn(label["text"].replace("|", r"\|"), first)
         self.assertIn("Semantic mapping candidates", first)

@@ -68,7 +68,8 @@ of record. Tooling: `scripts/registration_monikers/registry.py`
 
 | Platform | Role{Moniker} | Profile (Profile Registry heading) | Status | Registrations | Owning lane |
 |---|---|---|---|---|---|
-| AWS Builder Center | `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]` | AWS Builder Center | active | R1, R2, R3, D1 | challenge-entries |
+| AWS Builder Center | `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]` | AWS Builder Center | active | R1, R2, D0, R3, D1 | challenge-entries |
+| BOINC | `entrant{entrantBoinc}[platform:boinc]` | BOINC | registering | — | boinc |
 | Builder.io | `entrant{entrantBuilderIo}[platform:builder-io]` | Builder.io / Clips | active | D3 | challenge-entries |
 | Devpost | `entrant{entrantDevpost}[platform:devpost]` | Devpost | blocked-owner-gate | D4 | challenge-entries |
 | Kiro | `entrant{entrantKiro}[platform:kiro]` | Kiro | blocked-owner-gate | D4 | challenge-entries |

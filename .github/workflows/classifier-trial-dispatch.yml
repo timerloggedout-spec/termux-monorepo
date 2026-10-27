@@ -42,6 +42,14 @@ on:
         description: "Refuse non-free routes (turn off only with explicit owner approval)"
         type: boolean
         default: true
+      systemone_url:
+        description: "Optional System One server base URL; the winning text is also verified by decide_check"
+        required: false
+        default: ""
+      systemone_model:
+        description: "System One model id (server default when empty)"
+        required: false
+        default: ""
 
 permissions:
   contents: read
@@ -67,6 +75,8 @@ jobs:
           TRIAL_RUBRIC: ${{ inputs.rubric_json }}
           TRIAL_REFERENCE: ${{ inputs.reference_text }}
           TRIAL_TASK: ${{ inputs.task }}
+          SYSTEMONE_BASE_URL: ${{ inputs.systemone_url }}
+          SYSTEMONE_MODEL: ${{ inputs.systemone_model }}
         working-directory: deepcli
         run: |
           python -m deepcli.observatory.dispatch \
@@ -77,7 +87,8 @@ jobs:
             --reference "$TRIAL_REFERENCE" \
             --task "$TRIAL_TASK" \
             --out "$GITHUB_WORKSPACE/trial-record.json" \
-            ${{ inputs.free_only && '' || '--allow-paid' }}
+            ${{ inputs.free_only && '' || '--allow-paid' }} \
+            ${{ inputs.systemone_url != '' && '--decide' || '' }}
       - name: Upload trial record
         if: always()
         uses: actions/upload-artifact@v4

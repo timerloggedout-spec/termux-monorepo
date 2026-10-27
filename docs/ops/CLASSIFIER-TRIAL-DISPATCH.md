@@ -90,3 +90,18 @@ with artifacts in `laya.synthesize`, so a mid-list critique failure can
 pair an artifact with another artifact's verdicts. Single-producer
 dispatches are unaffected. Fix belongs in trial.py with a regression
 test (steward backlog).
+
+## System One decide stage
+
+`observatory/decide.py` + `llm/adapters/systemone.py` connect the
+quartet to the System One ecosystem (proposal
+`system-one-classifier-census`, catalog
+`docs/ops/SYSTEM-ONE-CATALOG.md`): any TypeSafe-compatible decision
+server (self-hosted Kev, simple-jev, Ollaya, …) can verify a text.
+The rubric maps to Score questions with criteria ["0", "1"] — the
+server's interpolated score is the 0..1 field score — plus a Noul
+fabrication check. Dispatch flags: `--decide` (verify the winning
+text after the trial; endpoint from `--decide-url` or the
+SYSTEMONE_BASE_URL env), `--decide-only` (run just the check on the
+prompt). Workflow inputs: `systemone_url`, `systemone_model`. Local
+servers need no credential; SYSTEMONE_API_KEY is optional.

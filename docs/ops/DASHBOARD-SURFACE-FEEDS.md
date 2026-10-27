@@ -1,9 +1,12 @@
-# Dashboard Surface Feeds — 3L0 / MoneyBall / MVT / DoE
+# Dashboard Surface Feeds — 3L0 / MoneyBall / MVT / DoE / ATES
 
-The contract for the four surface pages in `apps/help-wanted-dashboard/`
-(`3l0.html`, `moneyball.html`, `mvt.html`, `doe.html`), sibling to the
-Oracle Panel feed contract (`docs/ops/ORACLE-PANEL-FEED.md`, owned by the
-Delphi lane — that feed is separate and unchanged by this document).
+The contract for the surface pages in `apps/help-wanted-dashboard/`
+(`3l0.html`, `moneyball.html`, `mvt.html`, `doe.html`, `ates.html`),
+sibling to the Oracle Panel feed contract
+(`docs/ops/ORACLE-PANEL-FEED.md`, owned by the Delphi lane — that feed
+is separate and unchanged by this document). MVT, DoE and ATES are
+separate surfaces with separate records:
+`docs/ops/MVT-DOE-ATES-SEPARATION.md` is the separation spec.
 
 ## Feeds
 
@@ -13,6 +16,7 @@ Delphi lane — that feed is separate and unchanged by this document).
 | MoneyBall | `apps/help-wanted-dashboard/data/moneyball-feed.json` | `moneyball.html` |
 | MVT | `apps/help-wanted-dashboard/data/mvt-feed.json` | `mvt.html` |
 | DoE | `apps/help-wanted-dashboard/data/doe-feed.json` | `doe.html` |
+| ATES | `apps/help-wanted-dashboard/data/ates-feed.json` | `ates.html` (Web Design split — feed lands first, per the separation spec) |
 
 Schema: `dashboard-surface-feed/v1` — `{schema, surface, generated_at,
 sources, honesty_rules, data, gaps}`.
@@ -28,32 +32,22 @@ sources, honesty_rules, data, gaps}`.
 - **3L0** — `docs/ops/AGENT-TEAM-ORCHESTRATION.md`,
   `docs/ops/SCOUT-ROSTER.md`, `scripts/model_router.py`,
   `.github/connectors/llm-peers.yaml`, `docs/ops/generated/reviewer-metrics.json`,
-  `ops/delphi/panel.json` (cold-start seed defaults), plus the **observed
-  live Delphi weighting** from ledger #1489 via the observation snapshot
-  below. In the feed, seeds and observed values are separate blocks
-  (`panel_defaults`, labeled `cold_start_seed`, vs `observed`, labeled
-  `observed_live`); the observed block carries per-role effective weights
-  derived from the panel formula and full provenance (source issue,
-  newest weights comment, feedback issue/outcome, append history).
-- **MVT** — `docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md`,
-  `docs/ops/corpus/EXPERIMENT.schema.json`, the two MVT workflows.
+  `ops/delphi/panel.json` (defaults only; live weights live on ledger #1489).
+- **MVT** — `docs/ops/corpus/EXPERIMENT.schema.json`, the two MVT
+  workflows (`.github/workflows/agent-mvt-experiment.yml`,
+  `.github/workflows/team-mvt.yml`).
 - **DoE** — `deepcli/deepcli/observatory/doe.py` (AST: functions +
-  docstrings), `.agents/skills/multivariate-doe/SKILL.md`, the ATES doc,
-  the DSPy lane design doc, the Delphi cycle IMPLEMENTATION record.
+  docstrings), `.agents/skills/multivariate-doe/SKILL.md`, the ATES doc
+  §DoE (first factorial slice), the DSPy lane design doc. The Delphi
+  cycle IMPLEMENTATION record is a citation only — no payload.
+- **ATES** — `docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md` §MVT (the seven
+  invariants), the benchmark and run-receipt workflows, the
+  experiment-loop workflow as execution vehicle,
+  `tests/fixtures/ates/orchestrator_mvt.json`.
 
 Workflow run counts come from `scripts/dashboards/workflow_observations.json`,
 an Actions-API read stamped with its own `read_at`; refresh it by re-reading
 the API and updating that file in the same PR as the feed refresh.
-
-Delphi weights come from `scripts/dashboards/delphi_weights_observation.json`,
-an issue-comments API read of the append-only weights ledger (issue #1489)
-stamped with its own `read_at`. The ledger issue is the source of record —
-the collector never calls the network and never forks the ledger; the
-snapshot is its only route into the feeds. Refresh it the same way: re-read
-the issue's `delphi-weights v1` comments, replace the snapshot, re-run the
-collector, land both in one PR. `tests/test_surface_feeds.py` pins the
-feed's observed block against this snapshot, so a feed cannot drift from
-the ledger read silently.
 
 ## Rules
 
@@ -67,3 +61,7 @@ the ledger read silently.
   rules, harness invariants) are verified against their source files by
   `tests/test_surface_feeds.py`; if a source changes, the test fails
   before the feed can drift from the record.
+- Separation (MVT / DoE / ATES): each feed emits payloads only from its
+  own surface's records; cross-surface references travel in the feed's
+  `citations` array as pointers with labels, never as copied payloads.
+  Spec: `docs/ops/MVT-DOE-ATES-SEPARATION.md`.

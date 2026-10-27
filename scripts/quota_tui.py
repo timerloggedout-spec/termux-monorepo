@@ -64,8 +64,12 @@ def c(text: str, code: str) -> str:
     return f"{code}{text}{RESET}" if USE_COLOR else text
 
 
-# Statuses that must stand out, worst first.
-ALERT_ORDER = {"cap_tripped": 0, "exhausted": 0, "watch": 1}
+# Statuses that must stand out, worst first. Mirrors the web panel's
+# Needs attention set (quota.html): a stale or merely reported problem
+# state still surfaces — labelled as what it is, never upgraded to a
+# live state — instead of the text lane claiming "no problem state"
+# while the panel shows the same reading as an alert.
+ALERT_ORDER = {"cap_tripped": 0, "exhausted": 0, "watch": 1, "reported": 2, "stale": 3}
 ALERT_LABEL = {
     "cap_tripped": "!! CAP TRIPPED",
     "exhausted": "!! EXHAUSTED",
@@ -204,9 +208,9 @@ def public_readings(services: list[dict], readings: list[dict], now=None) -> lis
 
 
 def render(services: list[dict], readings: list[dict], meta: dict,
-           width: int, source_label: str) -> str:
+           width: int, source_label: str, now=None) -> str:
     width = max(40, min(width, 200))
-    readings = public_readings(services, readings)
+    readings = public_readings(services, readings, now)
     by_id = {r.get("resource_id"): r for r in readings if r.get("resource_id")}
 
     # If we only got readings (no registry), synthesise service rows
@@ -225,7 +229,7 @@ def render(services: list[dict], readings: list[dict], meta: dict,
 
     def alert_rank(svc: dict) -> tuple[int, str]:
         r = by_id.get(svc.get("id"))
-        return (ALERT_ORDER.get(r["status"], 2) if r else 3, svc.get("id", ""))
+        return (ALERT_ORDER.get(r["status"], 4) if r else 5, svc.get("id", ""))
 
     alerts = [s for s in services
               if (r := by_id.get(s.get("id"))) and r.get("status") in ALERT_ORDER]
@@ -359,6 +363,11 @@ def main(argv: list[str] | None = None) -> int:
                     help="public provider-quota-coverage/v1 metadata (default: repository snapshot)")
     ap.add_argument("--once", action="store_true",
                     help="print one frame and exit")
+    ap.add_argument("--snapshot", action="store_true",
+                    help="render as of the readings snapshot's generated_at "
+                         "instead of wall-clock now; makes regenerating "
+                         "apps/help-wanted-dashboard/quota.txt deterministic "
+                         "(statuses as they stood at snapshot generation)")
     ap.add_argument("--no-color", action="store_true",
                     help="disable ANSI colours")
     ap.add_argument("--width", type=int, default=None,
@@ -430,8 +439,21 @@ def main(argv: list[str] | None = None) -> int:
         coverage = {}
     source_label = " + ".join(sources)
 
+    snap_now = None
+    if args.snapshot:
+        gen = meta.get("generated_at")
+        try:
+            snap_now = datetime.fromisoformat(str(gen).replace("Z", "+00:00"))
+            if snap_now.tzinfo is None:
+                raise ValueError("generated_at needs a timezone")
+        except (TypeError, ValueError):
+            print(f"quota_tui: --snapshot needs a generated_at in the readings input, got: {gen!r}",
+                  file=sys.stderr)
+            return 2
+
     def frame() -> str:
-        return render(services, readings, {**meta, "provider_quota_coverage": coverage}, width, source_label)
+        return render(services, readings, {**meta, "provider_quota_coverage": coverage}, width, source_label,
+                      now=snap_now)
 
     if args.once or not sys.stdout.isatty():
         sys.stdout.write(frame())

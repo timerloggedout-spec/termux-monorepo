@@ -341,6 +341,19 @@ a submission path reaches an owner-account step.
   weekend) or a stood-up self-hosted Clips instance. Neither in place at
   build end → no submission and no silent workaround. This resolution
   propagates to the generated proposal's ITEMS DD-005 via the Delphi lane.
+- **Clips account — CREATED (2026-10-27, owner-approved Google route):**
+  the free Clips account now exists on the fleet Google identity (owner
+  decision 2026-10-27; sign-in completed with the owner's phone-prompt
+  approval). The app displays the account as the Google identity's name
+  with a personal workspace; no username/handle field was offered, so no
+  handle exists on this surface — the packet remains fronted by
+  `entrant{entrantBuilderIo}[platform:builder-io]`, and the account's
+  recorded state lives in the Profile Registry (Builder.io / Clips). The
+  account branch of the enforced check above is **satisfied**. Remaining
+  setup item for the build weekend (in-app, on this account): connect clip
+  storage before recording — the record flow shows a "Connect storage"
+  step (per the template docs, recordings need a Builder.io or
+  S3-compatible backend before uploads work).
 - **Source packet:** `docs/proposals/active/aws-free-tier-strands-delphi-oracle/`
   (DEBATE.md envelope, EXPERIMENT-MATRIX), `scripts/delphi/strands_oracle_mvp.py`
   (receipt pattern), PR #1655 CMDB design (conflict matrix / reconciliation).

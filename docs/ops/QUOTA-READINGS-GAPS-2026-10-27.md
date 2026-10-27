@@ -146,3 +146,58 @@ needed.
 - Mortality rule: this change adds no new free-tier dependency. Services
   with no live source stay entitlement-only rather than being wired to a
   fragile scrape.
+
+## G-12c addendum (2026-10-27, later the same day)
+
+Closes the three items the Gap Finder ledger (G-12c) carried from the
+2026-10-21 assessment, re-verified firsthand before fixing:
+
+1. **Source shape — converged.** The "remains open" note above is now
+   closed: PR #1826 (merged 7151beb977cc, history-scan + landed-content
+   verified) rebuilt `public_snapshot()` in `scripts/quota_poll.py` as
+   `quota-public-status/v2`. Rows carry the dashboard contract
+   (`observed_at` / `horizon` / `evidence_status`); a live read is
+   H0/confirmed with a coarse status derived in-memory (ok / watch in
+   the safety zone / exhausted only at the documented limit /
+   cap_tripped for `vercel.deployments` at its limit; model lane stays
+   private_preflight; unclassifiable stays unknown). No values are
+   exported. Proof end-to-end: `vercel-quota-probe` run 40521927734 on
+   master produced the v2 artifact with live H0 rows for
+   `github.actions.cache` (ok), `github.api.github_token` (ok),
+   `vercel.deployments` (ok) and `openrouter.free_models`
+   (private_preflight); render/neon readers returned nothing
+   (credentials absent in the probe environment), so their rows stay
+   unknown — nothing was invented for them.
+2. **Text lane — wired.** PR #1829 (merged 6019e239baac, verified the
+   same way; repo gate + provider-batch contracts green on the branch):
+   `quota_tui.py --snapshot` renders as of the readings `generated_at`,
+   making regeneration deterministic, and a byte-exact guard test
+   (`test_quota_txt_is_the_deterministic_snapshot_render`) runs in
+   provider-batch on every registry/readings change. The TUI alert set
+   now mirrors the web panel's Needs attention (adds reported/stale).
+3. **Promotions in this change** (through the generated-file path, from
+   the run 40521927734 artifact — status + observed_at only, values
+   withheld by poller public mode): `github.api.github_token` gains its
+   first reading row (H0/confirmed, ok, observed 2026-10-27T14:31:57Z),
+   and the `vercel.deployments` row is refreshed to the fresh H0 ok
+   reading, superseding the attributed 2026-10-20 cap_tripped report
+   (retained above and in git history). The two 2026-10-27T12:33:41Z
+   value rows (`github.api.user_token`, `github.actions.cache`) are
+   unchanged — their values belong to their own observation time.
+
+**Coverage, before -> after this addendum:** reading rows 5 -> 6;
+registry records with a reading row 5 -> 6 of 64; records with no
+reading row 59 -> 58; H0/confirmed rows 2 -> 4. The 58 with no row are
+the table above minus the six with rows (`vercel.deployments`,
+`openrouter.free_models`, `github.actions.minutes`,
+`github.api.user_token`, `github.api.github_token`,
+`github.actions.cache`): 46 entitlement-only with no live source, 3
+entitlement-only with no usage API (`github.copilot.free`,
+`gemini.api_free`, `g4f.vendors`), 4 poller-readable only with CI
+credentials that were absent in the probe run (`render.bandwidth`,
+`render.pipeline_minutes`, `neon.compute`, `neon.storage`), 3
+dashboard-only (`github.codespaces.core_hours`,
+`github.codespaces.storage`, `render.instance_hours`), and 2 private
+opt-in (`ollama.balance`, `openrouter.key`).
+Documented limits remain entitlements, not balances; no remaining
+value was invented anywhere in this fill.

@@ -1,6 +1,6 @@
 ================================================================================
  QUOTA  termux-monorepo  (64 registry records)
- Snapshot generated (not observation time): 2026-10-27T12:33:41Z
+ Snapshot generated (not observation time): 2026-10-27T14:31:57Z
  Source: apps/help-wanted-dashboard/data/quota.json + ops/quota/registry.json
  Limits are documented entitlements, not balances.
  Private balances are hidden; unknown is not healthy or admitted.
@@ -8,8 +8,11 @@
 
  ALERTS
 --------------------------------------------------------------------------------
- [STALE] vercel.deployments
-   limit (documented): 100 deployments/day
+ [STALE] github.actions.cache
+   limit (documented): 10 GB
+   used: No live reading
+ [STALE] github.api.user_token
+   limit (documented): 5000 requests/hour
    used: No live reading
 
  ALL SERVICES
@@ -150,7 +153,7 @@
 --------------------------------------------------------------------------------
  github (8)
   github.actions.cache
-    status: OK
+    status: STALE
     limit (documented): 10 GB
     metric: cache storage per repo | window: rolling | reset: LRU eviction;
     entries unused 7 days removed
@@ -162,13 +165,13 @@
     (free for public repos)
     Public evidence state only; no account balance or runtime admission implied.
   github.api.github_token
-    status: No live reading
+    status: OK
     limit (documented): 1000 requests/hour/repo
     metric: REST requests via GITHUB_TOKEN | window: hourly | reset:
     x-ratelimit-reset header
-    No live reading (live source: GET /rate_limit)
+    Public evidence state only; no account balance or runtime admission implied.
   github.api.user_token
-    status: OK
+    status: STALE
     limit (documented): 5000 requests/hour
     metric: REST requests via user/OAuth token | window: hourly | reset:
     x-ratelimit-reset header
@@ -426,7 +429,7 @@
     metric: build step duration per deployment | window: per-build | reset: n/a
     No live reading (live source: none)
   vercel.deployments
-    status: STALE
+    status: OK
     limit (documented): 100 deployments/day
     metric: deployments created | window: rolling 24h (observed: error says try
     again in 24 hours) | reset: rolling
@@ -488,6 +491,6 @@
   zai: Manager / ChronoMancer; official_documentation_only; no passive parser;
   registry: MISSING — explicit gap
  Coverage and quota checks do not grant runtime admission.
- 64 registry records | 1 alert(s) | 5 with a reported reading | 59 with No live
+ 64 registry records | 2 alert(s) | 6 with a reported reading | 58 with No live
  reading
 ================================================================================

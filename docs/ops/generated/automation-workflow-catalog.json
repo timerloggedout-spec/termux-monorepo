@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "5644926fea64f6beb8e2a5c13a0a6eae4b38d47b8a84c86d21205d567fdffade",
+  "source_fingerprint": "c89d442875a8d244973a3b23c82bbaac329bb9629a5ecb120e0fad77a1de6b7c",
   "workflow_count": 188,
   "workflows": [
     {
@@ -2735,6 +2735,7 @@
       "concurrency": "group: reconcile-devin-wiki-access cancel-in-progress: false",
       "domain": "reconciliation-publishing",
       "jobs": [
+        "index-created-branch",
         "reconcile"
       ],
       "name": "Reconcile Devin Wiki access",
@@ -2743,6 +2744,7 @@
         "41 5 * * *"
       ],
       "triggers": [
+        "create",
         "schedule",
         "workflow_dispatch"
       ]

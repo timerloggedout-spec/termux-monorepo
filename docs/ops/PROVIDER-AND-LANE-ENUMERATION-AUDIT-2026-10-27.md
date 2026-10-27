@@ -385,3 +385,26 @@ public catalogs: llm7, modelscope, ovhcloud, requesty, routeway, xkiro),
 Queue item 1: the Groq half is DONE. The Mistral half is still in flight (the
 account's sign-in step is the current gate); its outcome lands as a further
 addendum.
+
+---
+
+## Addendum 5 (2026-10-27) — owner ruling: Mistral is not an API-key family
+
+The owner rules: **there is no Mistral API key for this fleet — Mistral access
+is a webWrapper via local Termux** (the multi-ai-cli wrapper family; the
+Mistral target brief is #1790). The La Plateforme key-creation task was stopped
+on this ruling; no key was created and nothing was provisioned.
+
+Consequences for the record:
+
+- **Queue item 1 is fully closed**: Groq half provisioned (Addendum 4);
+  Mistral half closed as *not a provisioning item*.
+- `MISTRAL_API_KEY` remains unprovisioned **by design**. The availability probe
+  will keep reporting mistral `credential_present=false`; from this addendum
+  forward that reading means "not an API-key family," not "missing credential."
+  The same distinction applies wherever the phantom checklist counts MISTRAL:
+  it is a referenced-but-deliberately-unprovisioned name, not a harvest target.
+- The consumer Mistral account in use since mid-2026 is the wrapper's session
+  basis; session material stays in the origin-device seam, per the standing
+  rule. The mailbox evidence in Addendum 2 (usage-limit notices, no La
+  Plateforme key) is consistent with this ruling.

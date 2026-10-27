@@ -142,6 +142,13 @@ one ever enters a candidate set, it folds in through the normal pipeline.
    chooser divergence); CLI/JSONL/HTTP file the JSON as-is; chat transcribes
    field-for-field. One validator on every path; cross-surface identity is
    test-proven (form rendering ↔ canonical JSON ↔ HTTP /invoke).
+   **Probing (owner definition, 2026-10-27):** in this stack, probing means
+   finding the DOMs from the request — a probe starts from a captured
+   request and attributes the DOMs behind it (response structures and
+   rendered trees it produces or feeds; the endpoint and fields that select
+   them). `waf.PROBES` leads with the discovery three (request-inventory,
+   dom-attribution, dom-data-source); the differential probes verify DOMs
+   already found.
    Per the owner (2026-10-23): the phone is a remote orchestrator for
    these dispatches; the dual B160V device surfaces are owned by their
    existing lanes and this campaign waits for them to stabilise before

@@ -197,19 +197,93 @@ def generate(brief: dict, evidence_sets: list[dict],
     return docs
 
 
+def _load_profile_fn():
+    try:
+        from cross_vote import candidate_profile
+        return candidate_profile
+    except ImportError:  # run as a loose script outside the package path
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "cross_vote", Path(__file__).with_name("cross_vote.py"))
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        return module.candidate_profile
+
+
+def generate_pass(pass_brief: dict, evidence_sets: list[dict],
+                  generated_at: str | None = None) -> tuple[dict, dict]:
+    """One pass = n candidate proposals (owner parameter, 2026-10-27).
+
+    pass_brief: the base brief plus `variants` — each variant carries a
+    `suffix`, a `concept`, and its own summary_points / items. Returns
+    ({dirname: {filename: text}}, pass_meta) where pass_meta feeds
+    cross_vote.py: candidate ids, profiles, and provenance hashes.
+    """
+    generated_at = generated_at or datetime.now(timezone.utc).strftime(
+        "%Y-%m-%dT%H:%M:%SZ")
+    variants = pass_brief.get("variants") or []
+    if len(variants) < 2:
+        raise ValueError("a pass needs at least 2 variants (n >= 2)")
+    profile_fn = _load_profile_fn()
+    out: dict[str, dict[str, str]] = {}
+    candidates = []
+    for variant in variants:
+        brief = {k: v for k, v in pass_brief.items() if k != "variants"}
+        brief.update({k: variant[k] for k in
+                      ("summary_points", "items", "executive_request")
+                      if k in variant})
+        brief["id"] = f"{pass_brief['id']}-{variant['suffix']}"
+        brief["title"] = variant.get("title") or (
+            f"{pass_brief['title']} — {variant['concept']}")
+        docs = generate(brief, evidence_sets, generated_at)
+        prov = json.loads(docs["PROVENANCE.json"])
+        prov["pass_id"] = pass_brief["id"]
+        prov["concept"] = variant["concept"]
+        prov["siblings"] = [f"{pass_brief['id']}-{v['suffix']}"
+                            for v in variants if v is not variant]
+        docs["PROVENANCE.json"] = json.dumps(prov, indent=2) + "\n"
+        out[brief["id"]] = docs
+        candidates.append({
+            "id": brief["id"],
+            "concept": variant["concept"],
+            "profile": profile_fn(brief["id"], docs, brief, evidence_sets),
+        })
+    pass_meta = {
+        "schema": "oracle-method-pass/v1",
+        "pass_id": pass_brief["id"],
+        "generated_at": generated_at,
+        "n": len(variants),
+        "candidates": candidates,
+    }
+    return out, pass_meta
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Oracle Method proposal generator")
     parser.add_argument("--brief", required=True, help="brief JSON path")
     parser.add_argument("--evidence", action="append", default=[],
                         help="evidence-set JSON path (repeatable)")
     parser.add_argument("--out", required=True, help="output directory")
+    parser.add_argument("--pass", dest="as_pass", action="store_true",
+                        help="pass mode: brief carries variants; emit n candidates + pass.json")
     args = parser.parse_args(argv)
 
     brief = json.loads(Path(args.brief).read_text())
     evidence_sets = [json.loads(Path(p).read_text()) for p in args.evidence]
-    docs = generate(brief, evidence_sets)
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
+    if args.as_pass:
+        docs_by_dir, pass_meta = generate_pass(brief, evidence_sets)
+        for dirname, docs in docs_by_dir.items():
+            sub = out / dirname
+            sub.mkdir(parents=True, exist_ok=True)
+            for name, text in docs.items():
+                (sub / name).write_text(text)
+        (out / "pass.json").write_text(json.dumps(pass_meta, indent=2) + "\n")
+        print(f"generated pass {pass_meta['pass_id']}: n={pass_meta['n']} "
+              f"candidates {', '.join(docs_by_dir)}")
+        return 0
+    docs = generate(brief, evidence_sets)
     for name, text in docs.items():
         (out / name).write_text(text)
     print(f"generated {brief['id']}: {', '.join(docs)}")

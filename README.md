@@ -1,5 +1,7 @@
 # TERMUX MONOREPO
 
+<img src="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/profile-registry/assets/builder-avatar-1337.webp" />
+
 ```
 +---------------------------------------------------------------------------------------------------------+
 |  ⚡ ARCHWIZ COCKPIT // TERMUX HYPER-FORGE  |  TARGET: Android/Termux  |  GATES: repo-gate + smoke |

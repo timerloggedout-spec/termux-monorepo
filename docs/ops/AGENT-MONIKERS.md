@@ -38,6 +38,18 @@ Role vocabulary is extensible: `research`, `evaluation`, `benchmark`, `inference
 
 Attribution MUST preserve provider/model/adapter/role plus workflow/job/step, event, PR/issue, SHA, and confidence. Incorporation of output is not provider authorship.
 
+## Registration monikers (4n0n)
+
+Platform-fronting entrant identities for challenge registrations are
+**not** listed in the table above — they live in
+`config/registration_monikers.json`, rendered in
+`docs/ops/4N0N-REGISTRATION-PROTOCOL.md` (the **4n0n** doxxing-prevention
+protocol). They use the `role{moniker}[context]` form —
+`entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]` — follow
+this file's display discipline (backticks, never `@`-mentioned; they are
+not GitHub usernames), and are assigned by the deterministic rule in
+`scripts/registration_monikers/registry.py`, never coined per occasion.
+
 ## Rules
 
 1. Automated comments: **display** moniker in backticks; **ping** only the live trigger (`@jules`, `@gemini-cli`, `@deepseek` / `@deepseek-ci`).

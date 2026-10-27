@@ -9,6 +9,8 @@ name: PR production ledger
 # issue_comment fan-out; that cancels useful ledger evidence and is a failure
 # mode, not skippable noise.
 on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
   pull_request_target:
     types: [opened, synchronize, reopened, ready_for_review]
   pull_request_review:

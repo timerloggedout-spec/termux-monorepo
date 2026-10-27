@@ -54,3 +54,145 @@ Existing integration anchors reinforce this separation: [`scripts/provider_model
 ## Complete supplied-resource follow-through
 
 The subsequent [resource implementation matrix](RESOURCE-IMPLEMENTATION-MATRIX.md) now registers all supplied resources, including general awesome lists, search/topic/discussion links and provider pages previously excluded from this narrow brief. Those references remain discovery inputs, not evidence of free access or runtime eligibility. The native offline aggregate search and existing-workflow artifact generation are tracked as MSM-008.
+
+
+## 2026-10-23 source delta: newer free-inference catalogs and telemetry wiring
+
+This update adds two newer discovery sources to the research map; it does **not** assert that their claims have been ingested into the canonical provider-recon dataset or that any newly listed model is eligible to run.
+
+### Newly identified sources
+
+| Source | Current upstream claim (observed 2026-10-23) | Useful signal | Required treatment |
+|---|---|---|---|
+| [open-free-llm-api/awesome-freellm-apis](https://github.com/open-free-llm-api/awesome-freellm-apis) | README says 526+ free LLM APIs and daily refresh; repository About says 134+ APIs and 40+ providers. | Provider/model discovery, config examples, and provider-level onboarding friction such as card/phone requirements. | **Source-internal denominator mismatch.** Capture exact commit, file hash, source timestamp, and source-specific record counts before normalizing. Do not copy promotional counts into canonical totals. |
+| [surendranb/free-inference](https://github.com/surendranb/free-inference) and [freeinference.dev](https://www.freeinference.dev/) | The live directory reports 36 providers and 108–109 free models across pages/snapshots; it exposes machine-readable `data/providers.json` and a JSON schema. | Distinguishes API-key, CLI-login, and bundled coding-tool access; calls out limited-time promotions, account requirements, and data-use risks. | Treat counts as source snapshots, not truth. Validate the JSON against the upstream schema, retain retrieval time and immutable source revision where available, and preserve each provider's access class. |
+
+The counts above are deliberately recorded as **upstream claims**, not canonical repository counts. The observed disagreement within the first source and the 108/109 variation in the second are reasons to keep source provenance and raw counts, not to average or silently reconcile them.
+
+### Wiring status against existing systems
+
+| Layer | Existing implementation / contract | Gap exposed by this source delta | Safe completion criterion |
+|---|---|---|---|
+| Discovery evidence | `data/model-selection-market/provider-recon.json`, `scripts/model_selection_market/resource_index.py`, and the provider-batch workflow already support source-pinned research records and source-aware reconciliation. | The new upstream repositories are not yet established as distinct, pinned source entries in the canonical model-research snapshot. The existing `awesome-free-llm-apis` label must not be assumed to mean both GitHub repositories. | Add explicit source identity, immutable commit or content digest, license, retrieval timestamp, and parser/schema version; keep the current source separate from the newly discovered fork/catalog. |
+| Provider catalog | `scripts/provider_model_catalog.py` polls fixed provider catalog endpoints and keeps catalog evidence separate from routing policy. | A directory's free-tier claim is not a native catalog observation; new provider aliases must not inherit credentials or endpoint configuration through fuzzy matching. | Reconcile exact provider/model identities only. Unsupported aliases stay `adapter_not_implemented` or `catalog_adapter_not_implemented`; never guess endpoints or credential names. |
+| Capability spine | AR-18 / PR #605 adds dynamic observed candidates and capability-surface joins in observe mode. | New discovery must not create a capability declaration, validated status, or routing authority. PR #605 is open and its latest fetched metadata reports non-mergeable state. | Preserve observe-only behavior; promote only after current-head CI, two bounded observation cycles, and the ledger decision required by AR-18. |
+| Runtime quota and entitlement | Provider-batch and the quota-admission work distinguish catalog visibility, account binding, terms, exact-model entitlement, and observed remaining quota. | Neither directory's public label establishes that this account can invoke the model for this use case at zero cost. | Require exact provider/account/model admission, current official quota evidence, terms/data-policy review, and expiry. Unknown remains blocked. |
+| Systems telemetry | `docs/ops/HEX-MONEYBALL-INTEGRATION.md` defines run-attempt, agent-attempt, provider-call, outcome-score, and manager-decision grains. PR #1541 describes wiring actual hub calls into existing TermuxTelemetryLogger and 3L0 ingestion. | A discovered candidate is not an invocation. The current PR #1541 pilot evidence records a quota-admission block and zero dispatched inference requests; it cannot supply live performance observations. | Every real call must bind run attempt, full source SHA, experiment/arm, provider/model, call/attempt IDs, status, latency, token/cost fields when actually available, and provenance confidence. Preserve blocked/skipped/unknown states distinctly. |
+| Free-tier value projection | PR #1589 adds a board with validated-session filtering and missing-feed semantics. | Its PR body says there are no public session rows yet and references a separate session-feed wiring gap. | Do not display zero usage or savings. Populate only from validated, privacy-filtered invocation evidence with confirmed no-cost status; keep estimates separate from actual spend. |
+
+### Next bounded implementation sequence
+
+1. Register each new upstream as a **separate, pinned research source**; do not replace the existing `mnfst/awesome-free-llm-apis` or `tashfeenahmed/freellmapi` evidence.
+2. Add offline fixtures for each source's actual published shape, schema drift, duplicate model IDs, missing timestamps, and source-count discrepancies.
+3. Extend source-specific provider alias mappings only from observed source keys. Keep unknown providers unmapped and never derive an endpoint or secret name from README text.
+4. Feed the normalized candidates through the existing provider-batch reconciliation and AR-18 observe envelope; assert that discovery alone leaves `runtime_eligible=false`, `quota_remaining=null`, and no new capability declaration.
+5. Validate the exact commit through repository CI. Separately verify the real invocation path and artifact linkage; an offline test or green workflow is not a model-quality result.
+6. Connect only privacy-reviewed, validated provider-call records to the existing 3L0/Hex-compatible evidence contract and Free-Tier Use Value Board. Never export prompts, completions, tool payloads, keys, cookies, or arbitrary logs.
+
+### Related integration surfaces
+
+- [AR-18 Capability–Scope–Specialist spine / PR #605](https://github.com/timerloggedout-spec/termux-monorepo/pull/605)
+- [THUB-017 research orchestration and telemetry / PR #1541](https://github.com/timerloggedout-spec/termux-monorepo/pull/1541)
+- [Free-Tier Use Value Board / PR #1589](https://github.com/timerloggedout-spec/termux-monorepo/pull/1589)
+- [Provider batch implementation](PROVIDER-BATCH-IMPLEMENTATION.md)
+- [Hex × Agent Team Moneyball integration contract](HEX-MONEYBALL-INTEGRATION.md)
+
+**Disposition:** source discovery added to the research map; canonical source ingestion, live entitlement, provider invocation, and value-board feed remain separate acceptance gates. This is not a routing-policy change and does not authorize any new provider, secret, workflow dispatch, or deployment.
+
+
+## Crosswalk: inference discovery vs. backend capacity
+
+The [Free-Tier Backend Recon (2026-10-21)](FREE-TIER-BACKEND-RECON-2026-10-21.md) answers a different question: which compute, workspace, storage, queue and edge entitlements may support the mesh, and which are actually present or measured. This document answers which upstream model/provider claims deserve research. Keep these dimensions orthogonal:
+
+- **Backend capacity** is a provider/resource entitlement with its own cadence, expiry, account presence and live-reading method.
+- **Inference catalog** is a candidate claim with source commit/content hash, access method, provider/model identity and freshness.
+- **Runtime admission** requires both relevant backend/provider access evidence and task-specific policy/capability/data gates; neither recon grants it.
+- **Value telemetry** is based on real authorized invocation/session records and validated attribution. Do not turn free-tier limits, catalog counts, missing sessions or zero dispatched requests into savings, balance or model-quality claims.
+
+The [resource implementation matrix](RESOURCE-IMPLEMENTATION-MATRIX.md) tracks the two newly identified catalogs as separate discovery-only resource identities. Canonical ingestion still requires source-specific adapters and offline schema-drift tests; no automatic provider calls, account creation, or routing-policy change is implied.
+
+
+## Implementation archaeology: existing provider work predates this catalog delta
+
+**Correction to any reading of this recon as “only two providers exist” or “the providers are offline.”** The two newly registered entries above are only *new discovery-source identities*. They are not a count of implemented providers. The repository already contains a substantial live-capable remote-inference stack; the new catalogs must be reconciled with that stack rather than creating a parallel one.
+
+### Merged implementation lineage
+
+| PR | Status / scope evidenced by PR record | What it means for this recon |
+|---|---|---|
+| [#1321](https://github.com/timerloggedout-spec/termux-monorepo/pull/1321) and [#1325](https://github.com/timerloggedout-spec/termux-monorepo/pull/1325) | Merged: existing-token no-cost admission check and a bounded OpenRouter synthetic smoke attempt; the documented run received HTTP 429, so inference was **not** verified. | There is a real remote invocation path and a recorded provider-capacity failure; do not equate “attempted” with successful inference. |
+| [#1463](https://github.com/timerloggedout-spec/termux-monorepo/pull/1463) | Merged: opt-in private OpenRouter current-key quota observation. | Account quota is a separate, privacy-sensitive observation; public catalog counts are not balances. |
+| [#1466](https://github.com/timerloggedout-spec/termux-monorepo/pull/1466) | Merged: repairs 35 omitted source registrations; FreeLLMAPI static references 37 → 72, combined research records 160 → 195; 117 exact model claims unchanged; 54 service references initially unmapped in that repair. | Existing source ingestion and provider identity reconciliation already exist. Do not restart from a two-source/two-provider mental model. |
+| [#1471](https://github.com/timerloggedout-spec/termux-monorepo/pull/1471) | Merged: seven additional fixed HTTP transports (Typhoon, UnoRouter, Routeway, Requesty, xKiro, xfyun Spark Lite, SEA-LION), five catalog adapters, plus default-off Gemini readiness checks; existing Felo/Gemini/Groq/OpenRouter preserved. | These are remote-capable adapters behind exact-model admission—not offline inference. A credential/readiness check or catalog GET is not itself a completion. |
+| [#1481](https://github.com/timerloggedout-spec/termux-monorepo/pull/1481) | Merged: passive quota observation from supported catalog-response headers, status-only output, and Felo evidence reconciliation. | Existing quota readers and telemetry need reuse; unknown counters must remain unknown. |
+| [#1504](https://github.com/timerloggedout-spec/termux-monorepo/pull/1504) and [#1511](https://github.com/timerloggedout-spec/termux-monorepo/pull/1511) | Merged: backend quota registry 28 → 64 service/metric records and publication of the dated free-tier backend recon. | Backend free-tier capacity has its own inventory. It is not the inference-provider catalog and cannot prove a model call is free or available. |
+| [#1541](https://github.com/timerloggedout-spec/termux-monorepo/pull/1541) | Open, stacked on open #1470 at its recorded head; THUB-017 runtime/quota/telemetry implementation is not yet a merged production capability. | Keep this as a separate gated integration, not proof of a completed end-to-end research/inference loop. |
+
+Further existing lineage includes the native provider batch and service-expansion contracts in [Provider Batch Implementation](PROVIDER-BATCH-IMPLEMENTATION.md) and [Provider Service Expansion](PROVIDER-SERVICE-EXPANSION.md). Their recorded baseline is 117 exact pinned directory model claims across 16 families, 23 source-mapped FreeLLMAPI chat-transport families, and 47 remaining unmapped service references (the later inventory's classification; not all 72 are free inference APIs). These counts have different denominators and must not be added together.
+
+### What “offline” means—and what it does not
+
+- **Offline tests/fixtures:** deterministic unit and regression tests exercise parsing, schema drift, identity mapping, quota normalization, request construction, admission-denial paths, and response handling without spending provider quota or transmitting prompts. This is deliberate test isolation.
+- **Live catalog/readiness observations:** the existing provider-batch and operational-check workflows can make remote, bounded HTTPS requests to documented provider catalog/readiness endpoints when explicitly run in the authorized context. A catalog GET proves only that endpoint's observed response at that time.
+- **Remote inference:** a completion/chat request is a distinct action. It requires an explicit approved execution path, an existing authorized credential where required, exact provider/model identity, verified no-cost terms/account admission, public-data eligibility, current quota/cooldown admission, bounded request/response handling, and sanitized outcome evidence. Do not run it merely to test a parser, and do not call a provider “operational” from a catalog GET.
+- **Production proof:** a successful CI run against fixtures is not remote service proof; a successful catalog GET is not inference proof; an HTTP 429 is an observed capacity/rate-limit blocker, not a model-quality failure. Record each evidence class separately.
+
+Thus “offline schema fixtures” means **test the new catalog adapters offline before enabling their ingestion**, not “run inference offline.” Once an adapter is validated, its catalog source may be fetched remotely under the existing trusted workflow controls; remote inference remains governed by the existing hub/admission and quota contracts.
+
+### Actions consolidation chronology and risk
+
+The Actions consolidation lineage is also already committed: [#1574](https://github.com/timerloggedout-spec/termux-monorepo/pull/1574) introduced the Tier-0 quota dispatch tree; [#1577](https://github.com/timerloggedout-spec/termux-monorepo/pull/1577) migrated nine more lanes to its decision structure; [#1579](https://github.com/timerloggedout-spec/termux-monorepo/pull/1579) added static drift enforcement; and [#1581](https://github.com/timerloggedout-spec/termux-monorepo/pull/1581) added the Vantage observer/Node H and repaired cadence drift. These changes centralize **when a lane is woken**, not the lane's provider credentials, endpoint contract, model admission, or invocation semantics. The consolidation must preserve those contracts and dispatch authority; the mere presence of a lane in a decision tree does not mean it has been dispatched or that a remote call happened.
+
+### Required reconciliation before further provider additions
+
+1. Reuse the existing 72-reference source ingestion, 195-record reconciliation, 117-model denominator, 23 transport mappings, exact-model hub routes, and canonical quota/admission readers. Do not create duplicate provider adapters or another scheduler.
+2. For each of the two new catalogs, record the immutable source revision/content hash, schema, source-specific model/provider identity, access method and account/terms requirements. Keep the upstream directory's aggregate counts as claims.
+3. Run offline fixtures for parser/schema and negative-admission behavior. Separately run a bounded authorized catalog fetch to validate the remote source. Neither step sends inference.
+4. Only run remote synthetic inference through the already-reviewed operational gate, after no-cost account/model admission and quota reservation are proved. Capture run/job/request/attempt IDs and sanitized provider/model/status/usage evidence; never persist prompts, completions, keys, cookies, or raw private quota payloads.
+5. Reconcile actual evidence into the existing provider-batch report and THUB-017/3L0/Free-Tier Value Board contracts. If there is no successful invocation record, report **not proved**, not “offline,” “zero usage,” “zero savings,” or “provider broken.”
+
+## Priority validation extension: merged PR #1611 as an applied-science target
+
+**Required target:** [PR #1611](https://github.com/timerloggedout-spec/termux-monorepo/pull/1611), merged to `master` at `e9319891c8dcde5963b1b4d80a1a3103e7ef56cd`. This is not just a historical citation: the merged AWS Free Tier + Strands Delphi Oracle proposal is a production-shaped test case for whether our evidence and workflow system distinguishes an experiment proposal from an executed experiment.
+
+### Evidence observed at audit time
+
+- PR #1611 is merged; its changed files include the active proposal's `RFP.md`, `EXPERIMENT-MATRIX.md`, `DEBATE.md`, `MANIFEST.md`, `ITEMS.md`, the proposal registry, and lifecycle metadata for `quota-aware-cadence-rfp`.
+- Its experiment matrix explicitly says hypotheses only and no experiment has run. The PR states no AWS account/resources were created, no AWS invocation occurred, and no hackathon submission is claimed.
+- The merged SHA's GitHub Actions check-runs endpoint returned 17 check runs. Observed checks include successes, skipped jobs, and a cancelled optional evidence-emission job; do not flatten that mixed result into “all checks passed.” Re-query the current merged SHA and current required checks immediately before release.
+- The proposal-lifecycle workflow validates `scripts/proposals/validate_registry.py` on proposal-path pull requests and master pushes. Its `vote-hygiene` job is a PR-only advisory checklist and must not be treated as a binding vote or experiment result.
+
+### Required test matrix (run on the current candidate SHA)
+
+1. **Merged production regression:** run proposal registry/lifecycle validation against current `master`; assert PR #1611's proposal directory is registered, `MANIFEST.md` and `ITEMS.md` exist, and the pre-existing `quota-aware-cadence-rfp` entry remains valid.
+2. **Applied-science provenance:** validate that the ten experiment IDs E-01 through E-10 have falsifiable hypotheses, methods, metrics, and rejection criteria; all results remain absent until actual receipts exist. Human ballots, model/provider observations, deterministic baselines, CI checks, and driver synthesis must remain distinct evidence classes.
+3. **State-transition integrity:** reject any claim that `DESIGNED`, `COMMITTED`, `DEPLOYED`, `EXECUTED`, `VALIDATED`, or `PROMOTED` follows automatically from an earlier state. Require source SHA/config hash, fixture/cohort identity, timestamp/environment, result and failure classification, and sanitized receipt for each claimed transition.
+4. **Safety negative tests:** assert that CI/proposal validation does not create AWS accounts/resources, dispatch cloud inference, submit the hackathon entry, infer consensus, or convert a model/provider run into a human vote. Paid or external execution remains behind its explicit approval/cost/security gate.
+5. **Actions dispatch integration:** evaluate the current dispatch tree and its actual enabled workflow paths. Verify proposal-lifecycle validation is triggered by proposal path changes and master pushes; separately record skipped, disabled, unreachable, cancelled, and failed jobs. A scheduler node or successful workflow is not proof that an experiment or provider call ran.
+6. **Provider evidence boundary:** keep offline fixtures, live catalog/readiness GETs, and remote inference as separate test lanes. Only an approved invocation receipt may count as inference evidence; catalog status, secret-name presence, CI success, or an HTTP 429 must not be upgraded into successful inference.
+7. **Current-head verification:** pin every result to the candidate commit SHA, collect the current check-runs/workflow-run receipts, and re-check the head before publishing the verdict. The historical #1611 run is regression context, not a substitute for testing the current candidate.
+
+### Full available repository scope and permission boundary
+
+The connected repository metadata reports `admin=true`, `maintain=true`, `push=true`, `pull=true`, and `triage=true`; repository settings also report auto-merge and merge/squash/rebase methods enabled. This confirms repository-level connector scope, not every external provider entitlement or cloud account permission. Workflow job permissions are independently defined per workflow and remain least-privilege; do not widen them merely because the connector can administer the repository. GitHub Actions secret values are not retrievable through the supported secret APIs and must never be printed or copied into evidence.
+
+### Release acceptance
+
+The candidate is **not production-validated** until the current-head required gates are green, proposal registry validation passes, the state/provenance negative tests pass, and the current dispatch graph has been reconciled. Report the exact SHA, run URLs, passed/failed/skipped/cancelled states, and remaining blockers. No live AWS/provider inference is needed to validate offline lifecycle and evidence contracts; any separately approved remote experiment must have its own cost/security approval and sanitized execution receipt.
+
+## Architecture correction: RFP is the telemetry plane
+
+The RFP is **not merely a workflow trigger, scheduler, or static proposal checklist**. Treat it as the telemetry plane that observes proposal participation and execution across the independent DelphicAnonymityMethod contributor-participation proposals.
+
+- **Control plane:** eligibility, policy, permissions, and dispatch decisions.
+- **Execution plane:** proposal-specific Actions workflows and the actual validation/experiment jobs.
+- **RFP telemetry plane:** lifecycle/event contracts, correlation across proposal → event → dispatch → run/job → result, and explicit missing/blocked/skipped/failure states.
+- **Evidence plane:** immutable or content-addressed receipts sufficient to audit claims, with sensitive payloads excluded.
+
+Each independent proposal needs a stable proposal ID and its own correlation identity. Telemetry should include originating proposal ID, event type, repository/ref/commit SHA, workflow/run/job IDs and URLs when available, timestamps, actor/contributor pseudonymous reference where appropriate, state transition, result classification, and a sanitized evidence/receipt reference. Record trigger requested, trigger accepted, run queued, started, completed, failed, skipped, cancelled, and no-run/blocked outcomes as distinct states. Idempotency/deduplication and retry lineage must prevent retries from masquerading as independent participation.
+
+The RFP must not infer contributor participation from workflow dispatch alone, anonymity from a pseudonym alone, votes/consensus from model output, or experiment success from a green CI check. Keep contributor identity/privacy policy separate from public run provenance; avoid collecting unnecessary identifying data. Preserve independent proposal boundaries and do not merge their event streams without explicit linkage.
+
+**Acceptance:** demonstrate a traceable event path for each independent DelphicAnonymityMethod contributor-participation proposal, then use merged PR #1611 as a separate regression fixture for RFP lifecycle telemetry. Assert that the telemetry can report actual runs and gaps accurately. A green workflow with no experiment receipt is “workflow passed; experiment not evidenced,” not an experimental result.
+
+This section specifies the telemetry contract and does not by itself assert that the existing workflows are already wired or that any proposal-specific run has occurred.

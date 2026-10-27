@@ -81,10 +81,16 @@ async function load(){
   out.push(`<section class="card"><h2>DSPy optimizer lane</h2>
   <div class="notrun"><strong>Design only — not run.</strong> ${esc(dl.note)}</div>
   <p class="meta">${esc(dl.file)}</p></section>`);
-  if((d.citations || []).length){
-    out.push(`<section class="card"><h2>Executed comparisons — cited, not claimed</h2>
-    <p><strong>DoE results: none.</strong> No DoE campaign has run, so this surface reports no results of its own. The repo's one executed per-candidate comparison is a Delphi record, cited here so it is findable — its payload renders on the Oracle Panel, not here:</p>` +
-    d.citations.map(c => `<p><strong>${esc(c.label)}</strong> — ${esc(c.note)}<br><span class="meta">Record: <a href="${GH}${esc(c.record)}">${esc(c.record)}</a> · rendered on the <a href="./oracle.html">Oracle Panel</a></span></p>`).join("") + `</section>`);
+  const ec = d.executed_comparisons;
+  if(ec){
+    const crows = Object.entries(ec.candidates || {}).map(([cid, v]) =>
+      `<tr><td><code>${esc(cid)}</code></td><td>${(v.suites || []).map(s => `<code>${esc(s)}</code>`).join(", ")}</td><td>${esc(v.passed)} passed / ${esc(v.failed)} failed · pass rate ${esc(v.pass_rate)}</td></tr>`).join("");
+    out.push(`<section class="card"><h2>Executed comparisons — a Delphi record</h2>
+    <p><span class="pill gold">owner surface: ${esc(ec.owner_surface)}</span></p>
+    <p>No DoE campaign has run, and DoE claims no results of its own. The repo's one executed per-candidate comparison is this Delphi record, required on this surface with its full payload:</p>
+    <table class="rank"><tr><th>Candidate</th><th>Suites</th><th>Result</th></tr>${crows}</table>
+    <p>${esc(ec.note)}</p>
+    <p class="meta">Record: <a href="${GH}${esc((ec.record || "").split(" — ")[0])}">${esc(ec.record)}</a> · also rendered on the <a href="./oracle.html">Oracle Panel</a></p></section>`);
   }
   document.getElementById("content").innerHTML = out.join("");
   if((f.gaps || []).length){

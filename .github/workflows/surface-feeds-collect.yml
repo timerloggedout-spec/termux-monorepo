@@ -1,0 +1,74 @@
+# Dashboard surface feeds refresh (contract: docs/ops/DASHBOARD-SURFACE-FEEDS.md).
+# Regenerates the five surface feeds (moneyball / 3l0 / mvt / doe / ates) from
+# repository records via scripts/dashboards/surface_feeds.py and proposes
+# them as a refresh PR — never commits directly. Mirrors the
+# oracle-panel-feed-collect pattern; push triggers cover the collector's
+# source records so a landed source change refreshes the pages promptly.
+# The collector reads only repository records (never the network): the
+# checked-in API snapshots (workflow observations, Delphi weights) are
+# refreshed by their own lanes in the same PR as a feed refresh.
+name: surface-feeds-collect
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '41 6 * * 3'
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/dashboards/surface_feeds.py'
+      - 'scripts/dashboards/workflow_observations.json'
+      - 'scripts/dashboards/delphi_weights_observation.json'
+      - 'ml/pipelines/moneyball/**'
+      - 'docs/ops/HEX-MONEYBALL-INTEGRATION.md'
+      - 'docs/ops/AGENT-TEAM-ORCHESTRATION.md'
+      - 'docs/ops/SCOUT-ROSTER.md'
+      - 'scripts/model_router.py'
+      - '.github/connectors/llm-peers.yaml'
+      - 'docs/ops/generated/reviewer-metrics.json'
+      - 'ops/delphi/panel.json'
+      - 'docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md'
+      - 'docs/ops/corpus/EXPERIMENT.schema.json'
+      - 'deepcli/deepcli/observatory/doe.py'
+      - '.agents/skills/multivariate-doe/SKILL.md'
+      - 'docs/proposals/active/model-selection-market/DSPY-DOE-LANE.md'
+
+concurrency:
+  group: surface-feeds-collect
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Collect the feeds
+        run: |
+          set -euo pipefail
+          python3 -B scripts/dashboards/surface_feeds.py --surface all
+      - name: Propose the refresh as a PR
+        run: |
+          set -euo pipefail
+          feeds="apps/help-wanted-dashboard/data/moneyball-feed.json apps/help-wanted-dashboard/data/3l0-feed.json apps/help-wanted-dashboard/data/mvt-feed.json apps/help-wanted-dashboard/data/doe-feed.json apps/help-wanted-dashboard/data/ates-feed.json"
+          if git diff --quiet -- $feeds; then
+            echo "feeds unchanged; no refresh PR"
+            exit 0
+          fi
+          branch="surface-feeds/refresh"
+          git config user.name "surface-feeds-collect"
+          git config user.email "actions@github.com"
+          git checkout -B "$branch"
+          git add $feeds
+          git commit -m "chore(dashboards): refresh surface feeds (moneyball/3l0/mvt/doe/ates)"
+          git push -f origin "$branch"
+          gh pr create --base master --head "$branch" \
+            --title "chore(dashboards): refresh surface feeds" \
+            --body "Automated dashboard surface-feed refresh (collector: scripts/dashboards/surface_feeds.py; contract: docs/ops/DASHBOARD-SURFACE-FEEDS.md). Data is derived from repository records at collection time; nothing is copied forward." \
+            || echo "refresh PR already open"

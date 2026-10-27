@@ -27,6 +27,9 @@ Each run:
                                recorded, never auto-"fixed" with filler.
        active_ok               substantive PR awaiting upstream review.
        accepted_record         closed + merged (ledger bookkeeping).
+       withdrawn_record        closed by the lane's own withdrawal
+                               (zombie/yield pass); settled, never a
+                               reopen candidate.
        nonconversion_record    closed unmerged; stays a non-conversion.
        reopen_candidate        closed unmerged, but the issue is open,
                                unclaimed, and no maintainer closed the
@@ -199,6 +202,9 @@ def decide_disposition(pr, issue, comments, file_paths):
     if state == "closed":
         if merged:
             return "accepted_record", "closed and merged upstream"
+        if any(c["user"]["login"] == US and "Withdrawing this stake PR" in (c.get("body") or "")
+               for c in comments):
+            return "withdrawn_record", "withdrawn by the lane itself (zombie/yield pass); settled"
         if maintainer_noise_flag(comments):
             return "nonconversion_record", "maintainer flagged the PR itself; never reopen"
         if issue and issue.get("state") == "open":
@@ -299,8 +305,14 @@ def main(argv=None):
         if issue_num:
             try:
                 issue = gh.get(f"/repos/{repo}/issues/{issue_num}")
-                if issue.get("comments", 0) and not comments:
-                    comments = gh.get(f"/repos/{repo}/issues/{issue_num}/comments?per_page=100")
+                if issue.get("comments", 0):
+                    # Closed-set classification (prior claims, noise
+                    # flags, our own withdrawal) lives on the ISSUE
+                    # thread as much as the PR thread — always merge.
+                    seen = {c["id"] for c in comments}
+                    for c in gh.get(f"/repos/{repo}/issues/{issue_num}/comments?per_page=100"):
+                        if c["id"] not in seen:
+                            comments.append(c)
             except RuntimeError:
                 issue = None
         disposition, reason = decide_disposition(pr, issue, comments, files)

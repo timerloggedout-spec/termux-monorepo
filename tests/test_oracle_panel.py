@@ -1,7 +1,7 @@
 """Oracle Panel page contract (Web Design lane, 2026-10-27).
 
 The Delphi lane owns the data contract (docs/ops/ORACLE-PANEL-FEED.md):
-oracle.html consumes docs/ops/generated/oracle-panel-feed.json and nothing
+oracle.html consumes apps/help-wanted-dashboard/data/oracle-panel-feed.json and nothing
 else. These tests pin the rendering side of that contract:
 
 * the page reads the contract feed (raw master, the fleet pattern) and no

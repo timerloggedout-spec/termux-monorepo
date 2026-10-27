@@ -90,6 +90,7 @@ self-hosted simple-jev server calling the fleet dispatch's decide stage
 egress — 403 from both the sandbox and GitHub Actions, run 40517046438).
 Kev is a LoRA-adapter + head family, not standalone models —
 trial_candidate pending its own serve stack. mev (Mellow AI) is a full
-merged model — trial_candidate, local trial in flight. Jev (TypeSafe)
+merged model — trial_candidate; local serve blocked on this host
+(9 GB weights vs timing-out egress + 7 GB RAM; see TRIALS.md T1-MEV). Jev (TypeSafe)
 and the other paid-route rows are on the blocked-paid list in TRIALS.md
 for an owner ruling (SC-004).

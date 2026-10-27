@@ -48,6 +48,24 @@ class NomenclatureMatrixTests(unittest.TestCase):
         self.assertIn("linguistics.near_synonymy", concepts)
         self.assertGreaterEqual(len(self.data["sources"]), 8)
 
+    def test_evidence_records_have_source_locator_excerpt_and_date(self):
+        self.assertGreaterEqual(len(self.data["evidence_records"]), 1)
+        for evidence in self.data["evidence_records"]:
+            self.assertTrue(evidence["source_id"])
+            self.assertTrue(evidence["evidence_locator"])
+            self.assertTrue(evidence["evidence_excerpt"])
+            self.assertRegex(evidence["retrieved_on"], r"^\d{4}-\d{2}-\d{2}$")
+
+    def test_evidence_cannot_reference_unknown_assertion(self):
+        bad = json.loads(json.dumps(self.data))
+        bad["evidence_records"][0]["assertion_id"] = "missing-label"
+        self.assertTrue(any("unknown assertion" in e for e in MODULE.validate(bad)))
+
+    def test_accepted_evidence_requires_reviewer(self):
+        bad = json.loads(json.dumps(self.data))
+        bad["evidence_records"][0].update(status="accepted", reviewer=None)
+        self.assertTrue(any("requires reviewer" in e for e in MODULE.validate(bad)))
+
     def test_unknown_label_type_rejected(self):
         bad = json.loads(json.dumps(self.data))
         bad["labels"][0]["label_type"] = "just-a-synonym"

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dispatch Tree — Cadence &amp; Admission</title>
+<!--
+  Standalone prototype rendering ONLY data/dispatch-tree-feed.json
+  (schema dispatch-tree-feed/v1, contract docs/ops/DISPATCH-TREE-FEED.md).
+  Page integration (nav, shared styling) is owned by the Web Design
+  Specialist lane; this file is the visualization specialist's proof
+  that the feed carries everything the surface needs.
+-->
+<style>
+  :root { color-scheme: dark; --bg:#0d1117; --card:#161b22; --line:#30363d; --fg:#e6edf3; --dim:#8b949e; --red:#f85149; --green:#3fb950; --amber:#d29922; }
+  body { background:var(--bg); color:var(--fg); font:14px/1.5 system-ui, sans-serif; margin:0; padding:24px; }
+  h1 { font-size:20px; margin:0 0 4px; } h2 { font-size:16px; margin:28px 0 8px; }
+  .dim { color:var(--dim); } .card { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:16px; margin:12px 0; }
+  .big { font-size:44px; font-weight:700; } .red { color:var(--red); } .green { color:var(--green); } .amber { color:var(--amber); }
+  .bar { height:18px; background:#21262d; border-radius:4px; position:relative; margin:8px 0; }
+  .bar > div { height:100%; background:var(--red); border-radius:4px; }
+  .bar .mark { position:absolute; top:-3px; bottom:-3px; width:2px; background:var(--amber); }
+  table { border-collapse:collapse; width:100%; } th, td { text-align:left; padding:6px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { color:var(--dim); font-weight:600; } code { font-size:12px; color:var(--dim); word-break:break-all; }
+  .badge { display:inline-block; padding:1px 7px; border-radius:10px; font-size:12px; border:1px solid var(--line); }
+  .due { border-color:var(--red); color:var(--red); } .ok { border-color:var(--green); color:var(--green); }
+  .chip { display:inline-block; background:#21262d; border-radius:4px; padding:1px 6px; margin:2px 2px 2px 0; font-size:12px; }
+  .woken { border:1px solid var(--green); }
+</style>
+</head>
+<body>
+<h1>Quota Dispatch Tree — cadence &amp; admission state</h1>
+<p class="dim" id="meta">Loading feed…</p>
+
+<h2>Node A — admission guard</h2>
+<div class="card" id="admission"></div>
+<div class="card" id="busy-breakdown"></div>
+
+<h2>Lanes — cadence state</h2>
+<div class="card"><table id="lanes"><thead><tr>
+  <th>Lane</th><th>Latest run (UTC)</th><th>Age</th><th>Firing rule</th><th>Staleness</th><th>Due?</th>
+</tr></thead><tbody></tbody></table></div>
+
+<h2>Firing history — tree runs and the lanes they woke</h2>
+<div id="tree-runs"></div>
+
+<h2>Recorded gaps</h2>
+<div class="card" id="gaps"></div>
+
+<script>
+const fmtAge = m => m == null ? "—" : m < 90 ? Math.round(m) + "m" : m < 2880 ? (m/60).toFixed(1) + "h" : (m/1440).toFixed(1) + "d";
+fetch("data/dispatch-tree-feed.json").then(r => r.json()).then(feed => {
+  const d = feed.data, adm = d.admission, now = adm.now;
+  document.getElementById("meta").textContent =
+    `Feed ${feed.schema} · generated ${feed.generated_at} · busy read at ${now.read_at} (snapshot, not live at view time)`;
+
+  const pct = Math.min(100, 100 * now.busy / Math.max(now.busy, now.guard_threshold * 4));
+  const markPct = Math.min(100, 100 * now.guard_threshold / Math.max(now.busy, now.guard_threshold * 4));
+  document.getElementById("admission").innerHTML = `
+    <div class="big ${now.guard_would_pause ? "red" : "green"}">${now.busy}
+      <span style="font-size:18px" class="dim">busy runs (queued ${now.queued} + in-progress ${now.in_progress})</span></div>
+    <div class="bar"><div style="width:${pct}%"></div><div class="mark" style="left:${markPct}%"></div></div>
+    <p>Guard: <code>${adm.guard_expression}</code> with threshold <strong>${adm.guard_threshold}</strong> —
+    ${now.guard_would_pause ? `<span class="red"><strong>PAUSED</strong>: busy ≥ ${adm.guard_threshold}, non-critical dispatches suppressed this cycle.</span>` : `<span class="green">admission open.</span>`}</p>
+    <p>The workflow comment says the guard trips on too many <em>“${adm.comment_says.replace(/^when too many /,"")}”</em>,
+    but the code counts: <strong>${adm.code_counts}</strong></p>
+    <p class="dim">Sample series: ${adm.samples.length} reading(s), first at ${adm.samples[0].read_at}. ${adm.samples_note}</p>`;
+
+  const top = Object.entries(adm.by_workflow_at_read).slice(0, 12);
+  const max = Math.max(...top.map(([,n]) => n));
+  document.getElementById("busy-breakdown").innerHTML =
+    "<strong>What “busy” is actually made of</strong> (top workflows at read time)" +
+    top.map(([name, n]) => `<div style="display:flex;gap:8px;align-items:center;margin:3px 0">
+      <span style="width:280px" class="dim">${name}</span>
+      <span class="bar" style="flex:1;margin:0"><div style="width:${100*n/max}%;background:#58a6ff"></div></span>
+      <span>${n}</span></div>`).join("");
+
+  const tb = document.querySelector("#lanes tbody");
+  tb.innerHTML = d.lanes.map(l => `<tr>
+    <td>${l.lane}<br><code>${l.output}</code>${l.admission_gated ? ' <span class="badge">admission-gated</span>' : ""}</td>
+    <td>${l.latest_run ? l.latest_run.created_at.replace("T"," ").replace("Z","") + "<br>" + (l.latest_run.conclusion ?? l.latest_run.status) : "no runs observed"}</td>
+    <td>${fmtAge(l.age_min_at_read)}</td>
+    <td><code>${l.rule_expression ?? ""}</code></td>
+    <td>${l.staleness ? `measured age ${fmtAge(l.measured_age_min_at_read)} vs ${l.staleness.threshold_min}m` : l.manifest_staleness ? `manifest threshold ${l.manifest_staleness.threshold_min}m` : "phase-only"}</td>
+    <td>${l.due_at_read == null ? '<span class="dim">—</span>' : l.due_at_read ? '<span class="badge due">DUE</span>' : '<span class="badge ok">not due</span>'}</td>
+  </tr>`).join("");
+
+  document.getElementById("tree-runs").innerHTML = d.tree_runs.slice(0, 10).map(r => `
+    <div class="card"><strong><a style="color:#58a6ff" href="${r.html_url}">run ${r.id}</a></strong>
+    <span class="dim">${r.created_at} · ${r.event} · ${r.conclusion ?? r.status} · Supabase step: ${r.supabase_step_conclusion ?? "not observed"}</span><br>
+    ${r.jobs_observed ? (r.woken_lanes.length ? r.woken_lanes.map(l => `<span class="chip woken">${l}</span>`).join("") : '<span class="dim">woke no lanes</span>')
+                       : '<span class="dim">jobs not observed for this run</span>'}
+    </div>`).join("");
+
+  const sb = d.supabase_verdicts;
+  document.getElementById("gaps").innerHTML =
+    `<p><strong>Supabase verdicts</strong> — variables present: SUPABASE_URL ${sb.repo_variables_present.SUPABASE_URL ? "✓" : "✗"},
+     SUPABASE_ANON_KEY ${sb.repo_variables_present.SUPABASE_ANON_KEY ? "✓" : "✗"}; endpoint reachable: ${sb.endpoint_reachable ? "yes" : "no"};
+     anon SELECT visible rows: ${sb.anon_select_visible_rows}. ${sb.note}</p>` +
+    feed.gaps.map(g => `<p><code>${g.id}</code> — ${g.detail}</p>`).join("") +
+    feed.honesty_rules.map(h => `<p class="dim">· ${h}</p>`).join("");
+}).catch(e => { document.getElementById("meta").textContent = "Feed failed to load: " + e; });
+</script>
+</body>
+</html>

@@ -129,3 +129,8 @@ This lane records concepts, audience/register-specific labels, evidence sources,
 - Research source ledger: [`nomenclature-matrix/RESEARCH-SOURCES.md`](./nomenclature-matrix/RESEARCH-SOURCES.md).
 - Candidate seed expanded with lexical-label, controlled-vocabulary, colloquial-to-formal mapping, and near-synonymy concepts; sources include W3C SKOS, Wolfram, DARIAH-Campus, Getty, Europe PMC/BioHackrXiv, and scholarly mapping research.
 - Label and mapping semantics remain separate. Wikipedia is orientation-only; no source-discovery result independently promotes a candidate mapping.
+
+
+### Claim-level nomenclature evidence (research lane)
+
+`nomenclature-matrix/seed.json` now carries `evidence_records`: assertion-level provenance for specific concept, label, and mapping claims. Each record stores a source, locator, short excerpt, retrieval date, claim boundary, reviewer, and status. The validator checks assertion references and required provenance fields. This is distinct from the source bibliography and from the Domain Composition Matrix database; candidate evidence does not promote a notation or mapping to runtime authority.

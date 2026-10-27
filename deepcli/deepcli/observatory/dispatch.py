@@ -52,6 +52,33 @@ def assert_free_only(providers: list, judge: tuple, allow_paid: bool) -> None:
                 "(use openrouter/free or a *:free model)")
 
 
+def _esc(s: str) -> str:
+    """Escape a string for a GitHub Actions annotation message."""
+    return (s.replace("%", "%25").replace("\r", "%0D")
+             .replace("\n", "%0A").replace(":", "%3A").replace(",", "%2C"))
+
+
+def failure_annotations(record: dict) -> list[str]:
+    """One ::error annotation per failed stage, so a failed dispatch is
+    diagnosable from the run's annotations (the trial record itself is an
+    artifact; annotations are the API-readable surface)."""
+    out = []
+    for a in record.get("artifacts", []):
+        if not a.get("ok"):
+            out.append(
+                f"::error title=producer failed::{_esc(str(a.get('provider')))}"
+                f"/{_esc(str(a.get('model')))}: "
+                f"{_esc(str(a.get('error', 'unknown error'))[:280])}")
+    for j in record.get("jevs", []):
+        if not j.get("ok"):
+            out.append(
+                f"::error title=judge failed::{_esc(str(j.get('rationale', 'unknown error'))[:280])}")
+    if not (record.get("winner") or {}):
+        out.append("::error title=no winner::trial produced no winning "
+                   "artifact (see producer/judge annotations above)")
+    return out
+
+
 async def _run(args) -> dict:
     providers = [parse_endpoint(s) for s in args.provider]
     judge = parse_endpoint(args.judge)
@@ -88,6 +115,8 @@ def main(argv=None) -> int:
           f"winner={winner.get('provider')}/{winner.get('model')} "
           f"composite={winner.get('composite')}")
     if not ok_artifacts or not winner:
+        for line in failure_annotations(record):
+            print(line)
         print("FAIL: trial produced no winning artifact", file=sys.stderr)
         return 1
     return 0

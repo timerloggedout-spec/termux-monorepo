@@ -51,6 +51,21 @@ A packet naming no platform in the detection vocabulary.
 AWS Builder Center hackathons listing; Devpost; lablab.ai events.
 """
 
+FIXTURE_PROFILES = """# Profile Registry - Fleet Public Identities
+
+## 2. Profiles
+
+### Challenge entries lane
+
+#### AWS Builder Center - @fixturehandle
+
+- Status: exists.
+
+#### Devpost - not created
+
+#### Kiro - not created
+"""
+
 
 def empty_registry():
     return {"schema": reg.SCHEMA, "entries": []}
@@ -82,15 +97,16 @@ def test_activation_ignores_candidate_section():
     assert "lexsi" not in active and "hugging-face" not in active
 
 
-def test_assign_adds_activated_platforms_with_null_handles():
+def test_assign_adds_activated_platforms_with_profile_refs_only():
     registry = empty_registry()
     added = reg.assign(registry, FIXTURE_LOG)
     assert added == ["aws-builder-center", "devpost", "kiro"]
     by_id = {e["platform_id"]: e for e in registry["entries"]}
     assert by_id["devpost"]["moniker"] == "entrantDevpost"
     for e in registry["entries"]:
-        assert e["public_handle"] is None
-        assert e["handle_state"] == "unknown-verify"
+        # No profile data is carried here - only a pointer (one home per fact).
+        assert "public_handle" not in e and "handle_state" not in e
+        assert e["profile_ref"] == e["platform"]
     # D4 is attributed to both platforms its text names.
     assert [r["ref"] for r in by_id["devpost"]["registrations"]] == ["D4"]
     assert [r["ref"] for r in by_id["kiro"]["registrations"]] == ["D4"]
@@ -105,17 +121,27 @@ def test_assign_is_idempotent():
 def test_check_flags_unclaimed_packet_only():
     registry = empty_registry()
     reg.assign(registry, FIXTURE_LOG)
-    problems = reg.check(registry, FIXTURE_LOG)
+    problems = reg.check(registry, FIXTURE_LOG, FIXTURE_PROFILES)
     # D9 names no known platform: a curation item, reported not invented.
     assert problems == ["unclaimed-packet:D9"]
 
 
-def test_check_rejects_invented_handle():
+def test_check_rejects_duplicated_profile_data():
     registry = empty_registry()
     reg.assign(registry, FIXTURE_LOG)
     registry["entries"][0]["public_handle"] = "@guessed"
-    problems = reg.check(registry, FIXTURE_LOG)
-    assert any("handle present but state" in p for p in problems)
+    problems = reg.check(registry, FIXTURE_LOG, FIXTURE_PROFILES)
+    assert any("profile data" in p for p in problems)
+
+
+def test_check_rejects_unresolvable_profile_ref():
+    registry = empty_registry()
+    reg.assign(registry, FIXTURE_LOG)
+    for e in registry["entries"]:
+        if e["platform_id"] == "kiro":
+            e["profile_ref"] = "Kiro Prime"
+    problems = reg.check(registry, FIXTURE_LOG, FIXTURE_PROFILES)
+    assert any("does not resolve" in p for p in problems)
 
 
 def test_check_rejects_moniker_rule_drift():
@@ -124,7 +150,7 @@ def test_check_rejects_moniker_rule_drift():
     for e in registry["entries"]:
         if e["platform_id"] == "kiro":
             e["moniker"] = "entrantKiroPrime"
-    problems = reg.check(registry, FIXTURE_LOG)
+    problems = reg.check(registry, FIXTURE_LOG, FIXTURE_PROFILES)
     assert any("rule-derived" in p for p in problems)
 
 
@@ -133,13 +159,14 @@ def test_render_table_carries_canonical_forms():
     reg.assign(registry, FIXTURE_LOG)
     table = reg.render_table(registry)
     assert "`entrant{entrantDevpost}[platform:devpost]`" in table
-    assert "unknown-verify" in table  # null handles render their state
+    assert "| Devpost |" in table  # profile_ref column names the heading
 
 
 def test_shipped_registry_is_consistent_with_shipped_log():
     registry = json.loads((ROOT / "config" / "registration_monikers.json").read_text())
     log_text = (ROOT / "docs" / "ops" / "CHALLENGE-ENTRIES-LOG.md").read_text()
-    assert reg.check(registry, log_text) == []
+    profiles_text = (ROOT / "docs" / "ops" / "PROFILE-REGISTRY.md").read_text()
+    assert reg.check(registry, log_text, profiles_text) == []
 
 
 def test_shipped_doc_table_is_in_sync():

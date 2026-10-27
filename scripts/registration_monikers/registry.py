@@ -6,12 +6,14 @@ docs/ops/4N0N-REGISTRATION-PROTOCOL.md. The registry of record is
 config/registration_monikers.json; the registration source of truth is
 docs/ops/CHALLENGE-ENTRIES-LOG.md. This tool:
 
-  check   validate the registry against the log and the assignment rule
-          (exit 1 on any drift; drift lines are machine-readable)
+  check   validate the registry against the log, the assignment rule,
+          and the Profile Registry (exit 1 on any drift; drift lines are
+          machine-readable)
   assign  append entries for platforms the log has activated (a platform
           named in log section 1 or 4) that have no registry entry yet —
-          moniker derived by rule, public_handle always null (a handle is
-          a provisioning fact and is never invented)
+          moniker derived by rule; the entry references the platform's
+          profile in docs/ops/PROFILE-REGISTRY.md by pointer and carries
+          no profile data of its own (one home per fact)
   render  regenerate the registry table inside the protocol doc from the
           JSON (between the registry:begin / registry:end markers)
 
@@ -36,7 +38,8 @@ import re
 import sys
 
 ROLE = "entrant"
-SCHEMA = "registration-monikers/1"
+SCHEMA = "registration-monikers/2"
+PROFILE_REGISTRY = "docs/ops/PROFILE-REGISTRY.md"
 
 # (alias string as it appears in the challenge log, platform_id,
 #  platform display name, kind)
@@ -73,9 +76,12 @@ DEFAULT_HANDLING = {
     ],
 }
 
-HANDLE_STATES = {"recorded", "none-exists", "pending-registration",
-                 "blocked-owner-gate", "unknown-verify"}
 ENTRY_STATUSES = {"active", "registering", "pending", "blocked-owner-gate"}
+# Profile data (handles, display names, completeness) lives ONLY in the
+# Profile Registry. An entry carrying any of these keys is duplication
+# and fails check.
+PROFILE_DATA_KEYS = {"public_handle", "handle_state", "display_name",
+                     "profile_url", "avatar", "bio"}
 
 
 def derive_moniker(platform_id, taken):
@@ -136,7 +142,13 @@ def expected_monikers(entries):
     return expected
 
 
-def check(registry, log_text):
+def profile_headings(profiles_text):
+    """Heading labels of the Profile Registry's profile sections."""
+    return [m.group(1).strip() for m in
+            re.finditer(r"(?m)^####\s+(.+)$", profiles_text)]
+
+
+def check(registry, log_text, profiles_text):
     """Return a list of drift/problem lines ([] == registry is sound)."""
     problems = []
     entries = registry.get("entries")
@@ -147,12 +159,21 @@ def check(registry, log_text):
         problems.append("hard: duplicate platform_id in registry")
     expected = expected_monikers(entries)
     seen_monikers = {}
+    headings = profile_headings(profiles_text)
     for e in entries:
         pid = e.get("platform_id")
-        for key in ("platform", "kind", "role", "moniker", "public_handle",
-                    "handle_state", "status", "registrations", "handling"):
+        for key in ("platform", "kind", "role", "moniker", "profile_ref",
+                    "status", "registrations", "handling"):
             if key not in e:
                 problems.append(f"hard: {pid}: missing field {key}")
+        for key in PROFILE_DATA_KEYS & set(e):
+            problems.append(f"hard: {pid}: carries profile data key {key!r} - "
+                            f"profile data lives only in {PROFILE_REGISTRY}")
+        ref = e.get("profile_ref")
+        if ref and not any(h == ref or h.startswith(ref + " ") or
+                           h.startswith(ref + " —") for h in headings):
+            problems.append(f"hard: {pid}: profile_ref {ref!r} does not resolve "
+                            f"to a profile heading in {PROFILE_REGISTRY}")
         if e.get("role") != ROLE:
             problems.append(f"hard: {pid}: role is {e.get('role')!r}, must be {ROLE!r}")
         if pid in ALIAS_BY_ID and e.get("platform") != ALIAS_BY_ID[pid][1]:
@@ -165,13 +186,6 @@ def check(registry, log_text):
         if low in seen_monikers and seen_monikers[low] != pid:
             problems.append(f"hard: {pid}: moniker collides with {seen_monikers[low]}")
         seen_monikers[low] = pid
-        if e.get("handle_state") not in HANDLE_STATES:
-            problems.append(f"hard: {pid}: bad handle_state {e.get('handle_state')!r}")
-        if e.get("handle_state") == "recorded" and not e.get("public_handle"):
-            problems.append(f"hard: {pid}: handle_state recorded but no handle")
-        if e.get("handle_state") != "recorded" and e.get("public_handle"):
-            problems.append(f"hard: {pid}: handle present but state is "
-                            f"{e.get('handle_state')!r} (handles are recorded facts)")
         if e.get("status") not in ENTRY_STATUSES:
             problems.append(f"hard: {pid}: bad status {e.get('status')!r}")
         if pid in ALIAS_BY_ID and ALIAS_BY_ID[pid][0] not in log_text:
@@ -214,14 +228,15 @@ def assign(registry, log_text):
             "kind": kind,
             "role": ROLE,
             "moniker": moniker,
-            "public_handle": None,
-            "handle_state": "unknown-verify",
+            "profile_ref": name,
             "status": "pending",
             "registrations": regs,
             "handling": json.loads(json.dumps(DEFAULT_HANDLING)),
-            "notes": ["Auto-assigned by scripts/registration_monikers/registry.py; "
-                      "handle_state stays unknown-verify until a lane records "
-                      "the platform-side fact."],
+            "notes": ["Auto-assigned by scripts/registration_monikers/registry.py. "
+                      "profile_ref names the platform's heading in "
+                      "docs/ops/PROFILE-REGISTRY.md by convention; if no such "
+                      "profile exists yet, check fails until the owning lane "
+                      "registers it there. No profile data is carried here."],
         })
         added.append(pid)
     registry["entries"].sort(key=lambda e: e["platform_id"])
@@ -230,14 +245,13 @@ def assign(registry, log_text):
 
 def render_table(registry):
     lines = [
-        "| Platform | Role{Moniker} | Public handle | Status | Registrations | Owning lane |",
+        "| Platform | Role{Moniker} | Profile (Profile Registry heading) | Status | Registrations | Owning lane |",
         "|---|---|---|---|---|---|",
     ]
     for e in sorted(registry["entries"], key=lambda x: x["platform_id"]):
-        handle = e["public_handle"] if e["public_handle"] else f"— ({e['handle_state']})"
         regs = ", ".join(r["ref"] for r in e["registrations"]) or "—"
         lines.append(
-            f"| {e['platform']} | `{canonical(e)}` | {handle} | {e['status']} "
+            f"| {e['platform']} | `{canonical(e)}` | {e['profile_ref']} | {e['status']} "
             f"| {regs} | {e['handling']['owner_lane']} |")
     return "\n".join(lines)
 
@@ -256,6 +270,7 @@ def main(argv=None):
     ap.add_argument("mode", choices=["check", "assign", "render"])
     ap.add_argument("--registry", default="config/registration_monikers.json")
     ap.add_argument("--log", default="docs/ops/CHALLENGE-ENTRIES-LOG.md")
+    ap.add_argument("--profiles", default=PROFILE_REGISTRY)
     ap.add_argument("--doc", default="docs/ops/4N0N-REGISTRATION-PROTOCOL.md")
     args = ap.parse_args(argv)
 
@@ -263,7 +278,7 @@ def main(argv=None):
     log_text = open(args.log).read()
 
     if args.mode == "check":
-        problems = check(registry, log_text)
+        problems = check(registry, log_text, open(args.profiles).read())
         for p in problems:
             print(p)
         print(f"check: {len(problems)} problem(s), "

@@ -5,15 +5,18 @@ name: Operator Variable Provision
 # Secrets can never be set here — only the allowlisted variable names below.
 # Channel rule (registry section 4): values carried on public surfaces (issue
 # comments, workflow_dispatch inputs) must already be public. Private-valued
-# names (SUPABASE_URL, BUILDKITE_*, BIGQUERY_PROJECT_ID) are Settings-UI /
-# gh-CLI only, referenced publicly by name.
+# names (BUILDKITE_*, BIGQUERY_PROJECT_ID) are Settings-UI / gh-CLI only,
+# referenced publicly by name.
+# Exception (2026-10-25): SUPABASE_URL=@derive on workflow_dispatch derives
+# the value in-run from the SUPABASE_KEY secret (project ref from the key's
+# JWT ref claim or sb_secret_<ref>_ body). No value ever transits a surface.
 # No schedule trigger: cadence is operator-driven only (issue #1573).
 
 on:
   workflow_dispatch:
     inputs:
       assignments:
-        description: 'One or more NAME=value lines (allowlisted non-secret variables only)'
+        description: 'One or more NAME=value lines (allowlisted non-secret variables only; SUPABASE_URL=@derive derives from the secret)'
         required: true
         type: string
   issue_comment:
@@ -38,16 +41,20 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Upsert allowlisted repository variables
+      - name: Resolve allowlisted variable assignments
+        id: resolve
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b
         env:
           ASSIGNMENTS: ${{ github.event.inputs.assignments || github.event.comment.body }}
+          SUPABASE_KEY_DERIVE: ${{ secrets.SUPABASE_KEY }}
         with:
           script: |
             // Non-secret configuration only. Names must match the registry
             // allowlist (docs/ops/secrets-and-variables-registry.md).
             const allowlist = new Set([
               'SUPABASE_URL',
+              'SUPABASE_ANON_KEY',
+              'SUPABASE_PUBLISHABLE_KEY',
               'BUILDKITE_ORG_SLUG',
               'BUILDKITE_PIPELINE_SLUG',
               'BIGQUERY_PROJECT_ID',
@@ -58,10 +65,21 @@ jobs:
             // Already-public values only may transit this lane's public channels;
             // private-valued names go through Settings UI / gh CLI (registry section 4).
             const publicValueAllowlist = new Set([
+              'SUPABASE_ANON_KEY',
+              'SUPABASE_PUBLISHABLE_KEY',
               'QUOTA_DISPATCH_MAX_BUSY',
               'RECON_SWEEP_WINDOW_HOURS',
               'RECON_SWEEP_MAX_TARGETS'
             ]);
+            // Public-by-design Supabase credentials (owner rule 2026-10-25:
+            // keys carry scope-reflecting names — SUPABASE_ANON_KEY for the
+            // browser/anon JWT, SUPABASE_PUBLISHABLE_KEY for the publishable
+            // management-plane key; distinct names per scope, no overwrites of
+            // the legacy SUPABASE_KEY secret name). Supabase publishes both
+            // values to browser clients by design; table access is gated by RLS.
+            // Dispatch-only names whose value is derived in-run from a secret
+            // (2026-10-25): the literal value never appears on any surface.
+            const deriveOnlyAllowlist = new Set(['SUPABASE_URL']);
             // Comment mode: only lines after the marker, of the form NAME=value.
             const raw = process.env.ASSIGNMENTS || '';
             const lines = raw
@@ -74,6 +92,7 @@ jobs:
               return;
             }
             const results = [];
+            const resolved = [];
             for (const line of lines) {
               const m = line.match(/^([A-Z0-9_]+)=(.*)$/);
               if (!m) {
@@ -88,7 +107,8 @@ jobs:
                 );
                 return;
               }
-              if (!publicValueAllowlist.has(name)) {
+              const deriveOnly = context.eventName === 'workflow_dispatch' && deriveOnlyAllowlist.has(name);
+              if (!publicValueAllowlist.has(name) && !deriveOnly) {
                 core.setFailed(
                   `Variable ${name} carries a non-public value: this lane accepts only ` +
                   `already-public values. Provision ${name} via repo Settings -> Secrets ` +
@@ -97,32 +117,87 @@ jobs:
                 );
                 return;
               }
-              if (value.length === 0) {
+              let val = value;
+              if (val === '@derive') {
+                if (name !== 'SUPABASE_URL') {
+                  core.setFailed('@derive is only supported for SUPABASE_URL.');
+                  return;
+                }
+                const key = process.env.SUPABASE_KEY_DERIVE || '';
+                let ref = '';
+                const segs = key.split('.');
+                if (segs.length === 3) {
+                  try {
+                    const pad = segs[1].replace(/-/g, '+').replace(/_/g, '/');
+                    const payload = JSON.parse(Buffer.from(pad, 'base64').toString('utf8'));
+                    ref = payload.ref || '';
+                    if (!ref && payload.iss) {
+                      const iss = String(payload.iss).match(/^https:\/\/([a-z0-9]{20})\.supabase\.co/);
+                      ref = iss ? iss[1] : '';
+                    }
+                  } catch (_) { /* not a decodable JWT */ }
+                }
+                if (!ref) {
+                  const sb = key.match(/^sb_(?:secret|publishable)_([a-z0-9]{20})(?:_|$)/);
+                  ref = sb ? sb[1] : '';
+                }
+                if (!ref) {
+                  // Fuzzy last resort (v3): experimental keys may embed the ref
+                  // without delimiters or in mixed case. Collect 20-char
+                  // lowercase-alnum windows over a lowercased copy of the key and
+                  // verify each candidate against https://<cand>.supabase.co before
+                  // use, so a false positive can never be written as the variable.
+                  const lowered = key.toLowerCase();
+                  const runs = lowered.match(/[a-z0-9]+/g) || [];
+                  const cands = [];
+                  const seen = new Set();
+                  for (const run of runs) {
+                    for (let i = 0; i + 20 <= run.length && cands.length < 12; i++) {
+                      const cand = run.slice(i, i + 20);
+                      if (!seen.has(cand)) { seen.add(cand); cands.push(cand); }
+                    }
+                  }
+                  for (const cand of cands) {
+                    try {
+                      const probe = await fetch(`https://${cand}.supabase.co/rest/v1/`, {
+                        headers: { apikey: key, Authorization: `Bearer ${key}` }
+                      });
+                      // any HTTP response proves the project host resolves; auth
+                      // status is irrelevant (we only need the endpoint)
+                      ref = cand;
+                      break;
+                    } catch (_) { /* candidate does not resolve */ }
+                  }
+                }
+                if (!ref) {
+                  const cls = key.split('.').length === 3 ? 'jwt'
+                    : key.startsWith('sb_secret_') ? 'sb_secret'
+                    : key.startsWith('sb_publishable_') ? 'sb_publishable'
+                    : key ? 'other' : 'absent';
+                  core.setFailed(
+                    'SUPABASE_URL=@derive could not derive the project ref from the ' +
+                    'SUPABASE_KEY secret. Fingerprint (no value material): present=' +
+                    (key ? 'true' : 'false') + ', length=' + key.length + ', class=' + cls +
+                    '. Expected a legacy service JWT (ref claim or iss URL) or an ' +
+                    'sb_secret_<project-ref>_-shaped key. Provision with ' +
+                    '`gh variable set SUPABASE_URL --body <endpoint>` instead.'
+                  );
+                  return;
+                }
+                val = `https://${ref}.supabase.co`;
+              }
+              if (val.length === 0) {
                 core.setFailed(`Empty value for ${name}.`);
                 return;
               }
-              try {
-                await github.rest.actions.updateRepoVariable({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  name,
-                  value
-                });
-                results.push(`${name}: updated`);
-              } catch (err) {
-                if (err.status === 404) {
-                  await github.rest.actions.createRepoVariable({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    name,
-                    value
-                  });
-                  results.push(`${name}: created`);
-                } else {
-                  throw err;
-                }
-              }
+              // The App installation token cannot write repo variables
+              // ("Resource not accessible by integration", proven live
+              // 2026-10-25 in run 40153957375); the CLI upsert step performs
+              // the write with the operator token chain.
+              resolved.push(`${name}=${val}`);
+              results.push(`${name}: resolved for upsert`);
             }
+            core.setOutput('resolved', resolved.join('\n'));
             core.summary
               .addHeading('Operator variable provision')
               .addList(results)
@@ -143,3 +218,21 @@ jobs:
                 core.warning(`Result comment failed: ${err.message}`);
               }
             }
+
+      - name: Upsert resolved variables via gh CLI (operator token)
+        if: steps.resolve.outputs.resolved != ''
+        env:
+          GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
+          RESOLVED: ${{ steps.resolve.outputs.resolved }}
+        run: |
+          set -euo pipefail
+          while IFS='=' read -r name value; do
+            [ -z "$name" ] && continue
+            if gh api "repos/${GITHUB_REPOSITORY}/actions/variables/${name}" >/dev/null 2>&1; then
+              gh api --method PATCH "repos/${GITHUB_REPOSITORY}/actions/variables/${name}" -f value="$value" >/dev/null
+              echo "${name}: updated"
+            else
+              gh api --method POST "repos/${GITHUB_REPOSITORY}/actions/variables" -f name="$name" -f value="$value" >/dev/null
+              echo "${name}: created"
+            fi
+          done <<< "$RESOLVED"

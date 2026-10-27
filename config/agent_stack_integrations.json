@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "integration_id": "foresight-agent-stack-2026-10-01",
-  "observed_at": "2026-10-01T00:00:00Z",
+  "observed_at": "2026-10-27T00:00:00Z",
   "canonicality": {
     "evidence_store": "repository-owned JSONL/receipts",
     "telemetry_boundary": "OpenTelemetry",
@@ -33,11 +33,28 @@
       "status": "INVESTIGATE",
       "horizon": "H1",
       "evidence_status": "confirmed",
-      "capabilities": ["agent lifecycle", "identity/security", "governance", "OpenTelemetry observability", "MCP", "A2A"],
+      "capabilities": [
+        "agent lifecycle",
+        "identity/security",
+        "governance",
+        "OpenTelemetry observability",
+        "MCP",
+        "A2A"
+      ],
       "integration_mode": "adapter-only",
-      "required_exports": ["agent identity", "policy decisions", "trace/span linkage", "deployment/version", "evaluation results"],
+      "required_exports": [
+        "agent identity",
+        "policy decisions",
+        "trace/span linkage",
+        "deployment/version",
+        "evaluation results"
+      ],
       "hard_gate": "Must preserve repository-owned evidence and operate without making WSO2 persistence canonical.",
-      "unresolved_questions": ["Minimum self-hosted footprint for the monorepo lab.", "Termux/Android-adjacent interoperability.", "Exact export/API contract to canonical JSONL."]
+      "unresolved_questions": [
+        "Minimum self-hosted footprint for the monorepo lab.",
+        "Termux/Android-adjacent interoperability.",
+        "Exact export/API contract to canonical JSONL."
+      ]
     },
     {
       "id": "nvidia-openshell",
@@ -49,10 +66,20 @@
       "horizon": "H1",
       "evidence_status": "confirmed",
       "integration_mode": "reference implementation + bounded sandbox experiment",
-      "required_exports": ["policy decision", "agent identity", "tool/network/filesystem boundary", "runtime event linkage", "policy bundle hash"],
+      "required_exports": [
+        "policy decision",
+        "agent identity",
+        "tool/network/filesystem boundary",
+        "runtime event linkage",
+        "policy bundle hash"
+      ],
       "hardware_note": "Sentry/BlueField-4 hardware enforcement is optional research infrastructure, not a monorepo dependency.",
       "hard_gate": "Do not require NVIDIA hardware for the canonical security/evidence contract.",
-      "unresolved_questions": ["Non-NVIDIA portability.", "Android/Termux applicability.", "Exact upstream license/release pin and policy artifact format."]
+      "unresolved_questions": [
+        "Non-NVIDIA portability.",
+        "Android/Termux applicability.",
+        "Exact upstream license/release pin and policy artifact format."
+      ]
     },
     {
       "id": "orchbench-preflight",
@@ -64,10 +91,25 @@
       "horizon": "H1",
       "evidence_status": "research",
       "integration_mode": "simulation-before-live-execution",
-      "required_inputs": ["task DAG", "manager policy hash", "agent budget", "context limit", "cohort id"],
-      "required_outputs": ["simulated quality", "simulated makespan", "simulated token cost", "policy diagnostics"],
+      "required_inputs": [
+        "task DAG",
+        "manager policy hash",
+        "agent budget",
+        "context limit",
+        "cohort id"
+      ],
+      "required_outputs": [
+        "simulated quality",
+        "simulated makespan",
+        "simulated token cost",
+        "policy diagnostics"
+      ],
       "hard_gate": "Simulation evidence must remain distinct from live execution evidence.",
-      "unresolved_questions": ["Coding-task transfer.", "Artifact/implementation availability.", "ARM/Android reproducibility."]
+      "unresolved_questions": [
+        "Coding-task transfer.",
+        "Artifact/implementation availability.",
+        "ARM/Android reproducibility."
+      ]
     },
     {
       "id": "nist-ir8536-provenance",
@@ -79,9 +121,18 @@
       "horizon": "H0",
       "evidence_status": "confirmed",
       "integration_mode": "schema mapping / policy reference",
-      "mapping_targets": ["resource identity", "artifact pedigree", "cryptographic linkage", "provenance chain", "selective disclosure"],
+      "mapping_targets": [
+        "resource identity",
+        "artifact pedigree",
+        "cryptographic linkage",
+        "provenance chain",
+        "selective disclosure"
+      ],
       "hard_gate": "Reference model is not compliance certification.",
-      "unresolved_questions": ["Software/model/agent mapping.", "Reference implementation public-release state."]
+      "unresolved_questions": [
+        "Software/model/agent mapping.",
+        "Reference implementation public-release state."
+      ]
     },
     {
       "id": "llama-cpp-cpu-android",
@@ -94,7 +145,15 @@
       "evidence_status": "confirmed",
       "target": "Android arm64 CPU",
       "contract": "docs/ops/EDGE-INFERENCE-EVIDENCE.schema.json",
-      "required_measurements": ["latency_p50_ms", "latency_p95_ms", "peak_memory_mb", "thermal_state", "energy_proxy", "device_abi", "environment_fingerprint"],
+      "required_measurements": [
+        "latency_p50_ms",
+        "latency_p95_ms",
+        "peak_memory_mb",
+        "thermal_state",
+        "energy_proxy",
+        "device_abi",
+        "environment_fingerprint"
+      ],
       "constraint": "Do not assume local execution is currently suitable for the user's device; collect evidence before admission."
     },
     {
@@ -106,7 +165,14 @@
       "horizon": "H1",
       "evidence_status": "confirmed",
       "reason": "Upstream provides Vulkan builds on Linux arm64/x86_64, but current device/resource constraints make immediate device integration unjustified.",
-      "future_gate": ["device Vulkan support", "memory headroom", "thermal stability", "driver/backend compatibility", "reproducible build", "energy-per-completed-task"],
+      "future_gate": [
+        "device Vulkan support",
+        "memory headroom",
+        "thermal stability",
+        "driver/backend compatibility",
+        "reproducible build",
+        "energy-per-completed-task"
+      ],
       "documentation_requirement": "Retain as a future integration lane; do not add to active routing or assume availability on Android/Termux."
     },
     {
@@ -118,9 +184,301 @@
       "horizon": "H1",
       "evidence_status": "signal",
       "integration_mode": "bounded ARM/Android candidate evaluation",
-      "required_measurements": ["memory", "latency", "tool-call reliability", "structured-output reliability", "offline behavior", "energy proxy"],
+      "required_measurements": [
+        "memory",
+        "latency",
+        "tool-call reliability",
+        "structured-output reliability",
+        "offline behavior",
+        "energy proxy"
+      ],
       "hard_gate": "No active routing until independent device measurements and provenance are recorded.",
-      "unresolved_questions": ["Current release/model artifact pin.", "Android/Termux build path.", "Tool-call and structured-output behavior under constrained memory."]
+      "unresolved_questions": [
+        "Current release/model artifact pin.",
+        "Android/Termux build path.",
+        "Tool-call and structured-output behavior under constrained memory."
+      ]
+    },
+    {
+      "id": "witness-attestation",
+      "project": "Witness (in-toto)",
+      "source": "https://github.com/in-toto/witness",
+      "version": "v0.12.0",
+      "role": "build-provenance-attestation-engine",
+      "status": "INVESTIGATE",
+      "horizon": "H1",
+      "evidence_status": "confirmed",
+      "capabilities": [
+        "in-toto attestation of command, materials, and products",
+        "embedded OPA Rego policy verification",
+        "Sigstore keyless and SPIFFE/SPIRE signing",
+        "CI verify gate that exits non-zero with a stated reason on policy failure"
+      ],
+      "integration_mode": "attestation producer and verify gate; attestations are referenced from evidence records, never a replacement evidence store",
+      "required_exports": [
+        "in-toto attestation JSON per build or run",
+        "attestation digest for evidence-envelope reference",
+        "verify outcome with the stated failure reason",
+        "signer identity reference (OIDC subject or key name only)"
+      ],
+      "hard_gate": "Canonical evidence remains repository-owned JSONL/receipts and the evidence envelope. Signing keys are credentials: names only, values never in repo, telemetry, or artifacts.",
+      "unresolved_questions": [
+        "Fleet target test outstanding: GitHub Actions runner, ARM64 Linux, Termux (no Android release asset exists).",
+        "Key custody decision: Sigstore keyless via OIDC versus local or KMS keys for offline verification.",
+        "Upstream choice at pilot time: in-toto/witness community mainline versus aflock-ai/rookery hardened line."
+      ]
+    },
+    {
+      "id": "copilot-usage-metrics-api",
+      "project": "GitHub Copilot usage metrics API (totals_by_client)",
+      "source": "https://github.blog/changelog/2026-10-23-usage-metrics-api-adds-usage-from-tools-like-opencode/",
+      "version": "2026-10-23 changelog",
+      "role": "per-client-copilot-usage-telemetry-source",
+      "status": "HOLD",
+      "horizon": "H1",
+      "evidence_status": "confirmed",
+      "capabilities": [
+        "per-client model traffic in totals_by_client: request_count, session_count, token_usage (prompt/output/average per request)",
+        "per-model breakdown (totals_by_model) with model_selection_mode: user_selected, auto, product_selected",
+        "clients include claude_code, codex, opencode, copilot_cli, cloud_agent, code_review, vscode, jetbrains; unrecognized clients grouped as other",
+        "enterprise, organization, enterprise-user and organization-user reports, 1-day and 28-day"
+      ],
+      "integration_mode": "read-only metrics pull into the MVT/DoE telemetry comparison as a cost/activity input signal; never a score, never a replacement for Provenance/HindSight delivered-work attribution",
+      "required_exports": [
+        "1-day or 28-day usage metrics report JSON per organization",
+        "totals_by_client entries with client, request_count, session_count, token_usage, totals_by_model"
+      ],
+      "hard_gate": "Usage volume is not work value: request_count counts model calls, not prompts or outcomes, and client labels are best-effort integration-ID groupings, not verified identities. Absence of the metric is never read as zero work.",
+      "unresolved_questions": [
+        "NOT APPLICABLE to this account today (verified live 2026-10-26 via the PAT helper): both orgs (Research-Astute, search-astute-ly) report Copilot seat_breakdown total 0 with seat management unconfigured, /copilot/metrics returns 404 for both, and the personal account (plan free) has no report scope in this API.",
+        "Access role is not the blocker (timerloggedout-spec is admin of both orgs); the Copilot usage metrics policy must additionally be enabled per org/enterprise before reports populate.",
+        "Revisit trigger: any fleet org holds Copilot Business/Enterprise seats with the usage metrics policy enabled - re-test the report endpoints and reassess as a weighting input.",
+        "Fork check 2026-10-26: no fork of the OpenCode agent CLI exists on this account (repository search across user and both orgs = 0; 671 owned forks scanned by name). The fleet OpenCode presence is plugin/template-side: the refTemplates opencode-research-papers plugin template and the Jogyo lane OpenCode surfaces (PR #688). OpenCode connects Copilot via /connect device-code OAuth against an existing subscription, so its traffic attributes to that subscription billing scope - personal-scope traffic appears in no report this API exposes.",
+        "Forks created 2026-10-27 at owner order (timerloggedout-spec/opencode_fork + opencode-research-papers_fork): the fork-check above is superseded on the fork's existence. Verdict unchanged - the fork is a client; its Copilot traffic attributes to the authenticating subscription's billing scope, and this account still holds no org/enterprise Copilot scope."
+      ]
+    },
+    {
+      "id": "google-agent-compute-engine",
+      "project": "Google Cloud Agent Compute Engine (ACE) + Agent Gateway",
+      "source": "https://cloud.google.com/blog/topics/ai-infrastructure/agent-compute-engine-deep-dive",
+      "version": "announced 2026-10-22; preview in coming months (not available)",
+      "role": "credential-free-agent-sandbox-architecture-reference",
+      "status": "WATCH",
+      "horizon": "H1",
+      "evidence_status": "confirmed",
+      "capabilities": [
+        "one hardware-isolated microVM (Cloud Hypervisor, own guest kernel, root) per agent session on Titan/Titanium IPU hosts",
+        "zero secrets in the sandbox: no credentials, API keys, OAuth refresh tokens or SA keys in memory or on disk; no metadata-server access",
+        "Agent Gateway in-flight token swap: validates user delegation + agent identity + node identity, evaluates egress/DLP policy, inserts the backend credential on the wire outside the microVM",
+        "four identities kept distinct (user, delegated on-behalf-of, SPIFFE Agent Workload Identity, Agent Workforce Identity); attestation keys held in the Titanium IPU outside the guest",
+        "no standard NIC/default gateway/VPC access in the microVM; all traffic via virtio-vsock to a local proxy then the off-node gateway",
+        "application-aware idle checkpoint/pause at near-zero active cost, CoW/DAX memory deduplication, per-microVM Hyperdisk persistence, snapshot/fork for eval sweeps",
+        "open-source sibling Agent Substrate on GKE available today with the same design (microVM/gVisor + credential-injecting egress proxies)"
+      ],
+      "integration_mode": "comparison + design-pattern reference only; no deployment (announced-only, no fleet GCP project). Full comparison: docs/ops/AGENT-COMPUTE-ENGINE-COMPARISON-2026-10-26.md",
+      "required_exports": [
+        "if ever piloted: per-session SPIFFE workload identity + Agent Gateway audit logs into Provenance/HindSight as attested evidence"
+      ],
+      "hard_gate": "ACE removes credential theft from the sandbox; it does not remove policy-breadth risk - a compromised agent can still act through the gateway within its delegated scope and egress policy. Scoped grants remain the control, as with the Data Agent Kit IAM tier.",
+      "unresolved_questions": [
+        "Availability: Google states preview 'in the coming months' (announcement 2026-10-22); no console/API/pricing exists today - revisit when the preview opens.",
+        "Requires a fleet GCP project + billing, which does not exist; this is the same owner-pending item gating Data Agent Kit activation (card-gated signup + gcloud sign-in session).",
+        "Cannot touch GitHub Actions lanes, the PAT-helper route, on-device Termux/B160V lanes, or vendor-hosted agent surfaces (Jules/Grok/Manus) - it hosts only the execution half of a fleet-built, GCP-hosted agent, of which the fleet currently has none.",
+        "Mirror proposals (fleet-native, owner/lane decision, not implemented by the comparison): prefer short-lived per-workflow credentials over new long-lived Actions secrets; put a credential-swap proxy in any future agent tool-egress path instead of injecting secrets into the agent environment."
+      ]
+    },
+    {
+      "id": "deepseek-deepinfer",
+      "project": "DeepSeek DeepInfer (open-source production inference framework)",
+      "source": "https://github.com/deepseek-ai/DeepInfer",
+      "version": "repo created 2026-10-16; announced 2026-10-20; Apache-2.0",
+      "role": "production-inference-engine-pattern-reference",
+      "status": "WATCH",
+      "horizon": "H1",
+      "evidence_status": "confirmed",
+      "capabilities": [
+        "offline inference for DeepSeek-V4.1-Flash only; NVIDIA SM100 (CUDA 13) and Huawei Ascend 950 (CANN 9.2)",
+        "DSpark speculative decoding with confidence-scheduled verification integrated as a serving feature",
+        "batch-invariant inference and deterministic sampling (fixed seq_seed) as explicit toggles",
+        "structured outputs constrained by regex, JSON schema or EBNF grammar",
+        "kernels: FlashMLA, DeepGEMM, DeepEP, TileKernels, DeepSelect; attention-DP / balanced CP, MoE EP + EPLB, SWA bounded replay, zero-overhead async scheduling"
+      ],
+      "integration_mode": "pattern reference only; no deployment (datacenter hardware the fleet does not own). Lessons L2/L4/L6 in docs/ops/DEEPSEEK-INFERENCE-RELEASE-AND-BURIED-TECH-2026-10-26.md",
+      "required_exports": [
+        "none today; if a self-host lane ever evaluates it: batch-invariance/seed settings and batch composition recorded as evidence fields per run"
+      ],
+      "hard_gate": "The open release is the compute core, not a serving system: its README lists no KV cache system, no prefill/decode disaggregation, no load balancing. Vendor production figures circulating in press (155T tokens/day, 96% input cache hit, ~400 ms TTFT) describe the unreleased surround and are not a benchmark for fleet expectations.",
+      "unresolved_questions": [
+        "Online serving scope: the release is offline-only; whether/when DeepSeek publishes the serving surround is unknown.",
+        "Hardware: SM100/Ascend-950 only - no path to fleet hardware (B160V law; no GPU estate). Revisit only if a fleet cloud/GPU lane exists."
+      ]
+    },
+    {
+      "id": "deepseek-deepspec-dspark",
+      "project": "DeepSeek DeepSpec + DSpark (speculative-decoding draft-model training)",
+      "source": "https://github.com/deepseek-ai/DeepSpec",
+      "version": "repo 2026-06-26; DSpark paper arXiv:2607.05147 (submitted 2026-07-06); MIT",
+      "role": "speculative-decoding-draft-training-pipeline",
+      "status": "WATCH",
+      "horizon": "H1",
+      "evidence_status": "confirmed",
+      "capabilities": [
+        "full-stack pipeline: target-answer regeneration, target cache build, draft training, acceptance evaluation on a fixed suite (gsm8k, math500, aime25, humaneval, mbpp, livecodebench, mt-bench, alpaca, arena-hard-v2)",
+        "three draft algorithms in one harness: DSpark (semi-autoregressive drafter + confidence-scheduled verification), DFlash, Eagle3; released checkpoints for Qwen3-4B/8B/14B and Gemma-4-12B targets",
+        "paper-reported production result: +60-85% per-user generation speed vs the MTP-1 baseline at matched throughput in the DeepSeek-V4 serving system (DeepSeek-reported, not independently reproduced)"
+      ],
+      "integration_mode": "methods reference for verification scheduling and acceptance telemetry (lessons L2/L3 in the companion doc); no draft training run by the fleet today",
+      "required_exports": [
+        "if ever piloted: per-drafter acceptance rate and accepted length per eval suite, recorded as DoE evidence"
+      ],
+      "hard_gate": "Data cost dominates: DeepSpec's own README warns the target cache for its default Qwen3-4B configuration is roughly 38 TB. No pilot without a storage/regeneration budget.",
+      "unresolved_questions": [
+        "Whether any fleet self-host lane (llama.cpp-class) can use a trained draft at B160V scale is untested; DeepSpec's own defaults assume an 8-GPU node.",
+        "Builds on the SGLang community's SpecForge framework - draft training is commoditizing; the durable asset is target-generated data plus acceptance telemetry, not the training code."
+      ]
+    },
+    {
+      "id": "mooncake-kvcache",
+      "project": "Mooncake (KVCache-centric disaggregated serving platform, Moonshot AI / kvcache-ai)",
+      "source": "https://github.com/kvcache-ai/Mooncake",
+      "version": "FAST 2025 Best Paper; repo active (pushed 2026-10-26); serves as SGLang's KV cache backend",
+      "role": "kv-cache-centric-disaggregated-serving-reference",
+      "status": "WATCH",
+      "horizon": "H1",
+      "evidence_status": "confirmed",
+      "capabilities": [
+        "prefill/decode disaggregation organized around a distributed KV cache (Mooncake Store) rather than around compute",
+        "the production serving platform behind Moonshot's Kimi service",
+        "open-sourced anonymized production request traces for reproducible serving research",
+        "global KV pooling and cache reuse across PD pipelines (integrations: SGLang, FastDeploy, vLLM-ecosystem tooling)"
+      ],
+      "integration_mode": "architecture reference for cache-economics lesson L6; its published traces are candidate DoE workload evidence. No fleet deployment (no GPU serving estate)",
+      "required_exports": [
+        "none today"
+      ],
+      "hard_gate": "Pattern reference only until the fleet operates its own serving; API-lane prompt construction (prefix stability, cache-hit telemetry) is the applicable surface today.",
+      "unresolved_questions": [
+        "Revisit if a fleet self-host or overflow-compute lane (see skypilot-compute-broker) ever materializes."
+      ]
+    },
+    {
+      "id": "lmcache-cacheblend",
+      "project": "LMCache + CacheBlend (KV cache layer; non-prefix KV reuse for RAG)",
+      "source": "https://github.com/LMCache/LMCache",
+      "version": "CacheBlend: Yao et al., EuroSys 2025, arXiv:2405.16444; LMCache paper arXiv:2510.09665; repo active (pushed 2026-10-26)",
+      "role": "kv-cache-reuse-layer-nonprefix",
+      "status": "WATCH",
+      "horizon": "H2",
+      "evidence_status": "confirmed",
+      "capabilities": [
+        "KV cache storage/reuse layer across engines and instances (offload, sharing, compression)",
+        "CacheBlend: reuse precomputed KV for chunks at any prompt position, selectively recomputing a small token subset to restore cross-attention quality - paper-reported TTFT down 2.2-3.3x and throughput up 2.8-5x vs full recompute",
+        "defines the frontier beyond provider prefix caching for retrieval-heavy (multi-chunk) prompts"
+      ],
+      "integration_mode": "expectations reference for context-reuse design on API lanes; no fleet deployment (no self-host serving)",
+      "required_exports": [
+        "none today"
+      ],
+      "hard_gate": "Benefits accrue inside a serving stack the fleet does not run; on API lanes the transferable content is prompt/context engineering expectations, not the layer itself.",
+      "unresolved_questions": [
+        "Whether major API providers expose non-prefix cache reuse semantics (today: prefix caching only) - recheck at provider changelog reviews."
+      ]
+    },
+    {
+      "id": "trailofbits-buttercup",
+      "project": "Buttercup (Trail of Bits Cyber Reasoning System, DARPA AIxCC)",
+      "source": "https://github.com/trailofbits/buttercup",
+      "version": "open-sourced after AIxCC (2025); repo active (pushed 2026-10-19)",
+      "role": "autonomous-vulnerability-find-and-patch-crs",
+      "status": "INVESTIGATE",
+      "horizon": "H1",
+      "evidence_status": "confirmed",
+      "capabilities": [
+        "autonomous pipeline that finds and patches software vulnerabilities (a full CRS, not a scanner)",
+        "built by Trail of Bits for the DARPA AI Cyber Challenge; competition-grade provenance",
+        "open source with a small public footprint relative to capability (1.7k stars at observation)"
+      ],
+      "integration_mode": "scoped evaluation candidate against this repo's security-evidence workflow (ECC findings disposition is findings-only today; Buttercup is the adjacent find-and-patch capability)",
+      "required_exports": [
+        "an evaluation would emit: target scope, findings with repro evidence, proposed patches as PRs - all through the normal review gates, nothing auto-merged"
+      ],
+      "hard_gate": "No autonomous patching of fleet code without the standard review path; evaluation scope and targets are a lane decision before any run.",
+      "unresolved_questions": [
+        "Resource footprint and target-language coverage vs this repo's surfaces - to be established by the scoped evaluation, not assumed.",
+        "Overlap check vs the ECC Tools audit surface (comment-only findings) before any pilot."
+      ]
+    },
+    {
+      "id": "skypilot-compute-broker",
+      "project": "SkyPilot (Berkeley Sky Computing multi-cloud compute broker)",
+      "source": "https://github.com/skypilot-org/skypilot",
+      "version": "repo active (pushed 2026-10-26); 10.8k stars at observation",
+      "role": "multi-cloud-compute-broker-overflow",
+      "status": "WATCH",
+      "horizon": "H2",
+      "evidence_status": "confirmed",
+      "capabilities": [
+        "one interface over GPU/CPU capacity across clouds, including spot instances, with cost as a first-class placement objective",
+        "job brokering over fragmented capacity ('AI supercomputer' over existing clouds rather than a new cloud)"
+      ],
+      "integration_mode": "watch only; the candidate broker if a fleet burst/overflow or self-host compute lane is ever approved",
+      "required_exports": [
+        "none today"
+      ],
+      "hard_gate": "Blocked by the same fact as google-agent-compute-engine: no fleet cloud accounts exist and card-gated signup is closed by the owner's card rule. No account creation under this entry.",
+      "unresolved_questions": [
+        "Revisit trigger: an approved fleet cloud lane (e.g., Data Agent Kit Route A activation) creates the first account surface to broker over."
+      ]
+    },
+    {
+      "id": "ttt-e2e",
+      "project": "TTT-E2E (End-to-End Test-Time Training for Long Context)",
+      "source": "https://arxiv.org/abs/2512.23675",
+      "version": "arXiv:2512.23675v2, 2025-12-31; Astera Institute / NVIDIA / Stanford / UC Berkeley / UC San Diego; code public",
+      "role": "test-time-training-long-context-research",
+      "status": "WATCH",
+      "horizon": "H3",
+      "evidence_status": "confirmed",
+      "capabilities": [
+        "long context reframed as continual learning: a standard sliding-window Transformer keeps training on the context at test time, compressing it into weights",
+        "initialization meta-learned for test-time learning (end-to-end at both train and test time)",
+        "paper-reported: scaling matching full attention with constant per-token latency; 2.7x faster than full attention at 128K context (3B model, 164B training tokens)"
+      ],
+      "integration_mode": "research watch for DeepAgent/deepcli context strategy (context-into-weights vs retrieval); no implementation path today",
+      "required_exports": [
+        "none"
+      ],
+      "hard_gate": "Research-only: the fleet runs no trainable local model at this scale, and test-time weight updates sit outside every current evidence contract.",
+      "unresolved_questions": [
+        "Whether TTT-class adaptation ever reaches API-provider offerings (watch provider changelogs; today it is a paper plus code)."
+      ]
+    },
+    {
+      "id": "opencode-fork",
+      "project": "OpenCode agent CLI (fleet fork: timerloggedout-spec/opencode_fork)",
+      "source": "https://github.com/anomalyco/opencode",
+      "version": "fork @2026-10-27 (upstream default branch dev)",
+      "role": "template-adaptive-agent-client",
+      "status": "PROTOTYPE",
+      "horizon": "H1",
+      "evidence_status": "confirmed",
+      "capabilities": [
+        "provider-agnostic terminal agent client: config-driven provider/model selection across 75+ providers, plugin system, MCP client",
+        "GitHub Copilot as a first-class provider (packages/core/src/plugin/provider/github-copilot.ts): OAuth device flow with OpenCode's own registered client ID, github.com or GitHub Enterprise deployment, entitlement read via /copilot_internal/user, per-subscription API endpoint",
+        "plugin surface already templated by the fleet: timerloggedout-spec/opencode-research-papers_fork (vendored copy in refTemplates)",
+        "first-party session telemetry: per-message token usage (input/output/reasoning/cache read+write) and USD cost recorded locally, aggregable by session, project, provider and model (packages/core/src/session/usage.ts, stats.ts)"
+      ],
+      "integration_mode": "fleet reference client for template-adaptive dynamic integration: templates declare provider/model/plugin wiring and the fork executes it; recorded session usage exports into Provenance/HindSight as first-party MVT/DoE input, independent of any vendor billing-scope report",
+      "required_exports": [
+        "session usage records (tokens and cost by provider/model) from the fork session store",
+        "provider/model/plugin template configurations for refTemplates"
+      ],
+      "hard_gate": "Auth is per-user OAuth/device flow only; no provider keys or Copilot tokens in the fork, its configuration, or this repository (names only). Copilot traffic from the fork attributes to the authenticating subscription's billing scope - see copilot-usage-metrics-api.",
+      "unresolved_questions": [
+        "Forks created 2026-10-27 at owner order (opencode_fork + opencode-research-papers_fork); no fleet patches yet - clean mirror vs patched fork is decided after the first pilot runs.",
+        "Upstream TODO(#35765) in session/usage.ts: Copilot's reported billed amount is not yet normalized into Usage.cost, so Copilot-session costs in fork telemetry are catalog-priced estimates until that lands.",
+        "Pilot lane assignment (device Termux vs Actions runners) is open."
+      ]
     }
   ],
   "wiring_rules": [

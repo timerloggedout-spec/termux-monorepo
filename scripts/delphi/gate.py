@@ -518,47 +518,63 @@ def _run(args) -> int:
     session = f"run-{os.environ.get('GITHUB_RUN_ID', 'local')}"
     os.environ["DELPHI_REASON"] = args.reason
     summary, board = [], []
-    for issue in sorted(issues, key=lambda i: i["number"]):
-        s = surface_from_issue(issue, catalog)
-        if done >= plan["max_rfps_per_run"]:
-            pending += 1
-            board.append({"number": issue["number"], "surface": s["id"], "effective": None, "decision": "pending"})
-            continue
-        ih = input_hash(s, roles, registry, readings)
-        prev = last_ledger(gh, issue["number"])
-        due = prev and prev.get("award", {}).get("recheck_after") and prev["award"]["recheck_after"] <= now().strftime("%Y-%m-%dT%H:%MZ")
-        if prev and prev.get("input_hash") == ih and not due:
-            summary.append(f"#{issue['number']} {s['id']}: unchanged")
-            a = prev.get("award", {})
-            board.append({"number": issue["number"], "surface": s["id"], "effective": prev.get("effective_score"),
-                          "decision": a.get("decision", "pending"), "band": a.get("band"), "recheck": a.get("recheck_after")})
-            continue
-        out = score_surface(s, panel, registry, readings, f"#{issue['number']}", session, budget)
-        gh.req("POST", f"/issues/{issue['number']}/comments", {"body": comment_md(out, ih, args.reason)})
-        labels = {l["name"] for l in issue.get("labels", [])} - {"delphi:shadow", "delphi:parked", "delphi:converged", "delphi:needs-access"}
-        labels.add("delphi:" + out["award"]["decision"])
-        if out["result"]["converged"]:
-            labels.add("delphi:converged")
-        if out["award"].get("blocked_on"):
-            labels.add("delphi:needs-access")
-        gh.req("PUT", f"/issues/{issue['number']}/labels", {"labels": sorted(labels)})
-        with open(os.environ.get("DELPHI_OUT", "delphi-out.jsonl"), "a") as f:
-            f.write(json.dumps(out) + "\n")
-        summary.append(f"#{issue['number']} {s['id']}: {out['award']['decision']} eff={out['result']['effective_score']}")
-        a = out["award"]
-        board.append({"number": issue["number"], "surface": s["id"], "effective": out["result"]["effective_score"],
-                      "decision": a["decision"], "band": a.get("band"), "recheck": a.get("recheck_after")})
-        done += 1
-    for line in summary[:9]:
-        print(f"::notice::{line}")
-    if board:
-        radar = radar_candidates(catalog, registry, {r["surface"] for r in board})
-        print(f"::notice::delphi radar uncovered={len(radar)} results board #{update_board(gh, board, radar)}")
+    try:
+        for issue in sorted(issues, key=lambda i: i["number"]):
+            s = surface_from_issue(issue, catalog)
+            if done >= plan["max_rfps_per_run"]:
+                pending += 1
+                board.append({"number": issue["number"], "surface": s["id"], "effective": None, "decision": "pending"})
+                continue
+            try:
+                ih = input_hash(s, roles, registry, readings)
+                prev = last_ledger(gh, issue["number"])
+                due = prev and prev.get("award", {}).get("recheck_after") and prev["award"]["recheck_after"] <= now().strftime("%Y-%m-%dT%H:%MZ")
+                if prev and prev.get("input_hash") == ih and not due:
+                    summary.append(f"#{issue['number']} {s['id']}: unchanged")
+                    a = prev.get("award", {})
+                    board.append({"number": issue["number"], "surface": s["id"], "effective": prev.get("effective_score"),
+                                  "decision": a.get("decision", "pending"), "band": a.get("band"), "recheck": a.get("recheck_after")})
+                    continue
+                out = score_surface(s, panel, registry, readings, f"#{issue['number']}", session, budget)
+                gh.req("POST", f"/issues/{issue['number']}/comments", {"body": comment_md(out, ih, args.reason)})
+                labels = {l["name"] for l in issue.get("labels", [])} - {"delphi:shadow", "delphi:parked", "delphi:converged", "delphi:needs-access"}
+                labels.add("delphi:" + out["award"]["decision"])
+                if out["result"]["converged"]:
+                    labels.add("delphi:converged")
+                if out["award"].get("blocked_on"):
+                    labels.add("delphi:needs-access")
+                gh.req("PUT", f"/issues/{issue['number']}/labels", {"labels": sorted(labels)})
+                with open(os.environ.get("DELPHI_OUT", "delphi-out.jsonl"), "a") as f:
+                    f.write(json.dumps(out) + "\n")
+                summary.append(f"#{issue['number']} {s['id']}: {out['award']['decision']} eff={out['result']['effective_score']}")
+                a = out["award"]
+                board.append({"number": issue["number"], "surface": s["id"], "effective": out["result"]["effective_score"],
+                              "decision": a["decision"], "band": a.get("band"), "recheck": a.get("recheck_after")})
+                done += 1
+            except RateLimited as e:
+                # one 403/429 on a single issue defers only that issue; the run continues
+                pending += 1
+                board.append({"number": issue["number"], "surface": s["id"], "effective": None, "decision": "pending"})
+                print(f"::warning::delphi deferred #{issue['number']} {s['id']} on GitHub rate limit: {e}")
+        for line in summary[:9]:
+            print(f"::notice::{line}")
+    finally:
+        # the board is a rendered view; always attempt it before exit so a mid-run
+        # rate limit cannot leave it one event behind the ledgers of record
+        if board:
+            try:
+                radar = radar_candidates(catalog, registry, {r["surface"] for r in board})
+                print(f"::notice::delphi radar uncovered={len(radar)} results board #{update_board(gh, board, radar)}")
+            except RateLimited as e:
+                print(f"::warning::delphi board update deferred on GitHub rate limit: {e}")
     print(f"::notice::delphi processed={done} pending={pending} api_calls={gh.calls}")
     if pending and plan["mode"] == "accelerate":
-        gh.req("POST", "/actions/workflows/delphi-gate.yml/dispatches",
-               {"ref": os.environ.get("GITHUB_REF_NAME", "master"), "inputs": {"reason": "delphi-tick", "depth": str(args.depth + 1)}})
-        print(f"::notice::delphi accelerate: chained tick depth={args.depth + 1}")
+        try:
+            gh.req("POST", "/actions/workflows/delphi-gate.yml/dispatches",
+                   {"ref": os.environ.get("GITHUB_REF_NAME", "master"), "inputs": {"reason": "delphi-tick", "depth": str(args.depth + 1)}})
+            print(f"::notice::delphi accelerate: chained tick depth={args.depth + 1}")
+        except RateLimited as e:
+            print(f"::warning::delphi accelerate chaining deferred on GitHub rate limit: {e}")
     return 0
 
 

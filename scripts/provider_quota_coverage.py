@@ -132,9 +132,11 @@ def build_coverage(root: Path = ROOT) -> dict[str, Any]:
             "manager_metadata_source": "ops/quota/provider-managers.json" if manager_rows else None}
 
 _PRIVATE = {"key", "api_key", "token", "secret", "prompt", "request", "used", "remaining", "account_id", "account"}
+_SENSITIVE_SUBSTRINGS = ("api_key", "secret", "prompt", "request_body")
+
 def _safe_public(obj: Any) -> Any:
     if isinstance(obj, dict):
-        return {k: _safe_public(v) for k, v in obj.items() if k.lower() not in _PRIVATE and not any(x in k.lower() for x in ("api_key", "secret", "prompt", "request_body"))}
+        return {k: _safe_public(v) for k, v in obj.items() if k.lower() not in _PRIVATE and not any(x in k.lower() for x in _SENSITIVE_SUBSTRINGS)}
     if isinstance(obj, list): return [_safe_public(x) for x in obj]
     return obj
 
@@ -179,10 +181,16 @@ def evaluate(provider: str, model: str, evidence: list[Mapping[str, Any]], *, no
         return result("invalid_now")
     if not isinstance(evidence, list) or not evidence:
         return result("unknown_evidence")
-    matched = [e for e in evidence if isinstance(e, Mapping) and e.get("provider") == provider and e.get("model") == model]
-    if len(matched) != 1:
+
+    matched = None
+    for item in evidence:
+        if isinstance(item, Mapping) and item.get("provider") == provider and item.get("model") == model:
+            if matched is not None:
+                return result("duplicate_or_missing_evidence")
+            matched = item
+    if matched is None:
         return result("duplicate_or_missing_evidence")
-    e = matched[0]
+    e = matched
     try:
         if e.get("evidence_status") != "confirmed" or e.get("horizon") != "H0":
             return result("unconfirmed_or_unauthorized_evidence")

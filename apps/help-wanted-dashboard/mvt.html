@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MVT — Multivariate Testing Surface</title>
+<link rel="stylesheet" href="./dashboard.css">
+<style>
+  .feed-list{list-style:none;margin:0;padding:0}
+  .feed-list li{display:flex;justify-content:space-between;gap:1rem;padding:.35rem 0;border-bottom:1px solid var(--line)}
+  .feed-list li:last-child{border-bottom:none}
+  .meta{color:var(--muted);font-size:.8rem}
+  .gap{border-left:3px solid var(--gold);padding:.4rem .8rem;margin:.5rem 0}
+  .notrun{border:1px dashed var(--line);border-radius:.6rem;padding:.7rem .8rem;color:var(--muted)}
+  .chips{display:flex;flex-wrap:wrap;gap:.4rem;margin:.4rem 0}
+</style>
+</head>
+<body>
+<header>
+<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/help-wanted/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="https://timerloggedout-spec.github.io/help-wanted/quota.html">Quota</a><a href="https://timerloggedout-spec.github.io/help-wanted/admin.html">Admin</a><a href="https://timerloggedout-spec.github.io/help-wanted/oracle.html">Oracle</a><a href="https://timerloggedout-spec.github.io/help-wanted/3l0.html">3L0</a><a href="https://timerloggedout-spec.github.io/help-wanted/moneyball.html">MoneyBall</a><a href="https://timerloggedout-spec.github.io/help-wanted/mvt.html" aria-current="page">MVT</a><a href="https://timerloggedout-spec.github.io/help-wanted/doe.html">DoE</a><a href="https://help-wanted-oversight.vercel.app/">Vercel deployment</a><a href="https://timerloggedout-spec.github.io/help-wanted/sitemap.xml">Sitemap</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></nav>
+<div class="hero">
+<p class="eyebrow">MVT · ATES Orchestrator Harness</p>
+<h1>Multivariate testing surface</h1>
+<p class="sub">The MVT harness, its experiment record schema, and the state of its workflows — including the experiments that have not run, rendered as exactly that. This page consumes <code>data/mvt-feed.json</code> (collector <code>scripts/dashboards/surface_feeds.py</code>, contract <code>docs/ops/DASHBOARD-SURFACE-FEEDS.md</code>) and nothing else: a value the record doesn't hold renders as absent, never synthesized.</p>
+</div>
+</header>
+<main>
+<section class="card">
+<h2>Feed</h2>
+<ul class="feed-list">
+<li><span>Feed (<code>data/mvt-feed.json</code>, generated, served with this page)</span><span class="pill gold" id="feed-state">…</span></li>
+<li><span>Generated</span><span id="feed-generated">—</span></li>
+</ul>
+<div id="feed-error" class="gap" hidden>The feed could not be loaded, so nothing is shown rather than anything guessed.</div>
+</section>
+<div id="content"></div>
+<section class="card" id="gaps-card" hidden>
+<h2>What the record does not hold</h2>
+<div id="gaps"></div>
+</section>
+<section class="card">
+<h2>Sources</h2>
+<ul id="sources" class="feed-list"></ul>
+</section>
+</main>
+<script>
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+async function load(){
+  let f;
+  try{
+    const r = await fetch("./data/mvt-feed.json");
+    if(!r.ok) throw new Error(r.status);
+    f = await r.json();
+  }catch(e){
+    document.getElementById("feed-state").textContent = "unavailable";
+    document.getElementById("feed-error").hidden = false;
+    return;
+  }
+  document.getElementById("feed-state").textContent = "live · " + f.schema;
+  document.getElementById("feed-generated").textContent = f.generated_at;
+  const d = f.data, out = [];
+  out.push(`<section class="card"><h2>The harness — seven hard invariants</h2>
+  <div class="chips">${d.harness.invariants.map(i => `<span class="pill">${esc(i)}</span>`).join("")}</div>
+  <p class="meta">${esc(d.harness.doc)} · ${esc(d.harness.note)}</p></section>`);
+  const s = d.experiment_record_schema;
+  out.push(`<section class="card"><h2>Experiment record schema</h2>
+  <p class="meta">${esc(s.file)}</p>
+  <p>Required fields:</p><div class="chips">${s.required.map(x => `<span class="pill">${esc(x)}</span>`).join("")}</div>
+  <p>Status values:</p><div class="chips">${s.status_enum.map(x => `<span class="pill">${esc(x)}</span>`).join("")}</div>
+  <p class="meta">${esc(s.identity)}</p></section>`);
+  const el = d.experiment_loop, eo = el.observed_runs || {};
+  out.push(`<section class="card"><h2>Experiment loop — <code>${esc(el.file)}</code></h2>
+  <p>${esc(el.mode)}</p>
+  <p>Dispatch inputs:</p><div class="chips">${el.inputs.map(x => `<span class="pill">${esc(x)}</span>`).join("")}</div>
+  <div class="notrun"><strong>Defined — not run.</strong> Observed runs (Actions API read): ${esc(eo.total_runs ?? "not observed")}. No experiment has been dispatched through this loop, so there are no recorded experiment results; this block is the state, not a placeholder for one.</div></section>`);
+  const tm = d.team_mvt, to = tm.observed_runs || {};
+  const latest = (to.latest || []).map(r => `<li><span>${esc((r.created_at || "").slice(0, 10))} · ${esc(r.event)}</span><span>${esc(r.conclusion)}</span></li>`).join("");
+  out.push(`<section class="card"><h2>Team MVT — <code>${esc(tm.file)}</code></h2><p>${esc(tm.mode)}</p>
+  <ul class="feed-list"><li><span>Observed runs (Actions API read)</span><span>${esc(to.total_runs ?? "not observed")}</span></li>${latest}</ul></section>`);
+  out.push(`<section class="card"><h2>Fixtures are fixtures</h2><p>${esc(d.fixtures)}</p></section>`);
+  document.getElementById("content").innerHTML = out.join("");
+  if((f.gaps || []).length){
+    document.getElementById("gaps-card").hidden = false;
+    document.getElementById("gaps").innerHTML = f.gaps.map(g => `<div class="gap">${esc(g)}</div>`).join("");
+  }
+  document.getElementById("sources").innerHTML = f.sources.map(s2 => `<li><span>${esc(s2)}</span></li>`).join("");
+}
+load();
+</script>
+</body>
+</html>

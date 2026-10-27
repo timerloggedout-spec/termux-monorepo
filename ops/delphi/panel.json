@@ -13,5 +13,30 @@
     "reviewer":     {"base": 1.0, "gate_pass_rate": 0.5, "elo": 1500, "hits": 0, "misses": 0},
     "Scout":        {"base": 0.8, "gate_pass_rate": 0.5, "elo": 1500, "hits": 0, "misses": 0},
     "cost_auditor": {"base": 1.2, "gate_pass_rate": 0.5, "elo": 1500, "hits": 0, "misses": 0}
+  },
+  "generation": {
+    "proposals_per_pass": 3,
+    "cycle": {
+      "rounds": 2,
+      "expectation_format": "per-candidate expected rank + expected weighted score per source class, recorded before implementation; brief-supplied human expectations take precedence for their class",
+      "expectation_tolerance": 2.0,
+      "implementation": "parallel per-proposal implementations; tests run per individual proposal; their results are the round-2 evidence base",
+      "evidence_equalization": "the round-2 evidence set is identical for every voter; its sha256 is stamped on the round-2 receipt and required on every round-2 ballot",
+      "calibration": "round-2 outcome vs the recorded input expectations; deltas with the evidence that moved them; the feed for the weights (#1489) and outcome (#1487) ledgers",
+      "stage_gates": ["generation contract", "ballot contract", "evidence-set equality before round 2", "calibration record"],
+      "not_run_rule": "a stage that cannot execute is recorded specified_not_run in the cycle record - never dropped, never fabricated"
+    },
+    "cross_vote": {
+      "score_scale": "1-25 (DECISION-MATRIX Impact x Importance)",
+      "source_classes": ["HUMAN_COLLABORATOR", "MODEL_PROVIDER", "LOCAL_BASELINE"],
+      "class_rule": "Classes are tallied and reported separately, never merged (DEBATE protocol). DRIVER_SYNTHESIS is not a ballot. A class with no ballots is reported as zero.",
+      "weights_source": "Newest JSON state on the Delphi panel weights ledger issue (#1489); this file's role values are cold-start defaults.",
+      "ballot_record": "Ranked outcome is appended to the outcome ledger (#1487) as a delphi-generation-ballot v1 JSON comment, with the full receipt in the pass record."
+    },
+    "self_application": {
+      "status": "specified_not_run",
+      "mode": "Versioned comparison runs: method versions/configurations are the variants of a pass - generated, cross-voted, implemented/tested in parallel, evidence-equalized re-vote, calibration vs expectations; receipts and ledger records like any pass.",
+      "first_run": "Not yet executed. Runs when a method-variant brief is filed; method_cycle.py executes it unchanged."
+    }
   }
 }

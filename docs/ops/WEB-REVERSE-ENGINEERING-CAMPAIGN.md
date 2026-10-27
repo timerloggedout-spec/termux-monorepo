@@ -74,8 +74,9 @@ python3 -m ops.web_adapter_foundry.waf taxonomy h4ckf0r0day/obscura
 | JSONL stdin/stdout | implemented (`waf serve`) | one envelope/line, protocol-only stdout |
 | CLI | implemented (`waf`) | same `handle_request` |
 | CDP over WebSocket | native to Tier-1 engines/drivers | browser control + event streaming |
-| **SSE** | **primitives landed this PR** (`sse_encode`, `EventBus`) | one-way result/event streams; publish-once, subscribers never re-execute |
-| WebSocket / HTTP / MCP | designed facades | over the same `handle_request`; MCP is its own protocol, never a JSONL label |
+| **SSE** | **implemented** (`ops/web_adapter_foundry/facade.py`: `GET /events` over the landed `sse_encode`/`EventBus`) | one-way result/event streams; publish-once, subscribers never re-execute |
+| HTTP | **implemented** (same facade: `POST /invoke`, `GET /health`) | one envelope over HTTP -> one response, also published to `/events` |
+| WebSocket / MCP | designed facades | over the same `handle_request`; MCP is its own protocol, never a JSONL label |
 
 ## B160V law (applies to every fold)
 
@@ -83,6 +84,19 @@ Playwright / Chromium / Selenium are known on-device failures on the
 BLU B160V (crash / resource-exit Termux). Tier-1 thin engines on-device;
 everything Chromium/Firefox-class offloaded, driven over CDP-WebSocket /
 SSE / JSONL. See `docs/repositories/STARS-FORKS-WATCH.md` §3.
+
+## Registered environments
+
+Environments registered for RE / pentest work that are **not** taxonomy
+candidates. The taxonomy folds the Foundry catalog + browser-lane candidate
+sets exactly once (31 nodes, test-pinned in
+`tests/test_web_adapter_foundry.py`); an environment with no
+GitHub-canonical source has no fold, so it is registered here instead. If
+one ever enters a candidate set, it folds in through the normal pipeline.
+
+| Environment | Registered | Why it's here | Fleet fit |
+|---|---|---|---|
+| **Kali Linux** (kali.org · build scripts: gitlab.com/kalilinux) | 2026-10-26, at release 2026.3 | The lane's reference penetration-testing / RE environment, registered at the owner's direction as an *agentic environment* — a full toolset image an agent is given as its workbench, not another single-purpose adapter. | **Offload / container only.** 2026.3's refreshed build scripts each ship `build-in-container.sh` (auto-detects Docker/Podman, builds the official image inside a container; the full refresh is aimed at 2026.4), so images are built where containers run — never on the B160V. NetHunter is Kali's Android surface; it belongs to the device lanes and is not dispatched from here. New in 2026.3 and relevant to this campaign: `katana` (crawling/spidering), `dalfox` (XSS), `qsreplace`, `rustscan`, `snaffler-ng`. Status: registered reference environment — not a Foundry upstream, no fleet install yet. |
 
 ## Campaign order of operations
 
@@ -112,6 +126,33 @@ SSE / JSONL. See `docs/repositories/STARS-FORKS-WATCH.md` §3.
    and on-device execution itself, gated on the pull-queue installer.
    Collaborator entry point for any Target 🎯: the Target Brief +
    `waf intake` flow in `.agents/skills/web-adapter-foundry/SKILL.md`.
+   **Input surfaces landed (T.A.K. input layer):** the brief is filable as
+   a GitHub Issue (`.github/ISSUE_TEMPLATE/target-brief.yml`, label
+   `target-brief`) — filing/editing wakes `target-intake.yml` (event
+   trigger, no cron), which parses the form back into the brief schema
+   (`waf issue-intake`) and comments the dispatch plan onto the issue.
+   CLI, JSONL and chat briefs converge on the same validation + planner.
+   **Template submission method (2026-10-27):** one canonical submission
+   template for every RE surface — the brief itself, filled template at
+   `ops/web_adapter_foundry/examples/target-brief.example.json`, now
+   carrying `surfaces` (requested dispatch surfaces), `evidence_expectation`
+   (observed/reproduced/verified) and `submitter` (Role{Moniker}). The form
+   renders every field within the Delphi-proven construct subset (surfaces
+   as a comma-separated input — the recorded constraint from the v1/v2
+   chooser divergence); CLI/JSONL/HTTP file the JSON as-is; chat transcribes
+   field-for-field. One validator on every path; cross-surface identity is
+   test-proven (form rendering ↔ canonical JSON ↔ HTTP /invoke).
+   **Probing (owner definition, 2026-10-27):** in this stack, probing means
+   finding the DOMs from the request — a probe starts from a captured
+   request and attributes the DOMs behind it (response structures and
+   rendered trees it produces or feeds; the endpoint and fields that select
+   them). `waf.PROBES` leads with the discovery three (request-inventory,
+   dom-attribution, dom-data-source); the differential probes verify DOMs
+   already found.
+   Per the owner (2026-10-23): the phone is a remote orchestrator for
+   these dispatches; the dual B160V device surfaces are owned by their
+   existing lanes and this campaign waits for them to stabilise before
+   anything dispatches on-device.
 3. Then: HTTP/SSE facade server over `handle_request` using the landed
    primitives; first real adapter (one authorised site, three read-only
    operations, Foundry milestone).

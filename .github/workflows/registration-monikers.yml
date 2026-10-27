@@ -1,0 +1,103 @@
+name: Registration monikers
+
+# Machine half of the 4n0n protocol (docs/ops/4N0N-REGISTRATION-PROTOCOL.md):
+# keeps config/registration_monikers.json consistent with the registration
+# source of truth, docs/ops/CHALLENGE-ENTRIES-LOG.md. When the log activates
+# a platform (named in its section 1 or 4) that has no registry entry, the
+# workflow assigns one by the deterministic rule in
+# scripts/registration_monikers/registry.py (moniker + default routing,
+# public_handle always null - a handle is a provisioning fact and is never
+# invented) and opens or updates one PR from
+# registration-monikers/auto-extend. Hard validation failures fail the run
+# loudly; they are never auto-fixed. Platform accounts are never created
+# here, and nothing is ever submitted.
+#
+# Trigger accounting: one weekly scheduled run, manual dispatch, and
+# pushes to master touching the challenge log / registry paths (a merge
+# of the auto-extend PR itself re-triggers one no-op check run - accepted,
+# it exits green with no changes).
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'full = check + auto-extend PR; check-only = report drift only'
+        required: false
+        default: 'full'
+        type: choice
+        options: [full, check-only]
+  schedule:
+    - cron: '41 6 * * 2'
+  push:
+    branches: [master]
+    paths:
+      - 'docs/ops/CHALLENGE-ENTRIES-LOG.md'
+      - 'config/registration_monikers.json'
+      - 'scripts/registration_monikers/**'
+      - '.github/workflows/registration-monikers.yml'
+
+concurrency:
+  group: registration-monikers
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  registry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out master
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+          token: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Check registry against the challenge log
+        id: check
+        run: |
+          set +e
+          python3 scripts/registration_monikers/registry.py check > check.txt
+          code=$?
+          set -e
+          cat check.txt
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          if grep -q '^hard:' check.txt; then
+            echo 'Hard validation failure - not auto-fixable. Failing loudly.'
+            exit 1
+          fi
+
+      - name: Auto-extend registry and open PR
+        if: inputs.mode != 'check-only' && steps.check.outputs.code != '0'
+        env:
+          GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          branch="registration-monikers/auto-extend"
+          git checkout -B "$branch"
+          python3 scripts/registration_monikers/registry.py assign
+          python3 scripts/registration_monikers/registry.py render
+          git add config/registration_monikers.json docs/ops/4N0N-REGISTRATION-PROTOCOL.md
+          if git diff --cached --quiet; then
+            echo "Drift reported but nothing auto-fixable changed."
+            exit 0
+          fi
+          git commit -m "chore(registry): auto-extend registration monikers"
+          git push --force-with-lease origin "$branch"
+          if gh pr list --head "$branch" --state open --json number --jq '.[0].number' | grep -q .; then
+            echo "Auto-extend PR already open; branch updated in place."
+          else
+            gh pr create --base master --head "$branch" \
+              --title "chore(registry): auto-extend registration monikers" \
+              --body "Automated extension by the registration-monikers workflow. The challenge log activated a platform with no registry entry; the new entry was assigned by the deterministic rule in scripts/registration_monikers/registry.py (moniker + default routing). public_handle is null by protocol - a handle is a provisioning fact, recorded only after the platform issues it (docs/ops/4N0N-REGISTRATION-PROTOCOL.md rule 5)."
+          fi
+
+      - name: Verify drift is resolved
+        if: steps.check.outputs.code != '0'
+        run: |
+          python3 scripts/registration_monikers/registry.py check

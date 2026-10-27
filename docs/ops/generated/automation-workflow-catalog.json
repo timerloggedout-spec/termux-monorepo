@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "2acabc3b5ca82b67cf15c61da2a5036fe53fe5911e97b8a8d922bffa668ec3e3",
-  "workflow_count": 174,
+  "source_fingerprint": "5682cf62f5c4d0722d2c7375636a076667eb20945c5ec41c174b71f3562c3863",
+  "workflow_count": 188,
   "workflows": [
     {
       "action_pins": [
@@ -215,7 +215,7 @@
     },
     {
       "action_pins": [],
-      "authority": "bounded-state-write",
+      "authority": "writer",
       "concurrency": "",
       "domain": "agentic-development",
       "jobs": [
@@ -646,6 +646,22 @@
       ]
     },
     {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: context-backfill-contract-${{ github.ref }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "validate"
+      ],
+      "name": "Context backfill contract",
+      "path": ".github/workflows/context-backfill-contract.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push"
+      ]
+    },
+    {
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
         "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
@@ -823,6 +839,21 @@
     },
     {
       "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "probe"
+      ],
+      "name": "Credential family probe",
+      "path": ".github/workflows/credential-family-probe.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
       "authority": "read-only-or-advisory",
       "concurrency": "",
       "domain": "agentic-development",
@@ -959,6 +990,56 @@
         "schedule",
         "workflow_dispatch",
         "workflow_run"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "generate"
+      ],
+      "name": "delphi-generate",
+      "path": ".github/workflows/delphi-generate.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "bounded-state-write",
+      "concurrency": "group: delphi-intake-${{ github.event.issue.number || github.event.inputs.surface_id || github.run_id }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "intake"
+      ],
+      "name": "Delphi conversational intake",
+      "path": ".github/workflows/delphi-intake.yml",
+      "schedules": [],
+      "triggers": [
+        "issue_comment",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: delphi-oracle-mvp-${{ github.ref }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "offline-mvp"
+      ],
+      "name": "Delphi Oracle offline MVP",
+      "path": ".github/workflows/delphi-oracle-mvp.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
       ]
     },
     {
@@ -1197,6 +1278,23 @@
       "triggers": [
         "pull_request",
         "push"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: facade-smoke cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "smoke"
+      ],
+      "name": "facade smoke",
+      "path": ".github/workflows/facade-smoke.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
       ]
     },
     {
@@ -1863,6 +1961,30 @@
       ]
     },
     {
+      "action_pins": [
+        "actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830",
+        "actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830",
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
+      "authority": "bounded-state-write",
+      "concurrency": "group: integration-mesh-poll cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "poll"
+      ],
+      "name": "integration mesh poll",
+      "path": ".github/workflows/integration-mesh-poll.yml",
+      "schedules": [
+        "41 */6 * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
       "action_pins": [],
       "authority": "writer",
       "concurrency": "group: issue-comment-router-${{ github.event.issue.number }} cancel-in-progress: true",
@@ -2046,6 +2168,24 @@
       ]
     },
     {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: observer-poller-${{ github.workflow }}-${{ github.ref }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "poll"
+      ],
+      "name": "Observer Poller Scheduled",
+      "path": ".github/workflows/observer-poller-scheduled.yml",
+      "schedules": [
+        "*/20 * * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
@@ -2179,6 +2319,25 @@
       ]
     },
     {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: oracle-panel-feed-collect cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "collect"
+      ],
+      "name": "oracle-panel-feed-collect",
+      "path": ".github/workflows/oracle-panel-feed-collect.yml",
+      "schedules": [
+        "23 6 * * 2"
+      ],
+      "triggers": [
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
@@ -2232,6 +2391,25 @@
         "issue_comment",
         "pull_request_review",
         "pull_request_target"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: phantom-secrets-audit cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "audit"
+      ],
+      "name": "Phantom secrets audit",
+      "path": ".github/workflows/phantom-secrets-audit.yml",
+      "schedules": [
+        "23 6 * * 3"
+      ],
+      "triggers": [
+        "issue_comment",
+        "schedule",
+        "workflow_dispatch"
       ]
     },
     {
@@ -2557,6 +2735,7 @@
       "concurrency": "group: reconcile-devin-wiki-access cancel-in-progress: false",
       "domain": "reconciliation-publishing",
       "jobs": [
+        "index-created-branch",
         "reconcile"
       ],
       "name": "Reconcile Devin Wiki access",
@@ -2565,6 +2744,7 @@
         "41 5 * * *"
       ],
       "triggers": [
+        "create",
         "schedule",
         "workflow_dispatch"
       ]
@@ -2620,6 +2800,25 @@
       ],
       "triggers": [
         "pull_request",
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: registration-monikers cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "registry"
+      ],
+      "name": "Registration monikers",
+      "path": ".github/workflows/registration-monikers.yml",
+      "schedules": [
+        "41 6 * * 2"
+      ],
+      "triggers": [
         "push",
         "schedule",
         "workflow_dispatch"
@@ -2742,6 +2941,24 @@
     },
     {
       "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: reviewer-metrics-collect cancel-in-progress: false # The refresh-PR step pushes a branch and opens a PR, so this job needs # write on contents + pull-requests (the first dispatched run failed at # that step on read-only permissions; collection itself is read-only).",
+      "domain": "agentic-development",
+      "jobs": [
+        "collect"
+      ],
+      "name": "Reviewer metrics collect",
+      "path": ".github/workflows/reviewer-metrics-collect.yml",
+      "schedules": [
+        "17 5 * * 1"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
       "authority": "read-only-or-advisory",
       "concurrency": "",
       "domain": "agentic-development",
@@ -2814,6 +3031,24 @@
       "path": ".github/workflows/self-integrate.yml",
       "schedules": [],
       "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "group: shared-observer-poller cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "poll"
+      ],
+      "name": "Shared Observer Poller",
+      "path": ".github/workflows/shared-observer-poller.yml",
+      "schedules": [
+        "*/15 * * * *"
+      ],
+      "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -2928,6 +3163,23 @@
       "schedules": [],
       "triggers": [
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "bounded-state-write",
+      "concurrency": "group: target-intake-${{ github.event.issue.number }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "intake"
+      ],
+      "name": "target intake",
+      "path": ".github/workflows/target-intake.yml",
+      "schedules": [],
+      "triggers": [
+        "issues"
       ]
     },
     {

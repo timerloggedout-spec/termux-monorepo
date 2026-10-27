@@ -1,6 +1,6 @@
 # INTEGRATION MESH MATRIX — every GitHub-listed integration for `timerloggedout-spec`, mapped
 
-**Compiled:** 2026-10-21 ~10:00 PDT. **Amended same day (second pass):** census v2. **Refreshed 2026-10-22 (third pass):** secrets 31→33, PRs 1,292→1,327, issues 193→206, workflows 192→195 — all live figures re-taken; see #1505. **Refreshed 2026-10-22 (fourth pass, ~09:48 PDT):** PRs 1,327→1,330, workflows 195→196 (+1 "Research and paper accounting validation"), issues steady at 206 — see #1505. **Refreshed 2026-10-22 (fifth pass, ~15:48 PDT):** secrets 33→37 (+4: 2 Cloudflare deploy, 2 device-queue), workflows 196→198, variables 2→3 (+`DEVICE_QUEUE_URL`), PRs 1,330→1,342, issues 206→207 — see #1505. **Refreshed 2026-10-23 (sixth pass, ~09:48 PDT):** github-advanced-security first check suites in the 30-head window (5 suites, CodeQL, on `547f54e7`), workflows 200→201 (+`operator-variable-provision`), secrets steady at 37 names, PRs 1,358→1,362, issues steady at 213 — see #1505.
+**Compiled:** 2026-10-21 ~10:00 PDT. **Amended same day (second pass):** census v2. **Refreshed 2026-10-22 (third pass):** secrets 31→33, PRs 1,292→1,327, issues 193→206, workflows 192→195 — all live figures re-taken; see #1505. **Refreshed 2026-10-22 (fourth pass, ~09:48 PDT):** PRs 1,327→1,330, workflows 195→196 (+1 "Research and paper accounting validation"), issues steady at 206 — see #1505. **Refreshed 2026-10-22 (fifth pass, ~15:48 PDT):** secrets 33→37 (+4: 2 Cloudflare deploy, 2 device-queue), workflows 196→198, variables 2→3 (+`DEVICE_QUEUE_URL`), PRs 1,330→1,342, issues 206→207 — see #1505. **Refreshed 2026-10-23 (sixth pass, ~09:48 PDT):** github-advanced-security first check suites in the 30-head window (5 suites, CodeQL, on `547f54e7`), workflows 200→201 (+`operator-variable-provision`), secrets steady at 37 names, PRs 1,358→1,362, issues steady at 213 — see #1505. **Refreshed 2026-10-23 (seventh pass, ~15:48 PDT):** secrets 37→38 (+`VANTAGE_PAT_GH_SECRETS` — Vantage cost-report lane), workflows 201→205 (+4 verified new files: `vantage-cost-report`, `operator-wake`, `delphi-intake`, `target-intake`), PRs 1,362→1,374, issues 213→220 — see #1505.
 (full pagination, no samples — 1,342 PRs, 207 issues, 2,000 comments, check suites
 across 30 master heads, submitted reviews in two labeled frames) + the installations
 probe (stored-token exercise from inside Actions, Issue #184 comment 6321665538),
@@ -85,7 +85,7 @@ nothing here proposes a purge, rotation, or revocation — see §9 rules.
 | `timers-full+accessPAT` | Classic | Never used | Full-admin scope set, no expiration |
 | `MUSE_ADMIN_GH` | Classic | Live daily | Created 2026-10-20, **post-dates #184**. Muse's only GitHub route (`custom.github-pat`, Secure Vault, no per-call approval cards) |
 
-### 2b. Repository Actions secrets — termux-monorepo (LIVE-API, 37 names)
+### 2b. Repository Actions secrets — termux-monorepo (LIVE-API, 38 names)
 
 Grouped by the service each name serves (the mesh's wiring diagram in one table):
 
@@ -101,6 +101,7 @@ Grouped by the service each name serves (the mesh's wiring diagram in one table)
 | Cloudflare | `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN` |
 | Device queue | `DEVICE_QUEUE_PRODUCER_TOKEN_ACTIONS`, `DEVICE_QUEUE_DEVICE_TOKEN_PRIMARY` |
 | Termux device MCP | `TERMUX_MCP_KNOWN_HOSTS`, `TERMUX_MCP_SSH_PRIVATE_KEY` |
+| Cost reporting | `VANTAGE_PAT_GH_SECRETS` |
 
 ### 2c. Every other secret store — enumerated; all empty except the 7 repo Codespaces secrets listed here (LIVE-API, 2026-10-22)
 
@@ -377,9 +378,9 @@ triggered the apps.
 | Piece | State |
 |---|---|
 | Webhooks (4) | **Linear** — all events (`*`), last 200 OK · **GitLab mirror** — push+PR → `gitlab.com` project 85129320 mirror/pull, last **400** · **ZenHub** — 12 event types, last **422 misconfigured** · **Buildkite (NEW 2026-10-23)** — all events (`*`), last 200 OK (id 702058218) |
-| Workflows | **201 total, 199 active** (+1 since the 2026-10-23 03:48 PDT poll: `operator-variable-provision.yml` — workflow_dispatch operator tool for allowlisted non-secret repo variables; still no repo-side Buildkite workflow — the Buildkite lane is webhook/check-app only). Recent 100 runs: actors coderabbitai[bot] 43, ecc-tools[bot] 43, `timerloggedout-spec` 12 (owner-attributed — schedule + dispatch surface; which specific token fired each run is NOT ESTABLISHED, see the closing list), gitar-bot[bot] 2; events workflow_run 55, issue_comment 44, schedule 1 — bot-dispatch runs back in the majority this window; CodeRabbit review activity continues in both review frames, so no lane outage |
-| PR / issue totals (v2, fully paginated) | **1,358 PRs** — authors: owner 1,049 (+13), Jules 287 (+3), CodeRabbit 9, github-actions 4, Dependabot 3, ECC 3, Devin 2, Tembo 1 · **213 true issues** (owner 191 (+4), github-actions 21, mehvvy 1) · requested-reviewer records sit almost entirely on the owner (10) — the peer bots are triggered by comments/orchestrator, not by review requests |
-| Submitted reviews (two frames — keep separate) | *Most-recently-updated 150 PRs:* 41 PRs carry 277 reviews — Devin 146 (all COMMENTED; 92 on #143 alone), CodeRabbit 82 (56 CHANGES_REQUESTED / 6 APPROVED / 19 COMMENTED / 1 DISMISSED), owner 28, Aikido 12, GHAS 7, Qodo 2. *Most-recently-created 150 PRs:* 22 PRs carry reviews — CodeRabbit 37 (23 CHANGES_REQUESTED / 10 COMMENTED / 4 APPROVED), owner 18 (all COMMENTED), GHAS 7. Review weight lives on long-lived PRs |
+| Workflows | **205 total, 204 active, 1 manually disabled** (+4 since the 2026-10-23 09:48 PDT poll, all verified as live files on master: `vantage-cost-report.yml` (Vantage cost report, created 10:30 PDT), `operator-wake.yml` (Operator wake, 12:21 PDT), `delphi-intake.yml` (Delphi conversational intake, 13:37 PDT), `target-intake.yml` (target intake — T.A.K. input layer, PR #1597, 14:36 PDT); the one disabled workflow is Merge Promotion Queue (disabled_manually); note the API registry total also carries phantom entries for deleted workflow files — 176 workflow files are actually on master; still no repo-side Buildkite workflow — the Buildkite lane is webhook/check-app only). Recent 100 runs: actors `timerloggedout-spec` 62 (owner-attributed — schedule + dispatch surface; which specific token fired each run is NOT ESTABLISHED, see the closing list), vercel[bot] 29, ecc-tools[bot] 9; events workflow_run 40, issue_comment 60 — owner-attributed + Vercel deploy runs dominate this window; CodeRabbit review activity continues in the updated-PR frame, so no lane outage |
+| PR / issue totals (v2, fully paginated) | **1,374 PRs** — authors: owner 1,063 (+10 since the 09:48 PDT poll), Jules 288 (+1), CodeRabbit 9, github-actions 5 (+1), Dependabot 3, ECC 3, Devin 2, Tembo 1 · **220 true issues** (owner 198 (+7), github-actions 21, mehvvy 1) · requested-reviewer records sit almost entirely on the owner (10) — the peer bots are triggered by comments/orchestrator, not by review requests |
+| Submitted reviews (two frames — keep separate) | *Most-recently-updated 150 PRs:* 35 PRs carry 251 reviews — Devin 139 (all COMMENTED; 92 still on #143), CodeRabbit 66 (42 CHANGES_REQUESTED / 6 APPROVED / 17 COMMENTED / 1 DISMISSED), owner 26 (24 COMMENTED / 2 APPROVED), Aikido 12, GHAS 7, Qodo 1. *Most-recently-created 150 PRs:* 22 PRs carry reviews — CodeRabbit 37 (23 CHANGES_REQUESTED / 10 COMMENTED / 4 APPROVED), owner 18 (all COMMENTED), GHAS 7. Review weight lives on long-lived PRs |
 | Comment actors (2,000 newest) | Only **10 distinct actors**: ECC 792 (40%), owner 475, github-actions 263, CodeRabbit 155, Codex 105, BlocksOrg 81, Gitar 54, Qodo 54, Vercel 13, Jules 8 — **bots ≈ 76% of volume** |
 | Actions permissions | Enabled, allowed_actions = all, SHA pinning not required. Default workflow permissions = **write**; workflows **can approve PR reviews** (`can_approve_pull_request_reviews: true`) — a real mesh capability: the repo's own automation can act as an approver |
 | Deploy keys / autolinks / collaborators | **0 / 0 / owner only** — no deploy-key or autolink integrations exist on the hub repo |
@@ -420,8 +421,8 @@ triggered the apps.
 quota-aware cadence. (2) No credential purge/rotation/revocation without
 redundancy + owner clone/archive + dependency evaluation. (3) Names-only for
 all credential work. (4) Poller output is never committed (commits burn
-Vercel/Render quota) — census snapshots live in the workspace, this doc is
-hand-refreshed. (5) Provider-neutral early dispatch layer; per-provider
+Vercel/Render quota) — census snapshots persist in the poll workflow's
+Actions cache + run artifacts, this doc is refreshed via PR. (5) Provider-neutral early dispatch layer; per-provider
 parallel quota threads, each reconciling its own cap before its own dispatch.
 
 **Immediate (owner-actionable this week):**
@@ -450,17 +451,30 @@ parallel quota threads, each reconciling its own cap before its own dispatch.
 
 ## 10. Active polling
 
-A 6-hourly census poll (`github-integration-matrix-poll`, alongside
-`jules-census-6h`) re-runs the LIVE-API census and diffs it against the previous
-workspace snapshot: new/removed check-apps on master heads, bot-actor changes,
-hook health (last response codes), secret-name additions/removals (names
-only), environment/workflow counts, deployment-creator mix. Per the owner
-order of 2026-10-22, findings land **on GitHub**: material diffs are posted
-as `[MUSEai]` comments on the standing thread (Issue #1505), and when a diff
-materially stales this doc the poll opens a doc-refresh PR and merges it
-through the repo gates — no staging, no per-step asks. **No change = no
-comment, no report.** Snapshots stay in
-`~/workspace/github-integration-census/` — never committed (rule 4).
+The poll is a **repo-native GitHub Actions workflow** —
+`.github/workflows/integration-mesh-poll.yml` running
+`scripts/github/integration_mesh_poll.py` on a 6-hourly schedule
+(`41 */6 * * *` UTC) plus `workflow_dispatch`. (Owner order 2026-10-23: the
+poll must live in Actions; the Muse cron of the same name is retired.)
+It re-runs the LIVE-API census — the port of the former chat-side
+`census.py`/`census2.py`/`census3.py`/`secrets_plus.py`/`reviews_updated.py` —
+with the provisioned `OPERATOR_GITHUB_TOKEN` (fallback `GITHUB_TOKEN`,
+per-section graceful degradation recorded, never read as removals) and
+diffs it against the previous snapshot: new/removed check-apps on master
+heads and cross-repo, org installations, bot-actor changes, hook health
+(last response codes), secret-name additions/removals in every store
+(names only), environment/variable/workflow sets, deployment-creator mix,
+and a §9 plan-state check (rows claiming open/pending for closed/merged
+items are flagged stale — the I1 failure mode). A verify pass re-runs any
+headline total that drops or zeroes before anything is published.
+Findings land **on GitHub**: material diffs post as one `[MUSEai]`
+comment on the standing thread (Issue #1505); **structural changes — or
+four accumulated figure-only polls — also open/update a labeled
+`mesh-refresh` issue**, so a finding becomes tracked work with a refresh
+checklist instead of looping as comments. **No change = no comment.**
+Snapshots persist in the Actions cache + 30-day run artifacts — never
+committed (rule 4). Doc refresh PRs still land through the repo gates,
+driven by the `mesh-refresh` issue's diff.
 
 ## NOT ESTABLISHED — stated, not filled in
 

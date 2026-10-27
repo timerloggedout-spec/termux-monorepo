@@ -1,7 +1,7 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-10-21T09:45:00Z"
-updated_by: ChatGPT
+updated_at: "2026-10-27T08:52:00Z"
+updated_by: oracle-method
 
 proposals:
   - id: agent-contributor-provenance
@@ -651,3 +651,90 @@ proposals:
     related_prs: [499, 530, 531]
     related_branches: [gaps-opps/add-devcontainer-codespaces, docs/proposals/codespaces-enablement]
     gates_required: [repo-gate, termux-smoke]
+
+  - id: aws-free-tier-strands-delphi-oracle
+    title: "AWS Free Tier integration and Strands Decider Delphi Oracle"
+    author: ChatGPT
+    status: in_review
+    priority: P1
+    path: active/aws-free-tier-strands-delphi-oracle/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_prs: [1611]
+    related_branches:
+      - proposal/aws-free-tier-strands-delphi-oracle
+    gates_required: [proposal-lifecycle, repo-gate]
+
+  - id: quota-aware-cadence-rfp
+    title: "Quota-aware adaptive cadence system — full-thread evaluation"
+    author: timerloggedout-spec
+    status: posted
+    priority: P1
+    path: active/quota-aware-cadence-rfp/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: [1573]
+    related_prs: [1574, 1575, 1576]
+    related_branches: []
+    gates_required: [proposal-lifecycle]
+
+  - id: delphi-desk-builder-io
+    title: "Delphi Desk — decision-review cockpit for the Builder.io Agent-Native Hackathon"
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: active/delphi-desk-builder-io/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: []
+    related_prs: [1620, 1655, 1701, 1702]
+    related_branches: []
+    gates_required: [proposal-lifecycle, repo-gate]
+  - id: strands-rfp-response-kernel-first
+    title: "Strands RFP response — kernel-first: executable E-05/E-01/E-03 on the merged offline kernel"
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: active/strands-rfp-response-kernel-first/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: [1487, 1489]
+    related_prs: [1611, 1620, 1702]
+    related_branches: []
+    gates_required: [proposal-lifecycle, repo-gate]
+  - id: strands-rfp-response-collection-first
+    title: "Strands RFP response — collection-first: build the DEBATE collection plane (ITEMS-003)"
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: active/strands-rfp-response-collection-first/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: [1487, 1489]
+    related_prs: [1611, 1620, 1702]
+    related_branches: []
+    gates_required: [proposal-lifecycle, repo-gate]
+  - id: strands-rfp-response-packaging-first
+    title: "Strands RFP response — packaging-first: D0 Lambda shape as the deployment shape, to the account gate"
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: active/strands-rfp-response-packaging-first/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: [1487, 1489]
+    related_prs: [1611, 1620, 1702]
+    related_branches: []
+    gates_required: [proposal-lifecycle, repo-gate]

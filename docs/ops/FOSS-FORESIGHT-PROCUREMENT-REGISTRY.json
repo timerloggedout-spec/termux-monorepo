@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "registry_id": "termux-monorepo.foss-foresight",
-  "updated_at": "2026-10-01T00:00:00Z",
+  "updated_at": "2026-10-26T00:00:00Z",
   "maintainer": "timerloggedout-spec",
   "policy": {
     "horizons": [
@@ -380,6 +380,38 @@
       "deployment": [
         "ci",
         "policy"
+      ]
+    },
+    {
+      "id": "witness",
+      "name": "Witness (in-toto)",
+      "category": "supply-chain-provenance",
+      "horizon": "H1",
+      "evidence_status": "CONFIRMED",
+      "license": "Apache-2.0",
+      "canonical_sources": [
+        "https://github.com/in-toto/witness",
+        "https://witness.dev"
+      ],
+      "capabilities": [
+        "in-toto-attestation",
+        "build-provenance",
+        "policy-verification",
+        "keyless-signing",
+        "ci-gating"
+      ],
+      "lock_in_risk": "LOW",
+      "egress_risk": "MEDIUM",
+      "reproducibility": "HIGH",
+      "procurement_action": "P1_PROVENANCE_ATTESTATION_OPTION",
+      "unresolved": "No fleet target test yet: Actions runner, ARM64 Linux, and Termux runs are unverified. Key custody is undecided: Sigstore keyless via OIDC versus local or KMS keys, names only, never values in the repo. Upstream split to track: the community mainline is in-toto/witness; TestifySec's hardened line is aflock-ai/rookery.",
+      "deployment": [
+        "cli",
+        "ci"
+      ],
+      "platforms": [
+        "linux",
+        "arm64"
       ]
     },
     {

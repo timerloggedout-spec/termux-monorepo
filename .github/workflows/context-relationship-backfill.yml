@@ -8,6 +8,14 @@ on:
     branches: [master]
     paths:
       - 'workspace/llm_map/context_relationships/**'
+      # Bootstrap or resume the coverage ledger whenever its producer/contract changes.
+      - 'archwiz/context_relationships/build_index.py'
+      - 'archwiz/context_relationships/github_collector.py'
+      - 'archwiz/context_relationships/temporal.py'
+      - 'scripts/ci/validate_context_relationship_backfill.py'
+      - 'tests/test_context_relationship_backfill_validation.py'
+      - 'tests/test_context_history_coverage.py'
+      - '.github/workflows/context-relationship-backfill.yml'
   # # Cadence owned by quota-dispatch-tree.yml (Tier 0 decision tree, issue #1573).
   workflow_dispatch:
     inputs:
@@ -69,12 +77,14 @@ jobs:
               print('start_page=1')
           else:
               data = json.loads(manifest.read_text(encoding='utf-8'))
-              next_page = data.get('history_window', {}).get('next_start_page')
-              if next_page is None:
+              coverage = data.get('history_coverage', {})
+              status = coverage.get('status')
+              next_page = coverage.get('next_start_page')
+              if status == 'COMPLETE' and next_page is None:
                   print('continue=false')
               else:
                   print('continue=true')
-                  print(f'start_page={next_page}')
+                  print(f"start_page={next_page if isinstance(next_page, int) else 1}")
           PY
       - name: Build one historical relationship-index window
         if: steps.continuation.outputs.continue == 'true'
@@ -96,6 +106,32 @@ jobs:
             --max-comments-per-item 10 \
             --max-cochange-pairs-per-commit 100 \
             --full-refresh
+
+      - name: Validate backfill corpus before promotion
+        if: steps.continuation.outputs.continue == 'true'
+        env:
+          EXPECTED_REPOSITORY: ${{ github.repository }}
+          EXPECTED_REF: master
+          # The builder binds temporal.source_sha to the immutable event SHA.
+          EXPECTED_SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          python3 -m unittest -q tests/test_context_relationship_backfill_validation.py
+          receipt="$(python3 scripts/ci/validate_context_relationship_backfill.py \
+            --root workspace/llm_map/context_relationships \
+            --expected-repo "$EXPECTED_REPOSITORY" \
+            --expected-ref "$EXPECTED_REF" \
+            --expected-source-sha "$EXPECTED_SOURCE_SHA")"
+          printf '%s\n' "$receipt" | tee /tmp/context-backfill-validation.json
+          {
+            echo '## Backfill validation receipt'
+            echo
+            echo 'Validation is required before a corpus delta can be committed.'
+            echo
+            echo '```json'
+            cat /tmp/context-backfill-validation.json
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Publish backfill coverage summary
         if: steps.continuation.outputs.continue == 'true'

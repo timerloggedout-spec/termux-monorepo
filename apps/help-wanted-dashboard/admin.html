@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin · Control Panel — Help-Wanted Oversight</title>
+<link rel="stylesheet" href="./dashboard.css">
+<style>
+  .feed-list{list-style:none;margin:0;padding:0}
+  .feed-list li{display:flex;justify-content:space-between;gap:1rem;padding:.35rem 0;border-bottom:1px solid var(--line)}
+  .feed-list li:last-child{border-bottom:none}
+  .stage-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
+  @media(max-width:850px){.stage-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:640px){.stage-grid{grid-template-columns:1fr}.table{min-width:560px}}
+  .stage{border:1px solid var(--line);border-radius:.6rem;padding:.7rem .8rem;background:var(--panel)}
+  .stage b{color:var(--gold)}
+  .sys-table td a{white-space:nowrap}
+  .filter-bar{display:flex;gap:.5rem;flex-wrap:wrap;margin:.5rem 0 1rem}
+  .filter-bar input{flex:1;min-width:180px;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:.5rem;padding:.5rem .7rem}
+  .admin-note{border-left:3px solid var(--gold);padding:.4rem .8rem;background:var(--panel)}
+</style>
+</head>
+<body>
+<header>
+<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/help-wanted/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="https://timerloggedout-spec.github.io/help-wanted/quota.html">Quota</a><a href="https://timerloggedout-spec.github.io/help-wanted/admin.html" aria-current="page">Admin</a><a href="https://timerloggedout-spec.github.io/help-wanted/oracle.html">Oracle</a><a href="https://timerloggedout-spec.github.io/help-wanted/3l0.html">3L0</a><a href="https://timerloggedout-spec.github.io/help-wanted/moneyball.html">MoneyBall</a><a href="https://timerloggedout-spec.github.io/help-wanted/mvt.html">MVT</a><a href="https://timerloggedout-spec.github.io/help-wanted/doe.html">DoE</a><a href="https://help-wanted-oversight.vercel.app/">Vercel deployment</a><a href="https://timerloggedout-spec.github.io/help-wanted/sitemap.xml">Sitemap</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></nav>
+<div class="hero">
+<p class="eyebrow">Admin · Control Panel</p>
+<h1>Systems, inventory &amp; review queue</h1>
+<p class="sub">One panel over the whole web inventory: the Delphic Oracle Method, quota &amp; Moneyball, the collaborator orchestrator entry points, every published surface, and the work waiting for review. Live-fed from the same sources as the other panels — never a static snapshot.</p>
+</div>
+</header>
+<main>
+<section class="card admin-note">
+<strong>Control contract.</strong> This panel is a read-only projection, like the rest of the dashboard: it embeds no credentials and mutates nothing from browser JavaScript. Interacting means navigating — every action button opens the owning admin surface (a workflow dispatch page, a ledger issue, a Vercel project, a settings page) where the platform itself enforces who may act.
+</section>
+
+<section class="card">
+<h2>Feed health</h2>
+<ul class="feed-list" id="feeds">
+<li><span>Delphi panel config (<code>ops/delphi/panel.json</code>, live from master)</span><span class="pill gold" data-feed="delphi">…</span></li>
+<li><span>Control surface (<code>data/status.json</code>)</span><span class="pill gold" data-feed="status">…</span></li>
+<li><span>Quota readings (<code>data/quota.json</code>)</span><span class="pill gold" data-feed="quota">…</span></li>
+<li><span>Provider quota coverage (<code>data/provider-quota-coverage.json</code>)</span><span class="pill gold" data-feed="coverage">…</span></li>
+<li><span>Lane matrix sweep (<code>docs/ops/generated/lane-matrix-status.json</code>, live from master)</span><span class="pill gold" data-feed="matrix">…</span></li>
+<li><span>Review queue (public GitHub API)</span><span class="pill gold" data-feed="queue">…</span></li>
+</ul>
+<p><button id="refresh" type="button" class="button">Refresh feeds now</button> <span id="refreshed" class="muted"></span></p>
+</section>
+
+<section>
+<h2>Delphic Oracle Method</h2>
+<p class="muted" id="delphi-summary">Loading the live panel configuration from master…</p>
+<div class="stage-grid" id="delphi-cycle">
+<div class="stage"><b>1 · Generate n</b><p>Each pass generates <span data-cfg="n">n</span> proposals from a fetched, provenance-stamped evidence set.</p></div>
+<div class="stage"><b>2 · Cross-vote, round 1</b><p>Comparative ballots across all n; source classes stay separate; input vote expectations are recorded before implementation.</p></div>
+<div class="stage"><b>3 · Implementation comparisons</b><p>Parallel per-proposal implementations; tests run per proposal.</p></div>
+<div class="stage"><b>4 · Evidence equalization</b><p>Round 2 starts every voter from the identical per-proposal test-results bundle (sha256-stamped).</p></div>
+<div class="stage"><b>5 · Re-vote, round 2</b><p>Second Delphi cycle on the equalized evidence base.</p></div>
+<div class="stage"><b>6 · Calibration</b><p>Round-2 votes vs round-1 expectations; deltas feed the weights and outcome ledgers.</p></div>
+</div>
+<div class="grid-3">
+<div class="card"><h3>Operate</h3><ul>
+<li><a href="https://timerloggedout-spec.github.io/help-wanted/oracle.html">Oracle Panel — proposal results</a></li>
+<li><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/delphi-generate.yml">Dispatch a generation pass</a></li>
+<li><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/delphi-gate.yml">Delphi gate runs</a></li>
+<li><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/delphi-oracle-mvp.yml">Oracle MVP runs</a></li>
+<li><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/delphi-intake.yml">Delphi intake runs</a></li>
+</ul></div>
+<div class="card"><h3>Ledgers &amp; evidence</h3><ul>
+<li><a href="https://github.com/timerloggedout-spec/termux-monorepo/issues/1489">Weights ledger (#1489)</a></li>
+<li><a href="https://github.com/timerloggedout-spec/termux-monorepo/issues/1487">Outcome ledger (#1487)</a></li>
+<li><a href="https://github.com/timerloggedout-spec/termux-monorepo/issues/1533">Ingestion build (#1533)</a></li>
+<li><a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/DELPHI-STATUS-AND-CROSSOVER.md">Status &amp; crossover record</a></li>
+</ul></div>
+<div class="card"><h3>Sources of record</h3><ul>
+<li><a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/delphi/panel.json">panel.json (live config)</a></li>
+<li><a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/delphi/surfaces.json">surfaces.json</a> · <a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/delphi/shadow-lanes.json">shadow-lanes.json</a></li>
+<li><a href="https://github.com/timerloggedout-spec/termux-monorepo/tree/master/apps/weekend-challenge-delphi-oracle">Offline Oracle MVP app</a></li>
+<li><a href="https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/delphi-desk-builder-io">First generated proposal (#42, Delphi Desk)</a></li>
+</ul></div>
+</div>
+</section>
+
+<section>
+<h2>Systems inventory</h2>
+<div class="filter-bar"><input id="sys-filter" type="search" placeholder="Filter systems, surfaces, owners…" aria-label="Filter inventory"></div>
+<div class="table-wrap"><table class="table sys-table"><thead><tr><th>System / surface</th><th>What it is</th><th>Open</th><th>Admin</th></tr></thead>
+<tbody id="sys-rows">
+<tr><td>Quota &amp; Moneyball</td><td>64-record entitlement registry (23 providers / 27 families), coverage artifact, 3L0 weights; panel readings are evidence-stated, never invented balances.</td><td><a href="https://timerloggedout-spec.github.io/help-wanted/quota.html">Quota panel</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/vercel-quota-probe.yml">Quota probe dispatch</a></td></tr>
+<tr><td>Free-Tier Use Value Board</td><td>As-if-paid value derived from free-tier usage — PR #1589, in review; not yet published.</td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/pull/1589">PR #1589</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/issues/1683">Dispatch #1683</a></td></tr>
+<tr><td>Peer review orchestrator</td><td><code>peerGate</code> — SHA-bound peer cycles (CodeRabbit, Devin, Gemini second pass), JIT reviewer settings.</td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/peer-review-orchestrator.yml">Runs</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/.github/workflows/peer-review-orchestrator.yml">Workflow source</a></td></tr>
+<tr><td>Jules handoff lanes</td><td><code>@jules</code> PR handoff (receipt permissions fixed by #1681, <code>af1ed160</code>) + Jules-on-issues; session creation currently falls back to the GitHub App ping — see #1683.</td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/agent-pr-jules-handoff.yml">Handoff runs</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/agent-jules-on-issues.yml">Issue lane runs</a></td></tr>
+<tr><td>Target intake (T.A.K.)</td><td>Target Briefs from issue form / CLI / JSONL / chat / HTTP facade converge on one taxonomy-mapped dispatch plan (#1597, template #1714).</td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/issues/new/choose">New brief</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/target-intake.yml">Intake runs</a></td></tr>
+<tr><td>Help-Wanted Tribute</td><td>The control surface this panel extends: lane evolution, publication lanes, evidence.</td><td><a href="https://timerloggedout-spec.github.io/help-wanted/">Live dashboard</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/help-wanted-dashboard-deploy.yml">Deploy dispatch</a></td></tr>
+<tr><td>Lane matrix</td><td>Open-PR sweep by lane (CANDIDATE / SUPERSEDE / NEED_EVIDENCE / EXTRACT), refreshed by the ops lane-matrix sweep; the live count rides in Feed health above.</td><td><a href="https://timerloggedout-spec.github.io/matrix/">Live matrix</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/ops-lane-matrix-sweep.yml">Sweep runs</a></td></tr>
+<tr><td>Vercel lanes</td><td>Projects <code>help-wanted-oversight</code>, <code>help-wanted-dash</code>, <code>termux-monorepo</code> (showcase), <code>mcp-hub</code> (bearer-gated, no public hostname) — team <code>timerloggedout-5184s-projects</code>. Login required.</td><td><a href="https://help-wanted-oversight.vercel.app/">Oversight alias</a> · <a href="https://termux-monorepo.vercel.app/">Showcase</a></td><td><a href="https://vercel.com/timerloggedout-5184s-projects">Vercel team dashboard</a></td></tr>
+<tr><td>GitHub Pages</td><td>User site (landing + /help-wanted/ + /matrix/) and project site (hub + matrix only), both status <em>built</em>.</td><td><a href="https://timerloggedout-spec.github.io/">User site</a> · <a href="https://timerloggedout-spec.github.io/termux-monorepo/">Project hub</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/settings/pages">Pages settings</a></td></tr>
+</tbody></table></div>
+</section>
+
+<section>
+<h2>Review queue — prior &amp; continuing work</h2>
+<p class="muted">Open items are fetched live from the public GitHub API at view time; anything that cannot be fetched shows UNVERIFIED rather than a guessed state. Landed items are the review record, with merge SHAs established by master-history scan.</p>
+<h3>Waiting on review / dispatch</h3>
+<ul class="feed-list" id="queue-open"><li><span>Loading…</span><span class="pill gold">…</span></li></ul>
+<h3>Landed (review record)</h3>
+<ul class="feed-list">
+<li><span><a href="https://github.com/timerloggedout-spec/termux-monorepo/pull/1682">#1682</a> Quota count integrity — “64 registry records”</span><span class="pill ok">merged 8696160d</span></li>
+<li><span><a href="https://github.com/timerloggedout-spec/termux-monorepo/pull/1681">#1681</a> Jules handoff <code>pull-requests: write</code> fix</span><span class="pill ok">merged af1ed160</span></li>
+<li><span><a href="https://github.com/timerloggedout-spec/termux-monorepo/pull/1512">#1512</a> Quota phone tables + 60s refetch</span><span class="pill ok">merged 6f3a4563</span></li>
+<li><span><a href="https://github.com/timerloggedout-spec/termux-monorepo/pull/1509">#1509</a> Quota reading <code>observed_at</code> (P0-1)</span><span class="pill ok">merged 64211266</span></li>
+<li><span><a href="https://github.com/timerloggedout-spec/termux-monorepo/pull/1506">#1506</a> Quota.txt ↔ registry drift guard</span><span class="pill ok">merged fa9a2173</span></li>
+<li><span><a href="https://github.com/timerloggedout-spec/termux-monorepo/pull/1503">#1503</a> Shared <code>dashboard.css</code> + unified nav + sitemap</span><span class="pill ok">merged af523a8d</span></li>
+</ul>
+<p class="muted">Still on the backlog, not yet published: served-SHA stamps for the Pages mirrors (P1-5), splitting the index page’s ~1.3&nbsp;MB status payload (P1-6), publish-or-mark decisions for the orphan pages (P2-8), and the programmatic briefing page (scope pending in main chat).</p>
+</section>
+</main>
+<footer><p class="muted">Admin panel · Help-Wanted Oversight · <a href="https://timerloggedout-spec.github.io/help-wanted/sitemap.xml">Sitemap</a> · <a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></p></footer>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function feed(name,ok,label){const el=document.querySelector('[data-feed="'+name+'"]');if(el){el.textContent=label;el.className='pill '+(ok?'ok':'bad')}}
+async function jget(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw new Error(r.status);return r.json()}
+const RAW='https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/';
+const API='https://api.github.com/repos/timerloggedout-spec/termux-monorepo';
+const QUEUE=[['pull',1589,'Free-Tier Use Value Board'],['issue',1588,'Basksweep session wiring → Value Board'],['issue',1592,'Value Board × EPS / Moneyball / receipts'],['issue',1593,'Value Board × dynamic quota usage'],['pull',1495,'Quota full mappings + publication visibility'],['issue',1683,'Dispatch: the 64 + @Jules regression']];
+async function loadDelphi(){
+  try{
+    const p=await jget(RAW+'ops/delphi/panel.json');
+    const g=p.generation||{},c=g.cycle||{};
+    document.querySelector('[data-cfg="n"]').textContent=g.proposals_per_pass!=null?g.proposals_per_pass:'n';
+    $('delphi-summary').innerHTML='Live from master <code>ops/delphi/panel.json</code> (schema '+esc(p.schema||'?')+'): <strong>'+esc(g.proposals_per_pass!=null?g.proposals_per_pass:'?')+' proposals per pass</strong> · '+esc(c.rounds!=null?c.rounds:'?')+' cycle rounds · expectation tolerance '+esc(c.expectation_tolerance!=null?c.expectation_tolerance:'?')+' · '+(Array.isArray(p.roles)?p.roles.length+' panel roles':'')+(Array.isArray(c.stage_gates)?' · '+c.stage_gates.length+' stage gates':'')+'. Weights live in ledger #1489, outcomes in #1487.';
+    feed('delphi',true,'LIVE');
+  }catch(e){feed('delphi',false,'UNVERIFIED');$('delphi-summary').textContent='Panel configuration could not be fetched from master — showing the method as documented in the lane contract; treat values as UNVERIFIED.'}
+}
+async function loadStatus(){
+  try{const s=await jget('./data/status.json');const cs=s.control_surface||{};
+    feed('status',true,'LIVE · sha '+(cs.source_sha?String(cs.source_sha).slice(0,8):'?'));
+  }catch(e){feed('status',false,'UNVERIFIED')}
+  try{const q=await jget('./data/quota.json');const r=q.readings||[];
+    feed('quota',true,'LIVE · '+r.length+' readings');
+  }catch(e){feed('quota',false,'UNVERIFIED')}
+  try{const cv=await jget('./data/provider-quota-coverage.json');const cc=cv.coverage_counts||{};
+    feed('coverage',true,'LIVE · '+(cc.provider_families!=null?cc.provider_families:'?')+' families');
+  }catch(e){feed('coverage',false,'UNVERIFIED')}
+}
+async function loadMatrix(){
+  try{const lm=await jget(RAW+'docs/ops/generated/lane-matrix-status.json');const n=(lm.counts&&lm.counts.open_prs!=null)?lm.counts.open_prs:(lm.prs||[]).length;
+    feed('matrix',true,'LIVE · '+n+' open PRs · '+String(lm.observed_at||'').slice(0,10));
+  }catch(e){feed('matrix',false,'UNVERIFIED')}
+}
+async function loadQueue(){
+  const out=[];
+  let okCount=0;
+  for(const [kind,num,label] of QUEUE){
+    try{
+      const d=await jget(API+(kind==='pull'?'/pulls/':'/issues/')+num);
+      okCount++;
+      const state=kind==='pull'?(d.merged_at?'merged':d.state):d.state;
+      out.push('<li><span><a href="'+esc(d.html_url)+'">#'+num+'</a> '+esc(d.title||label)+'</span><span class="pill '+(state==='open'?'gold':'ok')+'">'+esc(state)+' · upd '+esc(String(d.updated_at||'').slice(0,10))+'</span></li>');
+    }catch(e){
+      out.push('<li><span><a href="https://github.com/timerloggedout-spec/termux-monorepo/'+(kind==='pull'?'pull':'issues')+'/'+num+'">#'+num+'</a> '+esc(label)+'</span><span class="pill bad">UNVERIFIED</span></li>');
+    }
+  }
+  $('queue-open').innerHTML=out.join('');
+  feed('queue',okCount>0,okCount===QUEUE.length?'LIVE':('PARTIAL '+okCount+'/'+QUEUE.length));
+}
+async function load(){
+  await Promise.allSettled([loadDelphi(),loadStatus(),loadMatrix(),loadQueue()]);
+  $('refreshed').textContent='Refreshed '+new Date().toLocaleTimeString();
+}
+$('refresh').addEventListener('click',load);
+$('sys-filter').addEventListener('input',e=>{
+  const q=e.target.value.toLowerCase();
+  document.querySelectorAll('#sys-rows tr').forEach(tr=>{tr.style.display=tr.textContent.toLowerCase().includes(q)?'':'none'});
+});
+load();
+setInterval(load,60000);
+</script>
+</body>
+</html>

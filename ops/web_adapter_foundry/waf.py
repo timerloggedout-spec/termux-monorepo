@@ -29,6 +29,7 @@ Stdlib only — runs on Termux, CI, and any Python 3.10+.
 from __future__ import annotations
 
 import json
+import re
 import sys
 import urllib.request
 import urllib.error
@@ -46,14 +47,24 @@ DEGRADED = "degraded"
 SIDE_EFFECTS = ("read", "write")
 
 # Bounded differential probes (iDEAL doc stage 3), in safe order.
+# Probing, in this stack's reverse-engineering sense (owner definition,
+# 2026-10-27): finding the DOMs from the request. A probe starts from a
+# captured request and attributes the DOMs behind it — the response
+# structures and rendered trees it produces or feeds, plus the endpoint
+# and fields that select them. The first three probes ARE that discovery;
+# the differential probes after them operate on DOMs already found and
+# never substitute for finding them.
 PROBES = (
+    {"id": "request-inventory", "question": "Which requests does the surface actually make?"},
+    {"id": "dom-attribution", "question": "For this request, which DOMs does it produce or feed?"},
+    {"id": "dom-data-source", "question": "Which endpoint serves each DOM, and which request fields/headers select it?"},
     {"id": "exact-replay", "question": "Does the captured operation still work?"},
-    {"id": "single-field-change", "question": "Which input controls the behaviour?"},
+    {"id": "single-field-change", "question": "Which input controls which DOM?"},
     {"id": "header-removal", "question": "Which headers are actually required?"},
     {"id": "fresh-session", "question": "Is the behaviour tied to one session?"},
     {"id": "expiry", "question": "What must be refreshed, and when?"},
     {"id": "pagination-boundary", "question": "How does traversal terminate?"},
-    {"id": "browser-vs-direct", "question": "Can this operation leave the browser?"},
+    {"id": "browser-vs-direct", "question": "Can this DOM be reached without the browser?"},
     {"id": "controlled-error", "question": "What failure contract should the adapter expose?"},
 )
 WRITE_UNSAFE_PROBES = ()  # all probes above are read-safe progressions; state-
@@ -195,6 +206,12 @@ PURPOSES = {
                      "substrate"],
 }
 DEVICE_CLASSES = ("b160v-on-device", "remote-service", "ci", "local")
+# The submission surfaces one canonical brief template converges from.
+SURFACES = ("github-issue", "cli", "jsonl", "chat", "http-facade")
+# What evidence a submission expects the dispatch to bring back.
+EVIDENCE_EXPECTATIONS = ("observed", "reproduced", "verified")
+# Submitter identity: Role{Moniker} (fleet coordination format).
+SUBMITTER_RE = re.compile(r"^[a-z][a-z0-9-]*\{[A-Za-z0-9_-]+\}$")
 
 
 def _brief_domain(brief: dict) -> str | None:
@@ -231,6 +248,16 @@ def validate_brief(brief: dict) -> list[str]:
         errs.append("probe_budget must be an integer in 1..200")
     if brief.get("device_class", "remote-service") not in DEVICE_CLASSES:
         errs.append(f"device_class must be one of {DEVICE_CLASSES}")
+    surfaces = brief.get("surfaces")
+    if surfaces is not None:
+        if (not isinstance(surfaces, list) or not surfaces
+                or any(s not in SURFACES for s in surfaces)):
+            errs.append(f"surfaces must be a non-empty list drawn from {SURFACES}")
+    if brief.get("evidence_expectation", "reproduced") not in EVIDENCE_EXPECTATIONS:
+        errs.append(f"evidence_expectation must be one of {EVIDENCE_EXPECTATIONS}")
+    submitter = brief.get("submitter")
+    if submitter is not None and not (isinstance(submitter, str) and SUBMITTER_RE.match(submitter)):
+        errs.append("submitter must be Role{Moniker}, e.g. inventory{atlas}")
     return errs
 
 
@@ -271,6 +298,9 @@ def plan_from_brief(brief: dict, taxonomy: dict) -> dict:
         "side_effect": brief.get("side_effect", "read"),
         "probe_budget": brief.get("probe_budget", 24),
         "device_class": device_class,
+        "surfaces": brief.get("surfaces") or list(SURFACES),
+        "evidence_expectation": brief.get("evidence_expectation", "reproduced"),
+        "submitter": brief.get("submitter"),
         "stages": ["scope-and-capture", "recover-semantics", "bounded-probes",
                    "synthesize-contract", "generate-and-verify", "promote-monitor-repair"],
         "stack": stack,
@@ -297,10 +327,112 @@ def plan_from_brief(brief: dict, taxonomy: dict) -> dict:
     }
 
 
+# ------------------------------------------------------- issue-form input
+# One brief schema, many surfaces (T.A.K. input layer): a GitHub Issue filed
+# from .github/ISSUE_TEMPLATE/target-brief.yml renders as markdown sections;
+# this parses that body back into the exact brief `validate_brief` expects,
+# so an issue, a CLI file, a JSONL call and a chat message all converge on
+# the same intake. Nothing surface-specific leaks past this function.
+
+_FORM_FIELDS = {
+    "target id": "target_id",
+    "target url or domain": "target",
+    "purpose": "purpose",
+    "authorization basis": "basis",
+    "scope domains": "scope_domains",
+    "side effect": "side_effect",
+    "probe budget": "probe_budget",
+    "execution venue": "device_class",
+    "state-changing authorization": "state_changing",
+    "surfaces requested": "surfaces",
+    "evidence expectation": "evidence_expectation",
+    "submitter role{moniker}": "submitter",
+}
+
+
+def parse_issue_form(body: str) -> dict:
+    sections: dict[str, str] = {}
+    current: str | None = None
+    for line in (body or "").splitlines():
+        if line.startswith("### "):
+            current = line[4:].strip().lower()
+            sections[current] = ""
+        elif current is not None:
+            sections[current] += line + "\n"
+
+    def val(key: str) -> str:
+        raw = ""
+        for heading, field in _FORM_FIELDS.items():
+            if field == key and heading in sections:
+                raw = sections[heading].strip()
+                break
+        return "" if raw in ("_No response_", "None") else raw
+
+    brief: dict = {}
+    if val("target_id"):
+        brief["target_id"] = val("target_id").split()[0]
+    if val("target"):
+        brief["target"] = val("target").split()[0]
+    if val("purpose"):
+        brief["purpose"] = val("purpose").strip()
+    if val("side_effect"):
+        brief["side_effect"] = val("side_effect").strip().lower()
+    if val("device_class"):
+        brief["device_class"] = val("device_class").strip()
+    budget = val("probe_budget")
+    if budget:
+        try:
+            brief["probe_budget"] = int(budget.split()[0])
+        except ValueError:
+            brief["probe_budget"] = budget  # validate_brief will flag it
+    scope = [s.strip().strip(",") for s in re.split(r"[,\s]+", val("scope_domains")) if s.strip()]
+    sc_raw = val("state_changing")
+    checked = (bool(re.search(r"-\s*\[x\]", sc_raw, re.IGNORECASE))
+               or sc_raw.strip().lower() == "yes")
+    brief["authorization"] = {"basis": val("basis"), "scope_domains": scope,
+                              "state_changing": checked}
+    if val("surfaces"):
+        brief["surfaces"] = [s.strip().strip(",") for s in
+                             re.split(r"[,\s]+", val("surfaces")) if s.strip()]
+    if val("evidence_expectation"):
+        brief["evidence_expectation"] = val("evidence_expectation").strip().lower()
+    if val("submitter"):
+        brief["submitter"] = val("submitter").split()[0]
+    return brief
+
+
+def render_plan_markdown(plan: dict) -> str:
+    lines = [f"## 🎯 Target plan — `{plan['target_id']}`", "",
+             f"- **Purpose:** {plan['purpose']} · **Domain:** {plan['domain']} · "
+             f"**Venue:** {plan['device_class']} · **Side effect:** {plan['side_effect']} · "
+             f"**Probe budget:** {plan['probe_budget']}",
+             (f"- **Surfaces:** {', '.join(plan.get('surfaces', []))} · "
+              f"**Evidence expected:** {plan.get('evidence_expectation', 'reproduced')}"
+              + (f" · **Submitter:** {plan['submitter']}" if plan.get("submitter") else "")),
+             f"- **Transports:** {', '.join(plan['transports'])}",
+             f"- **Stages:** {' → '.join(plan['stages'])}", "", "**Stack (taxonomy-mapped):**"]
+    by_cat: dict[str, list[dict]] = {}
+    for node in plan["stack"]:
+        by_cat.setdefault(node["category"], []).append(node)
+    for cat, nodes in by_cat.items():
+        lines.append(f"- `{cat}`")
+        for n in nodes:
+            lines.append(f"  - `{n['repo']}` → {n['execution_site']}")
+    lines += ["", "**Registry skeleton:** " +
+              ", ".join(f"`{op['operation_id']}` ({op['status']})"
+                        for op in plan["registry_skeleton"]["operations"]),
+              "", "**Artifact placement:**"]
+    for k, v in plan["artifact_placement"].items():
+        lines.append(f"- {k}: `{v}`" if k != "coordination" else f"- {k}: {v}")
+    return "\n".join(lines) + "\n"
+
+
 # ---------------------------------------------------------------- probes
 
 def plan_probes(op: dict) -> list[dict]:
-    """Ordered bounded probe plan for one operation."""
+    """Ordered bounded probe plan for one operation. Probing = finding the
+    DOMs from the request: discovery (inventory, attribution, data source)
+    first, then the differential probes over the DOMs found."""
     plan = [dict(p) for p in PROBES]
     if op.get("executor") == "direct-http":
         plan = [p for p in plan if p["id"] != "browser-vs-direct"]
@@ -428,20 +560,97 @@ def handle_request(req: dict, registry: dict | None = None) -> dict:
                  meta={"executor": executor})
 
 
+def _host_is_public(host: str) -> bool:
+    """SSRF guard: every address the host resolves to must be public.
+    (TOCTOU/DNS-rebinding between this check and connect remains a known
+    residual — the allowlist is the primary barrier; this stops the
+    allowlisted-name -> internal-address pivot.)"""
+    import ipaddress
+    import socket
+    try:
+        infos = socket.getaddrinfo(host, None)
+    except Exception:
+        return False
+    for info in infos:
+        try:
+            ip = ipaddress.ip_address(info[4][0])
+        except ValueError:
+            return False
+        if (ip.is_private or ip.is_loopback or ip.is_link_local
+                or ip.is_reserved or ip.is_multicast or ip.is_unspecified):
+            return False
+    return True
+
+
+def _validate_fetch_url(url, allow) -> str | None:
+    """None when the fetch may proceed, else the refusal reason. Barrier
+    chain: http(s) scheme only -> host present -> host in the operation's
+    declared allowlist -> host resolves only to public addresses."""
+    if not url or not isinstance(url, str):
+        return "url: required string"
+    parts = urllib.parse.urlparse(url)
+    if parts.scheme not in ("http", "https"):
+        return f"scheme {parts.scheme!r} refused (http/https only)"
+    host = parts.hostname
+    if not host:
+        return "url: no host"
+    if host not in (allow or []):
+        return f"url host {host!r} not in allowlist {allow}"
+    if not _host_is_public(host):
+        return f"url host {host!r} resolves to a non-public address"
+    return None
+
+
+class _AllowlistRedirectHandler(urllib.request.HTTPRedirectHandler):
+    """Re-validate every redirect hop against the same barrier chain —
+    an allowlisted URL must not 30x the fetch somewhere internal."""
+
+    def __init__(self, allow):
+        super().__init__()
+        self._allow = allow
+        self._hops = 0
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        self._hops += 1
+        if self._hops > 3:
+            raise urllib.error.URLError("too many redirects")
+        problem = _validate_fetch_url(newurl, self._allow)
+        if problem:
+            raise urllib.error.URLError(f"redirect refused: {problem}")
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
 def _direct_http(rid, op, inp, req):
     if op["side_effect"] != "read":
         return _resp(rid, False, error={"code": "write_via_core_refused",
                                         "message": "core direct-http executor is read-only"})
     url = inp.get("url")
     allow = op.get("allowlist") or []
-    host = urllib.parse.urlparse(url).hostname if url else None
-    if not url or host not in allow:
+    problem = _validate_fetch_url(url, allow)
+    if problem:
         return _resp(rid, False, error={"code": "not_allowlisted",
-                                        "message": f"url host {host!r} not in allowlist {allow}"})
+                                        "message": problem})
+    # Full-URL barrier, inline at the sink: when the operation declares
+    # url_prefixes, the fetch target must begin with one of them — the
+    # target is then chosen from an author-declared set, not free-form
+    # caller input (the canonical full-SSRF remediation). Without
+    # prefixes, the host-allowlist + public-address chain above is the
+    # barrier, and the URL is rebuilt from its validated components.
+    prefixes = op.get("url_prefixes") or []
+    if prefixes and not any(url.startswith(p) for p in prefixes):
+        return _resp(rid, False, error={"code": "not_allowlisted",
+                                        "message": f"url {url!r} matches no declared url_prefix"})
+    parts = urllib.parse.urlparse(url)
+    if parts.hostname not in allow:
+        return _resp(rid, False, error={"code": "not_allowlisted",
+                                        "message": f"url host {parts.hostname!r} not in allowlist {allow}"})
+    url = urllib.parse.urlunparse((parts.scheme, parts.netloc, parts.path,
+                                   "", parts.query, ""))
     deadline = ((req.get("execution") or {}).get("deadline_ms") or 15000) / 1000
     request = urllib.request.Request(url, headers={"User-Agent": f"waf/{VERSION}"})
+    opener = urllib.request.build_opener(_AllowlistRedirectHandler(allow))
     try:
-        with urllib.request.urlopen(request, timeout=deadline) as r:
+        with opener.open(request, timeout=deadline) as r:
             body = r.read(1_000_000).decode(errors="replace")
             try:
                 data = json.loads(body)
@@ -488,6 +697,9 @@ def main(argv: list[str]) -> int:
     p_sv.add_argument("--registry")
     p_in = sub.add_parser("intake", help="validate a Target Brief and print its stack plan")
     p_in.add_argument("brief")
+    p_ii = sub.add_parser("issue-intake", help="parse a GitHub issue-form body into a brief, then plan it")
+    p_ii.add_argument("body")
+    p_ii.add_argument("--markdown", action="store_true", help="emit the plan (or errors) as markdown")
     a = ap.parse_args(argv)
     if a.cmd == "catalog":
         print(json.dumps(load_catalog(), indent=1)); return 0
@@ -514,6 +726,20 @@ def main(argv: list[str]) -> int:
         if errs:
             print(json.dumps({"valid": False, "errors": errs}, indent=1)); return 1
         print(json.dumps(plan_from_brief(brief, load_taxonomy()), indent=1)); return 0
+    if a.cmd == "issue-intake":
+        brief = parse_issue_form(Path(a.body).read_text())
+        errs = validate_brief(brief)
+        if errs:
+            if a.markdown:
+                print("## 🎯 Target brief — needs fixes\n\n" +
+                      "\n".join(f"- {e}" for e in errs) +
+                      "\n\nEdit the issue to correct the fields above; intake re-runs on edit.")
+            else:
+                print(json.dumps({"valid": False, "errors": errs, "brief": brief}, indent=1))
+            return 1
+        plan = plan_from_brief(brief, load_taxonomy())
+        print(render_plan_markdown(plan) if a.markdown else json.dumps(plan, indent=1))
+        return 0
     if a.cmd == "serve":
         reg = load_registry(a.registry) if a.registry else None
         serve(reg, sys.stdin, sys.stdout); return 0

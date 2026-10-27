@@ -51,7 +51,7 @@ jobs:
       - name: List codespaces
         if: ${{ inputs.action == 'list' || inputs.action == 'start' || inputs.action == 'create' }}
         env:
-          GH_TOKEN: ${{ secrets.CODESPACE_CREATE_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
+          GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
         run: |
           curl -sS \
             -H "Accept: application/vnd.github+json" \
@@ -63,7 +63,7 @@ jobs:
       - name: Start codespace
         if: ${{ inputs.action == 'start' }}
         env:
-          GH_TOKEN: ${{ secrets.CODESPACE_CREATE_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
+          GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
           CS_NAME: ${{ inputs.codespace_name }}
         run: |
           set -euo pipefail
@@ -85,7 +85,7 @@ jobs:
       - name: Last-used names only
         if: ${{ inputs.action == 'list' || inputs.action == 'start' || inputs.action == 'create' }}
         env:
-          GH_TOKEN: ${{ secrets.CODESPACE_CREATE_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
+          GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
         run: |
           set -euo pipefail
           # Issue #184 evidence is names and timestamps only. Never print token material.
@@ -128,7 +128,7 @@ jobs:
       - name: Create codespace
         if: ${{ inputs.action == 'create' }}
         env:
-          GH_TOKEN: ${{ secrets.CODESPACE_CREATE_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
+          GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
           REF: ${{ inputs.ref }}
           DISPLAY: ${{ inputs.display_name }}
         run: |

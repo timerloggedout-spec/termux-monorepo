@@ -186,3 +186,57 @@ def test_graded_feedback_and_quantized_hash():
     s = cat["turso.free"]
     assert gate.input_hash(s, tiny, reg, {}) == gate.input_hash(s, panel["roles"], reg, {})
     assert "tribute-lane" in cat
+
+
+def test_run_defers_single_issue_on_rate_limit_and_still_updates_board(monkeypatch, tmp_path):
+    """2026-10-23 board-stale finding: one 403/429 on a single RFP must defer only that
+    RFP, and the results board must be regenerated before exit even when a rate limit
+    happens mid-run (#1591 landed but board #1474 stayed one event behind)."""
+    patched = []
+
+    class FakeGH:
+        def __init__(self, repo, token):
+            self.calls = 0
+
+        def req(self, method, path, body=None):
+            self.calls += 1
+            if method == "GET" and path.endswith("/rate_limit"):
+                return {"resources": {"core": {"remaining": 5000}}}
+            if method == "GET" and "labels=delphi:rfp" in path:
+                return [{"number": 11, "title": "[delphi:rfp] turso.free", "labels": [{"name": "delphi:rfp"}],
+                         "body": "### Surface id\n\nturso.free\n", "html_url": "https://github.com/x"},
+                        {"number": 12, "title": "[delphi:rfp] render.free", "labels": [{"name": "delphi:rfp"}],
+                         "body": "### Surface id\n\nrender.free\n", "html_url": "https://github.com/x"}]
+            if method == "GET" and "labels=delphi:weights" in path:
+                return []
+            if method == "GET" and "labels=delphi:board" in path:
+                return [{"number": 1474, "body": ""}]
+            if method == "GET" and "/labels?per_page=100" in path:
+                return [{"name": n} for n in gate.LABELS]
+            if method == "GET" and path.startswith("/issues/11/comments"):
+                return []
+            if method == "POST" and path == "/issues/11/comments":
+                raise gate.RateLimited("429 remaining=0 test")
+            if method == "PATCH" and path == "/issues/1474":
+                patched.append(body["body"])
+                return {}
+            return {}
+
+    monkeypatch.setattr(gate, "GH", FakeGH)
+    monkeypatch.setenv("GITHUB_REPOSITORY", "o/r")
+    monkeypatch.setenv("GITHUB_TOKEN", "t")
+    monkeypatch.setenv("GITHUB_REF_NAME", "master")
+    monkeypatch.setenv("DELPHI_OUT", str(tmp_path / "out.jsonl"))
+
+    class Args:
+        reason = "test"
+        depth = 0
+
+    rc = gate.cmd_run(Args())
+    assert rc == 0
+    assert len(patched) == 1
+    board_body = patched[0]
+    assert board_body.startswith(gate.BOARD_MARK)
+    # both open RFPs appear on the board: #11 deferred as pending, #12 still scored
+    assert len([l for l in board_body.splitlines() if l.startswith("| #")]) == 2
+    assert os.path.getsize(str(tmp_path / "out.jsonl")) > 0  # the non-rate-limited RFP was still scored

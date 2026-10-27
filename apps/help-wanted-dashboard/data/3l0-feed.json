@@ -1,0 +1,574 @@
+{
+ "schema": "dashboard-surface-feed/v1",
+ "surface": "3l0",
+ "generated_at": "2026-10-27T11:38:21Z",
+ "sources": [
+  "docs/ops/AGENT-TEAM-ORCHESTRATION.md + docs/ops/SCOUT-ROSTER.md + docs/ops/ROUTING-LOGIC-CHAIN.md",
+  "scripts/model_router.py + .github/connectors/llm-peers.yaml",
+  "docs/ops/generated/reviewer-metrics.json",
+  "ops/delphi/panel.json (defaults) + weighting ledger issue #1489 (live values)"
+ ],
+ "honesty_rules": [
+  "Show only what the record holds; a value the record does not hold renders as absent, never synthesized.",
+  "Defined-but-not-run experiments render as exactly that.",
+  "Weights and scores are read from the code and records at collection time, never transcribed from prose claims.",
+  "Workflow run counts are API observations stamped with their read time, not live claims."
+ ],
+ "data": {
+  "definition": "The custom 3L0 score is an inference matrix, not a claim of objective model intelligence (docs/ops/AGENT-TEAM-ORCHESTRATION.md). MoneyBall/3L0 scores providers, agents and models AFTER repeated success, for admission and routing weight \u2014 it does not pick the next HTTP model for a single request.",
+  "components": [
+   "task outcome / acceptance",
+   "useful feedback cycles",
+   "time to integrated result",
+   "latency and requests used",
+   "retry / failure rate",
+   "conflict and duplicate-work rate",
+   "human intervention",
+   "context efficiency",
+   "attribution confidence",
+   "provider availability and quota"
+  ],
+  "pipeline": "provider catalog -> normalized evidence -> Scout roster -> MVT -> telemetry -> MoneyBall/3L0 -> admission (docs/ops/SCOUT-ROSTER.md). Admission requires successful task probes, attributable telemetry, correctness/outcome evidence, regression checks, and the applicable manager/3L0 policy; 'candidate' means eligible to probe, not proven capable.",
+  "router": {
+   "mechanic": "scripts/model_router.py scores each model entry as elo x role_suitability (x MoneyBall quota_multiplier where applied); entries without a recorded elo use the router default of 1000.",
+   "default_elo": 1000,
+   "peers_source": ".github/connectors/llm-peers.yaml \u2014 provider peers, model ids, roles and soft budgets (real free-tier request-per-day limits)",
+   "peers": [
+    {
+     "provider": "felo",
+     "models": [
+      {
+       "id": "claude-sonnet-4-6",
+       "roles": [
+        "review",
+        "invoke"
+       ],
+       "soft_limits": {
+        "triage": 40,
+        "review": 40,
+        "invoke": 40
+       }
+      }
+     ]
+    },
+    {
+     "provider": "gemini",
+     "models": [
+      {
+       "id": "gemini-3.1-flash-lite",
+       "roles": null,
+       "soft_limits": {
+        "triage": 1400,
+        "review": 1400,
+        "invoke": 1400
+       }
+      },
+      {
+       "id": "gemini-3.5-flash-lite",
+       "roles": null,
+       "soft_limits": {
+        "triage": 1400,
+        "review": 1400,
+        "invoke": 1400
+       }
+      },
+      {
+       "id": "gemini-2.5-flash-lite",
+       "roles": null,
+       "soft_limits": {
+        "triage": 1000,
+        "review": 1000,
+        "invoke": 1000
+       }
+      },
+      {
+       "id": "gemini-3.5-flash",
+       "roles": null,
+       "soft_limits": {
+        "triage": 1400,
+        "review": 1400,
+        "invoke": 1400
+       }
+      },
+      {
+       "id": "gemini-2.5-flash",
+       "roles": null,
+       "soft_limits": {
+        "triage": 1400,
+        "review": 1400,
+        "invoke": 1400
+       }
+      },
+      {
+       "id": "gemini-3-flash",
+       "roles": null,
+       "soft_limits": {
+        "triage": 1400,
+        "review": 1400,
+        "invoke": 1400
+       }
+      }
+     ]
+    },
+    {
+     "provider": "omni",
+     "models": [
+      {
+       "id": "auto/best-free",
+       "roles": [
+        "triage",
+        "review",
+        "invoke"
+       ],
+       "soft_limits": {
+        "triage": 400,
+        "review": 250,
+        "invoke": 400
+       }
+      }
+     ]
+    },
+    {
+     "provider": "openrouter",
+     "models": [
+      {
+       "id": "stealth/ox-alpha",
+       "roles": [
+        "triage",
+        "review",
+        "invoke"
+       ],
+       "soft_limits": {
+        "triage": 80,
+        "review": 80,
+        "invoke": 80
+       }
+      },
+      {
+       "id": "google/gemma-4-31b-it:free",
+       "roles": [
+        "triage",
+        "review",
+        "invoke"
+       ],
+       "soft_limits": {
+        "triage": 80,
+        "review": 80,
+        "invoke": 80
+       }
+      },
+      {
+       "id": "google/gemma-4-26b-a4b-it:free",
+       "roles": [
+        "triage",
+        "review",
+        "invoke"
+       ],
+       "soft_limits": {
+        "triage": 80,
+        "review": 80,
+        "invoke": 80
+       }
+      },
+      {
+       "id": "meta-llama/llama-3.3-70b-instruct:free",
+       "roles": [
+        "triage",
+        "review",
+        "invoke"
+       ],
+       "soft_limits": {
+        "triage": 80,
+        "review": 80,
+        "invoke": 80
+       }
+      },
+      {
+       "id": "google/gemma-3-12b-it:free",
+       "roles": [
+        "triage",
+        "review",
+        "invoke"
+       ],
+       "soft_limits": {
+        "triage": 80,
+        "review": 80,
+        "invoke": 80
+       }
+      },
+      {
+       "id": "qwen/qwen3-coder:free",
+       "roles": [
+        "review",
+        "invoke"
+       ],
+       "soft_limits": {
+        "triage": 60,
+        "review": 60,
+        "invoke": 60
+       }
+      },
+      {
+       "id": "deepseek/deepseek-r1:free",
+       "roles": [
+        "review"
+       ],
+       "soft_limits": {
+        "triage": 40,
+        "review": 40,
+        "invoke": 40
+       }
+      },
+      {
+       "id": "cohere/north-mini-code:free",
+       "roles": [
+        "review",
+        "invoke"
+       ],
+       "soft_limits": {
+        "triage": 60,
+        "review": 60,
+        "invoke": 60
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "response_history": {
+   "record": "docs/ops/generated/reviewer-metrics.json (schema reviewer-metrics/v1) \u2014 the fleet's measured per-response record: every peer-review cycle, whether the provider delivered, and its latency. This is response history as recorded; it is a reviewer surface, and it is not dressed up as a model-intelligence ranking.",
+   "generated_at": "2026-10-24T11:09:14.224259+00:00",
+   "window": {
+    "cycles": 137,
+    "prs_examined": 100
+   },
+   "providers_ranked": [
+    {
+     "provider": "devin",
+     "cycles": 1,
+     "delivered": 1,
+     "delivery_rate": 1.0,
+     "contexts": 1,
+     "by_author_class": {
+      "user": {
+       "cycles": 1,
+       "delivered": 1,
+       "delivery_rate": 1.0,
+       "median_latency_sec": null,
+       "cooldown_cycles": 0
+      }
+     }
+    },
+    {
+     "provider": "qodo",
+     "cycles": 1,
+     "delivered": 1,
+     "delivery_rate": 1.0,
+     "contexts": 1,
+     "by_author_class": {
+      "user": {
+       "cycles": 1,
+       "delivered": 1,
+       "delivery_rate": 1.0,
+       "median_latency_sec": 307.0,
+       "cooldown_cycles": 0
+      }
+     }
+    },
+    {
+     "provider": "coderabbit",
+     "cycles": 133,
+     "delivered": 23,
+     "delivery_rate": 0.1729,
+     "contexts": 12,
+     "by_author_class": {
+      "bot": {
+       "cycles": 9,
+       "delivered": 0,
+       "delivery_rate": 0.0,
+       "median_latency_sec": null,
+       "cooldown_cycles": 7
+      },
+      "user": {
+       "cycles": 124,
+       "delivered": 23,
+       "delivery_rate": 0.1855,
+       "median_latency_sec": 473.0,
+       "cooldown_cycles": 39
+      }
+     }
+    },
+    {
+     "provider": "ecc",
+     "cycles": 0,
+     "delivered": 0,
+     "delivery_rate": null,
+     "contexts": 0,
+     "by_author_class": {}
+    }
+   ],
+   "history_tail": {
+    "coderabbit": [
+     {
+      "cycle_id": "pr-1278-e650476044b3",
+      "pr": 1278,
+      "started_at": "2026-10-22T17:07:55.000Z",
+      "delivered": true,
+      "latency_sec": 440.0,
+      "cooldown": false
+     },
+     {
+      "cycle_id": "pr-1568-bd3a7aa6c52b",
+      "pr": 1568,
+      "started_at": "2026-10-23T07:32:37.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": true
+     },
+     {
+      "cycle_id": "pr-1566-f03f7102d37e",
+      "pr": 1566,
+      "started_at": "2026-10-23T06:13:12.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": false
+     },
+     {
+      "cycle_id": "pr-1564-498e1c633cdf",
+      "pr": 1564,
+      "started_at": "2026-10-23T06:07:17.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": false
+     },
+     {
+      "cycle_id": "pr-1565-27792087bad7",
+      "pr": 1565,
+      "started_at": "2026-10-23T06:11:05.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": true
+     },
+     {
+      "cycle_id": "pr-1563-8e8a465178d6",
+      "pr": 1563,
+      "started_at": "2026-10-23T05:50:09.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": false
+     },
+     {
+      "cycle_id": "pr-1562-5dc0c8cfbdcd",
+      "pr": 1562,
+      "started_at": "2026-10-23T05:46:05.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": false
+     },
+     {
+      "cycle_id": "pr-1561-7cf55d05bacb",
+      "pr": 1561,
+      "started_at": "2026-10-23T05:17:56.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": false
+     },
+     {
+      "cycle_id": "pr-1560-df4de2af13e5",
+      "pr": 1560,
+      "started_at": "2026-10-23T05:12:34.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": false
+     },
+     {
+      "cycle_id": "pr-1555-9011fa7fb5a4",
+      "pr": 1555,
+      "started_at": "2026-10-22T23:10:01.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": false
+     },
+     {
+      "cycle_id": "pr-47-11b61f8139c2",
+      "pr": 47,
+      "started_at": "2026-08-21T06:00:33.000Z",
+      "delivered": true,
+      "latency_sec": 511.0,
+      "cooldown": false
+     },
+     {
+      "cycle_id": "pr-81-f1d2eef16b75",
+      "pr": 81,
+      "started_at": "2026-09-19T22:59:11.000Z",
+      "delivered": true,
+      "latency_sec": 449.0,
+      "cooldown": false
+     },
+     {
+      "cycle_id": "pr-1554-ddc32b641813",
+      "pr": 1554,
+      "started_at": "2026-10-22T22:20:38.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": false
+     },
+     {
+      "cycle_id": "pr-1553-519c656f2940",
+      "pr": 1553,
+      "started_at": "2026-10-22T22:18:53.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": true
+     },
+     {
+      "cycle_id": "pr-1552-73572bb30f96",
+      "pr": 1552,
+      "started_at": "2026-10-22T22:10:01.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": false
+     },
+     {
+      "cycle_id": "pr-1543-d55580f915a0",
+      "pr": 1543,
+      "started_at": "2026-10-22T22:07:40.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": true
+     },
+     {
+      "cycle_id": "pr-1551-8ed6e82bb45e",
+      "pr": 1551,
+      "started_at": "2026-10-22T21:56:17.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": false
+     },
+     {
+      "cycle_id": "pr-1550-2ab0966f171e",
+      "pr": 1550,
+      "started_at": "2026-10-22T21:32:28.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": false
+     },
+     {
+      "cycle_id": "pr-1549-522f3ba46dfd",
+      "pr": 1549,
+      "started_at": "2026-10-22T21:18:36.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": false
+     },
+     {
+      "cycle_id": "pr-1548-851e046c6316",
+      "pr": 1548,
+      "started_at": "2026-10-22T21:14:57.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": false
+     },
+     {
+      "cycle_id": "pr-1547-d7d55afd6354",
+      "pr": 1547,
+      "started_at": "2026-10-22T20:57:30.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": false
+     },
+     {
+      "cycle_id": "pr-1544-60e2135735e6",
+      "pr": 1544,
+      "started_at": "2026-10-22T18:08:27.000Z",
+      "delivered": true,
+      "latency_sec": 260.0,
+      "cooldown": false
+     },
+     {
+      "cycle_id": "pr-1545-8f013a7efdbe",
+      "pr": 1545,
+      "started_at": "2026-10-22T18:09:07.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": true
+     },
+     {
+      "cycle_id": "pr-1542-446edba39e3d",
+      "pr": 1542,
+      "started_at": "2026-10-22T17:08:55.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": true
+     }
+    ],
+    "devin": [
+     {
+      "cycle_id": "pr-47-11b61f8139c2",
+      "pr": 47,
+      "started_at": "2026-08-21T06:00:33.000Z",
+      "delivered": true,
+      "latency_sec": null,
+      "cooldown": false
+     }
+    ],
+    "qodo": [
+     {
+      "cycle_id": "pr-47-11b61f8139c2",
+      "pr": 47,
+      "started_at": "2026-08-21T06:00:33.000Z",
+      "delivered": true,
+      "latency_sec": 307.0,
+      "cooldown": false
+     }
+    ]
+   }
+  },
+  "delphi_weights": {
+   "panel_defaults": {
+    "OPERATOR": {
+     "base": 1.2,
+     "gate_pass_rate": 0.5,
+     "elo": 1500,
+     "hits": 0,
+     "misses": 0
+    },
+    "builder": {
+     "base": 1.0,
+     "gate_pass_rate": 0.5,
+     "elo": 1500,
+     "hits": 0,
+     "misses": 0
+    },
+    "reviewer": {
+     "base": 1.0,
+     "gate_pass_rate": 0.5,
+     "elo": 1500,
+     "hits": 0,
+     "misses": 0
+    },
+    "Scout": {
+     "base": 0.8,
+     "gate_pass_rate": 0.5,
+     "elo": 1500,
+     "hits": 0,
+     "misses": 0
+    },
+    "cost_auditor": {
+     "base": 1.2,
+     "gate_pass_rate": 0.5,
+     "elo": 1500,
+     "hits": 0,
+     "misses": 0
+    }
+   },
+   "formula": "effective_score = sum(w_i * score_i) / sum(w_i); w_i = base_i * (0.5 + gate_pass_rate_i) * (elo_i / 1500)",
+   "seed_note": "Initial weights are neutral defaults (gate_pass_rate 0.5, elo 1500). The live state is the newest JSON comment on the 'Delphi panel weights ledger' issue; this file is only the cold-start default.",
+   "live_source": "The live weights live on the Delphi weighting ledger, issue #1489 (EWMA/elo lineage); panel.json carries the defaults/seeds, not the live values."
+  }
+ },
+ "gaps": [
+  "No committed machine-readable 3L0 rankings table exists in the repo: rankings are computed at routing time (elo x role suitability x quota multiplier), and no per-model elo values are committed \u2014 the router default of 1000 applies where no elo is recorded.",
+  "Per-response scoring history exists for the reviewer surface (reviewer-metrics, shown above), not as a standalone 3L0 history file."
+ ]
+}

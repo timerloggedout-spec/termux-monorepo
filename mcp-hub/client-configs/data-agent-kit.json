@@ -1,0 +1,120 @@
+{
+  "_comment": "Fleet client config for Google Data Agent Kit - FULL server map (all 11 upstream servers, entries mirror the plugin's mcp_config.json verbatim; paths resolve inside the installed plugin directory - install the plugin first, see docs/ops/DATA-AGENT-KIT-WIRING.md). Readiness classes: day-one on project creation = dak-bigquery, dak-gcs, dak-kc; instance-required (server answers once a fleet instance exists) = dak-alloydb, dak-cloudsql, dak-spanner, dak-bigtable-data, dak-spark; local plugin tooling = dak-notebook, dak-viz; wired but IAM-denied for agents = dak-bigtable (admin plane - the read-only identity holds no admin role and the deny policy blocks non-read-only tools). Auth is ADC with impersonation of the read-only service account in ops/data_agent_kit/guardrail-policy.yaml - never owner user credentials, never a service-account key.",
+  "mcpServers": {
+    "dak-notebook": {
+      "command": "node",
+      "type": "stdio",
+      "args": [
+        "mcp/dist/index.js",
+        "--mode=notebook"
+      ]
+    },
+    "dak-viz": {
+      "command": "node",
+      "type": "stdio",
+      "args": [
+        "mcp/dist/index.js",
+        "--mode=visualization"
+      ]
+    },
+    "dak-alloydb": {
+      "command": "node",
+      "type": "stdio",
+      "args": [
+        "mcp/bin/mcp_proxy_bundle.cjs",
+        "https://alloydb.googleapis.com/mcp"
+      ],
+      "env": {
+        "X_GOOG_PROXY_HEADERS": "{\"User-Agent\":\"datacloud.antigravity\"}"
+      }
+    },
+    "dak-spark": {
+      "command": "node",
+      "type": "stdio",
+      "args": [
+        "mcp/bin/mcp_proxy_bundle.cjs",
+        "https://dataproc-$GCP_REGION.googleapis.com/mcp"
+      ],
+      "env": {
+        "X_GOOG_PROXY_HEADERS": "{\"User-Agent\":\"datacloud.antigravity\"}"
+      }
+    },
+    "dak-bigquery": {
+      "command": "node",
+      "type": "stdio",
+      "args": [
+        "mcp/bin/mcp_proxy_bundle.cjs",
+        "https://bigquery.googleapis.com/mcp"
+      ],
+      "env": {
+        "X_GOOG_PROXY_HEADERS": "{\"User-Agent\":\"datacloud.antigravity\"}"
+      }
+    },
+    "dak-bigtable-data": {
+      "command": "node",
+      "type": "stdio",
+      "args": [
+        "mcp/bin/mcp_proxy_bundle.cjs",
+        "https://bigtable.googleapis.com/mcp"
+      ],
+      "env": {
+        "X_GOOG_PROXY_HEADERS": "{\"User-Agent\":\"datacloud.antigravity\"}"
+      }
+    },
+    "dak-bigtable": {
+      "command": "node",
+      "type": "stdio",
+      "args": [
+        "mcp/bin/mcp_proxy_bundle.cjs",
+        "https://bigtableadmin.googleapis.com/mcp"
+      ],
+      "env": {
+        "X_GOOG_PROXY_HEADERS": "{\"User-Agent\":\"datacloud.antigravity\"}"
+      }
+    },
+    "dak-cloudsql": {
+      "command": "node",
+      "type": "stdio",
+      "args": [
+        "mcp/bin/mcp_proxy_bundle.cjs",
+        "https://sqladmin.googleapis.com/mcp"
+      ],
+      "env": {
+        "X_GOOG_PROXY_HEADERS": "{\"User-Agent\":\"datacloud.antigravity\"}"
+      }
+    },
+    "dak-gcs": {
+      "command": "node",
+      "type": "stdio",
+      "args": [
+        "mcp/bin/mcp_proxy_bundle.cjs",
+        "https://storage.googleapis.com/storage/mcp"
+      ],
+      "env": {
+        "X_GOOG_PROXY_HEADERS": "{\"User-Agent\":\"datacloud.antigravity\"}"
+      }
+    },
+    "dak-kc": {
+      "command": "node",
+      "type": "stdio",
+      "args": [
+        "mcp/bin/mcp_proxy_bundle.cjs",
+        "https://dataplex.googleapis.com/mcp"
+      ],
+      "env": {
+        "X_GOOG_PROXY_HEADERS": "{\"User-Agent\":\"datacloud.antigravity\"}"
+      }
+    },
+    "dak-spanner": {
+      "command": "node",
+      "type": "stdio",
+      "args": [
+        "mcp/bin/mcp_proxy_bundle.cjs",
+        "https://spanner.googleapis.com/mcp"
+      ],
+      "env": {
+        "X_GOOG_PROXY_HEADERS": "{\"User-Agent\":\"datacloud.antigravity\"}"
+      }
+    }
+  }
+}

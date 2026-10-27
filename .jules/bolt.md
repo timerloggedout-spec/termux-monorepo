@@ -93,3 +93,10 @@ In Actions incident deduplication (`actions_incident_dedupe.py`), constructing i
 
 **Action:**
 Always fast-path primary content checks before iterating child collections, and use short-circuiting `any()` generator expressions instead of list materialization when checking presence across collection items.
+
+## 2026-10-25 - Single-Pass Item Matching and Constant Hoisting in Provider Quota Evaluators
+**Learning:**
+In provider quota evaluators (`scripts/provider_quota_coverage.py`), constructing intermediate list comprehensions (`matched = [e for e in evidence if ...]`) during evidence matching forced full list materialization even when duplicate evidence was present. Replacing list comprehensions with a single-pass loop that early-exits upon detecting duplicate evidence avoids temporary list allocations and short-circuits collection scanning. Furthermore, hoisting recursive substring filtering tuples (`_SENSITIVE_SUBSTRINGS`) to module scope eliminates tuple re-allocation per item frame.
+
+**Action:**
+Replace list comprehensions in collection matching loops with single-pass iteration and early exits, and hoist immutable filter tuples to module scope.

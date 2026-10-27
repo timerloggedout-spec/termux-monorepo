@@ -1,0 +1,582 @@
+{
+  "schema": "oracle-panel-feed/v1",
+  "generated_at": "2026-10-27T11:38:06Z",
+  "generator": "scripts/delphi/oracle_panel_feed.py",
+  "sources": {
+    "registry": "docs/proposals/registry.yaml",
+    "registry_updated_at": "2026-10-27T08:52:00Z",
+    "registry_proposals_total": 45,
+    "oracle_method_proposals": 4,
+    "ledger_issue": 1487,
+    "ledger_verified": true
+  },
+  "honesty_rules": [
+    "Show only what the record holds: a value absent from the registry, pass records, or ledger payloads is shown as absent/null, never synthesized.",
+    "Ballot classes with no ballots read as recorded (0 / listed in classes_absent) \u2014 never as implied support.",
+    "UNVERIFIED points and specified_not_run stages are first-class statuses: render them, never hide them.",
+    "Rehearsals are ideation drafts imagining readiness (synthetic fixtures, no real ballots, not registered) and are excluded from results."
+  ],
+  "proposals": [
+    {
+      "id": "delphi-desk-builder-io",
+      "title": "Delphi Desk \u2014 decision-review cockpit for the Builder.io Agent-Native Hackathon",
+      "author": "oracle-method",
+      "status": "in_review",
+      "priority": "P1",
+      "path": "active/delphi-desk-builder-io/",
+      "pass": null,
+      "kind": "single",
+      "generated_at": "2026-10-27T08:18:26Z",
+      "generator": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+      "evidence_items": 117,
+      "description": [
+        "Delphi Desk is a decision-review cockpit: a Delphi-style panel drafts proposals with evidence receipts, and every consequential action (approve / request changes / escalate / annotate) is one defineAction() shared by the human UI and the agent. (evidence: `d3.concept`, `delphistatus:file.blob_sha`)",
+        "The data model mirrors the repo's Delphi envelope and the CMDB conflict matrix (infrastructure registry design, 36 KB on master). (evidence: `cmdb:file.blob_sha`, `delphistatus:file.blob_sha`)",
+        "The starting machinery is operational and demonstrated: the offline Oracle MVP is merged (PR #1620) with a CI receipt, and the D0 package (agent + fetch_evidence tool) is its working seam, completed 2026-10-27. (evidence: `mvppr:pr.merged`, `d0entry:file.blob_sha`)",
+        "The panel runs deterministically and locally, so the demo never depends on an API key. (evidence: `delphistatus:file.blob_sha`, `d0entry:file.blob_sha`)"
+      ],
+      "evidence_basis": {
+        "sets": [
+          {
+            "sha256": "0327c452942eeca9480802300686030d9e9c1e8334e6be96acd24b7c5b4cf034",
+            "items": 117,
+            "assembled_at": "2026-10-27T08:18:19Z"
+          }
+        ],
+        "items": 117,
+        "sources": null,
+        "claim_areas": null
+      },
+      "implementation_summary": null,
+      "unverified_points": [
+        "Publishing a public Clips demo needs no Builder account. (evidence refs unresolved at generation time)"
+      ],
+      "rounds": null,
+      "expectations": null,
+      "implementation": null,
+      "calibration": null,
+      "specified_not_run": [],
+      "ledger": null,
+      "live": true
+    },
+    {
+      "id": "strands-rfp-response-kernel-first",
+      "title": "Strands RFP response \u2014 kernel-first: executable E-05/E-01/E-03 on the merged offline kernel",
+      "author": "oracle-method",
+      "status": "in_review",
+      "priority": "P1",
+      "path": "active/strands-rfp-response-kernel-first/",
+      "pass": "strands-rfp-response",
+      "kind": "pass-candidate",
+      "generated_at": "2026-10-27T08:51:57Z",
+      "generator": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+      "evidence_items": 123,
+      "description": [
+        "The deterministic baseline and frozen fixture corpus already exist and are merged (ITEMS-005 in review), and the kernel's receipt already reports E-01/E-03/E-05 metrics on that cohort. (evidence: `mvppr:pr.merged`, `items.open`)",
+        "The experiment matrix names E-05, E-01, E-03 as the recommended first three, all offline-runnable. (evidence: `matrix.first_three`)",
+        "This strategy closes the kernel side only: the model panel (ITEMS-006) and the deployment (ITEMS-007) stay blocked and are recorded specified_not_run. (evidence: `items.open`)"
+      ],
+      "evidence_basis": {
+        "sets": [
+          {
+            "sha256": "33b2e7ebbe746cbf788e9741eb4ef8b8debefc9fadc7ff3107774a660e0a3156",
+            "items": 123,
+            "assembled_at": "2026-10-27T08:51:39Z"
+          }
+        ],
+        "items": 123,
+        "sources": {
+          "github-api": 121,
+          "strands-proposal-record": 2
+        },
+        "claim_areas": {
+          "rfp": 3,
+          "itemsdoc": 3,
+          "debate": 3,
+          "matrix": 4,
+          "weighting": 3,
+          "d0entry": 3,
+          "mvppr": 103,
+          "items": 1
+        }
+      },
+      "implementation_summary": {
+        "suites": [
+          "e05_adversarial_firewall",
+          "e01_evidence_gate_delta",
+          "e03_counterfactual_replay"
+        ],
+        "pass_rate": 1.0,
+        "evidenced_ratio": 1.0,
+        "all_suites_passed": true
+      },
+      "unverified_points": [],
+      "rounds": {
+        "round_1": {
+          "ranking": [
+            "strands-rfp-response-collection-first",
+            "strands-rfp-response-kernel-first",
+            "strands-rfp-response-packaging-first"
+          ],
+          "rank_of_this": 2,
+          "ballots_by_class": {
+            "HUMAN_COLLABORATOR": 0,
+            "MODEL_PROVIDER": 0,
+            "LOCAL_BASELINE": 5
+          },
+          "scores_by_class": {
+            "HUMAN_COLLABORATOR": null,
+            "MODEL_PROVIDER": null,
+            "LOCAL_BASELINE": 23.269
+          },
+          "classes_absent": [
+            "HUMAN_COLLABORATOR",
+            "MODEL_PROVIDER"
+          ]
+        },
+        "round_2": {
+          "ranking": [
+            "strands-rfp-response-collection-first",
+            "strands-rfp-response-kernel-first",
+            "strands-rfp-response-packaging-first"
+          ],
+          "rank_of_this": 2,
+          "ballots_by_class": {
+            "HUMAN_COLLABORATOR": 0,
+            "MODEL_PROVIDER": 0,
+            "LOCAL_BASELINE": 5
+          },
+          "scores_by_class": {
+            "HUMAN_COLLABORATOR": null,
+            "MODEL_PROVIDER": null,
+            "LOCAL_BASELINE": 25.0
+          },
+          "evidence_set_sha256": "620b67b3eee6a70bb4c290d944a76e1bef2597788fc8c5cdd8d39e9000ba6c48"
+        }
+      },
+      "expectations": {
+        "LOCAL_BASELINE": {
+          "expected_rank": 2,
+          "expected_score": 23.269,
+          "tolerance": 2.0
+        },
+        "BRIEF:delphi-lane": {
+          "expected_rank": 1,
+          "expected_score": 19
+        }
+      },
+      "implementation": {
+        "suites": [
+          {
+            "suite": "e05_adversarial_firewall",
+            "passed": 1,
+            "failed": 0
+          },
+          {
+            "suite": "e01_evidence_gate_delta",
+            "passed": 1,
+            "failed": 0
+          },
+          {
+            "suite": "e03_counterfactual_replay",
+            "passed": 1,
+            "failed": 0
+          }
+        ],
+        "passed": 3,
+        "failed": 0,
+        "suites_total": 3,
+        "suites_passed": 3
+      },
+      "calibration": {
+        "LOCAL_BASELINE": {
+          "rank_delta": 0,
+          "score_delta": 1.731,
+          "within_tolerance": true,
+          "moved_on_evidence": [
+            "full test pass in the implementation round"
+          ]
+        },
+        "BRIEF:delphi-lane": {
+          "rank_delta": 1,
+          "score_delta": 6.0,
+          "within_tolerance": false,
+          "moved_on_evidence": [
+            "full test pass in the implementation round"
+          ]
+        }
+      },
+      "specified_not_run": [
+        {
+          "item": "aws_deployment_ITEMS-007",
+          "reason": "card rule"
+        },
+        {
+          "item": "model_panel_ITEMS-006",
+          "reason": "DELPHI_LLM_MAX=0"
+        }
+      ],
+      "ledger": {
+        "ballot_comment_id": 6437672193,
+        "calibration_comment_id": 6437672608,
+        "verified": true
+      },
+      "live": true,
+      "expectations_recorded_before_implementation": false
+    },
+    {
+      "id": "strands-rfp-response-collection-first",
+      "title": "Strands RFP response \u2014 collection-first: build the DEBATE collection plane (ITEMS-003)",
+      "author": "oracle-method",
+      "status": "in_review",
+      "priority": "P1",
+      "path": "active/strands-rfp-response-collection-first/",
+      "pass": "strands-rfp-response",
+      "kind": "pass-candidate",
+      "generated_at": "2026-10-27T08:51:57Z",
+      "generator": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+      "evidence_items": 123,
+      "description": [
+        "The collection contract (ITEMS-003) is defined in DEBATE.md \u2014 source classes, normalized envelope, workflow states \u2014 but no collector exists; intake is the missing piece. (evidence: `debate:file.blob_sha`, `items.open`)",
+        "A collector built now makes ITEMS-006 executable the moment a no-cost entitlement is validated, without enabling model voting today. (evidence: `debate:file.blob_sha`, `rfp:file.blob_sha`)",
+        "E-06 is its natural first test: tallies must be reconstructable from the collection receipt alone. (evidence: `matrix:file.blob_sha`)"
+      ],
+      "evidence_basis": {
+        "sets": [
+          {
+            "sha256": "33b2e7ebbe746cbf788e9741eb4ef8b8debefc9fadc7ff3107774a660e0a3156",
+            "items": 123,
+            "assembled_at": "2026-10-27T08:51:39Z"
+          }
+        ],
+        "items": 123,
+        "sources": {
+          "github-api": 121,
+          "strands-proposal-record": 2
+        },
+        "claim_areas": {
+          "rfp": 3,
+          "itemsdoc": 3,
+          "debate": 3,
+          "matrix": 4,
+          "weighting": 3,
+          "d0entry": 3,
+          "mvppr": 103,
+          "items": 1
+        }
+      },
+      "implementation_summary": {
+        "suites": [
+          "collector_intake_validation",
+          "collector_dedupe",
+          "e06_receipt_completeness"
+        ],
+        "pass_rate": 1.0,
+        "evidenced_ratio": 1.0,
+        "all_suites_passed": true
+      },
+      "unverified_points": [],
+      "rounds": {
+        "round_1": {
+          "ranking": [
+            "strands-rfp-response-collection-first",
+            "strands-rfp-response-kernel-first",
+            "strands-rfp-response-packaging-first"
+          ],
+          "rank_of_this": 1,
+          "ballots_by_class": {
+            "HUMAN_COLLABORATOR": 0,
+            "MODEL_PROVIDER": 0,
+            "LOCAL_BASELINE": 5
+          },
+          "scores_by_class": {
+            "HUMAN_COLLABORATOR": null,
+            "MODEL_PROVIDER": null,
+            "LOCAL_BASELINE": 23.269
+          },
+          "classes_absent": [
+            "HUMAN_COLLABORATOR",
+            "MODEL_PROVIDER"
+          ]
+        },
+        "round_2": {
+          "ranking": [
+            "strands-rfp-response-collection-first",
+            "strands-rfp-response-kernel-first",
+            "strands-rfp-response-packaging-first"
+          ],
+          "rank_of_this": 1,
+          "ballots_by_class": {
+            "HUMAN_COLLABORATOR": 0,
+            "MODEL_PROVIDER": 0,
+            "LOCAL_BASELINE": 5
+          },
+          "scores_by_class": {
+            "HUMAN_COLLABORATOR": null,
+            "MODEL_PROVIDER": null,
+            "LOCAL_BASELINE": 25.0
+          },
+          "evidence_set_sha256": "620b67b3eee6a70bb4c290d944a76e1bef2597788fc8c5cdd8d39e9000ba6c48"
+        }
+      },
+      "expectations": {
+        "LOCAL_BASELINE": {
+          "expected_rank": 1,
+          "expected_score": 23.269,
+          "tolerance": 2.0
+        },
+        "BRIEF:delphi-lane": {
+          "expected_rank": 2,
+          "expected_score": 16
+        }
+      },
+      "implementation": {
+        "suites": [
+          {
+            "suite": "collector_intake_validation",
+            "passed": 1,
+            "failed": 0
+          },
+          {
+            "suite": "collector_dedupe",
+            "passed": 1,
+            "failed": 0
+          },
+          {
+            "suite": "e06_receipt_completeness",
+            "passed": 1,
+            "failed": 0
+          }
+        ],
+        "passed": 3,
+        "failed": 0,
+        "suites_total": 3,
+        "suites_passed": 3
+      },
+      "calibration": {
+        "LOCAL_BASELINE": {
+          "rank_delta": 0,
+          "score_delta": 1.731,
+          "within_tolerance": true,
+          "moved_on_evidence": [
+            "full test pass in the implementation round"
+          ]
+        },
+        "BRIEF:delphi-lane": {
+          "rank_delta": -1,
+          "score_delta": 9.0,
+          "within_tolerance": false,
+          "moved_on_evidence": [
+            "full test pass in the implementation round"
+          ]
+        }
+      },
+      "specified_not_run": [
+        {
+          "item": "aws_deployment_ITEMS-007",
+          "reason": "card rule"
+        },
+        {
+          "item": "model_panel_ITEMS-006",
+          "reason": "DELPHI_LLM_MAX=0"
+        }
+      ],
+      "ledger": {
+        "ballot_comment_id": 6437672193,
+        "calibration_comment_id": 6437672608,
+        "verified": true
+      },
+      "live": true,
+      "expectations_recorded_before_implementation": false
+    },
+    {
+      "id": "strands-rfp-response-packaging-first",
+      "title": "Strands RFP response \u2014 packaging-first: D0 Lambda shape as the deployment shape, to the account gate",
+      "author": "oracle-method",
+      "status": "in_review",
+      "priority": "P1",
+      "path": "active/strands-rfp-response-packaging-first/",
+      "pass": "strands-rfp-response",
+      "kind": "pass-candidate",
+      "generated_at": "2026-10-27T08:51:57Z",
+      "generator": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+      "evidence_items": 123,
+      "description": [
+        "A working Lambda-shaped packaging of this oracle already exists and is completed (D0): handler, agent, evidence tool, demo receipts \u2014 with deployment claimed nowhere. (evidence: `d0entry:file.blob_sha`)",
+        "E-08 is simulable offline before any account exists, per the experiment matrix. (evidence: `matrix:file.blob_sha`)",
+        "The deployment step itself (ITEMS-007) stays specified_not_run under the card rule; this strategy builds everything up to that gate and nothing past it. (evidence: `items.open`, `rfp:file.blob_sha`)"
+      ],
+      "evidence_basis": {
+        "sets": [
+          {
+            "sha256": "33b2e7ebbe746cbf788e9741eb4ef8b8debefc9fadc7ff3107774a660e0a3156",
+            "items": 123,
+            "assembled_at": "2026-10-27T08:51:39Z"
+          }
+        ],
+        "items": 123,
+        "sources": {
+          "github-api": 121,
+          "strands-proposal-record": 2
+        },
+        "claim_areas": {
+          "rfp": 3,
+          "itemsdoc": 3,
+          "debate": 3,
+          "matrix": 4,
+          "weighting": 3,
+          "d0entry": 3,
+          "mvppr": 103,
+          "items": 1
+        }
+      },
+      "implementation_summary": {
+        "suites": [
+          "handler_conformance",
+          "e08_budget_breaker",
+          "no_deploy_claim"
+        ],
+        "pass_rate": 1.0,
+        "evidenced_ratio": 1.0,
+        "all_suites_passed": true
+      },
+      "unverified_points": [],
+      "rounds": {
+        "round_1": {
+          "ranking": [
+            "strands-rfp-response-collection-first",
+            "strands-rfp-response-kernel-first",
+            "strands-rfp-response-packaging-first"
+          ],
+          "rank_of_this": 3,
+          "ballots_by_class": {
+            "HUMAN_COLLABORATOR": 0,
+            "MODEL_PROVIDER": 0,
+            "LOCAL_BASELINE": 5
+          },
+          "scores_by_class": {
+            "HUMAN_COLLABORATOR": null,
+            "MODEL_PROVIDER": null,
+            "LOCAL_BASELINE": 23.269
+          },
+          "classes_absent": [
+            "HUMAN_COLLABORATOR",
+            "MODEL_PROVIDER"
+          ]
+        },
+        "round_2": {
+          "ranking": [
+            "strands-rfp-response-collection-first",
+            "strands-rfp-response-kernel-first",
+            "strands-rfp-response-packaging-first"
+          ],
+          "rank_of_this": 3,
+          "ballots_by_class": {
+            "HUMAN_COLLABORATOR": 0,
+            "MODEL_PROVIDER": 0,
+            "LOCAL_BASELINE": 5
+          },
+          "scores_by_class": {
+            "HUMAN_COLLABORATOR": null,
+            "MODEL_PROVIDER": null,
+            "LOCAL_BASELINE": 25.0
+          },
+          "evidence_set_sha256": "620b67b3eee6a70bb4c290d944a76e1bef2597788fc8c5cdd8d39e9000ba6c48"
+        }
+      },
+      "expectations": {
+        "LOCAL_BASELINE": {
+          "expected_rank": 3,
+          "expected_score": 23.269,
+          "tolerance": 2.0
+        },
+        "BRIEF:delphi-lane": {
+          "expected_rank": 3,
+          "expected_score": 13
+        }
+      },
+      "implementation": {
+        "suites": [
+          {
+            "suite": "handler_conformance",
+            "passed": 1,
+            "failed": 0
+          },
+          {
+            "suite": "e08_budget_breaker",
+            "passed": 1,
+            "failed": 0
+          },
+          {
+            "suite": "no_deploy_claim",
+            "passed": 1,
+            "failed": 0
+          }
+        ],
+        "passed": 3,
+        "failed": 0,
+        "suites_total": 3,
+        "suites_passed": 3
+      },
+      "calibration": {
+        "LOCAL_BASELINE": {
+          "rank_delta": 0,
+          "score_delta": 1.731,
+          "within_tolerance": true,
+          "moved_on_evidence": [
+            "full test pass in the implementation round"
+          ]
+        },
+        "BRIEF:delphi-lane": {
+          "rank_delta": 0,
+          "score_delta": 12.0,
+          "within_tolerance": false,
+          "moved_on_evidence": [
+            "full test pass in the implementation round"
+          ]
+        }
+      },
+      "specified_not_run": [
+        {
+          "item": "aws_deployment_ITEMS-007",
+          "reason": "card rule"
+        },
+        {
+          "item": "model_panel_ITEMS-006",
+          "reason": "DELPHI_LLM_MAX=0"
+        }
+      ],
+      "ledger": {
+        "ballot_comment_id": 6437672193,
+        "calibration_comment_id": 6437672608,
+        "verified": true
+      },
+      "live": true,
+      "expectations_recorded_before_implementation": false
+    }
+  ],
+  "passes": [
+    {
+      "pass_id": "strands-rfp-response",
+      "n": 3,
+      "candidates": [
+        "strands-rfp-response-kernel-first",
+        "strands-rfp-response-collection-first",
+        "strands-rfp-response-packaging-first"
+      ],
+      "ranked_outcome": [
+        "strands-rfp-response-collection-first",
+        "strands-rfp-response-kernel-first",
+        "strands-rfp-response-packaging-first"
+      ],
+      "record": "docs/proposals/passes/strands-rfp-response/"
+    }
+  ],
+  "excluded": [
+    {
+      "what": "Oracle Method rehearsals on synthetic fixtures",
+      "label": "ideation drafts imagining readiness",
+      "reason": "not registered proposals; no real ballots; never shown as results"
+    }
+  ]
+}

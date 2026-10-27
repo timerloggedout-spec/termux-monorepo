@@ -1,0 +1,94 @@
+name: integration mesh poll
+
+# The Integration Mesh Matrix poll, repo-native (owner order 2026-10-23):
+# this workflow REPLACES the Muse cron poll of the same name. The census
+# that used to run in a chat-side workspace (census*.py + secrets_plus.py +
+# reviews_updated.py via a local PAT helper) now runs here, on a 6h cadence,
+# with the provisioned OPERATOR_GITHUB_TOKEN (fallback: GITHUB_TOKEN, with
+# graceful degradation recorded per section).
+#
+# Landing rules (unchanged from the cron design, plus one upgrade):
+# - Material diffs post as ONE [MUSEai] comment on the standing thread #1505.
+# - UPGRADE: structural changes (or 4 accumulated figure-only polls) also
+#   open/update a labeled `mesh-refresh` issue — findings become tracked
+#   work instead of looping forever as comments.
+# - No change = no comment.
+# - Poller output is NEVER committed (matrix §9 rule 4): the previous
+#   snapshot persists in the Actions cache and each run's snapshot is an
+#   artifact. Nothing here pushes to master.
+
+on:
+  schedule:
+    - cron: '41 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Census + diff only; post nothing'
+        type: boolean
+        default: false
+      force_comment:
+        description: 'Post the diff comment even when nothing changed'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: integration-mesh-poll
+  cancel-in-progress: false
+
+jobs:
+  poll:
+    name: census, diff, land findings on GitHub
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: master
+          fetch-depth: 1
+
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: '3.12'
+
+      - name: Test the poll logic
+        working-directory: scripts/github
+        run: python -m unittest -v test_integration_mesh_poll.py
+
+      - name: Restore previous snapshot (Actions cache — never a commit)
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: mesh-state.json
+          key: integration-mesh-state-${{ github.run_id }}
+          restore-keys: |
+            integration-mesh-state-
+
+      - name: Run the census + diff
+        env:
+          MESH_POLL_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          ARGS=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ "${{ inputs.force_comment }}" = "true" ]; then ARGS="$ARGS --force-comment"; fi
+          python scripts/github/integration_mesh_poll.py $ARGS \
+            --state-in mesh-state.json --state-out mesh-state.json
+
+      - name: Save snapshot for the next run
+        if: always() && hashFiles('mesh-state.json') != ''
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: mesh-state.json
+          key: integration-mesh-state-${{ github.run_id }}
+
+      - name: Upload snapshot artifact (backup channel)
+        if: always() && hashFiles('mesh-state.json') != ''
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: integration-mesh-snapshot-${{ github.run_id }}
+          path: mesh-state.json
+          retention-days: 30

@@ -1,25 +1,26 @@
 {
   "schema": "lane-matrix-sweep/v2",
-  "observed_at": "2026-10-23T17:01:55Z",
+  "observed_at": "2026-10-26T22:09:40Z",
   "repository": "timerloggedout-spec/termux-monorepo",
-  "master_sha": "e60c16986ddc2daab83a3d5a316dfeeefae2b1e0",
+  "master_sha": "8d904097bdf0039c730fab113d0513d72bf94bac",
   "counts": {
-    "open_prs": 60,
+    "open_prs": 77,
     "by_lane": {
-      "SUPERSEDE": 16,
-      "NEED_EVIDENCE": 19,
-      "CANDIDATE": 24,
+      "SUPERSEDE": 26,
+      "NEED_EVIDENCE": 22,
+      "CANDIDATE": 28,
       "EXTRACT": 1
     },
     "by_age": {
-      "ancient": 11,
-      "stale": 16,
-      "fresh": 33
+      "ancient": 12,
+      "stale": 15,
+      "mid": 2,
+      "fresh": 48
     }
   },
   "oldest": {
     "number": 47,
-    "days_open": 79.05,
+    "days_open": 82.27,
     "title": "feat(refTemplates): restore metadata-only skeleton (Option B recovery)",
     "lane": "SUPERSEDE"
   },
@@ -38,7 +39,7 @@
       "changed_files": -1,
       "created_at": "2026-08-05T15:44:30Z",
       "updated_at": "2026-10-23T13:34:06Z",
-      "days_open": 79.05,
+      "days_open": 82.27,
       "age_bucket": "ancient",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -59,8 +60,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-08-05T16:39:27Z",
-      "updated_at": "2026-10-23T13:33:28Z",
-      "days_open": 79.02,
+      "updated_at": "2026-10-26T13:13:13Z",
+      "days_open": 82.23,
       "age_bucket": "ancient",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -82,7 +83,7 @@
       "changed_files": -1,
       "created_at": "2026-08-07T21:52:05Z",
       "updated_at": "2026-10-22T22:25:52Z",
-      "days_open": 76.8,
+      "days_open": 80.01,
       "age_bucket": "ancient",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -104,7 +105,7 @@
       "changed_files": -1,
       "created_at": "2026-08-08T14:48:06Z",
       "updated_at": "2026-10-21T04:40:31Z",
-      "days_open": 76.09,
+      "days_open": 79.31,
       "age_bucket": "ancient",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -125,8 +126,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-08-09T01:01:40Z",
-      "updated_at": "2026-10-23T11:47:26Z",
-      "days_open": 75.67,
+      "updated_at": "2026-10-26T13:13:44Z",
+      "days_open": 78.88,
       "age_bucket": "ancient",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -143,12 +144,12 @@
       "base_ref": "master",
       "base_sha": "aec8efbe9891",
       "head_ref": "jules-12292744322971487197-f3d564f8",
-      "head_sha": "2f32c642e962",
+      "head_sha": "b7e4709b5036",
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-08-09T22:42:25Z",
-      "updated_at": "2026-10-23T17:00:57Z",
-      "days_open": 74.76,
+      "updated_at": "2026-10-24T23:34:10Z",
+      "days_open": 77.98,
       "age_bucket": "ancient",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -165,12 +166,12 @@
       "base_ref": "master",
       "base_sha": "d1cdb35584f4",
       "head_ref": "jules-14387055473036742921-a1c3cf6d",
-      "head_sha": "3d1ef5b9d8f7",
+      "head_sha": "c154540e4b64",
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-08-10T15:24:47Z",
-      "updated_at": "2026-10-23T12:36:59Z",
-      "days_open": 74.07,
+      "updated_at": "2026-10-26T07:41:31Z",
+      "days_open": 77.28,
       "age_bucket": "ancient",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -192,7 +193,7 @@
       "changed_files": -1,
       "created_at": "2026-08-21T18:47:02Z",
       "updated_at": "2026-10-21T03:23:04Z",
-      "days_open": 62.93,
+      "days_open": 66.14,
       "age_bucket": "ancient",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -214,7 +215,7 @@
       "changed_files": -1,
       "created_at": "2026-08-28T05:37:08Z",
       "updated_at": "2026-08-30T11:56:02Z",
-      "days_open": 56.48,
+      "days_open": 59.69,
       "age_bucket": "ancient",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -236,7 +237,7 @@
       "changed_files": -1,
       "created_at": "2026-08-28T06:20:05Z",
       "updated_at": "2026-09-03T22:51:06Z",
-      "days_open": 56.45,
+      "days_open": 59.66,
       "age_bucket": "ancient",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -258,7 +259,7 @@
       "changed_files": -1,
       "created_at": "2026-08-30T08:03:36Z",
       "updated_at": "2026-09-03T20:03:43Z",
-      "days_open": 54.37,
+      "days_open": 57.59,
       "age_bucket": "ancient",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -279,12 +280,12 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-09-15T07:56:20Z",
-      "updated_at": "2026-10-23T11:47:38Z",
-      "days_open": 38.38,
-      "age_bucket": "stale",
-      "lane": "CANDIDATE",
+      "updated_at": "2026-10-26T13:13:09Z",
+      "days_open": 41.59,
+      "age_bucket": "ancient",
+      "lane": "SUPERSEDE",
       "reasons": [
-        "state:unknown"
+        "ancient-no-auto-promote"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/527"
     },
@@ -302,7 +303,7 @@
       "changed_files": -1,
       "created_at": "2026-09-17T08:34:24Z",
       "updated_at": "2026-10-06T07:08:10Z",
-      "days_open": 36.35,
+      "days_open": 39.57,
       "age_bucket": "stale",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -324,7 +325,7 @@
       "changed_files": -1,
       "created_at": "2026-09-18T17:54:07Z",
       "updated_at": "2026-10-23T07:40:01Z",
-      "days_open": 34.96,
+      "days_open": 38.18,
       "age_bucket": "stale",
       "lane": "CANDIDATE",
       "reasons": [
@@ -346,7 +347,7 @@
       "changed_files": -1,
       "created_at": "2026-09-20T18:25:04Z",
       "updated_at": "2026-10-23T13:34:16Z",
-      "days_open": 32.94,
+      "days_open": 36.16,
       "age_bucket": "stale",
       "lane": "CANDIDATE",
       "reasons": [
@@ -363,12 +364,12 @@
       "base_ref": "master",
       "base_sha": "bf45b3eff90c",
       "head_ref": "feat/system-one-experiment-lanes",
-      "head_sha": "ee86859a3628",
+      "head_sha": "111665300905",
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-09-22T13:05:01Z",
-      "updated_at": "2026-10-22T08:24:36Z",
-      "days_open": 31.16,
+      "updated_at": "2026-10-25T00:44:19Z",
+      "days_open": 34.38,
       "age_bucket": "stale",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -390,7 +391,7 @@
       "changed_files": -1,
       "created_at": "2026-09-22T22:21:54Z",
       "updated_at": "2026-09-22T22:22:38Z",
-      "days_open": 30.78,
+      "days_open": 33.99,
       "age_bucket": "stale",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -412,7 +413,7 @@
       "changed_files": -1,
       "created_at": "2026-09-23T03:23:38Z",
       "updated_at": "2026-09-23T03:24:12Z",
-      "days_open": 30.57,
+      "days_open": 33.78,
       "age_bucket": "stale",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -434,7 +435,7 @@
       "changed_files": -1,
       "created_at": "2026-09-23T03:33:34Z",
       "updated_at": "2026-09-23T09:26:30Z",
-      "days_open": 30.56,
+      "days_open": 33.78,
       "age_bucket": "stale",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -456,7 +457,7 @@
       "changed_files": -1,
       "created_at": "2026-09-23T03:42:32Z",
       "updated_at": "2026-09-23T04:00:16Z",
-      "days_open": 30.56,
+      "days_open": 33.77,
       "age_bucket": "stale",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -478,7 +479,7 @@
       "changed_files": -1,
       "created_at": "2026-09-23T07:36:29Z",
       "updated_at": "2026-10-22T22:26:28Z",
-      "days_open": 30.39,
+      "days_open": 33.61,
       "age_bucket": "stale",
       "lane": "CANDIDATE",
       "reasons": [
@@ -500,7 +501,7 @@
       "changed_files": -1,
       "created_at": "2026-09-25T01:06:46Z",
       "updated_at": "2026-09-25T01:08:41Z",
-      "days_open": 28.66,
+      "days_open": 31.88,
       "age_bucket": "stale",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -522,7 +523,7 @@
       "changed_files": -1,
       "created_at": "2026-10-01T01:04:39Z",
       "updated_at": "2026-10-01T01:05:40Z",
-      "days_open": 22.66,
+      "days_open": 25.88,
       "age_bucket": "stale",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -544,7 +545,7 @@
       "changed_files": -1,
       "created_at": "2026-10-01T09:53:01Z",
       "updated_at": "2026-10-21T04:40:59Z",
-      "days_open": 22.3,
+      "days_open": 25.51,
       "age_bucket": "stale",
       "lane": "CANDIDATE",
       "reasons": [
@@ -566,7 +567,7 @@
       "changed_files": -1,
       "created_at": "2026-10-01T12:03:18Z",
       "updated_at": "2026-10-01T12:22:22Z",
-      "days_open": 22.21,
+      "days_open": 25.42,
       "age_bucket": "stale",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -588,7 +589,7 @@
       "changed_files": -1,
       "created_at": "2026-10-02T06:35:56Z",
       "updated_at": "2026-10-23T07:40:13Z",
-      "days_open": 21.43,
+      "days_open": 24.65,
       "age_bucket": "stale",
       "lane": "CANDIDATE",
       "reasons": [
@@ -610,7 +611,7 @@
       "changed_files": -1,
       "created_at": "2026-10-03T12:53:32Z",
       "updated_at": "2026-10-23T07:40:17Z",
-      "days_open": 20.17,
+      "days_open": 23.39,
       "age_bucket": "stale",
       "lane": "CANDIDATE",
       "reasons": [
@@ -632,8 +633,8 @@
       "changed_files": -1,
       "created_at": "2026-10-19T09:18:06Z",
       "updated_at": "2026-10-23T07:40:35Z",
-      "days_open": 4.32,
-      "age_bucket": "fresh",
+      "days_open": 7.54,
+      "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
         "state:unknown"
@@ -654,8 +655,8 @@
       "changed_files": -1,
       "created_at": "2026-10-19T09:43:58Z",
       "updated_at": "2026-10-23T07:40:09Z",
-      "days_open": 4.3,
-      "age_bucket": "fresh",
+      "days_open": 7.52,
+      "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
         "state:unknown"
@@ -676,7 +677,7 @@
       "changed_files": -1,
       "created_at": "2026-10-20T06:16:16Z",
       "updated_at": "2026-10-20T07:17:41Z",
-      "days_open": 3.45,
+      "days_open": 6.66,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -698,7 +699,7 @@
       "changed_files": -1,
       "created_at": "2026-10-21T06:36:50Z",
       "updated_at": "2026-10-21T10:53:39Z",
-      "days_open": 2.43,
+      "days_open": 5.65,
       "age_bucket": "fresh",
       "lane": "EXTRACT",
       "reasons": [
@@ -720,8 +721,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-21T07:48:16Z",
-      "updated_at": "2026-10-23T07:40:23Z",
-      "days_open": 2.38,
+      "updated_at": "2026-10-24T06:29:44Z",
+      "days_open": 5.6,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -743,7 +744,7 @@
       "changed_files": -1,
       "created_at": "2026-10-21T13:05:14Z",
       "updated_at": "2026-10-23T13:34:01Z",
-      "days_open": 2.16,
+      "days_open": 5.38,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -765,7 +766,7 @@
       "changed_files": -1,
       "created_at": "2026-10-21T13:13:33Z",
       "updated_at": "2026-10-23T13:34:11Z",
-      "days_open": 2.16,
+      "days_open": 5.37,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -786,8 +787,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-21T23:38:29Z",
-      "updated_at": "2026-10-23T11:47:28Z",
-      "days_open": 1.72,
+      "updated_at": "2026-10-26T13:13:16Z",
+      "days_open": 4.94,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -809,7 +810,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T02:25:01Z",
       "updated_at": "2026-10-23T07:40:43Z",
-      "days_open": 1.61,
+      "days_open": 4.82,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -830,8 +831,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-22T06:38:59Z",
-      "updated_at": "2026-10-23T13:33:35Z",
-      "days_open": 1.43,
+      "updated_at": "2026-10-26T13:13:47Z",
+      "days_open": 4.65,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -853,7 +854,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T07:32:45Z",
       "updated_at": "2026-10-22T07:33:38Z",
-      "days_open": 1.4,
+      "days_open": 4.61,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -875,7 +876,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T08:00:00Z",
       "updated_at": "2026-10-22T13:58:29Z",
-      "days_open": 1.38,
+      "days_open": 4.59,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -897,7 +898,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T08:16:12Z",
       "updated_at": "2026-10-22T22:26:02Z",
-      "days_open": 1.37,
+      "days_open": 4.58,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -914,12 +915,12 @@
       "base_ref": "master-staging",
       "base_sha": "1a5af217f3ef",
       "head_ref": "cue/1497-operational-device2",
-      "head_sha": "dbb302b5aa4a",
+      "head_sha": "13f795adadcd",
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-22T08:18:59Z",
-      "updated_at": "2026-10-23T11:46:23Z",
-      "days_open": 1.36,
+      "updated_at": "2026-10-26T13:13:50Z",
+      "days_open": 4.58,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -941,7 +942,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T08:20:11Z",
       "updated_at": "2026-10-22T08:23:49Z",
-      "days_open": 1.36,
+      "days_open": 4.58,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -963,79 +964,13 @@
       "changed_files": -1,
       "created_at": "2026-10-22T08:23:03Z",
       "updated_at": "2026-10-22T08:24:30Z",
-      "days_open": 1.36,
+      "days_open": 4.57,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
         "state:unknown"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1516"
-    },
-    {
-      "number": 1517,
-      "title": "test(orchestration): strengthen DAG property and admission coverage",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "373fb420ecff",
-      "head_ref": "test/dag-oracle-state-machine-20261022",
-      "head_sha": "94050f6879be",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-10-22T08:24:53Z",
-      "updated_at": "2026-10-22T08:26:29Z",
-      "days_open": 1.36,
-      "age_bucket": "fresh",
-      "lane": "CANDIDATE",
-      "reasons": [
-        "state:unknown"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1517"
-    },
-    {
-      "number": 1518,
-      "title": "feat(hex): add checksum-backed artifact provenance inventory",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "373fb420ecff",
-      "head_ref": "fix/hex-artifact-provenance-20261022",
-      "head_sha": "c0012d556d92",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-10-22T08:27:01Z",
-      "updated_at": "2026-10-22T08:29:08Z",
-      "days_open": 1.36,
-      "age_bucket": "fresh",
-      "lane": "CANDIDATE",
-      "reasons": [
-        "state:unknown"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1518"
-    },
-    {
-      "number": 1519,
-      "title": "ci(context): validate historical corpus before backfill promotion",
-      "user": "timerloggedout-spec",
-      "bot": false,
-      "draft": false,
-      "base_ref": "master",
-      "base_sha": "373fb420ecff",
-      "head_ref": "fix/context-backfill-validation-20261022",
-      "head_sha": "2fb5f325bb72",
-      "mergeable_state": "unknown",
-      "changed_files": -1,
-      "created_at": "2026-10-22T08:30:59Z",
-      "updated_at": "2026-10-23T13:33:43Z",
-      "days_open": 1.35,
-      "age_bucket": "fresh",
-      "lane": "CANDIDATE",
-      "reasons": [
-        "state:unknown"
-      ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1519"
     },
     {
       "number": 1531,
@@ -1051,7 +986,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T08:38:15Z",
       "updated_at": "2026-10-22T12:32:13Z",
-      "days_open": 1.35,
+      "days_open": 4.56,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1073,7 +1008,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T08:56:42Z",
       "updated_at": "2026-10-22T09:22:22Z",
-      "days_open": 1.34,
+      "days_open": 4.55,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1095,7 +1030,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T09:00:52Z",
       "updated_at": "2026-10-22T09:02:48Z",
-      "days_open": 1.33,
+      "days_open": 4.55,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1117,7 +1052,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T09:04:40Z",
       "updated_at": "2026-10-22T09:07:25Z",
-      "days_open": 1.33,
+      "days_open": 4.55,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -1139,7 +1074,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T11:36:17Z",
       "updated_at": "2026-10-22T11:38:12Z",
-      "days_open": 1.23,
+      "days_open": 4.44,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -1161,7 +1096,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T11:44:27Z",
       "updated_at": "2026-10-22T12:50:29Z",
-      "days_open": 1.22,
+      "days_open": 4.43,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -1183,7 +1118,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T17:16:26Z",
       "updated_at": "2026-10-22T22:08:16Z",
-      "days_open": 0.99,
+      "days_open": 4.2,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1205,7 +1140,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T22:18:51Z",
       "updated_at": "2026-10-22T22:19:32Z",
-      "days_open": 0.78,
+      "days_open": 3.99,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1226,8 +1161,8 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-22T23:21:39Z",
-      "updated_at": "2026-10-23T11:46:14Z",
-      "days_open": 0.74,
+      "updated_at": "2026-10-26T13:13:03Z",
+      "days_open": 3.95,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1244,12 +1179,12 @@
       "base_ref": "master",
       "base_sha": "a1057981e14f",
       "head_ref": "ops/actions-matrix-upgrade-continue-2026-10-23",
-      "head_sha": "e2354dea86eb",
+      "head_sha": "cafb47148f18",
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-23T01:03:39Z",
-      "updated_at": "2026-10-23T16:22:10Z",
-      "days_open": 0.67,
+      "updated_at": "2026-10-23T18:28:41Z",
+      "days_open": 3.88,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1271,7 +1206,7 @@
       "changed_files": -1,
       "created_at": "2026-10-23T07:32:36Z",
       "updated_at": "2026-10-23T07:33:19Z",
-      "days_open": 0.4,
+      "days_open": 3.61,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1288,12 +1223,12 @@
       "base_ref": "master-staging",
       "base_sha": "1a5af217f3ef",
       "head_ref": "docs/agy-mvt-doe-v0-20261023",
-      "head_sha": "b9bbcd85b2c4",
+      "head_sha": "ea16165266f7",
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-23T07:49:25Z",
-      "updated_at": "2026-10-23T13:33:48Z",
-      "days_open": 0.38,
+      "updated_at": "2026-10-24T04:02:40Z",
+      "days_open": 3.6,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -1315,7 +1250,7 @@
       "changed_files": -1,
       "created_at": "2026-10-23T08:06:51Z",
       "updated_at": "2026-10-23T08:07:29Z",
-      "days_open": 0.37,
+      "days_open": 3.59,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1324,26 +1259,466 @@
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1570"
     },
     {
-      "number": 1581,
-      "title": "Vantage cost telemetry (dispatcher Node H) + Tier 3 cadence drift repair (10 lanes)",
+      "number": 1582,
+      "title": "chore(recon): refresh pinned free-provider research",
+      "user": "github-actions[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "9dc6d094b984",
+      "head_ref": "q/provider-recon-fac825701241b05981a6",
+      "head_sha": "6eeb0cb7397f",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-10-23T17:14:33Z",
+      "updated_at": "2026-10-23T17:14:48Z",
+      "days_open": 3.2,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1582"
+    },
+    {
+      "number": 1589,
+      "title": "feat: add Free-Tier Use Value Board",
       "user": "timerloggedout-spec",
       "bot": false,
       "draft": false,
       "base_ref": "master",
-      "base_sha": "e60c16986ddc",
-      "head_ref": "vantage-cost-telemetry",
-      "head_sha": "c25f82feb999",
+      "base_sha": "5373296c4fc0",
+      "head_ref": "feat/free-tier-usage-value-board",
+      "head_sha": "3a40e5fe3268",
       "mergeable_state": "unknown",
       "changed_files": -1,
-      "created_at": "2026-10-23T16:59:51Z",
-      "updated_at": "2026-10-23T17:00:41Z",
-      "days_open": 0.0,
+      "created_at": "2026-10-23T19:24:55Z",
+      "updated_at": "2026-10-25T00:14:45Z",
+      "days_open": 3.11,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
         "state:unknown"
       ],
-      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1581"
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1589"
+    },
+    {
+      "number": 1599,
+      "title": "feat(ci): enforce review justification on dismissed PR reviews",
+      "user": "google-labs-jules[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "eede6685087c",
+      "head_ref": "jules-pr-merge-review-audit-1081120869410233778",
+      "head_sha": "ef3093ca186c",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-10-23T22:32:05Z",
+      "updated_at": "2026-10-23T22:37:54Z",
+      "days_open": 2.98,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1599"
+    },
+    {
+      "number": 1607,
+      "title": "\ud83d\udcd6 Linguist: 1337 cipher notation & steganography",
+      "user": "google-labs-jules[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "2faae22dcf43",
+      "head_ref": "jules/linguist-steganography-notation-12323987124918563199",
+      "head_sha": "04a137355f22",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-10-23T23:36:59Z",
+      "updated_at": "2026-10-26T13:13:19Z",
+      "days_open": 2.94,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1607"
+    },
+    {
+      "number": 1612,
+      "title": "docs(research): map new free LLM catalogs to telemetry gates",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "767eea1c372b",
+      "head_ref": "research/free-llm-catalog-recon-2026-10-23",
+      "head_sha": "56a89e1206aa",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-10-24T01:09:43Z",
+      "updated_at": "2026-10-25T02:39:40Z",
+      "days_open": 2.87,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1612"
+    },
+    {
+      "number": 1614,
+      "title": "ops(actions): matrix continuation + plan scheduled lane-events aggregator for spam reduction",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "7bfd678d90c0",
+      "head_ref": "ops/actions-matrix-upgrade-2026-10-24",
+      "head_sha": "3c1673ad397d",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-10-24T03:02:24Z",
+      "updated_at": "2026-10-24T03:24:07Z",
+      "days_open": 2.8,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1614"
+    },
+    {
+      "number": 1616,
+      "title": "docs(flywheel): add capability overlap audit",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "7bfd678d90c0",
+      "head_ref": "docs/flywheel-capability-overlap-audit",
+      "head_sha": "f4ddde780d56",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-10-24T03:10:50Z",
+      "updated_at": "2026-10-24T03:11:37Z",
+      "days_open": 2.79,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1616"
+    },
+    {
+      "number": 1617,
+      "title": "docs: improve Mintlify agent discoverability and record integration recon",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "1bc51a0676cc",
+      "head_ref": "docs/context7-mintlify-agent-discoverability",
+      "head_sha": "35c1f2bd5bbe",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-10-24T03:18:20Z",
+      "updated_at": "2026-10-25T02:25:16Z",
+      "days_open": 2.79,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1617"
+    },
+    {
+      "number": 1620,
+      "title": "feat(delphi): ship offline Oracle MVP with Gantt and evidence receipts",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "c8c162e5c573",
+      "head_ref": "feat/delphi-oracle-mvp-gantt-20261024",
+      "head_sha": "14f011ac37e8",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-10-24T03:49:02Z",
+      "updated_at": "2026-10-24T05:28:06Z",
+      "days_open": 2.76,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1620"
+    },
+    {
+      "number": 1626,
+      "title": "docs(rfp): add first source-backed mesh provider evidence",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "e6b68c93c6dd",
+      "head_ref": "research/mesh-resiliency-provider-evidence-20261024",
+      "head_sha": "72884472130b",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-10-24T06:10:56Z",
+      "updated_at": "2026-10-24T06:36:09Z",
+      "days_open": 2.67,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1626"
+    },
+    {
+      "number": 1627,
+      "title": "ci(context): wake page-one history coverage bootstrap",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "e6b68c93c6dd",
+      "head_ref": "fix/context-history-bootstrap-trigger-20261024",
+      "head_sha": "7b74e97ea7f0",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-10-24T06:18:41Z",
+      "updated_at": "2026-10-24T06:19:50Z",
+      "days_open": 2.66,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1627"
+    },
+    {
+      "number": 1630,
+      "title": "fix(delphi): gate and deduplicate conversational intake",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "ede9f4bcf0c5",
+      "head_ref": "fix/delphi-intake-hardening-rebased-20261024",
+      "head_sha": "571fb4ac9632",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-10-24T06:55:09Z",
+      "updated_at": "2026-10-24T06:55:51Z",
+      "days_open": 2.64,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1630"
+    },
+    {
+      "number": 1631,
+      "title": "\ud83d\udee1\ufe0f Sentinel: [security improvement] Harden DeepCLI export file permissions and symlink checks",
+      "user": "google-labs-jules[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "bdb82075f0b7",
+      "head_ref": "sentinel/deepcli-export-security-hardening-5124789695062630262",
+      "head_sha": "9c4fb929ce8c",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-10-24T07:18:36Z",
+      "updated_at": "2026-10-24T07:22:16Z",
+      "days_open": 2.62,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1631"
+    },
+    {
+      "number": 1632,
+      "title": "\u26a1 Bolt: optimize hex moneyball export stream serialization",
+      "user": "google-labs-jules[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "004bd0352b8c",
+      "head_ref": "bolt-hex-moneyball-export-opt-6627816218901495557",
+      "head_sha": "11ad92065202",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-10-24T08:12:29Z",
+      "updated_at": "2026-10-24T08:12:48Z",
+      "days_open": 2.58,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1632"
+    },
+    {
+      "number": 1640,
+      "title": "ci: enforce explicit justification for dismissed reviews in merge readiness engine",
+      "user": "google-labs-jules[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "599556ef47b3",
+      "head_ref": "enforce-dismissed-review-justification-2987740640332706324",
+      "head_sha": "8d4903f3540c",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-10-24T22:21:51Z",
+      "updated_at": "2026-10-24T22:23:11Z",
+      "days_open": 1.99,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1640"
+    },
+    {
+      "number": 1642,
+      "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
+      "user": "google-labs-jules[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "8fb93a3f49c7",
+      "head_ref": "jules-9521630560118455494-2da5f614",
+      "head_sha": "bc797513fadc",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-10-24T23:18:10Z",
+      "updated_at": "2026-10-26T13:14:03Z",
+      "days_open": 1.95,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1642"
+    },
+    {
+      "number": 1645,
+      "title": "fix: harden Help-Wanted telemetry and evidence audits",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "683992ec256f",
+      "head_ref": "fix/help-wanted-telemetry-maintenance",
+      "head_sha": "2dab66b406a5",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-10-25T00:28:43Z",
+      "updated_at": "2026-10-25T00:30:39Z",
+      "days_open": 1.9,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1645"
+    },
+    {
+      "number": 1650,
+      "title": "phantom-secrets-audit: comment-wake trigger + #184 ledger report",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "1bcc26518c32",
+      "head_ref": "phantom-audit-wake",
+      "head_sha": "fe37ab59ae8a",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-10-25T02:12:55Z",
+      "updated_at": "2026-10-25T02:14:09Z",
+      "days_open": 1.83,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1650"
+    },
+    {
+      "number": 1655,
+      "title": "[CMDB Design #1654] Infrastructure inventory, ownership, health, and reconciliation",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": true,
+      "base_ref": "master",
+      "base_sha": "a645f944a550",
+      "head_ref": "docs/infrastructure-registry-design-1654",
+      "head_sha": "9714df271d1a",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-10-25T02:31:20Z",
+      "updated_at": "2026-10-26T20:31:17Z",
+      "days_open": 1.82,
+      "age_bucket": "fresh",
+      "lane": "NEED_EVIDENCE",
+      "reasons": [
+        "draft"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1655"
+    },
+    {
+      "number": 1659,
+      "title": "\ud83d\udee1\ufe0f Sentinel: Fix symlink traversal and umask permission exposure in DeepCLI export",
+      "user": "google-labs-jules[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "5b06cd657b49",
+      "head_ref": "fix/sentinel-deepcli-export-symlink-atomic-perm-9392490192023462399",
+      "head_sha": "d2f37b032445",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-10-25T07:32:55Z",
+      "updated_at": "2026-10-25T08:24:38Z",
+      "days_open": 1.61,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1659"
+    },
+    {
+      "number": 1671,
+      "title": "\u26a1 Bolt: pre-compile language regexes and priority map in tribute_system1",
+      "user": "google-labs-jules[bot]",
+      "bot": true,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "c85427145315",
+      "head_ref": "bolt/tribute-system1-perf-opt-14475324276919715414",
+      "head_sha": "276350ba12cc",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-10-26T08:06:29Z",
+      "updated_at": "2026-10-26T08:06:51Z",
+      "days_open": 0.59,
+      "age_bucket": "fresh",
+      "lane": "SUPERSEDE",
+      "reasons": [
+        "bot-no-auto-promote"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1671"
     }
   ],
   "rules": {

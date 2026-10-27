@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# Tier-1 engine proof v2 — EVIDENCE collector, not a benchmark assertion.
+# Tier-1 engine proof v3 — EVIDENCE collector, not a benchmark assertion.
+# v3 adds the WS-level navigation probe (cdp_probe.py): createTarget ->
+# navigate fixture -> Runtime.evaluate extraction, with RSS sampled after.
 #
 # Round-1 lessons baked in (run 39908222462, diagnosed locally before this
 # rewrite): (1) binary discovery must match the EXACT binary name — a glob
@@ -33,7 +35,7 @@ probe_engine() {
     fi
     kill -0 "$pid" 2>/dev/null || break
   done
-  local rss_idle="null" rss_nav="null" new_tab="null"
+  local rss_idle="null" rss_nav="null" new_tab="null" ws_probe="null"
   if [ "$cdp_ok" = "true" ]; then
     sleep 1; rss_idle="$(hwm "$pid")"
     if curl -sf "http://127.0.0.1:$port/json/new?$FIXTURE_URL" >"$work/new.json" 2>/dev/null; then
@@ -41,13 +43,19 @@ probe_engine() {
     else
       new_tab="\"refused-or-unsupported\""
     fi
-    sleep 2; rss_nav="$(hwm "$pid")"
+    # v3: the real navigation test is WS-level (both engines refuse the
+    # HTTP /json/new GET): createTarget -> navigate -> evaluate-extract.
+    local probe_py="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/cdp_probe.py"
+    if [ -f "$probe_py" ]; then
+      ws_probe="$(python3 "$probe_py" "http://127.0.0.1:$port" "$FIXTURE_URL" 2>/dev/null || echo '{"error":"probe crashed"}')"
+    fi
+    sleep 1; rss_nav="$(hwm "$pid")"
   fi
   kill "$pid" 2>/dev/null; wait "$pid" 2>/dev/null
   local serve_log; serve_log="$(tail -c 500 "$work/serve.log" 2>/dev/null | json_escape)"
   cat <<EOF
 {"engine":"$name","binary_ok":true,"arch":"$(uname -m)","cdp_answered":$cdp_ok,
- "cdp_version":$version_json,"new_tab":$new_tab,
+ "cdp_version":$version_json,"new_tab":$new_tab,"ws_probe":$ws_probe,
  "serve_rss_idle_kb":$rss_idle,"serve_rss_after_nav_kb":$rss_nav,
  "help_head":$help_head,"serve_log_tail":$serve_log}
 EOF

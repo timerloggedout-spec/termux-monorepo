@@ -30,10 +30,10 @@ NEXUSCLI_TOKEN, NVIDIA_API_KEY, NVIDIA_NIM_API_KEY, OMNIROUTE_API_KEY,
 OMNI_API_KEY, OPENROUTER_API_KEY, OPERATOR_GITHUB_TOKEN,
 OPERATOR_GITLAB_TOKEN, OPERATOR_MATRIX_PROJECT_URL, OPERATOR_TOKEN,
 PEER_STATE_PUBLISHER_LOGINS, RECON_INTEL_GITLAB_READ_TOKEN, RENDER_API_KEY,
-REPOSITORY_OBSERVATORY_TOKEN, SWE_EVALUATION_API_KEY,
+REPOSITORY_OBSERVATORY_TOKEN, SUPABASE_KEY, SWE_EVALUATION_API_KEY,
 TERMUX_MCP_KNOWN_HOSTS, TERMUX_MCP_SSH_PRIVATE_KEY, TRIBUTE_VERCEL_PROJECTS,
-VANTAGE_PAT_GH_SECRETS, VERCEL_ORG_ID, VERCEL_TOKEN. GITHUB
-_TOKEN is the built-in per-run token.
+VANTAGE_PAT_GH_SECRETS, VERCEL_ORG_ID, VERCEL_TOKEN. GITHUB_TOKEN is the
+built-in per-run token.
 
 Variables in current use include: AUTOMATION_MARKER_PUBLISHER_LOGINS,
 CELLCOG_API_KEY, CELLCOG_CHAT_TIER, CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN,
@@ -44,29 +44,33 @@ OPENROUTER_HEALTH_MODEL, OPERATOR_COMMAND_ACTIONS, OPERATOR_EXECUTOR_LOGINS,
 PEER_ENFORCE_PROVIDER_COMPLETION, PEER_REQUIRED_PROVIDERS,
 RECON_SWEEP_MAX_TARGETS, RECON_SWEEP_WINDOW_HOURS,
 SWE_REFERENCE_EVALUATION_ENABLED, plus QUOTA_EVAL_WATERMARK (created by the
-quota dispatch tree).
+quota dispatch tree) and the scope-reflecting Supabase credential variables
+SUPABASE_ANON_KEY and SUPABASE_PUBLISHABLE_KEY (2026-10-25, see section 3).
 
 
 ## 3. New names required by the quota program
 
 | Name | Class | Value / source | Consumer |
 |---|---|---|---|
-| SUPABASE_URL | variable | lane-state project endpoint (project termux-monorepo-lane-state, us-west-1); value passed out-of-band only — Settings UI (Secrets and variables -> Actions -> Variables tab) or `gh variable set` by a collaborator; never written into public surfaces | quota-dispatch-tree: verdict persistence to dispatch_verdicts |
-| SUPABASE_SERVICE_ROLE_KEY | secret | Supabase dashboard -> Project Settings -> API -> service_role key | quota-dispatch-tree: service-role writes (RLS enabled; no anon policies) |
+| SUPABASE_URL | variable | lane-state project endpoint (project termux-monorepo-lane-state); provisioned via the operator-variable-provision @derive mode: the value is derived in-run from the SUPABASE_KEY secret (project ref from the key), never carried on a public surface (2026-10-25) | quota-dispatch-tree: verdict persistence to dispatch_verdicts |
+| SUPABASE_KEY | secret | LEGACY NAME (2026-10-23, experimental API key plane, expires 2027-10-23). Classification (2026-10-25): the value is publishable/management-plane material — valid against api.supabase.com, not usable for RLS-bypassing writes. KEPT AS-IS (no deletion/rename; retention policy); unused by the dispatcher since #1657. Scope-reflecting successors: SUPABASE_PUBLISHABLE_KEY (variable) and SUPABASE_SERVICE_ROLE_KEY (secret) below. | historical; superseded by scoped names |
+| SUPABASE_PUBLISHABLE_KEY | variable | publishable/management-plane key (scope name per the 2026-10-25 one-scope-one-name rule; the legacy SUPABASE_KEY value class). Public-by-design value; provisioned via the operator-variable-provision ephemeral-branch pattern (2026-10-25) | management-plane probes if a lane needs them; not usable for RLS-bypassing writes |
+| SUPABASE_ANON_KEY | variable | legacy anon JWT (browser/anon scope). Public-by-design value; provisioned via the operator-variable-provision ephemeral-branch pattern (2026-10-25) | quota-dispatch-tree: verdict persistence (anon INSERT on dispatch_verdicts via RLS policy + rate-limit trigger, migration anon_dispatch_verdict_ingest_v2) |
+| SUPABASE_SERVICE_ROLE_KEY | secret | FUTURE service-plane (service-role) key — provision under this scope name when one is created; NEVER overwrite SUPABASE_KEY (no-deletion/no-overwrite retention rule) | future service-role writes if the lane state ever needs beyond-anon access |
 | QUOTA_EVAL_WATERMARK | variable | created/advanced automatically | quota-dispatch-tree: Node E watermark |
 | BIGQUERY_PROJECT_ID | variable | TBD when BigQuery project is chosen | future quota telemetry lane |
 | GCP_BIGQUERY_SA_KEY | secret | GCP service-account JSON key | future quota telemetry lane |
 | BUILDKITE_ORG_SLUG | variable | `founders-are-found-to-implement` | future cross-platform dispatch lane |
 | BUILDKITE_PIPELINE_SLUG | variable | `termux-monorepo` | future cross-platform dispatch lane |
 | BUILDKITE_API_TOKEN | secret | Buildkite API token (read/write builds) | future cross-platform dispatch lane |
-| VANTAGE_PAT_GH_SECRETS | secret | Vantage access token, read scope (console.vantage.sh -> Settings -> API Access Tokens); provisioned 2026-10-23 via repo Settings -> Secrets and variables -> Actions 
-| vantage-cost-report lane: cost telemetry probe (woken 2x/day by dispatcher Node H) |
+| VANTAGE_PAT_GH_SECRETS | secret | Vantage access token, read scope (console.vantage.sh -> Settings -> API Access Tokens); provisioned 2026-10-23 via repo Settings -> Secrets and variables -> Actions | vantage-cost-report lane: cost telemetry probe (woken 2x/day by dispatcher Node H) |
 
 Provision with the CLI:
 
 ```
-gh variable set SUPABASE_URL        --body '<lane-state endpoint>' -R timerloggedout-spec/termux-monorepo   # value passed out-of-band; never into issues/PRs/comments/docs/code
-gh secret   set SUPABASE_SERVICE_ROLE_KEY -R timerloggedout-spec/termux-monorepo   # paste service_role key
+gh variable set SUPABASE_URL        --body '<lane-state endpoint>' -R timerloggedout-spec/termux-monorepo   # legacy route; now provisioned via the provision lane @derive mode (value derived in-run from the SUPABASE_KEY secret)
+gh secret   set SUPABASE_KEY       -R timerloggedout-spec/termux-monorepo   # already provisioned 2026-10-23 (experimental API key, expires 2027-10-23); legacy name — do not overwrite with a different-scope key
+gh secret   set SUPABASE_SERVICE_ROLE_KEY -R timerloggedout-spec/termux-monorepo   # future service-plane key gets its own scope name
 gh variable set BUILDKITE_ORG_SLUG  --body 'founders-are-found-to-implement' -R timerloggedout-spec/termux-monorepo
 gh variable set BUILDKITE_PIPELINE_SLUG --body 'termux-monorepo' -R timerloggedout-spec/termux-monorepo
 ```
@@ -82,8 +86,19 @@ repo Settings -> Secrets and variables -> Actions.
   BUILDKITE_, BIGQUERY_/GCP_), then role (URL, API_TOKEN, SERVICE_ROLE_KEY,
   ORG_ID). Read-only credentials end `_READ_TOKEN` (see
   RECON_INTEL_GITLAB_READ_TOKEN); write credentials end `_TOKEN` or `_API_KEY`.
+- One scope, one name (2026-10-25, binding): when a provider issues multiple
+  credential planes (publishable/management, anon/browser, service-role), each
+  plane gets its own scope-reflecting name — SUPABASE_PUBLISHABLE_KEY,
+  SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY — and none overwrites another.
+  The legacy SUPABASE_KEY name is frozen (kept, never repurposed for a
+  different scope); deleting or renaming provisioned credentials is forbidden
+  (ML-pipeline retention rule, #184).
 - URLs and slugs are variables, never secrets. Keys are secrets, never
-  variables.
+  variables — EXCEPT public-by-design credentials (SUPABASE_ANON_KEY,
+  SUPABASE_PUBLISHABLE_KEY): Supabase publishes these values to browser
+  clients by design, so they are variables; the security boundary is RLS, not
+  secrecy (anon INSERT on dispatch_verdicts only, via a lane/node allowlist
+  policy plus a rate-limit trigger, migration anon_dispatch_verdict_ingest_v2).
 - One name, one meaning: no alias families (DEEPSEEK_TOKEN vs
   DEEPSEEK_TOKEN_PRIMARY already exist — new work must not add more aliases;
   consolidate in #184 instead).
@@ -93,25 +108,36 @@ repo Settings -> Secrets and variables -> Actions.
   issues, PRs, comments, docs, and code by name only (pattern proven with
   VANTAGE_PAT_GH_SECRETS, 2026-10-23). The operator-variable-provision lane
   accepts only already-public values; SUPABASE_URL and the other cross-platform
-  endpoint variables go through the access methods.
+  endpoint variables go through the access methods. One exception
+  (2026-10-25): the operator-variable-provision lane's @derive mode derives a
+  variable's value in-run from a secret (SUPABASE_URL from the SUPABASE_KEY
+  project ref) on the workflow_dispatch channel only — no value ever transits
+  a public surface, so the private-value rule is preserved.
 - Optional integrations must degrade: consumers read
   `secrets.X || ''` / `vars.Y || ''` and skip cleanly when absent
   (pattern proven in quota-dispatch-tree Supabase persistence).
 
 ## 5. Extensions to additional systems
 
-- Supabase: live (lane-state schema). Wire-up needs SUPABASE_URL variable +
-  SUPABASE_SERVICE_ROLE_KEY secret; persistence is dormant until both exist.
+- Supabase: live (lane-state schema). Persistence LIVE since 2026-10-25
+  (#1657): the dispatcher reads `vars.SUPABASE_URL` + `vars.SUPABASE_ANON_KEY`
+  and writes dispatch_verdicts through the anon INSERT policy. Key taxonomy
+  (scope-reflecting names, no overwrites): SUPABASE_KEY (legacy secret,
+  publishable/management-plane value class, kept, unused by the dispatcher);
+  SUPABASE_PUBLISHABLE_KEY (variable, publishable plane);
+  SUPABASE_ANON_KEY (variable, anon plane, dispatcher credential);
+  SUPABASE_SERVICE_ROLE_KEY (reserved secret name for a future service-plane
+  key). Retention rule: nothing is deleted — the audit trail and ML pipelines
+  keep all historical material (#184).
 - BigQuery: define BIGQUERY_PROJECT_ID variable + GCP_BIGQUERY_SA_KEY secret
   when the telemetry dataset from the RFP (#1576) is chosen.
-- Buildkite: cross-platform dispatch per RFP; needs the three BUILDKITE_*
-  names
- above.
+- Buildkite: cross-platform dispatch per RFP; needs the three BUILDKITE_* names
+  above.
 - Vantage: GitHub-side lane delivered — vantage-cost-report.yml
   (workflow_dispatch-only; woken 2x/day by dispatcher Node H, hour % 12 == 1).
-  VANTAGE_PAT_GH_SECRETS was provisioned 2026-10-23 via repo Settings -> Secrets
-  and variables -> Actions, and the lane reads it as its Bearer token; it
-  degrades cleanly if the secret is removed. MCP connector token invalid —
+  VANTAGE_PAT_GH_SECRETS was provisioned 2026-10-23 via repo Settings ->
+  Secrets and variables -> Actions, and the lane reads it as its Bearer token;
+  it degrades cleanly if the secret is removed. MCP connector token invalid —
   re-provision the connector before MCP-side provisioning (workspaces,
   dashboards, budgets, alerts).
 
@@ -138,11 +164,16 @@ public-code scan:
   CLOUDFLARE_ACC... / CLOUDFLARE_API... (CLOUDFLARE_* family).
 - Repository variables confirmed present: only three at snapshot time
   (DEVICE_QUEUE_* / TERMUX_* family values). SUPABASE_URL was absent at
-  snapshot time and is the first variable to provision; after a value-disclosure
-  correction on #184 (2026-10-23) its route is Settings UI / `gh variable set`
-  only — the operator-variable-provision lane is now restricted to already-public
-  values (registry section 4).
+  snapshot time; after a value-disclosure correction on #184 (2026-10-23) its
+  route was Settings UI / `gh variable set` only. 2026-10-25: SUPABASE_URL is
+  provisioned via the operator-variable-provision @derive mode (value derived
+  in-run from the SUPABASE_KEY secret; registry section 4 exception) and
+  SUPABASE_KEY is confirmed in Secrets (experimental API key, expires
+  2027-10-23). Re-verify with the operator-wake `variables` duty.
 - Quota program status: QUOTA_EVAL_WATERMARK is created automatically by the
-  quota-dispatch-tree on first advance; SUPABASE_URL provisioning is pending;
-  SUPABASE_SERVICE_ROLE_KEY (secret) remains a manual Settings/gh-CLI action —
-  no lane or agent can place secret values, by design.
+  quota-dispatch-tree on first advance; SUPABASE_URL, SUPABASE_ANON_KEY and
+  SUPABASE_PUBLISHABLE_KEY are provisioned (2026-10-25); the SUPABASE_KEY
+  secret is present (legacy name, publishable-plane value class — kept frozen,
+  no rotation-overwrite; scope-reflecting successors live in section 3); no
+  lane or agent can place secret values, by design. Dispatcher persistence is
+  live via vars.SUPABASE_URL + vars.SUPABASE_ANON_KEY (#1657).

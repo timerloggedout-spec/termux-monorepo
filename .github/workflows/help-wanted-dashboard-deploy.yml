@@ -154,7 +154,7 @@ jobs:
       - name: Mirror Tribute to /help-wanted/
         uses: peaceiris/actions-gh-pages@v4
         with:
-          personal_token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+          personal_token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
           external_repository: timerloggedout-spec/timerloggedout-spec.github.io
           publish_dir: _tribute
           destination_dir: help-wanted
@@ -175,7 +175,7 @@ jobs:
       - name: Mirror Matrix to /matrix/
         uses: peaceiris/actions-gh-pages@v4
         with:
-          personal_token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+          personal_token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
           external_repository: timerloggedout-spec/timerloggedout-spec.github.io
           publish_dir: _matrix
           destination_dir: matrix

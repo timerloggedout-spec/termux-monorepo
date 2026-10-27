@@ -64,7 +64,9 @@ def test_promotion_state_machine():
 def test_probe_plan_is_ordered_and_write_annotated():
     ops = {o["operation_id"]: o for o in reg()["operations"]}
     plan = waf.plan_probes(ops["reports.list"])
-    assert plan[0]["id"] == "exact-replay"
+    # Probing = finding the DOMs from the request: discovery leads.
+    assert [p["id"] for p in plan[:3]] == ["request-inventory", "dom-attribution",
+                                           "dom-data-source"]
     assert plan[-1]["id"] == "controlled-error"
     write_plan = waf.plan_probes(ops["reports.export"])
     assert all("note" in p for p in write_plan)
@@ -134,6 +136,8 @@ BRIEF = {
     "device_class": "b160v-on-device",
     "authorization": {"basis": "operator account", "scope_domains": ["shop.example.com"],
                       "state_changing": False},
+    "surfaces": ["github-issue", "cli"], "evidence_expectation": "reproduced",
+    "submitter": "inventory{atlas}",
 }
 
 
@@ -171,6 +175,94 @@ def test_intake_via_jsonl_builtin():
     assert not out["ok"] and out["error"]["code"] == "bad_brief"
 
 
+ISSUE_BODY = """### Target ID
+
+example-shop
+
+### Target URL or domain
+
+https://shop.example.com/catalog
+
+### Purpose
+
+api-extraction
+
+### Authorization basis
+
+operator account
+
+### Scope domains
+
+shop.example.com
+
+### Side effect
+
+read
+
+### State-changing authorization
+
+no
+
+### Probe budget
+
+24
+
+### Execution venue
+
+b160v-on-device
+
+### Surfaces requested
+
+github-issue, cli
+
+### Evidence expectation
+
+reproduced
+
+### Submitter Role{Moniker}
+
+inventory{atlas}
+
+### Notes for the dispatcher
+
+_No response_
+"""
+
+
+def test_issue_form_parses_into_the_same_brief():
+    brief = waf.parse_issue_form(ISSUE_BODY)
+    assert brief == BRIEF  # identical to the hand-written JSON brief
+    assert waf.validate_brief(brief) == []
+
+
+def test_issue_form_write_requires_checked_box():
+    body = ISSUE_BODY.replace("### Side effect\n\nread", "### Side effect\n\nwrite")
+    brief = waf.parse_issue_form(body)
+    assert brief["authorization"]["state_changing"] is False
+    assert any("state_changing" in e for e in waf.validate_brief(brief))
+    yes = body.replace("### State-changing authorization\n\nno",
+                       "### State-changing authorization\n\nyes")
+    assert waf.parse_issue_form(yes)["authorization"]["state_changing"] is True
+    assert waf.validate_brief(waf.parse_issue_form(yes)) == []
+    # Legacy v1 checkbox rendering still parses (issues filed from it exist).
+    legacy = body.replace("### State-changing authorization\n\nno",
+                          "### State-changing authorization\n\n"
+                          "- [X] This brief authorizes state-changing (write) operations on the target")
+    assert waf.parse_issue_form(legacy)["authorization"]["state_changing"] is True
+
+
+def test_issue_form_out_of_scope_domain_is_refused():
+    body = ISSUE_BODY.replace("### Scope domains\n\nshop.example.com",
+                               "### Scope domains\n\nother.example")
+    assert any("outside authorization.scope_domains" in e
+               for e in waf.validate_brief(waf.parse_issue_form(body)))
+
+
+def test_render_plan_markdown_names_the_stack():
+    md = waf.render_plan_markdown(waf.plan_from_brief(BRIEF, waf.load_taxonomy()))
+    assert "example-shop" in md and "rever-browser" in md and "schemathesis" in md.lower()
+
+
 def test_jsonl_round_trip_stdout_is_protocol_only():
     inp = io.StringIO(
         '{"id":"a","operation":"foundry.ping"}\n'
@@ -184,3 +276,90 @@ def test_jsonl_round_trip_stdout_is_protocol_only():
     assert parsed[0]["ok"] and parsed[0]["id"] == "a"
     assert parsed[1]["error"]["code"] == "bad_json"
     assert "reports.list" in parsed[2]["data"]["operations"]
+
+
+# ------------------------------------------------- template submission (2026)
+
+CANONICAL_FORM_BODY = """### Target ID
+
+example-shop
+
+### Target URL or domain
+
+https://shop.example.com/catalog
+
+### Purpose
+
+api-extraction
+
+### Authorization basis
+
+Operator owns this storefront account; read-only catalogue access for price monitoring.
+
+### Scope domains
+
+shop.example.com
+
+### Side effect
+
+read
+
+### State-changing authorization
+
+no
+
+### Probe budget
+
+24
+
+### Execution venue
+
+remote-service
+
+### Surfaces requested
+
+github-issue, cli, jsonl, chat, http-facade
+
+### Evidence expectation
+
+reproduced
+
+### Submitter Role{Moniker}
+
+inventory{atlas}
+
+### Notes for the dispatcher
+
+_No response_
+"""
+
+
+def test_submission_template_fields_validate():
+    assert waf.validate_brief(BRIEF) == []
+    assert any("surfaces" in e for e in waf.validate_brief(dict(BRIEF, surfaces=["smoke-signal"])))
+    assert any("surfaces" in e for e in waf.validate_brief(dict(BRIEF, surfaces=[])))
+    assert any("evidence_expectation" in e for e in
+               waf.validate_brief(dict(BRIEF, evidence_expectation="vibes")))
+    assert any("submitter" in e for e in waf.validate_brief(dict(BRIEF, submitter="atlas")))
+    assert any("submitter" in e for e in waf.validate_brief(dict(BRIEF, submitter="{atlas}")))
+    minimal = {k: v for k, v in BRIEF.items()
+               if k not in ("surfaces", "evidence_expectation", "submitter")}
+    assert waf.validate_brief(minimal) == []  # optional on every surface
+    plan = waf.plan_from_brief(minimal, waf.load_taxonomy())
+    assert plan["surfaces"] == list(waf.SURFACES)
+    assert plan["evidence_expectation"] == "reproduced" and plan["submitter"] is None
+
+
+def test_canonical_template_same_brief_every_surface():
+    canonical = json.loads((ROOT / "ops" / "web_adapter_foundry" / "examples"
+                            / "target-brief.example.json").read_text())
+    assert waf.validate_brief(canonical) == []
+    parsed = waf.parse_issue_form(CANONICAL_FORM_BODY)  # GitHub-form rendering
+    assert parsed == canonical  # ... parses back to the exact canonical brief
+    assert (waf.plan_from_brief(parsed, waf.load_taxonomy())
+            == waf.plan_from_brief(canonical, waf.load_taxonomy()))
+
+
+def test_plan_markdown_carries_submission_fields():
+    md = waf.render_plan_markdown(waf.plan_from_brief(BRIEF, waf.load_taxonomy()))
+    assert "inventory{atlas}" in md and "github-issue" in md and "reproduced" in md

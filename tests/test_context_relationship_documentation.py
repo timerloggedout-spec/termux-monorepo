@@ -8,7 +8,7 @@ def read(relative_path):
 
 
 def test_agents_routes_nontrivial_work_to_context_reconnaissance_and_skill():
-    content = read("AGENTS.md")
+    content = read("AGENTS.hum.md")
 
     assert "context-relationship-reconnaissance.md" in content
     assert ".agents/skills/context-relationship-graph/SKILL.md" in content

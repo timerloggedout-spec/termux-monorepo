@@ -93,7 +93,8 @@ complete the entry even though its window has passed, because we entered it."
 The finished package is recorded as packet **D0** (§4) with a completion date
 of **Thu Oct 29, 2026**. A post-window completion is not a submission and does
 not change the verified count above; if the platform is ever found to accept
-the filing, that will be recorded here with its own evidence.
+the filing, that will be recorded here with its own evidence. **Completed
+2026-10-27** — see the D0 completion record in §4.
 
 ## 3. Candidate opportunities (deadline after 2026-10-26)
 
@@ -143,7 +144,7 @@ each other):
 
 | When (PT) | Focus |
 |-----------|-------|
-| Oct 27–29 | **D0 Weekend Challenge completion package — due Thu Oct 29** (predecessor: D1 reuses this agent work); D3 scaffold + core actions (build window open since Oct 19); D1 agent drafted locally, published in-window; D2 registration/sandbox recon |
+| Oct 27–29 | **D0 Weekend Challenge completion package — COMPLETED Oct 27** (PR #1702; predecessor: D1 reuses this agent work); D3 scaffold + core actions (build window open since Oct 19); D1 agent drafted locally, published in-window; D2 registration/sandbox recon |
 | Oct 28 | D1 window opens — workshop completion (owner account) + agent repo goes public |
 | Oct 30–Nov 1 | **D3 build weekend (concentrated)**; Kiroween window opens Oct 30 — no project creation (owner sequencing) |
 | Nov 2 | D3 Clips demo + submit by 11:59 PM PT |
@@ -155,7 +156,7 @@ each other):
 profile (§2).** It gates D1 directly and is the first blocker surfaced wherever
 a submission path reaches an owner-account step.
 
-### D0 — for R2, Weekend Challenge: Give your Agent a Tool — COMPLETION (owner ruling 2026-10-27)
+### D0 — for R2, Weekend Challenge: Give your Agent a Tool — COMPLETED 2026-10-27 (owner ruling 2026-10-27; date set: Oct 29)
 
 `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]`
 
@@ -178,11 +179,13 @@ a submission path reaches an owner-account step.
   - *Why:* the fleet's standing rule is evidence over claims; this is that
     rule as a tool. It is also the exact seam between the Delphi material and
     D1's Decider-gated agent.
-  - *AWS service:* the tool is packaged as an **AWS Lambda** handler behind a
-    Strands agent (the Decider pattern targets Amazon Bedrock). The
-    completion record runs it locally against this public repo — no AWS
-    account exists (card rule), and nothing in the package claims a live AWS
-    deployment.
+  - *AWS service:* the would-be deployment is an **AWS Lambda** handler
+    behind a Strands agent (the Decider pattern targets Amazon Bedrock) —
+    that deployment remains a **proposal** (no AWS account exists; card
+    rule). Per the Delphi lane's angle (PR #1701), the deliverable is the
+    decision machinery itself, already running in this repo; the packaged
+    handler is dependency-free and runs locally unchanged. Nothing claims a
+    live AWS deployment.
   - *Demo:* <3-minute scripted walkthrough (no-evidence request → ABSTAIN;
     tool fetches the PR's real checks → ALLOW_RECOMMENDATION with receipt;
     credential-mutation request → ESCALATE), with the real run output captured
@@ -194,6 +197,19 @@ a submission path reaches an owner-account step.
   filing is not accepted. The finished package stands as the completion
   record. (Submission would additionally require the owner's signed-in
   account and the completed profile, §2.)
+- **Completion record (2026-10-27):** package built by the Delphi lane and
+  landed as PR #1702, merged **aa110a5e** (both gates green, zero failed
+  checks) — `agent.py` (MVP deterministic-oracle kernel as decision core),
+  `fetch_evidence.py`, `lambda_handler.py`, `ENTRY.md` (the entry as it
+  would have been submitted, under the new angle), `demo.py` +
+  `demo-script.md`, `evidence/demo-run.json`, and
+  `tests/test_weekend_challenge_delphi_oracle.py` (5 offline tests,
+  passing). Captured real run against this repo: asserted evidence only →
+  **ABSTAIN** (0 API calls); `fetch_evidence` on PR #1620 → 103 stamped
+  evidence items → **ALLOW_RECOMMENDATION**; `credential_mutation` with
+  material evidence → **ESCALATE**. Verified on master by this lane
+  (history scan + package content read, 2026-10-27). Completed two days
+  ahead of the set date; D1 inherits the agent + tool as scheduled.
 
 ### D1 — for C1, Workshop to Ship — IN PROGRESS (owner already joined)
 

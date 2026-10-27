@@ -28,7 +28,7 @@ kit:
 
 freemium:
   program: "Google Cloud Free Trial + Always Free"
-  trial: "$300 credit, 90 days from signup; card required for identity verification; no automatic charge or upgrade — resources stop at trial end, 30-day grace before deletion. Eligibility: account never a paying GCP customer, trial never used."
+  trial: "BLOCKED (owner ruling, 2026-10-26: the credit card is a block). $300 credit / 90 days would require a card for identity verification; that route is closed while the block stands. If it lifts: no automatic charge or upgrade at trial end, 30-day grace before deletion; eligibility = account never a paying GCP customer, trial never used."
   always_free_relevant:
     - "BigQuery: 1 TiB query processing/month + 10 GiB storage"
     - "Cloud Storage: 5 GiB regional storage (US regions)"
@@ -38,10 +38,16 @@ freemium:
     runbook) BEFORE the owner creates the account. The 90-day trial clock
     starts at signup; credits are spent on usage and evaluation, never on
     setup. Budget alert is set on day 0 (alerts notify; they do not cap).
-  steady_state: >
-    After the trial, the read-only telemetry workload fits inside Always
-    Free allowances; nothing in this wiring requires a paid SKU to keep
-    operating at fleet scale.
+  operating_mode: >
+    NO-CARD (current): a project with no billing account runs BigQuery in
+    sandbox mode — 1 TiB queries/month, 10 GiB storage LIFETIME, all tables
+    expire at 60 days, no streaming/DML/Data Transfer Service. Safe for the
+    fleet because sandbox tables are a regenerable scratch copy of repo
+    artifacts, never the system of record. Cloud Storage and Dataplex/
+    Knowledge Catalog require billing and stay pending while the card
+    block stands. If billing is ever attached, the Always Free allowances
+    (BigQuery 1 TiB/mo + 10 GiB storage, GCS 5 GiB) cover the steady
+    read-only workload and the project graduates with no re-wiring.
 
 placeholders:
   project: "<GCP_PROJECT_ID>"        # no fleet GCP project exists yet (owner item)
@@ -73,20 +79,20 @@ servers:
       - { role: roles/bigquery.dataViewer, scope: "dataset <GCP_PROJECT_ID>.fleet_telemetry only" }
       - { role: roles/bigquery.jobUser, scope: "project (run queries; grants no data write)" }
     cost_guard: "Set maximum_bytes_billed on the telemetry dataset at creation (enforced version of the dry-run rule)."
-    fleet_use: "Telemetry / provenance / reviewer-metrics / quota analysis (MVT-DoE lane). A BigQuery connector entry already exists in the ML pipeline registry (ml/pipelines/recon09/connectors.py)."
+    fleet_use: "Telemetry / provenance / reviewer-metrics / quota analysis (MVT-DoE lane). A BigQuery connector entry already exists in the ML pipeline registry (ml/pipelines/recon09/connectors.py). Under the card block this is the one day-one server that ACTIVATES: sandbox mode on a billing-less project (see freemium.operating_mode); loads are batch load jobs (no DML/streaming in sandbox); maximum_bytes_billed applies on billing-enabled projects — in sandbox the 1 TiB/mo cap is the enforced cost control."
   - server: dak-gcs
     endpoint: https://storage.googleapis.com/storage/mcp
     readiness: day_one
     enforced_roles:
       - { role: roles/storage.objectViewer, scope: "bucket gs://<GCP_PROJECT_ID>-evidence only" }
-    fleet_use: "Evidence artifacts adjunct storage (read-only)."
+    fleet_use: "Evidence artifacts adjunct storage (read-only). REQUIRES BILLING: pending while the owner card block stands (Firebase Spark no longer includes Storage — Blaze-only since 2026-02-03)."
   - server: dak-kc
     endpoint: https://dataplex.googleapis.com/mcp
     readiness: day_one
     enforced_roles:
       - { role: roles/datacatalog.viewer, scope: "project (Knowledge Catalog read/discovery)" }
     note: "If the Dataplex endpoint requires roles/dataplex.viewer instead, grant that at provisioning and record the substitution here."
-    fleet_use: "Knowledge Catalog discovery + lineage over the wired services."
+    fleet_use: "Knowledge Catalog discovery + lineage over the wired services. REQUIRES BILLING (Dataplex): pending while the owner card block stands."
   - server: dak-alloydb
     endpoint: https://alloydb.googleapis.com/mcp
     readiness: instance_required
@@ -215,7 +221,7 @@ provisioning:
 
 owner_items:
   - id: gcp-project-and-billing
-    item: "Create the fleet GCP project + free-trial billing account (card for identity verification; $300/90-day trial; no auto-charge). Fleet recon 2026-10-21 (PR #1511): no fleet GCP presence exists. EVERYTHING repo-side is already wired, so the trial clock funds usage only."
+    item: "Create the fleet GCP project WITHOUT billing (owner ruling 2026-10-26: credit card is a BLOCK — the trial/billing route is closed). A billing-less project activates the BigQuery sandbox, the fleet primary need; GCS + Knowledge Catalog stay pending-billing. Fleet recon 2026-10-21 (PR #1511): no fleet GCP presence exists. Everything repo-side is already wired; the only owner action left is the sign-in session below."
   - id: gcp-signin-path
     item: "gcloud auth / ADC sign-in for the owner Google account — prompts land on the origin B160V (broken screen); plan the session."
   - id: telemetry-hook-review

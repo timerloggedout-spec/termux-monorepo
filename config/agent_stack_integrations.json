@@ -284,6 +284,172 @@
         "Cannot touch GitHub Actions lanes, the PAT-helper route, on-device Termux/B160V lanes, or vendor-hosted agent surfaces (Jules/Grok/Manus) - it hosts only the execution half of a fleet-built, GCP-hosted agent, of which the fleet currently has none.",
         "Mirror proposals (fleet-native, owner/lane decision, not implemented by the comparison): prefer short-lived per-workflow credentials over new long-lived Actions secrets; put a credential-swap proxy in any future agent tool-egress path instead of injecting secrets into the agent environment."
       ]
+    },
+    {
+      "id": "deepseek-deepinfer",
+      "project": "DeepSeek DeepInfer (open-source production inference framework)",
+      "source": "https://github.com/deepseek-ai/DeepInfer",
+      "version": "repo created 2026-10-16; announced 2026-10-20; Apache-2.0",
+      "role": "production-inference-engine-pattern-reference",
+      "status": "WATCH",
+      "horizon": "H1",
+      "evidence_status": "confirmed",
+      "capabilities": [
+        "offline inference for DeepSeek-V4.1-Flash only; NVIDIA SM100 (CUDA 13) and Huawei Ascend 950 (CANN 9.2)",
+        "DSpark speculative decoding with confidence-scheduled verification integrated as a serving feature",
+        "batch-invariant inference and deterministic sampling (fixed seq_seed) as explicit toggles",
+        "structured outputs constrained by regex, JSON schema or EBNF grammar",
+        "kernels: FlashMLA, DeepGEMM, DeepEP, TileKernels, DeepSelect; attention-DP / balanced CP, MoE EP + EPLB, SWA bounded replay, zero-overhead async scheduling"
+      ],
+      "integration_mode": "pattern reference only; no deployment (datacenter hardware the fleet does not own). Lessons L2/L4/L6 in docs/ops/DEEPSEEK-INFERENCE-RELEASE-AND-BURIED-TECH-2026-10-26.md",
+      "required_exports": [
+        "none today; if a self-host lane ever evaluates it: batch-invariance/seed settings and batch composition recorded as evidence fields per run"
+      ],
+      "hard_gate": "The open release is the compute core, not a serving system: its README lists no KV cache system, no prefill/decode disaggregation, no load balancing. Vendor production figures circulating in press (155T tokens/day, 96% input cache hit, ~400 ms TTFT) describe the unreleased surround and are not a benchmark for fleet expectations.",
+      "unresolved_questions": [
+        "Online serving scope: the release is offline-only; whether/when DeepSeek publishes the serving surround is unknown.",
+        "Hardware: SM100/Ascend-950 only - no path to fleet hardware (B160V law; no GPU estate). Revisit only if a fleet cloud/GPU lane exists."
+      ]
+    },
+    {
+      "id": "deepseek-deepspec-dspark",
+      "project": "DeepSeek DeepSpec + DSpark (speculative-decoding draft-model training)",
+      "source": "https://github.com/deepseek-ai/DeepSpec",
+      "version": "repo 2026-06-26; DSpark paper arXiv:2607.05147 (submitted 2026-07-06); MIT",
+      "role": "speculative-decoding-draft-training-pipeline",
+      "status": "WATCH",
+      "horizon": "H1",
+      "evidence_status": "confirmed",
+      "capabilities": [
+        "full-stack pipeline: target-answer regeneration, target cache build, draft training, acceptance evaluation on a fixed suite (gsm8k, math500, aime25, humaneval, mbpp, livecodebench, mt-bench, alpaca, arena-hard-v2)",
+        "three draft algorithms in one harness: DSpark (semi-autoregressive drafter + confidence-scheduled verification), DFlash, Eagle3; released checkpoints for Qwen3-4B/8B/14B and Gemma-4-12B targets",
+        "paper-reported production result: +60-85% per-user generation speed vs the MTP-1 baseline at matched throughput in the DeepSeek-V4 serving system (DeepSeek-reported, not independently reproduced)"
+      ],
+      "integration_mode": "methods reference for verification scheduling and acceptance telemetry (lessons L2/L3 in the companion doc); no draft training run by the fleet today",
+      "required_exports": [
+        "if ever piloted: per-drafter acceptance rate and accepted length per eval suite, recorded as DoE evidence"
+      ],
+      "hard_gate": "Data cost dominates: DeepSpec's own README warns the target cache for its default Qwen3-4B configuration is roughly 38 TB. No pilot without a storage/regeneration budget.",
+      "unresolved_questions": [
+        "Whether any fleet self-host lane (llama.cpp-class) can use a trained draft at B160V scale is untested; DeepSpec's own defaults assume an 8-GPU node.",
+        "Builds on the SGLang community's SpecForge framework - draft training is commoditizing; the durable asset is target-generated data plus acceptance telemetry, not the training code."
+      ]
+    },
+    {
+      "id": "mooncake-kvcache",
+      "project": "Mooncake (KVCache-centric disaggregated serving platform, Moonshot AI / kvcache-ai)",
+      "source": "https://github.com/kvcache-ai/Mooncake",
+      "version": "FAST 2025 Best Paper; repo active (pushed 2026-10-26); serves as SGLang's KV cache backend",
+      "role": "kv-cache-centric-disaggregated-serving-reference",
+      "status": "WATCH",
+      "horizon": "H1",
+      "evidence_status": "confirmed",
+      "capabilities": [
+        "prefill/decode disaggregation organized around a distributed KV cache (Mooncake Store) rather than around compute",
+        "the production serving platform behind Moonshot's Kimi service",
+        "open-sourced anonymized production request traces for reproducible serving research",
+        "global KV pooling and cache reuse across PD pipelines (integrations: SGLang, FastDeploy, vLLM-ecosystem tooling)"
+      ],
+      "integration_mode": "architecture reference for cache-economics lesson L6; its published traces are candidate DoE workload evidence. No fleet deployment (no GPU serving estate)",
+      "required_exports": [
+        "none today"
+      ],
+      "hard_gate": "Pattern reference only until the fleet operates its own serving; API-lane prompt construction (prefix stability, cache-hit telemetry) is the applicable surface today.",
+      "unresolved_questions": [
+        "Revisit if a fleet self-host or overflow-compute lane (see skypilot-compute-broker) ever materializes."
+      ]
+    },
+    {
+      "id": "lmcache-cacheblend",
+      "project": "LMCache + CacheBlend (KV cache layer; non-prefix KV reuse for RAG)",
+      "source": "https://github.com/LMCache/LMCache",
+      "version": "CacheBlend: Yao et al., EuroSys 2025, arXiv:2405.16444; LMCache paper arXiv:2510.09665; repo active (pushed 2026-10-26)",
+      "role": "kv-cache-reuse-layer-nonprefix",
+      "status": "WATCH",
+      "horizon": "H2",
+      "evidence_status": "confirmed",
+      "capabilities": [
+        "KV cache storage/reuse layer across engines and instances (offload, sharing, compression)",
+        "CacheBlend: reuse precomputed KV for chunks at any prompt position, selectively recomputing a small token subset to restore cross-attention quality - paper-reported TTFT down 2.2-3.3x and throughput up 2.8-5x vs full recompute",
+        "defines the frontier beyond provider prefix caching for retrieval-heavy (multi-chunk) prompts"
+      ],
+      "integration_mode": "expectations reference for context-reuse design on API lanes; no fleet deployment (no self-host serving)",
+      "required_exports": [
+        "none today"
+      ],
+      "hard_gate": "Benefits accrue inside a serving stack the fleet does not run; on API lanes the transferable content is prompt/context engineering expectations, not the layer itself.",
+      "unresolved_questions": [
+        "Whether major API providers expose non-prefix cache reuse semantics (today: prefix caching only) - recheck at provider changelog reviews."
+      ]
+    },
+    {
+      "id": "trailofbits-buttercup",
+      "project": "Buttercup (Trail of Bits Cyber Reasoning System, DARPA AIxCC)",
+      "source": "https://github.com/trailofbits/buttercup",
+      "version": "open-sourced after AIxCC (2025); repo active (pushed 2026-10-19)",
+      "role": "autonomous-vulnerability-find-and-patch-crs",
+      "status": "INVESTIGATE",
+      "horizon": "H1",
+      "evidence_status": "confirmed",
+      "capabilities": [
+        "autonomous pipeline that finds and patches software vulnerabilities (a full CRS, not a scanner)",
+        "built by Trail of Bits for the DARPA AI Cyber Challenge; competition-grade provenance",
+        "open source with a small public footprint relative to capability (1.7k stars at observation)"
+      ],
+      "integration_mode": "scoped evaluation candidate against this repo's security-evidence workflow (ECC findings disposition is findings-only today; Buttercup is the adjacent find-and-patch capability)",
+      "required_exports": [
+        "an evaluation would emit: target scope, findings with repro evidence, proposed patches as PRs - all through the normal review gates, nothing auto-merged"
+      ],
+      "hard_gate": "No autonomous patching of fleet code without the standard review path; evaluation scope and targets are a lane decision before any run.",
+      "unresolved_questions": [
+        "Resource footprint and target-language coverage vs this repo's surfaces - to be established by the scoped evaluation, not assumed.",
+        "Overlap check vs the ECC Tools audit surface (comment-only findings) before any pilot."
+      ]
+    },
+    {
+      "id": "skypilot-compute-broker",
+      "project": "SkyPilot (Berkeley Sky Computing multi-cloud compute broker)",
+      "source": "https://github.com/skypilot-org/skypilot",
+      "version": "repo active (pushed 2026-10-26); 10.8k stars at observation",
+      "role": "multi-cloud-compute-broker-overflow",
+      "status": "WATCH",
+      "horizon": "H2",
+      "evidence_status": "confirmed",
+      "capabilities": [
+        "one interface over GPU/CPU capacity across clouds, including spot instances, with cost as a first-class placement objective",
+        "job brokering over fragmented capacity ('AI supercomputer' over existing clouds rather than a new cloud)"
+      ],
+      "integration_mode": "watch only; the candidate broker if a fleet burst/overflow or self-host compute lane is ever approved",
+      "required_exports": [
+        "none today"
+      ],
+      "hard_gate": "Blocked by the same fact as google-agent-compute-engine: no fleet cloud accounts exist and card-gated signup is closed by the owner's card rule. No account creation under this entry.",
+      "unresolved_questions": [
+        "Revisit trigger: an approved fleet cloud lane (e.g., Data Agent Kit Route A activation) creates the first account surface to broker over."
+      ]
+    },
+    {
+      "id": "ttt-e2e",
+      "project": "TTT-E2E (End-to-End Test-Time Training for Long Context)",
+      "source": "https://arxiv.org/abs/2512.23675",
+      "version": "arXiv:2512.23675v2, 2025-12-31; Astera Institute / NVIDIA / Stanford / UC Berkeley / UC San Diego; code public",
+      "role": "test-time-training-long-context-research",
+      "status": "WATCH",
+      "horizon": "H3",
+      "evidence_status": "confirmed",
+      "capabilities": [
+        "long context reframed as continual learning: a standard sliding-window Transformer keeps training on the context at test time, compressing it into weights",
+        "initialization meta-learned for test-time learning (end-to-end at both train and test time)",
+        "paper-reported: scaling matching full attention with constant per-token latency; 2.7x faster than full attention at 128K context (3B model, 164B training tokens)"
+      ],
+      "integration_mode": "research watch for DeepAgent/deepcli context strategy (context-into-weights vs retrieval); no implementation path today",
+      "required_exports": [
+        "none"
+      ],
+      "hard_gate": "Research-only: the fleet runs no trainable local model at this scale, and test-time weight updates sit outside every current evidence contract.",
+      "unresolved_questions": [
+        "Whether TTT-class adaptation ever reaches API-provider offerings (watch provider changelogs; today it is a paper plus code)."
+      ]
     }
   ],
   "wiring_rules": [

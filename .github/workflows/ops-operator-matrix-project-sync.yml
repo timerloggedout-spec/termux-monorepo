@@ -20,6 +20,8 @@ name: Operator Matrix Project Sync
 on:
   issues:
     types: [opened, reopened, transferred, labeled]
+  pull_request:
+    types: [opened, reopened, ready_for_review, labeled]
   pull_request_target:
     types: [opened, reopened, ready_for_review, labeled]
   workflow_dispatch:

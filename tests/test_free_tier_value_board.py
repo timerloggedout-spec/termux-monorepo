@@ -21,8 +21,12 @@ class FreeTierValueBoardContractTests(unittest.TestCase):
         self.assertEqual(self.data["schema"], "3l0.free-tier-use-value.v1")
         self.assertGreaterEqual(len(self.data["pricing"]), 3)
         ids = set()
+        canonical_ids = set()
         for row in self.data["pricing"]:
             self.assertTrue(row["pricing_id"])
+            self.assertTrue(row["canonical_model_id"])
+            self.assertNotIn(row["canonical_model_id"], canonical_ids)
+            canonical_ids.add(row["canonical_model_id"])
             self.assertNotIn(row["pricing_id"], ids)
             ids.add(row["pricing_id"])
             self.assertGreaterEqual(row["input_usd_per_million"], 0)
@@ -59,6 +63,8 @@ class FreeTierValueBoardContractTests(unittest.TestCase):
         self.assertIn("SUCCEEDED", self.page)
         self.assertIn("Number.isFinite(p.input_usd_per_million)", self.page)
         self.assertIn("Number.isFinite(p.output_usd_per_million)", self.page)
+        self.assertIn("typeof p.canonical_model_id==='string'", self.page)
+        self.assertIn("p.canonical_model_id===s.canonical_model_id", self.page)
         self.assertIn("SESSION_KEYS", self.page)
         self.assertIn("safeHref(p.source_url)", self.page)
         self.assertIn("unavailable??", self.page)
@@ -78,7 +84,7 @@ class FreeTierValueBoardContractTests(unittest.TestCase):
         allowed = set(re.findall(r"'([^']+)'", match.group(1)))
         expected = {
             "session_label", "run_uid", "workflow", "source_sha", "observed_at",
-            "provider", "model_id", "input_tokens", "output_tokens",
+            "provider", "model_id", "canonical_model_id", "input_tokens", "output_tokens",
             "elapsed_seconds", "outcome_status", "evidence_url",
             "validation_status", "basksweep_status", "publication_status",
             "billing_status", "pricing_id",
@@ -96,6 +102,8 @@ class FreeTierValueBoardContractTests(unittest.TestCase):
         self.assertIn("typeof s.workflow==='string'&&s.workflow.trim().length>0", self.page)
         self.assertIn("typeof s.source_sha==='string'&&/^[0-9a-f]{40}$/i.test(s.source_sha)", self.page)
         self.assertIn("Number.isFinite(Date.parse(s.observed_at))&&/Z$/.test(s.observed_at)", self.page)
+        self.assertIn("typeof s.model_id==='string'&&s.model_id.trim().length>0", self.page)
+        self.assertIn("typeof s.canonical_model_id==='string'&&s.canonical_model_id.trim().length>0", self.page)
         self.assertIn("!!safeHref(s.evidence_url)", self.page)
         self.assertIn("Number.isFinite(s.elapsed_seconds)&&s.elapsed_seconds>=0", self.page)
 

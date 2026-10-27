@@ -240,3 +240,42 @@ def test_run_defers_single_issue_on_rate_limit_and_still_updates_board(monkeypat
     # both open RFPs appear on the board: #11 deferred as pending, #12 still scored
     assert len([l for l in board_body.splitlines() if l.startswith("| #")]) == 2
     assert os.path.getsize(str(tmp_path / "out.jsonl")) > 0  # the non-rate-limited RFP was still scored
+
+
+def test_tribute_signals_key_passthrough_and_cap():
+    raw = json.dumps([{"surface": "tribute-lane", "repo": "a/b",
+                       "outcome": "merged", "weight": 1,
+                       "key": "https://github.com/a/b/issues/1"}])
+    sigs = gate.parse_signals(raw)
+    assert sigs[0]["key"] == "https://github.com/a/b/issues/1"
+    many = json.dumps([{"surface": "tribute-lane", "repo": "a/b",
+                        "outcome": "merged", "weight": 1}] * 250)
+    assert len(gate.parse_signals(many)) == 200
+
+
+def test_tribute_dedupe_is_idempotent_on_key_and_outcome():
+    batch = [{"surface": "tribute-lane", "repo": "a/b", "outcome": "merged",
+              "weight": 1.0, "key": "https://github.com/a/b/issues/1"},
+             {"surface": "tribute-lane", "repo": "c/d", "outcome": "merged",
+              "weight": 1.0}]  # unkeyed: never deduped
+    kept, skipped, state = gate.dedupe_signals({"surfaces": {}}, batch)
+    assert len(kept) == 2 and not skipped
+    kept2, skipped2, state = gate.dedupe_signals(state, batch)
+    assert len(kept2) == 1 and len(skipped2) == 1  # only the unkeyed flows again
+    changed = [dict(batch[0], outcome="closed_already_assigned", weight=-0.6)]
+    kept3, skipped3, _ = gate.dedupe_signals(state, changed)
+    assert len(kept3) == 1 and not skipped3  # changed outcome = new signal
+
+
+def test_tribute_batch_reweighting_is_damped_to_one_step():
+    batch = [{"surface": "tribute-lane", "repo": "a/b", "outcome": "merged",
+              "weight": 1.0}] * 9 + [
+             {"surface": "tribute-lane", "repo": "a/b",
+              "outcome": "hostile_spam_flag", "weight": -1.0}]
+    st = gate.apply_outcomes({"surfaces": {}}, batch)
+    t = st["surfaces"]["tribute-lane"]
+    assert t["n"] == 10 and t["sum"] == 8.0  # tallies are per-signal facts
+    # one EWMA step at the batch mean (0.8): 0.8*0 + 0.2*0.8 = 0.16,
+    # NOT ten steps converging toward the weights
+    assert t["ewma"] == 0.16
+    assert t["repos"]["a/b"]["ewma"] == 0.16 and t["repos"]["a/b"]["n"] == 10

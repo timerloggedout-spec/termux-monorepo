@@ -44,6 +44,28 @@ field_size 40); all others are null pending the field-size OSINT pass.
   renders estimate + basis verbatim from the feed; a null that the
   feed still carries renders `not established`.
 
+## Amendment 2026-10-28 #2 (feed landed, PR #2244)
+
+Feed verified on master by the admin-panel lane: schema
+`challenge-admin-metrics/v1`, `surface` designation = admin panel only,
+7 events. `field_size_status` carries a **third state, `partial`**
+(the v1 amendment named only two — this amendment adopts the landed
+reality): participants sourced, projects (the winprob base field)
+not yet established.
+
+| Status | Events at landing | Render |
+|---|---|---|
+| `established` | D0 | participants + projects numbers |
+| `partial` | STRANDS-DECIDER, D1, D2, D4 | participants number + **PARTIAL** chip; projects null → `not established` |
+| `open_task` | D3, D5 | **OPEN TASK** (no numbers) |
+
+Estimates at landing: D0 0.025 only; all others null until MoneyBall
+refinement arrives via this feed (estimate + basis). The designated
+admin feed file itself (`data/challenge-admin-metrics.json`) is the
+sole permitted data-file carrier of these values — it is an internal,
+designation-level surface (same exposure class as the public repo);
+the forbidden-surface scan below excludes it by name.
+
 ## Rendering rules (admin view of challenge data)
 
 1. Render the block per event: estimate (as % when non-null, the words
@@ -66,7 +88,8 @@ field_size 40); all others are null pending the field-size OSINT pass.
 
 `win_probability` / `metrics_internal` must return **zero hits** in:
 `apps/help-wanted-dashboard/**` public pages and `data/*.json` feeds
-**except** the admin view surface itself, the opportunity ledger
+**except** the admin view surface itself and its designated feed
+`data/challenge-admin-metrics.json`, the opportunity ledger
 (`ops/challenge/opportunity_ledger.json` + its doc), challenge briefs
 and logs. At contract landing the repo-wide hit list is exactly:
 `docs/ops/MONEYBALL-PLANE.md`, `docs/ops/CHALLENGE-SCHEMA.md`,

@@ -1,5 +1,5 @@
 ================================================================================
- QUOTA  termux-monorepo  (90 registry records)
+ QUOTA  termux-monorepo  (95 registry records)
  Snapshot generated (not observation time): 2026-10-28T13:16:27Z
  Source: apps/help-wanted-dashboard/data/quota.json + ops/quota/registry.json
  Limits are documented entitlements, not balances.
@@ -446,6 +446,38 @@
     No live reading (live source: none published; consumption visible in the
     Control Panel)
 --------------------------------------------------------------------------------
+ pinecone (5)
+  pinecone.egress
+    status: No live reading
+    limit (documented): 1 GB/month
+    metric: egress (Starter) | window: monthly | reset: billing month
+    No live reading (live source: GET api.pinecone.io/indexes
+    (PINECONE_API_KEY))
+  pinecone.indexes
+    status: No live reading
+    limit (documented): 5 indexes (100 namespaces each)
+    metric: indexes (Starter) | window: point-in-time | reset: n/a
+    No live reading (live source: GET api.pinecone.io/indexes
+    (PINECONE_API_KEY))
+  pinecone.read_units
+    status: No live reading
+    limit (documented): 1000000 RU/month
+    metric: read units (Starter) | window: monthly | reset: billing month
+    No live reading (live source: GET api.pinecone.io/indexes
+    (PINECONE_API_KEY))
+  pinecone.storage
+    status: No live reading
+    limit (documented): 2 GB
+    metric: vector storage (Starter) | window: point-in-time | reset: n/a
+    No live reading (live source: GET api.pinecone.io/indexes
+    (PINECONE_API_KEY))
+  pinecone.write_units
+    status: No live reading
+    limit (documented): 2000000 WU/month
+    metric: write units (Starter) | window: monthly | reset: billing month
+    No live reading (live source: GET api.pinecone.io/indexes
+    (PINECONE_API_KEY))
+--------------------------------------------------------------------------------
  platform201 (1)
   platform201.projects
     status: No live reading
@@ -722,6 +754,6 @@
   zai: Manager / ChronoMancer; official_documentation_only; no passive parser;
   registry: zai.free_models
  Coverage and quota checks do not grant runtime admission.
- 90 registry records | 2 alert(s) | 8 with a reported reading | 82 with No live
+ 95 registry records | 2 alert(s) | 8 with a reported reading | 87 with No live
  reading
 ================================================================================

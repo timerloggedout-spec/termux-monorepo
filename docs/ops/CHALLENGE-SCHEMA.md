@@ -32,6 +32,7 @@ One object per packet (D0–D5), mirroring log §4.
 | `id`, `name`, `host`, `platform` | event identity; `platform` is the registry platform_id |
 | `also_platforms[]` | optional second platform (e.g. D2's `vultr` beside `lablab-ai`) |
 | `official_url` | the official event page, or `null` when no canonical URL is in the record |
+| `organizers[]` | `{name, role (host\|sponsor\|platform), source_url, fetched_at}` — full-spectrum OSINT scope (owner, 2026-10-28): event organizers tracked beside the bare `host` string, sourced from the official page |
 | `status` | `closed` \| `active` \| `registering` \| `upcoming` |
 | `entrant_moniker` | canonical registry reference (e.g. `entrant{n0nAha}[platform:aha-io]`), or `null` |
 | `dates{}` | `announced`, `reg_open`, `reg_close`, `build_start`, `build_end`, `submissions_open`, `deadline`, `judging_end`, `winners_at` — each either `{at, tz, source}` (ISO instant + IANA/America-Los_Angeles tz + where it was verified) or the string `NOT_ESTABLISHED` |

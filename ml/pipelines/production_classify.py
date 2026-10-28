@@ -183,30 +183,12 @@ def main() -> int:
         return _run(token)
     except Exception as exc:
         print(f"::error::classify failed: {type(exc).__name__}: {exc}", flush=True)
-        # Job logs and workflow-command annotations have proven unreadable
-        # through the fleet's API route (runs 40779970361/40780377727/
-        # 40780704752 left no trace), so the failure record goes in the
-        # feed itself — the workflow commits it with if: always(). An
-        # error feed on master is more honest than a stale one.
-        out_path = os.environ.get(
-            "PR_LANE_FEED",
-            os.path.join(os.path.dirname(__file__), "..", "..", "ops", "ml", "pr-lane-feed.json"),
-        )
-        payload = {
-            "schema": FEED_SCHEMA,
-            "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "open_prs": 0,
-            "counts": {},
-            "prs": [],
-            "error": f"{type(exc).__name__}: {exc}",
-        }
-        try:
-            os.makedirs(os.path.dirname(out_path), exist_ok=True)
-            with open(out_path, "w") as fh:
-                json.dump(payload, fh, indent=1)
-                fh.write("\n")
-        except Exception:
-            pass
+        # A failed run writes NOTHING (reverses the 2026-10-28 error-feed
+        # behavior): consumers keep the last good feed, staleness shows
+        # in generated_at, and the dashboard mirror never receives an
+        # error state. The failure record lives in the run itself —
+        # stage annotations carry this ::error line, which is how the
+        # 2026-10-28 series-parse failure was diagnosed.
         return 1
 
 

@@ -17,20 +17,34 @@ docs/ops/CHALLENGE-ENTRIES-LOG.md. This tool:
   render  regenerate the registry table inside the protocol doc from the
           JSON (between the registry:begin / registry:end markers)
   derive  print the assignment for one platform_id (the registry entry
-          if one exists, else the rule-v2 result) - the account-creation
+          if one exists, else the rule-v3 result) - the account-creation
           lane's instant lookup path; ratified into the registry by PR
 
-Moniker assignment rule v2 (deterministic): entries are processed in
-platform_id sort order; moniker = the 4n0n stem "n0n" + the platform_id's
-words capitalized and joined, dropping filler words (STOPWORDS: ai, io,
-center) in non-first positions ("aws-builder-center" -> "n0nAwsBuilder",
-"lablab-ai" -> "n0nLablab", "builder-io" -> "n0nBuilder"). On collision
-with a different platform_id, append the smallest integer >= 2 that
-frees the token. Canonical form: <role>{<moniker>}[platform:<platform_id>]
-with role "entrant" (challenge platforms) or "account" (provider
-accounts). The result is username-grade: alphanumeric, letter-led,
-short - the account-creation lane uses it verbatim as the signup
-username, pulled from this registry, never invented at a form.
+Moniker assignment rule v2 (deterministic, LEGACY - frozen): entries
+are processed in platform_id sort order; moniker = the 4n0n stem "n0n"
++ the platform_id's words capitalized and joined, dropping filler
+words (STOPWORDS: ai, io, center) in non-first positions
+("aws-builder-center" -> "n0nAwsBuilder", "lablab-ai" -> "n0nLablab",
+"builder-io" -> "n0nBuilder"). On collision with a different
+platform_id, append the smallest integer >= 2 that frees the token.
+
+Rule v3 (deterministic, CURRENT for every new assignment since the
+2026-10-28 owner standards review): the v2 stem made every fleet
+username share one identifiable characteristic - a cross-platform
+linkage signal that works against 4n0n rule 3. A v3 moniker is an
+unlinkable codename: SHA-256("4n0n-v3:" + platform_id) selects an
+adjective + noun from the generic wordlists below plus a two-digit
+suffix ("devpost" -> its codename, which names no platform and shares
+no stem with any other assignment). Collisions bump the suffix.
+Entries carry "moniker_rule": "v3" (absent == "v2" legacy); v2 entries
+of record keep their names - renaming an issued identity is a
+per-platform owner decision, never a silent re-derivation.
+
+Canonical form: <role>{<moniker>}[platform:<platform_id>] with role
+"entrant" (challenge platforms) or "account" (provider accounts).
+Either rule's result is username-grade: alphanumeric, letter-led,
+short - the owning lane uses it verbatim as the signup username,
+pulled from this registry, never invented at a form.
 
 Platform detection vocabulary (ALIASES below) is curated: a platform
 named in the log's candidate section (section 3) only is NOT activated —
@@ -41,6 +55,7 @@ curated PR, never an invented handle.
 Stdlib only.
 """
 import argparse
+import hashlib
 import json
 import re
 import sys
@@ -131,6 +146,39 @@ def derive_moniker(platform_id, taken):
     return candidate
 
 
+V3_ADJECTIVES = [
+    "Amber", "Brisk", "Calm", "Clever", "Coral", "Cozy", "Dapper",
+    "Eager", "Ember", "Fern", "Gentle", "Golden", "Happy", "Ivory",
+    "Jolly", "Keen", "Lively", "Mellow", "Noble", "Opal", "Plucky",
+    "Quiet", "Rapid", "Solar", "Spry", "Tender", "Urban", "Velvet",
+    "Witty", "Young", "Zephyr", "Zesty",
+]
+V3_NOUNS = [
+    "Anchor", "Beacon", "Canyon", "Cedar", "Comet", "Dune", "Falcon",
+    "Grove", "Harbor", "Island", "Juniper", "Lagoon", "Meadow", "Mesa",
+    "Nimbus", "Oasis", "Pebble", "Quarry", "Ridge", "Sable", "Summit",
+    "Timber", "Vale", "Vortex", "Walnut", "Willow", "Yarn", "Zenith",
+    "Basalt", "Cobalt", "Jasper", "Onyx",
+]
+
+
+def derive_moniker_v3(platform_id, taken):
+    """Unlinkable codename (rule v3) given {moniker_lower: pid}.
+
+    Deterministic from the platform_id alone; shares no stem across
+    platforms and embeds no platform token.
+    """
+    digest = hashlib.sha256(f"4n0n-v3:{platform_id}".encode()).digest()
+    base = (V3_ADJECTIVES[digest[0] % len(V3_ADJECTIVES)]
+            + V3_NOUNS[digest[1] % len(V3_NOUNS)])
+    num = 10 + digest[2] % 90
+    candidate = f"{base}{num}"
+    while taken.get(candidate.lower()) not in (None, platform_id):
+        num += 1
+        candidate = f"{base}{num}"
+    return candidate
+
+
 def canonical(entry):
     return f"{entry['role']}{{{entry['moniker']}}}[platform:{entry['platform_id']}]"
 
@@ -170,10 +218,17 @@ def attribute_packets(log_text):
 
 
 def expected_monikers(entries):
-    """Recompute every moniker by the rule, in platform_id sort order."""
+    """Recompute every moniker by its entry's rule, in sort order.
+
+    Entries carry "moniker_rule": "v3" for rule-v3 assignments; an
+    absent field means a legacy rule-v2 entry of record.
+    """
     taken, expected = {}, {}
     for entry in sorted(entries, key=lambda e: e["platform_id"]):
-        m = derive_moniker(entry["platform_id"], taken)
+        if entry.get("moniker_rule") == "v3":
+            m = derive_moniker_v3(entry["platform_id"], taken)
+        else:
+            m = derive_moniker(entry["platform_id"], taken)
         expected[entry["platform_id"]] = m
         taken[m.lower()] = entry["platform_id"]
     return expected
@@ -219,6 +274,13 @@ def check(registry, log_text, profiles_text):
         if e.get("role") not in ROLES:
             problems.append(f"hard: {pid}: role is {e.get('role')!r}, "
                             f"must be one of {sorted(ROLES)}")
+        if e.get("moniker_rule", "v2") not in ("v2", "v3"):
+            problems.append(f"hard: {pid}: bad moniker_rule "
+                            f"{e.get('moniker_rule')!r}")
+        if (e.get("moniker_rule") == "v3"
+                and str(e.get("moniker", "")).lower().startswith(STEM)):
+            problems.append(f"hard: {pid}: rule-v3 moniker carries the "
+                            "retired shared stem")
         if pid in ALIAS_BY_ID and e.get("platform") != ALIAS_BY_ID[pid][1]:
             problems.append(f"hard: {pid}: platform name drift")
         if e.get("moniker") != expected.get(pid):
@@ -261,7 +323,7 @@ def assign(registry, log_text):
     added = []
     for pid in missing:
         _alias, name, kind, _aclass = ALIAS_BY_ID[pid]
-        moniker = derive_moniker(pid, taken)
+        moniker = derive_moniker_v3(pid, taken)
         taken[moniker.lower()] = pid
         regs = [{"ref": ref, "event": "", "aspect": "participant",
                  "status": "in-progress"}
@@ -272,6 +334,7 @@ def assign(registry, log_text):
             "kind": kind,
             "role": DEFAULT_ROLE["log"],
             "moniker": moniker,
+            "moniker_rule": "v3",
             "profile_ref": name,
             "status": "pending",
             "registrations": regs,
@@ -339,10 +402,10 @@ def main(argv=None):
                  for e in registry["entries"]}
         aclass = ALIAS_BY_ID.get(pid, (None, None, None, "fleet"))[3]
         role = args.role or DEFAULT_ROLE[aclass]
-        moniker = derive_moniker(pid, taken)
+        moniker = derive_moniker_v3(pid, taken)
         print(json.dumps({"platform_id": pid, "moniker": moniker,
                           "canonical": f"{role}{{{moniker}}}[platform:{pid}]",
-                          "source": "rule-v2 (not yet in registry)"}))
+                          "source": "rule-v3 (not yet in registry)"}))
         return 0
     if args.mode == "check":
         problems = check(registry, log_text, open(args.profiles).read())

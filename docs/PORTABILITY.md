@@ -13,7 +13,7 @@ process-runtime artifact, or an editor backup.
 | Tracked symlinks | 45 | — |
 | …dangling in this clone | 42 | — |
 | …pointing at `/data/data/com.termux/...` | 34 | A / B |
-| Tracked `.bak*` / `.old` copies | 120 | D |
+| Tracked `.bak*` / `.old` copies | 0 | D |
 | Tracked agent session-store artifacts | 423 | E |
 | Tracked paths containing spaces | 452 | F |
 

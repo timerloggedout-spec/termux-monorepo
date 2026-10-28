@@ -35,10 +35,15 @@ FORM_FIELDS = {  # issue-form heading (lowercased) -> canonical key
     "scoped question": "question",
 }
 PIPELINES = {
-    "provider": ["provider-recon-compound", "provider-availability",
-                 "ops/quota/registry.json", "delphi-gate (if free-tier surface)"],
+    # Owner ruling 2026-10-28: the existing set IS the Repository Observatory
+    # (star/fork/watch -> provider/service gathering). Both intake kinds feed
+    # the Observatory pipeline; nothing routes elsewhere.
+    "provider": ["repository-observatory", "docs/repositories/research-seeds/",
+                 "workspace/llm_map/repositories/repository-index.json",
+                 "docs/repositories/matrix.md"],
     "service": ["repository-observatory", "docs/repositories/research-seeds/",
-                "research-registry", "docs/repositories/matrix.md"],
+                "workspace/llm_map/repositories/repository-index.json",
+                "docs/repositories/matrix.md"],
 }
 SIGNALS = {"starred", "forked", "watched", "owned", "none"}
 

@@ -48,7 +48,7 @@ class ResearchIntakeTests(unittest.TestCase):
         rec = ri.build_record("provider", ri.parse_form(PROVIDER_FORM))
         self.assertEqual(rec["seed_id"], "research-seed:provider:acme-ai")
         self.assertEqual(rec["observed_facts"]["auth_secret_name"], "ACME_API_KEY")
-        self.assertIn("provider-recon-compound", rec["starter"]["pipeline"])
+        self.assertIn("repository-observatory", rec["starter"]["pipeline"])
         self.assertEqual(rec["classification"]["adoption"], "research-only")
 
     def test_service_command_seed_matches_research_seeds_schema(self):

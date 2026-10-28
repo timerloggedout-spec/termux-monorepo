@@ -7,6 +7,7 @@ from pathlib import Path
 from repository_observatory import API, GitHubHttpError, build_records, build_payload, classify, compute_delta, markdown, resolve_login, snapshot_hash
 
 
+
 BASE = {
     "full_name": "example/research-agent",
     "name": "research-agent",
@@ -158,6 +159,29 @@ class ObservatoryTests(unittest.TestCase):
 
         with self.assertRaises(RuntimeError):
             resolve_login(fetch, "ghs_test", "timerloggedout-spec")
+
+
+    def test_issue_provenance_merges_as_fourth_signal(self):
+        records = build_records([BASE], [], [], [dict(BASE)])
+        self.assertEqual(len(records), 1)
+        self.assertEqual(records[0]["provenance"], ["issue", "owned"])
+        only = build_records([], [], [], [dict(BASE)])
+        self.assertEqual(only[0]["provenance"], ["issue"])
+        self.assertIn("reference", only[0]["classification"]["role"])
+
+    def test_payload_and_markdown_carry_intake(self):
+        intake = [{"issue": 2059, "kind": "service", "seed_id": "github:research-seed:example/research-agent",
+                   "name": "Research Agent", "upstream": "example/research-agent", "url": "",
+                   "signal": "starred", "category": "research", "filed_at": "2026-10-28T00:00:00Z"}]
+        records = build_records([], [], [], [dict(BASE)])
+        payload = build_payload("example", "example", records, "2026-10-28T00:00:00Z", intake=intake)
+        self.assertEqual(payload["counts"]["issue_filed"], 1)
+        self.assertEqual(payload["counts"]["issue_intake"], 1)
+        self.assertEqual(payload["issue_intake"], intake)
+        md = markdown(records, "2026-10-28T00:00:00Z", None, intake)
+        self.assertIn("## Issue intake", md)
+        self.assertIn("#2059", md)
+        self.assertIn("example/research-agent", md)
 
 
 if __name__ == "__main__":

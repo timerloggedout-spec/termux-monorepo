@@ -3,6 +3,29 @@
 `[MUSEai]@{role:{research-triggers}}` — recon verified firsthand via the PAT
 API on master (2026-10-28); expansion landed with this doc.
 
+## Owner scoping (2026-10-28, supersedes the broad recon framing below)
+
+The existing set **is the Repository Observatory**: star/fork/watch signals →
+provider/service gathering (`repository-observatory.yml` daily 04:17 UTC +
+dispatch → `scripts/github/repository_observatory.py` →
+`workspace/llm_map/repositories/repository-index.json` + `docs/repositories/matrix.md`).
+Observatory triggers stay untouched. The expansion below is scoped **into the
+Observatory pipeline**: issue filings are the Observatory's fourth signal
+source (provenance `issue`), collected by the Observatory's own daily run —
+not a separate pipeline. The other rows in the table were recon context only;
+nothing routes to them.
+
+**Intake → Observatory wiring (this amendment):**
+`observatory_intake.py` (run by `repository-observatory.yml` before the index
+build, degradation = empty intake, watching precedent) lists issues labeled
+`research:provider`/`research:service`, parses them with the same
+`research_intake.py` parser, and emits `observatory-intake/v1`;
+`repository_observatory.py --intake` merges upstream repos with provenance
+`issue` (role `reference`, like starred/watching), carries every entry in
+payload `issue_intake` + counts `issue_intake`/`issue_filed`, and renders the
+matrix **Issue intake** table. An upstream that does not resolve stays an
+entry only — never a repository record.
+
 ## Existing set — what fires today, on what, producing what
 
 | Trigger | Event(s) | Input | Produces |
@@ -33,11 +56,10 @@ trusted default-branch checkout; body treated as data, never executed.
 - Parser: `scripts/research/research_intake.py` (stdlib, deterministic, tests
   `tests/test_research_intake.py`). Emits the seed/starter record as a comment
   on the issue — the same record shape the pipelines below consume.
-- Routing (the "same pipeline" the existing triggers feed):
-  provider → provider-recon-compound / provider-availability /
-  `ops/quota/registry.json` (+ delphi-gate if it becomes a free-tier surface);
-  service → repository-observatory / `docs/repositories/research-seeds/` /
-  research-registry / `docs/repositories/matrix.md`.
+- Routing (owner-scoped): **both kinds → the Repository Observatory pipeline**
+  (`repository-observatory` → `docs/repositories/research-seeds/` seed record →
+  `repository-index.json` / `matrix.md` Issue-intake table). Nothing routes
+  elsewhere.
 - Secrets: none used, none invented. The `auth` field carries an Actions
   secret **NAME** only (phantom-secrets inventory / issue #184); a value-shaped
   string refuses the intake (exit 2, refusal comment).

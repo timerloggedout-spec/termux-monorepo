@@ -99,7 +99,7 @@ def classify(repo: dict[str, Any], provenance: list[str], repo_topics: list[str]
     if not domains:
         domains = ["unclassified"]
 
-    role = ["reference"] if ("starred" in provenance or "watching" in provenance) else ["owned"]
+    role = ["reference"] if ("starred" in provenance or "watching" in provenance or "issue" in provenance) else ["owned"]
     if repo.get("fork"):
         role.append("fork")
     if repo.get("is_template"):
@@ -172,11 +172,12 @@ def compute_delta(previous: list[dict[str, Any]] | None,
 
 
 def markdown(records: list[dict[str, Any]], observed_at: str,
-             delta: dict[str, Any] | None = None) -> str:
+             delta: dict[str, Any] | None = None,
+             intake: list[dict[str, Any]] | None = None) -> str:
     lines = ["# Repository Observatory", "", "> Generated from GitHub repository and starring metadata. JSON is canonical; this file is a navigation projection.", "",
              f"Observed: `{observed_at}`", "", "## Navigation", "", "- [Owned repositories](#owned)", "- [Starred repositories](#starred)",
              "- [Watching repositories](#watching)", "- [Owned forks](#owned-forks)",
-             "- [Research seeds](#research-seeds)", "- [Integration candidates](#integration-candidates)", ""]
+             "- [Research seeds](#research-seeds)", "- [Integration candidates](#integration-candidates)", "- [Issue intake](#issue-intake)", ""]
 
     if delta is not None:
         lines.extend(["## Changes since previous snapshot", ""])
@@ -235,20 +236,28 @@ def markdown(records: list[dict[str, Any]], observed_at: str,
     table("Owned forks", fork_rows)
     table("Research seeds", research_rows)
     table("Integration candidates", integration_rows)
+    lines.extend(["## Issue intake", "", "| Issue | Kind | Target | Declared signal | Seed |", "|---|---|---|---|---|"])
+    for e in intake or []:
+        target = e.get("upstream") or e.get("url") or e.get("name") or "—"
+        lines.append(f"| #{e.get('issue')} | {e.get('kind')} | {target} | {e.get('signal') or '—'} | `{e.get('seed_id')}` |")
+    lines.append("")
     return "\n".join(lines) + "\n"
 
 
 def build_records(owned: list[dict[str, Any]], starred: list[dict[str, Any]],
-                  watching: list[dict[str, Any]] | None = None) -> list[dict[str, Any]]:
-    """Consolidated Stars|Forks|Watch merge. Provenance is a set union across
-    owned / starred / watching; forks stay a role on owned records (with
-    upstream), so one canonical record carries every signal."""
+                  watching: list[dict[str, Any]] | None = None,
+                  issue: list[dict[str, Any]] | None = None) -> list[dict[str, Any]]:
+    """Consolidated Stars|Forks|Watch|Issue merge. Provenance is a set union
+    across owned / starred / watching / issue (filed via the research issue
+    templates, #2058+); forks stay a role on owned records (with upstream),
+    so one canonical record carries every signal. An issue filing is a
+    research signal, never an adoption order."""
     merged: dict[str, dict[str, Any]] = {}
     for repo in owned:
         full_name = repo.get("full_name")
         if full_name:
             merged[full_name] = normalize(repo, ["owned"])
-    for provenance_name, rows in (("starred", starred), ("watching", watching or [])):
+    for provenance_name, rows in (("starred", starred), ("watching", watching or []), ("issue", issue or [])):
         for repo in rows:
             full_name = repo.get("full_name")
             if not full_name:
@@ -269,13 +278,15 @@ def snapshot_hash(records: list[dict[str, Any]]) -> str:
 
 def build_payload(owner: str, login: str, records: list[dict[str, Any]], observed_at: str,
                   delta: dict[str, Any] | None = None,
-                  watching_status: str = "not_requested") -> dict[str, Any]:
+                  watching_status: str = "not_requested",
+                  intake: list[dict[str, Any]] | None = None) -> dict[str, Any]:
     c_owned = 0
     c_starred = 0
     c_both = 0
     c_research = 0
     c_integration = 0
     c_watching = 0
+    c_issue = 0
     c_owned_forks = 0
     stars_received = 0
     forks_received = 0
@@ -296,6 +307,8 @@ def build_payload(owner: str, login: str, records: list[dict[str, Any]], observe
             c_starred += 1
         if "watching" in prov:
             c_watching += 1
+        if "issue" in prov:
+            c_issue += 1
         if has_owned and has_starred:
             c_both += 1
 
@@ -314,7 +327,9 @@ def build_payload(owner: str, login: str, records: list[dict[str, Any]], observe
                    "watching": c_watching, "owned_forks": c_owned_forks,
                    "stars_received_on_owned": stars_received,
                    "forks_received_on_owned": forks_received,
-                   "research_seeds": c_research, "integration_candidates": c_integration},
+                   "research_seeds": c_research, "integration_candidates": c_integration,
+                   "issue_filed": c_issue, "issue_intake": len(intake or [])},
+        "issue_intake": intake or [],
         "repositories": records,
     }
 
@@ -349,6 +364,8 @@ def main(argv: list[str] | None = None, fetch: Callable[..., Any] = get_json) ->
     parser = argparse.ArgumentParser()
     parser.add_argument("--owner", required=True); parser.add_argument("--output", type=Path, required=True); parser.add_argument("--markdown", type=Path, required=True)
     parser.add_argument("--token-env", default="REPOSITORY_OBSERVATORY_TOKEN")
+    parser.add_argument("--intake", type=Path, default=None,
+                        help="observatory-intake/v1 JSON (from observatory_intake.py): issue-filed research targets merged with provenance 'issue'")
     parser.add_argument("--watching", action="store_true",
                         help="also merge /user/subscriptions (watching) provenance; requires a user token")
     args = parser.parse_args(argv)
@@ -379,7 +396,27 @@ def main(argv: list[str] | None = None, fetch: Callable[..., Any] = get_json) ->
             # (watching_status) instead of silently reading as zero watched.
             watching_status = "unavailable"
             print(f"watching unavailable ({exc}); continuing without it", file=sys.stderr)
-    records = build_records(owned, starred, watching)
+    intake: list[dict[str, Any]] = []
+    issue_repos: list[dict[str, Any]] = []
+    if args.intake and args.intake.exists():
+        try:
+            doc = json.loads(args.intake.read_text(encoding="utf-8"))
+            intake = [e for e in doc.get("entries", []) if isinstance(e, dict)]
+        except (OSError, json.JSONDecodeError):
+            intake = []
+        for e in intake:
+            upstream = (e.get("upstream") or "").strip()
+            if not upstream:
+                continue
+            try:
+                repo = fetch(f"/repos/{urllib.parse.quote(upstream, safe='/')}", token)
+                if isinstance(repo, dict) and repo.get("full_name"):
+                    issue_repos.append(repo)
+            except (GitHubHttpError, urllib.error.HTTPError) as exc:
+                # An unverified upstream stays an intake entry only; it
+                # never becomes a repository record.
+                print(f"issue intake upstream unavailable ({upstream}: {exc}); entry kept, no record", file=sys.stderr)
+    records = build_records(owned, starred, watching, issue_repos)
     previous: dict[str, Any] = {}
     if args.output.exists():
         try: previous = json.loads(args.output.read_text(encoding="utf-8"))
@@ -388,10 +425,11 @@ def main(argv: list[str] | None = None, fetch: Callable[..., Any] = get_json) ->
     observed_at = previous.get("observed_at") if previous.get("snapshot_hash") == digest else now()
     delta = compute_delta(previous.get("repositories"), records)
     payload = build_payload(args.owner, login, records, observed_at,
-                            delta=delta, watching_status=watching_status)
+                            delta=delta, watching_status=watching_status,
+                            intake=intake)
     args.output.parent.mkdir(parents=True, exist_ok=True); args.markdown.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    args.markdown.write_text(markdown(records, observed_at, delta), encoding="utf-8")
+    args.markdown.write_text(markdown(records, observed_at, delta, intake), encoding="utf-8")
     print(json.dumps(payload["counts"], sort_keys=True)); return 0
 
 if __name__ == "__main__": raise SystemExit(main())

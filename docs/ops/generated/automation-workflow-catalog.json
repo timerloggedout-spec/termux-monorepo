@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "43030f7d79527631312ff0b72882362b5f5d0114838f926097290b573f6f0be1",
-  "workflow_count": 215,
+  "source_fingerprint": "64e96f9c71b2cb07b3a4f6e2ef136c5c5ccce91e0b04efdccff08437543775da",
+  "workflow_count": 216,
   "workflows": [
     {
       "action_pins": [
@@ -630,6 +630,22 @@
       "triggers": [
         "push",
         "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: challenge-participant-mirror cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "mirror"
+      ],
+      "name": "challenge-participant-mirror",
+      "path": ".github/workflows/challenge-participant-mirror.yml",
+      "schedules": [],
+      "triggers": [
+        "push",
         "workflow_dispatch"
       ]
     },

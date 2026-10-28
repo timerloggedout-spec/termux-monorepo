@@ -768,3 +768,73 @@ proposals:
     related_prs: [1848]
     related_branches: [doe-live-method-competition]
     gates_required: [proposal-lifecycle]
+  - id: temporal-durable-execution-pi-core-resume
+    title: "Temporal durable execution — pi-core-resume: pi-temporal kill-and-resume core (Oracle Method pass, G6: adopt)"
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: active/temporal-durable-execution-pi-core-resume/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: [1885, 1487, 1489]
+    related_prs: [1867, 1886]
+    related_branches: []
+    gates_required: [proposal-lifecycle, repo-gate]
+  - id: temporal-durable-execution-cookbook-agent-loop
+    title: "Temporal durable execution — cookbook-agent-loop: ai-cookbook recipes + HITL approval (Oracle Method pass, G6: pilot)"
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: active/temporal-durable-execution-cookbook-agent-loop/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: [1885, 1487, 1489]
+    related_prs: [1867, 1886]
+    related_branches: []
+    gates_required: [proposal-lifecycle, repo-gate]
+  - id: temporal-durable-execution-versioned-autoscale
+    title: "Temporal durable execution — versioned-autoscale: Worker Versioning + backlog autoscaling model (Oracle Method pass, G6: reference-only)"
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: active/temporal-durable-execution-versioned-autoscale/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: [1885, 1487, 1489]
+    related_prs: [1867, 1886]
+    related_branches: []
+    gates_required: [proposal-lifecycle, repo-gate]
+  - id: temporal-durable-execution-contract-first
+    title: "Temporal durable execution — contract-first: evidence-envelope schema + generated validators (Oracle Method pass, G6: adopt as contract discipline)"
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: active/temporal-durable-execution-contract-first/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: [1885, 1487, 1489]
+    related_prs: [1867, 1886]
+    related_branches: []
+    gates_required: [proposal-lifecycle, repo-gate]
+  - id: temporal-durable-execution-serverless-skill
+    title: "Temporal durable execution — serverless-skill: skill-form starter, cloud paths gated (Oracle Method pass, G6: reference-only)"
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: active/temporal-durable-execution-serverless-skill/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: [1885, 1487, 1489]
+    related_prs: [1867, 1886]
+    related_branches: []
+    gates_required: [proposal-lifecycle, repo-gate]

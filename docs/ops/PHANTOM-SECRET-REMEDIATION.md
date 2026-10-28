@@ -1,11 +1,11 @@
 # Phantom-Secret Remediation
 
-Generated 2026-10-28T04:27:44.575026+00:00 by the phantom-secrets audit (repo-native, repeatable: `.github/workflows/phantom-secrets-audit.yml`). Counts are derived live at generation time. Names only — no secret values exist in this document.
+Generated 2026-10-28T22:19:17.618950+00:00 by the phantom-secrets audit (repo-native, repeatable: `.github/workflows/phantom-secrets-audit.yml`). Counts are derived live at generation time. Names only — no secret values exist in this document.
 
-- Phantom names: **60** across **139** references
+- Phantom names: **55** across **128** references
 - compiled: 20 references
 - dead-branch: 5 references
-- provisioning: 114 references
+- provisioning: 103 references
 
 ## Retired — dead fallback branches (PR #1858)
 
@@ -54,14 +54,12 @@ No verified provisioned replacement exists for these names. Each is an explicit 
 - [ ] `secrets.HF_API_TOKEN` — provider-availability.yml, team-mvt.yml
 - [ ] `secrets.HF_TOKEN` — provider-availability.yml
 - [ ] `secrets.HUGGING_FACE_HUB_TOKEN` — provider-availability.yml, team-mvt.yml
-- [ ] `secrets.IFLYTEK_SPARK_API_PASSWORD` — provider-batch.yml
+- [ ] `secrets.IFLYTEK_SPARK_API_PASSWORD` — provider-availability.yml, provider-batch.yml
 - [ ] `secrets.KILO_API_KEY` — provider-availability.yml, provider-batch.yml
 - [ ] `secrets.KOYEB_API_TOKEN` — koyeb-hindsight-deploy.yml
-- [x] `secrets.LANE_EVENTS_DATABASE_URL` — lane-events-recorder.yml, observer-poller-scheduled.yml, tribute-system1.yml — PROVISIONED 2026-10-28 (neon-fix lane): Neon project `lane-events` (aws-us-east-2), connection string for db `neondb`; sealed-box PUT via PAT, verified present in Actions secrets (repo total 53→55).
 - [ ] `secrets.MISTRAL_API_KEY` — provider-availability.yml, provider-batch.yml
 - [ ] `secrets.MODELSCOPE_TOKEN` — provider-availability.yml
 - [ ] `secrets.N8N_SHE_WEBHOOK_URL` — n8n-she-bridge.yml
-- [x] `secrets.NEON_API_KEY` — lane-events-recorder.yml, observer-poller-scheduled.yml, tribute-system1.yml, vercel-quota-probe.yml — PROVISIONED 2026-10-28 (neon-fix lane): dedicated key `GitHub Actions lane-events`; sealed-box PUT via PAT, verified present. Proof: lane-events-recorder record run 40770746018 success + lane_events rows verified live in Neon (selftest=1).
 - [ ] `secrets.NEXUSCLI_TOKEN` — deepseek-ci.yml
 - [ ] `secrets.OMNIROUTE_API_KEY` — gemini-after-peers.yml, gemini-invoke.yml, gemini-review.yml, gemini-triage.yml, help-wanted-llm-assist.yml
 - [ ] `secrets.OMNI_API_KEY` — continuous-evaluation.yml, gemini-after-peers.yml, gemini-invoke.yml, gemini-review.yml, gemini-triage.yml, help-wanted-llm-assist.yml, provider-availability.yml, provider-batch.yml, team-mvt.yml
@@ -72,33 +70,14 @@ No verified provisioned replacement exists for these names. Each is an explicit 
 - [ ] `secrets.OPERATOR_MATRIX_PROJECT_URL` — ops-operator-matrix-project-sync.yml
 - [ ] `secrets.OVHCLOUD_API_KEY` — provider-availability.yml
 - [ ] `secrets.RENDER_API_KEY` — vercel-quota-probe.yml
+- [ ] `secrets.REPOSITORY_OBSERVATORY_TOKEN` — repository-observatory.yml
 - [ ] `secrets.REPOSITORY_OBSERVATORY_TOKEN` — provision-secrets.yml — provisioning catalog entry (by design)
-- [ ] `secrets.REQUESTY_API_KEY` — provider-batch.yml
-- [ ] `secrets.SILICONFLOW_API_KEY` — provider-availability.yml, provider-batch.yml
+- [ ] `secrets.REQUESTY_API_KEY` — provider-availability.yml, provider-batch.yml
 - [ ] `secrets.SWE_EVALUATION_API_KEY` — swe-reference-evaluation.yml
 - [ ] `secrets.TYPHOON_API_KEY` — provider-batch.yml
-- [ ] `secrets.UNOROUTER_API_KEY` — provider-batch.yml
 - [ ] `secrets.VERCEL_ORG_ID` — help-wanted-dashboard-deploy.yml, tribute-vercel-prod.yml, vercel-batch-deploy.yml, vercel-quota-probe.yml
-- [ ] `secrets.XFYUN_API_KEY` — provider-batch.yml
-- [ ] `secrets.XKIRO_API_KEY` — provider-batch.yml
+- [ ] `secrets.XFYUN_API_KEY` — provider-availability.yml, provider-batch.yml
 
 ## Rule
 
 Workflows may reference only verified-provisioned secret names. A new secret is an owner provisioning act, named explicitly — never an assumption baked into a workflow.
-
-## Credential-shape preference (ACE mirror, owner order 2026-10-28)
-
-Landed with the Agent Compute Engine mirror work
-(`docs/ops/AGENT-COMPUTE-ENGINE-COMPARISON-2026-10-26.md` §6):
-
-- **New credentials default to short-lived.** When a surface offers
-  workload-identity / OIDC federation, a per-run `github.token`, or
-  an impersonated service account, that form is provisioned in
-  preference to a new long-lived stored secret.
-- **A new long-lived secret needs a named reason** in this checklist
-  (what surface cannot take a short-lived form, and what bounds the
-  blast radius instead — scope, allowlist, cadence).
-- Existing long-lived secrets are NOT retroactively flagged; this
-  preference governs new provisioning acts, in the same spirit as the
-  Rule above: names are owner provisioning acts, and now shapes are
-  too.

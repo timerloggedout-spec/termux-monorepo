@@ -102,3 +102,35 @@ console.log(JSON.stringify(res));
     assert res["cand_order"] == [12, 11]
     assert res["ext_numbers"] == [13]
     assert res["empty_lane"] == 0
+
+
+SERIES_SOURCE = ROOT / "ops" / "ml" / "pr-lane-series.jsonl"
+SERIES_MIRROR = APP / "data" / "pr-lane-series.jsonl"
+
+
+def _series_records(text):
+    # The seed line was committed without a trailing newline, so records
+    # can be concatenated; decode the object stream rather than lines.
+    dec, out, i = json.JSONDecoder(), [], 0
+    while i < len(text):
+        while i < len(text) and text[i] in " \n\r\t":
+            i += 1
+        if i >= len(text):
+            break
+        obj, j = dec.raw_decode(text, i)
+        out.append(obj)
+        i = j
+    return out
+
+
+def test_series_mirror_matches_source():
+    assert SERIES_MIRROR.read_bytes() == SERIES_SOURCE.read_bytes()
+    records = _series_records(SERIES_SOURCE.read_text())
+    assert records and all("counts" in x and "generated_at" in x for x in records)
+
+
+def test_workflow_mirrors_series_too():
+    wf = WORKFLOW.read_text()
+    # both commit paths mirror (initial + regenerate-on-conflict)
+    assert wf.count("cp ops/ml/pr-lane-series.jsonl apps/help-wanted-dashboard/data/pr-lane-series.jsonl") == 2
+    assert wf.count("cp ops/ml/pr-lane-feed.json apps/help-wanted-dashboard/data/pr-lane-feed.json") == 2

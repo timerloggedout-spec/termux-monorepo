@@ -60,28 +60,38 @@ Facts (Billing + Usage pages, inspected in-console 2026-10-27):
 - Plans state node/seat limits only, no credit inclusions: Solo $0 (current);
   Indie $8/mo ($80/yr); Pro $20/mo per seat ($200/yr per seat); Enterprise custom.
 
-Plan (REVISED 2026-10-27, owner correction — **$0 target REJECTED; the $20
-exists to be USED**; supersedes the reserve plan in PR #1987):
+Plan (REVISED rev3, 2026-10-27, owner refinement — **CONSERVATIVE use,
+MAXIMUM benefit**; supersedes rev2's spend allocations and PR #1987's
+reserve plan; the rev2 rejection of a $0 target stands — credits are used,
+but only where benefit is real and stated per credit):
 - Metering reality: after 3 deployments and an always-on container, Usage is
   still $0.00 and the balance unmoved — Solo usage is not visibly metered
-  against credits in-console. "Spend" therefore = **extract maximum hosted
-  value inside the $20 envelope**: fill the node/project caps with real,
-  always-on fleet workloads; if priced metering appears, allocations below
-  govern priority and a re-plan lands within a week.
-1. **Allocations (of $20):** $12 prod always-on (P1 + P2) · $5 experiment
-   bursts (P3) · $3 floor buffer (overage surprise only — the sole hoard).
-2. **Workloads, named:** P1 = **fleet help-wanted dashboard** (LIVE, above —
-   second host for the fleet control surface). P2 = **planning-queue**
-   backend (PR #1274 graph: intake + collector + sweeper containers, Neon
-   `ops_queue`, queue node, `*/5` scheduler) — next deploy, fills P2's caps.
-   P3 = rotating challenge/demo slot (entry demos, temporary backends);
-   recycle on completion, never idle-hold.
-3. **Utilization targets:** projects 3/3 with real payloads; every project
-   always-on or scheduler-driven; zero placeholder payloads (Vite lesson).
-   Efficiency = benefit per node, not idleness: scale-to-zero node types
-   (functions, Neon) go where traffic is bursty *inside* a real workload.
-4. **Tripwires:** credits < $3 floor → P3 experiments stop, prod runs on.
-   Usage > $0.00 (priced metering starts) → report + re-plan allocations
-   against real rates. Check Billing + Usage 1st monthly + after deploy bursts.
-5. **No paid refill:** tiers grant node limits, not credits. Upgrade only
-   when a node cap is the proven blocker for a named workload.
+  against credits in-console. Measured credits consumed to date: **$0.00**.
+  Every workload below states its benefit; while metering is $0 the
+  benefit-per-credit is unbounded, and the conservative gate is what keeps
+  that honest if priced metering starts: no benefit statement, no deploy.
+
+Benefit per credit, per workload:
+| Slot | Workload | Benefit (real, named) | Envelope |
+| --- | --- | --- | --- |
+| P1 | Fleet help-wanted dashboard (LIVE) | Independent second host for the fleet control surface + 18 data feeds; removes GitHub-Pages single-homing (fleet free-tier rule: no critical lane single-homed); saves Vercel deployment quota (100/day, cap already hit 2026-10-18/19) and Render free hours for workloads that need them | up to $12, always-on justified by daily fleet use |
+| P2 | planning-queue backend (PR #1274) | `ops_queue` intake/claim/done backend that lanes, Actions and devices enqueue through (hark-bridge mirror target) — **deploy gated on a wired consumer**: no consumer, no deploy (an idle queue is waste) | within the $12 prod envelope, only after the gate |
+| P3 | Experiments | **No standing allocation.** Each experiment pre-states benefit + kill date before deploy; deleted at kill date regardless of outcome | up to $2 per experiment, benefit-gated |
+| — | Floor buffer | Prod continuity against priced-metering surprises | $3, untouched unless prod is at risk |
+| — | Unallocated remainder | Default state is unspent — not hoarding: it converts the moment a benefit is named and gated | $3 |
+
+Rules:
+1. **Nothing wasteful:** no placeholder payloads (Vite lesson — the P1 swap
+   itself is held to this: its benefit is the row above, re-checked monthly;
+   if the dashboard host goes unused, it comes down), no idle always-on
+   nodes, no filling caps for utilization's sake.
+2. **Smallest sufficient shape first** (P1 runs 1 vCPU / 512 MB, instances
+   0–1); scale-to-zero node types (functions, Neon) where traffic is bursty
+   inside a real workload.
+3. **Tripwires:** credits < $3 floor → experiments stop, prod runs on.
+   Usage > $0.00 (priced metering starts) → report + re-plan within a week,
+   benefit-per-credit recomputed from real rates. Check Billing + Usage
+   1st monthly + after deploy bursts; the monthly check also re-validates
+   each live workload's benefit row.
+4. **No paid refill:** tiers grant node limits, not credits. Upgrade only
+   when a node cap is the proven blocker for a named, benefited workload.

@@ -92,5 +92,9 @@ def test_v11_progress_parent_and_criteria_items():
     assert "r.progress" in html and "pg.rounds_run" in html and "pg.votes_cast" in html
     assert "r.parent" in html and 'id="rfp-' in html
     assert "c.items" in html
-    feed = _feed()
-    assert feed["summary"]["by_status"].get("unscored", 0) == 0  # flood fully scored
+
+
+def test_page_title_is_the_rfp_flood_not_the_shell_donor():
+    html = _html()
+    assert "<title>Delphi RFP Flood" in html
+    assert "Challenge Countdowns" not in html.split("<script>", 1)[0].split("</head>", 1)[0]

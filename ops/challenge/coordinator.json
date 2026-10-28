@@ -1493,5 +1493,12 @@
     "json": "ops/challenge/opportunity_ledger.json",
     "doc": "docs/ops/CHALLENGE-OPPORTUNITY-LEDGER.md",
     "rule": "append-only; corrections as new entries; entry appended at every event close; AT_RISK for live near-deadline events without submission"
+  },
+  "osint": {
+    "coverage": "ops/challenge/osint/coverage.json",
+    "snapshots": "ops/challenge/osint/snapshots.json",
+    "watch": "scripts/challenge/osint_watch.py via .github/workflows/challenge-osint-watch.yml (weekly Wed 08:17Z + push + dispatch)",
+    "contract": "docs/ops/CHALLENGE-OSINT.md",
+    "rule": "public sources only; every fact sourced + fetched_at; gaps NOT_ESTABLISHED"
   }
 }

@@ -1,0 +1,37 @@
+name: referral-pool-watch
+# Weekly pool watchdog: registry alone proves pool depth, so this detection
+# IS fully automated. Opens/updates one referral:pool-low issue when any
+# live code programme drops below its spare target.
+on:
+  schedule:
+    - cron: "41 8 * * 2"
+  workflow_dispatch:
+permissions:
+  contents: read
+  issues: write
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pool check
+        id: chk
+        run: |
+          set +e
+          python3 scripts/referral/pool_check.py > pool-report.json
+          echo "rc=$?" >> "$GITHUB_OUTPUT"
+          set -e
+          cat pool-report.json
+      - name: File pool-low issue
+        if: steps.chk.outputs.rc == '1'
+        run: |
+          ALERTS=$(python3 -c "import json; print(', '.join(json.load(open('pool-report.json'))['alerts']))")
+          EXISTING=$(gh issue list --label "referral:pool-low" --state open --json number --jq '.[0].number // empty')
+          BODY="Pool below target: $ALERTS. Full report: $(cat pool-report.json). Owner input needed per docs/ops/REFERRAL-AUTOMATION.md (Rotation section)."
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --body "$BODY"
+          else
+            gh issue create --title "referral pool LOW: $ALERTS" --body "$BODY" --label "referral:pool-low"
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}

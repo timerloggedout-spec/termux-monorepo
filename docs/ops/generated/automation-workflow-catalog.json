@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "7f77404224c0ffd049f828587913faaec8dcb8cbcde9aa23039b682877369fdf",
-  "workflow_count": 201,
+  "source_fingerprint": "76fef564767ca0941f0ee1580a396af139c975be79030189f13861fbf0da715c",
+  "workflow_count": 202,
   "workflows": [
     {
       "action_pins": [
@@ -519,6 +519,25 @@
       "path": ".github/workflows/cadence-lead-lag.yml",
       "schedules": [],
       "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: cadence-provider-onboarding cancel-in-progress: false",
+      "domain": "peer-provider-review",
+      "jobs": [
+        "onboarding"
+      ],
+      "name": "Cadence provider onboarding",
+      "path": ".github/workflows/cadence-provider-onboarding.yml",
+      "schedules": [
+        "23 6 * * 3"
+      ],
+      "triggers": [
+        "push",
+        "schedule",
         "workflow_dispatch"
       ]
     },

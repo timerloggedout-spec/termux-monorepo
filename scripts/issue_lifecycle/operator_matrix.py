@@ -221,86 +221,183 @@ def render_md(m: dict) -> str:
 
 
 # --- live fetch (stdlib only; GITHUB_TOKEN from the environment) ---
+#
+# GraphQL, deliberately: the first version fetched over REST and
+# needed ~200 calls per run (issue pages + one detail + one
+# check-runs call per PR), which died on the shared Actions
+# installation rate limit in hot hours (run 40752171030, HTTP 403
+# after retries). The GraphQL shape below needs ~5 calls total for
+# the same snapshot.
 
-def _request(method: str, path: str, token: str, repo: str):
-    url = f"{API}/repos/{repo}{path}" if path.startswith("/") else f"{API}/{path}"
-    req = urllib.request.Request(url, method=method)
+_CONTEXT_FIELDS = """
+  __typename
+  ... on CheckRun { name conclusion status }
+  ... on StatusContext { context state }
+"""
+
+_ISSUES_Q = """
+query($owner: String!, $name: String!, $cursor: String) {
+  repository(owner: $owner, name: $name) {
+    issues(first: 100, after: $cursor, states: OPEN,
+           orderBy: {field: CREATED_AT, direction: ASC}) {
+      pageInfo { hasNextPage endCursor }
+      nodes {
+        number title createdAt updatedAt
+        labels(first: 20) { nodes { name } }
+        assignees(first: 1) { totalCount }
+        milestone { number }
+      }
+    }
+  }
+}
+"""
+
+_PRS_Q = """
+query($owner: String!, $name: String!, $cursor: String) {
+  repository(owner: $owner, name: $name) {
+    pullRequests(first: 40, after: $cursor, states: OPEN,
+                 orderBy: {field: CREATED_AT, direction: ASC}) {
+      pageInfo { hasNextPage endCursor }
+      nodes {
+        number title createdAt updatedAt isDraft mergeable mergeStateStatus headRefOid
+        labels(first: 20) { nodes { name } }
+        commits(last: 1) { nodes { commit {
+          statusCheckRollup { contexts(first: 50) { nodes { %s } } }
+        } } }
+      }
+    }
+  }
+}
+""" % _CONTEXT_FIELDS
+
+_MASTER_Q = """
+query($owner: String!, $name: String!) {
+  repository(owner: $owner, name: $name) {
+    ref(qualifiedName: "refs/heads/master") {
+      target { ... on Commit {
+        oid
+        statusCheckRollup { contexts(first: 50) { nodes { %s } } }
+      } }
+    }
+  }
+}
+""" % _CONTEXT_FIELDS
+
+
+def _graphql(query: str, variables: dict, token: str) -> dict:
+    body = json.dumps({"query": query, "variables": variables}).encode()
+    req = urllib.request.Request(f"{API}/graphql", data=body, method="POST")
     req.add_header("Accept", "application/vnd.github+json")
-    req.add_header("X-GitHub-Api-Version", "2022-11-28")
     req.add_header("User-Agent", USER_AGENT)
+    req.add_header("Content-Type", "application/json")
     if token:
         req.add_header("Authorization", f"Bearer {token}")
     for attempt in range(5):
         try:
             with urllib.request.urlopen(req, timeout=60) as resp:
-                raw = resp.read()
-                return json.loads(raw) if raw else {}
+                payload = json.loads(resp.read() or b"{}")
         except urllib.error.HTTPError as e:
             detail = e.read().decode(errors="replace")[:500]
             if e.code in (403, 429) and "rate limit" in detail.lower() and attempt < 4:
                 delay = min(5 * 2**attempt, 60)
-                print(f"rate limit on {path}; retry {attempt + 1}/4 in {delay}s", file=sys.stderr)
+                print(f"rate limit on graphql; retry {attempt + 1}/4 in {delay}s", file=sys.stderr)
                 time.sleep(delay)
                 continue
-            print(f"GitHub API error: {method} {path} -> HTTP {e.code}: {detail}", file=sys.stderr)
+            print(f"GitHub API error: POST /graphql -> HTTP {e.code}: {detail}", file=sys.stderr)
             raise SystemExit(1)
+        errors = payload.get("errors") or []
+        if errors:
+            text = json.dumps(errors)[:500]
+            if "RATE_LIMITED" in text and attempt < 4:
+                delay = min(5 * 2**attempt, 60)
+                print(f"rate limit on graphql; retry {attempt + 1}/4 in {delay}s", file=sys.stderr)
+                time.sleep(delay)
+                continue
+            print(f"GitHub GraphQL errors: {text}", file=sys.stderr)
+            raise SystemExit(1)
+        return payload.get("data") or {}
     raise SystemExit(1)
 
 
-def _paged(path: str, token: str, repo: str) -> list:
-    out, page = [], 1
-    while True:
-        batch = _request("GET", f"{path}&per_page=100&page={page}" if "?" in path else f"{path}?per_page=100&page={page}", token, repo)
-        if not batch:
-            break
-        out.extend(batch)
-        if len(batch) < 100:
-            break
-        page += 1
-    return out
-
-
-def _gates_for_sha(sha: str, token: str, repo: str) -> dict:
-    cr = _request("GET", f"/commits/{sha}/check-runs?per_page=100", token, repo)
+def _gates_from_contexts(contexts: list) -> dict:
     gates: dict[str, str] = {}
-    for run in cr.get("check_runs", []):
-        if run["name"] == GATE_HYGIENE:
-            gates["hygiene"] = run.get("conclusion") or run["status"]
-        if "termux smoke" in run["name"] and "smoke" not in gates:
-            gates["smoke"] = run.get("conclusion") or run["status"]
+    for ctx in contexts or []:
+        if ctx.get("__typename") == "CheckRun":
+            name = ctx.get("name") or ""
+            value = (ctx.get("conclusion") or ctx.get("status") or "").lower()
+        else:
+            name = ctx.get("context") or ""
+            value = (ctx.get("state") or "").lower()
+        if name == GATE_HYGIENE:
+            gates["hygiene"] = value
+        if "termux smoke" in name and "smoke" not in gates:
+            gates["smoke"] = value
     return gates
 
 
-def fetch_snapshot(repo: str, token: str) -> dict:
-    items = _paged("/issues?state=open&sort=created&direction=asc", token, repo)
-    issues, prs = [], []
-    for x in items:
-        base = {
+def _labels(node: dict) -> list:
+    return [l["name"] for l in ((node.get("labels") or {}).get("nodes") or [])]
+
+
+def shape_snapshot(issue_nodes: list, pr_nodes: list, master_target: dict) -> dict:
+    """Pure shaping from GraphQL nodes to the snapshot schema."""
+    issues = [
+        {
             "number": x["number"],
             "title": x["title"],
-            "labels": [l["name"] for l in x.get("labels", [])],
-            "created_at": x["created_at"],
-            "updated_at": x["updated_at"],
+            "labels": _labels(x),
+            "created_at": x["createdAt"],
+            "updated_at": x["updatedAt"],
+            "assignees": (x.get("assignees") or {}).get("totalCount", 0),
+            "milestone": bool(x.get("milestone")),
         }
-        if "pull_request" not in x:
-            base["assignees"] = len(x.get("assignees", []))
-            base["milestone"] = bool(x.get("milestone"))
-            issues.append(base)
-            continue
-        pr = _request("GET", f"/pulls/{x['number']}", token, repo)
-        base.update(
+        for x in issue_nodes
+    ]
+    prs = []
+    for x in pr_nodes:
+        commits = ((x.get("commits") or {}).get("nodes") or [])
+        rollup = {}
+        if commits:
+            rollup = (commits[0].get("commit") or {}).get("statusCheckRollup") or {}
+        contexts = (rollup.get("contexts") or {}).get("nodes") or []
+        prs.append(
             {
-                "head_sha": pr["head"]["sha"],
-                "mergeable": pr.get("mergeable"),
-                "mergeable_state": pr.get("mergeable_state"),
-                "draft": pr.get("draft"),
-                "gates": _gates_for_sha(pr["head"]["sha"], token, repo),
+                "number": x["number"],
+                "title": x["title"],
+                "labels": _labels(x),
+                "created_at": x["createdAt"],
+                "updated_at": x["updatedAt"],
+                "head_sha": x.get("headRefOid"),
+                "mergeable": x.get("mergeable") == "MERGEABLE",
+                "mergeable_state": (x.get("mergeStateStatus") or "UNKNOWN").lower(),
+                "draft": bool(x.get("isDraft")),
+                "gates": _gates_from_contexts(contexts),
             }
         )
-        prs.append(base)
-    tip = _request("GET", "/commits?sha=master&per_page=1", token, repo)[0]
-    master = {"sha": tip["sha"], "gates": _gates_for_sha(tip["sha"], token, repo)}
+    contexts = ((master_target.get("statusCheckRollup") or {}).get("contexts") or {}).get("nodes") or []
+    master = {"sha": master_target.get("oid"), "gates": _gates_from_contexts(contexts)}
     return {"master": master, "issues": issues, "prs": prs}
+
+
+def _paginate(query: str, key: str, owner: str, name: str, token: str) -> list:
+    nodes, cursor = [], None
+    while True:
+        data = _graphql(query, {"owner": owner, "name": name, "cursor": cursor}, token)
+        conn = (data.get("repository") or {}).get(key) or {}
+        nodes.extend(conn.get("nodes") or [])
+        page = conn.get("pageInfo") or {}
+        if not page.get("hasNextPage"):
+            return nodes
+        cursor = page.get("endCursor")
+
+
+def fetch_snapshot(repo: str, token: str) -> dict:
+    owner, name = repo.split("/", 1)
+    issue_nodes = _paginate(_ISSUES_Q, "issues", owner, name, token)
+    pr_nodes = _paginate(_PRS_Q, "pullRequests", owner, name, token)
+    data = _graphql(_MASTER_Q, {"owner": owner, "name": name}, token)
+    target = ((data.get("repository") or {}).get("ref") or {}).get("target") or {}
+    return shape_snapshot(issue_nodes, pr_nodes, target)
 
 
 def main() -> int:

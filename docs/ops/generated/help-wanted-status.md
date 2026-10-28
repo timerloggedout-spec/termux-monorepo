@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-28T13:30:22Z UTC · receipts=3962 · foreign_open=8 · tributes=112_
+_Generated 2026-10-28T19:56:53Z UTC · receipts=3962 · foreign_open=8 · tributes=112_
 
 ## Tributes (contributor ledger)
 
+- [timerloggedout-spec/timerloggedout-spec.github.io#4](https://github.com/timerloggedout-spec/timerloggedout-spec.github.io/pull/4) · state=closed · Landing: affiliate badge render (UnoRouter)
 - [timerloggedout-spec/timerloggedout-spec.github.io#3](https://github.com/timerloggedout-spec/timerloggedout-spec.github.io/pull/3) · state=closed · feat(landing): traffic counter + source breakdown (traffic-feed/1)
 - [timerloggedout-spec/timerloggedout-spec.github.io#2](https://github.com/timerloggedout-spec/timerloggedout-spec.github.io/pull/2) · state=closed · feat(landing): cut trust section; ?ch= A/B cell codes
 - [timerloggedout-spec/timerloggedout-spec.github.io#1](https://github.com/timerloggedout-spec/timerloggedout-spec.github.io/pull/1) · state=closed · feat(landing): de-center CellCog; feed-driven invite-code cards
@@ -43,7 +44,6 @@ _Generated 2026-10-28T13:30:22Z UTC · receipts=3962 · foreign_open=8 · tribut
 - [https://github.com/SO4-Markets/interface/pull/1029](https://github.com/SO4-Markets/interface/pull/1029) · state=? · 
 - [AmpedWasTaken/SML#18](https://github.com/AmpedWasTaken/SML/pull/18) · state=closed · help-wanted: stake + contribute for #17
 - [https://github.com/vedantnimbarte/zero/pull/81](https://github.com/vedantnimbarte/zero/pull/81) · state=? · 
-- [https://github.com/prime-radiant-inc/evener/pull/2661](https://github.com/prime-radiant-inc/evener/pull/2661) · state=? · 
 
 ## Foreign open PRs
 

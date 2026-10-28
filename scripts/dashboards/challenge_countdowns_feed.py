@@ -12,6 +12,11 @@ remaining-seconds value. The dashboard page derives state and
 time-remaining client-side from the instants on every tick
 (issue #1880 requirement 3), so a stale feed can never show a stale
 countdown; at worst it shows a stale deadline, which the log owns.
+
+Prizes are REQUIRED per entry (owner rule 2026-10-28: required fields
+render on the manager brief and the HITL pages, never blank). They are
+wired from the coordinator SSOT, ops/challenge/coordinator.json —
+status ESTABLISHED with verbatim tiers, or NOT_ESTABLISHED as such.
 """
 import argparse
 import importlib.util
@@ -20,8 +25,9 @@ import re
 from datetime import datetime, timezone
 from pathlib import Path
 
-SCHEMA = "challenge-countdowns-feed/v1"
+SCHEMA = "challenge-countdowns-feed/v1.1"
 LOG_REL = "docs/ops/CHALLENGE-ENTRIES-LOG.md"
+COORD_REL = "ops/challenge/coordinator.json"
 EMITTER_REL = "scripts/challenge_entries/countdowns.py"
 STATUS_WORDS = ("COMPLETED", "CLOSED", "IN PROGRESS", "REGISTERING",
                 "BLOCKED", "IN REVIEW", "PENDING")
@@ -48,8 +54,33 @@ def display_title(header_rest):
     return " — ".join(keep) if keep else header_rest.strip()
 
 
+def load_prizes(root):
+    """Per-event prize state from the coordinator SSOT.
+
+    Missing file or missing event -> NOT_ESTABLISHED (required field,
+    rendered as such — never blank, never omitted).
+    """
+    path = root / COORD_REL
+    prizes = {}
+    if path.exists():
+        coord = json.loads(path.read_text(encoding="utf-8"))
+        for ev in coord.get("events", []):
+            p = ev.get("prizes") or {}
+            prizes[ev["id"]] = {
+                "status": p.get("status") or "NOT_ESTABLISHED",
+                "pool": p.get("pool"),
+                "tiers": [
+                    {"place": t.get("place"), "award": t.get("award"),
+                     "source_url": t.get("source_url")}
+                    for t in p.get("tiers", [])
+                ],
+            }
+    return prizes
+
+
 def build_feed(root):
     mod = load_emitter(root)
+    prizes = load_prizes(root)
     text = (root / LOG_REL).read_text(encoding="utf-8")
     titles = {}
     for m in mod.HEADER_RE.finditer(text):
@@ -63,12 +94,15 @@ def build_feed(root):
             "status": status if status else "ACTIVE",
             "opens": e["opens"].isoformat() if e["opens"] else None,
             "closes": e["closes"].isoformat() if e["closes"] else None,
+            "prizes": prizes.get(e["id"], {
+                "status": "NOT_ESTABLISHED", "pool": None, "tiers": []}),
         })
     entries.sort(key=lambda e: int(e["id"][1:]))
     return {
         "schema": SCHEMA,
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "source": LOG_REL,
+        "prizes_source": COORD_REL,
         "entries": entries,
     }
 

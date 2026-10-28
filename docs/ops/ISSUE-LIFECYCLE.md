@@ -409,7 +409,26 @@ labelled at birth by the gate — plus one new label in use, `temporal`
   now also **merges its own PR** — master carries no
   branch-protection required checks, so the generate workflow polls
   the dual gates on the PR head itself and squash-merges only when
-  both are green, leaving the PR open otherwise. What remains
+  both are green, leaving the PR open otherwise. First
+  self-merge attempt (run `40749498541`) taught the missing half:
+  the gate workflows are path-filtered and never report on
+  generated-docs-only heads at all, and a transient rate-limit
+  error killed the polling step — so the rule is now: gates
+  reporting → both green or no merge; no gate runs after a
+  3-minute grace + a diff of only the two generated files →
+  provenance merge (the basis #2055/#2057 were hand-merged on);
+  API errors retry and never fail the step. The same run's other
+  lesson landed next: the REST fetch needed ~200 calls and died on
+  the installation rate limit in the generate step itself (run
+  `40752171030`) — the generator's live fetch is now GraphQL
+  (~5 calls for the identical snapshot; shaping is a pure,
+  unit-tested function). Self-merge settled at rule v3 (run
+  `40753935988` showed v2's polling multiplying calls into the
+  same rate wall, plus an unguarded `jq` dying under the runner's
+  `bash -e`): one guarded gate read per run — green merges, absent
+  gates + generated-only diff merges on provenance, failure or
+  pending leaves the PR for the next scheduled run to re-check.
+  What remains
   lane-side is judgment, not process: titles matching no mechanical
   class (the residue after the rules), closure-evidence audits vs
   C1, and corrections like the ones above.

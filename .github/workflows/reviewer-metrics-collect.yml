@@ -119,6 +119,13 @@ jobs:
           cp reviewer-metrics.json docs/ops/generated/reviewer-metrics.json
           git add docs/ops/generated/reviewer-metrics.json
           git commit -m "chore(reviewer-metrics): regenerate provider x context map"
+          # The refresh branch persists between runs (its PR may have
+          # merged without the branch being deleted). A bare checkout
+          # has no remote-tracking ref for it, so --force-with-lease
+          # rejects the push as stale info — this step failed on every
+          # run from 2026-10-26 until this fix. Fetch the branch first
+          # so the lease has a current value to check against.
+          git fetch origin "$branch" || true
           git push --force-with-lease origin "$branch"
           if gh pr list --head "$branch" --state open --json number --jq '.[0].number' | grep -q .; then
             echo "Refresh PR already open for $branch; branch updated in place."

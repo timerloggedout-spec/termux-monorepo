@@ -46,11 +46,16 @@ e.g. a Delphi feed-collector verification write died at 05:33 PT.
    scratch workspaces go under `~/workspace/scratch/<task>/` (real disk);
    /tmp is for small transient files only. Scratch clones are cleaned up
    in the session that creates them. (The repo-gate lesson of 2026-10-20
-   already said clones belong under ~/workspace, not /tmp — this incident
-   is the same rule relearned, now with a tripwire behind it.)
-2. **Tripwire:** a `tmp-usage-tripwire` hook on the VM polls /tmp every
-   5 minutes and, at ≥80% usage, wakes an agent to verify and report the
-   top consumers to the main chat (report-only; remediation stays a
-   main-chat decision under the archive-first rule). Both the silent path
-   (1% → silent) and the wake path (threshold variant → wake with the
-   consumer list) were dry-run verified on 2026-10-27 before enabling.
+   already said clones belong under ~/workspace, not /tmp.)
+2. **Tripwire — named exception to the VM = sandbox-only order:** a
+   `tmp-usage-tripwire` hook on the VM polls /tmp every 5 minutes and,
+   at ≥80% usage, wakes an agent to verify and report the top consumers
+   to the main chat (report-only; remediation stays a main-chat decision
+   under the archive-first rule). Both the silent path (1% → silent) and
+   the wake path (threshold variant → wake with the consumer list) were
+   dry-run verified on 2026-10-27 before enabling. On 2026-10-28 it was
+   briefly disabled under the owner's VM = sandbox-only order (no
+   standing monitors, daemons or cron-audits on the VM; continuous work
+   lives in GitHub Workflows), then re-enabled the same day as a named
+   exception: its subject is the VM's own /tmp, which no GitHub Workflow
+   can observe. It is the only named exception, and it is VM-self only.

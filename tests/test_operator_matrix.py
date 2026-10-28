@@ -13,7 +13,7 @@ sys.path.insert(0, str(ROOT / "scripts" / "issue_lifecycle"))
 
 import pytest
 
-from operator_matrix import build_matrix, classify_pr, lane_family, render_md, validate_matrix  # noqa: E402
+from operator_matrix import build_matrix, classify_pr, lane_family, render_md, shape_snapshot, validate_matrix  # noqa: E402
 
 GREEN = {"hygiene": "success", "smoke": "success"}
 
@@ -63,6 +63,36 @@ def test_build_matrix_counts_and_no_supersede():
     assert m["issues_unlabelled"] == [7]
     md = render_md(m)
     assert "#1" in md and "EXTRACT" in md and "NEED_EVIDENCE" in md
+
+
+def test_shape_snapshot_from_graphql_nodes():
+    """The live fetch is GraphQL (~5 calls vs ~200 REST — the REST
+    version died on the shared installation rate limit, run
+    40752171030). Shaping must preserve the snapshot schema exactly."""
+    issue_node = {
+        "number": 5, "title": "i", "createdAt": "c", "updatedAt": "u",
+        "labels": {"nodes": [{"name": "ops"}]},
+        "assignees": {"totalCount": 2}, "milestone": None,
+    }
+    pr_node = {
+        "number": 6, "title": "p", "createdAt": "c", "updatedAt": "u",
+        "isDraft": False, "mergeable": "MERGEABLE", "mergeStateStatus": "UNSTABLE",
+        "headRefOid": "d" * 40,
+        "labels": {"nodes": []},
+        "commits": {"nodes": [{"commit": {"statusCheckRollup": {"contexts": {"nodes": [
+            {"__typename": "CheckRun", "name": "hygiene + portability gate", "conclusion": "SUCCESS", "status": "COMPLETED"},
+            {"__typename": "CheckRun", "name": "agentic termux smoke", "conclusion": "SUCCESS", "status": "COMPLETED"},
+        ]}}}}]},
+    }
+    master_target = {"oid": "e" * 40, "statusCheckRollup": {"contexts": {"nodes": []}}}
+    snap = shape_snapshot([issue_node], [pr_node], master_target)
+    assert snap["issues"][0]["assignees"] == 2
+    assert snap["issues"][0]["milestone"] is False
+    assert snap["prs"][0]["mergeable"] is True
+    assert snap["prs"][0]["mergeable_state"] == "unstable"
+    assert snap["prs"][0]["gates"] == {"hygiene": "success", "smoke": "success"}
+    assert classify_pr(snap["prs"][0]) == "EXTRACT"
+    assert snap["master"]["sha"] == "e" * 40
 
 
 def test_validate_matrix_rejects_prs_without_issues():

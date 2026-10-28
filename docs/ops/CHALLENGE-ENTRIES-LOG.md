@@ -36,11 +36,19 @@ registrations, submissions, and prepared candidates — for
   America/Los_Angeles) in a `countdown-data` line; the state in its
   `countdown` line (opens in / closes in / OVERDUE / CLOSED) is generated
   by `scripts/challenge_entries/countdowns.py` from those instants and
-  refreshed by the weekly sweep. Lane reports carry the script's one-line
-  countdown block for all active entries.
-- Sweep cadence: weekly (Mondays, America/Los_Angeles) — a scheduled lane
-  check re-scans the sources in §5, refreshes this log by PR when something
-  changed, and reports new candidates. Log last verified 2026-10-26.
+  refreshed by the `challenge-countdowns-refresh` GitHub Workflow
+  (weekly schedule + on log push). Lane reports carry the script's
+  one-line countdown block for all active entries.
+- Sweep cadence (VM rule, owner 2026-10-28 — continuous work lives in
+  repo automation, never VM agent-crons): the countdown refresh runs as
+  the `challenge-countdowns-refresh` workflow (above). The §5 discovery
+  sweep is dispatch-driven lane work (owner/Manager dispatch): it
+  re-scans the sources, refreshes this log by PR when something changed,
+  and reports new candidates. The retired VM crons
+  (`challenge-entries-sweep`, `g07-escalation-daily`) are replaced —
+  G-07's standing watch is the daily `g07-profile-watch` workflow,
+  escalating on the G-07 tracking issue (Manager = responder of
+  record). Log last verified 2026-10-26.
 
 Builder identity used throughout: AWS Builder Center profile
 [@1337dia590r1c8u1ldr](https://builder.aws.com/community/@1337dia590r1c8u1ldr),
@@ -193,7 +201,9 @@ authorization from the pick alone).
 
 **Standing blocker for every platform submission: the incomplete Builder
 profile (§2).** It gates D1 directly and is the first blocker surfaced wherever
-a submission path reaches an owner-account step.
+a submission path reaches an owner-account step. Its standing watch is
+the daily `g07-profile-watch` workflow (public-profile check →
+escalation on the G-07 tracking issue; Manager = responder of record).
 
 **Lane oversight (owner structure, 2026-10-28):** the ChallengeLane
 Manager (own side chat — Challenge Management) owns the lane and the
@@ -203,6 +213,9 @@ Sub-coordinators per event sit under the Manager (D1–D5). Manager:
 through `-d5` (coordination identities — `docs/ops/AGENT-MONIKERS.md`,
 PR #1996/#1997).
 FUTURE (logged, not now): DoE-style comparison of manager implementations.
+**Schema SSOT:** the machine-readable source for this roster + the packets
+is `ops/challenge/coordinator.json` (schema: `docs/ops/CHALLENGE-SCHEMA.md`);
+this log is the human view of the same verified state.
 
 | Entry | State | Window (PT) | Gate |
 |-------|-------|-------------|------|
@@ -211,14 +224,14 @@ FUTURE (logged, not now): DoE-style comparison of manager implementations.
 | D2 | IN PROGRESS — Nov 5–8 build PRIMARY over D3 final weekend | opens Nov 5; closes Nov 8 15:00 | no-card path only (lablab + Discord + Vultr sandbox) |
 | D3 | Concept #42 QUESTIONED 2026-10-28 — under review, NOT killed, NOT the active build; pick pending owner freeze: ListingLens; core build Oct 30–Nov 1, final weekend polish/Clips only | closes Nov 9 23:59 (official schedule moved; corrected 2026-10-28) | Clips account ✓ created 2026-10-27 (held for the regenerated concept) |
 | D4 | REGISTERING | eligibility opens Oct 30 13:00 PDT; closes Dec 4 14:00 | Devpost + Kiro accounts (sibling lane); no project creation before the window opens |
-| D5 | REGISTERED — spot pending review | opens Nov 17 9:00 AM; closes Nov 19 23:59 (window end) | spot confirmation email |
+| D5 | REGISTERED — spot pending review | opens Nov 17 9:00 AM; closes Nov 19 12:00 PT (official Contest Rules) | spot confirmation email |
 
-<!-- countdown:BLOCK -->⏳ countdowns — D0: CLOSED · D1: closes in 7d 16h · D2: opens in 7d 16h (closes Nov 8 15:00 PT) · D3: closes in 12d 16h · D4: opens in 2d 4h (closes Dec 4 14:00 PT) · D5: opens in 20d 1h (closes Nov 19 23:59 PT) (computed 2026-10-28 08:00 PT)<!-- /countdown:BLOCK -->
+<!-- countdown:BLOCK -->⏳ countdowns — D0: CLOSED · D1: closes in 7d 12h · D2: opens in 7d 12h (closes Nov 8 15:00 PT) · D3: closes in 12d 12h · D4: opens in 2d 0h (closes Dec 4 14:00 PT) · D5: opens in 19d 21h (closes Nov 19 12:00 PT) (computed 2026-10-28 12:55 PT)<!-- /countdown:BLOCK -->
 
 ### D0 — for R2, Weekend Challenge: Give your Agent a Tool — COMPLETED 2026-10-27 (owner ruling 2026-10-27; date set: Oct 29)
 
 <!-- countdown-data:D0 opens=- closes=2026-10-26T13:00:00-07:00 -->
-<!-- countdown:D0 -->⏳ CLOSED (computed 2026-10-28 08:00 PT)<!-- /countdown:D0 -->
+<!-- countdown:D0 -->⏳ CLOSED (computed 2026-10-28 12:55 PT)<!-- /countdown:D0 -->
 
 `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]`
 
@@ -280,7 +293,7 @@ FUTURE (logged, not now): DoE-style comparison of manager implementations.
 ### D1 — for C1, Workshop to Ship — IN PROGRESS (owner already joined) — CONCEPT SET STOPPED 2026-10-28 (brief-first regeneration pending)
 
 <!-- countdown-data:D1 opens=2026-10-28T00:00:00-07:00 closes=2026-11-04T23:59:00-08:00 -->
-<!-- countdown:D1 -->⏳ closes in 7d 16h (computed 2026-10-28 08:00 PT)<!-- /countdown:D1 -->
+<!-- countdown:D1 -->⏳ closes in 7d 12h (computed 2026-10-28 12:55 PT)<!-- /countdown:D1 -->
 
 `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]`
 
@@ -345,9 +358,20 @@ FUTURE (logged, not now): DoE-style comparison of manager implementations.
 ### D2 — for C2, Vultr Agent Rush (Foundry entry) — IN PROGRESS
 
 <!-- countdown-data:D2 opens=2026-11-05T00:00:00-08:00 closes=2026-11-08T15:00:00-08:00 -->
-<!-- countdown:D2 -->⏳ opens in 7d 16h (computed 2026-10-28 08:00 PT)<!-- /countdown:D2 -->
+<!-- countdown:D2 -->⏳ opens in 7d 12h (computed 2026-10-28 12:55 PT)<!-- /countdown:D2 -->
 
 `entrant{entrantLablabAi}[platform:lablab-ai]` + `entrant{entrantVultr}[platform:vultr]`
+
+- **Prizes (official page — lablab.ai/ai-hackathons/vultr-hackathon, read
+  2026-10-28, verbatim amounts):** "Up to $15,000 in Prizes… Compete for
+  $14,000 in cash and Vultr credits, plus a chance to win exclusive tech
+  prizes at our onsite raffle." — **$9,000 cash prizes / $5,000 Vultr
+  credits / + up to $1,000 in onsite raffle prizes. 1st place: $5,000
+  cash + $3,000 in Vultr credits. 2nd place: $3,000 cash + $1,000 in
+  Vultr credits. 3rd place: $1,000 cash + $1,000 in Vultr credits.**
+  Every participant gets $200 in free Vultr credits. Onsite raffle
+  (3 individual winners, in-person only): PlayStation 5 Standard, Apple
+  AirPods 5, Razer DeathAdder V3 HyperSpeed.
 
 - **Concept:** the Web Adapter Foundry as a sandboxed browser-operating agent:
   given a target brief, the agent plans a bounded adapter probe, executes it
@@ -375,7 +399,7 @@ FUTURE (logged, not now): DoE-style comparison of manager implementations.
 ### D3 — for C3, Builder.io Agent-Native Hackathon — concept #42 QUESTIONED 2026-10-28 (under review; not the active build)
 
 <!-- countdown-data:D3 opens=- closes=2026-11-09T23:59:00-08:00 -->
-<!-- countdown:D3 -->⏳ closes in 12d 16h (computed 2026-10-28 08:00 PT)<!-- /countdown:D3 -->
+<!-- countdown:D3 -->⏳ closes in 12d 12h (computed 2026-10-28 12:55 PT)<!-- /countdown:D3 -->
 
 `entrant{entrantBuilderIo}[platform:builder-io]`
 
@@ -391,6 +415,12 @@ FUTURE (logged, not now): DoE-style comparison of manager implementations.
   puts users in control; a connected experience" — UI and agent call the same
   actions, defined once with `defineAction()` (`@agent-native/core`, zod
   schemas, React UI).
+- **Prizes (Official Rules — builder.io/hackathon/rules, read
+  2026-10-28, verbatim):** **Grand Prize: $5,000 USD. 2nd Place: $2,500
+  USD. 3rd Place: $1,500 USD. 4th Place: $750 USD. 5th Place: $250 USD.
+  Total: $10,000 USD across five ranked cash prizes** — one cash award
+  per project or team; recognition categories (Best Overall /
+  Productivity / Most Creative / Best Use of Agent-Native) add no cash.
 - **CORRECTION (owner, 2026-10-28) — proposal #42 is QUESTIONED, NOT
   killed:** "Delphi Desk" (generated proposal #42) stands **questioned /
   under review** as a D3 build — the inward-generation defect is
@@ -465,7 +495,7 @@ FUTURE (logged, not now): DoE-style comparison of manager implementations.
 ### D4 — for C4, Kiroween 2026 — REGISTERING (build sequenced after Nov 8)
 
 <!-- countdown-data:D4 opens=2026-10-30T13:00:00-07:00 closes=2026-12-04T14:00:00-08:00 -->
-<!-- countdown:D4 -->⏳ opens in 2d 4h (computed 2026-10-28 08:00 PT)<!-- /countdown:D4 -->
+<!-- countdown:D4 -->⏳ opens in 2d 0h (computed 2026-10-28 12:55 PT)<!-- /countdown:D4 -->
 
 `entrant{entrantDevpost}[platform:devpost]` + `entrant{entrantKiro}[platform:kiro]` — account creation owned by the dedicated Devpost + Kiro ID creation chat (owner order 2026-10-27, fleet Google identity route); registration completes with this lane on its handoff.
 
@@ -476,6 +506,12 @@ FUTURE (logged, not now): DoE-style comparison of manager implementations.
   Resurrection, Frankenstein, Skeleton Crew, Costume Contest; $100,000 pool.
   Registration requires a valid **Kiro user ID or AWS account ID** (per the
   official page: "Create or sign in to your Kiro account at kiro.dev").
+- **Prizes (official page — kiroween.devpost.com, read 2026-10-28):**
+  "Expect **$100,000 in cash prizes**"; the prizes block reads "**Prizes
+  TBD** — $100,000 in cash — 1 winner" (placeholder). **Per-place tiers:
+  NOT ESTABLISHED** — the page states complete details including "different
+  prizes" release Friday, October 30, 2026, when submissions open. Tier
+  record lands at the Oct 30 rules read.
 - **Sequencing rules (owner, 2026-10-26):** register now; do NOT create the
   project or start building before the window; the build itself waits until
   after Nov 8 (D1/D2/D3 windows first).
@@ -518,8 +554,8 @@ FUTURE (logged, not now): DoE-style comparison of manager implementations.
 
 ### D5 — for Aha! AI Builder Day Hackathon (Aha.io) — REGISTERED 2026-10-27 (spot pending review)
 
-<!-- countdown-data:D5 opens=2026-11-17T09:00:00-08:00 closes=2026-11-19T23:59:00-08:00 -->
-<!-- countdown:D5 -->⏳ opens in 20d 1h (computed 2026-10-28 08:00 PT)<!-- /countdown:D5 -->
+<!-- countdown-data:D5 opens=2026-11-17T09:00:00-08:00 closes=2026-11-19T12:00:00-08:00 -->
+<!-- countdown:D5 -->⏳ opens in 19d 21h (computed 2026-10-28 12:55 PT)<!-- /countdown:D5 -->
 
 `entrant{n0nAha}[platform:aha-io]` (assigned via the registry process,
 PR #1970 merged 2e99fadd).
@@ -543,11 +579,22 @@ PR #1970 merged 2e99fadd).
 - **Concept angle (draft):** rebuild a frustrating intake/review tool as
   an Aha! Builder prototype — subject picked at build (Nov 17), sized to
   the 3-day window.
+- **Prizes (official Contest Rules — aha.io/hackathon/ai-builder-day-contest-rules,
+  read 2026-10-28, verbatim):** judges "select a winner and an honorable
+  mention" in two categories — **Best replacement app** and **Most
+  innovative user interface**. "Each member of the winning team in each
+  category shall receive: **From Aha!: A six-month subscription to
+  Aha! Builder (approx. retail value $744)**." Event page adds: an AI
+  Builder badge + certificate. **No cash prizes; no other tiers
+  published.** Rules also give each team a 14-day free trial of Aha!
+  Builder + AI credits to build with.
 - **Eligibility check (enforced):** no spot confirmation email → no build
   commitment; if the review declines, the packet closes on that email as
-  evidence. Submission deadline time on Nov 19 is UNVERIFIED on the
-  official page (build window ends Nov 19; countdown uses 23:59 PT as the
-  window end, marked as such).
+  evidence. **Submission deadline CORRECTED 2026-10-28:** previously
+  UNVERIFIED (countdown used the Nov 19 23:59 PT window end); the
+  official Contest Rules state verbatim: "Each team must submit a video
+  recording demonstrating your application no later than **Thursday,
+  Nov. 19 at 12 p.m. PT**." Countdown now carries Nov 19 12:00 PT.
 
 ## 5. Sweep sources
 

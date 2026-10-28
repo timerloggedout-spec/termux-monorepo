@@ -1,6 +1,6 @@
 {
   "schema": "quota-allocations-feed/v1",
-  "generated_at": "2026-10-28T14:10:44.091947+00:00",
+  "generated_at": "2026-10-28T14:16:04.828539+00:00",
   "source": "ops/quota/allocations.json (owner-set, issue #1884) joined with ops/quota/registry.json entitlements and the public readings snapshot; entitlements are not usage and no focus attribution is invented.",
   "issue": 1884,
   "set_by": "owner",
@@ -766,10 +766,550 @@
       "pool": "g4f-vendors",
       "services": [
         {
+          "service": "g4f.agenttools",
+          "entitlement": {
+            "limit": 250,
+            "unit": "units",
+            "window": "per day"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.airforce",
+          "entitlement": {
+            "limit": 1000,
+            "unit": "requests",
+            "window": "per day"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.antigravity",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.arena",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.bingcreateimages",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.blackboxpro",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.blackforestlabs_flux1dev",
+          "entitlement": {
+            "limit": 2,
+            "unit": "minutes of GPU time",
+            "window": "per day, resets exactly 24 hours after first GPU usage"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.blackforestlabs_flux1kontextdev",
+          "entitlement": {
+            "limit": 2,
+            "unit": "minutes of GPU time",
+            "window": "per day, resets exactly 24 hours after first GPU usage"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.bravesearch",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.cachedsearch",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.cerebras",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.chatgpt",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.claude",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.cloudflare",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.cohereforai_c4ai_command",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.copilot",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.copilotapp",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.deepinfra",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.deepseek",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.elevenlabs",
+          "entitlement": {
+            "limit": 10000,
+            "unit": "credits",
+            "window": "per month"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.g4fspace",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.gemini",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.geminicli",
+          "entitlement": {
+            "limit": 1000,
+            "unit": "requests",
+            "window": "per user per day"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.geminipro",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.githubcopilot",
+          "entitlement": {
+            "limit": 50,
+            "unit": "premium requests (all chat interactions count as premium requests)",
+            "window": "per month"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.glm",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.googleaimode",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.googlesearch",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.grok",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.groq",
+          "entitlement": {
+            "limit": 1000,
+            "unit": "requests per day (RPD) for openai/gpt-oss-120b",
+            "window": "per day"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.hailuoai",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.huggingchat",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.huggingface",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.huggingfacemedia",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.huggingspace",
+          "entitlement": {
+            "limit": 2,
+            "unit": "GPU-minutes (ZeroGPU)",
+            "window": "per day"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.kilocode",
+          "entitlement": {
+            "limit": 200,
+            "unit": "requests",
+            "window": "per hour per IP"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.llm7",
+          "entitlement": {
+            "limit": 100000,
+            "unit": "tokens (input + output)",
+            "window": "per day"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.markitdown",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.metaai",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.metaaiaccount",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.microsoftdesigner",
+          "entitlement": {
+            "limit": 15,
+            "unit": "boosts (fast AI creations/edits)",
+            "window": "per day"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.nvidia",
+          "entitlement": {
+            "limit": 1000,
+            "unit": "API credits",
+            "window": "on sign-up (one-time trial grant)"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.ollama",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.omniroute",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.openaifm",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.openrouterfree",
+          "entitlement": {
+            "limit": 50,
+            "unit": "requests",
+            "window": "per day"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.operaaria",
+          "entitlement": {
+            "limit": 5,
+            "unit": "images",
+            "window": "per day"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.perplexity",
+          "entitlement": {
+            "limit": 3,
+            "unit": "Pro Searches",
+            "window": "per day"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.pi",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.pollinations",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.pollinationsaudio",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.pollinationsimage",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.puter",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.qwen",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.relayrouter",
+          "entitlement": {
+            "limit": 2000000,
+            "unit": "tokens",
+            "window": "per account total, with daily sub-caps resetting 00:00 UTC"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.stabilityai_sd35large",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.teachanything",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
           "service": "g4f.vendors",
           "entitlement": {
             "limit": null,
             "unit": "unmetered / unknown",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.whiterabbitneo",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.you",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
+            "window": "unknown"
+          },
+          "observed": null
+        },
+        {
+          "service": "g4f.yqcloud",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
           "observed": null

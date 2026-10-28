@@ -37,7 +37,15 @@ real runs ─▶ "/delphi confirmed|miss" or repository_dispatch ─▶ flywheel
 | ForeSight radar hit | `repository_dispatch: foresight-radar-hit` |
 | HindSight forecast miss | `repository_dispatch: hindsight-forecast-miss` (`client_payload.rfp`) → flywheel `miss` |
 | Real-run outcome | `repository_dispatch: delphi-feedback` (`rfp`, `outcome`) |
-| Liveness | `schedule` every 3 days; also re-checks parked RFPs whose `recheck_after` passed |
+| Liveness | `schedule` hourly; also re-checks parked RFPs whose `recheck_after` passed |
+
+## Burst filing protocol
+
+The concurrency group keeps only **one pending run**: during a burst of filings, each new event cancels the pending run before it starts (diagnosed 2026-10-27 on the 48-RFP research-silo burst: 38 `issues`-event runs cancelled against 4 successes; one successful run sweeps everything, but nothing guaranteed a post-burst sweep). Rules:
+
+1. **A burst ends with one tick.** Whoever files, labels, or comments on multiple `delphi:rfp` issues as one batch fires exactly one `repository_dispatch` with `event_type: "delphi-tick"` as the batch's last step (`POST /repos/{owner}/{repo}/dispatches`). One tick sweeps all open RFPs idempotently — never one tick per filing.
+2. **Backstop.** The hourly heartbeat (see the cadence table) guarantees a full sweep within the hour even if the tick is forgotten or itself cancelled, subject to the cadence governor's near-cap deferral below.
+3. Skipped runs on non-Delphi issues/comments are the label gate working as designed, not starvation — only `cancelled` runs count against this protocol.
 
 **Quota-aware scheduler** (`gate.cadence`): reads the 3L0 multipliers (`3l0.quota-weights.v1`, remaining-budget fraction ÷ remaining-time fraction). Mean ≥ 1.2 (free quota going unused before its reset) with RFPs still pending → **accelerate**: chain a `delphi-tick` dispatch, depth ≤ 3. Mean < 0.5 (near caps) → **defer** non-explicit triggers until reset. Otherwise **steady** (events + heartbeat). Each run spends at most a quarter of the registry's `github.api.github_token` budget (1000/h × 0.8 safety ÷ 6 calls per RFP ÷ 4).
 

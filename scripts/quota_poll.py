@@ -8,7 +8,7 @@ routing-weights.json, and one QUOTA line per live reading on stdout.
 """
 from __future__ import annotations
 
-import argparse, contextlib, hashlib, json, os, sys, time, urllib.request, urllib.parse
+import argparse, contextlib, hashlib, json, os, re, sys, time, urllib.request, urllib.parse
 from datetime import datetime, timezone
 
 UA = {"User-Agent": "termux-monorepo-quota-poll"}
@@ -18,6 +18,12 @@ def _get(url, headers=None, timeout=20):
     req = urllib.request.Request(url, headers={**UA, **(headers or {})})
     with urllib.request.urlopen(req, timeout=timeout) as r:
         return json.load(r)
+
+
+def _get_with_headers(url, headers=None, timeout=20):
+    req = urllib.request.Request(url, headers={**UA, **(headers or {})})
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        return json.load(r), r.headers
 
 
 def month_elapsed(now):
@@ -127,8 +133,38 @@ def openrouter_reader(now):
     return {"used": used, "limit": limit, "elapsed": None, "reset": "UTC midnight"}
 
 
+HF_TOKEN_ENVS = ("HUGGINGFACE_TOKEN", "HUGGING_FACE_HUB_TOKEN", "HF_API_TOKEN", "HF_TOKEN")
+
+
+def hf_hub_reader(now):
+    # Hub API quota only: the documented RateLimit response header on a
+    # whoami call (no inference sent). This is NOT Inference Providers /
+    # router quota (provider-quota-managers rule); it feeds the separate
+    # huggingface.hub_api registry record. Same r/t grammar as the passive
+    # adapter in scripts/provider_quota_managers.py.
+    key = next((os.environ.get(n) for n in HF_TOKEN_ENVS if os.environ.get(n)), None)
+    if not key:
+        return None
+    _payload, headers = _get_with_headers("https://huggingface.co/api/whoami-v2",
+                                          {"Authorization": "Bearer " + key})
+    raw = headers.get("RateLimit")
+    if not raw or len(raw) > 512:
+        return None
+    m = re.search(r'"api"\s*;\s*r=(\d+)\s*;\s*t=(\d+)', raw) or \
+        re.search(r"(?:^|;)\s*r=(\d+)\s*;\s*t=(\d+)", raw)
+    if not m:
+        return None
+    remaining, reset_s = int(m.group(1)), int(m.group(2))
+    return {"used": None, "elapsed": None,
+            "reset": f"RateLimit header: {reset_s}s to window reset",
+            "extra": {"ratelimit_remaining": remaining,
+                      "ratelimit_reset_after_seconds": reset_s,
+                      "basis": "Hub api category RateLimit header; not Inference Providers quota"}}
+
+
 LIVE = {"github.api.github_token": gh_rate, "github.actions.cache": gh_cache,
-        "vercel.deployments": vercel_deploys, "openrouter.free_models": openrouter_reader}
+        "vercel.deployments": vercel_deploys, "openrouter.free_models": openrouter_reader,
+        "huggingface.hub_api": hf_hub_reader}
 MULTI = [render_reader, neon_reader]
 
 

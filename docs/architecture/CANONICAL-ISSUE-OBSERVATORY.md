@@ -2,6 +2,10 @@
 
 **Implements:** #192
 
+**Status:** spec — implemented (`.github/workflows/issue-observatory.yml`; `deepcli/deepcli/observatory/`)
+**Owner/lane:** unrecorded
+**Canonical for:** the issue lifecycle evidence plane
+
 ## Purpose
 
 The Observatory is the issue lifecycle evidence plane. It removes the assumption that an issue becomes actionable only because a label was added or Jules was invoked.

@@ -1,0 +1,23 @@
+{
+ "schema": "delphi.research-sources.v1",
+ "doc": "docs/ops/RESEARCH-SOURCES.md",
+ "purpose": "External sources registered for Delphi/DoE research cycles. A source is a citation route, not a quota surface: it is NOT scored by the gate and does NOT belong in ops/delphi/surfaces.json or the research-silos registry.",
+ "sources": [
+  {
+   "id": "aisearchio",
+   "title": "AI Search (aisearchio)",
+   "kind": "early-adopter research aggregator",
+   "registered": "2026-10-27",
+   "registered_by": "owner order via main chat",
+   "use": "Early-adopter AI tool + research signals for Delphi research cycles: tool database, simplified paper breakdowns, weekly highlights.",
+   "routes": [
+    {"type": "website", "url": "https://ai-search.io", "status": "verified live 2026-10-27 (fetched firsthand: AI tools database + 'AI Research, Simplified' paper breakdowns)"},
+    {"type": "substack", "url": "https://aisearch.substack.com", "status": "verified live 2026-10-27 (fetched firsthand: 'AI Search' weekly newsletter)", "access": "reachable route"},
+    {"type": "x", "handle": "@aisearchio", "status": "owner-designated reachable route; not independently fetched (no X connector session used)"},
+    {"type": "youtube", "name": "AI Search (aisearchio)", "status": "named by owner; channel's existence corroborated by ai-search.io ('Check out our YouTube'); no YouTube connector — not a reachable route"}
+   ],
+   "other_channels": "A few other channels exist per the owner, unnamed at registration — owner names them later; appended here when named.",
+   "notes": "Substack and X are the reachable routes. Registration records existence and routing only; content from the source is evidence to be cited per item, never pre-trusted."
+  }
+ ]
+}

@@ -68,6 +68,7 @@ of record. Tooling: `scripts/registration_monikers/registry.py`
 
 | Platform | Role{Moniker} | Profile (Profile Registry heading) | Status | Registrations | Owning lane |
 |---|---|---|---|---|---|
+| Aha.io | `entrant{n0nAha}[platform:aha-io]` | Aha.io | registering | R4, D5 | challenge-entries |
 | Aion | `account{n0nAion}[platform:aion]` | — (pending: account-creation) | pending | — | account-creation |
 | AWS Builder Center | `entrant{n0nAwsBuilder}[platform:aws-builder-center]` | AWS Builder Center | active | R1, R2, D0, R3, D1 | challenge-entries |
 | BOINC | `entrant{n0nBoinc}[platform:boinc]` | BOINC | registering | — | boinc |

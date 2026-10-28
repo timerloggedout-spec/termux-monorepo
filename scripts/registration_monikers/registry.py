@@ -68,6 +68,7 @@ ALIASES = [
     ("PayPal", "paypal", "PayPal", "platform", "log"),
     ("Lexsi", "lexsi", "Lexsi", "platform", "log"),
     ("Hugging Face", "hugging-face", "Hugging Face", "platform", "log"),
+    ("Aha.io", "aha-io", "Aha.io", "platform", "log"),
     ("Cohere", "cohere", "Cohere", "provider", "fleet"),
     ("Aion", "aion", "Aion", "provider", "fleet"),
     ("LLM7", "llm7", "LLM7", "provider", "fleet"),

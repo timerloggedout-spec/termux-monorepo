@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-10-27T16:01:18Z` UTC  
+**Generated:** `2026-10-28T02:25:55Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 142 docs-lane branch(es)
+**Count:** 144 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -65,6 +65,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/deepseek-capture-pipeline`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/deepseek-capture-pipeline) | `c70fb1bbd9f8` | — | — | orphan lane |
 | [`docs/deepseek-inference-buried-tech-2026-10-26`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/deepseek-inference-buried-tech-2026-10-26) | `2257d78aec56` | — | — | orphan lane |
 | [`docs/delphi-desk-dd005-account-satisfied`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/delphi-desk-dd005-account-satisfied) | `b6c3cdf93946` | — | — | orphan lane |
+| [`docs/delphi-method-governance-mined`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/delphi-method-governance-mined) | `b68290b8f9b2` | — | — | orphan lane |
 | [`docs/delphi-status-crossover`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/delphi-status-crossover) | `05870344d952` | — | — | orphan lane |
 | [`docs/delphi-tie-correction`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/delphi-tie-correction) | `d376a1ccb38f` | — | — | orphan lane |
 | [`docs/device-access-opaque-ids`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/device-access-opaque-ids) | `c245e05aaaa4` | — | — | orphan lane |
@@ -147,6 +148,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/stepie-mcp-runbook-818`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/stepie-mcp-runbook-818) | `12ec627a5495` | — | — | orphan lane |
 | [`docs/sync-agents-hum-md`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/sync-agents-hum-md) | `056fc8ac7d0f` | — | — | orphan lane |
 | [`docs/team-formation-roster-rebased`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/team-formation-roster-rebased) | `06d7b7f46a76` | — | — | orphan lane |
+| [`docs/temporal-oracle-pass-record`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/temporal-oracle-pass-record) | `ea5956964b9f` | — | — | orphan lane |
 | [`docs/termux-mcp-lean-template`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/termux-mcp-lean-template) | `b6487c77d8e0` | — | — | orphan lane |
 | [`docs/termux-ssh-tunnel`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/termux-ssh-tunnel) | `41f5d318cd60` | [#1537](https://github.com/timerloggedout-spec/termux-monorepo/pull/1537)→`master` | — | PR without registry link |
 | [`docs/tier1-nav-proven`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/tier1-nav-proven) | `bfe043222ce0` | — | — | orphan lane |

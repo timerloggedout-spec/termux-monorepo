@@ -1,0 +1,56 @@
+name: referral-rotation
+# Automated code rotation: a named sensor report (workflow dispatch) runs
+# scripts/referral/rotate.py and the swap lands as a PR (registry -> feed ->
+# PARTNERS). Pool-empty exits land as a referral:pool-empty issue instead.
+# Detection sources are named per programme in config/referral_programs.json
+# (rotation.detection_source) — no programme exposes a redemption API.
+on:
+  workflow_dispatch:
+    inputs:
+      program: {description: "Programme id (muse|cue|migoo)", required: true}
+      cell: {description: "live|cell_b", required: true, default: "live"}
+      source: {description: "owner-panel|in-app|visitor-report", required: true}
+      uses_left: {description: "Sensor reading (blank = asserted exhausted)", required: false, default: ""}
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+jobs:
+  rotate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run rotation engine
+        id: rot
+        run: |
+          ARGS="--program ${{ inputs.program }} --cell ${{ inputs.cell }} --source ${{ inputs.source }}"
+          if [ -n "${{ inputs.uses_left }}" ]; then ARGS="$ARGS --uses-left ${{ inputs.uses_left }}"; fi
+          set +e
+          python3 scripts/referral/rotate.py $ARGS | tee rotation-result.json
+          echo "rc=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+          set -e
+      - name: Open rotation PR
+        if: steps.rot.outputs.rc == '0' || steps.rot.outputs.rc == '2'
+        run: |
+          git config user.name "referral-rotation[bot]"
+          git config user.email "actions@github.com"
+          BR="referral-rotation/${{ inputs.program }}-${{ github.run_id }}"
+          git checkout -b "$BR"
+          git add config/referral_programs.json apps/help-wanted-dashboard/data/referral-feed.json docs/PARTNERS.md
+          if git diff --cached --quiet; then echo "no changes (above-threshold no-op)"; exit 0; fi
+          git commit -m "feat(marketing): rotate ${{ inputs.program }} (${{ inputs.cell }}) via ${{ inputs.source }}"
+          git push origin "$BR"
+          if [ "${{ steps.rot.outputs.rc }}" = "0" ]; then
+            gh pr create --title "Rotate ${{ inputs.program }} code (${{ inputs.cell }})" \
+              --body "Automated rotation by referral-rotation workflow. Result: $(cat rotation-result.json)" \
+              --label "referral-rotation"
+          else
+            gh issue create --title "referral pool EMPTY: ${{ inputs.program }} (${{ inputs.cell }})" \
+              --body "Rotation ran but the spare pool is empty. Result: $(cat rotation-result.json). Owner: supply a fresh code (see docs/ops/REFERRAL-AUTOMATION.md)." \
+              --label "referral:pool-empty" || true
+            gh pr create --title "Referral pool empty: ${{ inputs.program }} marked code_pending" \
+              --body "Automated rotation found an empty pool; programme flipped per engine rules. Result: $(cat rotation-result.json)" \
+              --label "referral-rotation"
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}

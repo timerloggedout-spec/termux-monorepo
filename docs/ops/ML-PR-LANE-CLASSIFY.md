@@ -10,7 +10,10 @@ classified nothing live.
 
 ## What runs
 
-Daily 05:37 UTC + workflow_dispatch. The collector lists every open PR,
+Daily 05:37 UTC + workflow_dispatch. The collector is invoked as a
+module from the repo root (`python3 -m ml.pipelines.production_classify`) —
+script-path invocation puts ml/pipelines/ at sys.path[0], where its
+operator/ subpackage shadows the stdlib operator module. It lists every open PR,
 maps each to the classifier's input dict, runs `classify_pr`, and
 writes the feed to `ops/ml/pr-lane-feed.json` (schema `pr-lane-feed/v1`:
 generated_at, open_prs, per-lane counts, per-PR rows with lane, gates,

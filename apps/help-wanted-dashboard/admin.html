@@ -188,7 +188,7 @@ async function loadChallenge(){
     ids.map(id=>{const e=ev[id],w=e.win_probability||{},inp=w.inputs||{},fs=e.field_size||{};
       const est=w.estimate==null?'not established':(Math.round(w.estimate*1000)/10)+'%';
       const fstat=e.field_size_status||'';
-      const fsize=fstat==='open_task'?'OPEN TASK':('participants '+cell(fs.participants)+' · projects '+cell(fs.projects)+(fstat==='partial'?' · partial':''));
+      const fsize=fstat==='open_task'?'OPEN TASK':fstat==='partial'?('participants '+cell(fs.participants)+' · projects '+(fs.projects==null?'not established':esc(fs.projects))+' <span class="pill gold">PARTIAL</span>'):('participants '+cell(fs.participants)+' · projects '+cell(fs.projects));
       const inputs='slots '+cell(inp.award_slots_top)+' · field '+cell(inp.field_size)+' · scored '+cell(inp.field_scored_count)+' · field mean '+cell(inp.field_mean_composite)+' · ours '+cell(inp.our_composite);
       return '<tr><td><strong>'+esc(id)+'</strong></td><td>'+esc(est)+'</td><td>'+esc(w.method||'')+(w.basis?' · '+esc(w.basis):'')+'</td><td>'+fsize+'</td><td>'+inputs+'</td><td>'+esc(w.computed_at||'')+'</td></tr>'}).join('')+
     '</tbody></table></div>';

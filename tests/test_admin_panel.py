@@ -56,6 +56,7 @@ def test_admin_renders_internal_win_probability():
     assert "./data/challenge-admin-metrics.json" in html
     assert "win_probability" in html and "metrics" in html
     assert "not established" in html and "OPEN TASK" in html
+    assert "PARTIAL" in html  # amendment 2: partial field size carries the chip
     assert "INTERNAL" in html
     assert "computes nothing" in html
 

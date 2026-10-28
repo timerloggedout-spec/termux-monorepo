@@ -1,0 +1,113 @@
+name: Cadence provider onboarding
+
+# Automated half of cadence provider onboarding (QAC-006;
+# docs/ops/CADENCE-PROVIDER-ONBOARDING.md). Keeps
+# ops/cadence/provider-onboarding.json consistent with every cadence
+# surface: catalog endpoint/secret modules, provider-availability env,
+# quota family registry, quota registry model lane, and the peer-review
+# orchestrator maps. When a provider appears on a surface with no
+# registry entry, the workflow auto-registers it (kind inferred; missing
+# surfaces recorded as exceptions marked auto-registered) and opens or
+# updates one PR from cadence-provider-onboarding/auto-extend. The
+# generated matrix is re-rendered in the same PR. Hard drift — stale
+# exceptions, unclaimed availability secrets, unacknowledged unmapped
+# quota-registry providers — fails the run loudly; it is never
+# auto-fixed. No provider account, secret, or routing change is made
+# here; secret names only.
+#
+# Trigger accounting: one weekly scheduled run, manual dispatch, and
+# pushes to master touching any cadence surface (a merge of the
+# auto-extend PR itself re-triggers one no-op check run — accepted, it
+# exits green with no changes).
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'full = check + autofix PR; check-only = report drift only'
+        required: false
+        default: 'full'
+        type: choice
+        options: [full, check-only]
+  schedule:
+    - cron: '23 6 * * 3'
+  push:
+    branches: [master]
+    paths:
+      - 'ops/cadence/provider-onboarding.json'
+      - 'ops/quota/provider-managers.json'
+      - 'ops/quota/registry.json'
+      - 'scripts/cadence_provider_onboarding.py'
+      - 'scripts/provider_model_catalog.py'
+      - 'scripts/provider_extension_catalogs.py'
+      - 'scripts/provider_catalog_protocols.py'
+      - 'scripts/provider_quota_service.py'
+      - '.github/workflows/provider-availability.yml'
+      - '.github/workflows/peer-review-orchestrator.yml'
+      - '.github/workflows/cadence-provider-onboarding.yml'
+
+concurrency:
+  group: cadence-provider-onboarding
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  onboarding:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out master
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check onboarding against every cadence surface
+        id: check
+        run: |
+          set +e
+          python3 scripts/cadence_provider_onboarding.py check > check.txt 2>&1
+          code=$?
+          set -e
+          cat check.txt
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          if grep -qE 'stale|claimed by no|maps to no onboarded|empty reason|unknown|missing and no exception recorded' check.txt; then
+            echo 'Hard onboarding drift - not auto-fixable. Failing loudly.'
+            exit 1
+          fi
+
+      - name: Auto-register missing entries and open PR
+        if: inputs.mode != 'check-only' && steps.check.outputs.code != '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          branch="cadence-provider-onboarding/auto-extend"
+          git checkout -B "$branch"
+          python3 scripts/cadence_provider_onboarding.py autofix
+          git add ops/cadence/provider-onboarding.json docs/ops/generated/cadence-provider-onboarding.json
+          if git diff --cached --quiet; then
+            echo "Drift reported but nothing auto-fixable changed."
+            exit 0
+          fi
+          git commit -m "chore(cadence): auto-register providers from surface drift"
+          git push --force-with-lease origin "$branch"
+          if gh pr list --head "$branch" --state open --json number --jq '.[0].number' | grep -q .; then
+            echo "Auto-extend PR already open; branch updated in place."
+          else
+            gh pr create --base master --head "$branch" \
+              --title "chore(cadence): auto-register providers from surface drift" \
+              --body "Automated registration by the cadence-provider-onboarding workflow (QAC-006). A provider appeared on a cadence surface with no onboarding registry entry; the entry was added by scripts/cadence_provider_onboarding.py autofix (kind inferred from the surfaces present; each missing surface is recorded as an exception marked auto-registered). Review the exceptions: complete the missing surface or amend the reason before merging."
+          fi
+
+      - name: Verify drift is resolved on the auto-extend branch
+        if: inputs.mode != 'check-only' && steps.check.outputs.code != '0'
+        run: |
+          # Working tree is the auto-extend branch here (autofix applied).
+          python3 scripts/cadence_provider_onboarding.py check

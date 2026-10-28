@@ -1,0 +1,94 @@
+{
+  "schema": "challenge-opportunity-ledger/v1",
+  "doc": "docs/ops/CHALLENGE-OPPORTUNITY-LEDGER.md",
+  "source_of_truth": "ops/challenge/coordinator.json (event state); this file is the append-only outcome ledger",
+  "rules": [
+    "Append-only: entries are never edited or deleted; corrections land as NEW entries referencing the entry they correct.",
+    "Every event outcome (submitted/not, placed/not) appends an entry at close.",
+    "Live events near deadline with no submission carry AT_RISK entries (gross_foregone 0 until close).",
+    "Totals block is derived from the entries and recomputed on each append (totals are not an entry)."
+  ],
+  "entries": [
+    {
+      "id": "OC-001",
+      "event": "STRANDS-DECIDER \u2014 Agent Experience Hackathon: Strands Decider (Oct 16\u201323, 2026)",
+      "top_award": {
+        "value": 5600,
+        "form": "$5,000 AWS credits + AWS Builder swag bundle worth about $600 (official total per award $5,600)"
+      },
+      "status": "LOST",
+      "basis": "owner ruling 2026-10-28: Strands Decider $5,000 = 'LOST' \u2014 we keep a ledger. Corroborated by verified record (PR #2229): joined final day 2026-10-23 17:27 PT, NOT submitted (Gmail 6 Builder msgs / 0 confirmations; proposal MANIFEST claims no submission). If evidence contradicts, a correction entry follows \u2014 this entry is not edited.",
+      "gross_foregone": 5600,
+      "expected_value_foregone": {
+        "value": null,
+        "basis": "field_size NOT_ESTABLISHED (never verified); winprob/v1 internal estimate null"
+      },
+      "recorded_at": "2026-10-28",
+      "pr_ref": "PR #2232"
+    },
+    {
+      "id": "OC-002",
+      "event": "D0 \u2014 Weekend Challenge: Give your Agent a Tool (Oct 23\u201326, 2026)",
+      "top_award": {
+        "value": 200,
+        "form": "$100 AWS credits + Builder Backpack (official award value $200; backpack implied $100)"
+      },
+      "status": "LOST",
+      "basis": "verified record: 0 submissions (public project list exhausted, 40 entries, no match; Gmail 0 confirmations), platform Ended; completion package built as record only (PR #1702/#1703, PR #2221 prize correction)",
+      "gross_foregone": 200,
+      "expected_value_foregone": {
+        "value": null,
+        "basis": "ledger carries gross only (owner win-probability ruling 2026-10-28); internal winprob/v1 base-rate 0.025 (1/40) on file in coordinator metrics_internal, never multiplied into a displayed figure"
+      },
+      "recorded_at": "2026-10-28",
+      "pr_ref": "PR #2232"
+    },
+    {
+      "id": "OC-003",
+      "event": "D1 \u2014 Strands SDK: Workshop to Ship (Oct 28 \u2013 Nov 4, 2026)",
+      "top_award": {
+        "value": 5600,
+        "form": "$5,000 AWS Promotional Credits + AWS Builder swag bundle worth about $600 + winner's certificate (official total per award $5,600)"
+      },
+      "status": "AT_RISK",
+      "basis": "verified record: live event, deadline 2026-11-04 23:59 PT, submission state none, in-window workshop gate (hard qualifier) still open \u2014 near-deadline AT_RISK per ledger rule",
+      "gross_foregone": 0,
+      "expected_value_foregone": {
+        "value": null,
+        "basis": "not foregone \u2014 at risk only; converts to LOST/WON entry at close"
+      },
+      "recorded_at": "2026-10-28",
+      "pr_ref": "PR #2232"
+    }
+  ],
+  "totals": {
+    "as_of": "2026-10-28",
+    "entries": 3,
+    "lost": {
+      "count": 2,
+      "gross_foregone_total_value": 5800,
+      "by_form": {
+        "credits": 5100,
+        "swag_value": 700,
+        "cash": 0
+      }
+    },
+    "at_risk": {
+      "count": 1,
+      "exposure_value": 5600,
+      "by_form": {
+        "credits": 5000,
+        "swag_value": 600,
+        "cash": 0
+      }
+    },
+    "won": {
+      "count": 0,
+      "value": 0
+    },
+    "recovered": {
+      "count": 0,
+      "value": 0
+    }
+  }
+}

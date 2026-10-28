@@ -142,7 +142,8 @@
           "winner visibility",
           "judge-panel feedback (Gate 2, week of Nov 2)"
         ],
-        "computed_at": "2026-10-28"
+        "computed_at": "2026-10-28",
+        "ledger_entry": "OC-001"
       },
       "history_note": "Slate-history event added 2026-10-28 (manager addendum): predates the D0-D5 slate, NOT D-numbered \u2014 flagged to manager; id STRANDS-DECIDER is a history label, not a packet number. No moneyball{} block: no intake ever ran for this event.",
       "metrics_internal": {
@@ -315,7 +316,8 @@
           "top-5 winner visibility/recognition",
           "judge-panel feedback (2-gate: AI+human scoring to top 50, judge panel picks 5)"
         ],
-        "computed_at": "2026-10-28"
+        "computed_at": "2026-10-28",
+        "ledger_entry": "OC-002"
       },
       "metrics_internal": {
         "win_probability": {
@@ -676,7 +678,8 @@
           "official winner's certificate",
           "winner visibility"
         ],
-        "computed_at": "2026-10-28"
+        "computed_at": "2026-10-28",
+        "ledger_entry": "OC-003"
       },
       "metrics_internal": {
         "win_probability": {
@@ -1485,5 +1488,10 @@
       "registered": 4,
       "in_build": 0
     }
+  },
+  "opportunity_ledger": {
+    "json": "ops/challenge/opportunity_ledger.json",
+    "doc": "docs/ops/CHALLENGE-OPPORTUNITY-LEDGER.md",
+    "rule": "append-only; corrections as new entries; entry appended at every event close; AT_RISK for live near-deadline events without submission"
   }
 }

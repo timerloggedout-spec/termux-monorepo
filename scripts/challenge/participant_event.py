@@ -135,14 +135,25 @@ def batch_from_source(source: Path, source_ref: str) -> dict:
         snapshots += ps + js
         p_counts[eid] = len(pr)
         j_counts[eid] = len(jr)
+    ledger_rows = []
+    ledger_path = source.parent / "opportunity_ledger.json"
+    if ledger_path.exists():
+        for entry in json.loads(ledger_path.read_text()).get("entries", []):
+            eid2 = str(entry.get("id") or "")
+            ledger_rows.append({
+                "key": hashlib.sha256(f"opportunity-ledger|{eid2}".encode()).hexdigest(),
+                "sync": sync_key, "entry": eid2,
+                "payload": json.dumps(entry, sort_keys=True, default=str)})
     counts = {"participants": p_counts, "judges": j_counts,
               "snapshots": len(snapshots),
-              "touchpoints": len(touchpoints_of(participants))}
+              "touchpoints": len(touchpoints_of(participants)),
+              "ledger_entries": len(ledger_rows)}
     sync = {"sync": sync_key, "ref": source_ref,
             "counts": json.dumps(counts, sort_keys=True),
             "events": json.dumps(events_core, sort_keys=True, default=str)}
     return {"sync": sync, "participants": participants,
-            "judges": judges, "snapshots": snapshots, "counts": counts}
+            "judges": judges, "snapshots": snapshots,
+            "ledger": ledger_rows, "counts": counts}
 
 
 def recruitment_of(batch: dict) -> list[dict]:
@@ -255,7 +266,8 @@ def main(argv: list[str] | None = None) -> int:
         psql(url, args)
         plan = (("insert-participant.sql", batch["participants"]),
                 ("insert-judge.sql", batch["judges"]),
-                ("insert-snapshot.sql", batch["snapshots"]))
+                ("insert-snapshot.sql", batch["snapshots"]),
+                ("insert-ledger.sql", batch.get("ledger", [])))
         total = 0
         for sqlf, rows in plan:
             for r in rows:

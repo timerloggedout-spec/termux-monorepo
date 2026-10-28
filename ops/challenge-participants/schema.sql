@@ -212,3 +212,34 @@ BEGIN
     ALTER TABLE judge_events ADD PRIMARY KEY (sync_key, event_id, judge_key);
   END IF;
 END $$;
+
+-- ===== Opportunity-cost ledger (2026-10-28, owner ruling) =====
+-- Append-only entries from ops/challenge/opportunity_ledger.json.
+-- entry_key = sha256('opportunity-ledger'|entry_id). Corrections are
+-- NEW entries, never updates (trigger enforces append-only).
+CREATE TABLE IF NOT EXISTS opportunity_ledger_entries (
+  entry_key   text PRIMARY KEY,
+  sync_key    text NOT NULL,
+  entry_id    text NOT NULL,
+  payload     jsonb NOT NULL,
+  recorded_at timestamptz NOT NULL DEFAULT now(),
+  UNIQUE (sync_key, entry_id)
+);
+DROP TRIGGER IF EXISTS opportunity_ledger_no_mutation ON opportunity_ledger_entries;
+CREATE TRIGGER opportunity_ledger_no_mutation
+  BEFORE UPDATE OR DELETE ON opportunity_ledger_entries
+  FOR EACH ROW EXECUTE FUNCTION participant_mirror_append_only();
+
+-- Current ledger = entries of the newest sync batch.
+CREATE OR REPLACE VIEW opportunity_ledger_current AS
+SELECT e.entry_id, e.payload, e.recorded_at
+FROM opportunity_ledger_entries e
+JOIN (SELECT sync_key FROM participant_syncs ORDER BY synced_at DESC, sync_key DESC LIMIT 1) latest
+  ON e.sync_key = latest.sync_key;
+
+-- Running totals: LOST gross by form + AT_RISK exposure (gross only, no EV).
+CREATE OR REPLACE VIEW opportunity_ledger_totals AS
+SELECT payload->>'status' AS status, count(*) AS entries,
+       sum((payload->>'gross_foregone')::numeric) AS gross_foregone,
+       sum((payload->'top_award'->>'value')::numeric) AS top_award_value_total
+FROM opportunity_ledger_current GROUP BY payload->>'status';

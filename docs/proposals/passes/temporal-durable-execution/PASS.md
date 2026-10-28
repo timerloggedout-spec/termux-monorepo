@@ -191,3 +191,23 @@ vote is not re-run.
   template. The gate ignores dependency names semantically, so no
   scoring was affected; the fix belongs to the filing template.
   Executing a compiled plan *as* a workflow remains N5 future work.
+
+
+## Addendum 2 — 2026-10-28: self-host finish (owner decision)
+
+Owner decision 2026-10-27: Temporal is **self-hosted** (Cloud free
+tier not permanent; card rule). The integration now runs as a
+standing fleet self-host — systemd-supervised dev-server mode,
+persistent sqlite DB on the workspace disk, socat relay for
+non-loopback exposure, hourly keepalive reinstall after VM
+replacements. Operator record: `docs/ops/TEMPORAL-SELF-HOST.md`;
+units/scripts: `scripts/temporal/selfhost/`; receipts:
+`implementation/ADDENDUM-2026-10-28-SELFHOST.json`.
+
+Re-proof against the self-host: §6 kill-resume **PASS** direct
+(localhost:7233) and via the relay (127.0.0.1:7234) — receipt
+count exactly 1 both ways, unknown outcome reconciled — and both
+proof workflows survive a service restart from the persisted DB.
+Named limits (in the addendum record): the sandbox host link
+garbles gRPC through any relay (link fault, not relay fault);
+single node — no clustering claimed.

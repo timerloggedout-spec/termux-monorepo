@@ -1,0 +1,13 @@
+[Unit]
+Description=Temporal frontend relay (0.0.0.0:7234 -> 127.0.0.1:7233, socat)
+After=temporal-selfhost.service
+Wants=temporal-selfhost.service
+
+[Service]
+ExecStart=/usr/bin/socat TCP-LISTEN:7234,fork,reuseaddr,bind=0.0.0.0 TCP:127.0.0.1:7233
+Restart=always
+RestartSec=5
+User=root
+
+[Install]
+WantedBy=multi-user.target

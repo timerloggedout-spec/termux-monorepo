@@ -1,0 +1,99 @@
+# Gravitee APIM self-host — CI/mesh variant of the vendor quick-setup compose
+# (gravitee-io/gravitee-api-management/docker/quick-setup/mongodb, Apache-2.0).
+# Trims vs vendor: no Console/Portal UI, no mailhog (fast boot); ADDITIONS:
+# second gateway (mesh redundancy — both gateways sync from the same Mongo
+# repository) + mock-upstream (offline data-plane proof target).
+# APIM_VERSION: vendor default `latest`; the workflow records resolved digests.
+
+networks:
+  frontend:
+    name: frontend
+  storage:
+    name: storage
+
+volumes:
+  data-elasticsearch:
+  data-mongo:
+
+x-gateway-env: &gateway-env
+  - gravitee_management_mongodb_uri=mongodb://mongodb:27017/gravitee?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
+  - gravitee_ratelimit_mongodb_uri=mongodb://mongodb:27017/gravitee?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
+  - gravitee_reporters_elasticsearch_endpoints_0=http://elasticsearch:9200
+
+services:
+  mongodb:
+    image: mongo:${MONGODB_VERSION:-6.0}
+    container_name: gio_apim_mongodb
+    volumes:
+      - data-mongo:/data/db
+    healthcheck:
+      test: mongosh --eval 'db.runCommand({serverStatus:1}).ok' --quiet | grep 1
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks: [storage]
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_VERSION:-8.17.2}
+    container_name: gio_apim_elasticsearch
+    volumes:
+      - data-elasticsearch:/usr/share/elasticsearch/data
+    environment:
+      - http.host=0.0.0.0
+      - transport.host=0.0.0.0
+      - xpack.security.enabled=false
+      - cluster.name=elasticsearch
+      - bootstrap.memory_lock=true
+      - discovery.type=single-node
+      - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
+    ulimits:
+      memlock: {soft: -1, hard: -1}
+      nofile: 65536
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=5s']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks: [storage]
+
+  management_api:
+    image: ${APIM_REGISTRY:-graviteeio}/apim-management-api:${APIM_VERSION:-latest}
+    container_name: gio_apim_management_api
+    ports:
+      - '8083:8083'
+    depends_on:
+      mongodb: {condition: service_healthy}
+      elasticsearch: {condition: service_healthy}
+    environment:
+      - gravitee_management_mongodb_uri=mongodb://mongodb:27017/gravitee?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
+      - gravitee_analytics_elasticsearch_endpoints_0=http://elasticsearch:9200
+    networks: [storage, frontend]
+
+  gateway:
+    image: ${APIM_REGISTRY:-graviteeio}/apim-gateway:${APIM_VERSION:-latest}
+    container_name: gio_apim_gateway
+    ports:
+      - '8082:8082'
+    depends_on:
+      mongodb: {condition: service_healthy}
+      elasticsearch: {condition: service_healthy}
+    environment: *gateway-env
+    networks: [storage, frontend]
+
+  gateway2:
+    image: ${APIM_REGISTRY:-graviteeio}/apim-gateway:${APIM_VERSION:-latest}
+    container_name: gio_apim_gateway2
+    ports:
+      - '8092:8082'
+    depends_on:
+      mongodb: {condition: service_healthy}
+      elasticsearch: {condition: service_healthy}
+    environment: *gateway-env
+    networks: [storage, frontend]
+
+  mock-upstream:
+    image: nginx:alpine
+    container_name: gio_mock_upstream
+    volumes:
+      - ./mock:/usr/share/nginx/html:ro
+    networks: [frontend]

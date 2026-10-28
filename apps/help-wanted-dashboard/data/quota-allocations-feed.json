@@ -1,0 +1,5062 @@
+{
+  "schema": "quota-allocations-feed/v1",
+  "generated_at": "2026-10-28T02:01:37.058788+00:00",
+  "source": "ops/quota/allocations.json (owner-set, issue #1884) joined with ops/quota/registry.json entitlements and the public readings snapshot; entitlements are not usage and no focus attribution is invented.",
+  "issue": 1884,
+  "set_by": "owner",
+  "set_at": "2026-10-27",
+  "cadence": "Re-split at cadence ticks (dispatch-tree cadence / weekly sweep). Every change lands as a PR citing #1884 + the reason; this file is the single source lanes read.",
+  "constraints": [
+    "Per pool, standing allocations sum to <= 100%; the remainder is explicit reserve (computed and published in the feed, never silently absorbed).",
+    "Card rule: no allocation authorizes a card-gated account, purchase or paid tier; pools are free tiers / documented entitlements / owner-supplied credit figures only.",
+    "Free-only: allocations spend documented free entitlement only; documented limits are entitlements, not balances.",
+    "No displacement: leftover-only focuses (incl. BOINC) draw only quota the higher-priority focus cannot consume before expiry, and never displace it.",
+    "BOINC eligibility: GitHub-provider surfaces only (owner rule); Codespaces is excluded for a TBD interim (owner, 2026-10-27).",
+    "Credit amounts are owner-supplied / registry-documented entitlement figures (joined from ops/quota/registry.json at feed build); never invented."
+  ],
+  "focuses": [
+    {
+      "id": "winning",
+      "label": "Winning \u2014 challenge entries (active slate D1/D3/D2/D4)"
+    },
+    {
+      "id": "repo-development",
+      "label": "Repo development"
+    },
+    {
+      "id": "boinc-donations",
+      "label": "BOINC donations (stranded leftover only)"
+    },
+    {
+      "id": "research",
+      "label": "Research"
+    }
+  ],
+  "countdowns": [
+    {
+      "id": "D0",
+      "title": "for R2, Weekend Challenge: Give your Agent a Tool",
+      "status": "COMPLETED",
+      "opens": null,
+      "closes": "2026-10-26T13:00:00-07:00"
+    },
+    {
+      "id": "D1",
+      "title": "for C1, Workshop to Ship",
+      "status": "ACTIVE",
+      "opens": "2026-10-28T00:00:00-07:00",
+      "closes": "2026-11-04T23:59:00-08:00"
+    },
+    {
+      "id": "D2",
+      "title": "for C2, Vultr Agent Rush (Foundry entry)",
+      "status": "ACTIVE",
+      "opens": "2026-11-05T00:00:00-08:00",
+      "closes": "2026-11-08T15:00:00-08:00"
+    },
+    {
+      "id": "D3",
+      "title": "for C3, Builder.io Agent-Native Hackathon",
+      "status": "ACTIVE",
+      "opens": null,
+      "closes": "2026-11-02T23:59:00-08:00"
+    },
+    {
+      "id": "D4",
+      "title": "for C4, Kiroween 2026",
+      "status": "ACTIVE",
+      "opens": "2026-10-30T13:00:00-07:00",
+      "closes": "2026-12-04T14:00:00-08:00"
+    }
+  ],
+  "pools": [
+    {
+      "pool": "aion",
+      "services": [
+        {
+          "service": "aion.free_tokens",
+          "entitlement": {
+            "limit": 20000,
+            "unit": "tokens/day",
+            "window": "daily"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "aws",
+      "services": [
+        {
+          "service": "aws.dynamodb_storage",
+          "entitlement": {
+            "limit": 25,
+            "unit": "GB",
+            "window": "point-in-time"
+          },
+          "observed": null
+        },
+        {
+          "service": "aws.lambda_compute",
+          "entitlement": {
+            "limit": 400000,
+            "unit": "GB-seconds/month",
+            "window": "monthly"
+          },
+          "observed": null
+        },
+        {
+          "service": "aws.lambda_requests",
+          "entitlement": {
+            "limit": 1000000,
+            "unit": "requests/month",
+            "window": "monthly"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "aws.credits",
+      "services": [
+        {
+          "service": "aws.account_credits",
+          "entitlement": {
+            "limit": 200,
+            "unit": "USD",
+            "window": "one-time (6 months)"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "azure",
+      "services": [
+        {
+          "service": "azure.functions_executions",
+          "entitlement": {
+            "limit": 1000000,
+            "unit": "executions/month",
+            "window": "monthly"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "azure.credit",
+      "services": [
+        {
+          "service": "azure.account_credit",
+          "entitlement": {
+            "limit": 200,
+            "unit": "USD",
+            "window": "one-time (30 days)"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "cerebras",
+      "services": [
+        {
+          "service": "cerebras.free_tokens",
+          "entitlement": {
+            "limit": 1000000,
+            "unit": "tokens/day",
+            "window": "daily"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "cloudflare",
+      "services": [
+        {
+          "service": "cloudflare.d1_rows_read",
+          "entitlement": {
+            "limit": 5000000,
+            "unit": "rows/day",
+            "window": "daily"
+          },
+          "observed": null
+        },
+        {
+          "service": "cloudflare.d1_rows_written",
+          "entitlement": {
+            "limit": 100000,
+            "unit": "rows/day",
+            "window": "daily"
+          },
+          "observed": null
+        },
+        {
+          "service": "cloudflare.d1_storage",
+          "entitlement": {
+            "limit": 5,
+            "unit": "GB",
+            "window": "point-in-time"
+          },
+          "observed": null
+        },
+        {
+          "service": "cloudflare.kv_writes",
+          "entitlement": {
+            "limit": 1000,
+            "unit": "writes/day",
+            "window": "daily"
+          },
+          "observed": null
+        },
+        {
+          "service": "cloudflare.queues_ops",
+          "entitlement": {
+            "limit": 10000,
+            "unit": "operations/day",
+            "window": "daily"
+          },
+          "observed": null
+        },
+        {
+          "service": "cloudflare.r2_storage",
+          "entitlement": {
+            "limit": 10,
+            "unit": "GB-month",
+            "window": "monthly"
+          },
+          "observed": null
+        },
+        {
+          "service": "cloudflare.workers_ai",
+          "entitlement": {
+            "limit": 10000,
+            "unit": "Neurons/day",
+            "window": "daily"
+          },
+          "observed": null
+        },
+        {
+          "service": "cloudflare.workers_requests",
+          "entitlement": {
+            "limit": 100000,
+            "unit": "requests/day",
+            "window": "daily"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "cohere",
+      "services": [
+        {
+          "service": "cohere.trial_calls",
+          "entitlement": {
+            "limit": 1000,
+            "unit": "API calls/month",
+            "window": "monthly"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "deno",
+      "services": [
+        {
+          "service": "deno.deploy_requests",
+          "entitlement": {
+            "limit": 1000000,
+            "unit": "requests/month",
+            "window": "monthly"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "digitalocean",
+      "services": [
+        {
+          "service": "digitalocean.app_platform_static",
+          "entitlement": {
+            "limit": 3,
+            "unit": "apps",
+            "window": "point-in-time"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "digitalocean.credit",
+      "services": [
+        {
+          "service": "digitalocean.trial_credit",
+          "entitlement": {
+            "limit": 200,
+            "unit": "USD",
+            "window": "one-time (60 days)"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "felo.credits",
+      "services": [
+        {
+          "service": "felo.api_credits",
+          "entitlement": {
+            "limit": 200,
+            "unit": "credits/day",
+            "window": "daily"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "fly",
+      "services": [
+        {
+          "service": "fly.free_tier",
+          "entitlement": {
+            "limit": 0,
+            "unit": "USD/month",
+            "window": "n/a"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "g4f-vendors",
+      "services": [
+        {
+          "service": "g4f.vendors",
+          "entitlement": {
+            "limit": null,
+            "unit": "unmetered / unknown",
+            "window": "unknown"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "gcp",
+      "services": [
+        {
+          "service": "gcp.cloud_functions_invocations",
+          "entitlement": {
+            "limit": 2000000,
+            "unit": "invocations/month",
+            "window": "monthly"
+          },
+          "observed": null
+        },
+        {
+          "service": "gcp.cloud_run_requests",
+          "entitlement": {
+            "limit": 2000000,
+            "unit": "requests/month",
+            "window": "monthly"
+          },
+          "observed": null
+        },
+        {
+          "service": "gcp.compute_e2micro",
+          "entitlement": {
+            "limit": 1,
+            "unit": "instance/month",
+            "window": "monthly"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "github",
+      "services": [
+        {
+          "service": "github.actions.cache",
+          "entitlement": {
+            "limit": 10,
+            "unit": "GB",
+            "window": "rolling"
+          },
+          "observed": {
+            "status": "ok",
+            "horizon": "H0",
+            "evidence_status": "confirmed",
+            "observed_at": "2026-10-28T01:23:16Z",
+            "used": null
+          }
+        },
+        {
+          "service": "github.actions.minutes",
+          "entitlement": {
+            "limit": null,
+            "unit": "minutes",
+            "window": "monthly"
+          },
+          "observed": {
+            "status": "watch",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
+        },
+        {
+          "service": "github.api.github_token",
+          "entitlement": {
+            "limit": 1000,
+            "unit": "requests/hour/repo",
+            "window": "hourly"
+          },
+          "observed": {
+            "status": "watch",
+            "horizon": "H0",
+            "evidence_status": "confirmed",
+            "observed_at": "2026-10-28T01:23:16Z",
+            "used": null
+          }
+        },
+        {
+          "service": "github.api.user_token",
+          "entitlement": {
+            "limit": 5000,
+            "unit": "requests/hour",
+            "window": "hourly"
+          },
+          "observed": {
+            "status": "ok",
+            "horizon": "H0",
+            "evidence_status": "confirmed",
+            "observed_at": "2026-10-27T12:33:41Z",
+            "used": 378
+          }
+        },
+        {
+          "service": "github.artifacts.retention",
+          "entitlement": {
+            "limit": 90,
+            "unit": "days",
+            "window": "per-artifact"
+          },
+          "observed": null
+        },
+        {
+          "service": "github.copilot.free",
+          "entitlement": {
+            "limit": null,
+            "unit": "requests/month",
+            "window": "monthly"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "github.codespaces",
+      "services": [
+        {
+          "service": "github.codespaces.core_hours",
+          "entitlement": {
+            "limit": 120,
+            "unit": "core-hours/month",
+            "window": "monthly"
+          },
+          "observed": null
+        },
+        {
+          "service": "github.codespaces.storage",
+          "entitlement": {
+            "limit": 15,
+            "unit": "GB-month",
+            "window": "monthly"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "Pool excluded-interim (owner, 2026-10-27); BOINC draws nothing here."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 100,
+      "constraints": [
+        "excluded-interim (owner, 2026-10-27): Codespaces excluded for a TBD interim after the setup-error burn; all allocations 0, reserve 100."
+      ],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "google",
+      "services": [
+        {
+          "service": "gemini.api_free",
+          "entitlement": {
+            "limit": null,
+            "unit": "per-model",
+            "window": "daily (RPD)"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "grafana",
+      "services": [
+        {
+          "service": "grafana.cloud_free",
+          "entitlement": {
+            "limit": 10000,
+            "unit": "samples/s",
+            "window": "instant"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "groq",
+      "services": [
+        {
+          "service": "groq.free_tier",
+          "entitlement": {
+            "limit": null,
+            "unit": "per-model requests/tokens",
+            "window": "per minute/day"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "huggingface",
+      "services": [
+        {
+          "service": "huggingface.hub_api",
+          "entitlement": {
+            "limit": null,
+            "unit": "requests per 5-minute fixed window (account-dynamic)",
+            "window": "5-minute fixed window"
+          },
+          "observed": {
+            "status": "unknown",
+            "horizon": "H0",
+            "evidence_status": "confirmed",
+            "observed_at": "2026-10-28T01:23:16Z",
+            "used": null
+          }
+        },
+        {
+          "service": "huggingface.inference_providers",
+          "entitlement": {
+            "limit": null,
+            "unit": "monthly credits",
+            "window": "monthly"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "kilo",
+      "services": [
+        {
+          "service": "kilo.free_models",
+          "entitlement": {
+            "limit": 200,
+            "unit": "requests/hour",
+            "window": "hourly"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "koyeb",
+      "services": [
+        {
+          "service": "koyeb.free_instance",
+          "entitlement": {
+            "limit": 1,
+            "unit": "instance",
+            "window": "point-in-time"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "llm7",
+      "services": [
+        {
+          "service": "llm7.free_token",
+          "entitlement": {
+            "limit": 100000,
+            "unit": "tokens/day",
+            "window": "daily"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "mistral",
+      "services": [
+        {
+          "service": "mistral.free_mode",
+          "entitlement": {
+            "limit": null,
+            "unit": "included usage (per model, in-account)",
+            "window": "unknown"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "modelscope",
+      "services": [
+        {
+          "service": "modelscope.api_inference",
+          "entitlement": {
+            "limit": 2000,
+            "unit": "requests/day",
+            "window": "daily"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "neon",
+      "services": [
+        {
+          "service": "neon.compute",
+          "entitlement": {
+            "limit": 100,
+            "unit": "CU-hours/project/month",
+            "window": "monthly"
+          },
+          "observed": null
+        },
+        {
+          "service": "neon.egress",
+          "entitlement": {
+            "limit": 5,
+            "unit": "GB/month",
+            "window": "monthly"
+          },
+          "observed": null
+        },
+        {
+          "service": "neon.realtime",
+          "entitlement": {
+            "limit": null,
+            "unit": "free during beta",
+            "window": "n/a"
+          },
+          "observed": null
+        },
+        {
+          "service": "neon.storage",
+          "entitlement": {
+            "limit": 1,
+            "unit": "GB/project (20 GB total)",
+            "window": "point-in-time"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "netlify.credits",
+      "services": [
+        {
+          "service": "netlify.credits",
+          "entitlement": {
+            "limit": 300,
+            "unit": "credits/month",
+            "window": "monthly"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "nvidia",
+      "services": [
+        {
+          "service": "nvidia.api_catalog",
+          "entitlement": {
+            "limit": null,
+            "unit": "per-model credits/limits (in-account)",
+            "window": "unknown"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "ollama",
+      "services": [
+        {
+          "service": "ollama.balance",
+          "entitlement": {
+            "limit": null,
+            "unit": "variant-specific USD or percent; never requests/tokens",
+            "window": "source-supplied included period or legacy session/weekly"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "omni",
+      "services": [
+        {
+          "service": "omni.gateway",
+          "entitlement": {
+            "limit": null,
+            "unit": "n/a (aggregates upstream free tiers)",
+            "window": "n/a"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "openrouter",
+      "services": [
+        {
+          "service": "openrouter.free_models",
+          "entitlement": {
+            "limit": null,
+            "unit": "requests/day (dynamic tier; endpoint supplies limit)",
+            "window": "daily UTC"
+          },
+          "observed": {
+            "status": "unknown",
+            "horizon": "H0",
+            "evidence_status": "confirmed",
+            "observed_at": "2026-10-28T01:23:16Z",
+            "used": null
+          }
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "oracle",
+      "services": [
+        {
+          "service": "oracle.ampere_gb_hours",
+          "entitlement": {
+            "limit": 9000,
+            "unit": "GB-hours/month",
+            "window": "monthly"
+          },
+          "observed": null
+        },
+        {
+          "service": "oracle.ampere_ocpu_hours",
+          "entitlement": {
+            "limit": 1500,
+            "unit": "OCPU-hours/month",
+            "window": "monthly"
+          },
+          "observed": null
+        },
+        {
+          "service": "oracle.block_storage",
+          "entitlement": {
+            "limit": 200,
+            "unit": "GB",
+            "window": "point-in-time"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "ovhcloud",
+      "services": [
+        {
+          "service": "ovhcloud.ai_endpoints",
+          "entitlement": {
+            "limit": 2,
+            "unit": "requests/minute",
+            "window": "per minute"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "partners.credits",
+      "services": [
+        {
+          "service": "partners.credits",
+          "entitlement": {
+            "limit": null,
+            "unit": "one-time credits",
+            "window": "one-time"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "render",
+      "services": [
+        {
+          "service": "render.bandwidth",
+          "entitlement": {
+            "limit": 5,
+            "unit": "GB/month",
+            "window": "calendar month"
+          },
+          "observed": null
+        },
+        {
+          "service": "render.instance_hours",
+          "entitlement": {
+            "limit": 750,
+            "unit": "hours/month",
+            "window": "calendar month"
+          },
+          "observed": null
+        },
+        {
+          "service": "render.keyvalue_free",
+          "entitlement": {
+            "limit": 1,
+            "unit": "instance/workspace (in-memory only)",
+            "window": "n/a"
+          },
+          "observed": null
+        },
+        {
+          "service": "render.pipeline_minutes",
+          "entitlement": {
+            "limit": 500,
+            "unit": "minutes/month",
+            "window": "calendar month"
+          },
+          "observed": null
+        },
+        {
+          "service": "render.postgres_free",
+          "entitlement": {
+            "limit": 1,
+            "unit": "GB (1 instance/workspace)",
+            "window": "30 days from creation"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "requesty",
+      "services": [
+        {
+          "service": "requesty.free_models",
+          "entitlement": {
+            "limit": 200,
+            "unit": "requests/day",
+            "window": "daily"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "routeway",
+      "services": [
+        {
+          "service": "routeway.free_models",
+          "entitlement": {
+            "limit": 200,
+            "unit": "requests/day",
+            "window": "daily"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "sambanova",
+      "services": [
+        {
+          "service": "sambanova.free_tier",
+          "entitlement": {
+            "limit": 20,
+            "unit": "requests/day per model",
+            "window": "daily"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "sealion",
+      "services": [
+        {
+          "service": "sealion.api",
+          "entitlement": {
+            "limit": 10,
+            "unit": "requests/minute per user",
+            "window": "per minute"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "siliconflow",
+      "services": [
+        {
+          "service": "siliconflow.free_models",
+          "entitlement": {
+            "limit": null,
+            "unit": "requests/minute + tokens/minute (per model)",
+            "window": "per minute/day"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "supabase",
+      "services": [
+        {
+          "service": "supabase.db_storage",
+          "entitlement": {
+            "limit": 500,
+            "unit": "MB",
+            "window": "point-in-time"
+          },
+          "observed": null
+        },
+        {
+          "service": "supabase.edge_functions",
+          "entitlement": {
+            "limit": 500000,
+            "unit": "invocations/month",
+            "window": "monthly"
+          },
+          "observed": null
+        },
+        {
+          "service": "supabase.egress",
+          "entitlement": {
+            "limit": 5,
+            "unit": "GB/month",
+            "window": "monthly"
+          },
+          "observed": null
+        },
+        {
+          "service": "supabase.file_storage",
+          "entitlement": {
+            "limit": 1,
+            "unit": "GB",
+            "window": "point-in-time"
+          },
+          "observed": null
+        },
+        {
+          "service": "supabase.projects",
+          "entitlement": {
+            "limit": 2,
+            "unit": "projects",
+            "window": "point-in-time"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "turso",
+      "services": [
+        {
+          "service": "turso.databases",
+          "entitlement": {
+            "limit": 100,
+            "unit": "databases",
+            "window": "point-in-time"
+          },
+          "observed": null
+        },
+        {
+          "service": "turso.rows_read",
+          "entitlement": {
+            "limit": 500000000,
+            "unit": "rows/month",
+            "window": "monthly"
+          },
+          "observed": null
+        },
+        {
+          "service": "turso.rows_written",
+          "entitlement": {
+            "limit": 10000000,
+            "unit": "rows/month",
+            "window": "monthly"
+          },
+          "observed": null
+        },
+        {
+          "service": "turso.storage",
+          "entitlement": {
+            "limit": 5,
+            "unit": "GB",
+            "window": "point-in-time"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "typhoon",
+      "services": [
+        {
+          "service": "typhoon.api",
+          "entitlement": {
+            "limit": 200,
+            "unit": "requests/minute",
+            "window": "per minute"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "unorouter",
+      "services": [
+        {
+          "service": "unorouter.free_models",
+          "entitlement": {
+            "limit": 1,
+            "unit": "requests/minute per free model per user",
+            "window": "per minute"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "upstash",
+      "services": [
+        {
+          "service": "upstash.qstash_messages",
+          "entitlement": {
+            "limit": 1000,
+            "unit": "messages/day",
+            "window": "daily"
+          },
+          "observed": null
+        },
+        {
+          "service": "upstash.redis_bandwidth",
+          "entitlement": {
+            "limit": 10,
+            "unit": "GB/month",
+            "window": "monthly"
+          },
+          "observed": null
+        },
+        {
+          "service": "upstash.redis_commands",
+          "entitlement": {
+            "limit": 500000,
+            "unit": "commands/month",
+            "window": "monthly"
+          },
+          "observed": null
+        },
+        {
+          "service": "upstash.redis_storage",
+          "entitlement": {
+            "limit": 250,
+            "unit": "MB",
+            "window": "point-in-time"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "vercel",
+      "services": [
+        {
+          "service": "vercel.build_time",
+          "entitlement": {
+            "limit": 45,
+            "unit": "minutes",
+            "window": "per-build"
+          },
+          "observed": null
+        },
+        {
+          "service": "vercel.deployments",
+          "entitlement": {
+            "limit": 100,
+            "unit": "deployments/day",
+            "window": "rolling 24h (observed: error says try again in 24 hours)"
+          },
+          "observed": {
+            "status": "ok",
+            "horizon": "H0",
+            "evidence_status": "confirmed",
+            "observed_at": "2026-10-28T01:23:16Z",
+            "used": null
+          }
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "xfyun",
+      "services": [
+        {
+          "service": "xfyun.spark",
+          "entitlement": {
+            "limit": null,
+            "unit": "unknown",
+            "window": "unknown"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "xkiro",
+      "services": [
+        {
+          "service": "xkiro.free_models",
+          "entitlement": {
+            "limit": 500000,
+            "unit": "tokens/day",
+            "window": "daily"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "zai",
+      "services": [
+        {
+          "service": "zai.free_models",
+          "entitlement": {
+            "limit": null,
+            "unit": "per-account (unpublished)",
+            "window": "unknown"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    }
+  ],
+  "gantt": [
+    {
+      "pool": "aion",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "aion",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "aion",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "aion",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "aion",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "aws",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "aws",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "aws",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "aws",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "aws",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "aws.credits",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "aws.credits",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "aws.credits",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "aws.credits",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "aws.credits",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "azure",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "azure",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "azure",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "azure",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "azure",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "azure.credit",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "azure.credit",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "azure.credit",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "azure.credit",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "azure.credit",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "cerebras",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "cerebras",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "cerebras",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "cerebras",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "cerebras",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "cloudflare",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "cloudflare",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "cloudflare",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "cloudflare",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "cloudflare",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "cohere",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "cohere",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "cohere",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "cohere",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "cohere",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "deno",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "deno",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "deno",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "deno",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "deno",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "digitalocean",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "digitalocean",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "digitalocean",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "digitalocean",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "digitalocean",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "digitalocean.credit",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "digitalocean.credit",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "digitalocean.credit",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "digitalocean.credit",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "digitalocean.credit",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "felo.credits",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "felo.credits",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "felo.credits",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "felo.credits",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "felo.credits",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "fly",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "fly",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "fly",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "fly",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "fly",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "g4f-vendors",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "g4f-vendors",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "g4f-vendors",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "g4f-vendors",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "g4f-vendors",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "gcp",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "gcp",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "gcp",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "gcp",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "gcp",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "github",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "github",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "github",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "github",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "github",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "github.codespaces",
+      "focus": "winning",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "github.codespaces",
+      "focus": "repo-development",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "github.codespaces",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "github.codespaces",
+      "focus": "research",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "github.codespaces",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "google",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "google",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "google",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "google",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "google",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "grafana",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "grafana",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "grafana",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "grafana",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "grafana",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "groq",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "groq",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "groq",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "groq",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "groq",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "huggingface",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "huggingface",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "huggingface",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "huggingface",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "huggingface",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "kilo",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "kilo",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "kilo",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "kilo",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "kilo",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "koyeb",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "koyeb",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "koyeb",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "koyeb",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "koyeb",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "llm7",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "llm7",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "llm7",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "llm7",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "llm7",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "mistral",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "mistral",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "mistral",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "mistral",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "mistral",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "modelscope",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "modelscope",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "modelscope",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "modelscope",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "modelscope",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "neon",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "neon",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "neon",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "neon",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "neon",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "netlify.credits",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "netlify.credits",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "netlify.credits",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "netlify.credits",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "netlify.credits",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "nvidia",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "nvidia",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "nvidia",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "nvidia",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "nvidia",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "ollama",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "ollama",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "ollama",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "ollama",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "ollama",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "omni",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "omni",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "omni",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "omni",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "omni",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "openrouter",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "openrouter",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "openrouter",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "openrouter",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "openrouter",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "oracle",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "oracle",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "oracle",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "oracle",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "oracle",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "ovhcloud",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "ovhcloud",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "ovhcloud",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "ovhcloud",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "ovhcloud",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "partners.credits",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "partners.credits",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "partners.credits",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "partners.credits",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "partners.credits",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "render",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "render",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "render",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "render",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "render",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "requesty",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "requesty",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "requesty",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "requesty",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "requesty",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "routeway",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "routeway",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "routeway",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "routeway",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "routeway",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "sambanova",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "sambanova",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "sambanova",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "sambanova",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "sambanova",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "sealion",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "sealion",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "sealion",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "sealion",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "sealion",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "siliconflow",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "siliconflow",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "siliconflow",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "siliconflow",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "siliconflow",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "supabase",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "supabase",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "supabase",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "supabase",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "supabase",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "turso",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "turso",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "turso",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "turso",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "turso",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "typhoon",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "typhoon",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "typhoon",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "typhoon",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "typhoon",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "unorouter",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "unorouter",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "unorouter",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "unorouter",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "unorouter",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "upstash",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "upstash",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "upstash",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "upstash",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "upstash",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "vercel",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "vercel",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "vercel",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "vercel",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "vercel",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "xfyun",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "xfyun",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "xfyun",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "xfyun",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "xfyun",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "xkiro",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "xkiro",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "xkiro",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "xkiro",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "xkiro",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "zai",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "zai",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "zai",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "zai",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "zai",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    }
+  ]
+}

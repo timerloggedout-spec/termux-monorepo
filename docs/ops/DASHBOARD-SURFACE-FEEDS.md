@@ -93,6 +93,18 @@ it carries no collection logic of its own — and proposes the refreshed
 feeds as a refresh PR; it never commits to master directly. (Closes
 GAP-LEDGER G-10.)
 
+**3L0 discrimination watch (diagnostic trigger).** The same workflow then
+runs `scripts/dashboards/discrimination_watch.py` against the freshly
+collected 3L0 feed. While the observed weights report
+`effective_weight_driver = seed_base_only`, the watch keeps exactly one
+open diagnostic issue (title: `[3L0] discrimination watch: …`): it opens
+it if absent, comments only when the discrimination fingerprint
+(sha256 over the discrimination block + newest ledger comment id)
+changes, and comments + closes it when the driver is no longer
+`seed_base_only`. The diagnostic points at the upgrade of record, issue
+#1784. API failures degrade to a `::warning::` — the watch never fails
+the collect.
+
 ## Rules
 
 - Pages consume their feed and nothing else (pinned by

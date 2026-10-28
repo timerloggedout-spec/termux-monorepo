@@ -86,6 +86,12 @@
 </section>
 
 <section>
+<div class="head"><h2>Segments — the flood, grouped for comparison</h2></div>
+<div class="card"><div id="segments"></div>
+<p class="dim" id="seg-note"></p></div>
+</section>
+
+<section>
 <div class="head"><h2>Filings</h2></div>
 <div class="fbar" role="group" aria-label="Group filter">
 <button class="fchip on" data-f="group" data-v="all">All groups</button>
@@ -101,6 +107,14 @@
 <button class="fchip" data-f="status" data-v="unscored">Unscored</button>
 <label class="dim"><input type="checkbox" id="conv"> converged only</label>
 <input type="search" id="q" placeholder="Search number, title, surface id…" aria-label="Search filings">
+</div>
+<div class="fbar" role="group" aria-label="Segment class filter">
+<button class="fchip on" data-f="cls" data-v="all">All classes</button>
+<button class="fchip" data-f="cls" data-v="doe-components">DoE components</button>
+<button class="fchip" data-f="cls" data-v="research-silos">Research silos</button>
+<button class="fchip" data-f="cls" data-v="quota-surfaces">Quota surfaces</button>
+<button class="fchip" data-f="cls" data-v="meta-process">Meta-process</button>
+<select id="seg" aria-label="Segment filter"><option value="all">All segments</option></select>
 </div>
 <p class="muted" id="count"></p>
 <div id="cards"></div>
@@ -153,6 +167,7 @@ function cardHTML(r){
     chip(GROUPS[r.group]||r.group)+chip(decision,dcls)+(r.converged?chip("converged","ok"):"")+
     (oc&&oc.effective_score!=null?chip("effective "+oc.effective_score+" / 25"):"")+(r.lane?chip("lane "+r.lane):"")+
     (pg?chip("rounds "+pg.rounds_run+"/"+pg.rounds_max):"");
+  if(r.segment) head+=chip("segment "+r.segment);
   let b='<p class="rmeta"><a href="'+esc(r.url)+'">Issue #'+esc(r.number)+'</a> · surface <code>'+esc(r.surface_id||"—")+'</code> · filed '+esc(r.created_at||"—")+(r.silo?' · silo <code>'+esc(r.silo)+'</code>':"")+'</p>';
   if(r.parent) b+='<p class="rmeta">Variant of <a href="#rfp-'+esc(r.parent.number)+'">#'+esc(r.parent.number)+'</a> (<code>'+esc(r.parent.surface_id)+'</code>)</p>';
   if(pg){
@@ -180,7 +195,25 @@ function cardHTML(r){
     b+='<details class="sub"><summary>The 10 form questions — responses as filed</summary>'+
       r.questions.map(q=>'<div class="qa"><p class="q">'+esc(q.question)+'</p><p class="a">'+esc(q.response)+'</p></div>').join("")+'</details>';
   }
-  return '<details class="rfp" id="rfp-'+esc(r.number)+'" data-group="'+esc(r.group)+'" data-status="'+esc(r.status)+'" data-conv="'+(r.converged?"1":"0")+'" data-search="'+esc((r.number+" "+r.title+" "+(r.surface_id||"")).toLowerCase())+'"><summary>'+head+'</summary><div class="rbody">'+b+'</div></details>';
+  return '<details class="rfp" id="rfp-'+esc(r.number)+'" data-segment="'+esc(r.segment||"")+'" data-segclass="'+esc(SEGCLASS[r.segment]||"")+'" data-group="'+esc(r.group)+'" data-status="'+esc(r.status)+'" data-conv="'+(r.converged?"1":"0")+'" data-search="'+esc((r.number+" "+r.title+" "+(r.surface_id||"")).toLowerCase())+'"><summary>'+head+'</summary><div class="rbody">'+b+'</div></details>';
+}
+function renderSegments(sg){
+  const box=$("segments"); if(!box||!sg) return;
+  const segs=sg.segments||[];
+  SEGCLASS={};
+  for(const s of segs) SEGCLASS[s.segment_id]=s.class;
+  const order={"doe-components":0,"research-silos":1,"quota-surfaces":2,"meta-process":3};
+  const rows=segs.slice().sort((a,b)=>((order[a.class]!=null?order[a.class]:9)-(order[b.class]!=null?order[b.class]:9))||a.segment_id.localeCompare(b.segment_id)).map(s=>{
+    const n=(s.members||[]).length;
+    const st=Object.entries(s.by_status||{}).map(([k,v])=>esc(k)+" "+esc(v)).join(" · ");
+    const axes=(s.axes_total!=null)? esc(s.axes_recorded!=null?s.axes_recorded:0)+"/"+esc(s.axes_total) : "—";
+    return '<tr><td><a href="#rfp-'+esc((s.members||[])[0]||"")+'">'+esc(s.segment_id)+'</a></td><td>'+esc(s.class)+'</td><td>'+n+'</td><td>'+esc(s.gate_scored!=null?s.gate_scored:0)+'/'+n+'</td><td>'+st+'</td><td>'+axes+'</td></tr>';
+  }).join("");
+  box.innerHTML='<table class="vt"><thead><tr><th>Segment</th><th>Class</th><th>Members</th><th>Gate-scored</th><th>By status</th><th>Axes recorded</th></tr></thead><tbody>'+rows+'</tbody></table>';
+  const sel=$("seg");
+  if(sel) sel.innerHTML='<option value="all">All segments</option>'+segs.map(s=>'<option value="'+esc(s.segment_id)+'">'+esc(s.segment_id)+' ('+esc(s.class)+')</option>').join("");
+  const note=$("seg-note");
+  if(note) note.textContent="Segments from the feed (config "+(sg.config||"")+", doctrine "+(sg.doctrine||"")+"); unassigned: "+((sg.unassigned||[]).length)+". Comparison happens within a segment; the segment chip on each filing below is its segment of record.";
 }
 function renderSummary(s){
   const total=s.total_open||0, un=(s.by_status&&s.by_status.unscored)||0, scored=total-un;
@@ -206,12 +239,15 @@ function renderCriteria(c){
     '<p class="dim">'+esc(c.questions_source||"")+'</p>'+
     '<p class="dim">'+esc(c.research_axes_note||"")+'</p>';
 }
-const F={group:"all",status:"all",q:"",conv:false};
+const F={group:"all",status:"all",q:"",conv:false,cls:"all",seg:"all"};
+let SEGCLASS={};
 function applyFilters(){
   let n=0;
   document.querySelectorAll(".rfp").forEach(el=>{
     const ok=(F.group==="all"||el.dataset.group===F.group)&&
              (F.status==="all"||el.dataset.status===F.status)&&
+             (F.cls==="all"||el.dataset.segclass===F.cls)&&
+             (F.seg==="all"||el.dataset.segment===F.seg)&&
              (!F.conv||el.dataset.conv==="1")&&
              (!F.q||el.dataset.search.includes(F.q));
     el.style.display=ok?"":"none"; if(ok) n++;
@@ -226,6 +262,7 @@ function wireFilters(){
   }));
   $("q").addEventListener("input",e=>{ F.q=e.target.value.trim().toLowerCase(); applyFilters(); });
   $("conv").addEventListener("change",e=>{ F.conv=e.target.checked; applyFilters(); });
+  const segSel=$("seg"); if(segSel) segSel.addEventListener("change",e=>{ F.seg=e.target.value; applyFilters(); });
 }
 async function load(){
   try{
@@ -233,6 +270,7 @@ async function load(){
     if(!res.ok) throw new Error("feed "+res.status);
     const feed=await res.json();
     $("meta").textContent="Generated "+(feed.generated_at||"unknown")+" · Source: "+(feed.source||"")+" · Schema "+(feed.schema||"")+" · This page consumes data/delphi-rfp-feed.json (contract docs/ops/DELPHI-RFP-FEED.md) and nothing else — votes and outcomes render verbatim from the gate ledger; nothing is re-scored, averaged, or guessed.";
+    renderSegments(feed.segments);
     renderSummary(feed.summary||{});
     renderCriteria(feed.criteria);
     if(feed.honesty_rules) $("honesty").innerHTML=feed.honesty_rules.map(h=>'<li>'+esc(h)+'</li>').join("");

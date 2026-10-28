@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "681f5d18b2b784bfd8a2c5cacb2a908ee6cc1702892b949bb7ab50ca963c4741",
-  "workflow_count": 210,
+  "source_fingerprint": "7ccde22960c8f979a939ab9029e5d67b274b1a8afdc1b0efb190532656acdd80",
+  "workflow_count": 213,
   "workflows": [
     {
       "action_pins": [
@@ -607,6 +607,25 @@
       "path": ".github/workflows/challenge-countdowns-feed-collect.yml",
       "schedules": [
         "23 7 * * 2"
+      ],
+      "triggers": [
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "refresh"
+      ],
+      "name": "challenge-countdowns-refresh",
+      "path": ".github/workflows/challenge-countdowns-refresh.yml",
+      "schedules": [
+        "6 16 * * 1"
       ],
       "triggers": [
         "push",
@@ -1640,6 +1659,24 @@
       "triggers": [
         "pull_request",
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "watch"
+      ],
+      "name": "g07-profile-watch",
+      "path": ".github/workflows/g07-profile-watch.yml",
+      "schedules": [
+        "11 16 * * *"
+      ],
+      "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -2706,6 +2743,24 @@
       "path": ".github/workflows/pin-cor-ae-submodules.yml",
       "schedules": [],
       "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "group: platform201-support-response-check cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "nudge"
+      ],
+      "name": "platform201-support-response-check",
+      "path": ".github/workflows/platform201-support-response-check.yml",
+      "schedules": [
+        "17 13 * * *"
+      ],
+      "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },

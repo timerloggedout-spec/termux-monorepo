@@ -9,6 +9,7 @@ Affiliate, referral, and gifted-usage lanes this project takes part in — the c
 | CellCog | AI employees & agents (anchor) | 500 bonus credits on first purchase | https://cellcog.ai/invitation/l19hdRGY9dTh | `CellCog — 500 bonus credits` (teal `2e7e7e`) — row 1 | Marketing (Chloe) |
 | Polsia | AI directory & intelligence | 500 extra credits (per #574 — verify on signup) | https://polsia.com/?ref=B5K7S8NL | `Polsia — referral bonus` (`7c3aed`) — row 1 | Marketing (Chloe) |
 | Manus AI | AI employees & agents | Invitation link (UTM-tagged) | https://manus.im/invitation/5MHU34UJRBOTVC6?utm_source=invitation&utm_medium=social&utm_campaign=system_share | `Manus AI — invitation` (`111111`) — row 1 | Marketing (Chloe) |
+| UnoRouter | LLM routing | 10% of referred top-ups as account balance (no cash payout; balance transfers to main) | https://unorouter.com/register?aff=kHp6 | issued referral badge (dark, MD, SVG) — landing grid | Marketing (Chloe) |
 | Grafana | Observability & cloud | Referral code `gr8WEigykKjVGTV` | https://grafana.com/auth/sign-up?refCode=gr8WEigykKjVGTV | `Grafana Cloud — referral sign-up` (`F46800`, grafana logo) — row 2 | Marketing (Chloe) |
 
 ## 1b. Code lanes (invite / referral codes, owner-supplied, free no-CC)
@@ -36,7 +37,7 @@ Route per partner: referral/affiliate programme if one exists → otherwise gift
 | Generative media | HiggsField, Kling AI, Suno (listed as "Sumo" in #574) | Gift-card redemption & referral programmes |
 | LLMs & agent platforms | Moonshot AI (Kimi), Grok, Google, DeepSeek, GenSpark, FELO.ai, OpenRouter, OMNI, Devin.ai, Codex, BlackBoxAI, Dify, Tanka, Stepie, LikeClaw | Kimi: gift-card redemption codes |
 | Cloud, hosting & infra | v0, Vercel, Render, Cloudflare, Firebase, Repl.it, Gitpod / Ona (app.ona.com), Tailscale, Tembo | v0: gifted-usage codes; Ona: coupons |
-| LLM routing | UnoRouter | Affiliate programme exists (unorouter.com/en/affiliate, owner add 2026-10-28); terms behind sign-in, NOT ESTABLISHED. Registry: `code_pending` — activates when owner supplies in-account affiliate link |
+| LLM routing | UnoRouter | ACTIVATED 2026-10-28 — moved to §1 (affiliate link live, terms firsthand) |
 | Developer platforms & tools | GitHub, GitLab, Hugging Face, Hex, Brave | — |
 | Retail gift cards | Google Play Store redeem codes | Gift-card redemption |
 

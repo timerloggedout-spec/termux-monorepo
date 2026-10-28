@@ -227,6 +227,14 @@ material references another cell — the cells stay unlinkable for both
 profile fact, recorded in the Profile Registry under the
 marketing-channel section once the Page exists.
 
+**Lane-coordination monikers.** A lane's oversight roles (a lane
+Manager, per-event sub-coordinators) are coordination identities, not
+platform identities: the registry lane assigns them under the
+formation rule recorded in `docs/ops/AGENT-MONIKERS.md`
+("Lane-coordination monikers"), they are recorded there, and they are
+never entered in `config/registration_monikers.json` and never used
+at a platform form.
+
 ## 6. Owner-gated items the current registry surfaces
 
 Full detail for each lives with its profile in

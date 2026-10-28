@@ -12,6 +12,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts" / "issue_lifecycle"))
 
+import io
+import urllib.error
+
+import pytest
+
+import triage_labels
 from triage_labels import KNOWN_LABELS, propose_labels  # noqa: E402
 
 
@@ -48,6 +54,44 @@ def test_unmatched_title_gets_nothing():
     assert propose_labels("[mesh] Integration mesh matrix - standing thread", []) == []
     assert propose_labels("", []) == []
     assert propose_labels(None, []) == []
+
+
+def test_request_surfaces_http_error_and_exits(monkeypatch):
+    """Regression (2026-10-28): the first version let a GitHub 403 kill
+    the pass with no reason printed while the workflow step still
+    reported success. _request must name the status and exit non-zero."""
+
+    def fake_urlopen(req, timeout=0):
+        raise urllib.error.HTTPError(
+            req.full_url, 403, "Forbidden", {}, io.BytesIO(b"resource not accessible")
+        )
+
+    monkeypatch.setattr(triage_labels.urllib.request, "urlopen", fake_urlopen)
+    with pytest.raises(SystemExit) as excinfo:
+        triage_labels._request("GET", "/issues?state=open", "token", "o/r")
+    assert excinfo.value.code == 1
+
+
+def test_request_sets_user_agent(monkeypatch):
+    seen = {}
+
+    class Resp:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+        def read(self):
+            return b"[]"
+
+    def fake_urlopen(req, timeout=0):
+        seen["ua"] = req.get_header("User-agent")
+        return Resp()
+
+    monkeypatch.setattr(triage_labels.urllib.request, "urlopen", fake_urlopen)
+    assert triage_labels._request("GET", "/issues?state=open", "token", "o/r") == []
+    assert seen["ua"] == triage_labels.USER_AGENT
 
 
 def test_proposed_labels_always_exist_in_taxonomy():

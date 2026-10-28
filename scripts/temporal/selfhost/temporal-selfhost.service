@@ -1,0 +1,12 @@
+[Unit]
+Description=Fleet self-hosted Temporal server (dev-server mode, persistent DB)
+After=network.target
+
+[Service]
+ExecStart=/home/hatch/workspace/temporal-selfhost/start-temporal.sh
+Restart=always
+RestartSec=5
+User=root
+
+[Install]
+WantedBy=multi-user.target

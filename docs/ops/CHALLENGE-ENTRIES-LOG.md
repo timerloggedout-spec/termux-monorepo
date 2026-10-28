@@ -55,14 +55,17 @@ under the 4n0n protocol — registry of record:
 
 ## 1. Verified registrations (platform joins)
 
-Evidence for all three: platform confirmation emails to the owner's Gmail
-from `notifications@builder.aws.com` (message IDs cited).
+Evidence for R1–R3: platform confirmation emails to the owner's Gmail
+from `notifications@builder.aws.com` (message IDs cited). R4's evidence is
+its on-screen confirmation (cited in its row); its review email has not
+landed yet.
 
 | # | Event | Window (PT) | Joined (PT) | Role{Moniker} | Evidence |
 |---|-------|-------------|-------------|---------------|----------|
 | R1 | Agent Experience Hackathon: Strands Decider (AWS Builder Center) | Oct 16 12:00 AM – Oct 23 11:59 PM PDT | 2026-10-23 17:27 | `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]` | Gmail msg `1a16b4e87bbf0c55`; platform ID `4f50957c-1d08-37ab-b11c-97516b9adeb4` |
 | R2 | Weekend Challenge: Give your Agent a Tool (AWS Builder Center) | Oct 23 12:00 AM – Oct 26 1:00 PM PDT | 2026-10-23 23:40 | `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]` | Gmail msg `1a16ca3f96d0508c`; platform ID `2e275689-b202-316e-93b8-10cd6d6d1e4a` |
 | R3 | Strands SDK: Workshop to Ship (AWS Builder Center) | Oct 28 12:00 AM – Nov 4 11:59 PM PDT | 2026-10-23 23:40 | `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]` | Gmail msg `1a16ca3fb608dcf9`; platform ID `8311dcb5-1ece-3d62-a441-2e1c2ad90b86` |
+| R4 | AI Builder Day Hackathon (Aha.io) | Kickoff Nov 17 9:00 AM PT; build Nov 17–19; awards Nov 20 | 2026-10-27 23:34 | registry process pending — platform `aha-io` | On-screen confirmation 2026-10-27: "Thanks for registering! We will review your registration and email you to confirm your spot" — **spot PENDING REVIEW**; no platform ID issued. See packet D5 |
 
 Account creation itself is also verified: "Welcome to the AWS Builder Center
 community", 2026-10-23 17:20 PT (Gmail msg `1a16b477c91e5b07`). The complete
@@ -148,10 +151,10 @@ credits each + 10 backpack draws (October pattern).
 - Aha! AI Builder Day Hackathon — November 2026 (Aha.io; scoped 2026-10-27
   from the official page: kickoff Nov 17 9:00 AM PT, build Nov 17–19,
   awards Nov 20; free; prize = six months of Aha! Builder + badge).
-  Excluded: the build is locked to the proprietary Aha! Builder product,
-  and the official page states anonymous registrations will not be
-  accepted (registrations are reviewed) — incompatible with the fleet's
-  4n0n identity posture; prize is a subscription to the same product.
+  Initially excluded (proprietary-tool lock-in; reviewed registrations) —
+  **exclusion REVERSED by owner 2026-10-27**: agency registration under
+  4n0n (G-07 pattern). Registered 2026-10-27 (R4, §1); spot pending
+  review. See packet **D5** (§4).
 - Strands Decider hackathon (R1) — closed Oct 23; Gate 1 scoring week of
   Oct 26, winners week of Nov 9. Watch for a second edition.
 - Build, Ship, Shape: Amazon Developer Hackathon (Devpost) — closed
@@ -187,7 +190,7 @@ a submission path reaches an owner-account step.
 ### D0 — for R2, Weekend Challenge: Give your Agent a Tool — COMPLETED 2026-10-27 (owner ruling 2026-10-27; date set: Oct 29)
 
 <!-- countdown-data:D0 opens=- closes=2026-10-26T13:00:00-07:00 -->
-<!-- countdown:D0 -->⏳ CLOSED (computed 2026-10-27 18:40 PT)<!-- /countdown:D0 -->
+<!-- countdown:D0 -->⏳ CLOSED (computed 2026-10-27 23:35 PT)<!-- /countdown:D0 -->
 
 `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]`
 
@@ -249,7 +252,7 @@ a submission path reaches an owner-account step.
 ### D1 — for C1, Workshop to Ship — IN PROGRESS (owner already joined)
 
 <!-- countdown-data:D1 opens=2026-10-28T00:00:00-07:00 closes=2026-11-04T23:59:00-08:00 -->
-<!-- countdown:D1 -->⏳ opens in 5h 19m (computed 2026-10-27 18:40 PT)<!-- /countdown:D1 -->
+<!-- countdown:D1 -->⏳ opens in 24m (computed 2026-10-27 23:35 PT)<!-- /countdown:D1 -->
 
 `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]`
 
@@ -305,7 +308,7 @@ a submission path reaches an owner-account step.
 ### D2 — for C2, Vultr Agent Rush (Foundry entry) — IN PROGRESS
 
 <!-- countdown-data:D2 opens=2026-11-05T00:00:00-08:00 closes=2026-11-08T15:00:00-08:00 -->
-<!-- countdown:D2 -->⏳ opens in 8d 6h (computed 2026-10-27 18:40 PT)<!-- /countdown:D2 -->
+<!-- countdown:D2 -->⏳ opens in 8d 1h (computed 2026-10-27 23:35 PT)<!-- /countdown:D2 -->
 
 `entrant{entrantLablabAi}[platform:lablab-ai]` + `entrant{entrantVultr}[platform:vultr]`
 
@@ -335,7 +338,7 @@ a submission path reaches an owner-account step.
 ### D3 — for C3, Builder.io Agent-Native Hackathon — IN PROGRESS (scoped 2026-10-26)
 
 <!-- countdown-data:D3 opens=- closes=2026-11-02T23:59:00-08:00 -->
-<!-- countdown:D3 -->⏳ closes in 6d 6h (computed 2026-10-27 18:40 PT)<!-- /countdown:D3 -->
+<!-- countdown:D3 -->⏳ closes in 6d 1h (computed 2026-10-27 23:35 PT)<!-- /countdown:D3 -->
 
 `entrant{entrantBuilderIo}[platform:builder-io]`
 
@@ -409,7 +412,7 @@ a submission path reaches an owner-account step.
 ### D4 — for C4, Kiroween 2026 — REGISTERING (build sequenced after Nov 8)
 
 <!-- countdown-data:D4 opens=2026-10-30T13:00:00-07:00 closes=2026-12-04T14:00:00-08:00 -->
-<!-- countdown:D4 -->⏳ opens in 2d 18h (computed 2026-10-27 18:40 PT)<!-- /countdown:D4 -->
+<!-- countdown:D4 -->⏳ opens in 2d 13h (computed 2026-10-27 23:35 PT)<!-- /countdown:D4 -->
 
 `entrant{entrantDevpost}[platform:devpost]` + `entrant{entrantKiro}[platform:kiro]` — account creation owned by the dedicated Devpost + Kiro ID creation chat (owner order 2026-10-27, fleet Google identity route); registration completes with this lane on its handoff.
 
@@ -459,6 +462,40 @@ a submission path reaches an owner-account step.
   lane supplies at the Oct 30 rules publish is that pass's intake:
   base fields + `variants` + optional `expectations` + per-variant
   `test_suites`.
+
+### D5 — for Aha! AI Builder Day Hackathon (Aha.io) — REGISTERED 2026-10-27 (spot pending review)
+
+<!-- countdown-data:D5 opens=2026-11-17T09:00:00-08:00 closes=2026-11-19T23:59:00-08:00 -->
+<!-- countdown:D5 -->⏳ opens in 20d 10h (computed 2026-10-27 23:35 PT)<!-- /countdown:D5 -->
+
+Moniker: **registry process pending** — platform `aha-io` activated by this
+packet (R4, §1); the assignment is the registry lane's via
+`registry.py derive`, never invented here.
+
+- **Format (official page, read 2026-10-27):** pick an application that
+  frustrates you and build a better alternative prototype with **Aha!
+  Builder**; solo or team. Kickoff Nov 17 9:00 AM PT; build Nov 17–19;
+  submit the prototype with a brief explanation (inspiration, what changed,
+  why); awards Nov 20 11:30 AM PT. Prize: six months of Aha! Builder +
+  AI Builder badge/certificate. Free.
+- **Registration record (agency, under 4n0n per the G-07 pattern; owner
+  reversal 2026-10-27):** submitted 2026-10-27 23:34 PT on the official
+  event page with the fleet identity (name "LoggedOut Timer", business
+  email timerloggedout@gmail.com, company "timerloggedout-spec", role
+  Builder; the form's required website field took "timerloggedout-spec"
+  and was accepted; optional newsletters unchecked). On-screen proof:
+  "Thanks for registering! We will review your registration and email you
+  to confirm your spot in the AI Builder Day hackathon." **State:
+  registered, spot PENDING REVIEW** — the confirmation email, when it
+  lands, is the next evidence; no account, profile, or handle was created.
+- **Concept angle (draft):** rebuild a frustrating intake/review tool as
+  an Aha! Builder prototype — subject picked at build (Nov 17), sized to
+  the 3-day window.
+- **Eligibility check (enforced):** no spot confirmation email → no build
+  commitment; if the review declines, the packet closes on that email as
+  evidence. Submission deadline time on Nov 19 is UNVERIFIED on the
+  official page (build window ends Nov 19; countdown uses 23:59 PT as the
+  window end, marked as such).
 
 ## 5. Sweep sources
 

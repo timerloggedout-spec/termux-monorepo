@@ -17,7 +17,7 @@ Machine registry: `config/referral_programs.json` · Public feed: `apps/help-wan
 
 | Partner | Mechanic | Visitor gets (free) | Live code | Status |
 |---|---|---|---|---|
-| Muse (Meta) | Referral code, redeem in Settings ≤48h of joining | 1 billion Muse tokens (both sides; never expires) | — | Code pending: owner share code not yet supplied |
+| Muse (Meta) | Referral code, redeem in Settings ≤48h of joining | 1 billion Muse tokens (both sides; never expires) | `VDP1DW` (30 uses left, 2026-10-27) | Live |
 | Cue (by Manus) | Invite code, early access | Free early access | `W7AZA` (+1 reserve) | Live |
 | Migoo | Invite code at signup | Signup access + free daily points | `uA3QYP` (+2 reserve) | Live |
 

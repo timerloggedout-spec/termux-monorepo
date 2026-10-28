@@ -134,3 +134,18 @@ def test_workflow_mirrors_series_too():
     # both commit paths mirror (initial + regenerate-on-conflict)
     assert wf.count("cp ops/ml/pr-lane-series.jsonl apps/help-wanted-dashboard/data/pr-lane-series.jsonl") == 2
     assert wf.count("cp ops/ml/pr-lane-feed.json apps/help-wanted-dashboard/data/pr-lane-feed.json") == 2
+
+
+def test_chrome_wiring():
+    """Web Design chrome (post-landing follow-up): the page is linked
+    from every shell page's unified nav, marks itself current, is in
+    the sitemap, and has an Admin inventory row."""
+    link = 'href="https://timerloggedout-spec.github.io/help-wanted/pr-lanes.html"'
+    for other in ("index.html", "quota.html", "admin.html", "oracle.html", "3l0.html",
+                  "moneyball.html", "mvt.html", "doe.html", "ates.html",
+                  "free-tier-value.html", "dispatch-tree.html", "countdowns.html",
+                  "linguist.html", "delphi-rfp.html", "delphi-ledger.html"):
+        assert link in (APP / other).read_text(), f"{other} nav missing pr-lanes"
+    assert f'{link} aria-current="page"' in _html()
+    assert "https://timerloggedout-spec.github.io/help-wanted/pr-lanes.html" in (APP / "sitemap.xml").read_text()
+    assert "<td>PR Lanes</td>" in (APP / "admin.html").read_text()

@@ -16,29 +16,113 @@
    "consumer": "challenge-entries participant tracking",
    "declaration": "docs/ops/CHALLENGE-SCHEMA.md \u2014 judges/signals section (owner, 2026-10-28): participant tracking is a MoneyBall lane for competitions",
    "internal_metric": {
-    "adaptive_rule": "recompute in the same PR as the input change; overwrite in place (current estimate, not a series); computed_at must be >= latest input change or the value is stale",
+    "adaptive_rule": "recompute in the same PR as the input change; overwrite in place; computed_at >= latest input change or stale",
     "adaptive_triggers": [
      "participant added/removed",
-     "any v2 score record added/updated for the event",
-     "field_size verification change",
-     "our submission state or our score change"
+     "any v2 score record added/updated for the event (ours or field)",
+     "field_size/participants verification change",
+     "our submission state or our score change",
+     "judges/criteria published (fit becomes known)"
     ],
-    "computation": "base = 1/field_size. If our_composite present AND >=1 competitor scored under v2 for the event: lift = clamp(our_composite / field_mean_composite, 0.25, 4); estimate = min(1, base x lift). Else estimate = base (base_rate_only, recorded in method detail). field_size NOT_ESTABLISHED -> estimate null (never defaulted).",
-    "location": "ops/challenge/coordinator.json events[].metrics_internal.win_probability (ONLY home; removed from opportunity_cost display; ledger = 1st-place gross only, no EV anywhere)",
+    "computation": [
+     "1. Realized: event closed with recorded outcome (e.g. not_submitted) -> estimate = realized (0), range [0,0], confidence high.",
+     "2. No sourced denominator -> estimate null, range null, confidence none (no prior exists; a number would be invented).",
+     "3. Prior: base_rate b = award_slots_top / denominator (denominator per event as recorded: submitted projects where established, else participants). The base rate is ONLY a prior in v2.",
+     "4. Standing update (odds form): odds = b/(1-b) x LR_standing x LR_fit; estimate = odds/(1+odds). LR_standing from our v2 composite percentile s among scored field composites (Laplace s = (below + 0.5*ties + 0.5)/(n+1); LR = clamp(s/(1-s), 0.1, 10)). LR_fit = clamp(our criteria/judge-fit axis / field mean of same axis, 0.5, 2) when both exist, else 1 with fit unknown. No our_composite yet -> both LRs = 1, estimate = prior.",
+     "5. Uncertainty interval (never silently a point): unknowns u = unscored_share = 1 - scored_count/denominator, v = unverified_axis_weight_share from our v2 record (record absent -> v = 1). k = clamp(0.6u + 0.4v, 0.05, 0.95); range = [estimate*(1-k), min(1, estimate*(1+k))]. confidence: k < 0.30 high, k < 0.65 medium, else low."
+    ],
+    "location": "ops/challenge/coordinator.json events[].metrics_internal.win_probability (ONLY home; ledger = 1st-place gross only, no EV anywhere)",
+    "method": "winprob/v2",
     "name": "win_probability",
-    "non_render_contract": "metrics_internal is excluded by construction from challenge-countdowns-feed, dashboard pages, log section 4, manager briefs and the Neon ledger views; win_probability is never multiplied into any displayed figure (no EV)",
-    "owner_ruling": "2026-10-28 via challenge-entries-manager: MoneyBall-side metric; separate column; adaptive; SILENT + HIDDEN \u2014 never rendered on feeds/pages/briefs/ledger",
+    "non_render_contract": "metrics_internal excluded by construction from challenge-countdowns-feed, dashboard pages, log section 4, manager briefs and Neon ledger views; never multiplied into any displayed figure (no EV)",
+    "owner_ruling": "2026-10-28 via challenge-entries-manager: MoneyBall-side metric; separate column; adaptive; SILENT + HIDDEN \u2014 never rendered on feeds/pages/briefs/ledger. OWNER CRITIQUE 2026-10-28: winprob/v1 read as LOTTERY probability (slots/field base rate) \u2014 wrong model; these are TALENT-BASED measurements with unknowns. winprob/v2 supersedes v1; v1 estimates are superseded, not deleted (basis history).",
     "shape": {
+     "basis": "string",
      "computed_at": "ISO timestamp",
+     "confidence": "high|medium|low|none",
      "estimate": "number|null",
-     "inputs": {
-      "award_slots_top": 1,
-      "field_mean_composite": "number|null",
-      "field_scored_count": "int",
-      "field_size": "int|null",
-      "our_composite": "number|null"
+     "fit": {
+      "criteria_fit": "number|null",
+      "judges_known": "bool"
      },
-     "method": "winprob/v1"
+     "method": "winprob/v2",
+     "prior": {
+      "base_rate": "number|null",
+      "denominator": "int|null",
+      "denominator_kind": "projects|participants"
+     },
+     "range": "[lo, hi]|null",
+     "standing": {
+      "field_mean": "number|null",
+      "field_sd": "number|null",
+      "our_composite": "number|null",
+      "our_percentile": "number|null",
+      "scored_count": "int"
+     },
+     "unknowns": {
+      "unscored_share": "number",
+      "unverified_axis_weight_share": "number"
+     }
+    },
+    "supersedes": "winprob/v1 (base-rate point estimates; landed #2229/#2244/#2246, marked superseded by the implementing PR)",
+    "worked_values_2026-10-28": {
+     "D0": {
+      "basis": "realized: closed, not_submitted (v1 printed 0.025 for a settled event \u2014 the clearest v1 defect)",
+      "confidence": "high",
+      "estimate": 0,
+      "range": [
+       0,
+       0
+      ]
+     },
+     "D1": {
+      "basis": "prior 1/324 participants; no our_composite; u=0.997, v=1, k=0.95",
+      "confidence": "low",
+      "estimate": 0.003,
+      "range": [
+       0.0002,
+       0.0059
+      ]
+     },
+     "D2": {
+      "basis": "prior 1/1617 participants; u=1, v=1, k=0.95",
+      "confidence": "low",
+      "estimate": 0.0006,
+      "range": [
+       3e-05,
+       0.0012
+      ]
+     },
+     "D3": {
+      "basis": "no sourced denominator \u2014 no prior exists",
+      "confidence": "none",
+      "estimate": null,
+      "range": null
+     },
+     "D4": {
+      "basis": "prior 1/1908 participants; u=1, v=1, k=0.95",
+      "confidence": "low",
+      "estimate": 0.0005,
+      "range": [
+       2.5e-05,
+       0.001
+      ]
+     },
+     "D5": {
+      "basis": "no sourced denominator \u2014 no prior exists",
+      "confidence": "none",
+      "estimate": null,
+      "range": null
+     },
+     "STRANDS-DECIDER": {
+      "basis": "realized: closed, not_submitted",
+      "confidence": "high",
+      "estimate": 0,
+      "range": [
+       0,
+       0
+      ]
+     }
     }
    },
    "lane_chat_id": "a33d3ca1",

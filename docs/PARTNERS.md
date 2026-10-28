@@ -36,6 +36,7 @@ Route per partner: referral/affiliate programme if one exists → otherwise gift
 | Generative media | HiggsField, Kling AI, Suno (listed as "Sumo" in #574) | Gift-card redemption & referral programmes |
 | LLMs & agent platforms | Moonshot AI (Kimi), Grok, Google, DeepSeek, GenSpark, FELO.ai, OpenRouter, OMNI, Devin.ai, Codex, BlackBoxAI, Dify, Tanka, Stepie, LikeClaw | Kimi: gift-card redemption codes |
 | Cloud, hosting & infra | v0, Vercel, Render, Cloudflare, Firebase, Repl.it, Gitpod / Ona (app.ona.com), Tailscale, Tembo | v0: gifted-usage codes; Ona: coupons |
+| LLM routing | UnoRouter | Affiliate programme exists (unorouter.com/en/affiliate, owner add 2026-10-28); terms behind sign-in, NOT ESTABLISHED. Registry: `code_pending` — activates when owner supplies in-account affiliate link |
 | Developer platforms & tools | GitHub, GitLab, Hugging Face, Hex, Brave | — |
 | Retail gift cards | Google Play Store redeem codes | Gift-card redemption |
 

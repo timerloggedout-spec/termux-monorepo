@@ -128,6 +128,40 @@ def parse_ledger(comment: dict) -> dict:
     return out
 
 
+def _segments_config(cache: Path) -> tuple[dict | None, dict | None]:
+    """Segmentation config (ops/delphi/rfp-segments.json + the silo
+    registry), read from the cache when the fetch copied them there,
+    else from the working tree next to this collector. Absent config
+    means no segments block — the v1 feed is complete without it."""
+    ops = Path(__file__).resolve().parents[2] / "ops" / "delphi"
+    cfg = silos = None
+    for name, attr in (("rfp-segments.json", "cfg"),
+                       ("research-silos.json", "silos")):
+        for base in (cache, ops):
+            p = base / name
+            if p.exists():
+                data = json.loads(p.read_text())
+                if attr == "cfg":
+                    cfg = data
+                else:
+                    silos = data
+                break
+    return cfg, silos
+
+
+def _segment_for(entry: dict, meta_by_number: dict) -> tuple[str | None, str | None]:
+    """(segment_id, class) for one entry, per rfp-segments.json."""
+    group = entry["group"]
+    if group.startswith("research"):
+        return f"research.{entry['silo']}", "research-silos"
+    if group == "surface" or entry.get("surface_id") == "fly.free_tier":
+        return "quota-surfaces", "quota-surfaces"
+    slug = meta_by_number.get(entry["number"])
+    if slug:
+        return slug, "meta-process"
+    return None, None
+
+
 def build(cache: Path, generated_at: str) -> dict:
     missing = [n for n in ("issues.json", "comments.json", "surfaces.json", "panel.json")
                if not (cache / n).exists()]
@@ -228,13 +262,56 @@ def build(cache: Path, generated_at: str) -> dict:
         if r["group"] == "research-variant":
             r["parent"] = {"number": baselines.get(r["silo"]),
                            "surface_id": f"research.{r['silo']}"}
+    # Segmentation layer (DoE lane, ops/delphi/rfp-segments.json):
+    # every entry carries its segment; the feed-level block rolls
+    # members/status/axes up per segment. Counts and states only —
+    # no score is computed or averaged here.
+    seg_cfg, _silos = _segments_config(cache)
+    segments_block = None
+    if seg_cfg:
+        meta_by_number = {n: slug for slug, n in
+                          seg_cfg["classes"]["meta-process"]
+                          ["members"].items()}
+        grouped: dict[str, dict] = {}
+        unassigned = []
+        for r in rfps:
+            seg_id, seg_class = _segment_for(r, meta_by_number)
+            if seg_id is None:
+                unassigned.append(r["number"])
+                continue
+            r["segment"] = seg_id
+            g = grouped.setdefault(seg_id, {
+                "segment_id": seg_id, "class": seg_class,
+                "members": [], "by_status": {}, "gate_scored": 0})
+            g["members"].append(r["number"])
+            g["by_status"][r["status"]] = \
+                g["by_status"].get(r["status"], 0) + 1
+            if r["status"] != "unscored":
+                g["gate_scored"] += 1
+            if r["group"] == "research-baseline":
+                axes = r.get("comparison_axes") or {}
+                g["axes_recorded"] = sum(
+                    1 for v in axes.values()
+                    if not str(v).startswith("pending"))
+                g["axes_total"] = len(axes)
+        segments_block = {
+            "config": "ops/delphi/rfp-segments.json",
+            "doctrine": "docs/ops/DELPHI-RFP-SEGMENTATION.md",
+            "classes": {name: {"description": c["description"],
+                               "criteria": c["criteria"],
+                               "questions": c["questions"],
+                               "cycle": c["cycle"]}
+                        for name, c in seg_cfg["classes"].items()},
+            "segments": [grouped[k] for k in sorted(grouped)],
+            "unassigned": unassigned,
+        }
     by_status: dict[str, int] = {}
     by_group: dict[str, int] = {}
     for r in rfps:
         by_status[r["status"]] = by_status.get(r["status"], 0) + 1
         by_group[r["group"]] = by_group.get(r["group"], 0) + 1
     roles = panel.get("roles", {})
-    return {
+    feed_obj = {
         "schema": SCHEMA,
         "generated_at": generated_at,
         "source": "open GitHub issues labeled delphi:rfp + their gate ledger comments (live census at generation)",
@@ -264,9 +341,13 @@ def build(cache: Path, generated_at: str) -> dict:
             "A form field absent from a filing is an explicit gap entry, not an empty string.",
             "Research-silo comparison axes read 'pending' until a post-hoc record exists — never zero, never a gate score.",
             "Counts in summary are derived from the entries in this file at generation time.",
+            "Segments roll up members and states only — no score is averaged across a segment, and research comparison stays within its silo segment.",
         ],
         "rfps": rfps,
     }
+    if segments_block is not None:
+        feed_obj["segments"] = segments_block
+    return feed_obj
 
 
 def main() -> int:

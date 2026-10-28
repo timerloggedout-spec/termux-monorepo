@@ -147,3 +147,24 @@ it, do not rename it. (Recorded in the registry, ab_test.pages.fb-c.)
 **Media rule (owner, 2026-10-27):** Facebook Pages media production is
 OUTSOURCED — connector or issued request only. No fleet quota burn on media
 generation, for any MVT cell. (Launch posts are text-only; compliant.)
+
+## Traffic counters (traffic-feed/1)
+
+The landing carries a visible traffic counter + source breakdown,
+rendered from `data/traffic-feed.json` **in the landing repo**
+(schema `traffic-feed/1`). The collector
+(`scripts/referral/traffic_feed.py`, workflow
+`traffic-feed-collect.yml`, weekly + dispatch) reads the GitHub
+Traffic API for the landing repo — trailing-14-day views, uniques,
+per-day counts, top referrers, top paths — and writes the feed into
+the landing repo. Numbers are the API's own; a failed read fails the
+run loudly and writes nothing.
+
+Attribution honesty: per-campaign (`?ch=`) **visit** counts are not
+measurable from GitHub-native data (Pages exposes no access log, and
+no credential may be embedded in a page for a beacon). Source
+tracking therefore has two honest layers: referrers at visit level
+(this feed) and campaign cells at **redemption** level (the rotation
+ledger above). ROIT reads both; neither is inferred from the other.
+FB Page metrics land in the registry/feed as data by the Marketing
+Channel lane's connector pulls and render in the same panel.

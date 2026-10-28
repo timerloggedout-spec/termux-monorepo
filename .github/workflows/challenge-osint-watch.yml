@@ -1,0 +1,64 @@
+# challenge-osint-watch (contract: docs/ops/CHALLENGE-OSINT.md).
+# Full-spectrum public OSINT for the challenge slate: weekly + on
+# coordinator change, recompute the coverage matrix and append official
+# page snapshots (prize/rules/schedule change detection) via
+# scripts/challenge/osint_watch.py; mirror snapshots to Neon; propose
+# any repo-side change as a refresh PR — never commits directly.
+name: challenge-osint-watch
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 8 * * 3'
+  push:
+    branches: [master]
+    paths:
+      - 'ops/challenge/coordinator.json'
+      - 'scripts/challenge/osint_watch.py'
+
+concurrency:
+  group: challenge-osint-watch
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      LANE_EVENTS_DATABASE_URL: ${{ secrets.LANE_EVENTS_DATABASE_URL }}
+      NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Collect coverage + page snapshots
+        run: |
+          set -euo pipefail
+          python3 -B scripts/challenge/osint_watch.py --root .
+      - name: Mirror snapshots to Neon (append-only)
+        run: |
+          set -euo pipefail
+          python3 -B scripts/challenge/participant_event.py sync \
+            --source ops/challenge/coordinator.json
+      - name: Propose the refresh as a PR
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- ops/challenge/osint; then
+            echo "osint unchanged; no refresh PR"
+            exit 0
+          fi
+          branch="challenge-osint/refresh"
+          git config user.name "challenge-osint-watch"
+          git config user.email "actions@github.com"
+          git checkout -B "$branch"
+          git add ops/challenge/osint
+          git commit -m "chore(osint): refresh coverage + page snapshots"
+          git push -f origin "$branch"
+          gh pr create --base master --head "$branch" \
+            --title "chore(osint): refresh coverage + page snapshots" \
+            --body "Automated full-spectrum OSINT refresh (collector: scripts/challenge/osint_watch.py; contract: docs/ops/CHALLENGE-OSINT.md). A changed page hash = an official-page change (prizes/rules/schedule) since the previous snapshot; excerpts ride the snapshot rows." \
+            || echo "refresh PR already open"
+        env:
+          GH_TOKEN: ${{ github.token }}

@@ -243,3 +243,26 @@ SELECT payload->>'status' AS status, count(*) AS entries,
        sum((payload->>'gross_foregone')::numeric) AS gross_foregone,
        sum((payload->'top_award'->>'value')::numeric) AS top_award_value_total
 FROM opportunity_ledger_current GROUP BY payload->>'status';
+
+-- ===== OSINT page snapshots (2026-10-28) =====
+-- Append-only official-page snapshots from ops/challenge/osint/snapshots.json
+-- (hash-chained change detection for prizes/rules/schedule). Key =
+-- sha256('osint-page'|event|page sha256) — identical re-observation dedupes.
+CREATE TABLE IF NOT EXISTS osint_page_snapshots (
+  snapshot_key text PRIMARY KEY,
+  sync_key     text NOT NULL,
+  event_id     text NOT NULL,
+  payload      jsonb NOT NULL,
+  recorded_at  timestamptz NOT NULL DEFAULT now(),
+  UNIQUE (sync_key, event_id, snapshot_key)
+);
+DROP TRIGGER IF EXISTS osint_page_snapshots_no_mutation ON osint_page_snapshots;
+CREATE TRIGGER osint_page_snapshots_no_mutation
+  BEFORE UPDATE OR DELETE ON osint_page_snapshots
+  FOR EACH ROW EXECUTE FUNCTION participant_mirror_append_only();
+
+CREATE OR REPLACE VIEW osint_page_snapshots_current AS
+SELECT s.event_id, s.payload, s.recorded_at
+FROM osint_page_snapshots s
+JOIN (SELECT sync_key FROM participant_syncs ORDER BY synced_at DESC, sync_key DESC LIMIT 1) latest
+  ON s.sync_key = latest.sync_key;

@@ -61,11 +61,35 @@ the repo. That shape maps onto a workflow run:
 | 3 | Consumer repoint: temporal-mcp config documented as per-engagement (no standing target); ops docs updated (`TEMPORAL-SELF-HOST.md` → historical record at teardown); #2028 living record notes the new home | Docs PR merged |
 | 4 | Teardown: disable + remove `temporal-selfhost`/`temporal-relay` units, retire the keepalive cron (goal-owned — main/Delphi lane executes or delegates), DB + backups archived into the repo record before the workspace copy goes | Stages 1–3 green; owner-visible report first |
 
-## Current state at plan time (2026-10-28)
+## Address of record
 
+Named by the temporal-integration lane (2026-10-28), as the N5
+brief's amended substrate target requires:
+
+- **Surface:** GitHub Actions in this repo — workflows
+  `temporal-engagement.yml` (general engagements + §6 proof) and
+  `delphi-cycle.yml` (Delphi cycle proof), dispatched from the
+  Actions tab or the API. That workflow surface IS the
+  GitHub-reachable address; there is no standing host address,
+  by design.
+- **In-engagement address:** `localhost:7233`, namespace
+  `default`, on the job's ephemeral dev server — the same
+  coordinates every client/worker already defaults to.
+- **Consumers:** read results from run artifacts + repo records,
+  not from a live endpoint. temporal-mcp is used per-engagement
+  (point its target at the engagement's server while it runs);
+  its old standing `selfhost` target retires with stage 4.
+
+## Progress
+
+- Stage 1: LANDED (PR #2193, merged 0a648c8ade).
+- Stage 2: **PASSED** — `temporal-engagement` dispatch run
+  40759800247 completed success: §6 kill-resume verdict PASS +
+  N5 §5 prove PASS against the in-job server, receipts in the
+  run artifact. (delphi-cycle dispatch 40758279842 had already
+  proven §5 the same way.)
+- Stage 3: in progress — address of record named above; consumer
+  docs repointed (TEMPORAL-DELPHI-CYCLE.md, TEMPORAL-MCP.md).
 - VM instance: UP (units active, DB live) — stays up through
-  stage 3 by the hard gate above.
-- Stage 2 is partially pre-proven: delphi-cycle.yml already runs
-  the N5 §5 acceptance — including a SIGKILL-mid-implementation
-  resume — against an in-job dev server. The §6 harness run in
-  `temporal-engagement.yml` is the remaining stage-2 evidence.
+  stage 3 by the hard gate. Stage 4 teardown pending stage 3 +
+  owner-visible report.

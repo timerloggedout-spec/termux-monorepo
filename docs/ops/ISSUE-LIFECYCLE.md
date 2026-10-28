@@ -385,6 +385,19 @@ labelled at birth by the gate — plus one new label in use, `temporal`
   pulse-comments; the body is edited by its operator) is respected —
   this method is recorded here and in the landing PR, not commented
   onto #175.
+- **First automated cut defect + fix (2026-10-28).** The method's own
+  first dispatch (run `40727258970`) regenerated the matrix in
+  Actions and opened PR #2055, which this lane merged
+  (`8e2e89a52e`) after scope verification — but the stamped matrix
+  read "0 issues, 96 PRs": the workflow job declared explicit
+  permissions (contents + pull-requests write) without
+  `issues: read`, and the issues endpoint silently returns only PRs
+  to such a token. The PAT-driven local cut had full access, so the
+  defect was invisible until the automation ran as its own, narrower
+  principal — the same lesson as the triage pass, second instance.
+  Fix: `issues: read` added to the workflow permissions; the next
+  regeneration replaces the defective cut, and this note is its
+  correction on the record.
 - **Maintain — lane pass 2:** 12 issues labelled with signed comments —
   the 10 oldest unlabelled (#50 `ci`; #51 `documentation`+`automation`;
   #52 `bug`+`ci`; #53 `documentation`; #54 `ci`+`gemini`; #56

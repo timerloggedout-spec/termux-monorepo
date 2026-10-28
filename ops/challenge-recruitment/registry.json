@@ -4,8 +4,9 @@
   "manager_role": "challenge-entries-manager",
   "updated_at": "2026-10-28T14:30:00-07:00",
   "store": {
-    "primary": "Neon recruitment_current (ops/challenge-participants/schema.sql) \u2014 provisioning of LANE_EVENTS_DATABASE_URL/NEON_API_KEY pending (DB lane e3055a9c / neon-fix lane); rows queue in this JSON until then",
-    "source_of_truth_feed": "ops/challenge/coordinator.json"
+    "primary": "Neon recruitment_current (ops/challenge-participants/schema.sql) \u2014 LANE_EVENTS_DATABASE_URL + NEON_API_KEY provisioned per PR #2222 (2026-10-28); participant_event.py sync carries these rows on next coordinator push/dispatch",
+    "source_of_truth_feed": "ops/challenge/coordinator.json",
+    "queue_note": "Registry JSON remains the recruitment seat's record; Neon mirror sync owned by DB lane pattern."
   },
   "pipeline_states": [
     "identified",

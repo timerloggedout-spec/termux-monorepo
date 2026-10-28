@@ -180,12 +180,16 @@ rows carry them; the JSON carries the full series).
 event — who won what, with what project, judged by whom
 (`event_podium` view over the mirror, beside `participants_current`).
 
-**Recruitment pipeline:** standout competitors/judges carry
-`recruitment{candidate: true, pipeline_state}` with states
-`identified → profiled → engaged → in_talks → collaborator`, or
-`passed`. Engagement is autonomous (standing order above);
-touchpoints logged as specified. Non-candidates carry
-`recruitment{candidate: false, pipeline_state: null}`.
+**Recruitment pipeline — OUR TEAM ONLY (owner ruling 2026-10-28,
+supersedes the competitor/judge recruitment framing):** recruitment
+tracks OUR OWN team/entrants only. External competitors and judges
+are **observation-only**: they are profiled and scored, never
+recruitment candidates, never engaged for recruitment. Their records
+carry `recruitment{candidate: false, pipeline_state: null}` always;
+the standout-flag rule below flags *standout observation* only and
+does not set recruitment candidacy for an external entity. (The
+autonomous-engagement standing order above concerns public event
+channels under our entrant moniker, not recruitment of externals.)
 
 **Scoring (MoneyBall consumer pattern, landed 2026-10-28):**
 evaluations use **moneyball-plane/v2** (`docs/schemas/moneyball-score.schema.json`,

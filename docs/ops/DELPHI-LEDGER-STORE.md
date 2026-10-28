@@ -182,3 +182,31 @@ them): `NEON_API_KEY` (runtime resolution + project ops) and
 project at provisioning time). Writers stay as-is. Landing + proof
 run owned by the neon-fix lane; until their proof lands, writers
 remain in the verified no-op state.
+
+## Neon Realtime — evaluation (2026-10-28, owner handoff via neon-fix lane)
+
+Source: neon.com/docs/realtime/overview (read firsthand 2026-10-28).
+Realtime (Beta) makes any deterministic read-only SQL query live:
+sealed live queries defined by a backend holding
+`NEON_REALTIME_SECRET`, clients subscribe through the Live SQL API;
+joins/aggregates/window functions supported; enabled per
+project+branch (`neon realtime enable`); our region aws-us-east-2 is
+in the beta set; free during beta (DB compute + egress still billed);
+requires logical replication; cost shifts to incremental-on-write on
+a replica (zero primary write impact per docs). NOT yet: RLS,
+stable transport protocol, performance guarantees.
+
+**Verdict: DO NOT ADOPT for the lane-events store / read path now.**
+Every current consumer is batch — Actions writers/readers on psql,
+the collect-cadence DB export (ledger_db_export.py), ad-hoc agent SQL
+— and the only rendered surface is a static dashboard that cannot
+hold the sealing secret or run the backend Realtime requires; the VM
+rule also bars standing one up locally. There is no live subscriber
+to serve. **Designated candidate when one exists:** the store's
+currents/podium views (`delphi_ledger_current`,
+`delphi_weights_current`, `participants_current`, `event_podium`)
+are deterministic SELECTs — directly sealable as live queries for a
+future hosted app/agent surface on an owner account. Revisit trigger:
+a live consumer lands, or Realtime reaches GA with RLS. (The owner's
+noted Neon-login banner was not verified firsthand from this lane;
+in context it is consistent with the Realtime beta announcement.)

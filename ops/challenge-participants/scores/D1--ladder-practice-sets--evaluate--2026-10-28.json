@@ -1,0 +1,94 @@
+{
+  "schema": "moneyball-plane/v2",
+  "record_id": "mbv2-D1-ladder-practice-sets-evaluate-2026-10-28",
+  "pass_id": "challenge-participants-2026-10-28",
+  "opportunity": {
+    "entity_id": "ladder-practice-sets",
+    "action": "evaluate",
+    "context": "D1",
+    "decision_time": "2026-10-28T13:35:00-07:00"
+  },
+  "baseline_id": "unobserved-field-baseline",
+  "weights": {
+    "axes": {
+      "track_record": 0.3,
+      "momentum": 0.25,
+      "engagement_surface": 0.2,
+      "composability_fit": 0.15,
+      "inverse_engagement_cost": 0.1
+    },
+    "fixed_at": "D1 event intake - coordinator.json events[D1].moneyball (fixed 2026-10-28, before any score)"
+  },
+  "axes": [
+    {
+      "axis": "track_record",
+      "value": 0,
+      "evidence_strength": "unverified",
+      "uncertainty": 0.9,
+      "evidence_refs": [
+        "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/challenge/coordinator.json",
+        "https://builder.aws.com/project/3LJjkhxhefaoI8OMD5QZW8HkUnp/ladder-practice-sets-a-teacher-can-trust"
+      ]
+    },
+    {
+      "axis": "momentum",
+      "value": 0,
+      "evidence_strength": "unverified",
+      "uncertainty": 0.9,
+      "evidence_refs": [
+        "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/challenge/coordinator.json",
+        "https://builder.aws.com/project/3LJjkhxhefaoI8OMD5QZW8HkUnp/ladder-practice-sets-a-teacher-can-trust"
+      ]
+    },
+    {
+      "axis": "engagement_surface",
+      "value": 4,
+      "evidence_strength": "limited",
+      "uncertainty": 0.6,
+      "evidence_refs": [
+        "https://builder.aws.com/project/3LJjkhxhefaoI8OMD5QZW8HkUnp/ladder-practice-sets-a-teacher-can-trust",
+        "https://github.com/abhinavshukla152005-beep/ladder",
+        "https://youtu.be/aoFbngpUhP8"
+      ]
+    },
+    {
+      "axis": "composability_fit",
+      "value": 7,
+      "evidence_strength": "limited",
+      "uncertainty": 0.5,
+      "evidence_refs": [
+        "https://builder.aws.com/project/3LJjkhxhefaoI8OMD5QZW8HkUnp/ladder-practice-sets-a-teacher-can-trust",
+        "https://builder.aws.com/build/hackathons/8311dcb5-1ece-3d62-a441-2e1c2ad90b86/strands-sdk-workshop-to-ship"
+      ]
+    },
+    {
+      "axis": "inverse_engagement_cost",
+      "value": 2,
+      "evidence_strength": "limited",
+      "uncertainty": 0.7,
+      "evidence_refs": [
+        "https://builder.aws.com/project/3LJjkhxhefaoI8OMD5QZW8HkUnp/ladder-practice-sets-a-teacher-can-trust",
+        "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/challenge/coordinator.json"
+      ]
+    }
+  ],
+  "composite": 2.05,
+  "quantities": {
+    "capability": null,
+    "forecast": null,
+    "incremental_effect": null,
+    "value": null,
+    "surplus": null,
+    "portfolio_marginal_contribution": null
+  },
+  "ballot": {
+    "relation": "beside_never_merged",
+    "aggregate": null
+  },
+  "point_in_time": {
+    "event_time": "2026-10-28T13:02:00-07:00",
+    "published_at": "2026-10-28T13:35:00-07:00",
+    "ingested_at": "2026-10-28T13:35:00-07:00"
+  },
+  "notes": "First evaluation under the consumer pattern (ops/moneyball/plane.json consumers[0], PR #2211). track_record/momentum unverified: no past wins/placements and no snapshot series are published for this entity (absence established from the sources listed, fetched 2026-10-28). engagement_surface limited: project page + public repo + public demo exist; no public chat activity observed. composability_fit limited: project is an Education focus-area entry (practice sets for teachers) in the D1 gallery; persona skills unpublished. inverse_engagement_cost limited: no author identity or contact surface is published on Builder Center for this entry, so reaching 'engaged' is costly. FLAG RULE outcome: candidate flag NOT supported - composite 2.05 < intake threshold 6.0 and two axes unverified. The pre-pattern candidate=true set in PR #2194 (sole-entrant judgment, before this pattern landed) is corrected in the same PR as this record."
+}

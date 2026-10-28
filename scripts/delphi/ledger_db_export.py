@@ -93,9 +93,7 @@ def build_feed(registry: dict, events: list[dict], currents: list[dict],
             "excluded_noise": None})
         feed["summary"]["events"] += len(evs)
     by_issue = {r["issue_number"]: r for r in living}
-    for led in registry.get("ledgers", []):
-        if led.get("kind") != "living-body":
-            continue
+    for led in registry.get("living_records", []):
         r = by_issue.get(led["issue"])
         if r is None:
             continue
@@ -114,7 +112,9 @@ def build_feed(registry: dict, events: list[dict], currents: list[dict],
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("--registry", default="ops/delphi/ledgers.json")
+    ap.add_argument("--registry", default=None,
+                    help="default: .ledger-cache/ledgers.json when present, "
+                         "else ops/delphi/ledgers.json")
     ap.add_argument("--out", default="apps/help-wanted-dashboard/data/delphi-ledger-feed-db.json")
     ap.add_argument("--strict", action="store_true")
     ns = ap.parse_args(argv)
@@ -127,7 +127,10 @@ def main(argv: list[str] | None = None) -> int:
         def rows(q):
             out = le.psql(url, ["-At", "-c", q]).strip()
             return [json.loads(l) for l in out.splitlines() if l.strip()]
-        registry = json.loads(Path(ns.registry).read_text())
+        registry_path = Path(ns.registry) if ns.registry else (
+            Path(".ledger-cache/ledgers.json") if Path(".ledger-cache/ledgers.json").exists()
+            else Path("ops/delphi/ledgers.json"))
+        registry = json.loads(registry_path.read_text())
         feed = build_feed(registry, rows(EVENTS_Q), rows(CURRENT_Q), rows(LIVING_Q))
         Path(ns.out).parent.mkdir(parents=True, exist_ok=True)
         Path(ns.out).write_text(json.dumps(feed, indent=1, sort_keys=True) + "\n")

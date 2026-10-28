@@ -95,3 +95,16 @@ Rules:
    each live workload's benefit row.
 4. **No paid refill:** tiers grant node limits, not credits. Upgrade only
    when a node cap is the proven blocker for a named, benefited workload.
+
+
+## Credits ledger semantics (amendment 2026-10-28, PR #1992 debate)
+
+- The $20 is Platform201 platform CREDITS, not cash. Cash exposure = $0
+  (no card on file). Cumulative and monthly credit consumption are tracked
+  as separate ledgers.
+- Unsubsidized usage (cost at published rates) = NOT ESTABLISHED: rates are
+  unpublished and Usage reads $0.00. That ledger starts when rates publish
+  or Usage exceeds $0.00.
+- Credit thresholds (cumulative consumed): $1 reconcile · $3 review ·
+  $5 pause expansion · $8 stop optional experiments · $10 stop discretionary
+  spend. Rev3 envelopes remain the caps.

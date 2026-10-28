@@ -66,3 +66,85 @@ and the credits rev3 rules still govern every later step.
 - No new projects beyond Solo caps without a named benefit.
 - No credits spend assumption: metering is $0.00 observed; re-plan from real
   rates if Usage ever exceeds $0.00.
+
+## 6. Amendment 2026-10-28 — debate vs Perplexity research (PR #1992 comment 6467129384)
+
+Research evaluated firsthand by the eval lane + this lane. Verdicts:
+
+### 6.1 ACCEPTED — pilot resequencing (supersedes section 2/4 candidate order)
+
+- Pilot 1 = ONE bounded service: a read-only MCP service or a bounded Python
+  API. 1 environment, 1 service. Pilot-1 selection requires its own benefit
+  statement before packaging (rev3 gate).
+- Planning-queue (4 services + gateway + Pub/Sub + Neon + scheduler) is
+  DEFERRED to pilot 2: valid topology, too many independently failing or
+  billable components for a first experiment. Its consumer gate also stands.
+
+### 6.2 ACCEPTED — Phase-A verify gate (status firsthand, 2026-10-28)
+
+| Item | Status |
+|---|---|
+| Shoal -> Platform201 identity | DONE (org shoal-platform, display name platform201) |
+| Platform charges / trial restrictions | PARTIAL: Solo $0/mo, metering $0.00 observed; consumption rates UNPUBLISHED — open |
+| GCP payment method required? | NO for Platform201-managed mode (live deploy, no card); bring-own-GCP NOT assessed |
+| IAM / GitHub permissions requested | NONE observed: Google OAuth sign-in only; no GitHub permission, no repo connection, console-only |
+| Resources per blueprint | Hello World observed: container + gateway (Cloud Run, europe-west2) |
+| Environment deletion leaves-what | NOT ESTABLISHED — must verify before pilot-1 deploy |
+| Export / rebuild without platform | Blueprint sources are public (shoal-platform/blueprints) — rebuild path exists for blueprint payloads; own packaged blueprint must keep the same property (repo is source of truth) |
+| Platform-vs-GCP billing split | Platform201 credits/billing only observed; no owner-GCP billing exists in managed mode |
+
+Pass condition (research, adopted): before any pilot deploy, we can state who
+bills for every component and how to remove it. Deletion behavior is the one
+blocking unknown.
+
+### 6.3 RECONCILED — the $20 ledger (research cash model mapped, not adopted raw)
+
+- The fleet $20 = Platform201 platform CREDITS on the account balance.
+  It is NOT cash. Cash exposure = $0: no card is on file (verified at signup).
+- Two ledgers, kept separately:
+  1. Credits ledger (cumulative AND monthly, tracked independently):
+     balance, consumed, thresholds below.
+  2. Unsubsidized-usage ledger: what the same workload would cost at published
+     rates. Currently NOT ESTABLISHED — rates are unpublished and Usage reads
+     $0.00. This ledger starts the day rates publish or Usage exceeds $0.00;
+     until then every benefit claim must say "at $0 observed metering".
+- Credit thresholds (cumulative consumed) inside the rev3 envelopes:
+  $1 reconcile resources vs intent · $3 review cost/task · $5 pause expansion ·
+  $8 stop optional experiments · $10 stop discretionary spend, preserve rest.
+  Rev3 envelopes unchanged as caps (prod <= $12, floor $3, experiments <= $2
+  each with benefit + kill date). Thresholds govern pace; envelopes govern totals.
+
+### 6.4 ACCEPTED — pilot runtime policy (declared in the blueprint README graph table)
+
+environments 1 · services 1 · billing request-based · min instances 0 ·
+max instances 1 · task timeout 60s · max attempts 2 · external model calls
+per task <= 1 · writes disabled (pilot 1). The current live container already
+runs min 0 / max 1 (observed). Region: managed mode placed the live project
+in europe-west2 — platform-chosen; research's us-central1 is a deviation we
+record, not a setting we control.
+
+### 6.5 ACCEPTED — recovery + promotion gates
+
+- Any task-bearing service carries an application-level task record:
+  task_id, idempotency_key, status, attempt, max_attempts, lease_expires_at,
+  checkpoint_ref, result_ref, estimated/recorded cost. The platform is never
+  assumed to provide idempotency, leases, or checkpoints.
+- Pre-promotion tests: duplicate submission · interrupt mid-task · redeploy
+  with task pending · timeout · model provider unavailable · allowance
+  exhaustion · restore from exported checkpoint.
+- Phase-E: reconcile intended nodes vs actual resources, export config +
+  evidence, tear down, inspect for residual billable resources, rebuild from
+  repo instructions. Direct-Cloud-Run comparison on: cost per successful
+  task, recovery behavior, time-to-deploy. No "production" claim before
+  teardown + rebuild both pass.
+
+### 6.6 REJECTED — with reasons
+
+- Research file layout (deploy/platform201/, tests/deployment/,
+  docs/experiments/): rejected on path only — repo convention stands
+  (apps/platform201/blueprints/ + docs/ops/PLATFORM201-*). The file SET
+  (resource-inventory, pilot-policy, recovery, teardown) is adopted and will
+  live in the blueprint folder at packaging time.
+- Phase-A "stop at the GCP signup gate" + $300-trial framing: not applicable
+  to Platform201-managed mode — no owner GCP project or trial exists in this
+  lane. Recorded as binding only on a future bring-own-GCP route.

@@ -1,8 +1,8 @@
 {
   "coverage_counts": {
-    "actual_quota_service_mappings": 3,
+    "actual_quota_service_mappings": 27,
     "implemented_passive_adapters": 6,
-    "missing_actual_quota_service_mappings": 24,
+    "missing_actual_quota_service_mappings": 0,
     "missing_static_adapter_mappings": 0,
     "opt_in_private_service_managers": 2,
     "provider_families": 27,
@@ -14,7 +14,7 @@
   "policy": "Metadata only; no private balances, quota resets, free entitlement or runtime admission inferred.",
   "provider_families": [
     {
-      "covered": false,
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown",
       "documented_signals": [],
@@ -24,7 +24,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "unsupported",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "unsupported_or_no_verified_official_counter",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -42,8 +42,10 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "official product homepage found; quota counter/reset semantics unknown",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "aion.free_tokens"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -53,7 +55,7 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "continuous token-bucket replenishment, not a fixed reset; live capacity unknown",
       "documented_signals": [],
@@ -63,7 +65,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -81,8 +83,10 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "organization and model, with project-level limits; separate uncached and total token buckets",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "cerebras.free_tokens"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -92,7 +96,7 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown",
       "documented_signals": [],
@@ -102,7 +106,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -120,8 +124,10 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "account/model/task varies; documented ceilings are not observations",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "cloudflare.workers_ai"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -131,7 +137,7 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown",
       "documented_signals": [],
@@ -141,7 +147,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -159,8 +165,10 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "key type and model/endpoint; no documented remaining-count header",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "cohere.trial_calls"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -170,7 +178,7 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown for model API and daily-credit grant: no exact reset instant, timezone, carryover or machine-readable remaining-credit contract verified",
       "documented_signals": [],
@@ -180,7 +188,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "unsupported",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "unsupported_or_no_verified_official_counter",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -201,8 +209,10 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "existing /api/v1 model API: account eligibility and request/token counters unknown; /v2/chat key/user search limits are a separate endpoint contract",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "felo.api_credits"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "scripts/provider_model_catalog.py:ENDPOINTS"
       ],
@@ -252,7 +262,7 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "documented reset header is metric-specific duration; absolute reset unknown",
       "documented_signals": [
@@ -287,7 +297,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "implemented_passive_adapter",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "implemented_passive_parser; live account validation not established",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -305,8 +315,10 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "organization/model and metric-specific",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "groq.free_tier"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -316,7 +328,7 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "5-minute fixed window; RateLimit t seconds remaining",
       "documented_signals": [
@@ -331,7 +343,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "implemented_passive_adapter",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "implemented_passive_parser; live account validation not established",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -349,8 +361,10 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "token user/org and request class (Hub API, Resolver, Pages); not necessarily inference",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "huggingface.inference_providers"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -360,7 +374,7 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown; source does not specify an API-observed quota reset",
       "documented_signals": [],
@@ -370,7 +384,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -388,8 +402,10 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "official docs state 200 req/hour/IP for free gateway tier; no counter/header/reset observation schema verified",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "kilo.free_models"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -399,7 +415,7 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown; source does not specify an API-observed quota reset",
       "documented_signals": [],
@@ -409,7 +425,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -427,8 +443,10 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "official product page documents free-tier token/request caps and rolling 24-hour token usage; no counter API/header schema verified",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "llm7.free_token"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -438,7 +456,7 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown",
       "documented_signals": [],
@@ -448,7 +466,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -466,8 +484,10 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "organization/model/tier; remaining header mentioned but complete metric/reset schema not established",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "mistral.free_mode"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -477,7 +497,7 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown; source does not specify an API-observed quota reset",
       "documented_signals": [],
@@ -487,7 +507,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -505,8 +525,10 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "official docs describe dynamically adjusted per-model concurrency and magicube costs; no usage counter/reset API schema verified",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "modelscope.api_inference"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -516,7 +538,7 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown; source does not specify an API-observed quota reset",
       "documented_signals": [],
@@ -526,7 +548,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -544,8 +566,10 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "official API documentation index; quota counter/reset schema not verified",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "nvidia.api_catalog"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -635,7 +659,7 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown",
       "documented_signals": [],
@@ -645,7 +669,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "unsupported",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "unsupported_or_no_verified_official_counter",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -663,8 +687,10 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "official model listing endpoint only; no quota documentation or counter/reset contract verified",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "omni.gateway"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "scripts/provider_model_catalog.py:ENDPOINTS"
       ],
@@ -753,7 +779,7 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown; source does not specify an API-observed quota reset",
       "documented_signals": [],
@@ -763,7 +789,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -781,8 +807,10 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "official AI Endpoints docs describe limits by anonymous/authenticated scope; no account counter/header schema verified",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "ovhcloud.ai_endpoints"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -792,7 +820,7 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown",
       "documented_signals": [],
@@ -802,7 +830,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -820,8 +848,10 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "public API/model documentation; account quota counter and scope not verified",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "requesty.free_models"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -831,7 +861,7 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown",
       "documented_signals": [],
@@ -841,7 +871,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -859,8 +889,10 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "public API/model documentation; account quota counter and scope not verified",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "routeway.free_models"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -870,7 +902,7 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "reset headers describe time until reset, but wire encoding/units are unverified; no reset parser or instant inferred",
       "documented_signals": [
@@ -897,7 +929,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "implemented_passive_adapter",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "implemented_passive_parser; live account validation not established",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -915,8 +947,10 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "user/API response; per metric RPM/RPD",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "sambanova.free_tier"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -926,7 +960,7 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown",
       "documented_signals": [],
@@ -936,7 +970,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -954,8 +988,10 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "public API/model documentation; account quota counter and scope not verified",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "sealion.api"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -965,7 +1001,7 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown; balance endpoint supplies no quota/reset or free-account entitlement",
       "documented_signals": [
@@ -988,7 +1024,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "implemented_passive_adapter",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "implemented_passive_parser; live account validation not established",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -1006,8 +1042,10 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "private user monetary balance only, currency not assumed; account/model request quotas are separate and remain unknown",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "siliconflow.free_models"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -1017,7 +1055,7 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown",
       "documented_signals": [],
@@ -1027,7 +1065,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -1045,8 +1083,10 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "public API/model documentation; account quota counter and scope not verified",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "typhoon.api"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS"
       ],
@@ -1055,7 +1095,7 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown",
       "documented_signals": [],
@@ -1065,7 +1105,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -1083,8 +1123,10 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "public API/model documentation; account quota counter and scope not verified",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "unorouter.free_models"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -1094,7 +1136,7 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown",
       "documented_signals": [],
@@ -1104,7 +1146,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -1122,8 +1164,10 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "public API/model documentation; account quota counter and scope not verified",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "xfyun.spark"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS"
       ],
@@ -1132,7 +1176,7 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown",
       "documented_signals": [],
@@ -1142,7 +1186,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -1160,8 +1204,10 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "public API/model documentation; account quota counter and scope not verified",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "xkiro.free_models"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS",
         "scripts/provider_model_catalog.py:ENDPOINTS"
@@ -1171,7 +1217,7 @@
       "static_mapping_state": "static_roster_link_only"
     },
     {
-      "covered": false,
+      "covered": true,
       "documented_limit": null,
       "documented_reset_semantics": "unknown; source does not specify an API-observed quota reset",
       "documented_signals": [],
@@ -1181,7 +1227,7 @@
       "live_account_validation": "unknown",
       "manager_metadata_state": "documented_only",
       "manager_status": "public_documentation_only",
-      "mapping_state": "missing_provider_registry_mapping",
+      "mapping_state": "documented_registry_mapping",
       "observation_method": "official_documentation_only; no passive parser",
       "observed_reset": "unknown",
       "official_evidence": [
@@ -1199,8 +1245,10 @@
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "not_established_by_this_inventory",
       "scope": "official usage policy states plan-tier concurrency dynamically adjusts; no counter/reset response schema verified",
-      "service_ids": [],
-      "source_capability": "no_provider_specific_quota_capability",
+      "service_ids": [
+        "zai.free_models"
+      ],
+      "source_capability": "registered_service",
       "static_mapping_evidence": [
         "llm_api_hub/server/research_providers.py:ENDPOINTS"
       ],
@@ -1658,6 +1706,174 @@
       "provider": "netlify",
       "quota_manager_owner": "Manager",
       "service_id": "netlify.credits"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "aion",
+      "quota_manager_owner": "Manager",
+      "service_id": "aion.free_tokens"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "cerebras",
+      "quota_manager_owner": "Manager",
+      "service_id": "cerebras.free_tokens"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "cloudflare",
+      "quota_manager_owner": "Manager",
+      "service_id": "cloudflare.workers_ai"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "cohere",
+      "quota_manager_owner": "Manager",
+      "service_id": "cohere.trial_calls"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "felo",
+      "quota_manager_owner": "Manager",
+      "service_id": "felo.api_credits"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "groq",
+      "quota_manager_owner": "Manager",
+      "service_id": "groq.free_tier"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "huggingface",
+      "quota_manager_owner": "Manager",
+      "service_id": "huggingface.inference_providers"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "kilo",
+      "quota_manager_owner": "Manager",
+      "service_id": "kilo.free_models"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "llm7",
+      "quota_manager_owner": "Manager",
+      "service_id": "llm7.free_token"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "mistral",
+      "quota_manager_owner": "Manager",
+      "service_id": "mistral.free_mode"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "modelscope",
+      "quota_manager_owner": "Manager",
+      "service_id": "modelscope.api_inference"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "nvidia",
+      "quota_manager_owner": "Manager",
+      "service_id": "nvidia.api_catalog"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "omni",
+      "quota_manager_owner": "Manager",
+      "service_id": "omni.gateway"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "ovhcloud",
+      "quota_manager_owner": "Manager",
+      "service_id": "ovhcloud.ai_endpoints"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "requesty",
+      "quota_manager_owner": "Manager",
+      "service_id": "requesty.free_models"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "routeway",
+      "quota_manager_owner": "Manager",
+      "service_id": "routeway.free_models"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "sambanova",
+      "quota_manager_owner": "Manager",
+      "service_id": "sambanova.free_tier"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "sealion",
+      "quota_manager_owner": "Manager",
+      "service_id": "sealion.api"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "siliconflow",
+      "quota_manager_owner": "Manager",
+      "service_id": "siliconflow.free_models"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "typhoon",
+      "quota_manager_owner": "Manager",
+      "service_id": "typhoon.api"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "unorouter",
+      "quota_manager_owner": "Manager",
+      "service_id": "unorouter.free_models"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "xfyun",
+      "quota_manager_owner": "Manager",
+      "service_id": "xfyun.spark"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "xkiro",
+      "quota_manager_owner": "Manager",
+      "service_id": "xkiro.free_models"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "zai",
+      "quota_manager_owner": "Manager",
+      "service_id": "zai.free_models"
     }
   ]
 }

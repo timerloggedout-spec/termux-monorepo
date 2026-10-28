@@ -18,7 +18,7 @@ def test_provider_families_exhaust_registry_and_no_alias_hiding():
     assert families["ollama"]["opt_in_private_service_ids"] == ["ollama.balance"]
     assert families["ollama"]["reader_service_ids"] == []  # Not an automatic collector.
     assert families["ollama"]["live_account_validation"] == "unknown"
-    assert families["cloudflare"]["covered"] is False  # D1/Queues is not an inference quota
+    assert families["cloudflare"]["covered"] is True  # Workers AI is an inference quota (cloudflare.workers_ai); D1/Queues records alone would not cover it
     assert families["openrouter"]["reader_service_ids"] == ["openrouter.free_models"]
     assert families["openrouter"]["opt_in_private_service_ids"] == ["openrouter.key"]
     assert families["openrouter"]["live_account_validation"] == "unknown"
@@ -35,7 +35,9 @@ def test_static_mappings_exhaust_canonical_roster_without_claiming_quota_service
     assert counts["static_adapter_mappings"] == len(families)
     assert counts["missing_static_adapter_mappings"] == 0
     # Two opt-in services do not establish public live account validation.
-    assert counts["actual_quota_service_mappings"] == 3
+    # Every provider family carries a model-lane registry record (2026-10-27 expansion, 64 -> 88 records).
+    assert counts["actual_quota_service_mappings"] == counts["provider_families"]
+    assert counts["missing_actual_quota_service_mappings"] == 0
     assert counts["missing_actual_quota_service_mappings"] == counts["provider_families"] - counts["actual_quota_service_mappings"]
     assert counts["opt_in_private_service_managers"] == 2
     assert counts["implemented_passive_adapters"] == sum(

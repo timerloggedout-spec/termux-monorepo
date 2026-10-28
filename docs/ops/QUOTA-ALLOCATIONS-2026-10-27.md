@@ -23,7 +23,12 @@ on cadence. Owner lane: quota readings & convergence.
   sum to ≤ 100%; the remainder is **explicit reserve**, computed and
   published in the feed.
 
-Coverage: 51 pools, 90 of 90 registry services pooled; no exclusions.
+Coverage: 52 pools, 95 of 95 registry services pooled; no exclusions.
+The `pinecone` pool (2026-10-28) completes coverage for the five
+`pinecone.*` records, which had landed in the registry without an
+allocations entry; the same change restores the 26 registry records
+lost when PR #2018 published `ops/quota/registry.json` from a stale
+base (registry 90 → 69), returning the registry to 95 records.
 `openrouter.key` participates as a telemetry row in the `openrouter`
 pool (owner decision 2026-10-28): it carries no allocation of its own —
 the pool's split rides `openrouter.free_models` — and its reader is

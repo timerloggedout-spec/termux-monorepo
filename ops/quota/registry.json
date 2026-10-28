@@ -351,9 +351,9 @@
    "reset": "daily request reset instant unknown; only explicit source budget reset retained",
    "zone": "UTC",
    "source": "https://openrouter.ai/docs/api/api-reference/api-keys/get-current-api-key",
-   "live": "manual opt-in only: scripts/provider_quota_service.py --service openrouter.key --observe; fixed GET https://openrouter.ai/api/v1/key (OPENROUTER_API_KEY)",
+   "live": "registered live status-only (owner decision 2026-10-28): scripts/quota_poll.py openrouter_key_reader wraps scripts/provider_quota_service.py --service openrouter.key --observe in-process when OPENROUTER_KEY_OBSERVE=1 (vercel-quota-probe workflow); fixed GET https://openrouter.ai/api/v1/key (OPENROUTER_API_KEY); public snapshot carries the public_status() projection only",
    "planned_use": {
-    "note": "Private mode-0600 output outside Git; status-only public projection. Not an automatic reader, routing input, entitlement or inference authorization. Trusted-master workflow defaults off; no private artifacts."
+    "note": "Private mode-0600 output outside Git; status-only public projection. Registered live as a status-only snapshot reader (owner decision 2026-10-28); values and monetary fields are never published. Not a routing input, entitlement or inference authorization. Telemetry row in allocations pool openrouter — no own allocation; rides openrouter.free_models."
    }
   },
   {
@@ -758,7 +758,7 @@
    "live": "none",
    "planned_use": {
     "safety": 0.8,
-    "note": "reads 100,000/day + 1 GB storage on Free; writes are the binding cap \u2014 manifest-mirror use only, never a queue"
+    "note": "reads 100,000/day + 1 GB storage on Free; writes are the binding cap — manifest-mirror use only, never a queue"
    }
   },
   {
@@ -774,7 +774,7 @@
    "source": "https://fly.io/docs/about/pricing/",
    "live": "none",
    "planned_use": {
-    "note": "free allowances removed for NEW orgs Oct 2024 (short trial only). Fleet org billing state NOT ESTABLISHED \u2014 establish before HindSight plans lean on 'free Fly'"
+    "note": "free allowances removed for NEW orgs Oct 2024 (short trial only). Fleet org billing state NOT ESTABLISHED — establish before HindSight plans lean on 'free Fly'"
    }
   },
   {
@@ -790,7 +790,7 @@
    "source": "https://www.koyeb.com/pricing",
    "live": "none",
    "planned_use": {
-    "note": "free shape since Feb 2024: single instance, sleeps after 1h idle; Feb 2026 added a $29 verification hold (dated survey) \u2014 REVALIDATE on vendor page before any revival. Fleet: app authorized, dormant; koyeb-hindsight-deploy.yml exists"
+    "note": "free shape since Feb 2024: single instance, sleeps after 1h idle; Feb 2026 added a $29 verification hold (dated survey) — REVALIDATE on vendor page before any revival. Fleet: app authorized, dormant; koyeb-hindsight-deploy.yml exists"
    }
   },
   {
@@ -823,7 +823,7 @@
    "live": "none",
    "planned_use": {
     "safety": 0.9,
-    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); includes 180,000 vCPU-s + 360,000 GiB-s + 1 GB NA egress/mo; billing account required even for free tier"
+    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); includes 180,000 vCPU-s + 360,000 GiB-s + 1 GB NA egress/mo; billing account required even for free tier"
    }
   },
   {
@@ -840,7 +840,7 @@
    "live": "none",
    "planned_use": {
     "safety": 0.9,
-    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); includes 400,000 GB-s + 200,000 GHz-s + 5 GB egress/mo"
+    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); includes 400,000 GB-s + 200,000 GHz-s + 5 GB egress/mo"
    }
   },
   {
@@ -856,7 +856,7 @@
    "source": "https://cloud.google.com/free/docs/free-cloud-features",
    "live": "none",
    "planned_use": {
-    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); US regions only, with 30 GB standard persistent disk; separate $300/90-day trial for new billing accounts"
+    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); US regions only, with 30 GB standard persistent disk; separate $300/90-day trial for new billing accounts"
    }
   },
   {
@@ -874,7 +874,7 @@
    "live": "none",
    "planned_use": {
     "safety": 0.9,
-    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); no free tier when Provisioned Concurrency is enabled"
+    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); no free tier when Provisioned Concurrency is enabled"
    }
   },
   {
@@ -891,7 +891,7 @@
    "live": "none",
    "planned_use": {
     "safety": 0.9,
-    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated)"
+    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated)"
    }
   },
   {
@@ -907,7 +907,7 @@
    "source": "https://aws.amazon.com/free/",
    "live": "none",
    "planned_use": {
-    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); includes 25 provisioned RCU + 25 WCU (Standard table class)"
+    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); includes 25 provisioned RCU + 25 WCU (Standard table class)"
    }
   },
   {
@@ -923,7 +923,7 @@
    "source": "https://aws.amazon.com/free/",
    "live": "none",
    "planned_use": {
-    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); $100 at signup + up to $100 for onboarding actions. FREE plan can never bill and AUTO-CLOSES at the end; PAID plan bills after credits. Replaces the pre-2025-07-15 12-month EC2 free year for new accounts"
+    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); $100 at signup + up to $100 for onboarding actions. FREE plan can never bill and AUTO-CLOSES at the end; PAID plan bills after credits. Replaces the pre-2025-07-15 12-month EC2 free year for new accounts"
    }
   },
   {
@@ -940,7 +940,7 @@
    "live": "none",
    "planned_use": {
     "safety": 0.9,
-    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); includes 400,000 GB-s/mo resource consumption on Consumption plan"
+    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); includes 400,000 GB-s/mo resource consumption on Consumption plan"
    }
   },
   {
@@ -956,7 +956,7 @@
    "source": "https://azure.microsoft.com/en-us/pricing/offers/ms-azr-0044p",
    "live": "none",
    "planned_use": {
-    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); plus 12 months of popular services (B1S VM 750 h/mo, Blob 5 GB) that START BILLING in month 13 if upgraded and not deprovisioned; account disabled at day 30 without upgrade"
+    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); plus 12 months of popular services (B1S VM 750 h/mo, Blob 5 GB) that START BILLING in month 13 if upgraded and not deprovisioned; account disabled at day 30 without upgrade"
    }
   },
   {
@@ -973,7 +973,7 @@
    "live": "none",
    "planned_use": {
     "safety": 0.9,
-    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); JUNE 2026 HALVING: was effectively 3,000 OCPU-h. 1,500 OCPU-h ~= 2 OCPU running 24/7. Home region chosen at signup is permanent; capacity errors routine; idle instances reclaimable on pure-free accounts"
+    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); JUNE 2026 HALVING: was effectively 3,000 OCPU-h. 1,500 OCPU-h ~= 2 OCPU running 24/7. Home region chosen at signup is permanent; capacity errors routine; idle instances reclaimable on pure-free accounts"
    }
   },
   {
@@ -990,7 +990,7 @@
    "live": "none",
    "planned_use": {
     "safety": 0.9,
-    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); 9,000 GB-h ~= 12 GB running 24/7 (halved Jun 2026 from ~24 GB continuous)"
+    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); 9,000 GB-h ~= 12 GB running 24/7 (halved Jun 2026 from ~24 GB continuous)"
    }
   },
   {
@@ -1006,7 +1006,7 @@
    "source": "https://www.oracle.com/cloud/free/",
    "live": "none",
    "planned_use": {
-    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated)"
+    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated)"
    }
   },
   {
@@ -1022,7 +1022,7 @@
    "source": "https://www.digitalocean.com/pricing/app-platform",
    "live": "none",
    "planned_use": {
-    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); there is NO permanent DigitalOcean free tier \u2014 credit evaporates at day 61; Droplets start at $4/mo"
+    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); there is NO permanent DigitalOcean free tier — credit evaporates at day 61; Droplets start at $4/mo"
    }
   },
   {
@@ -1038,7 +1038,7 @@
    "source": "https://www.digitalocean.com/pricing/app-platform",
    "live": "none",
    "planned_use": {
-    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); 1 GiB outbound transfer per app/mo included; web-service components have NO free tier (from $5/mo)"
+    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); 1 GiB outbound transfer per app/mo included; web-service components have NO free tier (from $5/mo)"
    }
   },
   {
@@ -1070,7 +1070,7 @@
    "source": "https://www.netlify.com/pricing/",
    "live": "none",
    "planned_use": {
-    "note": "no fleet account; credit model since Sep 2025 (legacy free tier closed) \u2014 a production deploy costs 15 credits; one project over limit pauses the account (dated survey, revalidate before use)"
+    "note": "no fleet account; credit model since Sep 2025 (legacy free tier closed) — a production deploy costs 15 credits; one project over limit pauses the account (dated survey, revalidate before use)"
    }
   },
   {
@@ -1154,10 +1154,10 @@
    "reset": "daily refill",
    "zone": "UTC",
    "source": "https://openapi.felo.ai/pricing",
-   "doc_quote": "200 daily free credits (public harness docs) \u2014 FREE-QUOTA-WINDOWS cadence table; provider-managers free_entitlement: Standard plan, 200 free credits daily for selected API models/tools, shared with Playground",
+   "doc_quote": "200 daily free credits (public harness docs) — FREE-QUOTA-WINDOWS cadence table; provider-managers free_entitlement: Standard plan, 200 free credits daily for selected API models/tools, shared with Playground",
    "live": "response headers X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, Retry-After",
    "planned_use": {
-    "note": "no free entitlement; pay-as-you-go only \u2014 record exists so the family maps and the absence is documented, not assumed Allowance mapping is the fleet's historical record (docs/ops/FREE-QUOTA-WINDOWS.md + ops/quota/provider-managers.json), which supersedes the pay-as-you-go read of the pricing page taken 2026-10-27. Free models exist intermittently (e.g. ox-alpha trial; its ended-trial notice conflicts with the free pricing row) \u2014 treat free-model availability as intermittent and verify per catalog poll. FELO_AI_API provisioned (pre-existing).",
+    "note": "no free entitlement; pay-as-you-go only — record exists so the family maps and the absence is documented, not assumed Allowance mapping is the fleet's historical record (docs/ops/FREE-QUOTA-WINDOWS.md + ops/quota/provider-managers.json), which supersedes the pay-as-you-go read of the pricing page taken 2026-10-27. Free models exist intermittently (e.g. ox-alpha trial; its ended-trial notice conflicts with the free pricing row) — treat free-model availability as intermittent and verify per catalog poll. FELO_AI_API provisioned (pre-existing).",
     "safety": 0.9
    }
   },
@@ -1191,7 +1191,7 @@
    "zone": "UTC",
    "source": "https://huggingface.co/docs/inference-providers/pricing",
    "doc_quote": "Free users: monthly included credits are None (the former $0.10 credit no longer applies); usage beyond is pay-as-you-go.",
-   "live": "Hub RateLimit response header (remaining r, seconds-to-reset t; 5-minute fixed windows; passive adapter implemented \u2014 Hub API/Resolver/Pages categories, NOT hosted-inference quota); organization usage API GET /api/organizations/{org}/billing/usage/inference (Enterprise); router free/zero models via /v1/models catalog poll",
+   "live": "Hub RateLimit response header (remaining r, seconds-to-reset t; 5-minute fixed windows; passive adapter implemented — Hub API/Resolver/Pages categories, NOT hosted-inference quota); organization usage API GET /api/organizations/{org}/billing/usage/inference (Enterprise); router free/zero models via /v1/models catalog poll",
    "planned_use": {
     "note": "no free numeric entitlement published; treat as unknown, not zero-usage Historical allowance mapping (FREE-QUOTA-WINDOWS): router free/zero models are a catalog-cadence free route when the poll classifies them free. Fleet credential provisioned: HUGGINGFACE_TOKEN (repo Actions secret, 2026-10-27)."
    }
@@ -1245,7 +1245,7 @@
    "doc_quote": "Free mode usage limits are shown per model in the signed-in Admin Panel (Usage limits); no public numeric table is published.",
    "live": "none published (Admin Panel only; Admin API is Enterprise)",
    "planned_use": {
-    "note": "numbers exist only behind sign-in; never record the unsourced figures circulating elsewhere Historical allowance mapping (fleet account-creation recon): La Plateforme Free mode is the default for new API accounts, no card. Fleet ruling (PR #1805): no Mistral API key \u2014 Mistral runs as webWrapper via local Termux; MISTRAL_API_KEY deliberately unprovisioned."
+    "note": "numbers exist only behind sign-in; never record the unsourced figures circulating elsewhere Historical allowance mapping (fleet account-creation recon): La Plateforme Free mode is the default for new API accounts, no card. Fleet ruling (PR #1805): no Mistral API key — Mistral runs as webWrapper via local Termux; MISTRAL_API_KEY deliberately unprovisioned."
    }
   },
   {
@@ -1259,7 +1259,7 @@
    "reset": "daily (per fleet recon claim)",
    "zone": "UTC",
    "source": "https://www.modelscope.ai/docs/model-service/API-Inference/limits",
-   "doc_quote": "API-Inference free for registered users (~2,000 req/day claimed) \u2014 docs/ops/ACCOUNT-CREATION-RECON-2026-10-27.md",
+   "doc_quote": "API-Inference free for registered users (~2,000 req/day claimed) — docs/ops/ACCOUNT-CREATION-RECON-2026-10-27.md",
    "live": "none published (not established)",
    "planned_use": {
     "note": "revalidate against the official limits page before any numeric claim; third-party figures are not evidence The 2,000/day figure is the fleet account-creation recon claim, NOT verified on the official page (unreachable on fetch, 2026-10-27); official docs describe dynamic per-model concurrency and Magicube costs (PROVIDER-QUOTA-MANAGERS evidence matrix). Revalidate before relying on the number."
@@ -1296,7 +1296,7 @@
    "doc_quote": "OmniRoute aggregates the documented free tiers of 42 provider pools / 495 models into one honest number and shows it live on the dashboard (/dashboard/free-tiers).",
    "live": "self-hosted dashboard /dashboard/free-tiers shows live used/remaining per upstream pool; no hosted usage API or rate-limit headers",
    "planned_use": {
-    "note": "no entitlement of its own; the upstream providers' registry records govern Historical allowance mapping (FREE-QUOTA-WINDOWS): catalog $0 route \u2014 usable only when the catalog poll classifies a model free (OMNI_API_KEY + /v1/models); cadence class catalog."
+    "note": "no entitlement of its own; the upstream providers' registry records govern Historical allowance mapping (FREE-QUOTA-WINDOWS): catalog $0 route — usable only when the catalog poll classifies a model free (OMNI_API_KEY + /v1/models); cadence class catalog."
    }
   },
   {
@@ -1332,7 +1332,7 @@
    "live": "GET /v1/manage/org/usage; GET /v1/manage/apikey/{id}/usage",
    "planned_use": {
     "safety": 0.9,
-    "note": "shared org-wide; the figure has moved before (older changelog: 50/day for new orgs) \u2014 revalidate periodically"
+    "note": "shared org-wide; the figure has moved before (older changelog: 50/day for new orgs) — revalidate periodically"
    }
   },
   {
@@ -1453,7 +1453,7 @@
    "reset": "unknown",
    "zone": "UTC",
    "source": "https://www.xfyun.cn/doc/spark/HTTP%E8%B0%83%E7%94%A8%E6%96%87%E6%A1%A3.html",
-   "doc_quote": "Spark Lite is permanently free; global platform: 90-day free trial per capability \u2014 docs/ops/ACCOUNT-CREATION-RECON-2026-10-27.md",
+   "doc_quote": "Spark Lite is permanently free; global platform: 90-day free trial per capability — docs/ops/ACCOUNT-CREATION-RECON-2026-10-27.md",
    "live": "none published (not established)",
    "planned_use": {
     "note": "revalidate against the official page before any numeric claim; third-party figures are not evidence Mapping rests on the fleet recon plus the official Spark HTTP doc it cites; the marketing page was unreachable on fetch (2026-10-27) and no numeric cap is in evidence. Only the exact `lite` model is admitted by the hub transport."
@@ -1470,7 +1470,7 @@
    "reset": "daily reset; free-model requests blocked with 429 until the reset",
    "zone": "UTC",
    "source": "https://xkiro.com/",
-   "doc_quote": "Yes. 45 models are free to call on every account, within a daily allowance of 500K tokens \u2014 1M after you verify on Telegram. No credit card required.",
+   "doc_quote": "Yes. 45 models are free to call on every account, within a daily allowance of 500K tokens — 1M after you verify on Telegram. No credit card required.",
    "live": "Retry-After header when the wait is known; usage attributed per API key with dashboard call logs (model/tokens/cost/status); no dedicated usage endpoint published",
    "planned_use": {
     "safety": 0.9,
@@ -1488,7 +1488,7 @@
    "reset": "unknown",
    "zone": "UTC",
    "source": "https://docs.z.ai/api-reference/api-code",
-   "doc_quote": "GLM Flash models (4.5/4.6V/4.7) are $0-priced; no card \u2014 docs/ops/ACCOUNT-CREATION-RECON-2026-10-27.md",
+   "doc_quote": "GLM Flash models (4.5/4.6V/4.7) are $0-priced; no card — docs/ops/ACCOUNT-CREATION-RECON-2026-10-27.md",
    "live": "HTTP 429 error body codes 1308 / 1316-1321 carry a next_flush_time field (documented in the API-code reference)",
    "planned_use": {
     "note": "treat the ceiling as unknown; the 429 body's next_flush_time is the only documented telemetry Historical allowance mapping (fleet account-creation recon): the free route is $0-priced Flash models; per-account numeric limits remain unpublished."
@@ -1506,9 +1506,9 @@
    "zone": "UTC",
    "source": "https://huggingface.co/docs/hub/en/rate-limits",
    "doc_quote": "RateLimit header carries remaining r and seconds-to-reset t; categories are Hub API / Resolver / Pages; 5-minute fixed windows; account/org/member context applies (fleet evidence matrix, PROVIDER-QUOTA-MANAGERS.md).",
-   "live": "GET https://huggingface.co/api/whoami-v2 \u2014 RateLimit response header, read by scripts/quota_poll.py hf_hub_reader under the fleet credential (canonical HUGGINGFACE_TOKEN; alias resolve order shared with the availability probe). No inference sent.",
+   "live": "GET https://huggingface.co/api/whoami-v2 — RateLimit response header, read by scripts/quota_poll.py hf_hub_reader under the fleet credential (canonical HUGGINGFACE_TOKEN; alias resolve order shared with the availability probe). No inference sent.",
    "planned_use": {
-    "note": "Hub API quota only \u2014 NOT Inference Providers or router.huggingface.co quota; the two surfaces are never blended (provider-quota-managers rule). Reader reports remaining/reset only; no documented fixed limit is recorded."
+    "note": "Hub API quota only — NOT Inference Providers or router.huggingface.co quota; the two surfaces are never blended (provider-quota-managers rule). Reader reports remaining/reset only; no documented fixed limit is recorded."
    }
   }
  ]

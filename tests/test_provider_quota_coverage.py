@@ -19,7 +19,7 @@ def test_provider_families_exhaust_registry_and_no_alias_hiding():
     assert families["ollama"]["reader_service_ids"] == []  # Not an automatic collector.
     assert families["ollama"]["live_account_validation"] == "unknown"
     assert families["cloudflare"]["covered"] is True  # Workers AI is an inference quota (cloudflare.workers_ai); D1/Queues records alone would not cover it
-    assert families["openrouter"]["reader_service_ids"] == ["openrouter.free_models"]
+    assert families["openrouter"]["reader_service_ids"] == ["openrouter.free_models", "openrouter.key"]  # .key registered live status-only 2026-10-28; stays opt-in private too
     assert families["openrouter"]["opt_in_private_service_ids"] == ["openrouter.key"]
     assert families["openrouter"]["live_account_validation"] == "unknown"
     assert all(r["evidence_state"] == "unknown" for r in families.values())

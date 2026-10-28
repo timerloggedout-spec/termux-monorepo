@@ -757,11 +757,13 @@
       "quota_kind": "private_balance_not_publicly_observed",
       "quota_manager_owner": "Manager",
       "reader_service_ids": [
-        "openrouter.free_models"
+        "openrouter.free_models",
+        "openrouter.key"
       ],
       "registry": "ops/quota/registry.json",
       "registry_reader_service_ids": [
-        "openrouter.free_models"
+        "openrouter.free_models",
+        "openrouter.key"
       ],
       "runtime_admission": "unchanged; this inventory and opt-in quota check do not grant runtime admission",
       "runtime_manager_state": "implemented_opt_in_private_service",
@@ -1594,6 +1596,13 @@
       "provider": "koyeb",
       "quota_manager_owner": "Manager",
       "service_id": "koyeb.free_instance"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "platform201",
+      "quota_manager_owner": "Manager",
+      "service_id": "platform201.projects"
     },
     {
       "freshness_owner": "ChronoMancer",

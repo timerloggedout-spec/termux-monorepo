@@ -1,5 +1,5 @@
 ================================================================================
- QUOTA  termux-monorepo  (89 registry records)
+ QUOTA  termux-monorepo  (90 registry records)
  Snapshot generated (not observation time): 2026-10-28T01:23:16Z
  Source: apps/help-wanted-dashboard/data/quota.json + ops/quota/registry.json
  Limits are documented entitlements, not balances.
@@ -415,9 +415,12 @@
     separate | window: source daily counter; monetary budgets independently
     scoped | reset: daily request reset instant unknown; only explicit source
     budget reset retained
-    No live reading (live source: manual opt-in only:
-    scripts/provider_quota_service.py --service openrouter.key --observe; fixed
-    GET https://openrouter.ai/api/v1/key (OPENROUTER_API_KEY))
+    No live reading (live source: registered live status-only (owner decision
+    2026-10-28): scripts/quota_poll.py openrouter_key_reader wraps
+    scripts/provider_quota_service.py --service openrouter.key --observe
+    in-process when OPENROUTER_KEY_OBSERVE=1 (vercel-quota-probe workflow);
+    fixed GET https://openrouter.ai/api/v1/key (OPENROUTER_API_KEY); public
+    snapshot carries the public_status() projection only)
 --------------------------------------------------------------------------------
  oracle (3)
   oracle.ampere_gb_hours
@@ -447,6 +450,15 @@
     per-minute window
     No live reading (live source: none published; consumption visible in the
     Control Panel)
+--------------------------------------------------------------------------------
+ platform201 (1)
+  platform201.projects
+    status: No live reading
+    limit (documented): 3 projects
+    metric: Solo projects | window: point-in-time | reset: n/a
+    No live reading (live source: console https://app.platform201.com (Google
+    sign-in, Solo $0 Current); live workload
+    https://ringerhollow-kangaroorose-killerpuddle.eu1.platform201.live/)
 --------------------------------------------------------------------------------
  render (5)
   render.bandwidth
@@ -715,6 +727,6 @@
   zai: Manager / ChronoMancer; official_documentation_only; no passive parser;
   registry: zai.free_models
  Coverage and quota checks do not grant runtime admission.
- 89 registry records | 2 alert(s) | 7 with a reported reading | 82 with No live
+ 90 registry records | 2 alert(s) | 7 with a reported reading | 83 with No live
  reading
 ================================================================================

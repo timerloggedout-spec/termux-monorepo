@@ -70,6 +70,40 @@ class QuotaPollTest(unittest.TestCase):
             self.assertIsNotNone(_qp.hf_hub_reader(None))
         self.assertEqual(call.call_args[0][1]["Authorization"], "Bearer alias-key")
 
+    def test_openrouter_key_reader_gated_off_by_default(self):
+        loader = unittest.mock.Mock(side_effect=AssertionError("must not load"))
+        with patch.dict(os.environ, {"OPENROUTER_API_KEY": "not-a-real-key"}, clear=True), \
+             patch.object(_qp, "_load_key_service", loader):
+            self.assertIsNone(_qp.openrouter_key_reader(None))
+        loader.assert_not_called()
+
+    def test_openrouter_key_reader_projects_status_only(self):
+        observe = unittest.mock.Mock(return_value={"status": "observed", "signals": {"usage_usd": 3.5}})
+        project = unittest.mock.Mock(return_value={
+            "service_id": "openrouter.key", "provider_family": "openrouter",
+            "status": "observed", "observed_at": "2026-10-28T00:00:00Z",
+            "request_quota": "observed"})
+        env = {"OPENROUTER_KEY_OBSERVE": "1", "OPENROUTER_API_KEY": "not-a-real-key"}
+        with patch.dict(os.environ, env, clear=True), \
+             patch.object(_qp, "_load_key_service", return_value=(observe, project)):
+            result = _qp.openrouter_key_reader(None)
+        self.assertIsNone(result["used"])
+        self.assertEqual(result["extra"]["request_quota"], "observed")
+        self.assertNotIn("usage_usd", json.dumps(result))
+        self.assertNotIn("3.5", json.dumps(result))
+        observe.assert_called_once_with("openrouter.key", "not-a-real-key", scope="key:primary")
+
+    def test_openrouter_key_reader_unobserved_is_no_reading(self):
+        observe = unittest.mock.Mock(return_value={"status": "unknown"})
+        project = unittest.mock.Mock(return_value={"service_id": "openrouter.key",
+                                                   "status": "unknown", "request_quota": "unknown"})
+        env = {"OPENROUTER_KEY_OBSERVE": "1", "OPENROUTER_API_KEY": "not-a-real-key"}
+        with patch.dict(os.environ, env, clear=True), \
+             patch.object(_qp, "_load_key_service", return_value=(observe, project)):
+            self.assertIsNone(_qp.openrouter_key_reader(None))
+        with patch.dict(os.environ, {"OPENROUTER_KEY_OBSERVE": "1"}, clear=True):
+            self.assertIsNone(_qp.openrouter_key_reader(None))
+
     def test_multiplier(self):
         self.assertEqual(multiplier(None, 5, 0.5, 0.9), 1.0)
         self.assertEqual(multiplier(100, 95, 0.5, 0.9), 0.0)

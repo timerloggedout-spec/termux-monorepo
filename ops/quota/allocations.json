@@ -1,0 +1,1882 @@
+{
+  "schema": "quota-allocations/v1",
+  "issue": 1884,
+  "set_by": "owner",
+  "set_at": "2026-10-27",
+  "cadence": "Re-split at cadence ticks (dispatch-tree cadence / weekly sweep). Every change lands as a PR citing #1884 + the reason; this file is the single source lanes read.",
+  "constraints": [
+    "Per pool, standing allocations sum to <= 100%; the remainder is explicit reserve (computed and published in the feed, never silently absorbed).",
+    "Card rule: no allocation authorizes a card-gated account, purchase or paid tier; pools are free tiers / documented entitlements / owner-supplied credit figures only.",
+    "Free-only: allocations spend documented free entitlement only; documented limits are entitlements, not balances.",
+    "No displacement: leftover-only focuses (incl. BOINC) draw only quota the higher-priority focus cannot consume before expiry, and never displace it.",
+    "BOINC eligibility: GitHub-provider surfaces only (owner rule); Codespaces is excluded for a TBD interim (owner, 2026-10-27).",
+    "Credit amounts are owner-supplied / registry-documented entitlement figures (joined from ops/quota/registry.json at feed build); never invented."
+  ],
+  "focuses": [
+    {
+      "id": "winning",
+      "label": "Winning \u2014 challenge entries (active slate D1/D3/D2/D4)"
+    },
+    {
+      "id": "repo-development",
+      "label": "Repo development"
+    },
+    {
+      "id": "boinc-donations",
+      "label": "BOINC donations (stranded leftover only)"
+    },
+    {
+      "id": "research",
+      "label": "Research"
+    }
+  ],
+  "excluded_services": [
+    {
+      "id": "openrouter.key",
+      "reason": "Opt-in private observation record (provider-quota-service --observe); not a consumable pool service."
+    }
+  ],
+  "pools": [
+    {
+      "id": "aion",
+      "services": [
+        "aion.free_tokens"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "aws",
+      "services": [
+        "aws.dynamodb_storage",
+        "aws.lambda_compute",
+        "aws.lambda_requests"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "aws.credits",
+      "services": [
+        "aws.account_credits"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "azure",
+      "services": [
+        "azure.functions_executions"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "azure.credit",
+      "services": [
+        "azure.account_credit"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "cerebras",
+      "services": [
+        "cerebras.free_tokens"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "cloudflare",
+      "services": [
+        "cloudflare.d1_rows_read",
+        "cloudflare.d1_rows_written",
+        "cloudflare.d1_storage",
+        "cloudflare.kv_writes",
+        "cloudflare.queues_ops",
+        "cloudflare.r2_storage",
+        "cloudflare.workers_ai",
+        "cloudflare.workers_requests"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "cohere",
+      "services": [
+        "cohere.trial_calls"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "deno",
+      "services": [
+        "deno.deploy_requests"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "digitalocean",
+      "services": [
+        "digitalocean.app_platform_static"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "digitalocean.credit",
+      "services": [
+        "digitalocean.trial_credit"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "felo.credits",
+      "services": [
+        "felo.api_credits"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "fly",
+      "services": [
+        "fly.free_tier"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "g4f-vendors",
+      "services": [
+        "g4f.vendors"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "gcp",
+      "services": [
+        "gcp.cloud_functions_invocations",
+        "gcp.cloud_run_requests",
+        "gcp.compute_e2micro"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "github",
+      "services": [
+        "github.actions.cache",
+        "github.actions.minutes",
+        "github.api.github_token",
+        "github.api.user_token",
+        "github.artifacts.retention",
+        "github.copilot.free"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "github.codespaces",
+      "services": [
+        "github.codespaces.core_hours",
+        "github.codespaces.storage"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "Pool excluded-interim (owner, 2026-10-27); BOINC draws nothing here."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "constraints": [
+        "excluded-interim (owner, 2026-10-27): Codespaces excluded for a TBD interim after the setup-error burn; all allocations 0, reserve 100."
+      ]
+    },
+    {
+      "id": "google",
+      "services": [
+        "gemini.api_free"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "grafana",
+      "services": [
+        "grafana.cloud_free"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "groq",
+      "services": [
+        "groq.free_tier"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "huggingface",
+      "services": [
+        "huggingface.hub_api",
+        "huggingface.inference_providers"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "kilo",
+      "services": [
+        "kilo.free_models"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "koyeb",
+      "services": [
+        "koyeb.free_instance"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "llm7",
+      "services": [
+        "llm7.free_token"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "mistral",
+      "services": [
+        "mistral.free_mode"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "modelscope",
+      "services": [
+        "modelscope.api_inference"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "neon",
+      "services": [
+        "neon.compute",
+        "neon.egress",
+        "neon.realtime",
+        "neon.storage"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "netlify.credits",
+      "services": [
+        "netlify.credits"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "nvidia",
+      "services": [
+        "nvidia.api_catalog"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "ollama",
+      "services": [
+        "ollama.balance"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "omni",
+      "services": [
+        "omni.gateway"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "openrouter",
+      "services": [
+        "openrouter.free_models"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "oracle",
+      "services": [
+        "oracle.ampere_gb_hours",
+        "oracle.ampere_ocpu_hours",
+        "oracle.block_storage"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "ovhcloud",
+      "services": [
+        "ovhcloud.ai_endpoints"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "partners.credits",
+      "services": [
+        "partners.credits"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "render",
+      "services": [
+        "render.bandwidth",
+        "render.instance_hours",
+        "render.keyvalue_free",
+        "render.pipeline_minutes",
+        "render.postgres_free"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "requesty",
+      "services": [
+        "requesty.free_models"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "routeway",
+      "services": [
+        "routeway.free_models"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "sambanova",
+      "services": [
+        "sambanova.free_tier"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "sealion",
+      "services": [
+        "sealion.api"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "siliconflow",
+      "services": [
+        "siliconflow.free_models"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "supabase",
+      "services": [
+        "supabase.db_storage",
+        "supabase.edge_functions",
+        "supabase.egress",
+        "supabase.file_storage",
+        "supabase.projects"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "turso",
+      "services": [
+        "turso.databases",
+        "turso.rows_read",
+        "turso.rows_written",
+        "turso.storage"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "typhoon",
+      "services": [
+        "typhoon.api"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "unorouter",
+      "services": [
+        "unorouter.free_models"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "upstash",
+      "services": [
+        "upstash.qstash_messages",
+        "upstash.redis_bandwidth",
+        "upstash.redis_commands",
+        "upstash.redis_storage"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "vercel",
+      "services": [
+        "vercel.build_time",
+        "vercel.deployments"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "xfyun",
+      "services": [
+        "xfyun.spark"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "xkiro",
+      "services": [
+        "xkiro.free_models"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "zai",
+      "services": [
+        "zai.free_models"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-27",
+          "reason": "Owner setting 2026-10-27 (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4); other focuses draw only what Winning cannot consume before expiry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-27",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    }
+  ]
+}

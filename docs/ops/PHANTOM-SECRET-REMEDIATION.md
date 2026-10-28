@@ -85,3 +85,20 @@ No verified provisioned replacement exists for these names. Each is an explicit 
 ## Rule
 
 Workflows may reference only verified-provisioned secret names. A new secret is an owner provisioning act, named explicitly — never an assumption baked into a workflow.
+
+## Credential-shape preference (ACE mirror, owner order 2026-10-28)
+
+Landed with the Agent Compute Engine mirror work
+(`docs/ops/AGENT-COMPUTE-ENGINE-COMPARISON-2026-10-26.md` §6):
+
+- **New credentials default to short-lived.** When a surface offers
+  workload-identity / OIDC federation, a per-run `github.token`, or
+  an impersonated service account, that form is provisioned in
+  preference to a new long-lived stored secret.
+- **A new long-lived secret needs a named reason** in this checklist
+  (what surface cannot take a short-lived form, and what bounds the
+  blast radius instead — scope, allowlist, cadence).
+- Existing long-lived secrets are NOT retroactively flagged; this
+  preference governs new provisioning acts, in the same spirit as the
+  Rule above: names are owner provisioning acts, and now shapes are
+  too.

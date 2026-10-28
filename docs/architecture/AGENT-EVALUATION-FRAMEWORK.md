@@ -1,5 +1,9 @@
 # Agent Evaluation Framework
 
+**Status:** canonical spec
+**Owner/lane:** unrecorded
+**Canonical for:** evaluation measurement for agents, managers, prompts, tools, orchestration policies, and providers/models (the MVT/DoE measurement layer)
+
 ## Purpose
 
 The Agent Evaluation Framework (AEF) is the measurement layer for the Agentic Development Environment. It turns agent development, provider/model experiments, repository-history replay, Actions execution, and oversight tasks into reproducible evaluation units.

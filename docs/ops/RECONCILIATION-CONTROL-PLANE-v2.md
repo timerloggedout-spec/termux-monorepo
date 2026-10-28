@@ -1,5 +1,8 @@
 # Reconciliation Control Plane v2
 
+**Status:** engine behavior spec — the production reconciliation engine (`.github/workflows/reconciliation-engine.yml`) is observe-only, per this document.
+**Relationship:** process/architecture contract = [RECONCILIATION-CONTROL-PLANE.md](RECONCILIATION-CONTROL-PLANE.md); navigation = [RECONCILIATION-CONTROL-PLANE-INDEX.md](RECONCILIATION-CONTROL-PLANE-INDEX.md).
+
 The production reconciliation engine is an **observe-only** control plane. It accepts a candidate and baseline ref, resolves both to immutable SHAs, classifies their graph relationship, and records evidence. It does not mutate refs.
 
 This separation is intentional: branch switching is useful for MVT/DOE, while promotion or repair must remain a separate reviewed operation.

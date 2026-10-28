@@ -1,6 +1,7 @@
 # Reconciliation Control Plane
 
 Status: active design contract
+**Relationship:** this document is the process/architecture contract for the reconciliation family. Engine behavior is specified by [RECONCILIATION-CONTROL-PLANE-v2.md](RECONCILIATION-CONTROL-PLANE-v2.md); navigation across the family via [RECONCILIATION-CONTROL-PLANE-INDEX.md](RECONCILIATION-CONTROL-PLANE-INDEX.md).
 
 ## Why
 

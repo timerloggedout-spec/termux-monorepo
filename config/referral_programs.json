@@ -2,16 +2,23 @@
  "owner_lane": "marketing-channel",
  "programs": [
   {
-   "code_provenance": "Owner's own share code not yet supplied. Location (verified vs owner's Android Settings screenshot 2026-10-27, which has NO share item \u2014 Settings carries only 'Redeem referral code'): the personal code lives behind the Invite (gift) button at the top-right of the main chat screen.",
-   "codes": [],
-   "fleet_replenishment": "1 billion Muse tokens per redemption; referrer cap 20 redemptions (up to 20B tokens)",
+   "code_provenance": "Owner-supplied firsthand: Invite friends panel (Invite button, main chat screen), 2026-10-27. Panel states: both sides get 1 billion Muse tokens when the friend redeems within 48 hours of joining; 30 uses left.",
+   "codes": [
+    {
+     "code": "VDP1DW",
+     "source": "owner screenshot, Muse 'Invite friends' panel, 2026-10-27 19:47 PDT",
+     "status": "live",
+     "uses_left": 30
+    }
+   ],
+   "fleet_replenishment": "1 billion Muse tokens per redemption; 30 uses left on the live code (firsthand, in-app) = up to 30B tokens",
    "free_no_cc": "Redeem a friend's code within 48 hours of joining; no card, no payment.",
    "id": "muse",
    "mechanic": "invite_code",
    "name": "Muse (Meta)",
-   "notes": "Top priority per owner. Listing goes live the moment the share code lands; no other blocker.",
+   "notes": "Top priority per owner. LIVE.",
    "priority": 1,
-   "status": "code_pending",
+   "status": "active_codes",
    "terms_source": "Firsthand: owner's in-app Redeem screen, 2026-10-27 \u2014 redeem within 48h of joining, both sides get 1B tokens; tokens are a licence for AI usage, not money/stored value/gift card, usable only in Muse, non-transferable, no expiration.",
    "visitor_reward": "1 billion Muse tokens"
   },

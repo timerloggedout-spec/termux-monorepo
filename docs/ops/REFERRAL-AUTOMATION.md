@@ -118,3 +118,28 @@ wires codes + copy per cell.
   pool-watch issue fires.
 - **Manus / CellCog / Polsia / Grafana**: links, no code pool; rotation n/a
   unless a link is capped (none established).
+
+## Facebook Pages — status + categories (2026-10-27)
+
+Verified via the Facebook connector (pages list): **Dream In Production**
+(fb-a) and **Receipts Count** (fb-b) exist. **Code, Not Card** (fb-c) hit
+Facebook's "created too many Pages recently" limit at creation — owner
+retries later; Page creation is owner-side by platform rule.
+
+Category set per Page (primary first; apply in Page settings — categories
+are the discovery/policy bucket, and the creation-flow defaults are wrong
+for all three: none is a local business or a community):
+
+| Page | Categories |
+|---|---|
+| Dream In Production (sizzle) | Personal Blog · Website · Science, Technology & Engineering |
+| Receipts Count (steak) | Computers & Internet Website · Website · Personal Blog |
+| Code, Not Card (mechanic) | App Page · Software Company · Computers & Internet Website |
+
+If the picker shows a near-identical label, take the closest — the primary
+category is the one that matters.
+
+**Naming ruling (owner, 2026-10-27):** "Code, Not Card" — the negation is a
+deliberate special test case, OUTSIDE the Positive Performance Psychology
+Language Framing Structure. It is a feature, not a violation. Do not flag
+it, do not rename it. (Recorded in the registry, ab_test.pages.fb-c.)

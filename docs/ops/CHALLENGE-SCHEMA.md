@@ -80,7 +80,7 @@ Opportunity-cost metrics sit alongside prizes/participants/judges/signals/podium
 | `non_monetary_foregone[]` | non-cash items foregone (backpack/badge/visibility/judge feedback), sourced from the award/rules |
 | `computed_at` | date computed (YYYY-MM-DD) |
 
-**D0 seed (verified):** AWS Weekend Challenge (Oct 23–26 PT), not_submitted, top award $100 AWS credits + Builder Backpack (pool $1,000, top 5), field_size 40 (public project list exhausted 2026-10-26, no match for ours), estimate 5/40=0.125, gross_foregone 100, expected_value_foregone 12.5.
+**D0 seed (verified):** AWS Weekend Challenge (Oct 23–26 PT), not_submitted, top award $200 total ($100 AWS credits + Builder Backpack, pool $1,000, top 5), field_size 40 (public project list exhausted 2026-10-26, no match for ours), estimate 5/40=0.125, gross_foregone 200, expected_value_foregone 25.0. **Correction 2026-10-28 (owner dispute, firsthand recheck):** official Awards list values EACH award at $200 ($100 credits + backpack implied $100); pool $1,000 = 5×$200, credits subtotal $500 — PR #2219's credits-only top value 100 / EV 12.5 superseded.
 
 **DB (Neon, DB lane pattern):** sync rows carry `opportunity_cost` in events core; `challenge_events_current` exposes it and view `event_opportunity_cost` extracts outcome/gross/EV per event (schema.sql).
 

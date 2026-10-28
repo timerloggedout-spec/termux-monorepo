@@ -1,0 +1,620 @@
+{
+  "schema": "cadence-provider-onboarding/v1",
+  "contract": "Derived surface matrix for cadence provider onboarding; regenerate with scripts/cadence_provider_onboarding.py render. Secret names only; no values, no admission decision.",
+  "providers": [
+    {
+      "provider": "aikido",
+      "kind": "review",
+      "catalog_endpoint": null,
+      "catalog_secret": null,
+      "secret_aliases": [],
+      "availability_env": [],
+      "quota_family": null,
+      "public_catalog": false,
+      "review_login": "aikido-security[bot]",
+      "review_check_app": "aikido",
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "aion",
+      "kind": "llm",
+      "catalog_endpoint": "core",
+      "catalog_secret": "AION_API_KEY",
+      "secret_aliases": [],
+      "availability_env": [
+        "AION_API_KEY"
+      ],
+      "quota_family": "unsupported",
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "cerebras",
+      "kind": "llm",
+      "catalog_endpoint": "core",
+      "catalog_secret": "CEREBRAS_API_KEY",
+      "secret_aliases": [
+        "CEREBRAS_API_KEY"
+      ],
+      "availability_env": [
+        "CEREBRAS_API_KEY",
+        "CEREBRAS_API_KEY"
+      ],
+      "quota_family": "public_documentation_only",
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "cloudflare",
+      "kind": "llm",
+      "catalog_endpoint": "protocol",
+      "catalog_secret": "CLOUDFLARE_API_TOKEN",
+      "secret_aliases": [],
+      "availability_env": [
+        "CLOUDFLARE_ACCOUNT_ID",
+        "CLOUDFLARE_API_TOKEN"
+      ],
+      "quota_family": "public_documentation_only",
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "coderabbit",
+      "kind": "review",
+      "catalog_endpoint": null,
+      "catalog_secret": null,
+      "secret_aliases": [],
+      "availability_env": [],
+      "quota_family": null,
+      "public_catalog": false,
+      "review_login": "coderabbitai[bot]",
+      "review_check_app": "coderabbit",
+      "review_trigger_actions": [
+        "trigger_review"
+      ],
+      "review_required_default": true,
+      "exceptions": []
+    },
+    {
+      "provider": "cohere",
+      "kind": "llm",
+      "catalog_endpoint": "protocol",
+      "catalog_secret": "COHERE_API_KEY",
+      "secret_aliases": [],
+      "availability_env": [
+        "COHERE_API_KEY"
+      ],
+      "quota_family": "public_documentation_only",
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "copilot",
+      "kind": "review",
+      "catalog_endpoint": null,
+      "catalog_secret": null,
+      "secret_aliases": [],
+      "availability_env": [],
+      "quota_family": null,
+      "public_catalog": false,
+      "review_login": "copilot-pull-request-reviewer[bot]",
+      "review_check_app": "copilot",
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "devin",
+      "kind": "review",
+      "catalog_endpoint": null,
+      "catalog_secret": null,
+      "secret_aliases": [],
+      "availability_env": [],
+      "quota_family": null,
+      "public_catalog": false,
+      "review_login": "devin-ai-integration[bot]",
+      "review_check_app": "devin",
+      "review_trigger_actions": [
+        "trigger_review"
+      ],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "felo",
+      "kind": "llm",
+      "catalog_endpoint": "core",
+      "catalog_secret": "FELO_AI_API",
+      "secret_aliases": [],
+      "availability_env": [
+        "FELO_AI_API"
+      ],
+      "quota_family": "unsupported",
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "gemini",
+      "kind": "llm",
+      "catalog_endpoint": "core",
+      "catalog_secret": "GEMINI_API_KEY",
+      "secret_aliases": [
+        "GEMINI_API_KEY",
+        "GOOGLE_API_KEY"
+      ],
+      "availability_env": [
+        "GEMINI_API_KEY",
+        "GEMINI_API_KEY",
+        "GOOGLE_API_KEY"
+      ],
+      "quota_family": "public_documentation_only",
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "groq",
+      "kind": "llm",
+      "catalog_endpoint": "core",
+      "catalog_secret": "GROQ_API_KEY",
+      "secret_aliases": [],
+      "availability_env": [
+        "GROQ_API_KEY"
+      ],
+      "quota_family": "implemented_passive_adapter",
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "huggingface",
+      "kind": "llm",
+      "catalog_endpoint": "core",
+      "catalog_secret": "HUGGINGFACE_TOKEN",
+      "secret_aliases": [
+        "HF_API_TOKEN",
+        "HF_TOKEN",
+        "HUGGINGFACE_TOKEN",
+        "HUGGING_FACE_HUB_TOKEN"
+      ],
+      "availability_env": [
+        "HF_API_TOKEN",
+        "HF_TOKEN",
+        "HUGGINGFACE_TOKEN",
+        "HUGGINGFACE_TOKEN",
+        "HUGGING_FACE_HUB_TOKEN"
+      ],
+      "quota_family": "implemented_passive_adapter",
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "kilo",
+      "kind": "llm",
+      "catalog_endpoint": "core",
+      "catalog_secret": "KILO_API_KEY",
+      "secret_aliases": [],
+      "availability_env": [
+        "KILO_API_KEY"
+      ],
+      "quota_family": "public_documentation_only",
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "llm7",
+      "kind": "llm",
+      "catalog_endpoint": "core",
+      "catalog_secret": "LLM7_API_TOKEN",
+      "secret_aliases": [],
+      "availability_env": [
+        "LLM7_API_TOKEN"
+      ],
+      "quota_family": "public_documentation_only",
+      "public_catalog": true,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "mistral",
+      "kind": "llm",
+      "catalog_endpoint": "core",
+      "catalog_secret": "MISTRAL_API_KEY",
+      "secret_aliases": [],
+      "availability_env": [
+        "MISTRAL_API_KEY"
+      ],
+      "quota_family": "public_documentation_only",
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "modelscope",
+      "kind": "llm",
+      "catalog_endpoint": "core",
+      "catalog_secret": "MODELSCOPE_TOKEN",
+      "secret_aliases": [],
+      "availability_env": [
+        "MODELSCOPE_TOKEN"
+      ],
+      "quota_family": "public_documentation_only",
+      "public_catalog": true,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "nvidia",
+      "kind": "llm",
+      "catalog_endpoint": "core",
+      "catalog_secret": "NVIDIA_API_KEY",
+      "secret_aliases": [
+        "NVIDIA_API_KEY",
+        "NVIDIA_NIM_API_KEY"
+      ],
+      "availability_env": [
+        "NVIDIA_API_KEY",
+        "NVIDIA_API_KEY",
+        "NVIDIA_NIM_API_KEY"
+      ],
+      "quota_family": "public_documentation_only",
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "ollama",
+      "kind": "llm",
+      "catalog_endpoint": "protocol",
+      "catalog_secret": "OLLAMA_API_KEY",
+      "secret_aliases": [],
+      "availability_env": [
+        "OLLAMA_API_KEY"
+      ],
+      "quota_family": "implemented_passive_adapter",
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "omni",
+      "kind": "llm",
+      "catalog_endpoint": "core",
+      "catalog_secret": "OMNI_API_KEY",
+      "secret_aliases": [],
+      "availability_env": [
+        "OMNI_API_KEY"
+      ],
+      "quota_family": "unsupported",
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "openrouter",
+      "kind": "llm",
+      "catalog_endpoint": "core",
+      "catalog_secret": "OPENROUTER_API_KEY",
+      "secret_aliases": [],
+      "availability_env": [
+        "OPENROUTER_API_KEY"
+      ],
+      "quota_family": "implemented_passive_adapter",
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "ovhcloud",
+      "kind": "llm",
+      "catalog_endpoint": "protocol",
+      "catalog_secret": "OVHCLOUD_API_KEY",
+      "secret_aliases": [],
+      "availability_env": [
+        "OVHCLOUD_API_KEY"
+      ],
+      "quota_family": "public_documentation_only",
+      "public_catalog": true,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "qodo",
+      "kind": "review",
+      "catalog_endpoint": null,
+      "catalog_secret": null,
+      "secret_aliases": [],
+      "availability_env": [],
+      "quota_family": null,
+      "public_catalog": false,
+      "review_login": "qodo-code-review[bot]",
+      "review_check_app": "qodo",
+      "review_trigger_actions": [
+        "trigger_review"
+      ],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "requesty",
+      "kind": "llm",
+      "catalog_endpoint": "extension",
+      "catalog_secret": "REQUESTY_API_KEY",
+      "secret_aliases": [],
+      "availability_env": [
+        "REQUESTY_API_KEY"
+      ],
+      "quota_family": "public_documentation_only",
+      "public_catalog": true,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "routeway",
+      "kind": "llm",
+      "catalog_endpoint": "extension",
+      "catalog_secret": "ROUTEWAY_API_KEY",
+      "secret_aliases": [],
+      "availability_env": [
+        "ROUTEWAY_API_KEY"
+      ],
+      "quota_family": "public_documentation_only",
+      "public_catalog": true,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "sambanova",
+      "kind": "llm",
+      "catalog_endpoint": "core",
+      "catalog_secret": "SAMBANOVA_API_KEY",
+      "secret_aliases": [],
+      "availability_env": [
+        "SAMBANOVA_API_KEY"
+      ],
+      "quota_family": "implemented_passive_adapter",
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "sealion",
+      "kind": "llm",
+      "catalog_endpoint": "extension",
+      "catalog_secret": "SEALION_API_KEY",
+      "secret_aliases": [],
+      "availability_env": [
+        "SEALION_API_KEY"
+      ],
+      "quota_family": "public_documentation_only",
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "sentry",
+      "kind": "review",
+      "catalog_endpoint": null,
+      "catalog_secret": null,
+      "secret_aliases": [],
+      "availability_env": [],
+      "quota_family": null,
+      "public_catalog": false,
+      "review_login": "sentry-io[bot]",
+      "review_check_app": "sentry",
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "siliconflow",
+      "kind": "llm",
+      "catalog_endpoint": "core",
+      "catalog_secret": "SILICONFLOW_API_KEY",
+      "secret_aliases": [],
+      "availability_env": [
+        "SILICONFLOW_API_KEY"
+      ],
+      "quota_family": "implemented_passive_adapter",
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "typhoon",
+      "kind": "llm",
+      "catalog_endpoint": null,
+      "catalog_secret": null,
+      "secret_aliases": [],
+      "availability_env": [],
+      "quota_family": "public_documentation_only",
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": [
+        {
+          "surface": "catalog_endpoint",
+          "reason": "quota-family record only; no documented catalog endpoint wired in any catalog module"
+        },
+        {
+          "surface": "catalog_secret",
+          "reason": "quota-family record only; no catalog secret name established"
+        },
+        {
+          "surface": "availability_env",
+          "reason": "quota-family record only; not wired in provider-availability.yml"
+        }
+      ]
+    },
+    {
+      "provider": "unorouter",
+      "kind": "llm",
+      "catalog_endpoint": "extension",
+      "catalog_secret": "UNOROUTER_API_KEY",
+      "secret_aliases": [],
+      "availability_env": [
+        "UNOROUTER_API_KEY"
+      ],
+      "quota_family": "public_documentation_only",
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "xfyun",
+      "kind": "llm",
+      "catalog_endpoint": null,
+      "catalog_secret": null,
+      "secret_aliases": [],
+      "availability_env": [
+        "IFLYTEK_SPARK_API_PASSWORD",
+        "XFYUN_API_KEY"
+      ],
+      "quota_family": "public_documentation_only",
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": [
+        {
+          "surface": "catalog_endpoint",
+          "reason": "no catalog endpoint in any catalog module; availability wired under the vendor iFlytek names"
+        },
+        {
+          "surface": "catalog_secret",
+          "reason": "no catalog-module secret; availability uses XFYUN_API_KEY / IFLYTEK_SPARK_API_PASSWORD"
+        }
+      ]
+    },
+    {
+      "provider": "xkiro",
+      "kind": "llm",
+      "catalog_endpoint": "extension",
+      "catalog_secret": "XKIRO_API_KEY",
+      "secret_aliases": [],
+      "availability_env": [],
+      "quota_family": "public_documentation_only",
+      "public_catalog": true,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": [
+        {
+          "surface": "availability_env",
+          "reason": "public catalog (PUBLIC_CATALOGS): the availability probe needs no secret, so no env is wired in provider-availability.yml"
+        }
+      ]
+    },
+    {
+      "provider": "zai",
+      "kind": "llm",
+      "catalog_endpoint": null,
+      "catalog_secret": "ZAI_API_KEY",
+      "secret_aliases": [],
+      "availability_env": [
+        "ZAI_API_KEY"
+      ],
+      "quota_family": "public_documentation_only",
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": [
+        {
+          "surface": "catalog_endpoint",
+          "reason": "secret-only wiring: ZAI_API_KEY is provisioned and probed for continuity, but no catalog endpoint is registered in any catalog module"
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "providers": 33,
+    "llm": 27,
+    "review": 6,
+    "with_quota_adapter": 6,
+    "exceptions": 7
+  }
+}

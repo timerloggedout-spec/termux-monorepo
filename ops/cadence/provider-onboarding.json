@@ -1,0 +1,181 @@
+{
+  "schema": "cadence-provider-onboarding/v1",
+  "contract": "Single onboarding record for cadence providers. Every provider on any cadence surface (catalog endpoint/secret, provider-availability env, quota family, peer-review orchestrator maps) must have one entry here; every expected-but-absent surface must carry an exception with a reason. Checked by scripts/cadence_provider_onboarding.py; secret names only, never values.",
+  "providers": [
+    {
+      "provider": "aion",
+      "kind": "llm"
+    },
+    {
+      "provider": "cerebras",
+      "kind": "llm"
+    },
+    {
+      "provider": "cloudflare",
+      "kind": "llm",
+      "availability_extra_env": [
+        "CLOUDFLARE_ACCOUNT_ID"
+      ]
+    },
+    {
+      "provider": "cohere",
+      "kind": "llm"
+    },
+    {
+      "provider": "felo",
+      "kind": "llm"
+    },
+    {
+      "provider": "gemini",
+      "kind": "llm"
+    },
+    {
+      "provider": "groq",
+      "kind": "llm"
+    },
+    {
+      "provider": "huggingface",
+      "kind": "llm"
+    },
+    {
+      "provider": "kilo",
+      "kind": "llm"
+    },
+    {
+      "provider": "llm7",
+      "kind": "llm"
+    },
+    {
+      "provider": "mistral",
+      "kind": "llm"
+    },
+    {
+      "provider": "modelscope",
+      "kind": "llm"
+    },
+    {
+      "provider": "nvidia",
+      "kind": "llm"
+    },
+    {
+      "provider": "ollama",
+      "kind": "llm"
+    },
+    {
+      "provider": "omni",
+      "kind": "llm"
+    },
+    {
+      "provider": "openrouter",
+      "kind": "llm"
+    },
+    {
+      "provider": "ovhcloud",
+      "kind": "llm"
+    },
+    {
+      "provider": "requesty",
+      "kind": "llm"
+    },
+    {
+      "provider": "routeway",
+      "kind": "llm"
+    },
+    {
+      "provider": "sambanova",
+      "kind": "llm"
+    },
+    {
+      "provider": "sealion",
+      "kind": "llm"
+    },
+    {
+      "provider": "siliconflow",
+      "kind": "llm"
+    },
+    {
+      "provider": "typhoon",
+      "kind": "llm",
+      "exceptions": [
+        {
+          "surface": "catalog_endpoint",
+          "reason": "quota-family record only; no documented catalog endpoint wired in any catalog module"
+        },
+        {
+          "surface": "catalog_secret",
+          "reason": "quota-family record only; no catalog secret name established"
+        },
+        {
+          "surface": "availability_env",
+          "reason": "quota-family record only; not wired in provider-availability.yml"
+        }
+      ]
+    },
+    {
+      "provider": "unorouter",
+      "kind": "llm"
+    },
+    {
+      "provider": "xfyun",
+      "kind": "llm",
+      "availability_extra_env": [
+        "XFYUN_API_KEY",
+        "IFLYTEK_SPARK_API_PASSWORD"
+      ],
+      "exceptions": [
+        {
+          "surface": "catalog_endpoint",
+          "reason": "no catalog endpoint in any catalog module; availability wired under the vendor iFlytek names"
+        },
+        {
+          "surface": "catalog_secret",
+          "reason": "no catalog-module secret; availability uses XFYUN_API_KEY / IFLYTEK_SPARK_API_PASSWORD"
+        }
+      ]
+    },
+    {
+      "provider": "xkiro",
+      "kind": "llm",
+      "exceptions": [
+        {
+          "surface": "availability_env",
+          "reason": "public catalog (PUBLIC_CATALOGS): the availability probe needs no secret, so no env is wired in provider-availability.yml"
+        }
+      ]
+    },
+    {
+      "provider": "zai",
+      "kind": "llm",
+      "exceptions": [
+        {
+          "surface": "catalog_endpoint",
+          "reason": "secret-only wiring: ZAI_API_KEY is provisioned and probed for continuity, but no catalog endpoint is registered in any catalog module"
+        }
+      ]
+    },
+    {
+      "provider": "aikido",
+      "kind": "review"
+    },
+    {
+      "provider": "coderabbit",
+      "kind": "review"
+    },
+    {
+      "provider": "copilot",
+      "kind": "review"
+    },
+    {
+      "provider": "devin",
+      "kind": "review"
+    },
+    {
+      "provider": "qodo",
+      "kind": "review"
+    },
+    {
+      "provider": "sentry",
+      "kind": "review"
+    }
+  ]
+}

@@ -50,7 +50,21 @@ jobs:
           git add -A ops/ml/
           if git diff --cached --quiet; then
             echo "feed unchanged — no commit"
-          else
-            git commit -m "data(ml): pr-lane-feed refresh [skip ci]"
-            git push
+            exit 0
           fi
+          git commit -m "data(ml): pr-lane-feed refresh [skip ci]"
+          # Master moves constantly under the fleet; a classify run takes
+          # ~2 min, so a bare push loses the race (first successful
+          # classify run 40783906017: classify step green, push rejected
+          # non-fast-forward). Rebase onto current master and retry.
+          for attempt in 1 2 3; do
+            git fetch origin master
+            git rebase origin/master
+            if git push; then
+              echo "feed pushed (attempt $attempt)"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "::error::feed push failed after 3 attempts"
+          exit 1

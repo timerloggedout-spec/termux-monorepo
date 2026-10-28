@@ -13,13 +13,18 @@ apps in a live graph, into Google Cloud managed by Platform201.
 - Solo caps (Billing, console-observed): 3 projects; 1 environment per project;
   1 seat; 3 nodes each of container / function / gateway / scheduler /
   MongoDB-integration / Neon-DB-integration.
-- Project: **n0nplatform201-live** (Hello World (Vite) blueprint: Gateway → Vite
-  container, Node.js 20, port 5173), Production environment.
-- Deployment 1: completed, console status "(Deployed)", "Your deployment is live".
+- Project: **n0nplatform201-live**, Production environment. Deployment 1
+  (Hello World (Vite) blueprint) was the bring-up placeholder.
+  **P1 payload swapped 2026-10-27 (owner correction — placeholder rejected):**
+  container renamed `fleet-dashboard`, source replaced with the fleet's real
+  **help-wanted dashboard** (`apps/help-wanted-dashboard`: pages + 18 data
+  feeds, Node static host, port 8080, Node 22). Deployment 2 failed (buildpack
+  rejected bare runtime "20"); Deployment 3 "(Deployed)", 3:10.
   Runs on Platform201-managed GCP (Cloud Run, europe-west2) — not fleet GCP.
-- Live URL (opened and verified): 
+- Live URL (opened and verified):
   https://ringerhollow-kangaroorose-killerpuddle.eu1.platform201.live/
-  — serves "Welcome to Platform201 / Your Vite Example is running."
+  — serves "Help-Wanted · with Tribute · Control Surface"; `/quota.html`,
+  `/data/referral-feed.json` and `/health` (`{"ok":true,...}`) verified.
 - A starter project "My Project" pre-existed in the space (Gateway + Welcome App,
   not deployed by this lane).
 
@@ -55,21 +60,28 @@ Facts (Billing + Usage pages, inspected in-console 2026-10-27):
 - Plans state node/seat limits only, no credit inclusions: Solo $0 (current);
   Indie $8/mo ($80/yr); Pro $20/mo per seat ($200/yr per seat); Enterprise custom.
 
-Plan (B efficient):
-1. **$20 = reserve, never budget.** Runway is unpriced — plan all spend at $0
-   target; credits absorb surprises only.
-2. **Scale-to-zero first:** functions (on-demand, scale to zero) > schedulers
-   (no 24/7 server) > containers (always-on, last resort). DB: Neon integration
-   (scales to zero) before MongoDB/VM nodes.
-3. **Project slots (Solo cap 3):** P1 = n0nplatform201-live (prod). P2 = one
-   real workload. P3 = held reserve/experiment — never fill casually.
-   1 environment per project: no staging envs; test = redeploy.
-4. **Node discipline:** current live use = 1 container (1 vCPU / 512 MB,
-   instances 0–1) + 1 gateway of 3+3. Keep each project ≤3 nodes/type;
-   smallest container size that serves.
-5. **Tripwires:** Usage > $0.00, estimated monthly cost > $0.00, or credits
-   < $20.00 → stop new deploys, inspect Usage breakdown, report.
-   Check Billing + Usage on the 1st of each month and after every deploy burst.
-6. **No paid refill:** do not buy Indie/Pro for credits — tiers grant node
-   limits, not credits. Upgrade only when a node cap (3 projects / 10 nodes)
-   is the proven blocker.
+Plan (REVISED 2026-10-27, owner correction — **$0 target REJECTED; the $20
+exists to be USED**; supersedes the reserve plan in PR #1987):
+- Metering reality: after 3 deployments and an always-on container, Usage is
+  still $0.00 and the balance unmoved — Solo usage is not visibly metered
+  against credits in-console. "Spend" therefore = **extract maximum hosted
+  value inside the $20 envelope**: fill the node/project caps with real,
+  always-on fleet workloads; if priced metering appears, allocations below
+  govern priority and a re-plan lands within a week.
+1. **Allocations (of $20):** $12 prod always-on (P1 + P2) · $5 experiment
+   bursts (P3) · $3 floor buffer (overage surprise only — the sole hoard).
+2. **Workloads, named:** P1 = **fleet help-wanted dashboard** (LIVE, above —
+   second host for the fleet control surface). P2 = **planning-queue**
+   backend (PR #1274 graph: intake + collector + sweeper containers, Neon
+   `ops_queue`, queue node, `*/5` scheduler) — next deploy, fills P2's caps.
+   P3 = rotating challenge/demo slot (entry demos, temporary backends);
+   recycle on completion, never idle-hold.
+3. **Utilization targets:** projects 3/3 with real payloads; every project
+   always-on or scheduler-driven; zero placeholder payloads (Vite lesson).
+   Efficiency = benefit per node, not idleness: scale-to-zero node types
+   (functions, Neon) go where traffic is bursty *inside* a real workload.
+4. **Tripwires:** credits < $3 floor → P3 experiments stop, prod runs on.
+   Usage > $0.00 (priced metering starts) → report + re-plan allocations
+   against real rates. Check Billing + Usage 1st monthly + after deploy bursts.
+5. **No paid refill:** tiers grant node limits, not credits. Upgrade only
+   when a node cap is the proven blocker for a named workload.

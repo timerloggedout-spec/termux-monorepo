@@ -217,6 +217,16 @@ D5: judges "to be announced during the Event" per its Contest
 Rules). Entities populate on the schedule in the participants
 section; judges populate when an event names them publicly.
 
+## Full-spectrum OSINT (owner scope, 2026-10-28)
+
+All entity surfaces above are OSINT-tracked, public sources only:
+watch + coverage contract in `docs/ops/CHALLENGE-OSINT.md`
+(collector `scripts/challenge/osint_watch.py`, weekly workflow
+`challenge-osint-watch.yml`, coverage matrix
+`ops/challenge/osint/coverage.json`, append-only official-page
+snapshots `ops/challenge/osint/snapshots.json` → Neon
+`osint_page_snapshots`). Coordinator root carries an `osint{}` pointer.
+
 ## Required fields + surface contract (owner rule, 2026-10-28)
 
 **Required information:** `prizes`, `dates`, `status`, and `gates` —

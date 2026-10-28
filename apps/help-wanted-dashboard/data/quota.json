@@ -1,7 +1,7 @@
 {
   "schema": "3l0.quota-readings.v1",
-  "generated_at": "2026-10-28T01:23:16Z",
-  "source": "Poller-confirmed observations promoted through the generated-file path (2026-10-28: vercel-quota-probe run 40614712299, quota-public-status/v2 artifact) plus retained attributed reports; not a live quota feed. Private quota_poll.py values are withheld by the poller's public mode and are not published here.",
+  "generated_at": "2026-10-28T13:16:27Z",
+  "source": "Poller-confirmed observations promoted through the generated-file path (2026-10-28: vercel-quota-probe run 40694902515, quota-public-status/v2 artifact) plus retained attributed reports; not a live quota feed. Private quota_poll.py values are withheld by the poller's public mode and are not published here.",
   "readings": [
     {
       "resource_id": "vercel.deployments",
@@ -10,10 +10,10 @@
       "limit": 100,
       "unit": "deployments/day",
       "reset": null,
-      "note": "Fresh poller status from vercel-quota-probe run 40614712299 (scripts/quota_poll.py vercel_deploys under VERCEL_TOKEN): coarse status ok at observation time; the deployment count itself is withheld by poller public mode and is not published here (the deployments listing undercounts enforcement by >=13, registry observation 2026-10-19). Supersedes the attributed cap_tripped report of 2026-10-20T21:15Z (Hark), retained in git history and docs/ops/QUOTA-READINGS-GAPS-2026-10-27.md.",
+      "note": "Fresh poller status from vercel-quota-probe run 40694902515 (scripts/quota_poll.py vercel_deploys under VERCEL_TOKEN): coarse status ok at observation time; the deployment count itself is withheld by poller public mode and is not published here (the deployments listing undercounts enforcement by >=13, registry observation 2026-10-19). Supersedes the attributed cap_tripped report of 2026-10-20T21:15Z (Hark), retained in git history and docs/ops/QUOTA-READINGS-GAPS-2026-10-27.md.",
       "evidence_status": "confirmed",
       "horizon": "H0",
-      "observed_at": "2026-10-28T01:23:16Z"
+      "observed_at": "2026-10-28T13:16:27Z"
     },
     {
       "resource_id": "openrouter.free_models",
@@ -22,10 +22,22 @@
       "limit": null,
       "unit": "requests/day",
       "reset": null,
-      "note": "Poller preflight ran in vercel-quota-probe run 40614712299 (scripts/quota_poll.py openrouter_reader under OPENROUTER_API_KEY): the documented free-model daily counter was read at observation time against the renewed UTC-day allowance. Counts and reset are withheld by poller public mode and are not published here; the published status stays unknown by contract (no account state is claimed on this surface).",
+      "note": "Poller preflight ran in vercel-quota-probe run 40694902515 (scripts/quota_poll.py openrouter_reader under OPENROUTER_API_KEY): the documented free-model daily counter was read at observation time against the renewed UTC-day allowance. Counts and reset are withheld by poller public mode and are not published here; the published status stays unknown by contract (no account state is claimed on this surface).",
       "evidence_status": "confirmed",
       "horizon": "H0",
-      "observed_at": "2026-10-28T01:23:16Z"
+      "observed_at": "2026-10-28T13:16:27Z"
+    },
+    {
+      "resource_id": "openrouter.key",
+      "status": "unknown",
+      "used": null,
+      "limit": null,
+      "unit": "signal-specific requests or monetary credits; tier is not model price",
+      "reset": null,
+      "note": "First live observation of the current-key record, from vercel-quota-probe run 40694902515 (scripts/quota_poll.py openrouter_key_reader wrapping scripts/provider_quota_service.py --observe in-process, OPENROUTER_KEY_OBSERVE=1): the private observation succeeded and only its public_status() projection (status + request_quota enum) crossed into the snapshot; values and monetary fields are never published. Published status stays unknown by contract \u2014 observed but unclassifiable, since no used/limit is exported. Registered live by owner decision 2026-10-28 (PRs #2008/#2013); telemetry row in allocations pool openrouter, riding openrouter.free_models.",
+      "evidence_status": "confirmed",
+      "horizon": "H0",
+      "observed_at": "2026-10-28T13:16:27Z"
     },
     {
       "resource_id": "github.actions.minutes",
@@ -53,15 +65,15 @@
     },
     {
       "resource_id": "github.api.github_token",
-      "status": "watch",
+      "status": "exhausted",
       "used": null,
       "limit": 1000,
       "unit": "requests/hour/repo",
       "reset": null,
-      "note": "Status-only promotion from vercel-quota-probe run 40614712299 (scripts/quota_poll.py gh_rate under the Actions GITHUB_TOKEN, GET /rate_limit): coarse status watch at observation time (usage inside the registry safety zone); the count is withheld by poller public mode and is not published here. Limit is the documented registry entitlement, not a measured balance.",
+      "note": "Status-only promotion from vercel-quota-probe run 40694902515 (scripts/quota_poll.py gh_rate under the Actions GITHUB_TOKEN, GET /rate_limit): coarse status exhausted at observation time \u2014 the shared Actions-token core budget was at its documented limit when polled (the fleet's known hot-hour drain; the hourly window resets). The count is withheld by poller public mode and is not published here. Limit is the documented registry entitlement, not a measured balance.",
       "evidence_status": "confirmed",
       "horizon": "H0",
-      "observed_at": "2026-10-28T01:23:16Z"
+      "observed_at": "2026-10-28T13:16:27Z"
     },
     {
       "resource_id": "github.actions.cache",
@@ -70,10 +82,10 @@
       "limit": 10,
       "unit": "GB",
       "reset": null,
-      "note": "Status-only promotion from vercel-quota-probe run 40614712299 (scripts/quota_poll.py gh_cache under the Actions GITHUB_TOKEN, GET /repos/{repo}/actions/cache/usage): coarse status ok at observation time; the size is withheld by poller public mode and is not published here. Rolling window; GitHub evicts above the 10 GB entitlement.",
+      "note": "Status-only promotion from vercel-quota-probe run 40694902515 (scripts/quota_poll.py gh_cache under the Actions GITHUB_TOKEN, GET /repos/{repo}/actions/cache/usage): coarse status ok at observation time; the size is withheld by poller public mode and is not published here. Rolling window; GitHub evicts above the 10 GB entitlement.",
       "evidence_status": "confirmed",
       "horizon": "H0",
-      "observed_at": "2026-10-28T01:23:16Z"
+      "observed_at": "2026-10-28T13:16:27Z"
     },
     {
       "resource_id": "huggingface.hub_api",
@@ -82,10 +94,10 @@
       "limit": null,
       "unit": "requests per 5-minute fixed window (account-dynamic)",
       "reset": null,
-      "note": "First live reading for the Hub API record, from vercel-quota-probe run 40614712299 (scripts/quota_poll.py hf_hub_reader under the fleet HUGGINGFACE_TOKEN, GET /api/whoami-v2): the documented RateLimit header was observed (H0/confirmed), so the credential and reader are proven end to end. Status stays unknown by design: the header reports remaining/reset for a dynamic window and no documented fixed limit exists to classify against; the values are withheld by poller public mode. Hub API quota only \u2014 not Inference Providers quota.",
+      "note": "Live reading for the Hub API record, refreshed in vercel-quota-probe run 40694902515 (scripts/quota_poll.py hf_hub_reader under the fleet HUGGINGFACE_TOKEN, GET /api/whoami-v2): the documented RateLimit header was observed (H0/confirmed), so the credential and reader are proven end to end. Status stays unknown by design: the header reports remaining/reset for a dynamic window and no documented fixed limit exists to classify against; the values are withheld by poller public mode. Hub API quota only \u2014 not Inference Providers quota.",
       "evidence_status": "confirmed",
       "horizon": "H0",
-      "observed_at": "2026-10-28T01:23:16Z"
+      "observed_at": "2026-10-28T13:16:27Z"
     }
   ]
 }

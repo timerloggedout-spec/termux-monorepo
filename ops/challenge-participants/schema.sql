@@ -17,13 +17,13 @@ CREATE TABLE IF NOT EXISTS participant_syncs (
 );
 
 CREATE TABLE IF NOT EXISTS participant_events (
-  event_key       text PRIMARY KEY,            -- sha256(challenge-participants|event_id|participant_key)
+  event_key       text NOT NULL,               -- sha256(challenge-participants|event_id|participant_key)
   sync_key        text NOT NULL,
   event_id        text NOT NULL,               -- coordinator event id (D0..D5)
   participant_key text NOT NULL,               -- first of id/handle/username/name/url, else sha256(record)
   payload         jsonb NOT NULL,              -- the participant record verbatim
   recorded_at     timestamptz NOT NULL DEFAULT now(),
-  UNIQUE (sync_key, event_id, participant_key)
+  PRIMARY KEY (sync_key, event_id, participant_key)
 );
 
 CREATE INDEX IF NOT EXISTS participant_events_event_ix
@@ -63,13 +63,13 @@ ALTER TABLE participant_syncs ADD COLUMN IF NOT EXISTS events jsonb NOT NULL DEF
 -- as participants. Payload verbatim (persona, org, judging_history,
 -- public_criteria, statements, sources, plus any signal fields).
 CREATE TABLE IF NOT EXISTS judge_events (
-  event_key   text PRIMARY KEY,                -- sha256(challenge-judges|event_id|judge_key)
+  event_key   text NOT NULL,                   -- sha256(challenge-judges|event_id|judge_key)
   sync_key    text NOT NULL,
   event_id    text NOT NULL,
   judge_key   text NOT NULL,
   payload     jsonb NOT NULL,
   recorded_at timestamptz NOT NULL DEFAULT now(),
-  UNIQUE (sync_key, event_id, judge_key)
+  PRIMARY KEY (sync_key, event_id, judge_key)
 );
 CREATE INDEX IF NOT EXISTS judge_events_event_ix ON judge_events (event_id, judge_key);
 
@@ -194,3 +194,22 @@ SELECT ev.event_id, ev.name AS event_name,
        ev.opportunity_cost->>'computed_at' AS computed_at
 FROM challenge_events_current ev
 WHERE ev.opportunity_cost IS NOT NULL;
+
+-- Migration (2026-10-28 fix): the v1/v2 PK was event_key alone, so a
+-- participant's row could never re-bind to a newer sync batch and
+-- participants_current went empty on the second sync. PK is the
+-- (sync_key, event, entity) composite; event_key stays the stable
+-- identity hash. Idempotent for databases created by the old schema.
+DO $$
+BEGIN
+  IF EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'participant_events_pkey'
+             AND pg_get_constraintdef(oid) LIKE 'PRIMARY KEY (event_key)') THEN
+    ALTER TABLE participant_events DROP CONSTRAINT participant_events_pkey;
+    ALTER TABLE participant_events ADD PRIMARY KEY (sync_key, event_id, participant_key);
+  END IF;
+  IF EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'judge_events_pkey'
+             AND pg_get_constraintdef(oid) LIKE 'PRIMARY KEY (event_key)') THEN
+    ALTER TABLE judge_events DROP CONSTRAINT judge_events_pkey;
+    ALTER TABLE judge_events ADD PRIMARY KEY (sync_key, event_id, judge_key);
+  END IF;
+END $$;

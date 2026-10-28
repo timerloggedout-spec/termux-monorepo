@@ -28,6 +28,13 @@ STATE = os.environ.get("GRAVITEE_STATE_DIR", "gravitee-state")
 BASIC = base64.b64encode(b"admin:admin").decode()
 receipt = {"steps": []}
 
+# Diagnostics belong to the workflow's GitHub surfaces, not to anyone
+# downloading job logs afterwards: always leave a receipt in the state dir
+# (artifact + cache + step summary read it), even on failure.
+import atexit
+os.makedirs(STATE, exist_ok=True)
+atexit.register(lambda: json.dump(receipt, open(f"{STATE}/receipt.json", "w"), indent=1))
+
 def note(step, **kw):
     receipt["steps"].append({"step": step, **kw}); print(f"[{step}] {kw}")
 

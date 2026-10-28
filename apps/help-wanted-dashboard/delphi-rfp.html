@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Delphi RFP Flood — Progress, Criteria, Outcomes, Responses</title>
+<!--
+  Delphi RFP flood page (owner-assigned build: doe-expert lane;
+  chrome coordinated with the Web Design lane). Renders ONLY
+  data/delphi-rfp-feed.json (schema delphi-rfp-feed/v1, contract
+  docs/ops/DELPHI-RFP-FEED.md) — the single feed: progress & status,
+  criteria, the 10 form questions with responses as filed, gate
+  outcomes, the panel's signed votes verbatim, and the segmentation
+  layer (segments block, config ops/delphi/rfp-segments.json,
+  doctrine docs/ops/DELPHI-RFP-SEGMENTATION.md). Nothing is
+  re-scored, averaged, or inferred; gaps render as recorded.
+-->
+<link rel="stylesheet" href="./dashboard.css">
+<style>
+  .cd-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:.8rem}
+  .cd-value{font-size:30px;font-weight:700;line-height:1.15;margin:.3rem 0}
+  .cd-label{color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:.04em}
+  .badge{display:inline-block;padding:1px 7px;border-radius:10px;font-size:12px;border:1px solid var(--line)}
+  .badge.ok{border-color:var(--ok);color:var(--ok)} .badge.due{border-color:var(--bad);color:var(--bad)}
+  .badge.open{border-color:var(--gold);color:var(--gold)} .dim{color:var(--muted)}
+  .cd-when{font-size:13px;color:var(--muted)}
+  .stats{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.6rem}
+  .stat{background:#21262d;border-radius:8px;padding:6px 10px;font-size:13px}
+  .bar{height:10px;background:#21262d;border-radius:5px;overflow:hidden}
+  .bar>i{display:block;height:100%;background:var(--gold)}
+  .veto{border-left:3px solid var(--bad);padding-left:10px}
+  .fbar{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;margin:.4rem 0}
+  .fchip{background:#21262d;color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:4px 12px;cursor:pointer;font-size:13px}
+  .fchip.on{background:var(--gold);color:#0d1117;font-weight:700}
+  .fbar input[type="search"]{background:#0d1117;color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:5px 9px;min-width:200px}
+  .rfp{border:1px solid var(--line);border-radius:8px;margin:.5rem 0;background:var(--card)}
+  .rfp>summary{cursor:pointer;padding:10px 12px;list-style-position:outside}
+  .rnum{font-weight:700;color:var(--gold)}
+  .rtitle{font-weight:600}
+  .rbody{border-top:1px solid var(--line);padding:4px 14px 12px}
+  .rbody h4{margin:14px 0 6px}
+  .rmeta{color:var(--muted);font-size:13px;margin:4px 0}
+  .award{font-weight:600}
+  table.kv,table.vt{border-collapse:collapse;width:100%;margin:6px 0;font-size:13px}
+  table.kv th{text-align:left;color:var(--muted);font-weight:500;padding:3px 10px 3px 0;vertical-align:top;white-space:nowrap}
+  table.kv td{padding:3px 0}
+  table.vt th,table.vt td{border:1px solid var(--line);padding:4px 7px;text-align:left;vertical-align:top}
+  table.vt td.reason{white-space:pre-wrap}
+  table.vt td.sig{color:var(--muted);font-size:12px}
+  .gapbox{border:1px solid var(--bad);border-radius:8px;padding:8px 12px;margin:10px 0}
+  .gapbox ul{margin:4px 0 4px 18px;padding:0}
+  .qa{border-top:1px solid var(--line);padding:6px 0}
+  .qa .q{font-weight:600;margin:0 0 2px}
+  .qa .a{margin:0;white-space:pre-wrap;color:var(--fg)}
+  .oracle-line{background:#21262d;border-radius:6px;padding:8px 10px}
+  details.sub{margin:8px 0}
+  details.sub>summary{cursor:pointer;color:var(--gold)}
+  pre.json{overflow:auto;max-height:320px;font-size:11px;background:#0d1117;padding:8px;border-radius:6px}
+  .gantt-wrap{overflow-x:auto}
+  .g-label{fill:var(--fg);font-size:11px}
+  .g-axis{fill:var(--muted);font-size:10px}
+  .g-now{fill:var(--bad);font-size:10px;font-weight:700}
+  .swim{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:.8rem}
+  .lane{border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+  .lane h3{margin:0 0 8px;font-size:14px}
+  .lchip{display:block;background:#21262d;border-radius:6px;padding:5px 8px;margin:5px 0;font-size:13px}
+</style>
+</head>
+<body>
+<header>
+<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/help-wanted/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="https://timerloggedout-spec.github.io/help-wanted/quota.html">Quota</a><a href="https://timerloggedout-spec.github.io/help-wanted/admin.html">Admin</a><a href="https://timerloggedout-spec.github.io/help-wanted/oracle.html">Oracle</a><a href="https://timerloggedout-spec.github.io/help-wanted/3l0.html">3L0</a><a href="https://timerloggedout-spec.github.io/help-wanted/moneyball.html">MoneyBall</a><a href="https://timerloggedout-spec.github.io/help-wanted/mvt.html">MVT</a><a href="https://timerloggedout-spec.github.io/help-wanted/doe.html">DoE</a><a href="https://timerloggedout-spec.github.io/help-wanted/ates.html">ATES</a><a href="https://timerloggedout-spec.github.io/help-wanted/free-tier-value.html">Free-tier value</a><a href="https://timerloggedout-spec.github.io/help-wanted/dispatch-tree.html">Dispatch Tree</a><a href="https://timerloggedout-spec.github.io/help-wanted/countdowns.html">Countdowns</a><a href="https://timerloggedout-spec.github.io/help-wanted/linguist.html">Linguist</a><a href="https://timerloggedout-spec.github.io/help-wanted/delphi-rfp.html" aria-current="page">Delphi RFP</a><a href="https://help-wanted-oversight.vercel.app/">Vercel deployment</a><a href="https://timerloggedout-spec.github.io/help-wanted/sitemap.xml">Sitemap</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></nav>
+<div class="hero">
+<p class="eyebrow">Delphi Oracle · RFP Flood</p>
+<h1>Delphi RFP flood — progress, criteria, outcomes, and the panel’s responses</h1>
+<p class="lede">The 70 open <code>delphi:rfp</code> filings, rendered from the gate’s own record: each filing’s status and progress, the rubric it is scored against, the 10 form questions with the responses as filed, the gate’s outcome with its rounds, and the panel’s signed votes — verbatim. An RFP the gate has not scored yet says so, with the gap named; nothing on this page is re-scored, averaged, or inferred.</p>
+</div>
+</header>
+<main>
+<p class="muted" id="meta">Loading feed…</p>
+
+<section>
+<div class="head"><h2>Progress &amp; status</h2></div>
+<div class="card" id="summary"></div>
+</section>
+
+<section>
+<div class="head"><h2>Segments — improve-cycle context options</h2></div>
+<div class="card" id="segments"><p class="dim">Segments load with the feed…</p></div>
+</section>
+
+<section>
+<div class="head"><h2>Criteria — the rubric every filing is scored against</h2></div>
+<div class="card" id="criteria"></div>
+</section>
+
+<section>
+<div class="head"><h2>Filings</h2></div>
+<div class="fbar" role="group" aria-label="Group filter">
+<button class="fchip on" data-f="group" data-v="all">All groups</button>
+<button class="fchip" data-f="group" data-v="surface">Surface</button>
+<button class="fchip" data-f="group" data-v="synthetic">Synthetic</button>
+<button class="fchip" data-f="group" data-v="research-baseline">Research baseline</button>
+<button class="fchip" data-f="group" data-v="research-variant">Research variant</button>
+</div>
+<div class="fbar" role="group" aria-label="Status filter">
+<button class="fchip on" data-f="status" data-v="all">All statuses</button>
+<button class="fchip" data-f="status" data-v="parked">Parked</button>
+<button class="fchip" data-f="status" data-v="shadow">Shadow</button>
+<button class="fchip" data-f="status" data-v="unscored">Unscored</button>
+<label class="dim"><input type="checkbox" id="conv"> converged only</label>
+<input type="search" id="q" placeholder="Search number, title, surface id…" aria-label="Search filings">
+</div>
+<p class="muted" id="count"></p>
+<div id="cards"></div>
+</section>
+
+<section>
+<div class="head"><h2>How to read this page — the feed’s honesty rules</h2></div>
+<div class="card"><ul id="honesty" style="margin:0;padding-left:18px"></ul></div>
+</section>
+
+</main>
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const GROUPS={"surface":"Surface","synthetic":"Synthetic","research-baseline":"Research baseline","research-variant":"Research variant"};
+function chip(txt,cls){ return '<span class="p '+(cls||"")+'">'+esc(txt)+'</span>'; }
+function kvRows(obj){
+  return Object.entries(obj||{}).filter(([,v])=>v===null||typeof v!=="object")
+    .map(([k,v])=>'<tr><th>'+esc(k)+'</th><td>'+esc(v===null?"—":String(v))+'</td></tr>').join("");
+}
+function roundsTable(rounds){
+  if(!rounds||!rounds.length) return "";
+  return '<table class="vt"><thead><tr><th>Round</th><th>Median</th><th>IQR</th><th>Effective</th></tr></thead><tbody>'+
+    rounds.map(r=>'<tr><td>'+esc(r.round)+'</td><td>'+esc(r.median)+'</td><td>'+esc(r.iqr)+'</td><td>'+esc(r.effective)+'</td></tr>').join("")+'</tbody></table>';
+}
+function votesTable(votes){
+  if(!votes||!votes.length) return "";
+  return '<table class="vt"><thead><tr><th>Role</th><th>Score</th><th>Impact</th><th>Importance</th><th>Veto</th><th>Reason (verbatim)</th><th>Via</th><th>Signed</th></tr></thead><tbody>'+
+    votes.map(v=>'<tr><td>'+esc(v.role)+'</td><td>'+esc(v.score)+'</td><td>'+esc(v.impact)+'</td><td>'+esc(v.importance)+'</td><td>'+(v.veto?"YES":"—")+'</td><td class="reason">'+esc(v.reason)+'</td><td>'+esc(v.via||"")+'</td><td class="sig">'+esc(v.signed)+'</td></tr>').join("")+'</tbody></table>';
+}
+function recordsHTML(rec){
+  if(!rec) return "";
+  let h='<h4>Records</h4>';
+  for(const [k,v] of Object.entries(rec)){
+    if(v&&typeof v==="object"){
+      const rows=kvRows(v);
+      if(rows) h+='<table class="kv">'+rows+'</table>';
+      h+='<details class="sub"><summary>full '+esc(k)+' record (JSON, verbatim)</summary><pre class="json">'+esc(JSON.stringify(v,null,1))+'</pre></details>';
+    } else h+='<p>'+esc(k)+': '+esc(String(v))+'</p>';
+  }
+  return h;
+}
+function cardHTML(r){
+  const pg=r.progress||null;
+  const oc=r.outcome||null, aw=oc&&oc.award?oc.award:null;
+  const decision=aw?aw.decision:r.status;
+  const dcls=decision==="shadow"?"ok":(decision==="unscored"?"":"warn");
+  let head='<span class="rnum">#'+esc(r.number)+'</span> <span class="rtitle">'+esc(r.title)+'</span> '+
+    chip(GROUPS[r.group]||r.group)+chip(decision,dcls)+(r.converged?chip("converged","ok"):"")+
+    (oc&&oc.effective_score!=null?chip("effective "+oc.effective_score+" / 25"):"")+(r.lane?chip("lane "+r.lane):"")+
+    (pg?chip("rounds "+pg.rounds_run+"/"+pg.rounds_max):"")+(r.segment?chip("segment "+r.segment):"");
+  let b='<p class="rmeta"><a href="'+esc(r.url)+'">Issue #'+esc(r.number)+'</a> · surface <code>'+esc(r.surface_id||"—")+'</code> · filed '+esc(r.created_at||"—")+(r.silo?' · silo <code>'+esc(r.silo)+'</code>':"")+'</p>';
+  if(r.parent) b+='<p class="rmeta">Variant of <a href="#rfp-'+esc(r.parent.number)+'">#'+esc(r.parent.number)+'</a> (<code>'+esc(r.parent.surface_id)+'</code>)</p>';
+  if(pg){
+    const pct=pg.rounds_max?Math.round(pg.rounds_run/pg.rounds_max*100):0;
+    b+='<div class="prog"><div class="bar"><i style="width:'+pct+'%"></i></div><p class="rmeta">Progress \u2014 stage: '+esc(pg.stage)+' \u00b7 rounds '+esc(pg.rounds_run)+' of '+esc(pg.rounds_max)+' \u00b7 votes '+esc(pg.votes_cast)+' of '+esc(pg.votes_expected)+'</p></div>';
+  }
+  b+='<p class="rmeta">Scoring inputs: '+esc(typeof r.scoring_inputs==="string"?r.scoring_inputs:JSON.stringify(r.scoring_inputs))+'</p>';
+  if(r.gaps&&r.gaps.length) b+='<div class="gapbox"><strong>Recorded gaps</strong><ul>'+r.gaps.map(g=>'<li>'+esc(g)+'</li>').join("")+'</ul></div>';
+  if(oc){
+    b+='<h4>Outcome</h4><p class="award">'+esc(oc.award_line||"")+'</p>';
+    if(aw) b+='<table class="kv">'+kvRows(aw)+'</table>';
+    b+=roundsTable(oc.rounds);
+    b+='<p class="rmeta">rounds: '+esc(oc.rounds_count!=null?oc.rounds_count:"—")+' · trigger: '+esc(oc.trigger||"—")+' · ledger comment: '+esc(oc.comment_id||"—")+'</p>';
+  }
+  if(r.responses){
+    b+='<h4>Panel responses — signed votes, verbatim</h4>'+votesTable(r.responses.votes);
+    if(r.responses.oracle) b+='<p class="oracle-line"><strong>Oracle line (verbatim):</strong> '+esc(r.responses.oracle)+'</p>';
+    b+=recordsHTML(r.responses.records);
+  }
+  if(r.comparison_axes){
+    b+='<h4>Comparison axes (research — post-hoc, not gate-scored)</h4><table class="kv">'+
+      Object.entries(r.comparison_axes).map(([k,v])=>'<tr><th>'+esc(k)+'</th><td>'+esc(String(v))+'</td></tr>').join("")+'</table>';
+  }
+  if(r.questions&&r.questions.length){
+    b+='<details class="sub"><summary>The 10 form questions — responses as filed</summary>'+
+      r.questions.map(q=>'<div class="qa"><p class="q">'+esc(q.question)+'</p><p class="a">'+esc(q.response)+'</p></div>').join("")+'</details>';
+  }
+  return '<details class="rfp" id="rfp-'+esc(r.number)+'" data-group="'+esc(r.group)+'" data-status="'+esc(r.status)+'" data-conv="'+(r.converged?"1":"0")+'" data-search="'+esc((r.number+" "+r.title+" "+(r.surface_id||"")).toLowerCase())+'"><summary>'+head+'</summary><div class="rbody">'+b+'</div></details>';
+}
+function renderSummary(s){
+  const total=s.total_open||0, un=(s.by_status&&s.by_status.unscored)||0, scored=total-un;
+  const pct=total?Math.round(scored/total*100):0;
+  $("summary").innerHTML=
+    '<div class="stats">'+
+    '<span class="stat"><strong>'+esc(total)+'</strong> open RFPs</span>'+
+    Object.entries(s.by_status||{}).map(([k,v])=>'<span class="stat">'+esc(k)+': <strong>'+esc(v)+'</strong></span>').join("")+
+    Object.entries(s.by_group||{}).map(([k,v])=>'<span class="stat">'+esc(GROUPS[k]||k)+': <strong>'+esc(v)+'</strong></span>').join("")+
+    '</div>'+
+    '<div class="bar" role="img" aria-label="Scored progress"><i style="width:'+pct+'%"></i></div>'+
+    '<p class="dim">'+scored+' of '+total+' scored on record ('+pct+'%)'+(un? '; '+un+' awaiting the gate’s first ledger entry — they render below with their gap named, never an inferred status.' : '; every open filing carries a gate outcome on record.')+'</p>';
+}
+function renderSegments(sg){
+  const el=$("segments"); if(!sg){ el.innerHTML='<p class="dim">No segments block in the feed.</p>'; return; }
+  const cls=sg.classes||{};
+  let h='<p class="dim">Segmentation config: <code>'+esc(sg.config||"")+'</code> · doctrine: <code>'+esc(sg.doctrine||"")+'</code>. Rollups count members and states only — no score is averaged across a segment; research comparison stays within its silo.</p>';
+  for(const [name,c] of Object.entries(cls)){
+    h+='<details class="sub"><summary>'+esc(name)+' — criteria &amp; questions</summary>'+
+       '<p>'+esc(c.description||"")+'</p>'+
+       '<p><strong>Criteria:</strong> '+(c.criteria||[]).map(esc).join(" · ")+'</p>'+
+       '<p><strong>Questions:</strong> '+(c.questions||[]).map(esc).join(" · ")+'</p>'+
+       '<p class="dim">Cycle: '+esc(c.cycle||"")+'</p></details>';
+  }
+  h+='<div class="swim">'+(sg.segments||[]).map(s=>{
+    const chips=Object.entries(s.by_status||{}).map(([k,v])=>chip(k+": "+v)).join(" ");
+    const axes=(s.axes_total!=null)? '<p class="rmeta">comparison axes recorded: '+esc(s.axes_recorded)+' of '+esc(s.axes_total)+'</p>':"";
+    const links=(s.members||[]).map(n=>'<a href="#rfp-'+esc(n)+'">#'+esc(n)+'</a>').join(" ");
+    return '<div class="lane"><h3><code>'+esc(s.segment_id)+'</code></h3><p class="rmeta">'+esc(s.class)+' · '+esc(s.gate_scored)+' of '+esc((s.members||[]).length)+' gate-scored</p><p>'+chips+'</p>'+axes+'<p class="rmeta">'+links+'</p></div>';
+  }).join("")+'</div>';
+  if(sg.unassigned&&sg.unassigned.length) h+='<div class="gapbox"><strong>Unassigned</strong><ul>'+sg.unassigned.map(n=>'<li>#'+esc(n)+'</li>').join("")+'</ul></div>';
+  el.innerHTML=h;
+}
+function renderCriteria(c){
+  if(!c) return;
+  $("criteria").innerHTML=
+    '<p>'+esc(c.scale||"")+'</p>'+
+    (c.items&&c.items.length? '<ul class="citems">'+c.items.map(i=>'<li><strong>'+esc(i.id)+'</strong> \u2014 '+esc(i.text)+'</li>').join("")+'</ul>' : "")+
+    '<p>'+chip("shadow bar "+c.shadow_bar)+' '+esc(c.award_bands||"")+'</p>'+
+    '<p><strong>Panel:</strong> '+Object.keys(c.roles||{}).map(esc).join(", ")+'</p>'+
+    '<p class="dim">'+esc(c.roles_note||"")+'</p>'+
+    '<p class="veto"><strong>Money veto:</strong> '+esc(c.money_veto||"")+'</p>'+
+    '<p class="dim">'+esc(c.questions_source||"")+'</p>'+
+    '<p class="dim">'+esc(c.research_axes_note||"")+'</p>';
+}
+const F={group:"all",status:"all",q:"",conv:false};
+function applyFilters(){
+  let n=0;
+  document.querySelectorAll(".rfp").forEach(el=>{
+    const ok=(F.group==="all"||el.dataset.group===F.group)&&
+             (F.status==="all"||el.dataset.status===F.status)&&
+             (!F.conv||el.dataset.conv==="1")&&
+             (!F.q||el.dataset.search.includes(F.q));
+    el.style.display=ok?"":"none"; if(ok) n++;
+  });
+  $("count").textContent="Showing "+n+" of "+document.querySelectorAll(".rfp").length+" RFPs.";
+}
+function wireFilters(){
+  document.querySelectorAll("[data-f]").forEach(btn=>btn.addEventListener("click",()=>{
+    const f=btn.dataset.f; F[f]=btn.dataset.v;
+    document.querySelectorAll('[data-f="'+f+'"]').forEach(x=>x.classList.toggle("on",x===btn));
+    applyFilters();
+  }));
+  $("q").addEventListener("input",e=>{ F.q=e.target.value.trim().toLowerCase(); applyFilters(); });
+  $("conv").addEventListener("change",e=>{ F.conv=e.target.checked; applyFilters(); });
+}
+async function load(){
+  try{
+    const res=await fetch("./data/delphi-rfp-feed.json");
+    if(!res.ok) throw new Error("feed "+res.status);
+    const feed=await res.json();
+    $("meta").textContent="Generated "+(feed.generated_at||"unknown")+" · Source: "+(feed.source||"")+" · Schema "+(feed.schema||"")+" · This page consumes data/delphi-rfp-feed.json (contract docs/ops/DELPHI-RFP-FEED.md) and nothing else — votes and outcomes render verbatim from the gate ledger; nothing is re-scored, averaged, or guessed.";
+    renderSummary(feed.summary||{});
+    renderSegments(feed.segments);
+    renderCriteria(feed.criteria);
+    if(feed.honesty_rules) $("honesty").innerHTML=feed.honesty_rules.map(h=>'<li>'+esc(h)+'</li>').join("");
+    $("cards").innerHTML=(feed.rfps||[]).map(cardHTML).join("");
+    wireFilters(); applyFilters();
+  }catch(err){
+    $("meta").textContent="Feed unavailable — nothing is shown rather than anything guessed. ("+err.message+")";
+  }
+}
+load();
+</script>
+</body>
+</html>

@@ -358,6 +358,33 @@ labelled at birth by the gate — plus one new label in use, `temporal`
   (issues #175, #184; PRs #713, #714, #682), read back via GraphQL.
   Board placement is ESTABLISHED; the sync workflow's per-event adds
   now run against a real project. G4 is closed.
+- **Operator Matrix method (2026-10-28, owner: "needs a better
+  method").** The board-sync method is superseded as the method of
+  record. Its failure modes were structural: per-event runs (495,
+  all no-ops while prerequisites were missing), a project-scoped
+  token dependency, and state living outside the repo. The board
+  itself stays live as a view (it now works), but the record is:
+  **`scripts/issue_lifecycle/operator_matrix.py`** derives the matrix
+  from the live inventory — open issues/PRs, dual-gate conclusions on
+  each PR head, master-tip gate state — and stamps it to
+  `docs/ops/generated/operator-matrix.{json,md}`, refreshed weekly
+  (Mon 06:41 UTC) by `operator-matrix-generate.yml`, which opens one
+  PR from `operator-matrix/auto` (registration-monikers pattern; the
+  job's own GITHUB_TOKEN only, no project token). Classification uses
+  the #175 vocabulary where mechanically derivable — EXTRACT = both
+  dual gates green on the head + mergeable; CANDIDATE = gates green,
+  merge state not clean; NEED_EVIDENCE = the honest default;
+  SUPERSEDE is never auto-emitted (an operator judgment, not an API
+  signal) — and master gate state is reported per-SHA, never
+  inherited (first cut: tip `441a554dff` had no gate runs, so NOT
+  ESTABLISHED, exactly as #175's rules require). First cut from live
+  data (2026-10-28T16:20Z): 284 issues, 95 PRs — EXTRACT 30 /
+  CANDIDATE 30 / NEED_EVIDENCE 35. Retirement of
+  `ops-operator-matrix-project-sync.yml` is the follow-up, after the
+  first scheduled generation proves; #175's own rule 7 (no
+  pulse-comments; the body is edited by its operator) is respected —
+  this method is recorded here and in the landing PR, not commented
+  onto #175.
 - **Maintain — lane pass 2:** 12 issues labelled with signed comments —
   the 10 oldest unlabelled (#50 `ci`; #51 `documentation`+`automation`;
   #52 `bug`+`ci`; #53 `documentation`; #54 `ci`+`gemini`; #56

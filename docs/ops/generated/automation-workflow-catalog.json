@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "5432e5931d109cbdb4d5affc98fff8c441852b94b83fa3d1782837d79cc1857b",
-  "workflow_count": 205,
+  "source_fingerprint": "e3b2a75471d0464840521cf5a05c36a5ae3b6da427b137e1982fbca4b9836289",
+  "workflow_count": 206,
   "workflows": [
     {
       "action_pins": [
@@ -2444,6 +2444,24 @@
       "triggers": [
         "pull_request",
         "push",
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: operator-matrix-generate cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "generate"
+      ],
+      "name": "Operator Matrix Generate",
+      "path": ".github/workflows/operator-matrix-generate.yml",
+      "schedules": [
+        "41 6 * * 1"
+      ],
+      "triggers": [
         "schedule",
         "workflow_dispatch"
       ]

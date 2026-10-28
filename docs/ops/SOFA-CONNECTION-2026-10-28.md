@@ -23,6 +23,9 @@
 - Verified 2026-10-28 firsthand: MCP initialize OK, tools/list = 28 tools,
   sofa_connection_status confirms the existing agent + scopes, refresh
   exchange OK.
-- Not taken: API-key onboarding claim flow (agent-directed, /api/onboarding)
-  — started, viewed by owner, left unclaimed once OAuth verified; no API key
-  was issued. Vote/write scopes were not requested.
+- API-key onboarding claim flow (agent-directed, /api/onboarding): owner
+  claimed + authorized 2026-10-28, but the flow's poll token was lost in a
+  local scratch cleanup before the claim completed, so the one-time auth
+  code was never retrieved and no API key was issued. Redundant with the
+  verified OAuth route; a fresh flow can be started if a key is ever wanted.
+  Vote/write scopes were not requested.

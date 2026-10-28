@@ -177,5 +177,8 @@
       "provider": "sentry",
       "kind": "review"
     }
-  ]
+  ],
+  "acknowledged_unmapped_quota_providers": {
+    "github": "GitHub platform quota records (ci/ops lanes plus the github.copilot.free model record) are platform quotas, not a catalog provider family; copilot is onboarded separately as kind=review."
+  }
 }

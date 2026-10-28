@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Cadence provider auto-onboarding: one registry, every surface checked.
 
-Implements: QAC-005 (docs/proposals/active/quota-aware-cadence-rfp/ITEMS.md)
+Implements: QAC-005 + QAC-006 (docs/proposals/active/quota-aware-cadence-rfp/ITEMS.md)
 
-Before this module, adding a provider meant hand-editing up to five
-independent surfaces, and nothing verified the surfaces agreed:
+Before this module, adding a provider meant hand-editing independent
+surfaces, and nothing verified the surfaces agreed:
 
   1. catalog endpoint   scripts/provider_model_catalog.py ENDPOINTS, or
                         scripts/provider_extension_catalogs.py, or
@@ -12,8 +12,28 @@ independent surfaces, and nothing verified the surfaces agreed:
   2. catalog secret     the same modules' SECRETS / SECRET_ALIASES
   3. availability env   .github/workflows/provider-availability.yml
   4. quota family       ops/quota/provider-managers.json (provider-quota-managers/v1)
-  5. review bot maps    .github/workflows/peer-review-orchestrator.yml
+  5. quota registry     ops/quota/registry.json model-lane records, mapped
+                        to families by the provider_quota_coverage rule
+                        (lane == "model" or id in provider_quota_service
+                        SERVICES; provider alias google -> gemini)
+  6. review bot maps    .github/workflows/peer-review-orchestrator.yml
                         (kind=review providers only)
+
+Automation (QAC-006, owner order: automated & programmatic):
+  - `apply` writes a new provider onto every surface programmatically
+    (registry entry, extension catalog, availability env, quota family,
+    quota registry record) and lists the generator post-steps.
+  - `autofix` adds registry entries for providers that appeared on a
+    surface without one (kind inferred; missing surfaces recorded as
+    exceptions whose reason states they were absent at first detection).
+    The cadence-provider-onboarding workflow runs check + autofix +
+    render on every surface change and weekly, and opens/updates one
+    auto-extend PR; hard drift (stale exceptions, unclaimed secrets,
+    unacknowledged unmapped quota providers) fails the run loudly.
+  - Model-lane quota providers that map to no family are surfaced:
+    namespaced aggregates (g4f/*, gpt4free/*) are counted in the report;
+    a non-namespaced unmapped provider fails check unless it is listed
+    in the registry's acknowledged_unmapped_quota_providers with a reason.
 
 The registry at ops/cadence/provider-onboarding.json is the single
 onboarding record. This module derives the *actual* surface matrix from
@@ -54,9 +74,13 @@ ORCHESTRATOR_WF = ROOT / ".github" / "workflows" / "peer-review-orchestrator.yml
 GENERATED = ROOT / "docs" / "ops" / "generated" / "cadence-provider-onboarding.json"
 
 SCHEMA = "cadence-provider-onboarding/v1"
-LLM_SURFACES = ("catalog_endpoint", "catalog_secret", "availability_env", "quota_family")
+LLM_SURFACES = ("catalog_endpoint", "catalog_secret", "availability_env", "quota_family", "quota_registry")
 REVIEW_SURFACES = ("review_login", "review_check_app")
 ALL_SURFACES = LLM_SURFACES + REVIEW_SURFACES
+QUOTA_REGISTRY = "ops/quota/registry.json"
+AUTO_EXCEPTION_REASON = ("auto-registered by the cadence-provider-onboarding workflow: "
+                         "surface absent at first detection — complete the surface or "
+                         "amend this reason in the auto-extend PR")
 
 
 def _load_catalog():
@@ -114,7 +138,7 @@ def collect_surfaces(root: Path = ROOT) -> dict:
     def row(pid: str) -> dict:
         return providers.setdefault(pid, {
             "catalog_endpoint": None, "catalog_secret": None, "secret_aliases": [],
-            "availability_env": [], "quota_family": None,
+            "availability_env": [], "quota_family": None, "quota_registry": [],
             "review_login": None, "review_check_app": None,
             "review_trigger_actions": [], "review_required_default": False,
             "public_catalog": False,
@@ -130,6 +154,33 @@ def collect_surfaces(root: Path = ROOT) -> dict:
         row(pid)["public_catalog"] = True
     for pid, status in quota_status.items():
         row(pid)["quota_family"] = status
+
+    # Quota registry surface (ops/quota/registry.json), mapped with the
+    # provider_quota_coverage rule: a service matches a family when its
+    # lane is "model" or its id is a provider_quota_service SERVICES id,
+    # with provider alias google -> gemini.
+    try:
+        if str(root) not in sys.path:
+            sys.path.insert(0, str(root))
+        from scripts import provider_quota_service
+
+        private_ids = set(provider_quota_service.SERVICES)
+    except Exception:
+        private_ids = set()
+    quota_registry = json.loads((root / QUOTA_REGISTRY).read_text(encoding="utf-8"))
+    unmapped: dict[str, list[str]] = {}
+    namespaced = 0
+    for svc in quota_registry.get("services", []):
+        if svc.get("lane") != "model" and svc.get("id") not in private_ids:
+            continue
+        raw = str(svc.get("provider", "")).lower()
+        family = {"google": "gemini"}.get(raw, raw)
+        if family in providers or family in quota_status:
+            row(family)["quota_registry"] = sorted(set(row(family)["quota_registry"]) | {svc["id"]})
+        elif "/" in raw:
+            namespaced += 1
+        else:
+            unmapped.setdefault(raw, []).append(svc["id"])
     for pid, login in logins.items():
         row(pid)["review_login"] = login
     for pid, app in check_apps.items():
@@ -157,6 +208,8 @@ def collect_surfaces(root: Path = ROOT) -> dict:
         "availability_env_all": sorted(availability_env),
         "availability_claimed": claimed,
         "default_required": default_required,
+        "quota_registry_unmapped": {k: sorted(v) for k, v in sorted(unmapped.items())},
+        "quota_registry_namespaced_records": namespaced,
     }
 
 
@@ -202,6 +255,18 @@ def check(root: Path = ROOT) -> list[str]:
         if name not in claimed:
             problems.append(f"availability env {name}: wired in provider-availability.yml but claimed by no registry entry")
 
+    acknowledged = registry.get("acknowledged_unmapped_quota_providers", {})
+    for raw, ids in surfaces["quota_registry_unmapped"].items():
+        if raw not in acknowledged:
+            problems.append(
+                f"quota registry provider {raw!r} (records {ids}) maps to no onboarded family — "
+                "onboard it or acknowledge it in acknowledged_unmapped_quota_providers with a reason")
+        elif not str(acknowledged[raw]).strip():
+            problems.append(f"quota registry provider {raw!r}: acknowledgement has an empty reason")
+    for raw in acknowledged:
+        if raw not in surfaces["quota_registry_unmapped"]:
+            problems.append(f"stale acknowledgement for quota registry provider {raw!r} — it now maps to a family or is gone; remove the acknowledgement")
+
     for pid, entry in sorted(entries.items()):
         if pid not in actual:
             continue
@@ -246,6 +311,7 @@ def build_report(root: Path = ROOT) -> dict:
             "secret_aliases": actual["secret_aliases"],
             "availability_env": actual["availability_env"],
             "quota_family": actual["quota_family"],
+            "quota_registry": actual["quota_registry"],
             "public_catalog": actual["public_catalog"],
             "review_login": actual["review_login"],
             "review_check_app": actual["review_check_app"],
@@ -259,11 +325,14 @@ def build_report(root: Path = ROOT) -> dict:
                     "regenerate with scripts/cadence_provider_onboarding.py render. "
                     "Secret names only; no values, no admission decision.",
         "providers": rows,
+        "quota_registry_unmapped": surfaces["quota_registry_unmapped"],
+        "quota_registry_namespaced_records": surfaces["quota_registry_namespaced_records"],
         "counts": {
             "providers": len(rows),
             "llm": sum(1 for r in rows if r["kind"] == "llm"),
             "review": sum(1 for r in rows if r["kind"] == "review"),
             "with_quota_adapter": sum(1 for r in rows if r["quota_family"] == "implemented_passive_adapter"),
+            "with_quota_registry": sum(1 for r in rows if r["quota_registry"]),
             "exceptions": sum(len(r["exceptions"]) for r in rows),
         },
     }
@@ -321,6 +390,144 @@ def scaffold(provider: str, kind: str, endpoint: str = "", secret_env: str = "",
     return "\n".join(out) + "\n"
 
 
+def _write_registry(root: Path, registry: dict) -> None:
+    registry["providers"] = sorted(registry["providers"], key=lambda e: e["provider"])
+    (root / "ops/cadence/provider-onboarding.json").write_text(
+        json.dumps(registry, indent=2) + "\n", encoding="utf-8")
+
+
+def autofix(root: Path = ROOT) -> list[str]:
+    """Auto-register providers that appeared on a surface without an entry.
+
+    Only the missing-entry class is auto-fixable: kind is inferred from the
+    surfaces present, and every missing expected surface is recorded as an
+    exception carrying AUTO_EXCEPTION_REASON for review in the auto-extend
+    PR. All other drift classes stay hard failures for `check`.
+    Returns the list of providers added.
+    """
+    surfaces = collect_surfaces(root)
+    registry = load_registry(root)
+    entries = {e["provider"] for e in registry["providers"]}
+    added: list[str] = []
+    for pid, actual in sorted(surfaces["providers"].items()):
+        if pid in entries:
+            continue
+        kind = "review" if (actual["review_login"] or actual["review_check_app"]) else "llm"
+        expected = LLM_SURFACES if kind == "llm" else REVIEW_SURFACES
+        entry: dict = {"provider": pid, "kind": kind}
+        exceptions = [{"surface": s, "reason": AUTO_EXCEPTION_REASON}
+                      for s in expected if not actual[s]]
+        if exceptions:
+            entry["exceptions"] = exceptions
+        registry["providers"].append(entry)
+        added.append(pid)
+    if added:
+        _write_registry(root, registry)
+    return added
+
+
+def apply_onboarding(root: Path, provider: str, kind: str, endpoint: str = "",
+                     source: str = "", bot_login: str = "", secret_env: str = "") -> list[str]:
+    """Programmatically write a new provider onto every cadence surface.
+
+    Idempotent: a surface that already carries the provider is skipped and
+    reported as such. Returns the edit log. Generator post-steps (quota
+    coverage feed) are the caller's to run — `main` prints them.
+    """
+    provider = provider.strip().lower()
+    if not re.fullmatch(r"[a-z0-9][a-z0-9_-]*", provider):
+        raise ValueError("provider id must be lowercase [a-z0-9_-]")
+    if kind == "llm" and (not endpoint or not source):
+        raise ValueError("llm apply requires --endpoint and --source (official docs URL)")
+    if kind == "review" and not bot_login:
+        raise ValueError("review apply requires --bot-login (without the [bot] suffix)")
+    if kind not in ("llm", "review"):
+        raise ValueError("kind must be 'llm' or 'review'")
+    edits: list[str] = []
+    registry = load_registry(root)
+    if any(e["provider"] == provider for e in registry["providers"]):
+        edits.append("registry entry: already present, skipped")
+    else:
+        registry["providers"].append({"provider": provider, "kind": kind})
+        _write_registry(root, registry)
+        edits.append("registry entry: added to ops/cadence/provider-onboarding.json")
+
+    if kind == "llm":
+        if not endpoint or not source:
+            raise ValueError("llm apply requires --endpoint and --source (official docs URL)")
+        secret_env = secret_env or f"{provider.upper()}_API_KEY"
+        ext_path = root / "scripts/provider_extension_catalogs.py"
+        ext = ext_path.read_text(encoding="utf-8")
+        if f'"{provider}":' in ext.split("ENDPOINTS = {", 1)[1].split("}", 1)[0]:
+            edits.append("catalog endpoint: already present, skipped")
+        else:
+            ext = ext.replace("ENDPOINTS = {\n",
+                              f'ENDPOINTS = {{\n    "{provider}": "{endpoint}",\n', 1)
+            ext = ext.replace("SOURCES = {\n",
+                              f'SOURCES = {{\n    "{provider}": "{source}",\n', 1)
+            ext_path.write_text(ext, encoding="utf-8")
+            edits.append("catalog endpoint: added to provider_extension_catalogs ENDPOINTS + SOURCES "
+                         "(SECRETS auto-derived by that module)")
+        wf_path = root / ".github/workflows/provider-availability.yml"
+        wf = wf_path.read_text(encoding="utf-8")
+        if f"secrets.{secret_env}" in wf:
+            edits.append("availability env: already wired, skipped")
+        else:
+            anchor = "      GEMINI_HEALTH_MODEL:"
+            if anchor not in wf:
+                raise ValueError("provider-availability.yml anchor (GEMINI_HEALTH_MODEL) not found")
+            wf = wf.replace(anchor, f"      {secret_env}: ${{{{ secrets.{secret_env} }}}}\n" + anchor, 1)
+            wf_path.write_text(wf, encoding="utf-8")
+            edits.append(f"availability env: wired {secret_env} in provider-availability.yml")
+        qm_path = root / "ops/quota/provider-managers.json"
+        qm = json.loads(qm_path.read_text(encoding="utf-8"))
+        if any(r["provider_family"] == provider for r in qm["provider_families"]):
+            edits.append("quota family: already present, skipped")
+        else:
+            qm["provider_families"].append({
+                "provider_family": provider, "status": "public_documentation_only",
+                "source": source, "scope": "auto-onboarded; documented scope not yet recorded",
+                "reset": "unknown", "signals": []})
+            qm["provider_families"] = sorted(qm["provider_families"], key=lambda r: r["provider_family"])
+            qm_path.write_text(json.dumps(qm, indent=2) + "\n", encoding="utf-8")
+            edits.append("quota family: stub added to ops/quota/provider-managers.json")
+        qr_path = root / QUOTA_REGISTRY
+        qr = json.loads(qr_path.read_text(encoding="utf-8"))
+        if any(s.get("provider", "").lower() == provider and s.get("lane") == "model"
+               for s in qr["services"]):
+            edits.append("quota registry: model record already present, skipped")
+        else:
+            qr["services"].append({
+                "id": f"{provider}.api", "provider": provider, "lane": "model",
+                "metric": "Free tier (auto-onboarded; quota lane to resolve)",
+                "limit": None, "unit": "requests", "window": "unknown", "reset": "unknown",
+                "zone": "UTC", "source": source, "doc_quote": "NOT ESTABLISHED",
+                "live": "none",
+                "planned_use": {"safety": 1.0,
+                                "note": "auto-onboarded by cadence_provider_onboarding apply; limit not established"}})
+            qr_path.write_text(json.dumps(qr, indent=2) + "\n", encoding="utf-8")
+            edits.append("quota registry: model-lane record added (limit NOT ESTABLISHED)")
+    elif kind == "review":
+        if not bot_login:
+            raise ValueError("review apply requires --bot-login (without the [bot] suffix)")
+        orch_path = root / ".github/workflows/peer-review-orchestrator.yml"
+        orch = orch_path.read_text(encoding="utf-8")
+        if f"'{provider}'" in orch and f"{bot_login}[bot]" in orch:
+            edits.append("orchestrator maps: already present, skipped")
+        else:
+            login_anchor = "['copilot-pull-request-reviewer[bot]', 'copilot'],"
+            app_anchor = "['copilot', 'copilot'],"
+            if login_anchor not in orch or app_anchor not in orch:
+                raise ValueError("peer-review-orchestrator.yml map anchors not found")
+            orch = orch.replace(login_anchor, login_anchor + f"\n              ['{bot_login}[bot]', '{provider}'],", 1)
+            orch = orch.replace(app_anchor, app_anchor + f"\n              ['{provider}', '{provider}'],", 1)
+            orch_path.write_text(orch, encoding="utf-8")
+            edits.append("orchestrator maps: providerLogins + providerCheckApps entries added")
+    else:
+        raise ValueError("kind must be 'llm' or 'review'")
+    return edits
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="cmd", required=True)
@@ -333,6 +540,14 @@ def main(argv: list[str] | None = None) -> int:
     sc.add_argument("--secret-env", default="")
     sc.add_argument("--bot-login", default="")
     sc.add_argument("--module", choices=["extension", "core"], default="extension")
+    sub.add_parser("autofix", help="auto-register providers missing a registry entry, then render")
+    ap = sub.add_parser("apply", help="programmatically onboard a new provider onto every surface")
+    ap.add_argument("provider")
+    ap.add_argument("--kind", choices=["llm", "review"], required=True)
+    ap.add_argument("--endpoint", default="")
+    ap.add_argument("--source", default="", help="official docs/rate-limits URL (llm)")
+    ap.add_argument("--secret-env", default="")
+    ap.add_argument("--bot-login", default="")
     args = parser.parse_args(argv)
 
     if args.cmd == "check":
@@ -350,6 +565,26 @@ def main(argv: list[str] | None = None) -> int:
     if args.cmd == "render":
         GENERATED.write_text(json.dumps(build_report(), indent=2) + "\n", encoding="utf-8")
         print(f"wrote {GENERATED.relative_to(ROOT)}")
+        return 0
+    if args.cmd == "autofix":
+        added = autofix()
+        GENERATED.write_text(json.dumps(build_report(), indent=2) + "\n", encoding="utf-8")
+        print(f"autofix: added {added if added else 'none'}; matrix re-rendered")
+        return 0
+    if args.cmd == "apply":
+        try:
+            edits = apply_onboarding(ROOT, args.provider, args.kind, args.endpoint,
+                                     args.source, args.bot_login, args.secret_env)
+        except ValueError as exc:
+            print(f"error: {exc}", file=sys.stderr)
+            return 2
+        for edit in edits:
+            print(f"  - {edit}")
+        GENERATED.write_text(json.dumps(build_report(), indent=2) + "\n", encoding="utf-8")
+        print("  - generated matrix: re-rendered")
+        print("post-steps: python3 scripts/provider_quota_coverage.py --output "
+              "apps/help-wanted-dashboard/data/provider-quota-coverage.json && "
+              "python3 scripts/cadence_provider_onboarding.py check")
         return 0
     if args.cmd == "scaffold":
         try:

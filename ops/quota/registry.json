@@ -1477,6 +1477,23 @@
    "planned_use": {
     "note": "treat the ceiling as unknown; the 429 body's next_flush_time is the only documented telemetry Historical allowance mapping (fleet account-creation recon): the free route is $0-priced Flash models; per-account numeric limits remain unpublished."
    }
+  },
+  {
+   "id": "huggingface.hub_api",
+   "provider": "huggingface",
+   "lane": "ops",
+   "metric": "Hub API rate limit (api category)",
+   "limit": null,
+   "unit": "requests per 5-minute fixed window (account-dynamic)",
+   "window": "5-minute fixed window",
+   "reset": "RateLimit header t (seconds to reset)",
+   "zone": "UTC",
+   "source": "https://huggingface.co/docs/hub/en/rate-limits",
+   "doc_quote": "RateLimit header carries remaining r and seconds-to-reset t; categories are Hub API / Resolver / Pages; 5-minute fixed windows; account/org/member context applies (fleet evidence matrix, PROVIDER-QUOTA-MANAGERS.md).",
+   "live": "GET https://huggingface.co/api/whoami-v2 \u2014 RateLimit response header, read by scripts/quota_poll.py hf_hub_reader under the fleet credential (canonical HUGGINGFACE_TOKEN; alias resolve order shared with the availability probe). No inference sent.",
+   "planned_use": {
+    "note": "Hub API quota only \u2014 NOT Inference Providers or router.huggingface.co quota; the two surfaces are never blended (provider-quota-managers rule). Reader reports remaining/reset only; no documented fixed limit is recorded."
+   }
   }
  ]
 }

@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "db13243169e83ca156c4ec3bf12d8ea4ef34cb9325669c188385ed501eb790d6",
-  "workflow_count": 195,
+  "source_fingerprint": "11e67cef015258dd2750a6933b34371523304078ed7b23eb3e4f31bc2f308a55",
+  "workflow_count": 196,
   "workflows": [
     {
       "action_pins": [
@@ -556,6 +556,25 @@
       "triggers": [
         "issue_comment",
         "pull_request",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: challenge-countdowns-feed-collect cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "collect"
+      ],
+      "name": "challenge-countdowns-feed-collect",
+      "path": ".github/workflows/challenge-countdowns-feed-collect.yml",
+      "schedules": [
+        "23 7 * * 2"
+      ],
+      "triggers": [
+        "push",
+        "schedule",
         "workflow_dispatch"
       ]
     },

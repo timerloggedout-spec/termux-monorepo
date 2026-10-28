@@ -165,3 +165,29 @@ environment installs, not repo content). Remote-first (dev server on
 this VM; nothing on-device). Credentials names-only — none were
 needed. No variant decides readiness, dispatch, merge, or approval:
 this record is evidence for the operator, not a decision.
+
+## Addendum — 2026-10-27 closeout (this lane)
+
+Two non-gated open items closed with receipted evidence (record:
+`implementation/ADDENDUM-2026-10-27.json`). Ballots, scores and G6
+dispositions stand as recorded — the evidence base is updated, the
+vote is not re-run.
+
+- **V3 omes suite: 0/1 → 1/1.** omes (temporalio/omes) built in a
+  sandbox toolchain and executed against an embedded Temporal
+  server: 10/10 iterations, exit 0, receipted (command + output
+  sha256 in the addendum record). Scope honesty: this proves the
+  load layer runs here; it is not a versioning/autoscale proof.
+  V3 stays REFERENCE-ONLY — the blocker narrows to K8s actuation.
+- **N4: untested → compile-tested.** `scripts/temporal/gantt_compile.py`
+  compiles filing-format Gantt plans into a validated workflow DAG
+  (topological stages, critical path, dependency closure; unknown
+  deps and cycles fail with aggregated violations; tests in
+  `tests/test_temporal_gantt_compile.py`). Run over real filed
+  plans it caught a real defect: the fleet's filed Gantt template
+  depends `flywheel reweight` on `consensus implementation`, a
+  phase actually named `feature extraction + consensus
+  implementation` — dangling in every filing that used the
+  template. The gate ignores dependency names semantically, so no
+  scoring was affected; the fix belongs to the filing template.
+  Executing a compiled plan *as* a workflow remains N5 future work.

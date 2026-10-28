@@ -128,6 +128,29 @@
     {
       "handling": {
         "escalation": [
+          "If Facebook rejects the assigned Page name, the marketing-channel lane surfaces it; the registry assigns a replacement under the same rule - names are never improvised, and never borrowed from another cell's stem.",
+          "Cross-cell contamination (any link, mention, or shared asset between cells) breaks both 4n0n isolation and test attribution - surface immediately."
+        ],
+        "owner_lane": "marketing-channel",
+        "receipts_route": "Page creation is the owner's step in Facebook. The issued Page handle/URL and state are recorded in the Profile Registry under the marketing-channel section by that lane and cited by PR. Per-cell referral codes and landing params live in config/referral_programs.json (ab_test), wired by the marketing-channel lane.",
+        "submission_authority": "The marketing-channel lane operates the Page under the moniker within the referral test design (config/referral_programs.json ab_test). Page creation itself is owner-in-Facebook; the connector cannot create Pages."
+      },
+      "kind": "page",
+      "moniker": "n0nCodeNotCard",
+      "notes": [
+        "Facebook Page name assigned 2026-10-27 (owner directive via the marketing-channel lane) for referral test cell C 'mechanic' (urgency/mechanic-first: 48h redeem window, code-not-card; landing param ?ch=fb-c, to be wired by the marketing-channel lane). Owner creates the Page in Facebook under this exact name; the issued handle/URL is a profile fact for the Profile Registry (marketing-channel section). No shared stems with the other cells (4n0n rule 3, per-cell)."
+      ],
+      "platform": "Code, Not Card",
+      "platform_id": "code-not-card",
+      "profile_pending": "marketing-channel",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "pending"
+    },
+    {
+      "handling": {
+        "escalation": [
           "Card-gated signup is a BLOCK: it stops and surfaces as an owner item.",
           "If the platform rejects the assigned username (taken or invalid format), the account-creation lane surfaces it; the registry assigns the rule's collision variant (smallest free integer >= 2) - the lane never improvises a different name."
         ],
@@ -176,6 +199,29 @@
       ],
       "role": "entrant",
       "status": "blocked-owner-gate"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "If Facebook rejects the assigned Page name, the marketing-channel lane surfaces it; the registry assigns a replacement under the same rule - names are never improvised, and never borrowed from another cell's stem.",
+          "Cross-cell contamination (any link, mention, or shared asset between cells) breaks both 4n0n isolation and test attribution - surface immediately."
+        ],
+        "owner_lane": "marketing-channel",
+        "receipts_route": "Page creation is the owner's step in Facebook. The issued Page handle/URL and state are recorded in the Profile Registry under the marketing-channel section by that lane and cited by PR. Per-cell referral codes and landing params live in config/referral_programs.json (ab_test), wired by the marketing-channel lane.",
+        "submission_authority": "The marketing-channel lane operates the Page under the moniker within the referral test design (config/referral_programs.json ab_test). Page creation itself is owner-in-Facebook; the connector cannot create Pages."
+      },
+      "kind": "page",
+      "moniker": "n0nDreamInProduction",
+      "notes": [
+        "Facebook Page name assigned 2026-10-27 (owner directive via the marketing-channel lane) for referral test cell A 'sizzle' (benefit-first copy; landing param ?ch=fb-a). Owner creates the Page in Facebook under this exact name; the issued handle/URL is a profile fact for the Profile Registry (marketing-channel section). No shared stems with the other cells (4n0n rule 3, per-cell)."
+      ],
+      "platform": "Dream In Production",
+      "platform_id": "dream-in-production",
+      "profile_pending": "marketing-channel",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "pending"
     },
     {
       "handling": {
@@ -318,6 +364,29 @@
       "platform": "ModelScope",
       "platform_id": "model-scope",
       "profile_pending": "account-creation",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "pending"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "If Facebook rejects the assigned Page name, the marketing-channel lane surfaces it; the registry assigns a replacement under the same rule - names are never improvised, and never borrowed from another cell's stem.",
+          "Cross-cell contamination (any link, mention, or shared asset between cells) breaks both 4n0n isolation and test attribution - surface immediately."
+        ],
+        "owner_lane": "marketing-channel",
+        "receipts_route": "Page creation is the owner's step in Facebook. The issued Page handle/URL and state are recorded in the Profile Registry under the marketing-channel section by that lane and cited by PR. Per-cell referral codes and landing params live in config/referral_programs.json (ab_test), wired by the marketing-channel lane.",
+        "submission_authority": "The marketing-channel lane operates the Page under the moniker within the referral test design (config/referral_programs.json ab_test). Page creation itself is owner-in-Facebook; the connector cannot create Pages."
+      },
+      "kind": "page",
+      "moniker": "n0nReceiptsCount",
+      "notes": [
+        "Facebook Page name assigned 2026-10-27 (owner directive via the marketing-channel lane) for referral test cell B 'steak' (numbers-first copy, Value Derived board proof; landing param ?ch=fb-b). Owner creates the Page in Facebook under this exact name; the issued handle/URL is a profile fact for the Profile Registry (marketing-channel section). No shared stems with the other cells (4n0n rule 3, per-cell)."
+      ],
+      "platform": "Receipts Count",
+      "platform_id": "receipts-count",
+      "profile_pending": "marketing-channel",
       "profile_ref": null,
       "registrations": [],
       "role": "account",

@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-10-28T16:36:51Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-10-28T16:49:56Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `ee3f4de406` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `edc28c8a26` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 0 issues, 96 PRs. PR classes: EXTRACT 29 / CANDIDATE 31 / NEED_EVIDENCE 36 / SUPERSEDE 0.
+**Open inventory:** 284 issues, 96 PRs. PR classes: EXTRACT 29 / CANDIDATE 31 / NEED_EVIDENCE 36 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -106,16 +106,23 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1869 | NEED_EVIDENCE | unlabelled | `51a2885764` | not_reported | not_reported | unstable | chore(linguist): refresh linguist-panel-feed.json |
 | #1872 | NEED_EVIDENCE | unlabelled | `a1538d7656` | not_reported | success | unstable | chore(dashboards): refresh surface feeds |
 | #1883 | NEED_EVIDENCE | unlabelled | `df26468835` | not_reported | not_reported | unstable | chore(countdowns): refresh challenge-countdowns-feed.json |
-| #1965 | NEED_EVIDENCE | unlabelled | `acb87f6dc5` | not_reported | not_reported | clean | chore(delphi): refresh delphi-rfp-feed.json |
+| #1965 | NEED_EVIDENCE | unlabelled | `1275517642` | not_reported | not_reported | clean | chore(delphi): refresh delphi-rfp-feed.json |
 | #1966 | NEED_EVIDENCE | unlabelled | `5b45227190` | not_reported | not_reported | unknown | ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28) |
-| #2053 | NEED_EVIDENCE | unlabelled | `1e53c2c46a` | not_reported | queued | unstable | chore(delphi): refresh delphi-ledger-feed.json |
+| #2053 | NEED_EVIDENCE | unlabelled | `e64ae8ab1f` | not_reported | not_reported | clean | chore(delphi): refresh delphi-ledger-feed.json |
 
 ## Families (open)
 
 | Family | Issues | PRs |
 |--------|--------|-----|
-| other | 0 | 1 |
-| proposal | 0 | 1 |
-| unlabelled | 0 | 94 |
+| ci | 4 | 0 |
+| delphi | 80 | 0 |
+| mesh | 5 | 0 |
+| other | 103 | 1 |
+| proposal | 32 | 1 |
+| providers | 13 | 0 |
+| research | 2 | 0 |
+| security | 10 | 0 |
+| temporal | 2 | 0 |
+| unlabelled | 33 | 94 |
 
-**Unlabelled open issues (0):** none — worked oldest-first by the issue-lifecycle lane pass.
+**Unlabelled open issues (33):** #247, #259, #289, #300, #308, #343, #388, #389, #763, #876, #921, #923, #968, #1024, #1025, #1026, #1118, #1128, #1129, #1130, #1226, #1279, #1437, #1450, #1497, #1546, #1558, #1559, #1588, #1592, #1593, #1622, #1683 — worked oldest-first by the issue-lifecycle lane pass.

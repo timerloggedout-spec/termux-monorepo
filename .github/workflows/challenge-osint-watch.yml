@@ -15,6 +15,7 @@ on:
     paths:
       - 'ops/challenge/coordinator.json'
       - 'scripts/challenge/osint_watch.py'
+      - 'scripts/challenge/field_size_scrape.py'
 
 concurrency:
   group: challenge-osint-watch
@@ -33,6 +34,10 @@ jobs:
       NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
     steps:
       - uses: actions/checkout@v4
+      - name: Scrape field-size counts (participants/projects)
+        run: |
+          set -euo pipefail
+          python3 -B scripts/challenge/field_size_scrape.py --root .
       - name: Collect coverage + page snapshots
         run: |
           set -euo pipefail
@@ -45,7 +50,7 @@ jobs:
       - name: Propose the refresh as a PR
         run: |
           set -euo pipefail
-          if git diff --quiet -- ops/challenge/osint; then
+          if git diff --quiet -- ops/challenge/osint ops/challenge/coordinator.json; then
             echo "osint unchanged; no refresh PR"
             exit 0
           fi
@@ -53,7 +58,7 @@ jobs:
           git config user.name "challenge-osint-watch"
           git config user.email "actions@github.com"
           git checkout -B "$branch"
-          git add ops/challenge/osint
+          git add ops/challenge/osint ops/challenge/coordinator.json
           git commit -m "chore(osint): refresh coverage + page snapshots"
           git push -f origin "$branch"
           gh pr create --base master --head "$branch" \

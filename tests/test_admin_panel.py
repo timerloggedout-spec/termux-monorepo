@@ -77,3 +77,15 @@ def test_win_probability_stays_off_public_surfaces():
         text = feed_file.read_text()
         assert "win_probability" not in text, feed_file.name
         assert "metrics_internal" not in text, feed_file.name
+
+
+def test_admin_renders_winprob_v2_range_and_confidence():
+    """winprob/v2 (feed PR #2251): the estimate now carries a range and
+    a confidence; realized events read a recorded 0 (never confused
+    with the null "not established"). The v1 history block
+    (superseded_v1) is NOT rendered — it stays in the feed/record.
+    Field-size states (amendment 2) are unchanged."""
+    html = _admin()
+    assert "w.range" in html and "w.confidence" in html
+    assert "w.prior" in html and "w.unknowns" in html
+    assert "superseded_v1" not in html

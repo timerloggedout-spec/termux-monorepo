@@ -118,6 +118,9 @@ def collect(cache: Path) -> dict:
             seen_keys.add(key)
             ev = {"event_key": key, "comment_id": c["id"],
                   "created_at": c["created_at"], "marker": mark,
+                  # marked envelope = machine state; unmarked signed
+                  # append = record prose (Delphi semantics, 2026-10-28)
+                  "class": "machine-state" if mark is not None else "record",
                   "headline": first_line(body, led["markers"]),
                   "payload": payload_of(body)}
             events.append(ev)
@@ -141,10 +144,14 @@ def collect(cache: Path) -> dict:
                 f"partial cache refused: living record {rec['id']} issue #{num} absent")
         body = issues[num].get("body") or ""
         m = SNAPSHOT_AT.search(body)
+        first = body.lstrip().splitlines()[0].strip() if body.strip() else ""
         feed["living_records"].append({
             "id": rec["id"], "title": rec["title"], "issue": num,
             "kind": rec["kind"], "semantics": rec["semantics"],
             "state_rule": rec["state_rule"],
+            "marker": rec.get("marker"),
+            "assigned_marker": rec.get("assigned_marker"),
+            "body_marker": first if first.startswith("<!--") else None,
             "version_key": hashlib.sha256(body.encode()).hexdigest(),
             "snapshot_at": m.group(1) if m else None,
             "updated_at": issues[num].get("updated_at"), "body": body})

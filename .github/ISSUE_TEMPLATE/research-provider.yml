@@ -1,5 +1,5 @@
 name: Research — Provider
-description: Research a provider (API/model/data service) into the Repository Observatory pipeline. Filing IS the trigger — research-intake parses this form and posts the seed/starter record back, and the Observatory's daily collect gathers it alongside its owned/starred/watched signals.
+description: Research a provider (API/model/data service) into the provider-research pipeline. Filing IS the trigger — research-intake parses this form and posts the seed/starter record back.
 title: "[research:provider] <provider-id>"
 labels: ["research", "research:provider"]
 body:
@@ -9,7 +9,7 @@ body:
         One provider, one research run. Intake (`.github/workflows/research-intake.yml`,
         `scripts/research/research_intake.py`) maps these fields to the pipeline inputs of
         provider-recon-compound / provider-availability / the quota registry, and comments the
-        seed record on this issue; the Observatory (repository-observatory.yml, daily) then gathers it via observatory_intake.py into repository-index.json + matrix.md. A starred/forked/watched repo is a research *signal*, never
+        seed record on this issue. A starred/forked/watched repo is a research *signal*, never
         an adoption order. Never paste secret values: name the Actions secret only (names must
         come from the phantom-secrets inventory / issue #184 — do not invent one).
   - type: input

@@ -17,6 +17,7 @@ on:
     branches: [master]
     paths:
       - 'scripts/dashboards/surface_feeds.py'
+      - 'scripts/dashboards/discrimination_watch.py'
       - 'scripts/dashboards/workflow_observations.json'
       - 'scripts/dashboards/delphi_weights_observation.json'
       - 'ml/pipelines/moneyball/**'
@@ -40,6 +41,7 @@ concurrency:
 permissions:
   contents: write
   pull-requests: write
+  issues: write
 
 jobs:
   collect:
@@ -53,6 +55,8 @@ jobs:
         run: |
           set -euo pipefail
           python3 -B scripts/dashboards/surface_feeds.py --surface all
+      - name: 3L0 discrimination watch (diagnostic trigger)
+        run: python3 -B scripts/dashboards/discrimination_watch.py
       - name: Propose the refresh as a PR
         run: |
           set -euo pipefail

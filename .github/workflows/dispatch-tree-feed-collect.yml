@@ -1,0 +1,64 @@
+# Dispatch-tree feed refresh (contract: docs/ops/DISPATCH-TREE-FEED.md).
+# Regenerates scripts/dashboards/dispatch_tree_observation.json (read-only
+# observer, Actions API) and apps/help-wanted-dashboard/data/
+# dispatch-tree-feed.json (offline collector), and proposes them as a
+# refresh PR — never commits directly. Mirrors the
+# linguist-panel-feed-collect pattern. Each run appends one busy sample
+# to the feed's admission series.
+name: dispatch-tree-feed-collect
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '7 7 * * *'
+  push:
+    branches: [master]
+    paths:
+      - '.github/workflows/quota-dispatch-tree.yml'
+      - 'scripts/dashboards/dispatch_tree_observe.py'
+      - 'scripts/dashboards/dispatch_tree_feed.py'
+
+concurrency:
+  group: dispatch-tree-feed-collect
+  cancel-in-progress: false
+
+permissions:
+  actions: read
+  contents: write
+  pull-requests: write
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Observe + collect the feed
+        run: |
+          set -euo pipefail
+          python3 -B scripts/dashboards/dispatch_tree_observe.py \
+            --out scripts/dashboards/dispatch_tree_observation.json
+          python3 -B scripts/dashboards/dispatch_tree_feed.py \
+            --out apps/help-wanted-dashboard/data/dispatch-tree-feed.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Propose the refresh as a PR
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- scripts/dashboards/dispatch_tree_observation.json apps/help-wanted-dashboard/data/dispatch-tree-feed.json; then
+            echo "feed unchanged; no refresh PR"
+            exit 0
+          fi
+          branch="dispatch-tree-feed/refresh"
+          git config user.name "dispatch-tree-feed-collect"
+          git config user.email "actions@github.com"
+          git checkout -B "$branch"
+          git add scripts/dashboards/dispatch_tree_observation.json apps/help-wanted-dashboard/data/dispatch-tree-feed.json
+          git commit -m "chore(dashboards): refresh dispatch-tree feed + observation"
+          git push -f origin "$branch"
+          gh pr create --base master --head "$branch" \
+            --title "chore(dashboards): refresh dispatch-tree feed" \
+            --body "Automated dispatch-tree feed refresh (observer: scripts/dashboards/dispatch_tree_observe.py; collector: scripts/dashboards/dispatch_tree_feed.py; contract: docs/ops/DISPATCH-TREE-FEED.md). Busy counts are read live at collection time; nothing is copied forward." \
+            || echo "refresh PR already open"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

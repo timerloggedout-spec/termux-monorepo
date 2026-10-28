@@ -50,3 +50,13 @@ def test_no_new_data_sources():
     html = _html()
     fetches = re.findall(r"fetch\(([^)]*)\)", html)
     assert fetches == ['"./data/challenge-countdowns-feed.json"'], fetches
+
+
+def test_gantt_axis_ticks_on_pt_midnights():
+    html = _html()
+    # Axis ticks align to America/Los_Angeles calendar midnights and step
+    # 7 PT days (DST-safe). Epoch-aligned ticks (t0/(7*DAY)) would land at
+    # 16:00/17:00 PT and drift an hour across the Nov 1 fallback.
+    assert "ptMidnight" in html
+    assert "ptMidnight(tt+7*DAY+DAY/2)" in html
+    assert "t0/(7*DAY)" not in html

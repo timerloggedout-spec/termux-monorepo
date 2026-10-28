@@ -101,8 +101,14 @@ function renderGantt(){
   const X=t=>LW+(t-t0)/(t1-t0)*(W-LW-12);
   const DF=new Intl.DateTimeFormat("en-US",{timeZone:"America/Los_Angeles",month:"short",day:"numeric"});
   let s='<svg viewBox="0 0 '+W+' '+H+'" width="100%" role="img" aria-label="Hackathon programme Gantt chart" style="min-width:660px;display:block">';
-  let tickT=Math.ceil(t0/(7*DAY))*(7*DAY);
-  for(let tt=tickT; tt<=t1; tt+=7*DAY){
+  // Axis ticks sit on PT calendar midnights, stepped 7 PT days. Epoch-
+  // aligned ticks would land at 16:00/17:00 PT and drift an hour across
+  // the Nov 1 DST fallback — inside this chart's window.
+  const PTF=new Intl.DateTimeFormat("en-US",{timeZone:"America/Los_Angeles",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false});
+  const ptParts=t=>{ const o={}; for(const p of PTF.formatToParts(new Date(t))) o[p.type]=Number(p.value); return o; };
+  const ptOffset=t=>{ const o=ptParts(t); return Date.UTC(o.year,o.month-1,o.day,o.hour%24,o.minute,o.second)-Math.floor(t/1000)*1000; };
+  const ptMidnight=t=>{ const o=ptParts(t); const guess=Date.UTC(o.year,o.month-1,o.day); return guess-ptOffset(guess); };
+  for(let tt=ptMidnight(t0); tt<=t1; tt=ptMidnight(tt+7*DAY+DAY/2)){
     s+='<line x1="'+X(tt)+'" y1="'+AX+'" x2="'+X(tt)+'" y2="'+(H-6)+'" style="stroke:var(--line)" stroke-width="1"/>';
     s+='<text x="'+X(tt)+'" y="14" class="g-axis">'+esc(DF.format(new Date(tt)))+'</text>';
   }

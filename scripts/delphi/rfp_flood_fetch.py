@@ -61,7 +61,8 @@ def main() -> int:
         comments[str(issue["number"])] = paged(
             token, f"{base}/issues/{issue['number']}/comments")
     (cache / "comments.json").write_text(json.dumps(comments))
-    for name in ("surfaces.json", "panel.json"):
+    for name in ("surfaces.json", "panel.json", "rfp-segments.json",
+                 "research-silos.json"):
         src = Path("ops/delphi") / name
         if src.exists():
             shutil.copy(src, cache / name)

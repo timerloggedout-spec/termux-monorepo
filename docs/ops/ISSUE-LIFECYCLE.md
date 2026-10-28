@@ -417,7 +417,12 @@ labelled at birth by the gate — plus one new label in use, `temporal`
   reporting → both green or no merge; no gate runs after a
   3-minute grace + a diff of only the two generated files →
   provenance merge (the basis #2055/#2057 were hand-merged on);
-  API errors retry and never fail the step. What remains
+  API errors retry and never fail the step. The same run's other
+  lesson landed next: the REST fetch needed ~200 calls and died on
+  the installation rate limit in the generate step itself (run
+  `40752171030`) — the generator's live fetch is now GraphQL
+  (~5 calls for the identical snapshot; shaping is a pure,
+  unit-tested function). What remains
   lane-side is judgment, not process: titles matching no mechanical
   class (the residue after the rules), closure-evidence audits vs
   C1, and corrections like the ones above.

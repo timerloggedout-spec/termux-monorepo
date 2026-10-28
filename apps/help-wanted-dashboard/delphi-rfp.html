@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Delphi RFP — Segmentation & Improve-Cycle Progress</title>
+<link rel="stylesheet" href="./dashboard.css">
+<style>
+  .feed-list{list-style:none;margin:0;padding:0}
+  .feed-list li{display:flex;justify-content:space-between;gap:1rem;padding:.35rem 0;border-bottom:1px solid var(--line)}
+  .feed-list li:last-child{border-bottom:none}
+  .meta{color:var(--muted);font-size:.8rem}
+  .gap{border-left:3px solid var(--gold);padding:.4rem .8rem;margin:.5rem 0}
+  table.rank{width:100%;border-collapse:collapse}
+  table.rank td,table.rank th{padding:.35rem .5rem;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+</style>
+</head>
+<body>
+<header>
+<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/help-wanted/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="https://timerloggedout-spec.github.io/help-wanted/quota.html">Quota</a><a href="https://timerloggedout-spec.github.io/help-wanted/admin.html">Admin</a><a href="https://timerloggedout-spec.github.io/help-wanted/oracle.html">Oracle</a><a href="https://timerloggedout-spec.github.io/help-wanted/delphi-rfp.html" aria-current="page">Delphi RFP</a><a href="https://timerloggedout-spec.github.io/help-wanted/3l0.html">3L0</a><a href="https://timerloggedout-spec.github.io/help-wanted/moneyball.html">MoneyBall</a><a href="https://timerloggedout-spec.github.io/help-wanted/mvt.html">MVT</a><a href="https://timerloggedout-spec.github.io/help-wanted/doe.html">DoE</a><a href="https://timerloggedout-spec.github.io/help-wanted/ates.html">ATES</a><a href="https://timerloggedout-spec.github.io/help-wanted/free-tier-value.html">Free-tier value</a><a href="https://timerloggedout-spec.github.io/help-wanted/dispatch-tree.html">Dispatch Tree</a><a href="https://timerloggedout-spec.github.io/help-wanted/countdowns.html">Countdowns</a><a href="https://timerloggedout-spec.github.io/help-wanted/linguist.html">Linguist</a><a href="https://help-wanted-oversight.vercel.app/">Vercel deployment</a><a href="https://timerloggedout-spec.github.io/help-wanted/sitemap.xml">Sitemap</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></nav>
+<div class="hero">
+<p class="eyebrow">Delphi RFP · Segmentation</p>
+<h1>Delphi RFP progress — segmented improve cycles</h1>
+<p class="sub">Every open <code>delphi:rfp</code> issue, segmented per <code>docs/ops/DELPHI-RFP-SEGMENTATION.md</code>: research silos compare within their segment only (baseline vs rnd / selected / control) on three axes; the gate score for research ids is an admission rubric, never a result. This page consumes <code>data/delphi-rfp-feed.json</code> (collector <code>scripts/delphi/rfp_segment_feed.py</code>) and nothing else: counts are the census snapshot's, stamped with its read time.</p>
+</div>
+</header>
+<main>
+<section class="card">
+<h2>Feed</h2>
+<ul class="feed-list">
+<li><span>Feed (<code>data/delphi-rfp-feed.json</code>)</span><span class="pill gold" id="feed-state">…</span></li>
+<li><span>Generated</span><span id="feed-generated">—</span></li>
+<li><span>Census read at</span><span id="census-read">—</span></li>
+<li><span>Open delphi:rfp (census)</span><span id="total-open">—</span></li>
+</ul>
+<div id="feed-error" class="gap" hidden>The feed could not be loaded, so nothing is shown rather than anything guessed.</div>
+</section>
+<div id="content"></div>
+<section class="card">
+<h2>Sources</h2>
+<ul id="sources" class="feed-list"></ul>
+</section>
+</main>
+<script>
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+async function load(){
+  let f;
+  try{
+    const r = await fetch("./data/delphi-rfp-feed.json");
+    if(!r.ok) throw new Error(r.status);
+    f = await r.json();
+  }catch(e){
+    document.getElementById("feed-state").textContent = "unavailable";
+    document.getElementById("feed-error").hidden = false;
+    return;
+  }
+  document.getElementById("feed-state").textContent = "live · " + f.schema;
+  document.getElementById("feed-generated").textContent = f.generated_at;
+  document.getElementById("census-read").textContent = f.sources.census_read_at;
+  document.getElementById("total-open").textContent = f.totals.open_delphi_rfp;
+  const out = [];
+  const cls = f.classes["research-silos"];
+  out.push(`<section class="card"><h2>Research silos — criteria & questions</h2>
+  <p>${esc(cls.description)}</p>
+  <p>Criteria (the comparison axes):</p><ul>${cls.criteria.map(c => `<li><code>${esc(c)}</code></li>`).join("")}</ul>
+  <p>Questions per segment:</p><ul>${cls.questions.map(q => `<li>${esc(q)}</li>`).join("")}</ul>
+  <p>Cycle: ${cls.cycle.map(s => esc(s)).join(" → ")}</p></section>`);
+  const mlink = m => m ? `<a href="${esc(m.url)}">#${esc(m.number)}</a>` : "—";
+  const srows = f.research_segments.map(s => {
+    const st = s.status;
+    const axes = Object.entries(st.axes_status || {}).map(([k, v]) => `${esc(k)}: ${esc(v)}`).join(" · ");
+    return `<tr><td><code>${esc(s.segment_id)}</code></td>
+    <td>${mlink(s.members.baseline)} / ${mlink(s.members.rnd)} / ${mlink(s.members.selected)} / ${mlink(s.members.control)}</td>
+    <td>${esc(s.progress.filed)}/${esc(s.progress.expected)} filed · axes ${esc(s.progress.axes_recorded)}/${esc(s.progress.axes_total)}</td>
+    <td>${esc(st.stage)}${st.gate_award ? ` · gate ${esc(st.gate_award)} ${esc(st.effective_score)}/25 · recheck ${esc(st.recheck)}` : ""}<br><span class="meta">${axes}</span></td></tr>`;
+  }).join("");
+  out.push(`<section class="card"><h2>Research segments — progress & status</h2>
+  <table class="rank"><tr><th>Segment (silo)</th><th>Members: baseline / rnd / selected / control</th><th>Progress</th><th>Status</th></tr>${srows}</table>
+  <p class="meta">The gate line is the admission rubric only — uniform by construction for research ids; differentiation lives on the axes.</p></section>`);
+  for(const o of (f.recorded_outcomes || [])){
+    out.push(`<section class="card"><h2>Recorded outcome — ${esc(o.scope)}</h2>
+    <p>Gate award: <strong>${esc(o.gate_award)}</strong> · effective ${esc(o.effective_score)}/${esc(o.score_scale)} · ${esc(o.convergence)} · recheck ${esc(o.recheck)}</p>
+    <p>${esc(o.uniformity_note)}</p>
+    <p class="meta">Record: <a href="${esc(o.url)}">${esc(o.record)}</a></p></section>`);
+  }
+  const q = f.quota_segment;
+  out.push(`<section class="card"><h2>Quota surfaces — ${esc(q.progress.filed)} RFPs</h2>
+  <p>${esc(f.classes["quota-surfaces"].description)}</p>
+  <p>${q.members.map(m => `<a href="${esc(m.url)}">#${esc(m.number)}</a> <code>${esc(m.surface_id)}</code>`).join(" · ")}</p>
+  <p class="meta">${esc(q.status.note)}</p></section>`);
+  const mrows = f.meta_segments.map(s => `<tr><td><code>${esc(s.segment_id)}</code></td><td>${s.members.self ? mlink(s.members.self) : "—"}</td><td>${esc(s.status.stage)}</td></tr>`).join("");
+  out.push(`<section class="card"><h2>Meta / process segments</h2>
+  <table class="rank"><tr><th>Segment</th><th>RFP</th><th>Status</th></tr>${mrows}</table>
+  <p>Questions: ${f.classes["meta-process"].questions.map(esc).join(" ")}</p></section>`);
+  if((f.unassigned || []).length){
+    out.push(`<section class="card"><h2>Unassigned</h2><div class="gap">${f.unassigned.map(u => `#${esc(u.number)} ${esc(u.title)}`).join("<br>")}</div></section>`);
+  }
+  document.getElementById("content").innerHTML = out.join("");
+  document.getElementById("sources").innerHTML = Object.entries(f.sources).map(([k, v]) => `<li><span>${esc(k)}</span><span>${esc(v)}</span></li>`).join("");
+}
+load();
+</script>
+</body>
+</html>

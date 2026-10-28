@@ -114,3 +114,25 @@ def test_segments_block_and_doe_components_group():
     doe = [s for s in feed["segments"]["segments"] if s["class"] == "doe-components"]
     assert sorted(m for s in doe for m in s["members"]) == [1975, 1976, 1977, 1978]
     assert feed["segments"]["unassigned"] == []
+
+
+def test_participant_segments_are_the_research_surface():
+    """Participants reclassification (PR #2039 + feed PR #2044): the 12
+    research silos are Delphi process participants, not applicants —
+    kind:"participant" segments with arms[] per member, gate_scored 0,
+    axes intact. Entry-level research cards are gone; the segments
+    table renders the arms as the research surface, and the dead
+    research filing filters are removed."""
+    html = _html()
+    assert "s.kind" in html and "s.arms" in html and "a.arm" in html
+    assert "PSEG" in html and "not gate-scored" in html and 'id="seg-' in html
+    assert "participant" in html.split('class="lede"', 1)[1].split("</p>", 1)[0]
+    assert 'data-v="research-baseline"' not in html and 'data-v="research-variant"' not in html
+    assert 'data-v="research-silos"' not in html  # no research filing cards to filter
+    feed = _feed()
+    research = [s for s in feed["segments"]["segments"] if s["class"] == "research-silos"]
+    assert research and all(s.get("kind") == "participant" for s in research)
+    assert all(len(s["arms"]) == len(s["members"]) for s in research)
+    assert all(s["gate_scored"] == 0 for s in research)
+    assert all(s["axes_recorded"] == s["axes_total"] for s in research)
+    assert not [r for r in feed["rfps"] if r["group"].startswith("research")]

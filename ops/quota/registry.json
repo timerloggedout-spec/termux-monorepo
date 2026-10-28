@@ -353,7 +353,7 @@
    "source": "https://openrouter.ai/docs/api/api-reference/api-keys/get-current-api-key",
    "live": "registered live status-only (owner decision 2026-10-28): scripts/quota_poll.py openrouter_key_reader wraps scripts/provider_quota_service.py --service openrouter.key --observe in-process when OPENROUTER_KEY_OBSERVE=1 (vercel-quota-probe workflow); fixed GET https://openrouter.ai/api/v1/key (OPENROUTER_API_KEY); public snapshot carries the public_status() projection only",
    "planned_use": {
-    "note": "Private mode-0600 output outside Git; status-only public projection. Registered live as a status-only snapshot reader (owner decision 2026-10-28); values and monetary fields are never published. Not a routing input, entitlement or inference authorization. Telemetry row in allocations pool openrouter — no own allocation; rides openrouter.free_models."
+    "note": "Private mode-0600 output outside Git; status-only public projection. Registered live as a status-only snapshot reader (owner decision 2026-10-28); values and monetary fields are never published. Not a routing input, entitlement or inference authorization. Telemetry row in allocations pool openrouter \u2014 no own allocation; rides openrouter.free_models."
    }
   },
   {
@@ -758,7 +758,7 @@
    "live": "none",
    "planned_use": {
     "safety": 0.8,
-    "note": "reads 100,000/day + 1 GB storage on Free; writes are the binding cap — manifest-mirror use only, never a queue"
+    "note": "reads 100,000/day + 1 GB storage on Free; writes are the binding cap \u2014 manifest-mirror use only, never a queue"
    }
   },
   {
@@ -774,7 +774,7 @@
    "source": "https://fly.io/docs/about/pricing/",
    "live": "none",
    "planned_use": {
-    "note": "free allowances removed for NEW orgs Oct 2024 (short trial only). Fleet org billing state NOT ESTABLISHED — establish before HindSight plans lean on 'free Fly'"
+    "note": "free allowances removed for NEW orgs Oct 2024 (short trial only). Fleet org billing state NOT ESTABLISHED \u2014 establish before HindSight plans lean on 'free Fly'"
    }
   },
   {
@@ -790,7 +790,7 @@
    "source": "https://www.koyeb.com/pricing",
    "live": "none",
    "planned_use": {
-    "note": "free shape since Feb 2024: single instance, sleeps after 1h idle; Feb 2026 added a $29 verification hold (dated survey) — REVALIDATE on vendor page before any revival. Fleet: app authorized, dormant; koyeb-hindsight-deploy.yml exists"
+    "note": "free shape since Feb 2024: single instance, sleeps after 1h idle; Feb 2026 added a $29 verification hold (dated survey) \u2014 REVALIDATE on vendor page before any revival. Fleet: app authorized, dormant; koyeb-hindsight-deploy.yml exists"
    }
   },
   {
@@ -823,7 +823,7 @@
    "live": "none",
    "planned_use": {
     "safety": 0.9,
-    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); includes 180,000 vCPU-s + 360,000 GiB-s + 1 GB NA egress/mo; billing account required even for free tier"
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); includes 180,000 vCPU-s + 360,000 GiB-s + 1 GB NA egress/mo; billing account required even for free tier"
    }
   },
   {
@@ -840,7 +840,7 @@
    "live": "none",
    "planned_use": {
     "safety": 0.9,
-    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); includes 400,000 GB-s + 200,000 GHz-s + 5 GB egress/mo"
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); includes 400,000 GB-s + 200,000 GHz-s + 5 GB egress/mo"
    }
   },
   {
@@ -856,7 +856,7 @@
    "source": "https://cloud.google.com/free/docs/free-cloud-features",
    "live": "none",
    "planned_use": {
-    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); US regions only, with 30 GB standard persistent disk; separate $300/90-day trial for new billing accounts"
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); US regions only, with 30 GB standard persistent disk; separate $300/90-day trial for new billing accounts"
    }
   },
   {
@@ -874,7 +874,7 @@
    "live": "none",
    "planned_use": {
     "safety": 0.9,
-    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); no free tier when Provisioned Concurrency is enabled"
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); no free tier when Provisioned Concurrency is enabled"
    }
   },
   {
@@ -891,7 +891,7 @@
    "live": "none",
    "planned_use": {
     "safety": 0.9,
-    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated)"
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated)"
    }
   },
   {
@@ -907,7 +907,7 @@
    "source": "https://aws.amazon.com/free/",
    "live": "none",
    "planned_use": {
-    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); includes 25 provisioned RCU + 25 WCU (Standard table class)"
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); includes 25 provisioned RCU + 25 WCU (Standard table class)"
    }
   },
   {
@@ -923,7 +923,7 @@
    "source": "https://aws.amazon.com/free/",
    "live": "none",
    "planned_use": {
-    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); $100 at signup + up to $100 for onboarding actions. FREE plan can never bill and AUTO-CLOSES at the end; PAID plan bills after credits. Replaces the pre-2025-07-15 12-month EC2 free year for new accounts"
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); $100 at signup + up to $100 for onboarding actions. FREE plan can never bill and AUTO-CLOSES at the end; PAID plan bills after credits. Replaces the pre-2025-07-15 12-month EC2 free year for new accounts"
    }
   },
   {
@@ -940,7 +940,7 @@
    "live": "none",
    "planned_use": {
     "safety": 0.9,
-    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); includes 400,000 GB-s/mo resource consumption on Consumption plan"
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); includes 400,000 GB-s/mo resource consumption on Consumption plan"
    }
   },
   {
@@ -956,7 +956,7 @@
    "source": "https://azure.microsoft.com/en-us/pricing/offers/ms-azr-0044p",
    "live": "none",
    "planned_use": {
-    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); plus 12 months of popular services (B1S VM 750 h/mo, Blob 5 GB) that START BILLING in month 13 if upgraded and not deprovisioned; account disabled at day 30 without upgrade"
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); plus 12 months of popular services (B1S VM 750 h/mo, Blob 5 GB) that START BILLING in month 13 if upgraded and not deprovisioned; account disabled at day 30 without upgrade"
    }
   },
   {
@@ -973,7 +973,7 @@
    "live": "none",
    "planned_use": {
     "safety": 0.9,
-    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); JUNE 2026 HALVING: was effectively 3,000 OCPU-h. 1,500 OCPU-h ~= 2 OCPU running 24/7. Home region chosen at signup is permanent; capacity errors routine; idle instances reclaimable on pure-free accounts"
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); JUNE 2026 HALVING: was effectively 3,000 OCPU-h. 1,500 OCPU-h ~= 2 OCPU running 24/7. Home region chosen at signup is permanent; capacity errors routine; idle instances reclaimable on pure-free accounts"
    }
   },
   {
@@ -990,7 +990,7 @@
    "live": "none",
    "planned_use": {
     "safety": 0.9,
-    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); 9,000 GB-h ~= 12 GB running 24/7 (halved Jun 2026 from ~24 GB continuous)"
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); 9,000 GB-h ~= 12 GB running 24/7 (halved Jun 2026 from ~24 GB continuous)"
    }
   },
   {
@@ -1006,7 +1006,7 @@
    "source": "https://www.oracle.com/cloud/free/",
    "live": "none",
    "planned_use": {
-    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated)"
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated)"
    }
   },
   {
@@ -1022,7 +1022,7 @@
    "source": "https://www.digitalocean.com/pricing/app-platform",
    "live": "none",
    "planned_use": {
-    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); there is NO permanent DigitalOcean free tier — credit evaporates at day 61; Droplets start at $4/mo"
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); there is NO permanent DigitalOcean free tier \u2014 credit evaporates at day 61; Droplets start at $4/mo"
    }
   },
   {
@@ -1038,7 +1038,7 @@
    "source": "https://www.digitalocean.com/pricing/app-platform",
    "live": "none",
    "planned_use": {
-    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); 1 GiB outbound transfer per app/mo included; web-service components have NO free tier (from $5/mo)"
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); 1 GiB outbound transfer per app/mo included; web-service components have NO free tier (from $5/mo)"
    }
   },
   {
@@ -1070,7 +1070,7 @@
    "source": "https://www.netlify.com/pricing/",
    "live": "none",
    "planned_use": {
-    "note": "no fleet account; credit model since Sep 2025 (legacy free tier closed) — a production deploy costs 15 credits; one project over limit pauses the account (dated survey, revalidate before use)"
+    "note": "no fleet account; credit model since Sep 2025 (legacy free tier closed) \u2014 a production deploy costs 15 credits; one project over limit pauses the account (dated survey, revalidate before use)"
    }
   },
   {
@@ -1154,10 +1154,10 @@
    "reset": "daily refill",
    "zone": "UTC",
    "source": "https://openapi.felo.ai/pricing",
-   "doc_quote": "200 daily free credits (public harness docs) — FREE-QUOTA-WINDOWS cadence table; provider-managers free_entitlement: Standard plan, 200 free credits daily for selected API models/tools, shared with Playground",
+   "doc_quote": "200 daily free credits (public harness docs) \u2014 FREE-QUOTA-WINDOWS cadence table; provider-managers free_entitlement: Standard plan, 200 free credits daily for selected API models/tools, shared with Playground",
    "live": "response headers X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, Retry-After",
    "planned_use": {
-    "note": "no free entitlement; pay-as-you-go only — record exists so the family maps and the absence is documented, not assumed Allowance mapping is the fleet's historical record (docs/ops/FREE-QUOTA-WINDOWS.md + ops/quota/provider-managers.json), which supersedes the pay-as-you-go read of the pricing page taken 2026-10-27. Free models exist intermittently (e.g. ox-alpha trial; its ended-trial notice conflicts with the free pricing row) — treat free-model availability as intermittent and verify per catalog poll. FELO_AI_API provisioned (pre-existing).",
+    "note": "no free entitlement; pay-as-you-go only \u2014 record exists so the family maps and the absence is documented, not assumed Allowance mapping is the fleet's historical record (docs/ops/FREE-QUOTA-WINDOWS.md + ops/quota/provider-managers.json), which supersedes the pay-as-you-go read of the pricing page taken 2026-10-27. Free models exist intermittently (e.g. ox-alpha trial; its ended-trial notice conflicts with the free pricing row) \u2014 treat free-model availability as intermittent and verify per catalog poll. FELO_AI_API provisioned (pre-existing).",
     "safety": 0.9
    }
   },
@@ -1191,7 +1191,7 @@
    "zone": "UTC",
    "source": "https://huggingface.co/docs/inference-providers/pricing",
    "doc_quote": "Free users: monthly included credits are None (the former $0.10 credit no longer applies); usage beyond is pay-as-you-go.",
-   "live": "Hub RateLimit response header (remaining r, seconds-to-reset t; 5-minute fixed windows; passive adapter implemented — Hub API/Resolver/Pages categories, NOT hosted-inference quota); organization usage API GET /api/organizations/{org}/billing/usage/inference (Enterprise); router free/zero models via /v1/models catalog poll",
+   "live": "Hub RateLimit response header (remaining r, seconds-to-reset t; 5-minute fixed windows; passive adapter implemented \u2014 Hub API/Resolver/Pages categories, NOT hosted-inference quota); organization usage API GET /api/organizations/{org}/billing/usage/inference (Enterprise); router free/zero models via /v1/models catalog poll",
    "planned_use": {
     "note": "no free numeric entitlement published; treat as unknown, not zero-usage Historical allowance mapping (FREE-QUOTA-WINDOWS): router free/zero models are a catalog-cadence free route when the poll classifies them free. Fleet credential provisioned: HUGGINGFACE_TOKEN (repo Actions secret, 2026-10-27)."
    }
@@ -1245,7 +1245,7 @@
    "doc_quote": "Free mode usage limits are shown per model in the signed-in Admin Panel (Usage limits); no public numeric table is published.",
    "live": "none published (Admin Panel only; Admin API is Enterprise)",
    "planned_use": {
-    "note": "numbers exist only behind sign-in; never record the unsourced figures circulating elsewhere Historical allowance mapping (fleet account-creation recon): La Plateforme Free mode is the default for new API accounts, no card. Fleet ruling (PR #1805): no Mistral API key — Mistral runs as webWrapper via local Termux; MISTRAL_API_KEY deliberately unprovisioned."
+    "note": "numbers exist only behind sign-in; never record the unsourced figures circulating elsewhere Historical allowance mapping (fleet account-creation recon): La Plateforme Free mode is the default for new API accounts, no card. Fleet ruling (PR #1805): no Mistral API key \u2014 Mistral runs as webWrapper via local Termux; MISTRAL_API_KEY deliberately unprovisioned."
    }
   },
   {
@@ -1259,7 +1259,7 @@
    "reset": "daily (per fleet recon claim)",
    "zone": "UTC",
    "source": "https://www.modelscope.ai/docs/model-service/API-Inference/limits",
-   "doc_quote": "API-Inference free for registered users (~2,000 req/day claimed) — docs/ops/ACCOUNT-CREATION-RECON-2026-10-27.md",
+   "doc_quote": "API-Inference free for registered users (~2,000 req/day claimed) \u2014 docs/ops/ACCOUNT-CREATION-RECON-2026-10-27.md",
    "live": "none published (not established)",
    "planned_use": {
     "note": "revalidate against the official limits page before any numeric claim; third-party figures are not evidence The 2,000/day figure is the fleet account-creation recon claim, NOT verified on the official page (unreachable on fetch, 2026-10-27); official docs describe dynamic per-model concurrency and Magicube costs (PROVIDER-QUOTA-MANAGERS evidence matrix). Revalidate before relying on the number."
@@ -1296,7 +1296,7 @@
    "doc_quote": "OmniRoute aggregates the documented free tiers of 42 provider pools / 495 models into one honest number and shows it live on the dashboard (/dashboard/free-tiers).",
    "live": "self-hosted dashboard /dashboard/free-tiers shows live used/remaining per upstream pool; no hosted usage API or rate-limit headers",
    "planned_use": {
-    "note": "no entitlement of its own; the upstream providers' registry records govern Historical allowance mapping (FREE-QUOTA-WINDOWS): catalog $0 route — usable only when the catalog poll classifies a model free (OMNI_API_KEY + /v1/models); cadence class catalog."
+    "note": "no entitlement of its own; the upstream providers' registry records govern Historical allowance mapping (FREE-QUOTA-WINDOWS): catalog $0 route \u2014 usable only when the catalog poll classifies a model free (OMNI_API_KEY + /v1/models); cadence class catalog."
    }
   },
   {
@@ -1332,7 +1332,7 @@
    "live": "GET /v1/manage/org/usage; GET /v1/manage/apikey/{id}/usage",
    "planned_use": {
     "safety": 0.9,
-    "note": "shared org-wide; the figure has moved before (older changelog: 50/day for new orgs) — revalidate periodically"
+    "note": "shared org-wide; the figure has moved before (older changelog: 50/day for new orgs) \u2014 revalidate periodically"
    }
   },
   {
@@ -1453,7 +1453,7 @@
    "reset": "unknown",
    "zone": "UTC",
    "source": "https://www.xfyun.cn/doc/spark/HTTP%E8%B0%83%E7%94%A8%E6%96%87%E6%A1%A3.html",
-   "doc_quote": "Spark Lite is permanently free; global platform: 90-day free trial per capability — docs/ops/ACCOUNT-CREATION-RECON-2026-10-27.md",
+   "doc_quote": "Spark Lite is permanently free; global platform: 90-day free trial per capability \u2014 docs/ops/ACCOUNT-CREATION-RECON-2026-10-27.md",
    "live": "none published (not established)",
    "planned_use": {
     "note": "revalidate against the official page before any numeric claim; third-party figures are not evidence Mapping rests on the fleet recon plus the official Spark HTTP doc it cites; the marketing page was unreachable on fetch (2026-10-27) and no numeric cap is in evidence. Only the exact `lite` model is admitted by the hub transport."
@@ -1470,7 +1470,7 @@
    "reset": "daily reset; free-model requests blocked with 429 until the reset",
    "zone": "UTC",
    "source": "https://xkiro.com/",
-   "doc_quote": "Yes. 45 models are free to call on every account, within a daily allowance of 500K tokens — 1M after you verify on Telegram. No credit card required.",
+   "doc_quote": "Yes. 45 models are free to call on every account, within a daily allowance of 500K tokens \u2014 1M after you verify on Telegram. No credit card required.",
    "live": "Retry-After header when the wait is known; usage attributed per API key with dashboard call logs (model/tokens/cost/status); no dedicated usage endpoint published",
    "planned_use": {
     "safety": 0.9,
@@ -1488,7 +1488,7 @@
    "reset": "unknown",
    "zone": "UTC",
    "source": "https://docs.z.ai/api-reference/api-code",
-   "doc_quote": "GLM Flash models (4.5/4.6V/4.7) are $0-priced; no card — docs/ops/ACCOUNT-CREATION-RECON-2026-10-27.md",
+   "doc_quote": "GLM Flash models (4.5/4.6V/4.7) are $0-priced; no card \u2014 docs/ops/ACCOUNT-CREATION-RECON-2026-10-27.md",
    "live": "HTTP 429 error body codes 1308 / 1316-1321 carry a next_flush_time field (documented in the API-code reference)",
    "planned_use": {
     "note": "treat the ceiling as unknown; the 429 body's next_flush_time is the only documented telemetry Historical allowance mapping (fleet account-creation recon): the free route is $0-priced Flash models; per-account numeric limits remain unpublished."
@@ -1506,9 +1506,9 @@
    "zone": "UTC",
    "source": "https://huggingface.co/docs/hub/en/rate-limits",
    "doc_quote": "RateLimit header carries remaining r and seconds-to-reset t; categories are Hub API / Resolver / Pages; 5-minute fixed windows; account/org/member context applies (fleet evidence matrix, PROVIDER-QUOTA-MANAGERS.md).",
-   "live": "GET https://huggingface.co/api/whoami-v2 — RateLimit response header, read by scripts/quota_poll.py hf_hub_reader under the fleet credential (canonical HUGGINGFACE_TOKEN; alias resolve order shared with the availability probe). No inference sent.",
+   "live": "GET https://huggingface.co/api/whoami-v2 \u2014 RateLimit response header, read by scripts/quota_poll.py hf_hub_reader under the fleet credential (canonical HUGGINGFACE_TOKEN; alias resolve order shared with the availability probe). No inference sent.",
    "planned_use": {
-    "note": "Hub API quota only — NOT Inference Providers or router.huggingface.co quota; the two surfaces are never blended (provider-quota-managers rule). Reader reports remaining/reset only; no documented fixed limit is recorded."
+    "note": "Hub API quota only \u2014 NOT Inference Providers or router.huggingface.co quota; the two surfaces are never blended (provider-quota-managers rule). Reader reports remaining/reset only; no documented fixed limit is recorded."
    }
   },
   {
@@ -1592,6 +1592,1000 @@
    "zone": "UTC",
    "planned_use": {
     "safety": 0.85
+   }
+  },
+  {
+   "id": "g4f.agenttools",
+   "provider": "g4f/AgentTools",
+   "lane": "model",
+   "metric": "g4f provider AgentTools \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": 250,
+   "unit": "units",
+   "window": "per day",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://api.toolsforagents.tools/site/index.html",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "doc_quote": "250 units/day \u00b7 No email \u00b7 No credit card \u00b7 Instant access",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "ESTABLISHED from primary source, checked 2026-10-28. Auth: API key (free key issued instantly, no email; Authorization: Bearer). Vendor site titled 'AgentTools \u2014 API for AI Agents'; under 'Get Your Free API Key'. Also lists GET /v1/usage to 'Track your daily limits and request counts.' Beta, free during testing. Experiment label required (FREE-QUOTA-WINDOWS router rule)."
+   }
+  },
+  {
+   "id": "g4f.airforce",
+   "provider": "g4f/Airforce",
+   "lane": "model",
+   "metric": "g4f provider Airforce \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": 1000,
+   "unit": "requests",
+   "window": "per day",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://api.airforce/docs/quickstart/",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "doc_quote": "Free | 1 RPM | 1,000 RPD",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "ESTABLISHED from primary source, checked 2026-10-28. Auth: API key (free plan; Authorization: Bearer). Primary docs state: 'Rate limits are applied per plan tier. Limits are measured in requests per minute (RPM) and requests per day (RPD).' Free tier also capped at 1 RPM; Premium 5 RPM/5,000 RPD, Master 10 RPM/unlimited RPD. Experiment label required (FREE-QUOTA-WINDOWS router rule)."
+   }
+  },
+  {
+   "id": "g4f.antigravity",
+   "provider": "g4f/Antigravity",
+   "lane": "model",
+   "metric": "g4f provider Antigravity \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://antigravity.google/docs/plans",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://antigravity.google/docs/plans). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 22 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: Google account sign-in / Google AI plan (app/CLI, no API key; no BYOK per docs). Checked primary https://antigravity.google/pricing ($0 Individual: 'Basic weekly rate limits', 'Unlimited Tab completions', 'Unlimited Command requests') and https://antigravity.google/docs/plans. Neither publishes a numeric quota; docs say limits 'c"
+   }
+  },
+  {
+   "id": "g4f.arena",
+   "provider": "g4f/Arena",
+   "lane": "model",
+   "metric": "g4f provider Arena \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://arena.ai/faq",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://arena.ai/faq). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 154 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: Web-wrapped, no API key (arena.ai web Battle/Direct chat). Checked primary https://arena.ai (no pricing/limits published) and https://arena.ai/faq. FAQ invites unlimited prompts/votes and publishes no numeric free quota, rate limit, pricing tier, or daily/monthly cap for the wrapped web service."
+   }
+  },
+  {
+   "id": "g4f.bingcreateimages",
+   "provider": "g4f/BingCreateImages",
+   "lane": "model",
+   "metric": "g4f provider BingCreateImages \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://www.microsoft.com/en-us/microsoft-365/microsoft-designer",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://www.microsoft.com/en-us/microsoft-365/microsoft-designer). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 1 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: Microsoft account sign-in, web-only (no public API). Checked primary Microsoft Designer page and Microsoft Support AI-credits page (https://support.microsoft.com/en-us/microsoft-365-copilot/ai-credits-and-limits-for-microsoft-365-personal-family-and-premium-68530f1a-4459-4d02-9818-8233c1f673b8). Curren"
+   }
+  },
+  {
+   "id": "g4f.blackforestlabs_flux1dev",
+   "provider": "g4f/BlackForestLabs_Flux1Dev",
+   "lane": "model",
+   "metric": "g4f provider BlackForestLabs_Flux1Dev \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": 2,
+   "unit": "minutes of GPU time",
+   "window": "per day, resets exactly 24 hours after first GPU usage",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://huggingface.co/docs/hub/en/spaces-zerogpu",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "doc_quote": "GPU usage is subject to daily quotas, per account tier: Unauthenticated | 2 minutes",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "ESTABLISHED from primary source, checked 2026-10-28. Auth: no-auth/unauthenticated via g4f (HF token optional; free account tier is 5 minutes). Hosting-layer limit only: HF Space black-forest-labs/FLUX.1-dev is a ZeroGPU Space (uses @spaces.GPU/ZeroGPU); Black Forest Labs itself publishes no free quota for its paid API. HF docs count as primary for the HF Spaces hosting layer. Experiment label required (FREE-QUOTA-WINDOWS router rule)."
+   }
+  },
+  {
+   "id": "g4f.blackforestlabs_flux1kontextdev",
+   "provider": "g4f/BlackForestLabs_Flux1KontextDev",
+   "lane": "model",
+   "metric": "g4f provider BlackForestLabs_Flux1KontextDev \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": 2,
+   "unit": "minutes of GPU time",
+   "window": "per day, resets exactly 24 hours after first GPU usage",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://huggingface.co/docs/hub/en/spaces-zerogpu",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "doc_quote": "GPU usage is subject to daily quotas, per account tier: Unauthenticated | 2 minutes",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "ESTABLISHED from primary source, checked 2026-10-28. Auth: no-auth/unauthenticated via g4f (HF token optional; free account tier is 5 minutes). Hosting-layer limit only: HF org page lists FLUX.1 Kontext Space as 'Running on Zero' (ZeroGPU); Black Forest Labs itself publishes no free quota for its paid API. HF docs count as primary for the HF Spaces hosting layer. Experiment label required (FREE-QUOTA-WINDOWS router rule)."
+   }
+  },
+  {
+   "id": "g4f.blackboxpro",
+   "provider": "g4f/BlackboxPro",
+   "lane": "model",
+   "metric": "g4f provider BlackboxPro \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://www.blackbox.ai/pricing",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://www.blackbox.ai/pricing). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 0 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: no-auth/web-wrapped web chat at blackbox.ai (Blackbox API itself is API-key, per-token paid). Primary pricing page checked describes per-token commit/metering only ('Metering is per token, not per seat'); no numeric free/no-auth quota for the web service wrapped by g4f is published there."
+   }
+  },
+  {
+   "id": "g4f.bravesearch",
+   "provider": "g4f/BraveSearch",
+   "lane": "model",
+   "metric": "g4f provider BraveSearch \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://brave.com/ai/",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://brave.com/ai/). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 2 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: no-auth/web-wrapped Ask Brave at search.brave.com/ask. Primary Brave AI page checked describes Ask Brave with no numeric quota/limit. Distinct Brave Search API is an API-key paid service ($5 per 1,000 requests with $5 monthly credit on api-dashboard.search.brave.com) and is not the web Ask service g4f wr"
+   }
+  },
+  {
+   "id": "g4f.cachedsearch",
+   "provider": "g4f/CachedSearch",
+   "lane": "model",
+   "metric": "g4f provider CachedSearch \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://g4f.dev",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://g4f.dev). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 0 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: no-auth, no signup required. g4f's own service (g4f.dev), not a third-party vendor. Primary homepage checked claims 'Now Free & Unlimited' and no rate limits, and publishes no numeric quota; no CachedSearch-specific numeric limit found in g4f.dev docs."
+   }
+  },
+  {
+   "id": "g4f.cerebras",
+   "provider": "g4f/Cerebras",
+   "lane": "model",
+   "metric": "g4f provider Cerebras \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://inference-docs.cerebras.ai/support/rate-limits",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://inference-docs.cerebras.ai/support/rate-limits). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 4 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: API key (Free Trial tier). API Free Trial tier, not chat.cerebras.ai web chat: rate-limits table columns are RPM, Uncached TPM, Total TPM, TPH, TPD; both gpt-oss-120b and qwen-3.8-27b show TPD 1M and RPM 5. No numeric limit published for the web chat itself."
+   }
+  },
+  {
+   "id": "g4f.chatgpt",
+   "provider": "g4f/ChatGPT",
+   "lane": "model",
+   "metric": "g4f provider ChatGPT \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://help.openai.com/en/articles/9275245-chatgpt-free-tier-faq",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://help.openai.com/en/articles/9275245-chatgpt-free-tier-faq). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 1 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: web chat, account-based free tier. OpenAI Help Center Free Tier FAQ checked: no numeric limit published for free web chat; text described as unlimited subject to safeguards, tool limits are separate and unspecified, with in-product notification/reset only."
+   }
+  },
+  {
+   "id": "g4f.claude",
+   "provider": "g4f/Claude",
+   "lane": "model",
+   "metric": "g4f provider Claude \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://support.claude.com/en/articles/8114491-get-started-with-claude",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://support.claude.com/en/articles/8114491-get-started-with-claude). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 2 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: web chat, account-based free plan. Anthropic/Claude Help Center checked: free plan limit described qualitatively only, with a 5-hour reset window but no published numeric message/token count; pricing page likewise describes paid plans only as more usage."
+   }
+  },
+  {
+   "id": "g4f.cloudflare",
+   "provider": "g4f/Cloudflare",
+   "lane": "model",
+   "metric": "g4f provider Cloudflare \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://developers.cloudflare.com/workers-ai/platform/pricing/",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://developers.cloudflare.com/workers-ai/platform/pricing/). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 38 of 54 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: Cloudflare account / Workers AI API key. Workers AI API/Free plan allocation, the service behind playground.ai.cloudflare.com, not a playground-specific quota; Workers Free and Workers Paid both include 10,000 Neurons per day, all limits reset daily at 00:00 UTC."
+   }
+  },
+  {
+   "id": "g4f.cohereforai_c4ai_command",
+   "provider": "g4f/CohereForAI_C4AI_Command",
+   "lane": "model",
+   "metric": "g4f provider CohereForAI_C4AI_Command \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://coherelabs-c4ai-command.hf.space",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://coherelabs-c4ai-command.hf.space). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 3 of 7 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: no-auth web-wrapped Hugging Face Space. Wrapped service is the Cohere Labs HF Space demo, not the Cohere commercial API; HF model card/Space checked publish no numeric quota, only a try-out description. Distinct primary source checked: Cohere docs FAQ (docs.cohere.com/docs/cohere-faqs) sta"
+   }
+  },
+  {
+   "id": "g4f.copilot",
+   "provider": "g4f/Copilot",
+   "lane": "model",
+   "metric": "g4f provider Copilot \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://copilot.com",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://copilot.com). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 4 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: Microsoft account sign-in (web-wrapped); free tier with account. No numeric free quota published. Also checked: https://support.microsoft.com/en-us/microsoft-365-copilot/ai-credits-and-limits-for-microsoft-365-subscriptions (via search snippet; direct open hit browser-service 429) - uses qualitative labels Standar"
+   }
+  },
+  {
+   "id": "g4f.copilotapp",
+   "provider": "g4f/CopilotApp",
+   "lane": "model",
+   "metric": "g4f provider CopilotApp \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://play.google.com/store/apps/details/Microsoft_Copilot?id=com.microsoft.copilot&hl=en_IE",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://play.google.com/store/apps/details/Microsoft_Copilot?id=com.microsoft.copilot&hl=en_IE). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 5 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: Microsoft account / app session (standalone Microsoft Copilot app, com.microsoft.copilot). Play Store listing (Microsoft Corporation) checked in full: describes chat, voice, image generation, GPT-5 Smart mode, 'Contains ads, In-app purchases' - no numeric usage/quota limit anywhere in listing. Also checked: https://play.google.com/store/ap"
+   }
+  },
+  {
+   "id": "g4f.deepinfra",
+   "provider": "g4f/DeepInfra",
+   "lane": "model",
+   "metric": "g4f provider DeepInfra \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://deepinfra.com/blog/compare-models",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://deepinfra.com/blog/compare-models). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 25 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: No-auth (empty api_key) for trial; API key (Bearer) for production. Primary blog states no-auth trial exists and is IP rate-limited, but publishes NO numeric limit. Also checked: https://deepinfra.com (homepage - 'Low pay-as-you-go pricing - no long-term contracts', per-1M-token model prices, no free-tier quota/numbe"
+   }
+  },
+  {
+   "id": "g4f.deepseek",
+   "provider": "g4f/DeepSeek",
+   "lane": "model",
+   "metric": "g4f provider DeepSeek \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://cdn.deepseek.com/policies/en-US/deepseek-terms-of-use.html?source=post_page-----895be7b853b0--------------------------------",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://cdn.deepseek.com/policies/en-US/deepseek-terms-of-use.html?source=post_page-----895be7b853b0--------------------------------). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 2 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: Account required (email or third-party account); web-wrapped chat at chat.deepseek.com, not no-auth. Terms of Use (updated March 27, 2026) checked in full and searched for 'limit': no numeric free-chat quota, message cap, or rate limit - only account registration and use restrictions. https://chat.deepseek.com itself returned no extractable content."
+   }
+  },
+  {
+   "id": "g4f.elevenlabs",
+   "provider": "g4f/ElevenLabs",
+   "lane": "model",
+   "metric": "g4f provider ElevenLabs \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": 10000,
+   "unit": "credits",
+   "window": "per month",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://elevenlabs.io/pricing",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "doc_quote": "10k credits per month",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "ESTABLISHED from primary source, checked 2026-10-28. Auth: Free-plan account sign-up / API key (not no-auth); free plan is $0, non-commercial, attribution required. Caveat on method: direct browser.open of elevenlabs.io was blocked by tool policy in the researching session, so the primary page could not be fetched firsthand there; the 10,000 figure and exact pricing-page wording were corroborated across multiple independent October 2026 reproductions of elevenl Experiment label required (FREE-QUOTA-WINDOWS router rule)."
+   }
+  },
+  {
+   "id": "g4f.g4fspace",
+   "provider": "g4f/G4FSpace",
+   "lane": "model",
+   "metric": "g4f provider G4FSpace \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://g4f.dev",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://g4f.dev). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 174 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: no-auth/web-wrapped; homepage says 'No signup required \u2014 just start chatting'; separate members area uses GitHub sign-in/API key. Homepage also says 'Now Free & Unlimited' \u2014 a claim of no limit, not a numeric quota. Other primary sources checked: https://www.g4f.dev/members.html (shows 'Plan Free, Tier Limits, \u2014 \u2014', no numeric limit) and https://g4f.dev/docs/ (no numeric limit "
+   }
+  },
+  {
+   "id": "g4f.glm",
+   "provider": "g4f/GLM",
+   "lane": "model",
+   "metric": "g4f provider GLM \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://chat.z.ai",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://chat.z.ai). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 1 of 3 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: web-wrapped (chat.z.ai, g4f GLM provider); Z.ai developer API variant requires API key. chat.z.ai fetched text contains no limit statement. Other primary sources checked: https://docs.z.ai/guides/overview/pricing \u2014 lists GLM-4.7-Flash, GLM-4.5-Flash and GLM-4.6V-Flash as 'Free' for input/cached/output (i.e. $0 per-token pricing, not a q"
+   }
+  },
+  {
+   "id": "g4f.gemini",
+   "provider": "g4f/Gemini",
+   "lane": "model",
+   "metric": "g4f provider Gemini \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://support.google.com/gemini/answer/16275805?hl=en-IN",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://support.google.com/gemini/answer/16275805?hl=en-IN). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 1 of 1 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: Google account (OAuth) / web-wrapped via gemini.google.com. Same primary page's Usage limits table gives only 'Without an AI plan | Standard limits' (AI Plus 2x, AI Pro 4x) \u2014 no numeric value for the free/standard limit, and states limits may change without notice. Other primary source checked: https://gemini"
+   }
+  },
+  {
+   "id": "g4f.geminicli",
+   "provider": "g4f/GeminiCLI",
+   "lane": "model",
+   "metric": "g4f provider GeminiCLI \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": 1000,
+   "unit": "requests",
+   "window": "per user per day",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://geminicli.com/docs/resources/quota-and-pricing/",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "doc_quote": "1000 maximum model requests / user / day",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "ESTABLISHED from primary source, checked 2026-10-28. Auth: OAuth \u2014 Login with Google (Gemini Code Assist for individuals); alternative unpaid Gemini API key route listed at 250 requests/day, Flash only. Quota page table also states Google account / Gemini Code Assist (Individual) = 1,000 requests. Corroborating primary source: https://google-gemini.github.io/gemini-cli/ states 'Free tier: 60 requests/min and 1,000 requests/day with personal Google account.' CAVEAT: https://geminicli.com/terms/ stat Experiment label required (FREE-QUOTA-WINDOWS router rule)."
+   }
+  },
+  {
+   "id": "g4f.geminipro",
+   "provider": "g4f/GeminiPro",
+   "lane": "model",
+   "metric": "g4f provider GeminiPro \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://ai.google.dev/gemini-api/docs/rate-limits",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://ai.google.dev/gemini-api/docs/rate-limits). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 58 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: API key (Google AI Studio / Gemini API). Free tier exists (rate-limits page table: 'Free | Active project or free trial', spend limit N/A; pricing marks eligible models 'Free of charge') but Google no longer publishes per-model numeric RPM/TPM/RPD free limits on this page \u2014 limits are per-p"
+   }
+  },
+  {
+   "id": "g4f.githubcopilot",
+   "provider": "g4f/GithubCopilot",
+   "lane": "model",
+   "metric": "g4f provider GithubCopilot \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": 50,
+   "unit": "premium requests (all chat interactions count as premium requests)",
+   "window": "per month",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://docs.github.com/en/copilot/setting-up-github-copilot/setting-up-github-copilot-for-yourself",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "doc_quote": "Use Copilot Free. Get a limited experience of Copilot with up to 2,000 inline suggestion requests and 50 premium requests per month-no paid plan required.",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "ESTABLISHED from primary source, checked 2026-10-28. Auth: OAuth/signed-in GitHub account (Copilot Free plan); web-wrapped in g4f via account/cookies, not no-auth. Also checked docs.github.com Copilot requests/plans pages via search results stating the same: 'If you use Copilot Free, your plan comes with up to 2,000 inline suggestion requests and up to 50 premium requests per month.' The 2,000 is IDE inline suggestions, distinct from the 50 chat/premium-reques Experiment label required (FREE-QUOTA-WINDOWS router rule)."
+   }
+  },
+  {
+   "id": "g4f.googleaimode",
+   "provider": "g4f/GoogleAiMode",
+   "lane": "model",
+   "metric": "g4f provider GoogleAiMode \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://support.google.com/websearch/answer/16011537?visit_id=639285178901396813-4034714809&p=aimode&rd=1",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://support.google.com/websearch/answer/16011537?visit_id=639285178901396813-4034714809&p=aimode&rd=1). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 1 of 1 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: Web-wrapped google.com AI Mode; available signed-out in many regions, signed-in Google account required for some models/features. No numeric limit published for general AI Mode queries/text responses on the primary help page checked. Other URLs checked: https://support.google.com/websearch/answer/16649374?hl=en&ref_topic=16011146 \u2014 publishes a sub-feature limit only, 'No Google"
+   }
+  },
+  {
+   "id": "g4f.googlesearch",
+   "provider": "g4f/GoogleSearch",
+   "lane": "model",
+   "metric": "g4f provider GoogleSearch \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://developers.google.com/custom-search/v1/overview.html",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://developers.google.com/custom-search/v1/overview.html). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 1 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: No-auth web-wrapped scraping of google.com search; no API key for the wrapped service. No numeric quota published for google.com web Search itself. Other URLs checked: https://developers.google.com/custom-search/v1/overview.html says 'Custom Search JSON API provides 100 search queries per day for free' \u2014 that is a distinct API-key Prog"
+   }
+  },
+  {
+   "id": "g4f.grok",
+   "provider": "g4f/Grok",
+   "lane": "model",
+   "metric": "g4f provider Grok \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://docs.x.ai/grok/faq",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://docs.x.ai/grok/faq). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 4 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: Web-wrapped grok.com; signed-in X/xAI/Google/Apple account, with a limited unauthenticated free mode also described in xAI terms. Primary sources state free-tier/rate limits exist but publish no numeric value for them. Other URLs checked: http://x.ai/legal/terms-of-service/previous-2024-12-20 \u2014 unauthenticated Grok terms: xAI 'may in its sole discretion limit the number of requ"
+   }
+  },
+  {
+   "id": "g4f.groq",
+   "provider": "g4f/Groq",
+   "lane": "model",
+   "metric": "g4f provider Groq \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": 1000,
+   "unit": "requests per day (RPD) for openai/gpt-oss-120b",
+   "window": "per day",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://console.groq.com/docs/rate-limits",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "doc_quote": "RPD: Requests per day | openai/gpt-oss-120b | 30 | 1K | 8K | 200K | - | - |",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "ESTABLISHED from primary source, checked 2026-10-28. Auth: API key (GroqCloud account, free tier, no card stated on primary rate-limits page); API-key not no-auth/web-wrapped. Rate limits are per-model and org-level, not a single provider-wide number: same page table shows openai/gpt-oss-20b and qwen/qwen3.8-27b also 30 RPM / 1K RPD / 8K TPM / 200K TPD, meta-llama/llama-prompt-guard-2 models 14.4K RPD, whisper-large-v3 2K RPD, orpheus models 100 RPD. Page says: 'The follo Experiment label required (FREE-QUOTA-WINDOWS router rule)."
+   }
+  },
+  {
+   "id": "g4f.hailuoai",
+   "provider": "g4f/HailuoAI",
+   "lane": "model",
+   "metric": "g4f provider HailuoAI \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://www.minimax.io/news/minimax-hailuo-23",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://www.minimax.io/news/minimax-hailuo-23). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 1 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: Account sign-in required for the Hailuo web product; g4f provider uses an authenticated web session. Checked 2026-10-28: MiniMax's own news post confirms free trial credits exist but publishes no amount; the Hailuo subscribe/pricing page is sign-in gated and no public primary page states a numeric free credit amount. Third-party reports of the trial"
+   }
+  },
+  {
+   "id": "g4f.huggingchat",
+   "provider": "g4f/HuggingChat",
+   "lane": "model",
+   "metric": "g4f provider HuggingChat \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://huggingface.co/docs/api-inference/rate-limits",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://huggingface.co/docs/api-inference/rate-limits). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 131 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: Usable without registration in guest mode; HF account optional. Chat inference routes through Hugging Face Inference Providers. Checked 2026-10-28: no primary Hugging Face page publishes a numeric HuggingChat message quota (no messages/day figure). Its backing Inference Providers pricing page now lists included monthly credits for Free Users as 'None', so there is no publishe"
+   }
+  },
+  {
+   "id": "g4f.huggingface",
+   "provider": "g4f/HuggingFace",
+   "lane": "model",
+   "metric": "g4f provider HuggingFace \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://huggingface.co/docs/api-inference/rate-limits",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://huggingface.co/docs/api-inference/rate-limits). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 132 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: HF account + HF User Access Token (API); no-auth only for public Hub browsing/widgets. Checked 2026-10-28 firsthand: the current Inference Providers Pricing and Billing page lists Free Users' monthly credits as 'None' (the former $0.10/month free credit no longer appears on the live primary page). Free users must purchase credits or up"
+   }
+  },
+  {
+   "id": "g4f.huggingfacemedia",
+   "provider": "g4f/HuggingFaceMedia",
+   "lane": "model",
+   "metric": "g4f provider HuggingFaceMedia \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://huggingface.co/docs/api-inference/rate-limits",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://huggingface.co/docs/api-inference/rate-limits). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 361 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: HF account + HF token for Inference Providers media models (e.g. text-to-image via InferenceClient). Media generation through Hugging Face Inference Providers (hf-inference/routed providers) is billed per request from credits; the current primary pricing page gives Free Users 'None' in included monthly credits, so no free media quota is published. S"
+   }
+  },
+  {
+   "id": "g4f.huggingspace",
+   "provider": "g4f/HuggingSpace",
+   "lane": "model",
+   "metric": "g4f provider HuggingSpace \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": 2,
+   "unit": "GPU-minutes (ZeroGPU)",
+   "window": "per day",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://huggingface.co/docs/hub/en/spaces-zerogpu",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "doc_quote": "GPU usage is subject to daily quotas, per account tier: | Unauthenticated | 2 minutes | Low | | Free account | 5 minutes | Medium |",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "ESTABLISHED from primary source, checked 2026-10-28. Auth: No-auth (unauthenticated) use supported at the 2-minute tier; free HF account raises the daily ZeroGPU quota to 5 minutes. Included daily quota resets exactly 24 hours after first GPU usage. Applies to ZeroGPU-backed Spaces only (Gradio Spaces using @spaces.GPU); xlarge GPU size consumes 2x quota. Non-ZeroGPU/CPU Spaces have no equivalent published GPU quota. Experiment label required (FREE-QUOTA-WINDOWS router rule)."
+   }
+  },
+  {
+   "id": "g4f.kilocode",
+   "provider": "g4f/KiloCode",
+   "lane": "model",
+   "metric": "g4f provider KiloCode \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": 200,
+   "unit": "requests",
+   "window": "per hour per IP",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://kilo.ai/docs/getting-started/rate-limits-and-costs",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "doc_quote": "Free models (kilo-auto/free): 200 requests per hour per IP.",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "ESTABLISHED from primary source, checked 2026-10-28. Auth: Free models (kilo-auto/free) require no credits and are limited per IP; Kilo Gateway generally via Kilo account sign-in, paid models via credits/BYOK. Same primary page: 'Auto Free | No credits required \u2014 rotates through available free models' and 'Requests using Auto Free models are billed at $0 on Kilo's side.' Paid models have no Kilo gateway-level rate limit (upstream limits apply). No daily/monthly token quota for free models is published. Experiment label required (FREE-QUOTA-WINDOWS router rule)."
+   }
+  },
+  {
+   "id": "g4f.llm7",
+   "provider": "g4f/LLM7",
+   "lane": "model",
+   "metric": "g4f provider LLM7 \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": 100000,
+   "unit": "tokens (input + output)",
+   "window": "per day",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://docs.llm7.io/guides/models-api",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "doc_quote": "Free token | turbo models | 100,000 tokens per day | 1 request/second, 60/minute, 250/hour",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "ESTABLISHED from primary source, checked 2026-10-28. Auth: Free API token from the LLM7 dashboard (account registration; no payment/card for the free token). Current docs list only the free-token route, no anonymous plan. Free token covers 'turbo' models only; docs warn 'Free-token quotas may be reduced without notice based on demand, service capacity, model availability, fair-use calculations, abuse-prevention controls, and other operational factors.' Pro/topped-up models are paid. Experiment label required (FREE-QUOTA-WINDOWS router rule)."
+   }
+  },
+  {
+   "id": "g4f.markitdown",
+   "provider": "g4f/MarkItDown",
+   "lane": "model",
+   "metric": "g4f provider MarkItDown \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://github.com/microsoft/markitdown",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://github.com/microsoft/markitdown). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 0 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: None \u2014 local Python tool/CLI installed via pip (pip install 'markitdown[all]'); no account, API key or hosted service for the core converters. There is no vendor-hosted service and therefore no published free/no-auth quota: the README's cost comparison lists built-in converters as 'Local compute only' (usage is bounded only by the user's own machine). Optional Azure Document Intelligence / "
+   }
+  },
+  {
+   "id": "g4f.metaai",
+   "provider": "g4f/MetaAI",
+   "lane": "model",
+   "metric": "g4f provider MetaAI \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://www.meta.com/help/artificial-intelligence/1831790234178989/?ref=website",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://www.meta.com/help/artificial-intelligence/1831790234178989/?ref=website). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 1 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: meta.ai is usable in a no-account/guest mode for basic chat; the g4f MetaAI provider is the unauthenticated web surface. Meta's own Help Center confirms a free daily usage limit exists (mainly for advanced image/video generation and editing, shared across profiles linked in Accounts Center) but nowhere publishes its numeric size; no primary Meta page states a number, s"
+   }
+  },
+  {
+   "id": "g4f.metaaiaccount",
+   "provider": "g4f/MetaAIAccount",
+   "lane": "model",
+   "metric": "g4f provider MetaAIAccount \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://www.meta.com/help/artificial-intelligence/1831790234178989/?ref=website",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://www.meta.com/help/artificial-intelligence/1831790234178989/?ref=website). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 1 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: Authenticated variant: sign-in with a Meta/Facebook/Instagram account (Accounts Center); usage is shared across linked profiles. Same Meta AI service and same Help Center page as the guest variant: a free daily usage limit is acknowledged but its numeric value is unpublished on every primary Meta source checked (help center, Meta One usage page). User-reported figures (~25 ima"
+   }
+  },
+  {
+   "id": "g4f.microsoftdesigner",
+   "provider": "g4f/MicrosoftDesigner",
+   "lane": "model",
+   "metric": "g4f provider MicrosoftDesigner \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": 15,
+   "unit": "boosts (fast AI creations/edits)",
+   "window": "per day",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://www.microsoft.com/en-us/copilot/blog/2024/07/17/new-ways-to-get-creative-with-microsoft-designer-powered-by-ai/",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "doc_quote": "Today, Designer comes with 15 free daily boosts that you can use to create or edit AI-powered images and designs faster.",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "ESTABLISHED from primary source, checked 2026-10-28. Auth: Free Microsoft account sign-in required. Boosts are fast-generation tokens, not a hard usage cap: the same Microsoft announcement says boosts are automatically used in Designer and integrated Microsoft apps, and Copilot Pro raises the allowance to 100 boosts/day; generation continues at slower speed once boosts are exhausted. No other nume Experiment label required (FREE-QUOTA-WINDOWS router rule)."
+   }
+  },
+  {
+   "id": "g4f.nvidia",
+   "provider": "g4f/Nvidia",
+   "lane": "model",
+   "metric": "g4f provider Nvidia \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": 1000,
+   "unit": "API credits",
+   "window": "on sign-up (one-time trial grant)",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://docs.nvidia.com/ace/ace-agent/4.0/sample-bots/rag-langchain-bot.html",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "doc_quote": "Visit NVIDIA API Catalog website and login/sign-up: NVIDIA API Catalog. This gives you 1000 credits to use for free.",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "ESTABLISHED from primary source, checked 2026-10-28. Auth: NVIDIA Developer Program account (free) + self-generated NVIDIA API Catalog key (nvapi-); no credit card. NVIDIA's developer forum states the API Catalog trial is 'limited to 5000 free API credits' total \u2014 1,000 on sign-up plus 4,000 more via 'Request More' with a business email activating a free 90-day NVIDIA AI Enterprise license. Trial is for prototyping/testing; production requires NVIDIA AI Enterpr Experiment label required (FREE-QUOTA-WINDOWS router rule)."
+   }
+  },
+  {
+   "id": "g4f.ollama",
+   "provider": "g4f/Ollama",
+   "lane": "model",
+   "metric": "g4f provider Ollama \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://ollama.com/blog/transparent-pricing",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://ollama.com/blog/transparent-pricing). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 23 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: Local Ollama (the default g4f target, localhost) needs no account or key; Ollama Cloud requires an Ollama account / API key (Bearer $OLLAMA_API_KEY). Checked 2026-10-28: Ollama's own pricing page (ollama.com/pricing) and transparent-pricing blog describe the free/cloud pay-as-you-go plan only qualitatively ('a small amount of monthly usage'); no numeric free token/credit amount is published. Local"
+   }
+  },
+  {
+   "id": "g4f.omniroute",
+   "provider": "g4f/OmniRoute",
+   "lane": "model",
+   "metric": "g4f provider OmniRoute \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://github.com/diegosouzapw/OmniRoute",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://github.com/diegosouzapw/OmniRoute). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 1 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: Self-hosted local gateway (http://localhost:20128); user supplies their own upstream provider accounts/credentials \u2014 'Sign up, obtain credentials where required, and connect the providers you can use'. OmniRoute itself grants no quota: its README headline (~1.62B tokens/month) is explicitly an aggregate of third-party free tiers, and 'each provider controls its limits, availability, and terms.' Any quota belongs to the connected upstream providers,"
+   }
+  },
+  {
+   "id": "g4f.openaifm",
+   "provider": "g4f/OpenAIFM",
+   "lane": "model",
+   "metric": "g4f provider OpenAIFM \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://developers.openai.com/api/docs/guides/text-to-speech",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://developers.openai.com/api/docs/guides/text-to-speech). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 17 of 17 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: No auth \u2014 public interactive demo on openai.fm (no OpenAI account or API key); production TTS use is via the paid OpenAI API. OpenAI's own developer documentation describes openai.fm only as a free interactive demo of gpt-4o-mini-tts; no OpenAI page, terms or docs publish any numeric usage quota (generations/day, characters/day) for the demo. Direct fetch of openai.fm retur"
+   }
+  },
+  {
+   "id": "g4f.openrouterfree",
+   "provider": "g4f/OpenRouterFree",
+   "lane": "model",
+   "metric": "g4f provider OpenRouterFree \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": 50,
+   "unit": "requests",
+   "window": "per day",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://openrouter.ai/pricing",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "doc_quote": "Free models are capped at 20 requests per minute and 50 per day, rising to 1,000 per day once your account has bought at least $10 of credits.",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "ESTABLISHED from primary source, checked 2026-10-28. Auth: Account + API key (Bearer) required; free :free models, limit applies if < $10 credits purchased. Also checked https://openrouter.ai/docs/api_reference/limits - same free-usage table structure for :free variants, 20/min and daily cap tiered by credits purchased. Experiment label required (FREE-QUOTA-WINDOWS router rule)."
+   }
+  },
+  {
+   "id": "g4f.operaaria",
+   "provider": "g4f/OperaAria",
+   "lane": "model",
+   "metric": "g4f provider OperaAria \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": 5,
+   "unit": "images",
+   "window": "per day",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://www.opera.com/gx/features/opera-ai",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "doc_quote": "Image generation is limited to five images per day for accountless users, and 100 images per day for signed-in accounts.",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "ESTABLISHED from primary source, checked 2026-10-28. Auth: No-auth / accountless for core Aria/Opera AI in Opera browser; signed-in free Opera account raises image limit to 100/day. No numeric chat limit published on this page.. Limit is image-generation only, not chat. Also checked https://blogs.opera.com/news/2024/09/aria-browser-ai-now-available-in-opera-without-sign-in/ (older: 5 accountless, 30/day signed-in) and https://blogs.opera.com/mobile/2025/01/opera-ios-update-accountless-aria-home-screen-widgets/ (same older 5 Experiment label required (FREE-QUOTA-WINDOWS router rule)."
+   }
+  },
+  {
+   "id": "g4f.perplexity",
+   "provider": "g4f/Perplexity",
+   "lane": "model",
+   "metric": "g4f provider Perplexity \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": 3,
+   "unit": "Pro Searches",
+   "window": "per day",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://www.perplexity.ai/hub/blog/ai-costs",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "doc_quote": "Free includes basic searches, three Pro Searches (more thorough, multi-step searches) a day, and one Research query (a full report on a complex topic) a month.",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "ESTABLISHED from primary source, checked 2026-10-28. Auth: Free plan ($0); basic searches included, Pro Searches/Research are plan-gated - not a no-auth API quota. Also checked https://www.perplexity.ai/hub/pricing (Free: $0/month, 'Good for limited daily usage', no numeric Pro Search limit in extract), https://www.perplexity.ai/help-center/en/articles/10352895-how-does-perplexity-work ('Free users can enjoy a limited number of Pro Searches per day', no number Experiment label required (FREE-QUOTA-WINDOWS router rule)."
+   }
+  },
+  {
+   "id": "g4f.pi",
+   "provider": "g4f/Pi",
+   "lane": "model",
+   "metric": "g4f provider Pi \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://inflection.ai/blog/the-future-of-pi",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://inflection.ai/blog/the-future-of-pi). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 1 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: Free consumer Pi at pi.ai/talk, sign-up based; no paid consumer tier published. Primary sources checked: https://inflection.ai/blog/the-future-of-pi (says Pi kept 'available and free' and a future cap will be implemented, no numeric value/window), https://pi.ai/ (no limit stated), https://inflection.ai/terms-of-service (no numer"
+   }
+  },
+  {
+   "id": "g4f.pollinations",
+   "provider": "g4f/Pollinations",
+   "lane": "model",
+   "metric": "g4f provider Pollinations \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://pollinations.ai/",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://pollinations.ai/). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 1 of 175 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: Formerly no-auth basic calls; current primary homepage/docs route use via API key from enter.pollinations.ai - generation now key-based per primary site flow, no numeric anonymous quota stated there. Primary sources checked: https://pollinations.ai/ (models/agents overview, 'Your first API key earns a small Quest reward', no numeric free/no-auth limit), https://enter.pollinations.ai (News & FAQ, no numeric quota), https://gen.pollinations.ai (API"
+   }
+  },
+  {
+   "id": "g4f.pollinationsaudio",
+   "provider": "g4f/PollinationsAudio",
+   "lane": "model",
+   "metric": "g4f provider PollinationsAudio \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://pollinations.ai",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://pollinations.ai). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 38 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: API key required for generation: sk_ secret key or pk_ publishable key from enter.pollinations.ai; current APIDOCS documents no anonymous generation tier, only model listing without auth. No numeric free allocation for audio published on primary sources. Checked: https://pollinations.ai (no limit stated); github.com/pollinations/pollinations APIDOCS.md and POLLEN_FAQ.md via search-indexed primary text - free Pollen is now one-time Que"
+   }
+  },
+  {
+   "id": "g4f.pollinationsimage",
+   "provider": "g4f/PollinationsImage",
+   "lane": "model",
+   "metric": "g4f provider PollinationsImage \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://pollinations.ai",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://pollinations.ai). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 2 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: API key required for generation: sk_ secret key or pk_ publishable key from enter.pollinations.ai; current APIDOCS documents no anonymous generation tier, only model listing without auth. No numeric free allocation for image published on primary sources. Checked: https://pollinations.ai (no limit stated); github.com/pollinations/pollinations APIDOCS.md and POLLEN_FAQ.md via search-indexed primary text - free Pollen is now one-time Que"
+   }
+  },
+  {
+   "id": "g4f.puter",
+   "provider": "g4f/Puter",
+   "lane": "model",
+   "metric": "g4f provider Puter \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://docs.puter.com/user-pays-model/",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://docs.puter.com/user-pays-model/). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 1022 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: No API keys for developer; end user signs in with own Puter account under User-Pays Model, user covers own AI/cloud usage, developer pays $0. Free monthly allowance exists but no numeric amount is published on primary sources. Checked: https://docs.puter.com/user-pays-model/ (allowance described, no value); https://docs.puter.com/ (no numeric limit, states no API keys); https://developer.p"
+   }
+  },
+  {
+   "id": "g4f.qwen",
+   "provider": "g4f/Qwen",
+   "lane": "model",
+   "metric": "g4f provider Qwen \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://www.alibabacloud.com/help/en/model-studio/model-pricing?utm_source=chatgpt.com",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://www.alibabacloud.com/help/en/model-studio/model-pricing?utm_source=chatgpt.com). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 1 of 24 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: Authenticated: Alibaba Cloud Model Studio account activation + API key required; not no-auth. This is the Model Studio API free quota, not chat.qwen.ai. Scope caveat: https://chat.qwen.ai itself (checked, JS shell) publishes no numeric limit for the free web chat; the established numeric free quota is Alibaba Cloud Model Studio's, e.g. rows for qwen-plus-character and other Qwen models list 1 million"
+   }
+  },
+  {
+   "id": "g4f.relayrouter",
+   "provider": "g4f/RelayRouter",
+   "lane": "model",
+   "metric": "g4f provider RelayRouter \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": 2000000,
+   "unit": "tokens",
+   "window": "per account total, with daily sub-caps resetting 00:00 UTC",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://relayrouter.org/free-plan",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "doc_quote": "2M total free tokens per account.",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "ESTABLISHED from primary source, checked 2026-10-28. Auth: Authenticated, no card: email-verified RelayRouter account claimed via Discord (Discord account at least 14 days old, captcha/Turnstile, one free plan per person/device/network); free model works at $0.00 balance, API key used for API calls. Same primary page also states daily sub-caps verbatim: '700K input and 300K output tokens per UTC day.' and 'One model, 2M free tokens, and a hard daily cap.' Free model is deepseek-v4.1-flash-1017:free at $0; paid models still require credit. Also checked: https://relayrouter.org/ (paid catalog pri Experiment label required (FREE-QUOTA-WINDOWS router rule)."
+   }
+  },
+  {
+   "id": "g4f.stabilityai_sd35large",
+   "provider": "g4f/StabilityAI_SD35Large",
+   "lane": "model",
+   "metric": "g4f provider StabilityAI_SD35Large \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://stabilityai-stable-diffusion-3-5-large.hf.space",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://stabilityai-stable-diffusion-3-5-large.hf.space). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 1 of 1 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: No-auth Gradio Hugging Face Space for the listed surface; the separate Stability API requires an account/API key (Authorization: Bearer $STABILITY_API_KEY). Checked: https://stabilityai-stable-diffusion-3-5-large.hf.space (page text only 'Gradio'/'Examples', no numeric limit); https://platform.stability.ai/ (says 'Get started for free, no credit card required', shows Bearer-key API use, no recurring free"
+   }
+  },
+  {
+   "id": "g4f.teachanything",
+   "provider": "g4f/TeachAnything",
+   "lane": "model",
+   "metric": "g4f provider TeachAnything \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://www.teach-anything.com",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://www.teach-anything.com). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 1 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: No-auth/no-account homepage form (write question, select language, select difficulty); Pro is a separate upsell. Checked: https://www.teach-anything.com / https://teach-anything.com/ (homepage text: 'Teach you Anything in seconds', '1,063,505 answers generated so far.', 'Get Pro version \u2192' \u2014 no numeric free limit, pricing, or rate limit). site:teach-anything.co"
+   }
+  },
+  {
+   "id": "g4f.whiterabbitneo",
+   "provider": "g4f/WhiteRabbitNeo",
+   "lane": "model",
+   "metric": "g4f provider WhiteRabbitNeo \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://www.whiterabbitneo.com",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://www.whiterabbitneo.com). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 0 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: Current site redirects the brand to Deep Hat/Kindo with a free try link to app.deephat.ai; original model was open-source via Hugging Face. No no-auth numeric quota stated on the primary site. Checked: https://www.whiterabbitneo.com (now 'Deep Hat, formerly Whiterabbitneo, is Kindo's uncensored cybersecurity model...', 'Try it for free ->' / 'Use it for free ->' linking app.deephat.ai, no numeric limit). site:whiterabbitneo.com pricing/use"
+   }
+  },
+  {
+   "id": "g4f.you",
+   "provider": "g4f/You",
+   "lane": "model",
+   "metric": "g4f provider You \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://you.com/product/web-search-api",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://you.com/product/web-search-api). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 0 of 0 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: No signup or API key for the free MCP profile; API key/account credits required for higher volume. Corroborated on primary pricing page https://about.you.com/pricing: '100 queries/day' / 'Use the Web Search API for free.' / '100 queries per day', plus '$100 free credit to get started' for new accounts (separate from the no-auth 100/day profile)."
+   }
+  },
+  {
+   "id": "g4f.yqcloud",
+   "provider": "g4f/Yqcloud",
+   "lane": "model",
+   "metric": "g4f provider Yqcloud \u2014 free/no-auth quota (resolution 2026-10-28)",
+   "limit": null,
+   "unit": "unmetered / unknown (NOT ESTABLISHED)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://chat9.yqcloud.top",
+   "live": "none; observe 429/retry-after per call (g4f surface, REFERENCE_ONLY, runtime_eligible=false)",
+   "planned_use": {
+    "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://chat9.yqcloud.top). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 1 of 1 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: Unknown/no-auth web chat surface as fetched; no login, pricing, or terms information was published on the fetched page. Checked: https://chat9.yqcloud.top (page text only 'AIchatOS2' / 'kErrorDropped', no numeric limit, pricing, or docs). Web searches for 'chat9.yqcloud.top'/'yqcloud.top' free/pricing found no primary pricing/docs/terms page for this domain; results w"
    }
   }
  ]

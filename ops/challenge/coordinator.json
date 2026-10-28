@@ -61,8 +61,16 @@
       "constraints": [],
       "gates": [],
       "prizes": {
-        "status": "NOT_ESTABLISHED",
-        "tiers": []
+        "status": "ESTABLISHED",
+        "pool": "$1,000",
+        "tiers": [
+          {
+            "place": "top 5 projects (each)",
+            "award": "$100 AWS credits + Builder Backpack",
+            "source_url": null
+          }
+        ],
+        "notes": "Verified 2026-10-26 from official AWS Builder Center page: awards pool $1,000 stated; top 5 projects each $100 AWS credits + Builder Backpack. Tier source_url null: no canonical URL in record (official_url null)."
       },
       "moneyball": {
         "schema": "moneyball-plane/v2",
@@ -96,12 +104,12 @@
       "projects": [
         {
           "id": "delphi-oracle-weekend-challenge",
-          "name": "Delphi Oracle — Weekend Challenge completion package",
+          "name": "Delphi Oracle \u2014 Weekend Challenge completion package",
           "one_liner": "Decider-gated agent with a read-only evidence tool, built as the entered-but-passed challenge's completion record.",
           "origin": "hand-packet",
           "brief_anchor": null,
           "status": "abandoned",
-          "reason": "Window closed Oct 26 before completion; owner ruled 2026-10-27 to complete it anyway as a completion record only — never submitted to the platform (submission count stays 0).",
+          "reason": "Window closed Oct 26 before completion; owner ruled 2026-10-27 to complete it anyway as a completion record only \u2014 never submitted to the platform (submission count stays 0).",
           "superseded_by": null,
           "assets": {
             "repo_dir": "apps/weekend-challenge-delphi-oracle",
@@ -135,7 +143,30 @@
         }
       ],
       "participants": [],
-      "judges": []
+      "judges": [],
+      "opportunity_cost": {
+        "outcome": "not_submitted",
+        "top_award": {
+          "value": 100,
+          "form": "$100 AWS credits + Builder Backpack",
+          "source": "Official AWS Builder Center page, verified 2026-10-26: pool $1,000; top 5 projects each $100 AWS credits + Builder Backpack"
+        },
+        "gross_foregone": 100,
+        "win_probability": {
+          "estimate": 0.125,
+          "basis": {
+            "field_size": 40,
+            "our_standing": "not_submitted; no submission (0) \u2014 baseline = 5 winning slots / 40 public entries"
+          }
+        },
+        "expected_value_foregone": 12.5,
+        "non_monetary_foregone": [
+          "Builder Backpack (physical, part of top award)",
+          "top-5 winner visibility/recognition",
+          "judge-panel feedback (2-gate: AI+human scoring to top 50, judge panel picks 5)"
+        ],
+        "computed_at": "2026-10-28"
+      }
     },
     {
       "id": "D1",
@@ -295,7 +326,7 @@
           "origin": "oracle_proposal#43",
           "brief_anchor": null,
           "status": "abandoned",
-          "reason": "TAINTED per owner ruling 2026-10-28; recorded as a not-entry — a pass candidate, never an entry candidate. Do not build.",
+          "reason": "TAINTED per owner ruling 2026-10-28; recorded as a not-entry \u2014 a pass candidate, never an entry candidate. Do not build.",
           "superseded_by": null,
           "assets": {
             "repo_dir": null,
@@ -320,7 +351,7 @@
           "origin": "oracle_proposal#44",
           "brief_anchor": null,
           "status": "abandoned",
-          "reason": "TAINTED per owner ruling 2026-10-28; recorded as a not-entry — a pass candidate, never an entry candidate. Do not build.",
+          "reason": "TAINTED per owner ruling 2026-10-28; recorded as a not-entry \u2014 a pass candidate, never an entry candidate. Do not build.",
           "superseded_by": null,
           "assets": {
             "repo_dir": null,
@@ -345,7 +376,7 @@
           "origin": "oracle_proposal#45",
           "brief_anchor": null,
           "status": "abandoned",
-          "reason": "TAINTED per owner ruling 2026-10-28; recorded as a not-entry — a pass candidate, never an entry candidate. Do not build.",
+          "reason": "TAINTED per owner ruling 2026-10-28; recorded as a not-entry \u2014 a pass candidate, never an entry candidate. Do not build.",
           "superseded_by": null,
           "assets": {
             "repo_dir": null,
@@ -417,10 +448,33 @@
             }
           ],
           "confidence": "low",
-          "notes": "First and only project in D1's public Projects list on day 1 (checked signed-out 2026-10-28 13:01-13:03 PT). Builder Center shows NO author name/handle/profile for this entry on the list card or the project page; repo_url/demo_url are published in the project body and are project links, not author-profile facts. D1's Participants tab is join-gated (323 joined per page header) — not a public source; tracking runs on the Projects list. CORRECTION 2026-10-28 (MoneyBall consumer pattern, PR #2211): the candidate=true flag set at first record does NOT meet the standout flag rule - first v2 evaluation (ops/challenge-participants/scores/D1--ladder-practice-sets--evaluate--2026-10-28.json) gives composite 2.05 vs intake threshold 6.0, with track_record + momentum unverified. Flag removed; the entity stays tracked and re-evaluates as signals land."
+          "notes": "First and only project in D1's public Projects list on day 1 (checked signed-out 2026-10-28 13:01-13:03 PT). Builder Center shows NO author name/handle/profile for this entry on the list card or the project page; repo_url/demo_url are published in the project body and are project links, not author-profile facts. D1's Participants tab is join-gated (323 joined per page header) \u2014 not a public source; tracking runs on the Projects list. CORRECTION 2026-10-28 (MoneyBall consumer pattern, PR #2211): the candidate=true flag set at first record does NOT meet the standout flag rule - first v2 evaluation (ops/challenge-participants/scores/D1--ladder-practice-sets--evaluate--2026-10-28.json) gives composite 2.05 vs intake threshold 6.0, with track_record + momentum unverified. Flag removed; the entity stays tracked and re-evaluates as signals land."
         }
       ],
-      "judges": []
+      "judges": [],
+      "opportunity_cost": {
+        "outcome": "pending",
+        "top_award": {
+          "value": 5000,
+          "form": "$5,000 AWS Promotional Credits + AWS Builder swag bundle worth about $600 + official winner's certificate",
+          "source": "Official page (prizes.tiers[0].source_url)"
+        },
+        "gross_foregone": 0,
+        "win_probability": {
+          "estimate": null,
+          "basis": {
+            "field_size": "NOT_ESTABLISHED",
+            "our_standing": "joined; no submission yet; event active to 2026-11-04"
+          }
+        },
+        "expected_value_foregone": null,
+        "non_monetary_foregone": [
+          "AWS Builder swag bundle (jacket, backpack, keyboard)",
+          "official winner's certificate",
+          "winner visibility"
+        ],
+        "computed_at": "2026-10-28"
+      }
     },
     {
       "id": "D2",
@@ -510,7 +564,7 @@
       "registration": {
         "state": "not started",
         "evidence": [
-          "Requirement checklist in challenge log D2: lablab.ai registration + Discord join + Vultr account (no-card path only) — recon in the prep window."
+          "Requirement checklist in challenge log D2: lablab.ai registration + Discord join + Vultr account (no-card path only) \u2014 recon in the prep window."
         ]
       },
       "submission": {
@@ -542,7 +596,29 @@
         }
       ],
       "participants": [],
-      "judges": []
+      "judges": [],
+      "opportunity_cost": {
+        "outcome": "pending",
+        "top_award": {
+          "value": 8000,
+          "form": "$5,000 cash + $3,000 Vultr credits (1st place)",
+          "source": "Official lablab.ai page (prizes.tiers[0].source_url)"
+        },
+        "gross_foregone": 0,
+        "win_probability": {
+          "estimate": null,
+          "basis": {
+            "field_size": "NOT_ESTABLISHED",
+            "our_standing": "registered/joining; no submission yet"
+          }
+        },
+        "expected_value_foregone": null,
+        "non_monetary_foregone": [
+          "1st-place winner visibility",
+          "judge feedback"
+        ],
+        "computed_at": "2026-10-28"
+      }
     },
     {
       "id": "D3",
@@ -735,7 +811,29 @@
         }
       ],
       "participants": [],
-      "judges": []
+      "judges": [],
+      "opportunity_cost": {
+        "outcome": "pending",
+        "top_award": {
+          "value": 5000,
+          "form": "$5,000 USD cash (Grand Prize)",
+          "source": "https://builder.io/hackathon/rules"
+        },
+        "gross_foregone": 0,
+        "win_probability": {
+          "estimate": null,
+          "basis": {
+            "field_size": "NOT_ESTABLISHED",
+            "our_standing": "no submission yet; event active"
+          }
+        },
+        "expected_value_foregone": null,
+        "non_monetary_foregone": [
+          "Grand Prize winner visibility/recognition",
+          "judge feedback"
+        ],
+        "computed_at": "2026-10-28"
+      }
     },
     {
       "id": "D4",
@@ -888,7 +986,29 @@
         }
       ],
       "participants": [],
-      "judges": []
+      "judges": [],
+      "opportunity_cost": {
+        "outcome": "pending",
+        "top_award": {
+          "value": null,
+          "form": "NOT_ESTABLISHED",
+          "source": "Official page: pool $100,000 cash stated; per-place tiers TBD, releasing 2026-10-30 \u2014 top award NOT_ESTABLISHED"
+        },
+        "gross_foregone": 0,
+        "win_probability": {
+          "estimate": null,
+          "basis": {
+            "field_size": "NOT_ESTABLISHED",
+            "our_standing": "no submission yet; registering"
+          }
+        },
+        "expected_value_foregone": null,
+        "non_monetary_foregone": [
+          "winner visibility",
+          "judge feedback"
+        ],
+        "computed_at": "2026-10-28"
+      }
     },
     {
       "id": "D5",
@@ -994,7 +1114,30 @@
       },
       "projects": [],
       "participants": [],
-      "judges": []
+      "judges": [],
+      "opportunity_cost": {
+        "outcome": "pending",
+        "top_award": {
+          "value": 744,
+          "form": "Six-month Aha! Builder subscription (approx. retail $744) per winning-team member + AI Builder badge + certificate",
+          "source": "https://www.aha.io/hackathon/ai-builder-day-contest-rules"
+        },
+        "gross_foregone": 0,
+        "win_probability": {
+          "estimate": null,
+          "basis": {
+            "field_size": "NOT_ESTABLISHED",
+            "our_standing": "no submission yet; registering"
+          }
+        },
+        "expected_value_foregone": null,
+        "non_monetary_foregone": [
+          "AI Builder badge",
+          "winner certificate",
+          "winner visibility"
+        ],
+        "computed_at": "2026-10-28"
+      }
     }
   ],
   "derived": {

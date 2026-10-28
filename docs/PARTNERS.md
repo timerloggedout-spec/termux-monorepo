@@ -11,6 +11,16 @@ Affiliate, referral, and gifted-usage lanes this project takes part in — the c
 | Manus AI | AI employees & agents | Invitation link (UTM-tagged) | https://manus.im/invitation/5MHU34UJRBOTVC6?utm_source=invitation&utm_medium=social&utm_campaign=system_share | `Manus AI — invitation` (`111111`) — row 1 | Marketing (Chloe) |
 | Grafana | Observability & cloud | Referral code `gr8WEigykKjVGTV` | https://grafana.com/auth/sign-up?refCode=gr8WEigykKjVGTV | `Grafana Cloud — referral sign-up` (`F46800`, grafana logo) — row 2 | Marketing (Chloe) |
 
+## 1b. Code lanes (invite / referral codes, owner-supplied, free no-CC)
+
+Machine registry: `config/referral_programs.json` · Public feed: `apps/help-wanted-dashboard/data/referral-feed.json` · Automation: `docs/ops/REFERRAL-AUTOMATION.md`. One live code is published per programme; reserve codes rotate in on exhaustion.
+
+| Partner | Mechanic | Visitor gets (free) | Live code | Status |
+|---|---|---|---|---|
+| Muse (Meta) | Referral code, redeem in Settings ≤48h of joining | 1 billion Muse tokens (both sides; never expires) | — | Code pending: owner share code not yet supplied |
+| Cue (by Manus) | Invite code, early access | Free early access | `W7AZA` (+1 reserve) | Live |
+| Migoo | Invite code at signup | Signup access + free daily points | `uA3QYP` (+2 reserve) | Live |
+
 ## 2. Owned channels
 
 | Channel | Use | Link |

@@ -108,3 +108,11 @@ Rules:
 - Credit thresholds (cumulative consumed): $1 reconcile · $3 review ·
   $5 pause expansion · $8 stop optional experiments · $10 stop discretionary
   spend. Rev3 envelopes remain the caps.
+
+
+## $-RULE freeze (owner, 2026-10-28)
+
+Spend frozen at $0-metered essential P1 until a credit-intake benefit is
+found AND obtained (see plan doc sections 7-8 for the hunt table). 14-day
+Pro trial exists publicly (pricing page) — NOT obtained, claimable status
+on this account NOT ESTABLISHED.

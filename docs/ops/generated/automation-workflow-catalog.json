@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "e5f5fa5b8436424a8ee5c3f35d2fd143c8277784188a91622254c5a8e2f059c7",
-  "workflow_count": 200,
+  "source_fingerprint": "f4144837571c6dd14640cdf941c088515ee3e8b0d29b3f5051e2065a3141f10d",
+  "workflow_count": 201,
   "workflows": [
     {
       "action_pins": [
@@ -1290,6 +1290,25 @@
       "path": ".github/workflows/device-queue-install.yml",
       "schedules": [],
       "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: dispatch-tree-feed-collect cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "collect"
+      ],
+      "name": "dispatch-tree-feed-collect",
+      "path": ".github/workflows/dispatch-tree-feed-collect.yml",
+      "schedules": [
+        "7 7 * * *"
+      ],
+      "triggers": [
+        "push",
+        "schedule",
         "workflow_dispatch"
       ]
     },

@@ -187,10 +187,29 @@ each other):
 profile (§2).** It gates D1 directly and is the first blocker surfaced wherever
 a submission path reaches an owner-account step.
 
+**Lane oversight (owner structure, 2026-10-28):** the ChallengeLane
+Manager (own side chat — Challenge Management) owns the lane and the
+countdown-critical path; this log's lane is the execution lane under it.
+Sub-coordinators per event sit under the Manager (D1–D5). Monikers for
+the Manager + subs are assigned through the registry process (requested
+2026-10-28; recorded here on assignment — never invented).
+FUTURE (logged, not now): DoE-style comparison of manager implementations.
+
+| Entry | State | Window (PT) | Gate |
+|-------|-------|-------------|------|
+| D0 | DONE (completed 2026-10-27) | closed Oct 26 | — |
+| D1 | IN PROGRESS — window OPEN | closes Nov 4 23:59 | **G-07 Builder profile — ESCALATED** (login card unentered since 2026-10-27 07:34; sessions expired) + in-window workshop badge evidence |
+| D2 | IN PROGRESS | opens Nov 5; closes Nov 8 15:00 | no-card path only (lablab + Discord + Vultr sandbox) |
+| D3 | IN PROGRESS | closes Nov 2 23:59 | Clips account ✓ created 2026-10-27; storage connect at build weekend |
+| D4 | REGISTERING | eligibility opens Oct 30 13:00 PDT; closes Dec 4 14:00 | Devpost + Kiro accounts (sibling lane); no project creation before the window opens |
+| D5 | REGISTERED — spot pending review | opens Nov 17 9:00 AM; closes Nov 19 23:59 (window end) | spot confirmation email |
+
+<!-- countdown:BLOCK -->⏳ countdowns — D0: CLOSED · D1: closes in 7d 19h · D2: opens in 7d 19h (closes Nov 8 15:00 PT) · D3: closes in 5d 19h · D4: opens in 2d 7h (closes Dec 4 14:00 PT) · D5: opens in 20d 4h (closes Nov 19 23:59 PT) (computed 2026-10-28 05:01 PT)<!-- /countdown:BLOCK -->
+
 ### D0 — for R2, Weekend Challenge: Give your Agent a Tool — COMPLETED 2026-10-27 (owner ruling 2026-10-27; date set: Oct 29)
 
 <!-- countdown-data:D0 opens=- closes=2026-10-26T13:00:00-07:00 -->
-<!-- countdown:D0 -->⏳ CLOSED (computed 2026-10-27 23:35 PT)<!-- /countdown:D0 -->
+<!-- countdown:D0 -->⏳ CLOSED (computed 2026-10-28 05:01 PT)<!-- /countdown:D0 -->
 
 `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]`
 
@@ -252,7 +271,7 @@ a submission path reaches an owner-account step.
 ### D1 — for C1, Workshop to Ship — IN PROGRESS (owner already joined)
 
 <!-- countdown-data:D1 opens=2026-10-28T00:00:00-07:00 closes=2026-11-04T23:59:00-08:00 -->
-<!-- countdown:D1 -->⏳ opens in 24m (computed 2026-10-27 23:35 PT)<!-- /countdown:D1 -->
+<!-- countdown:D1 -->⏳ closes in 7d 19h (computed 2026-10-28 05:01 PT)<!-- /countdown:D1 -->
 
 `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]`
 
@@ -308,7 +327,7 @@ a submission path reaches an owner-account step.
 ### D2 — for C2, Vultr Agent Rush (Foundry entry) — IN PROGRESS
 
 <!-- countdown-data:D2 opens=2026-11-05T00:00:00-08:00 closes=2026-11-08T15:00:00-08:00 -->
-<!-- countdown:D2 -->⏳ opens in 8d 1h (computed 2026-10-27 23:35 PT)<!-- /countdown:D2 -->
+<!-- countdown:D2 -->⏳ opens in 7d 19h (computed 2026-10-28 05:01 PT)<!-- /countdown:D2 -->
 
 `entrant{entrantLablabAi}[platform:lablab-ai]` + `entrant{entrantVultr}[platform:vultr]`
 
@@ -338,7 +357,7 @@ a submission path reaches an owner-account step.
 ### D3 — for C3, Builder.io Agent-Native Hackathon — IN PROGRESS (scoped 2026-10-26)
 
 <!-- countdown-data:D3 opens=- closes=2026-11-02T23:59:00-08:00 -->
-<!-- countdown:D3 -->⏳ closes in 6d 1h (computed 2026-10-27 23:35 PT)<!-- /countdown:D3 -->
+<!-- countdown:D3 -->⏳ closes in 5d 19h (computed 2026-10-28 05:01 PT)<!-- /countdown:D3 -->
 
 `entrant{entrantBuilderIo}[platform:builder-io]`
 
@@ -412,7 +431,7 @@ a submission path reaches an owner-account step.
 ### D4 — for C4, Kiroween 2026 — REGISTERING (build sequenced after Nov 8)
 
 <!-- countdown-data:D4 opens=2026-10-30T13:00:00-07:00 closes=2026-12-04T14:00:00-08:00 -->
-<!-- countdown:D4 -->⏳ opens in 2d 13h (computed 2026-10-27 23:35 PT)<!-- /countdown:D4 -->
+<!-- countdown:D4 -->⏳ opens in 2d 7h (computed 2026-10-28 05:01 PT)<!-- /countdown:D4 -->
 
 `entrant{entrantDevpost}[platform:devpost]` + `entrant{entrantKiro}[platform:kiro]` — account creation owned by the dedicated Devpost + Kiro ID creation chat (owner order 2026-10-27, fleet Google identity route); registration completes with this lane on its handoff.
 
@@ -466,7 +485,7 @@ a submission path reaches an owner-account step.
 ### D5 — for Aha! AI Builder Day Hackathon (Aha.io) — REGISTERED 2026-10-27 (spot pending review)
 
 <!-- countdown-data:D5 opens=2026-11-17T09:00:00-08:00 closes=2026-11-19T23:59:00-08:00 -->
-<!-- countdown:D5 -->⏳ opens in 20d 10h (computed 2026-10-27 23:35 PT)<!-- /countdown:D5 -->
+<!-- countdown:D5 -->⏳ opens in 20d 4h (computed 2026-10-28 05:01 PT)<!-- /countdown:D5 -->
 
 Moniker: **registry process pending** — platform `aha-io` activated by this
 packet (R4, §1); the assignment is the registry lane's via

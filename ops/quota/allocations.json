@@ -30,12 +30,7 @@
       "label": "Research"
     }
   ],
-  "excluded_services": [
-    {
-      "id": "openrouter.key",
-      "reason": "Opt-in private observation record (provider-quota-service --observe); not a consumable pool service."
-    }
-  ],
+  "excluded_services": [],
   "pools": [
     {
       "id": "aion",
@@ -1180,7 +1175,8 @@
     {
       "id": "openrouter",
       "services": [
-        "openrouter.free_models"
+        "openrouter.free_models",
+        "openrouter.key"
       ],
       "allocations": [
         {
@@ -1874,6 +1870,42 @@
           "pct": 0,
           "mode": "leftover-only",
           "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
+    },
+    {
+      "id": "platform201",
+      "services": [
+        "platform201.projects"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-28",
+          "reason": "Owner setting (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4). Pool created 2026-10-28 to complete registry coverage \u2014 platform201.projects landed in the registry (PR #1983) without an allocations entry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-28",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-28",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-28",
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ]

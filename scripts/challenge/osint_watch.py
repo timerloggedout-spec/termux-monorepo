@@ -47,6 +47,7 @@ def coverage_of(ev: dict) -> dict:
         "entity_signals": {"populated": signals(parts + judges) > 0, "count": signals(parts + judges)},
         "recruitment": {"populated": any(isinstance(r, dict) and r.get("recruitment") for r in parts + judges), "count": sum(1 for r in parts + judges if isinstance(r, dict) and r.get("recruitment"))},
         "opportunity_cost": {"populated": bool(ev.get("opportunity_cost")), "ledger_entry": (ev.get("opportunity_cost") or {}).get("ledger_entry")},
+        "field_size": {"status": (ev.get("field_size") or {}).get("status", "open_task"), "participants": (ev.get("field_size") or {}).get("participants"), "projects": (ev.get("field_size") or {}).get("projects")},
         "official_page_watch": {"populated": bool(ev.get("official_url")), "url": ev.get("official_url")},
     }
 

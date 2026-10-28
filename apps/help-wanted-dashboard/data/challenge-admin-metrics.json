@@ -1,22 +1,24 @@
 {
   "schema": "challenge-admin-metrics/v1",
-  "generated_at": "2026-10-28T22:05:00Z",
+  "generated_at": "2026-10-28T22:09:00Z",
   "source": "ops/challenge/coordinator.json",
   "surface": "ADMIN PANEL ONLY (internal) \u2014 never public feeds/pages/log/briefs/ledger",
   "events": {
     "STRANDS-DECIDER": {
       "win_probability": {
         "method": "winprob/v1",
-        "estimate": null,
+        "estimate": 0.009,
         "inputs": {
           "award_slots_top": 1,
-          "field_size": null,
+          "field_size": 110,
           "field_scored_count": 0,
           "field_mean_composite": null,
           "our_composite": null,
-          "participants": 5917
+          "participants": 5917,
+          "field_size_basis": "MoneyBall refinement denominator (see basis)"
         },
-        "computed_at": "2026-10-28T22:05:00Z"
+        "computed_at": "2026-10-28T22:09:00Z",
+        "basis": "MoneyBall refinement (winprob/v1): projects floor 110 (list paginated past 110, total not displayed) \u2014 base = 1/110 upper bound; participants 5917 rejected as denominator."
       },
       "field_size_status": "partial",
       "field_size": {
@@ -36,7 +38,8 @@
           "our_composite": null,
           "participants": 252
         },
-        "computed_at": "2026-10-28T22:05:00Z"
+        "computed_at": "2026-10-28T22:09:00Z",
+        "basis": "winprob/v1 base-rate: 1/40 submitted projects (field established 2026-10-26); no scored field, no lift."
       },
       "field_size_status": "established",
       "field_size": {
@@ -47,16 +50,18 @@
     "D1": {
       "win_probability": {
         "method": "winprob/v1",
-        "estimate": null,
+        "estimate": 0.003,
         "inputs": {
           "award_slots_top": 1,
-          "field_size": 1,
+          "field_size": 324,
           "field_scored_count": 1,
           "field_mean_composite": null,
           "our_composite": null,
-          "participants": 324
+          "participants": 324,
+          "field_size_basis": "MoneyBall refinement denominator (see basis)"
         },
-        "computed_at": "2026-10-28T22:05:00Z"
+        "computed_at": "2026-10-28T22:09:00Z",
+        "basis": "MoneyBall refinement (winprob/v1): base = 1/324 participants (open event; landed projects=1 rejected as denominator \u2014 would print 1.0); no lift (our_composite null)."
       },
       "field_size_status": "partial",
       "field_size": {
@@ -67,16 +72,18 @@
     "D2": {
       "win_probability": {
         "method": "winprob/v1",
-        "estimate": null,
+        "estimate": 0.0006,
         "inputs": {
           "award_slots_top": 1,
-          "field_size": null,
+          "field_size": 1617,
           "field_scored_count": 0,
           "field_mean_composite": null,
           "our_composite": null,
-          "participants": 1617
+          "participants": 1617,
+          "field_size_basis": "MoneyBall refinement denominator (see basis)"
         },
-        "computed_at": "2026-10-28T22:05:00Z"
+        "computed_at": "2026-10-28T22:09:00Z",
+        "basis": "MoneyBall refinement (winprob/v1): base = 1/1617 participants (approved registrants; no projects published yet)."
       },
       "field_size_status": "partial",
       "field_size": {
@@ -96,7 +103,8 @@
           "our_composite": null,
           "participants": null
         },
-        "computed_at": "2026-10-28T22:05:00Z"
+        "computed_at": "2026-10-28T22:09:00Z",
+        "basis": "NO ESTIMATE (MoneyBall ruling 2026-10-28): no sourced denominator of any kind \u2014 a number would be invented. Open OSINT task."
       },
       "field_size_status": "open_task",
       "field_size": {
@@ -107,16 +115,18 @@
     "D4": {
       "win_probability": {
         "method": "winprob/v1",
-        "estimate": null,
+        "estimate": 0.0005,
         "inputs": {
           "award_slots_top": 1,
-          "field_size": null,
+          "field_size": 1908,
           "field_scored_count": 0,
           "field_mean_composite": null,
           "our_composite": null,
-          "participants": 1908
+          "participants": 1908,
+          "field_size_basis": "MoneyBall refinement denominator (see basis)"
         },
-        "computed_at": "2026-10-28T22:05:00Z"
+        "computed_at": "2026-10-28T22:09:00Z",
+        "basis": "MoneyBall refinement (winprob/v1): base = 1/1908 participants (projects 0, gallery unpublished)."
       },
       "field_size_status": "partial",
       "field_size": {
@@ -136,7 +146,8 @@
           "our_composite": null,
           "participants": null
         },
-        "computed_at": "2026-10-28T22:05:00Z"
+        "computed_at": "2026-10-28T22:09:00Z",
+        "basis": "NO ESTIMATE (MoneyBall ruling 2026-10-28): no sourced denominator of any kind \u2014 a number would be invented. Open OSINT task."
       },
       "field_size_status": "open_task",
       "field_size": {

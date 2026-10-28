@@ -1,5 +1,5 @@
 ================================================================================
- QUOTA  termux-monorepo  (95 registry records)
+ QUOTA  termux-monorepo  (155 registry records)
  Snapshot generated (not observation time): 2026-10-28T13:16:27Z
  Source: apps/help-wanted-dashboard/data/quota.json + ops/quota/registry.json
  Limits are documented entitlements, not balances.
@@ -173,6 +173,550 @@
     limit (documented): 0 USD/month
     metric: free allowance for new organizations | window: n/a | reset: n/a
     No live reading (live source: none)
+--------------------------------------------------------------------------------
+ g4f/AgentTools (1)
+  g4f.agenttools
+    status: No live reading
+    limit (documented): 250 units
+    metric: g4f provider AgentTools — free/no-auth quota (resolution 2026-10-28)
+    | window: per day | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/Airforce (1)
+  g4f.airforce
+    status: No live reading
+    limit (documented): 1000 requests
+    metric: g4f provider Airforce — free/no-auth quota (resolution 2026-10-28) |
+    window: per day | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/Antigravity (1)
+  g4f.antigravity
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider Antigravity — free/no-auth quota (resolution
+    2026-10-28) | window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/Arena (1)
+  g4f.arena
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider Arena — free/no-auth quota (resolution 2026-10-28) |
+    window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/BingCreateImages (1)
+  g4f.bingcreateimages
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider BingCreateImages — free/no-auth quota (resolution
+    2026-10-28) | window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/BlackForestLabs_Flux1Dev (1)
+  g4f.blackforestlabs_flux1dev
+    status: No live reading
+    limit (documented): 2 minutes of GPU time
+    metric: g4f provider BlackForestLabs_Flux1Dev — free/no-auth quota
+    (resolution 2026-10-28) | window: per day, resets exactly 24 hours after
+    first GPU usage | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/BlackForestLabs_Flux1KontextDev (1)
+  g4f.blackforestlabs_flux1kontextdev
+    status: No live reading
+    limit (documented): 2 minutes of GPU time
+    metric: g4f provider BlackForestLabs_Flux1KontextDev — free/no-auth quota
+    (resolution 2026-10-28) | window: per day, resets exactly 24 hours after
+    first GPU usage | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/BlackboxPro (1)
+  g4f.blackboxpro
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider BlackboxPro — free/no-auth quota (resolution
+    2026-10-28) | window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/BraveSearch (1)
+  g4f.bravesearch
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider BraveSearch — free/no-auth quota (resolution
+    2026-10-28) | window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/CachedSearch (1)
+  g4f.cachedsearch
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider CachedSearch — free/no-auth quota (resolution
+    2026-10-28) | window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/Cerebras (1)
+  g4f.cerebras
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider Cerebras — free/no-auth quota (resolution 2026-10-28) |
+    window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/ChatGPT (1)
+  g4f.chatgpt
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider ChatGPT — free/no-auth quota (resolution 2026-10-28) |
+    window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/Claude (1)
+  g4f.claude
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider Claude — free/no-auth quota (resolution 2026-10-28) |
+    window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/Cloudflare (1)
+  g4f.cloudflare
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider Cloudflare — free/no-auth quota (resolution 2026-10-28)
+    | window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/CohereForAI_C4AI_Command (1)
+  g4f.cohereforai_c4ai_command
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider CohereForAI_C4AI_Command — free/no-auth quota
+    (resolution 2026-10-28) | window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/Copilot (1)
+  g4f.copilot
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider Copilot — free/no-auth quota (resolution 2026-10-28) |
+    window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/CopilotApp (1)
+  g4f.copilotapp
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider CopilotApp — free/no-auth quota (resolution 2026-10-28)
+    | window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/DeepInfra (1)
+  g4f.deepinfra
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider DeepInfra — free/no-auth quota (resolution 2026-10-28)
+    | window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/DeepSeek (1)
+  g4f.deepseek
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider DeepSeek — free/no-auth quota (resolution 2026-10-28) |
+    window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/ElevenLabs (1)
+  g4f.elevenlabs
+    status: No live reading
+    limit (documented): 10000 credits
+    metric: g4f provider ElevenLabs — free/no-auth quota (resolution 2026-10-28)
+    | window: per month | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/G4FSpace (1)
+  g4f.g4fspace
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider G4FSpace — free/no-auth quota (resolution 2026-10-28) |
+    window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/GLM (1)
+  g4f.glm
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider GLM — free/no-auth quota (resolution 2026-10-28) |
+    window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/Gemini (1)
+  g4f.gemini
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider Gemini — free/no-auth quota (resolution 2026-10-28) |
+    window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/GeminiCLI (1)
+  g4f.geminicli
+    status: No live reading
+    limit (documented): 1000 requests
+    metric: g4f provider GeminiCLI — free/no-auth quota (resolution 2026-10-28)
+    | window: per user per day | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/GeminiPro (1)
+  g4f.geminipro
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider GeminiPro — free/no-auth quota (resolution 2026-10-28)
+    | window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/GithubCopilot (1)
+  g4f.githubcopilot
+    status: No live reading
+    limit (documented): 50 premium requests (all chat interactions count as
+    premium requests)
+    metric: g4f provider GithubCopilot — free/no-auth quota (resolution
+    2026-10-28) | window: per month | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/GoogleAiMode (1)
+  g4f.googleaimode
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider GoogleAiMode — free/no-auth quota (resolution
+    2026-10-28) | window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/GoogleSearch (1)
+  g4f.googlesearch
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider GoogleSearch — free/no-auth quota (resolution
+    2026-10-28) | window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/Grok (1)
+  g4f.grok
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider Grok — free/no-auth quota (resolution 2026-10-28) |
+    window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/Groq (1)
+  g4f.groq
+    status: No live reading
+    limit (documented): 1000 requests per day (RPD) for openai/gpt-oss-120b
+    metric: g4f provider Groq — free/no-auth quota (resolution 2026-10-28) |
+    window: per day | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/HailuoAI (1)
+  g4f.hailuoai
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider HailuoAI — free/no-auth quota (resolution 2026-10-28) |
+    window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/HuggingChat (1)
+  g4f.huggingchat
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider HuggingChat — free/no-auth quota (resolution
+    2026-10-28) | window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/HuggingFace (1)
+  g4f.huggingface
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider HuggingFace — free/no-auth quota (resolution
+    2026-10-28) | window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/HuggingFaceMedia (1)
+  g4f.huggingfacemedia
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider HuggingFaceMedia — free/no-auth quota (resolution
+    2026-10-28) | window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/HuggingSpace (1)
+  g4f.huggingspace
+    status: No live reading
+    limit (documented): 2 GPU-minutes (ZeroGPU)
+    metric: g4f provider HuggingSpace — free/no-auth quota (resolution
+    2026-10-28) | window: per day | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/KiloCode (1)
+  g4f.kilocode
+    status: No live reading
+    limit (documented): 200 requests
+    metric: g4f provider KiloCode — free/no-auth quota (resolution 2026-10-28) |
+    window: per hour per IP | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/LLM7 (1)
+  g4f.llm7
+    status: No live reading
+    limit (documented): 100000 tokens (input + output)
+    metric: g4f provider LLM7 — free/no-auth quota (resolution 2026-10-28) |
+    window: per day | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/MarkItDown (1)
+  g4f.markitdown
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider MarkItDown — free/no-auth quota (resolution 2026-10-28)
+    | window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/MetaAI (1)
+  g4f.metaai
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider MetaAI — free/no-auth quota (resolution 2026-10-28) |
+    window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/MetaAIAccount (1)
+  g4f.metaaiaccount
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider MetaAIAccount — free/no-auth quota (resolution
+    2026-10-28) | window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/MicrosoftDesigner (1)
+  g4f.microsoftdesigner
+    status: No live reading
+    limit (documented): 15 boosts (fast AI creations/edits)
+    metric: g4f provider MicrosoftDesigner — free/no-auth quota (resolution
+    2026-10-28) | window: per day | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/Nvidia (1)
+  g4f.nvidia
+    status: No live reading
+    limit (documented): 1000 API credits
+    metric: g4f provider Nvidia — free/no-auth quota (resolution 2026-10-28) |
+    window: on sign-up (one-time trial grant) | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/Ollama (1)
+  g4f.ollama
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider Ollama — free/no-auth quota (resolution 2026-10-28) |
+    window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/OmniRoute (1)
+  g4f.omniroute
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider OmniRoute — free/no-auth quota (resolution 2026-10-28)
+    | window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/OpenAIFM (1)
+  g4f.openaifm
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider OpenAIFM — free/no-auth quota (resolution 2026-10-28) |
+    window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/OpenRouterFree (1)
+  g4f.openrouterfree
+    status: No live reading
+    limit (documented): 50 requests
+    metric: g4f provider OpenRouterFree — free/no-auth quota (resolution
+    2026-10-28) | window: per day | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/OperaAria (1)
+  g4f.operaaria
+    status: No live reading
+    limit (documented): 5 images
+    metric: g4f provider OperaAria — free/no-auth quota (resolution 2026-10-28)
+    | window: per day | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/Perplexity (1)
+  g4f.perplexity
+    status: No live reading
+    limit (documented): 3 Pro Searches
+    metric: g4f provider Perplexity — free/no-auth quota (resolution 2026-10-28)
+    | window: per day | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/Pi (1)
+  g4f.pi
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider Pi — free/no-auth quota (resolution 2026-10-28) |
+    window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/Pollinations (1)
+  g4f.pollinations
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider Pollinations — free/no-auth quota (resolution
+    2026-10-28) | window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/PollinationsAudio (1)
+  g4f.pollinationsaudio
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider PollinationsAudio — free/no-auth quota (resolution
+    2026-10-28) | window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/PollinationsImage (1)
+  g4f.pollinationsimage
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider PollinationsImage — free/no-auth quota (resolution
+    2026-10-28) | window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/Puter (1)
+  g4f.puter
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider Puter — free/no-auth quota (resolution 2026-10-28) |
+    window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/Qwen (1)
+  g4f.qwen
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider Qwen — free/no-auth quota (resolution 2026-10-28) |
+    window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/RelayRouter (1)
+  g4f.relayrouter
+    status: No live reading
+    limit (documented): 2000000 tokens
+    metric: g4f provider RelayRouter — free/no-auth quota (resolution
+    2026-10-28) | window: per account total, with daily sub-caps resetting 00:00
+    UTC | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/StabilityAI_SD35Large (1)
+  g4f.stabilityai_sd35large
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider StabilityAI_SD35Large — free/no-auth quota (resolution
+    2026-10-28) | window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/TeachAnything (1)
+  g4f.teachanything
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider TeachAnything — free/no-auth quota (resolution
+    2026-10-28) | window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/WhiteRabbitNeo (1)
+  g4f.whiterabbitneo
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider WhiteRabbitNeo — free/no-auth quota (resolution
+    2026-10-28) | window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/You (1)
+  g4f.you
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider You — free/no-auth quota (resolution 2026-10-28) |
+    window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
+--------------------------------------------------------------------------------
+ g4f/Yqcloud (1)
+  g4f.yqcloud
+    status: No live reading
+    limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
+    metric: g4f provider Yqcloud — free/no-auth quota (resolution 2026-10-28) |
+    window: unknown | reset: unknown
+    No live reading (live source: none; observe 429/retry-after per call (g4f
+    surface, REFERENCE_ONLY, runtime_eligible=false))
 --------------------------------------------------------------------------------
  gcp (3)
   gcp.cloud_functions_invocations
@@ -754,6 +1298,6 @@
   zai: Manager / ChronoMancer; official_documentation_only; no passive parser;
   registry: zai.free_models
  Coverage and quota checks do not grant runtime admission.
- 95 registry records | 2 alert(s) | 8 with a reported reading | 87 with No live
- reading
+ 155 registry records | 2 alert(s) | 8 with a reported reading | 147 with No
+ live reading
 ================================================================================

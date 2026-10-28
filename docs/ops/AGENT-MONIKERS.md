@@ -45,7 +45,7 @@ Platform-fronting entrant identities for challenge registrations are
 `config/registration_monikers.json`, rendered in
 `docs/ops/4N0N-REGISTRATION-PROTOCOL.md` (the **4n0n** doxxing-prevention
 protocol). They use the `role{moniker}[context]` form —
-`entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]` — follow
+`entrant{n0nAwsBuilder}[platform:aws-builder-center]` — follow
 this file's display discipline (backticks, never `@`-mentioned; they are
 not GitHub usernames), and are assigned by the deterministic rule in
 `scripts/registration_monikers/registry.py`, never coined per occasion.

@@ -1,17 +1,19 @@
 # Phantom-Secret Remediation
 
-Generated 2026-10-27T13:12:10.655738+00:00 by the phantom-secrets audit (repo-native, repeatable: `.github/workflows/phantom-secrets-audit.yml`). Counts are derived live at generation time. Names only — no secret values exist in this document.
+Generated 2026-10-27T23:08:21.299471+00:00 by the phantom-secrets audit (repo-native, repeatable: `.github/workflows/phantom-secrets-audit.yml`). Counts are derived live at generation time. Names only — no secret values exist in this document.
 
-- Phantom names: **73** across **165** references
+- Phantom names: **69** across **154** references
 - compiled: 20 references
-- dead-branch: 3 references
-- provisioning: 142 references
+- dead-branch: 5 references
+- provisioning: 129 references
 
-## Retired — dead fallback branches (PR #1787)
+## Retired — dead fallback branches (PR #1858)
 
 Each reference below was one branch of a `||` fallback chain that also names a provisioned secret; the branch could never resolve and was removed. Behavior is unchanged — the chains resolve exactly as they did before, now without the phantom name.
 
-- `secrets.GH_TOKEN` — reconcile-devin-wiki-access.yml
+- `secrets.HF_API_TOKEN` — provider-batch.yml, team-mvt.yml
+- `secrets.HF_TOKEN` — provider-batch.yml
+- `secrets.HUGGING_FACE_HUB_TOKEN` — provider-batch.yml, team-mvt.yml
 
 ## Owner provisioning checklist
 
@@ -23,7 +25,6 @@ No verified provisioned replacement exists for these names. Each is an explicit 
 - [ ] `secrets.CEREBRAS_API_KEY` — provider-availability.yml, provider-batch.yml
 - [ ] `secrets.CODESPACE_CREATE_TOKEN` — codespace-create.yml
 - [ ] `secrets.CODEX_API_KEY` — provision-secrets.yml — provisioning catalog entry (by design)
-- [ ] `secrets.COHERE_API_KEY` — provider-availability.yml, provider-batch.yml
 - [ ] `secrets.COOKIES` — deepseek-ci.yml
 - [ ] `secrets.COPILOT_GITHUB_TOKEN` — provision-secrets.yml — provisioning catalog entry (by design)
 - [ ] `secrets.CROSS_REPO_PAT` — provision-secrets.yml — provisioning catalog entry (by design)
@@ -52,11 +53,9 @@ No verified provisioned replacement exists for these names. Each is an explicit 
 - [ ] `secrets.GRAFANA_SERVICE_ACCOUNT_TOKEN` — grafana-mcp-smoke.yml
 - [ ] `secrets.GRAFANA_TOKEN` — grafana-mcp-smoke.yml
 - [ ] `secrets.GRAFANA_URL` — grafana-mcp-smoke.yml
-- [ ] `secrets.GROQ_API_KEY` — provider-availability.yml, provider-batch.yml
-- [ ] `secrets.HF_API_TOKEN` — provider-availability.yml, provider-batch.yml, team-mvt.yml
-- [ ] `secrets.HF_TOKEN` — provider-availability.yml, provider-batch.yml
-- [ ] `secrets.HUGGINGFACE_TOKEN` — provider-availability.yml, provider-batch.yml, team-mvt.yml
-- [ ] `secrets.HUGGING_FACE_HUB_TOKEN` — provider-availability.yml, provider-batch.yml, team-mvt.yml
+- [ ] `secrets.HF_API_TOKEN` — provider-availability.yml, team-mvt.yml
+- [ ] `secrets.HF_TOKEN` — provider-availability.yml
+- [ ] `secrets.HUGGING_FACE_HUB_TOKEN` — provider-availability.yml, team-mvt.yml
 - [ ] `secrets.IFLYTEK_SPARK_API_PASSWORD` — provider-batch.yml
 - [ ] `secrets.KILO_API_KEY` — provider-availability.yml, provider-batch.yml
 - [ ] `secrets.KOYEB_API_TOKEN` — koyeb-hindsight-deploy.yml

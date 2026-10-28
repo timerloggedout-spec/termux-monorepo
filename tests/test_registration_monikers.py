@@ -72,21 +72,31 @@ def empty_registry():
 
 
 def test_derive_moniker_basic():
-    assert reg.derive_moniker("aws-builder-center", {}) == "entrantAwsBuilderCenter"
-    assert reg.derive_moniker("devpost", {}) == "entrantDevpost"
-    assert reg.derive_moniker("lablab-ai", {}) == "entrantLablabAi"
+    assert reg.derive_moniker("aws-builder-center", {}) == "n0nAwsBuilder"
+    assert reg.derive_moniker("devpost", {}) == "n0nDevpost"
+    assert reg.derive_moniker("uno-router", {}) == "n0nUnoRouter"
+    assert reg.derive_moniker("llm7", {}) == "n0nLlm7"
+
+
+def test_derive_moniker_drops_filler_words_but_never_the_first():
+    assert reg.derive_moniker("lablab-ai", {}) == "n0nLablab"
+    assert reg.derive_moniker("builder-io", {}) == "n0nBuilder"
+    assert reg.derive_moniker("ai", {}) == "n0nAi"
+    assert reg.derive_moniker("io", {}) == "n0nIo"
 
 
 def test_derive_moniker_collision_appends_smallest_free_integer():
-    taken = {"entrantdevpost": "devpost"}
-    assert reg.derive_moniker("devpost", taken) == "entrantDevpost"  # same owner
-    taken = {"entrantdevpost": "other-platform"}
-    assert reg.derive_moniker("devpost", taken) == "entrantDevpost2"
+    taken = {"n0ndevpost": "devpost"}
+    assert reg.derive_moniker("devpost", taken) == "n0nDevpost"  # same owner
+    taken = {"n0ndevpost": "other-platform"}
+    assert reg.derive_moniker("devpost", taken) == "n0nDevpost2"
 
 
 def test_canonical_form():
-    e = {"role": "entrant", "moniker": "entrantKiro", "platform_id": "kiro"}
-    assert reg.canonical(e) == "entrant{entrantKiro}[platform:kiro]"
+    e = {"role": "entrant", "moniker": "n0nKiro", "platform_id": "kiro"}
+    assert reg.canonical(e) == "entrant{n0nKiro}[platform:kiro]"
+    e = {"role": "account", "moniker": "n0nCohere", "platform_id": "cohere"}
+    assert reg.canonical(e) == "account{n0nCohere}[platform:cohere]"
 
 
 def test_activation_ignores_candidate_section():
@@ -102,7 +112,7 @@ def test_assign_adds_activated_platforms_with_profile_refs_only():
     added = reg.assign(registry, FIXTURE_LOG)
     assert added == ["aws-builder-center", "devpost", "kiro"]
     by_id = {e["platform_id"]: e for e in registry["entries"]}
-    assert by_id["devpost"]["moniker"] == "entrantDevpost"
+    assert by_id["devpost"]["moniker"] == "n0nDevpost"
     for e in registry["entries"]:
         # No profile data is carried here - only a pointer (one home per fact).
         assert "public_handle" not in e and "handle_state" not in e
@@ -149,7 +159,7 @@ def test_check_rejects_moniker_rule_drift():
     reg.assign(registry, FIXTURE_LOG)
     for e in registry["entries"]:
         if e["platform_id"] == "kiro":
-            e["moniker"] = "entrantKiroPrime"
+            e["moniker"] = "n0nKiroPrime"
     problems = reg.check(registry, FIXTURE_LOG, FIXTURE_PROFILES)
     assert any("rule-derived" in p for p in problems)
 
@@ -158,8 +168,51 @@ def test_render_table_carries_canonical_forms():
     registry = empty_registry()
     reg.assign(registry, FIXTURE_LOG)
     table = reg.render_table(registry)
-    assert "`entrant{entrantDevpost}[platform:devpost]`" in table
+    assert "`entrant{n0nDevpost}[platform:devpost]`" in table
     assert "| Devpost |" in table  # profile_ref column names the heading
+
+
+def fleet_entry(**overrides):
+    e = {"platform_id": "cohere", "platform": "Cohere", "kind": "provider",
+         "role": "account", "moniker": "n0nCohere", "profile_ref": None,
+         "profile_pending": "account-creation", "status": "pending",
+         "registrations": [],
+         "handling": json.loads(json.dumps(reg.DEFAULT_HANDLING))}
+    e.update(overrides)
+    return e
+
+
+def test_fleet_entry_null_profile_ref_with_pending_lane_is_valid():
+    registry = empty_registry()
+    reg.assign(registry, FIXTURE_LOG)
+    registry["entries"].append(fleet_entry())
+    problems = reg.check(registry, FIXTURE_LOG, FIXTURE_PROFILES)
+    # Only the known unclaimed-packet item remains; the fleet entry is
+    # neither stale-checked against the log nor required to resolve a ref.
+    assert problems == ["unclaimed-packet:D9"]
+
+
+def test_fleet_entry_null_profile_ref_without_pending_lane_fails():
+    registry = empty_registry()
+    reg.assign(registry, FIXTURE_LOG)
+    registry["entries"].append(fleet_entry(profile_pending=""))
+    problems = reg.check(registry, FIXTURE_LOG, FIXTURE_PROFILES)
+    assert any("profile_pending" in p for p in problems)
+
+
+def test_derive_mode_registered_and_unregistered(capsys, tmp_path):
+    registry = empty_registry()
+    reg.assign(registry, FIXTURE_LOG)
+    rp = tmp_path / "r.json"
+    rp.write_text(json.dumps(registry))
+    assert reg.main(["derive", "--registry", str(rp),
+                     "--platform-id", "devpost"]) == 0
+    out = json.loads(capsys.readouterr().out)
+    assert out["moniker"] == "n0nDevpost" and out["source"] == "registry"
+    assert reg.main(["derive", "--registry", str(rp),
+                     "--platform-id", "cohere"]) == 0
+    out = json.loads(capsys.readouterr().out)
+    assert out["canonical"] == "account{n0nCohere}[platform:cohere]"
 
 
 def test_shipped_registry_is_consistent_with_shipped_log():

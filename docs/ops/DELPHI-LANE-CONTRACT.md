@@ -205,6 +205,68 @@ ROUND2-EVIDENCE / BALLOT-round2 / CALIBRATION records); the generate
 workflow runs the cycle in pass mode. The D4 Kiroween first live run
 follows this cycle.
 
+### Method governance — arrangement, isolation, stopping, records
+
+Mined 2026-10-27 from the classical-Delphi research on file (the
+cycle-v2 design basis; the `…_faqm` export of that research is
+byte-identical to the `…_s9oz` export already mined — md5-verified —
+so this section transcribes the governance layer of the SAME source
+the v2 build left implicit; it introduces no new research claims).
+
+**Arrangement.** The cycle is classical stovepiped Delphi: responses
+are elicited in isolation and reach the panel only through the
+facilitator. Independence is strongest before the first feedback
+release; later judgments are *deliberately* informed by the anonymous
+synthesis. One modification, documented explicitly as the method
+requires: the callable DEBATE round (stage 2b) adds a
+facilitator-mediated revision opportunity beyond a bare feedback
+release — panelists answer the synthesis, never each other.
+Attribution discipline is confidentiality, not total anonymity: the
+synthesis attributes to source class + role only, while the
+facilitator-side ballot records keep the voter (role{moniker}) so
+every judgment stays auditable.
+
+**Isolation / information control, per stage:**
+
+| Cycle stage | Who sees what |
+|---|---|
+| Generate | Candidates are produced from the brief + evidence packet only — no ballot exists yet to anchor on |
+| Round 1 | Each ballot is cast without access to any peer ballot; a ballot sees the candidates and the evidence packet, nothing else |
+| Facilitator feedback | Only the facilitator reads all ballots; what crosses to the panel is `SYNTHESIS.json` — distributions and arguments, class + role attribution, dissent preserved |
+| DEBATE (when called) | Revised ballots answer the synthesis; no panelist sees another's revision before submitting their own |
+| Implementation | Suites run per candidate in parallel; results enter the record only with run receipts (phantom-test rule) |
+| Round 2 | Every voter receives the identical equalized evidence bundle (sha256-stamped, enforced at the stage gate) |
+
+**Stopping conditions are predefined, never renegotiated mid-pass.**
+The round structure is fixed by panel config (`generation.cycle`:
+rounds, tolerance) and the brief; the DEBATE round is the one
+revision opportunity per pass unless the brief states otherwise. A
+pass ends at its configured final round or the brief's deadline, and
+the stop decision stands in the cycle record. A divided outcome is a
+*result*: calibration reports the distribution and the persistent
+dissent verbatim — success is never redefined because the panel
+remained divided, and no extra round is invented to force
+convergence.
+
+**Response records.** Ballot records correspond to the research
+schema: `voter` = the pseudonymous expert id (role{moniker});
+`rationale`, `evidence_refs`, `revision_reason` as named there; the
+round is carried by the ballot file; the pass + brief ids carry the
+study/question identity. Validation is at intake (a ballot missing
+reasons or citations is refused); any clarification exchange is
+private between facilitator and voter and never discloses a peer
+judgment. Three schema fields are named gaps — `specified_not_run`
+until implemented in `method_cycle.py`, never silently assumed:
+`uncertainty` (an explicit per-ballot uncertainty measure),
+`assumptions` (the conditions a judgment depends on), and
+`feedback_packet_id` (the sha256 of the `SYNTHESIS.json` a DEBATE
+ballot answers — the binding that makes a revision auditable against
+the exact feedback received). Synthesis inspectability is binding:
+`SYNTHESIS.json` is a deterministic function of the round's ballot
+file, so its groupings and exclusions are reproducible from the
+record — the ballots themselves are the audit trail.
+
+
 ## Self-application (owner, 2026-10-27)
 
 The method applies to itself. Method versions and configurations are

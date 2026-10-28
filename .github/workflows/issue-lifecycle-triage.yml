@@ -1,0 +1,61 @@
+name: Issue Lifecycle Triage (deterministic label pass)
+
+# Machine half of the issue lifecycle (docs/ops/ISSUE-LIFECYCLE.md G1/G2,
+# section 9): the LLM triage chain suggests labels in a comment but never
+# applies them, and its provider route is fragile. This pass is the
+# provider-independent floor - it labels ONLY unlabelled open issues,
+# ONLY from the title-prefix rules in
+# scripts/issue_lifecycle/triage_labels.py, ONLY with labels that
+# already exist in the repo taxonomy. It never removes a label, never
+# relabels a labelled issue, never assigns, and never closes anything.
+#
+# Trigger accounting: one weekly scheduled run (apply mode, narrow rules
+# only) plus manual dispatch (report or apply). The weekly run's actions
+# are visible as label events on the issues it touches; the lane pass in
+# the map (section 9) audits them.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'report = list proposals only; apply = add the proposed labels'
+        required: false
+        default: 'report'
+        type: choice
+        options: [report, apply]
+  schedule:
+    - cron: '17 7 * * 2'
+
+permissions: {}
+
+concurrency:
+  group: issue-lifecycle-triage-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  triage-labels:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+
+      - name: Run deterministic triage label pass
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          MODE: ${{ inputs.mode || 'apply' }}
+        run: |
+          if [ "$MODE" = "apply" ]; then
+            python3 scripts/issue_lifecycle/triage_labels.py --apply | tee triage-pass.txt
+          else
+            python3 scripts/issue_lifecycle/triage_labels.py --report | tee triage-pass.txt
+          fi
+          {
+            echo '## Issue lifecycle triage pass'
+            echo
+            cat triage-pass.txt
+          } >> "$GITHUB_STEP_SUMMARY"

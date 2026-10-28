@@ -1,0 +1,60 @@
+# Linguist Panel feed refresh (contract: docs/ops/LINGUIST-PANEL-FEED.md).
+# Regenerates apps/help-wanted-dashboard/data/linguist-panel-feed.json
+# from the mapping sources of record and proposes it as a refresh PR —
+# never commits directly. Mirrors the oracle-panel-feed-collect pattern.
+name: linguist-panel-feed-collect
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '53 6 * * 2'
+  push:
+    branches: [master]
+    paths:
+      - 'workspace/compression_sandbox/cedrlang/**'
+      - 'harmony_hub/config/grimoire/**'
+      - 'harmony_hub/config/GRIMOIRE_DICTIONARY.md'
+      - 'docs/proposals/active/notation-sets/nomenclature-matrix/seed.json'
+      - 'docs/schemas/routing-notation.yaml'
+      - 'archwiz/pointer_index.json'
+      - 'scripts/linguist/linguist_panel_feed.py'
+
+concurrency:
+  group: linguist-panel-feed-collect
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Collect the feed
+        run: |
+          set -euo pipefail
+          python3 -B scripts/linguist/linguist_panel_feed.py \
+            --root . --out apps/help-wanted-dashboard/data/linguist-panel-feed.json
+      - name: Propose the refresh as a PR
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- apps/help-wanted-dashboard/data/linguist-panel-feed.json; then
+            echo "feed unchanged; no refresh PR"
+            exit 0
+          fi
+          branch="linguist-panel-feed/refresh"
+          git config user.name "linguist-panel-feed-collect"
+          git config user.email "actions@github.com"
+          git checkout -B "$branch"
+          git add apps/help-wanted-dashboard/data/linguist-panel-feed.json
+          git commit -m "chore(linguist): refresh linguist-panel-feed.json"
+          git push -f origin "$branch"
+          gh pr create --base master --head "$branch" \
+            --title "chore(linguist): refresh linguist-panel-feed.json" \
+            --body "Automated Linguist Panel feed refresh (collector: scripts/linguist/linguist_panel_feed.py; contract: docs/ops/LINGUIST-PANEL-FEED.md). Data is derived from the mapping sources of record at collection time; nothing is copied forward." \
+            || echo "refresh PR already open"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

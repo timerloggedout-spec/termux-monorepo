@@ -16,13 +16,21 @@ docs/ops/CHALLENGE-ENTRIES-LOG.md. This tool:
           no profile data of its own (one home per fact)
   render  regenerate the registry table inside the protocol doc from the
           JSON (between the registry:begin / registry:end markers)
+  derive  print the assignment for one platform_id (the registry entry
+          if one exists, else the rule-v2 result) - the account-creation
+          lane's instant lookup path; ratified into the registry by PR
 
-Moniker assignment rule (deterministic): entries are processed in
-platform_id sort order; moniker = "entrant" + the platform_id's words
-capitalized and joined ("aws-builder-center" -> "entrantAwsBuilderCenter").
-On collision with a different platform_id, append the smallest integer
->= 2 that frees the token. Canonical form:
-entrant{<moniker>}[platform:<platform_id>].
+Moniker assignment rule v2 (deterministic): entries are processed in
+platform_id sort order; moniker = the 4n0n stem "n0n" + the platform_id's
+words capitalized and joined, dropping filler words (STOPWORDS: ai, io,
+center) in non-first positions ("aws-builder-center" -> "n0nAwsBuilder",
+"lablab-ai" -> "n0nLablab", "builder-io" -> "n0nBuilder"). On collision
+with a different platform_id, append the smallest integer >= 2 that
+frees the token. Canonical form: <role>{<moniker>}[platform:<platform_id>]
+with role "entrant" (challenge platforms) or "account" (provider
+accounts). The result is username-grade: alphanumeric, letter-led,
+short - the account-creation lane uses it verbatim as the signup
+username, pulled from this registry, never invented at a form.
 
 Platform detection vocabulary (ALIASES below) is curated: a platform
 named in the log's candidate section (section 3) only is NOT activated —
@@ -37,24 +45,46 @@ import json
 import re
 import sys
 
-ROLE = "entrant"
-SCHEMA = "registration-monikers/2"
+ROLES = {"entrant", "account"}
+DEFAULT_ROLE = {"log": "entrant", "fleet": "account"}
+STEM = "n0n"
+STOPWORDS = {"ai", "io", "center"}
+SCHEMA = "registration-monikers/3"
 PROFILE_REGISTRY = "docs/ops/PROFILE-REGISTRY.md"
 
-# (alias string as it appears in the challenge log, platform_id,
-#  platform display name, kind)
+# (alias string, platform_id, platform display name, kind, class)
+# class "log":   detected in / attributed from the challenge log
+#                (activation = named in its sections 1/4).
+# class "fleet": fleet platforms registered by their owning lane
+#                (provider accounts for the account-creation lane);
+#                never log-detected, never stale-checked against it.
 ALIASES = [
-    ("AWS Builder Center", "aws-builder-center", "AWS Builder Center", "platform"),
-    ("Builder.io", "builder-io", "Builder.io", "platform"),
-    ("lablab.ai", "lablab-ai", "lablab.ai", "platform"),
-    ("Vultr", "vultr", "Vultr", "platform"),
-    ("Devpost", "devpost", "Devpost", "platform"),
-    ("Kiro", "kiro", "Kiro", "identity-provider"),
-    ("PayPal", "paypal", "PayPal", "platform"),
-    ("Lexsi", "lexsi", "Lexsi", "platform"),
-    ("Hugging Face", "hugging-face", "Hugging Face", "platform"),
+    ("AWS Builder Center", "aws-builder-center", "AWS Builder Center", "platform", "log"),
+    ("Builder.io", "builder-io", "Builder.io", "platform", "log"),
+    ("lablab.ai", "lablab-ai", "lablab.ai", "platform", "log"),
+    ("Vultr", "vultr", "Vultr", "platform", "log"),
+    ("Devpost", "devpost", "Devpost", "platform", "log"),
+    ("Kiro", "kiro", "Kiro", "identity-provider", "log"),
+    ("PayPal", "paypal", "PayPal", "platform", "log"),
+    ("Lexsi", "lexsi", "Lexsi", "platform", "log"),
+    ("Hugging Face", "hugging-face", "Hugging Face", "platform", "log"),
+    ("Cohere", "cohere", "Cohere", "provider", "fleet"),
+    ("Aion", "aion", "Aion", "provider", "fleet"),
+    ("LLM7", "llm7", "LLM7", "provider", "fleet"),
+    ("Requesty", "requesty", "Requesty", "provider", "fleet"),
+    ("Routeway", "routeway", "Routeway", "provider", "fleet"),
+    ("UnoRouter", "uno-router", "UnoRouter", "provider", "fleet"),
+    ("SeaLion", "sea-lion", "SeaLion", "provider", "fleet"),
+    ("Kilo", "kilo", "Kilo", "provider", "fleet"),
+    ("ZAI", "zai", "ZAI", "provider", "fleet"),
+    ("ModelScope", "model-scope", "ModelScope", "provider", "fleet"),
+    ("SiliconFlow", "silicon-flow", "SiliconFlow", "provider", "fleet"),
+    ("iFlytek", "iflytek", "iFlytek", "provider", "fleet"),
+    ("xKiro", "xkiro", "xKiro", "provider", "fleet"),
 ]
-ALIAS_BY_ID = {pid: (alias, name, kind) for alias, pid, name, kind in ALIASES}
+ALIAS_BY_ID = {pid: (alias, name, kind, aclass)
+               for alias, pid, name, kind, aclass in ALIASES}
+LOG_ALIASES = [(a, p) for a, p, _n, _k, c in ALIASES if c == "log"]
 
 DEFAULT_HANDLING = {
     "owner_lane": "challenge-entries",
@@ -85,8 +115,10 @@ PROFILE_DATA_KEYS = {"public_handle", "handle_state", "display_name",
 
 
 def derive_moniker(platform_id, taken):
-    """Deterministic moniker for platform_id given {moniker_lower: pid}."""
-    base = ROLE + "".join(w.capitalize() for w in platform_id.split("-") if w)
+    """Deterministic moniker (rule v2) given {moniker_lower: pid}."""
+    words = [w for w in platform_id.split("-") if w]
+    core = [w for i, w in enumerate(words) if i == 0 or w not in STOPWORDS]
+    base = STEM + "".join(w.capitalize() for w in core)
     candidate, n = base, 2
     while taken.get(candidate.lower()) not in (None, platform_id):
         candidate = f"{base}{n}"
@@ -121,14 +153,14 @@ def activated_platforms(log_text):
     """platform_ids whose alias appears in log section 1 or 4."""
     sections = split_sections(log_text)
     active_text = sections.get(1, "") + "\n" + sections.get(4, "")
-    return {pid for alias, pid, _n, _k in ALIASES if alias in active_text}
+    return {pid for alias, pid in LOG_ALIASES if alias in active_text}
 
 
 def attribute_packets(log_text):
     """{packet_ref: [platform_id, ...]} by alias presence in packet text."""
     out = {}
     for ref, text in packet_sections(log_text).items():
-        out[ref] = sorted({pid for alias, pid, _n, _k in ALIASES if alias in text})
+        out[ref] = sorted({pid for alias, pid in LOG_ALIASES if alias in text})
     return out
 
 
@@ -170,12 +202,18 @@ def check(registry, log_text, profiles_text):
             problems.append(f"hard: {pid}: carries profile data key {key!r} - "
                             f"profile data lives only in {PROFILE_REGISTRY}")
         ref = e.get("profile_ref")
-        if ref and not any(h == ref or h.startswith(ref + " ") or
-                           h.startswith(ref + " —") for h in headings):
+        if ref is None:
+            if not e.get("profile_pending"):
+                problems.append(f"hard: {pid}: profile_ref is null but no "
+                                "profile_pending names the lane that will "
+                                "register the profile")
+        elif not any(h == ref or h.startswith(ref + " ") or
+                     h.startswith(ref + " —") for h in headings):
             problems.append(f"hard: {pid}: profile_ref {ref!r} does not resolve "
                             f"to a profile heading in {PROFILE_REGISTRY}")
-        if e.get("role") != ROLE:
-            problems.append(f"hard: {pid}: role is {e.get('role')!r}, must be {ROLE!r}")
+        if e.get("role") not in ROLES:
+            problems.append(f"hard: {pid}: role is {e.get('role')!r}, "
+                            f"must be one of {sorted(ROLES)}")
         if pid in ALIAS_BY_ID and e.get("platform") != ALIAS_BY_ID[pid][1]:
             problems.append(f"hard: {pid}: platform name drift")
         if e.get("moniker") != expected.get(pid):
@@ -188,7 +226,8 @@ def check(registry, log_text, profiles_text):
         seen_monikers[low] = pid
         if e.get("status") not in ENTRY_STATUSES:
             problems.append(f"hard: {pid}: bad status {e.get('status')!r}")
-        if pid in ALIAS_BY_ID and ALIAS_BY_ID[pid][0] not in log_text:
+        if (pid in ALIAS_BY_ID and ALIAS_BY_ID[pid][3] == "log"
+                and ALIAS_BY_ID[pid][0] not in log_text):
             problems.append(f"hard: {pid}: platform alias absent from the log (stale entry)")
     active = activated_platforms(log_text)
     for pid in sorted(active - set(ids)):
@@ -216,7 +255,7 @@ def assign(registry, log_text):
     taken = {e["moniker"].lower(): e["platform_id"] for e in registry["entries"]}
     added = []
     for pid in missing:
-        _alias, name, kind = ALIAS_BY_ID[pid]
+        _alias, name, kind, _aclass = ALIAS_BY_ID[pid]
         moniker = derive_moniker(pid, taken)
         taken[moniker.lower()] = pid
         regs = [{"ref": ref, "event": "", "aspect": "participant",
@@ -226,7 +265,7 @@ def assign(registry, log_text):
             "platform_id": pid,
             "platform": name,
             "kind": kind,
-            "role": ROLE,
+            "role": DEFAULT_ROLE["log"],
             "moniker": moniker,
             "profile_ref": name,
             "status": "pending",
@@ -250,8 +289,9 @@ def render_table(registry):
     ]
     for e in sorted(registry["entries"], key=lambda x: x["platform_id"]):
         regs = ", ".join(r["ref"] for r in e["registrations"]) or "—"
+        profile = e["profile_ref"] or f"— (pending: {e.get('profile_pending', '?')})"
         lines.append(
-            f"| {e['platform']} | `{canonical(e)}` | {e['profile_ref']} | {e['status']} "
+            f"| {e['platform']} | `{canonical(e)}` | {profile} | {e['status']} "
             f"| {regs} | {e['handling']['owner_lane']} |")
     return "\n".join(lines)
 
@@ -267,7 +307,10 @@ def render_doc(doc_text, registry):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("mode", choices=["check", "assign", "render"])
+    ap.add_argument("mode", choices=["check", "assign", "render", "derive"])
+    ap.add_argument("--platform-id", help="derive mode: platform_id slug to assign")
+    ap.add_argument("--role", choices=sorted(ROLES),
+                    help="derive mode: role override (default: by alias class)")
     ap.add_argument("--registry", default="config/registration_monikers.json")
     ap.add_argument("--log", default="docs/ops/CHALLENGE-ENTRIES-LOG.md")
     ap.add_argument("--profiles", default=PROFILE_REGISTRY)
@@ -277,6 +320,25 @@ def main(argv=None):
     registry = json.load(open(args.registry))
     log_text = open(args.log).read()
 
+    if args.mode == "derive":
+        if not args.platform_id:
+            ap.error("derive mode requires --platform-id")
+        pid = args.platform_id
+        existing = {e["platform_id"]: e for e in registry["entries"]}
+        if pid in existing:
+            e = existing[pid]
+            print(json.dumps({"platform_id": pid, "moniker": e["moniker"],
+                              "canonical": canonical(e), "source": "registry"}))
+            return 0
+        taken = {e["moniker"].lower(): e["platform_id"]
+                 for e in registry["entries"]}
+        aclass = ALIAS_BY_ID.get(pid, (None, None, None, "fleet"))[3]
+        role = args.role or DEFAULT_ROLE[aclass]
+        moniker = derive_moniker(pid, taken)
+        print(json.dumps({"platform_id": pid, "moniker": moniker,
+                          "canonical": f"{role}{{{moniker}}}[platform:{pid}]",
+                          "source": "rule-v2 (not yet in registry)"}))
+        return 0
     if args.mode == "check":
         problems = check(registry, log_text, open(args.profiles).read())
         for p in problems:

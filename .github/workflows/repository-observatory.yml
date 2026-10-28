@@ -115,7 +115,7 @@ jobs:
           data = json.loads(Path('workspace/llm_map/repositories/repository-index.json').read_text())
           if data.get('watching_status') == 'unavailable':
               print('::warning::Repository Observatory: watching (subscriptions) unavailable this run; '
-                    'watching provenance is absent, not zero. Check REPOSITORY_OBSERVATORY_TOKEN provisioning.')
+                    'watching provenance is absent, not zero. Check the OPERATOR_GITHUB_TOKEN secret provisioning (fed to the collector as REPOSITORY_OBSERVATORY_TOKEN).')
           PY
 
       - name: Commit canonical index delta

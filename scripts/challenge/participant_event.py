@@ -56,6 +56,28 @@ def event_key(event_id: str, pkey: str) -> str:
     return hashlib.sha256(f"challenge-participants|{event_id}|{pkey}".encode()).hexdigest()
 
 
+def touchpoints_of(rows: list[dict]) -> list[dict]:
+    """Executed engagement touchpoints across a batch (first-class data).
+
+    Engagement is autonomous (owner correction, 2026-10-28): records
+    carry engagement.touchpoints[] = logs of touchpoints that HAPPENED
+    ({surface, at, content_ref}). There is no draft/approval state in
+    this writer — nothing is gated, held or approved here; a record is
+    mirrored as written.
+    """
+    out = []
+    for r in rows:
+        rec = json.loads(r["payload"])
+        eng = rec.get("engagement") if isinstance(rec, dict) else None
+        tps = eng.get("touchpoints") if isinstance(eng, dict) else None
+        for t in tps or []:
+            if isinstance(t, dict):
+                out.append({"event": r["event"], "participant": r["participant"],
+                            "surface": t.get("surface"), "at": t.get("at"),
+                            "content_ref": t.get("content_ref")})
+    return out
+
+
 def batch_from_source(source: Path, source_ref: str) -> tuple[dict, list[dict]]:
     data = json.loads(source.read_text())
     sync_key = hashlib.sha256(source_ref.encode()).hexdigest()
@@ -129,7 +151,8 @@ def main(argv: list[str] | None = None) -> int:
             sync, rows = batch_from_source(Path(ns.source), ns.source_ref)
             counts = json.loads(sync["counts"])
             print(f"dry-run: sync {sync['sync'][:12]} ref {sync['ref'][:12]} "
-                  f"counts {counts} rows {len(rows)}")
+                  f"counts {counts} rows {len(rows)} "
+                  f"touchpoints {len(touchpoints_of(rows))}")
             return 0
         url = resolve_url()
         if not url:

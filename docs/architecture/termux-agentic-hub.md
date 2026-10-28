@@ -1,5 +1,9 @@
 # Termux Agentic Hub Architecture
 
+**Status:** architecture spec — implemented in `hub_mcp/` (device deployment under a separate dependency hold)
+**Owner/lane:** unrecorded
+**Canonical for:** Termux Agentic Hub runtime topology and capability envelope
+
 ## Purpose
 
 The Termux Agentic Hub gives authorized agents useful Android administrative capability without exposing the phone as an unauthenticated public shell or allowing free-form commands to flow from repository events into Termux. It targets the BLU B160V as the first runtime and keeps its resource profile deliberately small.

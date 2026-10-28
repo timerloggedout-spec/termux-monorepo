@@ -10,6 +10,7 @@
       "secret_aliases": [],
       "availability_env": [],
       "quota_family": null,
+      "quota_registry": [],
       "public_catalog": false,
       "review_login": "aikido-security[bot]",
       "review_check_app": "aikido",
@@ -27,6 +28,9 @@
         "AION_API_KEY"
       ],
       "quota_family": "unsupported",
+      "quota_registry": [
+        "aion.free_tokens"
+      ],
       "public_catalog": false,
       "review_login": null,
       "review_check_app": null,
@@ -47,6 +51,9 @@
         "CEREBRAS_API_KEY"
       ],
       "quota_family": "public_documentation_only",
+      "quota_registry": [
+        "cerebras.free_tokens"
+      ],
       "public_catalog": false,
       "review_login": null,
       "review_check_app": null,
@@ -65,6 +72,9 @@
         "CLOUDFLARE_API_TOKEN"
       ],
       "quota_family": "public_documentation_only",
+      "quota_registry": [
+        "cloudflare.workers_ai"
+      ],
       "public_catalog": false,
       "review_login": null,
       "review_check_app": null,
@@ -80,6 +90,7 @@
       "secret_aliases": [],
       "availability_env": [],
       "quota_family": null,
+      "quota_registry": [],
       "public_catalog": false,
       "review_login": "coderabbitai[bot]",
       "review_check_app": "coderabbit",
@@ -99,6 +110,9 @@
         "COHERE_API_KEY"
       ],
       "quota_family": "public_documentation_only",
+      "quota_registry": [
+        "cohere.trial_calls"
+      ],
       "public_catalog": false,
       "review_login": null,
       "review_check_app": null,
@@ -114,6 +128,7 @@
       "secret_aliases": [],
       "availability_env": [],
       "quota_family": null,
+      "quota_registry": [],
       "public_catalog": false,
       "review_login": "copilot-pull-request-reviewer[bot]",
       "review_check_app": "copilot",
@@ -129,6 +144,7 @@
       "secret_aliases": [],
       "availability_env": [],
       "quota_family": null,
+      "quota_registry": [],
       "public_catalog": false,
       "review_login": "devin-ai-integration[bot]",
       "review_check_app": "devin",
@@ -148,6 +164,9 @@
         "FELO_AI_API"
       ],
       "quota_family": "unsupported",
+      "quota_registry": [
+        "felo.api_credits"
+      ],
       "public_catalog": false,
       "review_login": null,
       "review_check_app": null,
@@ -170,6 +189,9 @@
         "GOOGLE_API_KEY"
       ],
       "quota_family": "public_documentation_only",
+      "quota_registry": [
+        "gemini.api_free"
+      ],
       "public_catalog": false,
       "review_login": null,
       "review_check_app": null,
@@ -187,6 +209,9 @@
         "GROQ_API_KEY"
       ],
       "quota_family": "implemented_passive_adapter",
+      "quota_registry": [
+        "groq.free_tier"
+      ],
       "public_catalog": false,
       "review_login": null,
       "review_check_app": null,
@@ -213,6 +238,9 @@
         "HUGGING_FACE_HUB_TOKEN"
       ],
       "quota_family": "implemented_passive_adapter",
+      "quota_registry": [
+        "huggingface.inference_providers"
+      ],
       "public_catalog": false,
       "review_login": null,
       "review_check_app": null,
@@ -230,6 +258,9 @@
         "KILO_API_KEY"
       ],
       "quota_family": "public_documentation_only",
+      "quota_registry": [
+        "kilo.free_models"
+      ],
       "public_catalog": false,
       "review_login": null,
       "review_check_app": null,
@@ -247,6 +278,9 @@
         "LLM7_API_TOKEN"
       ],
       "quota_family": "public_documentation_only",
+      "quota_registry": [
+        "llm7.free_token"
+      ],
       "public_catalog": true,
       "review_login": null,
       "review_check_app": null,
@@ -264,6 +298,9 @@
         "MISTRAL_API_KEY"
       ],
       "quota_family": "public_documentation_only",
+      "quota_registry": [
+        "mistral.free_mode"
+      ],
       "public_catalog": false,
       "review_login": null,
       "review_check_app": null,
@@ -281,6 +318,9 @@
         "MODELSCOPE_TOKEN"
       ],
       "quota_family": "public_documentation_only",
+      "quota_registry": [
+        "modelscope.api_inference"
+      ],
       "public_catalog": true,
       "review_login": null,
       "review_check_app": null,
@@ -303,6 +343,9 @@
         "NVIDIA_NIM_API_KEY"
       ],
       "quota_family": "public_documentation_only",
+      "quota_registry": [
+        "nvidia.api_catalog"
+      ],
       "public_catalog": false,
       "review_login": null,
       "review_check_app": null,
@@ -320,6 +363,9 @@
         "OLLAMA_API_KEY"
       ],
       "quota_family": "implemented_passive_adapter",
+      "quota_registry": [
+        "ollama.balance"
+      ],
       "public_catalog": false,
       "review_login": null,
       "review_check_app": null,
@@ -337,6 +383,9 @@
         "OMNI_API_KEY"
       ],
       "quota_family": "unsupported",
+      "quota_registry": [
+        "omni.gateway"
+      ],
       "public_catalog": false,
       "review_login": null,
       "review_check_app": null,
@@ -354,6 +403,10 @@
         "OPENROUTER_API_KEY"
       ],
       "quota_family": "implemented_passive_adapter",
+      "quota_registry": [
+        "openrouter.free_models",
+        "openrouter.key"
+      ],
       "public_catalog": false,
       "review_login": null,
       "review_check_app": null,
@@ -371,6 +424,9 @@
         "OVHCLOUD_API_KEY"
       ],
       "quota_family": "public_documentation_only",
+      "quota_registry": [
+        "ovhcloud.ai_endpoints"
+      ],
       "public_catalog": true,
       "review_login": null,
       "review_check_app": null,
@@ -386,6 +442,7 @@
       "secret_aliases": [],
       "availability_env": [],
       "quota_family": null,
+      "quota_registry": [],
       "public_catalog": false,
       "review_login": "qodo-code-review[bot]",
       "review_check_app": "qodo",
@@ -405,6 +462,9 @@
         "REQUESTY_API_KEY"
       ],
       "quota_family": "public_documentation_only",
+      "quota_registry": [
+        "requesty.free_models"
+      ],
       "public_catalog": true,
       "review_login": null,
       "review_check_app": null,
@@ -422,6 +482,9 @@
         "ROUTEWAY_API_KEY"
       ],
       "quota_family": "public_documentation_only",
+      "quota_registry": [
+        "routeway.free_models"
+      ],
       "public_catalog": true,
       "review_login": null,
       "review_check_app": null,
@@ -439,6 +502,9 @@
         "SAMBANOVA_API_KEY"
       ],
       "quota_family": "implemented_passive_adapter",
+      "quota_registry": [
+        "sambanova.free_tier"
+      ],
       "public_catalog": false,
       "review_login": null,
       "review_check_app": null,
@@ -456,6 +522,9 @@
         "SEALION_API_KEY"
       ],
       "quota_family": "public_documentation_only",
+      "quota_registry": [
+        "sealion.api"
+      ],
       "public_catalog": false,
       "review_login": null,
       "review_check_app": null,
@@ -471,6 +540,7 @@
       "secret_aliases": [],
       "availability_env": [],
       "quota_family": null,
+      "quota_registry": [],
       "public_catalog": false,
       "review_login": "sentry-io[bot]",
       "review_check_app": "sentry",
@@ -488,6 +558,9 @@
         "SILICONFLOW_API_KEY"
       ],
       "quota_family": "implemented_passive_adapter",
+      "quota_registry": [
+        "siliconflow.free_models"
+      ],
       "public_catalog": false,
       "review_login": null,
       "review_check_app": null,
@@ -503,6 +576,9 @@
       "secret_aliases": [],
       "availability_env": [],
       "quota_family": "public_documentation_only",
+      "quota_registry": [
+        "typhoon.api"
+      ],
       "public_catalog": false,
       "review_login": null,
       "review_check_app": null,
@@ -533,6 +609,9 @@
         "UNOROUTER_API_KEY"
       ],
       "quota_family": "public_documentation_only",
+      "quota_registry": [
+        "unorouter.free_models"
+      ],
       "public_catalog": false,
       "review_login": null,
       "review_check_app": null,
@@ -551,6 +630,9 @@
         "XFYUN_API_KEY"
       ],
       "quota_family": "public_documentation_only",
+      "quota_registry": [
+        "xfyun.spark"
+      ],
       "public_catalog": false,
       "review_login": null,
       "review_check_app": null,
@@ -575,6 +657,9 @@
       "secret_aliases": [],
       "availability_env": [],
       "quota_family": "public_documentation_only",
+      "quota_registry": [
+        "xkiro.free_models"
+      ],
       "public_catalog": true,
       "review_login": null,
       "review_check_app": null,
@@ -597,6 +682,9 @@
         "ZAI_API_KEY"
       ],
       "quota_family": "public_documentation_only",
+      "quota_registry": [
+        "zai.free_models"
+      ],
       "public_catalog": false,
       "review_login": null,
       "review_check_app": null,
@@ -610,11 +698,18 @@
       ]
     }
   ],
+  "quota_registry_unmapped": {
+    "github": [
+      "github.copilot.free"
+    ]
+  },
+  "quota_registry_namespaced_records": 61,
   "counts": {
     "providers": 33,
     "llm": 27,
     "review": 6,
     "with_quota_adapter": 6,
+    "with_quota_registry": 27,
     "exceptions": 7
   }
 }

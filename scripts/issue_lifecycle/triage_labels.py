@@ -27,6 +27,7 @@ import argparse
 import json
 import os
 import sys
+import time
 import urllib.error
 import urllib.request
 
@@ -75,18 +76,35 @@ def _request(method, path, token, repo, body=None):
         req.add_header("Authorization", f"Bearer {token}")
     if data:
         req.add_header("Content-Type", "application/json")
-    try:
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            raw = resp.read()
-            return json.loads(raw) if raw else {}
-    except urllib.error.HTTPError as e:
-        # Fail loudly with the API's own reason. The 2026-10-28 pass found
-        # the first version dying here with an unprinted 403 while the
-        # workflow step still reported success (tee masked the exit code);
-        # an automation that cannot say why it failed has not run.
-        detail = e.read().decode(errors="replace")[:500]
-        print(f"GitHub API error: {method} {path} -> HTTP {e.code}: {detail}", file=sys.stderr)
-        raise SystemExit(1)
+    # Rate-limit responses (403/429 naming a rate limit) are retried with
+    # backoff: the shared Actions installation token is drained by repo
+    # traffic in hot hours (the pass-2 proof run, 2026-10-28, hit exactly
+    # this on its first call), and a weekly pass should ride out a hot
+    # window instead of dying on page 1. Any other HTTP error fails
+    # loudly at once, with the API's own reason printed — the first
+    # version of this script died on an unprinted 403 while the workflow
+    # step still reported success (tee masked the exit code); an
+    # automation that cannot say why it failed has not run.
+    for attempt in range(5):
+        try:
+            with urllib.request.urlopen(req, timeout=60) as resp:
+                raw = resp.read()
+                return json.loads(raw) if raw else {}
+        except urllib.error.HTTPError as e:
+            detail = e.read().decode(errors="replace")[:500]
+            if e.code in (403, 429) and "rate limit" in detail.lower() and attempt < 4:
+                wait = e.headers.get("Retry-After")
+                delay = int(wait) if wait and wait.isdigit() else min(5 * 2**attempt, 60)
+                print(
+                    f"GitHub API rate limit on {method} {path} (HTTP {e.code}); "
+                    f"retry {attempt + 1}/4 in {delay}s",
+                    file=sys.stderr,
+                )
+                time.sleep(delay)
+                continue
+            print(f"GitHub API error: {method} {path} -> HTTP {e.code}: {detail}", file=sys.stderr)
+            raise SystemExit(1)
+    raise SystemExit(1)  # pragma: no cover - loop always returns or exits
 
 
 def list_open_items(repo, token):

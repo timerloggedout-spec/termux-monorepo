@@ -30,7 +30,25 @@ jobs:
 
       - name: Test repository observatory
         working-directory: scripts/github
-        run: python -m unittest -v test_repository_observatory.py
+        run: |
+          python -m unittest -v test_repository_observatory.py
+          python -m unittest -v test_observatory_intake.py
+
+      - name: Collect research issue intake (Observatory signal 4)
+        env:
+          REPOSITORY_OBSERVATORY_TOKEN: ${{ secrets.REPOSITORY_OBSERVATORY_TOKEN || github.token }}
+        run: |
+          set -euo pipefail
+          # Issues filed via the research templates (labels research:provider /
+          # research:service) feed the Observatory alongside owned/starred/
+          # watched. Failure degrades to an empty intake, never a broken index
+          # (watching-degradation precedent).
+          if ! python scripts/github/observatory_intake.py \
+              --repo "$GITHUB_REPOSITORY" \
+              --output /tmp/observatory-intake.json; then
+            echo '::warning::issue intake unavailable; continuing without it'
+            printf '{"schema_version":"observatory-intake/v1","entries":[]}' > /tmp/observatory-intake.json
+          fi
 
       - name: Build repository index
         env:
@@ -40,6 +58,7 @@ jobs:
           python scripts/github/repository_observatory.py \
             --owner "$GITHUB_REPOSITORY_OWNER" \
             --watching \
+            --intake /tmp/observatory-intake.json \
             --output workspace/llm_map/repositories/repository-index.json \
             --markdown docs/repositories/matrix.md
 

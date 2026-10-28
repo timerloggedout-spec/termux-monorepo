@@ -5,6 +5,7 @@
 # restores them. Idempotent.
 set -e
 D=/home/hatch/workspace/temporal-selfhost
-cp "$D/temporal-selfhost.service" "$D/temporal-relay.service" /etc/systemd/system/
+cp "$D/temporal-selfhost.service" "$D/temporal-relay.service" \
+   "$D/temporal-delphi-worker.service" /etc/systemd/system/
 systemctl daemon-reload
-systemctl enable --now temporal-selfhost temporal-relay
+systemctl enable --now temporal-selfhost temporal-relay temporal-delphi-worker

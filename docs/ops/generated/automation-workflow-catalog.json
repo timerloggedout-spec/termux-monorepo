@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "9ca2a171fef9610e63c6f9a0761df3ec00a520fecd0a63b598f9e617c6ec5f68",
-  "workflow_count": 204,
+  "source_fingerprint": "824d07f24ad6da5e5c6f6906d4bcc4874cb599dde85e03705ef35483b8f99eac",
+  "workflow_count": 205,
   "workflows": [
     {
       "action_pins": [
@@ -679,6 +679,24 @@
       "path": ".github/workflows/codespace-start.yml",
       "schedules": [],
       "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "group: comment-quality-sweep cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "sweep"
+      ],
+      "name": "comment-quality-sweep",
+      "path": ".github/workflows/comment-quality-sweep.yml",
+      "schedules": [
+        "17 7 * * 3"
+      ],
+      "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },

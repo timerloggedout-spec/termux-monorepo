@@ -1,0 +1,148 @@
+{
+  "schema": "challenge-admin-metrics/v1",
+  "generated_at": "2026-10-28T22:05:00Z",
+  "source": "ops/challenge/coordinator.json",
+  "surface": "ADMIN PANEL ONLY (internal) \u2014 never public feeds/pages/log/briefs/ledger",
+  "events": {
+    "STRANDS-DECIDER": {
+      "win_probability": {
+        "method": "winprob/v1",
+        "estimate": null,
+        "inputs": {
+          "award_slots_top": 1,
+          "field_size": null,
+          "field_scored_count": 0,
+          "field_mean_composite": null,
+          "our_composite": null,
+          "participants": 5917
+        },
+        "computed_at": "2026-10-28T22:05:00Z"
+      },
+      "field_size_status": "partial",
+      "field_size": {
+        "participants": 5917,
+        "projects": null
+      }
+    },
+    "D0": {
+      "win_probability": {
+        "method": "winprob/v1",
+        "estimate": 0.025,
+        "inputs": {
+          "award_slots_top": 1,
+          "field_size": 40,
+          "field_scored_count": 0,
+          "field_mean_composite": null,
+          "our_composite": null,
+          "participants": 252
+        },
+        "computed_at": "2026-10-28T22:05:00Z"
+      },
+      "field_size_status": "established",
+      "field_size": {
+        "participants": 252,
+        "projects": 40
+      }
+    },
+    "D1": {
+      "win_probability": {
+        "method": "winprob/v1",
+        "estimate": null,
+        "inputs": {
+          "award_slots_top": 1,
+          "field_size": 1,
+          "field_scored_count": 1,
+          "field_mean_composite": null,
+          "our_composite": null,
+          "participants": 324
+        },
+        "computed_at": "2026-10-28T22:05:00Z"
+      },
+      "field_size_status": "partial",
+      "field_size": {
+        "participants": 324,
+        "projects": 1
+      }
+    },
+    "D2": {
+      "win_probability": {
+        "method": "winprob/v1",
+        "estimate": null,
+        "inputs": {
+          "award_slots_top": 1,
+          "field_size": null,
+          "field_scored_count": 0,
+          "field_mean_composite": null,
+          "our_composite": null,
+          "participants": 1617
+        },
+        "computed_at": "2026-10-28T22:05:00Z"
+      },
+      "field_size_status": "partial",
+      "field_size": {
+        "participants": 1617,
+        "projects": null
+      }
+    },
+    "D3": {
+      "win_probability": {
+        "method": "winprob/v1",
+        "estimate": null,
+        "inputs": {
+          "award_slots_top": 1,
+          "field_size": null,
+          "field_scored_count": 0,
+          "field_mean_composite": null,
+          "our_composite": null,
+          "participants": null
+        },
+        "computed_at": "2026-10-28T22:05:00Z"
+      },
+      "field_size_status": "open_task",
+      "field_size": {
+        "participants": null,
+        "projects": null
+      }
+    },
+    "D4": {
+      "win_probability": {
+        "method": "winprob/v1",
+        "estimate": null,
+        "inputs": {
+          "award_slots_top": 1,
+          "field_size": null,
+          "field_scored_count": 0,
+          "field_mean_composite": null,
+          "our_composite": null,
+          "participants": 1908
+        },
+        "computed_at": "2026-10-28T22:05:00Z"
+      },
+      "field_size_status": "partial",
+      "field_size": {
+        "participants": 1908,
+        "projects": 0
+      }
+    },
+    "D5": {
+      "win_probability": {
+        "method": "winprob/v1",
+        "estimate": null,
+        "inputs": {
+          "award_slots_top": 1,
+          "field_size": null,
+          "field_scored_count": 0,
+          "field_mean_composite": null,
+          "our_composite": null,
+          "participants": null
+        },
+        "computed_at": "2026-10-28T22:05:00Z"
+      },
+      "field_size_status": "open_task",
+      "field_size": {
+        "participants": null,
+        "projects": null
+      }
+    }
+  }
+}

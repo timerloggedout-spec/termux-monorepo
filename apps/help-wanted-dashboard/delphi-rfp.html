@@ -145,13 +145,20 @@ function recordsHTML(rec){
   return h;
 }
 function cardHTML(r){
+  const pg=r.progress||null;
   const oc=r.outcome||null, aw=oc&&oc.award?oc.award:null;
   const decision=aw?aw.decision:r.status;
   const dcls=decision==="shadow"?"ok":(decision==="unscored"?"":"warn");
   let head='<span class="rnum">#'+esc(r.number)+'</span> <span class="rtitle">'+esc(r.title)+'</span> '+
     chip(GROUPS[r.group]||r.group)+chip(decision,dcls)+(r.converged?chip("converged","ok"):"")+
-    (oc&&oc.effective_score!=null?chip("effective "+oc.effective_score+" / 25"):"")+(r.lane?chip("lane "+r.lane):"");
+    (oc&&oc.effective_score!=null?chip("effective "+oc.effective_score+" / 25"):"")+(r.lane?chip("lane "+r.lane):"")+
+    (pg?chip("rounds "+pg.rounds_run+"/"+pg.rounds_max):"");
   let b='<p class="rmeta"><a href="'+esc(r.url)+'">Issue #'+esc(r.number)+'</a> · surface <code>'+esc(r.surface_id||"—")+'</code> · filed '+esc(r.created_at||"—")+(r.silo?' · silo <code>'+esc(r.silo)+'</code>':"")+'</p>';
+  if(r.parent) b+='<p class="rmeta">Variant of <a href="#rfp-'+esc(r.parent.number)+'">#'+esc(r.parent.number)+'</a> (<code>'+esc(r.parent.surface_id)+'</code>)</p>';
+  if(pg){
+    const pct=pg.rounds_max?Math.round(pg.rounds_run/pg.rounds_max*100):0;
+    b+='<div class="prog"><div class="bar"><i style="width:'+pct+'%"></i></div><p class="rmeta">Progress \u2014 stage: '+esc(pg.stage)+' \u00b7 rounds '+esc(pg.rounds_run)+' of '+esc(pg.rounds_max)+' \u00b7 votes '+esc(pg.votes_cast)+' of '+esc(pg.votes_expected)+'</p></div>';
+  }
   b+='<p class="rmeta">Scoring inputs: '+esc(typeof r.scoring_inputs==="string"?r.scoring_inputs:JSON.stringify(r.scoring_inputs))+'</p>';
   if(r.gaps&&r.gaps.length) b+='<div class="gapbox"><strong>Recorded gaps</strong><ul>'+r.gaps.map(g=>'<li>'+esc(g)+'</li>').join("")+'</ul></div>';
   if(oc){
@@ -173,7 +180,7 @@ function cardHTML(r){
     b+='<details class="sub"><summary>The 10 form questions — responses as filed</summary>'+
       r.questions.map(q=>'<div class="qa"><p class="q">'+esc(q.question)+'</p><p class="a">'+esc(q.response)+'</p></div>').join("")+'</details>';
   }
-  return '<details class="rfp" data-group="'+esc(r.group)+'" data-status="'+esc(r.status)+'" data-conv="'+(r.converged?"1":"0")+'" data-search="'+esc((r.number+" "+r.title+" "+(r.surface_id||"")).toLowerCase())+'"><summary>'+head+'</summary><div class="rbody">'+b+'</div></details>';
+  return '<details class="rfp" id="rfp-'+esc(r.number)+'" data-group="'+esc(r.group)+'" data-status="'+esc(r.status)+'" data-conv="'+(r.converged?"1":"0")+'" data-search="'+esc((r.number+" "+r.title+" "+(r.surface_id||"")).toLowerCase())+'"><summary>'+head+'</summary><div class="rbody">'+b+'</div></details>';
 }
 function renderSummary(s){
   const total=s.total_open||0, un=(s.by_status&&s.by_status.unscored)||0, scored=total-un;
@@ -185,12 +192,13 @@ function renderSummary(s){
     Object.entries(s.by_group||{}).map(([k,v])=>'<span class="stat">'+esc(GROUPS[k]||k)+': <strong>'+esc(v)+'</strong></span>').join("")+
     '</div>'+
     '<div class="bar" role="img" aria-label="Scored progress"><i style="width:'+pct+'%"></i></div>'+
-    '<p class="dim">'+scored+' of '+total+' scored on record ('+pct+'%); '+un+' awaiting the gate\u2019s first ledger entry — they render below with their gap named, never an inferred status.</p>';
+    '<p class="dim">'+scored+' of '+total+' scored on record ('+pct+'%)'+(un? '; '+un+' awaiting the gate’s first ledger entry — they render below with their gap named, never an inferred status.' : '; every open filing carries a gate outcome on record.')+'</p>';
 }
 function renderCriteria(c){
   if(!c) return;
   $("criteria").innerHTML=
     '<p>'+esc(c.scale||"")+'</p>'+
+    (c.items&&c.items.length? '<ul class="citems">'+c.items.map(i=>'<li><strong>'+esc(i.id)+'</strong> \u2014 '+esc(i.text)+'</li>').join("")+'</ul>' : "")+
     '<p>'+chip("shadow bar "+c.shadow_bar)+' '+esc(c.award_bands||"")+'</p>'+
     '<p><strong>Panel:</strong> '+Object.keys(c.roles||{}).map(esc).join(", ")+'</p>'+
     '<p class="dim">'+esc(c.roles_note||"")+'</p>'+

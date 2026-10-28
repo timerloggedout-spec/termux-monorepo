@@ -83,3 +83,14 @@ def test_nav_sitemap_admin_and_oracle_link():
     # the strip names the flood feed once but never fetches it
     assert oracle.count("delphi-rfp-feed.json") == 1
     assert 'fetch("./data/delphi-rfp-feed.json"' not in oracle
+
+
+def test_v11_progress_parent_and_criteria_items():
+    """Feed v1.1 (PR #1952): per-RFP progress{} raw counts, variant
+    parent{} refs, criteria.items[] — all consumed by the render."""
+    html = _html()
+    assert "r.progress" in html and "pg.rounds_run" in html and "pg.votes_cast" in html
+    assert "r.parent" in html and 'id="rfp-' in html
+    assert "c.items" in html
+    feed = _feed()
+    assert feed["summary"]["by_status"].get("unscored", 0) == 0  # flood fully scored

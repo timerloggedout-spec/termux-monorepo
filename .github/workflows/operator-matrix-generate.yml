@@ -1,0 +1,66 @@
+name: Operator Matrix Generate
+
+# Method of record for the Operator Matrix (issue #175): the matrix is
+# a generated artifact derived from the live inventory, not a Projects
+# board kept in step by per-event sync runs. This workflow regenerates
+# docs/ops/generated/operator-matrix.{json,md} with
+# scripts/issue_lifecycle/operator_matrix.py and opens (or updates)
+# one PR from operator-matrix/auto — the registration-monikers
+# pattern. No project-scoped token is used; the job's GITHUB_TOKEN
+# only reads the repo's own issues/PRs/checks and writes the PR.
+#
+# Trigger accounting: one weekly scheduled run + manual dispatch.
+# Supersedes the per-event ops-operator-matrix-project-sync method
+# (495 no-op runs while its prerequisites were missing); that workflow
+# is retired in a follow-up once this one has proven on schedule.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '41 6 * * 1'
+
+concurrency:
+  group: operator-matrix-generate
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out master
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+          token: ${{ github.token }}
+
+      - name: Generate matrix and open PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 scripts/issue_lifecycle/operator_matrix.py --fetch | tee matrix-run.txt
+          if git diff --quiet -- docs/ops/generated/operator-matrix.json docs/ops/generated/operator-matrix.md; then
+            echo "Matrix already current; no PR."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          branch="operator-matrix/auto"
+          git checkout -B "$branch"
+          git add docs/ops/generated/operator-matrix.json docs/ops/generated/operator-matrix.md
+          git commit -m "chore(ops): regenerate operator matrix"
+          git push --force-with-lease origin "$branch"
+          if gh pr list --head "$branch" --state open --json number --jq '.[0].number' | grep -q .; then
+            echo "Operator matrix PR already open; branch updated in place."
+          else
+            gh pr create --base master --head "$branch" \
+              --title "chore(ops): regenerate operator matrix" \
+              --body "Automated regeneration of the Operator Matrix (docs/ops/generated/operator-matrix.{json,md}) from the live inventory by scripts/issue_lifecycle/operator_matrix.py — the #175 method of record (docs/ops/ISSUE-LIFECYCLE.md). PR classes use the #175 vocabulary from dual-gate evidence on each head; SUPERSEDE is never auto-emitted."
+          fi

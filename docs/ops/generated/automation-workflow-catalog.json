@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "bf26e9aec3df700a0d6e2f574d190780d6a22a6ba03647476ed5ebd0e7a97a7a",
-  "workflow_count": 203,
+  "source_fingerprint": "564aee80394f75c4254780d38184361ea42477ed47f76b8af832f47c87e83575",
+  "workflow_count": 204,
   "workflows": [
     {
       "action_pins": [
@@ -1111,6 +1111,24 @@
       "triggers": [
         "pull_request",
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "group: delphi-participant-cycle cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "cycle"
+      ],
+      "name": "delphi-participant-cycle",
+      "path": ".github/workflows/delphi-participant-cycle.yml",
+      "schedules": [
+        "37 * * * *"
+      ],
+      "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },

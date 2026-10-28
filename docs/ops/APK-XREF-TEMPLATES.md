@@ -6,7 +6,7 @@ own template set. Until now the filings went in as generic Target Briefs
 (the 30-app wave's `-apk` issues, #2064–#2123). The Foundry lane migrates
 those onto this set from its side; the target-brief versions stand meanwhile.
 
-## Forms (`.github/ISSUE_TEMPLATE/`, label `apk-xref` on both)
+## Forms — the Reverse Engineering family (`.github/ISSUE_TEMPLATE/`, label `apk-xref` on both)
 
 Both forms stay inside the proven chooser-safe construct subset (Delphi RFP
 baseline; target-brief v1 lesson, PR #1656): no emoji in `name`, no

@@ -65,6 +65,12 @@ def test_parse_and_refresh():
     assert "stale" not in out
 
 
+def test_block_line_refreshes_in_log():
+    text = SAMPLE + "\n<!-- countdown:BLOCK -->stale<!-- /countdown:BLOCK -->\n"
+    out = cd.refresh(text, NOW)
+    assert "⏳ countdowns — " in out and "D0: CLOSED" in out
+
+
 def test_block_lists_all_entries():
     entries = cd.parse_entries(SAMPLE)
     line = cd.block_line(entries, NOW)

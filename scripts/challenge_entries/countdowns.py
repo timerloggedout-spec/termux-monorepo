@@ -31,7 +31,7 @@ PT = ZoneInfo("America/Los_Angeles")
 DATA_RE = re.compile(
     r"<!-- countdown-data:(D\d+) opens=(\S+) closes=(\S+) -->")
 LINE_RE = re.compile(
-    r"(<!-- countdown:(D\d+) -->).*?(<!-- /countdown:\2 -->)")
+    r"(<!-- countdown:(D\d+|BLOCK) -->).*?(<!-- /countdown:\2 -->)")
 HEADER_RE = re.compile(r"^### (D\d+) (.*)$", re.M)
 
 
@@ -100,6 +100,9 @@ def refresh(text, now):
     stamp = now.astimezone(PT).strftime("%Y-%m-%d %H:%M PT")
 
     def repl(m):
+        if m.group(2) == "BLOCK":
+            block = block_line(list(entries.values()), now)
+            return f"{m.group(1)}{block} (computed {stamp}){m.group(3)}"
         e = entries.get(m.group(2))
         if e is None:
             return m.group(0)

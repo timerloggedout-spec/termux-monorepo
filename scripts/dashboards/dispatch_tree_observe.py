@@ -123,6 +123,16 @@ def main() -> None:
         var_names = sorted(x["name"] for x in v.get("variables", []))
     except Exception:
         var_names = []
+    if not var_names:
+        # Some tokens (e.g. a workflow GITHUB_TOKEN) cannot list repo
+        # variables. An empty read must not erase a previously recorded
+        # provisioning fact: fall back to the prior snapshot at the out
+        # path. Names only, never values.
+        try:
+            prev = json.loads(Path(args.out).read_text())
+            var_names = list(prev.get("repo_variable_names") or [])
+        except Exception:
+            var_names = []
 
     snap = {
         "schema": "dispatch-tree-observation/v1",

@@ -501,8 +501,26 @@ def _doe_campaigns() -> list:
         summary_path = camp_dir / "SUMMARY.json"
         if records and summary_path.exists():
             s = json.loads(summary_path.read_text())
+            arms = s.get("arms") or {}
+            # Spread is computed here from the committed records so the
+            # feed carries uncertainty even for summaries written before
+            # the runner emitted it (taxonomy delta: no effect claim
+            # without spread; effects stay descriptive, no significance
+            # is claimed at these run counts).
+            import statistics as _stats
+            by_arm: dict[str, list] = {}
+            for rec_path in records:
+                rec = json.loads(rec_path.read_text())
+                arm = (rec.get("treatment") or {}).get("arm")
+                acc = (rec.get("metrics") or {}).get("accuracy")
+                if arm and isinstance(acc, (int, float)):
+                    by_arm.setdefault(arm, []).append(float(acc))
+            for arm, accs in by_arm.items():
+                if arm in arms:
+                    arms[arm]["accuracy_sd"] = round(
+                        _stats.stdev(accs), 4) if len(accs) > 1 else 0.0
             entry["results"] = {
-                "arms": s.get("arms"),
+                "arms": arms,
                 "effects_accuracy": s.get("effects_accuracy"),
                 "verdict": s.get("verdict"),
             }
@@ -608,7 +626,7 @@ def collect_doe() -> dict:
                 "member_id": "design-classes",
                 "kind": "campaign_types",
                 "state": "methods_available",
-                "note": "Future design classes as first-class campaign types, from the methods library: full factorial (full_factorial), Taguchi L9 (taguchi_l9), sequential/randomized assignment (mvt_shuffle + the skill's adaptive screen-expand-replicate sequence).",
+                "note": "Design classes per docs/ops/DOE-TAXONOMY.md. Implemented generators: full factorial (full_factorial), Taguchi L9 fractional orthogonal array (taguchi_l9). Skill-named, no generator: fractional factorial, Plackett-Burman, sequential/adaptive. Candidates: foldover, central composite, Box-Behnken, RSM, mixture, split-plot, Latin hypercube. mvt_shuffle is an assignment mechanism, not a design class.",
             },
         ],
     }
@@ -629,7 +647,7 @@ def collect_doe() -> dict:
         "deepcli/deepcli/observatory/doe.py",
         ".agents/skills/multivariate-doe/SKILL.md",
         "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md (§DoE)",
-        "docs/ops/DOE-FAMILY.md + experiments/doe/*/DESIGN.json + experiments/doe/*/records/*.json + experiments/doe/*/SUMMARY.json (family campaigns — DoE-owned records)",
+        "docs/ops/DOE-FAMILY.md + docs/ops/DOE-TAXONOMY.md + experiments/doe/*/DESIGN.json + experiments/doe/*/records/*.json + experiments/doe/*/SUMMARY.json (family campaigns — DoE-owned records)",
         "docs/proposals/active/model-selection-market/DSPY-DOE-LANE.md + docs/proposals/passes/strands-rfp-response/cycle/IMPLEMENTATION.json (executed comparison — Delphi-owned, labeled)",
     ]
     return _feed("doe", sources, payload, gaps)

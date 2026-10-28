@@ -1,0 +1,19 @@
+{
+ "suites": [
+  {
+   "name": "contract generation fixture: evidence-envelope schema -> validators in 2 languages, invalid payloads rejected with aggregated violations",
+   "passed": 1,
+   "failed": 0,
+   "receipt": {
+    "command": "python3 scripts/temporal/run_contract_fixture.py",
+    "exit_code": 0,
+    "output_sha256": "9b075920899ca8ac17a71e07639268b6408684013692601c81f36eb47bf7c4f8",
+    "code_paths": [
+     "scripts/temporal/envelope_schema.json",
+     "scripts/temporal/validate_envelope.py",
+     "scripts/temporal/validate_envelope.js"
+    ]
+   }
+  }
+ ]
+}

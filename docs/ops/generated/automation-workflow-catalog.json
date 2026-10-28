@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "cd0b9e4b7b0492015568311e90f4297577804640341674f6bb34afa1fdcdb4c1",
-  "workflow_count": 206,
+  "source_fingerprint": "699405101ea0117e48adc91ecbd5503a69d9eac49176951adcdc7087b6f30f62",
+  "workflow_count": 207,
   "workflows": [
     {
       "action_pins": [
@@ -3199,6 +3199,24 @@
       "triggers": [
         "schedule",
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "bounded-state-write",
+      "concurrency": "group: research-intake-${{ github.event.issue.number }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "intake"
+      ],
+      "name": "research intake",
+      "path": ".github/workflows/research-intake.yml",
+      "schedules": [],
+      "triggers": [
+        "issue_comment",
+        "issues"
       ]
     },
     {

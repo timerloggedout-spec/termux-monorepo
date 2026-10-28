@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Delphi Ledgers — Outcomes, Weights, Generation, Living Records</title>
+<!--
+  Renders ONLY data/delphi-ledger-feed.json (schema
+  delphi-ledger-feed/v1, contract docs/ops/DELPHI-LEDGER-STORE.md,
+  registry ops/delphi/ledgers.json). The feed's per-ledger current
+  payload is the gate's own latest_json fold of the ledger issue's
+  comments, carried verbatim; this page renders it verbatim — no
+  re-folding, no recomputed EWMA or Elo. Events render as the
+  recorded stream; excluded noise is counted and named, never
+  silently dropped; living records render by version_key (sha256 of
+  the issue body) + snapshot_at.
+-->
+<link rel="stylesheet" href="./dashboard.css">
+<style>
+  .badge{display:inline-block;padding:1px 7px;border-radius:10px;font-size:12px;border:1px solid var(--line)}
+  .dim{color:var(--muted)}
+  .stats{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.6rem}
+  .stat{background:#21262d;border-radius:8px;padding:6px 10px;font-size:13px}
+  .led{border:1px solid var(--line);border-radius:8px;margin:.5rem 0;background:var(--card)}
+  .led>summary{cursor:pointer;padding:10px 12px;list-style-position:outside}
+  .rnum{font-weight:700;color:var(--gold)}
+  .rtitle{font-weight:600}
+  .rbody{border-top:1px solid var(--line);padding:4px 14px 12px}
+  .rbody h4{margin:14px 0 6px}
+  .rmeta{color:var(--muted);font-size:13px;margin:4px 0}
+  .ev{border-top:1px solid var(--line);padding:7px 0}
+  .ev .h{font-weight:600}
+  .noise{border-left:3px solid var(--gold);padding-left:10px}
+  pre.json{overflow:auto;max-height:420px;font-size:11px;background:#0d1117;padding:8px;border-radius:6px;white-space:pre}
+  pre.body{overflow:auto;max-height:420px;font-size:12px;background:#0d1117;padding:8px;border-radius:6px;white-space:pre-wrap}
+  details.sub{margin:8px 0}
+  details.sub>summary{cursor:pointer;color:var(--gold)}
+  code.vk{font-size:11px;word-break:break-all}
+</style>
+</head>
+<body>
+<header>
+<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/help-wanted/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="https://timerloggedout-spec.github.io/help-wanted/quota.html">Quota</a><a href="https://timerloggedout-spec.github.io/help-wanted/admin.html">Admin</a><a href="https://timerloggedout-spec.github.io/help-wanted/oracle.html">Oracle</a><a href="https://timerloggedout-spec.github.io/help-wanted/3l0.html">3L0</a><a href="https://timerloggedout-spec.github.io/help-wanted/moneyball.html">MoneyBall</a><a href="https://timerloggedout-spec.github.io/help-wanted/mvt.html">MVT</a><a href="https://timerloggedout-spec.github.io/help-wanted/doe.html">DoE</a><a href="https://timerloggedout-spec.github.io/help-wanted/ates.html">ATES</a><a href="https://timerloggedout-spec.github.io/help-wanted/free-tier-value.html">Free-tier value</a><a href="https://timerloggedout-spec.github.io/help-wanted/dispatch-tree.html">Dispatch Tree</a><a href="https://timerloggedout-spec.github.io/help-wanted/countdowns.html">Countdowns</a><a href="https://timerloggedout-spec.github.io/help-wanted/linguist.html">Linguist</a><a href="https://timerloggedout-spec.github.io/help-wanted/delphi-rfp.html">Delphi RFP</a><a href="https://timerloggedout-spec.github.io/help-wanted/delphi-ledger.html" aria-current="page">Delphi Ledgers</a><a href="https://help-wanted-oversight.vercel.app/">Vercel deployment</a><a href="https://timerloggedout-spec.github.io/help-wanted/sitemap.xml">Sitemap</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></nav>
+<div class="hero">
+<p class="eyebrow">Delphi Oracle · Continuous Ledgers</p>
+<h1>Delphi ledgers — current state and the event stream behind it</h1>
+<p class="lede">Delphi’s continuous ledgers — the outcome ledger, the panel weights, the generation ballots, and the living records — rendered from the ledger feed. Each ledger’s current payload is the gate’s own newest-marker fold, shown verbatim: nothing on this page re-folds a state, recomputes an EWMA or an Elo, or averages anything. Below each current state, the recorded event stream that produced it; comments the collector counted as noise are named as excluded, never silently dropped.</p>
+</div>
+</header>
+<main>
+<p class="muted" id="meta">Loading feed…</p>
+
+<section>
+<div class="head"><h2>Summary</h2></div>
+<div class="card" id="summary"></div>
+</section>
+
+<section>
+<div class="head"><h2>Ledgers</h2></div>
+<div id="ledgers"></div>
+</section>
+
+<section>
+<div class="head"><h2>Living records</h2></div>
+<div id="living"></div>
+</section>
+
+<section>
+<div class="head"><h2>How to read this page — the feed’s honesty rules</h2></div>
+<div class="card"><ul id="honesty" style="margin:0;padding-left:18px">
+<li>Current state is folded by the gate’s own rule (the newest marker comment’s JSON block, verbatim) in the collector — this page renders that payload as carried and recomputes nothing.</li>
+<li>Events are the recorded stream from the ledger issues, in feed order, headlines and payloads verbatim; corrections are new events, never edits.</li>
+<li>Excluded noise is counted per ledger and named on this page; the source of truth stays the issue comments and living bodies themselves.</li>
+<li>Living records are keyed by version: version_key is the sha256 of the issue body, so a changed body is a new version of the record, stamped at snapshot_at.</li>
+</ul></div>
+</section>
+
+</main>
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function chip(txt,cls){ return '<span class="badge '+(cls||"")+'">'+esc(txt)+'</span>'; }
+function eventHTML(ev){
+  let b='<p class="rmeta">'+esc(ev.created_at||"—")+' · marker <code>'+esc(ev.marker||"—")+'</code> · comment '+esc(ev.comment_id||"—")+' · event_key <code>'+esc(String(ev.event_key||"").slice(0,12))+'…</code></p>';
+  if(ev.payload) b+='<details class="sub"><summary>event payload (JSON, verbatim)</summary><pre class="json">'+esc(JSON.stringify(ev.payload,null,2))+'</pre></details>';
+  return '<div class="ev"><p class="h">'+esc(ev.headline||"")+'</p>'+b+'</div>';
+}
+function ledgerHTML(L){
+  const evs=L.events||[];
+  let head='<span class="rnum">#'+esc(L.issue)+'</span> <span class="rtitle">'+esc(L.title)+'</span> '+
+    chip(L.kind)+chip(evs.length+" events")+(L.excluded_noise?chip("excluded noise: "+L.excluded_noise):"");
+  let b='<p class="rmeta">Ledger <code>'+esc(L.id)+'</code> · issue <a href="https://github.com/timerloggedout-spec/termux-monorepo/issues/'+esc(L.issue)+'">#'+esc(L.issue)+'</a></p>';
+  b+='<p><strong>Semantics (verbatim):</strong> '+esc(L.semantics||"")+'</p>';
+  b+='<p><strong>State rule (verbatim):</strong> '+esc(L.state_rule||"")+'</p>';
+  b+='<p class="rmeta noise">Excluded noise: '+esc(L.excluded_noise||0)+' comment(s) on this ledger were counted and excluded as noise — named here, never silently dropped.</p>';
+  if(L.current){
+    const cur=L.current;
+    b+='<h4>Current state — payload verbatim</h4><p class="rmeta">From comment '+esc(cur.comment_id||"—")+' · '+esc(cur.created_at||"—")+'</p><pre class="json">'+esc(JSON.stringify(cur.payload,null,2))+'</pre>';
+  } else {
+    b+='<h4>Current state</h4><p class="dim">No folded current state for this ledger — the event stream below is the record.</p>';
+  }
+  b+='<h4>Event stream</h4>'+(evs.length?evs.map(eventHTML).join(""):'<p class="dim">No events recorded.</p>');
+  return '<details class="led" id="ledger-'+esc(L.id)+'" open><summary>'+head+'</summary><div class="rbody">'+b+'</div></details>';
+}
+function livingHTML(r){
+  let b='<p class="rmeta">Living record <code>'+esc(r.id)+'</code> · issue <a href="https://github.com/timerloggedout-spec/termux-monorepo/issues/'+esc(r.issue)+'">#'+esc(r.issue)+'</a> · kind '+esc(r.kind||"")+'</p>';
+  b+='<p class="rmeta">version_key <code class="vk">'+esc(r.version_key||"")+'</code></p>';
+  b+='<p class="rmeta">snapshot_at '+esc(r.snapshot_at||"—")+' · updated_at '+esc(r.updated_at||"—")+'</p>';
+  b+='<p><strong>Semantics (verbatim):</strong> '+esc(r.semantics||"")+'</p>';
+  b+='<p><strong>State rule (verbatim):</strong> '+esc(r.state_rule||"")+'</p>';
+  b+='<h4>Body — verbatim</h4><pre class="body">'+esc(r.body||"")+'</pre>';
+  return '<div class="card" id="living-'+esc(r.id)+'"><h3 style="margin-top:0">'+esc(r.title)+'</h3>'+b+'</div>';
+}
+function renderSummary(feed){
+  const s=feed.summary||{};
+  const nl=(feed.ledgers||[]).length, nr=(feed.living_records||[]).length;
+  $("summary").innerHTML=
+    '<div class="stats">'+
+    '<span class="stat"><strong>'+esc(nl)+'</strong> ledgers</span>'+
+    '<span class="stat"><strong>'+esc(s.events!=null?s.events:0)+'</strong> events recorded</span>'+
+    '<span class="stat"><strong>'+esc(s.excluded_noise!=null?s.excluded_noise:0)+'</strong> excluded noise (named, per ledger)</span>'+
+    '<span class="stat"><strong>'+esc(nr)+'</strong> living records</span>'+
+    '</div>'+
+    '<p class="dim">Currents below are the gate’s folds as carried by the feed (schema '+(esc(feed.schema||""))+'); this page is a read-only projection of the ledger issues — the comments and bodies remain the source of truth.</p>';
+}
+async function load(){
+  try{
+    const res=await fetch("./data/delphi-ledger-feed.json");
+    if(!res.ok) throw new Error("feed "+res.status);
+    const feed=await res.json();
+    $("meta").textContent="Schema "+(feed.schema||"")+" · This page consumes data/delphi-ledger-feed.json (contract docs/ops/DELPHI-LEDGER-STORE.md) and nothing else — currents render verbatim from the gate ledger; nothing is re-folded, recomputed, or guessed.";
+    renderSummary(feed);
+    $("ledgers").innerHTML=(feed.ledgers||[]).map(ledgerHTML).join("");
+    $("living").innerHTML=(feed.living_records||[]).map(livingHTML).join("");
+  }catch(err){
+    $("meta").textContent="Feed unavailable — nothing is shown rather than anything guessed. ("+err.message+")";
+  }
+}
+load();
+</script>
+</body>
+</html>

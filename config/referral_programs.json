@@ -1,4 +1,74 @@
 {
+ "ab_test": {
+  "anon": "Pages are third-party profiles: moniker-fronted, isolated, NO cross-links between cell A and B (linkage breaks 4n0n isolation and contaminates the test), no personal identifiers",
+  "cell_A": {
+   "copy": "benefit-first: AI team by tonight, $0 card",
+   "cue_code": "W7AZA",
+   "landing_param": "?ch=fb-a",
+   "migoo_code": "uA3QYP",
+   "name": "sizzle"
+  },
+  "cell_B": {
+   "copy": "numbers-first: 1B tokens, 30 uses, Value Derived board proof",
+   "cue_code": "7RKCJ",
+   "landing_param": "?ch=fb-b",
+   "migoo_code": "Du7Ehu",
+   "name": "steak"
+  },
+  "decision_rule": "winner copy becomes default on X/TikTok/Instagram/YouTube after 10 attributed redemptions or 14 days, whichever first",
+  "id": "fb-pages-sizzle-vs-steak-1",
+  "metric": "redemptions per cell (code-level for Cue/Migoo, landing-param for Muse) + landing clicks",
+  "platform": "Facebook Pages (owner creates 2 Pages; connector has no create command)",
+  "shared": {
+   "migoo_reserve": "TSGDUJ",
+   "muse_code": "VDP1DW (single code, both cells; attribution via landing param only)"
+  },
+  "status": "designed_not_started"
+ },
+ "channels": [
+  {
+   "handle": null,
+   "id": "landing",
+   "name": "GitHub Pages landing + repo (PARTNERS/README)",
+   "role": "owned surface, full stack",
+   "status": "live"
+  },
+  {
+   "handle": null,
+   "id": "youtube",
+   "name": "YouTube",
+   "role": "community post listing lanes (PARTNERS section 2); handle NOT ESTABLISHED",
+   "status": "live_post"
+  },
+  {
+   "handle": null,
+   "id": "facebook",
+   "name": "Facebook",
+   "role": "distribution + A/B Pages (below); managed Pages returned by connector 2026-10-27: 0 (empty result, not proof of none)",
+   "status": "owner_stated_account"
+  },
+  {
+   "handle": null,
+   "id": "x",
+   "name": "X",
+   "role": "distribution; handle NOT ESTABLISHED",
+   "status": "owner_stated"
+  },
+  {
+   "handle": null,
+   "id": "tiktok",
+   "name": "TikTok",
+   "role": "distribution; handle NOT ESTABLISHED",
+   "status": "owner_stated"
+  },
+  {
+   "handle": null,
+   "id": "instagram",
+   "name": "Instagram",
+   "role": "distribution; handle NOT ESTABLISHED",
+   "status": "owner_stated"
+  }
+ ],
  "owner_lane": "marketing-channel",
  "programs": [
   {
@@ -46,7 +116,7 @@
     {
      "code": "7RKCJ",
      "source": "owner screenshot, Cue 'Invite friends' screen, 2026-10-27",
-     "status": "reserve"
+     "status": "live_cell_b"
     }
    ],
    "fleet_replenishment": "NOT ESTABLISHED (no reward programme found; access holders receive extra codes to share)",
@@ -70,7 +140,7 @@
     {
      "code": "Du7Ehu",
      "source": "owner screenshot, Migoo 'Invite Code' screen, 2026-10-27",
-     "status": "reserve"
+     "status": "live_cell_b"
     },
     {
      "code": "TSGDUJ",

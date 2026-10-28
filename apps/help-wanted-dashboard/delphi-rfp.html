@@ -69,7 +69,7 @@
 <div class="hero">
 <p class="eyebrow">Delphi Oracle · RFP Flood</p>
 <h1>Delphi RFP flood — progress, criteria, outcomes, and the panel’s responses</h1>
-<p class="lede">The open <code>delphi:rfp</code> filings, rendered from the gate’s own record: each filing’s status and progress, the rubric it is scored against, the 10 form questions with the responses as filed, the gate’s outcome with its rounds, and the panel’s signed votes — verbatim. An RFP the gate has not scored yet says so, with the gap named; nothing on this page is re-scored, averaged, or inferred.</p>
+<p class="lede">The open <code>delphi:rfp</code> filings, rendered from the gate’s own record: each filing’s status and progress, the rubric it is scored against, the 10 form questions with the responses as filed, the gate’s outcome with its rounds, and the panel’s signed votes — verbatim. An RFP the gate has not scored yet says so, with the gap named; nothing on this page is re-scored, averaged, or inferred. The 12 research silos are Delphi process participants, not applicants (owner reclassification, 2026-10-28): they carry no filing cards — their arms (baseline / rnd / selected / control) and comparison axes live in the Segments table above.</p>
 </div>
 </header>
 <main>
@@ -97,8 +97,6 @@
 <button class="fchip on" data-f="group" data-v="all">All groups</button>
 <button class="fchip" data-f="group" data-v="surface">Surface</button>
 <button class="fchip" data-f="group" data-v="synthetic">Synthetic</button>
-<button class="fchip" data-f="group" data-v="research-baseline">Research baseline</button>
-<button class="fchip" data-f="group" data-v="research-variant">Research variant</button>
 </div>
 <div class="fbar" role="group" aria-label="Status filter">
 <button class="fchip on" data-f="status" data-v="all">All statuses</button>
@@ -111,7 +109,6 @@
 <div class="fbar" role="group" aria-label="Segment class filter">
 <button class="fchip on" data-f="cls" data-v="all">All classes</button>
 <button class="fchip" data-f="cls" data-v="doe-components">DoE components</button>
-<button class="fchip" data-f="cls" data-v="research-silos">Research silos</button>
 <button class="fchip" data-f="cls" data-v="quota-surfaces">Quota surfaces</button>
 <button class="fchip" data-f="cls" data-v="meta-process">Meta-process</button>
 <select id="seg" aria-label="Segment filter"><option value="all">All segments</option></select>
@@ -203,17 +200,23 @@ function renderSegments(sg){
   SEGCLASS={};
   for(const s of segs) SEGCLASS[s.segment_id]=s.class;
   const order={"doe-components":0,"research-silos":1,"quota-surfaces":2,"meta-process":3};
+  PSEG={};
   const rows=segs.slice().sort((a,b)=>((order[a.class]!=null?order[a.class]:9)-(order[b.class]!=null?order[b.class]:9))||a.segment_id.localeCompare(b.segment_id)).map(s=>{
     const n=(s.members||[]).length;
     const st=Object.entries(s.by_status||{}).map(([k,v])=>esc(k)+" "+esc(v)).join(" · ");
     const axes=(s.axes_total!=null)? esc(s.axes_recorded!=null?s.axes_recorded:0)+"/"+esc(s.axes_total) : "—";
-    return '<tr><td><a href="#rfp-'+esc((s.members||[])[0]||"")+'">'+esc(s.segment_id)+'</a></td><td>'+esc(s.class)+'</td><td>'+n+'</td><td>'+esc(s.gate_scored!=null?s.gate_scored:0)+'/'+n+'</td><td>'+st+'</td><td>'+axes+'</td></tr>';
+    if(s.kind==="participant"){
+      PSEG[s.segment_id]=1;
+      const arms=(s.arms||[]).map(a=>'<a href="https://github.com/timerloggedout-spec/termux-monorepo/issues/'+esc(a.number)+'">#'+esc(a.number)+'</a> '+esc(a.arm)).join(" · ");
+      return '<tr id="seg-'+esc(s.segment_id)+'"><td>'+esc(s.segment_id)+'<br><span class="dim">participant — arms: '+arms+'</span></td><td>'+esc(s.class)+'</td><td>'+n+'</td><td>— participant (not gate-scored)</td><td>'+st+'</td><td>'+axes+'</td></tr>';
+    }
+    return '<tr id="seg-'+esc(s.segment_id)+'"><td><a href="#rfp-'+esc((s.members||[])[0]||"")+'">'+esc(s.segment_id)+'</a></td><td>'+esc(s.class)+'</td><td>'+n+'</td><td>'+esc(s.gate_scored!=null?s.gate_scored:0)+'/'+n+'</td><td>'+st+'</td><td>'+axes+'</td></tr>';
   }).join("");
   box.innerHTML='<table class="vt"><thead><tr><th>Segment</th><th>Class</th><th>Members</th><th>Gate-scored</th><th>By status</th><th>Axes recorded</th></tr></thead><tbody>'+rows+'</tbody></table>';
   const sel=$("seg");
   if(sel) sel.innerHTML='<option value="all">All segments</option>'+segs.map(s=>'<option value="'+esc(s.segment_id)+'">'+esc(s.segment_id)+' ('+esc(s.class)+')</option>').join("");
   const note=$("seg-note");
-  if(note) note.textContent="Segments from the feed (config "+(sg.config||"")+", doctrine "+(sg.doctrine||"")+"); unassigned: "+((sg.unassigned||[]).length)+". Comparison happens within a segment; the segment chip on each filing below is its segment of record.";
+  if(note) note.textContent="Segments from the feed (config "+(sg.config||"")+", doctrine "+(sg.doctrine||"")+"); unassigned: "+((sg.unassigned||[]).length)+". Comparison happens within a segment; the segment chip on each filing below is its segment of record. Research-silo segments are participants (kind: participant): the gate does not score them, and no score, rank, or verdict crosses segment lines.";
 }
 function renderSummary(s){
   const total=s.total_open||0, un=(s.by_status&&s.by_status.unscored)||0, scored=total-un;
@@ -241,6 +244,7 @@ function renderCriteria(c){
 }
 const F={group:"all",status:"all",q:"",conv:false,cls:"all",seg:"all"};
 let SEGCLASS={};
+let PSEG={};
 function applyFilters(){
   let n=0;
   document.querySelectorAll(".rfp").forEach(el=>{
@@ -252,7 +256,7 @@ function applyFilters(){
              (!F.q||el.dataset.search.includes(F.q));
     el.style.display=ok?"":"none"; if(ok) n++;
   });
-  $("count").textContent="Showing "+n+" of "+document.querySelectorAll(".rfp").length+" RFPs.";
+  $("count").textContent=(F.seg!=="all"&&PSEG[F.seg])? "Segment "+F.seg+" is a research participant, not a filing \u2014 its arms and axes are in the Segments table above." : "Showing "+n+" of "+document.querySelectorAll(".rfp").length+" RFPs.";
 }
 function wireFilters(){
   document.querySelectorAll("[data-f]").forEach(btn=>btn.addEventListener("click",()=>{

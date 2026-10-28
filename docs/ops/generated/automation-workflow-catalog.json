@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "9e24c48d9b15bba1e7729d9bc8a6ffaef818fbc07fe40c28ca6bc435a54aebd5",
-  "workflow_count": 207,
+  "source_fingerprint": "a7310dddaa7e170fb03d25d943f03449d8866adfeba7aa1f094555b10802a187",
+  "workflow_count": 208,
   "workflows": [
     {
       "action_pins": [
@@ -354,6 +354,23 @@
       "triggers": [
         "schedule",
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "bounded-state-write",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "intake"
+      ],
+      "name": "apk-xref intake",
+      "path": ".github/workflows/apk-xref-intake.yml",
+      "schedules": [],
+      "triggers": [
+        "issues"
       ]
     },
     {

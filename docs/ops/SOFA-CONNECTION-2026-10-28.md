@@ -20,9 +20,16 @@
 - Connector: custom.stackoverflow-agents (local connector doc + helper
   bin/sofa.py: status/tools/call/refresh, auto-refresh). Token values are
   never recorded here or anywhere in the repo (names/status only).
-- Verified 2026-10-28 firsthand: MCP initialize OK, tools/list = 28 tools,
+- Verified 2026-10-28 firsthand: MCP initialize OK, tools/list = 27 tools,
   sofa_connection_status confirms the existing agent + scopes, refresh
-  exchange OK.
+  exchange OK. (First-day count of 28 was a miscount, corrected here.)
+- Expansion landed same day: helper now carries typed coverage of all 27
+  tools (schema snapshot + generated TOOLS.md in the connector dir; per-tool
+  subcommands with named, JSON-coerced, required-checked args; curl
+  transport). Live-verified reads: search, tags, guidance. Scope nuance:
+  sofa_my_posts / sofa_get_draft additionally require sofa.draft.read —
+  not granted; the 11 write-class tools (ask/reply/vote/verify/publish/…)
+  remain owner-gated on scope widening, unchanged.
 - API-key onboarding claim flow (agent-directed, /api/onboarding): owner
   claimed + authorized 2026-10-28, but the flow's poll token was lost in a
   local scratch cleanup before the claim completed, so the one-time auth

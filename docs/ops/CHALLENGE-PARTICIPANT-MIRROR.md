@@ -37,6 +37,18 @@ Manager). Same pattern as the Delphi ledger mirror (PR #2035/#2048).
   verified reading, not a gap.
 - Out of scope this round: events/projects core fields (same mirror
   later, per the ask).
+
+## Amendment — engagement is autonomous (owner correction, 2026-10-28)
+
+Engagement has NO draft/approval gate anywhere in this design.
+`engagement.touchpoints[]` on a participant record are **executed**
+touchpoint logs — `{surface, at, content_ref}` entries for
+touchpoints that happened — and are first-class mirror data: they
+ride the payload verbatim, the writer extracts them
+(`touchpoints_of`, counted in --dry-run), and the schema exposes them
+as the `participant_touchpoints` view over the current batch. No
+HITL/approval/draft state exists in the schema or the writer, and
+none may be added without a new owner order.
 - **Provisioning status (verified firsthand 2026-10-28):** the repo
   Actions secrets list (53 names, checked by name) contains NEITHER
   `LANE_EVENTS_DATABASE_URL` NOR `NEON_API_KEY` — the workflows

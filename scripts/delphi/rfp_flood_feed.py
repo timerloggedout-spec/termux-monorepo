@@ -185,8 +185,16 @@ def build(cache: Path, generated_at: str) -> dict:
         elif status is None:
             status = "unscored"
             gaps.append("no delphi: status label (shadow/promoted/parked/converged) applied")
+        votes_cast = len(responses["votes"]) if responses and "votes" in responses else 0
         entry = {
             "number": issue["number"],
+            "progress": {
+                "stage": "gate-scored" if outcome else "awaiting-gate",
+                "rounds_run": (outcome or {}).get("rounds_count", 0),
+                "rounds_max": 3,
+                "votes_cast": votes_cast,
+                "votes_expected": len(panel.get("roles", {})) or 5,
+            },
             "title": issue["title"],
             "url": issue["html_url"],
             "created_at": issue["created_at"],
@@ -215,6 +223,11 @@ def build(cache: Path, generated_at: str) -> dict:
                                         for axis in RESEARCH_AXES}
         rfps.append(entry)
 
+    baselines = {r["silo"]: r["number"] for r in rfps if r["group"] == "research-baseline"}
+    for r in rfps:
+        if r["group"] == "research-variant":
+            r["parent"] = {"number": baselines.get(r["silo"]),
+                           "surface_id": f"research.{r['silo']}"}
     by_status: dict[str, int] = {}
     by_group: dict[str, int] = {}
     for r in rfps:
@@ -236,6 +249,14 @@ def build(cache: Path, generated_at: str) -> dict:
             "money_veto": "cost_auditor vetoes surfaces whose filing requires a payment instrument or auto-bills overages (score capped at 4)",
             "questions_source": ".github/ISSUE_TEMPLATE/delphi-rfp.yml — the 10 form questions every RFP answers; per-RFP responses are in each entry's questions[]",
             "research_axes_note": "research.* RFPs: the gate score is an admission rubric only (synthetic surfaces); the comparison axes (produced outputs validated / feature extractions / consensus implementation) are post-hoc records, shown per RFP as comparison_axes",
+            "items": [
+                {"id": "scale", "text": "effective_score / 25 decides the award"},
+                {"id": "rounds", "text": "up to 3 blind panel rounds; rounds report median + IQR until convergence"},
+                {"id": "shadow_bar", "text": "shadow award at effective_score >= 15.0; below it the RFP parks with a recheck date"},
+                {"id": "roles", "text": "5-role blind panel: OPERATOR, builder, reviewer, Scout, cost_auditor; live weights are the #1489 ledger's"},
+                {"id": "money_veto", "text": "cost_auditor vetoes filings requiring a payment instrument or auto-billing overages (score capped at 4)"},
+                {"id": "research_axes", "text": "research.* RFPs only: validated outputs / feature extractions / consensus implementation are the real criteria, recorded post-hoc — the gate score is admission only"},
+            ],
         },
         "honesty_rules": [
             "Status comes from the gate's labels and its latest ledger comment; an RFP with neither is 'unscored' with the gap named — never inferred.",

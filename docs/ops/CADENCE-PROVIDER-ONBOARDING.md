@@ -1,6 +1,6 @@
 # Cadence Provider Onboarding — one registry, every surface checked
 
-Implements: QAC-005 (`docs/proposals/active/quota-aware-cadence-rfp/ITEMS.md`)
+Implements: QAC-005 + QAC-006 (`docs/proposals/active/quota-aware-cadence-rfp/ITEMS.md`)
 
 ## Problem (verified on master, 2026-10-28)
 
@@ -14,6 +14,7 @@ nothing verified the surfaces agreed:
 | Catalog secret (names only) | the same modules' `SECRETS` / `SECRET_ALIASES` |
 | Availability wiring | `.github/workflows/provider-availability.yml` job env |
 | Quota family | `ops/quota/provider-managers.json` |
+| Quota registry | `ops/quota/registry.json` model-lane records (coverage mapping rule: lane `model` or id in `provider_quota_service.SERVICES`; alias google → gemini) |
 | Review-bot maps | `.github/workflows/peer-review-orchestrator.yml` `providerLogins` / `providerCheckApps` |
 
 Within a registered provider, cadence *timing* is already adaptive
@@ -43,6 +44,36 @@ Discovery/onboarding was the manual part.
   prints the complete onboarding patch for every surface from one
   invocation. The registry entry it prints lands in the same PR as the
   surface edits — that is the whole onboarding procedure.
+
+## Automation (QAC-006 — automated & programmatic by owner order)
+
+- **Apply (programmatic onboarding):**
+  `scripts/cadence_provider_onboarding.py apply <id> --kind llm
+  --endpoint <url> --source <official-docs-url>` writes the provider onto
+  every surface in one run (registry entry, extension catalog endpoint —
+  its `SECRETS` are auto-derived by that module — availability env line,
+  quota-family stub, quota-registry model record with limit
+  `NOT ESTABLISHED`), re-renders the matrix, and prints the quota
+  coverage generator post-step. Review kind writes both orchestrator
+  maps. Apply is idempotent: surfaces already carrying the provider are
+  skipped and reported.
+- **Workflow (`.github/workflows/cadence-provider-onboarding.yml`):**
+  runs on pushes to master touching any cadence surface, weekly
+  (Wed 06:23 UTC), and on dispatch. It runs `check`; missing-entry drift
+  is auto-fixed by `autofix` (kind inferred, missing surfaces recorded
+  as exceptions marked *auto-registered*) plus `render`, committed to
+  `cadence-provider-onboarding/auto-extend` as one open-or-updated PR
+  for review. Hard drift (stale exceptions, secrets claimed by no entry,
+  existing entries missing a surface, unacknowledged unmapped
+  quota-registry providers) fails the run loudly and is never auto-fixed.
+- **Quota-registry visibility:** model-lane providers that map to no
+  family are surfaced in the generated matrix — namespaced aggregates
+  (`g4f/*`, 61 records) are counted; a non-namespaced unmapped provider
+  fails the check unless acknowledged in the registry's
+  `acknowledged_unmapped_quota_providers` with a reason (today: `github`
+  — platform quota records incl. `github.copilot.free`; copilot is
+  onboarded separately as kind=review). All 27 llm families currently
+  carry a quota-registry record (`with_quota_registry: 27`).
 
 ## Current state (2026-10-28, derived, not hand-counted)
 

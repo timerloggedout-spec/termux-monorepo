@@ -468,6 +468,48 @@ def collect_ates() -> dict:
 
 # --------------------------------------------------------------------- DoE
 
+def _doe_campaigns() -> list:
+    """Family campaign members, read from their committed records.
+
+    A campaign appears here only when its design record is committed
+    (intake rule, docs/ops/DOE-FAMILY.md). Its state is computed from
+    the records on disk: no records = admitted, design-only; records =
+    executed, with aggregates read from SUMMARY.json (the runner's
+    output over those same records).
+    """
+    base = ROOT / "experiments" / "doe"
+    out = []
+    if not base.exists():
+        return out
+    for design_path in sorted(base.glob("*/DESIGN.json")):
+        design = json.loads(design_path.read_text())
+        camp_dir = design_path.parent
+        records = sorted((camp_dir / "records").glob("*.json")) \
+            if (camp_dir / "records").exists() else []
+        entry = {
+            "campaign_id": design.get("campaign_id"),
+            "issue": design.get("issue"),
+            "kind": "campaign",
+            "design_record": str(design_path.relative_to(ROOT)),
+            "factors": design.get("factors"),
+            "design_type": (design.get("design") or {}).get("type"),
+            "primary_outcome": (design.get("outcomes") or {}).get("primary"),
+            "runs": len(records),
+            "state": "executed" if records else "admitted_design_only",
+            "results": None,
+        }
+        summary_path = camp_dir / "SUMMARY.json"
+        if records and summary_path.exists():
+            s = json.loads(summary_path.read_text())
+            entry["results"] = {
+                "arms": s.get("arms"),
+                "effects_accuracy": s.get("effects_accuracy"),
+                "verdict": s.get("verdict"),
+            }
+        out.append(entry)
+    return out
+
+
 def collect_doe() -> dict:
     doe_mod = ast.parse((ROOT / "deepcli/deepcli/observatory/doe.py").read_text())
     functions = []
@@ -535,13 +577,59 @@ def collect_doe() -> dict:
             },
         ],
     }
-    gaps = [
-        "No standalone committed DoE campaign records exist in the repo: the methods library, skill and factorial slice are defined; the DSPy optimizer lane is design-only. Campaigns defined-but-not-run render as exactly that.",
-    ]
+    campaigns = _doe_campaigns()
+    executed = [c for c in campaigns if c["state"] == "executed"]
+    payload["family"] = {
+        "spec": "docs/ops/DOE-FAMILY.md",
+        "issue": 1865,
+        "statement": "DoE is a family; MVT is one member, not the whole.",
+        "shared": {
+            "experiment_record_schema": "docs/ops/corpus/EXPERIMENT.schema.json — DOE/MVT Experiment Record v1.0 (primary home: MVT surface; family campaigns emit records conforming to it)",
+            "intake_rule": "A campaign joins the family only with a committed design record + run evidence (EXPERIMENT-conforming records). Proposals alone do not count.",
+            "evaluation_doctrine": "Parallel lanes under a shared capability contract; scoring separates execution status, task outcome, correctness, integration, regression, resource cost; cherry-pick customizations are recorded as a new cohort/version, never folded silently into a running design.",
+        },
+        "members": [
+            {
+                "member_id": "mvt-campaigns",
+                "kind": "member",
+                "state": "active_practice",
+                "home_surface": "mvt",
+                "note": "Existing member. Its payload lives on the MVT surface (mvt-feed.json); this surface carries the pointer only, per the separation spec.",
+            },
+            *campaigns,
+            {
+                "member_id": "pilot-2-dispatch-topology-x-quota-policy",
+                "kind": "campaign_candidate",
+                "state": "proposal_only_not_admitted",
+                "issue": 1850,
+                "note": "Proposal filed (#1850); no committed design record and no run evidence, so under the intake rule it is not yet a family member and claims no results.",
+            },
+            {
+                "member_id": "design-classes",
+                "kind": "campaign_types",
+                "state": "methods_available",
+                "note": "Future design classes as first-class campaign types, from the methods library: full factorial (full_factorial), Taguchi L9 (taguchi_l9), sequential/randomized assignment (mvt_shuffle + the skill's adaptive screen-expand-replicate sequence).",
+            },
+        ],
+    }
+    payload["campaigns"] = campaigns
+    gaps = []
+    for c in campaigns:
+        if c["state"] == "admitted_design_only":
+            gaps.append(
+                f"Campaign {c['campaign_id']} is admitted (design record committed) but has no run records yet — defined, not run.")
+    if not executed:
+        gaps.append(
+            "No executed DoE family campaign yet: the first executed campaign (pilot 1 or 2) is the family's proof deliverable (#1865). The Delphi executed_comparisons above are a required presentation of a Delphi record, not DoE results.")
+    gaps.append(
+        "Pilot 2 (#1850) is proposal-only: no design record or run evidence, so it is not yet a family member.")
+    gaps.append(
+        "The DSPy optimizer lane is design-only. Campaigns defined-but-not-run render as exactly that.")
     sources = [
         "deepcli/deepcli/observatory/doe.py",
         ".agents/skills/multivariate-doe/SKILL.md",
         "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md (§DoE)",
+        "docs/ops/DOE-FAMILY.md + experiments/doe/*/DESIGN.json + experiments/doe/*/records/*.json + experiments/doe/*/SUMMARY.json (family campaigns — DoE-owned records)",
         "docs/proposals/active/model-selection-market/DSPY-DOE-LANE.md + docs/proposals/passes/strands-rfp-response/cycle/IMPLEMENTATION.json (executed comparison — Delphi-owned, labeled)",
     ]
     return _feed("doe", sources, payload, gaps)

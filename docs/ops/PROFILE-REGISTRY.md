@@ -49,7 +49,10 @@ is its at-a-glance view and is refreshed from here.
   about section, and at least one social media link"):
   - Full name — the cryptic display name above (set).
   - Country — United States (set).
-  - Profile image — MISSING → **prepared:**
+  - Profile image — MISSING → **prepared (preferred, owner 2026-10-27):**
+    `docs/ops/profile-registry/assets/builder-avatar-4n0ns3c.png`
+    (faceless hooded mask + circuit/cipher ring, no text or identity;
+    landed in-repo 2026-10-28). Earlier asset, superseded:
     `docs/ops/profile-registry/assets/builder-avatar-1337.webp`
     (circuit-trace mask glyph, 1337 motif, no face).
   - About — MISSING → **prepared, paste-ready:**

@@ -49,7 +49,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           mkdir -p ops/ml
-          git add -A ops/ml/
+          mkdir -p apps/help-wanted-dashboard/data
+          cp ops/ml/pr-lane-feed.json apps/help-wanted-dashboard/data/pr-lane-feed.json
+          cp ops/ml/pr-lane-series.jsonl apps/help-wanted-dashboard/data/pr-lane-series.jsonl
+          git add -A ops/ml/ apps/help-wanted-dashboard/data/pr-lane-feed.json apps/help-wanted-dashboard/data/pr-lane-series.jsonl
           if git diff --cached --quiet; then
             echo "feed unchanged — no commit"
             exit 0
@@ -72,7 +75,10 @@ jobs:
               git rebase --abort
               git reset --hard origin/master
               python3 -m ml.pipelines.production_classify
-              git add -A ops/ml/
+                mkdir -p apps/help-wanted-dashboard/data
+                cp ops/ml/pr-lane-feed.json apps/help-wanted-dashboard/data/pr-lane-feed.json
+                cp ops/ml/pr-lane-series.jsonl apps/help-wanted-dashboard/data/pr-lane-series.jsonl
+              git add -A ops/ml/ apps/help-wanted-dashboard/data/pr-lane-feed.json apps/help-wanted-dashboard/data/pr-lane-series.jsonl
               if git diff --cached --quiet; then
                 echo "feed already current on master"
                 exit 0

@@ -144,7 +144,15 @@ def batch_from_source(source: Path, source_ref: str) -> dict:
                 "key": hashlib.sha256(f"opportunity-ledger|{eid2}".encode()).hexdigest(),
                 "sync": sync_key, "entry": eid2,
                 "payload": json.dumps(entry, sort_keys=True, default=str)})
-    counts = {"participants": p_counts, "judges": j_counts,
+    osint_rows = []
+    osint_path = source.parent / "osint" / "snapshots.json"
+    if osint_path.exists():
+        for snap in json.loads(osint_path.read_text()).get("snapshots", []):
+            osint_rows.append({
+                "key": hashlib.sha256(f"osint-page|{snap.get('event')}|{snap.get('sha256')}".encode()).hexdigest(),
+                "sync": sync_key, "event": str(snap.get("event") or ""),
+                "payload": json.dumps(snap, sort_keys=True, default=str)})
+    counts = {"participants": p_counts, "judges": j_counts, "osint_snapshots": len(osint_rows),
               "snapshots": len(snapshots),
               "touchpoints": len(touchpoints_of(participants)),
               "ledger_entries": len(ledger_rows)}
@@ -153,7 +161,7 @@ def batch_from_source(source: Path, source_ref: str) -> dict:
             "events": json.dumps(events_core, sort_keys=True, default=str)}
     return {"sync": sync, "participants": participants,
             "judges": judges, "snapshots": snapshots,
-            "ledger": ledger_rows, "counts": counts}
+            "ledger": ledger_rows, "osint": osint_rows, "counts": counts}
 
 
 def recruitment_of(batch: dict) -> list[dict]:
@@ -267,7 +275,8 @@ def main(argv: list[str] | None = None) -> int:
         plan = (("insert-participant.sql", batch["participants"]),
                 ("insert-judge.sql", batch["judges"]),
                 ("insert-snapshot.sql", batch["snapshots"]),
-                ("insert-ledger.sql", batch.get("ledger", [])))
+                ("insert-ledger.sql", batch.get("ledger", [])),
+                ("insert-osint.sql", batch.get("osint", [])))
         total = 0
         for sqlf, rows in plan:
             for r in rows:

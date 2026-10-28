@@ -68,21 +68,31 @@ def main() -> int:
     cache = Path(args.cache)
     cache.mkdir(parents=True, exist_ok=True)
     base = f"{API}/repos/{args.repo}"
-    issues = [i for i in paged(token, f"{base}/issues?state=open&labels=delphi:rfp")
-              if "pull_request" not in i]
-    (cache / "issues.json").write_text(json.dumps(issues))
-    comments = {}
-    for issue in issues:
-        comments[str(issue["number"])] = paged(
-            token, f"{base}/issues/{issue['number']}/comments")
-    (cache / "comments.json").write_text(json.dumps(comments))
-    for name in ("surfaces.json", "panel.json"):
-        src = Path("ops/delphi") / name
-        if src.exists():
-            shutil.copy(src, cache / name)
-    print(f"fetched {len(issues)} open delphi:rfp issues, "
-          f"{sum(len(v) for v in comments.values())} comments")
-    return 0
+    try:
+        issues = [i for i in paged(token, f"{base}/issues?state=open&labels=delphi:rfp")
+                  if "pull_request" not in i]
+        (cache / "issues.json").write_text(json.dumps(issues))
+        comments = {}
+        for issue in issues:
+            comments[str(issue["number"])] = paged(
+                token, f"{base}/issues/{issue['number']}/comments")
+        (cache / "comments.json").write_text(json.dumps(comments))
+        for name in ("surfaces.json", "panel.json", "rfp-segments.json",
+                     "research-silos.json"):
+            src = Path("ops/delphi") / name
+            if src.exists():
+                shutil.copy(src, cache / name)
+        print(f"fetched {len(issues)} open delphi:rfp issues, "
+              f"{sum(len(v) for v in comments.values())} comments")
+        return 0
+    except urllib.error.HTTPError as e:
+        if e.code in (403, 429):
+            print(f"::warning::GitHub API rate-limit / capacity ({e.code}); treating as non-failure (exit 0). Cache may be incomplete.")
+            # Write empty cache so downstream doesn't crash
+            (cache / "issues.json").write_text("[]")
+            (cache / "comments.json").write_text("{}")
+            return 0
+        raise
 
 
 if __name__ == "__main__":

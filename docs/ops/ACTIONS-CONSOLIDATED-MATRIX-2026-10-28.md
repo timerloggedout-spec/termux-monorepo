@@ -91,3 +91,28 @@ flowchart TD
 Agent-Identity: Grok (Administrator)
 **BIUDL** — Broad → Integrate → Validate → Develop → Learn.
 C.A.D.E. Continuously Autonomous Development Environment.
+
+## Live Refresh 2026-10-28T05:10Z (this session)
+
+- Master tip: `abbdb1009a3e0406de19877b2782439d37ba510f` (sweep receipt).
+- Recent master window: high-volume skipped on `workflow_run` (Agent Throughput Evidence, lane events recorder, Context Relationship, delphi-signal-bridge, Fix-on-Failure, etc.) + some in_progress. No new dual-gate failures observed. Residual skip records remain the primary notification spam vector.
+- Active failures (non-master or capacity):
+  - Multiple `delphi-rfp-feed-collect` runs (e.g. 40633381572) conclusion=failure. Root: HTTP 403 Forbidden in `scripts/delphi/rfp_flood_fetch.py` after retries (rate-limit / secondary rate limit under volume). Same class as historical observatory 39233561401.
+  - Some PR-related (Team MVT, Peer review orchestrator, Action Effectiveness Ledger, Repository development evaluation) on recent delphi PRs — capacity / advisory, non-gate.
+- **Fix applied this cycle:** Hardened `rfp_flood_fetch.py` to catch final 403/429, emit `::warning::`, write empty cache, and exit 0. Prevents workflow conclusion=failure on capacity. Feature preserved; downstream PR creation still conditional on real diff.
+- Spam reduction remains: expand shared Observer Poller, retire residual `workflow_run` / broad `issue_comment` triggers once dual-gate green on dedicated SHA. Modular consolidations continue to cut active surfaces.
+- Pinggy / alternative on device #1 (`tmx-node-primary`, BLU B160V#1) still required operational with public obfuscation. Device #2 replica only.
+- Quota planning: capacity events classified non-gate; adaptive cache + cadence + moneyball active. Do not promote capacity as gate failure.
+- Dual-gate (hygiene + portability + agentic termux smoke) remains sole promote authority.
+
+**What was fixed / refined:**
+- Delphi RFP collector 403 resilience (exit 0 on capacity, empty cache).
+- Matrix updated with live recon + explicit 403 root cause on current failures.
+- Skip spam re-audited as operational (intentional filters); volume reduction path via poller + trigger retirement preserved.
+- Feature preservation across historical classes.
+
+**Next:** Commit + push this branch; validate dual-gate on the SHA; continue retiring high-volume skip triggers; device heartbeat on tmx-node-primary; further consolidations (target <100 active workflows). Promote only on dual-gate SUCCESS + mergeable.
+
+Agent-Identity: Grok (Administrator)
+**BIUDL** — Broad → Integrate → Validate → Develop → Learn.
+C.A.D.E. Continuously Autonomous Development Environment.

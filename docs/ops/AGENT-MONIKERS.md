@@ -50,6 +50,36 @@ this file's display discipline (backticks, never `@`-mentioned; they are
 not GitHub usernames), and are assigned by the deterministic rule in
 `scripts/registration_monikers/registry.py`, never coined per occasion.
 
+## Lane-coordination monikers (managers)
+
+Coordination identities for lane oversight — **not** platform
+identities: they never appear in `config/registration_monikers.json`
+and front no external account. Assigned by the registry lane
+(`{role:{registration-monikers}}`) on a lane's request, under one
+formation rule: the lane manager's moniker is `<lane>-manager`; a
+sub-coordinator's is `<lane>-manager-<key>` — formed on the manager's
+string, with the key lowercased (an event id, a workstream tag).
+Signatures keep the fleet form `[MUSEai]@{role:{<moniker>}}`, display
+in backticks, never `@`-mentioned.
+
+**Challenge-entries lane roster** (assigned 2026-10-28, owner-ordered
+oversight stand-up; the roster of record for who coordinates what —
+the lane records it in the challenge log):
+
+| Scope | Moniker |
+|---|---|
+| Lane manager (whole lane) | `challenge-entries-manager` |
+| Sub-coordinator, event D1 (Workshop to Ship) | `challenge-entries-manager-d1` |
+| Sub-coordinator, event D2 (Vultr Agent Rush) | `challenge-entries-manager-d2` |
+| Sub-coordinator, event D3 (per the challenge log) | `challenge-entries-manager-d3` |
+| Sub-coordinator, event D4 (Kiroween) | `challenge-entries-manager-d4` |
+| Sub-coordinator, event D5 (Aha! AI Builder Day) | `challenge-entries-manager-d5` |
+
+The lane's own chat keeps its standing signature
+`{role:{challenge-entries-lane}}`; the manager and sub monikers are
+roles within the lane's oversight structure, distinct strings by
+design.
+
 ## Rules
 
 1. Automated comments: **display** moniker in backticks; **ping** only the live trigger (`@jules`, `@gemini-cli`, `@deepseek` / `@deepseek-ci`).

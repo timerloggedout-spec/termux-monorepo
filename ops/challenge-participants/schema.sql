@@ -181,15 +181,14 @@ FROM participants_current c,
 
 -- ===== Opportunity cost (2026-10-28) =====
 -- events[].opportunity_cost{} rides the sync events core; extracted here.
+-- Owner ruling 2026-10-28: ledger = gross only, NO EV; win_probability is a hidden
+-- MoneyBall-internal metric (coordinator metrics_internal) and is NEVER in DB views.
 CREATE OR REPLACE VIEW event_opportunity_cost AS
 SELECT ev.event_id, ev.name AS event_name,
        ev.opportunity_cost->>'outcome' AS outcome,
        (ev.opportunity_cost->'top_award'->>'value')::numeric AS top_award_value,
        ev.opportunity_cost->'top_award'->>'form' AS top_award_form,
        (ev.opportunity_cost->>'gross_foregone')::numeric AS gross_foregone,
-       (ev.opportunity_cost->'win_probability'->>'estimate')::numeric AS win_probability_estimate,
-       ev.opportunity_cost->'win_probability'->'basis' AS win_probability_basis,
-       (ev.opportunity_cost->>'expected_value_foregone')::numeric AS expected_value_foregone,
        ev.opportunity_cost->'non_monetary_foregone' AS non_monetary_foregone,
        ev.opportunity_cost->>'computed_at' AS computed_at
 FROM challenge_events_current ev

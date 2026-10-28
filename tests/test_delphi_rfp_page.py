@@ -44,7 +44,7 @@ def test_progress_criteria_honesty_rendered_from_feed():
 
 def test_responses_rendered_verbatim_no_rescoring():
     html = _html()
-    assert "esc(v.reason)" in html and "esc(v.signed)" in html and "esc(v.role)" in html
+    assert "esc(v.reason)" in html and "esc(v.signed)" in html and "esc(v.role)" in html and "esc(v.via||" in html
     script = html.split("<script>", 1)[1]
     assert "reduce(" not in script, "no aggregation over votes in the render"
     feed = _feed()

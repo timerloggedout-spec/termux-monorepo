@@ -129,8 +129,8 @@ function roundsTable(rounds){
 }
 function votesTable(votes){
   if(!votes||!votes.length) return "";
-  return '<table class="vt"><thead><tr><th>Role</th><th>Score</th><th>Impact</th><th>Importance</th><th>Veto</th><th>Reason (verbatim)</th><th>Signed</th></tr></thead><tbody>'+
-    votes.map(v=>'<tr><td>'+esc(v.role)+'</td><td>'+esc(v.score)+'</td><td>'+esc(v.impact)+'</td><td>'+esc(v.importance)+'</td><td>'+(v.veto?"YES":"—")+'</td><td class="reason">'+esc(v.reason)+'</td><td class="sig">'+esc(v.signed)+'</td></tr>').join("")+'</tbody></table>';
+  return '<table class="vt"><thead><tr><th>Role</th><th>Score</th><th>Impact</th><th>Importance</th><th>Veto</th><th>Reason (verbatim)</th><th>Via</th><th>Signed</th></tr></thead><tbody>'+
+    votes.map(v=>'<tr><td>'+esc(v.role)+'</td><td>'+esc(v.score)+'</td><td>'+esc(v.impact)+'</td><td>'+esc(v.importance)+'</td><td>'+(v.veto?"YES":"—")+'</td><td class="reason">'+esc(v.reason)+'</td><td>'+esc(v.via||"")+'</td><td class="sig">'+esc(v.signed)+'</td></tr>').join("")+'</tbody></table>';
 }
 function recordsHTML(rec){
   if(!rec) return "";

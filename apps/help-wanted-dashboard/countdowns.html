@@ -21,6 +21,14 @@
   .badge.ok{border-color:var(--ok);color:var(--ok)} .badge.due{border-color:var(--bad);color:var(--bad)}
   .badge.open{border-color:var(--gold);color:var(--gold)} .dim{color:var(--muted)}
   .cd-when{font-size:13px;color:var(--muted)}
+  .gantt-wrap{overflow-x:auto}
+  .g-label{fill:var(--fg);font-size:11px}
+  .g-axis{fill:var(--muted);font-size:10px}
+  .g-now{fill:var(--bad);font-size:10px;font-weight:700}
+  .swim{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:.8rem}
+  .lane{border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+  .lane h3{margin:0 0 8px;font-size:14px}
+  .lchip{display:block;background:#21262d;border-radius:6px;padding:5px 8px;margin:5px 0;font-size:13px}
 </style>
 </head>
 <body>
@@ -29,14 +37,26 @@
 <div class="hero">
 <p class="eyebrow">Challenge Countdowns · Hackathon Deadlines</p>
 <h1>Hackathon countdowns — computed live from the recorded deadlines</h1>
-<p class="lede">Every countdown on this page is computed in your browser, every second, from the deadline instants recorded in the challenge entries log. This page consumes <code>data/challenge-countdowns-feed.json</code> (schema <code>challenge-countdowns-feed/v1</code>, contract <code>docs/ops/CHALLENGE-COUNTDOWNS-FEED.md</code>) and nothing else — the feed holds instants only, never a pre-computed remaining time, and an instant the log does not record shows as not recorded rather than anything guessed.</p>
+<p class="lede">The Gantt timeline and the swimlanes below draw only the recorded instants. Every countdown on this page is computed in your browser, every second, from the deadline instants recorded in the challenge entries log. This page consumes <code>data/challenge-countdowns-feed.json</code> (schema <code>challenge-countdowns-feed/v1</code>, contract <code>docs/ops/CHALLENGE-COUNTDOWNS-FEED.md</code>) and nothing else — the feed holds instants only, never a pre-computed remaining time, and an instant the log does not record shows as not recorded rather than anything guessed.</p>
 </div>
 </header>
 <main>
 <p class="muted" id="meta">Loading feed…</p>
 
 <section>
-<div class="head"><h2>Entries</h2></div>
+<div class="head"><h2>Programme timeline — Gantt</h2></div>
+<div class="card"><div class="gantt-wrap" id="gantt"></div>
+<p class="dim" id="gantt-note" style="margin:.6rem 0 0"></p></div>
+</section>
+
+<section>
+<div class="head"><h2>Swimlanes — by state</h2></div>
+<div class="swim" id="lanes"></div>
+<p class="dim">Lanes group the same recorded entries by live state. Further lanes (stage pipelines, queues, blocker chains) join this board when their records exist as feeds — nothing is drawn from prose.</p>
+</section>
+
+<section>
+<div class="head"><h2>Entry countdowns</h2></div>
 <div class="cd-grid" id="cards"></div>
 </section>
 
@@ -66,6 +86,75 @@ function stateOf(e,now){
   if(o!==null && !isNaN(o) && now>=o) return {kind:"over",label:"Open",badge:"open",value:"window open"};
   return {kind:"over",label:"No window recorded",badge:"",value:"—"};
 }
+function renderGantt(){
+  const box=$("gantt"); if(!box) return;
+  const now=Date.now();
+  const rows=ENTRIES.slice().sort((a,b)=>{
+    const ca=a.closes?Date.parse(a.closes):Infinity, cb=b.closes?Date.parse(b.closes):Infinity; return ca-cb;});
+  const stamps=[];
+  for(const e of ENTRIES){ if(e.opens) stamps.push(Date.parse(e.opens)); if(e.closes) stamps.push(Date.parse(e.closes)); }
+  stamps.push(now);
+  const DAY=86400000;
+  let t0=Math.min.apply(null,stamps)-2*DAY, t1=Math.max.apply(null,stamps)+2*DAY;
+  if(t1-t0<7*DAY){ const mid=(t0+t1)/2; t0=mid-3.5*DAY; t1=mid+3.5*DAY; }
+  const W=920, LW=168, AX=24, RH=27, H=AX+rows.length*RH+8;
+  const X=t=>LW+(t-t0)/(t1-t0)*(W-LW-12);
+  const DF=new Intl.DateTimeFormat("en-US",{timeZone:"America/Los_Angeles",month:"short",day:"numeric"});
+  let s='<svg viewBox="0 0 '+W+' '+H+'" width="100%" role="img" aria-label="Hackathon programme Gantt chart" style="min-width:660px;display:block">';
+  let tickT=Math.ceil(t0/(7*DAY))*(7*DAY);
+  for(let tt=tickT; tt<=t1; tt+=7*DAY){
+    s+='<line x1="'+X(tt)+'" y1="'+AX+'" x2="'+X(tt)+'" y2="'+(H-6)+'" style="stroke:var(--line)" stroke-width="1"/>';
+    s+='<text x="'+X(tt)+'" y="14" class="g-axis">'+esc(DF.format(new Date(tt)))+'</text>';
+  }
+  rows.forEach((e,i)=>{
+    const y=AX+i*RH, cy=y+RH/2;
+    const st=stateOf(e,now);
+    const label=e.id+" — "+(e.title.length>26? e.title.slice(0,25)+"…" : e.title);
+    s+='<text x="0" y="'+(cy+4)+'" class="g-label">'+esc(label)+'</text>';
+    const o=e.opens?Date.parse(e.opens):null, c=e.closes?Date.parse(e.closes):null;
+    const col=st.kind==="done"? "var(--ok)" : (st.label==="Overdue"? "var(--bad)" : "var(--gold)");
+    if(o!==null && c!==null && !isNaN(o) && !isNaN(c)){
+      s+='<rect x="'+X(o)+'" y="'+(cy-6)+'" width="'+Math.max(2,X(c)-X(o))+'" height="12" rx="3" style="fill:'+col+'" opacity="0.35"/>';
+      const upto=Math.min(now,c);
+      if(upto>o) s+='<rect x="'+X(o)+'" y="'+(cy-6)+'" width="'+Math.max(2,X(upto)-X(o))+'" height="12" rx="3" style="fill:'+col+'" opacity="0.95"/>';
+      s+='<text x="'+(X(c)+6)+'" y="'+(cy+4)+'" class="g-axis">'+esc(DF.format(new Date(c)))+'</text>';
+    } else if(c!==null && !isNaN(c)){
+      const cx=X(c);
+      s+='<polygon points="'+cx+','+(cy-7)+' '+(cx+7)+','+cy+' '+cx+','+(cy+7)+' '+(cx-7)+','+cy+'" style="fill:'+col+'"/>';
+      s+='<text x="'+(cx+10)+'" y="'+(cy+4)+'" class="g-axis">'+esc(DF.format(new Date(c)))+'</text>';
+    }
+  });
+  s+='<line x1="'+X(now)+'" y1="'+AX+'" x2="'+X(now)+'" y2="'+(H-6)+'" style="stroke:var(--bad)" stroke-width="1.5" stroke-dasharray="4 3"/>';
+  s+='<text x="'+(X(now)+4)+'" y="'+(AX+10)+'" class="g-now">now</text>';
+  s+='</svg>';
+  box.innerHTML=s;
+  const note=$("gantt-note");
+  if(note) note.textContent="Bars run opens → closes, from the recorded instants only; ◆ marks a deadline-only entry (no open instant recorded). Solid fill = the elapsed share of each window.";
+}
+const LANES=[["up","Upcoming"],["in","In window"],["end","Ended"]];
+function laneOf(st){
+  if(st.kind==="done" || st.label==="Overdue") return "end";
+  if(st.label==="Opens in") return "up";
+  return "in";
+}
+function renderLanes(){
+  const box=$("lanes"); if(!box) return;
+  const now=Date.now();
+  const grouped={up:[],in:[],end:[]};
+  for(const e of ENTRIES){
+    const st=stateOf(e,now);
+    grouped[laneOf(st)].push({e,st});
+  }
+  box.innerHTML=LANES.map(([key,title])=>
+    '<div class="lane"><h3>'+title+' <span class="dim">('+grouped[key].length+')</span></h3>'+
+    (grouped[key].length? grouped[key].map(({e,st})=>
+      '<span class="lchip"><strong>'+esc(e.id)+'</strong> '+esc(e.title)+' · '+esc(st.label)+
+      (e.closes? ' · closes '+esc(fmtInstant(e.closes)) : '')+'</span>').join("")
+      : '<span class="dim">none</span>')+
+    '</div>').join("");
+}
+let TICKN=0;
+
 let ENTRIES=[];
 function render(){
   $("cards").innerHTML=ENTRIES.map(e=>
@@ -76,6 +165,8 @@ function render(){
     '<div class="cd-value" data-role="value"></div>'+
     '<div class="cd-when">Opens: '+esc(fmtInstant(e.opens))+'<br>Closes: '+esc(fmtInstant(e.closes))+'</div>'+
     '</div>').join("");
+  renderGantt();
+  renderLanes();
   tick();
 }
 function tick(){
@@ -89,6 +180,8 @@ function tick(){
     card.querySelector('[data-role="label"]').textContent=st.kind==="tick"? st.label : "";
     card.querySelector('[data-role="value"]').textContent=st.value;
   });
+  renderLanes();
+  if(++TICKN%30===0) renderGantt();
 }
 async function load(){
   try{

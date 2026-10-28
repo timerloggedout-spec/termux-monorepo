@@ -23,9 +23,15 @@ on cadence. Owner lane: quota readings & convergence.
   sum to ≤ 100%; the remainder is **explicit reserve**, computed and
   published in the feed.
 
-Coverage: 50 pools, 88 of 89 registry services pooled;
-`openrouter.key` is explicitly excluded (opt-in private observation
-record, not a consumable service).
+Coverage: 51 pools, 90 of 90 registry services pooled; no exclusions.
+`openrouter.key` participates as a telemetry row in the `openrouter`
+pool (owner decision 2026-10-28): it carries no allocation of its own —
+the pool's split rides `openrouter.free_models` — and its reader is
+registered live status-only (PRs #2008/#2013), so the feed carries its
+H0 status-only observation; values and monetary fields are never
+published. The `platform201` pool (2026-10-28) completes coverage for
+`platform201.projects`, which had landed in the registry without an
+allocations entry.
 
 ## Owner setting (2026-10-27, until reset)
 

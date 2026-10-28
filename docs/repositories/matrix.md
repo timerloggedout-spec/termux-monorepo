@@ -2,7 +2,7 @@
 
 > Generated from GitHub repository and starring metadata. JSON is canonical; this file is a navigation projection.
 
-Observed: `2026-10-28T10:37:16.253947Z`
+Observed: `2026-10-28T17:28:52.459524Z`
 
 ## Navigation
 
@@ -12,6 +12,12 @@ Observed: `2026-10-28T10:37:16.253947Z`
 - [Owned forks](#owned-forks)
 - [Research seeds](#research-seeds)
 - [Integration candidates](#integration-candidates)
+
+## Changes since previous snapshot
+
+- **Added (3):** `Free-AI-Things/g4f-working`, `timerloggedout-spec/g4f-working_fork`, `xiangsx/gpt4free-ts`
+- **Removed (0):** —
+- **Provenance changed (0):** —
 
 ## Owned
 
@@ -220,6 +226,7 @@ Observed: `2026-10-28T10:37:16.253947Z`
 | [timerloggedout-spec/Fair-Code](https://github.com/timerloggedout-spec/Fair-Code) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/ffcv-imagenet_fork](https://github.com/timerloggedout-spec/ffcv-imagenet_fork) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/free-llm-api-hub_fork](https://github.com/timerloggedout-spec/free-llm-api-hub_fork) | owned, starred | ai | medium | upstream-comparison |
+| [timerloggedout-spec/g4f-working_fork](https://github.com/timerloggedout-spec/g4f-working_fork) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/galai_fork](https://github.com/timerloggedout-spec/galai_fork) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/Gantt-Chart-Code_fork](https://github.com/timerloggedout-spec/Gantt-Chart-Code_fork) | owned, starred | ai | medium | upstream-comparison |
 | [timerloggedout-spec/genpark-multi-model-cost-latency-router-skill_fork](https://github.com/timerloggedout-spec/genpark-multi-model-cost-latency-router-skill_fork) | owned | ai | medium | upstream-comparison |
@@ -1465,6 +1472,7 @@ Observed: `2026-10-28T10:37:16.253947Z`
 | [Flaque/evals](https://github.com/Flaque/evals) | starred | ai | medium | dependency-candidate, upstream-comparison |
 | [Flaque/solana](https://github.com/Flaque/solana) | starred | ai | medium | upstream-comparison |
 | [fr4iser90/PIDEA](https://github.com/fr4iser90/PIDEA) | starred | ai | medium | — |
+| [Free-AI-Things/g4f-working](https://github.com/Free-AI-Things/g4f-working) | starred | ai | medium | — |
 | [FreedomIntelligence/Awesome-AI4Med](https://github.com/FreedomIntelligence/Awesome-AI4Med) | starred | ai | medium | — |
 | [FudanDISC/DISC-LawLLM](https://github.com/FudanDISC/DISC-LawLLM) | starred | ai | medium | — |
 | [FuelLabs/fuel-core](https://github.com/FuelLabs/fuel-core) | starred | ai | medium | — |
@@ -1763,6 +1771,7 @@ Observed: `2026-10-28T10:37:16.253947Z`
 | [Wbaker7702/x402-rails](https://github.com/Wbaker7702/x402-rails) | starred | ai | medium | upstream-comparison |
 | [Wbaker7702/xrpl-py](https://github.com/Wbaker7702/xrpl-py) | starred | ai | medium | dependency-candidate, upstream-comparison |
 | [x1xhlol/better-clawd](https://github.com/x1xhlol/better-clawd) | starred, watching | ai | medium | — |
+| [xiangsx/gpt4free-ts](https://github.com/xiangsx/gpt4free-ts) | starred | ai | medium | — |
 | [xiao-xiao-bai-ya/deepseek-harness-github-mcp-tutorial](https://github.com/xiao-xiao-bai-ya/deepseek-harness-github-mcp-tutorial) | starred | ai | medium | — |
 | [xtekky/gpt4free](https://github.com/xtekky/gpt4free) | starred | ai | medium | — |
 | [xumingjun5208/aistudio-gemini-mcp](https://github.com/xumingjun5208/aistudio-gemini-mcp) | starred | ai | medium | — |
@@ -4173,6 +4182,7 @@ Observed: `2026-10-28T10:37:16.253947Z`
 | [timerloggedout-spec/Fair-Code](https://github.com/timerloggedout-spec/Fair-Code) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/ffcv-imagenet_fork](https://github.com/timerloggedout-spec/ffcv-imagenet_fork) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/free-llm-api-hub_fork](https://github.com/timerloggedout-spec/free-llm-api-hub_fork) | owned, starred | ai | medium | upstream-comparison |
+| [timerloggedout-spec/g4f-working_fork](https://github.com/timerloggedout-spec/g4f-working_fork) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/galai_fork](https://github.com/timerloggedout-spec/galai_fork) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/Gantt-Chart-Code_fork](https://github.com/timerloggedout-spec/Gantt-Chart-Code_fork) | owned, starred | ai | medium | upstream-comparison |
 | [timerloggedout-spec/genpark-multi-model-cost-latency-router-skill_fork](https://github.com/timerloggedout-spec/genpark-multi-model-cost-latency-router-skill_fork) | owned | ai | medium | upstream-comparison |
@@ -5688,6 +5698,7 @@ Observed: `2026-10-28T10:37:16.253947Z`
 | [timerloggedout-spec/Fair-Code](https://github.com/timerloggedout-spec/Fair-Code) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/ffcv-imagenet_fork](https://github.com/timerloggedout-spec/ffcv-imagenet_fork) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/free-llm-api-hub_fork](https://github.com/timerloggedout-spec/free-llm-api-hub_fork) | owned, starred | ai | medium | upstream-comparison |
+| [timerloggedout-spec/g4f-working_fork](https://github.com/timerloggedout-spec/g4f-working_fork) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/galai_fork](https://github.com/timerloggedout-spec/galai_fork) | owned | ai | medium | upstream-comparison |
 | [timerloggedout-spec/Gantt-Chart-Code_fork](https://github.com/timerloggedout-spec/Gantt-Chart-Code_fork) | owned, starred | ai | medium | upstream-comparison |
 | [timerloggedout-spec/genpark-multi-model-cost-latency-router-skill_fork](https://github.com/timerloggedout-spec/genpark-multi-model-cost-latency-router-skill_fork) | owned | ai | medium | upstream-comparison |

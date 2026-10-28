@@ -162,9 +162,54 @@ def hf_hub_reader(now):
                       "basis": "Hub api category RateLimit header; not Inference Providers quota"}}
 
 
+_KEY_SERVICE = None
+
+
+def _load_key_service():
+    """Load the private quota-service module by file path, so the import
+    works under the probe's sparse checkout and from a repo-root sys.path
+    alike. The service module inserts the repo root itself before importing
+    its transport, exactly as when run as a CLI."""
+    global _KEY_SERVICE
+    if _KEY_SERVICE is None:
+        import importlib.util
+        path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                            "provider_quota_service.py")
+        spec = importlib.util.spec_from_file_location("quota_poll_key_service", path)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        _KEY_SERVICE = (mod.observe_service, mod.public_status)
+    return _KEY_SERVICE
+
+
+def openrouter_key_reader(now):
+    # openrouter.key: the opt-in private current-key observation
+    # (scripts/provider_quota_service.py), registered live status-only by
+    # owner decision 2026-10-28. The observation stays private and
+    # in-memory; only the service's public_status() allowlist projection
+    # (status + request_quota enum) crosses into the poller, and no
+    # used/limit is ever exported, so the public snapshot derives
+    # "unknown" for the row (observed but unclassifiable, like
+    # huggingface.hub_api). Gated on OPENROUTER_KEY_OBSERVE=1 so private
+    # CLI consumers keep the original opt-in behaviour; the
+    # vercel-quota-probe workflow sets it.
+    if os.environ.get("OPENROUTER_KEY_OBSERVE") != "1":
+        return None
+    key = os.environ.get("OPENROUTER_API_KEY")
+    if not key:
+        return None
+    observe_service, public_status = _load_key_service()
+    projection = public_status(observe_service("openrouter.key", key, scope="key:primary"))
+    if projection.get("status") != "observed":
+        return None
+    return {"used": None, "elapsed": None,
+            "extra": {"request_quota": projection.get("request_quota", "unknown"),
+                      "basis": "status-only public_status projection of the private current-key observation; monetary values never exported"}}
+
+
 LIVE = {"github.api.github_token": gh_rate, "github.actions.cache": gh_cache,
         "vercel.deployments": vercel_deploys, "openrouter.free_models": openrouter_reader,
-        "huggingface.hub_api": hf_hub_reader}
+        "huggingface.hub_api": hf_hub_reader, "openrouter.key": openrouter_key_reader}
 MULTI = [render_reader, neon_reader]
 
 

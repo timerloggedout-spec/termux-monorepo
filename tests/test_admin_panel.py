@@ -43,3 +43,36 @@ def test_admin_embeds_no_credentials_and_posts_nothing():
     html = _admin().lower()
     for forbidden in ("ghp_", "github_pat_", "bearer ", "authorization", "method:'post'", 'method:"post"', "method: 'post'"):
         assert forbidden not in html, forbidden
+
+
+def test_admin_renders_internal_win_probability():
+    """Owner correction 2026-10-28 (contract docs/ops/ADMIN-INTERNAL-
+    METRICS.md): win_probability renders on the Admin panel ONLY, from
+    the challenge-admin-metrics/v1 feed, verbatim — the panel computes
+    nothing. Null estimate renders as the words "not established"
+    (never 0 or blank); an unsourced field size renders OPEN TASK,
+    a state distinct from the estimate null."""
+    html = _admin()
+    assert "./data/challenge-admin-metrics.json" in html
+    assert "win_probability" in html and "metrics" in html
+    assert "not established" in html and "OPEN TASK" in html
+    assert "INTERNAL" in html
+    assert "computes nothing" in html
+
+
+def test_win_probability_stays_off_public_surfaces():
+    """Forbidden-surface scan (contract acceptance b): the metric must
+    appear in NO public page and NO data feed except admin.html and
+    its designated internal feed."""
+    for page in APP.glob("*.html"):
+        if page.name == "admin.html":
+            continue
+        text = page.read_text()
+        assert "win_probability" not in text, page.name
+        assert "metrics_internal" not in text, page.name
+    for feed_file in (APP / "data").glob("*.json"):
+        if feed_file.name == "challenge-admin-metrics.json":
+            continue
+        text = feed_file.read_text()
+        assert "win_probability" not in text, feed_file.name
+        assert "metrics_internal" not in text, feed_file.name

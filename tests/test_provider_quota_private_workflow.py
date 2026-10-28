@@ -80,6 +80,8 @@ def test_new_contracts_run_on_pull_requests_and_pushes():
 def test_observation_registry_does_not_change_legacy_routing_weights():
     import datetime as dt
     import json
+    import os
+    from unittest.mock import patch
     from scripts import provider_quota_service, quota_poll
 
     root = PATH.parents[2]
@@ -88,7 +90,12 @@ def test_observation_registry_does_not_change_legacy_routing_weights():
     assert row["lane"] == "model-observation"
     record = quota_poll.record(row, None, dt.datetime.now(dt.timezone.utc))
     assert record["lane_id"] not in {"quota-model", "quota-deploy", "quota-data"}
-    assert "openrouter.key" not in quota_poll.LIVE
+    # Registered live status-only (owner decision, 2026-10-28): the poller
+    # carries the reader, but it stays opt-in gated (OPENROUTER_KEY_OBSERVE)
+    # and value-free, so the observation still cannot move routing weights.
+    assert quota_poll.LIVE["openrouter.key"] is quota_poll.openrouter_key_reader
+    with patch.dict(os.environ, {}, clear=True):
+        assert quota_poll.openrouter_key_reader(dt.datetime.now(dt.timezone.utc)) is None
     assert all(fn.__module__ != provider_quota_service.__name__ for fn in quota_poll.MULTI)
 
 

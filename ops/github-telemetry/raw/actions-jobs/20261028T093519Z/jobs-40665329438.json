@@ -1,0 +1,40 @@
+{
+  "collected_at": "2026-10-28T09:35:35.798200+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 40665329438,
+    "endpoint": ".../runs/40665329438/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 122738316313,
+        "run_id": 40665329438,
+        "workflow_name": "Peer review orchestrator",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/40665329438",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAck8YUGQ",
+        "head_sha": "478596cedd0e03b23725f06e04694e6d9a9ac3e9",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/122738316313",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40665329438/job/122738316313",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-10-28T09:34:52Z",
+        "started_at": "2026-10-28T09:34:52Z",
+        "completed_at": "2026-10-28T09:34:44Z",
+        "name": "collect-peer-responses",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/122738316313",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      }
+    ]
+  }
+}

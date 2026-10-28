@@ -1,0 +1,49 @@
+{
+  "collected_at": "2026-10-28T09:35:33.785021+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 40665329996,
+    "endpoint": ".../runs/40665329996/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 122738585794,
+        "run_id": 40665329996,
+        "workflow_name": "delphi-rfp-feed-collect",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/40665329996",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAck8owwg",
+        "head_sha": "478596cedd0e03b23725f06e04694e6d9a9ac3e9",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/122738585794",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40665329996/job/122738585794",
+        "status": "in_progress",
+        "conclusion": null,
+        "created_at": "2026-10-28T09:35:29Z",
+        "started_at": "2026-10-28T09:35:31Z",
+        "completed_at": null,
+        "name": "collect",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "in_progress",
+            "conclusion": null,
+            "number": 1,
+            "started_at": "2026-10-28T09:35:32Z",
+            "completed_at": null
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/122738585794",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000396395,
+        "runner_name": "GitHub Actions 1000396395",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

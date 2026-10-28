@@ -1,6 +1,6 @@
 # Research Silo Delphi — Independent Outcome Stovepipes
 
-**Status:** ACTIVE — validated + rebased onto current master 2026-10-27 (validation lane; original branch feat/research-silo-delphi-stovepipes was 756 behind master, no PR)  
+**Status:** ACTIVE — validated + rebased onto current master 2026-10-27 (validation lane) · **2026-10-28: silos reclassified as Delphi process PARTICIPANTS (owner order) — see §4c; §§3–4b describe the original RFP filing shape, retained as history**  
 **Machine config:** `ops/delphi/research-silos.json`  
 **Parent:** `docs/ops/RESEARCH-INTEGRATION-LANE.md` · `docs/ops/DELPHI-ORACLE-RFP-GATE.md`  
 **Directive:** BIUDL · YOLO · adaptive-wait · evidence-led · dual-gate
@@ -84,6 +84,18 @@ Per RFP: `surface_id` = silo.id exactly · `lane` = `other` (form has no researc
 **Veto trap:** `surface_from_issue` flags `card_required` by substring search over the free_quota + failure_modes text — any occurrence of the payment-instrument word, even negated, triggers the cost_auditor money veto (score capped at 4). Keep that word out of both fields in research RFPs.
 
 ---
+
+## 4c. Participation reclassification (owner order, 2026-10-28)
+
+The 48 silo filings (12 baselines + 36 evolutionary arms) were filed as `delphi:rfp` applicants. **Owner ruling: category error** — the silos belong to the required Delphi process as **participants** ("implement now"), not as proposals awaiting a gate vote. The gate's uniform parked/6.69 outcome was the admission rubric acting on surfaces that were never applicants.
+
+Effective 2026-10-28:
+
+- **Registry:** `ops/delphi/research-participants.json` (`delphi.research-participants.v1`) — 12 participants, one per silo, each carrying its baseline filing + `rnd`/`selected`/`control` arms as issue references.
+- **Queue:** all 48 filings exit the gate queue (`delphi:rfp` + `delphi:parked` removed, `delphi:participant` applied, conversion comment on each). Gate scoring continues for true surfaces/proposals only.
+- **Process:** participation runs through the comparison-axes cycles — `ops/delphi/research-axes.json` (cycle 1 recorded 2026-10-28: feature extractions recorded; produced outputs none validated yet; consensus none yet). The Oct-30 research recheck converts to the first participant axes cycle under this model.
+- **History:** first-cycle gate ledger comments stand unedited on the 48 issues as the record of the rubric artifact; they no longer state a status.
+- **Future filings:** new silos/arms register as participants directly; the `delphi:rfp` form is not used for research silos.
 
 ## 5. First cycle focus
 

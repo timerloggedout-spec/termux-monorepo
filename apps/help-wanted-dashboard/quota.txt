@@ -1,6 +1,6 @@
 ================================================================================
  QUOTA  termux-monorepo  (90 registry records)
- Snapshot generated (not observation time): 2026-10-28T01:23:16Z
+ Snapshot generated (not observation time): 2026-10-28T13:16:27Z
  Source: apps/help-wanted-dashboard/data/quota.json + ops/quota/registry.json
  Limits are documented entitlements, not balances.
  Private balances are hidden; unknown is not healthy or admitted.
@@ -8,7 +8,7 @@
 
  ALERTS
 --------------------------------------------------------------------------------
- [!  WATCH] github.api.github_token
+ [!! EXHAUSTED] github.api.github_token
    limit (documented): 1000 requests/hour/repo
    used: No live reading
  [STALE] github.api.user_token
@@ -208,7 +208,7 @@
     (free for public repos)
     Public evidence state only; no account balance or runtime admission implied.
   github.api.github_token
-    status: !  WATCH
+    status: !! EXHAUSTED
     limit (documented): 1000 requests/hour/repo
     metric: REST requests via GITHUB_TOKEN | window: hourly | reset:
     x-ratelimit-reset header
@@ -408,19 +408,14 @@
     reset timestamp
     Public evidence state only; no account balance or runtime admission implied.
   openrouter.key
-    status: No live reading
+    status: UNKNOWN
     limit (documented): n/a signal-specific requests or monetary credits; tier
     is not model price
     metric: private request quota, monetary key limits and account tier kept
     separate | window: source daily counter; monetary budgets independently
     scoped | reset: daily request reset instant unknown; only explicit source
     budget reset retained
-    No live reading (live source: registered live status-only (owner decision
-    2026-10-28): scripts/quota_poll.py openrouter_key_reader wraps
-    scripts/provider_quota_service.py --service openrouter.key --observe
-    in-process when OPENROUTER_KEY_OBSERVE=1 (vercel-quota-probe workflow);
-    fixed GET https://openrouter.ai/api/v1/key (OPENROUTER_API_KEY); public
-    snapshot carries the public_status() projection only)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  oracle (3)
   oracle.ampere_gb_hours
@@ -727,6 +722,6 @@
   zai: Manager / ChronoMancer; official_documentation_only; no passive parser;
   registry: zai.free_models
  Coverage and quota checks do not grant runtime admission.
- 90 registry records | 2 alert(s) | 7 with a reported reading | 83 with No live
+ 90 registry records | 2 alert(s) | 8 with a reported reading | 82 with No live
  reading
 ================================================================================

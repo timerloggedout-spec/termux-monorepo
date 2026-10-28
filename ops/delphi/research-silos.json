@@ -152,6 +152,7 @@
     "reset_and_zone_field": "none - no quota reset; parked recheck per panel.json award defaults (medium 14d / backlog 30d)",
     "auth_from_actions_field": "none needed",
     "veto_trap": "gate.surface_from_issue sets card_required by substring search over the free_quota + failure_modes form text for the word denoting a payment instrument; any occurrence (even a negation) triggers the cost_auditor money veto (score capped at 4). Keep that word out of both fields for research RFPs.",
-    "title_regex_note": "gate title fallback regex is lowercase-only ([a-z0-9._-]); always file via the surface_id form field, never rely on title parsing."
+    "title_regex_note": "gate title fallback regex is lowercase-only ([a-z0-9._-]); always file via the surface_id form field, never rely on title parsing.",
+    "recheck": "research.* parked recheck = panel.json award.research_recheck_days (2d, owner ruling 2026-10-28; the generic 30d backlog park froze the silos for a month). Quota surfaces unchanged."
   }
 }

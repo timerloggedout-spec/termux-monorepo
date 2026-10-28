@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "c53f4722d4c27a404700b92051d97faf979b3a711111dd12329773e31fd0dc7f",
-  "workflow_count": 214,
+  "source_fingerprint": "43030f7d79527631312ff0b72882362b5f5d0114838f926097290b573f6f0be1",
+  "workflow_count": 215,
   "workflows": [
     {
       "action_pins": [
@@ -3645,6 +3645,21 @@
       "triggers": [
         "issues",
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "engagement"
+      ],
+      "name": "temporal-engagement",
+      "path": ".github/workflows/temporal-engagement.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },

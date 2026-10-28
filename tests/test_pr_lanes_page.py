@@ -102,3 +102,18 @@ console.log(JSON.stringify(res));
     assert res["cand_order"] == [12, 11]
     assert res["ext_numbers"] == [13]
     assert res["empty_lane"] == 0
+
+
+def test_chrome_wiring():
+    """Web Design chrome (post-landing follow-up): the page is linked
+    from every shell page's unified nav, marks itself current, is in
+    the sitemap, and has an Admin inventory row."""
+    link = 'href="https://timerloggedout-spec.github.io/help-wanted/pr-lanes.html"'
+    for other in ("index.html", "quota.html", "admin.html", "oracle.html", "3l0.html",
+                  "moneyball.html", "mvt.html", "doe.html", "ates.html",
+                  "free-tier-value.html", "dispatch-tree.html", "countdowns.html",
+                  "linguist.html", "delphi-rfp.html", "delphi-ledger.html"):
+        assert link in (APP / other).read_text(), f"{other} nav missing pr-lanes"
+    assert f'{link} aria-current="page"' in _html()
+    assert "https://timerloggedout-spec.github.io/help-wanted/pr-lanes.html" in (APP / "sitemap.xml").read_text()
+    assert "<td>PR Lanes</td>" in (APP / "admin.html").read_text()

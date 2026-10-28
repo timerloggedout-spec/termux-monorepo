@@ -15,6 +15,32 @@
   {
    "consumer": "challenge-entries participant tracking",
    "declaration": "docs/ops/CHALLENGE-SCHEMA.md \u2014 judges/signals section (owner, 2026-10-28): participant tracking is a MoneyBall lane for competitions",
+   "internal_metric": {
+    "adaptive_rule": "recompute in the same PR as the input change; overwrite in place (current estimate, not a series); computed_at must be >= latest input change or the value is stale",
+    "adaptive_triggers": [
+     "participant added/removed",
+     "any v2 score record added/updated for the event",
+     "field_size verification change",
+     "our submission state or our score change"
+    ],
+    "computation": "base = 1/field_size. If our_composite present AND >=1 competitor scored under v2 for the event: lift = clamp(our_composite / field_mean_composite, 0.25, 4); estimate = min(1, base x lift). Else estimate = base (base_rate_only, recorded in method detail). field_size NOT_ESTABLISHED -> estimate null (never defaulted).",
+    "location": "ops/challenge/coordinator.json events[].metrics_internal.win_probability (ONLY home; removed from opportunity_cost display; ledger = 1st-place gross only, no EV anywhere)",
+    "name": "win_probability",
+    "non_render_contract": "metrics_internal is excluded by construction from challenge-countdowns-feed, dashboard pages, log section 4, manager briefs and the Neon ledger views; win_probability is never multiplied into any displayed figure (no EV)",
+    "owner_ruling": "2026-10-28 via challenge-entries-manager: MoneyBall-side metric; separate column; adaptive; SILENT + HIDDEN \u2014 never rendered on feeds/pages/briefs/ledger",
+    "shape": {
+     "computed_at": "ISO timestamp",
+     "estimate": "number|null",
+     "inputs": {
+      "award_slots_top": 1,
+      "field_mean_composite": "number|null",
+      "field_scored_count": "int",
+      "field_size": "int|null",
+      "our_composite": "number|null"
+     },
+     "method": "winprob/v1"
+    }
+   },
    "lane_chat_id": "a33d3ca1",
    "pattern_for_consumer": {
     "not_this": "ml/pipelines/moneyball/ PR-triage scorer \u2014 its weights (dual_gate_green 40 etc) are PR-domain constants; verbatim reuse refused, domain mismatch. explain.py is pattern ancestry only.",

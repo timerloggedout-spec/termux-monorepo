@@ -69,4 +69,6 @@ def test_collector_reads_segments_config(tmp_path):
     cfg, silos = mod._segments_config(tmp_path)
     assert cfg is not None and silos is not None  # working-tree fallback
     assert set(cfg["classes"]) == {"research-silos", "quota-surfaces",
-                                   "meta-process"}
+                                   "meta-process", "doe-components"}
+    members = cfg["classes"]["doe-components"]["members"]
+    assert sorted(members.values()) == [1975, 1976, 1977, 1978]

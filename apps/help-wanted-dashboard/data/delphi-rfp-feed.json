@@ -1,16 +1,17 @@
 {
  "schema": "delphi-rfp-feed/v1",
- "generated_at": "2026-10-28T03:48:37Z",
+ "generated_at": "2026-10-28T04:32:50Z",
  "source": "open GitHub issues labeled delphi:rfp + their gate ledger comments (live census at generation)",
  "summary": {
-  "total_open": 70,
+  "total_open": 71,
   "by_status": {
    "parked": 68,
-   "shadow": 2
+   "shadow": 2,
+   "unscored": 1
   },
   "by_group": {
    "surface": 18,
-   "synthetic": 4,
+   "synthetic": 5,
    "research-baseline": 12,
    "research-variant": 36
   }
@@ -72,7 +73,8 @@
   "Responses are the panel's signed votes verbatim from the ledger comment (role, score, reason, sign-off); nothing is paraphrased into a new score.",
   "A form field absent from a filing is an explicit gap entry, not an empty string.",
   "Research-silo comparison axes read 'pending' until a post-hoc record exists \u2014 never zero, never a gate score.",
-  "Counts in summary are derived from the entries in this file at generation time."
+  "Counts in summary are derived from the entries in this file at generation time.",
+  "Segments roll up members and states only \u2014 no score is averaged across a segment, and research comparison stays within its silo segment."
  ],
  "rfps": [
   {
@@ -265,7 +267,8 @@
      }
     }
    },
-   "gaps": []
+   "gaps": [],
+   "segment": "quota-surfaces"
   },
   {
    "number": 1416,
@@ -457,7 +460,8 @@
      }
     }
    },
-   "gaps": []
+   "gaps": [],
+   "segment": "quota-surfaces"
   },
   {
    "number": 1417,
@@ -649,7 +653,8 @@
      }
     }
    },
-   "gaps": []
+   "gaps": [],
+   "segment": "quota-surfaces"
   },
   {
    "number": 1418,
@@ -841,7 +846,8 @@
      }
     }
    },
-   "gaps": []
+   "gaps": [],
+   "segment": "quota-surfaces"
   },
   {
    "number": 1419,
@@ -1033,7 +1039,8 @@
      }
     }
    },
-   "gaps": []
+   "gaps": [],
+   "segment": "quota-surfaces"
   },
   {
    "number": 1420,
@@ -1225,7 +1232,8 @@
      }
     }
    },
-   "gaps": []
+   "gaps": [],
+   "segment": "quota-surfaces"
   },
   {
    "number": 1421,
@@ -1417,7 +1425,8 @@
      }
     }
    },
-   "gaps": []
+   "gaps": [],
+   "segment": "quota-surfaces"
   },
   {
    "number": 1422,
@@ -1609,7 +1618,8 @@
      }
     }
    },
-   "gaps": []
+   "gaps": [],
+   "segment": "quota-surfaces"
   },
   {
    "number": 1423,
@@ -1802,7 +1812,8 @@
      }
     }
    },
-   "gaps": []
+   "gaps": [],
+   "segment": "quota-surfaces"
   },
   {
    "number": 1424,
@@ -2007,7 +2018,8 @@
      }
     }
    },
-   "gaps": []
+   "gaps": [],
+   "segment": "quota-surfaces"
   },
   {
    "number": 1425,
@@ -2199,7 +2211,8 @@
      }
     }
    },
-   "gaps": []
+   "gaps": [],
+   "segment": "quota-surfaces"
   },
   {
    "number": 1426,
@@ -2391,7 +2404,8 @@
      }
     }
    },
-   "gaps": []
+   "gaps": [],
+   "segment": "quota-surfaces"
   },
   {
    "number": 1427,
@@ -2594,7 +2608,8 @@
      }
     }
    },
-   "gaps": []
+   "gaps": [],
+   "segment": "quota-surfaces"
   },
   {
    "number": 1428,
@@ -2786,7 +2801,8 @@
      }
     }
    },
-   "gaps": []
+   "gaps": [],
+   "segment": "quota-surfaces"
   },
   {
    "number": 1429,
@@ -2978,7 +2994,8 @@
      }
     }
    },
-   "gaps": []
+   "gaps": [],
+   "segment": "quota-surfaces"
   },
   {
    "number": 1430,
@@ -3170,7 +3187,8 @@
      }
     }
    },
-   "gaps": []
+   "gaps": [],
+   "segment": "quota-surfaces"
   },
   {
    "number": 1431,
@@ -3362,7 +3380,8 @@
      }
     }
    },
-   "gaps": []
+   "gaps": [],
+   "segment": "quota-surfaces"
   },
   {
    "number": 1488,
@@ -3559,7 +3578,8 @@
     "form field 'auth_from_actions' absent from the filing",
     "form field 'failure_modes' absent from the filing",
     "form field 'evidence_links' absent from the filing"
-   ]
+   ],
+   "segment": "quota-surfaces"
   },
   {
    "number": 1567,
@@ -3792,7 +3812,8 @@
     "form field 'lock_in' absent from the filing",
     "form field 'failure_modes' absent from the filing",
     "form field 'evidence_links' absent from the filing"
-   ]
+   ],
+   "segment": "mvt-doe-tlm"
   },
   {
    "number": 1571,
@@ -3995,7 +4016,8 @@
     "form field 'lock_in' absent from the filing",
     "form field 'failure_modes' absent from the filing",
     "form field 'evidence_links' absent from the filing"
-   ]
+   ],
+   "segment": "web.visualization_layers"
   },
   {
    "number": 1572,
@@ -4201,7 +4223,8 @@
     "form field 'lock_in' absent from the filing",
     "form field 'failure_modes' absent from the filing",
     "form field 'evidence_links' absent from the filing"
-   ]
+   ],
+   "segment": "delphi.conversational_intake"
   },
   {
    "number": 1591,
@@ -4393,7 +4416,8 @@
      }
     }
    },
-   "gaps": []
+   "gaps": [],
+   "segment": "quota-surfaces"
   },
   {
    "number": 1897,
@@ -4602,7 +4626,8 @@
     "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
     "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
     "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
-   }
+   },
+   "segment": "research.jogyo-research-lab"
   },
   {
    "number": 1898,
@@ -4811,7 +4836,8 @@
     "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
     "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
     "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
-   }
+   },
+   "segment": "research.docxology-template"
   },
   {
    "number": 1899,
@@ -5020,7 +5046,8 @@
     "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
     "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
     "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
-   }
+   },
+   "segment": "research.yy-project-template"
   },
   {
    "number": 1900,
@@ -5229,7 +5256,8 @@
     "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
     "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
     "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
-   }
+   },
+   "segment": "research.buoyancy99-research-template"
   },
   {
    "number": 1901,
@@ -5438,7 +5466,8 @@
     "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
     "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
     "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
-   }
+   },
+   "segment": "research.yp-edu-research-project-template"
   },
   {
    "number": 1902,
@@ -5647,7 +5676,8 @@
     "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
     "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
     "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
-   }
+   },
+   "segment": "research.seunghyukoh-research-template"
   },
   {
    "number": 1903,
@@ -5856,7 +5886,8 @@
     "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
     "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
     "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
-   }
+   },
+   "segment": "research.irudik-repo-template"
   },
   {
    "number": 1904,
@@ -6065,7 +6096,8 @@
     "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
     "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
     "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
-   }
+   },
+   "segment": "research.jdingel-projecttemplate"
   },
   {
    "number": 1905,
@@ -6274,7 +6306,8 @@
     "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
     "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
     "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
-   }
+   },
+   "segment": "research.3rdcore-research-project-template"
   },
   {
    "number": 1906,
@@ -6483,7 +6516,8 @@
     "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
     "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
     "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
-   }
+   },
+   "segment": "research.dicklesworthstone-agentic-flywheel"
   },
   {
    "number": 1907,
@@ -6692,7 +6726,8 @@
     "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
     "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
     "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
-   }
+   },
+   "segment": "research.opencode-research-papers"
   },
   {
    "number": 1908,
@@ -6901,7 +6936,8 @@
     "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
     "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
     "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
-   }
+   },
+   "segment": "research.cactus-needle"
   },
   {
    "number": 1910,
@@ -7115,7 +7151,8 @@
    "parent": {
     "number": 1897,
     "surface_id": "research.jogyo-research-lab"
-   }
+   },
+   "segment": "research.jogyo-research-lab"
   },
   {
    "number": 1911,
@@ -7329,7 +7366,8 @@
    "parent": {
     "number": 1897,
     "surface_id": "research.jogyo-research-lab"
-   }
+   },
+   "segment": "research.jogyo-research-lab"
   },
   {
    "number": 1912,
@@ -7543,7 +7581,8 @@
    "parent": {
     "number": 1897,
     "surface_id": "research.jogyo-research-lab"
-   }
+   },
+   "segment": "research.jogyo-research-lab"
   },
   {
    "number": 1913,
@@ -7757,7 +7796,8 @@
    "parent": {
     "number": 1898,
     "surface_id": "research.docxology-template"
-   }
+   },
+   "segment": "research.docxology-template"
   },
   {
    "number": 1914,
@@ -7971,7 +8011,8 @@
    "parent": {
     "number": 1898,
     "surface_id": "research.docxology-template"
-   }
+   },
+   "segment": "research.docxology-template"
   },
   {
    "number": 1915,
@@ -8185,7 +8226,8 @@
    "parent": {
     "number": 1898,
     "surface_id": "research.docxology-template"
-   }
+   },
+   "segment": "research.docxology-template"
   },
   {
    "number": 1916,
@@ -8399,7 +8441,8 @@
    "parent": {
     "number": 1899,
     "surface_id": "research.yy-project-template"
-   }
+   },
+   "segment": "research.yy-project-template"
   },
   {
    "number": 1917,
@@ -8613,7 +8656,8 @@
    "parent": {
     "number": 1899,
     "surface_id": "research.yy-project-template"
-   }
+   },
+   "segment": "research.yy-project-template"
   },
   {
    "number": 1918,
@@ -8827,7 +8871,8 @@
    "parent": {
     "number": 1899,
     "surface_id": "research.yy-project-template"
-   }
+   },
+   "segment": "research.yy-project-template"
   },
   {
    "number": 1919,
@@ -9041,7 +9086,8 @@
    "parent": {
     "number": 1900,
     "surface_id": "research.buoyancy99-research-template"
-   }
+   },
+   "segment": "research.buoyancy99-research-template"
   },
   {
    "number": 1920,
@@ -9255,7 +9301,8 @@
    "parent": {
     "number": 1900,
     "surface_id": "research.buoyancy99-research-template"
-   }
+   },
+   "segment": "research.buoyancy99-research-template"
   },
   {
    "number": 1921,
@@ -9469,7 +9516,8 @@
    "parent": {
     "number": 1900,
     "surface_id": "research.buoyancy99-research-template"
-   }
+   },
+   "segment": "research.buoyancy99-research-template"
   },
   {
    "number": 1922,
@@ -9683,7 +9731,8 @@
    "parent": {
     "number": 1901,
     "surface_id": "research.yp-edu-research-project-template"
-   }
+   },
+   "segment": "research.yp-edu-research-project-template"
   },
   {
    "number": 1923,
@@ -9897,7 +9946,8 @@
    "parent": {
     "number": 1901,
     "surface_id": "research.yp-edu-research-project-template"
-   }
+   },
+   "segment": "research.yp-edu-research-project-template"
   },
   {
    "number": 1924,
@@ -10111,7 +10161,8 @@
    "parent": {
     "number": 1901,
     "surface_id": "research.yp-edu-research-project-template"
-   }
+   },
+   "segment": "research.yp-edu-research-project-template"
   },
   {
    "number": 1925,
@@ -10325,7 +10376,8 @@
    "parent": {
     "number": 1902,
     "surface_id": "research.seunghyukoh-research-template"
-   }
+   },
+   "segment": "research.seunghyukoh-research-template"
   },
   {
    "number": 1926,
@@ -10539,7 +10591,8 @@
    "parent": {
     "number": 1902,
     "surface_id": "research.seunghyukoh-research-template"
-   }
+   },
+   "segment": "research.seunghyukoh-research-template"
   },
   {
    "number": 1927,
@@ -10753,7 +10806,8 @@
    "parent": {
     "number": 1902,
     "surface_id": "research.seunghyukoh-research-template"
-   }
+   },
+   "segment": "research.seunghyukoh-research-template"
   },
   {
    "number": 1928,
@@ -10967,7 +11021,8 @@
    "parent": {
     "number": 1903,
     "surface_id": "research.irudik-repo-template"
-   }
+   },
+   "segment": "research.irudik-repo-template"
   },
   {
    "number": 1929,
@@ -11181,7 +11236,8 @@
    "parent": {
     "number": 1903,
     "surface_id": "research.irudik-repo-template"
-   }
+   },
+   "segment": "research.irudik-repo-template"
   },
   {
    "number": 1930,
@@ -11395,7 +11451,8 @@
    "parent": {
     "number": 1903,
     "surface_id": "research.irudik-repo-template"
-   }
+   },
+   "segment": "research.irudik-repo-template"
   },
   {
    "number": 1931,
@@ -11609,7 +11666,8 @@
    "parent": {
     "number": 1904,
     "surface_id": "research.jdingel-projecttemplate"
-   }
+   },
+   "segment": "research.jdingel-projecttemplate"
   },
   {
    "number": 1932,
@@ -11823,7 +11881,8 @@
    "parent": {
     "number": 1904,
     "surface_id": "research.jdingel-projecttemplate"
-   }
+   },
+   "segment": "research.jdingel-projecttemplate"
   },
   {
    "number": 1933,
@@ -12037,7 +12096,8 @@
    "parent": {
     "number": 1904,
     "surface_id": "research.jdingel-projecttemplate"
-   }
+   },
+   "segment": "research.jdingel-projecttemplate"
   },
   {
    "number": 1934,
@@ -12251,7 +12311,8 @@
    "parent": {
     "number": 1905,
     "surface_id": "research.3rdcore-research-project-template"
-   }
+   },
+   "segment": "research.3rdcore-research-project-template"
   },
   {
    "number": 1935,
@@ -12465,7 +12526,8 @@
    "parent": {
     "number": 1905,
     "surface_id": "research.3rdcore-research-project-template"
-   }
+   },
+   "segment": "research.3rdcore-research-project-template"
   },
   {
    "number": 1936,
@@ -12679,7 +12741,8 @@
    "parent": {
     "number": 1905,
     "surface_id": "research.3rdcore-research-project-template"
-   }
+   },
+   "segment": "research.3rdcore-research-project-template"
   },
   {
    "number": 1937,
@@ -12893,7 +12956,8 @@
    "parent": {
     "number": 1906,
     "surface_id": "research.dicklesworthstone-agentic-flywheel"
-   }
+   },
+   "segment": "research.dicklesworthstone-agentic-flywheel"
   },
   {
    "number": 1938,
@@ -13107,7 +13171,8 @@
    "parent": {
     "number": 1906,
     "surface_id": "research.dicklesworthstone-agentic-flywheel"
-   }
+   },
+   "segment": "research.dicklesworthstone-agentic-flywheel"
   },
   {
    "number": 1939,
@@ -13321,7 +13386,8 @@
    "parent": {
     "number": 1906,
     "surface_id": "research.dicklesworthstone-agentic-flywheel"
-   }
+   },
+   "segment": "research.dicklesworthstone-agentic-flywheel"
   },
   {
    "number": 1940,
@@ -13535,7 +13601,8 @@
    "parent": {
     "number": 1907,
     "surface_id": "research.opencode-research-papers"
-   }
+   },
+   "segment": "research.opencode-research-papers"
   },
   {
    "number": 1941,
@@ -13749,7 +13816,8 @@
    "parent": {
     "number": 1907,
     "surface_id": "research.opencode-research-papers"
-   }
+   },
+   "segment": "research.opencode-research-papers"
   },
   {
    "number": 1942,
@@ -13963,7 +14031,8 @@
    "parent": {
     "number": 1907,
     "surface_id": "research.opencode-research-papers"
-   }
+   },
+   "segment": "research.opencode-research-papers"
   },
   {
    "number": 1943,
@@ -14177,7 +14246,8 @@
    "parent": {
     "number": 1908,
     "surface_id": "research.cactus-needle"
-   }
+   },
+   "segment": "research.cactus-needle"
   },
   {
    "number": 1944,
@@ -14391,7 +14461,8 @@
    "parent": {
     "number": 1908,
     "surface_id": "research.cactus-needle"
-   }
+   },
+   "segment": "research.cactus-needle"
   },
   {
    "number": 1945,
@@ -14605,7 +14676,420 @@
    "parent": {
     "number": 1908,
     "surface_id": "research.cactus-needle"
-   }
+   },
+   "segment": "research.cactus-needle"
+  },
+  {
+   "number": 1959,
+   "progress": {
+    "stage": "awaiting-gate",
+    "rounds_run": 0,
+    "rounds_max": 3,
+    "votes_cast": 0,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] doe.criteria-loop",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1959",
+   "created_at": "2026-10-28T04:12:00Z",
+   "surface_id": "doe.criteria-loop",
+   "lane": "other",
+   "group": "synthetic",
+   "status": "unscored",
+   "converged": false,
+   "labels": [
+    "delphi:rfp"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "doe.criteria-loop"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "other"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "other"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "criteria census (this filing) | T0 | T0 | -\npanel rounds on the criteria set | T0 | T0 | criteria census\nfindings -> revision PRs or no-change record | T0+1d | T0+7d | panel rounds\nre-score under revised criteria | T0+7d | T0+7d | revision PRs\nloop repeats per gate cycle | T0+7d | - | re-score"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "No vendor quota consumed. The loop runs on the repo's existing GitHub Issues + Actions surface under the gate's cadence governor; panel cycles are the only spend, bounded by the existing registry caps. No paid tier, no payment instrument, no overage billing."
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "Gate heartbeat hourly (UTC); panel weights ledger continuous; criteria revision cycle weekly."
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "none needed"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "1 (portable)"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "- Loop files but never revises (criteria ossify) \u2014 each cycle must end in a revision PR or an explicit no-change record on this issue.\n- Wording games the rubric instead of improving criteria \u2014 score is an admission signal only; revisions are decided on run evidence, per criterion 1.\n- Loop spend crowds out RFP scoring \u2014 cadence governor defers non-explicit triggers near caps; this RFP yields to the flood queue.\n- Criteria revisions break landed records' conformance \u2014 revisions are additive or versioned; existing EXPERIMENT records stay valid under their schema version."
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "- docs/ops/DOE-FAMILY.md + docs/ops/DOE-TAXONOMY.md (criteria set of record)\n- PR #1871 (family restructure), PR #1873 (pilot 1 executed, 32 records), PR #1874 (taxonomy mining), PR #1954 (segmentation layer)\n- Issue #1865 (family work item), issue #1487 (outcomes ledger)"
+    }
+   ],
+   "outcome": null,
+   "responses": null,
+   "gaps": [
+    "no gate ledger comment yet \u2014 the gate has not scored this filing on record",
+    "no delphi: status label (shadow/promoted/parked/converged) applied"
+   ],
+   "segment": "doe-criteria-loop"
   }
- ]
+ ],
+ "segments": {
+  "config": "ops/delphi/rfp-segments.json",
+  "doctrine": "docs/ops/DELPHI-RFP-SEGMENTATION.md",
+  "classes": {
+   "meta-process": {
+    "description": "RFPs about the method/process itself (intake, visualization, MVT-DoE validation). Segmented individually; each is its own context.",
+    "criteria": [
+     "The RFP's own stated improvement criteria (per-issue)",
+     "Method-level evidence: the targeted process changes and the change is measured, not asserted"
+    ],
+    "questions": [
+     "Does this RFP improve the method it targets, per its own stated criteria?",
+     "What evidence would distinguish the improved method from the current one?"
+    ],
+    "cycle": [
+     "RFP filed",
+     "panel/gate admission",
+     "method comparison on the process's own evidence",
+     "outcome recorded on delphi:outcomes"
+    ]
+   },
+   "quota-surfaces": {
+    "description": "Free-tier quota surfaces from ops/delphi/surfaces.json plus fly.free_tier. The Delphi lane's home segmentation: gate-scored, flywheel-fed. Untouched by the research segmentation.",
+    "criteria": [
+     "Gate admission rubric (panel.json roles, DECISION-MATRIX 1-25: Impact x Importance)",
+     "Flywheel confirmed/miss outcomes on delphi:outcomes (#1487) reweight the panel (#1489)"
+    ],
+    "questions": [
+     "Is the surface's quota real, sourced, and still current?",
+     "What did the last flywheel outcome change about its weight?"
+    ],
+    "cycle": [
+     "RFP filed",
+     "gate scoring (sourced surfaces: real fit/headroom/horizon)",
+     "award shadow|parked",
+     "flywheel outcome -> reweight"
+    ]
+   },
+   "research-silos": {
+    "description": "One segment per research silo. Improve-cycle comparison runs WITHIN the segment only: baseline vs its .rnd/.selected/.control variants on the three axes. No cross-silo score aggregation (RESEARCH-SILO-DELPHI.md \u00a71/\u00a76). The gate score is an admission rubric only \u2014 research.* ids are synthetic unsourced surfaces, uniform by construction; it is never the comparison result.",
+    "criteria": [
+     "produced_output_results_validated",
+     "feature_extractions",
+     "consensus_implementation"
+    ],
+    "questions": [
+     "Does the variant's produced output validate against the silo's own contract, where the baseline's did or did not?",
+     "Which features does each variant extract that the baseline does not (and vice versa)?",
+     "Where do baseline and variants converge on one consensus implementation, and where do they irreconcilably differ?"
+    ],
+    "cycle": [
+     "RFP (improve-request on the RFP schema / surface itself)",
+     "oracle + blind panel (5 roles) \u2014 gate admission only for research ids",
+     "award shadow|parked",
+     "validated output comparison (axis 1)",
+     "feature extraction (axis 2)",
+     "consensus implementation (axis 3)",
+     "flywheel confirmed|miss -> reweight"
+    ]
+   }
+  },
+  "segments": [
+   {
+    "segment_id": "delphi.conversational_intake",
+    "class": "meta-process",
+    "members": [
+     1572
+    ],
+    "by_status": {
+     "parked": 1
+    },
+    "gate_scored": 1
+   },
+   {
+    "segment_id": "doe-criteria-loop",
+    "class": "meta-process",
+    "members": [
+     1959
+    ],
+    "by_status": {
+     "unscored": 1
+    },
+    "gate_scored": 0
+   },
+   {
+    "segment_id": "mvt-doe-tlm",
+    "class": "meta-process",
+    "members": [
+     1567
+    ],
+    "by_status": {
+     "parked": 1
+    },
+    "gate_scored": 1
+   },
+   {
+    "segment_id": "quota-surfaces",
+    "class": "quota-surfaces",
+    "members": [
+     1415,
+     1416,
+     1417,
+     1418,
+     1419,
+     1420,
+     1421,
+     1422,
+     1423,
+     1424,
+     1425,
+     1426,
+     1427,
+     1428,
+     1429,
+     1430,
+     1431,
+     1488,
+     1591
+    ],
+    "by_status": {
+     "parked": 17,
+     "shadow": 2
+    },
+    "gate_scored": 19
+   },
+   {
+    "segment_id": "research.3rdcore-research-project-template",
+    "class": "research-silos",
+    "members": [
+     1905,
+     1934,
+     1935,
+     1936
+    ],
+    "by_status": {
+     "parked": 4
+    },
+    "gate_scored": 4,
+    "axes_recorded": 0,
+    "axes_total": 3
+   },
+   {
+    "segment_id": "research.buoyancy99-research-template",
+    "class": "research-silos",
+    "members": [
+     1900,
+     1919,
+     1920,
+     1921
+    ],
+    "by_status": {
+     "parked": 4
+    },
+    "gate_scored": 4,
+    "axes_recorded": 0,
+    "axes_total": 3
+   },
+   {
+    "segment_id": "research.cactus-needle",
+    "class": "research-silos",
+    "members": [
+     1908,
+     1943,
+     1944,
+     1945
+    ],
+    "by_status": {
+     "parked": 4
+    },
+    "gate_scored": 4,
+    "axes_recorded": 0,
+    "axes_total": 3
+   },
+   {
+    "segment_id": "research.dicklesworthstone-agentic-flywheel",
+    "class": "research-silos",
+    "members": [
+     1906,
+     1937,
+     1938,
+     1939
+    ],
+    "by_status": {
+     "parked": 4
+    },
+    "gate_scored": 4,
+    "axes_recorded": 0,
+    "axes_total": 3
+   },
+   {
+    "segment_id": "research.docxology-template",
+    "class": "research-silos",
+    "members": [
+     1898,
+     1913,
+     1914,
+     1915
+    ],
+    "by_status": {
+     "parked": 4
+    },
+    "gate_scored": 4,
+    "axes_recorded": 0,
+    "axes_total": 3
+   },
+   {
+    "segment_id": "research.irudik-repo-template",
+    "class": "research-silos",
+    "members": [
+     1903,
+     1928,
+     1929,
+     1930
+    ],
+    "by_status": {
+     "parked": 4
+    },
+    "gate_scored": 4,
+    "axes_recorded": 0,
+    "axes_total": 3
+   },
+   {
+    "segment_id": "research.jdingel-projecttemplate",
+    "class": "research-silos",
+    "members": [
+     1904,
+     1931,
+     1932,
+     1933
+    ],
+    "by_status": {
+     "parked": 4
+    },
+    "gate_scored": 4,
+    "axes_recorded": 0,
+    "axes_total": 3
+   },
+   {
+    "segment_id": "research.jogyo-research-lab",
+    "class": "research-silos",
+    "members": [
+     1897,
+     1910,
+     1911,
+     1912
+    ],
+    "by_status": {
+     "parked": 4
+    },
+    "gate_scored": 4,
+    "axes_recorded": 0,
+    "axes_total": 3
+   },
+   {
+    "segment_id": "research.opencode-research-papers",
+    "class": "research-silos",
+    "members": [
+     1907,
+     1940,
+     1941,
+     1942
+    ],
+    "by_status": {
+     "parked": 4
+    },
+    "gate_scored": 4,
+    "axes_recorded": 0,
+    "axes_total": 3
+   },
+   {
+    "segment_id": "research.seunghyukoh-research-template",
+    "class": "research-silos",
+    "members": [
+     1902,
+     1925,
+     1926,
+     1927
+    ],
+    "by_status": {
+     "parked": 4
+    },
+    "gate_scored": 4,
+    "axes_recorded": 0,
+    "axes_total": 3
+   },
+   {
+    "segment_id": "research.yp-edu-research-project-template",
+    "class": "research-silos",
+    "members": [
+     1901,
+     1922,
+     1923,
+     1924
+    ],
+    "by_status": {
+     "parked": 4
+    },
+    "gate_scored": 4,
+    "axes_recorded": 0,
+    "axes_total": 3
+   },
+   {
+    "segment_id": "research.yy-project-template",
+    "class": "research-silos",
+    "members": [
+     1899,
+     1916,
+     1917,
+     1918
+    ],
+    "by_status": {
+     "parked": 4
+    },
+    "gate_scored": 4,
+    "axes_recorded": 0,
+    "axes_total": 3
+   },
+   {
+    "segment_id": "web.visualization_layers",
+    "class": "meta-process",
+    "members": [
+     1571
+    ],
+    "by_status": {
+     "parked": 1
+    },
+    "gate_scored": 1
+   }
+  ],
+  "unassigned": []
+ }
 }

@@ -186,3 +186,19 @@ unchanged as caps/tripwires):
 > partners, community? (3) Is the 14-day Pro trial still claimable on an
 > account that started directly on Solo? No purchase commitment implied;
 > we're inventorying intake routes. Thanks.
+
+## 9. Pilot 1 selection (2026-10-28, implementation start)
+
+- **Selected: `catalog-api`** — a bounded, read-only Python API (stdlib
+  only, Dockerfile-pinned) serving the fleet's Platform201 blueprint
+  catalog as JSON. Packaged at `apps/platform201/blueprints/catalog-api/`
+  (index: `apps/platform201/blueprints/README.md`); 5 local unit tests pass
+  (health / catalog / single-entry / 404 / writes-disabled 405).
+- Benefit statement + kill criterion: in the blueprint README (plan §3
+  rule 4). Short form: end-to-end pipeline proof on a real artifact at $0
+  observed metering + a machine-readable blueprint catalog for lanes;
+  killed if unconsumed by Pilot 2 packaging or if it ever meters > $0.00.
+- §6.5 task record: not applicable (not task-bearing); lands with Pilot 2.
+- Status: PACKAGED ONLY. Deploy remains frozen under §7 until credit
+  intake is obtained, and the §6.2 deletion-behavior unknown must be
+  verified before that deploy.

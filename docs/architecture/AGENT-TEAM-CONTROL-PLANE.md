@@ -1,5 +1,9 @@
 # Agent Team Control Plane
 
+**Status:** canonical architecture description
+**Owner/lane:** unrecorded
+**Canonical for:** the agent-team operating loop and control-plane shape
+
 The canonical compact architecture chart is [`AGENT-TEAM-CONTROL-PLANE.mmd`](./AGENT-TEAM-CONTROL-PLANE.mmd).
 
 ## Operating loop

@@ -57,3 +57,20 @@ Re-proven 2026-10-28 against this self-host (pass addendum
 - Repair/reinstall: `sh ~/workspace/temporal-selfhost/install.sh`
 - Connect: SDK/CLI `--address localhost:7233` (or `:7234` via the
   relay); UI at `http://localhost:8233`.
+
+## Maintenance lane re-verification (2026-10-28, temporal-integration)
+
+- Live check: `temporal-selfhost` + `temporal-relay` active,
+  `:7233` frontend answers, `:8233` UI HTTP 200, `:7234` relay
+  listening, DB present and growing.
+- §6 kill-resume harness re-proven fresh vs this self-host:
+  **PASS** — workflow `kill-resume-unit-1793192868`, worker
+  SIGKILLed (pid 9688), receipt count exactly 1, unknown outcome
+  reconciled, history sha256
+  `884f31ccd66d202f117d398d5fad24686f8531b809961077a4b5ea30b34936d9`.
+- MCP surface wired + proven the same day: see
+  `docs/ops/TEMPORAL-MCP.md`.
+- Mesh caveat stands: no tailscale interface exists in this VM's
+  network namespace, so fleet-mesh redundancy is **not**
+  established; this remains a single node with persistence,
+  supervision, relay and keepalive-reinstall recovery only.

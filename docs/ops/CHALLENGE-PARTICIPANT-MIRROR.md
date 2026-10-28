@@ -59,3 +59,25 @@ none may be added without a new owner order.
   the owner provisions one of the two names (owner item of record;
   secret values are provisioning facts, never invented). Source-side
   first counts (dry-run vs master): D0–D5 = 0 each.
+
+## MoneyBall expansion (owner via Manager, 2026-10-28)
+
+Same build, wider scope. (1) **Judges:** `events[].judges[]` mirror
+beside participants — `judge_events` (key
+`sha256(challenge-judges|event|judge_key)`, payload verbatim:
+persona, org, judging_history, public_criteria, statements,
+sources) + `judges_current` view. (2) **Signals:** per-entity
+`snapshots[]` become APPEND-ONLY `entity_snapshots` rows (never
+overwritten; identical re-observation dedupes by content key);
+`past_wins[]{event,place,prize,project}` + placements extract to
+`entity_past_wins` over both kinds. (3) **Podium:** sync rows carry
+events core (id/name/prizes) → `challenge_events_current`;
+`event_podium` joins prize tiers × matching competitor wins × the
+event's judges. (4) **Recruitment:** `recruitment{candidate,
+pipeline_state}` (identified→profiled→engaged→in_talks→
+collaborator|passed) mirrored as entity state → `recruitment_current`
+view; touchpoints per the autonomous amendment (no gates anywhere).
+Counts v2 in `participant_syncs.counts`:
+`{participants:{…}, judges:{…}, snapshots, touchpoints}`.
+State at landing: 0/0/0 — no galleries open, no judges named publicly
+yet; zeros are the verified reading.

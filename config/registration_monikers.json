@@ -406,6 +406,29 @@
     {
       "handling": {
         "escalation": [
+          "Any card/billing prompt is a hard stop (fleet card rule) - surface to the owner, never enter payment details.",
+          "If the username n0nPlatform201 is taken or invalid at the form, the registry assigns the rule's collision variant - names are never improvised."
+        ],
+        "owner_lane": "platform201-status",
+        "receipts_route": "Signup state (username of record n0nPlatform201, plan, verification) is recorded in the Profile Registry under the platform201-status lane's section by that lane's PR once the live attempt resolves.",
+        "submission_authority": "The platform201-status lane operates the account under the moniker within the owner's LIVE directive: free tier only."
+      },
+      "kind": "provider",
+      "moniker": "n0nPlatform201",
+      "notes": [
+        "Assigned 2026-10-27 at owner order via the platform201-status lane (Platform201 LIVE required; formerly Shoal Stack). A live signup attempt is running in that lane using n0nPlatform201 as the username of record; free tier only, no card. Profile pending that lane's Profile Registry entry on resolution."
+      ],
+      "platform": "Platform201",
+      "platform_id": "platform201",
+      "profile_pending": "platform201-status",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "registering"
+    },
+    {
+      "handling": {
+        "escalation": [
           "If Facebook rejects the assigned Page name, the marketing-channel lane surfaces it; the registry assigns a replacement under the same rule - names are never improvised, and never borrowed from another cell's stem.",
           "Cross-cell contamination (any link, mention, or shared asset between cells) breaks both 4n0n isolation and test attribution - surface immediately."
         ],

@@ -43,8 +43,16 @@
 <li><span>Provider quota coverage (<code>data/provider-quota-coverage.json</code>)</span><span class="pill gold" data-feed="coverage">…</span></li>
 <li><span>Lane matrix sweep (<code>docs/ops/generated/lane-matrix-status.json</code>, live from master)</span><span class="pill gold" data-feed="matrix">…</span></li>
 <li><span>Review queue (public GitHub API)</span><span class="pill gold" data-feed="queue">…</span></li>
+<li><span>Challenge internal metrics (<code>data/challenge-admin-metrics.json</code>) — ADMIN PANEL ONLY</span><span class="pill gold" data-feed="challenge">…</span></li>
 </ul>
 <p><button id="refresh" type="button" class="button">Refresh feeds now</button> <span id="refreshed" class="muted"></span></p>
+</section>
+
+<section class="card">
+<h2>Challenge — internal metrics <span class="pill gold">INTERNAL</span></h2>
+<p class="admin-note"><strong>Internal only.</strong> Win probability (<code>winprob/v1</code>) renders on this admin panel alone — never on public pages, public feeds, logs, briefs, or the opportunity ledger (contract: <code>docs/ops/ADMIN-INTERNAL-METRICS.md</code>). Values arrive verbatim from the coordinator record via the admin feed; this panel computes nothing and offers no export.</p>
+<div id="challenge-metrics"><p class="muted">Loading the internal metrics feed…</p></div>
+<p class="muted" id="challenge-metrics-meta"></p>
 </section>
 
 <section>
@@ -170,8 +178,26 @@ async function loadQueue(){
   $('queue-open').innerHTML=out.join('');
   feed('queue',okCount>0,okCount===QUEUE.length?'LIVE':('PARTIAL '+okCount+'/'+QUEUE.length));
 }
+async function loadChallenge(){
+  try{
+    const f=await jget('./data/challenge-admin-metrics.json');
+    const ev=f.events||{};
+    const ids=Object.keys(ev);
+    const cell=v=>v==null?'—':esc(v);
+    $('challenge-metrics').innerHTML='<div class="table-wrap"><table class="table"><thead><tr><th>Event</th><th>Win probability</th><th>Method / basis</th><th>Field size</th><th>Inputs</th><th>Computed</th></tr></thead><tbody>'+
+    ids.map(id=>{const e=ev[id],w=e.win_probability||{},inp=w.inputs||{},fs=e.field_size||{};
+      const est=w.estimate==null?'not established':String(parseFloat((w.estimate*100).toPrecision(10)))+'%';
+      const fstat=e.field_size_status||'';
+      const fsize=fstat==='open_task'?'OPEN TASK':fstat==='partial'?('participants '+cell(fs.participants)+' · projects '+(fs.projects==null?'not established':esc(fs.projects))+' <span class="pill gold">PARTIAL</span>'):('participants '+cell(fs.participants)+' · projects '+cell(fs.projects));
+      const inputs='slots '+cell(inp.award_slots_top)+' · field '+cell(inp.field_size)+' · scored '+cell(inp.field_scored_count)+' · field mean '+cell(inp.field_mean_composite)+' · ours '+cell(inp.our_composite);
+      return '<tr><td><strong>'+esc(id)+'</strong></td><td>'+esc(est)+'</td><td>'+esc(w.method||'')+(w.basis?' · '+esc(w.basis):'')+'</td><td>'+fsize+'</td><td>'+inputs+'</td><td>'+esc(w.computed_at||'')+'</td></tr>'}).join('')+
+    '</tbody></table></div>';
+    $('challenge-metrics-meta').textContent='Feed '+(f.schema||'')+' · generated '+(f.generated_at||'')+' · source '+(f.source||'')+' · '+ids.length+' events.';
+    feed('challenge',true,'LIVE · internal');
+  }catch(e){feed('challenge',false,'UNVERIFIED');$('challenge-metrics').innerHTML='<p class="muted">Internal metrics feed could not be fetched — UNVERIFIED; nothing is shown rather than anything guessed.</p>'}
+}
 async function load(){
-  await Promise.allSettled([loadDelphi(),loadStatus(),loadMatrix(),loadQueue()]);
+  await Promise.allSettled([loadDelphi(),loadStatus(),loadMatrix(),loadQueue(),loadChallenge()]);
   $('refreshed').textContent='Refreshed '+new Date().toLocaleTimeString();
 }
 $('refresh').addEventListener('click',load);

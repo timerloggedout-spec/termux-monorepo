@@ -41,13 +41,14 @@ trusted default-branch checkout; body treated as data, never executed.
 - Comment command (delphi-intake precedent, marker-gated, bot-safe):
   a comment containing `<!-- request-research -->` plus `key: value` lines
   (`kind:, id:, name:, url:, upstream:, category:, signal:, quota:, auth:, evidence:`).
-- Concurrency/dedupe (fix 2026-10-28, live case #2131): NO concurrency group —
-  a template filing fires `opened` + `labeled` in the same minute and a
-  per-issue group keeps only one pending run, cancelling the other (record
-  lost until manual re-trigger). Duplicate events are absorbed instead by a
-  content hash (`<!-- research-intake:<sha256> -->` in the record comment):
-  an identical record is posted exactly once; an edited filing (new hash)
-  re-posts.
+- Concurrency/dedupe (fix 2026-10-28, live cases #2131 + #2135/#2136): exactly
+  ONE issues event per filing — trigger types `opened/reopened/edited`, no
+  `labeled`, no concurrency group. (A template filing carries 2 labels and
+  fired opened+labeled×2 in the same minute: with a group the runs cancelled
+  each other — #2131 record lost; without, parallel runs raced the dedupe
+  check and posted 3 identical records.) Re-triggers: edit, close/reopen, or
+  the comment command. A content hash (`<!-- research-intake:<sha256> -->`)
+  still dedupes sequential duplicate events; an edited filing re-posts.
 - Parser: `scripts/research/research_intake.py` (stdlib, deterministic, tests
   `tests/test_research_intake.py`). Emits the seed/starter record as a comment
   on the issue — the same record shape the pipelines below consume.

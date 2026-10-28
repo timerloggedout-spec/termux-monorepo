@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "11e67cef015258dd2750a6933b34371523304078ed7b23eb3e4f31bc2f308a55",
-  "workflow_count": 196,
+  "source_fingerprint": "32c29211869cd2092b4c9024e6f96b0825e2e96aac46e4c1d9d2d5715c8da4d8",
+  "workflow_count": 199,
   "workflows": [
     {
       "action_pins": [
@@ -1075,6 +1075,25 @@
         "pull_request",
         "push",
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: delphi-rfp-feed-collect cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "collect"
+      ],
+      "name": "delphi-rfp-feed-collect",
+      "path": ".github/workflows/delphi-rfp-feed-collect.yml",
+      "schedules": [
+        "37 6 * * 2"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch",
+        "workflow_run"
       ]
     },
     {
@@ -2918,6 +2937,39 @@
         "pull_request",
         "push",
         "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "watch"
+      ],
+      "name": "referral-pool-watch",
+      "path": ".github/workflows/referral-pool-watch.yml",
+      "schedules": [
+        "41 8 * * 2"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "rotate"
+      ],
+      "name": "referral-rotation",
+      "path": ".github/workflows/referral-rotation.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },

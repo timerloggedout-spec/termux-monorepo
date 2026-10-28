@@ -9,6 +9,11 @@ its continuous execution must home on a **GitHub-reachable surface**
 (`temporal-selfhost` + `temporal-relay` + the keepalive cron) is a
 **migration item**, owned by the temporal-integration lane.
 
+**Owner definition (2026-10-28, verbatim sense):** "Self hosted =
+via GITHUB | our accounts — we host on OUR services." The GitHub
+Actions engagement home below is an owner-account surface under
+that definition; the VM is not one of our services.
+
 **Hard gate.** Nothing is torn down before the replacement home is
 proven: the RFP §6 kill-resume proof
 (`scripts/temporal/kill_resume_harness.py`) must PASS on the new
@@ -88,8 +93,23 @@ brief's amended substrate target requires:
   N5 §5 prove PASS against the in-job server, receipts in the
   run artifact. (delphi-cycle dispatch 40758279842 had already
   proven §5 the same way.)
-- Stage 3: in progress — address of record named above; consumer
-  docs repointed (TEMPORAL-DELPHI-CYCLE.md, TEMPORAL-MCP.md).
-- VM instance: UP (units active, DB live) — stays up through
-  stage 3 by the hard gate. Stage 4 teardown pending stage 3 +
-  owner-visible report.
+- Stage 3: LANDED (PR #2197, merged faca838af8) — address of
+  record named above; consumer docs repointed
+  (TEMPORAL-DELPHI-CYCLE.md, TEMPORAL-MCP.md).
+- Stage 4: **EXECUTED BY EVENTS, formalized by this record
+  (2026-10-28).** Sequence, honestly: the hard gate held while it
+  mattered — the VM instance stayed up through stages 2–3 and the
+  replacement home was proven first (§6 + §5, above). After stage
+  3 landed, a VM replacement wiped `/etc` (units
+  `temporal-selfhost`/`temporal-relay` verified not-found +
+  inactive, 15:33 PDT) and the `temporal-selfhost-keepalive` cron
+  stands **disabled** (verified: enabled=false, last run
+  2026-10-28 12:43 PDT, succeeded) — so nothing will resurrect
+  the instance, and this lane did NOT reinstall it: reinstalling
+  would re-extend VM hosting against the ruling. DB archived by
+  record: `temporal.db` (983,040 B, integrity ok, sha256
+  `529c7f4154c9…`) + snapshot `backups/temporal-20261028.db`
+  (720,896 B, sha256 `3d4761dace57…`) remain on the workspace
+  disk as runtime data (never repo content, by design). The
+  Actions engagement surface is the operational home; dispatch
+  either workflow to run Temporal work.

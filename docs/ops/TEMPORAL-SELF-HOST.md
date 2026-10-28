@@ -8,15 +8,17 @@ This page is the operator record; the pass evidence lives in
 
 **Live status (living record): issue #2028** — unit states, port checks, DB/backups, workflow list; refreshed by the keepalive on every repair + daily. Collaborators review there.
 
-> **MIGRATION (owner correction 2026-10-28):** no Temporal exception
-> to the VM = sandbox-only rule exists — the exception main relayed
-> on 2026-10-27 was main's inference, rejected by the owner.
-> Temporal is REQUIRED as a capability; its continuous execution
-> must home on a GitHub-reachable surface. This VM instance is a
-> migration item: plan + stage gates in
-> `docs/ops/TEMPORAL-MIGRATION.md`. It stays UP until the §6
-> kill-resume proof passes on the replacement home; teardown is the
-> plan's final stage, not a first move.
+> **RETIRED (2026-10-28) — historical record.** No Temporal
+> exception to the VM = sandbox-only rule exists — the exception
+> main relayed on 2026-10-27 was main's inference, rejected by the
+> owner. Temporal's home is now the GitHub Actions engagement
+> surface (owner definition: self-hosted = via GitHub | our
+> accounts). Migration record + stage gates:
+> `docs/ops/TEMPORAL-MIGRATION.md`. This VM instance is DOWN and
+> stays down: units wiped by a VM replacement after the
+> replacement home was proven (§6 + §5 PASS in Actions), keepalive
+> cron disabled, DB archived by hash record in the migration doc.
+> Everything below describes the instance as it was.
 
 ## What runs
 

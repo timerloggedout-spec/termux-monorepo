@@ -10,6 +10,7 @@ Affiliate, referral, and gifted-usage lanes this project takes part in — the c
 | Polsia | AI directory & intelligence | 500 extra credits (per #574 — verify on signup) | https://polsia.com/?ref=B5K7S8NL | `Polsia — referral bonus` (`7c3aed`) — row 1 | Marketing (Chloe) |
 | Manus AI | AI employees & agents | Invitation link (UTM-tagged) | https://manus.im/invitation/5MHU34UJRBOTVC6?utm_source=invitation&utm_medium=social&utm_campaign=system_share | `Manus AI — invitation` (`111111`) — row 1 | Marketing (Chloe) |
 | UnoRouter | LLM routing | 10% of referred top-ups as account balance (no cash payout; balance transfers to main) | https://unorouter.com/register?aff=kHp6 | issued referral badge (dark, MD, SVG) — landing grid | Marketing (Chloe) |
+| Neon | Serverless Postgres | Referral link — offer NOT ESTABLISHED (verify on signup) | https://neon.com/signup?refcode=BZL02IH2 | — | Marketing (Chloe) |
 | Grafana | Observability & cloud | Referral code `gr8WEigykKjVGTV` | https://grafana.com/auth/sign-up?refCode=gr8WEigykKjVGTV | `Grafana Cloud — referral sign-up` (`F46800`, grafana logo) — row 2 | Marketing (Chloe) |
 
 ## 1b. Code lanes (invite / referral codes, owner-supplied, free no-CC)

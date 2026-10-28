@@ -79,6 +79,41 @@ def build_pr_dict(pr: dict[str, Any], checks: list[dict[str, Any]],
     }
 
 
+def series_line(feed: dict[str, Any], prev_counts: dict[str, int] | None) -> dict[str, Any]:
+    """One counts-only snapshot line for ops/ml/pr-lane-series.jsonl.
+
+    The feed file is overwritten per run, so the trend series lives in
+    its own append-only file (same self-commit). delta is computed
+    against the previous line's counts so renderers need no git
+    archaeology (Visualization Specialist ask, 2026-10-28)."""
+    counts = feed["counts"]
+    delta = None
+    if prev_counts is not None:
+        keys = sorted(set(counts) | set(prev_counts))
+        delta = {k: counts.get(k, 0) - prev_counts.get(k, 0) for k in keys}
+    return {
+        "generated_at": feed["generated_at"],
+        "open_prs": feed["open_prs"],
+        "counts": counts,
+        "delta_vs_previous": delta,
+        "fetch_warnings": feed.get("fetch_warnings", 0),
+    }
+
+
+def append_series(path: str, feed: dict[str, Any]) -> dict[str, Any]:
+    """Append the feed's snapshot line to the series file; returns the line."""
+    prev_counts = None
+    if os.path.exists(path):
+        with open(path) as fh:
+            lines = [ln for ln in fh.read().splitlines() if ln.strip()]
+        if lines:
+            prev_counts = json.loads(lines[-1]).get("counts")
+    line = series_line(feed, prev_counts)
+    with open(path, "a") as fh:
+        fh.write(json.dumps(line) + "\n")
+    return line
+
+
 def classify_all(pr_dicts: list[dict[str, Any]], now: datetime) -> dict[str, Any]:
     """Classify mapped PR dicts and build the feed payload."""
     rows = []
@@ -208,6 +243,8 @@ def _run(token: str) -> int:
     with open(out_path, "w") as fh:
         json.dump(feed, fh, indent=1)
         fh.write("\n")
+    series_path = os.path.join(os.path.dirname(out_path), "pr-lane-series.jsonl")
+    append_series(series_path, feed)
     print(f"classified {feed['open_prs']} open PRs: {feed['counts']}")
     return 0
 

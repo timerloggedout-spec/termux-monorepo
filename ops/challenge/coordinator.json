@@ -39,6 +39,14 @@
       "id": "D0",
       "name": "Weekend Challenge: Give your Agent a Tool",
       "host": "AWS Builder Center",
+      "organizers": [
+        {
+          "name": "AWS Builder Center (Amazon Web Services)",
+          "role": "host",
+          "source_url": "https://builder.aws.com",
+          "fetched_at": "2026-10-28"
+        }
+      ],
       "platform": "aws-builder-center",
       "official_url": null,
       "status": "closed",
@@ -104,12 +112,12 @@
       "projects": [
         {
           "id": "delphi-oracle-weekend-challenge",
-          "name": "Delphi Oracle \u2014 Weekend Challenge completion package",
+          "name": "Delphi Oracle — Weekend Challenge completion package",
           "one_liner": "Decider-gated agent with a read-only evidence tool, built as the entered-but-passed challenge's completion record.",
           "origin": "hand-packet",
           "brief_anchor": null,
           "status": "abandoned",
-          "reason": "Window closed Oct 26 before completion; owner ruled 2026-10-27 to complete it anyway as a completion record only \u2014 never submitted to the platform (submission count stays 0).",
+          "reason": "Window closed Oct 26 before completion; owner ruled 2026-10-27 to complete it anyway as a completion record only — never submitted to the platform (submission count stays 0).",
           "superseded_by": null,
           "assets": {
             "repo_dir": "apps/weekend-challenge-delphi-oracle",
@@ -156,7 +164,7 @@
           "estimate": 0.125,
           "basis": {
             "field_size": 40,
-            "our_standing": "not_submitted; no submission (0) \u2014 baseline = 5 winning slots / 40 public entries"
+            "our_standing": "not_submitted; no submission (0) — baseline = 5 winning slots / 40 public entries"
           }
         },
         "expected_value_foregone": 12.5,
@@ -172,6 +180,14 @@
       "id": "D1",
       "name": "Strands SDK: Workshop to Ship",
       "host": "AWS Builder Center",
+      "organizers": [
+        {
+          "name": "AWS Builder Center (Amazon Web Services)",
+          "role": "host",
+          "source_url": "https://builder.aws.com/build/hackathons/8311dcb5-1ece-3d62-a441-2e1c2ad90b86/strands-sdk-workshop-to-ship",
+          "fetched_at": "2026-10-28"
+        }
+      ],
       "platform": "aws-builder-center",
       "official_url": "https://builder.aws.com/build/hackathons/8311dcb5-1ece-3d62-a441-2e1c2ad90b86/strands-sdk-workshop-to-ship",
       "status": "active",
@@ -326,7 +342,7 @@
           "origin": "oracle_proposal#43",
           "brief_anchor": null,
           "status": "abandoned",
-          "reason": "TAINTED per owner ruling 2026-10-28; recorded as a not-entry \u2014 a pass candidate, never an entry candidate. Do not build.",
+          "reason": "TAINTED per owner ruling 2026-10-28; recorded as a not-entry — a pass candidate, never an entry candidate. Do not build.",
           "superseded_by": null,
           "assets": {
             "repo_dir": null,
@@ -351,7 +367,7 @@
           "origin": "oracle_proposal#44",
           "brief_anchor": null,
           "status": "abandoned",
-          "reason": "TAINTED per owner ruling 2026-10-28; recorded as a not-entry \u2014 a pass candidate, never an entry candidate. Do not build.",
+          "reason": "TAINTED per owner ruling 2026-10-28; recorded as a not-entry — a pass candidate, never an entry candidate. Do not build.",
           "superseded_by": null,
           "assets": {
             "repo_dir": null,
@@ -376,7 +392,7 @@
           "origin": "oracle_proposal#45",
           "brief_anchor": null,
           "status": "abandoned",
-          "reason": "TAINTED per owner ruling 2026-10-28; recorded as a not-entry \u2014 a pass candidate, never an entry candidate. Do not build.",
+          "reason": "TAINTED per owner ruling 2026-10-28; recorded as a not-entry — a pass candidate, never an entry candidate. Do not build.",
           "superseded_by": null,
           "assets": {
             "repo_dir": null,
@@ -448,7 +464,7 @@
             }
           ],
           "confidence": "low",
-          "notes": "First and only project in D1's public Projects list on day 1 (checked signed-out 2026-10-28 13:01-13:03 PT). Builder Center shows NO author name/handle/profile for this entry on the list card or the project page; repo_url/demo_url are published in the project body and are project links, not author-profile facts. D1's Participants tab is join-gated (323 joined per page header) \u2014 not a public source; tracking runs on the Projects list. CORRECTION 2026-10-28 (MoneyBall consumer pattern, PR #2211): the candidate=true flag set at first record does NOT meet the standout flag rule - first v2 evaluation (ops/challenge-participants/scores/D1--ladder-practice-sets--evaluate--2026-10-28.json) gives composite 2.05 vs intake threshold 6.0, with track_record + momentum unverified. Flag removed; the entity stays tracked and re-evaluates as signals land."
+          "notes": "First and only project in D1's public Projects list on day 1 (checked signed-out 2026-10-28 13:01-13:03 PT). Builder Center shows NO author name/handle/profile for this entry on the list card or the project page; repo_url/demo_url are published in the project body and are project links, not author-profile facts. D1's Participants tab is join-gated (323 joined per page header) — not a public source; tracking runs on the Projects list. CORRECTION 2026-10-28 (MoneyBall consumer pattern, PR #2211): the candidate=true flag set at first record does NOT meet the standout flag rule - first v2 evaluation (ops/challenge-participants/scores/D1--ladder-practice-sets--evaluate--2026-10-28.json) gives composite 2.05 vs intake threshold 6.0, with track_record + momentum unverified. Flag removed; the entity stays tracked and re-evaluates as signals land."
         }
       ],
       "judges": [],
@@ -480,6 +496,20 @@
       "id": "D2",
       "name": "Vultr: Agent Rush Hackathon",
       "host": "lablab.ai (Vultr)",
+      "organizers": [
+        {
+          "name": "lablab.ai",
+          "role": "host",
+          "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon",
+          "fetched_at": "2026-10-28"
+        },
+        {
+          "name": "Vultr",
+          "role": "sponsor",
+          "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon",
+          "fetched_at": "2026-10-28"
+        }
+      ],
       "platform": "lablab-ai",
       "also_platforms": [
         "vultr"
@@ -564,7 +594,7 @@
       "registration": {
         "state": "not started",
         "evidence": [
-          "Requirement checklist in challenge log D2: lablab.ai registration + Discord join + Vultr account (no-card path only) \u2014 recon in the prep window."
+          "Requirement checklist in challenge log D2: lablab.ai registration + Discord join + Vultr account (no-card path only) — recon in the prep window."
         ]
       },
       "submission": {
@@ -624,6 +654,14 @@
       "id": "D3",
       "name": "Agent-Native Hackathon",
       "host": "Builder.io",
+      "organizers": [
+        {
+          "name": "Builder.io",
+          "role": "host",
+          "source_url": "https://builder.io/hackathon",
+          "fetched_at": "2026-10-28"
+        }
+      ],
       "platform": "builder-io",
       "official_url": "https://builder.io/hackathon",
       "status": "active",
@@ -839,6 +877,20 @@
       "id": "D4",
       "name": "Kiroween 2026",
       "host": "Devpost (Kiro)",
+      "organizers": [
+        {
+          "name": "Kiro",
+          "role": "host",
+          "source_url": "https://kiroween.devpost.com",
+          "fetched_at": "2026-10-28"
+        },
+        {
+          "name": "Devpost",
+          "role": "platform",
+          "source_url": "https://kiroween.devpost.com",
+          "fetched_at": "2026-10-28"
+        }
+      ],
       "platform": "devpost",
       "also_platforms": [
         "kiro"
@@ -992,7 +1044,7 @@
         "top_award": {
           "value": null,
           "form": "NOT_ESTABLISHED",
-          "source": "Official page: pool $100,000 cash stated; per-place tiers TBD, releasing 2026-10-30 \u2014 top award NOT_ESTABLISHED"
+          "source": "Official page: pool $100,000 cash stated; per-place tiers TBD, releasing 2026-10-30 — top award NOT_ESTABLISHED"
         },
         "gross_foregone": 0,
         "win_probability": {
@@ -1014,6 +1066,14 @@
       "id": "D5",
       "name": "AI Builder Day Hackathon - November 2026",
       "host": "Aha! (Aha.io)",
+      "organizers": [
+        {
+          "name": "Aha!",
+          "role": "host",
+          "source_url": "https://www.aha.io/academy/events/ai-builder-day-hackathon-november-2026",
+          "fetched_at": "2026-10-28"
+        }
+      ],
       "platform": "aha-io",
       "official_url": "https://www.aha.io/academy/events/ai-builder-day-hackathon-november-2026",
       "status": "registering",

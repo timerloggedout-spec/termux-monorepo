@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "b0a1115e8b0c2dac7d0da0528597c7cc94dd8787ba84b8e4f8517cfc09e945a0",
-  "workflow_count": 220,
+  "source_fingerprint": "d6392347f14dff727c122ede1f9d040b0937ee1da541033002902a5d4b9f27ff",
+  "workflow_count": 221,
   "workflows": [
     {
       "action_pins": [],
@@ -2515,6 +2515,24 @@
       "triggers": [
         "pull_request",
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: ml-pr-lane-classify cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "classify"
+      ],
+      "name": "ml PR lane classify",
+      "path": ".github/workflows/ml-pr-lane-classify.yml",
+      "schedules": [
+        "37 5 * * *"
+      ],
+      "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },

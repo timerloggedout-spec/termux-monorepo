@@ -62,7 +62,8 @@ def main() -> int:
             token, f"{base}/issues/{issue['number']}/comments")
     (cache / "comments.json").write_text(json.dumps(comments))
     for name in ("surfaces.json", "panel.json", "rfp-segments.json",
-                 "research-silos.json", "research-axes.json"):
+                 "research-silos.json", "research-axes.json",
+                 "research-participants.json"):
         src = Path("ops/delphi") / name
         if src.exists():
             shutil.copy(src, cache / name)

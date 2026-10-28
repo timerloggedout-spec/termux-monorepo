@@ -25,6 +25,11 @@ not a collector error.
 
 Network lives in main() only; build_pr_dict / classify_all are pure and
 unit-tested (ml/pipelines/test_production_classify.py).
+
+Invoke as a module from the repo root (`python3 -m
+ml.pipelines.production_classify`): script-path invocation puts
+ml/pipelines/ at sys.path[0], whose operator/ subpackage shadows the
+stdlib operator module and kills the interpreter during imports.
 """
 from __future__ import annotations
 
@@ -35,9 +40,7 @@ import urllib.request
 from datetime import datetime, timezone
 from typing import Any
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
-
-from ml.pipelines.lanes.classify import classify_pr  # noqa: E402
+from ml.pipelines.lanes.classify import classify_pr
 
 API = "https://api.github.com"
 GATE_CHECKS = {"repo-gate": "hygiene + portability gate",

@@ -149,6 +149,18 @@ def _segments_config(cache: Path) -> tuple[dict | None, dict | None]:
     return cfg, silos
 
 
+def _axes_record(cache: Path) -> dict | None:
+    """Post-hoc comparison-axes record (ops/delphi/research-axes.json,
+    delphi.research-axes.v1), from the cache when the fetch copied it,
+    else the working tree. Absent record -> axes stay pending."""
+    ops = Path(__file__).resolve().parents[2] / "ops" / "delphi"
+    for base in (cache, ops):
+        p = base / "research-axes.json"
+        if p.exists():
+            return json.loads(p.read_text())
+    return None
+
+
 def _segment_for(entry: dict, membered: dict) -> tuple[str | None, str | None]:
     """(segment_id, class) for one entry, per rfp-segments.json.
 
@@ -266,6 +278,24 @@ def build(cache: Path, generated_at: str) -> dict:
         if r["group"] == "research-variant":
             r["parent"] = {"number": baselines.get(r["silo"]),
                            "surface_id": f"research.{r['silo']}"}
+    # Post-hoc axes record (DoE lane, ops/delphi/research-axes.json):
+    # where a silo has a recorded cycle, the axis strings carry the
+    # recorded state instead of the pending placeholder. The record
+    # is the outcome; the gate never scores these axes.
+    axes_rec = _axes_record(cache)
+    if axes_rec:
+        for r in rfps:
+            if r["group"].startswith("research"):
+                rec = (axes_rec.get("silos") or {}).get(
+                    f"research.{r['silo']}")
+                if rec:
+                    for axis in RESEARCH_AXES:
+                        if axis in rec:
+                            r["comparison_axes"][axis] = (
+                                f"recorded — cycle "
+                                f"{axes_rec.get('cycle')}: "
+                                f"{rec[axis].get('state')} "
+                                f"(ops/delphi/research-axes.json)")
     # Segmentation layer (DoE lane, ops/delphi/rfp-segments.json):
     # every entry carries its segment; the feed-level block rolls
     # members/status/axes up per segment. Counts and states only —

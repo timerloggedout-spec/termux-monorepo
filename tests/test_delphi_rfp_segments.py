@@ -72,3 +72,20 @@ def test_collector_reads_segments_config(tmp_path):
                                    "meta-process", "doe-components"}
     members = cfg["classes"]["doe-components"]["members"]
     assert sorted(members.values()) == [1975, 1976, 1977, 1978]
+
+
+def test_axes_states_come_from_the_axes_record():
+    """Cycle-1 axes record (ops/delphi/research-axes.json) is the
+    home the silo spec names; feed axis strings carry its states."""
+    src = _feed()
+    rec = json.loads(
+        (ROOT / "ops/delphi/research-axes.json").read_text())
+    assert rec["schema"] == "delphi.research-axes.v1"
+    by_surface = {e["surface_id"]: e for e in src["rfps"]}
+    for silo_id, axes in rec["silos"].items():
+        base = by_surface[silo_id]
+        for axis, entry in axes.items():
+            if isinstance(entry, dict) and "state" in entry:
+                assert base["comparison_axes"][axis] == (
+                    f"recorded — cycle {rec['cycle']}: {entry['state']} "
+                    "(ops/delphi/research-axes.json)"), (silo_id, axis)

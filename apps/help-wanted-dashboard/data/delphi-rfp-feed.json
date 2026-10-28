@@ -1,13 +1,12 @@
 {
  "schema": "delphi-rfp-feed/v1",
- "generated_at": "2026-10-28T06:53:34Z",
+ "generated_at": "2026-10-28T13:10:11Z",
  "source": "open GitHub issues labeled delphi:rfp + their gate ledger comments (live census at generation)",
  "summary": {
   "total_open": 76,
   "by_status": {
-   "parked": 70,
-   "shadow": 2,
-   "unscored": 4
+   "parked": 74,
+   "shadow": 2
   },
   "by_group": {
    "surface": 18,
@@ -539,40 +538,40 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T00:20Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-11-27T07:05Z. Band Backlog.",
     "award": {
      "decision": "parked",
-     "why": "effective 5.54 below shadow bar 15.0",
+     "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T00:20Z"
+     "recheck_after": "2026-11-27T07:05Z"
     },
-    "effective_score": 5.54,
+    "effective_score": 6.69,
     "converged": true,
     "rounds_count": 1,
     "rounds": [
      {
       "round": 1,
-      "median": 3.0,
-      "iqr": 3.0,
-      "effective": 5.54
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 6.69
      }
     ],
     "trigger": "push",
-    "input_hash": "7c3e2b3204c2",
-    "comment_id": 6457236222,
-    "created_at": "2026-10-28T00:20:53Z"
+    "input_hash": "253cc7617a4e",
+    "comment_id": 6462905199,
+    "created_at": "2026-10-28T07:05:35Z"
    },
    "responses": {
     "votes": [
      {
       "role": "OPERATOR",
-      "score": 6,
+      "score": 9,
       "impact": 3,
-      "importance": 2,
+      "importance": 3,
       "veto": false,
       "reason": "policy fit: sourced limits, Actions auth, low lock-in",
       "via": "rubric",
-      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40608145469 / #1417#r1"
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40647839093 / #1417#r1"
      },
      {
       "role": "builder",
@@ -582,7 +581,7 @@
       "veto": false,
       "reason": "integration: credential reachable from Actions, room to build",
       "via": "rubric",
-      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40608145469 / #1417#r1"
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40647839093 / #1417#r1"
      },
      {
       "role": "reviewer",
@@ -590,32 +589,32 @@
       "impact": 3,
       "importance": 1,
       "veto": false,
-      "reason": "3 failure modes; unsourced limits",
+      "reason": "4 failure modes; sourced limits",
       "via": "rubric",
-      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40608145469 / #1417#r1"
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40647839093 / #1417#r1"
      },
      {
       "role": "Scout",
-      "score": 15,
-      "impact": 5,
+      "score": 9,
+      "impact": 3,
       "importance": 3,
       "veto": false,
-      "reason": "horizon H2: novelty vs fit",
+      "reason": "horizon H0: novelty vs fit",
       "via": "rubric",
-      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40608145469 / #1417#r1"
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40647839093 / #1417#r1"
      },
      {
       "role": "cost_auditor",
-      "score": 3,
+      "score": 9,
       "impact": 3,
-      "importance": 1,
+      "importance": 3,
       "veto": false,
       "reason": "free headroom and a documented reset",
       "via": "rubric",
-      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40608145469 / #1417#r1"
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40647839093 / #1417#r1"
      }
     ],
-    "oracle": "Solo plan allowance = None unpublished, reset unknown UTC ([source](https://app.platform201.com/sign-in))",
+    "oracle": "Solo projects = 3 projects, reset n/a UTC ([source](https://www.platform201.com/))",
     "records": {
      "foresight": {
       "resource_id": "platform201.solo",
@@ -623,23 +622,23 @@
       "lane_id": "delphi-oracle",
       "title": "Platform201 Solo (visual GCP backend deployer)",
       "category": "deploy",
-      "horizon": "H2",
-      "evidence_status": "attributed_claim",
-      "summary": "Delphi parked at effective 5.54 (Backlog)",
+      "horizon": "H0",
+      "evidence_status": "confirmed",
+      "summary": "Delphi parked at effective 6.69 (Backlog)",
       "source": {
-       "url": "https://app.platform201.com/sign-in"
+       "url": "https://www.platform201.com/"
       },
-      "canonical_source": "https://app.platform201.com/sign-in",
-      "observed_at": "2026-10-28T00:20:53Z",
-      "confidence": 0.22,
+      "canonical_source": "https://www.platform201.com/",
+      "observed_at": "2026-10-28T07:05:34Z",
+      "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T00:20Z"
+       "recheck_after": "2026-11-27T07:05Z"
       }
      },
      "hindsight": {
       "bank_id": "deepagent::termux-monorepo",
-      "content": "[delphi] platform201.solo -> parked eff=5.54 band=Backlog rfp=#1417 forecast=fail ts=2026-10-28T00:20:53Z"
+      "content": "[delphi] platform201.solo -> parked eff=6.69 band=Backlog rfp=#1417 forecast=fail ts=2026-10-28T07:05:34Z"
      },
      "moneyball": {
       "contract_version": "3l0.moneyball.v1",
@@ -647,8 +646,8 @@
       "agent_id": "delphi-panel",
       "terminal_state": "parked",
       "status": "converged",
-      "started_at": "2026-10-28T00:20:53Z",
-      "ended_at": "2026-10-28T00:20:53Z",
+      "started_at": "2026-10-28T07:05:34Z",
+      "ended_at": "2026-10-28T07:05:34Z",
       "trigger": "push"
      }
     }
@@ -4494,12 +4493,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:02Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:02Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:02Z"
+     "recheck_after": "2026-10-30T03:02Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -4601,7 +4600,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:02Z"
+       "recheck_after": "2026-10-30T03:02Z"
       }
      },
      "hindsight": {
@@ -4623,9 +4622,9 @@
    "gaps": [],
    "silo": "jogyo-research-lab",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "segment": "research.jogyo-research-lab"
   },
@@ -4704,12 +4703,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:02Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:02Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:02Z"
+     "recheck_after": "2026-10-30T03:02Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -4811,7 +4810,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:02Z"
+       "recheck_after": "2026-10-30T03:02Z"
       }
      },
      "hindsight": {
@@ -4833,9 +4832,9 @@
    "gaps": [],
    "silo": "docxology-template",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "segment": "research.docxology-template"
   },
@@ -4914,12 +4913,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:02Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:02Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:02Z"
+     "recheck_after": "2026-10-30T03:02Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -5021,7 +5020,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:02Z"
+       "recheck_after": "2026-10-30T03:02Z"
       }
      },
      "hindsight": {
@@ -5043,9 +5042,9 @@
    "gaps": [],
    "silo": "yy-project-template",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "segment": "research.yy-project-template"
   },
@@ -5124,12 +5123,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:02Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:02Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:02Z"
+     "recheck_after": "2026-10-30T03:02Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -5231,7 +5230,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:02Z"
+       "recheck_after": "2026-10-30T03:02Z"
       }
      },
      "hindsight": {
@@ -5253,9 +5252,9 @@
    "gaps": [],
    "silo": "buoyancy99-research-template",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "segment": "research.buoyancy99-research-template"
   },
@@ -5334,12 +5333,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:02Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:02Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:02Z"
+     "recheck_after": "2026-10-30T03:02Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -5441,7 +5440,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:02Z"
+       "recheck_after": "2026-10-30T03:02Z"
       }
      },
      "hindsight": {
@@ -5463,9 +5462,9 @@
    "gaps": [],
    "silo": "yp-edu-research-project-template",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "segment": "research.yp-edu-research-project-template"
   },
@@ -5544,12 +5543,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:02Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:02Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:02Z"
+     "recheck_after": "2026-10-30T03:02Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -5651,7 +5650,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:02Z"
+       "recheck_after": "2026-10-30T03:02Z"
       }
      },
      "hindsight": {
@@ -5673,9 +5672,9 @@
    "gaps": [],
    "silo": "seunghyukoh-research-template",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "segment": "research.seunghyukoh-research-template"
   },
@@ -5754,12 +5753,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:02Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:02Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:02Z"
+     "recheck_after": "2026-10-30T03:02Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -5861,7 +5860,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:02Z"
+       "recheck_after": "2026-10-30T03:02Z"
       }
      },
      "hindsight": {
@@ -5883,9 +5882,9 @@
    "gaps": [],
    "silo": "irudik-repo-template",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "segment": "research.irudik-repo-template"
   },
@@ -5964,12 +5963,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:02Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:02Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:02Z"
+     "recheck_after": "2026-10-30T03:02Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -6071,7 +6070,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:02Z"
+       "recheck_after": "2026-10-30T03:02Z"
       }
      },
      "hindsight": {
@@ -6093,9 +6092,9 @@
    "gaps": [],
    "silo": "jdingel-projecttemplate",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "segment": "research.jdingel-projecttemplate"
   },
@@ -6174,12 +6173,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:02Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:02Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:02Z"
+     "recheck_after": "2026-10-30T03:02Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -6281,7 +6280,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:02Z"
+       "recheck_after": "2026-10-30T03:02Z"
       }
      },
      "hindsight": {
@@ -6303,9 +6302,9 @@
    "gaps": [],
    "silo": "3rdcore-research-project-template",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "segment": "research.3rdcore-research-project-template"
   },
@@ -6384,12 +6383,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:02Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:02Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:02Z"
+     "recheck_after": "2026-10-30T03:02Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -6491,7 +6490,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:02Z"
+       "recheck_after": "2026-10-30T03:02Z"
       }
      },
      "hindsight": {
@@ -6513,9 +6512,9 @@
    "gaps": [],
    "silo": "dicklesworthstone-agentic-flywheel",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "segment": "research.dicklesworthstone-agentic-flywheel"
   },
@@ -6594,12 +6593,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:02Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:02Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:02Z"
+     "recheck_after": "2026-10-30T03:02Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -6701,7 +6700,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:02Z"
+       "recheck_after": "2026-10-30T03:02Z"
       }
      },
      "hindsight": {
@@ -6723,9 +6722,9 @@
    "gaps": [],
    "silo": "opencode-research-papers",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "segment": "research.opencode-research-papers"
   },
@@ -6804,12 +6803,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:02Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:02Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:02Z"
+     "recheck_after": "2026-10-30T03:02Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -6911,7 +6910,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:02Z"
+       "recheck_after": "2026-10-30T03:02Z"
       }
      },
      "hindsight": {
@@ -6933,9 +6932,9 @@
    "gaps": [],
    "silo": "cactus-needle",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "segment": "research.cactus-needle"
   },
@@ -7014,12 +7013,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:05Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:05Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:05Z"
+     "recheck_after": "2026-10-30T03:05Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -7121,7 +7120,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:05Z"
+       "recheck_after": "2026-10-30T03:05Z"
       }
      },
      "hindsight": {
@@ -7144,9 +7143,9 @@
    "silo": "jogyo-research-lab",
    "variant": "rnd",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1897,
@@ -7229,12 +7228,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:06Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:06Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:06Z"
+     "recheck_after": "2026-10-30T03:06Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -7336,7 +7335,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:06Z"
+       "recheck_after": "2026-10-30T03:06Z"
       }
      },
      "hindsight": {
@@ -7359,9 +7358,9 @@
    "silo": "jogyo-research-lab",
    "variant": "selected",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1897,
@@ -7444,12 +7443,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:06Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:06Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:06Z"
+     "recheck_after": "2026-10-30T03:06Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -7551,7 +7550,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:06Z"
+       "recheck_after": "2026-10-30T03:06Z"
       }
      },
      "hindsight": {
@@ -7574,9 +7573,9 @@
    "silo": "jogyo-research-lab",
    "variant": "control",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1897,
@@ -7659,12 +7658,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:06Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:06Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:06Z"
+     "recheck_after": "2026-10-30T03:06Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -7766,7 +7765,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:06Z"
+       "recheck_after": "2026-10-30T03:06Z"
       }
      },
      "hindsight": {
@@ -7789,9 +7788,9 @@
    "silo": "docxology-template",
    "variant": "rnd",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1898,
@@ -7874,12 +7873,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:06Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:06Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:06Z"
+     "recheck_after": "2026-10-30T03:06Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -7981,7 +7980,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:06Z"
+       "recheck_after": "2026-10-30T03:06Z"
       }
      },
      "hindsight": {
@@ -8004,9 +8003,9 @@
    "silo": "docxology-template",
    "variant": "selected",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1898,
@@ -8089,12 +8088,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:06Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:06Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:06Z"
+     "recheck_after": "2026-10-30T03:06Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -8196,7 +8195,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:06Z"
+       "recheck_after": "2026-10-30T03:06Z"
       }
      },
      "hindsight": {
@@ -8219,9 +8218,9 @@
    "silo": "docxology-template",
    "variant": "control",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1898,
@@ -8304,12 +8303,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:44Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:44Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:44Z"
+     "recheck_after": "2026-10-30T03:44Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -8411,7 +8410,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:44Z"
+       "recheck_after": "2026-10-30T03:44Z"
       }
      },
      "hindsight": {
@@ -8434,9 +8433,9 @@
    "silo": "yy-project-template",
    "variant": "rnd",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1899,
@@ -8519,12 +8518,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:44Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:44Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:44Z"
+     "recheck_after": "2026-10-30T03:44Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -8626,7 +8625,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:44Z"
+       "recheck_after": "2026-10-30T03:44Z"
       }
      },
      "hindsight": {
@@ -8649,9 +8648,9 @@
    "silo": "yy-project-template",
    "variant": "selected",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1899,
@@ -8734,12 +8733,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:44Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:44Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:44Z"
+     "recheck_after": "2026-10-30T03:44Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -8841,7 +8840,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:44Z"
+       "recheck_after": "2026-10-30T03:44Z"
       }
      },
      "hindsight": {
@@ -8864,9 +8863,9 @@
    "silo": "yy-project-template",
    "variant": "control",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1899,
@@ -8949,12 +8948,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:44Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:44Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:44Z"
+     "recheck_after": "2026-10-30T03:44Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -9056,7 +9055,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:44Z"
+       "recheck_after": "2026-10-30T03:44Z"
       }
      },
      "hindsight": {
@@ -9079,9 +9078,9 @@
    "silo": "buoyancy99-research-template",
    "variant": "rnd",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1900,
@@ -9164,12 +9163,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:44Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:44Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:44Z"
+     "recheck_after": "2026-10-30T03:44Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -9271,7 +9270,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:44Z"
+       "recheck_after": "2026-10-30T03:44Z"
       }
      },
      "hindsight": {
@@ -9294,9 +9293,9 @@
    "silo": "buoyancy99-research-template",
    "variant": "selected",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1900,
@@ -9379,12 +9378,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:44Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:44Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:44Z"
+     "recheck_after": "2026-10-30T03:44Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -9486,7 +9485,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:44Z"
+       "recheck_after": "2026-10-30T03:44Z"
       }
      },
      "hindsight": {
@@ -9509,9 +9508,9 @@
    "silo": "buoyancy99-research-template",
    "variant": "control",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1900,
@@ -9594,12 +9593,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:44Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:44Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:44Z"
+     "recheck_after": "2026-10-30T03:44Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -9701,7 +9700,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:44Z"
+       "recheck_after": "2026-10-30T03:44Z"
       }
      },
      "hindsight": {
@@ -9724,9 +9723,9 @@
    "silo": "yp-edu-research-project-template",
    "variant": "rnd",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1901,
@@ -9809,12 +9808,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:44Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:44Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:44Z"
+     "recheck_after": "2026-10-30T03:44Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -9916,7 +9915,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:44Z"
+       "recheck_after": "2026-10-30T03:44Z"
       }
      },
      "hindsight": {
@@ -9939,9 +9938,9 @@
    "silo": "yp-edu-research-project-template",
    "variant": "selected",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1901,
@@ -10024,12 +10023,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:44Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:44Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:44Z"
+     "recheck_after": "2026-10-30T03:44Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -10131,7 +10130,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:44Z"
+       "recheck_after": "2026-10-30T03:44Z"
       }
      },
      "hindsight": {
@@ -10154,9 +10153,9 @@
    "silo": "yp-edu-research-project-template",
    "variant": "control",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1901,
@@ -10239,12 +10238,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:44Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:44Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:44Z"
+     "recheck_after": "2026-10-30T03:44Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -10346,7 +10345,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:44Z"
+       "recheck_after": "2026-10-30T03:44Z"
       }
      },
      "hindsight": {
@@ -10369,9 +10368,9 @@
    "silo": "seunghyukoh-research-template",
    "variant": "rnd",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1902,
@@ -10454,12 +10453,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:44Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:44Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:44Z"
+     "recheck_after": "2026-10-30T03:44Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -10561,7 +10560,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:44Z"
+       "recheck_after": "2026-10-30T03:44Z"
       }
      },
      "hindsight": {
@@ -10584,9 +10583,9 @@
    "silo": "seunghyukoh-research-template",
    "variant": "selected",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1902,
@@ -10669,12 +10668,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:44Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:44Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:44Z"
+     "recheck_after": "2026-10-30T03:44Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -10776,7 +10775,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:44Z"
+       "recheck_after": "2026-10-30T03:44Z"
       }
      },
      "hindsight": {
@@ -10799,9 +10798,9 @@
    "silo": "seunghyukoh-research-template",
    "variant": "control",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1902,
@@ -10884,12 +10883,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:44Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:44Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:44Z"
+     "recheck_after": "2026-10-30T03:44Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -10991,7 +10990,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:44Z"
+       "recheck_after": "2026-10-30T03:44Z"
       }
      },
      "hindsight": {
@@ -11014,9 +11013,9 @@
    "silo": "irudik-repo-template",
    "variant": "rnd",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1903,
@@ -11099,12 +11098,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:44Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:44Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:44Z"
+     "recheck_after": "2026-10-30T03:44Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -11206,7 +11205,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:44Z"
+       "recheck_after": "2026-10-30T03:44Z"
       }
      },
      "hindsight": {
@@ -11229,9 +11228,9 @@
    "silo": "irudik-repo-template",
    "variant": "selected",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1903,
@@ -11314,12 +11313,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:44Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:44Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:44Z"
+     "recheck_after": "2026-10-30T03:44Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -11421,7 +11420,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:44Z"
+       "recheck_after": "2026-10-30T03:44Z"
       }
      },
      "hindsight": {
@@ -11444,9 +11443,9 @@
    "silo": "irudik-repo-template",
    "variant": "control",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1903,
@@ -11529,12 +11528,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:44Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:44Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:44Z"
+     "recheck_after": "2026-10-30T03:44Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -11636,7 +11635,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:44Z"
+       "recheck_after": "2026-10-30T03:44Z"
       }
      },
      "hindsight": {
@@ -11659,9 +11658,9 @@
    "silo": "jdingel-projecttemplate",
    "variant": "rnd",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1904,
@@ -11744,12 +11743,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:44Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:44Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:44Z"
+     "recheck_after": "2026-10-30T03:44Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -11851,7 +11850,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:44Z"
+       "recheck_after": "2026-10-30T03:44Z"
       }
      },
      "hindsight": {
@@ -11874,9 +11873,9 @@
    "silo": "jdingel-projecttemplate",
    "variant": "selected",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1904,
@@ -11959,12 +11958,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:44Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:44Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:44Z"
+     "recheck_after": "2026-10-30T03:44Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -12066,7 +12065,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:44Z"
+       "recheck_after": "2026-10-30T03:44Z"
       }
      },
      "hindsight": {
@@ -12089,9 +12088,9 @@
    "silo": "jdingel-projecttemplate",
    "variant": "control",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1904,
@@ -12174,12 +12173,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:44Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:44Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:44Z"
+     "recheck_after": "2026-10-30T03:44Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -12281,7 +12280,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:44Z"
+       "recheck_after": "2026-10-30T03:44Z"
       }
      },
      "hindsight": {
@@ -12304,9 +12303,9 @@
    "silo": "3rdcore-research-project-template",
    "variant": "rnd",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1905,
@@ -12389,12 +12388,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:44Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:44Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:44Z"
+     "recheck_after": "2026-10-30T03:44Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -12496,7 +12495,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:44Z"
+       "recheck_after": "2026-10-30T03:44Z"
       }
      },
      "hindsight": {
@@ -12519,9 +12518,9 @@
    "silo": "3rdcore-research-project-template",
    "variant": "selected",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1905,
@@ -12604,12 +12603,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:44Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:44Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:44Z"
+     "recheck_after": "2026-10-30T03:44Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -12711,7 +12710,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:44Z"
+       "recheck_after": "2026-10-30T03:44Z"
       }
      },
      "hindsight": {
@@ -12734,9 +12733,9 @@
    "silo": "3rdcore-research-project-template",
    "variant": "control",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1905,
@@ -12819,12 +12818,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:45Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:45Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:45Z"
+     "recheck_after": "2026-10-30T03:45Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -12926,7 +12925,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:45Z"
+       "recheck_after": "2026-10-30T03:45Z"
       }
      },
      "hindsight": {
@@ -12949,9 +12948,9 @@
    "silo": "dicklesworthstone-agentic-flywheel",
    "variant": "rnd",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1906,
@@ -13034,12 +13033,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:45Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:45Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:45Z"
+     "recheck_after": "2026-10-30T03:45Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -13141,7 +13140,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:45Z"
+       "recheck_after": "2026-10-30T03:45Z"
       }
      },
      "hindsight": {
@@ -13164,9 +13163,9 @@
    "silo": "dicklesworthstone-agentic-flywheel",
    "variant": "selected",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1906,
@@ -13249,12 +13248,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:45Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:45Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:45Z"
+     "recheck_after": "2026-10-30T03:45Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -13356,7 +13355,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:45Z"
+       "recheck_after": "2026-10-30T03:45Z"
       }
      },
      "hindsight": {
@@ -13379,9 +13378,9 @@
    "silo": "dicklesworthstone-agentic-flywheel",
    "variant": "control",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1906,
@@ -13464,12 +13463,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:45Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:45Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:45Z"
+     "recheck_after": "2026-10-30T03:45Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -13571,7 +13570,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:45Z"
+       "recheck_after": "2026-10-30T03:45Z"
       }
      },
      "hindsight": {
@@ -13594,9 +13593,9 @@
    "silo": "opencode-research-papers",
    "variant": "rnd",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1907,
@@ -13679,12 +13678,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:45Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:45Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:45Z"
+     "recheck_after": "2026-10-30T03:45Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -13786,7 +13785,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:45Z"
+       "recheck_after": "2026-10-30T03:45Z"
       }
      },
      "hindsight": {
@@ -13809,9 +13808,9 @@
    "silo": "opencode-research-papers",
    "variant": "selected",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1907,
@@ -13894,12 +13893,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:45Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:45Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:45Z"
+     "recheck_after": "2026-10-30T03:45Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -14001,7 +14000,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:45Z"
+       "recheck_after": "2026-10-30T03:45Z"
       }
      },
      "hindsight": {
@@ -14024,9 +14023,9 @@
    "silo": "opencode-research-papers",
    "variant": "control",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1907,
@@ -14109,12 +14108,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:45Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:45Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:45Z"
+     "recheck_after": "2026-10-30T03:45Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -14216,7 +14215,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:45Z"
+       "recheck_after": "2026-10-30T03:45Z"
       }
      },
      "hindsight": {
@@ -14239,9 +14238,9 @@
    "silo": "cactus-needle",
    "variant": "rnd",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1908,
@@ -14324,12 +14323,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:45Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:45Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:45Z"
+     "recheck_after": "2026-10-30T03:45Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -14431,7 +14430,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:45Z"
+       "recheck_after": "2026-10-30T03:45Z"
       }
      },
      "hindsight": {
@@ -14454,9 +14453,9 @@
    "silo": "cactus-needle",
    "variant": "selected",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1908,
@@ -14539,12 +14538,12 @@
     }
    ],
    "outcome": {
-    "award_line": "parked, recheck after 2026-11-27T03:45Z. Band Backlog.",
+    "award_line": "parked, recheck after 2026-10-30T03:45Z. Band Backlog.",
     "award": {
      "decision": "parked",
      "why": "effective 6.69 below shadow bar 15.0",
      "band": "Backlog",
-     "recheck_after": "2026-11-27T03:45Z"
+     "recheck_after": "2026-10-30T03:45Z"
     },
     "effective_score": 6.69,
     "converged": false,
@@ -14646,7 +14645,7 @@
       "confidence": 0.27,
       "procurement": {
        "decision": "parked",
-       "recheck_after": "2026-11-27T03:45Z"
+       "recheck_after": "2026-10-30T03:45Z"
       }
      },
      "hindsight": {
@@ -14669,9 +14668,9 @@
    "silo": "cactus-needle",
    "variant": "control",
    "comparison_axes": {
-    "produced_output_results_validated": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "feature_extractions": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored",
-    "consensus_implementation": "pending \u2014 recorded post-hoc per RESEARCH-SILO-DELPHI.md, not gate-scored"
+    "produced_output_results_validated": "recorded \u2014 cycle 1: none_validated_yet (ops/delphi/research-axes.json)",
+    "feature_extractions": "recorded \u2014 cycle 1: recorded (ops/delphi/research-axes.json)",
+    "consensus_implementation": "recorded \u2014 cycle 1: none_yet (ops/delphi/research-axes.json)"
    },
    "parent": {
     "number": 1908,
@@ -15090,10 +15089,10 @@
   {
    "number": 1975,
    "progress": {
-    "stage": "awaiting-gate",
-    "rounds_run": 0,
+    "stage": "gate-scored",
+    "rounds_run": 3,
     "rounds_max": 3,
-    "votes_cast": 0,
+    "votes_cast": 5,
     "votes_expected": 5
    },
    "title": "[delphi:rfp] markov.trellis-lab",
@@ -15102,10 +15101,11 @@
    "surface_id": "markov.trellis-lab",
    "lane": "other",
    "group": "synthetic",
-   "status": "unscored",
+   "status": "parked",
    "converged": false,
    "labels": [
-    "delphi:rfp"
+    "delphi:rfp",
+    "delphi:parked"
    ],
    "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
    "questions": [
@@ -15160,21 +15160,143 @@
      "response": "- ops/doe/component-registry.json + docs/ops/DOE-COMPONENT-REGISTRY.md (component of record)\n- experiments/archwiz-markov-lane/ (the lab)\n- docs/proposals/active/archwiz-markov-trellis-lab/ (proposal pack + REVIEW.md)"
     }
    ],
-   "outcome": null,
-   "responses": null,
-   "gaps": [
-    "no gate ledger comment yet \u2014 the gate has not scored this filing on record",
-    "no delphi: status label (shadow/promoted/parked/converged) applied"
-   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-27T07:06Z. Band Backlog.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 6.69 below shadow bar 15.0",
+     "band": "Backlog",
+     "recheck_after": "2026-11-27T07:06Z"
+    },
+    "effective_score": 6.69,
+    "converged": false,
+    "rounds_count": 3,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 7.38
+     },
+     {
+      "round": 2,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 6.92
+     },
+     {
+      "round": 3,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 6.69
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "960eebe8c1a5",
+    "comment_id": 6462912625,
+    "created_at": "2026-10-28T07:06:02Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40647839093 / #1975#r3"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40647839093 / #1975#r3"
+     },
+     {
+      "role": "reviewer",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "3 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40647839093 / #1975#r3"
+     },
+     {
+      "role": "Scout",
+      "score": 10.5,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit (moved toward median) (moved toward median)",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40647839093 / #1975#r3"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40647839093 / #1975#r3"
+     }
+    ],
+    "oracle": "No vendor quota consumed. The evaluation runs on the repo's existing GitHub Issues + Actions surface under the gate's cadence governor; panel cycles are the only spend, bounded by the existing registry caps. No paid tier, no overage. = None , reset Gate heartbeat hourly (UTC); panel weights ledger continuous; component revision cycle per gate findings.  ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/1975))",
+    "records": {
+     "foresight": {
+      "resource_id": "markov.trellis-lab",
+      "item_id": "delphi:#1975",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] markov.trellis-lab",
+      "category": "other",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 6.69 (Backlog)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1975"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1975",
+      "observed_at": "2026-10-28T07:06:02Z",
+      "confidence": 0.27,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-27T07:06Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] markov.trellis-lab -> parked eff=6.69 band=Backlog rfp=#1975 forecast=fail ts=2026-10-28T07:06:02Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1975",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "max_rounds",
+      "started_at": "2026-10-28T07:06:02Z",
+      "ended_at": "2026-10-28T07:06:02Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [],
    "segment": "markov-trellis-lab"
   },
   {
    "number": 1976,
    "progress": {
-    "stage": "awaiting-gate",
-    "rounds_run": 0,
+    "stage": "gate-scored",
+    "rounds_run": 3,
     "rounds_max": 3,
-    "votes_cast": 0,
+    "votes_cast": 5,
     "votes_expected": 5
    },
    "title": "[delphi:rfp] bayesian.routing",
@@ -15183,10 +15305,11 @@
    "surface_id": "bayesian.routing",
    "lane": "other",
    "group": "synthetic",
-   "status": "unscored",
+   "status": "parked",
    "converged": false,
    "labels": [
-    "delphi:rfp"
+    "delphi:rfp",
+    "delphi:parked"
    ],
    "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
    "questions": [
@@ -15241,21 +15364,143 @@
      "response": "- ops/doe/component-registry.json + docs/ops/DOE-COMPONENT-REGISTRY.md (component of record)\n- docs/ops/BAYESIAN-ROUTING.md + docs/schemas/bayesian-routing.yaml (design + schema)\n- scripts/bayesian_routing.py (implementation)\n- Issue #1487 (outcome ledger \u2014 the evidence the beliefs update on)"
     }
    ],
-   "outcome": null,
-   "responses": null,
-   "gaps": [
-    "no gate ledger comment yet \u2014 the gate has not scored this filing on record",
-    "no delphi: status label (shadow/promoted/parked/converged) applied"
-   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-27T07:06Z. Band Backlog.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 6.69 below shadow bar 15.0",
+     "band": "Backlog",
+     "recheck_after": "2026-11-27T07:06Z"
+    },
+    "effective_score": 6.69,
+    "converged": false,
+    "rounds_count": 3,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 7.38
+     },
+     {
+      "round": 2,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 6.92
+     },
+     {
+      "round": 3,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 6.69
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "4774e34b4f82",
+    "comment_id": 6462913139,
+    "created_at": "2026-10-28T07:06:04Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40647839093 / #1976#r3"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40647839093 / #1976#r3"
+     },
+     {
+      "role": "reviewer",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "3 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40647839093 / #1976#r3"
+     },
+     {
+      "role": "Scout",
+      "score": 10.5,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit (moved toward median) (moved toward median)",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40647839093 / #1976#r3"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40647839093 / #1976#r3"
+     }
+    ],
+    "oracle": "No vendor quota consumed. The evaluation runs on the repo's existing GitHub Issues + Actions surface under the gate's cadence governor; panel cycles are the only spend, bounded by the existing registry caps. No paid tier, no overage. = None , reset Gate heartbeat hourly (UTC); panel weights ledger continuous; component revision cycle per gate findings.  ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/1976))",
+    "records": {
+     "foresight": {
+      "resource_id": "bayesian.routing",
+      "item_id": "delphi:#1976",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] bayesian.routing",
+      "category": "other",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 6.69 (Backlog)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1976"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1976",
+      "observed_at": "2026-10-28T07:06:03Z",
+      "confidence": 0.27,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-27T07:06Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] bayesian.routing -> parked eff=6.69 band=Backlog rfp=#1976 forecast=fail ts=2026-10-28T07:06:03Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1976",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "max_rounds",
+      "started_at": "2026-10-28T07:06:03Z",
+      "ended_at": "2026-10-28T07:06:03Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [],
    "segment": "bayesian-routing"
   },
   {
    "number": 1977,
    "progress": {
-    "stage": "awaiting-gate",
-    "rounds_run": 0,
+    "stage": "gate-scored",
+    "rounds_run": 3,
     "rounds_max": 3,
-    "votes_cast": 0,
+    "votes_cast": 5,
     "votes_expected": 5
    },
    "title": "[delphi:rfp] kahn.dag",
@@ -15264,10 +15509,11 @@
    "surface_id": "kahn.dag",
    "lane": "other",
    "group": "synthetic",
-   "status": "unscored",
+   "status": "parked",
    "converged": false,
    "labels": [
-    "delphi:rfp"
+    "delphi:rfp",
+    "delphi:parked"
    ],
    "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
    "questions": [
@@ -15322,21 +15568,143 @@
      "response": "- ops/doe/component-registry.json + docs/ops/DOE-COMPONENT-REGISTRY.md (component of record)\n- she/orchestration/dag.py + docs/architecture/DETERMINISTIC-DAG-ORCHESTRATION.md\n- tests/test_dag_execution.py + tests/test_dag_properties.py (the contract)\n- scripts/temporal/gantt_compile.py (newest consumer, Temporal closeout PR)"
     }
    ],
-   "outcome": null,
-   "responses": null,
-   "gaps": [
-    "no gate ledger comment yet \u2014 the gate has not scored this filing on record",
-    "no delphi: status label (shadow/promoted/parked/converged) applied"
-   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-27T07:06Z. Band Backlog.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 6.69 below shadow bar 15.0",
+     "band": "Backlog",
+     "recheck_after": "2026-11-27T07:06Z"
+    },
+    "effective_score": 6.69,
+    "converged": false,
+    "rounds_count": 3,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 7.38
+     },
+     {
+      "round": 2,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 6.92
+     },
+     {
+      "round": 3,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 6.69
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "3926de75ff51",
+    "comment_id": 6462913649,
+    "created_at": "2026-10-28T07:06:06Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40647839093 / #1977#r3"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40647839093 / #1977#r3"
+     },
+     {
+      "role": "reviewer",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "3 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40647839093 / #1977#r3"
+     },
+     {
+      "role": "Scout",
+      "score": 10.5,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit (moved toward median) (moved toward median)",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40647839093 / #1977#r3"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40647839093 / #1977#r3"
+     }
+    ],
+    "oracle": "No vendor quota consumed. The evaluation runs on the repo's existing GitHub Issues + Actions surface under the gate's cadence governor; panel cycles are the only spend, bounded by the existing registry caps. No paid tier, no overage. = None , reset Gate heartbeat hourly (UTC); panel weights ledger continuous; component revision cycle per gate findings.  ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/1977))",
+    "records": {
+     "foresight": {
+      "resource_id": "kahn.dag",
+      "item_id": "delphi:#1977",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] kahn.dag",
+      "category": "other",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 6.69 (Backlog)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1977"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1977",
+      "observed_at": "2026-10-28T07:06:05Z",
+      "confidence": 0.27,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-27T07:06Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] kahn.dag -> parked eff=6.69 band=Backlog rfp=#1977 forecast=fail ts=2026-10-28T07:06:05Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1977",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "max_rounds",
+      "started_at": "2026-10-28T07:06:05Z",
+      "ended_at": "2026-10-28T07:06:05Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [],
    "segment": "kahn-dag"
   },
   {
    "number": 1978,
    "progress": {
-    "stage": "awaiting-gate",
-    "rounds_run": 0,
+    "stage": "gate-scored",
+    "rounds_run": 3,
     "rounds_max": 3,
-    "votes_cast": 0,
+    "votes_cast": 5,
     "votes_expected": 5
    },
    "title": "[delphi:rfp] gantt.dependency-phases",
@@ -15345,10 +15713,11 @@
    "surface_id": "gantt.dependency-phases",
    "lane": "other",
    "group": "synthetic",
-   "status": "unscored",
+   "status": "parked",
    "converged": false,
    "labels": [
-    "delphi:rfp"
+    "delphi:rfp",
+    "delphi:parked"
    ],
    "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
    "questions": [
@@ -15403,12 +15772,134 @@
      "response": "- ops/doe/component-registry.json + docs/ops/DOE-COMPONENT-REGISTRY.md (component of record)\n- docs/agentic/dependency-phases.json (canonical plan) + docs/agentic/DEPENDENCY_PHASES.md (generated status/history view) + the plan's git history (phase history of record)\n- scripts/agentic/dependency_phase_engine.py + scripts/agentic/gantt_projection.py (engine + projection)\n- scripts/temporal/gantt_compile.py + docs/proposals/passes/temporal-durable-execution/implementation/ADDENDUM-2026-10-27.json (N4 compile evidence)"
     }
    ],
-   "outcome": null,
-   "responses": null,
-   "gaps": [
-    "no gate ledger comment yet \u2014 the gate has not scored this filing on record",
-    "no delphi: status label (shadow/promoted/parked/converged) applied"
-   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-27T07:06Z. Band Backlog.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 6.69 below shadow bar 15.0",
+     "band": "Backlog",
+     "recheck_after": "2026-11-27T07:06Z"
+    },
+    "effective_score": 6.69,
+    "converged": false,
+    "rounds_count": 3,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 7.38
+     },
+     {
+      "round": 2,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 6.92
+     },
+     {
+      "round": 3,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 6.69
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "610e2d304ffa",
+    "comment_id": 6462914175,
+    "created_at": "2026-10-28T07:06:08Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40647839093 / #1978#r3"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40647839093 / #1978#r3"
+     },
+     {
+      "role": "reviewer",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "3 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40647839093 / #1978#r3"
+     },
+     {
+      "role": "Scout",
+      "score": 10.5,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit (moved toward median) (moved toward median)",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40647839093 / #1978#r3"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40647839093 / #1978#r3"
+     }
+    ],
+    "oracle": "No vendor quota consumed. The evaluation runs on the repo's existing GitHub Issues + Actions surface under the gate's cadence governor; panel cycles are the only spend, bounded by the existing registry caps. No paid tier, no overage. = None , reset Gate heartbeat hourly (UTC); panel weights ledger continuous; component revision cycle per gate findings.  ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/1978))",
+    "records": {
+     "foresight": {
+      "resource_id": "gantt.dependency-phases",
+      "item_id": "delphi:#1978",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] gantt.dependency-phases",
+      "category": "other",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 6.69 (Backlog)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1978"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1978",
+      "observed_at": "2026-10-28T07:06:07Z",
+      "confidence": 0.27,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-27T07:06Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] gantt.dependency-phases -> parked eff=6.69 band=Backlog rfp=#1978 forecast=fail ts=2026-10-28T07:06:07Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1978",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "max_rounds",
+      "started_at": "2026-10-28T07:06:07Z",
+      "ended_at": "2026-10-28T07:06:07Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [],
    "segment": "gantt-dependency-phases"
   }
  ],
@@ -15495,9 +15986,9 @@
      1976
     ],
     "by_status": {
-     "unscored": 1
+     "parked": 1
     },
-    "gate_scored": 0
+    "gate_scored": 1
    },
    {
     "segment_id": "delphi-method-self-application",
@@ -15539,9 +16030,9 @@
      1978
     ],
     "by_status": {
-     "unscored": 1
+     "parked": 1
     },
-    "gate_scored": 0
+    "gate_scored": 1
    },
    {
     "segment_id": "kahn-dag",
@@ -15550,9 +16041,9 @@
      1977
     ],
     "by_status": {
-     "unscored": 1
+     "parked": 1
     },
-    "gate_scored": 0
+    "gate_scored": 1
    },
    {
     "segment_id": "markov-trellis-lab",
@@ -15561,9 +16052,9 @@
      1975
     ],
     "by_status": {
-     "unscored": 1
+     "parked": 1
     },
-    "gate_scored": 0
+    "gate_scored": 1
    },
    {
     "segment_id": "mvt-doe-tlm",
@@ -15619,7 +16110,7 @@
      "parked": 4
     },
     "gate_scored": 4,
-    "axes_recorded": 0,
+    "axes_recorded": 3,
     "axes_total": 3
    },
    {
@@ -15635,7 +16126,7 @@
      "parked": 4
     },
     "gate_scored": 4,
-    "axes_recorded": 0,
+    "axes_recorded": 3,
     "axes_total": 3
    },
    {
@@ -15651,7 +16142,7 @@
      "parked": 4
     },
     "gate_scored": 4,
-    "axes_recorded": 0,
+    "axes_recorded": 3,
     "axes_total": 3
    },
    {
@@ -15667,7 +16158,7 @@
      "parked": 4
     },
     "gate_scored": 4,
-    "axes_recorded": 0,
+    "axes_recorded": 3,
     "axes_total": 3
    },
    {
@@ -15683,7 +16174,7 @@
      "parked": 4
     },
     "gate_scored": 4,
-    "axes_recorded": 0,
+    "axes_recorded": 3,
     "axes_total": 3
    },
    {
@@ -15699,7 +16190,7 @@
      "parked": 4
     },
     "gate_scored": 4,
-    "axes_recorded": 0,
+    "axes_recorded": 3,
     "axes_total": 3
    },
    {
@@ -15715,7 +16206,7 @@
      "parked": 4
     },
     "gate_scored": 4,
-    "axes_recorded": 0,
+    "axes_recorded": 3,
     "axes_total": 3
    },
    {
@@ -15731,7 +16222,7 @@
      "parked": 4
     },
     "gate_scored": 4,
-    "axes_recorded": 0,
+    "axes_recorded": 3,
     "axes_total": 3
    },
    {
@@ -15747,7 +16238,7 @@
      "parked": 4
     },
     "gate_scored": 4,
-    "axes_recorded": 0,
+    "axes_recorded": 3,
     "axes_total": 3
    },
    {
@@ -15763,7 +16254,7 @@
      "parked": 4
     },
     "gate_scored": 4,
-    "axes_recorded": 0,
+    "axes_recorded": 3,
     "axes_total": 3
    },
    {
@@ -15779,7 +16270,7 @@
      "parked": 4
     },
     "gate_scored": 4,
-    "axes_recorded": 0,
+    "axes_recorded": 3,
     "axes_total": 3
    },
    {
@@ -15795,7 +16286,7 @@
      "parked": 4
     },
     "gate_scored": 4,
-    "axes_recorded": 0,
+    "axes_recorded": 3,
     "axes_total": 3
    },
    {

@@ -1,0 +1,370 @@
+{
+ "schema": "delphi.research-axes.v1",
+ "cycle": 1,
+ "recorded_at": "2026-10-28T13:04:50Z",
+ "recorded_by": "[MUSEai]@{role:{doe-expert}}",
+ "generator": "scripts/delphi/research_axes_extract.py",
+ "honesty_rules": [
+  "Axes are post-hoc records, never gate scores (silo spec).",
+  "A negative state (none_validated_yet / none_yet) is a recorded finding, not a pending placeholder.",
+  "Features are verbatim from the in-repo curated record; nothing is extracted from sources the repo does not hold."
+ ],
+ "silos": {
+  "research.jogyo-research-lab": {
+   "baseline_issue": 1897,
+   "produced_output_results_validated": {
+    "state": "none_validated_yet",
+    "note": "Cycle-1 produced outputs of this silo stream are the Delphi filing + gate outcome (admission only). No silo-produced research output has been validated yet.",
+    "evidence": [
+     "issue #1897 (baseline RFP, gate ledger: parked, effective 6.69/25)"
+    ]
+   },
+   "feature_extractions": {
+    "state": "recorded",
+    "method": "readme_bullets",
+    "source": "in-repo curated record (stub README + SOURCE.txt); template source not vendored (metadata-first)",
+    "upstream": "https://github.com/Yeachan-Heo/My-Jogyo",
+    "summary": "**Primary research-repo template** for the consolidated `15_Research_Repo_Templates` lane.",
+    "features": [
+     "**Yeachan-Heo/My-Jogyo** \u2014 Gyoshu (Professor) + Jogyo (Teaching Assistant) + Baksa (PhD Reviewer)",
+     "One-click scientific research lab for OpenCode / agent surfaces",
+     "Hypothesis \u2192 experiment \u2192 finding \u2192 adversarial review \u2192 report",
+     "Persistent Python REPL, auto `.ipynb`, two-gate completion (Trust Gate + Goal Gate)",
+     "Structured markers that align with evidence-led + dual-gate culture",
+     "MCP + OpenCode plugin paths \u2192 mcp-hub / termux-mcp / android-mcp",
+     "Research session evidence receipts \u2192 help-wanted / evidence-led lanes",
+     "Metadata-first; live `smods/` pin only when dual-gate is ready"
+    ]
+   },
+   "consensus_implementation": {
+    "state": "none_yet",
+    "note": "Consensus implementation is cycle stage 6, after variant comparison; no cross-silo consensus implementation exists yet.",
+    "evidence": [
+     "docs/ops/RESEARCH-SILO-DELPHI.md (baseline_cycle stage order)"
+    ]
+   }
+  },
+  "research.docxology-template": {
+   "baseline_issue": 1898,
+   "produced_output_results_validated": {
+    "state": "none_validated_yet",
+    "note": "Cycle-1 produced outputs of this silo stream are the Delphi filing + gate outcome (admission only). No silo-produced research output has been validated yet.",
+    "evidence": [
+     "issue #1898 (baseline RFP, gate ledger: parked, effective 6.69/25)"
+    ]
+   },
+   "feature_extractions": {
+    "state": "recorded",
+    "method": "readme_summary_phrases",
+    "source": "in-repo curated record (stub README + SOURCE.txt); template source not vendored (metadata-first)",
+    "upstream": "https://github.com/docxology/template",
+    "summary": "Production-grade scaffold for reproducible computational research. Two-layer Python 3.10+/uv monorepo, pytest coverage gates, 17-stage build pipeline, markdown\u2192PDF, cryptographic provenance.",
+    "features": [
+     "Production-grade scaffold for reproducible computational research. Two-layer Python 3.10+/uv monorepo",
+     "pytest coverage gates",
+     "17-stage build pipeline",
+     "markdown\u2192PDF",
+     "cryptographic provenance."
+    ]
+   },
+   "consensus_implementation": {
+    "state": "none_yet",
+    "note": "Consensus implementation is cycle stage 6, after variant comparison; no cross-silo consensus implementation exists yet.",
+    "evidence": [
+     "docs/ops/RESEARCH-SILO-DELPHI.md (baseline_cycle stage order)"
+    ]
+   }
+  },
+  "research.yy-project-template": {
+   "baseline_issue": 1899,
+   "produced_output_results_validated": {
+    "state": "none_validated_yet",
+    "note": "Cycle-1 produced outputs of this silo stream are the Delphi filing + gate outcome (admission only). No silo-produced research output has been validated yet.",
+    "evidence": [
+     "issue #1899 (baseline RFP, gate ledger: parked, effective 6.69/25)"
+    ]
+   },
+   "feature_extractions": {
+    "state": "recorded",
+    "method": "readme_summary_phrases",
+    "source": "in-repo curated record (stub README + SOURCE.txt); template source not vendored (metadata-first)",
+    "upstream": "https://github.com/yy/project-template",
+    "summary": "Simple template for research project repos (src/tests/data/notebooks/paper/results/workflow). Uses uv for Python environment management.",
+    "features": [
+     "Simple template for research project repos (src/tests/data/notebooks/paper/results/workflow). Uses uv for Python environment management."
+    ]
+   },
+   "consensus_implementation": {
+    "state": "none_yet",
+    "note": "Consensus implementation is cycle stage 6, after variant comparison; no cross-silo consensus implementation exists yet.",
+    "evidence": [
+     "docs/ops/RESEARCH-SILO-DELPHI.md (baseline_cycle stage order)"
+    ]
+   }
+  },
+  "research.buoyancy99-research-template": {
+   "baseline_issue": 1900,
+   "produced_output_results_validated": {
+    "state": "none_validated_yet",
+    "note": "Cycle-1 produced outputs of this silo stream are the Delphi filing + gate outcome (admission only). No silo-produced research output has been validated yet.",
+    "evidence": [
+     "issue #1900 (baseline RFP, gate ledger: parked, effective 6.69/25)"
+    ]
+   },
+   "feature_extractions": {
+    "state": "recorded",
+    "method": "readme_summary_phrases",
+    "source": "in-repo curated record (stub README + SOURCE.txt); template source not vendored (metadata-first)",
+    "upstream": "https://github.com/buoyancy99/research-template",
+    "summary": "ML research template with strong documentation (Boyuan Chen / MIT). Experiment launch via `python -m main +name=\u2026`.",
+    "features": [
+     "ML research template with strong documentation (Boyuan Chen / MIT). Experiment launch via `python -m main +name=\u2026`."
+    ]
+   },
+   "consensus_implementation": {
+    "state": "none_yet",
+    "note": "Consensus implementation is cycle stage 6, after variant comparison; no cross-silo consensus implementation exists yet.",
+    "evidence": [
+     "docs/ops/RESEARCH-SILO-DELPHI.md (baseline_cycle stage order)"
+    ]
+   }
+  },
+  "research.yp-edu-research-project-template": {
+   "baseline_issue": 1901,
+   "produced_output_results_validated": {
+    "state": "none_validated_yet",
+    "note": "Cycle-1 produced outputs of this silo stream are the Delphi filing + gate outcome (admission only). No silo-produced research output has been validated yet.",
+    "evidence": [
+     "issue #1901 (baseline RFP, gate ledger: parked, effective 6.69/25)"
+    ]
+   },
+   "feature_extractions": {
+    "state": "recorded",
+    "method": "readme_summary_phrases",
+    "source": "in-repo curated record (stub README + SOURCE.txt); template source not vendored (metadata-first)",
+    "upstream": "https://github.com/yp-edu/research-project-template",
+    "summary": "KISS research project template built for agents (src/scripts/configs/docs/latex/results).",
+    "features": [
+     "KISS research project template built for agents (src/scripts/configs/docs/latex/results)."
+    ]
+   },
+   "consensus_implementation": {
+    "state": "none_yet",
+    "note": "Consensus implementation is cycle stage 6, after variant comparison; no cross-silo consensus implementation exists yet.",
+    "evidence": [
+     "docs/ops/RESEARCH-SILO-DELPHI.md (baseline_cycle stage order)"
+    ]
+   }
+  },
+  "research.seunghyukoh-research-template": {
+   "baseline_issue": 1902,
+   "produced_output_results_validated": {
+    "state": "none_validated_yet",
+    "note": "Cycle-1 produced outputs of this silo stream are the Delphi filing + gate outcome (admission only). No silo-produced research output has been validated yet.",
+    "evidence": [
+     "issue #1902 (baseline RFP, gate ledger: parked, effective 6.69/25)"
+    ]
+   },
+   "feature_extractions": {
+    "state": "recorded",
+    "method": "readme_summary_phrases",
+    "source": "in-repo curated record (stub README + SOURCE.txt); template source not vendored (metadata-first)",
+    "upstream": "https://github.com/seunghyukoh/research-template",
+    "summary": "Batteries-included template for ML/AI research (uv workspace, lm-eval, SFT, Docker, W&B).",
+    "features": [
+     "Batteries-included template for ML/AI research (uv workspace",
+     "lm-eval",
+     "SFT",
+     "Docker",
+     "W&B)."
+    ]
+   },
+   "consensus_implementation": {
+    "state": "none_yet",
+    "note": "Consensus implementation is cycle stage 6, after variant comparison; no cross-silo consensus implementation exists yet.",
+    "evidence": [
+     "docs/ops/RESEARCH-SILO-DELPHI.md (baseline_cycle stage order)"
+    ]
+   }
+  },
+  "research.irudik-repo-template": {
+   "baseline_issue": 1903,
+   "produced_output_results_validated": {
+    "state": "none_validated_yet",
+    "note": "Cycle-1 produced outputs of this silo stream are the Delphi filing + gate outcome (admission only). No silo-produced research output has been validated yet.",
+    "evidence": [
+     "issue #1903 (baseline RFP, gate ledger: parked, effective 6.69/25)"
+    ]
+   },
+   "feature_extractions": {
+    "state": "recorded",
+    "method": "readme_summary_phrases",
+    "source": "in-repo curated record (stub README + SOURCE.txt); template source not vendored (metadata-first)",
+    "upstream": "https://github.com/irudik/repo-template",
+    "summary": "AI-assisted academic research template (Make + R/Julia/Stata/MATLAB). Claude/Codex/Kimi-ready.",
+    "features": [
+     "AI-assisted academic research template (Make + R/Julia/Stata/MATLAB). Claude/Codex/Kimi-ready."
+    ]
+   },
+   "consensus_implementation": {
+    "state": "none_yet",
+    "note": "Consensus implementation is cycle stage 6, after variant comparison; no cross-silo consensus implementation exists yet.",
+    "evidence": [
+     "docs/ops/RESEARCH-SILO-DELPHI.md (baseline_cycle stage order)"
+    ]
+   }
+  },
+  "research.jdingel-projecttemplate": {
+   "baseline_issue": 1904,
+   "produced_output_results_validated": {
+    "state": "none_validated_yet",
+    "note": "Cycle-1 produced outputs of this silo stream are the Delphi filing + gate outcome (admission only). No silo-produced research output has been validated yet.",
+    "evidence": [
+     "issue #1904 (baseline RFP, gate ledger: parked, effective 6.69/25)"
+    ]
+   },
+   "feature_extractions": {
+    "state": "recorded",
+    "method": "readme_summary_phrases",
+    "source": "in-repo curated record (stub README + SOURCE.txt); template source not vendored (metadata-first)",
+    "upstream": "https://github.com/jdingel/projecttemplate",
+    "summary": "Common starting point for research projects (task-based, make, git, logbook).",
+    "features": [
+     "Common starting point for research projects (task-based",
+     "make",
+     "git",
+     "logbook)."
+    ]
+   },
+   "consensus_implementation": {
+    "state": "none_yet",
+    "note": "Consensus implementation is cycle stage 6, after variant comparison; no cross-silo consensus implementation exists yet.",
+    "evidence": [
+     "docs/ops/RESEARCH-SILO-DELPHI.md (baseline_cycle stage order)"
+    ]
+   }
+  },
+  "research.3rdcore-research-project-template": {
+   "baseline_issue": null,
+   "produced_output_results_validated": {
+    "state": "none_validated_yet",
+    "note": "Cycle-1 produced outputs of this silo stream are the Delphi filing + gate outcome (admission only). No silo-produced research output has been validated yet.",
+    "evidence": [
+     "issue #None (baseline RFP, gate ledger: parked, effective 6.69/25)"
+    ]
+   },
+   "feature_extractions": {
+    "state": "recorded",
+    "method": "readme_summary_phrases",
+    "source": "in-repo curated record (stub README + SOURCE.txt); template source not vendored (metadata-first)",
+    "upstream": "https://github.com/3rdCore/Research_Project_Template",
+    "summary": "PyTorch Lightning + Hydra + pre-commit + WandB + GHA research scaffold.",
+    "features": [
+     "PyTorch Lightning + Hydra + pre-commit + WandB + GHA research scaffold."
+    ]
+   },
+   "consensus_implementation": {
+    "state": "none_yet",
+    "note": "Consensus implementation is cycle stage 6, after variant comparison; no cross-silo consensus implementation exists yet.",
+    "evidence": [
+     "docs/ops/RESEARCH-SILO-DELPHI.md (baseline_cycle stage order)"
+    ]
+   }
+  },
+  "research.dicklesworthstone-agentic-flywheel": {
+   "baseline_issue": 1906,
+   "produced_output_results_validated": {
+    "state": "none_validated_yet",
+    "note": "Cycle-1 produced outputs of this silo stream are the Delphi filing + gate outcome (admission only). No silo-produced research output has been validated yet.",
+    "evidence": [
+     "issue #1906 (baseline RFP, gate ledger: parked, effective 6.69/25)"
+    ]
+   },
+   "feature_extractions": {
+    "state": "recorded",
+    "method": "readme_bullets",
+    "source": "in-repo curated record (stub README + SOURCE.txt); template source not vendored (metadata-first)",
+    "upstream": "https://github.com/Dicklesworthstone/agentic_coding_flywheel_setup",
+    "summary": "**Status:** RESEARCHED \u00b7 METADATA-ONLY \u00b7 INTEGRATION PR IN PROGRESS **Upstream:** https://github.com/Dicklesworthstone/agentic_coding_flywheel_setup **Methodology:** https://github.com/Dicklesworthstone/agentic_coding_flywheel_setup/blob/main/docs/methodology/THE_FLYWHEEL_CORE_LOOP.md **Integration contract:** docs/ops/DICKLESWORTHSTONE-FLYWHEEL-INTEGRATION.md **Machine-readable stack:** stack.json",
+    "features": [
+     "Metadata-first; no recursive clone or installer execution.",
+     "Reuse existing monorepo capabilities before introducing duplicate daemons, schedulers, task ledgers, or mail buses.",
+     "Keep upstream as the source of truth; project-specific patches belong in a maintained timerloggedout-spec/*_fork repository and a shallow gitlink under refTemplates/smods/ only after that fork exists.",
+     "Pin a reviewed tag or commit SHA for any executable dependency; never follow mutable main from production automation.",
+     "Test in a disposable Linux container first. Termux/Android support is a separate compatibility result, not implied by Linux support.",
+     "Do not enable upstream \u201cvibe\u201d defaults, passwordless sudo, destructive-command bypasses, or agent-wide unsafe flags in project-controlled environments.",
+     "No secrets, session stores, provider credentials, or user configuration snapshots in this reference slot.",
+     "A Delphi outcome-feedback flywheel in `scripts/delphi/gate.py` and `.github/workflows/delphi-gate.yml`, which updates role weights from confirmed/missed outcomes using the append-only weights ledger.",
+     "The Delphi lane/event contract for shadow trials, real-run feedback, HindSight misses, and re-scoring pending candidates.",
+     "Camshaft/Flywheel, Cadence, and Gantt scheduling/control surfaces with current-SHA, cooldown, idempotency, and provider-evidence boundaries."
+    ]
+   },
+   "consensus_implementation": {
+    "state": "none_yet",
+    "note": "Consensus implementation is cycle stage 6, after variant comparison; no cross-silo consensus implementation exists yet.",
+    "evidence": [
+     "docs/ops/RESEARCH-SILO-DELPHI.md (baseline_cycle stage order)"
+    ]
+   }
+  },
+  "research.opencode-research-papers": {
+   "baseline_issue": 1907,
+   "produced_output_results_validated": {
+    "state": "none_validated_yet",
+    "note": "Cycle-1 produced outputs of this silo stream are the Delphi filing + gate outcome (admission only). No silo-produced research output has been validated yet.",
+    "evidence": [
+     "issue #1907 (baseline RFP, gate ledger: parked, effective 6.69/25)"
+    ]
+   },
+   "feature_extractions": {
+    "state": "recorded",
+    "method": "readme_summary_phrases",
+    "source": "in-repo curated record (stub README + SOURCE.txt); template source not vendored (metadata-first)",
+    "upstream": "https://github.com/saim-x/opencode-research-papers",
+    "summary": "OpenCode plugin: arXiv + OpenAlex research search, no API keys, Markdown output, strict anchor-concept mode. Primary local-first scanner for `17_Papers` cadence.",
+    "features": [
+     "OpenCode plugin: arXiv + OpenAlex research search",
+     "no API keys",
+     "Markdown output",
+     "strict anchor-concept mode. Primary local-first scanner for `17_Papers` cadence."
+    ]
+   },
+   "consensus_implementation": {
+    "state": "none_yet",
+    "note": "Consensus implementation is cycle stage 6, after variant comparison; no cross-silo consensus implementation exists yet.",
+    "evidence": [
+     "docs/ops/RESEARCH-SILO-DELPHI.md (baseline_cycle stage order)"
+    ]
+   }
+  },
+  "research.cactus-needle": {
+   "baseline_issue": 1908,
+   "produced_output_results_validated": {
+    "state": "none_validated_yet",
+    "note": "Cycle-1 produced outputs of this silo stream are the Delphi filing + gate outcome (admission only). No silo-produced research output has been validated yet.",
+    "evidence": [
+     "issue #1908 (baseline RFP, gate ledger: parked, effective 6.69/25)"
+    ]
+   },
+   "feature_extractions": {
+    "state": "recorded",
+    "method": "readme_summary_phrases",
+    "source": "in-repo curated record (stub README + SOURCE.txt); template source not vendored (metadata-first)",
+    "upstream": "https://github.com/cactus-compute/needle",
+    "summary": "Needle 3 \u2014 8\u201329 MB foundation model for tiny devices (tool calls, structured extraction, embeddings). Strong fit for Termux / on-device agent runtime evaluation under `01_Agent_Runtime`.",
+    "features": [
+     "Needle 3 \u2014 8\u201329 MB foundation model for tiny devices (tool calls",
+     "structured extraction",
+     "embeddings). Strong fit for Termux / on-device agent runtime evaluation under `01_Agent_Runtime`."
+    ]
+   },
+   "consensus_implementation": {
+    "state": "none_yet",
+    "note": "Consensus implementation is cycle stage 6, after variant comparison; no cross-silo consensus implementation exists yet.",
+    "evidence": [
+     "docs/ops/RESEARCH-SILO-DELPHI.md (baseline_cycle stage order)"
+    ]
+   }
+  }
+ }
+}

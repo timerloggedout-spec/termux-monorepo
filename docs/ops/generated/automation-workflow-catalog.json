@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "a9f89aeaf04c66c048895a0d13a854a44cdec6864476c0c80920e21f1d60580d",
-  "workflow_count": 199,
+  "source_fingerprint": "ee46b2225ac1a5c929c5769dd36091e023a9936e7ab1d08650ccb4ddb761b3ac",
+  "workflow_count": 200,
   "workflows": [
     {
       "action_pins": [
@@ -3470,6 +3470,24 @@
       "path": ".github/workflows/tier1-engine-proof.yml",
       "schedules": [],
       "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "collect"
+      ],
+      "name": "traffic-feed-collect",
+      "path": ".github/workflows/traffic-feed-collect.yml",
+      "schedules": [
+        "23 9 * * 2"
+      ],
+      "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },

@@ -41,8 +41,13 @@ jobs:
             --out scripts/dashboards/dispatch_tree_observation.json 2>&1 | tee /tmp/obs.log
           rc=${PIPESTATUS[0]}
           if [ "$rc" -ne 0 ]; then
-            gh issue create --title "dispatch-tree-feed-collect: observer failed rc=$rc" \
-              --body-file /tmp/obs.log || true
+            cp /tmp/obs.log dispatch-tree-observe-failure.log || true
+            git config user.name "dispatch-tree-feed-collect"
+            git config user.email "actions@github.com"
+            git checkout -B "dispatch-tree-feed/diag" || true
+            git add dispatch-tree-observe-failure.log || true
+            git commit -m "diag: observer failure log" || true
+            git push -f origin "dispatch-tree-feed/diag" || true
             exit "$rc"
           fi
         env:

@@ -11,6 +11,28 @@
     "observed_at": {"type": "string", "format": "date-time"},
     "authenticated_user": {"type": "string", "minLength": 1},
     "snapshot_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "watching_status": {"type": "string", "enum": ["ok", "unavailable", "not_requested"]},
+    "delta": {
+      "type": "object",
+      "required": ["available", "added", "removed", "provenance_changed"],
+      "properties": {
+        "available": {"type": "boolean"},
+        "added": {"type": "array", "items": {"type": "string"}},
+        "removed": {"type": "array", "items": {"type": "string"}},
+        "provenance_changed": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["full_name", "from", "to"],
+            "properties": {
+              "full_name": {"type": "string"},
+              "from": {"type": "array", "items": {"type": "string"}},
+              "to": {"type": "array", "items": {"type": "string"}}
+            }
+          }
+        }
+      }
+    },
     "counts": {
       "type": "object",
       "required": ["owned", "starred", "both", "research_seeds", "integration_candidates"],

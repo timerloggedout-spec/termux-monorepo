@@ -38,7 +38,9 @@ of record. Tooling: `scripts/registration_monikers/registry.py`
 3. **No cross-platform identity linkage.** Entry material never points
    at the fleet's identity on another platform ("same team as …"),
    and avatars, bios, and handles are not copied across platforms
-   unless the owner directs it for a specific platform.
+   unless the owner directs it for a specific platform. A shared stem,
+   prefix, or pattern across the fleet's usernames is itself linkage —
+   assignment rule v3 (§3) exists because the v2 stem created one.
 4. **No personal identifiers in the record.** Legal names, personal
    email addresses, personal social accounts, and location beyond what
    a platform itself requires never appear in this repo, in entry
@@ -69,30 +71,30 @@ of record. Tooling: `scripts/registration_monikers/registry.py`
 | Platform | Role{Moniker} | Profile (Profile Registry heading) | Status | Registrations | Owning lane |
 |---|---|---|---|---|---|
 | Aha.io | `entrant{n0nAha}[platform:aha-io]` | Aha.io | registering | R4, D5 | challenge-entries |
-| Aion | `account{n0nAion}[platform:aion]` | — (pending: account-creation) | pending | — | account-creation |
+| Aion | `account{EagerComet73}[platform:aion]` | — (pending: account-creation) | pending | — | account-creation |
 | AWS Builder Center | `entrant{n0nAwsBuilder}[platform:aws-builder-center]` | AWS Builder Center | active | R1, R2, D0, R3, D1 | challenge-entries |
 | BOINC | `entrant{n0nBoinc}[platform:boinc]` | BOINC | registering | — | boinc |
 | Builder.io | `entrant{n0nBuilder}[platform:builder-io]` | Builder.io / Clips | active | D3 | challenge-entries |
 | Code, Not Card | `account{n0nCodeNotCard}[platform:code-not-card]` | — (pending: marketing-channel) | pending | — | marketing-channel |
-| Cohere | `account{n0nCohere}[platform:cohere]` | — (pending: account-creation) | registering | — | account-creation |
+| Cohere | `account{HappyCanyon42}[platform:cohere]` | — (pending: account-creation) | registering | — | account-creation |
 | Devpost | `entrant{n0nDevpost}[platform:devpost]` | Devpost | blocked-owner-gate | D4 | challenge-entries |
 | Dream In Production | `account{n0nDreamInProduction}[platform:dream-in-production]` | — (pending: marketing-channel) | pending | — | marketing-channel |
-| iFlytek | `account{n0nIflytek}[platform:iflytek]` | — (pending: account-creation) | pending | — | account-creation |
-| Kilo | `account{n0nKilo}[platform:kilo]` | — (pending: account-creation) | pending | — | account-creation |
+| iFlytek | `account{PluckyOasis73}[platform:iflytek]` | — (pending: account-creation) | pending | — | account-creation |
+| Kilo | `account{RapidHarbor74}[platform:kilo]` | — (pending: account-creation) | pending | — | account-creation |
 | Kiro | `entrant{n0nKiro}[platform:kiro]` | Kiro | blocked-owner-gate | D4 | challenge-entries |
 | lablab.ai | `entrant{n0nLablab}[platform:lablab-ai]` | lablab.ai | registering | D2 | challenge-entries |
-| LLM7 | `account{n0nLlm7}[platform:llm7]` | — (pending: account-creation) | pending | — | account-creation |
-| ModelScope | `account{n0nModelScope}[platform:model-scope]` | — (pending: account-creation) | pending | — | account-creation |
+| LLM7 | `account{WittyWillow78}[platform:llm7]` | — (pending: account-creation) | pending | — | account-creation |
+| ModelScope | `account{LivelyWillow16}[platform:model-scope]` | — (pending: account-creation) | pending | — | account-creation |
 | Platform201 | `account{n0nPlatform201}[platform:platform201]` | — (pending: platform201-status) | active | — | platform201-status |
 | Receipts Count | `account{n0nReceiptsCount}[platform:receipts-count]` | — (pending: marketing-channel) | pending | — | marketing-channel |
-| Requesty | `account{n0nRequesty}[platform:requesty]` | — (pending: account-creation) | pending | — | account-creation |
-| Routeway | `account{n0nRouteway}[platform:routeway]` | — (pending: account-creation) | pending | — | account-creation |
-| SeaLion | `account{n0nSeaLion}[platform:sea-lion]` | — (pending: account-creation) | pending | — | account-creation |
-| SiliconFlow | `account{n0nSiliconFlow}[platform:silicon-flow]` | — (pending: account-creation) | pending | — | account-creation |
-| UnoRouter | `account{n0nUnoRouter}[platform:uno-router]` | — (pending: account-creation) | pending | — | account-creation |
+| Requesty | `account{UrbanCanyon15}[platform:requesty]` | — (pending: account-creation) | pending | — | account-creation |
+| Routeway | `account{LivelyZenith43}[platform:routeway]` | — (pending: account-creation) | pending | — | account-creation |
+| SeaLion | `account{RapidDune76}[platform:sea-lion]` | — (pending: account-creation) | pending | — | account-creation |
+| SiliconFlow | `account{AmberFalcon96}[platform:silicon-flow]` | — (pending: account-creation) | pending | — | account-creation |
+| UnoRouter | `account{BriskMeadow17}[platform:uno-router]` | — (pending: account-creation) | pending | — | account-creation |
 | Vultr | `entrant{n0nVultr}[platform:vultr]` | Vultr | pending | D2 | challenge-entries |
-| xKiro | `account{n0nXkiro}[platform:xkiro]` | — (pending: account-creation) | pending | — | account-creation |
-| ZAI | `account{n0nZai}[platform:zai]` | — (pending: account-creation) | pending | — | account-creation |
+| xKiro | `account{OpalOnyx77}[platform:xkiro]` | — (pending: account-creation) | pending | — | account-creation |
+| ZAI | `account{JollyVale52}[platform:zai]` | — (pending: account-creation) | pending | — | account-creation |
 
 <!-- registry:end -->
 
@@ -102,11 +104,13 @@ Registry of record: `config/registration_monikers.json` (schema
 column names the entry's heading in `docs/ops/PROFILE-REGISTRY.md`,
 where the profile itself lives.
 
-## 3. Assignment rule (v2)
+## 3. Assignment rules (v2 legacy, v3 current)
 
 Deterministic, so the registry grows by rule rather than by taste —
 and the output is a **username**, not a class name: when a signup form
 asks for one, the assigned moniker is what goes in the field.
+
+**Rule v2 (legacy — frozen).**
 
 - Entries are processed in `platform_id` sort order.
 - `moniker = "n0n" + ` the platform_id's words capitalized and joined,
@@ -121,7 +125,7 @@ asks for one, the assigned moniker is what goes in the field.
 - Canonical form: `<role>{<moniker>}[platform:<platform_id>]` — role
   `entrant` for challenge platforms, `account` for provider accounts —
   e.g. `entrant{n0nAwsBuilder}[platform:aws-builder-center]`,
-  `account{n0nCohere}[platform:cohere]`.
+  `account{n0nPlatform201}[platform:platform201]`.
 - A packet (log §4) may be claimed by more than one entry — D2 is
   claimed by `lablab-ai` (event host) and `vultr` (sandbox) — with the
   `aspect` field saying why.
@@ -133,6 +137,30 @@ Artifacts carrying v1 forms predate the rename. The one rename with a
 possible platform-side footprint is BOINC's: if any BOINC project
 account already carries `entrantBoinc`, that name is a profile fact for
 the Profile Registry and the moniker of record is `n0nBoinc` regardless.
+
+**Rule v3 (current — owner standards review, 2026-10-28).** The v2
+stem stamped every fleet username with the same identifiable
+characteristic: any two fleet accounts were linkable at a glance,
+against rule 3. New assignments therefore carry **no shared stem and
+no platform name**:
+
+- A v3 moniker is a codename: `SHA-256("4n0n-v3:" + platform_id)`
+  selects an adjective + noun from generic wordlists in `registry.py`
+  plus a two-digit suffix (e.g. `BriskMeadow17`); collisions bump the
+  suffix. Deterministic — `registry.py derive` still answers instantly
+  — but the username itself names no platform and matches no fleet
+  pattern.
+- Entries record `"moniker_rule": "v3"` (absent = v2 legacy).
+  `registry.py check` recomputes each entry under its own rule and
+  fails a v3 moniker carrying the retired stem.
+- **Rotation (2026-10-28):** the 13 fleet provider pre-assignments
+  whose v2 names were never consumed at a platform form (Cohere +
+  Batch C) were rotated to v3 codenames in place; the account-creation
+  lane pulls the current value via `derive` at form time, per the §5
+  contract. Entries of record — issued, registered, or publicly
+  carried identities — keep their v2 names: renaming one is a
+  per-platform owner decision (tracked with Issue #1861), never a
+  silent re-derivation.
 
 ## 4. Orchestration routes
 

@@ -72,14 +72,17 @@ of record. Tooling: `scripts/registration_monikers/registry.py`
 | AWS Builder Center | `entrant{n0nAwsBuilder}[platform:aws-builder-center]` | AWS Builder Center | active | R1, R2, D0, R3, D1 | challenge-entries |
 | BOINC | `entrant{n0nBoinc}[platform:boinc]` | BOINC | registering | — | boinc |
 | Builder.io | `entrant{n0nBuilder}[platform:builder-io]` | Builder.io / Clips | active | D3 | challenge-entries |
+| Code, Not Card | `account{n0nCodeNotCard}[platform:code-not-card]` | — (pending: marketing-channel) | pending | — | marketing-channel |
 | Cohere | `account{n0nCohere}[platform:cohere]` | — (pending: account-creation) | registering | — | account-creation |
 | Devpost | `entrant{n0nDevpost}[platform:devpost]` | Devpost | blocked-owner-gate | D4 | challenge-entries |
+| Dream In Production | `account{n0nDreamInProduction}[platform:dream-in-production]` | — (pending: marketing-channel) | pending | — | marketing-channel |
 | iFlytek | `account{n0nIflytek}[platform:iflytek]` | — (pending: account-creation) | pending | — | account-creation |
 | Kilo | `account{n0nKilo}[platform:kilo]` | — (pending: account-creation) | pending | — | account-creation |
 | Kiro | `entrant{n0nKiro}[platform:kiro]` | Kiro | blocked-owner-gate | D4 | challenge-entries |
 | lablab.ai | `entrant{n0nLablab}[platform:lablab-ai]` | lablab.ai | registering | D2 | challenge-entries |
 | LLM7 | `account{n0nLlm7}[platform:llm7]` | — (pending: account-creation) | pending | — | account-creation |
 | ModelScope | `account{n0nModelScope}[platform:model-scope]` | — (pending: account-creation) | pending | — | account-creation |
+| Receipts Count | `account{n0nReceiptsCount}[platform:receipts-count]` | — (pending: marketing-channel) | pending | — | marketing-channel |
 | Requesty | `account{n0nRequesty}[platform:requesty]` | — (pending: account-creation) | pending | — | account-creation |
 | Routeway | `account{n0nRouteway}[platform:routeway]` | — (pending: account-creation) | pending | — | account-creation |
 | SeaLion | `account{n0nSeaLion}[platform:sea-lion]` | — (pending: account-creation) | pending | — | account-creation |
@@ -210,6 +213,17 @@ For the account-creation lane specifically:
   platform's profile in the Profile Registry under its own section;
   check accepts the null only while a pending owner is named, and any
   non-null ref must resolve.
+
+**Test-cell identities (marketing).** The same fleet-class pattern
+serves per-cell public identities for the referral test
+(marketing-channel lane): one Facebook Page = one cell identity,
+pre-assigned like the provider accounts, with the owner creating the
+Pages in Facebook himself. Rule 3 applies per cell with teeth: Page
+names and monikers share **no stems across cells**, and no cell's
+material references another cell — the cells stay unlinkable for both
+4n0n isolation and test attribution. The issued Page handle/URL is a
+profile fact, recorded in the Profile Registry under the
+marketing-channel section once the Page exists.
 
 ## 6. Owner-gated items the current registry surfaces
 

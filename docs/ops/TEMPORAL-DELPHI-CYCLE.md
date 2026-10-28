@@ -15,7 +15,7 @@ of record for semantics, and the workflow's finalize stage calls it.
 | Workflow | `DelphiCycleWorkflow`, task queue `delphi-cycle`, ID = `delphi-cycle/<pass-id>` (ID reuse is the idempotency boundary) |
 | Server | Fleet self-host, `localhost:7233`, namespace `default` (`docs/ops/TEMPORAL-SELF-HOST.md`) |
 | Code | `scripts/temporal/delphi_cycle/{workflow,activities,worker,client}.py` |
-| Worker | systemd `temporal-delphi-worker.service` (mirror in `scripts/temporal/selfhost/`), enrolled in `install.sh` keepalive coverage; runs the repo sparse checkout at `~/workspace/temporal-selfhost/repo` under the delphi-ops venv |
+| Worker | NOT a VM service (owner order 2026-10-28: VM = sandbox only; the Temporal self-host server is the sole exception). Workers run **bounded, per engagement**: `client.py prove` spawns them for the proof, and a live cycle runs `worker.py` in the foreground for the cycle's duration. The repeatable proof's always-on home is GitHub Actions (`.github/workflows/delphi-cycle.yml`: ephemeral in-job dev server, tests + §5 prove in record_only mode + parity, receipts as artifacts). A `temporal-delphi-worker.service` unit shipped in the first landing and was removed the same day under this order — the acceptance addendum records the state as it was when the proof ran |
 | Tests | `tests/test_delphi_cycle.py` (validation, phantom parity, staged parity, emission shape, payload-conversion regression) |
 
 ## How a cycle flows
@@ -62,8 +62,12 @@ bundle sha256, facilitator actions, ranked outcome.
 
 ## Operate
 
-- Status: `systemctl status temporal-delphi-worker`;
-  query a cycle: `client.py status --workflow-id delphi-cycle/<pass-id>`.
+- Query a cycle (any worker on the queue serves it; for a completed
+  cycle within retention, the self-host exception server holds the
+  history): `client.py status --workflow-id delphi-cycle/<pass-id>`.
+- Run a live cycle: start `worker.py --address localhost:7233` in
+  the foreground on the VM (bounded to the engagement — kill it
+  when the cycle completes), then drive it with `client.py`.
 - Start a cycle / cast ballots / facilitator actions: `client.py`
   subcommands (`start`, `ballot`, `facilitator`, `result`); the
   fixture mode is the rehearsal brief — real passes supply their

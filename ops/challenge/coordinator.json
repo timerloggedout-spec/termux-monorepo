@@ -7,11 +7,31 @@
     "chat_id": "9cb1c873-b150-490e-8a51-182765c15653",
     "scope": "Owns the challenge-entries lane and the countdown-critical path; the challenge-entries lane (log/execution) works under it.",
     "subs": [
-      {"suffix": "-d1", "event_id": "D1", "chat_id": null},
-      {"suffix": "-d2", "event_id": "D2", "chat_id": null},
-      {"suffix": "-d3", "event_id": "D3", "chat_id": null},
-      {"suffix": "-d4", "event_id": "D4", "chat_id": null},
-      {"suffix": "-d5", "event_id": "D5", "chat_id": null}
+      {
+        "suffix": "-d1",
+        "event_id": "D1",
+        "chat_id": null
+      },
+      {
+        "suffix": "-d2",
+        "event_id": "D2",
+        "chat_id": null
+      },
+      {
+        "suffix": "-d3",
+        "event_id": "D3",
+        "chat_id": null
+      },
+      {
+        "suffix": "-d4",
+        "event_id": "D4",
+        "chat_id": null
+      },
+      {
+        "suffix": "-d5",
+        "event_id": "D5",
+        "chat_id": null
+      }
     ]
   },
   "events": [
@@ -30,19 +50,36 @@
         "build_start": "NOT_ESTABLISHED",
         "build_end": "NOT_ESTABLISHED",
         "submissions_open": "NOT_ESTABLISHED",
-        "deadline": {"at": "2026-10-26T13:00:00-07:00", "tz": "America/Los_Angeles", "source": "challenge log section 4 D0 countdown-data; window Oct 23 - Oct 26 1:00 PM PDT per Gmail join receipt"},
+        "deadline": {
+          "at": "2026-10-26T13:00:00-07:00",
+          "tz": "America/Los_Angeles",
+          "source": "challenge log section 4 D0 countdown-data; window Oct 23 - Oct 26 1:00 PM PDT per Gmail join receipt"
+        },
         "judging_end": "NOT_ESTABLISHED",
         "winners_at": "NOT_ESTABLISHED"
       },
       "constraints": [],
       "gates": [],
-      "prizes": {"status": "NOT_ESTABLISHED", "tiers": []},
+      "prizes": {
+        "status": "NOT_ESTABLISHED",
+        "tiers": []
+      },
       "registration": {
         "state": "joined",
-        "evidence": ["Gmail msg 1a16ca3f96d0508c from notifications@builder.aws.com (joined 2026-10-23 23:40 PDT)", "platform challenge ID 2e275689-b202-316e-93b8-10cd6d6d1e4a"]
+        "evidence": [
+          "Gmail msg 1a16ca3f96d0508c from notifications@builder.aws.com (joined 2026-10-23 23:40 PDT)",
+          "platform challenge ID 2e275689-b202-316e-93b8-10cd6d6d1e4a"
+        ]
       },
-      "submission": {"state": "none", "at": null, "confirmation_ref": null},
-      "brief": {"evidence_pack_ref": null, "anchor_lines": []},
+      "submission": {
+        "state": "none",
+        "at": null,
+        "confirmation_ref": null
+      },
+      "brief": {
+        "evidence_pack_ref": null,
+        "anchor_lines": []
+      },
       "projects": [
         {
           "id": "delphi-oracle-weekend-challenge",
@@ -53,14 +90,39 @@
           "status": "abandoned",
           "reason": "Window closed Oct 26 before completion; owner ruled 2026-10-27 to complete it anyway as a completion record only — never submitted to the platform (submission count stays 0).",
           "superseded_by": null,
-          "assets": {"repo_dir": "apps/weekend-challenge-delphi-oracle", "proposal_dir": null, "demo_url": null, "clips_url": null},
+          "assets": {
+            "repo_dir": "apps/weekend-challenge-delphi-oracle",
+            "proposal_dir": null,
+            "demo_url": null,
+            "clips_url": null
+          },
           "decisions": [
-            {"at": "2026-10-27", "by": "owner", "action": "complete-anyway ruling; completion date set Thu Oct 29", "pr": 1699, "sha": "328778d668"},
-            {"at": "2026-10-27", "by": "delphi-lane", "action": "completion package landed", "pr": 1702, "sha": "aa110a5e"},
-            {"at": "2026-10-27", "by": "challenge-entries-lane", "action": "log flipped COMPLETED (completion record only; no late filing claimed)", "pr": 1703, "sha": "396d07441b"}
+            {
+              "at": "2026-10-27",
+              "by": "owner",
+              "action": "complete-anyway ruling; completion date set Thu Oct 29",
+              "pr": 1699,
+              "sha": "328778d668"
+            },
+            {
+              "at": "2026-10-27",
+              "by": "delphi-lane",
+              "action": "completion package landed",
+              "pr": 1702,
+              "sha": "aa110a5e"
+            },
+            {
+              "at": "2026-10-27",
+              "by": "challenge-entries-lane",
+              "action": "log flipped COMPLETED (completion record only; no late filing claimed)",
+              "pr": 1703,
+              "sha": "396d07441b"
+            }
           ]
         }
-      ]
+      ],
+      "participants": [],
+      "judges": []
     },
     {
       "id": "D1",
@@ -74,10 +136,26 @@
         "announced": "NOT_ESTABLISHED",
         "reg_open": "NOT_ESTABLISHED",
         "reg_close": "NOT_ESTABLISHED",
-        "build_start": {"at": "2026-10-28T00:00:00-07:00", "tz": "America/Los_Angeles", "source": "official challenge page: hackathon window October 28 to November 4 (read 2026-10-28)"},
-        "build_end": {"at": "2026-11-04T23:59:00-08:00", "tz": "America/Los_Angeles", "source": "official challenge page: projects due by November 4"},
-        "submissions_open": {"at": "2026-10-28T00:00:00-07:00", "tz": "America/Los_Angeles", "source": "official challenge page (window open = launch October 28)"},
-        "deadline": {"at": "2026-11-04T23:59:00-08:00", "tz": "America/Los_Angeles", "source": "challenge log section 4 D1 countdown-data; official page timeline: Projects due by November 4"},
+        "build_start": {
+          "at": "2026-10-28T00:00:00-07:00",
+          "tz": "America/Los_Angeles",
+          "source": "official challenge page: hackathon window October 28 to November 4 (read 2026-10-28)"
+        },
+        "build_end": {
+          "at": "2026-11-04T23:59:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official challenge page: projects due by November 4"
+        },
+        "submissions_open": {
+          "at": "2026-10-28T00:00:00-07:00",
+          "tz": "America/Los_Angeles",
+          "source": "official challenge page (window open = launch October 28)"
+        },
+        "deadline": {
+          "at": "2026-11-04T23:59:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "challenge log section 4 D1 countdown-data; official page timeline: Projects due by November 4"
+        },
         "judging_end": "NOT_ESTABLISHED",
         "winners_at": "NOT_ESTABLISHED"
       },
@@ -86,21 +164,46 @@
         "Your project submission must include: (1) An agent built with the Strands Agents SDK that addresses a real-world social good challenge. (2) A project article on Builder Center describing the agent, what it does, and the social good problem it addresses. (3) A link to a public repository with the agent's source code. (4) A short, publicly available demo video, under three minutes, showing the agent working. (5) An original agent that has not been published before."
       ],
       "gates": [
-        {"id": "G-07", "label": "Builder profile complete (mandatory fields: name, country, image, about, social link)", "blocks": "D1 submission validity", "owner": "owner (sign-in) / agency (edit)", "status": "open", "evidence": "Live public profile check 2026-10-28: default avatar asset, About empty, no social links. Daily g07-profile-watch workflow escalates on the G-07 tracking issue; Manager is responder of record."},
-        {"id": "D1-WORKSHOP", "label": "In-window workshop completion evidence (verified badge + certificate dated Oct 28 - Nov 4)", "blocks": "D1 qualification", "owner": "owner account (workshop sitting)", "status": "open", "evidence": "Not started as of 2026-10-28 09:06 PT. Runbook: challenge log D1 (PR #1947). Sandbox requested only at block start (8h clock, 1/week)."}
+        {
+          "id": "G-07",
+          "label": "Builder profile complete (mandatory fields: name, country, image, about, social link)",
+          "blocks": "D1 submission validity",
+          "owner": "owner (sign-in) / agency (edit)",
+          "status": "open",
+          "evidence": "Live public profile check 2026-10-28: default avatar asset, About empty, no social links. Daily g07-profile-watch workflow escalates on the G-07 tracking issue; Manager is responder of record."
+        },
+        {
+          "id": "D1-WORKSHOP",
+          "label": "In-window workshop completion evidence (verified badge + certificate dated Oct 28 - Nov 4)",
+          "blocks": "D1 qualification",
+          "owner": "owner account (workshop sitting)",
+          "status": "open",
+          "evidence": "Not started as of 2026-10-28 09:06 PT. Runbook: challenge log D1 (PR #1947). Sandbox requested only at block start (8h clock, 1/week)."
+        }
       ],
       "prizes": {
         "status": "ESTABLISHED",
         "pool": "$16,800",
         "tiers": [
-          {"place": "winner (3 selected)", "award": "$5,000 in AWS Promotional Credits and one AWS Builder swag bundle worth about $600 (jacket, backpack, keyboard); official winner's certificate", "source_url": "https://builder.aws.com/build/hackathons/8311dcb5-1ece-3d62-a441-2e1c2ad90b86/strands-sdk-workshop-to-ship"}
+          {
+            "place": "winner (3 selected)",
+            "award": "$5,000 in AWS Promotional Credits and one AWS Builder swag bundle worth about $600 (jacket, backpack, keyboard); official winner's certificate",
+            "source_url": "https://builder.aws.com/build/hackathons/8311dcb5-1ece-3d62-a441-2e1c2ad90b86/strands-sdk-workshop-to-ship"
+          }
         ]
       },
       "registration": {
         "state": "joined",
-        "evidence": ["Gmail msg 1a16ca3fb608dcf9 from notifications@builder.aws.com (joined 2026-10-23 23:40 PDT)", "platform challenge ID 8311dcb5-1ece-3d62-a441-2e1c2ad90b86"]
+        "evidence": [
+          "Gmail msg 1a16ca3fb608dcf9 from notifications@builder.aws.com (joined 2026-10-23 23:40 PDT)",
+          "platform challenge ID 8311dcb5-1ece-3d62-a441-2e1c2ad90b86"
+        ]
       },
-      "submission": {"state": "none", "at": null, "confirmation_ref": null},
+      "submission": {
+        "state": "none",
+        "at": null,
+        "confirmation_ref": null
+      },
       "brief": {
         "evidence_pack_ref": "docs/ops/CHALLENGE-BRIEF-EVIDENCE-2026-10-28.md",
         "anchor_lines": [
@@ -118,9 +221,20 @@
           "status": "picked_pending_freeze",
           "reason": null,
           "superseded_by": null,
-          "assets": {"repo_dir": null, "proposal_dir": null, "demo_url": null, "clips_url": null},
+          "assets": {
+            "repo_dir": null,
+            "proposal_dir": null,
+            "demo_url": null,
+            "clips_url": null
+          },
           "decisions": [
-            {"at": "2026-10-28", "by": "delphi-lane / manager", "action": "named as the D1 pick, pending owner freeze (not frozen; no build authorization from the pick alone)", "pr": 2046, "sha": "6aed4b6bad"}
+            {
+              "at": "2026-10-28",
+              "by": "delphi-lane / manager",
+              "action": "named as the D1 pick, pending owner freeze (not frozen; no build authorization from the pick alone)",
+              "pr": 2046,
+              "sha": "6aed4b6bad"
+            }
           ]
         },
         {
@@ -132,9 +246,20 @@
           "status": "abandoned",
           "reason": "TAINTED per owner ruling 2026-10-28: fleet-derived, no lineage from the official brief. Do not build.",
           "superseded_by": "studysprint",
-          "assets": {"repo_dir": null, "proposal_dir": null, "demo_url": null, "clips_url": null},
+          "assets": {
+            "repo_dir": null,
+            "proposal_dir": null,
+            "demo_url": null,
+            "clips_url": null
+          },
           "decisions": [
-            {"at": "2026-10-28", "by": "owner (via manager)", "action": "concept set stopped (tainted)", "pr": 2045, "sha": "5707465b81"}
+            {
+              "at": "2026-10-28",
+              "by": "owner (via manager)",
+              "action": "concept set stopped (tainted)",
+              "pr": 2045,
+              "sha": "5707465b81"
+            }
           ]
         },
         {
@@ -146,9 +271,20 @@
           "status": "abandoned",
           "reason": "TAINTED per owner ruling 2026-10-28; recorded as a not-entry — a pass candidate, never an entry candidate. Do not build.",
           "superseded_by": null,
-          "assets": {"repo_dir": null, "proposal_dir": "docs/proposals/passes/strands-rfp-response", "demo_url": null, "clips_url": null},
+          "assets": {
+            "repo_dir": null,
+            "proposal_dir": "docs/proposals/passes/strands-rfp-response",
+            "demo_url": null,
+            "clips_url": null
+          },
           "decisions": [
-            {"at": "2026-10-28", "by": "owner (via manager)", "action": "tainted; not an entry", "pr": 2045, "sha": "5707465b81"}
+            {
+              "at": "2026-10-28",
+              "by": "owner (via manager)",
+              "action": "tainted; not an entry",
+              "pr": 2045,
+              "sha": "5707465b81"
+            }
           ]
         },
         {
@@ -160,9 +296,20 @@
           "status": "abandoned",
           "reason": "TAINTED per owner ruling 2026-10-28; recorded as a not-entry — a pass candidate, never an entry candidate. Do not build.",
           "superseded_by": null,
-          "assets": {"repo_dir": null, "proposal_dir": "docs/proposals/passes/strands-rfp-response", "demo_url": null, "clips_url": null},
+          "assets": {
+            "repo_dir": null,
+            "proposal_dir": "docs/proposals/passes/strands-rfp-response",
+            "demo_url": null,
+            "clips_url": null
+          },
           "decisions": [
-            {"at": "2026-10-28", "by": "owner (via manager)", "action": "tainted; not an entry", "pr": 2045, "sha": "5707465b81"}
+            {
+              "at": "2026-10-28",
+              "by": "owner (via manager)",
+              "action": "tainted; not an entry",
+              "pr": 2045,
+              "sha": "5707465b81"
+            }
           ]
         },
         {
@@ -174,19 +321,86 @@
           "status": "abandoned",
           "reason": "TAINTED per owner ruling 2026-10-28; recorded as a not-entry — a pass candidate, never an entry candidate. Do not build.",
           "superseded_by": null,
-          "assets": {"repo_dir": null, "proposal_dir": "docs/proposals/passes/strands-rfp-response", "demo_url": null, "clips_url": null},
+          "assets": {
+            "repo_dir": null,
+            "proposal_dir": "docs/proposals/passes/strands-rfp-response",
+            "demo_url": null,
+            "clips_url": null
+          },
           "decisions": [
-            {"at": "2026-10-28", "by": "owner (via manager)", "action": "tainted; not an entry", "pr": 2045, "sha": "5707465b81"}
+            {
+              "at": "2026-10-28",
+              "by": "owner (via manager)",
+              "action": "tainted; not an entry",
+              "pr": 2045,
+              "sha": "5707465b81"
+            }
           ]
         }
-      ]
+      ],
+      "participants": [
+        {
+          "id": "ladder-practice-sets",
+          "team_name": "NOT_ESTABLISHED",
+          "members": [],
+          "platform_profile_url": null,
+          "project": {
+            "name": "Ladder: practice sets a teacher can trust",
+            "url": "https://builder.aws.com/project/3LJjkhxhefaoI8OMD5QZW8HkUnp/ladder-practice-sets-a-teacher-can-trust",
+            "status": "submitted",
+            "repo_url": "https://github.com/abhinavshukla152005-beep/ladder",
+            "demo_url": "https://youtu.be/aoFbngpUhP8"
+          },
+          "persona": {
+            "bio": "NOT_ESTABLISHED",
+            "skills": [],
+            "past_events": [],
+            "past_wins": [],
+            "public_links": {
+              "github": null,
+              "devpost": null,
+              "linkedin": null,
+              "site": null,
+              "other": null
+            }
+          },
+          "engagement": {
+            "public_chats": [],
+            "touchpoints": []
+          },
+          "signals": {
+            "past_wins": [],
+            "placements": [],
+            "snapshots": []
+          },
+          "recruitment": {
+            "candidate": true,
+            "pipeline_state": "identified"
+          },
+          "sources": [
+            {
+              "url": "https://builder.aws.com/project/3LJjkhxhefaoI8OMD5QZW8HkUnp/ladder-practice-sets-a-teacher-can-trust",
+              "fetched_at": "2026-10-28T13:02:00-07:00"
+            },
+            {
+              "url": "https://builder.aws.com/build/hackathons/8311dcb5-1ece-3d62-a441-2e1c2ad90b86/strands-sdk-workshop-to-ship",
+              "fetched_at": "2026-10-28T13:02:00-07:00"
+            }
+          ],
+          "confidence": "low",
+          "notes": "First and only project in D1's public Projects list on day 1 (checked signed-out 2026-10-28 13:01-13:03 PT). Builder Center shows NO author name/handle/profile for this entry on the list card or the project page; repo_url/demo_url are published in the project body and are project links, not author-profile facts. D1's Participants tab is join-gated (323 joined per page header) — not a public source; tracking runs on the Projects list."
+        }
+      ],
+      "judges": []
     },
     {
       "id": "D2",
       "name": "Vultr: Agent Rush Hackathon",
       "host": "lablab.ai (Vultr)",
       "platform": "lablab-ai",
-      "also_platforms": ["vultr"],
+      "also_platforms": [
+        "vultr"
+      ],
       "official_url": "https://lablab.ai/ai-hackathons/vultr-hackathon",
       "status": "registering",
       "entrant_moniker": "entrant{entrantLablabAi}[platform:lablab-ai]",
@@ -194,10 +408,22 @@
         "announced": "NOT_ESTABLISHED",
         "reg_open": "NOT_ESTABLISHED",
         "reg_close": "NOT_ESTABLISHED",
-        "build_start": {"at": "2026-11-03T15:00:00Z", "tz": "UTC", "source": "lablab.ai event page, Events block: 2026-11-03T15:00:00Z to 2026-11-08T22:00:00Z (read 2026-10-28)"},
-        "build_end": {"at": "2026-11-08T22:00:00Z", "tz": "UTC", "source": "lablab.ai event page, Events block (read 2026-10-28)"},
+        "build_start": {
+          "at": "2026-11-03T15:00:00Z",
+          "tz": "UTC",
+          "source": "lablab.ai event page, Events block: 2026-11-03T15:00:00Z to 2026-11-08T22:00:00Z (read 2026-10-28)"
+        },
+        "build_end": {
+          "at": "2026-11-08T22:00:00Z",
+          "tz": "UTC",
+          "source": "lablab.ai event page, Events block (read 2026-10-28)"
+        },
         "submissions_open": "NOT_ESTABLISHED",
-        "deadline": {"at": "2026-11-08T15:00:00-08:00", "tz": "America/Los_Angeles", "source": "challenge log section 3 C2 (official page read 2026-10-26): submissions end Nov 8, 2026, 3:00 PM PST"},
+        "deadline": {
+          "at": "2026-11-08T15:00:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "challenge log section 3 C2 (official page read 2026-10-26): submissions end Nov 8, 2026, 3:00 PM PST"
+        },
         "judging_end": "NOT_ESTABLISHED",
         "winners_at": "NOT_ESTABLISHED"
       },
@@ -208,24 +434,52 @@
         "Teams consist of 1-6 people."
       ],
       "gates": [
-        {"id": "D2-NOCARD", "label": "No-card path only (fleet card rule): lablab registration + Discord + published Vultr participant credits", "blocks": "any D2 participation step that would require a payment instrument", "owner": "challenge-entries lane", "status": "open", "evidence": "Official page (read 2026-10-28): each participant receives $200 in free Vultr credits via gift code at kickoff; account creation is email + password. Any payment-instrument step halts the packet."}
+        {
+          "id": "D2-NOCARD",
+          "label": "No-card path only (fleet card rule): lablab registration + Discord + published Vultr participant credits",
+          "blocks": "any D2 participation step that would require a payment instrument",
+          "owner": "challenge-entries lane",
+          "status": "open",
+          "evidence": "Official page (read 2026-10-28): each participant receives $200 in free Vultr credits via gift code at kickoff; account creation is email + password. Any payment-instrument step halts the packet."
+        }
       ],
       "prizes": {
         "status": "ESTABLISHED",
         "pool": "$14,000 in cash and Vultr credits, plus up to $1,000 in onsite raffle prizes",
         "tiers": [
-          {"place": "1st place", "award": "$5,000 cash prize + $3,000 in Vultr credits", "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon"},
-          {"place": "2nd place", "award": "$3,000 cash prize + $1,000 in Vultr credits", "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon"},
-          {"place": "3rd place", "award": "$1,000 cash prize + $1,000 in Vultr credits", "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon"}
+          {
+            "place": "1st place",
+            "award": "$5,000 cash prize + $3,000 in Vultr credits",
+            "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon"
+          },
+          {
+            "place": "2nd place",
+            "award": "$3,000 cash prize + $1,000 in Vultr credits",
+            "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon"
+          },
+          {
+            "place": "3rd place",
+            "award": "$1,000 cash prize + $1,000 in Vultr credits",
+            "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon"
+          }
         ],
         "notes": "Every participant gets $200 in free Vultr credits. Onsite raffle (3 individual winners, in-person only): PlayStation 5 Standard, Apple AirPods 5 with Wireless Charging Case, Razer DeathAdder V3 HyperSpeed."
       },
       "registration": {
         "state": "not started",
-        "evidence": ["Requirement checklist in challenge log D2: lablab.ai registration + Discord join + Vultr account (no-card path only) — recon in the prep window."]
+        "evidence": [
+          "Requirement checklist in challenge log D2: lablab.ai registration + Discord join + Vultr account (no-card path only) — recon in the prep window."
+        ]
       },
-      "submission": {"state": "none", "at": null, "confirmation_ref": null},
-      "brief": {"evidence_pack_ref": null, "anchor_lines": []},
+      "submission": {
+        "state": "none",
+        "at": null,
+        "confirmation_ref": null
+      },
+      "brief": {
+        "evidence_pack_ref": null,
+        "anchor_lines": []
+      },
       "projects": [
         {
           "id": "web-adapter-foundry",
@@ -236,10 +490,17 @@
           "status": "candidate",
           "reason": null,
           "superseded_by": null,
-          "assets": {"repo_dir": "ops/web_adapter_foundry", "proposal_dir": null, "demo_url": null, "clips_url": null},
+          "assets": {
+            "repo_dir": "ops/web_adapter_foundry",
+            "proposal_dir": null,
+            "demo_url": null,
+            "clips_url": null
+          },
           "decisions": []
         }
-      ]
+      ],
+      "participants": [],
+      "judges": []
     },
     {
       "id": "D3",
@@ -253,12 +514,32 @@
         "announced": "NOT_ESTABLISHED",
         "reg_open": "NOT_ESTABLISHED",
         "reg_close": "NOT_ESTABLISHED",
-        "build_start": {"at": "2026-10-27T00:00:00-07:00", "tz": "America/Los_Angeles", "source": "Official Rules (read 2026-10-28): October 27, 2026: Hackathon begins; building can start immediately."},
-        "build_end": {"at": "2026-11-09T23:59:00-08:00", "tz": "America/Los_Angeles", "source": "Official Rules: final submission deadline (build ends with submissions)."},
-        "submissions_open": {"at": "2026-10-27T00:00:00-07:00", "tz": "America/Los_Angeles", "source": "Official Rules schedule (hackathon begins Oct 27; submission via the project submission form)."},
-        "deadline": {"at": "2026-11-09T23:59:00-08:00", "tz": "America/Los_Angeles", "source": "Official Rules verbatim: Monday, November 9, 2026 at 11:59 PM PT: Final submission deadline. (Supersedes the 2026-10-26 read of Nov 2.)"},
+        "build_start": {
+          "at": "2026-10-27T00:00:00-07:00",
+          "tz": "America/Los_Angeles",
+          "source": "Official Rules (read 2026-10-28): October 27, 2026: Hackathon begins; building can start immediately."
+        },
+        "build_end": {
+          "at": "2026-11-09T23:59:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "Official Rules: final submission deadline (build ends with submissions)."
+        },
+        "submissions_open": {
+          "at": "2026-10-27T00:00:00-07:00",
+          "tz": "America/Los_Angeles",
+          "source": "Official Rules schedule (hackathon begins Oct 27; submission via the project submission form)."
+        },
+        "deadline": {
+          "at": "2026-11-09T23:59:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "Official Rules verbatim: Monday, November 9, 2026 at 11:59 PM PT: Final submission deadline. (Supersedes the 2026-10-26 read of Nov 2.)"
+        },
         "judging_end": "NOT_ESTABLISHED",
-        "winners_at": {"at": "2026-11-13", "tz": "America/Los_Angeles", "source": "Official Rules: November 13, 2026: Target winner announcement, subject to verification. (Date only; no time published.)"}
+        "winners_at": {
+          "at": "2026-11-13",
+          "tz": "America/Los_Angeles",
+          "source": "Official Rules: November 13, 2026: Target winner announcement, subject to verification. (Date only; no time published.)"
+        }
       },
       "constraints": [
         "Submit original work or meaningful new development completed during the Hackathon, beginning October 27, 2026. Identify pre-existing work, templates, libraries, third-party assets, and what changed during the event.",
@@ -266,25 +547,58 @@
         "Recording a clip alone does not submit an entry."
       ],
       "gates": [
-        {"id": "D3-CLIPS-STORAGE", "label": "Connect clip storage (Builder.io or S3-compatible backend) on the created Clips account", "blocks": "demo recording upload", "owner": "challenge-entries lane (in-app step on the account)", "status": "open", "evidence": "Clips account created 2026-10-27 (PR #1835 merged 264c5d9771); /record shows a Connect storage step; recordings cannot upload before it."}
+        {
+          "id": "D3-CLIPS-STORAGE",
+          "label": "Connect clip storage (Builder.io or S3-compatible backend) on the created Clips account",
+          "blocks": "demo recording upload",
+          "owner": "challenge-entries lane (in-app step on the account)",
+          "status": "open",
+          "evidence": "Clips account created 2026-10-27 (PR #1835 merged 264c5d9771); /record shows a Connect storage step; recordings cannot upload before it."
+        }
       ],
       "prizes": {
         "status": "ESTABLISHED",
         "pool": "$10,000 USD across five ranked cash prizes",
         "tiers": [
-          {"place": "Grand Prize", "award": "$5,000 USD", "source_url": "https://builder.io/hackathon/rules"},
-          {"place": "2nd Place", "award": "$2,500 USD", "source_url": "https://builder.io/hackathon/rules"},
-          {"place": "3rd Place", "award": "$1,500 USD", "source_url": "https://builder.io/hackathon/rules"},
-          {"place": "4th Place", "award": "$750 USD", "source_url": "https://builder.io/hackathon/rules"},
-          {"place": "5th Place", "award": "$250 USD", "source_url": "https://builder.io/hackathon/rules"}
+          {
+            "place": "Grand Prize",
+            "award": "$5,000 USD",
+            "source_url": "https://builder.io/hackathon/rules"
+          },
+          {
+            "place": "2nd Place",
+            "award": "$2,500 USD",
+            "source_url": "https://builder.io/hackathon/rules"
+          },
+          {
+            "place": "3rd Place",
+            "award": "$1,500 USD",
+            "source_url": "https://builder.io/hackathon/rules"
+          },
+          {
+            "place": "4th Place",
+            "award": "$750 USD",
+            "source_url": "https://builder.io/hackathon/rules"
+          },
+          {
+            "place": "5th Place",
+            "award": "$250 USD",
+            "source_url": "https://builder.io/hackathon/rules"
+          }
         ],
         "notes": "Each winning entry may receive at most one ranked cash prize. Recognition categories (Best Overall App, Best Productivity App, Most Creative App, Best Use of Agent-Native) add no cash."
       },
       "registration": {
         "state": "not required",
-        "evidence": ["Official Rules + hackathon page (read 2026-10-28): no registration required; no account needed to build or submit. The Clips account (for the demo recording) was created 2026-10-27; it has no username/handle."]
+        "evidence": [
+          "Official Rules + hackathon page (read 2026-10-28): no registration required; no account needed to build or submit. The Clips account (for the demo recording) was created 2026-10-27; it has no username/handle."
+        ]
       },
-      "submission": {"state": "none", "at": null, "confirmation_ref": null},
+      "submission": {
+        "state": "none",
+        "at": null,
+        "confirmation_ref": null
+      },
       "brief": {
         "evidence_pack_ref": "docs/ops/CHALLENGE-BRIEF-EVIDENCE-2026-10-28.md",
         "anchor_lines": [
@@ -302,9 +616,20 @@
           "status": "picked_pending_freeze",
           "reason": null,
           "superseded_by": null,
-          "assets": {"repo_dir": null, "proposal_dir": null, "demo_url": null, "clips_url": null},
+          "assets": {
+            "repo_dir": null,
+            "proposal_dir": null,
+            "demo_url": null,
+            "clips_url": null
+          },
           "decisions": [
-            {"at": "2026-10-28", "by": "delphi-lane / manager", "action": "named as the D3 pick, pending owner freeze (not frozen; no build authorization from the pick alone)", "pr": 2046, "sha": "6aed4b6bad"}
+            {
+              "at": "2026-10-28",
+              "by": "delphi-lane / manager",
+              "action": "named as the D3 pick, pending owner freeze (not frozen; no build authorization from the pick alone)",
+              "pr": 2046,
+              "sha": "6aed4b6bad"
+            }
           ]
         },
         {
@@ -316,22 +641,55 @@
           "status": "questioned",
           "reason": "Owner correction 2026-10-28: proposal #42 is QUESTIONED / under review as a D3 build - the inward-generation defect is challenged (duplicates the fleet's own Delphi system, inward-looking, no lineage from the official Builder.io brief). NOT terminated as a proposal record; NOT the active build - do not build pending the review outcome.",
           "superseded_by": null,
-          "assets": {"repo_dir": null, "proposal_dir": "docs/proposals/active/delphi-desk-builder-io", "demo_url": null, "clips_url": null},
+          "assets": {
+            "repo_dir": null,
+            "proposal_dir": "docs/proposals/active/delphi-desk-builder-io",
+            "demo_url": null,
+            "clips_url": null
+          },
           "decisions": [
-            {"at": "2026-10-27", "by": "delphi-lane (oracle-method)", "action": "generated and registered as proposal #42 (first author: oracle-method)", "pr": 1708, "sha": "7a7a5888"},
-            {"at": "2026-10-27", "by": "challenge-entries-lane", "action": "cited as D3's basis in the challenge log", "pr": 1709, "sha": "63eae908ee"},
-            {"at": "2026-10-28", "by": "owner (via manager)", "action": "stopped as the D3 build (initial wording: killed)", "pr": 2045, "sha": "5707465b81"},
-            {"at": "2026-10-28", "by": "owner", "action": "correction: #42 is questioned, not killed; record stands; not the active build", "pr": 2050, "sha": "c220ce5da5"}
+            {
+              "at": "2026-10-27",
+              "by": "delphi-lane (oracle-method)",
+              "action": "generated and registered as proposal #42 (first author: oracle-method)",
+              "pr": 1708,
+              "sha": "7a7a5888"
+            },
+            {
+              "at": "2026-10-27",
+              "by": "challenge-entries-lane",
+              "action": "cited as D3's basis in the challenge log",
+              "pr": 1709,
+              "sha": "63eae908ee"
+            },
+            {
+              "at": "2026-10-28",
+              "by": "owner (via manager)",
+              "action": "stopped as the D3 build (initial wording: killed)",
+              "pr": 2045,
+              "sha": "5707465b81"
+            },
+            {
+              "at": "2026-10-28",
+              "by": "owner",
+              "action": "correction: #42 is questioned, not killed; record stands; not the active build",
+              "pr": 2050,
+              "sha": "c220ce5da5"
+            }
           ]
         }
-      ]
+      ],
+      "participants": [],
+      "judges": []
     },
     {
       "id": "D4",
       "name": "Kiroween 2026",
       "host": "Devpost (Kiro)",
       "platform": "devpost",
-      "also_platforms": ["kiro"],
+      "also_platforms": [
+        "kiro"
+      ],
       "official_url": "https://kiroween.devpost.com",
       "status": "registering",
       "entrant_moniker": "entrant{entrantDevpost}[platform:devpost]",
@@ -339,10 +697,26 @@
         "announced": "NOT_ESTABLISHED",
         "reg_open": "NOT_ESTABLISHED",
         "reg_close": "NOT_ESTABLISHED",
-        "build_start": {"at": "2026-10-30T13:00:00-07:00", "tz": "America/Los_Angeles", "source": "official page (read 2026-10-28): submissions formally open Friday, October 30, 2026; only projects created during the submission period are eligible"},
-        "build_end": {"at": "2026-12-04T14:00:00-08:00", "tz": "America/Los_Angeles", "source": "official page: until Friday, December 4, 2026 at 2:00 PM Pacific Time"},
-        "submissions_open": {"at": "2026-10-30T13:00:00-07:00", "tz": "America/Los_Angeles", "source": "official page (read 2026-10-28)"},
-        "deadline": {"at": "2026-12-04T14:00:00-08:00", "tz": "America/Los_Angeles", "source": "official page (read 2026-10-28): Friday, December 4, 2026 at 2:00 PM Pacific Time"},
+        "build_start": {
+          "at": "2026-10-30T13:00:00-07:00",
+          "tz": "America/Los_Angeles",
+          "source": "official page (read 2026-10-28): submissions formally open Friday, October 30, 2026; only projects created during the submission period are eligible"
+        },
+        "build_end": {
+          "at": "2026-12-04T14:00:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official page: until Friday, December 4, 2026 at 2:00 PM Pacific Time"
+        },
+        "submissions_open": {
+          "at": "2026-10-30T13:00:00-07:00",
+          "tz": "America/Los_Angeles",
+          "source": "official page (read 2026-10-28)"
+        },
+        "deadline": {
+          "at": "2026-12-04T14:00:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official page (read 2026-10-28): Friday, December 4, 2026 at 2:00 PM Pacific Time"
+        },
         "judging_end": "NOT_ESTABLISHED",
         "winners_at": "NOT_ESTABLISHED"
       },
@@ -351,8 +725,22 @@
         "Only new projects created during the submission period will be eligible."
       ],
       "gates": [
-        {"id": "D4-ACCOUNTS", "label": "Devpost account + Kiro user ID created (fleet Google identity route)", "blocks": "D4 registration completion", "owner": "devpost-kiro lane (chat 79a004f8-3f3f-4a99-91c1-db3e54eeeb63)", "status": "open", "evidence": "Registration attempted 2026-10-26, stopped at the Devpost sign-up wall as briefed; creation delegated to the dedicated lane; verified facts land in the Profile Registry on its handoff."},
-        {"id": "D4-ELIGIBILITY", "label": "No project creation or build start before 2026-10-30T13:00:00-07:00 (mechanical gate in the brief and in the generator's cycle code)", "blocks": "any D4 build start", "owner": "challenge-entries lane + delphi-lane tooling", "status": "open", "evidence": "Brief eligibility_gate (docs/proposals/briefs/kiroween-delphi-concept.brief.json); log enforcement PR #1717; cycle-code enforcement PR #1719. Creation timestamp is captured into the packet as eligibility evidence at creation."}
+        {
+          "id": "D4-ACCOUNTS",
+          "label": "Devpost account + Kiro user ID created (fleet Google identity route)",
+          "blocks": "D4 registration completion",
+          "owner": "devpost-kiro lane (chat 79a004f8-3f3f-4a99-91c1-db3e54eeeb63)",
+          "status": "open",
+          "evidence": "Registration attempted 2026-10-26, stopped at the Devpost sign-up wall as briefed; creation delegated to the dedicated lane; verified facts land in the Profile Registry on its handoff."
+        },
+        {
+          "id": "D4-ELIGIBILITY",
+          "label": "No project creation or build start before 2026-10-30T13:00:00-07:00 (mechanical gate in the brief and in the generator's cycle code)",
+          "blocks": "any D4 build start",
+          "owner": "challenge-entries lane + delphi-lane tooling",
+          "status": "open",
+          "evidence": "Brief eligibility_gate (docs/proposals/briefs/kiroween-delphi-concept.brief.json); log enforcement PR #1717; cycle-code enforcement PR #1719. Creation timestamp is captured into the packet as eligibility evidence at creation."
+        }
       ],
       "prizes": {
         "status": "NOT_ESTABLISHED",
@@ -361,9 +749,16 @@
       },
       "registration": {
         "state": "in progress (delegated)",
-        "evidence": ["Registration attempted 2026-10-26; stopped at the Devpost sign-up wall.", "Account creation owned by the Devpost + Kiro ID creation lane (owner order 2026-10-27, fleet Google identity route)."]
+        "evidence": [
+          "Registration attempted 2026-10-26; stopped at the Devpost sign-up wall.",
+          "Account creation owned by the Devpost + Kiro ID creation lane (owner order 2026-10-27, fleet Google identity route)."
+        ]
       },
-      "submission": {"state": "none", "at": null, "confirmation_ref": null},
+      "submission": {
+        "state": "none",
+        "at": null,
+        "confirmation_ref": null
+      },
       "brief": {
         "evidence_pack_ref": "docs/proposals/briefs/kiroween-delphi-concept.brief.json",
         "anchor_lines": [
@@ -381,7 +776,12 @@
           "status": "candidate",
           "reason": null,
           "superseded_by": null,
-          "assets": {"repo_dir": null, "proposal_dir": "docs/proposals/passes/kiroween-delphi-concept", "demo_url": null, "clips_url": null},
+          "assets": {
+            "repo_dir": null,
+            "proposal_dir": "docs/proposals/passes/kiroween-delphi-concept",
+            "demo_url": null,
+            "clips_url": null
+          },
           "decisions": []
         },
         {
@@ -393,7 +793,12 @@
           "status": "candidate",
           "reason": null,
           "superseded_by": null,
-          "assets": {"repo_dir": null, "proposal_dir": "docs/proposals/passes/kiroween-delphi-concept", "demo_url": null, "clips_url": null},
+          "assets": {
+            "repo_dir": null,
+            "proposal_dir": "docs/proposals/passes/kiroween-delphi-concept",
+            "demo_url": null,
+            "clips_url": null
+          },
           "decisions": []
         },
         {
@@ -405,10 +810,17 @@
           "status": "candidate",
           "reason": null,
           "superseded_by": null,
-          "assets": {"repo_dir": null, "proposal_dir": "docs/proposals/passes/kiroween-delphi-concept", "demo_url": null, "clips_url": null},
+          "assets": {
+            "repo_dir": null,
+            "proposal_dir": "docs/proposals/passes/kiroween-delphi-concept",
+            "demo_url": null,
+            "clips_url": null
+          },
           "decisions": []
         }
-      ]
+      ],
+      "participants": [],
+      "judges": []
     },
     {
       "id": "D5",
@@ -422,12 +834,32 @@
         "announced": "NOT_ESTABLISHED",
         "reg_open": "NOT_ESTABLISHED",
         "reg_close": "NOT_ESTABLISHED",
-        "build_start": {"at": "2026-11-17T09:00:00-08:00", "tz": "America/Los_Angeles", "source": "official event page (read 2026-10-28): Kick off Nov. 17 at 9 a.m. PT; Build Nov. 17-19"},
-        "build_end": {"at": "2026-11-19T12:00:00-08:00", "tz": "America/Los_Angeles", "source": "official Contest Rules: submissions no later than Thursday, Nov. 19 at 12 p.m. PT"},
-        "submissions_open": {"at": "2026-11-17T09:00:00-08:00", "tz": "America/Los_Angeles", "source": "official event page: build window opens at kickoff (submission mechanics per the Contest Rules)"},
-        "deadline": {"at": "2026-11-19T12:00:00-08:00", "tz": "America/Los_Angeles", "source": "official Contest Rules verbatim (read 2026-10-28): Each team must submit a video recording demonstrating your application no later than Thursday, Nov. 19 at 12 p.m. PT."},
+        "build_start": {
+          "at": "2026-11-17T09:00:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official event page (read 2026-10-28): Kick off Nov. 17 at 9 a.m. PT; Build Nov. 17-19"
+        },
+        "build_end": {
+          "at": "2026-11-19T12:00:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official Contest Rules: submissions no later than Thursday, Nov. 19 at 12 p.m. PT"
+        },
+        "submissions_open": {
+          "at": "2026-11-17T09:00:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official event page: build window opens at kickoff (submission mechanics per the Contest Rules)"
+        },
+        "deadline": {
+          "at": "2026-11-19T12:00:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official Contest Rules verbatim (read 2026-10-28): Each team must submit a video recording demonstrating your application no later than Thursday, Nov. 19 at 12 p.m. PT."
+        },
         "judging_end": "NOT_ESTABLISHED",
-        "winners_at": {"at": "2026-11-20T11:30:00-08:00", "tz": "America/Los_Angeles", "source": "official event page: Show it off / awards Nov. 20 at 11:30 a.m. PT"}
+        "winners_at": {
+          "at": "2026-11-20T11:30:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official event page: Show it off / awards Nov. 20 at 11:30 a.m. PT"
+        }
       },
       "constraints": [
         "Anonymous registrations will not be accepted. We will review complete registrations and email you to confirm your spot.",
@@ -435,42 +867,114 @@
         "You may participate individually, or in a team of up to three eligible persons."
       ],
       "gates": [
-        {"id": "D5-SPOT", "label": "Spot confirmation email from Aha!'s registration review", "blocks": "D5 build commitment", "owner": "Aha! (platform review)", "status": "open", "evidence": "Registration submitted 2026-10-27 23:34 PT (agency, 4n0n); on-screen confirmation: 'Thanks for registering! We will review your registration and email you to confirm your spot.' No confirmation or rejection email as of 2026-10-28."}
+        {
+          "id": "D5-SPOT",
+          "label": "Spot confirmation email from Aha!'s registration review",
+          "blocks": "D5 build commitment",
+          "owner": "Aha! (platform review)",
+          "status": "open",
+          "evidence": "Registration submitted 2026-10-27 23:34 PT (agency, 4n0n); on-screen confirmation: 'Thanks for registering! We will review your registration and email you to confirm your spot.' No confirmation or rejection email as of 2026-10-28."
+        }
       ],
       "prizes": {
         "status": "ESTABLISHED",
         "pool": null,
         "tiers": [
-          {"place": "winner - Best replacement app", "award": "Six-month subscription to Aha! Builder (approx. retail value $744) for each member of the winning team; AI Builder badge and certificate (event page)", "source_url": "https://www.aha.io/hackathon/ai-builder-day-contest-rules"},
-          {"place": "winner - Most innovative user interface", "award": "Six-month subscription to Aha! Builder (approx. retail value $744) for each member of the winning team; AI Builder badge and certificate (event page)", "source_url": "https://www.aha.io/hackathon/ai-builder-day-contest-rules"}
+          {
+            "place": "winner - Best replacement app",
+            "award": "Six-month subscription to Aha! Builder (approx. retail value $744) for each member of the winning team; AI Builder badge and certificate (event page)",
+            "source_url": "https://www.aha.io/hackathon/ai-builder-day-contest-rules"
+          },
+          {
+            "place": "winner - Most innovative user interface",
+            "award": "Six-month subscription to Aha! Builder (approx. retail value $744) for each member of the winning team; AI Builder badge and certificate (event page)",
+            "source_url": "https://www.aha.io/hackathon/ai-builder-day-contest-rules"
+          }
         ],
         "notes": "Judges also select an honorable mention in each category; the rules state no separate prize for honorable mention. No cash prizes published. Each team receives a 14-day free trial of Aha! Builder plus AI credits to build with (Contest Rules section 3)."
       },
       "registration": {
         "state": "submitted - spot pending review",
-        "evidence": ["On-screen confirmation 2026-10-27 23:34 PT: 'Thanks for registering! We will review your registration and email you to confirm your spot in the AI Builder Day hackathon and share more details soon.'", "Form-only registration: no account, profile, or handle created; no platform ID issued. Recorded as R4 in challenge log section 1 (PR #1969)."]
+        "evidence": [
+          "On-screen confirmation 2026-10-27 23:34 PT: 'Thanks for registering! We will review your registration and email you to confirm your spot in the AI Builder Day hackathon and share more details soon.'",
+          "Form-only registration: no account, profile, or handle created; no platform ID issued. Recorded as R4 in challenge log section 1 (PR #1969)."
+        ]
       },
-      "submission": {"state": "none", "at": null, "confirmation_ref": null},
+      "submission": {
+        "state": "none",
+        "at": null,
+        "confirmation_ref": null
+      },
       "brief": {
         "evidence_pack_ref": null,
-        "anchor_lines": ["Pick an application that frustrates you - then build a better alternative with Aha! Builder."]
+        "anchor_lines": [
+          "Pick an application that frustrates you - then build a better alternative with Aha! Builder."
+        ]
       },
-      "projects": []
+      "projects": [],
+      "participants": [],
+      "judges": []
     }
   ],
   "derived": {
     "note": "Computed by tooling from the events above (scripts/challenge_entries/countdowns.py --json over the log's stored instants, plus counts from the registration/submission states); never hand-written.",
     "computed_at": "2026-10-28T12:53:00-07:00",
-    "next_deadline": {"event_id": "D1", "at": "2026-11-04T23:59:00-08:00", "tz": "America/Los_Angeles"},
+    "next_deadline": {
+      "event_id": "D1",
+      "at": "2026-11-04T23:59:00-08:00",
+      "tz": "America/Los_Angeles"
+    },
     "countdowns": [
-      {"id": "D0", "opens": null, "closes": "2026-10-26T13:00:00-07:00", "state": "CLOSED"},
-      {"id": "D1", "opens": "2026-10-28T00:00:00-07:00", "closes": "2026-11-04T23:59:00-08:00", "state": "closes in 7d 12h"},
-      {"id": "D2", "opens": "2026-11-05T00:00:00-08:00", "closes": "2026-11-08T15:00:00-08:00", "state": "opens in 7d 12h"},
-      {"id": "D3", "opens": null, "closes": "2026-11-09T23:59:00-08:00", "state": "closes in 12d 12h"},
-      {"id": "D4", "opens": "2026-10-30T13:00:00-07:00", "closes": "2026-12-04T14:00:00-08:00", "state": "opens in 2d 0h"},
-      {"id": "D5", "opens": "2026-11-17T09:00:00-08:00", "closes": "2026-11-19T12:00:00-08:00", "state": "opens in 19d 21h"}
+      {
+        "id": "D0",
+        "opens": null,
+        "closes": "2026-10-26T13:00:00-07:00",
+        "state": "CLOSED"
+      },
+      {
+        "id": "D1",
+        "opens": "2026-10-28T00:00:00-07:00",
+        "closes": "2026-11-04T23:59:00-08:00",
+        "state": "closes in 7d 12h"
+      },
+      {
+        "id": "D2",
+        "opens": "2026-11-05T00:00:00-08:00",
+        "closes": "2026-11-08T15:00:00-08:00",
+        "state": "opens in 7d 12h"
+      },
+      {
+        "id": "D3",
+        "opens": null,
+        "closes": "2026-11-09T23:59:00-08:00",
+        "state": "closes in 12d 12h"
+      },
+      {
+        "id": "D4",
+        "opens": "2026-10-30T13:00:00-07:00",
+        "closes": "2026-12-04T14:00:00-08:00",
+        "state": "opens in 2d 0h"
+      },
+      {
+        "id": "D5",
+        "opens": "2026-11-17T09:00:00-08:00",
+        "closes": "2026-11-19T12:00:00-08:00",
+        "state": "opens in 19d 21h"
+      }
     ],
-    "critical_path": ["G-07 profile gate (blocks D1 validity)", "D1 workshop sitting + completion evidence (Oct 28 - Nov 4)", "D4 eligibility opens Oct 30 13:00 PT (brief handoff same day)", "D1 submission deadline Nov 4 23:59 PT", "D2 submission deadline Nov 8 15:00 PT", "D3 submission deadline Nov 9 23:59 PT", "D5 build Nov 17-19 (spot confirmation first)"],
-    "counts": {"submitted": 0, "registered": 4, "in_build": 0}
+    "critical_path": [
+      "G-07 profile gate (blocks D1 validity)",
+      "D1 workshop sitting + completion evidence (Oct 28 - Nov 4)",
+      "D4 eligibility opens Oct 30 13:00 PT (brief handoff same day)",
+      "D1 submission deadline Nov 4 23:59 PT",
+      "D2 submission deadline Nov 8 15:00 PT",
+      "D3 submission deadline Nov 9 23:59 PT",
+      "D5 build Nov 17-19 (spot confirmation first)"
+    ],
+    "counts": {
+      "submitted": 0,
+      "registered": 4,
+      "in_build": 0
+    }
   }
 }

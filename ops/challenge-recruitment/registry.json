@@ -2,7 +2,7 @@
   "schema": "challenge-recruitment/v1",
   "owner_role": "challenge-recruitment",
   "manager_role": "challenge-entries-manager",
-  "updated_at": "2026-10-28T14:52:00-07:00",
+  "updated_at": "2026-10-28T16:07:00-07:00",
   "store": {
     "primary": "Neon recruitment_current (ops/challenge-participants/schema.sql) \u2014 LANE_EVENTS_DATABASE_URL + NEON_API_KEY provisioned per PR #2222 (2026-10-28); participant_event.py sync carries these rows on next coordinator push/dispatch",
     "source_of_truth_feed": "ops/challenge/coordinator.json",
@@ -19,8 +19,8 @@
   "counts": {
     "team_events": 7,
     "team_projects": 9,
-    "observations": 1,
-    "participants_observed": 1,
+    "observations": 2,
+    "participants_observed": 2,
     "judges_observed": 0,
     "github_matched": 1,
     "github_match_rate": 1.0,
@@ -123,6 +123,41 @@
       ],
       "scope": "observation_only",
       "standout_observation_only": true
+    },
+    {
+      "entity_id": "patchpilot",
+      "event_id": "STRANDS-DECIDER",
+      "kind": "participant",
+      "scope": "observation_only",
+      "candidate_flag": false,
+      "pipeline_state": null,
+      "standout_observation_only": true,
+      "project": {
+        "name": "PatchPilot: Decision-Guided Search for Automated Program Repair",
+        "status": "NOT_ESTABLISHED",
+        "summary": "Generates multiple candidate code fixes, ranks them with Strands Decider 2B, tests top-ranked patches first, adaptive LLM judging."
+      },
+      "github": {
+        "login": null,
+        "url": null,
+        "confidence": "NOT_ESTABLISHED",
+        "note": "No repo/demo link in source screenshot; unmatched = NOT_ESTABLISHED, no guessing."
+      },
+      "moneyball_evaluations": [],
+      "latest_composite": null,
+      "field_evidence": {
+        "event_status": "closed 2026-10-23",
+        "field_size_participants": 5917,
+        "field_size_source": "platform page per main relay",
+        "our_status": "NOT_SUBMITTED (verified final 2026-10-26)"
+      },
+      "sources": [
+        {
+          "url": "owner screenshot via main chat (2026-10-28 16:07 PT)",
+          "fetched_at": "2026-10-28T16:07:00-07:00"
+        }
+      ],
+      "notes": "Filed under Decider field evidence for metrics collection (main dispatch). Observation-only per #2237. No winprob change \u2014 method parked (owner, 2026-10-28)."
     }
   ],
   "pipeline_applies_to": "team[] only (our entrants); observations never enter the pipeline"

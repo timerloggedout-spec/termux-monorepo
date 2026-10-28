@@ -8,6 +8,7 @@ from .waf import (VERSION, EVIDENCE_LABELS, EXECUTORS, PROMOTION, PROBES,
                   PURPOSES, SURFACES, EVIDENCE_EXPECTATIONS, validate_brief,
                   plan_from_brief, parse_issue_form, render_plan_markdown)
 from .facade import make_server as make_facade_server
+from . import apk_xref as apk_xref
 
 __all__ = ["VERSION", "EVIDENCE_LABELS", "EXECUTORS", "PROMOTION", "PROBES",
            "validate_registry", "validate_envelope", "plan_probes",
@@ -15,4 +16,4 @@ __all__ = ["VERSION", "EVIDENCE_LABELS", "EXECUTORS", "PROMOTION", "PROBES",
            "load_taxonomy", "taxonomy_node", "sse_encode", "EventBus",
            "PURPOSES", "SURFACES", "EVIDENCE_EXPECTATIONS", "validate_brief",
            "plan_from_brief", "parse_issue_form", "render_plan_markdown",
-           "make_facade_server"]
+           "make_facade_server", "apk_xref"]

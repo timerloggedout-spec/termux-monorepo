@@ -31,6 +31,13 @@ registrations, submissions, and prepared candidates — for
   one exists (a refused start, a captured timestamp, a blocked submission
   step), never a remark. A check that fails halts the packet at that step and
   surfaces; it is never worked around.
+- **Countdowns are COMPUTED, never hand-typed (owner requirement, issue
+  #1880):** each §4 packet stores its deadline instants (opens/closes, ISO,
+  America/Los_Angeles) in a `countdown-data` line; the state in its
+  `countdown` line (opens in / closes in / OVERDUE / CLOSED) is generated
+  by `scripts/challenge_entries/countdowns.py` from those instants and
+  refreshed by the weekly sweep. Lane reports carry the script's one-line
+  countdown block for all active entries.
 - Sweep cadence: weekly (Mondays, America/Los_Angeles) — a scheduled lane
   check re-scans the sources in §5, refreshes this log by PR when something
   changed, and reports new candidates. Log last verified 2026-10-26.
@@ -172,6 +179,9 @@ a submission path reaches an owner-account step.
 
 ### D0 — for R2, Weekend Challenge: Give your Agent a Tool — COMPLETED 2026-10-27 (owner ruling 2026-10-27; date set: Oct 29)
 
+<!-- countdown-data:D0 opens=- closes=2026-10-26T13:00:00-07:00 -->
+<!-- countdown:D0 -->⏳ CLOSED (computed 2026-10-27 18:40 PT)<!-- /countdown:D0 -->
+
 `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]`
 
 - **Completion date: Thu Oct 29, 2026** (owner ruling 2026-10-27 00:03 PT:
@@ -231,6 +241,9 @@ a submission path reaches an owner-account step.
 
 ### D1 — for C1, Workshop to Ship — IN PROGRESS (owner already joined)
 
+<!-- countdown-data:D1 opens=2026-10-28T00:00:00-07:00 closes=2026-11-04T23:59:00-08:00 -->
+<!-- countdown:D1 -->⏳ opens in 5h 19m (computed 2026-10-27 18:40 PT)<!-- /countdown:D1 -->
+
 `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]`
 
 - **Concept:** "Proof Before Help" — a climate-resilience agent (cooling-center
@@ -262,6 +275,9 @@ a submission path reaches an owner-account step.
 
 ### D2 — for C2, Vultr Agent Rush (Foundry entry) — IN PROGRESS
 
+<!-- countdown-data:D2 opens=2026-11-05T00:00:00-08:00 closes=2026-11-08T15:00:00-08:00 -->
+<!-- countdown:D2 -->⏳ opens in 8d 6h (computed 2026-10-27 18:40 PT)<!-- /countdown:D2 -->
+
 `entrant{entrantLablabAi}[platform:lablab-ai]` + `entrant{entrantVultr}[platform:vultr]`
 
 - **Concept:** the Web Adapter Foundry as a sandboxed browser-operating agent:
@@ -288,6 +304,9 @@ a submission path reaches an owner-account step.
   evidence it fired.
 
 ### D3 — for C3, Builder.io Agent-Native Hackathon — IN PROGRESS (scoped 2026-10-26)
+
+<!-- countdown-data:D3 opens=- closes=2026-11-02T23:59:00-08:00 -->
+<!-- countdown:D3 -->⏳ closes in 6d 6h (computed 2026-10-27 18:40 PT)<!-- /countdown:D3 -->
 
 `entrant{entrantBuilderIo}[platform:builder-io]`
 
@@ -359,6 +378,9 @@ a submission path reaches an owner-account step.
   (receipt pattern), PR #1655 CMDB design (conflict matrix / reconciliation).
 
 ### D4 — for C4, Kiroween 2026 — REGISTERING (build sequenced after Nov 8)
+
+<!-- countdown-data:D4 opens=2026-10-30T13:00:00-07:00 closes=2026-12-04T14:00:00-08:00 -->
+<!-- countdown:D4 -->⏳ opens in 2d 18h (computed 2026-10-27 18:40 PT)<!-- /countdown:D4 -->
 
 `entrant{entrantDevpost}[platform:devpost]` + `entrant{entrantKiro}[platform:kiro]` — account creation owned by the dedicated Devpost + Kiro ID creation chat (owner order 2026-10-27, fleet Google identity route); registration completes with this lane on its handoff.
 

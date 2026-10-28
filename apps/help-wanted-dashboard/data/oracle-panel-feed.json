@@ -1,11 +1,11 @@
 {
   "schema": "oracle-panel-feed/v1",
-  "generated_at": "2026-10-27T14:28:11Z",
+  "generated_at": "2026-10-27T16:01:12Z",
   "generator": "scripts/delphi/oracle_panel_feed.py",
   "sources": {
     "registry": "docs/proposals/registry.yaml",
-    "registry_updated_at": "2026-10-27T08:52:00Z",
-    "registry_proposals_total": 45,
+    "registry_updated_at": "2026-10-27T13:52:00Z",
+    "registry_proposals_total": 47,
     "oracle_method_proposals": 4,
     "ledger_issue": 1487,
     "ledger_verified": true
@@ -120,7 +120,7 @@
           "id": "DD-005",
           "item": "Public Clips demo (<3 min) recorded from the working app",
           "state": "proposed",
-          "exit": "exit: public demo link in the submission packet; account requirement UNVERIFIED (open risk in the challenge log)"
+          "exit": "exit: public demo link in the submission packet. Account branch SATISFIED 2026-10-27: free Clips account created on clips.agent-native.com (Google route, fleet identity; the platform offered no handle, none recorded; challenge log PR #1835). Remaining pre-recording setup, in-app on this account, lands with the build weekend: connect clip storage (Builder.io or S3-compatible backend)"
         },
         {
           "id": "DD-006",

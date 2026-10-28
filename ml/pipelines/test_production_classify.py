@@ -78,6 +78,22 @@ class Series(unittest.TestCase):
         self.assertEqual(line2["delta_vs_previous"],
                          {"CANDIDATE": 2, "EXTRACT": -3, "NEED_EVIDENCE": 1})
 
+    def test_append_after_unterminated_seed(self):
+        import tempfile
+        feed = {"generated_at": "2026-10-28T23:17:01Z", "open_prs": 5,
+                "counts": {"CANDIDATE": 2}, "fetch_warnings": 0}
+        with tempfile.TemporaryDirectory() as td:
+            path = os.path.join(td, "s.jsonl")
+            with open(path, "w") as fh:  # seed WITHOUT trailing newline
+                fh.write('{"generated_at": "2026-10-28T23:02:34Z", "open_prs": 5,'
+                         ' "counts": {"CANDIDATE": 2}, "fetch_warnings": 0}')
+            production_classify.append_series(path, feed)
+            with open(path) as fh:
+                lines = fh.read().splitlines()
+            self.assertEqual(len(lines), 2)
+            for ln in lines:  # every physical line must parse alone
+                production_classify.json.loads(ln)
+
     def test_append_roundtrip(self):
         import tempfile
         feed = {"generated_at": "2026-10-28T23:02:34Z", "open_prs": 5,

@@ -316,6 +316,18 @@ labelled at birth by the gate — plus one new label in use, `temporal`
   swallowed the body); the fixed script surfaces it if it recurs, and
   post-merge dispatch verification for this PR is recorded below once
   run.
+- **403 cause identified + resilience upgrade (2026-10-28, later).**
+  With the fix merged (PR #2033, `b81c738db2`, history-scan + content
+  verified), the first proof dispatch (run `40706072646`) failed
+  **loudly**, as designed — and the surfaced body names the cause:
+  "API rate limit exceeded for installation." The shared Actions
+  installation token was exhausted (the same drain the Delphi gate's
+  defer_api design absorbs); permissions and script logic were never
+  the defect. Follow-up fix: rate-limit 403/429 responses are retried
+  with backoff (up to 4 retries, `Retry-After` honoured), so the
+  weekly pass rides out a hot window; non-rate-limit errors still
+  fail immediately with the body printed. A third regression test
+  pins the retry.
 - **Maintain — lane pass 2:** 12 issues labelled with signed comments —
   the 10 oldest unlabelled (#50 `ci`; #51 `documentation`+`automation`;
   #52 `bug`+`ci`; #53 `documentation`; #54 `ci`+`gemini`; #56

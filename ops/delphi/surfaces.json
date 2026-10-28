@@ -73,30 +73,31 @@
    "id": "platform201.solo",
    "title": "Platform201 Solo (visual GCP backend deployer)",
    "lane": "deploy",
-   "registry_id": null,
-   "horizon": "H2",
+   "registry_id": "platform201.projects",
+   "horizon": "H0",
    "quota": {
-    "metric": "Solo plan allowance",
-    "limit": null,
-    "unit": "unpublished",
-    "window": "unknown",
-    "reset": "unknown",
+    "metric": "Solo projects",
+    "limit": 3,
+    "unit": "projects",
+    "window": "point-in-time",
+    "reset": "n/a",
     "zone": "UTC",
-    "source": "https://app.platform201.com/sign-in"
+    "source": "https://www.platform201.com/"
    },
-   "sourced": false,
+   "sourced": true,
    "auth": {
     "actions_secret": null,
     "present": false,
-    "note": "web login only (Kinde email code); no Actions credential"
+    "note": "LIVE web account (Google sign-in, Solo $0, no card); console-only, no API token / no Actions credential"
    },
    "lock_in": 4,
    "fit": 3,
    "headroom": 3,
    "failure_modes": [
-    "no public pricing page fetched",
+    "Solo caps: 3 projects, 1 environment/project (console-observed 2026-10-27)",
     "no API token for Actions",
-    "vendor-specific blueprints"
+    "vendor-specific blueprints",
+    "deploys run in Platform201-managed GCP project (Cloud Run europe-west2), not fleet GCP"
    ],
    "card_required": false,
    "overage_autobill": false

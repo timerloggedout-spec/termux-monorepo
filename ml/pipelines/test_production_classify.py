@@ -67,6 +67,30 @@ class ClassifyAll(unittest.TestCase):
         self.assertEqual(sum(feed["counts"].values()), 5)
 
 
+class Series(unittest.TestCase):
+    def test_line_and_delta(self):
+        feed = {"generated_at": "2026-10-28T23:02:34Z", "open_prs": 5,
+                "counts": {"CANDIDATE": 2, "EXTRACT": 3}, "fetch_warnings": 0}
+        line = production_classify.series_line(feed, None)
+        self.assertIsNone(line["delta_vs_previous"])
+        line2 = production_classify.series_line(
+            {**feed, "counts": {"CANDIDATE": 4, "NEED_EVIDENCE": 1}}, feed["counts"])
+        self.assertEqual(line2["delta_vs_previous"],
+                         {"CANDIDATE": 2, "EXTRACT": -3, "NEED_EVIDENCE": 1})
+
+    def test_append_roundtrip(self):
+        import tempfile
+        feed = {"generated_at": "2026-10-28T23:02:34Z", "open_prs": 5,
+                "counts": {"CANDIDATE": 2}, "fetch_warnings": 1}
+        with tempfile.TemporaryDirectory() as td:
+            path = os.path.join(td, "s.jsonl")
+            production_classify.append_series(path, feed)
+            line = production_classify.append_series(path, feed)
+            self.assertEqual(line["delta_vs_previous"], {"CANDIDATE": 0})
+            with open(path) as fh:
+                self.assertEqual(len(fh.read().splitlines()), 2)
+
+
 class GetOr(unittest.TestCase):
     def test_failure_degrades_to_default_with_warning(self):
         warnings = []

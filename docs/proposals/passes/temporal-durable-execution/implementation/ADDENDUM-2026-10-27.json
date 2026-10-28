@@ -1,0 +1,107 @@
+{
+ "addendum": "2026-10-27",
+ "pass_id": "temporal-durable-execution",
+ "scope": "Closeout of the pass's two non-gated open items. Ballots, scores, and G6 dispositions stand as recorded \u2014 the evidence base is updated, the vote is not re-run (equalized-evidence discipline).",
+ "v3_omes_suite": {
+  "status": "run_passed",
+  "was": "0/1 \u2014 omes binary absent in environment; attempt receipted, zero credited (phantom-test rule)",
+  "now": "1/1 \u2014 omes built from temporalio/omes (depth-1 clone, Go 1.23.4) and executed",
+  "receipt": {
+   "command": "./omes-bin run-scenario-with-worker --scenario workflow_with_single_noop_activity --language go --embedded-server --iterations 10 --run-id v3-closeout --timeout 240s",
+   "exit_code": 0,
+   "output_sha256": "9e2f94d344328e253469543da4a2830f6fb27626c2e450f3741ab7bb3e955a9f",
+   "result_line": "Run completed in 374.760104ms \u2014 10/10 iterations complete (embedded server)"
+  },
+  "scope_note": "Proves the omes load layer executes in this environment against a Temporal server. It is NOT a versioning/autoscale proof: K8s actuation stays gated, and V3's G6 disposition stays REFERENCE-ONLY with the blocker narrowed to actuation only.",
+  "code_paths": [
+   "docs/proposals/passes/temporal-durable-execution/implementation/ADDENDUM-2026-10-27.json"
+  ]
+ },
+ "n4_gantt_compile": {
+  "plans": {
+   "issue-1897-filed-gantt": {
+    "valid": false,
+    "violations": [
+     "flywheel reweight: unknown dependency 'consensus implementation'"
+    ],
+    "stages": [
+     "oracle facts",
+     "panel rounds",
+     "validated output comparison",
+     "feature extraction + consensus implementation"
+    ],
+    "critical_path_stages": 4,
+    "depth": {
+     "oracle facts": 1,
+     "panel rounds": 2,
+     "validated output comparison": 3,
+     "feature extraction + consensus implementation": 4
+    },
+    "dependency_closure": {
+     "oracle facts": [],
+     "panel rounds": [
+      "oracle facts"
+     ],
+     "validated output comparison": [
+      "oracle facts",
+      "panel rounds"
+     ],
+     "feature extraction + consensus implementation": [
+      "oracle facts",
+      "panel rounds",
+      "validated output comparison"
+     ]
+    }
+   },
+   "delphi-rfp-form-default": {
+    "valid": true,
+    "violations": [],
+    "stages": [
+     "oracle facts",
+     "panel rounds",
+     "shadow lane (5% traffic)",
+     "promote or park"
+    ],
+    "critical_path_stages": 4,
+    "depth": {
+     "oracle facts": 1,
+     "panel rounds": 2,
+     "shadow lane (5% traffic)": 3,
+     "promote or park": 4
+    },
+    "dependency_closure": {
+     "oracle facts": [],
+     "panel rounds": [
+      "oracle facts"
+     ],
+     "shadow lane (5% traffic)": [
+      "oracle facts",
+      "panel rounds"
+     ],
+     "promote or park": [
+      "oracle facts",
+      "panel rounds",
+      "shadow lane (5% traffic)"
+     ]
+    }
+   }
+  },
+  "compiler": "scripts/temporal/gantt_compile.py",
+  "scope": "compile-level test of N4 (Gantt-as-workflow/query): real filed Gantt plans parse into a validated DAG with topological stages, critical path, and dependency closure. Executing a compiled plan AS a Temporal workflow remains N5 future work, unchanged.",
+  "finding": "The fleet's filed Gantt template (48 research RFPs + the DoE loop filings) carries a dangling dependency: 'flywheel reweight' depends on 'consensus implementation', but the phase is named 'feature extraction + consensus implementation'. The gate ignores Gantt dependency names semantically, so no scoring was affected; the compiler is the first consumer to validate them. Fix belongs to the filing template."
+ },
+ "suite_tally_after": {
+  "V1": "1/1",
+  "V2": "2/2",
+  "V3": "1/1",
+  "V4": "1/1",
+  "V5": "1/1 (local; cloud steps specified_not_run, card rule)"
+ },
+ "n_items_after": {
+  "N1": "implemented",
+  "N4": "compile-tested (was: survives untested)",
+  "N7": "implemented",
+  "N3": "model + invariant self-check (actuation gated)",
+  "N2/N5/N6": "recorded future builds, unchanged"
+ }
+}

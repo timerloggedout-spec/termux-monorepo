@@ -1,0 +1,45 @@
+{
+ "addendum": "2026-10-28-selfhost",
+ "pass_id": "temporal-durable-execution",
+ "decision": "Owner 2026-10-27: Temporal = SELF-HOST on fleet infrastructure (Cloud free tier not permanent; card rule). Integration finished as a standing self-host, not a per-pass dev server.",
+ "deployment": {
+  "server": "Temporal dev-server mode, CLI 1.9.1 / Server 1.32.0, single node, systemd units temporal-selfhost + temporal-relay (Restart=always)",
+  "bind": "localhost:7233 (UI 8233); socat relay 0.0.0.0:7234 -> 127.0.0.1:7233",
+  "persistence": "sqlite DB on durable workspace disk (~/workspace/temporal-selfhost/temporal.db)",
+  "recovery": "hourly keepalive job reinstalls units from workspace copies after VM replacement (install.sh); /etc does not persist",
+  "record": "docs/ops/TEMPORAL-SELF-HOST.md; scripts/temporal/selfhost/"
+ },
+ "reproof": [
+  {
+   "suite": "kill-resume harness (RFP \u00a76) vs self-host localhost:7233",
+   "receipt": {
+    "command": "kill_resume_harness.py prove --address localhost:7233 --workdir <wd>",
+    "exit_code": 0,
+    "output_sha256": "3b189d923a5f9b49a6bdccc7a8cc2825e9caf8a73a9df5a6d84a25a347854166",
+    "verdict": "PASS",
+    "receipt_count": 1,
+    "history_sha256": "9a3005b5b89fe9218423fc317599c9430eb4e0bb1500440963daef27f6236304",
+    "killed_worker_pid": 2107,
+    "unknown_outcomes": "surfaced + reconciled (in envelope)"
+   }
+  },
+  {
+   "suite": "kill-resume harness via relay 127.0.0.1:7234",
+   "receipt": {
+    "command": "kill_resume_harness.py prove --address 127.0.0.1:7234 --workdir <wd>",
+    "exit_code": 0,
+    "output_sha256": "64832fe42ef13fafaf3e64e588bd36693a76dec08812b3ae4fe9a09e9abb51ae",
+    "receipt_count": 1
+   }
+  },
+  {
+   "check": "persistence across service restart",
+   "result": "both proof workflows still list Completed from the sqlite DB after systemctl restart"
+  }
+ ],
+ "named_limits": [
+  "Sandbox host link (host0 198.19.0.2) garbles gRPC HTTP/2 preface through any relay (reproduced with socat + python relays) \u2014 the fault is the link; a clean mesh interface carries the relay.",
+  "Single node: multi-node Temporal clustering not claimed. Redundancy = persistence + supervision + relay + reinstall recovery.",
+  "Dev-server mode (sqlite) is the fleet's operating point per the pass; a Postgres-backed cluster is a future migration, not this integration's scope."
+ ]
+}

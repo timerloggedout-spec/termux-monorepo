@@ -110,3 +110,14 @@ is its at-a-glance view and is refreshed from here.
   (template docs).
 - A Builder.io CMS Space/plan account is NOT required for this packet
   (earlier first-pass concern; resolved 2026-10-27).
+
+#### Aha.io — event registration submitted 2026-10-27 (no profile)
+
+- AI Builder Day Hackathon registration submitted by the agency under
+  4n0n (owner reversal 2026-10-27; challenge log R4 / packet D5) with the
+  fleet identity (name "LoggedOut Timer", timerloggedout@gmail.com).
+  State: **spot PENDING REVIEW** (organizer confirms by email).
+- No account, public profile, or handle was created — the registration
+  form is the whole surface; nothing public exists to record. Moniker
+  assignment for platform `aha-io` runs through the registry process
+  (registry lane), never invented.

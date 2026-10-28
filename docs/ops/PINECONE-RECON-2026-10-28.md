@@ -52,3 +52,15 @@ Vendor sources: pinecone.io/pricing (read 2026-10-28), docs.pinecone.io/guides/o
 | Pinecone cloud (`remote` engine / managed indexes) | **No consumer justifies a new managed dependency today.** It is the documented escalation path if a self-hosted pg_pinecone `native` table outgrows one server — that precondition does not exist yet. |
 
 **Bottom line:** adopt-nothing now. Watch item = pg_pinecone maturity (pre-1.0, day-old) + a self-managed PG17/18 surface appearing (e.g. a self-hosted HindSight store). If that surface lands, `native` is a no-account, no-card, Apache-2.0 drop-in over the existing pgvector columns — re-run this recon then. Pinecone cloud signup is not needed for that path.
+
+---
+
+## State update — 2026-10-28 (account-creation lane, owner-ordered Starter init)
+
+The §5 "adopt-nothing / no signup" verdict was superseded by owner order 2026-10-28 for cloud Starter only. Outcome:
+
+- **Account PRE-EXISTED** — existence recon via fleet Gmail returned no vendor mail (false negative); firsthand console evidence: organization "LoggedOut's Org", project "Default", a `default` API key created 2025-09-28, and an existing serverless index `swaying-dogwood` (1024-dim, cosine, AWS us-east-1, Ready). No new org/project created.
+- **Plan: Starter, marked Current + Free** (console Settings → Subscription plans, verified 2026-10-28). Usage at init: 0/1M RU, 0/2M WU, 0GB/2GB storage, 0GB/1GB egress. **No payment method added or requested at any step** — the card-at-Starter question is now answered firsthand for this account: none demanded.
+- **Key:** new `fleet` key (All permissions, project Default) harvested via the sealed-box PAT route into the Actions secret store as `PINECONE_API_KEY` (store count 52, 2026-10-28T13:21:09Z). **Verified live:** `GET api.pinecone.io/indexes` with the key = HTTP 200, returned `swaying-dogwood`. Names only in records; value lives only in the secret store.
+- **Registry:** v3 derive for platform `pinecone` = `GentleWalnut50` — derived per protocol but **not consumed** (no signup form forced a name; the account predates it). Flagged for the registry lane to record.
+- **Quota registry:** `pinecone.*` records (storage, write_units, read_units, indexes, egress) added in the same PR as this update, live-check = list-indexes with PINECONE_API_KEY.

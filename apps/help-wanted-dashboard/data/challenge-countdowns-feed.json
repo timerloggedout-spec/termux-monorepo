@@ -1,49 +1,139 @@
 {
-  "schema": "challenge-countdowns-feed/v1",
-  "generated_at": "2026-10-28T15:01:57Z",
+  "schema": "challenge-countdowns-feed/v1.1",
+  "generated_at": "2026-10-28T19:59:36Z",
   "source": "docs/ops/CHALLENGE-ENTRIES-LOG.md",
+  "prizes_source": "ops/challenge/coordinator.json",
   "entries": [
     {
       "id": "D0",
       "title": "for R2, Weekend Challenge: Give your Agent a Tool",
       "status": "COMPLETED",
       "opens": null,
-      "closes": "2026-10-26T13:00:00-07:00"
+      "closes": "2026-10-26T13:00:00-07:00",
+      "prizes": {
+        "status": "NOT_ESTABLISHED",
+        "pool": null,
+        "tiers": []
+      }
     },
     {
       "id": "D1",
       "title": "for C1, Workshop to Ship",
       "status": "ACTIVE",
       "opens": "2026-10-28T00:00:00-07:00",
-      "closes": "2026-11-04T23:59:00-08:00"
+      "closes": "2026-11-04T23:59:00-08:00",
+      "prizes": {
+        "status": "ESTABLISHED",
+        "pool": "$16,800",
+        "tiers": [
+          {
+            "place": "winner (3 selected)",
+            "award": "$5,000 in AWS Promotional Credits and one AWS Builder swag bundle worth about $600 (jacket, backpack, keyboard); official winner's certificate",
+            "source_url": "https://builder.aws.com/build/hackathons/8311dcb5-1ece-3d62-a441-2e1c2ad90b86/strands-sdk-workshop-to-ship"
+          }
+        ]
+      }
     },
     {
       "id": "D2",
       "title": "for C2, Vultr Agent Rush (Foundry entry)",
       "status": "ACTIVE",
       "opens": "2026-11-05T00:00:00-08:00",
-      "closes": "2026-11-08T15:00:00-08:00"
+      "closes": "2026-11-08T15:00:00-08:00",
+      "prizes": {
+        "status": "ESTABLISHED",
+        "pool": "$14,000 in cash and Vultr credits, plus up to $1,000 in onsite raffle prizes",
+        "tiers": [
+          {
+            "place": "1st place",
+            "award": "$5,000 cash prize + $3,000 in Vultr credits",
+            "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon"
+          },
+          {
+            "place": "2nd place",
+            "award": "$3,000 cash prize + $1,000 in Vultr credits",
+            "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon"
+          },
+          {
+            "place": "3rd place",
+            "award": "$1,000 cash prize + $1,000 in Vultr credits",
+            "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon"
+          }
+        ]
+      }
     },
     {
       "id": "D3",
       "title": "for C3, Builder.io Agent-Native Hackathon \u2014 concept #42 QUESTIONED 2026-10-28 (under review; not the active build)",
       "status": "ACTIVE",
       "opens": null,
-      "closes": "2026-11-09T23:59:00-08:00"
+      "closes": "2026-11-09T23:59:00-08:00",
+      "prizes": {
+        "status": "ESTABLISHED",
+        "pool": "$10,000 USD across five ranked cash prizes",
+        "tiers": [
+          {
+            "place": "Grand Prize",
+            "award": "$5,000 USD",
+            "source_url": "https://builder.io/hackathon/rules"
+          },
+          {
+            "place": "2nd Place",
+            "award": "$2,500 USD",
+            "source_url": "https://builder.io/hackathon/rules"
+          },
+          {
+            "place": "3rd Place",
+            "award": "$1,500 USD",
+            "source_url": "https://builder.io/hackathon/rules"
+          },
+          {
+            "place": "4th Place",
+            "award": "$750 USD",
+            "source_url": "https://builder.io/hackathon/rules"
+          },
+          {
+            "place": "5th Place",
+            "award": "$250 USD",
+            "source_url": "https://builder.io/hackathon/rules"
+          }
+        ]
+      }
     },
     {
       "id": "D4",
       "title": "for C4, Kiroween 2026",
       "status": "ACTIVE",
       "opens": "2026-10-30T13:00:00-07:00",
-      "closes": "2026-12-04T14:00:00-08:00"
+      "closes": "2026-12-04T14:00:00-08:00",
+      "prizes": {
+        "status": "NOT_ESTABLISHED",
+        "pool": "$100,000 in cash (pool stated on the official page; per-place tiers are TBD - the page states complete details including different prizes release Friday, October 30, 2026)",
+        "tiers": []
+      }
     },
     {
       "id": "D5",
       "title": "for Aha! AI Builder Day Hackathon (Aha.io) \u2014 REGISTERED 2026-10-27 (spot pending review)",
       "status": "ACTIVE",
       "opens": "2026-11-17T09:00:00-08:00",
-      "closes": "2026-11-19T23:59:00-08:00"
+      "closes": "2026-11-19T12:00:00-08:00",
+      "prizes": {
+        "status": "ESTABLISHED",
+        "pool": null,
+        "tiers": [
+          {
+            "place": "winner - Best replacement app",
+            "award": "Six-month subscription to Aha! Builder (approx. retail value $744) for each member of the winning team; AI Builder badge and certificate (event page)",
+            "source_url": "https://www.aha.io/hackathon/ai-builder-day-contest-rules"
+          },
+          {
+            "place": "winner - Most innovative user interface",
+            "award": "Six-month subscription to Aha! Builder (approx. retail value $744) for each member of the winning team; AI Builder badge and certificate (event page)",
+            "source_url": "https://www.aha.io/hackathon/ai-builder-day-contest-rules"
+          }
+        ]
+      }
     }
   ]
 }

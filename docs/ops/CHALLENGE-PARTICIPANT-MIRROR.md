@@ -37,3 +37,13 @@ Manager). Same pattern as the Delphi ledger mirror (PR #2035/#2048).
   verified reading, not a gap.
 - Out of scope this round: events/projects core fields (same mirror
   later, per the ask).
+- **Provisioning status (verified firsthand 2026-10-28):** the repo
+  Actions secrets list (53 names, checked by name) contains NEITHER
+  `LANE_EVENTS_DATABASE_URL` NOR `NEON_API_KEY` — the workflows
+  reference the names, but the secrets are not provisioned, so every
+  lane-events-route writer (lane_events, delphi_ledger, this mirror)
+  currently no-ops in Actions. First dispatch run 40760335059 =
+  success via the no-op path. DB-side counts are NOT ESTABLISHED until
+  the owner provisions one of the two names (owner item of record;
+  secret values are provisioning facts, never invented). Source-side
+  first counts (dry-run vs master): D0–D5 = 0 each.

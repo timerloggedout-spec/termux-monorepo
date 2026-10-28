@@ -320,8 +320,7 @@
    "doc_quote": "Requests per day (RPD) quotas reset at midnight Pacific time.",
    "live": "none; .github/actions/gemini-quota-gate soft budgets + 429s",
    "planned_use": {
-    "safety": 0.9,
-    "note": "Fleet credential provisioned: GOOGLE_API_KEY (separate AI Studio key; GEMINI_API_KEY pre-existing) (repo Actions secret, 2026-10-27)."
+    "safety": 0.9
    }
   },
   {
@@ -337,7 +336,7 @@
    "source": "https://docs.ollama.com/api/balance",
    "live": "opt-in only: python3 -m scripts.provider_quota_service --observe; GET https://ollama.com/api/balance (OLLAMA_API_KEY)",
    "planned_use": {
-    "note": "Explicit private scope and mode-0700 output directory required. Not collected by quota_poll, no routing weights from balances, no account validation or reservation claimed. Fleet credential provisioned: OLLAMA_API_KEY (repo Actions secret, 2026-10-27)."
+    "note": "Explicit private scope and mode-0700 output directory required. Not collected by quota_poll, no routing weights from balances, no account validation or reservation claimed."
    }
   },
   {
@@ -351,9 +350,9 @@
    "reset": "daily request reset instant unknown; only explicit source budget reset retained",
    "zone": "UTC",
    "source": "https://openrouter.ai/docs/api/api-reference/api-keys/get-current-api-key",
-   "live": "registered live status-only (owner decision 2026-10-28): scripts/quota_poll.py openrouter_key_reader wraps scripts/provider_quota_service.py --service openrouter.key --observe in-process when OPENROUTER_KEY_OBSERVE=1 (vercel-quota-probe workflow); fixed GET https://openrouter.ai/api/v1/key (OPENROUTER_API_KEY); public snapshot carries the public_status() projection only",
+   "live": "manual opt-in only: scripts/provider_quota_service.py --service openrouter.key --observe; fixed GET https://openrouter.ai/api/v1/key (OPENROUTER_API_KEY)",
    "planned_use": {
-    "note": "Private mode-0600 output outside Git; status-only public projection. Registered live as a status-only snapshot reader (owner decision 2026-10-28); values and monetary fields are never published. Not a routing input, entitlement or inference authorization. Telemetry row in allocations pool openrouter — no own allocation; rides openrouter.free_models."
+    "note": "Private mode-0600 output outside Git; status-only public projection. Not an automatic reader, routing input, entitlement or inference authorization. Trusted-master workflow defaults off; no private artifacts."
    }
   },
   {
@@ -758,7 +757,7 @@
    "live": "none",
    "planned_use": {
     "safety": 0.8,
-    "note": "reads 100,000/day + 1 GB storage on Free; writes are the binding cap — manifest-mirror use only, never a queue"
+    "note": "reads 100,000/day + 1 GB storage on Free; writes are the binding cap \u2014 manifest-mirror use only, never a queue"
    }
   },
   {
@@ -774,7 +773,7 @@
    "source": "https://fly.io/docs/about/pricing/",
    "live": "none",
    "planned_use": {
-    "note": "free allowances removed for NEW orgs Oct 2024 (short trial only). Fleet org billing state NOT ESTABLISHED — establish before HindSight plans lean on 'free Fly'"
+    "note": "free allowances removed for NEW orgs Oct 2024 (short trial only). Fleet org billing state NOT ESTABLISHED \u2014 establish before HindSight plans lean on 'free Fly'"
    }
   },
   {
@@ -790,23 +789,7 @@
    "source": "https://www.koyeb.com/pricing",
    "live": "none",
    "planned_use": {
-    "note": "free shape since Feb 2024: single instance, sleeps after 1h idle; Feb 2026 added a $29 verification hold (dated survey) — REVALIDATE on vendor page before any revival. Fleet: app authorized, dormant; koyeb-hindsight-deploy.yml exists"
-   }
-  },
-  {
-   "id": "platform201.projects",
-   "provider": "platform201",
-   "lane": "deploy",
-   "metric": "Solo projects",
-   "limit": 3,
-   "unit": "projects",
-   "window": "point-in-time",
-   "reset": "n/a",
-   "zone": "UTC",
-   "source": "https://www.platform201.com/",
-   "live": "console https://app.platform201.com (Google sign-in, Solo $0 Current); live workload https://ringerhollow-kangaroorose-killerpuddle.eu1.platform201.live/",
-   "planned_use": {
-    "note": "LIVE 2026-10-27: account via Google sign-in, Solo plan $0/mo, no card on file, $20 credits observed in console (entitlement observed, not a balance guarantee). Solo caps observed in Billing: 3 projects, 1 environment/project, 1 seat, 3 nodes each of container/function/gateway/scheduler/MongoDB-integration/Neon-DB-integration. Project n0nplatform201-live (Hello World Vite blueprint) deployed to Platform201-managed GCP (Cloud Run, europe-west2); live URL in `live`. Previously (2026-10-19) this surface existed only as the 'Platform201 Planning Queue' source-citation on other stubs."
+    "note": "free shape since Feb 2024: single instance, sleeps after 1h idle; Feb 2026 added a $29 verification hold (dated survey) \u2014 REVALIDATE on vendor page before any revival. Fleet: app authorized, dormant; koyeb-hindsight-deploy.yml exists"
    }
   },
   {
@@ -823,7 +806,7 @@
    "live": "none",
    "planned_use": {
     "safety": 0.9,
-    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); includes 180,000 vCPU-s + 360,000 GiB-s + 1 GB NA egress/mo; billing account required even for free tier"
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); includes 180,000 vCPU-s + 360,000 GiB-s + 1 GB NA egress/mo; billing account required even for free tier"
    }
   },
   {
@@ -840,7 +823,7 @@
    "live": "none",
    "planned_use": {
     "safety": 0.9,
-    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); includes 400,000 GB-s + 200,000 GHz-s + 5 GB egress/mo"
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); includes 400,000 GB-s + 200,000 GHz-s + 5 GB egress/mo"
    }
   },
   {
@@ -856,7 +839,7 @@
    "source": "https://cloud.google.com/free/docs/free-cloud-features",
    "live": "none",
    "planned_use": {
-    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); US regions only, with 30 GB standard persistent disk; separate $300/90-day trial for new billing accounts"
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); US regions only, with 30 GB standard persistent disk; separate $300/90-day trial for new billing accounts"
    }
   },
   {
@@ -874,7 +857,7 @@
    "live": "none",
    "planned_use": {
     "safety": 0.9,
-    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); no free tier when Provisioned Concurrency is enabled"
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); no free tier when Provisioned Concurrency is enabled"
    }
   },
   {
@@ -891,7 +874,7 @@
    "live": "none",
    "planned_use": {
     "safety": 0.9,
-    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated)"
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated)"
    }
   },
   {
@@ -907,7 +890,7 @@
    "source": "https://aws.amazon.com/free/",
    "live": "none",
    "planned_use": {
-    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); includes 25 provisioned RCU + 25 WCU (Standard table class)"
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); includes 25 provisioned RCU + 25 WCU (Standard table class)"
    }
   },
   {
@@ -923,7 +906,7 @@
    "source": "https://aws.amazon.com/free/",
    "live": "none",
    "planned_use": {
-    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); $100 at signup + up to $100 for onboarding actions. FREE plan can never bill and AUTO-CLOSES at the end; PAID plan bills after credits. Replaces the pre-2025-07-15 12-month EC2 free year for new accounts"
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); $100 at signup + up to $100 for onboarding actions. FREE plan can never bill and AUTO-CLOSES at the end; PAID plan bills after credits. Replaces the pre-2025-07-15 12-month EC2 free year for new accounts"
    }
   },
   {
@@ -940,7 +923,7 @@
    "live": "none",
    "planned_use": {
     "safety": 0.9,
-    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); includes 400,000 GB-s/mo resource consumption on Consumption plan"
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); includes 400,000 GB-s/mo resource consumption on Consumption plan"
    }
   },
   {
@@ -956,7 +939,7 @@
    "source": "https://azure.microsoft.com/en-us/pricing/offers/ms-azr-0044p",
    "live": "none",
    "planned_use": {
-    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); plus 12 months of popular services (B1S VM 750 h/mo, Blob 5 GB) that START BILLING in month 13 if upgraded and not deprovisioned; account disabled at day 30 without upgrade"
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); plus 12 months of popular services (B1S VM 750 h/mo, Blob 5 GB) that START BILLING in month 13 if upgraded and not deprovisioned; account disabled at day 30 without upgrade"
    }
   },
   {
@@ -973,7 +956,7 @@
    "live": "none",
    "planned_use": {
     "safety": 0.9,
-    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); JUNE 2026 HALVING: was effectively 3,000 OCPU-h. 1,500 OCPU-h ~= 2 OCPU running 24/7. Home region chosen at signup is permanent; capacity errors routine; idle instances reclaimable on pure-free accounts"
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); JUNE 2026 HALVING: was effectively 3,000 OCPU-h. 1,500 OCPU-h ~= 2 OCPU running 24/7. Home region chosen at signup is permanent; capacity errors routine; idle instances reclaimable on pure-free accounts"
    }
   },
   {
@@ -990,7 +973,7 @@
    "live": "none",
    "planned_use": {
     "safety": 0.9,
-    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); 9,000 GB-h ~= 12 GB running 24/7 (halved Jun 2026 from ~24 GB continuous)"
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); 9,000 GB-h ~= 12 GB running 24/7 (halved Jun 2026 from ~24 GB continuous)"
    }
   },
   {
@@ -1006,7 +989,7 @@
    "source": "https://www.oracle.com/cloud/free/",
    "live": "none",
    "planned_use": {
-    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated)"
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated)"
    }
   },
   {
@@ -1022,7 +1005,7 @@
    "source": "https://www.digitalocean.com/pricing/app-platform",
    "live": "none",
    "planned_use": {
-    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); there is NO permanent DigitalOcean free tier — credit evaporates at day 61; Droplets start at $4/mo"
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); there is NO permanent DigitalOcean free tier \u2014 credit evaporates at day 61; Droplets start at $4/mo"
    }
   },
   {
@@ -1038,7 +1021,7 @@
    "source": "https://www.digitalocean.com/pricing/app-platform",
    "live": "none",
    "planned_use": {
-    "note": "fleet: no account — documented entitlement only, never a balance; signup is an owner action (card-gated); 1 GiB outbound transfer per app/mo included; web-service components have NO free tier (from $5/mo)"
+    "note": "fleet: no account \u2014 documented entitlement only, never a balance; signup is an owner action (card-gated); 1 GiB outbound transfer per app/mo included; web-service components have NO free tier (from $5/mo)"
    }
   },
   {
@@ -1070,445 +1053,90 @@
    "source": "https://www.netlify.com/pricing/",
    "live": "none",
    "planned_use": {
-    "note": "no fleet account; credit model since Sep 2025 (legacy free tier closed) — a production deploy costs 15 credits; one project over limit pauses the account (dated survey, revalidate before use)"
+    "note": "no fleet account; credit model since Sep 2025 (legacy free tier closed) \u2014 a production deploy costs 15 credits; one project over limit pauses the account (dated survey, revalidate before use)"
    }
   },
   {
-   "id": "aion.free_tokens",
-   "provider": "aion",
-   "lane": "model",
-   "metric": "Free tier token allowance",
-   "limit": 20000,
-   "unit": "tokens/day",
-   "window": "daily",
-   "reset": "daily (schedule not published)",
-   "zone": "UTC",
-   "source": "https://api.aionlabs.ai/docs/rate-limits/",
-   "doc_quote": "Free tier: 20,000 tokens per minute; 20,000 daily token limit (15 requests per minute)",
-   "live": "none published (no rate-limit headers or usage endpoint documented)",
-   "planned_use": {
-    "safety": 0.9,
-    "note": "Fleet credential provisioned: AION_API_KEY (repo Actions secret, 2026-10-27)."
-   }
-  },
-  {
-   "id": "cerebras.free_tokens",
-   "provider": "cerebras",
-   "lane": "model",
-   "metric": "Free Trial token allowance",
-   "limit": 1000000,
-   "unit": "tokens/day",
-   "window": "daily",
-   "reset": "continuous token-bucket replenishment; no fixed reset",
-   "zone": "UTC",
-   "source": "https://inference-docs.cerebras.ai/support/rate-limits",
-   "doc_quote": "Free Trial tier (gpt-oss-120b / qwen-3.8-27b): 5 RPM, 30K uncached TPM, 1M TPH, 1M TPD",
-   "live": "none published (no usage endpoint or rate-limit headers documented); Cloud Console Limits page is authoritative per organization; 429 names the exceeded bucket",
-   "planned_use": {
-    "safety": 0.9
-   }
-  },
-  {
-   "id": "cloudflare.workers_ai",
-   "provider": "cloudflare",
-   "lane": "model",
-   "metric": "Workers AI free allocation",
-   "limit": 10000,
-   "unit": "Neurons/day",
-   "window": "daily",
-   "reset": "daily at 00:00 UTC",
-   "zone": "UTC",
-   "source": "https://developers.cloudflare.com/workers-ai/platform/pricing/",
-   "doc_quote": "Our free allocation allows anyone to use a total of 10,000 Neurons per day at no charge.",
-   "live": "none published (no usage API); Workers AI dashboard only",
-   "planned_use": {
-    "safety": 0.9
-   }
-  },
-  {
-   "id": "cohere.trial_calls",
-   "provider": "cohere",
-   "lane": "model",
-   "metric": "Trial key call allowance",
-   "limit": 1000,
-   "unit": "API calls/month",
-   "window": "monthly",
-   "reset": "monthly",
-   "zone": "UTC",
-   "source": "https://docs.cohere.com/docs/rate-limits",
-   "doc_quote": "Trial keys (and prod keys on newer Chat model variants) are limited to 1,000 API calls a month.",
-   "live": "response meta billed_units; dashboard (no dedicated usage endpoint documented)",
-   "planned_use": {
-    "safety": 0.9,
-    "note": "Chat trial cap is also 20 requests/minute per model. Fleet credential provisioned: COHERE_API_KEY (repo Actions secret, 2026-10-27)."
-   }
-  },
-  {
-   "id": "felo.api_credits",
-   "provider": "felo",
-   "lane": "model",
-   "metric": "Search API Free Standard credits (daily refill) + intermittent free models",
-   "limit": 200,
-   "unit": "credits/day",
-   "window": "daily",
-   "reset": "daily refill",
-   "zone": "UTC",
-   "source": "https://openapi.felo.ai/pricing",
-   "doc_quote": "200 daily free credits (public harness docs) — FREE-QUOTA-WINDOWS cadence table; provider-managers free_entitlement: Standard plan, 200 free credits daily for selected API models/tools, shared with Playground",
-   "live": "response headers X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, Retry-After",
-   "planned_use": {
-    "note": "no free entitlement; pay-as-you-go only — record exists so the family maps and the absence is documented, not assumed Allowance mapping is the fleet's historical record (docs/ops/FREE-QUOTA-WINDOWS.md + ops/quota/provider-managers.json), which supersedes the pay-as-you-go read of the pricing page taken 2026-10-27. Free models exist intermittently (e.g. ox-alpha trial; its ended-trial notice conflicts with the free pricing row) — treat free-model availability as intermittent and verify per catalog poll. FELO_AI_API provisioned (pre-existing).",
-    "safety": 0.9
-   }
-  },
-  {
-   "id": "groq.free_tier",
-   "provider": "groq",
-   "lane": "model",
-   "metric": "Free tier rate limits (per model)",
-   "limit": null,
-   "unit": "per-model requests/tokens",
-   "window": "per minute/day",
-   "reset": "x-ratelimit-reset-requests / x-ratelimit-reset-tokens headers",
-   "zone": "UTC",
-   "source": "https://console.groq.com/docs/rate-limits",
-   "doc_quote": "Free-tier limits are published per model (e.g. chat models 30 RPM, 1,000 requests/day, 8K TPM, 200K tokens/day); no single account-wide number.",
-   "live": "response headers x-ratelimit-limit-requests, x-ratelimit-remaining-requests, x-ratelimit-reset-requests, x-ratelimit-limit-tokens, x-ratelimit-remaining-tokens, x-ratelimit-reset-tokens, retry-after (passive adapter implemented)",
-   "planned_use": {
-    "safety": 0.9,
-    "note": "per-model tables govern; read the headers, not this record, for the live ceiling Fleet credential provisioned: GROQ_API_KEY (repo Actions secret, 2026-10-27)."
-   }
-  },
-  {
-   "id": "huggingface.inference_providers",
-   "provider": "huggingface",
-   "lane": "model",
-   "metric": "Inference Providers monthly credits",
-   "limit": null,
-   "unit": "monthly credits",
-   "window": "monthly",
-   "reset": "monthly",
-   "zone": "UTC",
-   "source": "https://huggingface.co/docs/inference-providers/pricing",
-   "doc_quote": "Free users: monthly included credits are None (the former $0.10 credit no longer applies); usage beyond is pay-as-you-go.",
-   "live": "Hub RateLimit response header (remaining r, seconds-to-reset t; 5-minute fixed windows; passive adapter implemented — Hub API/Resolver/Pages categories, NOT hosted-inference quota); organization usage API GET /api/organizations/{org}/billing/usage/inference (Enterprise); router free/zero models via /v1/models catalog poll",
-   "planned_use": {
-    "note": "no free numeric entitlement published; treat as unknown, not zero-usage Historical allowance mapping (FREE-QUOTA-WINDOWS): router free/zero models are a catalog-cadence free route when the poll classifies them free. Fleet credential provisioned: HUGGINGFACE_TOKEN (repo Actions secret, 2026-10-27)."
-   }
-  },
-  {
-   "id": "kilo.free_models",
-   "provider": "kilo",
-   "lane": "model",
-   "metric": "Free model requests (kilo-auto/free)",
-   "limit": 200,
-   "unit": "requests/hour",
-   "window": "hourly",
-   "reset": "per-hour window (per IP)",
-   "zone": "UTC",
-   "source": "https://kilo.ai/docs/getting-started/rate-limits-and-costs",
-   "doc_quote": "Free models (kilo-auto/free): 200 requests per hour per IP.",
-   "live": "none published",
-   "planned_use": {
-    "safety": 0.9
-   }
-  },
-  {
-   "id": "llm7.free_token",
-   "provider": "llm7",
-   "lane": "model",
-   "metric": "Free token allowance (turbo models)",
-   "limit": 100000,
-   "unit": "tokens/day",
-   "window": "daily",
-   "reset": "daily",
-   "zone": "UTC",
-   "source": "https://docs.llm7.io/guides/models-api",
-   "doc_quote": "Free token | turbo models | 100,000 tokens per day | 1 request/second, 60/minute, 250/hour",
-   "live": "GET /v1/models per-model tier/pricing/limit fields; allowance state via dashboard",
-   "planned_use": {
-    "safety": 0.9,
-    "note": "free-token quotas may be reduced without notice per the same page Fleet credential provisioned: LLM7_API_TOKEN (repo Actions secret, 2026-10-27)."
-   }
-  },
-  {
-   "id": "mistral.free_mode",
-   "provider": "mistral",
-   "lane": "model",
-   "metric": "Free mode (Experiment) included usage",
-   "limit": null,
-   "unit": "included usage (per model, in-account)",
-   "window": "unknown",
-   "reset": "unknown",
-   "zone": "UTC",
-   "source": "https://docs.mistral.ai/admin/billing-usage/usage-limits",
-   "doc_quote": "Free mode usage limits are shown per model in the signed-in Admin Panel (Usage limits); no public numeric table is published.",
-   "live": "none published (Admin Panel only; Admin API is Enterprise)",
-   "planned_use": {
-    "note": "numbers exist only behind sign-in; never record the unsourced figures circulating elsewhere Historical allowance mapping (fleet account-creation recon): La Plateforme Free mode is the default for new API accounts, no card. Fleet ruling (PR #1805): no Mistral API key — Mistral runs as webWrapper via local Termux; MISTRAL_API_KEY deliberately unprovisioned."
-   }
-  },
-  {
-   "id": "modelscope.api_inference",
-   "provider": "modelscope",
-   "lane": "model",
-   "metric": "API-Inference usage limits",
-   "limit": 2000,
-   "unit": "requests/day",
-   "window": "daily",
-   "reset": "daily (per fleet recon claim)",
-   "zone": "UTC",
-   "source": "https://www.modelscope.ai/docs/model-service/API-Inference/limits",
-   "doc_quote": "API-Inference free for registered users (~2,000 req/day claimed) — docs/ops/ACCOUNT-CREATION-RECON-2026-10-27.md",
-   "live": "none published (not established)",
-   "planned_use": {
-    "note": "revalidate against the official limits page before any numeric claim; third-party figures are not evidence The 2,000/day figure is the fleet account-creation recon claim, NOT verified on the official page (unreachable on fetch, 2026-10-27); official docs describe dynamic per-model concurrency and Magicube costs (PROVIDER-QUOTA-MANAGERS evidence matrix). Revalidate before relying on the number."
-   }
-  },
-  {
-   "id": "nvidia.api_catalog",
-   "provider": "nvidia",
-   "lane": "model",
-   "metric": "API catalog free model limits (per model, in-account)",
-   "limit": null,
-   "unit": "per-model credits/limits (in-account)",
-   "window": "unknown",
-   "reset": "unknown",
-   "zone": "UTC",
-   "source": "https://build.nvidia.com/",
-   "doc_quote": "Current free limits are per model in the signed-in build.nvidia.com catalog; no public numeric table is published.",
-   "live": "none published",
-   "planned_use": {
-    "note": "a legacy FAQ figure (up to 5,000 credits) is NOT recorded: it is not a current documented entitlement Historical allowance mapping (fleet account-creation recon): Developer Program members get free NIM API access for prototyping, no card; one NIM key provisions both fleet names. Fleet credential provisioned: NVIDIA_API_KEY + NVIDIA_NIM_API_KEY (repo Actions secret, 2026-10-27)."
-   }
-  },
-  {
-   "id": "omni.gateway",
-   "provider": "omni",
-   "lane": "model",
-   "metric": "OmniRoute gateway (self-hosted; no own entitlement)",
-   "limit": null,
-   "unit": "n/a (aggregates upstream free tiers)",
-   "window": "n/a",
+   "provider": "pinecone",
+   "lane": "data",
+   "source": "https://www.pinecone.io/pricing/",
+   "live": "GET api.pinecone.io/indexes (PINECONE_API_KEY)",
+   "id": "pinecone.storage",
+   "metric": "vector storage (Starter)",
+   "limit": 2,
+   "unit": "GB",
+   "window": "point-in-time",
    "reset": "n/a",
    "zone": "UTC",
-   "source": "https://github.com/crl33/omniroute",
-   "doc_quote": "OmniRoute aggregates the documented free tiers of 42 provider pools / 495 models into one honest number and shows it live on the dashboard (/dashboard/free-tiers).",
-   "live": "self-hosted dashboard /dashboard/free-tiers shows live used/remaining per upstream pool; no hosted usage API or rate-limit headers",
    "planned_use": {
-    "note": "no entitlement of its own; the upstream providers' registry records govern Historical allowance mapping (FREE-QUOTA-WINDOWS): catalog $0 route — usable only when the catalog poll classifies a model free (OMNI_API_KEY + /v1/models); cadence class catalog."
+    "safety": 0.85,
+    "note": "Starter plan Current/Free verified in console 2026-10-28; existing index swaying-dogwood (1024-dim cosine, serverless us-east-1)"
    }
   },
   {
-   "id": "ovhcloud.ai_endpoints",
-   "provider": "ovhcloud",
-   "lane": "model",
-   "metric": "AI Endpoints anonymous rate limit",
-   "limit": 2,
-   "unit": "requests/minute",
-   "window": "per minute",
-   "reset": "per-minute window",
+   "provider": "pinecone",
+   "lane": "data",
+   "source": "https://www.pinecone.io/pricing/",
+   "live": "GET api.pinecone.io/indexes (PINECONE_API_KEY)",
+   "id": "pinecone.write_units",
+   "metric": "write units (Starter)",
+   "limit": 2000000,
+   "unit": "WU/month",
+   "window": "monthly",
+   "reset": "billing month",
    "zone": "UTC",
-   "source": "https://docs.ovhcloud.com/en/guides/public-cloud/ai-machine-learning/ai-endpoints-getting-started",
-   "doc_quote": "Anonymous: 2 requests per minute, per IP and per model.",
-   "live": "none published; consumption visible in the Control Panel",
    "planned_use": {
-    "safety": 0.9,
-    "note": "authenticated with an API access key: 400 requests/minute per project per model (same source)"
+    "safety": 0.85
    }
   },
   {
-   "id": "requesty.free_models",
-   "provider": "requesty",
-   "lane": "model",
-   "metric": "Free model requests",
-   "limit": 200,
-   "unit": "requests/day",
-   "window": "daily",
-   "reset": "daily",
+   "provider": "pinecone",
+   "lane": "data",
+   "source": "https://www.pinecone.io/pricing/",
+   "live": "GET api.pinecone.io/indexes (PINECONE_API_KEY)",
+   "id": "pinecone.read_units",
+   "metric": "read units (Starter)",
+   "limit": 1000000,
+   "unit": "RU/month",
+   "window": "monthly",
+   "reset": "billing month",
    "zone": "UTC",
-   "source": "https://www.requesty.ai/free-models",
-   "doc_quote": "You get 200 requests per day at no cost, with no credit card required.",
-   "live": "GET /v1/manage/org/usage; GET /v1/manage/apikey/{id}/usage",
    "planned_use": {
-    "safety": 0.9,
-    "note": "shared org-wide; the figure has moved before (older changelog: 50/day for new orgs) — revalidate periodically"
+    "safety": 0.85,
+    "note": "remote-engine escalation path for pg_pinecone; consumer = HindSight bank-scoped recall if/when it lands"
    }
   },
   {
-   "id": "routeway.free_models",
-   "provider": "routeway",
-   "lane": "model",
-   "metric": "Free model requests (:free models)",
-   "limit": 200,
-   "unit": "requests/day",
-   "window": "daily",
-   "reset": "UTC midnight (X-RateLimit-Reset-Day)",
+   "provider": "pinecone",
+   "lane": "data",
+   "source": "https://www.pinecone.io/pricing/",
+   "live": "GET api.pinecone.io/indexes (PINECONE_API_KEY)",
+   "id": "pinecone.indexes",
+   "metric": "indexes (Starter)",
+   "limit": 5,
+   "unit": "indexes (100 namespaces each)",
+   "window": "point-in-time",
+   "reset": "n/a",
    "zone": "UTC",
-   "source": "https://docs.routeway.ai/getting-started/rate-limits",
-   "doc_quote": "Free models (e.g., deepseek-r1:free) are subject to the following rate limits: 5 Requests Per Minute (RPM), 200 Requests Per Day (RPD)",
-   "live": "headers X-RateLimit-Limit-Minute, X-RateLimit-Remaining-Minute, X-RateLimit-Reset-Minute, X-RateLimit-Limit-Day, X-RateLimit-Remaining-Day, X-RateLimit-Reset-Day, Retry-After",
    "planned_use": {
-    "safety": 0.9,
-    "note": "Fleet credential provisioned: ROUTEWAY_API_KEY (repo Actions secret, 2026-10-27)."
+    "safety": 0.8,
+    "note": "1 of 5 in use (swaying-dogwood); 1 project / 2 users on Starter"
    }
   },
   {
-   "id": "sambanova.free_tier",
-   "provider": "sambanova",
-   "lane": "model",
-   "metric": "Free Tier requests per model",
-   "limit": 20,
-   "unit": "requests/day per model",
-   "window": "daily",
-   "reset": "daily (x-ratelimit-reset-requests-day header)",
-   "zone": "UTC",
-   "source": "https://sambanova-systems.mintlify.dev/docs/en/models/rate-limits",
-   "doc_quote": "Free Tier (no payment method linked): 20 RPM, 20 requests per day, 200,000 tokens per day per model",
-   "live": "response headers x-ratelimit-limit-requests, x-ratelimit-remaining-requests, x-ratelimit-reset-requests, x-ratelimit-limit-requests-day, x-ratelimit-remaining-requests-day, x-ratelimit-reset-requests-day (passive adapter implemented)",
-   "planned_use": {
-    "safety": 0.9,
-    "note": "tokens/day cap (200,000 per model) binds before requests/day for long generations Fleet credential provisioned: SAMBANOVA_API_KEY (repo Actions secret, 2026-10-27)."
-   }
-  },
-  {
-   "id": "sealion.api",
-   "provider": "sealion",
-   "lane": "model",
-   "metric": "Trial API rate limit",
-   "limit": 10,
-   "unit": "requests/minute per user",
-   "window": "per minute",
-   "reset": "per-minute window",
-   "zone": "UTC",
-   "source": "https://docs.sea-lion.ai/guides/inferencing/api",
-   "doc_quote": "As of 04 Jun 2026, our rate limits is set to 10 requests per minute per user",
-   "live": "none published",
-   "planned_use": {
-    "safety": 0.9,
-    "note": "free trial key via SEA-LION Playground; 1 API key per user; no daily quota published Fleet credential provisioned: SEALION_API_KEY (repo Actions secret, 2026-10-27)."
-   }
-  },
-  {
-   "id": "siliconflow.free_models",
-   "provider": "siliconflow",
-   "lane": "model",
-   "metric": "Free model rate limits (per model)",
-   "limit": null,
-   "unit": "requests/minute + tokens/minute (per model)",
-   "window": "per minute/day",
-   "reset": "per-window",
-   "zone": "UTC",
-   "source": "https://siliconflow-4a6a0801.mintlify.app/en/userguide/rate-limits/rate-limit-and-upgradation",
-   "doc_quote": "The Rate limits for free models are fixed values, while those for paid models vary based on the account's usage level",
-   "live": "GET user/info balance fields data.balance / data.chargeBalance / data.totalBalance (monetary only, passive adapter implemented); no rate-limit headers published; per-model free values shown in the account console only",
-   "planned_use": {
-    "note": "no single free number exists; per-model fixed values are console-only Historical allowance mapping (fleet account-creation recon): the international platform grants a $1 signup credit, no card; the .cn platform's $0 models require mainland real-name authentication and are not used."
-   }
-  },
-  {
-   "id": "typhoon.api",
-   "provider": "typhoon",
-   "lane": "model",
-   "metric": "Free research API rate limits (per model)",
-   "limit": 200,
-   "unit": "requests/minute",
-   "window": "per minute",
-   "reset": "per-minute window; 429 error body message carries the retry timestamp",
-   "zone": "UTC",
-   "source": "https://docs.opentyphoon.ai/en/rate-limits/",
-   "doc_quote": "typhoon-v2.5-30b-a3b-instruct: 5 requests per second, 200 requests per minute (typhoon-v2.1-12b-instruct: 5 RPS, 200 RPM)",
-   "live": "no usage endpoint; HTTP 429 error body (rate_limit_exceeded) carries the retry time in its message",
-   "planned_use": {
-    "safety": 0.9,
-    "note": "free light research usage per the official overview/FAQ (docs/ops/TYPHOON-FREE-API-CONTRACT.md); rate ceilings are not a remaining balance"
-   }
-  },
-  {
-   "id": "unorouter.free_models",
-   "provider": "unorouter",
-   "lane": "model",
-   "metric": "Free model rate cap (UnoRouter's own, above upstream)",
+   "provider": "pinecone",
+   "lane": "data",
+   "source": "https://www.pinecone.io/pricing/",
+   "live": "GET api.pinecone.io/indexes (PINECONE_API_KEY)",
+   "id": "pinecone.egress",
+   "metric": "egress (Starter)",
    "limit": 1,
-   "unit": "requests/minute per free model per user",
-   "window": "per minute",
-   "reset": "per-minute window; Retry-After on 429",
+   "unit": "GB/month",
+   "window": "monthly",
+   "reset": "billing month",
    "zone": "UTC",
-   "source": "http://unorouter.com/en/blog/free-models-aggregated",
-   "doc_quote": "On top of the upstream caps we add a small limit of our own: one request per minute per free model, per user",
-   "live": "Retry-After header on HTTP 429",
    "planned_use": {
-    "safety": 0.9,
-    "note": "upstream providers impose their own caps (RPM, daily token quotas) beneath this one"
-   }
-  },
-  {
-   "id": "xfyun.spark",
-   "provider": "xfyun",
-   "lane": "model",
-   "metric": "Spark Lite free tier + per-capability trials",
-   "limit": null,
-   "unit": "unknown",
-   "window": "unknown",
-   "reset": "unknown",
-   "zone": "UTC",
-   "source": "https://www.xfyun.cn/doc/spark/HTTP%E8%B0%83%E7%94%A8%E6%96%87%E6%A1%A3.html",
-   "doc_quote": "Spark Lite is permanently free; global platform: 90-day free trial per capability — docs/ops/ACCOUNT-CREATION-RECON-2026-10-27.md",
-   "live": "none published (not established)",
-   "planned_use": {
-    "note": "revalidate against the official page before any numeric claim; third-party figures are not evidence Mapping rests on the fleet recon plus the official Spark HTTP doc it cites; the marketing page was unreachable on fetch (2026-10-27) and no numeric cap is in evidence. Only the exact `lite` model is admitted by the hub transport."
-   }
-  },
-  {
-   "id": "xkiro.free_models",
-   "provider": "xkiro",
-   "lane": "model",
-   "metric": "Free model token allowance",
-   "limit": 500000,
-   "unit": "tokens/day",
-   "window": "daily",
-   "reset": "daily reset; free-model requests blocked with 429 until the reset",
-   "zone": "UTC",
-   "source": "https://xkiro.com/",
-   "doc_quote": "Yes. 45 models are free to call on every account, within a daily allowance of 500K tokens — 1M after you verify on Telegram. No credit card required.",
-   "live": "Retry-After header when the wait is known; usage attributed per API key with dashboard call logs (model/tokens/cost/status); no dedicated usage endpoint published",
-   "planned_use": {
-    "safety": 0.9,
-    "note": "allowance doubles to 1,000,000 tokens/day after Telegram verification"
-   }
-  },
-  {
-   "id": "zai.free_models",
-   "provider": "zai",
-   "lane": "model",
-   "metric": "Free ($0-priced GLM Flash) model access",
-   "limit": null,
-   "unit": "per-account (unpublished)",
-   "window": "unknown",
-   "reset": "unknown",
-   "zone": "UTC",
-   "source": "https://docs.z.ai/api-reference/api-code",
-   "doc_quote": "GLM Flash models (4.5/4.6V/4.7) are $0-priced; no card — docs/ops/ACCOUNT-CREATION-RECON-2026-10-27.md",
-   "live": "HTTP 429 error body codes 1308 / 1316-1321 carry a next_flush_time field (documented in the API-code reference)",
-   "planned_use": {
-    "note": "treat the ceiling as unknown; the 429 body's next_flush_time is the only documented telemetry Historical allowance mapping (fleet account-creation recon): the free route is $0-priced Flash models; per-account numeric limits remain unpublished."
-   }
-  },
-  {
-   "id": "huggingface.hub_api",
-   "provider": "huggingface",
-   "lane": "ops",
-   "metric": "Hub API rate limit (api category)",
-   "limit": null,
-   "unit": "requests per 5-minute fixed window (account-dynamic)",
-   "window": "5-minute fixed window",
-   "reset": "RateLimit header t (seconds to reset)",
-   "zone": "UTC",
-   "source": "https://huggingface.co/docs/hub/en/rate-limits",
-   "doc_quote": "RateLimit header carries remaining r and seconds-to-reset t; categories are Hub API / Resolver / Pages; 5-minute fixed windows; account/org/member context applies (fleet evidence matrix, PROVIDER-QUOTA-MANAGERS.md).",
-   "live": "GET https://huggingface.co/api/whoami-v2 — RateLimit response header, read by scripts/quota_poll.py hf_hub_reader under the fleet credential (canonical HUGGINGFACE_TOKEN; alias resolve order shared with the availability probe). No inference sent.",
-   "planned_use": {
-    "note": "Hub API quota only — NOT Inference Providers or router.huggingface.co quota; the two surfaces are never blended (provider-quota-managers rule). Reader reports remaining/reset only; no documented fixed limit is recorded."
+    "safety": 0.85
    }
   }
  ]

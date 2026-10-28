@@ -92,6 +92,40 @@ def test_derive_moniker_collision_appends_smallest_free_integer():
     assert reg.derive_moniker("devpost", taken) == "n0nDevpost2"
 
 
+def test_derive_moniker_v3_is_unlinkable_and_deterministic():
+    samples = ["devpost", "cohere", "platform201", "vultr", "kiro",
+               "aha-io", "model-scope", "sea-lion", "uno-router", "zai"]
+    seen = {}
+    for pid in samples:
+        m1 = reg.derive_moniker_v3(pid, {})
+        m2 = reg.derive_moniker_v3(pid, {})
+        assert m1 == m2  # deterministic: lanes can look it up instantly
+        assert not m1.lower().startswith(reg.STEM)  # no shared stem
+        # No platform token embedded in the codename.
+        assert pid.replace("-", "") not in m1.lower()
+        assert m1.lower() not in seen  # distinct across platforms
+        seen[m1.lower()] = pid
+
+
+def test_derive_moniker_v3_collision_bumps_suffix():
+    natural = reg.derive_moniker_v3("devpost", {})
+    taken = {natural.lower(): "other-platform"}
+    bumped = reg.derive_moniker_v3("devpost", taken)
+    assert bumped != natural and bumped[:-2] == natural[:-2]
+    # Same owner re-deriving is not a collision.
+    assert reg.derive_moniker_v3("devpost", {natural.lower(): "devpost"}) == natural
+
+
+def test_expected_monikers_respects_entry_rule():
+    v2 = fleet_entry()  # n0nCohere, no moniker_rule field == legacy v2
+    v3 = fleet_entry(platform_id="aion", platform="Aion",
+                     moniker=reg.derive_moniker_v3("aion", {}),
+                     moniker_rule="v3")
+    expected = reg.expected_monikers([v2, v3])
+    assert expected["cohere"] == "n0nCohere"
+    assert expected["aion"] == v3["moniker"]
+
+
 def test_canonical_form():
     e = {"role": "entrant", "moniker": "n0nKiro", "platform_id": "kiro"}
     assert reg.canonical(e) == "entrant{n0nKiro}[platform:kiro]"
@@ -112,7 +146,9 @@ def test_assign_adds_activated_platforms_with_profile_refs_only():
     added = reg.assign(registry, FIXTURE_LOG)
     assert added == ["aws-builder-center", "devpost", "kiro"]
     by_id = {e["platform_id"]: e for e in registry["entries"]}
-    assert by_id["devpost"]["moniker"] == "n0nDevpost"
+    # New assignments are rule v3 (unlinkable codenames), never v2 stems.
+    assert by_id["devpost"]["moniker"] == reg.derive_moniker_v3("devpost", {})
+    assert all(e["moniker_rule"] == "v3" for e in registry["entries"])
     for e in registry["entries"]:
         # No profile data is carried here - only a pointer (one home per fact).
         assert "public_handle" not in e and "handle_state" not in e
@@ -168,7 +204,8 @@ def test_render_table_carries_canonical_forms():
     registry = empty_registry()
     reg.assign(registry, FIXTURE_LOG)
     table = reg.render_table(registry)
-    assert "`entrant{n0nDevpost}[platform:devpost]`" in table
+    expected = reg.expected_monikers(registry["entries"])
+    assert f"`entrant{{{expected['devpost']}}}[platform:devpost]`" in table
     assert "| Devpost |" in table  # profile_ref column names the heading
 
 
@@ -208,11 +245,16 @@ def test_derive_mode_registered_and_unregistered(capsys, tmp_path):
     assert reg.main(["derive", "--registry", str(rp),
                      "--platform-id", "devpost"]) == 0
     out = json.loads(capsys.readouterr().out)
-    assert out["moniker"] == "n0nDevpost" and out["source"] == "registry"
+    assert out["moniker"] == reg.expected_monikers(registry["entries"])["devpost"]
+    assert out["source"] == "registry"
     assert reg.main(["derive", "--registry", str(rp),
                      "--platform-id", "cohere"]) == 0
     out = json.loads(capsys.readouterr().out)
-    assert out["canonical"] == "account{n0nCohere}[platform:cohere]"
+    taken = {e["moniker"].lower(): e["platform_id"]
+             for e in registry["entries"]}
+    codename = reg.derive_moniker_v3("cohere", taken)
+    assert out["canonical"] == f"account{{{codename}}}[platform:cohere]"
+    assert out["source"].startswith("rule-v3")
 
 
 def test_shipped_registry_is_consistent_with_shipped_log():

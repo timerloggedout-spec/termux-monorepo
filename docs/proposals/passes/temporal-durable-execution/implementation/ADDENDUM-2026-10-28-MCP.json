@@ -1,0 +1,102 @@
+{
+ "addendum": "temporal-durable-execution / temporal-integration lane",
+ "date": "2026-10-28",
+ "lane": "[MUSEai]@{role:{temporal-integration}}",
+ "context": "Repo-only compliance sweep (owner order): the lane's 2026-10-28 proof artifacts existed only in ~/workspace/temporal-selfhost/. They are recorded here. Companion record: docs/ops/TEMPORAL-MCP.md (PR #2012, merge fd5b13e854). Raw MCP transcript: ADDENDUM-2026-10-28-MCP-proof.jsonl (same directory).",
+ "selfhost_live_state": {
+  "units": [
+   "temporal-selfhost.service active",
+   "temporal-relay.service active"
+  ],
+  "frontend": "127.0.0.1:7233 answers (gRPC)",
+  "ui": "127.0.0.1:8233 HTTP 200",
+  "relay": "0.0.0.0:7234 -> 127.0.0.1:7233 (socat)",
+  "db": "~/workspace/temporal-selfhost/temporal.db (runtime data; not committed by design)",
+  "server": "CLI 1.9.1 / Server 1.32.0, namespace default Registered, retention 24h",
+  "keepalive": "Muse cron temporal-selfhost-keepalive, interval 15m, last run succeeded 2026-10-28"
+ },
+ "kill_resume_reproof": {
+  "verdict": "PASS",
+  "envelope": {
+   "workflow_id": "kill-resume-unit-1793192868",
+   "unit_id": "unit-1793192868",
+   "killed_worker_pid": 9688,
+   "workflow_result": {
+    "receipt": {
+     "prior_attempt_unrecorded": true,
+     "receipt_sha256": "44eb3531e21a270b6d5424201a6b64e42b2a75d8fb2fe8e54f04347a1f6340ae",
+     "records": 4,
+     "unit_id": "unit-1793192868"
+    },
+    "unit_id": "unit-1793192868",
+    "unknown_outcomes": [
+     {
+      "detail": "prior attempt started but recorded no receipt; reconciled via idempotency key, not blindly retried",
+      "outcome": "unknown",
+      "unit_id": "unit-1793192868"
+     }
+    ]
+   },
+   "receipt_count": 1,
+   "history_sha256": "884f31ccd66d202f117d398d5fad24686f8531b809961077a4b5ea30b34936d9",
+   "attestation": "history digest referenced here per RFP \u00a76 step 3 / N1; Witness in-toto arm names-only, no keys in this record"
+  },
+  "receipt_file": {
+   "unit_id": "unit-1793192868",
+   "receipt_sha256": "44eb3531e21a270b6d5424201a6b64e42b2a75d8fb2fe8e54f04347a1f6340ae",
+   "records": 4,
+   "prior_attempt_unrecorded": true
+  }
+ },
+ "mcp_proof": {
+  "server": "temporalio/temporal-mcp v0.0.3 (official installer https://temporal.download/mcp.sh -> ~/.temporalio/bin/temporal-mcp; env install, never committed)",
+  "transport": "stdio",
+  "config": "scripts/temporal/selfhost/mcp-config.yaml (target selfhost = localhost:7233, namespace default)",
+  "initialize_serverInfo": {
+   "name": "temporal",
+   "version": "0.0.3"
+  },
+  "tools": [
+   "check_connection",
+   "count_workflows",
+   "get_task_queues",
+   "get_workflow_history",
+   "get_workflows",
+   "list_available_targets",
+   "list_search_attributes",
+   "search_workflows"
+  ],
+  "check_connection": {
+   "target": "selfhost",
+   "result": {
+    "stages": [
+     {
+      "name": "server",
+      "status": "ok",
+      "latency_ms": 152,
+      "reason": null
+     },
+     {
+      "name": "namespace",
+      "status": "ok",
+      "latency_ms": 100,
+      "reason": null
+     },
+     {
+      "name": "codec",
+      "status": "skipped",
+      "latency_ms": null,
+      "reason": "not run because the target does not decode payloads"
+     }
+    ]
+   },
+   "complete": true,
+   "next_call": null
+  },
+  "followup_calls": {
+   "count_workflows": 3,
+   "search_workflows_DurableUnitWorkflow": "returned kill-resume-unit-1793192868 Completed (run 01a1829f-bb91-751f-bda5-823d07360147)"
+  }
+ },
+ "mesh_caveat": "No tailscale interface in this VM's network namespace; single node; fleet-mesh redundancy NOT established."
+}

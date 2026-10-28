@@ -1,6 +1,6 @@
 # Phantom-Secret Remediation
 
-Generated 2026-10-28T01:10:06.074615+00:00 by the phantom-secrets audit (repo-native, repeatable: `.github/workflows/phantom-secrets-audit.yml`). Counts are derived live at generation time. Names only — no secret values exist in this document.
+Generated 2026-10-28T04:27:44.575026+00:00 by the phantom-secrets audit (repo-native, repeatable: `.github/workflows/phantom-secrets-audit.yml`). Counts are derived live at generation time. Names only — no secret values exist in this document.
 
 - Phantom names: **60** across **139** references
 - compiled: 20 references

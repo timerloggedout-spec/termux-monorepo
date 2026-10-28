@@ -1,0 +1,130 @@
+{
+  "schema": "delphi-round2-evidence/v1",
+  "pass_id": "temporal-durable-execution",
+  "results": {
+    "temporal-durable-execution-pi-core-resume": {
+      "suites": [
+        {
+          "name": "kill-resume harness (RFP \u00a76): exactly one receipt after a mid-activity worker kill",
+          "passed": 1,
+          "failed": 0,
+          "receipt": {
+            "command": "python3 scripts/temporal/kill_resume_harness.py prove --address localhost:7233 --workdir <scratch>/v1",
+            "exit_code": 0,
+            "output_sha256": "ab99c70e0d35e691b0482719724f0da17dd3cadf3849f6fd3ed62378cb392bb5",
+            "code_paths": [
+              "scripts/temporal/kill_resume_harness.py"
+            ]
+          },
+          "receipt_state": "verified"
+        }
+      ],
+      "passed": 1,
+      "failed": 0,
+      "pass_rate": 1.0
+    },
+    "temporal-durable-execution-cookbook-agent-loop": {
+      "suites": [
+        {
+          "name": "HITL approval workflow: pause on signal, resume, complete",
+          "passed": 1,
+          "failed": 0,
+          "receipt": {
+            "command": "python3 scripts/temporal/hitl_approval.py prove --address localhost:7233",
+            "exit_code": 0,
+            "output_sha256": "470ee20d3b09f41f14114ae3666076d08d63ec8633ded2b7ea2760be77f13b3c",
+            "code_paths": [
+              "scripts/temporal/hitl_approval.py"
+            ]
+          },
+          "receipt_state": "verified"
+        },
+        {
+          "name": "kill-resume harness (RFP \u00a76)",
+          "passed": 1,
+          "failed": 0,
+          "receipt": {
+            "command": "python3 scripts/temporal/kill_resume_harness.py prove --address localhost:7233 --workdir <scratch>/v2",
+            "exit_code": 0,
+            "output_sha256": "f282b5c1aa7b07fd5ca30c950db2c5ab71900ec8d8e0fbc14d989c8ea3d259d1",
+            "code_paths": [
+              "scripts/temporal/kill_resume_harness.py"
+            ]
+          },
+          "receipt_state": "verified"
+        }
+      ],
+      "passed": 2,
+      "failed": 0,
+      "pass_rate": 1.0
+    },
+    "temporal-durable-execution-versioned-autoscale": {
+      "suites": [
+        {
+          "name": "omes load scenario against the self-host dev server with published scenario receipts",
+          "passed": 0,
+          "failed": 1,
+          "receipt": {
+            "command": "probe: which omes (omes load harness, Go tool)",
+            "exit_code": 1,
+            "output_sha256": "0ce9c4c0b0046fd865afaff61ff0b9d9876492d739a1f79141df5ff7212c149e",
+            "code_paths": [
+              "scripts/temporal/versioning_model.py"
+            ]
+          },
+          "unverified": true,
+          "receipt_state": "missing_or_invalid"
+        }
+      ],
+      "passed": 0,
+      "failed": 1,
+      "pass_rate": 0.0
+    },
+    "temporal-durable-execution-contract-first": {
+      "suites": [
+        {
+          "name": "contract generation fixture: evidence-envelope schema -> validators in 2 languages, invalid payloads rejected with aggregated violations",
+          "passed": 1,
+          "failed": 0,
+          "receipt": {
+            "command": "python3 scripts/temporal/run_contract_fixture.py",
+            "exit_code": 0,
+            "output_sha256": "9b075920899ca8ac17a71e07639268b6408684013692601c81f36eb47bf7c4f8",
+            "code_paths": [
+              "scripts/temporal/envelope_schema.json",
+              "scripts/temporal/validate_envelope.py",
+              "scripts/temporal/validate_envelope.js"
+            ]
+          },
+          "receipt_state": "verified"
+        }
+      ],
+      "passed": 1,
+      "failed": 0,
+      "pass_rate": 1.0
+    },
+    "temporal-durable-execution-serverless-skill": {
+      "suites": [
+        {
+          "name": "skill dry-walk against the self-host dev server only; Cloud steps recorded specified_not_run with reasons",
+          "passed": 1,
+          "failed": 0,
+          "receipt": {
+            "command": "python3 scripts/temporal/skill_dry_walk.py --address localhost:7233 --workdir <scratch>/v5",
+            "exit_code": 0,
+            "output_sha256": "4c697636e2d7ecc6c9ba65fd7940a8df965e69802887bc6635f88669a5e2c9da",
+            "code_paths": [
+              "scripts/temporal/skill_dry_walk.py",
+              "scripts/temporal/kill_resume_harness.py"
+            ]
+          },
+          "receipt_state": "verified"
+        }
+      ],
+      "passed": 1,
+      "failed": 0,
+      "pass_rate": 1.0
+    }
+  },
+  "sha256": "8d67dc0326925dac8ea739891d12d707cd92cb07ceb6d95f56c8cbda9291fd76"
+}

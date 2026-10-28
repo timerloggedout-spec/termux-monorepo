@@ -28,9 +28,27 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "cf0b5bd250542bbd8cf506ca44d11b98be7ec4bc295e058877cdc644217da2a5",
-  "workflow_count": 217,
+  "source_fingerprint": "19c0c6cb02e2d6b7b0650d07beacb3938d531d387210cb4f6a837c1fb3bee0d1",
+  "workflow_count": 219,
   "workflows": [
+    {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "watch"
+      ],
+      "name": "ace-watch",
+      "path": ".github/workflows/ace-watch.yml",
+      "schedules": [
+        "23 7 1 * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
     {
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
@@ -280,6 +298,21 @@
       ],
       "name": "Agent Runtime Stall Watch",
       "path": ".github/workflows/agent-runtime-stall-watch.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "eval"
+      ],
+      "name": "agent-substrate-eval",
+      "path": ".github/workflows/agent-substrate-eval.yml",
       "schedules": [],
       "triggers": [
         "workflow_dispatch"

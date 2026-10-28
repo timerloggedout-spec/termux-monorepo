@@ -1,0 +1,11 @@
+{
+  "handles": {
+    "example-route": {
+      "credential_env": "FLEET_PROXY_CRED_EXAMPLE",
+      "credential_header": "Authorization",
+      "credential_prefix": "Bearer ",
+      "allowed_hosts": ["api.example.com"],
+      "allowed_path_prefixes": ["/v1/"]
+    }
+  }
+}

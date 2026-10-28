@@ -114,6 +114,18 @@ def _get(path: str, token: str) -> Any:
         return json.loads(resp.read().decode())
 
 
+def _get_or(path: str, token: str, default: Any, warnings: list[str]) -> Any:
+    """GET with a recorded fallback. Per-PR fetches must not kill the run:
+    a fork PR whose head sha is unreachable 404s its check-runs, and one
+    bad PR must degrade to missing evidence, not a failed production run
+    (first dispatched run 40779970361 died exactly this way)."""
+    try:
+        return _get(path, token)
+    except Exception as exc:  # HTTPError and transport errors alike
+        warnings.append(f"{path}: {exc}")
+        return default
+
+
 def main() -> int:
     token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
     if not token:
@@ -126,20 +138,34 @@ def main() -> int:
     )
     now = datetime.now(timezone.utc)
     pr_dicts: list[dict[str, Any]] = []
+    warnings: list[str] = []
     page = 1
     while True:
-        batch = _get(f"/repos/{repo}/pulls?state=open&per_page=100&page={page}", token)
+        try:
+            batch = _get(f"/repos/{repo}/pulls?state=open&per_page=100&page={page}", token)
+        except Exception as exc:
+            # Fail closed (an empty feed would be a false classification),
+            # but name the cause in an annotation — job logs are not
+            # API-readable, annotations are.
+            print(f"::error::open-PR list fetch failed: {exc}")
+            raise
         if not batch:
             break
         for stub in batch:
-            pr = _get(f"/repos/{repo}/pulls/{stub['number']}", token)
-            checks_page = _get(
-                f"/repos/{repo}/commits/{pr['head']['sha']}/check-runs?per_page=100", token)
+            pr = _get_or(f"/repos/{repo}/pulls/{stub['number']}", token, None, warnings)
+            if pr is None:
+                continue
+            checks_page = _get_or(
+                f"/repos/{repo}/commits/{pr['head']['sha']}/check-runs?per_page=100",
+                token, {}, warnings)
             pr_dicts.append(build_pr_dict(pr, checks_page.get("check_runs", []), now))
         if len(batch) < 100:
             break
         page += 1
+    for warning in warnings:
+        print(f"::warning::fetch degraded: {warning}")
     feed = classify_all(pr_dicts, now)
+    feed["fetch_warnings"] = len(warnings)
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     with open(out_path, "w") as fh:
         json.dump(feed, fh, indent=1)

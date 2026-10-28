@@ -3,13 +3,13 @@
 **Status:** living index
 **Owner/lane:** Infrastructure Architecture (organization | documentation | specification)
 **Canonical for:** where the canonical architecture spec for each domain lives
-**Last verified:** 2026-10-26, against the live master tree (docs/ = 2,043 files; docs/ops root = 238 Markdown files; docs/ops/generated = 1,334 files; docs/architecture = 13 Markdown + 3 Mermaid + 1 JSON receipt, post-#1678)
+**Last verified:** 2026-10-28, against the live master tree at `9fd23dc2` (docs/ = 2,439 files; docs/ops root = 288 Markdown files; docs/ops/generated = 1,583 files; docs/architecture = 13 Markdown + 3 Mermaid + 1 JSON receipt)
 
 ## How this surface is organized
 
 - Canonical architecture specs and decision records live in `docs/architecture/`.
 - Operational contracts that are architecture-grade legitimately live in `docs/ops/` (and a few in `docs/schemas/`). This index **points** at them — it never copies their content. The pointed-to document is the single source; if this index and a source disagree, the source wins and the index gets fixed.
-- `docs/ops/generated/` holds generated projections (1,334 files). A projection is never a canonical spec, no matter how spec-like it reads.
+- `docs/ops/generated/` holds generated projections (1,583 files). A projection is never a canonical spec, no matter how spec-like it reads.
 - One canonical spec per domain. A proposal names what it would replace; a superseded doc keeps its text, gains a status line and a pointer to its successor, and leaves the canonical slot in this index.
 
 ## Residents of docs/architecture
@@ -50,6 +50,12 @@
 | Secrets audit (phantom-secret reconciliation) | [docs/ops/PHANTOM-SECRETS-AUDIT.md](../ops/PHANTOM-SECRETS-AUDIT.md) · Credential inventory of record: Issue #184 (names / last-used only) · Naming: [docs/ops/SECRET-NAMING-CONVENTION.md](../ops/SECRET-NAMING-CONVENTION.md) · Registry: [docs/ops/secrets-and-variables-registry.md](../ops/secrets-and-variables-registry.md) |
 | Backend & free-tier architecture | [docs/ops/FREE-TIER-BACKEND-RECON-2026-10-21.md](../ops/FREE-TIER-BACKEND-RECON-2026-10-21.md) · [docs/ops/RESILIENCY-MAP-AND-STACK-PROPOSAL-2026-10-21.md](../ops/RESILIENCY-MAP-AND-STACK-PROPOSAL-2026-10-21.md) |
 | Agent coordination & monikers | [docs/ops/AGENT-MONIKERS.md](../ops/AGENT-MONIKERS.md) |
+| Temporal workflow runtime (self-host + MCP) | [docs/ops/TEMPORAL-SELF-HOST.md](../ops/TEMPORAL-SELF-HOST.md) · [docs/ops/TEMPORAL-MCP.md](../ops/TEMPORAL-MCP.md) |
+| Cadence provider onboarding | [docs/ops/CADENCE-PROVIDER-ONBOARDING.md](../ops/CADENCE-PROVIDER-ONBOARDING.md) |
+| DoE component registry | [docs/ops/DOE-COMPONENT-REGISTRY.md](../ops/DOE-COMPONENT-REGISTRY.md) |
+| Profile / assignment registry | [docs/ops/PROFILE-REGISTRY.md](../ops/PROFILE-REGISTRY.md) |
+| Delphi system (status, RFP feed contract) | [docs/ops/DELPHI-STATUS-AND-CROSSOVER.md](../ops/DELPHI-STATUS-AND-CROSSOVER.md) · [docs/ops/DELPHI-RFP-FEED.md](../ops/DELPHI-RFP-FEED.md) |
+| Platform201 deployment | [docs/ops/PLATFORM201-LIVE-2026-10-27.md](../ops/PLATFORM201-LIVE-2026-10-27.md) · [docs/ops/PLATFORM201-BLUEPRINT-ADAPTATION-PLAN.md](../ops/PLATFORM201-BLUEPRINT-ADAPTATION-PLAN.md) |
 
 ## Conventions for architecture documents
 
@@ -72,6 +78,8 @@ Rules:
 6. **Status changes land with the change they describe** — a status line edited after the fact, without the underlying change, is drift.
 
 ## Hygiene backlog (from the 2026-10-26 recon)
+
+Rechecked 2026-10-28: no item has moved — the five status backfills and the reconciliation-pair relationship still await owner confirmation; no architecture resident has been edited since the recon.
 
 - **Status backfill:** 5 of the 10 residents state no status (Agent Evaluation Framework, Blind Evaluation, Agent Team Control Plane, Canonical Issue Observatory, Termux Agentic Hub). Owners to confirm status; this lane will land the header blocks once confirmed — statuses are not invented here.
 - **Reconciliation pair:** `RECONCILIATION-CONTROL-PLANE.md` calls itself the "active design contract" while `-v2.md` describes the production observe-only engine, with no stated relationship. Owners to confirm which is canonical for engine behavior; then cross-link and mark accordingly.

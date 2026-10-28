@@ -10,6 +10,8 @@ Design agent-team experiments as evidence-bearing **Design of Experiments (DOE)*
 - **RCT**: randomized controlled experiment; useful when causal comparison is the objective.
 - **RMT**: retain this term only when a project source explicitly uses it; do not silently redefine it as a universal scientific synonym for MVT.
 - **DOE**: the umbrella experimental-design discipline used here to choose informative treatments efficiently.
+- **Multivariate-outcome analysis**: multiple *response* variables measured on each experimental unit. Not a synonym for MVT: "multivariate" names inputs in MVT and outputs here. A campaign can be both — say which. The outcome model below is multiresponse in practice (primary + secondary outcomes).
+- **ANOVA**: an analysis method that partitions response variation into modeled sources. It is not an experimental design.
 - **Full factorial**: test every specified factor-level combination when feasible and justified.
 - **Fractional factorial / screening**: deliberately sample combinations when the full design is too large, while documenting assumptions about interactions.
 - **Orthogonal arrays / Taguchi-style designs**: structured designs for balanced factor-level coverage; use only when their assumptions match the experiment.

@@ -180,6 +180,7 @@ def run() -> dict:
             name = f"{arm['routing']}-{arm['representation']}-{task['id']}.json"
             (records_dir / name).write_text(json.dumps(rec, indent=1) + "\n")
             per_arm[arm_key].append(rec)
+    import statistics as _stats
     arm_summary = {}
     for arm_key, recs in per_arm.items():
         n = len(recs)
@@ -187,6 +188,8 @@ def run() -> dict:
             "runs": n,
             "mean_accuracy": round(
                 sum(r["metrics"]["accuracy"] for r in recs) / n, 4),
+            "accuracy_sd": round(_stats.stdev(
+                [r["metrics"]["accuracy"] for r in recs]), 4) if n > 1 else 0.0,
             "mean_input_tokens": round(
                 sum(r["metrics"]["input_tokens"] for r in recs) / n, 1),
             "mean_elapsed_ms": round(

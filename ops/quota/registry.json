@@ -794,6 +794,22 @@
    }
   },
   {
+   "id": "platform201.projects",
+   "provider": "platform201",
+   "lane": "deploy",
+   "metric": "Solo projects",
+   "limit": 3,
+   "unit": "projects",
+   "window": "point-in-time",
+   "reset": "n/a",
+   "zone": "UTC",
+   "source": "https://www.platform201.com/",
+   "live": "console https://app.platform201.com (Google sign-in, Solo $0 Current); live workload https://ringerhollow-kangaroorose-killerpuddle.eu1.platform201.live/",
+   "planned_use": {
+    "note": "LIVE 2026-10-27: account via Google sign-in, Solo plan $0/mo, no card on file, $20 credits observed in console (entitlement observed, not a balance guarantee). Solo caps observed in Billing: 3 projects, 1 environment/project, 1 seat, 3 nodes each of container/function/gateway/scheduler/MongoDB-integration/Neon-DB-integration. Project n0nplatform201-live (Hello World Vite blueprint) deployed to Platform201-managed GCP (Cloud Run, europe-west2); live URL in `live`. Previously (2026-10-19) this surface existed only as the 'Platform201 Planning Queue' source-citation on other stubs."
+   }
+  },
+  {
    "id": "gcp.cloud_run_requests",
    "provider": "gcp",
    "lane": "deploy",

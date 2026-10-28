@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "d4d2c2f6f28c5d61f373c70c5fd354fac7738c5d6c6bfd518cc956b985f66bdf",
-  "workflow_count": 219,
+  "source_fingerprint": "b22c04746b1df50b3e2e3ec0f5054b51d6b3133a17d092f25c1c3425b50509b4",
+  "workflow_count": 220,
   "workflows": [
     {
       "action_pins": [],
@@ -659,6 +659,25 @@
       "path": ".github/workflows/challenge-countdowns-refresh.yml",
       "schedules": [
         "6 16 * * 1"
+      ],
+      "triggers": [
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: challenge-osint-watch cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "watch"
+      ],
+      "name": "challenge-osint-watch",
+      "path": ".github/workflows/challenge-osint-watch.yml",
+      "schedules": [
+        "17 8 * * 3"
       ],
       "triggers": [
         "push",

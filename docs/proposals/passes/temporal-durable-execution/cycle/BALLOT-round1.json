@@ -1,0 +1,240 @@
+{
+  "schema": "delphi-cross-vote/v1",
+  "generated_at": "2026-10-28T02:14:12Z",
+  "candidates": [
+    "temporal-durable-execution-pi-core-resume",
+    "temporal-durable-execution-cookbook-agent-loop",
+    "temporal-durable-execution-versioned-autoscale",
+    "temporal-durable-execution-contract-first",
+    "temporal-durable-execution-serverless-skill"
+  ],
+  "profiles": [
+    {
+      "candidate": "temporal-durable-execution-pi-core-resume",
+      "points": 4,
+      "evidenced": 4,
+      "unverified": 0,
+      "evidenced_ratio": 1.0,
+      "items": 3,
+      "evidence_sources": 10,
+      "dependency_items": 0,
+      "money_veto": false,
+      "docs_sha256": "afd48b297e0c27d1ddab105b6fd3a0ddba6779a2e2c73269a0c98b52c6e3b1b9"
+    },
+    {
+      "candidate": "temporal-durable-execution-cookbook-agent-loop",
+      "points": 4,
+      "evidenced": 4,
+      "unverified": 0,
+      "evidenced_ratio": 1.0,
+      "items": 4,
+      "evidence_sources": 10,
+      "dependency_items": 0,
+      "money_veto": false,
+      "docs_sha256": "6455e434591cfb3d7c4b043a9107c4f45b012935b410a960a9302d022da0f76a"
+    },
+    {
+      "candidate": "temporal-durable-execution-versioned-autoscale",
+      "points": 4,
+      "evidenced": 4,
+      "unverified": 0,
+      "evidenced_ratio": 1.0,
+      "items": 3,
+      "evidence_sources": 10,
+      "dependency_items": 0,
+      "money_veto": false,
+      "docs_sha256": "f9d41ddbbd00d99f13b0e39b40df95d3b4bf58fbc90e1e6a279c6a77758dfea4"
+    },
+    {
+      "candidate": "temporal-durable-execution-contract-first",
+      "points": 4,
+      "evidenced": 4,
+      "unverified": 0,
+      "evidenced_ratio": 1.0,
+      "items": 3,
+      "evidence_sources": 10,
+      "dependency_items": 0,
+      "money_veto": false,
+      "docs_sha256": "ef5a639ae36e2b8ad3f94e07b179b47f734f680b970c9c2e5efbb2cee17ae40c"
+    },
+    {
+      "candidate": "temporal-durable-execution-serverless-skill",
+      "points": 4,
+      "evidenced": 4,
+      "unverified": 0,
+      "evidenced_ratio": 1.0,
+      "items": 3,
+      "evidence_sources": 10,
+      "dependency_items": 0,
+      "money_veto": false,
+      "docs_sha256": "589e0fd2bb787af1beebfea3efb6f06a99d6b90c198d7f6baf9de364c843fb0c"
+    }
+  ],
+  "weights": {
+    "source": "ledger weights file weights.json",
+    "role_weights": {
+      "OPERATOR": 1.4462,
+      "builder": 1.2052,
+      "reviewer": 1.2052,
+      "Scout": 0.9641,
+      "cost_auditor": 1.4462
+    }
+  },
+  "ballots": [
+    {
+      "voter": "rubric:OPERATOR",
+      "source_class": "LOCAL_BASELINE",
+      "scores": {
+        "temporal-durable-execution-pi-core-resume": 25,
+        "temporal-durable-execution-cookbook-agent-loop": 25,
+        "temporal-durable-execution-versioned-autoscale": 25,
+        "temporal-durable-execution-contract-first": 25,
+        "temporal-durable-execution-serverless-skill": 25
+      },
+      "rationale": {
+        "temporal-durable-execution-pi-core-resume": "evidenced_ratio 1.0 (4/4 points evidenced); unverified 0; items 3; evidence_sources 10; dependency_items 0",
+        "temporal-durable-execution-cookbook-agent-loop": "evidenced_ratio 1.0 (4/4 points evidenced); unverified 0; items 4; evidence_sources 10; dependency_items 0",
+        "temporal-durable-execution-versioned-autoscale": "evidenced_ratio 1.0 (4/4 points evidenced); unverified 0; items 3; evidence_sources 10; dependency_items 0",
+        "temporal-durable-execution-contract-first": "evidenced_ratio 1.0 (4/4 points evidenced); unverified 0; items 3; evidence_sources 10; dependency_items 0",
+        "temporal-durable-execution-serverless-skill": "evidenced_ratio 1.0 (4/4 points evidenced); unverified 0; items 3; evidence_sources 10; dependency_items 0"
+      },
+      "evidence_refs": [
+        "generation profiles derived from each candidate's PROVENANCE evidence sets"
+      ]
+    },
+    {
+      "voter": "rubric:builder",
+      "source_class": "LOCAL_BASELINE",
+      "scores": {
+        "temporal-durable-execution-pi-core-resume": 18,
+        "temporal-durable-execution-cookbook-agent-loop": 15,
+        "temporal-durable-execution-versioned-autoscale": 18,
+        "temporal-durable-execution-contract-first": 18,
+        "temporal-durable-execution-serverless-skill": 18
+      },
+      "rationale": {
+        "temporal-durable-execution-pi-core-resume": "evidenced_ratio 1.0 (4/4 points evidenced); unverified 0; items 3; evidence_sources 10; dependency_items 0",
+        "temporal-durable-execution-cookbook-agent-loop": "evidenced_ratio 1.0 (4/4 points evidenced); unverified 0; items 4; evidence_sources 10; dependency_items 0",
+        "temporal-durable-execution-versioned-autoscale": "evidenced_ratio 1.0 (4/4 points evidenced); unverified 0; items 3; evidence_sources 10; dependency_items 0",
+        "temporal-durable-execution-contract-first": "evidenced_ratio 1.0 (4/4 points evidenced); unverified 0; items 3; evidence_sources 10; dependency_items 0",
+        "temporal-durable-execution-serverless-skill": "evidenced_ratio 1.0 (4/4 points evidenced); unverified 0; items 3; evidence_sources 10; dependency_items 0"
+      },
+      "evidence_refs": [
+        "generation profiles derived from each candidate's PROVENANCE evidence sets"
+      ]
+    },
+    {
+      "voter": "rubric:reviewer",
+      "source_class": "LOCAL_BASELINE",
+      "scores": {
+        "temporal-durable-execution-pi-core-resume": 25,
+        "temporal-durable-execution-cookbook-agent-loop": 25,
+        "temporal-durable-execution-versioned-autoscale": 25,
+        "temporal-durable-execution-contract-first": 25,
+        "temporal-durable-execution-serverless-skill": 25
+      },
+      "rationale": {
+        "temporal-durable-execution-pi-core-resume": "evidenced_ratio 1.0 (4/4 points evidenced); unverified 0; items 3; evidence_sources 10; dependency_items 0",
+        "temporal-durable-execution-cookbook-agent-loop": "evidenced_ratio 1.0 (4/4 points evidenced); unverified 0; items 4; evidence_sources 10; dependency_items 0",
+        "temporal-durable-execution-versioned-autoscale": "evidenced_ratio 1.0 (4/4 points evidenced); unverified 0; items 3; evidence_sources 10; dependency_items 0",
+        "temporal-durable-execution-contract-first": "evidenced_ratio 1.0 (4/4 points evidenced); unverified 0; items 3; evidence_sources 10; dependency_items 0",
+        "temporal-durable-execution-serverless-skill": "evidenced_ratio 1.0 (4/4 points evidenced); unverified 0; items 3; evidence_sources 10; dependency_items 0"
+      },
+      "evidence_refs": [
+        "generation profiles derived from each candidate's PROVENANCE evidence sets"
+      ]
+    },
+    {
+      "voter": "rubric:Scout",
+      "source_class": "LOCAL_BASELINE",
+      "scores": {
+        "temporal-durable-execution-pi-core-resume": 25,
+        "temporal-durable-execution-cookbook-agent-loop": 25,
+        "temporal-durable-execution-versioned-autoscale": 25,
+        "temporal-durable-execution-contract-first": 25,
+        "temporal-durable-execution-serverless-skill": 25
+      },
+      "rationale": {
+        "temporal-durable-execution-pi-core-resume": "evidenced_ratio 1.0 (4/4 points evidenced); unverified 0; items 3; evidence_sources 10; dependency_items 0",
+        "temporal-durable-execution-cookbook-agent-loop": "evidenced_ratio 1.0 (4/4 points evidenced); unverified 0; items 4; evidence_sources 10; dependency_items 0",
+        "temporal-durable-execution-versioned-autoscale": "evidenced_ratio 1.0 (4/4 points evidenced); unverified 0; items 3; evidence_sources 10; dependency_items 0",
+        "temporal-durable-execution-contract-first": "evidenced_ratio 1.0 (4/4 points evidenced); unverified 0; items 3; evidence_sources 10; dependency_items 0",
+        "temporal-durable-execution-serverless-skill": "evidenced_ratio 1.0 (4/4 points evidenced); unverified 0; items 3; evidence_sources 10; dependency_items 0"
+      },
+      "evidence_refs": [
+        "generation profiles derived from each candidate's PROVENANCE evidence sets"
+      ]
+    },
+    {
+      "voter": "rubric:cost_auditor",
+      "source_class": "LOCAL_BASELINE",
+      "scores": {
+        "temporal-durable-execution-pi-core-resume": 25,
+        "temporal-durable-execution-cookbook-agent-loop": 25,
+        "temporal-durable-execution-versioned-autoscale": 25,
+        "temporal-durable-execution-contract-first": 25,
+        "temporal-durable-execution-serverless-skill": 25
+      },
+      "rationale": {
+        "temporal-durable-execution-pi-core-resume": "evidenced_ratio 1.0 (4/4 points evidenced); unverified 0; items 3; evidence_sources 10; dependency_items 0",
+        "temporal-durable-execution-cookbook-agent-loop": "evidenced_ratio 1.0 (4/4 points evidenced); unverified 0; items 4; evidence_sources 10; dependency_items 0",
+        "temporal-durable-execution-versioned-autoscale": "evidenced_ratio 1.0 (4/4 points evidenced); unverified 0; items 3; evidence_sources 10; dependency_items 0",
+        "temporal-durable-execution-contract-first": "evidenced_ratio 1.0 (4/4 points evidenced); unverified 0; items 3; evidence_sources 10; dependency_items 0",
+        "temporal-durable-execution-serverless-skill": "evidenced_ratio 1.0 (4/4 points evidenced); unverified 0; items 3; evidence_sources 10; dependency_items 0"
+      },
+      "evidence_refs": [
+        "generation profiles derived from each candidate's PROVENANCE evidence sets"
+      ]
+    }
+  ],
+  "ballots_by_class": {
+    "HUMAN_COLLABORATOR": 0,
+    "MODEL_PROVIDER": 0,
+    "LOCAL_BASELINE": 5
+  },
+  "per_class": {
+    "HUMAN_COLLABORATOR": {
+      "ballots": 0,
+      "scores": {},
+      "ranking": []
+    },
+    "MODEL_PROVIDER": {
+      "ballots": 0,
+      "scores": {},
+      "ranking": []
+    },
+    "LOCAL_BASELINE": {
+      "ballots": 5,
+      "scores": {
+        "temporal-durable-execution-pi-core-resume": 23.654,
+        "temporal-durable-execution-cookbook-agent-loop": 23.077,
+        "temporal-durable-execution-versioned-autoscale": 23.654,
+        "temporal-durable-execution-contract-first": 23.654,
+        "temporal-durable-execution-serverless-skill": 23.654
+      },
+      "ranking": [
+        "temporal-durable-execution-contract-first",
+        "temporal-durable-execution-pi-core-resume",
+        "temporal-durable-execution-serverless-skill",
+        "temporal-durable-execution-versioned-autoscale",
+        "temporal-durable-execution-cookbook-agent-loop"
+      ]
+    }
+  },
+  "classes_present": [
+    "LOCAL_BASELINE"
+  ],
+  "classes_absent": [
+    "HUMAN_COLLABORATOR",
+    "MODEL_PROVIDER"
+  ],
+  "combined_ranking": null,
+  "ranked_outcome": [
+    "temporal-durable-execution-contract-first",
+    "temporal-durable-execution-pi-core-resume",
+    "temporal-durable-execution-serverless-skill",
+    "temporal-durable-execution-versioned-autoscale",
+    "temporal-durable-execution-cookbook-agent-loop"
+  ],
+  "class_rule": "Source classes tallied and reported separately, never merged (DEBATE protocol). DRIVER_SYNTHESIS is not a ballot."
+}

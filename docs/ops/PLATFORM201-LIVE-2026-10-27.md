@@ -116,3 +116,25 @@ Spend frozen at $0-metered essential P1 until a credit-intake benefit is
 found AND obtained (see plan doc sections 7-8 for the hunt table). 14-day
 Pro trial exists publicly (pricing page) — NOT obtained, claimable status
 on this account NOT ESTABLISHED.
+
+
+## Revert record (2026-10-28, owner order "Put the webpages back")
+
+- Deployment v4 (id prefix 86a431a4, Succeeded, 2026-10-28 04:15 PDT):
+  fleet-dashboard container DELETED; "Hello World (Vite)" blueprint container
+  "Vite Test" (Node 20, port 5173) restored behind the ORIGINAL gateway at
+  the same live URL. Verified firsthand: title "Welcome to Platform201",
+  text "Your Vite Example is running." No rollback control exists in the
+  console; restore = re-add blueprint + delete old container + rewire gateway.
+- Console findings (firsthand, same session):
+  - "Environment variables" = the per-ENVIRONMENT key-value store
+    (environment Settings; "Add variable" / "Import .env"). Currently NONE
+    configured in n0nplatform201-live Production. Containers also have a
+    per-node Env section.
+  - SSH: NO ssh/terminal/shell access feature exists in the console. Only
+    SSH KEY STORAGE (browser-local, encrypted with a vault passphrase) in
+    environment Settings and Space Settings.
+  - Space Settings carries integration credential fields: Neon API key,
+    MongoDB Atlas client ID/secret (names only recorded here), plus a
+    "Join our Discord" help link — a Discord community EXISTS (invite URL
+    not yet captured) and a "Use in your AI assistant" (MCP) entry.

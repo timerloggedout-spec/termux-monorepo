@@ -571,6 +571,31 @@
       ],
       "title": "OmniRouter fork routing template",
       "url": "https://github.com/timerloggedout-spec/omnirouter_fork"
+    },
+    {
+      "evidence_class": "REFERENCE_ONLY",
+      "id": "g4f-working-fork",
+      "implementation_paths": [
+        "scripts/g4f_working_harvest.py",
+        "data/g4f-working/providers.json"
+      ],
+      "kind": "template",
+      "mesh_roles": [
+        "discovery",
+        "inference"
+      ],
+      "next_action": "Harvested catalog only; re-run scripts/g4f_working_harvest.py to refresh. Review GPL obligations and official access authorization per provider; no cookie or HAR harvesting; entries never authorize execution.",
+      "runtime_eligible": false,
+      "status": "discovery-only",
+      "tags": [
+        "g4f",
+        "gpt4free",
+        "llm",
+        "catalog",
+        "no-auth"
+      ],
+      "title": "g4f-working fork: harvested working no-auth provider/model lists (60 providers, 4242 models)",
+      "url": "https://github.com/timerloggedout-spec/g4f-working_fork"
     }
   ],
   "schema_version": "msm-resource-registry-v1",

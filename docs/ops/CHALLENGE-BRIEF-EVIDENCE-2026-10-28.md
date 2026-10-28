@@ -2,7 +2,8 @@
 
 Verbatim official brief text for brief-first concept generation. Supplied
 by the challenge-entries lane to the Delphi lane under the owner ruling
-of 2026-10-28 (STOP on fleet-derived concepts): generation starts from
+of 2026-10-28 (fleet-derived concepts stopped as active builds;
+#42 questioned, not killed — owner correction same day): generation starts from
 THESE lines, not from fleet material. Quotes are character-faithful from
 the official pages as fetched 2026-10-28; each section names its source
 and fetch stamp. No fleet concepts, summaries, or angles are included.
@@ -225,7 +226,7 @@ Source: https://builder.aws.com/build/hackathons/8311dcb5-1ece-3d62-a441-2e1c2ad
 
 Pack compiled 2026-10-28 by the challenge-entries lane
 (`[MUSEai]@{role:{challenge-entries-lane}}`). Generation note for the
-Delphi lane: the killed/tainted sets (D3 proposal #42 "Delphi Desk";
+Delphi lane: the questioned/tainted sets (D3 proposal #42 "Delphi Desk" — questioned/under review, not killed, not the active build;
 D1 pass candidates #43–#45 and the "Proof Before Help" concept) are
 excluded by the same ruling — do not reuse them or their fleet evidence
 base for these two briefs.

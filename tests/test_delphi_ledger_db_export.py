@@ -11,7 +11,8 @@ spec.loader.exec_module(ex)
 
 REG = {"invariants": {"append_only": True}, "ledgers": [
     {"id": "outcomes", "title": "Delphi outcomes ledger", "issue": 1487,
-     "kind": "snapshot-comments", "markers": ["<!-- delphi-outcomes v1 -->"]},
+     "kind": "snapshot-comments", "markers": ["<!-- delphi-outcomes v1 -->"]}],
+ "living_records": [
     {"id": "temporal-status", "title": "Temporal self-host status", "issue": 2028,
      "kind": "living-body", "marker": "<!-- delphi-board v1 -->"}]}
 EVENTS = [{"ledger_id": "outcomes", "event_key": "k1", "comment_id": 10,

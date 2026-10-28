@@ -17,7 +17,7 @@ numbers prove it). Copy rule: benefit → proof → code. Never specs first.
 
 | Programme | Visitor gets (free) | Fleet gets per redemption | Pool |
 |---|---|---|---|
-| Muse | 1B tokens, redeem ≤48h of joining, never expires | **1B tokens, cap 20 = up to 20B** | code pending (owner share code) |
+| Muse | 1B tokens, redeem ≤48h of joining, never expires | **1B tokens per use, 30 uses left = up to 30B** | 1 live code (`VDP1DW`), no reserve — single-code programme, rotation impossible until a second code exists |
 | Manus | free plan + invitation access | refer-a-friend credits (amount not firsthand) | link live (§1) |
 | Cue | free early access | NOT ESTABLISHED | 1 live + 1 reserve |
 | Migoo | invite signup + free daily points | NOT ESTABLISHED | 1 live + 2 reserve |
@@ -67,8 +67,28 @@ this upgrades the census's community-reported terms.
 
 ## Open blockers (named, minimal)
 
-- **Muse share code** — the only missing input. Owner: Muse Settings → the
-  *share/invite* view (the screenshot on file is the *redeem* view). On receipt:
-  registry update + feed rebuild + PARTNERS row, one PR, same day.
+- **Muse** — RESOLVED 2026-10-27 19:47 PDT: owner supplied the live code from
+  the Invite friends panel (30 uses left). Watch item: it is a single code with
+  no reserve; at 0 uses the lane flips to `code_pending` and pings the owner.
 - **Hark** — identity confirm (fleet surface vs Hark Pro) before anything lists.
 - **Web Design** — feed integration + de-center build, sequenced on this PR.
+
+## Channels + A/B test (owner, 2026-10-27)
+
+Channels (registry `channels[]`): landing/repo (live) · YouTube (community
+post live) · Facebook, X, TikTok, Instagram (owner-stated accounts; handles
+NOT ESTABLISHED — never invented). Facebook connector check 2026-10-27:
+managed Pages returned = 0 (empty result, not proof of none).
+
+**Experiment `fb-pages-sizzle-vs-steak-1`** (registry `ab_test`): two Facebook
+Pages, one per cell — A *sizzle* (benefit-first copy) vs B *steak*
+(numbers-first, Value Derived proof). Code pools split per cell for clean
+attribution (Cue W7AZA→A / 7RKCJ→B; Migoo uA3QYP→A / Du7Ehu→B, TSGDUJ
+reserve; Muse's single code shared, attributed by landing param `?ch=fb-a|b`).
+Metric: redemptions + landing clicks per cell. Decision rule: winner copy
+becomes the default on X / TikTok / Instagram / YouTube after 10 attributed
+redemptions or 14 days, whichever first.
+4n0n: the two Pages never cross-link (isolation + test contamination).
+Blocker: Page creation — the Facebook connector lists/publishes Pages but
+has no create command; the owner creates the 2 Pages in Facebook, this lane
+wires codes + copy per cell.

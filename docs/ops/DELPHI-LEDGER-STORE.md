@@ -54,15 +54,23 @@ Registry of ledgers: `ops/delphi/ledgers.json` (`delphi-ledgers/v1`).
    (same cache → same feed; a re-delivered comment yields one event).
    Refresh: `.github/workflows/delphi-ledger-feed-collect.yml`
    (dispatch + weekly + on delphi-gate completion; refresh PRs only).
-3. **Queryable mirror (schema landed, writer = slice 2):**
+3. **Queryable mirror (schema landed slice 1, writer landed slice 2):**
    `ops/delphi-ledger/schema.sql` — `delphi_ledger_events` +
    `delphi_living_records` on the existing lane-events Neon route,
    same `event_key`, append-only trigger, and a
    `delphi_ledger_current` view expressing `latest_json` in SQL.
-   Slice 2 = a `ledger_event.py` writer in the `scripts/ops/lane_event.py`
-   pattern (never fails its caller, `ON CONFLICT DO NOTHING`) invoked
-   from the collect workflow. Named, not built here, so the feed ships
-   first and the mirror cannot diverge from it (same keys, same fold).
+   Writer: `scripts/delphi/ledger_event.py` (lane_event.py pattern —
+   never fails its caller, no-op without `LANE_EVENTS_DATABASE_URL` /
+   `NEON_API_KEY`, guest in the `lane-events` Neon project, never
+   creates it). It flattens the collector cache through
+   `ledger_feed.collect`, so mirror rows are the feed's rows (same
+   partition, same keys); inserts are `ON CONFLICT DO NOTHING`
+   (`ops/delphi-ledger/insert-event.sql` / `insert-living.sql`), so a
+   re-sync inserts zero new rows. Wired as a step in
+   `delphi-ledger-feed-collect.yml` after the feed collect. Delphi lane
+   sign-off on the semantics (2026-10-28): confirmed point-for-point,
+   no corrections; the writer's event_key/idempotency wiring is theirs
+   to review on the slice-2 PR.
 
 Query examples once the mirror lands: current weights =
 `SELECT payload FROM delphi_ledger_current WHERE ledger_id='weights'`;

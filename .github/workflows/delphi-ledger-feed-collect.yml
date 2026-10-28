@@ -40,6 +40,13 @@ jobs:
           set -euo pipefail
           python3 -B scripts/delphi/ledger_feed.py \
             --cache .ledger-cache --out apps/help-wanted-dashboard/data/delphi-ledger-feed.json
+      - name: Mirror to Neon (slice 2; no-op without ledger secrets)
+        env:
+          LANE_EVENTS_DATABASE_URL: ${{ secrets.LANE_EVENTS_DATABASE_URL }}
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+        run: |
+          set -euo pipefail
+          python3 -B scripts/delphi/ledger_event.py sync --cache .ledger-cache
       - name: Propose the refresh as a PR
         run: |
           set -euo pipefail

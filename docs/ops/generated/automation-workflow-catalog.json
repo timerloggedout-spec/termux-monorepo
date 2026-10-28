@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "76fef564767ca0941f0ee1580a396af139c975be79030189f13861fbf0da715c",
-  "workflow_count": 202,
+  "source_fingerprint": "bf26e9aec3df700a0d6e2f574d190780d6a22a6ba03647476ed5ebd0e7a97a7a",
+  "workflow_count": 203,
   "workflows": [
     {
       "action_pins": [
@@ -1076,6 +1076,25 @@
       "triggers": [
         "issue_comment",
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: delphi-ledger-feed-collect cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "collect"
+      ],
+      "name": "delphi-ledger-feed-collect",
+      "path": ".github/workflows/delphi-ledger-feed-collect.yml",
+      "schedules": [
+        "47 6 * * 2"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch",
+        "workflow_run"
       ]
     },
     {

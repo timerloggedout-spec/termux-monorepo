@@ -92,3 +92,19 @@ redemptions or 14 days, whichever first.
 Blocker: Page creation — the Facebook connector lists/publishes Pages but
 has no create command; the owner creates the 2 Pages in Facebook, this lane
 wires codes + copy per cell.
+
+## Cell-selection rule (renderer contract, for Web Design)
+
+Deterministic, from the `?ch=` URL parameter — the renderer never guesses:
+
+| Visitor | Cue / Migoo code shown | Muse code shown |
+|---|---|---|
+| no `?ch` (default) | `live_code` (cell A) | `live_code` |
+| `?ch=fb-a` | `live_code` (cell A) | `live_code` |
+| `?ch=fb-b` | `cell_b_code` (cell B) | `live_code` (single code, both cells) |
+| any other `?ch` (x, tiktok, ig, yt…) | `live_code`; param is attribution-only | `live_code` |
+
+Reserve codes never render. On exhaustion of a cell's code, rotation flips
+the next reserve into **that cell's** slot (`live_code` or `cell_b_code`)
+via registry + feed rebuild. Programmes with `live_code: null`
+(pending) render nothing.

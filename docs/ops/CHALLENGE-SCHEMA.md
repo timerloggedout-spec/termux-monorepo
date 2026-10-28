@@ -163,6 +163,29 @@ event — who won what, with what project, judged by whom
 touchpoints logged as specified. Non-candidates carry
 `recruitment{candidate: false, pipeline_state: null}`.
 
+**Scoring (MoneyBall consumer pattern, landed 2026-10-28):**
+evaluations use **moneyball-plane/v2** (`docs/schemas/moneyball-score.schema.json`,
+validator `scripts/moneyball/moneyball_v2.py`; consumer mapping
+`ops/moneyball/plane.json` consumers[0], PR #2211 — NOT the
+ml/pipelines PR-triage scorer). Axes, sourced from the signals
+fields: `track_record` .30 (past_wins + placements) / `momentum`
+.25 (snapshots[] deltas) / `engagement_surface` .20 (public chats +
+project engagement) / `composability_fit` .15 (persona skills vs
+event themes) / `inverse_engagement_cost` .10. **Law: weights +
+flag threshold are fixed at event intake, recorded in the event's
+`moneyball{}` block in coordinator.json BEFORE any score is
+published; never adjusted after seeing scores.** One v2 record per
+(entity × event) evaluation, filed at
+`ops/challenge-participants/scores/`, referenced from the entity's
+`signals.moneyball_evaluations[]`. **Standout flag rule:**
+`recruitment.candidate = true` requires composite ≥ the intake
+threshold AND every axis `evidence_strength` in {evidenced,
+limited} (an unverified axis cannot support a flag) AND a
+v2-valid record. First evaluation (2026-10-28): D1
+ladder-practice-sets composite **2.05** vs threshold 6.0, two axes
+unverified → flag refused; the pre-pattern flag set in PR #2194
+was corrected in the same landing (see the record's notes).
+
 Population state at landing (2026-10-28): participants 0, judges 0,
 candidates 0 across all events — no gallery has opened and no event
 publishes named judges yet (D1: "a panel of AWS experts", unnamed;

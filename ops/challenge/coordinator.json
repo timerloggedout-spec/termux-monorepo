@@ -64,6 +64,19 @@
         "status": "NOT_ESTABLISHED",
         "tiers": []
       },
+      "moneyball": {
+        "schema": "moneyball-plane/v2",
+        "weights": {
+          "track_record": 0.3,
+          "momentum": 0.25,
+          "engagement_surface": 0.2,
+          "composability_fit": 0.15,
+          "inverse_engagement_cost": 0.1
+        },
+        "flag_threshold": 6.0,
+        "fixed_at": "2026-10-28",
+        "fixed_ref": "ops/moneyball/plane.json consumers[0].pattern_for_consumer (PR #2211); weights fixed at intake, before any score"
+      },
       "registration": {
         "state": "joined",
         "evidence": [
@@ -191,6 +204,19 @@
             "source_url": "https://builder.aws.com/build/hackathons/8311dcb5-1ece-3d62-a441-2e1c2ad90b86/strands-sdk-workshop-to-ship"
           }
         ]
+      },
+      "moneyball": {
+        "schema": "moneyball-plane/v2",
+        "weights": {
+          "track_record": 0.3,
+          "momentum": 0.25,
+          "engagement_surface": 0.2,
+          "composability_fit": 0.15,
+          "inverse_engagement_cost": 0.1
+        },
+        "flag_threshold": 6.0,
+        "fixed_at": "2026-10-28",
+        "fixed_ref": "ops/moneyball/plane.json consumers[0].pattern_for_consumer (PR #2211); weights fixed at intake, before any score"
       },
       "registration": {
         "state": "joined",
@@ -371,11 +397,14 @@
           "signals": {
             "past_wins": [],
             "placements": [],
-            "snapshots": []
+            "snapshots": [],
+            "moneyball_evaluations": [
+              "ops/challenge-participants/scores/D1--ladder-practice-sets--evaluate--2026-10-28.json"
+            ]
           },
           "recruitment": {
-            "candidate": true,
-            "pipeline_state": "identified"
+            "candidate": false,
+            "pipeline_state": null
           },
           "sources": [
             {
@@ -388,7 +417,7 @@
             }
           ],
           "confidence": "low",
-          "notes": "First and only project in D1's public Projects list on day 1 (checked signed-out 2026-10-28 13:01-13:03 PT). Builder Center shows NO author name/handle/profile for this entry on the list card or the project page; repo_url/demo_url are published in the project body and are project links, not author-profile facts. D1's Participants tab is join-gated (323 joined per page header) — not a public source; tracking runs on the Projects list."
+          "notes": "First and only project in D1's public Projects list on day 1 (checked signed-out 2026-10-28 13:01-13:03 PT). Builder Center shows NO author name/handle/profile for this entry on the list card or the project page; repo_url/demo_url are published in the project body and are project links, not author-profile facts. D1's Participants tab is join-gated (323 joined per page header) — not a public source; tracking runs on the Projects list. CORRECTION 2026-10-28 (MoneyBall consumer pattern, PR #2211): the candidate=true flag set at first record does NOT meet the standout flag rule - first v2 evaluation (ops/challenge-participants/scores/D1--ladder-practice-sets--evaluate--2026-10-28.json) gives composite 2.05 vs intake threshold 6.0, with track_record + momentum unverified. Flag removed; the entity stays tracked and re-evaluates as signals land."
         }
       ],
       "judges": []
@@ -464,6 +493,19 @@
           }
         ],
         "notes": "Every participant gets $200 in free Vultr credits. Onsite raffle (3 individual winners, in-person only): PlayStation 5 Standard, Apple AirPods 5 with Wireless Charging Case, Razer DeathAdder V3 HyperSpeed."
+      },
+      "moneyball": {
+        "schema": "moneyball-plane/v2",
+        "weights": {
+          "track_record": 0.3,
+          "momentum": 0.25,
+          "engagement_surface": 0.2,
+          "composability_fit": 0.15,
+          "inverse_engagement_cost": 0.1
+        },
+        "flag_threshold": 6.0,
+        "fixed_at": "2026-10-28",
+        "fixed_ref": "ops/moneyball/plane.json consumers[0].pattern_for_consumer (PR #2211); weights fixed at intake, before any score"
       },
       "registration": {
         "state": "not started",
@@ -587,6 +629,19 @@
           }
         ],
         "notes": "Each winning entry may receive at most one ranked cash prize. Recognition categories (Best Overall App, Best Productivity App, Most Creative App, Best Use of Agent-Native) add no cash."
+      },
+      "moneyball": {
+        "schema": "moneyball-plane/v2",
+        "weights": {
+          "track_record": 0.3,
+          "momentum": 0.25,
+          "engagement_surface": 0.2,
+          "composability_fit": 0.15,
+          "inverse_engagement_cost": 0.1
+        },
+        "flag_threshold": 6.0,
+        "fixed_at": "2026-10-28",
+        "fixed_ref": "ops/moneyball/plane.json consumers[0].pattern_for_consumer (PR #2211); weights fixed at intake, before any score"
       },
       "registration": {
         "state": "not required",
@@ -747,6 +802,19 @@
         "pool": "$100,000 in cash (pool stated on the official page; per-place tiers are TBD - the page states complete details including different prizes release Friday, October 30, 2026)",
         "tiers": []
       },
+      "moneyball": {
+        "schema": "moneyball-plane/v2",
+        "weights": {
+          "track_record": 0.3,
+          "momentum": 0.25,
+          "engagement_surface": 0.2,
+          "composability_fit": 0.15,
+          "inverse_engagement_cost": 0.1
+        },
+        "flag_threshold": 6.0,
+        "fixed_at": "2026-10-28",
+        "fixed_ref": "ops/moneyball/plane.json consumers[0].pattern_for_consumer (PR #2211); weights fixed at intake, before any score"
+      },
       "registration": {
         "state": "in progress (delegated)",
         "evidence": [
@@ -892,6 +960,19 @@
           }
         ],
         "notes": "Judges also select an honorable mention in each category; the rules state no separate prize for honorable mention. No cash prizes published. Each team receives a 14-day free trial of Aha! Builder plus AI credits to build with (Contest Rules section 3)."
+      },
+      "moneyball": {
+        "schema": "moneyball-plane/v2",
+        "weights": {
+          "track_record": 0.3,
+          "momentum": 0.25,
+          "engagement_surface": 0.2,
+          "composability_fit": 0.15,
+          "inverse_engagement_cost": 0.1
+        },
+        "flag_threshold": 6.0,
+        "fixed_at": "2026-10-28",
+        "fixed_ref": "ops/moneyball/plane.json consumers[0].pattern_for_consumer (PR #2211); weights fixed at intake, before any score"
       },
       "registration": {
         "state": "submitted - spot pending review",

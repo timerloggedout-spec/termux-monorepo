@@ -1,0 +1,46 @@
+name: ml PR lane classify
+
+# Production run of the vocab-v2 PR classifier (ml/pipelines/lanes) over
+# the live open-PR list — contract: docs/ops/ML-PR-LANE-CLASSIFY.md.
+# The keep-alive workflow only unit-tests the ml package on ml/** path
+# changes; this workflow is the classifier's production trigger. It
+# writes ops/ml/pr-lane-feed.json and commits it only when it changed
+# (repository-observatory collector pattern). Classification is
+# descriptive: no labels, comments, or gates are touched.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '37 5 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ml-pr-lane-classify
+  cancel-in-progress: false
+
+jobs:
+  classify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.OPERATOR_GITHUB_TOKEN || github.token }}
+          fetch-depth: 1
+      - name: Classify open PRs (vocab v2)
+        env:
+          GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || github.token }}
+        run: python3 ml/pipelines/production_classify.py
+      - name: Commit feed if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ops/ml/pr-lane-feed.json
+          if git diff --cached --quiet; then
+            echo "feed unchanged — no commit"
+          else
+            git commit -m "data(ml): pr-lane-feed refresh [skip ci]"
+            git push
+          fi

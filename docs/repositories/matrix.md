@@ -2,7 +2,7 @@
 
 > Generated from GitHub repository and starring metadata. JSON is canonical; this file is a navigation projection.
 
-Observed: `2026-10-27T09:51:29.871320Z`
+Observed: `2026-10-28T10:37:16.253947Z`
 
 ## Navigation
 
@@ -54,6 +54,7 @@ Observed: `2026-10-27T09:51:29.871320Z`
 | [timerloggedout-spec/mesa-geo_fork](https://github.com/timerloggedout-spec/mesa-geo_fork) | owned, starred | agent | medium | upstream-comparison |
 | [timerloggedout-spec/nanocoder](https://github.com/timerloggedout-spec/nanocoder) | owned | agent | medium | upstream-comparison |
 | [timerloggedout-spec/Observal_fork](https://github.com/timerloggedout-spec/Observal_fork) | owned | agent | medium | upstream-comparison |
+| [timerloggedout-spec/opencode_fork](https://github.com/timerloggedout-spec/opencode_fork) | owned | agent | medium | upstream-comparison |
 | [timerloggedout-spec/orchestra_fork](https://github.com/timerloggedout-spec/orchestra_fork) | owned, starred | agent | medium | upstream-comparison |
 | [timerloggedout-spec/oz-dev-environments_fork](https://github.com/timerloggedout-spec/oz-dev-environments_fork) | owned | agent | medium | upstream-comparison |
 | [timerloggedout-spec/phi](https://github.com/timerloggedout-spec/phi) | owned | agent | medium | upstream-comparison |
@@ -420,7 +421,9 @@ Observed: `2026-10-27T09:51:29.871320Z`
 | [timerloggedout-spec/fmri-analysis-course_fork](https://github.com/timerloggedout-spec/fmri-analysis-course_fork) | owned, starred | research | high | upstream-comparison |
 | [timerloggedout-spec/longeclaw_cfork](https://github.com/timerloggedout-spec/longeclaw_cfork) | owned | research | high | upstream-comparison |
 | [timerloggedout-spec/mathematics_in_lean_fork](https://github.com/timerloggedout-spec/mathematics_in_lean_fork) | owned | research | high | upstream-comparison |
+| [timerloggedout-spec/opencode-research-papers_fork](https://github.com/timerloggedout-spec/opencode-research-papers_fork) | owned | research | high | upstream-comparison |
 | [timerloggedout-spec/portals](https://github.com/timerloggedout-spec/portals) | owned | research, platform | high | upstream-comparison |
+| [timerloggedout-spec/termux-monorepo](https://github.com/timerloggedout-spec/termux-monorepo) | owned, starred | research, termux | high | — |
 | [timerloggedout-spec/termux-monorepo-sparked](https://github.com/timerloggedout-spec/termux-monorepo-sparked) | owned, starred | research, termux | high | — |
 | [timerloggedout-spec/awesome-github-actions-security_fork](https://github.com/timerloggedout-spec/awesome-github-actions-security_fork) | owned | security | medium | upstream-comparison, workflow-candidate |
 | [timerloggedout-spec/awesome-workflows_fork](https://github.com/timerloggedout-spec/awesome-workflows_fork) | owned | security | medium | upstream-comparison, workflow-candidate |
@@ -441,7 +444,6 @@ Observed: `2026-10-27T09:51:29.871320Z`
 | [timerloggedout-spec/termux-app_fork](https://github.com/timerloggedout-spec/termux-app_fork) | owned | termux | medium | upstream-comparison |
 | [timerloggedout-spec/termux-exec-package_fork](https://github.com/timerloggedout-spec/termux-exec-package_fork) | owned | termux | medium | upstream-comparison |
 | [timerloggedout-spec/termux-mcp-server_fork](https://github.com/timerloggedout-spec/termux-mcp-server_fork) | owned | termux | medium | upstream-comparison |
-| [timerloggedout-spec/termux-monorepo](https://github.com/timerloggedout-spec/termux-monorepo) | owned, starred | termux | medium | — |
 | [timerloggedout-spec/Thor_fork](https://github.com/timerloggedout-spec/Thor_fork) | owned, starred | termux | medium | upstream-comparison |
 | [timerloggedout-spec/web-to-app_fork](https://github.com/timerloggedout-spec/web-to-app_fork) | owned, starred | termux | medium | upstream-comparison |
 | [timerloggedout-spec/action-awesome-list-updater_fork](https://github.com/timerloggedout-spec/action-awesome-list-updater_fork) | owned | unclassified | medium | upstream-comparison, workflow-candidate |
@@ -1374,7 +1376,6 @@ Observed: `2026-10-27T09:51:29.871320Z`
 | [amrzv/awesome-colab-notebooks](https://github.com/amrzv/awesome-colab-notebooks) | starred | ai | medium | — |
 | [AndreMiras/etheroll](https://github.com/AndreMiras/etheroll) | starred | ai | medium | — |
 | [andykswong/pfrng](https://github.com/andykswong/pfrng) | starred | ai | medium | — |
-| [angiedejected330/AISTUDIOtESTING](https://github.com/angiedejected330/AISTUDIOtESTING) | starred | ai | medium | — |
 | [anki/vector-python-sdk](https://github.com/anki/vector-python-sdk) | starred | ai | medium | dependency-candidate |
 | [antirez/ds4](https://github.com/antirez/ds4) | starred, watching | ai | medium | — |
 | [AppFlowy-IO/AppFlowy](https://github.com/AppFlowy-IO/AppFlowy) | starred | ai | medium | — |
@@ -2378,6 +2379,7 @@ Observed: `2026-10-27T09:51:29.871320Z`
 | [t3l3machus/PowerShell-Obfuscation-Bible](https://github.com/t3l3machus/PowerShell-Obfuscation-Bible) | starred | research, security | high | — |
 | [Hack-with-Github/Awesome-Hacking](https://github.com/Hack-with-Github/Awesome-Hacking) | starred | research, security, termux | high | — |
 | [Nishant-Pathak/MathView](https://github.com/Nishant-Pathak/MathView) | starred | research, termux | high | — |
+| [timerloggedout-spec/termux-monorepo](https://github.com/timerloggedout-spec/termux-monorepo) | owned, starred | research, termux | high | — |
 | [timerloggedout-spec/termux-monorepo-sparked](https://github.com/timerloggedout-spec/termux-monorepo-sparked) | owned, starred | research, termux | high | — |
 | [2022it0489-hub/FUTURE_CS_01](https://github.com/2022it0489-hub/FUTURE_CS_01) | starred, watching | security | medium | — |
 | [alechilczenko/kimi](https://github.com/alechilczenko/kimi) | starred | security | medium | — |
@@ -2467,7 +2469,6 @@ Observed: `2026-10-27T09:51:29.871320Z`
 | [timerloggedout-spec/quirk_fork](https://github.com/timerloggedout-spec/quirk_fork) | owned, starred | termux | medium | upstream-comparison |
 | [timerloggedout-spec/ShizukuPlus_fork](https://github.com/timerloggedout-spec/ShizukuPlus_fork) | owned, starred | termux | medium | upstream-comparison |
 | [timerloggedout-spec/ShizukuRunner_fork](https://github.com/timerloggedout-spec/ShizukuRunner_fork) | owned, starred | termux | medium | upstream-comparison |
-| [timerloggedout-spec/termux-monorepo](https://github.com/timerloggedout-spec/termux-monorepo) | owned, starred | termux | medium | — |
 | [timerloggedout-spec/Thor_fork](https://github.com/timerloggedout-spec/Thor_fork) | owned, starred | termux | medium | upstream-comparison |
 | [timerloggedout-spec/web-to-app_fork](https://github.com/timerloggedout-spec/web-to-app_fork) | owned, starred | termux | medium | upstream-comparison |
 | [timschneeb/awesome-shizuku](https://github.com/timschneeb/awesome-shizuku) | starred | termux | medium | — |
@@ -2685,6 +2686,7 @@ Observed: `2026-10-27T09:51:29.871320Z`
 | [Correia-jpv/fucking-awesome-python](https://github.com/Correia-jpv/fucking-awesome-python) | starred | unclassified | medium | dependency-candidate |
 | [Correia-jpv/fucking-awesome-rust](https://github.com/Correia-jpv/fucking-awesome-rust) | starred | unclassified | medium | dependency-candidate |
 | [corylanou/oss-helpwanted](https://github.com/corylanou/oss-helpwanted) | starred | unclassified | medium | — |
+| [Cracked5pider/Ekko](https://github.com/Cracked5pider/Ekko) | starred | unclassified | medium | — |
 | [cruxopen/openISP](https://github.com/cruxopen/openISP) | starred | unclassified | medium | — |
 | [cruzlxyz/hermes-spotify-desktop](https://github.com/cruzlxyz/hermes-spotify-desktop) | starred | unclassified | medium | — |
 | [CSejersen/Tournament_bracket_generator](https://github.com/CSejersen/Tournament_bracket_generator) | starred | unclassified | medium | — |
@@ -4010,6 +4012,7 @@ Observed: `2026-10-27T09:51:29.871320Z`
 | [timerloggedout-spec/mesa-geo_fork](https://github.com/timerloggedout-spec/mesa-geo_fork) | owned, starred | agent | medium | upstream-comparison |
 | [timerloggedout-spec/nanocoder](https://github.com/timerloggedout-spec/nanocoder) | owned | agent | medium | upstream-comparison |
 | [timerloggedout-spec/Observal_fork](https://github.com/timerloggedout-spec/Observal_fork) | owned | agent | medium | upstream-comparison |
+| [timerloggedout-spec/opencode_fork](https://github.com/timerloggedout-spec/opencode_fork) | owned | agent | medium | upstream-comparison |
 | [timerloggedout-spec/orchestra_fork](https://github.com/timerloggedout-spec/orchestra_fork) | owned, starred | agent | medium | upstream-comparison |
 | [timerloggedout-spec/oz-dev-environments_fork](https://github.com/timerloggedout-spec/oz-dev-environments_fork) | owned | agent | medium | upstream-comparison |
 | [timerloggedout-spec/phi](https://github.com/timerloggedout-spec/phi) | owned | agent | medium | upstream-comparison |
@@ -4367,6 +4370,7 @@ Observed: `2026-10-27T09:51:29.871320Z`
 | [timerloggedout-spec/fmri-analysis-course_fork](https://github.com/timerloggedout-spec/fmri-analysis-course_fork) | owned, starred | research | high | upstream-comparison |
 | [timerloggedout-spec/longeclaw_cfork](https://github.com/timerloggedout-spec/longeclaw_cfork) | owned | research | high | upstream-comparison |
 | [timerloggedout-spec/mathematics_in_lean_fork](https://github.com/timerloggedout-spec/mathematics_in_lean_fork) | owned | research | high | upstream-comparison |
+| [timerloggedout-spec/opencode-research-papers_fork](https://github.com/timerloggedout-spec/opencode-research-papers_fork) | owned | research | high | upstream-comparison |
 | [timerloggedout-spec/portals](https://github.com/timerloggedout-spec/portals) | owned | research, platform | high | upstream-comparison |
 | [timerloggedout-spec/awesome-github-actions-security_fork](https://github.com/timerloggedout-spec/awesome-github-actions-security_fork) | owned | security | medium | upstream-comparison, workflow-candidate |
 | [timerloggedout-spec/awesome-workflows_fork](https://github.com/timerloggedout-spec/awesome-workflows_fork) | owned | security | medium | upstream-comparison, workflow-candidate |
@@ -5275,6 +5279,7 @@ Observed: `2026-10-27T09:51:29.871320Z`
 | [timerloggedout-spec/fmri-analysis-course_fork](https://github.com/timerloggedout-spec/fmri-analysis-course_fork) | owned, starred | research | high | upstream-comparison |
 | [timerloggedout-spec/longeclaw_cfork](https://github.com/timerloggedout-spec/longeclaw_cfork) | owned | research | high | upstream-comparison |
 | [timerloggedout-spec/mathematics_in_lean_fork](https://github.com/timerloggedout-spec/mathematics_in_lean_fork) | owned | research | high | upstream-comparison |
+| [timerloggedout-spec/opencode-research-papers_fork](https://github.com/timerloggedout-spec/opencode-research-papers_fork) | owned | research | high | upstream-comparison |
 | [ToFuProject/tofu](https://github.com/ToFuProject/tofu) | starred | research | high | dependency-candidate |
 | [tuan3w/awesome-tech-rss](https://github.com/tuan3w/awesome-tech-rss) | starred | research | high | — |
 | [vasishth/bayescogsci](https://github.com/vasishth/bayescogsci) | starred | research | high | — |
@@ -5287,6 +5292,7 @@ Observed: `2026-10-27T09:51:29.871320Z`
 | [t3l3machus/PowerShell-Obfuscation-Bible](https://github.com/t3l3machus/PowerShell-Obfuscation-Bible) | starred | research, security | high | — |
 | [Hack-with-Github/Awesome-Hacking](https://github.com/Hack-with-Github/Awesome-Hacking) | starred | research, security, termux | high | — |
 | [Nishant-Pathak/MathView](https://github.com/Nishant-Pathak/MathView) | starred | research, termux | high | — |
+| [timerloggedout-spec/termux-monorepo](https://github.com/timerloggedout-spec/termux-monorepo) | owned, starred | research, termux | high | — |
 | [timerloggedout-spec/termux-monorepo-sparked](https://github.com/timerloggedout-spec/termux-monorepo-sparked) | owned, starred | research, termux | high | — |
 | [gravitee-io/gravitee-api-management](https://github.com/gravitee-io/gravitee-api-management) | starred | security, api-management | high | — |
 | [gravitee-io/gravitee-gateway-api](https://github.com/gravitee-io/gravitee-gateway-api) | starred | security, api-management | high | — |
@@ -5351,6 +5357,7 @@ Observed: `2026-10-27T09:51:29.871320Z`
 | [timerloggedout-spec/mesa-geo_fork](https://github.com/timerloggedout-spec/mesa-geo_fork) | owned, starred | agent | medium | upstream-comparison |
 | [timerloggedout-spec/nanocoder](https://github.com/timerloggedout-spec/nanocoder) | owned | agent | medium | upstream-comparison |
 | [timerloggedout-spec/Observal_fork](https://github.com/timerloggedout-spec/Observal_fork) | owned | agent | medium | upstream-comparison |
+| [timerloggedout-spec/opencode_fork](https://github.com/timerloggedout-spec/opencode_fork) | owned | agent | medium | upstream-comparison |
 | [timerloggedout-spec/orchestra_fork](https://github.com/timerloggedout-spec/orchestra_fork) | owned, starred | agent | medium | upstream-comparison |
 | [timerloggedout-spec/oz-dev-environments_fork](https://github.com/timerloggedout-spec/oz-dev-environments_fork) | owned | agent | medium | upstream-comparison |
 | [timerloggedout-spec/phi](https://github.com/timerloggedout-spec/phi) | owned | agent | medium | upstream-comparison |
@@ -6015,6 +6022,7 @@ Observed: `2026-10-27T09:51:29.871320Z`
 | [timerloggedout-spec/fmri-analysis-course_fork](https://github.com/timerloggedout-spec/fmri-analysis-course_fork) | owned, starred | research | high | upstream-comparison |
 | [timerloggedout-spec/longeclaw_cfork](https://github.com/timerloggedout-spec/longeclaw_cfork) | owned | research | high | upstream-comparison |
 | [timerloggedout-spec/mathematics_in_lean_fork](https://github.com/timerloggedout-spec/mathematics_in_lean_fork) | owned | research | high | upstream-comparison |
+| [timerloggedout-spec/opencode-research-papers_fork](https://github.com/timerloggedout-spec/opencode-research-papers_fork) | owned | research | high | upstream-comparison |
 | [ToFuProject/tofu](https://github.com/ToFuProject/tofu) | starred | research | high | dependency-candidate |
 | [Wbaker7702/awesome-courses](https://github.com/Wbaker7702/awesome-courses) | starred | research | high | upstream-comparison |
 | [timerloggedout-spec/portals](https://github.com/timerloggedout-spec/portals) | owned | research, platform | high | upstream-comparison |

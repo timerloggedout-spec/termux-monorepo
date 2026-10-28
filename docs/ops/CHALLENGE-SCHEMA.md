@@ -74,6 +74,102 @@ over the stored deadline instants (issue #1880's rule: computed, never
 hand-typed). The block carries a `computed_at` stamp; a stale stamp
 means the next refresh recomputes it, not that anyone edits the values.
 
+## participants[] (nested per event) — other entrants, observed
+
+Tracks ALL other participants per event, with their engagement
+surfaces and persona profiles, from PUBLIC sources only.
+
+| field | meaning |
+|---|---|
+| `id` | stable local id (event-scoped slug from the public team/project name) |
+| `team_name` | as published on the source surface |
+| `members[]` | public member names/handles as published; `NOT_ESTABLISHED` elements never invented |
+| `platform_profile_url` | the participant's public profile on the event platform, or `null` |
+| `project{}` | `{name, url, status}` — their public project (gallery/project page) |
+| `persona{}` | `{bio, skills[], past_events[], past_wins[], public_links{github, devpost, linkedin, site, other}}` — public profile material only; any gap is `NOT_ESTABLISHED` (or `null` for a single link), never inferred |
+| `engagement{}` | `{public_chats[{surface, url, handle, last_activity_at, notes}], touchpoints[]}` — where they are publicly reachable/active |
+| `sources[]` | `[{url, fetched_at}]` — EVERY populated field traces to a listed source |
+| `confidence` | `high` \| `medium` \| `low` — source quality/coverage for this record |
+
+Rules (owner order, 2026-10-28):
+
+- **Public sources only** — participant galleries, project pages,
+  public profiles and posts. Nothing behind a login, nothing
+  scraped against a platform's terms.
+- **Sourced or NOT_ESTABLISHED.** Every field carries its source +
+  `fetched_at`; gaps are recorded as `NOT_ESTABLISHED`, never
+  inferred, never invented.
+- **4n0n unlinkability untouched.** We observe other participants;
+  nothing here links, names, or exposes OUR entrants — our own
+  projects/personas never appear in `participants[]`.
+- **Engagement is AUTONOMOUS (owner correction, 2026-10-28 —
+  supersedes any draft-only/HITL-gate framing).** Outbound
+  participant engagement (chats, forums, public channels) executes
+  under the event's entrant moniker with NO draft/approval gate.
+  Every touchpoint is logged — to the database mirror and to this
+  JSON — as `{surface, at, content_ref}` in the participant's
+  `engagement.touchpoints[]`. HITL pages are display surfaces only,
+  never gates. Red lines unchanged: 4n0n unlinkability, no personal
+  identifiers, credentials names-only.
+- **Population schedule:** as each event's gallery opens — D4 at
+  submissions open (Oct 30), D2 at build start (Nov 5), D5 at
+  kickoff (Nov 17); D1/D3 from any public participant surface
+  available now. Checked firsthand 2026-10-28: **D1's Projects tab
+  is public** (signed-out) and is the population source — 1 project
+  listed on day 1; its Participants tab is join-gated ("Join this
+  hackathon to see its participants"; 323 joined per the page
+  header) and is NOT a public source, so D1 tracking runs on
+  Projects only. **D3 has NO public gallery** — submissions are
+  form-only, so D3 participants populate from the winners/spotlight
+  surface after Nov 13. `project{}` may also carry `repo_url` /
+  `demo_url` when the project body itself publishes them (they are
+  project links, not author-profile facts).
+
+## judges[] (nested per event) + signals + recruitment (MoneyBall scope, owner 2026-10-28)
+
+Participant tracking is a **MoneyBall lane for competitions**: the
+same sourced-entity + time-series-signal + joined-view discipline
+the fleet's MoneyBall weighting uses, applied to competitors and
+judges.
+
+**Judges** — `events[].judges[]`, same persona discipline as
+participants:
+
+| field | meaning |
+|---|---|
+| `id`, `name`, `org` | as published by the event/platform |
+| `persona{}` | same shape as participants (bio, skills, past_events, past_wins, public_links) |
+| `judging_history[]` | prior events judged, as published |
+| `public_criteria[]` | their published judging criteria |
+| `statements[]` | public statements (posts/talks) relevant to judging, each sourced |
+| `sources[]`, `confidence` | as participants |
+
+**Signals (time-series, per entity — participants AND judges):**
+`signals.past_wins[]` = `{event, place, prize, project}`;
+`signals.placements[]`; `signals.snapshots[]` = appended metric
+snapshots `{at, fetched_at, source_url, comments_count, likes,
+followers, project_engagement{}}`. Snapshots are APPEND-ONLY —
+appended, never overwritten (the DB mirror's `participant_events`
+rows carry them; the JSON carries the full series).
+
+**Views (DB mirror):** prizes × competitors × profiles joined per
+event — who won what, with what project, judged by whom
+(`event_podium` view over the mirror, beside `participants_current`).
+
+**Recruitment pipeline:** standout competitors/judges carry
+`recruitment{candidate: true, pipeline_state}` with states
+`identified → profiled → engaged → in_talks → collaborator`, or
+`passed`. Engagement is autonomous (standing order above);
+touchpoints logged as specified. Non-candidates carry
+`recruitment{candidate: false, pipeline_state: null}`.
+
+Population state at landing (2026-10-28): participants 0, judges 0,
+candidates 0 across all events — no gallery has opened and no event
+publishes named judges yet (D1: "a panel of AWS experts", unnamed;
+D5: judges "to be announced during the Event" per its Contest
+Rules). Entities populate on the schedule in the participants
+section; judges populate when an event names them publicly.
+
 ## Required fields + surface contract (owner rule, 2026-10-28)
 
 **Required information:** `prizes`, `dates`, `status`, and `gates` —

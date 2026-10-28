@@ -37,5 +37,7 @@ HTTP increment → evidence in the run log. No GCP, no card, no VM
 hosting, nothing continuous. GKE activation is a separate, later,
 owner-gated step: `docs/ops/AGENT-SUBSTRATE-ACTIVATION.md`.
 
-Status: wired for evaluation; not deployed anywhere; no fleet
-workload runs on Substrate today.
+Status: Route 0 evaluation PROVEN (run 40765289808, 2026-10-28 —
+kind + pinned Substrate + counter actor + proxy increment, all on a
+GitHub-hosted runner). Not deployed anywhere; no fleet workload
+runs on Substrate today.

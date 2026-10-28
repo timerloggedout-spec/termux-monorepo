@@ -46,5 +46,6 @@ the eval workflow, and this doc is the whole exit. One session.
 
 ## Status
 
-`wired_for_evaluation` — Route 0 wired, Route A documented and
-gated. Status flips only on run evidence, per route.
+`route0_proven` — Route A documented and gated.
+
+Run 40765289808 (2026-10-28, workflow_dispatch on master): kind cluster created, Substrate installed at the pinned commit, counter demo deployed, actor `my-counter-1` created, and an HTTP POST through the substrate proxy returned 200 — **Route 0 PROVEN live**.

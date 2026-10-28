@@ -1,0 +1,60 @@
+# delphi-ledger-feed refresh (contract: docs/ops/DELPHI-LEDGER-STORE.md).
+# Regenerates apps/help-wanted-dashboard/data/delphi-ledger-feed.json from
+# the registered continuous-ledger issues (#1487 outcomes, #1489 weights,
+# #2028 living record; registry: ops/delphi/ledgers.json) and proposes it
+# as a refresh PR — never commits directly.
+name: delphi-ledger-feed-collect
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '47 6 * * 2'
+  workflow_run:
+    workflows: [delphi-gate]
+    types: [completed]
+
+concurrency:
+  group: delphi-ledger-feed-collect
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: read
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch the ledger cache
+        run: |
+          set -euo pipefail
+          python3 -B scripts/delphi/ledger_fetch.py --cache .ledger-cache
+      - name: Collect the feed
+        run: |
+          set -euo pipefail
+          python3 -B scripts/delphi/ledger_feed.py \
+            --cache .ledger-cache --out apps/help-wanted-dashboard/data/delphi-ledger-feed.json
+      - name: Propose the refresh as a PR
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- apps/help-wanted-dashboard/data/delphi-ledger-feed.json; then
+            echo "feed unchanged; no refresh PR"
+            exit 0
+          fi
+          branch="delphi-ledger-feed/refresh"
+          git config user.name "delphi-ledger-feed-collect"
+          git config user.email "actions@github.com"
+          git checkout -B "$branch"
+          git add apps/help-wanted-dashboard/data/delphi-ledger-feed.json
+          git commit -m "chore(delphi): refresh delphi-ledger-feed"
+          git push -f origin "$branch"
+          gh pr create --base master --head "$branch" \
+            --title "chore(delphi): refresh delphi-ledger-feed.json" \
+            --body "Automated continuous-ledger feed refresh (collector: scripts/delphi/ledger_feed.py; contract: docs/ops/DELPHI-LEDGER-STORE.md). Data is derived live from the registered ledger issues at collection time; nothing is copied forward." \
+            || echo "refresh PR already open"

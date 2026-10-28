@@ -52,3 +52,21 @@ def test_dry_run_cli(tmp_path, capsys):
                   "--source-ref", "abc123"])
     assert rc == 0
     assert "'D4': 3" in capsys.readouterr().out
+
+
+def test_touchpoints_are_executed_logs_first_class(tmp_path):
+    src = {"events": [{"id": "D4", "participants": [
+        {"handle": "entrantA",
+         "engagement": {"touchpoints": [
+             {"surface": "devpost", "at": "2026-10-30T10:00:00Z",
+              "content_ref": "https://example.invalid/post/1"},
+             {"surface": "discord", "at": "2026-10-30T11:00:00Z",
+              "content_ref": "msg-42"}]}},
+        {"handle": "entrantB"}]}]}
+    _, rows = pe.batch_from_source(write(tmp_path, src), "ref")
+    tps = pe.touchpoints_of(rows)
+    assert len(tps) == 2
+    assert tps[0]["participant"] == "entrantA"
+    assert tps[0]["surface"] == "devpost"
+    # payload carries the touchpoints verbatim (mirror data, not a gate)
+    assert "touchpoints" in rows[0]["payload"]

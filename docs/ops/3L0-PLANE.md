@@ -75,6 +75,16 @@ rankings table exists — rankings are computed at routing time and no
 per-model Elo values are committed (router default 1000 applies);
 per-response scoring history exists for the reviewer surface only.
 
+## Diagnostic trigger
+
+The `seed_base_only` discrimination state is wired to a real trigger:
+`surface-feeds-collect.yml` runs `scripts/dashboards/discrimination_watch.py`
+after every collect. It keeps exactly one open diagnostic issue while the
+driver is `seed_base_only` (open if absent, comment only on fingerprint
+change, comment + close when the driver clears). The diagnostic points at
+the upgrade of record, issue #1784. (Owner order 2026-10-28; before this,
+the discrimination block was a passive flag read by nothing.)
+
 ## Open work for this plane
 
 1. **Page render** — `3l0.html` shows panel seeds only (`(seed)` headers);

@@ -15,7 +15,7 @@ This page is the operator record; the pass evidence lives in
 | Persistence | sqlite DB at `~/workspace/temporal-selfhost/temporal.db` (durable workspace disk) |
 | Supervision | systemd units `temporal-selfhost` + `temporal-relay` (Restart=always) |
 | Exposure | socat relay `0.0.0.0:7234 -> 127.0.0.1:7233` (see below) |
-| Recovery | hourly keepalive job reinstalls the units from the workspace copies after a VM replacement (`/etc` does not persist; `install.sh` restores) |
+| Recovery | keepalive job (every 15 min) reinstalls the units from the workspace copies after a VM replacement (`/etc` does not persist; `install.sh` restores); daily integrity-checked DB snapshot to `~/workspace/temporal-selfhost/backups/`, newest 7 kept |
 | Files | `scripts/temporal/selfhost/` (repo mirror) = `~/workspace/temporal-selfhost/` (live copies) |
 
 ## Why localhost + a relay

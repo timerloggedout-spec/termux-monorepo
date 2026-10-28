@@ -320,7 +320,8 @@
    "doc_quote": "Requests per day (RPD) quotas reset at midnight Pacific time.",
    "live": "none; .github/actions/gemini-quota-gate soft budgets + 429s",
    "planned_use": {
-    "safety": 0.9
+    "safety": 0.9,
+    "note": "Fleet credential provisioned: GOOGLE_API_KEY (separate AI Studio key; GEMINI_API_KEY pre-existing) (repo Actions secret, 2026-10-27)."
    }
   },
   {
@@ -336,7 +337,7 @@
    "source": "https://docs.ollama.com/api/balance",
    "live": "opt-in only: python3 -m scripts.provider_quota_service --observe; GET https://ollama.com/api/balance (OLLAMA_API_KEY)",
    "planned_use": {
-    "note": "Explicit private scope and mode-0700 output directory required. Not collected by quota_poll, no routing weights from balances, no account validation or reservation claimed."
+    "note": "Explicit private scope and mode-0700 output directory required. Not collected by quota_poll, no routing weights from balances, no account validation or reservation claimed. Fleet credential provisioned: OLLAMA_API_KEY (repo Actions secret, 2026-10-27)."
    }
   },
   {
@@ -1070,7 +1071,8 @@
    "doc_quote": "Free tier: 20,000 tokens per minute; 20,000 daily token limit (15 requests per minute)",
    "live": "none published (no rate-limit headers or usage endpoint documented)",
    "planned_use": {
-    "safety": 0.9
+    "safety": 0.9,
+    "note": "Fleet credential provisioned: AION_API_KEY (repo Actions secret, 2026-10-27)."
    }
   },
   {
@@ -1122,24 +1124,25 @@
    "live": "response meta billed_units; dashboard (no dedicated usage endpoint documented)",
    "planned_use": {
     "safety": 0.9,
-    "note": "Chat trial cap is also 20 requests/minute per model."
+    "note": "Chat trial cap is also 20 requests/minute per model. Fleet credential provisioned: COHERE_API_KEY (repo Actions secret, 2026-10-27)."
    }
   },
   {
    "id": "felo.api_credits",
    "provider": "felo",
    "lane": "model",
-   "metric": "API service credits (pay-as-you-go)",
-   "limit": null,
-   "unit": "USD service credits",
-   "window": "n/a",
-   "reset": "n/a",
+   "metric": "Search API Free Standard credits (daily refill) + intermittent free models",
+   "limit": 200,
+   "unit": "credits/day",
+   "window": "daily",
+   "reset": "daily refill",
    "zone": "UTC",
    "source": "https://openapi.felo.ai/pricing",
-   "doc_quote": "There is no recurring free credit allowance.",
+   "doc_quote": "200 daily free credits (public harness docs) \u2014 FREE-QUOTA-WINDOWS cadence table; provider-managers free_entitlement: Standard plan, 200 free credits daily for selected API models/tools, shared with Playground",
    "live": "response headers X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, Retry-After",
    "planned_use": {
-    "note": "no free entitlement; pay-as-you-go only \u2014 record exists so the family maps and the absence is documented, not assumed"
+    "note": "no free entitlement; pay-as-you-go only \u2014 record exists so the family maps and the absence is documented, not assumed Allowance mapping is the fleet's historical record (docs/ops/FREE-QUOTA-WINDOWS.md + ops/quota/provider-managers.json), which supersedes the pay-as-you-go read of the pricing page taken 2026-10-27. Free models exist intermittently (e.g. ox-alpha trial; its ended-trial notice conflicts with the free pricing row) \u2014 treat free-model availability as intermittent and verify per catalog poll. FELO_AI_API provisioned (pre-existing).",
+    "safety": 0.9
    }
   },
   {
@@ -1157,7 +1160,7 @@
    "live": "response headers x-ratelimit-limit-requests, x-ratelimit-remaining-requests, x-ratelimit-reset-requests, x-ratelimit-limit-tokens, x-ratelimit-remaining-tokens, x-ratelimit-reset-tokens, retry-after (passive adapter implemented)",
    "planned_use": {
     "safety": 0.9,
-    "note": "per-model tables govern; read the headers, not this record, for the live ceiling"
+    "note": "per-model tables govern; read the headers, not this record, for the live ceiling Fleet credential provisioned: GROQ_API_KEY (repo Actions secret, 2026-10-27)."
    }
   },
   {
@@ -1172,9 +1175,9 @@
    "zone": "UTC",
    "source": "https://huggingface.co/docs/inference-providers/pricing",
    "doc_quote": "Free users: monthly included credits are None (the former $0.10 credit no longer applies); usage beyond is pay-as-you-go.",
-   "live": "organization usage API GET /api/organizations/{org}/billing/usage/inference (Enterprise only); no free-tier usage endpoint",
+   "live": "Hub RateLimit response header (remaining r, seconds-to-reset t; 5-minute fixed windows; passive adapter implemented \u2014 Hub API/Resolver/Pages categories, NOT hosted-inference quota); organization usage API GET /api/organizations/{org}/billing/usage/inference (Enterprise); router free/zero models via /v1/models catalog poll",
    "planned_use": {
-    "note": "no free numeric entitlement published; treat as unknown, not zero-usage"
+    "note": "no free numeric entitlement published; treat as unknown, not zero-usage Historical allowance mapping (FREE-QUOTA-WINDOWS): router free/zero models are a catalog-cadence free route when the poll classifies them free. Fleet credential provisioned: HUGGINGFACE_TOKEN (repo Actions secret, 2026-10-27)."
    }
   },
   {
@@ -1209,7 +1212,7 @@
    "live": "GET /v1/models per-model tier/pricing/limit fields; allowance state via dashboard",
    "planned_use": {
     "safety": 0.9,
-    "note": "free-token quotas may be reduced without notice per the same page"
+    "note": "free-token quotas may be reduced without notice per the same page Fleet credential provisioned: LLM7_API_TOKEN (repo Actions secret, 2026-10-27)."
    }
   },
   {
@@ -1226,7 +1229,7 @@
    "doc_quote": "Free mode usage limits are shown per model in the signed-in Admin Panel (Usage limits); no public numeric table is published.",
    "live": "none published (Admin Panel only; Admin API is Enterprise)",
    "planned_use": {
-    "note": "numbers exist only behind sign-in; never record the unsourced figures circulating elsewhere"
+    "note": "numbers exist only behind sign-in; never record the unsourced figures circulating elsewhere Historical allowance mapping (fleet account-creation recon): La Plateforme Free mode is the default for new API accounts, no card. Fleet ruling (PR #1805): no Mistral API key \u2014 Mistral runs as webWrapper via local Termux; MISTRAL_API_KEY deliberately unprovisioned."
    }
   },
   {
@@ -1234,16 +1237,16 @@
    "provider": "modelscope",
    "lane": "model",
    "metric": "API-Inference usage limits",
-   "limit": null,
-   "unit": "unknown",
-   "window": "unknown",
-   "reset": "unknown",
+   "limit": 2000,
+   "unit": "requests/day",
+   "window": "daily",
+   "reset": "daily (per fleet recon claim)",
    "zone": "UTC",
-   "source": "https://www.modelscope.cn/docs/model-service/API-Inference/limits",
-   "doc_quote": "Official API-Inference usage-limits page exists but could not be retrieved (fetch timeout, 2026-10-27); no number recorded.",
+   "source": "https://www.modelscope.ai/docs/model-service/API-Inference/limits",
+   "doc_quote": "API-Inference free for registered users (~2,000 req/day claimed) \u2014 docs/ops/ACCOUNT-CREATION-RECON-2026-10-27.md",
    "live": "none published (not established)",
    "planned_use": {
-    "note": "revalidate against the official limits page before any numeric claim; third-party figures are not evidence"
+    "note": "revalidate against the official limits page before any numeric claim; third-party figures are not evidence The 2,000/day figure is the fleet account-creation recon claim, NOT verified on the official page (unreachable on fetch, 2026-10-27); official docs describe dynamic per-model concurrency and Magicube costs (PROVIDER-QUOTA-MANAGERS evidence matrix). Revalidate before relying on the number."
    }
   },
   {
@@ -1260,7 +1263,7 @@
    "doc_quote": "Current free limits are per model in the signed-in build.nvidia.com catalog; no public numeric table is published.",
    "live": "none published",
    "planned_use": {
-    "note": "a legacy FAQ figure (up to 5,000 credits) is NOT recorded: it is not a current documented entitlement"
+    "note": "a legacy FAQ figure (up to 5,000 credits) is NOT recorded: it is not a current documented entitlement Historical allowance mapping (fleet account-creation recon): Developer Program members get free NIM API access for prototyping, no card; one NIM key provisions both fleet names. Fleet credential provisioned: NVIDIA_API_KEY + NVIDIA_NIM_API_KEY (repo Actions secret, 2026-10-27)."
    }
   },
   {
@@ -1277,7 +1280,7 @@
    "doc_quote": "OmniRoute aggregates the documented free tiers of 42 provider pools / 495 models into one honest number and shows it live on the dashboard (/dashboard/free-tiers).",
    "live": "self-hosted dashboard /dashboard/free-tiers shows live used/remaining per upstream pool; no hosted usage API or rate-limit headers",
    "planned_use": {
-    "note": "no entitlement of its own; the upstream providers' registry records govern"
+    "note": "no entitlement of its own; the upstream providers' registry records govern Historical allowance mapping (FREE-QUOTA-WINDOWS): catalog $0 route \u2014 usable only when the catalog poll classifies a model free (OMNI_API_KEY + /v1/models); cadence class catalog."
    }
   },
   {
@@ -1330,7 +1333,8 @@
    "doc_quote": "Free models (e.g., deepseek-r1:free) are subject to the following rate limits: 5 Requests Per Minute (RPM), 200 Requests Per Day (RPD)",
    "live": "headers X-RateLimit-Limit-Minute, X-RateLimit-Remaining-Minute, X-RateLimit-Reset-Minute, X-RateLimit-Limit-Day, X-RateLimit-Remaining-Day, X-RateLimit-Reset-Day, Retry-After",
    "planned_use": {
-    "safety": 0.9
+    "safety": 0.9,
+    "note": "Fleet credential provisioned: ROUTEWAY_API_KEY (repo Actions secret, 2026-10-27)."
    }
   },
   {
@@ -1348,7 +1352,7 @@
    "live": "response headers x-ratelimit-limit-requests, x-ratelimit-remaining-requests, x-ratelimit-reset-requests, x-ratelimit-limit-requests-day, x-ratelimit-remaining-requests-day, x-ratelimit-reset-requests-day (passive adapter implemented)",
    "planned_use": {
     "safety": 0.9,
-    "note": "tokens/day cap (200,000 per model) binds before requests/day for long generations"
+    "note": "tokens/day cap (200,000 per model) binds before requests/day for long generations Fleet credential provisioned: SAMBANOVA_API_KEY (repo Actions secret, 2026-10-27)."
    }
   },
   {
@@ -1366,7 +1370,7 @@
    "live": "none published",
    "planned_use": {
     "safety": 0.9,
-    "note": "free trial key via SEA-LION Playground; 1 API key per user; no daily quota published"
+    "note": "free trial key via SEA-LION Playground; 1 API key per user; no daily quota published Fleet credential provisioned: SEALION_API_KEY (repo Actions secret, 2026-10-27)."
    }
   },
   {
@@ -1383,24 +1387,25 @@
    "doc_quote": "The Rate limits for free models are fixed values, while those for paid models vary based on the account's usage level",
    "live": "GET user/info balance fields data.balance / data.chargeBalance / data.totalBalance (monetary only, passive adapter implemented); no rate-limit headers published; per-model free values shown in the account console only",
    "planned_use": {
-    "note": "no single free number exists; per-model fixed values are console-only"
+    "note": "no single free number exists; per-model fixed values are console-only Historical allowance mapping (fleet account-creation recon): the international platform grants a $1 signup credit, no card; the .cn platform's $0 models require mainland real-name authentication and are not used."
    }
   },
   {
    "id": "typhoon.api",
    "provider": "typhoon",
    "lane": "model",
-   "metric": "Typhoon API (free research showcase)",
-   "limit": null,
-   "unit": "unknown (no numeric limit published)",
-   "window": "unknown",
-   "reset": "unknown",
+   "metric": "Free research API rate limits (per model)",
+   "limit": 200,
+   "unit": "requests/minute",
+   "window": "per minute",
+   "reset": "per-minute window; 429 error body message carries the retry timestamp",
    "zone": "UTC",
-   "source": "https://docs.opentyphoon.ai/en/faq/",
-   "doc_quote": "The Typhoon API is a research showcase and free to use.",
-   "live": "none published",
+   "source": "https://docs.opentyphoon.ai/en/rate-limits/",
+   "doc_quote": "typhoon-v2.5-30b-a3b-instruct: 5 requests per second, 200 requests per minute (typhoon-v2.1-12b-instruct: 5 RPS, 200 RPM)",
+   "live": "no usage endpoint; HTTP 429 error body (rate_limit_exceeded) carries the retry time in its message",
    "planned_use": {
-    "note": "free to use with no documented numeric limit; treat ceiling as unknown"
+    "safety": 0.9,
+    "note": "free light research usage per the official overview/FAQ (docs/ops/TYPHOON-FREE-API-CONTRACT.md); rate ceilings are not a remaining balance"
    }
   },
   {
@@ -1425,17 +1430,17 @@
    "id": "xfyun.spark",
    "provider": "xfyun",
    "lane": "model",
-   "metric": "Spark API free quota",
+   "metric": "Spark Lite free tier + per-capability trials",
    "limit": null,
    "unit": "unknown",
    "window": "unknown",
    "reset": "unknown",
    "zone": "UTC",
-   "source": "https://xinghuo.xfyun.cn/sparkapi",
-   "doc_quote": "Official Spark API page could not be retrieved (fetch timeout, 2026-10-27); no number recorded.",
+   "source": "https://www.xfyun.cn/doc/spark/HTTP%E8%B0%83%E7%94%A8%E6%96%87%E6%A1%A3.html",
+   "doc_quote": "Spark Lite is permanently free; global platform: 90-day free trial per capability \u2014 docs/ops/ACCOUNT-CREATION-RECON-2026-10-27.md",
    "live": "none published (not established)",
    "planned_use": {
-    "note": "revalidate against the official page before any numeric claim; third-party figures are not evidence"
+    "note": "revalidate against the official page before any numeric claim; third-party figures are not evidence Mapping rests on the fleet recon plus the official Spark HTTP doc it cites; the marketing page was unreachable on fetch (2026-10-27) and no numeric cap is in evidence. Only the exact `lite` model is admitted by the hub transport."
    }
   },
   {
@@ -1460,17 +1465,17 @@
    "id": "zai.free_models",
    "provider": "zai",
    "lane": "model",
-   "metric": "Free ($0 Flash) model limits",
+   "metric": "Free ($0-priced GLM Flash) model access",
    "limit": null,
    "unit": "per-account (unpublished)",
    "window": "unknown",
    "reset": "unknown",
    "zone": "UTC",
    "source": "https://docs.z.ai/api-reference/api-code",
-   "doc_quote": "Free access is via $0 Flash models; per-account numeric limits are not published in the API-code documentation.",
+   "doc_quote": "GLM Flash models (4.5/4.6V/4.7) are $0-priced; no card \u2014 docs/ops/ACCOUNT-CREATION-RECON-2026-10-27.md",
    "live": "HTTP 429 error body codes 1308 / 1316-1321 carry a next_flush_time field (documented in the API-code reference)",
    "planned_use": {
-    "note": "treat the ceiling as unknown; the 429 body's next_flush_time is the only documented telemetry"
+    "note": "treat the ceiling as unknown; the 429 body's next_flush_time is the only documented telemetry Historical allowance mapping (fleet account-creation recon): the free route is $0-priced Flash models; per-account numeric limits remain unpublished."
    }
   }
  ]

@@ -57,11 +57,11 @@ No verified provisioned replacement exists for these names. Each is an explicit 
 - [ ] `secrets.IFLYTEK_SPARK_API_PASSWORD` — provider-batch.yml
 - [ ] `secrets.KILO_API_KEY` — provider-availability.yml, provider-batch.yml
 - [ ] `secrets.KOYEB_API_TOKEN` — koyeb-hindsight-deploy.yml
-- [ ] `secrets.LANE_EVENTS_DATABASE_URL` — lane-events-recorder.yml, observer-poller-scheduled.yml, tribute-system1.yml
+- [x] `secrets.LANE_EVENTS_DATABASE_URL` — lane-events-recorder.yml, observer-poller-scheduled.yml, tribute-system1.yml — PROVISIONED 2026-10-28 (neon-fix lane): Neon project `lane-events` (aws-us-east-2), connection string for db `neondb`; sealed-box PUT via PAT, verified present in Actions secrets (repo total 53→55).
 - [ ] `secrets.MISTRAL_API_KEY` — provider-availability.yml, provider-batch.yml
 - [ ] `secrets.MODELSCOPE_TOKEN` — provider-availability.yml
 - [ ] `secrets.N8N_SHE_WEBHOOK_URL` — n8n-she-bridge.yml
-- [ ] `secrets.NEON_API_KEY` — lane-events-recorder.yml, observer-poller-scheduled.yml, tribute-system1.yml, vercel-quota-probe.yml
+- [x] `secrets.NEON_API_KEY` — lane-events-recorder.yml, observer-poller-scheduled.yml, tribute-system1.yml, vercel-quota-probe.yml — PROVISIONED 2026-10-28 (neon-fix lane): dedicated key `GitHub Actions lane-events`; sealed-box PUT via PAT, verified present. Proof: lane-events-recorder record run 40770746018 success + lane_events rows verified live in Neon (selftest=1).
 - [ ] `secrets.NEXUSCLI_TOKEN` — deepseek-ci.yml
 - [ ] `secrets.OMNIROUTE_API_KEY` — gemini-after-peers.yml, gemini-invoke.yml, gemini-review.yml, gemini-triage.yml, help-wanted-llm-assist.yml
 - [ ] `secrets.OMNI_API_KEY` — continuous-evaluation.yml, gemini-after-peers.yml, gemini-invoke.yml, gemini-review.yml, gemini-triage.yml, help-wanted-llm-assist.yml, provider-availability.yml, provider-batch.yml, team-mvt.yml

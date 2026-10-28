@@ -1,10 +1,13 @@
 # Challenge Recruitment — pipeline of record
 
 Seat: recruitment (reports to `challenge-entries-manager`). Mission:
-find potential recruits from challenge participants/judges, build the
-database, find their GitHubs, execute MoneyBall v2 metrics. Autonomous;
-no approval gates. Engagement autonomous under the event entrant
-moniker, every touchpoint logged `{surface, at, content_ref}`.
+OWNER RULING (2026-10-28, PR #2237): "The OSINT recruit is our team
+only." Recruitment tracks OUR team/entrants only (registry `team[]`).
+External competitors/judges are OBSERVATION-ONLY: profiled + scored,
+never candidates, `recruitment{candidate:false, pipeline_state:null}`
+always; standout flag = observation flag only. GitHub hunts + MoneyBall
+v2 metrics run on observations for situational awareness, and on our
+team for the pipeline. No engagement/recruitment outreach to externals.
 
 ## Flow
 - SOURCE: `ops/challenge/coordinator.json` participants/judges (entries lane a33d3ca1).
@@ -19,5 +22,5 @@ GitHub profiles: `ops/challenge-recruitment/github-profiles/<event>--<entity>.js
 GitHub hunt: project repo/demo links, public profiles, commit authorship only; confidence recorded; unmatched = NOT_ESTABLISHED; no guessed handles; no personal identifiers beyond public professional profiles (commit emails never recorded).
 
 ## Population at stand-up (2026-10-28)
-Entities tracked 1 (D1 participant), judges 0, GitHub matched 1/1 (100%).
+Team: 7 events, 9 projects. Observations: 1 (D1 participant), judges 0, GitHub matched 1/1 (100%), candidates flagged 0 (externals never candidates).
 D4 gallery Oct 30 = first big field; D2 Nov 5; D5 Nov 17; D3 post-Nov 13.

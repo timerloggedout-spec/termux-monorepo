@@ -2,7 +2,7 @@
   "schema": "challenge-recruitment/v1",
   "owner_role": "challenge-recruitment",
   "manager_role": "challenge-entries-manager",
-  "updated_at": "2026-10-28T14:30:00-07:00",
+  "updated_at": "2026-10-28T14:52:00-07:00",
   "store": {
     "primary": "Neon recruitment_current (ops/challenge-participants/schema.sql) \u2014 LANE_EVENTS_DATABASE_URL + NEON_API_KEY provisioned per PR #2222 (2026-10-28); participant_event.py sync carries these rows on next coordinator push/dispatch",
     "source_of_truth_feed": "ops/challenge/coordinator.json",
@@ -17,21 +17,88 @@
     "passed"
   ],
   "counts": {
-    "entities_tracked": 1,
-    "participants": 1,
-    "judges": 0,
+    "team_events": 7,
+    "team_projects": 9,
+    "observations": 1,
+    "participants_observed": 1,
+    "judges_observed": 0,
     "github_matched": 1,
     "github_match_rate": 1.0,
     "candidates_flagged": 0
   },
-  "candidates": [
+  "population_schedule": "D4 gallery Oct 30 (first big field), D2 Nov 5, D5 Nov 17, D3 post-Nov 13 winners surface; judges when publicly named (currently 0 all events)",
+  "rules": [
+    "OWNER RULING 2026-10-28 (#2237): recruitment = our team only; externals observation-only, candidate:false + pipeline_state:null always",
+    "public sources only, every fact sourced + fetched_at",
+    "no guessed handles; unmatched = NOT_ESTABLISHED",
+    "weights/threshold fixed at event intake, never adjusted after scores",
+    "4n0n: never link our entrants across platforms; no personal identifiers beyond public professional profiles"
+  ],
+  "scope_ruling": {
+    "ruling": "The OSINT recruit is our team only (owner, direct, 2026-10-28)",
+    "landed": "PR #2237 merged c91c59cab4ae",
+    "effect": "recruitment pipeline tracks OUR team/entrants only; external competitors/judges = observation-only (profiled+scored, never candidates, recruitment{candidate:false, pipeline_state:null} always); standout flag = observation only"
+  },
+  "team": [
+    {
+      "event_id": "STRANDS-DECIDER",
+      "entrant_moniker": "entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]",
+      "projects": [
+        "delphi-oracle-strands (abandoned)"
+      ]
+    },
+    {
+      "event_id": "D0",
+      "entrant_moniker": "entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]",
+      "projects": [
+        "delphi-oracle-weekend-challenge (abandoned)"
+      ]
+    },
+    {
+      "event_id": "D1",
+      "entrant_moniker": "entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]",
+      "projects": [
+        "studysprint (picked_pending_freeze)"
+      ]
+    },
+    {
+      "event_id": "D2",
+      "entrant_moniker": "entrant{entrantLablabAi}[platform:lablab-ai]",
+      "projects": [
+        "web-adapter-foundry (candidate)"
+      ]
+    },
+    {
+      "event_id": "D3",
+      "entrant_moniker": "entrant{entrantBuilderIo}[platform:builder-io]",
+      "projects": [
+        "listinglens (picked_pending_freeze)",
+        "delphi-desk (questioned)"
+      ]
+    },
+    {
+      "event_id": "D4",
+      "entrant_moniker": "entrant{entrantDevpost}[platform:devpost]",
+      "projects": [
+        "kiroween-skeleton-crew (candidate)",
+        "kiroween-frankenstein (candidate)",
+        "kiroween-resurrection (candidate)"
+      ]
+    },
+    {
+      "event_id": "D5",
+      "entrant_moniker": "entrant{n0nAha}[platform:aha-io]",
+      "projects": []
+    }
+  ],
+  "observations": [
     {
       "entity_id": "ladder-practice-sets",
       "event_id": "D1",
       "kind": "participant",
-      "pipeline_state": "profiled",
+      "pipeline_state": null,
       "candidate_flag": false,
-      "candidate_flag_reason": "MoneyBall v2 flag rule refused: composite 2.90 < threshold 6.0 + track_record unverified (records: ops/challenge-participants/scores/D1--ladder-practice-sets--evaluate--2026-10-28.json + --recruitment.json)",
+      "candidate_flag_reason": "Owner ruling 2026-10-28 (PR #2237): externals never candidates; prior MoneyBall flag also refused (2.90<6.0 + track_record unverified).",
       "github": {
         "login": "abhinavshukla152005-beep",
         "url": "https://github.com/abhinavshukla152005-beep",
@@ -44,7 +111,6 @@
       ],
       "latest_composite": 2.9,
       "flag_threshold": 6.0,
-      "engagement_touchpoints": [],
       "sources": [
         {
           "url": "https://builder.aws.com/project/3LJjkhxhefaoI8OMD5QZW8HkUnp/ladder-practice-sets-a-teacher-can-trust",
@@ -54,15 +120,10 @@
           "url": "https://github.com/abhinavshukla152005-beep",
           "fetched_at": "2026-10-28T14:30:00-07:00"
         }
-      ]
+      ],
+      "scope": "observation_only",
+      "standout_observation_only": true
     }
   ],
-  "population_schedule": "D4 gallery Oct 30 (first big field), D2 Nov 5, D5 Nov 17, D3 post-Nov 13 winners surface; judges when publicly named (currently 0 all events)",
-  "rules": [
-    "public sources only, every fact sourced + fetched_at",
-    "no guessed handles; unmatched = NOT_ESTABLISHED",
-    "weights/threshold fixed at event intake, never adjusted after scores",
-    "engagement autonomous under entrant moniker, every touchpoint logged {surface, at, content_ref}",
-    "4n0n: never link our entrants across platforms; no personal identifiers beyond public professional profiles"
-  ]
+  "pipeline_applies_to": "team[] only (our entrants); observations never enter the pipeline"
 }

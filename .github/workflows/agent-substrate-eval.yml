@@ -1,0 +1,74 @@
+name: agent-substrate-eval
+
+# Evaluation harness for Agent Substrate (the open-source sibling of
+# Agent Compute Engine). Dispatch-only: builds a kind cluster on the
+# runner, installs Substrate at the pinned upstream commit, and runs
+# the upstream counter demo end-to-end. No GCP, no secrets, nothing
+# continuous. Wiring: ops/agent_substrate/README.md; runbook:
+# docs/ops/AGENT-SUBSTRATE-ACTIVATION.md (Route 0).
+
+on:
+  workflow_dispatch:
+    inputs:
+      substrate_ref:
+        description: "agent-substrate/substrate commit SHA to evaluate"
+        required: false
+        default: "475f49b023352b47b8504ffead596953f28d7e7f"
+
+permissions:
+  contents: read
+
+jobs:
+  eval:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.23"
+
+      - name: Install kubectl
+        run: |
+          curl -sSLO "https://dl.k8s.io/release/$(curl -sSL https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          sudo install -m 0755 kubectl /usr/local/bin/kubectl
+          kubectl version --client
+
+      - name: Check out Agent Substrate at the pinned ref
+        uses: actions/checkout@v4
+        with:
+          repository: agent-substrate/substrate
+          ref: ${{ inputs.substrate_ref }}
+          path: substrate
+
+      - name: Create kind cluster
+        working-directory: substrate
+        run: hack/create-kind-cluster.sh
+
+      - name: Install Substrate
+        working-directory: substrate
+        run: >-
+          hack/install-ate-kind.sh deploy ate-system
+          --credential-provider='{"name":"k8s.io"}'
+          --ingress-allowed-spiffe-ids=spiffe://cluster.local/ns/ate-system/sa/atenet-client
+
+      - name: Install counter demo
+        working-directory: substrate
+        run: hack/install-ate-kind.sh deploy demo counter
+
+      - name: Create counter actor and increment it through the proxy
+        working-directory: substrate
+        run: |
+          go install ./cmd/kubectl-ate
+          export PATH="$PATH:$(go env GOPATH)/bin"
+          kubectl ate create actor my-counter-1 -a ate-demo-counter --template counter
+          kubectl ate proxy actor my-counter-1 -a ate-demo-counter &
+          PROXY_PID=$!
+          trap 'kill $PROXY_PID || true' EXIT
+          for i in $(seq 1 30); do
+            if curl -s -o /dev/null http://localhost:8000/; then break; fi
+            sleep 2
+          done
+          curl -sS -X POST -i http://localhost:8000/ | tee /tmp/counter-response.txt
+          grep -q "200" /tmp/counter-response.txt
+          echo "substrate eval: counter actor responded through the proxy"

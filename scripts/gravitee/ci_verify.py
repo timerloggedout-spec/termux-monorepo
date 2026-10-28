@@ -40,9 +40,14 @@ def raw(method, url, body=None, auth=None):
         b = r.read().decode()
         return r.status, (json.loads(b) if b else {})
 
-# 1-2: admin -> PAT
-_, user = raw("GET", f"{ROOT}/management/user", auth=f"Basic {BASIC}")
-admin_id = user["id"]; note("admin-user", id=admin_id)
+# 1-2: admin -> PAT. NOTE: GET /management/user 500s on APIM 4.13 (latest)
+# without org context (OrganizationServiceImpl.findById(null), run
+# 40756680386 logs) — resolve the admin id via the org-scoped users list.
+_, users = raw("GET", f"{ROOT}/management/organizations/DEFAULT/users?size=200",
+               auth=f"Basic {BASIC}")
+ulist = users.get("data", users if isinstance(users, list) else [])
+admin = next(u for u in ulist if u.get("displayName") == "admin" or u.get("sourceId") == "admin")
+admin_id = admin["id"]; note("admin-user", id=admin_id)
 _, tok = raw("POST", f"{ROOT}/management/organizations/DEFAULT/users/{admin_id}/tokens",
              {"name": "ci-verify"}, auth=f"Basic {BASIC}")
 pat = tok["token"]; note("pat-minted", name=tok.get("name"))

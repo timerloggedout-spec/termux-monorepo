@@ -49,6 +49,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           MODE: ${{ inputs.mode || 'apply' }}
         run: |
+          set -o pipefail
           if [ "$MODE" = "apply" ]; then
             python3 scripts/issue_lifecycle/triage_labels.py --apply | tee triage-pass.txt
           else

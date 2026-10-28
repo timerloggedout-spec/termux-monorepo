@@ -84,6 +84,32 @@ the forbidden-surface scan below excludes it by name.
 4. Null estimates stay visible as nulls in admin (absence of an estimate
    is itself information); do not backfill from other sources.
 
+## Amendment 2026-10-28 #3 (winprob/v2, spec PR #2250, feed PR #2251)
+
+Verified on master by the admin-panel lane: all 7 events now carry
+`method: winprob/v2` with shape `{estimate, range, confidence, prior{},
+standing{}, fit{}, unknowns{}, basis, computed_at, superseded_v1{}}`.
+The v1 `inputs{}` object is **gone** — renderers must not read it.
+
+Render rules (supersede rule 1 where they conflict):
+
+- Estimate cell: % (lossless format) + range when non-null, rendered
+  as `est% (range lo%–hi%)`; **realized events** (estimate `0`,
+  range `[0,0]`, confidence `high` — Decider + D0, closed with recorded
+  outcome) render `0% — realized`, never a bare `0%` and never
+  `not established`. Null estimate (D3/D5) → `not established`.
+- Confidence renders as a pill: `high | low | none` verbatim.
+- Detail column (replaces the v1 inputs column): prior
+  (base_rate + denominator + kind), standing (our_composite /
+  percentile / field_mean when non-null), fit, unknowns
+  (unscored_share, unverified_axis_weight_share) — verbatim, nulls
+  shown as `—`.
+- `superseded_v1` is history: at most a collapsed/secondary note
+  (`v1: <estimate>`), never the headline value.
+
+Acceptance additions: (d) v2 fields render per above on all 7 events;
+(e) no renderer reads `inputs` or any v1 field for headline values.
+
 ## Forbidden surfaces (acceptance scan)
 
 `win_probability` / `metrics_internal` must return **zero hits** in:

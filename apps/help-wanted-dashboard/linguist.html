@@ -13,6 +13,7 @@
   synthesized. Deploy/integration (nav, sitemap, shared styling) is
   owned by the Web Design Specialist lane.
 -->
+<link rel="stylesheet" href="./dashboard.css">
 <style>
   :root { color-scheme: dark; --bg:#0d1117; --card:#161b22; --line:#30363d; --fg:#e6edf3; --dim:#8b949e; --acc:#58a6ff; --ok:#3fb950; --warn:#d29922; }
   body { background:var(--bg); color:var(--fg); font:14px/1.5 system-ui, sans-serif; margin:0; padding:24px; }
@@ -37,7 +38,15 @@
 </style>
 </head>
 <body>
+<header>
+<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/help-wanted/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="https://timerloggedout-spec.github.io/help-wanted/quota.html">Quota</a><a href="https://timerloggedout-spec.github.io/help-wanted/admin.html">Admin</a><a href="https://timerloggedout-spec.github.io/help-wanted/oracle.html">Oracle</a><a href="https://timerloggedout-spec.github.io/help-wanted/3l0.html">3L0</a><a href="https://timerloggedout-spec.github.io/help-wanted/moneyball.html">MoneyBall</a><a href="https://timerloggedout-spec.github.io/help-wanted/mvt.html">MVT</a><a href="https://timerloggedout-spec.github.io/help-wanted/doe.html">DoE</a><a href="https://timerloggedout-spec.github.io/help-wanted/ates.html">ATES</a><a href="https://timerloggedout-spec.github.io/help-wanted/free-tier-value.html">Free-tier value</a><a href="https://timerloggedout-spec.github.io/help-wanted/dispatch-tree.html">Dispatch Tree</a><a href="https://timerloggedout-spec.github.io/help-wanted/countdowns.html">Countdowns</a><a href="https://timerloggedout-spec.github.io/help-wanted/linguist.html" aria-current="page">Linguist</a><a href="https://help-wanted-oversight.vercel.app/">Vercel deployment</a><a href="https://timerloggedout-spec.github.io/help-wanted/sitemap.xml">Sitemap</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></nav>
+<div class="hero">
+<p class="eyebrow">Linguist · Mapping Panel</p>
 <h1>Linguist — mapping panel</h1>
+<p class="lede">The canonical notation and mapping families — cipher, compression, leet, notation, other — with the admin layers switch: toggle layers and families, transform sample text side-by-side or in-text, and search every recorded mapping. This page consumes <code>data/linguist-panel-feed.json</code> (schema <code>linguist-panel-feed/v1</code>, contract <code>docs/ops/LINGUIST-PANEL-FEED.md</code>) and nothing else — a value the feed does not hold renders as an explicit absent state, never synthesized.</p>
+</div>
+</header>
+<main>
 <p class="dim" id="meta">Loading feed…</p>
 
 <div class="card" id="feed-absent" hidden>
@@ -76,6 +85,7 @@
   <div class="card" id="gaps"></div>
 </div>
 
+</main>
 <script>
 "use strict";
 /* ---- pure mapping logic (also exercised by tests under node) ---- */

@@ -64,6 +64,26 @@
     "Where do baseline and variants converge on one consensus implementation, and where do they irreconcilably differ?"
    ],
    "segmentation": "per-silo: segment_id = silo.id from ops/delphi/research-silos.json; members = baseline (surface_id == silo.id) + variants (surface_id == silo.id + .rnd|.selected|.control)"
+  },
+  "doe-components": {
+   "description": "The DoE family's four algorithmic components, registered separately (ops/doe/component-registry.json, PR #1974) and evaluated individually: each component is its own segment and context, scored on its own evidence feeds. Findings loop back as revision PRs or explicit no-change records, same discipline as the criteria loop (#1959). Any component is available as a DoE factorial factor under the generator+tests admission rule.",
+   "criteria": [
+    "role fitness \u2014 the component does the one job its registry role states, nothing adjacent",
+    "evidence feeds live \u2014 the feeds named in the registry entry resolve and carry current data",
+    "separation clean \u2014 no cross-component state bleed; shared cores are deduplicated references, not copies"
+   ],
+   "questions": [
+    "does the component still do exactly its registered role?",
+    "are its registered evidence feeds live and current?",
+    "what did this cycle's findings change \u2014 revision PR, or no-change record?"
+   ],
+   "cycle": "Each component's RFP is scored by the gate cycle on its own segment; findings become revision PRs against the component or an explicit no-change record on its RFP. Cross-component comparison is descriptive only \u2014 no aggregate component score.",
+   "members": {
+    "markov-trellis-lab": 1975,
+    "bayesian-routing": 1976,
+    "kahn-dag": 1977,
+    "gantt-dependency-phases": 1978
+   }
   }
  },
  "doc": "docs/ops/DELPHI-RFP-SEGMENTATION.md",

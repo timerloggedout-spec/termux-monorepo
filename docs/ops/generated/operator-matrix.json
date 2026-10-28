@@ -1,29 +1,29 @@
 {
   "counts": {
-    "open_issues": 284,
-    "open_prs": 96,
+    "open_issues": 348,
+    "open_prs": 98,
     "pr_classes": {
-      "CANDIDATE": 31,
-      "EXTRACT": 29,
-      "NEED_EVIDENCE": 36,
+      "CANDIDATE": 56,
+      "EXTRACT": 5,
+      "NEED_EVIDENCE": 37,
       "SUPERSEDE": 0
     }
   },
   "families": {
     "ci": {
-      "issues": 4,
+      "issues": 11,
       "unlabelled_numbers": []
     },
     "delphi": {
-      "issues": 80,
+      "issues": 79,
       "unlabelled_numbers": []
     },
     "mesh": {
-      "issues": 5,
+      "issues": 4,
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 103,
+      "issues": 177,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -37,7 +37,7 @@
       "unlabelled_numbers": []
     },
     "research": {
-      "issues": 2,
+      "issues": 5,
       "unlabelled_numbers": []
     },
     "security": {
@@ -49,37 +49,19 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 33,
-      "prs": 94,
+      "issues": 15,
+      "prs": 96,
       "unlabelled_numbers": [
-        247,
-        259,
-        289,
-        300,
         308,
         343,
         388,
         389,
         763,
         876,
-        921,
-        923,
         968,
-        1024,
-        1025,
-        1026,
-        1118,
-        1128,
-        1129,
-        1130,
         1226,
-        1279,
-        1437,
         1450,
         1497,
-        1546,
-        1558,
-        1559,
         1588,
         1592,
         1593,
@@ -88,36 +70,18 @@
       ]
     }
   },
-  "generated_at": "2026-10-28T16:49:56Z",
+  "generated_at": "2026-10-28T19:48:37Z",
   "issues_unlabelled": [
-    247,
-    259,
-    289,
-    300,
     308,
     343,
     388,
     389,
     763,
     876,
-    921,
-    923,
     968,
-    1024,
-    1025,
-    1026,
-    1118,
-    1128,
-    1129,
-    1130,
     1226,
-    1279,
-    1437,
     1450,
     1497,
-    1546,
-    1558,
-    1559,
     1588,
     1592,
     1593,
@@ -127,40 +91,12 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "edc28c8a26"
+    "sha": "7de4d5f09f"
   },
   "prs": [
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "db77673cf7",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 1436,
-      "title": "feat(dashboard): salvage operational Hindsight dashboard onto current master",
-      "updated_at": "2026-10-21T10:53:39Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "c7f74de860",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 1469,
-      "title": "test(observatory): restore upstream provenance PR validation",
-      "updated_at": "2026-10-23T13:34:01Z"
-    },
     {
       "class": "EXTRACT",
       "family": "unlabelled",
@@ -174,48 +110,6 @@
       "number": 1498,
       "title": "Antigravity CLI: collaborative use cases, provisioning proposal, offline readiness (#1497)",
       "updated_at": "2026-10-28T13:05:10Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "0c3049a96f",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 1499,
-      "title": "\ud83d\udee1\ufe0f Sentinel: prevent parent symlink hijacking in obsidian server token read",
-      "updated_at": "2026-10-22T07:33:38Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "559607ff39",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 1510,
-      "title": "\u26a1 Bolt: optimize workflow catalog generation and fingerprint caching",
-      "updated_at": "2026-10-22T13:58:29Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "04c92a1763",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 1513,
-      "title": "test(observatory): verify Gravitee fork upstream identity",
-      "updated_at": "2026-10-22T22:26:02Z"
     },
     {
       "class": "EXTRACT",
@@ -238,51 +132,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "47d12cb4e3",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 1516,
-      "title": "feat(orchestration): add deterministic DAG reference primitive",
-      "updated_at": "2026-10-22T08:24:30Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "proposal",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "7f18ff5b20",
-      "labels": [
-        "documentation",
-        "proposal"
-      ],
-      "mergeable_state": "unstable",
-      "number": 1531,
-      "title": "docs: propose Research integration and paper-wallet accounting with native tracking",
-      "updated_at": "2026-10-22T12:32:13Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "41f5d318cd",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 1537,
-      "title": "docs(ops): direct CLI Termux SSH via self-healing Pinggy tunnel",
-      "updated_at": "2026-10-22T09:02:48Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "97c0c5649f",
       "labels": [],
       "mergeable_state": "unstable",
@@ -297,12 +146,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "519c656f29",
+      "head_sha": "e9fb8f1d81",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 1553,
-      "title": "Consolidate upgrades for provider quota & PR merge readiness",
-      "updated_at": "2026-10-22T22:19:32Z"
+      "number": 1541,
+      "title": "feat: implement THUB-017 Research and existing MSM-005 paper accounting",
+      "updated_at": "2026-10-22T12:50:29Z"
     },
     {
       "class": "EXTRACT",
@@ -317,230 +166,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "c851d9a575",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 1570,
-      "title": "\u26a1 Bolt: optimize decision engine selection and provider catalog secret lookup",
-      "updated_at": "2026-10-23T08:07:29Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "f4ddde780d",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 1616,
-      "title": "docs(flywheel): add capability overlap audit",
-      "updated_at": "2026-10-24T03:11:37Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "7b74e97ea7",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 1627,
-      "title": "ci(context): wake page-one history coverage bootstrap",
-      "updated_at": "2026-10-24T06:19:50Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "276350ba12",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 1671,
-      "title": "\u26a1 Bolt: pre-compile language regexes and priority map in tribute_system1",
-      "updated_at": "2026-10-26T08:06:51Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "dc52bd9e83",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 1679,
-      "title": "\ud83d\udcd6 Linguist: [performance improvement] conversational steganography 4th lane & BPE token density optimization",
-      "updated_at": "2026-10-26T23:44:27Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "3cd1f1aaa4",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 1694,
-      "title": "fix(help-wanted): preserve historical audit coverage on partial refreshes",
-      "updated_at": "2026-10-27T11:24:02Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "682988db40",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 1705,
-      "title": "\ud83c\udfa8 Palette: [UX improvement] Enhance Termux cockpit panel truncation for mobile viewports",
-      "updated_at": "2026-10-27T07:42:12Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "5c8ef1974f",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 1706,
-      "title": "\u26a1 Bolt: fix actions incident deduplication test assertion",
-      "updated_at": "2026-10-27T08:11:49Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "fccaa4b49a",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 1735,
-      "title": "docs(ops): refresh maintenance status and evidence gates",
-      "updated_at": "2026-10-27T11:22:58Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "358f8f7ea6",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 1852,
-      "title": "chore(recon): refresh pinned free-provider research",
-      "updated_at": "2026-10-27T18:05:20Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "87f3e8bad6",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 1857,
-      "title": "feat(ci): add merged branch review audit and timing quota engine",
-      "updated_at": "2026-10-27T22:21:15Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "8d61de2595",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 1858,
-      "title": "fix(secrets): phantom-secret remediation (dead-branch)",
-      "updated_at": "2026-10-28T13:15:53Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "a4b28f7ef8",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 1862,
-      "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
-      "updated_at": "2026-10-28T13:04:50Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "c3898767c0",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 1985,
-      "title": "\ud83d\udee1\ufe0f Sentinel: Fix Zip Slip path traversal and symlink checks in export extraction",
-      "updated_at": "2026-10-28T07:47:28Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "96fb09e450",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 1988,
-      "title": "\u26a1 Bolt: optimize foreign PR follow-up and recon routines",
-      "updated_at": "2026-10-28T08:10:08Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "f81ea41644",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2015,
-      "title": "docs(secrets): phantom-secret remediation map + provisioning checklist",
-      "updated_at": "2026-10-28T13:16:42Z"
     },
     {
       "class": "CANDIDATE",
@@ -609,7 +234,7 @@
       },
       "head_sha": "47868ebb21",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 578,
       "title": "feat(accounting): spreadsheet-first accounting/bidding schema pilot (real roster + simulated cycle)",
       "updated_at": "2026-10-06T07:08:10Z"
@@ -637,7 +262,7 @@
       },
       "head_sha": "b437529907",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 752,
       "title": "feat(ops): Termux MCP endpoint status workflow + Pinggy reference scripts",
       "updated_at": "2026-09-22T22:22:38Z"
@@ -651,7 +276,7 @@
       },
       "head_sha": "f3473cadfe",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 761,
       "title": "lane: Desktop Commander fork + Android execution alternatives",
       "updated_at": "2026-09-23T03:24:12Z"
@@ -669,6 +294,20 @@
       "number": 829,
       "title": "feat(multi-ai-cli): DeepTerm integration with Pinggy bridge support",
       "updated_at": "2026-09-25T01:08:41Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "4544ed8201",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 970,
+      "title": "Add Antigravity integration with CLI, SDK, headless config, tools, and FOSS alternatives",
+      "updated_at": "2026-10-01T12:22:22Z"
     },
     {
       "class": "CANDIDATE",
@@ -705,12 +344,40 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "db77673cf7",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 1436,
+      "title": "feat(dashboard): salvage operational Hindsight dashboard onto current master",
+      "updated_at": "2026-10-21T10:53:39Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "e17f7db4a0",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 1441,
       "title": "feat(triage): reconcile official quota before dispatch",
       "updated_at": "2026-10-26T23:11:16Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "c7f74de860",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 1469,
+      "title": "test(observatory): restore upstream provenance PR validation",
+      "updated_at": "2026-10-23T13:34:01Z"
     },
     {
       "class": "CANDIDATE",
@@ -747,6 +414,93 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "0c3049a96f",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 1499,
+      "title": "\ud83d\udee1\ufe0f Sentinel: prevent parent symlink hijacking in obsidian server token read",
+      "updated_at": "2026-10-22T07:33:38Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "559607ff39",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 1510,
+      "title": "\u26a1 Bolt: optimize workflow catalog generation and fingerprint caching",
+      "updated_at": "2026-10-22T13:58:29Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "04c92a1763",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 1513,
+      "title": "test(observatory): verify Gravitee fork upstream identity",
+      "updated_at": "2026-10-22T22:26:02Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "47d12cb4e3",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 1516,
+      "title": "feat(orchestration): add deterministic DAG reference primitive",
+      "updated_at": "2026-10-22T08:24:30Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "proposal",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "7f18ff5b20",
+      "labels": [
+        "documentation",
+        "proposal"
+      ],
+      "mergeable_state": "unknown",
+      "number": 1531,
+      "title": "docs: propose Research integration and paper-wallet accounting with native tracking",
+      "updated_at": "2026-10-22T12:32:13Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "41f5d318cd",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 1537,
+      "title": "docs(ops): direct CLI Termux SSH via self-healing Pinggy tunnel",
+      "updated_at": "2026-10-22T09:02:48Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "7099c7a9ff",
       "labels": [],
       "mergeable_state": "unknown",
@@ -767,6 +521,20 @@
       "number": 1543,
       "title": "chore(recon): refresh pinned free-provider research",
       "updated_at": "2026-10-22T22:08:16Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "519c656f29",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 1553,
+      "title": "Consolidate upgrades for provider quota & PR merge readiness",
+      "updated_at": "2026-10-22T22:19:32Z"
     },
     {
       "class": "CANDIDATE",
@@ -803,12 +571,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "6eeb0cb739",
+      "head_sha": "c851d9a575",
       "labels": [],
       "mergeable_state": "unknown",
-      "number": 1582,
-      "title": "chore(recon): refresh pinned free-provider research",
-      "updated_at": "2026-10-23T17:14:48Z"
+      "number": 1570,
+      "title": "\u26a1 Bolt: optimize decision engine selection and provider catalog secret lookup",
+      "updated_at": "2026-10-23T08:07:29Z"
     },
     {
       "class": "CANDIDATE",
@@ -833,7 +601,7 @@
       },
       "head_sha": "56a89e1206",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 1612,
       "title": "docs(research): map new free LLM catalogs to telemetry gates",
       "updated_at": "2026-10-25T02:39:40Z"
@@ -859,9 +627,37 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "f4ddde780d",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 1616,
+      "title": "docs(flywheel): add capability overlap audit",
+      "updated_at": "2026-10-24T03:11:37Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "7b74e97ea7",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 1627,
+      "title": "ci(context): wake page-one history coverage bootstrap",
+      "updated_at": "2026-10-24T06:19:50Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "571fb4ac96",
       "labels": [],
-      "mergeable_state": "blocked",
+      "mergeable_state": "unknown",
       "number": 1630,
       "title": "fix(delphi): gate and deduplicate conversational intake",
       "updated_at": "2026-10-24T06:55:51Z"
@@ -957,9 +753,23 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "276350ba12",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 1671,
+      "title": "\u26a1 Bolt: pre-compile language regexes and priority map in tribute_system1",
+      "updated_at": "2026-10-26T08:06:51Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "dcd3bba490",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 1677,
       "title": "fix(help-wanted): fail closed on placeholder work and stale eligibility",
       "updated_at": "2026-10-27T11:27:12Z"
@@ -971,12 +781,180 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "dc52bd9e83",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 1679,
+      "title": "\ud83d\udcd6 Linguist: [performance improvement] conversational steganography 4th lane & BPE token density optimization",
+      "updated_at": "2026-10-26T23:44:27Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "3cd1f1aaa4",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 1694,
+      "title": "fix(help-wanted): preserve historical audit coverage on partial refreshes",
+      "updated_at": "2026-10-27T11:24:02Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "40763bf29b",
       "labels": [],
-      "mergeable_state": "blocked",
+      "mergeable_state": "unknown",
       "number": 1704,
       "title": "\ud83d\udee1\ufe0f Sentinel: [HIGH] Harden NexusCLI session export file creation and imports",
       "updated_at": "2026-10-27T07:51:53Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "682988db40",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 1705,
+      "title": "\ud83c\udfa8 Palette: [UX improvement] Enhance Termux cockpit panel truncation for mobile viewports",
+      "updated_at": "2026-10-27T07:42:12Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "5c8ef1974f",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 1706,
+      "title": "\u26a1 Bolt: fix actions incident deduplication test assertion",
+      "updated_at": "2026-10-27T08:11:49Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "fccaa4b49a",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 1735,
+      "title": "docs(ops): refresh maintenance status and evidence gates",
+      "updated_at": "2026-10-27T11:22:58Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "87f3e8bad6",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 1857,
+      "title": "feat(ci): add merged branch review audit and timing quota engine",
+      "updated_at": "2026-10-27T22:21:15Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "8d61de2595",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 1858,
+      "title": "fix(secrets): phantom-secret remediation (dead-branch)",
+      "updated_at": "2026-10-28T13:15:53Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "a4b28f7ef8",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 1862,
+      "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
+      "updated_at": "2026-10-28T13:04:50Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "c3898767c0",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 1985,
+      "title": "\ud83d\udee1\ufe0f Sentinel: Fix Zip Slip path traversal and symlink checks in export extraction",
+      "updated_at": "2026-10-28T07:47:28Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "96fb09e450",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 1988,
+      "title": "\u26a1 Bolt: optimize foreign PR follow-up and recon routines",
+      "updated_at": "2026-10-28T08:10:08Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "f81ea41644",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2015,
+      "title": "docs(secrets): phantom-secret remediation map + provisioning checklist",
+      "updated_at": "2026-10-28T13:16:42Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "169d709d6c",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2133,
+      "title": "ops(portability): retire .gitignore.backup and lower ratchet baselines",
+      "updated_at": "2026-10-28T19:07:19Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1141,7 +1119,7 @@
       },
       "head_sha": "623da833f4",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 764,
       "title": "lane: connect Termux hub over Tailscale + repeatable collaborator bootstrap",
       "updated_at": "2026-09-23T04:00:16Z"
@@ -1169,7 +1147,7 @@
       },
       "head_sha": "8d466671a1",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 958,
       "title": "feat(multi-ai-cli): Complete Mistralai Vibe Code webWrapper CLI with Termux Hub",
       "updated_at": "2026-10-01T01:05:40Z"
@@ -1187,20 +1165,6 @@
       "number": 969,
       "title": "feat(experiment): Delphic Bayesian Oracle \u00d7 Observatory lab",
       "updated_at": "2026-10-21T04:40:59Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "4544ed8201",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 970,
-      "title": "Add Antigravity integration with CLI, SDK, headless config, tools, and FOSS alternatives",
-      "updated_at": "2026-10-01T12:22:22Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1239,7 +1203,7 @@
       },
       "head_sha": "61b2d94eb2",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 1274,
       "title": "[draft reference] planning-queue: Platform201 queue backend (not for deploy)",
       "updated_at": "2026-10-23T07:40:35Z"
@@ -1267,24 +1231,10 @@
       },
       "head_sha": "62492b4397",
       "labels": [],
-      "mergeable_state": "clean",
+      "mergeable_state": "unknown",
       "number": 1515,
       "title": "feat(ates): correlate Phase C run and event evidence",
       "updated_at": "2026-10-22T08:23:49Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "success"
-      },
-      "head_sha": "e9fb8f1d81",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 1541,
-      "title": "feat: implement THUB-017 Research and existing MSM-005 paper accounting",
-      "updated_at": "2026-10-22T12:50:29Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1307,9 +1257,23 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
+      "head_sha": "6eeb0cb739",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 1582,
+      "title": "chore(recon): refresh pinned free-provider research",
+      "updated_at": "2026-10-23T17:14:48Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
       "head_sha": "04a137355f",
       "labels": [],
-      "mergeable_state": "clean",
+      "mergeable_state": "unknown",
       "number": 1607,
       "title": "\ud83d\udcd6 Linguist: 1337 cipher notation & steganography",
       "updated_at": "2026-10-28T13:05:05Z"
@@ -1323,7 +1287,7 @@
       },
       "head_sha": "35c1f2bd5b",
       "labels": [],
-      "mergeable_state": "clean",
+      "mergeable_state": "unknown",
       "number": 1617,
       "title": "docs: improve Mintlify agent discoverability and record integration recon",
       "updated_at": "2026-10-25T02:25:16Z"
@@ -1337,7 +1301,7 @@
       },
       "head_sha": "7288447213",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 1626,
       "title": "docs(rfp): add first source-backed mesh provider evidence",
       "updated_at": "2026-10-24T06:36:09Z"
@@ -1365,7 +1329,7 @@
       },
       "head_sha": "d8b3011ec8",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 1734,
       "title": "feat(notation): add claim-level evidence provenance",
       "updated_at": "2026-10-27T15:03:30Z"
@@ -1379,7 +1343,7 @@
       },
       "head_sha": "de87f8e9ad",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 1760,
       "title": "ops(tribute): participation refresh",
       "updated_at": "2026-10-28T14:10:50Z"
@@ -1391,12 +1355,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "613b525346",
+      "head_sha": "358f8f7ea6",
       "labels": [],
-      "mergeable_state": "unstable",
-      "number": 1807,
-      "title": "chore(delphi): refresh oracle-panel-feed.json",
-      "updated_at": "2026-10-27T16:01:29Z"
+      "mergeable_state": "unknown",
+      "number": 1852,
+      "title": "chore(recon): refresh pinned free-provider research",
+      "updated_at": "2026-10-27T18:05:20Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1405,68 +1369,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "51a2885764",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 1869,
-      "title": "chore(linguist): refresh linguist-panel-feed.json",
-      "updated_at": "2026-10-27T23:54:43Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "success"
-      },
-      "head_sha": "a1538d7656",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 1872,
-      "title": "chore(dashboards): refresh surface feeds",
-      "updated_at": "2026-10-28T13:33:34Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "df26468835",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 1883,
-      "title": "chore(countdowns): refresh challenge-countdowns-feed.json",
-      "updated_at": "2026-10-28T15:02:22Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "1275517642",
-      "labels": [],
-      "mergeable_state": "clean",
-      "number": 1965,
-      "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-10-28T16:47:36Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "5b45227190",
+      "head_sha": "1736ad5ec8",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 1966,
       "title": "ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28)",
-      "updated_at": "2026-10-28T06:13:59Z"
+      "updated_at": "2026-10-28T18:01:50Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1475,12 +1383,96 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "e64ae8ab1f",
+      "head_sha": "4aff3696aa",
       "labels": [],
-      "mergeable_state": "clean",
-      "number": 2053,
+      "mergeable_state": "unknown",
+      "number": 2128,
+      "title": "chore(delphi): refresh delphi-rfp-feed.json",
+      "updated_at": "2026-10-28T19:47:34Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "94ebd49419",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2144,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-10-28T16:47:05Z"
+      "updated_at": "2026-10-28T19:46:10Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "30b99e8307",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2149,
+      "title": "chore(ops): regenerate operator matrix",
+      "updated_at": "2026-10-28T19:26:18Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "7bccac7e95",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2167,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-10-28T19:27:29Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "b7db01710c",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2168,
+      "title": "chore(dashboards): refresh surface feeds",
+      "updated_at": "2026-10-28T19:27:30Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "71856c6976",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2175,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-10-28T19:45:53Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "success"
+      },
+      "head_sha": "61260ea2dc",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2177,
+      "title": "fix(temporal): VM=sandbox \u2014 remove delphi-worker daemon, move proof to Actions",
+      "updated_at": "2026-10-28T19:48:00Z"
     }
   ],
   "schema": "operator-matrix/v1",

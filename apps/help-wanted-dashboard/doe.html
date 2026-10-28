@@ -23,7 +23,7 @@
 <div class="hero">
 <p class="eyebrow">DoE · Design of Experiments</p>
 <h1>Design-of-experiments surface</h1>
-<p class="sub">The DoE methods library, the experiment-design rules, the first factorial slice, and which parts have actually executed — defined-but-not-run renders as exactly that. This page consumes <code>data/doe-feed.json</code> (collector <code>scripts/dashboards/surface_feeds.py</code>, contract <code>docs/ops/DASHBOARD-SURFACE-FEEDS.md</code>) and nothing else: a value the record doesn't hold renders as absent, never synthesized.</p>
+<p class="sub">DoE is a family — MVT is one member, not the whole (issue #1865, spec <code>docs/ops/DOE-FAMILY.md</code>). The family members, the shared experiment-record schema, the methods library, the experiment-design rules, and which campaigns have actually executed — defined-but-not-run renders as exactly that. This page consumes <code>data/doe-feed.json</code> (collector <code>scripts/dashboards/surface_feeds.py</code>, contract <code>docs/ops/DASHBOARD-SURFACE-FEEDS.md</code>) and nothing else: a value the record doesn't hold renders as absent, never synthesized.</p>
 </div>
 </header>
 <main>
@@ -62,6 +62,37 @@ async function load(){
   document.getElementById("feed-state").textContent = "live · " + f.schema;
   document.getElementById("feed-generated").textContent = f.generated_at;
   const d = f.data, out = [];
+  const fam = d.family;
+  if(fam){
+    const mrows = fam.members.map(m => {
+      const id = m.member_id || m.campaign_id;
+      const runs = (m.runs !== undefined) ? `${esc(m.runs)} runs` : "";
+      const note = m.note || m.design_type || "";
+      return `<tr><td><code>${esc(id)}</code></td><td>${esc(m.kind)}</td><td><span class="pill">${esc(m.state)}</span></td><td>${runs}</td><td>${esc(note)}</td></tr>`;
+    }).join("");
+    out.push(`<section class="card"><h2>The DoE family</h2>
+    <p>${esc(fam.statement)} Spec: <a href="${GH}${esc(fam.spec)}">${esc(fam.spec)}</a> · issue #${esc(fam.issue)}</p>
+    <table class="rank"><tr><th>Member</th><th>Kind</th><th>State</th><th>Runs</th><th>Note / design</th></tr>${mrows}</table>
+    <p>Shared experiment record schema: <code>${esc(fam.shared.experiment_record_schema)}</code></p>
+    <p>Intake rule: ${esc(fam.shared.intake_rule)}</p>
+    <p>Evaluation doctrine: ${esc(fam.shared.evaluation_doctrine)}</p></section>`);
+  }
+  for(const c of (d.campaigns || [])){
+    if(c.state === "executed" && c.results){
+      const arows = Object.entries(c.results.arms || {}).map(([arm, a]) =>
+        `<tr><td><code>${esc(arm)}</code></td><td>${esc(a.runs)}</td><td>${esc(a.mean_accuracy)}</td><td>${esc(a.mean_input_tokens)}</td><td>${esc(a.mean_elapsed_ms)}</td><td>${esc(a.total_rework)}</td></tr>`).join("");
+      const eff = c.results.effects_accuracy || {};
+      out.push(`<section class="card"><h2>Campaign results — ${esc(c.campaign_id)} (DoE's own)</h2>
+      <p class="meta">Design record: <a href="${GH}${esc(c.design_record)}">${esc(c.design_record)}</a> · ${esc(c.runs)} run records, one per run, conforming to the family EXPERIMENT schema. These are DoE family results — not the Delphi record below.</p>
+      <table class="rank"><tr><th>Arm (routing × representation)</th><th>Runs</th><th>Mean accuracy</th><th>Mean input tokens</th><th>Mean elapsed ms</th><th>Rework</th></tr>${arows}</table>
+      <p>Factorial effects on accuracy — routing main effect: ${esc(eff.routing_main_effect)} · representation main effect: ${esc(eff.representation_main_effect)} · interaction: ${esc(eff.interaction)}</p>
+      <p>Verdict vs predeclared threshold: <strong>${esc(c.results.verdict)}</strong></p></section>`);
+    } else {
+      out.push(`<section class="card"><h2>Campaign — ${esc(c.campaign_id)}</h2>
+      <div class="notrun"><strong>Admitted — design record committed, not run yet.</strong> ${esc(c.design_type || "")}</div>
+      <p class="meta">Design record: <a href="${GH}${esc(c.design_record)}">${esc(c.design_record)}</a></p></section>`);
+    }
+  }
   const fns = d.methods_library.functions.map(fn =>
     `<tr><td><code>${esc(fn.signature)}</code></td><td>${esc(fn.doc)}</td></tr>`).join("");
   out.push(`<section class="card"><h2>Methods library — <code>${esc(d.methods_library.file.split(" — ")[0])}</code></h2>

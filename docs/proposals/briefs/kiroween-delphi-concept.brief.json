@@ -1,0 +1,309 @@
+{
+  "_draft_note": "PRE-DRAFT 2026-10-27 for the Oracle Method generator intake (contract: scripts/delphi/generate_proposal.py, PR #1708). Finalize the day Kiroween full rules publish (Oct 30) and hand to the Delphi lane (chat 5565cdf5) the same day. Fields marked TODO-RULES depend on the Oct 30 rules text. Verified facts below are from the official page read 2026-10-26 (kiroween.devpost.com) and the challenge log (docs/ops/CHALLENGE-ENTRIES-LOG.md \u00a73 C4 / \u00a74 D4). Variants added 2026-10-27 per the cross-vote pass contract (PR #1710): n=3 candidate concepts, cross-voted comparatively (1-25) with source classes separate; ranked outcome lands as BALLOT.json + a delphi-generation-ballot v1 comment on outcome ledger #1487. Costume Contest is the one theme not carried by a variant. Full-cycle fields added 2026-10-27 (PR #1712): per-variant test_suites for the implementation round + brief-author expectations (priors on the 1-25 scale, recorded pre-implementation; panel tolerance 2.0). Rationale: skeleton-crew has the deepest evidence base (landed CMDB design) and smallest scope; frankenstein reuses proven parts but carries integration risk; resurrection's corpse is not yet picked, so its prior carries the widest uncertainty. Stages that cannot execute (e.g. model ballots, DELPHI_LLM_MAX=0) are expected to appear in the cycle record as specified_not_run. ID LOCKED 2026-10-27: brief id changed kiroween-delphi-concept -> kiroween-concept, adopting the pass-record id the oracle-hackathon-tests lane recorded in PR #1749 (merged d128a9a94041, dir docs/proposals/passes/kiroween-concept/). The generator keys the pass directory by brief id; one id means the Oct 30 run supersedes the stated-not-run record in place instead of leaving a phantom second pass directory. Decision posted on PR #1749. FINAL ID LOCK 2026-10-27 (supersedes the adoption note above): the pass record renamed to this brief's id via PR #1757 (merged before the adoption messages settled), so the brief KEEPS kiroween-delphi-concept and the record sits at docs/proposals/passes/kiroween-delphi-concept/. One id, one directory; the Oct 30 run supersedes the stated-not-run record there. Correction posted on PR #1749 (comment 6442010046). Cycle v2 (PR #1776) applied 2026-10-27: require_plan=true set; every variant carries plan {steps, risks, alternatives} (generation refuses incomplete plans; a complete plan renders verbatim into the generated RFP's Plan section). Implementation-evidence rule noted for the build phase: per-suite results must carry run receipts (command, exit code, output sha256, code paths) \u2014 unreceipted suites earn zero passes (phantom-test rule); D4 builds are receipt-shaped from the start. Also available in v2: post-round-1 facilitator SYNTHESIS + a callable DEBATE/revision round (ballots with revision_reason) if the owner wants to revise/retain with reasons \u2014 surface with the human-ballot option at the Oct 30 handoff.",
+  "_evidence_pointers_for_delphi_lane": [
+    "docs/ops/CHALLENGE-ENTRIES-LOG.md (\u00a73 C4 candidate + \u00a74 D4 packet; claims prefix d4:)",
+    "docs/ops/PROFILE-REGISTRY.md (Devpost + Kiro profile rows)",
+    "config/registration_monikers.json (entrantDevpost / entrantKiro)",
+    "CMDB design doc on master (durable asset; its design PR #1655 closed unmerged, superseded by a clean-base draft \u2014 cite the doc, not the PR)",
+    "apps/weekend-challenge-delphi-oracle/ (D0 package \u2014 pattern evidence for spec-first agent builds)",
+    "Official page (off-repo source claims, prefix kiroween:): https://kiroween.devpost.com \u2014 themes, window, deadline, eligibility, registration ID rule (read 2026-10-26); full rules text lands Oct 30 and supersedes where it differs"
+  ],
+  "deadline": "Dec 4, 2026, 2:00 PM PST",
+  "deadline_evidence_refs": [
+    "d4:deadline",
+    "kiroween:deadline"
+  ],
+  "eligibility_gate": {
+    "enforcement": [
+      "The D4 brief/intake REFUSES any build start before window_open: no project creation, no building (owner ruling 2026-10-27 \u2014 eligibility enforced mechanically, per entry, per producing lane).",
+      "At project creation, the creation timestamp is captured into packet D4 as eligibility evidence; a timestamp before window_open voids the entry.",
+      "The generated concept proposal is not the competition project and does not trip this gate."
+    ],
+    "owner_confirmation": "2026-10-27: D4's build waits for its window.",
+    "rule": "Only new projects created during the submission period are eligible. Do not start building your project yet. (Official page, kiroween.devpost.com, read 2026-10-26; full rules publish Oct 30 and supersede where they differ.)",
+    "window_close": "2026-12-04T14:00:00-08:00",
+    "window_open": "2026-10-30T13:00:00-07:00"
+  },
+  "executive_request": "Generate the concept proposal for the fleet's Kiroween 2026 entry (challenge log packet D4): choose and scope a spec-first project built with Kiro under one of the four official themes, sized for a build window that starts after Nov 8, 2026 and ends at the Dec 4, 2026, 2:00 PM PST submission deadline. The project must be newly created inside the submission period (Oct 30, 1:00 PM PDT \u2013 Dec 4) \u2014 nothing pre-built is eligible. The challenge-entries lane's hand-noted input (an input, not the decision): a CMDB/reconciliation viewer seeded from the repo's CMDB design (PR #1655), under Skeleton Crew or Frankenstein. Registration is being completed via the Devpost + Kiro ID creation lane (fleet Google identity); the entrant monikers are entrant{entrantDevpost}[platform:devpost] and entrant{entrantKiro}[platform:kiro].",
+  "expectations": [
+    {
+      "expected_rank": 1,
+      "expected_score": 19,
+      "variant": "skeleton-crew",
+      "voter": "challenge-entries-lane (brief author)"
+    },
+    {
+      "expected_rank": 2,
+      "expected_score": 17,
+      "variant": "frankenstein",
+      "voter": "challenge-entries-lane (brief author)"
+    },
+    {
+      "expected_rank": 3,
+      "expected_score": 14,
+      "variant": "resurrection",
+      "voter": "challenge-entries-lane (brief author)"
+    }
+  ],
+  "id": "kiroween-delphi-concept",
+  "item_prefix": "KW",
+  "items": [
+    {
+      "evidence": "d4:registration-route",
+      "item": "KW-001 Registration completed (Devpost account + Kiro user ID via the dedicated creation lane; verified profile facts recorded in PROFILE-REGISTRY.md)",
+      "state": "in_progress"
+    },
+    {
+      "evidence": "d4:concept-generation",
+      "item": "KW-002 This brief finalized against the Oct 30 full rules and handed to the Delphi lane; generated concept proposal intaken as D4's basis",
+      "state": "planned"
+    },
+    {
+      "evidence": "kiroween:eligibility-new-projects",
+      "item": "KW-003 Kiro project created inside the submission window (not before Oct 30, 1:00 PM PDT)",
+      "state": "planned"
+    },
+    {
+      "evidence": "d4:sequencing",
+      "item": "KW-004 Build window: after Nov 8, 2026 (post-D2), spec-first in Kiro per the generated concept",
+      "state": "planned"
+    },
+    {
+      "evidence": "kiroween:deadline",
+      "item": "KW-005 Demo + submission filed on Devpost by Dec 4, 2026, 2:00 PM PST",
+      "state": "planned"
+    }
+  ],
+  "kind": "competition",
+  "priority": "P1",
+  "related_issues": [],
+  "related_prs": [
+    1655,
+    1697,
+    1699,
+    1707
+  ],
+  "require_plan": true,
+  "summary_points": [
+    {
+      "evidence_refs": [
+        "kiroween:window",
+        "kiroween:deadline",
+        "kiroween:prize-pool"
+      ],
+      "text": "Submissions open Oct 30, 2026, 1:00 PM PDT; deadline Dec 4, 2026, 2:00 PM PST; prize pool $100,000."
+    },
+    {
+      "evidence_refs": [
+        "kiroween:eligibility-new-projects"
+      ],
+      "text": "Only new projects created during the submission period are eligible; the official page instructs: do not start building your project yet."
+    },
+    {
+      "evidence_refs": [
+        "kiroween:themes"
+      ],
+      "text": "Official themes: Resurrection, Frankenstein, Skeleton Crew, Costume Contest."
+    },
+    {
+      "evidence_refs": [
+        "kiroween:registration-id",
+        "d4:registration-route"
+      ],
+      "text": "Registration requires a valid Kiro user ID or AWS account ID; Kiro sign-in is via Google / GitHub / Builder ID / organization (kiro.dev)."
+    },
+    {
+      "evidence_refs": [
+        "d4:sequencing"
+      ],
+      "text": "Owner sequencing (2026-10-26): register now; no project creation before the window opens; build after Nov 8 (D1 Nov 4 and D2 Nov 8 land first)."
+    },
+    {
+      "evidence_refs": [
+        "kiroween:full-rules"
+      ],
+      "text": "TODO-RULES: full rules publish Oct 30 \u2014 judging criteria, required deliverables (repo/demo/video), and any Kiro-usage requirements to be stamped from the rules text before generation."
+    }
+  ],
+  "surface": "Kiroween 2026 \u2014 Devpost (kiroween.devpost.com)",
+  "title": "Kiroween 2026 \u2014 generated concept proposal (challenge packet D4)",
+  "variants": [
+    {
+      "concept": "Skeleton Crew \u2014 a CMDB / reconciliation viewer run by a minimal crew: a tiny set of spec-first Kiro agents (ingest, reconcile, report) that keep a fleet inventory honest against its sources. The challenge lane's hand-noted input (input, not decision). Seeded from the repo's CMDB design (PR #1655); the Kiro project itself is created new inside the submission window.",
+      "items": [
+        {
+          "evidence": "kiroween:eligibility-new-projects",
+          "item": "Spec pack (inventory schema, reconciliation rules) authored in Kiro at project creation",
+          "state": "planned"
+        },
+        {
+          "evidence": "d4:concept-inputs",
+          "item": "Ingest + reconcile agents generated from specs; viewer renders conflicts with evidence stamps",
+          "state": "planned"
+        },
+        {
+          "evidence": "kiroween:deadline",
+          "item": "Demo run against public repo data; submission by Dec 4, 2:00 PM PST",
+          "state": "planned"
+        }
+      ],
+      "plan": {
+        "alternatives": [
+          "Shrink to a single-source read-only inventory viewer if reconciliation slips; the stamped report remains the demo centerpiece.",
+          "If spec-first generation stalls, re-shell the same data model inside the frankenstein composition."
+        ],
+        "risks": [
+          "Kiro spec-format learning curve inside a short post-Nov-8 window.",
+          "Reconciliation scope creep (sources x conflict types) beyond what the window fits.",
+          "Devpost deliverable requirements are unknown until the Oct 30 rules publish; the plan's demo/submission steps may need reshaping at lock."
+        ],
+        "steps": [
+          "Create the Kiro project inside the submission window (on/after Fri Oct 30, 2026, 1:00 PM PDT) and capture its creation timestamp into packet D4 as eligibility evidence; build work itself starts after Nov 8 per owner sequencing.",
+          "Author the spec pack in Kiro: inventory schema, source-adapter specs, reconciliation rules (from the CMDB design doc on master).",
+          "Generate the ingest and reconcile agents from the specs; keep every agent read-only.",
+          "Build the viewer: inventory list, conflict matrix, evidence-stamp detail view.",
+          "Seed the fixture inventory; run reconciliation; capture the stamped conflict report as implementation evidence (with run receipts).",
+          "Run the variant test_suites; every suite result carries its run receipt (command, exit code, output sha256, code paths).",
+          "Record the demo and file the Devpost submission by Dec 4, 2026, 2:00 PM PST."
+        ]
+      },
+      "suffix": "skeleton-crew",
+      "summary_points": [
+        {
+          "evidence_refs": [
+            "d4:concept-inputs"
+          ],
+          "text": "Data model and conflict matrix derive from the repo's CMDB design (PR #1655); specs written first in Kiro, agents generated from the specs."
+        },
+        {
+          "evidence_refs": [
+            "d4:sequencing"
+          ],
+          "text": "Smallest viable scope for the post-Nov-8 build window: read-only inventory views + reconciliation report, no write actions."
+        }
+      ],
+      "test_suites": [
+        "spec-pack completeness: inventory schema + reconciliation rules present and parse",
+        "reconciliation run against the seeded fixture inventory emits a stamped conflict report",
+        "read-only guard: no write/mutation action is exposed by any agent"
+      ]
+    },
+    {
+      "concept": "Frankenstein \u2014 one new creature stitched from proven public parts: a Kiro-built decision agent assembled from the fleet's existing public patterns (Delphi Oracle deterministic receipts, the fetch_evidence provenance tool pattern from the D0 package, quota-panel display patterns), re-combined into a single new project created inside the window. Patterns are reused; no pre-built project is submitted.",
+      "items": [
+        {
+          "evidence": "kiroween:eligibility-new-projects",
+          "item": "Kiro project created in-window; specs describe the stitched architecture before any generation",
+          "state": "planned"
+        },
+        {
+          "evidence": "d4:concept-inputs",
+          "item": "Decision kernel + evidence-fetch tool + panel UI composed per specs; receipts on every decision",
+          "state": "planned"
+        },
+        {
+          "evidence": "kiroween:deadline",
+          "item": "Demo + submission by Dec 4, 2:00 PM PST",
+          "state": "planned"
+        }
+      ],
+      "plan": {
+        "alternatives": [
+          "Drop the panel UI and ship kernel + evidence tool only, with the demo driven from the receipts.",
+          "Use the skeleton-crew viewer as the shell if the stitched UI lags."
+        ],
+        "risks": [
+          "Translating the fleet's patterns into Kiro idioms takes longer than estimated; integration seams (receipt schema drift between components) are the likely failure point.",
+          "Three components may exceed the post-Nov-8 window at demo quality."
+        ],
+        "steps": [
+          "Create the Kiro project inside the submission window and capture its creation timestamp into packet D4 as eligibility evidence; build work starts after Nov 8 per owner sequencing.",
+          "Write the stitching specs in Kiro: decision-kernel behavior (Delphi receipt pattern), the evidence-fetch contract (provenance + freshness stamps), and the panel UI surface.",
+          "Generate the components from the specs inside Kiro; patterns cross over, no pre-built code is submitted.",
+          "Integrate the components; verify a schema-valid receipt is emitted for every decision end to end.",
+          "Run the variant test_suites with run receipts on every suite result.",
+          "Record the demo and file the Devpost submission by Dec 4, 2026, 2:00 PM PST."
+        ]
+      },
+      "suffix": "frankenstein",
+      "summary_points": [
+        {
+          "evidence_refs": [
+            "d4:concept-inputs"
+          ],
+          "text": "Component patterns are all public and landed: Delphi Oracle MVP (PR #1620), D0 package with fetch_evidence (PR #1702)."
+        },
+        {
+          "evidence_refs": [
+            "kiroween:eligibility-new-projects"
+          ],
+          "text": "Eligibility guard: the Kiro project is created in-window; only patterns/specs cross over, never a pre-existing build."
+        }
+      ],
+      "test_suites": [
+        "every decision emits a schema-valid receipt (Delphi receipt pattern)",
+        "evidence fetch returns provenance + freshness stamps on every item",
+        "in-window creation guard: project creation timestamp inside the submission window"
+      ]
+    },
+    {
+      "concept": "Resurrection \u2014 bring a dormant public spec back from the dead: pick a stalled, publicly documented fleet spec (candidates sit in the repo's ops docs and proposal registry) and rebuild it fresh as a working Kiro project, created in-window, with the original spec as the requirements baseline and a resurrection report showing what the dead version never shipped.",
+      "items": [
+        {
+          "evidence": "d4:concept-inputs",
+          "item": "Corpse selection recorded with evidence refs at brief finalization (Oct 30)",
+          "state": "planned"
+        },
+        {
+          "evidence": "d4:sequencing",
+          "item": "Specs authored in Kiro from the original spec + gap list; build after Nov 8",
+          "state": "planned"
+        },
+        {
+          "evidence": "kiroween:deadline",
+          "item": "Resurrection report + demo; submission by Dec 4, 2:00 PM PST",
+          "state": "planned"
+        }
+      ],
+      "plan": {
+        "alternatives": [
+          "Pick a smaller corpse at lock time; the scope cap is part of the lock decision.",
+          "If the corpse's domain overlaps the CMDB design, convert the entry to skeleton-crew and record the switch with reasons."
+        ],
+        "risks": [
+          "The chosen spec's true scope exceeds the window (dead specs often died for scope reasons).",
+          "The original spec is too vague to spec from without inventing requirements."
+        ],
+        "steps": [
+          "At brief lock (Oct 30), select the corpse from the repo's public ops docs / proposal registry and record the pick with evidence refs, under a scope cap sized to the build window.",
+          "Create the Kiro project inside the submission window and capture its creation timestamp into packet D4 as eligibility evidence; build work starts after Nov 8 per owner sequencing.",
+          "Author specs in Kiro from the original spec plus the gap list (what the dead version never shipped).",
+          "Build to the specs; keep a running coverage map from original requirements to implemented-or-deferred.",
+          "Write the resurrection report (coverage + gap dispositions) as part of the deliverable.",
+          "Run the variant test_suites with run receipts on every suite result.",
+          "Record the demo and file the Devpost submission by Dec 4, 2026, 2:00 PM PST."
+        ]
+      },
+      "suffix": "resurrection",
+      "summary_points": [
+        {
+          "evidence_refs": [
+            "d4:concept-inputs"
+          ],
+          "text": "Candidate corpses are public and evidenced in-repo (ops docs + docs/proposals/registry.yaml); final pick is stamped as a packet claim at brief finalization."
+        },
+        {
+          "evidence_refs": [
+            "kiroween:eligibility-new-projects"
+          ],
+          "text": "Rebuild is a new in-window project; the dead artifact contributes only its spec."
+        }
+      ],
+      "test_suites": [
+        "original-spec coverage: each requirement in the dead spec maps to implemented or explicitly deferred",
+        "resurrection report lists the dead version's unshipped gaps and their disposition",
+        "fresh-build provenance: project created in-window; only the spec crossed over"
+      ]
+    }
+  ]
+}

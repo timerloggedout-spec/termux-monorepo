@@ -33,15 +33,18 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - name: Observe + collect the feed
+      - name: Observe (Actions API snapshot)
         run: |
           set -euo pipefail
           python3 -B scripts/dashboards/dispatch_tree_observe.py \
             --out scripts/dashboards/dispatch_tree_observation.json
-          python3 -B scripts/dashboards/dispatch_tree_feed.py \
-            --out apps/help-wanted-dashboard/data/dispatch-tree-feed.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Collect the feed (offline)
+        run: |
+          set -euo pipefail
+          python3 -B scripts/dashboards/dispatch_tree_feed.py \
+            --out apps/help-wanted-dashboard/data/dispatch-tree-feed.json
       - name: Propose the refresh as a PR
         run: |
           set -euo pipefail

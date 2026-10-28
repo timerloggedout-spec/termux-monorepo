@@ -40,11 +40,14 @@ verbatim from ml/pipelines/lanes rules.
 
 ## Failure record
 
-If a run fails, the collector writes the feed with an `error` field
-(exception type + message, no payload data) and the workflow commits
-it under `if: always()` — an error feed on master is more honest than
-a stale one, and the committed file is the diagnostic surface the
-fleet's API route can actually read (job logs are not API-readable).
+A failed run writes nothing: the last good feed stays in place
+(staleness is visible in its generated_at) and no error state ever
+reaches consumers or the dashboard mirror. The failure surfaces as a
+`::error::` stage annotation on the run (exception type + message) —
+annotations are readable through the fleet's API route even though
+job logs are not. (This reverses the original error-feed design after
+the 2026-10-28 series-parse failure overwrote a good feed with an
+error payload.)
 
 ## Boundaries
 

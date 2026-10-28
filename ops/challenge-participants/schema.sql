@@ -54,6 +54,114 @@ FROM participant_events e
 JOIN (SELECT sync_key FROM participant_syncs ORDER BY synced_at DESC, sync_key DESC LIMIT 1) latest
   ON e.sync_key = latest.sync_key;
 
+-- ===== MoneyBall expansion (2026-10-28): judges, signals, podium =====
+-- The sync row also carries the events' core fields (id/name/prizes)
+-- so views can join prizes without a second source.
+ALTER TABLE participant_syncs ADD COLUMN IF NOT EXISTS events jsonb NOT NULL DEFAULT '[]'::jsonb;
+
+-- Judges per event (coordinator events[].judges[]): same batch pattern
+-- as participants. Payload verbatim (persona, org, judging_history,
+-- public_criteria, statements, sources, plus any signal fields).
+CREATE TABLE IF NOT EXISTS judge_events (
+  event_key   text PRIMARY KEY,                -- sha256(challenge-judges|event_id|judge_key)
+  sync_key    text NOT NULL,
+  event_id    text NOT NULL,
+  judge_key   text NOT NULL,
+  payload     jsonb NOT NULL,
+  recorded_at timestamptz NOT NULL DEFAULT now(),
+  UNIQUE (sync_key, event_id, judge_key)
+);
+CREATE INDEX IF NOT EXISTS judge_events_event_ix ON judge_events (event_id, judge_key);
+
+DROP TRIGGER IF EXISTS judge_events_no_mutation ON judge_events;
+CREATE TRIGGER judge_events_no_mutation
+  BEFORE UPDATE OR DELETE ON judge_events
+  FOR EACH ROW EXECUTE FUNCTION participant_mirror_append_only();
+
+CREATE OR REPLACE VIEW judges_current AS
+SELECT e.event_id, e.judge_key, e.payload, e.recorded_at
+FROM judge_events e
+JOIN (SELECT sync_key FROM participant_syncs ORDER BY synced_at DESC, sync_key DESC LIMIT 1) latest
+  ON e.sync_key = latest.sync_key;
+
+-- Entity signal snapshots: APPEND-ONLY rows, never overwritten. One
+-- row per snapshots[] entry ever observed on a participant or judge
+-- record (comments/likes/followers/project engagement readings);
+-- snapshot_key dedupes re-observation of the identical reading.
+CREATE TABLE IF NOT EXISTS entity_snapshots (
+  snapshot_key text PRIMARY KEY,               -- sha256(kind|event|entity|canonical snapshot)
+  sync_key     text NOT NULL,
+  entity_kind  text NOT NULL,                  -- participant | judge
+  event_id     text NOT NULL,
+  entity_key   text NOT NULL,
+  snapshot     jsonb NOT NULL,
+  recorded_at  timestamptz NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS entity_snapshots_entity_ix
+  ON entity_snapshots (entity_kind, event_id, entity_key);
+
+DROP TRIGGER IF EXISTS entity_snapshots_no_mutation ON entity_snapshots;
+CREATE TRIGGER entity_snapshots_no_mutation
+  BEFORE UPDATE OR DELETE ON entity_snapshots
+  FOR EACH ROW EXECUTE FUNCTION participant_mirror_append_only();
+
+-- Past wins across both entity kinds, from the current payloads
+-- (past_wins[]{event, place, prize, project}; placements ride the
+-- same extraction when present as wins-shaped entries).
+CREATE OR REPLACE VIEW entity_past_wins AS
+SELECT 'participant' AS entity_kind, c.event_id AS listed_in_event,
+       c.participant_key AS entity_key,
+       w->>'event' AS win_event, w->>'place' AS place,
+       w->>'prize' AS prize, w->>'project' AS project
+FROM participants_current c,
+     jsonb_array_elements(CASE WHEN jsonb_typeof(c.payload->'past_wins') = 'array'
+                               THEN c.payload->'past_wins' ELSE '[]'::jsonb END) w
+UNION ALL
+SELECT 'judge', c.event_id, c.judge_key,
+       w->>'event', w->>'place', w->>'prize', w->>'project'
+FROM judges_current c,
+     jsonb_array_elements(CASE WHEN jsonb_typeof(c.payload->'past_wins') = 'array'
+                               THEN c.payload->'past_wins' ELSE '[]'::jsonb END) w;
+
+-- Recruitment state per entity (recruitment{candidate, pipeline_state},
+-- states identified->profiled->engaged->in_talks->collaborator|passed),
+-- mirrored as current entity state from the newest batch.
+CREATE OR REPLACE VIEW recruitment_current AS
+SELECT 'participant' AS entity_kind, event_id, participant_key AS entity_key,
+       payload->'recruitment'->>'candidate' AS candidate,
+       payload->'recruitment'->>'pipeline_state' AS pipeline_state
+FROM participants_current WHERE payload ? 'recruitment'
+UNION ALL
+SELECT 'judge', event_id, judge_key,
+       payload->'recruitment'->>'candidate',
+       payload->'recruitment'->>'pipeline_state'
+FROM judges_current WHERE payload ? 'recruitment';
+
+-- Events of the newest sync (id/name/prizes) for the podium join.
+CREATE OR REPLACE VIEW challenge_events_current AS
+SELECT e->>'id' AS event_id, e->>'name' AS name, e->'prizes' AS prizes
+FROM participant_syncs s,
+     jsonb_array_elements(s.events) e
+WHERE s.sync_key = (SELECT sync_key FROM participant_syncs
+                    ORDER BY synced_at DESC, sync_key DESC LIMIT 1);
+
+-- Podium: prizes x competitors x profiles x judges per event — for
+-- each prize tier, the competitor whose recorded past win matches
+-- this event (by id or name) at that place, and the event's judges.
+CREATE OR REPLACE VIEW event_podium AS
+SELECT ev.event_id, ev.name AS event_name,
+       tier->>'place' AS place, tier->>'award' AS award,
+       pw.entity_key AS competitor, pw.project AS project,
+       (SELECT jsonb_agg(j.judge_key ORDER BY j.judge_key)
+          FROM judges_current j WHERE j.event_id = ev.event_id) AS judges
+FROM challenge_events_current ev,
+     jsonb_array_elements(CASE WHEN jsonb_typeof(ev.prizes->'tiers') = 'array'
+                               THEN ev.prizes->'tiers' ELSE '[]'::jsonb END) tier
+LEFT JOIN entity_past_wins pw
+  ON pw.entity_kind = 'participant'
+ AND (pw.win_event = ev.event_id OR pw.win_event = ev.name)
+ AND pw.place = tier->>'place';
+
 -- Engagement touchpoints are EXECUTED logs (owner correction,
 -- 2026-10-28): engagement is autonomous — there is no draft/approval
 -- state anywhere in this schema or its writer, by design. Each

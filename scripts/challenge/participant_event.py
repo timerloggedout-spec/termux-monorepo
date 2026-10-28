@@ -78,27 +78,101 @@ def touchpoints_of(rows: list[dict]) -> list[dict]:
     return out
 
 
-def batch_from_source(source: Path, source_ref: str) -> tuple[dict, list[dict]]:
+def judge_key_for(event_id: str, jkey: str) -> str:
+    return hashlib.sha256(f"challenge-judges|{event_id}|{jkey}".encode()).hexdigest()
+
+
+def snapshot_key_for(kind: str, event_id: str, ekey: str, snap) -> str:
+    canon = json.dumps(snap, sort_keys=True, separators=(",", ":"), default=str)
+    return hashlib.sha256(f"{kind}|{event_id}|{ekey}|{canon}".encode()).hexdigest()
+
+
+def _entity_rows(records, eid, sync_key, kind):
+    """Rows for one entity list: entity rows + their snapshot rows."""
+    rows, snaps, seen = [], [], set()
+    key_field = "participant" if kind == "participant" else "judge"
+    for rec in records or []:
+        pk = participant_key(rec)
+        if pk in seen:
+            continue
+        seen.add(pk)
+        key = event_key(eid, pk) if kind == "participant" else judge_key_for(eid, pk)
+        rows.append({"key": key, "sync": sync_key, "event": eid,
+                     key_field: pk,
+                     "payload": json.dumps(rec, sort_keys=True, default=str)})
+        snaps_list = rec.get("snapshots") if isinstance(rec, dict) else None
+        for s in snaps_list or []:
+            snaps.append({"key": snapshot_key_for(kind, eid, pk, s),
+                          "sync": sync_key, "kind": kind, "event": eid,
+                          "entity": pk,
+                          "snapshot": json.dumps(s, sort_keys=True, default=str)})
+    return rows, snaps
+
+
+def batch_from_source(source: Path, source_ref: str) -> dict:
+    """One sync batch: sync row + participant/judge/snapshot rows.
+
+    Counts v2: {"participants": {event: n}, "judges": {event: n},
+    "snapshots": total, "touchpoints": total}. The sync row also
+    carries the events' core fields (id/name/prizes) for the podium
+    join (schema.sql challenge_events_current).
+    """
     data = json.loads(source.read_text())
     sync_key = hashlib.sha256(source_ref.encode()).hexdigest()
-    counts: dict[str, int] = {}
-    rows: list[dict] = []
+    p_counts: dict[str, int] = {}
+    j_counts: dict[str, int] = {}
+    participants, judges, snapshots = [], [], []
+    events_core = []
     for ev in data.get("events", []):
         eid = str(ev.get("id") or ev.get("slug") or ev.get("name") or "")
-        parts = ev.get("participants") or []
-        counts[eid] = len(parts)
-        seen = set()
-        for rec in parts:
-            pk = participant_key(rec)
-            if pk in seen:  # duplicate listing in source = one row
-                counts[eid] -= 1
-                continue
-            seen.add(pk)
-            rows.append({"key": event_key(eid, pk), "sync": sync_key,
-                         "event": eid, "participant": pk,
-                         "payload": json.dumps(rec, sort_keys=True, default=str)})
-    return {"sync": sync_key, "ref": source_ref,
-            "counts": json.dumps(counts, sort_keys=True)}, rows
+        events_core.append({"id": eid, "name": ev.get("name"),
+                            "prizes": ev.get("prizes")})
+        pr, ps = _entity_rows(ev.get("participants"), eid, sync_key, "participant")
+        jr, js = _entity_rows(ev.get("judges"), eid, sync_key, "judge")
+        participants += pr
+        judges += jr
+        snapshots += ps + js
+        p_counts[eid] = len(pr)
+        j_counts[eid] = len(jr)
+    counts = {"participants": p_counts, "judges": j_counts,
+              "snapshots": len(snapshots),
+              "touchpoints": len(touchpoints_of(participants))}
+    sync = {"sync": sync_key, "ref": source_ref,
+            "counts": json.dumps(counts, sort_keys=True),
+            "events": json.dumps(events_core, sort_keys=True, default=str)}
+    return {"sync": sync, "participants": participants,
+            "judges": judges, "snapshots": snapshots, "counts": counts}
+
+
+def recruitment_of(batch: dict) -> list[dict]:
+    """Current recruitment state across both entity kinds."""
+    out = []
+    for kind, rows in (("participant", batch["participants"]),
+                       ("judge", batch["judges"])):
+        for r in rows:
+            rec = json.loads(r["payload"])
+            rc = rec.get("recruitment") if isinstance(rec, dict) else None
+            if isinstance(rc, dict):
+                out.append({"kind": kind, "event": r["event"],
+                            "entity": r["participant"] if kind == "participant" else r["judge"],
+                            "candidate": rc.get("candidate"),
+                            "pipeline_state": rc.get("pipeline_state")})
+    return out
+
+
+def wins_of(batch: dict) -> list[dict]:
+    """past_wins[] across both entity kinds (podium inputs)."""
+    out = []
+    for kind, rows in (("participant", batch["participants"]),
+                       ("judge", batch["judges"])):
+        for r in rows:
+            rec = json.loads(r["payload"])
+            for w in (rec.get("past_wins") or []) if isinstance(rec, dict) else []:
+                if isinstance(w, dict):
+                    out.append({"kind": kind, "event": r["event"],
+                                "entity": r["participant"] if kind == "participant" else r["judge"],
+                                **{k: w.get(k) for k in ("event", "place", "prize", "project")}})
+    return out
 
 
 def _neon(method: str, path: str, key: str) -> dict:
@@ -148,11 +222,11 @@ def main(argv: list[str] | None = None) -> int:
     ns = ap.parse_args(argv)
     try:
         if ns.dry_run:
-            sync, rows = batch_from_source(Path(ns.source), ns.source_ref)
-            counts = json.loads(sync["counts"])
-            print(f"dry-run: sync {sync['sync'][:12]} ref {sync['ref'][:12]} "
-                  f"counts {counts} rows {len(rows)} "
-                  f"touchpoints {len(touchpoints_of(rows))}")
+            batch = batch_from_source(Path(ns.source), ns.source_ref)
+            print(f"dry-run: sync {batch['sync']['sync'][:12]} "
+                  f"ref {ns.source_ref[:12]} counts {batch['counts']} "
+                  f"recruitment {len(recruitment_of(batch))} "
+                  f"wins {len(wins_of(batch))}")
             return 0
         url = resolve_url()
         if not url:
@@ -170,18 +244,25 @@ def main(argv: list[str] | None = None) -> int:
             print(f"::notice title=challenge-participants count::"
                   f"latest sync counts {out or 'no syncs yet'}")
             return 0
-        sync, rows = batch_from_source(Path(ns.source), ns.source_ref)
+        batch = batch_from_source(Path(ns.source), ns.source_ref)
+        sync = batch["sync"]
         args = ["-f", str(SQL_DIR / "insert-sync.sql")]
         for k, v in sync.items():
             args += ["-v", f"{k}={v}"]
         psql(url, args)
-        for r in rows:
-            args = ["-f", str(SQL_DIR / "insert-participant.sql")]
-            for k, v in r.items():
-                args += ["-v", f"{k}={v}"]
-            psql(url, args)
+        plan = (("insert-participant.sql", batch["participants"]),
+                ("insert-judge.sql", batch["judges"]),
+                ("insert-snapshot.sql", batch["snapshots"]))
+        total = 0
+        for sqlf, rows in plan:
+            for r in rows:
+                args = ["-f", str(SQL_DIR / sqlf)]
+                for k, v in r.items():
+                    args += ["-v", f"{k}={v}"]
+                psql(url, args)
+                total += 1
         print(f"::notice title=challenge-participants::synced batch {sync['sync'][:12]} "
-              f"counts {sync['counts']} ({len(rows)} rows, ON CONFLICT DO NOTHING)")
+              f"counts {sync['counts']} ({total} rows, ON CONFLICT DO NOTHING)")
         return 0
     except (urllib.error.URLError, OSError, RuntimeError, ValueError, KeyError,
             subprocess.TimeoutExpired, json.JSONDecodeError) as exc:

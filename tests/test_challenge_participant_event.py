@@ -25,8 +25,10 @@ def write(tmp_path, data=SRC):
 
 
 def test_batch_counts_and_keys(tmp_path):
-    sync, rows = pe.batch_from_source(write(tmp_path), "abc123")
-    assert json.loads(sync["counts"]) == {"D1": 0, "D4": 3}  # dup collapsed
+    b = pe.batch_from_source(write(tmp_path), "abc123")
+    sync, rows = b["sync"], b["participants"]
+    assert b["counts"]["participants"] == {"D1": 0, "D4": 3}  # dup collapsed
+    assert b["counts"]["judges"] == {"D1": 0, "D4": 0}
     assert sync["sync"] == pe.hashlib.sha256(b"abc123").hexdigest()
     keys = [r["key"] for r in rows]
     assert keys[0] == pe.event_key("D4", "entrantA")
@@ -35,16 +37,40 @@ def test_batch_counts_and_keys(tmp_path):
 
 
 def test_absent_participants_is_empty_not_error(tmp_path):
-    sync, rows = pe.batch_from_source(
-        write(tmp_path, {"events": [{"id": "D0"}]}), "ref")
-    assert json.loads(sync["counts"]) == {"D0": 0}
-    assert rows == []
+    b = pe.batch_from_source(write(tmp_path, {"events": [{"id": "D0"}]}), "ref")
+    assert b["counts"]["participants"] == {"D0": 0}
+    assert b["participants"] == [] and b["judges"] == [] and b["snapshots"] == []
 
 
 def test_resync_same_ref_same_keys(tmp_path):
     a = pe.batch_from_source(write(tmp_path), "abc123")
     b = pe.batch_from_source(write(tmp_path), "abc123")
     assert a == b  # ON CONFLICT keys stable
+
+
+def test_judges_snapshots_recruitment_wins(tmp_path):
+    src = {"events": [{"id": "D4", "prizes": {"tiers": [{"place": "1st", "award": "$5k"}]},
+                       "participants": [
+                           {"handle": "winA",
+                            "past_wins": [{"event": "D4", "place": "1st",
+                                           "prize": "$5k", "project": "p1"}],
+                            "snapshots": [{"at": "2026-10-30", "likes": 12}],
+                            "recruitment": {"candidate": "winA",
+                                            "pipeline_state": "engaged"}}],
+                       "judges": [
+                           {"name": "judgeJ", "org": "Org",
+                            "snapshots": [{"at": "2026-10-30", "followers": 900}]}]}]}
+    b = pe.batch_from_source(write(tmp_path, src), "ref")
+    assert b["counts"]["judges"] == {"D4": 1}
+    assert b["counts"]["snapshots"] == 2
+    assert b["judges"][0]["key"] == pe.judge_key_for("D4", "judgeJ")
+    # snapshot keys stable + distinct per entity kind
+    assert len({s["key"] for s in b["snapshots"]}) == 2
+    assert pe.recruitment_of(b)[0]["pipeline_state"] == "engaged"
+    assert pe.wins_of(b)[0]["project"] == "p1"
+    # events core rides the sync row for the podium join
+    evs = json.loads(b["sync"]["events"])
+    assert evs[0]["prizes"]["tiers"][0]["place"] == "1st"
 
 
 def test_dry_run_cli(tmp_path, capsys):
@@ -63,7 +89,8 @@ def test_touchpoints_are_executed_logs_first_class(tmp_path):
              {"surface": "discord", "at": "2026-10-30T11:00:00Z",
               "content_ref": "msg-42"}]}},
         {"handle": "entrantB"}]}]}
-    _, rows = pe.batch_from_source(write(tmp_path, src), "ref")
+    b = pe.batch_from_source(write(tmp_path, src), "ref")
+    rows = b["participants"]
     tps = pe.touchpoints_of(rows)
     assert len(tps) == 2
     assert tps[0]["participant"] == "entrantA"

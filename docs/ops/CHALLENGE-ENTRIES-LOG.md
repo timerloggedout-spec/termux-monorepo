@@ -145,6 +145,13 @@ credits each + 10 backpack draws (October pattern).
 
 ### Checked and excluded
 
+- Aha! AI Builder Day Hackathon — November 2026 (Aha.io; scoped 2026-10-27
+  from the official page: kickoff Nov 17 9:00 AM PT, build Nov 17–19,
+  awards Nov 20; free; prize = six months of Aha! Builder + badge).
+  Excluded: the build is locked to the proprietary Aha! Builder product,
+  and the official page states anonymous registrations will not be
+  accepted (registrations are reviewed) — incompatible with the fleet's
+  4n0n identity posture; prize is a subscription to the same product.
 - Strands Decider hackathon (R1) — closed Oct 23; Gate 1 scoring week of
   Oct 26, winners week of Nov 9. Watch for a second edition.
 - Build, Ship, Shape: Amazon Developer Hackathon (Devpost) — closed
@@ -456,6 +463,9 @@ a submission path reaches an owner-account step.
 ## 5. Sweep sources
 
 AWS Builder Center hackathons listing; Devpost (AI/agent, Nov–Dec 2026);
-lablab.ai events; Builder.io hackathon page; vendor developer-competition
-pages (Google, Microsoft, Anthropic, Hugging Face). Each sweep re-verifies
-deadlines from the official page before touching §3.
+lablab.ai events; Builder.io hackathon page; Aha.io academy events;
+vendor developer-competition pages (Google, Microsoft, Anthropic,
+Hugging Face). Each sweep re-verifies deadlines from the official page
+before touching §3. **November watcher (owner, 2026-10-27):** through the
+fall season the sweep scopes November listings on every source, Aha.io
+included.

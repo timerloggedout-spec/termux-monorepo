@@ -77,6 +77,34 @@ def test_run_records_conform_to_experiment_schema():
     assert bool(records) == bool(executed)
 
 
+def test_taxonomy_and_terminology_discipline():
+    # DOE-TAXONOMY.md is the family's design-class + terminology record.
+    tax = (ROOT / "docs/ops/DOE-TAXONOMY.md").read_text()
+    for cls in ("Plackett", "Foldover", "Central composite",
+                "Box", "OFAT"):
+        assert cls in tax, cls
+    assert "multivariate-outcome" in tax.lower()
+    # The two senses of "multivariate" are distinguished in the skill.
+    skill = (ROOT / ".agents/skills/multivariate-doe/SKILL.md").read_text()
+    assert "Multivariate-outcome analysis" in skill
+    assert "not an experimental design" in skill  # ANOVA line
+    # The feed's design-classes member cites the taxonomy and does not
+    # classify the assignment mechanism as a design class.
+    feed = _doe_feed()
+    dc = [m for m in feed["data"]["family"]["members"]
+          if m.get("member_id") == "design-classes"][0]
+    assert "DOE-TAXONOMY.md" in dc["note"]
+    assert "assignment mechanism" in dc["note"]
+
+
+def test_executed_arms_carry_accuracy_spread():
+    feed = _doe_feed()
+    for camp in feed["data"]["campaigns"]:
+        if camp["state"] == "executed":
+            for arm, a in camp["results"]["arms"].items():
+                assert "accuracy_sd" in a, arm
+
+
 def test_delphi_record_never_counted_as_doe_result():
     feed = _doe_feed()
     ec = feed["data"]["executed_comparisons"]

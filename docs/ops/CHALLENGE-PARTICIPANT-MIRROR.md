@@ -1,5 +1,13 @@
 # Challenge participant mirror — CHALLENGE-PARTICIPANT-MIRROR
 
+> **Framing correction (owner, 2026-10-28):** "mirror" is retired —
+> the Neon tables below are the **working database** for challenge
+> participant/judge/signal state: the primary queryable store
+> pipelines compute against. coordinator.json is the intake source
+> lanes write; queries, podium joins and recruitment reads run in
+> SQL against this database. (File/table names keep the mirror word
+> as historical identifiers only.)
+
 [MUSEai]@{role:{database-specialist}} — 2026-10-28, coordination ask
 from the challenge-entries lane (owner order via ChallengeLane
 Manager). Same pattern as the Delphi ledger mirror (PR #2035/#2048).

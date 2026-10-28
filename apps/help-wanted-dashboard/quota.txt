@@ -161,8 +161,9 @@
  felo (1)
   felo.api_credits
     status: No live reading
-    limit (documented): n/a USD service credits
-    metric: API service credits (pay-as-you-go) | window: n/a | reset: n/a
+    limit (documented): 200 credits/day
+    metric: Search API Free Standard credits (daily refill) + intermittent free
+    models | window: daily | reset: daily refill
     No live reading (live source: response headers X-RateLimit-Limit,
     X-RateLimit-Remaining, X-RateLimit-Reset, Retry-After)
 --------------------------------------------------------------------------------
@@ -284,9 +285,11 @@
     limit (documented): n/a monthly credits
     metric: Inference Providers monthly credits | window: monthly | reset:
     monthly
-    No live reading (live source: organization usage API GET
-    /api/organizations/{org}/billing/usage/inference (Enterprise only); no
-    free-tier usage endpoint)
+    No live reading (live source: Hub RateLimit response header (remaining r,
+    seconds-to-reset t; 5-minute fixed windows; passive adapter implemented —
+    Hub API/Resolver/Pages categories, NOT hosted-inference quota); organization
+    usage API GET /api/organizations/{org}/billing/usage/inference (Enterprise);
+    router free/zero models via /v1/models catalog poll)
 --------------------------------------------------------------------------------
  kilo (1)
   kilo.free_models
@@ -323,8 +326,9 @@
  modelscope (1)
   modelscope.api_inference
     status: No live reading
-    limit (documented): n/a unknown
-    metric: API-Inference usage limits | window: unknown | reset: unknown
+    limit (documented): 2000 requests/day
+    metric: API-Inference usage limits | window: daily | reset: daily (per fleet
+    recon claim)
     No live reading (live source: none published (not established))
 --------------------------------------------------------------------------------
  neon (4)
@@ -573,10 +577,11 @@
  typhoon (1)
   typhoon.api
     status: No live reading
-    limit (documented): n/a unknown (no numeric limit published)
-    metric: Typhoon API (free research showcase) | window: unknown | reset:
-    unknown
-    No live reading (live source: none published)
+    limit (documented): 200 requests/minute
+    metric: Free research API rate limits (per model) | window: per minute |
+    reset: per-minute window; 429 error body message carries the retry timestamp
+    No live reading (live source: no usage endpoint; HTTP 429 error body
+    (rate_limit_exceeded) carries the retry time in its message)
 --------------------------------------------------------------------------------
  unorouter (1)
   unorouter.free_models
@@ -625,7 +630,8 @@
   xfyun.spark
     status: No live reading
     limit (documented): n/a unknown
-    metric: Spark API free quota | window: unknown | reset: unknown
+    metric: Spark Lite free tier + per-capability trials | window: unknown |
+    reset: unknown
     No live reading (live source: none published (not established))
 --------------------------------------------------------------------------------
  xkiro (1)
@@ -642,7 +648,8 @@
   zai.free_models
     status: No live reading
     limit (documented): n/a per-account (unpublished)
-    metric: Free ($0 Flash) model limits | window: unknown | reset: unknown
+    metric: Free ($0-priced GLM Flash) model access | window: unknown | reset:
+    unknown
     No live reading (live source: HTTP 429 error body codes 1308 / 1316-1321
     carry a next_flush_time field (documented in the API-code reference))
 --------------------------------------------------------------------------------

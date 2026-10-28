@@ -27,10 +27,12 @@ import argparse
 import json
 import os
 import sys
+import urllib.error
 import urllib.request
 
 API = "https://api.github.com"
 DEFAULT_REPO = "timerloggedout-spec/termux-monorepo"
+USER_AGENT = "termux-monorepo-issue-lifecycle-triage"
 
 # Labels this pass may apply. Every entry must already exist in the
 # repo label taxonomy (docs/ops/ISSUE-LIFECYCLE.md section 2); the
@@ -68,13 +70,23 @@ def _request(method, path, token, repo, body=None):
     req = urllib.request.Request(url, data=data, method=method)
     req.add_header("Accept", "application/vnd.github+json")
     req.add_header("X-GitHub-Api-Version", "2022-11-28")
+    req.add_header("User-Agent", USER_AGENT)
     if token:
         req.add_header("Authorization", f"Bearer {token}")
     if data:
         req.add_header("Content-Type", "application/json")
-    with urllib.request.urlopen(req, timeout=60) as resp:
-        raw = resp.read()
-        return json.loads(raw) if raw else {}
+    try:
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            raw = resp.read()
+            return json.loads(raw) if raw else {}
+    except urllib.error.HTTPError as e:
+        # Fail loudly with the API's own reason. The 2026-10-28 pass found
+        # the first version dying here with an unprinted 403 while the
+        # workflow step still reported success (tee masked the exit code);
+        # an automation that cannot say why it failed has not run.
+        detail = e.read().decode(errors="replace")[:500]
+        print(f"GitHub API error: {method} {path} -> HTTP {e.code}: {detail}", file=sys.stderr)
+        raise SystemExit(1)
 
 
 def list_open_items(repo, token):

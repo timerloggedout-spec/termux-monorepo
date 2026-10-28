@@ -227,6 +227,16 @@ def test_ballot_signal_survives_payload_conversion():
         assert back[0] == obj
 
 
+def test_worker_is_cycle_scoped_not_a_daemon():
+    # Amendment 2026-10-28 (VM = sandbox only): the worker's bounded
+    # mode exists and no systemd unit ships for it.
+    src = (ROOT / "scripts" / "temporal" / "delphi_cycle" /
+           "worker.py").read_text()
+    assert "--exit-on-complete" in src
+    assert not (ROOT / "scripts" / "temporal" / "selfhost" /
+                "temporal-delphi-worker.service").exists()
+
+
 def test_workflow_module_is_deterministic_shape():
     # The workflow module must not reach for I/O, clocks, or randomness:
     # a static guard over its source (the sandbox enforces it live).

@@ -7,16 +7,20 @@ segmentation**. The label holds 70 open RFPs (live-derived census,
 they read as one flood. This doc is the segmentation record. Machine
 config: `ops/delphi/rfp-segments.json`. The per-RFP feed of record
 is the Delphi lane's `delphi-rfp-feed/v1` (contract
-`docs/ops/DELPHI-RFP-FEED.md`, collector `rfp_flood_feed.py`; the
-Web Design lane renders the page from it). This segmentation layers
-over it: `scripts/delphi/rfp_segment_feed.py` →
-`delphi-rfp-segments-feed.json` (segment rollups — progress +
-status + criteria + questions + outcomes per segment), offered to
-the page as the grouping layer. Coordination: Delphi lane (gate,
-panel, ledgers, scoring engine stay theirs — this segmentation does
-not fork or re-derive them). An earlier doe-lane attempt at a
-parallel per-RFP feed + page (PR #1950) was closed as superseded by
-the Delphi lane's feed — one feed, one home.
+`docs/ops/DELPHI-RFP-FEED.md`, collector `rfp_flood_feed.py`).
+Segmentation rides INSIDE that single feed (owner collision rule —
+one feed, one collector): the flood collector reads
+`rfp-segments.json` (+ the silo registry, copied into its cache by
+`rfp_flood_fetch.py`) and emits a per-entry `segment` field plus a
+feed-level `segments` block (rollups — progress + status +
+criteria + questions per segment). The page `delphi-rfp.html`
+renders it (owner-assigned to the doe-expert lane; chrome
+coordinated with the Web Design lane). Coordination: Delphi lane
+(gate, panel, ledgers, scoring engine stay theirs — this
+segmentation does not fork or re-derive them). History: PR #1950
+(parallel feed + page) closed superseded by the Delphi feed;
+PR #1954's separate segments feed + collector were retired by the
+page PR, which folded the layer into the flood collector.
 
 ## The three classes
 

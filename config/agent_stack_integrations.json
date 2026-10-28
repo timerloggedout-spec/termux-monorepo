@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "integration_id": "foresight-agent-stack-2026-10-01",
-  "observed_at": "2026-10-27T00:00:00Z",
+  "observed_at": "2026-10-28T00:00:00Z",
   "canonicality": {
     "evidence_store": "repository-owned JSONL/receipts",
     "telemetry_boundary": "OpenTelemetry",
@@ -478,6 +478,31 @@
         "Forks created 2026-10-27 at owner order (opencode_fork + opencode-research-papers_fork); no fleet patches yet - clean mirror vs patched fork is decided after the first pilot runs.",
         "Upstream TODO(#35765) in session/usage.ts: Copilot's reported billed amount is not yet normalized into Usage.cost, so Copilot-session costs in fork telemetry are catalog-priced estimates until that lands.",
         "Pilot lane assignment (device Termux vs Actions runners) is open."
+      ]
+    },
+    {
+      "id": "google-agent-substrate",
+      "project": "Agent Substrate (open-source Agent Compute Engine sibling) on Kubernetes/GKE",
+      "source": "https://github.com/agent-substrate/substrate",
+      "version": "pinned commit 475f49b023352b47b8504ffead596953f28d7e7f (2026-10-28)",
+      "role": "credential-free-agent-sandbox-runtime-evaluation",
+      "status": "INVESTIGATE",
+      "horizon": "H1",
+      "evidence_status": "confirmed",
+      "capabilities": [
+        "hardware-isolated microVM or gVisor sandbox per agent actor on any Kubernetes cluster",
+        "egress credential injection outside the sandbox (bundled credential provider, default-deny namespace policy, explicit per-atespace grants)",
+        "idle suspend/resume with snapshots (Google-reported: 500 activations/sec, <500 ms resume in a 200,000-agent benchmark)",
+        "local kind quickstart needs only Go, kubectl and Docker - evaluable on GitHub-hosted runners with no cloud account"
+      ],
+      "integration_mode": "evaluation only via dispatch-only workflow .github/workflows/agent-substrate-eval.yml (kind on runner, upstream counter demo); wiring in ops/agent_substrate/, runbook docs/ops/AGENT-SUBSTRATE-ACTIVATION.md. No deployment, no fleet workload.",
+      "required_exports": [
+        "workflow run log as evaluation evidence per pinned commit"
+      ],
+      "hard_gate": "GKE route is billing-gated (GKE Standard resources incur charges) and therefore closed under the owner's card rule until the GCP project + a separate billing decision clear; production use on GKE is allowlist-only (limited GA).",
+      "unresolved_questions": [
+        "First Route 0 eval run has not yet been executed - status flips on run evidence.",
+        "Whether any fleet-built agent ever needs its own sandbox runtime (same open question as ACE watch trigger 4)."
       ]
     }
   ],

@@ -1,17 +1,17 @@
 {
  "schema": "delphi-rfp-feed/v1",
- "generated_at": "2026-10-28T04:32:50Z",
+ "generated_at": "2026-10-28T06:53:34Z",
  "source": "open GitHub issues labeled delphi:rfp + their gate ledger comments (live census at generation)",
  "summary": {
-  "total_open": 71,
+  "total_open": 76,
   "by_status": {
-   "parked": 68,
+   "parked": 70,
    "shadow": 2,
-   "unscored": 1
+   "unscored": 4
   },
   "by_group": {
    "surface": 18,
-   "synthetic": 5,
+   "synthetic": 10,
    "research-baseline": 12,
    "research-variant": 36
   }
@@ -14682,10 +14682,10 @@
   {
    "number": 1959,
    "progress": {
-    "stage": "awaiting-gate",
-    "rounds_run": 0,
+    "stage": "gate-scored",
+    "rounds_run": 3,
     "rounds_max": 3,
-    "votes_cast": 0,
+    "votes_cast": 5,
     "votes_expected": 5
    },
    "title": "[delphi:rfp] doe.criteria-loop",
@@ -14694,10 +14694,11 @@
    "surface_id": "doe.criteria-loop",
    "lane": "other",
    "group": "synthetic",
-   "status": "unscored",
+   "status": "parked",
    "converged": false,
    "labels": [
-    "delphi:rfp"
+    "delphi:rfp",
+    "delphi:parked"
    ],
    "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
    "questions": [
@@ -14752,13 +14753,663 @@
      "response": "- docs/ops/DOE-FAMILY.md + docs/ops/DOE-TAXONOMY.md (criteria set of record)\n- PR #1871 (family restructure), PR #1873 (pilot 1 executed, 32 records), PR #1874 (taxonomy mining), PR #1954 (segmentation layer)\n- Issue #1865 (family work item), issue #1487 (outcomes ledger)"
     }
    ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-27T04:38Z. Band Backlog.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 6.69 below shadow bar 15.0",
+     "band": "Backlog",
+     "recheck_after": "2026-11-27T04:38Z"
+    },
+    "effective_score": 6.69,
+    "converged": false,
+    "rounds_count": 3,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 7.38
+     },
+     {
+      "round": 2,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 6.92
+     },
+     {
+      "round": 3,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 6.69
+     }
+    ],
+    "trigger": "created",
+    "input_hash": "f825d99d66e1",
+    "comment_id": 6460802663,
+    "created_at": "2026-10-28T04:38:42Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40633418169 / #1959#r3"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40633418169 / #1959#r3"
+     },
+     {
+      "role": "reviewer",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "4 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40633418169 / #1959#r3"
+     },
+     {
+      "role": "Scout",
+      "score": 10.5,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit (moved toward median) (moved toward median)",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40633418169 / #1959#r3"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40633418169 / #1959#r3"
+     }
+    ],
+    "oracle": "No vendor quota consumed. The loop runs on the repo's existing GitHub Issues + Actions surface under the gate's cadence governor; panel cycles are the only spend, bounded by the existing registry caps. No paid tier, no payment instrument, no overage billing. = None , reset Gate heartbeat hourly (UTC); panel weights ledger continuous; criteria revision cycle weekly.  ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/1959))",
+    "records": {
+     "foresight": {
+      "resource_id": "doe.criteria-loop",
+      "item_id": "delphi:#1959",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] doe.criteria-loop",
+      "category": "other",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 6.69 (Backlog)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1959"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1959",
+      "observed_at": "2026-10-28T04:38:42Z",
+      "confidence": 0.27,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-27T04:38Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] doe.criteria-loop -> parked eff=6.69 band=Backlog rfp=#1959 forecast=fail ts=2026-10-28T04:38:42Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1959",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "max_rounds",
+      "started_at": "2026-10-28T04:38:42Z",
+      "ended_at": "2026-10-28T04:38:42Z",
+      "trigger": "created"
+     }
+    }
+   },
+   "gaps": [],
+   "segment": "doe-criteria-loop"
+  },
+  {
+   "number": 1963,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 3,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] delphi.method-self-application",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1963",
+   "created_at": "2026-10-28T04:36:05Z",
+   "surface_id": "delphi.method-self-application",
+   "lane": "other",
+   "group": "synthetic",
+   "status": "parked",
+   "converged": false,
+   "labels": [
+    "delphi:rfp",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "delphi.method-self-application"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "other"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "other"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "brief census (this filing, priors locked) | T0 | T0 | -\npanel rounds on the Method surface | T0 | T0 | brief census\nreplay suites: Strands + Temporal records x 3 variants | T0+1d | T0+7d | panel rounds\npass record + panel.json self_application flip | T0+7d | T0+7d | replay suites\nsecond cycle on equalized evidence | T0+7d | - | pass record"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "No vendor quota consumed. Replays are deterministic and offline, run against pass records already in the repo; gate cycles run under the existing cadence governor. No paid tier, no payment instrument, no overage billing."
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "Gate heartbeat hourly (UTC); replay suites run on demand per cycle; no vendor reset applies."
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "none needed"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "1 (portable)"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "- Self-grading bias (the Method judging itself) \u2014 source classes stay separate in cross-votes; priors are pre-registered in this filing by the Method's owner lane; replay inputs are the recorded live passes, not fresh self-authored evidence.\n- Arms tuned mid-run until the tie breaks \u2014 forbidden by the brief; a persistent tie is a result, and any variant change is a new cycle with new priors.\n- Replay drift from the live record \u2014 suites are receipted (command / exit / output sha); a replay that cannot reproduce the control tie invalidates the suite, not the record.\n- Loop spend crowds out RFP scoring \u2014 cadence governor defers near caps; this RFP yields to the flood queue."
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "- Brief `delphi-method-self-application-1` (Delphi lane, relayed 2026-10-27; this body amended to it verbatim in substance)\n- docs/proposals/passes/strands-rfp-response/ + docs/proposals/passes/temporal-durable-execution/ (replay inputs)\n- PR #1713 (self-application design), PR #1776 (cycle v2), PR #1870 (governance)\n- Issue #1487 (outcomes ledger), issue #1489 (panel weights ledger)\n- Companion loop: issue #1959 (doe.criteria-loop \u2014 the DoE criteria set under the same loop discipline)"
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-27T04:38Z. Band Backlog.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 6.69 below shadow bar 15.0",
+     "band": "Backlog",
+     "recheck_after": "2026-11-27T04:38Z"
+    },
+    "effective_score": 6.69,
+    "converged": false,
+    "rounds_count": 3,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 7.38
+     },
+     {
+      "round": 2,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 6.92
+     },
+     {
+      "round": 3,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 6.69
+     }
+    ],
+    "trigger": "created",
+    "input_hash": "e6bd2aefc766",
+    "comment_id": 6460803064,
+    "created_at": "2026-10-28T04:38:44Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40633418169 / #1963#r3"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40633418169 / #1963#r3"
+     },
+     {
+      "role": "reviewer",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "4 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40633418169 / #1963#r3"
+     },
+     {
+      "role": "Scout",
+      "score": 10.5,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit (moved toward median) (moved toward median)",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40633418169 / #1963#r3"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40633418169 / #1963#r3"
+     }
+    ],
+    "oracle": "No vendor quota consumed. Replays are deterministic and offline, run against pass records already in the repo; gate cycles run under the existing cadence governor. No paid tier, no payment instrument, no overage billing. = None , reset Gate heartbeat hourly (UTC); replay suites run on demand per cycle; no vendor reset applies.  ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/1963))",
+    "records": {
+     "foresight": {
+      "resource_id": "delphi.method-self-application",
+      "item_id": "delphi:#1963",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] delphi.method-self-application",
+      "category": "other",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 6.69 (Backlog)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1963"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1963",
+      "observed_at": "2026-10-28T04:38:44Z",
+      "confidence": 0.27,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-27T04:38Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] delphi.method-self-application -> parked eff=6.69 band=Backlog rfp=#1963 forecast=fail ts=2026-10-28T04:38:44Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1963",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "max_rounds",
+      "started_at": "2026-10-28T04:38:44Z",
+      "ended_at": "2026-10-28T04:38:44Z",
+      "trigger": "created"
+     }
+    }
+   },
+   "gaps": [],
+   "segment": "delphi-method-self-application"
+  },
+  {
+   "number": 1975,
+   "progress": {
+    "stage": "awaiting-gate",
+    "rounds_run": 0,
+    "rounds_max": 3,
+    "votes_cast": 0,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] markov.trellis-lab",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1975",
+   "created_at": "2026-10-28T06:50:16Z",
+   "surface_id": "markov.trellis-lab",
+   "lane": "other",
+   "group": "synthetic",
+   "status": "unscored",
+   "converged": false,
+   "labels": [
+    "delphi:rfp"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "markov.trellis-lab"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "other"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "delphi"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "component census (registry entry) | T0 | T0 | -\npanel rounds on the component | T0 | T0 | component census (registry entry)\nfindings to revision PRs or no-change record | T0+1d | T0+7d | panel rounds on the component\nre-score under revisions | T0+7d | T0+7d | findings to revision PRs or no-change record"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "No vendor quota consumed. The evaluation runs on the repo's existing GitHub Issues + Actions surface under the gate's cadence governor; panel cycles are the only spend, bounded by the existing registry caps. No paid tier, no overage."
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "Gate heartbeat hourly (UTC); panel weights ledger continuous; component revision cycle per gate findings."
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "none needed"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "1 (portable)"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "- Lab artifact mistaken for a wired surface \u2014 registry status stays 'lab' until a consumer lands by PR.\n- Trellis model fit asserted without transition data \u2014 claims need run records, per the DoE intake rule.\n- Loop files but never revises \u2014 each cycle ends in a revision PR or a no-change record."
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "- ops/doe/component-registry.json + docs/ops/DOE-COMPONENT-REGISTRY.md (component of record)\n- experiments/archwiz-markov-lane/ (the lab)\n- docs/proposals/active/archwiz-markov-trellis-lab/ (proposal pack + REVIEW.md)"
+    }
+   ],
    "outcome": null,
    "responses": null,
    "gaps": [
     "no gate ledger comment yet \u2014 the gate has not scored this filing on record",
     "no delphi: status label (shadow/promoted/parked/converged) applied"
    ],
-   "segment": "doe-criteria-loop"
+   "segment": "markov-trellis-lab"
+  },
+  {
+   "number": 1976,
+   "progress": {
+    "stage": "awaiting-gate",
+    "rounds_run": 0,
+    "rounds_max": 3,
+    "votes_cast": 0,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] bayesian.routing",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1976",
+   "created_at": "2026-10-28T06:50:17Z",
+   "surface_id": "bayesian.routing",
+   "lane": "other",
+   "group": "synthetic",
+   "status": "unscored",
+   "converged": false,
+   "labels": [
+    "delphi:rfp"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "bayesian.routing"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "other"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "delphi"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "belief calibration census vs ledger | T0 | T0 | -\npanel rounds on the component | T0 | T0 | belief calibration census vs ledger\nfindings to revision PRs or no-change record | T0+1d | T0+7d | panel rounds on the component\nre-score under revisions | T0+7d | T0+7d | findings to revision PRs or no-change record"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "No vendor quota consumed. The evaluation runs on the repo's existing GitHub Issues + Actions surface under the gate's cadence governor; panel cycles are the only spend, bounded by the existing registry caps. No paid tier, no overage."
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "Gate heartbeat hourly (UTC); panel weights ledger continuous; component revision cycle per gate findings."
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "none needed"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "1 (portable)"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "- Beliefs drift from ledger outcomes (no calibration check) \u2014 census step compares posteriors to #1487 records each cycle.\n- Layer silently overrides MoneyBall decisions \u2014 routing stays advisory-over-ledger by design (BAYESIAN-ROUTING.md).\n- Loop files but never revises \u2014 each cycle ends in a revision PR or a no-change record."
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "- ops/doe/component-registry.json + docs/ops/DOE-COMPONENT-REGISTRY.md (component of record)\n- docs/ops/BAYESIAN-ROUTING.md + docs/schemas/bayesian-routing.yaml (design + schema)\n- scripts/bayesian_routing.py (implementation)\n- Issue #1487 (outcome ledger \u2014 the evidence the beliefs update on)"
+    }
+   ],
+   "outcome": null,
+   "responses": null,
+   "gaps": [
+    "no gate ledger comment yet \u2014 the gate has not scored this filing on record",
+    "no delphi: status label (shadow/promoted/parked/converged) applied"
+   ],
+   "segment": "bayesian-routing"
+  },
+  {
+   "number": 1977,
+   "progress": {
+    "stage": "awaiting-gate",
+    "rounds_run": 0,
+    "rounds_max": 3,
+    "votes_cast": 0,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] kahn.dag",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1977",
+   "created_at": "2026-10-28T06:50:18Z",
+   "surface_id": "kahn.dag",
+   "lane": "other",
+   "group": "synthetic",
+   "status": "unscored",
+   "converged": false,
+   "labels": [
+    "delphi:rfp"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "kahn.dag"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "other"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "delphi"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "consumer + test census | T0 | T0 | -\npanel rounds on the component | T0 | T0 | consumer + test census\nfindings to revision PRs or no-change record | T0+1d | T0+7d | panel rounds on the component\nre-score under revisions | T0+7d | T0+7d | findings to revision PRs or no-change record"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "No vendor quota consumed. The evaluation runs on the repo's existing GitHub Issues + Actions surface under the gate's cadence governor; panel cycles are the only spend, bounded by the existing registry caps. No paid tier, no overage."
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "Gate heartbeat hourly (UTC); panel weights ledger continuous; component revision cycle per gate findings."
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "none needed"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "1 (portable)"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "- Parallel topo-sort re-implementations creep back \u2014 census greps for new ones each cycle.\n- Planner semantics drift from its property tests \u2014 tests are the contract; a red test blocks revision merges.\n- Loop files but never revises \u2014 each cycle ends in a revision PR or a no-change record."
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "- ops/doe/component-registry.json + docs/ops/DOE-COMPONENT-REGISTRY.md (component of record)\n- she/orchestration/dag.py + docs/architecture/DETERMINISTIC-DAG-ORCHESTRATION.md\n- tests/test_dag_execution.py + tests/test_dag_properties.py (the contract)\n- scripts/temporal/gantt_compile.py (newest consumer, Temporal closeout PR)"
+    }
+   ],
+   "outcome": null,
+   "responses": null,
+   "gaps": [
+    "no gate ledger comment yet \u2014 the gate has not scored this filing on record",
+    "no delphi: status label (shadow/promoted/parked/converged) applied"
+   ],
+   "segment": "kahn-dag"
+  },
+  {
+   "number": 1978,
+   "progress": {
+    "stage": "awaiting-gate",
+    "rounds_run": 0,
+    "rounds_max": 3,
+    "votes_cast": 0,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] gantt.dependency-phases",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1978",
+   "created_at": "2026-10-28T06:50:19Z",
+   "surface_id": "gantt.dependency-phases",
+   "lane": "other",
+   "group": "synthetic",
+   "status": "unscored",
+   "converged": false,
+   "labels": [
+    "delphi:rfp"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "gantt.dependency-phases"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "other"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "delphi"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "gantt history + compile census | T0 | T0 | -\npanel rounds on the component | T0 | T0 | gantt history + compile census\nfindings to revision PRs or no-change record | T0+1d | T0+7d | panel rounds on the component\nre-score under revisions | T0+7d | T0+7d | findings to revision PRs or no-change record"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "No vendor quota consumed. The evaluation runs on the repo's existing GitHub Issues + Actions surface under the gate's cadence governor; panel cycles are the only spend, bounded by the existing registry caps. No paid tier, no overage."
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "Gate heartbeat hourly (UTC); panel weights ledger continuous; component revision cycle per gate findings."
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "none needed"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "1 (portable)"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "- Derived Gantt views treated as authority \u2014 the canonical plan JSON is the only source (design rule, GANTT_DEPENDENCY_PHASES_ACTIONS_DESIGN.md).\n- Filed plans keep shipping the dangling dep \u2014 template fix is this loop's first expected revision.\n- Loop files but never revises \u2014 each cycle ends in a revision PR or a no-change record."
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "- ops/doe/component-registry.json + docs/ops/DOE-COMPONENT-REGISTRY.md (component of record)\n- docs/agentic/dependency-phases.json (canonical plan) + docs/agentic/DEPENDENCY_PHASES.md (generated status/history view) + the plan's git history (phase history of record)\n- scripts/agentic/dependency_phase_engine.py + scripts/agentic/gantt_projection.py (engine + projection)\n- scripts/temporal/gantt_compile.py + docs/proposals/passes/temporal-durable-execution/implementation/ADDENDUM-2026-10-27.json (N4 compile evidence)"
+    }
+   ],
+   "outcome": null,
+   "responses": null,
+   "gaps": [
+    "no gate ledger comment yet \u2014 the gate has not scored this filing on record",
+    "no delphi: status label (shadow/promoted/parked/converged) applied"
+   ],
+   "segment": "gantt-dependency-phases"
   }
  ],
  "segments": {
@@ -14820,9 +15471,45 @@
      "consensus implementation (axis 3)",
      "flywheel confirmed|miss -> reweight"
     ]
+   },
+   "doe-components": {
+    "description": "The DoE family's four algorithmic components, registered separately (ops/doe/component-registry.json, PR #1974) and evaluated individually: each component is its own segment and context, scored on its own evidence feeds. Findings loop back as revision PRs or explicit no-change records, same discipline as the criteria loop (#1959). Any component is available as a DoE factorial factor under the generator+tests admission rule.",
+    "criteria": [
+     "role fitness \u2014 the component does the one job its registry role states, nothing adjacent",
+     "evidence feeds live \u2014 the feeds named in the registry entry resolve and carry current data",
+     "separation clean \u2014 no cross-component state bleed; shared cores are deduplicated references, not copies"
+    ],
+    "questions": [
+     "does the component still do exactly its registered role?",
+     "are its registered evidence feeds live and current?",
+     "what did this cycle's findings change \u2014 revision PR, or no-change record?"
+    ],
+    "cycle": "Each component's RFP is scored by the gate cycle on its own segment; findings become revision PRs against the component or an explicit no-change record on its RFP. Cross-component comparison is descriptive only \u2014 no aggregate component score."
    }
   },
   "segments": [
+   {
+    "segment_id": "bayesian-routing",
+    "class": "doe-components",
+    "members": [
+     1976
+    ],
+    "by_status": {
+     "unscored": 1
+    },
+    "gate_scored": 0
+   },
+   {
+    "segment_id": "delphi-method-self-application",
+    "class": "meta-process",
+    "members": [
+     1963
+    ],
+    "by_status": {
+     "parked": 1
+    },
+    "gate_scored": 1
+   },
    {
     "segment_id": "delphi.conversational_intake",
     "class": "meta-process",
@@ -14839,6 +15526,39 @@
     "class": "meta-process",
     "members": [
      1959
+    ],
+    "by_status": {
+     "parked": 1
+    },
+    "gate_scored": 1
+   },
+   {
+    "segment_id": "gantt-dependency-phases",
+    "class": "doe-components",
+    "members": [
+     1978
+    ],
+    "by_status": {
+     "unscored": 1
+    },
+    "gate_scored": 0
+   },
+   {
+    "segment_id": "kahn-dag",
+    "class": "doe-components",
+    "members": [
+     1977
+    ],
+    "by_status": {
+     "unscored": 1
+    },
+    "gate_scored": 0
+   },
+   {
+    "segment_id": "markov-trellis-lab",
+    "class": "doe-components",
+    "members": [
+     1975
     ],
     "by_status": {
      "unscored": 1

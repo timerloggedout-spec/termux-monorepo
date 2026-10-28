@@ -78,6 +78,25 @@ jobs:
           print()
           for key, value in data['counts'].items():
               print(f'- **{key}:** {value}')
+          print()
+          print(f"Watching status: `{data.get('watching_status', 'not_requested')}`")
+          delta = data.get('delta') or {}
+          if delta.get('available'):
+              print(f"Delta vs previous snapshot: +{len(delta.get('added') or [])} added, "
+                    f"-{len(delta.get('removed') or [])} removed, "
+                    f"{len(delta.get('provenance_changed') or [])} provenance changed")
+          PY
+
+      - name: Warn on watching degradation
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path('workspace/llm_map/repositories/repository-index.json').read_text())
+          if data.get('watching_status') == 'unavailable':
+              print('::warning::Repository Observatory: watching (subscriptions) unavailable this run; '
+                    'watching provenance is absent, not zero. Check REPOSITORY_OBSERVATORY_TOKEN provisioning.')
           PY
 
       - name: Commit canonical index delta

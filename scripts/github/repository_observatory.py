@@ -24,7 +24,7 @@ class GitHubHttpError(RuntimeError):
         super().__init__(f"HTTP {code} for {path}")
         self.code = code
         self.path = path
-UA = "termux-monorepo-repository-observatory/2.2"
+UA = "termux-monorepo-repository-observatory/2.3"
 SCHEMA_VERSION = "1.1"
 MAX_PAGES = 100
 RETRIES = 3
@@ -72,7 +72,6 @@ DOMAIN_TERMS: dict[str, tuple[str, ...]] = {
     "research": ("research", "arxiv", "empirical", "science"),
     "security": ("security", "forensics", "supply-chain"),
     "termux": ("termux", "android"),
-    "developer-tools": ("cli", "developer-tools", "devtools"),
     "api-management": ("api-management", "api management", "api-gateway", "api gateway", "gateway", "openapi", "asyncapi"),
     "platform": ("platform", "developer-portal", "portal"),
     "kubernetes": ("kubernetes", "helm", "operator", "container"),
@@ -146,11 +145,59 @@ def normalize(repo: dict[str, Any], provenance: list[str]) -> dict[str, Any]:
     }
 
 
-def markdown(records: list[dict[str, Any]], observed_at: str) -> str:
+DELTA_LIST_CAP = 100
+
+
+def compute_delta(previous: list[dict[str, Any]] | None,
+                  records: list[dict[str, Any]]) -> dict[str, Any]:
+    """Signal delta vs the previous snapshot: which repositories entered,
+    left, or changed provenance. Signals are research signals only; a delta
+    entry is never an adoption order. ``available`` is False when there is
+    no usable previous snapshot to compare against."""
+    if previous is None:
+        return {"available": False, "added": [], "removed": [],
+                "provenance_changed": []}
+    prev = {r.get("full_name"): r for r in previous if r.get("full_name")}
+    cur = {r.get("full_name"): r for r in records if r.get("full_name")}
+    changed = []
+    for name in sorted(set(prev) & set(cur)):
+        before = sorted(prev[name].get("provenance") or [])
+        after = sorted(cur[name].get("provenance") or [])
+        if before != after:
+            changed.append({"full_name": name, "from": before, "to": after})
+    return {"available": True,
+            "added": sorted(set(cur) - set(prev)),
+            "removed": sorted(set(prev) - set(cur)),
+            "provenance_changed": changed}
+
+
+def markdown(records: list[dict[str, Any]], observed_at: str,
+             delta: dict[str, Any] | None = None) -> str:
     lines = ["# Repository Observatory", "", "> Generated from GitHub repository and starring metadata. JSON is canonical; this file is a navigation projection.", "",
              f"Observed: `{observed_at}`", "", "## Navigation", "", "- [Owned repositories](#owned)", "- [Starred repositories](#starred)",
              "- [Watching repositories](#watching)", "- [Owned forks](#owned-forks)",
              "- [Research seeds](#research-seeds)", "- [Integration candidates](#integration-candidates)", ""]
+
+    if delta is not None:
+        lines.extend(["## Changes since previous snapshot", ""])
+        if not delta.get("available"):
+            lines.extend(["_No previous snapshot available for comparison._", ""])
+        else:
+            def capped(names: list[str]) -> str:
+                shown = names[:DELTA_LIST_CAP]
+                extra = f" (+{len(names) - len(shown)} more)" if len(names) > len(shown) else ""
+                return (", ".join(f"`{n}`" for n in shown) + extra) if shown else "—"
+            changed = delta.get("provenance_changed") or []
+            changed_txt = ", ".join(
+                f"`{c['full_name']}` ({', '.join(c['from']) or '—'} → {', '.join(c['to']) or '—'})"
+                for c in changed[:DELTA_LIST_CAP]) or "—"
+            if len(changed) > DELTA_LIST_CAP:
+                changed_txt += f" (+{len(changed) - DELTA_LIST_CAP} more)"
+            lines.extend([
+                f"- **Added ({len(delta.get('added') or [])}):** {capped(delta.get('added') or [])}",
+                f"- **Removed ({len(delta.get('removed') or [])}):** {capped(delta.get('removed') or [])}",
+                f"- **Provenance changed ({len(changed)}):** {changed_txt}",
+                ""])
 
     owned_rows: list[dict[str, Any]] = []
     starred_rows: list[dict[str, Any]] = []
@@ -220,7 +267,9 @@ def snapshot_hash(records: list[dict[str, Any]]) -> str:
     return hashlib.sha256(canonical).hexdigest()
 
 
-def build_payload(owner: str, login: str, records: list[dict[str, Any]], observed_at: str) -> dict[str, Any]:
+def build_payload(owner: str, login: str, records: list[dict[str, Any]], observed_at: str,
+                  delta: dict[str, Any] | None = None,
+                  watching_status: str = "not_requested") -> dict[str, Any]:
     c_owned = 0
     c_starred = 0
     c_both = 0
@@ -257,7 +306,9 @@ def build_payload(owner: str, login: str, records: list[dict[str, Any]], observe
             c_integration += 1
 
     return {
-        "schema_version": SCHEMA_VERSION, "builder": "termux-monorepo.repository_observatory@2.2", "repository": f"{owner}/termux-monorepo",
+        "schema_version": SCHEMA_VERSION, "builder": "termux-monorepo.repository_observatory@2.3", "repository": f"{owner}/termux-monorepo",
+        "watching_status": watching_status,
+        "delta": delta if delta is not None else {"available": False, "added": [], "removed": [], "provenance_changed": []},
         "observed_at": observed_at, "authenticated_user": login, "snapshot_hash": snapshot_hash(records),
         "counts": {"owned": c_owned, "starred": c_starred, "both": c_both,
                    "watching": c_watching, "owned_forks": c_owned_forks,
@@ -316,12 +367,17 @@ def main(argv: list[str] | None = None, fetch: Callable[..., Any] = get_json) ->
     owned = [r for r in pages(f"/users/{owner_path}/repos", {"type": "owner", "sort": "updated", "direction": "desc"}) if r.get("owner", {}).get("login") == args.owner]
     starred = pages(f"/users/{owner_path}/starred", {"sort": "updated", "direction": "desc"})
     watching: list[dict[str, Any]] = []
+    watching_status = "not_requested"
     if args.watching:
         try:
             watching = pages("/user/subscriptions", {"sort": "updated", "direction": "desc"})
+            watching_status = "ok"
         except (GitHubHttpError, urllib.error.HTTPError) as exc:
             # Watching needs a user token; an app/token fallback must never
-            # break the daily owned+starred index. Degrade to no watching.
+            # break the daily owned+starred index. Degrade to no watching,
+            # but record it in the payload so the degradation is visible
+            # (watching_status) instead of silently reading as zero watched.
+            watching_status = "unavailable"
             print(f"watching unavailable ({exc}); continuing without it", file=sys.stderr)
     records = build_records(owned, starred, watching)
     previous: dict[str, Any] = {}
@@ -330,10 +386,12 @@ def main(argv: list[str] | None = None, fetch: Callable[..., Any] = get_json) ->
         except (OSError, json.JSONDecodeError): previous = {}
     digest = snapshot_hash(records)
     observed_at = previous.get("observed_at") if previous.get("snapshot_hash") == digest else now()
-    payload = build_payload(args.owner, login, records, observed_at)
+    delta = compute_delta(previous.get("repositories"), records)
+    payload = build_payload(args.owner, login, records, observed_at,
+                            delta=delta, watching_status=watching_status)
     args.output.parent.mkdir(parents=True, exist_ok=True); args.markdown.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    args.markdown.write_text(markdown(records, observed_at), encoding="utf-8")
+    args.markdown.write_text(markdown(records, observed_at, delta), encoding="utf-8")
     print(json.dumps(payload["counts"], sort_keys=True)); return 0
 
 if __name__ == "__main__": raise SystemExit(main())

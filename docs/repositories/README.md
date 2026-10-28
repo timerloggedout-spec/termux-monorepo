@@ -17,6 +17,8 @@ The Repository Observatory maintains a provenance-aware index of repositories ow
 
 The workflow is intentionally idempotent and delta-oriented. Repository records are canonicalized, hashed with SHA-256, and sorted deterministically. The observation timestamp is retained when the repository snapshot is unchanged, preventing scheduled runs from creating commits solely because the clock changed.
 
+Since v2.3 the canonical index also carries a `delta` block — repositories added, removed, or provenance-changed versus the previous snapshot — rendered as the matrix's "Changes since previous snapshot" section, and a `watching_status` field (`ok` / `unavailable` / `not_requested`). Watching degradation is therefore visible in the payload and as a workflow warning, instead of silently reading as zero watched repositories. Delta entries are research signals only, never adoption orders.
+
 The collector uses bounded pagination (100 pages × 100 records maximum per endpoint), retries transient GitHub API failures with backoff, fails closed on authentication mismatch, and never emits credentials into repository artifacts.
 
 The workflow runs tests before polling, validates the generated artifact shape, publishes an Actions summary, and commits only changes to the canonical JSON or generated Markdown projection.

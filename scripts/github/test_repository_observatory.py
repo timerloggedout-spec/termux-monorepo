@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from repository_observatory import API, GitHubHttpError, build_records, build_payload, classify, resolve_login, snapshot_hash
+from repository_observatory import API, GitHubHttpError, build_records, build_payload, classify, compute_delta, markdown, resolve_login, snapshot_hash
 
 
 BASE = {
@@ -103,6 +103,44 @@ class ObservatoryTests(unittest.TestCase):
         payload = build_payload("example", "example", build_records([repo], []), "2026-09-15T00:00:00Z")
         self.assertEqual(payload["counts"]["owned_forks"], 1)
         self.assertEqual(payload["counts"]["forks_received_on_owned"], 3)
+
+    def test_delta_added_removed_and_provenance_changed(self):
+        prev = build_records([BASE], [])
+        other = dict(BASE)
+        other.update({"full_name": "example/other", "name": "other"})
+        cur = build_records([], [BASE, other])
+        delta = compute_delta(prev, cur)
+        self.assertTrue(delta["available"])
+        self.assertEqual(delta["added"], ["example/other"])
+        self.assertEqual(delta["removed"], [])
+        self.assertEqual(delta["provenance_changed"],
+                         [{"full_name": BASE["full_name"], "from": ["owned"], "to": ["starred"]}])
+
+    def test_delta_unavailable_without_previous(self):
+        delta = compute_delta(None, build_records([], [BASE]))
+        self.assertFalse(delta["available"])
+        self.assertEqual(delta["added"], [])
+
+    def test_delta_empty_when_snapshot_unchanged(self):
+        records = build_records([BASE], [dict(BASE)])
+        delta = compute_delta(records, records)
+        self.assertTrue(delta["available"])
+        self.assertEqual(delta["added"], [])
+        self.assertEqual(delta["provenance_changed"], [])
+
+    def test_payload_carries_delta_and_watching_status(self):
+        records = build_records([BASE], [])
+        payload = build_payload("example", "example", records, "2026-09-15T00:00:00Z",
+                                delta=compute_delta([], records), watching_status="unavailable")
+        self.assertEqual(payload["watching_status"], "unavailable")
+        self.assertTrue(payload["delta"]["available"])
+        self.assertEqual(payload["builder"], "termux-monorepo.repository_observatory@2.3")
+
+    def test_markdown_renders_delta_section(self):
+        records = build_records([], [BASE])
+        text = markdown(records, "2026-09-15T00:00:00Z", compute_delta([], records))
+        self.assertIn("## Changes since previous snapshot", text)
+        self.assertIn("**Added (1):**", text)
 
     def test_actions_token_403_falls_back_to_declared_owner(self):
         def fetch(path, token, params=None):

@@ -1,6 +1,6 @@
 {
   "schema": "quota-allocations-feed/v1",
-  "generated_at": "2026-10-28T02:01:37.058788+00:00",
+  "generated_at": "2026-10-28T13:20:33.954640+00:00",
   "source": "ops/quota/allocations.json (owner-set, issue #1884) joined with ops/quota/registry.json entitlements and the public readings snapshot; entitlements are not usage and no focus attribution is invented.",
   "issue": 1884,
   "set_by": "owner",
@@ -888,7 +888,7 @@
             "status": "ok",
             "horizon": "H0",
             "evidence_status": "confirmed",
-            "observed_at": "2026-10-28T01:23:16Z",
+            "observed_at": "2026-10-28T13:16:27Z",
             "used": null
           }
         },
@@ -915,10 +915,10 @@
             "window": "hourly"
           },
           "observed": {
-            "status": "watch",
+            "status": "exhausted",
             "horizon": "H0",
             "evidence_status": "confirmed",
-            "observed_at": "2026-10-28T01:23:16Z",
+            "observed_at": "2026-10-28T13:16:27Z",
             "used": null
           }
         },
@@ -1203,7 +1203,7 @@
             "status": "unknown",
             "horizon": "H0",
             "evidence_status": "confirmed",
-            "observed_at": "2026-10-28T01:23:16Z",
+            "observed_at": "2026-10-28T13:16:27Z",
             "used": null
           }
         },
@@ -1762,7 +1762,22 @@
             "status": "unknown",
             "horizon": "H0",
             "evidence_status": "confirmed",
-            "observed_at": "2026-10-28T01:23:16Z",
+            "observed_at": "2026-10-28T13:16:27Z",
+            "used": null
+          }
+        },
+        {
+          "service": "openrouter.key",
+          "entitlement": {
+            "limit": null,
+            "unit": "signal-specific requests or monetary credits; tier is not model price",
+            "window": "source daily counter; monetary budgets independently scoped"
+          },
+          "observed": {
+            "status": "unknown",
+            "horizon": "H0",
+            "evidence_status": "confirmed",
+            "observed_at": "2026-10-28T13:16:27Z",
             "used": null
           }
         }
@@ -2626,7 +2641,7 @@
             "status": "ok",
             "horizon": "H0",
             "evidence_status": "confirmed",
-            "observed_at": "2026-10-28T01:23:16Z",
+            "observed_at": "2026-10-28T13:16:27Z",
             "used": null
           }
         }
@@ -2799,6 +2814,53 @@
           "pct": 0,
           "mode": "leftover-only",
           "date": "2026-10-27",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "platform201",
+      "services": [
+        {
+          "service": "platform201.projects",
+          "entitlement": {
+            "limit": 3,
+            "unit": "projects",
+            "window": "point-in-time"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-28",
+          "reason": "Owner setting (issue #1884): Focus Winning ~100% on the active challenge slate (D1/D3/D2/D4). Pool created 2026-10-28 to complete registry coverage \u2014 platform201.projects landed in the registry (PR #1983) without an allocations entry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-28",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-28",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-28",
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
@@ -5051,6 +5113,51 @@
     },
     {
       "pool": "zai",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "platform201",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "platform201",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "platform201",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "platform201",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "platform201",
       "focus": "reserve",
       "mode": "reserve",
       "plan_pct": 0,

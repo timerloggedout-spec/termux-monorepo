@@ -171,7 +171,7 @@ unchanged as caps/tripwires):
 | Docs, all 26 pages incl. MCP docs | referral/affiliate/coupon/promo/discount: ZERO hits |
 | Pricing page (platform201.com/pricing) | FOUND: 14-day Pro trial, no card, auto-falls back to Solo. Plan-limits benefit, NOT credits. Claimable on our account: NOT ESTABLISHED. NOT OBTAINED |
 | Web coupon/promo sources | NONE found for platform201/ShoalStack |
-| Community / Discord | No Discord or community link found (site + search): NOT ESTABLISHED |
+| Community / Discord | FOUND (2026-10-28, firsthand): Space Settings carries a "Join our Discord" link → https://discord.gg/ap2pDhrDph (space timerloggedout-space). Invite/credit benefits inside the server: NOT YET CHECKED — next hunt step (join + scan for coupon/referral/credit channels). |
 | LinkedIn | No company page found: NOT ESTABLISHED |
 | Product Hunt / launch offers | No listing found: NOT ESTABLISHED |
 | Support inquiry | DRAFTED below; not sent |

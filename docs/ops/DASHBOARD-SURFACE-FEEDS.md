@@ -45,8 +45,13 @@ sources, honesty_rules, data, gaps}`.
   `.github/workflows/team-mvt.yml`).
 - **DoE** — `deepcli/deepcli/observatory/doe.py` (AST: functions +
   docstrings), `.agents/skills/multivariate-doe/SKILL.md`, the ATES doc
-  §DoE (first factorial slice), the DSPy lane design doc. The Delphi
-  cycle IMPLEMENTATION record is presented in full as
+  §DoE (first factorial slice), the DSPy lane design doc. Since #1865
+  the feed also carries the **family** block (`docs/ops/DOE-FAMILY.md`):
+  per-member sections (MVT pointer, campaigns, design classes) and a
+  `campaigns` list read from the campaigns' own committed records
+  (`experiments/doe/*/DESIGN.json`, `records/*.json`, `SUMMARY.json`) —
+  DoE-owned results, kept distinct from the Delphi presentation. The
+  Delphi cycle IMPLEMENTATION record is presented in full as
   `executed_comparisons`, labeled `owner_surface: delphi` (required
   presentation — not DoE results).
 - **ATES** — `docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md` §MVT (the seven

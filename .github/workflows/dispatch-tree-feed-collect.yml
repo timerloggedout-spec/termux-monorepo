@@ -35,11 +35,18 @@ jobs:
       - uses: actions/checkout@v4
       - name: Observe (Actions API snapshot)
         run: |
-          set -euo pipefail
+          set -uo pipefail
           python3 -B scripts/dashboards/dispatch_tree_observe.py \
-            --out scripts/dashboards/dispatch_tree_observation.json
+            --out scripts/dashboards/dispatch_tree_observation.json 2>&1 | tee /tmp/obs.log
+          rc=${PIPESTATUS[0]}
+          if [ "$rc" -ne 0 ]; then
+            gh issue create --title "dispatch-tree-feed-collect: observer failed rc=$rc" \
+              --body-file /tmp/obs.log || true
+            exit "$rc"
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Collect the feed (offline)
         run: |
           set -euo pipefail

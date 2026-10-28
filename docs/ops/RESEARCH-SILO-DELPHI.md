@@ -77,6 +77,8 @@ Research silos are **not** in `ops/delphi/surfaces.json` (18 quota surfaces). Fi
 
 Per RFP: `surface_id` = silo.id exactly · `lane` = `other` (form has no research option) · `free_quota` = "none — research template validation lane; no quota surface (evidence: slot SOURCE.txt)" · `reset_and_zone` = "none — no quota reset; parked recheck per panel award defaults" · `auth_from_actions` = "none needed" · `lock_in` = 1.
 
+**Burst rule:** any batch filing (the 12 baselines, the 36 variants, any future wave) ends with ONE `repository_dispatch` `delphi-tick` — see DELPHI-ORACLE-RFP-GATE.md § Burst filing protocol. Mid-burst gate runs cancel each other in the single pending slot; the tick + the hourly heartbeat guarantee the sweep.
+
 **Veto trap:** `surface_from_issue` flags `card_required` by substring search over the free_quota + failure_modes text — any occurrence of the payment-instrument word, even negated, triggers the cost_auditor money veto (score capped at 4). Keep that word out of both fields in research RFPs.
 
 ---

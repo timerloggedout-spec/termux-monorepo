@@ -64,6 +64,26 @@ def test_nav_and_sitemap_wiring():
 
 def test_feed_entries_renderable_shape():
     feed = json.loads(FEED.read_text(encoding="utf-8"))
-    assert feed["schema"] == "challenge-countdowns-feed/v1"
+    assert feed["schema"] == "challenge-countdowns-feed/v1.1"
     for e in feed["entries"]:
         assert e["title"] and e["id"].startswith("D")
+
+
+def test_prizes_block_rendered_never_omitted():
+    """Feed v1.1 (PR #2192): prizes are REQUIRED on this HITL page
+    (contract honesty rule 5). Every card renders its entry's prizes
+    block: tier lines (place \u2014 award), the pool line when present,
+    and an unpublished prize set as the literal NOT_ESTABLISHED \u2014
+    never blank, never omitted."""
+    html = _page()
+    assert "prizesHTML(e)" in html and "e.prizes" in html
+    assert "NOT_ESTABLISHED" in html and "p.pool" in html
+    assert "p.tiers" in html and "t.place" in html and "t.award" in html
+    feed = json.loads(FEED.read_text(encoding="utf-8"))
+    for e in feed["entries"]:
+        pz = e["prizes"]
+        assert pz["status"] in ("ESTABLISHED", "NOT_ESTABLISHED")
+        if pz["status"] == "ESTABLISHED":
+            assert pz["tiers"] or pz["pool"]
+        for tier in pz["tiers"]:
+            assert tier["place"] and tier["award"]

@@ -1,1 +1,70 @@
-{"ledgers":[{"id":"outcomes","issue":1487,"kind":"snapshot-comments","markers":["<!-- delphi-outcomes v1 -->"],"semantics":"per-surface EWMA of graded signal weights (-1..+1), alpha=0.2 (ops/delphi/panel.json flywheel.ewma_alpha), damped: one EWMA step per batch at the batch mean (gate.py apply_outcomes, issue #1533); idempotency digest sha256(key|outcome)[:16] per surface, newest 2000 kept (gate.py signal_digest/dedupe_signals)","state_rule":"newest marker comment carrying a ```json block is the current state (gate.py latest_json)","title":"Delphi outcome ledger"},{"id":"weights","issue":1489,"kind":"snapshot-comments","markers":["<!-- delphi-weights v1 -->"],"semantics":"per-role gate_pass_rate EWMA (step = alpha*|weight|) + Elo (k=16, panel.json flywheel.elo_k), hits/misses tallies (gate.py feedback_graded)","state_rule":"newest marker comment carrying a ```json block is the current state (gate.py latest_json)","title":"Delphi panel weights ledger"},{"id":"generation","issue":1487,"kind":"event-comments","markers":["<!-- delphi-generation-ballot v1 -->","<!-- delphi-generation-calibration v1 -->","<!-- delphi-research-silos v1 -->"],"semantics":"append-only; a later signed [MUSEai]@ comment may correct an earlier event (corrections are new events, never edits)","state_rule":"no folded state; the event stream is the record (ranked outcomes + calibration deltas feeding weights/outcomes)","title":"Delphi generation ballots + calibrations (appended to the outcome ledger issue)"}],"living_records":[{"id":"temporal-selfhost-status","issue":2028,"kind":"living-body","semantics":"not append-only at the source; the feed + the Neon mirror make versions append-only by keying on the body hash","state_rule":"the issue BODY is the current state (edited in place by the keepalive job); version key = sha256(body) — a changed hash is a new version of the record","title":"Temporal self-host status (living record)"}],"note":"Registry of Delphi continuous ledgers + living records. Consumed by scripts/delphi/ledger_fetch.py + ledger_feed.py (schema delphi-ledger-feed/v1, contract docs/ops/DELPHI-LEDGER-STORE.md). A comment is a ledger event iff its body starts with one of the ledger's markers or with '[MUSEai]@' (signed append, e.g. corrections); anything else on the issue is noise and is counted, never carried.","schema":"delphi-ledgers/v1"}
+{
+ "ledgers": [
+  {
+   "id": "outcomes",
+   "issue": 1487,
+   "kind": "snapshot-comments",
+   "markers": [
+    "<!-- delphi-outcomes v1 -->"
+   ],
+   "semantics": "per-surface EWMA of graded signal weights (-1..+1), alpha=0.2 (ops/delphi/panel.json flywheel.ewma_alpha), damped: one EWMA step per batch at the batch mean (gate.py apply_outcomes, issue #1533); idempotency digest sha256(key|outcome)[:16] per surface, newest 2000 kept (gate.py signal_digest/dedupe_signals); tribute ingestion cap 200 records/batch (gate dispatch cap, PR #1824)",
+   "state_rule": "newest marker comment carrying a ```json block is the current state (gate.py latest_json)",
+   "title": "Delphi outcome ledger"
+  },
+  {
+   "id": "weights",
+   "issue": 1489,
+   "kind": "snapshot-comments",
+   "markers": [
+    "<!-- delphi-weights v1 -->"
+   ],
+   "semantics": "per-role gate_pass_rate EWMA (step = alpha*|weight|) + Elo (k=16, panel.json flywheel.elo_k), hits/misses tallies (gate.py feedback_graded)",
+   "state_rule": "newest marker comment carrying a ```json block is the current state (gate.py latest_json)",
+   "title": "Delphi panel weights ledger",
+   "derivation": {
+    "formula": "w_i = base_i * (0.5 + gate_pass_rate_i) * (elo_i / 1500)",
+    "source": "docs/ops/DELPHI-WEIGHTING.md",
+    "ewma_alpha": 0.2,
+    "elo_k": 16,
+    "rule": "weights are DERIVED from events by this formula \u2014 stores carry events + this derivation; snapshots are payloads of record, never the only copy of the math"
+   }
+  },
+  {
+   "id": "generation",
+   "issue": 1487,
+   "kind": "event-comments",
+   "markers": [
+    "<!-- delphi-generation-ballot v1 -->",
+    "<!-- delphi-generation-calibration v1 -->",
+    "<!-- delphi-research-silos v1 -->"
+   ],
+   "semantics": "append-only; a later signed [MUSEai]@ comment may correct an earlier event (corrections are new events, never edits)",
+   "state_rule": "no folded state; the event stream is the record (ranked outcomes + calibration deltas feeding weights/outcomes)",
+   "title": "Delphi generation ballots + calibrations (appended to the outcome ledger issue)"
+  }
+ ],
+ "living_records": [
+  {
+   "id": "temporal-selfhost-status",
+   "issue": 2028,
+   "kind": "living-body",
+   "semantics": "not append-only at the source; the feed + the Neon mirror make versions append-only by keying on the body hash",
+   "state_rule": "the issue BODY is the current state (edited in place by the keepalive job); version key = sha256(body) \u2014 a changed hash is a new version of the record",
+   "title": "Temporal self-host status (living record)"
+  }
+ ],
+ "note": "Registry of Delphi continuous ledgers + living records. Consumed by scripts/delphi/ledger_fetch.py + ledger_feed.py (schema delphi-ledger-feed/v1, contract docs/ops/DELPHI-LEDGER-STORE.md). A comment is a ledger event iff its body starts with one of the ledger's markers or with '[MUSEai]@' (signed append, e.g. corrections); anything else on the issue is noise and is counted, never carried.",
+ "schema": "delphi-ledgers/v1",
+ "invariants": {
+  "append_only": "corrections are NEW events naming what they supersede, never edits (one graded step once consumed by a misdirected write was deliberately NOT replayed \u2014 bounded-loss lesson)",
+  "idempotency": "keys on every ingest: tribute signals keyed by thread URL, gate dedupe sha256(key|outcome); mirror/feed key sha256(ledger_id|comment_id)",
+  "source_classes": [
+   "HUMAN_COLLABORATOR",
+   "MODEL_PROVIDER",
+   "LOCAL_BASELINE"
+  ],
+  "source_classes_rule": "never collapsed in any store, feed or render; DRIVER_SYNTHESIS is not a ballot",
+  "honest_negatives": "none_validated_yet / none_yet and similar are findings recorded as data, never coerced to null or dropped",
+  "resolution": "ledgers resolved by exact issue TITLE at registration (label-order resolution misdirected state to #1567/#1784 once; fixed PR #1833); this registry pins the resolved numbers"
+ }
+}

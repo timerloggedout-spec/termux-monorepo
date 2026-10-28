@@ -81,6 +81,9 @@ ALIASES = [
     ("SiliconFlow", "silicon-flow", "SiliconFlow", "provider", "fleet"),
     ("iFlytek", "iflytek", "iFlytek", "provider", "fleet"),
     ("xKiro", "xkiro", "xKiro", "provider", "fleet"),
+    ("Dream In Production", "dream-in-production", "Dream In Production", "page", "fleet"),
+    ("Receipts Count", "receipts-count", "Receipts Count", "page", "fleet"),
+    ("Code, Not Card", "code-not-card", "Code, Not Card", "page", "fleet"),
 ]
 ALIAS_BY_ID = {pid: (alias, name, kind, aclass)
                for alias, pid, name, kind, aclass in ALIASES}

@@ -53,3 +53,19 @@ SELECT e.event_id, e.participant_key, e.payload, e.recorded_at
 FROM participant_events e
 JOIN (SELECT sync_key FROM participant_syncs ORDER BY synced_at DESC, sync_key DESC LIMIT 1) latest
   ON e.sync_key = latest.sync_key;
+
+-- Engagement touchpoints are EXECUTED logs (owner correction,
+-- 2026-10-28): engagement is autonomous — there is no draft/approval
+-- state anywhere in this schema or its writer, by design. Each
+-- participant record's engagement.touchpoints[] entries
+-- ({surface, at, content_ref}) are first-class mirror data, exposed
+-- here as rows over the current batch.
+CREATE OR REPLACE VIEW participant_touchpoints AS
+SELECT c.event_id, c.participant_key,
+       t->>'surface' AS surface,
+       t->>'at' AS at,
+       t->>'content_ref' AS content_ref
+FROM participants_current c,
+     jsonb_array_elements(
+       CASE WHEN jsonb_typeof(c.payload->'engagement'->'touchpoints') = 'array'
+            THEN c.payload->'engagement'->'touchpoints' ELSE '[]'::jsonb END) AS t;

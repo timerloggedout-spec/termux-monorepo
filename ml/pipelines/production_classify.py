@@ -103,13 +103,22 @@ def series_line(feed: dict[str, Any], prev_counts: dict[str, int] | None) -> dic
 def append_series(path: str, feed: dict[str, Any]) -> dict[str, Any]:
     """Append the feed's snapshot line to the series file; returns the line."""
     prev_counts = None
+    needs_break = False
     if os.path.exists(path):
         with open(path) as fh:
-            lines = [ln for ln in fh.read().splitlines() if ln.strip()]
+            raw = fh.read()
+        lines = [ln for ln in raw.splitlines() if ln.strip()]
         if lines:
             prev_counts = json.loads(lines[-1]).get("counts")
+        needs_break = bool(raw) and not raw.endswith("\n")
     line = series_line(feed, prev_counts)
     with open(path, "a") as fh:
+        if needs_break:
+            # A seed or hand edit without a trailing newline must not
+            # fuse two records into one physical line (2026-10-28: the
+            # seeded series shipped unterminated, the first append fused
+            # records 1+2, and every later run died in json.loads).
+            fh.write("\n")
         fh.write(json.dumps(line) + "\n")
     return line
 

@@ -76,12 +76,14 @@ Opportunity-cost metrics sit alongside prizes/participants/judges/signals/podium
 | `outcome` | `submitted` \| `not_submitted` \| `pending` — from `submission.state` + event status (closed+none = not_submitted; open window = pending) |
 | `top_award{value, form, source}` | highest single award: numeric `value` in USD/credit-USD (null if NOT_ESTABLISHED), `form` verbatim, `source` = official source / verification record |
 | `gross_foregone` | `top_award.value` if outcome=not_submitted, else 0 |
-| `win_probability{estimate, basis{field_size, our_standing}}` | estimate = winning slots / field_size ONLY when field_size is verified from an official/public entrant count; otherwise null and field_size=NOT_ESTABLISHED. Never inferred. |
-| `expected_value_foregone` | estimate × gross_foregone when estimate is established and outcome=not_submitted; null otherwise (pending/submitted = not yet / not foregone) |
+| ~~`win_probability`~~ | REMOVED from opportunity_cost 2026-10-28 (owner ruling via manager): win probability is a MoneyBall-side INTERNAL metric — sole home `events[].metrics_internal.win_probability` (winprob/v1, plane.json internal_metric, PR #2225); SILENT+HIDDEN, never rendered on feeds/pages/briefs/ledger. |
+| ~~`expected_value_foregone`~~ | REMOVED 2026-10-28 (same ruling): no EV anywhere; the ledger carries 1st-place gross only. |
 | `non_monetary_foregone[]` | non-cash items foregone (backpack/badge/visibility/judge feedback), sourced from the award/rules |
 | `computed_at` | date computed (YYYY-MM-DD) |
 
-**D0 seed (verified):** AWS Weekend Challenge (Oct 23–26 PT), not_submitted, top award $200 total ($100 AWS credits + Builder Backpack, pool $1,000, top 5), field_size 40 (public project list exhausted 2026-10-26, no match for ours), estimate 5/40=0.125, gross_foregone 200, expected_value_foregone 25.0. **Correction 2026-10-28 (owner dispute, firsthand recheck):** official Awards list values EACH award at $200 ($100 credits + backpack implied $100); pool $1,000 = 5×$200, credits subtotal $500 — PR #2219's credits-only top value 100 / EV 12.5 superseded.
+**D0 seed (verified):** AWS Weekend Challenge (Oct 23–26 PT), not_submitted, top award $200 total ($100 AWS credits + Builder Backpack, pool $1,000, top 5), field_size 40 (public project list exhausted 2026-10-26, no match for ours), gross_foregone 200. **Correction 2026-10-28 (owner dispute, firsthand recheck):** official Awards list values EACH award at $200 ($100 credits + backpack implied $100); pool $1,000 = 5×$200, credits subtotal $500 — PR #2219's credits-only top value 100 / EV 12.5 superseded. **Win-probability ruling 2026-10-28:** EV/win_probability removed from opportunity_cost; D0 internal estimate (hidden) = winprob/v1 base 1/40 = 0.025, base-rate only.
+
+**metrics_internal{} (hidden):** `win_probability{method: winprob/v1, estimate, inputs{award_slots_top:1, field_size, field_scored_count, field_mean_composite, our_composite}, computed_at}` — adaptive (recompute in the same PR as any participant/score/field/submission change); excluded by construction from countdowns feed, pages, log §4, briefs and Neon ledger views; never multiplied into any displayed figure.
 
 **DB (Neon, DB lane pattern):** sync rows carry `opportunity_cost` in events core; `challenge_events_current` exposes it and view `event_opportunity_cost` extracts outcome/gross/EV per event (schema.sql).
 

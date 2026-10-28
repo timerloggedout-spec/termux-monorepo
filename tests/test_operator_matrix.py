@@ -11,7 +11,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts" / "issue_lifecycle"))
 
-from operator_matrix import build_matrix, classify_pr, lane_family, render_md  # noqa: E402
+import pytest
+
+from operator_matrix import build_matrix, classify_pr, lane_family, render_md, validate_matrix  # noqa: E402
 
 GREEN = {"hygiene": "success", "smoke": "success"}
 
@@ -61,6 +63,19 @@ def test_build_matrix_counts_and_no_supersede():
     assert m["issues_unlabelled"] == [7]
     md = render_md(m)
     assert "#1" in md and "EXTRACT" in md and "NEED_EVIDENCE" in md
+
+
+def test_validate_matrix_rejects_prs_without_issues():
+    """Regression (2026-10-28): a token without issues:read silently
+    returned only PRs and the cut stamped '0 issues, 96 PRs'."""
+    m = build_matrix({"master": {"sha": "b" * 40, "gates": {}}, "issues": [], "prs": [pr(number=1)]}, "t")
+    with pytest.raises(ValueError):
+        validate_matrix(m)
+    ok = build_matrix(
+        {"master": {"sha": "b" * 40, "gates": {}}, "issues": [{"number": 7, "title": "x", "labels": [], "created_at": "", "updated_at": ""}], "prs": [pr(number=1)]},
+        "t",
+    )
+    validate_matrix(ok)  # must not raise
 
 
 def test_master_gate_not_established_without_both_gates():

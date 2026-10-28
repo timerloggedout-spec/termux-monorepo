@@ -88,6 +88,12 @@
    "name": "Muse (Meta)",
    "notes": "Top priority per owner. LIVE.",
    "priority": 1,
+   "rotation": {
+    "detection_source": "owner-panel (Invite friends 'uses left') \u2014 Muse exposes no redemption API/webhook (audited 2026-10-27)",
+    "engine": "scripts/referral/rotate.py via referral-rotation workflow",
+    "pool_target": 1,
+    "threshold_uses_left": 5
+   },
    "status": "active_codes",
    "terms_source": "Firsthand: owner's in-app Redeem screen, 2026-10-27 \u2014 redeem within 48h of joining, both sides get 1B tokens; tokens are a licence for AI usage, not money/stored value/gift card, usable only in Muse, non-transferable, no expiration.",
    "visitor_reward": "1 billion Muse tokens"
@@ -126,6 +132,12 @@
    "name": "Cue (by Manus)",
    "notes": "First code published; second held as rotation reserve for high availability.",
    "priority": 3,
+   "rotation": {
+    "detection_source": "in-app invite screen \u2014 no API/webhook (audited 2026-10-27)",
+    "engine": "scripts/referral/rotate.py via referral-rotation workflow",
+    "pool_target": 1,
+    "threshold_uses_left": 5
+   },
    "status": "active_codes",
    "terms_source": "Manus 2.0 announcement (manus.im): early access free with invite code; everyone who gets access receives extra invite codes to share.",
    "visitor_reward": "Early access to Cue (personal agents with own email, phone, wallet, computer)"
@@ -155,6 +167,12 @@
    "name": "Migoo",
    "notes": "Corrects census verdict: invite mechanic exists firsthand; reward side stays NOT ESTABLISHED.",
    "priority": 4,
+   "rotation": {
+    "detection_source": "in-app invite screen \u2014 no API/webhook (audited 2026-10-27)",
+    "engine": "scripts/referral/rotate.py via referral-rotation workflow",
+    "pool_target": 1,
+    "threshold_uses_left": 5
+   },
    "status": "active_codes",
    "terms_source": "Firsthand: owner's in-app 'Invite Code' screen, 2026-10-27 (3 codes issued). Public programme terms not found; ToS points are account-bound.",
    "visitor_reward": "Invite-code signup access"
@@ -187,6 +205,7 @@
    "visitor_reward": null
   }
  ],
+ "rotation_log": [],
  "rules": [
   "Free / no credit card entry only in the public stack. Paid steps are never required to redeem a listed code.",
   "Codes are fleet-owned, supplied by the owner firsthand. Third-party codes are never listed.",

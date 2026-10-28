@@ -35,12 +35,26 @@ this upgrades the census's community-reported terms.
 2. **Feed is generated, never hand-edited.** `scripts/referral/build_feed.py`
    publishes exactly one live code per programme + reserve counts. Landing and
    dashboard consume the feed only (Web Design lane integrates; Dispatch Tree).
-3. **Rotation on exhaustion.** A code reported exhausted (visitor report, owner
-   check, or in-app signal) → issue labelled `referral:exhausted` → lane flips
-   the next reserve code to `live` in the registry, rebuilds the feed, PR merges,
-   surfaces re-render. Pool empty → status `code_pending`, owner pinged once for
-   a fresh screenshot. No silent dead codes: that is the availability failure
-   mode this design exists to kill.
+3. **Rotation — automated engine, named sensors.** AUDIT (2026-10-27): as
+   originally written this step was a manual lane relay (report → issue →
+   hand-flip). It is now an engine: `scripts/referral/rotate.py`, driven by
+   the `referral-rotation` workflow (dispatch: programme, cell, source,
+   uses-left). The engine flips the next reserve into the slot, marks the old
+   code `exhausted`, rebuilds the feed, patches PARTNERS §1b, appends a
+   `rotation_log` entry, and the swap lands as a PR; the landing re-renders
+   from the feed. Rotation fires **before** exhaustion: at
+   `rotation.threshold_uses_left` (5) on a sensor reading. Pool empty → live
+   cell flips the programme to `code_pending`, cell_b empties just end that
+   A/B cell, and a `referral:pool-empty` issue is filed automatically.
+   **Detection is the one step that cannot be automated today**: no programme
+   here exposes a redemption-count API or webhook (per-programme source is
+   named in the registry, `rotation.detection_source`) — Muse = owner
+   Invite-panel "uses left", Cue/Migoo = in-app invite screens. The sensor
+   reading enters via workflow dispatch; everything downstream is automatic.
+   Pool depth, by contrast, IS registry-provable: `pool_check.py` +
+   weekly `referral-pool-watch` workflow (Tue 08:41 UTC) file a
+   `referral:pool-low` issue the moment a live programme drops below its
+   spare target — currently TRUE for Muse (0 spares) and Cue (0 spares).
 4. **Replenishment ledger → Value Derived.** Every confirmed redemption is a
    session row candidate for `free-tier-value.json` (schema
    `3l0.free-tier-use-value.v1`): Muse 1B tokens ≈ 10 weeks of free allowance;
@@ -92,3 +106,15 @@ redemptions or 14 days, whichever first.
 Blocker: Page creation — the Facebook connector lists/publishes Pages but
 has no create command; the owner creates the 2 Pages in Facebook, this lane
 wires codes + copy per cell.
+
+## Owner input needed — spare pool (terse, per programme)
+
+- **Muse**: 1 spare code. Blocker question: does the Invite panel issue a
+  second code before the first dies, or only after? If only after, rotation
+  at 0 is: owner grabs new code → dispatch → swap is automatic.
+- **Cue**: ≥1 spare code (both current codes are deployed in the A/B cells;
+  pool = 0). If the app generates more invite codes, supply 1–2.
+- **Migoo**: covered for one rotation (spare `TSGDUJ`); top up +1 when the
+  pool-watch issue fires.
+- **Manus / CellCog / Polsia / Grafana**: links, no code pool; rotation n/a
+  unless a link is capped (none established).

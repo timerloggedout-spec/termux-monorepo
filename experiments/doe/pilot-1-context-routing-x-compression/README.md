@@ -15,10 +15,13 @@ First executed DoE family campaign. Design record: `DESIGN.json`
   `.agents/skills/**/*.md`, ranked by keyword hits, top-1 doc wins
   (it can pick the wrong doc — that is the measured routing effect).
 - **explicit**: context = retrieved doc as-is. **compressed**: context =
-  retrieved doc round-tripped through CedrLang `compile_doc` →
-  `decompile_doc`; input tokens counted on the compressed form actually fed.
-- Answer extraction: first keyword-bearing line ±8 lines; if accuracy < 1.0,
-  one fallback re-retrieval at ±20 lines (counted as rework).
+  retrieved doc round-tripped through the CedrLang `compress` → `expand` pair
+  (symbol substitution + stopword removal — lossy by design); input
+  tokens counted on the compressed form actually fed.
+- Answer extraction: the 3 densest keyword-bearing windows (±8 lines,
+  ranked by keyword hits, disjoint); if accuracy < 1.0, one fallback
+  re-retrieval with 6 windows (counted as rework). The extractor sees
+  keywords only — never the required fragments it is scored against.
 - Accuracy = required fragments recovered / required (case-insensitive).
 - One run = one `records/*.json`, conforming to
   `docs/ops/corpus/EXPERIMENT.schema.json` (family-adopted schema).
@@ -38,3 +41,27 @@ First executed DoE family campaign. Design record: `DESIGN.json`
 - Re-running the runner regenerates records; `observed_at` and
   `elapsed_ms` are run stamps and will differ. Everything else is
   deterministic at the pinned `base_sha` in DESIGN.json.
+
+## Results (executed 2026-10-28, base 5ce1a9c2)
+
+32 runs (8 tasks × 4 arms). Full aggregates + effects: `SUMMARY.json`.
+
+| Arm | Mean accuracy | Mean input tokens |
+|---|---|---|
+| icm-guided / explicit | 0.9375 | 1051.6 |
+| bounded-search / explicit | 0.8125 | 928.4 |
+| icm-guided / compressed | 0.3125 | 981.8 |
+| bounded-search / compressed | 0.3125 | 870.6 |
+
+Factorial effects on accuracy: routing +0.0625, representation
+−0.5625, interaction −0.0625.
+
+**Verdict: threshold NOT met.** CedrLang compression (compress/expand
+pair) cut input tokens only ~7% while destroying required-fragment
+recovery (stopword removal + punctuation stripping break verbatim
+source fragments). Routing choice barely mattered once the target doc
+was reachable. Negative result preserved per the skill's rule 10 —
+compression of routing-boundary context is not safe for
+source-grounded tasks in its current form; the #1849 live variant
+should not wake the compressed level until compression is
+fragment-preserving.

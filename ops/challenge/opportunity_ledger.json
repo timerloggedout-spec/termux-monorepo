@@ -6,7 +6,8 @@
     "Append-only: entries are never edited or deleted; corrections land as NEW entries referencing the entry they correct.",
     "Every event outcome (submitted/not, placed/not) appends an entry at close.",
     "Live events near deadline with no submission carry AT_RISK entries (gross_foregone 0 until close).",
-    "Totals block is derived from the entries and recomputed on each append (totals are not an entry)."
+    "Totals block is derived from the entries and recomputed on each append (totals are not an entry).",
+    "LEDGER = 1ST PLACE ONLY (owner correction 2026-10-28): entries record ONLY the top (1st-place) award gross foregone; no expected_value_foregone, no win_probability anywhere in entries or totals. Totals = sum of 1st-place gross by form over non-superseded entries."
   ],
   "entries": [
     {
@@ -59,26 +60,76 @@
       },
       "recorded_at": "2026-10-28",
       "pr_ref": "PR #2232"
+    },
+    {
+      "id": "OC-004",
+      "entry_type": "correction",
+      "corrects": "OC-001",
+      "event": "STRANDS-DECIDER \u2014 Agent Experience Hackathon: Strands Decider (Oct 16\u201323, 2026)",
+      "top_award": {
+        "value": 5000,
+        "form": "$5,000 AWS credits (top winner award; ledger = 1st-place gross only, swag excluded from ledger gross per owner correction)"
+      },
+      "status": "LOST",
+      "basis": "owner correction 2026-10-28: ledger = 1st place only, total $5,200 across OC-001+OC-002 as corrected. Supersedes OC-001 figures (5600 incl. swag) and removes its expected_value_foregone field. Status LOST per owner ruling (PR #2229 corroboration stands).",
+      "gross_foregone": 5000,
+      "recorded_at": "2026-10-28",
+      "pr_ref": "PR #2241"
+    },
+    {
+      "id": "OC-005",
+      "entry_type": "correction",
+      "corrects": "OC-002",
+      "event": "D0 \u2014 Weekend Challenge: Give your Agent a Tool (Oct 23\u201326, 2026)",
+      "top_award": {
+        "value": 200,
+        "form": "$100 AWS credits + Builder Backpack (official award value $200)"
+      },
+      "status": "LOST",
+      "basis": "owner correction 2026-10-28: figures unchanged ($200 stands); removes OC-002's expected_value_foregone field \u2014 ledger carries gross only.",
+      "gross_foregone": 200,
+      "recorded_at": "2026-10-28",
+      "pr_ref": "PR #2241"
+    },
+    {
+      "id": "OC-006",
+      "entry_type": "correction",
+      "corrects": "OC-003",
+      "event": "D1 \u2014 Strands SDK: Workshop to Ship (Oct 28 \u2013 Nov 4, 2026)",
+      "top_award": {
+        "value": 5000,
+        "form": "$5,000 AWS Promotional Credits (top winner award; ledger convention per owner correction)"
+      },
+      "status": "AT_RISK",
+      "basis": "owner correction 2026-10-28: AT_RISK exposure restated to 1st-place ledger convention ($5,000, matching OC-004); removes OC-003's expected_value_foregone field. Converts at close.",
+      "gross_foregone": 0,
+      "recorded_at": "2026-10-28",
+      "pr_ref": "PR #2241"
     }
   ],
   "totals": {
     "as_of": "2026-10-28",
-    "entries": 3,
+    "entries": 6,
+    "corrections_applied": [
+      "OC-004",
+      "OC-005",
+      "OC-006"
+    ],
     "lost": {
       "count": 2,
-      "gross_foregone_total_value": 5800,
+      "gross_foregone_total_value": 5200,
       "by_form": {
         "credits": 5100,
-        "swag_value": 700,
+        "swag_value": 100,
         "cash": 0
       }
     },
     "at_risk": {
       "count": 1,
-      "exposure_value": 5600,
+      "exposure_value": 5000,
       "by_form": {
         "credits": 5000,
-        "swag_value": 600,
+        "swag_value": 0,
         "cash": 0
       }
     },
@@ -89,6 +140,7 @@
     "recovered": {
       "count": 0,
       "value": 0
-    }
+    },
+    "note": "Totals over non-superseded entries only (OC-004..006 supersede OC-001..003). 1st-place gross only; no EV, no win probability."
   }
 }

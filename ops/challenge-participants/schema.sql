@@ -239,10 +239,15 @@ JOIN (SELECT sync_key FROM participant_syncs ORDER BY synced_at DESC, sync_key D
 
 -- Running totals: LOST gross by form + AT_RISK exposure (gross only, no EV).
 CREATE OR REPLACE VIEW opportunity_ledger_totals AS
+-- 1st-place gross only, no EV (owner correction 2026-10-28); superseded
+-- entries (named by a correction entry's `corrects`) are excluded.
 SELECT payload->>'status' AS status, count(*) AS entries,
        sum((payload->>'gross_foregone')::numeric) AS gross_foregone,
        sum((payload->'top_award'->>'value')::numeric) AS top_award_value_total
-FROM opportunity_ledger_current GROUP BY payload->>'status';
+FROM opportunity_ledger_current e
+WHERE NOT EXISTS (SELECT 1 FROM opportunity_ledger_current x
+                  WHERE x.payload->>'corrects' = e.entry_id)
+GROUP BY payload->>'status';
 
 -- ===== OSINT page snapshots (2026-10-28) =====
 -- Append-only official-page snapshots from ops/challenge/osint/snapshots.json

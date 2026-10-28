@@ -4,6 +4,40 @@
     {
       "handling": {
         "escalation": [
+          "If a granted spot requires creating an Aha account or profile, any forced personal field is owner-gated (4n0n rule 6); the identity on the submitted form is the fleet identity recorded in the Profile Registry."
+        ],
+        "owner_lane": "challenge-entries",
+        "receipts_route": "Registration was a form submission (no account exists); the organizer's spot decision lands in the owner's Gmail. The owning lane cites it into docs/ops/CHALLENGE-ENTRIES-LOG.md (R4 / packet D5) by PR and syncs this registry.",
+        "submission_authority": "The owning lane prepares artifacts under the moniker; submission follows the challenge log's standing boundary: no new account, no payment, no owner-gated step, and the challenge is already entered or owner-approved."
+      },
+      "kind": "platform",
+      "moniker": "n0nAha",
+      "notes": [
+        "Assigned by the registry lane 2026-10-27 on activation (log R4 + packet D5, PR #1969); the packet deliberately carried 'registry process pending' - no moniker was invented on the entries side."
+      ],
+      "platform": "Aha.io",
+      "platform_id": "aha-io",
+      "profile_ref": "Aha.io",
+      "registrations": [
+        {
+          "aspect": "platform",
+          "event": "Aha! AI Builder Day Hackathon",
+          "ref": "R4",
+          "status": "registered 2026-10-27 - spot pending review (form submission; no account created)"
+        },
+        {
+          "aspect": "platform",
+          "event": "Aha! AI Builder Day Hackathon entry (packet D5)",
+          "ref": "D5",
+          "status": "registered - spot pending review; build window Nov 17-19, 2026"
+        }
+      ],
+      "role": "entrant",
+      "status": "registering"
+    },
+    {
+      "handling": {
+        "escalation": [
           "Card-gated signup is a BLOCK: it stops and surfaces as an owner item.",
           "If the platform rejects the assigned username (taken or invalid format), the account-creation lane surfaces it; the registry assigns the rule's collision variant (smallest free integer >= 2) - the lane never improvises a different name."
         ],

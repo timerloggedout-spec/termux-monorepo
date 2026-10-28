@@ -410,13 +410,14 @@
           "If the username n0nPlatform201 is taken or invalid at the form, the registry assigns the rule's collision variant - names are never improvised."
         ],
         "owner_lane": "platform201-status",
-        "receipts_route": "Signup state (username of record n0nPlatform201, plan, verification) is recorded in the Profile Registry under the platform201-status lane's section by that lane's PR once the live attempt resolves.",
+        "receipts_route": "Account state (space, plan, project handle) is recorded in the Profile Registry under the platform201-status lane's section by that lane's PR; this entry flips to a resolving profile_ref when that block lands.",
         "submission_authority": "The platform201-status lane operates the account under the moniker within the owner's LIVE directive: free tier only."
       },
       "kind": "provider",
       "moniker": "n0nPlatform201",
       "notes": [
-        "Assigned 2026-10-27 at owner order via the platform201-status lane (Platform201 LIVE required; formerly Shoal Stack). A live signup attempt is running in that lane using n0nPlatform201 as the username of record; free tier only, no card. Profile pending that lane's Profile Registry entry on resolution."
+        "Assigned 2026-10-27 at owner order via the platform201-status lane (Platform201 LIVE required; formerly Shoal Stack). A live signup attempt is running in that lane using n0nPlatform201 as the username of record; free tier only, no card. Profile pending that lane's Profile Registry entry on resolution.",
+        "Resolved 2026-10-28: account LIVE (platform201-status lane PR #1983, merged 92aab593da). Signup presented NO username field (Google route) - the moniker was not consumed at the form and stands as the account moniker of record. Project handle and space state are profile facts: Profile Registry, platform201-status section (pending that lane)."
       ],
       "platform": "Platform201",
       "platform_id": "platform201",
@@ -424,7 +425,7 @@
       "profile_ref": null,
       "registrations": [],
       "role": "account",
-      "status": "registering"
+      "status": "active"
     },
     {
       "handling": {

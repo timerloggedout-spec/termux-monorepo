@@ -83,7 +83,7 @@ of record. Tooling: `scripts/registration_monikers/registry.py`
 | lablab.ai | `entrant{n0nLablab}[platform:lablab-ai]` | lablab.ai | registering | D2 | challenge-entries |
 | LLM7 | `account{n0nLlm7}[platform:llm7]` | — (pending: account-creation) | pending | — | account-creation |
 | ModelScope | `account{n0nModelScope}[platform:model-scope]` | — (pending: account-creation) | pending | — | account-creation |
-| Platform201 | `account{n0nPlatform201}[platform:platform201]` | — (pending: platform201-status) | registering | — | platform201-status |
+| Platform201 | `account{n0nPlatform201}[platform:platform201]` | — (pending: platform201-status) | active | — | platform201-status |
 | Receipts Count | `account{n0nReceiptsCount}[platform:receipts-count]` | — (pending: marketing-channel) | pending | — | marketing-channel |
 | Requesty | `account{n0nRequesty}[platform:requesty]` | — (pending: account-creation) | pending | — | account-creation |
 | Routeway | `account{n0nRouteway}[platform:routeway]` | — (pending: account-creation) | pending | — | account-creation |

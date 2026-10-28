@@ -19,11 +19,23 @@ if not EXPORT_ZIP or not EXPORT_ZIP.exists():
     sys.exit(1)
 
 TMP = HOME / '.cache' / 'deepseek_export_extract'
-TMP.mkdir(parents=True, exist_ok=True)
+if TMP.is_symlink() or TMP.parent.is_symlink():
+    raise ValueError(f"Symlink temporary directory {TMP} rejected for security")
+TMP.mkdir(mode=0o700, parents=True, exist_ok=True)
+if hasattr(os, "chmod"):
+    try:
+        os.chmod(str(TMP), 0o700)
+    except OSError:
+        pass
 
-# Extract ZIP
+# Extract ZIP safely with Zip Slip protection
+resolved_tmp = Path(os.path.abspath(TMP))
 with zipfile.ZipFile(EXPORT_ZIP, 'r') as zf:
-    zf.extractall(TMP)
+    for member in zf.infolist():
+        target_path = Path(os.path.abspath(TMP / member.filename))
+        if os.path.commonpath([resolved_tmp, target_path]) != str(resolved_tmp):
+            raise ValueError(f"Zip Slip path traversal detected in archive entry: {member.filename}")
+        zf.extract(member, TMP)
 
 print(f"Extracted to {TMP}")
 print("Contents:")
@@ -90,9 +102,14 @@ else:
 # Copy conversations to exports directory
 for f in TMP.rglob('conversations.json'):
     dest = HOME / 'storage' / 'downloads' / 'synthegration_exports' / '_official_export'
+    if dest.is_symlink() or dest.parent.is_symlink():
+        raise ValueError(f"Symlink destination directory {dest} rejected for security")
     dest.mkdir(parents=True, exist_ok=True)
-    shutil.copy(f, dest / f.name)
-    print(f"Conversations copied to {dest / f.name}")
+    dest_file = dest / f.name
+    if dest_file.is_symlink():
+        raise ValueError(f"Symlink destination file {dest_file} rejected for security")
+    shutil.copy(f, dest_file)
+    print(f"Conversations copied to {dest_file}")
 
 # Cleanup
 shutil.rmtree(TMP)

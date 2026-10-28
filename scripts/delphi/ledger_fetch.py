@@ -15,6 +15,8 @@ import argparse
 import json
 import os
 import shutil
+import time
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -22,13 +24,35 @@ API = "https://api.github.com"
 
 
 def get(token: str, url: str):
-    req = urllib.request.Request(url, headers={
-        "Authorization": f"Bearer {token}",
-        "Accept": "application/vnd.github+json",
-        "X-GitHub-Api-Version": "2022-11-28",
-    })
-    with urllib.request.urlopen(req, timeout=60) as resp:
-        return json.loads(resp.read())
+    """GET with the gate's defer discipline: a shared-token 403/429 is a
+    rate-limit defer, not a hard failure (delphi-gate defer_api class).
+    Retries with backoff, then raises Defer — main() turns that into a
+    notice + exit 0 with NO cache written, and the workflow skips its
+    remaining steps when the cache is absent."""
+    for attempt in range(4):
+        req = urllib.request.Request(url, headers={
+            "Authorization": f"Bearer {token}",
+            "Accept": "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2022-11-28",
+        })
+        try:
+            with urllib.request.urlopen(req, timeout=60) as resp:
+                return json.loads(resp.read())
+        except urllib.error.HTTPError as e:
+            body = e.read().decode(errors="replace")[:300]
+            if e.code in (403, 429) and attempt < 3:
+                wait = 20 * (2 ** attempt)
+                print(f"::notice title=delphi-ledger-fetch::HTTP {e.code} "
+                      f"(rate-limit class), retry in {wait}s: {body[:120]}")
+                time.sleep(wait)
+                continue
+            if e.code in (403, 429):
+                raise Defer(f"HTTP {e.code} after retries: {body[:200]}")
+            raise
+
+
+class Defer(Exception):
+    pass
 
 
 def paged(token: str, url: str) -> list:
@@ -58,9 +82,15 @@ def main() -> int:
     cache.mkdir(parents=True, exist_ok=True)
     base = f"{API}/repos/{args.repo}"
     issues, comments = [], {}
-    for num in numbers:
-        issues.append(get(token, f"{base}/issues/{num}"))
-        comments[str(num)] = paged(token, f"{base}/issues/{num}/comments")
+    try:
+        for num in numbers:
+            issues.append(get(token, f"{base}/issues/{num}"))
+            comments[str(num)] = paged(token, f"{base}/issues/{num}/comments")
+    except Defer as e:
+        print(f"::notice title=delphi-ledger-fetch::DEFERRED (shared-token "
+              f"rate limit, gate defer_api class): {e}; no cache written, "
+              f"workflow skips remaining steps")
+        return 0
     (cache / "issues.json").write_text(json.dumps(issues))
     (cache / "comments.json").write_text(json.dumps(comments))
     shutil.copy(registry_src, cache / "ledgers.json")

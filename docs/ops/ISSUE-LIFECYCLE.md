@@ -328,6 +328,18 @@ labelled at birth by the gate — plus one new label in use, `temporal`
   weekly pass rides out a hot window; non-rate-limit errors still
   fail immediately with the body printed. A third regression test
   pins the retry.
+- **Proof outcome (2026-10-28, ~14:34–14:37 UTC).** The retry fix
+  landed as PR #2034, merged `f8ebb621e22a` (history-scan + content
+  verified). Proof sequence, each step read from the run's own job
+  log, not its conclusion: report run `40706724713` retried the rate
+  limit 4 times with backoff and failed loudly (bucket still
+  exhausted); report run `40707249843` then succeeded with output
+  "open issues: 284; unlabelled: 35" — matching this lane's
+  independent post-pass census (47 − 12) — and proposed `proposal`
+  for exactly #1595/#1596; apply run `40707554421` succeeded and
+  #1595/#1596 now carry `proposal`, applied by the automation itself.
+  **The triage automation is proven live — this time on outcomes.**
+  Unlabelled after all pass-2 work: 33.
 - **Maintain — lane pass 2:** 12 issues labelled with signed comments —
   the 10 oldest unlabelled (#50 `ci`; #51 `documentation`+`automation`;
   #52 `bug`+`ci`; #53 `documentation`; #54 `ci`+`gemini`; #56

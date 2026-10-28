@@ -175,13 +175,21 @@ each other):
 
 | When (PT) | Focus |
 |-----------|-------|
-| Oct 27–29 | **D0 Weekend Challenge completion package — COMPLETED Oct 27** (PR #1702; predecessor: D1 reuses this agent work); D3 scaffold + core actions (build window open since Oct 19); D1 agent drafted locally, published in-window; D2 registration/sandbox recon |
-| Oct 28 | D1 window opens — workshop completion (owner account) + agent repo goes public |
-| Oct 30–Nov 1 | ~~D3 build weekend~~ — SUPERSEDED 2026-10-28 (concept killed; official schedule moved: final weekend Nov 6–8); Kiroween window opens Oct 30 — no project creation (owner sequencing) |
+| Oct 27–29 | **D0 Weekend Challenge completion package — COMPLETED Oct 27** (PR #1702); D1/D3 fleet-derived concepts stopped Oct 28; D1 workshop/profile path continues; D3 brief-first regeneration only; D2 registration/sandbox recon |
+| Oct 28 | D1 window opens — workshop completion (owner account) + in-window project work |
+| Oct 30–Nov 1 | **D3 core build** (regenerated concept only, after owner freeze); Kiroween window opens Oct 30 13:00 PDT — no project creation (owner sequencing) |
+| Nov 3–4 | **D1 FIRST deadline — priority up:** finish article, video, submission packet → owner submits by Nov 4 11:59 PM PT; D2 registration + sandbox prep in parallel |
+| Nov 5–8 | **D2 build PRIMARY** (lablab online build is Nov 3–8) → submit by Nov 8, 3:00 PM PST |
+| Nov 6–8 | D3 final weekend = polish + Clips only (secondary to D2 primary; no double-book) |
 | Nov 9 | D3 submit by 11:59 PM PT (date corrected 2026-10-28 per current Official Rules) |
-| Nov 3–4 | D1 finish: article, video, submission packet → owner submits by Nov 4 11:59 PM PDT; D2 registration + sandbox prep in parallel |
-| Nov 5–8 | D2 build (lablab online build is Nov 3–8) → submit by Nov 8, 3:00 PM PST |
 | After Nov 8 | D4 build (deadline Dec 4, 2:00 PM PST) |
+
+**Manager re-sequence (2026-10-28):** D1 is now the first deadline
+(Nov 4) and takes priority. D3 began Oct 27, but its core build remains
+Oct 30–Nov 1; the Nov 6–8 final weekend is polish/Clips only and is
+secondary to D2's Nov 5–8 build. Picks pending owner freeze:
+**D3 = ListingLens; D1 = StudySprint** (pending — not frozen, no build
+authorization from the pick alone).
 
 **Standing blocker for every platform submission: the incomplete Builder
 profile (§2).** It gates D1 directly and is the first blocker surfaced wherever
@@ -199,18 +207,18 @@ FUTURE (logged, not now): DoE-style comparison of manager implementations.
 | Entry | State | Window (PT) | Gate |
 |-------|-------|-------------|------|
 | D0 | DONE (completed 2026-10-27) | closed Oct 26 | — |
-| D1 | IN PROGRESS — window OPEN; concept set STOPPED 2026-10-28 (tainted) | closes Nov 4 23:59 | **G-07 Builder profile — ESCALATED** (login card unentered since 2026-10-27 07:34; sessions expired) + in-window workshop badge evidence |
-| D2 | IN PROGRESS | opens Nov 5; closes Nov 8 15:00 | no-card path only (lablab + Discord + Vultr sandbox) |
-| D3 | STOPPED 2026-10-28 — concept killed; brief-first regeneration pending | closes Nov 9 23:59 (official schedule moved; corrected 2026-10-28) | Clips account ✓ created 2026-10-27 (held for the regenerated concept) |
+| D1 | IN PROGRESS — window OPEN; concept set STOPPED 2026-10-28 (tainted); pick pending owner freeze: StudySprint; FIRST deadline — priority up | closes Nov 4 23:59 | **G-07 Builder profile — ESCALATED** (login card unentered since 2026-10-27 07:34; sessions expired) + in-window workshop badge evidence |
+| D2 | IN PROGRESS — Nov 5–8 build PRIMARY over D3 final weekend | opens Nov 5; closes Nov 8 15:00 | no-card path only (lablab + Discord + Vultr sandbox) |
+| D3 | STOPPED 2026-10-28 — concept killed; brief-first regeneration pending; pick pending owner freeze: ListingLens; core build Oct 30–Nov 1, final weekend polish/Clips only | closes Nov 9 23:59 (official schedule moved; corrected 2026-10-28) | Clips account ✓ created 2026-10-27 (held for the regenerated concept) |
 | D4 | REGISTERING | eligibility opens Oct 30 13:00 PDT; closes Dec 4 14:00 | Devpost + Kiro accounts (sibling lane); no project creation before the window opens |
 | D5 | REGISTERED — spot pending review | opens Nov 17 9:00 AM; closes Nov 19 23:59 (window end) | spot confirmation email |
 
-<!-- countdown:BLOCK -->⏳ countdowns — D0: CLOSED · D1: closes in 7d 17h · D2: opens in 7d 17h (closes Nov 8 15:00 PT) · D3: closes in 12d 17h · D4: opens in 2d 5h (closes Dec 4 14:00 PT) · D5: opens in 20d 2h (closes Nov 19 23:59 PT) (computed 2026-10-28 07:54 PT)<!-- /countdown:BLOCK -->
+<!-- countdown:BLOCK -->⏳ countdowns — D0: CLOSED · D1: closes in 7d 17h · D2: opens in 7d 17h (closes Nov 8 15:00 PT) · D3: closes in 12d 17h · D4: opens in 2d 5h (closes Dec 4 14:00 PT) · D5: opens in 20d 2h (closes Nov 19 23:59 PT) (computed 2026-10-28 07:56 PT)<!-- /countdown:BLOCK -->
 
 ### D0 — for R2, Weekend Challenge: Give your Agent a Tool — COMPLETED 2026-10-27 (owner ruling 2026-10-27; date set: Oct 29)
 
 <!-- countdown-data:D0 opens=- closes=2026-10-26T13:00:00-07:00 -->
-<!-- countdown:D0 -->⏳ CLOSED (computed 2026-10-28 07:54 PT)<!-- /countdown:D0 -->
+<!-- countdown:D0 -->⏳ CLOSED (computed 2026-10-28 07:56 PT)<!-- /countdown:D0 -->
 
 `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]`
 
@@ -272,7 +280,7 @@ FUTURE (logged, not now): DoE-style comparison of manager implementations.
 ### D1 — for C1, Workshop to Ship — IN PROGRESS (owner already joined) — CONCEPT SET STOPPED 2026-10-28 (brief-first regeneration pending)
 
 <!-- countdown-data:D1 opens=2026-10-28T00:00:00-07:00 closes=2026-11-04T23:59:00-08:00 -->
-<!-- countdown:D1 -->⏳ closes in 7d 17h (computed 2026-10-28 07:54 PT)<!-- /countdown:D1 -->
+<!-- countdown:D1 -->⏳ closes in 7d 17h (computed 2026-10-28 07:56 PT)<!-- /countdown:D1 -->
 
 `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]`
 
@@ -337,7 +345,7 @@ FUTURE (logged, not now): DoE-style comparison of manager implementations.
 ### D2 — for C2, Vultr Agent Rush (Foundry entry) — IN PROGRESS
 
 <!-- countdown-data:D2 opens=2026-11-05T00:00:00-08:00 closes=2026-11-08T15:00:00-08:00 -->
-<!-- countdown:D2 -->⏳ opens in 7d 17h (computed 2026-10-28 07:54 PT)<!-- /countdown:D2 -->
+<!-- countdown:D2 -->⏳ opens in 7d 17h (computed 2026-10-28 07:56 PT)<!-- /countdown:D2 -->
 
 `entrant{entrantLablabAi}[platform:lablab-ai]` + `entrant{entrantVultr}[platform:vultr]`
 
@@ -367,7 +375,7 @@ FUTURE (logged, not now): DoE-style comparison of manager implementations.
 ### D3 — for C3, Builder.io Agent-Native Hackathon — STOPPED 2026-10-28 (concept killed; brief-first regeneration pending)
 
 <!-- countdown-data:D3 opens=- closes=2026-11-09T23:59:00-08:00 -->
-<!-- countdown:D3 -->⏳ closes in 12d 17h (computed 2026-10-28 07:54 PT)<!-- /countdown:D3 -->
+<!-- countdown:D3 -->⏳ closes in 12d 17h (computed 2026-10-28 07:56 PT)<!-- /countdown:D3 -->
 
 `entrant{entrantBuilderIo}[platform:builder-io]`
 
@@ -454,7 +462,7 @@ FUTURE (logged, not now): DoE-style comparison of manager implementations.
 ### D4 — for C4, Kiroween 2026 — REGISTERING (build sequenced after Nov 8)
 
 <!-- countdown-data:D4 opens=2026-10-30T13:00:00-07:00 closes=2026-12-04T14:00:00-08:00 -->
-<!-- countdown:D4 -->⏳ opens in 2d 5h (computed 2026-10-28 07:54 PT)<!-- /countdown:D4 -->
+<!-- countdown:D4 -->⏳ opens in 2d 5h (computed 2026-10-28 07:56 PT)<!-- /countdown:D4 -->
 
 `entrant{entrantDevpost}[platform:devpost]` + `entrant{entrantKiro}[platform:kiro]` — account creation owned by the dedicated Devpost + Kiro ID creation chat (owner order 2026-10-27, fleet Google identity route); registration completes with this lane on its handoff.
 
@@ -508,7 +516,7 @@ FUTURE (logged, not now): DoE-style comparison of manager implementations.
 ### D5 — for Aha! AI Builder Day Hackathon (Aha.io) — REGISTERED 2026-10-27 (spot pending review)
 
 <!-- countdown-data:D5 opens=2026-11-17T09:00:00-08:00 closes=2026-11-19T23:59:00-08:00 -->
-<!-- countdown:D5 -->⏳ opens in 20d 2h (computed 2026-10-28 07:54 PT)<!-- /countdown:D5 -->
+<!-- countdown:D5 -->⏳ opens in 20d 2h (computed 2026-10-28 07:56 PT)<!-- /countdown:D5 -->
 
 `entrant{n0nAha}[platform:aha-io]` (assigned via the registry process,
 PR #1970 merged 2e99fadd).

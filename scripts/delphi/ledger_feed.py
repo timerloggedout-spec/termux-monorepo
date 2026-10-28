@@ -97,6 +97,7 @@ def collect(cache: Path) -> dict:
                 noise_of_issue[num] = noise_of_issue.get(num, 0) + 1
 
     feed: dict = {"schema": SCHEMA, "ledgers": [], "living_records": [],
+                  "invariants": registry.get("invariants", {}),
                   "summary": {"events": 0, "excluded_noise": 0}}
     for led in registry.get("ledgers", []):
         num = led["issue"]
@@ -127,6 +128,7 @@ def collect(cache: Path) -> dict:
         feed["ledgers"].append({
             "id": led["id"], "title": led["title"], "issue": num,
             "kind": led["kind"], "semantics": led["semantics"],
+            "derivation": led.get("derivation"),
             "state_rule": led["state_rule"], "events": events,
             "current": current, "excluded_noise": noise})
         feed["summary"]["events"] += len(events)

@@ -12,8 +12,12 @@ lf = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(lf)
 
 REG = {"schema": "delphi-ledgers/v1",
+       "invariants": {"append_only": "corrections are new events",
+                      "source_classes": ["HUMAN_COLLABORATOR", "MODEL_PROVIDER",
+                                         "LOCAL_BASELINE"]},
        "ledgers": [{"id": "outcomes", "issue": 11, "kind": "snapshot-comments",
                     "markers": ["<!-- delphi-outcomes v1 -->"],
+                    "derivation": {"formula": "w = base * (0.5 + gpr) * (elo / 1500)"},
                     "semantics": "s", "state_rule": "r", "title": "Outcomes"}],
        "living_records": [{"id": "living", "issue": 12, "kind": "living-body",
                            "semantics": "s", "state_rule": "r", "title": "Living"}]}
@@ -50,6 +54,8 @@ def test_events_current_and_noise(tmp_path):
     assert led["excluded_noise"] == 1
     assert led["current"]["comment_id"] == 4  # gate latest_json rule
     assert led["current"]["payload"]["surfaces"]["a"]["ewma"] == -0.04
+    assert led["derivation"]["formula"].startswith("w = base")
+    assert feed["invariants"]["source_classes"][0] == "HUMAN_COLLABORATOR"
     assert led["events"][1]["marker"] is None  # signed append, no marker
     assert led["events"][1]["payload"] is None
     living = feed["living_records"][0]

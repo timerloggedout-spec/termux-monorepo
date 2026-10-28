@@ -58,3 +58,22 @@ SELECT DISTINCT ON (ledger_id)
 FROM delphi_ledger_events
 WHERE payload IS NOT NULL
 ORDER BY ledger_id, occurred_at DESC, comment_id DESC;
+
+-- Weights are DERIVED, not stored (DELPHI-WEIGHTING.md):
+--   w_i = base_i * (0.5 + gate_pass_rate_i) * (elo_i / 1500)
+-- This view applies the derivation to the current weights payload, so a
+-- query answers with derived weights while the events + formula remain
+-- the record. Source classes are carried in ballot/calibration event
+-- payloads and are never collapsed here or in any consumer.
+CREATE OR REPLACE VIEW delphi_weights_current AS
+SELECT r.key AS role,
+       (r.value->>'base')::numeric AS base,
+       (r.value->>'gate_pass_rate')::numeric AS gate_pass_rate,
+       (r.value->>'elo')::numeric AS elo,
+       round((r.value->>'base')::numeric
+             * (0.5 + (r.value->>'gate_pass_rate')::numeric)
+             * ((r.value->>'elo')::numeric / 1500), 4) AS weight,
+       (r.value->>'hits')::int AS hits,
+       (r.value->>'misses')::int AS misses
+FROM delphi_ledger_current c, jsonb_each(c.payload->'roles') AS r
+WHERE c.ledger_id = 'weights';

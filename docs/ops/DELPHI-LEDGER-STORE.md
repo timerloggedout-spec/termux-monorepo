@@ -70,6 +70,39 @@ outcome history for one surface = payload path queries over
 `delphi_ledger_events WHERE ledger_id='outcomes'` ordered by
 `occurred_at`. Until then both are one `jq` over the feed file.
 
+## Semantics amendments (Delphi lane review, 2026-10-28)
+
+Delivered after slice 1 landed; diffed against the build and folded in
+here + registry + schema (amendment PR follows this doc):
+
+- **Weights derivation (was missing):** `w_i = base_i × (0.5 +
+  gate_pass_rate_i) × (elo_i / 1500)` (DELPHI-WEIGHTING.md:43). Weights
+  are DERIVED from events — the mirror therefore stores events + the
+  derivation (`delphi_weights_current` view applies it to the current
+  payload); the feed carries `derivation` on the weights ledger and
+  payloads verbatim. Snapshots alone are never the record.
+- **Invariants as contract** (registry `invariants`, carried into the
+  feed verbatim): append-only with corrections as new superseding
+  events; idempotency keys on every ingest; source classes
+  HUMAN_COLLABORATOR / MODEL_PROVIDER / LOCAL_BASELINE never collapsed
+  (DRIVER_SYNTHESIS is not a ballot); honest negatives
+  (`none_validated_yet`, `none_yet`) are data, never nulls; ledger
+  resolution by exact title (PR #1833), numbers pinned in the registry.
+- **Batch cap:** tribute ingestion ≤ 200 records/batch (PR #1824),
+  added to the outcomes semantics.
+- **Per-RFP gate ledgers** are the `delphi-rfp-feed` domain (status =
+  latest award comment; `delphi:converged` is a rounds property) —
+  already web-available; this store covers the continuous ledgers and
+  cross-references that feed rather than duplicating it.
+- **Living-record discrepancy, stated:** the Delphi lane describes
+  living records as periodic snapshot comments; #2028 firsthand is the
+  opposite — its comments are third-party vendor posts and the record
+  itself is the issue BODY, edited in place by the keepalive job with
+  a `Snapshot` stamp in the body. The registry therefore supports both
+  kinds; #2028 is registered `living-body`. If a snapshot-comment
+  living record is named, it registers as `snapshot-comments` with no
+  collector change.
+
 ## Render handoff
 
 Web Design lane (f2acba6f): render `delphi-ledger-feed.json` like the

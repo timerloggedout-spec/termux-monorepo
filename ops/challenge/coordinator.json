@@ -572,11 +572,18 @@
           },
           "persona": {
             "bio": "NOT_ESTABLISHED",
-            "skills": [],
+            "skills": [
+              "agentic AI",
+              "MCP servers",
+              "Python",
+              "TypeScript",
+              "Supabase",
+              "backend systems"
+            ],
             "past_events": [],
             "past_wins": [],
             "public_links": {
-              "github": null,
+              "github": "https://github.com/abhinavshukla152005-beep",
               "devpost": null,
               "linkedin": null,
               "site": null,
@@ -590,9 +597,31 @@
           "signals": {
             "past_wins": [],
             "placements": [],
-            "snapshots": [],
+            "snapshots": [
+              {
+                "at": "2026-10-28T14:30:00-07:00",
+                "fetched_at": "2026-10-28T14:30:00-07:00",
+                "source_url": "https://api.github.com/users/abhinavshukla152005-beep",
+                "comments_count": null,
+                "likes": null,
+                "followers": 0,
+                "project_engagement": {
+                  "github_public_repos": 17,
+                  "github_stars_total": 0,
+                  "github_languages_by_repo": {
+                    "JavaScript": 7,
+                    "Python": 5,
+                    "HTML": 2,
+                    "TypeScript": 1,
+                    "none": 2
+                  },
+                  "note": "GitHub hunt snapshot by recruitment seat; full profile at ops/challenge-recruitment/github-profiles/D1--ladder-practice-sets.json"
+                }
+              }
+            ],
             "moneyball_evaluations": [
-              "ops/challenge-participants/scores/D1--ladder-practice-sets--evaluate--2026-10-28.json"
+              "ops/challenge-participants/scores/D1--ladder-practice-sets--evaluate--2026-10-28.json",
+              "ops/challenge-participants/scores/D1--ladder-practice-sets--evaluate--2026-10-28-recruitment.json"
             ]
           },
           "recruitment": {
@@ -607,10 +636,18 @@
             {
               "url": "https://builder.aws.com/build/hackathons/8311dcb5-1ece-3d62-a441-2e1c2ad90b86/strands-sdk-workshop-to-ship",
               "fetched_at": "2026-10-28T13:02:00-07:00"
+            },
+            {
+              "url": "https://github.com/abhinavshukla152005-beep",
+              "fetched_at": "2026-10-28T14:30:00-07:00"
+            },
+            {
+              "url": "https://api.github.com/users/abhinavshukla152005-beep",
+              "fetched_at": "2026-10-28T14:30:00-07:00"
             }
           ],
-          "confidence": "low",
-          "notes": "First and only project in D1's public Projects list on day 1 (checked signed-out 2026-10-28 13:01-13:03 PT). Builder Center shows NO author name/handle/profile for this entry on the list card or the project page; repo_url/demo_url are published in the project body and are project links, not author-profile facts. D1's Participants tab is join-gated (323 joined per page header) \u2014 not a public source; tracking runs on the Projects list. CORRECTION 2026-10-28 (MoneyBall consumer pattern, PR #2211): the candidate=true flag set at first record does NOT meet the standout flag rule - first v2 evaluation (ops/challenge-participants/scores/D1--ladder-practice-sets--evaluate--2026-10-28.json) gives composite 2.05 vs intake threshold 6.0, with track_record + momentum unverified. Flag removed; the entity stays tracked and re-evaluates as signals land."
+          "confidence": "medium",
+          "notes": "First and only project in D1's public Projects list on day 1 (checked signed-out 2026-10-28 13:01-13:03 PT). Builder Center shows NO author name/handle/profile for this entry on the list card or the project page; repo_url/demo_url are published in the project body and are project links, not author-profile facts. D1's Participants tab is join-gated (323 joined per page header) \u2014 not a public source; tracking runs on the Projects list. CORRECTION 2026-10-28 (MoneyBall consumer pattern, PR #2211): the candidate=true flag set at first record does NOT meet the standout flag rule - first v2 evaluation (ops/challenge-participants/scores/D1--ladder-practice-sets--evaluate--2026-10-28.json) gives composite 2.05 vs intake threshold 6.0, with track_record + momentum unverified. Flag removed; the entity stays tracked and re-evaluates as signals land. RECRUITMENT UPDATE 2026-10-28 (recruitment seat): GitHub hunt RESOLVED high-confidence via project-published repo owner + commit authorship = abhinavshukla152005-beep (public profile: Abhinav Shukla, agentic AI/MCP/Python/TS). public_links.github + persona.skills now sourced from that public profile; signals snapshot appended. Re-evaluation composite 2.90 (<6.0, track_record unverified) \u2014 candidate flag STILL refused; pipeline state in ops/challenge-recruitment/registry.json = profiled."
         }
       ],
       "judges": [],

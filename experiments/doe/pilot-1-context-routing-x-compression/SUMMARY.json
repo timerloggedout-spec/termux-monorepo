@@ -1,0 +1,43 @@
+{
+ "campaign_id": "pilot-1-context-routing-x-compression",
+ "base_sha": "5ce1a9c233ef56b958c60099b94467273326f1c1",
+ "generated_at": "2026-10-28T00:04:27Z",
+ "runs": 32,
+ "arms": {
+  "icm-guided/explicit": {
+   "runs": 8,
+   "mean_accuracy": 0.9375,
+   "mean_input_tokens": 1051.6,
+   "mean_elapsed_ms": 0.732,
+   "total_rework": 1
+  },
+  "bounded-search/explicit": {
+   "runs": 8,
+   "mean_accuracy": 0.8125,
+   "mean_input_tokens": 928.4,
+   "mean_elapsed_ms": 176.195,
+   "total_rework": 2
+  },
+  "icm-guided/compressed": {
+   "runs": 8,
+   "mean_accuracy": 0.3125,
+   "mean_input_tokens": 981.8,
+   "mean_elapsed_ms": 2.36,
+   "total_rework": 7
+  },
+  "bounded-search/compressed": {
+   "runs": 8,
+   "mean_accuracy": 0.3125,
+   "mean_input_tokens": 870.6,
+   "mean_elapsed_ms": 120.592,
+   "total_rework": 7
+  }
+ },
+ "effects_accuracy": {
+  "routing_main_effect": 0.0625,
+  "representation_main_effect": -0.5625,
+  "interaction": -0.0625
+ },
+ "predeclared_threshold": "compressed-arm mean accuracy within 0.10 of explicit-arm mean accuracy, with mean input tokens strictly lower",
+ "verdict": "threshold_not_met"
+}

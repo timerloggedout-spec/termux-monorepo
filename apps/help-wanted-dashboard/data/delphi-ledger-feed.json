@@ -6,7 +6,8 @@
    "title": "Delphi outcome ledger",
    "issue": 1487,
    "kind": "snapshot-comments",
-   "semantics": "per-surface EWMA of graded signal weights (-1..+1), alpha=0.2 (ops/delphi/panel.json flywheel.ewma_alpha), damped: one EWMA step per batch at the batch mean (gate.py apply_outcomes, issue #1533); idempotency digest sha256(key|outcome)[:16] per surface, newest 2000 kept (gate.py signal_digest/dedupe_signals)",
+   "semantics": "per-surface EWMA of graded signal weights (-1..+1), alpha=0.2 (ops/delphi/panel.json flywheel.ewma_alpha), damped: one EWMA step per batch at the batch mean (gate.py apply_outcomes, issue #1533); idempotency digest sha256(key|outcome)[:16] per surface, newest 2000 kept (gate.py signal_digest/dedupe_signals); tribute ingestion cap 200 records/batch (gate dispatch cap, PR #1824)",
+   "derivation": null,
    "state_rule": "newest marker comment carrying a ```json block is the current state (gate.py latest_json)",
    "events": [
     {
@@ -1523,6 +1524,13 @@
    "issue": 1489,
    "kind": "snapshot-comments",
    "semantics": "per-role gate_pass_rate EWMA (step = alpha*|weight|) + Elo (k=16, panel.json flywheel.elo_k), hits/misses tallies (gate.py feedback_graded)",
+   "derivation": {
+    "formula": "w_i = base_i * (0.5 + gate_pass_rate_i) * (elo_i / 1500)",
+    "source": "docs/ops/DELPHI-WEIGHTING.md",
+    "ewma_alpha": 0.2,
+    "elo_k": 16,
+    "rule": "weights are DERIVED from events by this formula \u2014 stores carry events + this derivation; snapshots are payloads of record, never the only copy of the math"
+   },
    "state_rule": "newest marker comment carrying a ```json block is the current state (gate.py latest_json)",
    "events": [
     {
@@ -1677,6 +1685,7 @@
    "issue": 1487,
    "kind": "event-comments",
    "semantics": "append-only; a later signed [MUSEai]@ comment may correct an earlier event (corrections are new events, never edits)",
+   "derivation": null,
    "state_rule": "no folded state; the event stream is the record (ranked outcomes + calibration deltas feeding weights/outcomes)",
    "events": [
     {
@@ -2037,6 +2046,18 @@
    "body": "[MUSEai]@{role:{delphi-lane}} \u2014 **Temporal self-host status** (living record; refreshed by the keepalive job on every repair + daily).\n\n**Snapshot 2026-10-28T14:07:34Z**\n\n| Item | State |\n|---|---|\n| Units | temporal-selfhost + temporal-relay: `active / active` |\n| API | localhost:7233 answers (gRPC); Web UI localhost:8233 \u2192 HTTP 200 |\n| Relay | 0.0.0.0:7234 \u2192 127.0.0.1:7233 |\n| DB | ~/workspace/temporal-selfhost/temporal.db \u2014 720896 bytes, durable disk |\n| Backups | temporal-20261028.db (daily, integrity-checked, newest 7) |\n| Keepalive | every 15 min \u2014 reinstalls units after VM replacement (`/etc` is ephemeral), silent when healthy |\n\n**Workflows on the server**\n\n```\nCompleted  kill-resume-unit-1793192868  DurableUnitWorkflow  59 minutes ago\n  Completed  kill-resume-unit-1793175195  DurableUnitWorkflow  5 hours ago   \n  Completed  kill-resume-unit-1793175148  DurableUnitWorkflow  5 hours ago\n```\n\nDesign + operator record: docs/ops/TEMPORAL-SELF-HOST.md (PR #1989, doc corr. PR #2014). Owner ruling 2026-10-28: Required infrastructure is reviewable via GitHub surfaces \u2014 this issue is that surface for the Temporal self-host.\n"
   }
  ],
+ "invariants": {
+  "append_only": "corrections are NEW events naming what they supersede, never edits (one graded step once consumed by a misdirected write was deliberately NOT replayed \u2014 bounded-loss lesson)",
+  "idempotency": "keys on every ingest: tribute signals keyed by thread URL, gate dedupe sha256(key|outcome); mirror/feed key sha256(ledger_id|comment_id)",
+  "source_classes": [
+   "HUMAN_COLLABORATOR",
+   "MODEL_PROVIDER",
+   "LOCAL_BASELINE"
+  ],
+  "source_classes_rule": "never collapsed in any store, feed or render; DRIVER_SYNTHESIS is not a ballot",
+  "honest_negatives": "none_validated_yet / none_yet and similar are findings recorded as data, never coerced to null or dropped",
+  "resolution": "ledgers resolved by exact issue TITLE at registration (label-order resolution misdirected state to #1567/#1784 once; fixed PR #1833); this registry pins the resolved numbers"
+ },
  "summary": {
   "events": 14,
   "excluded_noise": 3

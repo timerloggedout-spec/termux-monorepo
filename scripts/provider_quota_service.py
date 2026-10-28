@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
-"""Opt-in private quota-service observation; never imported by automatic collectors.
+"""Opt-in private quota-service observation.
 
 Ollama balance and OpenRouter key observations are explicit opt-in only. USD pools
 and legacy percentages are not request counts, account identity, entitlement, or admission.
+
+Registered exception (owner decision, 2026-10-28): scripts/quota_poll.py's
+openrouter_key_reader may call observe_service in-process when
+OPENROUTER_KEY_OBSERVE=1 (set by the vercel-quota-probe workflow). Only the
+public_status() allowlist projection crosses into the poller; observation
+values, scopes and monetary fields never leave this module's private output.
 """
 from __future__ import annotations
 

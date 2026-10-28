@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PR Lanes — Classifier Disposition</title>
+<!--
+  Renders ONLY data/pr-lane-feed.json (schema pr-lane-feed/v1, contract
+  docs/ops/ML-PR-LANE-CLASSIFY.md). The dashboard copy is a byte-identical
+  mirror of ops/ml/pr-lane-feed.json, refreshed by the classify workflow
+  itself (ml-pr-lane-classify.yml). Classification is the vocab-v2
+  classifier's descriptive output — this page draws counts and rows
+  exactly as recorded, computes nothing about disposition itself, and
+  shows the feed's own error/warning fields rather than hiding them.
+-->
+<link rel="stylesheet" href="./dashboard.css">
+<style>
+  .dist-row{display:grid;grid-template-columns:170px 1fr 90px;gap:.6rem;align-items:center;margin:.35rem 0}
+  .dist-bar{height:16px;background:#21262d;border-radius:4px;overflow:hidden}
+  .dist-fill{height:100%}
+  .dist-n{font-weight:700;text-align:right}
+  table.pr{width:100%;border-collapse:collapse;font-size:13px}
+  table.pr td,table.pr th{padding:4px 6px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
+  .badge{display:inline-block;padding:0 6px;border-radius:10px;font-size:11px;border:1px solid var(--line)}
+  .badge.draft{border-color:var(--gold);color:var(--gold)}
+  .gate-ok{color:var(--ok)} .gate-no{color:var(--muted)}
+  .dim{color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/help-wanted/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="https://timerloggedout-spec.github.io/help-wanted/quota.html">Quota</a><a href="https://timerloggedout-spec.github.io/help-wanted/admin.html">Admin</a><a href="https://timerloggedout-spec.github.io/help-wanted/oracle.html">Oracle</a><a href="https://timerloggedout-spec.github.io/help-wanted/3l0.html">3L0</a><a href="https://timerloggedout-spec.github.io/help-wanted/moneyball.html">MoneyBall</a><a href="https://timerloggedout-spec.github.io/help-wanted/mvt.html">MVT</a><a href="https://timerloggedout-spec.github.io/help-wanted/doe.html">DoE</a><a href="https://timerloggedout-spec.github.io/help-wanted/ates.html">ATES</a><a href="https://timerloggedout-spec.github.io/help-wanted/free-tier-value.html">Free-tier value</a><a href="https://timerloggedout-spec.github.io/help-wanted/dispatch-tree.html">Dispatch Tree</a><a href="https://timerloggedout-spec.github.io/help-wanted/countdowns.html">Countdowns</a><a href="https://timerloggedout-spec.github.io/help-wanted/linguist.html">Linguist</a><a href="https://timerloggedout-spec.github.io/help-wanted/delphi-rfp.html">Delphi RFP</a><a href="https://timerloggedout-spec.github.io/help-wanted/delphi-ledger.html">Delphi Ledgers</a><a href="https://help-wanted-oversight.vercel.app/">Vercel deployment</a><a href="https://timerloggedout-spec.github.io/help-wanted/sitemap.xml">Sitemap</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></nav>
+<div class="hero">
+<p class="eyebrow">PR Lanes · Vocab-v2 Classifier</p>
+<h1>Open-PR disposition — the classifier's lanes, as recorded</h1>
+<p class="lede">Every open pull request, classified by the fleet's vocab-v2 PR classifier into its disposition lane. This page consumes <code>data/pr-lane-feed.json</code> (schema <code>pr-lane-feed/v1</code>, contract <code>docs/ops/ML-PR-LANE-CLASSIFY.md</code>) and nothing else — a byte-identical mirror of <code>ops/ml/pr-lane-feed.json</code>, refreshed daily by the classify workflow. Classification is descriptive: no labels, comments or gates are touched by it, or by this page.</p>
+</div>
+</header>
+<main>
+<p class="muted" id="meta">Loading feed…</p>
+
+<section>
+<div class="head"><h2>Lane distribution</h2></div>
+<div class="card" id="dist"></div>
+</section>
+
+<section>
+<div class="head"><h2>Pull requests by lane</h2></div>
+<div id="tables"></div>
+</section>
+
+</main>
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const LANES=["CANDIDATE","EXTRACT","NEED_EVIDENCE","SUPERSEDE"];
+const LANE_COLORS={CANDIDATE:"var(--ok)",EXTRACT:"var(--gold)",NEED_EVIDENCE:"var(--muted)",SUPERSEDE:"var(--bad)"};
+const PR_URL="https://github.com/timerloggedout-spec/termux-monorepo/pull/";
+let FEED=null;
+// ==== pure logic (node-sim tested) ====
+function distRows(feed){
+  const counts=(feed&&feed.counts)||{};
+  const total=LANES.reduce((a,l)=>a+(counts[l]||0),0);
+  const max=Math.max(1,...LANES.map(l=>counts[l]||0));
+  return LANES.map(l=>({lane:l,n:counts[l]||0,max,
+    pct: total? Math.round(1000*(counts[l]||0)/total)/10 : 0,
+    width: Math.round(100*(counts[l]||0)/max)}));
+}
+function laneGroups(feed){
+  const rows=(feed&&feed.prs)||[];
+  const groups={}; for(const l of LANES) groups[l]=[];
+  for(const r of rows){ if(groups[r.lane]) groups[r.lane].push(r); }
+  for(const l of LANES) groups[l].sort((a,b)=>(b.age_days||0)-(a.age_days||0));
+  return groups;
+}
+function gateMark(v){ return v? '<span class="gate-ok">✓</span>' : '<span class="gate-no">·</span>'; }
+// ==== end pure logic ====
+function render(){
+  const feed=FEED;
+  $("meta").textContent="Feed generated "+(feed.generated_at||"unknown")+" · "+(feed.open_prs!=null?feed.open_prs:0)+" open PRs"+
+    (feed.fetch_warnings? " · fetch warnings: "+feed.fetch_warnings : "")+
+    (feed.error? " · FEED ERROR: "+feed.error : "");
+  $("dist").innerHTML=distRows(feed).map(d=>
+    '<div class="dist-row"><span>'+esc(d.lane)+'</span>'+
+    '<div class="dist-bar"><div class="dist-fill" style="width:'+d.width+'%;background:'+LANE_COLORS[d.lane]+'"></div></div>'+
+    '<span class="dist-n">'+d.n+' <span class="dim">('+d.pct+'%)</span></span></div>').join("");
+  const groups=laneGroups(feed);
+  $("tables").innerHTML=LANES.map(l=>
+    '<div class="card" style="margin:.7rem 0"><h3 style="margin:.1rem 0 .5rem">'+esc(l)+' <span class="dim">('+groups[l].length+')</span></h3>'+
+    (groups[l].length?
+      '<div style="overflow-x:auto"><table class="pr"><tr><th>PR</th><th>Title</th><th>Author</th><th>Age</th><th>Files</th><th>Gates (repo / smoke)</th></tr>'+
+      groups[l].map(r=>'<tr><td><a href="'+PR_URL+r.number+'">#'+r.number+'</a>'+(r.draft?' <span class="badge draft">draft</span>':'')+'</td>'+
+        '<td>'+esc(r.title)+'</td><td>'+esc(r.author)+'</td><td>'+(r.age_days!=null? r.age_days+'d':'—')+'</td>'+
+        '<td>'+(r.changed_files!=null? r.changed_files:'—')+'</td>'+
+        '<td>'+gateMark(r.gates&&r.gates["repo-gate"])+' / '+gateMark(r.gates&&r.gates["termux-smoke"])+'</td></tr>').join("")+
+      '</table></div>'
+      : '<span class="dim">none</span>')+
+    '</div>').join("");
+}
+async function load(){
+  try{
+    const r=await fetch("./data/pr-lane-feed.json");
+    if(!r.ok) throw new Error("feed fetch "+r.status);
+    FEED=await r.json();
+    render();
+  }catch(e){
+    $("meta").textContent="Feed unavailable — data/pr-lane-feed.json could not be loaded ("+e.message+"). Nothing is drawn from any other source.";
+  }
+}
+if(typeof document!=="undefined") load();
+</script>
+</body>
+</html>

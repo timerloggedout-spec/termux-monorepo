@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "32c29211869cd2092b4c9024e6f96b0825e2e96aac46e4c1d9d2d5715c8da4d8",
+  "source_fingerprint": "63fe4a92951885ee53c2546c6fd8c2a916e377f37e0c0a0c4809bfa3b49ef4fb",
   "workflow_count": 199,
   "workflows": [
     {
@@ -1014,8 +1014,7 @@
       "name": "delphi-gate",
       "path": ".github/workflows/delphi-gate.yml",
       "schedules": [
-        "23 11 */3 * *",
-        "the only schedule\n"
+        "23 * * * *"
       ],
       "triggers": [
         "issue_comment",

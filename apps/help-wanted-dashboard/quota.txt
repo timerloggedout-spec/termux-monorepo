@@ -1,6 +1,6 @@
 ================================================================================
  QUOTA  termux-monorepo  (89 registry records)
- Snapshot generated (not observation time): 2026-10-27T14:31:57Z
+ Snapshot generated (not observation time): 2026-10-28T01:23:16Z
  Source: apps/help-wanted-dashboard/data/quota.json + ops/quota/registry.json
  Limits are documented entitlements, not balances.
  Private balances are hidden; unknown is not healthy or admitted.
@@ -8,8 +8,8 @@
 
  ALERTS
 --------------------------------------------------------------------------------
- [STALE] github.actions.cache
-   limit (documented): 10 GB
+ [!  WATCH] github.api.github_token
+   limit (documented): 1000 requests/hour/repo
    used: No live reading
  [STALE] github.api.user_token
    limit (documented): 5000 requests/hour
@@ -196,7 +196,7 @@
 --------------------------------------------------------------------------------
  github (8)
   github.actions.cache
-    status: STALE
+    status: OK
     limit (documented): 10 GB
     metric: cache storage per repo | window: rolling | reset: LRU eviction;
     entries unused 7 days removed
@@ -208,7 +208,7 @@
     (free for public repos)
     Public evidence state only; no account balance or runtime admission implied.
   github.api.github_token
-    status: OK
+    status: !  WATCH
     limit (documented): 1000 requests/hour/repo
     metric: REST requests via GITHUB_TOKEN | window: hourly | reset:
     x-ratelimit-reset header
@@ -281,14 +281,11 @@
 --------------------------------------------------------------------------------
  huggingface (2)
   huggingface.hub_api
-    status: No live reading
+    status: UNKNOWN
     limit (documented): n/a requests per 5-minute fixed window (account-dynamic)
     metric: Hub API rate limit (api category) | window: 5-minute fixed window |
     reset: RateLimit header t (seconds to reset)
-    No live reading (live source: GET https://huggingface.co/api/whoami-v2 —
-    RateLimit response header, read by scripts/quota_poll.py hf_hub_reader under
-    the fleet credential (canonical HUGGINGFACE_TOKEN; alias resolve order
-    shared with the availability probe). No inference sent.)
+    Public evidence state only; no account balance or runtime admission implied.
   huggingface.inference_providers
     status: No live reading
     limit (documented): n/a monthly credits
@@ -718,6 +715,6 @@
   zai: Manager / ChronoMancer; official_documentation_only; no passive parser;
   registry: zai.free_models
  Coverage and quota checks do not grant runtime admission.
- 89 registry records | 2 alert(s) | 6 with a reported reading | 83 with No live
+ 89 registry records | 2 alert(s) | 7 with a reported reading | 82 with No live
  reading
 ================================================================================

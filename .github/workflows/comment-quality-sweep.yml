@@ -1,0 +1,49 @@
+# Comment-quality sweep (standard: docs/ops/COMMENT-QUALITY.md).
+# Weekly report over the fleet record surfaces (ops/delphi/ledgers.json
+# registry issues + delphi:rfp / delphi:participant queues). Deletion of
+# the two verified noise classes happens only on an explicit dispatch
+# with delete=true; the weekly run is report-only.
+name: comment-quality-sweep
+
+on:
+  workflow_dispatch:
+    inputs:
+      delete:
+        description: 'Delete the two verified noise classes (vendor-promo, automation-failure)'
+        type: boolean
+        required: false
+        default: false
+  schedule:
+    - cron: '17 7 * * 3'
+
+concurrency:
+  group: comment-quality-sweep
+  cancel-in-progress: false
+
+permissions:
+  issues: write
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_REPOSITORY: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Sweep (report or delete)
+        run: |
+          set -euo pipefail
+          if [ "${{ inputs.delete }}" = "true" ]; then
+            python3 -B scripts/comment_quality_sweep.py --delete | tee sweep.json
+          else
+            python3 -B scripts/comment_quality_sweep.py | tee sweep.json
+          fi
+          {
+            echo '## Comment-quality sweep'
+            echo
+            echo '```json'
+            cat sweep.json
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

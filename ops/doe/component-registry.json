@@ -1,1 +1,100 @@
-{"components":[{"delphi_rfp":null,"doe":{"evaluation":"individual, per gate cycle","factor_candidate":true},"evidence_feeds":["experiments/archwiz-markov-lane/README.md","docs/proposals/active/archwiz-markov-trellis-lab/REVIEW.md"],"id":"markov.trellis-lab","kind":"markov","paths":["experiments/archwiz-markov-lane/","docs/proposals/active/archwiz-markov-trellis-lab/"],"role":"State-transition (Markov) modeling of lane/routing dynamics — candidate dynamics layer beside the Bayesian beliefs.","status":"lab","title":"Markov trellis lab (ArchWiz)"},{"delphi_rfp":null,"doe":{"evaluation":"individual, per gate cycle","factor_candidate":true},"evidence_feeds":["docs/ops/BAYESIAN-ROUTING.md","issue #1487 (Delphi outcome ledger — the evidence the beliefs update on)"],"id":"bayesian.routing","kind":"bayesian","paths":["docs/ops/BAYESIAN-ROUTING.md","scripts/bayesian_routing.py","docs/schemas/bayesian-routing.yaml"],"role":"Beta-Bernoulli outcome beliefs over the evidence ledger -> posterior state -> value-of-information -> route. The uncertainty layer over 3L0/MoneyBall; contributes posteriors to routing decisions.","status":"live","title":"Bayesian routing / uncertainty layer"},{"delphi_rfp":null,"doe":{"evaluation":"individual, per gate cycle","factor_candidate":true},"evidence_feeds":["tests/test_dag_execution.py","tests/test_dag_properties.py"],"id":"kahn.dag","kind":"dag-planning","paths":["she/orchestration/dag.py","docs/architecture/DETERMINISTIC-DAG-ORCHESTRATION.md","tests/test_dag_execution.py","tests/test_dag_properties.py"],"role":"Canonical deterministic Kahn planning (algorithm kahn-reference-v2): topological order, ready frontiers (waves), cycle residuals. Consumed by orchestration and, since the Temporal closeout, by the Gantt compiler.","status":"live","title":"Kahn DAG planning primitives (she)"},{"delphi_rfp":null,"doe":{"evaluation":"individual, per gate cycle","factor_candidate":true},"evidence_feeds":["docs/agentic/dependency-phases.json (canonical plan)","docs/agentic/DEPENDENCY_PHASES.md (generated status/history view)","git history of docs/agentic/dependency-phases.json (phase-history of record)","docs/proposals/passes/temporal-durable-execution/implementation/ADDENDUM-2026-10-27.json (N4 compile evidence + the filed-template dangling-dependency finding)"],"id":"gantt.dependency-phases","kind":"gantt","paths":["docs/agentic/dependency-phases.json","scripts/agentic/dependency_phase_engine.py","scripts/agentic/gantt_projection.py","scripts/temporal/gantt_compile.py","docs/GANTT_DEPENDENCY_PHASES_ACTIONS_DESIGN.md"],"role":"The optimizer is the dependency-phase engine: validate -> topological order -> compute_waves (max-parallel schedule). The canonical plan (dependency-phases.json) is the authority; every Gantt view is derived. The filing-format compiler (gantt_compile.py) validates filed Gantt plans on the Kahn surface (#3). Provenance: design by Manus; gantt-cli/GanTTY/Camshaft-GanttML forks are inspiration/exporters only.","status":"live","title":"Gantt dependency-phase system + filing-format compiler"}],"doc":"docs/ops/DOE-COMPONENT-REGISTRY.md","integration":{"delphi":"One delphi:rfp per component (ids above), filed by the Delphi lane under the burst protocol; gate scores are admission signals, the per-component evaluation record is the outcome of record.","doe_visibility":"Components appear as separate members of the proposed rfp-segments segment 'doe-components' (DoE lane lands the segments edit); the DoE family may admit any component as a factorial factor under its generator+tests admission rule.","self_improvement":"Evaluation findings convert to component revision PRs or explicit no-change records on the component's RFP — the same loop discipline as doe.criteria-loop (#1959) and delphi.method-self-application (#1963)."},"purpose":"The fleet's algorithmic components, registered as SEPARATE integrated surfaces: each is individually evaluable through the Delphi gate (its own delphi:rfp), its outcomes feed decisions, and its evaluation record feeds the DoE improvements loop (self-improvement under the DoE family, sandbox/lab discipline). Components are never merged into one aggregate score; comparison happens per component, per cycle.","schema":"doe.component-registry.v1"}
+{
+ "components": [
+  {
+   "delphi_rfp": 1975,
+   "doe": {
+    "evaluation": "individual, per gate cycle",
+    "factor_candidate": true
+   },
+   "evidence_feeds": [
+    "experiments/archwiz-markov-lane/README.md",
+    "docs/proposals/active/archwiz-markov-trellis-lab/REVIEW.md"
+   ],
+   "id": "markov.trellis-lab",
+   "kind": "markov",
+   "paths": [
+    "experiments/archwiz-markov-lane/",
+    "docs/proposals/active/archwiz-markov-trellis-lab/"
+   ],
+   "role": "State-transition (Markov) modeling of lane/routing dynamics \u2014 candidate dynamics layer beside the Bayesian beliefs.",
+   "status": "lab",
+   "title": "Markov trellis lab (ArchWiz)"
+  },
+  {
+   "delphi_rfp": 1976,
+   "doe": {
+    "evaluation": "individual, per gate cycle",
+    "factor_candidate": true
+   },
+   "evidence_feeds": [
+    "docs/ops/BAYESIAN-ROUTING.md",
+    "issue #1487 (Delphi outcome ledger \u2014 the evidence the beliefs update on)"
+   ],
+   "id": "bayesian.routing",
+   "kind": "bayesian",
+   "paths": [
+    "docs/ops/BAYESIAN-ROUTING.md",
+    "scripts/bayesian_routing.py",
+    "docs/schemas/bayesian-routing.yaml"
+   ],
+   "role": "Beta-Bernoulli outcome beliefs over the evidence ledger -> posterior state -> value-of-information -> route. The uncertainty layer over 3L0/MoneyBall; contributes posteriors to routing decisions.",
+   "status": "live",
+   "title": "Bayesian routing / uncertainty layer"
+  },
+  {
+   "delphi_rfp": 1977,
+   "doe": {
+    "evaluation": "individual, per gate cycle",
+    "factor_candidate": true
+   },
+   "evidence_feeds": [
+    "tests/test_dag_execution.py",
+    "tests/test_dag_properties.py"
+   ],
+   "id": "kahn.dag",
+   "kind": "dag-planning",
+   "paths": [
+    "she/orchestration/dag.py",
+    "docs/architecture/DETERMINISTIC-DAG-ORCHESTRATION.md",
+    "tests/test_dag_execution.py",
+    "tests/test_dag_properties.py"
+   ],
+   "role": "Canonical deterministic Kahn planning (algorithm kahn-reference-v2): topological order, ready frontiers (waves), cycle residuals. Consumed by orchestration and, since the Temporal closeout, by the Gantt compiler.",
+   "status": "live",
+   "title": "Kahn DAG planning primitives (she)"
+  },
+  {
+   "delphi_rfp": 1978,
+   "doe": {
+    "evaluation": "individual, per gate cycle",
+    "factor_candidate": true
+   },
+   "evidence_feeds": [
+    "docs/agentic/dependency-phases.json (canonical plan)",
+    "docs/agentic/DEPENDENCY_PHASES.md (generated status/history view)",
+    "git history of docs/agentic/dependency-phases.json (phase-history of record)",
+    "docs/proposals/passes/temporal-durable-execution/implementation/ADDENDUM-2026-10-27.json (N4 compile evidence + the filed-template dangling-dependency finding)"
+   ],
+   "id": "gantt.dependency-phases",
+   "kind": "gantt",
+   "paths": [
+    "docs/agentic/dependency-phases.json",
+    "scripts/agentic/dependency_phase_engine.py",
+    "scripts/agentic/gantt_projection.py",
+    "scripts/temporal/gantt_compile.py",
+    "docs/GANTT_DEPENDENCY_PHASES_ACTIONS_DESIGN.md"
+   ],
+   "role": "The optimizer is the dependency-phase engine: validate -> topological order -> compute_waves (max-parallel schedule). The canonical plan (dependency-phases.json) is the authority; every Gantt view is derived. The filing-format compiler (gantt_compile.py) validates filed Gantt plans on the Kahn surface (#3). Provenance: design by Manus; gantt-cli/GanTTY/Camshaft-GanttML forks are inspiration/exporters only.",
+   "status": "live",
+   "title": "Gantt dependency-phase system + filing-format compiler"
+  }
+ ],
+ "doc": "docs/ops/DOE-COMPONENT-REGISTRY.md",
+ "integration": {
+  "delphi": "One delphi:rfp per component (ids above), filed by the Delphi lane under the burst protocol; gate scores are admission signals, the per-component evaluation record is the outcome of record.",
+  "doe_visibility": "Components appear as separate members of the proposed rfp-segments segment 'doe-components' (DoE lane lands the segments edit); the DoE family may admit any component as a factorial factor under its generator+tests admission rule.",
+  "self_improvement": "Evaluation findings convert to component revision PRs or explicit no-change records on the component's RFP \u2014 the same loop discipline as doe.criteria-loop (#1959) and delphi.method-self-application (#1963)."
+ },
+ "purpose": "The fleet's algorithmic components, registered as SEPARATE integrated surfaces: each is individually evaluable through the Delphi gate (its own delphi:rfp), its outcomes feed decisions, and its evaluation record feeds the DoE improvements loop (self-improvement under the DoE family, sandbox/lab discipline). Components are never merged into one aggregate score; comparison happens per component, per cycle.",
+ "schema": "doe.component-registry.v1"
+}

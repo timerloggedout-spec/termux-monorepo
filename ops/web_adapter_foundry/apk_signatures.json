@@ -1,0 +1,496 @@
+{
+ "feature_signals": [
+  {
+   "any_of": [
+    "llama.cpp",
+    "llama_context",
+    "libllama",
+    "llama-jni",
+    "llama_jni"
+   ],
+   "id": "llama.cpp"
+  },
+  {
+   "any_of": [
+    ".gguf"
+   ],
+   "id": "gguf-model"
+  },
+  {
+   "any_of": [
+    "gemma"
+   ],
+   "id": "gemma"
+  },
+  {
+   "any_of": [
+    "onnxruntime",
+    "onnx runtime"
+   ],
+   "id": "onnx-runtime"
+  },
+  {
+   "any_of": [
+    "tensorflow lite",
+    "tflite",
+    ".tflite"
+   ],
+   "id": "tflite"
+  },
+  {
+   "any_of": [
+    "mediapipe",
+    "llm_inference",
+    "llminference"
+   ],
+   "id": "mediapipe"
+  },
+  {
+   "any_of": [
+    "whisper.cpp",
+    "libwhisper",
+    "whisper"
+   ],
+   "id": "whisper"
+  },
+  {
+   "any_of": [
+    "android.webkit.webview",
+    "android.webkit.WebView"
+   ],
+   "id": "webview"
+  },
+  {
+   "any_of": [
+    "websocket"
+   ],
+   "id": "websocket"
+  },
+  {
+   "any_of": [
+    "sqlite"
+   ],
+   "id": "sqlite"
+  },
+  {
+   "any_of": [
+    "workmanager",
+    "work manager"
+   ],
+   "id": "workmanager"
+  }
+ ],
+ "note": "Detection signatures for the APK cross-reference toolkit (apk_xref.py). Hosts match exactly, as a subdomain, or via a *.suffix pattern. string_markers match case-insensitively against DEX strings, asset names and manifest values. config_files match zip entry names. Secret VALUES are never recorded \u2014 a config file contributes its provider id and the NAMES of keys present only.",
+ "providers": [
+  {
+   "category": "ai",
+   "config_files": [],
+   "hosts": [
+    "api.openai.com"
+   ],
+   "id": "openai",
+   "string_markers": [
+    "openai",
+    "chatgpt"
+   ]
+  },
+  {
+   "category": "ai",
+   "config_files": [],
+   "hosts": [
+    "api.anthropic.com"
+   ],
+   "id": "anthropic",
+   "string_markers": [
+    "anthropic",
+    "claude"
+   ]
+  },
+  {
+   "category": "ai",
+   "config_files": [],
+   "hosts": [
+    "generativelanguage.googleapis.com",
+    "ai.google.dev"
+   ],
+   "id": "google-gemini",
+   "string_markers": [
+    "gemini",
+    "generativeai"
+   ]
+  },
+  {
+   "category": "backend",
+   "config_files": [
+    "google-services.json"
+   ],
+   "hosts": [
+    "*.firebaseio.com",
+    "fcm.googleapis.com",
+    "www.googleapis.com"
+   ],
+   "id": "google-firebase",
+   "string_markers": [
+    "firebase"
+   ]
+  },
+  {
+   "category": "ai",
+   "config_files": [],
+   "hosts": [
+    "openrouter.ai"
+   ],
+   "id": "openrouter",
+   "string_markers": [
+    "openrouter"
+   ]
+  },
+  {
+   "category": "ai",
+   "config_files": [],
+   "hosts": [
+    "huggingface.co",
+    "api-inference.huggingface.co",
+    "*.hf.co"
+   ],
+   "id": "huggingface",
+   "string_markers": [
+    "huggingface",
+    "hugging face"
+   ]
+  },
+  {
+   "category": "ai",
+   "config_files": [],
+   "hosts": [
+    "api.groq.com"
+   ],
+   "id": "groq",
+   "string_markers": [
+    "groq"
+   ]
+  },
+  {
+   "category": "ai",
+   "config_files": [],
+   "hosts": [
+    "api.together.xyz"
+   ],
+   "id": "together",
+   "string_markers": [
+    "together.ai",
+    "togetherxyz"
+   ]
+  },
+  {
+   "category": "ai",
+   "config_files": [],
+   "hosts": [
+    "api.mistral.ai"
+   ],
+   "id": "mistral",
+   "string_markers": [
+    "mistral"
+   ]
+  },
+  {
+   "category": "ai",
+   "config_files": [],
+   "hosts": [
+    "api.deepseek.com"
+   ],
+   "id": "deepseek",
+   "string_markers": [
+    "deepseek"
+   ]
+  },
+  {
+   "category": "ai",
+   "config_files": [],
+   "hosts": [
+    "api.perplexity.ai"
+   ],
+   "id": "perplexity",
+   "string_markers": [
+    "perplexity"
+   ]
+  },
+  {
+   "category": "ai",
+   "config_files": [],
+   "hosts": [
+    "api.cohere.com",
+    "api.cohere.ai"
+   ],
+   "id": "cohere",
+   "string_markers": [
+    "cohere"
+   ]
+  },
+  {
+   "category": "ai",
+   "config_files": [],
+   "hosts": [
+    "api.replicate.com"
+   ],
+   "id": "replicate",
+   "string_markers": [
+    "replicate"
+   ]
+  },
+  {
+   "category": "ai",
+   "config_files": [],
+   "hosts": [
+    "*.openai.azure.com"
+   ],
+   "id": "azure-openai",
+   "string_markers": [
+    "openai.azure"
+   ]
+  },
+  {
+   "category": "ai-local",
+   "config_files": [],
+   "hosts": [],
+   "id": "ollama",
+   "string_markers": [
+    "ollama",
+    ":11434",
+    "11434/api"
+   ]
+  },
+  {
+   "category": "backend",
+   "config_files": [],
+   "hosts": [
+    "*.supabase.co"
+   ],
+   "id": "supabase",
+   "string_markers": [
+    "supabase"
+   ]
+  },
+  {
+   "category": "platform",
+   "config_files": [],
+   "hosts": [
+    "api.github.com",
+    "raw.githubusercontent.com"
+   ],
+   "id": "github",
+   "string_markers": []
+  },
+  {
+   "category": "platform",
+   "config_files": [],
+   "hosts": [
+    "gitlab.com"
+   ],
+   "id": "gitlab",
+   "string_markers": []
+  },
+  {
+   "category": "payments",
+   "config_files": [],
+   "hosts": [
+    "api.stripe.com"
+   ],
+   "id": "stripe",
+   "string_markers": [
+    "com.stripe.android",
+    "stripe-android"
+   ]
+  },
+  {
+   "category": "payments",
+   "config_files": [],
+   "hosts": [
+    "api.revenuecat.com"
+   ],
+   "id": "revenuecat",
+   "string_markers": [
+    "revenuecat"
+   ]
+  },
+  {
+   "category": "maps",
+   "config_files": [],
+   "hosts": [
+    "api.mapbox.com",
+    "events.mapbox.com"
+   ],
+   "id": "mapbox",
+   "string_markers": [
+    "mapbox"
+   ]
+  },
+  {
+   "category": "push",
+   "config_files": [],
+   "hosts": [
+    "onesignal.com",
+    "api.onesignal.com"
+   ],
+   "id": "onesignal",
+   "string_markers": [
+    "onesignal"
+   ]
+  }
+ ],
+ "schema": "apk-xref-signatures/v1",
+ "trackers": [
+  {
+   "hosts": [
+    "app-measurement.com",
+    "www.google-analytics.com"
+   ],
+   "id": "firebase-analytics",
+   "string_markers": [
+    "firebaseanalytics",
+    "firebase-analytics",
+    "google_app_measurement"
+   ]
+  },
+  {
+   "hosts": [
+    "firebasecrashlyticssymbols.googleapis.com",
+    "firebaselogging.googleapis.com"
+   ],
+   "id": "crashlytics",
+   "string_markers": [
+    "crashlytics"
+   ]
+  },
+  {
+   "hosts": [
+    "*.ingest.sentry.io",
+    "sentry.io"
+   ],
+   "id": "sentry",
+   "string_markers": [
+    "io.sentry",
+    "sentry"
+   ]
+  },
+  {
+   "hosts": [
+    "api.segment.io",
+    "cdn-settings.segment.com"
+   ],
+   "id": "segment",
+   "string_markers": [
+    "com.segment.analytics",
+    "segment.analytics"
+   ]
+  },
+  {
+   "hosts": [
+    "api.amplitude.com",
+    "api2.amplitude.com"
+   ],
+   "id": "amplitude",
+   "string_markers": [
+    "amplitude"
+   ]
+  },
+  {
+   "hosts": [
+    "api.mixpanel.com",
+    "api-js.mixpanel.com"
+   ],
+   "id": "mixpanel",
+   "string_markers": [
+    "mixpanel"
+   ]
+  },
+  {
+   "hosts": [
+    "app.posthog.com",
+    "eu.posthog.com",
+    "us.i.posthog.com"
+   ],
+   "id": "posthog",
+   "string_markers": [
+    "posthog"
+   ]
+  },
+  {
+   "hosts": [
+    "app.adjust.com",
+    "gdpr.adjust.com"
+   ],
+   "id": "adjust",
+   "string_markers": [
+    "com.adjust.sdk"
+   ]
+  },
+  {
+   "hosts": [
+    "*.appsflyer.com"
+   ],
+   "id": "appsflyer",
+   "string_markers": [
+    "appsflyer"
+   ]
+  },
+  {
+   "hosts": [
+    "graph.facebook.com",
+    "connect.facebook.net"
+   ],
+   "id": "facebook-sdk",
+   "string_markers": [
+    "facebook.sdk",
+    "com.facebook"
+   ]
+  },
+  {
+   "hosts": [
+    "googleads.g.doubleclick.net",
+    "pagead2.googlesyndication.com"
+   ],
+   "id": "google-admob",
+   "string_markers": [
+    "admob",
+    "google.android.gms.ads"
+   ]
+  },
+  {
+   "hosts": [
+    "api.branch.io",
+    "api2.branch.io"
+   ],
+   "id": "branch",
+   "string_markers": [
+    "io.branch"
+   ]
+  },
+  {
+   "hosts": [
+    "notify.bugsnag.com",
+    "sessions.bugsnag.com"
+   ],
+   "id": "bugsnag",
+   "string_markers": [
+    "bugsnag"
+   ]
+  },
+  {
+   "hosts": [],
+   "id": "countly",
+   "string_markers": [
+    "countly"
+   ]
+  },
+  {
+   "hosts": [
+    "nom.telemetrydeck.com"
+   ],
+   "id": "telemetrydeck",
+   "string_markers": [
+    "telemetrydeck"
+   ]
+  }
+ ]
+}

@@ -148,3 +148,41 @@ record, not a setting we control.
 - Phase-A "stop at the GCP signup gate" + $300-trial framing: not applicable
   to Platform201-managed mode — no owner GCP project or trial exists in this
   lane. Recorded as binding only on a future bring-own-GCP route.
+
+
+## 7. OWNER $-RULE (2026-10-28) — spend freeze until intake is OBTAINED
+
+Supersedes the rev3 use-posture on TIMING (envelopes, thresholds, gates
+unchanged as caps/tripwires):
+
+- Keep $ (credits) AS LOW AS POSSIBLE: NO new deploys and no spend beyond
+  the $0-metered essential P1 already live, UNTIL an invite/referral-type
+  benefit or other credit intake is FOUND and OBTAINED.
+- "Found" is not enough — the freeze lifts only on obtained intake
+  (redeemed coupon, granted credits, or an activated benefit recorded in
+  the LIVE doc with date + evidence).
+- No paid tier, no card, ever.
+
+## 8. Benefit hunt (2026-10-28, widened pass — firsthand only)
+
+| Channel | Result |
+|---|---|
+| Console (prior pass) | Referral/affiliate NONE; Invites = space invites only; sole intake = Redeem coupon, code source NOT ESTABLISHED |
+| Docs, all 26 pages incl. MCP docs | referral/affiliate/coupon/promo/discount: ZERO hits |
+| Pricing page (platform201.com/pricing) | FOUND: 14-day Pro trial, no card, auto-falls back to Solo. Plan-limits benefit, NOT credits. Claimable on our account: NOT ESTABLISHED. NOT OBTAINED |
+| Web coupon/promo sources | NONE found for platform201/ShoalStack |
+| Community / Discord | No Discord or community link found (site + search): NOT ESTABLISHED |
+| LinkedIn | No company page found: NOT ESTABLISHED |
+| Product Hunt / launch offers | No listing found: NOT ESTABLISHED |
+| Support inquiry | DRAFTED below; not sent |
+
+### Support inquiry — DRAFT (send only on owner word; no-cost, no-commit)
+
+> Subject: Credit intake options for existing Solo accounts?
+> Hi — we run a small fleet-automation project on a Solo account (signed up
+> with the $20 starting credits). Before we plan further usage: (1) Are
+> there referral, invite, launch, or partner programmes that grant credits
+> to existing accounts? (2) Where do Redeem-coupon codes come from — events,
+> partners, community? (3) Is the 14-day Pro trial still claimable on an
+> account that started directly on Solo? No purchase commitment implied;
+> we're inventorying intake routes. Thanks.

@@ -196,6 +196,12 @@ def award(result: dict, surface: dict, panel: dict, at: dt.datetime | None = Non
         days = a["park_recheck_days"]["medium" if e >= 9 else "backlog"]
         out = {"decision": "parked", "why": f"effective {e} below shadow bar {a['shadow_min']}"}
     out["band"] = band
+    if days and str(surface.get("id", "")).startswith("research."):
+        # Research silos (ops/delphi/research-silos.json) cycle on lane work,
+        # not quota windows: the 30d backlog park froze all 48 silo RFPs for a
+        # month (owner ruling 2026-10-28). Short class recheck; quota
+        # surfaces keep medium/backlog cadence.
+        days = a.get("research_recheck_days", days)
     if days:
         out["recheck_after"] = (at + dt.timedelta(days=days)).strftime("%Y-%m-%dT%H:%MZ")
     return out

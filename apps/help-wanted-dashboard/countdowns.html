@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Challenge Countdowns — Hackathon Deadlines</title>
+<!--
+  Renders ONLY data/challenge-countdowns-feed.json (schema
+  challenge-countdowns-feed/v1, contract
+  docs/ops/CHALLENGE-COUNTDOWNS-FEED.md). The feed carries deadline
+  INSTANTS only; state and time-remaining are computed here, in the
+  browser, from those instants on every tick — never from a
+  remaining-seconds value baked at collect time (issue #1880).
+-->
+<link rel="stylesheet" href="./dashboard.css">
+<style>
+  .cd-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:.8rem}
+  .cd-value{font-size:30px;font-weight:700;line-height:1.15;margin:.3rem 0}
+  .cd-label{color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:.04em}
+  .badge{display:inline-block;padding:1px 7px;border-radius:10px;font-size:12px;border:1px solid var(--line)}
+  .badge.ok{border-color:var(--ok);color:var(--ok)} .badge.due{border-color:var(--bad);color:var(--bad)}
+  .badge.open{border-color:var(--gold);color:var(--gold)} .dim{color:var(--muted)}
+  .cd-when{font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/help-wanted/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="https://timerloggedout-spec.github.io/help-wanted/quota.html">Quota</a><a href="https://timerloggedout-spec.github.io/help-wanted/admin.html">Admin</a><a href="https://timerloggedout-spec.github.io/help-wanted/oracle.html">Oracle</a><a href="https://timerloggedout-spec.github.io/help-wanted/3l0.html">3L0</a><a href="https://timerloggedout-spec.github.io/help-wanted/moneyball.html">MoneyBall</a><a href="https://timerloggedout-spec.github.io/help-wanted/mvt.html">MVT</a><a href="https://timerloggedout-spec.github.io/help-wanted/doe.html">DoE</a><a href="https://timerloggedout-spec.github.io/help-wanted/ates.html">ATES</a><a href="https://timerloggedout-spec.github.io/help-wanted/free-tier-value.html">Free-tier value</a><a href="https://timerloggedout-spec.github.io/help-wanted/dispatch-tree.html">Dispatch Tree</a><a href="https://timerloggedout-spec.github.io/help-wanted/countdowns.html" aria-current="page">Countdowns</a><a href="https://help-wanted-oversight.vercel.app/">Vercel deployment</a><a href="https://timerloggedout-spec.github.io/help-wanted/sitemap.xml">Sitemap</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></nav>
+<div class="hero">
+<p class="eyebrow">Challenge Countdowns · Hackathon Deadlines</p>
+<h1>Hackathon countdowns — computed live from the recorded deadlines</h1>
+<p class="lede">Every countdown on this page is computed in your browser, every second, from the deadline instants recorded in the challenge entries log. This page consumes <code>data/challenge-countdowns-feed.json</code> (schema <code>challenge-countdowns-feed/v1</code>, contract <code>docs/ops/CHALLENGE-COUNTDOWNS-FEED.md</code>) and nothing else — the feed holds instants only, never a pre-computed remaining time, and an instant the log does not record shows as not recorded rather than anything guessed.</p>
+</div>
+</header>
+<main>
+<p class="muted" id="meta">Loading feed…</p>
+
+<section>
+<div class="head"><h2>Entries</h2></div>
+<div class="cd-grid" id="cards"></div>
+</section>
+
+</main>
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const PT=new Intl.DateTimeFormat("en-US",{timeZone:"America/Los_Angeles",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit",hour12:false});
+function fmtInstant(iso){ if(!iso) return "not recorded"; const d=new Date(iso); return isNaN(d)? "not recorded" : PT.format(d)+" PT"; }
+function fmtDur(ms){
+  let s=Math.max(0,Math.floor(ms/1000));
+  const d=Math.floor(s/86400); s-=d*86400;
+  const h=Math.floor(s/3600); s-=h*3600;
+  const m=Math.floor(s/60); s-=m*60;
+  if(d) return d+"d "+h+"h "+m+"m "+s+"s";
+  if(h) return h+"h "+m+"m "+s+"s";
+  return m+"m "+s+"s";
+}
+function stateOf(e,now){
+  if(e.status==="COMPLETED") return {kind:"done",label:"Completed",badge:"ok",value:"—"};
+  if(e.status==="CLOSED") return {kind:"done",label:"Closed",badge:"ok",value:"—"};
+  const o=e.opens?Date.parse(e.opens):null, c=e.closes?Date.parse(e.closes):null;
+  if(o!==null && !isNaN(o) && now<o) return {kind:"tick",label:"Opens in",badge:"open",value:fmtDur(o-now)};
+  if(c!==null && !isNaN(c) && now<=c) return {kind:"tick",label:"Closes in",badge:"open",value:fmtDur(c-now)};
+  if(c!==null && !isNaN(c) && now>c) return {kind:"over",label:"Overdue",badge:"due",value:"deadline passed"};
+  if(o!==null && !isNaN(o) && now>=o) return {kind:"over",label:"Open",badge:"open",value:"window open"};
+  return {kind:"over",label:"No window recorded",badge:"",value:"—"};
+}
+let ENTRIES=[];
+function render(){
+  $("cards").innerHTML=ENTRIES.map(e=>
+    '<div class="card" data-entry="'+esc(e.id)+'">'+
+    '<div><span class="badge" data-role="badge"></span> <span class="dim">'+esc(e.id)+'</span></div>'+
+    '<h3 style="margin:.4rem 0 .2rem">'+esc(e.title)+'</h3>'+
+    '<div class="cd-label" data-role="label"></div>'+
+    '<div class="cd-value" data-role="value"></div>'+
+    '<div class="cd-when">Opens: '+esc(fmtInstant(e.opens))+'<br>Closes: '+esc(fmtInstant(e.closes))+'</div>'+
+    '</div>').join("");
+  tick();
+}
+function tick(){
+  const now=Date.now();
+  document.querySelectorAll("[data-entry]").forEach(card=>{
+    const e=ENTRIES.find(x=>x.id===card.getAttribute("data-entry"));
+    if(!e) return;
+    const st=stateOf(e,now);
+    card.querySelector('[data-role="badge"]').textContent=st.label;
+    card.querySelector('[data-role="badge"]').className="badge "+st.badge;
+    card.querySelector('[data-role="label"]').textContent=st.kind==="tick"? st.label : "";
+    card.querySelector('[data-role="value"]').textContent=st.value;
+  });
+}
+async function load(){
+  try{
+    const r=await fetch("./data/challenge-countdowns-feed.json");
+    if(!r.ok) throw new Error("feed HTTP "+r.status);
+    const d=await r.json();
+    ENTRIES=Array.isArray(d.entries)? d.entries : [];
+    $("meta").textContent="Feed generated "+(d.generated_at||"unknown")+" · source "+(d.source||"")+" · "+ENTRIES.length+" entries · times shown in PT; countdowns tick every second from the recorded instants.";
+    render();
+    setInterval(tick,1000);
+  }catch(err){
+    $("meta").textContent="Countdown feed unavailable — nothing is shown rather than anything guessed. ("+err.message+")";
+  }
+}
+load();
+</script>
+</body>
+</html>

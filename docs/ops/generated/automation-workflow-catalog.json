@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "64e96f9c71b2cb07b3a4f6e2ef136c5c5ccce91e0b04efdccff08437543775da",
-  "workflow_count": 216,
+  "source_fingerprint": "2e18631bbbd4567757994121e1ef9eb812c1f86362b2ef01335ee3552a28e297",
+  "workflow_count": 217,
   "workflows": [
     {
       "action_pins": [
@@ -2459,6 +2459,23 @@
       ],
       "name": "ml pipelines keep-alive",
       "path": ".github/workflows/ml-pipelines-keepalive.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "compare"
+      ],
+      "name": "moneyball compare",
+      "path": ".github/workflows/moneyball-compare.yml",
       "schedules": [],
       "triggers": [
         "pull_request",

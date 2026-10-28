@@ -57,6 +57,13 @@ jobs:
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID || vars.CLOUDFLARE_ACCOUNT_ID || '' }}
       COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
       OLLAMA_API_KEY: ${{ secrets.OLLAMA_API_KEY }}
+      SEALION_API_KEY: ${{ secrets.SEALION_API_KEY }}
+      ROUTEWAY_API_KEY: ${{ secrets.ROUTEWAY_API_KEY }}
+      REQUESTY_API_KEY: ${{ secrets.REQUESTY_API_KEY }}
+      UNOROUTER_API_KEY: ${{ secrets.UNOROUTER_API_KEY }}
+      ZAI_API_KEY: ${{ secrets.ZAI_API_KEY }}
+      XFYUN_API_KEY: ${{ secrets.XFYUN_API_KEY }}
+      IFLYTEK_SPARK_API_PASSWORD: ${{ secrets.IFLYTEK_SPARK_API_PASSWORD }}
       GEMINI_HEALTH_MODEL: ${{ vars.GEMINI_HEALTH_MODEL || '' }}
       OPENROUTER_HEALTH_MODEL: ${{ vars.OPENROUTER_HEALTH_MODEL || '' }}
       STRICT: ${{ inputs.strict || 'false' }}

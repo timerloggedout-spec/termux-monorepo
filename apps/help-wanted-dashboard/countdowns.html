@@ -6,11 +6,15 @@
 <title>Challenge Countdowns — Hackathon Deadlines</title>
 <!--
   Renders ONLY data/challenge-countdowns-feed.json (schema
-  challenge-countdowns-feed/v1, contract
+  challenge-countdowns-feed/v1.1, contract
   docs/ops/CHALLENGE-COUNTDOWNS-FEED.md). The feed carries deadline
   INSTANTS only; state and time-remaining are computed here, in the
   browser, from those instants on every tick — never from a
   remaining-seconds value baked at collect time (issue #1880).
+  Prizes are REQUIRED on this page (contract honesty rule 5): each
+  card renders its entry's prizes block verbatim from the feed —
+  tier lines and the pool line when present; an unpublished prize
+  set renders as NOT_ESTABLISHED, never blank, never omitted.
 -->
 <link rel="stylesheet" href="./dashboard.css">
 <style>
@@ -21,6 +25,11 @@
   .badge.ok{border-color:var(--ok);color:var(--ok)} .badge.due{border-color:var(--bad);color:var(--bad)}
   .badge.open{border-color:var(--gold);color:var(--gold)} .dim{color:var(--muted)}
   .cd-when{font-size:13px;color:var(--muted)}
+  .prizes{margin-top:.55rem;border-top:1px solid var(--line);padding-top:.45rem}
+  .pz-pool{margin:.25rem 0;font-weight:600}
+  .pz-ne{margin:.25rem 0;color:var(--gold);font-weight:700;letter-spacing:.02em}
+  .pz-tiers{margin:.25rem 0;padding-left:17px}
+  .pz-tiers li{margin:.18rem 0}
   .gantt-wrap{overflow-x:auto}
   .g-label{fill:var(--fg);font-size:11px}
   .g-axis{fill:var(--muted);font-size:10px}
@@ -161,6 +170,14 @@ function renderLanes(){
 }
 let TICKN=0;
 
+function prizesHTML(e){
+  const p=e.prizes;
+  let h='<div class="prizes"><span class="cd-label">Prizes</span>';
+  if(!p||p.status==="NOT_ESTABLISHED") h+='<p class="pz-ne">NOT_ESTABLISHED</p>';
+  if(p&&p.pool) h+='<p class="pz-pool">'+esc(p.pool)+'</p>';
+  if(p&&p.tiers&&p.tiers.length) h+='<ul class="pz-tiers">'+p.tiers.map(t=>'<li><strong>'+esc(t.place)+'</strong> \u2014 '+esc(t.award)+(t.source_url?' <a href="'+esc(t.source_url)+'" target="_blank" rel="noopener">source</a>':'')+'</li>').join("")+'</ul>';
+  return h+'</div>';
+}
 let ENTRIES=[];
 function render(){
   $("cards").innerHTML=ENTRIES.map(e=>
@@ -170,6 +187,7 @@ function render(){
     '<div class="cd-label" data-role="label"></div>'+
     '<div class="cd-value" data-role="value"></div>'+
     '<div class="cd-when">Opens: '+esc(fmtInstant(e.opens))+'<br>Closes: '+esc(fmtInstant(e.closes))+'</div>'+
+    prizesHTML(e)+
     '</div>').join("");
   renderGantt();
   renderLanes();

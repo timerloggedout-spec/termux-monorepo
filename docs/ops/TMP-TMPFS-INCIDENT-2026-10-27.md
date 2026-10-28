@@ -46,11 +46,13 @@ e.g. a Delphi feed-collector verification write died at 05:33 PT.
    scratch workspaces go under `~/workspace/scratch/<task>/` (real disk);
    /tmp is for small transient files only. Scratch clones are cleaned up
    in the session that creates them. (The repo-gate lesson of 2026-10-20
-   already said clones belong under ~/workspace, not /tmp — this incident
-   is the same rule relearned, now with a tripwire behind it.)
-2. **Tripwire:** a `tmp-usage-tripwire` hook on the VM polls /tmp every
-   5 minutes and, at ≥80% usage, wakes an agent to verify and report the
-   top consumers to the main chat (report-only; remediation stays a
-   main-chat decision under the archive-first rule). Both the silent path
-   (1% → silent) and the wake path (threshold variant → wake with the
-   consumer list) were dry-run verified on 2026-10-27 before enabling.
+   already said clones belong under ~/workspace, not /tmp.)
+2. **Tripwire — RETIRED 2026-10-28:** a `tmp-usage-tripwire` hook on the
+   VM polled /tmp every 5 minutes to wake a report at ≥80% usage (both
+   paths dry-run verified 2026-10-27). It was disabled the next day under
+   the owner's VM = sandbox-only order: no standing monitors, daemons or
+   cron-audits run on the VM; continuous work lives in GitHub Workflows.
+   No workflow equivalent exists for this check — a workflow cannot see
+   this VM's /tmp — so the guardrail is the convention above, plus the
+   fact that /tmp pressure surfaces immediately as ENOSPC failures in
+   whichever lane hits it, as it did here.

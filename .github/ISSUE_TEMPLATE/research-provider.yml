@@ -1,0 +1,63 @@
+name: Research — Provider
+description: Research a provider (API/model/data service) into the provider-research pipeline. Filing IS the trigger — research-intake parses this form and posts the seed/starter record back.
+title: "[research:provider] <provider-id>"
+labels: ["research", "research:provider"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        One provider, one research run. Intake (`.github/workflows/research-intake.yml`,
+        `scripts/research/research_intake.py`) maps these fields to the pipeline inputs of
+        provider-recon-compound / provider-availability / the quota registry, and comments the
+        seed record on this issue. A starred/forked/watched repo is a research *signal*, never
+        an adoption order. Never paste secret values: name the Actions secret only (names must
+        come from the phantom-secrets inventory / issue #184 — do not invent one).
+  - type: input
+    id: provider_id
+    attributes:
+      label: Provider ID
+      description: Short slug, e.g. acme-ai (used in the seed_id `research-seed:provider:<id>`).
+    validations: { required: true }
+  - type: input
+    id: provider_name
+    attributes:
+      label: Provider Name
+      description: Display name, e.g. Acme AI.
+    validations: { required: true }
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options: [model, data, queue, deploy, observability, partner, other]
+    validations: { required: true }
+  - type: input
+    id: url
+    attributes:
+      label: Website / Docs URL
+      description: Canonical docs or pricing page the research starts from.
+    validations: { required: true }
+  - type: textarea
+    id: quota
+    attributes:
+      label: Free quota
+      description: Metric / limit / unit + the vendor page that states it (URL). Leave the limit blank if no page states a number — NOT ESTABLISHED stays explicit.
+  - type: input
+    id: auth
+    attributes:
+      label: Auth from Actions
+      description: Name of the Actions secret the lane would use (NAME only, from the phantom-secrets inventory), or "none needed".
+  - type: textarea
+    id: capabilities
+    attributes:
+      label: Capability signals
+      description: One per line or comma-separated — what this provider appears to offer.
+  - type: textarea
+    id: question
+    attributes:
+      label: Scoped question
+      description: The one question this research run should answer.
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and sources
+      description: Links the research should start from, one per line.

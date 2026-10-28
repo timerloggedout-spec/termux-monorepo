@@ -143,3 +143,7 @@ category is the one that matters.
 deliberate special test case, OUTSIDE the Positive Performance Psychology
 Language Framing Structure. It is a feature, not a violation. Do not flag
 it, do not rename it. (Recorded in the registry, ab_test.pages.fb-c.)
+
+**Media rule (owner, 2026-10-27):** Facebook Pages media production is
+OUTSOURCED — connector or issued request only. No fleet quota burn on media
+generation, for any MVT cell. (Launch posts are text-only; compliant.)

@@ -102,4 +102,4 @@ remain in the verified no-op state.
 
 ## Opportunity cost (2026-10-28)
 
-`events[].opportunity_cost{}` (see CHALLENGE-SCHEMA.md) rides the sync `events` core beside prizes; schema.sql exposes it on `challenge_events_current` + view `event_opportunity_cost` (outcome, top_award_value/form, gross_foregone, win_probability_estimate, expected_value_foregone, non_monetary_foregone, computed_at). D0 seed: not_submitted, gross 100, EV 12.5 (5/40). Provisioning status unchanged: writers no-op until NEON_API_KEY / LANE_EVENTS_DATABASE_URL provisioned — DB counts NOT ESTABLISHED.
+`events[].opportunity_cost{}` (see CHALLENGE-SCHEMA.md) rides the sync `events` core beside prizes; schema.sql exposes it on `challenge_events_current` + view `event_opportunity_cost` (outcome, top_award_value/form, gross_foregone, win_probability_estimate, expected_value_foregone, non_monetary_foregone, computed_at). D0 seed: not_submitted, gross 200, EV 25.0 (5/40 × $200 official award value; corrected 2026-10-28, see CHALLENGE-SCHEMA.md). Provisioning status unchanged: writers no-op until NEON_API_KEY / LANE_EVENTS_DATABASE_URL provisioned — DB counts NOT ESTABLISHED.

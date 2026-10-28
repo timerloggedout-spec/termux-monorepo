@@ -48,7 +48,7 @@
         }
       ],
       "platform": "aws-builder-center",
-      "official_url": null,
+      "official_url": "https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool",
       "status": "closed",
       "entrant_moniker": "entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]",
       "dates": {
@@ -73,12 +73,37 @@
         "pool": "$1,000",
         "tiers": [
           {
-            "place": "top 5 projects (each)",
-            "award": "$100 AWS credits + Builder Backpack",
-            "source_url": null
+            "place": "1) winner (top 5)",
+            "award": "$100 in AWS Promotional Credits and an AWS Builder Backpack",
+            "award_value": "$200",
+            "source_url": "https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool"
+          },
+          {
+            "place": "2) winner (top 5)",
+            "award": "$100 in AWS Promotional Credits and an AWS Builder Backpack",
+            "award_value": "$200",
+            "source_url": "https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool"
+          },
+          {
+            "place": "3) winner (top 5)",
+            "award": "$100 in AWS Promotional Credits and an AWS Builder Backpack",
+            "award_value": "$200",
+            "source_url": "https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool"
+          },
+          {
+            "place": "4) winner (top 5)",
+            "award": "$100 in AWS Promotional Credits and an AWS Builder Backpack",
+            "award_value": "$200",
+            "source_url": "https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool"
+          },
+          {
+            "place": "5) winner (top 5)",
+            "award": "$100 in AWS Promotional Credits and an AWS Builder Backpack",
+            "award_value": "$200",
+            "source_url": "https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool"
           }
         ],
-        "notes": "Verified 2026-10-26 from official AWS Builder Center page: awards pool $1,000 stated; top 5 projects each $100 AWS credits + Builder Backpack. Tier source_url null: no canonical URL in record (official_url null)."
+        "notes": "Firsthand recheck 2026-10-28 on official page: Prizes line verbatim 'The top 5 projects each receive $100 in AWS credits and an AWS Builder Backpack'; Awards list values each award at $200. Pool reconciliation: $1,000 = 5 x $200 total award value; credits subtotal $500; backpack implied value $100 per award ($200-$100). Supersedes the credits-only reading in PR #2219."
       },
       "moneyball": {
         "schema": "moneyball-plane/v2",
@@ -155,11 +180,11 @@
       "opportunity_cost": {
         "outcome": "not_submitted",
         "top_award": {
-          "value": 100,
-          "form": "$100 AWS credits + Builder Backpack",
-          "source": "Official AWS Builder Center page, verified 2026-10-26: pool $1,000; top 5 projects each $100 AWS credits + Builder Backpack"
+          "value": 200,
+          "form": "$100 in AWS Promotional Credits + AWS Builder Backpack (official award value $200; backpack implied $100)",
+          "source": "Official page firsthand 2026-10-28: https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool \u2014 Awards 1)-5) each listed $200"
         },
-        "gross_foregone": 100,
+        "gross_foregone": 200,
         "win_probability": {
           "estimate": 0.125,
           "basis": {
@@ -167,7 +192,7 @@
             "our_standing": "not_submitted; no submission (0) — baseline = 5 winning slots / 40 public entries"
           }
         },
-        "expected_value_foregone": 12.5,
+        "expected_value_foregone": 25.0,
         "non_monetary_foregone": [
           "Builder Backpack (physical, part of top award)",
           "top-5 winner visibility/recognition",

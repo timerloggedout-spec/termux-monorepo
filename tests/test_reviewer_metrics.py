@@ -179,3 +179,31 @@ def test_ecc_findings():
     assert f["prs_with_findings"] == 2
     assert f["gates"]["ECC Tools / Config"]["findings_action_required"] == 2
     json.dumps(out)
+
+
+def test_wilson_interval_pins():
+    # Pinned values: the orchestrator's JS wilsonUpper must agree.
+    assert collect.wilson_interval(0, 0) is None
+    lo, hi = collect.wilson_interval(0, 10)
+    assert lo == 0.0 and abs(hi - 0.2775) < 0.001  # 0/10 excludes almost nothing
+    lo, hi = collect.wilson_interval(0, 22)
+    assert abs(hi - 0.1487) < 0.001  # first n where upper < 0.15
+    lo, hi = collect.wilson_interval(23, 133)
+    assert abs(lo - 0.118) < 0.002 and abs(hi - 0.246) < 0.002
+    lo, hi = collect.wilson_interval(10, 10)
+    assert hi == 1.0 and lo > 0.7
+
+
+def test_aggregate_carries_ci95():
+    rec = {
+        "pr": 1, "author_class": "user", "primary_class": "docs",
+        "providers": {"coderabbit": {"required": True, "delivered": False,
+                                     "cooldown": False, "state": "pending",
+                                     "latency_sec": None}},
+        "verdicts": {}, "review_comment_counts": {}, "issue_comment_volume": {},
+    }
+    out = collect.aggregate([rec], prs_examined=1, warnings=[])
+    cell = out["providers"]["coderabbit"]["by_context"]["user/docs"]
+    assert cell["delivery_rate"] == 0.0
+    assert cell["delivery_ci95"][0] == 0.0 and abs(cell["delivery_ci95"][1] - 0.7935) < 0.001
+    json.dumps(out)

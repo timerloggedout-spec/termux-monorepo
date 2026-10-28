@@ -8,8 +8,14 @@ name: Reviewer metrics collect
 # map from master and fails open when it is missing or stale (>14 days),
 # so a lagging refresh degrades to structural rules only.
 #
-# Trigger accounting: one weekly scheduled run plus manual dispatch. The
-# collector is read-only against the API until the refresh-PR step.
+# Trigger accounting: event-driven on peer-review-orchestrator completion
+# (throttled: a workflow_run trigger collects at most once per 24h — see
+# the freshness gate), one weekly scheduled run as backstop, plus manual
+# dispatch. Previously weekly+dispatch only, which left the map static
+# for up to a week while review volume moved (owner challenge 2026-10-28;
+# the 150-PR window is now the default everywhere — the old 60 default
+# silently shrank the window on scheduled runs). The collector is
+# read-only against the API until the refresh-PR step.
 
 on:
   workflow_dispatch:
@@ -17,7 +23,10 @@ on:
       limit:
         description: 'Most-recently-updated PRs to examine'
         required: false
-        default: '60'
+        default: '150'
+  workflow_run:
+    workflows: ['Peer review orchestrator']
+    types: [completed]
   schedule:
     - cron: '17 5 * * 1'
 
@@ -43,10 +52,32 @@ jobs:
         with:
           ref: master
 
+      - name: Freshness gate (event-driven runs only)
+        id: gate
+        if: github.event_name == 'workflow_run'
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          skip = False
+          try:
+              with open('docs/ops/generated/reviewer-metrics.json') as fh:
+                  generated = datetime.fromisoformat(
+                      json.load(fh)['generated_at'].replace('Z', '+00:00'))
+              age_h = (datetime.now(timezone.utc) - generated).total_seconds() / 3600
+              skip = age_h < 24
+              print(f'map age {age_h:.1f}h; event-driven collect {"skipped (<24h)" if skip else "proceeds"}')
+          except Exception as exc:
+              print(f'freshness gate unreadable ({exc}); event-driven collect proceeds')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              out.write(f"skip={'true' if skip else 'false'}\n")
+          PY
+
       - name: Collect reviewer metrics
+        if: steps.gate.outputs.skip != 'true'
         env:
           GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
-          LIMIT: ${{ inputs.limit || '60' }}
+          LIMIT: ${{ inputs.limit || '150' }}
         run: |
           python3 scripts/reviewer_metrics/collect.py \
             --repo "${{ github.repository }}" \
@@ -64,6 +95,7 @@ jobs:
           PY
 
       - name: Upload metrics artifact
+        if: steps.gate.outputs.skip != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: reviewer-metrics
@@ -71,6 +103,7 @@ jobs:
           retention-days: 30
 
       - name: Open or update the metrics refresh PR
+        if: steps.gate.outputs.skip != 'true'
         env:
           GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
         run: |

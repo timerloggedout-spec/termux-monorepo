@@ -45,6 +45,22 @@ are the #1489 ledger's; panel.json is cold-start defaults), and the
 cost_auditor money veto. `summary` counts are derived from the
 entries at generation time.
 
+## Segments block (additive, DoE lane)
+
+When `ops/delphi/rfp-segments.json` is available (the fetch copies
+it and `research-silos.json` into the cache), the collector emits a
+feed-level `segments` block and a per-entry `segment` field — the
+segmentation layer of `docs/ops/DELPHI-RFP-SEGMENTATION.md` riding
+inside this one feed (no second feed, no second collector). The
+block carries the class definitions (description / criteria /
+questions / cycle) and one rollup per segment: member issue
+numbers, status counts, gate-scored count, and — research segments
+only — comparison-axes recorded/total read from the baseline's
+`comparison_axes`. Rollups count members and states only; no score
+is computed or averaged. Entries no rule claims land in
+`segments.unassigned`, never dropped. Absent config, the block is
+omitted and the v1 feed is otherwise unchanged.
+
 ## Honesty rules
 
 1. Status comes from the gate's award and labels; an RFP with no

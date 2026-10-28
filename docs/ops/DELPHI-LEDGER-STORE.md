@@ -4,6 +4,18 @@
 Mission (owner, via Delphi lane): continuous-ledger **web availability**
 as a database problem — not a single-ledger fix.
 
+> **OWNER CORRECTION (2026-10-28): retire the "mirror" framing.**
+> Neon is the **working database** — the primary queryable store for
+> lane events, ledgers and telemetry — not a mirror of the real store.
+> Pipelines COMPUTE against it (SQL: derivations, beliefs, joins,
+> aggregations), they do not re-derive state from issue comments or
+> feed files downstream. Issue comments remain the gate's human-visible
+> write surface and provenance record; the feed JSON is an EXPORT of
+> database state for static rendering, not the query path. Everywhere
+> this doc (and PR #2035) said "mirror", read "working database".
+> Provisioning of the Neon route is owned by the neon-fix lane;
+> schema/design semantics stay with the database-specialist lane.
+
 ## Problem
 
 Delphi's continuous ledgers live as append-only issue comments —
@@ -30,7 +42,7 @@ Registry of ledgers: `ops/delphi/ledgers.json` (`delphi-ledgers/v1`).
 
 | Candidate | Queryability | Web render path | Append-only integrity | Cost / card | Writers → readers | Verdict |
 |---|---|---|---|---|---|---|
-| **Neon Postgres** (fleet precedent: `ops/lane-events/`) | full SQL, jsonb | none direct (static dashboard cannot hold creds) — needs an export | trigger-enforced (proven in `lane_events`) | free tier, secrets already provisioned by name (`LANE_EVENTS_DATABASE_URL` / `NEON_API_KEY`) | gate workflows via psql writer pattern → export job | **ADOPT as queryable mirror (slice 2 writer)** |
+| **Neon Postgres** (fleet precedent: `ops/lane-events/`) | full SQL, jsonb | none direct (static dashboard cannot hold creds) — needs an export | trigger-enforced (proven in `lane_events`) | free tier; secret NAMES of record `LANE_EVENTS_DATABASE_URL` / `NEON_API_KEY` — verified 2026-10-28 NOT yet provisioned in repo Actions secrets (53 names checked); provisioning owned by the neon-fix lane | gate workflows via psql writer pattern → export job | **ADOPT as the working database (primary queryable store)** |
 | Supabase Postgres | full SQL | same export problem | buildable | free; key provisioned by name, but no ledger precedent + Jules route contested | new surface for no gain over Neon | reject (duplicate of Neon) |
 | Pinecone (provisioned 2026-10-28) | vector similarity only — no folds, no EWMA, no exact current-state query | none | none (upsert overwrites) | Starter free | HindSight recall only | reject — wrong shape entirely |
 | **Repo-native feed** (`delphi-rfp-feed` precedent, PR #1949/#1952) | jq / DuckDB `read_json` over one file; no SQL server | **proven**: `apps/help-wanted-dashboard/data/*.json` → static Pages/Vercel render | git history + collector honesty rules; source comments stay append-only | zero, no card | collector workflow (dispatch + weekly + `workflow_run` on delphi-gate) → Web Design pages | **ADOPT as web-availability layer (this slice)** |
@@ -54,7 +66,7 @@ Registry of ledgers: `ops/delphi/ledgers.json` (`delphi-ledgers/v1`).
    (same cache → same feed; a re-delivered comment yields one event).
    Refresh: `.github/workflows/delphi-ledger-feed-collect.yml`
    (dispatch + weekly + on delphi-gate completion; refresh PRs only).
-3. **Queryable mirror (schema landed slice 1, writer landed slice 2):**
+3. **Working database (schema landed slice 1, writer landed slice 2):**
    `ops/delphi-ledger/schema.sql` — `delphi_ledger_events` +
    `delphi_living_records` on the existing lane-events Neon route,
    same `event_key`, append-only trigger, and a
@@ -63,8 +75,8 @@ Registry of ledgers: `ops/delphi/ledgers.json` (`delphi-ledgers/v1`).
    never fails its caller, no-op without `LANE_EVENTS_DATABASE_URL` /
    `NEON_API_KEY`, guest in the `lane-events` Neon project, never
    creates it). It flattens the collector cache through
-   `ledger_feed.collect`, so mirror rows are the feed's rows (same
-   partition, same keys); inserts are `ON CONFLICT DO NOTHING`
+   `ledger_feed.collect`, so database rows carry the feed's keys (same
+   partition, same event_keys); inserts are `ON CONFLICT DO NOTHING`
    (`ops/delphi-ledger/insert-event.sql` / `insert-living.sql`), so a
    re-sync inserts zero new rows. Wired as a step in
    `delphi-ledger-feed-collect.yml` after the feed collect. Delphi lane
@@ -72,11 +84,13 @@ Registry of ledgers: `ops/delphi/ledgers.json` (`delphi-ledgers/v1`).
    no corrections; the writer's event_key/idempotency wiring is theirs
    to review on the slice-2 PR.
 
-Query examples once the mirror lands: current weights =
+Compute lives in the database: current weights =
 `SELECT payload FROM delphi_ledger_current WHERE ledger_id='weights'`;
-outcome history for one surface = payload path queries over
-`delphi_ledger_events WHERE ledger_id='outcomes'` ordered by
-`occurred_at`. Until then both are one `jq` over the feed file.
+derived weights = the `delphi_weights_current` view (SQL applies the
+derivation); outcome history for one surface = payload path queries
+over `delphi_ledger_events WHERE ledger_id='outcomes'` ordered by
+`occurred_at`. New pipeline consumers query Neon directly; the feed
+file is the render export, not a compute input.
 
 ## Semantics amendments (Delphi lane review, 2026-10-28)
 
@@ -85,7 +99,7 @@ here + registry + schema (amendment PR follows this doc):
 
 - **Weights derivation (was missing):** `w_i = base_i × (0.5 +
   gate_pass_rate_i) × (elo_i / 1500)` (DELPHI-WEIGHTING.md:43). Weights
-  are DERIVED from events — the mirror therefore stores events + the
+  are DERIVED from events — the database therefore stores events + the
   derivation (`delphi_weights_current` view applies it to the current
   payload); the feed carries `derivation` on the weights ledger and
   payloads verbatim. Snapshots alone are never the record.

@@ -38,6 +38,7 @@ One object per packet (D0–D5), mirroring log §4.
 | `constraints[]` | hard rules, verbatim from the official page/rules |
 | `gates[]` | `{id, label, blocks, owner, status (open\|cleared), evidence}` — enforced checks, per the lane's eligibility standard |
 | `prizes{}` | `{status (ESTABLISHED\|NOT_ESTABLISHED), pool, tiers[{place, award, source_url}], notes}` — `pool`/`notes` optional; tiers verbatim amounts only |
+| `opportunity_cost{}` | see Opportunity-cost section below — always populated per event |
 | `registration{}` | `{state, evidence[]}` — platform join/registration state with its proof |
 | `submission{}` | `{state (none\|draft\|submitted\|confirmed), at, confirmation_ref}` |
 | `brief{}` | `{evidence_pack_ref, anchor_lines[]}` — the verbatim official-brief pack the concept generation anchors to |
@@ -64,6 +65,24 @@ Notes on current usage:
   not to make them candidates.
 - A `questioned` project (D3's #42) keeps its full record and decisions;
   questioned is a review state, not a termination.
+
+## opportunity_cost{} (per event, owner order 2026-10-28)
+
+Opportunity-cost metrics sit alongside prizes/participants/judges/signals/podium/recruitment.
+
+| field | meaning |
+|---|---|
+| `outcome` | `submitted` \| `not_submitted` \| `pending` — from `submission.state` + event status (closed+none = not_submitted; open window = pending) |
+| `top_award{value, form, source}` | highest single award: numeric `value` in USD/credit-USD (null if NOT_ESTABLISHED), `form` verbatim, `source` = official source / verification record |
+| `gross_foregone` | `top_award.value` if outcome=not_submitted, else 0 |
+| `win_probability{estimate, basis{field_size, our_standing}}` | estimate = winning slots / field_size ONLY when field_size is verified from an official/public entrant count; otherwise null and field_size=NOT_ESTABLISHED. Never inferred. |
+| `expected_value_foregone` | estimate × gross_foregone when estimate is established and outcome=not_submitted; null otherwise (pending/submitted = not yet / not foregone) |
+| `non_monetary_foregone[]` | non-cash items foregone (backpack/badge/visibility/judge feedback), sourced from the award/rules |
+| `computed_at` | date computed (YYYY-MM-DD) |
+
+**D0 seed (verified):** AWS Weekend Challenge (Oct 23–26 PT), not_submitted, top award $100 AWS credits + Builder Backpack (pool $1,000, top 5), field_size 40 (public project list exhausted 2026-10-26, no match for ours), estimate 5/40=0.125, gross_foregone 100, expected_value_foregone 12.5.
+
+**DB (Neon, DB lane pattern):** sync rows carry `opportunity_cost` in events core; `challenge_events_current` exposes it and view `event_opportunity_cost` extracts outcome/gross/EV per event (schema.sql).
 
 ## derived (computed, never hand-written)
 

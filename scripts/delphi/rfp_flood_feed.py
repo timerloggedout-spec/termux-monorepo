@@ -161,6 +161,19 @@ def _axes_record(cache: Path) -> dict | None:
     return None
 
 
+def _participants(cache: Path) -> dict | None:
+    """Research-participant registry (ops/delphi/
+    research-participants.json, delphi.research-participants.v1),
+    from the cache when the fetch copied it, else the working tree.
+    Absent registry -> research segments fall back to queue entries."""
+    ops = Path(__file__).resolve().parents[2] / "ops" / "delphi"
+    for base in (cache, ops):
+        p = base / "research-participants.json"
+        if p.exists():
+            return json.loads(p.read_text())
+    return None
+
+
 def _segment_for(entry: dict, membered: dict) -> tuple[str | None, str | None]:
     """(segment_id, class) for one entry, per rfp-segments.json.
 
@@ -329,6 +342,37 @@ def build(cache: Path, generated_at: str) -> dict:
                     1 for v in axes.values()
                     if not str(v).startswith("pending"))
                 g["axes_total"] = len(axes)
+        # Participants (owner reclassification, PR #2039): when the
+        # registry is present, research segments describe the 12
+        # participants and their arms — not queue members. The gate
+        # does not score participants; their axes record carries the
+        # comparison. Registry wins over any residual queue entries.
+        parts = _participants(cache)
+        if parts:
+            for k in [k for k, g in grouped.items()
+                      if g["class"] == "research-silos"]:
+                del grouped[k]
+            for part in parts.get("participants", []):
+                filings = part["filings"]
+                arms = [{"number": filings["baseline"],
+                         "arm": "baseline"}] + [
+                    {"number": n, "arm": a}
+                    for a, n in filings["arms"].items()]
+                rec = ((axes_rec or {}).get("silos") or {}).get(
+                    part["silo_id"]) or {}
+                grouped[part["silo_id"]] = {
+                    "segment_id": part["silo_id"],
+                    "class": "research-silos",
+                    "kind": "participant",
+                    "members": [a["number"] for a in arms],
+                    "arms": arms,
+                    "by_status": {"participant": len(arms)},
+                    "gate_scored": 0,
+                    "axes_recorded": sum(
+                        1 for ax in RESEARCH_AXES
+                        if ax in rec),
+                    "axes_total": len(RESEARCH_AXES),
+                }
         segments_block = {
             "config": "ops/delphi/rfp-segments.json",
             "doctrine": "docs/ops/DELPHI-RFP-SEGMENTATION.md",

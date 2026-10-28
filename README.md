@@ -119,7 +119,7 @@ Start with **one** of these routes. Do not load the entire repository merely bec
 |---|---|---|
 | **Agent / operator entry (primary)** | [`CLAUDE.md`](CLAUDE.md) | Governance, hard rules, dual gates, adaptive WAIT, skills inventory pointer. **Load this first.** |
 | Task routing (one verified card) | [`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md) | Repository-native ICM system map, objects, processes, and impact routes. |
-| Linguist / CedrLang surface only | [`AGENTS.md`](AGENTS.md) | Deprecated as primary entry — retained as Linguist compression target + tooling compatibility. |
+| Linguist / CedrLang surface only | [`AGENTS.hum.md`](AGENTS.hum.md) | Human-readable counterpart (`AGENTS.md` folded into `CLAUDE.md` and deleted). |
 | Maintain the ICM map itself | [`docs/icm/maintenance/CLAUDE.md`](docs/icm/maintenance/CLAUDE.md) | Inventory → human design review → verification → promotion procedure. |
 | Operate or inspect the ArchWiz surface | [`archwiz/TOOL_INDEX.md`](archwiz/TOOL_INDEX.md) | Named cockpit, forensic, autonomous, verification, and knowledge tools. |
 | Review open proposal governance | [`docs/proposals/`](docs/proposals/) | Registered active proposals, operator policy notes, and validation structure. |
@@ -210,13 +210,31 @@ The current integration markers are maintained in [`.github/connectors/integrati
 
 ## 4. Linguist, CedrLang, and CID pointers
 
-The repository’s Linguist work optimizes **internal** agent communication through CedrLang compression and short-pointer conventions. The current `cid.py` implementation stores mappings locally under `~/.cedar/cedar_index.json`, generates short base-36 pointers, and expands them back to full commands.[1] The merged CedrLang v2 implementation documented lossless, line-oriented handling for its intended compiler pipeline.[3]
+The repository’s Linguist work optimizes **internal** agent communication through CedrLang compression, 1337_$934k symbolic representations, zero-width steganographic ciphering (`ConversationalSteganographyCipher`), and short-pointer conventions. Root `AGENTS.md` is folded into [`CLAUDE.md`](CLAUDE.md) (and deleted), with [`AGENTS.hum.md`](AGENTS.hum.md) remaining as its human-readable twin.
+
+### 1337_$934k / Grimoire Cipher Mapping
+| Human Term | Compressed Cipher Token | Sense / Domain |
+|---|---|---|
+| transmute | `h4x` | Transform / edit code |
+| scry | `scry` | Read / inspect output |
+| probe | `pr0b3` | Telemetry / probe |
+| grimoire | `gr1m01r3` | Knowledge base |
+| tool definition quality score | `tdqs` | MCP tool quality metric |
+| agent efficiency telemetry | `ates` | Execution telemetry |
+| agent evaluation framework | `aef` | Evaluation boundary |
+| three layer observation | `3l0` | Decision aggregation |
+| adaptive dynamic language mixing | `adlm` | Semantic codec policy |
+| category theory | `c47_7h30ry` | Formal math domain |
+| morphism | `m0rph` | Categorical arrow |
+
+The current `cid.py` implementation stores mappings locally under `~/.cedar/cedar_index.json`, generates short base-36 pointers, and expands them back to full commands.[1] The merged CedrLang v2 implementation documented lossless, line-oriented handling for its intended compiler pipeline.[3]
 
 > **README rule:** public documentation stays explicit. Use readable paths and links here. CID pointers are an internal efficiency mechanism only when the receiving context has the same trusted registry and can expand the pointer before execution.
 
 | Surface | Purpose | Audit route |
 |---|---|---|
 | [`workspace/compression_sandbox/cedrlang/cid.py`](workspace/compression_sandbox/cedrlang/cid.py) | Local CedarIndex short-pointer registry and expansion behavior | Source-level implementation. |
+| [`workspace/compression_sandbox/cedrlang/phase_codec.py`](workspace/compression_sandbox/cedrlang/phase_codec.py) | Phased 1337 surface codec & `ConversationalSteganographyCipher` | Pre-parser steganographic obfuscation. |
 | [`harmony_hub/workspace/agent/LINGUIST_SPEC.md`](harmony_hub/workspace/agent/LINGUIST_SPEC.md) | Linguist role, pointer conventions, and integration intent | Agent specification. |
 | [PR #196](https://github.com/timerloggedout-spec/termux-monorepo/pull/196) | Merged CedrLang v2 compilation work | Historical implementation and review evidence. |
 | [PR #228](https://github.com/timerloggedout-spec/termux-monorepo/pull/228) | Merged fast-path term-search optimization | Subsequent performance evidence. |

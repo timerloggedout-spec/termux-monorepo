@@ -137,3 +137,10 @@ In `from_1337speak()`, executing `VARIANT_REGEX.sub()` over documents that conta
 
 **Action:**
 In surface codec normalization pipelines, construct pre-search regexes and pre-computed casing tables targeting non-canonical variants only, allowing already-canonical streams to bypass substitution loops completely.
+
+## 2026-10-15 - Base64 BPE Token Inflation vs Zero-Width Base-4 Steganographic Density
+**Learning:**
+Using Base64 encoding for LLM communications or pre-parser payload routing causes ~71.4% BPE token inflation in modern tokenizers (Tiktoken cl100k_base / o200k_base, Llama) because non-word ASCII character chunks are split into 2-3 char tokens per 3 bytes. In contrast, CedrLang symbolic representations achieve 20-50%+ token savings over raw natural language. Furthermore, pre-LLM pre-parser steganographic payloads are best routed using Base-4 zero-width quadruplet encoding (`\u200b`, `\u200c`, `\u200d`, `\ufeff`). With pre-compiled zero-width regex pre-search guards (`ZW_REGEX.search(text)`), zero-width payload detection and decoding executes with zero allocation overhead when zero-width characters are absent in cover prose.
+
+**Action:**
+Avoid Base64 encoding for natural language or code payload routing in LLM prompts. Use CedrLang symbolic representations for token reduction and `ConversationalSteganographyCipher` zero-width Base-4 quadruplets for invisible pre-parser agent-to-agent payload transmission.

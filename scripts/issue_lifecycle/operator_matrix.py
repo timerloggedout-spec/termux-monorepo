@@ -163,6 +163,19 @@ def build_matrix(snapshot: dict, generated_at: str) -> dict:
     }
 
 
+def validate_matrix(m: dict) -> None:
+    """Stamp-guard: refuse outputs that cannot be the real inventory.
+
+    The first automated cut (2026-10-28) stamped "0 issues, 96 PRs"
+    because the workflow token lacked issues:read and the endpoint
+    silently returned only PRs. A repo with open PRs and zero open
+    issues is not credible here; fail loudly instead of stamping it.
+    """
+    c = m["counts"]
+    if c["open_prs"] > 0 and c["open_issues"] == 0:
+        raise ValueError("implausible inventory: open PRs but zero open issues (token scope?)")
+
+
 def render_md(m: dict) -> str:
     c = m["counts"]
     lines = [
@@ -313,6 +326,11 @@ def main() -> int:
 
     generated_at = args.generated_at or time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     matrix = build_matrix(snapshot, generated_at)
+    try:
+        validate_matrix(matrix)
+    except ValueError as e:
+        print(f"operator-matrix: refusing to stamp: {e}", file=sys.stderr)
+        return 1
     json_text = json.dumps(matrix, indent=2, sort_keys=True) + "\n"
     md_text = render_md(matrix)
 

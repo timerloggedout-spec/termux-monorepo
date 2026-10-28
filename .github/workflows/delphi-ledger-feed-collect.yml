@@ -49,11 +49,19 @@ jobs:
         run: |
           set -euo pipefail
           python3 -B scripts/delphi/ledger_event.py sync --cache .ledger-cache
+      - name: Export the feed from Neon (read mode; no-op without ledger secrets)
+        if: hashFiles('.ledger-cache/issues.json') != ''
+        env:
+          LANE_EVENTS_DATABASE_URL: ${{ secrets.LANE_EVENTS_DATABASE_URL }}
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+        run: |
+          set -euo pipefail
+          python3 -B scripts/delphi/ledger_db_export.py
       - name: Propose the refresh as a PR
         if: hashFiles('.ledger-cache/issues.json') != ''
         run: |
           set -euo pipefail
-          if git diff --quiet -- apps/help-wanted-dashboard/data/delphi-ledger-feed.json; then
+          if git diff --quiet -- apps/help-wanted-dashboard/data/delphi-ledger-feed.json apps/help-wanted-dashboard/data/delphi-ledger-feed-db.json; then
             echo "feed unchanged; no refresh PR"
             exit 0
           fi
@@ -61,7 +69,7 @@ jobs:
           git config user.name "delphi-ledger-feed-collect"
           git config user.email "actions@github.com"
           git checkout -B "$branch"
-          git add apps/help-wanted-dashboard/data/delphi-ledger-feed.json
+          git add apps/help-wanted-dashboard/data/delphi-ledger-feed.json apps/help-wanted-dashboard/data/delphi-ledger-feed-db.json
           git commit -m "chore(delphi): refresh delphi-ledger-feed"
           git push -f origin "$branch"
           gh pr create --base master --head "$branch" \

@@ -149,16 +149,20 @@ def _segments_config(cache: Path) -> tuple[dict | None, dict | None]:
     return cfg, silos
 
 
-def _segment_for(entry: dict, meta_by_number: dict) -> tuple[str | None, str | None]:
-    """(segment_id, class) for one entry, per rfp-segments.json."""
+def _segment_for(entry: dict, membered: dict) -> tuple[str | None, str | None]:
+    """(segment_id, class) for one entry, per rfp-segments.json.
+
+    `membered` maps issue number -> (slug, class) for every class
+    that names its members explicitly (meta-process, doe-components).
+    """
     group = entry["group"]
     if group.startswith("research"):
         return f"research.{entry['silo']}", "research-silos"
     if group == "surface" or entry.get("surface_id") == "fly.free_tier":
         return "quota-surfaces", "quota-surfaces"
-    slug = meta_by_number.get(entry["number"])
-    if slug:
-        return slug, "meta-process"
+    hit = membered.get(entry["number"])
+    if hit:
+        return hit
     return None, None
 
 
@@ -269,13 +273,14 @@ def build(cache: Path, generated_at: str) -> dict:
     seg_cfg, _silos = _segments_config(cache)
     segments_block = None
     if seg_cfg:
-        meta_by_number = {n: slug for slug, n in
-                          seg_cfg["classes"]["meta-process"]
-                          ["members"].items()}
+        membered = {}
+        for cls_name, cls in seg_cfg["classes"].items():
+            for slug, n in (cls.get("members") or {}).items():
+                membered[n] = (slug, cls_name)
         grouped: dict[str, dict] = {}
         unassigned = []
         for r in rfps:
-            seg_id, seg_class = _segment_for(r, meta_by_number)
+            seg_id, seg_class = _segment_for(r, membered)
             if seg_id is None:
                 unassigned.append(r["number"])
                 continue

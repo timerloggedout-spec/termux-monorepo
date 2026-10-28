@@ -22,9 +22,11 @@ on:
 
 permissions: {}
 
-concurrency:
-  group: research-intake-${{ github.event.issue.number }}
-  cancel-in-progress: false
+# NO concurrency group: a template filing fires opened + labeled events in
+# the same minute, and a per-issue group keeps only one pending run — the
+# other is cancelled (live: #2131, 2026-10-28, record lost until a manual
+# label re-trigger). Duplicate events are absorbed by the content-hash
+# dedupe in the comment step instead.
 
 jobs:
   intake:
@@ -89,9 +91,19 @@ jobs:
               echo "[MUSEai]@{role:{research-triggers}} intake refused (exit $code): missing id/name, a bad observatory signal, or a secret VALUE instead of an Actions secret NAME. Fix the fields and re-label or re-comment to re-run."
             fi
           } > /tmp/comment.md
+          hash="$(sha256sum /tmp/research-record.md | cut -d' ' -f1)"
+          echo "<!-- research-intake:${hash} -->" >> /tmp/comment.md
+          echo "RECORD_HASH=${hash}" >> "$GITHUB_ENV"
           cat /tmp/comment.md
 
-      - name: Comment the record on the issue
+      - name: Comment the record on the issue (hash-deduped)
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh issue comment "${{ github.event.issue.number }}" --body-file /tmp/comment.md
+        run: |
+          set -euo pipefail
+          if gh api "repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments" --paginate \
+              --jq '[.[] | .body // ""] | join("\n")' | grep -q "research-intake:${RECORD_HASH}"; then
+            echo "Identical intake record already posted (hash ${RECORD_HASH}); skipping duplicate."
+            exit 0
+          fi
+          gh issue comment "${{ github.event.issue.number }}" --body-file /tmp/comment.md

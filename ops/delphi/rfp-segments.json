@@ -48,16 +48,8 @@
     "feature_extractions",
     "consensus_implementation"
    ],
-   "cycle": [
-    "RFP (improve-request on the RFP schema / surface itself)",
-    "oracle + blind panel (5 roles) \u2014 gate admission only for research ids",
-    "award shadow|parked",
-    "validated output comparison (axis 1)",
-    "feature extraction (axis 2)",
-    "consensus implementation (axis 3)",
-    "flywheel confirmed|miss -> reweight"
-   ],
-   "description": "One segment per research silo. Improve-cycle comparison runs WITHIN the segment only: baseline vs its .rnd/.selected/.control variants on the three axes. No cross-silo score aggregation (RESEARCH-SILO-DELPHI.md \u00a71/\u00a76). The gate score is an admission rubric only \u2014 research.* ids are synthetic unsourced surfaces, uniform by construction; it is never the comparison result.",
+   "cycle": "Per participant, per cycle: axes records land in ops/delphi/research-axes.json (+ the outcomes ledger #1487) as the arms produce validated outputs, feature extractions, and \u2014 at stage 6 \u2014 consensus implementation. First-cycle gate scores (parked 6.69) stand on the filings as history of the admission-rubric artifact, superseded as a status by the participant registration.",
+   "description": "The 12 research silos are Delphi process PARTICIPANTS (owner reclassification 2026-10-28, PR #2039, ops/delphi/research-participants.json) \u2014 no longer RFP applicants. Each participant is one segment; its four filings are arms (baseline + rnd/selected/control). The gate does not score participants; participation runs through the comparison-axes cycles (ops/delphi/research-axes.json). Comparison stays WITHIN a segment: arms are compared on the three axes as post-hoc records, and no score, rank, or verdict ever crosses segment lines.",
    "questions": [
     "Does the variant's produced output validate against the silo's own contract, where the baseline's did or did not?",
     "Which features does each variant extract that the baseline does not (and vice versa)?",

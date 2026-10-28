@@ -1,57 +1,64 @@
 # Gravitee
 
-- `custom.gravitee` — SCAFFOLD, NOT REGISTERED, NOT VERIFIED (2026-10-28).
-- Target API: Gravitee APIM **Management API v2**, base `<instance>/management/v2`,
-  paths `/organizations/{orgId}/environments/{envId}/...`.
-- Auth model (vendor docs, proven): **Personal Access Token as Bearer header**.
-  PAT is generated on a **service account**: APIM Console → Organization →
-  Users → Add user → Service Account → assign roles → Tokens → Generate a
-  personal token (shown once). Distinct token: **Gravitee Cloud Token**
-  (Cloud Console → Settings → Cloud tokens, Automation scope) serves the
-  Gravitee Cloud control plane only — do not conflate.
-- Helper: `~/workspace/custom-connectors/custom.gravitee/bin/gravitee.py`
-  (ping / list-envs / list-apis / get). Compiles; every call currently exits
-  BLOCKED (no base URL / no credential).
+- `custom.gravitee` — BUILD COMPLETE, mock-verified; NOT registered against a
+  live instance (no instance exists). 2026-10-28.
+- API: Gravitee APIM **Management API v2** (APIM 4.12 surface). Root base
+  `<host>/management/v2`; org base `<host>/management/v2/organizations/{orgId}`
+  (spec `servers:` in the official MCP repo's vendored OpenAPI:
+  `gravitee-io/gravitee-apim-mcp-server/.speakeasy/openapi-{apis,environments}.yaml`
+  = **149 paths / 189 operations**).
+- Auth (vendor docs): **service-account Personal Access Token**, Bearer header.
+  Mint: Console → Organization → Users → Service Account → roles → Tokens →
+  Generate (shown once). Cloud Token (Gravitee Cloud control plane) and the AM
+  Management API are different surfaces — not covered, not conflated.
 
-## Blockers (owner ruling required)
+## Helper
 
-1. Hosting: self-hosted (Docker/Helm, e.g. `http://localhost:8083/management/v2`)
-   vs Gravitee Cloud (`https://<org>.<region>.api.gravitee.io/management/v2`)
-   vs hybrid. No signup/account creation done — standing no-card rule.
-2. Instance host + org/env IDs. The Management API host is instance-specific,
-   so `credentials.request_api_access` cannot be registered until the host
-   exists. Registration details once known:
-   `{"provider": "gravitee", "auth_scheme": "api_key", "placement": "bearer_header", "api_hosts": ["<instance-host>"]}`
-3. Service-account PAT issuance inside that instance (owner/instance admin).
+`~/workspace/custom-connectors/custom.gravitee/bin/gravitee.py` (in-repo copy:
+`docs/ops/gravitee-connector/`). 42 named commands + generic fallback covering
+any spec path:
 
-## Verify (once unblocked)
+- Reads: `ping envs env apis api api-export plans plan pages page subscriptions
+  subscription members analytics health logs audits groups integrations
+  integration clusters cluster scoring spg portal-pages`
+- Writes (require `--yes`): `api-create api-import api-update api-delete
+  api-start api-stop api-deploy plan-create plan-publish plan-close page-create
+  page-publish sub-accept sub-reject sub-close sub-pause sub-resume key-renew
+  key-revoke spg-deploy`
+- Generic: `get|post|put|patch|delete <path> [--file body.json]` (org base)
+- Utility: `ops` (coverage), `mcp-config` (official MCP client JSON; token as
+  `${APIM_BEARER_TOKEN}` placeholder only)
+- Global: `--base-url <root /management/v2 URL>` or `GRAVITEE_BASE_URL`
+  (non-secret config), `--org`, `--env` (default `DEFAULT`/`DEFAULT`).
 
-```text
-python3 ~/workspace/custom-connectors/custom.gravitee/bin/gravitee.py --base-url <instance>/management/v2 ping
-```
+## Verify
 
-Harmless read: `GET /management/v2/organizations/{org}`. Untested until then.
+- Mock-mAPI integration test (in-repo: `docs/ops/gravitee-connector/test_gravitee.py`):
+  local HTTP server serving documented v2 shapes + stubbed credential module
+  (test token only). **PASS 2026-10-28**: exact paths, Bearer header, write
+  guard (exit 3 without `--yes`), BLOCKED exit 2 without base URL, mcp-config
+  contains no token.
+- Live verification = first harmless read once an instance exists:
+  `gravitee.py --base-url <instance>/management/v2 ping`
+  (`GET /management/v2/organizations/{org}`). **Untested live.**
+
+## Remaining blocker (unchanged, external)
+
+No instance/account: no signup/card per owner rule; self-host infeasible on
+this VM (no docker; ~0.5G RAM free of 7.7G — APIM stack needs Mongo + search +
+gateway + mAPI + consoles). Unblock = instance on owner's host or Cloud org →
+register `custom.gravitee` (`api_key`, `bearer_header`, `api_hosts=[<instance
+host>]`) → PAT via vault → `ping`.
+
+## Official MCP (maximum-benefit route, ready)
+
+`npx @gravitee/apim-mcp-server start --mode dynamic --bearer-auth <PAT>
+--server-url <instance>/management/v2` — official, generated from the same
+OpenAPI; dynamic mode = 4 discovery/execution tools instead of 189 tools.
+`gravitee.py mcp-config` emits the client JSON. Same PAT/instance blocker.
 
 ## Credentials
 
-- Credential will live only in the registered `custom.gravitee` connection;
-  helpers use `dynamic_credentials.py` surrogates. Never put a token in this
-  doc, a helper, a command argument, an environment variable, or a log.
-- Keep redirects disabled on authenticated requests (helper enforces).
-
-## Official MCP (alternative/complement)
-
-- Official: `gravitee-io/gravitee-apim-mcp-server` (since APIM 4.9), generated
-  from the Management API v2 OpenAPI spec, stdio, Node 18+, launched with
-  `--bearer-auth <PAT> --server-url <instance>/management/v2`. Read-strong;
-  writes may need Console follow-up. Same PAT + instance blockers apply.
-- Distinct feature, not this connector: Gateway MCP entrypoint exposes v4
-  proxy APIs themselves as MCP tools to agents.
-
-## Limits
-
-- Covers APIM Management API v2 only. Access Management has a separate
-  Management API (token endpoint: `POST /management/auth/token`, Basic →
-  bearer JWT) — not covered, not conflated.
-- API Designer + Gravitee Cloud/Cockpit are Enterprise/Gravitee-managed
-  surfaces with no PAT route established here.
+Credential lives only in the registered connection once created; helpers use
+`dynamic_credentials.py` surrogates; redirects refused on authed requests.
+Never put a token in docs, helpers, args, env vars, or logs.

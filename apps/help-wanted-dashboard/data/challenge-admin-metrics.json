@@ -1,24 +1,56 @@
 {
   "schema": "challenge-admin-metrics/v1",
-  "generated_at": "2026-10-28T22:14:00Z",
+  "generated_at": "2026-10-28T22:20:00Z",
   "source": "ops/challenge/coordinator.json",
   "surface": "ADMIN PANEL ONLY (internal) \u2014 never public feeds/pages/log/briefs/ledger",
   "events": {
     "STRANDS-DECIDER": {
       "win_probability": {
-        "method": "winprob/v1",
-        "estimate": 0.009,
-        "inputs": {
-          "award_slots_top": 1,
-          "field_size": 110,
-          "field_scored_count": 0,
-          "field_mean_composite": null,
-          "our_composite": null,
-          "participants": 5917,
-          "field_size_basis": "MoneyBall refinement denominator (see basis)"
+        "method": "winprob/v2",
+        "estimate": 0,
+        "range": [
+          0,
+          0
+        ],
+        "confidence": "high",
+        "prior": {
+          "base_rate": null,
+          "denominator": null,
+          "denominator_kind": null
         },
-        "computed_at": "2026-10-28T22:09:00Z",
-        "basis": "MoneyBall refinement (winprob/v1): projects floor 110 (list paginated past 110, total not displayed) \u2014 base = 1/110 upper bound; participants 5917 rejected as denominator."
+        "standing": {
+          "our_composite": null,
+          "our_percentile": null,
+          "field_mean": null,
+          "field_sd": null,
+          "scored_count": 0
+        },
+        "fit": {
+          "criteria_fit": null,
+          "judges_known": false
+        },
+        "unknowns": {
+          "unscored_share": 0,
+          "unverified_axis_weight_share": 0
+        },
+        "basis": "winprob/v2 (spec PR #2250): realized \u2014 event closed, outcome recorded not_submitted -> estimate = realized 0, range [0,0], confidence high. v1 superseded.",
+        "computed_at": "2026-10-28T22:20:00Z",
+        "superseded_v1": {
+          "method": "winprob/v1",
+          "estimate": 0.009,
+          "basis": "MoneyBall refinement (winprob/v1): projects floor 110 (list paginated past 110, total not displayed) \u2014 base = 1/110 upper bound; participants 5917 rejected as denominator.",
+          "inputs": {
+            "award_slots_top": 1,
+            "field_size": 110,
+            "field_scored_count": 0,
+            "field_mean_composite": null,
+            "our_composite": null,
+            "participants": 5917,
+            "field_size_basis": "MoneyBall refinement denominator (see basis)"
+          },
+          "computed_at": "2026-10-28T22:09:00Z",
+          "superseded_by": "winprob/v2 (PR #2250 spec)"
+        }
       },
       "field_size_status": "partial",
       "field_size": {
@@ -28,18 +60,50 @@
     },
     "D0": {
       "win_probability": {
-        "method": "winprob/v1",
-        "estimate": 0.025,
-        "inputs": {
-          "award_slots_top": 1,
-          "field_size": 40,
-          "field_scored_count": 0,
-          "field_mean_composite": null,
-          "our_composite": null,
-          "participants": 252
+        "method": "winprob/v2",
+        "estimate": 0,
+        "range": [
+          0,
+          0
+        ],
+        "confidence": "high",
+        "prior": {
+          "base_rate": null,
+          "denominator": null,
+          "denominator_kind": null
         },
-        "computed_at": "2026-10-28T22:09:00Z",
-        "basis": "winprob/v1 base-rate: 1/40 submitted projects (field established 2026-10-26); no scored field, no lift."
+        "standing": {
+          "our_composite": null,
+          "our_percentile": null,
+          "field_mean": null,
+          "field_sd": null,
+          "scored_count": 0
+        },
+        "fit": {
+          "criteria_fit": null,
+          "judges_known": false
+        },
+        "unknowns": {
+          "unscored_share": 0,
+          "unverified_axis_weight_share": 0
+        },
+        "basis": "winprob/v2 (spec PR #2250): realized \u2014 closed, not_submitted (v1 printed 0.025 for a settled event \u2014 the clearest v1 defect). v1 superseded.",
+        "computed_at": "2026-10-28T22:20:00Z",
+        "superseded_v1": {
+          "method": "winprob/v1",
+          "estimate": 0.025,
+          "basis": "winprob/v1 base-rate: 1/40 submitted projects (field established 2026-10-26); no scored field, no lift.",
+          "inputs": {
+            "award_slots_top": 1,
+            "field_size": 40,
+            "field_scored_count": 0,
+            "field_mean_composite": null,
+            "our_composite": null,
+            "participants": 252
+          },
+          "computed_at": "2026-10-28T22:09:00Z",
+          "superseded_by": "winprob/v2 (PR #2250 spec)"
+        }
       },
       "field_size_status": "established",
       "field_size": {
@@ -49,19 +113,51 @@
     },
     "D1": {
       "win_probability": {
-        "method": "winprob/v1",
+        "method": "winprob/v2",
         "estimate": 0.003,
-        "inputs": {
-          "award_slots_top": 1,
-          "field_size": 324,
-          "field_scored_count": 1,
-          "field_mean_composite": null,
-          "our_composite": null,
-          "participants": 324,
-          "field_size_basis": "MoneyBall refinement denominator (see basis)"
+        "range": [
+          0.0002,
+          0.0059
+        ],
+        "confidence": "low",
+        "prior": {
+          "base_rate": 0.003086,
+          "denominator": 324,
+          "denominator_kind": "participants"
         },
-        "computed_at": "2026-10-28T22:09:00Z",
-        "basis": "MoneyBall refinement (winprob/v1): base = 1/324 participants (open event; landed projects=1 rejected as denominator \u2014 would print 1.0); no lift (our_composite null)."
+        "standing": {
+          "our_composite": null,
+          "our_percentile": null,
+          "field_mean": 2.05,
+          "field_sd": null,
+          "scored_count": 1
+        },
+        "fit": {
+          "criteria_fit": null,
+          "judges_known": false
+        },
+        "unknowns": {
+          "unscored_share": 0.997,
+          "unverified_axis_weight_share": 1
+        },
+        "basis": "winprob/v2 (spec PR #2250): prior 1/324 participants; no our_composite (LRs=1, estimate=prior); u=0.997, v=1, k=0.95. v1 superseded.",
+        "computed_at": "2026-10-28T22:20:00Z",
+        "superseded_v1": {
+          "method": "winprob/v1",
+          "estimate": 0.003,
+          "basis": "MoneyBall refinement (winprob/v1): base = 1/324 participants (open event; landed projects=1 rejected as denominator \u2014 would print 1.0); no lift (our_composite null).",
+          "inputs": {
+            "award_slots_top": 1,
+            "field_size": 324,
+            "field_scored_count": 1,
+            "field_mean_composite": null,
+            "our_composite": null,
+            "participants": 324,
+            "field_size_basis": "MoneyBall refinement denominator (see basis)"
+          },
+          "computed_at": "2026-10-28T22:09:00Z",
+          "superseded_by": "winprob/v2 (PR #2250 spec)"
+        }
       },
       "field_size_status": "partial",
       "field_size": {
@@ -71,19 +167,51 @@
     },
     "D2": {
       "win_probability": {
-        "method": "winprob/v1",
+        "method": "winprob/v2",
         "estimate": 0.0006,
-        "inputs": {
-          "award_slots_top": 1,
-          "field_size": 1617,
-          "field_scored_count": 0,
-          "field_mean_composite": null,
-          "our_composite": null,
-          "participants": 1617,
-          "field_size_basis": "MoneyBall refinement denominator (see basis)"
+        "range": [
+          3e-05,
+          0.0012
+        ],
+        "confidence": "low",
+        "prior": {
+          "base_rate": 0.000618,
+          "denominator": 1617,
+          "denominator_kind": "participants"
         },
-        "computed_at": "2026-10-28T22:09:00Z",
-        "basis": "MoneyBall refinement (winprob/v1): base = 1/1617 participants (approved registrants; no projects published yet)."
+        "standing": {
+          "our_composite": null,
+          "our_percentile": null,
+          "field_mean": null,
+          "field_sd": null,
+          "scored_count": 0
+        },
+        "fit": {
+          "criteria_fit": null,
+          "judges_known": false
+        },
+        "unknowns": {
+          "unscored_share": 1,
+          "unverified_axis_weight_share": 1
+        },
+        "basis": "winprob/v2 (spec PR #2250): prior 1/1617 participants; u=1, v=1, k=0.95. v1 superseded.",
+        "computed_at": "2026-10-28T22:20:00Z",
+        "superseded_v1": {
+          "method": "winprob/v1",
+          "estimate": 0.0006,
+          "basis": "MoneyBall refinement (winprob/v1): base = 1/1617 participants (approved registrants; no projects published yet).",
+          "inputs": {
+            "award_slots_top": 1,
+            "field_size": 1617,
+            "field_scored_count": 0,
+            "field_mean_composite": null,
+            "our_composite": null,
+            "participants": 1617,
+            "field_size_basis": "MoneyBall refinement denominator (see basis)"
+          },
+          "computed_at": "2026-10-28T22:09:00Z",
+          "superseded_by": "winprob/v2 (PR #2250 spec)"
+        }
       },
       "field_size_status": "partial",
       "field_size": {
@@ -93,18 +221,47 @@
     },
     "D3": {
       "win_probability": {
-        "method": "winprob/v1",
+        "method": "winprob/v2",
         "estimate": null,
-        "inputs": {
-          "award_slots_top": 1,
-          "field_size": null,
-          "field_scored_count": 0,
-          "field_mean_composite": null,
-          "our_composite": null,
-          "participants": null
+        "range": null,
+        "confidence": "none",
+        "prior": {
+          "base_rate": null,
+          "denominator": null,
+          "denominator_kind": null
         },
-        "computed_at": "2026-10-28T22:09:00Z",
-        "basis": "NO ESTIMATE (MoneyBall ruling 2026-10-28): no sourced denominator of any kind \u2014 a number would be invented. Open OSINT task."
+        "standing": {
+          "our_composite": null,
+          "our_percentile": null,
+          "field_mean": null,
+          "field_sd": null,
+          "scored_count": 0
+        },
+        "fit": {
+          "criteria_fit": null,
+          "judges_known": false
+        },
+        "unknowns": {
+          "unscored_share": 1,
+          "unverified_axis_weight_share": 1
+        },
+        "basis": "winprob/v2 (spec PR #2250): no sourced denominator \u2014 no prior exists; a number would be invented. Open OSINT task.",
+        "computed_at": "2026-10-28T22:20:00Z",
+        "superseded_v1": {
+          "method": "winprob/v1",
+          "estimate": null,
+          "basis": "NO ESTIMATE (MoneyBall ruling 2026-10-28): no sourced denominator of any kind \u2014 a number would be invented. Open OSINT task.",
+          "inputs": {
+            "award_slots_top": 1,
+            "field_size": null,
+            "field_scored_count": 0,
+            "field_mean_composite": null,
+            "our_composite": null,
+            "participants": null
+          },
+          "computed_at": "2026-10-28T22:09:00Z",
+          "superseded_by": "winprob/v2 (PR #2250 spec)"
+        }
       },
       "field_size_status": "open_task",
       "field_size": {
@@ -114,19 +271,51 @@
     },
     "D4": {
       "win_probability": {
-        "method": "winprob/v1",
+        "method": "winprob/v2",
         "estimate": 0.0005,
-        "inputs": {
-          "award_slots_top": 1,
-          "field_size": 1908,
-          "field_scored_count": 0,
-          "field_mean_composite": null,
-          "our_composite": null,
-          "participants": 1909,
-          "field_size_basis": "MoneyBall refinement denominator (see basis)"
+        "range": [
+          2.5e-05,
+          0.001
+        ],
+        "confidence": "low",
+        "prior": {
+          "base_rate": 0.000524,
+          "denominator": 1908,
+          "denominator_kind": "participants"
         },
-        "computed_at": "2026-10-28T22:09:00Z",
-        "basis": "MoneyBall refinement (winprob/v1): base = 1/1908 participants (projects 0, gallery unpublished)."
+        "standing": {
+          "our_composite": null,
+          "our_percentile": null,
+          "field_mean": null,
+          "field_sd": null,
+          "scored_count": 0
+        },
+        "fit": {
+          "criteria_fit": null,
+          "judges_known": false
+        },
+        "unknowns": {
+          "unscored_share": 1,
+          "unverified_axis_weight_share": 1
+        },
+        "basis": "winprob/v2 (spec PR #2250): prior 1/1908 participants (worked value at spec time; live count 1909 per scraper \u2014 adaptive recompute next trigger); u=1, v=1, k=0.95. v1 superseded.",
+        "computed_at": "2026-10-28T22:20:00Z",
+        "superseded_v1": {
+          "method": "winprob/v1",
+          "estimate": 0.0005,
+          "basis": "MoneyBall refinement (winprob/v1): base = 1/1908 participants (projects 0, gallery unpublished).",
+          "inputs": {
+            "award_slots_top": 1,
+            "field_size": 1908,
+            "field_scored_count": 0,
+            "field_mean_composite": null,
+            "our_composite": null,
+            "participants": 1909,
+            "field_size_basis": "MoneyBall refinement denominator (see basis)"
+          },
+          "computed_at": "2026-10-28T22:09:00Z",
+          "superseded_by": "winprob/v2 (PR #2250 spec)"
+        }
       },
       "field_size_status": "partial",
       "field_size": {
@@ -136,18 +325,47 @@
     },
     "D5": {
       "win_probability": {
-        "method": "winprob/v1",
+        "method": "winprob/v2",
         "estimate": null,
-        "inputs": {
-          "award_slots_top": 1,
-          "field_size": null,
-          "field_scored_count": 0,
-          "field_mean_composite": null,
-          "our_composite": null,
-          "participants": null
+        "range": null,
+        "confidence": "none",
+        "prior": {
+          "base_rate": null,
+          "denominator": null,
+          "denominator_kind": null
         },
-        "computed_at": "2026-10-28T22:09:00Z",
-        "basis": "NO ESTIMATE (MoneyBall ruling 2026-10-28): no sourced denominator of any kind \u2014 a number would be invented. Open OSINT task."
+        "standing": {
+          "our_composite": null,
+          "our_percentile": null,
+          "field_mean": null,
+          "field_sd": null,
+          "scored_count": 0
+        },
+        "fit": {
+          "criteria_fit": null,
+          "judges_known": false
+        },
+        "unknowns": {
+          "unscored_share": 1,
+          "unverified_axis_weight_share": 1
+        },
+        "basis": "winprob/v2 (spec PR #2250): no sourced denominator \u2014 no prior exists. Open OSINT task.",
+        "computed_at": "2026-10-28T22:20:00Z",
+        "superseded_v1": {
+          "method": "winprob/v1",
+          "estimate": null,
+          "basis": "NO ESTIMATE (MoneyBall ruling 2026-10-28): no sourced denominator of any kind \u2014 a number would be invented. Open OSINT task.",
+          "inputs": {
+            "award_slots_top": 1,
+            "field_size": null,
+            "field_scored_count": 0,
+            "field_mean_composite": null,
+            "our_composite": null,
+            "participants": null
+          },
+          "computed_at": "2026-10-28T22:09:00Z",
+          "superseded_by": "winprob/v2 (PR #2250 spec)"
+        }
       },
       "field_size_status": "open_task",
       "field_size": {

@@ -74,6 +74,28 @@ over the stored deadline instants (issue #1880's rule: computed, never
 hand-typed). The block carries a `computed_at` stamp; a stale stamp
 means the next refresh recomputes it, not that anyone edits the values.
 
+## Required fields + surface contract (owner rule, 2026-10-28)
+
+**Required information:** `prizes`, `dates`, `status`, and `gates` —
+for every event, always populated in this JSON (a value, or
+`NOT_ESTABLISHED` / an explicit state where unpublished). They are
+never blank and never omitted.
+
+**Named context surfaces** that must carry the required fields:
+
+1. **Manager brief** — the ChallengeLane Manager's oversight surface
+   (this JSON is its source; briefs drawn from it carry prizes,
+   dates, status, and open gates per event).
+2. **HITL web pages** — the countdowns dashboard
+   (`apps/help-wanted-dashboard/countdowns.html`, via
+   `challenge-countdowns-feed/v1.1`, whose entries carry `prizes`
+   wired from this JSON by the feed collector).
+
+On every surface, `NOT_ESTABLISHED` renders as `NOT_ESTABLISHED` —
+an unpublished prize set or date is shown as such, never as an
+empty field. A surface that drops a required field is a contract
+defect, fixed on that surface.
+
 ## Update discipline
 
 Changes land by PR (branch → PR → merge when gates pass), citing the

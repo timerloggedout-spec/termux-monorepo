@@ -1,42 +1,59 @@
 {
  "schema": "dispatch-tree-observation/v1",
- "read_at": "2026-10-27T14:46:53Z",
+ "read_at": "2026-10-28T13:19:45Z",
  "source": "GitHub Actions API, read firsthand at read_at via dispatch_tree_observe.py",
  "busy": {
-  "queued": 10,
-  "in_progress": 36,
-  "total": 46,
+  "queued": 3,
+  "in_progress": 4,
+  "total": 7,
   "by_workflow": {
-   "Context Relationship + Lead/Lag Audit": 4,
-   "PR production ledger": 4,
-   "Agent Throughput Evidence": 3,
-   "lane events recorder": 3,
-   "DeepSeek Termux Agent": 3,
-   "PR evidence evaluation": 2,
-   "Peer review orchestrator": 2,
-   "Sweep Accountability": 2,
-   "DeepSeek CI \u2013 Agentic Automation": 1,
    "Merge Promotion Queue": 1,
-   "Historical Evaluation Correlation": 1,
-   "Orchestration Regression Guard": 1,
-   "Provider batch production contracts": 1,
-   "hitl-control-plane-verify": 1,
-   "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
-   "termux smoke": 1,
-   "Foresight Evidence Spine": 1,
-   "repo gate": 1,
-   "Repository development evaluation": 1,
-   "Delphi conversational intake": 1,
-   "Model live canary": 1,
-   "hark enqueue on failure": 1,
-   "Agent PR Jules Handoff": 1,
+   "PR production ledger": 1,
+   "Peer review orchestrator": 1,
+   "lane events recorder": 1,
    "Advisory CodeQL analysis": 1,
-   "Phantom secrets audit": 1,
+   "PR evidence evaluation": 1,
    "help-wanted-dashboard-deploy": 1
   }
  },
  "lanes": {
   "agent-runtime-stall-watch": [
+   {
+    "id": 40649813017,
+    "created_at": "2026-10-28T07:23:58Z",
+    "updated_at": "2026-10-28T07:24:16Z",
+    "status": "completed",
+    "conclusion": "success",
+    "event": "workflow_dispatch",
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40649813017"
+   },
+   {
+    "id": 40615828789,
+    "created_at": "2026-10-28T01:34:14Z",
+    "updated_at": "2026-10-28T01:34:31Z",
+    "status": "completed",
+    "conclusion": "success",
+    "event": "workflow_dispatch",
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40615828789"
+   },
+   {
+    "id": 40594649495,
+    "created_at": "2026-10-27T22:25:00Z",
+    "updated_at": "2026-10-27T22:25:17Z",
+    "status": "completed",
+    "conclusion": "success",
+    "event": "workflow_dispatch",
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40594649495"
+   },
+   {
+    "id": 40557675827,
+    "created_at": "2026-10-27T18:11:46Z",
+    "updated_at": "2026-10-27T18:12:07Z",
+    "status": "completed",
+    "conclusion": "success",
+    "event": "workflow_dispatch",
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40557675827"
+   },
    {
     "id": 40519637507,
     "created_at": "2026-10-27T14:17:03Z",
@@ -45,42 +62,6 @@
     "conclusion": "success",
     "event": "workflow_dispatch",
     "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40519637507"
-   },
-   {
-    "id": 40507420326,
-    "created_at": "2026-10-27T12:53:54Z",
-    "updated_at": "2026-10-27T12:54:09Z",
-    "status": "completed",
-    "conclusion": "success",
-    "event": "workflow_dispatch",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40507420326"
-   },
-   {
-    "id": 40503780382,
-    "created_at": "2026-10-27T12:26:36Z",
-    "updated_at": "2026-10-27T12:26:54Z",
-    "status": "completed",
-    "conclusion": "success",
-    "event": "workflow_dispatch",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40503780382"
-   },
-   {
-    "id": 40459602917,
-    "created_at": "2026-10-27T06:11:17Z",
-    "updated_at": "2026-10-27T06:11:37Z",
-    "status": "completed",
-    "conclusion": "success",
-    "event": "workflow_dispatch",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40459602917"
-   },
-   {
-    "id": 40429859385,
-    "created_at": "2026-10-27T00:59:38Z",
-    "updated_at": "2026-10-27T01:00:01Z",
-    "status": "completed",
-    "conclusion": "success",
-    "event": "workflow_dispatch",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40429859385"
    }
   ],
   "tunnel-canary": [
@@ -273,6 +254,24 @@
   ],
   "team-mvt": [
    {
+    "id": 40633415410,
+    "created_at": "2026-10-28T04:38:01Z",
+    "updated_at": "2026-10-28T04:38:10Z",
+    "status": "completed",
+    "conclusion": "failure",
+    "event": "issues",
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40633415410"
+   },
+   {
+    "id": 40606797814,
+    "created_at": "2026-10-28T00:08:12Z",
+    "updated_at": "2026-10-28T00:08:23Z",
+    "status": "completed",
+    "conclusion": "failure",
+    "event": "issues",
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40606797814"
+   },
+   {
     "id": 40515644843,
     "created_at": "2026-10-27T13:50:35Z",
     "updated_at": "2026-10-27T13:50:55Z",
@@ -298,74 +297,92 @@
     "conclusion": "failure",
     "event": "issues",
     "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40154493436"
-   },
-   {
-    "id": 39989289164,
-    "created_at": "2026-10-23T16:44:31Z",
-    "updated_at": "2026-10-23T16:46:57Z",
-    "status": "completed",
-    "conclusion": "success",
-    "event": "push",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39989289164"
-   },
-   {
-    "id": 39969595031,
-    "created_at": "2026-10-23T14:26:09Z",
-    "updated_at": "2026-10-23T14:26:48Z",
-    "status": "completed",
-    "conclusion": "success",
-    "event": "schedule",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39969595031"
    }
   ],
   "recon-intel-discovery": [
    {
-    "id": 40523911053,
-    "created_at": "2026-10-27T14:43:44Z",
-    "updated_at": "2026-10-27T14:44:25Z",
-    "status": "completed",
-    "conclusion": "failure",
-    "event": "pull_request",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40523911053"
-   },
-   {
-    "id": 40523905907,
-    "created_at": "2026-10-27T14:43:42Z",
-    "updated_at": "2026-10-27T14:43:46Z",
-    "status": "completed",
-    "conclusion": "cancelled",
-    "event": "pull_request_target",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40523905907"
-   },
-   {
-    "id": 40523857557,
-    "created_at": "2026-10-27T14:43:25Z",
-    "updated_at": "2026-10-27T14:43:27Z",
+    "id": 40694725528,
+    "created_at": "2026-10-28T13:15:09Z",
+    "updated_at": "2026-10-28T13:15:12Z",
     "status": "completed",
     "conclusion": "cancelled",
     "event": "pull_request",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40523857557"
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40694725528"
    },
    {
-    "id": 40523856666,
-    "created_at": "2026-10-27T14:43:24Z",
-    "updated_at": "2026-10-27T14:44:21Z",
+    "id": 40694724871,
+    "created_at": "2026-10-28T13:15:09Z",
+    "updated_at": "2026-10-28T13:16:22Z",
     "status": "completed",
     "conclusion": "failure",
     "event": "pull_request_target",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40523856666"
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40694724871"
    },
    {
-    "id": 40523752786,
-    "created_at": "2026-10-27T14:42:46Z",
-    "updated_at": "2026-10-27T14:42:49Z",
+    "id": 40694716697,
+    "created_at": "2026-10-28T13:15:06Z",
+    "updated_at": "2026-10-28T13:16:10Z",
+    "status": "completed",
+    "conclusion": "failure",
+    "event": "pull_request",
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40694716697"
+   },
+   {
+    "id": 40694713725,
+    "created_at": "2026-10-28T13:15:05Z",
+    "updated_at": "2026-10-28T13:15:08Z",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "event": "pull_request_target",
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40694713725"
+   },
+   {
+    "id": 40694535832,
+    "created_at": "2026-10-28T13:13:54Z",
+    "updated_at": "2026-10-28T13:13:57Z",
     "status": "completed",
     "conclusion": "cancelled",
     "event": "pull_request",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40523752786"
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40694535832"
    }
   ],
   "help-wanted-status-refresh": [
+   {
+    "id": 40642700513,
+    "created_at": "2026-10-28T06:14:57Z",
+    "updated_at": "2026-10-28T06:15:56Z",
+    "status": "completed",
+    "conclusion": "success",
+    "event": "workflow_dispatch",
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40642700513"
+   },
+   {
+    "id": 40615852030,
+    "created_at": "2026-10-28T01:34:27Z",
+    "updated_at": "2026-10-28T01:35:12Z",
+    "status": "completed",
+    "conclusion": "success",
+    "event": "workflow_dispatch",
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40615852030"
+   },
+   {
+    "id": 40594681298,
+    "created_at": "2026-10-27T22:25:14Z",
+    "updated_at": "2026-10-27T22:26:06Z",
+    "status": "completed",
+    "conclusion": "success",
+    "event": "workflow_dispatch",
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40594681298"
+   },
+   {
+    "id": 40557710870,
+    "created_at": "2026-10-27T18:11:59Z",
+    "updated_at": "2026-10-27T18:12:58Z",
+    "status": "completed",
+    "conclusion": "success",
+    "event": "workflow_dispatch",
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40557710870"
+   },
    {
     "id": 40519676516,
     "created_at": "2026-10-27T14:17:18Z",
@@ -374,42 +391,6 @@
     "conclusion": "success",
     "event": "workflow_dispatch",
     "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40519676516"
-   },
-   {
-    "id": 40505526019,
-    "created_at": "2026-10-27T12:39:47Z",
-    "updated_at": "2026-10-27T12:41:28Z",
-    "status": "completed",
-    "conclusion": "success",
-    "event": "workflow_dispatch",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40505526019"
-   },
-   {
-    "id": 40164462301,
-    "created_at": "2026-10-25T05:08:48Z",
-    "updated_at": "2026-10-25T05:09:39Z",
-    "status": "completed",
-    "conclusion": "success",
-    "event": "workflow_dispatch",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40164462301"
-   },
-   {
-    "id": 40037960621,
-    "created_at": "2026-10-23T23:08:46Z",
-    "updated_at": "2026-10-23T23:09:30Z",
-    "status": "completed",
-    "conclusion": "success",
-    "event": "workflow_dispatch",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40037960621"
-   },
-   {
-    "id": 40016825240,
-    "created_at": "2026-10-23T20:07:55Z",
-    "updated_at": "2026-10-23T20:08:43Z",
-    "status": "completed",
-    "conclusion": "success",
-    "event": "workflow_dispatch",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40016825240"
    }
   ],
   "help-wanted-followup": [
@@ -602,49 +583,49 @@
   ],
   "merge-promotion-queue-v3": [
    {
-    "id": 40524032718,
-    "created_at": "2026-10-27T14:44:28Z",
-    "updated_at": "2026-10-27T14:44:39Z",
+    "id": 40694922495,
+    "created_at": "2026-10-28T13:16:24Z",
+    "updated_at": "2026-10-28T13:16:25Z",
     "status": "completed",
     "conclusion": "skipped",
     "event": "workflow_run",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40524032718"
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40694922495"
    },
    {
-    "id": 40524023624,
-    "created_at": "2026-10-27T14:44:24Z",
-    "updated_at": "2026-10-27T14:44:26Z",
+    "id": 40694895746,
+    "created_at": "2026-10-28T13:16:13Z",
+    "updated_at": "2026-10-28T13:16:14Z",
     "status": "completed",
     "conclusion": "skipped",
     "event": "workflow_run",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40524023624"
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40694895746"
    },
    {
-    "id": 40523867462,
-    "created_at": "2026-10-27T14:43:28Z",
-    "updated_at": "2026-10-27T14:43:30Z",
+    "id": 40694729204,
+    "created_at": "2026-10-28T13:15:11Z",
+    "updated_at": "2026-10-28T13:15:12Z",
     "status": "completed",
     "conclusion": "skipped",
     "event": "workflow_run",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40523867462"
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40694729204"
    },
    {
-    "id": 40523765998,
-    "created_at": "2026-10-27T14:42:51Z",
-    "updated_at": "2026-10-27T14:42:53Z",
+    "id": 40694708547,
+    "created_at": "2026-10-28T13:15:04Z",
+    "updated_at": "2026-10-28T13:15:05Z",
     "status": "completed",
     "conclusion": "skipped",
     "event": "workflow_run",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40523765998"
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40694708547"
    },
    {
-    "id": 40523627712,
-    "created_at": "2026-10-27T14:42:01Z",
-    "updated_at": "2026-10-27T14:42:02Z",
+    "id": 40694586573,
+    "created_at": "2026-10-28T13:14:13Z",
+    "updated_at": "2026-10-28T13:14:15Z",
     "status": "completed",
     "conclusion": "skipped",
     "event": "workflow_run",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40523627712"
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40694586573"
    }
   ],
   "agent-continuous-ops": [
@@ -743,49 +724,49 @@
   ],
   "issue-observatory": [
    {
-    "id": 40517849522,
-    "created_at": "2026-10-27T14:05:43Z",
-    "updated_at": "2026-10-27T14:10:08Z",
+    "id": 40646302239,
+    "created_at": "2026-10-28T06:50:22Z",
+    "updated_at": "2026-10-28T06:51:11Z",
     "status": "completed",
     "conclusion": "success",
     "event": "issues",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40517849522"
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40646302239"
    },
    {
-    "id": 40517847625,
-    "created_at": "2026-10-27T14:05:42Z",
-    "updated_at": "2026-10-27T14:08:25Z",
-    "status": "completed",
-    "conclusion": "success",
-    "event": "issues",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40517847625"
-   },
-   {
-    "id": 40517420311,
-    "created_at": "2026-10-27T14:02:44Z",
-    "updated_at": "2026-10-27T14:06:17Z",
-    "status": "completed",
-    "conclusion": "success",
-    "event": "issues",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40517420311"
-   },
-   {
-    "id": 40517416945,
-    "created_at": "2026-10-27T14:02:42Z",
-    "updated_at": "2026-10-27T14:08:09Z",
+    "id": 40646301590,
+    "created_at": "2026-10-28T06:50:22Z",
+    "updated_at": "2026-10-28T06:50:23Z",
     "status": "completed",
     "conclusion": "cancelled",
     "event": "issues",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40517416945"
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40646301590"
    },
    {
-    "id": 40517414518,
-    "created_at": "2026-10-27T14:02:41Z",
-    "updated_at": "2026-10-27T14:07:46Z",
+    "id": 40646299832,
+    "created_at": "2026-10-28T06:50:21Z",
+    "updated_at": "2026-10-28T06:50:23Z",
     "status": "completed",
-    "conclusion": "success",
+    "conclusion": "cancelled",
     "event": "issues",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40517414518"
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40646299832"
+   },
+   {
+    "id": 40646299765,
+    "created_at": "2026-10-28T06:50:21Z",
+    "updated_at": "2026-10-28T06:50:22Z",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "event": "issues",
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40646299765"
+   },
+   {
+    "id": 40646298816,
+    "created_at": "2026-10-28T06:50:20Z",
+    "updated_at": "2026-10-28T06:50:22Z",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "event": "issues",
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40646298816"
    }
   ],
   "reconciliation-engine": [
@@ -837,49 +818,49 @@
   ],
   "historical-evaluation-correlation": [
    {
-    "id": 40524278855,
-    "created_at": "2026-10-27T14:45:56Z",
-    "updated_at": "2026-10-27T14:46:04Z",
-    "status": "in_progress",
-    "conclusion": null,
-    "event": "push",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40524278855"
-   },
-   {
-    "id": 40524258039,
-    "created_at": "2026-10-27T14:45:48Z",
-    "updated_at": "2026-10-27T14:45:57Z",
-    "status": "completed",
-    "conclusion": "cancelled",
-    "event": "push",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40524258039"
-   },
-   {
-    "id": 40524232463,
-    "created_at": "2026-10-27T14:45:39Z",
-    "updated_at": "2026-10-27T14:45:57Z",
+    "id": 40695072346,
+    "created_at": "2026-10-28T13:17:26Z",
+    "updated_at": "2026-10-28T13:17:46Z",
     "status": "completed",
     "conclusion": "success",
     "event": "push",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40524232463"
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40695072346"
    },
    {
-    "id": 40523820965,
-    "created_at": "2026-10-27T14:43:11Z",
-    "updated_at": "2026-10-27T14:43:38Z",
+    "id": 40694871786,
+    "created_at": "2026-10-28T13:16:04Z",
+    "updated_at": "2026-10-28T13:16:31Z",
     "status": "completed",
     "conclusion": "success",
     "event": "push",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40523820965"
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40694871786"
    },
    {
-    "id": 40523759180,
-    "created_at": "2026-10-27T14:42:49Z",
-    "updated_at": "2026-10-27T14:43:17Z",
+    "id": 40694703533,
+    "created_at": "2026-10-28T13:15:01Z",
+    "updated_at": "2026-10-28T13:15:19Z",
     "status": "completed",
     "conclusion": "success",
     "event": "push",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40523759180"
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40694703533"
+   },
+   {
+    "id": 40694386941,
+    "created_at": "2026-10-28T13:12:54Z",
+    "updated_at": "2026-10-28T13:13:16Z",
+    "status": "completed",
+    "conclusion": "success",
+    "event": "push",
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40694386941"
+   },
+   {
+    "id": 40694231702,
+    "created_at": "2026-10-28T13:11:52Z",
+    "updated_at": "2026-10-28T13:12:23Z",
+    "status": "completed",
+    "conclusion": "success",
+    "event": "push",
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40694231702"
    }
   ],
   "vercel-batch-deploy": [
@@ -931,96 +912,96 @@
   ],
   "automation-docs-continuous-refresh": [
    {
-    "id": 40522798955,
-    "created_at": "2026-10-27T14:36:54Z",
-    "updated_at": "2026-10-27T14:38:16Z",
+    "id": 40694871603,
+    "created_at": "2026-10-28T13:16:04Z",
+    "updated_at": "2026-10-28T13:17:28Z",
     "status": "completed",
     "conclusion": "success",
     "event": "push",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40522798955"
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40694871603"
    },
    {
-    "id": 40522197564,
-    "created_at": "2026-10-27T14:33:11Z",
-    "updated_at": "2026-10-27T14:34:29Z",
+    "id": 40694716075,
+    "created_at": "2026-10-28T13:15:06Z",
+    "updated_at": "2026-10-28T13:16:13Z",
     "status": "completed",
     "conclusion": "success",
     "event": "pull_request",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40522197564"
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40694716075"
    },
    {
-    "id": 40521549347,
-    "created_at": "2026-10-27T14:29:12Z",
-    "updated_at": "2026-10-27T14:30:47Z",
-    "status": "completed",
-    "conclusion": "success",
-    "event": "push",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40521549347"
-   },
-   {
-    "id": 40521113852,
-    "created_at": "2026-10-27T14:26:25Z",
-    "updated_at": "2026-10-27T14:28:54Z",
+    "id": 40694441457,
+    "created_at": "2026-10-28T13:13:17Z",
+    "updated_at": "2026-10-28T13:14:33Z",
     "status": "completed",
     "conclusion": "success",
     "event": "pull_request",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40521113852"
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40694441457"
    },
    {
-    "id": 40519560205,
-    "created_at": "2026-10-27T14:16:33Z",
-    "updated_at": "2026-10-27T14:17:46Z",
+    "id": 40693489808,
+    "created_at": "2026-10-28T13:06:46Z",
+    "updated_at": "2026-10-28T13:09:16Z",
     "status": "completed",
     "conclusion": "success",
-    "event": "push",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40519560205"
+    "event": "pull_request",
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40693489808"
+   },
+   {
+    "id": 40693483799,
+    "created_at": "2026-10-28T13:06:44Z",
+    "updated_at": "2026-10-28T13:08:06Z",
+    "status": "completed",
+    "conclusion": "success",
+    "event": "pull_request",
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40693483799"
    }
   ],
   "context-relationship-audit": [
    {
-    "id": 40524338742,
-    "created_at": "2026-10-27T14:46:18Z",
-    "updated_at": "2026-10-27T14:46:19Z",
-    "status": "pending",
-    "conclusion": null,
-    "event": "workflow_run",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40524338742"
-   },
-   {
-    "id": 40524319431,
-    "created_at": "2026-10-27T14:46:10Z",
-    "updated_at": "2026-10-27T14:46:19Z",
-    "status": "completed",
-    "conclusion": "cancelled",
-    "event": "workflow_run",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40524319431"
-   },
-   {
-    "id": 40524315469,
-    "created_at": "2026-10-27T14:46:09Z",
-    "updated_at": "2026-10-27T14:46:12Z",
-    "status": "completed",
-    "conclusion": "cancelled",
-    "event": "workflow_run",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40524315469"
-   },
-   {
-    "id": 40524278949,
-    "created_at": "2026-10-27T14:45:56Z",
-    "updated_at": "2026-10-27T14:46:07Z",
-    "status": "in_progress",
-    "conclusion": null,
-    "event": "push",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40524278949"
-   },
-   {
-    "id": 40524278210,
-    "created_at": "2026-10-27T14:45:55Z",
-    "updated_at": "2026-10-27T14:46:17Z",
+    "id": 40695072229,
+    "created_at": "2026-10-28T13:17:26Z",
+    "updated_at": "2026-10-28T13:18:01Z",
     "status": "completed",
     "conclusion": "success",
-    "event": "pull_request",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40524278210"
+    "event": "push",
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40695072229"
+   },
+   {
+    "id": 40695032210,
+    "created_at": "2026-10-28T13:17:10Z",
+    "updated_at": "2026-10-28T13:17:37Z",
+    "status": "completed",
+    "conclusion": "success",
+    "event": "workflow_run",
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40695032210"
+   },
+   {
+    "id": 40694995011,
+    "created_at": "2026-10-28T13:16:55Z",
+    "updated_at": "2026-10-28T13:17:11Z",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "event": "workflow_run",
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40694995011"
+   },
+   {
+    "id": 40694980136,
+    "created_at": "2026-10-28T13:16:49Z",
+    "updated_at": "2026-10-28T13:17:11Z",
+    "status": "completed",
+    "conclusion": "success",
+    "event": "workflow_run",
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40694980136"
+   },
+   {
+    "id": 40694971474,
+    "created_at": "2026-10-28T13:16:45Z",
+    "updated_at": "2026-10-28T13:17:13Z",
+    "status": "completed",
+    "conclusion": "success",
+    "event": "issue_comment",
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40694971474"
    }
   ],
   "context-relationship-backfill": [
@@ -1072,6 +1053,33 @@
   ],
   "tribute-system1": [
    {
+    "id": 40654803599,
+    "created_at": "2026-10-28T08:09:36Z",
+    "updated_at": "2026-10-28T08:10:02Z",
+    "status": "completed",
+    "conclusion": "success",
+    "event": "pull_request",
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40654803599"
+   },
+   {
+    "id": 40654113543,
+    "created_at": "2026-10-28T08:03:35Z",
+    "updated_at": "2026-10-28T08:03:55Z",
+    "status": "completed",
+    "conclusion": "success",
+    "event": "pull_request",
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40654113543"
+   },
+   {
+    "id": 40653479562,
+    "created_at": "2026-10-28T07:58:00Z",
+    "updated_at": "2026-10-28T07:58:16Z",
+    "status": "completed",
+    "conclusion": "success",
+    "event": "pull_request",
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40653479562"
+   },
+   {
     "id": 40496061251,
     "created_at": "2026-10-27T11:25:40Z",
     "updated_at": "2026-10-27T11:26:04Z",
@@ -1088,33 +1096,6 @@
     "conclusion": "success",
     "event": "pull_request",
     "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40433024632"
-   },
-   {
-    "id": 40290003316,
-    "created_at": "2026-10-26T08:06:33Z",
-    "updated_at": "2026-10-26T08:06:52Z",
-    "status": "completed",
-    "conclusion": "success",
-    "event": "pull_request",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40290003316"
-   },
-   {
-    "id": 39995638359,
-    "created_at": "2026-10-23T17:30:33Z",
-    "updated_at": "2026-10-23T17:30:52Z",
-    "status": "completed",
-    "conclusion": "success",
-    "event": "push",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39995638359"
-   },
-   {
-    "id": 39994855833,
-    "created_at": "2026-10-23T17:24:54Z",
-    "updated_at": "2026-10-23T17:25:22Z",
-    "status": "completed",
-    "conclusion": "success",
-    "event": "pull_request",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39994855833"
    }
   ],
   "cadence-lead-lag": [
@@ -1354,49 +1335,49 @@
   ],
   "provider-availability": [
    {
-    "id": 40512185380,
-    "created_at": "2026-10-27T13:27:26Z",
-    "updated_at": "2026-10-27T13:28:07Z",
+    "id": 40609560325,
+    "created_at": "2026-10-28T00:33:55Z",
+    "updated_at": "2026-10-28T00:34:21Z",
     "status": "completed",
     "conclusion": "success",
     "event": "workflow_dispatch",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40512185380"
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40609560325"
    },
    {
-    "id": 40510433859,
-    "created_at": "2026-10-27T13:15:24Z",
-    "updated_at": "2026-10-27T13:15:49Z",
+    "id": 40608555014,
+    "created_at": "2026-10-28T00:24:24Z",
+    "updated_at": "2026-10-28T00:24:49Z",
     "status": "completed",
     "conclusion": "success",
     "event": "workflow_dispatch",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40510433859"
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40608555014"
    },
    {
-    "id": 40507836514,
-    "created_at": "2026-10-27T12:56:57Z",
-    "updated_at": "2026-10-27T12:57:19Z",
+    "id": 40608378822,
+    "created_at": "2026-10-28T00:22:47Z",
+    "updated_at": "2026-10-28T00:23:11Z",
     "status": "completed",
     "conclusion": "success",
     "event": "workflow_dispatch",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40507836514"
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40608378822"
    },
    {
-    "id": 39991236049,
-    "created_at": "2026-10-23T16:58:40Z",
-    "updated_at": "2026-10-23T16:59:00Z",
+    "id": 40608056036,
+    "created_at": "2026-10-28T00:19:46Z",
+    "updated_at": "2026-10-28T00:20:13Z",
     "status": "completed",
     "conclusion": "success",
-    "event": "schedule",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39991236049"
+    "event": "workflow_dispatch",
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40608056036"
    },
    {
-    "id": 39946479745,
-    "created_at": "2026-10-23T11:29:54Z",
-    "updated_at": "2026-10-23T11:30:19Z",
+    "id": 40607260286,
+    "created_at": "2026-10-28T00:12:26Z",
+    "updated_at": "2026-10-28T00:12:53Z",
     "status": "completed",
     "conclusion": "success",
-    "event": "schedule",
-    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39946479745"
+    "event": "workflow_dispatch",
+    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40607260286"
    }
   ],
   "actions-queue-reaper": [
@@ -1506,6 +1487,42 @@
   ]
  },
  "tree_runs": [
+  {
+   "id": 40649778579,
+   "created_at": "2026-10-28T07:23:39Z",
+   "updated_at": "2026-10-28T07:25:01Z",
+   "status": "completed",
+   "conclusion": "success",
+   "event": "schedule",
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40649778579"
+  },
+  {
+   "id": 40615801600,
+   "created_at": "2026-10-28T01:33:58Z",
+   "updated_at": "2026-10-28T01:35:13Z",
+   "status": "completed",
+   "conclusion": "success",
+   "event": "schedule",
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40615801600"
+  },
+  {
+   "id": 40594609649,
+   "created_at": "2026-10-27T22:24:41Z",
+   "updated_at": "2026-10-27T22:26:03Z",
+   "status": "completed",
+   "conclusion": "success",
+   "event": "schedule",
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40594609649"
+  },
+  {
+   "id": 40557633958,
+   "created_at": "2026-10-27T18:11:30Z",
+   "updated_at": "2026-10-27T18:12:46Z",
+   "status": "completed",
+   "conclusion": "success",
+   "event": "schedule",
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40557633958"
+  },
   {
    "id": 40519591463,
    "created_at": "2026-10-27T14:16:45Z",
@@ -1649,45 +1666,681 @@
    "conclusion": "success",
    "event": "schedule",
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40164433700"
-  },
-  {
-   "id": 40146541842,
-   "created_at": "2026-10-25T00:24:04Z",
-   "updated_at": "2026-10-25T00:25:13Z",
-   "status": "completed",
-   "conclusion": "success",
-   "event": "schedule",
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40146541842"
-  },
-  {
-   "id": 40138043500,
-   "created_at": "2026-10-24T22:19:17Z",
-   "updated_at": "2026-10-24T22:20:28Z",
-   "status": "completed",
-   "conclusion": "success",
-   "event": "schedule",
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40138043500"
-  },
-  {
-   "id": 40127194624,
-   "created_at": "2026-10-24T19:51:32Z",
-   "updated_at": "2026-10-24T19:53:12Z",
-   "status": "completed",
-   "conclusion": "success",
-   "event": "schedule",
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40127194624"
-  },
-  {
-   "id": 40117361036,
-   "created_at": "2026-10-24T17:42:46Z",
-   "updated_at": "2026-10-24T17:44:00Z",
-   "status": "completed",
-   "conclusion": "success",
-   "event": "schedule",
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40117361036"
   }
  ],
  "tree_jobs": {
+  "40649778579": [
+   {
+    "name": "decide",
+    "conclusion": "success",
+    "wake": null,
+    "supabase_step": "success"
+   },
+   {
+    "name": "dispatch (help-wanted-status-refresh, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (continuous-evaluation, false, false, true)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (help-wanted-scout, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (team-mvt, false, false, true)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (help-wanted-followup, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (tailscale-bridge-probe, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (recon-intel-discovery, false, {\"sweep\":true}, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (help-wanted-execute, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (deepcli-agent-bridge, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (help-wanted-llm-assist, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (agent-runtime-stall-watch, true, false, false)",
+    "conclusion": "success",
+    "wake": "success"
+   },
+   {
+    "name": "dispatch (merge-promotion-queue-v3, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (tunnel-canary, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (agent-continuous-ops, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (cellcog-engineering-health, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (issue-observatory, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (reconciliation-engine, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (historical-evaluation-correlation, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (automation-docs-continuous-refresh, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (vercel-batch-deploy, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (context-relationship-backfill, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (tribute-system1, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (context-relationship-audit, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (cadence-lead-lag, false, {\"per_page\":50}, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (self-integrate, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (ci-sweep, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (hygiene-sweep, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (ops-lane-matrix-sweep, false, {\"commit_artifacts\":true}, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (actions-queue-reaper, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (provider-availability, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (vantage-cost-report, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (gitlab-governed-reconciliation, false, {\"gitlab_ref\":\"master\"}, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   }
+  ],
+  "40615801600": [
+   {
+    "name": "decide",
+    "conclusion": "success",
+    "wake": null,
+    "supabase_step": "success"
+   },
+   {
+    "name": "dispatch (tailscale-bridge-probe, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (deepcli-agent-bridge, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (help-wanted-status-refresh, true, false, false)",
+    "conclusion": "success",
+    "wake": "success"
+   },
+   {
+    "name": "dispatch (tunnel-canary, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (help-wanted-scout, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (recon-intel-discovery, false, {\"sweep\":true}, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (help-wanted-execute, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (agent-runtime-stall-watch, true, false, false)",
+    "conclusion": "success",
+    "wake": "success"
+   },
+   {
+    "name": "dispatch (help-wanted-llm-assist, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (merge-promotion-queue-v3, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (help-wanted-followup, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (continuous-evaluation, false, false, true)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (team-mvt, false, false, true)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (agent-continuous-ops, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (issue-observatory, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (cellcog-engineering-health, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (reconciliation-engine, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (vercel-batch-deploy, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (context-relationship-audit, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (automation-docs-continuous-refresh, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (historical-evaluation-correlation, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (context-relationship-backfill, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (tribute-system1, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (cadence-lead-lag, false, {\"per_page\":50}, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (self-integrate, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (ci-sweep, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (hygiene-sweep, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (provider-availability, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (ops-lane-matrix-sweep, false, {\"commit_artifacts\":true}, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (actions-queue-reaper, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (gitlab-governed-reconciliation, false, {\"gitlab_ref\":\"master\"}, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (vantage-cost-report, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   }
+  ],
+  "40594609649": [
+   {
+    "name": "decide",
+    "conclusion": "success",
+    "wake": null,
+    "supabase_step": "success"
+   },
+   {
+    "name": "dispatch (agent-runtime-stall-watch, true, false, false)",
+    "conclusion": "success",
+    "wake": "success"
+   },
+   {
+    "name": "dispatch (tailscale-bridge-probe, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (merge-promotion-queue-v3, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (help-wanted-followup, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (continuous-evaluation, false, false, true)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (help-wanted-status-refresh, true, false, false)",
+    "conclusion": "success",
+    "wake": "success"
+   },
+   {
+    "name": "dispatch (recon-intel-discovery, false, {\"sweep\":true}, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (help-wanted-llm-assist, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (tunnel-canary, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (team-mvt, false, false, true)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (deepcli-agent-bridge, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (help-wanted-execute, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (help-wanted-scout, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (agent-continuous-ops, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (cellcog-engineering-health, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (issue-observatory, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (historical-evaluation-correlation, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (reconciliation-engine, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (vercel-batch-deploy, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (context-relationship-audit, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (automation-docs-continuous-refresh, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (tribute-system1, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (context-relationship-backfill, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (cadence-lead-lag, false, {\"per_page\":50}, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (ci-sweep, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (self-integrate, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (hygiene-sweep, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (ops-lane-matrix-sweep, false, {\"commit_artifacts\":true}, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (provider-availability, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (actions-queue-reaper, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (gitlab-governed-reconciliation, false, {\"gitlab_ref\":\"master\"}, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (vantage-cost-report, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   }
+  ],
+  "40557633958": [
+   {
+    "name": "decide",
+    "conclusion": "success",
+    "wake": null,
+    "supabase_step": "success"
+   },
+   {
+    "name": "dispatch (tailscale-bridge-probe, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (help-wanted-followup, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (help-wanted-llm-assist, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (help-wanted-scout, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (merge-promotion-queue-v3, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (tunnel-canary, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (agent-runtime-stall-watch, true, false, false)",
+    "conclusion": "success",
+    "wake": "success"
+   },
+   {
+    "name": "dispatch (help-wanted-status-refresh, true, false, false)",
+    "conclusion": "success",
+    "wake": "success"
+   },
+   {
+    "name": "dispatch (help-wanted-execute, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (team-mvt, false, false, true)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (recon-intel-discovery, false, {\"sweep\":true}, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (deepcli-agent-bridge, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (continuous-evaluation, false, false, true)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (cellcog-engineering-health, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (issue-observatory, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (historical-evaluation-correlation, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (agent-continuous-ops, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (vercel-batch-deploy, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (reconciliation-engine, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (automation-docs-continuous-refresh, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (context-relationship-backfill, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (context-relationship-audit, false, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (tribute-system1, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (cadence-lead-lag, false, {\"per_page\":50}, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (self-integrate, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (ci-sweep, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (hygiene-sweep, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (ops-lane-matrix-sweep, false, {\"commit_artifacts\":true}, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (provider-availability, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (vantage-cost-report, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (gitlab-governed-reconciliation, false, {\"gitlab_ref\":\"master\"}, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   },
+   {
+    "name": "dispatch (actions-queue-reaper, false, false)",
+    "conclusion": "success",
+    "wake": "skipped"
+   }
+  ],
   "40519591463": [
    {
     "name": "decide",
@@ -2356,678 +3009,6 @@
    },
    {
     "name": "dispatch (gitlab-governed-reconciliation, false, {\"gitlab_ref\":\"master\"}, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   }
-  ],
-  "40429835830": [
-   {
-    "name": "decide",
-    "conclusion": "success",
-    "wake": null,
-    "supabase_step": "success"
-   },
-   {
-    "name": "dispatch (help-wanted-status-refresh, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (help-wanted-llm-assist, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (deepcli-agent-bridge, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (tailscale-bridge-probe, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (agent-runtime-stall-watch, true, false, false)",
-    "conclusion": "success",
-    "wake": "success"
-   },
-   {
-    "name": "dispatch (continuous-evaluation, false, false, true)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (recon-intel-discovery, false, {\"sweep\":true}, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (tunnel-canary, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (team-mvt, false, false, true)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (help-wanted-execute, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (merge-promotion-queue-v3, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (help-wanted-followup, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (help-wanted-scout, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (agent-continuous-ops, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (issue-observatory, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (cellcog-engineering-health, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (reconciliation-engine, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (vercel-batch-deploy, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (historical-evaluation-correlation, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (context-relationship-backfill, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (automation-docs-continuous-refresh, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (context-relationship-audit, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (tribute-system1, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (self-integrate, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (cadence-lead-lag, false, {\"per_page\":50}, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (ci-sweep, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (hygiene-sweep, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (actions-queue-reaper, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (gitlab-governed-reconciliation, false, {\"gitlab_ref\":\"master\"}, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (ops-lane-matrix-sweep, false, {\"commit_artifacts\":true}, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (vantage-cost-report, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (provider-availability, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   }
-  ],
-  "40407555228": [
-   {
-    "name": "decide",
-    "conclusion": "success",
-    "wake": null,
-    "supabase_step": "success"
-   },
-   {
-    "name": "dispatch (tailscale-bridge-probe, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (agent-runtime-stall-watch, true, false, false)",
-    "conclusion": "success",
-    "wake": "success"
-   },
-   {
-    "name": "dispatch (help-wanted-followup, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (deepcli-agent-bridge, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (team-mvt, false, false, true)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (recon-intel-discovery, false, {\"sweep\":true}, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (tunnel-canary, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (help-wanted-status-refresh, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (continuous-evaluation, false, false, true)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (merge-promotion-queue-v3, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (help-wanted-llm-assist, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (help-wanted-scout, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (help-wanted-execute, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (agent-continuous-ops, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (cellcog-engineering-health, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (issue-observatory, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (reconciliation-engine, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (historical-evaluation-correlation, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (vercel-batch-deploy, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (automation-docs-continuous-refresh, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (context-relationship-audit, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (context-relationship-backfill, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (tribute-system1, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (self-integrate, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (cadence-lead-lag, false, {\"per_page\":50}, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (hygiene-sweep, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (ci-sweep, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (ops-lane-matrix-sweep, false, {\"commit_artifacts\":true}, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (provider-availability, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (gitlab-governed-reconciliation, false, {\"gitlab_ref\":\"master\"}, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (actions-queue-reaper, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (vantage-cost-report, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   }
-  ],
-  "40369099538": [
-   {
-    "name": "decide",
-    "conclusion": "success",
-    "wake": null,
-    "supabase_step": "success"
-   },
-   {
-    "name": "dispatch (tailscale-bridge-probe, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (recon-intel-discovery, false, {\"sweep\":true}, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (merge-promotion-queue-v3, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (deepcli-agent-bridge, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (tunnel-canary, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (continuous-evaluation, false, false, true)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (help-wanted-followup, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (help-wanted-execute, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (team-mvt, false, false, true)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (help-wanted-status-refresh, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (agent-runtime-stall-watch, true, false, false)",
-    "conclusion": "success",
-    "wake": "success"
-   },
-   {
-    "name": "dispatch (help-wanted-scout, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (help-wanted-llm-assist, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (agent-continuous-ops, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (cellcog-engineering-health, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (reconciliation-engine, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (issue-observatory, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (automation-docs-continuous-refresh, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (vercel-batch-deploy, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (historical-evaluation-correlation, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (context-relationship-audit, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (context-relationship-backfill, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (tribute-system1, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (cadence-lead-lag, false, {\"per_page\":50}, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (self-integrate, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (ops-lane-matrix-sweep, false, {\"commit_artifacts\":true}, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (hygiene-sweep, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (ci-sweep, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (vantage-cost-report, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (actions-queue-reaper, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (provider-availability, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (gitlab-governed-reconciliation, false, {\"gitlab_ref\":\"master\"}, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   }
-  ],
-  "40314168369": [
-   {
-    "name": "decide",
-    "conclusion": "success",
-    "wake": null,
-    "supabase_step": "success"
-   },
-   {
-    "name": "dispatch (tailscale-bridge-probe, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (team-mvt, false, false, true)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (tunnel-canary, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (help-wanted-status-refresh, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (help-wanted-llm-assist, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (recon-intel-discovery, false, {\"sweep\":true}, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (help-wanted-scout, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (merge-promotion-queue-v3, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (deepcli-agent-bridge, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (agent-runtime-stall-watch, true, false, false)",
-    "conclusion": "success",
-    "wake": "success"
-   },
-   {
-    "name": "dispatch (continuous-evaluation, false, false, true)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (help-wanted-followup, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (help-wanted-execute, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (agent-continuous-ops, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (cellcog-engineering-health, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (reconciliation-engine, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (historical-evaluation-correlation, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (issue-observatory, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (automation-docs-continuous-refresh, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (context-relationship-audit, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (vercel-batch-deploy, false, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (context-relationship-backfill, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (tribute-system1, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (cadence-lead-lag, false, {\"per_page\":50}, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (hygiene-sweep, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (ci-sweep, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (self-integrate, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (ops-lane-matrix-sweep, false, {\"commit_artifacts\":true}, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (actions-queue-reaper, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (provider-availability, false, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (gitlab-governed-reconciliation, false, {\"gitlab_ref\":\"master\"}, false)",
-    "conclusion": "success",
-    "wake": "skipped"
-   },
-   {
-    "name": "dispatch (vantage-cost-report, false, false)",
     "conclusion": "success",
     "wake": "skipped"
    }

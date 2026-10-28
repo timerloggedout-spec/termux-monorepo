@@ -53,6 +53,12 @@ calls the network):
    feed's `admission.samples` (deduped by `read_at`, capped at 500).
 
 Refresh = re-run both, land by PR. Feeds are never hand-edited.
+Automated since 2026-10-28: `.github/workflows/dispatch-tree-feed-collect.yml`
+(daily 07:07 UTC + on tree/collector changes + manual dispatch) runs the
+observer with the workflow token and proposes the refresh as a PR.
+Observer note: a token that cannot list repo variables (the workflow
+token) falls back to the previous snapshot's variable names — an empty
+read never erases the recorded Supabase provisioning fact.
 
 ## Honesty rules
 

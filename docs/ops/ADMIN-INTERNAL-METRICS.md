@@ -26,16 +26,39 @@ State at contract landing (verified on master by the admin-panel lane):
 7 events carry the block; only D0 has a non-null estimate (0.025,
 field_size 40); all others are null pending the field-size OSINT pass.
 
+## Amendment 2026-10-28 (challenge manager alignment)
+
+- **Unsourced `field_size` is an OPEN TASK, not a settled
+  "not established".** The two states are distinct in the UI:
+  an estimate that does not exist yet renders `not established`;
+  a field_size with no source renders **OPEN TASK**.
+- **Delivery vehicle = admin feed `challenge-admin-metrics/v1`**
+  (challenge lane's data PR, lands with the field-size count pass).
+  Per event it carries `field_size_status: established | open_task`
+  alongside the win-probability block. The admin renderer consumes
+  this feed; it does not read the coordinator record directly and
+  never computes values itself.
+- **MoneyBall-refined estimates:** where the MoneyBall method supports
+  one, the feed carries a refined `estimate` **plus its `basis`**
+  (internal), replacing the coordinator null for that event. The panel
+  renders estimate + basis verbatim from the feed; a null that the
+  feed still carries renders `not established`.
+
 ## Rendering rules (admin view of challenge data)
 
 1. Render the block per event: estimate (as % when non-null, the words
    `not established` when null — never render null as 0 or blank),
    method, `computed_at`, and the inputs (field_size, field_scored_count,
-   our/field composites when present).
+   our/field composites when present). Render `field_size` by its
+   `field_size_status`: the number when `established`, the words
+   **OPEN TASK** when `open_task`. Where the admin feed carries a
+   MoneyBall-refined estimate, render its `basis` next to the estimate.
 2. Label the block **internal** in the UI; no export/share affordance.
-3. The admin renderer reads `metrics_internal` from the coordinator
-   record only — it must not copy values into any public feed, page,
-   log, brief, or the opportunity ledger (ledger = 1st-place gross only).
+3. The admin renderer reads values from the `challenge-admin-metrics/v1`
+   admin feed only (which the challenge lane derives from the coordinator
+   record + MoneyBall refinement) — it must not copy values into any
+   public feed, page, log, brief, or the opportunity ledger
+   (ledger = 1st-place gross only).
 4. Null estimates stay visible as nulls in admin (absence of an estimate
    is itself information); do not backfill from other sources.
 
@@ -56,7 +79,10 @@ and logs. At contract landing the repo-wide hit list is exactly:
 - Data: challenge / MoneyBall lanes (coordinator record, winprob/v1).
 - Wiring: Web Design lane builds the admin view.
 - Acceptance: Linguist Admin Panel lane — (a) admin view shows the
-  block for all 7 events with correct null handling; (b) forbidden-surface
+  block for all 7 events with correct null handling (estimate null →
+  `not established`; field_size `open_task` → OPEN TASK; refined
+  estimates show their basis); (b) forbidden-surface
   scan stays zero outside the admin view; (c) estimates beyond D0 appear
-  only after the field-size OSINT pass lands them in the coordinator
-  record (the panel never computes or estimates values itself).
+  only as delivered by the `challenge-admin-metrics/v1` feed after the
+  field-size count pass (the panel never computes or estimates values
+  itself).

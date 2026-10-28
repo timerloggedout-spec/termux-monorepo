@@ -94,6 +94,37 @@ def test_request_sets_user_agent(monkeypatch):
     assert seen["ua"] == triage_labels.USER_AGENT
 
 
+def test_request_retries_rate_limit_then_succeeds(monkeypatch):
+    """The shared Actions installation token is rate-limited in hot
+    hours (proven live 2026-10-28); a rate-limit 403 must be retried,
+    not fatal."""
+    calls = {"n": 0}
+
+    class Resp:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+        def read(self):
+            return b"[]"
+
+    def fake_urlopen(req, timeout=0):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            raise urllib.error.HTTPError(
+                req.full_url, 403, "Forbidden", {},
+                io.BytesIO(b"API rate limit exceeded for installation"),
+            )
+        return Resp()
+
+    monkeypatch.setattr(triage_labels.urllib.request, "urlopen", fake_urlopen)
+    monkeypatch.setattr(triage_labels.time, "sleep", lambda s: None)
+    assert triage_labels._request("GET", "/issues?state=open", "token", "o/r") == []
+    assert calls["n"] == 2
+
+
 def test_proposed_labels_always_exist_in_taxonomy():
     titles = [
         "Proposal: investigate A",

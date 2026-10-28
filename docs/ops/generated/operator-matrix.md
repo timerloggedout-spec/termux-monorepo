@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-10-28T16:20:00Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-10-28T16:36:51Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `441a554dff` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `ee3f4de406` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 284 issues, 95 PRs. PR classes: EXTRACT 30 / CANDIDATE 30 / NEED_EVIDENCE 35 / SUPERSEDE 0.
+**Open inventory:** 0 issues, 96 PRs. PR classes: EXTRACT 29 / CANDIDATE 31 / NEED_EVIDENCE 36 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -32,7 +32,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1671 | EXTRACT | unlabelled | `276350ba12` | success | success | unstable | ⚡ Bolt: pre-compile language regexes and priority map in tribute_system1 |
 | #1679 | EXTRACT | unlabelled | `dc52bd9e83` | success | success | unstable | 📖 Linguist: [performance improvement] conversational steganography 4th lane & BP |
 | #1694 | EXTRACT | unlabelled | `3cd1f1aaa4` | success | success | unstable | fix(help-wanted): preserve historical audit coverage on partial refreshes |
-| #1704 | EXTRACT | unlabelled | `40763bf29b` | success | success | unstable | 🛡️ Sentinel: [HIGH] Harden NexusCLI session export file creation and imports |
 | #1705 | EXTRACT | unlabelled | `682988db40` | success | success | unstable | 🎨 Palette: [UX improvement] Enhance Termux cockpit panel truncation for mobile v |
 | #1706 | EXTRACT | unlabelled | `5c8ef1974f` | success | success | unstable | ⚡ Bolt: fix actions incident deduplication test assertion |
 | #1735 | EXTRACT | unlabelled | `fccaa4b49a` | success | success | unstable | docs(ops): refresh maintenance status and evidence gates |
@@ -65,7 +64,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1599 | CANDIDATE | unlabelled | `ef3093ca18` | success | success | unknown | feat(ci): enforce review justification on dismissed PR reviews |
 | #1612 | CANDIDATE | unlabelled | `56a89e1206` | success | success | unstable | docs(research): map new free LLM catalogs to telemetry gates |
 | #1614 | CANDIDATE | unlabelled | `3c1673ad39` | success | success | unknown | ops(actions): matrix continuation + plan scheduled lane-events aggregator for sp |
-| #1630 | CANDIDATE | unlabelled | `571fb4ac96` | success | success | unstable | fix(delphi): gate and deduplicate conversational intake |
+| #1630 | CANDIDATE | unlabelled | `571fb4ac96` | success | success | blocked | fix(delphi): gate and deduplicate conversational intake |
 | #1631 | CANDIDATE | unlabelled | `9c4fb929ce` | success | success | unknown | 🛡️ Sentinel: [security improvement] Harden DeepCLI export file permissions and s |
 | #1632 | CANDIDATE | unlabelled | `11ad920652` | success | success | unknown | ⚡ Bolt: optimize hex moneyball export stream serialization |
 | #1640 | CANDIDATE | unlabelled | `8d4903f354` | success | success | unknown | ci: enforce explicit justification for dismissed reviews in merge readiness engi |
@@ -73,6 +72,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1650 | CANDIDATE | unlabelled | `fe37ab59ae` | success | success | unknown | phantom-secrets-audit: comment-wake trigger + #184 ledger report |
 | #1659 | CANDIDATE | unlabelled | `d2f37b0324` | success | success | unknown | 🛡️ Sentinel: Fix symlink traversal and umask permission exposure in DeepCLI expo |
 | #1677 | CANDIDATE | unlabelled | `dcd3bba490` | success | success | unstable | fix(help-wanted): fail closed on placeholder work and stale eligibility |
+| #1704 | CANDIDATE | unlabelled | `40763bf29b` | success | success | blocked | 🛡️ Sentinel: [HIGH] Harden NexusCLI session export file creation and imports |
 | #47 | NEED_EVIDENCE | unlabelled | `11b61f8139` | not_reported | not_reported | unknown | feat(refTemplates): restore metadata-only skeleton (Option B recovery) |
 | #48 | NEED_EVIDENCE | unlabelled | `7839eeb7da` | not_reported | not_reported | dirty | feat(llm-api-hub): OpenAI hub + standalone server + ADE/kai9000 split (TER-71) |
 | #81 | NEED_EVIDENCE | unlabelled | `f1d2eef16b` | not_reported | not_reported | unknown | ci: promote Gemini quota-gate + agent workflows to master (event triggers) |
@@ -106,22 +106,16 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1869 | NEED_EVIDENCE | unlabelled | `51a2885764` | not_reported | not_reported | unstable | chore(linguist): refresh linguist-panel-feed.json |
 | #1872 | NEED_EVIDENCE | unlabelled | `a1538d7656` | not_reported | success | unstable | chore(dashboards): refresh surface feeds |
 | #1883 | NEED_EVIDENCE | unlabelled | `df26468835` | not_reported | not_reported | unstable | chore(countdowns): refresh challenge-countdowns-feed.json |
-| #1965 | NEED_EVIDENCE | unlabelled | `d795a4b34a` | not_reported | not_reported | clean | chore(delphi): refresh delphi-rfp-feed.json |
+| #1965 | NEED_EVIDENCE | unlabelled | `acb87f6dc5` | not_reported | not_reported | clean | chore(delphi): refresh delphi-rfp-feed.json |
 | #1966 | NEED_EVIDENCE | unlabelled | `5b45227190` | not_reported | not_reported | unknown | ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28) |
+| #2053 | NEED_EVIDENCE | unlabelled | `1e53c2c46a` | not_reported | queued | unstable | chore(delphi): refresh delphi-ledger-feed.json |
 
 ## Families (open)
 
 | Family | Issues | PRs |
 |--------|--------|-----|
-| ci | 4 | 0 |
-| delphi | 80 | 0 |
-| mesh | 5 | 0 |
-| other | 103 | 1 |
-| proposal | 32 | 1 |
-| providers | 13 | 0 |
-| research | 2 | 0 |
-| security | 10 | 0 |
-| temporal | 2 | 0 |
-| unlabelled | 33 | 93 |
+| other | 0 | 1 |
+| proposal | 0 | 1 |
+| unlabelled | 0 | 94 |
 
-**Unlabelled open issues (33):** #247, #259, #289, #300, #308, #343, #388, #389, #763, #876, #921, #923, #968, #1024, #1025, #1026, #1118, #1128, #1129, #1130, #1226, #1279, #1437, #1450, #1497, #1546, #1558, #1559, #1588, #1592, #1593, #1622, #1683 — worked oldest-first by the issue-lifecycle lane pass.
+**Unlabelled open issues (0):** none — worked oldest-first by the issue-lifecycle lane pass.

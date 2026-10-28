@@ -422,7 +422,13 @@ labelled at birth by the gate — plus one new label in use, `temporal`
   the installation rate limit in the generate step itself (run
   `40752171030`) — the generator's live fetch is now GraphQL
   (~5 calls for the identical snapshot; shaping is a pure,
-  unit-tested function). What remains
+  unit-tested function). Self-merge settled at rule v3 (run
+  `40753935988` showed v2's polling multiplying calls into the
+  same rate wall, plus an unguarded `jq` dying under the runner's
+  `bash -e`): one guarded gate read per run — green merges, absent
+  gates + generated-only diff merges on provenance, failure or
+  pending leaves the PR for the next scheduled run to re-check.
+  What remains
   lane-side is judgment, not process: titles matching no mechanical
   class (the residue after the rules), closure-evidence audits vs
   C1, and corrections like the ones above.

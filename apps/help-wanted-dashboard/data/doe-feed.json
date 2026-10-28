@@ -1,12 +1,12 @@
 {
  "schema": "dashboard-surface-feed/v1",
  "surface": "doe",
- "generated_at": "2026-10-28T00:04:36Z",
+ "generated_at": "2026-10-28T00:11:49Z",
  "sources": [
   "deepcli/deepcli/observatory/doe.py",
   ".agents/skills/multivariate-doe/SKILL.md",
   "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md (\u00a7DoE)",
-  "docs/ops/DOE-FAMILY.md + experiments/doe/*/DESIGN.json + experiments/doe/*/records/*.json + experiments/doe/*/SUMMARY.json (family campaigns \u2014 DoE-owned records)",
+  "docs/ops/DOE-FAMILY.md + docs/ops/DOE-TAXONOMY.md + experiments/doe/*/DESIGN.json + experiments/doe/*/records/*.json + experiments/doe/*/SUMMARY.json (family campaigns \u2014 DoE-owned records)",
   "docs/proposals/active/model-selection-market/DSPY-DOE-LANE.md + docs/proposals/passes/strands-rfp-response/cycle/IMPLEMENTATION.json (executed comparison \u2014 Delphi-owned, labeled)"
  ],
  "honesty_rules": [
@@ -187,28 +187,32 @@
         "mean_accuracy": 0.9375,
         "mean_input_tokens": 1051.6,
         "mean_elapsed_ms": 0.732,
-        "total_rework": 1
+        "total_rework": 1,
+        "accuracy_sd": 0.1768
        },
        "bounded-search/explicit": {
         "runs": 8,
         "mean_accuracy": 0.8125,
         "mean_input_tokens": 928.4,
         "mean_elapsed_ms": 176.195,
-        "total_rework": 2
+        "total_rework": 2,
+        "accuracy_sd": 0.372
        },
        "icm-guided/compressed": {
         "runs": 8,
         "mean_accuracy": 0.3125,
         "mean_input_tokens": 981.8,
         "mean_elapsed_ms": 2.36,
-        "total_rework": 7
+        "total_rework": 7,
+        "accuracy_sd": 0.372
        },
        "bounded-search/compressed": {
         "runs": 8,
         "mean_accuracy": 0.3125,
         "mean_input_tokens": 870.6,
         "mean_elapsed_ms": 120.592,
-        "total_rework": 7
+        "total_rework": 7,
+        "accuracy_sd": 0.372
        }
       },
       "effects_accuracy": {
@@ -230,7 +234,7 @@
      "member_id": "design-classes",
      "kind": "campaign_types",
      "state": "methods_available",
-     "note": "Future design classes as first-class campaign types, from the methods library: full factorial (full_factorial), Taguchi L9 (taguchi_l9), sequential/randomized assignment (mvt_shuffle + the skill's adaptive screen-expand-replicate sequence)."
+     "note": "Design classes per docs/ops/DOE-TAXONOMY.md. Implemented generators: full factorial (full_factorial), Taguchi L9 fractional orthogonal array (taguchi_l9). Skill-named, no generator: fractional factorial, Plackett-Burman, sequential/adaptive. Candidates: foldover, central composite, Box-Behnken, RSM, mixture, split-plot, Latin hypercube. mvt_shuffle is an assignment mechanism, not a design class."
     }
    ]
   },
@@ -261,28 +265,32 @@
        "mean_accuracy": 0.9375,
        "mean_input_tokens": 1051.6,
        "mean_elapsed_ms": 0.732,
-       "total_rework": 1
+       "total_rework": 1,
+       "accuracy_sd": 0.1768
       },
       "bounded-search/explicit": {
        "runs": 8,
        "mean_accuracy": 0.8125,
        "mean_input_tokens": 928.4,
        "mean_elapsed_ms": 176.195,
-       "total_rework": 2
+       "total_rework": 2,
+       "accuracy_sd": 0.372
       },
       "icm-guided/compressed": {
        "runs": 8,
        "mean_accuracy": 0.3125,
        "mean_input_tokens": 981.8,
        "mean_elapsed_ms": 2.36,
-       "total_rework": 7
+       "total_rework": 7,
+       "accuracy_sd": 0.372
       },
       "bounded-search/compressed": {
        "runs": 8,
        "mean_accuracy": 0.3125,
        "mean_input_tokens": 870.6,
        "mean_elapsed_ms": 120.592,
-       "total_rework": 7
+       "total_rework": 7,
+       "accuracy_sd": 0.372
       }
      },
      "effects_accuracy": {

@@ -1,10 +1,10 @@
-# Consolidated Actions Workflows Matrix — 2026-10-28 Live Refresh (tip update)
+# Consolidated Actions Workflows Matrix — 2026-10-28 Live Refresh (03:00Z)
 
 **Branch:** `ops/actions-matrix-upgrade-2026-10-18` (continued BIUDL cycle)
 **Authority:** Issue #631 13-phase + evidence-led-monorepo-ops + adaptive-wait + C.A.D.E.
 **Goal:** Z3π0 Failures, 100% SUCCESS on required dual-gates. Attentive validation audits of Skipped/Cancelled/Stale/Timed-out/Action Required (never silenced). Reduce notification spam via modular consolidations + shared scheduled poller. Operational Pinggy or alternative on device #1 (`tmx-node-primary`, BLU B160V#1). Quota-aware caching, cadence, 3L0 moneyball adaptive telemetry.
 
-## Current State Recon (2026-10-28T01:00Z)
+## Current State Recon (2026-10-28T03:00Z)
 
 - Master tip recent: predominantly skipped (lane-events-recorder, agent-throughput-evidence, fix-on-failure, delphi-*, peer-review etc. on workflow_run / issue_comment) + success. **No conclusion=failure** in latest completed window on tip. Dual-gate success on prior pushes.
 - **Residual high-volume skipped** (notification spam source): dozens of lane-events-recorder + agent-throughput-evidence + issue_comment bots concluding `skipped` within minutes. `workflow_run` and broad `issue_comment` create a run record even when job-level `if` skips. Pure operational; volume is the spam vector. Classified as intentional filter/concurrency after attentive audit — not silenced failures.
@@ -16,7 +16,7 @@
 - **Spam reduction path:** Shared Observer Poller (cron */20) + modular Issue Comment Router active. Residual workflow_run / issue_comment triggers to be retired post dual-gate on dedicated spam-reduction SHA. Further modular consolidations to cut active trigger surfaces. Target: zero residual high-volume skip run records.
 - Tunnel / Agentic Auth Canary: lag treated as ::notice:: exit 0. Device #1 opaque public ID `tmx-node-primary`. **Pinggy or Tailscale MUST be operational** on BLU B160V#1 (broken screen; device-side publisher required). Device #2 is replica/observer only. September tests on original #1; continuity now dual-device with public obfuscation.
 - Credentials: names-only in issue #184 (extend connectors as needed; no values in docs or issues).
-- Quota / rate-limits: high volume workflows (225 active). Adaptive cache (versioned by SHA + day, never authoritative for live quota) + cadence + moneyball. Capacity/403 → ::warning:: + exit 0, never gate failure. Observatory 403 is canonical example.
+- Quota / rate-limits: high volume workflows (225+ active). Adaptive cache (versioned by SHA + day, never authoritative for live quota) + cadence + moneyball. Capacity/403 → ::warning:: + exit 0, never gate failure. Observatory 403 is canonical example.
 
 ## Repeated Issue Classes & Disposition
 
@@ -26,7 +26,7 @@
 | App token minting | Remote knowledge fabric | Pin used client-id (rejected by v3) | Switched to app-id. Feature preserved. | Fixed |
 | Device tunnel / auth lag | Tunnel Canary, Agentic Auth Canary, deepseek-termux-agent | Publisher lag / offline / OIDC / heartbeat missing / unresolved Pinggy host | Opaque `device_id=tmx-node-primary`. Lag = ::notice:: exit 0. Pinggy fallback until Tailscale proven on device. Device #2 observer only. Device-side publish required. | Operational gap (device-side heartbeat required on #1) |
 | Rate-limit / capacity | ECC Tools 403, historical observatory (39233561401: HTTP 403 on user profile), Gemini, Vercel, quota runs (39234979788) | High volume / free tier / hobby plan / secondary rate limits | Resilient ::warning:: + exit 0. Moneyball adaptive rotation. Never hard-fail required gates. Path filters. Observatory script update recommended. | Active / non-gate |
-| Quota / caching | Free Actions minutes; high workflow count (225) | Provider limits | Dynamic adaptive cache, SHA+path filters, versioned namespaces (never treat cache as live quota). 3L0 telemetry for moneyball. Capacity ≠ failure. | Active |
+| Quota / caching | Free Actions minutes; high workflow count (225+) | Provider limits | Dynamic adaptive cache, SHA+path filters, versioned namespaces (never treat cache as live quota). 3L0 telemetry for moneyball. Capacity ≠ failure. | Active |
 
 ## Cadence & Cache Improvements (3L0 Moneyball)
 
@@ -77,7 +77,7 @@ flowchart TD
 - Historical Phantom secrets / Auth Canary / observatory 403 / quota runs (including 39233561401, 39234979788) classified as lag/capacity, not gate failures. Observatory 403 root: HTTP 403 on user profile fetch under volume.
 - client-id on older create-github-app-token pin superseded by app-id.
 
-**What was refined this cycle (2026-10-28T01:00Z session):**
+**What was refined this cycle (2026-10-28T03:00Z session):**
 - Live recon confirmed no tip failures; residual skips audited as operational.
 - Explicit root-cause on 39233561401: HTTP 403 Forbidden (rate-limit/capacity) in repository_observatory.py resolve_login. Recommend script hardening to exit 0 on 403.
 - Residual skip spam re-quantified; shared poller + router path confirmed active.

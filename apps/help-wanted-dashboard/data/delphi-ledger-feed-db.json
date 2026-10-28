@@ -1,0 +1,2595 @@
+{
+ "invariants": {
+  "append_only": "corrections are NEW events naming what they supersede, never edits (one graded step once consumed by a misdirected write was deliberately NOT replayed \u2014 bounded-loss lesson)",
+  "honest_negatives": "none_validated_yet / none_yet and similar are findings recorded as data, never coerced to null or dropped",
+  "idempotency": "keys on every ingest: tribute signals keyed by thread URL, gate dedupe sha256(key|outcome); mirror/feed key sha256(ledger_id|comment_id)",
+  "resolution": "ledgers resolved by exact issue TITLE at registration (label-order resolution misdirected state to #1567/#1784 once; fixed PR #1833); this registry pins the resolved numbers",
+  "source_classes": [
+   "HUMAN_COLLABORATOR",
+   "MODEL_PROVIDER",
+   "LOCAL_BASELINE"
+  ],
+  "source_classes_rule": "never collapsed in any store, feed or render; DRIVER_SYNTHESIS is not a ballot"
+ },
+ "ledgers": [
+  {
+   "current": {
+    "comment_id": 6444849082,
+    "created_at": "2026-10-27T14:37:36Z",
+    "payload": {
+     "digests": {
+      "tribute-lane": [
+       "9c915f8012db3eb1",
+       "0523793f97e245de",
+       "25ed95dbd9d7d2cd",
+       "4c41c728d0621ee9",
+       "9f2d3bd5c0352b4e",
+       "8de464672d667423",
+       "27c671b8aa8261cd",
+       "999c1a06ae8c810f",
+       "badb0296fd5a06f9",
+       "bf969acd547dbbae",
+       "cca64c0a1fc54a14",
+       "8243706e08c8ab6e",
+       "6c1f7037239d2850",
+       "2c262a70402076de",
+       "50cd026737303db0",
+       "3818ef644c5f1af5",
+       "eed14f6bb8dc2059",
+       "8f3516a911477f70",
+       "c4a9f2c289999dc7",
+       "229865446b7373a7",
+       "6ce190cdfdfcd2da",
+       "81da3ac44d7b281c",
+       "6f4c78eb5b491266",
+       "f54f2af8780b9478",
+       "10c28c7ab5b025f2",
+       "0b276b8418acb788",
+       "9fbddb77fb1cce1e",
+       "a5eb123d31111a1c",
+       "a9c97af7bd3e71eb",
+       "3e2f93629b935201",
+       "30384e147dd1543a",
+       "790188fd99852609",
+       "4d37053f6e8e5798",
+       "a8c2a37c9d16ee9b",
+       "3a4e390eb80ebbe9",
+       "9b71c647fd9ab138",
+       "4cb961b59ccb5595",
+       "4d55ca495dc72ea3",
+       "ce7e24ab0670c850",
+       "36587eae6cb44bd9",
+       "97774447f36f1128",
+       "98f69ed35d4ce4fb",
+       "55e919e68f4b6a4b",
+       "cb6b23bda1921d6d",
+       "7ef916965656dc0f",
+       "81c5a4620ec38850",
+       "5697c0310211b083",
+       "dd5c7b249a64f21d",
+       "86ecb5ea5dc673cd",
+       "7ede8b4709e42782",
+       "f5d6ce9377326c58",
+       "8ee992175db5f1c7",
+       "8e844878d5b855fe",
+       "653384774dd3c7f7",
+       "f5788f4a97c0fb66",
+       "ee078e07e2227241",
+       "2edba8210e5622a6",
+       "dc4a2dde0a9fa330",
+       "a9a2f00624fd74c3",
+       "b1957835008a64bd",
+       "5e820350b0d5e82d",
+       "0be684de16b467be",
+       "bcccc76daf7fdfd9",
+       "10a59783a2fd4b61",
+       "d4fc191f239597ae",
+       "819060d723c8dacc",
+       "3c4bf5f8fa8e8114",
+       "90be9d4939a399f1",
+       "aec0a4b7220b50c0",
+       "78d6515eb42cfa1a",
+       "87b62091a476c5b4",
+       "3569b1c6fb2f33e7",
+       "e76aac1e45dc7178",
+       "b22acc967345f4e2",
+       "214d9d062ea65245",
+       "71d8976eedfaa826",
+       "f005388d274501f2",
+       "a153c01047720e2c",
+       "65bf29f6b0affeb6",
+       "85039c8f38cc09c7",
+       "f4eefa6b16276e40",
+       "d43fe743dcc682ee",
+       "08a02b6c184c816e",
+       "9036653a4178f306",
+       "271c946e89ef261a",
+       "b9420886b644a7d1",
+       "99296f36387054f4",
+       "4c2b945d8909cc20",
+       "d1094098f5574d7f",
+       "f6e32f2dae1651a3",
+       "6a8df485235f51bb",
+       "0cd5962a4ef639e3",
+       "1aeff92b9b9d2dea",
+       "b902d7211a661b4f",
+       "c4da524ecf365fe4",
+       "e52773bcd0d2227e",
+       "46ed97d741d8753e",
+       "3b05a4fdb8f1cccf",
+       "5873da4a8550d5be",
+       "dfc754e9937532cf",
+       "e0e5b40ff2a579b6",
+       "7e9d0d2abb7c893c",
+       "7201cfe3e0fa0592",
+       "d699fd8419456a2f",
+       "ba311f5420a922d4",
+       "ffa3905952a10378",
+       "c69b44dd9f3fa7bd",
+       "16e6570d4fb14cfe",
+       "a2398398dbea964c",
+       "1b77c3f8c99263ad",
+       "67df38abf00b1a08",
+       "8cb348a8ffa24ee5",
+       "5838b96a43634f6f",
+       "0ef53cc55507bde9",
+       "482db7ed68721dbe",
+       "7c28efc89a67834c",
+       "525b0f9ecfe787d5",
+       "d47e6e4361ef4f83",
+       "9ba177713f054fc3",
+       "5a1179cb8e909458",
+       "10bfd1aef8774c25",
+       "9118e026495383cf",
+       "c08d05e3c215e025",
+       "9a2a9d5abc51fb32",
+       "523bd7dd2f65639c",
+       "95d2f61876f4ba90",
+       "49cd0f420210cf26",
+       "86fbadc45aa0905d",
+       "bc999b8395561a7f",
+       "4ad9764ddd4a7d46",
+       "4aef3228fc41232b",
+       "15dc3e41b158ebff",
+       "7aabf7ae8a4ee144",
+       "cb6a7816f971595a",
+       "f6e06bc2703e8cd1",
+       "5c752934ddbcc4da",
+       "88af87cef3e3860e",
+       "ad0241d1a7eb836f",
+       "538c6b0758020dd2",
+       "dec1b0dcdc40122c",
+       "2f4dcc59e9824034",
+       "d64901238926cf2a",
+       "175ad1f408d9d5a7",
+       "c0632791760d07ff",
+       "38f80d45f270f5ba",
+       "cb5b1207d16a7dcd",
+       "fabdddaa9ed2018f",
+       "f7fae4547f84f2d7",
+       "44ee162e1a3ca2f3",
+       "7aadb984af49794a",
+       "51e98f77f0599736",
+       "0dae396ec72703d6",
+       "97b0f74c7aab6fc2",
+       "3cfff36aea2dac56",
+       "b692edd6d5352b29",
+       "8f19228bc0b437fe",
+       "d02462dfb821fde4",
+       "ebaa28755c61b8e8",
+       "d965f4334c4b1530",
+       "2e2ed3a4f4e336b3",
+       "e696412da71de435",
+       "183662cedf1026f1",
+       "345d020c3e1f02a3",
+       "e7963fbbdcafa217",
+       "2e2d4e9361846ccf",
+       "81f62cc69cce9d34",
+       "427d4e119829de2b",
+       "8f76bdb23a76d81d",
+       "41cc52a7f82358ff"
+      ]
+     },
+     "surfaces": {
+      "tribute-lane": {
+       "by_outcome": {
+        "claimed_by_other": 64,
+        "closed_already_assigned": 31,
+        "hostile_spam_flag": 2,
+        "low_effort_placeholder": 57,
+        "merged": 11,
+        "needs_human_skill": 4,
+        "question_to_us": 1
+       },
+       "ewma": -0.0899,
+       "n": 170,
+       "repos": {
+        "0xLizTech/stellarforge": {
+         "ewma": -0.06,
+         "last": "claimed_by_other",
+         "n": 2
+        },
+        "Agora-Events/agora": {
+         "ewma": -0.14,
+         "last": "low_effort_placeholder",
+         "n": 2
+        },
+        "ApexChainx/ApexChainx-Contracts": {
+         "ewma": -0.14,
+         "last": "low_effort_placeholder",
+         "n": 2
+        },
+        "C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge--Frontend-": {
+         "ewma": -0.11,
+         "last": "low_effort_placeholder",
+         "n": 2
+        },
+        "C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend": {
+         "ewma": -0.14,
+         "last": "low_effort_placeholder",
+         "n": 2
+        },
+        "CodeGirlsInc/FrieghtFlow": {
+         "ewma": -0.14,
+         "last": "low_effort_placeholder",
+         "n": 2
+        },
+        "CopilotKit/CopilotKit": {
+         "ewma": -0.11,
+         "last": "low_effort_placeholder",
+         "n": 2
+        },
+        "Dfunder/stellarAid-api": {
+         "ewma": -0.11,
+         "last": "low_effort_placeholder",
+         "n": 2
+        },
+        "DioNanos/codex-termux": {
+         "ewma": -0.08,
+         "last": "needs_human_skill",
+         "n": 1
+        },
+        "EF-CHAIN/SendAm": {
+         "ewma": -0.0933,
+         "last": "low_effort_placeholder",
+         "n": 3
+        },
+        "FasterThanAi/ai-lead-generation-mvp": {
+         "ewma": -0.06,
+         "last": "claimed_by_other",
+         "n": 1
+        },
+        "GRITui/pixel-builder": {
+         "ewma": 0.2,
+         "last": "merged",
+         "n": 1
+        },
+        "Gautam-aman/ResQNet": {
+         "ewma": -0.09,
+         "last": "closed_already_assigned",
+         "n": 2
+        },
+        "GlassHaven/Haven": {
+         "ewma": -0.2,
+         "last": "hostile_spam_flag",
+         "n": 1
+        },
+        "Health-watchers/health_watchers": {
+         "ewma": -0.14,
+         "last": "low_effort_placeholder",
+         "n": 2
+        },
+        "Heliobond/frontend": {
+         "ewma": -0.14,
+         "last": "low_effort_placeholder",
+         "n": 2
+        },
+        "Hugelidus/Pointcast": {
+         "ewma": -0.16,
+         "last": "low_effort_placeholder",
+         "n": 1
+        },
+        "KayStcx/KayStcx": {
+         "ewma": -0.11,
+         "last": "low_effort_placeholder",
+         "n": 2
+        },
+        "LabsCrypt/remitlend": {
+         "ewma": -0.16,
+         "last": "low_effort_placeholder",
+         "n": 1
+        },
+        "LandSandBoat/server": {
+         "ewma": -0.16,
+         "last": "low_effort_placeholder",
+         "n": 1
+        },
+        "LaurierCS/locah-ai": {
+         "ewma": -0.12,
+         "last": "closed_already_assigned",
+         "n": 1
+        },
+        "Lee-Dongwook/E2E-Self-Heal": {
+         "ewma": -0.06,
+         "last": "claimed_by_other",
+         "n": 2
+        },
+        "LibreUML/LibreUML": {
+         "ewma": -0.16,
+         "last": "low_effort_placeholder",
+         "n": 1
+        },
+        "Loment-Lang/Loment": {
+         "ewma": -0.16,
+         "last": "low_effort_placeholder",
+         "n": 1
+        },
+        "MMALI3287/vibewatt": {
+         "ewma": -0.16,
+         "last": "low_effort_placeholder",
+         "n": 1
+        },
+        "Magiclovekorean/unbloarchy": {
+         "ewma": -0.16,
+         "last": "low_effort_placeholder",
+         "n": 1
+        },
+        "MergeFi/contracts": {
+         "ewma": -0.06,
+         "last": "claimed_by_other",
+         "n": 2
+        },
+        "MyFanss/MyFans": {
+         "ewma": -0.14,
+         "last": "low_effort_placeholder",
+         "n": 2
+        },
+        "Nano-Collective/nanocoder": {
+         "ewma": -0.12,
+         "last": "closed_already_assigned",
+         "n": 2
+        },
+        "Neziahtech/streampay": {
+         "ewma": 0.07,
+         "last": "merged",
+         "n": 2
+        },
+        "Nodal-stellar/Nodal-AI": {
+         "ewma": -0.01,
+         "last": "claimed_by_other",
+         "n": 4
+        },
+        "NousResearch/hermes-agent": {
+         "ewma": -0.08,
+         "last": "needs_human_skill",
+         "n": 1
+        },
+        "O2sa/DevImpact": {
+         "ewma": -0.14,
+         "last": "low_effort_placeholder",
+         "n": 2
+        },
+        "OBLIQ-in/OBLIQ-Website": {
+         "ewma": -0.16,
+         "last": "low_effort_placeholder",
+         "n": 1
+        },
+        "Octo-Protocol-org/Octo-frontend": {
+         "ewma": 0.04,
+         "last": "merged",
+         "n": 2
+        },
+        "P-r-e-m-i-u-m/open-source-starter-lab": {
+         "ewma": 0.2,
+         "last": "merged",
+         "n": 1
+        },
+        "ROCm/rocm-libraries": {
+         "ewma": -0.06,
+         "last": "claimed_by_other",
+         "n": 2
+        },
+        "RetinaX-Org/RetinaX": {
+         "ewma": -0.06,
+         "last": "claimed_by_other",
+         "n": 2
+        },
+        "SO4-Markets/interface": {
+         "ewma": -0.06,
+         "last": "claimed_by_other",
+         "n": 2
+        },
+        "SO4-Markets/so4-oracle": {
+         "ewma": -0.14,
+         "last": "low_effort_placeholder",
+         "n": 2
+        },
+        "Saidur-droid/MergeEarn": {
+         "ewma": -0.06,
+         "last": "claimed_by_other",
+         "n": 2
+        },
+        "ShippedLabs/soroban-upgrade-safeguard": {
+         "ewma": -0.06,
+         "last": "claimed_by_other",
+         "n": 2
+        },
+        "Soneso/stellar-agent-wallet": {
+         "ewma": -0.16,
+         "last": "low_effort_placeholder",
+         "n": 2
+        },
+        "SoroScan/soroscan": {
+         "ewma": -0.11,
+         "last": "low_effort_placeholder",
+         "n": 2
+        },
+        "Stellar-songifi/Lyricsflip_server": {
+         "ewma": -0.14,
+         "last": "low_effort_placeholder",
+         "n": 2
+        },
+        "StellarCanary/Protocol-Canary": {
+         "ewma": -0.06,
+         "last": "claimed_by_other",
+         "n": 2
+        },
+        "StellarFoundry/soroban-security-scanner": {
+         "ewma": -0.06,
+         "last": "claimed_by_other",
+         "n": 2
+        },
+        "StellarLock/StellarLock": {
+         "ewma": -0.14,
+         "last": "low_effort_placeholder",
+         "n": 2
+        },
+        "Suhas29wasnotavailable/blroad": {
+         "ewma": -0.16,
+         "last": "low_effort_placeholder",
+         "n": 1
+        },
+        "TabularisDB/tabularis": {
+         "ewma": -0.16,
+         "last": "low_effort_placeholder",
+         "n": 1
+        },
+        "ThinkLikeAFounder/pulsartrack": {
+         "ewma": -0.14,
+         "last": "low_effort_placeholder",
+         "n": 2
+        },
+        "TricklePay/tricklepay-backend": {
+         "ewma": -0.14,
+         "last": "low_effort_placeholder",
+         "n": 2
+        },
+        "TrusTrove/TrusTrove-contract": {
+         "ewma": -0.06,
+         "last": "claimed_by_other",
+         "n": 2
+        },
+        "TrustHire/hiresettle-backend": {
+         "ewma": -0.11,
+         "last": "low_effort_placeholder",
+         "n": 2
+        },
+        "UnityChainxx/StellarHunts": {
+         "ewma": 0.07,
+         "last": "merged",
+         "n": 2
+        },
+        "Vikram-sardiwal/react-open-source": {
+         "ewma": 0.07,
+         "last": "merged",
+         "n": 2
+        },
+        "Wayfare-labs/wayfare": {
+         "ewma": -0.11,
+         "last": "low_effort_placeholder",
+         "n": 2
+        },
+        "aHuddini/UniPlaySong": {
+         "ewma": -0.16,
+         "last": "low_effort_placeholder",
+         "n": 1
+        },
+        "adharshramu12/Seetha_ai": {
+         "ewma": -0.16,
+         "last": "low_effort_placeholder",
+         "n": 1
+        },
+        "amponce/archive-movie-browser": {
+         "ewma": -0.06,
+         "last": "claimed_by_other",
+         "n": 2
+        },
+        "anomalyco/opencode": {
+         "ewma": -0.12,
+         "last": "closed_already_assigned",
+         "n": 1
+        },
+        "apache/hugegraph-computer": {
+         "ewma": -0.16,
+         "last": "low_effort_placeholder",
+         "n": 1
+        },
+        "arsova-mx/OpenPoker": {
+         "ewma": -0.16,
+         "last": "low_effort_placeholder",
+         "n": 1
+        },
+        "bmad-code-org/bmad-loop": {
+         "ewma": -0.06,
+         "last": "claimed_by_other",
+         "n": 1
+        },
+        "ciaren-labs/Ciaren": {
+         "ewma": -0.16,
+         "last": "low_effort_placeholder",
+         "n": 1
+        },
+        "cubrid-lab/cubrid-mcp-server": {
+         "ewma": -0.16,
+         "last": "low_effort_placeholder",
+         "n": 1
+        },
+        "dentalpin/dentalpin": {
+         "ewma": -0.16,
+         "last": "low_effort_placeholder",
+         "n": 1
+        },
+        "dereksantos/cortex": {
+         "ewma": -0.16,
+         "last": "low_effort_placeholder",
+         "n": 1
+        },
+        "ennouaimi/invoicr": {
+         "ewma": -0.06,
+         "last": "claimed_by_other",
+         "n": 1
+        },
+        "estruyf/playwright-github-actions-reporter": {
+         "ewma": -0.16,
+         "last": "low_effort_placeholder",
+         "n": 1
+        },
+        "finos/fluxnova-bpm-platform": {
+         "ewma": -0.16,
+         "last": "low_effort_placeholder",
+         "n": 1
+        },
+        "francordel/kdemos": {
+         "ewma": -0.08,
+         "last": "needs_human_skill",
+         "n": 2
+        },
+        "fsr5-fhaachen/portals": {
+         "ewma": -0.16,
+         "last": "low_effort_placeholder",
+         "n": 1
+        },
+        "gabe-santana/saccade": {
+         "ewma": 0.2,
+         "last": "merged",
+         "n": 1
+        },
+        "infagent/merl": {
+         "ewma": -0.12,
+         "last": "closed_already_assigned",
+         "n": 1
+        },
+        "inferstep/ATLAS": {
+         "ewma": -0.14,
+         "last": "low_effort_placeholder",
+         "n": 2
+        },
+        "kawacukennedy/afrpoweros": {
+         "ewma": -0.06,
+         "last": "claimed_by_other",
+         "n": 2
+        },
+        "kiinshuk/kinshow": {
+         "ewma": -0.09,
+         "last": "closed_already_assigned",
+         "n": 2
+        },
+        "laugh-tales/starpass-contracts": {
+         "ewma": -0.06,
+         "last": "claimed_by_other",
+         "n": 2
+        },
+        "limelit-co/open": {
+         "ewma": -0.06,
+         "last": "claimed_by_other",
+         "n": 2
+        },
+        "lonestill/scope-launcher": {
+         "ewma": -0.09,
+         "last": "closed_already_assigned",
+         "n": 2
+        },
+        "marrabld/omazone": {
+         "ewma": -0.16,
+         "last": "low_effort_placeholder",
+         "n": 1
+        },
+        "mergepay/mergepay-web": {
+         "ewma": 0.04,
+         "last": "merged",
+         "n": 2
+        },
+        "nesstyx/ChessHome": {
+         "ewma": -0.16,
+         "last": "low_effort_placeholder",
+         "n": 1
+        },
+        "nextcloud/spreed": {
+         "ewma": -0.16,
+         "last": "low_effort_placeholder",
+         "n": 1
+        },
+        "prime-radiant-inc/evener": {
+         "ewma": -0.16,
+         "last": "low_effort_placeholder",
+         "n": 1
+        },
+        "pulseaiclub/phi": {
+         "ewma": -0.16,
+         "last": "low_effort_placeholder",
+         "n": 1
+        },
+        "pyrite-wiki/pyrite": {
+         "ewma": -0.2,
+         "last": "hostile_spam_flag",
+         "n": 1
+        },
+        "qim-center/qim3d": {
+         "ewma": -0.14,
+         "last": "low_effort_placeholder",
+         "n": 2
+        },
+        "rishiyaduwanshi/boiler": {
+         "ewma": -0.16,
+         "last": "low_effort_placeholder",
+         "n": 1
+        },
+        "seleniumboot/selenium-boot": {
+         "ewma": -0.06,
+         "last": "claimed_by_other",
+         "n": 2
+        },
+        "shadcn-labs/ogimagecn": {
+         "ewma": -0.06,
+         "last": "claimed_by_other",
+         "n": 1
+        },
+        "sorolens/sorolens": {
+         "ewma": -0.06,
+         "last": "claimed_by_other",
+         "n": 2
+        },
+        "sorotrail/SoroTrail": {
+         "ewma": 0.04,
+         "last": "merged",
+         "n": 2
+        },
+        "speedyk-005/yasbd-lib": {
+         "ewma": -0.14,
+         "last": "low_effort_placeholder",
+         "n": 2
+        },
+        "ssupportme/support-me": {
+         "ewma": -0.06,
+         "last": "claimed_by_other",
+         "n": 2
+        },
+        "stellar-compliance-kit/compliance-primitives": {
+         "ewma": -0.11,
+         "last": "low_effort_placeholder",
+         "n": 2
+        },
+        "tarantool/tarantool": {
+         "ewma": -0.16,
+         "last": "low_effort_placeholder",
+         "n": 1
+        },
+        "timerloggedout-spec/termux-monorepo": {
+         "ewma": 0.0,
+         "last": "question_to_us",
+         "n": 1
+        },
+        "topoteretes/cognee": {
+         "ewma": -0.06,
+         "last": "claimed_by_other",
+         "n": 2
+        },
+        "traceopt-ai/traceml": {
+         "ewma": -0.06,
+         "last": "claimed_by_other",
+         "n": 2
+        },
+        "tusharmotwani1718/dropsend": {
+         "ewma": -0.14,
+         "last": "low_effort_placeholder",
+         "n": 2
+        },
+        "use-assay/Assay": {
+         "ewma": -0.1,
+         "last": "claimed_by_other",
+         "n": 4
+        },
+        "ussyalfaks/ahjoorxmr-contract": {
+         "ewma": -0.12,
+         "last": "closed_already_assigned",
+         "n": 1
+        },
+        "uttrflow/uttrflow-swift": {
+         "ewma": 0.2,
+         "last": "merged",
+         "n": 1
+        }
+       },
+       "sum": -76.0
+      }
+     }
+    }
+   },
+   "derivation": null,
+   "events": [
+    {
+     "class": "machine-state",
+     "comment_id": 6321225375,
+     "created_at": "2026-10-21T16:37:35Z",
+     "event_key": "9a7b518fc24594565849dfa6518ce8a529426fb4b761ef6e9e9e7c14208f4820",
+     "headline": "1 signal(s): `tribute-lane` question_to_us +0.0",
+     "marker": "<!-- delphi-outcomes v1 -->",
+     "payload": {
+      "surfaces": {
+       "tribute-lane": {
+        "by_outcome": {
+         "question_to_us": 1
+        },
+        "ewma": 0.0,
+        "n": 1,
+        "repos": {
+         "timerloggedout-spec/termux-monorepo": {
+          "ewma": 0.0,
+          "last": "question_to_us",
+          "n": 1
+         }
+        },
+        "sum": 0.0
+       }
+      }
+     }
+    },
+    {
+     "class": "record",
+     "comment_id": 6442324046,
+     "created_at": "2026-10-27T12:51:10Z",
+     "event_key": "462590b3536038b55cd359db18ef8f7295ed493b8d99d2019ef1a885e620818f",
+     "headline": "[MUSEai]@{role:{delphi-lane}} \u2014 **correction to the Strands ballot + calibration appends above (comments 6437672193 / 6437672608), append-only.**",
+     "marker": null,
+     "payload": null
+    },
+    {
+     "class": "machine-state",
+     "comment_id": 6444849082,
+     "created_at": "2026-10-27T14:37:36Z",
+     "event_key": "6c8ecdd8d2f91847ce0583ebd29c2326c62a913cc079e5dea98c46c8d40b608d",
+     "headline": "State migration (2026-10-27, [MUSEai]@{role:{delphi-lane}}): the #1533 ingestion's first run posted the 169-signal backfill state to #1567 \u2014 the gate resolved its outcomes ledger by label order, and #",
+     "marker": "<!-- delphi-outcomes v1 -->",
+     "payload": {
+      "digests": {
+       "tribute-lane": [
+        "9c915f8012db3eb1",
+        "0523793f97e245de",
+        "25ed95dbd9d7d2cd",
+        "4c41c728d0621ee9",
+        "9f2d3bd5c0352b4e",
+        "8de464672d667423",
+        "27c671b8aa8261cd",
+        "999c1a06ae8c810f",
+        "badb0296fd5a06f9",
+        "bf969acd547dbbae",
+        "cca64c0a1fc54a14",
+        "8243706e08c8ab6e",
+        "6c1f7037239d2850",
+        "2c262a70402076de",
+        "50cd026737303db0",
+        "3818ef644c5f1af5",
+        "eed14f6bb8dc2059",
+        "8f3516a911477f70",
+        "c4a9f2c289999dc7",
+        "229865446b7373a7",
+        "6ce190cdfdfcd2da",
+        "81da3ac44d7b281c",
+        "6f4c78eb5b491266",
+        "f54f2af8780b9478",
+        "10c28c7ab5b025f2",
+        "0b276b8418acb788",
+        "9fbddb77fb1cce1e",
+        "a5eb123d31111a1c",
+        "a9c97af7bd3e71eb",
+        "3e2f93629b935201",
+        "30384e147dd1543a",
+        "790188fd99852609",
+        "4d37053f6e8e5798",
+        "a8c2a37c9d16ee9b",
+        "3a4e390eb80ebbe9",
+        "9b71c647fd9ab138",
+        "4cb961b59ccb5595",
+        "4d55ca495dc72ea3",
+        "ce7e24ab0670c850",
+        "36587eae6cb44bd9",
+        "97774447f36f1128",
+        "98f69ed35d4ce4fb",
+        "55e919e68f4b6a4b",
+        "cb6b23bda1921d6d",
+        "7ef916965656dc0f",
+        "81c5a4620ec38850",
+        "5697c0310211b083",
+        "dd5c7b249a64f21d",
+        "86ecb5ea5dc673cd",
+        "7ede8b4709e42782",
+        "f5d6ce9377326c58",
+        "8ee992175db5f1c7",
+        "8e844878d5b855fe",
+        "653384774dd3c7f7",
+        "f5788f4a97c0fb66",
+        "ee078e07e2227241",
+        "2edba8210e5622a6",
+        "dc4a2dde0a9fa330",
+        "a9a2f00624fd74c3",
+        "b1957835008a64bd",
+        "5e820350b0d5e82d",
+        "0be684de16b467be",
+        "bcccc76daf7fdfd9",
+        "10a59783a2fd4b61",
+        "d4fc191f239597ae",
+        "819060d723c8dacc",
+        "3c4bf5f8fa8e8114",
+        "90be9d4939a399f1",
+        "aec0a4b7220b50c0",
+        "78d6515eb42cfa1a",
+        "87b62091a476c5b4",
+        "3569b1c6fb2f33e7",
+        "e76aac1e45dc7178",
+        "b22acc967345f4e2",
+        "214d9d062ea65245",
+        "71d8976eedfaa826",
+        "f005388d274501f2",
+        "a153c01047720e2c",
+        "65bf29f6b0affeb6",
+        "85039c8f38cc09c7",
+        "f4eefa6b16276e40",
+        "d43fe743dcc682ee",
+        "08a02b6c184c816e",
+        "9036653a4178f306",
+        "271c946e89ef261a",
+        "b9420886b644a7d1",
+        "99296f36387054f4",
+        "4c2b945d8909cc20",
+        "d1094098f5574d7f",
+        "f6e32f2dae1651a3",
+        "6a8df485235f51bb",
+        "0cd5962a4ef639e3",
+        "1aeff92b9b9d2dea",
+        "b902d7211a661b4f",
+        "c4da524ecf365fe4",
+        "e52773bcd0d2227e",
+        "46ed97d741d8753e",
+        "3b05a4fdb8f1cccf",
+        "5873da4a8550d5be",
+        "dfc754e9937532cf",
+        "e0e5b40ff2a579b6",
+        "7e9d0d2abb7c893c",
+        "7201cfe3e0fa0592",
+        "d699fd8419456a2f",
+        "ba311f5420a922d4",
+        "ffa3905952a10378",
+        "c69b44dd9f3fa7bd",
+        "16e6570d4fb14cfe",
+        "a2398398dbea964c",
+        "1b77c3f8c99263ad",
+        "67df38abf00b1a08",
+        "8cb348a8ffa24ee5",
+        "5838b96a43634f6f",
+        "0ef53cc55507bde9",
+        "482db7ed68721dbe",
+        "7c28efc89a67834c",
+        "525b0f9ecfe787d5",
+        "d47e6e4361ef4f83",
+        "9ba177713f054fc3",
+        "5a1179cb8e909458",
+        "10bfd1aef8774c25",
+        "9118e026495383cf",
+        "c08d05e3c215e025",
+        "9a2a9d5abc51fb32",
+        "523bd7dd2f65639c",
+        "95d2f61876f4ba90",
+        "49cd0f420210cf26",
+        "86fbadc45aa0905d",
+        "bc999b8395561a7f",
+        "4ad9764ddd4a7d46",
+        "4aef3228fc41232b",
+        "15dc3e41b158ebff",
+        "7aabf7ae8a4ee144",
+        "cb6a7816f971595a",
+        "f6e06bc2703e8cd1",
+        "5c752934ddbcc4da",
+        "88af87cef3e3860e",
+        "ad0241d1a7eb836f",
+        "538c6b0758020dd2",
+        "dec1b0dcdc40122c",
+        "2f4dcc59e9824034",
+        "d64901238926cf2a",
+        "175ad1f408d9d5a7",
+        "c0632791760d07ff",
+        "38f80d45f270f5ba",
+        "cb5b1207d16a7dcd",
+        "fabdddaa9ed2018f",
+        "f7fae4547f84f2d7",
+        "44ee162e1a3ca2f3",
+        "7aadb984af49794a",
+        "51e98f77f0599736",
+        "0dae396ec72703d6",
+        "97b0f74c7aab6fc2",
+        "3cfff36aea2dac56",
+        "b692edd6d5352b29",
+        "8f19228bc0b437fe",
+        "d02462dfb821fde4",
+        "ebaa28755c61b8e8",
+        "d965f4334c4b1530",
+        "2e2ed3a4f4e336b3",
+        "e696412da71de435",
+        "183662cedf1026f1",
+        "345d020c3e1f02a3",
+        "e7963fbbdcafa217",
+        "2e2d4e9361846ccf",
+        "81f62cc69cce9d34",
+        "427d4e119829de2b",
+        "8f76bdb23a76d81d",
+        "41cc52a7f82358ff"
+       ]
+      },
+      "surfaces": {
+       "tribute-lane": {
+        "by_outcome": {
+         "claimed_by_other": 64,
+         "closed_already_assigned": 31,
+         "hostile_spam_flag": 2,
+         "low_effort_placeholder": 57,
+         "merged": 11,
+         "needs_human_skill": 4,
+         "question_to_us": 1
+        },
+        "ewma": -0.0899,
+        "n": 170,
+        "repos": {
+         "0xLizTech/stellarforge": {
+          "ewma": -0.06,
+          "last": "claimed_by_other",
+          "n": 2
+         },
+         "Agora-Events/agora": {
+          "ewma": -0.14,
+          "last": "low_effort_placeholder",
+          "n": 2
+         },
+         "ApexChainx/ApexChainx-Contracts": {
+          "ewma": -0.14,
+          "last": "low_effort_placeholder",
+          "n": 2
+         },
+         "C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge--Frontend-": {
+          "ewma": -0.11,
+          "last": "low_effort_placeholder",
+          "n": 2
+         },
+         "C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend": {
+          "ewma": -0.14,
+          "last": "low_effort_placeholder",
+          "n": 2
+         },
+         "CodeGirlsInc/FrieghtFlow": {
+          "ewma": -0.14,
+          "last": "low_effort_placeholder",
+          "n": 2
+         },
+         "CopilotKit/CopilotKit": {
+          "ewma": -0.11,
+          "last": "low_effort_placeholder",
+          "n": 2
+         },
+         "Dfunder/stellarAid-api": {
+          "ewma": -0.11,
+          "last": "low_effort_placeholder",
+          "n": 2
+         },
+         "DioNanos/codex-termux": {
+          "ewma": -0.08,
+          "last": "needs_human_skill",
+          "n": 1
+         },
+         "EF-CHAIN/SendAm": {
+          "ewma": -0.0933,
+          "last": "low_effort_placeholder",
+          "n": 3
+         },
+         "FasterThanAi/ai-lead-generation-mvp": {
+          "ewma": -0.06,
+          "last": "claimed_by_other",
+          "n": 1
+         },
+         "GRITui/pixel-builder": {
+          "ewma": 0.2,
+          "last": "merged",
+          "n": 1
+         },
+         "Gautam-aman/ResQNet": {
+          "ewma": -0.09,
+          "last": "closed_already_assigned",
+          "n": 2
+         },
+         "GlassHaven/Haven": {
+          "ewma": -0.2,
+          "last": "hostile_spam_flag",
+          "n": 1
+         },
+         "Health-watchers/health_watchers": {
+          "ewma": -0.14,
+          "last": "low_effort_placeholder",
+          "n": 2
+         },
+         "Heliobond/frontend": {
+          "ewma": -0.14,
+          "last": "low_effort_placeholder",
+          "n": 2
+         },
+         "Hugelidus/Pointcast": {
+          "ewma": -0.16,
+          "last": "low_effort_placeholder",
+          "n": 1
+         },
+         "KayStcx/KayStcx": {
+          "ewma": -0.11,
+          "last": "low_effort_placeholder",
+          "n": 2
+         },
+         "LabsCrypt/remitlend": {
+          "ewma": -0.16,
+          "last": "low_effort_placeholder",
+          "n": 1
+         },
+         "LandSandBoat/server": {
+          "ewma": -0.16,
+          "last": "low_effort_placeholder",
+          "n": 1
+         },
+         "LaurierCS/locah-ai": {
+          "ewma": -0.12,
+          "last": "closed_already_assigned",
+          "n": 1
+         },
+         "Lee-Dongwook/E2E-Self-Heal": {
+          "ewma": -0.06,
+          "last": "claimed_by_other",
+          "n": 2
+         },
+         "LibreUML/LibreUML": {
+          "ewma": -0.16,
+          "last": "low_effort_placeholder",
+          "n": 1
+         },
+         "Loment-Lang/Loment": {
+          "ewma": -0.16,
+          "last": "low_effort_placeholder",
+          "n": 1
+         },
+         "MMALI3287/vibewatt": {
+          "ewma": -0.16,
+          "last": "low_effort_placeholder",
+          "n": 1
+         },
+         "Magiclovekorean/unbloarchy": {
+          "ewma": -0.16,
+          "last": "low_effort_placeholder",
+          "n": 1
+         },
+         "MergeFi/contracts": {
+          "ewma": -0.06,
+          "last": "claimed_by_other",
+          "n": 2
+         },
+         "MyFanss/MyFans": {
+          "ewma": -0.14,
+          "last": "low_effort_placeholder",
+          "n": 2
+         },
+         "Nano-Collective/nanocoder": {
+          "ewma": -0.12,
+          "last": "closed_already_assigned",
+          "n": 2
+         },
+         "Neziahtech/streampay": {
+          "ewma": 0.07,
+          "last": "merged",
+          "n": 2
+         },
+         "Nodal-stellar/Nodal-AI": {
+          "ewma": -0.01,
+          "last": "claimed_by_other",
+          "n": 4
+         },
+         "NousResearch/hermes-agent": {
+          "ewma": -0.08,
+          "last": "needs_human_skill",
+          "n": 1
+         },
+         "O2sa/DevImpact": {
+          "ewma": -0.14,
+          "last": "low_effort_placeholder",
+          "n": 2
+         },
+         "OBLIQ-in/OBLIQ-Website": {
+          "ewma": -0.16,
+          "last": "low_effort_placeholder",
+          "n": 1
+         },
+         "Octo-Protocol-org/Octo-frontend": {
+          "ewma": 0.04,
+          "last": "merged",
+          "n": 2
+         },
+         "P-r-e-m-i-u-m/open-source-starter-lab": {
+          "ewma": 0.2,
+          "last": "merged",
+          "n": 1
+         },
+         "ROCm/rocm-libraries": {
+          "ewma": -0.06,
+          "last": "claimed_by_other",
+          "n": 2
+         },
+         "RetinaX-Org/RetinaX": {
+          "ewma": -0.06,
+          "last": "claimed_by_other",
+          "n": 2
+         },
+         "SO4-Markets/interface": {
+          "ewma": -0.06,
+          "last": "claimed_by_other",
+          "n": 2
+         },
+         "SO4-Markets/so4-oracle": {
+          "ewma": -0.14,
+          "last": "low_effort_placeholder",
+          "n": 2
+         },
+         "Saidur-droid/MergeEarn": {
+          "ewma": -0.06,
+          "last": "claimed_by_other",
+          "n": 2
+         },
+         "ShippedLabs/soroban-upgrade-safeguard": {
+          "ewma": -0.06,
+          "last": "claimed_by_other",
+          "n": 2
+         },
+         "Soneso/stellar-agent-wallet": {
+          "ewma": -0.16,
+          "last": "low_effort_placeholder",
+          "n": 2
+         },
+         "SoroScan/soroscan": {
+          "ewma": -0.11,
+          "last": "low_effort_placeholder",
+          "n": 2
+         },
+         "Stellar-songifi/Lyricsflip_server": {
+          "ewma": -0.14,
+          "last": "low_effort_placeholder",
+          "n": 2
+         },
+         "StellarCanary/Protocol-Canary": {
+          "ewma": -0.06,
+          "last": "claimed_by_other",
+          "n": 2
+         },
+         "StellarFoundry/soroban-security-scanner": {
+          "ewma": -0.06,
+          "last": "claimed_by_other",
+          "n": 2
+         },
+         "StellarLock/StellarLock": {
+          "ewma": -0.14,
+          "last": "low_effort_placeholder",
+          "n": 2
+         },
+         "Suhas29wasnotavailable/blroad": {
+          "ewma": -0.16,
+          "last": "low_effort_placeholder",
+          "n": 1
+         },
+         "TabularisDB/tabularis": {
+          "ewma": -0.16,
+          "last": "low_effort_placeholder",
+          "n": 1
+         },
+         "ThinkLikeAFounder/pulsartrack": {
+          "ewma": -0.14,
+          "last": "low_effort_placeholder",
+          "n": 2
+         },
+         "TricklePay/tricklepay-backend": {
+          "ewma": -0.14,
+          "last": "low_effort_placeholder",
+          "n": 2
+         },
+         "TrusTrove/TrusTrove-contract": {
+          "ewma": -0.06,
+          "last": "claimed_by_other",
+          "n": 2
+         },
+         "TrustHire/hiresettle-backend": {
+          "ewma": -0.11,
+          "last": "low_effort_placeholder",
+          "n": 2
+         },
+         "UnityChainxx/StellarHunts": {
+          "ewma": 0.07,
+          "last": "merged",
+          "n": 2
+         },
+         "Vikram-sardiwal/react-open-source": {
+          "ewma": 0.07,
+          "last": "merged",
+          "n": 2
+         },
+         "Wayfare-labs/wayfare": {
+          "ewma": -0.11,
+          "last": "low_effort_placeholder",
+          "n": 2
+         },
+         "aHuddini/UniPlaySong": {
+          "ewma": -0.16,
+          "last": "low_effort_placeholder",
+          "n": 1
+         },
+         "adharshramu12/Seetha_ai": {
+          "ewma": -0.16,
+          "last": "low_effort_placeholder",
+          "n": 1
+         },
+         "amponce/archive-movie-browser": {
+          "ewma": -0.06,
+          "last": "claimed_by_other",
+          "n": 2
+         },
+         "anomalyco/opencode": {
+          "ewma": -0.12,
+          "last": "closed_already_assigned",
+          "n": 1
+         },
+         "apache/hugegraph-computer": {
+          "ewma": -0.16,
+          "last": "low_effort_placeholder",
+          "n": 1
+         },
+         "arsova-mx/OpenPoker": {
+          "ewma": -0.16,
+          "last": "low_effort_placeholder",
+          "n": 1
+         },
+         "bmad-code-org/bmad-loop": {
+          "ewma": -0.06,
+          "last": "claimed_by_other",
+          "n": 1
+         },
+         "ciaren-labs/Ciaren": {
+          "ewma": -0.16,
+          "last": "low_effort_placeholder",
+          "n": 1
+         },
+         "cubrid-lab/cubrid-mcp-server": {
+          "ewma": -0.16,
+          "last": "low_effort_placeholder",
+          "n": 1
+         },
+         "dentalpin/dentalpin": {
+          "ewma": -0.16,
+          "last": "low_effort_placeholder",
+          "n": 1
+         },
+         "dereksantos/cortex": {
+          "ewma": -0.16,
+          "last": "low_effort_placeholder",
+          "n": 1
+         },
+         "ennouaimi/invoicr": {
+          "ewma": -0.06,
+          "last": "claimed_by_other",
+          "n": 1
+         },
+         "estruyf/playwright-github-actions-reporter": {
+          "ewma": -0.16,
+          "last": "low_effort_placeholder",
+          "n": 1
+         },
+         "finos/fluxnova-bpm-platform": {
+          "ewma": -0.16,
+          "last": "low_effort_placeholder",
+          "n": 1
+         },
+         "francordel/kdemos": {
+          "ewma": -0.08,
+          "last": "needs_human_skill",
+          "n": 2
+         },
+         "fsr5-fhaachen/portals": {
+          "ewma": -0.16,
+          "last": "low_effort_placeholder",
+          "n": 1
+         },
+         "gabe-santana/saccade": {
+          "ewma": 0.2,
+          "last": "merged",
+          "n": 1
+         },
+         "infagent/merl": {
+          "ewma": -0.12,
+          "last": "closed_already_assigned",
+          "n": 1
+         },
+         "inferstep/ATLAS": {
+          "ewma": -0.14,
+          "last": "low_effort_placeholder",
+          "n": 2
+         },
+         "kawacukennedy/afrpoweros": {
+          "ewma": -0.06,
+          "last": "claimed_by_other",
+          "n": 2
+         },
+         "kiinshuk/kinshow": {
+          "ewma": -0.09,
+          "last": "closed_already_assigned",
+          "n": 2
+         },
+         "laugh-tales/starpass-contracts": {
+          "ewma": -0.06,
+          "last": "claimed_by_other",
+          "n": 2
+         },
+         "limelit-co/open": {
+          "ewma": -0.06,
+          "last": "claimed_by_other",
+          "n": 2
+         },
+         "lonestill/scope-launcher": {
+          "ewma": -0.09,
+          "last": "closed_already_assigned",
+          "n": 2
+         },
+         "marrabld/omazone": {
+          "ewma": -0.16,
+          "last": "low_effort_placeholder",
+          "n": 1
+         },
+         "mergepay/mergepay-web": {
+          "ewma": 0.04,
+          "last": "merged",
+          "n": 2
+         },
+         "nesstyx/ChessHome": {
+          "ewma": -0.16,
+          "last": "low_effort_placeholder",
+          "n": 1
+         },
+         "nextcloud/spreed": {
+          "ewma": -0.16,
+          "last": "low_effort_placeholder",
+          "n": 1
+         },
+         "prime-radiant-inc/evener": {
+          "ewma": -0.16,
+          "last": "low_effort_placeholder",
+          "n": 1
+         },
+         "pulseaiclub/phi": {
+          "ewma": -0.16,
+          "last": "low_effort_placeholder",
+          "n": 1
+         },
+         "pyrite-wiki/pyrite": {
+          "ewma": -0.2,
+          "last": "hostile_spam_flag",
+          "n": 1
+         },
+         "qim-center/qim3d": {
+          "ewma": -0.14,
+          "last": "low_effort_placeholder",
+          "n": 2
+         },
+         "rishiyaduwanshi/boiler": {
+          "ewma": -0.16,
+          "last": "low_effort_placeholder",
+          "n": 1
+         },
+         "seleniumboot/selenium-boot": {
+          "ewma": -0.06,
+          "last": "claimed_by_other",
+          "n": 2
+         },
+         "shadcn-labs/ogimagecn": {
+          "ewma": -0.06,
+          "last": "claimed_by_other",
+          "n": 1
+         },
+         "sorolens/sorolens": {
+          "ewma": -0.06,
+          "last": "claimed_by_other",
+          "n": 2
+         },
+         "sorotrail/SoroTrail": {
+          "ewma": 0.04,
+          "last": "merged",
+          "n": 2
+         },
+         "speedyk-005/yasbd-lib": {
+          "ewma": -0.14,
+          "last": "low_effort_placeholder",
+          "n": 2
+         },
+         "ssupportme/support-me": {
+          "ewma": -0.06,
+          "last": "claimed_by_other",
+          "n": 2
+         },
+         "stellar-compliance-kit/compliance-primitives": {
+          "ewma": -0.11,
+          "last": "low_effort_placeholder",
+          "n": 2
+         },
+         "tarantool/tarantool": {
+          "ewma": -0.16,
+          "last": "low_effort_placeholder",
+          "n": 1
+         },
+         "timerloggedout-spec/termux-monorepo": {
+          "ewma": 0.0,
+          "last": "question_to_us",
+          "n": 1
+         },
+         "topoteretes/cognee": {
+          "ewma": -0.06,
+          "last": "claimed_by_other",
+          "n": 2
+         },
+         "traceopt-ai/traceml": {
+          "ewma": -0.06,
+          "last": "claimed_by_other",
+          "n": 2
+         },
+         "tusharmotwani1718/dropsend": {
+          "ewma": -0.14,
+          "last": "low_effort_placeholder",
+          "n": 2
+         },
+         "use-assay/Assay": {
+          "ewma": -0.1,
+          "last": "claimed_by_other",
+          "n": 4
+         },
+         "ussyalfaks/ahjoorxmr-contract": {
+          "ewma": -0.12,
+          "last": "closed_already_assigned",
+          "n": 1
+         },
+         "uttrflow/uttrflow-swift": {
+          "ewma": 0.2,
+          "last": "merged",
+          "n": 1
+         }
+        },
+        "sum": -76.0
+       }
+      }
+     }
+    },
+    {
+     "class": "record",
+     "comment_id": 6460260505,
+     "created_at": "2026-10-28T03:56:11Z",
+     "event_key": "158133aae611c47975e3ddbd44b155c5ff676fd5b3f97a4e20469fd3c638abae",
+     "headline": "[MUSEai]@{role:{doe-expert}}",
+     "marker": null,
+     "payload": null
+    },
+    {
+     "class": "record",
+     "comment_id": 6463698580,
+     "created_at": "2026-10-28T07:54:25Z",
+     "event_key": "d5cf4b58afd9a17197af0de840648b11789f289621b5c7032ce0aefe53e6bce2",
+     "headline": "[MUSEai]@{role:{delphi-validation}} \u2014 RECHECK FIX (owner ruling 2026-10-28: 30d park ridiculous). PR #1986 merged a365e1e5: panel award.research_recheck_days=2, gate award() applies it to research.* o",
+     "marker": null,
+     "payload": null
+    },
+    {
+     "class": "record",
+     "comment_id": 6469868202,
+     "created_at": "2026-10-28T13:11:13Z",
+     "event_key": "3a5a645aef42d1ee6f4c512ffdef5c94dea27b5de4facaaf0ea8b8c3f99efc5c",
+     "headline": "[MUSEai]@{role:{doe-expert}}",
+     "marker": null,
+     "payload": null
+    },
+    {
+     "class": "record",
+     "comment_id": 6472613783,
+     "created_at": "2026-10-28T15:05:52Z",
+     "event_key": "b37c2be689d412ecfbedb1915d8e4204dbe58509ca6f4e05962f22853e3cd65e",
+     "headline": "[MUSEai]@{role:{comment-quality}} \u2014 CENSUS + CLEANUP RECORD (2026-10-28, owner order via Delphi lane; noise definition = this registry ledger-feed definition, coordinated with Delphi lane + database l",
+     "marker": null,
+     "payload": null
+    }
+   ],
+   "excluded_noise": null,
+   "id": "outcomes",
+   "issue": 1487,
+   "kind": "snapshot-comments",
+   "semantics": "per-surface EWMA of graded signal weights (-1..+1), alpha=0.2 (ops/delphi/panel.json flywheel.ewma_alpha), damped: one EWMA step per batch at the batch mean (gate.py apply_outcomes, issue #1533); idempotency digest sha256(key|outcome)[:16] per surface, newest 2000 kept (gate.py signal_digest/dedupe_signals); tribute ingestion cap 200 records/batch (gate dispatch cap, PR #1824)",
+   "state_rule": "newest marker comment carrying a ```json block is the current state (gate.py latest_json)",
+   "title": "Delphi outcome ledger"
+  },
+  {
+   "current": {
+    "comment_id": 6321265454,
+    "created_at": "2026-10-21T16:39:26Z",
+    "payload": {
+     "roles": {
+      "OPERATOR": {
+       "base": 1.2,
+       "elo": 1532,
+       "gate_pass_rate": 0.68,
+       "hits": 2,
+       "misses": 0
+      },
+      "Scout": {
+       "base": 0.8,
+       "elo": 1532,
+       "gate_pass_rate": 0.68,
+       "hits": 2,
+       "misses": 0
+      },
+      "builder": {
+       "base": 1.0,
+       "elo": 1532,
+       "gate_pass_rate": 0.68,
+       "hits": 2,
+       "misses": 0
+      },
+      "cost_auditor": {
+       "base": 1.2,
+       "elo": 1532,
+       "gate_pass_rate": 0.68,
+       "hits": 2,
+       "misses": 0
+      },
+      "reviewer": {
+       "base": 1.0,
+       "elo": 1532,
+       "gate_pass_rate": 0.68,
+       "hits": 2,
+       "misses": 0
+      }
+     }
+    }
+   },
+   "derivation": {
+    "cold_start": "ops/delphi/panel.json seeds (gpr 0.5, elo 1500, hits/misses 0)",
+    "effective": "effective = sum(w_i * score_i) / sum(w_i)",
+    "elo_k": 16,
+    "ewma_alpha": 0.2,
+    "formula": "w_i = base_i * (0.5 + gate_pass_rate_i) * (elo_i / 1500)",
+    "hit_rule": "hit = (role final vote >= shadow_min 15.0) == (outcome == 'confirmed')",
+    "roles": {
+     "OPERATOR": 1.2,
+     "Scout": 0.8,
+     "builder": 1.0,
+     "cost_auditor": 1.2,
+     "reviewer": 1.0
+    },
+    "rule": "weights are DERIVED from events by this formula \u2014 stores carry events + this derivation; snapshots are payloads of record, never the only copy of the math",
+    "source": "docs/ops/DELPHI-WEIGHTING.md",
+    "update": {
+     "elo": "round(elo + 16 if hit else elo - 16, 1)  [k=16]",
+     "gate_pass_rate": "round(0.8*gpr + 0.2*(1 if hit else 0), 4)  [binary feedback, gate.feedback]",
+     "tallies": "hits/misses++ per graded outcome"
+    }
+   },
+   "events": [
+    {
+     "class": "machine-state",
+     "comment_id": 6321256851,
+     "created_at": "2026-10-21T16:39:01Z",
+     "event_key": "c7b48884904e2958780ba436352cc3a9ea0dd5169434f8ab4f6faed279d7fd43",
+     "headline": "Feedback from #1424: outcome **confirmed**",
+     "marker": "<!-- delphi-weights v1 -->",
+     "payload": {
+      "roles": {
+       "OPERATOR": {
+        "base": 1.2,
+        "elo": 1516,
+        "gate_pass_rate": 0.6,
+        "hits": 1,
+        "misses": 0
+       },
+       "Scout": {
+        "base": 0.8,
+        "elo": 1516,
+        "gate_pass_rate": 0.6,
+        "hits": 1,
+        "misses": 0
+       },
+       "builder": {
+        "base": 1.0,
+        "elo": 1516,
+        "gate_pass_rate": 0.6,
+        "hits": 1,
+        "misses": 0
+       },
+       "cost_auditor": {
+        "base": 1.2,
+        "elo": 1516,
+        "gate_pass_rate": 0.6,
+        "hits": 1,
+        "misses": 0
+       },
+       "reviewer": {
+        "base": 1.0,
+        "elo": 1516,
+        "gate_pass_rate": 0.6,
+        "hits": 1,
+        "misses": 0
+       }
+      }
+     }
+    },
+    {
+     "class": "machine-state",
+     "comment_id": 6321265454,
+     "created_at": "2026-10-21T16:39:26Z",
+     "event_key": "33aab1cfb8257d5b83ad56a47c3a14e386889edc83df7dd5f353c5ea3cb5b800",
+     "headline": "Feedback from #1424: outcome **confirmed**",
+     "marker": "<!-- delphi-weights v1 -->",
+     "payload": {
+      "roles": {
+       "OPERATOR": {
+        "base": 1.2,
+        "elo": 1532,
+        "gate_pass_rate": 0.68,
+        "hits": 2,
+        "misses": 0
+       },
+       "Scout": {
+        "base": 0.8,
+        "elo": 1532,
+        "gate_pass_rate": 0.68,
+        "hits": 2,
+        "misses": 0
+       },
+       "builder": {
+        "base": 1.0,
+        "elo": 1532,
+        "gate_pass_rate": 0.68,
+        "hits": 2,
+        "misses": 0
+       },
+       "cost_auditor": {
+        "base": 1.2,
+        "elo": 1532,
+        "gate_pass_rate": 0.68,
+        "hits": 2,
+        "misses": 0
+       },
+       "reviewer": {
+        "base": 1.0,
+        "elo": 1532,
+        "gate_pass_rate": 0.68,
+        "hits": 2,
+        "misses": 0
+       }
+      }
+     }
+    },
+    {
+     "class": "record",
+     "comment_id": 6442654206,
+     "created_at": "2026-10-27T13:07:37Z",
+     "event_key": "d1bcb6fac2789020579369c37eee2ca6fdd174ff22def70bd3aa77a120c8f270",
+     "headline": "[MUSEai]@{role:{3l0-weighting-backfill}} \u2014 coordination note for the Delphi lane (owner of this ledger); no weights data in this comment, parsers unaffected.",
+     "marker": null,
+     "payload": null
+    }
+   ],
+   "excluded_noise": null,
+   "id": "weights",
+   "issue": 1489,
+   "kind": "snapshot-comments",
+   "semantics": "per-role gate_pass_rate EWMA (step = alpha*|weight|) + Elo (k=16, panel.json flywheel.elo_k), hits/misses tallies (gate.py feedback_graded)",
+   "state_rule": "newest marker comment carrying a ```json block is the current state (gate.py latest_json)",
+   "title": "Delphi panel weights ledger"
+  },
+  {
+   "current": {
+    "comment_id": 6478760068,
+    "created_at": "2026-10-28T19:37:59Z",
+    "payload": {
+     "calibration": {
+      "candidates": {
+       "HUMAN_COLLABORATOR": {
+        "rehearsal-empty": {
+         "actual_rank": 3,
+         "actual_score": 4.0,
+         "expected_rank": 3,
+         "expected_score": 6.0,
+         "moved_on_evidence": [
+          "2 failing test(s) in the implementation round"
+         ],
+         "rank_delta": 0,
+         "score_delta": -2.0,
+         "within_tolerance": true
+        },
+        "rehearsal-strong": {
+         "actual_rank": 1,
+         "actual_score": 21.0,
+         "expected_rank": 1,
+         "expected_score": 20.0,
+         "moved_on_evidence": [
+          "full test pass in the implementation round"
+         ],
+         "rank_delta": 0,
+         "score_delta": 1.0,
+         "within_tolerance": true
+        },
+        "rehearsal-weak": {
+         "actual_rank": 2,
+         "actual_score": 9.0,
+         "expected_rank": 2,
+         "expected_score": 12.0,
+         "moved_on_evidence": [
+          "3 failing test(s) in the implementation round"
+         ],
+         "rank_delta": 0,
+         "score_delta": -3.0,
+         "within_tolerance": false
+        }
+       },
+       "LOCAL_BASELINE": {
+        "rehearsal-empty": {
+         "actual_rank": 3,
+         "actual_score": 1.0,
+         "expected_rank": 3,
+         "expected_score": 4.038,
+         "moved_on_evidence": [
+          "2 failing test(s) in the implementation round"
+         ],
+         "rank_delta": 0,
+         "score_delta": -3.038,
+         "within_tolerance": false
+        },
+        "rehearsal-strong": {
+         "actual_rank": 1,
+         "actual_score": 25.0,
+         "expected_rank": 1,
+         "expected_score": 24.231,
+         "moved_on_evidence": [
+          "full test pass in the implementation round"
+         ],
+         "rank_delta": 0,
+         "score_delta": 0.769,
+         "within_tolerance": true
+        },
+        "rehearsal-weak": {
+         "actual_rank": 2,
+         "actual_score": 8.538,
+         "expected_rank": 2,
+         "expected_score": 10.846,
+         "moved_on_evidence": [
+          "3 failing test(s) in the implementation round"
+         ],
+         "rank_delta": 0,
+         "score_delta": -2.308,
+         "within_tolerance": false
+        }
+       }
+      },
+      "evidence_set_sha256": "dde5aac5d62b8e6f6a946564908ee055b3e19cc488c61aeee62015013768d9ac",
+      "schema": "oracle-method-calibration/v1"
+     },
+     "pass_id": "rehearsal",
+     "type": "delphi-generation-calibration"
+    }
+   },
+   "derivation": null,
+   "events": [
+    {
+     "class": "machine-state",
+     "comment_id": 6437672193,
+     "created_at": "2026-10-27T08:56:15Z",
+     "event_key": "3b78b81dbffff518ba546734ee0668330d8504f8d9f4ac959c48d5ff9046549f",
+     "headline": "[MUSEai]@{role:{delphi-lane}} \u2014 first LIVE Oracle Method pass: ranked outcome.",
+     "marker": "<!-- delphi-generation-ballot v1 -->",
+     "payload": {
+      "pass_id": "strands-rfp-response",
+      "record": "docs/proposals/passes/strands-rfp-response/",
+      "round_1": {
+       "ballots_by_class": {
+        "HUMAN_COLLABORATOR": 0,
+        "LOCAL_BASELINE": 5,
+        "MODEL_PROVIDER": 0
+       },
+       "classes_absent": [
+        "HUMAN_COLLABORATOR",
+        "MODEL_PROVIDER"
+       ],
+       "classes_present": [
+        "LOCAL_BASELINE"
+       ],
+       "ranked_outcome": [
+        "strands-rfp-response-collection-first",
+        "strands-rfp-response-kernel-first",
+        "strands-rfp-response-packaging-first"
+       ]
+      },
+      "round_2": {
+       "ballots_by_class": {
+        "HUMAN_COLLABORATOR": 0,
+        "LOCAL_BASELINE": 5,
+        "MODEL_PROVIDER": 0
+       },
+       "evidence_set_sha256": "620b67b3eee6a70bb4c290d944a76e1bef2597788fc8c5cdd8d39e9000ba6c48",
+       "ranked_outcome": [
+        "strands-rfp-response-collection-first",
+        "strands-rfp-response-kernel-first",
+        "strands-rfp-response-packaging-first"
+       ]
+      },
+      "specified_not_run": {
+       "aws_deployment_ITEMS-007": "card rule",
+       "model_panel_ITEMS-006": "DELPHI_LLM_MAX=0"
+      }
+     }
+    },
+    {
+     "class": "machine-state",
+     "comment_id": 6437672608,
+     "created_at": "2026-10-27T08:56:16Z",
+     "event_key": "2e2830dcae9cce05350d71a2ca4a5d73c566b4066c3090cfe49070c4b3d70f14",
+     "headline": "[MUSEai]@{role:{delphi-lane}} \u2014 calibration feed for the weighting/elo ledgers.",
+     "marker": "<!-- delphi-generation-calibration v1 -->",
+     "payload": {
+      "calibration": {
+       "candidates": {
+        "BRIEF:delphi-lane": {
+         "strands-rfp-response-collection-first": {
+          "actual_rank": 1,
+          "actual_score": 25.0,
+          "expected_rank": 2,
+          "expected_score": 16,
+          "moved_on_evidence": [
+           "full test pass in the implementation round"
+          ],
+          "rank_delta": -1,
+          "score_delta": 9.0,
+          "within_tolerance": false
+         },
+         "strands-rfp-response-kernel-first": {
+          "actual_rank": 2,
+          "actual_score": 25.0,
+          "expected_rank": 1,
+          "expected_score": 19,
+          "moved_on_evidence": [
+           "full test pass in the implementation round"
+          ],
+          "rank_delta": 1,
+          "score_delta": 6.0,
+          "within_tolerance": false
+         },
+         "strands-rfp-response-packaging-first": {
+          "actual_rank": 3,
+          "actual_score": 25.0,
+          "expected_rank": 3,
+          "expected_score": 13,
+          "moved_on_evidence": [
+           "full test pass in the implementation round"
+          ],
+          "rank_delta": 0,
+          "score_delta": 12.0,
+          "within_tolerance": false
+         }
+        },
+        "LOCAL_BASELINE": {
+         "strands-rfp-response-collection-first": {
+          "actual_rank": 1,
+          "actual_score": 25.0,
+          "expected_rank": 1,
+          "expected_score": 23.269,
+          "moved_on_evidence": [
+           "full test pass in the implementation round"
+          ],
+          "rank_delta": 0,
+          "score_delta": 1.731,
+          "within_tolerance": true
+         },
+         "strands-rfp-response-kernel-first": {
+          "actual_rank": 2,
+          "actual_score": 25.0,
+          "expected_rank": 2,
+          "expected_score": 23.269,
+          "moved_on_evidence": [
+           "full test pass in the implementation round"
+          ],
+          "rank_delta": 0,
+          "score_delta": 1.731,
+          "within_tolerance": true
+         },
+         "strands-rfp-response-packaging-first": {
+          "actual_rank": 3,
+          "actual_score": 25.0,
+          "expected_rank": 3,
+          "expected_score": 23.269,
+          "moved_on_evidence": [
+           "full test pass in the implementation round"
+          ],
+          "rank_delta": 0,
+          "score_delta": 1.731,
+          "within_tolerance": true
+         }
+        }
+       },
+       "evidence_set_sha256": "620b67b3eee6a70bb4c290d944a76e1bef2597788fc8c5cdd8d39e9000ba6c48",
+       "schema": "oracle-method-calibration/v1"
+      },
+      "pass_id": "strands-rfp-response",
+      "type": "delphi-generation-calibration"
+     }
+    },
+    {
+     "class": "machine-state",
+     "comment_id": 6458968877,
+     "created_at": "2026-10-28T02:25:55Z",
+     "event_key": "2b30cfe74a8d1743a88e477d09c264a2048ad384004845ab43693d39c23e37d8",
+     "headline": "[MUSEai]@{role:{delphi-lane}} \u2014 second LIVE Oracle Method pass: ranked outcome.",
+     "marker": "<!-- delphi-generation-ballot v1 -->",
+     "payload": {
+      "ballots_by_class": {
+       "HUMAN_COLLABORATOR": 0,
+       "LOCAL_BASELINE": "rubric comparator (ledger weights from #1489)",
+       "MODEL_PROVIDER": 0
+      },
+      "g6_disposition": {
+       "temporal-durable-execution-contract-first": "adopt (contract discipline)",
+       "temporal-durable-execution-cookbook-agent-loop": "pilot",
+       "temporal-durable-execution-pi-core-resume": "adopt",
+       "temporal-durable-execution-serverless-skill": "reference-only",
+       "temporal-durable-execution-versioned-autoscale": "reference-only"
+      },
+      "moneyball_weighted": {
+       "temporal-durable-execution-contract-first": 6.5,
+       "temporal-durable-execution-cookbook-agent-loop": 8.5,
+       "temporal-durable-execution-pi-core-resume": 8.9,
+       "temporal-durable-execution-serverless-skill": 4.8,
+       "temporal-durable-execution-versioned-autoscale": 3.6
+      },
+      "pass_id": "temporal-durable-execution",
+      "record": "docs/proposals/passes/temporal-durable-execution/",
+      "round_1": {
+       "note": "four-way tie at 23.654 (pi-core-resume, contract-first, serverless-skill, versioned-autoscale); cookbook-agent-loop 23.077; order among tied = alphabetical tie-break",
+       "ranked_outcome": [
+        "temporal-durable-execution-contract-first",
+        "temporal-durable-execution-pi-core-resume",
+        "temporal-durable-execution-serverless-skill",
+        "temporal-durable-execution-versioned-autoscale",
+        "temporal-durable-execution-cookbook-agent-loop"
+       ]
+      },
+      "round_2": {
+       "note": "four-way tie at 25.0 (all candidates whose declared suites passed); versioned-autoscale separated at 11.615 (omes suite unexecutable in the pass environment, zero under the phantom-test rule)",
+       "ranked_outcome": [
+        "temporal-durable-execution-contract-first",
+        "temporal-durable-execution-cookbook-agent-loop",
+        "temporal-durable-execution-pi-core-resume",
+        "temporal-durable-execution-serverless-skill",
+        "temporal-durable-execution-versioned-autoscale"
+       ]
+      }
+     }
+    },
+    {
+     "class": "machine-state",
+     "comment_id": 6458969136,
+     "created_at": "2026-10-28T02:25:56Z",
+     "event_key": "d6a37243e31b93bfdfff98b8249233e4b2a2f866fd4790ea68388b8db5a0d424",
+     "headline": "[MUSEai]@{role:{delphi-lane}} \u2014 calibration feed for the weighting/elo ledgers (TD-005: posted to both ledgers).",
+     "marker": "<!-- delphi-generation-calibration v1 -->",
+     "payload": {
+      "calibration": {
+       "candidates": {
+        "BRIEF:BRIEF:temporal-recon-lane": {
+         "temporal-durable-execution-contract-first": {
+          "actual_rank": 1,
+          "actual_score": 25.0,
+          "expected_rank": 3,
+          "expected_score": 16,
+          "moved_on_evidence": [
+           "full test pass in the implementation round"
+          ],
+          "rank_delta": -2,
+          "score_delta": 9.0,
+          "within_tolerance": false
+         },
+         "temporal-durable-execution-cookbook-agent-loop": {
+          "actual_rank": 2,
+          "actual_score": 25.0,
+          "expected_rank": 2,
+          "expected_score": 19,
+          "moved_on_evidence": [
+           "full test pass in the implementation round"
+          ],
+          "rank_delta": 0,
+          "score_delta": 6.0,
+          "within_tolerance": false
+         },
+         "temporal-durable-execution-pi-core-resume": {
+          "actual_rank": 3,
+          "actual_score": 25.0,
+          "expected_rank": 1,
+          "expected_score": 22,
+          "moved_on_evidence": [
+           "full test pass in the implementation round"
+          ],
+          "rank_delta": 2,
+          "score_delta": 3.0,
+          "within_tolerance": false
+         },
+         "temporal-durable-execution-serverless-skill": {
+          "actual_rank": 4,
+          "actual_score": 25.0,
+          "expected_rank": 5,
+          "expected_score": 10,
+          "moved_on_evidence": [
+           "full test pass in the implementation round"
+          ],
+          "rank_delta": -1,
+          "score_delta": 15.0,
+          "within_tolerance": false
+         },
+         "temporal-durable-execution-versioned-autoscale": {
+          "actual_rank": 5,
+          "actual_score": 11.615,
+          "expected_rank": 4,
+          "expected_score": 13,
+          "moved_on_evidence": [
+           "1 failing test(s) in the implementation round"
+          ],
+          "rank_delta": 1,
+          "score_delta": -1.385,
+          "within_tolerance": true
+         }
+        },
+        "LOCAL_BASELINE": {
+         "temporal-durable-execution-contract-first": {
+          "actual_rank": 1,
+          "actual_score": 25.0,
+          "expected_rank": 1,
+          "expected_score": 23.654,
+          "moved_on_evidence": [
+           "full test pass in the implementation round"
+          ],
+          "rank_delta": 0,
+          "score_delta": 1.346,
+          "within_tolerance": true
+         },
+         "temporal-durable-execution-cookbook-agent-loop": {
+          "actual_rank": 2,
+          "actual_score": 25.0,
+          "expected_rank": 5,
+          "expected_score": 23.077,
+          "moved_on_evidence": [
+           "full test pass in the implementation round"
+          ],
+          "rank_delta": -3,
+          "score_delta": 1.923,
+          "within_tolerance": true
+         },
+         "temporal-durable-execution-pi-core-resume": {
+          "actual_rank": 3,
+          "actual_score": 25.0,
+          "expected_rank": 2,
+          "expected_score": 23.654,
+          "moved_on_evidence": [
+           "full test pass in the implementation round"
+          ],
+          "rank_delta": 1,
+          "score_delta": 1.346,
+          "within_tolerance": true
+         },
+         "temporal-durable-execution-serverless-skill": {
+          "actual_rank": 4,
+          "actual_score": 25.0,
+          "expected_rank": 3,
+          "expected_score": 23.654,
+          "moved_on_evidence": [
+           "full test pass in the implementation round"
+          ],
+          "rank_delta": 1,
+          "score_delta": 1.346,
+          "within_tolerance": true
+         },
+         "temporal-durable-execution-versioned-autoscale": {
+          "actual_rank": 5,
+          "actual_score": 11.615,
+          "expected_rank": 4,
+          "expected_score": 23.654,
+          "moved_on_evidence": [
+           "1 failing test(s) in the implementation round"
+          ],
+          "rank_delta": 1,
+          "score_delta": -12.039,
+          "within_tolerance": false
+         }
+        }
+       },
+       "evidence_set_sha256": "8d67dc0326925dac8ea739891d12d707cd92cb07ceb6d95f56c8cbda9291fd76",
+       "schema": "oracle-method-calibration/v1"
+      },
+      "pass_id": "temporal-durable-execution",
+      "type": "delphi-generation-calibration"
+     }
+    },
+    {
+     "class": "machine-state",
+     "comment_id": 6459554998,
+     "created_at": "2026-10-28T03:05:22Z",
+     "event_key": "34d9936cc0855275f34e198e5b1a7e7425500ebd93ae2791948c9f986d6c1066",
+     "headline": "[MUSEai]@{role:{delphi-lane}} \u2014 research-silo baseline comparison, first improve-cycle (post-hoc record per RESEARCH-SILO-DELPHI.md rules; no cross-silo aggregate score \u2014 attribution stays per silo).",
+     "marker": "<!-- delphi-research-silos v1 -->",
+     "payload": null
+    },
+    {
+     "class": "machine-state",
+     "comment_id": 6478757703,
+     "created_at": "2026-10-28T19:37:53Z",
+     "event_key": "6466cf3e92d4006995ee87858310254286deb589deffbfad46fe5fe51857c557",
+     "headline": "<!-- n5-emit:delphi-cycle/rehearsal:ballot_round1 -->",
+     "marker": "<!-- delphi-generation-ballot v1 -->",
+     "payload": {
+      "ballot": {
+       "ballots": [
+        {
+         "evidence_refs": [
+          "generation profiles derived from each candidate's PROVENANCE evidence sets"
+         ],
+         "rationale": {
+          "rehearsal-empty": "evidenced_ratio 0.0 (0/1 points evidenced); unverified 1; items 1; evidence_sources 2; dependency_items 0",
+          "rehearsal-strong": "evidenced_ratio 1.0 (2/2 points evidenced); unverified 0; items 1; evidence_sources 2; dependency_items 0",
+          "rehearsal-weak": "evidenced_ratio 0.5 (1/2 points evidenced); unverified 1; items 2; evidence_sources 2; dependency_items 1; money veto applied (score capped at 4)"
+         },
+         "scores": {
+          "rehearsal-empty": 1,
+          "rehearsal-strong": 25,
+          "rehearsal-weak": 12
+         },
+         "source_class": "LOCAL_BASELINE",
+         "voter": "rubric:OPERATOR"
+        },
+        {
+         "evidence_refs": [
+          "generation profiles derived from each candidate's PROVENANCE evidence sets"
+         ],
+         "rationale": {
+          "rehearsal-empty": "evidenced_ratio 0.0 (0/1 points evidenced); unverified 1; items 1; evidence_sources 2; dependency_items 0",
+          "rehearsal-strong": "evidenced_ratio 1.0 (2/2 points evidenced); unverified 0; items 1; evidence_sources 2; dependency_items 0",
+          "rehearsal-weak": "evidenced_ratio 0.5 (1/2 points evidenced); unverified 1; items 2; evidence_sources 2; dependency_items 1; money veto applied (score capped at 4)"
+         },
+         "scores": {
+          "rehearsal-empty": 12,
+          "rehearsal-strong": 25,
+          "rehearsal-weak": 19
+         },
+         "source_class": "LOCAL_BASELINE",
+         "voter": "rubric:Scout"
+        },
+        {
+         "evidence_refs": [
+          "generation profiles derived from each candidate's PROVENANCE evidence sets"
+         ],
+         "rationale": {
+          "rehearsal-empty": "evidenced_ratio 0.0 (0/1 points evidenced); unverified 1; items 1; evidence_sources 2; dependency_items 0",
+          "rehearsal-strong": "evidenced_ratio 1.0 (2/2 points evidenced); unverified 0; items 1; evidence_sources 2; dependency_items 0",
+          "rehearsal-weak": "evidenced_ratio 0.5 (1/2 points evidenced); unverified 1; items 2; evidence_sources 2; dependency_items 1; money veto applied (score capped at 4)"
+         },
+         "scores": {
+          "rehearsal-empty": 8,
+          "rehearsal-strong": 21,
+          "rehearsal-weak": 10
+         },
+         "source_class": "LOCAL_BASELINE",
+         "voter": "rubric:builder"
+        },
+        {
+         "evidence_refs": [
+          "generation profiles derived from each candidate's PROVENANCE evidence sets"
+         ],
+         "rationale": {
+          "rehearsal-empty": "evidenced_ratio 0.0 (0/1 points evidenced); unverified 1; items 1; evidence_sources 2; dependency_items 0",
+          "rehearsal-strong": "evidenced_ratio 1.0 (2/2 points evidenced); unverified 0; items 1; evidence_sources 2; dependency_items 0",
+          "rehearsal-weak": "evidenced_ratio 0.5 (1/2 points evidenced); unverified 1; items 2; evidence_sources 2; dependency_items 1; money veto applied (score capped at 4)"
+         },
+         "scores": {
+          "rehearsal-empty": 1,
+          "rehearsal-strong": 25,
+          "rehearsal-weak": 4
+         },
+         "source_class": "LOCAL_BASELINE",
+         "voter": "rubric:cost_auditor"
+        },
+        {
+         "evidence_refs": [
+          "generation profiles derived from each candidate's PROVENANCE evidence sets"
+         ],
+         "rationale": {
+          "rehearsal-empty": "evidenced_ratio 0.0 (0/1 points evidenced); unverified 1; items 1; evidence_sources 2; dependency_items 0",
+          "rehearsal-strong": "evidenced_ratio 1.0 (2/2 points evidenced); unverified 0; items 1; evidence_sources 2; dependency_items 0",
+          "rehearsal-weak": "evidenced_ratio 0.5 (1/2 points evidenced); unverified 1; items 2; evidence_sources 2; dependency_items 1; money veto applied (score capped at 4)"
+         },
+         "scores": {
+          "rehearsal-empty": 1,
+          "rehearsal-strong": 25,
+          "rehearsal-weak": 12
+         },
+         "source_class": "LOCAL_BASELINE",
+         "voter": "rubric:reviewer"
+        },
+        {
+         "evidence_refs": [
+          "fixture evidence set a.claim/b.claim"
+         ],
+         "rationale": "strong is fully evidenced; weak rests one point on a missing claim; empty is unevidenced",
+         "scores": {
+          "rehearsal-empty": 6,
+          "rehearsal-strong": 20,
+          "rehearsal-weak": 12
+         },
+         "source_class": "HUMAN_COLLABORATOR",
+         "voter": "registrar:owner"
+        }
+       ],
+       "ballots_by_class": {
+        "HUMAN_COLLABORATOR": 1,
+        "LOCAL_BASELINE": 5,
+        "MODEL_PROVIDER": 0
+       },
+       "candidates": [
+        "rehearsal-strong",
+        "rehearsal-weak",
+        "rehearsal-empty"
+       ],
+       "class_rule": "Source classes tallied and reported separately, never merged (DEBATE protocol). DRIVER_SYNTHESIS is not a ballot.",
+       "classes_absent": [
+        "MODEL_PROVIDER"
+       ],
+       "classes_present": [
+        "HUMAN_COLLABORATOR",
+        "LOCAL_BASELINE"
+       ],
+       "combined_ranking": [
+        "rehearsal-strong",
+        "rehearsal-weak",
+        "rehearsal-empty"
+       ],
+       "generated_at": "2026-10-28T00:00:00Z",
+       "per_class": {
+        "HUMAN_COLLABORATOR": {
+         "ballots": 1,
+         "ranking": [
+          "rehearsal-strong",
+          "rehearsal-weak",
+          "rehearsal-empty"
+         ],
+         "scores": {
+          "rehearsal-empty": 6.0,
+          "rehearsal-strong": 20.0,
+          "rehearsal-weak": 12.0
+         }
+        },
+        "LOCAL_BASELINE": {
+         "ballots": 5,
+         "ranking": [
+          "rehearsal-strong",
+          "rehearsal-weak",
+          "rehearsal-empty"
+         ],
+         "scores": {
+          "rehearsal-empty": 4.038,
+          "rehearsal-strong": 24.231,
+          "rehearsal-weak": 10.846
+         }
+        },
+        "MODEL_PROVIDER": {
+         "ballots": 0,
+         "ranking": [],
+         "scores": {}
+        }
+       },
+       "profiles": [
+        {
+         "candidate": "rehearsal-strong",
+         "dependency_items": 0,
+         "docs_sha256": "429596243f40c5970d2e4414cb1dc8c12c063db0fd485768e7312594ce835708",
+         "evidence_sources": 2,
+         "evidenced": 2,
+         "evidenced_ratio": 1.0,
+         "items": 1,
+         "money_veto": false,
+         "points": 2,
+         "unverified": 0
+        },
+        {
+         "candidate": "rehearsal-weak",
+         "dependency_items": 1,
+         "docs_sha256": "71f5264e85b9f355c3675dd6305812f38d3d87df45d270023e3450c07e1e72e3",
+         "evidence_sources": 2,
+         "evidenced": 1,
+         "evidenced_ratio": 0.5,
+         "items": 2,
+         "money_veto": true,
+         "points": 2,
+         "unverified": 1
+        },
+        {
+         "candidate": "rehearsal-empty",
+         "dependency_items": 0,
+         "docs_sha256": "9100e8f2577d8a68ea377248c73d3c961e511de0c84c6ad7f6aa05b0ebc124f9",
+         "evidence_sources": 2,
+         "evidenced": 0,
+         "evidenced_ratio": 0.0,
+         "items": 1,
+         "money_veto": false,
+         "points": 1,
+         "unverified": 1
+        }
+       ],
+       "ranked_outcome": [
+        "rehearsal-strong",
+        "rehearsal-weak",
+        "rehearsal-empty"
+       ],
+       "schema": "delphi-cross-vote/v1",
+       "weights": {
+        "role_weights": {
+         "OPERATOR": 1.4462,
+         "Scout": 0.9641,
+         "builder": 1.2052,
+         "cost_auditor": 1.4462,
+         "reviewer": 1.2052
+        },
+        "source": "fixture panel (tests/test_delphi_cross_vote PANEL)"
+       }
+      },
+      "pass_id": "rehearsal",
+      "round": 1,
+      "type": "delphi-generation-ballot"
+     }
+    },
+    {
+     "class": "machine-state",
+     "comment_id": 6478758831,
+     "created_at": "2026-10-28T19:37:56Z",
+     "event_key": "40de5526a12bb6ed83e38a3034ae28f3b2d7d6b92d4f173245229f6ebda1abb4",
+     "headline": "<!-- n5-emit:delphi-cycle/rehearsal:ballot_round2 -->",
+     "marker": "<!-- delphi-generation-ballot v1 -->",
+     "payload": {
+      "ballot": {
+       "ballots_by_class": {
+        "HUMAN_COLLABORATOR": 1,
+        "LOCAL_BASELINE": 5,
+        "MODEL_PROVIDER": 0
+       },
+       "classes_present": [
+        "HUMAN_COLLABORATOR",
+        "LOCAL_BASELINE"
+       ],
+       "evidence_set_sha256": "dde5aac5d62b8e6f6a946564908ee055b3e19cc488c61aeee62015013768d9ac",
+       "per_class": {
+        "HUMAN_COLLABORATOR": {
+         "ballots": 1,
+         "ranking": [
+          "rehearsal-strong",
+          "rehearsal-weak",
+          "rehearsal-empty"
+         ],
+         "scores": {
+          "rehearsal-empty": 4.0,
+          "rehearsal-strong": 21.0,
+          "rehearsal-weak": 9.0
+         }
+        },
+        "LOCAL_BASELINE": {
+         "ballots": 5,
+         "ranking": [
+          "rehearsal-strong",
+          "rehearsal-weak",
+          "rehearsal-empty"
+         ],
+         "scores": {
+          "rehearsal-empty": 1.0,
+          "rehearsal-strong": 25.0,
+          "rehearsal-weak": 8.538
+         }
+        },
+        "MODEL_PROVIDER": {
+         "ballots": 0,
+         "ranking": [],
+         "scores": {}
+        }
+       },
+       "ranked_outcome": [
+        "rehearsal-strong",
+        "rehearsal-weak",
+        "rehearsal-empty"
+       ],
+       "round": 2,
+       "schema": "delphi-cross-vote/v1"
+      },
+      "pass_id": "rehearsal",
+      "round": 2,
+      "type": "delphi-generation-ballot"
+     }
+    },
+    {
+     "class": "machine-state",
+     "comment_id": 6478760068,
+     "created_at": "2026-10-28T19:37:59Z",
+     "event_key": "795a845f4f2a362fed99fb907e6b11e1fdcb3c94f263933db48b1b60e75fce23",
+     "headline": "<!-- n5-emit:delphi-cycle/rehearsal:calibration -->",
+     "marker": "<!-- delphi-generation-calibration v1 -->",
+     "payload": {
+      "calibration": {
+       "candidates": {
+        "HUMAN_COLLABORATOR": {
+         "rehearsal-empty": {
+          "actual_rank": 3,
+          "actual_score": 4.0,
+          "expected_rank": 3,
+          "expected_score": 6.0,
+          "moved_on_evidence": [
+           "2 failing test(s) in the implementation round"
+          ],
+          "rank_delta": 0,
+          "score_delta": -2.0,
+          "within_tolerance": true
+         },
+         "rehearsal-strong": {
+          "actual_rank": 1,
+          "actual_score": 21.0,
+          "expected_rank": 1,
+          "expected_score": 20.0,
+          "moved_on_evidence": [
+           "full test pass in the implementation round"
+          ],
+          "rank_delta": 0,
+          "score_delta": 1.0,
+          "within_tolerance": true
+         },
+         "rehearsal-weak": {
+          "actual_rank": 2,
+          "actual_score": 9.0,
+          "expected_rank": 2,
+          "expected_score": 12.0,
+          "moved_on_evidence": [
+           "3 failing test(s) in the implementation round"
+          ],
+          "rank_delta": 0,
+          "score_delta": -3.0,
+          "within_tolerance": false
+         }
+        },
+        "LOCAL_BASELINE": {
+         "rehearsal-empty": {
+          "actual_rank": 3,
+          "actual_score": 1.0,
+          "expected_rank": 3,
+          "expected_score": 4.038,
+          "moved_on_evidence": [
+           "2 failing test(s) in the implementation round"
+          ],
+          "rank_delta": 0,
+          "score_delta": -3.038,
+          "within_tolerance": false
+         },
+         "rehearsal-strong": {
+          "actual_rank": 1,
+          "actual_score": 25.0,
+          "expected_rank": 1,
+          "expected_score": 24.231,
+          "moved_on_evidence": [
+           "full test pass in the implementation round"
+          ],
+          "rank_delta": 0,
+          "score_delta": 0.769,
+          "within_tolerance": true
+         },
+         "rehearsal-weak": {
+          "actual_rank": 2,
+          "actual_score": 8.538,
+          "expected_rank": 2,
+          "expected_score": 10.846,
+          "moved_on_evidence": [
+           "3 failing test(s) in the implementation round"
+          ],
+          "rank_delta": 0,
+          "score_delta": -2.308,
+          "within_tolerance": false
+         }
+        }
+       },
+       "evidence_set_sha256": "dde5aac5d62b8e6f6a946564908ee055b3e19cc488c61aeee62015013768d9ac",
+       "schema": "oracle-method-calibration/v1"
+      },
+      "pass_id": "rehearsal",
+      "type": "delphi-generation-calibration"
+     }
+    }
+   ],
+   "excluded_noise": null,
+   "id": "generation",
+   "issue": 1487,
+   "kind": "event-comments",
+   "semantics": "append-only; a later signed [MUSEai]@ comment may correct an earlier event (corrections are new events, never edits)",
+   "state_rule": "no folded state; the event stream is the record (ranked outcomes + calibration deltas feeding weights/outcomes)",
+   "title": "Delphi generation ballots + calibrations (appended to the outcome ledger issue)"
+  }
+ ],
+ "living_records": [
+  {
+   "assigned_marker": "<!-- delphi-living v1 -->",
+   "body": "<!-- delphi-living v1 -->\n[MUSEai]@{role:{delphi-lane}} \u2014 **Temporal self-host status** (living record; refreshed by the keepalive job on every repair + daily).\n\n**Snapshot 2026-10-28T18:30:11Z**\n\n| Item | State |\n|---|---|\n| Units | temporal-selfhost + temporal-relay: `active / active` |\n| API | localhost:7233 answers (gRPC); Web UI localhost:8233 \u2192 HTTP 200 |\n| Relay | 0.0.0.0:7234 \u2192 127.0.0.1:7233 (CLI via :7234 answers) |\n| DB | ~/workspace/temporal-selfhost/temporal.db \u2014 729088 bytes, durable disk |\n| Backups | temporal-20261028.db (daily, integrity-checked, newest 7) |\n| Keepalive | every 15 min \u2014 reinstalls units after VM replacement (`/etc` is ephemeral), silent when healthy |\n\n**Repair this run:** both units were `not-found` again (VM replacement had wiped /etc a second time today; prior repair 2026-10-28T16:28:08Z); `install.sh` reinstalled + enabled them, both active since 2026-10-28T18:28:44Z, CLI answers on :7233 and :7234. No daily snapshot taken \u2014 temporal-20261028.db already exists (integrity re-verified `ok` this run).\n\n**Workflows on the server**\n\n```\nCompleted  kill-resume-unit-1793192868  DurableUnitWorkflow  5 hours ago\n  Completed  kill-resume-unit-1793175195  DurableUnitWorkflow  10 hours ago\n  Completed  kill-resume-unit-1793175148  DurableUnitWorkflow  10 hours ago\n```\n\nDesign + operator record: docs/ops/TEMPORAL-SELF-HOST.md (PR #1989, doc corr. PR #2014). Owner ruling 2026-10-28: Required infrastructure is reviewable via GitHub surfaces \u2014 this issue is that surface for the Temporal self-host.\n",
+   "body_marker": "<!-- delphi-living v1 -->",
+   "id": "temporal-selfhost-status",
+   "issue": 2028,
+   "kind": "living-body",
+   "marker": null,
+   "recorded_at": "2026-10-28T21:30:05Z",
+   "semantics": "not append-only at the source; the feed + the Neon mirror make versions append-only by keying on the body hash; ASSIGNED MARKER (Delphi lane recommendation, 2026-10-28): future snapshot comments on living-record issues carry '<!-- delphi-living v1 -->' so collectors can separate them from third-party noise; the #2028 body pattern is unchanged until its writer adopts it",
+   "snapshot_at": "2026-10-28T18:30:11Z",
+   "state_rule": "the issue BODY is the current state (edited in place by the keepalive job); version key = sha256(body) \u2014 a changed hash is a new version of the record",
+   "title": "Temporal self-host status (living record)",
+   "version_key": "e3fbb4ba19d6d6f6319ffc0fdc92d44ac13e2ef2273c1f24c4889d2c11e44245"
+  },
+  {
+   "assigned_marker": null,
+   "body": "<!-- delphi-board v1 -->\nGenerated by delphi-gate at 2026-10-28 21:43 UTC. Ledger of record: the newest `<!-- delphi-ledger v1 -->` comment on each RFP.\n\n| RFP | Surface | Effective /25 | Award | Band | Recheck |\n|---|---|---|---|---|---|\n| #1424 | `github.native_ledger` | 18.55 | shadow | High | - |\n| #1423 | `turso.free` | 16.54 | shadow | High | - |\n| #1420 | `supabase.free` | 14.62 | parked | Medium | 2026-11-11T00:20Z |\n| #1421 | `cloudflare.d1_queues` | 14.62 | parked | Medium | 2026-11-11T00:20Z |\n| #1416 | `neon.data_api` | 12.92 | parked | Medium | 2026-11-11T00:20Z |\n| #1488 | `tribute-lane` | 12.69 | parked | Medium | 2026-11-11T00:21Z |\n| #1425 | `gemini.free` | 12.23 | parked | Medium | 2026-11-11T01:17Z |\n| #1426 | `openrouter.free` | 12.23 | parked | Medium | 2026-11-11T00:21Z |\n| #1428 | `grafana.cloud_free` | 12.0 | parked | Medium | 2026-11-11T00:21Z |\n| #1422 | `upstash.free` | 11.54 | parked | Medium | 2026-11-11T00:21Z |\n| #1419 | `vercel.hobby` | 10.81 | parked | Medium | 2026-11-11T00:20Z |\n| #1427 | `g4f.vendors` | 9.23 | parked | Medium | 2026-11-11T14:43Z |\n| #1567 | `issue-1567` | 9.12 | parked | Medium | 2026-11-11T00:21Z |\n| #1571 | `issue-1571` | 9.12 | parked | Medium | 2026-11-11T00:21Z |\n| #1572 | `issue-1572` | 9.12 | parked | Medium | 2026-11-11T00:21Z |\n| #1418 | `render.free` | 8.77 | parked | Backlog | 2026-11-27T00:20Z |\n| #1591 | `fly.free_tier` | 8.54 | parked | Backlog | 2026-11-27T00:21Z |\n| #1415 | `neon.realtime` | 7.15 | parked | Backlog | 2026-11-27T00:20Z |\n| #1417 | `platform201.solo` | 6.69 | parked | Backlog | 2026-11-27T07:05Z |\n| #1959 | `doe.criteria-loop` | 6.69 | parked | Backlog | 2026-11-27T04:38Z |\n| #1963 | `delphi.method-self-application` | 6.69 | parked | Backlog | 2026-11-27T04:38Z |\n| #1975 | `markov.trellis-lab` | 6.69 | parked | Backlog | 2026-11-27T07:06Z |\n| #1976 | `bayesian.routing` | 6.69 | parked | Backlog | 2026-11-27T07:06Z |\n| #1977 | `kahn.dag` | 6.69 | parked | Backlog | 2026-11-27T07:06Z |\n| #1978 | `gantt.dependency-phases` | 6.69 | parked | Backlog | 2026-11-27T07:06Z |\n| #1430 | `manus.credits` | 4.62 | parked | Backlog | 2026-11-27T00:21Z |\n| #1431 | `polsia.credits` | 4.62 | parked | Backlog | 2026-11-27T00:21Z |\n| #1429 | `cellcog.credits` | 4.31 | parked | Backlog | 2026-11-27T00:21Z |\n\n28 open RFPs \u00b7 2 shadow \u00b7 26 parked \u00b7 0 pending. Rubric-only panel (MSM-018); awards are advisory.\n\n### Radar: 133 surfaces with no RFP yet\nFile one with the Delphi Oracle RFP issue form to put a surface through the gate.\n\n| Surface | Lane | Seen in | Source |\n|---|---|---|---|\n| `otel-semantic-conventions` | agent-observability | foresight | [link](https://github.com/open-telemetry/semantic-conventions) |\n| `aion.free_tokens` | model | quota-registry | [link](https://api.aionlabs.ai/docs/rate-limits/) |\n| `aws.account_credits` | ops | quota-registry | [link](https://aws.amazon.com/free/) |\n| `aws.dynamodb_storage` | data | quota-registry | [link](https://aws.amazon.com/free/) |\n| `aws.lambda_compute` | deploy | quota-registry | [link](https://aws.amazon.com/lambda/pricing/) |\n| `aws.lambda_requests` | deploy | quota-registry | [link](https://aws.amazon.com/lambda/pricing/) |\n| `azure.account_credit` | ops | quota-registry | [link](https://azure.microsoft.com/en-us/pricing/offers/ms-azr-0044p) |\n| `azure.functions_executions` | deploy | quota-registry | [link](https://azure.microsoft.com/en-us/pricing/offers/ms-azr-0044p) |\n| `cerebras.free_tokens` | model | quota-registry | [link](https://inference-docs.cerebras.ai/support/rate-limits) |\n| `cloudflare.d1_rows_read` | data | quota-registry | [link](https://developers.cloudflare.com/d1/platform/pricing/) |\n| `cloudflare.d1_rows_written` | data | quota-registry | [link](https://developers.cloudflare.com/d1/platform/pricing/) |\n| `cloudflare.d1_storage` | data | quota-registry | [link](https://developers.cloudflare.com/d1/platform/pricing/) |\n| `cloudflare.kv_writes` | data | quota-registry | [link](https://developers.cloudflare.com/kv/platform/pricing/) |\n| `cloudflare.queues_ops` | data | quota-registry | [link](https://developers.cloudflare.com/d1/platform/pricing/) |\n| `cloudflare.r2_storage` | data | quota-registry | [link](https://developers.cloudflare.com/r2/pricing/) |\n| `cloudflare.workers_ai` | model | quota-registry | [link](https://developers.cloudflare.com/workers-ai/platform/pricing/) |\n| `cloudflare.workers_requests` | deploy | quota-registry | [link](https://developers.cloudflare.com/workers/platform/pricing/) |\n| `cohere.trial_calls` | model | quota-registry | [link](https://docs.cohere.com/docs/rate-limits) |\n| `deno.deploy_requests` | deploy | quota-registry | [link](https://deno.com/deploy/pricing) |\n| `digitalocean.app_platform_static` | deploy | quota-registry | [link](https://www.digitalocean.com/pricing/app-platform) |\n| `digitalocean.trial_credit` | ops | quota-registry | [link](https://www.digitalocean.com/pricing/app-platform) |\n| `felo.api_credits` | model | quota-registry | [link](https://openapi.felo.ai/pricing) |\n| `g4f.agenttools` | model | quota-registry | [link](https://api.toolsforagents.tools/site/index.html) |\n| `g4f.airforce` | model | quota-registry | [link](https://api.airforce/docs/quickstart/) |\n| `g4f.antigravity` | model | quota-registry | [link](https://antigravity.google/docs/plans) |\n| `g4f.arena` | model | quota-registry | [link](https://arena.ai/faq) |\n| `g4f.bingcreateimages` | model | quota-registry | [link](https://www.microsoft.com/en-us/microsoft-365/microsoft-designer) |\n| `g4f.blackboxpro` | model | quota-registry | [link](https://www.blackbox.ai/pricing) |\n| `g4f.blackforestlabs_flux1dev` | model | quota-registry | [link](https://huggingface.co/docs/hub/en/spaces-zerogpu) |\n| `g4f.blackforestlabs_flux1kontextdev` | model | quota-registry | [link](https://huggingface.co/docs/hub/en/spaces-zerogpu) |\n| `g4f.bravesearch` | model | quota-registry | [link](https://brave.com/ai/) |\n| `g4f.cachedsearch` | model | quota-registry | [link](https://g4f.dev) |\n| `g4f.cerebras` | model | quota-registry | [link](https://inference-docs.cerebras.ai/support/rate-limits) |\n| `g4f.chatgpt` | model | quota-registry | [link](https://help.openai.com/en/articles/9275245-chatgpt-free-tier-faq) |\n| `g4f.claude` | model | quota-registry | [link](https://support.claude.com/en/articles/8114491-get-started-with-claude) |\n| `g4f.cloudflare` | model | quota-registry | [link](https://developers.cloudflare.com/workers-ai/platform/pricing/) |\n| `g4f.cohereforai_c4ai_command` | model | quota-registry | [link](https://coherelabs-c4ai-command.hf.space) |\n| `g4f.copilot` | model | quota-registry | [link](https://copilot.com) |\n| `g4f.copilotapp` | model | quota-registry | [link](https://play.google.com/store/apps/details/Microsoft_Copilot?id=com.microsoft.copilot&hl=en_IE) |\n| `g4f.deepinfra` | model | quota-registry | [link](https://deepinfra.com/blog/compare-models) |\n| \u2026 | | | 93 more |",
+   "body_marker": "<!-- delphi-board v1 -->",
+   "id": "results-board",
+   "issue": 1474,
+   "kind": "living-body",
+   "marker": "<!-- delphi-board v1 -->",
+   "recorded_at": "2026-10-28T21:43:28Z",
+   "semantics": "DERIVED board regenerated by delphi-gate into the issue body (generated-at stamp in body); ledger of record = newest '<!-- delphi-ledger v1 -->' comment per RFP issue \u2014 the board itself is a render, never a source",
+   "snapshot_at": null,
+   "state_rule": "the issue BODY is the current board (body starts with the delphi-board marker); version key = sha256(body)",
+   "title": "Delphi results board",
+   "version_key": "21fbb0e7742592973626f0f4b5d9f8ee3b8e97ae82e9c6b50dea56989045412a"
+  }
+ ],
+ "schema": "delphi-ledger-feed-db/v1",
+ "summary": {
+  "events": 18,
+  "excluded_noise": null
+ }
+}

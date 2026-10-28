@@ -13,7 +13,7 @@ every fact sourced + `fetched_at`, gaps `NOT_ESTABLISHED`.
 - **PROJECTS** — ours (`events[].projects[]`) + competitors'
   (`events[].participants[].project{}`: public repos, demos, articles;
   engagement counts ride append-only `signals.snapshots[]`).
-- **COMPETITORS/PARTICIPANTS** — persona profiles, past wins, signals
+- **COMPETITORS/PARTICIPANTS** — persona profiles, past wins, signals (observation-only; recruitment is OUR TEAM ONLY per owner ruling 2026-10-28 — externals are never recruitment candidates)
   (CHALLENGE-SCHEMA.md participants section; MoneyBall v2 evaluations).
 - **JUDGES** — profiles, orgs, public statements/criteria, judging
   history (`events[].judges[]`).

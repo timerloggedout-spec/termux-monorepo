@@ -6,6 +6,8 @@ tier is not permanent, and the card rule closes the paid route).
 This page is the operator record; the pass evidence lives in
 `docs/proposals/passes/temporal-durable-execution/`.
 
+**Live status (living record): issue #2028** — unit states, port checks, DB/backups, workflow list; refreshed by the keepalive on every repair + daily. Collaborators review there.
+
 ## What runs
 
 | Piece | Value |

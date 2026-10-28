@@ -7,6 +7,13 @@ name: ml PR lane classify
 # writes ops/ml/pr-lane-feed.json and commits it only when it changed
 # (repository-observatory collector pattern). Classification is
 # descriptive: no labels, comments, or gates are touched.
+#
+# Invoke as a module from the repo root, never as a script path:
+# `python3 ml/pipelines/production_classify.py` puts ml/pipelines/ at
+# sys.path[0], where its operator/ subpackage shadows the stdlib
+# operator module and the interpreter dies importing json (first five
+# dispatched runs, 2026-10-28 — root-caused via a debug-capture run on
+# a bisect branch; the keep-alive's -m invocations never hit it).
 
 on:
   workflow_dispatch:
@@ -15,6 +22,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: read
 
 concurrency:
   group: ml-pr-lane-classify
@@ -32,14 +40,7 @@ jobs:
       - name: Classify open PRs (vocab v2)
         env:
           GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || github.token }}
-        run: |
-          set +e
-          python3 ml/pipelines/production_classify.py > classify-run.log 2>&1
-          code=$?
-          echo "collector exit=$code" >> classify-run.log
-          mkdir -p ops/ml
-          cp classify-run.log ops/ml/pr-lane-debug.log
-          exit $code
+        run: python3 -m ml.pipelines.production_classify
       - name: Commit feed if changed
         if: always()
         run: |

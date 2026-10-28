@@ -300,6 +300,12 @@ class QuotaPollTest(unittest.TestCase):
         from pathlib import Path
         workflow = (Path(ROOT) / ".github/workflows/vercel-quota-probe.yml").read_text()
         self.assertIn("scripts/quota_poll.py --public", workflow)
+        # Sparse checkout must cover quota_poll's import chain for the
+        # openrouter.key reader: service -> transport -> managers.
+        for path in ("scripts/provider_quota_service.py",
+                     "scripts/provider_quota_transport.py",
+                     "scripts/provider_quota_managers.py"):
+            self.assertIn(path, workflow)
         self.assertIn("path: quota-out/quota-public-status.json", workflow)
         self.assertNotIn("r['used']", workflow)
         self.assertNotIn("path: quota-out/\n", workflow)

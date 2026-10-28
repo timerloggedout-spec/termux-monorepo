@@ -57,6 +57,8 @@ def test_events_current_and_noise(tmp_path):
     assert led["derivation"]["formula"].startswith("w = base")
     assert feed["invariants"]["source_classes"][0] == "HUMAN_COLLABORATOR"
     assert led["events"][1]["marker"] is None  # signed append, no marker
+    assert led["events"][1]["class"] == "record"
+    assert led["events"][0]["class"] == "machine-state"
     assert led["events"][1]["payload"] is None
     living = feed["living_records"][0]
     assert living["snapshot_at"] == "2026-10-28T01:02:03Z"

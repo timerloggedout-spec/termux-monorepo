@@ -42,6 +42,34 @@ class QuotaPollTest(unittest.TestCase):
                 with self.subTest(payload=payload), patch.object(_qp, "_get", return_value=payload):
                     self.assertIsNone(_qp.openrouter_reader(None))
 
+    def test_hf_hub_reads_documented_ratelimit_header_only(self):
+        headers = {"RateLimit": '"api";r=2999;t=240'}
+        with patch.dict(os.environ, {"HUGGINGFACE_TOKEN": "not-a-real-key"}), \
+             patch.object(_qp, "_get_with_headers", return_value=({"name": "fleet"}, headers)):
+            result = _qp.hf_hub_reader(None)
+        self.assertIsNone(result["used"])
+        self.assertEqual(result["extra"]["ratelimit_remaining"], 2999)
+        self.assertEqual(result["extra"]["ratelimit_reset_after_seconds"], 240)
+        self.assertNotIn("not-a-real-key", json.dumps(result))
+
+    def test_hf_hub_rejects_missing_or_malformed_header(self):
+        cases = [{}, {"RateLimit": "garbage"}, {"RateLimit": '"api";r=x;t=3'},
+                 {"RateLimit": '"api";r=5'}, {"RateLimit": "x" * 600}]
+        with patch.dict(os.environ, {"HUGGINGFACE_TOKEN": "not-a-real-key"}):
+            for headers in cases:
+                with self.subTest(headers=headers), \
+                     patch.object(_qp, "_get_with_headers", return_value=({}, headers)):
+                    self.assertIsNone(_qp.hf_hub_reader(None))
+        with patch.dict(os.environ, {}, clear=True):
+            self.assertIsNone(_qp.hf_hub_reader(None))
+
+    def test_hf_hub_resolves_canonical_alias_order(self):
+        headers = {"RateLimit": '"api";r=10;t=60'}
+        with patch.dict(os.environ, {"HF_TOKEN": "alias-key"}, clear=True), \
+             patch.object(_qp, "_get_with_headers", return_value=({}, headers)) as call:
+            self.assertIsNotNone(_qp.hf_hub_reader(None))
+        self.assertEqual(call.call_args[0][1]["Authorization"], "Bearer alias-key")
+
     def test_multiplier(self):
         self.assertEqual(multiplier(None, 5, 0.5, 0.9), 1.0)
         self.assertEqual(multiplier(100, 95, 0.5, 0.9), 0.0)

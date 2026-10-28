@@ -65,7 +65,7 @@ landed yet.
 | R1 | Agent Experience Hackathon: Strands Decider (AWS Builder Center) | Oct 16 12:00 AM – Oct 23 11:59 PM PDT | 2026-10-23 17:27 | `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]` | Gmail msg `1a16b4e87bbf0c55`; platform ID `4f50957c-1d08-37ab-b11c-97516b9adeb4` |
 | R2 | Weekend Challenge: Give your Agent a Tool (AWS Builder Center) | Oct 23 12:00 AM – Oct 26 1:00 PM PDT | 2026-10-23 23:40 | `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]` | Gmail msg `1a16ca3f96d0508c`; platform ID `2e275689-b202-316e-93b8-10cd6d6d1e4a` |
 | R3 | Strands SDK: Workshop to Ship (AWS Builder Center) | Oct 28 12:00 AM – Nov 4 11:59 PM PDT | 2026-10-23 23:40 | `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]` | Gmail msg `1a16ca3fb608dcf9`; platform ID `8311dcb5-1ece-3d62-a441-2e1c2ad90b86` |
-| R4 | AI Builder Day Hackathon (Aha.io) | Kickoff Nov 17 9:00 AM PT; build Nov 17–19; awards Nov 20 | 2026-10-27 23:34 | registry process pending — platform `aha-io` | On-screen confirmation 2026-10-27: "Thanks for registering! We will review your registration and email you to confirm your spot" — **spot PENDING REVIEW**; no platform ID issued. See packet D5 |
+| R4 | AI Builder Day Hackathon (Aha.io) | Kickoff Nov 17 9:00 AM PT; build Nov 17–19; awards Nov 20 | 2026-10-27 23:34 | `entrant{n0nAha}[platform:aha-io]` | On-screen confirmation 2026-10-27: "Thanks for registering! We will review your registration and email you to confirm your spot" — **spot PENDING REVIEW**; no platform ID issued. See packet D5 |
 
 Account creation itself is also verified: "Welcome to the AWS Builder Center
 community", 2026-10-23 17:20 PT (Gmail msg `1a16b477c91e5b07`). The complete
@@ -190,9 +190,10 @@ a submission path reaches an owner-account step.
 **Lane oversight (owner structure, 2026-10-28):** the ChallengeLane
 Manager (own side chat — Challenge Management) owns the lane and the
 countdown-critical path; this log's lane is the execution lane under it.
-Sub-coordinators per event sit under the Manager (D1–D5). Monikers for
-the Manager + subs are assigned through the registry process (requested
-2026-10-28; recorded here on assignment — never invented).
+Sub-coordinators per event sit under the Manager (D1–D5). Manager:
+`challenge-entries-manager`; sub-coordinators: `challenge-entries-manager-d1`
+through `-d5` (coordination identities — `docs/ops/AGENT-MONIKERS.md`,
+PR #1996/#1997).
 FUTURE (logged, not now): DoE-style comparison of manager implementations.
 
 | Entry | State | Window (PT) | Gate |
@@ -487,9 +488,8 @@ FUTURE (logged, not now): DoE-style comparison of manager implementations.
 <!-- countdown-data:D5 opens=2026-11-17T09:00:00-08:00 closes=2026-11-19T23:59:00-08:00 -->
 <!-- countdown:D5 -->⏳ opens in 20d 4h (computed 2026-10-28 05:01 PT)<!-- /countdown:D5 -->
 
-Moniker: **registry process pending** — platform `aha-io` activated by this
-packet (R4, §1); the assignment is the registry lane's via
-`registry.py derive`, never invented here.
+`entrant{n0nAha}[platform:aha-io]` (assigned via the registry process,
+PR #1970 merged 2e99fadd).
 
 - **Format (official page, read 2026-10-27):** pick an application that
   frustrates you and build a better alternative prototype with **Aha!

@@ -118,6 +118,5 @@ is its at-a-glance view and is refreshed from here.
   fleet identity (name "LoggedOut Timer", timerloggedout@gmail.com).
   State: **spot PENDING REVIEW** (organizer confirms by email).
 - No account, public profile, or handle was created — the registration
-  form is the whole surface; nothing public exists to record. Moniker
-  assignment for platform `aha-io` runs through the registry process
-  (registry lane), never invented.
+  form is the whole surface; nothing public exists to record. Moniker:
+  `entrant{n0nAha}[platform:aha-io]` (registry process, PR #1970).

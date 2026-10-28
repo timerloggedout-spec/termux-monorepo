@@ -30,6 +30,14 @@ product, why) are fixed False/"" and documented here rather than
 silently implied; the minesweeper number set and title tokens apply
 verbatim from ml/pipelines/lanes rules.
 
+## Failure record
+
+If a run fails, the collector writes the feed with an `error` field
+(exception type + message, no payload data) and the workflow commits
+it under `if: always()` — an error feed on master is more honest than
+a stale one, and the committed file is the diagnostic surface the
+fleet's API route can actually read (job logs are not API-readable).
+
 ## Boundaries
 
 Descriptive only: the run labels nothing, comments nowhere, and gates

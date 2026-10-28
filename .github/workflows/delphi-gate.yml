@@ -1,10 +1,20 @@
 # Delphi Oracle RFP gate (docs/ops/DELPHI-ORACLE-RFP-GATE.md).
-# Event-driven, quota-aware, flywheel-weighted. No daily cron: the only schedule
-# is a low-frequency liveness heartbeat that also re-checks parked RFPs whose
-# recheck date has passed. Every run processes ALL open delphi:rfp issues
-# idempotently (a concurrency group keeps only one pending run), skipping any
-# whose inputs hash is unchanged. Ledger = signed issue comments (no commits,
-# so no Vercel/Render builds). Additive file.
+# Event-driven, quota-aware, flywheel-weighted. The only schedule is an
+# hourly liveness heartbeat that also re-checks parked RFPs whose recheck
+# date has passed — and, since the 2026-10-27 burst-starvation fix, serves
+# as the post-burst sweep guarantee: the single concurrency group keeps
+# only ONE pending run, so during a filing burst each new event cancels
+# the pending run before it starts (census of the 48-RFP research-silo
+# burst: 38 issues-event runs cancelled, 4 succeeded); the hourly
+# heartbeat bounds the damage — every open RFP is swept within the hour
+# regardless of event cancellations. Every run processes ALL open
+# delphi:rfp issues idempotently, skipping any whose inputs hash is
+# unchanged (quiet sweeps post nothing and stay cheap), and the cadence
+# governor still defers non-explicit triggers near quota caps.
+# Filers: end any burst with one repository_dispatch delphi-tick
+# (docs/ops/DELPHI-ORACLE-RFP-GATE.md, Burst filing protocol).
+# Ledger = signed issue comments (no commits, so no Vercel/Render
+# builds). Additive file.
 name: delphi-gate
 
 on:
@@ -21,7 +31,7 @@ on:
     branches: [master]
     paths: [ops/quota/registry.json, ops/delphi/**]
   schedule:
-    - cron: "23 11 */3 * *"   # liveness heartbeat only (every 3 days, 04:23 PDT / 11:23 UTC)
+    - cron: "23 * * * *"   # hourly heartbeat: liveness + parked rechecks + post-burst sweep guarantee (was every 3 days; see header)
   workflow_dispatch:
     inputs:
       reason: { description: "Why (manual | delphi-tick | ...)", required: false, default: "workflow_dispatch", type: string }

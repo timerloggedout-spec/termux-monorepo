@@ -36,11 +36,19 @@ registrations, submissions, and prepared candidates — for
   America/Los_Angeles) in a `countdown-data` line; the state in its
   `countdown` line (opens in / closes in / OVERDUE / CLOSED) is generated
   by `scripts/challenge_entries/countdowns.py` from those instants and
-  refreshed by the weekly sweep. Lane reports carry the script's one-line
-  countdown block for all active entries.
-- Sweep cadence: weekly (Mondays, America/Los_Angeles) — a scheduled lane
-  check re-scans the sources in §5, refreshes this log by PR when something
-  changed, and reports new candidates. Log last verified 2026-10-26.
+  refreshed by the `challenge-countdowns-refresh` GitHub Workflow
+  (weekly schedule + on log push). Lane reports carry the script's
+  one-line countdown block for all active entries.
+- Sweep cadence (VM rule, owner 2026-10-28 — continuous work lives in
+  repo automation, never VM agent-crons): the countdown refresh runs as
+  the `challenge-countdowns-refresh` workflow (above). The §5 discovery
+  sweep is dispatch-driven lane work (owner/Manager dispatch): it
+  re-scans the sources, refreshes this log by PR when something changed,
+  and reports new candidates. The retired VM crons
+  (`challenge-entries-sweep`, `g07-escalation-daily`) are replaced —
+  G-07's standing watch is the daily `g07-profile-watch` workflow,
+  escalating on the G-07 tracking issue (Manager = responder of
+  record). Log last verified 2026-10-26.
 
 Builder identity used throughout: AWS Builder Center profile
 [@1337dia590r1c8u1ldr](https://builder.aws.com/community/@1337dia590r1c8u1ldr),
@@ -193,7 +201,9 @@ authorization from the pick alone).
 
 **Standing blocker for every platform submission: the incomplete Builder
 profile (§2).** It gates D1 directly and is the first blocker surfaced wherever
-a submission path reaches an owner-account step.
+a submission path reaches an owner-account step. Its standing watch is
+the daily `g07-profile-watch` workflow (public-profile check →
+escalation on the G-07 tracking issue; Manager = responder of record).
 
 **Lane oversight (owner structure, 2026-10-28):** the ChallengeLane
 Manager (own side chat — Challenge Management) owns the lane and the
@@ -213,12 +223,12 @@ FUTURE (logged, not now): DoE-style comparison of manager implementations.
 | D4 | REGISTERING | eligibility opens Oct 30 13:00 PDT; closes Dec 4 14:00 | Devpost + Kiro accounts (sibling lane); no project creation before the window opens |
 | D5 | REGISTERED — spot pending review | opens Nov 17 9:00 AM; closes Nov 19 23:59 (window end) | spot confirmation email |
 
-<!-- countdown:BLOCK -->⏳ countdowns — D0: CLOSED · D1: closes in 7d 16h · D2: opens in 7d 16h (closes Nov 8 15:00 PT) · D3: closes in 12d 16h · D4: opens in 2d 4h (closes Dec 4 14:00 PT) · D5: opens in 20d 1h (closes Nov 19 23:59 PT) (computed 2026-10-28 08:00 PT)<!-- /countdown:BLOCK -->
+<!-- countdown:BLOCK -->⏳ countdowns — D0: CLOSED · D1: closes in 7d 12h · D2: opens in 7d 12h (closes Nov 8 15:00 PT) · D3: closes in 12d 12h · D4: opens in 2d 0h (closes Dec 4 14:00 PT) · D5: opens in 19d 21h (closes Nov 19 23:59 PT) (computed 2026-10-28 12:45 PT)<!-- /countdown:BLOCK -->
 
 ### D0 — for R2, Weekend Challenge: Give your Agent a Tool — COMPLETED 2026-10-27 (owner ruling 2026-10-27; date set: Oct 29)
 
 <!-- countdown-data:D0 opens=- closes=2026-10-26T13:00:00-07:00 -->
-<!-- countdown:D0 -->⏳ CLOSED (computed 2026-10-28 08:00 PT)<!-- /countdown:D0 -->
+<!-- countdown:D0 -->⏳ CLOSED (computed 2026-10-28 12:45 PT)<!-- /countdown:D0 -->
 
 `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]`
 
@@ -280,7 +290,7 @@ FUTURE (logged, not now): DoE-style comparison of manager implementations.
 ### D1 — for C1, Workshop to Ship — IN PROGRESS (owner already joined) — CONCEPT SET STOPPED 2026-10-28 (brief-first regeneration pending)
 
 <!-- countdown-data:D1 opens=2026-10-28T00:00:00-07:00 closes=2026-11-04T23:59:00-08:00 -->
-<!-- countdown:D1 -->⏳ closes in 7d 16h (computed 2026-10-28 08:00 PT)<!-- /countdown:D1 -->
+<!-- countdown:D1 -->⏳ closes in 7d 12h (computed 2026-10-28 12:45 PT)<!-- /countdown:D1 -->
 
 `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]`
 
@@ -345,7 +355,7 @@ FUTURE (logged, not now): DoE-style comparison of manager implementations.
 ### D2 — for C2, Vultr Agent Rush (Foundry entry) — IN PROGRESS
 
 <!-- countdown-data:D2 opens=2026-11-05T00:00:00-08:00 closes=2026-11-08T15:00:00-08:00 -->
-<!-- countdown:D2 -->⏳ opens in 7d 16h (computed 2026-10-28 08:00 PT)<!-- /countdown:D2 -->
+<!-- countdown:D2 -->⏳ opens in 7d 12h (computed 2026-10-28 12:45 PT)<!-- /countdown:D2 -->
 
 `entrant{entrantLablabAi}[platform:lablab-ai]` + `entrant{entrantVultr}[platform:vultr]`
 
@@ -375,7 +385,7 @@ FUTURE (logged, not now): DoE-style comparison of manager implementations.
 ### D3 — for C3, Builder.io Agent-Native Hackathon — concept #42 QUESTIONED 2026-10-28 (under review; not the active build)
 
 <!-- countdown-data:D3 opens=- closes=2026-11-09T23:59:00-08:00 -->
-<!-- countdown:D3 -->⏳ closes in 12d 16h (computed 2026-10-28 08:00 PT)<!-- /countdown:D3 -->
+<!-- countdown:D3 -->⏳ closes in 12d 12h (computed 2026-10-28 12:45 PT)<!-- /countdown:D3 -->
 
 `entrant{entrantBuilderIo}[platform:builder-io]`
 
@@ -465,7 +475,7 @@ FUTURE (logged, not now): DoE-style comparison of manager implementations.
 ### D4 — for C4, Kiroween 2026 — REGISTERING (build sequenced after Nov 8)
 
 <!-- countdown-data:D4 opens=2026-10-30T13:00:00-07:00 closes=2026-12-04T14:00:00-08:00 -->
-<!-- countdown:D4 -->⏳ opens in 2d 4h (computed 2026-10-28 08:00 PT)<!-- /countdown:D4 -->
+<!-- countdown:D4 -->⏳ opens in 2d 0h (computed 2026-10-28 12:45 PT)<!-- /countdown:D4 -->
 
 `entrant{entrantDevpost}[platform:devpost]` + `entrant{entrantKiro}[platform:kiro]` — account creation owned by the dedicated Devpost + Kiro ID creation chat (owner order 2026-10-27, fleet Google identity route); registration completes with this lane on its handoff.
 
@@ -519,7 +529,7 @@ FUTURE (logged, not now): DoE-style comparison of manager implementations.
 ### D5 — for Aha! AI Builder Day Hackathon (Aha.io) — REGISTERED 2026-10-27 (spot pending review)
 
 <!-- countdown-data:D5 opens=2026-11-17T09:00:00-08:00 closes=2026-11-19T23:59:00-08:00 -->
-<!-- countdown:D5 -->⏳ opens in 20d 1h (computed 2026-10-28 08:00 PT)<!-- /countdown:D5 -->
+<!-- countdown:D5 -->⏳ opens in 19d 21h (computed 2026-10-28 12:45 PT)<!-- /countdown:D5 -->
 
 `entrant{n0nAha}[platform:aha-io]` (assigned via the registry process,
 PR #1970 merged 2e99fadd).

@@ -1,0 +1,66 @@
+name: g07-profile-watch
+
+# VM rule (owner, 2026-10-28): continuous work lives in repo automation,
+# not VM agent-crons. This workflow replaces the retired daily VM cron
+# `g07-escalation-daily`: it checks the public Builder profile daily and
+# escalates on the G-07 tracking issue. Responder of record: Challenge
+# Management (Manager). Field states are marker-based (see steps); the
+# lane's rendered-fetch check remains the verification of record before
+# G-07 is closed in the challenge log.
+
+on:
+  schedule:
+    - cron: "11 16 * * *" # daily ~09:11 PT (16:11 UTC)
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check public Builder profile fields
+        id: check
+        run: |
+          curl -sL "https://builder.aws.com/community/@1337dia590r1c8u1ldr" -o profile.html
+          AVATAR=ok
+          grep -q "default-avatar" profile.html && AVATAR=missing
+          ABOUT=unknown
+          grep -q "hasn't added a bio yet" profile.html && ABOUT=missing
+          grep -q "ag3nts" profile.html && ABOUT=ok
+          LINK=unknown
+          grep -q "github.com/timerloggedout-spec" profile.html && LINK=ok
+          {
+            echo "avatar=$AVATAR"
+            echo "about=$ABOUT"
+            echo "link=$LINK"
+            if [ "$AVATAR" = missing ] || [ "$ABOUT" != ok ] || [ "$LINK" != ok ]; then
+              echo "complete=false"
+            else
+              echo "complete=true"
+            fi
+          } >> "$GITHUB_OUTPUT"
+          echo "avatar=$AVATAR about=$ABOUT link=$LINK" >> "$GITHUB_STEP_SUMMARY"
+      - name: Escalate or close on the G-07 tracking issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          AVATAR: ${{ steps.check.outputs.avatar }}
+          ABOUT: ${{ steps.check.outputs.about }}
+          LINK: ${{ steps.check.outputs.link }}
+          COMPLETE: ${{ steps.check.outputs.complete }}
+        run: |
+          NUM=$(gh issue list --repo "$GITHUB_REPOSITORY" --search "G-07 Builder profile gate in:title" --json number --jq '.[0].number // empty')
+          if [ -z "$NUM" ]; then
+            URL=$(gh issue create --repo "$GITHUB_REPOSITORY" \
+              --title "G-07 — Builder profile completion gate (D1)" \
+              --body "Standing watch: the g07-profile-watch workflow checks the public Builder profile (@1337dia590r1c8u1ldr) daily and escalates here while any mandatory field is incomplete. Responder of record: Challenge Management (Manager). G-07 is the sole D1 (Workshop to Ship) validity gate; D1 closes Nov 4, 2026, 11:59 PM PT. Prepared edit (agency, 4n0n): 4n0nS3C avatar + prepared bio + GitHub social link, staged in docs/ops/PROFILE-REGISTRY.md; the unblocking act is the owner-side Builder Center sign-in.")
+            NUM=$(echo "$URL" | grep -o '[0-9]*$')
+          fi
+          if [ "$COMPLETE" = "true" ]; then
+            gh issue comment "$NUM" --repo "$GITHUB_REPOSITORY" \
+              --body "G-07 watch ($(date -u +%F)): no incomplete markers on the public profile (avatar=$AVATAR, about=$ABOUT, link=$LINK). Closure is recorded in the challenge log only after the lane's rendered-fetch verification."
+          else
+            gh issue comment "$NUM" --repo "$GITHUB_REPOSITORY" \
+              --body "G-07 escalation ($(date -u +%F)): profile still incomplete — avatar=$AVATAR, about=$ABOUT, link=$LINK. Responder of record: Challenge Management (Manager) — drive the owner-side sign-in act; the instant sign-in exists, dispatch the staged agency edit to the challenge-entries lane. D1 closes Nov 4, 2026, 11:59 PM PT."
+          fi

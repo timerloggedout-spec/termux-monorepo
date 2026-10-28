@@ -1,0 +1,130 @@
+{
+  "schema": "oracle-method-calibration/v1",
+  "evidence_set_sha256": "8d67dc0326925dac8ea739891d12d707cd92cb07ceb6d95f56c8cbda9291fd76",
+  "candidates": {
+    "LOCAL_BASELINE": {
+      "temporal-durable-execution-contract-first": {
+        "expected_rank": 1,
+        "actual_rank": 1,
+        "rank_delta": 0,
+        "expected_score": 23.654,
+        "actual_score": 25.0,
+        "score_delta": 1.346,
+        "within_tolerance": true,
+        "moved_on_evidence": [
+          "full test pass in the implementation round"
+        ]
+      },
+      "temporal-durable-execution-cookbook-agent-loop": {
+        "expected_rank": 5,
+        "actual_rank": 2,
+        "rank_delta": -3,
+        "expected_score": 23.077,
+        "actual_score": 25.0,
+        "score_delta": 1.923,
+        "within_tolerance": true,
+        "moved_on_evidence": [
+          "full test pass in the implementation round"
+        ]
+      },
+      "temporal-durable-execution-pi-core-resume": {
+        "expected_rank": 2,
+        "actual_rank": 3,
+        "rank_delta": 1,
+        "expected_score": 23.654,
+        "actual_score": 25.0,
+        "score_delta": 1.346,
+        "within_tolerance": true,
+        "moved_on_evidence": [
+          "full test pass in the implementation round"
+        ]
+      },
+      "temporal-durable-execution-serverless-skill": {
+        "expected_rank": 3,
+        "actual_rank": 4,
+        "rank_delta": 1,
+        "expected_score": 23.654,
+        "actual_score": 25.0,
+        "score_delta": 1.346,
+        "within_tolerance": true,
+        "moved_on_evidence": [
+          "full test pass in the implementation round"
+        ]
+      },
+      "temporal-durable-execution-versioned-autoscale": {
+        "expected_rank": 4,
+        "actual_rank": 5,
+        "rank_delta": 1,
+        "expected_score": 23.654,
+        "actual_score": 11.615,
+        "score_delta": -12.039,
+        "within_tolerance": false,
+        "moved_on_evidence": [
+          "1 failing test(s) in the implementation round"
+        ]
+      }
+    },
+    "BRIEF:BRIEF:temporal-recon-lane": {
+      "temporal-durable-execution-contract-first": {
+        "expected_rank": 3,
+        "actual_rank": 1,
+        "rank_delta": -2,
+        "expected_score": 16,
+        "actual_score": 25.0,
+        "score_delta": 9.0,
+        "within_tolerance": false,
+        "moved_on_evidence": [
+          "full test pass in the implementation round"
+        ]
+      },
+      "temporal-durable-execution-cookbook-agent-loop": {
+        "expected_rank": 2,
+        "actual_rank": 2,
+        "rank_delta": 0,
+        "expected_score": 19,
+        "actual_score": 25.0,
+        "score_delta": 6.0,
+        "within_tolerance": false,
+        "moved_on_evidence": [
+          "full test pass in the implementation round"
+        ]
+      },
+      "temporal-durable-execution-pi-core-resume": {
+        "expected_rank": 1,
+        "actual_rank": 3,
+        "rank_delta": 2,
+        "expected_score": 22,
+        "actual_score": 25.0,
+        "score_delta": 3.0,
+        "within_tolerance": false,
+        "moved_on_evidence": [
+          "full test pass in the implementation round"
+        ]
+      },
+      "temporal-durable-execution-serverless-skill": {
+        "expected_rank": 5,
+        "actual_rank": 4,
+        "rank_delta": -1,
+        "expected_score": 10,
+        "actual_score": 25.0,
+        "score_delta": 15.0,
+        "within_tolerance": false,
+        "moved_on_evidence": [
+          "full test pass in the implementation round"
+        ]
+      },
+      "temporal-durable-execution-versioned-autoscale": {
+        "expected_rank": 4,
+        "actual_rank": 5,
+        "rank_delta": 1,
+        "expected_score": 13,
+        "actual_score": 11.615,
+        "score_delta": -1.385,
+        "within_tolerance": true,
+        "moved_on_evidence": [
+          "1 failing test(s) in the implementation round"
+        ]
+      }
+    }
+  }
+}

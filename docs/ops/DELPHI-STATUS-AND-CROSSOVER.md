@@ -111,6 +111,24 @@ is a single generation — no n-candidate set, no cross-vote, no
 cycle — and PayPal C5 is the named alternate if Kiroween's rules
 slip; neither is a second test.
 
+**Second live pass — the Temporal durable-execution RFP
+(2026-10-27).** Brief-supplied generation from the temporal-recon
+lane's frozen G0 intake (`docs/rfps/temporal-durable-execution/`,
+PRs #1867/#1886; tracking issue #1885): n=5 variants, full cycle.
+The RFP §6 kill-and-resume harness was built and proven (worker
+SIGKILLed mid-activity, exactly one receipt, unknown outcome
+surfaced and reconciled — `scripts/temporal/kill_resume_harness.py`);
+declared suites ran for every variant (V3's omes suite receipted as
+attempted/unexecutable here and credited zero under the phantom-test
+rule); the DoE 2⁴ slice published 20 canonical rows. Round 2 left a
+**four-way tie at 25.0** among the fully-proven candidates with V3
+separated at 11.615 — the differentiation is the explained MoneyBall
+scoring and the G6 disposition in the pass record
+(`docs/proposals/passes/temporal-durable-execution/`; candidates
+#46–#50), not a ballot winner. Calibration is the calibration
+lesson: the intake priors priced separation the evidence did not
+produce — four of five claims proved out.
+
 ## Method provenance — reconciled against the repo's Delphi history (2026-10-27)
 
 The Oracle Method was not invented on 2026-10-27; it was assembled

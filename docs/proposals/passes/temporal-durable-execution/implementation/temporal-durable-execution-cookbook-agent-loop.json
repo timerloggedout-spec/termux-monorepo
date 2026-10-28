@@ -1,0 +1,30 @@
+{
+ "suites": [
+  {
+   "name": "HITL approval workflow: pause on signal, resume, complete",
+   "passed": 1,
+   "failed": 0,
+   "receipt": {
+    "command": "python3 scripts/temporal/hitl_approval.py prove --address localhost:7233",
+    "exit_code": 0,
+    "output_sha256": "470ee20d3b09f41f14114ae3666076d08d63ec8633ded2b7ea2760be77f13b3c",
+    "code_paths": [
+     "scripts/temporal/hitl_approval.py"
+    ]
+   }
+  },
+  {
+   "name": "kill-resume harness (RFP \u00a76)",
+   "passed": 1,
+   "failed": 0,
+   "receipt": {
+    "command": "python3 scripts/temporal/kill_resume_harness.py prove --address localhost:7233 --workdir <scratch>/v2",
+    "exit_code": 0,
+    "output_sha256": "f282b5c1aa7b07fd5ca30c950db2c5ab71900ec8d8e0fbc14d989c8ea3d259d1",
+    "code_paths": [
+     "scripts/temporal/kill_resume_harness.py"
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,85 @@
+{
+ "items": [
+  {
+   "fleet_replenishment": "1 billion Muse tokens per redemption; referrer cap 20 redemptions (up to 20B tokens)",
+   "free_no_cc": "Redeem a friend's code within 48 hours of joining; no card, no payment.",
+   "id": "muse",
+   "link_ref": null,
+   "live_code": null,
+   "mechanic": "invite_code",
+   "name": "Muse (Meta)",
+   "reserve_codes": 0,
+   "status": "code_pending",
+   "visitor_reward": "1 billion Muse tokens"
+  },
+  {
+   "fleet_replenishment": "Refer-a-friend credits (amount not firsthand). Separate Tapfiliate affiliate lane: 10% commission up to 365 days, invitation-only enrolment \u2014 NOT the fleet's current link, owner-gated.",
+   "free_no_cc": "Free plan, no card.",
+   "id": "manus",
+   "link_ref": "docs/PARTNERS.md section 1 (Manus AI row)",
+   "live_code": null,
+   "mechanic": "invitation_link",
+   "name": "Manus AI",
+   "reserve_codes": 0,
+   "status": "active_link",
+   "visitor_reward": "Invitation access; refer-a-friend credit amount third-party reported as 500 credits both sides (not firsthand)"
+  },
+  {
+   "fleet_replenishment": "NOT ESTABLISHED (no reward programme found; access holders receive extra codes to share)",
+   "free_no_cc": "Early access is free with an invite code; no card.",
+   "id": "cue",
+   "link_ref": null,
+   "live_code": "W7AZA",
+   "mechanic": "invite_code",
+   "name": "Cue (by Manus)",
+   "reserve_codes": 1,
+   "status": "active_codes",
+   "visitor_reward": "Early access to Cue (personal agents with own email, phone, wallet, computer)"
+  },
+  {
+   "fleet_replenishment": "NOT ESTABLISHED (no public reward programme found; fleet codes exist firsthand in-app)",
+   "free_no_cc": "Free entry with invite code; free daily points (amount per third-party directory, not firsthand).",
+   "id": "migoo",
+   "link_ref": null,
+   "live_code": "uA3QYP",
+   "mechanic": "invite_code",
+   "name": "Migoo",
+   "reserve_codes": 2,
+   "status": "active_codes",
+   "visitor_reward": "Invite-code signup access"
+  },
+  {
+   "fleet_replenishment": "NOT ESTABLISHED publicly",
+   "free_no_cc": "200 free credits to start, no card (public site). The 500-credit invitation bonus requires a first purchase \u2014 paid step, listed separately, never counted in the free stack.",
+   "id": "cellcog",
+   "link_ref": "docs/PARTNERS.md section 1 (CellCog row)",
+   "live_code": null,
+   "mechanic": "invitation_link",
+   "name": "CellCog",
+   "reserve_codes": 0,
+   "status": "active_link",
+   "visitor_reward": "500 bonus credits on first purchase (paid step)"
+  },
+  {
+   "fleet_replenishment": null,
+   "free_no_cc": null,
+   "id": "hark",
+   "link_ref": null,
+   "live_code": null,
+   "mechanic": null,
+   "name": "Hark",
+   "reserve_codes": 0,
+   "status": "pending_identity",
+   "visitor_reward": null
+  }
+ ],
+ "rules": [
+  "Free / no credit card entry only in the public stack. Paid steps are never required to redeem a listed code.",
+  "Codes are fleet-owned, supplied by the owner firsthand. Third-party codes are never listed.",
+  "One live code is published per programme; the rest of the pool is held in reserve and rotated in when the live code is reported exhausted.",
+  "No personal identifiers in this registry. Account provenance is recorded as 'owner-supplied' only.",
+  "Unknown values stay unknown (never zero, never invented): reward amounts without a firsthand source are marked NOT ESTABLISHED."
+ ],
+ "schema": "referral-feed/1",
+ "source": "config/referral_programs.json"
+}

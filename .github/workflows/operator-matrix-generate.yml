@@ -35,7 +35,7 @@ permissions:
 jobs:
   generate:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - name: Check out master
         uses: actions/checkout@v4
@@ -69,3 +69,39 @@ jobs:
               --title "chore(ops): regenerate operator matrix" \
               --body "Automated regeneration of the Operator Matrix (docs/ops/generated/operator-matrix.{json,md}) from the live inventory by scripts/issue_lifecycle/operator_matrix.py — the #175 method of record (docs/ops/ISSUE-LIFECYCLE.md). PR classes use the #175 vocabulary from dual-gate evidence on each head; SUPERSEDE is never auto-emitted."
           fi
+
+      - name: Merge the matrix PR when the dual gates pass
+        # The workflow finishes its own loop: no human merges the
+        # generated PR. Master has no branch-protection required
+        # checks, so this step polls the dual gates itself
+        # (hygiene + portability gate, termux smoke) on the PR head
+        # and squash-merges only when both are green. Any other
+        # outcome leaves the PR open with a notice — never a merge.
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          pr=$(gh pr list --head "operator-matrix/auto" --state open --json number --jq '.[0].number // empty')
+          if [ -z "$pr" ]; then
+            echo "No open operator-matrix PR; nothing to merge."
+            exit 0
+          fi
+          sha=$(gh pr view "$pr" --json headRefOid --jq '.headRefOid')
+          echo "Watching dual gates on PR #$pr head $sha"
+          for i in $(seq 1 20); do
+            runs=$(gh api "repos/$GITHUB_REPOSITORY/commits/$sha/check-runs?per_page=100")
+            hygiene=$(echo "$runs" | jq -r '[.check_runs[] | select(.name == "hygiene + portability gate") | .conclusion // .status] | @csv')
+            smoke=$(echo "$runs" | jq -r '[.check_runs[] | select(.name | contains("termux smoke")) | .conclusion // .status] | @csv')
+            echo "poll $i: hygiene=[$hygiene] smoke=[$smoke]"
+            if echo "$hygiene $smoke" | grep -q '"failure"'; then
+              echo "::notice::A dual gate failed on PR #$pr; leaving it open."
+              exit 0
+            fi
+            if echo "$hygiene" | grep -q '"success"' && echo "$smoke" | grep -q '"success"'; then
+              gh pr merge "$pr" --squash
+              echo "PR #$pr merged by operator-matrix-generate (dual gates green)."
+              exit 0
+            fi
+            sleep 30
+          done
+          echo "::notice::Dual gates did not settle within 10 minutes on PR #$pr; leaving it open."

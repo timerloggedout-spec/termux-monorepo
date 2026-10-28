@@ -398,6 +398,21 @@ labelled at birth by the gate — plus one new label in use, `temporal`
   Fix: `issues: read` added to the workflow permissions; the next
   regeneration replaces the defective cut, and this note is its
   correction on the record.
+- **Automation owns the loop (2026-10-28, owner order).** The owner
+  directed that the workflows, not the lane by hand, run this system.
+  State after this change: the triage pass is fully automated (weekly
+  apply; the deterministic rules now also cover the mechanical title
+  classes that dominated the backlog — `[Actions Incident]` →
+  `bug`+`ci`, `[DPH-…]` → `enhancement`+`automation`,
+  `deepagent task:` → `agent`, `fix(`/`fix:` → `bug`, `ops:`/`ops(` →
+  `ops`, `feat:`/`feat(` → `enhancement`); the matrix regeneration
+  now also **merges its own PR** — master carries no
+  branch-protection required checks, so the generate workflow polls
+  the dual gates on the PR head itself and squash-merges only when
+  both are green, leaving the PR open otherwise. What remains
+  lane-side is judgment, not process: titles matching no mechanical
+  class (the residue after the rules), closure-evidence audits vs
+  C1, and corrections like the ones above.
 - **Maintain — lane pass 2:** 12 issues labelled with signed comments —
   the 10 oldest unlabelled (#50 `ci`; #51 `documentation`+`automation`;
   #52 `bug`+`ci`; #53 `documentation`; #54 `ci`+`gemini`; #56

@@ -38,7 +38,10 @@ USER_AGENT = "termux-monorepo-issue-lifecycle-triage"
 # Labels this pass may apply. Every entry must already exist in the
 # repo label taxonomy (docs/ops/ISSUE-LIFECYCLE.md section 2); the
 # point of the pass is applying the taxonomy, never inventing it.
-KNOWN_LABELS = {"proposal", "research", "target-brief", "delphi:rfp", "bug"}
+KNOWN_LABELS = {
+    "proposal", "research", "target-brief", "delphi:rfp", "bug",
+    "ci", "enhancement", "automation", "agent", "ops",
+}
 
 
 def propose_labels(title, existing_labels):
@@ -52,7 +55,22 @@ def propose_labels(title, existing_labels):
     t = (title or "").strip()
     low = t.lower()
     labels = []
-    if low.startswith("[target]") or low.startswith("[target "):
+    if low.startswith("[actions incident]"):
+        # Fleet incident filings: "[Actions Incident] <workflow>: failure".
+        labels = ["bug", "ci"]
+    elif low.startswith("[dph-"):
+        # DPH programme phases (cf. #246, labelled by hand in pass 2;
+        # the prefix is the programme's own filing convention).
+        labels = ["enhancement", "automation"]
+    elif low.startswith("deepagent task:"):
+        labels = ["agent"]
+    elif low.startswith("fix(") or low.startswith("fix:"):
+        labels = ["bug"]
+    elif low.startswith("ops:") or low.startswith("ops("):
+        labels = ["ops"]
+    elif low.startswith("feat:") or low.startswith("feat("):
+        labels = ["enhancement"]
+    elif low.startswith("[target]") or low.startswith("[target "):
         labels = ["target-brief"]
     elif low.startswith("[delphi:rfp]") or low.startswith("delphi:rfp"):
         labels = ["delphi:rfp"]

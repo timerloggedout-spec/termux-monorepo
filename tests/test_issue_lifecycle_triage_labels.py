@@ -125,6 +125,22 @@ def test_request_retries_rate_limit_then_succeeds(monkeypatch):
     assert calls["n"] == 2
 
 
+def test_mechanical_title_classes():
+    """Rules added 2026-10-28 so the weekly workflow, not a human,
+    clears the mechanical share of the unlabelled backlog."""
+    cases = {
+        "[Actions Incident] PR production ledger: failure": ["bug", "ci"],
+        "[DPH-100] GitHub Projects synchronization": ["enhancement", "automation"],
+        "deepagent task: verify live worker readiness": ["agent"],
+        "fix(governance): register existing active proposal directories": ["bug"],
+        "fix(workflows): restore CodeRabbit command-library approval trigger": ["bug"],
+        "ops: expand contributor monikers and role registry across agent/provider lanes": ["ops"],
+        "feat: uncertainty-aware routing, foresight and decision-evidence layer": ["enhancement"],
+    }
+    for title, want in cases.items():
+        assert propose_labels(title, []) == want, title
+
+
 def test_proposed_labels_always_exist_in_taxonomy():
     titles = [
         "Proposal: investigate A",

@@ -1,0 +1,29 @@
+{
+  "schema": "oracle-method-generation/v1",
+  "generator": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+  "generated_at": "2026-10-28T02:09:47Z",
+  "proposal_id": "temporal-durable-execution-contract-first",
+  "author": "oracle-method",
+  "evidence_sets": [
+    {
+      "sha256": "bb710fdd06c90d837ff0d94819c2873391e95741622e905f54ce2027c4622236",
+      "items": 10,
+      "assembled_at": null
+    }
+  ],
+  "documents": {
+    "MANIFEST.md": "28d7ff6f2df4d17cc9e1c9019168f6229965fa0a09898849d71d95fd8129368e",
+    "ITEMS.md": "5fceace90be087d09ba71c420fca817a0037e4e950031beb79e0f1445af6272d",
+    "RFP.md": "8b336adf35b51791baa32362809abe00f0a4645f4130ff234e9fbfcd448b54cc"
+  },
+  "human_ballots_received": 0,
+  "external_calls_by_generator": 0,
+  "pass_id": "temporal-durable-execution",
+  "concept": "Proto/schema-first lane contracts with nexgen-style generated typed models + shared validators, and workflow history treated as the projection/audit surface.",
+  "siblings": [
+    "temporal-durable-execution-pi-core-resume",
+    "temporal-durable-execution-cookbook-agent-loop",
+    "temporal-durable-execution-versioned-autoscale",
+    "temporal-durable-execution-serverless-skill"
+  ]
+}

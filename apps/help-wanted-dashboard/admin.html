@@ -186,13 +186,14 @@ async function loadChallenge(){
     const cell=v=>v==null?'—':esc(v);
     const pct=v=>String(parseFloat((v*100).toPrecision(10)))+'%';
     $('challenge-metrics').innerHTML='<div class="table-wrap"><table class="table"><thead><tr><th>Event</th><th>Win probability</th><th>Confidence</th><th>Method / basis</th><th>Field size</th><th>Record detail</th><th>Computed</th></tr></thead><tbody>'+
-    ids.map(id=>{const e=ev[id],w=e.win_probability||{},fs=e.field_size||{},pr=w.prior||{},st=w.standing||{},un=w.unknowns||{};
-      const est=w.estimate==null?'not established':pct(w.estimate)+(Array.isArray(w.range)?' ['+pct(w.range[0])+'–'+pct(w.range[1])+']':'');
+    ids.map(id=>{const e=ev[id],w=e.win_probability||{},fs=e.field_size||{},pr=w.prior||{},st=w.standing||{},ft=w.fit||{},un=w.unknowns||{};
+      const realized=w.estimate===0&&Array.isArray(w.range)&&w.range[0]===0&&w.range[1]===0&&w.confidence==='high';
+      const est=w.estimate==null?'not established':realized?'0% — realized':pct(w.estimate)+(Array.isArray(w.range)?' (range '+pct(w.range[0])+'–'+pct(w.range[1])+')':'');
       const conf=w.confidence||'';
       const confHtml=conf?'<span class="pill '+(conf==='high'?'ok':conf==='none'?'bad':'gold')+'">'+esc(conf)+'</span>':'—';
       const fstat=e.field_size_status||'';
       const fsize=fstat==='open_task'?'OPEN TASK':fstat==='partial'?('participants '+cell(fs.participants)+' · projects '+(fs.projects==null?'not established':esc(fs.projects))+' <span class="pill gold">PARTIAL</span>'):('participants '+cell(fs.participants)+' · projects '+cell(fs.projects));
-      const detail='prior '+cell(pr.base_rate)+(pr.denominator!=null?' ('+cell(pr.denominator_kind)+' '+cell(pr.denominator)+')':'')+' · scored '+cell(st.scored_count)+' · field mean '+cell(st.field_mean)+' · ours '+cell(st.our_composite)+' · unknowns u '+cell(un.unscored_share)+' / v '+cell(un.unverified_axis_weight_share);
+      const detail='prior '+cell(pr.base_rate)+(pr.denominator!=null?' ('+cell(pr.denominator_kind)+' '+cell(pr.denominator)+')':'')+' · ours '+cell(st.our_composite)+' · pctile '+cell(st.our_percentile)+' · field mean '+cell(st.field_mean)+' · scored '+cell(st.scored_count)+' · fit '+cell(ft.criteria_fit)+' · judges '+(ft.judges_known==null?'—':ft.judges_known?'known':'unknown')+' · unknowns u '+cell(un.unscored_share)+' / v '+cell(un.unverified_axis_weight_share);
       return '<tr><td><strong>'+esc(id)+'</strong></td><td>'+esc(est)+'</td><td>'+confHtml+'</td><td>'+esc(w.method||'')+(w.basis?' · '+esc(w.basis):'')+'</td><td>'+fsize+'</td><td>'+detail+'</td><td>'+esc(w.computed_at||'')+'</td></tr>'}).join('')+
     '</tbody></table></div>';
     $('challenge-metrics-meta').textContent='Feed '+(f.schema||'')+' · generated '+(f.generated_at||'')+' · source '+(f.source||'')+' · '+ids.length+' events.';

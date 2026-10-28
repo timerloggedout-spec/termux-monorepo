@@ -87,5 +87,9 @@ def test_admin_renders_winprob_v2_range_and_confidence():
     Field-size states (amendment 2) are unchanged."""
     html = _admin()
     assert "w.range" in html and "w.confidence" in html
-    assert "w.prior" in html and "w.unknowns" in html
+    assert "w.prior" in html and "w.unknowns" in html and "w.fit" in html
     assert "superseded_v1" not in html
+    assert "0% — realized" in html  # amendment 3: realized events, never bare 0%
+    # acceptance (e): the v2 renderer reads no v1 field for headline values
+    fn = html.split("async function loadChallenge(){")[1].split("async function load(){")[0]
+    assert ".inputs" not in fn and "superseded_v1" not in fn

@@ -93,6 +93,24 @@ def test_unscored_gap_named(tmp_path):
     assert any("gantt_plan" in g for g in entry["gaps"])  # absent field, named
 
 
+def test_progress_parent_and_criteria_items(tmp_path):
+    variant = _issue(3, ["delphi:rfp"])
+    variant["title"] = "[delphi:rfp] research.example-lab.rnd"
+    variant["body"] = BODY.replace("research.example-lab", "research.example-lab.rnd")
+    cache = _cache(tmp_path, [_issue(1, ["delphi:rfp", "delphi:parked"]),
+                              variant],
+                   {"1": [{"id": 9, "created_at": "2026-10-27T01:00:00Z", "body": LEDGER}],
+                    "3": []})
+    out = feed.build(cache, "2026-10-27T00:00:00Z")
+    base, var = out["rfps"]
+    assert base["progress"] == {"stage": "gate-scored", "rounds_run": 3,
+                                "rounds_max": 3, "votes_cast": 1, "votes_expected": 1}
+    assert var["group"] == "research-variant" and var["variant"] == "rnd"
+    assert var["parent"] == {"number": 1, "surface_id": "research.example-lab"}
+    assert var["progress"]["stage"] == "awaiting-gate"
+    assert {i["id"] for i in out["criteria"]["items"]} >= {"scale", "shadow_bar", "money_veto"}
+
+
 def test_partial_cache_refused(tmp_path):
     (tmp_path / "issues.json").write_text("[]")
     try:

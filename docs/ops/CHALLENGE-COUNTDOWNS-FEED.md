@@ -1,6 +1,6 @@
 # Challenge Countdowns Feed — contract
 
-Schema: `challenge-countdowns-feed/v1`
+Schema: `challenge-countdowns-feed/v1.1`
 File: `apps/help-wanted-dashboard/data/challenge-countdowns-feed.json`
 Collector: `scripts/dashboards/challenge_countdowns_feed.py`
 Refresh: `.github/workflows/challenge-countdowns-feed-collect.yml`
@@ -18,9 +18,11 @@ forward from a previous feed.
 
 ## Shape
 
-- `schema` — `challenge-countdowns-feed/v1`.
+- `schema` — `challenge-countdowns-feed/v1.1`.
 - `generated_at` — UTC collection instant.
 - `source` — the log path the instants were derived from.
+- `prizes_source` — `ops/challenge/coordinator.json`, the SSOT the
+  per-entry prizes were wired from.
 - `entries[]` — one per log entry, ordered by id:
   - `id` — the log's entry id (`D0`…).
   - `title` — display title derived from the entry's §4 header
@@ -30,6 +32,10 @@ forward from a previous feed.
   - `opens` / `closes` — ISO-8601 instants with offset, verbatim
     from the log's `countdown-data` line; `null` when the entry
     records no such instant (`-` in the log).
+  - `prizes` — REQUIRED (owner rule 2026-10-28): `{status, pool,
+    tiers[{place, award, source_url}]}` wired verbatim from
+    `ops/challenge/coordinator.json`. `status` is `ESTABLISHED`
+    (tiers published on the official page) or `NOT_ESTABLISHED`.
 
 ## Honesty rules
 
@@ -45,3 +51,8 @@ forward from a previous feed.
    "not recorded" — never a guessed date.
 4. Read-only projection: no credentials, no browser-side mutation;
    interaction is navigation only (dashboard contract).
+5. **Required fields never blank.** Prizes (with dates, status, and
+   gates) are required information on the named context surfaces —
+   the manager brief and the HITL web pages. An unpublished prize
+   set renders as `NOT_ESTABLISHED`; the field is never omitted,
+   never empty.

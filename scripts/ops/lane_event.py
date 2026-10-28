@@ -100,7 +100,9 @@ def psql(url: str, args: list[str], stdin: str | None = None) -> str:
                          input=stdin, capture_output=True, text=True, env=env, timeout=120)
     if res.returncode != 0:
         # stderr from psql never contains the password; keep only the first line.
-        raise RuntimeError((res.stderr or "psql failed").strip().splitlines()[0][:300])
+        lines = [l for l in (res.stderr or "psql failed").strip().splitlines()
+                 if "NOTICE:" not in l]
+        raise RuntimeError((lines[-1] if lines else "psql failed")[:300])
     return res.stdout
 
 

@@ -143,7 +143,8 @@ the Operator Matrix Project — **but only if `OPERATOR_MATRIX_PROJECT_URL`
 is set. It is not among the repo's 12 Actions variables (verified
 2026-10-27), and the workflow's own first step then skips the add with a
 notice and exits green.** Board placement is therefore
-**NOT ESTABLISHED — the sync is currently a graceful no-op** (G4). The
+**Was a graceful no-op at census time; RESOLVED 2026-10-28** (G4,
+pass-2 record). The
 owner-gated prerequisite from the workflow header stands: create the
 Project, set the variable. This lane does not create Projects or invent
 the URL.
@@ -256,7 +257,7 @@ the URL.
 | G1 | Triage suggests labels, never applies them; suggestions can name non-existent labels | no label step in `gemini-triage.yml`; #1794 / #1505 suggestions | **Landed with this map:** deterministic triage-labels script + workflow (§9); D4 |
 | G2 | Triage provider fragility: 429-incomplete comments; #1821/#1822 no triage comment (reason NOT ESTABLISHED) | comment samples §3 | **Mitigated:** lane + automated passes are provider-independent; triage comment stays advisory. Provider-quota repair is the dispatch lane's, not this lane's |
 | G3 | Only 2 issue forms; the dominant `Proposal: investigate …` class had no form → unlabelled filings | templates listing; recent-24 sample | **Landed with this map:** `proposal.yml` + `bug.yml` forms, built in the chooser-safe subset (no emoji in name, no checkboxes, no `default:`/`placeholder:`/`required: false`) per the 2026-10-24 form-visibility fix |
-| G4 | Operator Matrix board sync is a graceful no-op | `OPERATOR_MATRIX_PROJECT_URL` absent from the 12 repo variables; workflow skips by design | **Owner-gated, NOT landed:** create the Project + set the variable (workflow header prerequisites). Board placement stays NOT ESTABLISHED until then |
+| G4 | Operator Matrix board sync is a graceful no-op | `OPERATOR_MATRIX_PROJECT_URL` absent from the 12 repo variables; workflow skips by design | **RESOLVED 2026-10-28 (pass-2 record):** lane created Project #4 + set the variable itself per the owner's nothing-owner-gated ruling; seed run verified, board placement ESTABLISHED |
 | G5 | Ownership invisible in GitHub primitives (assignees 3.6%, milestones 4.9%) | census §0 | **Decided:** D2/D3 — lane comments + label families are the record; no bulk reassign |
 | G6 | Sub-issues feature unused; hierarchy implicit | sub-issues API `[]` on #943/#1241 | **Decided:** D1 — formally not adopted |
 | G7 | Close-as-fixed evidence inconsistent | closed-set sample §7 | **Convention set:** C1; lane audits closures in the weekly pass |
@@ -340,6 +341,23 @@ labelled at birth by the gate — plus one new label in use, `temporal`
   #1595/#1596 now carry `proposal`, applied by the automation itself.
   **The triage automation is proven live — this time on outcomes.**
   Unlabelled after all pass-2 work: 33.
+- **G4 RESOLVED (2026-10-28) — "owner-gated" retired.** Owner ruling
+  (this lane, 2026-10-28): nearly nothing is owner-gated; the owner
+  interacts via chat, so gates are worked by the lane or posted in
+  chat explicitly, never parked as owner homework. Acting on it, this
+  lane performed every G4 prerequisite itself via the PAT helper:
+  created the user Project **"termux-monorepo — Operator Matrix
+  (#175)"** — project #4,
+  https://github.com/users/timerloggedout-spec/projects/4 — set repo
+  variable `OPERATOR_MATRIX_PROJECT_URL` to that URL (read-back
+  verified 2026-10-28T14:42Z), and confirmed the workflow's named
+  token secrets exist (names only: `OPERATOR_GITHUB_TOKEN`,
+  `OPERATOR_TOKEN`, `ARCHWIZ_GITHUB_TOKEN` — all present among the
+  repo's 53). Proof on outcomes: seed dispatch run `40708603152`
+  succeeded and the project now holds exactly the 5 hub items
+  (issues #175, #184; PRs #713, #714, #682), read back via GraphQL.
+  Board placement is ESTABLISHED; the sync workflow's per-event adds
+  now run against a real project. G4 is closed.
 - **Maintain — lane pass 2:** 12 issues labelled with signed comments —
   the 10 oldest unlabelled (#50 `ci`; #51 `documentation`+`automation`;
   #52 `bug`+`ci`; #53 `documentation`; #54 `ci`+`gemini`; #56

@@ -19,6 +19,7 @@ token secrets). Usage:
 """
 import argparse
 import json
+import math
 import os
 import re
 import statistics
@@ -274,10 +275,31 @@ def build_cycle_records(pr, comments, reviews, review_comments, file_paths):
     return records
 
 
+def wilson_interval(delivered, n, z=1.96):
+    """Wilson score interval (95% by default) for a delivery rate.
+
+    Carried in the map so consumers can judge significance instead of
+    acting on raw rates from thin cells: e.g. 0 deliveries in 10 cycles
+    bounds the true rate only below ~0.28, while 0 in 58 bounds it
+    below ~0.06. Returns [lo, hi] rounded to 4dp, or None for n=0.
+    The orchestrator's JS implements the same formula (parity-tested
+    values are pinned in tests/test_reviewer_metrics.py).
+    """
+    if not n:
+        return None
+    p = delivered / n
+    den = 1 + z * z / n
+    centre = p + z * z / (2 * n)
+    half = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n))
+    return [round(max(0.0, (centre - half) / den), 4),
+            round(min(1.0, (centre + half) / den), 4)]
+
+
 def _blank_bucket():
     return {
         "cycles": 0, "required_cycles": 0, "delivered": 0,
-        "delivery_rate": None, "cooldown_cycles": 0, "not_required_cycles": 0,
+        "delivery_rate": None, "delivery_ci95": None,
+        "cooldown_cycles": 0, "not_required_cycles": 0,
         "latencies_sec": [], "median_latency_sec": None,
     }
 
@@ -340,6 +362,7 @@ def aggregate(records, prs_examined, warnings, pr_extras=None):
         for b in [entry["totals"], *entry["by_context"].values(), *entry["by_author_class"].values()]:
             if b["required_cycles"]:
                 b["delivery_rate"] = round(b["delivered"] / b["required_cycles"], 4)
+                b["delivery_ci95"] = wilson_interval(b["delivered"], b["required_cycles"])
             if b["latencies_sec"]:
                 b["median_latency_sec"] = round(statistics.median(b["latencies_sec"]), 1)
             b["latencies_sec"] = len(b["latencies_sec"])

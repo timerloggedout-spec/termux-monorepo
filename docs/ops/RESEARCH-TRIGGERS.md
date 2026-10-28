@@ -41,6 +41,14 @@ trusted default-branch checkout; body treated as data, never executed.
 - Comment command (delphi-intake precedent, marker-gated, bot-safe):
   a comment containing `<!-- request-research -->` plus `key: value` lines
   (`kind:, id:, name:, url:, upstream:, category:, signal:, quota:, auth:, evidence:`).
+- Concurrency/dedupe (fix 2026-10-28, live cases #2131 + #2135/#2136): exactly
+  ONE issues event per filing — trigger types `opened/reopened/edited`, no
+  `labeled`, no concurrency group. (A template filing carries 2 labels and
+  fired opened+labeled×2 in the same minute: with a group the runs cancelled
+  each other — #2131 record lost; without, parallel runs raced the dedupe
+  check and posted 3 identical records.) Re-triggers: edit, close/reopen, or
+  the comment command. A content hash (`<!-- research-intake:<sha256> -->`)
+  still dedupes sequential duplicate events; an edited filing re-posts.
 - Parser: `scripts/research/research_intake.py` (stdlib, deterministic, tests
   `tests/test_research_intake.py`). Emits the seed/starter record as a comment
   on the issue — the same record shape the pipelines below consume.
@@ -62,6 +70,18 @@ this expansion (the umbrella `research` label pre-existed).
 |---|---|---|
 | `research-provider.yml` | `research`, `research:provider` | provider_id→`seed_id`, provider_name, category→`classification.domains`, url→`canonical_upstream` fallback, free quota→`observed_facts.free_quota`, auth→`observed_facts.auth_secret_name` (name only), capability signals, scoped question, evidence |
 | `research-service.yml` | `research`, `research:service` | service_id, service_name, upstream repository→`seed_id` (`github:research-seed:<owner/repo>`, exact research-seeds schema), service URL, observatory signal→`provenance: observatory-signal:<signal>`, category, capability signals, scoped question, evidence |
+
+## Family growth — sibling template sets (same pattern, own intakes)
+
+Research triggers are a FAMILY of issue templates (owner definition,
+2026-10-28); Providers is one member. Sibling sets built on the same pattern
+(family-first names, chooser-safe subset, one label, single-event intake,
+hash dedupe):
+
+| Set | Forms | Label | Intake | Doc |
+| --- | --- | --- | --- | --- |
+| Reverse Engineering — APK Cross-Reference | `apk-cross-reference.yml`, `apk-cross-reference-findings.yml` | `apk-xref` | `apk-xref-intake.yml` -> `apk-xref/v1` | docs/ops/APK-XREF-TEMPLATES.md |
+| Reverse Engineering — Taxonomy / Toolkit | `reverse-engineering-taxonomy.yml`, `reverse-engineering-taxonomy-record.yml` | `re-taxonomy` | `re-taxonomy-intake.yml` -> `re-taxonomy-intake/v1` | docs/ops/RE-TAXONOMY-TEMPLATES.md |
 
 Filing either template applies the label that wakes `research-intake`, so
 filing an issue **is** the trigger — no cron, no manual dispatch.

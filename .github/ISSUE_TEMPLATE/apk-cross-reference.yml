@@ -1,0 +1,109 @@
+name: Reverse Engineering — APK Cross-Reference
+description: Cross-reference a published APK artifact against its source repo, both directions. The dedicated form for APK/repo cross-validation filings (paired with a repo Target Brief). Filing wakes apk-xref intake.
+title: "[apk-xref] <target-id>: APK cross-validation"
+labels: ["apk-xref"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        One target, one artifact, one paired repo brief. Obtain the published release
+        artifact; extract manifest, permissions, endpoints actually called, embedded
+        providers/routes and trackers; then cross-validate against the source tree in
+        BOTH directions — claims in source not present in the artifact, and behavior
+        in the artifact not present in source, are the findings. If no APK artifact
+        is published for this target, the findings form closes it as
+        no-artifact-found WITH evidence rather than substituting another build.
+        Read-only by default. Never paste secret values.
+  - type: input
+    id: target_id
+    attributes:
+      label: Target ID
+      description: Short slug for this target, e.g. aihub (the paired repo brief carries the same slug; the old wave used the -apk suffix).
+    validations: { required: true }
+  - type: input
+    id: paired_repo_brief
+    attributes:
+      label: Paired repo brief
+      description: Issue reference of the paired repo Target Brief, e.g. "#2063" or its full issue URL.
+    validations: { required: true }
+  - type: input
+    id: target
+    attributes:
+      label: Target repo URL
+      description: Canonical source repo, e.g. https://github.com/SilentCoderHere/aihub
+    validations: { required: true }
+  - type: dropdown
+    id: artifact_source
+    attributes:
+      label: Artifact source
+      description: Where the published APK artifact comes from.
+      options: [github-releases, gitea-releases, f-droid, google-play, direct-apk, other-store, none-known]
+    validations: { required: true }
+  - type: input
+    id: artifact_version
+    attributes:
+      label: Artifact version + build
+      description: e.g. "1.4.2 (build 1042)". Leave blank if not yet identified.
+  - type: input
+    id: package_id
+    attributes:
+      label: Package ID
+      description: Android applicationId, e.g. com.example.app. Leave blank if not yet identified.
+  - type: textarea
+    id: basis
+    attributes:
+      label: Authorization basis
+      description: Why this artifact may be reverse-engineered (public open-source release, own fleet RE program, ...).
+    validations: { required: true }
+  - type: input
+    id: scope_domains
+    attributes:
+      label: Scope domains
+      description: Comma-separated domains the work may touch, e.g. github.com, f-droid.org.
+    validations: { required: true }
+  - type: dropdown
+    id: side_effect
+    attributes:
+      label: Side effect
+      options: [read, write]
+    validations: { required: true }
+  - type: dropdown
+    id: state_changing
+    attributes:
+      label: State-changing authorization
+      description: Required only for write filings. Choose yes only if this filing authorizes state-changing operations.
+      options: [no, yes]
+    validations: { required: true }
+  - type: input
+    id: probe_budget
+    attributes:
+      label: Probe budget
+      description: Max bounded probes for this target (1-200). Leave blank for the default of 24.
+  - type: dropdown
+    id: venue
+    attributes:
+      label: Execution venue
+      options: [remote-service, ci, b160v-on-device, local]
+    validations: { required: true }
+  - type: dropdown
+    id: evidence_expectation
+    attributes:
+      label: Evidence expectation
+      options: [observed, reproduced, verified]
+    validations: { required: true }
+  - type: textarea
+    id: claims_to_check
+    attributes:
+      label: Source claims to check
+      description: Particular claims in the source/docs this cross-reference must verify against the artifact, one per line.
+  - type: input
+    id: submitter
+    attributes:
+      label: Submitter Role{Moniker}
+      description: e.g. foundry{archW1z} — role{moniker} of the filing lane.
+    validations: { required: true }
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes for the dispatcher
+      description: Anything else the cross-reference run needs (extraction axes, standing requirements, particular checks).

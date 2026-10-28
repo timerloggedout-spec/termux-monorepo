@@ -1,0 +1,95 @@
+name: APK Cross-Reference Findings
+description: Report the results of an APK/repo cross-reference — manifest, observed endpoints, claims checked, divergences in both directions, verdict. Pairs with an APK Cross-Reference filing.
+title: "[apk-xref:findings] <target-id>: cross-reference findings"
+labels: ["apk-xref"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Findings only, from the artifact as published — never from another build.
+        Divergences are the findings: state them in both directions, or say
+        "none found" explicitly. A no-artifact-found verdict must carry the
+        evidence for the absence (sources checked) in the notes.
+  - type: input
+    id: target_id
+    attributes:
+      label: Target ID
+      description: Same slug as the cross-reference filing, e.g. aihub.
+    validations: { required: true }
+  - type: input
+    id: xref_issue
+    attributes:
+      label: Cross-reference issue
+      description: Issue reference of the APK Cross-Reference filing these findings answer, e.g. "#2130" or its full issue URL.
+    validations: { required: true }
+  - type: input
+    id: package_id
+    attributes:
+      label: Package ID
+      description: Android applicationId as extracted from the artifact manifest.
+    validations: { required: true }
+  - type: dropdown
+    id: artifact_source
+    attributes:
+      label: Artifact source
+      options: [github-releases, gitea-releases, f-droid, google-play, direct-apk, other-store, none-known]
+    validations: { required: true }
+  - type: input
+    id: artifact_version
+    attributes:
+      label: Artifact version + build
+      description: e.g. "1.4.2 (build 1042)", exactly as the artifact reports it.
+    validations: { required: true }
+  - type: textarea
+    id: manifest_permissions
+    attributes:
+      label: Manifest permissions
+      description: Every permission declared in the extracted manifest, one per line.
+    validations: { required: true }
+  - type: textarea
+    id: endpoints_observed
+    attributes:
+      label: Endpoints actually observed
+      description: Endpoints the artifact actually calls (static extraction and/or runtime observation), one per line — not endpoints merely mentioned in source.
+    validations: { required: true }
+  - type: textarea
+    id: claims_checked
+    attributes:
+      label: Source claims checked
+      description: Each claim from the filing's claims-to-check (plus any found in source/docs) with its outcome, one per line.
+    validations: { required: true }
+  - type: textarea
+    id: divergences_repo_to_apk
+    attributes:
+      label: Divergences — repo to APK
+      description: Claims/behavior present in source but NOT present in the artifact, one per line. Write "none found" if there are none.
+    validations: { required: true }
+  - type: textarea
+    id: divergences_apk_to_repo
+    attributes:
+      label: Divergences — APK to repo
+      description: Behavior present in the artifact but NOT present in source, one per line. Write "none found" if there are none.
+    validations: { required: true }
+  - type: dropdown
+    id: verdict
+    attributes:
+      label: Verdict
+      options: [match, divergences-found, no-artifact-found]
+    validations: { required: true }
+  - type: dropdown
+    id: evidence_expectation
+    attributes:
+      label: Evidence expectation met
+      options: [observed, reproduced, verified]
+    validations: { required: true }
+  - type: input
+    id: submitter
+    attributes:
+      label: Submitter Role{Moniker}
+      description: e.g. foundry{archW1z} — role{moniker} of the reporting lane.
+    validations: { required: true }
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Evidence pointers, artifact hashes, sources checked for a no-artifact-found verdict, anything else of record.

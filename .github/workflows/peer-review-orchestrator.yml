@@ -22,11 +22,15 @@ name: Peer review orchestrator
 # the PR's context (author class, changed-file classes, size, labels),
 # records it in the state comment, and adapts the effective required set
 # just-in-time: the structural bot-author rule above, plus a metrics rule
-# driven by docs/ops/generated/reviewer-metrics.json (a provider with zero
-# deliveries over >=10 required cycles in this cycle's context is exempted
-# for the cycle). The metrics map is fail-open: missing/stale/unparsable
-# disables the metrics rule only. Every adaptation is recorded in the
-# state comment for audit and for the metrics collector to measure.
+# driven by docs/ops/generated/reviewer-metrics.json (a provider is
+# exempted for the cycle only when the evidence is significant: zero
+# deliveries over >=10 required cycles in this cycle's context AND the
+# Wilson 95% upper bound on its delivery rate below 0.15 — 0/10 alone
+# bounds the rate only below ~0.28, so the count floor alone never
+# fires; the bound first passes at 0/22). The metrics map is fail-open:
+# missing/stale/unparsable disables the metrics rule only. Every
+# adaptation is recorded in the state comment for audit and for the
+# metrics collector to measure.
 
 on:
   pull_request:
@@ -302,35 +306,64 @@ jobs:
               });
               core.info(`Bot-authored PR (${authorLogin}): exempting coderabbit from the required provider set.`);
             }
-            // Metrics rule: a provider with zero deliveries over >=10
-            // required cycles in this exact context is not actually
-            // reviewing this kind of PR; stop gating on it for the cycle.
+            // Metrics rule (significance-hardened 2026-10-28): a provider
+            // is not actually reviewing this kind of PR only when the
+            // zero-delivery evidence is statistically meaningful — zero
+            // deliveries over >=10 required cycles AND the Wilson 95%
+            // upper bound on the delivery rate below 0.15 (just under
+            // the fleet baseline ~0.17). The count floor alone is not
+            // evidence: 0/10 bounds the true rate only below ~0.28 and
+            // occurs by chance ~15% of the time at baseline; the bound
+            // first passes at 0/22. wilsonUpper mirrors
+            // wilson_interval in scripts/reviewer_metrics/collect.py
+            // (pinned values in tests/test_reviewer_metrics.py); the
+            // map's delivery_ci95 is the same interval, precomputed.
+            const ZERO_DELIVERY_MIN_CYCLES = 10;
+            const ZERO_DELIVERY_MAX_UPPER = 0.15;
+            const wilsonUpper = (delivered, n) => {
+              if (!n) return 1;
+              const z = 1.96, p = delivered / n, den = 1 + z * z / n;
+              const centre = p + z * z / (2 * n);
+              const half = z * Math.sqrt(p * (1 - p) / n + z * z / (4 * n * n));
+              return Math.min(1, (centre + half) / den);
+            };
+            const zeroDeliverySignificant = (cell) => {
+              if (!cell) return null;
+              const required = cell.required_cycles || 0;
+              if ((cell.delivered || 0) !== 0 || required < ZERO_DELIVERY_MIN_CYCLES) return null;
+              const upper = (Array.isArray(cell.delivery_ci95) && cell.delivery_ci95.length === 2)
+                ? cell.delivery_ci95[1] : wilsonUpper(0, required);
+              return upper < ZERO_DELIVERY_MAX_UPPER ? upper : null;
+            };
             if (metricsGeneratedAt) {
               for (const provider of [...effectiveProviders]) {
                 const b = metricsByContext[provider]?.[contextKey];
-                if (b && (b.required_cycles || 0) >= 10 && (b.delivered || 0) === 0) {
+                const upper = zeroDeliverySignificant(b);
+                if (upper !== null) {
                   effectiveProviders = effectiveProviders.filter(p => p !== provider);
                   exemptions.push({
                     provider,
                     state: 'not_required_zero_delivery_in_context',
-                    note: `metrics map ${metricsGeneratedAt}: zero deliveries in context ${contextKey} over ${b.required_cycles} required cycles`,
+                    note: `metrics map ${metricsGeneratedAt}: zero deliveries in context ${contextKey} over ${b.required_cycles} required cycles (Wilson 95% upper ${upper.toFixed(3)} < ${ZERO_DELIVERY_MAX_UPPER})`,
                   });
-                  core.info(`Metrics rule: exempting ${provider} in context ${contextKey} (zero deliveries over ${b.required_cycles} required cycles).`);
+                  core.info(`Metrics rule: exempting ${provider} in context ${contextKey} (zero deliveries over ${b.required_cycles} required cycles, Wilson upper ${upper.toFixed(3)}).`);
                 }
                 // Round 2: author-class rollup. Per-context keys fragment
                 // author-class-wide failure modes (widened map: bot
                 // contexts held 10 required cycles across 6 keys, zero
-                // delivered — no single key reached the threshold).
+                // delivered — no single key reached the threshold). The
+                // rollup is judged by the same significance test.
                 if (effectiveProviders.includes(provider)) {
                   const roll = metricsByAuthorClass[provider]?.[authorIsBot ? 'bot' : 'user'];
-                  if (roll && (roll.required_cycles || 0) >= 10 && (roll.delivered || 0) === 0) {
+                  const rollUpper = zeroDeliverySignificant(roll);
+                  if (rollUpper !== null) {
                     effectiveProviders = effectiveProviders.filter(p => p !== provider);
                     exemptions.push({
                       provider,
                       state: 'not_required_zero_delivery_in_context',
-                      note: `metrics map ${metricsGeneratedAt}: zero deliveries in author-class rollup ${authorIsBot ? 'bot' : 'user'}/* over ${roll.required_cycles} required cycles`,
+                      note: `metrics map ${metricsGeneratedAt}: zero deliveries in author-class rollup ${authorIsBot ? 'bot' : 'user'}/* over ${roll.required_cycles} required cycles (Wilson 95% upper ${rollUpper.toFixed(3)} < ${ZERO_DELIVERY_MAX_UPPER})`,
                     });
-                    core.info(`Metrics rule (rollup): exempting ${provider} for author class ${authorIsBot ? 'bot' : 'user'} (zero deliveries over ${roll.required_cycles} required cycles).`);
+                    core.info(`Metrics rule (rollup): exempting ${provider} for author class ${authorIsBot ? 'bot' : 'user'} (zero deliveries over ${roll.required_cycles} required cycles, Wilson upper ${rollUpper.toFixed(3)}).`);
                   }
                 }
               }

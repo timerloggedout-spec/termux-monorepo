@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "cc1fa7d85c06b5720cd05f9093da6dd961f04b0ce1121ed93b1cf9ad651e7774",
-  "workflow_count": 207,
+  "source_fingerprint": "30e065e8e5ee7c2e9fe85a0db38c677af24e743b9273a84b8f40a0b0d6dc2428",
+  "workflow_count": 209,
   "workflows": [
     {
       "action_pins": [
@@ -354,6 +354,23 @@
       "triggers": [
         "schedule",
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "bounded-state-write",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "intake"
+      ],
+      "name": "apk-xref intake",
+      "path": ".github/workflows/apk-xref-intake.yml",
+      "schedules": [],
+      "triggers": [
+        "issues"
       ]
     },
     {
@@ -2917,6 +2934,23 @@
       ]
     },
     {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "bounded-state-write",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "intake"
+      ],
+      "name": "re-taxonomy intake",
+      "path": ".github/workflows/re-taxonomy-intake.yml",
+      "schedules": [],
+      "triggers": [
+        "issues"
+      ]
+    },
+    {
       "action_pins": [],
       "authority": "read-only-or-advisory",
       "concurrency": "group: readme-extractor-image cancel-in-progress: true",
@@ -3206,7 +3240,7 @@
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
       "authority": "bounded-state-write",
-      "concurrency": "group: research-intake-${{ github.event.issue.number }} cancel-in-progress: false",
+      "concurrency": "",
       "domain": "agentic-development",
       "jobs": [
         "intake"
@@ -3250,7 +3284,8 @@
       ],
       "triggers": [
         "schedule",
-        "workflow_dispatch"
+        "workflow_dispatch",
+        "workflow_run"
       ]
     },
     {

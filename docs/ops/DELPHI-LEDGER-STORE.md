@@ -172,3 +172,13 @@ RFP feed — `current.payload` verbatim per ledger (no re-folding, no
 recomputed EWMA/Elo), events stream below it, `excluded_noise` named,
 living records by `version_key` + `snapshot_at`. Page itself is theirs;
 this slice is the store + feed contract.
+
+**Provisioning of record (neon-fix lane, 2026-10-28):** Neon project
+`lane-events` (writers' default; `LANE_EVENTS_NEON_PROJECT` unset),
+region aws-us-east-2, default branch, database `neondb`. Repo Actions
+secrets, names of record (no rename — writers/workflows already use
+them): `NEON_API_KEY` (runtime resolution + project ops) and
+`LANE_EVENTS_DATABASE_URL` (direct psql path, resolved from that
+project at provisioning time). Writers stay as-is. Landing + proof
+run owned by the neon-fix lane; until their proof lands, writers
+remain in the verified no-op state.

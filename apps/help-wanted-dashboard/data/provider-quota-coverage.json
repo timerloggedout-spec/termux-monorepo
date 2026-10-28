@@ -1874,6 +1874,13 @@
       "provider": "zai",
       "quota_manager_owner": "Manager",
       "service_id": "zai.free_models"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "implemented_read_only_reader",
+      "provider": "huggingface",
+      "quota_manager_owner": "Manager",
+      "service_id": "huggingface.hub_api"
     }
   ]
 }

@@ -72,3 +72,23 @@ this upgrades the census's community-reported terms.
   no reserve; at 0 uses the lane flips to `code_pending` and pings the owner.
 - **Hark** — identity confirm (fleet surface vs Hark Pro) before anything lists.
 - **Web Design** — feed integration + de-center build, sequenced on this PR.
+
+## Channels + A/B test (owner, 2026-10-27)
+
+Channels (registry `channels[]`): landing/repo (live) · YouTube (community
+post live) · Facebook, X, TikTok, Instagram (owner-stated accounts; handles
+NOT ESTABLISHED — never invented). Facebook connector check 2026-10-27:
+managed Pages returned = 0 (empty result, not proof of none).
+
+**Experiment `fb-pages-sizzle-vs-steak-1`** (registry `ab_test`): two Facebook
+Pages, one per cell — A *sizzle* (benefit-first copy) vs B *steak*
+(numbers-first, Value Derived proof). Code pools split per cell for clean
+attribution (Cue W7AZA→A / 7RKCJ→B; Migoo uA3QYP→A / Du7Ehu→B, TSGDUJ
+reserve; Muse's single code shared, attributed by landing param `?ch=fb-a|b`).
+Metric: redemptions + landing clicks per cell. Decision rule: winner copy
+becomes the default on X / TikTok / Instagram / YouTube after 10 attributed
+redemptions or 14 days, whichever first.
+4n0n: the two Pages never cross-link (isolation + test contamination).
+Blocker: Page creation — the Facebook connector lists/publishes Pages but
+has no create command; the owner creates the 2 Pages in Facebook, this lane
+wires codes + copy per cell.

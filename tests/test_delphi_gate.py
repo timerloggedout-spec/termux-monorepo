@@ -288,3 +288,21 @@ def test_ledger_issues_resolve_by_title_not_label_order():
     assert gate.pick_ledger_issue(found, "Delphi outcome ledger") == 1487
     assert gate.pick_ledger_issue(found, "Delphi panel weights ledger") == 1567  # bootstrap fallback
     assert gate.pick_ledger_issue([], "Delphi outcome ledger") is None
+
+
+def test_research_silo_parked_recheck_is_short():
+    panel, reg, cat = _load()
+    surf = {"id": "research.jogyo-research-lab", "title": "x", "lane": "other",
+            "horizon": "H2", "registry_id": None, "sourced": False,
+            "quota": {"metric": "", "limit": None, "unit": "", "window": "", "reset": "", "zone": "", "source": "x"},
+            "auth": {"actions_secret": None, "present": None}, "lock_in": 1, "fit": 3, "headroom": 3,
+            "failure_modes": [], "card_required": False, "overage_autobill": False}
+    out = gate.score_surface(surf, panel, reg, None, "#0", "test")
+    assert out["award"]["decision"] == "parked"
+    import datetime as _dt
+    ra = _dt.datetime.strptime(out["award"]["recheck_after"], "%Y-%m-%dT%H:%MZ")
+    assert (_dt.datetime.utcnow() - ra).days >= -3  # <= ~2 days out, never ~30
+    # quota surface keeps the long backlog cadence at the same score
+    aw2 = gate.award({"effective_score": 6.69, "veto": False}, dict(surf, id="turso.free"), panel)
+    ra2 = _dt.datetime.strptime(aw2["recheck_after"], "%Y-%m-%dT%H:%MZ")
+    assert (ra2 - _dt.datetime.utcnow()).days >= 20

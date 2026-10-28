@@ -1,9 +1,11 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-28T01:34:42Z UTC · receipts=3962 · foreign_open=8 · tributes=109_
+_Generated 2026-10-28T06:15:13Z UTC · receipts=3962 · foreign_open=8 · tributes=111_
 
 ## Tributes (contributor ledger)
 
+- [timerloggedout-spec/timerloggedout-spec.github.io#2](https://github.com/timerloggedout-spec/timerloggedout-spec.github.io/pull/2) · state=closed · feat(landing): cut trust section; ?ch= A/B cell codes
+- [timerloggedout-spec/timerloggedout-spec.github.io#1](https://github.com/timerloggedout-spec/timerloggedout-spec.github.io/pull/1) · state=closed · feat(landing): de-center CellCog; feed-driven invite-code cards
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
 - [https://github.com/Kilo-Org/agentic-path/pull/26](https://github.com/Kilo-Org/agentic-path/pull/26) · state=? · 
 - [mangiapanejohn-dev/MOBIUS-Searcher#7](https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7) · state=open · help-wanted: stake + contribute for #6
@@ -42,8 +44,6 @@ _Generated 2026-10-28T01:34:42Z UTC · receipts=3962 · foreign_open=8 · tribut
 - [https://github.com/vedantnimbarte/zero/pull/81](https://github.com/vedantnimbarte/zero/pull/81) · state=? · 
 - [https://github.com/prime-radiant-inc/evener/pull/2661](https://github.com/prime-radiant-inc/evener/pull/2661) · state=? · 
 - [https://github.com/Vikram-sardiwal/react-open-source/pull/50](https://github.com/Vikram-sardiwal/react-open-source/pull/50) · state=? · 
-- [https://github.com/uttrflow/uttrflow-swift/pull/3719](https://github.com/uttrflow/uttrflow-swift/pull/3719) · state=? · 
-- [https://github.com/qim-center/qim3d/pull/273](https://github.com/qim-center/qim3d/pull/273) · state=? · 
 
 ## Foreign open PRs
 

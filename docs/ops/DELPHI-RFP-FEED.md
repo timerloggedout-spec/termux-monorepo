@@ -30,7 +30,14 @@ feed, one collector — no parallel shapes.
 | `outcome` | From the latest ledger comment: award line + award object (decision, why, band, recheck), `effective_score` /25, converged, rounds[] (median / IQR / effective per round), trigger, input hash |
 | `responses` | The panel's **signed votes verbatim** (role, score, impact, importance, veto, reason, sign-off) + the oracle line + the HindSight/ForeSight/MoneyBall records block |
 | `comparison_axes` | research.* only: the three post-hoc axes, each reading `pending` until a record exists — never zero, never a gate score |
+| `progress` | Raw numbers the page's progress display derives from — never a baked percentage: `stage` (`awaiting-gate` / `gate-scored`), `rounds_run` / `rounds_max` (3), `votes_cast` / `votes_expected` (panel size) |
+| `parent` | Variants only: the baseline silo RFP (`number` + `surface_id`) |
 | `gaps[]` | Every honest absence for this entry, named |
+
+There is no "winning response" in the gate: the award is the outcome
+and the signed votes are the responses of record. An RFP with no
+ledger comment is undecided and renders as such (`status: unscored`,
+`progress.stage: awaiting-gate`).
 
 Feed-level `criteria` states the rubric once: /25 scale, up to 3
 median/IQR rounds, shadow bar 15.0, the 5 panel roles (live weights

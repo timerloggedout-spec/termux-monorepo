@@ -1,0 +1,94 @@
+{
+ "schema_version": "1.0",
+ "seed_id": "github:research-seed:temporalio/temporal-set",
+ "canonical_upstream": "temporalio/temporal (+ 16 temporalio repos, below)",
+ "provenance": [
+  "recon-validated-live-2026-10-27 (RECON.md, PR #1867): 17 repos, none archived, 15 of 17 pushed 2026-10-27"
+ ],
+ "classification": {
+  "domains": [
+   "durable-execution",
+   "workflow-orchestration",
+   "agent-infrastructure"
+  ],
+  "research_value": "high",
+  "integration_mode": "upstream-comparison",
+  "adoption": "mixed \u2014 per-repo disposition in the G6 record (docs/proposals/passes/temporal-durable-execution/PASS.md)"
+ },
+ "repos": [
+  {
+   "repo": "temporalio/pi-temporal",
+   "disposition": "adopt (pattern)"
+  },
+  {
+   "repo": "temporalio/temporal",
+   "disposition": "adopt (substrate)"
+  },
+  {
+   "repo": "temporalio/cli",
+   "disposition": "adopt (dev server)"
+  },
+  {
+   "repo": "temporalio/api",
+   "disposition": "adopt (contract source)"
+  },
+  {
+   "repo": "temporalio/ai-cookbook",
+   "disposition": "pilot"
+  },
+  {
+   "repo": "temporalio/ai-integrations",
+   "disposition": "pilot"
+  },
+  {
+   "repo": "temporalio/nexgen",
+   "disposition": "pilot"
+  },
+  {
+   "repo": "temporalio/temporal-worker-controller",
+   "disposition": "reference-only"
+  },
+  {
+   "repo": "temporalio/temporal-auto-scaled-workers",
+   "disposition": "reference-only"
+  },
+  {
+   "repo": "temporalio/omes",
+   "disposition": "reference-only (load harness unrun in the pass environment)"
+  },
+  {
+   "repo": "temporalio/ui",
+   "disposition": "reference-only (history-as-projection)"
+  },
+  {
+   "repo": "temporalio/skill-temporal-serverless",
+   "disposition": "reference-only (form; execution owner-gated)"
+  },
+  {
+   "repo": "temporalio/awesome-temporal",
+   "disposition": "reference-only (catalog)"
+  },
+  {
+   "repo": "temporalio/cloud-operator",
+   "disposition": "reference-only (cloud-gated)"
+  },
+  {
+   "repo": "temporalio/cruise-control-api",
+   "disposition": "reference-only (not exercised)"
+  },
+  {
+   "repo": "temporalio/kube-temporal",
+   "disposition": "reference-only (K8s-gated)"
+  },
+  {
+   "repo": "temporalio/public-actions",
+   "disposition": "reference-only (not exercised)"
+  }
+ ],
+ "integration_constraints": [
+  "do-not-vendor-source",
+  "do-not-auto-submodule",
+  "preserve-upstream-provenance",
+  "compare-before-extracting-patterns"
+ ]
+}

@@ -1,26 +1,37 @@
 #!/usr/bin/env python3
-"""N4 — Gantt-as-workflow compiler (Temporal pass addendum, 2026-10-27).
+"""N4 — Gantt-as-workflow compiler (Temporal pass; addendum 2026-10-27).
 
 Compiles a Gantt plan in the fleet's filing format — one phase per
 line, "phase | start | end | depends-on" (the delphi-rfp form's
-format, also used for candidate plans in Oracle Method passes) —
-into a workflow-shaped DAG: stages in topological order, dependency
-edges, and the query answers a workflow runtime would need
-(critical path by stage count, dependency closure per phase).
+format) — into a workflow-shaped DAG: stages in topological order,
+dependency waves, critical path, and per-phase dependency closure.
 
-Deterministic, offline, stdlib only. A plan that references an
-unknown phase or contains a dependency cycle fails compilation with
-the violations aggregated — the same discipline as the evidence
-envelope validators (V4).
+The Kahn core is NOT re-implemented here: ordering, frontiers and
+cycle residuals come from the canonical Kahn surface
+(`she/orchestration/dag.py`, algorithm `kahn-reference-v2`). This
+module owns only the filing-format parsing and the aggregated
+violation reporting (unknown dependencies are collected, not raised
+one at a time — the envelope-validator discipline).
 
 Usage: gantt_compile.py PLAN.txt [PLAN2.txt ...]  (JSON to stdout)
 """
 
 from __future__ import annotations
 
+import importlib.util
 import json
 import sys
 from pathlib import Path
+
+
+def _load_kahn():
+    root = Path(__file__).resolve().parents[2]
+    path = root / "she" / "orchestration" / "dag.py"
+    spec = importlib.util.spec_from_file_location("she_kahn_dag", path)
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = mod
+    spec.loader.exec_module(mod)
+    return mod
 
 
 def parse_gantt(text: str) -> list[dict]:
@@ -47,36 +58,37 @@ def compile_plan(phases: list[dict]) -> dict:
         for d in p["depends_on"]:
             if d not in known:
                 violations.append(f"{p['phase']}: unknown dependency '{d}'")
-    order, placed, remaining = [], set(), list(phases)
-    while remaining:
-        ready = [p for p in remaining if all(d in placed for d in p["depends_on"])]
-        if not ready:
-            stuck = [p["phase"] for p in remaining
-                     if all(d in known for d in p["depends_on"])]
-            if stuck:
-                violations.append("dependency cycle among: " + ", ".join(stuck))
-            break
-        for p in sorted(ready, key=lambda x: x["phase"]):
-            order.append(p["phase"])
-            placed.add(p["phase"])
-            remaining.remove(p)
-    depth = {}
     by_name = {p["phase"]: p for p in phases}
-    for name in order:
-        depth[name] = 1 + max((depth[d] for d in by_name[name]["depends_on"]), default=0)
-    critical = max(depth.values(), default=0)
     closure = {}
-    for name in order:
-        seen, stack = set(), list(by_name[name]["depends_on"])
+    for p in phases:
+        seen, stack = set(), list(p["depends_on"])
         while stack:
             d = stack.pop()
-            if d not in seen:
+            if d in by_name and d not in seen:
                 seen.add(d)
                 stack.extend(by_name[d]["depends_on"])
-        closure[name] = sorted(seen)
-    return {"valid": not violations, "violations": violations,
-            "stages": order, "critical_path_stages": critical,
-            "depth": depth, "dependency_closure": closure}
+        closure[p["phase"]] = sorted(seen)
+    if violations:
+        return {"valid": False, "violations": violations, "stages": [],
+                "dependency_closure": closure}
+    kahn = _load_kahn()
+    edges = [(d, p["phase"]) for p in phases for d in p["depends_on"]]
+    plan = kahn.plan_dag(names, edges)
+    if not plan.is_acyclic:
+        return {"valid": False,
+                "violations": ["dependency cycle among: " + ", ".join(plan.cycle_or_blocked_nodes)],
+                "stages": [], "dependency_closure": closure,
+                "algorithm": plan.algorithm_version, "graph_sha256": plan.graph_sha256}
+    depth = {}
+    for level, frontier in enumerate(plan.ready_frontiers):
+        for node in frontier:
+            depth[node] = level + 1
+    return {"valid": True, "violations": [],
+            "stages": list(plan.topological_order),
+            "waves": [list(f) for f in plan.ready_frontiers],
+            "critical_path_stages": len(plan.ready_frontiers),
+            "depth": depth, "dependency_closure": closure,
+            "algorithm": plan.algorithm_version, "graph_sha256": plan.graph_sha256}
 
 
 def compile_text(text: str) -> dict:

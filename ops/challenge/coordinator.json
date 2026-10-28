@@ -166,10 +166,10 @@
       "field_size": {
         "status": "partial",
         "participants": 5917,
-        "participants_source": "event header '5917 participants', AWS Builder Center, read 2026-10-28 (5,918 on 2026-10-26 pass; current displayed value governs)",
+        "participants_source": "event page HTML (server-rendered '<N> participants'), builder.aws.com",
         "projects": null,
         "projects_note": "submitted-project total NOT displayed; Projects list paginated past 110 entries with no total \u2014 projects count = OPEN TASK",
-        "fetched_at": "2026-10-28T22:05:00Z"
+        "fetched_at": "2026-10-28T22:11:14Z"
       }
     },
     {
@@ -355,10 +355,10 @@
       "field_size": {
         "status": "established",
         "participants": 252,
-        "participants_source": "event header, AWS Builder Center (verified 2026-10-26 pass)",
+        "participants_source": "event page HTML (server-rendered '<N> participants'), builder.aws.com",
         "projects": 40,
         "projects_source": "public Projects list loaded to exhaustion, 2026-10-26",
-        "fetched_at": "2026-10-28T22:05:00Z"
+        "fetched_at": "2026-10-28T22:11:14Z"
       }
     },
     {
@@ -728,10 +728,10 @@
       "field_size": {
         "status": "partial",
         "participants": 324,
-        "participants_source": "event header '324 participants', AWS Builder Center, read 2026-10-28",
+        "participants_source": "event page HTML (server-rendered '<N> participants'), builder.aws.com",
         "projects": 1,
         "projects_source": "Projects tab: 1 project ('Ladder: practice sets a teacher can trust'), no Load more \u2014 event OPEN, field still growing",
-        "fetched_at": "2026-10-28T22:05:00Z"
+        "fetched_at": "2026-10-28T22:11:14Z"
       }
     },
     {
@@ -1338,7 +1338,7 @@
             "field_scored_count": 0,
             "field_mean_composite": null,
             "our_composite": null,
-            "participants": 1908,
+            "participants": 1909,
             "field_size_basis": "MoneyBall refinement denominator (see basis)"
           },
           "computed_at": "2026-10-28T22:09:00Z",
@@ -1346,12 +1346,13 @@
         }
       },
       "field_size": {
-        "status": "partial",
-        "participants": 1908,
-        "participants_source": "Devpost Participants tab label 'Participants (1908)', read 2026-10-28",
+        "status": "established",
+        "participants": 1909,
+        "participants_source": "event page HTML ('Participants (<N>)'), devpost.com",
         "projects": 0,
-        "projects_source": "Devpost project gallery unpublished ('managers haven't published this gallery yet'); submissions open Oct 30",
-        "fetched_at": "2026-10-28T22:05:00Z"
+        "projects_source": "Devpost project gallery, devpost.com",
+        "fetched_at": "2026-10-28T22:11:14Z",
+        "projects_note": "project gallery unpublished by the organizers"
       }
     },
     {

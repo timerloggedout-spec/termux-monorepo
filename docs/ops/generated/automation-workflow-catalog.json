@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "cc1fa7d85c06b5720cd05f9093da6dd961f04b0ce1121ed93b1cf9ad651e7774",
+  "source_fingerprint": "eb53e8359c42951932230227675ff9a5deed2b5ac1d99766d3f1899659bb3162",
   "workflow_count": 207,
   "workflows": [
     {
@@ -3206,7 +3206,7 @@
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
       "authority": "bounded-state-write",
-      "concurrency": "group: research-intake-${{ github.event.issue.number }} cancel-in-progress: false",
+      "concurrency": "",
       "domain": "agentic-development",
       "jobs": [
         "intake"

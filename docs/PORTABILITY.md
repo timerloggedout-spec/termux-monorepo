@@ -1,6 +1,6 @@
 # Portability: why a fresh clone of this monorepo does not work yet
 
-Measured on `master` @ `2d78be6b` (approx 8023 tracked paths). Sample .bak retirement reduced tracked_backup_files 120→116.
+Measured on `master` @ `f85fd608` (approx tracked paths). Class D tracked .bak*/.old copies retired to 0 (ratchet advanced 120→0 in prior cycle).
 
 This is the single highest-leverage finding in the current repo state, and it is
 upstream of almost every open PR: **the tree on `master` cannot be reproduced from a
@@ -110,12 +110,10 @@ git rm --cached -- \
 `_TOOL_TAXONOMY/delta/latest.json` are intra-repo relative links. Leave them. They
 are the pattern Class A should be migrated toward.
 
-## Class D — 120 tracked backup copies
+## Class D — 0 tracked backup copies
 
-`archwiz/archwiz.py.bak.1782737822`, `.bak.20260628_225950`, `.bak.224047`, and one
-literal `archwiz/archwiz.py.bak.$(date +%H%M%S)` — an unexpanded command substitution
-that became a filename. Git already is the backup. The gate blocks *new* ones
-(`no-committed-backups`) and counts the existing pile.
+Retired in prior cycle (ratchet 120→0). Git already is the backup. The gate blocks *new* ones
+(`no-committed-backups`) and counts the existing pile at zero.
 
 ## Class E — 423 tracked session-store artifacts
 

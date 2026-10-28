@@ -154,9 +154,10 @@ SELECT ev.event_id, ev.name AS event_name,
        pw.entity_key AS competitor, pw.project AS project,
        (SELECT jsonb_agg(j.judge_key ORDER BY j.judge_key)
           FROM judges_current j WHERE j.event_id = ev.event_id) AS judges
-FROM challenge_events_current ev,
+FROM challenge_events_current ev
+CROSS JOIN LATERAL
      jsonb_array_elements(CASE WHEN jsonb_typeof(ev.prizes->'tiers') = 'array'
-                               THEN ev.prizes->'tiers' ELSE '[]'::jsonb END) tier
+                               THEN ev.prizes->'tiers' ELSE '[]'::jsonb END) AS tier
 LEFT JOIN entity_past_wins pw
   ON pw.entity_kind = 'participant'
  AND (pw.win_event = ev.event_id OR pw.win_event = ev.name)

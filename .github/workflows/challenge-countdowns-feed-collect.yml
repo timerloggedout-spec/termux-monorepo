@@ -1,0 +1,57 @@
+# Challenge countdowns feed refresh (contract: docs/ops/CHALLENGE-COUNTDOWNS-FEED.md).
+# Regenerates apps/help-wanted-dashboard/data/challenge-countdowns-feed.json
+# from the challenge entries log (the SSOT for deadline instants) and
+# proposes it as a refresh PR — never commits directly. Mirrors the
+# linguist-panel-feed-collect pattern (issue #1880).
+name: challenge-countdowns-feed-collect
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 7 * * 2'
+  push:
+    branches: [master]
+    paths:
+      - 'docs/ops/CHALLENGE-ENTRIES-LOG.md'
+      - 'scripts/challenge_entries/countdowns.py'
+      - 'scripts/dashboards/challenge_countdowns_feed.py'
+
+concurrency:
+  group: challenge-countdowns-feed-collect
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Collect the feed
+        run: |
+          set -euo pipefail
+          python3 -B scripts/dashboards/challenge_countdowns_feed.py \
+            --root . --out apps/help-wanted-dashboard/data/challenge-countdowns-feed.json
+      - name: Propose the refresh as a PR
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- apps/help-wanted-dashboard/data/challenge-countdowns-feed.json; then
+            echo "feed unchanged; no refresh PR"
+            exit 0
+          fi
+          branch="challenge-countdowns-feed/refresh"
+          git config user.name "challenge-countdowns-feed-collect"
+          git config user.email "actions@github.com"
+          git checkout -B "$branch"
+          git add apps/help-wanted-dashboard/data/challenge-countdowns-feed.json
+          git commit -m "chore(countdowns): refresh challenge-countdowns-feed.json"
+          git push -f origin "$branch"
+          gh pr create --base master --head "$branch" \
+            --title "chore(countdowns): refresh challenge-countdowns-feed.json" \
+            --body "Automated challenge countdowns feed refresh (collector: scripts/dashboards/challenge_countdowns_feed.py; contract: docs/ops/CHALLENGE-COUNTDOWNS-FEED.md). Instants are derived from docs/ops/CHALLENGE-ENTRIES-LOG.md at collection time; nothing is copied forward." \
+            || echo "refresh PR already open"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

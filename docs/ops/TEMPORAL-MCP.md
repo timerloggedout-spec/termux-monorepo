@@ -32,6 +32,12 @@ write-capable community server is **not** adopted.
 - Binary: official installer `https://temporal.download/mcp.sh`
   → `~/.temporalio/bin/temporal-mcp`, version **0.0.3**
   (env install, never committed — same pattern as the CLI).
+- **Migration note (2026-10-28):** the standing `selfhost` target
+  retires with the VM instance (docs/ops/TEMPORAL-MIGRATION.md,
+  stage 4). The MCP is used **per-engagement**: point the target
+  at the engagement's server (`localhost:7233` inside a GitHub
+  Actions engagement run, or a sandbox-local dev server) while it
+  runs. There is no standing target on the migrated home.
 - Config: `~/workspace/temporal-selfhost/mcp/config.yaml`,
   mirrored in-repo at `scripts/temporal/selfhost/mcp-config.yaml`.
   One target, `selfhost` → `localhost:7233`, namespace `default`,

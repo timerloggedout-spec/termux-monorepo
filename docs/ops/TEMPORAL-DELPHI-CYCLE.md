@@ -13,9 +13,9 @@ of record for semantics, and the workflow's finalize stage calls it.
 | Piece | Value |
 |---|---|
 | Workflow | `DelphiCycleWorkflow`, task queue `delphi-cycle`, ID = `delphi-cycle/<pass-id>` (ID reuse is the idempotency boundary) |
-| Server | Fleet self-host, `localhost:7233`, namespace `default` (`docs/ops/TEMPORAL-SELF-HOST.md`) |
+| Server | **Address of record (migration, 2026-10-28):** the GitHub Actions engagement surface — dispatch `.github/workflows/temporal-engagement.yml` or `.github/workflows/delphi-cycle.yml` in this repo; inside an engagement the address is `localhost:7233`, namespace `default`, on the job's ephemeral dev server. There is no standing host address by design (owner correction: no VM exception; `docs/ops/TEMPORAL-MIGRATION.md`). The original §5 acceptance ran against the then-standing VM self-host; §5 was re-proven on the Actions home in runs 40758279842 + 40759800247 |
 | Code | `scripts/temporal/delphi_cycle/{workflow,activities,worker,client}.py` |
-| Worker | NOT a VM service (owner order 2026-10-28: VM = sandbox only; the Temporal self-host server is the sole exception). Workers run **bounded, per engagement**: `client.py prove` spawns them for the proof, and a live cycle runs `worker.py` in the foreground for the cycle's duration. The repeatable proof's always-on home is GitHub Actions (`.github/workflows/delphi-cycle.yml`: ephemeral in-job dev server, tests + §5 prove in record_only mode + parity, receipts as artifacts). A `temporal-delphi-worker.service` unit shipped in the first landing and was removed the same day under this order — the acceptance addendum records the state as it was when the proof ran |
+| Worker | NOT a VM service (owner order 2026-10-28: VM = sandbox only, no exceptions). Workers run **bounded, per engagement, wherever the surface lives**: in the Actions home they are job processes (`client.py prove` spawns them; `worker.py --exit-on-complete` is cycle-scoped). The repeatable proof's always-on home is GitHub Actions (`.github/workflows/delphi-cycle.yml`: ephemeral in-job dev server, tests + §5 prove in record_only mode + parity, receipts as artifacts). A `temporal-delphi-worker.service` unit shipped in the first landing and was removed the same day under this order — the acceptance addendum records the state as it was when the proof ran |
 | Tests | `tests/test_delphi_cycle.py` (validation, phantom parity, staged parity, emission shape, payload-conversion regression) |
 
 ## How a cycle flows
@@ -62,12 +62,14 @@ bundle sha256, facilitator actions, ranked outcome.
 
 ## Operate
 
-- Query a cycle (any worker on the queue serves it; for a completed
-  cycle within retention, the self-host exception server holds the
-  history): `client.py status --workflow-id delphi-cycle/<pass-id>`.
-- Run a live cycle: start `worker.py --address localhost:7233` in
-  the foreground on the VM (bounded to the engagement — kill it
-  when the cycle completes), then drive it with `client.py`.
+- Query a cycle: within its engagement, any worker on the queue
+  serves it (`client.py status --workflow-id delphi-cycle/<pass-id>`);
+  after the engagement, read the run's artifact receipts — there is
+  no standing server holding history.
+- Run a live cycle: dispatch `delphi-cycle.yml` (proof-shaped) or
+  run an engagement locally in the sandbox: dev server +
+  `worker.py --exit-on-complete delphi-cycle/<pass-id>` +
+  `client.py`, all bounded to the engagement.
 - Start a cycle / cast ballots / facilitator actions: `client.py`
   subcommands (`start`, `ballot`, `facilitator`, `result`); the
   fixture mode is the rehearsal brief — real passes supply their
@@ -80,7 +82,7 @@ bundle sha256, facilitator actions, ranked outcome.
 
 ## Known limits
 
-- Single node, as with the self-host itself: mesh redundancy NOT
+- Single job, ephemeral server: mesh redundancy NOT
   established; durability = server sqlite persistence + worker
   supervision + keepalive reinstall.
 - Kill-recovery latency for the implementation stage is bounded by

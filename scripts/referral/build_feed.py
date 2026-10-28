@@ -17,6 +17,7 @@ def build(reg):
     items = []
     for p in sorted(reg["programs"], key=lambda x: x["priority"]):
         live = next((c for c in p.get("codes", []) if c["status"] == "live"), None)
+        cell_b = next((c for c in p.get("codes", []) if c["status"] == "live_cell_b"), None)
         reserve = sum(1 for c in p.get("codes", []) if c["status"] == "reserve")
         items.append({
             "id": p["id"],
@@ -27,6 +28,7 @@ def build(reg):
             "visitor_reward": p["visitor_reward"],
             "fleet_replenishment": p["fleet_replenishment"],
             "live_code": live["code"] if live else None,
+            "cell_b_code": cell_b["code"] if cell_b else None,
             "reserve_codes": reserve,
             "link_ref": p.get("link_ref"),
         })
@@ -34,6 +36,8 @@ def build(reg):
         "schema": "referral-feed/1",
         "source": "config/referral_programs.json",
         "items": items,
+        "channels": reg.get("channels", []),
+        "ab_test": reg.get("ab_test"),
         "rules": reg["rules"],
     }
 

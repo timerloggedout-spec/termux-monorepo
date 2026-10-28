@@ -1,0 +1,62 @@
+# Admin internal metrics — rendering contract
+
+Owner correction (2026-10-28, via challenge manager): internal metrics
+render in the **Admin Panel only** — an internal surface. They never
+render on public feeds, pages, logs, briefs, or ledgers. This supersedes
+the earlier "silent + hidden everywhere" posture for the admin surface
+only; everywhere else the hidden rule stands unchanged.
+
+## Metric in scope
+
+`win_probability` — source of record:
+`ops/challenge/coordinator.json` → `events[].metrics_internal.win_probability`
+
+Shape (`winprob/v1`, landed PR #2229):
+
+```jsonc
+{ "method": "winprob/v1",
+  "estimate": 0.025 | null,          // null = not established, never 0
+  "inputs": { "award_slots_top": 1, "field_size": 40 | null,
+              "field_scored_count": 0, "field_mean_composite": null,
+              "our_composite": null },
+  "computed_at": "RFC3339 UTC" }
+```
+
+State at contract landing (verified on master by the admin-panel lane):
+7 events carry the block; only D0 has a non-null estimate (0.025,
+field_size 40); all others are null pending the field-size OSINT pass.
+
+## Rendering rules (admin view of challenge data)
+
+1. Render the block per event: estimate (as % when non-null, the words
+   `not established` when null — never render null as 0 or blank),
+   method, `computed_at`, and the inputs (field_size, field_scored_count,
+   our/field composites when present).
+2. Label the block **internal** in the UI; no export/share affordance.
+3. The admin renderer reads `metrics_internal` from the coordinator
+   record only — it must not copy values into any public feed, page,
+   log, brief, or the opportunity ledger (ledger = 1st-place gross only).
+4. Null estimates stay visible as nulls in admin (absence of an estimate
+   is itself information); do not backfill from other sources.
+
+## Forbidden surfaces (acceptance scan)
+
+`win_probability` / `metrics_internal` must return **zero hits** in:
+`apps/help-wanted-dashboard/**` public pages and `data/*.json` feeds
+**except** the admin view surface itself, the opportunity ledger
+(`ops/challenge/opportunity_ledger.json` + its doc), challenge briefs
+and logs. At contract landing the repo-wide hit list is exactly:
+`docs/ops/MONEYBALL-PLANE.md`, `docs/ops/CHALLENGE-SCHEMA.md`,
+`docs/ops/CHALLENGE-PARTICIPANT-MIRROR.md`,
+`ops/challenge-participants/schema.sql`, `ops/moneyball/plane.json`,
+`ops/challenge/coordinator.json` — no page or feed hits.
+
+## Ownership + acceptance
+
+- Data: challenge / MoneyBall lanes (coordinator record, winprob/v1).
+- Wiring: Web Design lane builds the admin view.
+- Acceptance: Linguist Admin Panel lane — (a) admin view shows the
+  block for all 7 events with correct null handling; (b) forbidden-surface
+  scan stays zero outside the admin view; (c) estimates beyond D0 appear
+  only after the field-size OSINT pass lands them in the coordinator
+  record (the panel never computes or estimates values itself).

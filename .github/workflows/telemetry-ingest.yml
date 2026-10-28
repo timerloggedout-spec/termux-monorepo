@@ -1,0 +1,78 @@
+# Telemetry ingest (contract: docs/ops/TELEMETRY-INGEST.md).
+# Regenerates the Provenance ledger + HindSight retain payloads from every
+# telemetry source surface in the repo, POSTs the payloads to HindSight
+# when its secrets are present, and proposes the outputs as a refresh PR
+# -- never commits directly. HindSight and Provenance are SEPARATE sinks:
+# separate files, separate steps, neither feeds the other.
+name: telemetry-ingest
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 7 * * 3'
+  push:
+    branches: [master]
+    paths:
+      - 'ops/quota/registry.json'
+      - 'ops/cadence/provider-onboarding.json'
+      - 'config/agent_stack_integrations.json'
+      - 'data/g4f-working/providers.json'
+      - 'docs/ops/generated/reviewer-metrics.json'
+      - 'ops/github-telemetry/config/sources.yaml'
+      - 'agent_telemetry_stream.json'
+      - 'apps/help-wanted-dashboard/data/**'
+      - 'ops/delphi/ledgers.json'
+      - 'ops/challenge/coordinator.json'
+      - 'ops/moneyball/plane.json'
+      - 'scripts/telemetry_ingest/**'
+
+concurrency:
+  group: telemetry-ingest
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Tests
+        run: python3 -m pytest tests/test_telemetry_ingest.py -q
+      - name: Ingest (Provenance + HindSight payloads, separate sinks)
+        run: |
+          set -euo pipefail
+          python3 -B scripts/telemetry_ingest/ingest.py \
+            --now "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+      - name: HindSight live retain (separate; no-op without its secrets)
+        env:
+          HINDSIGHT_BASE_URL: ${{ secrets.HINDSIGHT_BASE_URL }}
+          HINDSIGHT_API_KEY: ${{ secrets.HINDSIGHT_API_KEY }}
+          HINDSIGHT_BANK_ID: ${{ secrets.HINDSIGHT_BANK_ID }}
+        run: |
+          set -euo pipefail
+          python3 -B scripts/telemetry_ingest/ingest.py \
+            --now "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --retain-live
+      - name: Propose the refresh as a PR
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- ops/telemetry; then
+            echo "ingest outputs unchanged; no refresh PR"
+            exit 0
+          fi
+          branch="telemetry-ingest/refresh"
+          git config user.name "telemetry-ingest"
+          git config user.email "actions@github.com"
+          git checkout -B "$branch"
+          git add ops/telemetry
+          git commit -m "chore(telemetry): refresh HindSight+Provenance ingest"
+          git push -f origin "$branch"
+          gh pr create --base master --head "$branch" \
+            --title "chore(telemetry): refresh HindSight+Provenance ingest" \
+            --body "Automated telemetry ingest refresh (collector: scripts/telemetry_ingest/ingest.py; contract: docs/ops/TELEMETRY-INGEST.md). Counts are derived live from the source surfaces at run time; excluded sources are recorded in ops/telemetry/ingest-receipt.json, never dropped." \
+            || echo "refresh PR already open"

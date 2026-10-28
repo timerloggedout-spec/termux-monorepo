@@ -126,7 +126,8 @@ def batch_from_source(source: Path, source_ref: str) -> dict:
     for ev in data.get("events", []):
         eid = str(ev.get("id") or ev.get("slug") or ev.get("name") or "")
         events_core.append({"id": eid, "name": ev.get("name"),
-                            "prizes": ev.get("prizes")})
+                            "prizes": ev.get("prizes"),
+                            "opportunity_cost": ev.get("opportunity_cost")})
         pr, ps = _entity_rows(ev.get("participants"), eid, sync_key, "participant")
         jr, js = _entity_rows(ev.get("judges"), eid, sync_key, "judge")
         participants += pr

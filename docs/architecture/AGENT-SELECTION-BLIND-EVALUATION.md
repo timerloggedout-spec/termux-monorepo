@@ -1,5 +1,9 @@
 # Blind Agent Selection & Evaluation
 
+**Status:** canonical companion spec — implemented as the blind-agent-evaluation skill (`.agents/skills/blind-agent-evaluation`)
+**Owner/lane:** unrecorded
+**Canonical for:** blind (identity-separated) agent evaluation protocol, companion to the Agent Evaluation Framework
+
 ## Purpose
 
 Agent selection should minimize identity, provider-brand, and reputation bias when those attributes are not relevant to the task. This document defines a **double-blind-style evaluation layer**, not a claim that GitHub or an LLM evaluation can achieve perfect statistical blindness.

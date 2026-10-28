@@ -46,6 +46,8 @@ def call(base, method, path, body=None):
     add_surrogate_to_request(req, "custom.gravitee", allowed_hosts=[host])
     try:
         with urllib.request.build_opener(NoRedirect()).open(req, timeout=30) as resp:
+            if resp.status == 204:
+                return {"ok": True, "status": 204}
             return read_json_response(resp)
     except urllib.error.HTTPError as e:
         print(json.dumps({"ok": False, "status": e.code,

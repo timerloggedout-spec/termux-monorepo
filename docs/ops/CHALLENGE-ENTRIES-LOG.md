@@ -177,8 +177,8 @@ each other):
 |-----------|-------|
 | Oct 27–29 | **D0 Weekend Challenge completion package — COMPLETED Oct 27** (PR #1702; predecessor: D1 reuses this agent work); D3 scaffold + core actions (build window open since Oct 19); D1 agent drafted locally, published in-window; D2 registration/sandbox recon |
 | Oct 28 | D1 window opens — workshop completion (owner account) + agent repo goes public |
-| Oct 30–Nov 1 | **D3 build weekend (concentrated)**; Kiroween window opens Oct 30 — no project creation (owner sequencing) |
-| Nov 2 | D3 Clips demo + submit by 11:59 PM PT |
+| Oct 30–Nov 1 | ~~D3 build weekend~~ — SUPERSEDED 2026-10-28 (concept killed; official schedule moved: final weekend Nov 6–8); Kiroween window opens Oct 30 — no project creation (owner sequencing) |
+| Nov 9 | D3 submit by 11:59 PM PT (date corrected 2026-10-28 per current Official Rules) |
 | Nov 3–4 | D1 finish: article, video, submission packet → owner submits by Nov 4 11:59 PM PDT; D2 registration + sandbox prep in parallel |
 | Nov 5–8 | D2 build (lablab online build is Nov 3–8) → submit by Nov 8, 3:00 PM PST |
 | After Nov 8 | D4 build (deadline Dec 4, 2:00 PM PST) |
@@ -199,18 +199,18 @@ FUTURE (logged, not now): DoE-style comparison of manager implementations.
 | Entry | State | Window (PT) | Gate |
 |-------|-------|-------------|------|
 | D0 | DONE (completed 2026-10-27) | closed Oct 26 | — |
-| D1 | IN PROGRESS — window OPEN | closes Nov 4 23:59 | **G-07 Builder profile — ESCALATED** (login card unentered since 2026-10-27 07:34; sessions expired) + in-window workshop badge evidence |
+| D1 | IN PROGRESS — window OPEN; concept set STOPPED 2026-10-28 (tainted) | closes Nov 4 23:59 | **G-07 Builder profile — ESCALATED** (login card unentered since 2026-10-27 07:34; sessions expired) + in-window workshop badge evidence |
 | D2 | IN PROGRESS | opens Nov 5; closes Nov 8 15:00 | no-card path only (lablab + Discord + Vultr sandbox) |
-| D3 | IN PROGRESS | closes Nov 2 23:59 | Clips account ✓ created 2026-10-27; storage connect at build weekend |
+| D3 | STOPPED 2026-10-28 — concept killed; brief-first regeneration pending | closes Nov 9 23:59 (official schedule moved; corrected 2026-10-28) | Clips account ✓ created 2026-10-27 (held for the regenerated concept) |
 | D4 | REGISTERING | eligibility opens Oct 30 13:00 PDT; closes Dec 4 14:00 | Devpost + Kiro accounts (sibling lane); no project creation before the window opens |
 | D5 | REGISTERED — spot pending review | opens Nov 17 9:00 AM; closes Nov 19 23:59 (window end) | spot confirmation email |
 
-<!-- countdown:BLOCK -->⏳ countdowns — D0: CLOSED · D1: closes in 7d 19h · D2: opens in 7d 19h (closes Nov 8 15:00 PT) · D3: closes in 5d 19h · D4: opens in 2d 7h (closes Dec 4 14:00 PT) · D5: opens in 20d 4h (closes Nov 19 23:59 PT) (computed 2026-10-28 05:01 PT)<!-- /countdown:BLOCK -->
+<!-- countdown:BLOCK -->⏳ countdowns — D0: CLOSED · D1: closes in 7d 17h · D2: opens in 7d 17h (closes Nov 8 15:00 PT) · D3: closes in 12d 17h · D4: opens in 2d 5h (closes Dec 4 14:00 PT) · D5: opens in 20d 2h (closes Nov 19 23:59 PT) (computed 2026-10-28 07:54 PT)<!-- /countdown:BLOCK -->
 
 ### D0 — for R2, Weekend Challenge: Give your Agent a Tool — COMPLETED 2026-10-27 (owner ruling 2026-10-27; date set: Oct 29)
 
 <!-- countdown-data:D0 opens=- closes=2026-10-26T13:00:00-07:00 -->
-<!-- countdown:D0 -->⏳ CLOSED (computed 2026-10-28 05:01 PT)<!-- /countdown:D0 -->
+<!-- countdown:D0 -->⏳ CLOSED (computed 2026-10-28 07:54 PT)<!-- /countdown:D0 -->
 
 `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]`
 
@@ -269,14 +269,23 @@ FUTURE (logged, not now): DoE-style comparison of manager implementations.
   submission — and it was enforced in the record itself: the verified
   submission count (§2) was never adjusted for D0.
 
-### D1 — for C1, Workshop to Ship — IN PROGRESS (owner already joined)
+### D1 — for C1, Workshop to Ship — IN PROGRESS (owner already joined) — CONCEPT SET STOPPED 2026-10-28 (brief-first regeneration pending)
 
 <!-- countdown-data:D1 opens=2026-10-28T00:00:00-07:00 closes=2026-11-04T23:59:00-08:00 -->
-<!-- countdown:D1 -->⏳ closes in 7d 19h (computed 2026-10-28 05:01 PT)<!-- /countdown:D1 -->
+<!-- countdown:D1 -->⏳ closes in 7d 17h (computed 2026-10-28 07:54 PT)<!-- /countdown:D1 -->
 
 `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]`
 
-- **Concept:** "Proof Before Help" — a climate-resilience agent (cooling-center
+- **STOP — CONCEPT SET TAINTED (owner ruling, 2026-10-28):** the concept
+  below ("Proof Before Help") and the Strands RFP-response pass
+  candidates #43–#45 are TAINTED — same defect as D3's killed concept
+  (fleet-derived, no lineage from the official brief). **Do not build
+  any of them.** Entry mechanics are unchanged (workshop qualification,
+  G-07 profile gate, 5-item submission checklist, Nov 4 deadline); the
+  replacement concept is generated brief-first from the official brief
+  text (evidence pack `docs/ops/CHALLENGE-BRIEF-EVIDENCE-2026-10-28.md`),
+  Delphi lane.
+- **Concept (TAINTED — do not build):** "Proof Before Help" — a climate-resilience agent (cooling-center
   / shelter router for extreme-heat events) whose consequential tool calls are
   gated by a Decider-style evidence check: the agent must cite a current,
   sourced fact (weather alert, facility status) before it may recommend or
@@ -328,7 +337,7 @@ FUTURE (logged, not now): DoE-style comparison of manager implementations.
 ### D2 — for C2, Vultr Agent Rush (Foundry entry) — IN PROGRESS
 
 <!-- countdown-data:D2 opens=2026-11-05T00:00:00-08:00 closes=2026-11-08T15:00:00-08:00 -->
-<!-- countdown:D2 -->⏳ opens in 7d 19h (computed 2026-10-28 05:01 PT)<!-- /countdown:D2 -->
+<!-- countdown:D2 -->⏳ opens in 7d 17h (computed 2026-10-28 07:54 PT)<!-- /countdown:D2 -->
 
 `entrant{entrantLablabAi}[platform:lablab-ai]` + `entrant{entrantVultr}[platform:vultr]`
 
@@ -355,21 +364,34 @@ FUTURE (logged, not now): DoE-style comparison of manager implementations.
   that step and surfaces — the card rule is the gate, and the halt is the
   evidence it fired.
 
-### D3 — for C3, Builder.io Agent-Native Hackathon — IN PROGRESS (scoped 2026-10-26)
+### D3 — for C3, Builder.io Agent-Native Hackathon — STOPPED 2026-10-28 (concept killed; brief-first regeneration pending)
 
-<!-- countdown-data:D3 opens=- closes=2026-11-02T23:59:00-08:00 -->
-<!-- countdown:D3 -->⏳ closes in 5d 19h (computed 2026-10-28 05:01 PT)<!-- /countdown:D3 -->
+<!-- countdown-data:D3 opens=- closes=2026-11-09T23:59:00-08:00 -->
+<!-- countdown:D3 -->⏳ closes in 12d 17h (computed 2026-10-28 07:54 PT)<!-- /countdown:D3 -->
 
 `entrant{entrantBuilderIo}[platform:builder-io]`
 
 - **Verified from the official page (2026-10-26):** no registration required;
   build window open since Oct 19; final weekend Oct 30–Nov 1; submit by
-  **Nov 2, 11:59 PM PT**; entry = working Agent-Native app + public Clips demo
+  **Nov 2, 11:59 PM PT**; entry = working Agent-Native app + public Clips demo.
+  **SCHEDULE CORRECTED 2026-10-28:** the official pages as re-read
+  2026-10-28 state the hackathon begins Oct 27, the final weekend is
+  Nov 6–8, and the deadline is **Monday, November 9, 2026, 11:59 PM PT**
+  (Official Rules, verbatim in `docs/ops/CHALLENGE-BRIEF-EVIDENCE-2026-10-28.md`).
+  The countdown instant above carries Nov 9.
   + project details. Judged shape: "an agent with a purpose; an interface that
   puts users in control; a connected experience" — UI and agent call the same
   actions, defined once with `defineAction()` (`@agent-native/core`, zod
   schemas, React UI).
-- **Concept:** "Delphi Desk" — a human-in-the-loop decision-review cockpit. A
+- **STOP — CONCEPT KILLED (owner ruling, 2026-10-28): "Delphi Desk"
+  (generated proposal #42) is KILLED** — it duplicates the fleet's own
+  Delphi system, is inward-looking, and has no lineage from the official
+  Builder.io brief. **Do not build it.** Scaffold halt: none was ever
+  started (no app directory exists) — clean. The entry itself is not
+  cancelled: a replacement concept is generated brief-first from the
+  official brief text (evidence pack
+  `docs/ops/CHALLENGE-BRIEF-EVIDENCE-2026-10-28.md`), Delphi lane.
+  The killed concept, for the record: "Delphi Desk" — a human-in-the-loop decision-review cockpit. A
   Delphi-style agent panel drafts engineering decision proposals with evidence
   receipts (the fleet's Delphi Oracle pattern); every consequential move —
   approve, request changes, escalate, annotate, apply-with-conditions — is a
@@ -380,11 +402,11 @@ FUTURE (logged, not now): DoE-style comparison of manager implementations.
   reconciliation ledger (Delphi DEBATE envelope + CMDB conflict matrix, PR
   #1655). This is a **new build** on the framework, seeded only with
   synthetic/public fixture data — not repurposed material.
-- **Build plan:** Oct 27–29 scaffold, action set, seed fixtures, agent loop
+- **Build plan (HALTED 2026-10-28 with the concept):** Oct 27–29 scaffold, action set, seed fixtures, agent loop
   (deterministic panel locally, so the demo never depends on an API key);
   Oct 30–Nov 1 concentrated build (review flows, ledger, agent revision loop);
   Nov 2 polish, Clips demo, submit.
-- **Citable basis (generated):** `docs/proposals/active/delphi-desk-builder-io/`
+- **Citable basis (generated; SUPERSEDED by the 2026-10-28 kill ruling above):** `docs/proposals/active/delphi-desk-builder-io/`
   — the Oracle Method's first generated proposal (PR #1708, merged 7a7a5888;
   proposal registry #42, the registry's first `author: oracle-method`;
   generated from a live-fetched 117-item evidence set including this
@@ -432,7 +454,7 @@ FUTURE (logged, not now): DoE-style comparison of manager implementations.
 ### D4 — for C4, Kiroween 2026 — REGISTERING (build sequenced after Nov 8)
 
 <!-- countdown-data:D4 opens=2026-10-30T13:00:00-07:00 closes=2026-12-04T14:00:00-08:00 -->
-<!-- countdown:D4 -->⏳ opens in 2d 7h (computed 2026-10-28 05:01 PT)<!-- /countdown:D4 -->
+<!-- countdown:D4 -->⏳ opens in 2d 5h (computed 2026-10-28 07:54 PT)<!-- /countdown:D4 -->
 
 `entrant{entrantDevpost}[platform:devpost]` + `entrant{entrantKiro}[platform:kiro]` — account creation owned by the dedicated Devpost + Kiro ID creation chat (owner order 2026-10-27, fleet Google identity route); registration completes with this lane on its handoff.
 
@@ -486,7 +508,7 @@ FUTURE (logged, not now): DoE-style comparison of manager implementations.
 ### D5 — for Aha! AI Builder Day Hackathon (Aha.io) — REGISTERED 2026-10-27 (spot pending review)
 
 <!-- countdown-data:D5 opens=2026-11-17T09:00:00-08:00 closes=2026-11-19T23:59:00-08:00 -->
-<!-- countdown:D5 -->⏳ opens in 20d 4h (computed 2026-10-28 05:01 PT)<!-- /countdown:D5 -->
+<!-- countdown:D5 -->⏳ opens in 20d 2h (computed 2026-10-28 07:54 PT)<!-- /countdown:D5 -->
 
 `entrant{n0nAha}[platform:aha-io]` (assigned via the registry process,
 PR #1970 merged 2e99fadd).

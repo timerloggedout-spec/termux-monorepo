@@ -272,6 +272,28 @@ a submission path reaches an owner-account step.
   account. No in-window completion evidence → the entry does not submit,
   whatever else is ready; the checklist item above is the gate, not a
   reminder.
+- **Workshop runbook — STARTS Oct 28 (owner decision 2026-10-27; steps from
+  the official challenge page, read 2026-10-27):**
+  1. Sign in to Builder Center as the owner (GitHub route). **First
+     complete the Builder profile (G-07)** — an incomplete profile gates
+     the entry's validity regardless of the workshop.
+  2. Open the free sandbox workshops listing on Builder Center; find
+     **"Building AI Agents with Strands SDK: From Simple Loops to
+     Multi-Agent Swarms."**
+  3. Click **Request free sandbox environment** — free, no AWS account or
+     card (official AWS announcement). The sandbox runs **8 hours from
+     activation**, one per week, ~15 min to provision, auto-cleanup after:
+     request it only when ready to sit the work block.
+  4. Complete the workshop's modules/checkpoints (progress saves
+     automatically; checkpoints validate as you go).
+  5. **Evidence:** on completion a verified badge + completion certificate
+     appear under the profile's Badges tab, with a platform notification
+     (official workshops article). This lane verifies the badge on the
+     public profile and records its date here — the date must read
+     Oct 28–Nov 4 for the qualifier to count.
+  6. Build/publish then proceed in-window: public repo (agent, D0-inherited
+     kernel + fetch_evidence pattern), Builder Center article, <3-min demo
+     video; submission under the owner account by Nov 4 23:59 PT.
 
 ### D2 — for C2, Vultr Agent Rush (Foundry entry) — IN PROGRESS
 

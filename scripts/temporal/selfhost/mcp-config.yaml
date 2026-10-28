@@ -1,0 +1,5 @@
+targets:
+  - name: selfhost
+    description: Fleet self-hosted Temporal (dev-server mode, systemd temporal-selfhost, sqlite DB).
+    address: localhost:7233
+    namespace: default

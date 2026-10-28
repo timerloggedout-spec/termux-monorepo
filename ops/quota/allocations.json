@@ -1909,6 +1909,46 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ]
+    },
+    {
+      "id": "pinecone",
+      "services": [
+        "pinecone.storage",
+        "pinecone.write_units",
+        "pinecone.read_units",
+        "pinecone.indexes",
+        "pinecone.egress"
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-28",
+          "reason": "Owner setting (issue #1884): every non-excluded pool stands at Winning 100. Pool created 2026-10-28 in the registry-restoration repair \u2014 the pinecone.* records landed via PR #2018 without an allocations entry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-28",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-28",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-28",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ]
     }
   ]
 }

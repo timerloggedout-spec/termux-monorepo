@@ -1,6 +1,6 @@
 {
   "schema": "quota-allocations-feed/v1",
-  "generated_at": "2026-10-28T13:20:33.954640+00:00",
+  "generated_at": "2026-10-28T14:10:44.091947+00:00",
   "source": "ops/quota/allocations.json (owner-set, issue #1884) joined with ops/quota/registry.json entitlements and the public readings snapshot; entitlements are not usage and no focus attribution is invented.",
   "issue": 1884,
   "set_by": "owner",
@@ -2867,6 +2867,89 @@
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
+    },
+    {
+      "pool": "pinecone",
+      "services": [
+        {
+          "service": "pinecone.storage",
+          "entitlement": {
+            "limit": 2,
+            "unit": "GB",
+            "window": "point-in-time"
+          },
+          "observed": null
+        },
+        {
+          "service": "pinecone.write_units",
+          "entitlement": {
+            "limit": 2000000,
+            "unit": "WU/month",
+            "window": "monthly"
+          },
+          "observed": null
+        },
+        {
+          "service": "pinecone.read_units",
+          "entitlement": {
+            "limit": 1000000,
+            "unit": "RU/month",
+            "window": "monthly"
+          },
+          "observed": null
+        },
+        {
+          "service": "pinecone.indexes",
+          "entitlement": {
+            "limit": 5,
+            "unit": "indexes (100 namespaces each)",
+            "window": "point-in-time"
+          },
+          "observed": null
+        },
+        {
+          "service": "pinecone.egress",
+          "entitlement": {
+            "limit": 1,
+            "unit": "GB/month",
+            "window": "monthly"
+          },
+          "observed": null
+        }
+      ],
+      "allocations": [
+        {
+          "focus": "winning",
+          "pct": 100,
+          "mode": "standing",
+          "date": "2026-10-28",
+          "reason": "Owner setting (issue #1884): every non-excluded pool stands at Winning 100. Pool created 2026-10-28 in the registry-restoration repair \u2014 the pinecone.* records landed via PR #2018 without an allocations entry."
+        },
+        {
+          "focus": "repo-development",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-28",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        },
+        {
+          "focus": "boinc-donations",
+          "pct": 0,
+          "mode": "none",
+          "date": "2026-10-28",
+          "reason": "BOINC runs only on GitHub-provider surfaces (owner rule); this pool is not eligible."
+        },
+        {
+          "focus": "research",
+          "pct": 0,
+          "mode": "leftover-only",
+          "date": "2026-10-28",
+          "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
+        }
+      ],
+      "reserve_pct": 0,
+      "constraints": [],
+      "observed_consumption_by_focus": null
     }
   ],
   "gantt": [
@@ -5158,6 +5241,51 @@
     },
     {
       "pool": "platform201",
+      "focus": "reserve",
+      "mode": "reserve",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "pinecone",
+      "focus": "winning",
+      "mode": "standing",
+      "plan_pct": 100,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "pinecone",
+      "focus": "repo-development",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "pinecone",
+      "focus": "boinc-donations",
+      "mode": "none",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "pinecone",
+      "focus": "research",
+      "mode": "leftover-only",
+      "plan_pct": 0,
+      "actual_pct": null,
+      "plan_start": "2026-10-27",
+      "plan_end": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "pool": "pinecone",
       "focus": "reserve",
       "mode": "reserve",
       "plan_pct": 0,

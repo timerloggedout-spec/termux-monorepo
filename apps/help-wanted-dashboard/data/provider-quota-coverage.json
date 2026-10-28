@@ -1890,6 +1890,41 @@
       "provider": "huggingface",
       "quota_manager_owner": "Manager",
       "service_id": "huggingface.hub_api"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "pinecone",
+      "quota_manager_owner": "Manager",
+      "service_id": "pinecone.storage"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "pinecone",
+      "quota_manager_owner": "Manager",
+      "service_id": "pinecone.write_units"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "pinecone",
+      "quota_manager_owner": "Manager",
+      "service_id": "pinecone.read_units"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "pinecone",
+      "quota_manager_owner": "Manager",
+      "service_id": "pinecone.indexes"
+    },
+    {
+      "freshness_owner": "ChronoMancer",
+      "observation_method": "manual_or_unknown",
+      "provider": "pinecone",
+      "quota_manager_owner": "Manager",
+      "service_id": "pinecone.egress"
     }
   ]
 }

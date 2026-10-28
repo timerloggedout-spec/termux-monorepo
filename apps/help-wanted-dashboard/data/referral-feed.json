@@ -15,14 +15,39 @@
    "migoo_code": "Du7Ehu",
    "name": "steak"
   },
+  "cell_C": {
+   "codes": "live_code for all programmes (no third code pool exists; attribution via landing param)",
+   "copy": "urgency/mechanic-first: 48h redeem window, code not card",
+   "landing_param": "?ch=fb-c",
+   "name": "mechanic"
+  },
   "decision_rule": "winner copy becomes default on X/TikTok/Instagram/YouTube after 10 attributed redemptions or 14 days, whichever first",
+  "design": "DoE.MVT 3-cell (owner upgrade from 2-cell A/B, 2026-10-27)",
   "id": "fb-pages-sizzle-vs-steak-1",
   "metric": "redemptions per cell (code-level for Cue/Migoo, landing-param for Muse) + landing clicks",
+  "pages": {
+   "fb-a": {
+    "angle": "sizzle",
+    "moniker": "account{n0nDreamInProduction}[platform:dream-in-production]",
+    "name": "Dream In Production"
+   },
+   "fb-b": {
+    "angle": "steak",
+    "moniker": "account{n0nReceiptsCount}[platform:receipts-count]",
+    "name": "Receipts Count"
+   },
+   "fb-c": {
+    "angle": "mechanic",
+    "moniker": "account{n0nCodeNotCard}[platform:code-not-card]",
+    "name": "Code, Not Card"
+   }
+  },
   "platform": "Facebook Pages (owner creates 2 Pages; connector has no create command)",
   "shared": {
    "migoo_reserve": "TSGDUJ",
    "muse_code": "VDP1DW (single code, both cells; attribution via landing param only)"
   },
+  "source": "Page identities assigned by registration-monikers lane, issue #1909",
   "status": "designed_not_started"
  },
  "channels": [

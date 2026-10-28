@@ -1055,6 +1055,423 @@
    "planned_use": {
     "note": "no fleet account; credit model since Sep 2025 (legacy free tier closed) \u2014 a production deploy costs 15 credits; one project over limit pauses the account (dated survey, revalidate before use)"
    }
+  },
+  {
+   "id": "aion.free_tokens",
+   "provider": "aion",
+   "lane": "model",
+   "metric": "Free tier token allowance",
+   "limit": 20000,
+   "unit": "tokens/day",
+   "window": "daily",
+   "reset": "daily (schedule not published)",
+   "zone": "UTC",
+   "source": "https://api.aionlabs.ai/docs/rate-limits/",
+   "doc_quote": "Free tier: 20,000 tokens per minute; 20,000 daily token limit (15 requests per minute)",
+   "live": "none published (no rate-limit headers or usage endpoint documented)",
+   "planned_use": {
+    "safety": 0.9
+   }
+  },
+  {
+   "id": "cerebras.free_tokens",
+   "provider": "cerebras",
+   "lane": "model",
+   "metric": "Free Trial token allowance",
+   "limit": 1000000,
+   "unit": "tokens/day",
+   "window": "daily",
+   "reset": "continuous token-bucket replenishment; no fixed reset",
+   "zone": "UTC",
+   "source": "https://inference-docs.cerebras.ai/support/rate-limits",
+   "doc_quote": "Free Trial tier (gpt-oss-120b / qwen-3.8-27b): 5 RPM, 30K uncached TPM, 1M TPH, 1M TPD",
+   "live": "none published (no usage endpoint or rate-limit headers documented); Cloud Console Limits page is authoritative per organization; 429 names the exceeded bucket",
+   "planned_use": {
+    "safety": 0.9
+   }
+  },
+  {
+   "id": "cloudflare.workers_ai",
+   "provider": "cloudflare",
+   "lane": "model",
+   "metric": "Workers AI free allocation",
+   "limit": 10000,
+   "unit": "Neurons/day",
+   "window": "daily",
+   "reset": "daily at 00:00 UTC",
+   "zone": "UTC",
+   "source": "https://developers.cloudflare.com/workers-ai/platform/pricing/",
+   "doc_quote": "Our free allocation allows anyone to use a total of 10,000 Neurons per day at no charge.",
+   "live": "none published (no usage API); Workers AI dashboard only",
+   "planned_use": {
+    "safety": 0.9
+   }
+  },
+  {
+   "id": "cohere.trial_calls",
+   "provider": "cohere",
+   "lane": "model",
+   "metric": "Trial key call allowance",
+   "limit": 1000,
+   "unit": "API calls/month",
+   "window": "monthly",
+   "reset": "monthly",
+   "zone": "UTC",
+   "source": "https://docs.cohere.com/docs/rate-limits",
+   "doc_quote": "Trial keys (and prod keys on newer Chat model variants) are limited to 1,000 API calls a month.",
+   "live": "response meta billed_units; dashboard (no dedicated usage endpoint documented)",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "Chat trial cap is also 20 requests/minute per model."
+   }
+  },
+  {
+   "id": "felo.api_credits",
+   "provider": "felo",
+   "lane": "model",
+   "metric": "API service credits (pay-as-you-go)",
+   "limit": null,
+   "unit": "USD service credits",
+   "window": "n/a",
+   "reset": "n/a",
+   "zone": "UTC",
+   "source": "https://openapi.felo.ai/pricing",
+   "doc_quote": "There is no recurring free credit allowance.",
+   "live": "response headers X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, Retry-After",
+   "planned_use": {
+    "note": "no free entitlement; pay-as-you-go only \u2014 record exists so the family maps and the absence is documented, not assumed"
+   }
+  },
+  {
+   "id": "groq.free_tier",
+   "provider": "groq",
+   "lane": "model",
+   "metric": "Free tier rate limits (per model)",
+   "limit": null,
+   "unit": "per-model requests/tokens",
+   "window": "per minute/day",
+   "reset": "x-ratelimit-reset-requests / x-ratelimit-reset-tokens headers",
+   "zone": "UTC",
+   "source": "https://console.groq.com/docs/rate-limits",
+   "doc_quote": "Free-tier limits are published per model (e.g. chat models 30 RPM, 1,000 requests/day, 8K TPM, 200K tokens/day); no single account-wide number.",
+   "live": "response headers x-ratelimit-limit-requests, x-ratelimit-remaining-requests, x-ratelimit-reset-requests, x-ratelimit-limit-tokens, x-ratelimit-remaining-tokens, x-ratelimit-reset-tokens, retry-after (passive adapter implemented)",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "per-model tables govern; read the headers, not this record, for the live ceiling"
+   }
+  },
+  {
+   "id": "huggingface.inference_providers",
+   "provider": "huggingface",
+   "lane": "model",
+   "metric": "Inference Providers monthly credits",
+   "limit": null,
+   "unit": "monthly credits",
+   "window": "monthly",
+   "reset": "monthly",
+   "zone": "UTC",
+   "source": "https://huggingface.co/docs/inference-providers/pricing",
+   "doc_quote": "Free users: monthly included credits are None (the former $0.10 credit no longer applies); usage beyond is pay-as-you-go.",
+   "live": "organization usage API GET /api/organizations/{org}/billing/usage/inference (Enterprise only); no free-tier usage endpoint",
+   "planned_use": {
+    "note": "no free numeric entitlement published; treat as unknown, not zero-usage"
+   }
+  },
+  {
+   "id": "kilo.free_models",
+   "provider": "kilo",
+   "lane": "model",
+   "metric": "Free model requests (kilo-auto/free)",
+   "limit": 200,
+   "unit": "requests/hour",
+   "window": "hourly",
+   "reset": "per-hour window (per IP)",
+   "zone": "UTC",
+   "source": "https://kilo.ai/docs/getting-started/rate-limits-and-costs",
+   "doc_quote": "Free models (kilo-auto/free): 200 requests per hour per IP.",
+   "live": "none published",
+   "planned_use": {
+    "safety": 0.9
+   }
+  },
+  {
+   "id": "llm7.free_token",
+   "provider": "llm7",
+   "lane": "model",
+   "metric": "Free token allowance (turbo models)",
+   "limit": 100000,
+   "unit": "tokens/day",
+   "window": "daily",
+   "reset": "daily",
+   "zone": "UTC",
+   "source": "https://docs.llm7.io/guides/models-api",
+   "doc_quote": "Free token | turbo models | 100,000 tokens per day | 1 request/second, 60/minute, 250/hour",
+   "live": "GET /v1/models per-model tier/pricing/limit fields; allowance state via dashboard",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "free-token quotas may be reduced without notice per the same page"
+   }
+  },
+  {
+   "id": "mistral.free_mode",
+   "provider": "mistral",
+   "lane": "model",
+   "metric": "Free mode (Experiment) included usage",
+   "limit": null,
+   "unit": "included usage (per model, in-account)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://docs.mistral.ai/admin/billing-usage/usage-limits",
+   "doc_quote": "Free mode usage limits are shown per model in the signed-in Admin Panel (Usage limits); no public numeric table is published.",
+   "live": "none published (Admin Panel only; Admin API is Enterprise)",
+   "planned_use": {
+    "note": "numbers exist only behind sign-in; never record the unsourced figures circulating elsewhere"
+   }
+  },
+  {
+   "id": "modelscope.api_inference",
+   "provider": "modelscope",
+   "lane": "model",
+   "metric": "API-Inference usage limits",
+   "limit": null,
+   "unit": "unknown",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://www.modelscope.cn/docs/model-service/API-Inference/limits",
+   "doc_quote": "Official API-Inference usage-limits page exists but could not be retrieved (fetch timeout, 2026-10-27); no number recorded.",
+   "live": "none published (not established)",
+   "planned_use": {
+    "note": "revalidate against the official limits page before any numeric claim; third-party figures are not evidence"
+   }
+  },
+  {
+   "id": "nvidia.api_catalog",
+   "provider": "nvidia",
+   "lane": "model",
+   "metric": "API catalog free model limits (per model, in-account)",
+   "limit": null,
+   "unit": "per-model credits/limits (in-account)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://build.nvidia.com/",
+   "doc_quote": "Current free limits are per model in the signed-in build.nvidia.com catalog; no public numeric table is published.",
+   "live": "none published",
+   "planned_use": {
+    "note": "a legacy FAQ figure (up to 5,000 credits) is NOT recorded: it is not a current documented entitlement"
+   }
+  },
+  {
+   "id": "omni.gateway",
+   "provider": "omni",
+   "lane": "model",
+   "metric": "OmniRoute gateway (self-hosted; no own entitlement)",
+   "limit": null,
+   "unit": "n/a (aggregates upstream free tiers)",
+   "window": "n/a",
+   "reset": "n/a",
+   "zone": "UTC",
+   "source": "https://github.com/crl33/omniroute",
+   "doc_quote": "OmniRoute aggregates the documented free tiers of 42 provider pools / 495 models into one honest number and shows it live on the dashboard (/dashboard/free-tiers).",
+   "live": "self-hosted dashboard /dashboard/free-tiers shows live used/remaining per upstream pool; no hosted usage API or rate-limit headers",
+   "planned_use": {
+    "note": "no entitlement of its own; the upstream providers' registry records govern"
+   }
+  },
+  {
+   "id": "ovhcloud.ai_endpoints",
+   "provider": "ovhcloud",
+   "lane": "model",
+   "metric": "AI Endpoints anonymous rate limit",
+   "limit": 2,
+   "unit": "requests/minute",
+   "window": "per minute",
+   "reset": "per-minute window",
+   "zone": "UTC",
+   "source": "https://docs.ovhcloud.com/en/guides/public-cloud/ai-machine-learning/ai-endpoints-getting-started",
+   "doc_quote": "Anonymous: 2 requests per minute, per IP and per model.",
+   "live": "none published; consumption visible in the Control Panel",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "authenticated with an API access key: 400 requests/minute per project per model (same source)"
+   }
+  },
+  {
+   "id": "requesty.free_models",
+   "provider": "requesty",
+   "lane": "model",
+   "metric": "Free model requests",
+   "limit": 200,
+   "unit": "requests/day",
+   "window": "daily",
+   "reset": "daily",
+   "zone": "UTC",
+   "source": "https://www.requesty.ai/free-models",
+   "doc_quote": "You get 200 requests per day at no cost, with no credit card required.",
+   "live": "GET /v1/manage/org/usage; GET /v1/manage/apikey/{id}/usage",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "shared org-wide; the figure has moved before (older changelog: 50/day for new orgs) \u2014 revalidate periodically"
+   }
+  },
+  {
+   "id": "routeway.free_models",
+   "provider": "routeway",
+   "lane": "model",
+   "metric": "Free model requests (:free models)",
+   "limit": 200,
+   "unit": "requests/day",
+   "window": "daily",
+   "reset": "UTC midnight (X-RateLimit-Reset-Day)",
+   "zone": "UTC",
+   "source": "https://docs.routeway.ai/getting-started/rate-limits",
+   "doc_quote": "Free models (e.g., deepseek-r1:free) are subject to the following rate limits: 5 Requests Per Minute (RPM), 200 Requests Per Day (RPD)",
+   "live": "headers X-RateLimit-Limit-Minute, X-RateLimit-Remaining-Minute, X-RateLimit-Reset-Minute, X-RateLimit-Limit-Day, X-RateLimit-Remaining-Day, X-RateLimit-Reset-Day, Retry-After",
+   "planned_use": {
+    "safety": 0.9
+   }
+  },
+  {
+   "id": "sambanova.free_tier",
+   "provider": "sambanova",
+   "lane": "model",
+   "metric": "Free Tier requests per model",
+   "limit": 20,
+   "unit": "requests/day per model",
+   "window": "daily",
+   "reset": "daily (x-ratelimit-reset-requests-day header)",
+   "zone": "UTC",
+   "source": "https://sambanova-systems.mintlify.dev/docs/en/models/rate-limits",
+   "doc_quote": "Free Tier (no payment method linked): 20 RPM, 20 requests per day, 200,000 tokens per day per model",
+   "live": "response headers x-ratelimit-limit-requests, x-ratelimit-remaining-requests, x-ratelimit-reset-requests, x-ratelimit-limit-requests-day, x-ratelimit-remaining-requests-day, x-ratelimit-reset-requests-day (passive adapter implemented)",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "tokens/day cap (200,000 per model) binds before requests/day for long generations"
+   }
+  },
+  {
+   "id": "sealion.api",
+   "provider": "sealion",
+   "lane": "model",
+   "metric": "Trial API rate limit",
+   "limit": 10,
+   "unit": "requests/minute per user",
+   "window": "per minute",
+   "reset": "per-minute window",
+   "zone": "UTC",
+   "source": "https://docs.sea-lion.ai/guides/inferencing/api",
+   "doc_quote": "As of 04 Jun 2026, our rate limits is set to 10 requests per minute per user",
+   "live": "none published",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "free trial key via SEA-LION Playground; 1 API key per user; no daily quota published"
+   }
+  },
+  {
+   "id": "siliconflow.free_models",
+   "provider": "siliconflow",
+   "lane": "model",
+   "metric": "Free model rate limits (per model)",
+   "limit": null,
+   "unit": "requests/minute + tokens/minute (per model)",
+   "window": "per minute/day",
+   "reset": "per-window",
+   "zone": "UTC",
+   "source": "https://siliconflow-4a6a0801.mintlify.app/en/userguide/rate-limits/rate-limit-and-upgradation",
+   "doc_quote": "The Rate limits for free models are fixed values, while those for paid models vary based on the account's usage level",
+   "live": "GET user/info balance fields data.balance / data.chargeBalance / data.totalBalance (monetary only, passive adapter implemented); no rate-limit headers published; per-model free values shown in the account console only",
+   "planned_use": {
+    "note": "no single free number exists; per-model fixed values are console-only"
+   }
+  },
+  {
+   "id": "typhoon.api",
+   "provider": "typhoon",
+   "lane": "model",
+   "metric": "Typhoon API (free research showcase)",
+   "limit": null,
+   "unit": "unknown (no numeric limit published)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://docs.opentyphoon.ai/en/faq/",
+   "doc_quote": "The Typhoon API is a research showcase and free to use.",
+   "live": "none published",
+   "planned_use": {
+    "note": "free to use with no documented numeric limit; treat ceiling as unknown"
+   }
+  },
+  {
+   "id": "unorouter.free_models",
+   "provider": "unorouter",
+   "lane": "model",
+   "metric": "Free model rate cap (UnoRouter's own, above upstream)",
+   "limit": 1,
+   "unit": "requests/minute per free model per user",
+   "window": "per minute",
+   "reset": "per-minute window; Retry-After on 429",
+   "zone": "UTC",
+   "source": "http://unorouter.com/en/blog/free-models-aggregated",
+   "doc_quote": "On top of the upstream caps we add a small limit of our own: one request per minute per free model, per user",
+   "live": "Retry-After header on HTTP 429",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "upstream providers impose their own caps (RPM, daily token quotas) beneath this one"
+   }
+  },
+  {
+   "id": "xfyun.spark",
+   "provider": "xfyun",
+   "lane": "model",
+   "metric": "Spark API free quota",
+   "limit": null,
+   "unit": "unknown",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://xinghuo.xfyun.cn/sparkapi",
+   "doc_quote": "Official Spark API page could not be retrieved (fetch timeout, 2026-10-27); no number recorded.",
+   "live": "none published (not established)",
+   "planned_use": {
+    "note": "revalidate against the official page before any numeric claim; third-party figures are not evidence"
+   }
+  },
+  {
+   "id": "xkiro.free_models",
+   "provider": "xkiro",
+   "lane": "model",
+   "metric": "Free model token allowance",
+   "limit": 500000,
+   "unit": "tokens/day",
+   "window": "daily",
+   "reset": "daily reset; free-model requests blocked with 429 until the reset",
+   "zone": "UTC",
+   "source": "https://xkiro.com/",
+   "doc_quote": "Yes. 45 models are free to call on every account, within a daily allowance of 500K tokens \u2014 1M after you verify on Telegram. No credit card required.",
+   "live": "Retry-After header when the wait is known; usage attributed per API key with dashboard call logs (model/tokens/cost/status); no dedicated usage endpoint published",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "allowance doubles to 1,000,000 tokens/day after Telegram verification"
+   }
+  },
+  {
+   "id": "zai.free_models",
+   "provider": "zai",
+   "lane": "model",
+   "metric": "Free ($0 Flash) model limits",
+   "limit": null,
+   "unit": "per-account (unpublished)",
+   "window": "unknown",
+   "reset": "unknown",
+   "zone": "UTC",
+   "source": "https://docs.z.ai/api-reference/api-code",
+   "doc_quote": "Free access is via $0 Flash models; per-account numeric limits are not published in the API-code documentation.",
+   "live": "HTTP 429 error body codes 1308 / 1316-1321 carry a next_flush_time field (documented in the API-code reference)",
+   "planned_use": {
+    "note": "treat the ceiling as unknown; the 429 body's next_flush_time is the only documented telemetry"
+   }
   }
  ]
 }

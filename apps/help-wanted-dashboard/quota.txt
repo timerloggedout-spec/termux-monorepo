@@ -1,5 +1,5 @@
 ================================================================================
- QUOTA  termux-monorepo  (64 registry records)
+ QUOTA  termux-monorepo  (88 registry records)
  Snapshot generated (not observation time): 2026-10-27T14:31:57Z
  Source: apps/help-wanted-dashboard/data/quota.json + ops/quota/registry.json
  Limits are documented entitlements, not balances.
@@ -24,6 +24,15 @@
     metric: referral/bonus credits (docs/PARTNERS.md) | window: one-time |
     reset: none
     No live reading (live source: none)
+--------------------------------------------------------------------------------
+ aion (1)
+  aion.free_tokens
+    status: No live reading
+    limit (documented): 20000 tokens/day
+    metric: Free tier token allowance | window: daily | reset: daily (schedule
+    not published)
+    No live reading (live source: none published (no rate-limit headers or usage
+    endpoint documented))
 --------------------------------------------------------------------------------
  aws (4)
   aws.account_credits
@@ -64,7 +73,17 @@
     calendar month
     No live reading (live source: none)
 --------------------------------------------------------------------------------
- cloudflare (7)
+ cerebras (1)
+  cerebras.free_tokens
+    status: No live reading
+    limit (documented): 1000000 tokens/day
+    metric: Free Trial token allowance | window: daily | reset: continuous
+    token-bucket replenishment; no fixed reset
+    No live reading (live source: none published (no usage endpoint or
+    rate-limit headers documented); Cloud Console Limits page is authoritative
+    per organization; 429 names the exceeded bucket)
+--------------------------------------------------------------------------------
+ cloudflare (8)
   cloudflare.d1_rows_read
     status: No live reading
     limit (documented): 5000000 rows/day
@@ -96,11 +115,26 @@
     metric: R2 storage (Free, Standard) | window: monthly | reset: calendar
     month
     No live reading (live source: none)
+  cloudflare.workers_ai
+    status: No live reading
+    limit (documented): 10000 Neurons/day
+    metric: Workers AI free allocation | window: daily | reset: daily at 00:00
+    UTC
+    No live reading (live source: none published (no usage API); Workers AI
+    dashboard only)
   cloudflare.workers_requests
     status: No live reading
     limit (documented): 100000 requests/day
     metric: Workers requests (Free plan) | window: daily | reset: 00:00 UTC
     No live reading (live source: none)
+--------------------------------------------------------------------------------
+ cohere (1)
+  cohere.trial_calls
+    status: No live reading
+    limit (documented): 1000 API calls/month
+    metric: Trial key call allowance | window: monthly | reset: monthly
+    No live reading (live source: response meta billed_units; dashboard (no
+    dedicated usage endpoint documented))
 --------------------------------------------------------------------------------
  deno (1)
   deno.deploy_requests
@@ -123,6 +157,14 @@
     metric: new-account trial credit | window: one-time (60 days) | reset: 60
     days from signup
     No live reading (live source: none)
+--------------------------------------------------------------------------------
+ felo (1)
+  felo.api_credits
+    status: No live reading
+    limit (documented): n/a USD service credits
+    metric: API service credits (pay-as-you-go) | window: n/a | reset: n/a
+    No live reading (live source: response headers X-RateLimit-Limit,
+    X-RateLimit-Remaining, X-RateLimit-Reset, Retry-After)
 --------------------------------------------------------------------------------
  fly (1)
   fly.free_tier
@@ -225,12 +267,65 @@
     metric: ingestion_rate per series | window: instant | reset: n/a
     No live reading (live source: none)
 --------------------------------------------------------------------------------
+ groq (1)
+  groq.free_tier
+    status: No live reading
+    limit (documented): n/a per-model requests/tokens
+    metric: Free tier rate limits (per model) | window: per minute/day | reset:
+    x-ratelimit-reset-requests / x-ratelimit-reset-tokens headers
+    No live reading (live source: response headers x-ratelimit-limit-requests,
+    x-ratelimit-remaining-requests, x-ratelimit-reset-requests,
+    x-ratelimit-limit-tokens, x-ratelimit-remaining-tokens,
+    x-ratelimit-reset-tokens, retry-after (passive adapter implemented))
+--------------------------------------------------------------------------------
+ huggingface (1)
+  huggingface.inference_providers
+    status: No live reading
+    limit (documented): n/a monthly credits
+    metric: Inference Providers monthly credits | window: monthly | reset:
+    monthly
+    No live reading (live source: organization usage API GET
+    /api/organizations/{org}/billing/usage/inference (Enterprise only); no
+    free-tier usage endpoint)
+--------------------------------------------------------------------------------
+ kilo (1)
+  kilo.free_models
+    status: No live reading
+    limit (documented): 200 requests/hour
+    metric: Free model requests (kilo-auto/free) | window: hourly | reset:
+    per-hour window (per IP)
+    No live reading (live source: none published)
+--------------------------------------------------------------------------------
  koyeb (1)
   koyeb.free_instance
     status: No live reading
     limit (documented): 1 instance
     metric: free web service instances | window: point-in-time | reset: n/a
     No live reading (live source: none)
+--------------------------------------------------------------------------------
+ llm7 (1)
+  llm7.free_token
+    status: No live reading
+    limit (documented): 100000 tokens/day
+    metric: Free token allowance (turbo models) | window: daily | reset: daily
+    No live reading (live source: GET /v1/models per-model tier/pricing/limit
+    fields; allowance state via dashboard)
+--------------------------------------------------------------------------------
+ mistral (1)
+  mistral.free_mode
+    status: No live reading
+    limit (documented): n/a included usage (per model, in-account)
+    metric: Free mode (Experiment) included usage | window: unknown | reset:
+    unknown
+    No live reading (live source: none published (Admin Panel only; Admin API is
+    Enterprise))
+--------------------------------------------------------------------------------
+ modelscope (1)
+  modelscope.api_inference
+    status: No live reading
+    limit (documented): n/a unknown
+    metric: API-Inference usage limits | window: unknown | reset: unknown
+    No live reading (live source: none published (not established))
 --------------------------------------------------------------------------------
  neon (4)
   neon.compute
@@ -263,6 +358,14 @@
     month
     No live reading (live source: none)
 --------------------------------------------------------------------------------
+ nvidia (1)
+  nvidia.api_catalog
+    status: No live reading
+    limit (documented): n/a per-model credits/limits (in-account)
+    metric: API catalog free model limits (per model, in-account) | window:
+    unknown | reset: unknown
+    No live reading (live source: none published)
+--------------------------------------------------------------------------------
  ollama (1)
   ollama.balance
     status: No live reading
@@ -275,6 +378,16 @@
     No live reading (live source: opt-in only: python3 -m
     scripts.provider_quota_service --observe; GET https://ollama.com/api/balance
     (OLLAMA_API_KEY))
+--------------------------------------------------------------------------------
+ omni (1)
+  omni.gateway
+    status: No live reading
+    limit (documented): n/a n/a (aggregates upstream free tiers)
+    metric: OmniRoute gateway (self-hosted; no own entitlement) | window: n/a |
+    reset: n/a
+    No live reading (live source: self-hosted dashboard /dashboard/free-tiers
+    shows live used/remaining per upstream pool; no hosted usage API or
+    rate-limit headers)
 --------------------------------------------------------------------------------
  openrouter (2)
   openrouter.free_models
@@ -316,6 +429,15 @@
     n/a
     No live reading (live source: none)
 --------------------------------------------------------------------------------
+ ovhcloud (1)
+  ovhcloud.ai_endpoints
+    status: No live reading
+    limit (documented): 2 requests/minute
+    metric: AI Endpoints anonymous rate limit | window: per minute | reset:
+    per-minute window
+    No live reading (live source: none published; consumption visible in the
+    Control Panel)
+--------------------------------------------------------------------------------
  render (5)
   render.bandwidth
     status: No live reading
@@ -347,6 +469,54 @@
     metric: free Postgres | window: 30 days from creation | reset: expires;
     14-day grace then deleted
     No live reading (live source: none)
+--------------------------------------------------------------------------------
+ requesty (1)
+  requesty.free_models
+    status: No live reading
+    limit (documented): 200 requests/day
+    metric: Free model requests | window: daily | reset: daily
+    No live reading (live source: GET /v1/manage/org/usage; GET
+    /v1/manage/apikey/{id}/usage)
+--------------------------------------------------------------------------------
+ routeway (1)
+  routeway.free_models
+    status: No live reading
+    limit (documented): 200 requests/day
+    metric: Free model requests (:free models) | window: daily | reset: UTC
+    midnight (X-RateLimit-Reset-Day)
+    No live reading (live source: headers X-RateLimit-Limit-Minute,
+    X-RateLimit-Remaining-Minute, X-RateLimit-Reset-Minute,
+    X-RateLimit-Limit-Day, X-RateLimit-Remaining-Day, X-RateLimit-Reset-Day,
+    Retry-After)
+--------------------------------------------------------------------------------
+ sambanova (1)
+  sambanova.free_tier
+    status: No live reading
+    limit (documented): 20 requests/day per model
+    metric: Free Tier requests per model | window: daily | reset: daily
+    (x-ratelimit-reset-requests-day header)
+    No live reading (live source: response headers x-ratelimit-limit-requests,
+    x-ratelimit-remaining-requests, x-ratelimit-reset-requests,
+    x-ratelimit-limit-requests-day, x-ratelimit-remaining-requests-day,
+    x-ratelimit-reset-requests-day (passive adapter implemented))
+--------------------------------------------------------------------------------
+ sealion (1)
+  sealion.api
+    status: No live reading
+    limit (documented): 10 requests/minute per user
+    metric: Trial API rate limit | window: per minute | reset: per-minute window
+    No live reading (live source: none published)
+--------------------------------------------------------------------------------
+ siliconflow (1)
+  siliconflow.free_models
+    status: No live reading
+    limit (documented): n/a requests/minute + tokens/minute (per model)
+    metric: Free model rate limits (per model) | window: per minute/day | reset:
+    per-window
+    No live reading (live source: GET user/info balance fields data.balance /
+    data.chargeBalance / data.totalBalance (monetary only, passive adapter
+    implemented); no rate-limit headers published; per-model free values shown
+    in the account console only)
 --------------------------------------------------------------------------------
  supabase (5)
   supabase.db_storage
@@ -400,6 +570,22 @@
     metric: total storage (Free plan) | window: point-in-time | reset: n/a
     No live reading (live source: none)
 --------------------------------------------------------------------------------
+ typhoon (1)
+  typhoon.api
+    status: No live reading
+    limit (documented): n/a unknown (no numeric limit published)
+    metric: Typhoon API (free research showcase) | window: unknown | reset:
+    unknown
+    No live reading (live source: none published)
+--------------------------------------------------------------------------------
+ unorouter (1)
+  unorouter.free_models
+    status: No live reading
+    limit (documented): 1 requests/minute per free model per user
+    metric: Free model rate cap (UnoRouter's own, above upstream) | window: per
+    minute | reset: per-minute window; Retry-After on 429
+    No live reading (live source: Retry-After header on HTTP 429)
+--------------------------------------------------------------------------------
  upstash (4)
   upstash.qstash_messages
     status: No live reading
@@ -435,62 +621,87 @@
     again in 24 hours) | reset: rolling
     Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
+ xfyun (1)
+  xfyun.spark
+    status: No live reading
+    limit (documented): n/a unknown
+    metric: Spark API free quota | window: unknown | reset: unknown
+    No live reading (live source: none published (not established))
+--------------------------------------------------------------------------------
+ xkiro (1)
+  xkiro.free_models
+    status: No live reading
+    limit (documented): 500000 tokens/day
+    metric: Free model token allowance | window: daily | reset: daily reset;
+    free-model requests blocked with 429 until the reset
+    No live reading (live source: Retry-After header when the wait is known;
+    usage attributed per API key with dashboard call logs
+    (model/tokens/cost/status); no dedicated usage endpoint published)
+--------------------------------------------------------------------------------
+ zai (1)
+  zai.free_models
+    status: No live reading
+    limit (documented): n/a per-account (unpublished)
+    metric: Free ($0 Flash) model limits | window: unknown | reset: unknown
+    No live reading (live source: HTTP 429 error body codes 1308 / 1316-1321
+    carry a next_flush_time field (documented in the API-code reference))
+--------------------------------------------------------------------------------
  PROVIDER QUOTA-MANAGER COVERAGE (metadata only)
   aion: Manager / ChronoMancer; unsupported_or_no_verified_official_counter;
-  registry: MISSING — explicit gap
+  registry: aion.free_tokens
   cerebras: Manager / ChronoMancer; official_documentation_only; no passive
-  parser; registry: MISSING — explicit gap
+  parser; registry: cerebras.free_tokens
   cloudflare: Manager / ChronoMancer; official_documentation_only; no passive
-  parser; registry: MISSING — explicit gap
+  parser; registry: cloudflare.workers_ai
   cohere: Manager / ChronoMancer; official_documentation_only; no passive
-  parser; registry: MISSING — explicit gap
+  parser; registry: cohere.trial_calls
   felo: Manager / ChronoMancer; unsupported_or_no_verified_official_counter;
-  registry: MISSING — explicit gap
+  registry: felo.api_credits
   gemini: Manager / ChronoMancer; official_documentation_only; no passive
   parser; registry: gemini.api_free
   groq: Manager / ChronoMancer; implemented_passive_parser; live account
-  validation not established; registry: MISSING — explicit gap
+  validation not established; registry: groq.free_tier
   huggingface: Manager / ChronoMancer; implemented_passive_parser; live account
-  validation not established; registry: MISSING — explicit gap
+  validation not established; registry: huggingface.inference_providers
   kilo: Manager / ChronoMancer; official_documentation_only; no passive parser;
-  registry: MISSING — explicit gap
+  registry: kilo.free_models
   llm7: Manager / ChronoMancer; official_documentation_only; no passive parser;
-  registry: MISSING — explicit gap
+  registry: llm7.free_token
   mistral: Manager / ChronoMancer; official_documentation_only; no passive
-  parser; registry: MISSING — explicit gap
+  parser; registry: mistral.free_mode
   modelscope: Manager / ChronoMancer; official_documentation_only; no passive
-  parser; registry: MISSING — explicit gap
+  parser; registry: modelscope.api_inference
   nvidia: Manager / ChronoMancer; official_documentation_only; no passive
-  parser; registry: MISSING — explicit gap
+  parser; registry: nvidia.api_catalog
   ollama: Manager / ChronoMancer; opt_in_private_quota_service; live account
   validation not established; registry: ollama.balance
   omni: Manager / ChronoMancer; unsupported_or_no_verified_official_counter;
-  registry: MISSING — explicit gap
+  registry: omni.gateway
   openrouter: Manager / ChronoMancer; opt_in_private_quota_service; live account
   validation not established; registry: openrouter.free_models, openrouter.key
   ovhcloud: Manager / ChronoMancer; official_documentation_only; no passive
-  parser; registry: MISSING — explicit gap
+  parser; registry: ovhcloud.ai_endpoints
   requesty: Manager / ChronoMancer; official_documentation_only; no passive
-  parser; registry: MISSING — explicit gap
+  parser; registry: requesty.free_models
   routeway: Manager / ChronoMancer; official_documentation_only; no passive
-  parser; registry: MISSING — explicit gap
+  parser; registry: routeway.free_models
   sambanova: Manager / ChronoMancer; implemented_passive_parser; live account
-  validation not established; registry: MISSING — explicit gap
+  validation not established; registry: sambanova.free_tier
   sealion: Manager / ChronoMancer; official_documentation_only; no passive
-  parser; registry: MISSING — explicit gap
+  parser; registry: sealion.api
   siliconflow: Manager / ChronoMancer; implemented_passive_parser; live account
-  validation not established; registry: MISSING — explicit gap
+  validation not established; registry: siliconflow.free_models
   typhoon: Manager / ChronoMancer; official_documentation_only; no passive
-  parser; registry: MISSING — explicit gap
+  parser; registry: typhoon.api
   unorouter: Manager / ChronoMancer; official_documentation_only; no passive
-  parser; registry: MISSING — explicit gap
+  parser; registry: unorouter.free_models
   xfyun: Manager / ChronoMancer; official_documentation_only; no passive parser;
-  registry: MISSING — explicit gap
+  registry: xfyun.spark
   xkiro: Manager / ChronoMancer; official_documentation_only; no passive parser;
-  registry: MISSING — explicit gap
+  registry: xkiro.free_models
   zai: Manager / ChronoMancer; official_documentation_only; no passive parser;
-  registry: MISSING — explicit gap
+  registry: zai.free_models
  Coverage and quota checks do not grant runtime admission.
- 64 registry records | 2 alert(s) | 6 with a reported reading | 58 with No live
+ 88 registry records | 2 alert(s) | 6 with a reported reading | 82 with No live
  reading
 ================================================================================

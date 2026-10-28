@@ -129,8 +129,17 @@ def _get_or(path: str, token: str, default: Any, warnings: list[str]) -> Any:
 def main() -> int:
     token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
     if not token:
-        print("GH_TOKEN/GITHUB_TOKEN required", file=sys.stderr)
+        print("::error::GH_TOKEN/GITHUB_TOKEN not set in this environment", flush=True)
         return 1
+    print("::notice::classify run starting", flush=True)
+    try:
+        return _run(token)
+    except Exception as exc:
+        print(f"::error::classify failed: {type(exc).__name__}: {exc}", flush=True)
+        raise
+
+
+def _run(token: str) -> int:
     repo = os.environ.get("GITHUB_REPOSITORY", "timerloggedout-spec/termux-monorepo")
     out_path = os.environ.get(
         "PR_LANE_FEED",
@@ -147,8 +156,9 @@ def main() -> int:
             # Fail closed (an empty feed would be a false classification),
             # but name the cause in an annotation — job logs are not
             # API-readable, annotations are.
-            print(f"::error::open-PR list fetch failed: {exc}")
+            print(f"::error::open-PR list fetch failed: {exc}", flush=True)
             raise
+        print(f"::notice::page {page}: {len(batch)} PR stubs", flush=True)
         if not batch:
             break
         for stub in batch:
@@ -163,7 +173,8 @@ def main() -> int:
             break
         page += 1
     for warning in warnings:
-        print(f"::warning::fetch degraded: {warning}")
+        print(f"::warning::fetch degraded: {warning}", flush=True)
+    print(f"::notice::mapped {len(pr_dicts)} PRs, classifying", flush=True)
     feed = classify_all(pr_dicts, now)
     feed["fetch_warnings"] = len(warnings)
     os.makedirs(os.path.dirname(out_path), exist_ok=True)

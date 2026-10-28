@@ -123,7 +123,18 @@ jobs:
             gravitee-state
           retention-days: 7
 
-      - name: Stack logs on failure
-        if: failure()
+      - name: Diagnostics on GitHub (step summary + stack logs in artifact)
+        if: always()
         working-directory: ops/gravitee
-        run: docker compose -f docker-compose.selfhost.yml logs --tail 200 || true
+        run: |
+          set -uo pipefail
+          mkdir -p ../../gravitee-state
+          docker compose -f docker-compose.selfhost.yml logs --tail 300 > ../../gravitee-state/stack-logs.txt 2>/dev/null || true
+          {
+            echo "## Gravitee selfhost — run ${{ github.run_id }}"
+            echo "- workflow conclusion so far: verify step above; receipt:"
+            echo '```json'
+            cat ../../gravitee-state/receipt.json 2>/dev/null || echo "(no receipt — verify did not start or died before first step)"
+            echo '```'
+            echo "- stack logs: gravitee-state/stack-logs.txt (failure artifact / sync cache)"
+          } >> "$GITHUB_STEP_SUMMARY"

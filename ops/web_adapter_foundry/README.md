@@ -31,3 +31,18 @@ external dependency (OpenCLI / rever-browser) honestly instead of faking it.
 Full design: `docs/ops/WEB-ADAPTER-FOUNDRY.md` ·
 Skill: `.agents/skills/web-adapter-foundry/SKILL.md` ·
 Tests: `tests/test_web_adapter_foundry.py`
+
+## APK cross-reference belt (apk_xref)
+
+```bash
+python3 -m ops.web_adapter_foundry.apk_xref acquire --source f-droid --package-id com.example.app --out artifacts/app
+python3 -m ops.web_adapter_foundry.apk_xref extract app.apk --out extraction.json
+python3 -m ops.web_adapter_foundry.apk_xref scan-repo /path/to/repo --out claims.json
+python3 -m ops.web_adapter_foundry.apk_xref xref --extraction extraction.json --claims claims.json --target-id example --xref-issue '#2064' --submitter 'role{moniker}' --out report.json --markdown findings.md
+```
+
+Acquire (GitHub/Gitea Releases, F-Droid — never Play) → extract
+(manifest/permissions/endpoints/providers/trackers, stdlib parsers)
+→ cross-validate both directions → findings in the `apk-xref/v1`
+template shape. Doc: `docs/ops/APK-XREF-TOOLKIT.md` ·
+Tests: `tests/test_apk_xref.py`

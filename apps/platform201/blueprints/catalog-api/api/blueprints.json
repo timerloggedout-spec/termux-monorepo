@@ -1,0 +1,20 @@
+{
+  "catalog": "platform201-blueprints",
+  "source": "timerloggedout-spec/termux-monorepo apps/platform201/blueprints/",
+  "blueprints": [
+    {
+      "id": "catalog-api",
+      "name": "Catalog API",
+      "description": "Read-only API serving this blueprint catalog. Platform201 Pilot 1 (bounded, GET-only).",
+      "services": ["api"],
+      "status": "packaged-not-deployed"
+    },
+    {
+      "id": "planning-queue",
+      "name": "Planning Queue",
+      "description": "4-service planning queue (intake, collector, sweeper, dashboard) adapted from shoal-platform/message-queue-demo. Pilot 2, consumer-gated.",
+      "services": ["intake-service", "collector", "sweeper", "dashboard"],
+      "status": "deferred-pilot-2"
+    }
+  ]
+}

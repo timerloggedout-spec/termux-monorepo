@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 APP = ROOT / "apps" / "help-wanted-dashboard"
 FEED = APP / "data" / "challenge-countdowns-feed.json"
 LOG = ROOT / "docs" / "ops" / "CHALLENGE-ENTRIES-LOG.md"
+COORD = ROOT / "ops" / "challenge" / "coordinator.json"
 
 
 def _load_collector():
@@ -38,7 +39,7 @@ def test_feed_matches_collector_rerun():
 
 def test_feed_schema_and_source():
     feed = _feed()
-    assert feed["schema"] == "challenge-countdowns-feed/v1"
+    assert feed["schema"] == "challenge-countdowns-feed/v1.1"
     assert feed["source"] == "docs/ops/CHALLENGE-ENTRIES-LOG.md"
 
 
@@ -61,9 +62,27 @@ def test_feed_never_bakes_state_or_remaining_seconds():
         assert "state" not in e
         assert "seconds_to_open" not in e
         assert "seconds_to_close" not in e
-        assert set(e) == {"id", "title", "status", "opens", "closes"}
+        assert set(e) == {"id", "title", "status", "opens", "closes", "prizes"}
 
 
 def test_completed_entries_stay_listed():
     entries = {e["id"]: e for e in _feed()["entries"]}
     assert entries["D0"]["status"] == "COMPLETED"
+
+
+def test_prizes_wired_from_coordinator_ssot():
+    """Prizes are a REQUIRED field (owner rule 2026-10-28): every entry
+    carries them, verbatim from ops/challenge/coordinator.json; an
+    unpublished tier set renders NOT_ESTABLISHED, never blank."""
+    coord = json.loads(COORD.read_text(encoding="utf-8"))
+    want = {ev["id"]: ev["prizes"] for ev in coord["events"]}
+    entries = {e["id"]: e for e in _feed()["entries"]}
+    for eid, e in entries.items():
+        p = e["prizes"]
+        assert p["status"] in ("ESTABLISHED", "NOT_ESTABLISHED"), eid
+        assert p["status"] == want[eid]["status"], eid
+        got = [(t["place"], t["award"]) for t in p["tiers"]]
+        exp = [(t["place"], t["award"]) for t in want[eid].get("tiers", [])]
+        assert got == exp, eid
+        if p["status"] == "NOT_ESTABLISHED":
+            assert p["tiers"] == [], eid

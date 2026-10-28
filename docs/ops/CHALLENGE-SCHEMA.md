@@ -25,7 +25,7 @@ sets) or `null` — never inferred, never reconstructed from plausibility.
 
 ## events[]
 
-One object per packet (D0–D5), mirroring log §4.
+One object per packet (D0–D5), mirroring log §4. Plus slate-history events (e.g. `STRANDS-DECIDER`, added 2026-10-28: closed, not D-numbered, no moneyball intake — carried for history + opportunity_cost).
 
 | field | meaning |
 |---|---|

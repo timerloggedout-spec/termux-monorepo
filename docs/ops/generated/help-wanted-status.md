@@ -1,9 +1,10 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-10-28T06:15:13Z UTC · receipts=3962 · foreign_open=8 · tributes=111_
+_Generated 2026-10-28T13:30:22Z UTC · receipts=3962 · foreign_open=8 · tributes=112_
 
 ## Tributes (contributor ledger)
 
+- [timerloggedout-spec/timerloggedout-spec.github.io#3](https://github.com/timerloggedout-spec/timerloggedout-spec.github.io/pull/3) · state=closed · feat(landing): traffic counter + source breakdown (traffic-feed/1)
 - [timerloggedout-spec/timerloggedout-spec.github.io#2](https://github.com/timerloggedout-spec/timerloggedout-spec.github.io/pull/2) · state=closed · feat(landing): cut trust section; ?ch= A/B cell codes
 - [timerloggedout-spec/timerloggedout-spec.github.io#1](https://github.com/timerloggedout-spec/timerloggedout-spec.github.io/pull/1) · state=closed · feat(landing): de-center CellCog; feed-driven invite-code cards
 - [E-Timileyin/Sail-CLI#23](https://github.com/E-Timileyin/Sail-CLI/pull/23) · state=open · help-wanted: stake + contribute for #20
@@ -25,7 +26,7 @@ _Generated 2026-10-28T06:15:13Z UTC · receipts=3962 · foreign_open=8 · tribut
 - [fsr5-fhaachen/portals#948](https://github.com/fsr5-fhaachen/portals/pull/948) · state=open · help-wanted: stake + contribute for #928
 - [ROCm/rocm-libraries#13152](https://github.com/ROCm/rocm-libraries/pull/13152) · state=open · help-wanted: stake + contribute for #10586
 - [https://github.com/topoteretes/cognee/pull/5439](https://github.com/topoteretes/cognee/pull/5439) · state=? · 
-- [Suhas29wasnotavailable/blroad#12](https://github.com/Suhas29wasnotavailable/blroad/pull/12) · state=closed · help-wanted: stake + contribute for #7
+- [https://github.com/Suhas29wasnotavailable/blroad/pull/12](https://github.com/Suhas29wasnotavailable/blroad/pull/12) · state=? · 
 - [MMALI3287/vibewatt#100](https://github.com/MMALI3287/vibewatt/pull/100) · state=open · help-wanted: stake + contribute for #95
 - [apache/hugegraph-computer#365](https://github.com/apache/hugegraph-computer/pull/365) · state=closed · help-wanted: stake + contribute for #325
 - [ciaren-labs/Ciaren#234](https://github.com/ciaren-labs/Ciaren/pull/234) · state=closed · help-wanted: stake + contribute for #96
@@ -43,7 +44,6 @@ _Generated 2026-10-28T06:15:13Z UTC · receipts=3962 · foreign_open=8 · tribut
 - [AmpedWasTaken/SML#18](https://github.com/AmpedWasTaken/SML/pull/18) · state=closed · help-wanted: stake + contribute for #17
 - [https://github.com/vedantnimbarte/zero/pull/81](https://github.com/vedantnimbarte/zero/pull/81) · state=? · 
 - [https://github.com/prime-radiant-inc/evener/pull/2661](https://github.com/prime-radiant-inc/evener/pull/2661) · state=? · 
-- [https://github.com/Vikram-sardiwal/react-open-source/pull/50](https://github.com/Vikram-sardiwal/react-open-source/pull/50) · state=? · 
 
 ## Foreign open PRs
 

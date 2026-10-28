@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "38036d79a270a8b10b0727f3b750cc1c524ae242a4bd6e788115be49244bdcab",
-  "workflow_count": 209,
+  "source_fingerprint": "681f5d18b2b784bfd8a2c5cacb2a908ee6cc1702892b949bb7ab50ca963c4741",
+  "workflow_count": 210,
   "workflows": [
     {
       "action_pins": [
@@ -1848,6 +1848,31 @@
       "schedules": [],
       "triggers": [
         "workflow_call",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830",
+        "actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830",
+        "actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830",
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: gravitee-selfhost cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "selfhost"
+      ],
+      "name": "gravitee selfhost",
+      "path": ".github/workflows/gravitee-selfhost.yml",
+      "schedules": [
+        "17 5 * * 1"
+      ],
+      "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },

@@ -73,35 +73,74 @@ jobs:
       - name: Merge the matrix PR when the dual gates pass
         # The workflow finishes its own loop: no human merges the
         # generated PR. Master has no branch-protection required
-        # checks, so this step polls the dual gates itself
-        # (hygiene + portability gate, termux smoke) on the PR head
-        # and squash-merges only when both are green. Any other
-        # outcome leaves the PR open with a notice — never a merge.
+        # checks, so this step applies the merge rule itself:
+        #   - if the dual gates report on the head, both must be
+        #     green (a failure/cancel leaves the PR open);
+        #   - the gate workflows are path-filtered and do NOT report
+        #     at all on generated-docs-only heads (first self-merge
+        #     attempt, run 40749498541: 12 polls, zero check-runs) —
+        #     so after a 3-minute grace, a PR whose diff is ONLY the
+        #     two generated matrix files merges on provenance (the
+        #     landed generator's own output), the same basis the lane
+        #     hand-merged #2055/#2057 on.
+        # Transient API errors (the shared Actions rate wall) never
+        # fail this step; an unsettled outcome leaves the PR open
+        # with a notice and exit 0 — generation already succeeded.
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          set -euo pipefail
-          pr=$(gh pr list --head "operator-matrix/auto" --state open --json number --jq '.[0].number // empty')
+          pr=$(gh pr list --head "operator-matrix/auto" --state open --json number --jq '.[0].number // empty' || echo "")
           if [ -z "$pr" ]; then
             echo "No open operator-matrix PR; nothing to merge."
             exit 0
           fi
-          sha=$(gh pr view "$pr" --json headRefOid --jq '.headRefOid')
-          echo "Watching dual gates on PR #$pr head $sha"
+          files=$(gh pr diff "$pr" --name-only || echo "unknown")
+          echo "PR #$pr files: $files"
+          generated_only=1
+          while IFS= read -r f; do
+            case "$f" in
+              docs/ops/generated/operator-matrix.json|docs/ops/generated/operator-matrix.md) ;;
+              *) generated_only=0 ;;
+            esac
+          done <<EOF
+          $files
+          EOF
+          sha=$(gh pr view "$pr" --json headRefOid --jq '.headRefOid' || echo "")
+          echo "Watching dual gates on PR #$pr head $sha (generated_only=$generated_only)"
+          merge_pr() {
+            if gh pr merge "$pr" --squash; then
+              echo "PR #$pr merged by operator-matrix-generate ($1)."
+            else
+              echo "::notice::Merge of PR #$pr failed ($1); leaving it open."
+            fi
+            exit 0
+          }
           for i in $(seq 1 20); do
-            runs=$(gh api "repos/$GITHUB_REPOSITORY/commits/$sha/check-runs?per_page=100")
+            runs=""
+            for attempt in 1 2 3; do
+              runs=$(gh api "repos/$GITHUB_REPOSITORY/commits/$sha/check-runs?per_page=100" 2>/dev/null || echo "")
+              [ -n "$runs" ] && break
+              sleep 10
+            done
+            if [ -z "$runs" ]; then
+              echo "poll $i: check-runs unavailable (API); continuing"
+              sleep 30
+              continue
+            fi
             hygiene=$(echo "$runs" | jq -r '[.check_runs[] | select(.name == "hygiene + portability gate") | .conclusion // .status] | @csv')
             smoke=$(echo "$runs" | jq -r '[.check_runs[] | select(.name | contains("termux smoke")) | .conclusion // .status] | @csv')
             echo "poll $i: hygiene=[$hygiene] smoke=[$smoke]"
-            if echo "$hygiene $smoke" | grep -q '"failure"'; then
+            if echo "$hygiene $smoke" | grep -qE '"(failure|cancelled|timed_out)"'; then
               echo "::notice::A dual gate failed on PR #$pr; leaving it open."
               exit 0
             fi
             if echo "$hygiene" | grep -q '"success"' && echo "$smoke" | grep -q '"success"'; then
-              gh pr merge "$pr" --squash
-              echo "PR #$pr merged by operator-matrix-generate (dual gates green)."
-              exit 0
+              merge_pr "dual gates green"
+            fi
+            if [ -z "$hygiene" ] && [ -z "$smoke" ] && [ "$i" -ge 6 ] && [ "$generated_only" -eq 1 ]; then
+              merge_pr "no gate runs report on generated-docs-only heads; provenance merge after grace"
             fi
             sleep 30
           done
           echo "::notice::Dual gates did not settle within 10 minutes on PR #$pr; leaving it open."
+          exit 0

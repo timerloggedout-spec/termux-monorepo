@@ -1,0 +1,59 @@
+# Delphi RFP flood feed refresh (contract: docs/ops/DELPHI-RFP-FEED.md).
+# Regenerates apps/help-wanted-dashboard/data/delphi-rfp-feed.json from
+# the open delphi:rfp issues and their gate ledger comments, and
+# proposes it as a refresh PR — never commits directly.
+name: delphi-rfp-feed-collect
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '37 6 * * 2'
+  workflow_run:
+    workflows: [delphi-gate]
+    types: [completed]
+
+concurrency:
+  group: delphi-rfp-feed-collect
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: read
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GITHUB_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch the RFP census cache
+        run: |
+          set -euo pipefail
+          python3 -B scripts/delphi/rfp_flood_fetch.py --cache .rfp-cache
+      - name: Collect the feed
+        run: |
+          set -euo pipefail
+          python3 -B scripts/delphi/rfp_flood_feed.py \
+            --cache .rfp-cache --out apps/help-wanted-dashboard/data/delphi-rfp-feed.json
+      - name: Propose the refresh as a PR
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- apps/help-wanted-dashboard/data/delphi-rfp-feed.json; then
+            echo "feed unchanged; no refresh PR"
+            exit 0
+          fi
+          branch="delphi-rfp-feed/refresh"
+          git config user.name "delphi-rfp-feed-collect"
+          git config user.email "actions@github.com"
+          git checkout -B "$branch"
+          git add apps/help-wanted-dashboard/data/delphi-rfp-feed.json
+          git commit -m "chore(delphi): refresh delphi-rfp-feed"
+          git push -f origin "$branch"
+          gh pr create --base master --head "$branch" \
+            --title "chore(delphi): refresh delphi-rfp-feed.json" \
+            --body "Automated RFP flood feed refresh (collector: scripts/delphi/rfp_flood_feed.py; contract: docs/ops/DELPHI-RFP-FEED.md). Data is derived live from the open delphi:rfp issues and their gate ledger comments at collection time; nothing is copied forward." \
+            || echo "refresh PR already open"

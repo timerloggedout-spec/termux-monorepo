@@ -52,7 +52,8 @@ jobs:
           # byte-identical and committed in the same commit.
           mkdir -p apps/help-wanted-dashboard/data
           cp ops/ml/pr-lane-feed.json apps/help-wanted-dashboard/data/pr-lane-feed.json
-          git add -A ops/ml/ apps/help-wanted-dashboard/data/pr-lane-feed.json
+          cp ops/ml/pr-lane-series.jsonl apps/help-wanted-dashboard/data/pr-lane-series.jsonl
+          git add -A ops/ml/ apps/help-wanted-dashboard/data/pr-lane-feed.json apps/help-wanted-dashboard/data/pr-lane-series.jsonl
           if git diff --cached --quiet; then
             echo "feed unchanged — no commit"
             exit 0

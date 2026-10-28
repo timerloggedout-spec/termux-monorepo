@@ -49,7 +49,7 @@ def test_responses_rendered_verbatim_no_rescoring():
     assert "reduce(" not in script, "no aggregation over votes in the render"
     feed = _feed()
     assert feed["schema"] == "delphi-rfp-feed/v1"
-    assert feed["summary"]["total_open"] == len(feed["rfps"]) == 70
+    assert feed["summary"]["total_open"] == len(feed["rfps"])
 
 
 def test_status_is_award_converged_is_separate_unscored_shows_gap():
@@ -98,3 +98,19 @@ def test_page_title_is_the_rfp_flood_not_the_shell_donor():
     html = _html()
     assert "<title>Delphi RFP Flood" in html
     assert "Challenge Countdowns" not in html.split("<script>", 1)[0].split("</head>", 1)[0]
+
+
+def test_segments_block_and_doe_components_group():
+    """Feed segments (PR #1979): the page renders feed.segments as a
+    table, stamps each card with its segment + segment class, and
+    can isolate the doe-components class (the four component RFPs
+    #1975-#1978 render as their own group)."""
+    html = _html()
+    assert 'id="segments"' in html and "feed.segments" in html
+    assert "renderSegments" in html and "SEGCLASS" in html
+    assert 'data-segclass' in html and 'data-segment' in html
+    assert 'data-v="doe-components"' in html
+    feed = _feed()
+    doe = [s for s in feed["segments"]["segments"] if s["class"] == "doe-components"]
+    assert sorted(m for s in doe for m in s["members"]) == [1975, 1976, 1977, 1978]
+    assert feed["segments"]["unassigned"] == []

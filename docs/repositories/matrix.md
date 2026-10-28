@@ -2,7 +2,7 @@
 
 > Generated from GitHub repository and starring metadata. JSON is canonical; this file is a navigation projection.
 
-Observed: `2026-10-28T17:28:52.459524Z`
+Observed: `2026-10-28T17:33:12.315336Z`
 
 ## Navigation
 
@@ -12,12 +12,13 @@ Observed: `2026-10-28T17:28:52.459524Z`
 - [Owned forks](#owned-forks)
 - [Research seeds](#research-seeds)
 - [Integration candidates](#integration-candidates)
+- [Issue intake](#issue-intake)
 
 ## Changes since previous snapshot
 
-- **Added (3):** `Free-AI-Things/g4f-working`, `timerloggedout-spec/g4f-working_fork`, `xiangsx/gpt4free-ts`
-- **Removed (0):** —
-- **Provenance changed (0):** —
+- **Added (0):** —
+- **Removed (1):** `rtk-ai/rtk`
+- **Provenance changed (1):** `gravitee-io/gravitee-api-management` (starred → issue, starred)
 
 ## Owned
 
@@ -1195,7 +1196,6 @@ Observed: `2026-10-28T17:28:52.459524Z`
 | [ParadevAI/Paradev](https://github.com/ParadevAI/Paradev) | starred | agent, ai, developer-tools | medium | — |
 | [RAIT-09/obsidian-agent-client](https://github.com/RAIT-09/obsidian-agent-client) | starred | agent, ai, developer-tools | medium | — |
 | [retentioneering/retentioneering-tools](https://github.com/retentioneering/retentioneering-tools) | starred | agent, ai, developer-tools | medium | — |
-| [rtk-ai/rtk](https://github.com/rtk-ai/rtk) | starred | agent, ai, developer-tools | medium | — |
 | [SamyRai/juleson](https://github.com/SamyRai/juleson) | starred | agent, ai, developer-tools | medium | — |
 | [SCTY-Inc/agentcy-cli](https://github.com/SCTY-Inc/agentcy-cli) | starred | agent, ai, developer-tools | medium | — |
 | [sickn33/agentic-awesome-skills](https://github.com/sickn33/agentic-awesome-skills) | starred | agent, ai, developer-tools | medium | dependency-candidate, workflow-candidate |
@@ -2411,7 +2411,7 @@ Observed: `2026-10-28T17:28:52.459524Z`
 | [tokyoneon/Chimera](https://github.com/tokyoneon/Chimera) | starred | security | medium | — |
 | [twpayne/chezmoi](https://github.com/twpayne/chezmoi) | starred | security | medium | — |
 | [Vishisht16/awesome-workflows](https://github.com/Vishisht16/awesome-workflows) | starred | security | medium | workflow-candidate |
-| [gravitee-io/gravitee-api-management](https://github.com/gravitee-io/gravitee-api-management) | starred | security, api-management | high | — |
+| [gravitee-io/gravitee-api-management](https://github.com/gravitee-io/gravitee-api-management) | issue, starred | security, api-management | high | — |
 | [gravitee-io/gravitee-gateway-api](https://github.com/gravitee-io/gravitee-gateway-api) | starred | security, api-management | high | — |
 | [google-github-actions/auth](https://github.com/google-github-actions/auth) | starred | security, platform | high | workflow-candidate |
 | [Wbaker7702/nova-wallet-android](https://github.com/Wbaker7702/nova-wallet-android) | starred | security, termux | medium | upstream-comparison |
@@ -5304,7 +5304,7 @@ Observed: `2026-10-28T17:28:52.459524Z`
 | [Nishant-Pathak/MathView](https://github.com/Nishant-Pathak/MathView) | starred | research, termux | high | — |
 | [timerloggedout-spec/termux-monorepo](https://github.com/timerloggedout-spec/termux-monorepo) | owned, starred | research, termux | high | — |
 | [timerloggedout-spec/termux-monorepo-sparked](https://github.com/timerloggedout-spec/termux-monorepo-sparked) | owned, starred | research, termux | high | — |
-| [gravitee-io/gravitee-api-management](https://github.com/gravitee-io/gravitee-api-management) | starred | security, api-management | high | — |
+| [gravitee-io/gravitee-api-management](https://github.com/gravitee-io/gravitee-api-management) | issue, starred | security, api-management | high | — |
 | [gravitee-io/gravitee-gateway-api](https://github.com/gravitee-io/gravitee-gateway-api) | starred | security, api-management | high | — |
 | [google-github-actions/auth](https://github.com/google-github-actions/auth) | starred | security, platform | high | workflow-candidate |
 | [alphaSeclab/awesome-reverse-engineering](https://github.com/alphaSeclab/awesome-reverse-engineering) | starred | security, termux, platform | high | — |
@@ -6613,4 +6613,10 @@ Observed: `2026-10-28T17:28:52.459524Z`
 | [zskbot/Azure-Spring-Apps](https://github.com/zskbot/Azure-Spring-Apps) | starred | unclassified | medium | upstream-comparison |
 | [zskbot/bbit](https://github.com/zskbot/bbit) | starred | unclassified | medium | upstream-comparison |
 | [zx0828/big_model_radar](https://github.com/zx0828/big_model_radar) | starred | unclassified | medium | upstream-comparison |
+
+## Issue intake
+
+| Issue | Kind | Target | Declared signal | Seed |
+|---|---|---|---|---|
+| #2059 | service | gravitee-io/gravitee-api-management | starred | `github:research-seed:gravitee-io/gravitee-api-management` |
 

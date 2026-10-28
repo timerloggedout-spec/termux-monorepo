@@ -31,6 +31,8 @@ def build(reg):
             "cell_b_code": cell_b["code"] if cell_b else None,
             "reserve_codes": reserve,
             "link_ref": p.get("link_ref"),
+            "link": p.get("link"),
+            "badge_svg": p.get("badge_svg"),
         })
     return {
         "schema": "referral-feed/1",

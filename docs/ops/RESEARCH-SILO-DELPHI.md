@@ -79,6 +79,8 @@ Per RFP: `surface_id` = silo.id exactly · `lane` = `other` (form has no researc
 
 **Burst rule:** any batch filing (the 12 baselines, the 36 variants, any future wave) ends with ONE `repository_dispatch` `delphi-tick` — see DELPHI-ORACLE-RFP-GATE.md § Burst filing protocol. Mid-burst gate runs cancel each other in the single pending slot; the tick + the hourly heartbeat guarantee the sweep.
 
+**Recheck:** research silos park with a 2-day recheck (`panel.json award.research_recheck_days`, gate-enforced for `research.*` ids) — the generic 30-day backlog park froze all 48 silo RFPs for a month and was overruled 2026-10-28. Quota surfaces keep 14d/30d.
+
 **Veto trap:** `surface_from_issue` flags `card_required` by substring search over the free_quota + failure_modes text — any occurrence of the payment-instrument word, even negated, triggers the cost_auditor money veto (score capped at 4). Keep that word out of both fields in research RFPs.
 
 ---

@@ -202,7 +202,7 @@ jobs:
           prompt_variant: ${{ steps.lane.outputs.variant }}
           max_tokens: ${{ steps.lane.outputs.max_tokens }}
           post_comment: 'false'
-          api_key: ${{ secrets.HUGGINGFACE_TOKEN || secrets.HUGGING_FACE_HUB_TOKEN || secrets.HF_API_TOKEN }}
+          api_key: ${{ secrets.HUGGINGFACE_TOKEN }}
 
       - name: Write lane manifest
         if: always()

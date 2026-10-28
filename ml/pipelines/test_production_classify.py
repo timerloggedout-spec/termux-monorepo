@@ -5,9 +5,11 @@ import os
 import sys
 import unittest
 from datetime import datetime, timezone
+from unittest import mock
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
+from ml.pipelines import production_classify
 from ml.pipelines.production_classify import build_pr_dict, classify_all
 
 NOW = datetime(2026, 10, 28, tzinfo=timezone.utc)
@@ -63,6 +65,17 @@ class ClassifyAll(unittest.TestCase):
         self.assertEqual(lanes[4], "CANDIDATE")      # clean + gates green
         self.assertEqual(lanes[5], "NEED_EVIDENCE")  # no gate evidence
         self.assertEqual(sum(feed["counts"].values()), 5)
+
+
+class GetOr(unittest.TestCase):
+    def test_failure_degrades_to_default_with_warning(self):
+        warnings = []
+        with mock.patch.object(
+                production_classify, "_get", side_effect=OSError("boom")):
+            out = production_classify._get_or("/x", "tok", {"d": 1}, warnings)
+        self.assertEqual(out, {"d": 1})
+        self.assertEqual(len(warnings), 1)
+        self.assertIn("/x", warnings[0])
 
 
 if __name__ == "__main__":

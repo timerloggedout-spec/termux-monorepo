@@ -26,6 +26,11 @@ concurrency:
 permissions:
   contents: write
   pull-requests: write
+  # Required: with explicit permissions, unspecified scopes are none —
+  # and the issues endpoint silently returns ONLY pull requests to a
+  # token without issues:read (first automated cut, run 40727258970,
+  # stamped "0 issues, 96 PRs" before this was added).
+  issues: read
 
 jobs:
   generate:

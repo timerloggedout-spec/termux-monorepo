@@ -274,7 +274,10 @@ the URL.
 - **Automation proven live:** first dispatch of
   `issue-lifecycle-triage.yml` (report mode) — run `40592755434`,
   completed **success**, 2026-10-27T22:10Z. The weekly apply run is
-  scheduled Tue 07:17 UTC per §9.
+  scheduled Tue 07:17 UTC per §9. **CORRECTED 2026-10-28 — see the
+  pass-2 record below: the run's conclusion was success but the script
+  inside it had in fact failed; "proven live" was not established by
+  that dispatch.**
 - **First triage pass (2026-10-27, after the map landed — no history was
   relabelled before it):** 7 issues labelled, each with a signed
   `[MUSEai]@{role:{issue-lifecycle}}` comment —
@@ -286,3 +289,41 @@ the URL.
   **52 → 45**; open issues still 225; `proposal`-labelled open issues
   24 → 29. The remaining 45 unlabelled are older history and are worked
   oldest-first in the weekly lane pass (§9), not in bulk.
+
+## Pass 2 — update / upgrade / maintain (2026-10-28)
+
+Live census re-derived ~14:14 UTC (never copied forward): **379 open =
+284 issues + 95 PRs** (was 311 = 225 + 86); **47 unlabelled**; closed
+issues all-time 30. The overnight growth was a Delphi RFP flood — 58
+issues created 2026-10-28, almost all `delphi:rfp` + `delphi:parked`,
+labelled at birth by the gate — plus one new label in use, `temporal`
+(taxonomy 97 → **98**).
+
+- **CORRECTION + UPGRADE (the automation had never actually run).**
+  Pass 2 dispatched the triage workflow in apply mode (run
+  `40704280554`, conclusion success) and then verified outcomes — the
+  two rule-matching unlabelled issues (#1595, #1596) were still
+  unlabelled. The job log shows why: the script died on its first API
+  call with an unprinted HTTP 403, and the step still reported success
+  because the run block piped through `tee` under `bash -e` without
+  `pipefail`. The 2026-10-27 report-mode dispatch had the same defect,
+  so the landing record's "automation proven live" claim is corrected
+  above. Fix (this PR): the workflow run block sets
+  `set -o pipefail`; the script sends a named User-Agent and, on any
+  HTTP error, prints the status + API response body and exits non-zero;
+  two regression tests pin the failure-surfacing behaviour. The exact
+  403 reason was not recoverable from the old log (the old code
+  swallowed the body); the fixed script surfaces it if it recurs, and
+  post-merge dispatch verification for this PR is recorded below once
+  run.
+- **Maintain — lane pass 2:** 12 issues labelled with signed comments —
+  the 10 oldest unlabelled (#50 `ci`; #51 `documentation`+`automation`;
+  #52 `bug`+`ci`; #53 `documentation`; #54 `ci`+`gemini`; #56
+  `enhancement`+`ops`; #64 `bug`; #91 `Integrations`+`Providers`; #150
+  `enhancement`+`automation`; #246 `enhancement`+`automation`) plus the
+  two new unlabelled (#1861 `security` — world-readable identity files;
+  #1885 `proposal`+`temporal`).
+- **Closure audit vs C1:** one closure since the map landed — #1865,
+  closed `completed` 2026-10-28T00:08Z with a signed doe-expert comment
+  naming PR #1871 merged `5ce1a9c233ef`, history-scan + content
+  verified. **Meets C1.**

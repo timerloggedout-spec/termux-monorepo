@@ -1,0 +1,37 @@
+name: moneyball compare
+
+# Comparison tests for the competing MoneyBall schemas: v1 as landed
+# (oracle-method-pass/v1 records, moneyball-plane/v1) vs moneyball-plane/v2
+# (docs/schemas/moneyball-score.schema.json). Filed with the v2 PR;
+# research cross-check runs under issue #2206.
+
+on:
+  pull_request:
+    paths:
+      - "scripts/moneyball/**"
+      - "tests/test_moneyball_compare.py"
+      - "docs/schemas/moneyball-score.schema.json"
+      - "ops/moneyball/**"
+  push:
+    branches: [master]
+    paths:
+      - "scripts/moneyball/**"
+      - "tests/test_moneyball_compare.py"
+      - "docs/schemas/moneyball-score.schema.json"
+      - "ops/moneyball/**"
+  workflow_dispatch: {}
+
+permissions: {}
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pytest
+      - run: python -m pytest tests/test_moneyball_compare.py -v

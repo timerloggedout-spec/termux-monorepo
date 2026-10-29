@@ -1,6 +1,6 @@
-# Lane matrix status (2026-10-29T02:10:29Z)
+# Lane matrix status (2026-10-29T05:15:00Z)
 
-- Master: `3875308e40a31ca6b0f37a4c33a5b3503f1dd9e1`
+- Master: `9d294b3f48c7134839c431afe82b80a7b470f532`
 - Open PRs: **103**
 - Oldest: #47 (84.43d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -64,3 +64,5 @@
 | #764 | 35.94 | NEED_EVIDENCE | draft | lane: connect Termux hub over Tailscale + repeatab |
 
 Writer only: does not merge. Dual-gate remains promote authority. HOLD/WAIT/OBSERVE are invalid parking. Age alone ≠ promote.
+
+Recon stamp 2026-10-29T05:15Z: master tip advanced to 9d294b3f48c7134839c431afe82b80a7b470f532 (chore(ops): record sweep accountability receipt). No dual-gate green + mergeable candidates observed on tip; portability counters stable (backups 0). Next: advance Class E session-store or Class A relative links.

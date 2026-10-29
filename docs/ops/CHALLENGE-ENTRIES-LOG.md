@@ -220,10 +220,10 @@ this log is the human view of the same verified state.
 | Entry | State | Window (PT) | Gate |
 |-------|-------|-------------|------|
 | D0 | DONE (completed 2026-10-27) | closed Oct 26 | — |
-| D1 | IN PROGRESS — window OPEN; concept set STOPPED 2026-10-28 (tainted); pick pending owner freeze: StudySprint; FIRST deadline — priority up | closes Nov 4 23:59 | **G-07 Builder profile — ESCALATED** (login card unentered since 2026-10-27 07:34; sessions expired) + in-window workshop badge evidence |
-| D2 | IN PROGRESS — Nov 5–8 build PRIMARY over D3 final weekend | opens Nov 5; closes Nov 8 15:00 | no-card path only (lablab + Discord + Vultr sandbox) |
+| D1 | IN PROGRESS — window OPEN; concept set STOPPED 2026-10-28 (tainted); pick pending owner freeze: StudySprint; FIRST deadline — priority up | closes Nov 4 23:59 | **G-07 Builder profile — PARTIAL 2026-10-29**: avatar SET (4n0nS3C live, verified); sign-in route resolved (GitHub-linked); About (prepared text rejected by AWS moderation ×2) + social link (save forces First/Last/State — 4n0n carve-out) = owner decisions pending + in-window workshop badge evidence |
+| D2 | IN PROGRESS — Nov 5–8 build PRIMARY over D3 final weekend; **registration execution = this lane (handed over 2026-10-29 with recon)** | opens Nov 5; closes Nov 8 15:00 | no-card path only (lablab + Discord + Vultr sandbox) |
 | D3 | Concept #42 QUESTIONED 2026-10-28 — under review, NOT killed, NOT the active build; pick pending owner freeze: ListingLens; core build Oct 30–Nov 1, final weekend polish/Clips only | closes Nov 9 23:59 (official schedule moved; corrected 2026-10-28) | Clips account ✓ created 2026-10-27 (held for the regenerated concept) |
-| D4 | REGISTERING | eligibility opens Oct 30 13:00 PDT; closes Dec 4 14:00 | Devpost + Kiro accounts (sibling lane); no project creation before the window opens |
+| D4 | REGISTERING — Devpost profile COMPLETE 2026-10-29 (timerloggedout); Kiro account exists (no editable fields); Kiroween registration + exact Kiro ID still blocked | eligibility opens Oct 30 13:00 PDT; closes Dec 4 14:00 | no project creation before the window opens |
 | D5 | REGISTERED — spot pending review | opens Nov 17 9:00 AM; closes Nov 19 12:00 PT (official Contest Rules) | spot confirmation email |
 
 <!-- countdown:BLOCK -->⏳ countdowns — D0: CLOSED · D1: closes in 7d 12h · D2: opens in 7d 12h (closes Nov 8 15:00 PT) · D3: closes in 12d 12h · D4: opens in 2d 0h (closes Dec 4 14:00 PT) · D5: opens in 19d 21h (closes Nov 19 12:00 PT) (computed 2026-10-28 12:55 PT)<!-- /countdown:BLOCK -->

@@ -39,17 +39,19 @@ is its at-a-glance view and is refreshed from here.
 
 - URL: https://builder.aws.com/community/@1337dia590r1c8u1ldr
 - Display name: "'Founders' are 'found' to implement."
-- Status: **exists — INCOMPLETE** (observed live 2026-10-26: default avatar,
-  no bio; **re-verified live 2026-10-27** (gap G-07), public view: profile
-  image still the default placeholder asset, About explicitly empty — the
-  page states the bio hasn't been added — and no social links shown;
-  display name + country set).
+- Status: **exists — PARTIALLY COMPLETE** (avatar DONE 2026-10-29 via the
+  accounts lane, owner-authorized in-chat; sign-in route RESOLVED: the
+  Builder ID is GitHub-linked — Google sign-in rejected by AWS.
+  **Verified live by the challenge lane 2026-10-29**: the public profile
+  serves a custom avatar asset (avatars.builderprofile.aws.dev), no longer
+  the default placeholder; About still empty; no social links shown).
 - Mandatory fields (official AWS Builder Center Sweepstakes Terms, verified
   2026-10-26: "Your profile must include full name, country, profile image,
   about section, and at least one social media link"):
   - Full name — the cryptic display name above (set).
   - Country — United States (set).
-  - Profile image — MISSING → **prepared (preferred, owner 2026-10-27):**
+  - Profile image — **SET 2026-10-29** (the 4n0nS3C asset below is live).
+    Prepared (preferred, owner 2026-10-27):
     `docs/ops/profile-registry/assets/builder-avatar-4n0ns3c.png`
     (faceless hooded mask + circuit/cipher ring, no text or identity;
     landed in-repo 2026-10-28). Earlier asset, superseded:
@@ -59,38 +61,70 @@ is its at-a-glance view and is refreshed from here.
     > 'Founders' are 'found' to implement. ‖ 1337 sp34k only ‖ ag3nts,
     > syst3ms, d3c1s10ns w/ receipts ‖ n0 nam3. n0 fac3. just sh1p. ‖
     > 0b1111011100111 ‖
+    **This exact text was REJECTED by AWS profile moderation twice on
+    2026-10-29.** An alternate About text is an owner decision (pending in
+    the accounts lane's chat, 2026-10-29).
   - Social link — none visible → **prepared:** `github.com/timerloggedout-spec`
     (already the fleet's public identity; exposes nothing new).
-- Owner-gated item: applying the edit requires the owner's signed-in Builder
-  session. Note: if an entry ever wins, AWS privately requires tax
+    **Blocked 2026-10-29**: the Edit-information save forces First name +
+    Last name + State/Province fields — the 4n0n carve-out case; owner
+    decision pending (accounts lane's chat). Nothing was invented or
+    entered.
+- Owner-gated items remaining: the two decisions above (About alternate
+  text; forced name/state fields). Sign-in itself is resolved (GitHub
+  route). Note: if an entry ever wins, AWS privately requires tax
   documentation before paying — a private winner step, not a profile field.
 - Used by: challenge log §1–§4 (`docs/ops/CHALLENGE-ENTRIES-LOG.md`), packets
   D1 (Workshop to Ship).
 
-#### Devpost — not created
+#### Devpost — timerloggedout — PROFILE COMPLETE 2026-10-29
 
-- Gate of record (verified 2026-10-26): Kiroween registration redirects to
-  Devpost sign-up ("Join Devpost to register for Kiroween 2026"; options
-  GitHub / Facebook / Google / LinkedIn / email). No session exists.
-- Owner-gated item: account sign-in/creation. Used by packet D4 (Kiroween).
+- Account created + profile completed by the accounts lane (browser-
+  verified 2026-10-29). Handle: `timerloggedout`.
+- Bio: "bu1ld1ng w/ ag3nts ‖ syst3ms, t00ls, r3ce1pts ‖ spec-dr1v3n,
+  sh1p-f1rst ‖ n0 nam3. n0 fac3."
+- Skills: python / javascript / typescript / github-actions / api /
+  artificial-intelligence / machine-learning / automation.
+- Interests: Cybersecurity / DevOps / ML-AI / Productivity / Web.
+- Occupation: Professional; employed-in-tech: Yes; Location: United
+  States (both platform-forced to save).
+- Avatar: left as the default initial (no cross-moniker reuse).
+- Used by packet D4 (Kiroween). Kiroween registration itself is still
+  blocked — see the Kiro entry.
 
-#### Kiro — not created
+#### Kiro — account exists; NO editable profile fields
 
-- Registration for Kiroween requires a valid Kiro user ID (or AWS account ID)
-  per the official overview. Sign-in at app.kiro.dev: Google / GitHub /
-  Builder ID / organization — no email/password.
-- Owner-gated item: Kiro sign-in. Used by packet D4 (Kiroween).
+- Account exists (Google sign-in; plan KIRO FREE). Verified 2026-10-29 by
+  the accounts lane: the account row is read-only — no editable profile
+  fields exist, nothing to complete.
+- Kiroween registration + the exact Kiro user ID are STILL BLOCKED
+  (Cloudflare + ID-surface blockers; reverse-engineering target brief
+  #1729 in dispatch). Registration for Kiroween requires a valid Kiro
+  user ID (or AWS account ID) per the official overview.
+- Used by packet D4 (Kiroween).
 
-#### lablab.ai — not created (D2 window)
+#### lablab.ai — not created (D2 window) — EXECUTION: challenge lane
 
+- Execution handed to the challenge lane 2026-10-29 (moniker registry:
+  owner_lane challenge-entries; entrant{n0nLablab}[platform:lablab-ai]).
+- Recon (accounts lane, verified 2026-10-29): sign-up via Email
+  (magic-link) / GitHub / AMD — no Google route; Cloudflare check on the
+  form; no card anywhere ("all events are free to attend"). Vultr Agent
+  Rush enrollment OPEN. Profile completion + Discord connect are required
+  before team create/join (teams 1–6).
 - Registration + Discord join are mandatory for Vultr Agent Rush
   (submissions end Nov 8, 2026, 3:00 PM PST). Owner-approved 2026-10-26;
   any verification gate is surfaced, not worked around.
 
-#### Vultr — not created (D2 window)
+#### Vultr — not created (D2 window) — EXECUTION: challenge lane
 
-- Account needed for sandbox credits; $200 participant credit offsets the
-  sandbox. **No-card path only** — the card is a BLOCK.
+- Execution handed to the challenge lane 2026-10-29
+  (entrant{n0nVultr}[platform:vultr]).
+- Account = valid email + strong password + terms + email verification
+  (password via the Secure Vault new-password flow). $200 participant
+  credit arrives as a gift code at kickoff. A payment method is asked
+  only to CONTINUE after credits — **No-card path only** — the card is
+  a BLOCK; that step halts and surfaces.
 
 #### Builder.io / Clips — account CREATED 2026-10-27
 

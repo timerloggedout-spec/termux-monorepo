@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "d2665c6c13121b11539d436c3ae761f0e903ade481cdb6a79eb914f9fc487a45",
-  "workflow_count": 221,
+  "source_fingerprint": "31c7b1464d5acadb40fcdb089ad16c0b2499fdebee4f0b068f0f50345b458971",
+  "workflow_count": 222,
   "workflows": [
     {
       "action_pins": [],
@@ -2972,6 +2972,22 @@
       "schedules": [],
       "triggers": [
         "pull_request",
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: proposals-feed-collect cancel-in-progress: false",
+      "domain": "governance-relationships",
+      "jobs": [
+        "collect"
+      ],
+      "name": "proposals-feed-collect",
+      "path": ".github/workflows/proposals-feed-collect.yml",
+      "schedules": [],
+      "triggers": [
         "push",
         "workflow_dispatch"
       ]

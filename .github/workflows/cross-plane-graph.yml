@@ -10,6 +10,7 @@ on:
       - 'workspace/llm_map/repositories/repository-index.json'
       - 'workspace/llm_map/social/x-index.json'
       - 'docs/repositories/research-seeds/**'
+      - 'ops/challenge/coordinator.json'
 
 permissions:
   contents: write
@@ -47,6 +48,7 @@ jobs:
             --repo-index workspace/llm_map/repositories/repository-index.json \
             --x-index workspace/llm_map/social/x-index.json \
             --seeds-dir docs/repositories/research-seeds \
+            --challenge-index ops/challenge/coordinator.json \
             --output workspace/llm_map/graph/edges.jsonl \
             --summary workspace/llm_map/graph/graph-index.json \
             --markdown docs/graph/matrix.md
@@ -63,7 +65,7 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -s -m 'chore(graph): refresh cross-plane graph view' \
             -m 'Agent-Identity: GitHub Actions Cross-Plane Graph' \
-            -m 'Source: derived view over repository-index + x-index + research-seeds (offline link pass)'
+            -m 'Source: derived view over repository-index + x-index + research-seeds + challenge coordinator (offline link pass)'
           git fetch origin master
           git rebase origin/master
           for attempt in 1 2 3; do

@@ -98,3 +98,49 @@ instead of a merged mega-record per entity.
   dispatch + push on plane-index paths) regenerates the view on
   GitHub and commits any delta directly, like the other observatory
   workflows. The VM authors and pushes only; it hosts nothing.
+
+## 6. Challenge plane (v2, 2026-10-29) — participant/competitor OSINT import
+
+The Competitive Hackathons structures join the view as a *challenge
+plane*, imported read-only from `ops/challenge/coordinator.json`
+(events / participants / competitors / projects / judges / organizers,
+per `docs/ops/CHALLENGE-SCHEMA.md` + `docs/ops/CHALLENGE-OSINT.md`).
+**No migration:** the structures stay where their lanes keep them
+(see §7). The link pass is shape-tolerant (the participant_event.py
+precedent) and derives participant keys the same way the Neon
+participant store does (first of id/handle/username/name/team_name/url,
+else a sha256 of the canonical record).
+
+Entities: `challenge:event:{id}`, `challenge:participant:{event}/{key}`,
+`challenge:project:{event}/{slug}`, `challenge:judge:{slug}`,
+`challenge:organizer:{slug}`.
+Edges: participant `--competes_in-->` event; participant
+`--entered_with-->` project `--submitted_to-->` event; project
+`--hosted_at-->` `github:repository:` (from its GitHub URL — the seam
+where the challenge subgraph joins the GitHub plane); judge
+`--judges-->` event; organizer `--organizes-->` event; participant
+`--won-->` past event (from `past_wins[]`).
+
+Guardrails, hard-coded in the importer and covered by tests:
+- `metrics_internal` is **never read** — win-probability and friends
+  render only in the Admin panel, never in this public view.
+- `same_author_as` is emitted only from a participant's own published
+  `persona.public_links.github` (explicit evidence) — never from name
+  matching. 4n0n unlinkability is untouched; our entrants carry no such
+  public link by design.
+- Recruitment fields are observation-only in the source and stay so
+  here: the view records competition structure, not candidates.
+
+## 7. Lane responsibility (resolved 2026-10-29)
+
+| Structure | Responsible lane | This view |
+|---|---|---|
+| coordinator.json records (single writer) | challenge-entries `a33d3ca1` | read-only import |
+| OSINT coverage + page snapshots (PR #2234) | assistant seat `a440bcb2` | not imported (hashes are not entities) |
+| Neon participant store (schema/writer) | database-specialist `e3055a9c` | key rule mirrored, store untouched |
+| Participant scoring pattern | moneyball-plane `cd195597` | not imported (metrics_internal excluded) |
+| Repository / X plane indexes | Observatory `e3d17643` / X Observatory | read-only import |
+| **Edges, graph schema, this doc, link pass** | **cross-plane-graph `6f7170c0`** | **owns the view only** |
+
+Adding an observation consumer never moves a structure: producers keep
+their files, consumers derive views, and every view is regenerable.

@@ -2,9 +2,13 @@
 import unittest
 from datetime import datetime, timedelta, timezone
 
+from unittest.mock import patch
+
+from scripts.ci import help_wanted_followup
 from scripts.ci.help_wanted_followup import (
-    MARKER, count_prior_nudges, decide_action, filter_maintainer_activity,
-    is_own_repo, latest_approval_ts, latest_maintainer_signal, nudge_policy,
+    MARKER, _search_foreign_prs, count_prior_nudges, decide_action,
+    filter_maintainer_activity, is_own_repo, latest_approval_ts,
+    latest_maintainer_signal, nudge_policy,
 )
 
 
@@ -162,6 +166,38 @@ class HelpWantedFollowupScopeTests(unittest.TestCase):
         self.assertTrue(is_own_repo("timerloggedout-spec/gh-aw-mcpg_fork"))
         self.assertFalse(is_own_repo("mangiapanejohn-dev/MOBIUS-Searcher"))
         self.assertFalse(is_own_repo(""))
+
+
+class HelpWantedFollowupPaginationTests(unittest.TestCase):
+    """Foreign search must walk every page, not one sliding window."""
+
+    @staticmethod
+    def _item(repo, number):
+        return {
+            "repository_url": f"https://api.github.com/repos/{repo}",
+            "html_url": f"https://github.com/{repo}/pull/{number}",
+            "number": number,
+        }
+
+    def test_walks_all_pages_and_filters_own_repos(self):
+        pages = {
+            1: [self._item("foreign-owner/repo-a", n) for n in range(1, 101)],
+            2: [
+                self._item("foreign-owner/repo-b", 1),
+                self._item("timerloggedout-spec/gh-aw_fork", 2),
+            ],
+        }
+        requested = []
+
+        def fake_api(method, path):
+            page = int(path.split("&page=")[1].split("&")[0])
+            requested.append(page)
+            return 200, {"items": pages.get(page, []), "total_count": 102}
+
+        with patch.object(help_wanted_followup, "api", fake_api):
+            out = _search_foreign_prs("is:closed")
+        self.assertEqual(requested, [1, 2])
+        self.assertEqual(len(out), 101)
 
 
 if __name__ == "__main__":

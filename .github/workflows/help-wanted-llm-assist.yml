@@ -34,14 +34,10 @@ jobs:
       - name: Resolve target foreign PR
         id: target
         env:
-          OPERATOR_GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
-          OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
-          ARCHWIZ_GITHUB_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
           INPUT_PR: ${{ github.event.inputs.pr || github.event.client_payload.pr || '' }}
         run: |
           set -euo pipefail
-          export GITHUB_TOKEN="${OPERATOR_GITHUB_TOKEN:-${OPERATOR_TOKEN:-${ARCHWIZ_GITHUB_TOKEN:-$GITHUB_TOKEN}}}"
           python3 <<'PY'
           import json, os, re, urllib.parse, urllib.request
           tok = os.environ["GITHUB_TOKEN"]

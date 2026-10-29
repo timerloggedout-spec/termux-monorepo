@@ -1,0 +1,65 @@
+name: Pinecone knowledge sync
+
+# The fleet's Pinecone consumer: semantic search over docs/ops (repo knowledge
+# base) for lanes / Delphi research retrieval. Runs on GitHub (our account
+# surface), never as a VM service. Cadence: manual dispatch + monthly refresh
+# + when the integration code itself changes. Secrets are never printed.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "sync | search | observe"
+        required: false
+        default: "sync"
+        type: string
+      query:
+        description: "query text for mode=search"
+        required: false
+        default: ""
+        type: string
+  schedule:
+    - cron: "37 5 1 * *"
+  push:
+    branches: [master]
+    paths:
+      - "scripts/pinecone/**"
+      - "tests/test_pinecone_knowledge.py"
+      - ".github/workflows/pinecone-knowledge.yml"
+
+concurrency:
+  group: pinecone-knowledge
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  pinecone:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PINECONE_API_KEY: ${{ secrets.PINECONE_API_KEY }}
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Unit tests (fake transport, no network)
+        run: python3 -m pytest tests/test_pinecone_knowledge.py -q
+
+      - name: Run integration
+        run: |
+          set -euo pipefail
+          mode="${{ inputs.mode || 'sync' }}"
+          python3 scripts/pinecone/knowledge_sync.py "$mode" "${{ inputs.query || '' }}" | tee /tmp/pinecone-result.json
+
+      - name: Publish evidence
+        if: always()
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: pinecone-knowledge-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/pinecone-result.json
+          if-no-files-found: error
+          retention-days: 30

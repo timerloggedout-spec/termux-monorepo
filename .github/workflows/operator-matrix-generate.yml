@@ -9,15 +9,26 @@ name: Operator Matrix Generate
 # pattern. No project-scoped token is used; the job's GITHUB_TOKEN
 # only reads the repo's own issues/PRs/checks and writes the PR.
 #
-# Trigger accounting: one weekly scheduled run + manual dispatch.
+# Trigger accounting (adaptive frequency, owner order 2026-10-28 —
+# cadence follows relevance, not a fixed weekly guess):
+#   - pull_request closed+merged: the inventory the matrix describes
+#     just changed; regenerate then (job-level if keeps unmerged
+#     closes out). The workflow's own bot merge re-fires this once —
+#     a self-limiting no-op ("already current").
+#   - daily schedule (06:41 UTC): the floor — bounds staleness at
+#     ~24h for issue-side change (opens/closes don't fire the PR
+#     trigger); a no-change run costs ~5 GraphQL calls and no PR.
+#   - manual dispatch.
 # Supersedes the per-event ops-operator-matrix-project-sync method
 # (495 no-op runs while its prerequisites were missing); that workflow
 # is retired in a follow-up once this one has proven on schedule.
 
 on:
   workflow_dispatch:
+  pull_request:
+    types: [closed]
   schedule:
-    - cron: '41 6 * * 1'
+    - cron: '41 6 * * *'
 
 concurrency:
   group: operator-matrix-generate
@@ -34,6 +45,8 @@ permissions:
 
 jobs:
   generate:
+    # pull_request trigger fires on every close; only merges count.
+    if: github.event_name != 'pull_request' || github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:

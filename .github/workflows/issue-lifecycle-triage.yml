@@ -9,12 +9,21 @@ name: Issue Lifecycle Triage (deterministic label pass)
 # already exist in the repo taxonomy. It never removes a label, never
 # relabels a labelled issue, never assigns, and never closes anything.
 #
-# Trigger accounting: one weekly scheduled run (apply mode, narrow rules
-# only) plus manual dispatch (report or apply). The weekly run's actions
-# are visible as label events on the issues it touches; the lane pass in
-# the map (section 9) audits them.
+# Trigger accounting (adaptive frequency, owner order 2026-10-28 —
+# cadence follows relevance, not a fixed weekly guess):
+#   - issues opened/reopened: label at birth, when relevance is
+#     highest — the pass still only touches unlabelled issues, so a
+#     burst just re-runs a cheap no-op-mostly pass (concurrency group
+#     below serializes; one run + one queued max per group).
+#   - weekly schedule (Tue 07:17 UTC): the floor sweep — catches
+#     anything the event path missed (edits, trigger drops).
+#   - manual dispatch: report or apply.
+# The run's actions are visible as label events on the issues it
+# touches; the lane pass in the map (section 9) audits them.
 
 on:
+  issues:
+    types: [opened, reopened]
   workflow_dispatch:
     inputs:
       mode:

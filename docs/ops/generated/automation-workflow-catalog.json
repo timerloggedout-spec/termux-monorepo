@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "1f521f601d71dd27d084025fe7563c5a4672c291947d9574903111ff8b8f50cb",
+  "source_fingerprint": "c9e5433de0cdeba63d4b64a66e24bc78ac973f7a4a8b1ad62377614ac910de40",
   "workflow_count": 223,
   "workflows": [
     {
@@ -2359,6 +2359,7 @@
         "17 7 * * 2"
       ],
       "triggers": [
+        "issues",
         "schedule",
         "workflow_dispatch"
       ]
@@ -2657,9 +2658,10 @@
       "name": "Operator Matrix Generate",
       "path": ".github/workflows/operator-matrix-generate.yml",
       "schedules": [
-        "41 6 * * 1"
+        "41 6 * * *"
       ],
       "triggers": [
+        "pull_request",
         "schedule",
         "workflow_dispatch"
       ]

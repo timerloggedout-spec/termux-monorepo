@@ -30,16 +30,55 @@ jobs:
       GITHUB_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
+      - name: Freshness gate (event-driven runs only)
+        id: gate
+        if: github.event_name == 'workflow_run'
+        run: |
+          # Loop breaker (2026-10-29 burst root cause): delphi-gate
+          # completed 143 times in 25 min and every completion fired an
+          # unthrottled collect (~30-80 API calls each), exhausting the
+          # shared rate buckets; collectors then failed exit-1 for 5h.
+          # Event-driven collects now run at most once per 15 min —
+          # the same freshness-gate pattern reviewer-metrics-collect
+          # uses at 24h. Dispatch and schedule always proceed.
+          python3 - <<'PY'
+          import json, os, subprocess
+          from datetime import datetime, timezone
+          skip = False
+          try:
+              out = subprocess.run(
+                  ["gh", "run", "list", "--workflow",
+                   "delphi-rfp-feed-collect.yml", "--status", "success",
+                   "--limit", "1", "--json", "createdAt"],
+                  capture_output=True, text=True, timeout=60)
+              runs = json.loads(out.stdout or "[]")
+              if runs:
+                  last = datetime.fromisoformat(
+                      runs[0]["createdAt"].replace("Z", "+00:00"))
+                  age_min = (datetime.now(timezone.utc) - last).total_seconds() / 60
+                  skip = age_min < 15
+                  print(f"last successful collect {age_min:.1f} min ago; "
+                        f"event-driven collect {'skipped (<15m)' if skip else 'proceeds'}")
+              else:
+                  print("no successful collect on record; event-driven collect proceeds")
+          except Exception as exc:
+              print(f"freshness gate unreadable ({exc}); event-driven collect proceeds")
+          with open(os.environ["GITHUB_OUTPUT"], "a") as fh:
+              fh.write(f"skip={'true' if skip else 'false'}\n")
+          PY
       - name: Fetch the RFP census cache
+        if: steps.gate.outputs.skip != 'true'
         run: |
           set -euo pipefail
           python3 -B scripts/delphi/rfp_flood_fetch.py --cache .rfp-cache
       - name: Collect the feed
+        if: steps.gate.outputs.skip != 'true'
         run: |
           set -euo pipefail
           python3 -B scripts/delphi/rfp_flood_feed.py \
             --cache .rfp-cache --out apps/help-wanted-dashboard/data/delphi-rfp-feed.json
       - name: Propose the refresh as a PR
+        if: steps.gate.outputs.skip != 'true'
         run: |
           set -euo pipefail
           if git diff --quiet -- apps/help-wanted-dashboard/data/delphi-rfp-feed.json; then

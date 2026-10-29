@@ -1,23 +1,32 @@
 {
- "builder": "termux-monorepo.cross_plane_link@1.0",
+ "builder": "termux-monorepo.cross_plane_link@1.1",
  "counts": {
   "edge_types": {
    "about_topic": 12312,
    "authored_by": 3639,
+   "competes_in": 1,
+   "entered_with": 1,
    "fork_of": 1,
    "in_domain": 5196,
    "mentions_repo": 20,
+   "organizes": 9,
    "owned": 696,
+   "same_author_as": 1,
    "starred": 3185,
+   "submitted_to": 14,
    "upstream": 2,
    "watching": 128
   },
-  "edges": 25179,
+  "edges": 25205,
   "entity_endpoints_by_namespace": {
+   "challenge:event": 24,
+   "challenge:organizer": 9,
+   "challenge:participant": 3,
+   "challenge:project": 15,
    "domain": 5196,
    "github:repository": 25169,
    "github:research-seed": 31,
-   "github:user": 7648,
+   "github:user": 7649,
    "research-seed": 2,
    "topic": 12312
   },
@@ -25,8 +34,18 @@
  },
  "observed_at": "2026-10-29T10:55:52.286678Z",
  "schema_version": "graph-index/v1",
- "snapshot_hash": "904e1874bf2458167f03aa16f8865ca668701f1150f62eb643f996460d81453a",
+ "snapshot_hash": "bffdc4fed3e867f0a5174f33862eed7220778b7028a99452f9823117bbdc9c23",
  "sources": {
+  "challenge": {
+   "observed_at": null,
+   "path": "ops/challenge/coordinator.json",
+   "records": {
+    "events": 7,
+    "judges": 0,
+    "organizers": 9,
+    "participants": 1
+   }
+  },
   "github": {
    "observed_at": "2026-10-29T10:55:52.286678Z",
    "path": "workspace/llm_map/repositories/repository-index.json",

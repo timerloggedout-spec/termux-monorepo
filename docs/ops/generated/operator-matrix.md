@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-10-29T12:56:17Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-10-29T12:57:24Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `6e168d42bc` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `3c9e4606c8` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 353 issues, 107 PRs. PR classes: EXTRACT 5 / CANDIDATE 58 / NEED_EVIDENCE 44 / SUPERSEDE 0.
+**Open inventory:** 353 issues, 106 PRs. PR classes: EXTRACT 5 / CANDIDATE 57 / NEED_EVIDENCE 44 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -75,7 +75,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2304 | CANDIDATE | unlabelled | `55ac9c79a2` | success | success | unknown | 📖 Linguist: optimize token efficiency & add stego cipher |
 | #2309 | CANDIDATE | unlabelled | `68f2c77cfe` | success | success | unknown | docs(secrets): phantom-secret remediation map + provisioning checklist |
 | #2330 | CANDIDATE | unlabelled | `fd02b2c8e0` | success | success | unknown | 🛡️ Sentinel: Fix umask permission exposure in token provider vault |
-| #2335 | CANDIDATE | unlabelled | `9d98c1607c` | success | success | unknown | feat(graph): cross-plane v2.1 — challenge field_size on event nodes, tracked_rec |
 | #47 | NEED_EVIDENCE | unlabelled | `11b61f8139` | not_reported | not_reported | unknown | feat(refTemplates): restore metadata-only skeleton (Option B recovery) |
 | #48 | NEED_EVIDENCE | unlabelled | `7839eeb7da` | not_reported | not_reported | dirty | feat(llm-api-hub): OpenAI hub + standalone server + ADE/kai9000 split (TER-71) |
 | #81 | NEED_EVIDENCE | unlabelled | `f1d2eef16b` | not_reported | not_reported | unknown | ci: promote Gemini quota-gate + agent workflows to master (event triggers) |
@@ -117,8 +116,8 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2190 | NEED_EVIDENCE | unlabelled | `be30d8c241` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2235 | NEED_EVIDENCE | unlabelled | `1cf1f72ae0` | not_reported | not_reported | unknown | chore(osint): refresh coverage + page snapshots |
 | #2252 | NEED_EVIDENCE | unlabelled | `77f6526342` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2263 | NEED_EVIDENCE | unlabelled | `e22896bcb9` | not_reported | not_reported | clean | chore(delphi): refresh delphi-ledger-feed.json |
-| #2310 | NEED_EVIDENCE | unlabelled | `1cc727c59d` | not_reported | not_reported | unstable | chore(delphi): refresh delphi-rfp-feed.json |
+| #2263 | NEED_EVIDENCE | unlabelled | `e4faceb971` | not_reported | not_reported | unstable | chore(delphi): refresh delphi-ledger-feed.json |
+| #2310 | NEED_EVIDENCE | unlabelled | `1db73f0d68` | not_reported | not_reported | unstable | chore(delphi): refresh delphi-rfp-feed.json |
 | #2324 | NEED_EVIDENCE | unlabelled | `1fdb151f97` | not_reported | not_reported | unknown | chore(proposals): refresh proposals-feed.json |
 
 ## Families (open)
@@ -134,6 +133,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | research | 6 | 0 |
 | security | 10 | 0 |
 | temporal | 2 | 0 |
-| unlabelled | 19 | 105 |
+| unlabelled | 19 | 104 |
 
 **Unlabelled open issues (19):** #308, #343, #388, #389, #763, #876, #968, #1226, #1450, #1497, #1588, #1592, #1593, #1622, #1683, #2179, #2185, #2204, #2210 — worked oldest-first by the issue-lifecycle lane pass.

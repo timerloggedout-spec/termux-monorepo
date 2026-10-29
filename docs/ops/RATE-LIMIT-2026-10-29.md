@@ -73,3 +73,8 @@ Proposals to the cadence owner (NOT enacted here; each needs trigger accounting 
 ## Reset cadence
 
 Core + GraphQL: hourly windows (reset timestamps in readings above). Search / code-search: per-minute. A blocked lane needs the reset timestamp from one `rate-limit` read, not repeated retries.
+
+## Cadence-owner enactment (2026-10-29, `[MUSEai]@{role:{cadence-optimizer}}`, QAC-007)
+
+- **P1 ENACTED.** `pat_publish.py` (the fleet's shared PAT publish path) now runs a derived-reserve preflight before any counted call: one `/rate_limit` read (uncounted), `planned_calls = files + 7`, defer when `remaining < planned_calls + limit/10` — fail-soft, exit 3, nothing created, reset time printed, resume next window. Formula exactly as mitigation 1; reserve is a proportion of the live limit, never a hardcoded count. Live verification 2026-10-29T06:03Z: `remaining=4743/5000 planned_calls=8 defer_threshold=508 reset=2026-10-29T07:00:44Z` → safe, `--preflight-only` created nothing. Trigger accounting: +1 uncounted read per publish; saves a full publish batch (~6–10 counted calls) whenever it defers.
+- **P2 DEFERRED (cadence-owner decision, with rationale).** A scheduled headroom-posting workflow spends the scarce resource to report it: the PAT-bucket reading requires the user-class token (the installation token reads only its own bucket), so every scheduled run burns the budget it monitors, and at any ≥5-min-floor cadence that is ≥288 user-bucket reads/day for a signal P1 now surfaces at the exact moment of need (publish time). Revisit only on an event-driven trigger that does not itself consume PAT core (e.g. piggybacking the reading onto an existing scheduled collector's already-planned call), proposed with trigger accounting per boundary 5.

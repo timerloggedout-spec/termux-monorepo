@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "f1a4f9f9444906cef9fa2e448a95c6a0780beb56e25145a570ea55a2afc8f826",
-  "workflow_count": 225,
+  "source_fingerprint": "6d9b319fc63c05df2b70c33bdf8c618cd981a1fd7ae6728f53e35b572da0f0cf",
+  "workflow_count": 226,
   "workflows": [
     {
       "action_pins": [],
@@ -3223,6 +3223,22 @@
       "schedules": [],
       "triggers": [
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: receiver-process cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "process"
+      ],
+      "name": "receiver-process",
+      "path": ".github/workflows/receiver-process.yml",
+      "schedules": [],
+      "triggers": [
+        "repository_dispatch",
         "workflow_dispatch"
       ]
     },

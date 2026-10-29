@@ -8,7 +8,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from x_harvest import (XHttpError, build_payload, classify_plane, compute_delta,
-                       main, merge_records, normalize, snapshot_hash)
+                       main, merge_records, normalize, refresh_access_token,
+                       snapshot_hash)
+import x_oauth
 
 USERS = {"42": {"id": "42", "username": "someone", "name": "Some One"}}
 TWEET = {"id": "100", "author_id": "42", "text": "a post about termux workflows",
@@ -93,6 +95,27 @@ class XHarvestTests(unittest.TestCase):
                 os.environ.pop("X_OAUTH2_USER_TOKEN", None)
             else:
                 os.environ["X_OAUTH2_USER_TOKEN"] = env_old
+
+
+    def test_refresh_access_token_shape(self):
+        seen = {}
+
+        def poster(url, form, client_id, client_secret):
+            seen.update(form)
+            return {"access_token": "acc", "refresh_token": "rotated"}
+
+        access, rotated = refresh_access_token("cid", None, "rt0", poster=poster)
+        self.assertEqual((access, rotated), ("acc", "rotated"))
+        self.assertEqual(seen["grant_type"], "refresh_token")
+        self.assertEqual(seen["refresh_token"], "rt0")
+
+    def test_authorize_url_is_pkce_s256(self):
+        import urllib.parse as up
+        url = x_oauth.authorize_url("cid", "http://localhost:8765/callback")
+        q = up.parse_qs(up.urlparse(url).query)
+        self.assertEqual(q["code_challenge_method"], ["S256"])
+        self.assertIn("offline.access", q["scope"][0])
+        self.assertIn("bookmark.read", q["scope"][0])
 
 
 if __name__ == "__main__":

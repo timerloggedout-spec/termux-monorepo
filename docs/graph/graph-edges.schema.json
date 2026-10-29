@@ -9,12 +9,14 @@
     "dst": {"type": "string", "minLength": 1},
     "type": {"type": "string", "enum": ["owned", "starred", "watching", "authored_by",
       "fork_of", "about_topic", "in_domain", "mentions_repo", "upstream",
-      "liked", "bookmarked", "follows", "implements", "cites", "same_author_as"]},
+      "liked", "bookmarked", "follows", "implements", "cites", "same_author_as",
+      "competes_in", "entered_with", "submitted_to", "judges", "organizes",
+      "won", "hosted_at"]},
     "evidence": {
       "type": "object",
       "required": ["plane", "record", "method", "observed_at"],
       "properties": {
-        "plane": {"type": "string", "enum": ["github", "x", "research-seeds", "papers", "following"]},
+        "plane": {"type": "string", "enum": ["github", "x", "research-seeds", "papers", "following", "challenge"]},
         "record": {"type": "string"},
         "method": {"type": "string"},
         "observed_at": {"type": ["string", "null"]}

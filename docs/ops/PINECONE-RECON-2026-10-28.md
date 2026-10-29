@@ -64,3 +64,13 @@ The §5 "adopt-nothing / no signup" verdict was superseded by owner order 2026-1
 - **Key:** new `fleet` key (All permissions, project Default) harvested via the sealed-box PAT route into the Actions secret store as `PINECONE_API_KEY` (store count 52, 2026-10-28T13:21:09Z). **Verified live:** `GET api.pinecone.io/indexes` with the key = HTTP 200, returned `swaying-dogwood`. Names only in records; value lives only in the secret store.
 - **Registry:** v3 derive for platform `pinecone` = `GentleWalnut50` — derived per protocol but **not consumed** (no signup form forced a name; the account predates it). Flagged for the registry lane to record.
 - **Quota registry:** `pinecone.*` records (storage, write_units, read_units, indexes, egress) added in the same PR as this update, live-check = list-indexes with PINECONE_API_KEY.
+
+## 4. Integration — LANDED (2026-10-28, owner order "Integrate")
+
+State change supersedes §3's "no consumer yet" for knowledge search:
+
+- **Client:** `scripts/pinecone/pinecone_client.py` — stdlib-only REST client (control + data plane), API version `2025-10`, key from `PINECONE_API_KEY` env only, never printed.
+- **Consumer:** `scripts/pinecone/knowledge_sync.py` — semantic search over the repo knowledge base (`docs/ops/*.md`). Index `termux-knowledge` (integrated inference, `llama-text-embed-v2`, aws/us-east-1 = Starter region), namespace `repo-docs`. Chunk ids are content hashes → re-sync is idempotent. Modes: `sync` (ensure index + upsert + smoke searches), `search "<query>"`, `observe` (quota reading: indexes + record counts).
+- **Runner:** `.github/workflows/pinecone-knowledge.yml` — workflow_dispatch + monthly schedule (1st 05:37Z) + push on the integration paths. Runs on GitHub (our-account surface); the VM hosts nothing. Evidence = run step summary + artifact.
+- **Tests:** `tests/test_pinecone_knowledge.py` — fake transport, no network (create-once, NDJSON batching, search parse, content-addressed chunk ids, corpus build).
+- **Unchanged:** HindSight remains the pg_pinecone candidate (still gated on a self-managed PG17/18 store); Delphi ledger store rejection stands; the pre-existing `swaying-dogwood` index is untouched by this integration.

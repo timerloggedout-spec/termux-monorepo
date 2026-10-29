@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "c9e5433de0cdeba63d4b64a66e24bc78ac973f7a4a8b1ad62377614ac910de40",
-  "workflow_count": 223,
+  "source_fingerprint": "f1a4f9f9444906cef9fa2e448a95c6a0780beb56e25145a570ea55a2afc8f826",
+  "workflow_count": 225,
   "workflows": [
     {
       "action_pins": [],
@@ -1042,6 +1042,28 @@
       "triggers": [
         "pull_request",
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
+      ],
+      "authority": "writer",
+      "concurrency": "group: cross-plane-graph-master cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "link"
+      ],
+      "name": "cross-plane graph",
+      "path": ".github/workflows/cross-plane-graph.yml",
+      "schedules": [
+        "47 6 * * 3"
+      ],
+      "triggers": [
+        "push",
+        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -4079,6 +4101,27 @@
       "schedules": [],
       "triggers": [
         "pull_request"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
+      ],
+      "authority": "writer",
+      "concurrency": "group: x-observatory-master cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "index"
+      ],
+      "name": "x observatory",
+      "path": ".github/workflows/x-observatory.yml",
+      "schedules": [
+        "23 5 * * 3"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
       ]
     }
   ]

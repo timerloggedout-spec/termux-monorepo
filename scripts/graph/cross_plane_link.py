@@ -3,11 +3,17 @@
 observation-plane indexes, never a new source of truth.
 
 Reads the committed plane indexes (GitHub repository-index, X x-index,
-research-seed files, the repository index's issue_intake) and derives a
-deterministic edge list (graph-edges/v1) plus a summary (graph-index/v1)
-and a Markdown projection. It makes NO API calls and edits NO plane
-index: planes stay single-writer by their owning lanes, and this view is
-regenerated from them by .github/workflows/cross-plane-graph.yml.
+research-seed files, the repository index's issue_intake, and the
+challenge coordinator) and derives a deterministic edge list
+(graph-edges/v1) plus a summary (graph-index/v1) and a Markdown
+projection. It makes NO API calls and edits NO plane index: planes stay
+single-writer by their owning lanes, and this view is regenerated from
+them by .github/workflows/cross-plane-graph.yml.
+
+Lane responsibility (2026-10-29): source structures stay with their
+owning lanes — challenge entries lane owns coordinator.json records,
+the OSINT seat owns coverage/snapshots, the DB lane owns the Neon
+participant store. This graph lane owns ONLY the import/view layer.
 
 Entity ids are the ids the planes already emit:
   github:repository:{owner}/{repo}   (repository-index record `id`)
@@ -15,27 +21,39 @@ Entity ids are the ids the planes already emit:
   github:research-seed:{owner}/{repo} / research-seed:{slug} (seed_id)
 plus view-minted namespaces for entities planes name but do not id:
   github:user:{login}  x:user:{handle}  topic:{slug}  domain:{slug}
-  github:issue:{owner}/{repo}#{n}
+  challenge:event:{id}  challenge:participant:{event}/{key}
+  challenge:project:{event}/{slug}  challenge:judge:{slug}
+  challenge:organizer:{slug}
 
 Edge record (one JSON object per line in edges.jsonl):
   {src, dst, type, evidence:{plane, record, method, observed_at}}
-Directions are actor-first: src --type--> dst reads as a sentence
-("github:user:OWNER --starred--> github:repository:X/Y").
+Directions are actor-first: src --type--> dst reads as a sentence.
 
-Privacy: X bookmark records are metadata-only in their plane; this pass
-never reads or stores tweet text. URL extraction runs only over a like
-record's public excerpt (the only text field an x-index may carry).
+Privacy / integrity rules:
+- X bookmark records are metadata-only in their plane; this pass never
+  reads or stores tweet text. URL extraction runs only over a like
+  record's public excerpt.
+- Challenge `metrics_internal` (win_probability etc.) is NEVER read:
+  internal metrics render only in the Admin panel, never in a public
+  graph view. The challenge pass skips that key by construction.
+- Participant identity edges (`same_author_as`) are emitted only from a
+  participant's own published public_links.github — explicit evidence,
+  never name-matching. 4n0n unlinkability is untouched: our entrants'
+  records carry no such public link by design.
 """
 import argparse, hashlib, json, re, sys
 from pathlib import Path
 
-BUILDER = "termux-monorepo.cross_plane_link@1.0"
+BUILDER = "termux-monorepo.cross_plane_link@1.1"
 GH_REPO_RE = re.compile(r"github\.com/([A-Za-z0-9_.-]+)/([A-Za-z0-9_.-]+)")
 OWNER_REPO_RE = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
 
 def repo_id(full_name): return f"github:repository:{full_name}"
 def gh_user(login): return f"github:user:{login}"
 def x_user(handle): return f"x:user:{handle}"
+def slugify(text):
+    s = re.sub(r"[^a-z0-9]+", "-", str(text).lower()).strip("-")
+    return s or "unknown"
 
 class EdgeSet:
     def __init__(self): self.edges = {}
@@ -75,7 +93,6 @@ def pass_github(payload, es):
         if rec.get("upstream") and OWNER_REPO_RE.match(rec["upstream"]):
             es.add(rid, repo_id(rec["upstream"]), "fork_of",
                    "github", rec["full_name"], "record_upstream_field", observed)
-    # issue intake entries carried inside the repository index
     for entry in payload.get("issue_intake") or []:
         seed = entry.get("seed_id")
         up = (entry.get("upstream") or "").strip()
@@ -135,7 +152,86 @@ def pass_seeds(seeds_dir, es, observed):
                    "research-seeds", sid, "classification_domains", observed)
     return n
 
-def build(repo_index_path, x_index_path, seeds_dir):
+def _participant_key(p):
+    for field in ("id", "handle", "username", "name", "team_name", "url"):
+        v = (p.get(field) or "")
+        if isinstance(v, str) and v.strip(): return slugify(v)
+    return "sha256:" + hashlib.sha256(
+        json.dumps(p, sort_keys=True).encode()).hexdigest()[:16]
+
+def _gh_login_from_link(link):
+    if not link: return None
+    m = re.search(r"github\.com/([A-Za-z0-9-]+)", str(link))
+    if m: return m.group(1)
+    s = str(link).strip().lstrip("@")
+    return s if re.fullmatch(r"[A-Za-z0-9-]+", s) else None
+
+def _project_edges(es, eid, event_id, project, owner_entity, observed):
+    """project may be a dict {name,url,...} or a plain string."""
+    if not project: return
+    if isinstance(project, str): project = {"name": project}
+    name = project.get("name") or project.get("title") or project.get("url") or ""
+    if not name: return
+    pid = f"challenge:project:{eid}/{slugify(name)}"
+    if owner_entity:
+        es.add(owner_entity, pid, "entered_with",
+               "challenge", pid, "participant_project", observed)
+    es.add(pid, event_id, "submitted_to",
+           "challenge", pid, "project_of_event", observed)
+    url = project.get("url") or project.get("repo") or ""
+    for owner, repo in GH_REPO_RE.findall(str(url)):
+        es.add(pid, repo_id(f"{owner}/{repo.rstrip('.,)')}"), "hosted_at",
+               "challenge", pid, "project_url_github", observed)
+
+def pass_challenge(payload, es):
+    """Import participant|competitor OSINT structures from the challenge
+    coordinator (ops/challenge/coordinator.json). Shape-tolerant, like
+    scripts/challenge/participant_event.py. NEVER reads metrics_internal."""
+    observed = payload.get("updated_at") or payload.get("observed_at")
+    counts = {"events": 0, "participants": 0, "judges": 0, "organizers": 0}
+    for ev in payload.get("events") or []:
+        if not isinstance(ev, dict): continue
+        eid = ev.get("id") or ev.get("slug") or ev.get("key") or slugify(ev.get("name") or "event")
+        event_id = f"challenge:event:{eid}"
+        counts["events"] += 1
+        for org in ev.get("organizers") or []:
+            if isinstance(org, str): org = {"name": org}
+            oname = org.get("name")
+            if not oname: continue
+            counts["organizers"] += 1
+            es.add(f"challenge:organizer:{slugify(oname)}", event_id, "organizes",
+                   "challenge", event_id, f"organizer_role_{org.get('role') or 'unknown'}", observed)
+        for judge in ev.get("judges") or []:
+            if isinstance(judge, str): judge = {"name": judge}
+            jname = judge.get("name") or (judge.get("persona") or {}).get("name")
+            if not jname: continue
+            counts["judges"] += 1
+            es.add(f"challenge:judge:{slugify(jname)}", event_id, "judges",
+                   "challenge", event_id, "event_judges_list", observed)
+        for proj in ev.get("projects") or []:
+            _project_edges(es, eid, event_id, proj, None, observed)
+        people = list(ev.get("participants") or []) + list(ev.get("competitors") or [])
+        for p in people:
+            if not isinstance(p, dict): continue
+            counts["participants"] += 1
+            pkey = _participant_key(p)
+            pid = f"challenge:participant:{eid}/{pkey}"
+            es.add(pid, event_id, "competes_in",
+                   "challenge", pid, "event_participants_list", observed)
+            _project_edges(es, eid, event_id, p.get("project"), pid, observed)
+            links = ((p.get("persona") or {}).get("public_links") or {})
+            login = _gh_login_from_link(links.get("github"))
+            if login:
+                es.add(pid, gh_user(login), "same_author_as",
+                       "challenge", pid, "participant_public_links_github_explicit", observed)
+            for win in p.get("past_wins") or []:
+                wname = (win or {}).get("event")
+                if wname:
+                    es.add(pid, f"challenge:event:{slugify(wname)}", "won",
+                           "challenge", pid, "participant_past_wins", observed)
+    return counts
+
+def build(repo_index_path, x_index_path, seeds_dir, challenge_path=None):
     es = EdgeSet()
     sources = {}
     repo_payload = load_json(repo_index_path)
@@ -145,7 +241,6 @@ def build(repo_index_path, x_index_path, seeds_dir):
                          "records": len(repo_payload.get("repositories") or [])}
     repo_names = pass_github(repo_payload, es)
     skipped_actor = 0
-    x_payload = {"records": [], "observed_at": None}
     if x_index_path and Path(x_index_path).exists():
         x_payload = load_json(x_index_path)
         sources["x"] = {"path": "workspace/llm_map/social/x-index.json",
@@ -157,6 +252,12 @@ def build(repo_index_path, x_index_path, seeds_dir):
     observed = repo_payload.get("observed_at")
     n_seeds = pass_seeds(seeds_dir, es, observed)
     sources["research_seeds"] = {"path": "docs/repositories/research-seeds", "records": n_seeds}
+    if challenge_path and Path(challenge_path).exists():
+        ch = load_json(challenge_path)
+        counts = pass_challenge(ch, es)
+        sources["challenge"] = {"path": "ops/challenge/coordinator.json",
+                                "observed_at": ch.get("updated_at") or ch.get("observed_at"),
+                                "records": counts}
     edges = es.sorted()
     blob = "".join(json.dumps(e, sort_keys=True) + "\n" for e in edges).encode()
     entities = {}
@@ -164,10 +265,8 @@ def build(repo_index_path, x_index_path, seeds_dir):
     for e in edges:
         by_type[e["type"]] = by_type.get(e["type"], 0) + 1
         for endpoint in (e["src"], e["dst"]):
-            ns = endpoint.split(":", 1)[0] if ":" in endpoint else "other"
-            # github:repository / github:user share the github namespace at depth 2
             parts = endpoint.split(":")
-            key = ":".join(parts[:2]) if len(parts) >= 2 and parts[0] in ("github", "x") else parts[0]
+            key = ":".join(parts[:2]) if len(parts) >= 2 and parts[0] in ("github", "x", "challenge") else parts[0]
             entities[key] = entities.get(key, 0) + 1
     summary = {
         "schema_version": "graph-index/v1",
@@ -191,7 +290,7 @@ def render_markdown(edges, summary):
              "", "## Edges by type", ""]
     for t, c in sorted(summary["counts"]["edge_types"].items(), key=lambda kv: -kv[1]):
         lines.append(f"- **{t}:** {c}")
-    lines += ["", "## Cross-plane / seed edges", "",
+    lines += ["", "## Cross-plane / seed / challenge edges", "",
               "| Src | Type | Dst | Method |", "|---|---|---|---|"]
     for e in edges:
         if e["evidence"]["plane"] != "github" or e["type"] in ("mentions_repo", "upstream", "fork_of"):
@@ -204,11 +303,12 @@ def main(argv=None):
     ap.add_argument("--repo-index", required=True)
     ap.add_argument("--x-index")
     ap.add_argument("--seeds-dir")
+    ap.add_argument("--challenge-index")
     ap.add_argument("--output", required=True, help="edges.jsonl path")
     ap.add_argument("--summary", required=True, help="graph-index.json path")
     ap.add_argument("--markdown", required=True)
     a = ap.parse_args(argv)
-    edges, summary = build(a.repo_index, a.x_index, a.seeds_dir)
+    edges, summary = build(a.repo_index, a.x_index, a.seeds_dir, a.challenge_index)
     Path(a.output).parent.mkdir(parents=True, exist_ok=True)
     Path(a.output).write_text("".join(json.dumps(e, sort_keys=True) + "\n" for e in edges), encoding="utf-8")
     Path(a.summary).write_text(json.dumps(summary, indent=1, sort_keys=True) + "\n", encoding="utf-8")

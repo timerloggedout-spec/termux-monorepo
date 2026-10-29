@@ -1,0 +1,77 @@
+name: cross-plane graph
+
+on:
+  schedule:
+    - cron: '47 6 * * 3'
+  workflow_dispatch: {}
+  push:
+    branches: [master]
+    paths:
+      - 'workspace/llm_map/repositories/repository-index.json'
+      - 'workspace/llm_map/social/x-index.json'
+      - 'docs/repositories/research-seeds/**'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cross-plane-graph-master
+  cancel-in-progress: false
+
+jobs:
+  link:
+    name: regenerate cross-plane graph view
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: master
+          fetch-depth: 1
+          persist-credentials: true
+
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: '3.12'
+
+      - name: Test link pass
+        working-directory: scripts/graph
+        run: python -m unittest -v test_cross_plane_link.py
+
+      # Offline by design: reads only committed plane indexes, makes no
+      # API calls, needs no secrets, and edits no plane index.
+      - name: Run link pass
+        run: |
+          set -euo pipefail
+          python scripts/graph/cross_plane_link.py \
+            --repo-index workspace/llm_map/repositories/repository-index.json \
+            --x-index workspace/llm_map/social/x-index.json \
+            --seeds-dir docs/repositories/research-seeds \
+            --output workspace/llm_map/graph/edges.jsonl \
+            --summary workspace/llm_map/graph/graph-index.json \
+            --markdown docs/graph/matrix.md
+
+      - name: Commit graph view delta
+        run: |
+          set -euo pipefail
+          git add workspace/llm_map/graph/edges.jsonl workspace/llm_map/graph/graph-index.json docs/graph/matrix.md
+          if git diff --cached --quiet; then
+            echo 'No cross-plane graph delta to publish.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -s -m 'chore(graph): refresh cross-plane graph view' \
+            -m 'Agent-Identity: GitHub Actions Cross-Plane Graph' \
+            -m 'Source: derived view over repository-index + x-index + research-seeds (offline link pass)'
+          git fetch origin master
+          git rebase origin/master
+          for attempt in 1 2 3; do
+            if git push origin HEAD:master; then
+              exit 0
+            fi
+            echo "push rejected (attempt ${attempt}); rebasing onto origin/master"
+            git pull --rebase origin master
+          done
+          echo '::error::failed to push graph view after retries'
+          exit 1

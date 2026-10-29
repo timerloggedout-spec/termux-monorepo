@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/graph/graph-edges.schema.json",
+  "title": "Cross-Plane Graph edge (graph-edges/v1) — one object per line in edges.jsonl",
+  "type": "object",
+  "required": ["src", "dst", "type", "evidence"],
+  "properties": {
+    "src": {"type": "string", "minLength": 1},
+    "dst": {"type": "string", "minLength": 1},
+    "type": {"type": "string", "enum": ["owned", "starred", "watching", "authored_by",
+      "fork_of", "about_topic", "in_domain", "mentions_repo", "upstream",
+      "liked", "bookmarked", "follows", "implements", "cites", "same_author_as"]},
+    "evidence": {
+      "type": "object",
+      "required": ["plane", "record", "method", "observed_at"],
+      "properties": {
+        "plane": {"type": "string", "enum": ["github", "x", "research-seeds", "papers", "following"]},
+        "record": {"type": "string"},
+        "method": {"type": "string"},
+        "observed_at": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

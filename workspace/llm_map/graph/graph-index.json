@@ -1,0 +1,49 @@
+{
+ "builder": "termux-monorepo.cross_plane_link@1.0",
+ "counts": {
+  "edge_types": {
+   "about_topic": 12312,
+   "authored_by": 3639,
+   "fork_of": 1,
+   "in_domain": 5196,
+   "mentions_repo": 20,
+   "owned": 696,
+   "starred": 3185,
+   "upstream": 2,
+   "watching": 128
+  },
+  "edges": 25179,
+  "entity_endpoints_by_namespace": {
+   "domain": 5196,
+   "github:repository": 25169,
+   "github:research-seed": 31,
+   "github:user": 7648,
+   "research-seed": 2,
+   "topic": 12312
+  },
+  "x_actor_edges_skipped_account_unknown": 0
+ },
+ "observed_at": "2026-10-29T10:55:52.286678Z",
+ "schema_version": "graph-index/v1",
+ "snapshot_hash": "904e1874bf2458167f03aa16f8865ca668701f1150f62eb643f996460d81453a",
+ "sources": {
+  "github": {
+   "observed_at": "2026-10-29T10:55:52.286678Z",
+   "path": "workspace/llm_map/repositories/repository-index.json",
+   "records": 3639,
+   "snapshot_hash": "62e9ae5b3e385ba0a8b54ad43c1c0b403327caf5056d3f7caf5fee260a1e89d8"
+  },
+  "research_seeds": {
+   "path": "docs/repositories/research-seeds",
+   "records": 4
+  },
+  "x": {
+   "observed_at": "2026-10-29T10:26:00Z",
+   "path": "workspace/llm_map/social/x-index.json",
+   "records": 0,
+   "snapshot_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+   "status": "awaiting_token"
+  }
+ },
+ "view_of": "existing observation-plane indexes; derived, never a source of truth"
+}

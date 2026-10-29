@@ -44,7 +44,7 @@ Privacy / integrity rules:
 import argparse, hashlib, json, re, sys
 from pathlib import Path
 
-BUILDER = "termux-monorepo.cross_plane_link@1.1"
+BUILDER = "termux-monorepo.cross_plane_link@1.2"
 GH_REPO_RE = re.compile(r"github\.com/([A-Za-z0-9_.-]+)/([A-Za-z0-9_.-]+)")
 OWNER_REPO_RE = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
 
@@ -186,14 +186,29 @@ def _project_edges(es, eid, event_id, project, owner_entity, observed):
 def pass_challenge(payload, es):
     """Import participant|competitor OSINT structures from the challenge
     coordinator (ops/challenge/coordinator.json). Shape-tolerant, like
-    scripts/challenge/participant_event.py. NEVER reads metrics_internal."""
+    scripts/challenge/participant_event.py. NEVER reads metrics_internal.
+
+    Returns (tracked_counts, field_size_by_event). The two are different
+    quantities and must never be conflated (owner flag, 2026-10-29):
+    tracked_counts = participant/competitor RECORDS this lane tracks in
+    coordinator.json (e.g. 1); field_size = the platform-displayed field
+    for the event (e.g. STRANDS-DECIDER participants=5917), carried as
+    attributes on the challenge:event node id, sourced verbatim from
+    events[].field_size {participants, projects, status} only."""
     observed = payload.get("updated_at") or payload.get("observed_at")
     counts = {"events": 0, "participants": 0, "judges": 0, "organizers": 0}
+    field_size_by_event = {}
     for ev in payload.get("events") or []:
         if not isinstance(ev, dict): continue
         eid = ev.get("id") or ev.get("slug") or ev.get("key") or slugify(ev.get("name") or "event")
         event_id = f"challenge:event:{eid}"
         counts["events"] += 1
+        fs = ev.get("field_size") if isinstance(ev.get("field_size"), dict) else {}
+        field_size_by_event[event_id] = {
+            "participants": fs.get("participants"),
+            "projects": fs.get("projects"),
+            "status": fs.get("status") or "open_task",
+        }
         for org in ev.get("organizers") or []:
             if isinstance(org, str): org = {"name": org}
             oname = org.get("name")
@@ -229,7 +244,7 @@ def pass_challenge(payload, es):
                 if wname:
                     es.add(pid, f"challenge:event:{slugify(wname)}", "won",
                            "challenge", pid, "participant_past_wins", observed)
-    return counts
+    return counts, field_size_by_event
 
 def build(repo_index_path, x_index_path, seeds_dir, challenge_path=None):
     es = EdgeSet()
@@ -254,10 +269,11 @@ def build(repo_index_path, x_index_path, seeds_dir, challenge_path=None):
     sources["research_seeds"] = {"path": "docs/repositories/research-seeds", "records": n_seeds}
     if challenge_path and Path(challenge_path).exists():
         ch = load_json(challenge_path)
-        counts = pass_challenge(ch, es)
+        counts, field_size_by_event = pass_challenge(ch, es)
         sources["challenge"] = {"path": "ops/challenge/coordinator.json",
                                 "observed_at": ch.get("updated_at") or ch.get("observed_at"),
-                                "records": counts}
+                                "tracked_records": counts,
+                                "field_size_by_event": field_size_by_event}
     edges = es.sorted()
     blob = "".join(json.dumps(e, sort_keys=True) + "\n" for e in edges).encode()
     entities = {}
@@ -290,6 +306,15 @@ def render_markdown(edges, summary):
              "", "## Edges by type", ""]
     for t, c in sorted(summary["counts"]["edge_types"].items(), key=lambda kv: -kv[1]):
         lines.append(f"- **{t}:** {c}")
+    ch_src = (summary.get("sources") or {}).get("challenge") or {}
+    if ch_src.get("field_size_by_event"):
+        tr = ch_src.get("tracked_records") or {}
+        lines += ["", "## Challenge event field size (platform-displayed)", "",
+                  f"Tracked participant records in coordinator.json: **{tr.get('participants', 0)}** — distinct from the field sizes below.",
+                  "", "| Event node | Participants | Projects | Status |", "|---|---|---|---|"]
+        for event_id in sorted(ch_src["field_size_by_event"]):
+            fs = ch_src["field_size_by_event"][event_id]
+            lines.append(f"| `{event_id}` | {fs.get('participants')} | {fs.get('projects')} | {fs.get('status')} |")
     lines += ["", "## Cross-plane / seed / challenge edges", "",
               "| Src | Type | Dst | Method |", "|---|---|---|---|"]
     for e in edges:

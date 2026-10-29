@@ -3,7 +3,8 @@ import unittest
 from datetime import datetime, timedelta, timezone
 
 from scripts.ci.help_wanted_followup import (
-    decide_action, filter_maintainer_activity, latest_approval_ts, latest_maintainer_signal,
+    MARKER, count_prior_nudges, decide_action, filter_maintainer_activity,
+    latest_approval_ts, latest_maintainer_signal,
 )
 
 
@@ -92,3 +93,35 @@ class HelpWantedFollowupPolicyTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+    def test_nudge_cap_suppresses_further_nudges(self):
+        # Focusflow #15 regression: the 72h cooldown alone let the loop
+        # post 10 identical nudges. At the lifetime cap it stays silent
+        # even when the thread is idle and feedback-free.
+        self.assertEqual(
+            decide_action(self.old_marker, None, None, self.old, self.now, nudge_count=2),
+            "skip",
+        )
+        self.assertEqual(
+            decide_action(None, None, None, self.old, self.now, nudge_count=10),
+            "skip",
+        )
+
+    def test_one_prior_nudge_still_allows_a_second(self):
+        self.assertEqual(
+            decide_action(self.old_marker, None, None, self.old, self.now, nudge_count=1),
+            "stale_nudge",
+        )
+
+    def test_count_prior_nudges_counts_only_our_stale_nudge_markers(self):
+        def comment(login, body):
+            return {"user": {"login": login}, "body": body}
+
+        comments = [
+            comment("timerloggedout-spec", f"{MARKER}\n\n**Action:** `stale_nudge`"),
+            comment("timerloggedout-spec", f"{MARKER}\n\n**Action:** `stale_nudge`"),
+            comment("timerloggedout-spec", f"{MARKER}\n\n**Action:** `reengage`"),
+            comment("someone-else", f"{MARKER}\n\n**Action:** `stale_nudge`"),
+            comment("timerloggedout-spec", "A substantive update, not a follow-up marker"),
+        ]
+        self.assertEqual(count_prior_nudges(comments), 2)

@@ -1,9 +1,9 @@
 {
   "counts": {
     "open_issues": 353,
-    "open_prs": 105,
+    "open_prs": 107,
     "pr_classes": {
-      "CANDIDATE": 56,
+      "CANDIDATE": 58,
       "EXTRACT": 5,
       "NEED_EVIDENCE": 44,
       "SUPERSEDE": 0
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 19,
-      "prs": 103,
+      "prs": 105,
       "unlabelled_numbers": [
         308,
         343,
@@ -74,7 +74,7 @@
       ]
     }
   },
-  "generated_at": "2026-10-29T06:25:12Z",
+  "generated_at": "2026-10-29T12:56:17Z",
   "issues_unlabelled": [
     308,
     343,
@@ -102,7 +102,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "199a880c91"
+    "sha": "6e168d42bc"
   },
   "prs": [
     {
@@ -965,6 +965,34 @@
       "updated_at": "2026-10-29T03:32:46Z"
     },
     {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "fd02b2c8e0",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2330,
+      "title": "\ud83d\udee1\ufe0f Sentinel: Fix umask permission exposure in token provider vault",
+      "updated_at": "2026-10-29T07:26:09Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "9d98c1607c",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2335,
+      "title": "feat(graph): cross-plane v2.1 \u2014 challenge field_size on event nodes, tracked_records label",
+      "updated_at": "2026-10-29T12:54:57Z"
+    },
+    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -1545,12 +1573,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "abe9b679ad",
+      "head_sha": "e22896bcb9",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "clean",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-10-29T06:21:42Z"
+      "updated_at": "2026-10-29T12:56:07Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1559,12 +1587,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "ca28b0f074",
+      "head_sha": "1cc727c59d",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2310,
       "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-10-29T06:21:18Z"
+      "updated_at": "2026-10-29T12:56:02Z"
     },
     {
       "class": "NEED_EVIDENCE",

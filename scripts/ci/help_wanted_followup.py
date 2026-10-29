@@ -56,13 +56,12 @@ MARKER = "### Help-wanted follow-up — termux-monorepo"
 REENGAGE_HOURS = float(os.environ.get("HELP_WANTED_REENGAGE_HOURS", "18"))
 # Stake PRs idle this long get a gentle nudge + CONTRIBUTING recon once per cooldown
 STALE_IDLE_HOURS = float(os.environ.get("HELP_WANTED_STALE_IDLE_HOURS", "72"))
-# Hard lifetime cap on stale nudges per PR. The 72h cooldown alone
-# self-perpetuates: every nudge is itself a marker comment, so an
-# uncapped loop posts the same form text forever (Focusflow #15
-# collected 10 identical nudges, 2026-09-24 → 2026-10-21). Two is a
-# reminder; ten is spam. After the cap the lane stays silent and the
-# participation loop owns the PR's disposition.
-MAX_STALE_NUDGES = int(os.environ.get("HELP_WANTED_MAX_STALE_NUDGES", "2"))
+# Adaptive stale-nudge policy (supersedes the flat lifetime cap of
+# PR #2311 — a constant cannot tell a dead thread from an engaged
+# one). Attention is spent where response is evidenced; see
+# nudge_policy() for the rules. A thread that has been carried this
+# many days since its first nudge earns one renewal nudge.
+STALE_RENEW_DAYS = float(os.environ.get("HELP_WANTED_STALE_RENEW_DAYS", "45"))
 # Closed foreign PRs updated within this window are routed for a lesson (never posted on).
 LESSON_DAYS = int(os.environ.get("HELP_WANTED_LESSON_DAYS", "14"))
 # Actions that post a timing-based public comment; Tribute System 1 must allow them.
@@ -218,16 +217,77 @@ def last_marker_ts(comments: list[dict]) -> datetime | None:
     return last
 
 
+def _is_our_nudge(c: dict) -> bool:
+    if ((c.get("user") or {}).get("login") or "") != AUTHOR:
+        return False
+    body = c.get("body") or ""
+    return MARKER in body and "`stale_nudge`" in body
+
+
 def count_prior_nudges(comments: list[dict]) -> int:
     """How many stale_nudge comments we have already posted on a thread."""
-    n = 0
+    return sum(1 for c in comments if _is_our_nudge(c))
+
+
+def nudge_timestamps(comments: list[dict]) -> list[datetime]:
+    """Timestamps of our stale_nudge comments on a thread, ascending."""
+    out = []
     for c in comments:
-        if ((c.get("user") or {}).get("login") or "") != AUTHOR:
-            continue
-        body = c.get("body") or ""
-        if MARKER in body and "`stale_nudge`" in body:
-            n += 1
-    return n
+        if _is_our_nudge(c):
+            ts = parse_ts(c.get("created_at"))
+            if ts:
+                out.append(ts)
+    return sorted(out)
+
+
+def nudge_policy(
+    *,
+    total_nudges: int,
+    nudges_since_signal: int,
+    maintainer_signals: int,
+    first_nudge_ts: datetime | None,
+    marker_ts: datetime | None,
+    pr_updated: datetime | None,
+    now: datetime,
+    held: bool = False,
+) -> tuple[bool, str]:
+    """Decide whether a stale nudge is EARNED, and say why.
+
+    The budget is earned by evidence, not fixed:
+    - 1 base nudge for a fresh, silent thread;
+    - +1 per maintainer signal on the thread (max +2) — engagement
+      is the strongest evidence a follow-up can land;
+    - +1 renewal once the thread has been carried longer than
+      STALE_RENEW_DAYS since its first nudge — longevity re-earns
+      a single touch instead of a drip.
+
+    The required idle interval backs off geometrically with each
+    consecutive unanswered nudge (72h, 144h, 288h, then ~24 days),
+    so silence stretches the cadence toward zero on its own.
+
+    A held surface (an unanswered maintainer question — we owe the
+    reply, not them) is never nudged.
+
+    Focusflow #15 under this policy: 0 maintainer signals, first
+    nudge earned, then budget exhausted (its 10 historical nudges
+    sit far past the earned budget) — permanently silent unless a
+    maintainer engages or the renewal window arrives.
+    """
+    if held:
+        return False, "held_surface: we owe the maintainer a reply"
+
+    earned = 1 + min(maintainer_signals, 2)
+    if first_nudge_ts is not None and (now - first_nudge_ts) >= timedelta(days=STALE_RENEW_DAYS):
+        earned += 1
+    if total_nudges >= earned:
+        return False, f"budget exhausted ({total_nudges} nudges, {earned} earned)"
+
+    interval = timedelta(hours=STALE_IDLE_HOURS) * (2 ** min(nudges_since_signal, 3))
+    if pr_updated is None or (now - pr_updated) < interval:
+        return False, f"backoff: idle < {interval.days * 24 + interval.seconds // 3600}h"
+    if marker_ts is not None and (now - marker_ts) < interval:
+        return False, f"backoff: last marker < {interval.days * 24 + interval.seconds // 3600}h"
+    return True, f"earned ({total_nudges}/{earned} used), interval satisfied"
 
 
 def latest_changes_requested(reviews: list[dict]) -> tuple[str | None, datetime | None, str]:
@@ -305,11 +365,14 @@ def decide_action(
     pr_updated: datetime | None,
     now: datetime,
     approval_ts: datetime | None = None,
-    nudge_count: int = 0,
+    total_nudges: int = 0,
+    nudges_since_signal: int = 0,
+    maintainer_signals: int = 0,
+    first_nudge_ts: datetime | None = None,
+    held: bool = False,
 ) -> str:
     """Return action: changes | reengage | stale_nudge | skip."""
     reengage_delta = timedelta(hours=REENGAGE_HOURS)
-    stale_delta = timedelta(hours=STALE_IDLE_HOURS)
 
     # Fresh CHANGES_REQUESTED after last marker → act
     if changes_ts and (marker_ts is None or changes_ts > marker_ts):
@@ -326,11 +389,18 @@ def decide_action(
     # next action is ours: adapt/validate the patch, not ask the maintainer again.
     # New feedback after the marker is handled by the reengage branch above.
     if signal_ts is None and changes_ts is None and approval_ts is None:
-        if nudge_count >= MAX_STALE_NUDGES:
-            return "skip"
-        if pr_updated and (now - pr_updated) >= stale_delta:
-            if marker_ts is None or (now - marker_ts) >= stale_delta:
-                return "stale_nudge"
+        allowed, _reason = nudge_policy(
+            total_nudges=total_nudges,
+            nudges_since_signal=nudges_since_signal,
+            maintainer_signals=maintainer_signals,
+            first_nudge_ts=first_nudge_ts,
+            marker_ts=marker_ts,
+            pr_updated=pr_updated,
+            now=now,
+            held=held,
+        )
+        if allowed:
+            return "stale_nudge"
 
     return "skip"
 
@@ -351,6 +421,30 @@ def append_evidence(rows: list[dict]) -> None:
     with path.open("a", encoding="utf-8") as f:
         for row in rows:
             f.write(json.dumps(row, separators=(",", ":")) + "\n")
+
+
+_HELD_SURFACES: dict | None = None
+
+
+def held_surfaces() -> dict:
+    """PR URL -> disposition from the tribute-participation record.
+
+    The participation loop's record lives in the checkout once its
+    refresh PRs land; when absent, no surface is marked held and the
+    rest of the policy still applies. A held surface (unanswered
+    maintainer question) must never be nudged — we owe the reply.
+    """
+    global _HELD_SURFACES
+    if _HELD_SURFACES is None:
+        _HELD_SURFACES = {}
+        path = Path("docs/ops/generated/tribute-participation.json")
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+            for item in data.get("items", []):
+                _HELD_SURFACES[item.get("pr_url", "")] = item.get("disposition", "")
+        except Exception:  # noqa: BLE001 — record absent/stale: degrade open
+            pass
+    return _HELD_SURFACES
 
 
 def main() -> int:
@@ -394,9 +488,27 @@ def main() -> int:
             maintainer_comments, maintainer_reviews, owner
         )
         approval_ts = latest_approval_ts(maintainer_reviews)
+        # Adaptive nudge facts: engagement earns budget, silence
+        # stretches the interval (see nudge_policy).
+        nudge_ts = nudge_timestamps(comments)
+        signal_cutoff = signal_ts or changes_ts
+        nudges_since_signal = (
+            len([t for t in nudge_ts if signal_cutoff is None or t > signal_cutoff])
+            if nudge_ts else 0
+        )
+        maintainer_signal_count = len(maintainer_comments) + len(
+            [r for r in maintainer_reviews
+             if r.get("state") in ("COMMENTED", "CHANGES_REQUESTED", "APPROVED")]
+        )
+        held = held_surfaces().get(html or "") == "held_surface"
         action = decide_action(
             marker_ts, signal_ts, changes_ts, pr_updated, now,
-            approval_ts=approval_ts, nudge_count=count_prior_nudges(comments),
+            approval_ts=approval_ts,
+            total_nudges=len(nudge_ts),
+            nudges_since_signal=nudges_since_signal,
+            maintainer_signals=maintainer_signal_count,
+            first_nudge_ts=nudge_ts[0] if nudge_ts else None,
+            held=held,
         )
 
         if action == "skip":

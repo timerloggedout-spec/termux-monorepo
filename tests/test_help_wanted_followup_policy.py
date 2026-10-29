@@ -4,7 +4,7 @@ from datetime import datetime, timedelta, timezone
 
 from scripts.ci.help_wanted_followup import (
     MARKER, count_prior_nudges, decide_action, filter_maintainer_activity,
-    latest_approval_ts, latest_maintainer_signal,
+    latest_approval_ts, latest_maintainer_signal, nudge_policy,
 )
 
 
@@ -91,32 +91,58 @@ class HelpWantedFollowupPolicyTests(unittest.TestCase):
         )
 
 
-if __name__ == "__main__":
-    unittest.main()
 
-    def test_nudge_cap_suppresses_further_nudges(self):
-        # Focusflow #15 regression: the 72h cooldown alone let the loop
-        # post 10 identical nudges. At the lifetime cap it stays silent
-        # even when the thread is idle and feedback-free.
+    def test_unearned_nudges_are_suppressed(self):
+        # Focusflow #15 regression: a silent thread earns ONE base
+        # nudge. Past the earned budget the loop stays silent no
+        # matter how idle the thread is (it collected 10 under the
+        # old self-perpetuating cooldown).
         self.assertEqual(
-            decide_action(self.old_marker, None, None, self.old, self.now, nudge_count=2),
+            decide_action(self.old_marker, None, None, self.old, self.now, total_nudges=1),
             "skip",
         )
         self.assertEqual(
-            decide_action(None, None, None, self.old, self.now, nudge_count=10),
+            decide_action(None, None, None, self.old, self.now, total_nudges=10),
             "skip",
         )
-
-    def test_one_prior_nudge_still_allows_a_second(self):
+    def test_maintainer_engagement_earns_a_followup(self):
+        # One maintainer signal earns a second nudge; the doubled
+        # backoff interval (144h) is satisfied by a 7-day idle.
+        week = self.now - timedelta(days=7)
         self.assertEqual(
-            decide_action(self.old_marker, None, None, self.old, self.now, nudge_count=1),
+            decide_action(week, None, None, week, self.now,
+                          total_nudges=1, nudges_since_signal=1, maintainer_signals=1),
             "stale_nudge",
         )
-
+    def test_policy_backoff_doubles_with_unanswered_nudges(self):
+        idle_100h = self.now - timedelta(hours=100)
+        allowed, _ = nudge_policy(
+            total_nudges=0, nudges_since_signal=0, maintainer_signals=0,
+            first_nudge_ts=None, marker_ts=None, pr_updated=idle_100h, now=self.now)
+        self.assertTrue(allowed)  # 100h > 72h base interval
+        allowed, reason = nudge_policy(
+            total_nudges=1, nudges_since_signal=1, maintainer_signals=1,
+            first_nudge_ts=idle_100h, marker_ts=idle_100h, pr_updated=idle_100h, now=self.now)
+        self.assertFalse(allowed)  # second consecutive nudge needs 144h
+        self.assertIn("backoff", reason)
+    def test_policy_renewal_after_long_carry(self):
+        # 50 days carried since the first nudge re-earns one touch.
+        allowed, _ = nudge_policy(
+            total_nudges=1, nudges_since_signal=1, maintainer_signals=0,
+            first_nudge_ts=self.now - timedelta(days=50),
+            marker_ts=self.now - timedelta(days=30),
+            pr_updated=self.now - timedelta(days=30), now=self.now)
+        self.assertTrue(allowed)
+    def test_policy_never_nudges_a_held_surface(self):
+        allowed, reason = nudge_policy(
+            total_nudges=0, nudges_since_signal=0, maintainer_signals=0,
+            first_nudge_ts=None, marker_ts=None, pr_updated=self.old,
+            now=self.now, held=True)
+        self.assertFalse(allowed)
+        self.assertIn("held", reason)
     def test_count_prior_nudges_counts_only_our_stale_nudge_markers(self):
         def comment(login, body):
             return {"user": {"login": login}, "body": body}
-
         comments = [
             comment("timerloggedout-spec", f"{MARKER}\n\n**Action:** `stale_nudge`"),
             comment("timerloggedout-spec", f"{MARKER}\n\n**Action:** `stale_nudge`"),
@@ -125,3 +151,7 @@ if __name__ == "__main__":
             comment("timerloggedout-spec", "A substantive update, not a follow-up marker"),
         ]
         self.assertEqual(count_prior_nudges(comments), 2)
+
+
+if __name__ == "__main__":
+    unittest.main()

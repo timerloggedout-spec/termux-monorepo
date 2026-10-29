@@ -1,0 +1,74 @@
+name: x observatory
+
+on:
+  schedule:
+    - cron: '23 5 * * 3'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: x-observatory-master
+  cancel-in-progress: false
+
+jobs:
+  index:
+    name: harvest X likes and bookmarks
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: master
+          fetch-depth: 1
+          persist-credentials: true
+
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: '3.12'
+
+      - name: Test X harvest
+        working-directory: scripts/social
+        run: python -m unittest -v test_x_harvest.py
+
+      # PROVISIONING ITEM (owner): secret X_OAUTH2_USER_TOKEN — an X API
+      # OAuth 2.0 *user-context* token (scopes bookmark.read, like.read,
+      # tweet.read, users.read, offline.access). NOT PROVISIONED yet.
+      # While absent the collector prints DEFER and exits 0 without
+      # writing; this workflow stays green and the index stays untouched.
+      - name: Harvest X signals
+        env:
+          X_OAUTH2_USER_TOKEN: <REDACTED_SECRET> secrets.X_OAUTH2_USER_TOKEN }}
+        run: |
+          set -euo pipefail
+          python scripts/social/x_harvest.py \
+            --defer-ok \
+            --overrides ops/social/x-plane-overrides.json \
+            --output workspace/llm_map/social/x-index.json \
+            --markdown docs/social/matrix.md
+
+      - name: Commit X index delta
+        run: |
+          set -euo pipefail
+          git add workspace/llm_map/social/x-index.json docs/social/matrix.md
+          if git diff --cached --quiet; then
+            echo 'No X-observatory delta to publish (harvest deferred or unchanged).'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -s -m 'chore(social): refresh X signal index' \
+            -m 'Agent-Identity: GitHub Actions X Observatory' \
+            -m 'Source: X API v2 user-context Likes and Bookmarks (bookmarks metadata-only)'
+          git fetch origin master
+          git rebase origin/master
+          for attempt in 1 2 3; do
+            if git push origin HEAD:master; then
+              exit 0
+            fi
+            echo "push rejected (attempt ${attempt}); rebasing onto origin/master"
+            git pull --rebase origin master
+          done
+          echo '::error::failed to push X index after retries'
+          exit 1

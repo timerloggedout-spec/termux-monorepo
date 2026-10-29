@@ -60,3 +60,7 @@ No token, authorization header, or secret value is written to generated artifact
 5. Add optional semantic enrichment behind the deterministic fact layer.
 
 A starred repository is a **research signal**, not an instruction to import, execute, or trust code.
+
+## Sibling plane
+
+The X (Twitter) signal plane (Likes + Bookmarks, personal vs marketing distinction) is the Social Observatory: [`docs/social/X-OBSERVATORY.md`](../social/X-OBSERVATORY.md) — the surface map for all observation planes lives there.

@@ -91,14 +91,19 @@ jobs:
       EVENT_NAME: ${{ github.event_name }}
       # [AUTOMATION] Targets for automated (push/schedule) runs, one
       # "project|helper_arg" per line. ONLY the known pair is enabled.
-      # The other helper args from the original allowlist have no
-      # confirmed Vercel project name in the repo record — do not guess
-      # one. To enable another project: replace the placeholder with
-      # the confirmed project name and uncomment the line.
+      # Project names for mcp-hub + both help-wanted projects confirmed
+      # live 2026-10-28 by plan-mode dispatches (runs 40822313438 /
+      # 40822458368 / 40822322021) from the vercel-specialist lane:
+      # each GET returned its rootDirectory + unguarded setting.
+      # termux-mcp remains NOT enabled: project exists (rootDirectory
+      # null, no commandForIgnoringBuildStep) but is not in the
+      # batch-deploy plan and its root is the repo root, so the
+      # mcp-hub pathspec does not describe it — confirm before enable.
       ENABLED_TARGETS: |
         termux-monorepo|demo-portal
-        # CONFIRM-BEFORE-ENABLE: <vercel-project-for-mcp-hub>|mcp-hub
-        # CONFIRM-BEFORE-ENABLE: <vercel-project-for-help-wanted-dashboard>|help-wanted-dashboard
+        help-wanted-oversight|help-wanted-dashboard
+        help-wanted-dash|help-wanted-dashboard
+        mcp-hub|mcp-hub
     steps:
       - name: Read or patch Ignored Build Step
         shell: bash

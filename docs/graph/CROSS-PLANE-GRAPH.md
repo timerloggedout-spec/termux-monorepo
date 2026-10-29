@@ -131,6 +131,20 @@ Guardrails, hard-coded in the importer and covered by tests:
 - Recruitment fields are observation-only in the source and stay so
   here: the view records competition structure, not candidates.
 
+**Field size vs tracked records (v2.1, owner flag 2026-10-29):** two
+different quantities, never conflated. `tracked_records` in
+`graph-index.json` (`sources.challenge.tracked_records`) counts the
+participant/competitor *records this fleet tracks* in coordinator.json
+— 1 at first import. The *field size* is the platform-displayed size of
+an event (STRANDS-DECIDER `field_size.participants` = 5,917 at the same
+moment). Since v2.1 (builder `@1.2`) the view carries
+`field_size {participants, projects, status}` as attributes on each
+`challenge:event:` node id, in
+`sources.challenge.field_size_by_event` — sourced verbatim from
+`events[].field_size` in coordinator.json (landed there via PR #2244;
+no new exposure class), nulls preserved for `open_task` events. Reports
+from this lane label the record count `tracked_records`, always.
+
 ## 7. Lane responsibility (resolved 2026-10-29)
 
 | Structure | Responsible lane | This view |

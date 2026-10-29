@@ -1,3 +1,8 @@
+---
+name: blind-agent-evaluation
+description: Use blinded or partially blinded evaluation when provider/model identity could bias selection or review and identity is not required for safe execution.
+---
+
 # Blind Agent Evaluation Skill
 
 ## Purpose

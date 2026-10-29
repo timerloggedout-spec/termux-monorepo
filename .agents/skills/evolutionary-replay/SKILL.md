@@ -1,7 +1,7 @@
 ---
 name: evolutionary-replay
 version: 1
-summary: Use realized discovery history as a deterministic replay simulator for bounded manager-policy experimentation.
+description: Use realized discovery history as a deterministic replay simulator for bounded manager-policy experimentation.
 ---
 
 # Evolutionary Replay Skill

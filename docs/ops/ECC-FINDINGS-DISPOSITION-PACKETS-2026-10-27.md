@@ -358,3 +358,70 @@ is a separate owner decision about those PRs, not an ECC finding.
   verdicts (blob-identical flagged files, flagged files untouched by the
   audited→head delta), not new ECC verdicts; a fresh ECC sweep at head
   is the step that would convert them, and it has not been requested.
+
+---
+
+## Execution record — 2026-10-28
+
+Owner delegation 2026-10-28: D-01..D-09 in full (incl. D-09) assigned to
+the ecc-disposition-prep lane with an execute order. Dispositions taken:
+
+- **D-01 — DISMISSED-WITH-REASON.** `agent-review-auto-jules.yml`: the one
+  verifiable assignment is a step-scoped env (`JULES_API_KEY`, lines
+  283–284), GitHub's sanctioned pattern for step credentials; ECC's second
+  bullet is not locatable in the audited blob.
+- **D-02 — DISMISSED-WITH-REASON.**
+  `agentic-repository-operations-report.lock.yml` is a gh-aw compiled
+  artifact; its step-level secret env assignments are compiler output
+  (incl. the compiler's own redaction step). Direct edits would be
+  overwritten on recompile; any change belongs in the `.md` source
+  workflow, not the lock file.
+- **D-03 — DISMISSED-WITH-REASON (false positive as stated).**
+  `hark-enqueue.yml` contains zero `secrets.*` references; its only
+  credential is a step-scoped `GH_TOKEN: ${{ github.token }}` (lines
+  50–51) against ECC's 3 counted bullets.
+- **D-04 — FIXED (this PR).** `help-wanted-llm-assist.yml` step 1: the
+  four PAT-class secret env assignments (lines 37–40 at master blob
+  `fbbd0d9a`) are replaced by a single composite
+  `GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}`
+  — the file's own line-199 fallback pattern, extended with
+  OPERATOR_TOKEN to preserve the existing precedence — and the redundant
+  shell fallback export is removed. The step's script reads only
+  `GITHUB_TOKEN` (plus `INPUT_PR` / `GITHUB_OUTPUT`), so behavior is
+  unchanged while three secret values no longer enter the step env.
+  Caveat from the packet stands: ECC's file-level rule may still flag
+  the file; the exposure itself is closed.
+- **D-05 — FIXED (this PR).** `blind-agent-evaluation/SKILL.md`:
+  `name:` + `description:` frontmatter prepended (description from the
+  file's own Purpose section).
+- **D-06 — FIXED (this PR).** `evolutionary-replay/SKILL.md`:
+  `summary:` renamed to the contract-required `description:` (same text).
+- **D-07 — FIXED (this PR).** `gemini-performance-psychology/SKILL.md`:
+  `name:` + `description:` frontmatter prepended (from Purpose).
+- **D-08 — FIXED (this PR).** `multivariate-doe/SKILL.md`: `name:` +
+  `description:` frontmatter prepended (from Purpose).
+- **D-09 — DISMISSED-WITH-REASON, conditional.** PR #1514 is a
+  DO-NOT-MERGE partial pilot by its own body; its Security Evidence
+  finding is dismissed for as long as the PR remains a pilot record.
+  Binding condition: any move toward merge requires scanner-grade
+  evidence for the head (secret-scan / security review over the diff, or
+  a SARIF upload covering `.agents/agents/` + `scripts/antigravity/`)
+  plus a fresh ECC sweep at that head, before merge.
+
+### Efficiency / de-spam notes (2026-10-28)
+
+- The repeat-finding engine was master content: every new PR touching
+  these surfaces inherited the same action_required audits. D-04..D-08
+  close the flagged content at the root.
+- ECC's comment volume is per-push re-audit repetition (measured in the
+  prep: #125 = 1,580 audit comments over 264 audited SHAs; #143 = 1,758
+  over 293). There is no repo-side ECC Tools app config: the `.github`
+  root listing was verified 2026-10-28 (14 entries, no ECC config file)
+  and the app is comment-only by vendor design (it holds no `checks`
+  permission); its audit cadence is not repo-configurable. The repo-side
+  signal already lives in check runs via the mirror (PR #1491).
+- #125 / #143 heads still carry the pre-fix content (fixing master does
+  not change their branches). Both are dormant — they generate audits
+  only when pushed to. Any future update that merges current master
+  clears the standing content; closing them remains a PR-fate decision,
+  not an ECC finding.

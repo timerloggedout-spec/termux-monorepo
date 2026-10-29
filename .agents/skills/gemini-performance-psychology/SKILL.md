@@ -1,3 +1,8 @@
+---
+name: gemini-performance-psychology
+description: Improve autonomous Gemini/Gem-style development behavior by applying performance psychology as an engineering control; reduce avoidable thrash, preserve momentum, make progress legible, and bias toward evidence-backed completion without manufacturing success.
+---
+
 # Gemini Performance Psychology
 
 ## Purpose

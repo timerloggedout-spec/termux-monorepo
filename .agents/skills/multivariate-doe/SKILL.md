@@ -1,3 +1,8 @@
+---
+name: multivariate-doe
+description: Design agent-team experiments as evidence-bearing Design of Experiments (DOE) rather than an uncontrolled collection of A/B requests.
+---
+
 # Multivariate DOE / MVT Skill
 
 ## Purpose

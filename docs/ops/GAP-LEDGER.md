@@ -86,10 +86,15 @@ vs **done** (code/workflows implement) vs **executed** (runs/artifacts prove).
 - Evidence: `docs/ops/generated/reviewer-metrics.json` → providers/ecc:
   `findings_action_required: 14` (Security Evidence 8, PR Config Audit 6),
   `current_head_findings: 1`, across PRs #125 / #143 / #1514 at their last
-  audited heads. No disposition is recorded.
+  audited heads. Dispositions recorded 2026-10-28 (execution record
+  in the packets doc): D-01..D-03 dismissed-with-reason, D-04..D-08
+  fixed on master, D-09 dismissed-while-pilot with an
+  evidence-before-merge condition.
 - Severity: medium. Fix route: owner disposition + author fixes at head.
-  Status: open (owner decision); disposition-prep chat spawned 2026-10-27
-  to re-audit at current heads and prepare per-PR packets.
+  Status: CLOSED 2026-10-28 — prep PR #1836 merged `137cf07055e3`;
+  execution delegated to the prep lane by the owner 2026-10-28 and
+  landed the same day (PR number + merge SHA in the packets doc
+  execution record's git history and the lane's report to main).
 
 ### G-07 — Builder profile incomplete → D1 entry validity at risk
 - Surface: challenges (D1, deadline Nov 4). Layers: claimed vs held.

@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "ignoreCommand": "bash \"$(git rev-parse --show-toplevel)/scripts/ci/vercel_ignore_build.sh\" demo-portal",
+  "ignoreCommand": "f=\"$(git rev-parse --show-toplevel)/scripts/ci/vercel_ignore_build.sh\"; if [ -f \"$f\" ]; then bash \"$f\" demo-portal; else echo \"[vercel-ignore] helper absent; skip\"; exit 0; fi",
   "git": {
     "deploymentEnabled": false
   }

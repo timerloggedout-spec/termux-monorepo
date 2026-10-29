@@ -46,6 +46,12 @@ jobs:
           persist-credentials: false
           fetch-depth: 1
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install pytest
+
       - name: Unit tests (fake transport, no network)
         run: python3 -m pytest tests/test_pinecone_knowledge.py -q
 

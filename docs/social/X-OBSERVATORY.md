@@ -89,9 +89,13 @@ fail-soft: without the token it prints DEFER and exits 0, writing
 nothing. **Provisioning item (owner):** create an X developer app,
 run one OAuth 2.0 PKCE authorization for the account with scopes
 `bookmark.read like.read tweet.read users.read offline.access`, and
-store the user token as Actions secret `X_OAUTH2_USER_TOKEN`
-(names-only; values never transit chat). Token expiry/refresh is
-handled by re-authorization until a refresh worker is justified.
+run `scripts/social/x_oauth.py authorize-url` for the PKCE link, approve,
+then `exchange` the returned code, and store the resulting secrets
+(names-only; values never transit chat): `X_OAUTH2_REFRESH_TOKEN` (the
+durable credential — access tokens expire in ~2h and the collector
+refreshes at run start), `X_CLIENT_ID`, `X_CLIENT_SECRET` (confidential
+clients), optionally `X_OAUTH2_USER_TOKEN`. If X rotates the refresh
+token, the run warns and the owner re-stores it.
 Account handle: NOT ESTABLISHED (no signed-in or API read has named
 it yet; the first successful harvest records it in the index).
 

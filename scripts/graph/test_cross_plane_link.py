@@ -31,6 +31,8 @@ CHALLENGE = {
     "updated_at": "2026-10-29T00:00:00Z",
     "events": [{
         "id": "D1", "name": "Workshop to Ship",
+        "field_size": {"status": "partial", "participants": 5917, "projects": None,
+                       "participants_source": "event page HTML", "fetched_at": "2026-10-28T22:11:14Z"},
         "organizers": [{"name": "AWS Builder Center", "role": "host"}],
         "judges": [{"name": "Jane Judge"}],
         "projects": [{"name": "Our Entry", "url": "https://github.com/owner1/b_fork"}],
@@ -89,7 +91,16 @@ class LinkPass(unittest.TestCase):
         self.assertIn(("challenge:participant:D1/ladder-team", "won", "challenge:event:old-hack-2025"), triples)
         self.assertIn(("challenge:judge:jane-judge", "judges", "challenge:event:D1"), triples)
         self.assertIn(("challenge:organizer:aws-builder-center", "organizes", "challenge:event:D1"), triples)
-        self.assertEqual(summary["sources"]["challenge"]["records"]["participants"], 1)
+        self.assertEqual(summary["sources"]["challenge"]["tracked_records"]["participants"], 1)
+        self.assertNotIn("records", summary["sources"]["challenge"])
+    def test_challenge_field_size_carried_as_event_attributes(self):
+        edges, summary = self.run_build(challenge=CHALLENGE)
+        fs = summary["sources"]["challenge"]["field_size_by_event"]
+        # tracked_records (1) and field size (5917) are different quantities
+        self.assertEqual(fs["challenge:event:D1"],
+                         {"participants": 5917, "projects": None, "status": "partial"})
+        # only the three attribute keys are carried — no source notes/fetched_at
+        self.assertEqual(set(fs["challenge:event:D1"]), {"participants", "projects", "status"})
     def test_metrics_internal_never_imported(self):
         edges, summary = self.run_build(challenge=CHALLENGE)
         blob = json.dumps(edges) + json.dumps(summary)

@@ -27,6 +27,29 @@ TOKEN = (
 EXCLUDE = {"timerloggedout-spec/termux-monorepo"}
 
 
+def repo_owner(repo: str) -> str:
+    """Owner segment of an ``owner/repo`` full name ('' when unparseable)."""
+    parts = [p for p in str(repo or "").strip("/").split("/") if p]
+    return parts[0] if len(parts) >= 2 else ""
+
+
+def is_own_repo(repo: str) -> bool:
+    """True when the repo is owned by the lane author.
+
+    A tribute is a PR to a FOREIGN maintainer. Repos owned by the author
+    (the monorepo, the landing repo, personal forks, ...) are our own
+    surface, never upstream tributes.
+    """
+    owner = repo_owner(repo)
+    return bool(owner) and owner.lower() == AUTHOR.lower()
+
+
+def pr_url_repo(pr_url: str) -> str:
+    """``owner/repo`` parsed from a github.com PR URL ('' when unparseable)."""
+    parts = [p for p in urllib.parse.urlparse(pr_url or "").path.split("/") if p]
+    return f"{parts[0]}/{parts[1]}" if len(parts) >= 2 else ""
+
+
 def api_get(path: str):
     url = path if path.startswith("http") else f"{API}{path}"
     headers = {
@@ -100,7 +123,7 @@ def current_source_sha() -> str:
     except (OSError, subprocess.CalledProcessError): return ''
 
 def live_foreign_prs(state: str = "open") -> list[dict]:
-    q = f"author:{AUTHOR} is:pr is:{state} -repo:timerloggedout-spec/termux-monorepo"
+    q = f"author:{AUTHOR} is:pr is:{state} -repo:timerloggedout-spec/termux-monorepo -user:{AUTHOR}"
     data = api_get(f"/search/issues?q={urllib.parse.quote(q)}&per_page=50")
     if not data:
         return []
@@ -109,7 +132,7 @@ def live_foreign_prs(state: str = "open") -> list[dict]:
         repo_url = it.get("repository_url") or ""
         parts = repo_url.rstrip("/").split("/")
         full = f"{parts[-2]}/{parts[-1]}" if len(parts) >= 2 else ""
-        if full in EXCLUDE:
+        if full in EXCLUDE or is_own_repo(full):
             continue
         out.append(
             {
@@ -137,7 +160,7 @@ def build_tributes(rows: list[dict], foreign_open: list[dict], foreign_closed: l
                 pr = issue
             else:
                 continue
-        if AUTHOR in pr and "termux-monorepo" in pr:
+        if is_own_repo(pr_url_repo(pr)):
             continue
         entry = by_pr.setdefault(
             pr,
@@ -161,6 +184,8 @@ def build_tributes(rows: list[dict], foreign_open: list[dict], foreign_closed: l
     for p in foreign_open + foreign_closed:
         pr = p.get("html_url") or ""
         if not pr:
+            continue
+        if is_own_repo(p.get("repo") or pr_url_repo(pr)):
             continue
         entry = by_pr.setdefault(
             pr,
@@ -235,6 +260,7 @@ def main() -> int:
             "fallback": "fork-notice",
             "foreign_only_followup": True,
             "exclude_monorepo": True,
+            "exclude_own_repos": True,
             "tribute": "each upstream PR is a contributor tribute to the foreign maintainer",
         },
         "live": {

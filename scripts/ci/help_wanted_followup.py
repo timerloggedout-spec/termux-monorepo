@@ -7,7 +7,8 @@ Beyond one-shot CHANGES_REQUESTED:
   - CONTRIBUTING.md recon + URLs from thread
   - Cooldown prevents spam; evidence for every decision
 
-Excludes timerloggedout-spec/termux-monorepo.
+Excludes every repo owned by the author (the monorepo, the landing
+repo, personal forks): follow-up is for foreign maintainers only.
 """
 from __future__ import annotations
 
@@ -44,6 +45,18 @@ except ImportError:  # pragma: no cover - Actions checkout root
 API = "https://api.github.com"
 AUTHOR = os.environ.get("HELP_WANTED_AUTHOR", "timerloggedout-spec")
 EXCLUDE_REPOS = {"timerloggedout-spec/termux-monorepo"}
+
+
+def repo_owner(repo: str) -> str:
+    """Owner segment of an ``owner/repo`` full name ('' when unparseable)."""
+    parts = [p for p in str(repo or "").strip("/").split("/") if p]
+    return parts[0] if len(parts) >= 2 else ""
+
+
+def is_own_repo(repo: str) -> bool:
+    """True when the repo is owned by the lane author (never foreign)."""
+    owner = repo_owner(repo)
+    return bool(owner) and owner.lower() == AUTHOR.lower()
 TOKEN = (
     os.environ.get("OPERATOR_GITHUB_TOKEN")
     or os.environ.get("OPERATOR_TOKEN")
@@ -103,7 +116,7 @@ def parse_ts(s: str | None) -> datetime | None:
 
 
 def _search_foreign_prs(qualifier: str) -> list[dict]:
-    q = f"author:{AUTHOR} is:pr {qualifier} -repo:timerloggedout-spec/termux-monorepo"
+    q = f"author:{AUTHOR} is:pr {qualifier} -repo:timerloggedout-spec/termux-monorepo -user:{AUTHOR}"
     status, data = api("GET", f"/search/issues?q={urllib.parse.quote(q)}&per_page=40")
     if status != 200:
         return []
@@ -112,7 +125,7 @@ def _search_foreign_prs(qualifier: str) -> list[dict]:
         repo_url = it.get("repository_url") or ""
         parts = repo_url.rstrip("/").split("/")
         full = f"{parts[-2]}/{parts[-1]}" if len(parts) >= 2 else ""
-        if full in EXCLUDE_REPOS:
+        if full in EXCLUDE_REPOS or is_own_repo(full):
             continue
         items.append(it)
     return items

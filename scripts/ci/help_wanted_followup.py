@@ -56,6 +56,13 @@ MARKER = "### Help-wanted follow-up — termux-monorepo"
 REENGAGE_HOURS = float(os.environ.get("HELP_WANTED_REENGAGE_HOURS", "18"))
 # Stake PRs idle this long get a gentle nudge + CONTRIBUTING recon once per cooldown
 STALE_IDLE_HOURS = float(os.environ.get("HELP_WANTED_STALE_IDLE_HOURS", "72"))
+# Hard lifetime cap on stale nudges per PR. The 72h cooldown alone
+# self-perpetuates: every nudge is itself a marker comment, so an
+# uncapped loop posts the same form text forever (Focusflow #15
+# collected 10 identical nudges, 2026-09-24 → 2026-10-21). Two is a
+# reminder; ten is spam. After the cap the lane stays silent and the
+# participation loop owns the PR's disposition.
+MAX_STALE_NUDGES = int(os.environ.get("HELP_WANTED_MAX_STALE_NUDGES", "2"))
 # Closed foreign PRs updated within this window are routed for a lesson (never posted on).
 LESSON_DAYS = int(os.environ.get("HELP_WANTED_LESSON_DAYS", "14"))
 # Actions that post a timing-based public comment; Tribute System 1 must allow them.
@@ -211,6 +218,18 @@ def last_marker_ts(comments: list[dict]) -> datetime | None:
     return last
 
 
+def count_prior_nudges(comments: list[dict]) -> int:
+    """How many stale_nudge comments we have already posted on a thread."""
+    n = 0
+    for c in comments:
+        if ((c.get("user") or {}).get("login") or "") != AUTHOR:
+            continue
+        body = c.get("body") or ""
+        if MARKER in body and "`stale_nudge`" in body:
+            n += 1
+    return n
+
+
 def latest_changes_requested(reviews: list[dict]) -> tuple[str | None, datetime | None, str]:
     for r in reversed(reviews or []):
         if r.get("state") == "CHANGES_REQUESTED":
@@ -286,6 +305,7 @@ def decide_action(
     pr_updated: datetime | None,
     now: datetime,
     approval_ts: datetime | None = None,
+    nudge_count: int = 0,
 ) -> str:
     """Return action: changes | reengage | stale_nudge | skip."""
     reengage_delta = timedelta(hours=REENGAGE_HOURS)
@@ -306,6 +326,8 @@ def decide_action(
     # next action is ours: adapt/validate the patch, not ask the maintainer again.
     # New feedback after the marker is handled by the reengage branch above.
     if signal_ts is None and changes_ts is None and approval_ts is None:
+        if nudge_count >= MAX_STALE_NUDGES:
+            return "skip"
         if pr_updated and (now - pr_updated) >= stale_delta:
             if marker_ts is None or (now - marker_ts) >= stale_delta:
                 return "stale_nudge"
@@ -373,7 +395,8 @@ def main() -> int:
         )
         approval_ts = latest_approval_ts(maintainer_reviews)
         action = decide_action(
-            marker_ts, signal_ts, changes_ts, pr_updated, now, approval_ts=approval_ts
+            marker_ts, signal_ts, changes_ts, pr_updated, now,
+            approval_ts=approval_ts, nudge_count=count_prior_nudges(comments),
         )
 
         if action == "skip":

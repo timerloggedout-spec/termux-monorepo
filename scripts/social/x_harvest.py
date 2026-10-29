@@ -61,6 +61,38 @@ def now() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
+TOKEN_URL = "https://api.x.com/2/oauth2/token"
+
+
+def post_form(url: str, form: dict[str, str], client_id: str, client_secret: str | None) -> Any:
+    import base64 as _b64
+    data = urllib.parse.urlencode(form).encode()
+    req = urllib.request.Request(url, data=data, method="POST", headers={
+        "Content-Type": "application/x-www-form-urlencoded",
+        "User-Agent": UA,
+    })
+    if client_secret:  # confidential client: HTTP Basic client auth
+        basic = _b64.b64encode(f"{client_id}:{client_secret}".encode()).decode()
+        req.add_header("Authorization", f"Basic {basic}")
+    with urllib.request.urlopen(req, timeout=30) as response:  # nosec B310: fixed API host
+        return json.loads(response.read().decode("utf-8"))
+
+
+def refresh_access_token(client_id: str, client_secret: str | None, refresh_token: str,
+                         poster: Callable[..., Any] = post_form) -> tuple[str, str | None]:
+    """X user access tokens expire in ~2h; the refresh token (offline.access
+    scope) is the durable credential. Returns (access_token, rotated_refresh
+    or None). A rotated refresh token must be re-stored by the owner — the
+    workflow cannot rewrite its own secret, so callers warn loudly."""
+    out = poster(TOKEN_URL, {"grant_type": "refresh_token",
+                             "refresh_token": refresh_token,
+                             "client_id": client_id}, client_id, client_secret)
+    access = out.get("access_token")
+    if not access:
+        raise RuntimeError("token refresh returned no access_token")
+    return access, out.get("refresh_token")
+
+
 def get_json(path: str, token: str, params: dict[str, Any] | None = None) -> Any:
     query = "?" + urllib.parse.urlencode(params or {}) if params else ""
     req = urllib.request.Request(API + path + query, headers={
@@ -274,6 +306,18 @@ def main(argv: list[str] | None = None, fetch: Callable[..., Any] = get_json) ->
                         help="missing token or auth failure -> DEFER receipt, exit 0, write nothing")
     args = parser.parse_args(argv)
     token = os.environ.get(args.token_env)
+    refresh = os.environ.get("X_OAUTH2_REFRESH_TOKEN")
+    client_id = os.environ.get("X_CLIENT_ID")
+    if refresh and client_id:
+        try:
+            token, rotated = refresh_access_token(
+                client_id, os.environ.get("X_CLIENT_SECRET") or None, refresh)
+            if rotated and rotated != refresh:
+                print("::warning::X refresh token ROTATED — owner must re-store "
+                      "X_OAUTH2_REFRESH_TOKEN (the workflow cannot rewrite its own secret)")
+        except Exception as exc:  # refresh failure must degrade, not redden
+            print(f"DEFER: X token refresh failed ({exc}); harvest skipped")
+            return 0 if args.defer_ok else 1
     if not token:
         print(f"DEFER: {args.token_env} not provisioned; X harvest skipped (owner provisioning item)")
         return 0 if args.defer_ok else 2

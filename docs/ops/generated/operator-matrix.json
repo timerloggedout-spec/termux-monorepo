@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 348,
-    "open_prs": 98,
+    "open_issues": 354,
+    "open_prs": 105,
     "pr_classes": {
       "CANDIDATE": 56,
       "EXTRACT": 5,
-      "NEED_EVIDENCE": 37,
+      "NEED_EVIDENCE": 44,
       "SUPERSEDE": 0
     }
   },
@@ -37,7 +37,7 @@
       "unlabelled_numbers": []
     },
     "research": {
-      "issues": 5,
+      "issues": 6,
       "unlabelled_numbers": []
     },
     "security": {
@@ -49,8 +49,8 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 15,
-      "prs": 96,
+      "issues": 20,
+      "prs": 103,
       "unlabelled_numbers": [
         308,
         343,
@@ -66,11 +66,16 @@
         1592,
         1593,
         1622,
-        1683
+        1683,
+        2179,
+        2185,
+        2204,
+        2210,
+        2326
       ]
     }
   },
-  "generated_at": "2026-10-28T19:48:37Z",
+  "generated_at": "2026-10-29T06:09:22Z",
   "issues_unlabelled": [
     308,
     343,
@@ -86,15 +91,20 @@
     1592,
     1593,
     1622,
-    1683
+    1683,
+    2179,
+    2185,
+    2204,
+    2210,
+    2326
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "queued"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "7de4d5f09f"
+    "sha": "54a842d48b"
   },
   "prs": [
     {
@@ -879,20 +889,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "8d61de2595",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 1858,
-      "title": "fix(secrets): phantom-secret remediation (dead-branch)",
-      "updated_at": "2026-10-28T13:15:53Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "a4b28f7ef8",
       "labels": [],
       "mergeable_state": "unknown",
@@ -935,12 +931,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "f81ea41644",
+      "head_sha": "b67fbebacf",
       "labels": [],
       "mergeable_state": "unknown",
-      "number": 2015,
-      "title": "docs(secrets): phantom-secret remediation map + provisioning checklist",
-      "updated_at": "2026-10-28T13:16:42Z"
+      "number": 2261,
+      "title": "Add Merged Branch Audit & Timing Quota Governance Engine",
+      "updated_at": "2026-10-28T22:38:27Z"
     },
     {
       "class": "CANDIDATE",
@@ -949,12 +945,26 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "169d709d6c",
+      "head_sha": "55ac9c79a2",
       "labels": [],
       "mergeable_state": "unknown",
-      "number": 2133,
-      "title": "ops(portability): retire .gitignore.backup and lower ratchet baselines",
-      "updated_at": "2026-10-28T19:07:19Z"
+      "number": 2304,
+      "title": "\ud83d\udcd6 Linguist: optimize token efficiency & add stego cipher",
+      "updated_at": "2026-10-28T23:35:20Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "68f2c77cfe",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2309,
+      "title": "docs(secrets): phantom-secret remediation map + provisioning checklist",
+      "updated_at": "2026-10-29T03:32:46Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1369,54 +1379,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "1736ad5ec8",
+      "head_sha": "b5951e754e",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 1966,
       "title": "ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28)",
-      "updated_at": "2026-10-28T18:01:50Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "4aff3696aa",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2128,
-      "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-10-28T19:47:34Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "94ebd49419",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2144,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-10-28T19:46:10Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "30b99e8307",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2149,
-      "title": "chore(ops): regenerate operator matrix",
-      "updated_at": "2026-10-28T19:26:18Z"
+      "updated_at": "2026-10-29T06:02:41Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1439,12 +1407,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "b7db01710c",
+      "head_sha": "ded4f789d7",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2168,
       "title": "chore(dashboards): refresh surface feeds",
-      "updated_at": "2026-10-28T19:27:30Z"
+      "updated_at": "2026-10-29T05:39:40Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1458,21 +1426,161 @@
       "mergeable_state": "unknown",
       "number": 2175,
       "title": "chore(ops): refresh computed countdown lines",
-      "updated_at": "2026-10-28T19:45:53Z"
+      "updated_at": "2026-10-28T19:50:08Z"
     },
     {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "success"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
-      "head_sha": "61260ea2dc",
+      "head_sha": "fc92217e1b",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2181,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-10-28T19:54:15Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "a81bf4a5b9",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2182,
+      "title": "chore(countdowns): refresh challenge-countdowns-feed.json",
+      "updated_at": "2026-10-28T22:21:03Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "e9efa35753",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2183,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-10-28T19:55:07Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "52de1f57a1",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2186,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-10-28T19:56:43Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "e97d22fe58",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2187,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-10-28T19:57:26Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "be30d8c241",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2190,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-10-28T19:59:25Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "1cf1f72ae0",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2235,
+      "title": "chore(osint): refresh coverage + page snapshots",
+      "updated_at": "2026-10-28T22:21:07Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "77f6526342",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2252,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-10-28T22:19:49Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "e55ab276bd",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 2177,
-      "title": "fix(temporal): VM=sandbox \u2014 remove delphi-worker daemon, move proof to Actions",
-      "updated_at": "2026-10-28T19:48:00Z"
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-10-29T06:09:19Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "85d4fb7116",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2310,
+      "title": "chore(delphi): refresh delphi-rfp-feed.json",
+      "updated_at": "2026-10-29T06:09:17Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "1fdb151f97",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2324,
+      "title": "chore(proposals): refresh proposals-feed.json",
+      "updated_at": "2026-10-29T06:07:16Z"
     }
   ],
   "schema": "operator-matrix/v1",

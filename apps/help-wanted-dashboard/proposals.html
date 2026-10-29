@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proposals — Registry Index</title>
+<!--
+  Renders ONLY data/proposals-feed.json (schema proposals-feed/v1,
+  contract docs/ops/PROPOSALS-FEED.md). The feed is collected from the
+  registry of record (docs/proposals/registry.yaml) and the pass
+  records under docs/proposals/passes/ by
+  scripts/proposals/proposals_feed.py; the refresh workflow proposes
+  updates as PRs. Registry values are drawn verbatim — this page
+  filters what the feed carries and computes nothing else.
+-->
+<link rel="stylesheet" href="./dashboard.css">
+</head>
+<body>
+<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/help-wanted/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="https://timerloggedout-spec.github.io/help-wanted/quota.html">Quota</a><a href="https://timerloggedout-spec.github.io/help-wanted/admin.html">Admin</a><a href="https://timerloggedout-spec.github.io/help-wanted/oracle.html">Oracle</a><a href="https://timerloggedout-spec.github.io/help-wanted/3l0.html">3L0</a><a href="https://timerloggedout-spec.github.io/help-wanted/moneyball.html">MoneyBall</a><a href="https://timerloggedout-spec.github.io/help-wanted/mvt.html">MVT</a><a href="https://timerloggedout-spec.github.io/help-wanted/doe.html">DoE</a><a href="https://timerloggedout-spec.github.io/help-wanted/ates.html">ATES</a><a href="https://timerloggedout-spec.github.io/help-wanted/free-tier-value.html">Free-tier value</a><a href="https://timerloggedout-spec.github.io/help-wanted/dispatch-tree.html">Dispatch Tree</a><a href="https://timerloggedout-spec.github.io/help-wanted/countdowns.html">Countdowns</a><a href="https://timerloggedout-spec.github.io/help-wanted/linguist.html">Linguist</a><a href="https://timerloggedout-spec.github.io/help-wanted/delphi-rfp.html">Delphi RFP</a><a href="https://timerloggedout-spec.github.io/help-wanted/delphi-ledger.html">Delphi Ledgers</a><a href="https://timerloggedout-spec.github.io/help-wanted/pr-lanes.html">PR Lanes</a><a href="https://timerloggedout-spec.github.io/help-wanted/proposals.html" aria-current="page">Proposals</a><a href="https://help-wanted-oversight.vercel.app/">Vercel deployment</a><a href="https://timerloggedout-spec.github.io/help-wanted/sitemap.xml">Sitemap</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></nav>
+
+<header class="hero">
+  <p class="eyebrow">Proposals registry · docs/proposals</p>
+  <h1>Proposals</h1>
+  <p class="lede">Every registered proposal pack in the monorepo — the index the registry of record (<code>docs/proposals/registry.yaml</code>) describes, rendered as filed. Each pack links to its tree on GitHub; the Oracle Method pass records are listed below the registry. Filter by status, priority or author — the filter values come from the feed itself.</p>
+</header>
+
+<main>
+<section>
+  <div class="head"><h2>Registry</h2><span class="note" id="meta">Loading…</span></div>
+  <div class="toolbar">
+    <select id="f-status" aria-label="Filter by status"></select>
+    <select id="f-priority" aria-label="Filter by priority"></select>
+    <select id="f-author" aria-label="Filter by author"></select>
+    <input id="f-text" type="search" placeholder="Filter by title or id…" aria-label="Filter by title or id">
+  </div>
+  <div id="proposals"><p class="empty">Loading the proposals feed…</p></div>
+</section>
+
+<section>
+  <div class="head"><h2>Pass records</h2><span class="note">docs/proposals/passes — Oracle Method cycles</span></div>
+  <div id="passes"><p class="empty">Loading…</p></div>
+</section>
+
+<section>
+  <div class="head"><h2>How this page works</h2></div>
+  <p class="note">This page renders <code>data/proposals-feed.json</code> (schema <code>proposals-feed/v1</code>), collected from <code>docs/proposals/registry.yaml</code> and <code>docs/proposals/passes/*/pass.json</code> by <code>scripts/proposals/proposals_feed.py</code> (contract: <code>docs/ops/PROPOSALS-FEED.md</code>). The collector runs on every push to <code>docs/proposals/**</code> and proposes the refreshed feed as a PR. Registry values are carried verbatim; where the feed is empty, nothing is shown rather than anything guessed.</p>
+</section>
+</main>
+
+<footer>
+  Proposals index · registry of record: docs/proposals/registry.yaml · feed: proposals-feed/v1 · page renders the feed verbatim.
+</footer>
+
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const GH='https://github.com/timerloggedout-spec/termux-monorepo';
+// ==== pure logic (node-sim tested) ====
+function filterProposals(feed,f){
+  return (feed.proposals||[]).filter(p=>
+    (!f.status||p.status===f.status)&&
+    (!f.priority||p.priority===f.priority)&&
+    (!f.author||p.author===f.author)&&
+    (!f.text||(String(p.title)+' '+String(p.id)).toLowerCase().includes(f.text.toLowerCase())));
+}
+function facetValues(feed,key){
+  return [...new Set((feed.proposals||[]).map(p=>p[key]).filter(v=>v!=null))].sort();
+}
+// ==== end pure logic ====
+let FEED=null;
+function statusPill(s){
+  const cls=s==='accepted'?'pill ok':s==='executing'?'pill gold':'pill';
+  return '<span class="'+cls+'">'+esc(s)+'</span>';
+}
+function render(){
+  const f={status:$('f-status').value,priority:$('f-priority').value,author:$('f-author').value,text:$('f-text').value.trim()};
+  const rows=filterProposals(FEED,f);
+  if(!rows.length){$('proposals').innerHTML='<p class="empty">No proposals match the current filters — nothing is shown rather than anything guessed.</p>';return}
+  $('proposals').innerHTML='<div class="table-wrap"><table class="table"><thead><tr><th>Proposal</th><th>Status</th><th>Priority</th><th>Author</th><th>Related</th></tr></thead><tbody>'+
+    rows.map(p=>{
+      const rel=[...(p.issues||[]).map(n=>'<a href="'+GH+'/issues/'+n+'">#'+n+'</a>'),
+                 ...(p.prs||[]).map(n=>'<a href="'+GH+'/pull/'+n+'">PR #'+n+'</a>')].join(' · ');
+      return '<tr><td><a href="'+esc(p.url)+'"><strong>'+esc(p.title)+'</strong></a><br><span class="muted">'+esc(p.id)+' · '+esc(p.path)+'</span></td>'+
+        '<td>'+statusPill(p.status)+'</td><td>'+esc(p.priority)+'</td><td>'+esc(p.author)+'</td>'+
+        '<td>'+(rel||'—')+'</td></tr>'}).join('')+
+    '</tbody></table></div>';
+  $('meta').textContent='Showing '+rows.length+' of '+FEED.counts.total+' proposals · feed generated '+FEED.generated_at+' · registry updated '+(FEED.registry_updated_at||'—');
+}
+function fillSelect(id,values,label){
+  const el=$(id);
+  el.innerHTML='<option value="">'+label+': all</option>'+values.map(v=>'<option value="'+esc(v)+'">'+esc(v)+'</option>').join('');
+  el.addEventListener('change',render);
+}
+async function load(){
+  try{
+    const r=await fetch('./data/proposals-feed.json');
+    if(!r.ok) throw new Error('feed '+r.status);
+    FEED=await r.json();
+    fillSelect('f-status',facetValues(FEED,'status'),'Status');
+    fillSelect('f-priority',facetValues(FEED,'priority'),'Priority');
+    fillSelect('f-author',facetValues(FEED,'author'),'Author');
+    $('f-text').addEventListener('input',render);
+    render();
+    const ps=FEED.passes||[];
+    $('passes').innerHTML=ps.length?'<div class="table-wrap"><table class="table"><thead><tr><th>Pass</th><th>Status</th><th>Schema</th><th>Candidates</th></tr></thead><tbody>'+
+      ps.map(p=>'<tr><td><a href="'+esc(p.url)+'"><strong>'+esc(p.id)+'</strong></a><br><span class="muted">'+esc(p.path)+'</span></td><td>'+esc(p.status||'—')+'</td><td>'+esc(p.schema||'—')+'</td><td>'+(p.candidates==null?'—':p.candidates)+'</td></tr>').join('')+
+      '</tbody></table></div>':'<p class="empty">No pass records in the feed — nothing is shown rather than anything guessed.</p>';
+    if((FEED.gaps||[]).length){$('passes').innerHTML+='<p class="muted">Feed gaps: '+FEED.gaps.map(esc).join('; ')+'</p>'}
+  }catch(e){
+    $('proposals').innerHTML='<p class="empty">The proposals feed could not be fetched — nothing is shown rather than anything guessed.</p>';
+    $('passes').innerHTML='';
+    $('meta').textContent='Feed unavailable.';
+  }
+}
+load();
+</script>
+</body>
+</html>

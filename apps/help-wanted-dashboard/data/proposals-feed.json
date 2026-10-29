@@ -1,0 +1,851 @@
+{
+ "schema": "proposals-feed/v1",
+ "generated_at": "2026-10-28T23:52:47Z",
+ "source": "docs/proposals/registry.yaml",
+ "registry_updated_at": "2026-10-27T13:52:00Z",
+ "registry_updated_by": "tier1-classifiers-steward",
+ "counts": {
+  "total": 52,
+  "by_status": {
+   "in_review": 12,
+   "posted": 18,
+   "executing": 18,
+   "draft": 2,
+   "accepted": 2
+  },
+  "by_priority": {
+   "P1": 37,
+   "P0": 6,
+   "P2": 9
+  },
+  "by_author": {
+   "ChatGPT": 11,
+   "grok": 7,
+   "timerloggedout-spec": 9,
+   "Manus": 3,
+   "Kimi2.6": 1,
+   "Manus AI": 4,
+   "Claude": 2,
+   "agent-automation": 2,
+   "Hark": 1,
+   "Cue": 1,
+   "gaps-and-opportunities-subagent": 1,
+   "oracle-method": 9,
+   "Perplexity": 1
+  },
+  "passes": 3
+ },
+ "proposals": [
+  {
+   "id": "agent-contributor-provenance",
+   "title": "Evidence-backed agent contributor attribution and source citation ledger",
+   "author": "ChatGPT",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/agent-contributor-provenance/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/agent-contributor-provenance/",
+   "issues": [
+    1241
+   ],
+   "prs": [
+    1244
+   ]
+  },
+  {
+   "id": "model-selection-market",
+   "title": "Model selection market \u2014 equal-weight bootstrap, 3L0 performance, DSPy-DoE, bets/trading-cards",
+   "author": "grok",
+   "status": "posted",
+   "priority": "P1",
+   "path": "active/model-selection-market/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/model-selection-market/",
+   "issues": [],
+   "prs": []
+  },
+  {
+   "id": "ratatui-tokio-terminal-dashboard",
+   "title": "Termux-first Ratatui + Tokio responsive terminal dashboard",
+   "author": "ChatGPT",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/ratatui-tokio-terminal-dashboard/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/ratatui-tokio-terminal-dashboard/",
+   "issues": [
+    934
+   ],
+   "prs": [
+    935,
+    938,
+    940,
+    955
+   ]
+  },
+  {
+   "id": "ml-keep-alive",
+   "title": "ML keep-alive DAG extract onto live master (Issue #175)",
+   "author": "grok",
+   "status": "executing",
+   "priority": "P0",
+   "path": "active/ml-keep-alive/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/ml-keep-alive/",
+   "issues": [
+    175,
+    772
+   ],
+   "prs": [
+    817,
+    787,
+    746,
+    682,
+    432
+   ]
+  },
+  {
+   "id": "temporal-langsmith-adapter",
+   "title": "Temporal self-host + LangSmith Trajectories adapter (P1 observational)",
+   "author": "grok",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/temporal-langsmith-adapter/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/temporal-langsmith-adapter/",
+   "issues": [],
+   "prs": []
+  },
+  {
+   "id": "approxination-integration",
+   "title": "Approxination skill search/create/contribute + A/B/C/D evaluation cohort",
+   "author": "grok",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/approxination-integration/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/approxination-integration/",
+   "issues": [],
+   "prs": [
+    614
+   ]
+  },
+  {
+   "id": "bifrost-gateway-integration",
+   "title": "Bifrost AI gateway + benchmarking forks \u2014 RECON, catalog, provider path",
+   "author": "grok",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/bifrost-gateway-integration/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/bifrost-gateway-integration/",
+   "issues": [],
+   "prs": [
+    611
+   ]
+  },
+  {
+   "id": "auditengine-adapt",
+   "title": "RinDig AuditEngine (Ethics Engine) adapt pass",
+   "author": "timerloggedout-spec",
+   "status": "draft",
+   "priority": "P2",
+   "path": "active/auditengine-adapt/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/auditengine-adapt/",
+   "issues": [],
+   "prs": []
+  },
+  {
+   "id": "cost-of-remembering-integration",
+   "title": "RinDig cost-of-remembering_fork ICM evidence lane",
+   "author": "timerloggedout-spec",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/cost-of-remembering-integration/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/cost-of-remembering-integration/",
+   "issues": [],
+   "prs": []
+  },
+  {
+   "id": "mcp-hub-risk-split",
+   "title": "mcp-hub / hub_mcp risk split",
+   "author": "timerloggedout-spec",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/mcp-hub-risk-split/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/mcp-hub-risk-split/",
+   "issues": [],
+   "prs": []
+  },
+  {
+   "id": "context-relationship-graph",
+   "title": "GitHub-native context relationship graph and scope index",
+   "author": "Manus",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/context-relationship-graph/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/context-relationship-graph/",
+   "issues": [],
+   "prs": [
+    232,
+    1286
+   ]
+  },
+  {
+   "id": "manus-critical-eval",
+   "title": "Manus Critical Evaluation & Novel Work",
+   "author": "Manus",
+   "status": "executing",
+   "priority": "P0",
+   "path": "active/manus-critical-eval/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/manus-critical-eval/",
+   "issues": [],
+   "prs": [
+    13
+   ]
+  },
+  {
+   "id": "rate-limit-rotation",
+   "title": "Rate limits, model rotation, OpenRouter fallback",
+   "author": "grok",
+   "status": "executing",
+   "priority": "P0",
+   "path": "active/rate-limit-rotation/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/rate-limit-rotation/",
+   "issues": [
+    86,
+    87,
+    88,
+    91
+   ],
+   "prs": [
+    72,
+    81
+   ]
+  },
+  {
+   "id": "termux-agentic-hub",
+   "title": "Termux-first Agentic Hub and governed fork integration",
+   "author": "Manus",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/termux-agentic-hub/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/termux-agentic-hub/",
+   "issues": [],
+   "prs": []
+  },
+  {
+   "id": "chatgpt-critical-eval",
+   "title": "Critical Eval TER0-15 + other branches",
+   "author": "ChatGPT",
+   "status": "executing",
+   "priority": "P0",
+   "path": "active/chatgpt-critical-eval/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/chatgpt-critical-eval/",
+   "issues": [],
+   "prs": [
+    2,
+    3,
+    5,
+    6,
+    9,
+    10,
+    11
+   ]
+  },
+  {
+   "id": "chatgpt-initial",
+   "title": "Initial repository evaluation / cockpit intelligence",
+   "author": "ChatGPT",
+   "status": "posted",
+   "priority": "P2",
+   "path": "active/chatgpt-initial/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/chatgpt-initial/",
+   "issues": [],
+   "prs": []
+  },
+  {
+   "id": "chatgpt-droidapp",
+   "title": "droidApp / early branch inventory + plugin architecture",
+   "author": "ChatGPT",
+   "status": "posted",
+   "priority": "P2",
+   "path": "active/chatgpt-droidapp/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/chatgpt-droidapp/",
+   "issues": [],
+   "prs": [
+    1,
+    2
+   ]
+  },
+  {
+   "id": "kimi-cloud-offload",
+   "title": "Corrected Cloud Offload & Parallelization Evaluation",
+   "author": "Kimi2.6",
+   "status": "posted",
+   "priority": "P1",
+   "path": "active/kimi-cloud-offload/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/kimi-cloud-offload/",
+   "issues": [],
+   "prs": []
+  },
+  {
+   "id": "icm-architect-integration",
+   "title": "Repository-native ICM integration",
+   "author": "timerloggedout-spec",
+   "status": "executing",
+   "priority": "P0",
+   "path": "active/icm-architect-integration/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/icm-architect-integration/",
+   "issues": [],
+   "prs": [
+    232
+   ]
+  },
+  {
+   "id": "actions-refinements",
+   "title": "Issue #192 action-integration refinements",
+   "author": "Manus AI",
+   "status": "accepted",
+   "priority": "P1",
+   "path": "active/actions-refinements/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/actions-refinements/",
+   "issues": [
+    192,
+    175
+   ],
+   "prs": [
+    193,
+    81,
+    92,
+    143,
+    72,
+    232
+   ]
+  },
+  {
+   "id": "linguist-machine-parity",
+   "title": "Linguist README machine-parity enhancement",
+   "author": "Manus AI",
+   "status": "posted",
+   "priority": "P2",
+   "path": "active/linguist-machine-parity/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/linguist-machine-parity/",
+   "issues": [],
+   "prs": []
+  },
+  {
+   "id": "gantt-dependency-phases",
+   "title": "Dependency-phase automation and GitHub Projects integration",
+   "author": "Manus AI",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/gantt-dependency-phases/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/gantt-dependency-phases/",
+   "issues": [],
+   "prs": [
+    248
+   ]
+  },
+  {
+   "id": "notation-sets",
+   "title": "Notation Sets, Living Lexicon, and Cross-Domain Semantic Index",
+   "author": "ChatGPT",
+   "status": "posted",
+   "priority": "P1",
+   "path": "active/notation-sets/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/notation-sets/",
+   "issues": [
+    320,
+    309,
+    182,
+    175,
+    126,
+    304,
+    196,
+    177,
+    208,
+    274
+   ],
+   "prs": [
+    322
+   ]
+  },
+  {
+   "id": "archwiz-ui-protocol",
+   "title": "ArchW1z Termux UI over shared agentic protocols",
+   "author": "ChatGPT",
+   "status": "posted",
+   "priority": "P1",
+   "path": "active/archwiz-ui-protocol/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/archwiz-ui-protocol/",
+   "issues": [
+    292
+   ],
+   "prs": [
+    329
+   ]
+  },
+  {
+   "id": "vercel-lane-topology",
+   "title": "Vercel deployment lane topology: legacy project fate, mcp-multi-host retirement, lanes registry",
+   "author": "Claude",
+   "status": "accepted",
+   "priority": "P1",
+   "path": "active/vercel-lane-topology/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/vercel-lane-topology/",
+   "issues": [],
+   "prs": [
+    442,
+    445,
+    446
+   ]
+  },
+  {
+   "id": "demo-portal",
+   "title": "Demo portal: public showcase of archwiz.py / deepcli-tui via a sandboxed Termux emulator",
+   "author": "Claude",
+   "status": "posted",
+   "priority": "P2",
+   "path": "active/demo-portal/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/demo-portal/",
+   "issues": [],
+   "prs": [
+    447
+   ]
+  },
+  {
+   "id": "agentic-scoped-access",
+   "title": "Agentic scoped access: per-agent scoped tokens instead of shared full-scope credentials",
+   "author": "agent-automation",
+   "status": "posted",
+   "priority": "P2",
+   "path": "active/agentic-scoped-access/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/agentic-scoped-access/",
+   "issues": [],
+   "prs": [
+    492
+   ]
+  },
+  {
+   "id": "tier4-scope-review",
+   "title": "Tier 4 scope review: pre-authorized allowlist for repeatable Operator-approved actions",
+   "author": "agent-automation",
+   "status": "posted",
+   "priority": "P2",
+   "path": "active/tier4-scope-review/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/tier4-scope-review/",
+   "issues": [],
+   "prs": [
+    492
+   ]
+  },
+  {
+   "id": "rindig-eduba-consolidation",
+   "title": "RinDig ICM + EDUBA repository consolidation",
+   "author": "timerloggedout-spec",
+   "status": "executing",
+   "priority": "P0",
+   "path": "active/rindig-eduba-consolidation/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/rindig-eduba-consolidation/",
+   "issues": [],
+   "prs": []
+  },
+  {
+   "id": "paper2agent-scientific-factory",
+   "title": "Paper2Agent scientific factory: manifest, claim graph, reproduction, certificate",
+   "author": "ChatGPT",
+   "status": "posted",
+   "priority": "P1",
+   "path": "active/paper2agent-scientific-factory/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/paper2agent-scientific-factory/",
+   "issues": [
+    621
+   ],
+   "prs": [
+    695
+   ]
+  },
+  {
+   "id": "domain-composition-matrix",
+   "title": "Domain composition matrix: versioned research database for composition rules",
+   "author": "timerloggedout-spec",
+   "status": "posted",
+   "priority": "P2",
+   "path": "active/domain-composition-matrix/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/domain-composition-matrix/",
+   "issues": [],
+   "prs": []
+  },
+  {
+   "id": "lane-compounding",
+   "title": "Lane compounding: live dashboard data, Bayesian/Markov tribute qualification, ForeSight\u2192HindSight calibration, blind-graded treatments",
+   "author": "Hark",
+   "status": "posted",
+   "priority": "P1",
+   "path": "active/lane-compounding/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/lane-compounding/",
+   "issues": [],
+   "prs": [
+    1244,
+    1274,
+    1277,
+    1278,
+    1280
+   ]
+  },
+  {
+   "id": "free-llm-provider-prioritization",
+   "title": "Free LLM provider research/RFP feedback prioritization and HITL",
+   "author": "Cue",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/free-llm-provider-prioritization/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/free-llm-provider-prioritization/",
+   "issues": [],
+   "prs": []
+  },
+  {
+   "id": "archwiz-markov-trellis-lab",
+   "title": "ArchWiz Markov recombining tree/trellis visualization and evaluation sandbox",
+   "author": "ChatGPT",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/archwiz-markov-trellis-lab/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/archwiz-markov-trellis-lab/",
+   "issues": [
+    966
+   ],
+   "prs": [
+    967
+   ]
+  },
+  {
+   "id": "archwiz-hyperforge-gemini-review",
+   "title": "ArchWiz Hyper-Forge \u2014 Gemini plan reconciliation and collaborative development",
+   "author": "ChatGPT",
+   "status": "posted",
+   "priority": "P1",
+   "path": "active/archwiz-hyperforge-gemini-review/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/archwiz-hyperforge-gemini-review/",
+   "issues": [
+    943,
+    951,
+    952,
+    944,
+    945,
+    946,
+    947,
+    948,
+    949,
+    950
+   ],
+   "prs": [
+    937
+   ]
+  },
+  {
+   "id": "agent-team-formation",
+   "title": "Role-aware agent teams, game-player fleet, scoring, and controlled research",
+   "author": "Manus AI",
+   "status": "draft",
+   "priority": "P1",
+   "path": "active/agent-team-formation/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/agent-team-formation/",
+   "issues": [
+    129,
+    236,
+    243
+   ],
+   "prs": [
+    131
+   ]
+  },
+  {
+   "id": "ops-hitl-control-plane",
+   "title": "OPS-EVENT HITL Control Plane",
+   "author": "timerloggedout-spec",
+   "status": "posted",
+   "priority": "P1",
+   "path": "active/ops-hitl-control-plane/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/ops-hitl-control-plane/",
+   "issues": [],
+   "prs": [
+    739
+   ]
+  },
+  {
+   "id": "arrhythmic-zero-token-search",
+   "title": "Arrhythmic Flow + Matrix Intersections for Zero-Token Web Search Wrappers",
+   "author": "grok",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/arrhythmic-zero-token-search/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/arrhythmic-zero-token-search/",
+   "issues": [],
+   "prs": [
+    685
+   ]
+  },
+  {
+   "id": "codespaces-enablement",
+   "title": "Codespaces prebuilds (cost decision) + org-wide standard-piece gaps from the gaps-and-opportunities sweep",
+   "author": "gaps-and-opportunities-subagent",
+   "status": "posted",
+   "priority": "P2",
+   "path": "active/codespaces-enablement/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/codespaces-enablement/",
+   "issues": [],
+   "prs": [
+    499,
+    530,
+    531
+   ]
+  },
+  {
+   "id": "aws-free-tier-strands-delphi-oracle",
+   "title": "AWS Free Tier integration and Strands Decider Delphi Oracle",
+   "author": "ChatGPT",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/aws-free-tier-strands-delphi-oracle/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/aws-free-tier-strands-delphi-oracle/",
+   "issues": [],
+   "prs": [
+    1611
+   ]
+  },
+  {
+   "id": "quota-aware-cadence-rfp",
+   "title": "Quota-aware adaptive cadence system \u2014 full-thread evaluation",
+   "author": "timerloggedout-spec",
+   "status": "posted",
+   "priority": "P1",
+   "path": "active/quota-aware-cadence-rfp/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/quota-aware-cadence-rfp/",
+   "issues": [
+    1573
+   ],
+   "prs": [
+    1574,
+    1575,
+    1576
+   ]
+  },
+  {
+   "id": "delphi-desk-builder-io",
+   "title": "Delphi Desk \u2014 decision-review cockpit for the Builder.io Agent-Native Hackathon",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/delphi-desk-builder-io/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/delphi-desk-builder-io/",
+   "issues": [],
+   "prs": [
+    1620,
+    1655,
+    1701,
+    1702
+   ]
+  },
+  {
+   "id": "strands-rfp-response-kernel-first",
+   "title": "Strands RFP response \u2014 kernel-first: executable E-05/E-01/E-03 on the merged offline kernel",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/strands-rfp-response-kernel-first/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/strands-rfp-response-kernel-first/",
+   "issues": [
+    1487,
+    1489
+   ],
+   "prs": [
+    1611,
+    1620,
+    1702
+   ]
+  },
+  {
+   "id": "strands-rfp-response-collection-first",
+   "title": "Strands RFP response \u2014 collection-first: build the DEBATE collection plane (ITEMS-003)",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/strands-rfp-response-collection-first/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/strands-rfp-response-collection-first/",
+   "issues": [
+    1487,
+    1489
+   ],
+   "prs": [
+    1611,
+    1620,
+    1702
+   ]
+  },
+  {
+   "id": "strands-rfp-response-packaging-first",
+   "title": "Strands RFP response \u2014 packaging-first: D0 Lambda shape as the deployment shape, to the account gate",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/strands-rfp-response-packaging-first/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/strands-rfp-response-packaging-first/",
+   "issues": [
+    1487,
+    1489
+   ],
+   "prs": [
+    1611,
+    1620,
+    1702
+   ]
+  },
+  {
+   "id": "system-one-classifier-census",
+   "title": "System One classifier census \u2014 the full decision-model ecosystem as the Tier-1 extension backlog",
+   "author": "Perplexity",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/system-one-classifier-census/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/system-one-classifier-census/",
+   "issues": [],
+   "prs": [
+    1754,
+    1782,
+    1786
+   ]
+  },
+  {
+   "id": "doe-live-method-competition",
+   "title": "DOE/MVT live method-competition framework \u2014 repo-wide, sandbox-free",
+   "author": "timerloggedout-spec",
+   "status": "posted",
+   "priority": "P1",
+   "path": "active/doe-live-method-competition/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/doe-live-method-competition/",
+   "issues": [
+    1573,
+    1595,
+    1596
+   ],
+   "prs": [
+    1848
+   ]
+  },
+  {
+   "id": "temporal-durable-execution-pi-core-resume",
+   "title": "Temporal durable execution \u2014 pi-core-resume: pi-temporal kill-and-resume core (Oracle Method pass, G6: adopt)",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/temporal-durable-execution-pi-core-resume/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/temporal-durable-execution-pi-core-resume/",
+   "issues": [
+    1885,
+    1487,
+    1489
+   ],
+   "prs": [
+    1867,
+    1886
+   ]
+  },
+  {
+   "id": "temporal-durable-execution-cookbook-agent-loop",
+   "title": "Temporal durable execution \u2014 cookbook-agent-loop: ai-cookbook recipes + HITL approval (Oracle Method pass, G6: pilot)",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/temporal-durable-execution-cookbook-agent-loop/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/temporal-durable-execution-cookbook-agent-loop/",
+   "issues": [
+    1885,
+    1487,
+    1489
+   ],
+   "prs": [
+    1867,
+    1886
+   ]
+  },
+  {
+   "id": "temporal-durable-execution-versioned-autoscale",
+   "title": "Temporal durable execution \u2014 versioned-autoscale: Worker Versioning + backlog autoscaling model (Oracle Method pass, G6: reference-only)",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/temporal-durable-execution-versioned-autoscale/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/temporal-durable-execution-versioned-autoscale/",
+   "issues": [
+    1885,
+    1487,
+    1489
+   ],
+   "prs": [
+    1867,
+    1886
+   ]
+  },
+  {
+   "id": "temporal-durable-execution-contract-first",
+   "title": "Temporal durable execution \u2014 contract-first: evidence-envelope schema + generated validators (Oracle Method pass, G6: adopt as contract discipline)",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/temporal-durable-execution-contract-first/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/temporal-durable-execution-contract-first/",
+   "issues": [
+    1885,
+    1487,
+    1489
+   ],
+   "prs": [
+    1867,
+    1886
+   ]
+  },
+  {
+   "id": "temporal-durable-execution-serverless-skill",
+   "title": "Temporal durable execution \u2014 serverless-skill: skill-form starter, cloud paths gated (Oracle Method pass, G6: reference-only)",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/temporal-durable-execution-serverless-skill/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/temporal-durable-execution-serverless-skill/",
+   "issues": [
+    1885,
+    1487,
+    1489
+   ],
+   "prs": [
+    1867,
+    1886
+   ]
+  }
+ ],
+ "passes": [
+  {
+   "id": "kiroween-delphi-concept",
+   "pass_id": "kiroween-delphi-concept",
+   "schema": "oracle-method-pass/v1",
+   "status": "stated_not_run",
+   "candidates": 0,
+   "path": "passes/kiroween-delphi-concept/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/passes/kiroween-delphi-concept"
+  },
+  {
+   "id": "strands-rfp-response",
+   "pass_id": "strands-rfp-response",
+   "schema": "oracle-method-pass/v1",
+   "status": "recorded",
+   "candidates": 3,
+   "path": "passes/strands-rfp-response/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/passes/strands-rfp-response"
+  },
+  {
+   "id": "temporal-durable-execution",
+   "pass_id": "temporal-durable-execution",
+   "schema": "oracle-method-pass/v1",
+   "status": "recorded",
+   "candidates": 5,
+   "path": "passes/temporal-durable-execution/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/passes/temporal-durable-execution"
+  }
+ ],
+ "gaps": []
+}

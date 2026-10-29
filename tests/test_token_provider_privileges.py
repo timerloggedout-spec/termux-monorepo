@@ -11,7 +11,12 @@ def test_token_provider_privileges_enforcement(tmp_path, monkeypatch):
     upload_file.parent.mkdir(parents=True, exist_ok=True)
     upload_file.write_text(json.dumps({"authorization": "test_bearer_token"}))
 
-    import token_provider_v2 as tp
+    try:
+        import token_provider_v2 as tp
+    except ModuleNotFoundError:
+        import sys
+        sys.path.insert(0, os.path.abspath("harmony_hub/src"))
+        import token_provider_v2 as tp
 
     monkeypatch.setattr(tp, "VAULT_DIR", test_vault_dir)
     monkeypatch.setattr(tp, "VAULT", test_vault_file)
@@ -40,7 +45,12 @@ def test_token_provider_symlink_safety(tmp_path, monkeypatch):
 
     test_vault_file.symlink_to(target_file)
 
-    import token_provider_v2 as tp
+    try:
+        import token_provider_v2 as tp
+    except ModuleNotFoundError:
+        import sys
+        sys.path.insert(0, os.path.abspath("harmony_hub/src"))
+        import token_provider_v2 as tp
 
     monkeypatch.setattr(tp, "VAULT_DIR", test_vault_dir)
     monkeypatch.setattr(tp, "VAULT", test_vault_file)
@@ -65,7 +75,12 @@ def test_token_provider_symlink_dir_safety(tmp_path, monkeypatch):
     upload_file.parent.mkdir(parents=True, exist_ok=True)
     upload_file.write_text(json.dumps({"authorization": "test_bearer_token"}))
 
-    import token_provider_v2 as tp
+    try:
+        import token_provider_v2 as tp
+    except ModuleNotFoundError:
+        import sys
+        sys.path.insert(0, os.path.abspath("harmony_hub/src"))
+        import token_provider_v2 as tp
 
     monkeypatch.setattr(tp, "VAULT_DIR", symlink_vault_dir)
     monkeypatch.setattr(tp, "VAULT", test_vault_file)

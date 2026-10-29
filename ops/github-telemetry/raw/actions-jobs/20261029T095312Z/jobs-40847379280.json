@@ -1,0 +1,97 @@
+{
+  "collected_at": "2026-10-29T09:53:22.241280+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 40847379280,
+    "endpoint": ".../runs/40847379280/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 123358119338,
+        "run_id": 40847379280,
+        "workflow_name": "delphi-rfp-feed-collect",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/40847379280",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAcuLeFqg",
+        "head_sha": "4287d4dd28e46c47f843719a7fa9adcc43fa8fec",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/123358119338",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40847379280/job/123358119338",
+        "status": "completed",
+        "conclusion": "failure",
+        "created_at": "2026-10-29T09:09:11Z",
+        "started_at": "2026-10-29T09:09:14Z",
+        "completed_at": "2026-10-29T09:09:25Z",
+        "name": "collect",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-29T09:09:15Z",
+            "completed_at": "2026-10-29T09:09:15Z"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-29T09:09:15Z",
+            "completed_at": "2026-10-29T09:09:23Z"
+          },
+          {
+            "name": "Fetch the RFP census cache",
+            "status": "completed",
+            "conclusion": "failure",
+            "number": 3,
+            "started_at": "2026-10-29T09:09:23Z",
+            "completed_at": "2026-10-29T09:09:23Z"
+          },
+          {
+            "name": "Collect the feed",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 4,
+            "started_at": "2026-10-29T09:09:23Z",
+            "completed_at": "2026-10-29T09:09:23Z"
+          },
+          {
+            "name": "Propose the refresh as a PR",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 5,
+            "started_at": "2026-10-29T09:09:23Z",
+            "completed_at": "2026-10-29T09:09:23Z"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-29T09:09:23Z",
+            "completed_at": "2026-10-29T09:09:23Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-29T09:09:23Z",
+            "completed_at": "2026-10-29T09:09:23Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/123358119338",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000425323,
+        "runner_name": "GitHub Actions 1000425323",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

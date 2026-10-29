@@ -1,0 +1,105 @@
+{
+  "collected_at": "2026-10-29T09:53:23.106984+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 40847378807,
+    "endpoint": ".../runs/40847378807/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 123358191298,
+        "run_id": 40847378807,
+        "workflow_name": "Reviewer metrics collect",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/40847378807",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAcuLiewg",
+        "head_sha": "4287d4dd28e46c47f843719a7fa9adcc43fa8fec",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/123358191298",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40847378807/job/123358191298",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-29T09:09:21Z",
+        "started_at": "2026-10-29T09:09:24Z",
+        "completed_at": "2026-10-29T09:09:38Z",
+        "name": "collect",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-29T09:09:25Z",
+            "completed_at": "2026-10-29T09:09:26Z"
+          },
+          {
+            "name": "Check out master",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-29T09:09:26Z",
+            "completed_at": "2026-10-29T09:09:35Z"
+          },
+          {
+            "name": "Freshness gate (event-driven runs only)",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-29T09:09:35Z",
+            "completed_at": "2026-10-29T09:09:35Z"
+          },
+          {
+            "name": "Collect reviewer metrics",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 4,
+            "started_at": "2026-10-29T09:09:35Z",
+            "completed_at": "2026-10-29T09:09:35Z"
+          },
+          {
+            "name": "Upload metrics artifact",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 5,
+            "started_at": "2026-10-29T09:09:35Z",
+            "completed_at": "2026-10-29T09:09:35Z"
+          },
+          {
+            "name": "Open or update the metrics refresh PR",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 6,
+            "started_at": "2026-10-29T09:09:35Z",
+            "completed_at": "2026-10-29T09:09:35Z"
+          },
+          {
+            "name": "Post Check out master",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-10-29T09:09:35Z",
+            "completed_at": "2026-10-29T09:09:35Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-10-29T09:09:35Z",
+            "completed_at": "2026-10-29T09:09:35Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/123358191298",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000425325,
+        "runner_name": "GitHub Actions 1000425325",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

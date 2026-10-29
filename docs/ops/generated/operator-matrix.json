@@ -1,9 +1,9 @@
 {
   "counts": {
     "open_issues": 353,
-    "open_prs": 107,
+    "open_prs": 109,
     "pr_classes": {
-      "CANDIDATE": 57,
+      "CANDIDATE": 59,
       "EXTRACT": 5,
       "NEED_EVIDENCE": 45,
       "SUPERSEDE": 0
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 19,
-      "prs": 105,
+      "prs": 107,
       "unlabelled_numbers": [
         308,
         343,
@@ -74,7 +74,7 @@
       ]
     }
   },
-  "generated_at": "2026-10-29T22:35:44Z",
+  "generated_at": "2026-10-29T23:43:34Z",
   "issues_unlabelled": [
     308,
     343,
@@ -102,7 +102,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "5b31827fe0"
+    "sha": "e271c8e2a9"
   },
   "prs": [
     {
@@ -979,6 +979,34 @@
       "updated_at": "2026-10-29T07:26:09Z"
     },
     {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "001ef79704",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2343,
+      "title": "Add Merged Branch Audit and Timing Quotas Evaluator",
+      "updated_at": "2026-10-29T22:37:14Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "d5ba1dab07",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2344,
+      "title": "\ud83d\udcd6 Linguist: implement Notation matrices, ConversationalSteganographyCipher 4th lane, and Base64 efficiency research",
+      "updated_at": "2026-10-29T23:40:31Z"
+    },
+    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -1393,7 +1421,7 @@
       },
       "head_sha": "b5951e754e",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1966,
       "title": "ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28)",
       "updated_at": "2026-10-29T06:02:41Z"
@@ -1405,12 +1433,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "7a3c81b970",
+      "head_sha": "0c1b68b285",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-10-29T21:51:51Z"
+      "updated_at": "2026-10-29T23:42:29Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1559,12 +1587,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "89ed8c8a1e",
+      "head_sha": "77e114df26",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-10-29T22:35:13Z"
+      "updated_at": "2026-10-29T23:43:19Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1573,12 +1601,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "f02550f3c9",
+      "head_sha": "0dd0e8fcd3",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2310,
       "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-10-29T21:47:21Z"
+      "updated_at": "2026-10-29T23:41:22Z"
     },
     {
       "class": "NEED_EVIDENCE",

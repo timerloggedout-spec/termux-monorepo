@@ -2,10 +2,14 @@
 import unittest
 from pathlib import Path
 
+from unittest.mock import patch
+
+from scripts.ci import help_wanted_status
 from scripts.ci.help_wanted_status import (
     build_tributes,
     classify_receipt_outcome,
     is_own_repo,
+    live_foreign_prs,
 )
 
 
@@ -121,6 +125,56 @@ class HelpWantedStatusTributeScopeTests(unittest.TestCase):
             [t["pr_url"] for t in tributes],
             ["https://github.com/Kilo-Org/agentic-path/pull/26"],
         )
+
+
+def _search_item(repo, number):
+    return {
+        "repository_url": f"https://api.github.com/repos/{repo}",
+        "html_url": f"https://github.com/{repo}/pull/{number}",
+        "title": f"pr {number}",
+        "number": number,
+        "updated_at": "2026-10-01T00:00:00Z",
+    }
+
+
+class HelpWantedLiveForeignPaginationTests(unittest.TestCase):
+    """The ledger census must walk every search page, not one window."""
+
+    def test_walks_all_pages_and_filters_own_repos_on_later_pages(self):
+        pages = {
+            1: [_search_item("foreign-owner/repo-a", n) for n in range(1, 101)],
+            2: [
+                _search_item("foreign-owner/repo-b", 1),
+                _search_item("timerloggedout-spec/timerloggedout-spec.github.io", 6),
+                _search_item("foreign-owner/repo-c", 2),
+            ],
+        }
+        requested = []
+
+        def fake_api_get(path):
+            page = int(path.split("&page=")[1].split("&")[0])
+            requested.append(page)
+            return {"items": pages.get(page, []), "total_count": 103}
+
+        with patch.object(help_wanted_status, "api_get", fake_api_get):
+            out = live_foreign_prs("closed")
+        self.assertEqual(requested, [1, 2])
+        self.assertEqual(len(out), 102)
+        self.assertTrue(all(not is_own_repo(r["repo"]) for r in out))
+        self.assertTrue(all(r["state"] == "closed" for r in out))
+
+    def test_api_failure_keeps_pages_already_fetched(self):
+        def flaky_api_get(path):
+            if "&page=1&" in path:
+                return {
+                    "items": [_search_item("foreign-owner/repo-a", n) for n in range(1, 101)],
+                    "total_count": 150,
+                }
+            return None
+
+        with patch.object(help_wanted_status, "api_get", flaky_api_get):
+            out = live_foreign_prs("open")
+        self.assertEqual(len(out), 100)
 
 
 if __name__ == "__main__":

@@ -822,6 +822,224 @@
      "capture"
     ]
    }
+  },
+  {
+   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) \u2014 composed, not vendored",
+   "description": "Broad inspection substrate for web surfaces. Boundary (Foundry catalog): broader than the web-wrapper problem.",
+   "id": "rea",
+   "kind": "tool",
+   "name": "REA (morluto/rea)",
+   "parents": [
+    "target-web-client"
+   ],
+   "tags": {
+    "environment": [
+     "ci-remote"
+    ],
+    "method": [
+     "static",
+     "dynamic"
+    ],
+    "tool_role": [
+     "workspace",
+     "capture"
+    ]
+   },
+   "upstream": "morluto/rea"
+  },
+  {
+   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) \u2014 composed, not vendored",
+   "description": "Capture-investigate-export core: captured requests investigated and exported as candidate clients. Boundary: exported clients are candidates until independently verified per operation.",
+   "id": "rever-browser",
+   "kind": "tool",
+   "name": "rever-browser",
+   "parents": [
+    "target-web-client"
+   ],
+   "tags": {
+    "environment": [
+     "ci-remote"
+    ],
+    "method": [
+     "static",
+     "dynamic"
+    ],
+    "tool_role": [
+     "capture"
+    ]
+   },
+   "upstream": "greekr4/rever-browser"
+  },
+  {
+   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) \u2014 composed, not vendored",
+   "description": "Browser-backed reusable CLI / website-to-CLI execution core. Boundary: browser-backed automation is not proof of browser-independent API extraction. Browser-backed = offload under the B160V law.",
+   "id": "opencli",
+   "kind": "tool",
+   "name": "OpenCLI",
+   "parents": [
+    "target-web-client"
+   ],
+   "tags": {
+    "environment": [
+     "ci-remote"
+    ],
+    "method": [
+     "dynamic"
+    ],
+    "tool_role": [
+     "adapter-factory"
+    ]
+   },
+   "upstream": "jackwener/opencli"
+  },
+  {
+   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) \u2014 composed, not vendored",
+   "description": "OpenCLI fork. Boundary: do not assume upstream OpenCLI compatibility.",
+   "id": "opencli-linxule",
+   "kind": "tool",
+   "name": "OpenCLI (linxule fork)",
+   "parents": [
+    "target-web-client"
+   ],
+   "tags": {
+    "environment": [
+     "ci-remote"
+    ],
+    "method": [
+     "dynamic"
+    ],
+    "tool_role": [
+     "adapter-factory"
+    ]
+   },
+   "upstream": "linxule/opencli"
+  },
+  {
+   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) \u2014 composed, not vendored",
+   "description": "Captured request -> code seed. Boundary: a starting point, not the final client.",
+   "id": "curlconverter",
+   "kind": "tool",
+   "name": "curlconverter",
+   "parents": [
+    "target-web-client",
+    "target-protocols-formats"
+   ],
+   "tags": {
+    "method": [
+     "static"
+    ],
+    "tool_role": [
+     "adapter-factory"
+    ]
+   },
+   "upstream": "curlconverter/curlconverter"
+  },
+  {
+   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) \u2014 composed, not vendored",
+   "description": "Agent-accessible browser interaction (MCP facade). Boundary: not an adapter synthesiser. Chromium-class = offload-only under the B160V law.",
+   "id": "playwright-mcp",
+   "kind": "tool",
+   "name": "Playwright MCP",
+   "parents": [
+    "target-web-client"
+   ],
+   "tags": {
+    "environment": [
+     "ci-remote"
+    ],
+    "method": [
+     "dynamic"
+    ],
+    "tool_role": [
+     "instrumentation"
+    ]
+   },
+   "upstream": "microsoft/playwright-mcp"
+  },
+  {
+   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) \u2014 composed, not vendored",
+   "description": "Contract-driven verification. Boundary: a generated schema can be wrong; passing its tests alone is not semantic correctness.",
+   "id": "schemathesis",
+   "kind": "tool",
+   "name": "Schemathesis",
+   "parents": [
+    "target-web-client",
+    "target-protocols-formats"
+   ],
+   "tags": {
+    "method": [
+     "automated",
+     "comparative"
+    ],
+    "objective": [
+     "cross-validation"
+    ],
+    "tool_role": [
+     "cross-validator"
+    ]
+   },
+   "upstream": "schemathesis/schemathesis"
+  },
+  {
+   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) \u2014 composed, not vendored",
+   "description": "Existing-client discovery index (curated list, not an executable tool). Boundary: listings are leads; inspect upstream before trusting.",
+   "id": "awesome-reverse-engineered",
+   "kind": "tool",
+   "name": "awesome-reverse-engineered",
+   "parents": [
+    "target-web-client"
+   ],
+   "tags": {
+    "method": [
+     "static"
+    ],
+    "tool_role": [
+     "workspace"
+    ]
+   },
+   "upstream": "alexgaoth/awesome-reverse-engineered"
+  },
+  {
+   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) \u2014 composed, not vendored",
+   "description": "Desktop/Electron CLI recovery. Boundary: desktop/Electron targets, not ordinary web apps.",
+   "id": "reverse-cli-anything",
+   "kind": "tool",
+   "name": "reverse-cli-anything",
+   "parents": [
+    "target-scripts",
+    "target-web-client"
+   ],
+   "tags": {
+    "method": [
+     "static",
+     "comparative"
+    ],
+    "tool_role": [
+     "adapter-factory"
+    ]
+   },
+   "upstream": "leileqiTHU/reverse-cli-anything"
+  },
+  {
+   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) \u2014 composed, not vendored",
+   "description": "Capture -> draft OpenAPI: derives contract from captured traffic only; workflow inventory drives coverage. Sibling of the mitmproxy capture node, not a duplicate.",
+   "id": "mitmproxy2swagger",
+   "kind": "tool",
+   "name": "mitmproxy2swagger",
+   "parents": [
+    "target-protocols-formats",
+    "target-web-client"
+   ],
+   "tags": {
+    "method": [
+     "static",
+     "comparative"
+    ],
+    "tool_role": [
+     "adapter-factory"
+    ]
+   },
+   "upstream": "alufers/mitmproxy2swagger"
   }
  ],
  "overlap_matrix": {
@@ -1084,25 +1302,37 @@
    "category": "target-web-client",
    "stages": [
     {
+     "output": "existing-client leads (listings are leads, inspected before trust)",
+     "stage": "identify",
+     "tools": [
+      "awesome-reverse-engineered"
+     ]
+    },
+    {
      "output": "request inventory -> DOM attribution -> DOM data sources",
      "stage": "analyze-static",
      "tools": [
       "web-adapter-foundry",
-      "webcrack"
+      "webcrack",
+      "rea",
+      "rever-browser"
      ]
     },
     {
      "output": "captured traffic / replay",
      "stage": "observe-dynamic",
      "tools": [
-      "mitmproxy"
+      "mitmproxy",
+      "playwright-mcp",
+      "opencli"
      ]
     },
     {
      "output": "promotion pipeline: discovered -> captured -> modeled -> reproduced -> verified",
      "stage": "validate",
      "tools": [
-      "web-adapter-foundry"
+      "web-adapter-foundry",
+      "schemathesis"
      ]
     },
     {
@@ -1126,7 +1356,9 @@
      "output": "format model + field selection",
      "stage": "analyze-static",
      "tools": [
-      "web-adapter-foundry"
+      "web-adapter-foundry",
+      "mitmproxy2swagger",
+      "curlconverter"
      ]
     },
     {

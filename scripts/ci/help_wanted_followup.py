@@ -116,18 +116,34 @@ def parse_ts(s: str | None) -> datetime | None:
 
 
 def _search_foreign_prs(qualifier: str) -> list[dict]:
+    """Full census for the qualifier, paginated (see help_wanted_status).
+
+    A single page is a sliding window: closes beyond it would silently
+    miss their lesson routing. On an API failure keep the pages
+    already fetched.
+    """
     q = f"author:{AUTHOR} is:pr {qualifier} -repo:timerloggedout-spec/termux-monorepo -user:{AUTHOR}"
-    status, data = api("GET", f"/search/issues?q={urllib.parse.quote(q)}&per_page=40")
-    if status != 200:
-        return []
     items = []
-    for it in data.get("items") or []:
-        repo_url = it.get("repository_url") or ""
-        parts = repo_url.rstrip("/").split("/")
-        full = f"{parts[-2]}/{parts[-1]}" if len(parts) >= 2 else ""
-        if full in EXCLUDE_REPOS or is_own_repo(full):
-            continue
-        items.append(it)
+    page = 1
+    while page <= 10:  # the search API serves at most 1,000 results
+        status, data = api(
+            "GET",
+            f"/search/issues?q={urllib.parse.quote(q)}"
+            f"&per_page=100&page={page}&sort=created&order=asc",
+        )
+        if status != 200:
+            break
+        batch = data.get("items") or []
+        for it in batch:
+            repo_url = it.get("repository_url") or ""
+            parts = repo_url.rstrip("/").split("/")
+            full = f"{parts[-2]}/{parts[-1]}" if len(parts) >= 2 else ""
+            if full in EXCLUDE_REPOS or is_own_repo(full):
+                continue
+            items.append(it)
+        if len(batch) < 100:
+            break
+        page += 1
     return items
 
 

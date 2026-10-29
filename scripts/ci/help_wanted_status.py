@@ -123,28 +123,45 @@ def current_source_sha() -> str:
     except (OSError, subprocess.CalledProcessError): return ''
 
 def live_foreign_prs(state: str = "open") -> list[dict]:
+    """Full census of authored foreign PRs in one state, paginated.
+
+    A single search page is a sliding window over the universe (the
+    closed universe is >100 PRs): rows rotate in and out between runs
+    and the ledger built on it is unstable. Walk every page with a
+    deterministic created-asc order instead; on an API failure keep
+    the pages already fetched rather than dropping the whole state.
+    """
     q = f"author:{AUTHOR} is:pr is:{state} -repo:timerloggedout-spec/termux-monorepo -user:{AUTHOR}"
-    data = api_get(f"/search/issues?q={urllib.parse.quote(q)}&per_page=50")
-    if not data:
-        return []
     out = []
-    for it in data.get("items") or []:
-        repo_url = it.get("repository_url") or ""
-        parts = repo_url.rstrip("/").split("/")
-        full = f"{parts[-2]}/{parts[-1]}" if len(parts) >= 2 else ""
-        if full in EXCLUDE or is_own_repo(full):
-            continue
-        out.append(
-            {
-                "html_url": it.get("html_url"),
-                "title": it.get("title"),
-                "number": it.get("number"),
-                "repo": full,
-                "state": state,
-                "updated_at": it.get("updated_at"),
-                "tribute": True,
-            }
+    page = 1
+    while page <= 10:  # the search API serves at most 1,000 results
+        data = api_get(
+            f"/search/issues?q={urllib.parse.quote(q)}"
+            f"&per_page=100&page={page}&sort=created&order=asc"
         )
+        if not data:
+            break
+        items = data.get("items") or []
+        for it in items:
+            repo_url = it.get("repository_url") or ""
+            parts = repo_url.rstrip("/").split("/")
+            full = f"{parts[-2]}/{parts[-1]}" if len(parts) >= 2 else ""
+            if full in EXCLUDE or is_own_repo(full):
+                continue
+            out.append(
+                {
+                    "html_url": it.get("html_url"),
+                    "title": it.get("title"),
+                    "number": it.get("number"),
+                    "repo": full,
+                    "state": state,
+                    "updated_at": it.get("updated_at"),
+                    "tribute": True,
+                }
+            )
+        if len(items) < 100:
+            break
+        page += 1
     return out
 
 

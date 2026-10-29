@@ -21,6 +21,20 @@ Observed (repository index): `2026-10-29T10:55:52.286678Z` · Edges: **25205**
 - **same_author_as:** 1
 - **fork_of:** 1
 
+## Challenge event field size (platform-displayed)
+
+Tracked participant records in coordinator.json: **1** — distinct from the field sizes below.
+
+| Event node | Participants | Projects | Status |
+|---|---|---|---|
+| `challenge:event:D0` | 252 | 40 | established |
+| `challenge:event:D1` | 324 | 1 | partial |
+| `challenge:event:D2` | 1617 | None | partial |
+| `challenge:event:D3` | None | None | open_task |
+| `challenge:event:D4` | 1909 | 0 | established |
+| `challenge:event:D5` | None | None | open_task |
+| `challenge:event:STRANDS-DECIDER` | 5917 | None | partial |
+
 ## Cross-plane / seed / challenge edges
 
 | Src | Type | Dst | Method |

@@ -1,5 +1,5 @@
 {
- "builder": "termux-monorepo.cross_plane_link@1.1",
+ "builder": "termux-monorepo.cross_plane_link@1.2",
  "counts": {
   "edge_types": {
    "about_topic": 12312,
@@ -37,9 +37,46 @@
  "snapshot_hash": "bffdc4fed3e867f0a5174f33862eed7220778b7028a99452f9823117bbdc9c23",
  "sources": {
   "challenge": {
+   "field_size_by_event": {
+    "challenge:event:D0": {
+     "participants": 252,
+     "projects": 40,
+     "status": "established"
+    },
+    "challenge:event:D1": {
+     "participants": 324,
+     "projects": 1,
+     "status": "partial"
+    },
+    "challenge:event:D2": {
+     "participants": 1617,
+     "projects": null,
+     "status": "partial"
+    },
+    "challenge:event:D3": {
+     "participants": null,
+     "projects": null,
+     "status": "open_task"
+    },
+    "challenge:event:D4": {
+     "participants": 1909,
+     "projects": 0,
+     "status": "established"
+    },
+    "challenge:event:D5": {
+     "participants": null,
+     "projects": null,
+     "status": "open_task"
+    },
+    "challenge:event:STRANDS-DECIDER": {
+     "participants": 5917,
+     "projects": null,
+     "status": "partial"
+    }
+   },
    "observed_at": null,
    "path": "ops/challenge/coordinator.json",
-   "records": {
+   "tracked_records": {
     "events": 7,
     "judges": 0,
     "organizers": 9,

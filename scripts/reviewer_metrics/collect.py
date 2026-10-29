@@ -24,6 +24,8 @@ import os
 import re
 import statistics
 import sys
+import time
+import urllib.error
 import urllib.request
 from datetime import datetime, timezone
 
@@ -414,22 +416,90 @@ def aggregate(records, prs_examined, warnings, pr_extras=None):
     }
 
 
+def _retry_delay(exc, attempt):
+    """Seconds to wait before retrying a transient API failure.
+
+    Honors Retry-After, then X-RateLimit-Reset when the primary bucket
+    is empty; otherwise exponential backoff. Capped at 120s.
+    """
+    headers = getattr(exc, "headers", None) or {}
+    retry_after = headers.get("Retry-After")
+    if retry_after:
+        try:
+            return min(float(retry_after), 120.0)
+        except ValueError:
+            pass
+    if headers.get("X-RateLimit-Remaining") == "0":
+        try:
+            reset = float(headers.get("X-RateLimit-Reset", 0))
+            if reset:
+                return max(0.0, min(reset - time.time(), 120.0))
+        except ValueError:
+            pass
+    return min(5.0 * (3 ** attempt), 120.0)
+
+
 class ApiClient:
     def __init__(self, repo, token):
         self.repo = repo
         self.token = token
 
     def get(self, path):
-        req = urllib.request.Request(
-            f"https://api.github.com/repos/{self.repo}{path}",
-            headers={
-                "Authorization": f"Bearer {self.token}",
-                "Accept": "application/vnd.github+json",
-                "X-GitHub-Api-Version": "2022-11-28",
-            },
-        )
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            return json.loads(resp.read().decode())
+        """GET one API path with transient-failure retry.
+
+        Root cause of the 2026-10-29 failure burst: the collector died
+        on the first 403 (shared operator-token bucket exhausted by a
+        workflow_run trigger storm) and the traceback reached only the
+        job log, which is not API-readable — failures surfaced as a
+        bare "exit code 1" annotation. Retries ride out secondary
+        limits; a final failure is emitted as a ::error:: annotation
+        (check-run annotations ARE API-readable, the classify_pr
+        debug-capture pattern, PRs #2255-#2265) naming status +
+        GitHub's own message before the exception propagates.
+        """
+        last_exc = None
+        for attempt in range(4):
+            req = urllib.request.Request(
+                f"https://api.github.com/repos/{self.repo}{path}",
+                headers={
+                    "Authorization": f"Bearer {self.token}",
+                    "Accept": "application/vnd.github+json",
+                    "X-GitHub-Api-Version": "2022-11-28",
+                },
+            )
+            try:
+                with urllib.request.urlopen(req, timeout=30) as resp:
+                    return json.loads(resp.read().decode())
+            except urllib.error.HTTPError as exc:
+                last_exc = exc
+                transient = exc.code in (403, 429) or exc.code >= 500
+                if not transient or attempt == 3:
+                    body = exc.read().decode("utf-8", "replace") if exc.fp else ""
+                    try:
+                        message = json.loads(body).get("message", body[:200])
+                    except ValueError:
+                        message = body[:200]
+                    print(f"::error::reviewer-metrics fetch failed status={exc.code} "
+                          f"path={path} message={message}",
+                          flush=True, file=sys.stderr)
+                    raise
+                delay = _retry_delay(exc, attempt)
+                print(f"::warning::reviewer-metrics fetch HTTP {exc.code} "
+                      f"(attempt {attempt + 1}/4); retrying in {delay:.0f}s",
+                      flush=True, file=sys.stderr)
+                time.sleep(delay)
+            except urllib.error.URLError as exc:
+                last_exc = exc
+                if attempt == 3:
+                    print(f"::error::reviewer-metrics fetch failed path={path} "
+                          f"message={exc}", flush=True, file=sys.stderr)
+                    raise
+                delay = min(5.0 * (3 ** attempt), 120.0)
+                print(f"::warning::reviewer-metrics fetch network error {exc} "
+                      f"(attempt {attempt + 1}/4); retrying in {delay:.0f}s",
+                      flush=True, file=sys.stderr)
+                time.sleep(delay)
+        raise last_exc  # pragma: no cover
 
 
 def collect(client, limit):

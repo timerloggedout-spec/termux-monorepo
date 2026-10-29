@@ -40,6 +40,9 @@ jobs:
       - name: Harvest X signals
         env:
           X_OAUTH2_USER_TOKEN: <REDACTED_SECRET> secrets.X_OAUTH2_USER_TOKEN }}
+          X_OAUTH2_REFRESH_TOKEN: <REDACTED_SECRET> secrets.X_OAUTH2_REFRESH_TOKEN }}
+          X_CLIENT_ID: ${{ secrets.X_CLIENT_ID }}
+          X_CLIENT_SECRET: ${{ secrets.X_CLIENT_SECRET }}
         run: |
           set -euo pipefail
           python scripts/social/x_harvest.py \

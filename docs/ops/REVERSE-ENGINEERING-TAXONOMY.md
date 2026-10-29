@@ -54,6 +54,21 @@ python3 -m ops.reverse_engineering.taxonomy overlap
   carries a `tool_role`; every node descends from the root; toolchains
   reference real tool nodes in stage order.
 
+## WAF upstream stack (integrated 2026-10-28)
+
+The Foundry catalog's 11 upstreams (`ops/web_adapter_foundry/catalog.json`,
+PR #1550) are first-class tool nodes here, not only reachable indirectly
+through the `web-adapter-foundry` node: `rea`, `rever-browser`, `opencli`,
+`opencli-linxule` (fork; upstream compatibility not assumed),
+`curlconverter`, `playwright-mcp`, `schemathesis`,
+`awesome-reverse-engineered` (discovery index, listings are leads),
+`reverse-cli-anything`, `mitmproxy2swagger` (sibling of the `mitmproxy`
+capture node), plus the pre-existing `webcrack`. Each node carries its
+catalog role and boundary in its description. **Composed, not vendored** —
+no upstream code enters the repo; the catalog remains the composition
+boundary. Browser-backed nodes (`opencli`, `playwright-mcp`,
+`rever-browser`) are tagged `ci-remote` under the B160V offload law.
+
 ## Registered sibling registries
 
 - Web RE: `ops/web_adapter_foundry/taxonomy.json` — the nested

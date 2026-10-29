@@ -65,3 +65,25 @@ def test_validator_catches_damage():
     assert any("unknown parent" in e for e in errs)
     assert any("unknown axis" in e for e in errs)
     assert any("does not descend" in e for e in errs)
+
+
+WAF_UPSTREAMS = ["rea", "rever-browser", "opencli", "opencli-linxule",
+                 "curlconverter", "playwright-mcp", "schemathesis",
+                 "awesome-reverse-engineered", "reverse-cli-anything",
+                 "mitmproxy2swagger"]
+
+
+def test_waf_upstreams_are_tool_nodes_with_roles():
+    nodes = {n["id"]: n for n in tax()["nodes"]}
+    for uid in WAF_UPSTREAMS:
+        node = nodes[uid]
+        assert node["kind"] == "tool", uid
+        assert node["tags"]["tool_role"], uid
+        assert node.get("upstream"), uid
+        assert "not vendored" in node.get("composed_from", ""), uid
+    web = next(c for c in tax()["toolchains"] if c["category"] == "target-web-client")
+    chain_tools = {t for s in web["stages"] for t in s["tools"]}
+    assert {"rea", "rever-browser", "playwright-mcp", "opencli",
+            "schemathesis", "awesome-reverse-engineered"} <= chain_tools
+    proto = next(c for c in tax()["toolchains"] if c["category"] == "target-protocols-formats")
+    assert {"mitmproxy2swagger", "curlconverter"} <= {t for s in proto["stages"] for t in s["tools"]}

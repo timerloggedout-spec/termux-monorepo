@@ -41,15 +41,34 @@
 
 Enacted as lane discipline by this record (no schedule/cadence change):
 
-1. **Preflight before publish:** run `github_pat.py rate-limit` once before a `pat_publish` batch; if core remaining < 250, defer the publish to the reset time shown and report that time — do not retry-loop against a 403.
+1. **Preflight before publish:** run `github_pat.py rate-limit` once before a `pat_publish` batch. Defer threshold is DERIVED from that live reading (cadence boundary 2, adopted 2026-10-29): defer when `remaining < planned_calls + limit/10` (reserve proportion taken from the response's own `limit`, never a hardcoded count); deferral is fail-soft + logged (Delphi `defer_api` pattern) — report the `reset` time, resume next window, never retry-loop against a 403. (This supersedes the fixed-count threshold in this record's first version.)
 2. **No tight polling:** never poll check-runs/run status in a loop. Use completion handoffs / a single check after a bounded wait. One verification read per outcome (compare API = 1 call replaces per-file reads; master-history scan = 1 call).
 3. **Sweeps are snapshots:** `list-prs --all` at most once per task, timestamped and reused across lanes via the repo record — never as a heartbeat.
 4. **403 = stop:** a rate-limit 403 ends the attempt for that window; report reset time. No endpoint/tool switching to evade it.
 
-Proposals to the cadence owner (`ac333a25`, coordination sent 2026-10-29T06:00Z before any proposal; NOT enacted here, cadence change only within their boundaries):
+## Cadence-owner boundaries (received 2026-10-29, `ac333a25` — adopted, this record conforms)
 
-- P1: fleet-wide minimum poll interval + per-PR poll cap for any workflow/lane status check, with the Delphi reserve pattern mirrored for PAT (defer below a reserve instead of draining to 0).
-- P2: a dispatch-only GitHub Workflow (VM hosts nothing) that posts core/search/graphql headroom to a standing issue on a cadence the cadence owner sets — always-on visibility lives in Workflows only.
+1. Poll floor: no new fixed-interval polling under the schema minimum (5 min); prefer event-driven (push / `workflow_run` / `issue_comment`) wherever a trigger exists.
+2. Defer/reserve thresholds DERIVED from the live `/rate_limit` reading (remaining + reset), never hardcoded counts; defer = fail-soft + logged, work resumes next cycle.
+3. Batching: one `commits/{sha}/check-runs` call per SHA, `per_page=100` on lists, stop-on-condition; full `--all` sweeps only in scheduled collectors, never per-PR/per-event lanes.
+4. Orchestrator poll budget (cadence-owned exception, unchanged): `POLL_SEC ≥ 20s`, per-event polls bounded by `MAX_WAIT`; no cross-PR tight loops.
+5. Any cadence/schedule change = proposal to the cadence owner WITH trigger accounting (executions + API calls per run); they land it as a QAC PR. No unilateral schedule edits in this record.
+6. Consumer census ranked by calls/hour (below) is the evidence base for any interval proposal.
+
+## Consumer census — ranked by calls/hour (evidence for cadence owner)
+
+| Consumer | Interval / shape | Calls/hour |
+|---|---|---|
+| Lane tight polling loops (incident shape, Pinecone lane that hour) | ~3 endpoints (check-runs + run + PR), interval NOT ESTABLISHED; at 10s illustrative | ~1080/lane at 10s; multiple lanes ⇒ >5000 (whole bucket) |
+| Peer-review orchestrator (cadence-owned) | `POLL_SEC` 20s, bounded by `MAX_WAIT` per PR event | ≤180 per active PR event |
+| `list-prs --all` sweeps (per-PR/per-event lane use) | paginated `per_page=100`, all states | pages × sweeps/h — unbounded if repeated; boundary 3 confines to scheduled collectors |
+| `pat_publish` + merge verification | per outcome, stop-on-condition | bounded, ~6–10 per PR |
+| Repository Observatory collector | daily cron `17 4 * * *`, user token | negligible averaged; burst within its run only |
+
+Proposals to the cadence owner (NOT enacted here; each needs trigger accounting before a QAC PR):
+
+- P1: mirror the Delphi derived-reserve defer pattern on the PAT publish path fleet-wide (formula in mitigation 1).
+- P2: a dispatch-only GitHub Workflow (VM hosts nothing) posting core/search/graphql headroom to a standing issue, at an event-driven or ≥5-min-floor cadence the cadence owner sets.
 
 ## Reset cadence
 

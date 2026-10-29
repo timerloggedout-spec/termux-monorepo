@@ -4,7 +4,7 @@ from datetime import datetime, timedelta, timezone
 
 from scripts.ci.help_wanted_followup import (
     MARKER, count_prior_nudges, decide_action, filter_maintainer_activity,
-    latest_approval_ts, latest_maintainer_signal, nudge_policy,
+    is_own_repo, latest_approval_ts, latest_maintainer_signal, nudge_policy,
 )
 
 
@@ -151,6 +151,17 @@ class HelpWantedFollowupPolicyTests(unittest.TestCase):
             comment("timerloggedout-spec", "A substantive update, not a follow-up marker"),
         ]
         self.assertEqual(count_prior_nudges(comments), 2)
+
+
+class HelpWantedFollowupScopeTests(unittest.TestCase):
+    """Follow-up is foreign-only: author-owned repos are never foreign."""
+
+    def test_own_repos_detected(self):
+        self.assertTrue(is_own_repo("timerloggedout-spec/termux-monorepo"))
+        self.assertTrue(is_own_repo("timerloggedout-spec/timerloggedout-spec.github.io"))
+        self.assertTrue(is_own_repo("timerloggedout-spec/gh-aw-mcpg_fork"))
+        self.assertFalse(is_own_repo("mangiapanejohn-dev/MOBIUS-Searcher"))
+        self.assertFalse(is_own_repo(""))
 
 
 if __name__ == "__main__":

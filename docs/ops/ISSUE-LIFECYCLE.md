@@ -428,7 +428,14 @@ labelled at birth by the gate — plus one new label in use, `temporal`
   `bash -e`): one guarded gate read per run — green merges, absent
   gates + generated-only diff merges on provenance, failure or
   pending leaves the PR for the next scheduled run to re-check.
-  What remains
+  Frequency is adaptive (owner order, same day): triage fires on
+  `issues: opened/reopened` — labels land at birth, when relevance
+  is highest — with the Tuesday run demoted to a floor sweep for
+  whatever the event path missed; the matrix regenerates on every
+  merged PR (its subject just changed) with a daily 06:41 UTC floor
+  bounding issue-side staleness at ~24h, no-change runs costing
+  ~5 GraphQL calls and no PR. Fixed weekly-only cadence is retired
+  for both. What remains
   lane-side is judgment, not process: titles matching no mechanical
   class (the residue after the rules), closure-evidence audits vs
   C1, and corrections like the ones above.

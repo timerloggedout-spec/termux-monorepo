@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "d0075ebee226c4c3e905ba6ad635a1d4cac01fec1de52b6a18695dde4cf9d96e",
-  "workflow_count": 222,
+  "source_fingerprint": "736f2655e9a53847e88a725d558af41026d64cae8f0db745b5438de4acdb2482",
+  "workflow_count": 223,
   "workflows": [
     {
       "action_pins": [],
@@ -2862,6 +2862,27 @@
       "path": ".github/workflows/pin-cor-ae-submodules.yml",
       "schedules": [],
       "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: pinecone-knowledge cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "pinecone"
+      ],
+      "name": "Pinecone knowledge sync",
+      "path": ".github/workflows/pinecone-knowledge.yml",
+      "schedules": [
+        "37 5 1 * *"
+      ],
+      "triggers": [
+        "push",
+        "schedule",
         "workflow_dispatch"
       ]
     },

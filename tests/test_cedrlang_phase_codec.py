@@ -46,3 +46,39 @@ def test_probability_validation():
             pass
         else:
             raise AssertionError("invalid probability was accepted")
+
+
+def test_conversational_steganography_cipher_roundtrip():
+    from workspace.compression_sandbox.cedrlang.phase_codec import ConversationalSteganographyCipher
+
+    payload = "Agent-2-Agent secret instruction: execute build!"
+    cover = "Everything is running smoothly."
+    key = "private_secret_key"
+
+    encoded = ConversationalSteganographyCipher.encode(payload, cover_text=cover, key=key)
+    assert ConversationalSteganographyCipher.has_payload(encoded) is True
+
+    decoded_payload, clean_cover = ConversationalSteganographyCipher.decode(encoded, key=key)
+    assert decoded_payload == payload
+    assert clean_cover == cover
+
+
+def test_conversational_steganography_key_isolation():
+    from workspace.compression_sandbox.cedrlang.phase_codec import ConversationalSteganographyCipher
+
+    payload = "Top secret data"
+    encoded = ConversationalSteganographyCipher.encode(payload, key="key_A")
+
+    # Decoding with incorrect key yields garbage/mismatched string
+    wrong_decoded, _ = ConversationalSteganographyCipher.decode(encoded, key="key_B")
+    assert wrong_decoded != payload
+
+
+def test_conversational_steganography_plain_text_has_no_payload():
+    from workspace.compression_sandbox.cedrlang.phase_codec import ConversationalSteganographyCipher
+
+    plain_text = "Standard plain text message without hidden stego quads."
+    assert ConversationalSteganographyCipher.has_payload(plain_text) is False
+    decoded_payload, clean_text = ConversationalSteganographyCipher.decode(plain_text)
+    assert decoded_payload == ""
+    assert clean_text == plain_text

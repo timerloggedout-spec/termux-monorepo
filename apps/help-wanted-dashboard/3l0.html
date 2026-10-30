@@ -18,6 +18,10 @@
   .hist span{width:10px;height:10px;border-radius:2px;background:var(--line)}
   .hist span.ok{background:var(--gold)}
   .hist span.cool{background:var(--bad)}
+  .weight-track{height:7px;min-width:90px;max-width:180px;margin-top:.35rem;background:var(--line);border-radius:99px;overflow:hidden}
+  .weight-track span{display:block;height:100%;background:var(--gold);border-radius:99px}
+  .table-wrap{overflow-x:auto}
+  .links{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.75rem}
 </style>
 </head>
 <body>
@@ -84,12 +88,46 @@ async function load(){
   out.push(`<section class="card"><h2>Routing surface</h2><p>${esc(d.router.mechanic)}</p>
   <table class="rank"><tr><th>Peer</th><th>Models · roles · soft budgets (RPD)</th></tr>${peerRows}</table>
   <p class="meta">${esc(d.router.peers_source)}</p></section>`);
-  const roles = Object.entries(d.delphi_weights.panel_defaults || {}).map(([r, v]) =>
+  const weights = d.delphi_weights || {};
+  const roles = Object.entries(weights.panel_defaults || {}).map(([r, v]) =>
     `<tr><td><code>${esc(r)}</code></td><td>${esc(v.base)}</td><td>${esc(v.gate_pass_rate)}</td><td>${esc(v.elo)}</td></tr>`).join("");
-  out.push(`<section class="card"><h2>Delphi panel weights — defaults</h2>
-  <table class="rank"><tr><th>Role</th><th>Base</th><th>Gate pass rate (seed)</th><th>Elo (seed)</th></tr>${roles}</table>
-  <p class="meta">Formula: ${esc(d.delphi_weights.formula || "")} ${esc(d.delphi_weights.seed_note || "")}</p>
-  <p>${esc(d.delphi_weights.live_source)}</p></section>`);
+  out.push(`<section class="card"><h2>Delphi panel weights — cold-start seeds</h2>
+  <p class="meta">These are neutral defaults, not observed performance. They remain separate from the ledger-backed observations below.</p>
+  <div class="table-wrap"><table class="rank"><tr><th>Role</th><th>Base</th><th>Gate pass rate (seed)</th><th>Elo (seed)</th></tr>${roles}</table></div>
+  <p class="meta">Formula: ${esc(weights.formula || "")} ${esc(weights.seed_note || "")}</p></section>`);
+  const observed = weights.observed;
+  if (observed && observed.roles) {
+    const observedRows = Object.entries(observed.roles).map(([role, v]) => {
+      const share = Number(v.weight_share);
+      const bar = Number.isFinite(share) ? Math.max(0, Math.min(100, share * 100)) : null;
+      const width = bar === null ? "" : `<div class="weight-track" aria-label="Effective weight share ${bar.toFixed(1)} percent"><span style="width:${bar.toFixed(2)}%"></span></div>`;
+      const cell = value => value === null || value === undefined ? "unavailable" : esc(value);
+      return `<tr><td><code>${esc(role)}</code></td><td>${cell(v.gate_pass_rate)}</td><td>${cell(v.elo)}</td><td>${cell(v.hits)} / ${cell(v.misses)}</td><td>${cell(v.effective_weight)}</td><td>${bar === null ? "unavailable" : bar.toFixed(2) + "%"}${width}</td></tr>`;
+    }).join("");
+    const discrimination = observed.discrimination || {};
+    const provenance = observed.provenance || {};
+    const issueUrl = typeof provenance.issue_url === "string" && /^https:\/\/github\.com\/timerloggedout-spec\/termux-monorepo\/issues\/\d+$/.test(provenance.issue_url) ? provenance.issue_url : "";
+    const commentUrl = typeof provenance.newest_comment_url === "string" && /^https:\/\/github\.com\/timerloggedout-spec\/termux-monorepo\/issues\/\d+#issuecomment-\d+$/.test(provenance.newest_comment_url) ? provenance.newest_comment_url : "";
+    const warning = discrimination.effective_weight_driver === "seed_base_only"
+      ? `<div class="gap"><strong>Observed signal is not yet differentiating roles.</strong> The recorded fields are uniform across roles; the displayed weight-share differences are driven by cold-start base weights, not demonstrated role-specific performance. ${esc(discrimination.note || "")}</div>`
+      : "";
+    const uniform = Array.isArray(discrimination.uniform_fields) ? discrimination.uniform_fields.map(x => `<span class="pill gold">${esc(x)}</span>`).join("") : "";
+    out.push(`<section class="card"><h2>Observed Delphi weights — ledger-backed</h2>
+    <p>State: <span class="pill ok">${esc(observed.kind || weights.state || "observed")}</span>
+    <span class="meta">Observed ${esc(observed.observed_at || "time unavailable")} · snapshot read ${esc(observed.read_at || "time unavailable")}</span></p>
+    ${warning}
+    <div class="chips"><span class="pill">Appends: ${discrimination.appends === undefined ? "unavailable" : esc(discrimination.appends)}</span><span class="pill">Distinct outcome events: ${discrimination.distinct_outcome_events === undefined ? "unavailable" : esc(discrimination.distinct_outcome_events)}</span><span class="pill">Driver: ${esc(discrimination.effective_weight_driver || "unknown")}</span></div>
+    <p class="meta">Uniform observed fields: ${uniform || "not reported"}</p>
+    <div class="table-wrap"><table class="rank"><tr><th>Role</th><th>Gate pass</th><th>Elo</th><th>Hits / misses</th><th>Effective weight</th><th>Weight share</th></tr>${observedRows}</table></div>
+    <p class="meta">Bar length represents the recorded effective-weight share. It is not a standalone performance ranking.</p>
+    <p>Formula: ${esc(weights.formula || "unavailable")}</p>
+    <p class="meta">Feedback: issue #${provenance.feedback && provenance.feedback.issue !== undefined ? esc(provenance.feedback.issue) : "unavailable"} · outcome ${esc(provenance.feedback && provenance.feedback.outcome || "unavailable")} · newest ledger comment ${provenance.newest_comment_id === undefined ? "unavailable" : esc(provenance.newest_comment_id)}</p>
+    <div class="links">${issueUrl ? `<a class="button" href="${issueUrl}" target="_blank" rel="noopener noreferrer">Open weights ledger</a>` : ""}${commentUrl ? `<a class="button" href="${commentUrl}" target="_blank" rel="noopener noreferrer">Open observed entry</a>` : ""}</div>
+    </section>`);
+  } else {
+    out.push(`<section class="card"><h2>Observed Delphi weights</h2><p class="empty">No observed ledger block is present in this feed. Cold-start seeds above are not a substitute for observed performance.</p></section>`);
+  }
+  if (weights.live_source) out.push(`<section class="card"><h2>Weighting source</h2><p>${esc(weights.live_source)}</p></section>`);
   document.getElementById("content").innerHTML = out.join("");
   if((f.gaps || []).length){
     document.getElementById("gaps-card").hidden = false;

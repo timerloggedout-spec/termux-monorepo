@@ -23,7 +23,7 @@ class TelemetryTests(unittest.TestCase):
         result = build_telemetry(REGISTRY)
         self.assertEqual(len(result["planned_roles"]), 4)
         self.assertTrue(all(
-            role["status"] == "naming_draft_do_not_provision"
+            role["status"] == "owner_reported_in_flight_unverified"
             for role in result["planned_roles"]
         ))
         self.assertEqual(len(result["apps"]), 1)

@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "6f9c85b2e5b47161ab6f487efb594658c2bedd7158a92b2c3841797f1376e785",
-  "workflow_count": 226,
+  "source_fingerprint": "6f5f88666d33024a0df4a474c424efb7b4865ee48191cbf5ca47cb3f13228a21",
+  "workflow_count": 227,
   "workflows": [
     {
       "action_pins": [],
@@ -911,8 +911,11 @@
       ],
       "name": "context relationship Linear freshness",
       "path": ".github/workflows/context-relationship-linear-freshness.yml",
-      "schedules": [],
+      "schedules": [
+        "23 6 * * *"
+      ],
       "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -3150,6 +3153,25 @@
       "schedules": [],
       "triggers": [
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: quota-allocation-planner cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "plan"
+      ],
+      "name": "quota-allocation-planner",
+      "path": ".github/workflows/quota-allocation-planner.yml",
+      "schedules": [
+        "47 8 * * 3"
+      ],
+      "triggers": [
+        "push",
+        "schedule",
         "workflow_dispatch"
       ]
     },

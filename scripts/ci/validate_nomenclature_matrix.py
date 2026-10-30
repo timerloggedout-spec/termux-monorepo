@@ -79,8 +79,8 @@ def validate(data):
         assertion_type = e.get("assertion_type")
         if assertion_type not in assertion_ids or e.get("assertion_id") not in assertion_ids.get(assertion_type, set()):
             errors.append(f"evidence {e.get('evidence_id')} references unknown assertion")
-        if not all(e.get(k) for k in ("claim", "evidence_locator", "evidence_excerpt", "retrieved_on")):
-            errors.append(f"evidence {e.get('evidence_id')} needs claim, locator, excerpt, and retrieval date")
+        if not all(e.get(k) for k in ("claim", "evidence_locator", "retrieved_on")) or not str(e.get("evidence_excerpt") or "").strip():
+            errors.append(f"evidence {e.get('evidence_id')} needs claim, locator, a nonblank excerpt, and retrieval date")
         try:
             date.fromisoformat(e.get("retrieved_on", ""))
         except (TypeError, ValueError):

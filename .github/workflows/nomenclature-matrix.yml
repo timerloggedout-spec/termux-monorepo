@@ -12,8 +12,11 @@ on:
   pull_request:
     paths:
       - 'docs/proposals/active/notation-sets/nomenclature-matrix/**'
+      - 'docs/proposals/active/domain-composition-matrix/seed.json'
       - 'scripts/ci/validate_nomenclature_matrix.py'
+      - 'scripts/ci/validate_nomenclature_domain_links.py'
       - 'tests/test_nomenclature_matrix.py'
+      - 'tests/test_nomenclature_domain_links.py'
       - '.github/workflows/nomenclature-matrix.yml'
   workflow_dispatch:
 permissions:

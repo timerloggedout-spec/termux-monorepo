@@ -1,0 +1,789 @@
+{
+ "schema": "quota-allocation-plan/v1",
+ "generated_at": "2026-10-30T01:43:31Z",
+ "issue": 1884,
+ "registry_records": 155,
+ "pools": [
+  {
+   "id": "aion",
+   "class": "A",
+   "services": [
+    "aion.free_tokens"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "aws",
+   "class": "A",
+   "services": [
+    "aws.dynamodb_storage",
+    "aws.lambda_compute",
+    "aws.lambda_requests"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "aws.credits",
+   "class": "A",
+   "services": [
+    "aws.account_credits"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "azure",
+   "class": "A",
+   "services": [
+    "azure.functions_executions"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "azure.credit",
+   "class": "A",
+   "services": [
+    "azure.account_credit"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "cerebras",
+   "class": "A",
+   "services": [
+    "cerebras.free_tokens"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "cloudflare",
+   "class": "A",
+   "services": [
+    "cloudflare.d1_rows_read",
+    "cloudflare.d1_rows_written",
+    "cloudflare.d1_storage",
+    "cloudflare.kv_writes",
+    "cloudflare.queues_ops",
+    "cloudflare.r2_storage",
+    "cloudflare.workers_ai",
+    "cloudflare.workers_requests"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "cohere",
+   "class": "A",
+   "services": [
+    "cohere.trial_calls"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "deno",
+   "class": "A",
+   "services": [
+    "deno.deploy_requests"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "digitalocean",
+   "class": "A",
+   "services": [
+    "digitalocean.app_platform_static"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "digitalocean.credit",
+   "class": "A",
+   "services": [
+    "digitalocean.trial_credit"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "felo.credits",
+   "class": "A",
+   "services": [
+    "felo.api_credits"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "fly",
+   "class": "A",
+   "services": [
+    "fly.free_tier"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "g4f-vendors",
+   "class": "A",
+   "services": [
+    "g4f.agenttools",
+    "g4f.airforce",
+    "g4f.antigravity",
+    "g4f.arena",
+    "g4f.bingcreateimages",
+    "g4f.blackboxpro",
+    "g4f.blackforestlabs_flux1dev",
+    "g4f.blackforestlabs_flux1kontextdev",
+    "g4f.bravesearch",
+    "g4f.cachedsearch",
+    "g4f.cerebras",
+    "g4f.chatgpt",
+    "g4f.claude",
+    "g4f.cloudflare",
+    "g4f.cohereforai_c4ai_command",
+    "g4f.copilot",
+    "g4f.copilotapp",
+    "g4f.deepinfra",
+    "g4f.deepseek",
+    "g4f.elevenlabs",
+    "g4f.g4fspace",
+    "g4f.gemini",
+    "g4f.geminicli",
+    "g4f.geminipro",
+    "g4f.githubcopilot",
+    "g4f.glm",
+    "g4f.googleaimode",
+    "g4f.googlesearch",
+    "g4f.grok",
+    "g4f.groq",
+    "g4f.hailuoai",
+    "g4f.huggingchat",
+    "g4f.huggingface",
+    "g4f.huggingfacemedia",
+    "g4f.huggingspace",
+    "g4f.kilocode",
+    "g4f.llm7",
+    "g4f.markitdown",
+    "g4f.metaai",
+    "g4f.metaaiaccount",
+    "g4f.microsoftdesigner",
+    "g4f.nvidia",
+    "g4f.ollama",
+    "g4f.omniroute",
+    "g4f.openaifm",
+    "g4f.openrouterfree",
+    "g4f.operaaria",
+    "g4f.perplexity",
+    "g4f.pi",
+    "g4f.pollinations",
+    "g4f.pollinationsaudio",
+    "g4f.pollinationsimage",
+    "g4f.puter",
+    "g4f.qwen",
+    "g4f.relayrouter",
+    "g4f.stabilityai_sd35large",
+    "g4f.teachanything",
+    "g4f.vendors",
+    "g4f.whiterabbitneo",
+    "g4f.you",
+    "g4f.yqcloud"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "gcp",
+   "class": "A",
+   "services": [
+    "gcp.cloud_functions_invocations",
+    "gcp.cloud_run_requests",
+    "gcp.compute_e2micro"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "github",
+   "class": "A",
+   "services": [
+    "github.actions.cache",
+    "github.actions.minutes",
+    "github.api.github_token",
+    "github.api.user_token",
+    "github.artifacts.retention",
+    "github.copilot.free"
+   ],
+   "limit": 5000,
+   "used": 378,
+   "state": "ok",
+   "pacing_multiplier": 0.9244,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "github.codespaces",
+   "class": "A",
+   "services": [
+    "github.codespaces.core_hours",
+    "github.codespaces.storage"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "google",
+   "class": "B",
+   "services": [
+    "gemini.api_free"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "grafana",
+   "class": "A",
+   "services": [
+    "grafana.cloud_free"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "groq",
+   "class": "B",
+   "services": [
+    "groq.free_tier"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "huggingface",
+   "class": "B",
+   "services": [
+    "huggingface.hub_api",
+    "huggingface.inference_providers"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "kilo",
+   "class": "A",
+   "services": [
+    "kilo.free_models"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "koyeb",
+   "class": "A",
+   "services": [
+    "koyeb.free_instance"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "llm7",
+   "class": "A",
+   "services": [
+    "llm7.free_token"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "mistral",
+   "class": "B",
+   "services": [
+    "mistral.free_mode"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "modelscope",
+   "class": "A",
+   "services": [
+    "modelscope.api_inference"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "neon",
+   "class": "A",
+   "services": [
+    "neon.compute",
+    "neon.egress",
+    "neon.realtime",
+    "neon.storage"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "netlify.credits",
+   "class": "A",
+   "services": [
+    "netlify.credits"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "nvidia",
+   "class": "B",
+   "services": [
+    "nvidia.api_catalog"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "ollama",
+   "class": "B",
+   "services": [
+    "ollama.balance"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "omni",
+   "class": "B",
+   "services": [
+    "omni.gateway"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "openrouter",
+   "class": "B",
+   "services": [
+    "openrouter.free_models",
+    "openrouter.key"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "oracle",
+   "class": "A",
+   "services": [
+    "oracle.ampere_gb_hours",
+    "oracle.ampere_ocpu_hours",
+    "oracle.block_storage"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "ovhcloud",
+   "class": "A",
+   "services": [
+    "ovhcloud.ai_endpoints"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "partners.credits",
+   "class": "C",
+   "services": [
+    "partners.credits"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "render",
+   "class": "A",
+   "services": [
+    "render.bandwidth",
+    "render.instance_hours",
+    "render.keyvalue_free",
+    "render.pipeline_minutes",
+    "render.postgres_free"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "requesty",
+   "class": "A",
+   "services": [
+    "requesty.free_models"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "routeway",
+   "class": "A",
+   "services": [
+    "routeway.free_models"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "sambanova",
+   "class": "A",
+   "services": [
+    "sambanova.free_tier"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "sealion",
+   "class": "A",
+   "services": [
+    "sealion.api"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "siliconflow",
+   "class": "B",
+   "services": [
+    "siliconflow.free_models"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "supabase",
+   "class": "A",
+   "services": [
+    "supabase.db_storage",
+    "supabase.edge_functions",
+    "supabase.egress",
+    "supabase.file_storage",
+    "supabase.projects"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "turso",
+   "class": "A",
+   "services": [
+    "turso.databases",
+    "turso.rows_read",
+    "turso.rows_written",
+    "turso.storage"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "typhoon",
+   "class": "A",
+   "services": [
+    "typhoon.api"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "unorouter",
+   "class": "A",
+   "services": [
+    "unorouter.free_models"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "upstash",
+   "class": "A",
+   "services": [
+    "upstash.qstash_messages",
+    "upstash.redis_bandwidth",
+    "upstash.redis_commands",
+    "upstash.redis_storage"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "vercel",
+   "class": "A",
+   "services": [
+    "vercel.build_time",
+    "vercel.deployments"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "ok",
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "xfyun",
+   "class": "B",
+   "services": [
+    "xfyun.spark"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "xkiro",
+   "class": "A",
+   "services": [
+    "xkiro.free_models"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "zai",
+   "class": "B",
+   "services": [
+    "zai.free_models"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "platform201",
+   "class": "A",
+   "services": [
+    "platform201.projects"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  },
+  {
+   "id": "pinecone",
+   "class": "A",
+   "services": [
+    "pinecone.storage",
+    "pinecone.write_units",
+    "pinecone.read_units",
+    "pinecone.indexes",
+    "pinecone.egress"
+   ],
+   "limit": null,
+   "used": null,
+   "state": null,
+   "pacing_multiplier": 1.0,
+   "stranded": null,
+   "release_to": null
+  }
+ ],
+ "triggers_fired": [],
+ "rules": "Pacing/stranded per docs/ops/QUOTA-ALLOCATION-PLANNING.md; stranded null = NOT ESTABLISHED (no numeric reading), never invented."
+}

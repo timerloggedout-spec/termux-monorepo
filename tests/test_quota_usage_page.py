@@ -174,3 +174,12 @@ console.log(JSON.stringify(res));
     assert res["state_ok"] == "cap_tripped" and res["state_none"] == "none"
     assert res["bar_max_h"] == 180 and res["bar_zero_h"] == 0
     assert res["stamp_ok"] == "↻ DAILY" and res["stamp_none"].startswith("NO STAMP")
+
+
+def test_quota_page_links_usage_graphs_and_sitemap():
+    # web-design chrome wiring: the usage page is a quota sub-page, so the
+    # parent panel links it and the sitemap lists it; it is not a shell page.
+    quota = (APP / "quota.html").read_text()
+    assert 'href="./quota-usage.html"' in quota
+    sitemap = (APP / "sitemap.xml").read_text()
+    assert "https://timerloggedout-spec.github.io/help-wanted/quota-usage.html" in sitemap

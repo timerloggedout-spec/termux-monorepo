@@ -74,9 +74,27 @@ def test_executions_proxy_is_labeled(tmp_path):
 
 
 def test_committed_feed_matches_collector(tmp_path):
-    """The committed feed is the collector's output (modulo generated_at)."""
+    """The committed feed is the collector's output, modulo collection
+    timestamps.
+
+    Sources refresh independently of the feed (e.g. the help-wanted
+    status-refresh workflow commits status.json direct-to-master), so
+    a fresh run's generated_at and sources[].stamped_at legitimately
+    differ from the committed feed's. Only those two timestamp fields
+    are stripped; every value in data/gaps/honesty_rules must match.
+    (Web Design flag on PR #2431: status.json 06:22:26Z -> 06:24:46Z
+    with no value differences exposed exactly this brittleness.)
+    """
     fresh = _collect(tmp_path)
     committed = json.loads((DATA / "telemetry-feed.json").read_text())
-    fresh.pop("generated_at")
-    committed.pop("generated_at")
+    for feed in (fresh, committed):
+        feed.pop("generated_at")
+        for src in feed["sources"]:
+            src.pop("stamped_at", None)
+        # status.json's own generated_at is copied verbatim into two
+        # data blocks (outcomes + lane_receipts); it is a source stamp,
+        # not a value, so it is stripped with the other timestamps.
+        feed["data"]["outcomes"].pop("generated_at", None)
+        (feed["data"]["executions"].get("lane_receipts") or {}).pop(
+            "generated_at", None)
     assert committed == fresh

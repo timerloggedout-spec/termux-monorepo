@@ -1,0 +1,55 @@
+name: quota-allocation-planner
+
+# Automated revision-adaptive allocation planning
+# (docs/ops/QUOTA-ALLOCATION-PLANNING.md, issue #1884).
+# Recomputes ops/quota/allocation-plan.json from registry +
+# allocations + readings and opens a refresh-PR when it changes.
+# Never commits directly to master.
+
+on:
+  schedule:
+    - cron: "47 8 * * 3"
+  workflow_dispatch:
+  push:
+    branches: [master]
+    paths:
+      - "ops/quota/**"
+      - "docs/ops/generated/quota-status.json"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: quota-allocation-planner
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Tests
+        run: python3 -m pytest tests/test_quota_allocation_planner.py tests/test_quota_allocations.py -q
+      - name: Recompute allocation plan
+        run: python3 scripts/quota_allocation_planner.py
+      - name: Refresh-PR if changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet -- ops/quota/allocation-plan.json; then
+            echo "plan unchanged"; exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -B quota/allocation-plan-refresh
+          git add ops/quota/allocation-plan.json
+          git commit -m "quota: allocation plan refresh (automated, #1884)"
+          git push --force-with-lease origin quota/allocation-plan-refresh
+          gh pr view quota/allocation-plan-refresh --json number >/dev/null 2>&1 || \
+            gh pr create --title "quota: allocation plan refresh (automated, #1884)" \
+              --body "Automated revision-adaptive allocation plan recomputed by quota-allocation-planner from registry + allocations + readings. Stranded=null means NOT ESTABLISHED (no numeric reading) — nothing invented. Re-split proposals for allocations.json, when a trigger fired, are listed in the plan's triggers_fired and still land as their own PR citing #1884." \
+              --head quota/allocation-plan-refresh --base master

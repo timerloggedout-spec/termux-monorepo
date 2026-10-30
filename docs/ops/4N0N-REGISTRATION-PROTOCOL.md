@@ -48,13 +48,19 @@ of record. Tooling: `scripts/registration_monikers/registry.py`
    public handles that already exist; this registry records nothing
    about a person at all.
 5. **Profiles have one home.** Handles, display names, and profile
-   completeness live only in `docs/ops/PROFILE-REGISTRY.md`, recorded
-   there only after the platform issues them (a handle is a
-   provisioning fact — inventing one is a protocol breach). An entry
-   here carries a `profile_ref` pointer to that profile's heading and
-   nothing else about the profile; `registry.py check` fails any entry
-   that restates profile data, and fails a `profile_ref` that does not
-   resolve to a heading in the Profile Registry.
+   completeness live only in the profile's home, recorded there only
+   after the platform issues them (a handle is a provisioning fact —
+   inventing one is a protocol breach). The default home is
+   `docs/ops/PROFILE-REGISTRY.md`; an entry's home may instead be an
+   **alternative off-GitHub surface** (owner steer 2026-10-29: finished
+   account creations stay OFF GitHub — e.g. the interim gSheet), in
+   which case the entry's `profile_ref` is an `alt:<surface>` pointer.
+   Either way an entry here carries the pointer and nothing else about
+   the profile; `registry.py check` fails any entry that restates
+   profile data, fails a `profile_ref` that resolves to no Profile
+   Registry heading, and fails an `alt:` pointer that names no surface.
+   Which home a profile uses is the owning lane's call, recorded in
+   the entry.
 6. **Forced personal fields are owner-gated.** Legal-name fields,
    identity verification, profile completion, and payment instruments
    (the credit card is a standing BLOCK) are surfaced to the owner as
@@ -246,9 +252,11 @@ For the account-creation lane specifically:
   integer ≥ 2) by rule. No improvised alternatives.
 - **Profiles:** fleet-class entries carry `profile_ref: null` plus
   `profile_pending: <lane>` until the owning lane registers the
-  platform's profile in the Profile Registry under its own section;
-  check accepts the null only while a pending owner is named, and any
-  non-null ref must resolve.
+  platform's profile in its home — the Profile Registry under its own
+  section, or the lane's alternative off-GitHub surface, recorded as
+  `profile_ref: "alt:<surface>"` (rule 5). Check accepts the null only
+  while a pending owner is named; an in-repo ref must resolve, an
+  `alt:` ref must name its surface.
 
 **Test-cell identities (marketing).** The same fleet-class pattern
 serves per-cell public identities for the referral test

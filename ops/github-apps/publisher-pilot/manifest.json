@@ -1,13 +1,14 @@
 {
+ "name": "Termux Fleet Publisher",
+ "url": "https://github.com/timerloggedout-spec/termux-monorepo",
+ "description": "Fleet publisher for timerloggedout-spec/termux-monorepo: branch pushes, pull-request creation and merges on an ephemeral GitHub App installation token \u2014 its own rate-limit bucket, separate from the owner PAT bucket, so publishes and merges never die on the shared PAT wall. Write class: contents + pull_requests. Part of the fleet AppID specialist bundle (docs/ops/GITHUB-APP-PILOT.md).",
+ "public": true,
  "default_events": [],
  "default_permissions": {
   "contents": "write",
-  "metadata": "read",
   "pull_requests": "write",
-  "issues": "write"
+  "checks": "read",
+  "metadata": "read"
  },
- "description": "Fleet publisher for timerloggedout-spec/termux-monorepo: branch creation, file publication, PR creation and merge on an ephemeral GitHub App installation token \u2014 its own rate-limit bucket, separate from the owner PAT bucket, so publishes and merges survive PAT exhaustion. Write counterpart to the read-only Termux Fleet Collector; part of the fleet's automated revision-adaptive allocation process (docs/ops/QUOTA-ALLOCATION-PLANNING.md).",
- "name": "Termux Fleet Publisher",
- "public": true,
- "url": "https://github.com/timerloggedout-spec/termux-monorepo"
+ "redirect_url": "https://github.com/timerloggedout-spec/termux-monorepo"
 }

@@ -18,7 +18,7 @@ PR) — never on a lane report alone. Owner lane in brackets.
 - [ ] MIG-RR-01 Repo Replay telemetry-ingest reconciliation: 2026-10-28 Provenance+HindSight ingest landed via AppID route (Collector verify + Publisher landing); PAT fallback only [migration-plan §1.1 RR-1]
 - [ ] MIG-RR-02 Repo Replay publish route PAT → Publisher AppID, gated on installation extension to replay target repos (AppID lane) [migration-plan §1.1 RR-2]
 - [x] MIG-03 DISPOSITIONED 2026-10-30: Delphi-class feed collectors — ZERO migrations (evidence: 5 collectors on GITHUB_TOKEN/github.token per-repo bucket; proposals script = 0 API calls, token only serves its refresh-PR write → M6 class; traffic-feed app-token probe 403 ×3 endpoints → NOT MIGRATABLE to Collector). Plan §1.1 M3 corrected [migration-plan]
-- [ ] MIG-04 Wave 1: `provider-availability` GitHub probe steps → Collector [migration-plan]
+- [x] MIG-04 DISPOSITIONED 2026-10-30: `provider-availability` has NO GitHub-API probe portion (workflow: no GH token env; probe script: zero GitHub references; all probes on provider keys) — nothing to migrate [migration-plan]
 - [ ] MIG-05 Wave 1: read-only recon/observer class → Collector (discovery, reconcile, issue-observatory, observer pollers, telemetry snapshot, osint reads) [migration-plan]
 - [ ] MIG-06 Wave 2: workflow publishes/merges/comments → Publisher, on Publisher standing [migration-plan + appid]
 - [ ] MIG-07 Wave 2: lane `pat_publish` opt-in to Publisher token, after AppID lane declares minter lane-usable; PAT fallback retained [appid]

@@ -189,6 +189,57 @@ credits each + 10 backpack draws (October pattern).
 - Anthropic "Built with Claude: Japan 2026" — applications close Oct 26,
   screened, Japan residents only.
 
+### C11 packet — AMD AI League (candidate — Manager oversight direct; NOT a D-number)
+
+- **Registration**: R6 (2026-10-30, state Approved; no screening form).
+  Individual participation only. Handle `entrant{Rap1dZ3nith}[platform:lablab-ai]`.
+- **League shape**: Sep 1 – Dec 1, 2026; submission deadline **Dec 1,
+  2026, 11:00 AM PST**. Points league: onboarding + Academy courses +
+  6 Matches. Podium $2,500/$1,500/$1,000 (gate: finish at least 5
+  Academy courses). Per-Match prizes: $500 cash / $250 GPU credits /
+  $100 GPU credits top-50 (only while the Match is live; closed Matches
+  stay open for points only).
+- **Dated tasks**: Onboarding (300 pts: claim $100 GPU credits +100 ·
+  first Academy course +100 · complete AMD profile +50 · join lablab
+  Discord — REQUIRED for Match participation · join AMD Discord +50) ·
+  **Match 4 LIVE now** · Match 5 in Nov · Match 6 Nov 10–14 · final
+  Match ends Nov 14 · League concludes Dec 1.
+- **League-wide rules (official Match 1 & 2 brief, read 2026-10-30 —
+  the brief states these are "the same for every challenge")**:
+  submission = a container image pushed to a public registry, image
+  reference submitted, pullable without credentials, run as-is. Code at
+  `/app` (`app.py` + `requirements.txt`; `/models` optional). Hard
+  gates (fail = zero): built on the mandated ROCm base image
+  (`rocm/pytorch:rocm10.0_ubuntu26.04_py3.14_pytorch_release_2.13.0`;
+  multi-stage allowed only if the FINAL stage starts from it; no
+  squashing) · image ≤ 60 GiB · VRAM 1–48 GiB · starts/processes within
+  time limits. Anti-hardcoding: hidden tests; hardcoded answers score
+  zero. Secrets: NO keys/tokens/credentials in the image or repo (the
+  image is public). Open-source models/frameworks expressly allowed
+  ("Choosing well is part of the challenge"). GPU environment:
+  notebooks.amd.com/hackathon (AMD SSO), 1 GPU/session, 48 GiB VRAM,
+  ~25 GB persistent storage, **3 h/day session quota**.
+- **Match 4 — Intelligent Web Information Retrieval (LIVE, 1,800 pts)**:
+  official brief is the card text only: "Build an AI agent that can
+  navigate websites, understand a natural-language request and
+  accurately retrieve the specific information a user needs." **No
+  detail page, harness, rubric, or Match-4-specific dates are
+  published** (checked firsthand 2026-10-30; the details link reloads
+  the event page). Participant submissions describe an assumed harness
+  — NOT official, do not rely on them. Pre-work/originality rules for
+  Match 4: **none published**.
+- **Match 5 — AI-Powered Code Repository Repair (coming soon, Nov;
+  2,100 pts)**: card text only ("Build a multi-agent AI system that
+  analyzes code, detects defects and proposes fixes with minimal human
+  intervention"). Nothing else published yet. **Claim-gate: no claim
+  language for Match 5 × Repo Replay until the Manager rules-checks
+  (Manager ruling 2026-10-30).**
+- **Feasibility (Match 4)**: the fleet's web-retrieval surface (Web RE
+  campaign + Web Adapter Foundry) maps directly onto the card brief;
+  the binding constraints are the league container contract + the
+  3 h/day GPU quota, not the task. Build target = league contract +
+  generality (hidden tests).
+
 ## 4. Entry packets
 
 **Owner decision (2026-10-26 23:41 PT): "ALL of them"** — D1, D2, D3, and D4

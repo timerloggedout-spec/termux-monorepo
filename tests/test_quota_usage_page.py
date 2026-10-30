@@ -85,6 +85,70 @@ def test_buckets_kept_separate_and_storm_fix_recorded():
     assert "NOT ESTABLISHED" in wall_anno["text"]
 
 
+def test_flow_line_model():
+    # Owner principle (via cadence lane): the target line is the
+    # replenishment flow line, phased to reset epochs — not a ceiling.
+    s1 = _pack()["series1_api_core"]
+    m = s1["model"]
+    assert m["window_ms"] == 3600000 and "NOT a survival ceiling" in m["principle"]
+    assert set(m["faults"]) == {"below_line", "above_line"}
+    anchor = 1793324529000  # 2026-10-30T01:42:09Z in ms
+    assert m["anchor_reset"] == "2026-10-30T01:42:09Z"
+    for w in m["worked"]:
+        t = __import__("datetime").datetime.fromisoformat(w["at"].replace("Z", "+00:00"))
+        ms = int(t.timestamp() * 1000)
+        ideal = 5000 * (((anchor - ms) % 3600000) / 3600000)
+        assert abs(ideal - w["ideal_remaining"]) <= 3, (w, ideal)
+
+
+def test_node_sim_flow_line(tmp_path):
+    html = _html()
+    logic = html.split("// ==== pure logic (node-sim tested) ====")[1].split("// ==== end pure logic ====")[0]
+    harness = tmp_path / "harness.cjs"
+    harness.write_text(logic)
+    out = tmp_path / "run.cjs"
+    out.write_text("""
+const {idealRemaining, parseT} = require("./harness.cjs");
+const A = parseT("2026-10-30T01:42:09Z"), W = 3600000;
+const res = {
+  at_reset: idealRemaining(A, 5000, A, W),
+  half_window: idealRemaining(A - 1800000, 5000, A, W),
+  just_after_reset: Math.round(idealRemaining(A + 60000, 5000, A, W)),
+  prev_window_same_phase: idealRemaining(A - W - 1800000, 5000, A, W),
+};
+console.log(JSON.stringify(res));
+""")
+    r = subprocess.run(["node", str(out)], cwd=tmp_path, capture_output=True, text=True)
+    assert r.returncode == 0, r.stderr
+    res = json.loads(r.stdout.strip())
+    assert res["at_reset"] == 0 and res["half_window"] == 2500
+    # one minute into a fresh window the ideal is nearly the full bucket
+    assert res["just_after_reset"] == 4917
+    assert res["prev_window_same_phase"] == 2500
+
+
+def test_gearbox_concept_block():
+    gb = _pack()["gearbox"]
+    assert gb["doc"] == "docs/ops/QUOTA-GEARBOX-CONCEPT.md"
+    assert "INTERNAL" in gb["admin_designation"]
+    assert [g["focus"] for g in gb["gears"]] == [
+        "winning", "repo-development", "research", "boinc-donations"]
+    # the mock is flagged as a mock, and the honesty flags are explicit
+    assert gb["mock"]["flag"].startswith("MOCK")
+    assert any("NOT ESTABLISHED" in h for h in gb["honesty"])
+    assert gb["shift_log_type"]["shape"]["cites"] == "#1884"
+    # no fake shift events leak into the real annotation stream
+    assert all(a.get("type") != "shift" for a in _pack()["annotations"])
+    # owner refinement: sliders + presets, checkbox subsets, extended audit
+    ui = gb["admin_ui"]
+    assert [p["name"] for p in ui["sliders"]["presets"]] == [
+        "Winning 100", "leftover-only", "excluded / reserve-100", "equal-split"]
+    assert {"issue", "rfp"} <= set(ui["subset_selection"]["tags"])
+    shape = gb["shift_log_type"]["shape"]
+    assert "subset_filter" in shape and "input_source" in shape
+    assert ui["guardrail_ruling"]["over_100"].startswith("BLOCK")
+
+
 def test_series2_snapshots_provenance_and_landing_flags():
     s2 = _pack()["series2_snapshots"]
     snaps = s2["snapshots"]
@@ -142,6 +206,17 @@ def test_series3_deltas_match_corpus():
     assert checked == len(pack_days) == 28
     spike = _pack()["series3_actions"]["spike"]
     assert spike["runs"] == 143 and spike["workflow"] == "delphi-gate"
+
+
+def test_full_script_parses(tmp_path):
+    # Regression pin: PR #2360 shipped a missing ')' in renderBurn that
+    # made the whole <script> unparseable (page stuck on "Loading pack")
+    # while every pure-logic test stayed green. Parse the full script.
+    script = _html().split("<script>")[1].split("</script>")[0]
+    f = tmp_path / "page.js"
+    f.write_text(script)
+    r = subprocess.run(["node", "--check", str(f)], capture_output=True, text=True)
+    assert r.returncode == 0, r.stderr
 
 
 def test_node_sim_logic(tmp_path):

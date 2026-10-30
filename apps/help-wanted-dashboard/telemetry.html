@@ -8,7 +8,9 @@
   Renders ONLY data/telemetry-feed.json (schema telemetry-viz-feed/v1,
   contract docs/ops/TELEMETRY-VIZ-RECON.md §4). The feed is produced by
   scripts/dashboards/telemetry_feed.py from already-committed sources.
-  Page grammar: golden top-row → executions → outcomes → quota.
+  Page grammar: golden top-row → executions → actions → outcomes → quota.
+  Slice 2 adds the Actions corpus block (per-workflow RED + latest runs,
+  stride-sample snapshot; run_id join to S1 unexecuted, G3).
   Honesty rules from the feed itself: absence is never zero — an
   unobserved value renders as absent, never synthesized; quota
   saturation null renders as NOT OBSERVED, never 0; executions are a
@@ -37,6 +39,11 @@
 </section>
 
 <section>
+  <div class="head"><h2>Actions</h2><span class="note" id="act-note">Loading…</span></div>
+  <div id="actions"><p class="empty">Loading actions…</p></div>
+</section>
+
+<section>
   <div class="head"><h2>Outcomes</h2><span class="note" id="out-note">Loading…</span></div>
   <div id="outcomes"><p class="empty">Loading outcomes…</p></div>
 </section>
@@ -62,7 +69,7 @@ async function load(){
   try{
     const r=await fetch('./data/telemetry-feed.json',{cache:'no-store'});
     if(!r.ok)throw new Error(r.status);
-    const f=await r.json(),d=f.data||{},g=d.golden||{},ex=d.executions||{},oc=d.outcomes||{},q=d.quota||{};
+    const f=await r.json(),d=f.data||{},g=d.golden||{},ex=d.executions||{},ac=d.actions||{},oc=d.outcomes||{},q=d.quota||{};
     $('meta').textContent='Feed '+(f.schema||'')+' · generated '+(f.generated_at||'')+' · surface '+(f.surface||'');
     let sat=g.quota_saturation==null?'<span class="pill bad">NOT OBSERVED</span>':esc(g.quota_saturation);
     $('golden').innerHTML=
@@ -73,7 +80,10 @@ async function load(){
       card('Workflow runs observed',num(g.workflow_runs_observed),'from the committed snapshot')+
       card('Quota readings',num(g.quota_readings_total),'quota records in the feed')+
       card('Quota measured',num(g.quota_measured_count),'readings carrying used + limit')+
-      card('Quota saturation',sat,'null in the feed renders as absent, never 0');
+      card('Quota saturation',sat,'null in the feed renders as absent, never 0')+
+      (g.actions_runs_sampled==null?'':card('Actions runs sampled',num(g.actions_runs_sampled),'stride sample of the Actions corpus')+
+      card('Actions failure rate',num(g.actions_failure_rate),'fraction of concluded runs, sampled')+
+      card('Actions workflows sampled',num(g.actions_workflows_sampled),'workflows in the sample'));
     $('exec-note').textContent='Kind: '+(ex.kind||'')+' · snapshot '+(ex.source_snapshot||'')+' · read '+(ex.read_at||'');
     let eh='<p class="muted">Executions are a committed-projection proxy (recon gap G3): the Neon lane_events table is not read by this collector and no live run state is claimed.</p>';
     const wfs=ex.workflows||{};
@@ -85,6 +95,24 @@ async function load(){
       else{eh+='<p class="muted">No runs in the snapshot.</p>'}
     }
     $('executions').innerHTML=eh;
+    $('act-note').textContent='Kind: '+(ac.kind||'')+' · snapshot '+(ac.source_snapshot||'')+' · read '+(ac.read_at||'');
+    let ah='';
+    if(!ac.workflows){ah='<p class="empty">No actions block in this feed generation.</p>'}
+    else{
+      const b=ac.budget||{},w=ac.window||{},t=ac.totals||{},jn=ac.join||{};
+      ah+='<p class="muted">Budgeted stride sample: '+num(b.calls_made)+' API calls · pages '+(b.pages_sampled||[]).join(', ')+' · '+num(b.runs_fetched)+' runs fetched of '+num(b.api_total_count_display)+' displayed total — the sample is NOT the full run history (G1 partial). Window '+(w.earliest_created_at||'')+' → '+(w.latest_created_at||'')+' ('+num(w.span_hours)+'h).</p>';
+      ah+='<p>'+card('Runs sampled',num(t.runs),'')+card('Workflows',num(t.workflows),'')+card('Concluded',num(t.concluded),'')+card('Failures',num(t.failures),'')+card('Failure rate',num(t.failure_rate),'fraction of concluded runs')+'</p>';
+      ah+='<p class="muted">Join: key '+esc(jn.key||'')+' · '+esc(jn.status||'')+'</p>';
+      ah+='<p class="muted">RED per workflow — Rate (sample rate/hr) · Errors (failures / failure rate) · Duration (median / p95 / mean seconds). Duration counts exclude runs the collector could not time; see the excluded column where nonzero.</p>';
+      ah+='<div class="table-wrap"><table class="table"><thead><tr><th>Workflow</th><th>Runs</th><th>Concluded</th><th>Failures</th><th>Fail rate</th><th>Rate/hr</th><th>Dur median</th><th>Dur p95</th><th>Dur mean</th><th>Dur excluded</th><th>Latest</th></tr></thead><tbody>';
+      for(const path of Object.keys(ac.workflows)){
+        const wf=ac.workflows[path],red=wf.red||{},dur=red.duration_s||{},lat=wf.latest||{};
+        const latest=lat.created_at?esc(lat.created_at)+' · '+(lat.conclusion==null?esc(lat.status||''):esc(lat.conclusion))+' · '+esc(lat.event||'')+(lat.html_url?' · <a href="'+esc(lat.html_url)+'">run</a>':''):'—';
+        ah+='<tr><td>'+esc(wf.name||path)+'</td><td>'+num(wf.runs)+'</td><td>'+num(wf.concluded)+'</td><td>'+num(wf.failures)+'</td><td>'+num(wf.failure_rate)+'</td><td>'+num(red.sample_rate_per_hour)+'</td><td>'+num(dur.median)+'</td><td>'+num(dur.p95)+'</td><td>'+num(dur.mean)+'</td><td>'+num(wf.duration_excluded)+'</td><td>'+latest+'</td></tr>';
+      }
+      ah+='</tbody></table></div>';
+    }
+    $('actions').innerHTML=ah;
     $('out-note').textContent='Lane '+(oc.lane||'')+' · project '+(oc.project||'')+' · generated '+(oc.generated_at||'');
     let oh='<p>'+card('Receipts',num(oc.receipts),'')+card('Actioned',num((oc.outcomes||{}).actioned),'')+card('Skipped',num((oc.outcomes||{}).skipped),'')+'</p>';
     oh+='<p class="muted">'+esc(oc.outcome_semantics||'')+'</p>';
@@ -107,6 +135,7 @@ async function load(){
     $('meta').textContent='Telemetry feed could not be fetched — UNVERIFIED; nothing is shown rather than anything guessed.';
     $('golden').innerHTML='<p class="empty">Feed unavailable.</p>';
     $('executions').innerHTML='<p class="empty">Feed unavailable.</p>';
+    $('actions').innerHTML='<p class="empty">Feed unavailable.</p>';
     $('outcomes').innerHTML='<p class="empty">Feed unavailable.</p>';
     $('quota').innerHTML='<p class="empty">Feed unavailable.</p>';
     $('gaps').innerHTML='<p class="empty">Feed unavailable.</p>';

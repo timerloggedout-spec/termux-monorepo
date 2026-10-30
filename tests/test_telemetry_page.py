@@ -86,3 +86,29 @@ def test_telemetry_inline_script_parses():
     r = subprocess.run(["node", "--check", "/tmp/telemetry-script.js"],
                        capture_output=True, text=True)
     assert r.returncode == 0, r.stderr
+
+
+def test_telemetry_actions_section_renders_from_feed():
+    script = _script()
+    assert "d.actions" in script
+    assert "ac.totals" in script and "ac.workflows" in script
+    assert "red.sample_rate_per_hour" in script
+    assert "duration_s" in script and "failure_rate" in script
+    assert "ac.join" in script and "jn.status" in script
+    assert '<div id="actions">' in _page()
+    assert "<h2>Actions</h2>" in _page()
+
+
+def test_telemetry_golden_includes_actions_fields():
+    script = _script()
+    assert "g.actions_runs_sampled" in script
+    assert "g.actions_failure_rate" in script
+    assert "g.actions_workflows_sampled" in script
+
+
+def test_telemetry_actions_values_not_hardcoded():
+    html = _page()
+    # Sample-specific values from the current feed must not appear in the page.
+    assert "41022221792" not in html
+    assert "api_observations_snapshot" not in html
+    assert "actions_observations.json" not in html

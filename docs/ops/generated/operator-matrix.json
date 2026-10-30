@@ -3,8 +3,8 @@
     "open_issues": 354,
     "open_prs": 119,
     "pr_classes": {
-      "CANDIDATE": 65,
-      "EXTRACT": 6,
+      "CANDIDATE": 64,
+      "EXTRACT": 7,
       "NEED_EVIDENCE": 48,
       "SUPERSEDE": 0
     }
@@ -74,7 +74,7 @@
       ]
     }
   },
-  "generated_at": "2026-10-30T09:00:03Z",
+  "generated_at": "2026-10-30T09:01:01Z",
   "issues_unlabelled": [
     308,
     343,
@@ -99,10 +99,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "in_progress",
-      "smoke": "success"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "b62a09041a"
+    "sha": "6e865f01cb"
   },
   "prs": [
     {
@@ -174,6 +174,20 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "3748823cfb",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2453,
+      "title": "feat(mesh): poll output \u21a6 notation spec (#320 + #1734)",
+      "updated_at": "2026-10-30T08:58:34Z"
     },
     {
       "class": "EXTRACT",
@@ -1091,20 +1105,6 @@
       "updated_at": "2026-10-30T08:59:13Z"
     },
     {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "3748823cfb",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2453,
-      "title": "feat(mesh): poll output \u21a6 notation spec (#320 + #1734)",
-      "updated_at": "2026-10-30T08:58:34Z"
-    },
-    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -1519,7 +1519,7 @@
       },
       "head_sha": "7fc8364d23",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
       "updated_at": "2026-10-30T08:59:45Z"
@@ -1671,12 +1671,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "3a1aa6ef62",
+      "head_sha": "f8b8562bbf",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-10-30T08:59:30Z"
+      "updated_at": "2026-10-30T09:00:48Z"
     },
     {
       "class": "NEED_EVIDENCE",

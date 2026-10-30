@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "f34c66bacfec32ee28df6f6e963115914b8b6dfb653bfd12861b0dfeca0a8317",
+  "source_fingerprint": "abd94c3258c45d3507c3906a76a2dd9fe5f30146bd94cdee36b23bda1ae303f9",
   "workflow_count": 230,
   "workflows": [
     {
@@ -3628,7 +3628,9 @@
       ]
     },
     {
-      "action_pins": [],
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
       "authority": "writer",
       "concurrency": "group: reviewer-metrics-collect cancel-in-progress: false # The refresh-PR step pushes a branch and opens a PR, so this job needs # write on contents + pull-requests (the first dispatched run failed at # that step on read-only permissions; collection itself is read-only).",
       "domain": "agentic-development",

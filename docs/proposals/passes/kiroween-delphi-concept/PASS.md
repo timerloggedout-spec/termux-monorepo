@@ -53,6 +53,23 @@ from the evidence, not asserted.
 - **Facilitator synthesis issued** (`cycle/SYNTHESIS.json`) from
   the round-1 rationales; score spread 0 per candidate — no
   material disagreement to report.
+- **DEBATE round (stage 2b, calibration):** called by manager
+  ruling 2026-10-30 and run the same day — five revision ballots
+  (one per panel role) re-scored the candidates on the dimensions
+  round 1 never scored (evidenced breadth, plan depth, risk load,
+  input certainty) under a stated formula. Outcome:
+  skeleton-crew 23.288 > frankenstein 22.865 > resurrection
+  22.481 — rank agreement 3/3 with the brief-author priors. Full
+  record: `DEBATE.md`; receipts `cycle/FEEDBACK.json` +
+  `cycle/debate-ballots.json`.
+- **Variant freeze:** the challenge manager froze
+  **skeleton-crew** on 2026-10-30 on the brief-author priors
+  (19/17/14), profile points, and scope certainty (manager
+  decision, recorded by the challenge-entries lane; project repo
+  `timerloggedout-spec/skeleton-crew` created in-period
+  2026-10-30T23:55:28Z). The DEBATE round above is
+  calibration-only relative to that freeze and supports its
+  order.
 
 ## Eligibility
 
@@ -67,9 +84,6 @@ Dec 4, 2026, 2:00 PM PT.
 
 ## Specified not run
 
-- **DEBATE / revision round:** `specified_not_run` — callable
-  against the synthesis, not automatic; no revision ballots
-  supplied.
 - **Implementation, evidence equalization, round 2,
   calibration:** `specified_not_run` — no per-proposal test
   results exist; the D4 build sequence runs after Nov 8 and a
@@ -82,5 +96,6 @@ Dec 4, 2026, 2:00 PM PT.
 
 Round-1 ballot record appended to the outcome ledger (issue
 #1487) as a `delphi-generation-ballot v1` JSON comment at run
-time. Calibration appends when round 2 runs; full receipts in
-`cycle/` in this directory.
+time; the DEBATE outcome appended the same day as a
+`delphi-generation-debate v1` comment. Calibration appends when
+round 2 runs; full receipts in `cycle/` in this directory.

@@ -64,17 +64,17 @@
     "window_close": "2026-12-04T14:00:00-08:00",
     "window_open": "2026-10-30T09:00:00-07:00"
   },
-  "status": "round_1_recorded",
+  "status": "debate_recorded",
   "cycle": {
     "record": "cycle/CYCLE.json",
     "ran": [
       "generate",
       "cross_vote_round_1",
       "expectations_recorded",
-      "facilitator_feedback"
+      "facilitator_feedback",
+      "debate_revision"
     ],
     "specified_not_run": [
-      "debate_revision",
       "implementation",
       "evidence_equalization",
       "cross_vote_round_2",
@@ -96,6 +96,33 @@
     "ledger": {
       "outcome_ledger_issue": 1487,
       "appends": "round-1 ballot record (delphi-generation-ballot v1) at run time; calibration appends when round 2 runs"
+    },
+    "debate": {
+      "record": "DEBATE.md",
+      "receipt": "cycle/FEEDBACK.json",
+      "ballots_file": "cycle/debate-ballots.json",
+      "standing": "calibration-only \u2014 the variant freeze (skeleton-crew) was enacted by the challenge manager 2026-10-30 on the brief-author priors, not on this ballot",
+      "ballots_by_class": {
+        "HUMAN_COLLABORATOR": 0,
+        "MODEL_PROVIDER": 0,
+        "LOCAL_BASELINE": 10
+      },
+      "scores": {
+        "kiroween-delphi-concept-skeleton-crew": 23.288,
+        "kiroween-delphi-concept-frankenstein": 22.865,
+        "kiroween-delphi-concept-resurrection": 22.481
+      },
+      "ranking": [
+        "kiroween-delphi-concept-skeleton-crew",
+        "kiroween-delphi-concept-frankenstein",
+        "kiroween-delphi-concept-resurrection"
+      ],
+      "debate_ballots_only_scores": {
+        "kiroween-delphi-concept-skeleton-crew": 23.308,
+        "kiroween-delphi-concept-frankenstein": 22.462,
+        "kiroween-delphi-concept-resurrection": 21.692
+      },
+      "calibration_vs_brief_priors": "rank agreement 3/3 (skeleton-crew > frankenstein > resurrection); formal stage-6 calibration still runs at round 2"
     }
   }
 }

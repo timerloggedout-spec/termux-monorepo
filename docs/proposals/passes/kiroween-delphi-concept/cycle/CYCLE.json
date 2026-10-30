@@ -1,7 +1,7 @@
 {
   "schema": "oracle-method-cycle/v1",
   "pass_id": "kiroween-delphi-concept",
-  "generated_at": "2026-10-30T23:44:05Z",
+  "generated_at": "2026-10-30T23:58:13Z",
   "config": {
     "rounds": 2,
     "expectation_format": "per-candidate expected rank + expected weighted score per source class, recorded before implementation; brief-supplied human expectations take precedence for their class",
@@ -43,8 +43,8 @@
     },
     {
       "stage": "debate_revision",
-      "status": "specified_not_run",
-      "detail": "no DEBATE / revision ballots supplied against the synthesis; the round is callable, not automatic"
+      "status": "ran",
+      "detail": "revised ballots_by_class={'HUMAN_COLLABORATOR': 0, 'MODEL_PROVIDER': 0, 'LOCAL_BASELINE': 10}"
     },
     {
       "stage": "implementation",
@@ -70,7 +70,8 @@
   "artifacts": {
     "round1": "BALLOT-round1.json",
     "expectations": "EXPECTATIONS.json",
-    "synthesis": "SYNTHESIS.json"
+    "synthesis": "SYNTHESIS.json",
+    "feedback": "FEEDBACK.json"
   },
   "ledger_feed": null
 }

@@ -1413,8 +1413,8 @@
      "label": "No project creation or build start before 2026-10-30T09:00:00-07:00 (official rules s.1 Submission Period open; mechanical gate in the brief and in the generator cycle code; label corrected 2026-10-30 from the stale 13:00 dates-page value)",
      "blocks": "any D4 build start",
      "owner": "challenge-entries lane + delphi-lane tooling",
-     "status": "open",
-     "evidence": "Brief eligibility_gate (docs/proposals/briefs/kiroween-delphi-concept.brief.json); log enforcement PR #1717; cycle-code enforcement PR #1719. Creation timestamp is captured into the packet as eligibility evidence at creation. | Window OPEN since 2026-10-30 09:00 PT; Delphi pass ran 2026-10-30T23:44Z under this gate (implementation stage specified_not_run)."
+     "status": "cleared",
+     "evidence": "Brief eligibility_gate (docs/proposals/briefs/kiroween-delphi-concept.brief.json); log enforcement PR #1717; cycle-code enforcement PR #1719. Creation timestamp is captured into the packet as eligibility evidence at creation. | Window OPEN since 2026-10-30 09:00 PT; Delphi pass ran 2026-10-30T23:44Z under this gate (implementation stage specified_not_run). | CLEARED 2026-10-30 (gates-delegate delta + Manager ruling): window opened 2026-10-30T09:00 PT; no D4 project was created before the open; the frozen pick repo was created in-period (see projects). Not a live blocker."
     }
    ],
    "prizes": {
@@ -1484,14 +1484,16 @@
      "one_liner": "Brief variant (Skeleton Crew theme): a CMDB/reconciliation viewer as a minimal spec-first skeleton, shown with two distinct applications.",
      "origin": "brief-first-gen",
      "brief_anchor": "docs/proposals/briefs/kiroween-delphi-concept.brief.json (variants)",
-     "status": "candidate",
-     "reason": null,
+     "status": "frozen",
+     "reason": "Manager freeze 2026-10-30 on brief-author priors (19>17>14) + profile points (3>2=2) + scope certainty, after the round-1 tie (23.269 x3, LOCAL_BASELINE only); DEBATE round proceeds as calibration only, not contingent.",
      "superseded_by": null,
      "assets": {
       "repo_dir": null,
       "proposal_dir": "docs/proposals/passes/kiroween-delphi-concept",
       "demo_url": null,
-      "clips_url": null
+      "clips_url": null,
+      "repo_url": "https://github.com/timerloggedout-spec/skeleton-crew",
+      "repo_created": "2026-10-30T23:55:28Z (in-period; created by Manager)"
      },
      "decisions": []
     },
@@ -1501,8 +1503,8 @@
      "one_liner": "Brief variant (Frankenstein theme): a new in-window project stitched from public patterns of the offline Oracle MVP and the D0 package.",
      "origin": "brief-first-gen",
      "brief_anchor": "docs/proposals/briefs/kiroween-delphi-concept.brief.json (variants)",
-     "status": "candidate",
-     "reason": null,
+     "status": "not_picked",
+     "reason": "Not frozen; skeleton-crew frozen 2026-10-30 (Manager ruling on priors).",
      "superseded_by": null,
      "assets": {
       "repo_dir": null,
@@ -1518,8 +1520,8 @@
      "one_liner": "Brief variant (Resurrection theme): a dormant public spec rebuilt fresh in-window; subject picked at brief lock under a scope cap.",
      "origin": "brief-first-gen",
      "brief_anchor": "docs/proposals/briefs/kiroween-delphi-concept.brief.json (variants)",
-     "status": "candidate",
-     "reason": null,
+     "status": "not_picked",
+     "reason": "Not frozen; skeleton-crew frozen 2026-10-30 (Manager ruling on priors).",
      "superseded_by": null,
      "assets": {
       "repo_dir": null,
@@ -1609,7 +1611,8 @@
    },
    "brief_status": {
     "delphi_handoff": "Handed off to the Delphi lane 2026-10-30 with the rules stamp (brief id kiroween-delphi-concept).",
-    "delphi_pass": "RAN 2026-10-30T23:44:05Z (pass.json @master): status round_1_recorded; cycle ran [generate (n=3 candidates), cross_vote_round_1, expectations_recorded, facilitator_feedback]; specified_not_run [debate_revision, implementation, evidence_equalization...] under the eligibility gate; pass eligibility_gate.window_open = 2026-10-30T09:00:00-07:00 (agrees with rules s.1). Coordinator and pass records now agree (reconciled 2026-10-30, D4 sub-manager census delta)."
+    "delphi_pass": "RAN 2026-10-30T23:44:05Z (pass.json @master): status round_1_recorded; cycle ran [generate (n=3 candidates), cross_vote_round_1, expectations_recorded, facilitator_feedback]; specified_not_run [debate_revision, implementation, evidence_equalization...] under the eligibility gate; pass eligibility_gate.window_open = 2026-10-30T09:00:00-07:00 (agrees with rules s.1). Coordinator and pass records now agree (reconciled 2026-10-30, D4 sub-manager census delta).",
+    "freeze": "skeleton-crew FROZEN 2026-10-30 (Manager, on priors); repo timerloggedout-spec/skeleton-crew created in-period 2026-10-30T23:55:28Z; DEBATE = calibration-only."
    }
   },
   {
@@ -1969,7 +1972,33 @@
    "sub_manager": {
     "role_moniker": "challenge-entries-manager-amd (delegate; moniker registry-pending)",
     "chat_id": "f92553f1-4e05-4712-bd83-2430702968c3"
-   }
+   },
+   "gates": [
+    {
+     "id": "AMD-ACADEMY-5",
+     "label": "Complete >=5 AMD Academy courses (league podium gate)",
+     "blocks": "C11 league podium eligibility ($2,500/$1,500/$1,000)",
+     "owner": "gates-academy oversight (840bd147) with AMD sub-manager (f92553f1)",
+     "status": "open",
+     "evidence": "Plan deadline 2026-11-20 (gates-delegate plan); league deadline 2026-12-01T11:00-08:00. Evidence per course: completion certificate + points screenshot (x5). Course plan: AI on AMD (<=Nov 07, +M1 100pts) -> PyTorch on AMD GPUs (<=Nov 10) -> AI Agents 101 MCP/Open-Source Inference (<=Nov 13) -> AI Agents 201 Multi-Agent Systems (<=Nov 17) -> LLM Serving Inference vLLM/MI300X (<=Nov 20)."
+    },
+    {
+     "id": "AMD-GPU100",
+     "label": "Claim $100 AMD GPU credits (Match 1 onboarding task, timed claim)",
+     "blocks": "C11 Match 1 points (+100) and GPU build capacity",
+     "owner": "gates-academy oversight (840bd147) with AMD sub-manager (f92553f1)",
+     "status": "open",
+     "evidence": "Target <=2026-11-07 with the M1 verify-all pass. Evidence: claim screenshot."
+    },
+    {
+     "id": "AMD-M1-ONBOARDING",
+     "label": "Match 1 remainder: complete AMD profile (+50), join AMD Discord (+50), join lablab Discord (REQUIRED for Match participation)",
+     "blocks": "C11 Match 1 completion + Match participation eligibility",
+     "owner": "gates-academy oversight (840bd147); lablab-side steps with venue specialist (6401df1e); Discord account creation = owner (2026-10-30)",
+     "status": "open",
+     "evidence": "Sign-up with AMD done at registration 2026-10-30 (Approved). Remainder open; lablab Discord step waits on the fleet Discord account."
+    }
+   ]
   }
  ]
 }

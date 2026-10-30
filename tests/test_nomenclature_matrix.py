@@ -1,6 +1,9 @@
 import importlib.util
 import json
 import sqlite3
+import subprocess
+import sys
+import tempfile
 from pathlib import Path
 import unittest
 
@@ -127,6 +130,32 @@ class NomenclatureMatrixTests(unittest.TestCase):
         self.assertEqual(len(first["mappings"]), len(self.data["mappings"]))
         self.assertEqual(len(first["evidence_records"]), len(self.data["evidence_records"]))
         self.assertIn("not runtime authority", first["authority_boundary"])
+
+    def test_cli_generates_both_crosswalk_projections(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "crosswalk.md"
+            json_output = Path(directory) / "crosswalk.json"
+            subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "scripts/ci/build_nomenclature_crosswalk.py"),
+                    "--seed", str(SEED),
+                    "--output", str(output),
+                    "--json-output", str(json_output),
+                ],
+                cwd=ROOT,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(
+                (ROOT / "docs/proposals/active/notation-sets/nomenclature-matrix/CROSSWALK.md").read_text(encoding="utf-8"),
+                output.read_text(encoding="utf-8"),
+            )
+            self.assertEqual(
+                json.loads((ROOT / "docs/proposals/active/notation-sets/nomenclature-matrix/CROSSWALK.json").read_text(encoding="utf-8")),
+                json.loads(json_output.read_text(encoding="utf-8")),
+            )
 
     def test_unknown_label_type_rejected(self):
         bad = json.loads(json.dumps(self.data))

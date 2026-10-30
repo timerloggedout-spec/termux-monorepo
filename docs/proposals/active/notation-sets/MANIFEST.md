@@ -143,3 +143,10 @@ This lane records concepts, audience/register-specific labels, evidence sources,
 - Generated machine-readable view: [CROSSWALK.json](./nomenclature-matrix/CROSSWALK.json).
 - Both projections group labels by concept, list semantic mapping candidates separately, and include claim-level evidence with reviewer/status. The JSON projection retains source records and typed fields for downstream tooling.
 - Regenerate both with `python scripts/ci/build_nomenclature_crosswalk.py` (or override paths with `--output` and `--json-output`). Outputs are deterministic and must not be edited manually.
+
+### Nomenclature governance and consumer contracts
+
+- Historical lineage and verified milestones: [DECISION-LEDGER.md](./nomenclature-matrix/DECISION-LEDGER.md).
+- Claim review and lifecycle gates: [REVIEW-AND-ACCEPTANCE.md](./nomenclature-matrix/REVIEW-AND-ACCEPTANCE.md).
+- Machine-readable projection contract: [JSON-CONSUMER-CONTRACT.md](./nomenclature-matrix/JSON-CONSUMER-CONTRACT.md).
+- These documents preserve the boundary between repository implementation, candidate research, human/domain acceptance, and runtime authority. The Domain Composition Matrix remains a separate research database under Issue #1115.

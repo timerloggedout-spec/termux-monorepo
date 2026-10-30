@@ -231,7 +231,7 @@ this log is the human view of the same verified state.
 |-------|-------|-------------|------|
 | D0 | DONE (completed 2026-10-27) | closed Oct 26 | — |
 | D1 | IN PROGRESS — window OPEN; concept set STOPPED 2026-10-28 (tainted); pick pending owner freeze: StudySprint; FIRST deadline — priority up | closes Nov 4 23:59 | **G-07 Builder profile — CLEARED 2026-10-29** (all 5 mandatory fields live, verified on the public profile 17:10 PT: 4n0nS3C avatar + About bisection text + GitHub link; forced save fields = least-specific values) — remaining D1 gate: in-window workshop badge evidence |
-| D2 | IN PROGRESS — Nov 5–8 build PRIMARY over D3 final weekend; **registration execution = this lane (handed over 2026-10-29 with recon)** | opens Nov 5; closes Nov 8 15:00 | no-card path only (lablab + Discord + Vultr sandbox) |
+| D2 | **REGISTRATION COMPLETE 2026-10-29 — ENROLLED** (lablab via AMD SSO; screening form submitted; organizer email confirmation pending); Nov 5–8 build PRIMARY over D3 final weekend | opens Nov 5; closes Nov 8 15:00 | no-card path only (lablab + Discord + Vultr sandbox) |
 | D3 | Concept #42 QUESTIONED 2026-10-28 — under review, NOT killed, NOT the active build; pick pending owner freeze: ListingLens; core build Oct 30–Nov 1, final weekend polish/Clips only | closes Nov 9 23:59 (official schedule moved; corrected 2026-10-28) | Clips account ✓ created 2026-10-27 (held for the regenerated concept) |
 | D4 | REGISTERING — Devpost profile COMPLETE 2026-10-29 (timerloggedout); Kiro account exists (no editable fields); Kiroween registration + exact Kiro ID still blocked | eligibility opens Oct 30 13:00 PDT; closes Dec 4 14:00 | no project creation before the window opens |
 | D5 | REGISTERED — spot pending review | opens Nov 17 9:00 AM; closes Nov 19 12:00 PT (official Contest Rules) | spot confirmation email |
@@ -503,6 +503,8 @@ this log is the human view of the same verified state.
   (receipt pattern), PR #1655 CMDB design (conflict matrix / reconciliation).
 
 ### D4 — for C4, Kiroween 2026 — REGISTERING (build sequenced after Nov 8)
+
+- **FREEZE LINE (Manager ruling, 2026-10-30): Repo Replay / RevWright is NEVER claimable for D4** — its build began 2026-10-29, before this event's eligibility window opens (2026-10-30 13:00 PT); a D4 claim would be void ab initio under the in-period rule. Repo Replay ∈ no slate event (coordinator census verified); its #1884 quota enrollment is NOT a claim. Any future event claim for Repo Replay ⇒ Manager rules-check FIRST.
 
 <!-- countdown-data:D4 opens=2026-10-30T13:00:00-07:00 closes=2026-12-04T14:00:00-08:00 -->
 <!-- countdown:D4 -->⏳ opens in 2d 0h (computed 2026-10-28 12:55 PT)<!-- /countdown:D4 -->

@@ -10,11 +10,11 @@ Make provisioned GitHub Apps discoverable even when they emit no check suites, c
 ## Implemented on this branch
 
 - `ops/github-apps/registry.json`: non-secret app registry, canonical manifest pointers, expected installation scope, promotion gates, and four role slots reported by the owner as in flight but not independently verified.
-- `scripts/github/github_app_telemetry.py`: validates registry structure and derives permissions/events directly from each referenced manifest (manifest is the declared-permission SSOT). Optional manual probes accept an ephemeral installation token; credentials are never serialized.
+- `scripts/github/github_app_telemetry.py`: validates registry structure and derives permissions/events directly from each referenced manifest (manifest is the declared-permission SSOT). Optional manual probes require an explicit registry slug binding, apply evidence only to that app, and paginate the full installation repository list; incomplete pagination is never marked observed. Credentials are never serialized.
 - `scripts/github/test_github_app_telemetry.py`: tests manifest-derived permissions/events, role-state labeling, duplicate slugs, invalid manifest data, successful/failed probes, and token redaction.
 - `scripts/github/integration_mesh_poll.py`: adds the checked-in app registry and manifest declarations to the existing census. Registry changes become structural diffs. Old snapshots without this field remain compatible; unavailable registry data is degraded, never interpreted as removal.
 - `scripts/github/test_integration_mesh_poll.py`: tests registry census, change detection, old-cache compatibility, and degraded-state handling.
-- `.github/workflows/github-app-telemetry.yml`: PR validation, manual dispatch, and a weekly declaration census artifact.
+- `.github/workflows/github-app-telemetry.yml`: PR validation and manual dispatch. The weekly schedule is deliberately disabled until the shared Actions quota is confirmed; the workflow currently emits declaration-only evidence.
 
 ## Provisioning truth and four in-flight role slots
 
@@ -48,8 +48,13 @@ Every field must distinguish unknown from empty. Missing sections and partial AP
 - [x] Derive declared permissions/events from the manifest SSOT; remove duplicated permission declarations from the registry.
 - [x] Add tests for the registry, manifest derivation, safe probe behavior, and four unverified role slots.
 - [x] Integrate registry declarations into the existing mesh census/diff with backward-compatible old-cache handling.
-- [x] Add weekly declaration-only artifact workflow.
+- [x] Add PR/manual declaration-only artifact workflow.
+- [ ] Enable weekly declaration census only after the shared Actions quota owner confirms budget and records the approval.
 - [ ] Run updated branch CI and review artifacts.
+- [x] Require both manifest declaration fields; missing declarations fail validation instead of becoming empty declarations.
+- [x] Bind live probe evidence to one explicit app and reject unbound tokens.
+- [x] Require complete pagination before reporting repository scope as observed.
+- [x] Isolate workflow concurrency by event and pull-request number; disable schedule pending quota approval.
 - [ ] Reconcile four role-slot statuses with AppID/PROCESS.json source of truth.
 
 ### P1 — live proof (blocked by secret provisioning)

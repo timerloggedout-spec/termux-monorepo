@@ -153,6 +153,14 @@ jobs:
           git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           if git fetch -q origin vercel-deploy-state 2>/dev/null; then git switch -q -C vercel-deploy-state FETCH_HEAD; else git switch -q --orphan vercel-deploy-state; git rm -rqf . >/dev/null 2>&1 || true; fi
           cp "$RUNNER_TEMP/keep/state.json" "$RUNNER_TEMP/keep/ledger.jsonl" .
-          git add state.json ledger.jsonl && git commit -qm "vercel batch state ${GITHUB_SHA:0:7} [skip ci] [skip render]" && git push -q origin vercel-deploy-state
+          # The state branch is in the same Git repository connected to Vercel.
+          # Preserve each project root config on this orphan branch too:
+          # without it Vercel creates broken Git deployments on every state push.
+          # These configs set git.deploymentEnabled=false; no application source is copied.
+          mkdir -p apps/help-wanted-dashboard mcp-hub demo-portal/public
+          cp "$GITHUB_WORKSPACE/apps/help-wanted-dashboard/vercel.json" apps/help-wanted-dashboard/vercel.json
+          cp "$GITHUB_WORKSPACE/mcp-hub/vercel.json" mcp-hub/vercel.json
+          cp "$GITHUB_WORKSPACE/demo-portal/public/vercel.json" demo-portal/public/vercel.json
+          git add state.json ledger.jsonl apps/help-wanted-dashboard/vercel.json mcp-hub/vercel.json demo-portal/public/vercel.json && git commit -qm "vercel batch state ${GITHUB_SHA:0:7} [skip ci] [skip render]" && git push -q origin vercel-deploy-state
           echo "::notice title=vercel-batch::deployed=[$(jq -r --arg s "$GITHUB_SHA" '[.last|to_entries[]|select(.value.sha==$s)|.key]|join(" ")' state.json)] failed=[${FAILED# }]"
           [ -z "$FAILED" ]

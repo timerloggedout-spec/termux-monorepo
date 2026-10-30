@@ -15,6 +15,10 @@
   via convergence PR #2362 (its composed-not-landed flag flipped on
   verification), the reconstructed corpus increments are corpus
   growth (not fleet volume), and g4f renders NO stamp — none exists.
+  The burn-down also draws the replenishment FLOW line (owner
+  principle via cadence lane, 2026-10-29): not a survival ceiling but
+  ideal pacing — diagonal to zero exactly at each reset epoch, with
+  deviations faults both ways (burst below, wasted quota above).
 -->
 <link rel="stylesheet" href="./dashboard.css">
 <style>
@@ -104,10 +108,14 @@ function barGeom(days,w,h,pad){
   const iw=w-pad*2, ih=h-pad*2, bw=iw/days.length;
   return days.map((d,i)=>({x:pad+i*bw, w:Math.max(bw*0.7,1), h:ih*d.runs_delta/max, y:pad+ih-ih*d.runs_delta/max, d}));
 }
+function idealRemaining(tMs,limit,anchorMs,windowMs){
+  const msToReset=((anchorMs-tMs)%windowMs+windowMs)%windowMs;
+  return limit*msToReset/windowMs;
+}
 function stampText(stamp){
   return stamp.established ? ("↻ "+String(stamp.cadence).toUpperCase()) : "NO STAMP — UNMETERED";
 }
-if(typeof module!=="undefined"){ module.exports={parseT,burnGeom,stepPath,stateClass,barGeom,stampText}; }
+if(typeof module!=="undefined"){ module.exports={parseT,burnGeom,stepPath,stateClass,barGeom,stampText,idealRemaining}; }
 // ==== end pure logic ====
 let PACK=null;
 function svgEl(html){ return html; }
@@ -119,6 +127,19 @@ function renderBurn(){
   out+='<line x1="'+P+'" y1="'+P+'" x2="'+P+'" y2="'+(H-P)+'" stroke="var(--line)"/>';
   out+='<text x="6" y="'+(P+4)+'" fill="var(--muted)" font-size="11">'+esc(s.limit)+'</text>';
   out+='<text x="6" y="'+(H-P+4)+'" fill="var(--muted)" font-size="11">0</text>';
+  if(s.model){
+    const anchor=parseT(s.model.anchor_reset), winMs=s.model.window_ms;
+    let fp="";
+    const steps=260;
+    for(let i=0;i<=steps;i++){
+      const t=g.t0+(g.t1-g.t0)*i/steps;
+      const rem=idealRemaining(t, s.limit, anchor, winMs);
+      const xx=P+(t-g.t0)/(g.t1-g.t0)*(W-P*2), yy=P+(H-P*2)*(1-rem/s.limit);
+      fp+=(i===0?"M":"L")+xx.toFixed(1)+","+yy.toFixed(1)+" ";
+    }
+    out+='<path d="'+fp+'" fill="none" stroke="var(--ok)" stroke-width="1" stroke-dasharray="2 3" opacity="0.8"/>';
+    out+='<text x="'+(W-P-150)+'" y="'+(P+12)+'" fill="var(--ok)" font-size="11">flow line = ideal pacing</text>';
+  }
   out+='<path d="'+stepPath(g.pts)+'" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-dasharray="5 4"/>';
   for(const q of g.pts){
     if(q.p.kind==="wall"){
@@ -132,7 +153,8 @@ function renderBurn(){
   out+='</svg>';
   $("burndown").innerHTML=svgEl(out);
   let bn=s.note+" Replenishment: "+s.replenishment+"; next reset observed "+s.next_reset_observed+".";
-  if(PACK.buckets){ bn+=" Buckets, kept separate — never one merged line: "+PACK.buckets.map(b=>b.name+" "+b.limit+"/"+b.unit+(b.observed?(" ("+b.observed+")":"")).join(" · ")+"."; }
+  if(s.model){ bn+=" Flow line (green): "+s.model.ideal+". Faults both ways — "+s.model.faults.below_line+"; "+s.model.faults.above_line+"."; }
+  if(PACK.buckets){ bn+=" Buckets, kept separate — never one merged line: "+PACK.buckets.map(b=>b.name+" "+b.limit+"/"+b.unit+(b.observed?(" ("+b.observed+")"):"")).join(" · ")+"."; }
   $("burnnote").textContent=bn;
 }
 function renderStates(){

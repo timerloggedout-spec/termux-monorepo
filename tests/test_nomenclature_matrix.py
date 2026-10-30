@@ -109,6 +109,18 @@ class NomenclatureMatrixTests(unittest.TestCase):
         self.assertIn("Claim-level evidence", first)
         self.assertIn("Candidate status is preserved", first)
 
+    def test_machine_crosswalk_is_deterministic_and_matches_checked_in_json(self):
+        first = CROSSWALK.render_machine_crosswalk(self.data)
+        second = CROSSWALK.render_machine_crosswalk(self.data)
+        self.assertEqual(first, second)
+        checked_in = json.loads((ROOT / "docs/proposals/active/notation-sets/nomenclature-matrix/CROSSWALK.json").read_text(encoding="utf-8"))
+        self.assertEqual(first, checked_in)
+        self.assertEqual(len(first["concepts"]), len(self.data["concepts"]))
+        self.assertEqual(sum(len(c["labels"]) for c in first["concepts"]), len(self.data["labels"]))
+        self.assertEqual(len(first["mappings"]), len(self.data["mappings"]))
+        self.assertEqual(len(first["evidence_records"]), len(self.data["evidence_records"]))
+        self.assertIn("not runtime authority", first["authority_boundary"])
+
     def test_unknown_label_type_rejected(self):
         bad = json.loads(json.dumps(self.data))
         bad["labels"][0]["label_type"] = "just-a-synonym"

@@ -34,7 +34,7 @@ jobs:
           set -euo pipefail
           python -m unittest -v test_github_app_telemetry.py test_integration_mesh_poll.py
           python github_app_telemetry.py --output ../../github-app-telemetry.json
-          echo 'Scheduled artifact is declaration-only. Live token minting remains disabled until SEC-01/02 provisioning is verified.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Artifact is declaration-only. Live token minting remains disabled until SEC-01/02 provisioning is verified.' >> "$GITHUB_STEP_SUMMARY"
       - name: Upload declaration-only telemetry artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:

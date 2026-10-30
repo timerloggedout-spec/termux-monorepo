@@ -1,6 +1,6 @@
 {
   "schema": "quota-usage/v1",
-  "generated_at": "2026-10-30T01:57:48Z",
+  "generated_at": "2026-10-30T02:03:03Z",
   "ordered_by": "owner order 2026-10-29 via quota-specialist lane (b18fae96)",
   "built_by": "viz lane (4ed48ba4) \u2014 visualizations for everything Web",
   "registry_context": {
@@ -127,16 +127,17 @@
       {
         "at": "2026-10-28T23:36:07Z",
         "rows": 155,
-        "landed": false,
-        "provenance": "quota-specialist pack 2026-10-29 \u2014 composed 2026-10-28T23:36:07Z, landing pending (convergence lane d92e1e1d fires on first headroom window, ~8 calls)",
+        "landed": true,
+        "provenance": "landed via convergence PR #2362 (merged 49089ee5c010, 2026-10-30T01:48:11Z) \u2014 master quota-status.json + dashboard twin, pair blob 5d5238c9, 155 readings, generated 2026-10-28T23:36:07Z (viz-verified firsthand)",
         "states": {
           "github.api.github_token": "watch",
           "github.actions.cache": "ok",
           "vercel.deployments": "ok",
           "openrouter.free_models": "unknown",
-          "openrouter.key": "unknown"
+          "openrouter.key": "unknown",
+          "github.actions.minutes": "unknown"
         },
-        "note": "github.api.github_token recovered exhausted \u2192 watch in this snapshot"
+        "note": "github.api.github_token recovered exhausted \u2192 watch in this snapshot; github.actions.minutes reads unknown in the full 155-row snapshot"
       }
     ],
     "stamp_source": "registry reset fields \u2014 snapshot rows carry reset=null by design; stamps never join from the snapshot"
@@ -443,10 +444,8 @@
       "established": false
     }
   ],
-  "stamps_provenance": "registry reset fields \u2014 quota-specialist pack 2026-10-29 as corrected by the convergence lane (verified vs current-master registry, 2026-10-29); stamp-accuracy confirmation otherwise pending (convergence lane d92e1e1d)",
-  "pending_inputs": [
-    "convergence lane (d92e1e1d) snapshot-landing + stamp-accuracy confirmation \u2014 pending"
-  ],
+  "stamps_provenance": "registry reset fields \u2014 quota-specialist pack 2026-10-29 as corrected by the convergence lane (verified vs current-master registry, 2026-10-29); convergence confirmation closed with the PR #2362 landing \u2014 quota lanes report no open inputs (2026-10-29)",
+  "pending_inputs": [],
   "buckets": [
     {
       "name": "github.api.user_token (PAT user bucket)",

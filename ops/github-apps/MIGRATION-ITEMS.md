@@ -50,8 +50,9 @@ execution and evidence must be independently observable.
 
 ## SEC — provisioning (owner items, names-only)
 
-- [ ] SEC-01 D3 check: is the `APP_PRIVATE_KEY` secret referenced by `github-app-capability-probe.yml` actually provisioned? (referenced ≠ provisioned) [appid]
-- [ ] SEC-02 Per-app Actions secret names provisioned + verified before any workflow references them [owner + appid]
+- [x] SEC-01 RESOLVED as identity separation (2026-10-30): the `APP_PRIVATE_KEY` + `APP_CLIENT_ID` referenced by `github-app-capability-probe.yml` belong to that probe's Checks:write app (PR #800 lineage) — NOT to the Collector. It is not provisioned, and must not be provisioned with the Collector PEM; it stops being a Collector blocker. Its own provisioning waits for the Gate/CI app (APP-06). [migration-plan]
+- [ ] SEC-02 Collector Actions pair provisioned: secret `TERMUX_FLEET_COLLECTOR_PRIVATE_KEY` (sealed-box from custody PEM, value never in chat/files/logs) + variable `TERMUX_FLEET_COLLECTOR_CLIENT_ID`, proven by a green `github-app-collector-mint-probe` run [migration-plan + owner order 2026-10-29]
+- [ ] SEC-03 Per-app Actions secret names for future apps follow the SEC-02 pattern (`TERMUX_FLEET_<ROLE>_*`), provisioned + verified before any workflow references them [owner + appid]
 
 ## MAINT — recurring (all as GitHub Workflows; VM hosts none)
 

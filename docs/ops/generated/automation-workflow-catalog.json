@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "abd94c3258c45d3507c3906a76a2dd9fe5f30146bd94cdee36b23bda1ae303f9",
+  "source_fingerprint": "96db91312a1555141d8fc16df174856954b085d35c193b362cddf18dc63823d8",
   "workflow_count": 230,
   "workflows": [
     {
@@ -1964,8 +1964,8 @@
         "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b",
         "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
       ],
-      "authority": "read-only-or-advisory",
-      "concurrency": "group: github-app-telemetry-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }} cancel-in-progress: false",
+      "authority": "writer",
+      "concurrency": "group: github-app-telemetry-${{ github.event.pull_request.number || github.ref }} cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
         "collector-census",
@@ -1974,7 +1974,7 @@
       "name": "GitHub App fleet telemetry",
       "path": ".github/workflows/github-app-telemetry.yml",
       "schedules": [
-        "17 6 * * 1"
+        "17 * * * *"
       ],
       "triggers": [
         "pull_request",

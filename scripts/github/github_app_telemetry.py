@@ -169,6 +169,77 @@ def build_telemetry(registry, token=None, probe_app_slug=None):
         "apps": rows,
     }
 
+
+G4_CONCLUSIONS = {
+    "success", "failure", "cancelled", "timed_out", "action_required",
+    "neutral", "skipped", "stale", "startup_failure",
+}
+
+
+def validate_g4_receipt(receipt):
+    """Validate a sanitized G4 runtime receipt; never creates or fabricates evidence."""
+    required = {
+        "schema_version", "receipt_type", "app_slug", "mint_outcome",
+        "rate_limit_before", "rate_limit_after", "api_calls_by_status",
+        "repositories_inspected", "workflow", "duration_seconds",
+        "conclusion", "observed_at",
+    }
+    if not isinstance(receipt, dict) or set(receipt) != required:
+        raise ValueError("G4 receipt must contain exactly the required fields")
+    if receipt["schema_version"] != 1 or receipt["receipt_type"] != "github_app_g4_runtime_receipt":
+        raise ValueError("unsupported G4 receipt schema or type")
+    if not isinstance(receipt["app_slug"], str) or not receipt["app_slug"].strip():
+        raise ValueError("G4 receipt app_slug must be a non-empty string")
+    if receipt["mint_outcome"] not in ("success", "failure"):
+        raise ValueError("G4 receipt mint_outcome must be success or failure")
+
+    for key in ("rate_limit_before", "rate_limit_after"):
+        reading = receipt[key]
+        if not isinstance(reading, dict) or set(reading) != {"limit", "remaining", "reset"}:
+            raise ValueError(f"G4 receipt {key} must contain limit, remaining, and reset")
+        if any(type(reading[field]) is not int or reading[field] < 0
+               for field in ("limit", "remaining", "reset")):
+            raise ValueError(f"G4 receipt {key} values must be non-negative integers")
+        if reading["remaining"] > reading["limit"]:
+            raise ValueError(f"G4 receipt {key} remaining exceeds limit")
+
+    calls = receipt["api_calls_by_status"]
+    if not isinstance(calls, dict):
+        raise ValueError("G4 receipt api_calls_by_status must be an object")
+    for status, count in calls.items():
+        if (not isinstance(status, str) or len(status) != 3 or
+                not status.isdigit() or status[0] not in "12345" or
+                type(count) is not int or count < 0):
+            raise ValueError("G4 receipt API status counts must use HTTP status keys and non-negative integers")
+
+    if type(receipt["repositories_inspected"]) is not int or receipt["repositories_inspected"] < 0:
+        raise ValueError("G4 receipt repositories_inspected must be a non-negative integer")
+    workflow = receipt["workflow"]
+    if not isinstance(workflow, dict) or set(workflow) != {"run_id", "attempt", "head_sha"}:
+        raise ValueError("G4 receipt workflow must contain run_id, attempt, and head_sha")
+    if any(type(workflow[field]) is not int or workflow[field] <= 0
+           for field in ("run_id", "attempt")):
+        raise ValueError("G4 receipt run_id and attempt must be positive integers")
+    sha = workflow["head_sha"]
+    if not isinstance(sha, str) or len(sha) != 40 or any(c not in "0123456789abcdef" for c in sha):
+        raise ValueError("G4 receipt head_sha must be a lowercase 40-character commit SHA")
+    duration = receipt["duration_seconds"]
+    if type(duration) not in (int, float) or duration < 0:
+        raise ValueError("G4 receipt duration_seconds must be non-negative")
+    if receipt["conclusion"] not in G4_CONCLUSIONS:
+        raise ValueError("G4 receipt conclusion is not a recognized workflow conclusion")
+    observed_at = receipt["observed_at"]
+    if not isinstance(observed_at, str):
+        raise ValueError("G4 receipt observed_at must be an ISO-8601 timestamp")
+    try:
+        parsed = datetime.datetime.fromisoformat(observed_at.replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise ValueError("G4 receipt observed_at must be an ISO-8601 timestamp") from exc
+    if parsed.tzinfo is None:
+        raise ValueError("G4 receipt observed_at must include a timezone")
+    return True
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--registry", default=str(DEFAULT_REGISTRY))

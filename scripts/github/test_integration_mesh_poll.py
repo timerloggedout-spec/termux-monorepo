@@ -2,7 +2,7 @@
 """Unit tests for the integration mesh poll diff/plan-state logic (pure parts)."""
 import unittest
 
-from integration_mesh_poll import diff_snapshots, name_set, render_comment
+from integration_mesh_poll import app_registry_census, diff_snapshots, name_set, render_comment
 
 
 def snap(**kw):
@@ -32,6 +32,37 @@ class DiffTests(unittest.TestCase):
     def test_no_change_no_lines(self):
         s, f = diff_snapshots(snap(), snap())
         self.assertEqual((s, f), ([], []))
+
+    def test_checked_in_app_registry_is_censused_as_declaration(self):
+        registry = app_registry_census()
+        self.assertIsNotNone(registry)
+        self.assertEqual(len(registry["apps"]), 1)
+        self.assertEqual(registry["apps"][0]["slug"], "termux-fleet-collector")
+        self.assertEqual(registry["apps"][0]["evidence"], "checked_in_declaration")
+        self.assertEqual(len(registry["planned_roles"]), 4)
+        self.assertTrue(all(x["status"] == "naming_draft_do_not_provision"
+                            for x in registry["planned_roles"]))
+
+    def test_registry_change_is_structural(self):
+        old = {"apps": [{"slug": "collector", "status": "live"}], "planned_roles": []}
+        new = {"apps": [{"slug": "collector", "status": "live"},
+                        {"slug": "publisher", "status": "planned"}],
+               "planned_roles": []}
+        structural, _ = diff_snapshots(snap(github_app_registry=old),
+                                       snap(github_app_registry=new))
+        self.assertTrue(any("declared GitHub App registry added" in x for x in structural))
+
+    def test_old_snapshot_without_registry_is_backward_compatible(self):
+        old = snap()
+        new = snap(github_app_registry={"apps": [{"slug": "collector"}], "planned_roles": []})
+        structural, figures = diff_snapshots(old, new)
+        self.assertEqual((structural, figures), ([], []))
+
+    def test_degraded_registry_does_not_report_removal(self):
+        old = snap(github_app_registry={"apps": [{"slug": "collector"}], "planned_roles": []})
+        new = snap(github_app_registry=None)
+        structural, figures = diff_snapshots(old, new)
+        self.assertEqual((structural, figures), ([], []))
 
     def test_new_check_app_is_structural(self):
         cur = snap(check_apps_30={"github-actions": {"suites": 9}, "buildkite": {"suites": 2}})

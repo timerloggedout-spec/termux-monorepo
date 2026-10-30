@@ -116,12 +116,23 @@ def plan(registry, allocations, readings, countdowns=None, now=None):
                 break
         if state in ("exhausted", "cap_tripped"):
             triggers.append({"pool": pool["id"], "trigger": f"readings_state:{state}"})
+        order = {f: i for i, f in enumerate(FOCUS_LADDER)}
+        slices = []
+        for a in sorted(pool.get("allocations", []),
+                        key=lambda a: order.get(a["focus"], 99)):
+            slices.append({
+                "focus": a["focus"], "share_pct": a["pct"],
+                "mode": a.get("mode"),
+                "priority": order.get(a["focus"], 99),
+                "flow_per_min": (flow * a["pct"] / 100.0) if flow is not None else None,
+            })
         pools_out.append({
             "id": pool["id"], "class": cls,
             "services": pool["services"],
             "limit": limit, "used": used, "state": state,
             "pacing_multiplier": mult,
             "target_flow_per_min": flow,
+            "slices": slices,
             "stranded": stranded, "release_to": release_to,
         })
     if countdowns:

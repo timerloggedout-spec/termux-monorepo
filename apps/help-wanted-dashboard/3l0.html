@@ -98,8 +98,9 @@ async function load(){
   const observed = weights.observed;
   if (observed && observed.roles) {
     const observedRows = Object.entries(observed.roles).map(([role, v]) => {
-      const share = Number(v.weight_share);
-      const bar = Number.isFinite(share) ? Math.max(0, Math.min(100, share * 100)) : null;
+      const share = v.weight_share;
+      const bar = share === null || share === undefined || !Number.isFinite(Number(share))
+        ? null : Math.max(0, Math.min(100, Number(share) * 100));
       const width = bar === null ? "" : `<div class="weight-track" aria-label="Effective weight share ${bar.toFixed(1)} percent"><span style="width:${bar.toFixed(2)}%"></span></div>`;
       const cell = value => value === null || value === undefined ? "unavailable" : esc(value);
       return `<tr><td><code>${esc(role)}</code></td><td>${cell(v.gate_pass_rate)}</td><td>${cell(v.elo)}</td><td>${cell(v.hits)} / ${cell(v.misses)}</td><td>${cell(v.effective_weight)}</td><td>${bar === null ? "unavailable" : bar.toFixed(2) + "%"}${width}</td></tr>`;

@@ -1,6 +1,6 @@
 {
   "schema": "quota-usage/v1",
-  "generated_at": "2026-10-30T01:45:11Z",
+  "generated_at": "2026-10-30T01:57:48Z",
   "ordered_by": "owner order 2026-10-29 via quota-specialist lane (b18fae96)",
   "built_by": "viz lane (4ed48ba4) \u2014 visualizations for everything Web",
   "registry_context": {
@@ -58,16 +58,34 @@
         "remaining": 0,
         "kind": "wall",
         "provenance": "quota-specialist pack 2026-10-29 (~18:32 PT)",
-        "note": "post-fix recurrence (burst-fix PR #2341 already merged); shape TBD, no PAT-side attribution available"
+        "note": "prior window exhausted; post-fix recurrence in shape, not in mechanism TBD \u2014 burn shape resolved by convergence correction: sustained ramp (see event-burn-shape)"
       },
       {
         "at": "2026-10-30T01:36:00Z",
         "remaining": 0,
         "kind": "observed",
         "provenance": "viz rate-limit read (used 5000, reset 2026-10-30T01:42:09Z)"
+      },
+      {
+        "at": "2026-10-30T01:43:00Z",
+        "remaining": 4999,
+        "kind": "observed",
+        "provenance": "viz pat_publish preflight read (uncounted /rate_limit) \u2014 new window just opened, used 1"
+      },
+      {
+        "at": "2026-10-30T01:45:00Z",
+        "remaining": 4645,
+        "kind": "reported",
+        "provenance": "convergence lane via quota-specialist (verified from reset epochs) \u2014 new window, used 355"
+      },
+      {
+        "at": "2026-10-30T01:54:00Z",
+        "remaining": 3230,
+        "kind": "reported",
+        "provenance": "convergence lane via quota-specialist (verified from reset epochs) \u2014 used 1770, reset 02:42:19Z"
       }
     ],
-    "note": "Observed points only \u2014 the bucket is read at check time, not sampled continuously. Dashed connectors span unobserved gaps; they are not measurements. Buckets stay separate (see buckets) \u2014 this line is the PAT user bucket only, never merged with installation or GraphQL spend.",
+    "note": "Observed points only \u2014 the bucket is read at check time, not sampled continuously. Dashed connectors span unobserved gaps; they are not measurements. Buckets stay separate (see buckets) \u2014 this line is the PAT user bucket only, never merged with installation or GraphQL spend. Burn shape (convergence, verified from reset epochs): sustained ~120\u2013160 calls/min fleet-wide \u2014 the bucket dies over a 30\u201340 min ramp, then stays dead until the hourly reset. Not a spike; no instant re-exhaustion.",
     "bucket": "github.api.user_token"
   },
   "series2_snapshots": {
@@ -343,6 +361,12 @@
       "on": "series2",
       "at": "2026-10-20T23:05:00Z",
       "text": "Vercel cap-trip 2026-10-20 \u2194 dashboard deploy bursts (tribute-vercel-prod promotions; registry notes API undercounts enforcement \u226513). OpenRouter free daily cap exhausted the same day."
+    },
+    {
+      "id": "event-burn-shape",
+      "on": "series1",
+      "at": "2026-10-30T01:45:00Z",
+      "text": "Burn shape correction (convergence, verified from reset epochs): NO instant re-exhaustion \u2014 the new window opened at the 01:42:09Z reset and drained on a sustained ~120\u2013160 calls/min ramp (4999 @01:43Z viz preflight \u2192 4645 @~01:45Z \u2192 3230 @~01:54Z, used 1770). A 5000 bucket dies in ~30\u201340 min of storm and stays dead until the hourly reset; graph walls as ramps, not spikes. Consistent with the quota lane's firsthand ~150/min, ~32-min burn on 2026-10-29."
     }
   ],
   "stamps": [

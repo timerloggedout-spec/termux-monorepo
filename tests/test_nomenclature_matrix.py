@@ -78,7 +78,7 @@ class NomenclatureMatrixTests(unittest.TestCase):
     def test_accepted_evidence_requires_reviewer(self):
         bad = json.loads(json.dumps(self.data))
         bad["evidence_records"][0].update(status="accepted", reviewer=None)
-        self.assertTrue(any("requires reviewer" in e for e in MODULE.validate(bad)))
+        self.assertTrue(any("nonblank reviewer" in e for e in MODULE.validate(bad)))
 
     def test_accepted_evidence_rejects_blank_reviewer(self):
         for reviewer in (None, "", "   ", "\t"):

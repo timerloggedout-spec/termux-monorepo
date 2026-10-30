@@ -93,3 +93,22 @@ def test_admin_renders_winprob_v2_range_and_confidence():
     # acceptance (e): the v2 renderer reads no v1 field for headline values
     fn = html.split("async function loadChallenge(){")[1].split("async function load(){")[0]
     assert ".inputs" not in fn and "superseded_v1" not in fn
+
+
+def test_admin_renders_gearbox_consumer_controls():
+    """Gearbox consumer controls (owner order 2026-10-29): the pack schema
+    renders on the Admin panel only — design-only, inert, honesty verbatim."""
+    html = _admin()
+    assert 'data-feed="gearbox"' in html
+    assert 'id="gearbox-controls"' in html and 'id="gearbox-meta"' in html
+    assert "async function loadGearbox(){" in html
+    assert "jget('./data/quota-usage.json')" in html
+    fn = html.split("async function loadGearbox(){")[1].split("async function load(){")[0]
+    for marker in ("consumer_controls", "diagnose_dependency", "guardrail_ruling",
+                   "subset_selection", "settings_example", "shift_log_type",
+                   "honesty", "audit_event", "admin_designation"):
+        assert marker in fn, marker
+    # controls render as inert designs (disabled), never live inputs
+    assert 'type="button" disabled' in fn
+    assert 'type="range"' in fn and "disabled" in fn
+    assert 'type="checkbox" disabled' in fn

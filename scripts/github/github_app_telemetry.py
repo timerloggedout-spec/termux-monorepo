@@ -14,6 +14,7 @@ and /installation/repositories.
 import argparse
 import datetime
 import json
+import math
 import os
 import pathlib
 import sys
@@ -186,11 +187,12 @@ def validate_g4_receipt(receipt):
     }
     if not isinstance(receipt, dict) or set(receipt) != required:
         raise ValueError("G4 receipt must contain exactly the required fields")
-    if receipt["schema_version"] != 1 or receipt["receipt_type"] != "github_app_g4_runtime_receipt":
+    if (type(receipt["schema_version"]) is not int or receipt["schema_version"] != 1 or
+            receipt["receipt_type"] != "github_app_g4_runtime_receipt"):
         raise ValueError("unsupported G4 receipt schema or type")
     if not isinstance(receipt["app_slug"], str) or not receipt["app_slug"].strip():
         raise ValueError("G4 receipt app_slug must be a non-empty string")
-    if receipt["mint_outcome"] not in ("success", "failure"):
+    if not isinstance(receipt["mint_outcome"], str) or receipt["mint_outcome"] not in ("success", "failure"):
         raise ValueError("G4 receipt mint_outcome must be success or failure")
 
     for key in ("rate_limit_before", "rate_limit_after"):
@@ -224,9 +226,9 @@ def validate_g4_receipt(receipt):
     if not isinstance(sha, str) or len(sha) != 40 or any(c not in "0123456789abcdef" for c in sha):
         raise ValueError("G4 receipt head_sha must be a lowercase 40-character commit SHA")
     duration = receipt["duration_seconds"]
-    if type(duration) not in (int, float) or duration < 0:
+    if type(duration) not in (int, float) or not math.isfinite(duration) or duration < 0:
         raise ValueError("G4 receipt duration_seconds must be non-negative")
-    if receipt["conclusion"] not in G4_CONCLUSIONS:
+    if not isinstance(receipt["conclusion"], str) or receipt["conclusion"] not in G4_CONCLUSIONS:
         raise ValueError("G4 receipt conclusion is not a recognized workflow conclusion")
     observed_at = receipt["observed_at"]
     if not isinstance(observed_at, str):

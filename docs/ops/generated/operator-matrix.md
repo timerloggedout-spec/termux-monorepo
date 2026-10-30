@@ -1,9 +1,9 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-10-30T04:19:46Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-10-30T04:46:11Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `52e60e3d72` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `1876619af7` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
 **Open inventory:** 354 issues, 114 PRs. PR classes: EXTRACT 5 / CANDIDATE 60 / NEED_EVIDENCE 49 / SUPERSEDE 0.
 
@@ -119,8 +119,8 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2190 | NEED_EVIDENCE | unlabelled | `be30d8c241` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2235 | NEED_EVIDENCE | unlabelled | `1106e61b09` | not_reported | not_reported | unknown | chore(osint): refresh coverage + page snapshots |
 | #2252 | NEED_EVIDENCE | unlabelled | `77f6526342` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2263 | NEED_EVIDENCE | unlabelled | `41cee77c85` | not_reported | not_reported | unknown | chore(delphi): refresh delphi-ledger-feed.json |
-| #2310 | NEED_EVIDENCE | unlabelled | `4e28ac6a54` | not_reported | not_reported | unknown | chore(delphi): refresh delphi-rfp-feed.json |
+| #2263 | NEED_EVIDENCE | unlabelled | `6b5cfcb1f2` | not_reported | not_reported | clean | chore(delphi): refresh delphi-ledger-feed.json |
+| #2310 | NEED_EVIDENCE | unlabelled | `a909924219` | not_reported | not_reported | unknown | chore(delphi): refresh delphi-rfp-feed.json |
 | #2324 | NEED_EVIDENCE | unlabelled | `1fdb151f97` | not_reported | not_reported | unknown | chore(proposals): refresh proposals-feed.json |
 | #2340 | NEED_EVIDENCE | unlabelled | `cc347a254a` | not_reported | not_reported | unknown | chore(dashboards): refresh dispatch-tree feed |
 | #2348 | NEED_EVIDENCE | unlabelled | `1007521382` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |

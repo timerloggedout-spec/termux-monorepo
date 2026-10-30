@@ -23,8 +23,8 @@ PR) — never on a lane report alone. Owner lane in brackets.
 - [x] MIG-06 DISPOSITIONED 2026-10-30: workflow-side writes (merge-promotion family, context-relationship-publish, osint refresh writes) — ZERO PAT-class writes (all github.token); self-integrate = external-agent dispatch, no in-workflow GitHub writes. Publisher adoption = optional identity graduation, behind MIG-07/08 [migration-plan]
 - [ ] MIG-07 Wave 2: lane `pat_publish` opt-in to Publisher token — GATE SATISFIED 2026-10-30 (minter lane-usable proven firsthand by migration-plan lane; path proof = the mig07-gate-proof PR published on the Publisher token); rollout = per-lane opt-in declared/scheduled by AppID lane; PAT fallback retained [appid]
 - [x] MIG-08 DISPOSITIONED 2026-10-30: peer-review-orchestrator — polling/evidence step on GITHUB_TOKEN (∅ PAT); OPERATOR steps identity-bound by design (authorized-publisher checks + provider triggers) and STAY. Reviewer relief for evidence step = optional, MIG-05 class [migration-plan]
-- [ ] MIG-09 Wave 4: gate check-runs/annotations → Gate/CI, on its standing [migration-plan]
-- [ ] MIG-10 Wave 5: issue-lifecycle sweeps → Lifecycle, on its standing [migration-plan]
+- [x] MIG-09 DISPOSITIONED 2026-10-30: repo-gate verdicts = own job check-runs (Actions identity); no PAT, no separate annotation token. Gate-app adoption = optional identity graduation [migration-plan]
+- [x] MIG-10 DISPOSITIONED 2026-10-30: lifecycle triage class on Actions job token (∅ PAT). Lifecycle-app adoption = optional identity graduation [migration-plan]
 - [ ] MIG-11 Per-item calls/run recorded into quota registry at G4 (MEASURE-AT-GATE items: M1, M3, M4, M5) [quota]
 
 ## APP — new app graduations (plan §3.4: proven → recorded → planned → standing)

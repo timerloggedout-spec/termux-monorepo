@@ -2,7 +2,7 @@
 
 > Generated from GitHub repository and starring metadata. JSON is canonical; this file is a navigation projection.
 
-Observed: `2026-10-29T10:55:52.286678Z`
+Observed: `2026-10-30T10:53:50.135661Z`
 
 ## Navigation
 
@@ -16,9 +16,9 @@ Observed: `2026-10-29T10:55:52.286678Z`
 
 ## Changes since previous snapshot
 
-- **Added (62):** `BrokkAi/mjolnir`, `BrokkAi/muse-acp`, `HarjjotSinghh/helicon`, `LING71671/Open-ClaudeCode`, `Natfii/UnrealClaude`, `RandyNorthrup/muse-spark-code`, `RussPalms/MetalFG_dev`, `TheStreamCode/hermes-muse-code`, `TheStreamCode/openclaw-muse-code`, `TheStreamCode/opencode-muse-auth`, `ai-for-developers/awesome-ai-coding-tools`, `aicodedecode/awesome-muse-skills`, `akshat12/herdr-muse`, `alexgaoth/awesome-reverse-engineered`, `alufers/mitmproxy2swagger`, `angletech2026-arch/desktop-sense`, `asheshgoplani/agent-deck`, `bex-co/bex-security`, `bex-co/muse-code-acp`, `braedonsaunders/bb-plugin-provider-muse`, `chaitin/MonkeyCode`, `chendahe666/karpathy-skill`, `curlconverter/curlconverter`, `decodingai-magazine/building-a-coding-agent-from-scratch-course`, `ellistarn/muse`, `facebookincubator/muse-gadget-sdk`, `filipecalegario/awesome-vibe-coding`, `gmickel/flow-next`, `itayinbarr/little-coder`, `j4k0xb/webcrack`, `jhlee0409/claude-code-history-viewer`, `kishormorol/agent-command-atlas`, `leileqiTHU/reverse-cli-anything`, `meta-models/muse-code-sdk`, `meta/zstd`, `microsoft/playwright-mcp`, `nimbalyst/nimbalyst`, `ningbainb/deepseek-harness-desktop`, `org2AI/ORG2`, `pacifio/atlas`, `phuryn/grok-build-vscode`, `robzilla1738/muse-desktop`, `rtk-ai/rtk`, `schemathesis/schemathesis`, `sno-ai/sno-station`, `sno-ai/sno-station-skills`, `subinium/agf`, `termux/termux-api`, `termux/termux-boot`, `termux/termux-tasker`, `timerloggedout-spec/muse-code-sdk_fork`, `timerloggedout-spec/muse_fork-user-persona-import`, `timerloggedout-spec/termux-api_fork`, `timerloggedout-spec/termux-boot_fork`, `tninja/ai-code-interface.el`, `tom-nwachuku/tgl`, `twinnydotdev/twinny`, `verseles/codewalk`, `withkynam/vibecode-pro-max-kit`, `xhluca/session-migrate`, `yigitkonur/cli-continues`, `zhu1090093659/spec_driven_develop`
-- **Removed (2):** `facebook/zstd`, `ph7klw76/github-mcp-server2`
-- **Provenance changed (2):** `frappe/gantt` (starred → issue, starred), `timerloggedout-spec/termux-monorepo` (owned, starred → issue, owned, starred)
+- **Added (3):** `AgenticResourceRegistry/AgenticResourceRegistry`, `timerloggedout-spec/repo-replay`, `vercel-labs/agent-desktop`
+- **Removed (3):** `JasonGuoo/gemini-cli-api`, `Observal/Observal`, `lahfir/agent-desktop`
+- **Provenance changed (0):** —
 
 ## Owned
 
@@ -652,6 +652,7 @@ Observed: `2026-10-29T10:55:52.286678Z`
 | [timerloggedout-spec/remitlend](https://github.com/timerloggedout-spec/remitlend) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/remote-box_fork](https://github.com/timerloggedout-spec/remote-box_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/render-mcp-server_fork](https://github.com/timerloggedout-spec/render-mcp-server_fork) | owned, starred | unclassified | medium | upstream-comparison |
+| [timerloggedout-spec/repo-replay](https://github.com/timerloggedout-spec/repo-replay) | owned | unclassified | medium | — |
 | [timerloggedout-spec/rig_fork](https://github.com/timerloggedout-spec/rig_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/rjsf-validator-cfworker_fork](https://github.com/timerloggedout-spec/rjsf-validator-cfworker_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/rocm-libraries](https://github.com/timerloggedout-spec/rocm-libraries) | owned | unclassified | medium | upstream-comparison |
@@ -1070,7 +1071,6 @@ Observed: `2026-10-29T10:55:52.286678Z`
 | [alphaparkinc/genpark-workspace-skill](https://github.com/alphaparkinc/genpark-workspace-skill) | starred | agent, ai, context | high | — |
 | [alphaparkinc/genpark-zoodata-agent-data-layer-skill](https://github.com/alphaparkinc/genpark-zoodata-agent-data-layer-skill) | starred | agent, ai, context | high | — |
 | [alphaparkinc/openclaw-agentic-commerce-protocol](https://github.com/alphaparkinc/openclaw-agentic-commerce-protocol) | starred | agent, ai, context | high | — |
-| [alphaparkinc/openclaw-genpark-marketing](https://github.com/alphaparkinc/openclaw-genpark-marketing) | starred | agent, ai, context | high | — |
 | [alphaparkinc/openclaw-genpark-voice-shop](https://github.com/alphaparkinc/openclaw-genpark-voice-shop) | starred | agent, ai, context | high | — |
 | [ANative-Lab/EvoAgentX](https://github.com/ANative-Lab/EvoAgentX) | starred | agent, ai, context | high | — |
 | [beltromatti/get-it](https://github.com/beltromatti/get-it) | starred | agent, ai, context | high | — |
@@ -1150,8 +1150,10 @@ Observed: `2026-10-29T10:55:52.286678Z`
 | [brycewang-stanford/StatsPAI](https://github.com/brycewang-stanford/StatsPAI) | starred | agent, ai, context, research | high | dependency-candidate |
 | [samugit83/AutoCodeAgent2.0](https://github.com/samugit83/AutoCodeAgent2.0) | starred, watching | agent, ai, context, research | high | — |
 | [alphaparkinc/genpark-multi-tenant-agent-isolation-sandbox-skill](https://github.com/alphaparkinc/genpark-multi-tenant-agent-isolation-sandbox-skill) | starred | agent, ai, context, security | high | — |
+| [alphaparkinc/openclaw-genpark-marketing](https://github.com/alphaparkinc/openclaw-genpark-marketing) | starred | agent, ai, context, security | high | — |
 | [1jehuang/jcode](https://github.com/1jehuang/jcode) | starred | agent, ai, developer-tools | medium | workflow-candidate |
 | [agent-of-empires/agent-of-empires](https://github.com/agent-of-empires/agent-of-empires) | starred | agent, ai, developer-tools | medium | — |
+| [AgenticResourceRegistry/AgenticResourceRegistry](https://github.com/AgenticResourceRegistry/AgenticResourceRegistry) | starred | agent, ai, developer-tools | medium | — |
 | [aicodedecode/awesome-muse-skills](https://github.com/aicodedecode/awesome-muse-skills) | starred | agent, ai, developer-tools | medium | — |
 | [akshat12/herdr-muse](https://github.com/akshat12/herdr-muse) | starred | agent, ai, developer-tools | medium | — |
 | [alexei-led/ccgram](https://github.com/alexei-led/ccgram) | starred | agent, ai, developer-tools | medium | — |
@@ -1205,7 +1207,6 @@ Observed: `2026-10-29T10:55:52.286678Z`
 | [juan-xin-cai/manus-cli](https://github.com/juan-xin-cai/manus-cli) | starred | agent, ai, developer-tools | medium | — |
 | [Kilo-Org/kilo-marketplace](https://github.com/Kilo-Org/kilo-marketplace) | starred | agent, ai, developer-tools | medium | — |
 | [kishormorol/agent-command-atlas](https://github.com/kishormorol/agent-command-atlas) | starred | agent, ai, developer-tools | medium | — |
-| [lahfir/agent-desktop](https://github.com/lahfir/agent-desktop) | starred | agent, ai, developer-tools | medium | — |
 | [larksuite/cli](https://github.com/larksuite/cli) | starred | agent, ai, developer-tools | medium | — |
 | [Laurenfeminine36/google-jules-skill](https://github.com/Laurenfeminine36/google-jules-skill) | starred | agent, ai, developer-tools | medium | workflow-candidate |
 | [leileqiTHU/reverse-cli-anything](https://github.com/leileqiTHU/reverse-cli-anything) | starred | agent, ai, developer-tools | medium | workflow-candidate |
@@ -1216,7 +1217,6 @@ Observed: `2026-10-29T10:55:52.286678Z`
 | [Manitchahar/jules-foreman](https://github.com/Manitchahar/jules-foreman) | starred | agent, ai, developer-tools | medium | workflow-candidate |
 | [moazbuilds/CodeMachine-CLI](https://github.com/moazbuilds/CodeMachine-CLI) | starred | agent, ai, developer-tools | medium | workflow-candidate |
 | [ningbainb/deepseek-harness-desktop](https://github.com/ningbainb/deepseek-harness-desktop) | starred | agent, ai, developer-tools | medium | — |
-| [Observal/Observal](https://github.com/Observal/Observal) | starred | agent, ai, developer-tools | medium | — |
 | [OpenHands/OpenHands](https://github.com/OpenHands/OpenHands) | starred | agent, ai, developer-tools | medium | — |
 | [org2AI/ORG2](https://github.com/org2AI/ORG2) | starred | agent, ai, developer-tools | medium | — |
 | [pacifio/atlas](https://github.com/pacifio/atlas) | starred | agent, ai, developer-tools | medium | — |
@@ -1245,6 +1245,7 @@ Observed: `2026-10-29T10:55:52.286678Z`
 | [ttxs69/coding-agent-eval](https://github.com/ttxs69/coding-agent-eval) | starred | agent, ai, developer-tools | medium | — |
 | [twinnydotdev/twinny](https://github.com/twinnydotdev/twinny) | starred | agent, ai, developer-tools | medium | — |
 | [vedantnimbarte/Wingman](https://github.com/vedantnimbarte/Wingman) | starred | agent, ai, developer-tools | medium | — |
+| [vercel-labs/agent-desktop](https://github.com/vercel-labs/agent-desktop) | starred | agent, ai, developer-tools | medium | — |
 | [VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills) | starred | agent, ai, developer-tools | medium | — |
 | [voocel/ainovel-cli](https://github.com/voocel/ainovel-cli) | starred | agent, ai, developer-tools | medium | — |
 | [Wbaker7702/cli](https://github.com/Wbaker7702/cli) | starred | agent, ai, developer-tools | medium | upstream-comparison |
@@ -1297,7 +1298,6 @@ Observed: `2026-10-29T10:55:52.286678Z`
 | [timerloggedout-spec/dockashell_fork](https://github.com/timerloggedout-spec/dockashell_fork) | owned, starred | agent, ai, kubernetes | high | upstream-comparison |
 | [timerloggedout-spec/lobehub_fork](https://github.com/timerloggedout-spec/lobehub_fork) | owned, starred | agent, ai, kubernetes | high | upstream-comparison |
 | [AIPexStudio/AIPex](https://github.com/AIPexStudio/AIPex) | starred | agent, ai, kubernetes, browser | high | — |
-| [farion1231/cc-switch](https://github.com/farion1231/cc-switch) | starred | agent, ai, platform | high | — |
 | [mlflow/mlflow](https://github.com/mlflow/mlflow) | starred | agent, ai, platform | high | — |
 | [OrionStarAI/EasyCode](https://github.com/OrionStarAI/EasyCode) | starred | agent, ai, platform | high | — |
 | [phodal/auto-dev](https://github.com/phodal/auto-dev) | starred | agent, ai, platform | high | — |
@@ -1640,7 +1640,6 @@ Observed: `2026-10-29T10:55:52.286678Z`
 | [NVIDIA/TensorRT-LLM](https://github.com/NVIDIA/TensorRT-LLM) | starred | ai | medium | — |
 | [Nyarum/betting](https://github.com/Nyarum/betting) | starred | ai | medium | — |
 | [open-compass/CriticEval](https://github.com/open-compass/CriticEval) | starred | ai | medium | — |
-| [open-saas-directory/awesome-saas-directory](https://github.com/open-saas-directory/awesome-saas-directory) | starred | ai | medium | — |
 | [open-spaced-repetition/fsrs4anki](https://github.com/open-spaced-repetition/fsrs4anki) | starred, watching | ai | medium | — |
 | [openai/evals](https://github.com/openai/evals) | starred | ai | medium | dependency-candidate |
 | [openai/parameter-golf](https://github.com/openai/parameter-golf) | starred | ai | medium | — |
@@ -1990,6 +1989,7 @@ Observed: `2026-10-29T10:55:52.286678Z`
 | [AP3X-Dev/Solana-Casino](https://github.com/AP3X-Dev/Solana-Casino) | starred | ai, platform | high | — |
 | [cornel-pe/crypto-casino-betting-platform](https://github.com/cornel-pe/crypto-casino-betting-platform) | starred | ai, platform | high | — |
 | [dulaiduwang003/comfyui-openrouter-ai](https://github.com/dulaiduwang003/comfyui-openrouter-ai) | starred | ai, platform | high | workflow-candidate |
+| [farion1231/cc-switch](https://github.com/farion1231/cc-switch) | starred | ai, platform | high | — |
 | [gidsola/Mistral-AI-ChatBox](https://github.com/gidsola/Mistral-AI-ChatBox) | starred | ai, platform | high | — |
 | [google-github-actions/get-secretmanager-secrets](https://github.com/google-github-actions/get-secretmanager-secrets) | starred | ai, platform | high | workflow-candidate |
 | [GozaRuu/QGraphDesigner](https://github.com/GozaRuu/QGraphDesigner) | starred | ai, platform | high | — |
@@ -2210,7 +2210,6 @@ Observed: `2026-10-29T10:55:52.286678Z`
 | [ibnjunaid/grafana-cli-jules](https://github.com/ibnjunaid/grafana-cli-jules) | starred | developer-tools | medium | — |
 | [iHildy/google-jules-workflow](https://github.com/iHildy/google-jules-workflow) | starred | developer-tools | medium | workflow-candidate |
 | [ishakaleksandr2-ux/gemini-cli-test-jules](https://github.com/ishakaleksandr2-ux/gemini-cli-test-jules) | starred | developer-tools | medium | — |
-| [JasonGuoo/gemini-cli-api](https://github.com/JasonGuoo/gemini-cli-api) | starred | developer-tools | medium | — |
 | [JasonSteving99/click-clack](https://github.com/JasonSteving99/click-clack) | starred | developer-tools | medium | dependency-candidate |
 | [jchristn/CavemanTcp](https://github.com/jchristn/CavemanTcp) | starred | developer-tools | medium | — |
 | [julesjewels-ai/jules-idea-automation](https://github.com/julesjewels-ai/jules-idea-automation) | starred | developer-tools | medium | — |
@@ -3291,6 +3290,7 @@ Observed: `2026-10-29T10:55:52.286678Z`
 | [open-compass/CompassJudger](https://github.com/open-compass/CompassJudger) | starred | unclassified | medium | — |
 | [open-compass/DevEval](https://github.com/open-compass/DevEval) | starred | unclassified | medium | — |
 | [open-compass/MathBench](https://github.com/open-compass/MathBench) | starred | unclassified | medium | — |
+| [open-saas-directory/awesome-saas-directory](https://github.com/open-saas-directory/awesome-saas-directory) | starred | unclassified | medium | — |
 | [open-spaced-repetition/awesome-fsrs](https://github.com/open-spaced-repetition/awesome-fsrs) | starred | unclassified | medium | — |
 | [open-spaced-repetition/free-spaced-repetition-scheduler](https://github.com/open-spaced-repetition/free-spaced-repetition-scheduler) | starred | unclassified | medium | — |
 | [open-spaced-repetition/fsrs4anki-helper](https://github.com/open-spaced-repetition/fsrs4anki-helper) | starred, watching | unclassified | medium | — |
@@ -4784,7 +4784,6 @@ Observed: `2026-10-29T10:55:52.286678Z`
 | [alphaparkinc/genpark-workspace-skill](https://github.com/alphaparkinc/genpark-workspace-skill) | starred | agent, ai, context | high | — |
 | [alphaparkinc/genpark-zoodata-agent-data-layer-skill](https://github.com/alphaparkinc/genpark-zoodata-agent-data-layer-skill) | starred | agent, ai, context | high | — |
 | [alphaparkinc/openclaw-agentic-commerce-protocol](https://github.com/alphaparkinc/openclaw-agentic-commerce-protocol) | starred | agent, ai, context | high | — |
-| [alphaparkinc/openclaw-genpark-marketing](https://github.com/alphaparkinc/openclaw-genpark-marketing) | starred | agent, ai, context | high | — |
 | [alphaparkinc/openclaw-genpark-voice-shop](https://github.com/alphaparkinc/openclaw-genpark-voice-shop) | starred | agent, ai, context | high | — |
 | [ANative-Lab/EvoAgentX](https://github.com/ANative-Lab/EvoAgentX) | starred | agent, ai, context | high | — |
 | [beltromatti/get-it](https://github.com/beltromatti/get-it) | starred | agent, ai, context | high | — |
@@ -4870,6 +4869,7 @@ Observed: `2026-10-29T10:55:52.286678Z`
 | [brycewang-stanford/StatsPAI](https://github.com/brycewang-stanford/StatsPAI) | starred | agent, ai, context, research | high | dependency-candidate |
 | [samugit83/AutoCodeAgent2.0](https://github.com/samugit83/AutoCodeAgent2.0) | starred, watching | agent, ai, context, research | high | — |
 | [alphaparkinc/genpark-multi-tenant-agent-isolation-sandbox-skill](https://github.com/alphaparkinc/genpark-multi-tenant-agent-isolation-sandbox-skill) | starred | agent, ai, context, security | high | — |
+| [alphaparkinc/openclaw-genpark-marketing](https://github.com/alphaparkinc/openclaw-genpark-marketing) | starred | agent, ai, context, security | high | — |
 | [cheaper-inference/OmniRoute](https://github.com/cheaper-inference/OmniRoute) | starred | agent, ai, developer-tools, api-management | high | — |
 | [Dicklesworthstone/ntm](https://github.com/Dicklesworthstone/ntm) | starred | agent, ai, developer-tools, api-management | high | — |
 | [kalil0321/reverse-api-engineer](https://github.com/kalil0321/reverse-api-engineer) | starred | agent, ai, developer-tools, api-management, browser | high | — |
@@ -4894,7 +4894,6 @@ Observed: `2026-10-29T10:55:52.286678Z`
 | [timerloggedout-spec/dockashell_fork](https://github.com/timerloggedout-spec/dockashell_fork) | owned, starred | agent, ai, kubernetes | high | upstream-comparison |
 | [timerloggedout-spec/lobehub_fork](https://github.com/timerloggedout-spec/lobehub_fork) | owned, starred | agent, ai, kubernetes | high | upstream-comparison |
 | [AIPexStudio/AIPex](https://github.com/AIPexStudio/AIPex) | starred | agent, ai, kubernetes, browser | high | — |
-| [farion1231/cc-switch](https://github.com/farion1231/cc-switch) | starred | agent, ai, platform | high | — |
 | [mlflow/mlflow](https://github.com/mlflow/mlflow) | starred | agent, ai, platform | high | — |
 | [OrionStarAI/EasyCode](https://github.com/OrionStarAI/EasyCode) | starred | agent, ai, platform | high | — |
 | [phodal/auto-dev](https://github.com/phodal/auto-dev) | starred | agent, ai, platform | high | — |
@@ -5071,6 +5070,7 @@ Observed: `2026-10-29T10:55:52.286678Z`
 | [AP3X-Dev/Solana-Casino](https://github.com/AP3X-Dev/Solana-Casino) | starred | ai, platform | high | — |
 | [cornel-pe/crypto-casino-betting-platform](https://github.com/cornel-pe/crypto-casino-betting-platform) | starred | ai, platform | high | — |
 | [dulaiduwang003/comfyui-openrouter-ai](https://github.com/dulaiduwang003/comfyui-openrouter-ai) | starred | ai, platform | high | workflow-candidate |
+| [farion1231/cc-switch](https://github.com/farion1231/cc-switch) | starred | ai, platform | high | — |
 | [gidsola/Mistral-AI-ChatBox](https://github.com/gidsola/Mistral-AI-ChatBox) | starred | ai, platform | high | — |
 | [google-github-actions/get-secretmanager-secrets](https://github.com/google-github-actions/get-secretmanager-secrets) | starred | ai, platform | high | workflow-candidate |
 | [GozaRuu/QGraphDesigner](https://github.com/GozaRuu/QGraphDesigner) | starred | ai, platform | high | — |

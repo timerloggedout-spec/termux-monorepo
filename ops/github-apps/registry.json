@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "registry_id": "termux-github-app-fleet",
+  "purpose": "Discoverable, non-secret registry of GitHub Apps used by the Termux integration mesh. Declared configuration is not proof of live installation permissions.",
+  "source_of_truth_policy": {
+    "declared_permissions": "ops/github-apps/<app>/manifest.json",
+    "profile_and_installation_claims": "ops/github-apps/<app>/PROFILE.md",
+    "observed_state": "generated telemetry artifact from github-app-telemetry workflow",
+    "secret_values": "never collect, serialize, log, or upload"
+  },
+  "apps": [
+    {
+      "slug": "termux-fleet-collector",
+      "display_name": "Termux Fleet Collector",
+      "app_id": 5535733,
+      "profile_path": "ops/github-apps/collector-pilot/PROFILE.md",
+      "manifest_path": "ops/github-apps/collector-pilot/manifest.json",
+      "homepage": "https://github.com/timerloggedout-spec/termux-monorepo",
+      "purpose": "Read-only collection, quota readings, feed collection, evidence harvest",
+      "pilot": true,
+      "declared_permissions": {
+        "metadata": "read",
+        "contents": "read",
+        "pull_requests": "read",
+        "issues": "read",
+        "checks": "read",
+        "actions": "read"
+      },
+      "declared_events": [],
+      "expected_installations": [
+        {
+          "account": "timerloggedout-spec",
+          "installation_id": 176747357,
+          "repositories": [
+            "timerloggedout-spec/termux-monorepo"
+          ]
+        }
+      ],
+      "observability": {
+        "runtime_token_mint": "not_instrumented",
+        "installation_scope_probe": "not_instrumented",
+        "rate_limit_probe": "not_instrumented",
+        "live_permission_readback": "not_established",
+        "installation_lifecycle_events": "not_configured"
+      },
+      "promotion_gates": [
+        "Verify active installation and repository scope using installation-authenticated evidence.",
+        "Verify active permission grants separately from manifest declarations.",
+        "Instrument token-mint outcome, API status counts, rate-limit remaining/reset, and collector run identity without recording credentials.",
+        "Prove a real collector batch uses the app token and does not consume the PAT bucket.",
+        "Pass negative-path tests for missing credentials, revoked installation, inaccessible repository, and permission drift."
+      ]
+    }
+  ]
+}

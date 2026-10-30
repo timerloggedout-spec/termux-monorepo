@@ -425,7 +425,7 @@ this log is the human view of the same verified state.
 
 ### D2 — for C2, Vultr Agent Rush (Foundry entry) — IN PROGRESS
 
-<!-- countdown-data:D2 opens=2026-11-05T00:00:00-08:00 closes=2026-11-08T15:00:00-08:00 -->
+<!-- countdown-data:D2 opens=2026-11-03T15:00:00Z closes=2026-11-08T15:00:00-08:00 -->
 <!-- countdown:D2 -->⏳ opens in 7d 12h (computed 2026-10-28 12:55 PT)<!-- /countdown:D2 -->
 
 `entrant{entrantLablabAi}[platform:lablab-ai]` + `entrant{entrantVultr}[platform:vultr]`

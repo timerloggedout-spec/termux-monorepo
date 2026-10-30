@@ -220,18 +220,18 @@ this log is the human view of the same verified state.
 | Entry | State | Window (PT) | Gate |
 |-------|-------|-------------|------|
 | D0 | DONE (completed 2026-10-27) | closed Oct 26 | — |
-| D1 | IN PROGRESS — window OPEN; concept set STOPPED 2026-10-28 (tainted); pick pending owner freeze: StudySprint; FIRST deadline — priority up | closes Nov 4 23:59 | **G-07 Builder profile — PARTIAL 2026-10-29**: avatar SET (4n0nS3C live, verified); sign-in route resolved (GitHub-linked); About (prepared text rejected by AWS moderation ×2) + social link (save forces First/Last/State — 4n0n carve-out) = owner decisions pending + in-window workshop badge evidence |
+| D1 | IN PROGRESS — window OPEN; concept set STOPPED 2026-10-28 (tainted); pick pending owner freeze: StudySprint; FIRST deadline — priority up | closes Nov 4 23:59 | **G-07 Builder profile — CLEARED 2026-10-29** (all 5 mandatory fields live, verified on the public profile 17:10 PT: 4n0nS3C avatar + About bisection text + GitHub link; forced save fields = least-specific values) — remaining D1 gate: in-window workshop badge evidence |
 | D2 | IN PROGRESS — Nov 5–8 build PRIMARY over D3 final weekend; **registration execution = this lane (handed over 2026-10-29 with recon)** | opens Nov 5; closes Nov 8 15:00 | no-card path only (lablab + Discord + Vultr sandbox) |
 | D3 | Concept #42 QUESTIONED 2026-10-28 — under review, NOT killed, NOT the active build; pick pending owner freeze: ListingLens; core build Oct 30–Nov 1, final weekend polish/Clips only | closes Nov 9 23:59 (official schedule moved; corrected 2026-10-28) | Clips account ✓ created 2026-10-27 (held for the regenerated concept) |
 | D4 | REGISTERING — Devpost profile COMPLETE 2026-10-29 (timerloggedout); Kiro account exists (no editable fields); Kiroween registration + exact Kiro ID still blocked | eligibility opens Oct 30 13:00 PDT; closes Dec 4 14:00 | no project creation before the window opens |
 | D5 | REGISTERED — spot pending review | opens Nov 17 9:00 AM; closes Nov 19 12:00 PT (official Contest Rules) | spot confirmation email |
 
-<!-- countdown:BLOCK -->⏳ countdowns — D0: CLOSED · D1: closes in 7d 12h · D2: opens in 7d 12h (closes Nov 8 15:00 PT) · D3: closes in 12d 12h · D4: opens in 2d 0h (closes Dec 4 14:00 PT) · D5: opens in 19d 21h (closes Nov 19 12:00 PT) (computed 2026-10-28 12:55 PT)<!-- /countdown:BLOCK -->
+<!-- countdown:BLOCK -->⏳ countdowns — D0: CLOSED · D1: closes in 6d 5h · D2: opens in 6d 5h (closes Nov 8 15:00 PT) · D3: closes in 11d 5h · D4: opens in 17h 52m (closes Dec 4 14:00 PT) · D5: opens in 18d 14h (closes Nov 19 12:00 PT) (computed 2026-10-29 19:07 PT)<!-- /countdown:BLOCK -->
 
 ### D0 — for R2, Weekend Challenge: Give your Agent a Tool — COMPLETED 2026-10-27 (owner ruling 2026-10-27; date set: Oct 29)
 
 <!-- countdown-data:D0 opens=- closes=2026-10-26T13:00:00-07:00 -->
-<!-- countdown:D0 -->⏳ CLOSED (computed 2026-10-28 12:55 PT)<!-- /countdown:D0 -->
+<!-- countdown:D0 -->⏳ CLOSED (computed 2026-10-29 19:07 PT)<!-- /countdown:D0 -->
 
 `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]`
 
@@ -293,7 +293,7 @@ this log is the human view of the same verified state.
 ### D1 — for C1, Workshop to Ship — IN PROGRESS (owner already joined) — CONCEPT SET STOPPED 2026-10-28 (brief-first regeneration pending)
 
 <!-- countdown-data:D1 opens=2026-10-28T00:00:00-07:00 closes=2026-11-04T23:59:00-08:00 -->
-<!-- countdown:D1 -->⏳ closes in 7d 12h (computed 2026-10-28 12:55 PT)<!-- /countdown:D1 -->
+<!-- countdown:D1 -->⏳ closes in 6d 5h (computed 2026-10-29 19:07 PT)<!-- /countdown:D1 -->
 
 `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]`
 
@@ -358,7 +358,7 @@ this log is the human view of the same verified state.
 ### D2 — for C2, Vultr Agent Rush (Foundry entry) — IN PROGRESS
 
 <!-- countdown-data:D2 opens=2026-11-05T00:00:00-08:00 closes=2026-11-08T15:00:00-08:00 -->
-<!-- countdown:D2 -->⏳ opens in 7d 12h (computed 2026-10-28 12:55 PT)<!-- /countdown:D2 -->
+<!-- countdown:D2 -->⏳ opens in 6d 5h (computed 2026-10-29 19:07 PT)<!-- /countdown:D2 -->
 
 `entrant{entrantLablabAi}[platform:lablab-ai]` + `entrant{entrantVultr}[platform:vultr]`
 
@@ -399,7 +399,7 @@ this log is the human view of the same verified state.
 ### D3 — for C3, Builder.io Agent-Native Hackathon — concept #42 QUESTIONED 2026-10-28 (under review; not the active build)
 
 <!-- countdown-data:D3 opens=- closes=2026-11-09T23:59:00-08:00 -->
-<!-- countdown:D3 -->⏳ closes in 12d 12h (computed 2026-10-28 12:55 PT)<!-- /countdown:D3 -->
+<!-- countdown:D3 -->⏳ closes in 11d 5h (computed 2026-10-29 19:07 PT)<!-- /countdown:D3 -->
 
 `entrant{entrantBuilderIo}[platform:builder-io]`
 
@@ -495,7 +495,7 @@ this log is the human view of the same verified state.
 ### D4 — for C4, Kiroween 2026 — REGISTERING (build sequenced after Nov 8)
 
 <!-- countdown-data:D4 opens=2026-10-30T13:00:00-07:00 closes=2026-12-04T14:00:00-08:00 -->
-<!-- countdown:D4 -->⏳ opens in 2d 0h (computed 2026-10-28 12:55 PT)<!-- /countdown:D4 -->
+<!-- countdown:D4 -->⏳ opens in 17h 52m (computed 2026-10-29 19:07 PT)<!-- /countdown:D4 -->
 
 `entrant{entrantDevpost}[platform:devpost]` + `entrant{entrantKiro}[platform:kiro]` — account creation owned by the dedicated Devpost + Kiro ID creation chat (owner order 2026-10-27, fleet Google identity route); registration completes with this lane on its handoff.
 
@@ -555,7 +555,7 @@ this log is the human view of the same verified state.
 ### D5 — for Aha! AI Builder Day Hackathon (Aha.io) — REGISTERED 2026-10-27 (spot pending review)
 
 <!-- countdown-data:D5 opens=2026-11-17T09:00:00-08:00 closes=2026-11-19T12:00:00-08:00 -->
-<!-- countdown:D5 -->⏳ opens in 19d 21h (computed 2026-10-28 12:55 PT)<!-- /countdown:D5 -->
+<!-- countdown:D5 -->⏳ opens in 18d 14h (computed 2026-10-29 19:07 PT)<!-- /countdown:D5 -->
 
 `entrant{n0nAha}[platform:aha-io]` (assigned via the registry process,
 PR #1970 merged 2e99fadd).

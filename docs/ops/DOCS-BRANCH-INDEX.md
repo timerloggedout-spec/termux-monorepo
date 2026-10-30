@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-10-29T13:00:21Z` UTC  
+**Generated:** `2026-10-30T05:11:51Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 173 docs-lane branch(es)
+**Count:** 175 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -143,6 +143,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/pr-scope-discipline-ce22`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/pr-scope-discipline-ce22) | `a68300477966` | — | — | orphan lane |
 | [`docs/preflight-remove-phantom-check-action`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/preflight-remove-phantom-check-action) | `b622610948b2` | — | — | orphan lane |
 | [`docs/probing-means-finding-doms`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/probing-means-finding-doms) | `e0a3262a087c` | — | — | orphan lane |
+| [`docs/profile-completion-method`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/profile-completion-method) | `d1c59273ee52` | — | — | orphan lane |
 | [`docs/profile-registry`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/profile-registry) | `639f2fceed23` | — | — | orphan lane |
 | [`docs/project-status-provider-museai-2026-10-21`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/project-status-provider-museai-2026-10-21) | `8a965e78eba4` | — | — | orphan lane |
 | [`docs/promote-archwiz-to-master`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/promote-archwiz-to-master) | `70bfdeff314a` | — | — | orphan lane |
@@ -164,6 +165,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/readme-upgrade-claude-entry-ates-deploy`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/readme-upgrade-claude-entry-ates-deploy) | `e1d997a85cac` | — | — | orphan lane |
 | [`docs/record-issue-192-promotion`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/record-issue-192-promotion) | `64f2a4139a83` | — | — | orphan lane |
 | [`docs/refocus-do-framing-rfp-1643`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/refocus-do-framing-rfp-1643) | `30433bacf793` | — | — | orphan lane |
+| [`docs/repo-replay-import-2026-10-29`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/repo-replay-import-2026-10-29) | `797c26349e67` | — | — | orphan lane |
 | [`docs/research-paper-wallet-proposals-20261022`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/research-paper-wallet-proposals-20261022) | `7f18ff5b20e9` | [#1531](https://github.com/timerloggedout-spec/termux-monorepo/pull/1531)→`master` | — | PR without registry link |
 | [`docs/retroactive-automation-review-pr390`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/retroactive-automation-review-pr390) | `366215c87a6b` | — | — | orphan lane |
 | [`docs/rl-05-status-2026-08-09`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/rl-05-status-2026-08-09) | `736a459ba488` | — | — | orphan lane |

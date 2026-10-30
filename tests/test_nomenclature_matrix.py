@@ -75,6 +75,13 @@ class NomenclatureMatrixTests(unittest.TestCase):
         bad["evidence_records"][0]["assertion_id"] = "missing-label"
         self.assertTrue(any("unknown assertion" in e for e in MODULE.validate(bad)))
 
+    def test_retrieval_date_must_use_canonical_iso_format(self):
+        for retrieved_on in ("20261027", "2026-1-27", "2026-02-30"):
+            with self.subTest(retrieved_on=retrieved_on):
+                bad = json.loads(json.dumps(self.data))
+                bad["evidence_records"][0]["retrieved_on"] = retrieved_on
+                self.assertTrue(any("expected YYYY-MM-DD" in e for e in MODULE.validate(bad)))
+
     def test_accepted_evidence_requires_reviewer(self):
         bad = json.loads(json.dumps(self.data))
         bad["evidence_records"][0].update(status="accepted", reviewer=None)

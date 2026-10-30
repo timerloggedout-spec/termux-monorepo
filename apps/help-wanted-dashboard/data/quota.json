@@ -1,6 +1,6 @@
 {
   "schema": "3l0.quota-readings.v1",
-  "generated_at": "2026-10-28T23:36:07.194574+00:00",
+  "generated_at": "2026-10-30T02:47:00.930298+00:00",
   "source": "Converted from the quota probe's status-only public projection (quota-public-status) through the generated-file path; not a live quota feed. The projection withholds account values by design, so every converted row carries used null and reset null.",
   "readings": [
     {
@@ -25,11 +25,23 @@
       "note": "Probe-derived status from a private live read; account values are withheld from the public projection. Converted through the generated-file path.",
       "evidence_status": "confirmed",
       "horizon": "H0",
-      "observed_at": "2026-10-28T23:36:07.194574+00:00"
+      "observed_at": "2026-10-30T02:47:00.930298+00:00"
+    },
+    {
+      "resource_id": "github.api.app_collector",
+      "status": "unknown",
+      "used": null,
+      "limit": 5000,
+      "unit": "requests/hour/installation",
+      "reset": null,
+      "note": "Probe run did not observe this service; no account state is published.",
+      "evidence_status": "early_signal",
+      "horizon": "H1",
+      "observed_at": null
     },
     {
       "resource_id": "github.api.github_token",
-      "status": "watch",
+      "status": "ok",
       "used": null,
       "limit": 1000,
       "unit": "requests/hour/repo",
@@ -37,7 +49,7 @@
       "note": "Probe-derived status from a private live read; account values are withheld from the public projection. Converted through the generated-file path.",
       "evidence_status": "confirmed",
       "horizon": "H0",
-      "observed_at": "2026-10-28T23:36:07.194574+00:00"
+      "observed_at": "2026-10-30T02:47:00.930298+00:00"
     },
     {
       "resource_id": "github.api.user_token",
@@ -85,7 +97,7 @@
       "note": "Probe-derived status from a private live read; account values are withheld from the public projection. Converted through the generated-file path.",
       "evidence_status": "confirmed",
       "horizon": "H0",
-      "observed_at": "2026-10-28T23:36:07.194574+00:00"
+      "observed_at": "2026-10-30T02:47:00.930298+00:00"
     },
     {
       "resource_id": "vercel.build_time",
@@ -217,7 +229,7 @@
       "note": "Probe run observed this service privately (private_preflight); account values and the real status are withheld from the public projection, so the public row is unknown. Private authoritative preflight required.",
       "evidence_status": "confirmed",
       "horizon": "H0",
-      "observed_at": "2026-10-28T23:36:07.194574+00:00"
+      "observed_at": "2026-10-30T02:47:00.930298+00:00"
     },
     {
       "resource_id": "gemini.api_free",
@@ -253,7 +265,7 @@
       "note": "Probe run did not observe this service; no account state is published.",
       "evidence_status": "confirmed",
       "horizon": "H0",
-      "observed_at": "2026-10-28T23:36:07.194574+00:00"
+      "observed_at": "2026-10-30T02:47:00.930298+00:00"
     },
     {
       "resource_id": "g4f.vendors",
@@ -1081,7 +1093,7 @@
       "note": "Probe run did not observe this service; no account state is published.",
       "evidence_status": "confirmed",
       "horizon": "H0",
-      "observed_at": "2026-10-28T23:36:07.194574+00:00"
+      "observed_at": "2026-10-30T02:47:00.930298+00:00"
     },
     {
       "resource_id": "pinecone.storage",

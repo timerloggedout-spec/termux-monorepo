@@ -1,6 +1,6 @@
 {
   "schema": "quota-allocations-feed/v1",
-  "generated_at": "2026-10-30T02:23:55.691719+00:00",
+  "generated_at": "2026-10-30T02:48:01.965209+00:00",
   "source": "ops/quota/allocations.json (owner-set, issue #1884) joined with ops/quota/registry.json entitlements and the public readings snapshot; entitlements are not usage and no focus attribution is invented.",
   "issue": 1884,
   "set_by": "owner",
@@ -1951,7 +1951,7 @@
             "status": "ok",
             "horizon": "H0",
             "evidence_status": "confirmed",
-            "observed_at": "2026-10-28T23:36:07.194574+00:00",
+            "observed_at": "2026-10-30T02:47:00.930298+00:00",
             "used": null
           }
         },
@@ -1977,7 +1977,13 @@
             "unit": "requests/hour/installation",
             "window": "hourly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "early_signal",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "github.api.github_token",
@@ -1987,10 +1993,10 @@
             "window": "hourly"
           },
           "observed": {
-            "status": "watch",
+            "status": "ok",
             "horizon": "H0",
             "evidence_status": "confirmed",
-            "observed_at": "2026-10-28T23:36:07.194574+00:00",
+            "observed_at": "2026-10-30T02:47:00.930298+00:00",
             "used": null
           }
         },
@@ -2317,7 +2323,7 @@
             "status": "unknown",
             "horizon": "H0",
             "evidence_status": "confirmed",
-            "observed_at": "2026-10-28T23:36:07.194574+00:00",
+            "observed_at": "2026-10-30T02:47:00.930298+00:00",
             "used": null
           }
         },
@@ -2960,7 +2966,7 @@
             "status": "unknown",
             "horizon": "H0",
             "evidence_status": "confirmed",
-            "observed_at": "2026-10-28T23:36:07.194574+00:00",
+            "observed_at": "2026-10-30T02:47:00.930298+00:00",
             "used": null
           }
         },
@@ -2975,7 +2981,7 @@
             "status": "unknown",
             "horizon": "H0",
             "evidence_status": "confirmed",
-            "observed_at": "2026-10-28T23:36:07.194574+00:00",
+            "observed_at": "2026-10-30T02:47:00.930298+00:00",
             "used": null
           }
         }
@@ -4025,7 +4031,7 @@
             "status": "ok",
             "horizon": "H0",
             "evidence_status": "confirmed",
-            "observed_at": "2026-10-28T23:36:07.194574+00:00",
+            "observed_at": "2026-10-30T02:47:00.930298+00:00",
             "used": null
           }
         }

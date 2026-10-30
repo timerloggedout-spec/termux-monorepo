@@ -1,5 +1,5 @@
 ================================================================================
- QUOTA  termux-monorepo  (156 registry records)
+ QUOTA  termux-monorepo  (157 registry records)
  Snapshot generated (not observation time): 2026-10-30T02:47:00.930298+00:00
  Source: apps/help-wanted-dashboard/data/quota.json + ops/quota/registry.json
  Limits are documented entitlements, not balances.
@@ -667,7 +667,7 @@
     reset: calendar month
     Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
- github (9)
+ github (10)
   github.actions.cache
     status: OK
     limit (documented): 10 GB
@@ -687,6 +687,14 @@
     Collector, app 5535733, installation 176747357, termux-monorepo only) |
     window: hourly | reset: x-ratelimit-reset header
     Public evidence state only; no account balance or runtime admission implied.
+  github.api.app_publisher
+    status: No live reading
+    limit (documented): 5000 requests/hour/installation
+    metric: REST requests via GitHub App installation token (Termux Fleet
+    Publisher, app 5537873, installation 176799777, WRITE:
+    contents+pull_requests) | window: hourly | reset: x-ratelimit-reset header
+    No live reading (live source: GET /rate_limit (installation token via
+    scripts/github_app_token.py))
   github.api.github_token
     status: OK
     limit (documented): 1000 requests/hour/repo
@@ -1194,6 +1202,6 @@
   zai: Manager / ChronoMancer; official_documentation_only; no passive parser;
   registry: zai.free_models
  Coverage and quota checks do not grant runtime admission.
- 156 registry records | 0 alert(s) | 156 with a reported reading | 0 with No
+ 157 registry records | 0 alert(s) | 156 with a reported reading | 1 with No
  live reading
 ================================================================================

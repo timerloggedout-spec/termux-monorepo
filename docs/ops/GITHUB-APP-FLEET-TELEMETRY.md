@@ -11,7 +11,7 @@ Make provisioned GitHub Apps discoverable even when they emit no check suites, c
 
 - `ops/github-apps/registry.json`: non-secret app registry, canonical manifest pointers, expected installation scope, promotion gates, and four role slots reported by the owner as in flight but not independently verified.
 - `scripts/github/github_app_telemetry.py`: validates registry structure and derives permissions/events directly from each referenced manifest (manifest is the declared-permission SSOT). Optional manual probes require an explicit registry slug binding, apply evidence only to that app, and paginate the full installation repository list; incomplete pagination is never marked observed. Credentials are never serialized.
-- `scripts/github/test_github_app_telemetry.py`: tests manifest-derived permissions/events, role-state labeling, duplicate slugs, invalid manifest data, successful/failed probes, and token redaction.
+- `scripts/github/test_github_app_telemetry.py`: tests manifest-derived permissions/events, role-state labeling, duplicate slugs, invalid manifest data, successful/failed probes, token redaction, and the G4 receipt contract.
 - `scripts/github/integration_mesh_poll.py`: adds the checked-in app registry and manifest declarations to the existing census. Registry changes become structural diffs. Old snapshots without this field remain compatible; unavailable registry data is degraded, never interpreted as removal.
 - `scripts/github/test_integration_mesh_poll.py`: tests registry census, change detection, old-cache compatibility, and degraded-state handling.
 - `.github/workflows/github-app-telemetry.yml`: PR validation and manual dispatch. The weekly schedule is deliberately disabled until the shared Actions quota is confirmed; the workflow currently emits declaration-only evidence.
@@ -21,6 +21,10 @@ Make provisioned GitHub Apps discoverable even when they emit no check suites, c
 The owner reports four additional apps are in flight. The registry records role candidates for publisher, reviewer-ops, gate-ci, and lifecycle as `owner_reported_in_flight_unverified`. It deliberately does not invent App IDs, installations, live permissions, or credentials.
 
 **Reconciliation required:** the current `ops/github-apps/PROCESS.json` naming section still marks these candidate slugs as conference draft / DO NOT PROVISION pending naming conference and owner close. The provisioning/AppID lane must reconcile that record before any candidate slug is treated as final or any workflow begins minting tokens. This telemetry registry is not permission to bypass that gate.
+
+## G4 runtime receipt contract
+
+`docs/ops/GITHUB-APP-G4-RUNTIME-RECEIPT.schema.json` defines the sanitized receipt required by the landed #2415 amendment. `validate_g4_receipt()` enforces the same required fields and rejects unknown fields (including credential-bearing additions): mint outcome, rate-limit before/after, API calls by HTTP status, repositories inspected, workflow run ID/attempt/head SHA, duration, conclusion, and timestamp. This is a contract validator only; it does not mint credentials or manufacture observations. Runtime receipt generation remains gated on SEC-02 and the sanctioned short-lived token path.
 
 ## Evidence contract
 
@@ -61,7 +65,7 @@ Every field must distinguish unknown from empty. Missing sections and partial AP
 - [ ] Resolve SEC-01: verify whether `APP_PRIVATE_KEY` is actually provisioned at the correct scope; the referenced name is not proof.
 - [ ] Resolve SEC-02: verify per-app secret names before any workflow references them.
 - [ ] Use the sanctioned minter or SHA-pinned token action only after provisioning is verified.
-- [ ] Capture token-mint outcome, rate-limit readings, workflow run ID/attempt/SHA, duration/conclusion, and API status counts without credentials.
+- [x] Define and validate the sanitized G4 runtime receipt contract; runtime generation remains blocked until SEC-02 and sanctioned mint wiring are verified.
 - [ ] Read back active installation scope and effective permissions; compare them with manifest declarations.
 - [ ] Pass migration gates G1–G5 for each workflow before cutover, including shadow parity, bucket proof, and one-cycle fallback.
 

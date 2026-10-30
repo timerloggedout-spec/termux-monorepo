@@ -1,6 +1,11 @@
 name: context relationship Linear freshness
 
+# Cadence (2026-10-29): daily schedule added — read-only, summary-only,
+# self-skips when LINEAR_API_KEY is absent. Was the one dispatch-only
+# periodic monitor with no cadence owner in the fleet-wide auto survey.
 on:
+  schedule:
+    - cron: '23 6 * * *'
   workflow_dispatch:
     inputs:
       max_issues:
@@ -34,7 +39,7 @@ jobs:
       - name: Fetch bounded Linear metadata and compare explicit GitHub links
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
-          MAX_ISSUES: ${{ inputs.max_issues }}
+          MAX_ISSUES: ${{ inputs.max_issues || '100' }}
           GITHUB_OWNER: ${{ github.repository_owner }}
           GITHUB_REPO: ${{ github.event.repository.name }}
         run: |

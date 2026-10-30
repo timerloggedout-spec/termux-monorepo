@@ -1,0 +1,68 @@
+name: GitHub App Collector Mint Probe
+
+# Manual proof that Actions-side minting for Termux Fleet Collector works:
+# mints a short-lived installation token from the provisioned repo secret
+# (TERMUX_FLEET_COLLECTOR_PRIVATE_KEY) + client-id variable, then records
+# the app bucket reading and installation scope as a runtime receipt
+# (migration plan docs/ops/GITHUB-APP-MIGRATION-PLAN.md gate G4).
+# Read-only: creates no checks, comments, branches, commits, or PRs.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-app-collector-mint-probe
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    name: Mint Collector token and record receipt
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Validate credential inputs are configured
+        env:
+          APP_CLIENT_ID: ${{ vars.TERMUX_FLEET_COLLECTOR_CLIENT_ID }}
+          APP_PRIVATE_KEY: ${{ secrets.TERMUX_FLEET_COLLECTOR_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          test -n "${APP_CLIENT_ID}" || { echo "TERMUX_FLEET_COLLECTOR_CLIENT_ID repository variable is missing." >&2; exit 2; }
+          test -n "${APP_PRIVATE_KEY}" || { echo "TERMUX_FLEET_COLLECTOR_PRIVATE_KEY repository secret is missing." >&2; exit 2; }
+
+      - name: Mint short-lived installation token
+        id: app-token
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3 release
+        with:
+          client-id: ${{ vars.TERMUX_FLEET_COLLECTOR_CLIENT_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_COLLECTOR_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
+
+      - name: Record runtime receipt (rate limit + installation scope)
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, subprocess
+
+          def api(path):
+              return json.loads(subprocess.check_output(
+                  ["gh", "api", path], text=True,
+                  env={**os.environ}))
+
+          limits = api("/rate_limit")["resources"]["core"]
+          repos = api("/installation/repositories?per_page=100")
+          names = [r["full_name"] for r in repos.get("repositories", [])]
+          print(f"app bucket: limit={limits['limit']} remaining={limits['remaining']} reset={limits['reset']}")
+          print(f"installation scope: {names}")
+          assert limits["limit"] == 5000, "unexpected app bucket limit"
+          assert "timerloggedout-spec/termux-monorepo" in names, "repo not in installation scope"
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as fh:
+              fh.write("## GitHub App Collector mint probe — runtime receipt\n\n")
+              fh.write(f"- App bucket: limit={limits['limit']} remaining={limits['remaining']} reset={limits['reset']}\n")
+              fh.write(f"- Installation scope: {', '.join(names)}\n")
+              fh.write("- Installation token: short-lived and runtime-only; no repository mutation attempted\n")
+          PY

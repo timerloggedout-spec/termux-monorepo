@@ -25,7 +25,7 @@ mechanism below lives in a GitHub Workflow, never a local daemon or cron.
 | Custody | `custom.github-app-collector/keys/collector.pem`, 0600, dir 0700; SHA-256 fingerprint `3dfa81bd…c488d2a` recorded in that connector's CONNECTOR.md | AppID lane transfer 2026-10-30 |
 | Adoption | **PENDING — 0 production workflows run on an app token.** PAT-driven collectors are still production (owner DISTRIBUTED test: tested ∧ installed ∧ production-replacement of parity structures ⇒ not yet distributed) | workflow scan 2026-10-30 |
 | Workflow surface | 257 workflows on master | Actions API via app token |
-| In-flight probe | `.github/workflows/github-app-capability-probe.yml` already mints via `actions/create-github-app-token` from a repo secret named `APP_PRIVATE_KEY`; whether that secret is provisioned is **NOT ESTABLISHED** (AppID lane D3 check owns it — a referenced name is not a provisioned name) | workflow source |
+| In-flight probe | `.github/workflows/github-app-capability-probe.yml` mints via `actions/create-github-app-token` from `APP_PRIVATE_KEY` / `APP_CLIENT_ID` — those names belong to that probe's **Checks:write** app (PR #800 lineage), **not** the Collector; not provisioned, and never to be provisioned with the Collector PEM (identity separation, resolved 2026-10-30, MIGRATION-ITEMS SEC-01). The Collector's own Actions pair is `TERMUX_FLEET_COLLECTOR_PRIVATE_KEY` + `TERMUX_FLEET_COLLECTOR_CLIENT_ID` (SEC-02), proven by `github-app-collector-mint-probe.yml` | workflow sources |
 
 Slate when built (build order per AppID lane): Collector + Publisher +
 Reviewer-ops + Gate/CI + Lifecycle = **5 principals × 5000/h = 25,000/h

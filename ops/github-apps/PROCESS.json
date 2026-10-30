@@ -316,6 +316,7 @@
    {
     "app": "Termux Fleet Collector",
     "app_id": 5535733,
+    "avatar": "uploaded 2026-10-29 (collector-pilot package avatar.png)",
     "client_id": "Iv23liKMLj976ok6Cn3D",
     "installation": 176747357,
     "installation_repositories": [
@@ -338,6 +339,7 @@
    {
     "app": "Termux Fleet Publisher",
     "app_id": 5537873,
+    "avatar": "uploaded 2026-10-30 (package avatar.png)",
     "client_id": "Iv23li4m16A2EEmBagCF",
     "covers": "publishes, merges, coordination comments (cadence bundle 2026-10-29: issues:write added for comments)",
     "custody": "transferred 2026-10-30 to custom.github-app-publisher/keys/ (0600); pubkey fp 4f5515eb9456f22ddc2ba929be62194484528d124343fe9ede0aa062baee3fa3; rotation due 2027-04-30",
@@ -368,6 +370,7 @@
    {
     "app": "Termux Fleet Reviewer",
     "app_id": 5539430,
+    "avatar": "uploaded 2026-10-30 (package avatar.png)",
     "client_id": "Iv23liLbX6zqTUyL8oX6",
     "covers": "peer-review orchestrator polling + review comments off PAT (<=180/h/event)",
     "custody": "custom.github-app-reviewer/keys/ (0600, dir 0700); pubkey fp 79e7e6283c46e95bbf3b6af0d092d2b7a131ebcb01b44d89b44fb9e7a6c5585f; rotation due 2027-04-30",
@@ -386,6 +389,7 @@
    {
     "app": "Termux Fleet Gate",
     "app_id": 5539499,
+    "avatar": "uploaded 2026-10-30 (package avatar.png)",
     "client_id": "Iv23li0uADFck24vzQfg",
     "covers": "gate annotations + status posts (repo-gate, ECC-class)",
     "custody": "custom.github-app-gate/keys/ (0600, dir 0700); pubkey fp c481b7b73b336dfc491d6576ed18831253c5023608157ce6c0dfe611ce94a1bf; rotation due 2027-04-30",
@@ -403,6 +407,7 @@
    {
     "app": "Termux Fleet Lifecycle",
     "app_id": 5539639,
+    "avatar": "uploaded 2026-10-30 (package avatar.png)",
     "client_id": "Iv23lig75eVTdlSG4htY",
     "covers": "issue lifecycle/triage sweeps, GAP-ledger sweeps",
     "custody": "custom.github-app-lifecycle/keys/ (0600, dir 0700); pubkey fp 1c663199788db3c5689b9769a3d6ea4dcf94453d899e26a6655f40e5ad03b79e; rotation due 2027-04-30",
@@ -422,6 +427,7 @@
  },
  "pilot": {
   "app_id": 5535733,
+  "avatar": "avatar.png in collector-pilot package; uploaded 2026-10-29; avatar.webp removed 2026-10-30 (logo control rejects WebP; 1 MB cap)",
   "client_id": "Iv23liKMLj976ok6Cn3D",
   "events": [],
   "installation": {
@@ -468,7 +474,7 @@
   "verified": "2026-10-30T09:53Z via both installation tokens: GET /installation/repositories total=2 {termux-monorepo, repo-replay} each"
  },
  "schema": "appid-process/v1",
- "updated_at": "2026-10-30T09:55Z",
+ "updated_at": "2026-10-30T10:16Z",
  "web_pr_failsafe": {
   "doc": "docs/ops/FAILSAFE-PUBLISH-PROTOCOL.md",
   "posture": "fallback for merge (+small creates) only; primary stays PAT helper / AppID token; oracle verification still binds",

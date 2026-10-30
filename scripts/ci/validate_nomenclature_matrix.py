@@ -81,10 +81,13 @@ def validate(data):
             errors.append(f"evidence {e.get('evidence_id')} references unknown assertion")
         if not all(e.get(k) for k in ("claim", "evidence_locator", "retrieved_on")) or not str(e.get("evidence_excerpt") or "").strip():
             errors.append(f"evidence {e.get('evidence_id')} needs claim, locator, a nonblank excerpt, and retrieval date")
+        retrieved_on = e.get("retrieved_on", "")
         try:
-            date.fromisoformat(e.get("retrieved_on", ""))
+            parsed_date = date.fromisoformat(retrieved_on)
+            if not isinstance(retrieved_on, str) or parsed_date.isoformat() != retrieved_on:
+                raise ValueError("date must use canonical YYYY-MM-DD format")
         except (TypeError, ValueError):
-            errors.append(f"evidence {e.get('evidence_id')} has invalid retrieved_on date")
+            errors.append(f"evidence {e.get('evidence_id')} has invalid retrieved_on date; expected YYYY-MM-DD")
         if e.get("status") not in STATUSES:
             errors.append(f"evidence {e.get('evidence_id')} has invalid status")
         if e.get("status") == "accepted" and not (isinstance(e.get("reviewer"), str) and e["reviewer"].strip()):

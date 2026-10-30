@@ -7,6 +7,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_SEED = ROOT / "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json"
 DEFAULT_OUTPUT = ROOT / "docs/proposals/active/notation-sets/nomenclature-matrix/CROSSWALK.md"
+DEFAULT_JSON_OUTPUT = ROOT / "docs/proposals/active/notation-sets/nomenclature-matrix/CROSSWALK.json"
 
 
 def cell(value):
@@ -84,16 +85,43 @@ def render_crosswalk(data):
     return "\n".join(lines)
 
 
+
+def render_machine_crosswalk(data):
+    """Return a stable, machine-readable projection without promoting candidates."""
+    concepts = []
+    labels_by_concept = {}
+    for label in data.get("labels", []):
+        labels_by_concept.setdefault(label["concept_id"], []).append(label)
+    for concept in sorted(data.get("concepts", []), key=lambda x: x["concept_id"]):
+        labels = sorted(
+            labels_by_concept.get(concept["concept_id"], []),
+            key=lambda x: (x.get("label_type", ""), x.get("text", "").casefold(), x.get("label_id", "")),
+        )
+        concepts.append({**concept, "labels": labels})
+    return {
+        "projection_version": 1,
+        "source_seed": "seed.json",
+        "authority_boundary": "candidate research data only; not runtime authority or approval",
+        "sources": sorted(data.get("sources", []), key=lambda x: x["source_id"]),
+        "concepts": concepts,
+        "mappings": sorted(data.get("mappings", []), key=lambda x: x["mapping_id"]),
+        "evidence_records": sorted(data.get("evidence_records", []), key=lambda x: x["evidence_id"]),
+    }
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--seed", type=Path, default=DEFAULT_SEED)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
+    parser.add_argument("--json-output", type=Path, default=DEFAULT_JSON_OUTPUT)
     args = parser.parse_args()
     data = json.loads(args.seed.read_text(encoding="utf-8"))
     output = render_crosswalk(data)
+    machine_output = json.dumps(render_machine_crosswalk(data), ensure_ascii=False, indent=2) + "\\n"
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(output, encoding="utf-8")
-    print(f"OK: rendered crosswalk for {len(data.get('concepts', []))} concepts, {len(data.get('labels', []))} labels, {len(data.get('mappings', []))} mappings, {len(data.get('evidence_records', []))} evidence records")
+    args.json_output.parent.mkdir(parents=True, exist_ok=True)
+    args.json_output.write_text(machine_output, encoding="utf-8")
+    print(f"OK: rendered Markdown and JSON crosswalk for {len(data.get('concepts', []))} concepts, {len(data.get('labels', []))} labels, {len(data.get('mappings', []))} mappings, {len(data.get('evidence_records', []))} evidence records")
     return 0
 
 

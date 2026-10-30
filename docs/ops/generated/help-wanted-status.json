@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-29T21:22:35Z",
+  "generated_at": "2026-10-30T01:17:30Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
   "receipts": 3962,
@@ -42469,7 +42469,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "1f764f3eaa8ad70290f660c4f98337cc630970a7",
+    "source_sha": "7519efee12bc15432c0e49b6c3705af982743da6",
     "source_ref": "master",
     "history_complete": false,
     "history_coverage": "lane-local-complete; repository-wide historical accountability requires sweep-accountability backfill",
@@ -42503,12 +42503,12 @@
   },
   "evolution": [
     {
-      "sha": "1f764f3eaa8ad70290f660c4f98337cc630970a7",
-      "short_sha": "1f764f3eaa8a",
-      "date": "2026-10-29T19:50:43Z",
-      "author": "github-actions[bot]",
-      "subject": "ops(help-wanted): live status refresh 2026-10-29T19:50Z",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/1f764f3eaa8ad70290f660c4f98337cc630970a7"
+      "sha": "7519efee12bc15432c0e49b6c3705af982743da6",
+      "short_sha": "7519efee12bc",
+      "date": "2026-10-30T01:05:30Z",
+      "author": "termux-monorepo sweep",
+      "subject": "chore(ops): record sweep accountability receipt",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/7519efee12bc15432c0e49b6c3705af982743da6"
     }
   ],
   "pipeline": [
@@ -42522,56 +42522,31 @@
   ],
   "tribute_audit": {
     "schema_version": "help-wanted.tribute-audit.v1",
-    "generated_at": "2026-10-29T21:23:03.419247+00:00",
-    "source_status_generated_at": "2026-10-29T21:22:35Z",
+    "generated_at": "2026-10-30T01:17:32.419225+00:00",
+    "source_status_generated_at": "2026-10-30T01:17:30Z",
     "source_tribute_count": 132,
     "unique_pr_count": 132,
     "audited_pr_count": 126,
-    "audited_this_run_count": 24,
+    "audited_this_run_count": 0,
     "attempted_this_run_count": 25,
-    "deferred_this_run_count": 0,
+    "deferred_this_run_count": 25,
     "unknown_this_run_count": 0,
-    "partial_this_run_count": 1,
-    "audited_this_run_pr_urls": [
-      "https://github.com/limelit-co/open/pull/32",
-      "https://github.com/sorotrail/SoroTrail/pull/943",
-      "https://github.com/DeltaV-Station/Delta-v/pull/6534",
-      "https://github.com/ussyalfaks/ahjoorxmr-contract/pull/872",
-      "https://github.com/FasterThanAi/ai-lead-generation-mvp/pull/34",
-      "https://github.com/ennouaimi/invoicr/pull/8",
-      "https://github.com/shadcn-labs/ogimagecn/pull/34",
-      "https://github.com/pyrite-wiki/pyrite/pull/198",
-      "https://github.com/vigneshv1cky/alphadesk-terminal/pull/12",
-      "https://github.com/chahe-dridi/vscode-agent-bell/pull/225",
-      "https://github.com/Research-Astute/manus-ui-research-hub/pull/3",
-      "https://github.com/Research-Astute/manus-ui-research-hub/pull/1",
-      "https://github.com/Research-Astute/manus-ui-adapter-lab/pull/1",
-      "https://github.com/search-astute-ly/manus-public-ui-research/pull/1",
-      "https://github.com/E-Timileyin/Sail-CLI/pull/23",
-      "https://github.com/Kilo-Org/agentic-path/pull/26",
-      "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7",
-      "https://github.com/w1977-0/open-stream-saver/pull/3",
-      "https://github.com/Vasudev-ai/Focusflow/pull/15",
-      "https://github.com/OrionStarAI/EasyCode/pull/53",
-      "https://github.com/ThinkLikeAFounder/pulsartrack/pull/898",
-      "https://github.com/MergeFi/contracts/pull/374",
-      "https://github.com/EF-CHAIN/SendAm/pull/492",
-      "https://github.com/EF-CHAIN/SendAm/pull/607"
-    ],
+    "partial_this_run_count": 0,
+    "audited_this_run_pr_urls": [],
     "not_audited_count": 6,
-    "audit_window_start": 117,
+    "audit_window_start": 85,
     "audit_window_size": 25,
     "stages": {
       "implementation_unproven": 7,
       "closed_unmerged": 96,
       "stake_only": 2,
       "accepted": 22,
-      "unknown": 1
+      "unknown": 2
     },
     "audit_statuses": {
-      "observed": 106,
-      "unknown": 3,
-      "deferred": 18,
+      "observed": 83,
+      "unknown": 2,
+      "deferred": 43,
       "partial": 1
     },
     "realized_effect_verified_count": 0,
@@ -45441,7 +45416,19 @@
         "checks_truncated": false,
         "checks_complete": false,
         "checks_pass": false,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T01:17:30.866906+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T01:17:30.866906+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
       },
       {
         "pr_url": "https://github.com/CopilotKit/CopilotKit/pull/7594",
@@ -45472,7 +45459,19 @@
         "checks_truncated": false,
         "checks_complete": false,
         "checks_pass": false,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T01:17:30.939690+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T01:17:30.939690+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
       },
       {
         "pr_url": "https://github.com/pulseaiclub/phi/pull/286",
@@ -45503,7 +45502,19 @@
         "checks_truncated": false,
         "checks_complete": false,
         "checks_pass": false,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T01:17:31.022916+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T01:17:31.022916+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
       },
       {
         "pr_url": "https://github.com/GlassHaven/Haven/pull/657",
@@ -45533,7 +45544,19 @@
         "checks_truncated": false,
         "checks_complete": true,
         "checks_pass": true,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T01:17:31.087757+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T01:17:31.087757+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
       },
       {
         "pr_url": "https://github.com/dentalpin/dentalpin/pull/591",
@@ -45564,7 +45587,19 @@
         "checks_truncated": false,
         "checks_complete": false,
         "checks_pass": false,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T01:17:31.150000+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T01:17:31.150000+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
       },
       {
         "pr_url": "https://github.com/estruyf/playwright-github-actions-reporter/pull/59",
@@ -45595,7 +45630,19 @@
         "checks_truncated": false,
         "checks_complete": false,
         "checks_pass": false,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T01:17:31.210251+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T01:17:31.210251+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
       },
       {
         "pr_url": "https://github.com/nesstyx/ChessHome/pull/81",
@@ -45626,7 +45673,19 @@
         "checks_truncated": false,
         "checks_complete": false,
         "checks_pass": false,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T01:17:31.265782+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T01:17:31.265782+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
       },
       {
         "pr_url": "https://github.com/Magiclovekorean/unbloarchy/pull/5",
@@ -45657,7 +45716,19 @@
         "checks_truncated": false,
         "checks_complete": false,
         "checks_pass": false,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T01:17:31.324347+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T01:17:31.324347+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
       },
       {
         "pr_url": "https://github.com/GRITui/pixel-builder/pull/13",
@@ -45687,7 +45758,19 @@
         "checks_truncated": false,
         "checks_complete": true,
         "checks_pass": true,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T01:17:31.378548+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T01:17:31.378548+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
       },
       {
         "pr_url": "https://github.com/OBLIQ-in/OBLIQ-Website/pull/39",
@@ -45718,7 +45801,19 @@
         "checks_truncated": false,
         "checks_complete": false,
         "checks_pass": false,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T01:17:31.441789+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T01:17:31.441789+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
       },
       {
         "pr_url": "https://github.com/speedyk-005/yasbd-lib/pull/363",
@@ -45748,7 +45843,19 @@
         "checks_truncated": false,
         "checks_complete": true,
         "checks_pass": true,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T01:17:31.513555+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T01:17:31.513555+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
       },
       {
         "pr_url": "https://github.com/StayLitCodes/Vaultix/pull/711",
@@ -45779,16 +45886,16 @@
         "checks_complete": true,
         "checks_pass": true,
         "realization_note": "requires a separately linked, independently verified effect receipt",
-        "last_attempt_at": "2026-10-29T09:41:52.668804+00:00",
-        "last_attempt_status": "unknown",
+        "last_attempt_at": "2026-10-30T01:17:31.570686+00:00",
+        "last_attempt_status": "deferred",
         "last_attempt_evidence_gaps": [
-          "http_404"
+          "rate_limited"
         ],
         "last_audit_attempt": {
-          "audited_at": "2026-10-29T09:41:52.668804+00:00",
-          "audit_status": "unknown",
+          "audited_at": "2026-10-30T01:17:31.570686+00:00",
+          "audit_status": "deferred",
           "evidence_gaps": [
-            "http_404"
+            "rate_limited"
           ]
         }
       },
@@ -45820,7 +45927,19 @@
         "checks_truncated": false,
         "checks_complete": true,
         "checks_pass": true,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T01:17:31.631501+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T01:17:31.631501+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
       },
       {
         "pr_url": "https://github.com/LibreUML/LibreUML/pull/130",
@@ -45851,7 +45970,19 @@
         "checks_truncated": false,
         "checks_complete": false,
         "checks_pass": false,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T01:17:31.690781+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T01:17:31.690781+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
       },
       {
         "pr_url": "https://github.com/StellarCanary/Protocol-Canary/pull/345",
@@ -45882,7 +46013,19 @@
         "checks_truncated": false,
         "checks_complete": false,
         "checks_pass": false,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T01:17:31.755417+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T01:17:31.755417+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
       },
       {
         "pr_url": "https://github.com/arsova-mx/OpenPoker/pull/69",
@@ -45913,7 +46056,19 @@
         "checks_truncated": false,
         "checks_complete": false,
         "checks_pass": false,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T01:17:31.818730+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T01:17:31.818730+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
       },
       {
         "pr_url": "https://github.com/Agora-Events/agora/pull/1518",
@@ -45944,7 +46099,19 @@
         "checks_truncated": false,
         "checks_complete": false,
         "checks_pass": false,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T01:17:31.870633+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T01:17:31.870633+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
       },
       {
         "pr_url": "https://github.com/tarantool/tarantool/pull/13285",
@@ -45975,7 +46142,19 @@
         "checks_truncated": false,
         "checks_complete": true,
         "checks_pass": false,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T01:17:31.937631+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T01:17:31.937631+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
       },
       {
         "pr_url": "https://github.com/inferstep/ATLAS/pull/278",
@@ -46006,7 +46185,19 @@
         "checks_truncated": false,
         "checks_complete": false,
         "checks_pass": false,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T01:17:31.993362+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T01:17:31.993362+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
       },
       {
         "pr_url": "https://github.com/bmad-code-org/bmad-loop/pull/819",
@@ -46037,7 +46228,19 @@
         "checks_truncated": false,
         "checks_complete": false,
         "checks_pass": false,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T01:17:32.055400+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T01:17:32.055400+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
       },
       {
         "pr_url": "https://github.com/Hugelidus/Pointcast/pull/48",
@@ -46068,7 +46271,19 @@
         "checks_truncated": false,
         "checks_complete": false,
         "checks_pass": false,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T01:17:32.108791+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T01:17:32.108791+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
       },
       {
         "pr_url": "https://github.com/mergepay/mergepay-web/pull/552",
@@ -46098,7 +46313,19 @@
         "checks_truncated": false,
         "checks_complete": true,
         "checks_pass": true,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T01:17:32.164942+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T01:17:32.164942+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
       },
       {
         "pr_url": "https://github.com/olcf/olcf-test-harness/pull/280",
@@ -46129,7 +46356,19 @@
         "checks_truncated": false,
         "checks_complete": false,
         "checks_pass": false,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T01:17:32.224907+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T01:17:32.224907+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
       },
       {
         "pr_url": "https://github.com/umn-adc/ATLAS/pull/42",
@@ -46160,7 +46399,29 @@
         "checks_truncated": false,
         "checks_complete": false,
         "checks_pass": false,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T01:17:32.281517+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T01:17:32.281517+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
+      },
+      {
+        "pr_url": "https://github.com/lonestill/scope-launcher/pull/45",
+        "audited_at": "2026-10-30T01:17:32.362463+00:00",
+        "stage": "unknown",
+        "evidence_gaps": [
+          "rate_limited"
+        ],
+        "realized_effect_verified": false,
+        "audit_status": "deferred"
       },
       {
         "pr_url": "https://github.com/lonestill/onyx-launcher/pull/45",

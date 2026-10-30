@@ -1,10 +1,10 @@
 {
   "counts": {
     "open_issues": 354,
-    "open_prs": 114,
+    "open_prs": 115,
     "pr_classes": {
       "CANDIDATE": 60,
-      "EXTRACT": 5,
+      "EXTRACT": 6,
       "NEED_EVIDENCE": 49,
       "SUPERSEDE": 0
     }
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 19,
-      "prs": 112,
+      "prs": 113,
       "unlabelled_numbers": [
         308,
         343,
@@ -74,7 +74,7 @@
       ]
     }
   },
-  "generated_at": "2026-10-30T02:50:09Z",
+  "generated_at": "2026-10-30T02:54:38Z",
   "issues_unlabelled": [
     308,
     343,
@@ -102,7 +102,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "406e05f346"
+    "sha": "d2b738161c"
   },
   "prs": [
     {
@@ -174,6 +174,20 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "96c1ad89eb",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2394,
+      "title": "feat(viz): quota gearbox \u2014 per-consumer STOP/PAUSE + throttle controls (concept amendment)",
+      "updated_at": "2026-10-30T02:52:56Z"
     },
     {
       "class": "CANDIDATE",
@@ -1447,12 +1461,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "9d7a1be0ef",
+      "head_sha": "f7100de2ea",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-10-30T02:48:55Z"
+      "updated_at": "2026-10-30T02:53:21Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1601,12 +1615,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "8286e1bddc",
+      "head_sha": "fb7f7dab93",
       "labels": [],
-      "mergeable_state": "clean",
+      "mergeable_state": "unstable",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-10-30T02:49:55Z"
+      "updated_at": "2026-10-30T02:54:22Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1659,7 +1673,7 @@
       },
       "head_sha": "1007521382",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 2348,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-29T23:51:50Z"

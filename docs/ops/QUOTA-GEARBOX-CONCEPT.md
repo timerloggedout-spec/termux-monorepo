@@ -90,6 +90,38 @@ the pool (pool flow × share, ladder-ordered) before anything is saved; a shift
 takes effect only as the auditable #1884 record (a PR), exactly like cadence
 re-splits today.
 
+### Per-consumer moderation controls (owner, 2026-10-29 19:49 PT)
+
+Priority shares decide who SHOULD draw; moderation controls act on a
+consumer that is drawing NOW — the moderate-and-diagnose pair the owner
+ordered ("moderate consumption && diagnose"):
+
+- **STOP (per consumer)** — hard halt: the consumer's gate closes
+  (effective share 0, draw denied) until explicitly released. For a
+  runaway — the delphi-gate burst shape (143 runs / 25 min,
+  2026-10-29T16:30–16:55Z) is the case this exists for.
+- **PAUSE (per consumer)** — temporary hold with an expiry; the gate
+  reopens on its own at expiry unless released or stopped first. For
+  incident triage while diagnosing.
+- **Throttle slider (per consumer)** — a RATE cap (max calls/min),
+  distinct from the priority share (% of pool flow): the share rations
+  the window, the throttle caps the instantaneous rate. A consumer can
+  hold a large share and still be throttled flat.
+
+Every action is an audited event under the same discipline as a shift:
+`{at, actor, consumer, action: stop|pause|release|throttle, old, new,
+expires?, reason}`, #1884-cited, landing as a PR — never a silent toggle.
+
+**Diagnose dependency (NOT ESTABLISHED):** these controls target a
+CONSUMER, and per-consumer metering does not exist yet for the shared
+PAT bucket — attribution for the 2026-10-29 walls was reconstructed
+after the fact, not read live. The controls are designed now;
+enforcement and live diagnosis need per-consumer call accounting from
+the quota substrate (consumer-tagged gate/dispatch records). Until that
+lands, the Admin shows the controls against the consumers the planner
+knows (allocations slices) with measured-rate fields blank — never
+invented.
+
 ## 4. Shift-log annotation type (for the existing graph)
 
 Extends quota-usage/v1 `annotations[]` with `type: "shift"` entries shaped
@@ -117,6 +149,10 @@ MOCK — example settings + one example shift event for design review only.
 
 ## 6. What the data cannot honestly render (NOT ESTABLISHED over invented)
 
+- **Per-consumer moderation is DESIGN-ONLY until metering lands.**
+  STOP/PAUSE/throttle (section 3) target consumers; per-consumer call
+  accounting is NOT ESTABLISHED, so no live per-consumer rate, halt
+  state, or diagnosis can render yet.
 - **Per-slice RPM is NOT ESTABLISHED.** No per-consumer attribution exists
   for the shared PAT bucket (GitHub exposes none to a PAT — established
   repeatedly in the rate-limit record). Slice tachometers render the

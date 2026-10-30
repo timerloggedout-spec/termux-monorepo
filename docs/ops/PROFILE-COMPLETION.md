@@ -107,13 +107,18 @@ no profile content of its own.
   the existing GitHub session.
 - Avatar: Profile → Update avatar; upload works and reflects on the public
   profile immediately.
-- The registry's prepared leet About **failed AWS moderation twice**
-  ("Moderation check failed. Please review your input and try again.") —
-  Rule 5 case, pending owner ruling.
+- The registry's prepared leet About **failed AWS moderation**
+  ("Moderation check failed. Please review your input and try again.").
+  Rule 5 bisection applied 2026-10-29 (owner un-park ruling): the variant
+  still carrying the "Leet speak only." sentence was also rejected; the
+  landed About is: "'Founders' are 'found' to implement. Agents, systems,
+  decisions with receipts. No name. No face. Just ship."
 - Social links demand a full `https://` URL. The Edit-information save
-  **hard-requires First name, Last name, State/Province** — Rule 4 carve-out,
-  pending owner ruling. Display name + country are separate fields and were
-  already set; do not touch them.
+  **hard-requires First name, Last name, State/Province**. Resolved
+  2026-10-29 under the owner's un-park order (least-specific true values,
+  Rule 2): First name `1337`, Last name `dia590r1c8u1ldr` (the account's own
+  moniker, split), State/Province `CA` — saved, link displayed. Display name
+  + country are separate fields and were already set; do not touch them.
 
 ### Kiro (verified 2026-10-29)
 - **No editable profile fields exist.** The account row (email, sign-in method,

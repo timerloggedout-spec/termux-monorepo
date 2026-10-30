@@ -35,6 +35,19 @@ PR) — never on a lane report alone. Owner lane in brackets.
 - [ ] APP-06 Gate/CI: same four steps [appid + registry + quota]
 - [ ] APP-07 Lifecycle: same four steps [appid + registry + quota]
 
+## TEL — telemetry integration (PR #2407 audit, 2026-10-30)
+
+Acceptance rule (audit, adopted): an app is not operationally integrated
+merely because it exists in the registry — identity, effective scope,
+execution and evidence must be independently observable.
+
+- [ ] TEL-01 #2407 declaration layer merged (registry.json + emitter + tests) [author lane; review: migration-plan]
+- [ ] TEL-02 Collector registered in integration-mesh snapshot/diff (mesh 6h poll consumes registry.json; app visible with no check suites) [mesh lane]
+- [ ] TEL-03 Emitter scheduled + mint-wired: weekly census run on a freshly minted installation token (never a stored token) — feeds MAINT-02 readings [quota + migration-plan]
+- [ ] TEL-04 Live permission readback on installation token vs manifest declarations (drift leg of MAINT-01); declared ≠ observed kept separate [appid]
+- [ ] TEL-05 Negative-path tests pass: missing credentials, revoked installation, inaccessible repository, permission drift [author + appid]
+- [ ] TEL-06 First runtime receipt (plan §1.4 G4 fields) captured on a real Collector-token collection run — closes MIG-01's evidence requirement [migration-plan]
+
 ## SEC — provisioning (owner items, names-only)
 
 - [ ] SEC-01 D3 check: is the `APP_PRIVATE_KEY` secret referenced by `github-app-capability-probe.yml` actually provisioned? (referenced ≠ provisioned) [appid]

@@ -107,6 +107,17 @@ class FreeTierValueBoardContractTests(unittest.TestCase):
         self.assertIn("!!safeHref(s.evidence_url)", self.page)
         self.assertIn("Number.isFinite(s.elapsed_seconds)&&s.elapsed_seconds>=0", self.page)
 
+    def test_public_usage_equivalents_rank_expensive_to_cheap(self):
+        self.assertIn("Equivalent cost of our public usage across providers", self.page)
+        self.assertIn('id="usage-equivalents"', self.page)
+        self.assertIn("function usageEquivalent()", self.page)
+        self.assertIn("dedupe(d.sessions.filter(valid))", self.page)
+        self.assertIn("sessions.reduce((sum,s)=>sum+s.input_tokens,0)", self.page)
+        self.assertIn("sessions.reduce((sum,s)=>sum+s.output_tokens,0)", self.page)
+        self.assertIn(".sort((a,b)=>b.total-a.total)", self.page)
+        self.assertIn("Equivalent cost is unavailable—not $0", self.page)
+        self.assertIn("most expensive → least expensive", self.page)
+
     def test_public_payload_has_no_prompt_or_completion_fields(self):
         encoded = json.dumps(self.data).lower()
         self.assertNotIn('"prompt":', encoded)

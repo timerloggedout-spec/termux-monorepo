@@ -40,6 +40,12 @@ The checked-in pricing examples are source-linked and dated 2026-10-23. Re-verif
 
 Price comparisons do not imply quality equivalence, free-tier availability, or that any listed model executed a repository session.
 
+## Public usage cross-provider equivalent
+
+The public usage-equivalent panel aggregates input/output tokens from deduplicated rows that pass the existing validation, Basksweep, public-safe, success, and pricing-identity gates. It applies the same aggregate token counts to each valid, source-linked, model-specific pricing record and sorts results from **most expensive to least expensive**. The arbitrary-workload calculator uses the same descending order. The lowest-priced row is highlighted without implying quality equivalence.
+
+This panel remains unavailable when no validated public usage rows exist; it must not fabricate zero usage or $0 value. It reports counterfactual list-price estimates only. Observed provider cost and verified no-cost execution remain separate metrics.
+
 ## Session row contract
 
 Each public row is bounded metadata only: opaque session/run ID; workflow and source ref/SHA; observed UTC time; provider/model display labels plus a stable `canonical_model_id`; input/output tokens; elapsed seconds; outcome; evidence URL; validation status; Basksweep status; publication status; billing status; and pricing ID. Every pricing record must also declare a unique `canonical_model_id`. A session contributes only when its `canonical_model_id` exactly matches the canonical ID on the valid pricing record referenced by `pricing_id`; raw provider strings are not identity keys.

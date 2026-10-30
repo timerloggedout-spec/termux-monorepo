@@ -42,6 +42,22 @@
    }
   },
   {
+   "id": "github.api.app_collector",
+   "provider": "github",
+   "lane": "ops",
+   "metric": "REST requests via GitHub App installation token (Termux Fleet Collector, app 5535733, installation 176747357, termux-monorepo only)",
+   "limit": 5000,
+   "unit": "requests/hour/installation",
+   "window": "hourly",
+   "reset": "x-ratelimit-reset header",
+   "zone": "UTC",
+   "source": "firsthand proof 2026-10-30T02:18Z (installation-token /rate_limit 5000/5000 while user-token bucket 0)",
+   "live": "GET /rate_limit (installation token via scripts/github_app_token.py)",
+   "planned_use": {
+    "safety": 0.9
+   }
+  },
+  {
    "id": "github.api.github_token",
    "provider": "github",
    "lane": "ci",

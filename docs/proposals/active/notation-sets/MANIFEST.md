@@ -139,6 +139,7 @@ This lane records concepts, audience/register-specific labels, evidence sources,
 ### Deterministic nomenclature crosswalk projection
 
 - Generator: [build_nomenclature_crosswalk.py](../../../../scripts/ci/build_nomenclature_crosswalk.py).
-- Generated view: [CROSSWALK.md](./nomenclature-matrix/CROSSWALK.md).
-- The projection groups labels by concept, lists semantic mapping candidates separately, and includes claim-level evidence with reviewer/status.
-- Regenerate with `python scripts/ci/build_nomenclature_crosswalk.py`. Output is deterministic and must not be edited manually.
+- Generated human-readable view: [CROSSWALK.md](./nomenclature-matrix/CROSSWALK.md).
+- Generated machine-readable view: [CROSSWALK.json](./nomenclature-matrix/CROSSWALK.json).
+- Both projections group labels by concept, list semantic mapping candidates separately, and include claim-level evidence with reviewer/status. The JSON projection retains source records and typed fields for downstream tooling.
+- Regenerate both with `python scripts/ci/build_nomenclature_crosswalk.py` (or override paths with `--output` and `--json-output`). Outputs are deterministic and must not be edited manually.

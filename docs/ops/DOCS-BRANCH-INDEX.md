@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-10-30T05:15:35Z` UTC  
+**Generated:** `2026-10-30T12:55:38Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 175 docs-lane branch(es)
+**Count:** 177 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -132,6 +132,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/nse-022-023-lambda-lean-extract`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/nse-022-023-lambda-lean-extract) | `e588a84c04bf` | — | — | orphan lane |
 | [`docs/opencode-fork-integration`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/opencode-fork-integration) | `dfbabaddfb4a` | — | — | orphan lane |
 | [`docs/ops-docs-branch-index-automation`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/ops-docs-branch-index-automation) | `17961df7b0c5` | — | — | orphan lane |
+| [`docs/ops-maintenance-refresh-2026-10-30`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/ops-maintenance-refresh-2026-10-30) | `f643e3bc18bc` | [#2456](https://github.com/timerloggedout-spec/termux-monorepo/pull/2456)→`master` | — | PR without registry link |
 | [`docs/ops-maintenance-status-2026-10-27`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/ops-maintenance-status-2026-10-27) | `fccaa4b49a3a` | [#1735](https://github.com/timerloggedout-spec/termux-monorepo/pull/1735)→`master` | — | PR without registry link |
 | [`docs/paper2agent-scientific-factory-proposal-2026-09-29`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/paper2agent-scientific-factory-proposal-2026-09-29) | `f9923fd7bdfa` | — | `timerloggedout-spec` | registered; no open PR |
 | [`docs/phantom-secrets-audit`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/phantom-secrets-audit) | `27792087bad7` | — | — | orphan lane |
@@ -143,6 +144,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/pr-scope-discipline-ce22`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/pr-scope-discipline-ce22) | `a68300477966` | — | — | orphan lane |
 | [`docs/preflight-remove-phantom-check-action`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/preflight-remove-phantom-check-action) | `b622610948b2` | — | — | orphan lane |
 | [`docs/probing-means-finding-doms`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/probing-means-finding-doms) | `e0a3262a087c` | — | — | orphan lane |
+| [`docs/profile-completion-builder-resolution`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/profile-completion-builder-resolution) | `3fc88936542c` | — | — | orphan lane |
 | [`docs/profile-completion-method`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/profile-completion-method) | `d1c59273ee52` | — | — | orphan lane |
 | [`docs/profile-registry`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/profile-registry) | `639f2fceed23` | — | — | orphan lane |
 | [`docs/project-status-provider-museai-2026-10-21`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/project-status-provider-museai-2026-10-21) | `8a965e78eba4` | — | — | orphan lane |

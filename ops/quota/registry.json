@@ -58,6 +58,22 @@
    }
   },
   {
+   "id": "github.api.app_publisher",
+   "provider": "github",
+   "lane": "ops",
+   "metric": "REST requests via GitHub App installation token (Termux Fleet Publisher, app 5537873, installation 176799777, WRITE: contents+pull_requests)",
+   "limit": 5000,
+   "unit": "requests/hour/installation",
+   "window": "hourly",
+   "reset": "x-ratelimit-reset header",
+   "zone": "UTC",
+   "source": "firsthand proof 2026-10-30T06:45Z (installation-token /rate_limit 5000 at mint; write proof 201/204; PAT bucket unmoved)",
+   "live": "GET /rate_limit (installation token via scripts/github_app_token.py)",
+   "planned_use": {
+    "safety": 0.9
+   }
+  },
+  {
    "id": "github.api.github_token",
    "provider": "github",
    "lane": "ci",

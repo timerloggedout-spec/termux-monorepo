@@ -26,7 +26,7 @@ def test_github_pool_carries_the_repo_replay_app_slice():
     # PR #2450): replay/migration load sits on the AppID buckets, the PAT
     # service is fallback-only with no routine draw.
     gh = next(p for p in CFG["pools"] if p["id"] == "github")
-    slices = {s["project"]: s for s in gh.get("slices", [])}
+    slices = {s["project"]: s for s in gh.get("slices", []) if "project" in s}
     rr = slices["repo-replay"]
     assert rr["primary_services"] == ["github.api.app_collector", "github.api.app_publisher"]
     assert rr["fallback_service"] == "github.api.user_token"
@@ -48,11 +48,44 @@ def test_validator_rejects_a_slice_pointing_outside_its_pool():
     assert any("not a service of this pool" in e for e in errs), errs
 
 
+def test_enroll_batch_lane_slices_are_landed_with_claims():
+    # #1884 ENROLL batch 1: lane-keyed slices carry their claim comment id;
+    # the github pool holds the batch plus the repo-replay project slice.
+    gh = next(p for p in CFG["pools"] if p["id"] == "github")
+    lanes = {s["lane"]: s for s in gh["slices"] if "lane" in s}
+    assert len(lanes) == 39, sorted(lanes)
+    for lane, s in lanes.items():
+        assert isinstance(s["claim"], int) and s["claim"] > 6_000_000_000, lane
+        assert s["primary_services"], lane
+        assert s["routine_draw_on_fallback"] is False, lane
+    qs = lanes["quota-specialist"]
+    assert qs["primary_services"] == ["github.api.app_publisher", "github.api.app_collector"]
+    assert qs["fallback_service"] == "github.api.user_token"
+    assert qs["fallback_mode"] == "fallback-only"
+    pat = lanes["gap-finder"]
+    assert pat["primary_services"] == ["github.api.user_token"]
+    assert pat["fallback_mode"] == "none" and pat["fallback_service"] is None
+    p201 = next(p for p in CFG["pools"] if p["id"] == "platform201")
+    assert [s["lane"] for s in p201["slices"]] == ["platform201-status"]
+
+
+def test_validator_rejects_none_mode_with_a_fallback_set():
+    import copy
+    bad = copy.deepcopy(CFG)
+    gh = next(p for p in bad["pools"] if p["id"] == "github")
+    s = next(x for x in gh["slices"] if x.get("lane") == "gap-finder")
+    s["fallback_service"] = "github.api.github_token"
+    errs = qa.validate(bad, REG)
+    assert any("fallback_mode none but fallback_service is set" in e for e in errs), errs
+
+
 def test_feed_surfaces_pool_slices():
     f = qa.build_feed(CFG, REG, READINGS, COUNTDOWNS, NOW)
     gh = next(p for p in f["pools"] if p["pool"] == "github")
     assert gh["slices"][0]["project"] == "repo-replay"
-    others = [p for p in f["pools"] if p["pool"] != "github"]
+    p201 = next(p for p in f["pools"] if p["pool"] == "platform201")
+    assert [s["lane"] for s in p201["slices"]] == ["platform201-status"]
+    others = [p for p in f["pools"] if p["pool"] not in ("github", "platform201")]
     assert all(p["slices"] == [] for p in others)
 
 

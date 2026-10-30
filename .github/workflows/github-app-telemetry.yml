@@ -1,8 +1,6 @@
 name: GitHub App fleet telemetry
 
 on:
-  schedule:
-    - cron: '17 5 * * 1'
   pull_request:
     paths:
       - 'ops/github-apps/**'
@@ -18,7 +16,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: github-app-telemetry
+  group: github-app-telemetry-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: false
 
 jobs:

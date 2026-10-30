@@ -20,6 +20,7 @@ import argparse, json, os, sys
 from datetime import datetime, timezone
 
 MODES = {"standing", "leftover-only", "none"}
+SLICE_FALLBACK_MODES = {"fallback-only"}
 DISPLAY = {"ok", "watch", "exhausted", "cap_tripped"}
 
 
@@ -58,6 +59,28 @@ def validate(cfg, registry):
                 errs.append(f"{pid}/{a.get('focus')}: allocation needs date + reason")
         if standing > 100:
             errs.append(f"{pid}: standing allocations sum to {standing} > 100")
+        pool_services = set(pool.get("services", []))
+        for s in pool.get("slices", []):
+            project = s.get("project")
+            if not project:
+                errs.append(f"{pid}: slice without a project")
+            primaries = s.get("primary_services") or []
+            if not primaries:
+                errs.append(f"{pid}/{project}: slice has no primary_services")
+            for sid in primaries:
+                if sid not in pool_services:
+                    errs.append(f"{pid}/{project}: primary {sid} is not a service of this pool")
+            fallback = s.get("fallback_service")
+            if fallback not in pool_services:
+                errs.append(f"{pid}/{project}: fallback {fallback} is not a service of this pool")
+            if fallback in primaries:
+                errs.append(f"{pid}/{project}: fallback {fallback} is also a primary")
+            if s.get("fallback_mode") not in SLICE_FALLBACK_MODES:
+                errs.append(f"{pid}/{project}: bad fallback_mode {s.get('fallback_mode')}")
+            if s.get("fallback_mode") == "fallback-only" and s.get("routine_draw_on_fallback"):
+                errs.append(f"{pid}/{project}: fallback-only slice cannot carry a routine draw")
+            if not s.get("date") or not s.get("reason"):
+                errs.append(f"{pid}/{project}: slice needs date + reason")
     for ex in cfg.get("excluded_services", []):
         if ex.get("id") in seen_services:
             errs.append(f"excluded service {ex.get('id')} is also in pool {seen_services[ex.get('id')]}")
@@ -89,6 +112,7 @@ def build_feed(cfg, registry, readings, countdowns, now):
         pools.append({
             "pool": pool["id"], "services": rows,
             "allocations": pool["allocations"],
+            "slices": pool.get("slices", []),
             "reserve_pct": reserve_pct(pool),
             "constraints": pool.get("constraints", []),
             # Readings observe services, not focuses. Attributing a service

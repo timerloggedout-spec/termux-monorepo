@@ -135,6 +135,34 @@ def plan(registry, allocations, readings, countdowns=None, now=None):
             "slices": slices,
             "stranded": stranded, "release_to": release_to,
         })
+    # Standing AppID slice assignment (planner route, settled with
+    # cadence + repo-replay 2026-10-30): the repo-replay project draws
+    # on the GitHub App buckets; the owner PAT is fallback-only (no
+    # routine draw). Emitted as a fired trigger record whenever both
+    # app services are pooled in the github pool, so convergence can
+    # execute the matching allocations change citing #1884. NOT an
+    # allocations.json schema change (no new focus).
+    for p in pools_out:
+        if p["id"] != "github":
+            continue
+        svcs = set(p["services"])
+        apps = [s for s in ("github.api.app_collector",
+                            "github.api.app_publisher") if s in svcs]
+        if len(apps) == 2 and "github.api.user_token" in svcs:
+            triggers.append({
+                "pool": "github",
+                "trigger": "app_slice_assignment:repo-replay",
+                "project": "repo-replay",
+                "slice": {
+                    "project": "repo-replay",
+                    "primary_services": apps,
+                    "fallback_service": "github.api.user_token",
+                    "fallback_mode": "fallback-only",
+                    "routine_draw_on_fallback": False,
+                },
+                "action": "convergence executes the matching allocations "
+                          "change citing #1884 + this plan record",
+            })
     if countdowns:
         for c in countdowns:
             hrs = c.get("hours_remaining")

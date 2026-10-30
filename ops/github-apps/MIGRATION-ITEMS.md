@@ -22,7 +22,7 @@ PR) — never on a lane report alone. Owner lane in brackets.
 - [x] MIG-05 DISPOSITIONED 2026-10-30: recon/observer class (7 workflows) — ZERO PAT-bucket reads (7/7 on GITHUB_TOKEN/github.token per-repo bucket, firsthand audit). Collector relief for the shared per-repo bucket remains available, reprioritized below MIG-06/08 [migration-plan]
 - [x] MIG-06 DISPOSITIONED 2026-10-30: workflow-side writes (merge-promotion family, context-relationship-publish, osint refresh writes) — ZERO PAT-class writes (all github.token); self-integrate = external-agent dispatch, no in-workflow GitHub writes. Publisher adoption = optional identity graduation, behind MIG-07/08 [migration-plan]
 - [ ] MIG-07 Wave 2: lane `pat_publish` opt-in to Publisher token — GATE SATISFIED 2026-10-30 (minter lane-usable proven firsthand by migration-plan lane; path proof = the mig07-gate-proof PR published on the Publisher token); rollout = per-lane opt-in declared/scheduled by AppID lane; PAT fallback retained [appid]
-- [ ] MIG-08 Wave 3: `peer-review-orchestrator` polling → Reviewer-ops, on its standing [migration-plan]
+- [x] MIG-08 DISPOSITIONED 2026-10-30: peer-review-orchestrator — polling/evidence step on GITHUB_TOKEN (∅ PAT); OPERATOR steps identity-bound by design (authorized-publisher checks + provider triggers) and STAY. Reviewer relief for evidence step = optional, MIG-05 class [migration-plan]
 - [ ] MIG-09 Wave 4: gate check-runs/annotations → Gate/CI, on its standing [migration-plan]
 - [ ] MIG-10 Wave 5: issue-lifecycle sweeps → Lifecycle, on its standing [migration-plan]
 - [ ] MIG-11 Per-item calls/run recorded into quota registry at G4 (MEASURE-AT-GATE items: M1, M3, M4, M5) [quota]

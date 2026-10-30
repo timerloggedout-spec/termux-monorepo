@@ -23,12 +23,12 @@ ROOT = Path(__file__).resolve().parent.parent
 FOCUS_LADDER = ["repo-development", "research", "boinc-donations"]
 DEADLINE_TRIGGER_HOURS = 72
 
-# Slice-assignment emission holds (project ids). HOLD 2026-10-30:
-# repo-replay emission PAUSED (owner competition-rules question,
-# lane-side via cadence); (a) planner route remains the preference;
-# resume on repo-replay clearance only. Governs planner EMISSION
-# only - allocations.json records are convergence's.
-SLICE_ASSIGNMENT_HOLDS = {"repo-replay"}
+# Slice-assignment emission holds (project ids). The 2026-10-30
+# repo-replay hold was LIFTED same day (manager ruling: Repo Replay
+# is in zero events; enrollment is not a competition claim), so the
+# set is empty. Governs planner EMISSION only - allocations.json
+# records are convergence's.
+SLICE_ASSIGNMENT_HOLDS = set()
 
 
 def pool_class(services):

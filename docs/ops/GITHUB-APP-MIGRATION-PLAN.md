@@ -92,7 +92,13 @@ invented here.
   PAT-path output (same inputs); diff = ∅ or explained in the migration PR.
 - **G4 Bucket proof**: during the shadow run, record `GET /rate_limit` on the
   app token (remaining > 0 while PAT low/0 is the strong form, Collector-style)
-  into the registry readings (§2.4).
+  into the registry readings (§2.4). The proof is a **runtime receipt**, not a
+  lone reading (amended 2026-10-30 per the #2407 telemetry audit): mint
+  outcome, rate-limit before AND after the batch, API call count by status,
+  repositories inspected, workflow run id / attempt / head SHA, duration and
+  terminal conclusion — emitted by the #2407 telemetry emitter
+  (`scripts/github/github_app_telemetry.py`) or an equivalent receipt with
+  the same fields. Manifest declarations are never G4 evidence.
 - **G5 Fallback retained one cycle**: the old credential path stays wired
   (env-selected) for one full schedule cycle after cutover, then is removed by
   a follow-up PR. Rollback at any point = flip the token-source env back;
@@ -160,7 +166,10 @@ invented here.
   breaking-change or deprecation entries touching apps/auth/permissions
   become MIGRATION-ITEMS entries with the sunset date. Workflows keep
   sending the pinned `X-GitHub-Api-Version` until a PR moves it.
-- Weekly census workflow: for each installed app, mint + `GET /rate_limit`,
+- Weekly census workflow: vehicle of record = the #2407 telemetry emitter
+  (`scripts/github/github_app_telemetry.py` + `ops/github-apps/registry.json`
+  declaration layer), scheduled and mint-wired as TEL-01..03 in
+  MIGRATION-ITEMS; for each installed app, mint + `GET /rate_limit`,
   and record the reading (limit / used / remaining / reset, timestamp) as
   registry readings for `github.api.app_<role>` via the established
   #1884-citing quota feed/PR route. **Readings only — a missing reading is

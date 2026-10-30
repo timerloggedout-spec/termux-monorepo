@@ -1,6 +1,6 @@
 {
   "schema": "quota-usage/v1",
-  "generated_at": "2026-10-30T02:03:03Z",
+  "generated_at": "2026-10-30T02:30:35Z",
   "ordered_by": "owner order 2026-10-29 via quota-specialist lane (b18fae96)",
   "built_by": "viz lane (4ed48ba4) \u2014 visualizations for everything Web",
   "registry_context": {
@@ -86,7 +86,32 @@
       }
     ],
     "note": "Observed points only \u2014 the bucket is read at check time, not sampled continuously. Dashed connectors span unobserved gaps; they are not measurements. Buckets stay separate (see buckets) \u2014 this line is the PAT user bucket only, never merged with installation or GraphQL spend. Burn shape (convergence, verified from reset epochs): sustained ~120\u2013160 calls/min fleet-wide \u2014 the bucket dies over a 30\u201340 min ramp, then stays dead until the hourly reset. Not a spike; no instant re-exhaustion.",
-    "bucket": "github.api.user_token"
+    "bucket": "github.api.user_token",
+    "model": {
+      "principle": "Owner principle (2026-10-29 19:10 PT, via cadence lane): the target line is NOT a survival ceiling \u2014 it is the replenishment flow line (limit / window, phase-aligned to reset epochs), with cumulative use reaching ~100% exactly at replenishment.",
+      "anchor_reset": "2026-10-30T01:42:09Z",
+      "window_ms": 3600000,
+      "ideal": "remaining declines linearly from the limit at window start to 0 exactly at the reset epoch \u2014 a diagonal burn-down pacing to zero-at-reset",
+      "faults": {
+        "below_line": "actual under the flow line = burn ahead of pace -> burst fault: early death before the reset epoch",
+        "above_line": "actual over the flow line late in the window = burn behind pace -> flat fault: quota wasted at replenishment"
+      },
+      "worked": [
+        {
+          "at": "2026-10-30T01:32:00Z",
+          "ideal_remaining": 846,
+          "actual_remaining": 0,
+          "read": "burst fault \u2014 bucket dead ~10 min before its reset epoch"
+        },
+        {
+          "at": "2026-10-30T01:54:00Z",
+          "ideal_remaining": 4012,
+          "actual_remaining": 3230,
+          "read": "~1.8x pace in the new window (used 1770 vs ~988 ideal) \u2014 burst fault forming"
+        }
+      ],
+      "note": "Reset epochs drift seconds per window (observed resets 01:42:09Z -> 02:42:19Z); the line is phase-aligned to the anchor epoch, not to the clock hour."
+    }
   },
   "series2_snapshots": {
     "title": "Quota readings snapshots \u2014 per-service state (status-only; used/reset null across rows)",
@@ -368,6 +393,12 @@
       "on": "series1",
       "at": "2026-10-30T01:45:00Z",
       "text": "Burn shape correction (convergence, verified from reset epochs): NO instant re-exhaustion \u2014 the new window opened at the 01:42:09Z reset and drained on a sustained ~120\u2013160 calls/min ramp (4999 @01:43Z viz preflight \u2192 4645 @~01:45Z \u2192 3230 @~01:54Z, used 1770). A 5000 bucket dies in ~30\u201340 min of storm and stays dead until the hourly reset; graph walls as ramps, not spikes. Consistent with the quota lane's firsthand ~150/min, ~32-min burn on 2026-10-29."
+    },
+    {
+      "id": "model-flow-line",
+      "on": "series1",
+      "at": "2026-10-30T01:42:09Z",
+      "text": "Model correction (owner principle via cadence lane, 2026-10-29 19:10 PT): the green line is the replenishment FLOW line \u2014 limit/window phased to reset epochs, ideal = diagonal to zero-at-reset. Deviations are faults both ways: below = burst (early death; the 01:32Z wall sat at 0 with ~846 ideal remaining), above late = flat (wasted quota). At 01:54Z the new window burned ~1.8x pace \u2014 a burst fault forming, visible against the line."
     }
   ],
   "stamps": [
@@ -480,5 +511,143 @@
     "received": "2026-10-29",
     "from": "cadence-optimizer lane (ac333a25)",
     "sources": "rate-limit record PR #2321/#2322 + burst-fix record PR #2341 (history-verified per cadence lane)"
+  },
+  "gearbox": {
+    "status": "concept \u2014 owner order 2026-10-29 19:27 PT via cadence lane; design only, nothing here is live behavior",
+    "doc": "docs/ops/QUOTA-GEARBOX-CONCEPT.md",
+    "admin_designation": "INTERNAL \u2014 settings surface only, never public render (challenge admin-metrics precedent)",
+    "metaphor": {
+      "rpm": "burn rate, calls/min per bucket \u2014 measured only where a meter exists",
+      "redline": "replenishment flow rate = limit/window, phase-aligned to reset epoch (series1.model)",
+      "gear": "priority class in the allocation ladder (allocations focus, ordered in gears[]) ",
+      "shift": "a re-allocation / re-prioritization event \u2014 a #1884 re-split record",
+      "tachometer": "per-slice gauge; needle = planner target_flow_per_min where no meter exists"
+    },
+    "gears": [
+      {
+        "gear": 1,
+        "focus": "winning",
+        "mode": "standing"
+      },
+      {
+        "gear": 2,
+        "focus": "repo-development",
+        "mode": "leftover-only"
+      },
+      {
+        "gear": 3,
+        "focus": "research",
+        "mode": "leftover-only"
+      },
+      {
+        "gear": 4,
+        "focus": "boinc-donations",
+        "mode": "leftover-only",
+        "eligibility": "GitHub-provider pools only"
+      }
+    ],
+    "shift_log_type": {
+      "annotation_on": "annotations[] with type=shift",
+      "shape": {
+        "type": "shift",
+        "at": "ISO-8601",
+        "actor": "admin identity / lane role",
+        "slice": "pool/focus",
+        "field": "pct | gear | mode",
+        "old": "any",
+        "new": "any",
+        "cites": "#1884",
+        "pr": "re-split PR number",
+        "subset_filter": "work-type tags checked, or null",
+        "input_source": "slider | preset | checkbox-bulk"
+      },
+      "state": "type defined; log EMPTY \u2014 no re-split tick exercised yet (allocations set_at 2026-10-27)"
+    },
+    "mock": {
+      "flag": "MOCK \u2014 interaction mock for design review; not telemetry, not live settings",
+      "settings_example": [
+        {
+          "pool": "github",
+          "focus": "winning",
+          "gear": 1,
+          "pct": 100,
+          "mode": "standing"
+        },
+        {
+          "pool": "github",
+          "focus": "boinc-donations",
+          "gear": 4,
+          "pct": 0,
+          "mode": "leftover-only"
+        }
+      ],
+      "shift_events": [
+        {
+          "type": "shift",
+          "at": "MOCK",
+          "actor": "admin (mock)",
+          "slice": "github/winning",
+          "field": "pct",
+          "old": 100,
+          "new": 90,
+          "cites": "#1884",
+          "pr": null
+        }
+      ],
+      "subset_example": {
+        "checked": [
+          "issue",
+          "rfp"
+        ],
+        "input_source": "checkbox-bulk",
+        "applies": "priority/share change to issue+rfp-tagged lanes only (mock)"
+      }
+    },
+    "honesty": [
+      "per-slice RPM is NOT ESTABLISHED \u2014 no per-consumer attribution exists for the shared PAT bucket; tachometers render planner target (target_flow_per_min) or blank, never a measured rate",
+      "gear state is CONFIGURED state (allocations.json), not observed behavior",
+      "reserve-as-timing-slack release curve is PROPOSED; today's reserve is a static explicit per-pool remainder",
+      "planner slices[] detail (208 slices / 52 pools, 124 numeric \u2014 cadence via quota-specialist PR #2381) not viz-verified at design time; shipped UI must read slices[] itself"
+    ],
+    "admin_ui": {
+      "refinement": "owner refinement 2026-10-29 19:30 PT via cadence lane",
+      "sliders": {
+        "control": "one % slider per slice; move -> live flow re-derivation preview (slice flow = pool flow x share) before commit",
+        "presets": [
+          {
+            "name": "Winning 100",
+            "posture": "standing 100 to the top gear (existing allocation posture)"
+          },
+          {
+            "name": "leftover-only",
+            "posture": "draw only what higher gears cannot consume (existing allocation posture)"
+          },
+          {
+            "name": "excluded / reserve-100",
+            "posture": "0 everywhere, reserve 100 (existing Codespaces posture)"
+          },
+          {
+            "name": "equal-split",
+            "posture": "pool shared evenly across the checked subset"
+          }
+        ]
+      },
+      "subset_selection": {
+        "control": "checkboxes by work-type tag; bulk apply touches checked lanes only; unchecked lanes untouched; the filter scopes which sliders are shown/active",
+        "tags": [
+          "issue",
+          "rfp",
+          "challenge",
+          "research",
+          "repo-dev",
+          "collectors"
+        ],
+        "tags_note": "owner examples (issue, RFP) + the fleet's standing work classes; set is open"
+      },
+      "guardrail_ruling": {
+        "over_100": "BLOCK with the overage shown \u2014 supported by the allocations discipline",
+        "auto_balance": "mocked but REJECTED: silently rewriting other slices breaks per-slice audited old->new and the explicit-reserve rule (reserve is computed, never silently absorbed)"
+      }
+    }
   }
 }

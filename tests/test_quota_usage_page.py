@@ -4,8 +4,9 @@ The page renders ONLY data/quota-usage.json (schema quota-usage/v1),
 the pack built from the quota-specialist data pack (owner order
 2026-10-29). Integrity rules pinned here: no observation values are
 hardcoded in the page; every series-1 point and series-2 snapshot
-carries provenance; the composed 155-row snapshot stays flagged
-landed=False until the convergence lane confirms landing; g4f has NO
+carries provenance; the 155-row snapshot's landed flag flipped to True
+only when convergence PR #2362 landed and viz verified the pair blob
+on master; g4f has NO
 replenishment stamp (established=False, cadence=None) and must never
 gain one silently; series-3 daily deltas must equal the increments of
 the in-repo reconstructed corpus they are derived from.
@@ -87,7 +88,7 @@ def test_buckets_kept_separate_and_storm_fix_recorded():
 def test_series2_snapshots_provenance_and_landing_flags():
     s2 = _pack()["series2_snapshots"]
     snaps = s2["snapshots"]
-    assert [sn["landed"] for sn in snaps] == [True, True, False]
+    assert [sn["landed"] for sn in snaps] == [True, True, True]
     assert [sn["rows"] for sn in snaps] == [3, 8, 155]
     for sn in snaps:
         assert sn["provenance"]
@@ -96,6 +97,9 @@ def test_series2_snapshots_provenance_and_landing_flags():
     # snapshot 3 is the recovery: github token exhausted -> watch
     assert snaps[1]["states"]["github.api.github_token"] == "exhausted"
     assert snaps[2]["states"]["github.api.github_token"] == "watch"
+    # landed 155-row truth (PR #2362, pair blob 5d5238c9): minutes unknown
+    assert snaps[2]["states"]["github.actions.minutes"] == "unknown"
+    assert "2362" in snaps[2]["provenance"]
 
 
 def test_g4f_has_no_stamp():

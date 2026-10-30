@@ -1,6 +1,6 @@
 {
   "schema": "quota-allocations-feed/v1",
-  "generated_at": "2026-10-30T09:06:11.835926+00:00",
+  "generated_at": "2026-10-30T10:39:51.286300+00:00",
   "source": "ops/quota/allocations.json (owner-set, issue #1884) joined with ops/quota/registry.json entitlements and the public readings snapshot; entitlements are not usage and no focus attribution is invented.",
   "issue": 1884,
   "set_by": "owner",
@@ -2112,6 +2112,479 @@
           "routine_draw_on_fallback": false,
           "date": "2026-10-30",
           "reason": "Owner order 2026-10-30 (cadence + repo-replay lanes): migrations + replays run on the AppID buckets, not the PAT bucket; the PAT service is fallback-only with no routine draw. Executes planner trigger app_slice_assignment:repo-replay (ops/quota/allocation-plan.json, PR #2450 merged 7b182d51), citing #1884."
+        },
+        {
+          "lane": "quota-specialist",
+          "claim": 6520547215,
+          "primary_services": [
+            "github.api.app_publisher",
+            "github.api.app_collector"
+          ],
+          "fallback_service": "github.api.user_token",
+          "fallback_mode": "fallback-only",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520547215 (explicit slice request, repo-replay shape): allocation-planning / plan-refresh / quota publishes on the AppID buckets; priority ask ops-maintenance (below winning-standing, above leftover-only), recorded as claimed; timers: planner workflow Wed 08:47Z + dispatch, bursts ~10-20 calls/publish."
+        },
+        {
+          "lane": "foundry",
+          "claim": 6520528321,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520528321: PAT filings/intake/verification, burst-class event-driven (issues events + dispatch workflows); priority low/routine, focus repo-development; timers none owned (event-rate)."
+        },
+        {
+          "lane": "provisioning",
+          "claim": 6520538214,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520538214: PAT core + Actions, one-shot provisioning passes; timers none owned; priority routine."
+        },
+        {
+          "lane": "delphi-validation",
+          "claim": 6520538778,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520538778: PAT reads + publish/merge, bursty per owner-dispatched validation task; priority leftover-only; timers none owned."
+        },
+        {
+          "lane": "cadence-optimizer",
+          "claim": 6520539563,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520539563: chat-side PAT for quota-dispatch-tree / peer-review-orchestrator / cadence-provider-onboarding / pat-publish-path surfaces; workflow timers Wed 06:23Z + per-PR poll budgets."
+        },
+        {
+          "lane": "quota-convergence",
+          "claim": 6520539793,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520539793: PAT publishes for the readings promotion cycle + allocations execution (probe itself draws 0 PAT, installation token); measured 8 calls/pass, 15-25 per promotion cycle, <=10/day loop budget; timers signal-dispatch + <=1 census/day, diff-gated."
+        },
+        {
+          "lane": "platform201-status",
+          "claim": 6520540242,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520540242: PAT publish/verify, burst-class event-driven; priority low/routine, focus repo-development; timers none (monthly manual Billing+Usage read). Platform201 credit surface enrolled separately in the platform201 pool."
+        },
+        {
+          "lane": "marketing-channel",
+          "claim": 6520540521,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520540521: PAT PRs/issues/comments burst-class + referral workflows (rotation dispatch-only, pool-watch weekly Tue 08:41Z); priority low/routine, focus repo-development."
+        },
+        {
+          "lane": "viz-dispatch-tree",
+          "claim": 6520543760,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520543760: PAT publishes + verification reads for help-wanted-dashboard surfaces, ~11-12 calls/PR, QAC-007 preflight-gated; focus repo-development (leftover-only posture); timers none owned."
+        },
+        {
+          "lane": "account-creation",
+          "claim": 6520553645,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520553645: PAT provisioning PUTs + audit/availability dispatches, event-driven bursts per provider batch; timers none standing."
+        },
+        {
+          "lane": "reverse-engineering-toolkits",
+          "claim": 6520554477,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520554477: PAT helper only, bursty PR-cycle calls; focus repo-development (research secondary); priority below winning, leftover-compatible; timers none owned."
+        },
+        {
+          "lane": "tribute-efficacy-audit",
+          "claim": 6520558757,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520558757: PAT search/reads with in-script caps + tribute-participation workflow (daily 07:23Z + dispatch); priority low/routine, leftover-only claim; focus repo-development."
+        },
+        {
+          "lane": "web-design",
+          "claim": 6520560027,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520560027: PAT publish/merge/verify, burst-class event-driven (~tens of calls/PR) for dashboard surfaces; priority routine, focus repo-development leftover-only; timers none owned."
+        },
+        {
+          "lane": "linguist-admin-panel",
+          "claim": 6520561526,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520561526: PAT verify/acceptance/publish, episodic burst; substrate-owned collector cron Tue 06:53Z runs on Actions; priority low/routine, focus repo-development."
+        },
+        {
+          "lane": "surface-separation",
+          "claim": 6520563164,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520563164: PAT verify/publish/merge episodic bursts for MVT/DoE/ATES surfaces; priority low/routine leftover-only, focus repo-development; lane-owned timers none (surface-feeds weekly Wed 06:41Z)."
+        },
+        {
+          "lane": "gap-finder",
+          "claim": 6520564100,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520564100: PAT sweep reads + verification + ledger publishes, episodic bursts; priority leftover-only, lowest burst class; timers none (interactive sweeps)."
+        },
+        {
+          "lane": "challenge-entries",
+          "claim": 6520567420,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520567420: PAT is this lane's sole routine draw (log/registry/coordinator publishes + reads) for the D0-D5 challenge slate; priority WINNING (owner setting 2026-10-27; draws under the winning focus); timers event-driven (countdowns-refresh Mon 16:06Z + push/dispatch)."
+        },
+        {
+          "lane": "devpost-kiro-accounts",
+          "claim": 6520570396,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520570396: PAT filings/PRs/verification, burst-class event-driven, for D4 Kiroween accounts/profiles; priority Winning (active slate); timers none."
+        },
+        {
+          "lane": "tmpfs-remediation",
+          "claim": 6520570428,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520570428: PAT publish/verify episodic; lane task COMPLETE (incident closed 2026-10-27), standing draw ~0; sole timer = tmp-usage-tripwire hook (VM-self exception, 0 pool draw)."
+        },
+        {
+          "lane": "oracle-hackathon-tests",
+          "claim": 6520571271,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520571271: PAT publish/verify/[MUSEai] comments only, one-shot per briefed task; priority low/routine episodic; record task complete 2026-10-27; timers none."
+        },
+        {
+          "lane": "sofa-search",
+          "claim": 6520571661,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520571661: PAT publish/verify only, episodic bursts <=~15 calls/pass (SOFA MCP surface is unpooled, own OAuth grant); focus research, leftover-only; priority low/routine; timers none."
+        },
+        {
+          "lane": "registration-monikers",
+          "claim": 6520572467,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520572467: PAT registry passes ~9-30 core calls/pass, event-driven; workflow cron Tue 06:41Z runs on the Actions token; class repo-dev/leftover."
+        },
+        {
+          "lane": "witness-lane",
+          "claim": 6520574483,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520574483: PAT helper publishes, ~dozens of calls per wiring pass, bursty, 0 standing; priority low, event-driven; timers none owned."
+        },
+        {
+          "lane": "moneyball-plane",
+          "claim": 6520579926,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520579926: PAT route, small bursts (single-digit calls/op), event-driven only; work-class repo-development serving the Winning consumer (challenge scoring seam); timers none standing."
+        },
+        {
+          "lane": "temporal-integration",
+          "claim": 6520580039,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520580039: PAT PR publish/comments/verification, burst-class event-driven; Actions surfaces dispatch/PR-triggered only; priority low/routine, focus repo-development; timers none (keepalive disabled at migration)."
+        },
+        {
+          "lane": "3l0-weighting-backfill",
+          "claim": 6520582020,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520582020: PAT episodic verify/publish only, burst-class (feed refresh rides gap-finder-fix-g10's surface-feeds workflow, not double-claimed); priority low/routine, focus repo-development leftover-only; timers none own."
+        },
+        {
+          "lane": "cross-plane-graph",
+          "claim": 6520587366,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520587366: PAT episodic publish/verify (~10-20 counted/PR); regeneration runs on the installation token (0 PAT/pass; cron Wed 06:47Z + dispatch + push); focus repo-development; priority low/routine."
+        },
+        {
+          "lane": "rate-limit",
+          "claim": 6520591412,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520591412: PAT episodic ~6-10 counted calls/PR (publish/verify), event-driven only; priority routine, incident-spike; timers none (pat_publish preflight = 1 uncounted /rate_limit read per publish, QAC-007)."
+        },
+        {
+          "lane": "doe-expert",
+          "claim": 6520599229,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520599229: PAT filings/comments/publishes/merges/verification, burst-class event-driven (~tens of calls/PR); co-owned delphi-rfp-feed-collect cron Tue 06:37Z (PAT fetch inside); priority low/routine; focus repo-development + research."
+        },
+        {
+          "lane": "papers-surfaces",
+          "claim": 6520593536,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520593536: PAT episodic recon/verify only (lane recon-only; proposed papers observatory unbuilt; arXiv/HF Papers/OpenAlex surfaces unpooled); focus research, leftover-only fit; timers none current."
+        },
+        {
+          "lane": "explore-reverse-seo",
+          "claim": 6520601251,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520601251: PAT episodic recon (~5 core calls; search bucket 30/min governs proposed passes, unbuilt); focus research, priority low/routine; timers none (adaptive triggers proposed, not landed)."
+        },
+        {
+          "lane": "research-triggers",
+          "claim": 6520531943,
+          "primary_services": [
+            "github.actions.minutes"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520531943: pool named by the claim = GitHub Actions minutes (research-intake / apk-xref-intake / re-taxonomy-intake workflows; issue-event + comment-marker triggers; 5-min timeout cap per run); priority event-driven; timers none (no schedule in any of the 3 workflows)."
+        },
+        {
+          "lane": "issue-lifecycle",
+          "claim": 6520547124,
+          "primary_services": [
+            "github.api.github_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520547124: Actions job GITHUB_TOKEN only (triage ~2-5 REST calls/run; matrix ~5 GraphQL + ~4 calls/run); timers event-rate (issues opened/reopened + Tue 07:17Z floor sweep; PR-merged + daily 06:41Z floor, diff-gated)."
+        },
+        {
+          "lane": "gap-finder-fix-g10",
+          "claim": 6520560215,
+          "primary_services": [
+            "github.actions.minutes"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520560215: GitHub Actions minutes only (surface-feeds-collect: weekly Wed 06:41Z + dispatch + push on source paths; collect job timeout 10m); lane G-10 complete, closed-on-evidence."
+        },
+        {
+          "lane": "linguist-substrate",
+          "claim": 6520573728,
+          "primary_services": [
+            "github.actions.minutes"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520573728: GitHub Actions minutes only \u2014 PAT draw 0 by design (collector runs on GITHUB_TOKEN, 0 API reads); timers cron Tue 06:53Z + dispatch + push on source paths; cost ~1 collector pass + <=1 refresh PR per run."
+        },
+        {
+          "lane": "delphi-lane",
+          "claim": 6520532135,
+          "primary_services": [
+            "github.api.github_token",
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520532135: delphi-gate (cron :23 hourly) + participant-cycle (cron :37 hourly) run on GITHUB_TOKEN with self-defer thresholds; ledger-feed-collect (weekly Tue 06:47Z + workflow_run + dispatch) fetches via PAT; chat PAT episodic verify/publish; priority repo-development/research infrastructure, leftover-only claim."
+        },
+        {
+          "lane": "comment-quality",
+          "claim": 6520549520,
+          "primary_services": [
+            "github.api.github_token",
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520549520: reviewer-metrics-collect + comment-quality-sweep run on github_token (OPERATOR||GITHUB_TOKEN; ~750 + <=160 calls/run, leftover-only speculative-cadence class, freshness-gated <=1 collect/day, weekly backstops); lane PAT work episodic."
+        },
+        {
+          "lane": "observatory",
+          "claim": 6520551280,
+          "primary_services": [
+            "github.api.user_token",
+            "github.actions.minutes"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520551280: OPERATOR-route PAT (collector + intake; the installation token cannot serve /user/subscriptions) + Actions minutes (repository-observatory daily 04:17Z, 1 bounded run/day; intake event-driven); focus research, leftover-only; priority low/steady-state; x-observatory parked, draw ~0."
+        },
+        {
+          "lane": "inventory",
+          "claim": 6520580174,
+          "primary_services": [
+            "github.api.user_token",
+            "github.actions.minutes"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520580174: PAT helper draws (inventory sweeps + connector landings) + Actions minutes (inventory refresh workflows); focus repo-development; timer on record: platform201-support-response-check daily 13:17Z."
         }
       ],
       "reserve_pct": 0,
@@ -4350,7 +4823,20 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
-      "slices": [],
+      "slices": [
+        {
+          "lane": "platform201-status",
+          "claim": 6520540242,
+          "primary_services": [
+            "platform201.projects"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520540242: platform201.projects surface (limit 3 + $20 credits per the registry record); draw FROZEN ~0 under the owner $-rule (no deploy until credit intake obtained); github-side PAT draw enrolled in the github pool."
+        }
+      ],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null

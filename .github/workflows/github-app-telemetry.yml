@@ -37,7 +37,7 @@ jobs:
         working-directory: scripts/github
         run: |
           set -euo pipefail
-          python -m unittest -v test_github_app_telemetry.py test_integration_mesh_poll.py
+          python -m unittest -v test_github_app_telemetry.py test_publish_github_app_telemetry.py test_integration_mesh_poll.py
           python github_app_telemetry.py --help
           python publish_github_app_telemetry.py --help
 

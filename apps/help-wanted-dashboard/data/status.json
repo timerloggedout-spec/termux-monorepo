@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-30T06:24:46Z",
+  "generated_at": "2026-10-30T13:30:18Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
   "receipts": 3962,
@@ -42469,7 +42469,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "df22680558bd538232aab61ccd7358eb318c3f3f",
+    "source_sha": "53241557636ade6abf66ab0d961d2a810541ad15",
     "source_ref": "master",
     "history_complete": false,
     "history_coverage": "lane-local-complete; repository-wide historical accountability requires sweep-accountability backfill",
@@ -42503,12 +42503,12 @@
   },
   "evolution": [
     {
-      "sha": "df22680558bd538232aab61ccd7358eb318c3f3f",
-      "short_sha": "df22680558bd",
-      "date": "2026-10-29T22:50:13-07:00",
-      "author": "Founders' are 'found' to implement.",
-      "subject": "docs(ops): telemetry visualization recon + seeded design (telemetry-viz lane) (#2414)",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/df22680558bd538232aab61ccd7358eb318c3f3f"
+      "sha": "53241557636ade6abf66ab0d961d2a810541ad15",
+      "short_sha": "53241557636a",
+      "date": "2026-10-30T13:21:13Z",
+      "author": "github-actions[bot]",
+      "subject": "chore(ops): regenerate operator matrix (#2521)",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/53241557636ade6abf66ab0d961d2a810541ad15"
     }
   ],
   "pipeline": [
@@ -42522,19 +42522,44 @@
   ],
   "tribute_audit": {
     "schema_version": "help-wanted.tribute-audit.v1",
-    "generated_at": "2026-10-30T06:24:50.779472+00:00",
-    "source_status_generated_at": "2026-10-30T06:24:46Z",
+    "generated_at": "2026-10-30T13:30:55.876921+00:00",
+    "source_status_generated_at": "2026-10-30T13:30:18Z",
     "source_tribute_count": 132,
     "unique_pr_count": 132,
     "audited_pr_count": 126,
-    "audited_this_run_count": 0,
+    "audited_this_run_count": 24,
     "attempted_this_run_count": 25,
-    "deferred_this_run_count": 25,
+    "deferred_this_run_count": 0,
     "unknown_this_run_count": 0,
-    "partial_this_run_count": 0,
-    "audited_this_run_pr_urls": [],
+    "partial_this_run_count": 1,
+    "audited_this_run_pr_urls": [
+      "https://github.com/FasterThanAi/ai-lead-generation-mvp/pull/34",
+      "https://github.com/ennouaimi/invoicr/pull/8",
+      "https://github.com/shadcn-labs/ogimagecn/pull/34",
+      "https://github.com/pyrite-wiki/pyrite/pull/198",
+      "https://github.com/vigneshv1cky/alphadesk-terminal/pull/12",
+      "https://github.com/chahe-dridi/vscode-agent-bell/pull/225",
+      "https://github.com/Research-Astute/manus-ui-research-hub/pull/3",
+      "https://github.com/Research-Astute/manus-ui-research-hub/pull/1",
+      "https://github.com/Research-Astute/manus-ui-adapter-lab/pull/1",
+      "https://github.com/search-astute-ly/manus-public-ui-research/pull/1",
+      "https://github.com/E-Timileyin/Sail-CLI/pull/23",
+      "https://github.com/Kilo-Org/agentic-path/pull/26",
+      "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7",
+      "https://github.com/w1977-0/open-stream-saver/pull/3",
+      "https://github.com/Vasudev-ai/Focusflow/pull/15",
+      "https://github.com/OrionStarAI/EasyCode/pull/53",
+      "https://github.com/ThinkLikeAFounder/pulsartrack/pull/898",
+      "https://github.com/MergeFi/contracts/pull/374",
+      "https://github.com/EF-CHAIN/SendAm/pull/492",
+      "https://github.com/EF-CHAIN/SendAm/pull/607",
+      "https://github.com/SO4-Markets/so4-oracle/pull/1143",
+      "https://github.com/StellarLock/StellarLock/pull/865",
+      "https://github.com/KayStcx/KayStcx/pull/104",
+      "https://github.com/TrusTrove/TrusTrove-contract/pull/860"
+    ],
     "not_audited_count": 6,
-    "audit_window_start": 78,
+    "audit_window_start": 121,
     "audit_window_size": 25,
     "stages": {
       "implementation_unproven": 7,
@@ -42559,7 +42584,7 @@
     "items": [
       {
         "pr_url": "https://github.com/E-Timileyin/Sail-CLI/pull/23",
-        "audited_at": "2026-10-29T21:22:52.434639+00:00",
+        "audited_at": "2026-10-30T13:30:35.552104+00:00",
         "stage": "implementation_unproven",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42590,7 +42615,7 @@
       },
       {
         "pr_url": "https://github.com/Kilo-Org/agentic-path/pull/26",
-        "audited_at": "2026-10-29T21:22:53.940183+00:00",
+        "audited_at": "2026-10-30T13:30:37.443230+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42621,7 +42646,7 @@
       },
       {
         "pr_url": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7",
-        "audited_at": "2026-10-29T21:22:55.084304+00:00",
+        "audited_at": "2026-10-30T13:30:38.832366+00:00",
         "stage": "implementation_unproven",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42652,7 +42677,7 @@
       },
       {
         "pr_url": "https://github.com/w1977-0/open-stream-saver/pull/3",
-        "audited_at": "2026-10-29T21:22:56.077614+00:00",
+        "audited_at": "2026-10-30T13:30:40.274484+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42683,7 +42708,7 @@
       },
       {
         "pr_url": "https://github.com/Vasudev-ai/Focusflow/pull/15",
-        "audited_at": "2026-10-29T21:22:57.189794+00:00",
+        "audited_at": "2026-10-30T13:30:41.708029+00:00",
         "stage": "implementation_unproven",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42714,7 +42739,7 @@
       },
       {
         "pr_url": "https://github.com/OrionStarAI/EasyCode/pull/53",
-        "audited_at": "2026-10-29T21:22:58.221890+00:00",
+        "audited_at": "2026-10-30T13:30:43.112939+00:00",
         "stage": "implementation_unproven",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42745,7 +42770,7 @@
       },
       {
         "pr_url": "https://github.com/ThinkLikeAFounder/pulsartrack/pull/898",
-        "audited_at": "2026-10-29T21:22:59.314912+00:00",
+        "audited_at": "2026-10-30T13:30:44.489504+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42776,7 +42801,7 @@
       },
       {
         "pr_url": "https://github.com/MergeFi/contracts/pull/374",
-        "audited_at": "2026-10-29T21:23:00.545910+00:00",
+        "audited_at": "2026-10-30T13:30:46.138685+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42807,7 +42832,7 @@
       },
       {
         "pr_url": "https://github.com/EF-CHAIN/SendAm/pull/492",
-        "audited_at": "2026-10-29T21:23:01.502752+00:00",
+        "audited_at": "2026-10-30T13:30:47.500539+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42838,7 +42863,7 @@
       },
       {
         "pr_url": "https://github.com/EF-CHAIN/SendAm/pull/607",
-        "audited_at": "2026-10-29T21:23:02.489821+00:00",
+        "audited_at": "2026-10-30T13:30:48.746281+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42869,7 +42894,7 @@
       },
       {
         "pr_url": "https://github.com/SO4-Markets/so4-oracle/pull/1143",
-        "audited_at": "2026-10-29T16:27:48.265306+00:00",
+        "audited_at": "2026-10-30T13:30:49.974673+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42900,7 +42925,7 @@
       },
       {
         "pr_url": "https://github.com/StellarLock/StellarLock/pull/865",
-        "audited_at": "2026-10-29T16:27:49.340946+00:00",
+        "audited_at": "2026-10-30T13:30:51.474058+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42931,7 +42956,7 @@
       },
       {
         "pr_url": "https://github.com/KayStcx/KayStcx/pull/104",
-        "audited_at": "2026-10-29T16:27:50.375465+00:00",
+        "audited_at": "2026-10-30T13:30:52.813977+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42962,7 +42987,7 @@
       },
       {
         "pr_url": "https://github.com/TrusTrove/TrusTrove-contract/pull/860",
-        "audited_at": "2026-10-29T16:27:51.513912+00:00",
+        "audited_at": "2026-10-30T13:30:54.076787+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing"
@@ -46753,7 +46778,7 @@
       },
       {
         "pr_url": "https://github.com/FasterThanAi/ai-lead-generation-mvp/pull/34",
-        "audited_at": "2026-10-29T21:22:40.898773+00:00",
+        "audited_at": "2026-10-30T13:30:18.878534+00:00",
         "stage": "accepted",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -46784,7 +46809,7 @@
       },
       {
         "pr_url": "https://github.com/ennouaimi/invoicr/pull/8",
-        "audited_at": "2026-10-29T21:22:41.734402+00:00",
+        "audited_at": "2026-10-30T13:30:20.216307+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -46815,7 +46840,7 @@
       },
       {
         "pr_url": "https://github.com/shadcn-labs/ogimagecn/pull/34",
-        "audited_at": "2026-10-29T21:22:42.842693+00:00",
+        "audited_at": "2026-10-30T13:30:21.613757+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -46846,7 +46871,7 @@
       },
       {
         "pr_url": "https://github.com/pyrite-wiki/pyrite/pull/198",
-        "audited_at": "2026-10-29T21:22:44.067948+00:00",
+        "audited_at": "2026-10-30T13:30:23.277653+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -46877,7 +46902,7 @@
       },
       {
         "pr_url": "https://github.com/vigneshv1cky/alphadesk-terminal/pull/12",
-        "audited_at": "2026-10-29T21:22:45.337264+00:00",
+        "audited_at": "2026-10-30T13:30:24.718353+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing"
@@ -46907,7 +46932,7 @@
       },
       {
         "pr_url": "https://github.com/DioNanos/codex-termux/pull/27",
-        "audited_at": "2026-10-29T21:22:46.452191+00:00",
+        "audited_at": "2026-10-30T13:30:26.177639+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "files_truncated",
@@ -46939,7 +46964,7 @@
       },
       {
         "pr_url": "https://github.com/chahe-dridi/vscode-agent-bell/pull/225",
-        "audited_at": "2026-10-29T21:22:47.555113+00:00",
+        "audited_at": "2026-10-30T13:30:27.792931+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -46970,7 +46995,7 @@
       },
       {
         "pr_url": "https://github.com/Research-Astute/manus-ui-research-hub/pull/3",
-        "audited_at": "2026-10-29T21:22:48.669018+00:00",
+        "audited_at": "2026-10-30T13:30:29.774168+00:00",
         "stage": "accepted",
         "evidence_gaps": [
           "solution_proof_missing"
@@ -47000,7 +47025,7 @@
       },
       {
         "pr_url": "https://github.com/Research-Astute/manus-ui-research-hub/pull/1",
-        "audited_at": "2026-10-29T21:22:49.623623+00:00",
+        "audited_at": "2026-10-30T13:30:31.551587+00:00",
         "stage": "accepted",
         "evidence_gaps": [
           "solution_proof_missing"
@@ -47030,7 +47055,7 @@
       },
       {
         "pr_url": "https://github.com/Research-Astute/manus-ui-adapter-lab/pull/1",
-        "audited_at": "2026-10-29T21:22:50.534567+00:00",
+        "audited_at": "2026-10-30T13:30:32.865627+00:00",
         "stage": "accepted",
         "evidence_gaps": [
           "solution_proof_missing"
@@ -47060,7 +47085,7 @@
       },
       {
         "pr_url": "https://github.com/search-astute-ly/manus-public-ui-research/pull/1",
-        "audited_at": "2026-10-29T21:22:51.489962+00:00",
+        "audited_at": "2026-10-30T13:30:34.226513+00:00",
         "stage": "accepted",
         "evidence_gaps": [
           "solution_proof_missing"

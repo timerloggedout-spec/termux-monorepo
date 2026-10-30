@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Validate typed, candidate-only references between nomenclature and domain matrices."""
 import json
+from datetime import date
 from pathlib import Path
 import sys
 
@@ -8,6 +9,10 @@ ROOT = Path(__file__).resolve().parents[2]
 LINKS_PATH = ROOT / "docs/proposals/active/notation-sets/nomenclature-matrix/DOMAIN-COMPOSITION-LINKS.json"
 NOMENCLATURE_PATH = ROOT / "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json"
 DOMAIN_PATH = ROOT / "docs/proposals/active/domain-composition-matrix/seed.json"
+EXPECTED_SOURCE_PATHS = {
+    "nomenclature": "docs/proposals/active/notation-sets/nomenclature-matrix/seed.json",
+    "domain_composition": "docs/proposals/active/domain-composition-matrix/seed.json",
+}
 TARGETS = {
     "domain": ("domains", "domain_id", {"domain_scope"}),
     "entity_type": ("entity_types", "entity_type_id", {"describes_entity_type"}),
@@ -22,7 +27,10 @@ def validate(links, nomenclature, domain):
         errors.append("unsupported links schema_version")
     contracts = links.get("source_contracts", {})
     for name, data in (("nomenclature", nomenclature), ("domain_composition", domain)):
-        declared = contracts.get(name, {}).get("schema_version")
+        source_contract = contracts.get(name, {})
+        if source_contract.get("path") != EXPECTED_SOURCE_PATHS[name]:
+            errors.append(f"{name} source path mismatch")
+        declared = source_contract.get("schema_version")
         if declared != data.get("schema_version"):
             errors.append(f"{name} source schema_version mismatch")
     if "candidate only" not in links.get("authority_boundary", ""):
@@ -87,8 +95,12 @@ def validate(links, nomenclature, domain):
             reviewed_on = item.get("reviewed_on")
             if not isinstance(reviewer, str) or not reviewer.strip():
                 errors.append(f"{link_id} accepted link requires nonblank reviewer")
-            if not isinstance(reviewed_on, str) or len(reviewed_on) != 10:
-                errors.append(f"{link_id} accepted link requires reviewed_on YYYY-MM-DD")
+            try:
+                parsed_date = date.fromisoformat(reviewed_on) if isinstance(reviewed_on, str) else None
+            except ValueError:
+                parsed_date = None
+            if parsed_date is None or parsed_date.isoformat() != reviewed_on:
+                errors.append(f"{link_id} accepted link requires canonical reviewed_on YYYY-MM-DD")
     return errors
 
 def main():

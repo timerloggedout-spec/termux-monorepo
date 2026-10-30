@@ -51,17 +51,10 @@ class DeepSeekBackend(ChatBackend):
 
         # cookie
         self.cookie = None
-        cookie_path = session_manager.get("deepseek", "cookie_path")
-        if cookie_path:
-            cp = os.path.expanduser(cookie_path)
-            if os.path.exists(cp):
-                with open(cp) as f:
-                    data = json.load(f)
-                cookies = data if isinstance(data, list) else data.get('cookies', [])
-                for c in cookies:
-                    if c.get("name") == "ds_session_id":
-                        self.cookie = c.get("value")
-                        break
+        for c in session_manager.get_cookies("deepseek"):
+            if c.get("name") == "ds_session_id":
+                self.cookie = c.get("value")
+                break
         self._session = None
 
     def is_available(self):

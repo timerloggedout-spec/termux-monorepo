@@ -30,3 +30,18 @@ class SessionManager:
                 with open(expanded) as f:
                     return f.read().strip()
         return None
+
+    def get_cookies(self, provider: str) -> list[dict]:
+        cookie_path = self.get(provider, "cookie_path")
+        if cookie_path:
+            cookie_str = str(cookie_path)
+            if ".." in Path(cookie_str).parts:
+                raise ValueError(f"Path traversal detected in cookie_path for '{provider}'")
+            expanded = Path(os.path.expanduser(cookie_str))
+            if expanded.is_symlink():
+                raise ValueError(f"Symlink cookie path {expanded} rejected for security")
+            if expanded.exists():
+                with open(expanded, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                return data if isinstance(data, list) else data.get("cookies", [])
+        return []

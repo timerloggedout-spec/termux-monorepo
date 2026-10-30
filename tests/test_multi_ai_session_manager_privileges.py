@@ -74,3 +74,44 @@ def test_session_manager_windows_path_compatibility(tmp_path):
     mgr = sm.SessionManager(config_path=config_file)
     # File doesn't exist so get_token returns None, but must NOT raise ValueError for '\\'
     assert mgr.get_token("deepseek") is None
+
+
+def test_session_manager_cookie_path_traversal_rejection(tmp_path):
+    sm = _get_sm()
+    config_file = tmp_path / "config.yaml"
+    config_file.write_text("deepseek:\n  cookie_path: ../../etc/passwd\n")
+
+    mgr = sm.SessionManager(config_path=config_file)
+    with pytest.raises(ValueError, match="Path traversal detected in cookie_path"):
+        mgr.get_cookies("deepseek")
+
+
+def test_session_manager_cookie_symlink_rejection(tmp_path):
+    sm = _get_sm()
+    sensitive_file = tmp_path / "sensitive_cookies.json"
+    sensitive_file.write_text('[{"name": "ds_session_id", "value": "secret"}]')
+
+    symlink_cookie = tmp_path / "symlinked_cookie.json"
+    symlink_cookie.symlink_to(sensitive_file)
+
+    config_file = tmp_path / "config.yaml"
+    config_file.write_text(f"deepseek:\n  cookie_path: {symlink_cookie}\n")
+
+    mgr = sm.SessionManager(config_path=config_file)
+    with pytest.raises(ValueError, match="Symlink cookie path"):
+        mgr.get_cookies("deepseek")
+
+
+def test_session_manager_valid_cookies_reading(tmp_path):
+    sm = _get_sm()
+    cookie_file = tmp_path / "valid_cookies.json"
+    cookie_file.write_text('[{"name": "ds_session_id", "value": "abc123val"}]')
+
+    config_file = tmp_path / "config.yaml"
+    config_file.write_text(f"deepseek:\n  cookie_path: {cookie_file}\n")
+
+    mgr = sm.SessionManager(config_path=config_file)
+    cookies = mgr.get_cookies("deepseek")
+    assert len(cookies) == 1
+    assert cookies[0]["name"] == "ds_session_id"
+    assert cookies[0]["value"] == "abc123val"

@@ -104,16 +104,19 @@ vs **done** (code/workflows implement) vs **executed** (runs/artifacts prove).
   country, profile image, about section, ≥1 social link.
 - Severity: high, time-bound (entries invalid without a complete profile).
 - Fix route: owner completes the profile (prepared content sits in the
-  registry); challenge lane verifies. Status: fix-spawned — VERIFIED OPEN
-  2026-10-27 (PR #1820): live re-check shows the profile unchanged
-  (default placeholder avatar, About empty, no social links; display name
-  + country set) — 3 of 5 mandatory fields still open. OWNER CORRECTION
-  (2026-10-27): the "owner-only edit" framing is wrong — the profile
-  follows the @N0n (4n0n) anonymous style setup and is completed BY THE
-  AGENCY; the challenge lane is dispatched to complete it from the
-  registry's prepared content through the fleet's signed-in session. Sole
-  carve-out (per the 4n0n protocol): a genuinely forced real-name field
-  returns to the owner; everything else is agency work.
+  registry); challenge lane verifies.
+- **Status: closed-on-evidence (2026-10-29).** Completed by the agency
+  under the @N0n setup (owner correction 2026-10-27 withdrew the
+  "owner-only edit" framing). Live signed-out verification by the Gap
+  Finder, 2026-10-29 17:11 PT: custom 4n0nS3C avatar rendered (not the
+  default placeholder), About live ("'Founders' are 'found' to
+  implement. Agents, systems, decisions with receipts. No name. No face.
+  Just ship."), GitHub social link live, display name + country set —
+  all 5 mandatory fields satisfied. (A cached fetch crawled 16:49 PT
+  still showed the pre-edit state; the live read governs.) No forced
+  real-name field was encountered. Closure record: challenge lane PR
+  #2375 merged 9bfd134bbf4f (coordinator G-07 cleared; Profile Registry
+  Builder section COMPLETE).
 
 ### G-08 — D3/Builder.io: Clips account requirement UNVERIFIED
 - Surface: challenges (D3, deadline Nov 2). Layers: claimed vs held.

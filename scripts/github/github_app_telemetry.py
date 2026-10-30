@@ -95,7 +95,7 @@ def main(argv=None):
     p=argparse.ArgumentParser(description=__doc__); p.add_argument("--output",required=True); p.add_argument("--probe-app",default="termux-fleet-collector"); a=p.parse_args(argv)
     try:
         workflow={"run_id":int(os.environ["GITHUB_RUN_ID"]),"attempt":int(os.environ.get("GITHUB_RUN_ATTEMPT","1")),"head_sha":os.environ["GITHUB_SHA"].lower()}
-        result=collect(os.environ.get("GITHUB_APP_INSTALLATION_TOKEN"),a.probe_app,workflow)
+        result=collect(os.environ.get("GITHUB_APP_INSTALLATION_TOKEN"),a.probe_app,workflow,os.environ.get("GITHUB_JOB_CONCLUSION","success"))
         pathlib.Path(a.output).write_text(json.dumps(result,indent=2,sort_keys=True)+"\n",encoding="utf-8")
         summary=os.environ.get("GITHUB_STEP_SUMMARY")
         if summary:

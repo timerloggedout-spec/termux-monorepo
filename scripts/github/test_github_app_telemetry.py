@@ -4,18 +4,29 @@ import json
 import pathlib
 import unittest
 from unittest.mock import patch
-from github_app_telemetry import build_telemetry
 
-ROOT = pathlib.Path(__file__).resolve().parents[2]
+from github_app_telemetry import ROOT, build_telemetry
+
 REGISTRY = json.loads((ROOT / "ops/github-apps/registry.json").read_text())
 
 
 class TelemetryTests(unittest.TestCase):
-    def test_registry_is_declaration_not_live_proof(self):
+    def test_registry_permissions_are_derived_from_manifest_ssot(self):
         app = build_telemetry(REGISTRY)["apps"][0]
-        self.assertEqual(app["slug"], "termux-fleet-collector")
+        manifest = json.loads((ROOT / REGISTRY["apps"][0]["manifest_path"]).read_text())
+        self.assertEqual(app["declared_permissions"], manifest["default_permissions"])
+        self.assertEqual(app["declared_events"], manifest["default_events"])
+        self.assertEqual(app["evidence"]["manifest"], "checked_in_declaration")
         self.assertEqual(app["evidence"]["live_permissions"], "not_observed")
-        self.assertEqual(app["evidence"]["live_installation"], "not_observed")
+
+    def test_registry_contains_four_non_provisioned_role_slots(self):
+        result = build_telemetry(REGISTRY)
+        self.assertEqual(len(result["planned_roles"]), 4)
+        self.assertTrue(all(
+            role["status"] == "naming_draft_do_not_provision"
+            for role in result["planned_roles"]
+        ))
+        self.assertEqual(len(result["apps"]), 1)
 
     def test_duplicate_slug_is_rejected(self):
         registry = dict(REGISTRY)
@@ -23,11 +34,11 @@ class TelemetryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "unique"):
             build_telemetry(registry)
 
-    def test_invalid_permission_value_is_rejected(self):
-        registry = json.loads(json.dumps(REGISTRY))
-        registry["apps"][0]["declared_permissions"]["contents"] = "owner"
-        with self.assertRaisesRegex(ValueError, "invalid declared permission"):
-            build_telemetry(registry)
+    def test_manifest_permission_values_are_validated(self):
+        with patch("github_app_telemetry._load_manifest",
+                   side_effect=ValueError("termux-fleet-collector: invalid manifest permission value")):
+            with self.assertRaisesRegex(ValueError, "invalid manifest permission"):
+                build_telemetry(REGISTRY)
 
     @patch("github_app_telemetry.request_json")
     def test_live_probe_is_redacted(self, request_json):

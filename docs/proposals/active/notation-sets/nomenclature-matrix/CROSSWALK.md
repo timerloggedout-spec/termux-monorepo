@@ -27,8 +27,8 @@ Candidate research data only: this projection does not promote labels or mapping
 
 | Mapping ID | Source concept | Relation | Target concept | Status | Confidence | Sources | Evidence note |
 |---|---|---|---|---|---:|---|---|
-| map-bind-not-compose |haskell.monadic_bind |related_match |category_theory.composition |candidate |0.35 |issue-320 |Keep related rather than exact: typeclass/monadic semantics and ordinary composition differ. |
-| map-morphism-arrow |category_theory.morphism |same_concept_label |category_theory.morphism |candidate |0.5 |issue-320 |Label-level candidate inherited from Issue #320; domain review required. |
+| map-bind-not-compose | haskell.monadic_bind | related_match | category_theory.composition | candidate | 0.35 | issue-320 | Keep related rather than exact: typeclass/monadic semantics and ordinary composition differ. |
+| map-morphism-arrow | category_theory.morphism | same_concept_label | category_theory.morphism | candidate | 0.5 | issue-320 | Label-level candidate inherited from Issue #320; domain review required. |
 
 ## Claim-level evidence
 

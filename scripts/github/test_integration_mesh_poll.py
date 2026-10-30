@@ -91,7 +91,9 @@ class DiffTests(unittest.TestCase):
 
     def test_comment_renders_sections(self):
         body = render_comment(snap(), ["x structural"], ["y figure"], 2, "https://example/run")
-        self.assertIn("Structural changes", body)
+        self.assertIn("Δ structural", body)
+        self.assertIn("Δ figures", body)
+        self.assertIn("evidence ↦", body)  # notation spec #1734: claim ↦ evidence ref
         self.assertIn("2/4", body)
         self.assertIn("[MUSEai]", body)
 

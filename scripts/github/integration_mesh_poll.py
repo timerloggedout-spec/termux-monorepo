@@ -406,7 +406,7 @@ def diff_snapshots(prev, cur):
     if pc and cc:
         for slug in sorted(set(pc) & set(cc)):
             if pc[slug]["repo_count"] != cc[slug]["repo_count"]:
-                structural.append(f"cross-repo reach {slug}: {pc[slug]['repo_count']} -> {cc[slug]['repo_count']} repos")
+                structural.append(f"cross-repo reach {slug}: {pc[slug]['repo_count']} → {cc[slug]['repo_count']} repos")
 
     for org in ORGS:
         set_delta(f"org installations {org}", (prev.get("org_installations") or {}).get(org),
@@ -428,7 +428,7 @@ def diff_snapshots(prev, cur):
     if pw and cw:
         set_delta("workflows", pw["names"], cw["names"], structural)
         if pw["total"] != cw["total"]:
-            figure.append(f"workflows total {pw['total']} -> {cw['total']} (active {cw['active']})")
+            figure.append(f"workflows total {pw['total']} → {cw['total']} (active {cw['active']})")
 
     for row in cur.get("stale_rows") or []:
         if row not in (prev.get("stale_rows") or []):
@@ -437,7 +437,7 @@ def diff_snapshots(prev, cur):
     for key, label in (("prs_total", "PRs total"), ("issues_total_true", "true issues"),
                        ("codespaces_total", "codespaces")):
         if prev.get(key) is not None and cur.get(key) is not None and prev[key] != cur[key]:
-            figure.append(f"{label} {prev[key]} -> {cur[key]}")
+            figure.append(f"{label} {prev[key]} → {cur[key]}")
 
     pa = {a["login"]: a["comments"] for a in prev.get("comment_actors") or []}
     ca = {a["login"]: a["comments"] for a in cur.get("comment_actors") or []}
@@ -452,32 +452,37 @@ def diff_snapshots(prev, cur):
 
 
 def render_comment(cur, structural, figure, counter, run_url, baseline=False):
+    # Notation spec (owner, 2026-10-30; #320 + #1734): symbol-dense;
+    # every claim ↦ its evidence ref (locator + observed_at + status).
     now = datetime.datetime.now(datetime.timezone.utc)
     try:
         days = (now.date() - datetime.date.fromisoformat(LAST_OWNER_REFRESH)).days
     except ValueError:
         days = "?"
     lines = ["[MUSEai]@{role:{`Muse`}}", "",
-             f"## Integration mesh poll — {now:%Y-%m-%d %H:%M} UTC (Actions workflow)", ""]
+             f"## mesh poll ∘ {now:%Y-%m-%d %H:%M} UTC ∘ Actions", ""]
     if baseline:
-        lines.append("Baseline snapshot captured by the new repo-native workflow "
-                     "(`integration-mesh-poll.yml`). The Muse cron poll is retired; "
-                     "state now persists in the Actions cache + run artifacts — never committed.")
+        lines.append("baseline ✓ captured ∵ repo-native workflow `integration-mesh-poll.yml`; "
+                     "Muse cron ≡ retired; state ∈ Actions cache + run artifacts, ¬committed.")
     else:
         if structural:
-            lines.append("**Structural changes:**")
+            lines.append("**Δ structural:**")
             lines += [f"- {x}" for x in structural]
             lines.append("")
         if figure:
-            lines.append("**Figure movement:**")
+            lines.append("**Δ figures:**")
             lines += [f"- {x}" for x in figure]
             lines.append("")
-        lines.append(f"Figure-only polls accumulated toward refresh: {counter}/{FIGURE_ESCALATION}")
+        if not structural and not figure:
+            lines.append("Δ ≡ ∅ (no material change)")
+        lines.append(f"figure-only streak ↦ {counter}/{FIGURE_ESCALATION} ⇒ refresh issue @{FIGURE_ESCALATION}")
     if cur.get("degraded"):
-        lines.append(f"Degraded sections this run (skipped by diff): {', '.join(cur['degraded'])}")
-    lines.append(f"§3/§4 owner-firsthand refresh: {LAST_OWNER_REFRESH} ({days} days ago)")
+        lines.append(f"degraded (¬diffed) ↦ {', '.join(cur['degraded'])}")
+    lines.append(f"§3/§4 owner-firsthand ↦ {LAST_OWNER_REFRESH} ({days} d ago)")
+    evidence = f"snapshot artifact `integration-mesh-snapshot` ∘ observed_at {cur.get('observed_at', '?')}"
     if run_url:
-        lines.append(f"Run: {run_url}")
+        evidence = f"run {run_url} ∘ " + evidence
+    lines.append(f"evidence ↦ {evidence}")
     return "\n".join(lines)
 
 
@@ -573,19 +578,18 @@ def ensure_refresh_issue(c, structural, figure, diff_body):
     if isinstance(open_issues, list) and open_issues:
         num = open_issues[0]["number"]
         c.post(f"/repos/{REPO}/issues/{num}/comments",
-               {"body": f"[MUSEai]@{{role:{{`Muse`}}}}\n\nNew poll diff while this refresh is open:\n\n{diff_body}"})
+               {"body": f"[MUSEai]@{{role:{{`Muse`}}}}\n\nΔ while refresh open ≫\n\n{diff_body}"})
         print(f"refresh issue #{num} updated")
         return
-    title_hint = (structural[0] if structural else "figure accumulation reached threshold")[:80]
+    title_hint = (structural[0] if structural else "figure streak ⇒ threshold")[:80]
     body = ("[MUSEai]@{role:{`Muse`}}\n\n"
-            "The Actions integration-mesh poll found the committed matrix "
-            "(`docs/ops/INTEGRATION-MESH-MATRIX.md`) stale:\n\n"
+            "poll Δ ⇒ committed matrix (`docs/ops/INTEGRATION-MESH-MATRIX.md`) stale:\n\n"
             f"{diff_body}\n\n"
-            "Refresh checklist:\n"
-            "- [ ] Update the matrix figures/rows named above from this diff\n"
-            "- [ ] Re-verify landed content on master after the refresh PR merges\n"
-            "- [ ] Close this issue with the refresh PR number + merge SHA\n")
-    res = c.post(f"/repos/{REPO}/issues", {"title": f"[mesh] Matrix refresh needed — {title_hint}",
+            "refresh checklist:\n"
+            "- [ ] matrix figures/rows named above ↦ updated from this diff\n"
+            "- [ ] landed content on master re-verified after refresh PR merges\n"
+            "- [ ] close with refresh PR# + verified merge SHA\n")
+    res = c.post(f"/repos/{REPO}/issues", {"title": f"[mesh] matrix refresh ⇒ {title_hint}",
                                            "body": body, "labels": [REFRESH_LABEL]})
     print("refresh issue:", res.get("number") if isinstance(res, dict) else res)
 

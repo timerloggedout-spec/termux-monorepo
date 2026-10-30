@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "9ba9bef1b493cad2d81b509cf58f22d0da448eb31489796884b8228dbb09b0a6",
+  "source_fingerprint": "f34c66bacfec32ee28df6f6e963115914b8b6dfb653bfd12861b0dfeca0a8317",
   "workflow_count": 230,
   "workflows": [
     {
@@ -1965,7 +1965,7 @@
         "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
       ],
       "authority": "read-only-or-advisory",
-      "concurrency": "group: github-app-telemetry-\\${{ github.event_name }}-\\${{ github.event.pull_request.number || github.ref }} cancel-in-progress: false",
+      "concurrency": "group: github-app-telemetry-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }} cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
         "collector-census",

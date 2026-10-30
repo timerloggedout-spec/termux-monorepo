@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Telemetry — Fleet Signals</title>
+<!--
+  Renders ONLY data/telemetry-feed.json (schema telemetry-viz-feed/v1,
+  contract docs/ops/TELEMETRY-VIZ-RECON.md §4). The feed is produced by
+  scripts/dashboards/telemetry_feed.py from already-committed sources.
+  Page grammar: golden top-row → executions → outcomes → quota.
+  Honesty rules from the feed itself: absence is never zero — an
+  unobserved value renders as absent, never synthesized; quota
+  saturation null renders as NOT OBSERVED, never 0; executions are a
+  committed-projection proxy, labeled as such, never live run state.
+-->
+<link rel="stylesheet" href="./dashboard.css">
+</head>
+<body>
+<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/help-wanted/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="https://timerloggedout-spec.github.io/help-wanted/quota.html">Quota</a><a href="https://timerloggedout-spec.github.io/help-wanted/quota-usage.html">Quota Usage</a><a href="https://timerloggedout-spec.github.io/help-wanted/admin.html">Admin</a><a href="https://timerloggedout-spec.github.io/help-wanted/oracle.html">Oracle</a><a href="https://timerloggedout-spec.github.io/help-wanted/3l0.html">3L0</a><a href="https://timerloggedout-spec.github.io/help-wanted/moneyball.html">MoneyBall</a><a href="https://timerloggedout-spec.github.io/help-wanted/mvt.html">MVT</a><a href="https://timerloggedout-spec.github.io/help-wanted/doe.html">DoE</a><a href="https://timerloggedout-spec.github.io/help-wanted/ates.html">ATES</a><a href="https://timerloggedout-spec.github.io/help-wanted/free-tier-value.html">Free-tier value</a><a href="https://timerloggedout-spec.github.io/help-wanted/dispatch-tree.html">Dispatch Tree</a><a href="https://timerloggedout-spec.github.io/help-wanted/countdowns.html">Countdowns</a><a href="https://timerloggedout-spec.github.io/help-wanted/linguist.html">Linguist</a><a href="https://timerloggedout-spec.github.io/help-wanted/delphi-rfp.html">Delphi RFP</a><a href="https://timerloggedout-spec.github.io/help-wanted/delphi-ledger.html">Delphi Ledgers</a><a href="https://timerloggedout-spec.github.io/help-wanted/pr-lanes.html">PR Lanes</a><a href="https://timerloggedout-spec.github.io/help-wanted/proposals.html">Proposals</a><a href="https://timerloggedout-spec.github.io/help-wanted/telemetry.html" aria-current="page">Telemetry</a><a href="https://help-wanted-oversight.vercel.app/">Vercel deployment</a><a href="https://timerloggedout-spec.github.io/help-wanted/sitemap.xml">Sitemap</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></nav>
+
+<header class="hero">
+  <p class="eyebrow">Fleet telemetry · seeded visualization</p>
+  <h1>Telemetry</h1>
+  <p class="lede">The fleet's own telemetry, as the record holds it: golden signals, workflow executions, outcome funnels, and quota readings. Nothing here is synthesized — a value the record does not hold renders as absent, never as a guess.</p>
+</header>
+
+<main>
+<section>
+  <div class="head"><h2>Golden signals</h2><span class="note" id="meta">Loading…</span></div>
+  <div class="grid grid-3" id="golden"><p class="empty">Loading the telemetry feed…</p></div>
+</section>
+
+<section>
+  <div class="head"><h2>Executions</h2><span class="note" id="exec-note">Loading…</span></div>
+  <div id="executions"><p class="empty">Loading executions…</p></div>
+</section>
+
+<section>
+  <div class="head"><h2>Outcomes</h2><span class="note" id="out-note">Loading…</span></div>
+  <div id="outcomes"><p class="empty">Loading outcomes…</p></div>
+</section>
+
+<section>
+  <div class="head"><h2>Quota</h2><span class="note" id="quota-note">Loading…</span></div>
+  <div id="quota"><p class="empty">Loading quota…</p></div>
+</section>
+
+<section>
+  <div class="head"><h2>Gaps &amp; honesty rules</h2><span class="note">Named gaps, not filled blanks</span></div>
+  <div id="gaps"><p class="empty">Loading gaps…</p></div>
+</section>
+</main>
+<footer><p class="muted">Telemetry · Help-Wanted Oversight · <a href="https://timerloggedout-spec.github.io/help-wanted/sitemap.xml">Sitemap</a> · <a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></p></footer>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const num=v=>v==null?'—':esc(v);
+function card(label,value,note){return '<div class="card"><h3>'+esc(label)+'</h3><p><strong>'+value+'</strong></p>'+(note?'<p class="muted">'+esc(note)+'</p>':'')+'</div>'}
+function kvTable(obj){let rows='';for(const k of Object.keys(obj||{})){rows+='<tr><td>'+esc(k)+'</td><td>'+num(obj[k])+'</td></tr>'}return '<div class="table-wrap"><table class="table"><tbody>'+rows+'</tbody></table></div>'}
+async function load(){
+  try{
+    const r=await fetch('./data/telemetry-feed.json',{cache:'no-store'});
+    if(!r.ok)throw new Error(r.status);
+    const f=await r.json(),d=f.data||{},g=d.golden||{},ex=d.executions||{},oc=d.outcomes||{},q=d.quota||{};
+    $('meta').textContent='Feed '+(f.schema||'')+' · generated '+(f.generated_at||'')+' · surface '+(f.surface||'');
+    let sat=g.quota_saturation==null?'<span class="pill bad">NOT OBSERVED</span>':esc(g.quota_saturation);
+    $('golden').innerHTML=
+      card('Receipts',num(g.receipts_total),'lane receipts in the record')+
+      card('Actioned',num(g.actioned),'of receipts')+
+      card('Skipped',num(g.skipped),'of receipts')+
+      card('Workflows observed',num(g.workflows_observed),'from the committed snapshot')+
+      card('Workflow runs observed',num(g.workflow_runs_observed),'from the committed snapshot')+
+      card('Quota readings',num(g.quota_readings_total),'quota records in the feed')+
+      card('Quota measured',num(g.quota_measured_count),'readings carrying used + limit')+
+      card('Quota saturation',sat,'null in the feed renders as absent, never 0');
+    $('exec-note').textContent='Kind: '+(ex.kind||'')+' · snapshot '+(ex.source_snapshot||'')+' · read '+(ex.read_at||'');
+    let eh='<p class="muted">Executions are a committed-projection proxy (recon gap G3): the Neon lane_events table is not read by this collector and no live run state is claimed.</p>';
+    const wfs=ex.workflows||{};
+    for(const name of Object.keys(wfs)){
+      const w=wfs[name];
+      eh+='<h3>'+esc(name)+' · '+num(w.total_runs)+' runs</h3>';
+      const lat=w.latest||[];
+      if(lat.length){eh+='<div class="table-wrap"><table class="table"><thead><tr><th>Created</th><th>Conclusion</th><th>Event</th></tr></thead><tbody>';for(const run of lat){eh+='<tr><td>'+esc(run.created_at)+'</td><td>'+esc(run.conclusion)+'</td><td>'+esc(run.event)+'</td></tr>'}eh+='</tbody></table></div>'}
+      else{eh+='<p class="muted">No runs in the snapshot.</p>'}
+    }
+    $('executions').innerHTML=eh;
+    $('out-note').textContent='Lane '+(oc.lane||'')+' · project '+(oc.project||'')+' · generated '+(oc.generated_at||'');
+    let oh='<p>'+card('Receipts',num(oc.receipts),'')+card('Actioned',num((oc.outcomes||{}).actioned),'')+card('Skipped',num((oc.outcomes||{}).skipped),'')+'</p>';
+    oh+='<p class="muted">'+esc(oc.outcome_semantics||'')+'</p>';
+    oh+='<h3>Outcome kinds</h3>'+kvTable(oc.kinds);
+    oh+='<p class="muted">Tribute count '+num(oc.tribute_count)+' · foreign open '+num(oc.foreign_open_count)+' · issues tracked '+num(oc.issues_tracked)+'</p>';
+    $('outcomes').innerHTML=oh;
+    $('quota-note').textContent='Generated '+(q.generated_at||'')+' · readings '+num(q.readings_total)+' · unmeasured '+num(q.unmeasured_count);
+    let qh='<p>Quota saturation: <span class="pill bad">NOT OBSERVED</span> — '+(q.measured||[]).length+' measured readings of '+num(q.readings_total)+'; absence is never zero.</p>';
+    qh+='<h3>By status</h3>'+kvTable(q.by_status);
+    qh+='<h3>By horizon</h3>'+kvTable(q.by_horizon);
+    qh+='<h3>By evidence status</h3>'+kvTable(q.by_evidence_status);
+    const ap=(q.usage_pack||{}).api_core||{};
+    if(ap.title){qh+='<p class="muted">'+esc(ap.title)+' · limit '+num(ap.limit)+' '+esc(ap.unit)+' · replenishment '+esc(ap.replenishment)+' · next reset observed '+esc(ap.next_reset_observed)+' — full burn-down on <a href="./quota-usage.html">Quota Usage</a>.</p>'}
+    $('quota').innerHTML=qh;
+    let gh='';
+    for(const gap of (f.gaps||[])){gh+='<p>'+esc(gap)+'</p>'}
+    gh+='<h3>Honesty rules</h3><ul>';for(const rule of (f.honesty_rules||[])){gh+='<li>'+esc(rule)+'</li>'}gh+='</ul>';
+    $('gaps').innerHTML=gh;
+  }catch(e){
+    $('meta').textContent='Telemetry feed could not be fetched — UNVERIFIED; nothing is shown rather than anything guessed.';
+    $('golden').innerHTML='<p class="empty">Feed unavailable.</p>';
+    $('executions').innerHTML='<p class="empty">Feed unavailable.</p>';
+    $('outcomes').innerHTML='<p class="empty">Feed unavailable.</p>';
+    $('quota').innerHTML='<p class="empty">Feed unavailable.</p>';
+    $('gaps').innerHTML='<p class="empty">Feed unavailable.</p>';
+  }
+}
+load();
+</script>
+</body>
+</html>

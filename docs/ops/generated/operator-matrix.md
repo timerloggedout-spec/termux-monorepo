@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-10-30T04:46:11Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-10-30T04:53:31Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `1876619af7` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `01dc6d5692` (hygiene: queued, smoke: success). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 354 issues, 114 PRs. PR classes: EXTRACT 5 / CANDIDATE 60 / NEED_EVIDENCE 49 / SUPERSEDE 0.
+**Open inventory:** 354 issues, 115 PRs. PR classes: EXTRACT 5 / CANDIDATE 61 / NEED_EVIDENCE 49 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -78,6 +78,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2343 | CANDIDATE | unlabelled | `001ef79704` | success | success | unknown | Add Merged Branch Audit and Timing Quotas Evaluator |
 | #2344 | CANDIDATE | unlabelled | `d5ba1dab07` | success | success | unknown | 📖 Linguist: implement Notation matrices, ConversationalSteganographyCipher 4th l |
 | #2359 | CANDIDATE | unlabelled | `4d2bb4a40e` | success | success | unknown | Linguist 1337 Grimoire Review & Codec Upgrade for RevWright Candidate Set |
+| #2404 | CANDIDATE | unlabelled | `415e5e9d2e` | success | success | unknown | docs(ops): GitHub App fleet migration + maintenance + upgrade plan |
 | #47 | NEED_EVIDENCE | unlabelled | `11b61f8139` | not_reported | not_reported | unknown | feat(refTemplates): restore metadata-only skeleton (Option B recovery) |
 | #48 | NEED_EVIDENCE | unlabelled | `7839eeb7da` | not_reported | not_reported | dirty | feat(llm-api-hub): OpenAI hub + standalone server + ADE/kai9000 split (TER-71) |
 | #81 | NEED_EVIDENCE | unlabelled | `f1d2eef16b` | not_reported | not_reported | unknown | ci: promote Gemini quota-gate + agent workflows to master (event triggers) |
@@ -104,11 +105,11 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1617 | NEED_EVIDENCE | unlabelled | `35c1f2bd5b` | not_reported | not_reported | unknown | docs: improve Mintlify agent discoverability and record integration recon |
 | #1626 | NEED_EVIDENCE | unlabelled | `7288447213` | not_reported | not_reported | unknown | docs(rfp): add first source-backed mesh provider evidence |
 | #1645 | NEED_EVIDENCE | unlabelled | `2dab66b406` | not_reported | not_reported | unknown | fix: harden Help-Wanted telemetry and evidence audits |
-| #1734 | NEED_EVIDENCE | unlabelled | `d8b3011ec8` | not_reported | not_reported | unknown | feat(notation): add claim-level evidence provenance |
+| #1734 | NEED_EVIDENCE | unlabelled | `5c654e3b87` | not_reported | not_reported | unstable | feat(notation): add claim-level evidence provenance |
 | #1760 | NEED_EVIDENCE | unlabelled | `e4073528e8` | not_reported | not_reported | unknown | ops(tribute): participation refresh |
 | #1852 | NEED_EVIDENCE | unlabelled | `358f8f7ea6` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #1966 | NEED_EVIDENCE | unlabelled | `b5951e754e` | not_reported | not_reported | unknown | ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28) |
-| #2167 | NEED_EVIDENCE | unlabelled | `95f70c8e8d` | not_reported | not_reported | unknown | chore(reviewer-metrics): regenerate provider x context map |
+| #2167 | NEED_EVIDENCE | unlabelled | `49a4c4d8c9` | not_reported | not_reported | unknown | chore(reviewer-metrics): regenerate provider x context map |
 | #2168 | NEED_EVIDENCE | unlabelled | `ded4f789d7` | not_reported | not_reported | unknown | chore(dashboards): refresh surface feeds |
 | #2175 | NEED_EVIDENCE | unlabelled | `71856c6976` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2181 | NEED_EVIDENCE | unlabelled | `fc92217e1b` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
@@ -119,7 +120,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2190 | NEED_EVIDENCE | unlabelled | `be30d8c241` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2235 | NEED_EVIDENCE | unlabelled | `1106e61b09` | not_reported | not_reported | unknown | chore(osint): refresh coverage + page snapshots |
 | #2252 | NEED_EVIDENCE | unlabelled | `77f6526342` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2263 | NEED_EVIDENCE | unlabelled | `6b5cfcb1f2` | not_reported | not_reported | clean | chore(delphi): refresh delphi-ledger-feed.json |
+| #2263 | NEED_EVIDENCE | unlabelled | `5fe56c8927` | not_reported | not_reported | unstable | chore(delphi): refresh delphi-ledger-feed.json |
 | #2310 | NEED_EVIDENCE | unlabelled | `a909924219` | not_reported | not_reported | unknown | chore(delphi): refresh delphi-rfp-feed.json |
 | #2324 | NEED_EVIDENCE | unlabelled | `1fdb151f97` | not_reported | not_reported | unknown | chore(proposals): refresh proposals-feed.json |
 | #2340 | NEED_EVIDENCE | unlabelled | `cc347a254a` | not_reported | not_reported | unknown | chore(dashboards): refresh dispatch-tree feed |
@@ -141,6 +142,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | research | 6 | 0 |
 | security | 10 | 0 |
 | temporal | 2 | 0 |
-| unlabelled | 19 | 112 |
+| unlabelled | 19 | 113 |
 
 **Unlabelled open issues (19):** #308, #343, #388, #389, #763, #876, #968, #1226, #1450, #1497, #1588, #1592, #1593, #1622, #1683, #2179, #2185, #2204, #2210 — worked oldest-first by the issue-lifecycle lane pass.

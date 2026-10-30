@@ -2,9 +2,11 @@
 """Unit tests for GitHub App fleet telemetry."""
 import json
 import pathlib
+import tempfile
 import unittest
 from unittest.mock import patch
 
+import github_app_telemetry as telemetry
 from github_app_telemetry import ROOT, build_telemetry
 
 REGISTRY = json.loads((ROOT / "ops/github-apps/registry.json").read_text())
@@ -35,18 +37,40 @@ class TelemetryTests(unittest.TestCase):
             build_telemetry(registry)
 
     def test_manifest_permission_values_are_validated(self):
-        with patch("github_app_telemetry._load_manifest",
-                   side_effect=ValueError("termux-fleet-collector: invalid manifest permission value")):
-            with self.assertRaisesRegex(ValueError, "invalid manifest permission"):
-                build_telemetry(REGISTRY)
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            manifest = root / "invalid-manifest.json"
+            manifest.write_text(json.dumps({
+                "default_permissions": {"contents": "superuser"},
+                "default_events": [],
+            }), encoding="utf-8")
+            registry = dict(REGISTRY)
+            registry["apps"] = [dict(REGISTRY["apps"][0], manifest_path="invalid-manifest.json")]
+            with patch.object(telemetry, "ROOT", root):
+                with self.assertRaisesRegex(ValueError, "invalid manifest permission value"):
+                    build_telemetry(registry)
+
+    def test_missing_manifest_declaration_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            (root / "incomplete.json").write_text(
+                json.dumps({"default_permissions": {}}), encoding="utf-8"
+            )
+            registry = dict(REGISTRY)
+            registry["apps"] = [dict(REGISTRY["apps"][0], manifest_path="incomplete.json")]
+            with patch.object(telemetry, "ROOT", root):
+                with self.assertRaisesRegex(ValueError, "must declare"):
+                    build_telemetry(registry)
 
     @patch("github_app_telemetry.request_json")
     def test_live_probe_is_redacted(self, request_json):
         request_json.side_effect = [
-            (200, {"resources": {"core": {"limit": 5000, "remaining": 4999, "reset": 123}}}),
-            (200, {"repositories": [{"full_name": "timerloggedout-spec/termux-monorepo"}]}),
+            (200, {"resources": {"core": {"limit": 5000, "remaining": 4999, "reset": 123}}}, {}),
+            (200, {"repositories": [{"full_name": "timerloggedout-spec/termux-monorepo"}]}, {}),
         ]
-        result = build_telemetry(REGISTRY, token="ephemeral-test-value")
+        result = build_telemetry(
+            REGISTRY, token="ephemeral-test-value", probe_app_slug="termux-fleet-collector"
+        )
         app = result["apps"][0]
         self.assertEqual(app["evidence"]["rate_limit"], "observed")
         self.assertEqual(app["evidence"]["repository_scope"], "observed")
@@ -55,11 +79,55 @@ class TelemetryTests(unittest.TestCase):
 
     @patch("github_app_telemetry.request_json")
     def test_failed_probe_is_not_success(self, request_json):
-        request_json.side_effect = [(403, {}), (403, {})]
-        app = build_telemetry(REGISTRY, token="ephemeral-value")["apps"][0]
+        request_json.side_effect = [(403, {}, {}), (403, {}, {})]
+        app = build_telemetry(
+            REGISTRY, token="ephemeral-value", probe_app_slug="termux-fleet-collector"
+        )["apps"][0]
         self.assertEqual(app["evidence"]["rate_limit"], "probe_failed_http_403")
         self.assertEqual(app["evidence"]["repository_scope"], "probe_failed_http_403")
         self.assertNotIn("observed_repository_scope", app)
+
+    @patch("github_app_telemetry.request_json")
+    def test_repository_scope_paginates_all_pages(self, request_json):
+        request_json.side_effect = [
+            (200, {"repositories": [{"full_name": "org/one"}]},
+             {"Link": '<https://api.github.com/installation/repositories?per_page=100&page=2>; rel="next"'}),
+            (200, {"repositories": [{"full_name": "org/two"}]}, {}),
+        ]
+        status, repos = telemetry._installation_repositories("ephemeral")
+        self.assertEqual(status, 200)
+        self.assertEqual(repos, ["org/one", "org/two"])
+        self.assertEqual(request_json.call_count, 2)
+
+    @patch("github_app_telemetry.request_json")
+    def test_partial_repository_scope_is_not_observed(self, request_json):
+        request_json.side_effect = [
+            (200, {"repositories": [{"full_name": "org/one"}]},
+             {"Link": '<https://api.github.com/installation/repositories?per_page=100&page=2>; rel="next"'}),
+            (403, {}, {}),
+        ]
+        status, repos = telemetry._installation_repositories("ephemeral")
+        self.assertEqual(status, 403)
+        self.assertIsNone(repos)
+
+    @patch("github_app_telemetry.request_json")
+    def test_probe_updates_only_the_named_app(self, request_json):
+        second = dict(REGISTRY["apps"][0], slug="second-app")
+        registry = dict(REGISTRY, apps=REGISTRY["apps"] + [second])
+        request_json.side_effect = [
+            (200, {"resources": {"core": {"limit": 5000, "remaining": 4900, "reset": 123}}}, {}),
+            (200, {"repositories": []}, {}),
+        ]
+        rows = build_telemetry(
+            registry, token="ephemeral", probe_app_slug="termux-fleet-collector"
+        )["apps"]
+        self.assertEqual(rows[0]["evidence"]["rate_limit"], "observed")
+        self.assertEqual(rows[1]["evidence"]["rate_limit"], "not_observed")
+        self.assertEqual(rows[1]["evidence"]["repository_scope"], "not_observed")
+
+    def test_token_requires_explicit_app_binding(self):
+        with self.assertRaisesRegex(ValueError, "probe_app_slug is required"):
+            build_telemetry(REGISTRY, token="ephemeral")
 
 
 if __name__ == "__main__":

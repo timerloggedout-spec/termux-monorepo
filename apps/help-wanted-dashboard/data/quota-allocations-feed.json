@@ -1,6 +1,6 @@
 {
   "schema": "quota-allocations-feed/v1",
-  "generated_at": "2026-10-28T23:40:18.002849+00:00",
+  "generated_at": "2026-10-30T02:23:55.691719+00:00",
   "source": "ops/quota/allocations.json (owner-set, issue #1884) joined with ops/quota/registry.json entitlements and the public readings snapshot; entitlements are not usage and no focus attribution is invented.",
   "issue": 1884,
   "set_by": "owner",
@@ -1969,6 +1969,15 @@
             "observed_at": null,
             "used": null
           }
+        },
+        {
+          "service": "github.api.app_collector",
+          "entitlement": {
+            "limit": 5000,
+            "unit": "requests/hour/installation",
+            "window": "hourly"
+          },
+          "observed": null
         },
         {
           "service": "github.api.github_token",

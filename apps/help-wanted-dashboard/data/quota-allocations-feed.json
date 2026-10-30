@@ -1,6 +1,6 @@
 {
   "schema": "quota-allocations-feed/v1",
-  "generated_at": "2026-10-30T06:49:52.176531+00:00",
+  "generated_at": "2026-10-30T09:06:11.835926+00:00",
   "source": "ops/quota/allocations.json (owner-set, issue #1884) joined with ops/quota/registry.json entitlements and the public readings snapshot; entitlements are not usage and no focus attribution is invented.",
   "issue": 1884,
   "set_by": "owner",
@@ -126,6 +126,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -209,6 +210,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -262,6 +264,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -315,6 +318,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -368,6 +372,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -421,6 +426,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -579,6 +585,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -632,6 +639,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -685,6 +693,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -738,6 +747,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -791,6 +801,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -844,6 +855,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -897,6 +909,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -1850,6 +1863,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -1933,6 +1947,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -2085,6 +2100,20 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [
+        {
+          "project": "repo-replay",
+          "primary_services": [
+            "github.api.app_collector",
+            "github.api.app_publisher"
+          ],
+          "fallback_service": "github.api.user_token",
+          "fallback_mode": "fallback-only",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "Owner order 2026-10-30 (cadence + repo-replay lanes): migrations + replays run on the AppID buckets, not the PAT bucket; the PAT service is fallback-only with no routine draw. Executes planner trigger app_slice_assignment:repo-replay (ops/quota/allocation-plan.json, PR #2450 merged 7b182d51), citing #1884."
+        }
+      ],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -2153,6 +2182,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 100,
       "constraints": [
         "excluded-interim (owner, 2026-10-27): Codespaces excluded for a TBD interim after the setup-error burn; all allocations 0, reserve 100."
@@ -2208,6 +2238,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -2261,6 +2292,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -2314,6 +2346,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -2382,6 +2415,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -2435,6 +2469,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -2488,6 +2523,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -2541,6 +2577,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -2594,6 +2631,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -2647,6 +2685,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -2745,6 +2784,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -2798,6 +2838,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -2851,6 +2892,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -2904,6 +2946,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -2957,6 +3000,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -3025,6 +3069,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -3108,6 +3153,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -3161,6 +3207,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -3214,6 +3261,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -3327,6 +3375,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -3380,6 +3429,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -3433,6 +3483,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -3486,6 +3537,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -3539,6 +3591,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -3592,6 +3645,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -3705,6 +3759,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -3803,6 +3858,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -3856,6 +3912,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -3909,6 +3966,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -4007,6 +4065,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -4075,6 +4134,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -4128,6 +4188,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -4181,6 +4242,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -4234,6 +4296,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -4287,6 +4350,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -4400,6 +4464,7 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
+      "slices": [],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null

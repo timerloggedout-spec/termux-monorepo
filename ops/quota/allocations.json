@@ -684,6 +684,20 @@
           "date": "2026-10-27",
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
+      ],
+      "slices": [
+        {
+          "project": "repo-replay",
+          "primary_services": [
+            "github.api.app_collector",
+            "github.api.app_publisher"
+          ],
+          "fallback_service": "github.api.user_token",
+          "fallback_mode": "fallback-only",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "Owner order 2026-10-30 (cadence + repo-replay lanes): migrations + replays run on the AppID buckets, not the PAT bucket; the PAT service is fallback-only with no routine draw. Executes planner trigger app_slice_assignment:repo-replay (ops/quota/allocation-plan.json, PR #2450 merged 7b182d51), citing #1884."
+        }
       ]
     },
     {

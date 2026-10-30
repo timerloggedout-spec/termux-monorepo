@@ -33,15 +33,24 @@ Codespaces excluded-interim, reserve 100 explicit.
 - **Event horizon:** challenge slate deadlines; Gantt plan end = D4
   close 2026-12-04. Winning sub-focus narrows as deadlines approach (§5).
 
-## 3. Pacing rule (extends the registry's own planned_use rule)
+## 3. Pacing rule — Smooth Flowing Continuous Operation (owner principle, 2026-10-29)
+
+> Quota usage can be 100% utilization IF timed exactly with
+> replenishment. Waste has two shapes: burst-death AND idle quota.
 
 Per class-A pool, per window:
 
-- Budget for the window = `safety × limit` (safety on the record,
-  default 0.9; 0.85 data pools; 0.8 tight pools).
-- Routing multiplier = remaining-budget fraction ÷ remaining-time
-  fraction, capped at 2, 0 when exhausted, 1.0 when no live reading
-  (registry rule, unchanged).
+- **Flow target = `limit ÷ window`, phase-aligned to the reset epoch**
+  (PAT core: 5000/h ≈ 83.3/min, landing at ~100% as the window rolls).
+  The planner emits `target_flow_per_min` per pool where a numeric
+  limit and a derivable window exist (else null — never invented).
+- **Routing multiplier = flow correction:** remaining-budget fraction ÷
+  remaining-time fraction, capped at 2, 0 when exhausted, 1.0 when no
+  live reading. >1 = behind flow, spend faster; <1 = ahead, slow down.
+- **Safety factors are enforcement margins, not idle withholding**
+  (e.g. Vercel: plan against 87 because enforcement trips above the
+  API-reported 100 — the margin covers measurement error, and is spent
+  as the window closes, not held to expiry).
 - Burn-rate input = readings snapshots + collector cost accounting;
   a pool with no reading is paced at 1.0 and flagged to the gaps lane —
   observability before optimization.
@@ -54,9 +63,12 @@ and 2026-10-29 ~18:32 PT (reset 01:42Z); storm burn 2026-10-29
 15-min freshness gate).
 
 Rules:
-1. **Derived reserve** (QAC-007, cadence lane): reserve =
-   10% of limit (= 500 @ 5000) unless a collector-cost forecast
-   demands more; derived, never a magic constant.
+1. **Derived reserve = timing slack** (QAC-007, cadence lane;
+   reframed by the smooth-flow principle): reserve = 10% of limit
+   (= 500 @ 5000) unless a collector-cost forecast demands more —
+   derived, never a magic constant. Slack absorbs jitter so the flow
+   can run at the full replenishment rate; it is NOT withheld quota —
+   as reset approaches, slack releases into classes 3–4 in order.
 2. **Priority classes** when remaining < reserve: (1) gates / merge
    operations, (2) readings & probes, (3) scheduled collectors,
    (4) speculative cadence (reviewer-metrics collects, availability

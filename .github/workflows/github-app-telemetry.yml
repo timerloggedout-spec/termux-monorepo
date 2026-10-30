@@ -2,11 +2,12 @@ name: GitHub App fleet telemetry
 
 on:
   schedule:
-    - cron: '17 6 * * 1'
+    - cron: '17 */6 * * *'
   pull_request:
     paths:
       - 'ops/github-apps/**'
       - 'scripts/github/github_app_telemetry.py'
+      - 'scripts/github/publish_github_app_telemetry.py'
       - 'scripts/github/test_github_app_telemetry.py'
       - 'scripts/github/integration_mesh_poll.py'
       - 'scripts/github/test_integration_mesh_poll.py'
@@ -32,17 +33,20 @@ jobs:
       - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
         with:
           python-version: '3.12'
-      - name: Validate registry, receipt schema, and mesh tests
+      - name: Validate telemetry and mesh tests
         working-directory: scripts/github
         run: |
           set -euo pipefail
           python -m unittest -v test_github_app_telemetry.py test_integration_mesh_poll.py
           python github_app_telemetry.py --help
+          python publish_github_app_telemetry.py --help
 
   collector-census:
     if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/master')
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: Validate Collector credential bindings
@@ -72,9 +76,18 @@ jobs:
         run: |
           set -euo pipefail
           python scripts/github/github_app_telemetry.py --probe-app termux-fleet-collector --output github-app-telemetry.json
-      - name: Upload sanitized telemetry and G4 receipt
+      - name: Upload per-run telemetry artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: github-app-telemetry-${{ github.run_id }}-${{ github.run_attempt }}
           path: github-app-telemetry.json
-          retention-days: 30
+          retention-days: 90
+      - name: Publish immutable per-run observation
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          set -euo pipefail
+          python scripts/github/publish_github_app_telemetry.py --input github-app-telemetry.json

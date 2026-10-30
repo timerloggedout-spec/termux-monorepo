@@ -34,6 +34,7 @@ STATUS = "apps/help-wanted-dashboard/data/status.json"
 QUOTA = "apps/help-wanted-dashboard/data/quota.json"
 QUOTA_USAGE = "apps/help-wanted-dashboard/data/quota-usage.json"
 OBSERVATIONS = "scripts/dashboards/workflow_observations.json"
+ACTIONS_OBS = "scripts/dashboards/actions_observations.json"
 
 HONESTY = [
     "Show only what the record holds; a value the record does not hold renders as absent, never synthesized.",
@@ -63,11 +64,13 @@ def collect() -> dict:
     quota = _read_json(QUOTA)
     usage = _read_json(QUOTA_USAGE)
     obs = _read_json(OBSERVATIONS)
+    act = _read_json(ACTIONS_OBS)
 
     for rel, doc, key in ((STATUS, status, "generated_at"),
                           (QUOTA, quota, "generated_at"),
                           (QUOTA_USAGE, usage, "generated_at"),
-                          (OBSERVATIONS, obs, "read_at")):
+                          (OBSERVATIONS, obs, "read_at"),
+                          (ACTIONS_OBS, act, "read_at")):
         if doc is None:
             gaps.append(f"source missing at collection time: {rel}")
         else:
@@ -107,11 +110,12 @@ def collect() -> dict:
             },
         }
         gaps.append(
-            "G1/G3: executions are proxied from the checked-in observations "
+            "G3: executions are proxied from the checked-in observations "
             f"snapshot (read_at {obs.get('read_at')}, {len(workflows)} "
-            "workflows) plus status.json lane receipts; there is no "
-            "consolidated Actions run-corpus feed and the Neon lane_events "
-            "table is not page-readable.")
+            "workflows) plus status.json lane receipts; the Neon "
+            "lane_events table is not page-readable. The consolidated "
+            "Actions corpus lives in the actions block (Slice 2, G1 "
+            "partial).")
     if status is not None:
         if executions is None:
             executions = {"kind": "committed_projection_proxy", "workflows": {}}
@@ -121,6 +125,40 @@ def collect() -> dict:
             "kinds": status.get("kinds"),
             "generated_at": status.get("generated_at"),
         }
+
+    # ---- S6: Actions corpus (Slice 2, gap G1 partial) ---------------------
+    actions = None
+    if act is not None:
+        actions = {
+            "kind": "api_observations_snapshot",
+            "source_snapshot": ACTIONS_OBS,
+            "read_at": act.get("read_at"),
+            "budget": act.get("budget"),
+            "window": act.get("window"),
+            "totals": act.get("totals"),
+            "workflows": act.get("workflows"),
+            "join": {
+                "key": "run_id",
+                "s1_source": "Neon lane_events (append-only; run_id + "
+                             "run_attempt + subject)",
+                "status": "join key defined and carried per workflow as "
+                          "latest.id; the join itself is unexecuted — "
+                          "lane_events is not page-readable and no "
+                          "committed lane-events projection exists (G3).",
+            },
+        }
+        gaps.append(
+            "G1 partial: the Actions corpus is a budgeted stride-sample "
+            f"snapshot (read_at {act.get('read_at')}, "
+            f"{(act.get('budget') or {}).get('runs_fetched')} runs sampled, "
+            "pages "
+            f"{(act.get('budget') or {}).get('pages_sampled')}); it is not "
+            "the full run history — that remains the locally reconstructed "
+            "daily corpus (quota usage_pack.actions_corpus).")
+    else:
+        gaps.append(
+            "G1: no Actions corpus snapshot at collection time "
+            f"({ACTIONS_OBS} missing); actions block absent.")
 
     # ---- S4/S5: quota ------------------------------------------------------
     quota_block = None
@@ -185,6 +223,9 @@ def collect() -> dict:
         "quota_saturation": None,  # derived only when a measured reading exists
         "workflows_observed": executions.get("workflows_observed") if executions else None,
         "workflow_runs_observed": executions.get("total_runs_observed") if executions else None,
+        "actions_runs_sampled": (actions.get("totals") or {}).get("runs") if actions else None,
+        "actions_failure_rate": (actions.get("totals") or {}).get("failure_rate") if actions else None,
+        "actions_workflows_sampled": (actions.get("totals") or {}).get("workflows") if actions else None,
     }
     if quota_block and quota_block["measured"]:
         sats = [m["saturation"] for m in quota_block["measured"]
@@ -203,6 +244,7 @@ def collect() -> dict:
         "data": {
             "golden": golden,
             "executions": executions,
+            "actions": actions,
             "outcomes": outcomes,
             "quota": quota_block,
         },

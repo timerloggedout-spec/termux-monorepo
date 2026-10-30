@@ -62,6 +62,13 @@ def test_series1_points_carry_provenance_and_walls():
     walls = [p for p in pts if p["kind"] == "wall"]
     assert len(walls) == 5 and all(p["remaining"] == 0 for p in walls)
     assert s1["limit"] == 5000 and s1["next_reset_observed"]
+    # burn shape is a sustained ramp, not a spike (convergence correction):
+    # the new window's first reads drain 4999 -> 4645 -> 3230
+    by_at = {p["at"]: p["remaining"] for p in pts}
+    assert by_at["2026-10-30T01:43:00Z"] == 4999
+    assert by_at["2026-10-30T01:45:00Z"] == 4645
+    assert by_at["2026-10-30T01:54:00Z"] == 3230
+    assert "30–40 min ramp" in s1["note"]
 
 
 def test_buckets_kept_separate_and_storm_fix_recorded():

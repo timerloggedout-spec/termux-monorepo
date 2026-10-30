@@ -88,3 +88,14 @@ def test_repo_replay_app_slice_trigger():
     out3 = planner.plan(reg, alloc, {"readings": []})
     assert not any(t["trigger"].startswith("app_slice_assignment")
                    for t in out3["triggers_fired"])
+
+
+def test_lane_slices_carried_verbatim():
+    alloc = {"pools": [{"id": "github", "services": [],
+                        "slices": [{"project": "repo-replay",
+                                    "claim": 6519135715}]}]}
+    out = planner.plan({"services": []}, alloc, {"readings": []})
+    gh = out["pools"][0]
+    assert gh["lane_slices"] == [{"project": "repo-replay",
+                                  "claim": 6519135715}]
+    assert gh["slices"] == []  # focus slices stay distinct

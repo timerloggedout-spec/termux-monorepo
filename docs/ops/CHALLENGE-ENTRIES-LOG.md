@@ -209,9 +209,10 @@ each other):
 **Manager re-sequence (2026-10-28):** D1 is now the first deadline
 (Nov 4) and takes priority. D3 began Oct 27, but its core build remains
 Oct 30–Nov 1; the Nov 6–8 final weekend is polish/Clips only and is
-secondary to D2's Nov 5–8 build. Picks pending owner freeze:
-**D3 = ListingLens; D1 = StudySprint** (pending — not frozen, no build
-authorization from the pick alone).
+secondary to D2's Nov 5–8 build. **FREEZE ENACTED 2026-10-30 (Manager, owner mandate "manage progress"):
+D1 = StudySprint ∧ D3 = ListingLens — status picked_pending_freeze ↦
+FROZEN (manager-enacted, reversible by owner).** Builds authorized on
+the frozen picks.
 
 **Standing blocker for every platform submission: the incomplete Builder
 profile (§2).** It gates D1 directly and is the first blocker surfaced wherever
@@ -234,9 +235,9 @@ this log is the human view of the same verified state.
 | Entry | State | Window (PT) | Gate |
 |-------|-------|-------------|------|
 | D0 | DONE (completed 2026-10-27) | closed Oct 26 | — |
-| D1 | IN PROGRESS — window OPEN; concept set STOPPED 2026-10-28 (tainted); pick pending owner freeze: StudySprint; FIRST deadline — priority up | closes Nov 4 23:59 | **G-07 Builder profile — CLEARED 2026-10-29** (all 5 mandatory fields live, verified on the public profile 17:10 PT: 4n0nS3C avatar + About bisection text + GitHub link; forced save fields = least-specific values) — remaining D1 gate: in-window workshop badge evidence |
+| D1 | IN PROGRESS — window OPEN; concept set STOPPED 2026-10-28 (tainted); pick **FROZEN 2026-10-30 (Manager-enacted): StudySprint**; workshop begun 2026-10-30; FIRST deadline — priority up | closes Nov 4 23:59 | **G-07 Builder profile — CLEARED 2026-10-29** (all 5 mandatory fields live, verified on the public profile 17:10 PT: 4n0nS3C avatar + About bisection text + GitHub link; forced save fields = least-specific values) — remaining D1 gate: in-window workshop badge evidence |
 | D2 | **REGISTRATION COMPLETE 2026-10-29 — ENROLLED** (lablab via AMD SSO; screening form submitted; organizer email confirmation pending); Nov 5–8 build PRIMARY over D3 final weekend | opens Nov 5; closes Nov 8 15:00 | no-card path only (lablab + Discord + Vultr sandbox) |
-| D3 | Concept #42 QUESTIONED 2026-10-28 — under review, NOT killed, NOT the active build; pick pending owner freeze: ListingLens; core build Oct 30–Nov 1, final weekend polish/Clips only | closes Nov 9 23:59 (official schedule moved; corrected 2026-10-28) | Clips account ✓ created 2026-10-27 (held for the regenerated concept) |
+| D3 | Concept #42 QUESTIONED 2026-10-28 — under review, NOT killed, NOT the active build; pick **FROZEN 2026-10-30 (Manager-enacted): ListingLens**; core build Oct 30–Nov 1, final weekend polish/Clips only | closes Nov 9 23:59 (official schedule moved; corrected 2026-10-28) | Clips account ✓ created 2026-10-27 (held for the regenerated concept) |
 | D4 | REGISTERING — Devpost profile COMPLETE 2026-10-29 (timerloggedout); Kiro account exists (no editable fields); Kiroween registration + exact Kiro ID still blocked | eligibility opens Oct 30 09:00 PDT (rules s.1); closes Dec 4 14:00 | no project creation before the window opens |
 | D5 | REGISTERED — spot pending review | opens Nov 17 9:00 AM; closes Nov 19 12:00 PT (official Contest Rules) | spot confirmation email |
 
@@ -443,8 +444,9 @@ this log is the human view of the same verified state.
   brief). It is **not terminated as a proposal record**, and it is
   **not the active build — do not build it pending the review outcome.**
   Scaffold halt: none was ever started (no app directory exists) —
-  clean. The entry itself is not cancelled: the active pick pending
-  owner freeze is **ListingLens**; brief-first evidence pack
+  clean. The entry itself is not cancelled: the active pick is
+  **ListingLens — FROZEN 2026-10-30 (Manager-enacted freeze, owner
+  mandate)**; brief-first evidence pack
   `docs/ops/CHALLENGE-BRIEF-EVIDENCE-2026-10-28.md`.
   The concept under review, for the record: "Delphi Desk" — a human-in-the-loop decision-review cockpit. A
   Delphi-style agent panel drafts engineering decision proposals with evidence

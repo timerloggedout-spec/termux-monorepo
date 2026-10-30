@@ -51,6 +51,13 @@ Per class-A pool, per window:
   (e.g. Vercel: plan against 87 because enforcement trips above the
   API-reported 100 — the margin covers measurement error, and is spent
   as the window closes, not held to expiry).
+- **Per-slice flow (owner amendment, 2026-10-29 19:13 PT):** flow is
+  computed per dynamic allocation slice (focus × priority from the
+  #1884 allocations), never only per bucket: `slice flow = pool flow ×
+  slice share`, drawn in focus-ladder priority order. Leftover-only
+  slices (0% standing) draw only released slack/stranded, in order.
+  The planner emits `slices[]` per pool; cadence gates re-derive on
+  every re-split tick.
 - Burn-rate input = readings snapshots + collector cost accounting;
   a pool with no reading is paced at 1.0 and flagged to the gaps lane —
   observability before optimization.

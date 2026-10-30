@@ -116,7 +116,7 @@ def main():
     args = parser.parse_args()
     data = json.loads(args.seed.read_text(encoding="utf-8"))
     output = render_crosswalk(data)
-    machine_output = json.dumps(render_machine_crosswalk(data), ensure_ascii=False, indent=2) + "\\n"
+    machine_output = json.dumps(render_machine_crosswalk(data), ensure_ascii=False, indent=2) + "\n"
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(output, encoding="utf-8")
     args.json_output.parent.mkdir(parents=True, exist_ok=True)

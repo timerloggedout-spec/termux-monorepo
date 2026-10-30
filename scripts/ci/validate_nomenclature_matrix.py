@@ -87,8 +87,8 @@ def validate(data):
             errors.append(f"evidence {e.get('evidence_id')} has invalid retrieved_on date")
         if e.get("status") not in STATUSES:
             errors.append(f"evidence {e.get('evidence_id')} has invalid status")
-        if e.get("status") == "accepted" and not e.get("reviewer"):
-            errors.append(f"accepted evidence {e.get('evidence_id')} requires reviewer")
+        if e.get("status") == "accepted" and not (isinstance(e.get("reviewer"), str) and e["reviewer"].strip()):
+            errors.append(f"accepted evidence {e.get('evidence_id')} requires a nonblank reviewer")
     return errors
 
 def main():

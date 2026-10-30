@@ -1,0 +1,53 @@
+name: Dashboard surface contracts
+
+on:
+  pull_request:
+    branches: [master]
+    paths:
+      - 'apps/help-wanted-dashboard/**'
+      - 'tests/test_surface_pages.py'
+      - 'docs/ops/DASHBOARD-SURFACE-FEEDS.md'
+
+permissions:
+  contents: read
+
+jobs:
+  dashboard-surface-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run feed-bound page contracts
+        run: |
+          python3 - <<'PY'
+          import runpy
+
+          tests = runpy.run_path("tests/test_surface_pages.py")
+          names = (
+              "test_moneyball_page",
+              "test_3l0_page",
+              "test_mvt_page",
+              "test_ates_page",
+              "test_doe_page",
+          )
+          for name in names:
+              tests[name]()
+              print(f"PASS {name}")
+          PY
+      - name: Check 3L0 inline JavaScript syntax
+        run: |
+          python3 - <<'PY'
+          import re
+          import subprocess
+          import tempfile
+          from pathlib import Path
+
+          html = Path("apps/help-wanted-dashboard/3l0.html").read_text()
+          scripts = re.findall(r"<script>(.*?)</script>", html, flags=re.S)
+          if len(scripts) != 1:
+              raise SystemExit(f"expected one inline script, found {len(scripts)}")
+          with tempfile.NamedTemporaryFile("w", suffix=".js") as source:
+              source.write(scripts[0])
+              source.flush()
+              subprocess.run(["node", "--check", source.name], check=True)
+          print("PASS 3l0 inline JavaScript syntax")
+          PY

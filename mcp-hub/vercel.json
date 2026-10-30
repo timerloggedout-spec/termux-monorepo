@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    { "source": "/mcp/:server", "destination": "/api/mcp/:server" },
+    { "source": "/mcp-hub/:server", "destination": "/api/mcp/:server" }
+  ],
+  "functions": { "api/mcp/[server].ts": { "maxDuration": 60 } },
+  "ignoreCommand": "f=\"$(git rev-parse --show-toplevel)/scripts/ci/vercel_ignore_build.sh\"; if [ -f \"$f\" ]; then bash \"$f\" mcp-hub; else echo \"[vercel-ignore] helper absent; skip\"; exit 0; fi",
+  "git": { "deploymentEnabled": false }
+}

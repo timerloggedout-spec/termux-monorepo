@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/matrix", "destination": "/matrix.html" },
+    { "source": "/lane-matrix", "destination": "/matrix.html" }
+  ],
+  "headers": [
+    { "source": "/data/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=60, s-maxage=60" }] }
+  ],
+  "ignoreCommand": "f=\"$(git rev-parse --show-toplevel)/scripts/ci/vercel_ignore_build.sh\"; if [ -f \"$f\" ]; then bash \"$f\" help-wanted-dashboard; else echo \"[vercel-ignore] helper absent; skip\"; exit 0; fi",
+  "git": { "deploymentEnabled": false }
+}

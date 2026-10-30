@@ -40,7 +40,7 @@ class DiffTests(unittest.TestCase):
         self.assertEqual(registry["apps"][0]["slug"], "termux-fleet-collector")
         self.assertEqual(registry["apps"][0]["evidence"], "checked_in_declaration")
         self.assertEqual(len(registry["planned_roles"]), 4)
-        self.assertTrue(all(x["status"] == "naming_draft_do_not_provision"
+        self.assertTrue(all(x["status"] == "owner_reported_in_flight_unverified"
                             for x in registry["planned_roles"]))
 
     def test_registry_change_is_structural(self):

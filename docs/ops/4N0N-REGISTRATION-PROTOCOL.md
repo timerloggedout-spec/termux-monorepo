@@ -32,6 +32,10 @@ of record. Tooling: `scripts/registration_monikers/registry.py`
    Where a platform itself displays the account handle, that handle is
    the moniker's public face: it is recorded in the Profile Registry as
    a provisioning fact, never improvised per artifact.
+   **Username changes are the registry lane's call** (owner rule,
+   2026-10-29): a platform-assigned or stale username is changed only
+   on the registry lane's direction; executing lanes never change one
+   unilaterally.
 2. **One platform, one moniker.** A moniker is never reused across
    platforms, so no moniker string can link the fleet's presence on two
    platforms together.
@@ -47,6 +51,11 @@ of record. Tooling: `scripts/registration_monikers/registry.py`
    packets, in submissions, or in demos. The Profile Registry records
    public handles that already exist; this registry records nothing
    about a person at all.
+   Scope: this rule binds lanes - never invent, never publish. It does
+   not gate the owner. A personal value the owner supplies for
+   form-filling is held by the registry lane OFF-repo (alternative
+   surface) as the form value of record, and lanes use it without
+   re-asking.
 5. **Profiles have one home.** Handles, display names, and profile
    completeness live only in the profile's home, recorded there only
    after the platform issues them (a handle is a provisioning fact —
@@ -61,14 +70,32 @@ of record. Tooling: `scripts/registration_monikers/registry.py`
    Registry heading, and fails an `alt:` pointer that names no surface.
    Which home a profile uses is the owning lane's call, recorded in
    the entry.
-6. **Forced personal fields are owner-gated.** Legal-name fields,
-   identity verification, profile completion, and payment instruments
-   (the credit card is a standing BLOCK) are surfaced to the owner as
-   decision items — never filled with invented data, never worked
-   around.
+6. **Forced personal fields surface to the owner once.** Legal-name
+   fields, identity verification, profile completion, and payment
+   instruments (the credit card is a standing BLOCK) are surfaced to
+   the owner as decision items — never filled with invented data,
+   never worked around. Once the owner supplies a value (or has a
+   standing value on record), that value is HELD by the registry lane
+   off-repo and used by every lane without re-asking: the gate is a
+   one-time collection, not a per-form toll, and this rule is never
+   cited back at an owner-directed question.
 7. **Leak response.** If a personal identifier reaches a public
    artifact, the handling lane flags it to main chat immediately;
    correction or takedown is owner-directed.
+
+**Owner precedence.** These rules are the owner's delegation to the
+lanes: they constrain lane improvisation, never the owner. An
+owner-directed question is answered, not gate-checked. Where a
+direct owner instruction conflicts with this text, the instruction
+governs and the text is corrected in the same pass.
+
+**Demographic fields.** Age brackets and similar demographic
+screening fields are persona values, assigned by the registry lane
+per profile from the adult brackets only (18+/21+, as the form
+offers), fitted to the profile's demographic representation on
+record - never the owner's literal age (not held, never asked),
+never a minor bracket. A profile keeps its assigned bracket across
+forms; the owning lane records it with the profile.
 
 ## 2. The registry
 

@@ -857,3 +857,45 @@ proposals:
       - feat/free-tier-value-public-usage-rank
       - fix/provider-usage-unknown-token-counts
     gates_required: [repo-gate, termux-smoke]
+  - id: kiroween-delphi-concept-skeleton-crew
+    title: "Kiroween 2026 — skeleton-crew: CMDB/reconciliation viewer (spec-first minimal crew)"
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: active/kiroween-delphi-concept-skeleton-crew/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: [1487, 1489]
+    related_prs: [1655, 1697, 1699, 1707]
+    related_branches: []
+    gates_required: [proposal-lifecycle, repo-gate]
+  - id: kiroween-delphi-concept-frankenstein
+    title: "Kiroween 2026 — frankenstein: decision agent stitched from proven public patterns"
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: active/kiroween-delphi-concept-frankenstein/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: [1487, 1489]
+    related_prs: [1655, 1697, 1699, 1707]
+    related_branches: []
+    gates_required: [proposal-lifecycle, repo-gate]
+  - id: kiroween-delphi-concept-resurrection
+    title: "Kiroween 2026 — resurrection: dormant public spec rebuilt fresh in Kiro"
+    author: oracle-method
+    status: in_review
+    priority: P1
+    path: active/kiroween-delphi-concept-resurrection/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: [1487, 1489]
+    related_prs: [1655, 1697, 1699, 1707]
+    related_branches: []
+    gates_required: [proposal-lifecycle, repo-gate]

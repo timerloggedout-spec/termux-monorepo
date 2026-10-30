@@ -78,7 +78,7 @@ invented here.
 
 | # | Consumer | Current | Target app | Notes |
 |---|---|---|---|---|
-| M8 | `peer-review-orchestrator.yml` polling + review-state comments | PAT-class operator tokens | Reviewer-ops (checks read, PR write) | ≤180 calls/h/event (lane figure); polling moves, the operator-token publish leg moves only when its write class matches Reviewer-ops perms — otherwise that leg waits for Publisher |
+| M8 | `peer-review-orchestrator.yml` polling + review-state steps | mixed (see verdict) | — | **DISPOSITIONED 2026-10-30 (firsthand step-level audit of the 875-line workflow):** the polling/evidence step (Collect controls and provider response evidence — the call-volume step) takes NO token input → runs on the workflow `GITHUB_TOKEN` (per-repo bucket, ∅ PAT). The OPERATOR-token steps are IDENTITY-BOUND BY DESIGN and STAY: Publish SHA-bound peer response state + Dispatch verified second pass resolve an *authorized state publisher* (login-checked, OPERATOR_INTERACTIVE_ACTIONS), and Request supported provider reviews requires the operator identity for provider triggers. Reviewer-token adoption for the evidence step remains available as per-repo-bucket relief (optional, M5-poller class) | — |
 | M9 | `repo-gate.yml` check-runs/annotations; `skill-quality-lane` and ECC-class annotation posts | `GITHUB_TOKEN` / PAT mixed | Gate/CI (checks write) | Reason is identity + audit separation (verdicts issued by the gate identity), not PAT relief |
 | M10 | `issue-lifecycle-triage.yml` (Tue 07:17Z), `proposal-lifecycle`, GAP-ledger issue sweeps | `GITHUB_TOKEN` (triage today) | Lifecycle (issues write) | Same: identity/audit win + own bucket; `GITHUB_TOKEN` keeps working as rollback |
 

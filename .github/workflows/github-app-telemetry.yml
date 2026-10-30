@@ -46,8 +46,6 @@ jobs:
           python cadence_controller.py --help
 
   collector-census:
-    permissions:
-      contents: write
     if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/master')
     runs-on: ubuntu-latest
     timeout-minutes: 5

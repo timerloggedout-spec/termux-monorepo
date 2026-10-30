@@ -43,7 +43,7 @@ execution and evidence must be independently observable.
 
 - [ ] TEL-01 #2407 declaration layer merged (registry.json + emitter + tests) [author lane; review: migration-plan]
 - [ ] TEL-02 Collector registered in integration-mesh snapshot/diff (mesh 6h poll consumes registry.json; app visible with no check suites) [mesh lane]
-- [ ] TEL-03 Emitter scheduled + mint-wired: weekly census run on a freshly minted installation token (never a stored token) — feeds MAINT-02 readings [quota + migration-plan]
+- [ ] TEL-03 Emitter scheduled + mint-wired: weekly census run on a freshly minted installation token (never a stored token) — feeds MAINT-02 readings [quota + migration-plan] — MINT-WIRING DONE 2026-10-30: mint pattern proven by green probe run 41016897632 (app-id var TERMUX_FLEET_COLLECTOR_APP_ID + secret TERMUX_FLEET_COLLECTOR_PRIVATE_KEY); remains open for census scheduling only.
 - [ ] TEL-04 Live permission readback on installation token vs manifest declarations (drift leg of MAINT-01); declared ≠ observed kept separate [appid]
 - [ ] TEL-05 Negative-path tests pass: missing credentials, revoked installation, inaccessible repository, permission drift [author + appid]
 - [ ] TEL-06 First runtime receipt (plan §1.4 G4 fields) captured on a real Collector-token collection run — closes MIG-01's evidence requirement [migration-plan]
@@ -51,7 +51,7 @@ execution and evidence must be independently observable.
 ## SEC — provisioning (owner items, names-only)
 
 - [x] SEC-01 RESOLVED as identity separation (2026-10-30): the `APP_PRIVATE_KEY` + `APP_CLIENT_ID` referenced by `github-app-capability-probe.yml` belong to that probe's Checks:write app (PR #800 lineage) — NOT to the Collector. It is not provisioned, and must not be provisioned with the Collector PEM; it stops being a Collector blocker. Its own provisioning waits for the Gate/CI app (APP-06). [migration-plan]
-- [ ] SEC-02 Collector Actions pair provisioned: secret `TERMUX_FLEET_COLLECTOR_PRIVATE_KEY` (sealed-box from custody PEM, value never in chat/files/logs) + variable `TERMUX_FLEET_COLLECTOR_CLIENT_ID`, proven by a green `github-app-collector-mint-probe` run [migration-plan + owner order 2026-10-29]
+- [x] SEC-02 Collector Actions pair provisioned (2026-10-30): secret `TERMUX_FLEET_COLLECTOR_PRIVATE_KEY` (sealed-box from custody PEM, value never in chat/files/logs) + variables `TERMUX_FLEET_COLLECTOR_CLIENT_ID` + `TERMUX_FLEET_COLLECTOR_APP_ID` (App ID 5535733; the action takes app-id, not client-id — fix PR #2427), proven by green `github-app-collector-mint-probe` run 41016897632 [migration-plan + owner order 2026-10-29]
 - [ ] SEC-03 Per-app Actions secret names for future apps follow the SEC-02 pattern (`TERMUX_FLEET_<ROLE>_*`), provisioned + verified before any workflow references them [owner + appid]
 
 ## MAINT — recurring (all as GitHub Workflows; VM hosts none)

@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "96db91312a1555141d8fc16df174856954b085d35c193b362cddf18dc63823d8",
-  "workflow_count": 230,
+  "source_fingerprint": "4b0b247cd94a7e88c396373d694bba476fa8ccec349edbf8efcec7ce292d3d97",
+  "workflow_count": 231,
   "workflows": [
     {
       "action_pins": [],
@@ -386,6 +386,22 @@
       ],
       "triggers": [
         "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: ai-studio-delphi-trigger cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "gate"
+      ],
+      "name": "ai-studio-delphi-trigger",
+      "path": ".github/workflows/ai-studio-delphi-trigger.yml",
+      "schedules": [],
+      "triggers": [
+        "repository_dispatch",
         "workflow_dispatch"
       ]
     },

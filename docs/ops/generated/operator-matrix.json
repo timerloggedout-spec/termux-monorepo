@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 354,
-    "open_prs": 131,
+    "open_prs": 132,
     "pr_classes": {
       "CANDIDATE": 66,
       "EXTRACT": 5,
-      "NEED_EVIDENCE": 60,
+      "NEED_EVIDENCE": 61,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 19,
-      "prs": 129,
+      "prs": 130,
       "unlabelled_numbers": [
         308,
         343,
@@ -74,7 +74,7 @@
       ]
     }
   },
-  "generated_at": "2026-10-30T23:46:03Z",
+  "generated_at": "2026-10-30T23:47:52Z",
   "issues_unlabelled": [
     308,
     343,
@@ -102,7 +102,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "9d110b01e8"
+    "sha": "92555a56c4"
   },
   "prs": [
     {
@@ -228,7 +228,7 @@
       },
       "head_sha": "60fc3e697b",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 527,
       "title": "ops: close admission and pagination stall evidence gaps",
       "updated_at": "2026-10-30T13:12:24Z"
@@ -553,7 +553,7 @@
       },
       "head_sha": "2177e62206",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1556,
       "title": "\ud83d\udcd6 Linguist: implement steganographic cipher lane and token efficiency analysis",
       "updated_at": "2026-10-30T13:12:27Z"
@@ -721,7 +721,7 @@
       },
       "head_sha": "bc797513fa",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1642,
       "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
       "updated_at": "2026-10-30T13:13:07Z"
@@ -1169,7 +1169,7 @@
       },
       "head_sha": "da109a5469",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 103,
       "title": "feat(comms): CAVEMAN-micro seed + success matrix + dual-file + CLAUDE.md Cheat_Code",
       "updated_at": "2026-10-30T13:12:15Z"
@@ -1517,12 +1517,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "7bcea530b4",
+      "head_sha": "a38153ea74",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-10-30T23:43:39Z"
+      "updated_at": "2026-10-30T23:46:31Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1643,12 +1643,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "287d145185",
+      "head_sha": "e3cae45e32",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2235,
       "title": "chore(osint): refresh coverage + page snapshots",
-      "updated_at": "2026-10-30T23:45:56Z"
+      "updated_at": "2026-10-30T23:47:20Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1671,12 +1671,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "71d62b00c5",
+      "head_sha": "aedfc404a1",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-10-30T23:45:09Z"
+      "updated_at": "2026-10-30T23:47:41Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1939,10 +1939,24 @@
       },
       "head_sha": "784a80e7bd",
       "labels": [],
-      "mergeable_state": "clean",
+      "mergeable_state": "unknown",
       "number": 2541,
       "title": "chore(ops): refresh computed countdown lines",
-      "updated_at": "2026-10-30T23:45:56Z"
+      "updated_at": "2026-10-30T23:46:02Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "36107eaf9d",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2545,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-10-30T23:46:48Z"
     }
   ],
   "schema": "operator-matrix/v1",

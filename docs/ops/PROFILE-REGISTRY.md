@@ -39,12 +39,11 @@ is its at-a-glance view and is refreshed from here.
 
 - URL: https://builder.aws.com/community/@1337dia590r1c8u1ldr
 - Display name: "'Founders' are 'found' to implement."
-- Status: **exists — PARTIALLY COMPLETE** (avatar DONE 2026-10-29 via the
-  accounts lane, owner-authorized in-chat; sign-in route RESOLVED: the
-  Builder ID is GitHub-linked — Google sign-in rejected by AWS.
-  **Verified live by the challenge lane 2026-10-29**: the public profile
-  serves a custom avatar asset (avatars.builderprofile.aws.dev), no longer
-  the default placeholder; About still empty; no social links shown).
+- Status: **COMPLETE — all 5 mandatory fields satisfied (2026-10-29)**,
+  executed by the accounts lane under the owner's un-park ruling and
+  **verified live by the challenge lane 2026-10-29 17:10 PT** (second
+  independent live read by the Gap Finder lane 17:11 PT: avatar + About +
+  link all live). Gate G-07 CLEARED.
 - Mandatory fields (official AWS Builder Center Sweepstakes Terms, verified
   2026-10-26: "Your profile must include full name, country, profile image,
   about section, and at least one social media link"):
@@ -57,23 +56,24 @@ is its at-a-glance view and is refreshed from here.
     landed in-repo 2026-10-28). Earlier asset, superseded:
     `docs/ops/profile-registry/assets/builder-avatar-1337.webp`
     (circuit-trace mask glyph, 1337 motif, no face).
-  - About — MISSING → **prepared, paste-ready:**
-    > 'Founders' are 'found' to implement. ‖ 1337 sp34k only ‖ ag3nts,
-    > syst3ms, d3c1s10ns w/ receipts ‖ n0 nam3. n0 fac3. just sh1p. ‖
-    > 0b1111011100111 ‖
-    **This exact text was REJECTED by AWS profile moderation twice on
-    2026-10-29.** An alternate About text is an owner decision (pending in
-    the accounts lane's chat, 2026-10-29).
-  - Social link — none visible → **prepared:** `github.com/timerloggedout-spec`
-    (already the fleet's public identity; exposes nothing new).
-    **Blocked 2026-10-29**: the Edit-information save forces First name +
-    Last name + State/Province fields — the 4n0n carve-out case; owner
-    decision pending (accounts lane's chat). Nothing was invented or
-    entered.
-- Owner-gated items remaining: the two decisions above (About alternate
-  text; forced name/state fields). Sign-in itself is resolved (GitHub
-  route). Note: if an entry ever wins, AWS privately requires tax
-  documentation before paying — a private winner step, not a profile field.
+  - About — **SET 2026-10-29**, displayed verbatim:
+    > 'Founders' are 'found' to implement. Agents, systems, decisions
+    > with receipts. No name. No face. Just ship.
+    The registry's original leet text (recorded in git history) was
+    REJECTED by AWS profile moderation (twice, 2026-10-29), as was a
+    first bisection variant; the saved text is the plain-English
+    bisection (same meaning), ruled by the accounts-lane moderation
+    procedure and executed under the owner un-park ruling.
+  - Social link — **SET 2026-10-29**: https://github.com/timerloggedout-spec
+    (already the fleet's public identity; exposes nothing new). The
+    Edit-information save forced First name + Last name + State/Province
+    fields; filled with least-specific true values per the standards
+    (First 1337 / Last dia590r1c8u1ldr / State CA) — the handle itself
+    carries the name; display name + country untouched.
+- Sign-in route (resolved): the Builder ID is GitHub-linked — Google
+  sign-in rejected by AWS. Note: if an entry ever wins, AWS privately
+  requires tax documentation before paying — a private winner step,
+  not a profile field.
 - Used by: challenge log §1–§4 (`docs/ops/CHALLENGE-ENTRIES-LOG.md`), packets
   D1 (Workshop to Ship).
 

@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "f4953321a912c5a111da85fe165830b6aad772b7b65fbc3930303cac8d899ae0",
-  "workflow_count": 229,
+  "source_fingerprint": "9ba9bef1b493cad2d81b509cf58f22d0da448eb31489796884b8228dbb09b0a6",
+  "workflow_count": 230,
   "workflows": [
     {
       "action_pins": [],
@@ -1954,6 +1954,31 @@
       "path": ".github/workflows/github-app-collector-mint-probe.yml",
       "schedules": [],
       "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e",
+        "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: github-app-telemetry-\\${{ github.event_name }}-\\${{ github.event.pull_request.number || github.ref }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "collector-census",
+        "validate"
+      ],
+      "name": "GitHub App fleet telemetry",
+      "path": ".github/workflows/github-app-telemetry.yml",
+      "schedules": [
+        "17 6 * * 1"
+      ],
+      "triggers": [
+        "pull_request",
+        "schedule",
         "workflow_dispatch"
       ]
     },

@@ -1,0 +1,46 @@
+name: Free-Tier Use Value Board Contract
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'apps/help-wanted-dashboard/free-tier-value.html'
+      - 'apps/help-wanted-dashboard/data/free-tier-value.json'
+      - 'docs/ops/FREE-TIER-USE-VALUE-BOARD.md'
+      - 'tests/test_free_tier_value_board.py'
+      - '.github/workflows/free-tier-value-board-contract.yml'
+  push:
+    branches: [master]
+    paths:
+      - 'apps/help-wanted-dashboard/free-tier-value.html'
+      - 'apps/help-wanted-dashboard/data/free-tier-value.json'
+      - 'docs/ops/FREE-TIER-USE-VALUE-BOARD.md'
+      - 'tests/test_free_tier_value_board.py'
+      - '.github/workflows/free-tier-value-board-contract.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Run Free-Tier Use Value Board contract tests
+        run: python3 -m unittest tests/test_free_tier_value_board.py -v
+      - name: Parse inline dashboard JavaScript
+        run: |
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+          html = Path('apps/help-wanted-dashboard/free-tier-value.html').read_text(encoding='utf-8')
+          scripts = re.findall(r'<script>(.*?)</script>', html, re.DOTALL)
+          if not scripts:
+              raise SystemExit('no inline dashboard script found')
+          Path('/tmp/free-tier-value-board.js').write_text('\n'.join(scripts), encoding='utf-8')
+          PY
+          node --check /tmp/free-tier-value-board.js

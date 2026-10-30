@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 354,
-    "open_prs": 114,
+    "open_prs": 113,
     "pr_classes": {
       "CANDIDATE": 61,
       "EXTRACT": 5,
-      "NEED_EVIDENCE": 48,
+      "NEED_EVIDENCE": 47,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 19,
-      "prs": 112,
+      "prs": 111,
       "unlabelled_numbers": [
         308,
         343,
@@ -74,7 +74,7 @@
       ]
     }
   },
-  "generated_at": "2026-10-30T02:00:50Z",
+  "generated_at": "2026-10-30T02:01:49Z",
   "issues_unlabelled": [
     308,
     343,
@@ -102,7 +102,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "90e1bf353d"
+    "sha": "39d70ceaa7"
   },
   "prs": [
     {
@@ -1421,7 +1421,7 @@
       },
       "head_sha": "e4073528e8",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1760,
       "title": "ops(tribute): participation refresh",
       "updated_at": "2026-10-29T14:31:05Z"
@@ -1463,7 +1463,7 @@
       },
       "head_sha": "68d55e842c",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
       "updated_at": "2026-10-30T02:00:43Z"
@@ -1615,12 +1615,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "eb8620b826",
+      "head_sha": "76d37d7667",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-10-30T01:59:39Z"
+      "updated_at": "2026-10-30T02:01:44Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1691,20 +1691,6 @@
       "number": 2349,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-29T23:52:11Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "in_progress",
-        "smoke": "success"
-      },
-      "head_sha": "957fc1a10c",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2371,
-      "title": "feat(dashboard): wire quota usage graphs into quota panel + sitemap",
-      "updated_at": "2026-10-30T02:00:41Z"
     }
   ],
   "schema": "operator-matrix/v1",

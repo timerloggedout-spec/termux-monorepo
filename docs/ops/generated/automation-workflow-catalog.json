@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "80f74524efa564d7228dbfe3aa1b3b1e612e2eff11d1d63b28574b4a757350f5",
-  "workflow_count": 228,
+  "source_fingerprint": "f4953321a912c5a111da85fe165830b6aad772b7b65fbc3930303cac8d899ae0",
+  "workflow_count": 229,
   "workflows": [
     {
       "action_pins": [],
@@ -1935,6 +1935,23 @@
       ],
       "name": "GitHub App Capability Probe",
       "path": ".github/workflows/github-app-capability-probe.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: github-app-collector-mint-probe cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "probe"
+      ],
+      "name": "GitHub App Collector Mint Probe",
+      "path": ".github/workflows/github-app-collector-mint-probe.yml",
       "schedules": [],
       "triggers": [
         "workflow_dispatch"

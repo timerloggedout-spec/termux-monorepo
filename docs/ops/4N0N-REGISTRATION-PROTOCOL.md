@@ -111,6 +111,7 @@ forms; the owning lane records it with the profile.
 | Code, Not Card | `account{n0nCodeNotCard}[platform:code-not-card]` | — (pending: marketing-channel) | pending | — | marketing-channel |
 | Cohere | `account{HappyCanyon42}[platform:cohere]` | — (pending: account-creation) | registering | — | account-creation |
 | Devpost | `entrant{n0nDevpost}[platform:devpost]` | Devpost | active | D4 | challenge-entries |
+| Discord | `account{GentleOnyx47}[platform:discord]` | — (pending: challenge-entries) | registering | — | challenge-entries |
 | Dream In Production | `account{n0nDreamInProduction}[platform:dream-in-production]` | — (pending: marketing-channel) | pending | — | marketing-channel |
 | iFlytek | `account{PluckyOasis73}[platform:iflytek]` | — (pending: account-creation) | pending | — | account-creation |
 | Kilo | `account{RapidHarbor74}[platform:kilo]` | — (pending: account-creation) | pending | — | account-creation |

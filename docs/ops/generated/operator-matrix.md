@@ -1,9 +1,9 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-10-30T06:50:16Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-10-30T06:51:26Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `70c98ed499` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `9601ac783a` (hygiene: in_progress, smoke: in_progress). A tip is evidence for itself only; promotion rules live on #175.
 
 **Open inventory:** 354 issues, 116 PRs. PR classes: EXTRACT 5 / CANDIDATE 62 / NEED_EVIDENCE 49 / SUPERSEDE 0.
 
@@ -120,7 +120,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2190 | NEED_EVIDENCE | unlabelled | `be30d8c241` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2235 | NEED_EVIDENCE | unlabelled | `1106e61b09` | not_reported | not_reported | unknown | chore(osint): refresh coverage + page snapshots |
 | #2252 | NEED_EVIDENCE | unlabelled | `77f6526342` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2263 | NEED_EVIDENCE | unlabelled | `60fc64ac61` | not_reported | not_reported | unstable | chore(delphi): refresh delphi-ledger-feed.json |
+| #2263 | NEED_EVIDENCE | unlabelled | `345260ff81` | not_reported | not_reported | unknown | chore(delphi): refresh delphi-ledger-feed.json |
 | #2310 | NEED_EVIDENCE | unlabelled | `9f75ad95b5` | not_reported | not_reported | unknown | chore(delphi): refresh delphi-rfp-feed.json |
 | #2324 | NEED_EVIDENCE | unlabelled | `3d16823d7c` | not_reported | not_reported | unknown | chore(proposals): refresh proposals-feed.json |
 | #2340 | NEED_EVIDENCE | unlabelled | `cc347a254a` | not_reported | not_reported | unknown | chore(dashboards): refresh dispatch-tree feed |
@@ -128,7 +128,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2349 | NEED_EVIDENCE | unlabelled | `a09b5f22a6` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2377 | NEED_EVIDENCE | unlabelled | `529ec2dc60` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2378 | NEED_EVIDENCE | unlabelled | `d25f1f0cf6` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2420 | NEED_EVIDENCE | unlabelled | `45b7f05f19` | not_reported | not_reported | clean | docs(appid): Publisher LIVE record — provisioned 5537873, custody transferred, p |
+| #2420 | NEED_EVIDENCE | unlabelled | `45b7f05f19` | not_reported | not_reported | unknown | docs(appid): Publisher LIVE record — provisioned 5537873, custody transferred, p |
 
 ## Families (open)
 

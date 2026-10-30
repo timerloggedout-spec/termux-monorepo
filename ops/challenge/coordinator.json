@@ -1392,11 +1392,11 @@
     },
     {
      "id": "D4-ELIGIBILITY",
-     "label": "No project creation or build start before 2026-10-30T13:00:00-07:00 (mechanical gate in the brief and in the generator's cycle code)",
+     "label": "No project creation or build start before 2026-10-30T09:00:00-07:00 (official rules s.1 Submission Period open; mechanical gate in the brief and in the generator cycle code; label corrected 2026-10-30 from the stale 13:00 dates-page value)",
      "blocks": "any D4 build start",
      "owner": "challenge-entries lane + delphi-lane tooling",
      "status": "open",
-     "evidence": "Brief eligibility_gate (docs/proposals/briefs/kiroween-delphi-concept.brief.json); log enforcement PR #1717; cycle-code enforcement PR #1719. Creation timestamp is captured into the packet as eligibility evidence at creation."
+     "evidence": "Brief eligibility_gate (docs/proposals/briefs/kiroween-delphi-concept.brief.json); log enforcement PR #1717; cycle-code enforcement PR #1719. Creation timestamp is captured into the packet as eligibility evidence at creation. | Window OPEN since 2026-10-30 09:00 PT; Delphi pass ran 2026-10-30T23:44Z under this gate (implementation stage specified_not_run)."
     }
    ],
    "prizes": {
@@ -1517,9 +1517,10 @@
    "opportunity_cost": {
     "outcome": "pending",
     "top_award": {
-     "value": null,
-     "form": "NOT_ESTABLISHED",
-     "source": "Official page: pool $100,000 cash stated; per-place tiers TBD, releasing 2026-10-30 \u2014 top award NOT_ESTABLISHED"
+     "value": 30000,
+     "form": "$30,000 cash (Overall 1st place)",
+     "source": "Official rules s.8 + event page prize table (read firsthand 2026-10-30): Overall 1st $30,000 / 2nd $20,000 / 3rd $10,000; cash total $94,000 + subscriptions/credits",
+     "status": "ESTABLISHED (corrected 2026-10-30 from stale NOT_ESTABLISHED)"
     },
     "gross_foregone": 0,
     "non_monetary_foregone": [
@@ -1582,12 +1583,15 @@
     "participants": 1909,
     "participants_source": "event page HTML ('Participants (<N>)'), devpost.com",
     "projects": 0,
-    "projects_source": "Devpost project gallery, devpost.com",
+    "projects_source": "Devpost project gallery, devpost.com \u2014 RE-VERIFIED 2026-10-30T23:49Z: gallery page states the hackathon managers have not published the gallery yet; projects = 0 current",
     "fetched_at": "2026-10-28T22:11:14Z",
-    "projects_note": "project gallery unpublished by the organizers"
+    "projects_note": "project gallery unpublished by the organizers",
+    "refresh_note": "Refresh attempted firsthand 2026-10-30T23:48Z: participants counter is no longer publicly readable (participants tab requires login; main page text exposes no count) \u2014 participants 1909 stands as of its 2026-10-28 source read; next refresh via the OSINT watch scrape.",
+    "refreshed_at": "2026-10-30T23:49:00Z"
    },
    "brief_status": {
-    "delphi_handoff": "Handed off to the Delphi lane 2026-10-30 with the rules stamp (brief id kiroween-delphi-concept)."
+    "delphi_handoff": "Handed off to the Delphi lane 2026-10-30 with the rules stamp (brief id kiroween-delphi-concept).",
+    "delphi_pass": "RAN 2026-10-30T23:44:05Z (pass.json @master): status round_1_recorded; cycle ran [generate (n=3 candidates), cross_vote_round_1, expectations_recorded, facilitator_feedback]; specified_not_run [debate_revision, implementation, evidence_equalization...] under the eligibility gate; pass eligibility_gate.window_open = 2026-10-30T09:00:00-07:00 (agrees with rules s.1). Coordinator and pass records now agree (reconciled 2026-10-30, D4 sub-manager census delta)."
    }
   },
   {
@@ -1808,9 +1812,9 @@
    },
    {
     "id": "D4",
-    "opens": "2026-10-30T13:00:00-07:00",
+    "opens": "2026-10-30T09:00:00-07:00",
     "closes": "2026-12-04T14:00:00-08:00",
-    "state": "opens in 2d 0h"
+    "state": "OPEN (window opened 2026-10-30 09:00 PT)"
    },
    {
     "id": "D5",
@@ -1822,7 +1826,7 @@
   "critical_path": [
    "G-07 profile gate (blocks D1 validity)",
    "D1 workshop sitting + completion evidence (Oct 28 - Nov 4)",
-   "D4 eligibility opens Oct 30 13:00 PT (brief handoff same day)",
+   "D4 eligibility opened Oct 30 09:00 PT per rules s.1 (brief handoff + Delphi pass round 1 same day)",
    "D1 submission deadline Nov 4 23:59 PT",
    "D2 submission deadline Nov 8 15:00 PT",
    "D3 submission deadline Nov 9 23:59 PT",

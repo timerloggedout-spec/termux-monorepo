@@ -105,6 +105,7 @@ ALIASES = [
     ("Receipts Count", "receipts-count", "Receipts Count", "page", "fleet"),
     ("Code, Not Card", "code-not-card", "Code, Not Card", "page", "fleet"),
     ("Platform201", "platform201", "Platform201", "provider", "fleet"),
+    ("Discord", "discord", "Discord", "provider", "fleet"),
 ]
 ALIAS_BY_ID = {pid: (alias, name, kind, aclass)
                for alias, pid, name, kind, aclass in ALIASES}

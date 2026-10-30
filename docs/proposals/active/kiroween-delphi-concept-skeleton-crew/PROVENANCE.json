@@ -1,0 +1,38 @@
+{
+  "schema": "oracle-method-generation/v1",
+  "generator": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+  "generated_at": "2026-10-30T23:44:05Z",
+  "proposal_id": "kiroween-delphi-concept-skeleton-crew",
+  "author": "oracle-method",
+  "evidence_sets": [
+    {
+      "sha256": "21ab2f46f17d2991da1475404a58aa8374c1bcac4cc1f0fc1b7db4ef3aa239ad",
+      "items": 13,
+      "assembled_at": "2026-10-30T23:43:55Z"
+    }
+  ],
+  "documents": {
+    "MANIFEST.md": "db43910269c55f45c080e1e032efa85bfea162ec1956f2ab5fb7e3763c965645",
+    "ITEMS.md": "545b69ea8938808d4b8d41317fde85e62b5f0f7dec0e56912ebad264a4324d03",
+    "RFP.md": "e707c7bd5fea9a831b03978afc3f0da188339161855bd86e990be7872b19f1b4"
+  },
+  "human_ballots_received": 0,
+  "external_calls_by_generator": 0,
+  "pass_id": "kiroween-delphi-concept",
+  "concept": "Skeleton Crew \u2014 a CMDB / reconciliation viewer run by a minimal crew: a tiny set of spec-first Kiro agents (ingest, reconcile, report) that keep a fleet inventory honest against its sources. The challenge lane's hand-noted input (input, not decision). Seeded from the repo's CMDB design (PR #1655); the Kiro project itself is created new inside the submission window.",
+  "eligibility_gate": {
+    "enforcement": [
+      "The D4 brief/intake REFUSES any build start before window_open: no project creation, no building (owner ruling 2026-10-27 \u2014 eligibility enforced mechanically, per entry, per producing lane).",
+      "At project creation, the creation timestamp is captured into packet D4 as eligibility evidence; a timestamp before window_open voids the entry.",
+      "The generated concept proposal is not the competition project and does not trip this gate."
+    ],
+    "owner_confirmation": "2026-10-27: D4's build waits for its window.",
+    "rule": "New Projects Only (Official Rules s.4, kiroween.devpost.com/rules, read 2026-10-30): Projects must be newly created by the Entrant after the start of the Hackathon Submission Period (Oct 30, 2026, 9:00 AM PT). Standard development resources (frameworks, libraries, starter templates) may be used; any other pre-existing code or work incorporated must be disclosed. The work described and submitted must have been built during the Submission Period.",
+    "window_close": "2026-12-04T14:00:00-08:00",
+    "window_open": "2026-10-30T09:00:00-07:00"
+  },
+  "siblings": [
+    "kiroween-delphi-concept-frankenstein",
+    "kiroween-delphi-concept-resurrection"
+  ]
+}

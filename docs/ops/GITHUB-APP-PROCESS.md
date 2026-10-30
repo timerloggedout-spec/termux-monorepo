@@ -59,9 +59,9 @@ apps per role.
 |---|---|---|---|
 | `collector` — Termux Fleet Collector | metadata, contents, pull_requests, issues, checks, actions = read | **LIVE** 5535733 | Collector reads off the PAT bucket (proven) |
 | `publisher` — `Edict` (draft template) | metadata read; checks read; **contents write; pull_requests write** | **LIVE** — App 5537873, installation 176799777, provisioned 2026-10-30 by quota-specialist under the owner's FINISH order (naming gate killed, draft template applied); self-published PR #2417 merged `88aa48f21f71` by its own token; custody → `custom.github-app-publisher/keys/` (fp `4f5515eb…`) | The pat_publish path (branch, file PUT, PR create, merge) dies when PAT core hits 0; the publisher bucket cannot be starved by collector traffic. **Delta vs the #2401 package:** as-submitted manifest has checks read and **no issues permission** (package carried issues write) — issue-comment routes are unavailable to this app; adding issues = write is an amendment and the UP-01 template candidate |
-| `reviewer-ops` — name PROPOSED | metadata read; checks read; **pull_requests write** (reviews) | Proposed #2 (cadence bundle) | Peer-review orchestrator polling (≤180/h/event) + review comments off PAT |
-| `gate-ci` — name PROPOSED | metadata read; **checks write** | Proposed #3 (cadence bundle) | Gate annotations + status posts (repo-gate, ECC-class surfaces; the PR #800 checks failure class) |
-| `lifecycle` — name PROPOSED (supersedes this lane's earlier "steward" label) | metadata read; **issues write** | Proposed #4 (cadence bundle) | Issue lifecycle / triage sweeps, GAP-ledger sweeps |
+| `reviewer-ops` — `Argus` | metadata read; checks read; **pull_requests write** (reviews) | **LIVE** — App 5539430, installation 176838378, provisioned 2026-10-30 by the AppID lane under the FINAL SET; perms verified via App JWT exactly as listed; bucket 5000/5000; custody → `custom.github-app-reviewer/keys/` (fp `79e7e628…`) | Peer-review orchestrator polling (≤180/h/event) + review comments off PAT |
+| `gate-ci` — `Cerberus` | metadata read; **checks write** | **LIVE** — App 5539499, installation 176839926, provisioned 2026-10-30 by the AppID lane under the FINAL SET; perms verified via App JWT exactly as listed; bucket 5000/5000; custody → `custom.github-app-gate/keys/` (fp `c481b7b7…`) | Gate annotations + status posts (repo-gate, ECC-class surfaces; the PR #800 checks failure class) |
+| `lifecycle` — `Janus` | metadata read; **issues write** | **LIVE** — App 5539639, installation 176843209, provisioned 2026-10-30 by the AppID lane under the FINAL SET; perms verified via App JWT exactly as listed; bucket 5000/5000; custody → `custom.github-app-lifecycle/keys/` (fp `1c663199…`) | Issue lifecycle / triage sweeps, GAP-ledger sweeps |
 
 **Bundle requirements (cadence handover, owner order 2026-10-29 21:36
 PT — all apps, no exceptions):** manifest `public: true` from day one;
@@ -76,9 +76,15 @@ coordinates); **adoption proof** per app = first workflow run ON the app
 token + a bucket reading (remaining while PAT low), Collector-style —
 which is also the owner's DISTRIBUTED test (§4).
 
-**Naming — CONFERENCE DRAFT received 2026-10-29 (registration-monikers
-lane); DO NOT PROVISION on it.** Final set lands after marketing
-conferral + owner. Draft sets (template = collector, of record):
+**Naming — FINAL SET issued 2026-10-30 01:33 PT by the registry lane**
+(conference CLOSED by the lanes per the owner's 01:32 PT order — the
+owner-close framing is dead; marketing conferral ran direct with the
+Marketing Channel lane, no objections carried). Mark rankings
+(marketing, 2026-10-30): single-substitution marks first — Ed1ct >
+3d1ct, Argu5 > 4rgu5, J4nus > J4nu5, Cerberu5 > C3rberu5; canonical >
+queued (Edict > Herald, Argus > Themis, Janus > Clotho). The sets of
+record (template = collector), ALL LIVE as provisioned 2026-10-30 —
+canonical slugs, zero bounce variants consumed:
 
 | Role | appName | Slug (candidate) | Moniker | Alias |
 |---|---|---|---|---|
@@ -202,13 +208,14 @@ Build order (bundle of four, cadence handover 2026-10-29):
    (`custom.github-app-publisher`). Remaining publisher items: avatar
    upload (PNG, web-only) and the issues-write amendment decision
    (UP-01 candidate).
-2. **Reviewer-ops** — orchestrator poll burn is the largest steady PAT
-   drain after publishes.
-3. **Gate/CI** — checks publication, the PR #800 failure class.
-4. **Lifecycle** — sweeps are the lowest-frequency drain; last.
+2. **Reviewer-ops — DONE (2026-10-30).** App 5539430, installation
+   176838378, provisioned by the AppID lane under the FINAL SET (§3).
+3. **Gate/CI — DONE (2026-10-30).** App 5539499, installation 176839926.
+4. **Lifecycle — DONE (2026-10-30).** App 5539639, installation
+   176843209. Sweeps are the lowest-frequency drain; last, as ordered.
 
-Four roles landed = 4 registrations of the 100 cap and 20,000/h of
-separated installation quota on termux-monorepo (§5).
+Slate complete = 5 registrations of the 100 cap (Collector included)
+and 25,000/h of separated installation quota on termux-monorepo (§5).
 
 ## 7. Per-app repos + submodules (owner question, 2026-10-29 21:28 PT)
 
@@ -248,3 +255,37 @@ credentials names-only, values never in chat/files/commits; GitHub API
 via the PAT helper or App JWT — never a browser sign-in as a credential
 route; VM = sandbox only (custody files are local secrets at rest, not a
 service; all continuous work stays in repo automation).
+
+## 10. Bundle completion — 2026-10-30 (AppID lane)
+
+- **FINAL SET provisioned end-to-end.** Reviewer (5539430), Gate
+  (5539499) and Lifecycle (5539639) were created by the AppID lane via
+  the manifest flow inside the owner's sudo window (the 02:25 PT sudo
+  blocker cleared when the owner completed the confirmation inside the
+  live browser session ~02:30 PT; all later legs ran prompt-free), each
+  verified firsthand via its own App JWT: exact permissions, one
+  installation (timerloggedout-spec, selected repositories),
+  termux-monorepo only, independent 5000/5000 bucket. Lifecycle's form
+  was served byte-identical from a temporary Publisher-token branch
+  after Netlify Drop hit its anonymous daily limit; the temp branch was
+  deleted after conversion. Every custody pair sits in its own
+  `custom.github-app-<role>` connector (0600/0700), rotation due
+  2027-04-30.
+- **SEC-02 closed; SEC-03 pattern.** The Collector Actions pair
+  (`TERMUX_FLEET_COLLECTOR_PRIVATE_KEY` secret + `CLIENT_ID`/`APP_ID`
+  vars) is provisioned (PRs #2419/#2427/#2428; mint-probe run
+  41016897632 success; the token action takes the numeric APP ID, not
+  the client id). Future apps follow `TERMUX_FLEET_<ROLE>_*`.
+  `APP_PRIVATE_KEY` stays unprovisioned by design (probe identity ≠
+  Collector). §4's verdict stands under the owner definition —
+  production adoption is the migration waves' work (MIG-08/09 recon
+  started); MAINT-01 drift-audit is unblocked.
+- **MIG-07 declared (AppID lane).** App-token publishing is opt-in per
+  lane, scoped by permission class, PAT fallback retained. Proof of
+  record: PR #2472 published + merged entirely on the Publisher token.
+- **Repo-replay extension.** Collector + Publisher installations now
+  cover `timerloggedout-spec/repo-replay` as well as termux-monorepo
+  (verified via both installation tokens, repositories total = 2 each),
+  so repo-replay harvest/migration routes mint AppID-side. The
+  Publisher's missing issues permission was NOT amended in this pass —
+  it remains the UP-01 candidate, gated on its own explicit order.

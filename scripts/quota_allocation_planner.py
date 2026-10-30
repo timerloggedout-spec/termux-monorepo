@@ -140,6 +140,11 @@ def plan(registry, allocations, readings, countdowns=None, now=None):
             "pacing_multiplier": mult,
             "target_flow_per_min": flow,
             "slices": slices,
+            # lane/project slices landed in allocations.json (#1884
+            # enrollment, convergence-executed) carried verbatim so
+            # the plan reflects who holds what; distinct from the
+            # focus slices above.
+            "lane_slices": pool.get("slices", []),
             "stranded": stranded, "release_to": release_to,
         })
     # Standing AppID slice assignment (planner route, settled with

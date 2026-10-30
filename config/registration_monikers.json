@@ -212,17 +212,17 @@
     {
       "handling": {
         "escalation": [
-          "Devpost account sign-in/creation is an owner item (no signed-in Devpost session exists; sign-up offers GitHub/Facebook/Google/LinkedIn/email).",
-          "Team info is not a gate (solo entry allowed); nothing to escalate there."
+          "Profile is complete; no Devpost gate stands. Payment or a forced personal field beyond what the Profile Registry records stays owner-gated (rule 6)."
         ],
         "owner_lane": "challenge-entries",
-        "receipts_route": "Registration cannot proceed past the sign-up gate, so no confirmation exists; the attempt and its stop point are recorded in docs/ops/CHALLENGE-ENTRIES-LOG.md section 4 (packet D4).",
-        "submission_authority": "None until the account exists. After owner sign-in, the owning lane may complete registration under the moniker within the standing boundary."
+        "receipts_route": "Account + profile completed by the accounts lane 2026-10-29 (Profile Registry, Devpost block). Kiroween registration confirmations cite into docs/ops/CHALLENGE-ENTRIES-LOG.md (packet D4) by the owning lane.",
+        "submission_authority": "The owning lane may register and submit under the moniker within the standing boundary (challenge already owner-approved)."
       },
       "kind": "platform",
       "moniker": "n0nDevpost",
       "notes": [
-        "Future candidate C5 (PayPal AI Hackathon) is also Devpost-hosted and attaches to this entry if it becomes a registration."
+        "Future candidate C5 (PayPal AI Hackathon) is also Devpost-hosted and attaches to this entry if it becomes a registration.",
+        "Owner gate cleared 2026-10-29: account created + profile completed by the accounts lane (browser-verified). Status synced by the registry lane 2026-10-29."
       ],
       "platform": "Devpost",
       "platform_id": "devpost",
@@ -232,11 +232,11 @@
           "aspect": "event-host",
           "event": "Kiroween 2026 entry (packet D4 for C4)",
           "ref": "D4",
-          "status": "registering - stopped at the Devpost sign-up gate 2026-10-26"
+          "status": "account + profile complete 2026-10-29; D4 submission window opens Oct 30 13:00 PT"
         }
       ],
       "role": "entrant",
-      "status": "blocked-owner-gate"
+      "status": "active"
     },
     {
       "handling": {
@@ -314,16 +314,17 @@
     {
       "handling": {
         "escalation": [
-          "A valid Kiro user ID (or AWS account ID) is required to register for Kiroween - owner item. Kiro sign-in (app.kiro.dev) offers Google, GitHub, Builder ID, or organization - no email/password."
+          "The blocker is the Kiro user ID surface (Cloudflare + ID-surface blockers; reverse-engineering target brief #1729 in dispatch) - not an owner item: the account itself exists. Substituting an AWS account ID instead is owner-gated."
         ],
         "owner_lane": "challenge-entries",
-        "receipts_route": "No receipt exists; the requirement is recorded in docs/ops/CHALLENGE-ENTRIES-LOG.md section 4 (packet D4).",
+        "receipts_route": "Account existence verified 2026-10-29 by the accounts lane (Profile Registry, Kiro block). The Kiroween registration receipt lands when the user ID surface clears; the owning lane cites it into the log (packet D4).",
         "submission_authority": "None; this entry fronts an identity dependency, not a submission surface."
       },
       "kind": "identity-provider",
       "moniker": "n0nKiro",
       "notes": [
-        "Identity-provider entry: Kiroween registration consumes a Kiro identity; the moniker keeps that dependency inside the same routing/escalation surface as the Devpost entry it pairs with."
+        "Identity-provider entry: Kiroween registration consumes a Kiro identity; the moniker keeps that dependency inside the same routing/escalation surface as the Devpost entry it pairs with.",
+        "Synced 2026-10-29: account exists (Google route, KIRO FREE; no editable profile fields exist). The earlier 'owner item' framing is retired - the remaining block is the ID surface."
       ],
       "platform": "Kiro",
       "platform_id": "kiro",
@@ -333,11 +334,11 @@
           "aspect": "identity-provider",
           "event": "Kiroween 2026 entry (packet D4 for C4)",
           "ref": "D4",
-          "status": "blocked - Kiro user ID is an owner item"
+          "status": "account exists 2026-10-29; Kiroween registration blocked on the Kiro user ID surface (not an owner gate)"
         }
       ],
       "role": "entrant",
-      "status": "blocked-owner-gate"
+      "status": "registering"
     },
     {
       "handling": {

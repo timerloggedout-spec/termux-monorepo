@@ -77,11 +77,11 @@ of record. Tooling: `scripts/registration_monikers/registry.py`
 | Builder.io | `entrant{n0nBuilder}[platform:builder-io]` | Builder.io / Clips | active | D3 | challenge-entries |
 | Code, Not Card | `account{n0nCodeNotCard}[platform:code-not-card]` | — (pending: marketing-channel) | pending | — | marketing-channel |
 | Cohere | `account{HappyCanyon42}[platform:cohere]` | — (pending: account-creation) | registering | — | account-creation |
-| Devpost | `entrant{n0nDevpost}[platform:devpost]` | Devpost | blocked-owner-gate | D4 | challenge-entries |
+| Devpost | `entrant{n0nDevpost}[platform:devpost]` | Devpost | active | D4 | challenge-entries |
 | Dream In Production | `account{n0nDreamInProduction}[platform:dream-in-production]` | — (pending: marketing-channel) | pending | — | marketing-channel |
 | iFlytek | `account{PluckyOasis73}[platform:iflytek]` | — (pending: account-creation) | pending | — | account-creation |
 | Kilo | `account{RapidHarbor74}[platform:kilo]` | — (pending: account-creation) | pending | — | account-creation |
-| Kiro | `entrant{n0nKiro}[platform:kiro]` | Kiro | blocked-owner-gate | D4 | challenge-entries |
+| Kiro | `entrant{n0nKiro}[platform:kiro]` | Kiro | registering | D4 | challenge-entries |
 | lablab.ai | `entrant{n0nLablab}[platform:lablab-ai]` | lablab.ai | registering | D2 | challenge-entries |
 | LLM7 | `account{WittyWillow78}[platform:llm7]` | — (pending: account-creation) | pending | — | account-creation |
 | ModelScope | `account{LivelyWillow16}[platform:model-scope]` | — (pending: account-creation) | pending | — | account-creation |
@@ -206,6 +206,12 @@ registry. It runs `registry.py check`; the auto-fixable drift class is
   in the Profile Registry yet, check fails on the unresolved
   `profile_ref` until the owning lane registers the profile there —
   that failure is the coordination signal, not an error to silence.
+- **Known-item exemption (2026-10-29):** the `boinc` `profile_ref`
+  line is a named, owned signal (the BOINC lane's pending profile).
+  The workflow still prints it and warns on it every run, but that
+  exact line no longer blocks auto-extension for unrelated platforms;
+  ANY other hard line still fails the run. When the BOINC profile
+  lands, the line disappears and the exemption is inert.
 - The detection vocabulary (platform name → platform_id) is the
   `ALIASES` table in `registry.py`. It is curated: a platform outside
   the vocabulary gets no auto-assignment, and adding its line is a
@@ -231,7 +237,7 @@ For the account-creation lane specifically:
   ModelScope, SiliconFlow, iFlytek, xKiro) are pre-assigned in the
   registry with role `account`.
 - **Instant lookup:** `registry.py derive --platform-id <slug>` prints
-  the assignment — the registry entry if one exists, else the rule-v2
+  the assignment — the registry entry if one exists, else the rule-v3
   result (collision-aware against the current registry). A derived
   value is authoritative; it is ratified into the registry by PR
   afterwards, and check guarantees the ratified value matches the rule.

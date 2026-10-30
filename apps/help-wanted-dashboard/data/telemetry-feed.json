@@ -1,0 +1,500 @@
+{
+ "schema": "telemetry-viz-feed/v1",
+ "surface": "telemetry",
+ "generated_at": "2026-10-30T06:22:26Z",
+ "sources": [
+  {
+   "path": "apps/help-wanted-dashboard/data/status.json",
+   "stamped_at": "2026-10-30T01:17:30Z"
+  },
+  {
+   "path": "apps/help-wanted-dashboard/data/quota.json",
+   "stamped_at": "2026-10-30T02:47:00.930298+00:00"
+  },
+  {
+   "path": "apps/help-wanted-dashboard/data/quota-usage.json",
+   "stamped_at": "2026-10-30T02:30:35Z"
+  },
+  {
+   "path": "scripts/dashboards/workflow_observations.json",
+   "stamped_at": "2026-10-27T12:29:50Z"
+  }
+ ],
+ "honesty_rules": [
+  "Show only what the record holds; a value the record does not hold renders as absent, never synthesized.",
+  "Absence is never zero: unobserved quota readings stay null and are counted as unobserved, not as 0 used.",
+  "Executions are a committed-projection proxy (recon gap G3): the Neon lane_events table is not read by this collector and no live run state is claimed.",
+  "Workflow run counts are API observations stamped with their read time, not live claims.",
+  "Derived values are labeled derived and computed from the source fields named beside them."
+ ],
+ "data": {
+  "golden": {
+   "receipts_total": 3962,
+   "actioned": 221,
+   "skipped": 3741,
+   "quota_readings_total": 156,
+   "quota_measured_count": 0,
+   "quota_saturation": null,
+   "workflows_observed": 5,
+   "workflow_runs_observed": 573
+  },
+  "executions": {
+   "kind": "committed_projection_proxy",
+   "source_snapshot": "scripts/dashboards/workflow_observations.json",
+   "read_at": "2026-10-27T12:29:50Z",
+   "workflows_observed": 5,
+   "total_runs_observed": 573,
+   "workflows": {
+    "agent-mvt-experiment.yml": {
+     "total_runs": 0,
+     "latest": []
+    },
+    "ates-orchestrator-benchmark.yml": {
+     "total_runs": 13,
+     "latest": [
+      {
+       "created_at": "2026-10-22T12:25:12Z",
+       "conclusion": "success",
+       "event": "pull_request"
+      },
+      {
+       "created_at": "2026-10-22T12:20:26Z",
+       "conclusion": "success",
+       "event": "pull_request"
+      },
+      {
+       "created_at": "2026-10-22T12:20:22Z",
+       "conclusion": "success",
+       "event": "push"
+      }
+     ]
+    },
+    "ates-phase-b-run-receipt.yml": {
+     "total_runs": 9,
+     "latest": [
+      {
+       "created_at": "2026-10-23T13:34:25Z",
+       "conclusion": "success",
+       "event": "workflow_run"
+      },
+      {
+       "created_at": "2026-10-23T07:40:57Z",
+       "conclusion": "success",
+       "event": "workflow_run"
+      },
+      {
+       "created_at": "2026-10-23T01:37:40Z",
+       "conclusion": "success",
+       "event": "workflow_run"
+      }
+     ]
+    },
+    "hex-moneyball-evidence.yml": {
+     "total_runs": 23,
+     "latest": [
+      {
+       "created_at": "2026-10-24T08:12:33Z",
+       "conclusion": "success",
+       "event": "pull_request"
+      },
+      {
+       "created_at": "2026-10-24T03:14:20Z",
+       "conclusion": "success",
+       "event": "push"
+      },
+      {
+       "created_at": "2026-10-22T08:27:36Z",
+       "conclusion": "success",
+       "event": "pull_request"
+      }
+     ]
+    },
+    "team-mvt.yml": {
+     "total_runs": 528,
+     "latest": [
+      {
+       "created_at": "2026-10-26T17:15:46Z",
+       "conclusion": "failure",
+       "event": "issues"
+      },
+      {
+       "created_at": "2026-10-25T02:27:13Z",
+       "conclusion": "failure",
+       "event": "issues"
+      },
+      {
+       "created_at": "2026-10-23T16:44:31Z",
+       "conclusion": "success",
+       "event": "push"
+      }
+     ]
+    }
+   },
+   "lane_receipts": {
+    "lane": "help-wanted",
+    "receipts": 3962,
+    "kinds": {
+     "upstream_pr": 12,
+     "claim_skipped_closed": 1,
+     "followup_skip_idempotent": 35,
+     "followup_skip_cooldown": 3675,
+     "followup_reengage": 51,
+     "followup_stale_nudge": 138,
+     "followup_changes": 2,
+     "followup_lesson": 18,
+     "followup_skip_system1": 30
+    },
+    "generated_at": "2026-10-30T01:17:30Z"
+   }
+  },
+  "outcomes": {
+   "lane": "help-wanted",
+   "project": "help-wanted-with-tribute",
+   "generated_at": "2026-10-30T01:17:30Z",
+   "receipts": 3962,
+   "kinds": {
+    "upstream_pr": 12,
+    "claim_skipped_closed": 1,
+    "followup_skip_idempotent": 35,
+    "followup_skip_cooldown": 3675,
+    "followup_reengage": 51,
+    "followup_stale_nudge": 138,
+    "followup_changes": 2,
+    "followup_lesson": 18,
+    "followup_skip_system1": 30
+   },
+   "outcomes": {
+    "actioned": 221,
+    "skipped": 3741
+   },
+   "outcome_semantics": "actioned/skipped/failed are operational receipt states, not successful tribute counts",
+   "tribute_count": 132,
+   "foreign_open_count": 8,
+   "issues_tracked": 107
+  },
+  "quota": {
+   "generated_at": "2026-10-30T02:47:00.930298+00:00",
+   "readings_total": 156,
+   "by_status": {
+    "unknown": 153,
+    "ok": 3
+   },
+   "by_horizon": {
+    "H1": 150,
+    "H0": 6
+   },
+   "by_evidence_status": {
+    "attributed_claim": 145,
+    "confirmed": 6,
+    "early_signal": 5
+   },
+   "measured": [],
+   "unmeasured_count": 156,
+   "usage_pack": {
+    "generated_at": "2026-10-30T02:30:35Z",
+    "api_core": {
+     "title": "GitHub API core \u2014 shared PAT bucket",
+     "limit": 5000,
+     "unit": "requests/hour",
+     "replenishment": "rolling hourly",
+     "next_reset_observed": "2026-10-30T01:42:09Z",
+     "points": [
+      {
+       "at": "2026-10-28T23:41:00Z",
+       "remaining": 0,
+       "kind": "wall",
+       "provenance": "quota-specialist pack 2026-10-29"
+      },
+      {
+       "at": "2026-10-29T00:32:00Z",
+       "remaining": 2950,
+       "kind": "reported",
+       "provenance": "tier1-classifiers-steward rate-limit check after reset"
+      },
+      {
+       "at": "2026-10-29T00:37:00Z",
+       "remaining": 2945,
+       "kind": "observed",
+       "provenance": "viz rate-limit read (used 2055)"
+      },
+      {
+       "at": "2026-10-29T05:50:14Z",
+       "remaining": 0,
+       "kind": "wall",
+       "provenance": "cadence lane timeline 2026-10-29 (rate-limit record PR #2321/#2322) \u2014 core 403 blocked a pat_publish first call"
+      },
+      {
+       "at": "2026-10-29T11:41:45Z",
+       "remaining": 0,
+       "kind": "wall",
+       "provenance": "rate-limit lane incident record (PR #2321/#2322, via fleet memory) \u2014 incident 2: full 5000-call window burned in ~25 min (11:41:45Z\u2013~12:06Z)"
+      },
+      {
+       "at": "2026-10-29T21:39:53Z",
+       "remaining": 0,
+       "kind": "wall",
+       "provenance": "cadence lane timeline 2026-10-29 \u2014 ECC ack run annotation: 'API rate limit exceeded for user ID 233432881'"
+      },
+      {
+       "at": "2026-10-30T01:32:00Z",
+       "remaining": 0,
+       "kind": "wall",
+       "provenance": "quota-specialist pack 2026-10-29 (~18:32 PT)",
+       "note": "prior window exhausted; post-fix recurrence in shape, not in mechanism TBD \u2014 burn shape resolved by convergence correction: sustained ramp (see event-burn-shape)"
+      },
+      {
+       "at": "2026-10-30T01:36:00Z",
+       "remaining": 0,
+       "kind": "observed",
+       "provenance": "viz rate-limit read (used 5000, reset 2026-10-30T01:42:09Z)"
+      },
+      {
+       "at": "2026-10-30T01:43:00Z",
+       "remaining": 4999,
+       "kind": "observed",
+       "provenance": "viz pat_publish preflight read (uncounted /rate_limit) \u2014 new window just opened, used 1"
+      },
+      {
+       "at": "2026-10-30T01:45:00Z",
+       "remaining": 4645,
+       "kind": "reported",
+       "provenance": "convergence lane via quota-specialist (verified from reset epochs) \u2014 new window, used 355"
+      },
+      {
+       "at": "2026-10-30T01:54:00Z",
+       "remaining": 3230,
+       "kind": "reported",
+       "provenance": "convergence lane via quota-specialist (verified from reset epochs) \u2014 used 1770, reset 02:42:19Z"
+      }
+     ],
+     "latest_point": {
+      "at": "2026-10-30T01:54:00Z",
+      "remaining": 3230,
+      "kind": "reported",
+      "provenance": "convergence lane via quota-specialist (verified from reset epochs) \u2014 used 1770, reset 02:42:19Z"
+     }
+    },
+    "actions_corpus": {
+     "title": "Actions run volume \u2014 reconstructed corpus (daily increments)",
+     "method": "Delta of run_count/total_jobs between consecutive daily docs/ops/generated/actions-performance-reconstructed-*.json files (cumulative, label locally_reconstructed, source_count == run_count). minutes_est = jobs_delta \u00d7 that day's avg_job_duration_ms / 60000 \u2014 an estimate. Corpus grows ~40 runs/day by reconstruction sampling: increments are corpus growth, NOT total fleet Actions volume.",
+     "days": [
+      {
+       "date": "2026-10-02",
+       "runs_delta": 40,
+       "jobs_delta": 80,
+       "minutes_est": 16
+      },
+      {
+       "date": "2026-10-03",
+       "runs_delta": 40,
+       "jobs_delta": 47,
+       "minutes_est": 9
+      },
+      {
+       "date": "2026-10-04",
+       "runs_delta": 40,
+       "jobs_delta": 38,
+       "minutes_est": 7
+      },
+      {
+       "date": "2026-10-05",
+       "runs_delta": 40,
+       "jobs_delta": 65,
+       "minutes_est": 12
+      },
+      {
+       "date": "2026-10-06",
+       "runs_delta": 40,
+       "jobs_delta": 51,
+       "minutes_est": 9
+      },
+      {
+       "date": "2026-10-07",
+       "runs_delta": 40,
+       "jobs_delta": 80,
+       "minutes_est": 15
+      },
+      {
+       "date": "2026-10-08",
+       "runs_delta": 40,
+       "jobs_delta": 49,
+       "minutes_est": 9
+      },
+      {
+       "date": "2026-10-09",
+       "runs_delta": 40,
+       "jobs_delta": 39,
+       "minutes_est": 8
+      },
+      {
+       "date": "2026-10-10",
+       "runs_delta": 40,
+       "jobs_delta": 93,
+       "minutes_est": 19
+      },
+      {
+       "date": "2026-10-11",
+       "runs_delta": 40,
+       "jobs_delta": 71,
+       "minutes_est": 15
+      },
+      {
+       "date": "2026-10-12",
+       "runs_delta": 40,
+       "jobs_delta": 95,
+       "minutes_est": 22
+      },
+      {
+       "date": "2026-10-13",
+       "runs_delta": 40,
+       "jobs_delta": 49,
+       "minutes_est": 11
+      },
+      {
+       "date": "2026-10-14",
+       "runs_delta": 40,
+       "jobs_delta": 40,
+       "minutes_est": 9
+      },
+      {
+       "date": "2026-10-15",
+       "runs_delta": 40,
+       "jobs_delta": 49,
+       "minutes_est": 11
+      },
+      {
+       "date": "2026-10-16",
+       "runs_delta": 40,
+       "jobs_delta": 42,
+       "minutes_est": 10
+      },
+      {
+       "date": "2026-10-17",
+       "runs_delta": 40,
+       "jobs_delta": 37,
+       "minutes_est": 8
+      },
+      {
+       "date": "2026-10-18",
+       "runs_delta": 40,
+       "jobs_delta": 40,
+       "minutes_est": 9
+      },
+      {
+       "date": "2026-10-19",
+       "runs_delta": 40,
+       "jobs_delta": 40,
+       "minutes_est": 9
+      },
+      {
+       "date": "2026-10-20",
+       "runs_delta": 40,
+       "jobs_delta": 40,
+       "minutes_est": 9
+      },
+      {
+       "date": "2026-10-21",
+       "runs_delta": 40,
+       "jobs_delta": 52,
+       "minutes_est": 11
+      },
+      {
+       "date": "2026-10-22",
+       "runs_delta": 40,
+       "jobs_delta": 49,
+       "minutes_est": 10
+      },
+      {
+       "date": "2026-10-23",
+       "runs_delta": 40,
+       "jobs_delta": 52,
+       "minutes_est": 11
+      },
+      {
+       "date": "2026-10-24",
+       "runs_delta": 40,
+       "jobs_delta": 48,
+       "minutes_est": 10
+      },
+      {
+       "date": "2026-10-25",
+       "runs_delta": 0,
+       "jobs_delta": 0,
+       "minutes_est": 0
+      },
+      {
+       "date": "2026-10-26",
+       "runs_delta": 40,
+       "jobs_delta": 49,
+       "minutes_est": 10
+      },
+      {
+       "date": "2026-10-27",
+       "runs_delta": 40,
+       "jobs_delta": 53,
+       "minutes_est": 11
+      },
+      {
+       "date": "2026-10-28",
+       "runs_delta": 40,
+       "jobs_delta": 53,
+       "minutes_est": 11
+      },
+      {
+       "date": "2026-10-29",
+       "runs_delta": 40,
+       "jobs_delta": 82,
+       "minutes_est": 16
+      }
+     ],
+     "spike": {
+      "at": "2026-10-29T16:30:00Z",
+      "until": "2026-10-29T16:55:00Z",
+      "runs": 143,
+      "workflow": "delphi-gate",
+      "fires": "delphi-rfp-feed-collect",
+      "provenance": "quota-specialist pack 2026-10-29 + cadence lane timeline 2026-10-29 (rate-limit record PR #2321/#2322, burst-fix record PR #2341, history-verified per cadence lane)",
+      "outcome": "burst-fix PR #2341 (merged 97938a583f50): retry \u00d74 (Retry-After / X-RateLimit-Reset, 120s cap) in both collectors + 15-min freshness gate on delphi-rfp-feed-collect workflow_run (loop breaker); 3 workflows re-enabled with green proof each",
+      "detail": "Each collect ran ~30\u201380 calls on the installation token (1000/hr bucket); mid-storm the reviewer map crossed 24h staleness, so every orchestrator completion launched a ~750-call reviewer-metrics collect on the OPERATOR (PAT user) token \u2014 the PAT-bucket burn mechanism."
+     }
+    },
+    "annotations_count": 8,
+    "stamps_count": 12,
+    "buckets": [
+     {
+      "name": "github.api.user_token (PAT user bucket)",
+      "limit": 5000,
+      "unit": "req/hr",
+      "note": "the bucket graphed above; rolling 1h anchored by the x-ratelimit-reset header, not the clock hour",
+      "provenance": "cadence lane graph note 2026-10-29"
+     },
+     {
+      "name": "github.api.github_token (installation, per-repo)",
+      "limit": 1000,
+      "unit": "req/hr",
+      "note": "delphi-rfp-feed-collect runs spend here, ~30\u201380 calls each; 1000/hr per repo",
+      "provenance": "cadence lane timeline 2026-10-29"
+     },
+     {
+      "name": "GitHub GraphQL (user token)",
+      "limit": 5000,
+      "unit": "points/hr",
+      "observed": "4997 remaining at 2026-10-30T01:37Z live check",
+      "provenance": "cadence lane live check 2026-10-30T01:37Z"
+     },
+     {
+      "name": "vercel.deployments",
+      "limit": 100,
+      "unit": "deployments/day",
+      "note": "rolling 24h daily cap \u2014 separate from the API buckets; see state timeline",
+      "provenance": "quota registry / cadence lane graph note"
+     }
+    ]
+   }
+  }
+ },
+ "gaps": [
+  "G1/G3: executions are proxied from the checked-in observations snapshot (read_at 2026-10-27T12:29:50Z, 5 workflows) plus status.json lane receipts; there is no consolidated Actions run-corpus feed and the Neon lane_events table is not page-readable.",
+  "quota saturation NOT OBSERVED: 0 of 156 readings carry both used and limit; saturation renders as absent, never 0."
+ ]
+}

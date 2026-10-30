@@ -241,6 +241,33 @@
     {
       "handling": {
         "escalation": [
+          "Any card/billing prompt is a hard stop (fleet card rule) - surface to the owner, never enter payment details.",
+          "Any owner-only verification step the agency path cannot complete surfaces to main chat instead of being worked around.",
+          "If Discord rejects the assigned username (taken or invalid), the executing lane surfaces it; the registry assigns the rule-v3 collision variant (suffix bump) - the lane never improvises a different name."
+        ],
+        "owner_lane": "challenge-entries",
+        "receipts_route": "Account facts (issued username, display name, persona DOB as submitted, lablab OAuth connect state) are recorded in the Profile Registry by the challenge-entries lane under its own section and cited by PR; the coordinator connect state is that lane's seam. This entry flips to a resolving profile_ref when that block lands.",
+        "submission_authority": "Manager ruling 2026-10-30: the challenge-entries lane creates the fleet Discord account under agency authorization (the owner-sign-in path is not taken) and connects lablab OAuth. The assigned moniker IS the signup username of record, pulled from this registry - never invented at the form."
+      },
+      "kind": "provider",
+      "moniker": "GentleOnyx47",
+      "moniker_rule": "v3",
+      "notes": [
+        "Assigned 2026-10-30 by the registry lane at the challenge-entries lane's direction request (manager ruling: create the fleet Discord, agency path). Purpose: the fleet Discord identity the lablab.ai account connects via OAuth - unblocks D2 team create/join (Discord-not-connected blocker) and satisfies the AMD AI League Discord-join requirement. Rule-v3 codename: no shared stem, no platform token, no cross-platform reuse (in particular no relation to the lablab handle Rap1dZ3nith - rule 3).",
+        "Platform rendering: Discord usernames are lowercase-only, so the signup username is gentleonyx47 (the codename's lowercase form); the Discord display name carries the canonical case, GentleOnyx47. The moniker of record stays GentleOnyx47; the issued username is a Profile Registry fact, recorded there by the executing lane.",
+        "Persona DOB assigned by the registry lane under the demographic rule (2026-10-29): the fleet builder persona keeps its 25-34 bracket (first assigned for lablab.ai, 2026-10-29); the exact date of record was relayed to the executing lane with this direction and is recorded with the Discord profile in the Profile Registry - one persona DOB of record, reused across forms, never re-rolled per form."
+      ],
+      "platform": "Discord",
+      "platform_id": "discord",
+      "profile_pending": "challenge-entries",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "registering"
+    },
+    {
+      "handling": {
+        "escalation": [
           "If Facebook rejects the assigned Page name, the marketing-channel lane surfaces it; the registry assigns a replacement under the same rule - names are never improvised, and never borrowed from another cell's stem.",
           "Cross-cell contamination (any link, mention, or shared asset between cells) breaks both 4n0n isolation and test attribution - surface immediately."
         ],

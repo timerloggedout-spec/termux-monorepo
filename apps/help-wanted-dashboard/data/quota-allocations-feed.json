@@ -1,6 +1,6 @@
 {
   "schema": "quota-allocations-feed/v1",
-  "generated_at": "2026-10-30T10:39:51.286300+00:00",
+  "generated_at": "2026-10-30T10:58:17.233608+00:00",
   "source": "ops/quota/allocations.json (owner-set, issue #1884) joined with ops/quota/registry.json entitlements and the public readings snapshot; entitlements are not usage and no focus attribution is invented.",
   "issue": 1884,
   "set_by": "owner",
@@ -2585,6 +2585,116 @@
           "routine_draw_on_fallback": false,
           "date": "2026-10-30",
           "reason": "ENROLL claim 6520580174: PAT helper draws (inventory sweeps + connector landings) + Actions minutes (inventory refresh workflows); focus repo-development; timer on record: platform201-support-response-check daily 13:17Z."
+        },
+        {
+          "lane": "google-ai-studio",
+          "claim": 6520849921,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520849921: PAT episodic ~11-13 calls/PR (AI Studio extension + Delphi panel publishes/verifies) + Actions dispatches (mesh trigger workflow = repository_dispatch + workflow_dispatch only, cron none, polling none); focus research + repo-development; priority low/routine; timers current per QAC-008 by construction."
+        },
+        {
+          "lane": "temporal-recon",
+          "claim": 6520939645,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520939645: PAT episodic bursts (~20-40 calls/PR) for the Temporal durable-execution RFP (#1885) recon; focus research + repo-development; priority low/routine; timers none (no cron/dispatch/workflows/polling \u2014 QAC-008 current by construction)."
+        },
+        {
+          "lane": "4n0n-protocol",
+          "claim": 6520947846,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520947846: PAT episodic publish/verify for the 4n0n protocol + branding-perception evaluation (PR #2159); focus repo-development; priority low/routine; timers none (no cron/dispatch/workflow/polling \u2014 QAC-008 current by construction)."
+        },
+        {
+          "lane": "vercel-specialist",
+          "claim": 6520970014,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520970014: PAT episodic + Actions minutes for the Vercel project fleet (help-wanted-oversight/dash, mcp-hub, demo-portal); focus repo-development, priority low/routine; batch deploys dispatch-only via quota-dispatch-tree Tier-3 with a rolling-24h flow regulator; vercel-side draw enrolled in the vercel pool."
+        },
+        {
+          "lane": "telemetry-viz",
+          "claim": 6520968738,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520968738: PAT episodic bursts ~10-20 calls/PR (observer sample 3 counted/run), QAC-007 gated, for fleet telemetry visualization; focus repo-development, priority low/routine leftover-only; lane-owned recurring timers none, periodic draw 0."
+        },
+        {
+          "lane": "burst-fix",
+          "claim": 6520955774,
+          "primary_services": [
+            "github.api.user_token",
+            "github.actions.minutes"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520955774: PAT episodic + Actions minutes (proof dispatches) for feed-collect failure-burst fixes (PR #2341); focus repo-development; priority incident-spike/routine \u2014 mission complete, steady draw 0, incident sessions ~150-250 calls; timers none owned."
+        },
+        {
+          "lane": "scraping-tools",
+          "claim": 6520959920,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520959920: PAT episodic for login-capable free scraping-tools recon; focus research, priority low/routine; vendor free tiers are vendor-side quotas, not github draw; timers none current."
+        },
+        {
+          "lane": "3l0-plane",
+          "claim": 6520955026,
+          "primary_services": [
+            "github.api.user_token"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520955026: PAT episodic ~6-13 calls/PR for the 3L0 scoring plane (sibling of 3l0-weighting-backfill, claim 6520582020 \u2014 separate lane, own slice); Actions minutes ride gap-finder-fix-g10's surface-feeds slice, not double-claimed; discrimination watch <=3 GH API calls/run; focus repo-development, priority low/routine leftover-only."
+        },
+        {
+          "lane": "challenge-entries-manager",
+          "claim": 6520947956,
+          "primary_services": [
+            "github.api.user_token",
+            "github.actions.minutes"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520947956: PAT bursts ~6-15 calls/PR + Actions minutes (challenge-osint-watch.yml, cron Wed 08:17Z + push + dispatch) for challenge-entries management (distinct seat from challenge-entries, claim 6520567420); focus winning; priority low/routine."
         }
       ],
       "reserve_pct": 0,
@@ -2711,7 +2821,20 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
-      "slices": [],
+      "slices": [
+        {
+          "lane": "google-ai-studio",
+          "claim": 6520849921,
+          "primary_services": [
+            "gemini.api_free"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520849921: AI Studio / gemini.api_free draw under its own RPD budgets via ops/ai-studio-mesh quota_gate (PR #2489) \u2014 not the github bucket; mesh trigger = both legs (Cloudflare receiver + bounded trigger), quota-gated DEFER on low budget."
+        }
+      ],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null
@@ -4607,7 +4730,21 @@
           "reason": "Draws only quota Winning cannot consume before expiry (owner setting, #1884)."
         }
       ],
-      "slices": [],
+      "slices": [
+        {
+          "lane": "vercel-specialist",
+          "claim": 6520970014,
+          "primary_services": [
+            "vercel.deployments",
+            "vercel.build_time"
+          ],
+          "fallback_service": null,
+          "fallback_mode": "none",
+          "routine_draw_on_fallback": false,
+          "date": "2026-10-30",
+          "reason": "ENROLL claim 6520970014: vercel.deployments + vercel.build_time surface; deploys paced by the lane's rolling-24h regulator (budget = 100 - max(API-24h + offset, ledger), reserve 5, cooldown 6h) under the batch-deploy dispatch; ignore-guard cron Tue 04:17Z PATCH-on-drift."
+        }
+      ],
       "reserve_pct": 0,
       "constraints": [],
       "observed_consumption_by_focus": null

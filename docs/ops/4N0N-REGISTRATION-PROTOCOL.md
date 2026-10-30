@@ -115,7 +115,7 @@ forms; the owning lane records it with the profile.
 | iFlytek | `account{PluckyOasis73}[platform:iflytek]` | — (pending: account-creation) | pending | — | account-creation |
 | Kilo | `account{RapidHarbor74}[platform:kilo]` | — (pending: account-creation) | pending | — | account-creation |
 | Kiro | `entrant{n0nKiro}[platform:kiro]` | Kiro | registering | D4 | challenge-entries |
-| lablab.ai | `entrant{n0nLablab}[platform:lablab-ai]` | lablab.ai | registering | D2 | challenge-entries |
+| lablab.ai | `entrant{Rap1dZ3nith}[platform:lablab-ai]` | lablab.ai | active | D2 | challenge-entries |
 | LLM7 | `account{WittyWillow78}[platform:llm7]` | — (pending: account-creation) | pending | — | account-creation |
 | ModelScope | `account{LivelyWillow16}[platform:model-scope]` | — (pending: account-creation) | pending | — | account-creation |
 | Platform201 | `account{n0nPlatform201}[platform:platform201]` | — (pending: platform201-status) | active | — | platform201-status |
@@ -148,7 +148,7 @@ asks for one, the assigned moniker is what goes in the field.
 - Entries are processed in `platform_id` sort order.
 - `moniker = "n0n" + ` the platform_id's words capitalized and joined,
   dropping filler words (`ai`, `io`, `center`) in non-first positions —
-  `aws-builder-center` → `n0nAwsBuilder`, `lablab-ai` → `n0nLablab`,
+  `aws-builder-center` → `n0nAwsBuilder`,
   `builder-io` → `n0nBuilder`, `uno-router` → `n0nUnoRouter`. The `n0n`
   stem is the 4n0n mark: short, letter-led, alphanumeric, ≤ 30 chars on
   every current platform — valid username shape on the surfaces the
@@ -194,6 +194,15 @@ no platform name**:
   carried identities — keep their v2 names: renaming one is a
   per-platform owner decision (tracked with Issue #1861), never a
   silent re-derivation.
+- **Owner-issued names (`"moniker_rule": "owner-issued"`).** The owner
+  may set a platform's issued name directly; that name — the handle as
+  issued on the platform — becomes the moniker of record, carried
+  verbatim from `OWNER_ISSUED` in `registry.py` and never re-derived.
+  First instance: lablab-ai → `Rap1dZ3nith` (owner pick 2026-10-30:
+  the candidate queue and the owner's draw converged on `latentf0rge`,
+  overridden pre-submit to this leet respelling of the v3 derive
+  `RapidZenith18`; issued handle recorded in the Profile Registry,
+  PR #2504).
 
 ## 4. Orchestration routes
 

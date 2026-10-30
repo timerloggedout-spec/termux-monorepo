@@ -24,7 +24,7 @@ Moniker assignment rule v2 (deterministic, LEGACY - frozen): entries
 are processed in platform_id sort order; moniker = the 4n0n stem "n0n"
 + the platform_id's words capitalized and joined, dropping filler
 words (STOPWORDS: ai, io, center) in non-first positions
-("aws-builder-center" -> "n0nAwsBuilder", "lablab-ai" -> "n0nLablab",
+("aws-builder-center" -> "n0nAwsBuilder", "devpost" -> "n0nDevpost",
 "builder-io" -> "n0nBuilder"). On collision with a different
 platform_id, append the smallest integer >= 2 that frees the token.
 
@@ -38,7 +38,11 @@ suffix ("devpost" -> its codename, which names no platform and shares
 no stem with any other assignment). Collisions bump the suffix.
 Entries carry "moniker_rule": "v3" (absent == "v2" legacy); v2 entries
 of record keep their names - renaming an issued identity is a
-per-platform owner decision, never a silent re-derivation.
+per-platform owner decision, never a silent re-derivation. An entry
+may instead carry "moniker_rule": "owner-issued": the owner set the
+platform's issued name directly and that name IS the moniker of
+record - its value lives in OWNER_ISSUED below and is never
+re-derived (first instance: lablab-ai, 2026-10-30).
 
 Canonical form: <role>{<moniker>}[platform:<platform_id>] with role
 "entrant" (challenge platforms) or "account" (provider accounts).
@@ -179,6 +183,17 @@ def derive_moniker_v3(platform_id, taken):
     return candidate
 
 
+# Owner-issued monikers of record: platform_id -> the issued name the
+# owner set directly (the platform's handle, issued). The value is a
+# fact of record, never derived; check() requires an "owner-issued"
+# entry's moniker to equal its value here exactly.
+#   lablab-ai: Rap1dZ3nith - owner pick 2026-10-30 (queue + rnd + tap
+#   converged on latentf0rge; owner overrode pre-submit to this leet
+#   respell of the v3 derive RapidZenith18). Evidence: PR #2504
+#   (Profile Registry + coordinator), https://lablab.ai/u/@Rap1dZ3nith.
+OWNER_ISSUED = {"lablab-ai": "Rap1dZ3nith"}
+
+
 def canonical(entry):
     return f"{entry['role']}{{{entry['moniker']}}}[platform:{entry['platform_id']}]"
 
@@ -221,11 +236,14 @@ def expected_monikers(entries):
     """Recompute every moniker by its entry's rule, in sort order.
 
     Entries carry "moniker_rule": "v3" for rule-v3 assignments; an
-    absent field means a legacy rule-v2 entry of record.
+    absent field means a legacy rule-v2 entry of record. An
+    "owner-issued" entry takes its value from OWNER_ISSUED verbatim.
     """
     taken, expected = {}, {}
     for entry in sorted(entries, key=lambda e: e["platform_id"]):
-        if entry.get("moniker_rule") == "v3":
+        if entry.get("moniker_rule") == "owner-issued":
+            m = OWNER_ISSUED.get(entry["platform_id"])
+        elif entry.get("moniker_rule") == "v3":
             m = derive_moniker_v3(entry["platform_id"], taken)
         else:
             m = derive_moniker(entry["platform_id"], taken)
@@ -282,9 +300,13 @@ def check(registry, log_text, profiles_text):
         if e.get("role") not in ROLES:
             problems.append(f"hard: {pid}: role is {e.get('role')!r}, "
                             f"must be one of {sorted(ROLES)}")
-        if e.get("moniker_rule", "v2") not in ("v2", "v3"):
+        if e.get("moniker_rule", "v2") not in ("v2", "v3", "owner-issued"):
             problems.append(f"hard: {pid}: bad moniker_rule "
                             f"{e.get('moniker_rule')!r}")
+        if (e.get("moniker_rule") == "owner-issued"
+                and pid not in OWNER_ISSUED):
+            problems.append(f"hard: {pid}: moniker_rule owner-issued but "
+                            f"no OWNER_ISSUED value in registry.py")
         if (e.get("moniker_rule") == "v3"
                 and str(e.get("moniker", "")).lower().startswith(STEM)):
             problems.append(f"hard: {pid}: rule-v3 moniker carries the "

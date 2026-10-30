@@ -31,8 +31,10 @@ def test_schema_and_envelope(tmp_path):
         "apps/help-wanted-dashboard/data/quota.json",
         "apps/help-wanted-dashboard/data/quota-usage.json",
         "scripts/dashboards/workflow_observations.json",
+        "scripts/dashboards/actions_observations.json",
     }
-    assert set(feed["data"]) == {"golden", "executions", "outcomes", "quota"}
+    assert set(feed["data"]) == {"golden", "executions", "actions",
+                                 "outcomes", "quota"}
 
 
 def test_outcomes_equal_source(tmp_path):
@@ -70,7 +72,9 @@ def test_executions_proxy_is_labeled(tmp_path):
     assert ex["read_at"] == obs["read_at"]
     assert ex["total_runs_observed"] == sum(
         w["total_runs"] for w in obs["workflows"].values())
-    assert any("G1/G3" in g for g in feed["gaps"])
+    # Slice 2 split the combined G1/G3 gap: executions proxy is the G3 gap,
+    # Actions corpus is the separate "G1 partial" gap (pinned below).
+    assert any(g.startswith("G3:") for g in feed["gaps"])
 
 
 def test_committed_feed_matches_collector(tmp_path):
@@ -98,3 +102,20 @@ def test_committed_feed_matches_collector(tmp_path):
         (feed["data"]["executions"].get("lane_receipts") or {}).pop(
             "generated_at", None)
     assert committed == fresh
+
+
+def test_actions_block_matches_snapshot(tmp_path):
+    """Slice 2: the actions block is the committed Actions snapshot,
+    shaped — totals/workflows verbatim, join key named, G1 partial."""
+    feed = _collect(tmp_path)
+    snap = json.loads((ROOT / "scripts" / "dashboards"
+                       / "actions_observations.json").read_text())
+    a = feed["data"]["actions"]
+    assert a["kind"] == "api_observations_snapshot"
+    assert a["read_at"] == snap["read_at"]
+    assert a["totals"] == snap["totals"]
+    assert a["workflows"] == snap["workflows"]
+    assert a["join"]["key"] == "run_id"
+    assert "unexecuted" in a["join"]["status"]
+    assert feed["data"]["golden"]["actions_runs_sampled"] == snap["totals"]["runs"]
+    assert any(g.startswith("G1 partial") for g in feed["gaps"])

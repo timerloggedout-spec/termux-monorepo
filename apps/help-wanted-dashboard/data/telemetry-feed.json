@@ -1,11 +1,11 @@
 {
  "schema": "telemetry-viz-feed/v1",
  "surface": "telemetry",
- "generated_at": "2026-10-30T06:22:26Z",
+ "generated_at": "2026-10-30T07:47:32Z",
  "sources": [
   {
    "path": "apps/help-wanted-dashboard/data/status.json",
-   "stamped_at": "2026-10-30T01:17:30Z"
+   "stamped_at": "2026-10-30T06:24:46Z"
   },
   {
    "path": "apps/help-wanted-dashboard/data/quota.json",
@@ -18,6 +18,10 @@
   {
    "path": "scripts/dashboards/workflow_observations.json",
    "stamped_at": "2026-10-27T12:29:50Z"
+  },
+  {
+   "path": "scripts/dashboards/actions_observations.json",
+   "stamped_at": "2026-10-30T07:47:29Z"
   }
  ],
  "honesty_rules": [
@@ -36,7 +40,10 @@
    "quota_measured_count": 0,
    "quota_saturation": null,
    "workflows_observed": 5,
-   "workflow_runs_observed": 573
+   "workflow_runs_observed": 573,
+   "actions_runs_sampled": 300,
+   "actions_failure_rate": 0.00369,
+   "actions_workflows_sampled": 45
   },
   "executions": {
    "kind": "committed_projection_proxy",
@@ -144,13 +151,1618 @@
      "followup_lesson": 18,
      "followup_skip_system1": 30
     },
-    "generated_at": "2026-10-30T01:17:30Z"
+    "generated_at": "2026-10-30T06:24:46Z"
+   }
+  },
+  "actions": {
+   "kind": "api_observations_snapshot",
+   "source_snapshot": "scripts/dashboards/actions_observations.json",
+   "read_at": "2026-10-30T07:47:29Z",
+   "budget": {
+    "route": "pat_helper",
+    "calls_made": 3,
+    "per_page": 100,
+    "pages_sampled": [
+     1,
+     50,
+     100
+    ],
+    "sampling": "stride",
+    "runs_fetched": 300,
+    "api_total_count_display": 40000
+   },
+   "window": {
+    "earliest_created_at": "2026-10-30T06:09:07Z",
+    "latest_created_at": "2026-10-30T07:47:14Z",
+    "span_hours": 1.6353
+   },
+   "totals": {
+    "runs": 300,
+    "workflows": 45,
+    "concluded": 271,
+    "failures": 1,
+    "failure_rate": 0.00369
+   },
+   "workflows": {
+    ".github/workflows/action-effectiveness-ledger.yml": {
+     "name": "Action Effectiveness Ledger",
+     "runs": 12,
+     "conclusions": {
+      "skipped": 9,
+      "success": 3
+     },
+     "events": {
+      "issue_comment": 9,
+      "pull_request_target": 1,
+      "pull_request": 2
+     },
+     "concluded": 12,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 12,
+      "sample_rate_per_hour": 7.3381,
+      "duration_s": {
+       "n": 12,
+       "median": 1.0,
+       "p95": 201.0,
+       "mean": 30.92
+      }
+     },
+     "latest": {
+      "id": 41022221792,
+      "created_at": "2026-10-30T07:47:13Z",
+      "conclusion": "skipped",
+      "status": "completed",
+      "event": "issue_comment",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221792"
+     }
+    },
+    ".github/workflows/actionlint-advisory.yml": {
+     "name": "Advisory GitHub Actions lint",
+     "runs": 2,
+     "conclusions": {
+      "success": 2
+     },
+     "events": {
+      "pull_request": 2
+     },
+     "concluded": 2,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 2,
+      "sample_rate_per_hour": 1.223,
+      "duration_s": {
+       "n": 2,
+       "median": 66.0,
+       "p95": 66.0,
+       "mean": 55.0
+      }
+     },
+     "latest": {
+      "id": 41016770075,
+      "created_at": "2026-10-30T06:53:45Z",
+      "conclusion": "success",
+      "status": "completed",
+      "event": "pull_request",
+      "head_sha": "c90009f464f9a5be39685faa4a7af84d3b46e925",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41016770075"
+     }
+    },
+    ".github/workflows/agent-ecc-tools-ops.yml": {
+     "name": "ECC Tools comment-command ops",
+     "runs": 9,
+     "conclusions": {
+      "cancelled": 3,
+      "success": 3,
+      "skipped": 1
+     },
+     "events": {
+      "issue_comment": 9
+     },
+     "concluded": 7,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 9,
+      "sample_rate_per_hour": 5.5036,
+      "duration_s": {
+       "n": 7,
+       "median": 11.0,
+       "p95": 91.0,
+       "mean": 30.0
+      }
+     },
+     "latest": {
+      "id": 41022221867,
+      "created_at": "2026-10-30T07:47:13Z",
+      "conclusion": null,
+      "status": "pending",
+      "event": "issue_comment",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221867"
+     }
+    },
+    ".github/workflows/agent-jules-on-issues.yml": {
+     "name": "Jules on Issues (label / @jules)",
+     "runs": 8,
+     "conclusions": {
+      "skipped": 7
+     },
+     "events": {
+      "issue_comment": 8
+     },
+     "concluded": 7,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 8,
+      "sample_rate_per_hour": 4.8921,
+      "duration_s": {
+       "n": 7,
+       "median": 1.0,
+       "p95": 1.0,
+       "mean": 1.0
+      }
+     },
+     "latest": {
+      "id": 41022221718,
+      "created_at": "2026-10-30T07:47:13Z",
+      "conclusion": null,
+      "status": "in_progress",
+      "event": "issue_comment",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221718"
+     }
+    },
+    ".github/workflows/agent-pr-jules-handoff.yml": {
+     "name": "Agent PR Jules Handoff",
+     "runs": 10,
+     "conclusions": {
+      "skipped": 8,
+      "success": 1
+     },
+     "events": {
+      "issue_comment": 9,
+      "pull_request": 1
+     },
+     "concluded": 9,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 10,
+      "sample_rate_per_hour": 6.1151,
+      "duration_s": {
+       "n": 9,
+       "median": 2.0,
+       "p95": 8.0,
+       "mean": 3.44
+      }
+     },
+     "latest": {
+      "id": 41022221876,
+      "created_at": "2026-10-30T07:47:13Z",
+      "conclusion": null,
+      "status": "in_progress",
+      "event": "issue_comment",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221876"
+     }
+    },
+    ".github/workflows/agent-review-auto-jules.yml": {
+     "name": "Agent review \u2192 auto Jules",
+     "runs": 10,
+     "conclusions": {
+      "skipped": 8,
+      "success": 1
+     },
+     "events": {
+      "issue_comment": 10
+     },
+     "concluded": 9,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 10,
+      "sample_rate_per_hour": 6.1151,
+      "duration_s": {
+       "n": 9,
+       "median": 2.0,
+       "p95": 26.0,
+       "mean": 4.89
+      }
+     },
+     "latest": {
+      "id": 41022221796,
+      "created_at": "2026-10-30T07:47:13Z",
+      "conclusion": null,
+      "status": "in_progress",
+      "event": "issue_comment",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221796"
+     }
+    },
+    ".github/workflows/agent-throughput-evidence.yml": {
+     "name": "Agent Throughput Evidence",
+     "runs": 20,
+     "conclusions": {
+      "skipped": 19
+     },
+     "events": {
+      "workflow_run": 20
+     },
+     "concluded": 19,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 20,
+      "sample_rate_per_hour": 12.2302,
+      "duration_s": {
+       "n": 19,
+       "median": 1.0,
+       "p95": 11.0,
+       "mean": 3.21
+      }
+     },
+     "latest": {
+      "id": 41022205788,
+      "created_at": "2026-10-30T07:47:04Z",
+      "conclusion": null,
+      "status": "in_progress",
+      "event": "workflow_run",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022205788"
+     }
+    },
+    ".github/workflows/audit-cycle.yml": {
+     "name": "Audit Cycle \u2014 Single PR Feed-Forward",
+     "runs": 11,
+     "conclusions": {
+      "cancelled": 6,
+      "success": 3
+     },
+     "events": {
+      "issue_comment": 9,
+      "pull_request": 2
+     },
+     "concluded": 9,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 11,
+      "sample_rate_per_hour": 6.7266,
+      "duration_s": {
+       "n": 9,
+       "median": 4.0,
+       "p95": 71.0,
+       "mean": 19.44
+      }
+     },
+     "latest": {
+      "id": 41022221644,
+      "created_at": "2026-10-30T07:47:13Z",
+      "conclusion": null,
+      "status": "pending",
+      "event": "issue_comment",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221644"
+     }
+    },
+    ".github/workflows/automation-docs-continuous-refresh.yml": {
+     "name": "Automation Documentation Continuous Refresh",
+     "runs": 1,
+     "conclusions": {
+      "success": 1
+     },
+     "events": {
+      "pull_request": 1
+     },
+     "concluded": 1,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 1,
+      "sample_rate_per_hour": 0.6115,
+      "duration_s": {
+       "n": 1,
+       "median": 88.0,
+       "p95": 88.0,
+       "mean": 88.0
+      }
+     },
+     "latest": {
+      "id": 41012401333,
+      "created_at": "2026-10-30T06:09:07Z",
+      "conclusion": "success",
+      "status": "completed",
+      "event": "pull_request",
+      "head_sha": "880fa421536f36772e07a25079f599e0b9c63266",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41012401333"
+     }
+    },
+    ".github/workflows/cellcog-review.yml": {
+     "name": "CellCog review",
+     "runs": 11,
+     "conclusions": {
+      "skipped": 8,
+      "success": 1,
+      "cancelled": 1
+     },
+     "events": {
+      "issue_comment": 9,
+      "pull_request": 2
+     },
+     "concluded": 10,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 11,
+      "sample_rate_per_hour": 6.7266,
+      "duration_s": {
+       "n": 10,
+       "median": 2.0,
+       "p95": 43.0,
+       "mean": 5.9
+      }
+     },
+     "latest": {
+      "id": 41022221759,
+      "created_at": "2026-10-30T07:47:13Z",
+      "conclusion": null,
+      "status": "queued",
+      "event": "issue_comment",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221759"
+     }
+    },
+    ".github/workflows/context-relationship-audit.yml": {
+     "name": "Context Relationship + Lead/Lag Audit",
+     "runs": 14,
+     "conclusions": {
+      "cancelled": 8,
+      "success": 2
+     },
+     "events": {
+      "issue_comment": 10,
+      "workflow_run": 3,
+      "pull_request": 1
+     },
+     "concluded": 10,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 14,
+      "sample_rate_per_hour": 8.5611,
+      "duration_s": {
+       "n": 10,
+       "median": 4.0,
+       "p95": 172.0,
+       "mean": 23.8
+      }
+     },
+     "latest": {
+      "id": 41022221654,
+      "created_at": "2026-10-30T07:47:13Z",
+      "conclusion": null,
+      "status": "pending",
+      "event": "issue_comment",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221654"
+     }
+    },
+    ".github/workflows/deepseek-ci.yml": {
+     "name": "DeepSeek CI \u2013 Agentic Automation",
+     "runs": 10,
+     "conclusions": {
+      "skipped": 9,
+      "success": 1
+     },
+     "events": {
+      "issue_comment": 9,
+      "pull_request": 1
+     },
+     "concluded": 10,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 10,
+      "sample_rate_per_hour": 6.1151,
+      "duration_s": {
+       "n": 10,
+       "median": 1.0,
+       "p95": 43.0,
+       "mean": 7.8
+      }
+     },
+     "latest": {
+      "id": 41022221728,
+      "created_at": "2026-10-30T07:47:13Z",
+      "conclusion": "skipped",
+      "status": "completed",
+      "event": "issue_comment",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221728"
+     }
+    },
+    ".github/workflows/deepseek-termux-agent.yml": {
+     "name": "DeepSeek Termux Agent",
+     "runs": 10,
+     "conclusions": {
+      "skipped": 10
+     },
+     "events": {
+      "issue_comment": 10
+     },
+     "concluded": 10,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 10,
+      "sample_rate_per_hour": 6.1151,
+      "duration_s": {
+       "n": 10,
+       "median": 1.0,
+       "p95": 8.0,
+       "mean": 2.4
+      }
+     },
+     "latest": {
+      "id": 41022221686,
+      "created_at": "2026-10-30T07:47:13Z",
+      "conclusion": "skipped",
+      "status": "completed",
+      "event": "issue_comment",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221686"
+     }
+    },
+    ".github/workflows/delphi-gate.yml": {
+     "name": "delphi-gate",
+     "runs": 8,
+     "conclusions": {
+      "skipped": 7
+     },
+     "events": {
+      "issue_comment": 8
+     },
+     "concluded": 7,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 8,
+      "sample_rate_per_hour": 4.8921,
+      "duration_s": {
+       "n": 7,
+       "median": 1.0,
+       "p95": 10.0,
+       "mean": 2.43
+      }
+     },
+     "latest": {
+      "id": 41022221692,
+      "created_at": "2026-10-30T07:47:13Z",
+      "conclusion": null,
+      "status": "in_progress",
+      "event": "issue_comment",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221692"
+     }
+    },
+    ".github/workflows/delphi-intake.yml": {
+     "name": "Delphi conversational intake",
+     "runs": 8,
+     "conclusions": {
+      "skipped": 7
+     },
+     "events": {
+      "issue_comment": 8
+     },
+     "concluded": 7,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 8,
+      "sample_rate_per_hour": 4.8921,
+      "duration_s": {
+       "n": 7,
+       "median": 1.0,
+       "p95": 2.0,
+       "mean": 1.29
+      }
+     },
+     "latest": {
+      "id": 41022221793,
+      "created_at": "2026-10-30T07:47:13Z",
+      "conclusion": null,
+      "status": "in_progress",
+      "event": "issue_comment",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221793"
+     }
+    },
+    ".github/workflows/delphi-ledger-feed-collect.yml": {
+     "name": "delphi-ledger-feed-collect",
+     "runs": 3,
+     "conclusions": {
+      "cancelled": 1,
+      "success": 1
+     },
+     "events": {
+      "workflow_run": 3
+     },
+     "concluded": 2,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 3,
+      "sample_rate_per_hour": 1.8345,
+      "duration_s": {
+       "n": 2,
+       "median": 32.0,
+       "p95": 32.0,
+       "mean": 23.0
+      }
+     },
+     "latest": {
+      "id": 41022184776,
+      "created_at": "2026-10-30T07:46:52Z",
+      "conclusion": null,
+      "status": "in_progress",
+      "event": "workflow_run",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022184776"
+     }
+    },
+    ".github/workflows/delphi-rfp-feed-collect.yml": {
+     "name": "delphi-rfp-feed-collect",
+     "runs": 3,
+     "conclusions": {
+      "success": 3
+     },
+     "events": {
+      "workflow_run": 3
+     },
+     "concluded": 3,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 3,
+      "sample_rate_per_hour": 1.8345,
+      "duration_s": {
+       "n": 3,
+       "median": 20.0,
+       "p95": 28.0,
+       "mean": 22.67
+      }
+     },
+     "latest": {
+      "id": 41022184778,
+      "created_at": "2026-10-30T07:46:52Z",
+      "conclusion": "success",
+      "status": "completed",
+      "event": "workflow_run",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022184778"
+     }
+    },
+    ".github/workflows/delphi-signal-bridge.yml": {
+     "name": "delphi-signal-bridge",
+     "runs": 3,
+     "conclusions": {
+      "skipped": 3
+     },
+     "events": {
+      "workflow_run": 3
+     },
+     "concluded": 3,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 3,
+      "sample_rate_per_hour": 1.8345,
+      "duration_s": {
+       "n": 3,
+       "median": 1.0,
+       "p95": 1.0,
+       "mean": 1.0
+      }
+     },
+     "latest": {
+      "id": 41022184940,
+      "created_at": "2026-10-30T07:46:52Z",
+      "conclusion": "skipped",
+      "status": "completed",
+      "event": "workflow_run",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022184940"
+     }
+    },
+    ".github/workflows/fix-on-failure.yml": {
+     "name": "Fix-on-Failure Agent",
+     "runs": 4,
+     "conclusions": {
+      "skipped": 4
+     },
+     "events": {
+      "workflow_run": 4
+     },
+     "concluded": 4,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 4,
+      "sample_rate_per_hour": 2.446,
+      "duration_s": {
+       "n": 4,
+       "median": 2.0,
+       "p95": 11.0,
+       "mean": 3.75
+      }
+     },
+     "latest": {
+      "id": 41022200249,
+      "created_at": "2026-10-30T07:47:01Z",
+      "conclusion": "skipped",
+      "status": "completed",
+      "event": "workflow_run",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022200249"
+     }
+    },
+    ".github/workflows/gemini-after-peers.yml": {
+     "name": "Gemini review after peers",
+     "runs": 1,
+     "conclusions": {},
+     "events": {
+      "workflow_dispatch": 1
+     },
+     "concluded": 0,
+     "failures": 0,
+     "failure_rate": null,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 1,
+      "sample_rate_per_hour": 0.6115,
+      "duration_s": {
+       "n": 0,
+       "median": null,
+       "p95": null,
+       "mean": null
+      }
+     },
+     "latest": {
+      "id": 41022189164,
+      "created_at": "2026-10-30T07:46:54Z",
+      "conclusion": null,
+      "status": "in_progress",
+      "event": "workflow_dispatch",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022189164"
+     }
+    },
+    ".github/workflows/gemini-dispatch.yml": {
+     "name": "\ud83d\udd00 Gemini Dispatch (free-tier agentic)",
+     "runs": 8,
+     "conclusions": {
+      "skipped": 8
+     },
+     "events": {
+      "issue_comment": 8
+     },
+     "concluded": 8,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 8,
+      "sample_rate_per_hour": 4.8921,
+      "duration_s": {
+       "n": 8,
+       "median": 2.0,
+       "p95": 8.0,
+       "mean": 3.0
+      }
+     },
+     "latest": {
+      "id": 41022221761,
+      "created_at": "2026-10-30T07:47:13Z",
+      "conclusion": "skipped",
+      "status": "completed",
+      "event": "issue_comment",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221761"
+     }
+    },
+    ".github/workflows/github-app-telemetry.yml": {
+     "name": "GitHub App fleet telemetry",
+     "runs": 1,
+     "conclusions": {
+      "failure": 1
+     },
+     "events": {
+      "pull_request": 1
+     },
+     "concluded": 1,
+     "failures": 1,
+     "failure_rate": 1.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 1,
+      "sample_rate_per_hour": 0.6115,
+      "duration_s": {
+       "n": 1,
+       "median": 32.0,
+       "p95": 32.0,
+       "mean": 32.0
+      }
+     },
+     "latest": {
+      "id": 41012401365,
+      "created_at": "2026-10-30T06:09:07Z",
+      "conclusion": "failure",
+      "status": "completed",
+      "event": "pull_request",
+      "head_sha": "880fa421536f36772e07a25079f599e0b9c63266",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41012401365"
+     }
+    },
+    ".github/workflows/hark-enqueue-on-failure.yml": {
+     "name": "hark enqueue on failure",
+     "runs": 4,
+     "conclusions": {
+      "skipped": 3
+     },
+     "events": {
+      "workflow_run": 4
+     },
+     "concluded": 3,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 4,
+      "sample_rate_per_hour": 2.446,
+      "duration_s": {
+       "n": 3,
+       "median": 1.0,
+       "p95": 9.0,
+       "mean": 3.67
+      }
+     },
+     "latest": {
+      "id": 41022216434,
+      "created_at": "2026-10-30T07:47:10Z",
+      "conclusion": null,
+      "status": "in_progress",
+      "event": "workflow_run",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022216434"
+     }
+    },
+    ".github/workflows/issue-comment-router.yml": {
+     "name": "Issue Comment Router \u2014 modular fan-out reduction",
+     "runs": 8,
+     "conclusions": {
+      "success": 2,
+      "cancelled": 5
+     },
+     "events": {
+      "issue_comment": 8
+     },
+     "concluded": 7,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 8,
+      "sample_rate_per_hour": 4.8921,
+      "duration_s": {
+       "n": 7,
+       "median": 11.0,
+       "p95": 69.0,
+       "mean": 17.29
+      }
+     },
+     "latest": {
+      "id": 41022221656,
+      "created_at": "2026-10-30T07:47:13Z",
+      "conclusion": null,
+      "status": "queued",
+      "event": "issue_comment",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221656"
+     }
+    },
+    ".github/workflows/lane-events-recorder.yml": {
+     "name": "lane events recorder",
+     "runs": 7,
+     "conclusions": {
+      "skipped": 5,
+      "success": 1
+     },
+     "events": {
+      "workflow_run": 7
+     },
+     "concluded": 6,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 7,
+      "sample_rate_per_hour": 4.2806,
+      "duration_s": {
+       "n": 6,
+       "median": 1.0,
+       "p95": 89.0,
+       "mean": 15.83
+      }
+     },
+     "latest": {
+      "id": 41022222879,
+      "created_at": "2026-10-30T07:47:14Z",
+      "conclusion": null,
+      "status": "queued",
+      "event": "workflow_run",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022222879"
+     }
+    },
+    ".github/workflows/merge-promotion-queue-v3.yml": {
+     "name": "Merge Promotion Queue v3",
+     "runs": 3,
+     "conclusions": {
+      "skipped": 3
+     },
+     "events": {
+      "workflow_run": 3
+     },
+     "concluded": 3,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 3,
+      "sample_rate_per_hour": 1.8345,
+      "duration_s": {
+       "n": 3,
+       "median": 1.0,
+       "p95": 1.0,
+       "mean": 1.0
+      }
+     },
+     "latest": {
+      "id": 41016772426,
+      "created_at": "2026-10-30T06:53:46Z",
+      "conclusion": "skipped",
+      "status": "completed",
+      "event": "workflow_run",
+      "head_sha": "5ea244659ddfe2d01faa55ddd1163035a404ad5b",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41016772426"
+     }
+    },
+    ".github/workflows/n8n-she-bridge.yml": {
+     "name": "n8n SHE bridge",
+     "runs": 4,
+     "conclusions": {
+      "cancelled": 1,
+      "success": 1,
+      "skipped": 1
+     },
+     "events": {
+      "workflow_run": 4
+     },
+     "concluded": 3,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 4,
+      "sample_rate_per_hour": 2.446,
+      "duration_s": {
+       "n": 3,
+       "median": 10.0,
+       "p95": 89.0,
+       "mean": 33.33
+      }
+     },
+     "latest": {
+      "id": 41022216324,
+      "created_at": "2026-10-30T07:47:10Z",
+      "conclusion": null,
+      "status": "pending",
+      "event": "workflow_run",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022216324"
+     }
+    },
+    ".github/workflows/nomenclature-matrix.yml": {
+     "name": "Nomenclature Equivalency Matrix",
+     "runs": 2,
+     "conclusions": {
+      "success": 2
+     },
+     "events": {
+      "push": 2
+     },
+     "concluded": 2,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 2,
+      "sample_rate_per_hour": 1.223,
+      "duration_s": {
+       "n": 2,
+       "median": 38.0,
+       "p95": 38.0,
+       "mean": 36.0
+      }
+     },
+     "latest": {
+      "id": 41016802044,
+      "created_at": "2026-10-30T06:54:04Z",
+      "conclusion": "success",
+      "status": "completed",
+      "event": "push",
+      "head_sha": "aa3e470cd7ab94b8de5257be837471f46d97555c",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41016802044"
+     }
+    },
+    ".github/workflows/operator-variable-provision.yml": {
+     "name": "Operator Variable Provision",
+     "runs": 9,
+     "conclusions": {
+      "skipped": 9
+     },
+     "events": {
+      "issue_comment": 9
+     },
+     "concluded": 9,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 9,
+      "sample_rate_per_hour": 5.5036,
+      "duration_s": {
+       "n": 9,
+       "median": 1.0,
+       "p95": 11.0,
+       "mean": 2.33
+      }
+     },
+     "latest": {
+      "id": 41022221658,
+      "created_at": "2026-10-30T07:47:13Z",
+      "conclusion": "skipped",
+      "status": "completed",
+      "event": "issue_comment",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221658"
+     }
+    },
+    ".github/workflows/operator-wake.yml": {
+     "name": "Operator wake",
+     "runs": 9,
+     "conclusions": {
+      "skipped": 8
+     },
+     "events": {
+      "issue_comment": 9
+     },
+     "concluded": 8,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 9,
+      "sample_rate_per_hour": 5.5036,
+      "duration_s": {
+       "n": 8,
+       "median": 1.0,
+       "p95": 11.0,
+       "mean": 2.38
+      }
+     },
+     "latest": {
+      "id": 41022221927,
+      "created_at": "2026-10-30T07:47:13Z",
+      "conclusion": null,
+      "status": "queued",
+      "event": "issue_comment",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221927"
+     }
+    },
+    ".github/workflows/ox-alpha-smoke.yml": {
+     "name": "Model live canary",
+     "runs": 9,
+     "conclusions": {
+      "skipped": 9
+     },
+     "events": {
+      "issue_comment": 9
+     },
+     "concluded": 9,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 9,
+      "sample_rate_per_hour": 5.5036,
+      "duration_s": {
+       "n": 9,
+       "median": 1.0,
+       "p95": 11.0,
+       "mean": 3.22
+      }
+     },
+     "latest": {
+      "id": 41022221531,
+      "created_at": "2026-10-30T07:47:13Z",
+      "conclusion": "skipped",
+      "status": "completed",
+      "event": "issue_comment",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221531"
+     }
+    },
+    ".github/workflows/peer-review-orchestrator.yml": {
+     "name": "Peer review orchestrator",
+     "runs": 12,
+     "conclusions": {
+      "skipped": 7,
+      "success": 3,
+      "cancelled": 1
+     },
+     "events": {
+      "issue_comment": 9,
+      "pull_request_target": 1,
+      "pull_request": 2
+     },
+     "concluded": 11,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 12,
+      "sample_rate_per_hour": 7.3381,
+      "duration_s": {
+       "n": 11,
+       "median": 1.0,
+       "p95": 118.0,
+       "mean": 30.45
+      }
+     },
+     "latest": {
+      "id": 41022221570,
+      "created_at": "2026-10-30T07:47:13Z",
+      "conclusion": null,
+      "status": "in_progress",
+      "event": "issue_comment",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221570"
+     }
+    },
+    ".github/workflows/phantom-secrets-audit.yml": {
+     "name": "Phantom secrets audit",
+     "runs": 9,
+     "conclusions": {
+      "skipped": 8
+     },
+     "events": {
+      "issue_comment": 9
+     },
+     "concluded": 8,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 9,
+      "sample_rate_per_hour": 5.5036,
+      "duration_s": {
+       "n": 8,
+       "median": 1.0,
+       "p95": 11.0,
+       "mean": 2.38
+      }
+     },
+     "latest": {
+      "id": 41022221572,
+      "created_at": "2026-10-30T07:47:13Z",
+      "conclusion": null,
+      "status": "in_progress",
+      "event": "issue_comment",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221572"
+     }
+    },
+    ".github/workflows/pr-change-effectiveness-ledger.yml": {
+     "name": "PR Change Effectiveness Ledger",
+     "runs": 2,
+     "conclusions": {
+      "cancelled": 1,
+      "success": 1
+     },
+     "events": {
+      "pull_request_target": 1,
+      "pull_request": 1
+     },
+     "concluded": 2,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 2,
+      "sample_rate_per_hour": 1.223,
+      "duration_s": {
+       "n": 2,
+       "median": 29.0,
+       "p95": 29.0,
+       "mean": 18.0
+      }
+     },
+     "latest": {
+      "id": 41016798915,
+      "created_at": "2026-10-30T06:54:02Z",
+      "conclusion": "cancelled",
+      "status": "completed",
+      "event": "pull_request_target",
+      "head_sha": "bf8941e3f38c415f024a0f9941de1254fb920724",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41016798915"
+     }
+    },
+    ".github/workflows/pr-evidence-evaluation.yml": {
+     "name": "PR evidence evaluation",
+     "runs": 11,
+     "conclusions": {
+      "skipped": 4,
+      "cancelled": 5,
+      "success": 1
+     },
+     "events": {
+      "issue_comment": 9,
+      "pull_request_target": 1,
+      "pull_request": 1
+     },
+     "concluded": 10,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 11,
+      "sample_rate_per_hour": 6.7266,
+      "duration_s": {
+       "n": 10,
+       "median": 2.0,
+       "p95": 28.0,
+       "mean": 5.2
+      }
+     },
+     "latest": {
+      "id": 41022221636,
+      "created_at": "2026-10-30T07:47:13Z",
+      "conclusion": null,
+      "status": "in_progress",
+      "event": "issue_comment",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221636"
+     }
+    },
+    ".github/workflows/pr-production-ledger.yml": {
+     "name": "PR production ledger",
+     "runs": 10,
+     "conclusions": {
+      "skipped": 7,
+      "success": 2
+     },
+     "events": {
+      "issue_comment": 9,
+      "pull_request_target": 1
+     },
+     "concluded": 9,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 10,
+      "sample_rate_per_hour": 6.1151,
+      "duration_s": {
+       "n": 9,
+       "median": 9.0,
+       "p95": 60.0,
+       "mean": 22.22
+      }
+     },
+     "latest": {
+      "id": 41022221789,
+      "created_at": "2026-10-30T07:47:13Z",
+      "conclusion": null,
+      "status": "queued",
+      "event": "issue_comment",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221789"
+     }
+    },
+    ".github/workflows/pr-scope-guard.yml": {
+     "name": "PR scope guard",
+     "runs": 2,
+     "conclusions": {
+      "success": 2
+     },
+     "events": {
+      "pull_request_target": 1,
+      "pull_request": 1
+     },
+     "concluded": 2,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 2,
+      "sample_rate_per_hour": 1.223,
+      "duration_s": {
+       "n": 2,
+       "median": 109.0,
+       "p95": 109.0,
+       "mean": 101.5
+      }
+     },
+     "latest": {
+      "id": 41016798873,
+      "created_at": "2026-10-30T06:54:02Z",
+      "conclusion": "success",
+      "status": "completed",
+      "event": "pull_request_target",
+      "head_sha": "bf8941e3f38c415f024a0f9941de1254fb920724",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41016798873"
+     }
+    },
+    ".github/workflows/recon-intel-discovery.yml": {
+     "name": "RECON INTEL discovery",
+     "runs": 1,
+     "conclusions": {
+      "cancelled": 1
+     },
+     "events": {
+      "pull_request_target": 1
+     },
+     "concluded": 1,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 1,
+      "sample_rate_per_hour": 0.6115,
+      "duration_s": {
+       "n": 1,
+       "median": 7.0,
+       "p95": 7.0,
+       "mean": 7.0
+      }
+     },
+     "latest": {
+      "id": 41016798910,
+      "created_at": "2026-10-30T06:54:02Z",
+      "conclusion": "cancelled",
+      "status": "completed",
+      "event": "pull_request_target",
+      "head_sha": "bf8941e3f38c415f024a0f9941de1254fb920724",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41016798910"
+     }
+    },
+    ".github/workflows/repo-gate.yml": {
+     "name": "repo gate",
+     "runs": 2,
+     "conclusions": {
+      "success": 2
+     },
+     "events": {
+      "pull_request": 2
+     },
+     "concluded": 2,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 2,
+      "sample_rate_per_hour": 1.223,
+      "duration_s": {
+       "n": 2,
+       "median": 171.0,
+       "p95": 171.0,
+       "mean": 101.0
+      }
+     },
+     "latest": {
+      "id": 41016770078,
+      "created_at": "2026-10-30T06:53:45Z",
+      "conclusion": "success",
+      "status": "completed",
+      "event": "pull_request",
+      "head_sha": "c90009f464f9a5be39685faa4a7af84d3b46e925",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41016770078"
+     }
+    },
+    ".github/workflows/repository-development-evaluation.yml": {
+     "name": "Repository development evaluation",
+     "runs": 1,
+     "conclusions": {
+      "success": 1
+     },
+     "events": {
+      "pull_request": 1
+     },
+     "concluded": 1,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 1,
+      "sample_rate_per_hour": 0.6115,
+      "duration_s": {
+       "n": 1,
+       "median": 55.0,
+       "p95": 55.0,
+       "mean": 55.0
+      }
+     },
+     "latest": {
+      "id": 41016770076,
+      "created_at": "2026-10-30T06:53:45Z",
+      "conclusion": "success",
+      "status": "completed",
+      "event": "pull_request",
+      "head_sha": "c90009f464f9a5be39685faa4a7af84d3b46e925",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41016770076"
+     }
+    },
+    ".github/workflows/research-intake.yml": {
+     "name": "research intake",
+     "runs": 9,
+     "conclusions": {
+      "skipped": 9
+     },
+     "events": {
+      "issue_comment": 9
+     },
+     "concluded": 9,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 9,
+      "sample_rate_per_hour": 5.5036,
+      "duration_s": {
+       "n": 9,
+       "median": 1.0,
+       "p95": 2.0,
+       "mean": 1.11
+      }
+     },
+     "latest": {
+      "id": 41022221679,
+      "created_at": "2026-10-30T07:47:13Z",
+      "conclusion": "skipped",
+      "status": "completed",
+      "event": "issue_comment",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221679"
+     }
+    },
+    ".github/workflows/reviewer-metrics-collect.yml": {
+     "name": "Reviewer metrics collect",
+     "runs": 4,
+     "conclusions": {
+      "cancelled": 2
+     },
+     "events": {
+      "workflow_run": 4
+     },
+     "concluded": 2,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 4,
+      "sample_rate_per_hour": 2.446,
+      "duration_s": {
+       "n": 2,
+       "median": 26.0,
+       "p95": 26.0,
+       "mean": 17.5
+      }
+     },
+     "latest": {
+      "id": 41022205841,
+      "created_at": "2026-10-30T07:47:04Z",
+      "conclusion": null,
+      "status": "pending",
+      "event": "workflow_run",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022205841"
+     }
+    },
+    ".github/workflows/sweep-accountability.yml": {
+     "name": "Sweep Accountability",
+     "runs": 13,
+     "conclusions": {
+      "skipped": 8,
+      "cancelled": 2,
+      "success": 2
+     },
+     "events": {
+      "issue_comment": 9,
+      "push": 3,
+      "pull_request": 1
+     },
+     "concluded": 12,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 13,
+      "sample_rate_per_hour": 7.9496,
+      "duration_s": {
+       "n": 12,
+       "median": 1.0,
+       "p95": 36.0,
+       "mean": 6.75
+      }
+     },
+     "latest": {
+      "id": 41022221588,
+      "created_at": "2026-10-30T07:47:13Z",
+      "conclusion": null,
+      "status": "in_progress",
+      "event": "issue_comment",
+      "head_sha": "14c67f0c860ff1b2fdb3c4f525a389ce6c0e7f66",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41022221588"
+     }
+    },
+    ".github/workflows/termux-smoke.yml": {
+     "name": "termux smoke",
+     "runs": 1,
+     "conclusions": {
+      "success": 1
+     },
+     "events": {
+      "pull_request": 1
+     },
+     "concluded": 1,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 1,
+      "sample_rate_per_hour": 0.6115,
+      "duration_s": {
+       "n": 1,
+       "median": 17.0,
+       "p95": 17.0,
+       "mean": 17.0
+      }
+     },
+     "latest": {
+      "id": 41012401206,
+      "created_at": "2026-10-30T06:09:07Z",
+      "conclusion": "success",
+      "status": "completed",
+      "event": "pull_request",
+      "head_sha": "880fa421536f36772e07a25079f599e0b9c63266",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41012401206"
+     }
+    },
+    ".github/workflows/workflow-surface-policy.yml": {
+     "name": "Workflow Surface Policy",
+     "runs": 1,
+     "conclusions": {
+      "success": 1
+     },
+     "events": {
+      "pull_request": 1
+     },
+     "concluded": 1,
+     "failures": 0,
+     "failure_rate": 0.0,
+     "duration_excluded": 0,
+     "red": {
+      "rate_runs_sampled": 1,
+      "sample_rate_per_hour": 0.6115,
+      "duration_s": {
+       "n": 1,
+       "median": 44.0,
+       "p95": 44.0,
+       "mean": 44.0
+      }
+     },
+     "latest": {
+      "id": 41012401353,
+      "created_at": "2026-10-30T06:09:07Z",
+      "conclusion": "success",
+      "status": "completed",
+      "event": "pull_request",
+      "head_sha": "880fa421536f36772e07a25079f599e0b9c63266",
+      "run_attempt": 1,
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41012401353"
+     }
+    }
+   },
+   "join": {
+    "key": "run_id",
+    "s1_source": "Neon lane_events (append-only; run_id + run_attempt + subject)",
+    "status": "join key defined and carried per workflow as latest.id; the join itself is unexecuted \u2014 lane_events is not page-readable and no committed lane-events projection exists (G3)."
    }
   },
   "outcomes": {
    "lane": "help-wanted",
    "project": "help-wanted-with-tribute",
-   "generated_at": "2026-10-30T01:17:30Z",
+   "generated_at": "2026-10-30T06:24:46Z",
    "receipts": 3962,
    "kinds": {
     "upstream_pr": 12,
@@ -494,7 +2106,8 @@
   }
  },
  "gaps": [
-  "G1/G3: executions are proxied from the checked-in observations snapshot (read_at 2026-10-27T12:29:50Z, 5 workflows) plus status.json lane receipts; there is no consolidated Actions run-corpus feed and the Neon lane_events table is not page-readable.",
+  "G3: executions are proxied from the checked-in observations snapshot (read_at 2026-10-27T12:29:50Z, 5 workflows) plus status.json lane receipts; the Neon lane_events table is not page-readable. The consolidated Actions corpus lives in the actions block (Slice 2, G1 partial).",
+  "G1 partial: the Actions corpus is a budgeted stride-sample snapshot (read_at 2026-10-30T07:47:29Z, 300 runs sampled, pages [1, 50, 100]); it is not the full run history \u2014 that remains the locally reconstructed daily corpus (quota usage_pack.actions_corpus).",
   "quota saturation NOT OBSERVED: 0 of 156 readings carry both used and limit; saturation renders as absent, never 0."
  ]
 }

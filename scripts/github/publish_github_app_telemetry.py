@@ -5,15 +5,20 @@ import base64
 import datetime as dt
 import json
 import os
+import re
 import urllib.error
 import urllib.request
 
 
 def publish(document, token, repository, run_id, attempt):
+    if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repository):
+        raise ValueError("repository must be owner/name")
     receipt = document.get("g4_runtime_receipt", {})
     observed = dt.datetime.fromisoformat(receipt["observed_at"].replace("Z", "+00:00"))
     if observed.tzinfo is None:
         raise ValueError("observation timestamp must include timezone")
+    if receipt.get("mint_outcome") != "success":
+        raise ValueError("only successful G4 receipts may be published")
     identity = receipt.get("workflow", {})
     if identity.get("run_id") != run_id or identity.get("attempt") != attempt:
         raise ValueError("receipt workflow identity does not match publishing run")

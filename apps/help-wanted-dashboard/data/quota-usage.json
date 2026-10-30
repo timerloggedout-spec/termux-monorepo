@@ -1,6 +1,6 @@
 {
   "schema": "quota-usage/v1",
-  "generated_at": "2026-10-30T01:41:53Z",
+  "generated_at": "2026-10-30T01:45:11Z",
   "ordered_by": "owner order 2026-10-29 via quota-specialist lane (b18fae96)",
   "built_by": "viz lane (4ed48ba4) \u2014 visualizations for everything Web",
   "registry_context": {
@@ -67,7 +67,8 @@
         "provenance": "viz rate-limit read (used 5000, reset 2026-10-30T01:42:09Z)"
       }
     ],
-    "note": "Observed points only \u2014 the bucket is read at check time, not sampled continuously. Dashed connectors span unobserved gaps; they are not measurements. Buckets stay separate (see buckets) \u2014 this line is the PAT user bucket only, never merged with installation or GraphQL spend."
+    "note": "Observed points only \u2014 the bucket is read at check time, not sampled continuously. Dashed connectors span unobserved gaps; they are not measurements. Buckets stay separate (see buckets) \u2014 this line is the PAT user bucket only, never merged with installation or GraphQL spend.",
+    "bucket": "github.api.user_token"
   },
   "series2_snapshots": {
     "title": "Quota readings snapshots \u2014 per-service state (status-only; used/reset null across rows)",
@@ -109,7 +110,7 @@
         "at": "2026-10-28T23:36:07Z",
         "rows": 155,
         "landed": false,
-        "provenance": "quota-specialist pack 2026-10-29 \u2014 convergence-composed; landing confirmation pending (convergence lane d92e1e1d)",
+        "provenance": "quota-specialist pack 2026-10-29 \u2014 composed 2026-10-28T23:36:07Z, landing pending (convergence lane d92e1e1d fires on first headroom window, ~8 calls)",
         "states": {
           "github.api.github_token": "watch",
           "github.actions.cache": "ok",
@@ -119,7 +120,8 @@
         },
         "note": "github.api.github_token recovered exhausted \u2192 watch in this snapshot"
       }
-    ]
+    ],
+    "stamp_source": "registry reset fields \u2014 snapshot rows carry reset=null by design; stamps never join from the snapshot"
   },
   "series3_actions": {
     "title": "Actions run volume \u2014 reconstructed corpus (daily increments)",
@@ -347,7 +349,7 @@
     {
       "pool": "github.api (PAT core)",
       "cadence": "rolling hourly",
-      "detail": "5000/hr shared bucket; next reset observed 2026-10-30T01:42:09Z",
+      "detail": "5000/hr; rolling 1h anchored by x-ratelimit-reset header (not clock-hour); next reset observed 2026-10-30T01:42:09Z",
       "established": true
     },
     {
@@ -365,31 +367,31 @@
     {
       "pool": "openrouter.free_models",
       "cadence": "daily",
-      "detail": "resets UTC midnight",
+      "detail": "resets UTC midnight \u2014 per-record registry reset field (the only daily record confirmed to pin UTC midnight)",
       "established": true
     },
     {
       "pool": "daily free tiers (groq, cerebras, airforce, g4f.established)",
       "cadence": "daily",
-      "detail": "daily (UTC)",
+      "detail": "daily window; UTC-midnight reset NOT pinned per record (~29 daily-family records, most do not pin UTC \u2014 no family-wide UTC stamp)",
       "established": true
     },
     {
-      "pool": "render pipeline minutes",
-      "cadence": "monthly",
-      "detail": "billing month",
+      "pool": "render.pipeline_minutes",
+      "cadence": "monthly \u2014 calendar",
+      "detail": "calendar month, resets the 1st",
       "established": true
     },
     {
-      "pool": "neon CU-hours",
-      "cadence": "monthly",
-      "detail": "billing month",
+      "pool": "neon.compute (CU-hours)",
+      "cadence": "monthly \u2014 billing",
+      "detail": "billing month (NOT a 1st-of-month reset)",
       "established": true
     },
     {
-      "pool": "elevenlabs credits",
+      "pool": "g4f.elevenlabs (10,000 credits)",
       "cadence": "monthly",
-      "detail": "billing month",
+      "detail": "the only elevenlabs record (landed PR #2032); no standalone elevenlabs.* record exists",
       "established": true
     },
     {
@@ -409,25 +411,31 @@
       "cadence": null,
       "detail": "NOT ESTABLISHED \u2014 no stamp exists; unmetered/unknown. Do not invent one.",
       "established": false
+    },
+    {
+      "pool": "48 of 155 registry records",
+      "cadence": null,
+      "detail": "window 'unknown' in the registry \u2014 no stamp, by design",
+      "established": false
     }
   ],
-  "stamps_provenance": "quota-specialist pack 2026-10-29 (registry reset fields); stamp-accuracy confirmation pending (convergence lane d92e1e1d)",
+  "stamps_provenance": "registry reset fields \u2014 quota-specialist pack 2026-10-29 as corrected by the convergence lane (verified vs current-master registry, 2026-10-29); stamp-accuracy confirmation otherwise pending (convergence lane d92e1e1d)",
   "pending_inputs": [
     "convergence lane (d92e1e1d) snapshot-landing + stamp-accuracy confirmation \u2014 pending"
   ],
   "buckets": [
     {
-      "name": "github.api PAT core (user token)",
+      "name": "github.api.user_token (PAT user bucket)",
       "limit": 5000,
       "unit": "req/hr",
-      "note": "the bucket graphed above",
+      "note": "the bucket graphed above; rolling 1h anchored by the x-ratelimit-reset header, not the clock hour",
       "provenance": "cadence lane graph note 2026-10-29"
     },
     {
-      "name": "GitHub App installation token",
+      "name": "github.api.github_token (installation, per-repo)",
       "limit": 1000,
       "unit": "req/hr",
-      "note": "delphi-rfp-feed-collect runs spend here, ~30\u201380 calls each",
+      "note": "delphi-rfp-feed-collect runs spend here, ~30\u201380 calls each; 1000/hr per repo",
       "provenance": "cadence lane timeline 2026-10-29"
     },
     {

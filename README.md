@@ -66,6 +66,8 @@ The optional ARCHWIZ_THEME=tron mode supplies the Tron-inspired cyan/green termi
 
 See [docs/ops/TERMUX-ARCHWIZ-HYPERFORGE.md](docs/ops/TERMUX-ARCHWIZ-HYPERFORGE.md).
 
+[Interaction Graph](https://muse.ai/s/admin-interaction-graph-xvxc6hxt9xwxpkn5/em9KdWGI6W6-1ScZIouU8eG3tZZAYQYNneE1kYnDkoc)
+
 > **Evidence rule:** header images and cinematic panels are visual seeds, not live telemetry. Never present generated art as current branch/PR/CI state unless it was generated from a verified repository snapshot.
 
 

@@ -103,20 +103,27 @@ is its at-a-glance view and is refreshed from here.
   user ID (or AWS account ID) per the official overview.
 - Used by packet D4 (Kiroween).
 
-#### lablab.ai — account CREATED 2026-10-29 (D2) — handle HELD
+#### lablab.ai — account CREATED 2026-10-29 (D2) — handle `Rap1dZ3nith` (issued 2026-10-30)
 
 - Account created 2026-10-29 by the challenge lane via the owner-selected
   AMD route: AMD AI Developer Program account (timerloggedout@gmail.com;
   LoggedOut / Timer / None / United States; owner-activated) ⇒ AMD SSO
   sign-in to lablab (vault password + email verification). Profile SAVED:
   name "LoggedOut Timer", country United States.
-- Handle (platform-assigned at sign-up, provisioning fact):
-  `timerloggedout63215` — **CHANGE HELD**: the registry lane's n0nLablab
-  direction was superseded by the owner 2026-10-29 (the `n0n` stem was
-  retired by v3; the change is a fresh assignment). Candidate queue
-  (owner-queued): s1gnaldr1ft · qu13tcompile · latentf0rge · dr1ftc0de
-  + v3 derive RapidZenith18. The once-per-30-days change is UNSPENT;
-  final pick = owner's; the issued handle gets recorded here on landing.
+- Handle history: platform-assigned at sign-up `timerloggedout63215`.
+  The registry lane's n0nLablab direction was superseded by the owner
+  2026-10-29 (the `n0n` stem was retired by v3; the change is a fresh
+  assignment). Candidate queue (owner-queued + lane-dug, all
+  protocol-checked): RapidZenith18 (v3 derive) · latentf0rge ·
+  s1gnaldr1ft · qu13tcompile · dr1ftc0de. Selection 2026-10-30: owner
+  queue + `rnd` draw ∧ owner tap converged on latentf0rge; the owner
+  then overrode mid-execution, pre-submit, with a leet respell of the
+  v3 derive. **ISSUED HANDLE: `Rap1dZ3nith`** — changed on-platform
+  2026-10-30 (confirmation dialog + "Profile settings updated";
+  public profile https://lablab.ai/u/@Rap1dZ3nith verified
+  firsthand by the executing lane). The once-per-30-days change is
+  now SPENT (next change available ~2026-11-29). Moniker of record:
+  `entrant{Rap1dZ3nith}[platform:lablab-ai]`.
 - Age bracket (persona value, registry-lane assignment 2026-10-29):
   **25-34** — recorded with this profile; kept across forms.
 - Vultr Agent Rush: ENROLLED 2026-10-29 (screening form submitted;

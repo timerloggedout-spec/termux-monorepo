@@ -2,7 +2,7 @@ name: GitHub App Collector Mint Probe
 
 # Manual proof that Actions-side minting for Termux Fleet Collector works:
 # mints a short-lived installation token from the provisioned repo secret
-# (TERMUX_FLEET_COLLECTOR_PRIVATE_KEY) + client-id variable, then records
+# (TERMUX_FLEET_COLLECTOR_PRIVATE_KEY) + app-id variable TERMUX_FLEET_COLLECTOR_APP_ID, then records
 # the app bucket reading and installation scope as a runtime receipt
 # (migration plan docs/ops/GITHUB-APP-MIGRATION-PLAN.md gate G4).
 # Read-only: creates no checks, comments, branches, commits, or PRs.
@@ -36,7 +36,7 @@ jobs:
         id: app-token
         uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3 release
         with:
-          client-id: ${{ vars.TERMUX_FLEET_COLLECTOR_CLIENT_ID }}
+          app-id: ${{ vars.TERMUX_FLEET_COLLECTOR_APP_ID }}
           private-key: ${{ secrets.TERMUX_FLEET_COLLECTOR_PRIVATE_KEY }}
           repositories: ${{ github.event.repository.name }}
 

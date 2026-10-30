@@ -1,8 +1,8 @@
 {
  "schema": "quota-allocation-plan/v1",
- "generated_at": "2026-10-30T02:13:52Z",
+ "generated_at": "2026-10-30T04:04:03Z",
  "issue": 1884,
- "registry_records": 155,
+ "registry_records": 156,
  "pools": [
   {
    "id": "aion",
@@ -741,6 +741,7 @@
    "services": [
     "github.actions.cache",
     "github.actions.minutes",
+    "github.api.app_collector",
     "github.api.github_token",
     "github.api.user_token",
     "github.artifacts.retention",
@@ -750,7 +751,7 @@
    "used": null,
    "state": "unknown",
    "pacing_multiplier": 1.0,
-   "target_flow_per_min": 16.666666666666668,
+   "target_flow_per_min": 83.33333333333333,
    "slices": [
     {
      "focus": "repo-development",
@@ -778,7 +779,7 @@
      "share_pct": 100,
      "mode": "standing",
      "priority": 99,
-     "flow_per_min": 16.666666666666668
+     "flow_per_min": 83.33333333333331
     }
    ],
    "stranded": null,

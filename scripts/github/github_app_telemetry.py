@@ -36,11 +36,11 @@ def request_json(token, path):
     )
     try:
         with urllib.request.urlopen(req, timeout=15) as response:
-            return response.status, json.load(response)
+            return response.status, json.load(response), response.headers
     except urllib.error.HTTPError as exc:
-        return exc.code, {}
+        return exc.code, {}, exc.headers
     except (OSError, TimeoutError):
-        return 0, {}
+        return 0, {}, {}
 
 
 def _load_manifest(app):
@@ -49,8 +49,12 @@ def _load_manifest(app):
         return None
     manifest_path = ROOT / path
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    permissions = manifest.get("default_permissions", {})
-    events = manifest.get("default_events", [])
+    if "default_permissions" not in manifest or "default_events" not in manifest:
+        raise ValueError(
+            f"{app.get('slug')}: manifest must declare default_permissions and default_events"
+        )
+    permissions = manifest["default_permissions"]
+    events = manifest["default_events"]
     if not isinstance(permissions, dict) or not isinstance(events, list):
         raise ValueError(f"{app.get('slug')}: invalid manifest permission/event shape")
     if any(value not in ("read", "write", "admin", "none")
@@ -59,7 +63,33 @@ def _load_manifest(app):
     return manifest, permissions, events
 
 
-def build_telemetry(registry, token=None):
+def _installation_repositories(token):
+    """Fetch every installation repository page; never return partial scope as observed."""
+    path = "/installation/repositories?per_page=100"
+    repositories = []
+    while path:
+        status, payload, headers = request_json(token, path)
+        if status != 200 or not isinstance(payload.get("repositories"), list):
+            return status, None
+        repositories.extend(
+            repo["full_name"] for repo in payload["repositories"]
+            if isinstance(repo, dict) and isinstance(repo.get("full_name"), str)
+        )
+        link_header = headers.get("Link", "") if headers else ""
+        next_path = None
+        for part in link_header.split(","):
+            if 'rel="next"' in part:
+                url = part[part.find("<") + 1:part.find(">")]
+                if url.startswith(API):
+                    next_path = url[len(API):]
+                else:
+                    next_path = url
+                break
+        path = next_path
+    return 200, sorted(set(repositories))
+
+
+def build_telemetry(registry, token=None, probe_app_slug=None):
     if registry.get("schema_version") != 1:
         raise ValueError("unsupported registry schema_version")
     apps = registry.get("apps")
@@ -97,33 +127,34 @@ def build_telemetry(registry, token=None):
             },
         })
 
+    if token and not probe_app_slug:
+        raise ValueError("probe_app_slug is required when a live installation token is supplied")
+    if probe_app_slug and not token:
+        raise ValueError("a live installation token is required when probe_app_slug is supplied")
     if token:
-        # This optional probe is for a caller-supplied, ephemeral installation
-        # token only. Scheduled CI intentionally does not provide one; token
-        # minting remains gated on verified secret provisioning (SEC-01/02).
-        status, limits = request_json(token, "/rate_limit")
-        for row in rows:
-            row["evidence"]["rate_limit"] = (
-                "observed" if status == 200 and isinstance(limits.get("resources"), dict)
-                else f"probe_failed_http_{status}" if status else "probe_failed_network"
-            )
-            if status == 200:
-                core = (limits.get("resources") or {}).get("core") or {}
-                row["rate_limit"] = {
-                    key: core.get(key) for key in ("limit", "remaining", "reset")
-                }
-        status, installation = request_json(token, "/installation/repositories?per_page=100")
-        if status == 200 and isinstance(installation.get("repositories"), list):
-            repos = sorted(r.get("full_name") for r in installation["repositories"]
-                           if r.get("full_name"))
-            for row in rows:
-                row["evidence"]["repository_scope"] = "observed"
-                row["observed_repository_scope"] = repos
+        # A token is evidence for exactly one named app row. The caller must
+        # supply an ephemeral installation token and its registry slug together.
+        target = next((row for row in rows if row["slug"] == probe_app_slug), None)
+        if target is None:
+            raise ValueError(f"probe_app_slug is not registered: {probe_app_slug}")
+        status, limits, _ = request_json(token, "/rate_limit")
+        target["evidence"]["rate_limit"] = (
+            "observed" if status == 200 and isinstance(limits.get("resources"), dict)
+            else f"probe_failed_http_{status}" if status else "probe_failed_network"
+        )
+        if status == 200:
+            core = (limits.get("resources") or {}).get("core") or {}
+            target["rate_limit"] = {
+                key: core.get(key) for key in ("limit", "remaining", "reset")
+            }
+        scope_status, repos = _installation_repositories(token)
+        if scope_status == 200 and repos is not None:
+            target["evidence"]["repository_scope"] = "observed"
+            target["observed_repository_scope"] = repos
         else:
-            for row in rows:
-                row["evidence"]["repository_scope"] = (
-                    f"probe_failed_http_{status}" if status else "probe_failed_network"
-                )
+            target["evidence"]["repository_scope"] = (
+                f"probe_failed_http_{scope_status}" if scope_status else "probe_failed_network"
+            )
 
     planned_roles = registry.get("planned_roles", [])
     if not isinstance(planned_roles, list):
@@ -142,10 +173,15 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--registry", default=str(DEFAULT_REGISTRY))
     parser.add_argument("--output", help="write JSON to this path; default stdout")
+    parser.add_argument(
+        "--probe-app", help="registry slug for the single app matched to the ephemeral probe token"
+    )
     args = parser.parse_args(argv)
     try:
         registry = json.loads(pathlib.Path(args.registry).read_text(encoding="utf-8"))
-        result = build_telemetry(registry, os.environ.get("GITHUB_APP_INSTALLATION_TOKEN"))
+        result = build_telemetry(
+            registry, os.environ.get("GITHUB_APP_INSTALLATION_TOKEN"), args.probe_app
+        )
         encoded = json.dumps(result, indent=2, sort_keys=True) + "\n"
         if args.output:
             pathlib.Path(args.output).write_text(encoded, encoding="utf-8")

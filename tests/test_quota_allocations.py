@@ -91,8 +91,19 @@ def test_feed_never_invents_focus_attribution():
         assert p["observed_consumption_by_focus"] is None
     gh = next(p for p in f["pools"] if p["pool"] == "github")
     observed = {s["service"]: s["observed"] for s in gh["services"]}
-    assert observed["github.api.user_token"]["status"] == "ok"  # from the public readings snapshot
-    assert observed["github.artifacts.retention"] is None  # no reading, no claim
+    # Join canary: a probe-observed row, so the pin survives snapshot
+    # promotions. (Was github.api.user_token == "ok" from the #1764
+    # hand-promoted H0 row; the first converted-snapshot promotion
+    # supersedes hand-promoted rows per QUOTA-PROJECTION-CONVERGENCE
+    # procedure step 5, and the probe does not observe the PAT row.)
+    assert observed["github.api.github_token"]["status"] in (
+        "ok", "watch", "exhausted", "cap_tripped")  # from the public readings snapshot
+    # No reading, no claim: the complete converted snapshot carries an
+    # unobserved row for every record, so the no-claim shape is now an
+    # unknown status with no observation time (was: observed is None,
+    # when the snapshot carried no row for the service at all).
+    assert observed["github.artifacts.retention"]["status"] == "unknown"
+    assert observed["github.artifacts.retention"]["observed_at"] is None
 
 
 def test_committed_feed_matches_config():

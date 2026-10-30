@@ -102,9 +102,47 @@ def name_set(section):
 
 # ---------------------------------------------------------------- census ---
 
+def app_registry_census():
+    """Read checked-in app identities and manifests as declarations only."""
+    root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+    path = os.path.join(root, "ops/github-apps/registry.json")
+    try:
+        with open(path, encoding="utf-8") as fh:
+            registry = json.load(fh)
+        if registry.get("schema_version") != 1 or not isinstance(registry.get("apps"), list):
+            return None
+        apps, seen = [], set()
+        for app in registry["apps"]:
+            slug, manifest_path = app.get("slug"), app.get("manifest_path")
+            if not isinstance(slug, str) or not slug or slug in seen or not manifest_path:
+                return None
+            seen.add(slug)
+            with open(os.path.join(root, manifest_path), encoding="utf-8") as fh:
+                manifest = json.load(fh)
+            if not isinstance(manifest.get("default_permissions"), dict) or not isinstance(manifest.get("default_events"), list):
+                return None
+            apps.append({"slug": slug, "app_id": app.get("app_id"), "role": app.get("role"),
+                         "status": app.get("status", "unknown"),
+                         "declared_permissions": manifest["default_permissions"],
+                         "declared_events": manifest["default_events"],
+                         "evidence": "checked_in_declaration"})
+        planned = registry.get("planned_roles", [])
+        return {"apps": sorted(apps, key=lambda row: row["slug"]),
+                "planned_roles": sorted(
+                    [{"role": row.get("role"), "slug_candidate": row.get("slug_candidate"),
+                      "status": row.get("status")} for row in planned],
+                    key=lambda row: row.get("role") or ""),
+                "source": "checked_in_registry_and_manifests"}
+    except (OSError, ValueError, TypeError, json.JSONDecodeError):
+        return None
+
+
 def census(c):
     s = {"schema": 1, "repo": REPO, "degraded": []}
     degraded = s["degraded"]
+    s["github_app_registry"] = app_registry_census()
+    if s["github_app_registry"] is None:
+        degraded.append("github_app_registry")
 
     u = c.get("/user")
     if err(u):
@@ -354,6 +392,11 @@ def diff_snapshots(prev, cur):
     structural, figure = [], []
     if prev is None:
         return structural, figure
+
+    previous_registry = prev.get("github_app_registry")
+    current_registry = cur.get("github_app_registry")
+    if previous_registry is not None and current_registry is not None and previous_registry != current_registry:
+        structural.append("declared GitHub App registry changed")
 
     set_delta("check apps (30-head)", (prev.get("check_apps_30") or {}).keys() if prev.get("check_apps_30") is not None else None,
               (cur.get("check_apps_30") or {}).keys() if cur.get("check_apps_30") is not None else None, structural)

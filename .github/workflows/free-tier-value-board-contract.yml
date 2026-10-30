@@ -8,6 +8,8 @@ on:
       - 'apps/help-wanted-dashboard/data/free-tier-value.json'
       - 'docs/ops/FREE-TIER-USE-VALUE-BOARD.md'
       - 'tests/test_free_tier_value_board.py'
+      - 'tests/test_http_llm_invoke_usage_contract.py'
+      - '.github/actions/http-llm-invoke/action.yml'
       - '.github/workflows/free-tier-value-board-contract.yml'
   push:
     branches: [master]
@@ -16,6 +18,8 @@ on:
       - 'apps/help-wanted-dashboard/data/free-tier-value.json'
       - 'docs/ops/FREE-TIER-USE-VALUE-BOARD.md'
       - 'tests/test_free_tier_value_board.py'
+      - 'tests/test_http_llm_invoke_usage_contract.py'
+      - '.github/actions/http-llm-invoke/action.yml'
       - '.github/workflows/free-tier-value-board-contract.yml'
 
 permissions:

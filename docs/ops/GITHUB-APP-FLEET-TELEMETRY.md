@@ -62,8 +62,8 @@ Every field must distinguish unknown from empty. Missing sections and partial AP
 - [ ] Reconcile four role-slot statuses with AppID/PROCESS.json source of truth.
 
 ### P1 — live proof (blocked by secret provisioning)
-- [ ] Resolve SEC-01: verify whether `APP_PRIVATE_KEY` is actually provisioned at the correct scope; the referenced name is not proof.
-- [ ] Resolve SEC-02: verify per-app secret names before any workflow references them.
+- [x] SEC-01 resolved by the landed collaborator amendment: `APP_PRIVATE_KEY` belongs to the separate capability-probe/Gate-CI identity, not the Collector; it is not to be provisioned with the Collector PEM.
+- [ ] SEC-02: verify the Collector-specific Actions secret/variable names and scope, then require a green sanctioned mint-probe run before wiring telemetry.
 - [ ] Use the sanctioned minter or SHA-pinned token action only after provisioning is verified.
 - [x] Define and validate the sanitized G4 runtime receipt contract; runtime generation remains blocked until SEC-02 and sanctioned mint wiring are verified.
 - [ ] Read back active installation scope and effective permissions; compare them with manifest declarations.

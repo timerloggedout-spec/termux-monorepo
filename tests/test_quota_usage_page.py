@@ -68,8 +68,8 @@ def test_buckets_kept_separate_and_storm_fix_recorded():
     pack = _pack()
     buckets = {b["name"]: b for b in pack["buckets"]}
     # cadence graph note: buckets are never merged into one burn line
-    assert buckets["github.api PAT core (user token)"]["limit"] == 5000
-    assert buckets["GitHub App installation token"]["limit"] == 1000
+    assert buckets["github.api.user_token (PAT user bucket)"]["limit"] == 5000
+    assert buckets["github.api.github_token (installation, per-repo)"]["limit"] == 1000
     assert buckets["GitHub GraphQL (user token)"]["limit"] == 5000
     spike = pack["series3_actions"]["spike"]
     assert "2341" in spike["outcome"] and "97938a583f50" in spike["outcome"]
@@ -93,11 +93,25 @@ def test_series2_snapshots_provenance_and_landing_flags():
 
 def test_g4f_has_no_stamp():
     stamps = _pack()["stamps"]
-    g4f = [s for s in stamps if s["pool"].startswith("g4f")]
+    g4f = [s for s in stamps if s["pool"].startswith("g4f (")]
     assert len(g4f) == 1
     assert g4f[0]["established"] is False and g4f[0]["cadence"] is None
-    others = [s for s in stamps if not s["pool"].startswith("g4f")]
-    assert others and all(s["established"] and s["cadence"] for s in others)
+    # the only other unstamped group: registry records whose window is unknown
+    unstamped = [s for s in stamps if not s["established"]]
+    assert {s["pool"] for s in unstamped} == {"g4f (43 records)", "48 of 155 registry records"}
+    others = [s for s in stamps if s["established"]]
+    assert others and all(s["cadence"] for s in others)
+
+
+def test_stamp_cadence_precision():
+    # convergence-lane corrections vs the registry, pinned so they cannot regress
+    stamps = {s["pool"]: s for s in _pack()["stamps"]}
+    assert "UTC midnight" in stamps["openrouter.free_models"]["detail"]
+    assert "NOT pinned" in stamps["daily free tiers (groq, cerebras, airforce, g4f.established)"]["detail"]
+    assert stamps["render.pipeline_minutes"]["cadence"] == "monthly — calendar"
+    assert stamps["neon.compute (CU-hours)"]["cadence"] == "monthly — billing"
+    assert "x-ratelimit-reset" in stamps["github.api (PAT core)"]["detail"]
+    assert "2032" in stamps["g4f.elevenlabs (10,000 credits)"]["detail"]
 
 
 def test_series3_deltas_match_corpus():

@@ -13,7 +13,7 @@ PR) — never on a lane report alone. Owner lane in brackets.
 
 ## MIG — migration waves (plan §1; gates G1–G5 per item)
 
-- [ ] MIG-01 Wave 0: `repository-observatory` → Collector (G1–G5) [migration-plan]
+- [x] MIG-01 DISPOSITIONED 2026-10-30: `repository-observatory` NOT MIGRATABLE as a whole (evidence: app-token public owned 30 vs index 692 — private-account inventory; watching + /user = 403 for installation tokens; plan §1.1 M1 + §1.5). Stays on user token; wave 0 re-picked = MIG-02 [migration-plan]
 - [ ] MIG-02 Wave 1: `reviewer-metrics-collect` → Collector (~750 calls/run off PAT) [migration-plan]
 - [ ] MIG-03 Wave 1: Delphi feed collectors' GitHub reads → Collector, one at a time (ledger, rfp, proposals, oracle-panel, linguist-panel, surface, traffic) [migration-plan]
 - [ ] MIG-04 Wave 1: `provider-availability` GitHub probe steps → Collector [migration-plan]

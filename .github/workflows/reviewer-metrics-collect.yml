@@ -16,6 +16,12 @@ name: Reviewer metrics collect
 # the 150-PR window is now the default everywhere — the old 60 default
 # silently shrank the window on scheduled runs). The collector is
 # read-only against the API until the refresh-PR step.
+#
+# MIG-02 (2026-10-30, docs/ops/GITHUB-APP-MIGRATION-PLAN.md): collection
+# reads run on the Termux Fleet Collector app token when minting succeeds
+# (vars.REVIEWER_METRICS_TOKEN_SOURCE=pat forces the old path; a failed
+# mint falls back automatically). The refresh-PR step is a write and
+# stays on its existing token.
 
 on:
   workflow_dispatch:
@@ -73,10 +79,20 @@ jobs:
               out.write(f"skip={'true' if skip else 'false'}\n")
           PY
 
+      - name: Mint Collector app token (MIG-02)
+        id: app-token
+        if: steps.gate.outputs.skip != 'true' && vars.REVIEWER_METRICS_TOKEN_SOURCE != 'pat'
+        continue-on-error: true
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3 release
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_COLLECTOR_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_COLLECTOR_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
+
       - name: Collect reviewer metrics
         if: steps.gate.outputs.skip != 'true'
         env:
-          GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token || secrets.OPERATOR_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
           LIMIT: ${{ inputs.limit || '150' }}
         run: |
           python3 scripts/reviewer_metrics/collect.py \
@@ -93,6 +109,19 @@ jobs:
                     f"delivered={t['delivered']} rate={t['delivery_rate']} "
                     f"cooldown={t['cooldown_cycles']} median_latency={t['median_latency_sec']}")
           PY
+
+
+      - name: Runtime receipt (MIG-02 / G4)
+        if: steps.gate.outputs.skip != 'true'
+        env:
+          APP_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          {
+            echo "## Reviewer metrics - token receipt"
+            if [ -n "$APP_TOKEN" ]; then echo "- Token source: Termux Fleet Collector (app)"; else echo "- Token source: fallback (operator token)"; fi
+            echo "- Run: ${{ github.run_id }} attempt ${{ github.run_attempt }} sha ${{ github.sha }}"
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "$APP_TOKEN" ]; then GH_TOKEN="$APP_TOKEN" gh api /rate_limit --jq '.resources.core | "- App bucket after collect: limit=\(.limit) remaining=\(.remaining) reset=\(.reset)"' >> "$GITHUB_STEP_SUMMARY" || true; fi
 
       - name: Upload metrics artifact
         if: steps.gate.outputs.skip != 'true'

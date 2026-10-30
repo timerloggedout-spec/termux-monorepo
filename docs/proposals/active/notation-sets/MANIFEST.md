@@ -150,3 +150,12 @@ This lane records concepts, audience/register-specific labels, evidence sources,
 - Claim review and lifecycle gates: [REVIEW-AND-ACCEPTANCE.md](./nomenclature-matrix/REVIEW-AND-ACCEPTANCE.md).
 - Machine-readable projection contract: [JSON-CONSUMER-CONTRACT.md](./nomenclature-matrix/JSON-CONSUMER-CONTRACT.md).
 - These documents preserve the boundary between repository implementation, candidate research, human/domain acceptance, and runtime authority. The Domain Composition Matrix remains a separate research database under Issue #1115.
+
+
+### Nomenclature governance and consumer contracts
+
+- Decision lineage: [nomenclature-matrix/DECISION-LEDGER.md](./nomenclature-matrix/DECISION-LEDGER.md).
+- Human evidence review and lifecycle: [nomenclature-matrix/REVIEW-PROTOCOL.md](./nomenclature-matrix/REVIEW-PROTOCOL.md).
+- Machine-readable projection consumer contract: [nomenclature-matrix/CROSSWALK-CONSUMER-CONTRACT.md](./nomenclature-matrix/CROSSWALK-CONSUMER-CONTRACT.md).
+
+These documents clarify historical decisions, domain-review expectations, and the candidate-only boundary for downstream JSON consumers. They do not confer domain acceptance or runtime authority.

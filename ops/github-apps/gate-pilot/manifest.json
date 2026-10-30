@@ -1,0 +1,9 @@
+{
+ "name": "Termux Fleet Gate",
+ "url": "https://github.com/timerloggedout-spec/termux-monorepo",
+ "description": "Fleet gate/CI for timerloggedout-spec/termux-monorepo: gate annotations and status posts (repo-gate, ECC-class) on an ephemeral GitHub App installation token — its own rate-limit bucket, separate from the owner PAT bucket. Write class: checks. Part of the fleet AppID specialist bundle (docs/ops/GITHUB-APP-PILOT.md).",
+ "public": true,
+ "default_events": [],
+ "default_permissions": {"checks": "write", "metadata": "read"},
+ "redirect_url": "https://github.com/timerloggedout-spec/termux-monorepo"
+}

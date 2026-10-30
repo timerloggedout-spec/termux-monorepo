@@ -1,0 +1,301 @@
+{
+ "allocation_queue": [
+  {
+   "fix_class": "wall-dead merges/publishes",
+   "order": 1,
+   "role": "publisher",
+   "state": "package_prepared"
+  },
+  {
+   "order": 2,
+   "role": "reviewer-ops",
+   "state": "bundled_cadence_2026-10-29"
+  },
+  {
+   "order": 3,
+   "role": "gate-ci",
+   "state": "bundled_cadence_2026-10-29"
+  },
+  {
+   "order": 4,
+   "role": "lifecycle",
+   "state": "bundled_cadence_2026-10-29"
+  }
+ ],
+ "app_repos": {
+  "current": "no app has its own repo; collector = plain dir ops/github-apps/collector-pilot/; .gitmodules carries forks/vendors/mcp only (read 2026-10-30)",
+  "proposal": "per-app repo timerloggedout-spec/<app-slug> (manifest/profile/avatar/tooling/docs, no secrets) included in termux-monorepo as shallow submodule at ops/github-apps/<role>-pilot/, replacing the plain dir; owner pick at publisher creation"
+ },
+ "bundle_cadence_2026-10-29": {
+  "naming": {
+   "rules": [
+    "apps are FUNCTION identities (Oracle/Delphi precedent), not lane monikers; AGENT-MONIKERS scope rule untouched",
+    "slug availability verified by AppID lane at creation; a taken slug returns to registry lane for a variant \u2014 never improvised in-lane"
+   ],
+   "sets": [
+    {
+     "appName": "Termux Fleet Collector",
+     "bot": "termux-fleet-collector[bot]",
+     "moniker": "Collector",
+     "role": "collector",
+     "slug": "termux-fleet-collector",
+     "status": "LIVE \u2014 of record"
+    },
+    {
+     "alias": "Acta",
+     "appName": "Termux Fleet Publisher",
+     "bot": "termux-fleet-publisher[bot]",
+     "moniker": "Edict",
+     "role": "publisher",
+     "slug": "termux-fleet-publisher",
+     "status": "draft"
+    },
+    {
+     "alias": "Panoptes",
+     "appName": "Termux Fleet Reviewer",
+     "bot": "termux-fleet-reviewer[bot]",
+     "moniker": "Argus",
+     "role": "reviewer-ops",
+     "slug": "termux-fleet-reviewer",
+     "status": "draft"
+    },
+    {
+     "alias": "Patulcius",
+     "appName": "Termux Fleet Lifecycle",
+     "bot": "termux-fleet-lifecycle[bot]",
+     "moniker": "Janus",
+     "role": "lifecycle",
+     "slug": "termux-fleet-lifecycle",
+     "status": "draft"
+    },
+    {
+     "alias": "the Ward",
+     "appName": "Termux Fleet Gate",
+     "bot": "termux-fleet-gate[bot]",
+     "moniker": "Cerberus",
+     "role": "gate-ci",
+     "slug": "termux-fleet-gate",
+     "status": "draft"
+    }
+   ],
+   "state": "CONFERENCE DRAFT received 2026-10-29 from registration-monikers (ac8e5e6b) \u2014 DO NOT PROVISION; final set after marketing conferral + owner"
+  },
+  "per_app_requirements": [
+   "manifest public:true day one, least-privilege, no webhooks unless function demands",
+   "custody per collector template (custom-connector keys/, 0600); minter = scripts/github_app_token.py pattern",
+   "installation scope termux-monorepo first; distribution later",
+   "books: registry record github.api.app_<slug> (5000/h/installation, hourly, x-ratelimit-reset) + allocations meta-pool slice + planner flow share via #1884-citing re-split PR (quota-convergence executes; this lane coordinates)",
+   "adoption proof: first workflow run ON the app token + bucket reading (remaining while PAT low), Collector-style"
+  ],
+  "source": "cadence-optimizer ac333a25 handover, owner order 2026-10-29 21:36 PT"
+ },
+ "capacity_census": {
+  "binding_constraints": [
+   "custody: one PEM + client secret per app",
+   "bookkeeping: one install consent + permission-approval surface per (app x account)",
+   "web-only residuals per app: Create click, install consent, avatar upload, key rotation",
+   "distribution: one repo secret per (app x repo) before workflows can mint",
+   "secondary rate limits apply platform-wide; no single published number, none claimed"
+  ],
+  "fleet_position": {
+   "four_roles_projection": "4 registrations of 100; 20000/h separated installation quota once all installed on termux-monorepo",
+   "owned_apps_established": 1,
+   "owned_apps_note": "no REST route lists an account's owned apps; other registrations are NOT ESTABLISHED via API \u2014 owner-UI census item of record"
+  },
+  "limits": {
+   "app_jwt_max_lifetime_min": 10,
+   "apps_installable_per_account": "no limit",
+   "apps_registered_per_user_org_or_enterprise": 100,
+   "installation_rate_limit_per_hour": {
+    "cap_non_ghec": 12500,
+    "ghec_org_or_enterprise": 15000,
+    "minimum": 5000,
+    "scaling": "+50 per repo beyond 20 and per org user beyond 20 (non-Enterprise-Cloud)"
+   },
+   "installation_token_lifetime_min": 60,
+   "our_installation_today": "1 repo, personal account -> flat 5000/h per (app x installation)",
+   "private_keys_per_app": 25
+  },
+  "source": "GitHub Docs read firsthand 2026-10-30 (Registering a GitHub App; Managing private keys; Rate limits for the REST API; Generating an installation access token) + github.blog changelog 2024-11-08"
+ },
+ "custody": {
+  "dir_mode": "0700",
+  "file_mode": "0600",
+  "files_names_only": [
+   "collector.pem",
+   "client_secret.txt"
+  ],
+  "key_id": "NOT ESTABLISHED via API \u2014 GitHub exposes no private-key list route; keys are identified by fingerprint in app settings (cap 25/app, no expiry, manual revocation)",
+  "pattern": "local 0600 PEM in the app's custom-connector custody dir (custom.github-app-collector/keys/), referenced by path/env name only; key signs the JWT locally and never travels, so the vault surrogate-swap pattern has no swap point",
+  "public_key_fingerprint_sha256_der": "3dfa81bd8f9deb303e521bf87f3999a404fdd2afd372a672ee723edd4c488d2a",
+  "rotation": "app settings -> Private keys: generate new -> save over custody file -> verify helper -> delete old (web-only residual)",
+  "transferred_from": "quota lane scratch (scratch/app-pilot/out/app.pem) \u2014 removed there 2026-10-30; scratch token file shredded"
+ },
+ "distribution_audit": {
+  "audited_at": "2026-10-30T04:18-04:26Z",
+  "definition": {
+   "D1_installations": "installations_count > 1 or any foreign-account installation",
+   "D2_workflow_adoption": "any .github/workflows/* minting collector tokens (app id / slug / collector secret names)",
+   "D3_actions_secret": "a repo Actions secret holding the collector PEM (names-only)"
+  },
+  "definition_owner": "DISTRIBUTED = tested & installed in production replacement of parity structures (owner, 2026-10-29 21:28 PT); D1-D3 = supporting evidence ladder only",
+  "evidence": {
+   "D1": {
+    "installations_count": 1,
+    "repositories_total": 1,
+    "result": "not_distributed",
+    "sole_account": "timerloggedout-spec"
+   },
+   "D2": {
+    "note": "3 workflows use actions/create-github-app-token with vars.APP_CLIENT_ID / secrets.APP_PRIVATE_KEY \u2014 the pre-existing capability-probe app (PR #800 lineage), not the collector",
+    "result": "not_distributed",
+    "slug_hits_in_workflows": 0
+   },
+   "D3": {
+    "checked_at": "2026-10-30T04:44Z",
+    "collector_pem_secret_present": false,
+    "note": "names-only list via PAT helper, per_page=100, all 58 read; no collector/app PEM name present. Side finding: APP_PRIVATE_KEY (bound by the 3 capability-probe workflows) is also absent from repo-level names \u2014 its source is org/environment-level or unprovisioned, NOT ESTABLISHED here.",
+    "repo_actions_secrets_total": 58,
+    "result": "not_distributed"
+   }
+  },
+  "verdict": "NOT DISTRIBUTED under owner definition (0 production workflows on the collector token; PAT collectors remain production) and on D1+D2+D3 (all established 2026-10-30)"
+ },
+ "how_many_more": {
+  "cap_per_owner": 100,
+  "more_on_established_floor": 99,
+  "note": "other owned registrations NOT ESTABLISHED via API (no list-owned-apps REST route)",
+  "owned_established": 1
+ },
+ "lane": "appid-process",
+ "later_queue": [
+  {
+   "item": "user authorization callback URL + device-flow user access tokens vs installation tokens",
+   "state": "parked_owner_later"
+  },
+  {
+   "item": "Marketplace publishing of fleet apps",
+   "state": "parked_owner_later"
+  }
+ ],
+ "permissions_ladder": {
+  "amendment_flow": "existing apps are amended in app settings (manifest flow creates new apps only; no REST amendment route). Adding permissions emails every installing account owner and takes effect per installation only on that owner's approval; until approved the installation keeps its old permissions. Removing permissions/webhooks is immediate. Fleet consequence: prefer new apps per role over amending the collector.",
+  "pilot_readonly_why": [
+   "least-privilege proof: the bucket split needs reads only",
+   "public-install safety: any account may install a public app; read-only caps blast radius for installers and for a leaked key",
+   "separation of duties: reads were the quota bleed; writes stay PAT until a dedicated writer app exists"
+  ],
+  "roles": [
+   {
+    "app": "Termux Fleet Collector",
+    "permissions": {
+     "actions": "read",
+     "checks": "read",
+     "contents": "read",
+     "issues": "read",
+     "metadata": "read",
+     "pull_requests": "read"
+    },
+    "role": "collector",
+    "status": "live"
+   },
+   {
+    "app": "Termux Fleet Publisher (PROPOSED \u2014 naming conference)",
+    "covers": "publishes, merges, coordination comments (cadence bundle 2026-10-29: issues:write added for comments)",
+    "owner_decision_points": [
+     "workflows:write = rung 2",
+     "actions:write deferred",
+     "public:true vs account-only at Create click"
+    ],
+    "permissions": {
+     "contents": "write",
+     "issues": "write",
+     "metadata": "read",
+     "pull_requests": "write"
+    },
+    "role": "publisher",
+    "status": "proposed_1_package_prepared"
+   },
+   {
+    "app": "PROPOSED \u2014 naming conference",
+    "covers": "peer-review orchestrator polling + review comments off PAT (<=180/h/event)",
+    "permissions": {
+     "checks": "read",
+     "metadata": "read",
+     "pull_requests": "write"
+    },
+    "role": "reviewer-ops",
+    "status": "proposed_2"
+   },
+   {
+    "app": "PROPOSED \u2014 naming conference",
+    "covers": "gate annotations + status posts (repo-gate, ECC-class)",
+    "permissions": {
+     "checks": "write",
+     "metadata": "read"
+    },
+    "role": "gate-ci",
+    "status": "proposed_3"
+   },
+   {
+    "app": "PROPOSED \u2014 naming conference (supersedes this lane's 'steward' label)",
+    "covers": "issue lifecycle/triage sweeps, GAP-ledger sweeps",
+    "permissions": {
+     "issues": "write",
+     "metadata": "read"
+    },
+    "role": "lifecycle",
+    "status": "proposed_4"
+   }
+  ],
+  "rule": "never expand the collector; one app per role, least privilege per role; app permissions are a ceiling \u2014 tokens can be scoped down further at mint time"
+ },
+ "pilot": {
+  "app_id": 5535733,
+  "client_id": "Iv23liKMLj976ok6Cn3D",
+  "events": [],
+  "installation": {
+   "account": "timerloggedout-spec",
+   "id": 176747357,
+   "repositories": [
+    "timerloggedout-spec/termux-monorepo"
+   ],
+   "repository_selection": "selected"
+  },
+  "name": "Termux Fleet Collector",
+  "permissions": {
+   "actions": "read",
+   "checks": "read",
+   "contents": "read",
+   "issues": "read",
+   "metadata": "read",
+   "pull_requests": "read"
+  },
+  "public": true,
+  "role": "collector",
+  "slug": "termux-fleet-collector",
+  "verified": {
+   "at": "2026-10-30T04:18Z",
+   "bucket": {
+    "independent_of_pat": true,
+    "limit": 5000,
+    "remaining_after_audit": 4990
+   },
+   "installations_count": 1,
+   "routes": [
+    "GET /app",
+    "GET /app/installations",
+    "GET /installation/repositories",
+    "GET /rate_limit"
+   ]
+  }
+ },
+ "schema": "appid-process/v1",
+ "updated_at": "2026-10-30T04:45Z",
+ "web_pr_failsafe": {
+  "doc": "docs/ops/FAILSAFE-PUBLISH-PROTOCOL.md",
+  "posture": "fallback for merge (+small creates) only; primary stays PAT helper / AppID token; oracle verification still binds",
+  "session_basis": "pre-existing signed-in owner browser session; no sign-in, no credential handled \u2014 not a credential-provisioning route; STOP on any fresh auth/2FA wall",
+  "source": "quota-specialist route, proven PR #2399 web merge 952b1fec at PAT remaining=0 (API merge 403 04:13Z, web merge ok same wall)"
+ }
+}

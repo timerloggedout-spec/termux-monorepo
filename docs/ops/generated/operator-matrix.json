@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 354,
-    "open_prs": 114,
+    "open_prs": 116,
     "pr_classes": {
-      "CANDIDATE": 60,
+      "CANDIDATE": 61,
       "EXTRACT": 5,
-      "NEED_EVIDENCE": 49,
+      "NEED_EVIDENCE": 50,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 19,
-      "prs": 112,
+      "prs": 114,
       "unlabelled_numbers": [
         308,
         343,
@@ -74,7 +74,7 @@
       ]
     }
   },
-  "generated_at": "2026-10-30T04:55:50Z",
+  "generated_at": "2026-10-30T05:07:37Z",
   "issues_unlabelled": [
     308,
     343,
@@ -102,7 +102,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "85a4067ce2"
+    "sha": "a72d267cb4"
   },
   "prs": [
     {
@@ -1021,6 +1021,20 @@
       "updated_at": "2026-10-30T01:30:56Z"
     },
     {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "a5158793a3",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2407,
+      "title": "GitHub App telemetry proposal",
+      "updated_at": "2026-10-30T05:02:40Z"
+    },
+    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -1447,12 +1461,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "3ca1848ec8",
+      "head_sha": "0874d8f0a5",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "clean",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-10-30T04:54:29Z"
+      "updated_at": "2026-10-30T05:07:20Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1601,12 +1615,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "0d5ca4d3de",
+      "head_sha": "7ef471dade",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-10-30T04:55:07Z"
+      "updated_at": "2026-10-30T05:06:02Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1705,6 +1719,20 @@
       "number": 2378,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-30T02:09:00Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "in_progress",
+        "smoke": "in_progress"
+      },
+      "head_sha": "cf275fef17",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2409,
+      "title": "feat: rank public usage value across providers",
+      "updated_at": "2026-10-30T05:07:27Z"
     }
   ],
   "schema": "operator-matrix/v1",

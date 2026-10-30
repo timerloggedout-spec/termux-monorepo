@@ -14,7 +14,7 @@ PR) — never on a lane report alone. Owner lane in brackets.
 ## MIG — migration waves (plan §1; gates G1–G5 per item)
 
 - [x] MIG-01 DISPOSITIONED 2026-10-30: `repository-observatory` NOT MIGRATABLE as a whole (evidence: app-token public owned 30 vs index 692 — private-account inventory; watching + /user = 403 for installation tokens; plan §1.1 M1 + §1.5). Stays on user token; wave 0 re-picked = MIG-02 [migration-plan]
-- [ ] MIG-02 Wave 1: `reviewer-metrics-collect` → Collector (~750 calls/run off PAT) [migration-plan]
+- [x] MIG-02 Wave 0 (re-picked) LANDED 2026-10-30: `reviewer-metrics-collect` collection reads → Collector app token (PR #2446 merged 34976ec908fe, oracle-verified; shadow run 41024874583 SUCCESS — mint/collect/receipt OK, artifact validated; production = same code path live on master). Refresh-PR write step stays on its existing token; rollback = vars.REVIEWER_METRICS_TOKEN_SOURCE=pat or automatic fallback on mint failure (G5, retained) [migration-plan]
 - [ ] MIG-03 Wave 1: Delphi feed collectors' GitHub reads → Collector, one at a time (ledger, rfp, proposals, oracle-panel, linguist-panel, surface, traffic) [migration-plan]
 - [ ] MIG-04 Wave 1: `provider-availability` GitHub probe steps → Collector [migration-plan]
 - [ ] MIG-05 Wave 1: read-only recon/observer class → Collector (discovery, reconcile, issue-observatory, observer pollers, telemetry snapshot, osint reads) [migration-plan]

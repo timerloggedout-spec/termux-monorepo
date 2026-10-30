@@ -1,0 +1,1219 @@
+<!-- Admin Interaction Graph — canonical-model admin UI (owner order 2026-10-30).
+     Source of record: Muse artifact admin-interaction-graph; model reconciled to master
+     docs/DEPLOYMENT-LANES.md (blob c0131ee8) + docs/ops/FREE-TIER-BACKEND-RECON-2026-10-21.md (91847c45).
+     Self-contained page: no fetches, no credentials; pulses simulated, dispatch payloads prepared-not-sent. -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<meta name="color-scheme" content="dark"/>
+<link rel="icon" href="data:,"/>
+<title>Admin Interaction Graph</title>
+<style>
+:root{--bg:#0b0e14;--panel:#11151f;--panel2:#161b28;--line:#232a3a;--ink:#e8ecf4;--muted:#9aa5b8;--faint:#6b768c;--violet:#a78bfa;--cyan:#22d3ee;--amber:#fbbf24;--green:#34d399;--magenta:#f472b6;--radius:10px}
+*{box-sizing:border-box}html,body{height:100%;overscroll-behavior:none;overscroll-behavior-y:none}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-system,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.45;display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden;overscroll-behavior:none;overscroll-behavior-y:none}
+.layout,.svg-holder,main.canvas-wrap{overscroll-behavior:none;overscroll-behavior-y:none}
+main.canvas-wrap,.svg-holder{touch-action:none}
+.node.focus-dim,.edge-g.focus-dim{opacity:.13}
+.group-row.focused{border-color:var(--cyan);background:#0c2b38}
+.focus-picker{position:fixed;left:10px;right:10px;bottom:78px;z-index:80;background:var(--panel);border:1px solid #39445e;border-radius:12px;padding:12px;box-shadow:0 14px 40px rgba(0,0,0,.55);max-height:62vh;overflow-y:auto;overscroll-behavior:contain}
+.focus-picker h3{margin:0 0 4px;font-size:14px}.focus-picker .fp-list{display:grid;gap:6px;margin-top:8px}
+.focus-picker .fp-list .btn{min-height:44px;text-align:left;width:100%}
+@media (min-width:1081px){.focus-picker{left:auto;right:24px;bottom:24px;width:360px}}
+html.scroll-locked,body.scroll-locked{overflow:hidden!important}
+body.scroll-locked{position:fixed;left:0;right:0}
+main.canvas-wrap.fs{position:fixed;inset:0;z-index:190;height:100dvh;max-height:100dvh;background:var(--bg)}
+.fs-bar{display:none;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 10px;border-bottom:1px solid var(--line);background:var(--panel)}
+main.canvas-wrap.fs .fs-bar{display:flex}
+.fs-bar .fs-title{font-weight:700;font-size:14px;margin-right:auto}
+.fs-bar .btn{min-height:44px}
+button{font:inherit;cursor:pointer}input,select,textarea{font:inherit}
+.topbar{display:flex;flex:0 0 auto;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--panel)}
+.topbar h1{font-size:17px;margin:0;font-weight:700}.topbar .sub{color:var(--muted);font-size:12px}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:7px 12px;font-size:13px}
+.btn:hover{border-color:#39445e}.btn.primary{background:#7c3aed;border-color:#7c3aed;color:#fff;font-weight:600}
+.btn.small{padding:4px 9px;font-size:12px}.btn.danger{border-color:#9d174d;color:#f9a8d4}
+.btn[aria-pressed="true"]{background:#164e63;border-color:var(--cyan);color:var(--cyan)}
+.sim-badge{font-size:11px;border:1px solid var(--amber);color:var(--amber);border-radius:999px;padding:2px 8px;white-space:nowrap}
+.dirty-badge{font-size:11px;border:1px solid var(--magenta);color:var(--magenta);border-radius:999px;padding:2px 8px;white-space:nowrap}
+.clean-badge{font-size:11px;border:1px solid #065f46;color:#6ee7b7;border-radius:999px;padding:2px 8px;white-space:nowrap}
+.layout{display:grid;grid-template-columns:264px minmax(0,1fr) 384px;grid-template-rows:minmax(0,1fr);flex:1 1 0;min-height:0;overflow:hidden}
+aside{background:var(--panel);padding:14px;overflow-y:auto;min-height:0;min-width:0;overscroll-behavior:contain}
+aside.left{border-right:1px solid var(--line)}aside.right{border-left:1px solid var(--line)}
+aside h2{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:18px 0 8px}aside h2:first-child{margin-top:0}
+aside h3{font-size:13px;margin:12px 0 4px}p.small,.small{font-size:12px;color:var(--muted)}
+.legend-row{display:flex;align-items:center;gap:10px;padding:4px 0;font-size:12.5px}.legend-row svg{flex:0 0 56px}
+.legend-row .k{color:var(--muted);font-size:11px;display:block}
+.swatches{display:grid;gap:5px}.swatch{display:flex;gap:8px;align-items:center;font-size:12.5px}.dot{width:10px;height:10px;border-radius:50%;flex:0 0 10px}
+select,input[type=text],textarea{width:100%;background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:7px 8px;font-size:13px}
+textarea{font-family:ui-monospace,Menlo,monospace;font-size:11px;min-height:110px;resize:vertical}
+label.flabel{font-size:12px;color:var(--muted);display:block;margin:10px 0 4px}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 0;border-top:1px solid var(--line);font-size:13px}
+.switch{position:relative;width:44px;height:24px;flex:0 0 44px}.switch input{appearance:none;width:44px;height:24px;margin:0;cursor:pointer;background:#2a3247;border:1px solid var(--line);border-radius:999px;position:relative;display:block}
+.switch input::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#cbd5e1;transition:.15s}
+.switch input:checked{background:#065f46;border-color:#065f46}.switch input:checked::after{left:23px;background:#fff}
+.gate-switch{display:inline-flex;align-items:center;gap:7px;width:82px;height:44px;flex:0 0 82px;padding:4px 6px;border-radius:999px;border:1px solid var(--line);background:#2a3247;color:#cbd5e1;position:relative;font-size:12px;font-weight:700}
+.gate-switch .gate-knob{width:20px;height:20px;border-radius:50%;background:#cbd5e1;flex:0 0 20px;order:0}
+.gate-switch .gate-state{order:1}
+.gate-switch.is-off{background:#2a3247;color:#cbd5e1}
+.gate-switch.is-on{background:#065f46;border-color:#065f46;color:#fff;flex-direction:row-reverse}
+.gate-switch.is-on .gate-knob{background:#fff}
+.tpl{display:flex;flex-direction:column;gap:4px;border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:6px 0;background:var(--panel2);text-align:left;width:100%;color:var(--ink)}
+.tpl b{font-size:13px}.tpl span{font-size:11.5px;color:var(--muted)}
+main.canvas-wrap{position:relative;background:#0b0e14;background-image:radial-gradient(#1c2333 1px,transparent 1px);background-size:22px 22px;overflow:hidden;min-height:0;min-width:0;display:flex;flex-direction:column}
+.canvas-toolbar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:8px 10px;border-bottom:1px solid var(--line);background:rgba(17,21,31,.96);z-index:5}
+.canvas-toolbar .sep{width:1px;height:22px;background:var(--line)}
+.canvas-toolbar select{width:auto;padding:5px 6px;font-size:12px}
+.canvas-toolbar .lbl{font-size:11px;color:var(--muted)}
+.svg-holder{position:relative;flex:1 1 0;min-height:0}
+main svg{width:100%;height:100%;display:block;touch-action:none}
+.hint{position:absolute;left:10px;bottom:10px;background:rgba(17,21,31,.92);border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:12px;color:var(--muted);pointer-events:none;max-width:92%}
+#tooltip{position:fixed;z-index:50;pointer-events:none;background:#0f1420;border:1px solid #39445e;border-radius:8px;padding:10px 12px;max-width:280px;font-size:12.5px;display:none;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+#tooltip .meta{color:var(--muted);margin-top:4px}#tooltip .meta span{color:var(--ink)}
+.node{cursor:grab}.node text{fill:var(--ink);pointer-events:none}
+.node .ntitle{font-size:13.5px;font-weight:700}.node .nsub{font-size:9.5px;fill:var(--muted);font-weight:400}
+.node .frow{font-size:9px;fill:#c6cede;font-family:ui-monospace,Menlo,monospace}
+.node .frow .ft{fill:#7dd3fc}.node rect.body{fill:#171d2b;stroke-width:1.5}
+.node.selected rect.body{stroke:var(--cyan)!important;stroke-width:2.5}
+.node.pending rect.body{stroke:#fff!important;stroke-width:2.5}
+.node.dimmed,.edge-g.dimmed{opacity:.12}.node.notest{opacity:.45}
+.node .halo{fill:none;stroke:var(--cyan);stroke-width:1.5;opacity:0}.node.active .halo{opacity:.7;animation:haloPulse 1.6s ease-out infinite}
+@keyframes haloPulse{0%{opacity:.85}70%{opacity:.15}100%{opacity:.85}}
+.edge{fill:none;cursor:pointer}.edge-hit{fill:none;stroke:transparent;stroke-width:16;cursor:pointer}
+.edge.hl{filter:drop-shadow(0 0 5px currentColor)}.edge.sel{filter:drop-shadow(0 0 6px #fff)}
+.edge-label{font-size:11px;fill:#c6cede;paint-order:stroke;stroke:#0b0e14;stroke-width:4;pointer-events:none}
+.march{animation:march 1.2s linear infinite}.march-slow{animation:march 2.6s linear infinite}@keyframes march{to{stroke-dashoffset:-24}}
+.paused .march,.paused .march-slow,.paused .node.active .halo{animation-play-state:paused}
+@media (prefers-reduced-motion:reduce){.march,.march-slow,.node.active .halo{animation:none}}
+.detail-card{background:var(--panel2);border:1px solid var(--line);border-radius:var(--radius);padding:12px}.detail-card h3{margin:0 0 4px;font-size:15px}
+.kv{display:grid;grid-template-columns:86px 1fr;gap:4px 8px;font-size:12.5px;margin-top:8px}.kv dt{color:var(--muted)}.kv dd{margin:0}
+.status{font-size:11px;font-weight:700;border-radius:999px;padding:1px 8px;white-space:nowrap}
+.st-live{background:#422006;color:#fcd34d;border:1px solid #92400e}.st-ok{background:#052e22;color:#6ee7b7;border:1px solid #065f46}
+.st-blocked{background:#3b0a1e;color:#f9a8d4;border:1px solid #9d174d}.st-mock{background:#1e293b;color:#cbd5e1;border:1px solid #475569}
+.st-gated{background:#2e1065;color:#c4b5fd;border:1px solid #6d28d9}.st-impl{background:#172554;color:#93c5fd;border:1px solid #1d4ed8}
+.st-open{background:#422006;color:#fde68a;border:1px solid #b45309}.st-unclaimed{background:#111827;color:#9ca3af;border:1px solid #374151}
+.group-row{border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:6px 0;background:var(--panel2)}
+.group-row .btn{width:100%;text-align:left;min-height:44px}
+.group-chip{cursor:pointer}
+.group-title{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#e8ecf4;background:#1c2333;border:1px solid var(--line);border-radius:6px;padding:6px 9px;margin:18px 0 2px;display:flex;justify-content:space-between;align-items:center}
+.group-title span{color:var(--muted);letter-spacing:0;text-transform:none;font-weight:400}
+.unclaimed{opacity:.52}.mortality{margin-top:14px;border:1px solid #92400e;background:#1c1410;border-radius:8px;padding:10px 12px;font-size:12.5px;color:#fde68a}.mortality b{color:#fbbf24}
+.integ{border-top:1px solid var(--line);padding:10px 0}.integ:first-of-type{border-top:none}
+.integ .head{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;flex-wrap:wrap}.integ .name{font-weight:600;font-size:13.5px}
+.integ code{font-size:11px;color:var(--cyan);word-break:break-all}.integ p{margin:4px 0 0;font-size:12.5px;color:var(--muted)}
+ol.biudl{margin:6px 0 0;padding-left:18px;font-size:12.5px;color:var(--muted);columns:2;column-gap:14px}
+.event-log{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;background:#0a0d13;border:1px solid var(--line);border-radius:8px;padding:8px;max-height:130px;overflow-y:auto;color:#a5f3fc}
+.checklist{list-style:none;margin:6px 0;padding:0;font-size:12.5px}.checklist li{padding:4px 0 4px 22px;position:relative;border-top:1px solid #1a2130}
+.checklist li::before{content:"✓";position:absolute;left:2px;color:#34d399;font-weight:700}.checklist li.fail::before{content:"✗";color:#f472b6}
+.checklist li.warn::before{content:"!";color:var(--amber)}
+.frow-edit{display:grid;grid-template-columns:1fr 74px 1fr 26px;gap:4px;margin:4px 0}.frow-edit input{padding:5px 6px;font-size:12px}
+pre.diffbox{background:#0a0d13;border:1px solid var(--line);border-radius:8px;padding:8px;font-size:11px;max-height:260px;overflow:auto;white-space:pre-wrap;word-break:break-word}
+.btnrow{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.stepper{display:flex;gap:6px;overflow-x:auto;padding:6px 0 8px;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+.step{flex:0 0 auto;min-height:44px;border:1px solid var(--line);background:var(--panel2);color:var(--ink);border-radius:8px;padding:7px 11px;font-size:12.5px;text-align:left}
+.step b{display:block;font-size:13px}.step span{color:var(--muted);font-size:11px}
+.step[aria-pressed="true"]{border-color:var(--cyan);background:#164e63;color:#cffafe}
+.step[aria-pressed="true"] span{color:#a5f3fc}
+.chiprow{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+.fitchip{min-height:44px;border:1px solid var(--line);background:var(--panel2);color:var(--muted);border-radius:999px;padding:6px 12px;font-size:12px}
+.fitchip[aria-pressed="true"]{border-color:var(--cyan);color:var(--cyan);background:#0c2b38}
+.prep-badge{font-size:11px;border:1px solid var(--amber);color:var(--amber);border-radius:999px;padding:2px 8px;white-space:nowrap}
+footer.note{flex:0 0 auto;padding:10px 14px;border-top:1px solid var(--line);color:var(--faint);font-size:12px;background:var(--panel)}
+.mobile-bar{display:none}
+@media (max-width:1080px){body{height:auto;overflow:visible;display:block;padding-bottom:118px}.layout{grid-template-columns:minmax(0,1fr);grid-template-rows:none;height:auto;flex:none;overflow:visible}aside{height:auto;overflow-y:visible}aside.left{order:2;border-right:none;border-top:1px solid var(--line)}aside.right{order:3;border-left:none;border-top:1px solid var(--line)}main.canvas-wrap{order:1;min-height:54vh;height:54vh}.hint{display:none}
+.btn{min-height:44px;padding:10px 14px}.btn.small{min-height:44px;padding:9px 12px}.canvas-toolbar select{min-height:44px}.tpl{min-height:44px}input[type=text]{min-height:44px}select{min-height:44px}.frow-edit input{min-height:40px}
+.mobile-bar{display:flex;flex-wrap:wrap;position:fixed;left:0;right:0;bottom:0;z-index:60;gap:8px;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:rgba(17,21,31,.98);border-top:1px solid var(--line)}.mobile-bar .btn{flex:1 1 21%;min-height:48px;font-size:13px;padding:8px 4px}}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div>
+    <h1>Admin Interaction Graph</h1>
+    <div class="sub">Canonical model → deterministic render · draft, verify, diff &amp; dispatch-prep from this screen · <span class="sim-badge">SIMULATED PULSES — prototype, not live traffic</span> <span id="dirtyBadge" class="clean-badge">MODEL CLEAN vs baseline</span></div>
+  </div>
+  <div class="controls" role="group" aria-label="Graph controls">
+    <button class="btn primary" id="pulseBtn" type="button">▶ Send pulse</button>
+    <button class="btn" id="playPauseBtn" type="button" aria-pressed="false">⏸ Pause motion</button>
+    <button class="btn" id="resetBtn" type="button">Reset layout</button>
+  </div>
+</header>
+<div class="layout">
+  <aside class="left" data-scrollable="1" aria-label="Edge legend, filters and templates">
+    <h2>Edge taxonomy</h2>
+    <p class="small">Every connection is delineated by five channels at once — thickness, opacity, dash pattern, animation, and color. The canvas is generated from the model: nothing is drawn that is not in the model, and nothing in the model is left undrawn (satellite layer permitting).</p>
+    <h3>Thickness = flow weight</h3>
+    <div class="legend-row"><svg width="56" height="10" aria-hidden="true"><line x1="2" y1="5" x2="54" y2="5" stroke="#e8ecf4" stroke-width="1"/></svg><span>1px<span class="k">minor / side channel</span></span></div>
+    <div class="legend-row"><svg width="56" height="10" aria-hidden="true"><line x1="2" y1="5" x2="54" y2="5" stroke="#e8ecf4" stroke-width="3"/></svg><span>3px<span class="k">standard flow</span></span></div>
+    <div class="legend-row"><svg width="56" height="12" aria-hidden="true"><line x1="2" y1="6" x2="54" y2="6" stroke="#e8ecf4" stroke-width="6"/></svg><span>6px<span class="k">primary trunk</span></span></div>
+    <h3>Opacity = confidence</h3>
+    <div class="legend-row"><svg width="56" height="10" aria-hidden="true"><line x1="2" y1="5" x2="54" y2="5" stroke="#e8ecf4" stroke-width="3" opacity=".3"/></svg><span>Faint<span class="k">inferred / not established</span></span></div>
+    <div class="legend-row"><svg width="56" height="10" aria-hidden="true"><line x1="2" y1="5" x2="54" y2="5" stroke="#e8ecf4" stroke-width="3"/></svg><span>Solid<span class="k">verified</span></span></div>
+    <h3>Dash = connection type</h3>
+    <div class="legend-row"><svg width="56" height="10" aria-hidden="true"><line x1="2" y1="5" x2="54" y2="5" stroke="#e8ecf4" stroke-width="2.5"/></svg><span>Solid<span class="k">synchronous control</span></span></div>
+    <div class="legend-row"><svg width="56" height="10" aria-hidden="true"><line x1="2" y1="5" x2="54" y2="5" stroke="#e8ecf4" stroke-width="2.5" stroke-dasharray="8 5"/></svg><span>Dashed<span class="k">async / event</span></span></div>
+    <div class="legend-row"><svg width="56" height="10" aria-hidden="true"><line x1="2" y1="5" x2="54" y2="5" stroke="#e8ecf4" stroke-width="2.5" stroke-dasharray="2 5" stroke-linecap="round"/></svg><span>Dotted<span class="k">evidence / provenance</span></span></div>
+    <div class="legend-row"><svg width="56" height="10" aria-hidden="true"><line x1="2" y1="5" x2="54" y2="5" stroke="#e8ecf4" stroke-width="2.5" stroke-dasharray="12 4 2 4"/></svg><span>Dash-dot<span class="k">feedback loop</span></span></div>
+    <h3>Color = plane</h3>
+    <div class="swatches">
+      <div class="swatch"><span class="dot" style="background:var(--violet)"></span>Control — routing &amp; decisions</div>
+      <div class="swatch"><span class="dot" style="background:var(--cyan)"></span>Execution — work performed</div>
+      <div class="swatch"><span class="dot" style="background:var(--amber)"></span>Evidence — provenance &amp; experiments</div>
+      <div class="swatch"><span class="dot" style="background:var(--green)"></span>External — integrations</div>
+      <div class="swatch"><span class="dot" style="background:var(--magenta)"></span>Feedback — loops returning upstream</div>
+    </div>
+    <p class="small">Marching dashes show direction. A traveling bright dot is an event in transit. A pulsing ring is a node heartbeat.</p>
+    <h2>Isolate</h2>
+    <label class="flabel" for="planeFilter">Plane</label>
+    <select id="planeFilter"><option value="all">All planes</option><option value="control">Control only</option><option value="execution">Execution only</option><option value="evidence">Evidence only</option><option value="external">External only</option><option value="feedback">Feedback only</option></select>
+    <label class="flabel" for="typeFilter">Connection type</label>
+    <select id="typeFilter"><option value="all">All types</option><option value="sync">Synchronous control (solid)</option><option value="async">Async / event (dashed)</option><option value="evidence">Evidence / provenance (dotted)</option><option value="feedback">Feedback loop (dash-dot)</option></select>
+    <div class="toggle-row"><span>Satellite layer<br><span class="small">Deploy / host nodes in the right-hand column</span></span><span class="switch"><input type="checkbox" id="satToggle" checked aria-label="Toggle satellite layer"></span></div>
+    <h2>Groups — collapse / expand</h2>
+    <p class="small">Groups are model data (every node carries a <code>group</code> field, exported as Mermaid subgraphs). Collapsing is <strong>view state only</strong>: it never dirties the model, never appears in the Δ diff, and exports always show the full model. A collapsed group renders as one summary node; boundary edges aggregate onto it (×N = merged member edges, style = strongest member; internal edges hide and are counted in the header). Workflow families (vercel-*, collectors, bridges) exist as field rows inside the GitHub Actions node. The Delphi family is the exception: delphi-* is its own group below (intake → generate → cross-vote → gate → ledger, wrapped by the cycle), alongside Research, Issues, Competition, and the Proposal flow group that models this dashboard's own submission pipeline. The unclaimed set (GCP / AWS / Azure / Oracle / DigitalOcean) likewise has no model nodes — inventory stubs only — so it has no group.</p>
+    <div class="btnrow"><button class="btn small" id="collapseAllBtn" type="button">Collapse all groups</button><button class="btn small" id="expandAllBtn" type="button">Expand all groups</button></div>
+    <h3>Focus on a category / family</h3>
+    <p class="small">Focus expands one group (category or workflow family) and collapses every other group. <strong>Focus is view state only</strong> — like collapse, it never dirties the model and never appears in the Δ diff. Exiting Focus restores the exact collapse state from before Focus was entered.</p>
+    <label class="flabel" for="focusSelect">Focus selector — pick a group to focus</label>
+    <select id="focusSelect"><option value="">No focus — all groups as set above</option></select>
+    <div class="btnrow" role="group" aria-label="How non-focused groups are shown">
+      <button class="btn small" id="focusDimBtn" type="button" aria-pressed="false" style="min-height:44px">Dim others</button>
+      <button class="btn small" id="focusHideBtn" type="button" aria-pressed="true" style="min-height:44px">Hide others (summaries remain)</button>
+      <button class="btn small" id="fitOnFocusBtn" type="button" aria-pressed="true" style="min-height:44px">Fit on focus: ON</button>
+    </div>
+    <p class="small"><strong>Dim others:</strong> non-focused summaries and their non-boundary edges render at low opacity. <strong>Hide others (summaries remain):</strong> non-focused groups stay as collapsed summary nodes — never fully invisible — so context and egress edges stay discoverable, with boundary edges of the focused group at full strength and aggregated edges labeled ×N. The same choice applies in the bottom-bar group picker. <strong>Fit on focus</strong> (third companion, default ON): entering Focus also zooms the camera to fit the focused group's rendered bounds — its members plus the boundary summaries it connects to — with padding; exiting Focus restores the exact pre-Focus camera (scale + translation, snapshotted alongside the collapse state).</p>
+    <div class="btnrow"><button class="btn small" id="exitFocusBtn" type="button" style="min-height:44px" disabled>Exit Focus — restore previous view</button></div>
+    <div class="small" id="focusStatus" role="status">focus: none</div>
+    <div id="groupList"></div>
+    <h2>Add node — templates</h2>
+    <p class="small">Add a draft box with sensible field rows, then edit it in the inspector. New nodes are marked dirty vs baseline and appear in the diff. The same picker opens as a sheet from the <strong>+ Node</strong> button in the canvas toolbar and the phone bottom bar.</p>
+    <div id="tplList"></div>
+    <h2>Admin gates</h2>
+    <div class="toggle-row"><span>Vercel production publish — LIVE · ADMIN-GATED<br><span class="small">Manual dispatch only — git auto-deploy is off</span></span><button type="button" class="gate-switch is-off" id="vercelGate" role="switch" aria-checked="false" aria-label="Arm Vercel production publish gate"><span class="gate-knob" aria-hidden="true"></span><span class="gate-state">OFF</span></button></div>
+    <p class="small" id="vercelGateState">Gate closed (OFF): Vercel is LIVE, but publish is held — the Aggregator → Vercel edge stays strong/solid (3px, conf 0.95) with flow stopped at the gate.</p>
+  </aside>
+
+  <main class="canvas-wrap">
+    <div class="fs-bar" id="fsBar">
+      <span class="fs-title">Admin Interaction Graph — larger canvas</span>
+      <button class="btn small" id="fsLockBtn" type="button" aria-pressed="false">Lock page scroll</button>
+      <button class="btn small" id="fsZoomOut" type="button" aria-label="Zoom out (larger canvas)">−</button>
+      <span class="lbl" id="fsZoomLabel">100%</span>
+      <button class="btn small" id="fsZoomIn" type="button" aria-label="Zoom in (larger canvas)">+</button>
+      <button class="btn small" id="fsFitBtn" type="button">Fit</button>
+      <button class="btn small primary" id="fsExitBtn" type="button">Exit ⛶</button>
+    </div>
+    <div class="canvas-toolbar" role="group" aria-label="Canvas and editor toolbar">
+      <button class="btn small" id="modeSelect" type="button" aria-pressed="true">Select / drag</button>
+      <button class="btn small" id="modeConnect" type="button" aria-pressed="false">Connect</button>
+      <button class="btn small" id="modePan" type="button" aria-pressed="false">Pan</button>
+      <span class="sep"></span>
+      <button class="btn small" id="zoomOut" type="button" aria-label="Zoom out">−</button>
+      <span class="lbl" id="zoomLabel">100%</span>
+      <button class="btn small" id="zoomIn" type="button" aria-label="Zoom in">+</button>
+      <button class="btn small" id="fitBtn" type="button">Fit</button>
+      <button class="btn small" id="actualBtn" type="button">100%</button>
+      <button class="btn small" id="toolbarFocusBtn" type="button" aria-pressed="false" style="min-height:44px">◎ Focus</button>
+      <button class="btn small" id="addNodeBtn" type="button" style="min-height:44px">+ Node</button>
+      <button class="btn small" id="fsBtn" type="button" aria-pressed="false" style="min-height:44px">⛶ Larger canvas</button>
+      <button class="btn small" id="lockBtn" type="button" aria-pressed="false" style="min-height:44px">Lock page scroll</button>
+      <span class="sep"></span>
+      <span class="lbl">New edge:</span>
+      <select id="edgePlane" aria-label="New edge plane"><option value="control">control</option><option value="execution" selected>execution</option><option value="evidence">evidence</option><option value="external">external</option><option value="feedback">feedback</option></select>
+      <select id="edgeType" aria-label="New edge type"><option value="sync">sync</option><option value="async" selected>async</option><option value="evidence">evidence</option><option value="feedback">feedback</option></select>
+      <select id="edgeWeight" aria-label="New edge weight"><option value="1">1px</option><option value="3" selected>3px</option><option value="6">6px</option></select>
+      <select id="edgeConf" aria-label="New edge confidence"><option value="1">conf 1.0</option><option value="0.85" selected>conf .85</option><option value="0.6">conf .6</option><option value="0.4">conf .4</option></select>
+    </div>
+    <div class="svg-holder">
+      <svg id="graph" role="img" aria-label="Editable interaction graph generated from the canonical model. Nodes show field rows like database diagram tables.">
+        <defs>
+          <marker id="arr-violet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#a78bfa"/></marker>
+          <marker id="arr-cyan" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#22d3ee"/></marker>
+          <marker id="arr-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+          <marker id="arr-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#34d399"/></marker>
+          <marker id="arr-magenta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f472b6"/></marker>
+        </defs>
+        <g id="viewport"><g id="groupLayer"></g><g id="edgeLayer"></g><g id="nodeLayer"></g><g id="groupHeadLayer"></g><circle id="pulseDot" r="8" fill="#fff" stroke="#7c3aed" stroke-width="3" style="display:none;filter:drop-shadow(0 0 8px #a78bfa)"/></g>
+      </svg>
+      <div class="hint" id="canvasHint">Select mode: drag nodes, click a node to edit it, click an edge to select it. Connect mode: click a source node, then a target node. Pan mode drags the canvas — pull-to-refresh is suppressed on the canvas. Pinch or use +/− to zoom; Fit frames the core graph. ◎ Focus (toolbar / bottom bar / Groups panel) focuses one category or family. + Node adds a draft box from a template; ⛶ Larger canvas fills the screen (page scroll locks while it is open).</div>
+      <div id="tooltip" role="status"></div>
+    </div>
+  </main>
+
+  <aside class="right" data-scrollable="1" aria-label="Inspector, verification, diff and integrations">
+    <h2>Inspector — edit selected node</h2>
+    <div class="detail-card">
+      <label class="flabel" for="inspTitle">Title</label><input type="text" id="inspTitle">
+      <label class="flabel" for="inspSub">Subtitle / role line</label><input type="text" id="inspSub">
+      <label class="flabel" for="inspType">Box type</label><input type="text" id="inspType">
+      <label class="flabel" for="inspStatus">Status</label><input type="text" id="inspStatus">
+      <label class="flabel" for="inspGroup">Group (model field — exports in JSON / Mermaid subgraphs; changing it is a model edit)</label><select id="inspGroup"></select>
+      <label class="flabel">Field rows — field · type · note (rendered on the box)</label>
+      <div id="fieldEditor"></div>
+      <div class="btnrow"><button class="btn small" id="addFieldBtn" type="button">+ Add field row</button><button class="btn small danger" id="deleteNodeBtn" type="button">Delete node</button></div>
+      <dl class="kv"><dt>Node id</dt><dd id="inspId">—</dd><dt>Plane</dt><dd id="inspPlane">—</dd><dt>In / Out</dt><dd id="inspIO">—</dd><dt>Notes</dt><dd id="inspNotes">—</dd><dt>Repo source</dt><dd id="inspRepo">—</dd><dt>Repo delta</dt><dd id="inspDelta">—</dd></dl>
+    </div>
+    <div class="detail-card" style="margin-top:10px" id="edgeCard">
+      <h3 style="margin:0 0 4px;font-size:14px">Selected edge</h3>
+      <div class="small" id="edgeInfo">Click an edge on the canvas to select it here.</div>
+      <div class="btnrow"><button class="btn small danger" id="deleteEdgeBtn" type="button" disabled>Delete selected edge</button></div>
+    </div>
+
+    <h2>Proposal dispatch console — new proposal</h2>
+    <div class="detail-card">
+      <p class="small" style="margin-top:0">This panel formalizes the owner ↔ agent chat loop <strong>happening in Muse chat right now</strong>: the owner drafts a concept, dispatches it, and gets feedback → review → enhancement → expansion → fit analysis back. Here the same loop is a form + a stage pipeline (the <code>proposal-flow</code> group on the canvas). Submitting = <strong>Prepare dispatch</strong>: the proposal becomes a draft node in the model (it appears in the Δ diff), wired to the chosen method's target and to every stage node, and the panel emits that method's real payload shape. <span class="prep-badge">PREPARED — not sent</span> Sending = a PAT issue POST / workflow dispatch call outside this static prototype; no “sent” state is ever shown here.</p>
+      <label class="flabel" for="propTitle">Proposal title</label>
+      <input type="text" id="propTitle" placeholder="e.g. Add a quota-drift watch for the delphi-* workflows">
+      <label class="flabel" for="propType">Type (issue-form family)</label>
+      <select id="propType"><option value="Proposal">Proposal</option><option value="Delphi RFP">Delphi RFP</option><option value="Research: service">Research: service</option><option value="Research: provider">Research: provider</option><option value="Target brief">Target brief</option></select>
+      <label class="flabel" for="propBody">Body — the proposal itself</label>
+      <textarea id="propBody" placeholder="What is proposed, why, and what changes if it lands."></textarea>
+      <label class="flabel" for="propFit">Fit targets — what it must fit (free text: surfaces, planes, constraints)</label>
+      <textarea id="propFit" style="min-height:64px" placeholder="e.g. must fit the Vercel SSOT lanes, the delphi-* quota slice, and the B160V touch-first rule; no new single-homed free tier"></textarea>
+      <label class="flabel" for="propMethod">Dispatch method</label>
+      <select id="propMethod">
+        <option value="issue">a) GitHub Issue — proposal.yml form, via PAT route</option>
+        <option value="delphi">b) Delphi intake — delphi-rfp.yml → Delphi Intake</option>
+        <option value="research">c) Research intake — research-service / provider → seed record</option>
+        <option value="workflow">d) Workflow dispatch — repository_dispatch / workflow_dispatch JSON</option>
+        <option value="chat">e) Chat relay — structured brief for a side-chat lane (this chat's loop)</option>
+      </select>
+      <div id="propWorkflowWrap" style="display:none">
+        <label class="flabel" for="propWorkflow">Workflow file (for method d)</label>
+        <input type="text" id="propWorkflow" value="delphi-generate.yml">
+      </div>
+      <h3 style="margin:14px 0 2px;font-size:13px">Stage pipeline — tap a stage</h3>
+      <p class="small" style="margin:0">Feedback → Review → Enhancement → Expansion → Fit analysis. Every stage starts <strong>awaiting dispatch</strong>; preparing a dispatch marks the stage nodes <em>Prepared — not sent</em> in the model.</p>
+      <div class="stepper" id="propStepper" role="group" aria-label="Proposal stage pipeline stepper"></div>
+      <div class="small" id="stageDetail" style="border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--panel)"></div>
+      <div id="fitPanel" style="display:none">
+        <h3 style="margin:14px 0 2px;font-size:13px">Fit analysis — checklist generated from the model itself</h3>
+        <p class="small" style="margin:0">Pick the groups / planes this proposal touches; conflicts and quota planes are then read off the live model (repo-delta nodes, group membership, plane wiring) — not typed in by hand.</p>
+        <div class="chiprow" id="fitGroupChips" role="group" aria-label="Groups this proposal touches"></div>
+        <ul class="checklist" id="fitChecklist"></ul>
+        <label class="flabel" for="fitVerdict">Fit verdict (admin fills — travels with the payload)</label>
+        <input type="text" id="fitVerdict" placeholder="e.g. FIT with deltas: … / NOT FIT: …">
+      </div>
+      <div class="btnrow"><button class="btn primary" id="propPrepareBtn" type="button">Prepare dispatch — create proposal node</button></div>
+      <div class="small" id="propStatus">No proposal prepared yet. Stages: awaiting dispatch.</div>
+      <div class="btnrow"><button class="btn small" id="propCopyBtn" type="button">Copy payload</button><button class="btn small" id="propDlBtn" type="button">Download payload</button></div>
+      <label class="flabel" for="propPayloadOut">Generated payload (PREPARED — not sent)</label>
+      <textarea id="propPayloadOut" readonly placeholder="Press “Prepare dispatch” — the payload for the chosen method appears here, and a draft proposal node appears in the proposal-flow group on the canvas."></textarea>
+    </div>
+
+    <h2>Verify — model accuracy</h2>
+    <div class="detail-card">
+      <dl class="kv"><dt>Version</dt><dd id="vVersion">—</dd><dt>Model hash</dt><dd id="vHash">—</dd><dt>Nodes</dt><dd id="vNodes">—</dd><dt>Edges</dt><dd id="vEdges">—</dd><dt>Rendered</dt><dd id="vRendered">—</dd><dt>Focus</dt><dd id="vFocus">focus: none</dd><dt>Touch</dt><dd id="vTouch">pull-to-refresh: suppressed on canvas · page scroll lock: off</dd></dl>
+      <div class="small" id="vCounts" style="margin-top:8px"></div>
+      <div class="small" style="margin-top:10px"><strong>Repo match</strong> — the repo is the authority; fleet-memory statuses are not. Sources: <code>docs/DEPLOYMENT-LANES.md</code> (blob c0131ee8) · <code>docs/ops/FREE-TIER-BACKEND-RECON-2026-10-21.md</code> (blob 91847c45) · master, fetched 2026-10-30 via the PAT API.</div>
+      <div class="small" id="repoMatch" style="margin-top:6px"></div>
+      <div class="small" style="margin-top:8px"><strong>Primary target: BLU View 5 (B160V)</strong> — Android phone viewport (~360–412 CSS px wide, tall), touch-first; desktop is secondary. All flows (edit, connect, diff, dispatch-prep) are completable by touch alone: tap a node to edit it, tap an edge to read its full detail in the “Selected edge” card (the tap equivalent of the hover tooltip — nothing is hover-only), and primary actions also live in the bottom action bar on phone-width screens.</div>
+      <div class="small" style="margin-top:8px"><strong>Satellite edges — endpoint &amp; styling audit.</strong> Style words describe the <strong>edge only</strong>, derived from the edge's own weight + confidence (≥3px / high-conf = solid/strong · 1px / low-conf = faint/thin · otherwise = connected/mid). Node statuses are listed separately per endpoint and never determine the edge style word:</div>
+      <div class="small" id="satEdges"></div>
+      <ul class="checklist" id="verifyList"></ul>
+      <div class="btnrow"><button class="btn small" id="verifyBtn" type="button">Re-run verify</button></div>
+    </div>
+
+    <h2>Export — same model, two formats</h2>
+    <div class="btnrow">
+      <button class="btn small" id="copyJsonBtn" type="button">Copy JSON</button>
+      <button class="btn small" id="dlJsonBtn" type="button">Download .json</button>
+      <button class="btn small" id="copyMmdBtn" type="button">Copy Mermaid</button>
+      <button class="btn small" id="dlMmdBtn" type="button">Download .mmd</button>
+    </div>
+    <label class="flabel" for="mmdOut">Mermaid (.mmd) — generated from the model</label>
+    <textarea id="mmdOut" readonly></textarea>
+
+    <h2>Δ Diff vs baseline &amp; dispatch</h2>
+    <p class="small">Baseline = the model as loaded. Every add / delete / edit / move / connect marks the model dirty and is listed here as a readable diff of the model JSON plus a Mermaid delta.</p>
+    <div class="small" id="diffSummary">No changes yet.</div>
+    <div class="btnrow"><button class="btn primary small" id="createDiffBtn" type="button">Create diff bundle</button><button class="btn small" id="copyDiffBtn" type="button">Copy diff</button><button class="btn small" id="dlDiffBtn" type="button">Download diff bundle</button></div>
+    <label class="flabel" for="diffOut">Diff bundle (.mmd delta + JSON + unified-style diff)</label>
+    <textarea id="diffOut" readonly placeholder="Press “Create diff bundle” after editing."></textarea>
+    <label class="flabel" for="dispatchTarget">Dispatch target</label>
+    <select id="dispatchTarget"><option value="github-pr">GitHub PR via fleet PAT route</option><option value="clipboard">Clipboard</option><option value="download">Download file</option></select>
+    <div class="btnrow"><button class="btn small" id="dispatchBtn" type="button">Prepare dispatch payload</button><button class="btn small" id="copyPayloadBtn" type="button">Copy payload</button><button class="btn small" id="dlPayloadBtn" type="button">Download payload</button></div>
+    <p class="small"><strong>Honest scope:</strong> this static prototype <strong>prepares and exports</strong> the dispatch payload only — it does not itself send anything to GitHub. No “sent” state is shown because none occurs here.</p>
+    <label class="flabel" for="payloadOut">Dispatch payload (prepared, not sent)</label>
+    <textarea id="payloadOut" readonly placeholder="No payload prepared yet."></textarea>
+
+    <h2>Event trace <span class="sim-badge">simulated</span></h2>
+    <div class="event-log" id="eventLog" aria-live="polite"><div>Idle. Press “Send pulse” to trace one request end-to-end.</div></div>
+
+    <h2>Resource inventory</h2>
+    <p class="small">Full fleet inventory — not just examples. Statuses reconciled against termux-monorepo master (fetched 2026-10-30 via PAT API): docs/DEPLOYMENT-LANES.md is the authority; where the repo disagrees with itself (Pages / Render / Cloudflare), the SSOT status governs and a ⚠ repo delta names both sources. Status snapshot — not live data; this static page does not call these endpoints.</p>
+    <div class="group-title">Compute / Hosting <span>deploy surfaces → graph satellites</span></div>
+    <div class="integ"><div class="head"><span class="name">Vercel</span><span class="status st-gated">LIVE · ADMIN-GATED</span></div><p>Repo SSOT (docs/DEPLOYMENT-LANES.md): the ONLY documented live application-hosting lane. Overall: <strong>LIVE, CAPACITY CONSTRAINED / SELECTOR CONFIGURED, EFFECT NOT YET VERIFIED</strong> (build-rate-limit noted). Exactly two SSOT lanes, modeled as two satellite nodes: <strong>(1) mcp-hub</strong> — LIVE, bearer-token-gated MCP router serving termux-mcp + android-mcp via /mcp/:server routes, root dir mcp-hub; <strong>(2) termux-monorepo</strong> — LIVE, root demo-portal/public, public showcase, currently a placeholder page. Production publish is admin-gated by manual dispatch only; git auto-deploy is off. help-wanted-dash + help-wanted-oversight are connected projects (settings PR #1310) — <em>not</em> SSOT lanes.</p></div>
+    <div class="integ"><div class="head"><span class="name">Render</span><span class="status st-impl">AVAILABLE/CANDIDATE · UNPROVEN HERE ⚠</span></div><p>Repo SSOT status governs: AVAILABLE/CANDIDATE, UNPROVEN HERE — no Render project/lane recorded. ⚠ Repo delta: the recon doc (FREE-TIER-BACKEND-RECON-2026-10-21.md) says Render “Live” (app installed, Jules MCP connected, previews). Both sources named; SSOT governs the node.</p></div>
+    <div class="integ"><div class="head"><span class="name">Fly.io</span><span class="status st-impl">LIVE · UNPRICED · BILLING NOT ESTABLISHED</span></div><p>Live but unpriced per recon; billing state NOT ESTABLISHED. deploy-hindsight.yml, manual dispatch; free allowances ended Oct 2024 for new accounts.</p></div>
+    <div class="integ"><div class="head"><span class="name">Koyeb</span><span class="status st-impl">DORMANT</span></div><p>Dormant per recon: koyeb-hindsight-deploy.yml exists; revalidate before revival.</p></div>
+    <div class="integ"><div class="head"><span class="name">GitHub Pages</span><span class="status st-open">CONFIGURED / PUBLICATION UNVERIFIED ⚠</span></div><p>Repo SSOT status governs: CONFIGURED / PUBLICATION UNVERIFIED — workflow help-wanted-dashboard-deploy.yml + gh-pages branch exist; SSOT says verify URLs+SHA before declaring LIVE. ⚠ Repo delta: the recon doc says Pages = Live. Repo-internal disagreement — both sources named, neither silently picked.</p></div>
+    <div class="group-title">Data / Stores <span>stores &amp; state</span></div>
+    <div class="integ"><div class="head"><span class="name">Neon</span><span class="status st-ok">LIVE-ISH</span></div><p>“Live-ish” per recon (FREE-TIER-BACKEND-RECON-2026-10-21.md): batch writes hourly. Repo edge: lane-events-recorder.yml (GitHub Actions → Neon). Provisioned primary store for lane events.</p></div>
+    <div class="integ"><div class="head"><span class="name">Supabase</span><span class="status st-open">GAP — REGISTRY RECORD ONLY</span></div><p>Gap per recon: registry record only; the Supabase → Jules lane is still open (only remaining path = Supabase’s own email/password sign-in, not yet taken).</p></div>
+    <div class="integ"><div class="head"><span class="name">Turso</span><span class="status st-impl">RECORDED · UN-DETAILED</span></div><p>Recorded, un-detailed per recon: registry record only, limits null.</p></div>
+    <div class="integ"><div class="head"><span class="name">Upstash</span><span class="status st-impl">RECORDED · UN-DETAILED</span></div><p>Recorded, un-detailed per recon: registry record only, limits null.</p></div>
+    <div class="integ"><div class="head"><span class="name">Grafana Cloud</span><span class="status st-impl">RECORDED · UN-DETAILED</span></div><p>Recorded, un-detailed per recon: registry record only, limits null. Modeled as a satellite node fed from Logs.</p></div>
+    <div class="group-title">Edge / Transport <span>public intake &amp; gateways</span></div>
+    <div class="integ"><div class="head"><span class="name">Cloudflare</span><span class="status st-impl">AVAILABLE/CANDIDATE · UNPROVEN HERE ⚠</span></div><p>Repo SSOT status governs: AVAILABLE/CANDIDATE, UNPROVEN HERE — no live Cloudflare project recorded in the SSOT. ⚠ Repo delta: recon (2026-10-21) says “Partial — Tunnel lane blocked on cfapi.net consent; Workers/Pages/D1/R2 lane never built”. The fleet’s workers.dev device-queue Worker is <strong>not</strong> a repo lane and is not presented as one.</p></div>
+    <div class="integ"><div class="head"><span class="name">Gravitee</span><span class="status st-mock">RESEARCH SEED IN-REPO</span></div><p>Research-seed only in-repo. The connector was built outside the repo (mock-verified against Management API v2, 149 paths). No live instance exists yet — not connected.</p></div>
+    <div class="integ"><div class="head"><span class="name">Bifrost</span><span class="status st-impl">PROPOSAL · PARTIAL SLICE IN-REPO</span></div><p>Request plane: provider routing, model route, fallback. Proposal + partial slice in-repo — not a live gateway.</p></div>
+    <div class="integ"><div class="head"><span class="name">Temporal</span><span class="status st-mock">SELF-HOST OPERATIONAL · MCP READ-ONLY</span></div><p>Time / durable-execution plane. Self-host operational; official MCP is read-only.</p></div>
+    <div class="integ"><div class="head"><span class="name">getDX</span><span class="status st-unclaimed">NOT ESTABLISHED</span></div><p>Measurement candidate: absent, 0 hits in fleet recon — shown dimmed / NOT ESTABLISHED.</p></div>
+    <div class="group-title">Control / Automation <span>orchestration &amp; evidence</span></div>
+    <div class="integ"><div class="head"><span class="name">GitHub Actions</span><span class="status st-ok">LIVE · AUTHORITATIVE</span></div><p>Live, authoritative execution substrate — 232 workflow files on master (counted 2026-10-30). Workflows backing this diagram: vercel-batch-deploy.yml, vercel-ignore-guard.yml, vercel-quota-probe.yml, tribute-vercel-prod.yml, lane-events-recorder.yml (→ Neon), n8n-she-bridge.yml, temporal-engagement.yml, temporal-self-host-smoke.yml, cross-plane-graph.yml, and the delphi-* family.</p></div>
+    <div class="integ"><div class="head"><span class="name">Hex</span><span class="status st-ok">INTEGRATED EVIDENCE SURFACE</span></div><p>Evidence surface per docs/ops/HEX-MONEYBALL-INTEGRATION.md, fed by hex-moneyball-evidence.yml. Actions remains the execution plane — Hex is evidence, not execution.</p></div>
+    <div class="integ"><div class="head"><span class="name">GitHub Wiki / DeepWiki / Devin Wiki</span><span class="status st-mock">DOCUMENTATION SURFACES</span></div><p>Documentation only, modeled as one grouped node. Never an authority boundary.</p></div>
+    <div class="integ"><div class="head"><span class="name">GitHub Codespaces</span><span class="status st-open">PRESENT · UNMEASURED</span></div><p>Present, unmeasured per recon: 3 codespaces, NO registry record — the recon’s biggest registry gap.</p></div>
+    <div class="integ"><div class="head"><span class="name">Replit</span><span class="status st-ok">LIVE · Muse-SIDE CONNECTOR</span></div><p>Live (Muse-side connector) per recon. Not a backend the mesh depends on.</p></div>
+    <div class="integ"><div class="head"><span class="name">GitLab</span><span class="status st-open">DEGRADED · MIRROR WEBHOOK 400</span></div><p>Mirror webhook degraded per recon — last response 400.</p></div>
+    <div class="integ"><div class="head"><span class="name">Platform201 MCP</span><span class="status st-live">LIVE · 401</span></div><code>https://api.platform201.com/mcp/v1</code><p>Endpoint live, probed today: returns a 401 OAuth challenge (no bearer). OAuth-only — no API key exists. Known blocker: token exchange fails through the VM egress proxy. <strong>Not connected.</strong></p></div>
+    <div class="integ"><div class="head"><span class="name">Platform201</span><span class="status st-ok">EXTERNAL · PROJECT LIVE OUTSIDE REPO SSOT</span></div><p>NOT a repo deployment lane — external platform, project live outside the repo SSOT. Visual graph cloud infrastructure — theirs, used first while we build our own. Solo plan, $0.</p></div>
+    <div class="integ"><div class="head"><span class="name">n8n</span><span class="status st-mock">SELF-HOSTED</span></div><p>Self-host Community wiring in-repo (ops/n8n/docker-compose.yml) + bridge workflow n8n-she-bridge.yml. NOT a hosted service. GitHub Actions is authoritative. Not part of Platform201.</p></div>
+    <div class="integ"><div class="head"><span class="name">Witness / Evidence Substrate</span><span class="status st-open">INVESTIGATE</span></div><p>Per docs/ops/AGENT-EVIDENCE-SUBSTRATE.md; witness-attestation = INVESTIGATE in config/agent_stack_integrations.json — labeled INVESTIGATE, not live.</p><p>Provenance &amp; attestation. The BIUDL execution loop runs:</p><ol class="biudl"><li>RECON</li><li>PLAN / MEASURE</li><li>ACT</li><li>COMMIT</li><li>WAIT</li><li>WATCH</li><li>VALIDATE</li><li>RE-FETCH</li><li>COMPARE</li><li>CLASSIFY</li><li>RECORD</li><li>REPEAT</li></ol><p>DoE / MVT harness: experiment arms vary declared factors while task contract, environment fingerprint, and scorer stay fixed.</p></div>
+    <div class="group-title">Intake planes <span>Delphi · Research · Issues · Competition</span></div>
+    <div class="integ"><div class="head"><span class="name">Delphi Oracle — proposal passes</span><span class="status st-ok">LIVE PIPELINE</span></div><p>Form <code>.github/ISSUE_TEMPLATE/delphi-rfp.yml</code> + <code>delphi-intake.yml</code> (live) → <code>delphi-generate.yml</code> — the Oracle Method <em>generates</em>, the gate only <em>evaluates</em> → cross-vote ballots (cycle v2: rationale + evidence_refs required, source classes separate; phantom suite = 0 without a run receipt) → <code>delphi-gate.yml</code> (weights ledger issue #1489; gate_pass_rate 0.68 / elo 1532 since 2026-10-21) → outcome ledger issue #1487 (live). <code>delphi-cycle.yml</code>: N5 = the cycle as a Temporal workflow, build briefed, promotion = dual-run parity.</p></div>
+    <div class="integ"><div class="head"><span class="name">Research — intake &amp; observatory</span><span class="status st-impl">INTAKE LIVE</span></div><p><code>workflows/research-intake.yml</code> + templates <code>research-service.yml</code> / <code>research-provider.yml</code>; triggers on opened / reopened / edited only, sha256 dedupe. Seeds: <code>docs/repositories/research-seeds</code>, schema v1.0. Repository Observatory seam: <code>observatory-intake/v1</code>; provenance signals owned / starred / watching / issue.</p></div>
+    <div class="integ"><div class="head"><span class="name">Issues — templates &amp; triage</span><span class="status st-ok">ON MASTER</span></div><p><code>.github/ISSUE_TEMPLATE/</code> on master: proposal.yml, delphi-rfp.yml, research-service.yml, research-provider.yml, target-brief.yml, bug.yml, plus the apk-cross-reference and reverse-engineering-taxonomy families. Triage is mechanical: title-class rules, labels verified in the live taxonomy. Each form routes somewhere real: delphi-rfp → Delphi intake, research-* → Research intake, proposal → the proposal dispatch console above.</p></div>
+    <div class="integ"><div class="head"><span class="name">Competition — challenge plane</span><span class="status st-open">7 EVENTS · ADMIN METRICS INTERNAL</span></div><p>Coordinator: <code>ops/challenge/coordinator.json</code>, 7 events, blob d5f14c5c84c9; single-writer = challenge-entries lane. Entries track <strong>our team only</strong> — external competitors are observation only. OSINT watch: <code>challenge-osint-watch.yml</code>, weekly Wed 08:17Z, coverage matrix + append-only page snapshots. Participant store = Neon tables; the repo keeps a derived projection only. Admin metrics feed (<code>apps/help-wanted-dashboard/data/challenge-admin-metrics.json</code>) is <strong>ADMIN PANEL ONLY</strong> — internal metrics, values deliberately not in this graph.</p></div>
+    <div class="group-title">Available, unclaimed <span>no_account stubs · recon §6</span></div>
+    <div class="unclaimed"><p class="small" style="margin:8px 0 0">Vendor-checked 2026-10-21, NO fleet account, signups are owner/card-gated actions. Shown dimmed — low opacity = not established.</p>
+    <div class="integ"><div class="head"><span class="name">GCP Cloud Run</span><span class="status st-unclaimed">UNCLAIMED</span></div><p>Always-free core candidate. No fleet account.</p></div>
+    <div class="integ"><div class="head"><span class="name">AWS Lambda</span><span class="status st-unclaimed">UNCLAIMED</span></div><p>Always-free core candidate. No fleet account.</p></div>
+    <div class="integ"><div class="head"><span class="name">Azure Functions</span><span class="status st-unclaimed">UNCLAIMED</span></div><p>Always-free core candidate. No fleet account.</p></div>
+    <div class="integ"><div class="head"><span class="name">Oracle Ampere A1</span><span class="status st-unclaimed">UNCLAIMED</span></div><p>Always-free core candidate. No fleet account.</p></div>
+    <div class="integ"><div class="head"><span class="name">DigitalOcean</span><span class="status st-unclaimed">NO_ACCOUNT STUB · TRIAL</span></div><p>Trial stub per recon §6. No fleet account.</p></div></div>
+    <div class="mortality"><b>Mortality rule:</b> no critical lane single-homed on a free tier; every free dependency carries a named exit.</div>
+  </aside>
+</div>
+<div class="focus-picker" id="focusPicker" data-scrollable="1" hidden>
+  <h3>Focus on a category / family</h3>
+  <div class="small">Focus expands the picked group and collapses all others. View state only — the model and the Δ diff are untouched. Exiting Focus restores the exact prior collapse state and camera.</div>
+  <div class="btnrow" role="group" aria-label="How non-focused groups are shown (picker)">
+    <button class="btn small" id="fpDimBtn" type="button" aria-pressed="false" style="min-height:44px">Dim others</button>
+    <button class="btn small" id="fpHideBtn" type="button" aria-pressed="true" style="min-height:44px">Hide others (summaries remain)</button>
+    <button class="btn small" id="fpFitOnFocusBtn" type="button" aria-pressed="true" style="min-height:44px">Fit on focus: ON</button>
+    <button class="btn small" id="fpLockBtn" type="button" aria-pressed="false" style="min-height:44px">Lock page scroll</button>
+  </div>
+  <div class="fp-list" id="focusPickerList"></div>
+  <div class="btnrow"><button class="btn small" id="fpExitBtn" type="button" style="min-height:44px">Exit Focus — restore previous view</button><button class="btn small" id="fpCloseBtn" type="button" style="min-height:44px">Close picker</button></div>
+</div>
+<div class="focus-picker" id="tplSheet" data-scrollable="1" hidden>
+  <h3>Add node — templates</h3>
+  <div class="small">Pick a template — a draft box is added to the model exactly as from the panel list (marked dirty vs baseline, appears in the Δ diff), then edit it in the inspector.</div>
+  <div class="fp-list" id="tplSheetList"></div>
+  <div class="btnrow"><button class="btn small" id="tplSheetClose" type="button" style="min-height:44px">Close</button></div>
+</div>
+<div class="mobile-bar" role="group" aria-label="Primary actions">
+  <button class="btn primary" id="mbPulse" type="button">▶ Pulse</button>
+  <button class="btn" id="mbFocus" type="button" aria-pressed="false">◎ Focus</button>
+  <button class="btn" id="mbFit" type="button">Fit</button>
+  <button class="btn" id="mbNode" type="button">+ Node</button>
+  <button class="btn" id="mbFs" type="button" aria-pressed="false">⛶ Canvas</button>
+  <button class="btn" id="mbDiff" type="button">Δ Create diff</button>
+  <button class="btn" id="mbDispatch" type="button">Prepare dispatch</button>
+  <button class="btn primary" id="mbProposal" type="button">＋ Proposal</button>
+</div>
+<footer class="note">Static prototype. Primary target surface: BLU View 5 (B160V), touch-first; desktop secondary. The diagram is a canonical data model (model version shown in Verify) rendered deterministically to SVG; Mermaid and JSON exports are generated from that same model. The hand sketch was a semi-random concept draft, not a spec — topology here is the model, not a tracing. Pulses are simulated in-page; resource statuses are the 2026-10-30 checked snapshot. Dispatch prepares and exports a payload only; it does not send to GitHub.</footer>
+<script>
+(function(){
+"use strict";
+var PLANE_COLOR={control:"#a78bfa",execution:"#22d3ee",evidence:"#fbbf24",external:"#34d399",feedback:"#f472b6"};
+var PLANE_MARKER={control:"arr-violet",execution:"arr-cyan",evidence:"arr-amber",external:"arr-green",feedback:"arr-magenta"};
+var DASH={sync:"",async:"9 6",evidence:"2 6",feedback:"14 5 3 5"};
+var TYPE_NAME={sync:"Synchronous control",async:"Async / event",evidence:"Evidence / provenance",feedback:"Feedback loop"};
+function F(n,t,note){return{name:n,type:t,note:note||""};}
+function N(id,type,title,sub,plane,layer,x,y,w,status,notes,fields,repoSource,delta){return{id:id,type:type,title:title,sub:sub,plane:plane,layer:layer,x:x,y:y,w:w,status:status,notes:notes,fields:fields,repoSource:repoSource||"",repoDelta:delta||""};}
+function E(id,from,to,plane,type,weight,conf,label,repoSource){return{id:id,from:from,to:to,plane:plane,type:type,weight:weight,conf:conf,label:label,repoSource:repoSource||""};}
+
+var MODEL={version:"model/v4",nodes:[
+ N("show","service","Show User","results → user","control","core",150,70,184,"Active","Presentation of validated results back to the user.",[F("payload","rendered","validated output"),F("audience","user","requester")]),
+ N("user","service","User: Request","entry point","control","core",430,70,196,"Active","Every interaction starts here; results return via Show User.",[F("intent","text","what is asked"),F("context","refs","prior state")]),
+ N("routing","service","Routing / Who?","who handles this?","control","core",430,205,196,"Active","Decides who owns the request; connects to Loops, DoE and Bifrost.",[F("owner","lane id","decided here"),F("policy","rules","routing table")], "docs/ops/AGENT-TEAM-ORCHESTRATION.md"),
+ N("orch","service","Orchestrator","directly under Routing","control","core",430,330,196,"Active","Receives the routed request and drives execution.",[F("plan","steps","ordered"),F("state","durable?","see Temporal")], "docs/ops/AGENT-TEAM-ORCHESTRATION.md"),
+ N("loops","service","Loops","iteration control","feedback","core",150,215,184,"Active","Iteration control beside Routing; descends into Check This.",[F("iteration","count","bounded"),F("exit","condition","checked")]),
+ N("check","service","Check This","verify before doing","execution","core",150,350,184,"Active","Verifies input before Do Stuff! acts on it.",[F("check","predicate","pass / fail"),F("evidence","refs","what was seen")]),
+ N("dostuff","service","Do Stuff!","central execution","execution","core",430,455,196,"Active","The hub: routes to X, tasks Scout, drives n8n / Actions.",[F("work","task","central unit"),F("route","→ X","primary")]),
+ N("x","junction","X","junction","execution","core",665,455,84,"Active","Route junction fanning out to the worker lanes.",[F("fan-out","3 lanes","+ Logs")]),
+ N("laneA","service","Lane A","worker","execution","core",575,600,92,"Active","Parallel worker lane under X.",[F("task","unit","assigned by X")]),
+ N("laneB","service","Lane B","worker","execution","core",680,600,92,"Active","Parallel worker lane under X.",[F("task","unit","assigned by X")]),
+ N("laneC","service","Lane C","worker","execution","core",785,600,92,"Active","Parallel worker lane under X.",[F("task","unit","assigned by X")]),
+ N("logs","store","Logs","cluster log sink","evidence","core",885,600,100,"Active","Log box alongside the worker lanes; converges into the Aggregator and Neon.",[F("stream","append-only","cluster logs"),F("retention","policy","")]),
+ N("agg","service","Aggregator","cluster convergence","execution","core",680,715,196,"Active","All lanes converge here; output loops back to Do Stuff! and X.",[F("merge","rule","convergence"),F("result","bundle","")]),
+ N("doe","service","DoE","design of experiments","evidence","core",720,215,150,"Active","Arms vary declared factors while task contract, environment fingerprint, and scorer stay fixed.",[F("factor","declared","varied per arm"),F("scorer","fixed","same for all arms")], "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md"),
+ N("arm1","service","Arm 1","experiment","evidence","core",905,190,96,"Armed","One declared factor combination.",[F("config","variant","")]),
+ N("arm2","service","Arm 2","experiment","evidence","core",905,278,96,"Armed","One declared factor combination.",[F("config","variant","")]),
+ N("arm3","service","Arm 3","experiment","evidence","core",905,366,96,"Armed","One declared factor combination.",[F("config","variant","")]),
+ N("scout","service","Scout ☺","recon under Do Stuff!","evidence","core",300,565,150,"Active","Recon feeding the BIUDL loop.",[F("recon","pass","fleet scan")], "docs/ops/BIUDL-EXECUTION-AND-PROVENANCE.md"),
+ N("biudl","service","BIUDL!","execution loop","evidence","core",300,665,184,"Active","RECON → PLAN/MEASURE → ACT → COMMIT → WAIT → WATCH → VALIDATE → RE-FETCH → COMPARE → CLASSIFY → RECORD → REPEAT.",[F("step","12-phase","loop"),F("record","provenance","every cycle")], "docs/ops/BIUDL-EXECUTION-AND-PROVENANCE.md"),
+ N("validate","service","Validate","attest & compare","evidence","core",300,790,184,"Active","Attests and compares; its outer loop returns to Show User.",[F("attest","check",""),F("compare","vs expected","")], "docs/ops/BIUDL-EXECUTION-AND-PROVENANCE.md"),
+ N("bifrost","gateway","Bifrost","request plane","control","core",665,70,212,"Proposal · partial slice in-repo","Provider / model routing with fallback. Proposal + partial slice in-repo — not a live gateway.",[F("provider","route","per request"),F("model route","policy",""),F("fallback","chain","on failure")]),
+ N("temporal","workflow","Temporal","durable execution","execution","core",110,790,190,"Self-host operational · MCP read-only","Time / durable-execution plane. In-repo: temporal-engagement.yml + temporal-self-host-smoke.yml (P1 smoke). Self-host operational; official MCP read-only.",[F("task queue","name",""),F("activity","fn","retried"),F("signal / query","in / out","")], ".github/workflows/temporal-engagement.yml"),
+ N("n8n","workflow","n8n","workflow automation","external","core",120,485,180,"Self-hosted","Separate self-hosted Community wiring via docker-compose. GitHub Actions is authoritative; not part of Platform201.",[F("trigger","event","workflow start"),F("steps","nodes","ordered"),F("webhook","url","intake")], "ops/n8n/docker-compose.yml"),
+ N("gravitee","gateway","Gravitee","API gateway","external","core",905,462,180,"Research seed in-repo","In-repo: research seed only. The connector was built outside the repo (mock-verified vs Management API v2, 149 paths). No live instance — not connected.",[F("api","name",""),F("plans","tier",""),F("policies","list","")]),
+ N("platform201","blueprint","Platform201","visual graph blueprint","external","core",905,70,212,"External platform · project live outside repo SSOT","NOT a repo deployment lane. External platform, project live outside the repo SSOT — theirs, used first while we build our own. Solo plan, $0.",[F("node type","blueprint",""),F("env","name",""),F("deploy target","own GCP","")]),
+ N("lane_events","table","lane_events","SQL table · Neon","external","core",905,715,216,"Live · in Neon","Example SQL/DB table box: columns rendered as field rows, as in visual DB diagram tools.",[F("id","uuid PK",""),F("lane","text",""),F("event","jsonb","payload"),F("created_at","timestamptz","")], ".github/workflows/lane-events-recorder.yml"),
+ N("getdx","service","getDX","measurement","evidence","core",480,830,170,"NOT ESTABLISHED","Measurement candidate: absent, 0 hits in fleet recon. Shown dimmed — not established.",[F("metric","—","no data"),F("source","—","0 hits")]),
+ N("cloudflare","service","Cloudflare","SSOT: candidate, unproven here","external","satellite",1140,60,216,"AVAILABLE/CANDIDATE · UNPROVEN HERE","Repo SSOT (docs/DEPLOYMENT-LANES.md): AVAILABLE/CANDIDATE, UNPROVEN HERE — no live Cloudflare project recorded in the SSOT. The fleet's workers.dev device-queue Worker is NOT a repo lane and is not shown as one.",[F("SSOT lane","none recorded",""),F("recon","partial","2026-10-21")],"docs/DEPLOYMENT-LANES.md","SSOT docs/DEPLOYMENT-LANES.md: AVAILABLE/CANDIDATE, UNPROVEN HERE (no live Cloudflare project recorded). Recon docs/ops/FREE-TIER-BACKEND-RECON-2026-10-21.md: 'Partial — Tunnel lane blocked on cfapi.net consent; Workers/Pages/D1/R2 lane never built' (2026-10-21). SSOT governs this node."),
+ N("render","service","Render","SSOT: candidate, unproven here","external","satellite",1140,190,216,"AVAILABLE/CANDIDATE · UNPROVEN HERE","Repo SSOT (docs/DEPLOYMENT-LANES.md): AVAILABLE/CANDIDATE, UNPROVEN HERE — no Render project/lane recorded.",[F("SSOT lane","none recorded",""),F("recon claim","Live","app + Jules MCP")],"docs/DEPLOYMENT-LANES.md","SSOT docs/DEPLOYMENT-LANES.md: AVAILABLE/CANDIDATE, UNPROVEN HERE (no Render project/lane recorded). Recon docs/ops/FREE-TIER-BACKEND-RECON-2026-10-21.md: Render 'Live' (app installed, Jules MCP connected, previews). SSOT governs this node."),
+ N("ghpages","service","GitHub Pages","SSOT: configured, unverified","external","satellite",1140,450,216,"CONFIGURED / PUBLICATION UNVERIFIED","Repo SSOT (docs/DEPLOYMENT-LANES.md): workflow help-wanted-dashboard-deploy.yml + gh-pages branch exist; SSOT says verify URLs+SHA before declaring LIVE.",[F("workflow","help-wanted-dashboard-deploy.yml",""),F("branch","gh-pages","")],"docs/DEPLOYMENT-LANES.md","SSOT docs/DEPLOYMENT-LANES.md: CONFIGURED / PUBLICATION UNVERIFIED (verify URLs+SHA before declaring LIVE). Recon docs/ops/FREE-TIER-BACKEND-RECON-2026-10-21.md: Pages = Live. This is a repo-internal disagreement — SSOT governs this node; neither claim is silently dropped."),
+ N("flyio","service","Fly.io","live · unpriced","external","satellite",1140,320,216,"Live · unpriced · billing NOT ESTABLISHED","Live but unpriced per recon; billing state NOT ESTABLISHED. deploy-hindsight.yml, manual dispatch. Free allowances ended Oct 2024 for new accounts.",[F("workflow","deploy-hindsight.yml","manual dispatch"),F("billing","NOT ESTABLISHED","")],"docs/ops/FREE-TIER-BACKEND-RECON-2026-10-21.md"),
+ N("koyeb","service","Koyeb","dormant","external","satellite",1140,565,216,"Dormant","Dormant per recon: koyeb-hindsight-deploy.yml exists; revalidate before revival.",[F("workflow","koyeb-hindsight-deploy.yml","exists"),F("revival","revalidate first","")],"docs/ops/FREE-TIER-BACKEND-RECON-2026-10-21.md"),
+ N("vercel-mcp","service","Vercel · mcp-hub","LIVE · MCP router lane","external","satellite",1140,680,216,"LIVE","SSOT lane 1 of 2 (docs/DEPLOYMENT-LANES.md). Bearer-token-gated MCP router serving termux-mcp + android-mcp via /mcp/:server routes. Root dir mcp-hub.",[F("routes","/mcp/:server","termux-mcp + android-mcp"),F("auth","bearer token","gated"),F("root dir","mcp-hub","")],"docs/DEPLOYMENT-LANES.md"),
+ N("vercel-demo","service","Vercel · termux-monorepo","LIVE · showcase lane (placeholder)","external","satellite",1140,800,216,"LIVE · Gate closed","SSOT lane 2 of 2 (docs/DEPLOYMENT-LANES.md). Root demo-portal/public — public showcase, currently a placeholder page. Vercel overall: LIVE, CAPACITY CONSTRAINED / SELECTOR CONFIGURED, EFFECT NOT YET VERIFIED (build-rate-limit noted). Production publish admin-gated by manual dispatch only; git auto-deploy off. help-wanted-dash + help-wanted-oversight are connected projects (settings PR #1310), NOT SSOT lanes.",[F("root dir","demo-portal/public",""),F("page","placeholder","showcase"),F("publish","manual dispatch","gated")],"docs/DEPLOYMENT-LANES.md"),
+ N("neon","store","Neon","lane-event store · live-ish","external","satellite",1140,930,216,"Live-ish","“Live-ish” per recon — batch writes hourly. Repo edge: lane-events-recorder.yml (GitHub Actions → Neon). Provisioned primary store for lane events.",[F("db","postgres","primary store"),F("writes","batch · hourly",""),F("table","lane_events","see SQL box")],"docs/ops/FREE-TIER-BACKEND-RECON-2026-10-21.md"),
+ N("codespaces","service","GitHub Codespaces","present · unmeasured","external","satellite",1140,1060,216,"Present · unmeasured","Present, unmeasured per recon: 3 codespaces, NO registry record — the recon's biggest registry gap.",[F("codespaces","3","present"),F("registry","no record","biggest gap")],"docs/ops/FREE-TIER-BACKEND-RECON-2026-10-21.md"),
+ N("grafana","service","Grafana Cloud","recorded · un-detailed","external","satellite",1140,1175,216,"Recorded · un-detailed","Recorded, un-detailed per recon: registry record only, limits null.",[F("record","registry","limits null")],"docs/ops/FREE-TIER-BACKEND-RECON-2026-10-21.md"),
+ N("replit","service","Replit","live · Muse-side connector","external","satellite",1140,1290,216,"Live · Muse-side connector","Live (Muse-side connector) per recon. Not a backend the mesh depends on.",[F("connector","Muse-side",""),F("mesh dependency","none","")],"docs/ops/FREE-TIER-BACKEND-RECON-2026-10-21.md"),
+ N("gitlab","service","GitLab","mirror webhook · degraded","external","satellite",1140,1405,216,"Degraded · last response 400","Mirror webhook degraded per recon — last response 400.",[F("mirror","webhook",""),F("last response","400","degraded")],"docs/ops/FREE-TIER-BACKEND-RECON-2026-10-21.md"),
+ N("hex","service","Hex","integrated evidence surface","evidence","core",905,850,216,"INTEGRATED EVIDENCE SURFACE","Integrated evidence surface per docs/ops/HEX-MONEYBALL-INTEGRATION.md, fed by hex-moneyball-evidence.yml. GitHub Actions remains the execution plane; Hex is evidence only.",[F("feed","hex-moneyball-evidence.yml",""),F("role","evidence","not execution")],"docs/ops/HEX-MONEYBALL-INTEGRATION.md"),
+ N("wiki","service","Wikis","documentation surfaces","control","core",480,965,220,"DOCUMENTATION SURFACE","GitHub Wiki / DeepWiki / Devin Wiki — documentation surfaces only, grouped as one node. Never an authority boundary.",[F("surfaces","Wiki · DeepWiki · Devin Wiki","grouped"),F("authority","none","docs only")]),
+ N("witness","service","Witness","attestation substrate","evidence","core",110,925,190,"INVESTIGATE","Evidence/attestation substrate per docs/ops/AGENT-EVIDENCE-SUBSTRATE.md. witness-attestation = INVESTIGATE in config/agent_stack_integrations.json — not live.",[F("integration","witness-attestation","INVESTIGATE"),F("substrate","evidence","")],"docs/ops/AGENT-EVIDENCE-SUBSTRATE.md"),
+ N("ghactions","service","GitHub Actions","LIVE · processor plane","external","core",110,620,180,"Live — authoritative","Live execution substrate: 232 workflow files on master (counted 2026-10-30). Authoritative processor plane: workflows, quota gates, dispatch.",[F("workflows","232 files","master · 2026-10-30"),F("vercel","batch-deploy · ignore-guard · quota-probe",""),F("tribute","tribute-vercel-prod.yml",""),F("neon","lane-events-recorder.yml",""),F("families","delphi-* · cross-plane-graph","")], "docs/ops/FREE-TIER-BACKEND-RECON-2026-10-21.md"),
+ N("delphi-intake","service","Delphi Intake","delphi-rfp.yml form + intake workflow","evidence","core",280,1580,216,"Live","Intake for Delphi RFPs: issue form delphi-rfp.yml plus workflow delphi-intake.yml. Status: live.",[F("form","delphi-rfp.yml","issue template"),F("workflow","delphi-intake.yml",""),F("status","live","")], ".github/workflows/delphi-intake.yml"),
+ N("delphi-generate","workflow","Generate n proposals","delphi-generate.yml","evidence","core",540,1580,216,"Live","The Oracle Method generates the proposal set; the gate only evaluates — generation and judgement are separate steps.",[F("workflow","delphi-generate.yml",""),F("method","Oracle Method","generates"),F("gate role","evaluates only","never generates")], ".github/workflows/delphi-generate.yml"),
+ N("delphi-vote","service","Cross-vote ballots","cycle v2 · receipts required","evidence","core",800,1580,216,"Live · cycle v2","Cross-vote ballots, cycle v2: rationale + evidence_refs required, source classes kept separate; the phantom suite scores 0 without a run receipt.",[F("ballot","rationale + evidence_refs","required"),F("sources","classes separate",""),F("phantom suite","0","without run receipt")], ".github/workflows/delphi-generate.yml"),
+ N("delphi-gate","service","Gate","delphi-gate.yml · weights ledger #1489","evidence","core",800,1760,216,"Live","Gate evaluation only (delphi-gate.yml). Weights live in the ledger on issue #1489; gate_pass_rate 0.68 / elo 1532 since 2026-10-21.",[F("workflow","delphi-gate.yml","evaluates only"),F("weights","ledger · issue #1489",""),F("gate_pass_rate","0.68","since 2026-10-21"),F("elo","1532","since 2026-10-21")], ".github/workflows/delphi-gate.yml"),
+ N("delphi-ledger","store","Outcome ledger","issue #1487 · live","evidence","core",540,1760,216,"Live · issue #1487","Delphi outcomes are recorded on the outcome ledger, issue #1487 (live).",[F("ledger","issue #1487","live"),F("records","gate outcomes","")], "docs/ops/DELPHI.md"),
+ N("delphi-cycle","workflow","Delphi Cycle","delphi-cycle.yml · N5 Temporal workflow","execution","core",280,1760,216,"Build briefed · N5","delphi-cycle.yml wraps the pass as a loop. N5 = the cycle as a Temporal workflow — build briefed; promotion = dual-run parity.",[F("workflow","delphi-cycle.yml",""),F("N5","cycle as Temporal workflow","build briefed"),F("promotion","dual-run parity","")], ".github/workflows/delphi-cycle.yml"),
+ N("research-intake","service","Research intake","research-intake.yml · dedupe sha256","evidence","core",1060,1580,216,"Live","workflows/research-intake.yml with templates research-service.yml / research-provider.yml. Triggers on opened / reopened / edited only; sha256 dedupe.",[F("workflow","research-intake.yml",""),F("templates","research-service · research-provider",".yml"),F("triggers","opened · reopened · edited","only"),F("dedupe","sha256","")], ".github/workflows/research-intake.yml"),
+ N("research-seeds","store","Research seeds","docs/repositories/research-seeds","evidence","core",1320,1580,216,"Recorded · schema v1.0","Seed records live in docs/repositories/research-seeds, schema v1.0.",[F("path","docs/repositories/research-seeds",""),F("schema","v1.0","")], "docs/repositories/research-seeds"),
+ N("research-observatory","service","Repository Observatory","observatory-intake/v1 seam","evidence","core",1190,1760,216,"Seam · observatory-intake/v1","Repository Observatory behind the observatory-intake/v1 seam; provenance signals: owned / starred / watching / issue.",[F("seam","observatory-intake/v1",""),F("signals","owned · starred · watching · issue","provenance")], "docs/repositories/research-seeds"),
+ N("issue-templates","table","Issue template family",".github/ISSUE_TEMPLATE/ · on master","control","core",280,1940,240,"On master","The form family on master — each form is a field row. proposal.yml feeds the proposal dispatch console; delphi-rfp.yml feeds Delphi Intake; research-*.yml feed Research intake.",[F("proposal.yml","form","→ proposal dispatch"),F("delphi-rfp.yml","form","→ Delphi Intake"),F("research-service.yml","form","→ Research intake"),F("research-provider.yml","form","→ Research intake"),F("target-brief.yml","form",""),F("bug.yml","form",""),F("apk-cross-reference","family",""),F("reverse-engineering-taxonomy","family","")], ".github/ISSUE_TEMPLATE/"),
+ N("triage","service","Triage","mechanical title-class rules","control","core",560,1940,200,"Active","Mechanical triage: title-class rules; labels verified in the live taxonomy.",[F("rules","title-class","mechanical"),F("labels","live taxonomy","verified")], ".github/ISSUE_TEMPLATE/"),
+ N("challenge-coordinator","service","Coordinator","ops/challenge/coordinator.json · 7 events","evidence","core",800,1940,216,"Live · 7 events","Challenge coordinator of record: ops/challenge/coordinator.json, 7 events, blob d5f14c5c84c9. Single-writer = challenge-entries lane.",[F("file","ops/challenge/coordinator.json",""),F("events","7",""),F("blob","d5f14c5c84c9",""),F("single-writer","challenge-entries lane","")], "ops/challenge/coordinator.json"),
+ N("challenge-entries","service","Entries / our team","recruitment = our team only","evidence","core",1060,1940,216,"Active · our team only","Entries track our team only (recruitment scope). External competitors are observation only — never candidates.",[F("scope","our team only","recruitment"),F("external","observation only","never candidates")], "ops/challenge/coordinator.json"),
+ N("challenge-osint","workflow","OSINT watch","challenge-osint-watch.yml · Wed 08:17Z","evidence","core",1320,1940,216,"Live · weekly Wed 08:17Z","challenge-osint-watch.yml runs weekly, Wed 08:17Z: recomputes the coverage matrix and appends official-page snapshots.",[F("workflow","challenge-osint-watch.yml",""),F("cadence","weekly · Wed 08:17Z",""),F("outputs","coverage matrix · page snapshots","")], ".github/workflows/challenge-osint-watch.yml"),
+ N("challenge-participants","store","Participant store","Neon tables · repo = projection only","external","core",1060,2120,216,"Live · Neon tables","Participant data lives in Neon tables; the repo keeps a derived projection only — Neon is the store, the repo is not.",[F("store","Neon tables",""),F("repo","derived projection only","")], "ops/challenge/coordinator.json"),
+ N("challenge-metrics","service","Admin metrics feed","challenge-admin-metrics.json","evidence","core",800,2120,216,"Active · ADMIN PANEL ONLY","apps/help-wanted-dashboard/data/challenge-admin-metrics.json — ADMIN PANEL ONLY designation. Internal metrics — values not in graph (deliberately: no win-probability values are modeled here).",[F("feed","challenge-admin-metrics.json",""),F("designation","ADMIN PANEL ONLY",""),F("values","not in graph","internal metrics")], "apps/help-wanted-dashboard/data/challenge-admin-metrics.json"),
+ N("proposal-console","service","Proposal Dispatch Console","this dashboard panel","control","core",210,2320,200,"Active · this dashboard","The console panel in this dashboard (right panel): title, type, body, fit targets, dispatch method. Preparing a dispatch creates a draft proposal node here and emits the method payload — PREPARED, not sent. It formalizes the owner ↔ agent Muse-chat loop.",[F("inputs","title · type · body · fit targets",""),F("methods","issue · delphi · research · workflow · chat",""),F("output","payload + draft node","PREPARED — not sent")]),
+ N("proposal-feedback","service","Feedback","stage 1 · collect reactions","control","core",430,2320,190,"Awaiting dispatch","Stage 1 — Feedback: collect reactions / comments on the proposal.",[F("purpose","collect reactions / comments",""),F("state","awaiting dispatch","")]),
+ N("proposal-review","service","Review","stage 2 · gate-style evaluation","control","core",640,2320,190,"Awaiting dispatch","Stage 2 — Review: gate-style evaluation with receipts.",[F("purpose","gate-style evaluation","with receipts"),F("state","awaiting dispatch","")]),
+ N("proposal-enhancement","service","Enhancement","stage 3 · revise from feedback","control","core",850,2320,190,"Awaiting dispatch","Stage 3 — Enhancement: revise the proposal from the feedback gathered.",[F("purpose","revise proposal","from feedback"),F("state","awaiting dispatch","")]),
+ N("proposal-expansion","service","Expansion","stage 4 · scope / adjacency growth","control","core",1060,2320,190,"Awaiting dispatch","Stage 4 — Expansion: scope / adjacency growth — what else the proposal touches or unlocks.",[F("purpose","scope / adjacency growth",""),F("state","awaiting dispatch","")]),
+ N("proposal-fit","service","Fit analysis","stage 5 · verdict + deltas","control","core",1270,2320,190,"Awaiting dispatch","Stage 5 — Fit analysis: check the proposal against repo planes, SSOTs, quota, and existing lanes. Output = fit verdict + deltas. The console generates its checklist from the model itself.",[F("checks","planes · SSOTs · quota · lanes","from the model"),F("output","fit verdict + deltas",""),F("state","awaiting dispatch","")])
+],edges:[
+ E("show-user","show","user","control","sync",3,0.95,"present results"),
+ E("user-routing","user","routing","control","sync",6,1,"request"),
+ E("user-bifrost","user","bifrost","control","async",1,0.6,"model route?"),
+ E("routing-orch","routing","orch","control","sync",3,1,"dispatch", "docs/ops/AGENT-TEAM-ORCHESTRATION.md"),
+ E("routing-bifrost","routing","bifrost","control","async",3,0.6,"provider route"),
+ E("bifrost-dostuff","bifrost","dostuff","control","async",1,0.5,"routed call"),
+ E("orch-dostuff","orch","dostuff","control","sync",3,0.95,"execute order", "docs/ops/AGENT-TEAM-ORCHESTRATION.md"),
+ E("orch-temporal","orch","temporal","execution","async",1,0.7,"durable schedule", ".github/workflows/temporal-engagement.yml"),
+ E("temporal-dostuff","temporal","dostuff","execution","feedback",1,0.7,"activity result", ".github/workflows/temporal-engagement.yml"),
+ E("loops-routing","loops","routing","feedback","feedback",3,0.85,"loop control"),
+ E("loops-check","loops","check","execution","async",3,0.8,"iterate"),
+ E("check-dostuff","check","dostuff","execution","sync",3,0.9,"checked ✓"),
+ E("dostuff-x","dostuff","x","execution","sync",6,1,"Route"),
+ E("x-laneA","x","laneA","execution","async",3,0.9,"fan-out"),
+ E("x-laneB","x","laneB","execution","async",3,0.9,"fan-out"),
+ E("x-laneC","x","laneC","execution","async",3,0.9,"fan-out"),
+ E("x-logs","x","logs","evidence","evidence",1,0.7,"log stream"),
+ E("laneA-agg","laneA","agg","execution","sync",3,0.9,"result"),
+ E("laneB-agg","laneB","agg","execution","sync",3,0.9,"result"),
+ E("laneC-agg","laneC","agg","execution","sync",3,0.9,"result"),
+ E("logs-agg","logs","agg","evidence","evidence",1,0.7,"log rollup"),
+ E("agg-x-loop","agg","x","feedback","feedback",3,0.85,"% feedback"),
+ E("agg-dostuff-loop","agg","dostuff","feedback","feedback",3,0.85,"bottom loop"),
+ E("routing-doe","routing","doe","evidence","async",3,0.85,"experiment?", "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md"),
+ E("doe-arm1","doe","arm1","evidence","async",1,0.75,"arm", "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md"),
+ E("doe-arm2","doe","arm2","evidence","async",1,0.75,"arm", "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md"),
+ E("doe-arm3","doe","arm3","evidence","async",1,0.75,"arm", "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md"),
+ E("doe-self","arm3","doe","feedback","feedback",1,0.6,"self-loop", "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md"),
+ E("dostuff-scout","dostuff","scout","evidence","evidence",3,0.85,"recon", "docs/ops/BIUDL-EXECUTION-AND-PROVENANCE.md"),
+ E("scout-biudl","scout","biudl","evidence","async",3,0.9,"findings", "docs/ops/BIUDL-EXECUTION-AND-PROVENANCE.md"),
+ E("biudl-validate","biudl","validate","evidence","sync",3,0.95,"attest", "docs/ops/BIUDL-EXECUTION-AND-PROVENANCE.md"),
+ E("validate-show","validate","show","feedback","feedback",6,0.9,"outer loop"),
+ E("dostuff-n8n","dostuff","n8n","external","async",3,0.8,"workflows", "ops/n8n/docker-compose.yml"),
+ E("n8n-ghactions","n8n","ghactions","external","async",1,0.7,"handoff", ".github/workflows/n8n-she-bridge.yml"),
+ E("dostuff-ghactions","dostuff","ghactions","external","sync",3,1,"workflows · LIVE", "docs/ops/FREE-TIER-BACKEND-RECON-2026-10-21.md"),
+ E("x-gravitee","x","gravitee","external","async",1,0.5,"API plans · no instance"),
+ E("gravitee-cloudflare","gravitee","cloudflare","external","async",1,0.4,"gateway → edge", "docs/DEPLOYMENT-LANES.md"),
+ E("x-cloudflare","x","cloudflare","external","async",1,0.4,"candidate · unproven (SSOT)", "docs/DEPLOYMENT-LANES.md"),
+ E("x-render","x","render","external","async",1,0.4,"candidate · unproven (SSOT)", "docs/DEPLOYMENT-LANES.md"),
+ E("agg-ghpages","agg","ghpages","external","async",1,0.6,"publish · unverified (SSOT)", "docs/DEPLOYMENT-LANES.md"),
+ E("x-flyio","x","flyio","external","async",1,0.45,"deploy · implemented", "docs/ops/FREE-TIER-BACKEND-RECON-2026-10-21.md"),
+ E("agg-koyeb","agg","koyeb","external","async",1,0.45,"deploy · implemented", "docs/ops/FREE-TIER-BACKEND-RECON-2026-10-21.md"),
+ E("agg-vercel","agg","vercel-demo","external","async",3,0.95,"publish (gated)", "docs/DEPLOYMENT-LANES.md"),
+ E("logs-neon","logs","neon","external","evidence",3,0.95,"persist events", ".github/workflows/lane-events-recorder.yml"),
+ E("neon-lane_events","neon","lane_events","external","evidence",1,0.95,"table", ".github/workflows/lane-events-recorder.yml"),
+ E("dostuff-platform201","dostuff","platform201","external","async",1,0.6,"blueprint"),
+ E("routing-getdx","routing","getdx","evidence","evidence",1,0.3,"measure · NOT ESTABLISHED"),
+ E("routing-vercel-mcp","routing","vercel-mcp","external","async",3,0.95,"MCP router /mcp/:server · LIVE","docs/DEPLOYMENT-LANES.md"),
+ E("ghactions-neon","ghactions","neon","external","evidence",3,0.9,"lane-events-recorder.yml",".github/workflows/lane-events-recorder.yml"),
+ E("ghactions-hex","ghactions","hex","evidence","evidence",1,0.8,"hex-moneyball-evidence.yml","docs/ops/HEX-MONEYBALL-INTEGRATION.md"),
+ E("validate-witness","validate","witness","evidence","evidence",1,0.6,"witness-attestation · INVESTIGATE","config/agent_stack_integrations.json"),
+ E("routing-wiki","routing","wiki","control","async",1,0.5,"documentation · not authority"),
+ E("dostuff-codespaces","dostuff","codespaces","external","async",1,0.6,"dev env · unmeasured","docs/ops/FREE-TIER-BACKEND-RECON-2026-10-21.md"),
+ E("logs-grafana","logs","grafana","evidence","evidence",1,0.5,"metrics · recorded, un-detailed","docs/ops/FREE-TIER-BACKEND-RECON-2026-10-21.md"),
+ E("x-replit","x","replit","external","async",1,0.6,"connector · live, no mesh dependency","docs/ops/FREE-TIER-BACKEND-RECON-2026-10-21.md"),
+ E("ghactions-gitlab","ghactions","gitlab","external","async",1,0.4,"mirror webhook · degraded (400)","docs/ops/FREE-TIER-BACKEND-RECON-2026-10-21.md"),
+ E("routing-delphi","routing","delphi-intake","evidence","async",1,0.7,"Delphi RFP route",".github/workflows/delphi-intake.yml"),
+ E("delphi-in-gen","delphi-intake","delphi-generate","evidence","async",3,0.9,"intake → generate",".github/workflows/delphi-generate.yml"),
+ E("delphi-gen-vote","delphi-generate","delphi-vote","evidence","async",3,0.9,"proposals → ballots",".github/workflows/delphi-generate.yml"),
+ E("delphi-vote-gate","delphi-vote","delphi-gate","evidence","sync",3,0.9,"ballots → gate",".github/workflows/delphi-gate.yml"),
+ E("delphi-gate-ledger","delphi-gate","delphi-ledger","evidence","evidence",3,0.9,"outcome → ledger #1487","docs/ops/DELPHI.md"),
+ E("delphi-ledger-cycle","delphi-ledger","delphi-cycle","feedback","feedback",1,0.7,"ledger → next cycle",".github/workflows/delphi-cycle.yml"),
+ E("delphi-cycle-intake","delphi-cycle","delphi-intake","feedback","feedback",1,0.7,"cycle wraps the loop",".github/workflows/delphi-cycle.yml"),
+ E("research-in-seeds","research-intake","research-seeds","evidence","async",3,0.85,"intake → seeds (schema v1.0)","docs/repositories/research-seeds"),
+ E("research-seeds-obs","research-seeds","research-observatory","evidence","async",3,0.85,"seeds → observatory","docs/repositories/research-seeds"),
+ E("research-obs-xplane","research-observatory","ghactions","evidence","evidence",1,0.7,"observatory → cross-plane graph",".github/workflows/cross-plane-graph.yml"),
+ E("issues-triage","issue-templates","triage","control","sync",3,0.9,"templates → triage",".github/ISSUE_TEMPLATE/"),
+ E("issues-delphi","issue-templates","delphi-intake","evidence","async",1,0.8,"delphi-rfp.yml → Delphi intake",".github/ISSUE_TEMPLATE/delphi-rfp.yml"),
+ E("issues-research","issue-templates","research-intake","evidence","async",1,0.8,"research-*.yml → Research intake",".github/ISSUE_TEMPLATE/research-service.yml"),
+ E("issues-proposal","issue-templates","proposal-console","control","async",1,0.8,"proposal.yml → proposal dispatch",".github/ISSUE_TEMPLATE/proposal.yml"),
+ E("challenge-coord-entries","challenge-coordinator","challenge-entries","evidence","sync",3,0.9,"coordinator → entries (our team)","ops/challenge/coordinator.json"),
+ E("challenge-coord-osint","challenge-coordinator","challenge-osint","evidence","async",3,0.9,"coordinator → OSINT watch",".github/workflows/challenge-osint-watch.yml"),
+ E("challenge-osint-participants","challenge-osint","challenge-participants","evidence","evidence",1,0.8,"osint → Neon participants","ops/challenge/coordinator.json"),
+ E("challenge-participants-neon","challenge-participants","neon","external","evidence",1,0.85,"Neon tables · repo = projection","ops/challenge/coordinator.json"),
+ E("challenge-coord-metrics","challenge-coordinator","challenge-metrics","evidence","evidence",1,0.8,"coordinator → admin metrics (ADMIN PANEL ONLY)","apps/help-wanted-dashboard/data/challenge-admin-metrics.json"),
+ E("user-proposal","user","proposal-console","control","async",1,0.85,"proposal drafted here — like this chat"),
+ E("proposal-pipeline-1","proposal-console","proposal-feedback","control","sync",3,0.9,"submit → Feedback"),
+ E("proposal-pipeline-2","proposal-feedback","proposal-review","control","sync",3,0.9,"Feedback → Review"),
+ E("proposal-pipeline-3","proposal-review","proposal-enhancement","control","sync",3,0.9,"Review → Enhancement"),
+ E("proposal-pipeline-4","proposal-enhancement","proposal-expansion","control","sync",3,0.9,"Enhancement → Expansion"),
+ E("proposal-pipeline-5","proposal-expansion","proposal-fit","control","sync",3,0.9,"Expansion → Fit analysis")
+]};
+
+/* ===== groups (model field) =====
+   Group membership is DATA: every node carries a `group` field, exported in
+   JSON and as Mermaid subgraph blocks. COLLAPSE state is view state only —
+   it lives in `collapsedGroups`, never in MODEL, so it never dirties the
+   model, never appears in the diff, and exports always show the full model. */
+var GROUPS=[
+ {id:"core-loop",label:"Core loop",short:"Core loop",chip:{x:44,y:30},summary:{x:430,y:455}},
+ {id:"doe",label:"DoE — design of experiments",short:"DoE",chip:{x:659,y:182},summary:{x:825,y:300}},
+ {id:"platform-external",label:"Platform / external planes",short:"Platform / external",chip:{x:665,y:32},summary:{x:785,y:110}},
+ {id:"workflows",label:"Workflows — GitHub Actions",short:"Workflows",chip:{x:20,y:592},summary:{x:205,y:685}},
+ {id:"deploy-satellites",label:"Deploy satellites",short:"Deploy satellites",chip:{x:1032,y:28},summary:{x:1246,y:300}},
+ {id:"dev-redundancy",label:"Dev & redundancy surfaces",short:"Dev & redundancy",chip:{x:1032,y:1032},summary:{x:1246,y:1180}},
+ {id:"vercel-lanes",label:"Vercel lanes (SSOT)",short:"Vercel lanes",chip:{x:1032,y:655},summary:{x:1246,y:745}},
+ {id:"data-stores",label:"Data stores",short:"Data stores",chip:{x:783,y:681},summary:{x:905,y:775}},
+ {id:"evidence",label:"Evidence surfaces",short:"Evidence",chip:{x:388,y:806},summary:{x:560,y:880}},
+ {id:"docs",label:"Documentation surfaces",short:"Docs",chip:{x:370,y:931},summary:{x:480,y:1010}},
+ {id:"delphi",label:"Delphi Oracle — proposal passes",short:"Delphi",chip:{x:44,y:1548},summary:{x:540,y:1670}},
+ {id:"research",label:"Research — intake & observatory",short:"Research",chip:{x:1004,y:1548},summary:{x:1190,y:1670}},
+ {id:"issues",label:"Issues — templates & triage",short:"Issues",chip:{x:44,y:1908},summary:{x:410,y:2015}},
+ {id:"competition",label:"Competition — challenge plane",short:"Competition",chip:{x:744,y:1908},summary:{x:1060,y:2015}},
+ {id:"proposal-flow",label:"Proposal flow — submission pipeline",short:"Proposal flow",chip:{x:44,y:2288},summary:{x:740,y:2320}}
+];
+var GROUP_OF={show:"core-loop",user:"core-loop",routing:"core-loop",orch:"core-loop",loops:"core-loop",check:"core-loop",dostuff:"core-loop",x:"core-loop",laneA:"core-loop",laneB:"core-loop",laneC:"core-loop",logs:"core-loop",agg:"core-loop",scout:"core-loop",biudl:"core-loop",validate:"core-loop",
+ doe:"doe",arm1:"doe",arm2:"doe",arm3:"doe",
+ "vercel-mcp":"vercel-lanes","vercel-demo":"vercel-lanes",
+ ghactions:"workflows",
+ cloudflare:"deploy-satellites",render:"deploy-satellites",ghpages:"deploy-satellites",flyio:"deploy-satellites",koyeb:"deploy-satellites",
+ codespaces:"dev-redundancy",replit:"dev-redundancy",gitlab:"dev-redundancy",
+ neon:"data-stores",lane_events:"data-stores",grafana:"data-stores",
+ hex:"evidence",witness:"evidence",getdx:"evidence",
+ wiki:"docs",
+ platform201:"platform-external",bifrost:"platform-external",temporal:"platform-external",gravitee:"platform-external",n8n:"platform-external",
+ "delphi-intake":"delphi","delphi-generate":"delphi","delphi-vote":"delphi","delphi-gate":"delphi","delphi-ledger":"delphi","delphi-cycle":"delphi",
+ "research-intake":"research","research-seeds":"research","research-observatory":"research",
+ "issue-templates":"issues",triage:"issues",
+ "challenge-coordinator":"competition","challenge-entries":"competition","challenge-osint":"competition","challenge-participants":"competition","challenge-metrics":"competition",
+ "proposal-console":"proposal-flow","proposal-feedback":"proposal-flow","proposal-review":"proposal-flow","proposal-enhancement":"proposal-flow","proposal-expansion":"proposal-flow","proposal-fit":"proposal-flow"};
+MODEL.nodes.forEach(function(n){n.group=GROUP_OF[n.id]||"core-loop";});
+/* View state ONLY — not part of MODEL. Phone (B160V-class) default: deploy
+   satellites, dev & redundancy surfaces, data stores and docs start
+   collapsed; core loop expanded.
+   Desktop starts fully expanded. (The unclaimed set — GCP / AWS / Azure /
+   Oracle / DigitalOcean — has no nodes in the model, only inventory stubs,
+   so no group is created for it; nothing is invented to fill it.) */
+var collapsedGroups={};
+if(window.innerWidth<760){collapsedGroups={"deploy-satellites":true,"dev-redundancy":true,"data-stores":true,"docs":true,"delphi":true,"research":true,"issues":true,"competition":true};}
+/* ===== focus (view state only) =====
+   Focus = view state, same rule as collapse: focusGroup / focusMode /
+   focusSnapshot live OUTSIDE MODEL, so focusing never dirties the model and
+   never appears in the Δ diff. Entering Focus snapshots the exact collapse
+   state; exiting restores that snapshot verbatim.focusMode: "hide" (default)
+   = non-focused groups stay as collapsed summaries at full strength;
+   "dim" = those summaries + non-boundary edges render at low opacity. */
+var focusGroup=null,focusMode="hide",focusSnapshot=null;
+var fitOnFocus=true,focusCam=null;
+function applyFocusCollapse(){if(!focusGroup)return;GROUPS.forEach(function(g){if(!groupMembers(g.id).length)return;if(g.id===focusGroup)delete collapsedGroups[g.id];else collapsedGroups[g.id]=true;});}
+function enterFocus(gid){if(!groupMembers(gid).length)return;if(!focusGroup){focusSnapshot=JSON.parse(JSON.stringify(collapsedGroups));focusCam={s:view.s,tx:view.tx,ty:view.ty};}
+ focusGroup=gid;applyFocusCollapse();if(!scrollLocked)setScrollLock(true,"focus");log("Focus: "+groupMeta(gid).label+" expanded, all other groups collapsed ("+(focusMode==="hide"?"Hide others (summaries remain)":"Dim others")+(fitOnFocus?", zoom-to-fit applied":"")+") — view state only, model unchanged.");render();if(fitOnFocus)applyFit(focusBounds||renderedBounds);else fitView(false);}
+function exitFocus(){if(!focusGroup)return;var lbl=groupMeta(focusGroup).label;if(focusSnapshot)collapsedGroups=focusSnapshot;focusSnapshot=null;focusGroup=null;if(lockAutoBy==="focus")setScrollLock(false);log("Focus exited ("+lbl+") — prior collapse state and camera restored exactly. View state only.");render();if(focusCam){view.s=focusCam.s;view.tx=focusCam.tx;view.ty=focusCam.ty;focusCam=null;applyView();}}
+function setFocusMode(m){focusMode=m;if(focusGroup)applyFocusCollapse();syncFocusUI();render();}
+function setFitOnFocus(on){fitOnFocus=on;syncFocusUI();log("Fit on focus "+(on?"ON — entering Focus zooms to the focused group's bounds; exiting restores the prior camera.":"OFF — Focus leaves the camera where it is (whole graph is fitted instead)."));if(focusGroup){render();if(on)applyFit(focusBounds||renderedBounds);}}
+function focusLabel(){return focusGroup?("focus: "+groupMeta(focusGroup).label+" ("+focusGroup+") · view only · "+(focusMode==="hide"?"Hide others (summaries remain)":"Dim others")+" · "+(fitOnFocus?"zoom-to-fit on":"zoom-to-fit off")):"focus: none";}
+function syncFocusUI(){var st=focusLabel();
+ var fs=document.getElementById("focusStatus");if(fs)fs.textContent=st;
+ var sel=document.getElementById("focusSelect");if(sel){var cur=sel.value;sel.innerHTML="";var o0=document.createElement("option");o0.value="";o0.textContent="No focus — all groups as set above";sel.appendChild(o0);GROUPS.forEach(function(g){if(!groupMembers(g.id).length)return;var o=document.createElement("option");o.value=g.id;o.textContent=g.label;sel.appendChild(o);});sel.value=focusGroup||"";if(!focusGroup&&cur)sel.value="";}
+ [["focusDimBtn","dim"],["focusHideBtn","hide"],["fpDimBtn","dim"],["fpHideBtn","hide"]].forEach(function(pair){var b=document.getElementById(pair[0]);if(b)b.setAttribute("aria-pressed",focusMode===pair[1]?"true":"false");});
+ ["fitOnFocusBtn","fpFitOnFocusBtn"].forEach(function(id){var b=document.getElementById(id);if(b){b.setAttribute("aria-pressed",fitOnFocus?"true":"false");b.textContent="Fit on focus: "+(fitOnFocus?"ON":"OFF");}});
+ var ex=document.getElementById("exitFocusBtn");if(ex)ex.disabled=!focusGroup;
+ var mb=document.getElementById("mbFocus");if(mb)mb.setAttribute("aria-pressed",focusGroup?"true":"false");
+ var tb=document.getElementById("toolbarFocusBtn");if(tb)tb.setAttribute("aria-pressed",focusGroup?"true":"false");}
+function groupMeta(gid){for(var i=0;i<GROUPS.length;i++)if(GROUPS[i].id===gid)return GROUPS[i];return GROUPS[0];}
+function groupOf(n){return (n&&n.group)||"core-loop";}
+function groupMembers(gid){return MODEL.nodes.filter(function(n){return groupOf(n)===gid;});}
+function groupById(id){for(var i=0;i<MODEL.nodes.length;i++)if(MODEL.nodes[i].id===id)return MODEL.nodes[i];return null;}
+function internalCount(gid){var c=0;MODEL.edges.forEach(function(e){var a=groupById(e.from),b=groupById(e.to);if(a&&b&&groupOf(a)===gid&&groupOf(b)===gid)c++;});return c;}
+function statusRank(status){var s=String(status||"").trim();if(!s)return 0;var u=s.toUpperCase();
+ if(/^NOT ESTABLISHED\b/.test(u))return 0;
+ if(/BRIEFED/.test(u))return 5;
+ if(/AWAITING/.test(u))return 6;
+ if(/PREPARED/.test(u))return 7;
+ if(/RESEARCH SEED/.test(u))return 1;
+ if(/NO INSTANCE/.test(u))return 1;
+ if(/\bGAP\b/.test(u))return 2;
+ if(/^DRAFT\b/.test(u)&&/PROPOSAL/.test(u))return 3;
+ if(/PROPOSAL/.test(u)||/PARTIAL/.test(u))return 3;
+ if(/RECORDED/.test(u)&&/UN-DETAILED/.test(u))return 4;
+ if(/INVESTIGATE/.test(u))return 5;
+ if(/CANDIDATE/.test(u)||/UNPROVEN/.test(u)||/UNVERIFIED/.test(u))return 6;
+ if(/DORMANT/.test(u))return 7;
+ if(/PRESENT/.test(u)&&/UNMEASURED/.test(u))return 8;
+ if(/DEGRADED/.test(u))return 9;
+ if(/LIVE-ISH/.test(u))return 10;
+ if(/CONNECTED/.test(u)&&(/NO LIVE/.test(u)||/NOT LIVE/.test(u)||/NO-LIVE/.test(u)))return 11;
+ if(/^DRAFT\b/.test(u))return 3;
+ if(/\bLIVE\b/.test(u)||/^ACTIVE\b/.test(u)||/^ARMED\b/.test(u)||/OPERATIONAL/.test(u)||/SELF-HOST/.test(u)||/INTEGRATED/.test(u)||/DOCUMENTATION SURFACE/.test(u)||/AUTHORITATIVE/.test(u))return 13;
+ return 11;}
+function worstOf(members){var worst=null,wr=Infinity;members.forEach(function(m){var rk=statusRank(m.status);if(rk<wr){wr=rk;worst=m;}});return{node:worst,rank:wr};}
+function rollupFor(members){if(!members||!members.length)return "all established / active";var hasDelta=members.some(function(m){return !!m.repoDelta;});var w=worstOf(members);
+ if(w.rank>=13)return hasDelta?"all established / active \u00b7 \u26a0 repo delta inside":"all established / active";
+ return "worst: "+w.node.title+" \u2014 "+w.node.status+(hasDelta?" \u00b7 \u26a0 repo delta inside":"");}
+function rollupShort(r){if(!r)return"";if(r.indexOf("all established")===0)return r.indexOf("\u26a0")>=0?"\u26a0 delta":"";
+ var hasDelta=r.indexOf("\u26a0")>=0;var core=r.replace(/^worst:\s*/,"").replace(/\s*\u00b7\s*\u26a0 repo delta inside$/,"");
+ var parts=core.split(" \u2014 ");var title=parts[0]||"";var st=parts.slice(1).join(" \u2014 ")||"";
+ var shortSt=st;if(shortSt.length>24){var seg=shortSt.split(" \u00b7 ")[0];if(seg&&seg.length>=4)shortSt=seg;}
+ return "worst: "+title+" \u00b7 "+shortSt+(hasDelta?" \u26a0":"");}
+function toggleGroup(gid,force){var want=(typeof force==="boolean")?force:!collapsedGroups[gid];if(want&&focusGroup===gid){focusGroup=null;focusSnapshot=null;log("Focus cleared — the focused group was collapsed manually.");}if(want)collapsedGroups[gid]=true;else delete collapsedGroups[gid];render();}
+function updateGroupsPanel(){var box=document.getElementById("groupList");if(!box)return;box.innerHTML="";
+ GROUPS.forEach(function(g){var mem=groupMembers(g.id);if(!mem.length)return;var r=rollupFor(mem);var row=document.createElement("div");row.className="group-row"+(focusGroup===g.id?" focused":"");
+  var b=document.createElement("button");b.className="btn small";b.type="button";b.setAttribute("aria-pressed",collapsedGroups[g.id]?"true":"false");
+  b.textContent=(collapsedGroups[g.id]?"\u25b8 Expand ":"\u25be Collapse ")+g.label;
+  b.addEventListener("click",function(){toggleGroup(g.id);});
+  var fb=document.createElement("button");fb.className="btn small";fb.type="button";fb.style.minHeight="44px";fb.style.marginTop="6px";fb.style.width="100%";fb.style.textAlign="left";fb.setAttribute("aria-pressed",focusGroup===g.id?"true":"false");
+  fb.textContent=focusGroup===g.id?"◎ Focused — tap to exit Focus":"◎ Focus "+g.label;
+  fb.addEventListener("click",function(){if(focusGroup===g.id)exitFocus();else enterFocus(g.id);});
+  var meta=document.createElement("div");meta.className="small";meta.textContent=mem.length+" nodes \u00b7 "+internalCount(g.id)+" internal edges \u00b7 "+r+(collapsedGroups[g.id]?" \u00b7 COLLAPSED (view only)":"")+(focusGroup===g.id?" \u00b7 FOCUSED (view only)":(focusGroup?" \u00b7 not focused":""));
+  row.appendChild(b);row.appendChild(fb);row.appendChild(meta);box.appendChild(row);});
+ syncFocusUI();}
+
+var TEMPLATES=[
+ {key:"n8n",label:"n8n — workflow",desc:"trigger · steps · webhook",make:function(){return{type:"workflow",title:"n8n workflow",sub:"workflow automation",plane:"external",status:"Draft",notes:"Drafted from the n8n template.",fields:[F("trigger","event","workflow start"),F("steps","nodes","ordered"),F("webhook","url","intake")]};}},
+ {key:"bifrost",label:"Bifrost — request plane",desc:"provider · model route · fallback",make:function(){return{type:"gateway",title:"Bifrost route",sub:"request plane",plane:"control",status:"Draft · proposal",notes:"Drafted from the Bifrost template (proposal + partial slice in-repo).",fields:[F("provider","route","per request"),F("model route","policy",""),F("fallback","chain","on failure")]};}},
+ {key:"temporal",label:"Temporal — workflow",desc:"task queue · activity · signal/query",make:function(){return{type:"workflow",title:"Temporal workflow",sub:"durable execution",plane:"execution",status:"Draft",notes:"Drafted from the Temporal template (self-host operational; official MCP read-only).",fields:[F("task queue","name",""),F("activity","fn","retried"),F("signal / query","in / out","")]};}},
+ {key:"platform201",label:"Platform201 — blueprint",desc:"node type · env · deploy target",make:function(){return{type:"blueprint",title:"Platform201 blueprint",sub:"visual graph blueprint",plane:"external",status:"Draft",notes:"Drafted from the Platform201 template.",fields:[F("node type","blueprint",""),F("env","name",""),F("deploy target","own GCP","")]};}},
+ {key:"gravitee",label:"Gravitee — API",desc:"plans · policies",make:function(){return{type:"gateway",title:"Gravitee API",sub:"API gateway",plane:"external",status:"Draft · no instance",notes:"Drafted from the Gravitee template (mock-verified, no live instance).",fields:[F("api","name",""),F("plans","tier",""),F("policies","list","")]};}},
+ {key:"sql",label:"SQL / DB table",desc:"columns with types, like a DB diagram",make:function(){return{type:"table",title:"new_table",sub:"SQL table",plane:"external",status:"Draft",notes:"Drafted from the SQL table template.",fields:[F("id","uuid PK",""),F("name","text",""),F("created_at","timestamptz","")]};}},
+ {key:"service",label:"Generic service",desc:"endpoint · owner · health",make:function(){return{type:"service",title:"New service",sub:"service",plane:"execution",status:"Draft",notes:"Drafted from the generic service template.",fields:[F("endpoint","url",""),F("owner","lane",""),F("health","check","")]};}},
+ {key:"store",label:"Generic store",desc:"engine · key · retention",make:function(){return{type:"store",title:"New store",sub:"data store",plane:"external",status:"Draft",notes:"Drafted from the generic store template.",fields:[F("engine","type",""),F("key","schema",""),F("retention","policy","")]};}},
+ {key:"queue",label:"Generic queue",desc:"topic · consumer · DLQ",make:function(){return{type:"queue",title:"New queue",sub:"queue",plane:"execution",status:"Draft",notes:"Drafted from the generic queue template.",fields:[F("topic","name",""),F("consumer","lane",""),F("dlq","policy","")]};}}
+];
+
+/* ===== state ===== */
+var SVGNS="http://www.w3.org/2000/svg";
+var svg=document.getElementById("graph"), viewport=document.getElementById("viewport"), edgeLayer=document.getElementById("edgeLayer"), nodeLayer=document.getElementById("nodeLayer"), tooltip=document.getElementById("tooltip"), pulseDot=document.getElementById("pulseDot");
+var BASELINE=JSON.stringify(MODEL);
+var selectedNode=null, selectedEdge=null, pendingFrom=null, mode="select", vercelArmed=false, edgeSeq=1, nodeSeq=1;
+var view={s:1,tx:0,ty:0};
+var showSat=true;
+function byId(id){for(var i=0;i<MODEL.nodes.length;i++)if(MODEL.nodes[i].id===id)return MODEL.nodes[i];return null;}
+function markerRows(n){return (n.repoDelta?1:0)+(!n.repoSource?1:0);}
+function nodeH(n){return 46+n.fields.length*17+8+markerRows(n)*15;}
+function el(tag,attrs,parent){var e=document.createElementNS(SVGNS,tag);for(var k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+function trunc(s,max){s=String(s||"");return s.length>max?s.slice(0,max-1)+"…":s;}
+function modelHash(){var s=JSON.stringify(MODEL),h=5381;for(var i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))>>>0;return "0x"+h.toString(16).padStart(8,"0");}
+function isDirty(){return JSON.stringify(MODEL)!==BASELINE;}
+function anchors(a,b){var ah=nodeH(a),bh=nodeH(b);var ax=a.x,ay=a.y+ah/2,bx=b.x,by=b.y+bh/2;var dx=bx-ax,dy=by-ay;var sx,sy,tx2,ty2;if(Math.abs(dx)>=Math.abs(dy)){if(dx>=0){sx=ax+a.w/2;sy=ay;tx2=bx-b.w/2;ty2=by;}else{sx=ax-a.w/2;sy=ay;tx2=bx+b.w/2;ty2=by;}}else{if(dy>=0){sx=ax;sy=a.y+ah;tx2=bx;ty2=b.y;}else{sx=ax;sy=a.y;tx2=bx;ty2=b.y+bh;}}var mx=Math.max(30,Math.abs(tx2-sx)*0.4),my=Math.max(30,Math.abs(ty2-sy)*0.4);var c1x=sx,c1y=sy,c2x=tx2,c2y=ty2;if(Math.abs(dx)>=Math.abs(dy)){c1x=sx+(dx>=0?mx:-mx);c2x=tx2+(dx>=0?-mx:mx);}else{c1y=sy+(dy>=0?my:-my);c2y=ty2+(dy>=0?-my:my);}return{d:"M "+sx+" "+sy+" C "+c1x+" "+c1y+", "+c2x+" "+c2y+", "+tx2+" "+ty2,mid:{x:(sx+tx2)/2,y:(sy+ty2)/2}};}
+var edgeEls={},nodeEls={};
+function visibleNode(n){return n.layer!=="satellite"||showSat;}
+var renderedBounds=null,focusBounds=null;
+function render(){
+  edgeLayer.innerHTML="";nodeLayer.innerHTML="";edgeEls={};nodeEls={};
+  var groupLayer=document.getElementById("groupLayer"), headLayer=document.getElementById("groupHeadLayer");
+  if(groupLayer)groupLayer.innerHTML=""; if(headLayer)headLayer.innerHTML="";
+  var pf=document.getElementById("planeFilter").value,tf=document.getElementById("typeFilter").value;
+  /* --- rendered node set: individual members + one summary per collapsed group --- */
+  var rendNodes=[],rendById={};
+  MODEL.nodes.forEach(function(n){if(!visibleNode(n))return;if(collapsedGroups[groupOf(n)])return;rendNodes.push(n);rendById[n.id]=n;});
+  GROUPS.forEach(function(g){if(!collapsedGroups[g.id])return;var mem=groupMembers(g.id).filter(function(n){return visibleNode(n);});if(!mem.length)return;
+    var r=rollupFor(mem);
+    var pseudo={id:"group:"+g.id,groupSummary:true,summaryGroup:g.id,type:"group",title:g.label,sub:"collapsed group",plane:mem[0].plane,layer:"core",x:g.summary.x,y:0,w:248,status:r,notes:"Collapsed group summary (view state). Tap to expand.",fields:[F(mem.length+" nodes","collapsed","tap to expand"),F(internalCount(g.id)+" internal edges","hidden","while collapsed"),F("worst status",r,"")],repoSource:"group summary",repoDelta:""};
+    pseudo.y=g.summary.y-nodeH(pseudo)/2;rendNodes.push(pseudo);rendById[pseudo.id]=pseudo;});
+  function mapEnd(n){var gid=groupOf(n);if(collapsedGroups[gid]&&rendById["group:"+gid])return "group:"+gid;return n.id;}
+  function rendGroup(rid){if(!rid)return null;if(String(rid).indexOf("group:")===0)return String(rid).slice(6);var rn=rendById[rid];if(!rn)return null;return rn.groupSummary?rn.summaryGroup:groupOf(rn);}
+  /* --- group containers + header chips (expanded groups with >=2 visible members) --- */
+  var containers=[];
+  GROUPS.forEach(function(g){if(collapsedGroups[g.id])return;var mem=groupMembers(g.id).filter(function(n){return visibleNode(n)&&rendById[n.id];});if(mem.length<2)return;
+    var minX=1e9,minY=1e9,maxX=-1e9,maxY=-1e9;mem.forEach(function(n){minX=Math.min(minX,n.x-n.w/2);maxX=Math.max(maxX,n.x+n.w/2);minY=Math.min(minY,n.y);maxY=Math.max(maxY,n.y+nodeH(n));});
+    containers.push({g:g,minX:minX-12,minY:minY-12,maxX:maxX+12,maxY:maxY+12,area:(maxX-minX)*(maxY-minY)});});
+  containers.sort(function(a,b){return b.area-a.area;});
+  if(groupLayer)containers.forEach(function(c){var cr=el("rect",{x:c.minX,y:c.minY,width:c.maxX-c.minX,height:c.maxY-c.minY,rx:14,fill:"#ffffff","fill-opacity":0.02,stroke:"#39445e","stroke-width":1,"stroke-dasharray":"5 5"},groupLayer);if(focusGroup&&focusMode==="dim"&&c.g.id!==focusGroup)cr.setAttribute("opacity","0.3");});
+  if(headLayer)GROUPS.forEach(function(g){if(collapsedGroups[g.id])return;var mem=groupMembers(g.id).filter(function(n){return visibleNode(n);});if(!mem.length)return;
+    var r=rollupFor(mem),rs=rollupShort(r),ic=internalCount(g.id);
+    var txt="\u25be "+g.short+" \u00b7 "+mem.length+(ic?" \u00b7 "+ic+" int.":"")+(rs?" \u00b7 "+rs:"");
+    var w=Math.max(96,Math.round(20+txt.length*5.6)),hg=el("g",{"class":"group-chip",tabindex:"0",role:"button","aria-label":"Collapse group "+g.label},headLayer);
+    if(focusGroup&&focusMode==="dim"&&g.id!==focusGroup)hg.setAttribute("opacity","0.3");
+    el("rect",{x:g.chip.x,y:g.chip.y-10,width:w,height:44,fill:"transparent"},hg);
+    el("rect",{x:g.chip.x,y:g.chip.y,width:w,height:24,rx:6,fill:"#1c2333",stroke: focusGroup===g.id?"#22d3ee":"#39445e","stroke-width":1},hg);
+    var ct=el("text",{x:g.chip.x+8,y:g.chip.y+16,"font-size":11,"font-weight":700,fill:"#e8ecf4"},hg);ct.textContent=txt;
+    hg.addEventListener("click",function(ev){ev.stopPropagation();toggleGroup(g.id);});
+    hg.addEventListener("keydown",function(ev){if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();toggleGroup(g.id);}});
+    var fg=el("g",{"class":"group-chip",tabindex:"0",role:"button","aria-label":(focusGroup===g.id?"Exit Focus":"Focus group "+g.label)},headLayer);
+    el("rect",{x:g.chip.x+w+6,y:g.chip.y-10,width:64,height:44,fill:"transparent"},fg);
+    el("rect",{x:g.chip.x+w+6,y:g.chip.y,width:64,height:24,rx:6,fill:focusGroup===g.id?"#164e63":"#1c2333",stroke:"#22d3ee","stroke-width":1},fg);
+    var ft=el("text",{x:g.chip.x+w+14,y:g.chip.y+16,"font-size":11,"font-weight":700,fill:"#22d3ee"},fg);ft.textContent=focusGroup===g.id?"◎ Exit":"◎ Focus";
+    fg.addEventListener("click",function(ev){ev.stopPropagation();if(focusGroup===g.id)exitFocus();else enterFocus(g.id);});
+    fg.addEventListener("keydown",function(ev){if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();if(focusGroup===g.id)exitFocus();else enterFocus(g.id);}});});
+  /* --- edges: aggregate across collapsed-group boundaries --- */
+  var emap={},eorder=[];
+  MODEL.edges.forEach(function(ed){var a=byId(ed.from),b=byId(ed.to);if(!a||!b)return;if(!visibleNode(a)||!visibleNode(b))return;
+    var fa=mapEnd(a),fb=mapEnd(b);if(fa===fb)return;if(!rendById[fa]||!rendById[fb])return;
+    var key=fa+">"+fb;if(!emap[key]){emap[key]={members:[]};eorder.push(emap[key]);}emap[key].members.push(ed);});
+  eorder.forEach(function(rec){
+    var members=rec.members.slice().sort(function(m1,m2){return (m2.weight-m1.weight)||(m2.conf-m1.conf);});
+    var st=members[0];
+    var ed={id:st.id,from:mapEnd(byId(st.from)),to:mapEnd(byId(st.to)),plane:st.plane,type:st.type,weight:st.weight,conf:st.conf,label:st.label+(members.length>1?" \u00d7"+members.length:""),repoSource:st.repoSource,memberIds:members.map(function(m){return m.id;}),members:members};
+    var a=rendById[ed.from],b=rendById[ed.to];var an=anchors(a,b);var g=el("g",{"class":"edge-g"},edgeLayer);
+    var hit=el("path",{"class":"edge-hit",d:an.d},g);
+    var p=el("path",{"class":"edge march"+(ed.type==="feedback"?" march-slow":""),d:an.d},g);
+    p.style.color=PLANE_COLOR[ed.plane];p.setAttribute("stroke",PLANE_COLOR[ed.plane]);
+    var isVercelGate=ed.memberIds.indexOf("agg-vercel")>=0;
+    if(isVercelGate&&!vercelArmed){p.classList.remove("march");p.classList.remove("march-slow");}
+    p.setAttribute("stroke-width",ed.weight);p.setAttribute("opacity",ed.conf);
+    if(DASH[ed.type]){p.setAttribute("stroke-dasharray",DASH[ed.type]);p.setAttribute("stroke-linecap","round");}
+    p.setAttribute("marker-end","url(#"+PLANE_MARKER[ed.plane]+")");
+    if(selectedEdge===ed.id||(selectedEdge&&ed.memberIds.indexOf(selectedEdge)>=0))p.classList.add("sel");
+    var lab=el("text",{"class":"edge-label","text-anchor":"middle",x:an.mid.x,y:an.mid.y-7},g);lab.textContent=isVercelGate?(vercelArmed?"publish (gated) \u00b7 open":"publish (gated) \u00b7 held")+(members.length>1?" \u00d7"+members.length:""):ed.label;
+    if(!ed.repoSource){var nm=el("text",{"class":"edge-label","text-anchor":"middle",x:an.mid.x,y:an.mid.y+13,"font-size":8.5},g);nm.textContent="\u25cb no repo source";}
+    var dim=(pf!=="all"&&ed.plane!==pf)||(tf!=="all"&&ed.type!==tf);if(dim)g.classList.add("dimmed");
+    if(focusGroup&&focusMode==="dim"){var egA=rendGroup(ed.from),egB=rendGroup(ed.to);if(egA!==focusGroup&&egB!==focusGroup)g.classList.add("focus-dim");}
+    if(focusGroup){var fgA=rendGroup(ed.from),fgB=rendGroup(ed.to);if(fgA===focusGroup||fgB===focusGroup)g.classList.add("focus-boundary");}
+    edgeEls[ed.id]={path:p,def:ed};
+    members.forEach(function(m){if(m.id!==ed.id)edgeEls[m.id]=edgeEls[ed.id];});
+    function showTip(ev){p.classList.add("hl");var memHtml=members.length>1?"<br>Aggregates "+members.length+" member edges:<br>"+members.map(function(m){return "\u00b7 "+esc(m.from)+" \u2192 "+esc(m.to)+" ("+esc(m.label)+", "+m.weight+"px, conf "+m.conf+")";}).join("<br>"):"";
+      tooltip.innerHTML="<b>"+esc(ed.label)+"</b> \u2014 "+TYPE_NAME[ed.type]+"<div class='meta'>"+esc(ed.from)+" \u2192 "+esc(ed.to)+"<br>Plane: <span>"+ed.plane+"</span> \u00b7 Weight: <span>"+ed.weight+"px</span> \u00b7 Confidence: <span>"+ed.conf+"</span><br>Style = strongest member ("+esc(st.id)+").<br>Repo source: <span>"+(ed.repoSource||"\u25cb no repo source")+"</span>"+(isVercelGate?"<br>Classification: <span>LIVE \u00b7 ADMIN-GATED</span> \u00b7 Gate: <span>"+(vercelArmed?"ON \u2014 flows":"OFF \u2014 held (strong base)")+"</span>":"")+memHtml+"</div>";tooltip.style.display="block";moveTip(ev);}
+    function moveTip(ev){tooltip.style.left=Math.min(window.innerWidth-300,ev.clientX+14)+"px";tooltip.style.top=(ev.clientY+14)+"px";}
+    function hideTip(){p.classList.remove("hl");tooltip.style.display="none";}
+    [hit,p].forEach(function(t){t.addEventListener("pointerenter",showTip);t.addEventListener("pointermove",moveTip);t.addEventListener("pointerleave",hideTip);t.addEventListener("click",function(ev2){ev2.stopPropagation();selectEdge(ed.id);});});
+  });
+  /* --- nodes --- */
+  rendNodes.forEach(function(n){
+    var h=nodeH(n);
+    var g=el("g",{"class":"node",tabindex:"0",role:"button","aria-label":n.title+" node"},nodeLayer);
+    g.setAttribute("transform","translate("+n.x+","+n.y+")");
+    if(n.id==="getdx")g.classList.add("notest");
+    if(selectedNode===n.id)g.classList.add("selected");if(pendingFrom===n.id)g.classList.add("pending");
+    if(["user","routing","dostuff","validate"].indexOf(n.id)>=0)g.classList.add("active");
+    if(pf!=="all"&&n.plane!==pf)g.classList.add("dimmed");
+    if(focusGroup&&focusMode==="dim"){var ngid=n.groupSummary?n.summaryGroup:groupOf(n);if(ngid!==focusGroup)g.classList.add("focus-dim");}
+    el("rect",{"class":"halo",x:-n.w/2-6,y:-6,width:n.w+12,height:h+12,rx:14},g);
+    var r=el("rect",{"class":"body",x:-n.w/2,y:0,width:n.w,height:h,rx:10},g);r.style.stroke=n.groupSummary?"#e8ecf4":(PLANE_COLOR[n.plane]||"#3a445e");
+    el("line",{x1:-n.w/2,y1:38,x2:n.w/2,y2:38,stroke:"#2a3247","stroke-width":1},g);
+    var t=el("text",{"class":"ntitle","text-anchor":"middle",y:17},g);t.textContent=trunc(n.title,Math.floor(n.w/8));
+    var sn=el("text",{"class":"nsub","text-anchor":"middle",y:31},g);sn.textContent=trunc(n.type+" \u00b7 "+n.sub,Math.floor(n.w/5.2));
+    n.fields.forEach(function(f,i){var y=54+i*17;var row=el("text",{"class":"frow",x:-n.w/2+9,y:y},g);var max=Math.floor((n.w-14)/5.15);row.textContent=trunc(f.name+" \u00b7 "+f.type+(f.note?" \u00b7 "+f.note:""),max);});
+    var my=54+n.fields.length*17;
+    if(n.repoDelta){var dt=el("text",{x:-n.w/2+9,y:my,"font-size":9.5,fill:"#fbbf24","font-weight":700},g);dt.textContent="\u26a0 repo delta \u2014 see inspector";my+=15;}
+    if(!n.repoSource){var nt=el("text",{x:-n.w/2+9,y:my,"font-size":9,fill:"#8b96ab"},g);nt.textContent="\u25cb no repo source";my+=15;}
+    nodeEls[n.id]=g;
+    g.addEventListener("click",function(ev){ev.stopPropagation();onNodeTap(n.id);});
+    g.addEventListener("keydown",function(ev){if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();onNodeTap(n.id);}});
+    g.addEventListener("pointerdown",function(ev){startNodeDrag(ev,n,g);});
+  });
+  /* --- rendered bounds for Fit --- */
+  if(rendNodes.length){var bX0=1e9,bY0=1e9,bX1=-1e9,bY1=-1e9;rendNodes.forEach(function(n){bX0=Math.min(bX0,n.x-n.w/2);bX1=Math.max(bX1,n.x+n.w/2);bY0=Math.min(bY0,n.y);bY1=Math.max(bY1,n.y+nodeH(n));});renderedBounds={minX:bX0,minY:bY0,maxX:bX1,maxY:bY1};}
+  /* focus bounds: focused group's members + summaries of groups it has boundary edges with */
+  focusBounds=null;
+  if(focusGroup){var bgMap={};MODEL.edges.forEach(function(e){var a=byId(e.from),b=byId(e.to);if(!a||!b)return;if(groupOf(a)===focusGroup&&groupOf(b)!==focusGroup)bgMap[groupOf(b)]=true;if(groupOf(b)===focusGroup&&groupOf(a)!==focusGroup)bgMap[groupOf(a)]=true;});
+    var fn=rendNodes.filter(function(n){return n.groupSummary?!!bgMap[n.summaryGroup]:groupOf(n)===focusGroup;});
+    if(fn.length){var fX0=1e9,fY0=1e9,fX1=-1e9,fY1=-1e9;fn.forEach(function(n){fX0=Math.min(fX0,n.x-n.w/2);fX1=Math.max(fX1,n.x+n.w/2);fY0=Math.min(fY0,n.y);fY1=Math.max(fY1,n.y+nodeH(n));});focusBounds={minX:fX0,minY:fY0,maxX:fX1,maxY:fY1};}}
+  pulseDot.parentNode.appendChild(pulseDot);
+  updateGroupsPanel();updateVerify();updateDirty();updateMermaid();updateDiffSummary();
+}
+function applyView(){viewport.setAttribute("transform","translate("+view.tx+","+view.ty+") scale("+view.s+")");document.getElementById("zoomLabel").textContent=Math.round(view.s*100)+"%";var fz=document.getElementById("fsZoomLabel");if(fz)fz.textContent=Math.round(view.s*100)+"%";}
+function svgPoint(ev){var pt=svg.createSVGPoint();pt.x=ev.clientX;pt.y=ev.clientY;var m=svg.getScreenCTM();return pt.matrixTransform(m.inverse());}
+function toModel(pt){return{x:(pt.x-view.tx)/view.s,y:(pt.y-view.ty)/view.s};}
+function applyFit(b){
+  var rect=svg.getBoundingClientRect();if(rect.width<10)return;
+  if(!b)return;
+  var minX=b.minX,minY=b.minY,maxX=b.maxX,maxY=b.maxY;
+  var padX=window.innerWidth<760?8:14,padY=window.innerWidth<760?10:14;
+  var availW=Math.max(40,rect.width-2*padX),availH=Math.max(40,rect.height-2*padY);
+  var s=Math.min(availW/(maxX-minX),availH/(maxY-minY));s=Math.min(s,1.35);
+  view.s=Math.max(0.07,s);
+  view.tx=padX+(availW-(maxX-minX)*view.s)/2-minX*view.s;
+  view.ty=padY+(availH-(maxY-minY)*view.s)/2-minY*view.s;
+  applyView();
+}
+function fitView(coreOnly){applyFit(renderedBounds);}
+/* ===== pan & pinch — the canvas owns its touches =====
+   Pull-to-refresh fix (B160V): the SVG carries touch-action:none (CSS), the
+   page carries overscroll-behavior:none, AND every touchmove that arrives
+   while a pan / pinch / node-drag gesture is active is preventDefaulted via
+   NON-PASSIVE listeners — so a downward finger drag on the canvas (panning
+   up toward the top) can never be reinterpreted by Android Chrome as a page
+   scroll or pull-to-refresh reload. */
+var pointers={},panStart=null,pinchStart=null,dragActive=false;
+function gestureActive(){return !!(panStart||pinchStart||dragActive);}
+function blockTouchMove(ev){if(gestureActive()&&ev.cancelable)ev.preventDefault();}
+svg.addEventListener("touchmove",blockTouchMove,{passive:false});
+var svgHolderEl=document.querySelector(".svg-holder");
+if(svgHolderEl)svgHolderEl.addEventListener("touchmove",blockTouchMove,{passive:false});
+window.addEventListener("touchmove",function(ev){if(dragActive&&ev.cancelable)ev.preventDefault();},{passive:false});
+/* ===== canvas owns its touches from touchstart + page scroll lock =====
+   v2 of the pull-to-refresh fix (B160V retest: the canvas still moved a bit,
+   then the host page took the gesture into a reload swipe — the gap was that
+   preventDefault only fired AFTER a pan/pinch/drag was recognized). Now ANY
+   touch that STARTS inside the canvas holder sets canvasTouch at touchstart,
+   and a document-level non-passive touchmove listener preventDefaults every
+   move until touchend/cancel — regardless of tool mode or recognition state.
+   Separately, the page scroll lock freezes html/body scrolling entirely
+   (standard technique: body position:fixed at the current offset, restored
+   on unlock) and blocks document touchmove except inside [data-scrollable]
+   regions (side panels, proposal console, stage stepper, pickers/sheets). */
+var canvasTouch=false;
+if(svgHolderEl)svgHolderEl.addEventListener("touchstart",function(){canvasTouch=true;},{passive:true});
+window.addEventListener("touchend",function(){canvasTouch=false;},{passive:true});
+window.addEventListener("touchcancel",function(){canvasTouch=false;},{passive:true});
+var scrollLocked=false,lockAutoBy=null,savedScrollY=0;
+function syncLockUI(){["lockBtn","fpLockBtn","fsLockBtn"].forEach(function(id){var b=document.getElementById(id);if(!b)return;b.setAttribute("aria-pressed",scrollLocked?"true":"false");b.textContent=scrollLocked?"🔒 Page scroll: locked":"Lock page scroll";});}
+function setScrollLock(on,source){
+  if(on===scrollLocked){if(on&&source&&!lockAutoBy)lockAutoBy=source;syncLockUI();return;}
+  scrollLocked=on;
+  if(on){lockAutoBy=source||null;savedScrollY=window.scrollY||document.documentElement.scrollTop||0;
+    document.documentElement.classList.add("scroll-locked");
+    var b=document.body;b.classList.add("scroll-locked");b.style.top=(-savedScrollY)+"px";b.style.width="100%";
+    log("Page scroll LOCKED"+(source?" (auto: "+source+")":"")+" — the page cannot scroll or pull-to-refresh while you work the canvas; side panels and the console stay scrollable.");}
+  else{lockAutoBy=null;document.documentElement.classList.remove("scroll-locked");
+    var b2=document.body;b2.classList.remove("scroll-locked");b2.style.top="";b2.style.width="";
+    window.scrollTo(0,savedScrollY);
+    log("Page scroll unlocked — prior scroll position restored.");}
+  syncLockUI();updateVerify();
+}
+document.addEventListener("touchmove",function(ev){
+  if(canvasTouch){if(ev.cancelable)ev.preventDefault();return;}
+  if(scrollLocked){var t=ev.target;var ok=t&&t.closest&&t.closest("[data-scrollable]");if(!ok&&ev.cancelable)ev.preventDefault();}
+},{passive:false});
+svg.addEventListener("pointerdown",function(ev){pointers[ev.pointerId]={x:ev.clientX,y:ev.clientY};if(Object.keys(pointers).length===2){var ps=Object.values(pointers);pinchStart={d:Math.hypot(ps[0].x-ps[1].x,ps[0].y-ps[1].y),s:view.s};panStart=null;}else if(mode==="pan"){var pt=svgPoint(ev);panStart={x:pt.x,y:pt.y,tx:view.tx,ty:view.ty};}});
+svg.addEventListener("pointermove",function(ev){if(!pointers[ev.pointerId])return;pointers[ev.pointerId]={x:ev.clientX,y:ev.clientY};
+  if(panStart||pinchStart){if(ev.cancelable)ev.preventDefault();}
+  if(pinchStart&&Object.keys(pointers).length===2){var ps=Object.values(pointers);var d=Math.hypot(ps[0].x-ps[1].x,ps[0].y-ps[1].y);if(pinchStart.d>0){view.s=Math.min(2.5,Math.max(0.15,pinchStart.s*d/pinchStart.d));applyView();}return;}
+  if(panStart&&mode==="pan"){var pt=svgPoint(ev);view.tx=panStart.tx+(pt.x-panStart.x);view.ty=panStart.ty+(pt.y-panStart.y);applyView();}});
+function endPointer(ev){delete pointers[ev.pointerId];if(Object.keys(pointers).length<2)pinchStart=null;if(Object.keys(pointers).length===0)panStart=null;}
+svg.addEventListener("pointerup",endPointer);svg.addEventListener("pointercancel",endPointer);
+svg.addEventListener("wheel",function(ev){ev.preventDefault();var k=ev.deltaY<0?1.08:0.93;view.s=Math.min(2.5,Math.max(0.15,view.s*k));applyView();},{passive:false});
+svg.addEventListener("click",function(){if(mode==="connect"){pendingFrom=null;render();}});
+function startNodeDrag(ev,n,g){
+  if(n.groupSummary)return;
+  if(mode!=="select"||ev.button!==0&&ev.pointerType==="mouse")return;
+  ev.stopPropagation();dragActive=true;var start=toModel(svgPoint(ev)),ox=n.x,oy=n.y,moved=false;
+  function mv(e2){if(e2.cancelable)e2.preventDefault();var pt=toModel(svgPoint(e2));var nx=ox+(pt.x-start.x),ny=oy+(pt.y-start.y);if(Math.abs(nx-ox)+Math.abs(ny-oy)>2)moved=true;n.x=nx;n.y=ny;render();}
+  function up(){dragActive=false;window.removeEventListener("pointermove",mv);window.removeEventListener("pointerup",up);window.removeEventListener("pointercancel",up);if(moved){updateVerify();updateDirty();updateDiffSummary();}}
+  window.addEventListener("pointermove",mv);window.addEventListener("pointerup",up);window.addEventListener("pointercancel",up);
+}
+function onNodeTap(id){
+  if(id.indexOf("group:")===0){var gid=id.slice(6);if(focusGroup&&gid!==focusGroup){enterFocus(gid);return;}log("Group expanded: "+groupMeta(gid).label+" (view state only — model unchanged).");toggleGroup(gid,false);return;}
+  if(mode==="connect"){
+    if(!pendingFrom){pendingFrom=id;selectNode(id,false);render();log("Connect: source = "+byId(id).title+". Click a target node.");return;}
+    if(pendingFrom===id){pendingFrom=null;render();return;}
+    var nid="e-"+pendingFrom+"-"+id+"-"+(edgeSeq++);
+    MODEL.edges.push(E(nid,pendingFrom,id,document.getElementById("edgePlane").value,document.getElementById("edgeType").value,parseInt(document.getElementById("edgeWeight").value,10),parseFloat(document.getElementById("edgeConf").value),"draft link"));
+    log("Edge created: "+byId(pendingFrom).title+" → "+byId(id).title+" ("+nid+").");pendingFrom=null;selectNode(id,false);render();return;
+  }
+  selectNode(id,true);
+}
+/* ===== inspector ===== */
+function ioText(n){var i=[],o=[];MODEL.edges.forEach(function(e){if(e.to===n.id)i.push(e.from);if(e.from===n.id)o.push(e.to);});return (i.join(", ")||"—")+" → "+(o.join(", ")||"—");}
+function selectNode(id,rerender){var _n0=byId(id);if(_n0&&collapsedGroups[groupOf(_n0)]){delete collapsedGroups[groupOf(_n0)];log("Group auto-expanded to reveal selected node: "+groupMeta(groupOf(_n0)).label+".");}selectedNode=id;selectedEdge=null;document.getElementById("deleteEdgeBtn").disabled=true;document.getElementById("edgeInfo").textContent="Click an edge on the canvas to select it here.";var n=byId(id);if(!n)return;
+  document.getElementById("inspTitle").value=n.title;document.getElementById("inspSub").value=n.sub;document.getElementById("inspType").value=n.type;document.getElementById("inspStatus").value=n.status;
+  var gs=document.getElementById("inspGroup");if(gs){gs.innerHTML="";GROUPS.forEach(function(g){var o=document.createElement("option");o.value=g.id;o.textContent=g.label;gs.appendChild(o);});gs.value=groupOf(n);}
+  document.getElementById("inspId").textContent=n.id;document.getElementById("inspPlane").textContent=n.plane+" · "+n.layer;document.getElementById("inspIO").textContent=ioText(n);document.getElementById("inspNotes").textContent=n.notes;
+  document.getElementById("inspRepo").textContent=n.repoSource||"○ no repo source — not backed by a repo file";
+  document.getElementById("inspDelta").textContent=n.repoDelta||"—";
+  buildFieldEditor(n);if(typeof setStageForNode==="function")setStageForNode(id);if(rerender)render();}
+function buildFieldEditor(n){var box=document.getElementById("fieldEditor");box.innerHTML="";n.fields.forEach(function(f,i){var row=document.createElement("div");row.className="frow-edit";
+  [["name",f.name],["type",f.type],["note",f.note]].forEach(function(pair){var inp=document.createElement("input");inp.type="text";inp.value=pair[1];inp.setAttribute("aria-label","Field "+pair[0]);inp.addEventListener("input",function(){f[pair[0]]=inp.value;renderCanvasOnly();});row.appendChild(inp);});
+  var del=document.createElement("button");del.className="btn small danger";del.type="button";del.textContent="×";del.setAttribute("aria-label","Remove field row");del.addEventListener("click",function(){n.fields.splice(i,1);buildFieldEditor(n);render();});row.appendChild(del);box.appendChild(row);});}
+function renderCanvasOnly(){render();}
+[["inspTitle","title"],["inspSub","sub"],["inspType","type"],["inspStatus","status"]].forEach(function(pair){document.getElementById(pair[0]).addEventListener("input",function(ev){var n=byId(selectedNode);if(n){n[pair[1]]=ev.target.value;render();}});});
+document.getElementById("addFieldBtn").addEventListener("click",function(){var n=byId(selectedNode);if(!n)return;n.fields.push(F("field","type",""));buildFieldEditor(n);render();});
+document.getElementById("deleteNodeBtn").addEventListener("click",function(){var n=byId(selectedNode);if(!n)return;MODEL.nodes=MODEL.nodes.filter(function(x){return x.id!==n.id;});MODEL.edges=MODEL.edges.filter(function(e){return e.from!==n.id&&e.to!==n.id;});log("Node deleted: "+n.title+" (and its edges).");selectedNode=MODEL.nodes.length?MODEL.nodes[0].id:null;if(selectedNode)selectNode(selectedNode,false);render();});
+function selectEdge(id){selectedEdge=id;var rec=edgeEls[id];var e=rec?rec.def:null;if(!e){MODEL.edges.forEach(function(x){if(x.id===id)e=x;});}if(!e)return;var aggNote=(e.members&&e.members.length>1)?"<br><b>Aggregated edge</b> — represents "+e.members.length+" member edges across a collapsed group:<br>"+e.members.map(function(m){return "· "+esc(m.from)+" → "+esc(m.to)+" ("+esc(m.label)+", "+m.weight+"px, conf "+m.conf+")";}).join("<br>"):"";document.getElementById("edgeInfo").innerHTML="<b>"+esc(e.label)+"</b><br>"+esc(e.from)+" → "+esc(e.to)+"<br>plane "+e.plane+" · type "+TYPE_NAME[e.type]+" · weight "+e.weight+"px · confidence "+e.conf+((e.memberIds&&e.memberIds.indexOf("agg-vercel")>=0)||e.id==="agg-vercel"?"<br>classification LIVE · ADMIN-GATED · gate "+(vercelArmed?"ON — flows":"OFF — held (strong base)"):"")+"<br>repo source: "+esc(e.repoSource||"○ no repo source — not backed by a repo file")+"<br>id "+esc(e.id)+aggNote;document.getElementById("deleteEdgeBtn").disabled=!!(e.members&&e.members.length>1);render();}
+document.getElementById("deleteEdgeBtn").addEventListener("click",function(){if(!selectedEdge)return;var _rec=edgeEls[selectedEdge];if(_rec&&_rec.def.members&&_rec.def.members.length>1){log("That edge is an aggregate of a collapsed group — expand the group to edit member edges.");return;}MODEL.edges=MODEL.edges.filter(function(e){return e.id!==selectedEdge;});log("Edge deleted: "+selectedEdge);selectedEdge=null;document.getElementById("deleteEdgeBtn").disabled=true;render();});
+/* ===== templates — panel list AND the "+ Node" sheet share one add path ===== */
+function addTemplateNode(t){var d=t.make();var id=t.key+"-draft-"+(nodeSeq++);var spot={x:340+(nodeSeq*37)%420,y:120+(nodeSeq*53)%620};var nn=N(id,d.type,d.title,d.sub,d.plane,"core",spot.x,spot.y,190,""+d.status,d.notes,d.fields);nn.group="core-loop";MODEL.nodes.push(nn);log("Draft node added from template: "+d.title+" ("+id+").");selectNode(id,false);render();}
+var tplBox=document.getElementById("tplList");
+TEMPLATES.forEach(function(t){var b=document.createElement("button");b.className="tpl";b.type="button";b.innerHTML="<b>"+esc(t.label)+"</b><span>"+esc(t.desc)+" — click to add a draft box</span>";b.addEventListener("click",function(){addTemplateNode(t);});tplBox.appendChild(b);});
+var tplSheetList=document.getElementById("tplSheetList");
+if(tplSheetList)TEMPLATES.forEach(function(t){var b=document.createElement("button");b.className="btn small";b.type="button";b.style.textAlign="left";b.style.width="100%";b.textContent=t.label+" — "+t.desc;b.addEventListener("click",function(){addTemplateNode(t);hideTplSheet();});tplSheetList.appendChild(b);});
+function showTplSheet(){var s=document.getElementById("tplSheet");if(s)s.hidden=false;}
+function hideTplSheet(){var s=document.getElementById("tplSheet");if(s)s.hidden=true;}
+function toggleTplSheet(){var s=document.getElementById("tplSheet");if(s&&s.hidden)showTplSheet();else hideTplSheet();}
+/* ===== verify ===== */
+function runVerify(){
+  var ids={},orphans=[],bad=[],counts={plane:{},etype:{},nplane:{}};
+  MODEL.nodes.forEach(function(n){ids[n.id]=0;counts.nplane[n.plane]=(counts.nplane[n.plane]||0)+1;});
+  MODEL.edges.forEach(function(e){counts.plane[e.plane]=(counts.plane[e.plane]||0)+1;counts.etype[e.type]=(counts.etype[e.type]||0)+1;if(!byId(e.from)||!byId(e.to))bad.push(e.id);else{ids[e.from]++;ids[e.to]++;}});
+  MODEL.nodes.forEach(function(n){if(ids[n.id]===0)orphans.push(n.id);});
+  return{bad:bad,orphans:orphans,counts:counts};
+}
+function updateVerify(){var v=runVerify();
+  document.getElementById("vVersion").textContent=MODEL.version;document.getElementById("vHash").textContent=modelHash();
+  document.getElementById("vNodes").textContent=MODEL.nodes.length+" ("+MODEL.nodes.filter(function(n){return n.layer==="core";}).length+" core · "+MODEL.nodes.filter(function(n){return n.layer==="satellite";}).length+" satellite)";
+  document.getElementById("vEdges").textContent=MODEL.edges.length;
+  function fmt(o){return Object.keys(o).sort().map(function(k){return k+" "+o[k];}).join(" · ")||"—";}
+  document.getElementById("vCounts").innerHTML="Nodes by plane: "+fmt(v.counts.nplane)+"<br>Edges by plane: "+fmt(v.counts.plane)+"<br>Edges by type: "+fmt(v.counts.etype);
+  var rm=document.getElementById("repoMatch");if(rm){var nWith=MODEL.nodes.filter(function(n){return !!n.repoSource;}).length,eWith=MODEL.edges.filter(function(e){return !!e.repoSource;}).length;
+  var surfaces=[["Vercel (overall)","LIVE, CAPACITY CONSTRAINED / SELECTOR CONFIGURED, EFFECT NOT YET VERIFIED — only live app-hosting lane"],["Vercel · mcp-hub","LIVE — bearer-gated MCP router, /mcp/:server"],["Vercel · termux-monorepo","LIVE — demo-portal/public showcase, placeholder page"],["GitHub Pages","CONFIGURED / PUBLICATION UNVERIFIED"],["Render","AVAILABLE/CANDIDATE, UNPROVEN HERE"],["Cloudflare","AVAILABLE/CANDIDATE, UNPROVEN HERE"],["GitHub Actions","Live — execution substrate, 232 workflow files"],["Fly.io","Live, unpriced — billing NOT ESTABLISHED"],["Koyeb","Dormant"],["Neon","Live-ish — batch writes hourly, lane-events-recorder.yml"],["Hex","INTEGRATED EVIDENCE SURFACE"],["Wikis (GitHub / DeepWiki / Devin)","DOCUMENTATION SURFACES"],["Codespaces","Present, unmeasured — no registry record"],["Grafana Cloud","Recorded, un-detailed"],["Replit","Live — Muse-side connector, no mesh dependency"],["GitLab","Degraded — mirror webhook, last response 400"],["Witness (witness-attestation)","INVESTIGATE"],["getDX","NOT ESTABLISHED — absent from repo, 0 hits"],["Delphi Intake","Live — delphi-rfp.yml form + delphi-intake.yml"],["Delphi Gate","Live — delphi-gate.yml; weights ledger #1489; gate_pass_rate 0.68 / elo 1532 since 2026-10-21"],["Delphi Outcome ledger","Live — issue #1487"],["Delphi Cycle","Build briefed — N5 = cycle as Temporal workflow, promotion = dual-run parity"],["Research intake","Live — triggers opened/reopened/edited only, sha256 dedupe"],["Research seeds","Schema v1.0 — docs/repositories/research-seeds"],["Repository Observatory","Seam observatory-intake/v1 — signals owned/starred/watching/issue"],["Issue template family","On master — proposal / delphi-rfp / research-service / research-provider / target-brief / bug + apk-cross-reference & reverse-engineering-taxonomy families"],["Competition Coordinator","7 events — ops/challenge/coordinator.json, blob d5f14c5c84c9, single-writer challenge-entries"],["OSINT watch","Weekly Wed 08:17Z — challenge-osint-watch.yml"],["Participant store","Neon tables — repo keeps derived projection only"],["Admin metrics feed","ADMIN PANEL ONLY — internal metrics, values not in graph"]];
+  var deltas=["GitHub Pages — SSOT: CONFIGURED / PUBLICATION UNVERIFIED vs recon: Live","Render — SSOT: AVAILABLE/CANDIDATE, UNPROVEN HERE vs recon: Live","Cloudflare — SSOT: AVAILABLE/CANDIDATE, UNPROVEN HERE vs recon: Partial (Tunnel blocked; Workers/Pages/D1/R2 lane never built, 2026-10-21)"];
+  rm.innerHTML="<strong>Per-surface repo status (SSOT vocabulary):</strong><br>"+surfaces.map(function(s){return esc(s[0])+": "+esc(s[1]);}).join("<br>")+"<br><strong>⚠ Repo deltas ("+deltas.length+") — SSOT governs the node, both sources named in the inspector:</strong><br>"+deltas.map(function(d){return "⚠ "+esc(d);}).join("<br>")+"<br><strong>Provenance coverage:</strong> nodes with repo source "+nWith+" / "+MODEL.nodes.length+" ("+(MODEL.nodes.length-nWith)+" marked 'no repo source') · edges with repo source "+eWith+" / "+MODEL.edges.length+" ("+(MODEL.edges.length-eWith)+" marked 'no repo source').";}
+  var satBox=document.getElementById("satEdges");if(satBox){var NODE_STATUS={cloudflare:"AVAILABLE/CANDIDATE · UNPROVEN HERE ⚠ delta",render:"AVAILABLE/CANDIDATE · UNPROVEN HERE ⚠ delta",ghpages:"CONFIGURED / PUBLICATION UNVERIFIED ⚠ delta",flyio:"Live · unpriced · billing NOT ESTABLISHED",koyeb:"Dormant","vercel-mcp":"LIVE · MCP router lane","vercel-demo":vercelArmed?"LIVE · ADMIN-GATED · gate ON — flows":"LIVE · ADMIN-GATED · gate OFF — held",neon:"Live-ish",lane_events:"Live · in Neon",gravitee:"research seed in-repo",hex:"INTEGRATED EVIDENCE SURFACE",wiki:"DOCUMENTATION SURFACE",witness:"INVESTIGATE",codespaces:"present · unmeasured",grafana:"recorded · un-detailed",replit:"Live · Muse-side connector",gitlab:"Degraded · 400",ghactions:"Live · authoritative",logs:"Active",x:"Active",agg:"Active"};function edgeStyle(e){if(e.weight>=3&&e.conf>=0.85)return"solid/strong";if(e.weight<=1&&e.conf<0.7)return"faint/thin";return"connected/mid";}function nodeStatus(n){if(!n)return"—";return NODE_STATUS[n.id]||n.status||"—";}var slines=[];MODEL.edges.forEach(function(e){var fb=byId(e.from),tb=byId(e.to);var touchesSat=(fb&&fb.layer==="satellite")||(tb&&tb.layer==="satellite");if(touchesSat){slines.push(esc(e.from)+" → "+esc(e.to)+" — "+e.plane+"/"+e.type+", "+e.weight+"px, conf "+e.conf+" · edge: "+edgeStyle(e)+" · source: "+esc(fb?fb.title:e.from)+" — "+esc(nodeStatus(fb))+" · target: "+esc(tb?tb.title:e.to)+" — "+esc(nodeStatus(tb)));}});satBox.innerHTML=slines.join("<br>");}
+  var cgList=GROUPS.filter(function(g){return collapsedGroups[g.id]&&groupMembers(g.id).length;});
+  var hiddenN=0;cgList.forEach(function(g){hiddenN+=groupMembers(g.id).length;});
+  var vRend=document.getElementById("vRendered");
+  if(vRend)vRend.textContent="rendered "+(MODEL.nodes.length-hiddenN)+" of "+MODEL.nodes.length+" nodes ("+hiddenN+" collapsed into "+cgList.length+" groups) \u2014 model unchanged";
+  var vFoc=document.getElementById("vFocus");if(vFoc)vFoc.textContent=focusLabel();
+  var vTch=document.getElementById("vTouch");if(vTch)vTch.textContent="pull-to-refresh: suppressed on canvas · page scroll lock: "+(scrollLocked?"on":"off");
+  var ul=document.getElementById("verifyList");ul.innerHTML="";
+  function li(txt,cls){var l=document.createElement("li");l.textContent=txt;if(cls)l.className=cls;ul.appendChild(l);}
+  li("Render is generated from the model — drawn nodes = model nodes"+(showSat?"":" on visible layers (satellite layer off)")+".");
+  li("Groups: rendered "+(MODEL.nodes.length-hiddenN)+" of "+MODEL.nodes.length+" nodes ("+hiddenN+" collapsed into "+cgList.length+" group summaries: "+(cgList.map(function(g){return g.id;}).join(", ")||"none")+") — collapse is view state only, model unchanged; group membership IS model data and exports as Mermaid subgraphs.",cgList.length?"warn":"");
+  li(focusGroup?("focus: "+focusGroup+" \u00b7 view only \u00b7 "+(focusMode==="hide"?"Hide others (summaries remain)":"Dim others")+" — focused group expanded, all other groups collapsed to summaries; boundary edges of the focused group stay full-strength, aggregated edges to summaries stay labeled \u00d7N; exiting Focus restores the exact prior collapse state. Focus never dirties the model and is not in the \u0394 diff."):"focus: none",focusGroup?"warn":"");
+  li("pull-to-refresh: suppressed on canvas · page scroll lock: "+(scrollLocked?"on":"off")+" — touch-action: none on the SVG viewport and its holder, overscroll-behavior: none on html/body and the app root, and ANY touch starting inside the canvas holder is owned by the canvas from touchstart: a document-level non-passive touchmove listener preventDefaults every move until touchend/cancel, regardless of tool mode or whether a pan/drag has been recognized yet. The page scroll lock (canvas toolbar toggle; auto-on when entering Focus or the ⛶ larger-canvas view) freezes page scrolling via body position:fixed at the current offset and blocks document touchmove except inside the side panels, console and pickers.",scrollLocked?"warn":"");
+  li(v.bad.length?("FAIL: "+v.bad.length+" edge(s) with missing endpoints: "+v.bad.join(", ")):"Every edge's endpoints exist ("+MODEL.edges.length+"/"+MODEL.edges.length+").",v.bad.length?"fail":"");
+  li(v.orphans.length?("Orphan nodes (no edges): "+v.orphans.join(", ")):"No orphan nodes.",v.orphans.length?"warn":"");
+  li("Vercel classified identically on every surface — nodes, inventory, edge (3px, conf 0.95) and this audit: LIVE · ADMIN-GATED (manual dispatch only, git auto-deploy off). Gate "+(vercelArmed?"ON: edge flows.":"OFF: edge held on its strong base, never faint/thin."));
+  li("Repo match (SSOT vocabulary): Vercel = only live app-hosting lane (mcp-hub + termux-monorepo/demo-portal) · Pages = CONFIGURED / PUBLICATION UNVERIFIED ⚠ · Render + Cloudflare = AVAILABLE/CANDIDATE, UNPROVEN HERE ⚠ · Fly.io = live, unpriced, billing NOT ESTABLISHED · Koyeb = Dormant · Neon = Live-ish · Hex = INTEGRATED EVIDENCE SURFACE · Wikis = DOCUMENTATION SURFACES · Witness = INVESTIGATE · Codespaces = present, unmeasured · Grafana = recorded, un-detailed · GitLab mirror = Degraded (400).");
+  li("Bifrost status kept as supplied: proposal + partial slice in-repo — not upgraded.");
+  li("Temporal status kept as supplied: self-host operational, official MCP read-only; in-repo workflows temporal-engagement.yml + temporal-self-host-smoke.yml.");
+  li("Gravitee = research seed only in-repo (connector built outside repo); Platform201 = external platform, not a repo deployment lane.");
+  li("getDX kept as NOT ESTABLISHED (absent from repo, 0 hits) and rendered dimmed.");
+  li("New planes present as model groups: delphi (intake → generate → cross-vote → gate → outcome ledger #1487, cycle wraps as feedback), research (intake → seeds schema v1.0 → observatory seam → cross-plane graph), issues (template family on master → triage + per-form routes), competition (coordinator, 7 events, blob d5f14c5c84c9 → entries / OSINT / participants / admin metrics).");
+  li("Admin metrics feed carries NO win-probability values in this model — node and inventory state the ADMIN PANEL ONLY designation and that values are not in the graph.");
+  li("Proposal dispatch console: preparing a dispatch is a model edit (draft proposal node + edges in proposal-flow) and every payload is labeled PREPARED — not sent; this static prototype never sends.");
+  li("Integration statuses in the inventory are the 2026-10-30 snapshot — none upgraded by editing.");
+}
+document.getElementById("verifyBtn").addEventListener("click",function(){updateVerify();log("Verify re-run: hash "+modelHash()+".");});
+function updateDirty(){var d=isDirty();var b=document.getElementById("dirtyBadge");b.textContent=d?"MODEL DIRTY vs baseline — see Δ Diff panel":"MODEL CLEAN vs baseline";b.className=d?"dirty-badge":"clean-badge";}
+/* ===== export ===== */
+function mermaidId(id){return id.replace(/[^A-Za-z0-9_]/g,"_");}
+function toMermaid(){var lines=["flowchart LR","  %% generated from "+MODEL.version+" · hash "+modelHash()];
+  function nodeLines(n,ind){var fl=n.fields.map(function(f){return f.name+" : "+f.type+(f.note?" ("+f.note+")":"");}).join("<br/>");lines.push(ind+mermaidId(n.id)+"[\"<b>"+n.title+"</b><br/>"+n.type+" · "+n.sub+(fl?"<br/>"+fl:"")+"\"]");lines.push(ind+"%% "+n.id+" group: "+groupOf(n)+" · repoSource: "+(n.repoSource||"none")+(n.repoDelta?" · repoDelta: yes":""));}
+  GROUPS.forEach(function(g){var mem=groupMembers(g.id);if(!mem.length)return;lines.push("  subgraph "+mermaidId(g.id)+"[\""+g.label+"\"]");mem.forEach(function(n){nodeLines(n,"    ");});lines.push("  end");});
+  MODEL.nodes.forEach(function(n){if(GROUPS.indexOf(groupMeta(groupOf(n)))<0)nodeLines(n,"  ");});
+  var arrow={sync:"-->",async:"-.->",evidence:"-..->",feedback:"==>"}; 
+  MODEL.edges.forEach(function(e){lines.push("  "+mermaidId(e.from)+" "+(arrow[e.type]||"-->")+"|"+e.label+"| "+mermaidId(e.to));lines.push("  %% edge "+e.id+" repoSource: "+(e.repoSource||"none"));});
+  return lines.join("\n")+"\n";}
+function updateMermaid(){document.getElementById("mmdOut").value=toMermaid();}
+function modelJSON(){return JSON.stringify(MODEL,null,2);}
+function download(name,text,type){var blob=new Blob([text],{type:type||"text/plain"});var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},300);}
+function copyText(id,label){var ta=document.getElementById(id);var txt=ta.value;function done(){log(label+" copied to clipboard.");}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,function(){ta.select();document.execCommand("copy");done();});}else{ta.select();document.execCommand("copy");done();}}
+document.getElementById("copyJsonBtn").addEventListener("click",function(){var tmp=document.getElementById("mmdOut");download._x=0;var holder=document.createElement("textarea");holder.id="tmpJson";holder.value=modelJSON();holder.style.display="none";document.body.appendChild(holder);copyText("tmpJson","Model JSON");holder.remove();});
+document.getElementById("dlJsonBtn").addEventListener("click",function(){download("admin-interaction-graph.model.json",modelJSON(),"application/json");});
+document.getElementById("copyMmdBtn").addEventListener("click",function(){copyText("mmdOut","Mermaid .mmd");});
+document.getElementById("dlMmdBtn").addEventListener("click",function(){download("admin-interaction-graph.mmd",toMermaid());});
+/* ===== diff ===== */
+function itemMap(arr){var m={};arr.forEach(function(x){m[x.id]=JSON.stringify(x);});return m;}
+function computeDiff(){var base=JSON.parse(BASELINE);var bn=itemMap(base.nodes),cn=itemMap(MODEL.nodes),be=itemMap(base.edges),ce=itemMap(MODEL.edges);var out={nodes:{added:[],removed:[],modified:[]},edges:{added:[],removed:[],modified:[]}};
+  function cmp(b,c,acc){Object.keys(c).forEach(function(k){if(!(k in b))acc.added.push(k);else if(b[k]!==c[k])acc.modified.push(k);});Object.keys(b).forEach(function(k){if(!(k in c))acc.removed.push(k);});}
+  cmp(bn,cn,out.nodes);cmp(be,ce,out.edges);return out;}
+function diffSummaryText(d){return "Nodes: +"+d.nodes.added.length+" / −"+d.nodes.removed.length+" / ~"+d.nodes.modified.length+" · Edges: +"+d.edges.added.length+" / −"+d.edges.removed.length+" / ~"+d.edges.modified.length;}
+function updateDiffSummary(){var d=computeDiff();document.getElementById("diffSummary").textContent=isDirty()?diffSummaryText(d)+". Added nodes: "+(d.nodes.added.join(", ")||"—")+"; removed: "+(d.nodes.removed.join(", ")||"—")+"; modified: "+(d.nodes.modified.join(", ")||"—")+".":"No changes yet — model matches baseline.";}
+function lineDiff(a,b){var A=a.split("\n"),B=b.split("\n");var n=A.length,m=B.length;var dp=[];for(var i=0;i<=n;i++){dp.push(new Array(m+1).fill(0));}for(var i2=n-1;i2>=0;i2--)for(var j=m-1;j>=0;j--)dp[i2][j]=A[i2]===B[j]?dp[i2+1][j+1]+1:Math.max(dp[i2+1][j],dp[i2][j+1]);var out=[],i3=0,j2=0;while(i3<n&&j2<m){if(A[i3]===B[j2]){out.push("  "+A[i3]);i3++;j2++;}else if(dp[i3+1][j2]>=dp[i3][j2+1]){out.push("- "+A[i3]);i3++;}else{out.push("+ "+B[j2]);j2++;}}while(i3<n)out.push("- "+A[i3++]);while(j2<m)out.push("+ "+B[j2++]);return out.join("\n");}
+function mermaidDelta(d){var lines=["flowchart LR","  %% DELTA vs baseline · "+diffSummaryText(d)];d.nodes.added.forEach(function(id){var n=byId(id);if(n)lines.push("  "+mermaidId(id)+"[\"+ ADDED: "+n.title+"\"]");});d.nodes.modified.forEach(function(id){var n=byId(id);if(n)lines.push("  "+mermaidId(id)+"[\"~ MODIFIED: "+n.title+"\"]");});d.nodes.removed.forEach(function(id){lines.push("  %% - REMOVED node: "+id);});d.edges.added.forEach(function(id){MODEL.edges.forEach(function(e){if(e.id===id)lines.push("  "+mermaidId(e.from)+" -->|+"+e.label+"| "+mermaidId(e.to));});});d.edges.removed.forEach(function(id){lines.push("  %% - REMOVED edge: "+id);});d.edges.modified.forEach(function(id){lines.push("  %% ~ MODIFIED edge: "+id);});return lines.join("\n")+"\n";}
+function buildBundle(){var d=computeDiff();var bundle="=== Δ DIFF BUNDLE — Admin Interaction Graph ===\nModel: "+MODEL.version+" · hash "+modelHash()+"\n"+diffSummaryText(d)+"\n\n--- Mermaid delta (.mmd) ---\n"+mermaidDelta(d)+"\n--- Full Mermaid (.mmd) ---\n"+toMermaid()+"\n--- Model JSON (current) ---\n"+modelJSON()+"\n\n--- Unified-style diff of model JSON (baseline → current) ---\n"+lineDiff(JSON.stringify(JSON.parse(BASELINE),null,2),modelJSON())+"\n";return bundle;}
+document.getElementById("createDiffBtn").addEventListener("click",function(){document.getElementById("diffOut").value=buildBundle();log("Diff bundle created: "+diffSummaryText(computeDiff())+".");});
+document.getElementById("copyDiffBtn").addEventListener("click",function(){if(!document.getElementById("diffOut").value)document.getElementById("diffOut").value=buildBundle();copyText("diffOut","Diff bundle");});
+document.getElementById("dlDiffBtn").addEventListener("click",function(){download("admin-interaction-graph.diff-bundle.txt",document.getElementById("diffOut").value||buildBundle());});
+document.getElementById("dispatchBtn").addEventListener("click",function(){var target=document.getElementById("dispatchTarget").value;var payload={kind:"admin-interaction-graph/dispatch-payload",prepared_at:new Date().toISOString(),target:target,delivery:"PREPARED ONLY — this static prototype exports the payload; it does not send it.",model_version:MODEL.version,model_hash:modelHash(),summary:diffSummaryText(computeDiff()),files:{"admin-interaction-graph.mmd":toMermaid(),"admin-interaction-graph.model.json":modelJSON(),"admin-interaction-graph.diff.txt":buildBundle()}};document.getElementById("payloadOut").value=JSON.stringify(payload,null,2);log("Dispatch payload PREPARED for target '"+target+"' — not sent. Copy or download it to dispatch through that route.");});
+document.getElementById("copyPayloadBtn").addEventListener("click",function(){if(document.getElementById("payloadOut").value)copyText("payloadOut","Dispatch payload");});
+document.getElementById("dlPayloadBtn").addEventListener("click",function(){if(document.getElementById("payloadOut").value)download("dispatch-payload.json",document.getElementById("payloadOut").value,"application/json");});
+/* ===== controls ===== */
+function setMode(m){mode=m;pendingFrom=null;["Select","Connect","Pan"].forEach(function(k){document.getElementById("mode"+k).setAttribute("aria-pressed",mode===k.toLowerCase()?"true":"false");});document.getElementById("canvasHint").textContent=m==="connect"?"Connect mode: click a source node, then a target node — the new edge uses the plane / type / weight / confidence chosen in the toolbar. Click an edge in Select mode to delete it from the inspector.":m==="pan"?"Pan mode: drag the canvas to pan — the canvas owns the touch (pull-to-refresh is suppressed here, panning up to the top will not reload). Pinch or use +/− to zoom; Fit frames the core graph.":"Select mode: drag nodes, click a node to edit it, click an edge to select it. Connect mode: click a source node, then a target node. Pinch or use +/− to zoom; Fit frames the core graph.";render();}
+document.getElementById("modeSelect").addEventListener("click",function(){setMode("select");});
+document.getElementById("modeConnect").addEventListener("click",function(){setMode("connect");});
+document.getElementById("modePan").addEventListener("click",function(){setMode("pan");});
+document.getElementById("zoomIn").addEventListener("click",function(){view.s=Math.min(2.5,view.s*1.2);applyView();});
+document.getElementById("zoomOut").addEventListener("click",function(){view.s=Math.max(0.15,view.s/1.2);applyView();});
+document.getElementById("fitBtn").addEventListener("click",function(){fitView(false);});
+document.getElementById("actualBtn").addEventListener("click",function(){view.s=1;view.tx=12;view.ty=12;applyView();});
+document.getElementById("planeFilter").addEventListener("change",render);
+document.getElementById("typeFilter").addEventListener("change",render);
+document.getElementById("satToggle").addEventListener("change",function(ev){showSat=ev.target.checked;render();fitView(false);});
+document.getElementById("inspGroup").addEventListener("change",function(ev){var n=byId(selectedNode);if(!n)return;n.group=ev.target.value;log("Node group changed (model edit): "+n.title+" → "+n.group+". Appears in the Δ diff.");render();});
+document.getElementById("collapseAllBtn").addEventListener("click",function(){focusGroup=null;focusSnapshot=null;GROUPS.forEach(function(g){if(groupMembers(g.id).length)collapsedGroups[g.id]=true;});log("All groups collapsed (view state only — model unchanged; any Focus cleared).");render();});
+document.getElementById("expandAllBtn").addEventListener("click",function(){focusGroup=null;focusSnapshot=null;collapsedGroups={};log("All groups expanded (view state only — model unchanged; any Focus cleared).");render();});
+/* ===== focus controls (Groups panel + picker + bottom bar) ===== */
+document.getElementById("focusSelect").addEventListener("change",function(ev){var v=ev.target.value;if(!v){exitFocus();}else{enterFocus(v);}hideFocusPicker();});
+document.getElementById("exitFocusBtn").addEventListener("click",function(){exitFocus();});
+document.getElementById("focusDimBtn").addEventListener("click",function(){setFocusMode("dim");});
+document.getElementById("focusHideBtn").addEventListener("click",function(){setFocusMode("hide");});
+document.getElementById("fpDimBtn").addEventListener("click",function(){setFocusMode("dim");});
+document.getElementById("fpHideBtn").addEventListener("click",function(){setFocusMode("hide");});
+document.getElementById("fpExitBtn").addEventListener("click",function(){exitFocus();hideFocusPicker();});
+document.getElementById("fpCloseBtn").addEventListener("click",function(){hideFocusPicker();});
+document.getElementById("fitOnFocusBtn").addEventListener("click",function(){setFitOnFocus(!fitOnFocus);});
+document.getElementById("fpFitOnFocusBtn").addEventListener("click",function(){setFitOnFocus(!fitOnFocus);});
+/* ===== page scroll lock + larger canvas + add-node sheet wiring ===== */
+function toggleScrollLockManual(){setScrollLock(!scrollLocked,null);}
+document.getElementById("lockBtn").addEventListener("click",toggleScrollLockManual);
+document.getElementById("fpLockBtn").addEventListener("click",toggleScrollLockManual);
+document.getElementById("fsLockBtn").addEventListener("click",toggleScrollLockManual);
+var fsActive=false;
+function enterFs(){if(fsActive)return;fsActive=true;var wrap=document.querySelector("main.canvas-wrap");if(wrap)wrap.classList.add("fs");
+ ["fsBtn","mbFs"].forEach(function(id){var b=document.getElementById(id);if(b)b.setAttribute("aria-pressed","true");});
+ if(!scrollLocked)setScrollLock(true,"fs");
+ log("Larger canvas open — full-viewport overlay; all canvas interactions work as usual. Exit ⛶ restores the previous view and scroll position.");
+ if(window.requestAnimationFrame)requestAnimationFrame(function(){fitView(false);});else fitView(false);}
+function exitFs(){if(!fsActive)return;fsActive=false;var wrap=document.querySelector("main.canvas-wrap");if(wrap)wrap.classList.remove("fs");
+ ["fsBtn","mbFs"].forEach(function(id){var b=document.getElementById(id);if(b)b.setAttribute("aria-pressed","false");});
+ if(lockAutoBy==="fs")setScrollLock(false);
+ log("Larger canvas closed — layout and scroll position restored.");
+ if(window.requestAnimationFrame)requestAnimationFrame(function(){fitView(false);});else fitView(false);}
+document.getElementById("fsBtn").addEventListener("click",function(){if(fsActive)exitFs();else enterFs();});
+document.getElementById("fsExitBtn").addEventListener("click",function(){exitFs();});
+document.getElementById("fsFitBtn").addEventListener("click",function(){fitView(false);});
+document.getElementById("fsZoomIn").addEventListener("click",function(){document.getElementById("zoomIn").click();});
+document.getElementById("fsZoomOut").addEventListener("click",function(){document.getElementById("zoomOut").click();});
+document.getElementById("addNodeBtn").addEventListener("click",function(){toggleTplSheet();});
+document.getElementById("tplSheetClose").addEventListener("click",function(){hideTplSheet();});
+syncLockUI();
+function buildFocusPicker(){var box=document.getElementById("focusPickerList");if(!box)return;box.innerHTML="";
+ GROUPS.forEach(function(g){if(!groupMembers(g.id).length)return;var b=document.createElement("button");b.className="btn small";b.type="button";b.setAttribute("aria-pressed",focusGroup===g.id?"true":"false");
+  b.textContent=(focusGroup===g.id?"◎ Focused — ":"◎ Focus ")+g.label+" ("+groupMembers(g.id).length+" nodes)";
+  b.addEventListener("click",function(){if(focusGroup===g.id)exitFocus();else enterFocus(g.id);hideFocusPicker();});box.appendChild(b);});}
+function showFocusPicker(){buildFocusPicker();syncFocusUI();document.getElementById("focusPicker").hidden=false;}
+function hideFocusPicker(){var p=document.getElementById("focusPicker");if(p)p.hidden=true;}
+function toggleFocusPicker(){var p=document.getElementById("focusPicker");if(p.hidden)showFocusPicker();else hideFocusPicker();}
+document.getElementById("mbFocus").addEventListener("click",function(){toggleFocusPicker();});
+document.getElementById("toolbarFocusBtn").addEventListener("click",function(){toggleFocusPicker();});
+var HOME={};MODEL.nodes.forEach(function(n){HOME[n.id]={x:n.x,y:n.y};});
+document.getElementById("resetBtn").addEventListener("click",function(){MODEL.nodes.forEach(function(n){if(HOME[n.id]){n.x=HOME[n.id].x;n.y=HOME[n.id].y;}});render();fitView(false);log("Layout reset to model baseline positions (positions are part of the model, so a moved node shows in the diff until reset).");});
+var paused=false,ppBtn=document.getElementById("playPauseBtn");
+ppBtn.addEventListener("click",function(){paused=!paused;svg.classList.toggle("paused",paused);if(paused){try{svg.pauseAnimations();}catch(e){}ppBtn.textContent="▶ Resume motion";ppBtn.setAttribute("aria-pressed","true");}else{try{svg.unpauseAnimations();}catch(e){}ppBtn.textContent="⏸ Pause motion";ppBtn.setAttribute("aria-pressed","false");}});
+/* gate — button role=switch; visual (OFF/ON + knob side + colour), text, node status
+   and canvas edge are all driven from the single vercelArmed flag via syncGate(),
+   so the four surfaces can never disagree. Default on load: OFF / closed / held. */
+var gate=document.getElementById("vercelGate");
+function syncGate(){
+  gate.setAttribute("aria-checked",vercelArmed?"true":"false");
+  gate.classList.toggle("is-on",vercelArmed);gate.classList.toggle("is-off",!vercelArmed);
+  gate.querySelector(".gate-state").textContent=vercelArmed?"ON":"OFF";
+  var n=byId("vercel-demo");if(n)n.status=vercelArmed?"LIVE · Gate open":"LIVE · Gate closed";
+  document.getElementById("vercelGateState").textContent=vercelArmed?"Gate open (ON): Vercel is LIVE and armed — manual dispatch may publish to the termux-monorepo (demo-portal) lane; the Aggregator → Vercel · termux-monorepo edge flows (marching, 3px, conf 0.95).":"Gate closed (OFF): Vercel is LIVE, but publish is held — the Aggregator → Vercel · termux-monorepo edge stays strong/solid (3px, conf 0.95) with flow stopped at the gate.";
+}
+gate.addEventListener("click",function(){vercelArmed=!vercelArmed;syncGate();log(vercelArmed?"Vercel gate OPEN (ON) — armed by admin, manual dispatch may publish.":"Vercel gate CLOSED (OFF) — publish held.");render();});
+syncGate();
+/* log + pulse */
+var logEl=document.getElementById("eventLog");
+function log(msg){var d=document.createElement("div");d.textContent="› "+msg;logEl.appendChild(d);logEl.scrollTop=logEl.scrollHeight;}
+var PULSE_SEQ=[["user-routing","User Request → Routing / Who?"],["routing-orch","Routing → Orchestrator"],["orch-dostuff","Orchestrator → Do Stuff!"],["dostuff-x","Do Stuff! —Route→ X"],["x-laneB","X → worker lanes (fan-out)"],["laneB-agg","Workers → Aggregator"],["dostuff-scout","Do Stuff! → Scout (recon)"],["scout-biudl","Scout → BIUDL!"],["biudl-validate","BIUDL! → Validate"],["validate-show","Validate → Show User (outer loop)"],["show-user","Show User → User: results delivered ✓"]];
+var pulsing=false;
+document.getElementById("pulseBtn").addEventListener("click",function(){if(pulsing)return;pulsing=true;logEl.innerHTML="";log("Pulse sent (simulated trace).");pulseDot.style.display="";var i=0;
+  function step(){if(i>=PULSE_SEQ.length){pulseDot.style.display="none";pulsing=false;log("Trace complete — outer loop closed.");return;}var rec=edgeEls[PULSE_SEQ[i][0]];if(!rec){i++;step();return;}var path=rec.path;path.classList.add("hl");var L=path.getTotalLength(),t0=null,dur=Math.max(350,L*1.1);
+    function frame(ts){if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/dur);var pt=path.getPointAtLength(L*k);pulseDot.setAttribute("cx",pt.x);pulseDot.setAttribute("cy",pt.y);if(k<1)requestAnimationFrame(frame);else{var via=(rec.def&&(String(rec.def.from).indexOf("group:")===0||String(rec.def.to).indexOf("group:")===0||(rec.def.memberIds&&rec.def.memberIds.length>1)))?" (via collapsed group summary)":"";log(PULSE_SEQ[i][1]+via);path.classList.remove("hl");i++;step();}}
+    requestAnimationFrame(frame);}
+  step();});
+var resizeFitTimer=null;
+window.addEventListener("resize",function(){if(resizeFitTimer)clearTimeout(resizeFitTimer);resizeFitTimer=setTimeout(function(){fitView(false);},140);});
+/* mobile bottom action bar (B160V primary actions, thumb reach) */
+document.getElementById("mbPulse").addEventListener("click",function(){document.getElementById("pulseBtn").click();});
+document.getElementById("mbFit").addEventListener("click",function(){fitView(false);});
+document.getElementById("mbNode").addEventListener("click",function(){toggleTplSheet();});
+document.getElementById("mbFs").addEventListener("click",function(){if(fsActive)exitFs();else enterFs();});
+document.getElementById("mbDiff").addEventListener("click",function(){document.getElementById("createDiffBtn").click();document.getElementById("diffOut").scrollIntoView({block:"center"});});
+document.getElementById("mbDispatch").addEventListener("click",function(){document.getElementById("dispatchBtn").click();document.getElementById("payloadOut").scrollIntoView({block:"center"});});
+/* ===== proposal dispatch console =====
+   Formalizes the owner ↔ agent Muse-chat loop: draft here, Prepare emits the
+   chosen method's payload shape (PREPARED — not sent; sending is a PAT issue
+   POST / dispatch call outside this static prototype) and adds a draft
+   proposal node to the proposal-flow group — a model edit, so it lands in
+   the Δ diff like any other. */
+var PROP_STAGES=[
+ {key:"feedback",nodeId:"proposal-feedback",name:"Feedback",purpose:"Collect reactions / comments on the proposal."},
+ {key:"review",nodeId:"proposal-review",name:"Review",purpose:"Gate-style evaluation with receipts."},
+ {key:"enhancement",nodeId:"proposal-enhancement",name:"Enhancement",purpose:"Revise the proposal from the feedback gathered."},
+ {key:"expansion",nodeId:"proposal-expansion",name:"Expansion",purpose:"Scope / adjacency growth — what else the proposal touches or unlocks."},
+ {key:"fit",nodeId:"proposal-fit",name:"Fit analysis",purpose:"Check against repo planes, SSOTs, quota, and existing lanes. Output = fit verdict + deltas."}
+];
+var currentStage=0;
+function renderStepper(){var box=document.getElementById("propStepper");if(!box)return;box.innerHTML="";
+ PROP_STAGES.forEach(function(st,i){var n=byId(st.nodeId);var b=document.createElement("button");b.className="step";b.type="button";b.setAttribute("aria-pressed",i===currentStage?"true":"false");
+  b.innerHTML="<b>"+(i+1)+". "+esc(st.name)+"</b><span>"+esc(n?n.status:"awaiting dispatch")+"</span>";
+  b.addEventListener("click",function(){setStage(i);});box.appendChild(b);});
+ var st=PROP_STAGES[currentStage],n2=byId(st.nodeId);
+ document.getElementById("stageDetail").innerHTML="<b>"+esc(st.name)+"</b> — "+esc(st.purpose)+"<br><span style='color:var(--muted)'>Stage node: "+esc(st.nodeId)+" · state: "+esc(n2?n2.status:"—")+"</span>";
+ document.getElementById("fitPanel").style.display=st.key==="fit"?"":"none";
+ if(st.key==="fit")updateFitChecklist();}
+function setStage(i){currentStage=i;renderStepper();}
+function setStageForNode(id){for(var i=0;i<PROP_STAGES.length;i++)if(PROP_STAGES[i].nodeId===id){currentStage=i;renderStepper();return;}}
+var fitTouched={};
+var QUOTA_BY_GROUP={"core-loop":"GitHub Actions minutes · github.api (core execution)","doe":"Actions minutes · scorer runs (DoE arms)","platform-external":"Provider quotas (Bifrost routes) · Temporal self-host · external platform seats","workflows":"GitHub Actions minutes · github.api — 232 workflow files","deploy-satellites":"Host free-tier quotas · Actions dispatch minutes","dev-redundancy":"Codespaces minutes (present, unmeasured)","vercel-lanes":"Vercel build quota — CAPACITY CONSTRAINED · Actions minutes (batch-deploy)","data-stores":"Neon storage / writes · Grafana ingestion","evidence":"Neon lane-events writes · Hex evidence feed","docs":"No quota — documentation surfaces only","delphi":"github.api (PAT) intake/gate calls · Actions minutes (delphi-* workflows)","research":"github.api search / intake calls · Actions minutes","issues":"github.api issue calls via the PAT route","competition":"Actions minutes (challenge-osint-watch, weekly) · Neon participant store","proposal-flow":"github.api + Actions minutes if dispatched · chat relay = no repo quota"};
+function buildFitChips(){var box=document.getElementById("fitGroupChips");if(!box)return;box.innerHTML="";
+ GROUPS.forEach(function(g){if(!groupMembers(g.id).length)return;var b=document.createElement("button");b.className="fitchip";b.type="button";b.textContent=g.short;b.setAttribute("aria-pressed","false");
+  b.addEventListener("click",function(){if(fitTouched[g.id])delete fitTouched[g.id];else fitTouched[g.id]=true;b.setAttribute("aria-pressed",fitTouched[g.id]?"true":"false");updateFitChecklist();});box.appendChild(b);});}
+function updateFitChecklist(){var ul=document.getElementById("fitChecklist");if(!ul)return;ul.innerHTML="";
+ function li(txt,cls){var l=document.createElement("li");l.textContent=txt;if(cls)l.className=cls;ul.appendChild(l);}
+ var picked=GROUPS.filter(function(g){return fitTouched[g.id]&&groupMembers(g.id).length;});
+ if(!picked.length){li("Groups / planes touched: none picked yet — tap the group chips above so the checks below can be generated from the model.","warn");}
+ else{var planes={},nodeCount=0;picked.forEach(function(g){groupMembers(g.id).forEach(function(n){planes[n.plane]=true;nodeCount++;});});
+  li("Groups touched: "+picked.map(function(g){return g.label;}).join(" · "));
+  li("Planes touched (from member nodes in the model): "+Object.keys(planes).sort().join(", "));
+  li("Existing lanes to fit against: "+nodeCount+" model nodes already live in the touched groups — the proposal must name its deltas against them.");}
+ var deltas=MODEL.nodes.filter(function(n){return !!n.repoDelta;});
+ var hitDeltas=deltas.filter(function(n){return fitTouched[groupOf(n)];});
+ if(hitDeltas.length)hitDeltas.forEach(function(n){li("⚠ SSOT conflict in a touched group: "+n.title+" — "+n.status+". Both repo sources are named in its inspector; the SSOT (docs/DEPLOYMENT-LANES.md) governs.","warn");});
+ else li("SSOT conflicts: no repo-delta node sits in the touched groups. Standing repo deltas in the model (check anyway): "+deltas.map(function(n){return n.title;}).join(", ")+".");
+ if(picked.length){picked.forEach(function(g){li("Quota plane — "+g.short+": "+(QUOTA_BY_GROUP[g.id]||"no named quota plane in the model"));});}
+ else li("Quota planes touched: pick groups above — each touched group's quota plane is read from the model here.","warn");
+ li("Mortality rule check: no critical lane may end up single-homed on a free tier — state the exit for any new free dependency in the fit targets.");
+ li("Verdict: fill the fit-verdict field below — it travels with the dispatch payload and onto the proposal node.");}
+var METHOD_DEF={
+ issue:{label:"GitHub Issue — proposal.yml",short:"github issue · proposal.yml",target:"issue-templates",targetLabel:"Issue template family (proposal.yml → proposal dispatch)"},
+ delphi:{label:"Delphi intake — delphi-rfp.yml",short:"delphi intake · delphi-rfp.yml",target:"delphi-intake",targetLabel:"Delphi Intake"},
+ research:{label:"Research intake — seed record",short:"research intake · seed record",target:"research-intake",targetLabel:"Research intake"},
+ workflow:{label:"Workflow dispatch",short:"workflow dispatch",target:"ghactions",targetLabel:"GitHub Actions (workflow dispatch)"},
+ chat:{label:"Chat relay — side-chat brief",short:"chat relay · side-chat brief",target:"routing",targetLabel:"Routing / Who? (side-chat lane)"}};
+var propSeq=1;
+function slugifyTitle(s){var out=String(s||"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,30);return out||"proposal";}
+function buildPropPayload(method,common,wf){
+ if(method==="issue")return{kind:"proposal-dispatch/github-issue",status:"PREPARED — not sent",delivery:"PAT route: POST /repos/{owner}/{repo}/issues — not called by this static prototype",form:".github/ISSUE_TEMPLATE/proposal.yml",issue:{title:common.title,labels:["proposal"],body:"## Proposal\n"+common.body+"\n\n## Fit targets\n"+common.fit_targets+"\n\n## Pipeline\nFeedback → Review → Enhancement → Expansion → Fit analysis (proposal-flow group, Admin Interaction Graph)"},form_fields:{type:common.type,fit_targets:common.fit_targets,fit_verdict:common.fit_verdict||null,touched_groups:common.touched_groups},proposal_node:common.proposal_node};
+ if(method==="delphi")return{kind:"proposal-dispatch/delphi-intake",status:"PREPARED — not sent",delivery:"Enters the delphi group at Intake — not submitted by this static prototype",form:".github/ISSUE_TEMPLATE/delphi-rfp.yml",workflow:".github/workflows/delphi-intake.yml",enters_at:"delphi-intake",form_fields:{title:common.title,rfp:common.body,fit_targets:common.fit_targets,fit_verdict:common.fit_verdict||null,touched_groups:common.touched_groups,requested_pass:"generate n proposals → cross-vote ballots → gate → outcome ledger"},proposal_node:common.proposal_node};
+ if(method==="research"){var isProvider=common.type==="Research: provider";return{kind:"proposal-dispatch/research-seed",status:"PREPARED — not sent",delivery:"Becomes a research-seeds record via research-intake — not submitted by this static prototype",schema:"research-seeds schema v1.0",template:isProvider?".github/ISSUE_TEMPLATE/research-provider.yml":".github/ISSUE_TEMPLATE/research-service.yml",workflow:".github/workflows/research-intake.yml",seed_record:{name:common.title,kind:isProvider?"provider":"service",description:common.body,fit_targets:common.fit_targets,provenance:"proposal dispatch console"},proposal_node:common.proposal_node};}
+ if(method==="workflow")return{kind:"proposal-dispatch/workflow-dispatch",status:"PREPARED — not sent",delivery:"Dispatch call happens outside this static prototype",workflow_dispatch:{endpoint:"POST /repos/{owner}/{repo}/actions/workflows/"+wf+"/dispatches",workflow:wf,payload:{ref:"master",inputs:{proposal_title:common.title,proposal_type:common.type,fit_targets:common.fit_targets}}},repository_dispatch:{endpoint:"POST /repos/{owner}/{repo}/dispatches",payload:{event_type:"proposal-submitted",client_payload:{title:common.title,type:common.type,fit_targets:common.fit_targets}}},proposal_node:common.proposal_node};
+ return{kind:"proposal-dispatch/chat-relay",status:"PREPARED — not sent",delivery:"Paste / hand this brief to a side-chat lane — the owner ↔ agent Muse-chat loop this console formalizes; nothing is sent by this page",channel:"Muse chat — side-chat lane",brief:{title:common.title,type:common.type,ask:"Run the pipeline with receipts: Feedback → Review → Enhancement → Expansion → Fit analysis",body:common.body,fit_targets:common.fit_targets,fit_verdict:common.fit_verdict||null,touched_groups:common.touched_groups,return_to:"Admin Interaction Graph · proposal-flow group"},proposal_node:common.proposal_node};}
+document.getElementById("propMethod").addEventListener("change",function(ev){document.getElementById("propWorkflowWrap").style.display=ev.target.value==="workflow"?"":"none";});
+document.getElementById("propPrepareBtn").addEventListener("click",function(){
+ var title=document.getElementById("propTitle").value.trim()||"Untitled proposal";
+ var type=document.getElementById("propType").value;
+ var body=document.getElementById("propBody").value.trim()||"(no body drafted)";
+ var fit=document.getElementById("propFit").value.trim();
+ var method=document.getElementById("propMethod").value;
+ var wf=document.getElementById("propWorkflow").value.trim()||"delphi-generate.yml";
+ var verdict=document.getElementById("fitVerdict").value.trim();
+ var def=METHOD_DEF[method];
+ var id="proposal-"+slugifyTitle(title)+"-"+propSeq;while(byId(id)){propSeq++;id="proposal-"+slugifyTitle(title)+"-"+propSeq;}
+ var touched=GROUPS.filter(function(g){return fitTouched[g.id];}).map(function(g){return g.id;});
+ var common={title:title,type:type,body:body,fit_targets:fit,fit_verdict:verdict,touched_groups:touched,proposal_node:id};
+ var payload=buildPropPayload(method,common,wf);payload.prepared_at=new Date().toISOString();payload.method_label=def.label;
+ var nn=N(id,"proposal",title,type+" · draft proposal","control","core",740,2560+(propSeq-1)*190,232,"Draft · PREPARED — not sent","Drafted in the proposal dispatch console. Body: "+body+" · Fit targets: "+(fit||"—")+(verdict?" · Fit verdict: "+verdict:""),[F("type",type,"form family"),F("method",def.short,"PREPARED — not sent"),F("fit targets",fit||"—",""),F("stages","feedback → review → enhancement → expansion → fit","pipeline"),F("verdict",verdict||"— (admin fills at Fit analysis)","")]);
+ nn.group="proposal-flow";MODEL.nodes.push(nn);
+ MODEL.edges.push(E("pe-"+id+"-target",id,def.target,"control","async",3,0.85,"dispatch → "+def.targetLabel+" · PREPARED"));
+ PROP_STAGES.forEach(function(st){MODEL.edges.push(E("pe-"+id+"-"+st.key,id,st.nodeId,"feedback","feedback",1,0.7,"stage: "+st.name+" · PREPARED"));});
+ PROP_STAGES.forEach(function(st){var sn=byId(st.nodeId);if(sn){sn.status="Prepared — not sent";sn.fields.forEach(function(f){if(f.name==="state")f.type="prepared — not sent";});}});
+ document.getElementById("propPayloadOut").value=JSON.stringify(payload,null,2);
+ document.getElementById("propStatus").textContent="Proposal node “"+id+"” created in proposal-flow: edges to "+def.targetLabel+" + all 5 stage nodes. Payload above is PREPARED — not sent (sending = PAT issue POST / dispatch call outside this prototype). The node + edges are a model edit — see the Δ Diff panel.";
+ log("Proposal PREPARED (not sent): "+title+" → "+def.label+". Draft node "+id+" added to proposal-flow.");
+ propSeq++;renderStepper();selectNode(id,false);render();});
+document.getElementById("propCopyBtn").addEventListener("click",function(){if(document.getElementById("propPayloadOut").value)copyText("propPayloadOut","Proposal payload");});
+document.getElementById("propDlBtn").addEventListener("click",function(){if(document.getElementById("propPayloadOut").value)download("proposal-dispatch-payload.json",document.getElementById("propPayloadOut").value,"application/json");});
+document.getElementById("mbProposal").addEventListener("click",function(){document.getElementById("propPrepareBtn").click();var out=document.getElementById("propPayloadOut");if(out.value)out.scrollIntoView({block:"center"});});
+buildFitChips();renderStepper();updateFitChecklist();
+/* init — default view frames ALL visible nodes incl. the satellite column (nothing clipped) */
+render();selectNode("user",false);render();fitView(false);
+if(window.requestAnimationFrame)requestAnimationFrame(function(){requestAnimationFrame(function(){fitView(false);});});
+})();
+</script>
+</body>
+</html>

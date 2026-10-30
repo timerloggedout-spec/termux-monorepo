@@ -15,6 +15,8 @@ PR) — never on a lane report alone. Owner lane in brackets.
 
 - [x] MIG-01 DISPOSITIONED 2026-10-30: `repository-observatory` NOT MIGRATABLE as a whole (evidence: app-token public owned 30 vs index 692 — private-account inventory; watching + /user = 403 for installation tokens; plan §1.1 M1 + §1.5). Stays on user token; wave 0 re-picked = MIG-02 [migration-plan]
 - [ ] MIG-02 Wave 1: `reviewer-metrics-collect` → Collector (~750 calls/run off PAT) [migration-plan]
+- [ ] MIG-RR-01 Repo Replay telemetry-ingest reconciliation: 2026-10-28 Provenance+HindSight ingest landed via AppID route (Collector verify + Publisher landing); PAT fallback only [migration-plan §1.1 RR-1]
+- [ ] MIG-RR-02 Repo Replay publish route PAT → Publisher AppID, gated on installation extension to replay target repos (AppID lane) [migration-plan §1.1 RR-2]
 - [ ] MIG-03 Wave 1: Delphi feed collectors' GitHub reads → Collector, one at a time (ledger, rfp, proposals, oracle-panel, linguist-panel, surface, traffic) [migration-plan]
 - [ ] MIG-04 Wave 1: `provider-availability` GitHub probe steps → Collector [migration-plan]
 - [ ] MIG-05 Wave 1: read-only recon/observer class → Collector (discovery, reconcile, issue-observatory, observer pollers, telemetry snapshot, osint reads) [migration-plan]

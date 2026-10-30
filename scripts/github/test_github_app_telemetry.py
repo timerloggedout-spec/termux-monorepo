@@ -193,6 +193,28 @@ class TelemetryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "API status counts"):
             telemetry.validate_g4_receipt(receipt)
 
+    def test_g4_runtime_receipt_rejects_malformed_conclusion_and_nonfinite_duration(self):
+        receipt = {
+            "schema_version": 1,
+            "receipt_type": "github_app_g4_runtime_receipt",
+            "app_slug": "termux-fleet-collector",
+            "mint_outcome": "success",
+            "rate_limit_before": {"limit": 5000, "remaining": 4990, "reset": 1900000000},
+            "rate_limit_after": {"limit": 5000, "remaining": 4984, "reset": 1900000000},
+            "api_calls_by_status": {"200": 5},
+            "repositories_inspected": 1,
+            "workflow": {"run_id": 12345, "attempt": 1, "head_sha": "a" * 40},
+            "duration_seconds": 12.5,
+            "conclusion": [],
+            "observed_at": "2026-10-30T07:00:00Z",
+        }
+        with self.assertRaisesRegex(ValueError, "conclusion"):
+            telemetry.validate_g4_receipt(receipt)
+        receipt["conclusion"] = "success"
+        receipt["duration_seconds"] = float("nan")
+        with self.assertRaisesRegex(ValueError, "duration_seconds"):
+            telemetry.validate_g4_receipt(receipt)
+
 
 if __name__ == "__main__":
     unittest.main()

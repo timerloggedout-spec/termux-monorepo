@@ -1,6 +1,6 @@
 {
   "schema": "quota-allocations-feed/v1",
-  "generated_at": "2026-10-28T14:16:04.828539+00:00",
+  "generated_at": "2026-10-28T23:40:18.002849+00:00",
   "source": "ops/quota/allocations.json (owner-set, issue #1884) joined with ops/quota/registry.json entitlements and the public readings snapshot; entitlements are not usage and no focus attribution is invented.",
   "issue": 1884,
   "set_by": "owner",
@@ -56,10 +56,10 @@
     },
     {
       "id": "D3",
-      "title": "for C3, Builder.io Agent-Native Hackathon",
+      "title": "for C3, Builder.io Agent-Native Hackathon \u2014 concept #42 QUESTIONED 2026-10-28 (under review; not the active build)",
       "status": "ACTIVE",
       "opens": null,
-      "closes": "2026-11-02T23:59:00-08:00"
+      "closes": "2026-11-09T23:59:00-08:00"
     },
     {
       "id": "D4",
@@ -67,6 +67,13 @@
       "status": "ACTIVE",
       "opens": "2026-10-30T13:00:00-07:00",
       "closes": "2026-12-04T14:00:00-08:00"
+    },
+    {
+      "id": "D5",
+      "title": "for Aha! AI Builder Day Hackathon (Aha.io) \u2014 REGISTERED 2026-10-27 (spot pending review)",
+      "status": "ACTIVE",
+      "opens": "2026-11-17T09:00:00-08:00",
+      "closes": "2026-11-19T12:00:00-08:00"
     }
   ],
   "pools": [
@@ -80,7 +87,13 @@
             "unit": "tokens/day",
             "window": "daily"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -127,7 +140,13 @@
             "unit": "GB",
             "window": "point-in-time"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "aws.lambda_compute",
@@ -136,7 +155,13 @@
             "unit": "GB-seconds/month",
             "window": "monthly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "aws.lambda_requests",
@@ -145,7 +170,13 @@
             "unit": "requests/month",
             "window": "monthly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -192,7 +223,13 @@
             "unit": "USD",
             "window": "one-time (6 months)"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -239,7 +276,13 @@
             "unit": "executions/month",
             "window": "monthly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -286,7 +329,13 @@
             "unit": "USD",
             "window": "one-time (30 days)"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -333,7 +382,13 @@
             "unit": "tokens/day",
             "window": "daily"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -380,7 +435,13 @@
             "unit": "rows/day",
             "window": "daily"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "cloudflare.d1_rows_written",
@@ -389,7 +450,13 @@
             "unit": "rows/day",
             "window": "daily"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "cloudflare.d1_storage",
@@ -398,7 +465,13 @@
             "unit": "GB",
             "window": "point-in-time"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "cloudflare.kv_writes",
@@ -407,7 +480,13 @@
             "unit": "writes/day",
             "window": "daily"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "cloudflare.queues_ops",
@@ -416,7 +495,13 @@
             "unit": "operations/day",
             "window": "daily"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "cloudflare.r2_storage",
@@ -425,7 +510,13 @@
             "unit": "GB-month",
             "window": "monthly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "cloudflare.workers_ai",
@@ -434,7 +525,13 @@
             "unit": "Neurons/day",
             "window": "daily"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "cloudflare.workers_requests",
@@ -443,7 +540,13 @@
             "unit": "requests/day",
             "window": "daily"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -490,7 +593,13 @@
             "unit": "API calls/month",
             "window": "monthly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -537,7 +646,13 @@
             "unit": "requests/month",
             "window": "monthly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -584,7 +699,13 @@
             "unit": "apps",
             "window": "point-in-time"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -631,7 +752,13 @@
             "unit": "USD",
             "window": "one-time (60 days)"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -678,7 +805,13 @@
             "unit": "credits/day",
             "window": "daily"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -725,7 +858,13 @@
             "unit": "USD/month",
             "window": "n/a"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -772,7 +911,13 @@
             "unit": "units",
             "window": "per day"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.airforce",
@@ -781,7 +926,13 @@
             "unit": "requests",
             "window": "per day"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.antigravity",
@@ -790,7 +941,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.arena",
@@ -799,7 +956,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.bingcreateimages",
@@ -808,7 +971,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.blackboxpro",
@@ -817,7 +986,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.blackforestlabs_flux1dev",
@@ -826,7 +1001,13 @@
             "unit": "minutes of GPU time",
             "window": "per day, resets exactly 24 hours after first GPU usage"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.blackforestlabs_flux1kontextdev",
@@ -835,7 +1016,13 @@
             "unit": "minutes of GPU time",
             "window": "per day, resets exactly 24 hours after first GPU usage"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.bravesearch",
@@ -844,7 +1031,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.cachedsearch",
@@ -853,7 +1046,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.cerebras",
@@ -862,7 +1061,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.chatgpt",
@@ -871,7 +1076,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.claude",
@@ -880,7 +1091,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.cloudflare",
@@ -889,7 +1106,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.cohereforai_c4ai_command",
@@ -898,7 +1121,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.copilot",
@@ -907,7 +1136,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.copilotapp",
@@ -916,7 +1151,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.deepinfra",
@@ -925,7 +1166,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.deepseek",
@@ -934,7 +1181,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.elevenlabs",
@@ -943,7 +1196,13 @@
             "unit": "credits",
             "window": "per month"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.g4fspace",
@@ -952,7 +1211,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.gemini",
@@ -961,7 +1226,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.geminicli",
@@ -970,7 +1241,13 @@
             "unit": "requests",
             "window": "per user per day"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.geminipro",
@@ -979,7 +1256,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.githubcopilot",
@@ -988,7 +1271,13 @@
             "unit": "premium requests (all chat interactions count as premium requests)",
             "window": "per month"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.glm",
@@ -997,7 +1286,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.googleaimode",
@@ -1006,7 +1301,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.googlesearch",
@@ -1015,7 +1316,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.grok",
@@ -1024,7 +1331,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.groq",
@@ -1033,7 +1346,13 @@
             "unit": "requests per day (RPD) for openai/gpt-oss-120b",
             "window": "per day"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.hailuoai",
@@ -1042,7 +1361,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.huggingchat",
@@ -1051,7 +1376,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.huggingface",
@@ -1060,7 +1391,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.huggingfacemedia",
@@ -1069,7 +1406,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.huggingspace",
@@ -1078,7 +1421,13 @@
             "unit": "GPU-minutes (ZeroGPU)",
             "window": "per day"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.kilocode",
@@ -1087,7 +1436,13 @@
             "unit": "requests",
             "window": "per hour per IP"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.llm7",
@@ -1096,7 +1451,13 @@
             "unit": "tokens (input + output)",
             "window": "per day"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.markitdown",
@@ -1105,7 +1466,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.metaai",
@@ -1114,7 +1481,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.metaaiaccount",
@@ -1123,7 +1496,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.microsoftdesigner",
@@ -1132,7 +1511,13 @@
             "unit": "boosts (fast AI creations/edits)",
             "window": "per day"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.nvidia",
@@ -1141,7 +1526,13 @@
             "unit": "API credits",
             "window": "on sign-up (one-time trial grant)"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.ollama",
@@ -1150,7 +1541,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.omniroute",
@@ -1159,7 +1556,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.openaifm",
@@ -1168,7 +1571,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.openrouterfree",
@@ -1177,7 +1586,13 @@
             "unit": "requests",
             "window": "per day"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.operaaria",
@@ -1186,7 +1601,13 @@
             "unit": "images",
             "window": "per day"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.perplexity",
@@ -1195,7 +1616,13 @@
             "unit": "Pro Searches",
             "window": "per day"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.pi",
@@ -1204,7 +1631,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.pollinations",
@@ -1213,7 +1646,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.pollinationsaudio",
@@ -1222,7 +1661,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.pollinationsimage",
@@ -1231,7 +1676,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.puter",
@@ -1240,7 +1691,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.qwen",
@@ -1249,7 +1706,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.relayrouter",
@@ -1258,7 +1721,13 @@
             "unit": "tokens",
             "window": "per account total, with daily sub-caps resetting 00:00 UTC"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.stabilityai_sd35large",
@@ -1267,7 +1736,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.teachanything",
@@ -1276,7 +1751,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.vendors",
@@ -1285,7 +1766,13 @@
             "unit": "unmetered / unknown",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "early_signal",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.whiterabbitneo",
@@ -1294,7 +1781,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.you",
@@ -1303,7 +1796,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "g4f.yqcloud",
@@ -1312,7 +1811,13 @@
             "unit": "unmetered / unknown (NOT ESTABLISHED)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -1359,7 +1864,13 @@
             "unit": "invocations/month",
             "window": "monthly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "gcp.cloud_run_requests",
@@ -1368,7 +1879,13 @@
             "unit": "requests/month",
             "window": "monthly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "gcp.compute_e2micro",
@@ -1377,7 +1894,13 @@
             "unit": "instance/month",
             "window": "monthly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -1428,7 +1951,7 @@
             "status": "ok",
             "horizon": "H0",
             "evidence_status": "confirmed",
-            "observed_at": "2026-10-28T13:16:27Z",
+            "observed_at": "2026-10-28T23:36:07.194574+00:00",
             "used": null
           }
         },
@@ -1440,7 +1963,7 @@
             "window": "monthly"
           },
           "observed": {
-            "status": "watch",
+            "status": "unknown",
             "horizon": "H1",
             "evidence_status": "attributed_claim",
             "observed_at": null,
@@ -1455,10 +1978,10 @@
             "window": "hourly"
           },
           "observed": {
-            "status": "exhausted",
+            "status": "watch",
             "horizon": "H0",
             "evidence_status": "confirmed",
-            "observed_at": "2026-10-28T13:16:27Z",
+            "observed_at": "2026-10-28T23:36:07.194574+00:00",
             "used": null
           }
         },
@@ -1470,11 +1993,11 @@
             "window": "hourly"
           },
           "observed": {
-            "status": "ok",
-            "horizon": "H0",
-            "evidence_status": "confirmed",
-            "observed_at": "2026-10-27T12:33:41Z",
-            "used": 378
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
           }
         },
         {
@@ -1484,7 +2007,13 @@
             "unit": "days",
             "window": "per-artifact"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "early_signal",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "github.copilot.free",
@@ -1493,7 +2022,13 @@
             "unit": "requests/month",
             "window": "monthly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -1540,7 +2075,13 @@
             "unit": "core-hours/month",
             "window": "monthly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "github.codespaces.storage",
@@ -1549,7 +2090,13 @@
             "unit": "GB-month",
             "window": "monthly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -1598,7 +2145,13 @@
             "unit": "per-model",
             "window": "daily (RPD)"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -1645,7 +2198,13 @@
             "unit": "samples/s",
             "window": "instant"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -1692,7 +2251,13 @@
             "unit": "per-model requests/tokens",
             "window": "per minute/day"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -1743,7 +2308,7 @@
             "status": "unknown",
             "horizon": "H0",
             "evidence_status": "confirmed",
-            "observed_at": "2026-10-28T13:16:27Z",
+            "observed_at": "2026-10-28T23:36:07.194574+00:00",
             "used": null
           }
         },
@@ -1754,7 +2319,13 @@
             "unit": "monthly credits",
             "window": "monthly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -1801,7 +2372,13 @@
             "unit": "requests/hour",
             "window": "hourly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -1848,7 +2425,13 @@
             "unit": "instance",
             "window": "point-in-time"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -1895,7 +2478,13 @@
             "unit": "tokens/day",
             "window": "daily"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -1942,7 +2531,13 @@
             "unit": "included usage (per model, in-account)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -1989,7 +2584,13 @@
             "unit": "requests/day",
             "window": "daily"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -2036,7 +2637,13 @@
             "unit": "CU-hours/project/month",
             "window": "monthly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "neon.egress",
@@ -2045,7 +2652,13 @@
             "unit": "GB/month",
             "window": "monthly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "neon.realtime",
@@ -2054,7 +2667,13 @@
             "unit": "free during beta",
             "window": "n/a"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "early_signal",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "neon.storage",
@@ -2063,7 +2682,13 @@
             "unit": "GB/project (20 GB total)",
             "window": "point-in-time"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -2110,7 +2735,13 @@
             "unit": "credits/month",
             "window": "monthly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -2157,7 +2788,13 @@
             "unit": "per-model credits/limits (in-account)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -2204,7 +2841,13 @@
             "unit": "variant-specific USD or percent; never requests/tokens",
             "window": "source-supplied included period or legacy session/weekly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -2251,7 +2894,13 @@
             "unit": "n/a (aggregates upstream free tiers)",
             "window": "n/a"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -2302,7 +2951,7 @@
             "status": "unknown",
             "horizon": "H0",
             "evidence_status": "confirmed",
-            "observed_at": "2026-10-28T13:16:27Z",
+            "observed_at": "2026-10-28T23:36:07.194574+00:00",
             "used": null
           }
         },
@@ -2317,7 +2966,7 @@
             "status": "unknown",
             "horizon": "H0",
             "evidence_status": "confirmed",
-            "observed_at": "2026-10-28T13:16:27Z",
+            "observed_at": "2026-10-28T23:36:07.194574+00:00",
             "used": null
           }
         }
@@ -2366,7 +3015,13 @@
             "unit": "GB-hours/month",
             "window": "monthly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "oracle.ampere_ocpu_hours",
@@ -2375,7 +3030,13 @@
             "unit": "OCPU-hours/month",
             "window": "monthly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "oracle.block_storage",
@@ -2384,7 +3045,13 @@
             "unit": "GB",
             "window": "point-in-time"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -2431,7 +3098,13 @@
             "unit": "requests/minute",
             "window": "per minute"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -2478,7 +3151,13 @@
             "unit": "one-time credits",
             "window": "one-time"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "early_signal",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -2525,7 +3204,13 @@
             "unit": "GB/month",
             "window": "calendar month"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "render.instance_hours",
@@ -2534,7 +3219,13 @@
             "unit": "hours/month",
             "window": "calendar month"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "render.keyvalue_free",
@@ -2543,7 +3234,13 @@
             "unit": "instance/workspace (in-memory only)",
             "window": "n/a"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "render.pipeline_minutes",
@@ -2552,7 +3249,13 @@
             "unit": "minutes/month",
             "window": "calendar month"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "render.postgres_free",
@@ -2561,7 +3264,13 @@
             "unit": "GB (1 instance/workspace)",
             "window": "30 days from creation"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -2608,7 +3317,13 @@
             "unit": "requests/day",
             "window": "daily"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -2655,7 +3370,13 @@
             "unit": "requests/day",
             "window": "daily"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -2702,7 +3423,13 @@
             "unit": "requests/day per model",
             "window": "daily"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -2749,7 +3476,13 @@
             "unit": "requests/minute per user",
             "window": "per minute"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -2796,7 +3529,13 @@
             "unit": "requests/minute + tokens/minute (per model)",
             "window": "per minute/day"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -2843,7 +3582,13 @@
             "unit": "MB",
             "window": "point-in-time"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "supabase.edge_functions",
@@ -2852,7 +3597,13 @@
             "unit": "invocations/month",
             "window": "monthly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "supabase.egress",
@@ -2861,7 +3612,13 @@
             "unit": "GB/month",
             "window": "monthly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "supabase.file_storage",
@@ -2870,7 +3627,13 @@
             "unit": "GB",
             "window": "point-in-time"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "supabase.projects",
@@ -2879,7 +3642,13 @@
             "unit": "projects",
             "window": "point-in-time"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -2926,7 +3695,13 @@
             "unit": "databases",
             "window": "point-in-time"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "turso.rows_read",
@@ -2935,7 +3710,13 @@
             "unit": "rows/month",
             "window": "monthly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "turso.rows_written",
@@ -2944,7 +3725,13 @@
             "unit": "rows/month",
             "window": "monthly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "turso.storage",
@@ -2953,7 +3740,13 @@
             "unit": "GB",
             "window": "point-in-time"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -3000,7 +3793,13 @@
             "unit": "requests/minute",
             "window": "per minute"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -3047,7 +3846,13 @@
             "unit": "requests/minute per free model per user",
             "window": "per minute"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -3094,7 +3899,13 @@
             "unit": "messages/day",
             "window": "daily"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "upstash.redis_bandwidth",
@@ -3103,7 +3914,13 @@
             "unit": "GB/month",
             "window": "monthly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "upstash.redis_commands",
@@ -3112,7 +3929,13 @@
             "unit": "commands/month",
             "window": "monthly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "upstash.redis_storage",
@@ -3121,7 +3944,13 @@
             "unit": "MB",
             "window": "point-in-time"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -3168,7 +3997,13 @@
             "unit": "minutes",
             "window": "per-build"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "vercel.deployments",
@@ -3181,7 +4016,7 @@
             "status": "ok",
             "horizon": "H0",
             "evidence_status": "confirmed",
-            "observed_at": "2026-10-28T13:16:27Z",
+            "observed_at": "2026-10-28T23:36:07.194574+00:00",
             "used": null
           }
         }
@@ -3230,7 +4065,13 @@
             "unit": "unknown",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -3277,7 +4118,13 @@
             "unit": "tokens/day",
             "window": "daily"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -3324,7 +4171,13 @@
             "unit": "per-account (unpublished)",
             "window": "unknown"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -3371,7 +4224,13 @@
             "unit": "projects",
             "window": "point-in-time"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [
@@ -3418,7 +4277,13 @@
             "unit": "GB",
             "window": "point-in-time"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "pinecone.write_units",
@@ -3427,7 +4292,13 @@
             "unit": "WU/month",
             "window": "monthly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "pinecone.read_units",
@@ -3436,7 +4307,13 @@
             "unit": "RU/month",
             "window": "monthly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "pinecone.indexes",
@@ -3445,7 +4322,13 @@
             "unit": "indexes (100 namespaces each)",
             "window": "point-in-time"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         },
         {
           "service": "pinecone.egress",
@@ -3454,7 +4337,13 @@
             "unit": "GB/month",
             "window": "monthly"
           },
-          "observed": null
+          "observed": {
+            "status": "unknown",
+            "horizon": "H1",
+            "evidence_status": "attributed_claim",
+            "observed_at": null,
+            "used": null
+          }
         }
       ],
       "allocations": [

@@ -1,82 +1,101 @@
 {
- "brief": {
-  "due": "at the Oct 30 rules publish",
-  "first_brief_supplied_generation": true,
-  "format": [
-   "base fields",
-   "variants (n concepts)",
-   "optional recorded expectations",
-   "per-variant test_suites"
+  "schema": "oracle-method-pass/v1",
+  "pass_id": "kiroween-delphi-concept",
+  "generated_at": "2026-10-30T23:44:05Z",
+  "n": 3,
+  "candidates": [
+    {
+      "id": "kiroween-delphi-concept-skeleton-crew",
+      "concept": "Skeleton Crew \u2014 a CMDB / reconciliation viewer run by a minimal crew: a tiny set of spec-first Kiro agents (ingest, reconcile, report) that keep a fleet inventory honest against its sources. The challenge lane's hand-noted input (input, not decision). Seeded from the repo's CMDB design (PR #1655); the Kiro project itself is created new inside the submission window.",
+      "profile": {
+        "candidate": "kiroween-delphi-concept-skeleton-crew",
+        "points": 3,
+        "evidenced": 3,
+        "unverified": 0,
+        "evidenced_ratio": 1.0,
+        "items": 3,
+        "evidence_sources": 2,
+        "dependency_items": 0,
+        "money_veto": false,
+        "docs_sha256": "87900eaec6e29ad07ec731b8a9c443208d32e259164d1d49cc8ee3f41a69ca19"
+      }
+    },
+    {
+      "id": "kiroween-delphi-concept-frankenstein",
+      "concept": "Frankenstein \u2014 one new creature stitched from proven public parts: a Kiro-built decision agent assembled from the fleet's existing public patterns (Delphi Oracle deterministic receipts, the fetch_evidence provenance tool pattern from the D0 package, quota-panel display patterns), re-combined into a single new project created inside the window. Patterns are reused; no pre-built project is submitted.",
+      "profile": {
+        "candidate": "kiroween-delphi-concept-frankenstein",
+        "points": 2,
+        "evidenced": 2,
+        "unverified": 0,
+        "evidenced_ratio": 1.0,
+        "items": 3,
+        "evidence_sources": 2,
+        "dependency_items": 0,
+        "money_veto": false,
+        "docs_sha256": "d84d32ba5da3eb4f250b6903c8be7522cfa7878525bf34b6c0c6173205c4926e"
+      }
+    },
+    {
+      "id": "kiroween-delphi-concept-resurrection",
+      "concept": "Resurrection \u2014 bring a dormant public spec back from the dead: pick a stalled, publicly documented fleet spec (candidates sit in the repo's ops docs and proposal registry) and rebuild it fresh as a working Kiro project, created in-window, with the original spec as the requirements baseline and a resurrection report showing what the dead version never shipped.",
+      "profile": {
+        "candidate": "kiroween-delphi-concept-resurrection",
+        "points": 2,
+        "evidenced": 2,
+        "unverified": 0,
+        "evidenced_ratio": 1.0,
+        "items": 3,
+        "evidence_sources": 2,
+        "dependency_items": 0,
+        "money_veto": false,
+        "docs_sha256": "9bccf6f421afa094522070aee55762828ad2a9682e9c3844fbb9d3c419963177"
+      }
+    }
   ],
-  "owner": "challenge entries lane",
-  "state": "not_supplied"
- },
- "candidates": [],
- "cycle": {
-  "spec": "docs/ops/DELPHI-LANE-CONTRACT.md \u2014 The Oracle Method cycle",
-  "stages": [
-   {
-    "reason": "awaiting brief (trigger: Oct 30 rules publish)",
-    "stage": "generate",
-    "state": "specified_not_run"
-   },
-   {
-    "reason": "awaiting generation; input vote expectations are recorded before implementation",
-    "stage": "cross_vote_round_1",
-    "state": "specified_not_run"
-   },
-   {
-    "reason": "awaiting round 1; D4 build sequence runs after Nov 8",
-    "stage": "implementation_parallel_comparisons",
-    "state": "specified_not_run"
-   },
-   {
-    "reason": "awaiting implementation results (the equalized evidence base)",
-    "stage": "cross_vote_round_2_equalized",
-    "state": "specified_not_run"
-   },
-   {
-    "reason": "awaiting round 2; deltas feed ledgers #1489/#1487 when ballots exist",
-    "stage": "calibration",
-    "state": "specified_not_run"
-   }
-  ]
- },
- "eligibility_gate": {
-  "evidence": "project creation timestamp captured into the D4 packet at creation; a pre-window timestamp voids the entry",
-  "note": "the generated concept proposal is not the project and does not trip the gate",
-  "rule": "no project creation or build start before 2026-10-30T13:00:00-07:00; brief/intake refuses early starts",
-  "source": "docs/ops/CHALLENGE-ENTRIES-LOG.md \u00a74 (D4); owner ruling 2026-10-27"
- },
- "ledger": {
-  "appends": "none \u2014 no ballots exist until the pass runs",
-  "outcome_ledger_issue": 1487
- },
- "n": {
-  "source": "ops/delphi/panel.json generation.proposals_per_pass (per-context configurable)",
-  "value": 3
- },
- "occasion": {
-  "event": "Kiroween 2026 \u2014 Kiro (AWS) on Devpost",
-  "monikers": [
-   "entrant{entrantDevpost}[platform:devpost]",
-   "entrant{entrantKiro}[platform:kiro]"
-  ],
-  "packet": "D4"
- },
- "pass_id": "kiroween-delphi-concept",
- "run_at": null,
- "schema": "oracle-method-pass/v1",
- "sequencing": {
-  "deadline": "2026-12-04T14:00:00-08:00",
-  "implementation_window": "D4 build after Nov 8 (D1/D2/D3 windows first)",
-  "owner_order": "Strands RFP pass first (ran 2026-10-27; docs/proposals/passes/strands-rfp-response/); this pass second"
- },
- "stated_at": "2026-10-27",
- "status": "stated_not_run",
- "trigger": {
-  "action": "challenge lane supplies the brief; Delphi lane generates and runs the full cycle",
-  "at": "2026-10-30T13:00:00-07:00",
-  "event": "Kiroween 2026 full rules publish / submissions open"
- }
+  "eligibility_gate": {
+    "enforcement": [
+      "The D4 brief/intake REFUSES any build start before window_open: no project creation, no building (owner ruling 2026-10-27 \u2014 eligibility enforced mechanically, per entry, per producing lane).",
+      "At project creation, the creation timestamp is captured into packet D4 as eligibility evidence; a timestamp before window_open voids the entry.",
+      "The generated concept proposal is not the competition project and does not trip this gate."
+    ],
+    "owner_confirmation": "2026-10-27: D4's build waits for its window.",
+    "rule": "New Projects Only (Official Rules s.4, kiroween.devpost.com/rules, read 2026-10-30): Projects must be newly created by the Entrant after the start of the Hackathon Submission Period (Oct 30, 2026, 9:00 AM PT). Standard development resources (frameworks, libraries, starter templates) may be used; any other pre-existing code or work incorporated must be disclosed. The work described and submitted must have been built during the Submission Period.",
+    "window_close": "2026-12-04T14:00:00-08:00",
+    "window_open": "2026-10-30T09:00:00-07:00"
+  },
+  "status": "round_1_recorded",
+  "cycle": {
+    "record": "cycle/CYCLE.json",
+    "ran": [
+      "generate",
+      "cross_vote_round_1",
+      "expectations_recorded",
+      "facilitator_feedback"
+    ],
+    "specified_not_run": [
+      "debate_revision",
+      "implementation",
+      "evidence_equalization",
+      "cross_vote_round_2",
+      "calibration"
+    ],
+    "round_1": {
+      "ballots_by_class": {
+        "HUMAN_COLLABORATOR": 0,
+        "MODEL_PROVIDER": 0,
+        "LOCAL_BASELINE": 5
+      },
+      "scores": {
+        "kiroween-delphi-concept-skeleton-crew": 23.269,
+        "kiroween-delphi-concept-frankenstein": 23.269,
+        "kiroween-delphi-concept-resurrection": 23.269
+      },
+      "ranking_basis": "TIE - identical LOCAL_BASELINE scores (23.269) on identical scored profile dimensions; the recorded ranked_outcome order is the rank() tie-break by candidate id, not an evidence preference"
+    },
+    "ledger": {
+      "outcome_ledger_issue": 1487,
+      "appends": "round-1 ballot record (delphi-generation-ballot v1) at run time; calibration appends when round 2 runs"
+    }
+  }
 }

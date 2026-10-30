@@ -1,0 +1,76 @@
+{
+  "schema": "oracle-method-cycle/v1",
+  "pass_id": "kiroween-delphi-concept",
+  "generated_at": "2026-10-30T23:44:05Z",
+  "config": {
+    "rounds": 2,
+    "expectation_format": "per-candidate expected rank + expected weighted score per source class, recorded before implementation; brief-supplied human expectations take precedence for their class",
+    "expectation_tolerance": 2.0,
+    "implementation": "parallel per-proposal implementations; tests run per individual proposal; their results are the round-2 evidence base",
+    "evidence_equalization": "the round-2 evidence set is identical for every voter; its sha256 is stamped on the round-2 receipt and required on every round-2 ballot",
+    "calibration": "round-2 outcome vs the recorded input expectations; deltas with the evidence that moved them; the feed for the weights (#1489) and outcome (#1487) ledgers",
+    "stage_gates": [
+      "generation contract",
+      "ballot contract",
+      "evidence-set equality before round 2",
+      "calibration record"
+    ],
+    "not_run_rule": "a stage that cannot execute is recorded specified_not_run in the cycle record - never dropped, never fabricated",
+    "require_suite_receipts": true,
+    "facilitator_feedback": "after round 1 the facilitator issues an anonymous synthesis from the ballots\u2019 own rationales; a DEBATE / revision round is callable on it (revised ballots carry rationale, cited sources, revision_reason); uncalled = specified_not_run",
+    "ballot_reasons": "every ballot carries rationale + evidence_refs; supplied ballots without them are refused at intake"
+  },
+  "stages": [
+    {
+      "stage": "generate",
+      "status": "ran",
+      "detail": "n=3 candidates"
+    },
+    {
+      "stage": "cross_vote_round_1",
+      "status": "ran",
+      "detail": "ballots_by_class={'HUMAN_COLLABORATOR': 0, 'MODEL_PROVIDER': 0, 'LOCAL_BASELINE': 5}"
+    },
+    {
+      "stage": "expectations_recorded",
+      "status": "ran",
+      "detail": "priors on record before implementation"
+    },
+    {
+      "stage": "facilitator_feedback",
+      "status": "ran",
+      "detail": "synthesis issued from round-1 rationales; arguments unattributed beyond class + role"
+    },
+    {
+      "stage": "debate_revision",
+      "status": "specified_not_run",
+      "detail": "no DEBATE / revision ballots supplied against the synthesis; the round is callable, not automatic"
+    },
+    {
+      "stage": "implementation",
+      "status": "specified_not_run",
+      "detail": "no per-proposal test results supplied; round 2 as specified needs the implementation evidence"
+    },
+    {
+      "stage": "evidence_equalization",
+      "status": "specified_not_run",
+      "detail": "no per-proposal test results supplied; round 2 as specified needs the implementation evidence"
+    },
+    {
+      "stage": "cross_vote_round_2",
+      "status": "specified_not_run",
+      "detail": "no per-proposal test results supplied; round 2 as specified needs the implementation evidence"
+    },
+    {
+      "stage": "calibration",
+      "status": "specified_not_run",
+      "detail": "no per-proposal test results supplied; round 2 as specified needs the implementation evidence"
+    }
+  ],
+  "artifacts": {
+    "round1": "BALLOT-round1.json",
+    "expectations": "EXPECTATIONS.json",
+    "synthesis": "SYNTHESIS.json"
+  },
+  "ledger_feed": null
+}

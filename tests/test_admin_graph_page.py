@@ -55,3 +55,8 @@ def test_nav_link_on_every_published_page():
 def test_in_sitemap():
     sitemap = (APP / "sitemap.xml").read_text(encoding="utf-8")
     assert "help-wanted/admin-graph.html" in sitemap
+
+
+def test_admin_systems_inventory_row():
+    admin = (APP / "admin.html").read_text(encoding="utf-8")
+    assert "<td>Admin Interaction Graph</td>" in admin

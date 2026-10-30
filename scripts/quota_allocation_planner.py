@@ -35,8 +35,11 @@ def pool_class(services):
 
 
 def pacing_multiplier(used, limit, window_fraction_elapsed):
-    """Registry rule: remaining-budget fraction / remaining-time
-    fraction, capped at 2, 0 when exhausted, 1.0 with no reading."""
+    """Flow regulator (owner smooth-flow principle, 2026-10-29): pace
+    consumption to the replenishment rate so cumulative use reaches
+    ~100% exactly at reset. multiplier > 1 = behind flow (spend faster),
+    < 1 = ahead of flow (slow down); capped at 2, 0 when exhausted,
+    1.0 with no reading. Idle quota and burst-death are both waste."""
     if used is None or limit is None or not limit:
         return 1.0
     if used >= limit:
@@ -44,6 +47,18 @@ def pacing_multiplier(used, limit, window_fraction_elapsed):
     remaining_budget = (limit - used) / limit
     remaining_time = max(1.0 - (window_fraction_elapsed or 0.0), 1e-9)
     return min(remaining_budget / remaining_time, 2.0)
+
+
+WINDOW_MINUTES = (("hour", 60), ("24h", 1440), ("day", 1440),
+                  ("daily", 1440), ("week", 10080), ("month", 43200))
+
+
+def window_minutes(service):
+    w = (service.get("window") or "").lower()
+    for key, mins in WINDOW_MINUTES:
+        if key in w:
+            return mins
+    return None
 
 
 def stranded_estimate(used, limit, winning_forecast):
@@ -64,13 +79,26 @@ def plan(registry, allocations, readings, countdowns=None, now=None):
         cls = pool_class(services)
         # numeric reading: first service in the pool with used+limit
         used = limit = state = None
+        flow = None
         for s in services:
             r = read.get(s["id"])
             if r:
                 state = r.get("status")
                 if r.get("used") is not None and r.get("limit") is not None:
                     used, limit = r["used"], r["limit"]
+                    mins = window_minutes(s)
+                    flow = (limit / mins) if mins else None
                     break
+        if flow is None:
+            # flow target derives from the REGISTRY entitlement (limit +
+            # window), independent of readings — readings carry used=null
+            # by design, so a registry-side derivation is the norm.
+            for s in services:
+                if s.get("limit"):
+                    mins = window_minutes(s)
+                    if mins:
+                        flow = s["limit"] / mins
+                        break
         mult = pacing_multiplier(used, limit, None)
         # Winning forecast under linear pacing: Winning holds ~100%
         # standing, so its forecast consumption = remaining budget it
@@ -93,6 +121,7 @@ def plan(registry, allocations, readings, countdowns=None, now=None):
             "services": pool["services"],
             "limit": limit, "used": used, "state": state,
             "pacing_multiplier": mult,
+            "target_flow_per_min": flow,
             "stranded": stranded, "release_to": release_to,
         })
     if countdowns:

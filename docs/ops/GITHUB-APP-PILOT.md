@@ -22,19 +22,20 @@
   JWT; key read from a local PEM path in env; token value never logged).
 - `scripts/github_app_bucket_proof.py` — PAT vs app `/rate_limit` compare.
 
-## Owner creation steps (account-level; ~5 min)
-1. github.com → Settings → Developer settings → GitHub Apps → New GitHub App.
-   Fill from `manifest.json`: name "Termux Fleet Collector", homepage =
-   repo URL, description = PROFILE.md text, permissions = the six reads,
-   uncheck webhook Active, check "Anyone can install" (public) — or use the
-   manifest flow with `manifest.json` verbatim.
-2. Create → note the **App ID** (a provisioning fact; record it in PROFILE.md).
-3. Private keys → Generate → download the PEM. **Vault it, never chat it:**
-   store via the fleet vault pattern (names-only in chat: key id + last-used).
-4. Profile picture → upload `avatar.webp`. Verify the slug on the profile
-   page; record the real slug in PROFILE.md if it differs from the guess.
-5. Install App → on timerloggedout-spec → select `termux-monorepo` only →
-   note the **installation ID** (record in PROFILE.md).
+## Creation — programmatic (manifest flow; see docs/ops/GITHUB-APP-ROUTES.md)
+Web computer use is an early-allowance workaround for single tests only;
+the durable route is API-first:
+1. `python3 scripts/github_app_manifest.py serve < ops/github-apps/collector-pilot/manifest.json`
+   — serves the submission form on localhost and catches the result.
+2. In any already-signed-in browser tab, open the localhost page and click
+   Create once (the ONLY web-session step; GitHub has no REST create).
+   GitHub redirects back with a one-time code; the tool converts it
+   immediately (`POST /app-manifests/{code}/conversions`) and writes the
+   bootstrap PEM + secrets to 0600 files — values never printed or chatted.
+3. Install consent: open the returned `install_url`, select
+   `termux-monorepo` only. Record App ID + installation ID in PROFILE.md.
+(Equivalent manual form-fill values remain in `manifest.json` /
+`PROFILE.md` for reference.)
 
 ## Proof protocol (bucket split)
 1. Mint: `GITHUB_APP_ID=… GITHUB_APP_INSTALLATION_ID=… GITHUB_APP_KEY_FILE=…pem GITHUB_APP_TOKEN_OUT=/path/tok python3 scripts/github_app_token.py`

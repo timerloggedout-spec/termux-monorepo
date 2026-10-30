@@ -148,6 +148,16 @@ free-tier / mesh-resiliency engineering (device pull queue, quota systems);
 | C6 | Next AWS Builder Center Weekend Challenge | **Not yet published** (checked 2026-10-26). Recurring pattern from official October pages: opens Fri 12:00 AM PT, closes Mon 1:00 PM PT; November theme unannounced | Per pattern: Builder Center article (≥ 500 words, required sections, week tag) or comment-format entry; **complete Builder profile required for validity** | Builder profile only; no AWS account needed at entry | A/B — lowest-effort venue; fleet already writes this format |
 | C7 | Lexsi AI Safety & Alignment Hackathon — Lexsi Labs × Cohere Labs | Nov 1–21, 2026 per secondary source — **UNVERIFIED** | ≥ 2 Lexsi toolkits with Cohere open-weight models; before/after measurements; artifacts on Hugging Face | Free; HF account | Weak — governance-adjacent tracks only |
 
+| C8 | Codegeist 2026 — Atlassian on Devpost. **Repo+Story primary fit (see I1).** | Submissions close **Dec 22, 2026, 3:00 PM ET** (Devpost event window, official page read 2026-10-30) | Forge app + ≥1 Atlassian product (Bitbucket/Jira/Confluence/Rovo/Teamwork Graph); category = Apps for Software Teams ("smarter code reviews" ∈ official brief); demo video <5 min; install link for judges | Free; Devpost + Atlassian Cloud developer account | **I1** — story context = the brief's context thesis verbatim-fit |
+| C9 | Gemma 4 Developer Agent Competition — Google DeepMind × Kaggle | Entry by **Nov 25, 2026, 23:59 UTC**; main submit Dec 2, 23:59 UTC; Paper Track Nov 12, 23:59 UTC (official-derived guide, checked 2026-10-30) | Post-train Gemma 4 → offline coding agent (main) ∨ paper/resource on parsing/embedding/reasoning over complex code repos (Paper Track) | Free; Kaggle account | I1 △ — context-engine = Paper Track resource angle only; main leaderboard = bug-fixing agent ≠ story |
+| C10 | Agentware — Hackathon Raptors | Build **Nov 27–30, 2026**; submissions close Dec 7, 18:00 UTC (organizer page, checked 2026-10-30) | Autonomous agent; **new code only** in the 72h window (pre-window code disqualifies) | Free; Discord | I1 △ — repo-maintenance agent framing; 72h new-code constraint = rebuild, not reuse |
+
+### Idea bank (unassigned concepts)
+
+| # | Idea | Source | Concept (1-line) | Matched ⇒ status |
+|---|------|--------|------------------|------------------|
+| I1 | **Repo+Story** (owner name; source conversation titles it "PR+Story") — GitHub App surface | Owner, 2026-10-30; Google AI Mode share `share.google/aimode/FWlvGfxlRa556mbGr` (read firsthand 2026-10-30) | Ingest git event-stream (commits × file mutations × authors — the data Gource consumes, ¬ its animation) ⇒ clustered, blast-radius-aware narrative w/ every claim cited ↦ source commit; Python/PyDriller pipeline ⇒ GitHub Action sticky story; persistence ∈ {`.story/` JSON, vector index, SQL chrono-graph}; goal = repo-history/PR maintenance ease | C8 primary ⇒ **candidate, unassigned**; C9/C10 △ alternates; current slate D1–D5 ∅ fit (briefs ≠ repo maintenance; picks frozen) ∴ no slate insertion |
+
 Prizes (official pages): C1 — 3 × $5,000 AWS credits + ~$600 swag (pool
 $16,800). C2 — $9,000 cash pool + $5,000 Vultr credits; $200 credits per
 participant. C3 — $10,000 cash across 5 places. C4 — $100,000 cash pool. C5 —

@@ -1,0 +1,9 @@
+{
+  "source_repo": "timerloggedout-spec/repo-replay",
+  "spec": "replay-store/v1",
+  "engine": "RevWright",
+  "methods": ["extract", "build_index", "compose", "replay", "verify", "fill_gap", "jit_resolve", "edit"],
+  "import_mode": "by-reference",
+  "consumer_role": "test subject + consumer; the system is owned by the source repo",
+  "record": "docs/ops/REPO-REPLAY.md"
+}

@@ -23,6 +23,13 @@ ROOT = Path(__file__).resolve().parent.parent
 FOCUS_LADDER = ["repo-development", "research", "boinc-donations"]
 DEADLINE_TRIGGER_HOURS = 72
 
+# Slice-assignment emission holds (project ids). HOLD 2026-10-30:
+# repo-replay emission PAUSED (owner competition-rules question,
+# lane-side via cadence); (a) planner route remains the preference;
+# resume on repo-replay clearance only. Governs planner EMISSION
+# only - allocations.json records are convergence's.
+SLICE_ASSIGNMENT_HOLDS = {"repo-replay"}
+
 
 def pool_class(services):
     """A if any service has a numeric limit; B if all null but at
@@ -148,7 +155,8 @@ def plan(registry, allocations, readings, countdowns=None, now=None):
         svcs = set(p["services"])
         apps = [s for s in ("github.api.app_collector",
                             "github.api.app_publisher") if s in svcs]
-        if len(apps) == 2 and "github.api.user_token" in svcs:
+        if (len(apps) == 2 and "github.api.user_token" in svcs
+                and "repo-replay" not in SLICE_ASSIGNMENT_HOLDS):
             triggers.append({
                 "pool": "github",
                 "trigger": "app_slice_assignment:repo-replay",

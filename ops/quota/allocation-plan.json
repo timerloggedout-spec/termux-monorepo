@@ -1,6 +1,6 @@
 {
  "schema": "quota-allocation-plan/v1",
- "generated_at": "2026-10-30T08:43:52Z",
+ "generated_at": "2026-10-30T10:34:25Z",
  "issue": 1884,
  "registry_records": 157,
  "pools": [
@@ -2398,23 +2398,6 @@
    "release_to": null
   }
  ],
- "triggers_fired": [
-  {
-   "pool": "github",
-   "trigger": "app_slice_assignment:repo-replay",
-   "project": "repo-replay",
-   "slice": {
-    "project": "repo-replay",
-    "primary_services": [
-     "github.api.app_collector",
-     "github.api.app_publisher"
-    ],
-    "fallback_service": "github.api.user_token",
-    "fallback_mode": "fallback-only",
-    "routine_draw_on_fallback": false
-   },
-   "action": "convergence executes the matching allocations change citing #1884 + this plan record"
-  }
- ],
+ "triggers_fired": [],
  "rules": "Pacing/stranded per docs/ops/QUOTA-ALLOCATION-PLANNING.md; stranded null = NOT ESTABLISHED (no numeric reading), never invented."
 }

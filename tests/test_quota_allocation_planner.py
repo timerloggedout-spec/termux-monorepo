@@ -67,6 +67,8 @@ def test_repo_replay_app_slice_trigger():
     alloc = {"pools": [{"id": "github", "services": [
         "github.api.app_collector", "github.api.app_publisher",
         "github.api.user_token"]}]}
+    # hold lifted in-test: the assignment logic itself is verified
+    planner.SLICE_ASSIGNMENT_HOLDS.discard("repo-replay")
     out = planner.plan(reg, alloc, {"readings": []})
     hits = [t for t in out["triggers_fired"]
             if t["trigger"] == "app_slice_assignment:repo-replay"]
@@ -81,3 +83,8 @@ def test_repo_replay_app_slice_trigger():
     out2 = planner.plan(reg, ALLOC, {"readings": []})
     assert not any(t["trigger"].startswith("app_slice_assignment")
                    for t in out2["triggers_fired"])
+    # and suppressed while the hold stands (2026-10-30)
+    planner.SLICE_ASSIGNMENT_HOLDS.add("repo-replay")
+    out3 = planner.plan(reg, alloc, {"readings": []})
+    assert not any(t["trigger"].startswith("app_slice_assignment")
+                   for t in out3["triggers_fired"])

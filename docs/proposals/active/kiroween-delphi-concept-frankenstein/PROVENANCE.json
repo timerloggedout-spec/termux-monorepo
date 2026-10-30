@@ -1,0 +1,38 @@
+{
+  "schema": "oracle-method-generation/v1",
+  "generator": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+  "generated_at": "2026-10-30T23:44:05Z",
+  "proposal_id": "kiroween-delphi-concept-frankenstein",
+  "author": "oracle-method",
+  "evidence_sets": [
+    {
+      "sha256": "21ab2f46f17d2991da1475404a58aa8374c1bcac4cc1f0fc1b7db4ef3aa239ad",
+      "items": 13,
+      "assembled_at": "2026-10-30T23:43:55Z"
+    }
+  ],
+  "documents": {
+    "MANIFEST.md": "9e360bfd84b71613c80cd66b73f8a80b5b742aba658cab411e535faaf35e594a",
+    "ITEMS.md": "3b82c95a737465e317c3486309b28b006a0ec1f6ead8ef884d6d64b87bb2c7b0",
+    "RFP.md": "650183350c86fcdaf5f7c5ea07badb50c1d8c4bcd66ff5c82c963b70866a4f43"
+  },
+  "human_ballots_received": 0,
+  "external_calls_by_generator": 0,
+  "pass_id": "kiroween-delphi-concept",
+  "concept": "Frankenstein \u2014 one new creature stitched from proven public parts: a Kiro-built decision agent assembled from the fleet's existing public patterns (Delphi Oracle deterministic receipts, the fetch_evidence provenance tool pattern from the D0 package, quota-panel display patterns), re-combined into a single new project created inside the window. Patterns are reused; no pre-built project is submitted.",
+  "eligibility_gate": {
+    "enforcement": [
+      "The D4 brief/intake REFUSES any build start before window_open: no project creation, no building (owner ruling 2026-10-27 \u2014 eligibility enforced mechanically, per entry, per producing lane).",
+      "At project creation, the creation timestamp is captured into packet D4 as eligibility evidence; a timestamp before window_open voids the entry.",
+      "The generated concept proposal is not the competition project and does not trip this gate."
+    ],
+    "owner_confirmation": "2026-10-27: D4's build waits for its window.",
+    "rule": "New Projects Only (Official Rules s.4, kiroween.devpost.com/rules, read 2026-10-30): Projects must be newly created by the Entrant after the start of the Hackathon Submission Period (Oct 30, 2026, 9:00 AM PT). Standard development resources (frameworks, libraries, starter templates) may be used; any other pre-existing code or work incorporated must be disclosed. The work described and submitted must have been built during the Submission Period.",
+    "window_close": "2026-12-04T14:00:00-08:00",
+    "window_open": "2026-10-30T09:00:00-07:00"
+  },
+  "siblings": [
+    "kiroween-delphi-concept-skeleton-crew",
+    "kiroween-delphi-concept-resurrection"
+  ]
+}

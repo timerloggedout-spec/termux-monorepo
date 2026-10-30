@@ -262,3 +262,22 @@ def test_quota_page_links_usage_graphs_and_sitemap():
     assert 'href="./quota-usage.html"' in quota
     sitemap = (APP / "sitemap.xml").read_text()
     assert "https://timerloggedout-spec.github.io/help-wanted/quota-usage.html" in sitemap
+
+
+def test_gearbox_consumer_controls_present_and_admin_only():
+    # owner 2026-10-29 19:49 PT: STOP/PAUSE per consumer + throttle slider,
+    # audited like shifts; diagnosis dependency stated, never faked.
+    g = _pack()["gearbox"]
+    cc = g["admin_ui"]["consumer_controls"]
+    assert cc["stop"]["action"] == "stop"
+    assert cc["pause"]["action"] == "pause"
+    assert "calls/min" in cc["throttle"]["control"]
+    ev = cc["audit_event"]
+    assert ev["cites"] == "#1884" and "consumer" in ev["fields"]
+    assert "NOT ESTABLISHED" in cc["diagnose_dependency"]
+    assert any("DESIGN-ONLY" in h for h in g["honesty"])
+    # moderation controls are Admin-internal schema — the public page
+    # never renders them
+    html = _html()
+    assert "consumer_controls" not in html
+    assert "diagnose_dependency" not in html

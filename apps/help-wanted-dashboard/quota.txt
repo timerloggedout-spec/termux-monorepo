@@ -1,6 +1,6 @@
 ================================================================================
  QUOTA  termux-monorepo  (155 registry records)
- Snapshot generated (not observation time): 2026-10-28T13:16:27Z
+ Snapshot generated (not observation time): 2026-10-28T23:36:07.194574+00:00
  Source: apps/help-wanted-dashboard/data/quota.json + ops/quota/registry.json
  Limits are documented entitlements, not balances.
  Private balances are hidden; unknown is not healthy or admitted.
@@ -8,735 +8,666 @@
 
  ALERTS
 --------------------------------------------------------------------------------
- [!! EXHAUSTED] github.api.github_token
+ [!  WATCH] github.api.github_token
    limit (documented): 1000 requests/hour/repo
-   used: No live reading
- [STALE] github.api.user_token
-   limit (documented): 5000 requests/hour
    used: No live reading
 
  ALL SERVICES
 --------------------------------------------------------------------------------
  CellCog/Polsia/Manus (1)
   partners.credits
-    status: No live reading
+    status: UNKNOWN
     limit (documented): n/a one-time credits
     metric: referral/bonus credits (docs/PARTNERS.md) | window: one-time |
     reset: none
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  aion (1)
   aion.free_tokens
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 20000 tokens/day
     metric: Free tier token allowance | window: daily | reset: daily (schedule
     not published)
-    No live reading (live source: none published (no rate-limit headers or usage
-    endpoint documented))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  aws (4)
   aws.account_credits
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 200 USD
     metric: new-account credits (post-2025-07-15 plan) | window: one-time (6
     months) | reset: 6 months from signup or credit exhaustion
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   aws.dynamodb_storage
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 25 GB
     metric: DynamoDB storage (Always Free) | window: point-in-time | reset: n/a
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   aws.lambda_compute
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 400000 GB-seconds/month
     metric: Lambda compute (Always Free) | window: monthly | reset: calendar
     month
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   aws.lambda_requests
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 1000000 requests/month
     metric: Lambda requests (Always Free) | window: monthly | reset: calendar
     month
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  azure (2)
   azure.account_credit
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 200 USD
     metric: free-account credit | window: one-time (30 days) | reset: 30 days
     from signup
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   azure.functions_executions
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 1000000 executions/month
     metric: Azure Functions executions (always free) | window: monthly | reset:
     calendar month
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  cerebras (1)
   cerebras.free_tokens
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 1000000 tokens/day
     metric: Free Trial token allowance | window: daily | reset: continuous
     token-bucket replenishment; no fixed reset
-    No live reading (live source: none published (no usage endpoint or
-    rate-limit headers documented); Cloud Console Limits page is authoritative
-    per organization; 429 names the exceeded bucket)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  cloudflare (8)
   cloudflare.d1_rows_read
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 5000000 rows/day
     metric: D1 rows read (Free) | window: daily | reset: 00:00 UTC
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   cloudflare.d1_rows_written
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 100000 rows/day
     metric: D1 rows written (Free) | window: daily | reset: 00:00 UTC
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   cloudflare.d1_storage
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 5 GB
     metric: D1 total storage (Free) | window: point-in-time | reset: n/a
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   cloudflare.kv_writes
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 1000 writes/day
     metric: Workers KV writes (Free) | window: daily | reset: 00:00 UTC
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   cloudflare.queues_ops
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 10000 operations/day
     metric: Queues operations (Free) | window: daily | reset: daily
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   cloudflare.r2_storage
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 10 GB-month
     metric: R2 storage (Free, Standard) | window: monthly | reset: calendar
     month
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   cloudflare.workers_ai
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 10000 Neurons/day
     metric: Workers AI free allocation | window: daily | reset: daily at 00:00
     UTC
-    No live reading (live source: none published (no usage API); Workers AI
-    dashboard only)
+    Public evidence state only; no account balance or runtime admission implied.
   cloudflare.workers_requests
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 100000 requests/day
     metric: Workers requests (Free plan) | window: daily | reset: 00:00 UTC
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  cohere (1)
   cohere.trial_calls
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 1000 API calls/month
     metric: Trial key call allowance | window: monthly | reset: monthly
-    No live reading (live source: response meta billed_units; dashboard (no
-    dedicated usage endpoint documented))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  deno (1)
   deno.deploy_requests
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 1000000 requests/month
     metric: Deno Deploy requests (Free) | window: monthly | reset: calendar
     month
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  digitalocean (2)
   digitalocean.app_platform_static
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 3 apps
     metric: App Platform static-site apps (Free Tier) | window: point-in-time |
     reset: n/a
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   digitalocean.trial_credit
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 200 USD
     metric: new-account trial credit | window: one-time (60 days) | reset: 60
     days from signup
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  felo (1)
   felo.api_credits
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 200 credits/day
     metric: Search API Free Standard credits (daily refill) + intermittent free
     models | window: daily | reset: daily refill
-    No live reading (live source: response headers X-RateLimit-Limit,
-    X-RateLimit-Remaining, X-RateLimit-Reset, Retry-After)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  fly (1)
   fly.free_tier
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 0 USD/month
     metric: free allowance for new organizations | window: n/a | reset: n/a
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/AgentTools (1)
   g4f.agenttools
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 250 units
     metric: g4f provider AgentTools — free/no-auth quota (resolution 2026-10-28)
     | window: per day | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/Airforce (1)
   g4f.airforce
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 1000 requests
     metric: g4f provider Airforce — free/no-auth quota (resolution 2026-10-28) |
     window: per day | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/Antigravity (1)
   g4f.antigravity
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider Antigravity — free/no-auth quota (resolution
     2026-10-28) | window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/Arena (1)
   g4f.arena
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider Arena — free/no-auth quota (resolution 2026-10-28) |
     window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/BingCreateImages (1)
   g4f.bingcreateimages
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider BingCreateImages — free/no-auth quota (resolution
     2026-10-28) | window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/BlackForestLabs_Flux1Dev (1)
   g4f.blackforestlabs_flux1dev
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 2 minutes of GPU time
     metric: g4f provider BlackForestLabs_Flux1Dev — free/no-auth quota
     (resolution 2026-10-28) | window: per day, resets exactly 24 hours after
     first GPU usage | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/BlackForestLabs_Flux1KontextDev (1)
   g4f.blackforestlabs_flux1kontextdev
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 2 minutes of GPU time
     metric: g4f provider BlackForestLabs_Flux1KontextDev — free/no-auth quota
     (resolution 2026-10-28) | window: per day, resets exactly 24 hours after
     first GPU usage | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/BlackboxPro (1)
   g4f.blackboxpro
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider BlackboxPro — free/no-auth quota (resolution
     2026-10-28) | window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/BraveSearch (1)
   g4f.bravesearch
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider BraveSearch — free/no-auth quota (resolution
     2026-10-28) | window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/CachedSearch (1)
   g4f.cachedsearch
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider CachedSearch — free/no-auth quota (resolution
     2026-10-28) | window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/Cerebras (1)
   g4f.cerebras
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider Cerebras — free/no-auth quota (resolution 2026-10-28) |
     window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/ChatGPT (1)
   g4f.chatgpt
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider ChatGPT — free/no-auth quota (resolution 2026-10-28) |
     window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/Claude (1)
   g4f.claude
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider Claude — free/no-auth quota (resolution 2026-10-28) |
     window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/Cloudflare (1)
   g4f.cloudflare
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider Cloudflare — free/no-auth quota (resolution 2026-10-28)
     | window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/CohereForAI_C4AI_Command (1)
   g4f.cohereforai_c4ai_command
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider CohereForAI_C4AI_Command — free/no-auth quota
     (resolution 2026-10-28) | window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/Copilot (1)
   g4f.copilot
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider Copilot — free/no-auth quota (resolution 2026-10-28) |
     window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/CopilotApp (1)
   g4f.copilotapp
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider CopilotApp — free/no-auth quota (resolution 2026-10-28)
     | window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/DeepInfra (1)
   g4f.deepinfra
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider DeepInfra — free/no-auth quota (resolution 2026-10-28)
     | window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/DeepSeek (1)
   g4f.deepseek
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider DeepSeek — free/no-auth quota (resolution 2026-10-28) |
     window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/ElevenLabs (1)
   g4f.elevenlabs
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 10000 credits
     metric: g4f provider ElevenLabs — free/no-auth quota (resolution 2026-10-28)
     | window: per month | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/G4FSpace (1)
   g4f.g4fspace
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider G4FSpace — free/no-auth quota (resolution 2026-10-28) |
     window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/GLM (1)
   g4f.glm
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider GLM — free/no-auth quota (resolution 2026-10-28) |
     window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/Gemini (1)
   g4f.gemini
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider Gemini — free/no-auth quota (resolution 2026-10-28) |
     window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/GeminiCLI (1)
   g4f.geminicli
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 1000 requests
     metric: g4f provider GeminiCLI — free/no-auth quota (resolution 2026-10-28)
     | window: per user per day | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/GeminiPro (1)
   g4f.geminipro
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider GeminiPro — free/no-auth quota (resolution 2026-10-28)
     | window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/GithubCopilot (1)
   g4f.githubcopilot
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 50 premium requests (all chat interactions count as
     premium requests)
     metric: g4f provider GithubCopilot — free/no-auth quota (resolution
     2026-10-28) | window: per month | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/GoogleAiMode (1)
   g4f.googleaimode
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider GoogleAiMode — free/no-auth quota (resolution
     2026-10-28) | window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/GoogleSearch (1)
   g4f.googlesearch
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider GoogleSearch — free/no-auth quota (resolution
     2026-10-28) | window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/Grok (1)
   g4f.grok
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider Grok — free/no-auth quota (resolution 2026-10-28) |
     window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/Groq (1)
   g4f.groq
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 1000 requests per day (RPD) for openai/gpt-oss-120b
     metric: g4f provider Groq — free/no-auth quota (resolution 2026-10-28) |
     window: per day | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/HailuoAI (1)
   g4f.hailuoai
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider HailuoAI — free/no-auth quota (resolution 2026-10-28) |
     window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/HuggingChat (1)
   g4f.huggingchat
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider HuggingChat — free/no-auth quota (resolution
     2026-10-28) | window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/HuggingFace (1)
   g4f.huggingface
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider HuggingFace — free/no-auth quota (resolution
     2026-10-28) | window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/HuggingFaceMedia (1)
   g4f.huggingfacemedia
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider HuggingFaceMedia — free/no-auth quota (resolution
     2026-10-28) | window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/HuggingSpace (1)
   g4f.huggingspace
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 2 GPU-minutes (ZeroGPU)
     metric: g4f provider HuggingSpace — free/no-auth quota (resolution
     2026-10-28) | window: per day | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/KiloCode (1)
   g4f.kilocode
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 200 requests
     metric: g4f provider KiloCode — free/no-auth quota (resolution 2026-10-28) |
     window: per hour per IP | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/LLM7 (1)
   g4f.llm7
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 100000 tokens (input + output)
     metric: g4f provider LLM7 — free/no-auth quota (resolution 2026-10-28) |
     window: per day | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/MarkItDown (1)
   g4f.markitdown
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider MarkItDown — free/no-auth quota (resolution 2026-10-28)
     | window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/MetaAI (1)
   g4f.metaai
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider MetaAI — free/no-auth quota (resolution 2026-10-28) |
     window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/MetaAIAccount (1)
   g4f.metaaiaccount
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider MetaAIAccount — free/no-auth quota (resolution
     2026-10-28) | window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/MicrosoftDesigner (1)
   g4f.microsoftdesigner
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 15 boosts (fast AI creations/edits)
     metric: g4f provider MicrosoftDesigner — free/no-auth quota (resolution
     2026-10-28) | window: per day | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/Nvidia (1)
   g4f.nvidia
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 1000 API credits
     metric: g4f provider Nvidia — free/no-auth quota (resolution 2026-10-28) |
     window: on sign-up (one-time trial grant) | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/Ollama (1)
   g4f.ollama
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider Ollama — free/no-auth quota (resolution 2026-10-28) |
     window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/OmniRoute (1)
   g4f.omniroute
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider OmniRoute — free/no-auth quota (resolution 2026-10-28)
     | window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/OpenAIFM (1)
   g4f.openaifm
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider OpenAIFM — free/no-auth quota (resolution 2026-10-28) |
     window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/OpenRouterFree (1)
   g4f.openrouterfree
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 50 requests
     metric: g4f provider OpenRouterFree — free/no-auth quota (resolution
     2026-10-28) | window: per day | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/OperaAria (1)
   g4f.operaaria
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 5 images
     metric: g4f provider OperaAria — free/no-auth quota (resolution 2026-10-28)
     | window: per day | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/Perplexity (1)
   g4f.perplexity
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 3 Pro Searches
     metric: g4f provider Perplexity — free/no-auth quota (resolution 2026-10-28)
     | window: per day | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/Pi (1)
   g4f.pi
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider Pi — free/no-auth quota (resolution 2026-10-28) |
     window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/Pollinations (1)
   g4f.pollinations
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider Pollinations — free/no-auth quota (resolution
     2026-10-28) | window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/PollinationsAudio (1)
   g4f.pollinationsaudio
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider PollinationsAudio — free/no-auth quota (resolution
     2026-10-28) | window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/PollinationsImage (1)
   g4f.pollinationsimage
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider PollinationsImage — free/no-auth quota (resolution
     2026-10-28) | window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/Puter (1)
   g4f.puter
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider Puter — free/no-auth quota (resolution 2026-10-28) |
     window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/Qwen (1)
   g4f.qwen
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider Qwen — free/no-auth quota (resolution 2026-10-28) |
     window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/RelayRouter (1)
   g4f.relayrouter
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 2000000 tokens
     metric: g4f provider RelayRouter — free/no-auth quota (resolution
     2026-10-28) | window: per account total, with daily sub-caps resetting 00:00
     UTC | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/StabilityAI_SD35Large (1)
   g4f.stabilityai_sd35large
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider StabilityAI_SD35Large — free/no-auth quota (resolution
     2026-10-28) | window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/TeachAnything (1)
   g4f.teachanything
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider TeachAnything — free/no-auth quota (resolution
     2026-10-28) | window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/WhiteRabbitNeo (1)
   g4f.whiterabbitneo
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider WhiteRabbitNeo — free/no-auth quota (resolution
     2026-10-28) | window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/You (1)
   g4f.you
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider You — free/no-auth quota (resolution 2026-10-28) |
     window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  g4f/Yqcloud (1)
   g4f.yqcloud
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown (NOT ESTABLISHED)
     metric: g4f provider Yqcloud — free/no-auth quota (resolution 2026-10-28) |
     window: unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call (g4f
-    surface, REFERENCE_ONLY, runtime_eligible=false))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  gcp (3)
   gcp.cloud_functions_invocations
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 2000000 invocations/month
     metric: Cloud Run functions invocations (Free Tier, always free) | window:
     monthly | reset: calendar month
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   gcp.cloud_run_requests
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 2000000 requests/month
     metric: Cloud Run requests (Free Tier, always free) | window: monthly |
     reset: calendar month
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   gcp.compute_e2micro
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 1 instance/month
     metric: Compute Engine e2-micro (Free Tier, always free) | window: monthly |
     reset: calendar month
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  github (8)
   github.actions.cache
@@ -752,76 +683,70 @@
     (free for public repos)
     Public evidence state only; no account balance or runtime admission implied.
   github.api.github_token
-    status: !! EXHAUSTED
+    status: !  WATCH
     limit (documented): 1000 requests/hour/repo
     metric: REST requests via GITHUB_TOKEN | window: hourly | reset:
     x-ratelimit-reset header
     Public evidence state only; no account balance or runtime admission implied.
   github.api.user_token
-    status: STALE
+    status: UNKNOWN
     limit (documented): 5000 requests/hour
     metric: REST requests via user/OAuth token | window: hourly | reset:
     x-ratelimit-reset header
     Public evidence state only; no account balance or runtime admission implied.
   github.artifacts.retention
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 90 days
     metric: artifact retention default | window: per-artifact | reset: n/a
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   github.codespaces.core_hours
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 120 core-hours/month
     metric: Codespaces compute, personal account (GitHub Free) | window: monthly
     | reset: calendar month
-    No live reading (live source: GitHub Settings > Billing > Usage
-    (Codespaces))
+    Public evidence state only; no account balance or runtime admission implied.
   github.codespaces.storage
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 15 GB-month
     metric: Codespaces storage, personal account (GitHub Free) | window: monthly
     | reset: calendar month
-    No live reading (live source: GitHub Settings > Billing > Usage
-    (Codespaces))
+    Public evidence state only; no account balance or runtime admission implied.
   github.copilot.free
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a requests/month
     metric: Copilot Free allowance | window: monthly | reset: unverified
-    No live reading (live source: none (no usage API for Free))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  google (1)
   gemini.api_free
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a per-model
     metric: RPM/TPM/RPD per model, per project | window: daily (RPD) | reset:
     midnight
-    No live reading (live source: none; .github/actions/gemini-quota-gate soft
-    budgets + 429s)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  gpt4free/CLIProxyAPI/Chapito/ai-manus (1)
   g4f.vendors
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unmetered / unknown
     metric: public/web-wrapped endpoints (multi-ai-cli/vendors) | window:
     unknown | reset: unknown
-    No live reading (live source: none; observe 429/retry-after per call)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  grafana (1)
   grafana.cloud_free
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 10000 samples/s
     metric: ingestion_rate per series | window: instant | reset: n/a
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  groq (1)
   groq.free_tier
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a per-model requests/tokens
     metric: Free tier rate limits (per model) | window: per minute/day | reset:
     x-ratelimit-reset-requests / x-ratelimit-reset-tokens headers
-    No live reading (live source: response headers x-ratelimit-limit-requests,
-    x-ratelimit-remaining-requests, x-ratelimit-reset-requests,
-    x-ratelimit-limit-tokens, x-ratelimit-remaining-tokens,
-    x-ratelimit-reset-tokens, retry-after (passive adapter implemented))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  huggingface (2)
   huggingface.hub_api
@@ -831,117 +756,106 @@
     reset: RateLimit header t (seconds to reset)
     Public evidence state only; no account balance or runtime admission implied.
   huggingface.inference_providers
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a monthly credits
     metric: Inference Providers monthly credits | window: monthly | reset:
     monthly
-    No live reading (live source: Hub RateLimit response header (remaining r,
-    seconds-to-reset t; 5-minute fixed windows; passive adapter implemented —
-    Hub API/Resolver/Pages categories, NOT hosted-inference quota); organization
-    usage API GET /api/organizations/{org}/billing/usage/inference (Enterprise);
-    router free/zero models via /v1/models catalog poll)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  kilo (1)
   kilo.free_models
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 200 requests/hour
     metric: Free model requests (kilo-auto/free) | window: hourly | reset:
     per-hour window (per IP)
-    No live reading (live source: none published)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  koyeb (1)
   koyeb.free_instance
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 1 instance
     metric: free web service instances | window: point-in-time | reset: n/a
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  llm7 (1)
   llm7.free_token
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 100000 tokens/day
     metric: Free token allowance (turbo models) | window: daily | reset: daily
-    No live reading (live source: GET /v1/models per-model tier/pricing/limit
-    fields; allowance state via dashboard)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  mistral (1)
   mistral.free_mode
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a included usage (per model, in-account)
     metric: Free mode (Experiment) included usage | window: unknown | reset:
     unknown
-    No live reading (live source: none published (Admin Panel only; Admin API is
-    Enterprise))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  modelscope (1)
   modelscope.api_inference
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 2000 requests/day
     metric: API-Inference usage limits | window: daily | reset: daily (per fleet
     recon claim)
-    No live reading (live source: none published (not established))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  neon (4)
   neon.compute
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 100 CU-hours/project/month
     metric: compute | window: monthly | reset: billing month
-    No live reading (live source: GET console.neon.tech/api/v2/projects
-    (NEON_API_KEY))
+    Public evidence state only; no account balance or runtime admission implied.
   neon.egress
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 5 GB/month
     metric: egress | window: monthly | reset: billing month
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   neon.realtime
-    status: No live reading
+    status: UNKNOWN
     limit (documented): n/a free during beta
     metric: Realtime (beta) | window: n/a | reset: n/a
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   neon.storage
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 1 GB/project (20 GB total)
     metric: Postgres storage | window: point-in-time | reset: n/a
-    No live reading (live source: projects API synthetic_storage_size)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  netlify (1)
   netlify.credits
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 300 credits/month
     metric: Netlify credits (Free plan) | window: monthly | reset: calendar
     month
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  nvidia (1)
   nvidia.api_catalog
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a per-model credits/limits (in-account)
     metric: API catalog free model limits (per model, in-account) | window:
     unknown | reset: unknown
-    No live reading (live source: none published)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  ollama (1)
   ollama.balance
-    status: No live reading
+    status: UNKNOWN
     limit (documented): n/a variant-specific USD or percent; never
     requests/tokens
     metric: remaining included/purchased USD balance or legacy remaining
     percentages | window: source-supplied included period or legacy
     session/weekly | reset: unknown until authenticated source supplies
     period.until or legacy resets_at; purchased-credit reset unknown
-    No live reading (live source: opt-in only: python3 -m
-    scripts.provider_quota_service --observe; GET https://ollama.com/api/balance
-    (OLLAMA_API_KEY))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  omni (1)
   omni.gateway
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a n/a (aggregates upstream free tiers)
     metric: OmniRoute gateway (self-hosted; no own entitlement) | window: n/a |
     reset: n/a
-    No live reading (live source: self-hosted dashboard /dashboard/free-tiers
-    shows live used/remaining per upstream pool; no hosted usage API or
-    rate-limit headers)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  openrouter (2)
   openrouter.free_models
@@ -963,251 +877,231 @@
 --------------------------------------------------------------------------------
  oracle (3)
   oracle.ampere_gb_hours
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 9000 GB-hours/month
     metric: Ampere A1 memory (Always Free) | window: monthly | reset: calendar
     month
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   oracle.ampere_ocpu_hours
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 1500 OCPU-hours/month
     metric: Ampere A1 compute (Always Free) | window: monthly | reset: calendar
     month
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   oracle.block_storage
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 200 GB
     metric: block volume storage (Always Free) | window: point-in-time | reset:
     n/a
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  ovhcloud (1)
   ovhcloud.ai_endpoints
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 2 requests/minute
     metric: AI Endpoints anonymous rate limit | window: per minute | reset:
     per-minute window
-    No live reading (live source: none published; consumption visible in the
-    Control Panel)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  pinecone (5)
   pinecone.egress
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 1 GB/month
     metric: egress (Starter) | window: monthly | reset: billing month
-    No live reading (live source: GET api.pinecone.io/indexes
-    (PINECONE_API_KEY))
+    Public evidence state only; no account balance or runtime admission implied.
   pinecone.indexes
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 5 indexes (100 namespaces each)
     metric: indexes (Starter) | window: point-in-time | reset: n/a
-    No live reading (live source: GET api.pinecone.io/indexes
-    (PINECONE_API_KEY))
+    Public evidence state only; no account balance or runtime admission implied.
   pinecone.read_units
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 1000000 RU/month
     metric: read units (Starter) | window: monthly | reset: billing month
-    No live reading (live source: GET api.pinecone.io/indexes
-    (PINECONE_API_KEY))
+    Public evidence state only; no account balance or runtime admission implied.
   pinecone.storage
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 2 GB
     metric: vector storage (Starter) | window: point-in-time | reset: n/a
-    No live reading (live source: GET api.pinecone.io/indexes
-    (PINECONE_API_KEY))
+    Public evidence state only; no account balance or runtime admission implied.
   pinecone.write_units
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 2000000 WU/month
     metric: write units (Starter) | window: monthly | reset: billing month
-    No live reading (live source: GET api.pinecone.io/indexes
-    (PINECONE_API_KEY))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  platform201 (1)
   platform201.projects
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 3 projects
     metric: Solo projects | window: point-in-time | reset: n/a
-    No live reading (live source: console https://app.platform201.com (Google
-    sign-in, Solo $0 Current); live workload
-    https://ringerhollow-kangaroorose-killerpuddle.eu1.platform201.live/)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  render (5)
   render.bandwidth
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 5 GB/month
     metric: outbound bandwidth included (Hobby) | window: calendar month |
     reset: 1st of month
-    No live reading (live source: GET /v1/metrics/bandwidth?resource=srv-...)
+    Public evidence state only; no account balance or runtime admission implied.
   render.instance_hours
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 750 hours/month
     metric: Free instance hours per workspace | window: calendar month | reset:
     start of month, no rollover
-    No live reading (live source: dashboard only (billing#included-usage))
+    Public evidence state only; no account balance or runtime admission implied.
   render.keyvalue_free
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 1 instance/workspace (in-memory only)
     metric: free Key Value | window: n/a | reset: data lost on restart
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   render.pipeline_minutes
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 500 minutes/month
     metric: Starter build pipeline minutes (Hobby) | window: calendar month |
     reset: 1st of month
-    No live reading (live source: dashboard only (billing#unbilled-charges);
-    estimate from deploys API wall-clock)
+    Public evidence state only; no account balance or runtime admission implied.
   render.postgres_free
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 1 GB (1 instance/workspace)
     metric: free Postgres | window: 30 days from creation | reset: expires;
     14-day grace then deleted
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  requesty (1)
   requesty.free_models
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 200 requests/day
     metric: Free model requests | window: daily | reset: daily
-    No live reading (live source: GET /v1/manage/org/usage; GET
-    /v1/manage/apikey/{id}/usage)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  routeway (1)
   routeway.free_models
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 200 requests/day
     metric: Free model requests (:free models) | window: daily | reset: UTC
     midnight (X-RateLimit-Reset-Day)
-    No live reading (live source: headers X-RateLimit-Limit-Minute,
-    X-RateLimit-Remaining-Minute, X-RateLimit-Reset-Minute,
-    X-RateLimit-Limit-Day, X-RateLimit-Remaining-Day, X-RateLimit-Reset-Day,
-    Retry-After)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  sambanova (1)
   sambanova.free_tier
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 20 requests/day per model
     metric: Free Tier requests per model | window: daily | reset: daily
     (x-ratelimit-reset-requests-day header)
-    No live reading (live source: response headers x-ratelimit-limit-requests,
-    x-ratelimit-remaining-requests, x-ratelimit-reset-requests,
-    x-ratelimit-limit-requests-day, x-ratelimit-remaining-requests-day,
-    x-ratelimit-reset-requests-day (passive adapter implemented))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  sealion (1)
   sealion.api
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 10 requests/minute per user
     metric: Trial API rate limit | window: per minute | reset: per-minute window
-    No live reading (live source: none published)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  siliconflow (1)
   siliconflow.free_models
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a requests/minute + tokens/minute (per model)
     metric: Free model rate limits (per model) | window: per minute/day | reset:
     per-window
-    No live reading (live source: GET user/info balance fields data.balance /
-    data.chargeBalance / data.totalBalance (monetary only, passive adapter
-    implemented); no rate-limit headers published; per-model free values shown
-    in the account console only)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  supabase (5)
   supabase.db_storage
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 500 MB
     metric: Postgres database size (Free plan) | window: point-in-time | reset:
     n/a
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   supabase.edge_functions
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 500000 invocations/month
     metric: Edge Function invocations (Free plan) | window: monthly | reset:
     billing month
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   supabase.egress
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 5 GB/month
     metric: bandwidth / egress (Free plan) | window: monthly | reset: billing
     month
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   supabase.file_storage
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 1 GB
     metric: file storage (Free plan) | window: point-in-time | reset: n/a
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   supabase.projects
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 2 projects
     metric: active projects (Free plan) | window: point-in-time | reset: n/a
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  turso (4)
   turso.databases
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 100 databases
     metric: databases (Free plan) | window: point-in-time | reset: n/a
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   turso.rows_read
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 500000000 rows/month
     metric: rows read (Free plan) | window: monthly | reset: billing month
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   turso.rows_written
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 10000000 rows/month
     metric: rows written (Free plan) | window: monthly | reset: billing month
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   turso.storage
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 5 GB
     metric: total storage (Free plan) | window: point-in-time | reset: n/a
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  typhoon (1)
   typhoon.api
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 200 requests/minute
     metric: Free research API rate limits (per model) | window: per minute |
     reset: per-minute window; 429 error body message carries the retry timestamp
-    No live reading (live source: no usage endpoint; HTTP 429 error body
-    (rate_limit_exceeded) carries the retry time in its message)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  unorouter (1)
   unorouter.free_models
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 1 requests/minute per free model per user
     metric: Free model rate cap (UnoRouter's own, above upstream) | window: per
     minute | reset: per-minute window; Retry-After on 429
-    No live reading (live source: Retry-After header on HTTP 429)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  upstash (4)
   upstash.qstash_messages
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 1000 messages/day
     metric: QStash messages (Free) | window: daily | reset: daily
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   upstash.redis_bandwidth
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 10 GB/month
     metric: Redis bandwidth (Free) | window: monthly | reset: billing period
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   upstash.redis_commands
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 500000 commands/month
     metric: Redis commands (Free) | window: monthly | reset: billing period
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   upstash.redis_storage
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 250 MB
     metric: Redis data size (Free) | window: point-in-time | reset: n/a
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  vercel (2)
   vercel.build_time
-    status: No live reading
+    status: UNKNOWN
     limit (documented): 45 minutes
     metric: build step duration per deployment | window: per-build | reset: n/a
-    No live reading (live source: none)
+    Public evidence state only; no account balance or runtime admission implied.
   vercel.deployments
     status: OK
     limit (documented): 100 deployments/day
@@ -1217,30 +1111,27 @@
 --------------------------------------------------------------------------------
  xfyun (1)
   xfyun.spark
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a unknown
     metric: Spark Lite free tier + per-capability trials | window: unknown |
     reset: unknown
-    No live reading (live source: none published (not established))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  xkiro (1)
   xkiro.free_models
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): 500000 tokens/day
     metric: Free model token allowance | window: daily | reset: daily reset;
     free-model requests blocked with 429 until the reset
-    No live reading (live source: Retry-After header when the wait is known;
-    usage attributed per API key with dashboard call logs
-    (model/tokens/cost/status); no dedicated usage endpoint published)
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  zai (1)
   zai.free_models
-    status: No live reading
+    status: PRIVATE_PREFLIGHT
     limit (documented): n/a per-account (unpublished)
     metric: Free ($0-priced GLM Flash) model access | window: unknown | reset:
     unknown
-    No live reading (live source: HTTP 429 error body codes 1308 / 1316-1321
-    carry a next_flush_time field (documented in the API-code reference))
+    Public evidence state only; no account balance or runtime admission implied.
 --------------------------------------------------------------------------------
  PROVIDER QUOTA-MANAGER COVERAGE (metadata only)
   aion: Manager / ChronoMancer; unsupported_or_no_verified_official_counter;
@@ -1298,6 +1189,6 @@
   zai: Manager / ChronoMancer; official_documentation_only; no passive parser;
   registry: zai.free_models
  Coverage and quota checks do not grant runtime admission.
- 155 registry records | 2 alert(s) | 8 with a reported reading | 147 with No
+ 155 registry records | 1 alert(s) | 155 with a reported reading | 0 with No
  live reading
 ================================================================================

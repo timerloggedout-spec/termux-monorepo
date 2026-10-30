@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 354,
-    "open_prs": 116,
+    "open_prs": 117,
     "pr_classes": {
       "CANDIDATE": 61,
       "EXTRACT": 6,
-      "NEED_EVIDENCE": 49,
+      "NEED_EVIDENCE": 50,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 19,
-      "prs": 114,
+      "prs": 115,
       "unlabelled_numbers": [
         308,
         343,
@@ -74,7 +74,7 @@
       ]
     }
   },
-  "generated_at": "2026-10-30T06:52:24Z",
+  "generated_at": "2026-10-30T06:59:39Z",
   "issues_unlabelled": [
     308,
     343,
@@ -102,7 +102,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "3abe49ce03"
+    "sha": "f0c7f3eb2a"
   },
   "prs": [
     {
@@ -182,12 +182,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "7459e165b8",
+      "head_sha": "ad4b8dace0",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 1734,
       "title": "feat(notation): add claim-level evidence provenance",
-      "updated_at": "2026-10-30T06:16:04Z"
+      "updated_at": "2026-10-30T06:59:08Z"
     },
     {
       "class": "CANDIDATE",
@@ -1041,12 +1041,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "1c9f87c093",
+      "head_sha": "c90009f464",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2407,
       "title": "GitHub App telemetry proposal",
-      "updated_at": "2026-10-30T06:13:40Z"
+      "updated_at": "2026-10-30T06:56:52Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1461,12 +1461,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "3c776a7975",
+      "head_sha": "19b559af8a",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-10-30T06:52:13Z"
+      "updated_at": "2026-10-30T06:58:37Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1615,12 +1615,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "e7848641c5",
+      "head_sha": "33b431bf86",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-10-30T06:51:42Z"
+      "updated_at": "2026-10-30T06:59:03Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1733,6 +1733,20 @@
       "number": 2420,
       "title": "docs(appid): Publisher LIVE record \u2014 provisioned 5537873, custody transferred, perms delta",
       "updated_at": "2026-10-30T06:48:31Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "85eaa8f6e7",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2426,
+      "title": "chore(quota): allocation plan refresh (registry 157 + publisher pool member)",
+      "updated_at": "2026-10-30T06:53:00Z"
     }
   ],
   "schema": "operator-matrix/v1",

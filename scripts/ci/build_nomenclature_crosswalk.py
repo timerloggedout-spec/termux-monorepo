@@ -34,12 +34,15 @@ def render_crosswalk(data):
     ]
     for concept in concepts:
         labels = sorted(labels_by_concept.get(concept["concept_id"], []), key=lambda x: (x.get("label_type", ""), x.get("text", "").casefold(), x.get("label_id", "")))
-        for label in labels:
+        # Keep every concept visible even when no label candidate has been curated yet.
+        for label in labels or [None]:
             values = (
                 concept["concept_id"], concept.get("domain_id", ""), concept.get("preferred_label", ""),
-                concept.get("definition", ""), label.get("text", ""), label.get("label_type", ""),
-                label.get("language", ""), label.get("audience", ""), label.get("register", ""),
-                label.get("status", ""), ", ".join(label.get("source_ids", [])))
+                concept.get("definition", ""), label.get("text", "") if label else "",
+                label.get("label_type", "") if label else "", label.get("language", "") if label else "",
+                label.get("audience", "") if label else "", label.get("register", "") if label else "",
+                label.get("status", "") if label else "",
+                ", ".join(label.get("source_ids", [])) if label else ", ".join(concept.get("source_ids", [])))
             lines.append("| " + " | ".join(cell(v) for v in values) + " |")
     lines.extend([
         "",

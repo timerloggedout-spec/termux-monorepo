@@ -21,6 +21,41 @@ def test_config_is_valid_against_live_registry():
     assert qa.validate(CFG, REG) == []
 
 
+def test_github_pool_carries_the_repo_replay_app_slice():
+    # Planner trigger app_slice_assignment:repo-replay (allocation-plan.json,
+    # PR #2450): replay/migration load sits on the AppID buckets, the PAT
+    # service is fallback-only with no routine draw.
+    gh = next(p for p in CFG["pools"] if p["id"] == "github")
+    slices = {s["project"]: s for s in gh.get("slices", [])}
+    rr = slices["repo-replay"]
+    assert rr["primary_services"] == ["github.api.app_collector", "github.api.app_publisher"]
+    assert rr["fallback_service"] == "github.api.user_token"
+    assert rr["fallback_mode"] == "fallback-only"
+    assert rr["routine_draw_on_fallback"] is False
+
+
+def test_validator_rejects_a_slice_pointing_outside_its_pool():
+    import copy
+    bad = copy.deepcopy(CFG)
+    gh = next(p for p in bad["pools"] if p["id"] == "github")
+    gh["slices"] = [{"project": "repo-replay",
+                     "primary_services": ["vercel.deployments"],
+                     "fallback_service": "github.api.user_token",
+                     "fallback_mode": "fallback-only",
+                     "routine_draw_on_fallback": False,
+                     "date": "2026-10-30", "reason": "synthetic"}]
+    errs = qa.validate(bad, REG)
+    assert any("not a service of this pool" in e for e in errs), errs
+
+
+def test_feed_surfaces_pool_slices():
+    f = qa.build_feed(CFG, REG, READINGS, COUNTDOWNS, NOW)
+    gh = next(p for p in f["pools"] if p["pool"] == "github")
+    assert gh["slices"][0]["project"] == "repo-replay"
+    others = [p for p in f["pools"] if p["pool"] != "github"]
+    assert all(p["slices"] == [] for p in others)
+
+
 def test_every_registry_service_is_pooled_or_explicitly_excluded():
     pooled = {s for p in CFG["pools"] for s in p["services"]}
     excluded = {e["id"] for e in CFG["excluded_services"]}

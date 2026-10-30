@@ -21,7 +21,10 @@ NAV_LINK = ('<a href="https://timerloggedout-spec.github.io/help-wanted/'
             'admin-graph.html">Admin Graph</a>')
 NAV_PAGES = ["index.html", "quota.html", "matrix.html", "admin.html",
              "oracle.html", "moneyball.html", "3l0.html", "mvt.html",
-             "doe.html", "ates.html", "free-tier-value.html"]
+             "doe.html", "ates.html", "free-tier-value.html",
+             "countdowns.html", "delphi-ledger.html", "delphi-rfp.html",
+             "dispatch-tree.html", "linguist.html", "pr-lanes.html",
+             "proposals.html", "quota-usage.html", "telemetry.html"]
 
 
 def _html():

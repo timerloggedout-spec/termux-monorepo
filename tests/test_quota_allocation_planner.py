@@ -56,3 +56,28 @@ def test_deadline_trigger():
                                    {"id": "d9", "hours_remaining": 200}])
     kinds = [t["trigger"] for t in out["triggers_fired"]]
     assert "deadline_t72h:d4" in kinds and "deadline_t72h:d9" not in kinds
+
+
+def test_repo_replay_app_slice_trigger():
+    reg = {"services": REG["services"] + [
+        {"id": "github.api.app_collector", "limit": 5000, "live": "api"},
+        {"id": "github.api.app_publisher", "limit": 5000, "live": "api"},
+        {"id": "github.api.user_token", "limit": 5000, "live": "api"},
+    ]}
+    alloc = {"pools": [{"id": "github", "services": [
+        "github.api.app_collector", "github.api.app_publisher",
+        "github.api.user_token"]}]}
+    out = planner.plan(reg, alloc, {"readings": []})
+    hits = [t for t in out["triggers_fired"]
+            if t["trigger"] == "app_slice_assignment:repo-replay"]
+    assert len(hits) == 1
+    sl = hits[0]["slice"]
+    assert sl["primary_services"] == ["github.api.app_collector",
+                                      "github.api.app_publisher"]
+    assert sl["fallback_service"] == "github.api.user_token"
+    assert sl["fallback_mode"] == "fallback-only"
+    assert sl["routine_draw_on_fallback"] is False
+    # absent when the app pair is not pooled
+    out2 = planner.plan(reg, ALLOC, {"readings": []})
+    assert not any(t["trigger"].startswith("app_slice_assignment")
+                   for t in out2["triggers_fired"])

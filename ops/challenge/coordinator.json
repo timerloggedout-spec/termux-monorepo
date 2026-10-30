@@ -1330,12 +1330,20 @@
    "entrant_moniker": "entrant{entrantDevpost}[platform:devpost]",
    "dates": {
     "announced": "NOT_ESTABLISHED",
-    "reg_open": "NOT_ESTABLISHED",
-    "reg_close": "NOT_ESTABLISHED",
-    "build_start": {
-     "at": "2026-10-30T13:00:00-07:00",
+    "reg_open": {
+     "at": "2026-10-13T08:30:00-07:00",
      "tz": "America/Los_Angeles",
-     "source": "official page (read 2026-10-28): submissions formally open Friday, October 30, 2026; only projects created during the submission period are eligible"
+     "source": "official RULES s.1 (kiroween.devpost.com/rules, read 2026-10-30)"
+    },
+    "reg_close": {
+     "at": "2026-12-04T14:00:00-08:00",
+     "tz": "America/Los_Angeles",
+     "source": "official RULES s.1 (kiroween.devpost.com/rules, read 2026-10-30)"
+    },
+    "build_start": {
+     "at": "2026-10-30T09:00:00-07:00",
+     "tz": "America/Los_Angeles",
+     "source": "official RULES s.1 (kiroween.devpost.com/rules, read 2026-10-30): Submission Period opens Oct 30, 2026 9:00 AM PT (CORRECTS the 13:00 dates-page value carried earlier; rules prevail)"
     },
     "build_end": {
      "at": "2026-12-04T14:00:00-08:00",
@@ -1343,17 +1351,25 @@
      "source": "official page: until Friday, December 4, 2026 at 2:00 PM Pacific Time"
     },
     "submissions_open": {
-     "at": "2026-10-30T13:00:00-07:00",
+     "at": "2026-10-30T09:00:00-07:00",
      "tz": "America/Los_Angeles",
-     "source": "official page (read 2026-10-28)"
+     "source": "official RULES s.1 (kiroween.devpost.com/rules, read 2026-10-30)"
     },
     "deadline": {
      "at": "2026-12-04T14:00:00-08:00",
      "tz": "America/Los_Angeles",
      "source": "official page (read 2026-10-28): Friday, December 4, 2026 at 2:00 PM Pacific Time"
     },
-    "judging_end": "NOT_ESTABLISHED",
-    "winners_at": "NOT_ESTABLISHED"
+    "judging_end": {
+     "at": "2027-01-29T13:00:00-08:00",
+     "tz": "America/Los_Angeles",
+     "source": "official RULES s.1 (kiroween.devpost.com/rules, read 2026-10-30): Judging Period Dec 16, 2026 - Jan 29, 2027"
+    },
+    "winners_at": {
+     "at": "2027-02-03T09:00:00-08:00",
+     "tz": "America/Los_Angeles",
+     "source": "official RULES s.1 (kiroween.devpost.com/rules, read 2026-10-30): on or around Feb 3, 2027"
+    }
    },
    "constraints": [
     "Do not start building your project yet.",
@@ -1378,9 +1394,32 @@
     }
    ],
    "prizes": {
-    "status": "NOT_ESTABLISHED",
-    "pool": "$100,000 in cash (pool stated on the official page; per-place tiers are TBD - the page states complete details including different prizes release Friday, October 30, 2026)",
-    "tiers": []
+    "status": "ESTABLISHED",
+    "source": "official RULES s.1 (kiroween.devpost.com/rules, read 2026-10-30) (s.8 Prizes)",
+    "pool": "$94,000 cash + subscription/credit prizes (announced as $100,000 in cash prizes)",
+    "tiers": {
+     "overall": [
+      "1st $30,000",
+      "2nd $20,000",
+      "3rd $10,000"
+     ],
+     "category": [
+      "Best Resurrection $5,000",
+      "Best Frankenstein $5,000",
+      "Best Skeleton Crew $5,000",
+      "Best Costume Contest $5,000"
+     ],
+     "bonus": [
+      "Best Startup Project $10,000",
+      "Best Ghost of Kiroween Past $2,000",
+      "Best Kiro Crew App $1,000",
+      "Best Demo $1,000",
+      "Best Student Project: 1-year Kiro Pro Max subscription (~$1,500) x4",
+      "Bonus Blog Prize: 2,000 Kiro credits x100",
+      "Social Blitz Prize: 3-month Kiro Pro+ subscription x5"
+     ]
+    },
+    "note": "One Overall OR one Category prize per project, plus any number of Bonus prizes."
    },
    "moneyball": {
     "schema": "moneyball-plane/v2",
@@ -1540,6 +1579,9 @@
     "projects_source": "Devpost project gallery, devpost.com",
     "fetched_at": "2026-10-28T22:11:14Z",
     "projects_note": "project gallery unpublished by the organizers"
+   },
+   "brief_status": {
+    "delphi_handoff": "Handed off to the Delphi lane 2026-10-30 with the rules stamp (brief id kiroween-delphi-concept)."
    }
   },
   {
@@ -1838,6 +1880,61 @@
    "not_an_event_entry": true,
    "project_start": "2026-10-29 (public repo, timestamped commits)",
    "subject": "Repo Replay / RevWright"
+  }
+ ],
+ "candidate_events": [
+  {
+   "candidate_id": "C11",
+   "claim_gate": "No claim language for any candidate match (esp. Match 5 repo-repair x Repo Replay) until Manager rules-check vs the 2026-10-29 start.",
+   "deadline": "2026-12-01T11:00:00-08:00",
+   "fetched_at": "2026-10-30",
+   "format": "individual participation only (no teams)",
+   "handle": "Rap1dZ3nith",
+   "host": "AMD x lablab.ai",
+   "kind": "candidate_event",
+   "league_window": "2026-09-01 / 2026-12-01",
+   "matches": [
+    {
+     "id": "M1",
+     "name": "Onboarding: Get Started With AMD",
+     "points": 300,
+     "state": "open throughout the League",
+     "tasks": "AMD sign-up (done), claim $100 GPU credits, first Academy course, complete AMD profile, join lablab Discord (required for Match participation), join AMD Discord"
+    },
+    {
+     "deadline": "2026-12-01T11:00:00-08:00 (league submission deadline)",
+     "id": "M4",
+     "name": "Intelligent Web Information Retrieval",
+     "points": 1800,
+     "state": "LIVE (as of 2026-10-30)"
+    },
+    {
+     "id": "M5",
+     "name": "AI-Powered Code Repository Repair",
+     "points": 2100,
+     "state": "coming soon (Nov)"
+    },
+    {
+     "dates": "2026-11-10 / 2026-11-14",
+     "id": "M6",
+     "name": "Can Your AI Master the Unknown?",
+     "points": 2400,
+     "state": "coming soon"
+    }
+   ],
+   "name": "AMD AI League",
+   "oversight": "Manager oversight direct (ruling 2026-10-30); promotion to slate = owner call; NOT a D-numbered packet",
+   "packet": "challenge-entries lane: brief + per-match rules firsthand before any build (see log s.3 C11 packet)",
+   "platform": "lablab.ai",
+   "prizes": "League podium $2,500/$1,500/$1,000 (gate: >=5 Academy courses) | per Match $500 cash / $250 GPU credits / $100 GPU credits top-50 | Referral Leaders $1,000/$600/$400 | ROCm Certified Associate credential",
+   "registration": {
+    "by": "challenge-entries lane, owner order via main",
+    "evidence": "platform notification verbatim: 'You've been approved for the hackathon'; participant counter displayed 6287",
+    "joined": "2026-10-30T16:31:00-07:00",
+    "screening_form": "none exists for this event (no fields presented, no values submitted)",
+    "state": "Approved"
+   },
+   "source_url": "https://lablab.ai/ai-hackathons/amd-lablab-ai-academy-challenge"
   }
  ]
 }

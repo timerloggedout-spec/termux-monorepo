@@ -79,10 +79,19 @@ def test_derive_moniker_basic():
 
 
 def test_derive_moniker_drops_filler_words_but_never_the_first():
-    assert reg.derive_moniker("lablab-ai", {}) == "n0nLablab"
+    assert reg.derive_moniker("uno-router-ai", {}) == "n0nUnoRouter"
     assert reg.derive_moniker("builder-io", {}) == "n0nBuilder"
     assert reg.derive_moniker("ai", {}) == "n0nAi"
     assert reg.derive_moniker("io", {}) == "n0nIo"
+
+
+def test_owner_issued_moniker_is_the_record_not_a_derivation():
+    # lablab-ai: the owner set the issued name directly (2026-10-30);
+    # neither rule derives it - OWNER_ISSUED carries it verbatim.
+    assert reg.OWNER_ISSUED["lablab-ai"] == "Rap1dZ3nith"
+    entry = {"platform_id": "lablab-ai", "moniker_rule": "owner-issued"}
+    assert reg.expected_monikers([entry])["lablab-ai"] == "Rap1dZ3nith"
+    assert reg.derive_moniker("lablab-ai", {}) == "n0nLablab"  # frozen v2 rule, superseded on-platform
 
 
 def test_derive_moniker_collision_appends_smallest_free_integer():

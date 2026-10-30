@@ -1,0 +1,485 @@
+{
+  "schema": "quota-usage/v1",
+  "generated_at": "2026-10-30T01:57:48Z",
+  "ordered_by": "owner order 2026-10-29 via quota-specialist lane (b18fae96)",
+  "built_by": "viz lane (4ed48ba4) \u2014 visualizations for everything Web",
+  "registry_context": {
+    "records": 155,
+    "pools": 52,
+    "coverage": "27/27",
+    "note": "Winning \u2248100% (#1884); docs/ops/QUOTA-RECONCILE-2026-10-28.md",
+    "provenance": "quota-specialist pack 2026-10-29"
+  },
+  "series1_api_core": {
+    "title": "GitHub API core \u2014 shared PAT bucket",
+    "limit": 5000,
+    "unit": "requests/hour",
+    "replenishment": "rolling hourly",
+    "next_reset_observed": "2026-10-30T01:42:09Z",
+    "points": [
+      {
+        "at": "2026-10-28T23:41:00Z",
+        "remaining": 0,
+        "kind": "wall",
+        "provenance": "quota-specialist pack 2026-10-29"
+      },
+      {
+        "at": "2026-10-29T00:32:00Z",
+        "remaining": 2950,
+        "kind": "reported",
+        "provenance": "tier1-classifiers-steward rate-limit check after reset"
+      },
+      {
+        "at": "2026-10-29T00:37:00Z",
+        "remaining": 2945,
+        "kind": "observed",
+        "provenance": "viz rate-limit read (used 2055)"
+      },
+      {
+        "at": "2026-10-29T05:50:14Z",
+        "remaining": 0,
+        "kind": "wall",
+        "provenance": "cadence lane timeline 2026-10-29 (rate-limit record PR #2321/#2322) \u2014 core 403 blocked a pat_publish first call"
+      },
+      {
+        "at": "2026-10-29T11:41:45Z",
+        "remaining": 0,
+        "kind": "wall",
+        "provenance": "rate-limit lane incident record (PR #2321/#2322, via fleet memory) \u2014 incident 2: full 5000-call window burned in ~25 min (11:41:45Z\u2013~12:06Z)"
+      },
+      {
+        "at": "2026-10-29T21:39:53Z",
+        "remaining": 0,
+        "kind": "wall",
+        "provenance": "cadence lane timeline 2026-10-29 \u2014 ECC ack run annotation: 'API rate limit exceeded for user ID 233432881'"
+      },
+      {
+        "at": "2026-10-30T01:32:00Z",
+        "remaining": 0,
+        "kind": "wall",
+        "provenance": "quota-specialist pack 2026-10-29 (~18:32 PT)",
+        "note": "prior window exhausted; post-fix recurrence in shape, not in mechanism TBD \u2014 burn shape resolved by convergence correction: sustained ramp (see event-burn-shape)"
+      },
+      {
+        "at": "2026-10-30T01:36:00Z",
+        "remaining": 0,
+        "kind": "observed",
+        "provenance": "viz rate-limit read (used 5000, reset 2026-10-30T01:42:09Z)"
+      },
+      {
+        "at": "2026-10-30T01:43:00Z",
+        "remaining": 4999,
+        "kind": "observed",
+        "provenance": "viz pat_publish preflight read (uncounted /rate_limit) \u2014 new window just opened, used 1"
+      },
+      {
+        "at": "2026-10-30T01:45:00Z",
+        "remaining": 4645,
+        "kind": "reported",
+        "provenance": "convergence lane via quota-specialist (verified from reset epochs) \u2014 new window, used 355"
+      },
+      {
+        "at": "2026-10-30T01:54:00Z",
+        "remaining": 3230,
+        "kind": "reported",
+        "provenance": "convergence lane via quota-specialist (verified from reset epochs) \u2014 used 1770, reset 02:42:19Z"
+      }
+    ],
+    "note": "Observed points only \u2014 the bucket is read at check time, not sampled continuously. Dashed connectors span unobserved gaps; they are not measurements. Buckets stay separate (see buckets) \u2014 this line is the PAT user bucket only, never merged with installation or GraphQL spend. Burn shape (convergence, verified from reset epochs): sustained ~120\u2013160 calls/min fleet-wide \u2014 the bucket dies over a 30\u201340 min ramp, then stays dead until the hourly reset. Not a spike; no instant re-exhaustion.",
+    "bucket": "github.api.user_token"
+  },
+  "series2_snapshots": {
+    "title": "Quota readings snapshots \u2014 per-service state (status-only; used/reset null across rows)",
+    "services": [
+      "github.api.github_token",
+      "vercel.deployments",
+      "openrouter.free_models",
+      "openrouter.key",
+      "github.actions.cache",
+      "github.actions.minutes"
+    ],
+    "snapshots": [
+      {
+        "at": "2026-10-20T23:05:00Z",
+        "rows": 3,
+        "landed": true,
+        "provenance": "docs/ops/generated/quota-status.json @ cebe6ce48 (git history, viz-verified)",
+        "states": {
+          "vercel.deployments": "cap_tripped",
+          "openrouter.free_models": "exhausted",
+          "github.actions.minutes": "watch"
+        }
+      },
+      {
+        "at": "2026-10-28T13:16:27Z",
+        "rows": 8,
+        "landed": true,
+        "provenance": "current master quota-status.json + dashboard twin, parsed-equal (viz-verified)",
+        "states": {
+          "github.api.github_token": "exhausted",
+          "vercel.deployments": "ok",
+          "github.actions.cache": "ok",
+          "openrouter.free_models": "unknown",
+          "openrouter.key": "unknown",
+          "github.actions.minutes": "watch"
+        }
+      },
+      {
+        "at": "2026-10-28T23:36:07Z",
+        "rows": 155,
+        "landed": false,
+        "provenance": "quota-specialist pack 2026-10-29 \u2014 composed 2026-10-28T23:36:07Z, landing pending (convergence lane d92e1e1d fires on first headroom window, ~8 calls)",
+        "states": {
+          "github.api.github_token": "watch",
+          "github.actions.cache": "ok",
+          "vercel.deployments": "ok",
+          "openrouter.free_models": "unknown",
+          "openrouter.key": "unknown"
+        },
+        "note": "github.api.github_token recovered exhausted \u2192 watch in this snapshot"
+      }
+    ],
+    "stamp_source": "registry reset fields \u2014 snapshot rows carry reset=null by design; stamps never join from the snapshot"
+  },
+  "series3_actions": {
+    "title": "Actions run volume \u2014 reconstructed corpus (daily increments)",
+    "method": "Delta of run_count/total_jobs between consecutive daily docs/ops/generated/actions-performance-reconstructed-*.json files (cumulative, label locally_reconstructed, source_count == run_count). minutes_est = jobs_delta \u00d7 that day's avg_job_duration_ms / 60000 \u2014 an estimate. Corpus grows ~40 runs/day by reconstruction sampling: increments are corpus growth, NOT total fleet Actions volume.",
+    "days": [
+      {
+        "date": "2026-10-02",
+        "runs_delta": 40,
+        "jobs_delta": 80,
+        "minutes_est": 16
+      },
+      {
+        "date": "2026-10-03",
+        "runs_delta": 40,
+        "jobs_delta": 47,
+        "minutes_est": 9
+      },
+      {
+        "date": "2026-10-04",
+        "runs_delta": 40,
+        "jobs_delta": 38,
+        "minutes_est": 7
+      },
+      {
+        "date": "2026-10-05",
+        "runs_delta": 40,
+        "jobs_delta": 65,
+        "minutes_est": 12
+      },
+      {
+        "date": "2026-10-06",
+        "runs_delta": 40,
+        "jobs_delta": 51,
+        "minutes_est": 9
+      },
+      {
+        "date": "2026-10-07",
+        "runs_delta": 40,
+        "jobs_delta": 80,
+        "minutes_est": 15
+      },
+      {
+        "date": "2026-10-08",
+        "runs_delta": 40,
+        "jobs_delta": 49,
+        "minutes_est": 9
+      },
+      {
+        "date": "2026-10-09",
+        "runs_delta": 40,
+        "jobs_delta": 39,
+        "minutes_est": 8
+      },
+      {
+        "date": "2026-10-10",
+        "runs_delta": 40,
+        "jobs_delta": 93,
+        "minutes_est": 19
+      },
+      {
+        "date": "2026-10-11",
+        "runs_delta": 40,
+        "jobs_delta": 71,
+        "minutes_est": 15
+      },
+      {
+        "date": "2026-10-12",
+        "runs_delta": 40,
+        "jobs_delta": 95,
+        "minutes_est": 22
+      },
+      {
+        "date": "2026-10-13",
+        "runs_delta": 40,
+        "jobs_delta": 49,
+        "minutes_est": 11
+      },
+      {
+        "date": "2026-10-14",
+        "runs_delta": 40,
+        "jobs_delta": 40,
+        "minutes_est": 9
+      },
+      {
+        "date": "2026-10-15",
+        "runs_delta": 40,
+        "jobs_delta": 49,
+        "minutes_est": 11
+      },
+      {
+        "date": "2026-10-16",
+        "runs_delta": 40,
+        "jobs_delta": 42,
+        "minutes_est": 10
+      },
+      {
+        "date": "2026-10-17",
+        "runs_delta": 40,
+        "jobs_delta": 37,
+        "minutes_est": 8
+      },
+      {
+        "date": "2026-10-18",
+        "runs_delta": 40,
+        "jobs_delta": 40,
+        "minutes_est": 9
+      },
+      {
+        "date": "2026-10-19",
+        "runs_delta": 40,
+        "jobs_delta": 40,
+        "minutes_est": 9
+      },
+      {
+        "date": "2026-10-20",
+        "runs_delta": 40,
+        "jobs_delta": 40,
+        "minutes_est": 9
+      },
+      {
+        "date": "2026-10-21",
+        "runs_delta": 40,
+        "jobs_delta": 52,
+        "minutes_est": 11
+      },
+      {
+        "date": "2026-10-22",
+        "runs_delta": 40,
+        "jobs_delta": 49,
+        "minutes_est": 10
+      },
+      {
+        "date": "2026-10-23",
+        "runs_delta": 40,
+        "jobs_delta": 52,
+        "minutes_est": 11
+      },
+      {
+        "date": "2026-10-24",
+        "runs_delta": 40,
+        "jobs_delta": 48,
+        "minutes_est": 10
+      },
+      {
+        "date": "2026-10-25",
+        "runs_delta": 0,
+        "jobs_delta": 0,
+        "minutes_est": 0
+      },
+      {
+        "date": "2026-10-26",
+        "runs_delta": 40,
+        "jobs_delta": 49,
+        "minutes_est": 10
+      },
+      {
+        "date": "2026-10-27",
+        "runs_delta": 40,
+        "jobs_delta": 53,
+        "minutes_est": 11
+      },
+      {
+        "date": "2026-10-28",
+        "runs_delta": 40,
+        "jobs_delta": 53,
+        "minutes_est": 11
+      },
+      {
+        "date": "2026-10-29",
+        "runs_delta": 40,
+        "jobs_delta": 82,
+        "minutes_est": 16
+      }
+    ],
+    "spike": {
+      "at": "2026-10-29T16:30:00Z",
+      "until": "2026-10-29T16:55:00Z",
+      "runs": 143,
+      "workflow": "delphi-gate",
+      "fires": "delphi-rfp-feed-collect",
+      "provenance": "quota-specialist pack 2026-10-29 + cadence lane timeline 2026-10-29 (rate-limit record PR #2321/#2322, burst-fix record PR #2341, history-verified per cadence lane)",
+      "outcome": "burst-fix PR #2341 (merged 97938a583f50): retry \u00d74 (Retry-After / X-RateLimit-Reset, 120s cap) in both collectors + 15-min freshness gate on delphi-rfp-feed-collect workflow_run (loop breaker); 3 workflows re-enabled with green proof each",
+      "detail": "Each collect ran ~30\u201380 calls on the installation token (1000/hr bucket); mid-storm the reviewer map crossed 24h staleness, so every orchestrator completion launched a ~750-call reviewer-metrics collect on the OPERATOR (PAT user) token \u2014 the PAT-bucket burn mechanism."
+    }
+  },
+  "annotations": [
+    {
+      "id": "origin-pat-wall",
+      "on": "series1",
+      "at": "2026-10-28T23:41:00Z",
+      "text": "PAT wall \u2194 multi-lane polling in hot merge hours (quota pack: tier1 steward + viz + quota-convergence publish attempts active). Per-consumer attribution NOT ESTABLISHED \u2014 GitHub exposes none to a PAT (cadence lane). Lesson of record: poll sparingly, batch reads, head-SHA check-runs."
+    },
+    {
+      "id": "event-fresh-window",
+      "on": "series1",
+      "at": "2026-10-29T06:00:00Z",
+      "text": "Fresh window: 42 core calls fleet-wide in 77s (~1900/h baseline pace before spikes) \u2014 cadence lane timeline, rate-limit record PR #2321/#2322."
+    },
+    {
+      "id": "event-incident2",
+      "on": "series1",
+      "at": "2026-10-29T11:41:45Z",
+      "text": "Incident 2 (rate-limit lane record): the full 5000-call window burned in ~25 min (11:41:45Z\u2013~12:06Z); the earlier ~1452-call figure was only the forwarding lane's 11:56Z\u201312:06Z segment. Per-consumer attribution NOT ESTABLISHED."
+    },
+    {
+      "id": "origin-delphi-storm",
+      "on": "series3",
+      "at": "2026-10-29T16:30:00Z",
+      "text": "Feed-collect burst \u2194 delphi-gate workflow_run storm: 143 runs / 25 min, each firing UNTHROTTLED delphi-rfp-feed-collect (~30\u201380 installation-token calls); reviewer map crossed 24h staleness mid-storm \u2192 orchestrator completions launched ~750-call reviewer-metrics collects on the PAT token. Fixed by PR #2341 (merged 97938a583f50): retry \u00d74 + 15-min freshness gate loop breaker; 3 workflows re-enabled green."
+    },
+    {
+      "id": "event-qac007",
+      "on": "series1",
+      "at": "2026-10-29T23:03:00Z",
+      "text": "QAC-007 (PR #2323): pat_publish derived-reserve preflight enacted \u2014 publish defers when remaining < planned calls + limit/10, so lanes stop draining the shared bucket into walls."
+    },
+    {
+      "id": "origin-vercel-cap",
+      "on": "series2",
+      "at": "2026-10-20T23:05:00Z",
+      "text": "Vercel cap-trip 2026-10-20 \u2194 dashboard deploy bursts (tribute-vercel-prod promotions; registry notes API undercounts enforcement \u226513). OpenRouter free daily cap exhausted the same day."
+    },
+    {
+      "id": "event-burn-shape",
+      "on": "series1",
+      "at": "2026-10-30T01:45:00Z",
+      "text": "Burn shape correction (convergence, verified from reset epochs): NO instant re-exhaustion \u2014 the new window opened at the 01:42:09Z reset and drained on a sustained ~120\u2013160 calls/min ramp (4999 @01:43Z viz preflight \u2192 4645 @~01:45Z \u2192 3230 @~01:54Z, used 1770). A 5000 bucket dies in ~30\u201340 min of storm and stays dead until the hourly reset; graph walls as ramps, not spikes. Consistent with the quota lane's firsthand ~150/min, ~32-min burn on 2026-10-29."
+    }
+  ],
+  "stamps": [
+    {
+      "pool": "github.api (PAT core)",
+      "cadence": "rolling hourly",
+      "detail": "5000/hr; rolling 1h anchored by x-ratelimit-reset header (not clock-hour); next reset observed 2026-10-30T01:42:09Z",
+      "established": true
+    },
+    {
+      "pool": "github.actions.cache",
+      "cadence": "rolling",
+      "detail": "10 GB rolling window",
+      "established": true
+    },
+    {
+      "pool": "vercel.deployments",
+      "cadence": "rolling 24h",
+      "detail": "deployments allowance, rolling 24h",
+      "established": true
+    },
+    {
+      "pool": "openrouter.free_models",
+      "cadence": "daily",
+      "detail": "resets UTC midnight \u2014 per-record registry reset field (the only daily record confirmed to pin UTC midnight)",
+      "established": true
+    },
+    {
+      "pool": "daily free tiers (groq, cerebras, airforce, g4f.established)",
+      "cadence": "daily",
+      "detail": "daily window; UTC-midnight reset NOT pinned per record (~29 daily-family records, most do not pin UTC \u2014 no family-wide UTC stamp)",
+      "established": true
+    },
+    {
+      "pool": "render.pipeline_minutes",
+      "cadence": "monthly \u2014 calendar",
+      "detail": "calendar month, resets the 1st",
+      "established": true
+    },
+    {
+      "pool": "neon.compute (CU-hours)",
+      "cadence": "monthly \u2014 billing",
+      "detail": "billing month (NOT a 1st-of-month reset)",
+      "established": true
+    },
+    {
+      "pool": "g4f.elevenlabs (10,000 credits)",
+      "cadence": "monthly",
+      "detail": "the only elevenlabs record (landed PR #2032); no standalone elevenlabs.* record exists",
+      "established": true
+    },
+    {
+      "pool": "pinecone units",
+      "cadence": "monthly",
+      "detail": "billing month",
+      "established": true
+    },
+    {
+      "pool": "antigravity",
+      "cadence": "weekly",
+      "detail": "weekly replenishment",
+      "established": true
+    },
+    {
+      "pool": "g4f (43 records)",
+      "cadence": null,
+      "detail": "NOT ESTABLISHED \u2014 no stamp exists; unmetered/unknown. Do not invent one.",
+      "established": false
+    },
+    {
+      "pool": "48 of 155 registry records",
+      "cadence": null,
+      "detail": "window 'unknown' in the registry \u2014 no stamp, by design",
+      "established": false
+    }
+  ],
+  "stamps_provenance": "registry reset fields \u2014 quota-specialist pack 2026-10-29 as corrected by the convergence lane (verified vs current-master registry, 2026-10-29); stamp-accuracy confirmation otherwise pending (convergence lane d92e1e1d)",
+  "pending_inputs": [
+    "convergence lane (d92e1e1d) snapshot-landing + stamp-accuracy confirmation \u2014 pending"
+  ],
+  "buckets": [
+    {
+      "name": "github.api.user_token (PAT user bucket)",
+      "limit": 5000,
+      "unit": "req/hr",
+      "note": "the bucket graphed above; rolling 1h anchored by the x-ratelimit-reset header, not the clock hour",
+      "provenance": "cadence lane graph note 2026-10-29"
+    },
+    {
+      "name": "github.api.github_token (installation, per-repo)",
+      "limit": 1000,
+      "unit": "req/hr",
+      "note": "delphi-rfp-feed-collect runs spend here, ~30\u201380 calls each; 1000/hr per repo",
+      "provenance": "cadence lane timeline 2026-10-29"
+    },
+    {
+      "name": "GitHub GraphQL (user token)",
+      "limit": 5000,
+      "unit": "points/hr",
+      "observed": "4997 remaining at 2026-10-30T01:37Z live check",
+      "provenance": "cadence lane live check 2026-10-30T01:37Z"
+    },
+    {
+      "name": "vercel.deployments",
+      "limit": 100,
+      "unit": "deployments/day",
+      "note": "rolling 24h daily cap \u2014 separate from the API buckets; see state timeline",
+      "provenance": "quota registry / cadence lane graph note"
+    }
+  ],
+  "cadence_timeline": {
+    "received": "2026-10-29",
+    "from": "cadence-optimizer lane (ac333a25)",
+    "sources": "rate-limit record PR #2321/#2322 + burst-fix record PR #2341 (history-verified per cadence lane)"
+  }
+}

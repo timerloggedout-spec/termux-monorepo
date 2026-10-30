@@ -4,8 +4,8 @@
     "open_prs": 114,
     "pr_classes": {
       "CANDIDATE": 61,
-      "EXTRACT": 6,
-      "NEED_EVIDENCE": 47,
+      "EXTRACT": 5,
+      "NEED_EVIDENCE": 48,
       "SUPERSEDE": 0
     }
   },
@@ -74,7 +74,7 @@
       ]
     }
   },
-  "generated_at": "2026-10-30T02:00:00Z",
+  "generated_at": "2026-10-30T02:00:50Z",
   "issues_unlabelled": [
     308,
     343,
@@ -99,10 +99,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "queued"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "04c6ee57b0"
+    "sha": "90e1bf353d"
   },
   "prs": [
     {
@@ -174,20 +174,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "26f3b5e913",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2365,
-      "title": "chore(quota): allocation plan refresh (snapshot #2362)",
-      "updated_at": "2026-10-30T01:50:40Z"
     },
     {
       "class": "CANDIDATE",
@@ -1463,7 +1449,7 @@
       },
       "head_sha": "b5951e754e",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1966,
       "title": "ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28)",
       "updated_at": "2026-10-29T06:02:41Z"
@@ -1475,12 +1461,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "0e28be8963",
+      "head_sha": "68d55e842c",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-10-30T01:58:51Z"
+      "updated_at": "2026-10-30T02:00:43Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1631,7 +1617,7 @@
       },
       "head_sha": "eb8620b826",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
       "updated_at": "2026-10-30T01:59:39Z"
@@ -1705,6 +1691,20 @@
       "number": 2349,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-29T23:52:11Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "in_progress",
+        "smoke": "success"
+      },
+      "head_sha": "957fc1a10c",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2371,
+      "title": "feat(dashboard): wire quota usage graphs into quota panel + sitemap",
+      "updated_at": "2026-10-30T02:00:41Z"
     }
   ],
   "schema": "operator-matrix/v1",

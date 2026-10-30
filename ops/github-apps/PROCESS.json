@@ -1,4 +1,9 @@
 {
+ "actions_secrets_sec03": {
+  "collector": "PROVISIONED 2026-10-30 (sealed-box, names-only): TERMUX_FLEET_COLLECTOR_PRIVATE_KEY + TERMUX_FLEET_COLLECTOR_CLIENT_ID + TERMUX_FLEET_COLLECTOR_APP_ID; SEC-01 [x] identity separation, SEC-02 [x]; probe run 41016897632 success",
+  "pattern": "TERMUX_FLEET_<ROLE>_* (secret <ROLE>_PRIVATE_KEY + vars <ROLE>_CLIENT_ID / <ROLE>_APP_ID); the create-github-app-token action takes the numeric APP_ID, not the client id (lesson of PR #2427)",
+  "probe_app": "APP_PRIVATE_KEY stays UNPROVISIONED BY DESIGN \u2014 it belongs to the Checks:write capability-probe identity (PR #800 lineage), never conflated with the Collector"
+ },
  "allocation_queue": [
   {
    "merge": "88aa48f21f71",
@@ -10,17 +15,17 @@
   {
    "order": 2,
    "role": "reviewer-ops",
-   "state": "bundled_cadence_2026-10-29"
+   "state": "live_provisioned_recorded"
   },
   {
    "order": 3,
    "role": "gate-ci",
-   "state": "bundled_cadence_2026-10-29"
+   "state": "live_provisioned_recorded"
   },
   {
    "order": 4,
    "role": "lifecycle",
-   "state": "bundled_cadence_2026-10-29"
+   "state": "live_provisioned_recorded"
   }
  ],
  "app_repos": {
@@ -32,7 +37,7 @@
    "balance_rule": "OWNER STANDING RULE (2026-10-29 22:22 PT): keep a balance of normalized/plain names in use alongside the mythic set \u2014 the active naming pool mixes both; the slate never goes all-mythic. Applies to this bundle and future naming.",
    "bounce_set": {
     "protocol": "on a taken slug at creation: take V1, then V2; beyond V2 returns to registry lane \u2014 never improvise a third. Display appName keeps clean spelling unless the name itself is the taken element.",
-    "record_note": "lane-side record; rides the naming-FINAL follow-up PR into master PROCESS.json",
+    "record_note": "recorded in master PROCESS.json by the bundle record PR (this update); zero variants consumed at provisioning",
     "role_review": "all four monikers KEEP (Edict/Argus/Janus/Cerberus); alts held: Herald / Themis / Clotho",
     "source": "registration-monikers 2026-10-29; Grimoire of L33tsp3@k v2.0 char table; slug-safe digits only, 1-2 substitutions",
     "variants": {
@@ -124,7 +129,8 @@
     },
     "rule": "owner expansion 2026-10-29 22:23 PT: queue the FULL alternative-form family of every slate moniker (canonical / epithet|aspects / queued alt / leet marks / slug bounce variants / normalized form), drawable when a surface needs it; balance rule stands alongside"
    },
-   "publisher_note": "Owner FINISH order 2026-10-29 23:35 PT killed the naming gate for Publisher: provisioned under the conference DRAFT template (Termux Fleet Publisher / termux-fleet-publisher / moniker Edict). Conference final set still open for the remaining apps.",
+   "mark_rankings": "marketing rankings 2026-10-30: single-substitution marks first (legibility decays per substitution): Ed1ct > 3d1ct, Argu5 > 4rgu5, J4nus > J4nu5, Cerberu5 > C3rberu5 \u2014 matches bounce order (V1 before V2). Canonical > queued: Edict > Herald, Argus > Themis, Janus > Clotho, Cerberus unopposed.",
+   "publisher_note": "Publisher was provisioned FIRST (2026-10-29/30) under the owner's FINISH order on the conference draft template; the FINAL SET (2026-10-30 01:33 PT) confirms the same names for all five \u2014 no renames.",
    "queued_alts": {
     "gate-ci": [],
     "lifecycle": [
@@ -145,50 +151,55 @@
    "sets": [
     {
      "appName": "Termux Fleet Collector",
+     "app_id": 5535733,
      "bot": "termux-fleet-collector[bot]",
      "moniker": "Collector",
      "role": "collector",
      "slug": "termux-fleet-collector",
-     "status": "LIVE \u2014 of record"
+     "status": "LIVE \u2014 provisioned 2026-10-30"
     },
     {
      "alias": "Acta",
      "appName": "Termux Fleet Publisher",
+     "app_id": 5537873,
      "bot": "termux-fleet-publisher[bot]",
      "moniker": "Edict",
      "role": "publisher",
      "slug": "termux-fleet-publisher",
-     "status": "draft"
+     "status": "LIVE \u2014 provisioned 2026-10-30"
     },
     {
      "alias": "Panoptes",
      "appName": "Termux Fleet Reviewer",
+     "app_id": 5539430,
      "bot": "termux-fleet-reviewer[bot]",
      "moniker": "Argus",
      "role": "reviewer-ops",
      "slug": "termux-fleet-reviewer",
-     "status": "draft"
+     "status": "LIVE \u2014 provisioned 2026-10-30"
     },
     {
      "alias": "Patulcius",
      "appName": "Termux Fleet Lifecycle",
+     "app_id": 5539639,
      "bot": "termux-fleet-lifecycle[bot]",
      "moniker": "Janus",
      "role": "lifecycle",
      "slug": "termux-fleet-lifecycle",
-     "status": "draft"
+     "status": "LIVE \u2014 provisioned 2026-10-30"
     },
     {
      "alias": "the Ward",
      "appName": "Termux Fleet Gate",
+     "app_id": 5539499,
      "bot": "termux-fleet-gate[bot]",
      "moniker": "Cerberus",
      "role": "gate-ci",
      "slug": "termux-fleet-gate",
-     "status": "draft"
+     "status": "LIVE \u2014 provisioned 2026-10-30"
     }
    ],
-   "state": "conference open; queued alts + balance rule recorded; FINAL set unchanged until registry closes with marketing + owner; DO NOT PROVISION"
+   "state": "FINAL SET ISSUED 2026-10-30 01:33 PT by the registry lane \u2014 conference CLOSED by the lanes (owner order 2026-10-30 01:32 PT: owner-close framing dead, no owner gate). Marketing conferral ran direct with the Marketing Channel lane 81cbe17c; no objections carried. ALL FIVE provisioned 2026-10-30 on canonical slugs \u2014 ZERO bounce variants consumed across the slate."
   },
   "per_app_requirements": [
    "manifest public:true day one, least-privilege, no webhooks unless function demands",
@@ -209,8 +220,9 @@
   ],
   "fleet_position": {
    "four_roles_projection": "4 registrations of 100; 20000/h separated installation quota once all installed on termux-monorepo",
-   "owned_apps_established": 1,
-   "owned_apps_note": "no REST route lists an account's owned apps; other registrations are NOT ESTABLISHED via API \u2014 owner-UI census item of record"
+   "owned_apps_established": 5,
+   "owned_apps_note": "no REST route lists an account's owned apps; other registrations are NOT ESTABLISHED via API \u2014 owner-UI census item of record",
+   "slate_live": "5 registrations of 100 (Collector, Publisher, Reviewer, Gate, Lifecycle); 25000/h separated installation quota on termux-monorepo (5000/h per app x installation)"
   },
   "limits": {
    "app_jwt_max_lifetime_min": 10,
@@ -242,6 +254,7 @@
   "transferred_from": "quota lane scratch (scratch/app-pilot/out/app.pem) \u2014 removed there 2026-10-30; scratch token file shredded"
  },
  "distribution_audit": {
+  "addendum_2026-10-30": "SEC-02 CLOSED 2026-10-30: Collector Actions pair provisioned (secret TERMUX_FLEET_COLLECTOR_PRIVATE_KEY + vars TERMUX_FLEET_COLLECTOR_CLIENT_ID / TERMUX_FLEET_COLLECTOR_APP_ID; PRs #2419/#2427/#2428; mint-probe run 41016897632 success) \u2014 the D3 rung's fact basis is superseded for Actions-side minting. Verdict under the owner definition remains NOT DISTRIBUTED: production workflow adoption in replacement of parity structures is the migration waves' work (MIG-08 orchestrator->Reviewer, MIG-09 repo-gate->Gate recon started 2026-10-30). D1 also moved: Collector + Publisher installations now span 2 repos (termux-monorepo + repo-replay), still owner-account only.",
   "audited_at": "2026-10-30T04:18-04:26Z",
   "definition": {
    "D1_installations": "installations_count > 1 or any foreign-account installation",
@@ -273,9 +286,9 @@
  },
  "how_many_more": {
   "cap_per_owner": 100,
-  "more_on_established_floor": 99,
+  "more_on_established_floor": 95,
   "note": "other owned registrations NOT ESTABLISHED via API (no list-owned-apps REST route)",
-  "owned_established": 1
+  "owned_established": 5
  },
  "lane": "appid-process",
  "later_queue": [
@@ -288,6 +301,10 @@
    "state": "parked_owner_later"
   }
  ],
+ "mig07_rollout": {
+  "declaration": "AppID lane, 2026-10-30: app-token publishing is OPT-IN PER LANE, effective now, scoped by permission class (Publisher publishes/merges; Reviewer review routes; Gate check posts); PAT fallback retained \u2014 no lane is forced off pat_publish",
+  "proof": "PR #2472 published + merged ENTIRELY on the Publisher token (migration lane firsthand, merge 3bf2fba1ffd3, oracle-verified, zero PAT calls); earlier proofs PR #2417 (Publisher self-publish) and PR #2420 (record publish by the publisher bot)"
+ },
  "permissions_ladder": {
   "amendment_flow": "existing apps are amended in app settings (manifest flow creates new apps only; no REST amendment route). Adding permissions emails every installing account owner and takes effect per installation only on that owner's approval; until approved the installation keeps its old permissions. Removing permissions/webhooks is immediate. Fleet consequence: prefer new apps per role over amending the collector.",
   "pilot_readonly_why": [
@@ -298,6 +315,13 @@
   "roles": [
    {
     "app": "Termux Fleet Collector",
+    "app_id": 5535733,
+    "client_id": "Iv23liKMLj976ok6Cn3D",
+    "installation": 176747357,
+    "installation_repositories": [
+     "timerloggedout-spec/termux-monorepo",
+     "timerloggedout-spec/repo-replay"
+    ],
     "permissions": {
      "actions": "read",
      "checks": "read",
@@ -307,16 +331,22 @@
      "pull_requests": "read"
     },
     "role": "collector",
+    "scope_note": "installation extended 2026-10-30 to repo-replay (repo-replay harvest route); verified via installation token: repositories total=2",
+    "slug": "termux-fleet-collector",
     "status": "live"
    },
    {
-    "app": "Termux Fleet Publisher (PROPOSED \u2014 naming conference)",
+    "app": "Termux Fleet Publisher",
     "app_id": 5537873,
     "client_id": "Iv23li4m16A2EEmBagCF",
     "covers": "publishes, merges, coordination comments (cadence bundle 2026-10-29: issues:write added for comments)",
     "custody": "transferred 2026-10-30 to custom.github-app-publisher/keys/ (0600); pubkey fp 4f5515eb9456f22ddc2ba929be62194484528d124343fe9ede0aa062baee3fa3; rotation due 2027-04-30",
     "delta_vs_package": "package (PR #2401) carried issues:write + no checks; as-submitted manifest = checks:read + NO issues permission \u2014 issue-comment routes unavailable to this app; adding issues:write = amendment, UP-01 template candidate",
     "installation": 176799777,
+    "installation_repositories": [
+     "timerloggedout-spec/termux-monorepo",
+     "timerloggedout-spec/repo-replay"
+    ],
     "owner_decision_points": [
      "workflows:write = rung 2",
      "actions:write deferred",
@@ -330,40 +360,62 @@
     },
     "provisioned": "2026-10-30T06:44Z by quota-specialist under owner FINISH order (2026-10-29 23:35 PT \u2014 naming gate killed, conference draft template applied); self-published record PR #2417 merged 88aa48f21f71 by the publisher token itself",
     "role": "publisher",
+    "scope_note": "installation extended 2026-10-30 to repo-replay (repo-replay landing route); verified via installation token: repositories total=2",
     "slug": "termux-fleet-publisher",
     "status": "live",
-    "verified": "2026-10-30T06:47Z AppID lane via App JWT: installations=1, repos=termux-monorepo only, bucket 5000 (remaining 4988)"
+    "verified": "2026-10-30T06:47Z AppID lane via App JWT: installations=1, repos=termux-monorepo only, bucket 5000 (remaining 4988) MIG-07 path proof: PR #2472 published + merged entirely on the publisher token (migration lane, oracle-verified)."
    },
    {
-    "app": "PROPOSED \u2014 naming conference",
+    "app": "Termux Fleet Reviewer",
+    "app_id": 5539430,
+    "client_id": "Iv23liLbX6zqTUyL8oX6",
     "covers": "peer-review orchestrator polling + review comments off PAT (<=180/h/event)",
+    "custody": "custom.github-app-reviewer/keys/ (0600, dir 0700); pubkey fp 79e7e6283c46e95bbf3b6af0d092d2b7a131ebcb01b44d89b44fb9e7a6c5585f; rotation due 2027-04-30",
+    "installation": 176838378,
     "permissions": {
      "checks": "read",
      "metadata": "read",
      "pull_requests": "write"
     },
+    "provisioned": "2026-10-30 by AppID lane under the FINAL SET (manifest flow; owner sudo-mode confirmation in the live browser; conversion local)",
     "role": "reviewer-ops",
-    "status": "proposed_2"
+    "slug": "termux-fleet-reviewer",
+    "status": "live",
+    "verified": "2026-10-30T09:32Z AppID lane via App JWT: installations=1 (timerloggedout-spec, selected), repos=termux-monorepo only, perms exactly {checks read, metadata read, pull_requests write}, events [], bucket 5000/5000"
    },
    {
-    "app": "PROPOSED \u2014 naming conference",
+    "app": "Termux Fleet Gate",
+    "app_id": 5539499,
+    "client_id": "Iv23li0uADFck24vzQfg",
     "covers": "gate annotations + status posts (repo-gate, ECC-class)",
+    "custody": "custom.github-app-gate/keys/ (0600, dir 0700); pubkey fp c481b7b73b336dfc491d6576ed18831253c5023608157ce6c0dfe611ce94a1bf; rotation due 2027-04-30",
+    "installation": 176839926,
     "permissions": {
      "checks": "write",
      "metadata": "read"
     },
+    "provisioned": "2026-10-30 by AppID lane under the FINAL SET (manifest flow inside the owner's sudo window; conversion local)",
     "role": "gate-ci",
-    "status": "proposed_3"
+    "slug": "termux-fleet-gate",
+    "status": "live",
+    "verified": "2026-10-30T09:38Z AppID lane via App JWT: installations=1 (timerloggedout-spec, selected), repos=termux-monorepo only, perms exactly {checks write, metadata read}, events [], bucket 5000/5000"
    },
    {
-    "app": "PROPOSED \u2014 naming conference (supersedes this lane's 'steward' label)",
+    "app": "Termux Fleet Lifecycle",
+    "app_id": 5539639,
+    "client_id": "Iv23lig75eVTdlSG4htY",
     "covers": "issue lifecycle/triage sweeps, GAP-ledger sweeps",
+    "custody": "custom.github-app-lifecycle/keys/ (0600, dir 0700); pubkey fp 1c663199788db3c5689b9769a3d6ea4dcf94453d899e26a6655f40e5ad03b79e; rotation due 2027-04-30",
+    "installation": 176843209,
     "permissions": {
      "issues": "write",
      "metadata": "read"
     },
+    "provisioned": "2026-10-30 by AppID lane under the FINAL SET (manifest flow inside the owner's sudo window; form served from a temp repo branch after Netlify Drop hit its daily limit; temp branch deleted after conversion)",
     "role": "lifecycle",
-    "status": "proposed_4"
+    "slug": "termux-fleet-lifecycle",
+    "status": "live",
+    "verified": "2026-10-30T09:51Z AppID lane via App JWT: installations=1 (timerloggedout-spec, selected), repos=termux-monorepo only, perms exactly {issues write, metadata read}, events [], bucket 5000/5000"
    }
   ],
   "rule": "never expand the collector; one app per role, least privilege per role; app permissions are a ceiling \u2014 tokens can be scoped down further at mint time"
@@ -374,9 +426,11 @@
   "events": [],
   "installation": {
    "account": "timerloggedout-spec",
+   "extension_note": "repo-replay added 2026-10-30 (see repo_replay_extension)",
    "id": 176747357,
    "repositories": [
-    "timerloggedout-spec/termux-monorepo"
+    "timerloggedout-spec/termux-monorepo",
+    "timerloggedout-spec/repo-replay"
    ],
    "repository_selection": "selected"
   },
@@ -408,8 +462,13 @@
    ]
   }
  },
+ "repo_replay_extension": {
+  "publisher_issues_write": "NOT amended \u2014 settings amendment is a separate surface and needs its own explicit order (UP-01 candidate stands)",
+  "state": "DONE 2026-10-30 \u2014 Collector 176747357 + Publisher 176799777 installations extended to timerloggedout-spec/repo-replay (settings legs in the owner's sudo window; /user/installations API foreclosed by the proven 403 boundary)",
+  "verified": "2026-10-30T09:53Z via both installation tokens: GET /installation/repositories total=2 {termux-monorepo, repo-replay} each"
+ },
  "schema": "appid-process/v1",
- "updated_at": "2026-10-30T06:50Z",
+ "updated_at": "2026-10-30T09:55Z",
  "web_pr_failsafe": {
   "doc": "docs/ops/FAILSAFE-PUBLISH-PROTOCOL.md",
   "posture": "fallback for merge (+small creates) only; primary stays PAT helper / AppID token; oracle verification still binds",

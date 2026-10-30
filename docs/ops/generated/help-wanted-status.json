@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-30T01:17:30Z",
+  "generated_at": "2026-10-30T06:24:46Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
   "receipts": 3962,
@@ -42469,7 +42469,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "7519efee12bc15432c0e49b6c3705af982743da6",
+    "source_sha": "df22680558bd538232aab61ccd7358eb318c3f3f",
     "source_ref": "master",
     "history_complete": false,
     "history_coverage": "lane-local-complete; repository-wide historical accountability requires sweep-accountability backfill",
@@ -42503,12 +42503,12 @@
   },
   "evolution": [
     {
-      "sha": "7519efee12bc15432c0e49b6c3705af982743da6",
-      "short_sha": "7519efee12bc",
-      "date": "2026-10-30T01:05:30Z",
-      "author": "termux-monorepo sweep",
-      "subject": "chore(ops): record sweep accountability receipt",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/7519efee12bc15432c0e49b6c3705af982743da6"
+      "sha": "df22680558bd538232aab61ccd7358eb318c3f3f",
+      "short_sha": "df22680558bd",
+      "date": "2026-10-29T22:50:13-07:00",
+      "author": "Founders' are 'found' to implement.",
+      "subject": "docs(ops): telemetry visualization recon + seeded design (telemetry-viz lane) (#2414)",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/df22680558bd538232aab61ccd7358eb318c3f3f"
     }
   ],
   "pipeline": [
@@ -42522,8 +42522,8 @@
   ],
   "tribute_audit": {
     "schema_version": "help-wanted.tribute-audit.v1",
-    "generated_at": "2026-10-30T01:17:32.419225+00:00",
-    "source_status_generated_at": "2026-10-30T01:17:30Z",
+    "generated_at": "2026-10-30T06:24:50.779472+00:00",
+    "source_status_generated_at": "2026-10-30T06:24:46Z",
     "source_tribute_count": 132,
     "unique_pr_count": 132,
     "audited_pr_count": 126,
@@ -42534,7 +42534,7 @@
     "partial_this_run_count": 0,
     "audited_this_run_pr_urls": [],
     "not_audited_count": 6,
-    "audit_window_start": 85,
+    "audit_window_start": 78,
     "audit_window_size": 25,
     "stages": {
       "implementation_unproven": 7,
@@ -42544,9 +42544,9 @@
       "unknown": 2
     },
     "audit_statuses": {
-      "observed": 83,
+      "observed": 76,
       "unknown": 2,
-      "deferred": 43,
+      "deferred": 50,
       "partial": 1
     },
     "realized_effect_verified_count": 0,
@@ -45204,7 +45204,19 @@
         "checks_truncated": false,
         "checks_complete": true,
         "checks_pass": true,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T06:24:46.997460+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T06:24:46.997460+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
       },
       {
         "pr_url": "https://github.com/marrabld/omazone/pull/72",
@@ -45234,7 +45246,19 @@
         "checks_truncated": false,
         "checks_complete": true,
         "checks_pass": true,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T06:24:47.148992+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T06:24:47.148992+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
       },
       {
         "pr_url": "https://github.com/tusharmotwani1718/dropsend/pull/24",
@@ -45264,7 +45288,19 @@
         "checks_truncated": false,
         "checks_complete": true,
         "checks_pass": true,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T06:24:47.281645+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T06:24:47.281645+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
       },
       {
         "pr_url": "https://github.com/P-r-e-m-i-u-m/open-source-starter-lab/pull/492",
@@ -45294,7 +45330,19 @@
         "checks_truncated": false,
         "checks_complete": true,
         "checks_pass": true,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T06:24:47.430271+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T06:24:47.430271+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
       },
       {
         "pr_url": "https://github.com/aHuddini/UniPlaySong/pull/101",
@@ -45325,7 +45373,19 @@
         "checks_truncated": false,
         "checks_complete": false,
         "checks_pass": false,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T06:24:47.565620+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T06:24:47.565620+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
       },
       {
         "pr_url": "https://github.com/Soneso/stellar-agent-wallet/pull/349",
@@ -45355,7 +45415,19 @@
         "checks_truncated": false,
         "checks_complete": true,
         "checks_pass": true,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T06:24:47.699709+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T06:24:47.699709+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
       },
       {
         "pr_url": "https://github.com/O2sa/DevImpact/pull/221",
@@ -45385,7 +45457,19 @@
         "checks_truncated": false,
         "checks_complete": true,
         "checks_pass": true,
-        "realization_note": "requires a separately linked, independently verified effect receipt"
+        "realization_note": "requires a separately linked, independently verified effect receipt",
+        "last_attempt_at": "2026-10-30T06:24:47.844479+00:00",
+        "last_attempt_status": "deferred",
+        "last_attempt_evidence_gaps": [
+          "rate_limited"
+        ],
+        "last_audit_attempt": {
+          "audited_at": "2026-10-30T06:24:47.844479+00:00",
+          "audit_status": "deferred",
+          "evidence_gaps": [
+            "rate_limited"
+          ]
+        }
       },
       {
         "pr_url": "https://github.com/amponce/archive-movie-browser/pull/437",
@@ -45417,13 +45501,13 @@
         "checks_complete": false,
         "checks_pass": false,
         "realization_note": "requires a separately linked, independently verified effect receipt",
-        "last_attempt_at": "2026-10-30T01:17:30.866906+00:00",
+        "last_attempt_at": "2026-10-30T06:24:47.989508+00:00",
         "last_attempt_status": "deferred",
         "last_attempt_evidence_gaps": [
           "rate_limited"
         ],
         "last_audit_attempt": {
-          "audited_at": "2026-10-30T01:17:30.866906+00:00",
+          "audited_at": "2026-10-30T06:24:47.989508+00:00",
           "audit_status": "deferred",
           "evidence_gaps": [
             "rate_limited"
@@ -45460,13 +45544,13 @@
         "checks_complete": false,
         "checks_pass": false,
         "realization_note": "requires a separately linked, independently verified effect receipt",
-        "last_attempt_at": "2026-10-30T01:17:30.939690+00:00",
+        "last_attempt_at": "2026-10-30T06:24:48.121772+00:00",
         "last_attempt_status": "deferred",
         "last_attempt_evidence_gaps": [
           "rate_limited"
         ],
         "last_audit_attempt": {
-          "audited_at": "2026-10-30T01:17:30.939690+00:00",
+          "audited_at": "2026-10-30T06:24:48.121772+00:00",
           "audit_status": "deferred",
           "evidence_gaps": [
             "rate_limited"
@@ -45503,13 +45587,13 @@
         "checks_complete": false,
         "checks_pass": false,
         "realization_note": "requires a separately linked, independently verified effect receipt",
-        "last_attempt_at": "2026-10-30T01:17:31.022916+00:00",
+        "last_attempt_at": "2026-10-30T06:24:48.241761+00:00",
         "last_attempt_status": "deferred",
         "last_attempt_evidence_gaps": [
           "rate_limited"
         ],
         "last_audit_attempt": {
-          "audited_at": "2026-10-30T01:17:31.022916+00:00",
+          "audited_at": "2026-10-30T06:24:48.241761+00:00",
           "audit_status": "deferred",
           "evidence_gaps": [
             "rate_limited"
@@ -45545,13 +45629,13 @@
         "checks_complete": true,
         "checks_pass": true,
         "realization_note": "requires a separately linked, independently verified effect receipt",
-        "last_attempt_at": "2026-10-30T01:17:31.087757+00:00",
+        "last_attempt_at": "2026-10-30T06:24:48.393295+00:00",
         "last_attempt_status": "deferred",
         "last_attempt_evidence_gaps": [
           "rate_limited"
         ],
         "last_audit_attempt": {
-          "audited_at": "2026-10-30T01:17:31.087757+00:00",
+          "audited_at": "2026-10-30T06:24:48.393295+00:00",
           "audit_status": "deferred",
           "evidence_gaps": [
             "rate_limited"
@@ -45588,13 +45672,13 @@
         "checks_complete": false,
         "checks_pass": false,
         "realization_note": "requires a separately linked, independently verified effect receipt",
-        "last_attempt_at": "2026-10-30T01:17:31.150000+00:00",
+        "last_attempt_at": "2026-10-30T06:24:48.649448+00:00",
         "last_attempt_status": "deferred",
         "last_attempt_evidence_gaps": [
           "rate_limited"
         ],
         "last_audit_attempt": {
-          "audited_at": "2026-10-30T01:17:31.150000+00:00",
+          "audited_at": "2026-10-30T06:24:48.649448+00:00",
           "audit_status": "deferred",
           "evidence_gaps": [
             "rate_limited"
@@ -45631,13 +45715,13 @@
         "checks_complete": false,
         "checks_pass": false,
         "realization_note": "requires a separately linked, independently verified effect receipt",
-        "last_attempt_at": "2026-10-30T01:17:31.210251+00:00",
+        "last_attempt_at": "2026-10-30T06:24:48.786418+00:00",
         "last_attempt_status": "deferred",
         "last_attempt_evidence_gaps": [
           "rate_limited"
         ],
         "last_audit_attempt": {
-          "audited_at": "2026-10-30T01:17:31.210251+00:00",
+          "audited_at": "2026-10-30T06:24:48.786418+00:00",
           "audit_status": "deferred",
           "evidence_gaps": [
             "rate_limited"
@@ -45674,13 +45758,13 @@
         "checks_complete": false,
         "checks_pass": false,
         "realization_note": "requires a separately linked, independently verified effect receipt",
-        "last_attempt_at": "2026-10-30T01:17:31.265782+00:00",
+        "last_attempt_at": "2026-10-30T06:24:48.916032+00:00",
         "last_attempt_status": "deferred",
         "last_attempt_evidence_gaps": [
           "rate_limited"
         ],
         "last_audit_attempt": {
-          "audited_at": "2026-10-30T01:17:31.265782+00:00",
+          "audited_at": "2026-10-30T06:24:48.916032+00:00",
           "audit_status": "deferred",
           "evidence_gaps": [
             "rate_limited"
@@ -45717,13 +45801,13 @@
         "checks_complete": false,
         "checks_pass": false,
         "realization_note": "requires a separately linked, independently verified effect receipt",
-        "last_attempt_at": "2026-10-30T01:17:31.324347+00:00",
+        "last_attempt_at": "2026-10-30T06:24:49.072544+00:00",
         "last_attempt_status": "deferred",
         "last_attempt_evidence_gaps": [
           "rate_limited"
         ],
         "last_audit_attempt": {
-          "audited_at": "2026-10-30T01:17:31.324347+00:00",
+          "audited_at": "2026-10-30T06:24:49.072544+00:00",
           "audit_status": "deferred",
           "evidence_gaps": [
             "rate_limited"
@@ -45759,13 +45843,13 @@
         "checks_complete": true,
         "checks_pass": true,
         "realization_note": "requires a separately linked, independently verified effect receipt",
-        "last_attempt_at": "2026-10-30T01:17:31.378548+00:00",
+        "last_attempt_at": "2026-10-30T06:24:49.201460+00:00",
         "last_attempt_status": "deferred",
         "last_attempt_evidence_gaps": [
           "rate_limited"
         ],
         "last_audit_attempt": {
-          "audited_at": "2026-10-30T01:17:31.378548+00:00",
+          "audited_at": "2026-10-30T06:24:49.201460+00:00",
           "audit_status": "deferred",
           "evidence_gaps": [
             "rate_limited"
@@ -45802,13 +45886,13 @@
         "checks_complete": false,
         "checks_pass": false,
         "realization_note": "requires a separately linked, independently verified effect receipt",
-        "last_attempt_at": "2026-10-30T01:17:31.441789+00:00",
+        "last_attempt_at": "2026-10-30T06:24:49.352407+00:00",
         "last_attempt_status": "deferred",
         "last_attempt_evidence_gaps": [
           "rate_limited"
         ],
         "last_audit_attempt": {
-          "audited_at": "2026-10-30T01:17:31.441789+00:00",
+          "audited_at": "2026-10-30T06:24:49.352407+00:00",
           "audit_status": "deferred",
           "evidence_gaps": [
             "rate_limited"
@@ -45844,13 +45928,13 @@
         "checks_complete": true,
         "checks_pass": true,
         "realization_note": "requires a separately linked, independently verified effect receipt",
-        "last_attempt_at": "2026-10-30T01:17:31.513555+00:00",
+        "last_attempt_at": "2026-10-30T06:24:49.480489+00:00",
         "last_attempt_status": "deferred",
         "last_attempt_evidence_gaps": [
           "rate_limited"
         ],
         "last_audit_attempt": {
-          "audited_at": "2026-10-30T01:17:31.513555+00:00",
+          "audited_at": "2026-10-30T06:24:49.480489+00:00",
           "audit_status": "deferred",
           "evidence_gaps": [
             "rate_limited"
@@ -45886,13 +45970,13 @@
         "checks_complete": true,
         "checks_pass": true,
         "realization_note": "requires a separately linked, independently verified effect receipt",
-        "last_attempt_at": "2026-10-30T01:17:31.570686+00:00",
+        "last_attempt_at": "2026-10-30T06:24:49.627005+00:00",
         "last_attempt_status": "deferred",
         "last_attempt_evidence_gaps": [
           "rate_limited"
         ],
         "last_audit_attempt": {
-          "audited_at": "2026-10-30T01:17:31.570686+00:00",
+          "audited_at": "2026-10-30T06:24:49.627005+00:00",
           "audit_status": "deferred",
           "evidence_gaps": [
             "rate_limited"
@@ -45928,13 +46012,13 @@
         "checks_complete": true,
         "checks_pass": true,
         "realization_note": "requires a separately linked, independently verified effect receipt",
-        "last_attempt_at": "2026-10-30T01:17:31.631501+00:00",
+        "last_attempt_at": "2026-10-30T06:24:49.761999+00:00",
         "last_attempt_status": "deferred",
         "last_attempt_evidence_gaps": [
           "rate_limited"
         ],
         "last_audit_attempt": {
-          "audited_at": "2026-10-30T01:17:31.631501+00:00",
+          "audited_at": "2026-10-30T06:24:49.761999+00:00",
           "audit_status": "deferred",
           "evidence_gaps": [
             "rate_limited"
@@ -45971,13 +46055,13 @@
         "checks_complete": false,
         "checks_pass": false,
         "realization_note": "requires a separately linked, independently verified effect receipt",
-        "last_attempt_at": "2026-10-30T01:17:31.690781+00:00",
+        "last_attempt_at": "2026-10-30T06:24:49.902170+00:00",
         "last_attempt_status": "deferred",
         "last_attempt_evidence_gaps": [
           "rate_limited"
         ],
         "last_audit_attempt": {
-          "audited_at": "2026-10-30T01:17:31.690781+00:00",
+          "audited_at": "2026-10-30T06:24:49.902170+00:00",
           "audit_status": "deferred",
           "evidence_gaps": [
             "rate_limited"
@@ -46014,13 +46098,13 @@
         "checks_complete": false,
         "checks_pass": false,
         "realization_note": "requires a separately linked, independently verified effect receipt",
-        "last_attempt_at": "2026-10-30T01:17:31.755417+00:00",
+        "last_attempt_at": "2026-10-30T06:24:50.036486+00:00",
         "last_attempt_status": "deferred",
         "last_attempt_evidence_gaps": [
           "rate_limited"
         ],
         "last_audit_attempt": {
-          "audited_at": "2026-10-30T01:17:31.755417+00:00",
+          "audited_at": "2026-10-30T06:24:50.036486+00:00",
           "audit_status": "deferred",
           "evidence_gaps": [
             "rate_limited"
@@ -46057,13 +46141,13 @@
         "checks_complete": false,
         "checks_pass": false,
         "realization_note": "requires a separately linked, independently verified effect receipt",
-        "last_attempt_at": "2026-10-30T01:17:31.818730+00:00",
+        "last_attempt_at": "2026-10-30T06:24:50.167878+00:00",
         "last_attempt_status": "deferred",
         "last_attempt_evidence_gaps": [
           "rate_limited"
         ],
         "last_audit_attempt": {
-          "audited_at": "2026-10-30T01:17:31.818730+00:00",
+          "audited_at": "2026-10-30T06:24:50.167878+00:00",
           "audit_status": "deferred",
           "evidence_gaps": [
             "rate_limited"
@@ -46100,13 +46184,13 @@
         "checks_complete": false,
         "checks_pass": false,
         "realization_note": "requires a separately linked, independently verified effect receipt",
-        "last_attempt_at": "2026-10-30T01:17:31.870633+00:00",
+        "last_attempt_at": "2026-10-30T06:24:50.300664+00:00",
         "last_attempt_status": "deferred",
         "last_attempt_evidence_gaps": [
           "rate_limited"
         ],
         "last_audit_attempt": {
-          "audited_at": "2026-10-30T01:17:31.870633+00:00",
+          "audited_at": "2026-10-30T06:24:50.300664+00:00",
           "audit_status": "deferred",
           "evidence_gaps": [
             "rate_limited"
@@ -46143,13 +46227,13 @@
         "checks_complete": true,
         "checks_pass": false,
         "realization_note": "requires a separately linked, independently verified effect receipt",
-        "last_attempt_at": "2026-10-30T01:17:31.937631+00:00",
+        "last_attempt_at": "2026-10-30T06:24:50.655116+00:00",
         "last_attempt_status": "deferred",
         "last_attempt_evidence_gaps": [
           "rate_limited"
         ],
         "last_audit_attempt": {
-          "audited_at": "2026-10-30T01:17:31.937631+00:00",
+          "audited_at": "2026-10-30T06:24:50.655116+00:00",
           "audit_status": "deferred",
           "evidence_gaps": [
             "rate_limited"

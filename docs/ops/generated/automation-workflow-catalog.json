@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "6f5f88666d33024a0df4a474c424efb7b4865ee48191cbf5ca47cb3f13228a21",
-  "workflow_count": 227,
+  "source_fingerprint": "ac86a28f656b81c6dcf7a5d1d275c4b36cbc24bc624398134fbd96d07b3dd292",
+  "workflow_count": 228,
   "workflows": [
     {
       "action_pins": [],
@@ -1769,6 +1769,24 @@
         "pull_request",
         "push",
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "contract"
+      ],
+      "name": "Free-Tier Use Value Board Contract",
+      "path": ".github/workflows/free-tier-value-board-contract.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push"
       ]
     },
     {

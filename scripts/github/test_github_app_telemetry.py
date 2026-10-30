@@ -15,6 +15,27 @@ class ReceiptTests(unittest.TestCase):
         self.assertTrue(telemetry.validate_receipt(receipt))
         self.assertEqual(receipt["repositories_inspected"],1)
         self.assertNotIn("ephemeral",str(result))
+    def test_pagination_reads_every_page(self):
+        probe = unittest.mock.MagicMock()
+        probe.get.side_effect = [
+            (200, {"repositories": [{"full_name": "org/a"}]},
+             {"Link": '<https://api.github.com/installation/repositories?per_page=100&page=2>; rel="next"'}),
+            (200, {"repositories": [{"full_name": "org/b"}]}, {}),
+        ]
+        self.assertEqual(telemetry.installation_repositories(probe), ["org/a", "org/b"])
+        self.assertEqual(probe.get.call_count, 2)
+
+    def test_pagination_rejects_external_next_link(self):
+        probe = unittest.mock.MagicMock()
+        probe.get.return_value = (200, {"repositories": []},
+            {"Link": '<https://attacker.example/steal>; rel="next"'})
+        with self.assertRaisesRegex(ValueError, "escaped GitHub API host"):
+            telemetry.installation_repositories(probe)
+
+    def test_missing_token_fails_closed(self):
+        with self.assertRaisesRegex(ValueError, "token is required"):
+            telemetry.Probe(None)
+
     def test_rejects_missing_or_secret_fields(self):
         with self.assertRaisesRegex(ValueError,"missing or unexpected"): telemetry.validate_receipt({"schema_version":1})
     def test_rejects_bad_status_and_nan(self):

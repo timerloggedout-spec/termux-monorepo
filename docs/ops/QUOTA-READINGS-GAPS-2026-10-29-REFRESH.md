@@ -5,7 +5,8 @@
 ## State of record
 
 - Registry: **155 records** (94 with a documented limit, 61 limit null).
-- Committed readings snapshot: generated **2026-10-28T13:16:27Z, 8 rows**. The converted 155-row snapshot (generated 2026-10-28T23:36:07Z, composed and locally verified by the quota-convergence lane) has **not landed** — publish was rate-limit-blocked 2026-10-28 23:41Z and remains outstanding; landing it converts classes C/D below into structured unobserved rows but adds no new burn signal.
+- Committed readings snapshot at computation time: generated **2026-10-28T13:16:27Z, 8 rows**.
+- **Update (2026-10-29 ~18:50 PT, verified on master): the converted 155-row snapshot LANDED — PR #2362 merged `49089ee5c010`** (snapshot pair byte-identical, blob `5d5238c9`, 155 rows, generated 2026-10-28T23:36:07Z). Post-landing classes: **A = 6** H0/confirmed (github.actions.cache · github.api.github_token · huggingface.hub_api · openrouter.free_models · openrouter.key · vercel.deployments), **4** H1/early_signal, **145** H1/attributed_claim unobserved rows. The per-record table below preserves the pre-landing committed state it was computed from; the landing changed structure (every record now has a row), not signal — burn observability remains confined to class A, as the strategy input states. Per the documented converter procedure the hand-promoted github.api.user_token H0 row and the github.actions.minutes attributed note were superseded by unobserved rows.
 - Burn-signal classes: **A** probe-observed (H0/confirmed reading on master) · **B** row present, unobserved/attributed only · **C** entitlement only (limit documented, zero readings of any kind) · **D** fully dark (limit null, no row).
 
 ## Counts

@@ -1,10 +1,11 @@
 {
  "allocation_queue": [
   {
-   "fix_class": "wall-dead merges/publishes",
+   "merge": "88aa48f21f71",
    "order": 1,
+   "pr": 2417,
    "role": "publisher",
-   "state": "package_prepared"
+   "state": "live_provisioned_recorded"
   },
   {
    "order": 2,
@@ -28,6 +29,115 @@
  },
  "bundle_cadence_2026-10-29": {
   "naming": {
+   "balance_rule": "OWNER STANDING RULE (2026-10-29 22:22 PT): keep a balance of normalized/plain names in use alongside the mythic set \u2014 the active naming pool mixes both; the slate never goes all-mythic. Applies to this bundle and future naming.",
+   "bounce_set": {
+    "protocol": "on a taken slug at creation: take V1, then V2; beyond V2 returns to registry lane \u2014 never improvise a third. Display appName keeps clean spelling unless the name itself is the taken element.",
+    "record_note": "lane-side record; rides the naming-FINAL follow-up PR into master PROCESS.json",
+    "role_review": "all four monikers KEEP (Edict/Argus/Janus/Cerberus); alts held: Herald / Themis / Clotho",
+    "source": "registration-monikers 2026-10-29; Grimoire of L33tsp3@k v2.0 char table; slug-safe digits only, 1-2 substitutions",
+    "variants": {
+     "termux-fleet-gate": [
+      "termux-fleet-g4te",
+      "termux-fleet-g4t3"
+     ],
+     "termux-fleet-lifecycle": [
+      "termux-fleet-l1fecycle",
+      "termux-fleet-l1f3cycle"
+     ],
+     "termux-fleet-publisher": [
+      "termux-fleet-publ1sher",
+      "termux-fleet-publ15her"
+     ],
+     "termux-fleet-reviewer": [
+      "termux-fleet-rev1ewer",
+      "termux-fleet-r3v1ewer"
+     ]
+    }
+   },
+   "form_families": {
+    "collector": {
+     "alternate_family": "none issued (canonical = normalized)",
+     "canonical": "Collector",
+     "normalized": "Collector"
+    },
+    "gate-ci": {
+     "bounce": [
+      "termux-fleet-g4te",
+      "termux-fleet-g4t3"
+     ],
+     "canonical": "Cerberus",
+     "epithet": "the Ward",
+     "marks": [
+      "Cerberu5",
+      "C3rberu5"
+     ],
+     "normalized": "Gate",
+     "queued_alt": null
+    },
+    "lifecycle": {
+     "alt_mark": "Cl0tho",
+     "aspects": {
+      "closer": "Clusius",
+      "opener": "Patulcius"
+     },
+     "bounce": [
+      "termux-fleet-l1fecycle",
+      "termux-fleet-l1f3cycle"
+     ],
+     "canonical": "Janus",
+     "marks": [
+      "J4nus",
+      "J4nu5"
+     ],
+     "normalized": "Lifecycle",
+     "queued_alt": "Clotho"
+    },
+    "publisher": {
+     "alt_mark": "H3rald",
+     "bounce": [
+      "termux-fleet-publ1sher",
+      "termux-fleet-publ15her"
+     ],
+     "canonical": "Edict",
+     "epithet": "Acta",
+     "marks": [
+      "Ed1ct",
+      "3d1ct"
+     ],
+     "normalized": "Publisher",
+     "queued_alt": "Herald"
+    },
+    "reviewer-ops": {
+     "alt_mark": "Th3mis",
+     "bounce": [
+      "termux-fleet-rev1ewer",
+      "termux-fleet-r3v1ewer"
+     ],
+     "canonical": "Argus",
+     "epithet": "Panoptes",
+     "marks": [
+      "Argu5",
+      "4rgu5"
+     ],
+     "normalized": "Reviewer",
+     "queued_alt": "Themis"
+    },
+    "rule": "owner expansion 2026-10-29 22:23 PT: queue the FULL alternative-form family of every slate moniker (canonical / epithet|aspects / queued alt / leet marks / slug bounce variants / normalized form), drawable when a surface needs it; balance rule stands alongside"
+   },
+   "publisher_note": "Owner FINISH order 2026-10-29 23:35 PT killed the naming gate for Publisher: provisioned under the conference DRAFT template (Termux Fleet Publisher / termux-fleet-publisher / moniker Edict). Conference final set still open for the remaining apps.",
+   "queued_alts": {
+    "gate-ci": [],
+    "lifecycle": [
+     "Clotho"
+    ],
+    "note": "QUEUED CANDIDATES in conference (owner ruling 2026-10-29 22:22 PT via cadence) \u2014 not discards; Cerberus unchallenged",
+    "publisher": [
+     "Herald"
+    ],
+    "reviewer-ops": [
+     "Themis"
+    ]
+   },
    "rules": [
     "apps are FUNCTION identities (Oracle/Delphi precedent), not lane monikers; AGENT-MONIKERS scope rule untouched",
     "slug availability verified by AppID lane at creation; a taken slug returns to registry lane for a variant \u2014 never improvised in-lane"
@@ -78,7 +188,7 @@
      "status": "draft"
     }
    ],
-   "state": "CONFERENCE DRAFT received 2026-10-29 from registration-monikers (ac8e5e6b) \u2014 DO NOT PROVISION; final set after marketing conferral + owner"
+   "state": "conference open; queued alts + balance rule recorded; FINAL set unchanged until registry closes with marketing + owner; DO NOT PROVISION"
   },
   "per_app_requirements": [
    "manifest public:true day one, least-privilege, no webhooks unless function demands",
@@ -167,14 +277,6 @@
   "note": "other owned registrations NOT ESTABLISHED via API (no list-owned-apps REST route)",
   "owned_established": 1
  },
- "migration_plan": {
-  "doc": "docs/ops/GITHUB-APP-MIGRATION-PLAN.md",
-  "items": "ops/github-apps/MIGRATION-ITEMS.md",
-  "lane": "appid-migration-plan",
-  "pr": 2404,
-  "scope": "migration map (waves M1-M10, gates G1-G5) + maintenance (PEM rotation, drift audit, bucket census, incident playbook) + upgrade plan (naming-gated classes, permission expansions, graduation proven->recorded->planned->standing)",
-  "build_order_note": "creation order Publisher -> Reviewer-ops -> Gate/CI -> Lifecycle (Gate 3rd; registry draft numbering lists Lifecycle 4 / Gate 5 cosmetically)"
- },
  "lane": "appid-process",
  "later_queue": [
   {
@@ -209,20 +311,28 @@
    },
    {
     "app": "Termux Fleet Publisher (PROPOSED \u2014 naming conference)",
+    "app_id": 5537873,
+    "client_id": "Iv23li4m16A2EEmBagCF",
     "covers": "publishes, merges, coordination comments (cadence bundle 2026-10-29: issues:write added for comments)",
+    "custody": "transferred 2026-10-30 to custom.github-app-publisher/keys/ (0600); pubkey fp 4f5515eb9456f22ddc2ba929be62194484528d124343fe9ede0aa062baee3fa3; rotation due 2027-04-30",
+    "delta_vs_package": "package (PR #2401) carried issues:write + no checks; as-submitted manifest = checks:read + NO issues permission \u2014 issue-comment routes unavailable to this app; adding issues:write = amendment, UP-01 template candidate",
+    "installation": 176799777,
     "owner_decision_points": [
      "workflows:write = rung 2",
      "actions:write deferred",
      "public:true vs account-only at Create click"
     ],
     "permissions": {
+     "checks": "read",
      "contents": "write",
-     "issues": "write",
      "metadata": "read",
      "pull_requests": "write"
     },
+    "provisioned": "2026-10-30T06:44Z by quota-specialist under owner FINISH order (2026-10-29 23:35 PT \u2014 naming gate killed, conference draft template applied); self-published record PR #2417 merged 88aa48f21f71 by the publisher token itself",
     "role": "publisher",
-    "status": "proposed_1_package_prepared"
+    "slug": "termux-fleet-publisher",
+    "status": "live",
+    "verified": "2026-10-30T06:47Z AppID lane via App JWT: installations=1, repos=termux-monorepo only, bucket 5000 (remaining 4988)"
    },
    {
     "app": "PROPOSED \u2014 naming conference",
@@ -299,7 +409,7 @@
   }
  },
  "schema": "appid-process/v1",
- "updated_at": "2026-10-30T04:45Z",
+ "updated_at": "2026-10-30T06:50Z",
  "web_pr_failsafe": {
   "doc": "docs/ops/FAILSAFE-PUBLISH-PROTOCOL.md",
   "posture": "fallback for merge (+small creates) only; primary stays PAT helper / AppID token; oracle verification still binds",

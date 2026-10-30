@@ -58,7 +58,7 @@ apps per role.
 | Role (function identity) | Permissions | Status | Kills / covers |
 |---|---|---|---|
 | `collector` — Termux Fleet Collector | metadata, contents, pull_requests, issues, checks, actions = read | **LIVE** 5535733 | Collector reads off the PAT bucket (proven) |
-| `publisher` — name PROPOSED | metadata read; **contents write; pull_requests write; issues write** (comments — cadence bundle delta) | **PROPOSED #1** — package in `ops/github-apps/publisher-pilot/` | The pat_publish path (branch, file PUT, PR create, merge) + coordination comments die when PAT core hits 0; a publisher installation is an independent 5000/h bucket that cannot be starved by collector traffic |
+| `publisher` — `Edict` (draft template) | metadata read; checks read; **contents write; pull_requests write** | **LIVE** — App 5537873, installation 176799777, provisioned 2026-10-30 by quota-specialist under the owner's FINISH order (naming gate killed, draft template applied); self-published PR #2417 merged `88aa48f21f71` by its own token; custody → `custom.github-app-publisher/keys/` (fp `4f5515eb…`) | The pat_publish path (branch, file PUT, PR create, merge) dies when PAT core hits 0; the publisher bucket cannot be starved by collector traffic. **Delta vs the #2401 package:** as-submitted manifest has checks read and **no issues permission** (package carried issues write) — issue-comment routes are unavailable to this app; adding issues = write is an amendment and the UP-01 template candidate |
 | `reviewer-ops` — name PROPOSED | metadata read; checks read; **pull_requests write** (reviews) | Proposed #2 (cadence bundle) | Peer-review orchestrator polling (≤180/h/event) + review comments off PAT |
 | `gate-ci` — name PROPOSED | metadata read; **checks write** | Proposed #3 (cadence bundle) | Gate annotations + status posts (repo-gate, ECC-class surfaces; the PR #800 checks failure class) |
 | `lifecycle` — name PROPOSED (supersedes this lane's earlier "steward" label) | metadata read; **issues write** | Proposed #4 (cadence bundle) | Issue lifecycle / triage sweeps, GAP-ledger sweeps |
@@ -194,17 +194,14 @@ no single number; none is claimed here).
 
 Build order (bundle of four, cadence handover 2026-10-29):
 
-1. **Publisher (next)** — package prepared in
-   `ops/github-apps/publisher-pilot/` (manifest + profile). Creation is
-   the standing manifest flow: serve form → one signed-in Create click →
-   convert → install on termux-monorepo → custody per §2 → bucket proof
-   (mint while PAT = 0, publish-path dry run). The Create click and
-   install consent are web-only residuals the owner performs or
-   explicitly delegates; everything else is this lane, API-side.
-   Immediate fix class: merges/publishes dying on the PAT wall
-   (PAT core read 0 twice on 2026-10-29/30 while work queued; PR #2399's
-   window is the latest instance). Creation waits only on its naming
-   set (§3, naming conference).
+1. **Publisher — DONE (2026-10-30).** Provisioned by the quota-specialist
+   lane under the owner's FINISH order (the naming gate was killed;
+   conference draft template applied). App 5537873, installation
+   176799777, bucket + write proof passed, record self-published as
+   PR #2417, custody transferred to the §2 pattern
+   (`custom.github-app-publisher`). Remaining publisher items: avatar
+   upload (PNG, web-only) and the issues-write amendment decision
+   (UP-01 candidate).
 2. **Reviewer-ops** — orchestrator poll burn is the largest steady PAT
    drain after publishes.
 3. **Gate/CI** — checks publication, the PR #800 failure class.

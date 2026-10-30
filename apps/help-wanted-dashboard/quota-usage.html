@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quota Usage — Burn-down &amp; Replenishment</title>
+<!--
+  Renders ONLY data/quota-usage.json (schema quota-usage/v1), the pack
+  built by the viz lane from the quota-specialist data pack (owner order
+  2026-10-29) with every in-repo claim verified firsthand against
+  docs/ops/generated/quota-status.json (current + git history) and the
+  actions-performance-reconstructed corpus. Provenance rides in the pack
+  per point / snapshot / series and is shown, not hidden: observed
+  points are the only measurements drawn, the 155-row snapshot is
+  flagged composed-not-landed until the convergence lane confirms, the
+  reconstructed corpus increments are corpus growth (not fleet volume),
+  and g4f renders NO stamp — none exists.
+-->
+<link rel="stylesheet" href="./dashboard.css">
+<style>
+  .chart{width:100%;height:auto;display:block}
+  .wall-note{color:var(--bad);font-weight:700}
+  .chip{display:inline-block;padding:0 8px;border-radius:10px;font-size:11px;border:1px solid var(--line);white-space:nowrap}
+  .chip.ok{border-color:var(--ok);color:var(--ok)}
+  .chip.watch{border-color:var(--gold);color:var(--gold)}
+  .chip.exhausted,.chip.cap_tripped{border-color:var(--bad);color:var(--bad)}
+  .chip.unknown{color:var(--muted)}
+  .chip.none{color:var(--muted);border-style:dashed}
+  table.st{width:100%;border-collapse:collapse;font-size:13px}
+  table.st td,table.st th{padding:4px 6px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
+  .stamps{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.6rem}
+  .stamp{border:1px solid var(--line);border-radius:8px;padding:.6rem .7rem}
+  .stamp .cad{display:inline-block;font-weight:700;border:2px solid var(--ok);color:var(--ok);border-radius:6px;padding:.1rem .5rem;transform:rotate(-2deg);letter-spacing:.04em}
+  .stamp.unmetered .cad{border-style:dashed;border-color:var(--muted);color:var(--muted)}
+  .stamp .pool{font-weight:700;margin-bottom:.35rem}
+  .anno{border-left:3px solid var(--gold);padding:.2rem .6rem;margin:.5rem 0}
+  .dim{color:var(--muted)}
+  .flag{color:var(--gold);font-weight:700}
+</style>
+</head>
+<body>
+<header>
+<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/help-wanted/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="https://timerloggedout-spec.github.io/help-wanted/quota.html">Quota</a><a href="https://timerloggedout-spec.github.io/help-wanted/quota-usage.html" aria-current="page">Quota Usage</a><a href="https://timerloggedout-spec.github.io/help-wanted/admin.html">Admin</a><a href="https://timerloggedout-spec.github.io/help-wanted/oracle.html">Oracle</a><a href="https://timerloggedout-spec.github.io/help-wanted/3l0.html">3L0</a><a href="https://timerloggedout-spec.github.io/help-wanted/moneyball.html">MoneyBall</a><a href="https://timerloggedout-spec.github.io/help-wanted/mvt.html">MVT</a><a href="https://timerloggedout-spec.github.io/help-wanted/doe.html">DoE</a><a href="https://timerloggedout-spec.github.io/help-wanted/ates.html">ATES</a><a href="https://timerloggedout-spec.github.io/help-wanted/free-tier-value.html">Free-tier value</a><a href="https://timerloggedout-spec.github.io/help-wanted/dispatch-tree.html">Dispatch Tree</a><a href="https://timerloggedout-spec.github.io/help-wanted/countdowns.html">Countdowns</a><a href="https://timerloggedout-spec.github.io/help-wanted/linguist.html">Linguist</a><a href="https://timerloggedout-spec.github.io/help-wanted/delphi-rfp.html">Delphi RFP</a><a href="https://timerloggedout-spec.github.io/help-wanted/delphi-ledger.html">Delphi Ledgers</a><a href="https://timerloggedout-spec.github.io/help-wanted/pr-lanes.html">PR Lanes</a><a href="https://timerloggedout-spec.github.io/help-wanted/proposals.html">Proposals</a><a href="https://help-wanted-oversight.vercel.app/">Vercel deployment</a><a href="https://timerloggedout-spec.github.io/help-wanted/sitemap.xml">Sitemap</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></nav>
+<div class="hero">
+<p class="eyebrow">Quota Usage · Burn-down &amp; Replenishment</p>
+<h1>Usage, walls and replenishment — as observed</h1>
+<p class="lede">The historical burn-down of the shared GitHub API bucket, the per-service state timeline from the quota readings snapshots, the Actions corpus volume with its storm spike, and the replenishment stamp for every pool. This page consumes <code>data/quota-usage.json</code> (schema <code>quota-usage/v1</code>) and nothing else. Points are observations, not samples: gaps stay gaps, composed-but-unlanded data is flagged, and a pool with no established replenishment renders no stamp.</p>
+</div>
+</header>
+<main>
+<p class="muted" id="meta">Loading pack…</p>
+
+<section>
+<div class="head"><h2>API core burn-down — shared PAT bucket</h2></div>
+<div class="card"><div id="burndown"></div><p class="dim" id="burnnote"></p></div>
+</section>
+
+<section>
+<div class="head"><h2>Service state timeline — readings snapshots</h2></div>
+<div class="card" id="states"></div>
+</section>
+
+<section>
+<div class="head"><h2>Actions volume — reconstructed corpus, daily increments</h2></div>
+<div class="card"><div id="actions"></div><p class="dim" id="actionsnote"></p><div id="spike"></div></div>
+</section>
+
+<section>
+<div class="head"><h2>Replenishment stamps</h2></div>
+<div class="card"><div class="stamps" id="stamps"></div><p class="dim" id="stampsnote"></p></div>
+</section>
+
+<section>
+<div class="head"><h2>Origins — correlated actions</h2></div>
+<div class="card" id="origins"></div>
+</section>
+
+</main>
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+// ==== pure logic (node-sim tested) ====
+function parseT(s){return Date.parse(s);}
+function burnGeom(points,limit,w,h,pad){
+  const ts=points.map(p=>parseT(p.at));
+  let t0=Math.min.apply(null,ts), t1=Math.max.apply(null,ts);
+  const span=Math.max(t1-t0,3600000); t0-=span*0.04; t1+=span*0.04;
+  const iw=w-pad*2, ih=h-pad*2;
+  return {t0,t1,pts:points.map(p=>({x:pad+iw*(parseT(p.at)-t0)/(t1-t0), y:pad+ih*(1-p.remaining/limit), p}))};
+}
+function stepPath(pts){
+  if(!pts.length) return "";
+  let d="M"+pts[0].x.toFixed(1)+","+pts[0].y.toFixed(1);
+  for(let i=1;i<pts.length;i++){ d+=" L"+pts[i].x.toFixed(1)+","+pts[i-1].y.toFixed(1)+" L"+pts[i].x.toFixed(1)+","+pts[i].y.toFixed(1); }
+  return d;
+}
+function stateClass(state){
+  if(state==null) return "none";
+  return String(state).replace(/[^a-z_]/g,"");
+}
+function barGeom(days,w,h,pad){
+  const max=Math.max.apply(null,days.map(d=>d.runs_delta).concat([1]));
+  const iw=w-pad*2, ih=h-pad*2, bw=iw/days.length;
+  return days.map((d,i)=>({x:pad+i*bw, w:Math.max(bw*0.7,1), h:ih*d.runs_delta/max, y:pad+ih-ih*d.runs_delta/max, d}));
+}
+function stampText(stamp){
+  return stamp.established ? ("↻ "+String(stamp.cadence).toUpperCase()) : "NO STAMP — UNMETERED";
+}
+if(typeof module!=="undefined"){ module.exports={parseT,burnGeom,stepPath,stateClass,barGeom,stampText}; }
+// ==== end pure logic ====
+let PACK=null;
+function svgEl(html){ return html; }
+function renderBurn(){
+  const s=PACK.series1_api_core, W=920, H=300, P=44;
+  const g=burnGeom(s.points, s.limit, W, H, P);
+  let out='<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="API core remaining over time">';
+  out+='<line x1="'+P+'" y1="'+(H-P)+'" x2="'+(W-P)+'" y2="'+(H-P)+'" stroke="var(--line)"/>';
+  out+='<line x1="'+P+'" y1="'+P+'" x2="'+P+'" y2="'+(H-P)+'" stroke="var(--line)"/>';
+  out+='<text x="6" y="'+(P+4)+'" fill="var(--muted)" font-size="11">'+esc(s.limit)+'</text>';
+  out+='<text x="6" y="'+(H-P+4)+'" fill="var(--muted)" font-size="11">0</text>';
+  out+='<path d="'+stepPath(g.pts)+'" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-dasharray="5 4"/>';
+  for(const q of g.pts){
+    if(q.p.kind==="wall"){
+      out+='<path d="M'+q.x+','+(q.y-8)+' L'+(q.x+8)+','+q.y+' L'+q.x+','+(q.y+8)+' L'+(q.x-8)+','+q.y+' Z" fill="var(--bad)"/>';
+      out+='<text x="'+(q.x+11)+'" y="'+(q.y+4)+'" fill="var(--bad)" font-size="11" font-weight="700">WALL '+esc(q.p.at)+'</text>';
+    } else {
+      out+='<circle cx="'+q.x+'" cy="'+q.y+'" r="4.5" fill="var(--ok)"/>';
+      out+='<text x="'+(q.x+8)+'" y="'+(q.y-8)+'" fill="var(--muted)" font-size="11">'+esc(q.p.remaining)+' · '+esc(q.p.at)+'</text>';
+    }
+  }
+  out+='</svg>';
+  $("burndown").innerHTML=svgEl(out);
+  let bn=s.note+" Replenishment: "+s.replenishment+"; next reset observed "+s.next_reset_observed+".";
+  if(PACK.buckets){ bn+=" Buckets, kept separate — never one merged line: "+PACK.buckets.map(b=>b.name+" "+b.limit+"/"+b.unit+(b.observed?(" ("+b.observed+")":"")).join(" · ")+"."; }
+  $("burnnote").textContent=bn;
+}
+function renderStates(){
+  const s=PACK.series2_snapshots;
+  let out='<table class="st"><tr><th>Service</th>';
+  for(const sn of s.snapshots){
+    out+='<th>'+esc(sn.at)+' · '+esc(sn.rows)+' rows'+(sn.landed?'':' · <span class="flag">composed — landing unconfirmed</span>')+'<br><span class="dim">'+esc(sn.provenance)+'</span></th>';
+  }
+  out+='</tr>';
+  for(const svc of s.services){
+    out+='<tr><td><code>'+esc(svc)+'</code></td>';
+    for(const sn of s.snapshots){
+      const st=sn.states[svc];
+      out+='<td>'+(st==null?'<span class="chip none">no reading</span>':'<span class="chip '+esc(stateClass(st))+'">'+esc(st)+'</span>')+'</td>';
+    }
+    out+='</tr>';
+  }
+  out+='</table><p class="dim">'+esc(s.title)+'.</p>';
+  $("states").innerHTML=out;
+}
+function renderActions(){
+  const s=PACK.series3_actions, W=920, H=260, P=40;
+  const bars=barGeom(s.days, W, H, P);
+  let out='<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Daily reconstructed run increments">';
+  out+='<line x1="'+P+'" y1="'+(H-P)+'" x2="'+(W-P)+'" y2="'+(H-P)+'" stroke="var(--line)"/>';
+  for(const b of bars){
+    out+='<rect x="'+b.x.toFixed(1)+'" y="'+b.y.toFixed(1)+'" width="'+b.w.toFixed(1)+'" height="'+b.h.toFixed(1)+'" fill="'+(b.d.runs_delta===0?'var(--muted)':'var(--gold)')+'"><title>'+esc(b.d.date)+': +'+esc(b.d.runs_delta)+' runs, +'+esc(b.d.jobs_delta)+' jobs, ~'+esc(b.d.minutes_est)+' job-min est</title></rect>';
+    if(b.d.date.endsWith("-02")||b.d.date.endsWith("-09")||b.d.date.endsWith("-16")||b.d.date.endsWith("-23")||b.d.date.endsWith("-29")){
+      out+='<text x="'+b.x.toFixed(1)+'" y="'+(H-P+14)+'" fill="var(--muted)" font-size="10">'+esc(b.d.date.slice(5))+'</text>';
+    }
+    if(b.d.runs_delta===0){
+      out+='<text x="'+b.x.toFixed(1)+'" y="'+(H-P-4)+'" fill="var(--muted)" font-size="10">0 — no corpus growth</text>';
+    }
+  }
+  out+='</svg>';
+  $("actions").innerHTML=out;
+  $("actionsnote").textContent=s.method;
+  const sp=s.spike;
+  $("spike").innerHTML='<div class="anno"><span class="wall-note">SPIKE '+esc(sp.at)+' → '+esc(sp.until)+': '+esc(sp.runs)+' '+esc(sp.workflow)+' runs in 25 min</span>, each firing '+esc(sp.fires)+'. '+esc(sp.outcome)+'.<br><span class="dim">'+esc(sp.provenance)+'</span></div>';
+}
+function renderStamps(){
+  let out='';
+  for(const st of PACK.stamps){
+    out+='<div class="stamp'+(st.established?'':' unmetered')+'"><div class="pool">'+esc(st.pool)+'</div><span class="cad">'+esc(stampText(st))+'</span><p class="dim">'+esc(st.detail)+'</p></div>';
+  }
+  $("stamps").innerHTML=out;
+  $("stampsnote").textContent=PACK.stamps_provenance+". Registry context: "+PACK.registry_context.records+" records, "+PACK.registry_context.pools+" pools, coverage "+PACK.registry_context.coverage+" — "+PACK.registry_context.note+".";
+}
+function renderOrigins(){
+  const names={series1:"API core burn-down",series2:"Service state timeline",series3:"Actions volume"};
+  let out='';
+  for(const a of PACK.annotations){
+    out+='<div class="anno"><strong>'+esc(names[a.on]||a.on)+' · '+esc(a.at)+'</strong> — '+esc(a.text)+'</div>';
+  }
+  if(PACK.pending_inputs && PACK.pending_inputs.length){
+    out+='<p class="dim">Pending inputs: '+PACK.pending_inputs.map(esc).join(" · ")+'</p>';
+  }
+  $("origins").innerHTML=out;
+}
+fetch("./data/quota-usage.json").then(r=>{ if(!r.ok) throw new Error("pack fetch "+r.status); return r.json(); }).then(p=>{
+  PACK=p;
+  $("meta").textContent="Pack "+p.schema+" · generated "+p.generated_at+" · "+p.ordered_by+" · built by "+p.built_by+".";
+  renderBurn(); renderStates(); renderActions(); renderStamps(); renderOrigins();
+}).catch(e=>{ $("meta").innerHTML='<span class="wall-note">PACK ERROR</span> '+esc(e.message); });
+</script>
+</body>
+</html>

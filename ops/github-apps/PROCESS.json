@@ -167,6 +167,14 @@
   "note": "other owned registrations NOT ESTABLISHED via API (no list-owned-apps REST route)",
   "owned_established": 1
  },
+ "migration_plan": {
+  "doc": "docs/ops/GITHUB-APP-MIGRATION-PLAN.md",
+  "items": "ops/github-apps/MIGRATION-ITEMS.md",
+  "lane": "appid-migration-plan",
+  "pr": 2404,
+  "scope": "migration map (waves M1-M10, gates G1-G5) + maintenance (PEM rotation, drift audit, bucket census, incident playbook) + upgrade plan (naming-gated classes, permission expansions, graduation proven->recorded->planned->standing)",
+  "build_order_note": "creation order Publisher -> Reviewer-ops -> Gate/CI -> Lifecycle (Gate 3rd; registry draft numbering lists Lifecycle 4 / Gate 5 cosmetically)"
+ },
  "lane": "appid-process",
  "later_queue": [
   {

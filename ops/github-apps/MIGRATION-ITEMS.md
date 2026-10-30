@@ -20,7 +20,7 @@ PR) — never on a lane report alone. Owner lane in brackets.
 - [x] MIG-03 DISPOSITIONED 2026-10-30: Delphi-class feed collectors — ZERO migrations (evidence: 5 collectors on GITHUB_TOKEN/github.token per-repo bucket; proposals script = 0 API calls, token only serves its refresh-PR write → M6 class; traffic-feed app-token probe 403 ×3 endpoints → NOT MIGRATABLE to Collector). Plan §1.1 M3 corrected [migration-plan]
 - [x] MIG-04 DISPOSITIONED 2026-10-30: `provider-availability` has NO GitHub-API probe portion (workflow: no GH token env; probe script: zero GitHub references; all probes on provider keys) — nothing to migrate [migration-plan]
 - [x] MIG-05 DISPOSITIONED 2026-10-30: recon/observer class (7 workflows) — ZERO PAT-bucket reads (7/7 on GITHUB_TOKEN/github.token per-repo bucket, firsthand audit). Collector relief for the shared per-repo bucket remains available, reprioritized below MIG-06/08 [migration-plan]
-- [ ] MIG-06 Wave 2: workflow publishes/merges/comments → Publisher, on Publisher standing [migration-plan + appid]
+- [x] MIG-06 DISPOSITIONED 2026-10-30: workflow-side writes (merge-promotion family, context-relationship-publish, osint refresh writes) — ZERO PAT-class writes (all github.token); self-integrate = external-agent dispatch, no in-workflow GitHub writes. Publisher adoption = optional identity graduation, behind MIG-07/08 [migration-plan]
 - [ ] MIG-07 Wave 2: lane `pat_publish` opt-in to Publisher token, after AppID lane declares minter lane-usable; PAT fallback retained [appid]
 - [ ] MIG-08 Wave 3: `peer-review-orchestrator` polling → Reviewer-ops, on its standing [migration-plan]
 - [ ] MIG-09 Wave 4: gate check-runs/annotations → Gate/CI, on its standing [migration-plan]

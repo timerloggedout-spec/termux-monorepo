@@ -71,7 +71,7 @@ invented here.
 
 | # | Consumer | Current | Target behaviour | Gate |
 |---|---|---|---|---|
-| M6 | Workflow-side publishes / merges / coordination comments: `merge-promotion-queue*`, `self-integrate`, `context-relationship-publish`, osint refresh-PR writes (from M5) | PAT-class secrets / `GITHUB_TOKEN` | mint Publisher token in-workflow; comments and merges carry the app identity | Publisher graduation (§3.4) + G1–G5 |
+| M6 | Workflow-side publishes / merges / coordination comments (named set) | `github.token` (per-repo Actions identity) | — | **DISPOSITIONED 2026-10-30 (firsthand audit): ZERO PAT-class writes in the named set.** `merge-promotion-queue` v1/v2/v3 + `merge-promotion-steward` (incl. its `gh pr merge`) and `context-relationship-publish` all run on `github.token`; the osint refresh-PR writes (from M5) likewise. `self-integrate` performs NO GitHub writes in-workflow — it dispatches an external agent over HTTPS (that agent's own credential surface, out of scope). Publisher adoption for these remains an identity/audit-separation choice (§3.4 graduation), NOT quota relief — reprioritized as optional, behind M7/M8 | — |
 | M7 | Lane `pat_publish` paths | chat-side PAT | **Stay PAT** until Publisher custody + minter are lane-usable from chat side (connector-pattern helper, AppID lane); then PAT remains the fallback, never removed | AppID lane declares lane-usable; per-lane opt-in, no flag day |
 
 ### 1.3 Wave 3–5 → Reviewer-ops / Gate/CI / Lifecycle (when built)

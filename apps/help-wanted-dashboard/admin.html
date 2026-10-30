@@ -44,6 +44,7 @@
 <li><span>Lane matrix sweep (<code>docs/ops/generated/lane-matrix-status.json</code>, live from master)</span><span class="pill gold" data-feed="matrix">…</span></li>
 <li><span>Review queue (public GitHub API)</span><span class="pill gold" data-feed="queue">…</span></li>
 <li><span>Challenge internal metrics (<code>data/challenge-admin-metrics.json</code>) — ADMIN PANEL ONLY</span><span class="pill gold" data-feed="challenge">…</span></li>
+<li><span>Quota gearbox — consumer controls (<code>data/quota-usage.json</code>) — ADMIN PANEL ONLY</span><span class="pill gold" data-feed="gearbox">…</span></li>
 </ul>
 <p><button id="refresh" type="button" class="button">Refresh feeds now</button> <span id="refreshed" class="muted"></span></p>
 </section>
@@ -53,6 +54,13 @@
 <p class="admin-note"><strong>Internal only.</strong> Win probability (internal metric, method as recorded in the feed) renders on this admin panel alone — never on public pages, public feeds, logs, briefs, or the opportunity ledger (contract: <code>docs/ops/ADMIN-INTERNAL-METRICS.md</code>). Values arrive verbatim from the coordinator record via the admin feed; this panel computes nothing and offers no export.</p>
 <div id="challenge-metrics"><p class="muted">Loading the internal metrics feed…</p></div>
 <p class="muted" id="challenge-metrics-meta"></p>
+</section>
+
+<section class="card">
+<h2>Quota gearbox — consumer controls <span class="pill gold">INTERNAL</span></h2>
+<p class="admin-note"><strong>Internal only — design schema.</strong> The quota gearbox (concept: <code>docs/ops/QUOTA-GEARBOX-CONCEPT.md</code>) renders on this admin panel alone, following the internal-metrics precedent; the public Quota Usage page never renders it. Everything below arrives verbatim from the <code>gearbox</code> block of <code>data/quota-usage.json</code>; the controls are design-only and inert — this panel mutates nothing, and per-consumer metering is flagged in the pack itself where it is not established.</p>
+<div id="gearbox-controls"><p class="muted">Loading the quota usage pack…</p></div>
+<p class="muted" id="gearbox-meta"></p>
 </section>
 
 <section>
@@ -203,8 +211,41 @@ async function loadChallenge(){
     feed('challenge',true,'LIVE · internal');
   }catch(e){feed('challenge',false,'UNVERIFIED');$('challenge-metrics').innerHTML='<p class="muted">Internal metrics feed could not be fetched — UNVERIFIED; nothing is shown rather than anything guessed.</p>'}
 }
+
+async function loadGearbox(){
+  try{
+    const f=await jget('./data/quota-usage.json');
+    const g=f.gearbox||{},au=g.admin_ui||{},cc=au.consumer_controls||{},mk=g.mock||{};
+    const cell=v=>v==null?'—':esc(v);
+    let h='';
+    h+='<p>'+cell(g.status)+'</p>';
+    h+='<p><span class="pill gold">'+cell(mk.flag||'MOCK')+'</span> <span class="muted">'+cell(g.admin_designation)+'</span></p>';
+    if(cc.diagnose_dependency){h+='<p><span class="pill bad">Diagnose dependency</span> '+esc(cc.diagnose_dependency)+'</p>'}
+    const ctl=(name,inner)=>'<tr><td><strong>'+name+'</strong></td><td>'+inner+'</td></tr>';
+    let rows='';
+    if(cc.stop){rows+=ctl('STOP','<button type="button" disabled>STOP</button> '+esc(cc.stop.effect||'')+(cc.stop.case?'<br><span class="muted">Case: '+esc(cc.stop.case)+'</span>':'') )}
+    if(cc.pause){rows+=ctl('PAUSE','<button type="button" disabled>PAUSE</button> '+esc(cc.pause.effect||'')+((cc.pause.fields||[]).length?'<br><span class="muted">Fields: '+esc(cc.pause.fields.join(', '))+'</span>':''))}
+    if(cc.throttle){rows+=ctl('Throttle','<input type="range" min="0" max="100" value="0" disabled aria-label="Throttle slider (design only)"> '+esc(cc.throttle.control||'')+(cc.throttle.distinct_from?'<br><span class="muted">Distinct from: '+esc(cc.throttle.distinct_from)+'</span>':''))}
+    if(rows){h+='<h3>Per-consumer controls — '+cell(cc.requirement)+'</h3><div class="table-wrap"><table class="table"><thead><tr><th>Control</th><th>Design (inert)</th></tr></thead><tbody>'+rows+'</tbody></table></div>'}
+    const sl=au.sliders||{},ss=au.subset_selection||{},gr=au.guardrail_ruling||{};
+    h+='<h3>Share sliders &amp; subsets</h3><p>'+cell(sl.control)+'</p>';
+    if((sl.presets||[]).length){h+='<ul>'+sl.presets.map(p=>'<li><strong>'+esc(p.name)+'</strong> — '+esc(p.posture)+'</li>').join('')+'</ul>'}
+    if(gr.over_100||gr.auto_balance){h+='<p class="muted">Guardrail — over 100: '+cell(gr.over_100)+'<br>Auto-balance: '+cell(gr.auto_balance)+'</p>'}
+    const checked=(mk.subset_example||{}).checked||[];
+    if((ss.tags||[]).length){h+='<p>'+cell(ss.control)+'</p><p>'+ss.tags.map(t=>'<label><input type="checkbox" disabled'+(checked.includes(t)?' checked':'')+'> '+esc(t)+'</label> ').join('')+'<br><span class="muted">'+cell((mk.subset_example||{}).applies)+'</span></p>'}
+    if((g.gears||[]).length){h+='<h3>Gears — configured allocation state</h3><div class="table-wrap"><table class="table"><thead><tr><th>Gear</th><th>Focus</th><th>Mode</th><th>Eligibility</th></tr></thead><tbody>'+g.gears.map(x=>'<tr><td>'+cell(x.gear)+'</td><td>'+esc(x.focus)+'</td><td>'+esc(x.mode)+'</td><td>'+cell(x.eligibility)+'</td></tr>').join('')+'</tbody></table></div>'}
+    if((mk.settings_example||[]).length){h+='<h3>Settings example (mock)</h3><div class="table-wrap"><table class="table"><thead><tr><th>Pool</th><th>Focus</th><th>Gear</th><th>%</th><th>Mode</th></tr></thead><tbody>'+mk.settings_example.map(x=>'<tr><td>'+esc(x.pool)+'</td><td>'+esc(x.focus)+'</td><td>'+cell(x.gear)+'</td><td>'+cell(x.pct)+'</td><td>'+esc(x.mode)+'</td></tr>').join('')+'</tbody></table></div>'}
+    const ae=cc.audit_event||{};
+    if((ae.fields||[]).length){h+='<p class="muted">Audit event — fields: '+esc(ae.fields.join(', '))+' · cites '+cell(ae.cites)+' · lands as '+cell(ae.lands_as)+'.</p>'}
+    if(g.shift_log_type){h+='<p class="muted">Shift log: '+cell(g.shift_log_type.state)+'</p>'}
+    if((g.honesty||[]).length){h+='<h3>Honesty — read before trusting any needle</h3><ul>'+g.honesty.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>'}
+    $('gearbox-controls').innerHTML=h;
+    $('gearbox-meta').textContent='Pack '+(f.schema||'')+' · gearbox block rendered verbatim · source data/quota-usage.json (mirror of ops/quota/quota-usage.json) · concept '+(g.doc||'');
+    feed('gearbox',true,'LIVE · internal');
+  }catch(e){feed('gearbox',false,'UNVERIFIED');$('gearbox-controls').innerHTML='<p class="muted">Quota usage pack could not be fetched — UNVERIFIED; nothing is shown rather than anything guessed.</p>'}
+}
 async function load(){
-  await Promise.allSettled([loadDelphi(),loadStatus(),loadMatrix(),loadQueue(),loadChallenge()]);
+  await Promise.allSettled([loadDelphi(),loadStatus(),loadMatrix(),loadQueue(),loadChallenge(),loadGearbox()]);
   $('refreshed').textContent='Refreshed '+new Date().toLocaleTimeString();
 }
 $('refresh').addEventListener('click',load);

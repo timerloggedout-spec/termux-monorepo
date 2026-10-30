@@ -103,18 +103,25 @@ is its at-a-glance view and is refreshed from here.
   user ID (or AWS account ID) per the official overview.
 - Used by packet D4 (Kiroween).
 
-#### lablab.ai — not created (D2 window) — EXECUTION: challenge lane
+#### lablab.ai — account CREATED 2026-10-29 (D2) — handle HELD
 
-- Execution handed to the challenge lane 2026-10-29 (moniker registry:
-  owner_lane challenge-entries; entrant{n0nLablab}[platform:lablab-ai]).
-- Recon (accounts lane, verified 2026-10-29): sign-up via Email
-  (magic-link) / GitHub / AMD — no Google route; Cloudflare check on the
-  form; no card anywhere ("all events are free to attend"). Vultr Agent
-  Rush enrollment OPEN. Profile completion + Discord connect are required
-  before team create/join (teams 1–6).
-- Registration + Discord join are mandatory for Vultr Agent Rush
-  (submissions end Nov 8, 2026, 3:00 PM PST). Owner-approved 2026-10-26;
-  any verification gate is surfaced, not worked around.
+- Account created 2026-10-29 by the challenge lane via the owner-selected
+  AMD route: AMD AI Developer Program account (timerloggedout@gmail.com;
+  LoggedOut / Timer / None / United States; owner-activated) ⇒ AMD SSO
+  sign-in to lablab (vault password + email verification). Profile SAVED:
+  name "LoggedOut Timer", country United States.
+- Handle (platform-assigned at sign-up, provisioning fact):
+  `timerloggedout63215` — **CHANGE HELD**: the registry lane's n0nLablab
+  direction was superseded by the owner 2026-10-29 (the `n0n` stem was
+  retired by v3; the change is a fresh assignment). Candidate queue
+  (owner-queued): s1gnaldr1ft · qu13tcompile · latentf0rge · dr1ftc0de
+  + v3 derive RapidZenith18. The once-per-30-days change is UNSPENT;
+  final pick = owner's; the issued handle gets recorded here on landing.
+- Age bracket (persona value, registry-lane assignment 2026-10-29):
+  **25-34** — recorded with this profile; kept across forms.
+- Vultr Agent Rush: ENROLLED 2026-10-29 (screening form submitted;
+  organizer confirmation by email pending). Discord connect = build-week
+  step (required before team create/join). See the log, packet D2.
 
 #### Vultr — not created (D2 window) — EXECUTION: challenge lane
 

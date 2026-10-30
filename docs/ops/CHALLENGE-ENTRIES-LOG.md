@@ -243,7 +243,9 @@ this log is the human view of the same verified state.
 
 <!-- countdown:BLOCK -->⏳ countdowns — D0: CLOSED · D1: closes in 7d 12h · D2: opens in 7d 12h (closes Nov 8 15:00 PT) · D3: closes in 12d 12h · D4: opens in 2d 0h (closes Dec 4 14:00 PT) · D5: opens in 19d 21h (closes Nov 19 12:00 PT) (computed 2026-10-28 12:55 PT)<!-- /countdown:BLOCK -->
 
-### D0 — for R2, Weekend Challenge: Give your Agent a Tool — COMPLETED 2026-10-27 (owner ruling 2026-10-27; date set: Oct 29)
+### D0 — for R2, Weekend Challenge: Give your Agent a Tool — COMPLETED 2026-10-27
+
+- **ROLE (owner framing, 2026-10-30): prerequisite-practice.** D0 is the mandate practice — the prerequisite pattern for the whole slate: agent + one new tool + article + demo; its completion package is the template every entry follows. D1 executes the D0 pattern formally (workshop agent + tool; StudySprint article + demo per the D0 shape). The opportunity ledger is UNCHANGED (OC-002 LOST $200 stands) — this framing is not a reclassification. (owner ruling 2026-10-27; date set: Oct 29)
 
 <!-- countdown-data:D0 opens=- closes=2026-10-26T13:00:00-07:00 -->
 <!-- countdown:D0 -->⏳ CLOSED (computed 2026-10-28 12:55 PT)<!-- /countdown:D0 -->

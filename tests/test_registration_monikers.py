@@ -229,6 +229,26 @@ def test_fleet_entry_null_profile_ref_with_pending_lane_is_valid():
     assert problems == ["unclaimed-packet:D9"]
 
 
+def test_alt_profile_ref_is_accepted_without_inrepo_resolution():
+    registry = empty_registry()
+    reg.assign(registry, FIXTURE_LOG)
+    registry["entries"].append(fleet_entry(
+        profile_ref="alt:gsheet:Profile Registry", profile_pending=None))
+    problems = reg.check(registry, FIXTURE_LOG, FIXTURE_PROFILES)
+    # The profile lives off-GitHub on the named surface; the registry
+    # carries the pointer only, so nothing about it can drift in-repo.
+    assert problems == ["unclaimed-packet:D9"]
+
+
+def test_alt_profile_ref_with_empty_surface_fails():
+    registry = empty_registry()
+    reg.assign(registry, FIXTURE_LOG)
+    registry["entries"].append(fleet_entry(
+        profile_ref="alt:", profile_pending=None))
+    problems = reg.check(registry, FIXTURE_LOG, FIXTURE_PROFILES)
+    assert any("alt profile_ref" in p for p in problems)
+
+
 def test_fleet_entry_null_profile_ref_without_pending_lane_fails():
     registry = empty_registry()
     reg.assign(registry, FIXTURE_LOG)

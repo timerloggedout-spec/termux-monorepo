@@ -267,6 +267,14 @@ def check(registry, log_text, profiles_text):
                 problems.append(f"hard: {pid}: profile_ref is null but no "
                                 "profile_pending names the lane that will "
                                 "register the profile")
+        elif isinstance(ref, str) and ref.startswith("alt:"):
+            # Alternative-surface profile home (owner steer 2026-10-29:
+            # finished account creations stay OFF GitHub, e.g. on the
+            # interim gSheet). The registry carries the pointer only -
+            # no profile data, and no in-repo resolution to check.
+            if not ref[4:].strip():
+                problems.append(f"hard: {pid}: alt profile_ref names no "
+                                "surface")
         elif not any(h == ref or h.startswith(ref + " ") or
                      h.startswith(ref + " —") for h in headings):
             problems.append(f"hard: {pid}: profile_ref {ref!r} does not resolve "

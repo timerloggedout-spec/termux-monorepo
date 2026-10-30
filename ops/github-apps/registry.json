@@ -1,11 +1,10 @@
 {
   "schema_version": 1,
   "registry_id": "termux-github-app-fleet",
-  "purpose": "Discoverable, non-secret registry of GitHub Apps used by the Termux integration mesh. Declared configuration is not proof of live installation permissions.",
+  "purpose": "Discoverable non-secret registry. Checked-in manifests are the declared-permission source of truth; this registry never proves live installation state.",
   "source_of_truth_policy": {
-    "declared_permissions": "ops/github-apps/<app>/manifest.json",
-    "profile_and_installation_claims": "ops/github-apps/<app>/PROFILE.md",
-    "observed_state": "generated telemetry artifact from github-app-telemetry workflow",
+    "declared_permissions": "manifest_path in each app record",
+    "observed_state": "timestamped telemetry artifact",
     "secret_values": "never collect, serialize, log, or upload"
   },
   "apps": [
@@ -13,20 +12,12 @@
       "slug": "termux-fleet-collector",
       "display_name": "Termux Fleet Collector",
       "app_id": 5535733,
+      "role": "collector",
+      "status": "installed_claimed_live",
       "profile_path": "ops/github-apps/collector-pilot/PROFILE.md",
       "manifest_path": "ops/github-apps/collector-pilot/manifest.json",
       "homepage": "https://github.com/timerloggedout-spec/termux-monorepo",
       "purpose": "Read-only collection, quota readings, feed collection, evidence harvest",
-      "pilot": true,
-      "declared_permissions": {
-        "metadata": "read",
-        "contents": "read",
-        "pull_requests": "read",
-        "issues": "read",
-        "checks": "read",
-        "actions": "read"
-      },
-      "declared_events": [],
       "expected_installations": [
         {
           "account": "timerloggedout-spec",
@@ -50,6 +41,36 @@
         "Prove a real collector batch uses the app token and does not consume the PAT bucket.",
         "Pass negative-path tests for missing credentials, revoked installation, inaccessible repository, and permission drift."
       ]
+    }
+  ],
+  "planned_roles": [
+    {
+      "role": "publisher",
+      "slug_candidate": "termux-fleet-publisher",
+      "status": "naming_draft_do_not_provision",
+      "source": "ops/github-apps/PROCESS.json",
+      "note": "Candidate only; final naming requires conference and owner close."
+    },
+    {
+      "role": "reviewer-ops",
+      "slug_candidate": "termux-fleet-reviewer",
+      "status": "naming_draft_do_not_provision",
+      "source": "ops/github-apps/PROCESS.json",
+      "note": "Candidate only; final naming requires conference and owner close."
+    },
+    {
+      "role": "gate-ci",
+      "slug_candidate": "termux-fleet-gate",
+      "status": "naming_draft_do_not_provision",
+      "source": "ops/github-apps/PROCESS.json",
+      "note": "Candidate only; final naming requires conference and owner close."
+    },
+    {
+      "role": "lifecycle",
+      "slug_candidate": "termux-fleet-lifecycle",
+      "status": "naming_draft_do_not_provision",
+      "source": "ops/github-apps/PROCESS.json",
+      "note": "Candidate only; final naming requires conference and owner close."
     }
   ]
 }

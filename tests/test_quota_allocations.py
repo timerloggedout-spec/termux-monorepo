@@ -53,7 +53,7 @@ def test_enroll_batch_lane_slices_are_landed_with_claims():
     # the github pool holds the batch plus the repo-replay project slice.
     gh = next(p for p in CFG["pools"] if p["id"] == "github")
     lanes = {s["lane"]: s for s in gh["slices"] if "lane" in s}
-    assert len(lanes) == 39, sorted(lanes)
+    assert len(lanes) == 48, sorted(lanes)
     for lane, s in lanes.items():
         assert isinstance(s["claim"], int) and s["claim"] > 6_000_000_000, lane
         assert s["primary_services"], lane
@@ -67,6 +67,11 @@ def test_enroll_batch_lane_slices_are_landed_with_claims():
     assert pat["fallback_mode"] == "none" and pat["fallback_service"] is None
     p201 = next(p for p in CFG["pools"] if p["id"] == "platform201")
     assert [s["lane"] for s in p201["slices"]] == ["platform201-status"]
+    goog = next(p for p in CFG["pools"] if p["id"] == "google")
+    assert [s["lane"] for s in goog["slices"]] == ["google-ai-studio"]
+    assert goog["slices"][0]["primary_services"] == ["gemini.api_free"]
+    ver = next(p for p in CFG["pools"] if p["id"] == "vercel")
+    assert [s["lane"] for s in ver["slices"]] == ["vercel-specialist"]
 
 
 def test_validator_rejects_none_mode_with_a_fallback_set():
@@ -85,7 +90,7 @@ def test_feed_surfaces_pool_slices():
     assert gh["slices"][0]["project"] == "repo-replay"
     p201 = next(p for p in f["pools"] if p["pool"] == "platform201")
     assert [s["lane"] for s in p201["slices"]] == ["platform201-status"]
-    others = [p for p in f["pools"] if p["pool"] not in ("github", "platform201")]
+    others = [p for p in f["pools"] if p["pool"] not in ("github", "platform201", "google", "vercel")]
     assert all(p["slices"] == [] for p in others)
 
 

@@ -87,6 +87,13 @@ class NomenclatureMatrixTests(unittest.TestCase):
                 bad["evidence_records"][0].update(status="accepted", reviewer=reviewer)
                 self.assertTrue(any("nonblank reviewer" in e for e in MODULE.validate(bad)))
 
+    def test_evidence_excerpt_must_not_be_whitespace(self):
+        for excerpt in ("", "   ", "\t"):
+            with self.subTest(excerpt=excerpt):
+                bad = json.loads(json.dumps(self.data))
+                bad["evidence_records"][0]["evidence_excerpt"] = excerpt
+                self.assertTrue(any("nonblank excerpt" in e for e in MODULE.validate(bad)))
+
     def test_crosswalk_is_deterministic_and_covers_seed_labels(self):
         first = CROSSWALK.render_crosswalk(self.data)
         second = CROSSWALK.render_crosswalk(self.data)
@@ -95,6 +102,9 @@ class NomenclatureMatrixTests(unittest.TestCase):
         self.assertEqual(first, checked_in)
         for label in self.data["labels"]:
             self.assertIn(label["text"].replace("|", r"\|"), first)
+        for concept in self.data["concepts"]:
+            self.assertIn(concept["concept_id"], first)
+        self.assertIn("functional_programming.left_to_right_composition", first)
         self.assertIn("Semantic mapping candidates", first)
         self.assertIn("Claim-level evidence", first)
         self.assertIn("Candidate status is preserved", first)

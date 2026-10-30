@@ -5,9 +5,11 @@ This script distinguishes checked-in declarations from live observations. It
 never reads secret stores, prints tokens, or treats a manifest as proof that a
 permission or installation is active.
 
-Optional live probe: set GITHUB_APP_INSTALLATION_TOKEN to an ephemeral
-installation token. It is used only in Authorization headers and never
-serialized. The probe reads /rate_limit and /installation/repositories.
+Optional manual probe: a caller may supply an ephemeral installation token via
+GITHUB_APP_INSTALLATION_TOKEN. It is used only in Authorization headers and
+never serialized. Scheduled CI intentionally does not provide a token while
+SEC-01/02 secret provisioning remains unverified. The probe reads /rate_limit
+and /installation/repositories.
 """
 import argparse
 import datetime
@@ -41,6 +43,22 @@ def request_json(token, path):
         return 0, {}
 
 
+def _load_manifest(app):
+    path = app.get("manifest_path")
+    if not path:
+        return None
+    manifest_path = ROOT / path
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    permissions = manifest.get("default_permissions", {})
+    events = manifest.get("default_events", [])
+    if not isinstance(permissions, dict) or not isinstance(events, list):
+        raise ValueError(f"{app.get('slug')}: invalid manifest permission/event shape")
+    if any(value not in ("read", "write", "admin", "none")
+           for value in permissions.values()):
+        raise ValueError(f"{app.get('slug')}: invalid manifest permission value")
+    return manifest, permissions, events
+
+
 def build_telemetry(registry, token=None):
     if registry.get("schema_version") != 1:
         raise ValueError("unsupported registry schema_version")
@@ -55,21 +73,23 @@ def build_telemetry(registry, token=None):
         if not isinstance(slug, str) or not slug or slug in seen:
             raise ValueError("each app must have a unique non-empty slug")
         seen.add(slug)
-        declared = app.get("declared_permissions", {})
-        if any(value not in ("read", "write", "admin", "none")
-               for value in declared.values()):
-            raise ValueError(f"{slug}: invalid declared permission value")
+        loaded = _load_manifest(app)
+        if loaded is None:
+            raise ValueError(f"{slug}: manifest_path is required for registered apps")
+        manifest, declared, events = loaded
         rows.append({
             "slug": slug,
             "display_name": app.get("display_name"),
             "app_id": app.get("app_id"),
+            "role": app.get("role"),
+            "status": app.get("status", "unknown"),
             "purpose": app.get("purpose"),
-            "pilot": bool(app.get("pilot")),
             "declared_permissions": dict(sorted(declared.items())),
-            "declared_events": sorted(app.get("declared_events", [])),
+            "declared_events": sorted(events),
             "expected_installations": app.get("expected_installations", []),
             "evidence": {
                 "registry": "checked_in_declaration",
+                "manifest": "checked_in_declaration",
                 "live_installation": "not_observed",
                 "live_permissions": "not_observed",
                 "repository_scope": "not_observed",
@@ -78,6 +98,9 @@ def build_telemetry(registry, token=None):
         })
 
     if token:
+        # This optional probe is for a caller-supplied, ephemeral installation
+        # token only. Scheduled CI intentionally does not provide one; token
+        # minting remains gated on verified secret provisioning (SEC-01/02).
         status, limits = request_json(token, "/rate_limit")
         for row in rows:
             row["evidence"]["rate_limit"] = (
@@ -102,15 +125,18 @@ def build_telemetry(registry, token=None):
                     f"probe_failed_http_{status}" if status else "probe_failed_network"
                 )
 
+    planned_roles = registry.get("planned_roles", [])
+    if not isinstance(planned_roles, list):
+        raise ValueError("registry planned_roles must be a list")
     return {
         "schema_version": 1,
         "observed_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "registry_id": registry.get("registry_id"),
-        "source_class": "checked_in_declaration_plus_optional_live_probe",
+        "source_class": "checked_in_declaration_plus_optional_manual_live_probe",
+        "planned_roles": planned_roles,
         "credential_policy": "no credentials or secret values are emitted",
         "apps": rows,
     }
-
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)

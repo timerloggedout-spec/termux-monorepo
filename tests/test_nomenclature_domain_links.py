@@ -54,6 +54,18 @@ class NomenclatureDomainLinkTests(unittest.TestCase):
         self.assertTrue(any("nonblank reviewer" in e for e in errors))
         self.assertTrue(any("reviewed_on" in e for e in errors))
 
+    def test_source_path_mismatch_is_rejected(self):
+        bad = copy.deepcopy(self.links)
+        bad["source_contracts"]["nomenclature"]["path"] = "some/other/seed.json"
+        self.assertTrue(any("nomenclature source path mismatch" in e for e in MODULE.validate(bad, self.nomenclature, self.domain)))
+
+    def test_accepted_link_requires_canonical_review_date(self):
+        for reviewed_on in ("20261030", "2026-1-30", "2026-02-30"):
+            with self.subTest(reviewed_on=reviewed_on):
+                bad = copy.deepcopy(self.links)
+                bad["links"][0].update(status="accepted", reviewer="independent reviewer", reviewed_on=reviewed_on)
+                self.assertTrue(any("canonical reviewed_on" in e for e in MODULE.validate(bad, self.nomenclature, self.domain)))
+
     def test_source_schema_version_mismatch_is_rejected(self):
         bad = copy.deepcopy(self.links)
         bad["source_contracts"]["domain_composition"]["schema_version"] = 99

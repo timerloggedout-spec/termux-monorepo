@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 354,
-    "open_prs": 120,
+    "open_prs": 119,
     "pr_classes": {
-      "CANDIDATE": 63,
-      "EXTRACT": 8,
-      "NEED_EVIDENCE": 49,
+      "CANDIDATE": 65,
+      "EXTRACT": 6,
+      "NEED_EVIDENCE": 48,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 19,
-      "prs": 118,
+      "prs": 117,
       "unlabelled_numbers": [
         308,
         343,
@@ -74,7 +74,7 @@
       ]
     }
   },
-  "generated_at": "2026-10-30T08:58:50Z",
+  "generated_at": "2026-10-30T09:00:03Z",
   "issues_unlabelled": [
     308,
     343,
@@ -99,10 +99,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "in_progress",
+      "smoke": "success"
     },
-    "sha": "8d8ac4bbb5"
+    "sha": "b62a09041a"
   },
   "prs": [
     {
@@ -182,40 +182,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "4460c735a2",
+      "head_sha": "f643e3bc18",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 2445,
-      "title": "\u26a1 Bolt: optimize research intake parsing and observatory intake processing",
-      "updated_at": "2026-10-30T08:11:42Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "3748823cfb",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2453,
-      "title": "feat(mesh): poll output \u21a6 notation spec (#320 + #1734)",
-      "updated_at": "2026-10-30T08:58:34Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "9477ded857",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2454,
-      "title": "docs(migration-plan): fold Repo Replay into the AppID migration plan (RR-1/RR-2)",
-      "updated_at": "2026-10-30T08:57:23Z"
+      "number": 2456,
+      "title": "docs(ops): refresh AppID quota and telemetry maintenance status",
+      "updated_at": "2026-10-30T08:59:17Z"
     },
     {
       "class": "CANDIDATE",
@@ -1097,12 +1069,40 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "4460c735a2",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2445,
+      "title": "\u26a1 Bolt: optimize research intake parsing and observatory intake processing",
+      "updated_at": "2026-10-30T08:11:42Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "a2c88f8efe",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2448,
       "title": "Draft: adaptive GitHub App fleet telemetry and per-run publication",
-      "updated_at": "2026-10-30T08:57:29Z"
+      "updated_at": "2026-10-30T08:59:13Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "3748823cfb",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2453,
+      "title": "feat(mesh): poll output \u21a6 notation spec (#320 + #1734)",
+      "updated_at": "2026-10-30T08:58:34Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1517,12 +1517,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "af49b0691d",
+      "head_sha": "7fc8364d23",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-10-30T08:49:50Z"
+      "updated_at": "2026-10-30T08:59:45Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1671,12 +1671,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "42a0ad7fba",
+      "head_sha": "3a1aa6ef62",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-10-30T08:58:36Z"
+      "updated_at": "2026-10-30T08:59:30Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1775,20 +1775,6 @@
       "number": 2378,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-30T02:09:00Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "success"
-      },
-      "head_sha": "f643e3bc18",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2456,
-      "title": "docs(ops): refresh AppID quota and telemetry maintenance status",
-      "updated_at": "2026-10-30T08:58:37Z"
     }
   ],
   "schema": "operator-matrix/v1",

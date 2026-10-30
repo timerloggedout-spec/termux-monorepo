@@ -159,3 +159,13 @@ This lane records concepts, audience/register-specific labels, evidence sources,
 - Machine-readable projection consumer contract: [nomenclature-matrix/CROSSWALK-CONSUMER-CONTRACT.md](./nomenclature-matrix/CROSSWALK-CONSUMER-CONTRACT.md).
 
 These documents clarify historical decisions, domain-review expectations, and the candidate-only boundary for downstream JSON consumers. They do not confer domain acceptance or runtime authority.
+
+
+### Typed Domain Composition Matrix integration
+
+- Integration contract: [nomenclature-matrix/DOMAIN-COMPOSITION-INTEGRATION.md](./nomenclature-matrix/DOMAIN-COMPOSITION-INTEGRATION.md).
+- Candidate reference registry: [nomenclature-matrix/DOMAIN-COMPOSITION-LINKS.json](./nomenclature-matrix/DOMAIN-COMPOSITION-LINKS.json).
+- Validator: [validate_nomenclature_domain_links.py](../../../../scripts/ci/validate_nomenclature_domain_links.py).
+- Tests: [test_nomenclature_domain_links.py](../../../../tests/test_nomenclature_domain_links.py).
+
+The registry connects nomenclature concepts to typed DCM domain/entity/operation/rule records. It is not an equivalence map; every link remains candidate and carries a non-equivalence boundary. The dedicated nomenclature workflow validates both source seeds and the typed links.

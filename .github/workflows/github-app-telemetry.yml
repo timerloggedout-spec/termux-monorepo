@@ -19,7 +19,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: github-app-telemetry-\${{ github.event_name }}-\${{ github.event.pull_request.number || github.ref }}
+  group: github-app-telemetry-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -47,9 +47,9 @@ jobs:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: Validate Collector credential bindings
         env:
-          APP_ID: \${{ vars.TERMUX_FLEET_COLLECTOR_APP_ID }}
-          APP_CLIENT_ID: \${{ vars.TERMUX_FLEET_COLLECTOR_CLIENT_ID }}
-          APP_PRIVATE_KEY: \${{ secrets.TERMUX_FLEET_COLLECTOR_PRIVATE_KEY }}
+          APP_ID: ${{ vars.TERMUX_FLEET_COLLECTOR_APP_ID }}
+          APP_CLIENT_ID: ${{ vars.TERMUX_FLEET_COLLECTOR_CLIENT_ID }}
+          APP_PRIVATE_KEY: ${{ secrets.TERMUX_FLEET_COLLECTOR_PRIVATE_KEY }}
         run: |
           set -euo pipefail
           test -n "$APP_ID" || { echo "::error::TERMUX_FLEET_COLLECTOR_APP_ID is missing"; exit 2; }
@@ -59,22 +59,22 @@ jobs:
         id: app-token
         uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3 release
         with:
-          app-id: \${{ vars.TERMUX_FLEET_COLLECTOR_APP_ID }}
-          private-key: \${{ secrets.TERMUX_FLEET_COLLECTOR_PRIVATE_KEY }}
+          app-id: ${{ vars.TERMUX_FLEET_COLLECTOR_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_COLLECTOR_PRIVATE_KEY }}
           repositories: termux-monorepo
       - name: Emit live census and G4 runtime receipt
         env:
-          GITHUB_APP_INSTALLATION_TOKEN: \${{ steps.app-token.outputs.token }}
-          GITHUB_RUN_ID: \${{ github.run_id }}
-          GITHUB_RUN_ATTEMPT: \${{ github.run_attempt }}
-          GITHUB_SHA: \${{ github.sha }}
-          GITHUB_STEP_SUMMARY: \${{ github.step_summary }}
+          GITHUB_APP_INSTALLATION_TOKEN: ${{ steps.app-token.outputs.token }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_JOB_CONCLUSION: ${{ job.status }}
         run: |
           set -euo pipefail
           python scripts/github/github_app_telemetry.py --probe-app termux-fleet-collector --output github-app-telemetry.json
       - name: Upload sanitized telemetry and G4 receipt
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: github-app-telemetry-\${{ github.run_id }}-\${{ github.run_attempt }}
+          name: github-app-telemetry-${{ github.run_id }}-${{ github.run_attempt }}
           path: github-app-telemetry.json
           retention-days: 30

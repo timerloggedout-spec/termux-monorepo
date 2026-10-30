@@ -36,6 +36,18 @@ Reviewer-ops `Argus`, Lifecycle `Janus`, Gate/CI `Cerberus`; slugs
 `termux-fleet-<function>` are candidates verified at creation by the AppID
 lane. This plan is naming-independent: it binds to permission classes.
 
+Principal classes — never conflated anywhere in this plan (quota lane
+confirmation, 2026-10-30, ∅ corrections): **installation token = 5000/h per
+installation** (one bucket per installation; the planning figure stays 5000 —
+any scaling with install/repo counts is NOT ESTABLISHED until measured);
+**user PAT = 5000/h per USER**, shared across every same-account PAT
+(rotating PATs adds no bucket); **Actions `GITHUB_TOKEN` = 1000/h per repo**.
+Per-bucket flow target = limit ÷ window phase-aligned to the reset epoch
+(5000/60 ≈ 83.3/min per installation bucket; PR #2381), split per consumer
+slice — slice flow = bucket flow × slice share, re-derived on every #1884
+re-split and every new app allocation (PR #2384); reserve = timing slack,
+releasing into lower priority classes as the reset nears.
+
 ## 1. Deliverable 1 — Migration map
 
 Calls/run are estimates of record where a lane has measured them; where no

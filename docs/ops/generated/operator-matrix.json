@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 365,
+    "open_issues": 366,
     "open_prs": 152,
     "pr_classes": {
-      "CANDIDATE": 69,
+      "CANDIDATE": 70,
       "EXTRACT": 5,
-      "NEED_EVIDENCE": 78,
+      "NEED_EVIDENCE": 77,
       "SUPERSEDE": 0
     }
   },
@@ -49,7 +49,7 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 27,
+      "issues": 28,
       "prs": 150,
       "unlabelled_numbers": [
         308,
@@ -78,11 +78,12 @@
         2732,
         2734,
         2735,
-        2750
+        2750,
+        2758
       ]
     }
   },
-  "generated_at": "2026-10-31T17:36:03Z",
+  "generated_at": "2026-10-31T23:56:51Z",
   "issues_unlabelled": [
     308,
     343,
@@ -110,7 +111,8 @@
     2732,
     2734,
     2735,
-    2750
+    2750,
+    2758
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
@@ -118,7 +120,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "dde9caa3f8"
+    "sha": "96d5005eb3"
   },
   "prs": [
     {
@@ -133,7 +135,7 @@
       "mergeable_state": "unstable",
       "number": 1498,
       "title": "Antigravity CLI: collaborative use cases, provisioning proposal, offline readiness (#1497)",
-      "updated_at": "2026-10-30T13:12:12Z"
+      "updated_at": "2026-10-31T21:44:48Z"
     },
     {
       "class": "EXTRACT",
@@ -244,7 +246,7 @@
       },
       "head_sha": "60fc3e697b",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 527,
       "title": "ops: close admission and pagination stall evidence gaps",
       "updated_at": "2026-10-31T12:48:28Z"
@@ -1163,6 +1165,20 @@
       "updated_at": "2026-10-31T16:17:00Z"
     },
     {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "4c1021ab0e",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2757,
+      "title": "feat(ci): add merged branch review audit and quota engine",
+      "updated_at": "2026-10-31T22:20:31Z"
+    },
+    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -1227,7 +1243,7 @@
       },
       "head_sha": "da109a5469",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 103,
       "title": "feat(comms): CAVEMAN-micro seed + success matrix + dual-file + CLAUDE.md Cheat_Code",
       "updated_at": "2026-10-31T12:48:36Z"
@@ -1575,12 +1591,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "0ebcaf765a",
+      "head_sha": "a793a097bb",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-10-31T17:34:26Z"
+      "updated_at": "2026-10-31T22:24:05Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1729,12 +1745,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "764c70edfe",
+      "head_sha": "20dc23a1e6",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-10-31T17:22:57Z"
+      "updated_at": "2026-10-31T22:21:58Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1743,12 +1759,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "1464101de4",
+      "head_sha": "64c7e21cf9",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2310,
       "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-10-31T15:59:22Z"
+      "updated_at": "2026-10-31T22:21:22Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2239,20 +2255,6 @@
       "number": 2629,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-31T05:34:47Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "in_progress",
-        "smoke": "in_progress"
-      },
-      "head_sha": "5a17bdcbb5",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2731,
-      "title": "StudySprint v0.2.0 release cut \u2014 VERSION bump + CHANGELOG + receipts refresh",
-      "updated_at": "2026-10-31T17:35:57Z"
     }
   ],
   "schema": "operator-matrix/v1",

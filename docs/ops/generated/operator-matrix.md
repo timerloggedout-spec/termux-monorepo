@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-10-31T07:49:52Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-10-31T07:51:08Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `e3f3ac347f` (hygiene: queued, smoke: in_progress). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `cfe85cd411` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 360 issues, 153 PRs. PR classes: EXTRACT 5 / CANDIDATE 69 / NEED_EVIDENCE 79 / SUPERSEDE 0.
+**Open inventory:** 360 issues, 152 PRs. PR classes: EXTRACT 5 / CANDIDATE 69 / NEED_EVIDENCE 78 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -127,7 +127,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2190 | NEED_EVIDENCE | unlabelled | `be30d8c241` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2235 | NEED_EVIDENCE | unlabelled | `e1d36f6c2f` | not_reported | not_reported | unknown | chore(osint): refresh coverage + page snapshots |
 | #2252 | NEED_EVIDENCE | unlabelled | `77f6526342` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2263 | NEED_EVIDENCE | unlabelled | `bdc7966755` | not_reported | not_reported | unstable | chore(delphi): refresh delphi-ledger-feed.json |
+| #2263 | NEED_EVIDENCE | unlabelled | `c737aca97a` | not_reported | not_reported | unknown | chore(delphi): refresh delphi-ledger-feed.json |
 | #2310 | NEED_EVIDENCE | unlabelled | `c537d9d26e` | not_reported | not_reported | unknown | chore(delphi): refresh delphi-rfp-feed.json |
 | #2324 | NEED_EVIDENCE | unlabelled | `7187890729` | not_reported | not_reported | unknown | chore(proposals): refresh proposals-feed.json |
 | #2340 | NEED_EVIDENCE | unlabelled | `201f04bfdb` | not_reported | not_reported | unknown | chore(dashboards): refresh dispatch-tree feed |
@@ -165,7 +165,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2628 | NEED_EVIDENCE | unlabelled | `ef4b0d52ba` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2629 | NEED_EVIDENCE | unlabelled | `dae7247663` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2679 | NEED_EVIDENCE | unlabelled | `d24fd5e65c` | not_reported | not_reported | unknown | feat(desk): phrase stamps beside instance stamps (provider-phrases SSOT) |
-| #2686 | NEED_EVIDENCE | unlabelled | `12989ac92e` | not_reported | not_reported | unknown | fix(challenge): event_opportunity_cost view — DROP before replace (schema apply  |
 
 ## Families (open)
 
@@ -180,6 +179,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | research | 6 | 0 |
 | security | 10 | 0 |
 | temporal | 2 | 0 |
-| unlabelled | 23 | 151 |
+| unlabelled | 23 | 150 |
 
 **Unlabelled open issues (23):** #308, #343, #388, #389, #763, #876, #968, #1226, #1450, #1497, #1588, #1592, #1593, #1622, #1683, #2179, #2185, #2204, #2210, #2571, #2600, #2672, #2677 — worked oldest-first by the issue-lifecycle lane pass.

@@ -27,9 +27,13 @@ until build receipts land; (d) 4n0n protocol ∀ public artifacts
 ## 2. Beats (event-triggered)
 
 1. **Announcement** — fire: NOW (scaffold/freeze fact established).
-   Channel: repo README link surface + social when a channel exists.
+   Channel (parent decision 2026-10-31): fleet FB Page **Dream In
+   Production** carries the post; copy routes ↦ parent lane, parent
+   publishes ∧ logs against the D4 campaign. Repo README/releases =
+   durable record. Devpost joins the channel set when a draft exists.
 2. **Build-in-open** — fire: D4 spec-pack handoff (pre-Nov 8), then per
    build receipt (Jules PR merged / artifact sync verified by D4 seat).
+   Channel: same as beat 1 (FB Page via parent; repo = durable record).
 3. **Blog** — draft in build window; fire: first real `/.kiro` hook/spec
    receipts exist (Bonus Blog target). Final sections fill post-build.
 4. **Submission beat** — fire: D4 seat confirms submission on Devpost
@@ -151,7 +155,8 @@ in-period on 2026-10-30: https://github.com/timerloggedout-spec/skeleton-crew
 
 - D4-ACCOUNTS closure (registration ∧ Kiro ID) — accounts lane owns;
   promo dependency = credit form ≤ 2026-12-01T12:00PT.
-- Publication channel for beats 1–2 = NOT ESTABLISHED (∅ social surface
-  exists today) ⇒ parent decides channel ∨ beats ride repo + Devpost only.
+- Publication channel beats 1–2 = RESOLVED (parent, 2026-10-31): fleet
+  FB Page Dream In Production via parent publish; repo = durable record;
+  Devpost joins when a draft project exists.
 - Media (demo <3 min, screenshots) = build-window outputs, OUTSOURCE
   rule applies; ∅ fleet quota burn for media production.

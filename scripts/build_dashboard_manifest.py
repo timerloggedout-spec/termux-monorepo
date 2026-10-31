@@ -13,6 +13,21 @@ ID_OVERRIDES = {
     "index.html": "help-wanted-home",
     "versioning.html": "version-comparison",
 }
+TITLE_OVERRIDES = {
+    "index.html": "Help-Wanted Home",
+    "versioning.html": "Version Comparison",
+    "3l0.html": "3L0",
+    "ates.html": "ATES",
+    "doe.html": "DoE",
+    "delphi-rfp.html": "Delphi RFP",
+    "delphi-ledger.html": "Delphi Ledger",
+    "mvt.html": "MVT",
+    "pr-lanes.html": "PR Lanes",
+}
+
+
+def page_title(filename: str) -> str:
+    return TITLE_OVERRIDES.get(filename, Path(filename).stem.replace("-", " ").replace("_", " ").title())
 EXCLUDED = {"sitemap.xml"}
 
 
@@ -60,7 +75,7 @@ def build(root: Path, channel: str, source_ref: str, source_sha: str, version_pr
         manifest["pages"].append({
             "id": page_id(page.name),
             "file": page.name,
-            "title": page.stem.replace("-", " ").replace("_", " ").title(),
+            "title": page_title(page.name),
             "content_sha256": sha256(page),
         })
     (root / "version-manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")

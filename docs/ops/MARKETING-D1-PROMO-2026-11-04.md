@@ -37,4 +37,4 @@ Positive set (author — comment): Dhriti Gupta — "Awesome 😎" · Sanjai V �
 
 Neutral/questions (reply candidates for the entries lane): Devesh Arya — "How can you implement it in the real World scenarios?" · Sugam sharma — "why demo is required to run locally?"
 
-Liking status: ∅ liked — Builder requires a signed-in session to like comments; this browser profile is not signed in to Builder. Owner takeover sign-in ⇒ parent lane resumes and likes all 21.
+Liking status: DONE 2026-10-31 — 21/21 positive comments LIKED via the entries lane's signed-in Builder session (GitHub-route; 19 clicked + 2 already-liked left as-is); excluded 3 untouched. Replies posted same session: Devesh Arya (revised personality version) + Sugam sharma (verbatim), both live as Reply 1, 2026-10-31.

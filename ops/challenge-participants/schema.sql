@@ -183,6 +183,12 @@ FROM participants_current c,
 -- events[].opportunity_cost{} rides the sync events core; extracted here.
 -- Owner ruling 2026-10-28: ledger = gross only, NO EV; win_probability is a hidden
 -- MoneyBall-internal metric (coordinator metrics_internal) and is NEVER in DB views.
+-- DROP first: CREATE OR REPLACE VIEW cannot drop columns, and the
+-- pre-ruling version of this view carried EV/winprob columns — a
+-- replace against a database holding that version fails hard
+-- ("cannot drop columns from view", schema.sql:195, found live
+-- 2026-10-31 when the failed apply also blocked the tables below).
+DROP VIEW IF EXISTS event_opportunity_cost;
 CREATE OR REPLACE VIEW event_opportunity_cost AS
 SELECT ev.event_id, ev.name AS event_name,
        ev.opportunity_cost->>'outcome' AS outcome,

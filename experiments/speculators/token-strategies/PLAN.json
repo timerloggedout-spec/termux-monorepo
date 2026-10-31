@@ -1,0 +1,1213 @@
+{
+ "campaign_id": "token-strategies-1",
+ "cells": 12,
+ "fork": {
+  "ref": "c13304cf3ec212171c7ad536f18698a7c67f18a8",
+  "repo": "timerloggedout-spec/speculators_fork",
+  "upstream": "vllm-project/speculators"
+ },
+ "planned_runs": 48,
+ "rows": [
+  {
+   "cell": "c01",
+   "factors": {
+    "strategy": "baseline",
+    "verifier": "Qwen/Qwen3-8B"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "7c98617f7bf96e05dc149866959496dec5c0786237875f00ad80ef5929a046e7",
+    "model": "Qwen/Qwen3-8B+baseline",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#baseline",
+     "sha256": "d87f4bc6cbc287e6afeb57e094d75b3d4519d9ad47f37e2a72ed568f525daba2"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c01-t1",
+   "task": "t1"
+  },
+  {
+   "cell": "c01",
+   "factors": {
+    "strategy": "baseline",
+    "verifier": "Qwen/Qwen3-8B"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "7c98617f7bf96e05dc149866959496dec5c0786237875f00ad80ef5929a046e7",
+    "model": "Qwen/Qwen3-8B+baseline",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#baseline",
+     "sha256": "d87f4bc6cbc287e6afeb57e094d75b3d4519d9ad47f37e2a72ed568f525daba2"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c01-t2",
+   "task": "t2"
+  },
+  {
+   "cell": "c01",
+   "factors": {
+    "strategy": "baseline",
+    "verifier": "Qwen/Qwen3-8B"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "7c98617f7bf96e05dc149866959496dec5c0786237875f00ad80ef5929a046e7",
+    "model": "Qwen/Qwen3-8B+baseline",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#baseline",
+     "sha256": "d87f4bc6cbc287e6afeb57e094d75b3d4519d9ad47f37e2a72ed568f525daba2"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c01-t3",
+   "task": "t3"
+  },
+  {
+   "cell": "c01",
+   "factors": {
+    "strategy": "baseline",
+    "verifier": "Qwen/Qwen3-8B"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "7c98617f7bf96e05dc149866959496dec5c0786237875f00ad80ef5929a046e7",
+    "model": "Qwen/Qwen3-8B+baseline",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#baseline",
+     "sha256": "d87f4bc6cbc287e6afeb57e094d75b3d4519d9ad47f37e2a72ed568f525daba2"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c01-t4",
+   "task": "t4"
+  },
+  {
+   "cell": "c02",
+   "factors": {
+    "strategy": "baseline",
+    "verifier": "meta-llama/Llama-3.1-8B-Instruct"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "a7f767112f17eaa7e2b7b41a48af9da385ffdf3bf663b15e58fabd9104ffde59",
+    "model": "meta-llama/Llama-3.1-8B-Instruct+baseline",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#baseline",
+     "sha256": "d87f4bc6cbc287e6afeb57e094d75b3d4519d9ad47f37e2a72ed568f525daba2"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c02-t1",
+   "task": "t1"
+  },
+  {
+   "cell": "c02",
+   "factors": {
+    "strategy": "baseline",
+    "verifier": "meta-llama/Llama-3.1-8B-Instruct"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "a7f767112f17eaa7e2b7b41a48af9da385ffdf3bf663b15e58fabd9104ffde59",
+    "model": "meta-llama/Llama-3.1-8B-Instruct+baseline",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#baseline",
+     "sha256": "d87f4bc6cbc287e6afeb57e094d75b3d4519d9ad47f37e2a72ed568f525daba2"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c02-t2",
+   "task": "t2"
+  },
+  {
+   "cell": "c02",
+   "factors": {
+    "strategy": "baseline",
+    "verifier": "meta-llama/Llama-3.1-8B-Instruct"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "a7f767112f17eaa7e2b7b41a48af9da385ffdf3bf663b15e58fabd9104ffde59",
+    "model": "meta-llama/Llama-3.1-8B-Instruct+baseline",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#baseline",
+     "sha256": "d87f4bc6cbc287e6afeb57e094d75b3d4519d9ad47f37e2a72ed568f525daba2"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c02-t3",
+   "task": "t3"
+  },
+  {
+   "cell": "c02",
+   "factors": {
+    "strategy": "baseline",
+    "verifier": "meta-llama/Llama-3.1-8B-Instruct"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "a7f767112f17eaa7e2b7b41a48af9da385ffdf3bf663b15e58fabd9104ffde59",
+    "model": "meta-llama/Llama-3.1-8B-Instruct+baseline",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#baseline",
+     "sha256": "d87f4bc6cbc287e6afeb57e094d75b3d4519d9ad47f37e2a72ed568f525daba2"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c02-t4",
+   "task": "t4"
+  },
+  {
+   "cell": "c03",
+   "factors": {
+    "strategy": "dflash",
+    "verifier": "Qwen/Qwen3-8B"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "14db44122346ac5a160b3b672d2dda8f050ea12f74cbf164610fb9140a916a66",
+    "model": "Qwen/Qwen3-8B+dflash",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#dflash",
+     "sha256": "6d841e2966bf096dc719852b2aed91580ab1b7a93d627ea564efdfc1a282811b"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c03-t1",
+   "task": "t1"
+  },
+  {
+   "cell": "c03",
+   "factors": {
+    "strategy": "dflash",
+    "verifier": "Qwen/Qwen3-8B"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "14db44122346ac5a160b3b672d2dda8f050ea12f74cbf164610fb9140a916a66",
+    "model": "Qwen/Qwen3-8B+dflash",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#dflash",
+     "sha256": "6d841e2966bf096dc719852b2aed91580ab1b7a93d627ea564efdfc1a282811b"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c03-t2",
+   "task": "t2"
+  },
+  {
+   "cell": "c03",
+   "factors": {
+    "strategy": "dflash",
+    "verifier": "Qwen/Qwen3-8B"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "14db44122346ac5a160b3b672d2dda8f050ea12f74cbf164610fb9140a916a66",
+    "model": "Qwen/Qwen3-8B+dflash",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#dflash",
+     "sha256": "6d841e2966bf096dc719852b2aed91580ab1b7a93d627ea564efdfc1a282811b"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c03-t3",
+   "task": "t3"
+  },
+  {
+   "cell": "c03",
+   "factors": {
+    "strategy": "dflash",
+    "verifier": "Qwen/Qwen3-8B"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "14db44122346ac5a160b3b672d2dda8f050ea12f74cbf164610fb9140a916a66",
+    "model": "Qwen/Qwen3-8B+dflash",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#dflash",
+     "sha256": "6d841e2966bf096dc719852b2aed91580ab1b7a93d627ea564efdfc1a282811b"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c03-t4",
+   "task": "t4"
+  },
+  {
+   "cell": "c04",
+   "factors": {
+    "strategy": "dflash",
+    "verifier": "meta-llama/Llama-3.1-8B-Instruct"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "7f184a82c1ad9ee240edee4dda42164ac6e9899d26457cbddbc3bcf92b0a20a7",
+    "model": "meta-llama/Llama-3.1-8B-Instruct+dflash",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#dflash",
+     "sha256": "6d841e2966bf096dc719852b2aed91580ab1b7a93d627ea564efdfc1a282811b"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c04-t1",
+   "task": "t1"
+  },
+  {
+   "cell": "c04",
+   "factors": {
+    "strategy": "dflash",
+    "verifier": "meta-llama/Llama-3.1-8B-Instruct"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "7f184a82c1ad9ee240edee4dda42164ac6e9899d26457cbddbc3bcf92b0a20a7",
+    "model": "meta-llama/Llama-3.1-8B-Instruct+dflash",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#dflash",
+     "sha256": "6d841e2966bf096dc719852b2aed91580ab1b7a93d627ea564efdfc1a282811b"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c04-t2",
+   "task": "t2"
+  },
+  {
+   "cell": "c04",
+   "factors": {
+    "strategy": "dflash",
+    "verifier": "meta-llama/Llama-3.1-8B-Instruct"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "7f184a82c1ad9ee240edee4dda42164ac6e9899d26457cbddbc3bcf92b0a20a7",
+    "model": "meta-llama/Llama-3.1-8B-Instruct+dflash",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#dflash",
+     "sha256": "6d841e2966bf096dc719852b2aed91580ab1b7a93d627ea564efdfc1a282811b"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c04-t3",
+   "task": "t3"
+  },
+  {
+   "cell": "c04",
+   "factors": {
+    "strategy": "dflash",
+    "verifier": "meta-llama/Llama-3.1-8B-Instruct"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "7f184a82c1ad9ee240edee4dda42164ac6e9899d26457cbddbc3bcf92b0a20a7",
+    "model": "meta-llama/Llama-3.1-8B-Instruct+dflash",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#dflash",
+     "sha256": "6d841e2966bf096dc719852b2aed91580ab1b7a93d627ea564efdfc1a282811b"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c04-t4",
+   "task": "t4"
+  },
+  {
+   "cell": "c05",
+   "factors": {
+    "strategy": "dspark",
+    "verifier": "Qwen/Qwen3-8B"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "4190442cc17496b00c4b87e67afab577affd14231cb25335eaf869d2b25efb64",
+    "model": "Qwen/Qwen3-8B+dspark",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#dspark",
+     "sha256": "0d19ed504e7a3ac1f9c9781c1e05f90f56d0593bfed57628d6d77daed9ce0ad7"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c05-t1",
+   "task": "t1"
+  },
+  {
+   "cell": "c05",
+   "factors": {
+    "strategy": "dspark",
+    "verifier": "Qwen/Qwen3-8B"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "4190442cc17496b00c4b87e67afab577affd14231cb25335eaf869d2b25efb64",
+    "model": "Qwen/Qwen3-8B+dspark",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#dspark",
+     "sha256": "0d19ed504e7a3ac1f9c9781c1e05f90f56d0593bfed57628d6d77daed9ce0ad7"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c05-t2",
+   "task": "t2"
+  },
+  {
+   "cell": "c05",
+   "factors": {
+    "strategy": "dspark",
+    "verifier": "Qwen/Qwen3-8B"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "4190442cc17496b00c4b87e67afab577affd14231cb25335eaf869d2b25efb64",
+    "model": "Qwen/Qwen3-8B+dspark",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#dspark",
+     "sha256": "0d19ed504e7a3ac1f9c9781c1e05f90f56d0593bfed57628d6d77daed9ce0ad7"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c05-t3",
+   "task": "t3"
+  },
+  {
+   "cell": "c05",
+   "factors": {
+    "strategy": "dspark",
+    "verifier": "Qwen/Qwen3-8B"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "4190442cc17496b00c4b87e67afab577affd14231cb25335eaf869d2b25efb64",
+    "model": "Qwen/Qwen3-8B+dspark",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#dspark",
+     "sha256": "0d19ed504e7a3ac1f9c9781c1e05f90f56d0593bfed57628d6d77daed9ce0ad7"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c05-t4",
+   "task": "t4"
+  },
+  {
+   "cell": "c06",
+   "factors": {
+    "strategy": "dspark",
+    "verifier": "meta-llama/Llama-3.1-8B-Instruct"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "1744430907f0731809b9114150b22df7ce485c621dc41386914aadab779697df",
+    "model": "meta-llama/Llama-3.1-8B-Instruct+dspark",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#dspark",
+     "sha256": "0d19ed504e7a3ac1f9c9781c1e05f90f56d0593bfed57628d6d77daed9ce0ad7"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c06-t1",
+   "task": "t1"
+  },
+  {
+   "cell": "c06",
+   "factors": {
+    "strategy": "dspark",
+    "verifier": "meta-llama/Llama-3.1-8B-Instruct"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "1744430907f0731809b9114150b22df7ce485c621dc41386914aadab779697df",
+    "model": "meta-llama/Llama-3.1-8B-Instruct+dspark",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#dspark",
+     "sha256": "0d19ed504e7a3ac1f9c9781c1e05f90f56d0593bfed57628d6d77daed9ce0ad7"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c06-t2",
+   "task": "t2"
+  },
+  {
+   "cell": "c06",
+   "factors": {
+    "strategy": "dspark",
+    "verifier": "meta-llama/Llama-3.1-8B-Instruct"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "1744430907f0731809b9114150b22df7ce485c621dc41386914aadab779697df",
+    "model": "meta-llama/Llama-3.1-8B-Instruct+dspark",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#dspark",
+     "sha256": "0d19ed504e7a3ac1f9c9781c1e05f90f56d0593bfed57628d6d77daed9ce0ad7"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c06-t3",
+   "task": "t3"
+  },
+  {
+   "cell": "c06",
+   "factors": {
+    "strategy": "dspark",
+    "verifier": "meta-llama/Llama-3.1-8B-Instruct"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "1744430907f0731809b9114150b22df7ce485c621dc41386914aadab779697df",
+    "model": "meta-llama/Llama-3.1-8B-Instruct+dspark",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#dspark",
+     "sha256": "0d19ed504e7a3ac1f9c9781c1e05f90f56d0593bfed57628d6d77daed9ce0ad7"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c06-t4",
+   "task": "t4"
+  },
+  {
+   "cell": "c07",
+   "factors": {
+    "strategy": "eagle3",
+    "verifier": "Qwen/Qwen3-8B"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "cb5bae0dfbd5770188cba21bddc25e29bfe9034237598b770ea1b7f00711de53",
+    "model": "Qwen/Qwen3-8B+eagle3",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#eagle3",
+     "sha256": "0ba4513e9d99231c6981daedd862006311760b8d803b65b2070bcd1173472e5f"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c07-t1",
+   "task": "t1"
+  },
+  {
+   "cell": "c07",
+   "factors": {
+    "strategy": "eagle3",
+    "verifier": "Qwen/Qwen3-8B"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "cb5bae0dfbd5770188cba21bddc25e29bfe9034237598b770ea1b7f00711de53",
+    "model": "Qwen/Qwen3-8B+eagle3",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#eagle3",
+     "sha256": "0ba4513e9d99231c6981daedd862006311760b8d803b65b2070bcd1173472e5f"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c07-t2",
+   "task": "t2"
+  },
+  {
+   "cell": "c07",
+   "factors": {
+    "strategy": "eagle3",
+    "verifier": "Qwen/Qwen3-8B"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "cb5bae0dfbd5770188cba21bddc25e29bfe9034237598b770ea1b7f00711de53",
+    "model": "Qwen/Qwen3-8B+eagle3",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#eagle3",
+     "sha256": "0ba4513e9d99231c6981daedd862006311760b8d803b65b2070bcd1173472e5f"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c07-t3",
+   "task": "t3"
+  },
+  {
+   "cell": "c07",
+   "factors": {
+    "strategy": "eagle3",
+    "verifier": "Qwen/Qwen3-8B"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "cb5bae0dfbd5770188cba21bddc25e29bfe9034237598b770ea1b7f00711de53",
+    "model": "Qwen/Qwen3-8B+eagle3",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#eagle3",
+     "sha256": "0ba4513e9d99231c6981daedd862006311760b8d803b65b2070bcd1173472e5f"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c07-t4",
+   "task": "t4"
+  },
+  {
+   "cell": "c08",
+   "factors": {
+    "strategy": "eagle3",
+    "verifier": "meta-llama/Llama-3.1-8B-Instruct"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "9b8c1a767c0089085c62468a79f6da5375ba40a2f2044e762320b79737276812",
+    "model": "meta-llama/Llama-3.1-8B-Instruct+eagle3",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#eagle3",
+     "sha256": "0ba4513e9d99231c6981daedd862006311760b8d803b65b2070bcd1173472e5f"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c08-t1",
+   "task": "t1"
+  },
+  {
+   "cell": "c08",
+   "factors": {
+    "strategy": "eagle3",
+    "verifier": "meta-llama/Llama-3.1-8B-Instruct"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "9b8c1a767c0089085c62468a79f6da5375ba40a2f2044e762320b79737276812",
+    "model": "meta-llama/Llama-3.1-8B-Instruct+eagle3",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#eagle3",
+     "sha256": "0ba4513e9d99231c6981daedd862006311760b8d803b65b2070bcd1173472e5f"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c08-t2",
+   "task": "t2"
+  },
+  {
+   "cell": "c08",
+   "factors": {
+    "strategy": "eagle3",
+    "verifier": "meta-llama/Llama-3.1-8B-Instruct"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "9b8c1a767c0089085c62468a79f6da5375ba40a2f2044e762320b79737276812",
+    "model": "meta-llama/Llama-3.1-8B-Instruct+eagle3",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#eagle3",
+     "sha256": "0ba4513e9d99231c6981daedd862006311760b8d803b65b2070bcd1173472e5f"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c08-t3",
+   "task": "t3"
+  },
+  {
+   "cell": "c08",
+   "factors": {
+    "strategy": "eagle3",
+    "verifier": "meta-llama/Llama-3.1-8B-Instruct"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "9b8c1a767c0089085c62468a79f6da5375ba40a2f2044e762320b79737276812",
+    "model": "meta-llama/Llama-3.1-8B-Instruct+eagle3",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#eagle3",
+     "sha256": "0ba4513e9d99231c6981daedd862006311760b8d803b65b2070bcd1173472e5f"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c08-t4",
+   "task": "t4"
+  },
+  {
+   "cell": "c09",
+   "factors": {
+    "strategy": "mtp",
+    "verifier": "Qwen/Qwen3-8B"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "feeed83cbefe2ba2f7cdd96d95808f9ff752c7ce0aded03d4de64095c2d728b1",
+    "model": "Qwen/Qwen3-8B+mtp",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#mtp",
+     "sha256": "c8bb8bf2f25324b3ffafacf43df752fc9d68f568421dffe0ba74e8ae8aeb6632"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c09-t1",
+   "task": "t1"
+  },
+  {
+   "cell": "c09",
+   "factors": {
+    "strategy": "mtp",
+    "verifier": "Qwen/Qwen3-8B"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "feeed83cbefe2ba2f7cdd96d95808f9ff752c7ce0aded03d4de64095c2d728b1",
+    "model": "Qwen/Qwen3-8B+mtp",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#mtp",
+     "sha256": "c8bb8bf2f25324b3ffafacf43df752fc9d68f568421dffe0ba74e8ae8aeb6632"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c09-t2",
+   "task": "t2"
+  },
+  {
+   "cell": "c09",
+   "factors": {
+    "strategy": "mtp",
+    "verifier": "Qwen/Qwen3-8B"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "feeed83cbefe2ba2f7cdd96d95808f9ff752c7ce0aded03d4de64095c2d728b1",
+    "model": "Qwen/Qwen3-8B+mtp",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#mtp",
+     "sha256": "c8bb8bf2f25324b3ffafacf43df752fc9d68f568421dffe0ba74e8ae8aeb6632"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c09-t3",
+   "task": "t3"
+  },
+  {
+   "cell": "c09",
+   "factors": {
+    "strategy": "mtp",
+    "verifier": "Qwen/Qwen3-8B"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "feeed83cbefe2ba2f7cdd96d95808f9ff752c7ce0aded03d4de64095c2d728b1",
+    "model": "Qwen/Qwen3-8B+mtp",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#mtp",
+     "sha256": "c8bb8bf2f25324b3ffafacf43df752fc9d68f568421dffe0ba74e8ae8aeb6632"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c09-t4",
+   "task": "t4"
+  },
+  {
+   "cell": "c10",
+   "factors": {
+    "strategy": "mtp",
+    "verifier": "meta-llama/Llama-3.1-8B-Instruct"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "f78817221babda313c6af0e4ce40412d1eac06e1f24d9aff09e3343200809918",
+    "model": "meta-llama/Llama-3.1-8B-Instruct+mtp",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#mtp",
+     "sha256": "c8bb8bf2f25324b3ffafacf43df752fc9d68f568421dffe0ba74e8ae8aeb6632"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c10-t1",
+   "task": "t1"
+  },
+  {
+   "cell": "c10",
+   "factors": {
+    "strategy": "mtp",
+    "verifier": "meta-llama/Llama-3.1-8B-Instruct"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "f78817221babda313c6af0e4ce40412d1eac06e1f24d9aff09e3343200809918",
+    "model": "meta-llama/Llama-3.1-8B-Instruct+mtp",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#mtp",
+     "sha256": "c8bb8bf2f25324b3ffafacf43df752fc9d68f568421dffe0ba74e8ae8aeb6632"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c10-t2",
+   "task": "t2"
+  },
+  {
+   "cell": "c10",
+   "factors": {
+    "strategy": "mtp",
+    "verifier": "meta-llama/Llama-3.1-8B-Instruct"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "f78817221babda313c6af0e4ce40412d1eac06e1f24d9aff09e3343200809918",
+    "model": "meta-llama/Llama-3.1-8B-Instruct+mtp",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#mtp",
+     "sha256": "c8bb8bf2f25324b3ffafacf43df752fc9d68f568421dffe0ba74e8ae8aeb6632"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c10-t3",
+   "task": "t3"
+  },
+  {
+   "cell": "c10",
+   "factors": {
+    "strategy": "mtp",
+    "verifier": "meta-llama/Llama-3.1-8B-Instruct"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "f78817221babda313c6af0e4ce40412d1eac06e1f24d9aff09e3343200809918",
+    "model": "meta-llama/Llama-3.1-8B-Instruct+mtp",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#mtp",
+     "sha256": "c8bb8bf2f25324b3ffafacf43df752fc9d68f568421dffe0ba74e8ae8aeb6632"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c10-t4",
+   "task": "t4"
+  },
+  {
+   "cell": "c11",
+   "factors": {
+    "strategy": "peagle",
+    "verifier": "Qwen/Qwen3-8B"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "afc8c7d582b1c12ef4ef6f7d0dd30bd9a5416a5a95a2af3099e4ddf8f7df7b59",
+    "model": "Qwen/Qwen3-8B+peagle",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#peagle",
+     "sha256": "2d175c5fd1ffa1c3e4f82f782ef5d70c922655d9388d9650b83988bb6ff81aec"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c11-t1",
+   "task": "t1"
+  },
+  {
+   "cell": "c11",
+   "factors": {
+    "strategy": "peagle",
+    "verifier": "Qwen/Qwen3-8B"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "afc8c7d582b1c12ef4ef6f7d0dd30bd9a5416a5a95a2af3099e4ddf8f7df7b59",
+    "model": "Qwen/Qwen3-8B+peagle",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#peagle",
+     "sha256": "2d175c5fd1ffa1c3e4f82f782ef5d70c922655d9388d9650b83988bb6ff81aec"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c11-t2",
+   "task": "t2"
+  },
+  {
+   "cell": "c11",
+   "factors": {
+    "strategy": "peagle",
+    "verifier": "Qwen/Qwen3-8B"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "afc8c7d582b1c12ef4ef6f7d0dd30bd9a5416a5a95a2af3099e4ddf8f7df7b59",
+    "model": "Qwen/Qwen3-8B+peagle",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#peagle",
+     "sha256": "2d175c5fd1ffa1c3e4f82f782ef5d70c922655d9388d9650b83988bb6ff81aec"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c11-t3",
+   "task": "t3"
+  },
+  {
+   "cell": "c11",
+   "factors": {
+    "strategy": "peagle",
+    "verifier": "Qwen/Qwen3-8B"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "afc8c7d582b1c12ef4ef6f7d0dd30bd9a5416a5a95a2af3099e4ddf8f7df7b59",
+    "model": "Qwen/Qwen3-8B+peagle",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#peagle",
+     "sha256": "2d175c5fd1ffa1c3e4f82f782ef5d70c922655d9388d9650b83988bb6ff81aec"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c11-t4",
+   "task": "t4"
+  },
+  {
+   "cell": "c12",
+   "factors": {
+    "strategy": "peagle",
+    "verifier": "meta-llama/Llama-3.1-8B-Instruct"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "d90bd947843c74be59884f4c03fa6e9ff249d5fa5e4981688b0e8a9ecd9073f0",
+    "model": "meta-llama/Llama-3.1-8B-Instruct+peagle",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#peagle",
+     "sha256": "2d175c5fd1ffa1c3e4f82f782ef5d70c922655d9388d9650b83988bb6ff81aec"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c12-t1",
+   "task": "t1"
+  },
+  {
+   "cell": "c12",
+   "factors": {
+    "strategy": "peagle",
+    "verifier": "meta-llama/Llama-3.1-8B-Instruct"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "d90bd947843c74be59884f4c03fa6e9ff249d5fa5e4981688b0e8a9ecd9073f0",
+    "model": "meta-llama/Llama-3.1-8B-Instruct+peagle",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#peagle",
+     "sha256": "2d175c5fd1ffa1c3e4f82f782ef5d70c922655d9388d9650b83988bb6ff81aec"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c12-t2",
+   "task": "t2"
+  },
+  {
+   "cell": "c12",
+   "factors": {
+    "strategy": "peagle",
+    "verifier": "meta-llama/Llama-3.1-8B-Instruct"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "d90bd947843c74be59884f4c03fa6e9ff249d5fa5e4981688b0e8a9ecd9073f0",
+    "model": "meta-llama/Llama-3.1-8B-Instruct+peagle",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#peagle",
+     "sha256": "2d175c5fd1ffa1c3e4f82f782ef5d70c922655d9388d9650b83988bb6ff81aec"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c12-t3",
+   "task": "t3"
+  },
+  {
+   "cell": "c12",
+   "factors": {
+    "strategy": "peagle",
+    "verifier": "meta-llama/Llama-3.1-8B-Instruct"
+   },
+   "instance": {
+    "context": "token-strategies-1",
+    "instance_key": "d90bd947843c74be59884f4c03fa6e9ff249d5fa5e4981688b0e8a9ecd9073f0",
+    "model": "meta-llama/Llama-3.1-8B-Instruct+peagle",
+    "moniker": "speculators",
+    "provider": "speculators_fork",
+    "role": "evaluation",
+    "system_prompt": {
+     "ref": "scripts/speculators/strategies.py#peagle",
+     "sha256": "2d175c5fd1ffa1c3e4f82f782ef5d70c922655d9388d9650b83988bb6ff81aec"
+    },
+    "tools": {
+     "ref": "tools:speculators:evaluate",
+     "sha256": "c8f69d857a50f06df2cf5b5d42743de9ba80465a4b91a254a2889bb8363280b3"
+    }
+   },
+   "run_id": "token-strategies-1-c12-t4",
+   "task": "t4"
+  }
+ ],
+ "tasks": 4
+}

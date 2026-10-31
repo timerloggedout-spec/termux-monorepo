@@ -163,6 +163,9 @@ const syn = providerRollup([{provider_usage:[{provider:"X", usage:{value:null, s
 if (syn.coverage.covered !== 2 || syn.coverage.waived !== 1 || syn.coverage.gap !== 0) throw new Error("coverage status");
 if (!usageText({usage:{value:1, unit:"sessions", match:"activity-proxy"}}).includes("activity-proxy \u2014 not consumption")) throw new Error("proxy label");
 if (!usageText({usage:{value:42, unit:"calls", match:"exact"}}).startsWith("usage: 42 calls")) throw new Error("exact text");
+if (!phrasesText({phrases:{set:"deepseek", placement:"prefix", form:"leet", profile:"1337"}}).includes("deepseek")) throw new Error("phrases obj");
+if (phrasesText({phrases:"NOT ESTABLISHED"}) !== "phrases: NOT ESTABLISHED") throw new Error("phrases str");
+if (phrasesText({}) !== "") throw new Error("phrases absent");
 console.log("ok");
 """ % json.dumps(pack["traversals"][1])
     sim = sim.replace("TRAVSJSON", travs_json)

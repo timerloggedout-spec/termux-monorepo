@@ -56,7 +56,7 @@ def test_dispatch_payload_is_blocked_on_validation_errors():
 def test_blank_field_types_are_rejected():
     html = _html()
     start = html.index("function runVerify(){")
-    end = html.index("\\nfunction updateVerify()", start)
+    end = html.index("\nfunction updateVerify()", start)
     validator = html[start:end]
     assert 'typeof field.type!=="string"||!field.type.trim()' in validator
 

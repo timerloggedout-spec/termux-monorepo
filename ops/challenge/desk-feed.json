@@ -1,6 +1,6 @@
 {
  "schema": "desk-feed/v1",
- "generated_at": "2026-10-31T05:19:00Z",
+ "generated_at": "2026-10-31T05:47:00Z",
  "built_by": "viz lane (seed from firsthand audits, 2026-10-30)",
  "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence.",
  "desk": {
@@ -68,7 +68,8 @@
    "evidence": {
     "pr": 2616,
     "merge_sha": "6ea0e52b0d95",
-    "sync": "artifact repo HEAD 59c6c3b0427d = sync commit (viz firsthand)"
+    "sync": "artifact repo HEAD 59c6c3b0427d = sync commit (viz firsthand)",
+    "note": "Authorship: desk-spawned Muse subagents (substituted route; retracted as provider-lane production 2026-10-30). Merge + sync facts stand."
    },
    "next": "Nov 1 checkpoint met build-side (landed 2026-10-30); submission deadline 2026-11-09"
   },
@@ -89,15 +90,17 @@
    "evidence": {
     "prs": [
      2615,
-     2619
+     2619,
+     2623
     ],
     "merge_shas": [
      "4a5c49b265f8",
-     "95cf49d2c917"
+     "95cf49d2c917",
+     "5687f6033a4b"
     ],
-    "note": "P0 scaffold + P1 multi-hop retrieval landed"
+    "note": "P0 scaffold + P1 retrieval + P2 tests landed (40 ok / 2 skip; P3-VALIDATION.md runbook NOT-RUN). AUTHORSHIP: desk-spawned Muse subagents — substituted route (Jules unsteerable, no escalation); provider-lane production credit RETRACTED 2026-10-30."
    },
-   "next": "P2 tests + P3 prep in flight (no PR yet); carried P3: docker first-build + LLM live activation (env-stubbed on VM)"
+   "next": "P3 execution = AMD seat Nov 07–09 (docker first-build + LLM live activation); M4 frozen @5687f6033a4b. First provider-produced PR (Jules-on-issues) = the live proof still owed."
   },
   {
    "entry": "AMD M3",

@@ -13,12 +13,20 @@ except ModuleNotFoundError:
             print(text)
     console = DummyConsole()
 
-from deepcli.core import (
-    get_token, create_session, fetch_sessions, get_history,
-    stream_completion, upload_file, wait_for_file,
-    branch_conversation, export_markdown, export_json,
-    load_config, save_config, _set_last_session,
-)
+try:
+    from .core import (
+        get_token, create_session, fetch_sessions, get_history,
+        stream_completion, upload_file, wait_for_file,
+        branch_conversation, export_markdown, export_json,
+        load_config, save_config, _set_last_session,
+    )
+except ImportError:
+    from deepcli.core import (
+        get_token, create_session, fetch_sessions, get_history,
+        stream_completion, upload_file, wait_for_file,
+        branch_conversation, export_markdown, export_json,
+        load_config, save_config, _set_last_session,
+    )
 
 def secure_permissions_recursively(root_path: Path):
     """

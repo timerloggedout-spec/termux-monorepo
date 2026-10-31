@@ -187,16 +187,15 @@ def cmd_export(args):
 
     if args.output:
         out_path = Path(args.output)
-        if out_path.is_symlink() or (out_path.parent.exists() and out_path.parent.is_symlink()):
+        if ".." in out_path.parts:
+            console.print(f"[red]Export target '{args.output}' contains path traversal ('..'). Rejected for security.[/]")
+            raise ValueError("Path traversal ('..') is not permitted for exports")
+        if out_path.is_symlink() or any(p.is_symlink() for p in out_path.parents if p.exists()):
             console.print(f"[red]Output target cannot be a symlink: {args.output}[/]")
             raise ValueError("Symlink targets are not permitted for exports")
-        with open(args.output, "w") as f:
+        fd = os.open(out_path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
             f.write(content)
-        try:
-            if not out_path.is_symlink():
-                os.chmod(args.output, 0o600)
-        except Exception:
-            pass
         console.print(f"[green]Exported to {args.output}[/]")
     else:
         console.print(content)

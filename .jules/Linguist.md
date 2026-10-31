@@ -137,3 +137,10 @@ In `from_1337speak()`, executing `VARIANT_REGEX.sub()` over documents that conta
 
 **Action:**
 In surface codec normalization pipelines, construct pre-search regexes and pre-computed casing tables targeting non-canonical variants only, allowing already-canonical streams to bypass substitution loops completely.
+
+## 2026-10-26 - Base64 BPE Token Inflation and Deterministic Base-4 Zero-Width Steganography
+**Learning:**
+Base64 encoding expands byte sequences into arbitrary 6-bit ASCII characters without natural subword boundaries, causing +71.4% token inflation in standard BPE tokenizers (e.g. Tiktoken cl100k_base / o200k_base, Llama, Mistral) compared to natural prose. CedrLang symbolic representations reduce token footprint by 20-50%+ while preserving lossless round-trip expansion. For conversational steganography, variable-length zero-width character alphabets cause greedy parsing ambiguities during byte decoding. Employing a fixed Base-4 quadruplet mapping (4 zero-width characters per byte) guarantees unambiguous, deterministic O(N) steganographic encoding and decoding without affecting visible cover text token lengths.
+
+**Action:**
+Avoid Base64 for agentic token efficiency; utilize CedrLang symbolic compression for prompt density and fixed Base-4 zero-width character quadruplets for deterministic conversational steganography.

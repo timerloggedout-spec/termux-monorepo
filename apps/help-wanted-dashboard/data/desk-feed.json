@@ -1,6 +1,6 @@
 {
  "schema": "desk-feed/v1.1",
- "generated_at": "2026-10-31T06:06:00Z",
+ "generated_at": "2026-10-31T06:09:00Z",
  "built_by": "contribution desk (refresh #1, 2026-10-30)",
  "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal — the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
  "desk": {
@@ -90,11 +90,13 @@
      "pr_author": "google-labs-jules[bot]",
      "pr_head": "84c6db3e2d37",
      "ci": "head 84c6db3e2d37: repo gate + termux smoke in_progress at stamp (2026-10-31T06:06Z); prior head 91b554ea64b2: both success",
-     "state": "Session COMPLETED; PR open — D1 seat verification pending",
-     "session_state": "COMPLETED"
+     "state": "LANDED — merged + synced (D1 PASS, firsthand: 17 tests, 21 CI success / 0 failure)",
+     "session_state": "COMPLETED",
+     "merge_sha": "2c0894d2e7d3",
+     "sync": "studysprint repo @f7270f379fae; parity 21/21 blobs, ∅ drift (desk sync check)"
     }
    },
-   "next": "Iteration PR #2635 (Jules) awaiting D1 verification; re-sync test target 2026-11-03; submission 2026-11-04 (owner ruling: submit on due day)",
+   "next": "Nov 3 re-sync test (parity tool now in-repo: resync_parity.py); submission Nov 4 (owner ruling: submit on due day)",
    "provider_usage": [
     {
      "provider": "Muse (in-house, pre-correction)",
@@ -110,7 +112,7 @@
      "scope": "iteration dispatch",
      "via": "issue #2626 + jules label (agent-jules-on-issues)",
      "session_id": "17326020844735872479",
-     "state": "PR #2635 open — authored by google-labs-jules[bot]",
+     "state": "landed (merged 2c0894d2e7d3; synced f7270f379fae)",
      "usage": null,
      "usage_note": "Jules API exposes session state/timing only; per-session consumption NOT ESTABLISHED"
     }

@@ -208,9 +208,24 @@ design factors. The runner calls it when a design sets
 `phrase_layer`; enabled-but-data-missing fails loud at plan
 time. The established leet form substitutes ONLY the vowels
 (a→4, e→3, i→1, o→0) — read off the 1337 profile's own
-suffixes and pinned by test; wider dictionary variants and the
-`d0 > DO > Do > do` casing ladder are candidate factor levels,
-NOT ESTABLISHED as precedence.
+suffixes and pinned by test.
+
+**Micro-variable kinds are evaluation dimensions (owner,
+2026-10-31).** A single example stands for its whole KIND: the
+`d0 > DO > Do > do` ladder was offered as one example of the
+kind of micro-decision evaluations must consider — NOT as a
+precedence claim to verify. The kinds register, each with
+candidate levels a design enumerates and runs rank: casing /
+token-form ladders (levels: the rungs themselves, applied via
+the layer's `token_forms`); substitution scope (vowels-only —
+the established form — | wider consonant sets | full dictionary
+tables); substitution depth (first variant | alternates);
+placement (prefix | suffix | both); selection (first | hash |
+rotated); timing / when-to-use (always | per-role | per-context
+| profile-gated); profile composition (lists | named profile);
+emoji-sequence inclusion (in | out). Treating any one instance
+as a fact to establish-or-refute misses the point: instances
+are levels, kinds are factors.
 
 ## Binding rules (from #1865 + separation spec)
 

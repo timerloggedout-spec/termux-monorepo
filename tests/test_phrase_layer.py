@@ -65,3 +65,24 @@ def test_profile_overrides_lists():
                                    profile="1337")
     assert text == "PRE-1337\n\nbody\n\nSUF-1337"
     assert stamp["profile"] == "1337"
+
+
+def test_token_forms_are_factor_levels_not_precedence():
+    PL = _layer()
+    # The owner's example kind: a casing/substitution ladder for
+    # one token. Each rung is a LEVEL; the layer applies whichever
+    # the design selects and stamps it.
+    data = {"providers": {"deepseek": {
+        "match": ["deepseek"], "prefixes": [],
+        "suffixes": ["Do the thing. do it well."]}}}
+    outs = {}
+    for rung in ("d0", "DO", "Do", "do"):
+        text, stamp = PL.apply_phrases(
+            "body", data, "x/deepseek-v4", placement="suffix",
+            token_forms={"do": rung})
+        outs[rung] = text
+        assert stamp["token_forms"] == {"do": rung}
+    assert outs["d0"] == "body\n\nd0 the thing. d0 it well."
+    assert outs["DO"] == "body\n\nDO the thing. DO it well."
+    assert outs["do"] == "body\n\ndo the thing. do it well."
+    assert len(set(outs.values())) == 4  # four distinct instances

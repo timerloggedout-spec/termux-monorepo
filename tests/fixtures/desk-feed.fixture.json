@@ -1,0 +1,326 @@
+{
+ "schema": "desk-feed/v1.2",
+ "generated_at": "2026-10-31T07:45:00Z",
+ "built_by": "contribution desk (refresh #1, 2026-10-30)",
+ "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal — the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
+ "desk": {
+  "name": "Contribution Desk",
+  "seat": "Challenge Management — Assistant (contribution desk under the contestant model, PR #2604)",
+  "model": "termux-monorepo = the contestant under test (HQ + build/test body). Build code is produced ONLY by repo provider lanes (88 providers wired, ops/quota/registry.json) — primary Jules via agent-jules-on-issues; Gemini/DeepSeek dispatch wired; provider-command-dispatch for polish. Muse seats NEVER author build code (owner correction 2026-10-30: substituted Muse-subagent production retracted). The Desk is a UI/UX surface: it renders contribution state and routes specs; it executes nothing.",
+  "roles": {
+   "owner": "authorization of record (direct orders only; a halt lifts only by the owner)",
+   "sub_managers": "spec / census / gates / verify (incl. provenance) — not code",
+   "desk": "UI/UX surface: intake board, traversal state, provider+session evidence per PR — executes nothing",
+   "orchestration": "Scout / Orchestrator surfaces own provider dispatch (lane flow fix in progress, 2026-10-30)",
+   "provider_lanes": "Jules / Gemini / DeepSeek / command-dispatch — author ALL build code via monorepo PRs",
+   "entries_lane": "coordinator/log single-writer (records)"
+  },
+  "pipeline": [
+   "spec",
+   "desk",
+   "builder",
+   "pr",
+   "ci",
+   "merge",
+   "sync"
+  ]
+ },
+ "dispatch": {
+  "how": "A dispatch is a GitHub issue spec routed via the orchestration surfaces to a provider lane; the provider authors a monorepo PR naming provider + session id; sub-manager verifies (provenance first); desk tracks merge on merge-clear and artifact sync. This page mutates nothing. Instance stamp is part of the dispatch record (DoE configured-instance identity, PR #2656): every dispatch carries provider + session_id + model@version verbatim + system_prompt_ref + tools_ref (ref scheme: repo path or prompt:<moniker>:<slug> / tools:<moniker>:<slug>, always with the SHA-256 of the exact dispatched content; compact stamp <ref>#<sha256[:12]>; instance_key via scripts/doe/instance_key.py). No stamp => no dispatch (telemetry gate, 2026-10-30 23:10 PT).",
+  "intake_url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/new?title=%5BDESK%20DISPATCH%5D%20%3Centry%3E%3A%20%3Cone-line%20spec%3E&body=Entry%3A%20%0ASpec%20%28what%20to%20build%29%3A%20%0ABuilder%20ask%20%28lane%20or%20any%29%3A%20%0AProvider%20%2B%20session_id%3A%20%0AModel%40version%20%28verbatim%29%3A%20%0AInstance%20stamp%20-%20system_prompt_ref%20%28%3Cref%3E%23%3Csha256%5B%3A12%5D%3E%29%3A%20%0AInstance%20stamp%20-%20tools_ref%20%28%3Cref%3E%23%3Csha256%5B%3A12%5D%3E%29%3A%20%0ADeadline%20/%20checkpoint%3A%20%0AEvidence%20links%3A%20%0A%0ADesk%20route%3A%20sub-manager%20spec%20check%20%3D%3E%20desk%20routes%20to%20builder%20lane%20%3D%3E%20monorepo%20PR%20%3D%3E%20desk%20verifies%20%3D%3E%20merge%20on%20merge-clear%20%3D%3E%20artifact%20sync.",
+  "intake_label": "New dispatch (GitHub issue)"
+ },
+ "traversals": [
+  {
+   "entry": "D0",
+   "project": "Delphi Oracle",
+   "artifact_repo": "timerloggedout-spec/delphi-oracle",
+   "status": "landed",
+   "stages": {
+    "spec": "done",
+    "desk": "done",
+    "builder": "done",
+    "pr": "done",
+    "ci": "done",
+    "merge": "done",
+    "sync": "done"
+   },
+   "evidence": {
+    "pr": 1702,
+    "merge_sha": "aa110a5e71af",
+    "note": "D0 completion package (Delphi Oracle + fetch_evidence) — the contestant-model precedent. Own-repo port timerloggedout-spec/delphi-oracle@393e1f4b verified firsthand (blobs identical, tests 5 passed, demo receipts reproduced). Builders of record: Scout (port) + Delphi (verification).",
+    "sync": "delphi-oracle repo live @393e1f4b (foundation pin)"
+   },
+   "next": "Closed as foundation for D1 (StudySprint builds on the D0 package).",
+   "provider_usage": [
+    {
+     "provider": "Scout / Delphi (owner-named)",
+     "via": "provider route of record at the time",
+     "session_id": null,
+     "state": "landed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": null,
+      "window": null,
+      "match": null,
+      "note": "No provider surface exposes a consumption figure for the owner-named Scout/Delphi lanes; per-dispatch consumption NOT ESTABLISHED.",
+      "status": "waived"
+     },
+     "model": "NOT ESTABLISHED",
+     "phrases": "NOT ESTABLISHED"
+    }
+   ]
+  },
+  {
+   "entry": "D1",
+   "project": "StudySprint",
+   "artifact_repo": "timerloggedout-spec/studysprint",
+   "status": "landed",
+   "stages": {
+    "spec": "done",
+    "desk": "done",
+    "builder": "done",
+    "pr": "done",
+    "ci": "done",
+    "merge": "done",
+    "sync": "done"
+   },
+   "evidence": {
+    "pr": 2606,
+    "merge_sha": "cd381db0e824",
+    "ci": "head b66a86a29f5a: 46 check runs, 29 success / 0 failure",
+    "sync": "artifact repo live; parity 19/19 per D1 seat verification",
+    "iteration": {
+     "provider": "Jules (Google)",
+     "dispatch": "issue #2626 + jules label (agent-jules-on-issues)",
+     "session": "17326020844735872479",
+     "pr": 2635,
+     "pr_author": "google-labs-jules[bot]",
+     "pr_head": "84c6db3e2d37",
+     "ci": "head 84c6db3e2d37: repo gate + termux smoke in_progress at stamp (2026-10-31T06:06Z); prior head 91b554ea64b2: both success",
+     "state": "LANDED — merged + synced (D1 PASS, firsthand: 17 tests, 21 CI success / 0 failure)",
+     "session_state": "COMPLETED",
+     "merge_sha": "2c0894d2e7d3",
+     "sync": "studysprint repo @f7270f379fae; parity 21/21 blobs, ∅ drift (desk sync check)"
+    }
+   },
+   "next": "Nov 3 re-sync test (parity tool now in-repo: resync_parity.py); submission Nov 4 (owner ruling: submit on due day)",
+   "provider_usage": [
+    {
+     "provider": "Muse (in-house, pre-correction)",
+     "scope": "original build · PR #2606",
+     "via": "D1 lane under owner ruling (we complete ourselves, via main); contributed byte-identical via PR #2606 — desk/D1 record",
+     "session_id": null,
+     "state": "landed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": "Muse subscription status (account level)",
+      "window": "week of 2026-10-30",
+      "match": null,
+      "note": "no provider surface; pre-correction in-house build Per-PR split NOT ESTABLISHED.",
+      "status": "waived"
+     },
+     "model": "NOT ESTABLISHED",
+     "phrases": "NOT ESTABLISHED"
+    },
+    {
+     "provider": "Jules",
+     "scope": "iteration dispatch",
+     "via": "issue #2626 + jules label (agent-jules-on-issues)",
+     "session_id": "17326020844735872479",
+     "state": "landed (merged 2c0894d2e7d3; synced f7270f379fae)",
+     "usage": {
+      "value": 1,
+      "unit": "sessions",
+      "source": "Jules API session record (sessions/17326020844735872479)",
+      "window": "2026-10-31T05:32Z dispatch; session COMPLETED",
+      "match": "activity-proxy",
+      "note": "activity proxy, labeled — NOT consumption; Jules API exposes no usage figure",
+      "status": "activity-only"
+     },
+     "model": "NOT ESTABLISHED",
+     "moniker": "[MUSEai]@{role:{challenge-entries-manager}}",
+     "role": "contribution-desk dispatch (per-dispatch)",
+     "context": "issue #2626 (D1 iteration backlog) + jules label via agent-jules-on-issues",
+     "phrases": "NOT ESTABLISHED",
+     "instance_refs": {
+      "system_prompt_ref": "prompt:challenge-entries-manager:d1-studysprint-iteration-backlog#e0ff454d02e2",
+      "tools_ref": "NOT ESTABLISHED",
+      "note": "system_prompt_ref hash = sha256[:12] of the exact dispatched content as recorded in the Jules session prompt (title + issue #2626 body, 1475 chars, retrieved via Jules API); tools_ref: Jules API exposes no tool list for the session"
+     },
+     "instance_key": null
+    }
+   ]
+  },
+  {
+   "entry": "D3",
+   "project": "ListingLens",
+   "artifact_repo": "timerloggedout-spec/listinglens",
+   "status": "landed",
+   "stages": {
+    "spec": "done",
+    "desk": "done",
+    "builder": "done",
+    "pr": "done",
+    "ci": "done",
+    "merge": "done",
+    "sync": "done"
+   },
+   "evidence": {
+    "pr": 2616,
+    "merge_sha": "6ea0e52b0d95",
+    "sync": "artifact repo HEAD 59c6c3b0427d = sync commit (viz firsthand)",
+    "note": "Authorship: desk-spawned Muse subagents (substituted route; retracted as provider-lane production 2026-10-30). Merge + sync facts stand."
+   },
+   "next": "Nov 1 checkpoint met build-side (landed 2026-10-30); submission deadline 2026-11-09",
+   "provider_usage": [
+    {
+     "provider": "Muse — desk-spawned subagents",
+     "via": "substituted route (retracted 2026-10-30)",
+     "session_id": null,
+     "state": "landed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": "Muse subscription status (account level)",
+      "window": "week of 2026-10-30; resets 2026-11-03 03:21 PST",
+      "match": null,
+      "note": "shared Muse weekly bucket: 100% consumed the night of 2026-10-30 (resets 2026-11-03 03:21 PST); per-dispatch split NOT ESTABLISHED Per-PR split NOT ESTABLISHED — shared Muse bucket (weekly 100% + additional tokens 26% consumed at 2026-10-30 measurement).",
+      "status": "waived"
+     },
+     "model": "Muse Spark 1.3",
+     "moniker": "[MUSEai]@{role:{challenge-entries-manager}}",
+     "role": "contribution-desk dispatch (per-dispatch)",
+     "context": "D3 - desk-spawned builder subagents, 2026-10-30 (substituted route, retracted)",
+     "phrases": "NOT ESTABLISHED",
+     "instance_refs": {
+      "system_prompt_ref": "prompt:challenge-entries-manager:d3-listinglens-desk-spawned-builders",
+      "tools_ref": "tools:challenge-entries-manager:muse-desk-subagent-builders",
+      "note": "Instance named per the DoE ref scheme (PR #2656) as it existed at dispatch; content hashes NOT ESTABLISHED - the spawn briefs of the retracted 2026-10-30 desk session are not in any repo or provider-API record this feed can hash, and no hash is fabricated. Axes waived: these dispatches predate the telemetry mandate (2026-10-30 23:10 PT) and the scheme landing; usage.status stays waived. The two Muse desk-spawned rows are DISTINCT configured instances (per-entry prompt sets) - roll-ups must never merge them on provider+model alone (QUOTA-ATTRIBUTION duplicate rule)."
+     },
+     "instance_key": null
+    }
+   ]
+  },
+  {
+   "entry": "AMD M4",
+   "project": "amd-m4-retrieval (AI League C11)",
+   "artifact_repo": null,
+   "status": "in-progress",
+   "stages": {
+    "spec": "done",
+    "desk": "done",
+    "builder": "done",
+    "pr": "done",
+    "ci": "done",
+    "merge": "done",
+    "sync": "na"
+   },
+   "evidence": {
+    "prs": [
+     2615,
+     2619,
+     2623
+    ],
+    "merge_shas": [
+     "4a5c49b265f8",
+     "95cf49d2c917",
+     "5687f6033a4b"
+    ],
+    "note": "P0 scaffold + P1 retrieval + P2 tests landed (40 ok / 2 skip; P3-VALIDATION.md runbook NOT-RUN). AUTHORSHIP: desk-spawned Muse subagents — substituted route (Jules unsteerable, no escalation); provider-lane production credit RETRACTED 2026-10-30."
+   },
+   "next": "P3 execution = AMD seat Nov 07–09 (docker first-build + LLM live activation); M4 frozen @5687f6033a4b. Provider route PROVEN on D1 (PR #2635, Jules); future M4 fixes route Jules-only.",
+   "provider_usage": [
+    {
+     "provider": "Muse — desk-spawned subagents",
+     "via": "substituted route (retracted 2026-10-30)",
+     "session_id": null,
+     "state": "landed",
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": "Muse subscription status (account level)",
+      "window": "week of 2026-10-30; resets 2026-11-03 03:21 PST",
+      "match": null,
+      "note": "shared Muse weekly bucket: 100% consumed the night of 2026-10-30 (resets 2026-11-03 03:21 PST); per-dispatch split NOT ESTABLISHED Per-PR split NOT ESTABLISHED — shared Muse bucket (weekly 100% + additional tokens 26% consumed at 2026-10-30 measurement).",
+      "status": "waived"
+     },
+     "model": "Muse Spark 1.3",
+     "moniker": "[MUSEai]@{role:{challenge-entries-manager}}",
+     "role": "contribution-desk dispatch (per-dispatch)",
+     "context": "AMD M4 - desk-spawned builder subagents, 2026-10-30 (substituted route, retracted)",
+     "phrases": "NOT ESTABLISHED",
+     "instance_refs": {
+      "system_prompt_ref": "prompt:challenge-entries-manager:amd-m4-desk-spawned-builders",
+      "tools_ref": "tools:challenge-entries-manager:muse-desk-subagent-builders",
+      "note": "Instance named per the DoE ref scheme (PR #2656) as it existed at dispatch; content hashes NOT ESTABLISHED - the spawn briefs of the retracted 2026-10-30 desk session are not in any repo or provider-API record this feed can hash, and no hash is fabricated. Axes waived: these dispatches predate the telemetry mandate (2026-10-30 23:10 PT) and the scheme landing; usage.status stays waived. The two Muse desk-spawned rows are DISTINCT configured instances (per-entry prompt sets) - roll-ups must never merge them on provider+model alone (QUOTA-ATTRIBUTION duplicate rule)."
+     },
+     "instance_key": null
+    }
+   ]
+  },
+  {
+   "entry": "AMD M3",
+   "project": "amd-m3-rag",
+   "artifact_repo": null,
+   "status": "gated",
+   "stages": {
+    "spec": "done",
+    "desk": "done",
+    "builder": "gated",
+    "pr": "pending",
+    "ci": "pending",
+    "merge": "pending",
+    "sync": "na"
+   },
+   "evidence": {
+    "note": "staged at the desk; gate = M4 submitted or builder idle and not competing; priority M3 over M2 (desk record)"
+   },
+   "next": "Routes to a builder lane when the gate opens",
+   "provider_usage": []
+  },
+  {
+   "entry": "AMD M2",
+   "project": "amd-m2-ocr",
+   "artifact_repo": null,
+   "status": "gated",
+   "stages": {
+    "spec": "done",
+    "desk": "done",
+    "builder": "gated",
+    "pr": "pending",
+    "ci": "pending",
+    "merge": "pending",
+    "sync": "na"
+   },
+   "evidence": {
+    "note": "staged at the desk behind the same gate as M3, lower priority (desk record)"
+   },
+   "next": "Routes after M3 or when builders idle",
+   "provider_usage": []
+  },
+  {
+   "entry": "D2",
+   "project": "Vultr Agent Rush — pick not frozen (candidate: Web Adapter Foundry)",
+   "artifact_repo": null,
+   "status": "queued",
+   "stages": {
+    "spec": "pending",
+    "desk": "pending",
+    "builder": "pending",
+    "pr": "pending",
+    "ci": "pending",
+    "merge": "pending",
+    "sync": "pending"
+   },
+   "evidence": {
+    "note": "build route per D2 seat record: pick/spec ⇒ Desk ⇒ builder lanes ⇒ monorepo PR ⇒ sync ⇒ D2 verifies"
+   },
+   "next": "Kickoff 2026-11-03T15:00Z; gate D2-NOCARD open (Vultr account before the gift-code step)",
+   "provider_usage": []
+  }
+ ],
+ "provenance": "Seeded by the viz lane from firsthand PAT-API audits on 2026-10-30 (contribution-desk audit + lane-level identification for the challenge manager): every PR, merge SHA (master-history verified), CI count and sync HEAD above was read from the live record; items sourced from another lane's record say so in their evidence."
+}

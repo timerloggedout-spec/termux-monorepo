@@ -2,7 +2,7 @@
 
 > Generated from GitHub repository and starring metadata. JSON is canonical; this file is a navigation projection.
 
-Observed: `2026-10-30T10:53:50.135661Z`
+Observed: `2026-10-31T10:25:43.336281Z`
 
 ## Navigation
 
@@ -16,8 +16,8 @@ Observed: `2026-10-30T10:53:50.135661Z`
 
 ## Changes since previous snapshot
 
-- **Added (3):** `AgenticResourceRegistry/AgenticResourceRegistry`, `timerloggedout-spec/repo-replay`, `vercel-labs/agent-desktop`
-- **Removed (3):** `JasonGuoo/gemini-cli-api`, `Observal/Observal`, `lahfir/agent-desktop`
+- **Added (7):** `timerloggedout-spec/delphi-oracle`, `timerloggedout-spec/fleet-logs`, `timerloggedout-spec/listinglens`, `timerloggedout-spec/provider-phrases`, `timerloggedout-spec/repo-replay-data`, `timerloggedout-spec/skeleton-crew`, `timerloggedout-spec/studysprint`
+- **Removed (3):** `1canhhoa/sports-betting-toolbox`, `AhmedHazem02/fifa-world-cup-2026-prediction-agent`, `agutinbaigo28/financial-agent-api`
 - **Provenance changed (0):** —
 
 ## Owned
@@ -39,6 +39,7 @@ Observed: `2026-10-30T10:53:50.135661Z`
 | [timerloggedout-spec/claude-managed-agents-demo_fork](https://github.com/timerloggedout-spec/claude-managed-agents-demo_fork) | owned | agent | medium | dependency-candidate, upstream-comparison |
 | [timerloggedout-spec/CodeWhale_fork](https://github.com/timerloggedout-spec/CodeWhale_fork) | owned, starred | agent | medium | upstream-comparison |
 | [timerloggedout-spec/CopilotKit](https://github.com/timerloggedout-spec/CopilotKit) | owned | agent | medium | upstream-comparison |
+| [timerloggedout-spec/delphi-oracle](https://github.com/timerloggedout-spec/delphi-oracle) | owned | agent | medium | — |
 | [timerloggedout-spec/FiniteStateEntropy_fork](https://github.com/timerloggedout-spec/FiniteStateEntropy_fork) | owned, starred | agent | medium | upstream-comparison |
 | [timerloggedout-spec/fractal_fork](https://github.com/timerloggedout-spec/fractal_fork) | owned | agent | medium | upstream-comparison |
 | [timerloggedout-spec/fractals_fork](https://github.com/timerloggedout-spec/fractals_fork) | owned, starred | agent | medium | upstream-comparison |
@@ -374,6 +375,7 @@ Observed: `2026-10-30T10:53:50.135661Z`
 | [timerloggedout-spec/kalamarnica_fork](https://github.com/timerloggedout-spec/kalamarnica_fork) | owned, starred | context, developer-tools | high | upstream-comparison |
 | [timerloggedout-spec/OpenRouter-Client_fork](https://github.com/timerloggedout-spec/OpenRouter-Client_fork) | owned | context, developer-tools | high | upstream-comparison |
 | [timerloggedout-spec/MOBIUS-Searcher](https://github.com/timerloggedout-spec/MOBIUS-Searcher) | owned | context, research | high | upstream-comparison |
+| [timerloggedout-spec/fleet-logs](https://github.com/timerloggedout-spec/fleet-logs) | owned | context, termux | high | — |
 | [timerloggedout-spec/boiler](https://github.com/timerloggedout-spec/boiler) | owned | developer-tools | medium | upstream-comparison, workflow-candidate |
 | [timerloggedout-spec/BotFramework-WebChat_fork](https://github.com/timerloggedout-spec/BotFramework-WebChat_fork) | owned | developer-tools | medium | dependency-candidate, upstream-comparison |
 | [timerloggedout-spec/cjules_fork](https://github.com/timerloggedout-spec/cjules_fork) | owned | developer-tools | medium | upstream-comparison |
@@ -442,14 +444,17 @@ Observed: `2026-10-30T10:53:50.135661Z`
 | [timerloggedout-spec/AnkiconnectAndroid_fork](https://github.com/timerloggedout-spec/AnkiconnectAndroid_fork) | owned | termux | medium | upstream-comparison |
 | [timerloggedout-spec/astro-loop_fork](https://github.com/timerloggedout-spec/astro-loop_fork) | owned, starred | termux | medium | upstream-comparison |
 | [timerloggedout-spec/awesome-shizuku_fork](https://github.com/timerloggedout-spec/awesome-shizuku_fork) | owned | termux | medium | upstream-comparison |
+| [timerloggedout-spec/listinglens](https://github.com/timerloggedout-spec/listinglens) | owned | termux | medium | — |
 | [timerloggedout-spec/MAD_fork](https://github.com/timerloggedout-spec/MAD_fork) | owned | termux | medium | upstream-comparison |
 | [timerloggedout-spec/mcp-android-ssh_fork](https://github.com/timerloggedout-spec/mcp-android-ssh_fork) | owned, starred | termux | medium | upstream-comparison |
 | [timerloggedout-spec/NerdCalci_fork](https://github.com/timerloggedout-spec/NerdCalci_fork) | owned, starred | termux | medium | upstream-comparison |
 | [timerloggedout-spec/NewPipe_fork](https://github.com/timerloggedout-spec/NewPipe_fork) | owned | termux | medium | upstream-comparison |
 | [timerloggedout-spec/obsidian-shell-termux_fork](https://github.com/timerloggedout-spec/obsidian-shell-termux_fork) | owned | termux | medium | upstream-comparison, workflow-candidate |
+| [timerloggedout-spec/provider-phrases](https://github.com/timerloggedout-spec/provider-phrases) | owned | termux | medium | — |
 | [timerloggedout-spec/quirk_fork](https://github.com/timerloggedout-spec/quirk_fork) | owned, starred | termux | medium | upstream-comparison |
 | [timerloggedout-spec/ShizukuPlus_fork](https://github.com/timerloggedout-spec/ShizukuPlus_fork) | owned, starred | termux | medium | upstream-comparison |
 | [timerloggedout-spec/ShizukuRunner_fork](https://github.com/timerloggedout-spec/ShizukuRunner_fork) | owned, starred | termux | medium | upstream-comparison |
+| [timerloggedout-spec/studysprint](https://github.com/timerloggedout-spec/studysprint) | owned | termux | medium | — |
 | [timerloggedout-spec/termux-api_fork](https://github.com/timerloggedout-spec/termux-api_fork) | owned | termux | medium | upstream-comparison |
 | [timerloggedout-spec/termux-app_fork](https://github.com/timerloggedout-spec/termux-app_fork) | owned | termux | medium | upstream-comparison |
 | [timerloggedout-spec/termux-boot_fork](https://github.com/timerloggedout-spec/termux-boot_fork) | owned | termux | medium | upstream-comparison |
@@ -653,6 +658,7 @@ Observed: `2026-10-30T10:53:50.135661Z`
 | [timerloggedout-spec/remote-box_fork](https://github.com/timerloggedout-spec/remote-box_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/render-mcp-server_fork](https://github.com/timerloggedout-spec/render-mcp-server_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/repo-replay](https://github.com/timerloggedout-spec/repo-replay) | owned | unclassified | medium | — |
+| [timerloggedout-spec/repo-replay-data](https://github.com/timerloggedout-spec/repo-replay-data) | owned | unclassified | medium | — |
 | [timerloggedout-spec/rig_fork](https://github.com/timerloggedout-spec/rig_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/rjsf-validator-cfworker_fork](https://github.com/timerloggedout-spec/rjsf-validator-cfworker_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/rocm-libraries](https://github.com/timerloggedout-spec/rocm-libraries) | owned | unclassified | medium | upstream-comparison |
@@ -671,6 +677,7 @@ Observed: `2026-10-30T10:53:50.135661Z`
 | [timerloggedout-spec/Shizuku-API_fork](https://github.com/timerloggedout-spec/Shizuku-API_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/Shizuku_fork](https://github.com/timerloggedout-spec/Shizuku_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/ShizukuDhizuku-list_fork](https://github.com/timerloggedout-spec/ShizukuDhizuku-list_fork) | owned, starred | unclassified | medium | upstream-comparison |
+| [timerloggedout-spec/skeleton-crew](https://github.com/timerloggedout-spec/skeleton-crew) | owned | unclassified | medium | — |
 | [timerloggedout-spec/SML](https://github.com/timerloggedout-spec/SML) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/snek_fork](https://github.com/timerloggedout-spec/snek_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/so4-oracle](https://github.com/timerloggedout-spec/so4-oracle) | owned | unclassified | medium | upstream-comparison |
@@ -730,7 +737,6 @@ Observed: `2026-10-30T10:53:50.135661Z`
 | [aalzo/agy-sdk-agents](https://github.com/aalzo/agy-sdk-agents) | starred | agent | medium | dependency-candidate |
 | [AboveColin/remote-for-xirp](https://github.com/AboveColin/remote-for-xirp) | starred | agent | medium | — |
 | [adybag14-cyber/hermes-agent](https://github.com/adybag14-cyber/hermes-agent) | starred | agent | medium | upstream-comparison |
-| [AhmedHazem02/fifa-world-cup-2026-prediction-agent](https://github.com/AhmedHazem02/fifa-world-cup-2026-prediction-agent) | starred | agent | medium | — |
 | [AIMikav/skillopt](https://github.com/AIMikav/skillopt) | starred | agent | medium | — |
 | [anomalyco/opencode](https://github.com/anomalyco/opencode) | starred | agent | medium | — |
 | [anthropics/skills](https://github.com/anthropics/skills) | starred | agent | medium | — |
@@ -1104,7 +1110,6 @@ Observed: `2026-10-30T10:53:50.135661Z`
 | [win4r/GraphRAG4OpenWebUI](https://github.com/win4r/GraphRAG4OpenWebUI) | starred | agent, ai, context | high | — |
 | [maximhq/bifrost](https://github.com/maximhq/bifrost) | starred | agent, ai, context, api-management | high | dependency-candidate |
 | [hyperbrowserai/HyperAgent](https://github.com/hyperbrowserai/HyperAgent) | starred | agent, ai, context, browser | high | — |
-| [agutinbaigo28/financial-agent-api](https://github.com/agutinbaigo28/financial-agent-api) | starred | agent, ai, context, developer-tools | high | dependency-candidate |
 | [angletech2026-arch/desktop-sense](https://github.com/angletech2026-arch/desktop-sense) | starred | agent, ai, context, developer-tools | high | — |
 | [askimo-ai/askimo](https://github.com/askimo-ai/askimo) | starred | agent, ai, context, developer-tools | high | — |
 | [awslabs/cli-agent-orchestrator](https://github.com/awslabs/cli-agent-orchestrator) | starred | agent, ai, context, developer-tools | high | — |
@@ -1114,7 +1119,6 @@ Observed: `2026-10-30T10:53:50.135661Z`
 | [getmetatron/context-md](https://github.com/getmetatron/context-md) | starred, watching | agent, ai, context, developer-tools | high | — |
 | [kerbelp/metatron](https://github.com/kerbelp/metatron) | starred, watching | agent, ai, context, developer-tools | high | workflow-candidate |
 | [ManusAgents/ManusClaw](https://github.com/ManusAgents/ManusClaw) | starred | agent, ai, context, developer-tools | high | dependency-candidate |
-| [morluto/rea](https://github.com/morluto/rea) | starred | agent, ai, context, developer-tools | high | — |
 | [pchalasani/claude-code-tools](https://github.com/pchalasani/claude-code-tools) | starred | agent, ai, context, developer-tools | high | — |
 | [priyankark/a11y-mcp](https://github.com/priyankark/a11y-mcp) | starred | agent, ai, context, developer-tools | high | — |
 | [PV-Bhat/gemsuite-mcp](https://github.com/PV-Bhat/gemsuite-mcp) | starred | agent, ai, context, developer-tools | high | — |
@@ -1286,6 +1290,7 @@ Observed: `2026-10-30T10:53:50.135661Z`
 | [greekr4/rever-browser](https://github.com/greekr4/rever-browser) | starred | agent, ai, developer-tools, security, browser | medium | — |
 | [Dicklesworthstone/destructive_command_guard](https://github.com/Dicklesworthstone/destructive_command_guard) | starred | agent, ai, developer-tools, security, kubernetes | high | — |
 | [VibePod/vibepod-cli](https://github.com/VibePod/vibepod-cli) | starred | agent, ai, developer-tools, security, kubernetes | high | — |
+| [morluto/rea](https://github.com/morluto/rea) | starred | agent, ai, developer-tools, security, termux | medium | — |
 | [26zl/cybersec-toolkit](https://github.com/26zl/cybersec-toolkit) | starred | agent, ai, developer-tools, security, termux, kubernetes | high | — |
 | [callstack/agent-device](https://github.com/callstack/agent-device) | starred | agent, ai, developer-tools, termux | medium | — |
 | [DioNanos/codex-termux](https://github.com/DioNanos/codex-termux) | starred | agent, ai, developer-tools, termux | medium | upstream-comparison |
@@ -2562,7 +2567,6 @@ Observed: `2026-10-30T10:53:50.135661Z`
 | [13bm/GhidraMCP](https://github.com/13bm/GhidraMCP) | starred | unclassified | medium | — |
 | [14790897/my-strategies](https://github.com/14790897/my-strategies) | starred, watching | unclassified | medium | — |
 | [173249672/feishu-agy-sdk-bridge](https://github.com/173249672/feishu-agy-sdk-bridge) | starred | unclassified | medium | dependency-candidate |
-| [1canhhoa/sports-betting-toolbox](https://github.com/1canhhoa/sports-betting-toolbox) | starred | unclassified | medium | — |
 | [3eif/gitmotion](https://github.com/3eif/gitmotion) | starred | unclassified | medium | — |
 | [3Gsman/DeepTerminologyExtraction](https://github.com/3Gsman/DeepTerminologyExtraction) | starred | unclassified | medium | — |
 | [3zpnix/WriteOn](https://github.com/3zpnix/WriteOn) | starred | unclassified | medium | — |
@@ -4822,7 +4826,6 @@ Observed: `2026-10-30T10:53:50.135661Z`
 | [maximhq/bifrost](https://github.com/maximhq/bifrost) | starred | agent, ai, context, api-management | high | dependency-candidate |
 | [hyperbrowserai/HyperAgent](https://github.com/hyperbrowserai/HyperAgent) | starred | agent, ai, context, browser | high | — |
 | [timerloggedout-spec/HyperAgent_fork-ai_browser](https://github.com/timerloggedout-spec/HyperAgent_fork-ai_browser) | owned | agent, ai, context, browser | high | upstream-comparison |
-| [agutinbaigo28/financial-agent-api](https://github.com/agutinbaigo28/financial-agent-api) | starred | agent, ai, context, developer-tools | high | dependency-candidate |
 | [angletech2026-arch/desktop-sense](https://github.com/angletech2026-arch/desktop-sense) | starred | agent, ai, context, developer-tools | high | — |
 | [askimo-ai/askimo](https://github.com/askimo-ai/askimo) | starred | agent, ai, context, developer-tools | high | — |
 | [awslabs/cli-agent-orchestrator](https://github.com/awslabs/cli-agent-orchestrator) | starred | agent, ai, context, developer-tools | high | — |
@@ -4832,7 +4835,6 @@ Observed: `2026-10-30T10:53:50.135661Z`
 | [getmetatron/context-md](https://github.com/getmetatron/context-md) | starred, watching | agent, ai, context, developer-tools | high | — |
 | [kerbelp/metatron](https://github.com/kerbelp/metatron) | starred, watching | agent, ai, context, developer-tools | high | workflow-candidate |
 | [ManusAgents/ManusClaw](https://github.com/ManusAgents/ManusClaw) | starred | agent, ai, context, developer-tools | high | dependency-candidate |
-| [morluto/rea](https://github.com/morluto/rea) | starred | agent, ai, context, developer-tools | high | — |
 | [pchalasani/claude-code-tools](https://github.com/pchalasani/claude-code-tools) | starred | agent, ai, context, developer-tools | high | — |
 | [priyankark/a11y-mcp](https://github.com/priyankark/a11y-mcp) | starred | agent, ai, context, developer-tools | high | — |
 | [PV-Bhat/gemsuite-mcp](https://github.com/PV-Bhat/gemsuite-mcp) | starred | agent, ai, context, developer-tools | high | — |
@@ -5227,6 +5229,7 @@ Observed: `2026-10-30T10:53:50.135661Z`
 | [logseq/logseq](https://github.com/logseq/logseq) | starred | context, platform | high | — |
 | [timerloggedout-spec/MOBIUS-Searcher](https://github.com/timerloggedout-spec/MOBIUS-Searcher) | owned | context, research | high | upstream-comparison |
 | [Threekiii/Awesome-Laws](https://github.com/Threekiii/Awesome-Laws) | starred | context, security | high | — |
+| [timerloggedout-spec/fleet-logs](https://github.com/timerloggedout-spec/fleet-logs) | owned | context, termux | high | — |
 | [schemathesis/schemathesis](https://github.com/schemathesis/schemathesis) | starred | developer-tools, api-management | high | — |
 | [Wbaker7702/nethermind](https://github.com/Wbaker7702/nethermind) | starred | developer-tools, kubernetes | high | upstream-comparison |
 | [chen08209/FlClash](https://github.com/chen08209/FlClash) | starred | developer-tools, platform | high | — |
@@ -5584,7 +5587,6 @@ Observed: `2026-10-30T10:53:50.135661Z`
 | [timerloggedout-spec/temporal-ai-agent-pipeline_fork](https://github.com/timerloggedout-spec/temporal-ai-agent-pipeline_fork) | owned, starred | agent, ai, context | high | upstream-comparison |
 | [maximhq/bifrost](https://github.com/maximhq/bifrost) | starred | agent, ai, context, api-management | high | dependency-candidate |
 | [timerloggedout-spec/HyperAgent_fork-ai_browser](https://github.com/timerloggedout-spec/HyperAgent_fork-ai_browser) | owned | agent, ai, context, browser | high | upstream-comparison |
-| [agutinbaigo28/financial-agent-api](https://github.com/agutinbaigo28/financial-agent-api) | starred | agent, ai, context, developer-tools | high | dependency-candidate |
 | [can4hou6joeng4/boss-agent-cli](https://github.com/can4hou6joeng4/boss-agent-cli) | starred | agent, ai, context, developer-tools | high | workflow-candidate |
 | [kerbelp/metatron](https://github.com/kerbelp/metatron) | starred, watching | agent, ai, context, developer-tools | high | workflow-candidate |
 | [ManusAgents/ManusClaw](https://github.com/ManusAgents/ManusClaw) | starred | agent, ai, context, developer-tools | high | dependency-candidate |

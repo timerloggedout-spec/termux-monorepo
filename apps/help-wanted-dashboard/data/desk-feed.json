@@ -1,6 +1,6 @@
 {
  "schema": "desk-feed/v1.2",
- "generated_at": "2026-10-31T07:45:00Z",
+ "generated_at": "2026-10-31T23:59:00Z",
  "built_by": "contribution desk (refresh #1, 2026-10-30)",
  "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal — the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
  "desk": {
@@ -146,11 +146,36 @@
      "context": "issue #2626 (D1 iteration backlog) + jules label via agent-jules-on-issues",
      "phrases": "NOT ESTABLISHED",
      "instance_refs": {
-      "system_prompt_ref": "prompt:challenge-entries-manager:d1-studysprint-iteration-backlog#e0ff454d02e2",
+      "system_prompt_ref": "prompt:challenge-entries-manager:d1-iteration-dispatch#e0ff454d02e2",
       "tools_ref": "NOT ESTABLISHED",
       "note": "system_prompt_ref hash = sha256[:12] of the exact dispatched content as recorded in the Jules session prompt (title + issue #2626 body, 1475 chars, retrieved via Jules API); tools_ref: Jules API exposes no tool list for the session"
      },
-     "instance_key": null
+     "instance_key": null,
+     "window": "2026-10-31T05:32:50Z -> 2026-10-31T06:17:14Z",
+     "activities": 60,
+     "session_state": "COMPLETED"
+    },
+    {
+     "provider": "Jules (Google) — issue-label route, session 7007935780300107338",
+     "context": "D1 StudySprint v0.2.0 release cut — VERSION bump + CHANGELOG + receipts refresh (issue #2728)",
+     "pr": 2731,
+     "merge_sha": "f416489aa1b3524e8a0b44c1960c34c123e658d9",
+     "instance_refs": {
+      "system_prompt_ref": "prompt:challenge-entries-manager:d1-studysprint-v020-release-cut#51b61d5bbe2c",
+      "tools_ref": "NOT ESTABLISHED"
+     },
+     "instance_key": null,
+     "model": "NOT ESTABLISHED",
+     "phrases": "NOT ESTABLISHED",
+     "usage": {
+      "value": 1,
+      "unit": "sessions",
+      "source": "Jules API session record (activity only)",
+      "window": "2026-10-31",
+      "match": "activity-proxy",
+      "note": "Jules exposes no consumption units; activity-only per telemetry ruling #2648.",
+      "status": "reported"
+     }
     }
    ]
   },

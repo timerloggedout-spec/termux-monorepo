@@ -10,36 +10,56 @@
  "design": {
   "type": "live_mvt",
   "factors": {
-   "copy_angle": ["fb-a", "fb-b", "fb-c"],
+   "copy_angle": [
+    "fb-a",
+    "fb-b",
+    "fb-c"
+   ],
    "code_pool_split": "per-cell codes (Cue/Migoo per-cell; Muse shared, attribution via ?ch= landing param)"
   },
   "assignment": "organic page audiences per cell; ?ch=fb-a|fb-b|fb-c landing attribution"
  },
  "arms": [
-  {"cell": "fb-a", "copy_angle": "sizzle (benefit-first)",
+  {
+   "cell": "fb-a",
+   "copy_angle": "sizzle (benefit-first)",
    "page": "Dream In Production",
    "page_account": "account{n0nDreamInProduction}[platform:dream-in-production]",
-   "state": "live", "started": "2026-10-27"},
-  {"cell": "fb-b", "copy_angle": "steak (numbers / Value-Derived proof)",
+   "state": "live",
+   "started": "2026-10-27"
+  },
+  {
+   "cell": "fb-b",
+   "copy_angle": "steak (numbers / Value-Derived proof)",
    "page": "Receipts Count",
    "page_account": "account{n0nReceiptsCount}[platform:receipts-count]",
-   "state": "live", "started": "2026-10-27"},
-  {"cell": "fb-c", "copy_angle": "mechanic (urgency/mechanic-first, 48h redeem window)",
+   "state": "live",
+   "started": "2026-10-27"
+  },
+  {
+   "cell": "fb-c",
+   "copy_angle": "mechanic (urgency/mechanic-first, 48h redeem window)",
    "page": "Code, Not Card",
    "page_account": "account{n0nCodeNotCard}[platform:code-not-card]",
-   "state": "arm_not_started", "started": null}
+   "state": "arm_not_started",
+   "started": null
+  }
  ],
  "deviations": [
-  {"arm": "fb-c", "kind": "arm_not_started",
+  {
+   "arm": "fb-c",
+   "kind": "arm_not_started",
    "reason": "FB new-Page limit at launch; owner retries",
    "recorded": "2026-10-31",
-   "effect": "Design stays 3 arms; window-1 verdict evaluates started arms only. A late fb-c start enters as a late arm with its own start stamp and is never pooled retroactively into window 1."}
+   "effect": "Design stays 3 arms; window-1 verdict evaluates started arms only. A late fb-c start enters as a late arm with its own start stamp and is never pooled retroactively into window 1."
+  }
  ],
  "responses": {
   "primary": "attributed redemptions per cell (rotation_log + replenishment ledger)",
   "secondary": [
    "FB insights — apps/help-wanted-dashboard/data/fb-traffic.json (lane-pulled)",
-   "landing traffic — traffic-feed (Web Design collect)"]
+   "landing traffic — traffic-feed (Web Design collect)"
+  ]
  },
  "decision_rule": {
   "text": "winner copy => default for all channels at 10 attributed redemptions or 14d",
@@ -53,10 +73,73 @@
   "note": "Designed by the marketing lane before launch with a stated decision rule; the in-repo design record is created at family wiring and is recorded honestly as post-launch — never retro-dressed as pre-registered."
  },
  "registry_ref": "config/referral_programs.json (ab_test)",
- "instance_stamps": "NOT ESTABLISHED — per-cell configured-instance tuples owed by the marketing lane with the copy of record: page id/URL, post copy ref + sha256, code pool ref. Supplied values land as a DESIGN amendment; until then cells are identified by their registry page accounts above.",
+ "instance_stamps": {
+  "fb-a": {
+   "page_id": "1403768132822477",
+   "profile_id": "61596155692530",
+   "page_url": "https://facebook.com/61596155692530",
+   "posts": [
+    {
+     "post_id": "122093913669538523",
+     "kind": "launch",
+     "published": "2026-10-27T21:12-07:00",
+     "copy_ref": "facebook:page/1403768132822477/post/122093913669538523",
+     "copy_sha256": "6cb8e44360f06f943405b4724c0522cb35225b8a1cad81d0fa8c5cb82dd0c42a"
+    },
+    {
+     "post_id": "122093977485538523",
+     "kind": "60b-campaign",
+     "published": "2026-10-27T23:42-07:00",
+     "copy_ref": "facebook:page/1403768132822477/post/122093977485538523",
+     "copy_sha256": "278c55f5fe79c2f94bf2ffd2fd13e7ad3649f512d9a419d3a1e849ee2db3fe20"
+    }
+   ],
+   "code_pool": {
+    "ref": "config/referral_programs.json#ab_test.cell_A",
+    "muse": "VDP1DW (shared all cells; attribution via landing param)",
+    "cue": "W7AZA",
+    "migoo": "uA3QYP",
+    "landing_param": "?ch=fb-a"
+   }
+  },
+  "fb-b": {
+   "page_id": "1368017223068543",
+   "profile_id": "61595762229816",
+   "page_url": "https://facebook.com/61595762229816",
+   "posts": [
+    {
+     "post_id": "122100212403525407",
+     "kind": "launch",
+     "published": "2026-10-27T21:12-07:00",
+     "copy_ref": "facebook:page/1368017223068543/post/122100212403525407",
+     "copy_sha256": "cd8608909b08f604a488138135b6aacb67b440eab0f0583ff0089c0826c7192a"
+    },
+    {
+     "post_id": "122100315417525407",
+     "kind": "60b-campaign",
+     "published": "2026-10-27T23:42-07:00",
+     "copy_ref": "facebook:page/1368017223068543/post/122100315417525407",
+     "copy_sha256": "e9efb26a3ac7b5ffa612522e6b5477616683f1bf70c423a05418ea768c6040e5"
+    }
+   ],
+   "code_pool": {
+    "ref": "config/referral_programs.json#ab_test.cell_B",
+    "muse": "VDP1DW (shared all cells; attribution via landing param)",
+    "cue": "7RKCJ",
+    "migoo": "Du7Ehu",
+    "landing_param": "?ch=fb-b"
+   }
+  },
+  "fb-c": "NOT ESTABLISHED - arm_not_started: no page, no posts, no per-cell pool (at start: live_code all programmes, attribution via ?ch=fb-c)",
+  "stamp_note": "Copy of record = exact published post text read back via facebook-cli pages posts list 2026-10-31 (truncated_fields empty); sha256 = UTF-8 of that text. Supplied by marketing-channel per DOE-FAMILY wiring (PR #2703 owed items)."
+ },
  "run_evidence": {
   "status": "exists_on_lane_surfaces",
-  "records_conformance": "pending_first_export",
-  "records_home": "experiments/marketing/fb-pages-mvt-1/records/"
+  "records_conformance": "first_export_landed",
+  "records_home": "experiments/marketing/fb-pages-mvt-1/records/",
+  "records": [
+   "records/snapshot-fb-a-2026-10-31.json",
+   "records/snapshot-fb-b-2026-10-31.json"
+  ]
  }
 }

@@ -44,3 +44,19 @@ def test_builder_fails_closed_when_page_cannot_be_versioned(tmp_path):
         "--source-ref", "test", "--source-sha", "abc",
     ], capture_output=True, text=True)
     assert result.returncode != 0
+
+def test_preview_workflow_isolated_and_preserves_existing_site():
+    workflow = (ROOT / ".github" / "workflows" / "help-wanted-dashboard-preview.yml").read_text()
+    assert "workflow_dispatch:" in workflow
+    assert "source_ref:" in workflow and "preview_key:" in workflow
+    assert "publish_dir: _preview" in workflow
+    assert "destination_dir: previews/${{ inputs.preview_key }}/help-wanted" in workflow
+    assert "keep_files: true" in workflow
+    assert "force_orphan: true" not in workflow
+
+
+def test_production_deployment_stamps_the_artifact():
+    workflow = (ROOT / ".github" / "workflows" / "help-wanted-dashboard-deploy.yml").read_text()
+    assert "scripts/build_dashboard_manifest.py" in workflow
+    assert "--channel production" in workflow
+    assert "--source-sha" in workflow

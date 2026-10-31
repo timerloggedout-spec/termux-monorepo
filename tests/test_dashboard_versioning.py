@@ -89,3 +89,24 @@ def test_versioning_preview_and_production_share_release_prefix():
     assert '--version-prefix "1.0.1"' in production
     assert "scripts/build_dashboard_manifest.py" in production
     assert ".github/workflows/help-wanted-dashboard-preview.yml" in production
+
+
+def test_fallback_navigation_covers_every_registered_page():
+    js = (APP / "versioning.js").read_text()
+    manifest = json.loads((APP / "version-manifest.json").read_text())
+    for page in manifest["pages"]:
+        assert f'"file":"{page["file"]}"' in js, f"fallback navigation missing {page['file']}"
+
+
+def test_builder_preserves_canonical_home_and_comparison_titles(tmp_path):
+    (tmp_path / "index.html").write_text("<html><head></head><body>home</body></html>")
+    (tmp_path / "versioning.html").write_text("<html><head></head><body>compare</body></html>")
+    (tmp_path / "versioning.js").write_text("/* test */")
+    subprocess.run([
+        sys.executable, str(BUILDER), "--root", str(tmp_path), "--channel", "preview",
+        "--source-ref", "test", "--source-sha", "0123456789abcdef",
+    ], check=True, capture_output=True, text=True)
+    manifest = json.loads((tmp_path / "version-manifest.json").read_text())
+    titles = {page["file"]: page["title"] for page in manifest["pages"]}
+    assert titles["index.html"] == "Help-Wanted Home"
+    assert titles["versioning.html"] == "Version Comparison"

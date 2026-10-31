@@ -49,15 +49,28 @@ TOOLS = ["retrieve_context", "extract_fragments"]
 
 
 def composed_prompt(campaign_dir: Path, prompt_level: str,
-                    role: str) -> str:
+                    role: str, phrases: dict | None = None) -> str:
     text = (campaign_dir / "prompts" /
             f"{prompt_level}.md").read_text().strip()
-    return f"{text}\n\n{ROLE_LINES[role]}"
+    parts = []
+    if phrases and phrases.get("prefix"):
+        parts.append(phrases["prefix"].strip())
+    parts.append(text)
+    parts.append(ROLE_LINES[role])
+    if phrases and phrases.get("suffix"):
+        parts.append(phrases["suffix"].strip())
+    return "\n\n".join(parts)
 
 
 def cell_instance(campaign_dir: Path, design: dict, cell: dict) -> dict:
+    # Mandatory provider phrases (owner order, 2026-10-31): when the
+    # campaign design declares provider_phrases for this model route
+    # (verbatim from the harmony_hub prompt sources), they are composed
+    # INTO the dispatched prompt and covered by its hash — a run
+    # without them is a different configured instance.
+    phrases = (design.get("provider_phrases") or {}).get(cell["model"])
     prompt_text = composed_prompt(campaign_dir, cell["prompt"],
-                                  cell["role"])
+                                  cell["role"], phrases)
     provider, model = cell["model"].split("/", 1)
     p_sha = IK.sha256_text(prompt_text)
     t_sha = IK.tools_sha256(TOOLS)
@@ -70,7 +83,9 @@ def cell_instance(campaign_dir: Path, design: dict, cell: dict) -> dict:
         "provider": provider, "model": model,
         "system_prompt": {
             "ref": f"experiments/doe/{design['campaign_id']}/prompts/"
-                   f"{cell['prompt']}.md (+ role line: {cell['role']})",
+                   f"{cell['prompt']}.md (+ role line: {cell['role']})"
+                   + (" (+ provider phrases)"
+                      if phrases else ""),
             "sha256": p_sha},
         "tools": {"ref": "tools:doe-expert:lab-runner",
                   "sha256": t_sha},

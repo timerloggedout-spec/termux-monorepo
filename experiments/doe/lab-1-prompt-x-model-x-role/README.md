@@ -15,3 +15,13 @@ results.jsonl → `lab_runner.py record` writes EXPERIMENT records
 + SUMMARY with the verdict vs the pre-registered selection rule
 (top cell >= 0.80 accuracy, margin >= 0.05, else no_selection).
 State until records land: admitted_design_only.
+
+**Suite type: `control`** (owner, 2026-10-31) — fragment-style
+suites are the control type, minimal use; the primary
+experimental mass is active development + review as live
+testing. **Provider phrases:** none established for this
+campaign's two OpenRouter routes (the established sets in
+`harmony_hub/workspace/prompts/prompt_engine.py` are
+DeepSeek-shaped) — recorded in DESIGN.json as NOT ESTABLISHED;
+when a set exists for a route, the runner composes it into the
+prompt and the hash.

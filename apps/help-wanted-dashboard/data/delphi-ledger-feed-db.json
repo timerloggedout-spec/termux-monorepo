@@ -1725,93 +1725,50 @@
   },
   {
    "current": {
-    "comment_id": 6478760068,
-    "created_at": "2026-10-28T19:37:59Z",
+    "comment_id": 6535938191,
+    "created_at": "2026-10-30T23:47:07Z",
     "payload": {
-     "calibration": {
-      "candidates": {
-       "HUMAN_COLLABORATOR": {
-        "rehearsal-empty": {
-         "actual_rank": 3,
-         "actual_score": 4.0,
-         "expected_rank": 3,
-         "expected_score": 6.0,
-         "moved_on_evidence": [
-          "2 failing test(s) in the implementation round"
-         ],
-         "rank_delta": 0,
-         "score_delta": -2.0,
-         "within_tolerance": true
-        },
-        "rehearsal-strong": {
-         "actual_rank": 1,
-         "actual_score": 21.0,
-         "expected_rank": 1,
-         "expected_score": 20.0,
-         "moved_on_evidence": [
-          "full test pass in the implementation round"
-         ],
-         "rank_delta": 0,
-         "score_delta": 1.0,
-         "within_tolerance": true
-        },
-        "rehearsal-weak": {
-         "actual_rank": 2,
-         "actual_score": 9.0,
-         "expected_rank": 2,
-         "expected_score": 12.0,
-         "moved_on_evidence": [
-          "3 failing test(s) in the implementation round"
-         ],
-         "rank_delta": 0,
-         "score_delta": -3.0,
-         "within_tolerance": false
-        }
-       },
-       "LOCAL_BASELINE": {
-        "rehearsal-empty": {
-         "actual_rank": 3,
-         "actual_score": 1.0,
-         "expected_rank": 3,
-         "expected_score": 4.038,
-         "moved_on_evidence": [
-          "2 failing test(s) in the implementation round"
-         ],
-         "rank_delta": 0,
-         "score_delta": -3.038,
-         "within_tolerance": false
-        },
-        "rehearsal-strong": {
-         "actual_rank": 1,
-         "actual_score": 25.0,
-         "expected_rank": 1,
-         "expected_score": 24.231,
-         "moved_on_evidence": [
-          "full test pass in the implementation round"
-         ],
-         "rank_delta": 0,
-         "score_delta": 0.769,
-         "within_tolerance": true
-        },
-        "rehearsal-weak": {
-         "actual_rank": 2,
-         "actual_score": 8.538,
-         "expected_rank": 2,
-         "expected_score": 10.846,
-         "moved_on_evidence": [
-          "3 failing test(s) in the implementation round"
-         ],
-         "rank_delta": 0,
-         "score_delta": -2.308,
-         "within_tolerance": false
-        }
-       }
+     "expectations_brief_author": {
+      "kiroween-delphi-concept-frankenstein": {
+       "expected_rank": 2,
+       "expected_score": 17
       },
-      "evidence_set_sha256": "dde5aac5d62b8e6f6a946564908ee055b3e19cc488c61aeee62015013768d9ac",
-      "schema": "oracle-method-calibration/v1"
+      "kiroween-delphi-concept-resurrection": {
+       "expected_rank": 3,
+       "expected_score": 14
+      },
+      "kiroween-delphi-concept-skeleton-crew": {
+       "expected_rank": 1,
+       "expected_score": 19
+      }
      },
-     "pass_id": "rehearsal",
-     "type": "delphi-generation-calibration"
+     "pass_id": "kiroween-delphi-concept",
+     "record": "docs/proposals/passes/kiroween-delphi-concept/",
+     "round_1": {
+      "ballots_by_class": {
+       "HUMAN_COLLABORATOR": 0,
+       "LOCAL_BASELINE": 5,
+       "MODEL_PROVIDER": 0
+      },
+      "ranked_outcome": [
+       "kiroween-delphi-concept-frankenstein",
+       "kiroween-delphi-concept-resurrection",
+       "kiroween-delphi-concept-skeleton-crew"
+      ],
+      "ranking_basis": "tie \u2014 identical scores on identical scored profile dimensions; order is the rank() tie-break by candidate id",
+      "scores": {
+       "kiroween-delphi-concept-frankenstein": 23.269,
+       "kiroween-delphi-concept-resurrection": 23.269,
+       "kiroween-delphi-concept-skeleton-crew": 23.269
+      }
+     },
+     "stages_specified_not_run": [
+      "debate_revision",
+      "implementation",
+      "evidence_equalization",
+      "cross_vote_round_2",
+      "calibration"
+     ]
     }
    },
    "derivation": null,
@@ -2544,6 +2501,57 @@
       "pass_id": "rehearsal",
       "type": "delphi-generation-calibration"
      }
+    },
+    {
+     "class": "machine-state",
+     "comment_id": 6535938191,
+     "created_at": "2026-10-30T23:47:07Z",
+     "event_key": "b57086737611c2d258fb5f4d6a1bb080af0ab664c5ce90ed58e2c1162eb4aa73",
+     "headline": "[MUSEai]@{role:{delphi-lane}} \u2014 D4 Kiroween concept pass: round-1 outcome.",
+     "marker": "<!-- delphi-generation-ballot v1 -->",
+     "payload": {
+      "expectations_brief_author": {
+       "kiroween-delphi-concept-frankenstein": {
+        "expected_rank": 2,
+        "expected_score": 17
+       },
+       "kiroween-delphi-concept-resurrection": {
+        "expected_rank": 3,
+        "expected_score": 14
+       },
+       "kiroween-delphi-concept-skeleton-crew": {
+        "expected_rank": 1,
+        "expected_score": 19
+       }
+      },
+      "pass_id": "kiroween-delphi-concept",
+      "record": "docs/proposals/passes/kiroween-delphi-concept/",
+      "round_1": {
+       "ballots_by_class": {
+        "HUMAN_COLLABORATOR": 0,
+        "LOCAL_BASELINE": 5,
+        "MODEL_PROVIDER": 0
+       },
+       "ranked_outcome": [
+        "kiroween-delphi-concept-frankenstein",
+        "kiroween-delphi-concept-resurrection",
+        "kiroween-delphi-concept-skeleton-crew"
+       ],
+       "ranking_basis": "tie \u2014 identical scores on identical scored profile dimensions; order is the rank() tie-break by candidate id",
+       "scores": {
+        "kiroween-delphi-concept-frankenstein": 23.269,
+        "kiroween-delphi-concept-resurrection": 23.269,
+        "kiroween-delphi-concept-skeleton-crew": 23.269
+       }
+      },
+      "stages_specified_not_run": [
+       "debate_revision",
+       "implementation",
+       "evidence_equalization",
+       "cross_vote_round_2",
+       "calibration"
+      ]
+     }
     }
    ],
    "excluded_noise": null,
@@ -2573,23 +2581,23 @@
   },
   {
    "assigned_marker": null,
-   "body": "<!-- delphi-board v1 -->\nGenerated by delphi-gate at 2026-10-28 21:43 UTC. Ledger of record: the newest `<!-- delphi-ledger v1 -->` comment on each RFP.\n\n| RFP | Surface | Effective /25 | Award | Band | Recheck |\n|---|---|---|---|---|---|\n| #1424 | `github.native_ledger` | 18.55 | shadow | High | - |\n| #1423 | `turso.free` | 16.54 | shadow | High | - |\n| #1420 | `supabase.free` | 14.62 | parked | Medium | 2026-11-11T00:20Z |\n| #1421 | `cloudflare.d1_queues` | 14.62 | parked | Medium | 2026-11-11T00:20Z |\n| #1416 | `neon.data_api` | 12.92 | parked | Medium | 2026-11-11T00:20Z |\n| #1488 | `tribute-lane` | 12.69 | parked | Medium | 2026-11-11T00:21Z |\n| #1425 | `gemini.free` | 12.23 | parked | Medium | 2026-11-11T01:17Z |\n| #1426 | `openrouter.free` | 12.23 | parked | Medium | 2026-11-11T00:21Z |\n| #1428 | `grafana.cloud_free` | 12.0 | parked | Medium | 2026-11-11T00:21Z |\n| #1422 | `upstash.free` | 11.54 | parked | Medium | 2026-11-11T00:21Z |\n| #1419 | `vercel.hobby` | 10.81 | parked | Medium | 2026-11-11T00:20Z |\n| #1427 | `g4f.vendors` | 9.23 | parked | Medium | 2026-11-11T14:43Z |\n| #1567 | `issue-1567` | 9.12 | parked | Medium | 2026-11-11T00:21Z |\n| #1571 | `issue-1571` | 9.12 | parked | Medium | 2026-11-11T00:21Z |\n| #1572 | `issue-1572` | 9.12 | parked | Medium | 2026-11-11T00:21Z |\n| #1418 | `render.free` | 8.77 | parked | Backlog | 2026-11-27T00:20Z |\n| #1591 | `fly.free_tier` | 8.54 | parked | Backlog | 2026-11-27T00:21Z |\n| #1415 | `neon.realtime` | 7.15 | parked | Backlog | 2026-11-27T00:20Z |\n| #1417 | `platform201.solo` | 6.69 | parked | Backlog | 2026-11-27T07:05Z |\n| #1959 | `doe.criteria-loop` | 6.69 | parked | Backlog | 2026-11-27T04:38Z |\n| #1963 | `delphi.method-self-application` | 6.69 | parked | Backlog | 2026-11-27T04:38Z |\n| #1975 | `markov.trellis-lab` | 6.69 | parked | Backlog | 2026-11-27T07:06Z |\n| #1976 | `bayesian.routing` | 6.69 | parked | Backlog | 2026-11-27T07:06Z |\n| #1977 | `kahn.dag` | 6.69 | parked | Backlog | 2026-11-27T07:06Z |\n| #1978 | `gantt.dependency-phases` | 6.69 | parked | Backlog | 2026-11-27T07:06Z |\n| #1430 | `manus.credits` | 4.62 | parked | Backlog | 2026-11-27T00:21Z |\n| #1431 | `polsia.credits` | 4.62 | parked | Backlog | 2026-11-27T00:21Z |\n| #1429 | `cellcog.credits` | 4.31 | parked | Backlog | 2026-11-27T00:21Z |\n\n28 open RFPs \u00b7 2 shadow \u00b7 26 parked \u00b7 0 pending. Rubric-only panel (MSM-018); awards are advisory.\n\n### Radar: 133 surfaces with no RFP yet\nFile one with the Delphi Oracle RFP issue form to put a surface through the gate.\n\n| Surface | Lane | Seen in | Source |\n|---|---|---|---|\n| `otel-semantic-conventions` | agent-observability | foresight | [link](https://github.com/open-telemetry/semantic-conventions) |\n| `aion.free_tokens` | model | quota-registry | [link](https://api.aionlabs.ai/docs/rate-limits/) |\n| `aws.account_credits` | ops | quota-registry | [link](https://aws.amazon.com/free/) |\n| `aws.dynamodb_storage` | data | quota-registry | [link](https://aws.amazon.com/free/) |\n| `aws.lambda_compute` | deploy | quota-registry | [link](https://aws.amazon.com/lambda/pricing/) |\n| `aws.lambda_requests` | deploy | quota-registry | [link](https://aws.amazon.com/lambda/pricing/) |\n| `azure.account_credit` | ops | quota-registry | [link](https://azure.microsoft.com/en-us/pricing/offers/ms-azr-0044p) |\n| `azure.functions_executions` | deploy | quota-registry | [link](https://azure.microsoft.com/en-us/pricing/offers/ms-azr-0044p) |\n| `cerebras.free_tokens` | model | quota-registry | [link](https://inference-docs.cerebras.ai/support/rate-limits) |\n| `cloudflare.d1_rows_read` | data | quota-registry | [link](https://developers.cloudflare.com/d1/platform/pricing/) |\n| `cloudflare.d1_rows_written` | data | quota-registry | [link](https://developers.cloudflare.com/d1/platform/pricing/) |\n| `cloudflare.d1_storage` | data | quota-registry | [link](https://developers.cloudflare.com/d1/platform/pricing/) |\n| `cloudflare.kv_writes` | data | quota-registry | [link](https://developers.cloudflare.com/kv/platform/pricing/) |\n| `cloudflare.queues_ops` | data | quota-registry | [link](https://developers.cloudflare.com/d1/platform/pricing/) |\n| `cloudflare.r2_storage` | data | quota-registry | [link](https://developers.cloudflare.com/r2/pricing/) |\n| `cloudflare.workers_ai` | model | quota-registry | [link](https://developers.cloudflare.com/workers-ai/platform/pricing/) |\n| `cloudflare.workers_requests` | deploy | quota-registry | [link](https://developers.cloudflare.com/workers/platform/pricing/) |\n| `cohere.trial_calls` | model | quota-registry | [link](https://docs.cohere.com/docs/rate-limits) |\n| `deno.deploy_requests` | deploy | quota-registry | [link](https://deno.com/deploy/pricing) |\n| `digitalocean.app_platform_static` | deploy | quota-registry | [link](https://www.digitalocean.com/pricing/app-platform) |\n| `digitalocean.trial_credit` | ops | quota-registry | [link](https://www.digitalocean.com/pricing/app-platform) |\n| `felo.api_credits` | model | quota-registry | [link](https://openapi.felo.ai/pricing) |\n| `g4f.agenttools` | model | quota-registry | [link](https://api.toolsforagents.tools/site/index.html) |\n| `g4f.airforce` | model | quota-registry | [link](https://api.airforce/docs/quickstart/) |\n| `g4f.antigravity` | model | quota-registry | [link](https://antigravity.google/docs/plans) |\n| `g4f.arena` | model | quota-registry | [link](https://arena.ai/faq) |\n| `g4f.bingcreateimages` | model | quota-registry | [link](https://www.microsoft.com/en-us/microsoft-365/microsoft-designer) |\n| `g4f.blackboxpro` | model | quota-registry | [link](https://www.blackbox.ai/pricing) |\n| `g4f.blackforestlabs_flux1dev` | model | quota-registry | [link](https://huggingface.co/docs/hub/en/spaces-zerogpu) |\n| `g4f.blackforestlabs_flux1kontextdev` | model | quota-registry | [link](https://huggingface.co/docs/hub/en/spaces-zerogpu) |\n| `g4f.bravesearch` | model | quota-registry | [link](https://brave.com/ai/) |\n| `g4f.cachedsearch` | model | quota-registry | [link](https://g4f.dev) |\n| `g4f.cerebras` | model | quota-registry | [link](https://inference-docs.cerebras.ai/support/rate-limits) |\n| `g4f.chatgpt` | model | quota-registry | [link](https://help.openai.com/en/articles/9275245-chatgpt-free-tier-faq) |\n| `g4f.claude` | model | quota-registry | [link](https://support.claude.com/en/articles/8114491-get-started-with-claude) |\n| `g4f.cloudflare` | model | quota-registry | [link](https://developers.cloudflare.com/workers-ai/platform/pricing/) |\n| `g4f.cohereforai_c4ai_command` | model | quota-registry | [link](https://coherelabs-c4ai-command.hf.space) |\n| `g4f.copilot` | model | quota-registry | [link](https://copilot.com) |\n| `g4f.copilotapp` | model | quota-registry | [link](https://play.google.com/store/apps/details/Microsoft_Copilot?id=com.microsoft.copilot&hl=en_IE) |\n| `g4f.deepinfra` | model | quota-registry | [link](https://deepinfra.com/blog/compare-models) |\n| \u2026 | | | 93 more |",
+   "body": "<!-- delphi-board v1 -->\nGenerated by delphi-gate at 2026-10-31 06:07 UTC. Ledger of record: the newest `<!-- delphi-ledger v1 -->` comment on each RFP.\n\n| RFP | Surface | Effective /25 | Award | Band | Recheck |\n|---|---|---|---|---|---|\n| #1424 | `github.native_ledger` | 18.55 | shadow | High | - |\n| #1423 | `turso.free` | 16.54 | shadow | High | - |\n| #1420 | `supabase.free` | 14.62 | parked | Medium | 2026-11-11T00:20Z |\n| #1421 | `cloudflare.d1_queues` | 14.62 | parked | Medium | 2026-11-11T00:20Z |\n| #1416 | `neon.data_api` | 12.92 | parked | Medium | 2026-11-11T00:20Z |\n| #1488 | `tribute-lane` | 12.69 | parked | Medium | 2026-11-11T00:21Z |\n| #1425 | `gemini.free` | 12.23 | parked | Medium | 2026-11-11T01:17Z |\n| #1426 | `openrouter.free` | 12.23 | parked | Medium | 2026-11-11T00:21Z |\n| #1428 | `grafana.cloud_free` | 12.0 | parked | Medium | 2026-11-11T00:21Z |\n| #1422 | `upstash.free` | 11.54 | parked | Medium | 2026-11-11T00:21Z |\n| #1419 | `vercel.hobby` | 10.81 | parked | Medium | 2026-11-11T00:20Z |\n| #1427 | `g4f.vendors` | 9.23 | parked | Medium | 2026-11-11T14:43Z |\n| #1567 | `issue-1567` | 9.12 | parked | Medium | 2026-11-11T00:21Z |\n| #1571 | `issue-1571` | 9.12 | parked | Medium | 2026-11-11T00:21Z |\n| #1572 | `issue-1572` | 9.12 | parked | Medium | 2026-11-11T00:21Z |\n| #1418 | `render.free` | 8.77 | parked | Backlog | 2026-11-27T00:20Z |\n| #1591 | `fly.free_tier` | 8.54 | parked | Backlog | 2026-11-27T00:21Z |\n| #1415 | `neon.realtime` | 7.15 | parked | Backlog | 2026-11-27T00:20Z |\n| #1417 | `platform201.solo` | 6.69 | parked | Backlog | 2026-11-27T07:05Z |\n| #1959 | `doe.criteria-loop` | 6.69 | parked | Backlog | 2026-11-27T04:38Z |\n| #1963 | `delphi.method-self-application` | 6.69 | parked | Backlog | 2026-11-27T04:38Z |\n| #1975 | `markov.trellis-lab` | 6.69 | parked | Backlog | 2026-11-27T07:06Z |\n| #1976 | `bayesian.routing` | 6.69 | parked | Backlog | 2026-11-27T07:06Z |\n| #1977 | `kahn.dag` | 6.69 | parked | Backlog | 2026-11-27T07:06Z |\n| #1978 | `gantt.dependency-phases` | 6.69 | parked | Backlog | 2026-11-27T07:06Z |\n| #1430 | `manus.credits` | 4.62 | parked | Backlog | 2026-11-27T00:21Z |\n| #1431 | `polsia.credits` | 4.62 | parked | Backlog | 2026-11-27T00:21Z |\n| #1429 | `cellcog.credits` | 4.31 | parked | Backlog | 2026-11-27T00:21Z |\n\n28 open RFPs \u00b7 2 shadow \u00b7 26 parked \u00b7 0 pending. Rubric-only panel (MSM-018); awards are advisory.\n\n### Radar: 137 surfaces with no RFP yet\nFile one with the Delphi Oracle RFP issue form to put a surface through the gate.\n\n| Surface | Lane | Seen in | Source |\n|---|---|---|---|\n| `otel-semantic-conventions` | agent-observability | foresight | [link](https://github.com/open-telemetry/semantic-conventions) |\n| `aion.free_tokens` | model | quota-registry | [link](https://api.aionlabs.ai/docs/rate-limits/) |\n| `aws.account_credits` | ops | quota-registry | [link](https://aws.amazon.com/free/) |\n| `aws.dynamodb_storage` | data | quota-registry | [link](https://aws.amazon.com/free/) |\n| `aws.lambda_compute` | deploy | quota-registry | [link](https://aws.amazon.com/lambda/pricing/) |\n| `aws.lambda_requests` | deploy | quota-registry | [link](https://aws.amazon.com/lambda/pricing/) |\n| `azure.account_credit` | ops | quota-registry | [link](https://azure.microsoft.com/en-us/pricing/offers/ms-azr-0044p) |\n| `azure.functions_executions` | deploy | quota-registry | [link](https://azure.microsoft.com/en-us/pricing/offers/ms-azr-0044p) |\n| `cerebras.free_tokens` | model | quota-registry | [link](https://inference-docs.cerebras.ai/support/rate-limits) |\n| `cloudflare.d1_rows_read` | data | quota-registry | [link](https://developers.cloudflare.com/d1/platform/pricing/) |\n| `cloudflare.d1_rows_written` | data | quota-registry | [link](https://developers.cloudflare.com/d1/platform/pricing/) |\n| `cloudflare.d1_storage` | data | quota-registry | [link](https://developers.cloudflare.com/d1/platform/pricing/) |\n| `cloudflare.kv_writes` | data | quota-registry | [link](https://developers.cloudflare.com/kv/platform/pricing/) |\n| `cloudflare.queues_ops` | data | quota-registry | [link](https://developers.cloudflare.com/d1/platform/pricing/) |\n| `cloudflare.r2_storage` | data | quota-registry | [link](https://developers.cloudflare.com/r2/pricing/) |\n| `cloudflare.workers_ai` | model | quota-registry | [link](https://developers.cloudflare.com/workers-ai/platform/pricing/) |\n| `cloudflare.workers_requests` | deploy | quota-registry | [link](https://developers.cloudflare.com/workers/platform/pricing/) |\n| `cohere.trial_calls` | model | quota-registry | [link](https://docs.cohere.com/docs/rate-limits) |\n| `deno.deploy_requests` | deploy | quota-registry | [link](https://deno.com/deploy/pricing) |\n| `digitalocean.app_platform_static` | deploy | quota-registry | [link](https://www.digitalocean.com/pricing/app-platform) |\n| `digitalocean.trial_credit` | ops | quota-registry | [link](https://www.digitalocean.com/pricing/app-platform) |\n| `felo.api_credits` | model | quota-registry | [link](https://openapi.felo.ai/pricing) |\n| `fleet.vm_webhooks` | ops | quota-registry | docs/ops/VM-WEBHOOKS.md |\n| `g4f.agenttools` | model | quota-registry | [link](https://api.toolsforagents.tools/site/index.html) |\n| `g4f.airforce` | model | quota-registry | [link](https://api.airforce/docs/quickstart/) |\n| `g4f.antigravity` | model | quota-registry | [link](https://antigravity.google/docs/plans) |\n| `g4f.arena` | model | quota-registry | [link](https://arena.ai/faq) |\n| `g4f.bingcreateimages` | model | quota-registry | [link](https://www.microsoft.com/en-us/microsoft-365/microsoft-designer) |\n| `g4f.blackboxpro` | model | quota-registry | [link](https://www.blackbox.ai/pricing) |\n| `g4f.blackforestlabs_flux1dev` | model | quota-registry | [link](https://huggingface.co/docs/hub/en/spaces-zerogpu) |\n| `g4f.blackforestlabs_flux1kontextdev` | model | quota-registry | [link](https://huggingface.co/docs/hub/en/spaces-zerogpu) |\n| `g4f.bravesearch` | model | quota-registry | [link](https://brave.com/ai/) |\n| `g4f.cachedsearch` | model | quota-registry | [link](https://g4f.dev) |\n| `g4f.cerebras` | model | quota-registry | [link](https://inference-docs.cerebras.ai/support/rate-limits) |\n| `g4f.chatgpt` | model | quota-registry | [link](https://help.openai.com/en/articles/9275245-chatgpt-free-tier-faq) |\n| `g4f.claude` | model | quota-registry | [link](https://support.claude.com/en/articles/8114491-get-started-with-claude) |\n| `g4f.cloudflare` | model | quota-registry | [link](https://developers.cloudflare.com/workers-ai/platform/pricing/) |\n| `g4f.cohereforai_c4ai_command` | model | quota-registry | [link](https://coherelabs-c4ai-command.hf.space) |\n| `g4f.copilot` | model | quota-registry | [link](https://copilot.com) |\n| `g4f.copilotapp` | model | quota-registry | [link](https://play.google.com/store/apps/details/Microsoft_Copilot?id=com.microsoft.copilot&hl=en_IE) |\n| \u2026 | | | 97 more |",
    "body_marker": "<!-- delphi-board v1 -->",
    "id": "results-board",
    "issue": 1474,
    "kind": "living-body",
    "marker": "<!-- delphi-board v1 -->",
-   "recorded_at": "2026-10-28T21:43:28Z",
+   "recorded_at": "2026-10-31T06:07:20Z",
    "semantics": "DERIVED board regenerated by delphi-gate into the issue body (generated-at stamp in body); ledger of record = newest '<!-- delphi-ledger v1 -->' comment per RFP issue \u2014 the board itself is a render, never a source",
    "snapshot_at": null,
    "state_rule": "the issue BODY is the current board (body starts with the delphi-board marker); version key = sha256(body)",
    "title": "Delphi results board",
-   "version_key": "21fbb0e7742592973626f0f4b5d9f8ee3b8e97ae82e9c6b50dea56989045412a"
+   "version_key": "af48fe0b85b3d484a7f4193cde1db19c254c75be9ec8f6ed8bb023a66b6f06d8"
   }
  ],
  "schema": "delphi-ledger-feed-db/v1",
  "summary": {
-  "events": 18,
+  "events": 19,
   "excluded_noise": null
  }
 }

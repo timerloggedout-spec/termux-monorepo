@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Compare page versions, source revisions, and production versus preview dashboard builds.">
+<title>Version comparison · Help-Wanted</title>
+<link rel="stylesheet" href="./dashboard.css">
+<script src="./versioning.js" defer></script>
+<style>
+main{max-width:1440px;margin:2rem auto;padding:0 1rem}.panel{padding:1rem;border:1px solid var(--line);border-radius:10px;background:var(--panel)}.pv-table-wrap{overflow:auto}table{border-collapse:collapse;width:100%;min-width:760px}th,td{text-align:left;padding:.65rem;border-bottom:1px solid var(--line)}th{color:var(--gold)}code{overflow-wrap:anywhere}.callout{border-left:3px solid var(--gold);padding:.7rem 1rem;background:var(--panel2)}
+</style>
+</head>
+<body>
+<header><div class="hero"><div><div class="eyebrow">Release engineering · provenance</div><h1>Version <span class="gold">comparison</span></h1><p class="lede">Compare production and preview pages before merge. Page IDs remain stable; build versions and content hashes identify the exact artifacts under test.</p></div></div></header>
+<main><section class="panel"><p class="callout">A preview is not production. A version string alone is not proof: use the source commit and SHA-256 content hashes. Missing production evidence is shown as unavailable, never as “same”.</p><div id="version-comparison" aria-live="polite"></div></section></main>
+</body></html>

@@ -32,7 +32,7 @@ def test_versioning_header_is_injected_for_all_pages_by_build_step(tmp_path):
         assert 'src="./versioning.js"' in (tmp_path / name).read_text()
     manifest = json.loads((tmp_path / "version-manifest.json").read_text())
     assert manifest["channel"] == "preview"
-    assert manifest["version"] == "1.0.0+0123456789ab"
+    assert manifest["version"] == "1.0.1+0123456789ab"
     assert len(manifest["pages"]) == 2
     assert all(len(p["content_sha256"]) == 64 for p in manifest["pages"])
 
@@ -60,3 +60,32 @@ def test_production_deployment_stamps_the_artifact():
     assert "scripts/build_dashboard_manifest.py" in workflow
     assert "--channel production" in workflow
     assert "--source-sha" in workflow
+
+
+def test_builder_rejects_colliding_page_ids(tmp_path):
+    (tmp_path / "alpha_beta.html").write_text("<html><head></head><body>a</body></html>")
+    (tmp_path / "alpha-beta.html").write_text("<html><head></head><body>b</body></html>")
+    result = subprocess.run([
+        sys.executable, str(BUILDER), "--root", str(tmp_path), "--channel", "preview",
+        "--source-ref", "test", "--source-sha", "abc",
+    ], capture_output=True, text=True)
+    assert result.returncode != 0
+    assert "duplicate page unique IDs" in result.stderr
+
+
+def test_builder_rejects_empty_registry(tmp_path):
+    result = subprocess.run([
+        sys.executable, str(BUILDER), "--root", str(tmp_path), "--channel", "preview",
+        "--source-ref", "test", "--source-sha", "abc",
+    ], capture_output=True, text=True)
+    assert result.returncode != 0
+    assert "no HTML pages found" in result.stderr
+
+
+def test_versioning_preview_and_production_share_release_prefix():
+    preview = (ROOT / ".github" / "workflows" / "help-wanted-dashboard-preview.yml").read_text()
+    production = (ROOT / ".github" / "workflows" / "help-wanted-dashboard-deploy.yml").read_text()
+    assert '--version-prefix "1.0.1"' in preview
+    assert '--version-prefix "1.0.1"' in production
+    assert "scripts/build_dashboard_manifest.py" in production
+    assert ".github/workflows/help-wanted-dashboard-preview.yml" in production

@@ -1,0 +1,92 @@
+name: tinyfish osint
+
+# [MUSEai]@{role:{scraping-tools}} — TinyFish Search/Fetch collector for
+# public-page OSINT (data-ingestion routes tinyfish-search ∘ tinyfish-fetch).
+# Dispatch-only in v1 (cadence is set by the consuming lane); while the
+# TINYFISH_API_KEY secret is absent the collector DEFERs green and writes
+# nothing. Quota slice of record: github:scraping-tools (claim 6520959920).
+# Public pages only — no login/session use (hosted login = session export).
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'tinyfish mode'
+        type: choice
+        options: [fetch, search]
+        default: fetch
+      urls:
+        description: 'fetch mode: public URLs, one per line'
+        type: string
+        required: false
+      query:
+        description: 'search mode: query text'
+        type: string
+        required: false
+      include_domains:
+        description: 'search mode: comma-separated domain allowlist'
+        type: string
+        required: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tinyfish-osint
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    name: tinyfish search/fetch (public OSINT)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: master
+          fetch-depth: 1
+          persist-credentials: false
+
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: '3.12'
+
+      - name: Test collector
+        run: python -m unittest -v tests/test_tinyfish_osint.py
+
+      # PROVISIONING ITEM (owner): secret TINYFISH_API_KEY — the account's
+      # single TinyFish API key (X-API-Key header), entered via the Secure
+      # Vault custom.tinyfish connection. While absent: DEFER, green, no write.
+      - name: Collect
+        env:
+          TINYFISH_API_KEY: ${{ secrets.TINYFISH_API_KEY }}
+          MODE: ${{ inputs.mode }}
+          URLS: ${{ inputs.urls }}
+          QUERY: ${{ inputs.query }}
+          INCLUDE_DOMAINS: ${{ inputs.include_domains }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/tinyfish-osint
+          args=(--mode "$MODE" --output /tmp/tinyfish-osint/envelope.json --defer-ok)
+          if [ "$MODE" = "search" ]; then
+            args+=(--query "$QUERY")
+            if [ -n "$INCLUDE_DOMAINS" ]; then
+              args+=(--include-domains "$INCLUDE_DOMAINS")
+            fi
+          else
+            while IFS= read -r line; do
+              line="$(echo "$line" | xargs)"
+              if [ -n "$line" ]; then
+                args+=(--url "$line")
+              fi
+            done <<< "$URLS"
+          fi
+          python3 scripts/services/tinyfish_osint.py "${args[@]}"
+
+      - name: Upload envelope
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: tinyfish-osint-envelope
+          path: /tmp/tinyfish-osint/envelope.json
+          if-no-files-found: ignore

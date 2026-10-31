@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 355,
-    "open_prs": 143,
+    "open_prs": 145,
     "pr_classes": {
       "CANDIDATE": 69,
       "EXTRACT": 5,
-      "NEED_EVIDENCE": 69,
+      "NEED_EVIDENCE": 71,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 20,
-      "prs": 141,
+      "prs": 143,
       "unlabelled_numbers": [
         308,
         343,
@@ -75,7 +75,7 @@
       ]
     }
   },
-  "generated_at": "2026-10-31T01:13:35Z",
+  "generated_at": "2026-10-31T01:44:17Z",
   "issues_unlabelled": [
     308,
     343,
@@ -104,7 +104,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "56aad5356e"
+    "sha": "f68e23a169"
   },
   "prs": [
     {
@@ -1227,7 +1227,7 @@
       },
       "head_sha": "b7e4709b50",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 125,
       "title": "analyze agentic workflows and peer coordination rules",
       "updated_at": "2026-10-24T23:34:10Z"
@@ -1561,12 +1561,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "dba3966046",
+      "head_sha": "b42a383c08",
       "labels": [],
-      "mergeable_state": "clean",
+      "mergeable_state": "unknown",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-10-31T01:13:01Z"
+      "updated_at": "2026-10-31T01:43:11Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1687,12 +1687,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "dc7129e136",
+      "head_sha": "14b82d4b35",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2235,
       "title": "chore(osint): refresh coverage + page snapshots",
-      "updated_at": "2026-10-31T01:13:27Z"
+      "updated_at": "2026-10-31T01:43:57Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1715,12 +1715,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "06ac6244bf",
+      "head_sha": "81ed18b065",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-10-31T01:13:25Z"
+      "updated_at": "2026-10-31T01:43:36Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1899,7 +1899,7 @@
       },
       "head_sha": "fbeef033b9",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 2513,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-30T11:13:25Z"
@@ -2025,7 +2025,7 @@
       },
       "head_sha": "2897d0a7a5",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 2555,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-30T23:55:45Z"
@@ -2039,7 +2039,7 @@
       },
       "head_sha": "3ab9d4bd7c",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 2562,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-30T23:59:17Z"
@@ -2109,10 +2109,38 @@
       },
       "head_sha": "02496c37d4",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2581,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-31T01:13:11Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "84e916c933",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2584,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-10-31T01:14:50Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "6fe93de68b",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2586,
+      "title": "chore(ops): regenerate operator matrix",
+      "updated_at": "2026-10-31T01:15:58Z"
     }
   ],
   "schema": "operator-matrix/v1",

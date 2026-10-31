@@ -98,6 +98,15 @@ def test_fallback_navigation_covers_every_registered_page():
         assert f'"file":"{page["file"]}"' in js, f"fallback navigation missing {page['file']}"
 
 
+def test_version_comparison_uses_union_of_page_ids_and_pinned_source_shas():
+    js = (APP / "versioning.js").read_text()
+    assert "currentPages.concat(productionPages)" in js
+    assert "REMOVED FROM PREVIEW" in js
+    assert "encodeURIComponent(prod.source_sha)" in js
+    assert "encodeURIComponent(current.source_sha)" in js
+    assert 'current.source_ref || "master"' not in js
+
+
 def test_builder_preserves_canonical_home_and_comparison_titles(tmp_path):
     (tmp_path / "index.html").write_text("<html><head></head><body>home</body></html>")
     (tmp_path / "versioning.html").write_text("<html><head></head><body>compare</body></html>")

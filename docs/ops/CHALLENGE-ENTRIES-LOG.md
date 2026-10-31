@@ -243,6 +243,7 @@ credits each + 10 backpack draws (October pattern).
 
 > **ARCHITECTURE (owner contestant framing, record correction 2026-10-30):** termux-monorepo = HQ + the build/test **contestant body** — contributor lanes land entry code there via branch/PR ⇒ repo CI (repo_gate + agentic termux smoke). The per-entry repos (studysprint, listinglens, skeleton-crew, delphi-oracle) are **public submission artifacts** synced from those contributions. PR #2538's "record only" gloss is **superseded** — it removed duplicate scaffolds only.
 > **ROLES (owner, 2026-10-30):** sub-managers = spec/census/gates/verify (¬ code); the Assistant seat (a440bcb2) additionally = **Contribution Desk** — contribution queue, routing ↦ builder lanes, CI/merge tracking, artifact sync state.
+> **PROVENANCE CORRECTION (2026-10-30, Contribution Desk):** PRs #2615/#2619/#2623 (AMD M4) + #2616 (D3 ListingLens) were authored by **desk-spawned Muse subagents**, ¬ provider lanes — the "builder lane / Jules-Bolt" labels are **retracted**. Route of record: provider-dispatch map (Jules primary via agent-jules-on-issues; Gemini/DeepSeek wired, action_required caveat; command-dispatch for polish); Desk reports name provider + session per PR; a Muse-authored PR = stop + report, ¬ merge. First proof: issue #2626 + `jules` label.
 
 ## 4. Entry packets
 

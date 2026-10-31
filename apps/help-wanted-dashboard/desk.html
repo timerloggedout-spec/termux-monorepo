@@ -128,7 +128,7 @@ function providerRollup(traversals){
     const dispatches=Array.isArray(t.provider_usage)?t.provider_usage:[];
     if(dispatches.length===0) noDispatchEntries++;
     dispatches.forEach(p=>{
-      if(!p.provider) unknown.dispatches++;
+      if(!p.provider){ unknown.dispatches++; return; }
       // A configured instance—not provider/model alone—is the consumer identity.
       const refs=p.instance_refs||{};
       const identity=[p.provider||"provider not established",p.model||"model not established",
@@ -147,10 +147,10 @@ function providerRollup(traversals){
     coverage.total++;
     const u=p.usage, st=u&&u.status;
     if(st==="established"){
-      if(u.match==="exact" && typeof u.value==="number" && Number.isFinite(u.value)) coverage.established++;
+      if(u.match==="exact" && typeof u.value==="number" && Number.isFinite(u.value) && u.value>=0) coverage.established++;
       else coverage.fault++;
     } else if(st==="activity-only"){
-      if(u.match==="activity-proxy" && typeof u.value==="number" && Number.isFinite(u.value)) coverage.activity++;
+      if(u.match==="activity-proxy" && typeof u.value==="number" && Number.isFinite(u.value) && u.value>=0) coverage.activity++;
       else coverage.fault++;
     } else if(st==="waived"){
       if(typeof u.note==="string" && u.note.trim()) coverage.waived++;

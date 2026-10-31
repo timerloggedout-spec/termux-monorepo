@@ -78,7 +78,7 @@ def test_dispatch_is_a_link_not_a_mutation():
 
 def test_full_script_parses(tmp_path):
     html = _html()
-    scripts = re.findall(r"<script>(.*?)</script>", html, re.S)
+    scripts = re.findall(r"<script>(.*?)</script>", html, re.S | re.I)
     assert len(scripts) == 1
     f = tmp_path / "desk-script.js"
     f.write_text(scripts[0], encoding="utf-8")
@@ -88,7 +88,7 @@ def test_full_script_parses(tmp_path):
 
 def test_node_sim_logic(tmp_path):
     html = _html()
-    script = re.findall(r"<script>(.*?)</script>", html, re.S)[0]
+    script = re.findall(r"<script>(.*?)</script>", html, re.S | re.I)[0]
     esc_line = re.search(r"const esc=.*;", script).group(0)
     m = re.search(
         r"// ==== pure logic \(node-sim tested\) ====(.*?)// ==== end pure logic ====",

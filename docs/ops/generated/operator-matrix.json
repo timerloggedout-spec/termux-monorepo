@@ -3,9 +3,9 @@
     "open_issues": 358,
     "open_prs": 153,
     "pr_classes": {
-      "CANDIDATE": 69,
+      "CANDIDATE": 71,
       "EXTRACT": 5,
-      "NEED_EVIDENCE": 79,
+      "NEED_EVIDENCE": 77,
       "SUPERSEDE": 0
     }
   },
@@ -76,7 +76,7 @@
       ]
     }
   },
-  "generated_at": "2026-10-31T05:59:29Z",
+  "generated_at": "2026-10-31T06:05:20Z",
   "issues_unlabelled": [
     308,
     343,
@@ -106,7 +106,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "dbee2171c4"
+    "sha": "f936dbf616"
   },
   "prs": [
     {
@@ -1151,6 +1151,34 @@
       "updated_at": "2026-10-31T00:26:12Z"
     },
     {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "fd0c56d071",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2635,
+      "title": "feat(studysprint): implement Now features and Nov 3 re-sync parity audit tool",
+      "updated_at": "2026-10-31T05:59:31Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "c9a95dc6ec",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2641,
+      "title": "VM webhooks (bounded Receiver Mesh leg) + Meta/Muse providers wired",
+      "updated_at": "2026-10-31T06:04:38Z"
+    },
+    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -1717,12 +1745,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "3b203e2721",
+      "head_sha": "45c80c9575",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "clean",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-10-31T05:58:48Z"
+      "updated_at": "2026-10-31T06:04:47Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2227,34 +2255,6 @@
       "number": 2629,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-31T05:34:47Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "in_progress"
-      },
-      "head_sha": "fd0c56d071",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2635,
-      "title": "feat(studysprint): implement Now features and Nov 3 re-sync parity audit tool",
-      "updated_at": "2026-10-31T05:59:23Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "02571273bb",
-      "labels": [],
-      "mergeable_state": "dirty",
-      "number": 2638,
-      "title": "feat(desk): desk-feed v1.1 \u2014 provider + usage per dispatch (D0 row incl.)",
-      "updated_at": "2026-10-31T05:59:13Z"
     }
   ],
   "schema": "operator-matrix/v1",

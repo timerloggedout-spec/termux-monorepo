@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "4781f746e1557f3851c1d31e521ae946d1b4f85180d97b7f5ccd61d4c253c570",
-  "workflow_count": 232,
+  "source_fingerprint": "5c5b707df15cf6014ad72bb52856c3ea7afa44974e198324c8cfc27c850465a1",
+  "workflow_count": 233,
   "workflows": [
     {
       "action_pins": [],
@@ -2164,6 +2164,23 @@
       "schedules": [],
       "triggers": [
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: help-wanted-preview-${{ inputs.preview_key }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "publish-preview"
+      ],
+      "name": "Help-Wanted Dashboard Preview",
+      "path": ".github/workflows/help-wanted-dashboard-preview.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },

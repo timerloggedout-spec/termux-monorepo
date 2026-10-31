@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 358,
-    "open_prs": 152,
+    "open_prs": 154,
     "pr_classes": {
       "CANDIDATE": 69,
       "EXTRACT": 5,
-      "NEED_EVIDENCE": 78,
+      "NEED_EVIDENCE": 80,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 21,
-      "prs": 150,
+      "prs": 152,
       "unlabelled_numbers": [
         308,
         343,
@@ -76,7 +76,7 @@
       ]
     }
   },
-  "generated_at": "2026-10-31T06:11:51Z",
+  "generated_at": "2026-10-31T06:14:02Z",
   "issues_unlabelled": [
     308,
     343,
@@ -106,7 +106,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "c8cfa8410e"
+    "sha": "7c2c8da0f6"
   },
   "prs": [
     {
@@ -1563,12 +1563,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "9d3482dcbb",
+      "head_sha": "21a6de5ac3",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-10-31T06:10:48Z"
+      "updated_at": "2026-10-31T06:12:48Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1691,7 +1691,7 @@
       },
       "head_sha": "e1d36f6c2f",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 2235,
       "title": "chore(osint): refresh coverage + page snapshots",
       "updated_at": "2026-10-31T05:01:05Z"
@@ -1717,12 +1717,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "9d8a01df09",
+      "head_sha": "d42af5e537",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-10-31T06:11:35Z"
+      "updated_at": "2026-10-31T06:13:34Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2083,7 +2083,7 @@
       },
       "head_sha": "cd310a869a",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 2574,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-31T00:10:06Z"
@@ -2111,7 +2111,7 @@
       },
       "head_sha": "02496c37d4",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 2581,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-31T01:13:11Z"
@@ -2125,7 +2125,7 @@
       },
       "head_sha": "84e916c933",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 2584,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-31T01:14:50Z"
@@ -2153,7 +2153,7 @@
       },
       "head_sha": "21f7913c8a",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 2605,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-31T04:58:22Z"
@@ -2167,7 +2167,7 @@
       },
       "head_sha": "276c631095",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 2608,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-31T05:01:04Z"
@@ -2209,7 +2209,7 @@
       },
       "head_sha": "ef4b0d52ba",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 2628,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-31T05:34:17Z"
@@ -2235,12 +2235,40 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "158e513f7e",
+      "head_sha": "eec9b306a9",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 2648,
-      "title": "docs(quota): telemetry requirement for all entries + waiver ruling (usage.status)",
-      "updated_at": "2026-10-31T06:11:47Z"
+      "number": 2650,
+      "title": "feat(desk): v1.2 render \u2014 QUOTA-ATTRIBUTION usage{} shape + telemetry coverage",
+      "updated_at": "2026-10-31T06:13:59Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "444f8a9568",
+      "labels": [],
+      "mergeable_state": "clean",
+      "number": 2652,
+      "title": "docs(quota): telemetry key set {provider, model, moniker, role, context} + roll-ups",
+      "updated_at": "2026-10-31T06:13:05Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "8c053fdc4b",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2653,
+      "title": "desk-feed refresh #5: usage.status per ruling #2648 (waived pre-mandate rows, activity-only Jules)",
+      "updated_at": "2026-10-31T06:13:58Z"
     }
   ],
   "schema": "operator-matrix/v1",

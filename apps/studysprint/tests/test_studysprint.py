@@ -72,7 +72,7 @@ def test_receipt_carries_version_of_record():
                   now=NOW, root=ROOT)
     version_file = (ROOT / "VERSION").read_text().strip()
     assert r["agent_version"] == version_file
-    assert r["agent_version"] == "0.1.0"
+    assert r["agent_version"] == "0.2.0"
 
 
 def test_agent_escalates_consequential():

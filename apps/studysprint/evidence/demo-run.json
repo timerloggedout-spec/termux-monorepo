@@ -5,7 +5,7 @@
       "narration": "Plan my BIO 101 study \u2014 the student asserts the course topics, no syllabus file named.",
       "receipt": {
         "schema": "studysprint-agent-receipt/v1",
-        "agent_version": "0.1.0",
+        "agent_version": "0.2.0",
         "request_id": "no-evidence",
         "action": "draft",
         "decision_on_asserted_evidence": "ABSTAIN",
@@ -24,15 +24,15 @@
         },
         "strands_agent_available": false,
         "deployment": false,
-        "generated_at": "2026-10-31T05:44:15Z",
-        "receipt_sha256": "33b9d177f75c76d196354f7efb61b79e50bb2fea6d80692a82859c8b04b1b312"
+        "generated_at": "2026-10-31T17:00:03Z",
+        "receipt_sha256": "cbd00fe21601e8b4f1992d602c87111053e1d6e18ee37ec844671d1fa7941f58"
       }
     },
     {
       "narration": "Same request, syllabus file named: fetch_study_evidence stamps it, the gate allows, the plan + quiz are built, and missed week 1 is re-planned.",
       "receipt": {
         "schema": "studysprint-agent-receipt/v1",
-        "agent_version": "0.1.0",
+        "agent_version": "0.2.0",
         "request_id": "fetched-syllabus",
         "action": "draft",
         "decision_on_asserted_evidence": "ABSTAIN",
@@ -50,7 +50,7 @@
           "items_verified": 8,
           "content_hash_short": "1991c70a2d85",
           "trust_statement": "Planned from your verified BIO 101 \u2014 Intro Biology (sample, synthetic) syllabus: 3 weeks, 3 scheduled deadline(s), evidence hash 1991c70a2d85.",
-          "verified_at": "2026-10-31T05:44:15Z",
+          "verified_at": "2026-10-31T17:00:03Z",
           "source_path": "examples/syllabus.json"
         },
         "evidence_set": {
@@ -59,8 +59,8 @@
             "kind": "syllabus",
             "ref": "examples/syllabus.json"
           },
-          "assembled_at": "2026-10-31T05:44:15Z",
-          "fresh_until": "2026-10-31T05:59:15Z",
+          "assembled_at": "2026-10-31T17:00:03Z",
+          "fresh_until": "2026-10-31T17:15:03Z",
           "items": [
             {
               "claim": "syllabus.course",
@@ -68,9 +68,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T05:44:15Z"
+                "observed_at": "2026-10-31T17:00:03Z"
               },
-              "fresh_until": "2026-10-31T05:59:15Z",
+              "fresh_until": "2026-10-31T17:15:03Z",
               "sha256": "da171ec35ebfa07e4a2cf1a1e22e9be1b009b79fa04f5990659b7e6e5ba39fad"
             },
             {
@@ -79,9 +79,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T05:44:15Z"
+                "observed_at": "2026-10-31T17:00:03Z"
               },
-              "fresh_until": "2026-10-31T05:59:15Z",
+              "fresh_until": "2026-10-31T17:15:03Z",
               "sha256": "0e8ca5c02283afab21c1e59940c6307d13ab91fd66c15354652a05f40360a756"
             },
             {
@@ -93,9 +93,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T05:44:15Z"
+                "observed_at": "2026-10-31T17:00:03Z"
               },
-              "fresh_until": "2026-10-31T05:59:15Z",
+              "fresh_until": "2026-10-31T17:15:03Z",
               "sha256": "a9e10313a6ddf019e44f03f79f17381336c84e21e44f53f343e4640a2e0e8045"
             },
             {
@@ -104,9 +104,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T05:44:15Z"
+                "observed_at": "2026-10-31T17:00:03Z"
               },
-              "fresh_until": "2026-10-31T05:59:15Z",
+              "fresh_until": "2026-10-31T17:15:03Z",
               "sha256": "1251ebd726491c6b312396a4757b0bdcce70a2b3d43b51ff386b3fca479473b3"
             },
             {
@@ -118,9 +118,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T05:44:15Z"
+                "observed_at": "2026-10-31T17:00:03Z"
               },
-              "fresh_until": "2026-10-31T05:59:15Z",
+              "fresh_until": "2026-10-31T17:15:03Z",
               "sha256": "497670e8a6b78a61b51f535ede4409775ae931f3e3956bfefcb87e0659f1e835"
             },
             {
@@ -129,9 +129,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T05:44:15Z"
+                "observed_at": "2026-10-31T17:00:03Z"
               },
-              "fresh_until": "2026-10-31T05:59:15Z",
+              "fresh_until": "2026-10-31T17:15:03Z",
               "sha256": "81f4f9c814dd8a1f70fbd00d212a35dcfefb0681ef198a3c0c9dc11bc5441120"
             },
             {
@@ -143,9 +143,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T05:44:15Z"
+                "observed_at": "2026-10-31T17:00:03Z"
               },
-              "fresh_until": "2026-10-31T05:59:15Z",
+              "fresh_until": "2026-10-31T17:15:03Z",
               "sha256": "78abca5399478c1a205b1636ef8f45997fadf72d730363f61368f1579f4a00d9"
             },
             {
@@ -154,9 +154,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T05:44:15Z"
+                "observed_at": "2026-10-31T17:00:03Z"
               },
-              "fresh_until": "2026-10-31T05:59:15Z",
+              "fresh_until": "2026-10-31T17:15:03Z",
               "sha256": "42f294ce2d4d3090cfa70c1bf357e00ed1db47c33b4b8590afa33373ff7c81d2"
             }
           ],
@@ -406,15 +406,15 @@
         },
         "strands_agent_available": false,
         "deployment": false,
-        "generated_at": "2026-10-31T05:44:15Z",
-        "receipt_sha256": "92059ba51339e648388af8aa6196d82f0d7045f129ec798f457038fafa2a925a"
+        "generated_at": "2026-10-31T17:00:03Z",
+        "receipt_sha256": "6734bf25e1fe18b922455d565f204f943dce6ea9015cfd3efbb4fce8511dd5c4"
       }
     },
     {
       "narration": "A credential-mutation request with fetched, material evidence \u2014 the class rule still escalates.",
       "receipt": {
         "schema": "studysprint-agent-receipt/v1",
-        "agent_version": "0.1.0",
+        "agent_version": "0.2.0",
         "request_id": "credential",
         "action": "credential_mutation",
         "decision_on_asserted_evidence": "ESCALATE",
@@ -432,7 +432,7 @@
           "items_verified": 8,
           "content_hash_short": "1991c70a2d85",
           "trust_statement": "Planned from your verified BIO 101 \u2014 Intro Biology (sample, synthetic) syllabus: 3 weeks, 3 scheduled deadline(s), evidence hash 1991c70a2d85.",
-          "verified_at": "2026-10-31T05:44:15Z",
+          "verified_at": "2026-10-31T17:00:03Z",
           "source_path": "examples/syllabus.json"
         },
         "evidence_set": {
@@ -441,8 +441,8 @@
             "kind": "syllabus",
             "ref": "examples/syllabus.json"
           },
-          "assembled_at": "2026-10-31T05:44:15Z",
-          "fresh_until": "2026-10-31T05:59:15Z",
+          "assembled_at": "2026-10-31T17:00:03Z",
+          "fresh_until": "2026-10-31T17:15:03Z",
           "items": [
             {
               "claim": "syllabus.course",
@@ -450,9 +450,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T05:44:15Z"
+                "observed_at": "2026-10-31T17:00:03Z"
               },
-              "fresh_until": "2026-10-31T05:59:15Z",
+              "fresh_until": "2026-10-31T17:15:03Z",
               "sha256": "da171ec35ebfa07e4a2cf1a1e22e9be1b009b79fa04f5990659b7e6e5ba39fad"
             },
             {
@@ -461,9 +461,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T05:44:15Z"
+                "observed_at": "2026-10-31T17:00:03Z"
               },
-              "fresh_until": "2026-10-31T05:59:15Z",
+              "fresh_until": "2026-10-31T17:15:03Z",
               "sha256": "0e8ca5c02283afab21c1e59940c6307d13ab91fd66c15354652a05f40360a756"
             },
             {
@@ -475,9 +475,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T05:44:15Z"
+                "observed_at": "2026-10-31T17:00:03Z"
               },
-              "fresh_until": "2026-10-31T05:59:15Z",
+              "fresh_until": "2026-10-31T17:15:03Z",
               "sha256": "a9e10313a6ddf019e44f03f79f17381336c84e21e44f53f343e4640a2e0e8045"
             },
             {
@@ -486,9 +486,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T05:44:15Z"
+                "observed_at": "2026-10-31T17:00:03Z"
               },
-              "fresh_until": "2026-10-31T05:59:15Z",
+              "fresh_until": "2026-10-31T17:15:03Z",
               "sha256": "1251ebd726491c6b312396a4757b0bdcce70a2b3d43b51ff386b3fca479473b3"
             },
             {
@@ -500,9 +500,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T05:44:15Z"
+                "observed_at": "2026-10-31T17:00:03Z"
               },
-              "fresh_until": "2026-10-31T05:59:15Z",
+              "fresh_until": "2026-10-31T17:15:03Z",
               "sha256": "497670e8a6b78a61b51f535ede4409775ae931f3e3956bfefcb87e0659f1e835"
             },
             {
@@ -511,9 +511,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T05:44:15Z"
+                "observed_at": "2026-10-31T17:00:03Z"
               },
-              "fresh_until": "2026-10-31T05:59:15Z",
+              "fresh_until": "2026-10-31T17:15:03Z",
               "sha256": "81f4f9c814dd8a1f70fbd00d212a35dcfefb0681ef198a3c0c9dc11bc5441120"
             },
             {
@@ -525,9 +525,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T05:44:15Z"
+                "observed_at": "2026-10-31T17:00:03Z"
               },
-              "fresh_until": "2026-10-31T05:59:15Z",
+              "fresh_until": "2026-10-31T17:15:03Z",
               "sha256": "78abca5399478c1a205b1636ef8f45997fadf72d730363f61368f1579f4a00d9"
             },
             {
@@ -536,9 +536,9 @@
               "provenance": {
                 "source": "local-file",
                 "path": "examples/syllabus.json",
-                "observed_at": "2026-10-31T05:44:15Z"
+                "observed_at": "2026-10-31T17:00:03Z"
               },
-              "fresh_until": "2026-10-31T05:59:15Z",
+              "fresh_until": "2026-10-31T17:15:03Z",
               "sha256": "42f294ce2d4d3090cfa70c1bf357e00ed1db47c33b4b8590afa33373ff7c81d2"
             }
           ],
@@ -554,8 +554,8 @@
         },
         "strands_agent_available": false,
         "deployment": false,
-        "generated_at": "2026-10-31T05:44:15Z",
-        "receipt_sha256": "999962f1a437ebaf4d252f54c594e9f2142e136036aaa4d19bdbd3e8ec6d107d"
+        "generated_at": "2026-10-31T17:00:03Z",
+        "receipt_sha256": "6c30f92066eb834d4094b75ccabc4801e931ec3f23325acd99a97644c3b1fc2b"
       }
     }
   ]

@@ -86,3 +86,43 @@ def test_token_forms_are_factor_levels_not_precedence():
     assert outs["DO"] == "body\n\nDO the thing. DO it well."
     assert outs["do"] == "body\n\ndo the thing. do it well."
     assert len(set(outs.values())) == 4  # four distinct instances
+
+
+DATA2 = dict(DATA)
+DATA2["char_variants"] = {"o": ["0", "()"], "i": ["1", "!"],
+                          "e": ["3", "&"], "a": ["4", "@"],
+                          "t": ["7", "+"], "h": ["#", "|-|"]}
+DATA2["established_vowel_map"] = {"a": "4", "e": "3", "i": "1",
+                                  "o": "0"}
+
+
+def test_ladder_rungs_are_generated_not_enumerated():
+    PL = _layer()
+    # No per-token dict anywhere: the engine derives every rung.
+    assert PL.transform("Do it", casing="lower",
+                        sub_scope="vowels",
+                        vowel_map=DATA2["established_vowel_map"]) \
+        == "d0 1t"
+    assert PL.transform("Do it", casing="upper") == "DO IT"
+    assert PL.transform("Do it", casing="as-written") == "Do it"
+
+
+def test_generate_variants_covers_kinds_for_arbitrary_text():
+    PL = _layer()
+    vs = PL.generate_variants("Forge this with fire.", DATA2)
+    ids = [v["id"] for v in vs]
+    assert ids[0] == "verbatim" and len(vs) >= 6
+    assert len({v["text"] for v in vs}) == len(vs)  # deduped
+    by_id = {v["id"]: v["text"] for v in vs}
+    assert by_id["vowels"] == "F0rg3 th1s w1th f1r3."
+    assert by_id["lower+vowels"] == "f0rg3 th1s w1th f1r3."
+
+
+def test_apply_phrases_transform_cfg_stamps_and_transforms():
+    PL = _layer()
+    text, stamp = PL.apply_phrases(
+        "body", DATA2, "x/deepseek-v4", placement="suffix",
+        transform_cfg={"casing": "lower", "sub_scope": "vowels"})
+    assert text == "body\n\nbu1ld th3 futur3 n0w. m4k3 1t s0."
+    assert stamp["transform"] == {"casing": "lower",
+                                   "sub_scope": "vowels"}

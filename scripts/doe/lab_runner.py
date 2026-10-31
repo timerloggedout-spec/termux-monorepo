@@ -92,7 +92,8 @@ def cell_instance(campaign_dir: Path, design: dict, cell: dict) -> dict:
             placement=layer_cfg.get("placement", "prefix+suffix"),
             form=layer_cfg.get("form", "verbatim"),
             profile=layer_cfg.get("profile"),
-            token_forms=layer_cfg.get("token_forms"))
+            token_forms=layer_cfg.get("token_forms"),
+            transform_cfg=layer_cfg.get("transform"))
     provider, model = cell["model"].split("/", 1)
     p_sha = IK.sha256_text(prompt_text)
     t_sha = IK.tools_sha256(TOOLS)

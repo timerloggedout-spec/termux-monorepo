@@ -69,13 +69,17 @@ def get_token(account='primary'):
         VAULT_DIR.mkdir(mode=0o700, parents=True, exist_ok=True)
         if not VAULT_DIR.is_symlink():
             os.chmod(VAULT_DIR, 0o700)
-        # Save to vault
+        # Save to vault with atomic 0o600 creation permissions to prevent umask exposure
         current = _load_json(VAULT) or {}
         current[account] = token
-        with open(VAULT, 'w') as f:
+        fd = os.open(VAULT, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+        with os.fdopen(fd, 'w') as f:
             json.dump(current, f)
         if not VAULT.is_symlink():
-            os.chmod(VAULT, 0o600)
+            try:
+                os.chmod(VAULT, 0o600)
+            except Exception:
+                pass
         return token
 
     raise RuntimeError(f"No token found for account '{account}'")

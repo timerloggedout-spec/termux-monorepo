@@ -57,7 +57,7 @@ jobs:
           printf '%s\n' "Preview key: $PREVIEW_KEY" "Requested ref: $SOURCE_REF" "Source SHA: $(git -C source rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"
           echo "PREVIEW_URL=https://timerloggedout-spec.github.io/previews/$PREVIEW_KEY/help-wanted/" >> "$GITHUB_ENV"
       - name: Publish isolated preview without replacing production files
-        uses: peaceiris/actions-gh-pages@84c30a8
+        uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453
         with:
           personal_token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN }}
           external_repository: timerloggedout-spec/timerloggedout-spec.github.io

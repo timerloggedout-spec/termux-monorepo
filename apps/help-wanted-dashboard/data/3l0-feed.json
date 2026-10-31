@@ -1,7 +1,7 @@
 {
  "schema": "dashboard-surface-feed/v1",
  "surface": "3l0",
- "generated_at": "2026-10-28T13:33:08Z",
+ "generated_at": "2026-10-31T06:17:18Z",
  "sources": [
   "docs/ops/AGENT-TEAM-ORCHESTRATION.md + docs/ops/SCOUT-ROSTER.md + docs/ops/ROUTING-LOGIC-CHAIN.md",
   "scripts/model_router.py + .github/connectors/llm-peers.yaml",
@@ -237,64 +237,32 @@
   },
   "response_history": {
    "record": "docs/ops/generated/reviewer-metrics.json (schema reviewer-metrics/v1) \u2014 the fleet's measured per-response record: every peer-review cycle, whether the provider delivered, and its latency. This is response history as recorded; it is a reviewer surface, and it is not dressed up as a model-intelligence ranking.",
-   "generated_at": "2026-10-24T11:09:14.224259+00:00",
+   "generated_at": "2026-10-28T19:22:47.435932+00:00",
    "window": {
-    "cycles": 137,
+    "cycles": 32,
     "prs_examined": 100
    },
    "providers_ranked": [
     {
-     "provider": "devin",
-     "cycles": 1,
-     "delivered": 1,
-     "delivery_rate": 1.0,
-     "contexts": 1,
-     "by_author_class": {
-      "user": {
-       "cycles": 1,
-       "delivered": 1,
-       "delivery_rate": 1.0,
-       "median_latency_sec": null,
-       "cooldown_cycles": 0
-      }
-     }
-    },
-    {
-     "provider": "qodo",
-     "cycles": 1,
-     "delivered": 1,
-     "delivery_rate": 1.0,
-     "contexts": 1,
-     "by_author_class": {
-      "user": {
-       "cycles": 1,
-       "delivered": 1,
-       "delivery_rate": 1.0,
-       "median_latency_sec": 307.0,
-       "cooldown_cycles": 0
-      }
-     }
-    },
-    {
      "provider": "coderabbit",
-     "cycles": 133,
-     "delivered": 23,
-     "delivery_rate": 0.1729,
-     "contexts": 12,
+     "cycles": 29,
+     "delivered": 5,
+     "delivery_rate": 0.1724,
+     "contexts": 4,
      "by_author_class": {
       "bot": {
-       "cycles": 9,
+       "cycles": 2,
        "delivered": 0,
        "delivery_rate": 0.0,
        "median_latency_sec": null,
-       "cooldown_cycles": 7
+       "cooldown_cycles": 1
       },
       "user": {
-       "cycles": 124,
-       "delivered": 23,
-       "delivery_rate": 0.1855,
-       "median_latency_sec": 473.0,
-       "cooldown_cycles": 39
+       "cycles": 27,
+       "delivered": 5,
+       "delivery_rate": 0.1852,
+       "median_latency_sec": 739.0,
+       "cooldown_cycles": 14
       }
      }
     },
@@ -305,220 +273,208 @@
      "delivery_rate": null,
      "contexts": 0,
      "by_author_class": {}
+    },
+    {
+     "provider": "qodo",
+     "cycles": 0,
+     "delivered": 0,
+     "delivery_rate": null,
+     "contexts": 0,
+     "by_author_class": {}
     }
    ],
    "history_tail": {
     "coderabbit": [
      {
-      "cycle_id": "pr-1278-e650476044b3",
-      "pr": 1278,
-      "started_at": "2026-10-22T17:07:55.000Z",
-      "delivered": true,
-      "latency_sec": 440.0,
+      "cycle_id": "pr-1966-bafa2be510cb",
+      "pr": 1966,
+      "started_at": "2026-10-28T06:00:46.000Z",
+      "delivered": false,
+      "latency_sec": null,
       "cooldown": false
      },
      {
-      "cycle_id": "pr-1568-bd3a7aa6c52b",
-      "pr": 1568,
-      "started_at": "2026-10-23T07:32:37.000Z",
+      "cycle_id": "pr-1966-5b4522719095",
+      "pr": 1966,
+      "started_at": "2026-10-28T06:01:01.000Z",
+      "delivered": true,
+      "latency_sec": 754.0,
+      "cooldown": false
+     },
+     {
+      "cycle_id": "pr-1966-c4eff44abe83",
+      "pr": 1966,
+      "started_at": "2026-10-28T17:01:58.000Z",
+      "delivered": true,
+      "latency_sec": 1035.0,
+      "cooldown": false
+     },
+     {
+      "cycle_id": "pr-1966-1736ad5ec8d2",
+      "pr": 1966,
+      "started_at": "2026-10-28T18:01:16.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": false
+     },
+     {
+      "cycle_id": "pr-2126-5dbc0084058f",
+      "pr": 2126,
+      "started_at": "2026-10-28T17:45:39.000Z",
       "delivered": false,
       "latency_sec": null,
       "cooldown": true
      },
      {
-      "cycle_id": "pr-1566-f03f7102d37e",
-      "pr": 1566,
-      "started_at": "2026-10-23T06:13:12.000Z",
-      "delivered": false,
-      "latency_sec": null,
-      "cooldown": false
-     },
-     {
-      "cycle_id": "pr-1564-498e1c633cdf",
-      "pr": 1564,
-      "started_at": "2026-10-23T06:07:17.000Z",
-      "delivered": false,
-      "latency_sec": null,
-      "cooldown": false
-     },
-     {
-      "cycle_id": "pr-1565-27792087bad7",
-      "pr": 1565,
-      "started_at": "2026-10-23T06:11:05.000Z",
+      "cycle_id": "pr-2124-a689c5ebe484",
+      "pr": 2124,
+      "started_at": "2026-10-28T17:35:50.000Z",
       "delivered": false,
       "latency_sec": null,
       "cooldown": true
      },
      {
-      "cycle_id": "pr-1563-8e8a465178d6",
-      "pr": 1563,
-      "started_at": "2026-10-23T05:50:09.000Z",
-      "delivered": false,
-      "latency_sec": null,
-      "cooldown": false
-     },
-     {
-      "cycle_id": "pr-1562-5dc0c8cfbdcd",
-      "pr": 1562,
-      "started_at": "2026-10-23T05:46:05.000Z",
-      "delivered": false,
-      "latency_sec": null,
-      "cooldown": false
-     },
-     {
-      "cycle_id": "pr-1561-7cf55d05bacb",
-      "pr": 1561,
-      "started_at": "2026-10-23T05:17:56.000Z",
-      "delivered": false,
-      "latency_sec": null,
-      "cooldown": false
-     },
-     {
-      "cycle_id": "pr-1560-df4de2af13e5",
-      "pr": 1560,
-      "started_at": "2026-10-23T05:12:34.000Z",
-      "delivered": false,
-      "latency_sec": null,
-      "cooldown": false
-     },
-     {
-      "cycle_id": "pr-1555-9011fa7fb5a4",
-      "pr": 1555,
-      "started_at": "2026-10-22T23:10:01.000Z",
-      "delivered": false,
-      "latency_sec": null,
-      "cooldown": false
-     },
-     {
-      "cycle_id": "pr-47-11b61f8139c2",
-      "pr": 47,
-      "started_at": "2026-08-21T06:00:33.000Z",
-      "delivered": true,
-      "latency_sec": 511.0,
-      "cooldown": false
-     },
-     {
-      "cycle_id": "pr-81-f1d2eef16b75",
-      "pr": 81,
-      "started_at": "2026-09-19T22:59:11.000Z",
-      "delivered": true,
-      "latency_sec": 449.0,
-      "cooldown": false
-     },
-     {
-      "cycle_id": "pr-1554-ddc32b641813",
-      "pr": 1554,
-      "started_at": "2026-10-22T22:20:38.000Z",
-      "delivered": false,
-      "latency_sec": null,
-      "cooldown": false
-     },
-     {
-      "cycle_id": "pr-1553-519c656f2940",
-      "pr": 1553,
-      "started_at": "2026-10-22T22:18:53.000Z",
+      "cycle_id": "pr-2071-852711677fa9",
+      "pr": 2071,
+      "started_at": "2026-10-28T17:31:18.000Z",
       "delivered": false,
       "latency_sec": null,
       "cooldown": true
      },
      {
-      "cycle_id": "pr-1552-73572bb30f96",
-      "pr": 1552,
-      "started_at": "2026-10-22T22:10:01.000Z",
-      "delivered": false,
-      "latency_sec": null,
-      "cooldown": false
-     },
-     {
-      "cycle_id": "pr-1543-d55580f915a0",
-      "pr": 1543,
-      "started_at": "2026-10-22T22:07:40.000Z",
+      "cycle_id": "pr-2071-852711677fa9",
+      "pr": 2071,
+      "started_at": "2026-10-28T17:31:29.000Z",
       "delivered": false,
       "latency_sec": null,
       "cooldown": true
      },
      {
-      "cycle_id": "pr-1551-8ed6e82bb45e",
-      "pr": 1551,
-      "started_at": "2026-10-22T21:56:17.000Z",
+      "cycle_id": "pr-2056-6b31d83824ce",
+      "pr": 2056,
+      "started_at": "2026-10-28T16:45:31.000Z",
       "delivered": false,
       "latency_sec": null,
       "cooldown": false
      },
      {
-      "cycle_id": "pr-1550-2ab0966f171e",
-      "pr": 1550,
-      "started_at": "2026-10-22T21:32:28.000Z",
+      "cycle_id": "pr-2054-a15cc556305f",
+      "pr": 2054,
+      "started_at": "2026-10-28T16:32:12.000Z",
       "delivered": false,
       "latency_sec": null,
       "cooldown": false
      },
      {
-      "cycle_id": "pr-1549-522f3ba46dfd",
-      "pr": 1549,
-      "started_at": "2026-10-22T21:18:36.000Z",
-      "delivered": false,
-      "latency_sec": null,
-      "cooldown": false
-     },
-     {
-      "cycle_id": "pr-1548-851e046c6316",
-      "pr": 1548,
-      "started_at": "2026-10-22T21:14:57.000Z",
-      "delivered": false,
-      "latency_sec": null,
-      "cooldown": false
-     },
-     {
-      "cycle_id": "pr-1547-d7d55afd6354",
-      "pr": 1547,
-      "started_at": "2026-10-22T20:57:30.000Z",
-      "delivered": false,
-      "latency_sec": null,
-      "cooldown": false
-     },
-     {
-      "cycle_id": "pr-1544-60e2135735e6",
-      "pr": 1544,
-      "started_at": "2026-10-22T18:08:27.000Z",
-      "delivered": true,
-      "latency_sec": 260.0,
-      "cooldown": false
-     },
-     {
-      "cycle_id": "pr-1545-8f013a7efdbe",
-      "pr": 1545,
-      "started_at": "2026-10-22T18:09:07.000Z",
+      "cycle_id": "pr-2040-f3db85dab10c",
+      "pr": 2040,
+      "started_at": "2026-10-28T14:44:27.000Z",
       "delivered": false,
       "latency_sec": null,
       "cooldown": true
      },
      {
-      "cycle_id": "pr-1542-446edba39e3d",
-      "pr": 1542,
-      "started_at": "2026-10-22T17:08:55.000Z",
+      "cycle_id": "pr-2041-47af604c7ff0",
+      "pr": 2041,
+      "started_at": "2026-10-28T14:44:58.000Z",
       "delivered": false,
       "latency_sec": null,
       "cooldown": true
-     }
-    ],
-    "devin": [
+     },
      {
-      "cycle_id": "pr-47-11b61f8139c2",
-      "pr": 47,
-      "started_at": "2026-08-21T06:00:33.000Z",
+      "cycle_id": "pr-2035-7f8c856bcff6",
+      "pr": 2035,
+      "started_at": "2026-10-28T14:34:18.000Z",
       "delivered": true,
+      "latency_sec": 491.0,
+      "cooldown": false
+     },
+     {
+      "cycle_id": "pr-2039-e089a738e167",
+      "pr": 2039,
+      "started_at": "2026-10-28T14:43:27.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": true
+     },
+     {
+      "cycle_id": "pr-2038-e70bccb03426",
+      "pr": 2038,
+      "started_at": "2026-10-28T14:41:36.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": true
+     },
+     {
+      "cycle_id": "pr-2037-bfa25d30ff8a",
+      "pr": 2037,
+      "started_at": "2026-10-28T14:39:48.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": true
+     },
+     {
+      "cycle_id": "pr-2036-f44aaf821e41",
+      "pr": 2036,
+      "started_at": "2026-10-28T14:37:42.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": true
+     },
+     {
+      "cycle_id": "pr-2026-2813af1a699d",
+      "pr": 2026,
+      "started_at": "2026-10-28T13:53:57.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": true
+     },
+     {
+      "cycle_id": "pr-2023-2711cdaafa64",
+      "pr": 2023,
+      "started_at": "2026-10-28T13:33:16.000Z",
+      "delivered": false,
       "latency_sec": null,
       "cooldown": false
-     }
-    ],
-    "qodo": [
+     },
      {
-      "cycle_id": "pr-47-11b61f8139c2",
-      "pr": 47,
-      "started_at": "2026-08-21T06:00:33.000Z",
+      "cycle_id": "pr-1858-3dc6a7c7b976",
+      "pr": 1858,
+      "started_at": "2026-10-27T23:08:28.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": true
+     },
+     {
+      "cycle_id": "pr-1858-00d2cf6d1c15",
+      "pr": 1858,
+      "started_at": "2026-10-28T01:10:12.000Z",
       "delivered": true,
-      "latency_sec": 307.0,
+      "latency_sec": 460.0,
+      "cooldown": false
+     },
+     {
+      "cycle_id": "pr-1494-8464945ec49b",
+      "pr": 1494,
+      "started_at": "2026-10-21T23:38:29.000Z",
+      "delivered": false,
+      "latency_sec": null,
+      "cooldown": true
+     },
+     {
+      "cycle_id": "pr-1498-d7b8022e92c1",
+      "pr": 1498,
+      "started_at": "2026-10-22T06:38:59.000Z",
+      "delivered": true,
+      "latency_sec": 739.0,
+      "cooldown": false
+     },
+     {
+      "cycle_id": "pr-1607-a7609cd0d1c0",
+      "pr": 1607,
+      "started_at": "2026-10-23T23:37:01.000Z",
+      "delivered": false,
+      "latency_sec": null,
       "cooldown": false
      }
     ]

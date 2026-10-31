@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 354,
-    "open_prs": 136,
+    "open_prs": 137,
     "pr_classes": {
       "CANDIDATE": 66,
       "EXTRACT": 5,
-      "NEED_EVIDENCE": 65,
+      "NEED_EVIDENCE": 66,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 19,
-      "prs": 134,
+      "prs": 135,
       "unlabelled_numbers": [
         308,
         343,
@@ -74,7 +74,7 @@
       ]
     }
   },
-  "generated_at": "2026-10-31T00:06:52Z",
+  "generated_at": "2026-10-31T00:07:42Z",
   "issues_unlabelled": [
     308,
     343,
@@ -102,7 +102,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "ca5c03f597"
+    "sha": "4a9bf4d0a2"
   },
   "prs": [
     {
@@ -1645,10 +1645,10 @@
       },
       "head_sha": "82fa276419",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2235,
       "title": "chore(osint): refresh coverage + page snapshots",
-      "updated_at": "2026-10-31T00:06:45Z"
+      "updated_at": "2026-10-31T00:06:49Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1993,12 +1993,26 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "8e52828b5d",
+      "head_sha": "3ab9d4bd7c",
       "labels": [],
-      "mergeable_state": "dirty",
-      "number": 2561,
-      "title": "Gates: C11 AMD gates registered; D4-ELIGIBILITY cleared; skeleton-crew freeze recorded",
-      "updated_at": "2026-10-31T00:02:34Z"
+      "mergeable_state": "unknown",
+      "number": 2562,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-10-30T23:59:17Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "in_progress",
+        "smoke": "in_progress"
+      },
+      "head_sha": "6afca2b27e",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2567,
+      "title": "Gates + freeze re-applied on current master (supersedes closed #2561)",
+      "updated_at": "2026-10-31T00:07:34Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2007,12 +2021,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "3ab9d4bd7c",
+      "head_sha": "259efcc436",
       "labels": [],
       "mergeable_state": "unknown",
-      "number": 2562,
+      "number": 2568,
       "title": "chore(ops): refresh computed countdown lines",
-      "updated_at": "2026-10-30T23:59:17Z"
+      "updated_at": "2026-10-31T00:07:39Z"
     }
   ],
   "schema": "operator-matrix/v1",

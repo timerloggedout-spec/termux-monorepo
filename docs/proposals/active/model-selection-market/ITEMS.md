@@ -18,6 +18,7 @@
 | MSM-010 | Official provider catalog + explicit native hub adapters for harvested models | **done** | MSM-006, MSM-009 | Q; Groq, Mistral and Gemini official endpoints; exact-model opt-in admission, no inferred free entitlement or routing-weight mutation; real production-contract regressions |
 | MSM-011 | Evidence-backed matrix review attribution and reconciliation tests | **done** | MSM-008 | Q; distinguish submitted reviews, conversation, inline comments, claimed local roles, and authenticated actors; preserve provenance |
 
+| MSM-012 | Paper-only CSV wallet projection from market snapshots | **in_review** | MSM-005 | PR #1470 at `d2778bcc`: read-only stakes/cards/offers projection only; unmerged/undeployed, no balances or settlement engine |
 | MSM-013 | Diagnose existing Actions provider-secret mappings and execute only a verified no-cost bounded smoke | **done** | MSM-010 | #1321 merged; run 39432211461 verified existing OpenRouter free-tier and exact zero-price model, one synthetic request returned HTTP 429; inference remains unverified, no retry/paid fallback/admission change; 301 pytest + 9 unit contracts |
 
 | MSM-019 | Official-source passive quota manager contracts for 20 canonical provider families | **done** | MSM-018 (free-provider prioritization) | Implementation validated in #1448; 5 passive parsers, 12 documentation-only, 3 unsupported; current-head promotion/publication receipts in that PR. No new polling/account validation/admission change; 18 live/service-mapping gaps remain explicit. |
@@ -57,3 +58,16 @@ python3 scripts/ci/termux_smoke.py
 - Paid routes / silent weight mutation
 - Secrets in cards
 - Wholesale MoneyBall mega-merge
+
+## MSM-005 paper-accounting extension (proposed)
+
+The existing MSM-005 **done** row covers its cards/bets/graph stub only. The balance/reservation/settlement engine is absent; these are proposed subscopes of that same lane, not a duplicate wagering market or new MSM-012. [Proposal](PAPER-WALLET-ACCOUNTING.md) · [cross-lane tracking](../termux-agentic-hub/RESEARCH-WALLET-TRACKING.md).
+
+Owning extension issue: [wallet / #1521](https://github.com/timerloggedout-spec/termux-monorepo/issues/1521).
+
+| Scope | Status | Depends | Acceptance / issue |
+|---|---|---|---|
+| MSM-005.A | posted / Todo | MSM-005 existing event/market model; proposal review | [MSM-005.A / #1526](https://github.com/timerloggedout-spec/termux-monorepo/issues/1526): Paper-point unit, issuance, account/event and settlement contracts. |
+| MSM-005.B | posted / Todo | MSM-005.A | [MSM-005.B / #1527](https://github.com/timerloggedout-spec/termux-monorepo/issues/1527): Balance/reserve/settle/release, atomicity, idempotency and recovery. |
+| MSM-005.C | posted / Todo | MSM-005.A/B; MSM-012 projection baseline | [MSM-005.C / #1528](https://github.com/timerloggedout-spec/termux-monorepo/issues/1528): Rebuildable versioned CSV views, no import-based minting. |
+| MSM-005.D | posted / Todo | MSM-005.A/B/C | [MSM-005.D / #1529](https://github.com/timerloggedout-spec/termux-monorepo/issues/1529): Conservation, overspend, replay, concurrency, restart and CSV proofs. |

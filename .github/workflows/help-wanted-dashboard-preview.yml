@@ -1,0 +1,75 @@
+name: Help-Wanted Dashboard Preview
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_ref:
+        description: "Branch or commit to preview (e.g. codex/admin-graph-validation-hardening)"
+        required: true
+        type: string
+      preview_key:
+        description: "Stable preview key (e.g. pr-2579); lowercase letters, numbers, and hyphens only"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: help-wanted-preview-${{ inputs.preview_key }}
+  cancel-in-progress: false
+
+jobs:
+  publish-preview:
+    if: ${{ github.repository == 'timerloggedout-spec/termux-monorepo' && !contains(inputs.preview_key, '/') && !contains(inputs.preview_key, '..') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout requested source revision
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_ref }}
+          path: source
+          persist-credentials: false
+      - name: Checkout trusted artifact builder
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          path: tooling
+          persist-credentials: false
+      - name: Prepare preview artifact
+        env:
+          SOURCE_REF: ${{ inputs.source_ref }}
+          PREVIEW_KEY: ${{ inputs.preview_key }}
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          if ! [[ "$PREVIEW_KEY" =~ ^[a-z0-9][a-z0-9-]{0,60}$ ]]; then
+            echo "::error::preview_key must be lowercase letters, digits, and hyphens."
+            exit 1
+          fi
+          mkdir -p _preview
+          cp -a source/apps/help-wanted-dashboard/. _preview/
+          python3 tooling/scripts/build_dashboard_manifest.py \
+            --root _preview \
+            --channel preview \
+            --source-ref "$SOURCE_REF" \
+            --source-sha "$(git -C source rev-parse HEAD)" \
+            --version-prefix "1.0.0"
+          printf '%s\n' "Preview key: $PREVIEW_KEY" "Requested ref: $SOURCE_REF" "Source SHA: $(git -C source rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"
+          echo "PREVIEW_URL=https://timerloggedout-spec.github.io/previews/$PREVIEW_KEY/help-wanted/" >> "$GITHUB_ENV"
+      - name: Publish isolated preview without replacing production files
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN }}
+          external_repository: timerloggedout-spec/timerloggedout-spec.github.io
+          publish_dir: _preview
+          destination_dir: previews/${{ inputs.preview_key }}/help-wanted
+          publish_branch: main
+          keep_files: true
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com
+          commit_message: "preview(help-wanted): ${{ inputs.preview_key }} from ${{ inputs.source_ref }}"
+      - name: Publish preview links
+        run: |
+          echo "Preview: $PREVIEW_URL" >> "$GITHUB_STEP_SUMMARY"
+          echo "Comparison: $PREVIEW_URL/versioning.html" >> "$GITHUB_STEP_SUMMARY"

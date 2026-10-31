@@ -1,6 +1,6 @@
 {
  "schema": "desk-feed/v1.2",
- "generated_at": "2026-10-31T06:14:00Z",
+ "generated_at": "2026-10-31T06:18:00Z",
  "built_by": "contribution desk (refresh #1, 2026-10-30)",
  "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal — the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
  "desk": {
@@ -141,7 +141,12 @@
      "model": "NOT ESTABLISHED",
      "moniker": "[MUSEai]@{role:{challenge-entries-manager}}",
      "role": "contribution-desk dispatch (per-dispatch)",
-     "context": "issue #2626 (D1 iteration backlog) + jules label via agent-jules-on-issues"
+     "context": "issue #2626 (D1 iteration backlog) + jules label via agent-jules-on-issues",
+     "instance_key": {
+      "system_prompt_ref": "prompt:challenge-entries-manager:d1-studysprint-iteration-backlog#e0ff454d02e2",
+      "tools_ref": "NOT ESTABLISHED",
+      "note": "system_prompt_ref hash = sha256[:12] of the exact dispatched content as recorded in the Jules session prompt (title + issue #2626 body, 1475 chars, retrieved via Jules API); tools_ref: Jules API exposes no tool list for the session"
+     }
     }
    ]
   },

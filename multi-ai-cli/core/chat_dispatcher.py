@@ -5,6 +5,12 @@ from backends.mistral_web import MistralWebBackend
 from backends.claude_web import ClaudeWebBackend
 from backends.gemini_web import GeminiWebBackend
 from backends.colab import ColabBackend
+from backends.antigravity.antigravity_cli import AntigravityCLIBackend
+from backends.antigravity.antigravity_sdk import AntigravitySDKBackend
+from backends.antigravity.headless_config import HeadlessConfigBackend
+from foss.eigent_ai import EigentAIBackend
+from foss.open_code import OpenCodeBackend
+from foss.velocity import VelocityBackend
 
 BACKENDS = {
     "deepseek": DeepSeekBackend,
@@ -12,6 +18,12 @@ BACKENDS = {
     "claude": ClaudeWebBackend,
     "gemini": GeminiWebBackend,
     "colab": ColabBackend,
+    "antigravity_cli": AntigravityCLIBackend,
+    "antigravity_sdk": AntigravitySDKBackend,
+    "antigravity_headless": HeadlessConfigBackend,
+    "eigent": EigentAIBackend,
+    "opencode": OpenCodeBackend,
+    "velocity": VelocityBackend,
 }
 
 class ChatDispatcher:

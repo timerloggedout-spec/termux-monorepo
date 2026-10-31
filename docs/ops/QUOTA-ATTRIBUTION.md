@@ -106,3 +106,12 @@ Roll-ups (rendered totals):
 - Split BEFORE any Σ: records group by {provider, model@version, role} first (role is per-dispatch, never aggregated away); per-axis totals for moniker / context / instance (prompt/tools refs) derive from the split rows, never from pre-aggregated sums.
 - `activity-proxy` values roll up separately under their unit, labeled activity — never merged into consumption totals.
 - `waived` records contribute ∅ to totals and count as covered in the coverage strip; `fault` records contribute ∅ and count as gaps.
+
+## Ref scheme (DoE, landed PR #2656 `82bd529b17fc` — adopted verbatim)
+
+`system_prompt_ref` / `tools_ref` are now NAMEABLE:
+
+- ref = repo-relative PATH ∨ scoped id `prompt:<moniker>:<slug>` / `tools:<moniker>:<slug>`, ALWAYS + the full SHA-256 of the exact dispatched content.
+- Compact stamp = `<ref>#<sha256[:12]>`.
+- `instance_key` = `sha256(canonical tuple JSON)`; helper `scripts/doe/instance_key.py` on master computes it.
+- Fault boundary flips at the scheme landing: dispatches after PR #2656 carry both refs or they are unstamped ⇒ `fault`. Pre-scheme records keep `null` refs, waived on those two axes.

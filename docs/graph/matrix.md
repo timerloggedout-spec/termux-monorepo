@@ -27,6 +27,7 @@ Tracked participant records in coordinator.json: **1** — distinct from the fie
 
 | Event node | Participants | Projects | Status |
 |---|---|---|---|
+| `challenge:event:C11` | None | None | open_task |
 | `challenge:event:D0` | 252 | 40 | established |
 | `challenge:event:D1` | 324 | 1 | partial |
 | `challenge:event:D2` | 1617 | None | partial |

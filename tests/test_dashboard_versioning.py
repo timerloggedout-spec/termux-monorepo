@@ -51,7 +51,7 @@ def test_preview_workflow_isolated_and_preserves_existing_site():
     assert "source_ref:" in workflow and "preview_key:" in workflow
     assert "publish_dir: _preview" in workflow
     assert "destination_dir: previews/${{ inputs.preview_key }}/help-wanted" in workflow
-    assert "keep_files: true" in workflow
+    assert "keep_files: false" in workflow
     assert "force_orphan: true" not in workflow
 
 

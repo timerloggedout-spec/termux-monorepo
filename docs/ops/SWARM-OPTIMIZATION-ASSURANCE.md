@@ -31,7 +31,8 @@ Repo-wide @first census: `status=action_required` total_count **2500** (API valu
 
 ## 2. Blockers (established)
 
-- **B1 ∀ provider reactions on bot/fork PR events ⇒ `action_required`** (pending_deployments=[], ∅ environment keys) ⇒ clears ONLY via owner UI per-run approve ∨ fork-PR approval-policy change. ∅ workaround attempted; escalation = owner-UI item-of-record.
+- **B1 (MECHANISM CORRECTED 2026-10-31, desk owner-challenged ∧ re-verified by this lane): ¬ fork-approval.** Mechanism = **GitHub `GITHUB_TOKEN` anti-recursion rule**: events created by `GITHUB_TOKEN` don't start new runs; the run parks at `action_required` awaiting a human "Approve and run workflows" (workflow_dispatch/repository_dispatch exempt). Evidence: run **41221418258** — actor ∧ triggering_actor = `github-actions[bot]`, jobs=0, pending_deployments=[]; its PR **#2167 author = owner, head fork=false** ⇒ fork policy cannot explain it. **PAT/App-token PR events are UNAFFECTED**: PR #2635 (author `google-labs-jules[bot]`) head carries 38 check-runs, 11 ✓. Per-run UI approval drains STOCK only.
+  - **FIX CLASS F1 (optimization list):** migrate PR-creating/pushing workflows off `GITHUB_TOKEN` ↦ PAT/App token (fleet Apps + PAT routes already exist), ∨ chain follow-ups via `workflow_dispatch` ⇒ drains the 2500 pile's INFLOW at source. Census shorthand "bot/fork PR gate" elsewhere in this doc = read as this mechanism.
 - **B2 #2672 provider-batch contracts red on master** ⇒ observe job skipped/blocked (run 41178501775 evidence in #2672). Fix lane ≠ this lane; this lane tracks ∧ verifies.
 
 ## 3. Swarm rules (optimization core)
@@ -54,7 +55,7 @@ Repo-wide @first census: `status=action_required` total_count **2500** (API valu
 
 ✓ Jules issue-label · Gemini via issue/comment · provider-command-dispatch workflow_dispatch (1 proof)
 △ DeepSeek CI workflow_dispatch-only · DeepSeek termux-agent workflow_dispatch (unproven ✓) · provider-batch (B2) · DeepAgent (0 runs, A3)
-✗ ∀ PR-event provider reactions (B1, owner-UI) · Gemini review (stale, 2026-08-20)
+✗ PR-event reactions to GITHUB_TOKEN-created events (B1; fix class F1, ¬ per-run approval) · Gemini review (stale, 2026-08-20)
 
 ## 6. Desk input 2026-10-31 — #2732 dispatch_policy ∧ DeepSeek reroute (verified by this lane)
 
@@ -67,3 +68,7 @@ Repo-wide @first census: `status=action_required` total_count **2500** (API valu
 ## 7. Desk cross-check 2026-10-31 — DeepSeek termux-agent (verified by this lane)
 
 Desk acceptance of census noted. Cross-check pair kept together in-plan: (a) termux-agent route **works when the device lives** — exhaustive workflow_dispatch subset = 20 runs / 18 ✓ (2026-09-25→10-05, last ✓ run 37297514722); (b) that proof **predates the owner's device-availability objection**, and the desk's answer is the #2732 reroute (OpenRouter primary, webWrapper fallback-flagged `device_dependent=true`). Date correction vs desk relay: last-✓ = **2026-10-05**, ¬ 2026-10-20 (see §1 row).
+
+## 8. B1 correction record (2026-10-31)
+
+Original plan text named B1 a "fork-PR approval gate" — WRONG mechanism (the pending_deployments=[] observation was real; the fork inference was not). Corrected per desk challenge + this lane's firsthand re-verification (run 41221418258, PR #2167 fork=false/owner-authored, PR #2635 App-token check-runs ✓). Fix class F1 added to §2/§3 scope: token migration ∨ workflow_dispatch chaining for PR-creating/pushing workflows.

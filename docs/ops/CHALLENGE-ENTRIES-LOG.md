@@ -240,6 +240,9 @@ credits each + 10 backpack draws (October pattern).
   3 h/day GPU quota, not the task. Build target = league contract +
   generality (hidden tests).
 
+
+> **ARCHITECTURE (owner contestant framing, record correction 2026-10-30):** termux-monorepo = HQ + the build/test **contestant body** — contributor lanes land entry code there via branch/PR ⇒ repo CI (repo_gate + agentic termux smoke). The per-entry repos (studysprint, listinglens, skeleton-crew, delphi-oracle) are **public submission artifacts** synced from those contributions. PR #2538's "record only" gloss is **superseded** — it removed duplicate scaffolds only.
+
 ## 4. Entry packets
 
 **Owner decision (2026-10-26 23:41 PT): "ALL of them"** — D1, D2, D3, and D4

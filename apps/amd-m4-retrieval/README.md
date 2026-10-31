@@ -1,4 +1,4 @@
-# AMD AI League — Match 4: Intelligent Web Information Retrieval (P1: core agent)
+# AMD AI League — Match 4: Intelligent Web Information Retrieval (P2: hardened)
 
 Agent: NL request ⇒ plan (decompose ⇒ sub-queries) ⇒ navigate/fetch (bounded
 multi-hop: pagination chains ∘ ranked evidence links) ⇒ extract (prose ∘
@@ -47,7 +47,7 @@ and the real-model activation remains a P3 (GPU/container) verification item.
 | Public-registry image, pullable ∅ creds, runs as-is | ✓ `CMD python3 /app/app.py --serve`; ∅ build args, ∅ runtime creds |
 | Image ≤ 60 GiB (target ≪) | ✓ app delta ≈ 0 (stdlib only); total ≈ mandated base; ∅ weights baked in |
 | VRAM 1–48 GiB envelope | ✓ pipeline is CPU-only with ∅ model; a mounted local model must size ≤ 48 GiB — P3 checklist item, NOT yet verified |
-| Startup/process time limits | ✓ stdlib-only imports ⇒ fast start; fetch timeout 15 s × `MAX_PAGES = 8` ∧ `MAX_HOPS = 2` bound a run (test: hop bound) |
+| Startup/process time limits | ✓ declared budgets, functionally enforced: `python3 app.py --selfcheck` measures cold start (0.11 s on the build VM vs 5 s budget), exercises the page bound on an endless next-chain (stops at `MAX_PAGES = 8`), the fetch byte cap (`MAX_RESPONSE_BYTES = 2_000_000`) ∧ the 15 s fetch timeout against a loopback probe (P2; tests ↦ `TestSelfcheck` + `TestRobustnessLoopback`) |
 | ∅ secrets in image or repo | ✓ ∅ keys/tokens anywhere; model path reads ∅ credentials ∧ refuses non-loopback endpoints (test: refused, ∅ external call) |
 | Anti-hardcoding: hidden tests, hardcoded answers = 0 | ✓ answers composed only from fetched pages; unseen-query suites (P0 ×5 + P1 ×12) assert structure + retrieval-derived fragments, ∅ memorized strings ↦ `tests/` |
 | Open-source models/frameworks allowed | ✓ P1 model path = local open-source models only (endpoint ∨ in-process), detection-gated, heuristic fallback |
@@ -61,18 +61,33 @@ the first real `docker build` + run-as-is check happens in P3
 
 ## Tests
 
-- Default (offline, ∅ network): `python3 -m unittest discover -s tests -v`
-  — 23 tests: P0 suite (unchanged, green) + P1 suite (extract+ ∘ multi-hop ∘
-  LLM local-model ∘ 12 unseen queries).
+- Default (offline, ∅ network beyond loopback probes):
+  `python3 -m unittest discover -s tests -v` — 42 run / 40 ok / 2 skipped:
+  P0 suite (7) + P1 suite (18: extract+ ∘ multi-hop ∘ LLM local-model ∘
+  12 unseen queries) + P2 suite (17, below). All P0/P1 tests unchanged
+  ∧ green.
+- P2 suite (`tests/test_amd_m4_p2.py`): 21 NEW unseen queries (factual ∘
+  table ∘ list ∘ multi-hop ×6) + 4 negative/honesty queries (zero-overlap
+  ∧ unreachable ⇒ explicit no-answer, never invention) ∘ property checks
+  (cited sources ⊆ fetched pages; ∅ content from unfetched fixtures;
+  repeat runs byte-identical) ∘ robustness (malformed HTML — extractor
+  now auto-closes unterminated blocks/rows/lists instead of dropping
+  them ∘ huge pages under the byte cap ∘ redirect chains + loops ∘
+  non-HTML bodies ∘ fetch timeouts) ∘ `--selfcheck` budget verification.
+- Selfcheck: `python3 app.py --selfcheck` → JSON with the measured
+  numbers; exit 0 ⇔ every budget check passes.
 - Live (opt-in, network-marked, SKIPPED by default incl. CI):
   `AMD_M4_LIVE=1 python3 -m unittest tests.test_amd_m4_live -v` — real public
   pages (example.com/.org), structural assertions only. Verified live
-  2026-10-30 on the build VM: 2/2 ok when opted in.
+  2026-10-30 on the build VM: 2/2 ok when opted in; re-verified at P2
+  after the extractor robustness change: 2/2 ok.
 
 ## Remaining phases
 
-- P2 (Nov 05–07): standing/fit ranking upgrade — passage scoring ⇒ v2
-  composite over the scored field, replacing term-overlap.
+- P2 (Nov 05–07, delivered early): test hardening + robustness +
+  `--selfcheck` (this section) ∧ P3 prep = `P3-VALIDATION.md` runbook —
+  every step there is NOT-RUN, owner = AMD seat environment.
 - P3 (Nov 07–09): GPU/container phase — FIRST docker build (flag above),
-  real local-model activation + VRAM sizing ≤ 48 GiB, harness adapter once
-  AMD publishes one (∅ published at P1).
+  real local-model activation + VRAM sizing ≤ 48 GiB, compliance table
+  re-verification claim ↦ evidence, per `P3-VALIDATION.md`; harness
+  adapter once AMD publishes one (∅ published at P2).

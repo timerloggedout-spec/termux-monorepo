@@ -54,3 +54,11 @@ Repo-wide @first census: `status=action_required` total_count **2500** (API valu
 ✓ Jules issue-label · Gemini via issue/comment · provider-command-dispatch workflow_dispatch (1 proof)
 △ DeepSeek CI workflow_dispatch-only · DeepSeek termux-agent workflow_dispatch (unproven ✓) · provider-batch (B2) · DeepAgent (0 runs, A3)
 ✗ ∀ PR-event provider reactions (B1, owner-UI) · Gemini review (stale, 2026-08-20)
+
+## 6. Desk input 2026-10-31 — #2732 dispatch_policy ∧ DeepSeek reroute (verified by this lane)
+
+- **#2732 OPEN** (desk self-upgrade, dispatched ↦ Gemini): `gemini-dispatch` run on `issues` event = **SUCCESS run 41223286134** (2026-10-31T17:11:07Z, read firsthand by this lane) ⇒ Gemini issues route carries a named success anchor; deliverable PR off #2732 = NOT_ESTABLISHED yet (API search: ∅ PR), desk reviews on landing.
+- **Spec'd (∅ landed until #2732 PR merges):** desk-feed gains `dispatch_policy` {mode: auto|manual, per-role ordered routes (feature_build/fix/review/invoke), `selected` overrides, rotation rule} ∧ desk.html per-role provider `<select>` (intake-issue link carries choice; page mutates nothing).
+- **DeepSeek route order (spec'd in #2732, applies to this lane's map NOW as routing intent):** (1) **OpenRouter cloud FIRST** for invoke/review — model `deepseek/deepseek-r1:free`, catalog `scripts/openrouter_free_catalog.py`, `OPENROUTER_API_KEY` provisioned, runs in GitHub Actions = device-free; (2) Termux webWrapper (`deepseek-ci` cookies/webWrapper + `DEEPSEEK_AGENT_URL`) demoted ⇒ **fallback-only, `device_dependent=true`**.
+- **Credential constraint (owner correction 2026-10-24, memory-verified):** `DEEPSEEK_API_KEY` = a route-named **GitHub PAT** (one GitHub-access route for DeepSeek CLI Termux agents), ¬ a DeepSeek-issued key ⇒ ∅ "official DeepSeek API" route exists until a real DeepSeek key is provisioned. Names declare family; ∅ official-API claims in any dispatch record.
+- Census impact: §1 DeepSeek termux-agent row's route = fallback-only effective this spec; OpenRouter route joins the swarm set as cloud invoke/review surface (provider-batch Actions precedent).

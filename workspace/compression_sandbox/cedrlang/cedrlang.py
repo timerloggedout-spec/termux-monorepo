@@ -237,16 +237,22 @@ def caveman(text: str, max_up: bool = False) -> str:
     words = [w for w in t.split() if w.lower() not in STOPWORDS]
     return SPACES_PATTERN.sub(' ', " ".join(words)).strip()
 
-def expand(cedr: str) -> str:
+def expand(cedr: str, secret_key: Any = None) -> str:
     if not cedr:
         return ""
+    from .phase_codec import ConversationalSteganographyCipher
+    stego_payload = ""
+    if ConversationalSteganographyCipher.has_stego(cedr):
+        stego_payload = ConversationalSteganographyCipher.decode(cedr, secret_key=secret_key)
     # Pre-computed module-scoped REV_SYMBOL_PAIRS with fast-path substring guards (~1.9x speedup)
     result = cedr
     for sym, replacement in REV_SYMBOL_PAIRS:
         if sym in result:
             result = result.replace(sym, replacement)
-    result = SPACES_PATTERN.sub(' ', result)
-    return result.strip()
+    result = SPACES_PATTERN.sub(' ', result).strip()
+    if stego_payload:
+        result = f"{result} [Stego Decoded: {stego_payload}]"
+    return result
 
 def _sub_cb_comp(m: re.Match[str]) -> str:
     val = m.group(0)
@@ -351,10 +357,19 @@ def compile_doc(text: str) -> str:
             compiled_lines.append(translate_line(line, to_compressed=True))
     return "".join(compiled_lines)
 
-def decompile_doc(text: str) -> str:
-    if not isinstance(text, str) or not text or not DECOMP_SINGLE_REGEX.search(text):
+def decompile_doc(text: str, secret_key: Any = None) -> str:
+    if not isinstance(text, str) or not text:
         return text if isinstance(text, str) else ""
-    lines = text.splitlines(keepends=True)
+    from .phase_codec import ConversationalSteganographyCipher, from_1337speak
+    stego_prefix = ""
+    if ConversationalSteganographyCipher.has_stego(text):
+        extracted_payload = ConversationalSteganographyCipher.decode(text, secret_key=secret_key)
+        if extracted_payload:
+            stego_prefix = f"<!-- Stego Payload: {extracted_payload} -->\n"
+    normalized_text = from_1337speak(text)
+    if not DECOMP_SINGLE_REGEX.search(normalized_text):
+        return stego_prefix + normalized_text
+    lines = normalized_text.splitlines(keepends=True)
     decompiled_lines = []
     in_fenced_code = False
     for line in lines:
@@ -366,7 +381,7 @@ def decompile_doc(text: str) -> str:
             decompiled_lines.append(line)
         else:
             decompiled_lines.append(translate_line(line, to_compressed=False))
-    return "".join(decompiled_lines)
+    return stego_prefix + "".join(decompiled_lines)
 
 def count_tokens(text: str) -> int:
     tokens = re.findall(r'\b\w+\b|[^\w\s]', text)
@@ -406,6 +421,13 @@ def main():
     p_stats.add_argument("original")
     p_stats.add_argument("--compressed")
     p_serve = subparsers.add_parser("serve", help="Read stdin, compress, write stdout")
+    p_stego_enc = subparsers.add_parser("stego-encode", help="Encode steganographic payload")
+    p_stego_enc.add_argument("payload", nargs="*", help="Payload to encode")
+    p_stego_enc.add_argument("--host", default="", help="Host text to embed into")
+    p_stego_enc.add_argument("--key", default=None, help="Secret XOR key")
+    p_stego_dec = subparsers.add_parser("stego-decode", help="Decode steganographic payload")
+    p_stego_dec.add_argument("stego_text", nargs="*", help="Stego text to decode")
+    p_stego_dec.add_argument("--key", default=None, help="Secret XOR key")
     args = parser.parse_args()
     if args.command == "compress":
         text = " ".join(args.text) if args.text else sys.stdin.read().strip()
@@ -465,6 +487,14 @@ def main():
         for line in sys.stdin:
             sys.stdout.write(compress(line.rstrip('\n'), aggressive=True) + "\n")
             sys.stdout.flush()
+    elif args.command == "stego-encode":
+        payload = " ".join(args.payload) if args.payload else sys.stdin.read().strip()
+        from .phase_codec import ConversationalSteganographyCipher
+        print(ConversationalSteganographyCipher.encode(payload, host_text=args.host, secret_key=args.key))
+    elif args.command == "stego-decode":
+        stego_text = " ".join(args.stego_text) if args.stego_text else sys.stdin.read().strip()
+        from .phase_codec import ConversationalSteganographyCipher
+        print(ConversationalSteganographyCipher.decode(stego_text, secret_key=args.key))
 
 if __name__ == "__main__":
     main()

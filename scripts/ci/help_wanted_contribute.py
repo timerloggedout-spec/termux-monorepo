@@ -219,6 +219,21 @@ def preflight_issue(owner: str, repo: str, number: int, meta: dict) -> dict:
     return preflight(owner, repo, number, meta, allow_closed=os.environ.get("HELP_WANTED_ALLOW_CLOSED") == "1")
 
 
+def revalidate_issue(owner: str, repo: str, number: int) -> tuple[dict | None, dict]:
+    """Refresh issue state and eligibility immediately before external delivery."""
+    try:
+        meta = _api("GET", f"https://api.github.com/repos/{owner}/{repo}/issues/{number}")
+        if not isinstance(meta, dict):
+            return None, {"eligible": False, "reasons": ["issue_revalidation_invalid_payload"]}
+        if (meta.get("state") or "").lower() == "closed" and os.environ.get("HELP_WANTED_ALLOW_CLOSED") != "1":
+            return meta, {"eligible": False, "reasons": ["closed"]}
+        return meta, preflight_issue(owner, repo, number, meta)
+    except Exception as exc:
+        # Eligibility evidence is mandatory at delivery time. Any API or comment
+        # retrieval failure blocks the write instead of assuming the old state.
+        return None, {"eligible": False, "reasons": [f"issue_revalidation_failed:{type(exc).__name__}"]}
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--issue", required=True)
@@ -296,7 +311,22 @@ def main() -> int:
         commit = run(["git", "commit", "-m", f"fix: address #{number}"], cwd=tmp, check=False)
         if commit.returncode != 0:
             return 1
+        latest_meta, latest_pf = revalidate_issue(owner, repo, number)
+        if not latest_pf["eligible"]:
+            print(f"SKIP before push {owner}/{repo}#{number}: eligibility changed or could not be verified {latest_pf['reasons']}", file=sys.stderr)
+            print("::notice::contribute_skipped_revalidation=true")
+            return 0
+        meta = latest_meta or meta
         run(["git", "push", "-u", "origin", branch, "--force"], cwd=tmp)
+
+    # The issue can change while the fork branch is being pushed. Re-check once
+    # more immediately before opening the upstream PR.
+    latest_meta, latest_pf = revalidate_issue(owner, repo, number)
+    if not latest_pf["eligible"]:
+        print(f"SKIP before PR {owner}/{repo}#{number}: eligibility changed or could not be verified {latest_pf['reasons']}", file=sys.stderr)
+        print("::notice::contribute_skipped_revalidation=true")
+        return 0
+    meta = latest_meta or meta
 
     title = f"Fix #{number}: {(meta.get('title') or '').strip()[:80]}".rstrip(": ")
     changed = ", ".join(f"`{f['filename']}`" for f in files[:10])

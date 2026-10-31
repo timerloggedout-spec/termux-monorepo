@@ -1817,6 +1817,114 @@
     "projects_note": "aha.io event page displays NO participant/team/project counter or gallery \u2014 OPEN TASK",
     "fetched_at": "2026-10-28T22:05:00Z"
    }
+  },
+  {
+   "candidate_id": "C11",
+   "claim_gate": "No claim language for any candidate match (esp. Match 5 repo-repair x Repo Replay) until Manager rules-check vs the 2026-10-29 start.",
+   "deadline": "2026-12-01T11:00:00-08:00",
+   "fetched_at": "2026-10-30",
+   "format": "individual participation only (no teams)",
+   "handle": "Rap1dZ3nith",
+   "host": "AMD x lablab.ai",
+   "kind": "candidate_event",
+   "league_window": "2026-09-01 / 2026-12-01",
+   "matches": [
+    {
+     "id": "M1",
+     "name": "Onboarding: Get Started With AMD",
+     "points": 300,
+     "state": "open throughout the League",
+     "tasks": "AMD sign-up (done), claim $100 GPU credits, first Academy course, complete AMD profile, join lablab Discord (required for Match participation), join AMD Discord"
+    },
+    {
+     "id": "M2",
+     "name": "Optical Character Recognition",
+     "points": 1200,
+     "state": "closed for prizes \u2014 points only",
+     "queue": "QUEUED after M4 (Manager ruling 2026-10-30): specs to the Contribution Desk now; execution post-M4-submission or on non-competing capacity"
+    },
+    {
+     "id": "M3",
+     "name": "Retrieval-Augmented Generation",
+     "points": 1500,
+     "state": "closed for prizes \u2014 points only",
+     "queue": "QUEUED after M4 (Manager ruling 2026-10-30): specs to the Contribution Desk now; execution post-M4-submission or on non-competing capacity"
+    },
+    {
+     "deadline": "2026-12-01T11:00:00-08:00 (league submission deadline)",
+     "id": "M4",
+     "name": "Intelligent Web Information Retrieval",
+     "points": 1800,
+     "state": "LIVE (as of 2026-10-30)",
+     "rules": "card brief only + league-wide shared rules; no harness published"
+    },
+    {
+     "id": "M5",
+     "name": "AI-Powered Code Repository Repair",
+     "points": 2100,
+     "state": "coming soon (Nov)",
+     "rules": "card text only; nothing else published yet"
+    },
+    {
+     "dates": "2026-11-10 / 2026-11-14",
+     "id": "M6",
+     "name": "Can Your AI Master the Unknown?",
+     "points": 2400,
+     "state": "coming soon"
+    }
+   ],
+   "name": "AMD AI League",
+   "oversight": "Manager oversight direct (ruling 2026-10-30); promotion to slate = owner call; NOT a D-numbered packet",
+   "packet": "challenge-entries lane: brief + per-match rules firsthand before any build (see log s.3 C11 packet)",
+   "platform": "lablab.ai",
+   "prizes": "League podium $2,500/$1,500/$1,000 (gate: >=5 Academy courses) | per Match $500 cash / $250 GPU credits / $100 GPU credits top-50 | Referral Leaders $1,000/$600/$400 | ROCm Certified Associate credential",
+   "registration": {
+    "by": "challenge-entries lane, owner order via main",
+    "evidence": "platform notification verbatim: 'You've been approved for the hackathon'; participant counter displayed 6287",
+    "joined": "2026-10-30T16:31:00-07:00",
+    "screening_form": "none exists for this event (no fields presented, no values submitted)",
+    "state": "Approved"
+   },
+   "source_url": "https://lablab.ai/ai-hackathons/amd-lablab-ai-academy-challenge",
+   "rules_state": "League-wide shared rules published (official Match 1 & 2 brief: container contract, ROCm base image, hard gates); Match 4 + Match 5: NO match-specific detail page, rubric, or pre-work/originality rule published (checked firsthand 2026-10-30). Match 5 claim-gate holds until Manager rules-check.",
+   "sub_manager": {
+    "role_moniker": "challenge-entries-manager-amd (delegate; moniker registry-pending)",
+    "chat_id": "f92553f1-4e05-4712-bd83-2430702968c3"
+   },
+   "gates": [
+    {
+     "id": "AMD-ACADEMY-5",
+     "label": "Complete >=5 AMD Academy courses (league podium gate)",
+     "blocks": "C11 league podium eligibility ($2,500/$1,500/$1,000)",
+     "owner": "gates-academy oversight (840bd147) with AMD sub-manager (f92553f1)",
+     "status": "open",
+     "evidence": "Plan deadline 2026-11-20 (gates-delegate plan); league deadline 2026-12-01T11:00-08:00. Evidence per course: completion certificate + points screenshot (x5). Course plan: AI on AMD (<=Nov 07, +M1 100pts) -> PyTorch on AMD GPUs (<=Nov 10) -> AI Agents 101 MCP/Open-Source Inference (<=Nov 13) -> AI Agents 201 Multi-Agent Systems (<=Nov 17) -> LLM Serving Inference vLLM/MI300X (<=Nov 20)."
+    },
+    {
+     "id": "AMD-GPU100",
+     "label": "Claim $100 AMD GPU credits (Match 1 onboarding task, timed claim)",
+     "blocks": "C11 Match 1 points (+100) and GPU build capacity",
+     "owner": "gates-academy oversight (840bd147) with AMD sub-manager (f92553f1)",
+     "status": "open",
+     "evidence": "Target <=2026-11-07 with the M1 verify-all pass. Evidence: claim screenshot."
+    },
+    {
+     "id": "AMD-M1-ONBOARDING",
+     "label": "Match 1 remainder: complete AMD profile (+50), join AMD Discord (+50), join lablab Discord (REQUIRED for Match participation)",
+     "blocks": "C11 Match 1 completion + Match participation eligibility",
+     "owner": "gates-academy oversight (840bd147); lablab-side steps with venue specialist (6401df1e); Discord account creation = owner (2026-10-30)",
+     "status": "open",
+     "evidence": "Sign-up with AMD done at registration 2026-10-30 (Approved). Remainder open; lablab Discord step waits on the fleet Discord account. | 2026-10-30: lablab-side Discord requirement SATISFIED \u2014 Discord CONNECTED 2026-10-30 (owner-created account; OAuth via lablab completed this lane): issued username wh1msical_sw4n_06136 (NOTE: differs from the registry-directed gentleonyx47 \u2014 owner-created, issued fact governs); lablab profile 60% -> 70%, \"Connect your account with Discord\" checked, Discord section shows Connected \u2014 wh1msical_sw4n_06136. Login location authorized via the emailed Verify Login link (owner-directed click); Discord login saved in the Secure Vault (email-keyed). D2 team create/join blocker LIFTED. A separate \"Verify Email Address for Discord\" email (2026-10-30 18:24 PT) exists; account email-verification state NOT_ESTABLISHED from this lane. AMD Discord server join (+50) still open (separate step)."
+    }
+   ],
+   "id": "C11",
+   "status": "active",
+   "promoted": "PROMOTED candidate_events[] => events[] 2026-10-30 (Manager ruling): Approved + joined 2026-10-30, gates registered, M4 in build; candidate status was stale. Carries matches M1-M6 (M2/M3 closed, points only, queued after M4), gates AMD-ACADEMY-5 / AMD-GPU100 / AMD-M1-ONBOARDING, deadline 2026-12-01T11:00:00-08:00.",
+   "submission": {
+    "state": "none",
+    "at": null,
+    "confirmation_ref": null
+   }
   }
  ],
  "derived": {
@@ -1934,108 +2042,7 @@
    "subject": "Repo Replay / RevWright"
   }
  ],
- "candidate_events": [
-  {
-   "candidate_id": "C11",
-   "claim_gate": "No claim language for any candidate match (esp. Match 5 repo-repair x Repo Replay) until Manager rules-check vs the 2026-10-29 start.",
-   "deadline": "2026-12-01T11:00:00-08:00",
-   "fetched_at": "2026-10-30",
-   "format": "individual participation only (no teams)",
-   "handle": "Rap1dZ3nith",
-   "host": "AMD x lablab.ai",
-   "kind": "candidate_event",
-   "league_window": "2026-09-01 / 2026-12-01",
-   "matches": [
-    {
-     "id": "M1",
-     "name": "Onboarding: Get Started With AMD",
-     "points": 300,
-     "state": "open throughout the League",
-     "tasks": "AMD sign-up (done), claim $100 GPU credits, first Academy course, complete AMD profile, join lablab Discord (required for Match participation), join AMD Discord"
-    },
-    {
-     "id": "M2",
-     "name": "Optical Character Recognition",
-     "points": 1200,
-     "state": "closed for prizes \u2014 points only",
-     "queue": "QUEUED after M4 (Manager ruling 2026-10-30): specs to the Contribution Desk now; execution post-M4-submission or on non-competing capacity"
-    },
-    {
-     "id": "M3",
-     "name": "Retrieval-Augmented Generation",
-     "points": 1500,
-     "state": "closed for prizes \u2014 points only",
-     "queue": "QUEUED after M4 (Manager ruling 2026-10-30): specs to the Contribution Desk now; execution post-M4-submission or on non-competing capacity"
-    },
-    {
-     "deadline": "2026-12-01T11:00:00-08:00 (league submission deadline)",
-     "id": "M4",
-     "name": "Intelligent Web Information Retrieval",
-     "points": 1800,
-     "state": "LIVE (as of 2026-10-30)",
-     "rules": "card brief only + league-wide shared rules; no harness published"
-    },
-    {
-     "id": "M5",
-     "name": "AI-Powered Code Repository Repair",
-     "points": 2100,
-     "state": "coming soon (Nov)",
-     "rules": "card text only; nothing else published yet"
-    },
-    {
-     "dates": "2026-11-10 / 2026-11-14",
-     "id": "M6",
-     "name": "Can Your AI Master the Unknown?",
-     "points": 2400,
-     "state": "coming soon"
-    }
-   ],
-   "name": "AMD AI League",
-   "oversight": "Manager oversight direct (ruling 2026-10-30); promotion to slate = owner call; NOT a D-numbered packet",
-   "packet": "challenge-entries lane: brief + per-match rules firsthand before any build (see log s.3 C11 packet)",
-   "platform": "lablab.ai",
-   "prizes": "League podium $2,500/$1,500/$1,000 (gate: >=5 Academy courses) | per Match $500 cash / $250 GPU credits / $100 GPU credits top-50 | Referral Leaders $1,000/$600/$400 | ROCm Certified Associate credential",
-   "registration": {
-    "by": "challenge-entries lane, owner order via main",
-    "evidence": "platform notification verbatim: 'You've been approved for the hackathon'; participant counter displayed 6287",
-    "joined": "2026-10-30T16:31:00-07:00",
-    "screening_form": "none exists for this event (no fields presented, no values submitted)",
-    "state": "Approved"
-   },
-   "source_url": "https://lablab.ai/ai-hackathons/amd-lablab-ai-academy-challenge",
-   "rules_state": "League-wide shared rules published (official Match 1 & 2 brief: container contract, ROCm base image, hard gates); Match 4 + Match 5: NO match-specific detail page, rubric, or pre-work/originality rule published (checked firsthand 2026-10-30). Match 5 claim-gate holds until Manager rules-check.",
-   "sub_manager": {
-    "role_moniker": "challenge-entries-manager-amd (delegate; moniker registry-pending)",
-    "chat_id": "f92553f1-4e05-4712-bd83-2430702968c3"
-   },
-   "gates": [
-    {
-     "id": "AMD-ACADEMY-5",
-     "label": "Complete >=5 AMD Academy courses (league podium gate)",
-     "blocks": "C11 league podium eligibility ($2,500/$1,500/$1,000)",
-     "owner": "gates-academy oversight (840bd147) with AMD sub-manager (f92553f1)",
-     "status": "open",
-     "evidence": "Plan deadline 2026-11-20 (gates-delegate plan); league deadline 2026-12-01T11:00-08:00. Evidence per course: completion certificate + points screenshot (x5). Course plan: AI on AMD (<=Nov 07, +M1 100pts) -> PyTorch on AMD GPUs (<=Nov 10) -> AI Agents 101 MCP/Open-Source Inference (<=Nov 13) -> AI Agents 201 Multi-Agent Systems (<=Nov 17) -> LLM Serving Inference vLLM/MI300X (<=Nov 20)."
-    },
-    {
-     "id": "AMD-GPU100",
-     "label": "Claim $100 AMD GPU credits (Match 1 onboarding task, timed claim)",
-     "blocks": "C11 Match 1 points (+100) and GPU build capacity",
-     "owner": "gates-academy oversight (840bd147) with AMD sub-manager (f92553f1)",
-     "status": "open",
-     "evidence": "Target <=2026-11-07 with the M1 verify-all pass. Evidence: claim screenshot."
-    },
-    {
-     "id": "AMD-M1-ONBOARDING",
-     "label": "Match 1 remainder: complete AMD profile (+50), join AMD Discord (+50), join lablab Discord (REQUIRED for Match participation)",
-     "blocks": "C11 Match 1 completion + Match participation eligibility",
-     "owner": "gates-academy oversight (840bd147); lablab-side steps with venue specialist (6401df1e); Discord account creation = owner (2026-10-30)",
-     "status": "open",
-     "evidence": "Sign-up with AMD done at registration 2026-10-30 (Approved). Remainder open; lablab Discord step waits on the fleet Discord account. | 2026-10-30: lablab-side Discord requirement SATISFIED \u2014 Discord CONNECTED 2026-10-30 (owner-created account; OAuth via lablab completed this lane): issued username wh1msical_sw4n_06136 (NOTE: differs from the registry-directed gentleonyx47 \u2014 owner-created, issued fact governs); lablab profile 60% -> 70%, \"Connect your account with Discord\" checked, Discord section shows Connected \u2014 wh1msical_sw4n_06136. Login location authorized via the emailed Verify Login link (owner-directed click); Discord login saved in the Secure Vault (email-keyed). D2 team create/join blocker LIFTED. A separate \"Verify Email Address for Discord\" email (2026-10-30 18:24 PT) exists; account email-verification state NOT_ESTABLISHED from this lane. AMD Discord server join (+50) still open (separate step)."
-    }
-   ]
-  }
- ],
+ "candidate_events": [],
  "architecture": {
   "contestant_model": "OWNER CONTESTANT FRAMING (record correction, 2026-10-30 via Manager): termux-monorepo = HQ + the build/test CONTESTANT BODY \u2014 contributor lanes land entry code in the monorepo via branch/PR, built and tested by repo CI (repo_gate + agentic termux smoke); the per-entry repos are PUBLIC SUBMISSION ARTIFACTS synced from those contributions. PR #2538's \"record only\" gloss is SUPERSEDED \u2014 that PR removed duplicate scaffolds only, it did not demote the monorepo.",
   "recorded": "2026-10-30",

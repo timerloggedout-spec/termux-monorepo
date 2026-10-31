@@ -22,7 +22,8 @@ Method note: comment-triggered workflows accumulate a run per comment (mostly `s
 | Gemini review | 327943481 | 26 | last 2026-08-20 ✗ push ⇒ STALE (agrees 2026-10-27 census) | ✗ stale |
 | DeepSeek CI | 330577935 | 40000 (cap) | PR runs `action_required` = B1 | △ workflow_dispatch path only |
 | DeepSeek termux-agent | 367231371 | 32894 | head = skipped issue_comment noise; workflow_dispatch last-✓ = NOT_ESTABLISHED (earlier 2026-10-20 claim WITHDRAWN) | △ workflow_dispatch defined in file; success unproven in corrected census |
-| DeepAgent | 373901223 | **0 runs ever** | never dispatched ⇒ working state NOT_ESTABLISHED (earlier "3 failure" claim WITHDRAWN; §4 A3 rewritten) | △ trigger exists, unproven |
+| DeepAgent (`deepagent-task.yml` only) | 373901223 | **0 runs ever** | never dispatched ⇒ THIS FILE unproven (earlier "3 failure" claim WITHDRAWN; §4 A3 rewritten). File added 2026-10-03 (commit d41bd73877, sole commit for path) | △ trigger exists, unproven |
+| **DeepAgent via DeepCLI Agent Bridge** (`deepcli-agent-bridge.yml`) — OWNER CORRECTION 2026-10-31, verified by this lane | 371692445 | 158 total; **28 runs before 2026-10-06** | **✓ successes pre-Oct-6: runs #17–#28 (first ✓ #17 2026-10-04T16:22Z 37216522300; #21 success 37247626949 cited on #1128; last pre-Oct-6 ✓ #28 schedule 2026-10-05T22:06Z 37380309487)**; latest run #158 ✓ 2026-10-23T16:44Z, quiet since. Caveat: #1128 comment records run #21 reached bridge admission with device status "unknown" ⇒ did NOT attempt SSH/DeepAgent execution — bridge-level ✓ established; end-to-end device execution from that run = NOT_ESTABLISHED | ✓ historically (bridge route); current liveness △ (∅ runs since 2026-10-23) |
 | provider-batch (OpenRouter free ∧ batch families) | 390191855 | 234 | latest-100: 49 ✓ / 50 ✗; last ✓ 2026-10-28T14:53Z 40710434190; latest ✗ 2026-10-31T06:55Z 41178501775 (#2672) | △ dispatchable; contracts red ⇒ observe blocked (#2672) |
 | provider-command-dispatch (CodeRabbit/Devin/Qodo fix lanes) | 339005236 | **1 run ever** | ✓ workflow_dispatch 2026-10-18T22:08Z run 39170909023 | ✓ workflow_dispatch (single proof) |
 
@@ -45,7 +46,7 @@ Repo-wide @first census: `status=action_required` total_count **2500** (API valu
 
 - **A1 ✓ this doc** — census + plan of record.
 - **A2 issue (filed with this PR):** add `workflow_dispatch` trigger to `gemini-dispatch.yml` ⇒ Gemini joins dispatchable set directly, bypassing B1 lawfully. Small ops change; author = provider lane, this lane verifies run evidence.
-- **A3 issue #2735 (CORRECTED):** DeepAgent `deepagent-task.yml` = **0 runs ever** — first-dispatch smoke owed; surface unproven, ¬ failing.
+- **A3 issue #2735 (CORRECTED ×2):** DeepAgent `deepagent-task.yml` = **0 runs ever** — first-dispatch smoke owed for THAT FILE. DeepAgent itself is proven via DeepCLI Agent Bridge (pre-Oct-6 successes, table above); open questions = bridge quiet since 2026-10-23 ∧ which surface is canonical for new DeepAgent dispatches.
 - **A4 tracked, ∅ new issue:** #2672 contracts fix ⇒ on green, re-run provider-batch observe ∧ verify Firecrawl harvest lands.
 - **A5 standing:** weekly census refresh (this table) via GitHub Workflow surface when a repo automation home is assigned; VM = sandbox only, ∅ local cron.
 

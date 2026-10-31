@@ -1,10 +1,10 @@
 {
   "counts": {
-    "open_issues": 359,
-    "open_prs": 151,
+    "open_issues": 360,
+    "open_prs": 152,
     "pr_classes": {
       "CANDIDATE": 69,
-      "EXTRACT": 5,
+      "EXTRACT": 6,
       "NEED_EVIDENCE": 77,
       "SUPERSEDE": 0
     }
@@ -49,8 +49,8 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 22,
-      "prs": 149,
+      "issues": 23,
+      "prs": 150,
       "unlabelled_numbers": [
         308,
         343,
@@ -73,11 +73,12 @@
         2210,
         2571,
         2600,
-        2672
+        2672,
+        2677
       ]
     }
   },
-  "generated_at": "2026-10-31T07:30:39Z",
+  "generated_at": "2026-10-31T07:45:37Z",
   "issues_unlabelled": [
     308,
     343,
@@ -100,7 +101,8 @@
     2210,
     2571,
     2600,
-    2672
+    2672,
+    2677
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
@@ -108,7 +110,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "4d2203f5ec"
+    "sha": "1e039bcc6e"
   },
   "prs": [
     {
@@ -180,6 +182,20 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "ca5131e504",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2679,
+      "title": "feat(desk): phrase stamps beside instance stamps (provider-phrases SSOT)",
+      "updated_at": "2026-10-31T07:45:25Z"
     },
     {
       "class": "CANDIDATE",
@@ -1565,12 +1581,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "1f5f21ab8a",
+      "head_sha": "747ec2b7fd",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-10-31T07:29:18Z"
+      "updated_at": "2026-10-31T07:44:47Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1719,12 +1735,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "51089c6e5f",
+      "head_sha": "bc503bf1c3",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-10-31T07:30:06Z"
+      "updated_at": "2026-10-31T07:44:33Z"
     },
     {
       "class": "NEED_EVIDENCE",

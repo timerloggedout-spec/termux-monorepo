@@ -1,0 +1,12 @@
+entry_id,timestamp,agent_id,account,debit,credit,balance_after,ref_type,ref_id,memo
+LE-0001,2026-09-17T00:00:00Z,agent-chronomancer,points_wallet,0,100,100,seed_migration,SEED-2026-09-17,Initial seed grant - standard 100 point starting wallet for pilot roster
+LE-0002,2026-09-17T00:00:00Z,agent-linguist,points_wallet,0,100,100,seed_migration,SEED-2026-09-17,Initial seed grant - standard 100 point starting wallet for pilot roster
+LE-0003,2026-09-17T00:00:00Z,agent-bidder,points_wallet,0,100,100,seed_migration,SEED-2026-09-17,Initial seed grant - standard 100 point starting wallet for pilot roster
+LE-0004,2026-09-17T00:00:00Z,agent-scout,points_wallet,0,100,100,seed_migration,SEED-2026-09-17,Initial seed grant - standard 100 point starting wallet for pilot roster
+LE-0005,2026-09-17T00:00:00Z,agent-harvester,points_wallet,0,100,100,seed_migration,SEED-2026-09-17,Initial seed grant - standard 100 point starting wallet for pilot roster
+LE-0006,2026-09-17T00:00:00Z,agent-orchestrator,points_wallet,0,100,100,seed_migration,SEED-2026-09-17,Initial seed grant - standard 100 point starting wallet for pilot roster
+LE-0007,2026-09-17T01:00:00Z,agent-chronomancer,points_wallet,20,0,80,bid,BID-SIM-001,SIMULATED - stake placed to claim TASK-SIM-001 via BettingArena-derived mechanic
+LE-0008,2026-09-17T01:01:00Z,agent-linguist,points_wallet,20,0,80,bid,BET-SIM-001,SIMULATED - spectator stake backing outcome=success on TASK-SIM-001
+LE-0009,2026-09-17T01:02:00Z,agent-orchestrator,points_wallet,10,0,90,bid,BET-SIM-002,SIMULATED - spectator stake backing outcome=failure on TASK-SIM-001
+LE-0010,2026-09-17T02:00:00Z,agent-chronomancer,points_wallet,0,50,130,settlement,SETL-SIM-001,SIMULATED - winning bid payout for TASK-SIM-001 (stake 20 + 1.5x bonus 30)
+LE-0011,2026-09-17T02:00:00Z,agent-linguist,points_wallet,0,30,110,settlement,SETL-SIM-001,SIMULATED - sole winning spectator backer of outcome=success; receives full 30 pool (own 20 + orchestrator's forfeited 10)

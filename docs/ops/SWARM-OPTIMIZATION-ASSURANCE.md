@@ -6,24 +6,27 @@
 
 Mission brief {157 records, 108 distinct, model 88} = STALE ⇒ firsthand `ops/quota/registry.json` @`a113a620`: **161 records, 110 distinct providers, model lane 91 records / 89 distinct**. Use 161/110/91/89 ∀ downstream counts.
 
-## 1. Census — dispatch surfaces (runs total / last success in latest-20 sample / gate state)
+## 1. Census — dispatch surfaces (CORRECTED 2026-10-31T17:2xZ; 2 independent PAT-API reads agree)
 
-| surface | workflow id | runs | last ✓ | triggers @file | dispatchable TODAY ∅owner-UI |
-|---|---|---|---|---|---|
-| Jules issue-label | 327570452 `agent-jules-on-issues.yml` | 81 | 2026-10-31T16:52Z ✓ | issues[labeled], issue_comment | ✓ (owner-actor issue/label) |
-| Jules PR handoff | 355288036 `agent-pr-jules-handoff.yml` | 1169 | 2026-10-24 | PR events | ✗ gate-bound on bot/fork PRs |
-| Jules review-auto | 326843961 `agent-review-auto-jules.yml` | 162 | 2026-10-22 | PR events | ✗ gate-bound |
-| Gemini dispatch | 327943478 `gemini-dispatch.yml` | 91 | 2026-10-30 | PR, issues, issue_comment; ∅ workflow_dispatch | ✓ via issues/issue_comment only |
-| Gemini invoke | 327943479 `gemini-invoke.yml` | 1627 | 2026-10-29 | workflow_call only | indirect (caller-dependent) |
-| Gemini review | 327943481 `gemini-review.yml` | 4685 | ∅ in latest-20 | workflow_call | ✗ action_required-dominated |
-| Gemini triage | 327943482 `gemini-triage.yml` | 2969 | 2026-10-27 | workflow_call | indirect |
-| DeepSeek CI | 330577935 `deepseek-ci.yml` | 1700 | ∅ in latest-20 | PR, issue_comment, workflow_dispatch | △ workflow_dispatch path only; PR/comment = gate |
-| DeepSeek termux-agent | 367231371 `deepseek-termux-agent.yml` | 14 | 2026-10-20 ✓ workflow_dispatch | issue_comment, issues[assigned], PR[assigned], workflow_dispatch | ✓ workflow_dispatch (DEEPSEEK_AGENT_URL route) |
-| DeepAgent | 373901223 `deepagent-task.yml` | 4 | ∅ — 3 failure + 1 action_required | workflow_dispatch | △ dispatchable, own-failure (triage owed, §4 A3) |
-| provider-batch (OpenRouter free ∧ batch families) | 390191855 `provider-batch.yml` | 32 | 2026-10-28 | workflow_dispatch | △ dispatchable; contracts red ⇒ observe blocked (#2672) |
-| provider-command-dispatch (CodeRabbit/Devin/Qodo fix lanes) | 339005236 `provider-command-dispatch.yml` | 12 | 2026-10-18 | workflow_dispatch only | ✓ workflow_dispatch |
+> **ERRATA:** the first-published version of this table carried WRONG run totals + last-green dates (e.g. Jules 81, Gemini dispatch 91, DeepAgent "4 runs, 3 failure") — superseded in full by this section. Conclusions that survive are marked ✓-kept; withdrawn claims are named. Correction filed openly per verify-before-claim discipline.
 
-Repo-wide @census: `status=action_required` total_count **2500** (API value; treated as floor, exact tail NOT_ESTABLISHED) ∧ queued=3 ∧ in_progress=4 ∴ gate pile ≫ live queue.
+Method note: comment-triggered workflows accumulate a run per comment (mostly `skipped` by their own gates) ∴ raw totals ≠ dispatch counts. `40000` = API total_count cap (exact = NOT_ESTABLISHED).
+
+| surface | workflow id | runs total | verified anchor | dispatchable TODAY ∅owner-UI |
+|---|---|---|---|---|
+| Jules issue-label | 327570452 | 38338 all-events; event=issues subset 333 | issues ✓ 2026-10-31T05:32Z run 41173021506; latest issues run ✗ 2026-10-31T16:51Z 41221671137 | ✓-kept (owner-actor issue/label) |
+| Jules PR handoff | 355288036 | 26752 | PR runs `action_required` (sample 41222975782) = B1 | ✗ gate-bound on bot/fork PRs |
+| Jules review-auto | 326843961 | 40000 (cap) | ✓ issue_comment 2026-10-31T17:06:49Z run 41222921464 ⇒ live today | △ via issue_comment; PR route gate-bound |
+| Gemini dispatch | 327943478 | 40000 (cap) | PR runs `action_required` = B1; file triggers {PR, issues, issue_comment}, ∅ workflow_dispatch ✓-kept | ✓ via issues/issue_comment only |
+| Gemini invoke / triage | 327943479 / 327943482 | 0 direct | structural: `workflow_call` only (runs attribute to caller; agrees 2026-10-27 census) | indirect |
+| Gemini review | 327943481 | 26 | last 2026-08-20 ✗ push ⇒ STALE (agrees 2026-10-27 census) | ✗ stale |
+| DeepSeek CI | 330577935 | 40000 (cap) | PR runs `action_required` = B1 | △ workflow_dispatch path only |
+| DeepSeek termux-agent | 367231371 | 32894 | head = skipped issue_comment noise; workflow_dispatch last-✓ = NOT_ESTABLISHED (earlier 2026-10-20 claim WITHDRAWN) | △ workflow_dispatch defined in file; success unproven in corrected census |
+| DeepAgent | 373901223 | **0 runs ever** | never dispatched ⇒ working state NOT_ESTABLISHED (earlier "3 failure" claim WITHDRAWN; §4 A3 rewritten) | △ trigger exists, unproven |
+| provider-batch (OpenRouter free ∧ batch families) | 390191855 | 234 | latest-100: 49 ✓ / 50 ✗; last ✓ 2026-10-28T14:53Z 40710434190; latest ✗ 2026-10-31T06:55Z 41178501775 (#2672) | △ dispatchable; contracts red ⇒ observe blocked (#2672) |
+| provider-command-dispatch (CodeRabbit/Devin/Qodo fix lanes) | 339005236 | **1 run ever** | ✓ workflow_dispatch 2026-10-18T22:08Z run 39170909023 | ✓ workflow_dispatch (single proof) |
+
+Repo-wide @first census: `status=action_required` total_count **2500** (API value; treated as floor, exact tail NOT_ESTABLISHED) ∧ queued=3 ∧ in_progress=4 ∴ gate pile ≫ live queue.
 
 ## 2. Blockers (established)
 
@@ -42,12 +45,12 @@ Repo-wide @census: `status=action_required` total_count **2500** (API value; tre
 
 - **A1 ✓ this doc** — census + plan of record.
 - **A2 issue (filed with this PR):** add `workflow_dispatch` trigger to `gemini-dispatch.yml` ⇒ Gemini joins dispatchable set directly, bypassing B1 lawfully. Small ops change; author = provider lane, this lane verifies run evidence.
-- **A3 issue (filed with this PR):** DeepAgent `deepagent-task.yml` 3/4 workflow_dispatch failures — triage root cause; surface currently dispatchable-but-red.
+- **A3 issue #2735 (CORRECTED):** DeepAgent `deepagent-task.yml` = **0 runs ever** — first-dispatch smoke owed; surface unproven, ¬ failing.
 - **A4 tracked, ∅ new issue:** #2672 contracts fix ⇒ on green, re-run provider-batch observe ∧ verify Firecrawl harvest lands.
 - **A5 standing:** weekly census refresh (this table) via GitHub Workflow surface when a repo automation home is assigned; VM = sandbox only, ∅ local cron.
 
-## 5. Dispatchable TODAY (summary)
+## 5. Dispatchable TODAY (summary, corrected)
 
-✓ Jules issue-label · Gemini via issue/comment · DeepSeek termux-agent workflow_dispatch · provider-command-dispatch workflow_dispatch
-△ DeepSeek CI workflow_dispatch-only · provider-batch (B2) · DeepAgent (A3)
-✗ ∀ PR-event provider reactions (B1, owner-UI)
+✓ Jules issue-label · Gemini via issue/comment · provider-command-dispatch workflow_dispatch (1 proof)
+△ DeepSeek CI workflow_dispatch-only · DeepSeek termux-agent workflow_dispatch (unproven ✓) · provider-batch (B2) · DeepAgent (0 runs, A3)
+✗ ∀ PR-event provider reactions (B1, owner-UI) · Gemini review (stale, 2026-08-20)

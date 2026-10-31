@@ -51,6 +51,9 @@ Copy ∀ beats carries placeholders [FRUSTRATING APP] / [REPLACEMENT] /
 4n0n ∀ public artifacts: moniker only, ∅ personal names/handles.
 Media production = outsourced, real screens only, ∅ fleet quota,
 ∅ generated imagery.
+Channel CONFIRMED (parent, 2026-10-31; D4/AMD precedent): fleet FB
+Page `Dream In Production` — copy ↦ parent publishes ∧ returns URL
+⇒ this lane's audience/comment watch starts on URL receipt.
 
 ## §3 Beats — fire-on-signal
 
@@ -171,5 +174,6 @@ Next: awards, Nov 20, 11:30 PT.
 - D5-SPOT flip + concept freeze ⇒ D5 seat relays; this lane fires ANN.
 - MVT-1 winner angle @2026-11-10 ⇒ parent lane records; ANN variant
   pick follows it.
-- Publication channel beyond FB pages = NOT_ESTABLISHED (∅ D5-owned
-  public surface exists to post from/to).
+- Channel RESOLVED 2026-10-31 (parent confirm): FB Page
+  `Dream In Production`, parent publishes + returns URL (see §2).
+  D5-owned public surface stays ∅; aha.io surfaces = watch-only.

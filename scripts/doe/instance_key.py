@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Configured-instance identity for DoE (owner fix, 2026-10-30).
+"""Configured-instance identity for DoE (recorded 2026-10-30).
+
+Configured instances have been the case since init; the lag was in
+our records/spec, not in the setup. This module records the refs
+as they exist.
 
 model@version is NOT a sufficient identity: one provider
 model@version runs as different configured instances — distinct

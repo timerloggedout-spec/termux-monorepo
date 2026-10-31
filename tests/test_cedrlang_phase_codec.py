@@ -1,8 +1,12 @@
 import random
 
+import pytest
 from workspace.compression_sandbox.cedrlang.phase_codec import (
     INITIAL_SUBSTITUTION_PROBABILITY,
+    ConversationalSteganographyCipher,
     from_1337speak,
+    steganography_decode,
+    steganography_encode,
     to_1337speak,
 )
 
@@ -46,3 +50,36 @@ def test_probability_validation():
             pass
         else:
             raise AssertionError("invalid probability was accepted")
+
+
+def test_conversational_steganography_roundtrip():
+    secret = "Top secret agent prompt: execute pre-parser transmute h4x"
+    key = "Agent007-PrivateKey-2026"
+    cover = "System telemetry status nominal."
+
+    encoded = steganography_encode(secret, key, cover_text=cover)
+    assert cover in encoded
+    # The secret itself is hidden using invisible zero-width characters in cover
+    assert secret not in encoded
+
+    decoded = steganography_decode(encoded, key)
+    assert decoded == secret
+
+
+def test_conversational_steganography_invalid_key_and_payload():
+    secret = "Confidential data"
+    key_valid = "CorrectKey123"
+    key_invalid = "WrongKey456"
+
+    encoded = steganography_encode(secret, key_valid)
+
+    with pytest.raises(ValueError, match="key cannot be empty"):
+        ConversationalSteganographyCipher("")
+
+    # Mismatched decryption key raises ValueError
+    with pytest.raises(ValueError):
+        steganography_decode(encoded, key_invalid)
+
+    # Corrupted stego payload raises ValueError
+    with pytest.raises(ValueError):
+        steganography_decode("Invalid\u200b\u200cPayload", key_valid)

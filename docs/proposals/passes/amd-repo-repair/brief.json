@@ -1,0 +1,264 @@
+{
+  "id": "amd-repo-repair",
+  "title": "Evidence-Gated Autonomous Code Repository Repair for the AMD AI League",
+  "kind": "competition-entry",
+  "priority": "P0",
+  "surface": "AMD AI League — Match: AI-Powered Code Repository Repair",
+  "deadline": "2026-12-01T19:00:00Z",
+  "deadline_evidence_refs": [
+    "event:match5_repair"
+  ],
+  "related_issues": [
+    2571
+  ],
+  "related_prs": [],
+  "item_prefix": "ARR",
+  "require_plan": true,
+  "eligibility_gate": {
+    "participation": "individual only",
+    "event_source": "https://lablab.ai/ai-hackathons/amd-lablab-ai-academy-challenge",
+    "rule_evidence_refs": [
+      "event:individual_only"
+    ],
+    "submission_state": "not_submitted",
+    "note": "Registration approval is not a project submission. Re-check the official match window and current submission UI before freezing or filing."
+  },
+  "executive_request": "Generate and compare three implementable architectures for a high-quality AI-powered code repository repair agent. The system must inspect a repository, identify a defect, propose a bounded patch, run relevant regression tests in isolation, preserve a provenance/evidence trail, and refuse promotion when required checks fail. Evaluate the designs against the same versioned task cohort and identical test/evidence contract. Prioritize verified repair correctness, regression avoidance, reproducibility, and a clear live demo over raw model speed. Keep model-provider calls and accelerator claims disabled unless separately authorized and actually measured.",
+  "summary_points": [
+    {
+      "text": "The target event includes an AI-Powered Code Repository Repair match; the repository records individual participation only and the current league entry is not evidence of a submitted project.",
+      "evidence_refs": [
+        "event:match5_repair",
+        "event:individual_only"
+      ]
+    },
+    {
+      "text": "The repository already has an inspectable repair-PR planner that records incident linkage, sandbox branch, evidence URIs, required tests, rollback SHA, and promotion constraints; its current contract explicitly does not mutate source or create live PRs.",
+      "evidence_refs": [
+        "repo:she_repair_planner"
+      ]
+    },
+    {
+      "text": "The existing repair design has sandbox planning and verification planning modules, and its repair-PR contract requires repo-gate and termux-smoke among required checks.",
+      "evidence_refs": [
+        "repo:she_sandbox",
+        "repo:she_verify"
+      ]
+    },
+    {
+      "text": "The canonical agent-evaluation framework ranks correctness and integrated task outcome above latency and includes deterministic regression, repository-history replay, and patch-quality benchmark families.",
+      "evidence_refs": [
+        "repo:aef_correctness_priority"
+      ]
+    },
+    {
+      "text": "The repository's Oracle Method supports evidence-linked proposal generation and a three-candidate cycle with implementation comparisons, equalized evidence, re-voting, and calibration; unavailable stages must be recorded as specified_not_run.",
+      "evidence_refs": [
+        "repo:oracle_method",
+        "repo:delphi_cycle"
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "suffix": "gated-single-agent",
+      "concept": "Gated single-agent repair with deterministic safety rails",
+      "title": "Repair Agent — Gated Single-Agent Architecture",
+      "executive_request": "Build the smallest credible end-to-end repair system around one repair agent, strict scope limits, a disposable worktree, a bounded retry budget, and mandatory verification gates. The agent may suggest a patch; only the verifier can declare a repair successful. The default path must run offline with fixtures and deterministic test doubles.",
+      "summary_points": [
+        {
+          "text": "Reuse the existing repair-PR planning contract as the boundary for incident linkage, rollback identity, required tests, and promotion readiness.",
+          "evidence_refs": [
+            "repo:she_repair_planner"
+          ]
+        },
+        {
+          "text": "Use the existing sandbox and verification planning modules as the starting point, then add an end-to-end runner only where the current code lacks materialization.",
+          "evidence_refs": [
+            "repo:she_sandbox",
+            "repo:she_verify"
+          ]
+        },
+        {
+          "text": "Judge success by verified issue resolution and no regressions, not by latency alone.",
+          "evidence_refs": [
+            "repo:aef_correctness_priority"
+          ]
+        }
+      ],
+      "items": [
+        {
+          "item": "Define a versioned repair-task contract and frozen fixture cohort covering known bugs, regression traps, malformed tasks, and no-fix cases.",
+          "state": "proposed",
+          "evidence": "Exit: fixtures are deterministic, hashed, and include expected behavior and test commands."
+        },
+        {
+          "item": "Implement isolated worktree creation, scoped patch capture, path/size limits, and cleanup after every run.",
+          "state": "proposed",
+          "evidence": "Exit: tests prove isolation, cleanup, and rejection of out-of-scope file writes."
+        },
+        {
+          "item": "Implement bounded propose → apply → test → diagnose retry loop with a hard retry cap and stop-on-uncertainty.",
+          "state": "proposed",
+          "evidence": "Exit: retry budget cannot be exceeded; no unverified patch is marked successful."
+        },
+        {
+          "item": "Integrate required repo-gate, termux-smoke, and task-specific tests; emit a machine-readable evidence receipt.",
+          "state": "proposed",
+          "evidence": "Exit: pass/fail/unknown states reconcile to actual command outputs and exact commit/tree hashes."
+        }
+      ],
+      "plan": {
+        "steps": [
+          "Pin the baseline commit and build the frozen task/fixture contract before implementation.",
+          "Extend the existing repair planner with an isolated executor and strict patch-scope checks.",
+          "Implement bounded repair attempts and test selection; capture stdout, exit codes, duration, and hashes.",
+          "Run the same tasks against baseline and candidate; publish per-task receipts and an aggregate scorecard.",
+          "Demonstrate one successful repair, one regression rejection, and one abstention in a repeatable notebook/demo."
+        ],
+        "risks": [
+          "A single agent may repeatedly make the same mistaken diagnosis; the retry cap and explicit abstention path must prevent loops.",
+          "Tests may be incomplete or flaky; UNKNOWN must remain distinct from PASS and a patch cannot pass solely because no tests fail.",
+          "Repository-specific commands may not work in the AMD-hosted notebook; define a minimal portable baseline and document any unavailable checks."
+        ],
+        "alternatives": [
+          "A multi-agent specialist swarm with independent review.",
+          "A retrieval-first repair pipeline using repository history and prior fixes."
+        ]
+      }
+    },
+    {
+      "suffix": "specialist-swarm",
+      "concept": "Specialist multi-agent repair with independent adversarial review",
+      "title": "Repair Agent — Specialist Swarm Architecture",
+      "executive_request": "Build a bounded multi-agent pipeline with separate defect-localization, patch-generation, adversarial-review, and verification roles. Roles exchange structured, evidence-linked artifacts rather than unrestricted chat. A reviewer can reject or narrow a patch, but only deterministic checks and the final verifier can mark it successful. All model calls must be replaceable with local deterministic stubs for reproducible tests.",
+      "summary_points": [
+        {
+          "text": "The existing repair planner already models evidence URIs, required tests, rollback SHA, and promotion constraints that can serve as the shared inter-agent contract.",
+          "evidence_refs": [
+            "repo:she_repair_planner"
+          ]
+        },
+        {
+          "text": "The evaluation framework explicitly measures agent trajectories and patch quality in addition to task outcome, making coordination overhead and unnecessary loops measurable.",
+          "evidence_refs": [
+            "repo:aef_correctness_priority"
+          ]
+        },
+        {
+          "text": "The system should reuse the existing sandbox and verification planning boundaries rather than granting any agent direct promotion authority.",
+          "evidence_refs": [
+            "repo:she_sandbox",
+            "repo:she_verify"
+          ]
+        }
+      ],
+      "items": [
+        {
+          "item": "Define typed role inputs/outputs for locator, patcher, adversarial reviewer, and verifier; require evidence references for defect claims.",
+          "state": "proposed",
+          "evidence": "Exit: schema tests reject missing provenance, invalid paths, and unsupported success claims."
+        },
+        {
+          "item": "Implement role orchestration with strict step/time/token budgets and deterministic stub providers.",
+          "state": "proposed",
+          "evidence": "Exit: max steps and retries are enforced; provider-independent tests pass."
+        },
+        {
+          "item": "Implement reviewer challenge and patch revision only when a concrete counterexample or failed check is cited.",
+          "state": "proposed",
+          "evidence": "Exit: every revision has a reason and before/after diff receipt."
+        },
+        {
+          "item": "Compare swarm outcomes with the single-agent baseline on the identical frozen cohort.",
+          "state": "proposed",
+          "evidence": "Exit: report correctness, regression rate, patch scope, abstentions, cost, latency, and trajectory length."
+        }
+      ],
+      "plan": {
+        "steps": [
+          "Freeze role contracts and the shared task cohort before adding orchestration.",
+          "Build the locator, patcher, critic, and verifier as independently testable functions with stubbed providers.",
+          "Add a bounded coordinator that records every transition and rejects untyped or unsupported claims.",
+          "Run paired comparisons against the single-agent baseline using identical tasks and test evidence.",
+          "Keep the swarm only if it improves repair correctness or regression resistance enough to justify extra complexity."
+        ],
+        "risks": [
+          "Multiple agents can amplify shared errors or produce correlated agreement; independent review must include counterexample-seeking, not majority vote.",
+          "Orchestration adds latency and cost and may miss the submission window.",
+          "Provider credentials, prompts, or untrusted repository content could cross trust boundaries unless tools and context are explicitly constrained."
+        ],
+        "alternatives": [
+          "A gated single-agent loop with deterministic verification.",
+          "A retrieval-first design that improves localization before any patch is generated."
+        ]
+      }
+    },
+    {
+      "suffix": "retrieval-first",
+      "concept": "Repository-history retrieval and test-aware repair",
+      "title": "Repair Agent — Retrieval-First Architecture",
+      "executive_request": "Build a repair pipeline that first assembles a compact, provenance-stamped repository context from symbols, imports, failing tests, recent diffs, and relevant historical fixes. Use that evidence to localize the likely defect, select tests, and generate a minimal patch. Retrieval must be inspectable and bounded; stale or weak matches cannot be treated as proof. The same verifier and sandbox gates apply as in every other candidate.",
+      "summary_points": [
+        {
+          "text": "The repository-history replay and deterministic-regression families in the canonical evaluation framework provide an existing evaluation direction for measuring retrieval-informed repair.",
+          "evidence_refs": [
+            "repo:aef_correctness_priority"
+          ]
+        },
+        {
+          "text": "The repair-PR contract can carry source/evidence URIs, exact baseline identity, rollback SHA, and required checks through the retrieval and repair stages.",
+          "evidence_refs": [
+            "repo:she_repair_planner"
+          ]
+        },
+        {
+          "text": "The Oracle Method's evidence-reference discipline provides a repository-native pattern for marking unsupported claims as unverified instead of silently promoting them.",
+          "evidence_refs": [
+            "repo:oracle_method"
+          ]
+        }
+      ],
+      "items": [
+        {
+          "item": "Build a repository context index for symbols, imports, tests, failure output, and recent history with exact source locations and content hashes.",
+          "state": "proposed",
+          "evidence": "Exit: retrieval records identify file/line or commit provenance and can be reproduced from a pinned revision."
+        },
+        {
+          "item": "Implement a relevance-ranked context pack with explicit freshness and a strict token/byte budget.",
+          "state": "proposed",
+          "evidence": "Exit: deterministic fixture queries return stable ranked results and reject stale/missing source references."
+        },
+        {
+          "item": "Use retrieved evidence for fault localization and test selection, then generate a minimal patch under the same sandbox constraints.",
+          "state": "proposed",
+          "evidence": "Exit: patch scope is bounded and every localization claim links to repository evidence."
+        },
+        {
+          "item": "Run ablations: no retrieval, source-only retrieval, and history-plus-test retrieval on the same task cohort.",
+          "state": "proposed",
+          "evidence": "Exit: results include task success, regression rate, retrieval quality, patch size, and runtime."
+        }
+      ],
+      "plan": {
+        "steps": [
+          "Select a small representative task cohort and pin the repository revision used by every retrieval query.",
+          "Build a deterministic source/test/history retriever with provenance and freshness metadata.",
+          "Add test-aware localization and minimal-patch prompting behind a provider-neutral interface.",
+          "Run paired ablations against the same repair baseline and capture retrieval traces with output hashes.",
+          "Keep retrieval in the final design only if it produces measurable gains without unacceptable context leakage or runtime."
+        ],
+        "risks": [
+          "Historical fixes may be obsolete, unrelated, or unsafe to copy; retrieval is a hypothesis generator, never a correctness oracle.",
+          "Indexing can consume the time budget and produce stale results when the repository changes.",
+          "Large context packs may hide the relevant evidence and increase model cost without improving accuracy."
+        ],
+        "alternatives": [
+          "A gated single-agent repair loop with no history index.",
+          "A specialist swarm that independently localizes and reviews a defect."
+        ]
+      }
+    }
+  ]
+}

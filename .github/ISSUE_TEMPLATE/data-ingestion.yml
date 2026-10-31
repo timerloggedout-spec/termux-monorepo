@@ -1,0 +1,114 @@
+name: Data Ingestion
+description: Aim the fleet ingestion routes at one source with one purpose. Filing wakes intake (event trigger, no cron), which validates scope and authorisation and comments back the route-mapped dispatch plan. Ingestion is read-only.
+title: "[ingest] <source-id>: <purpose>"
+labels: ["data-ingestion"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        One source, one purpose, read-only. Intake validates this brief:
+        out-of-scope domains, write briefs and credential VALUES are refused.
+        It then maps (source x purpose x volume_class) to a verified route and
+        posts the dispatch plan as a comment on this issue. Harvests run via
+        repo tooling (workflows, quota slice github:scraping-tools); the
+        browser is a recon/verify surface, not a harvest vehicle. The same
+        brief schema works from
+        every surface: this form, a brief.json, or a chat message.
+        Never paste secret values — credential routes are secret NAMES only.
+  - type: input
+    id: source_id
+    attributes:
+      label: Source ID
+      description: Short slug for this source, e.g. kiroween-gallery (used for registry and artifact paths).
+    validations: { required: true }
+  - type: input
+    id: source
+    attributes:
+      label: Source URL or domain
+      description: The page, feed or surface to ingest, e.g. https://kiroween.devpost.com/project-gallery
+    validations: { required: true }
+  - type: dropdown
+    id: purpose
+    attributes:
+      label: Purpose
+      description: What ingestion outcome this source needs.
+      options: [search-harvest, page-fetch, structured-extract, change-monitor, login-session-read, bulk-archive]
+    validations: { required: true }
+  - type: textarea
+    id: basis
+    attributes:
+      label: Authorization basis
+      description: Why this source may be automated (public page, own account, written permission, ...).
+    validations: { required: true }
+  - type: input
+    id: scope_domains
+    attributes:
+      label: Scope domains
+      description: Comma-separated domains the automation may touch. The source domain must be in this list.
+    validations: { required: true }
+  - type: dropdown
+    id: side_effect
+    attributes:
+      label: Side effect
+      description: Ingestion is read-only. Write briefs are refused by intake.
+      options: [read]
+    validations: { required: true }
+  - type: dropdown
+    id: volume_class
+    attributes:
+      label: Volume class
+      description: large means automate-under-slice only — the manual-browser route is refused for large (scraping-tools lane policy of record).
+      options: [single, batch, large]
+    validations: { required: true }
+  - type: dropdown
+    id: route
+    attributes:
+      label: Route
+      description: Verified ingestion routes (scraping-tools lane set, 2026-10-29/30). auto-map lets intake pick from (source x purpose x volume_class).
+      options: [auto-map, firecrawl-keyless, tinyfish-search, tinyfish-fetch, crawl4ai-selfhost, twscrape, scrapling, apify, zenrows]
+    validations: { required: true }
+  - type: dropdown
+    id: login_required
+    attributes:
+      label: Login required
+      description: Choose yes only if the source needs an authenticated session to read.
+      options: [no, yes]
+    validations: { required: true }
+  - type: input
+    id: credential_secret_name
+    attributes:
+      label: Credential secret NAME (never a value)
+      description: Required only when login is required. The Actions-secret NAME only, e.g. TINYFISH_API_KEY. Hosted login means a session export — intake flags it in the plan.
+  - type: dropdown
+    id: cadence
+    attributes:
+      label: Cadence
+      options: [one-shot, dispatch, scheduled]
+    validations: { required: true }
+  - type: input
+    id: quota_slice
+    attributes:
+      label: Quota slice ref
+      description: Slice this harvest draws on. Default github:scraping-tools (assigned, claim 6520959920).
+  - type: input
+    id: output_sink
+    attributes:
+      label: Output sink
+      description: Where results land, e.g. a repo path or feed, such as ops/challenge/osint/snapshots.json.
+    validations: { required: true }
+  - type: dropdown
+    id: evidence_expectation
+    attributes:
+      label: Evidence expectation
+      description: What evidence the dispatch must bring back.
+      options: [observed, reproduced, verified]
+  - type: input
+    id: submitter
+    attributes:
+      label: Submitter Role{Moniker}
+      description: Who is filing, in fleet coordination format, e.g. challenge-entries{...}.
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes for the dispatcher
+      description: Anything else the dispatch plan should know (known endpoints, prior recon, deadlines). Not parsed by intake.

@@ -1,6 +1,6 @@
 """Pins for the Contribution Desk page (traversal board + dispatch).
 
-The page renders ONLY data/desk-feed.json (schema desk-feed/v1.1), seeded
+The page renders ONLY data/desk-feed.json (schema desk-feed/v1.2), seeded
 by the viz lane from firsthand audits of the live record (2026-10-30)
 and refreshed by the Contribution Desk lane as traversals move.
 Integrity rules pinned here: the dashboard copy is a byte-identical
@@ -54,7 +54,7 @@ def test_no_hardcoded_evidence_in_page():
 
 def test_feed_schema_and_stage_states():
     pack = _pack()
-    assert pack["schema"] == "desk-feed/v1.1"
+    assert pack["schema"] == "desk-feed/v1.2"
     assert pack["desk"]["pipeline"] == PIPELINE
     assert pack["traversals"], "board must not be empty"
     for t in pack["traversals"]:
@@ -71,7 +71,8 @@ def test_provider_usage_shape_and_d0():
     pack = _pack()
     by_entry = {t["entry"]: t for t in pack["traversals"]}
     assert by_entry["D0"]["evidence"]["pr"] == 1702
-    allowed = {"provider", "scope", "via", "session_id", "state", "usage", "usage_note"}
+    allowed = {"provider", "scope", "via", "session_id", "state", "usage",
+               "model", "moniker", "role", "context"}
     for t in pack["traversals"]:
         assert isinstance(t.get("provider_usage"), list), t["entry"]
         for p in t["provider_usage"]:
@@ -123,7 +124,7 @@ const roll = providerRollup(TRAVS);
 if ((roll.counts["Jules"] || 0) < 1) throw new Error("rollup jules");
 if ((roll.counts["Muse (in-house, pre-correction)"] || 0) !== 1) throw new Error("rollup in-house");
 if (!roll.live.some(s => s.session_id === "17326020844735872479")) throw new Error("rollup live");
-if (roll.coverage.total !== 5 || roll.coverage.none !== 5) throw new Error("coverage");
+if (roll.coverage.total !== 5 || roll.coverage.none !== 4 || roll.coverage.proxy !== 1) throw new Error("coverage");
 if (!usageText({usage:{value:1, unit:"sessions", match:"activity-proxy"}}).includes("activity-proxy \u2014 not consumption")) throw new Error("proxy label");
 if (!usageText({usage:{value:42, unit:"calls", match:"exact"}}).startsWith("usage: 42 calls")) throw new Error("exact text");
 console.log("ok");

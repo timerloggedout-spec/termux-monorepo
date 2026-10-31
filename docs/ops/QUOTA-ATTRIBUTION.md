@@ -115,3 +115,12 @@ Roll-ups (rendered totals):
 - Compact stamp = `<ref>#<sha256[:12]>`.
 - `instance_key` = `sha256(canonical tuple JSON)`; helper `scripts/doe/instance_key.py` on master computes it.
 - Fault boundary flips at the scheme landing: dispatches after PR #2656 carry both refs or they are unstamped ⇒ `fault`. Pre-scheme records keep `null` refs, waived on those two axes.
+
+## Duplicate rule + desk-feed ↔ DoE mapping (landed with the duplicate integration)
+
+Rows that share `{provider, model@version}` are DUPLICATES on the model axis alone — the standing case is the pair of `Muse — desk-spawned subagents` rows in desk-feed (D3 + AMD M4, same provider, same model, same moniker/role). Rule:
+
+- A duplicate pair stays TWO consumers iff their configured instances differ: entry-scoped `context` + distinct `system_prompt_ref` slugs (per-entry prompt sets). Roll-ups group by the full key tuple incl. instance — never merge a duplicate pair on provider+model.
+- desk-feed `provider_usage[].instance_key{system_prompt_ref, tools_ref, note}` is the feed's transitional stamp object (pilot: Jules row, content hash in compact `<ref>#<sha256[:12]>` form where the dispatched content is retrievable). It maps 1:1 onto DoE `treatment.instance` (`docs/ops/corpus/EXPERIMENT.schema.json`, PR #2656): `system_prompt{ref, sha256}` / `tools{ref, sha256}` + `{provider, model, role, moniker, context}`; when both content hashes are established, the hex `instance_key` is computed by `scripts/doe/instance_key.py` and the EXPERIMENT record supersedes the feed object as the identity of record.
+- Hashes are NEVER fabricated: where the exact dispatched content is not retrievable from a repo or provider-API record (the retracted 2026-10-30 desk-spawned briefs), the stamp carries the named ref + `NOT ESTABLISHED` in its note, and the axes stay waived for pre-mandate rows.
+- Desk dispatch intake carries the stamp fields as required inputs (desk-feed `dispatch.intake_url` template): provider + session_id + model@version + both refs. No stamp ⇒ no dispatch.

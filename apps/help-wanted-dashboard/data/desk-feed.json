@@ -26,8 +26,8 @@
   ]
  },
  "dispatch": {
-  "how": "A dispatch is a GitHub issue spec routed via the orchestration surfaces to a provider lane; the provider authors a monorepo PR naming provider + session id; sub-manager verifies (provenance first); desk tracks merge on merge-clear and artifact sync. This page mutates nothing.",
-  "intake_url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/new?title=%5BDESK%20DISPATCH%5D%20%3Centry%3E%3A%20%3Cone-line%20spec%3E&body=Entry%3A%20%0ASpec%20%28what%20to%20build%29%3A%20%0ABuilder%20ask%20%28lane%20or%20any%29%3A%20%0ADeadline%20/%20checkpoint%3A%20%0AEvidence%20links%3A%20%0A%0ADesk%20route%3A%20sub-manager%20spec%20check%20%3D%3E%20desk%20routes%20to%20builder%20lane%20%3D%3E%20monorepo%20PR%20%3D%3E%20desk%20verifies%20%3D%3E%20merge%20on%20merge-clear%20%3D%3E%20artifact%20sync.",
+  "how": "A dispatch is a GitHub issue spec routed via the orchestration surfaces to a provider lane; the provider authors a monorepo PR naming provider + session id; sub-manager verifies (provenance first); desk tracks merge on merge-clear and artifact sync. This page mutates nothing. Instance stamp is part of the dispatch record (DoE configured-instance identity, PR #2656): every dispatch carries provider + session_id + model@version verbatim + system_prompt_ref + tools_ref (ref scheme: repo path or prompt:<moniker>:<slug> / tools:<moniker>:<slug>, always with the SHA-256 of the exact dispatched content; compact stamp <ref>#<sha256[:12]>; instance_key via scripts/doe/instance_key.py). No stamp => no dispatch (telemetry gate, 2026-10-30 23:10 PT).",
+  "intake_url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/new?title=%5BDESK%20DISPATCH%5D%20%3Centry%3E%3A%20%3Cone-line%20spec%3E&body=Entry%3A%20%0ASpec%20%28what%20to%20build%29%3A%20%0ABuilder%20ask%20%28lane%20or%20any%29%3A%20%0AProvider%20%2B%20session_id%3A%20%0AModel%40version%20%28verbatim%29%3A%20%0AInstance%20stamp%20-%20system_prompt_ref%20%28%3Cref%3E%23%3Csha256%5B%3A12%5D%3E%29%3A%20%0AInstance%20stamp%20-%20tools_ref%20%28%3Cref%3E%23%3Csha256%5B%3A12%5D%3E%29%3A%20%0ADeadline%20/%20checkpoint%3A%20%0AEvidence%20links%3A%20%0A%0ADesk%20route%3A%20sub-manager%20spec%20check%20%3D%3E%20desk%20routes%20to%20builder%20lane%20%3D%3E%20monorepo%20PR%20%3D%3E%20desk%20verifies%20%3D%3E%20merge%20on%20merge-clear%20%3D%3E%20artifact%20sync.",
   "intake_label": "New dispatch (GitHub issue)"
  },
  "traversals": [
@@ -189,7 +189,12 @@
      "model": "Muse Spark 1.3",
      "moniker": "[MUSEai]@{role:{challenge-entries-manager}}",
      "role": "contribution-desk dispatch (per-dispatch)",
-     "context": "desk-spawned builder subagents, 2026-10-30 (substituted route, retracted)"
+     "context": "D3 - desk-spawned builder subagents, 2026-10-30 (substituted route, retracted)",
+     "instance_key": {
+      "system_prompt_ref": "prompt:challenge-entries-manager:d3-listinglens-desk-spawned-builders",
+      "tools_ref": "tools:challenge-entries-manager:muse-desk-subagent-builders",
+      "note": "Instance named per the DoE ref scheme (PR #2656) as it existed at dispatch; content hashes NOT ESTABLISHED - the spawn briefs of the retracted 2026-10-30 desk session are not in any repo or provider-API record this feed can hash, and no hash is fabricated. Axes waived: these dispatches predate the telemetry mandate (2026-10-30 23:10 PT) and the scheme landing; usage.status stays waived. The two Muse desk-spawned rows are DISTINCT configured instances (per-entry prompt sets) - roll-ups must never merge them on provider+model alone (QUOTA-ATTRIBUTION duplicate rule)."
+     }
     }
    ]
   },
@@ -239,7 +244,12 @@
      "model": "Muse Spark 1.3",
      "moniker": "[MUSEai]@{role:{challenge-entries-manager}}",
      "role": "contribution-desk dispatch (per-dispatch)",
-     "context": "desk-spawned builder subagents, 2026-10-30 (substituted route, retracted)"
+     "context": "AMD M4 - desk-spawned builder subagents, 2026-10-30 (substituted route, retracted)",
+     "instance_key": {
+      "system_prompt_ref": "prompt:challenge-entries-manager:amd-m4-desk-spawned-builders",
+      "tools_ref": "tools:challenge-entries-manager:muse-desk-subagent-builders",
+      "note": "Instance named per the DoE ref scheme (PR #2656) as it existed at dispatch; content hashes NOT ESTABLISHED - the spawn briefs of the retracted 2026-10-30 desk session are not in any repo or provider-API record this feed can hash, and no hash is fabricated. Axes waived: these dispatches predate the telemetry mandate (2026-10-30 23:10 PT) and the scheme landing; usage.status stays waived. The two Muse desk-spawned rows are DISTINCT configured instances (per-entry prompt sets) - roll-ups must never merge them on provider+model alone (QUOTA-ATTRIBUTION duplicate rule)."
+     }
     }
    ]
   },

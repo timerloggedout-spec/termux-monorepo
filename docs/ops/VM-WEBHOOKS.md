@@ -61,8 +61,16 @@ the 88-model-provider registry of record) so provider-dispatch can
 route bounded trigger/intake tasks to this surface:
 
 - `fleet.vm_webhooks` (provider `fleet-vm`, lane `ops`) — this surface.
-  Secret name: `VM_WEBHOOK_SECRET` (local 0600 custody on the VM;
-  value never in chat, files, or commits).
+  Secret name: `VM_WEBHOOK_SECRET` — provisioned in GitHub repo Actions
+  secrets via the PAT sealed-box route (fleet pattern; verified in the
+  secrets list 2026-10-31T06:18:04Z, repo total 59 ⇒ 60) with the same
+  value mirrored in local 0600 custody on the VM for the receiver
+  process; value never in chat, files, or commits. (Correction of the
+  original landing note, which held local-only custody: transport and
+  HMAC credentials in this fleet are provisioned in `gh` secrets —
+  cf. `MANUS_SSH_KEY`, `TERMUX_MCP_SSH_PRIVATE_KEY`. SSH keys are the
+  asymmetric transport class; the webhook secret is the shared HMAC
+  class; both take the same sealed-box provisioning route.)
 
 ## Meta ∧ Muse — official API routes (findings, 2026-10-30)
 

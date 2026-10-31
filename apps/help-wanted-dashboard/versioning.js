@@ -72,7 +72,7 @@
       var current = results[0], prod = results[1];
       var rows = (current.pages || []).map(function (p) {
         var old = (prod.pages || []).find(function (q) { return q.id === p.id; });
-        var changed = !old ? "NEW PAGE" : (old.content_sha256 !== p.content_sha256 ? "CHANGED" : "same content");
+        var changed = !old ? "NEW PAGE" : (!old.content_sha256 || !p.content_sha256 ? "HASH UNAVAILABLE" : (old.content_sha256 !== p.content_sha256 ? "CHANGED" : "same content"));
         return '<tr><th scope="row">' + esc(p.id) + '</th><td>' + esc(p.title || p.file) +
           '</td><td>' + esc(changed) + '</td><td><a href="./' + esc(p.file) + '?page_unique_id=' +
           encodeURIComponent(p.id) + '&amp;version=' + encodeURIComponent(current.version) +

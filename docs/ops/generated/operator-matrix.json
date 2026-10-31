@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 354,
-    "open_prs": 137,
+    "open_issues": 355,
+    "open_prs": 139,
     "pr_classes": {
       "CANDIDATE": 66,
       "EXTRACT": 5,
-      "NEED_EVIDENCE": 66,
+      "NEED_EVIDENCE": 68,
       "SUPERSEDE": 0
     }
   },
@@ -49,8 +49,8 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 19,
-      "prs": 135,
+      "issues": 20,
+      "prs": 137,
       "unlabelled_numbers": [
         308,
         343,
@@ -70,11 +70,12 @@
         2179,
         2185,
         2204,
-        2210
+        2210,
+        2571
       ]
     }
   },
-  "generated_at": "2026-10-31T00:08:36Z",
+  "generated_at": "2026-10-31T00:10:47Z",
   "issues_unlabelled": [
     308,
     343,
@@ -94,7 +95,8 @@
     2179,
     2185,
     2204,
-    2210
+    2210,
+    2571
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
@@ -102,7 +104,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "a552afb5e8"
+    "sha": "cb1a77b9a4"
   },
   "prs": [
     {
@@ -1643,12 +1645,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "82fa276419",
+      "head_sha": "495e5ffdb3",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2235,
       "title": "chore(osint): refresh coverage + page snapshots",
-      "updated_at": "2026-10-31T00:06:49Z"
+      "updated_at": "2026-10-31T00:10:16Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2009,7 +2011,7 @@
       },
       "head_sha": "259efcc436",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2568,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-31T00:08:19Z"
@@ -2023,10 +2025,38 @@
       },
       "head_sha": "08423d2c78",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2570,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-31T00:08:27Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "cd310a869a",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2574,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-10-31T00:10:06Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "a879d9c760",
+      "labels": [],
+      "mergeable_state": "clean",
+      "number": 2575,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-10-31T00:10:33Z"
     }
   ],
   "schema": "operator-matrix/v1",

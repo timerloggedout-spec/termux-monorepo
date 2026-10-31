@@ -35,7 +35,11 @@ ownership spec for the surfaces.
   cohort/version, never silently folded into a running design (skill
   rule 12).
 
-## Configured-instance identity (owner fix, 2026-10-30)
+## Configured-instance identity (recorded 2026-10-30; true since init)
+
+Correction of framing (owner, 2026-10-30): configured instances
+have been the case since init — the lag was in our records/spec,
+not in the setup. This section records what was always true.
 
 `model@version` is NOT a sufficient identity under the DoE. One
 provider model@version runs as DIFFERENT configured instances —
@@ -48,7 +52,7 @@ DoE record keys the executing instance by its configuration, in
  tools {ref, sha256}, role, moniker, context, instance_key}
 ```
 
-**Ref scheme (named by this lane; the fleet stamps the same refs):**
+**Ref scheme (named by this lane — the refs as they exist; the fleet stamps the same refs):**
 a ref is a repo-relative **path** when the artifact lives in the
 repo (a prompt file, a tool manifest); otherwise a **scoped id** —
 `prompt:<moniker>:<slug>` or `tools:<moniker>:<slug>`. Every ref

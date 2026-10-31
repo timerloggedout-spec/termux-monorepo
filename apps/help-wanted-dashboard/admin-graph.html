@@ -971,7 +971,7 @@ function runVerify(){
     ["x","y","w"].forEach(function(k){if(typeof n[k]!=="number"||!isFinite(n[k])||(k==="w"&&n[k]<=0))issue("node-coordinate",String(n.id||i)+" has invalid "+k);});
     if(!Array.isArray(n.fields))issue("node-fields",String(n.id||i)+" fields must be an array");
     else n.fields.forEach(function(field,j){
-      if(!field||typeof field!=="object"||typeof field.name!=="string"||!field.name.trim()||typeof field.type!=="string")
+      if(!field||typeof field!=="object"||typeof field.name!=="string"||!field.name.trim()||typeof field.type!=="string"||!field.type.trim())
         issue("field-shape",String(n.id||i)+" fields["+j+"] requires a name and type");
     });
   });
@@ -1066,6 +1066,20 @@ document.getElementById("createDiffBtn").addEventListener("click",function(){doc
 document.getElementById("copyDiffBtn").addEventListener("click",function(){if(!document.getElementById("diffOut").value)document.getElementById("diffOut").value=buildBundle();copyText("diffOut","Diff bundle");});
 document.getElementById("dlDiffBtn").addEventListener("click",function(){download("admin-interaction-graph.diff-bundle.txt",document.getElementById("diffOut").value||buildBundle());});
 document.getElementById("dispatchBtn").addEventListener("click",function(){var validation=runVerify();if(validation.issues.length){document.getElementById("payloadOut").value="";updateVerify();log("Dispatch payload BLOCKED: model validation failed — "+validation.issues.slice(0,5).join("; "));return;}var target=document.getElementById("dispatchTarget").value;var payload={kind:"admin-interaction-graph/dispatch-payload",prepared_at:new Date().toISOString(),target:target,delivery:"PREPARED ONLY — this static prototype exports the payload; it does not send it.",validation:{status:"passed",issue_count:0,node_count:MODEL.nodes.length,edge_count:MODEL.edges.length},model_version:MODEL.version,model_hash:modelHash(),summary:diffSummaryText(computeDiff()),files:{"admin-interaction-graph.mmd":toMermaid(),"admin-interaction-graph.model.json":modelJSON(),"admin-interaction-graph.diff.txt":buildBundle()}};document.getElementById("payloadOut").value=JSON.stringify(payload,null,2);log("Dispatch payload PREPARED for target '"+target+"' — model validation passed; not sent. Copy or download it to dispatch through that route.");});
+/* Any edit to the graph invalidates a previously prepared payload. The payload is
+   a snapshot, never a live binding to the editable model. */
+document.addEventListener("input",function(event){
+  var target=event.target;
+  if(!target||!target.id||!/^insp/.test(target.id))return;
+  var out=document.getElementById("payloadOut");
+  if(out&&out.value){out.value="";log("Prepared payload invalidated: graph fields changed. Re-validate and prepare a fresh payload.");}
+});
+document.addEventListener("change",function(event){
+  var target=event.target;
+  if(!target||!target.id||!/^insp/.test(target.id))return;
+  var out=document.getElementById("payloadOut");
+  if(out&&out.value){out.value="";log("Prepared payload invalidated: graph fields changed. Re-validate and prepare a fresh payload.");}
+});
 document.getElementById("copyPayloadBtn").addEventListener("click",function(){if(document.getElementById("payloadOut").value)copyText("payloadOut","Dispatch payload");});
 document.getElementById("dlPayloadBtn").addEventListener("click",function(){if(document.getElementById("payloadOut").value)download("dispatch-payload.json",document.getElementById("payloadOut").value,"application/json");});
 /* ===== controls ===== */

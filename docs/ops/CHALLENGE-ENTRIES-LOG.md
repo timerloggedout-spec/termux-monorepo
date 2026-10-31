@@ -417,10 +417,11 @@ this log is the human view of the same verified state.
      request it only when ready to sit the work block.
   4. Complete the workshop's modules/checkpoints (progress saves
      automatically; checkpoints validate as you go).
-  5. **Evidence:** on completion a verified badge + completion certificate
-     appear under the profile's Badges tab, with a platform notification
-     (official workshops article). This lane verifies the badge on the
-     public profile and records its date here — the date must read
+  5. **Evidence:** ~~on completion a verified badge + completion certificate
+     appear under the profile's Badges tab~~ **CORRECTED 2026-10-30 (firsthand, after full completion): NO badge or certificate is issued for this workshop**
+     (Badges tab exhaustively checked — 21 badges, none for workshops; "Your workshops" shows no completion status either). The evidence standard (Manager ruling
+     2026-10-30) = the Workshop Studio completion page ("Workshop Complete!") + per-module EXIT:0 execution receipts + the preserved run notebooks, all dated
+     inside Oct 28–Nov 4 for the qualifier to count.
      Oct 28–Nov 4 for the qualifier to count.
   6. Build/publish then proceed in-window: public repo (agent, D0-inherited
      kernel + fetch_evidence pattern), Builder Center article, <3-min demo

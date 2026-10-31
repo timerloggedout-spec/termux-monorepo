@@ -1,25 +1,25 @@
 {
  "schema": "proposals-feed/v1",
- "generated_at": "2026-10-28T23:52:47Z",
+ "generated_at": "2026-10-30T23:40:41Z",
  "source": "docs/proposals/registry.yaml",
  "registry_updated_at": "2026-10-27T13:52:00Z",
  "registry_updated_by": "tier1-classifiers-steward",
  "counts": {
-  "total": 52,
+  "total": 53,
   "by_status": {
    "in_review": 12,
    "posted": 18,
-   "executing": 18,
+   "executing": 19,
    "draft": 2,
    "accepted": 2
   },
   "by_priority": {
-   "P1": 37,
+   "P1": 38,
    "P0": 6,
    "P2": 9
   },
   "by_author": {
-   "ChatGPT": 11,
+   "ChatGPT": 12,
    "grok": 7,
    "timerloggedout-spec": 9,
    "Manus": 3,
@@ -33,7 +33,7 @@
    "oracle-method": 9,
    "Perplexity": 1
   },
-  "passes": 3
+  "passes": 4
  },
  "proposals": [
   {
@@ -816,9 +816,37 @@
     1867,
     1886
    ]
+  },
+  {
+   "id": "free-tier-value-board",
+   "title": "Public usage value projection and cross-provider cost comparison",
+   "author": "ChatGPT",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/free-tier-value-board/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/free-tier-value-board/",
+   "issues": [
+    1588,
+    1592,
+    1593,
+    1571
+   ],
+   "prs": [
+    1589,
+    2409
+   ]
   }
  ],
  "passes": [
+  {
+   "id": "ai-studio-delphi-panel",
+   "pass_id": null,
+   "schema": null,
+   "status": null,
+   "candidates": null,
+   "path": "passes/ai-studio-delphi-panel/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/passes/ai-studio-delphi-panel"
+  },
   {
    "id": "kiroween-delphi-concept",
    "pass_id": "kiroween-delphi-concept",
@@ -847,5 +875,7 @@
    "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/passes/temporal-durable-execution"
   }
  ],
- "gaps": []
+ "gaps": [
+  "pass ai-studio-delphi-panel: pass.json unreadable (FileNotFoundError)"
+ ]
 }

@@ -21,16 +21,20 @@ Evidence: coordinator.json@master firsthand 2026-10-31 {#coord-D2} ∧ census th
 
 | beat | when | surface | status |
 |---|---|---|---|
-| DISCORD-INTRO | kickoff 2026-11-03 | lablab Discord | drafted §3.6 |
-| ANNOUNCE | kickoff 2026-11-03 | X-style short post | drafted §3.1 |
-| BUILD-OPEN-1 | 2026-11-04 | short post | drafted §3.2 |
-| BUILD-OPEN-2 | mid-build ≈2026-11-06 | long post / Discord | drafted §3.3 |
+| ANNOUNCE-FACTS | kickoff 2026-11-03 | short post | drafted §3.0, PUBLISH ✓ per D2 seat 2026-10-31 |
+| DISCORD-INTRO | kickoff 2026-11-03 | lablab Discord | drafted §3.6 — HOLD ∅ until freeze (names candidate concept) |
+| ANNOUNCE | kickoff 2026-11-03 | X-style short post | drafted §3.1 — HOLD ∅ until freeze (names candidate) |
+| BUILD-OPEN-1 | 2026-11-04 | short post | drafted §3.2 — HOLD ∅ until freeze |
+| BUILD-OPEN-2 | mid-build ≈2026-11-06 | long post / Discord | drafted §3.3 — HOLD ∅ until freeze |
 | DEMO-TEASE | demo live only | short post | drafted §3.5, blocked: demo_url NOT_ESTABLISHED |
 | SUBMISSION | post-submit only | short post | drafted §3.4, blocked: submission = none |
 
 Rules: 4n0n ∀ public artifacts (∅ personal identifiers) ∧ candidate status stated honestly until freeze ∧ ∅ post claiming submission/demo before evidence ∧ media production = OUTSOURCE (∅ fleet quota burn) ∧ copy generation delegated, this lane edits+verifies.
 
 ## 3. Promo copy (verified vs §1; placeholders ¬ invented)
+
+### 3.0 ANNOUNCE-FACTS (publish-ready @ kickoff; facts only, per D2 seat ruling 2026-10-31)
+Enrolled: Vultr: Agent Rush Hackathon via lablab.ai — Rap1dZ3nith. Kickoff 2026-11-03 15:00 UTC, submissions due 2026-11-08 15:00 PT. $14k prize pool. Discord connected, team create/join unblocked. Build starts Nov 3.
 
 ### 3.1 ANNOUNCE
 Kickoff: Vultr: Agent Rush Hackathon via lablab.ai + Vultr — 2026-11-03 15:00 UTC. Building as Rap1dZ3nith. Candidate: Web Adapter Foundry, a sandboxed browser-operating agent. Containment-first. Submission due 2026-11-08 15:00 PT. Receipts to follow.

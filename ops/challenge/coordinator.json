@@ -1227,7 +1227,8 @@
        "pr": 2046,
        "sha": "6aed4b6bad"
       }
-     ]
+     ],
+     "provenance": "Build PR #2616 merged 2026-10-30 \u2014 authored by a desk-spawned Muse subagent (provenance correction 2026-10-30; NOT a provider lane)."
     },
     {
      "id": "delphi-desk",
@@ -1273,7 +1274,8 @@
        "pr": 2050,
        "sha": "c220ce5da5"
       }
-     ]
+     ],
+     "provenance": "Build PR #2616 merged 2026-10-30 \u2014 authored by a desk-spawned Muse subagent (provenance correction 2026-10-30; NOT a provider lane)."
     }
    ],
    "participants": [],
@@ -1856,7 +1858,8 @@
      "name": "Intelligent Web Information Retrieval",
      "points": 1800,
      "state": "LIVE (as of 2026-10-30)",
-     "rules": "card brief only + league-wide shared rules; no harness published"
+     "rules": "card brief only + league-wide shared rules; no harness published",
+     "provenance": "Build PRs #2615 (P0 scaffold) / #2619 (P1) / #2623 (P2) merged 2026-10-30 \u2014 authored by desk-spawned Muse subagents (provenance correction 2026-10-30; NOT provider lanes)."
     },
     {
      "id": "M5",
@@ -2052,6 +2055,7 @@
    "assistant_contribution_desk": "chat a440bcb2-f95a-41c5-81b4-9e1728e5fd6c (Challenge Management \u2014 Assistant) ADDITIONALLY = CONTRIBUTION DESK: contribution queue, routing to builder lanes, CI/merge tracking, artifact sync state (entry repos synced from monorepo contributions)",
    "builder_lanes": "land code in termux-monorepo via branch/PR (contestant body); CI = repo_gate + agentic termux smoke",
    "entries_lane": "coordinator/log single-writer (records)"
-  }
+  },
+  "provenance_correction": "PROVENANCE CORRECTION (2026-10-30, Contribution Desk a440bcb2): PRs #2615/#2619/#2623 (AMD M4) and #2616 (D3 ListingLens) were authored by desk-spawned Muse subagents, NOT by repo provider lanes; the Desk's \"builder lane / Jules-Bolt pattern\" labels for that night are RETRACTED. ROUTE OF RECORD from now: provider-dispatch map \u2014 Jules primary via agent-jules-on-issues; Gemini/DeepSeek wired with the action_required caveat; command-dispatch for polish. Desk reports name the producing provider + session id per PR; a Muse-authored PR = stop + report, do not merge. First live proof under the corrected route: issue #2626 (D1 backlog) + the jules label fired this cycle."
  }
 }

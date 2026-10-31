@@ -75,6 +75,19 @@ role `extractor`, moniker `doe-expert`, context
 `pilot-1 offline-deterministic`. New campaigns stamp
 `treatment.instance` at run time.
 
+### Provider-schema mappings (2026-10-30)
+
+Standing rule: EVERY surface carrying its own provider/model
+config schema adds a mapping row here (or in its own doc, cited
+here) BEFORE its results join attribution or comparison. A field
+the surface does not carry is recorded NOT ESTABLISHED — never
+silently collapsed into a model-only key. Mapped so far:
+HindSight (below), DSPy-DoE, the SWE evaluation contract. Census
+continues (same treatment owed): `.github/connectors/llm_providers.yaml`,
+`ops/delphi/panel.json`, `.github/agentic/provider-command-library.json`,
+the quota registry's model lane — rows land with their owning
+lanes.
+
 ### HindSight provider-schema mapping (2026-10-30)
 
 HindSight carries its own provider schema — per function role:
@@ -130,3 +143,37 @@ experiments/doe/<campaign-id>/
 
 Runner: `scripts/doe/run_pilot1.py` (deterministic, offline; re-running
 regenerates records + summary — `observed_at`/elapsed are run stamps).
+
+### DSPy-DoE mapping (2026-10-30)
+
+The DSPy-DoE stub (`scripts/model_selection_market/dspy_doe.py`)
+records arms as {lane, arm_id, signature, model_id, role} — keyed
+by `model_id` alone (default `stealth/ox-alpha`). In DSPy the
+Signature IS the program/prompt spec, so: `signature` →
+`system_prompt` ref (the signature's code path; sha256 over its
+source at run time); `model_id` → provider/model split at the
+first `/` (prefix = provider, remainder = model@version);
+`role` → `role` verbatim; the arm's module/tools (DSPy modules +
+tool calls) → `tools` (NOT ESTABLISHED in the stub today — records
+carry no tool field); `arm_id` + lane → `context`. Until the stub
+stamps `treatment.instance`, its rows join comparisons by
+(signature, model_id, role) — never by model_id alone.
+
+### SWE evaluation-contract mapping (2026-10-30)
+
+The SWE contract (`scripts/ci/swe_evaluation_contract.py`) keys
+result manifests by bare `model_id` — but the manifest already
+carries the configuration in other fields: `reference`
+(`mini-swe-agent` | `swe-agent`) + `reference_revision` (40-hex)
+identify the configured harness — its prompts and tools live in
+that revision. Mapping: `reference@reference_revision` →
+`system_prompt` + `tools` refs (one artifact: the harness
+revision; sha256 NOT ESTABLISHED — the revision sha is the pin);
+`model_id` → provider/model split at the first `/`; `benchmark` +
+`split` + `slice` → `context`; `reference` → `role`
+(`swe-agent-runner` class); the running lane → `moniker` (NOT in
+the manifest — NOT ESTABLISHED gap, named for the SWE lane).
+Cohort comparisons (`docs/evaluations/swe-performance/COHORTS.md`)
+must group by (reference@revision, model_id), never model_id
+alone: the same model under mini-swe-agent vs swe-agent is two
+configured instances.

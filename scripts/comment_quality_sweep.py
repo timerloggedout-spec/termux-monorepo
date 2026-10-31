@@ -60,11 +60,12 @@ def classify(comment: dict) -> str:
     author = (comment.get("user") or {}).get("login") or ""
     if author == VENDOR_AUTHOR and body.startswith(VENDOR_PREFIX):
         return "vendor-promo"
-    if FAILURE_MARKER.match(body) and FAILURE_TEXT in body:
-        return "automation-failure"
-    if body.startswith("<!-- delphi") or body.startswith("<!-- delphi-board"):
-        return "ledger-event"
-    if body.startswith("[MUSEai]@"):
+    if body.startswith("<!--"):
+        if FAILURE_TEXT in body and FAILURE_MARKER.match(body):
+            return "automation-failure"
+        if body.startswith("<!-- delphi") or body.startswith("<!-- delphi-board"):
+            return "ledger-event"
+    elif body.startswith("[MUSEai]@"):
         return "signed-append"
     return "substantive-other"
 
@@ -75,7 +76,8 @@ DELETABLE = ("vendor-promo", "automation-failure")
 def record_surfaces(repo: str, registry_path: str, get) -> list[int]:
     """Registry-pinned issues + the Delphi queue, de-duplicated."""
     issues: set[int] = set()
-    registry = json.load(open(registry_path))
+    with open(registry_path, encoding="utf-8") as stream:
+        registry = json.load(stream)
     for entry in registry.get("ledgers", []) + registry.get("living_records", []):
         if isinstance(entry.get("issue"), int):
             issues.add(entry["issue"])

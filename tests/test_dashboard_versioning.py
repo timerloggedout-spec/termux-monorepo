@@ -14,7 +14,8 @@ def test_every_dashboard_html_has_stable_identity_in_build_registry():
     manifest = json.loads((APP / "version-manifest.json").read_text())
     ids = [p["id"] for p in manifest["pages"]]
     files = [p["file"] for p in manifest["pages"]]
-    assert set(pages) == set(files), "manifest must list every HTML page exactly once"\n    assert len(files) == len(set(files)), "manifest must not duplicate page files"
+    assert set(pages) == set(files), "manifest must list every HTML page exactly once"
+    assert len(files) == len(set(files)), "manifest must not duplicate page files"
     assert len(ids) == len(set(ids)), "page unique IDs must be unique"
     assert "versioning.html" in files
     assert "lanes-and-scopes.html" in files

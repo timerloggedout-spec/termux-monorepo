@@ -1,15 +1,17 @@
 name: Data Ingestion
-description: Aim the fleet ingestion routes at one source with one purpose. Filing wakes intake (event trigger, no cron), which validates scope and authorisation and comments back the route-mapped dispatch plan. Ingestion is read-only.
+description: Aim the fleet ingestion routes at one source with one purpose. Read-only. NOTE: the intake workflow (event-triggered validation + route-mapped dispatch plan) is leg 2 and not live yet — until it lands, filed briefs are triaged by the challenge-entries lane.
 title: "[ingest] <source-id>: <purpose>"
 labels: ["data-ingestion"]
 body:
   - type: markdown
     attributes:
       value: |
-        One source, one purpose, read-only. Intake validates this brief:
-        out-of-scope domains, write briefs and credential VALUES are refused.
-        It then maps (source x purpose x volume_class) to a verified route and
-        posts the dispatch plan as a comment on this issue. Harvests run via
+        One source, one purpose, read-only. When the intake workflow
+        (leg 2, not live yet) lands, it will validate this brief —
+        out-of-scope domains, write briefs and credential VALUES refused —
+        map (source x purpose x volume_class) to a verified route and post
+        the dispatch plan as a comment on this issue. Until then, the
+        challenge-entries lane triages filed briefs by hand. Harvests run via
         repo tooling (workflows, quota slice github:scraping-tools); the
         browser is a recon/verify surface, not a harvest vehicle. The same
         brief schema works from

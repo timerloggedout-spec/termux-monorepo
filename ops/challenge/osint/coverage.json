@@ -1,6 +1,6 @@
 {
   "schema": "challenge-osint-coverage/v1",
-  "generated_at": "2026-10-28",
+  "generated_at": "2026-10-31",
   "source": "ops/challenge/coordinator.json at run time; public official pages for snapshots",
   "events": {
     "STRANDS-DECIDER": {
@@ -52,7 +52,9 @@
       },
       "official_page_watch": {
         "populated": true,
-        "url": "https://builder.aws.com/build/hackathons/4f50957c-1d08-37ab-b11c-97516b9adeb4/agent-experience-hackathon"
+        "url": "https://builder.aws.com/build/hackathons/4f50957c-1d08-37ab-b11c-97516b9adeb4/agent-experience-hackathon",
+        "fetch_status": "ok",
+        "last_sha256": "76bf4fabede76c67"
       }
     },
     "D0": {
@@ -104,7 +106,9 @@
       },
       "official_page_watch": {
         "populated": true,
-        "url": "https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool"
+        "url": "https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool",
+        "fetch_status": "ok",
+        "last_sha256": "625d2fa23d80dd2d"
       }
     },
     "D1": {
@@ -151,12 +155,14 @@
       },
       "field_size": {
         "status": "partial",
-        "participants": 324,
+        "participants": 382,
         "projects": 1
       },
       "official_page_watch": {
         "populated": true,
-        "url": "https://builder.aws.com/build/hackathons/8311dcb5-1ece-3d62-a441-2e1c2ad90b86/strands-sdk-workshop-to-ship"
+        "url": "https://builder.aws.com/build/hackathons/8311dcb5-1ece-3d62-a441-2e1c2ad90b86/strands-sdk-workshop-to-ship",
+        "fetch_status": "ok",
+        "last_sha256": "561f7273870c73d3"
       }
     },
     "D2": {
@@ -208,7 +214,9 @@
       },
       "official_page_watch": {
         "populated": true,
-        "url": "https://lablab.ai/ai-hackathons/vultr-hackathon"
+        "url": "https://lablab.ai/ai-hackathons/vultr-hackathon",
+        "fetch_status": "ok",
+        "last_sha256": "691dab00c5113389"
       }
     },
     "D3": {
@@ -260,7 +268,9 @@
       },
       "official_page_watch": {
         "populated": true,
-        "url": "https://builder.io/hackathon"
+        "url": "https://builder.io/hackathon",
+        "fetch_status": "ok",
+        "last_sha256": "bf12075064ee96af"
       }
     },
     "D4": {
@@ -270,12 +280,12 @@
       },
       "dates": {
         "populated": true,
-        "count": 4
+        "count": 8
       },
       "prizes": {
-        "populated": false,
-        "status": "NOT_ESTABLISHED",
-        "tiers": 0
+        "populated": true,
+        "status": "ESTABLISHED",
+        "tiers": 3
       },
       "rules_constraints": {
         "populated": true,
@@ -312,7 +322,8 @@
       },
       "official_page_watch": {
         "populated": true,
-        "url": "https://kiroween.devpost.com"
+        "url": "https://kiroween.devpost.com",
+        "fetch_status": "failed:HTTPError"
       }
     },
     "D5": {
@@ -364,7 +375,9 @@
       },
       "official_page_watch": {
         "populated": true,
-        "url": "https://www.aha.io/academy/events/ai-builder-day-hackathon-november-2026"
+        "url": "https://www.aha.io/academy/events/ai-builder-day-hackathon-november-2026",
+        "fetch_status": "ok",
+        "last_sha256": "54ce96d7b24f8925"
       }
     }
   },
@@ -372,8 +385,11 @@
     "events": 7,
     "participants_total": 1,
     "judges_total": 0,
-    "prizes_established": 6,
-    "page_snapshots_total": 0,
-    "page_changes_this_run": []
+    "prizes_established": 7,
+    "page_snapshots_total": 9,
+    "page_changes_this_run": [
+      "D1",
+      "D2"
+    ]
   }
 }

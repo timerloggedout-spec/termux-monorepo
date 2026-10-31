@@ -1,2035 +1,2044 @@
 {
- "schema_version": 1,
- "schema_doc": "docs/ops/CHALLENGE-SCHEMA.md",
- "human_view": "docs/ops/CHALLENGE-ENTRIES-LOG.md (section 4)",
- "coordinator": {
-  "role_moniker": "challenge-entries-manager",
-  "chat_id": "9cb1c873-b150-490e-8a51-182765c15653",
-  "scope": "Owns the challenge-entries lane and the countdown-critical path; the challenge-entries lane (log/execution) works under it.",
-  "subs": [
-   {
-    "suffix": "-d0",
-    "event_id": "D0",
-    "chat_id": "7f59b235-f413-40ef-8b1f-c0f5eea05c4c",
-    "role_moniker": "challenge-entries-manager-d0"
-   },
-   {
-    "suffix": "-d1",
-    "event_id": "D1",
-    "chat_id": "07d68c43-7792-4d22-8c78-e4143f499e4c"
-   },
-   {
-    "suffix": "-d2",
-    "event_id": "D2",
-    "chat_id": "d8f72f94-9340-45ee-a9f1-862ee53b34c3"
-   },
-   {
-    "suffix": "-d3",
-    "event_id": "D3",
-    "chat_id": "39fc8b89-45aa-447d-ad83-0481effc312e"
-   },
-   {
-    "suffix": "-d4",
-    "event_id": "D4",
-    "chat_id": "fefff1ad-e0fa-49ad-9d0b-352def889575"
-   },
-   {
-    "suffix": "-d5",
-    "event_id": "D5",
-    "chat_id": "5b1fd8ae-3c47-4fbc-8097-5b764665fdbb"
-   }
-  ],
-  "staff": [
-   {
-    "role": "venue-lablab-specialist",
-    "role_moniker": "registry-pending",
-    "chat_id": "6401df1e-9193-4c62-aec9-3a36a09156fe",
-    "scope": "lablab.ai venue mastery for D2 Vultr + C11 AMD League: account/handle, profile, lablab-side Discord connect ownership, team + solo submit mechanics, Events-block truth, quirks log. Does not build, does not sit Academy, does not write records (entries lane single-writer)."
-   },
-   {
-    "role": "gates-academy-oversight",
-    "role_moniker": "registry-pending",
-    "chat_id": "840bd147-dcf6-4ce1-8f88-633186849181",
-    "scope": "Completion assurance for all non-build requirements: gates register oversight (coordinator events[].gates[]) + AMD Academy >=5-course gate plan/schedule/evidence. Record deltas route via the entries lane."
-   },
-   {
-    "role": "contribution-desk",
-    "role_moniker": "challenge-entries-assistant",
-    "chat_id": "a440bcb2-f95a-41c5-81b4-9e1728e5fd6c",
-    "scope": "Challenge Management \u2014 Assistant seat, ADDITIONALLY Contribution Desk under the contestant model (owner, 2026-10-30): contribution queue, routing to builder lanes, CI/merge tracking, artifact sync state. (Base scope unchanged: wiring + coverage matrix + opportunity-cost/ledger + metrics_internal landings.)"
-   }
-  ]
- },
- "events": [
-  {
-   "id": "STRANDS-DECIDER",
-   "name": "Agent Experience Hackathon: Strands Decider",
-   "host": "AWS Builder Center",
-   "organizers": [
-    {
-     "name": "AWS Builder Center (Amazon Web Services)",
-     "role": "host",
-     "source_url": "https://builder.aws.com/build/hackathons/4f50957c-1d08-37ab-b11c-97516b9adeb4/agent-experience-hackathon",
-     "fetched_at": "2026-10-28"
-    }
-   ],
-   "platform": "aws-builder-center",
-   "official_url": "https://builder.aws.com/build/hackathons/4f50957c-1d08-37ab-b11c-97516b9adeb4/agent-experience-hackathon",
-   "status": "closed",
-   "entrant_moniker": "entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]",
-   "dates": {
-    "announced": "NOT_ESTABLISHED",
-    "reg_open": "NOT_ESTABLISHED",
-    "reg_close": "NOT_ESTABLISHED",
-    "build_start": {
-     "at": "2026-10-16T00:00:00-07:00",
-     "tz": "America/Los_Angeles",
-     "source": "official page timeline: Launch October 16"
-    },
-    "build_end": {
-     "at": "2026-10-23T23:59:00-07:00",
-     "tz": "America/Los_Angeles",
-     "source": "official page timeline: Projects due by October 23"
-    },
-    "submissions_open": "NOT_ESTABLISHED",
-    "deadline": {
-     "at": "2026-10-23T23:59:00-07:00",
-     "tz": "America/Los_Angeles",
-     "source": "official page timeline: Projects due by October 23"
-    },
-    "judging_end": "NOT_ESTABLISHED",
-    "winners_at": "NOT_ESTABLISHED"
-   },
-   "constraints": [
-    "Agent using Strands Decider 2B for a meaningful decision paired with Amazon Bedrock; Builder Center article; public repo link with >=1 reusable Decider 2B decision pattern; public demo video <3 min; tags #strands-decider-2b + one pattern tag; original unpublished agent (all verbatim from official page, read 2026-10-28)"
-   ],
-   "gates": [],
-   "prizes": {
-    "status": "ESTABLISHED",
-    "pool": "$16,800",
-    "tiers": [
-     {
-      "place": "winner (3 selected)",
-      "award": "$5,000 in AWS credits and one AWS Builder swag bundle worth about $600 (jacket, backpack, keyboard); official winner's certificate",
-      "award_value": "$5,600",
-      "source_url": "https://builder.aws.com/build/hackathons/4f50957c-1d08-37ab-b11c-97516b9adeb4/agent-experience-hackathon"
-     }
-    ],
-    "notes": "Verbatim official page (firsthand 2026-10-28): 'Three winning projects will be selected. Each receives $5,000 in AWS credits and one AWS Builder swag bundle worth about $600... Total prize pool: $16,800.' Identical prize structure to D1 = same Agent Experience series template (verified on both pages, not a conflation)."
-   },
-   "registration": {
-    "state": "joined",
-    "evidence": [
-     "Gmail msg 1a16b4e87bbf0c55 from notifications@builder.aws.com (joined 2026-10-23 17:27 PDT, final day)",
-     "platform hackathon ID 4f50957c-1d08-37ab-b11c-97516b9adeb4"
-    ]
-   },
-   "submission": {
-    "state": "none",
-    "at": null,
-    "confirmation_ref": null
-   },
-   "brief": {
-    "evidence_pack_ref": null,
-    "anchor_lines": []
-   },
-   "projects": [
-    {
-     "id": "delphi-oracle-strands",
-     "name": "Delphi Oracle \u2014 Strands Decider proposal package",
-     "one_liner": "Offline Oracle MVP built the night of the deadline (Delphi PR #1620 activity); repo material only, never submitted to the platform.",
-     "origin": "hand-packet",
-     "brief_anchor": null,
-     "status": "abandoned",
-     "reason": "NOT SUBMITTED \u2014 established 2026-10-28: Gmail live check = 6 Builder messages total, zero submission confirmations; proposal MANIFEST on master states verbatim 'No AWS account, resources, invocation, or hackathon submission is claimed'; PR #1620 records zero external/AWS calls.",
-     "superseded_by": null,
-     "assets": {
-      "repo_dir": "docs/proposals/active/aws-free-tier-strands-delphi-oracle",
-      "proposal_dir": null,
-      "demo_url": null,
-      "clips_url": null
-     },
-     "decisions": []
-    }
-   ],
-   "participants": [],
-   "judges": [],
-   "opportunity_cost": {
-    "outcome": "not_submitted",
-    "top_award": {
-     "value": 5600,
-     "form": "$5,000 AWS credits + AWS Builder swag bundle worth about $600 (official total per award $5,600)",
-     "source": "Official page firsthand 2026-10-28: https://builder.aws.com/build/hackathons/4f50957c-1d08-37ab-b11c-97516b9adeb4/agent-experience-hackathon"
-    },
-    "gross_foregone": 5600,
-    "non_monetary_foregone": [
-     "AWS Builder swag bundle (jacket, backpack, keyboard) \u2014 valued in top award",
-     "official winner's certificate",
-     "winner visibility",
-     "judge-panel feedback (Gate 2, week of Nov 2)"
-    ],
-    "computed_at": "2026-10-28",
-    "ledger_entry": "OC-001"
-   },
-   "history_note": "Slate-history event added 2026-10-28 (manager addendum): predates the D0-D5 slate, NOT D-numbered \u2014 flagged to manager; id STRANDS-DECIDER is a history label, not a packet number. No moneyball{} block: no intake ever ran for this event.",
-   "metrics_internal": {
-    "win_probability": {
-     "method": "winprob/v2",
-     "estimate": 0,
-     "range": [
-      0,
-      0
-     ],
-     "confidence": "high",
-     "prior": {
-      "base_rate": null,
-      "denominator": null,
-      "denominator_kind": null
-     },
-     "standing": {
-      "our_composite": null,
-      "our_percentile": null,
-      "field_mean": null,
-      "field_sd": null,
-      "scored_count": 0
-     },
-     "fit": {
-      "criteria_fit": null,
-      "judges_known": false
-     },
-     "unknowns": {
-      "unscored_share": 0,
-      "unverified_axis_weight_share": 0
-     },
-     "basis": "winprob/v2 (spec PR #2250): realized \u2014 event closed, outcome recorded not_submitted -> estimate = realized 0, range [0,0], confidence high. v1 superseded.",
-     "computed_at": "2026-10-28T22:20:00Z",
-     "superseded_v1": {
-      "method": "winprob/v1",
-      "estimate": 0.009,
-      "basis": "MoneyBall refinement (winprob/v1): projects floor 110 (list paginated past 110, total not displayed) \u2014 base = 1/110 upper bound; participants 5917 rejected as denominator.",
-      "inputs": {
-       "award_slots_top": 1,
-       "field_size": 110,
-       "field_scored_count": 0,
-       "field_mean_composite": null,
-       "our_composite": null,
-       "participants": 5917,
-       "field_size_basis": "MoneyBall refinement denominator (see basis)"
+  "schema_version": 1,
+  "schema_doc": "docs/ops/CHALLENGE-SCHEMA.md",
+  "human_view": "docs/ops/CHALLENGE-ENTRIES-LOG.md (section 4)",
+  "coordinator": {
+    "role_moniker": "challenge-entries-manager",
+    "chat_id": "9cb1c873-b150-490e-8a51-182765c15653",
+    "scope": "Owns the challenge-entries lane and the countdown-critical path; the challenge-entries lane (log/execution) works under it.",
+    "subs": [
+      {
+        "suffix": "-d0",
+        "event_id": "D0",
+        "chat_id": "7f59b235-f413-40ef-8b1f-c0f5eea05c4c",
+        "role_moniker": "challenge-entries-manager-d0"
       },
-      "computed_at": "2026-10-28T22:09:00Z",
-      "superseded_by": "winprob/v2 (PR #2250 spec)"
-     }
-    }
-   },
-   "field_size": {
-    "status": "partial",
-    "participants": 5917,
-    "participants_source": "event page HTML (server-rendered '<N> participants'), builder.aws.com",
-    "projects": null,
-    "projects_note": "submitted-project total NOT displayed; Projects list paginated past 110 entries with no total \u2014 projects count = OPEN TASK",
-    "fetched_at": "2026-10-28T22:11:14Z"
-   }
+      {
+        "suffix": "-d1",
+        "event_id": "D1",
+        "chat_id": "07d68c43-7792-4d22-8c78-e4143f499e4c"
+      },
+      {
+        "suffix": "-d2",
+        "event_id": "D2",
+        "chat_id": "d8f72f94-9340-45ee-a9f1-862ee53b34c3"
+      },
+      {
+        "suffix": "-d3",
+        "event_id": "D3",
+        "chat_id": "39fc8b89-45aa-447d-ad83-0481effc312e"
+      },
+      {
+        "suffix": "-d4",
+        "event_id": "D4",
+        "chat_id": "fefff1ad-e0fa-49ad-9d0b-352def889575"
+      },
+      {
+        "suffix": "-d5",
+        "event_id": "D5",
+        "chat_id": "5b1fd8ae-3c47-4fbc-8097-5b764665fdbb"
+      }
+    ],
+    "staff": [
+      {
+        "role": "venue-lablab-specialist",
+        "role_moniker": "registry-pending",
+        "chat_id": "6401df1e-9193-4c62-aec9-3a36a09156fe",
+        "scope": "lablab.ai venue mastery for D2 Vultr + C11 AMD League: account/handle, profile, lablab-side Discord connect ownership, team + solo submit mechanics, Events-block truth, quirks log. Does not build, does not sit Academy, does not write records (entries lane single-writer)."
+      },
+      {
+        "role": "gates-academy-oversight",
+        "role_moniker": "registry-pending",
+        "chat_id": "840bd147-dcf6-4ce1-8f88-633186849181",
+        "scope": "Completion assurance for all non-build requirements: gates register oversight (coordinator events[].gates[]) + AMD Academy >=5-course gate plan/schedule/evidence. Record deltas route via the entries lane."
+      },
+      {
+        "role": "contribution-desk",
+        "role_moniker": "challenge-entries-assistant",
+        "chat_id": "a440bcb2-f95a-41c5-81b4-9e1728e5fd6c",
+        "scope": "Challenge Management \u2014 Assistant seat, ADDITIONALLY Contribution Desk under the contestant model (owner, 2026-10-30): contribution queue, routing to builder lanes, CI/merge tracking, artifact sync state. (Base scope unchanged: wiring + coverage matrix + opportunity-cost/ledger + metrics_internal landings.)"
+      }
+    ]
   },
-  {
-   "id": "D0",
-   "name": "Weekend Challenge: Give your Agent a Tool",
-   "host": "AWS Builder Center",
-   "organizers": [
+  "events": [
     {
-     "name": "AWS Builder Center (Amazon Web Services)",
-     "role": "host",
-     "source_url": "https://builder.aws.com",
-     "fetched_at": "2026-10-28"
-    }
-   ],
-   "platform": "aws-builder-center",
-   "official_url": "https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool",
-   "status": "closed",
-   "entrant_moniker": "entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]",
-   "dates": {
-    "announced": "NOT_ESTABLISHED",
-    "reg_open": "NOT_ESTABLISHED",
-    "reg_close": "NOT_ESTABLISHED",
-    "build_start": "NOT_ESTABLISHED",
-    "build_end": "NOT_ESTABLISHED",
-    "submissions_open": "NOT_ESTABLISHED",
-    "deadline": {
-     "at": "2026-10-26T13:00:00-07:00",
-     "tz": "America/Los_Angeles",
-     "source": "challenge log section 4 D0 countdown-data; window Oct 23 - Oct 26 1:00 PM PDT per Gmail join receipt"
-    },
-    "judging_end": "NOT_ESTABLISHED",
-    "winners_at": "NOT_ESTABLISHED"
-   },
-   "constraints": [
-    "Open to builders 18 or older with a Builder Center profile. See Rules for country and employee exclusions. (verbatim, official page read 2026-10-28)",
-    "Submit a previously unpublished project that includes: The agent you started with and what it could already do (verbatim, official page read 2026-10-28)",
-    "The one new tool you added and why you picked it (verbatim, official page read 2026-10-28)",
-    "At least one AWS service as part of the agent or tool (verbatim, official page read 2026-10-28)",
-    "In the \"demo\" field of your project submission, include a link to a short (less than 3 minute) public video (e.g. YouTube, Vimeo, Facebook), showing what your agent can do now that it could not do before (verbatim, official page read 2026-10-28)"
-   ],
-   "gates": [],
-   "prizes": {
-    "status": "ESTABLISHED",
-    "pool": "$1,000",
-    "tiers": [
-     {
-      "place": "1) winner (top 5)",
-      "award": "$100 in AWS Promotional Credits and an AWS Builder Backpack",
-      "award_value": "$200",
-      "source_url": "https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool"
-     },
-     {
-      "place": "2) winner (top 5)",
-      "award": "$100 in AWS Promotional Credits and an AWS Builder Backpack",
-      "award_value": "$200",
-      "source_url": "https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool"
-     },
-     {
-      "place": "3) winner (top 5)",
-      "award": "$100 in AWS Promotional Credits and an AWS Builder Backpack",
-      "award_value": "$200",
-      "source_url": "https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool"
-     },
-     {
-      "place": "4) winner (top 5)",
-      "award": "$100 in AWS Promotional Credits and an AWS Builder Backpack",
-      "award_value": "$200",
-      "source_url": "https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool"
-     },
-     {
-      "place": "5) winner (top 5)",
-      "award": "$100 in AWS Promotional Credits and an AWS Builder Backpack",
-      "award_value": "$200",
-      "source_url": "https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool"
-     }
-    ],
-    "notes": "Firsthand recheck 2026-10-28 on official page: Prizes line verbatim 'The top 5 projects each receive $100 in AWS credits and an AWS Builder Backpack'; Awards list values each award at $200. Pool reconciliation: $1,000 = 5 x $200 total award value; credits subtotal $500; backpack implied value $100 per award ($200-$100). Supersedes the credits-only reading in PR #2219."
-   },
-   "moneyball": {
-    "schema": "moneyball-plane/v2",
-    "weights": {
-     "track_record": 0.3,
-     "momentum": 0.25,
-     "engagement_surface": 0.2,
-     "composability_fit": 0.15,
-     "inverse_engagement_cost": 0.1
-    },
-    "flag_threshold": 6.0,
-    "fixed_at": "2026-10-28",
-    "fixed_ref": "ops/moneyball/plane.json consumers[0].pattern_for_consumer (PR #2211); weights fixed at intake, before any score"
-   },
-   "registration": {
-    "state": "joined",
-    "evidence": [
-     "Gmail msg 1a16ca3f96d0508c from notifications@builder.aws.com (joined 2026-10-23 23:40 PDT)",
-     "platform challenge ID 2e275689-b202-316e-93b8-10cd6d6d1e4a"
-    ]
-   },
-   "submission": {
-    "state": "none",
-    "at": null,
-    "confirmation_ref": null
-   },
-   "brief": {
-    "evidence_pack_ref": null,
-    "anchor_lines": []
-   },
-   "projects": [
-    {
-     "id": "delphi-oracle-weekend-challenge",
-     "name": "Delphi Oracle \u2014 Weekend Challenge completion package",
-     "one_liner": "Decider-gated agent with a read-only evidence tool, built as the entered-but-passed challenge's completion record.",
-     "origin": "hand-packet",
-     "brief_anchor": null,
-     "status": "abandoned",
-     "reason": "Window closed Oct 26 before completion; owner ruled 2026-10-27 to complete it anyway as a completion record only \u2014 never submitted to the platform (submission count stays 0).",
-     "superseded_by": null,
-     "assets": {
-      "repo_dir": "apps/weekend-challenge-delphi-oracle",
-      "proposal_dir": null,
-      "demo_url": null,
-      "clips_url": null
-     },
-     "decisions": [
-      {
-       "at": "2026-10-27",
-       "by": "owner",
-       "action": "complete-anyway ruling; completion date set Thu Oct 29",
-       "pr": 1699,
-       "sha": "328778d668"
-      },
-      {
-       "at": "2026-10-27",
-       "by": "delphi-lane",
-       "action": "completion package landed",
-       "pr": 1702,
-       "sha": "aa110a5e"
-      },
-      {
-       "at": "2026-10-27",
-       "by": "challenge-entries-lane",
-       "action": "log flipped COMPLETED (completion record only; no late filing claimed)",
-       "pr": 1703,
-       "sha": "396d07441b"
-      }
-     ],
-     "repo_url": "https://github.com/timerloggedout-spec/delphi-oracle"
-    }
-   ],
-   "participants": [],
-   "judges": [],
-   "opportunity_cost": {
-    "outcome": "not_submitted",
-    "top_award": {
-     "value": 200,
-     "form": "$100 in AWS Promotional Credits + AWS Builder Backpack (official award value $200; backpack implied $100)",
-     "source": "Official page firsthand 2026-10-28: https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool \u2014 Awards 1)-5) each listed $200"
-    },
-    "gross_foregone": 200,
-    "non_monetary_foregone": [
-     "Builder Backpack (physical, part of top award)",
-     "top-5 winner visibility/recognition",
-     "judge-panel feedback (2-gate: AI+human scoring to top 50, judge panel picks 5)"
-    ],
-    "computed_at": "2026-10-28",
-    "ledger_entry": "OC-002"
-   },
-   "metrics_internal": {
-    "win_probability": {
-     "method": "winprob/v2",
-     "estimate": 0,
-     "range": [
-      0,
-      0
-     ],
-     "confidence": "high",
-     "prior": {
-      "base_rate": null,
-      "denominator": null,
-      "denominator_kind": null
-     },
-     "standing": {
-      "our_composite": null,
-      "our_percentile": null,
-      "field_mean": null,
-      "field_sd": null,
-      "scored_count": 0
-     },
-     "fit": {
-      "criteria_fit": null,
-      "judges_known": false
-     },
-     "unknowns": {
-      "unscored_share": 0,
-      "unverified_axis_weight_share": 0
-     },
-     "basis": "winprob/v2 (spec PR #2250): realized \u2014 closed, not_submitted (v1 printed 0.025 for a settled event \u2014 the clearest v1 defect). v1 superseded.",
-     "computed_at": "2026-10-28T22:20:00Z",
-     "superseded_v1": {
-      "method": "winprob/v1",
-      "estimate": 0.025,
-      "basis": "winprob/v1 base-rate: 1/40 submitted projects (field established 2026-10-26); no scored field, no lift.",
-      "inputs": {
-       "award_slots_top": 1,
-       "field_size": 40,
-       "field_scored_count": 0,
-       "field_mean_composite": null,
-       "our_composite": null,
-       "participants": 252
-      },
-      "computed_at": "2026-10-28T22:09:00Z",
-      "superseded_by": "winprob/v2 (PR #2250 spec)"
-     }
-    }
-   },
-   "field_size": {
-    "status": "established",
-    "participants": 252,
-    "participants_source": "event page HTML (server-rendered '<N> participants'), builder.aws.com",
-    "projects": 40,
-    "projects_source": "public Projects list loaded to exhaustion, 2026-10-26",
-    "fetched_at": "2026-10-28T22:11:14Z"
-   },
-   "framing": "prerequisite-practice (owner framing, 2026-10-30): D0 is the mandate practice and prerequisite pattern for the whole slate \u2014 agent + one new tool + article + demo; its completion package is the template every entry follows. Opportunity ledger UNCHANGED (LOST $200 stands): framing is not a reclassification. D1 executes the D0 pattern formally: workshop agent + tool, StudySprint article + demo per the D0 shape. | Own repo LANDED 2026-10-30 (owner order; Manager + builder roles): https://github.com/timerloggedout-spec/delphi-oracle \u2014 public, created 2026-10-31T01:41:40Z, tree 393e1f4b9f7f; port verified blob-for-blob vs the monorepo originals (agent cf712eb1, fetch_evidence 8442d813, ENTRY edd731c2, lambda bd60f973, kernel strands_oracle_mvp 9a4a1c78) \u2014 verified firsthand by the D1 seat and by the entries lane via API.",
-   "repo_url": "https://github.com/timerloggedout-spec/delphi-oracle"
-  },
-  {
-   "id": "D1",
-   "name": "Strands SDK: Workshop to Ship",
-   "host": "AWS Builder Center",
-   "organizers": [
-    {
-     "name": "AWS Builder Center (Amazon Web Services)",
-     "role": "host",
-     "source_url": "https://builder.aws.com/build/hackathons/8311dcb5-1ece-3d62-a441-2e1c2ad90b86/strands-sdk-workshop-to-ship",
-     "fetched_at": "2026-10-28"
-    }
-   ],
-   "platform": "aws-builder-center",
-   "official_url": "https://builder.aws.com/build/hackathons/8311dcb5-1ece-3d62-a441-2e1c2ad90b86/strands-sdk-workshop-to-ship",
-   "status": "active",
-   "entrant_moniker": "entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]",
-   "dates": {
-    "announced": "NOT_ESTABLISHED",
-    "reg_open": "NOT_ESTABLISHED",
-    "reg_close": "NOT_ESTABLISHED",
-    "build_start": {
-     "at": "2026-10-28T00:00:00-07:00",
-     "tz": "America/Los_Angeles",
-     "source": "official challenge page: hackathon window October 28 to November 4 (read 2026-10-28)"
-    },
-    "build_end": {
-     "at": "2026-11-04T23:59:00-08:00",
-     "tz": "America/Los_Angeles",
-     "source": "official challenge page: projects due by November 4"
-    },
-    "submissions_open": {
-     "at": "2026-10-28T00:00:00-07:00",
-     "tz": "America/Los_Angeles",
-     "source": "official challenge page (window open = launch October 28)"
-    },
-    "deadline": {
-     "at": "2026-11-04T23:59:00-08:00",
-     "tz": "America/Los_Angeles",
-     "source": "challenge log section 4 D1 countdown-data; official page timeline: Projects due by November 4"
-    },
-    "judging_end": "NOT_ESTABLISHED",
-    "winners_at": "NOT_ESTABLISHED"
-   },
-   "constraints": [
-    "Complete the free Strands SDK workshop on Builder Center during the hackathon window (October 28 to November 4). Workshop completion is required to qualify.",
-    "Your project submission must include: (1) An agent built with the Strands Agents SDK that addresses a real-world social good challenge. (2) A project article on Builder Center describing the agent, what it does, and the social good problem it addresses. (3) A link to a public repository with the agent's source code. (4) A short, publicly available demo video, under three minutes, showing the agent working. (5) An original agent that has not been published before."
-   ],
-   "gates": [
-    {
-     "id": "G-07",
-     "label": "Builder profile complete (mandatory fields: name, country, image, about, social link)",
-     "blocks": "D1 submission validity",
-     "owner": "owner (sign-in) / agency (edit)",
-     "status": "cleared",
-     "evidence": "CLEARED 2026-10-29 (owner un-park ruling, executed by the accounts lane; verified firsthand by this lane on the LIVE public profile 2026-10-29 17:10 PT, second independent live read by the Gap Finder lane 17:11 PT): all 5 Sweepstakes-Terms mandatory fields satisfied \u2014 display name (cryptic, set), country US (set), profile image = 4n0nS3C custom avatar live, About SAVED verbatim: \"'Founders' are 'found' to implement. Agents, systems, decisions with receipts. No name. No face. Just ship.\" (plain-English bisection of the registry text after the leet original and a variant failed AWS moderation), social link SAVED: https://github.com/timerloggedout-spec. Forced personal-detail save fields filled with least-specific true values (First 1337 / Last dia590r1c8u1ldr / State CA). Sign-in route was the GitHub-linked Builder ID."
-    },
-    {
-     "id": "D1-WORKSHOP",
-     "label": "Free Strands workshop completed in-window (Oct 28-Nov 4) on the owner Builder account \u2014 evidence standard: Workshop Studio completion page + per-module EXIT:0 receipts + preserved notebooks (no badge/certificate is issued for this workshop)",
-     "blocks": "D1 qualification",
-     "owner": "owner account (workshop sitting)",
-     "status": "cleared",
-     "evidence": "COMPLETED IN-WINDOW 2026-10-30 (owner Builder account @1337dia590r1c8u1ldr; window Oct 28-Nov 4): all 7 modules executed in the free sandbox, every notebook EXIT:0 (M1 agent loop+tools; M2 Hooks RateLimiterHook; M3 Skills+Steering; M4 Session Managers save/restore; M5 Deploy to AgentCore Runtime \u2014 runtime csdeploy_default_MyAgent verified READY, answered live queries; M6 Multi-Agent; M7 Evals 1.00 vs 0.70). Workshop Studio Cleanup page states \"Workshop Complete!\" / \"Nothing to Clean Up\" (provided account auto-teardown at event end ~00:55 PT Oct 31). BADGE/CERTIFICATE FINDING: the platform issues NONE for this workshop \u2014 Badges tab checked exhaustively after completion (21 badges; only 2 earned, both 2026-10-29 profile badges: \"Hello, World!\" + \"Photo Finisher\"); \"Your workshops\" shows no completed status. Completion evidence of record = the Workshop Studio completion page + per-module execution receipts (run notebooks preserved from the sandbox before teardown). Gate cleared on that evidence (entries lane, 2026-10-30); the Manager is flagged that the runbook-era badge assumption does not hold for this workshop. | MANAGER RULING 2026-10-30: evidence bar ACCEPTED \u2014 badge N/A, none issued for this workshop; completion page + per-module EXIT:0 receipts + preserved notebooks = the standard. | PRESERVED 2026-10-30 (pre-teardown, browser downloads verified by size + sha256): module-01-run.ipynb 20070B sha256 ca9d20606cff; module-02 14954B 4685ceef454c; module-03 21791B 9ff4e4f795a5; module-04 24360B 042901f99562; module-05 18316B 8f2ae3516182; module-06 20132B 97b95ed1c642; module-07 73738B 212fa5f43e59; Cleanup \"Workshop Complete!\" page PDF 77900B 6460fe22f3da. Held in the entries-lane workspace (challenge-entries/workshop-evidence/); available for the Nov-4 submission packet."
-    }
-   ],
-   "prizes": {
-    "status": "ESTABLISHED",
-    "pool": "$16,800",
-    "tiers": [
-     {
-      "place": "winner (3 selected)",
-      "award": "$5,000 in AWS Promotional Credits and one AWS Builder swag bundle worth about $600 (jacket, backpack, keyboard); official winner's certificate",
-      "source_url": "https://builder.aws.com/build/hackathons/8311dcb5-1ece-3d62-a441-2e1c2ad90b86/strands-sdk-workshop-to-ship",
-      "award_value": "$5,600"
-     }
-    ],
-    "notes": "Firsthand recheck 2026-10-28 on D1's own official page: prizes verbatim + Awards list x3 at $5,600 each, pool $16,800 \u2014 genuinely Workshop to Ship's, not carried over from Strands Decider (identical figures = same series template, both pages verified)."
-   },
-   "moneyball": {
-    "schema": "moneyball-plane/v2",
-    "weights": {
-     "track_record": 0.3,
-     "momentum": 0.25,
-     "engagement_surface": 0.2,
-     "composability_fit": 0.15,
-     "inverse_engagement_cost": 0.1
-    },
-    "flag_threshold": 6.0,
-    "fixed_at": "2026-10-28",
-    "fixed_ref": "ops/moneyball/plane.json consumers[0].pattern_for_consumer (PR #2211); weights fixed at intake, before any score"
-   },
-   "registration": {
-    "state": "joined",
-    "evidence": [
-     "Gmail msg 1a16ca3fb608dcf9 from notifications@builder.aws.com (joined 2026-10-23 23:40 PDT)",
-     "platform challenge ID 8311dcb5-1ece-3d62-a441-2e1c2ad90b86"
-    ]
-   },
-   "submission": {
-    "state": "none",
-    "at": null,
-    "confirmation_ref": null,
-    "planned_at": "2026-11-04",
-    "note": "OWNER RULING 2026-10-30 (via Manager): HOLD the project submission until Nov 4 (day of due) \u2014 the staged Builder session stands down until then, not fired early. Article + demo video already LIVE = assets of record. Oct 31-Nov 3 = iterative-improvement phase (D1 seat). On Nov 4: session fires, publish, confirmation_ref recorded."
-   },
-   "brief": {
-    "evidence_pack_ref": "docs/ops/CHALLENGE-BRIEF-EVIDENCE-2026-10-28.md",
-    "anchor_lines": [
-     "build and ship your own AI agent for social good with the Strands Agents SDK",
-     "Complete the free Strands SDK workshop on Builder Center during the hackathon window (October 28 to November 4). Workshop completion is required to qualify."
-    ]
-   },
-   "projects": [
-    {
-     "id": "studysprint",
-     "name": "StudySprint",
-     "one_liner": "D1 pick from the Delphi lane's brief-first generation on the official brief evidence pack; details in that generation record.",
-     "origin": "brief-first-gen",
-     "brief_anchor": "docs/ops/CHALLENGE-BRIEF-EVIDENCE-2026-10-28.md (D1 section)",
-     "status": "frozen",
-     "reason": "Manager-enacted freeze 2026-10-30 under owner mandate (\"manage progress. LFGOOO\"); reversible by owner.",
-     "superseded_by": null,
-     "assets": {
-      "repo_dir": null,
-      "proposal_dir": null,
-      "demo_url": null,
-      "clips_url": null,
-      "repo_url": "https://github.com/timerloggedout-spec/studysprint",
-      "repo_note": "Dedicated public repo created 2026-10-30 (owner order: new repo per entry; created by the Manager seat via PAT API, verified). Scaffold + build brief live in the repo; the monorepo apps/ scaffold from PR #2533 was superseded the same day and removed."
-     },
-     "decisions": [
-      {
-       "at": "2026-10-28",
-       "by": "delphi-lane / manager",
-       "action": "named as the D1 pick, pending owner freeze (not frozen; no build authorization from the pick alone)",
-       "pr": 2046,
-       "sha": "6aed4b6bad"
-      }
-     ],
-     "foundation": "D0 prerequisite pattern extracted 2026-10-30 (D1 sub-manager census, firsthand @master): D0 package apps/weekend-challenge-delphi-oracle (PR #1702 aa110a5e; demo-run receipts 103 items ALLOW / ABSTAIN 0 / ESCALATE) -> studysprint@main foundation/D0-FOUNDATION.md (3a2ce7c360dd) + foundation/fetch_evidence.py (db4f7dcb14df, blob 8442d813 verbatim). Open gaps: G1 kernel path-bound, G2 artifact kinds, G3 Strands wiring none yet, G4 workshop not evidenced, G5 article/demo/submission none yet. | G1 CLOSED 2026-10-30 (D1 seat): foundation/oracle_kernel.py landed in studysprint@main (commit 4275f5cb6dc6, blob 9a4a1c78 verbatim D0 kernel; verified firsthand by entries lane via API). G2/G3/G5 in progress (D1 seat). | OWNER RULING 2026-10-30 (via main): \"We complete ourselves\" \u2014 the D0 prerequisite completes in-house; the remaining chain (G2 \u2218 G3 \u2218 G5) is fleet work to finish, due Nov 4; completions recorded by the entries lane as they land. | G2 + G3 CLOSED 2026-10-30 (D1 seat build; entries-verified @studysprint main HEAD ce23c79165ef): study_tools.py blob 2c9bce77314b (6182B), agent.py blob 2f25e3ddb922 (6482B), tests/test_studysprint.py present (seat reports 5 passed). NOTE: blob ids cited by the seat (3cd61497dc2a / 01c9d3368940 / article fbe5e1d9e169) do NOT match the verified tree blobs (2c9bce77314b / 2f25e3ddb922 / 5cd171599fc6) \u2014 tree values govern; seat flagged. G5 platform side handed to the entries lane 2026-10-30: article publish + demo video + project submission on Builder Center, due 2026-11-04T23:59-08:00. | G5 article PUBLISHED 2026-10-30: https://builder.aws.com/content/3LRJhGucOZfz9ydzFax8sD2p5yB/studysprint-a-study-plan-you-can-trust-built-with-the-strands-agents-sdk (Builder Center, live). Submission-form recon (same session): project form = Title/Description/Body/Tags/Repo/Endpoint fields; demo video goes in Body as a YouTube embed (no video upload field); article link goes in Body. An empty unpublished project draft was auto-created by the recon (one-project-at-a-time) \u2014 the submission edits that draft. Remaining G5: YouTube demo video + project publish. | G5 demo video PUBLISHED 2026-10-30: https://www.youtube.com/watch?v=N3HBRV4LOGQ (YouTube, Public, 1:10, narrated; produced in-lane from the real demo.py run + demo-script.md narration; channel LoggedOut Timer @LoggedOutTimer-m9v). Custom thumbnail NOT applied \u2014 Studio requires phone verification for custom thumbnails (owner-surface item, not taken). Remaining G5: Builder project publish only \u2014 held per owner framing (D1 held by D0) until the D0 repo URL lands or the owner says go.",
-     "article_url": "https://builder.aws.com/content/3LRJhGucOZfz9ydzFax8sD2p5yB/studysprint-a-study-plan-you-can-trust-built-with-the-strands-agents-sdk",
-     "demo_url": "https://www.youtube.com/watch?v=N3HBRV4LOGQ"
-    },
-    {
-     "id": "proof-before-help",
-     "name": "Proof Before Help",
-     "one_liner": "Climate-resilience agent whose consequential tool calls are gated by a Decider-style evidence check.",
-     "origin": "hand-packet",
-     "brief_anchor": null,
-     "status": "abandoned",
-     "reason": "TAINTED per owner ruling 2026-10-28: fleet-derived, no lineage from the official brief. Do not build.",
-     "superseded_by": "studysprint",
-     "assets": {
-      "repo_dir": null,
-      "proposal_dir": null,
-      "demo_url": null,
-      "clips_url": null
-     },
-     "decisions": [
-      {
-       "at": "2026-10-28",
-       "by": "owner (via manager)",
-       "action": "concept set stopped (tainted)",
-       "pr": 2045,
-       "sha": "5707465b81"
-      }
-     ]
-    },
-    {
-     "id": "strands-rfp-response-43",
-     "name": "Strands RFP-response strategy #43 (kernel-first)",
-     "one_liner": "Generated pass candidate from the Strands RFP-response pass (registry proposal #43).",
-     "origin": "oracle_proposal#43",
-     "brief_anchor": null,
-     "status": "abandoned",
-     "reason": "TAINTED per owner ruling 2026-10-28; recorded as a not-entry \u2014 a pass candidate, never an entry candidate. Do not build.",
-     "superseded_by": null,
-     "assets": {
-      "repo_dir": null,
-      "proposal_dir": "docs/proposals/passes/strands-rfp-response",
-      "demo_url": null,
-      "clips_url": null
-     },
-     "decisions": [
-      {
-       "at": "2026-10-28",
-       "by": "owner (via manager)",
-       "action": "tainted; not an entry",
-       "pr": 2045,
-       "sha": "5707465b81"
-      }
-     ]
-    },
-    {
-     "id": "strands-rfp-response-44",
-     "name": "Strands RFP-response strategy #44 (collection-first)",
-     "one_liner": "Generated pass candidate from the Strands RFP-response pass (registry proposal #44); ranked first in both pass rounds.",
-     "origin": "oracle_proposal#44",
-     "brief_anchor": null,
-     "status": "abandoned",
-     "reason": "TAINTED per owner ruling 2026-10-28; recorded as a not-entry \u2014 a pass candidate, never an entry candidate. Do not build.",
-     "superseded_by": null,
-     "assets": {
-      "repo_dir": null,
-      "proposal_dir": "docs/proposals/passes/strands-rfp-response",
-      "demo_url": null,
-      "clips_url": null
-     },
-     "decisions": [
-      {
-       "at": "2026-10-28",
-       "by": "owner (via manager)",
-       "action": "tainted; not an entry",
-       "pr": 2045,
-       "sha": "5707465b81"
-      }
-     ]
-    },
-    {
-     "id": "strands-rfp-response-45",
-     "name": "Strands RFP-response strategy #45 (packaging-first)",
-     "one_liner": "Generated pass candidate from the Strands RFP-response pass (registry proposal #45).",
-     "origin": "oracle_proposal#45",
-     "brief_anchor": null,
-     "status": "abandoned",
-     "reason": "TAINTED per owner ruling 2026-10-28; recorded as a not-entry \u2014 a pass candidate, never an entry candidate. Do not build.",
-     "superseded_by": null,
-     "assets": {
-      "repo_dir": null,
-      "proposal_dir": "docs/proposals/passes/strands-rfp-response",
-      "demo_url": null,
-      "clips_url": null
-     },
-     "decisions": [
-      {
-       "at": "2026-10-28",
-       "by": "owner (via manager)",
-       "action": "tainted; not an entry",
-       "pr": 2045,
-       "sha": "5707465b81"
-      }
-     ]
-    }
-   ],
-   "participants": [
-    {
-     "id": "ladder-practice-sets",
-     "team_name": "NOT_ESTABLISHED",
-     "members": [],
-     "platform_profile_url": null,
-     "project": {
-      "name": "Ladder: practice sets a teacher can trust",
-      "url": "https://builder.aws.com/project/3LJjkhxhefaoI8OMD5QZW8HkUnp/ladder-practice-sets-a-teacher-can-trust",
-      "status": "submitted",
-      "repo_url": "https://github.com/abhinavshukla152005-beep/ladder",
-      "demo_url": "https://youtu.be/aoFbngpUhP8"
-     },
-     "persona": {
-      "bio": "NOT_ESTABLISHED",
-      "skills": [
-       "agentic AI",
-       "MCP servers",
-       "Python",
-       "TypeScript",
-       "Supabase",
-       "backend systems"
-      ],
-      "past_events": [],
-      "past_wins": [],
-      "public_links": {
-       "github": "https://github.com/abhinavshukla152005-beep",
-       "devpost": null,
-       "linkedin": null,
-       "site": null,
-       "other": null
-      }
-     },
-     "engagement": {
-      "public_chats": [],
-      "touchpoints": []
-     },
-     "signals": {
-      "past_wins": [],
-      "placements": [],
-      "snapshots": [
-       {
-        "at": "2026-10-28T14:30:00-07:00",
-        "fetched_at": "2026-10-28T14:30:00-07:00",
-        "source_url": "https://api.github.com/users/abhinavshukla152005-beep",
-        "comments_count": null,
-        "likes": null,
-        "followers": 0,
-        "project_engagement": {
-         "github_public_repos": 17,
-         "github_stars_total": 0,
-         "github_languages_by_repo": {
-          "JavaScript": 7,
-          "Python": 5,
-          "HTML": 2,
-          "TypeScript": 1,
-          "none": 2
-         },
-         "note": "GitHub hunt snapshot by recruitment seat; full profile at ops/challenge-recruitment/github-profiles/D1--ladder-practice-sets.json"
+      "id": "STRANDS-DECIDER",
+      "name": "Agent Experience Hackathon: Strands Decider",
+      "host": "AWS Builder Center",
+      "organizers": [
+        {
+          "name": "AWS Builder Center (Amazon Web Services)",
+          "role": "host",
+          "source_url": "https://builder.aws.com/build/hackathons/4f50957c-1d08-37ab-b11c-97516b9adeb4/agent-experience-hackathon",
+          "fetched_at": "2026-10-28"
         }
-       }
       ],
-      "moneyball_evaluations": [
-       "ops/challenge-participants/scores/D1--ladder-practice-sets--evaluate--2026-10-28.json",
-       "ops/challenge-participants/scores/D1--ladder-practice-sets--evaluate--2026-10-28-recruitment.json"
+      "platform": "aws-builder-center",
+      "official_url": "https://builder.aws.com/build/hackathons/4f50957c-1d08-37ab-b11c-97516b9adeb4/agent-experience-hackathon",
+      "status": "closed",
+      "entrant_moniker": "entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]",
+      "dates": {
+        "announced": "NOT_ESTABLISHED",
+        "reg_open": "NOT_ESTABLISHED",
+        "reg_close": "NOT_ESTABLISHED",
+        "build_start": {
+          "at": "2026-10-16T00:00:00-07:00",
+          "tz": "America/Los_Angeles",
+          "source": "official page timeline: Launch October 16"
+        },
+        "build_end": {
+          "at": "2026-10-23T23:59:00-07:00",
+          "tz": "America/Los_Angeles",
+          "source": "official page timeline: Projects due by October 23"
+        },
+        "submissions_open": "NOT_ESTABLISHED",
+        "deadline": {
+          "at": "2026-10-23T23:59:00-07:00",
+          "tz": "America/Los_Angeles",
+          "source": "official page timeline: Projects due by October 23"
+        },
+        "judging_end": "NOT_ESTABLISHED",
+        "winners_at": "NOT_ESTABLISHED"
+      },
+      "constraints": [
+        "Agent using Strands Decider 2B for a meaningful decision paired with Amazon Bedrock; Builder Center article; public repo link with >=1 reusable Decider 2B decision pattern; public demo video <3 min; tags #strands-decider-2b + one pattern tag; original unpublished agent (all verbatim from official page, read 2026-10-28)"
+      ],
+      "gates": [],
+      "prizes": {
+        "status": "ESTABLISHED",
+        "pool": "$16,800",
+        "tiers": [
+          {
+            "place": "winner (3 selected)",
+            "award": "$5,000 in AWS credits and one AWS Builder swag bundle worth about $600 (jacket, backpack, keyboard); official winner's certificate",
+            "award_value": "$5,600",
+            "source_url": "https://builder.aws.com/build/hackathons/4f50957c-1d08-37ab-b11c-97516b9adeb4/agent-experience-hackathon"
+          }
+        ],
+        "notes": "Verbatim official page (firsthand 2026-10-28): 'Three winning projects will be selected. Each receives $5,000 in AWS credits and one AWS Builder swag bundle worth about $600... Total prize pool: $16,800.' Identical prize structure to D1 = same Agent Experience series template (verified on both pages, not a conflation)."
+      },
+      "registration": {
+        "state": "joined",
+        "evidence": [
+          "Gmail msg 1a16b4e87bbf0c55 from notifications@builder.aws.com (joined 2026-10-23 17:27 PDT, final day)",
+          "platform hackathon ID 4f50957c-1d08-37ab-b11c-97516b9adeb4"
+        ]
+      },
+      "submission": {
+        "state": "none",
+        "at": null,
+        "confirmation_ref": null
+      },
+      "brief": {
+        "evidence_pack_ref": null,
+        "anchor_lines": []
+      },
+      "projects": [
+        {
+          "id": "delphi-oracle-strands",
+          "name": "Delphi Oracle \u2014 Strands Decider proposal package",
+          "one_liner": "Offline Oracle MVP built the night of the deadline (Delphi PR #1620 activity); repo material only, never submitted to the platform.",
+          "origin": "hand-packet",
+          "brief_anchor": null,
+          "status": "abandoned",
+          "reason": "NOT SUBMITTED \u2014 established 2026-10-28: Gmail live check = 6 Builder messages total, zero submission confirmations; proposal MANIFEST on master states verbatim 'No AWS account, resources, invocation, or hackathon submission is claimed'; PR #1620 records zero external/AWS calls.",
+          "superseded_by": null,
+          "assets": {
+            "repo_dir": "docs/proposals/active/aws-free-tier-strands-delphi-oracle",
+            "proposal_dir": null,
+            "demo_url": null,
+            "clips_url": null
+          },
+          "decisions": []
+        }
+      ],
+      "participants": [],
+      "judges": [],
+      "opportunity_cost": {
+        "outcome": "not_submitted",
+        "top_award": {
+          "value": 5600,
+          "form": "$5,000 AWS credits + AWS Builder swag bundle worth about $600 (official total per award $5,600)",
+          "source": "Official page firsthand 2026-10-28: https://builder.aws.com/build/hackathons/4f50957c-1d08-37ab-b11c-97516b9adeb4/agent-experience-hackathon"
+        },
+        "gross_foregone": 5600,
+        "non_monetary_foregone": [
+          "AWS Builder swag bundle (jacket, backpack, keyboard) \u2014 valued in top award",
+          "official winner's certificate",
+          "winner visibility",
+          "judge-panel feedback (Gate 2, week of Nov 2)"
+        ],
+        "computed_at": "2026-10-28",
+        "ledger_entry": "OC-001"
+      },
+      "history_note": "Slate-history event added 2026-10-28 (manager addendum): predates the D0-D5 slate, NOT D-numbered \u2014 flagged to manager; id STRANDS-DECIDER is a history label, not a packet number. No moneyball{} block: no intake ever ran for this event.",
+      "metrics_internal": {
+        "win_probability": {
+          "method": "winprob/v2",
+          "estimate": 0,
+          "range": [
+            0,
+            0
+          ],
+          "confidence": "high",
+          "prior": {
+            "base_rate": null,
+            "denominator": null,
+            "denominator_kind": null
+          },
+          "standing": {
+            "our_composite": null,
+            "our_percentile": null,
+            "field_mean": null,
+            "field_sd": null,
+            "scored_count": 0
+          },
+          "fit": {
+            "criteria_fit": null,
+            "judges_known": false
+          },
+          "unknowns": {
+            "unscored_share": 0,
+            "unverified_axis_weight_share": 0
+          },
+          "basis": "winprob/v2 (spec PR #2250): realized \u2014 event closed, outcome recorded not_submitted -> estimate = realized 0, range [0,0], confidence high. v1 superseded.",
+          "computed_at": "2026-10-28T22:20:00Z",
+          "superseded_v1": {
+            "method": "winprob/v1",
+            "estimate": 0.009,
+            "basis": "MoneyBall refinement (winprob/v1): projects floor 110 (list paginated past 110, total not displayed) \u2014 base = 1/110 upper bound; participants 5917 rejected as denominator.",
+            "inputs": {
+              "award_slots_top": 1,
+              "field_size": 110,
+              "field_scored_count": 0,
+              "field_mean_composite": null,
+              "our_composite": null,
+              "participants": 5917,
+              "field_size_basis": "MoneyBall refinement denominator (see basis)"
+            },
+            "computed_at": "2026-10-28T22:09:00Z",
+            "superseded_by": "winprob/v2 (PR #2250 spec)"
+          },
+          "inputs": {
+            "participants": 5917
+          }
+        }
+      },
+      "field_size": {
+        "status": "partial",
+        "participants": 5917,
+        "participants_source": "event page HTML (server-rendered '<N> participants'), builder.aws.com",
+        "projects": null,
+        "projects_note": "submitted-project total NOT displayed; Projects list paginated past 110 entries with no total \u2014 projects count = OPEN TASK",
+        "fetched_at": "2026-10-31T05:00:46Z"
+      }
+    },
+    {
+      "id": "D0",
+      "name": "Weekend Challenge: Give your Agent a Tool",
+      "host": "AWS Builder Center",
+      "organizers": [
+        {
+          "name": "AWS Builder Center (Amazon Web Services)",
+          "role": "host",
+          "source_url": "https://builder.aws.com",
+          "fetched_at": "2026-10-28"
+        }
+      ],
+      "platform": "aws-builder-center",
+      "official_url": "https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool",
+      "status": "closed",
+      "entrant_moniker": "entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]",
+      "dates": {
+        "announced": "NOT_ESTABLISHED",
+        "reg_open": "NOT_ESTABLISHED",
+        "reg_close": "NOT_ESTABLISHED",
+        "build_start": "NOT_ESTABLISHED",
+        "build_end": "NOT_ESTABLISHED",
+        "submissions_open": "NOT_ESTABLISHED",
+        "deadline": {
+          "at": "2026-10-26T13:00:00-07:00",
+          "tz": "America/Los_Angeles",
+          "source": "challenge log section 4 D0 countdown-data; window Oct 23 - Oct 26 1:00 PM PDT per Gmail join receipt"
+        },
+        "judging_end": "NOT_ESTABLISHED",
+        "winners_at": "NOT_ESTABLISHED"
+      },
+      "constraints": [
+        "Open to builders 18 or older with a Builder Center profile. See Rules for country and employee exclusions. (verbatim, official page read 2026-10-28)",
+        "Submit a previously unpublished project that includes: The agent you started with and what it could already do (verbatim, official page read 2026-10-28)",
+        "The one new tool you added and why you picked it (verbatim, official page read 2026-10-28)",
+        "At least one AWS service as part of the agent or tool (verbatim, official page read 2026-10-28)",
+        "In the \"demo\" field of your project submission, include a link to a short (less than 3 minute) public video (e.g. YouTube, Vimeo, Facebook), showing what your agent can do now that it could not do before (verbatim, official page read 2026-10-28)"
+      ],
+      "gates": [],
+      "prizes": {
+        "status": "ESTABLISHED",
+        "pool": "$1,000",
+        "tiers": [
+          {
+            "place": "1) winner (top 5)",
+            "award": "$100 in AWS Promotional Credits and an AWS Builder Backpack",
+            "award_value": "$200",
+            "source_url": "https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool"
+          },
+          {
+            "place": "2) winner (top 5)",
+            "award": "$100 in AWS Promotional Credits and an AWS Builder Backpack",
+            "award_value": "$200",
+            "source_url": "https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool"
+          },
+          {
+            "place": "3) winner (top 5)",
+            "award": "$100 in AWS Promotional Credits and an AWS Builder Backpack",
+            "award_value": "$200",
+            "source_url": "https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool"
+          },
+          {
+            "place": "4) winner (top 5)",
+            "award": "$100 in AWS Promotional Credits and an AWS Builder Backpack",
+            "award_value": "$200",
+            "source_url": "https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool"
+          },
+          {
+            "place": "5) winner (top 5)",
+            "award": "$100 in AWS Promotional Credits and an AWS Builder Backpack",
+            "award_value": "$200",
+            "source_url": "https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool"
+          }
+        ],
+        "notes": "Firsthand recheck 2026-10-28 on official page: Prizes line verbatim 'The top 5 projects each receive $100 in AWS credits and an AWS Builder Backpack'; Awards list values each award at $200. Pool reconciliation: $1,000 = 5 x $200 total award value; credits subtotal $500; backpack implied value $100 per award ($200-$100). Supersedes the credits-only reading in PR #2219."
+      },
+      "moneyball": {
+        "schema": "moneyball-plane/v2",
+        "weights": {
+          "track_record": 0.3,
+          "momentum": 0.25,
+          "engagement_surface": 0.2,
+          "composability_fit": 0.15,
+          "inverse_engagement_cost": 0.1
+        },
+        "flag_threshold": 6.0,
+        "fixed_at": "2026-10-28",
+        "fixed_ref": "ops/moneyball/plane.json consumers[0].pattern_for_consumer (PR #2211); weights fixed at intake, before any score"
+      },
+      "registration": {
+        "state": "joined",
+        "evidence": [
+          "Gmail msg 1a16ca3f96d0508c from notifications@builder.aws.com (joined 2026-10-23 23:40 PDT)",
+          "platform challenge ID 2e275689-b202-316e-93b8-10cd6d6d1e4a"
+        ]
+      },
+      "submission": {
+        "state": "none",
+        "at": null,
+        "confirmation_ref": null
+      },
+      "brief": {
+        "evidence_pack_ref": null,
+        "anchor_lines": []
+      },
+      "projects": [
+        {
+          "id": "delphi-oracle-weekend-challenge",
+          "name": "Delphi Oracle \u2014 Weekend Challenge completion package",
+          "one_liner": "Decider-gated agent with a read-only evidence tool, built as the entered-but-passed challenge's completion record.",
+          "origin": "hand-packet",
+          "brief_anchor": null,
+          "status": "abandoned",
+          "reason": "Window closed Oct 26 before completion; owner ruled 2026-10-27 to complete it anyway as a completion record only \u2014 never submitted to the platform (submission count stays 0).",
+          "superseded_by": null,
+          "assets": {
+            "repo_dir": "apps/weekend-challenge-delphi-oracle",
+            "proposal_dir": null,
+            "demo_url": null,
+            "clips_url": null
+          },
+          "decisions": [
+            {
+              "at": "2026-10-27",
+              "by": "owner",
+              "action": "complete-anyway ruling; completion date set Thu Oct 29",
+              "pr": 1699,
+              "sha": "328778d668"
+            },
+            {
+              "at": "2026-10-27",
+              "by": "delphi-lane",
+              "action": "completion package landed",
+              "pr": 1702,
+              "sha": "aa110a5e"
+            },
+            {
+              "at": "2026-10-27",
+              "by": "challenge-entries-lane",
+              "action": "log flipped COMPLETED (completion record only; no late filing claimed)",
+              "pr": 1703,
+              "sha": "396d07441b"
+            }
+          ],
+          "repo_url": "https://github.com/timerloggedout-spec/delphi-oracle"
+        }
+      ],
+      "participants": [],
+      "judges": [],
+      "opportunity_cost": {
+        "outcome": "not_submitted",
+        "top_award": {
+          "value": 200,
+          "form": "$100 in AWS Promotional Credits + AWS Builder Backpack (official award value $200; backpack implied $100)",
+          "source": "Official page firsthand 2026-10-28: https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool \u2014 Awards 1)-5) each listed $200"
+        },
+        "gross_foregone": 200,
+        "non_monetary_foregone": [
+          "Builder Backpack (physical, part of top award)",
+          "top-5 winner visibility/recognition",
+          "judge-panel feedback (2-gate: AI+human scoring to top 50, judge panel picks 5)"
+        ],
+        "computed_at": "2026-10-28",
+        "ledger_entry": "OC-002"
+      },
+      "metrics_internal": {
+        "win_probability": {
+          "method": "winprob/v2",
+          "estimate": 0,
+          "range": [
+            0,
+            0
+          ],
+          "confidence": "high",
+          "prior": {
+            "base_rate": null,
+            "denominator": null,
+            "denominator_kind": null
+          },
+          "standing": {
+            "our_composite": null,
+            "our_percentile": null,
+            "field_mean": null,
+            "field_sd": null,
+            "scored_count": 0
+          },
+          "fit": {
+            "criteria_fit": null,
+            "judges_known": false
+          },
+          "unknowns": {
+            "unscored_share": 0,
+            "unverified_axis_weight_share": 0
+          },
+          "basis": "winprob/v2 (spec PR #2250): realized \u2014 closed, not_submitted (v1 printed 0.025 for a settled event \u2014 the clearest v1 defect). v1 superseded.",
+          "computed_at": "2026-10-28T22:20:00Z",
+          "superseded_v1": {
+            "method": "winprob/v1",
+            "estimate": 0.025,
+            "basis": "winprob/v1 base-rate: 1/40 submitted projects (field established 2026-10-26); no scored field, no lift.",
+            "inputs": {
+              "award_slots_top": 1,
+              "field_size": 40,
+              "field_scored_count": 0,
+              "field_mean_composite": null,
+              "our_composite": null,
+              "participants": 252
+            },
+            "computed_at": "2026-10-28T22:09:00Z",
+            "superseded_by": "winprob/v2 (PR #2250 spec)"
+          },
+          "inputs": {
+            "participants": 252
+          }
+        }
+      },
+      "field_size": {
+        "status": "established",
+        "participants": 252,
+        "participants_source": "event page HTML (server-rendered '<N> participants'), builder.aws.com",
+        "projects": 40,
+        "projects_source": "public Projects list loaded to exhaustion, 2026-10-26",
+        "fetched_at": "2026-10-31T05:00:46Z"
+      },
+      "framing": "prerequisite-practice (owner framing, 2026-10-30): D0 is the mandate practice and prerequisite pattern for the whole slate \u2014 agent + one new tool + article + demo; its completion package is the template every entry follows. Opportunity ledger UNCHANGED (LOST $200 stands): framing is not a reclassification. D1 executes the D0 pattern formally: workshop agent + tool, StudySprint article + demo per the D0 shape. | Own repo LANDED 2026-10-30 (owner order; Manager + builder roles): https://github.com/timerloggedout-spec/delphi-oracle \u2014 public, created 2026-10-31T01:41:40Z, tree 393e1f4b9f7f; port verified blob-for-blob vs the monorepo originals (agent cf712eb1, fetch_evidence 8442d813, ENTRY edd731c2, lambda bd60f973, kernel strands_oracle_mvp 9a4a1c78) \u2014 verified firsthand by the D1 seat and by the entries lane via API.",
+      "repo_url": "https://github.com/timerloggedout-spec/delphi-oracle"
+    },
+    {
+      "id": "D1",
+      "name": "Strands SDK: Workshop to Ship",
+      "host": "AWS Builder Center",
+      "organizers": [
+        {
+          "name": "AWS Builder Center (Amazon Web Services)",
+          "role": "host",
+          "source_url": "https://builder.aws.com/build/hackathons/8311dcb5-1ece-3d62-a441-2e1c2ad90b86/strands-sdk-workshop-to-ship",
+          "fetched_at": "2026-10-28"
+        }
+      ],
+      "platform": "aws-builder-center",
+      "official_url": "https://builder.aws.com/build/hackathons/8311dcb5-1ece-3d62-a441-2e1c2ad90b86/strands-sdk-workshop-to-ship",
+      "status": "active",
+      "entrant_moniker": "entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]",
+      "dates": {
+        "announced": "NOT_ESTABLISHED",
+        "reg_open": "NOT_ESTABLISHED",
+        "reg_close": "NOT_ESTABLISHED",
+        "build_start": {
+          "at": "2026-10-28T00:00:00-07:00",
+          "tz": "America/Los_Angeles",
+          "source": "official challenge page: hackathon window October 28 to November 4 (read 2026-10-28)"
+        },
+        "build_end": {
+          "at": "2026-11-04T23:59:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official challenge page: projects due by November 4"
+        },
+        "submissions_open": {
+          "at": "2026-10-28T00:00:00-07:00",
+          "tz": "America/Los_Angeles",
+          "source": "official challenge page (window open = launch October 28)"
+        },
+        "deadline": {
+          "at": "2026-11-04T23:59:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "challenge log section 4 D1 countdown-data; official page timeline: Projects due by November 4"
+        },
+        "judging_end": "NOT_ESTABLISHED",
+        "winners_at": "NOT_ESTABLISHED"
+      },
+      "constraints": [
+        "Complete the free Strands SDK workshop on Builder Center during the hackathon window (October 28 to November 4). Workshop completion is required to qualify.",
+        "Your project submission must include: (1) An agent built with the Strands Agents SDK that addresses a real-world social good challenge. (2) A project article on Builder Center describing the agent, what it does, and the social good problem it addresses. (3) A link to a public repository with the agent's source code. (4) A short, publicly available demo video, under three minutes, showing the agent working. (5) An original agent that has not been published before."
+      ],
+      "gates": [
+        {
+          "id": "G-07",
+          "label": "Builder profile complete (mandatory fields: name, country, image, about, social link)",
+          "blocks": "D1 submission validity",
+          "owner": "owner (sign-in) / agency (edit)",
+          "status": "cleared",
+          "evidence": "CLEARED 2026-10-29 (owner un-park ruling, executed by the accounts lane; verified firsthand by this lane on the LIVE public profile 2026-10-29 17:10 PT, second independent live read by the Gap Finder lane 17:11 PT): all 5 Sweepstakes-Terms mandatory fields satisfied \u2014 display name (cryptic, set), country US (set), profile image = 4n0nS3C custom avatar live, About SAVED verbatim: \"'Founders' are 'found' to implement. Agents, systems, decisions with receipts. No name. No face. Just ship.\" (plain-English bisection of the registry text after the leet original and a variant failed AWS moderation), social link SAVED: https://github.com/timerloggedout-spec. Forced personal-detail save fields filled with least-specific true values (First 1337 / Last dia590r1c8u1ldr / State CA). Sign-in route was the GitHub-linked Builder ID."
+        },
+        {
+          "id": "D1-WORKSHOP",
+          "label": "Free Strands workshop completed in-window (Oct 28-Nov 4) on the owner Builder account \u2014 evidence standard: Workshop Studio completion page + per-module EXIT:0 receipts + preserved notebooks (no badge/certificate is issued for this workshop)",
+          "blocks": "D1 qualification",
+          "owner": "owner account (workshop sitting)",
+          "status": "cleared",
+          "evidence": "COMPLETED IN-WINDOW 2026-10-30 (owner Builder account @1337dia590r1c8u1ldr; window Oct 28-Nov 4): all 7 modules executed in the free sandbox, every notebook EXIT:0 (M1 agent loop+tools; M2 Hooks RateLimiterHook; M3 Skills+Steering; M4 Session Managers save/restore; M5 Deploy to AgentCore Runtime \u2014 runtime csdeploy_default_MyAgent verified READY, answered live queries; M6 Multi-Agent; M7 Evals 1.00 vs 0.70). Workshop Studio Cleanup page states \"Workshop Complete!\" / \"Nothing to Clean Up\" (provided account auto-teardown at event end ~00:55 PT Oct 31). BADGE/CERTIFICATE FINDING: the platform issues NONE for this workshop \u2014 Badges tab checked exhaustively after completion (21 badges; only 2 earned, both 2026-10-29 profile badges: \"Hello, World!\" + \"Photo Finisher\"); \"Your workshops\" shows no completed status. Completion evidence of record = the Workshop Studio completion page + per-module execution receipts (run notebooks preserved from the sandbox before teardown). Gate cleared on that evidence (entries lane, 2026-10-30); the Manager is flagged that the runbook-era badge assumption does not hold for this workshop. | MANAGER RULING 2026-10-30: evidence bar ACCEPTED \u2014 badge N/A, none issued for this workshop; completion page + per-module EXIT:0 receipts + preserved notebooks = the standard. | PRESERVED 2026-10-30 (pre-teardown, browser downloads verified by size + sha256): module-01-run.ipynb 20070B sha256 ca9d20606cff; module-02 14954B 4685ceef454c; module-03 21791B 9ff4e4f795a5; module-04 24360B 042901f99562; module-05 18316B 8f2ae3516182; module-06 20132B 97b95ed1c642; module-07 73738B 212fa5f43e59; Cleanup \"Workshop Complete!\" page PDF 77900B 6460fe22f3da. Held in the entries-lane workspace (challenge-entries/workshop-evidence/); available for the Nov-4 submission packet."
+        }
+      ],
+      "prizes": {
+        "status": "ESTABLISHED",
+        "pool": "$16,800",
+        "tiers": [
+          {
+            "place": "winner (3 selected)",
+            "award": "$5,000 in AWS Promotional Credits and one AWS Builder swag bundle worth about $600 (jacket, backpack, keyboard); official winner's certificate",
+            "source_url": "https://builder.aws.com/build/hackathons/8311dcb5-1ece-3d62-a441-2e1c2ad90b86/strands-sdk-workshop-to-ship",
+            "award_value": "$5,600"
+          }
+        ],
+        "notes": "Firsthand recheck 2026-10-28 on D1's own official page: prizes verbatim + Awards list x3 at $5,600 each, pool $16,800 \u2014 genuinely Workshop to Ship's, not carried over from Strands Decider (identical figures = same series template, both pages verified)."
+      },
+      "moneyball": {
+        "schema": "moneyball-plane/v2",
+        "weights": {
+          "track_record": 0.3,
+          "momentum": 0.25,
+          "engagement_surface": 0.2,
+          "composability_fit": 0.15,
+          "inverse_engagement_cost": 0.1
+        },
+        "flag_threshold": 6.0,
+        "fixed_at": "2026-10-28",
+        "fixed_ref": "ops/moneyball/plane.json consumers[0].pattern_for_consumer (PR #2211); weights fixed at intake, before any score"
+      },
+      "registration": {
+        "state": "joined",
+        "evidence": [
+          "Gmail msg 1a16ca3fb608dcf9 from notifications@builder.aws.com (joined 2026-10-23 23:40 PDT)",
+          "platform challenge ID 8311dcb5-1ece-3d62-a441-2e1c2ad90b86"
+        ]
+      },
+      "submission": {
+        "state": "none",
+        "at": null,
+        "confirmation_ref": null,
+        "planned_at": "2026-11-04",
+        "note": "OWNER RULING 2026-10-30 (via Manager): HOLD the project submission until Nov 4 (day of due) \u2014 the staged Builder session stands down until then, not fired early. Article + demo video already LIVE = assets of record. Oct 31-Nov 3 = iterative-improvement phase (D1 seat). On Nov 4: session fires, publish, confirmation_ref recorded."
+      },
+      "brief": {
+        "evidence_pack_ref": "docs/ops/CHALLENGE-BRIEF-EVIDENCE-2026-10-28.md",
+        "anchor_lines": [
+          "build and ship your own AI agent for social good with the Strands Agents SDK",
+          "Complete the free Strands SDK workshop on Builder Center during the hackathon window (October 28 to November 4). Workshop completion is required to qualify."
+        ]
+      },
+      "projects": [
+        {
+          "id": "studysprint",
+          "name": "StudySprint",
+          "one_liner": "D1 pick from the Delphi lane's brief-first generation on the official brief evidence pack; details in that generation record.",
+          "origin": "brief-first-gen",
+          "brief_anchor": "docs/ops/CHALLENGE-BRIEF-EVIDENCE-2026-10-28.md (D1 section)",
+          "status": "frozen",
+          "reason": "Manager-enacted freeze 2026-10-30 under owner mandate (\"manage progress. LFGOOO\"); reversible by owner.",
+          "superseded_by": null,
+          "assets": {
+            "repo_dir": null,
+            "proposal_dir": null,
+            "demo_url": null,
+            "clips_url": null,
+            "repo_url": "https://github.com/timerloggedout-spec/studysprint",
+            "repo_note": "Dedicated public repo created 2026-10-30 (owner order: new repo per entry; created by the Manager seat via PAT API, verified). Scaffold + build brief live in the repo; the monorepo apps/ scaffold from PR #2533 was superseded the same day and removed."
+          },
+          "decisions": [
+            {
+              "at": "2026-10-28",
+              "by": "delphi-lane / manager",
+              "action": "named as the D1 pick, pending owner freeze (not frozen; no build authorization from the pick alone)",
+              "pr": 2046,
+              "sha": "6aed4b6bad"
+            }
+          ],
+          "foundation": "D0 prerequisite pattern extracted 2026-10-30 (D1 sub-manager census, firsthand @master): D0 package apps/weekend-challenge-delphi-oracle (PR #1702 aa110a5e; demo-run receipts 103 items ALLOW / ABSTAIN 0 / ESCALATE) -> studysprint@main foundation/D0-FOUNDATION.md (3a2ce7c360dd) + foundation/fetch_evidence.py (db4f7dcb14df, blob 8442d813 verbatim). Open gaps: G1 kernel path-bound, G2 artifact kinds, G3 Strands wiring none yet, G4 workshop not evidenced, G5 article/demo/submission none yet. | G1 CLOSED 2026-10-30 (D1 seat): foundation/oracle_kernel.py landed in studysprint@main (commit 4275f5cb6dc6, blob 9a4a1c78 verbatim D0 kernel; verified firsthand by entries lane via API). G2/G3/G5 in progress (D1 seat). | OWNER RULING 2026-10-30 (via main): \"We complete ourselves\" \u2014 the D0 prerequisite completes in-house; the remaining chain (G2 \u2218 G3 \u2218 G5) is fleet work to finish, due Nov 4; completions recorded by the entries lane as they land. | G2 + G3 CLOSED 2026-10-30 (D1 seat build; entries-verified @studysprint main HEAD ce23c79165ef): study_tools.py blob 2c9bce77314b (6182B), agent.py blob 2f25e3ddb922 (6482B), tests/test_studysprint.py present (seat reports 5 passed). NOTE: blob ids cited by the seat (3cd61497dc2a / 01c9d3368940 / article fbe5e1d9e169) do NOT match the verified tree blobs (2c9bce77314b / 2f25e3ddb922 / 5cd171599fc6) \u2014 tree values govern; seat flagged. G5 platform side handed to the entries lane 2026-10-30: article publish + demo video + project submission on Builder Center, due 2026-11-04T23:59-08:00. | G5 article PUBLISHED 2026-10-30: https://builder.aws.com/content/3LRJhGucOZfz9ydzFax8sD2p5yB/studysprint-a-study-plan-you-can-trust-built-with-the-strands-agents-sdk (Builder Center, live). Submission-form recon (same session): project form = Title/Description/Body/Tags/Repo/Endpoint fields; demo video goes in Body as a YouTube embed (no video upload field); article link goes in Body. An empty unpublished project draft was auto-created by the recon (one-project-at-a-time) \u2014 the submission edits that draft. Remaining G5: YouTube demo video + project publish. | G5 demo video PUBLISHED 2026-10-30: https://www.youtube.com/watch?v=N3HBRV4LOGQ (YouTube, Public, 1:10, narrated; produced in-lane from the real demo.py run + demo-script.md narration; channel LoggedOut Timer @LoggedOutTimer-m9v). Custom thumbnail NOT applied \u2014 Studio requires phone verification for custom thumbnails (owner-surface item, not taken). Remaining G5: Builder project publish only \u2014 held per owner framing (D1 held by D0) until the D0 repo URL lands or the owner says go.",
+          "article_url": "https://builder.aws.com/content/3LRJhGucOZfz9ydzFax8sD2p5yB/studysprint-a-study-plan-you-can-trust-built-with-the-strands-agents-sdk",
+          "demo_url": "https://www.youtube.com/watch?v=N3HBRV4LOGQ"
+        },
+        {
+          "id": "proof-before-help",
+          "name": "Proof Before Help",
+          "one_liner": "Climate-resilience agent whose consequential tool calls are gated by a Decider-style evidence check.",
+          "origin": "hand-packet",
+          "brief_anchor": null,
+          "status": "abandoned",
+          "reason": "TAINTED per owner ruling 2026-10-28: fleet-derived, no lineage from the official brief. Do not build.",
+          "superseded_by": "studysprint",
+          "assets": {
+            "repo_dir": null,
+            "proposal_dir": null,
+            "demo_url": null,
+            "clips_url": null
+          },
+          "decisions": [
+            {
+              "at": "2026-10-28",
+              "by": "owner (via manager)",
+              "action": "concept set stopped (tainted)",
+              "pr": 2045,
+              "sha": "5707465b81"
+            }
+          ]
+        },
+        {
+          "id": "strands-rfp-response-43",
+          "name": "Strands RFP-response strategy #43 (kernel-first)",
+          "one_liner": "Generated pass candidate from the Strands RFP-response pass (registry proposal #43).",
+          "origin": "oracle_proposal#43",
+          "brief_anchor": null,
+          "status": "abandoned",
+          "reason": "TAINTED per owner ruling 2026-10-28; recorded as a not-entry \u2014 a pass candidate, never an entry candidate. Do not build.",
+          "superseded_by": null,
+          "assets": {
+            "repo_dir": null,
+            "proposal_dir": "docs/proposals/passes/strands-rfp-response",
+            "demo_url": null,
+            "clips_url": null
+          },
+          "decisions": [
+            {
+              "at": "2026-10-28",
+              "by": "owner (via manager)",
+              "action": "tainted; not an entry",
+              "pr": 2045,
+              "sha": "5707465b81"
+            }
+          ]
+        },
+        {
+          "id": "strands-rfp-response-44",
+          "name": "Strands RFP-response strategy #44 (collection-first)",
+          "one_liner": "Generated pass candidate from the Strands RFP-response pass (registry proposal #44); ranked first in both pass rounds.",
+          "origin": "oracle_proposal#44",
+          "brief_anchor": null,
+          "status": "abandoned",
+          "reason": "TAINTED per owner ruling 2026-10-28; recorded as a not-entry \u2014 a pass candidate, never an entry candidate. Do not build.",
+          "superseded_by": null,
+          "assets": {
+            "repo_dir": null,
+            "proposal_dir": "docs/proposals/passes/strands-rfp-response",
+            "demo_url": null,
+            "clips_url": null
+          },
+          "decisions": [
+            {
+              "at": "2026-10-28",
+              "by": "owner (via manager)",
+              "action": "tainted; not an entry",
+              "pr": 2045,
+              "sha": "5707465b81"
+            }
+          ]
+        },
+        {
+          "id": "strands-rfp-response-45",
+          "name": "Strands RFP-response strategy #45 (packaging-first)",
+          "one_liner": "Generated pass candidate from the Strands RFP-response pass (registry proposal #45).",
+          "origin": "oracle_proposal#45",
+          "brief_anchor": null,
+          "status": "abandoned",
+          "reason": "TAINTED per owner ruling 2026-10-28; recorded as a not-entry \u2014 a pass candidate, never an entry candidate. Do not build.",
+          "superseded_by": null,
+          "assets": {
+            "repo_dir": null,
+            "proposal_dir": "docs/proposals/passes/strands-rfp-response",
+            "demo_url": null,
+            "clips_url": null
+          },
+          "decisions": [
+            {
+              "at": "2026-10-28",
+              "by": "owner (via manager)",
+              "action": "tainted; not an entry",
+              "pr": 2045,
+              "sha": "5707465b81"
+            }
+          ]
+        }
+      ],
+      "participants": [
+        {
+          "id": "ladder-practice-sets",
+          "team_name": "NOT_ESTABLISHED",
+          "members": [],
+          "platform_profile_url": null,
+          "project": {
+            "name": "Ladder: practice sets a teacher can trust",
+            "url": "https://builder.aws.com/project/3LJjkhxhefaoI8OMD5QZW8HkUnp/ladder-practice-sets-a-teacher-can-trust",
+            "status": "submitted",
+            "repo_url": "https://github.com/abhinavshukla152005-beep/ladder",
+            "demo_url": "https://youtu.be/aoFbngpUhP8"
+          },
+          "persona": {
+            "bio": "NOT_ESTABLISHED",
+            "skills": [
+              "agentic AI",
+              "MCP servers",
+              "Python",
+              "TypeScript",
+              "Supabase",
+              "backend systems"
+            ],
+            "past_events": [],
+            "past_wins": [],
+            "public_links": {
+              "github": "https://github.com/abhinavshukla152005-beep",
+              "devpost": null,
+              "linkedin": null,
+              "site": null,
+              "other": null
+            }
+          },
+          "engagement": {
+            "public_chats": [],
+            "touchpoints": []
+          },
+          "signals": {
+            "past_wins": [],
+            "placements": [],
+            "snapshots": [
+              {
+                "at": "2026-10-28T14:30:00-07:00",
+                "fetched_at": "2026-10-28T14:30:00-07:00",
+                "source_url": "https://api.github.com/users/abhinavshukla152005-beep",
+                "comments_count": null,
+                "likes": null,
+                "followers": 0,
+                "project_engagement": {
+                  "github_public_repos": 17,
+                  "github_stars_total": 0,
+                  "github_languages_by_repo": {
+                    "JavaScript": 7,
+                    "Python": 5,
+                    "HTML": 2,
+                    "TypeScript": 1,
+                    "none": 2
+                  },
+                  "note": "GitHub hunt snapshot by recruitment seat; full profile at ops/challenge-recruitment/github-profiles/D1--ladder-practice-sets.json"
+                }
+              }
+            ],
+            "moneyball_evaluations": [
+              "ops/challenge-participants/scores/D1--ladder-practice-sets--evaluate--2026-10-28.json",
+              "ops/challenge-participants/scores/D1--ladder-practice-sets--evaluate--2026-10-28-recruitment.json"
+            ]
+          },
+          "recruitment": {
+            "candidate": false,
+            "pipeline_state": null
+          },
+          "sources": [
+            {
+              "url": "https://builder.aws.com/project/3LJjkhxhefaoI8OMD5QZW8HkUnp/ladder-practice-sets-a-teacher-can-trust",
+              "fetched_at": "2026-10-28T13:02:00-07:00"
+            },
+            {
+              "url": "https://builder.aws.com/build/hackathons/8311dcb5-1ece-3d62-a441-2e1c2ad90b86/strands-sdk-workshop-to-ship",
+              "fetched_at": "2026-10-28T13:02:00-07:00"
+            },
+            {
+              "url": "https://github.com/abhinavshukla152005-beep",
+              "fetched_at": "2026-10-28T14:30:00-07:00"
+            },
+            {
+              "url": "https://api.github.com/users/abhinavshukla152005-beep",
+              "fetched_at": "2026-10-28T14:30:00-07:00"
+            }
+          ],
+          "confidence": "medium",
+          "notes": "First and only project in D1's public Projects list on day 1 (checked signed-out 2026-10-28 13:01-13:03 PT). Builder Center shows NO author name/handle/profile for this entry on the list card or the project page; repo_url/demo_url are published in the project body and are project links, not author-profile facts. D1's Participants tab is join-gated (323 joined per page header) \u2014 not a public source; tracking runs on the Projects list. CORRECTION 2026-10-28 (MoneyBall consumer pattern, PR #2211): the candidate=true flag set at first record does NOT meet the standout flag rule - first v2 evaluation (ops/challenge-participants/scores/D1--ladder-practice-sets--evaluate--2026-10-28.json) gives composite 2.05 vs intake threshold 6.0, with track_record + momentum unverified. Flag removed; the entity stays tracked and re-evaluates as signals land. RECRUITMENT UPDATE 2026-10-28 (recruitment seat): GitHub hunt RESOLVED high-confidence via project-published repo owner + commit authorship = abhinavshukla152005-beep (public profile: Abhinav Shukla, agentic AI/MCP/Python/TS). public_links.github + persona.skills now sourced from that public profile; signals snapshot appended. Re-evaluation composite 2.90 (<6.0, track_record unverified) \u2014 candidate flag STILL refused; pipeline state in ops/challenge-recruitment/registry.json = profiled."
+        }
+      ],
+      "judges": [],
+      "opportunity_cost": {
+        "outcome": "pending",
+        "top_award": {
+          "value": 5600,
+          "form": "$5,000 AWS Promotional Credits + AWS Builder swag bundle worth about $600 + official winner's certificate (official total per award $5,600)",
+          "source": "Official D1 page firsthand 2026-10-28: prizes verbatim; Awards 1)-3) each $5,600"
+        },
+        "gross_foregone": 0,
+        "non_monetary_foregone": [
+          "AWS Builder swag bundle (jacket, backpack, keyboard)",
+          "official winner's certificate",
+          "winner visibility"
+        ],
+        "computed_at": "2026-10-28",
+        "ledger_entry": "OC-003"
+      },
+      "metrics_internal": {
+        "win_probability": {
+          "method": "winprob/v2",
+          "estimate": 0.003,
+          "range": [
+            0.0002,
+            0.0059
+          ],
+          "confidence": "low",
+          "prior": {
+            "base_rate": 0.003086,
+            "denominator": 324,
+            "denominator_kind": "participants"
+          },
+          "standing": {
+            "our_composite": null,
+            "our_percentile": null,
+            "field_mean": 2.05,
+            "field_sd": null,
+            "scored_count": 1
+          },
+          "fit": {
+            "criteria_fit": null,
+            "judges_known": false
+          },
+          "unknowns": {
+            "unscored_share": 0.997,
+            "unverified_axis_weight_share": 1
+          },
+          "basis": "winprob/v2 (spec PR #2250): prior 1/324 participants; no our_composite (LRs=1, estimate=prior); u=0.997, v=1, k=0.95. v1 superseded.",
+          "computed_at": "2026-10-28T22:20:00Z",
+          "superseded_v1": {
+            "method": "winprob/v1",
+            "estimate": 0.003,
+            "basis": "MoneyBall refinement (winprob/v1): base = 1/324 participants (open event; landed projects=1 rejected as denominator \u2014 would print 1.0); no lift (our_composite null).",
+            "inputs": {
+              "award_slots_top": 1,
+              "field_size": 324,
+              "field_scored_count": 1,
+              "field_mean_composite": null,
+              "our_composite": null,
+              "participants": 324,
+              "field_size_basis": "MoneyBall refinement denominator (see basis)"
+            },
+            "computed_at": "2026-10-28T22:09:00Z",
+            "superseded_by": "winprob/v2 (PR #2250 spec)"
+          },
+          "inputs": {
+            "participants": 382
+          }
+        }
+      },
+      "field_size": {
+        "status": "partial",
+        "participants": 382,
+        "participants_source": "event page HTML (server-rendered '<N> participants'), builder.aws.com",
+        "projects": 1,
+        "projects_source": "Projects tab: 1 project ('Ladder: practice sets a teacher can trust'), no Load more \u2014 event OPEN, field still growing",
+        "fetched_at": "2026-10-31T05:00:46Z"
+      },
+      "notes": [
+        "D0=>D1 prerequisite: D0 prerequisite pattern extracted 2026-10-30 (D1 sub-manager census, firsthand @master): D0 package apps/weekend-challenge-delphi-oracle (PR #1702 aa110a5e; demo-run receipts 103 items ALLOW / ABSTAIN 0 / ESCALATE) -> studysprint@main foundation/D0-FOUNDATION.md (3a2ce7c360dd) + foundation/fetch_evidence.py (db4f7dcb14df, blob 8442d813 verbatim). Open gaps: G1 kernel path-bound, G2 artifact kinds, G3 Strands wiring none yet, G4 workshop not evidenced, G5 article/demo/submission none yet."
       ]
-     },
-     "recruitment": {
-      "candidate": false,
-      "pipeline_state": null
-     },
-     "sources": [
-      {
-       "url": "https://builder.aws.com/project/3LJjkhxhefaoI8OMD5QZW8HkUnp/ladder-practice-sets-a-teacher-can-trust",
-       "fetched_at": "2026-10-28T13:02:00-07:00"
+    },
+    {
+      "id": "D2",
+      "name": "Vultr: Agent Rush Hackathon",
+      "host": "lablab.ai (Vultr)",
+      "organizers": [
+        {
+          "name": "lablab.ai",
+          "role": "host",
+          "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon",
+          "fetched_at": "2026-10-28"
+        },
+        {
+          "name": "Vultr",
+          "role": "sponsor",
+          "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon",
+          "fetched_at": "2026-10-28"
+        }
+      ],
+      "platform": "lablab-ai",
+      "also_platforms": [
+        "vultr"
+      ],
+      "official_url": "https://lablab.ai/ai-hackathons/vultr-hackathon",
+      "status": "registered",
+      "entrant_moniker": "entrant{entrantLablabAi}[platform:lablab-ai]",
+      "dates": {
+        "announced": "NOT_ESTABLISHED",
+        "reg_open": "NOT_ESTABLISHED",
+        "reg_close": "NOT_ESTABLISHED",
+        "build_start": {
+          "at": "2026-11-03T15:00:00Z",
+          "tz": "UTC",
+          "source": "lablab event page Events block (read 2026-10-30): 2026-11-03T15:00Z to 2026-11-08T22:00Z \u2014 VERDICT: Nov 3 governs kickoff + $200 gift-code timing (\"Gift code available at kickoff\"); the slate briefs \"opens Nov 5\" appears nowhere on the official page. Manager interim rule confirmed."
+        },
+        "build_end": {
+          "at": "2026-11-08T22:00:00Z",
+          "tz": "UTC",
+          "source": "lablab event page Events block (read 2026-10-30). Submission deadline stays Nov 8 15:00 PT per the official schedule read at enrollment."
+        },
+        "submissions_open": "NOT_ESTABLISHED",
+        "deadline": {
+          "at": "2026-11-08T15:00:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "challenge log section 3 C2 (official page read 2026-10-26): submissions end Nov 8, 2026, 3:00 PM PST"
+        },
+        "judging_end": "NOT_ESTABLISHED",
+        "winners_at": "NOT_ESTABLISHED",
+        "verdict_note": "Kickoff = Nov 3 15:00Z (Events block). No Nov 5 date exists on the official page (checked firsthand 2026-10-30)."
       },
-      {
-       "url": "https://builder.aws.com/build/hackathons/8311dcb5-1ece-3d62-a441-2e1c2ad90b86/strands-sdk-workshop-to-ship",
-       "fetched_at": "2026-10-28T13:02:00-07:00"
+      "constraints": [
+        "Please register for both [the LabLab platform and the LabLab Discord server] in order to participate.",
+        "Important: Submit on LabLab for judging. Your official project submission must be completed on LabLab to be considered for hackathon judging and prizes.",
+        "Containment-first is required. (Challenge 1: Blast Radius Zero)",
+        "Teams consist of 1-6 people."
+      ],
+      "gates": [
+        {
+          "id": "D2-NOCARD",
+          "label": "No-card path only (fleet card rule): lablab registration + Discord + published Vultr participant credits",
+          "blocks": "any D2 participation step that would require a payment instrument",
+          "owner": "challenge-entries lane",
+          "status": "open",
+          "evidence": "Official page (read 2026-10-28): each participant receives $200 in free Vultr credits via gift code at kickoff; account creation is email + password. Any payment-instrument step halts the packet."
+        }
+      ],
+      "prizes": {
+        "status": "ESTABLISHED",
+        "pool": "$14,000 in cash and Vultr credits, plus up to $1,000 in onsite raffle prizes",
+        "tiers": [
+          {
+            "place": "1st place",
+            "award": "$5,000 cash prize + $3,000 in Vultr credits",
+            "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon"
+          },
+          {
+            "place": "2nd place",
+            "award": "$3,000 cash prize + $1,000 in Vultr credits",
+            "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon"
+          },
+          {
+            "place": "3rd place",
+            "award": "$1,000 cash prize + $1,000 in Vultr credits",
+            "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon"
+          }
+        ],
+        "notes": "Every participant gets $200 in free Vultr credits. Onsite raffle (3 individual winners, in-person only): PlayStation 5 Standard, Apple AirPods 5 with Wireless Charging Case, Razer DeathAdder V3 HyperSpeed."
       },
-      {
-       "url": "https://github.com/abhinavshukla152005-beep",
-       "fetched_at": "2026-10-28T14:30:00-07:00"
+      "moneyball": {
+        "schema": "moneyball-plane/v2",
+        "weights": {
+          "track_record": 0.3,
+          "momentum": 0.25,
+          "engagement_surface": 0.2,
+          "composability_fit": 0.15,
+          "inverse_engagement_cost": 0.1
+        },
+        "flag_threshold": 6.0,
+        "fixed_at": "2026-10-28",
+        "fixed_ref": "ops/moneyball/plane.json consumers[0].pattern_for_consumer (PR #2211); weights fixed at intake, before any score"
       },
-      {
-       "url": "https://api.github.com/users/abhinavshukla152005-beep",
-       "fetched_at": "2026-10-28T14:30:00-07:00"
+      "registration": {
+        "state": "registered \u2014 ENROLLED (screening form submitted; organizer review = email confirmation pending)",
+        "evidence": "lablab.ai account created 2026-10-29 via owner-selected AMD route: AMD AI Developer Program account (timerloggedout@gmail.com; LoggedOut/Timer/None/United States; owner-activated), AMD SSO sign-in completed (vault password + email verification). Lablab profile SAVED: handle (platform-assigned) timerloggedout63215 \u2014 CHANGE HELD (owner killed the n0n stem 2026-10-29; candidate queue s1gnaldr1ft/qu13tcompile/latentf0rge/dr1ftc0de + v3 derive RapidZenith18; 30-day one-shot UNSPENT). Vultr Agent Rush: initial Sign up + screening form SUBMITTED 2026-10-29 ('Your survey responses have been successfully submitted'); event state = Enrolled. Screening values: age bracket 25-34 (registry persona assignment), SLC travel No, media-release + privacy consents checked under owner agency authorization, LinkedIn field = 'timerloggedout-spec' (no fleet LinkedIn; accepted at submit). Discord NOT connected (flow never prompted; required before team create/join \u2014 build-week step). Vultr account + $200 gift code = kickoff items. No payment entered anywhere. Handle changed on-platform 2026-10-30: timerloggedout63215 -> Rap1dZ3nith (owner selection: queue + rnd + tap, final override = leet respell of the v3 derive; public profile https://lablab.ai/u/@Rap1dZ3nith verified; 30-day change lock now runs). | Discord CONNECTED 2026-10-30 (owner-created account; OAuth via lablab completed this lane): issued username wh1msical_sw4n_06136 (NOTE: differs from the registry-directed gentleonyx47 \u2014 owner-created, issued fact governs); lablab profile 60% -> 70%, \"Connect your account with Discord\" checked, Discord section shows Connected \u2014 wh1msical_sw4n_06136. Login location authorized via the emailed Verify Login link (owner-directed click); Discord login saved in the Secure Vault (email-keyed). D2 team create/join blocker LIFTED. A separate \"Verify Email Address for Discord\" email (2026-10-30 18:24 PT) exists; account email-verification state NOT_ESTABLISHED from this lane."
+      },
+      "submission": {
+        "state": "none",
+        "at": null,
+        "confirmation_ref": null
+      },
+      "brief": {
+        "evidence_pack_ref": null,
+        "anchor_lines": []
+      },
+      "projects": [
+        {
+          "id": "web-adapter-foundry",
+          "name": "Web Adapter Foundry (sandboxed browser-operating agent)",
+          "one_liner": "Given a target brief, the agent plans a bounded adapter probe, executes it in the Vultr sandbox, and returns an evidence envelope.",
+          "origin": "hand-packet",
+          "brief_anchor": null,
+          "status": "candidate",
+          "reason": null,
+          "superseded_by": null,
+          "assets": {
+            "repo_dir": "ops/web_adapter_foundry",
+            "proposal_dir": null,
+            "demo_url": null,
+            "clips_url": null
+          },
+          "decisions": []
+        }
+      ],
+      "participants": [],
+      "judges": [],
+      "opportunity_cost": {
+        "outcome": "pending",
+        "top_award": {
+          "value": 8000,
+          "form": "$5,000 cash + $3,000 Vultr credits (1st place)",
+          "source": "Official lablab.ai page (prizes.tiers[0].source_url)"
+        },
+        "gross_foregone": 0,
+        "non_monetary_foregone": [
+          "1st-place winner visibility",
+          "judge feedback"
+        ],
+        "computed_at": "2026-10-28"
+      },
+      "metrics_internal": {
+        "win_probability": {
+          "method": "winprob/v2",
+          "estimate": 0.0006,
+          "range": [
+            3e-05,
+            0.0012
+          ],
+          "confidence": "low",
+          "prior": {
+            "base_rate": 0.000618,
+            "denominator": 1617,
+            "denominator_kind": "participants"
+          },
+          "standing": {
+            "our_composite": null,
+            "our_percentile": null,
+            "field_mean": null,
+            "field_sd": null,
+            "scored_count": 0
+          },
+          "fit": {
+            "criteria_fit": null,
+            "judges_known": false
+          },
+          "unknowns": {
+            "unscored_share": 1,
+            "unverified_axis_weight_share": 1
+          },
+          "basis": "winprob/v2 (spec PR #2250): prior 1/1617 participants; u=1, v=1, k=0.95. v1 superseded.",
+          "computed_at": "2026-10-28T22:20:00Z",
+          "superseded_v1": {
+            "method": "winprob/v1",
+            "estimate": 0.0006,
+            "basis": "MoneyBall refinement (winprob/v1): base = 1/1617 participants (approved registrants; no projects published yet).",
+            "inputs": {
+              "award_slots_top": 1,
+              "field_size": 1617,
+              "field_scored_count": 0,
+              "field_mean_composite": null,
+              "our_composite": null,
+              "participants": 1617,
+              "field_size_basis": "MoneyBall refinement denominator (see basis)"
+            },
+            "computed_at": "2026-10-28T22:09:00Z",
+            "superseded_by": "winprob/v2 (PR #2250 spec)"
+          }
+        }
+      },
+      "field_size": {
+        "status": "partial",
+        "participants": 1617,
+        "participants_source": "'Approved 1617' counter, lablab.ai sign-up bar, read 2026-10-28",
+        "projects": null,
+        "projects_note": "no project gallery published (event Nov 3-8) \u2014 projects count = OPEN TASK at gallery publish",
+        "fetched_at": "2026-10-28T22:05:00Z"
       }
-     ],
-     "confidence": "medium",
-     "notes": "First and only project in D1's public Projects list on day 1 (checked signed-out 2026-10-28 13:01-13:03 PT). Builder Center shows NO author name/handle/profile for this entry on the list card or the project page; repo_url/demo_url are published in the project body and are project links, not author-profile facts. D1's Participants tab is join-gated (323 joined per page header) \u2014 not a public source; tracking runs on the Projects list. CORRECTION 2026-10-28 (MoneyBall consumer pattern, PR #2211): the candidate=true flag set at first record does NOT meet the standout flag rule - first v2 evaluation (ops/challenge-participants/scores/D1--ladder-practice-sets--evaluate--2026-10-28.json) gives composite 2.05 vs intake threshold 6.0, with track_record + momentum unverified. Flag removed; the entity stays tracked and re-evaluates as signals land. RECRUITMENT UPDATE 2026-10-28 (recruitment seat): GitHub hunt RESOLVED high-confidence via project-published repo owner + commit authorship = abhinavshukla152005-beep (public profile: Abhinav Shukla, agentic AI/MCP/Python/TS). public_links.github + persona.skills now sourced from that public profile; signals snapshot appended. Re-evaluation composite 2.90 (<6.0, track_record unverified) \u2014 candidate flag STILL refused; pipeline state in ops/challenge-recruitment/registry.json = profiled."
-    }
-   ],
-   "judges": [],
-   "opportunity_cost": {
-    "outcome": "pending",
-    "top_award": {
-     "value": 5600,
-     "form": "$5,000 AWS Promotional Credits + AWS Builder swag bundle worth about $600 + official winner's certificate (official total per award $5,600)",
-     "source": "Official D1 page firsthand 2026-10-28: prizes verbatim; Awards 1)-3) each $5,600"
     },
-    "gross_foregone": 0,
-    "non_monetary_foregone": [
-     "AWS Builder swag bundle (jacket, backpack, keyboard)",
-     "official winner's certificate",
-     "winner visibility"
-    ],
-    "computed_at": "2026-10-28",
-    "ledger_entry": "OC-003"
-   },
-   "metrics_internal": {
-    "win_probability": {
-     "method": "winprob/v2",
-     "estimate": 0.003,
-     "range": [
-      0.0002,
-      0.0059
-     ],
-     "confidence": "low",
-     "prior": {
-      "base_rate": 0.003086,
-      "denominator": 324,
-      "denominator_kind": "participants"
-     },
-     "standing": {
-      "our_composite": null,
-      "our_percentile": null,
-      "field_mean": 2.05,
-      "field_sd": null,
-      "scored_count": 1
-     },
-     "fit": {
-      "criteria_fit": null,
-      "judges_known": false
-     },
-     "unknowns": {
-      "unscored_share": 0.997,
-      "unverified_axis_weight_share": 1
-     },
-     "basis": "winprob/v2 (spec PR #2250): prior 1/324 participants; no our_composite (LRs=1, estimate=prior); u=0.997, v=1, k=0.95. v1 superseded.",
-     "computed_at": "2026-10-28T22:20:00Z",
-     "superseded_v1": {
-      "method": "winprob/v1",
-      "estimate": 0.003,
-      "basis": "MoneyBall refinement (winprob/v1): base = 1/324 participants (open event; landed projects=1 rejected as denominator \u2014 would print 1.0); no lift (our_composite null).",
-      "inputs": {
-       "award_slots_top": 1,
-       "field_size": 324,
-       "field_scored_count": 1,
-       "field_mean_composite": null,
-       "our_composite": null,
-       "participants": 324,
-       "field_size_basis": "MoneyBall refinement denominator (see basis)"
+    {
+      "id": "D3",
+      "name": "Agent-Native Hackathon",
+      "host": "Builder.io",
+      "organizers": [
+        {
+          "name": "Builder.io",
+          "role": "host",
+          "source_url": "https://builder.io/hackathon",
+          "fetched_at": "2026-10-28"
+        }
+      ],
+      "platform": "builder-io",
+      "official_url": "https://builder.io/hackathon",
+      "status": "active",
+      "entrant_moniker": "entrant{entrantBuilderIo}[platform:builder-io]",
+      "dates": {
+        "announced": "NOT_ESTABLISHED",
+        "reg_open": "NOT_ESTABLISHED",
+        "reg_close": "NOT_ESTABLISHED",
+        "build_start": {
+          "at": "2026-10-27T00:00:00-07:00",
+          "tz": "America/Los_Angeles",
+          "source": "Official Rules (read 2026-10-28): October 27, 2026: Hackathon begins; building can start immediately."
+        },
+        "build_end": {
+          "at": "2026-11-09T23:59:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "Official Rules: final submission deadline (build ends with submissions)."
+        },
+        "submissions_open": {
+          "at": "2026-10-27T00:00:00-07:00",
+          "tz": "America/Los_Angeles",
+          "source": "Official Rules schedule (hackathon begins Oct 27; submission via the project submission form)."
+        },
+        "deadline": {
+          "at": "2026-11-09T23:59:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "Official Rules verbatim: Monday, November 9, 2026 at 11:59 PM PT: Final submission deadline. (Supersedes the 2026-10-26 read of Nov 2.)"
+        },
+        "judging_end": "NOT_ESTABLISHED",
+        "winners_at": {
+          "at": "2026-11-13",
+          "tz": "America/Los_Angeles",
+          "source": "Official Rules: November 13, 2026: Target winner announcement, subject to verification. (Date only; no time published.)"
+        }
       },
-      "computed_at": "2026-10-28T22:09:00Z",
-      "superseded_by": "winprob/v2 (PR #2250 spec)"
-     }
-    }
-   },
-   "field_size": {
-    "status": "partial",
-    "participants": 324,
-    "participants_source": "event page HTML (server-rendered '<N> participants'), builder.aws.com",
-    "projects": 1,
-    "projects_source": "Projects tab: 1 project ('Ladder: practice sets a teacher can trust'), no Load more \u2014 event OPEN, field still growing",
-    "fetched_at": "2026-10-28T22:11:14Z"
-   },
-   "notes": [
-    "D0=>D1 prerequisite: D0 prerequisite pattern extracted 2026-10-30 (D1 sub-manager census, firsthand @master): D0 package apps/weekend-challenge-delphi-oracle (PR #1702 aa110a5e; demo-run receipts 103 items ALLOW / ABSTAIN 0 / ESCALATE) -> studysprint@main foundation/D0-FOUNDATION.md (3a2ce7c360dd) + foundation/fetch_evidence.py (db4f7dcb14df, blob 8442d813 verbatim). Open gaps: G1 kernel path-bound, G2 artifact kinds, G3 Strands wiring none yet, G4 workshop not evidenced, G5 article/demo/submission none yet."
-   ]
-  },
-  {
-   "id": "D2",
-   "name": "Vultr: Agent Rush Hackathon",
-   "host": "lablab.ai (Vultr)",
-   "organizers": [
-    {
-     "name": "lablab.ai",
-     "role": "host",
-     "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon",
-     "fetched_at": "2026-10-28"
-    },
-    {
-     "name": "Vultr",
-     "role": "sponsor",
-     "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon",
-     "fetched_at": "2026-10-28"
-    }
-   ],
-   "platform": "lablab-ai",
-   "also_platforms": [
-    "vultr"
-   ],
-   "official_url": "https://lablab.ai/ai-hackathons/vultr-hackathon",
-   "status": "registered",
-   "entrant_moniker": "entrant{entrantLablabAi}[platform:lablab-ai]",
-   "dates": {
-    "announced": "NOT_ESTABLISHED",
-    "reg_open": "NOT_ESTABLISHED",
-    "reg_close": "NOT_ESTABLISHED",
-    "build_start": {
-     "at": "2026-11-03T15:00:00Z",
-     "tz": "UTC",
-     "source": "lablab event page Events block (read 2026-10-30): 2026-11-03T15:00Z to 2026-11-08T22:00Z \u2014 VERDICT: Nov 3 governs kickoff + $200 gift-code timing (\"Gift code available at kickoff\"); the slate briefs \"opens Nov 5\" appears nowhere on the official page. Manager interim rule confirmed."
-    },
-    "build_end": {
-     "at": "2026-11-08T22:00:00Z",
-     "tz": "UTC",
-     "source": "lablab event page Events block (read 2026-10-30). Submission deadline stays Nov 8 15:00 PT per the official schedule read at enrollment."
-    },
-    "submissions_open": "NOT_ESTABLISHED",
-    "deadline": {
-     "at": "2026-11-08T15:00:00-08:00",
-     "tz": "America/Los_Angeles",
-     "source": "challenge log section 3 C2 (official page read 2026-10-26): submissions end Nov 8, 2026, 3:00 PM PST"
-    },
-    "judging_end": "NOT_ESTABLISHED",
-    "winners_at": "NOT_ESTABLISHED",
-    "verdict_note": "Kickoff = Nov 3 15:00Z (Events block). No Nov 5 date exists on the official page (checked firsthand 2026-10-30)."
-   },
-   "constraints": [
-    "Please register for both [the LabLab platform and the LabLab Discord server] in order to participate.",
-    "Important: Submit on LabLab for judging. Your official project submission must be completed on LabLab to be considered for hackathon judging and prizes.",
-    "Containment-first is required. (Challenge 1: Blast Radius Zero)",
-    "Teams consist of 1-6 people."
-   ],
-   "gates": [
-    {
-     "id": "D2-NOCARD",
-     "label": "No-card path only (fleet card rule): lablab registration + Discord + published Vultr participant credits",
-     "blocks": "any D2 participation step that would require a payment instrument",
-     "owner": "challenge-entries lane",
-     "status": "open",
-     "evidence": "Official page (read 2026-10-28): each participant receives $200 in free Vultr credits via gift code at kickoff; account creation is email + password. Any payment-instrument step halts the packet."
-    }
-   ],
-   "prizes": {
-    "status": "ESTABLISHED",
-    "pool": "$14,000 in cash and Vultr credits, plus up to $1,000 in onsite raffle prizes",
-    "tiers": [
-     {
-      "place": "1st place",
-      "award": "$5,000 cash prize + $3,000 in Vultr credits",
-      "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon"
-     },
-     {
-      "place": "2nd place",
-      "award": "$3,000 cash prize + $1,000 in Vultr credits",
-      "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon"
-     },
-     {
-      "place": "3rd place",
-      "award": "$1,000 cash prize + $1,000 in Vultr credits",
-      "source_url": "https://lablab.ai/ai-hackathons/vultr-hackathon"
-     }
-    ],
-    "notes": "Every participant gets $200 in free Vultr credits. Onsite raffle (3 individual winners, in-person only): PlayStation 5 Standard, Apple AirPods 5 with Wireless Charging Case, Razer DeathAdder V3 HyperSpeed."
-   },
-   "moneyball": {
-    "schema": "moneyball-plane/v2",
-    "weights": {
-     "track_record": 0.3,
-     "momentum": 0.25,
-     "engagement_surface": 0.2,
-     "composability_fit": 0.15,
-     "inverse_engagement_cost": 0.1
-    },
-    "flag_threshold": 6.0,
-    "fixed_at": "2026-10-28",
-    "fixed_ref": "ops/moneyball/plane.json consumers[0].pattern_for_consumer (PR #2211); weights fixed at intake, before any score"
-   },
-   "registration": {
-    "state": "registered \u2014 ENROLLED (screening form submitted; organizer review = email confirmation pending)",
-    "evidence": "lablab.ai account created 2026-10-29 via owner-selected AMD route: AMD AI Developer Program account (timerloggedout@gmail.com; LoggedOut/Timer/None/United States; owner-activated), AMD SSO sign-in completed (vault password + email verification). Lablab profile SAVED: handle (platform-assigned) timerloggedout63215 \u2014 CHANGE HELD (owner killed the n0n stem 2026-10-29; candidate queue s1gnaldr1ft/qu13tcompile/latentf0rge/dr1ftc0de + v3 derive RapidZenith18; 30-day one-shot UNSPENT). Vultr Agent Rush: initial Sign up + screening form SUBMITTED 2026-10-29 ('Your survey responses have been successfully submitted'); event state = Enrolled. Screening values: age bracket 25-34 (registry persona assignment), SLC travel No, media-release + privacy consents checked under owner agency authorization, LinkedIn field = 'timerloggedout-spec' (no fleet LinkedIn; accepted at submit). Discord NOT connected (flow never prompted; required before team create/join \u2014 build-week step). Vultr account + $200 gift code = kickoff items. No payment entered anywhere. Handle changed on-platform 2026-10-30: timerloggedout63215 -> Rap1dZ3nith (owner selection: queue + rnd + tap, final override = leet respell of the v3 derive; public profile https://lablab.ai/u/@Rap1dZ3nith verified; 30-day change lock now runs). | Discord CONNECTED 2026-10-30 (owner-created account; OAuth via lablab completed this lane): issued username wh1msical_sw4n_06136 (NOTE: differs from the registry-directed gentleonyx47 \u2014 owner-created, issued fact governs); lablab profile 60% -> 70%, \"Connect your account with Discord\" checked, Discord section shows Connected \u2014 wh1msical_sw4n_06136. Login location authorized via the emailed Verify Login link (owner-directed click); Discord login saved in the Secure Vault (email-keyed). D2 team create/join blocker LIFTED. A separate \"Verify Email Address for Discord\" email (2026-10-30 18:24 PT) exists; account email-verification state NOT_ESTABLISHED from this lane."
-   },
-   "submission": {
-    "state": "none",
-    "at": null,
-    "confirmation_ref": null
-   },
-   "brief": {
-    "evidence_pack_ref": null,
-    "anchor_lines": []
-   },
-   "projects": [
-    {
-     "id": "web-adapter-foundry",
-     "name": "Web Adapter Foundry (sandboxed browser-operating agent)",
-     "one_liner": "Given a target brief, the agent plans a bounded adapter probe, executes it in the Vultr sandbox, and returns an evidence envelope.",
-     "origin": "hand-packet",
-     "brief_anchor": null,
-     "status": "candidate",
-     "reason": null,
-     "superseded_by": null,
-     "assets": {
-      "repo_dir": "ops/web_adapter_foundry",
-      "proposal_dir": null,
-      "demo_url": null,
-      "clips_url": null
-     },
-     "decisions": []
-    }
-   ],
-   "participants": [],
-   "judges": [],
-   "opportunity_cost": {
-    "outcome": "pending",
-    "top_award": {
-     "value": 8000,
-     "form": "$5,000 cash + $3,000 Vultr credits (1st place)",
-     "source": "Official lablab.ai page (prizes.tiers[0].source_url)"
-    },
-    "gross_foregone": 0,
-    "non_monetary_foregone": [
-     "1st-place winner visibility",
-     "judge feedback"
-    ],
-    "computed_at": "2026-10-28"
-   },
-   "metrics_internal": {
-    "win_probability": {
-     "method": "winprob/v2",
-     "estimate": 0.0006,
-     "range": [
-      3e-05,
-      0.0012
-     ],
-     "confidence": "low",
-     "prior": {
-      "base_rate": 0.000618,
-      "denominator": 1617,
-      "denominator_kind": "participants"
-     },
-     "standing": {
-      "our_composite": null,
-      "our_percentile": null,
-      "field_mean": null,
-      "field_sd": null,
-      "scored_count": 0
-     },
-     "fit": {
-      "criteria_fit": null,
-      "judges_known": false
-     },
-     "unknowns": {
-      "unscored_share": 1,
-      "unverified_axis_weight_share": 1
-     },
-     "basis": "winprob/v2 (spec PR #2250): prior 1/1617 participants; u=1, v=1, k=0.95. v1 superseded.",
-     "computed_at": "2026-10-28T22:20:00Z",
-     "superseded_v1": {
-      "method": "winprob/v1",
-      "estimate": 0.0006,
-      "basis": "MoneyBall refinement (winprob/v1): base = 1/1617 participants (approved registrants; no projects published yet).",
-      "inputs": {
-       "award_slots_top": 1,
-       "field_size": 1617,
-       "field_scored_count": 0,
-       "field_mean_composite": null,
-       "our_composite": null,
-       "participants": 1617,
-       "field_size_basis": "MoneyBall refinement denominator (see basis)"
+      "constraints": [
+        "Submit original work or meaningful new development completed during the Hackathon, beginning October 27, 2026. Identify pre-existing work, templates, libraries, third-party assets, and what changed during the event.",
+        "Record a public Clips demonstration showing the actual application in use. The recording must be viewable without a login or access request.",
+        "Recording a clip alone does not submit an entry."
+      ],
+      "gates": [
+        {
+          "id": "D3-CLIPS-STORAGE",
+          "label": "Connect clip storage (Builder.io or S3-compatible backend) on the created Clips account",
+          "blocks": "demo recording upload",
+          "owner": "challenge-entries lane (in-app step on the account)",
+          "status": "open",
+          "evidence": "Clips account created 2026-10-27 (PR #1835 merged 264c5d9771); /record shows a Connect storage step; recordings cannot upload before it."
+        }
+      ],
+      "prizes": {
+        "status": "ESTABLISHED",
+        "pool": "$10,000 USD across five ranked cash prizes",
+        "tiers": [
+          {
+            "place": "Grand Prize",
+            "award": "$5,000 USD",
+            "source_url": "https://builder.io/hackathon/rules"
+          },
+          {
+            "place": "2nd Place",
+            "award": "$2,500 USD",
+            "source_url": "https://builder.io/hackathon/rules"
+          },
+          {
+            "place": "3rd Place",
+            "award": "$1,500 USD",
+            "source_url": "https://builder.io/hackathon/rules"
+          },
+          {
+            "place": "4th Place",
+            "award": "$750 USD",
+            "source_url": "https://builder.io/hackathon/rules"
+          },
+          {
+            "place": "5th Place",
+            "award": "$250 USD",
+            "source_url": "https://builder.io/hackathon/rules"
+          }
+        ],
+        "notes": "Each winning entry may receive at most one ranked cash prize. Recognition categories (Best Overall App, Best Productivity App, Most Creative App, Best Use of Agent-Native) add no cash."
       },
-      "computed_at": "2026-10-28T22:09:00Z",
-      "superseded_by": "winprob/v2 (PR #2250 spec)"
-     }
-    }
-   },
-   "field_size": {
-    "status": "partial",
-    "participants": 1617,
-    "participants_source": "'Approved 1617' counter, lablab.ai sign-up bar, read 2026-10-28",
-    "projects": null,
-    "projects_note": "no project gallery published (event Nov 3-8) \u2014 projects count = OPEN TASK at gallery publish",
-    "fetched_at": "2026-10-28T22:05:00Z"
-   }
-  },
-  {
-   "id": "D3",
-   "name": "Agent-Native Hackathon",
-   "host": "Builder.io",
-   "organizers": [
-    {
-     "name": "Builder.io",
-     "role": "host",
-     "source_url": "https://builder.io/hackathon",
-     "fetched_at": "2026-10-28"
-    }
-   ],
-   "platform": "builder-io",
-   "official_url": "https://builder.io/hackathon",
-   "status": "active",
-   "entrant_moniker": "entrant{entrantBuilderIo}[platform:builder-io]",
-   "dates": {
-    "announced": "NOT_ESTABLISHED",
-    "reg_open": "NOT_ESTABLISHED",
-    "reg_close": "NOT_ESTABLISHED",
-    "build_start": {
-     "at": "2026-10-27T00:00:00-07:00",
-     "tz": "America/Los_Angeles",
-     "source": "Official Rules (read 2026-10-28): October 27, 2026: Hackathon begins; building can start immediately."
-    },
-    "build_end": {
-     "at": "2026-11-09T23:59:00-08:00",
-     "tz": "America/Los_Angeles",
-     "source": "Official Rules: final submission deadline (build ends with submissions)."
-    },
-    "submissions_open": {
-     "at": "2026-10-27T00:00:00-07:00",
-     "tz": "America/Los_Angeles",
-     "source": "Official Rules schedule (hackathon begins Oct 27; submission via the project submission form)."
-    },
-    "deadline": {
-     "at": "2026-11-09T23:59:00-08:00",
-     "tz": "America/Los_Angeles",
-     "source": "Official Rules verbatim: Monday, November 9, 2026 at 11:59 PM PT: Final submission deadline. (Supersedes the 2026-10-26 read of Nov 2.)"
-    },
-    "judging_end": "NOT_ESTABLISHED",
-    "winners_at": {
-     "at": "2026-11-13",
-     "tz": "America/Los_Angeles",
-     "source": "Official Rules: November 13, 2026: Target winner announcement, subject to verification. (Date only; no time published.)"
-    }
-   },
-   "constraints": [
-    "Submit original work or meaningful new development completed during the Hackathon, beginning October 27, 2026. Identify pre-existing work, templates, libraries, third-party assets, and what changed during the event.",
-    "Record a public Clips demonstration showing the actual application in use. The recording must be viewable without a login or access request.",
-    "Recording a clip alone does not submit an entry."
-   ],
-   "gates": [
-    {
-     "id": "D3-CLIPS-STORAGE",
-     "label": "Connect clip storage (Builder.io or S3-compatible backend) on the created Clips account",
-     "blocks": "demo recording upload",
-     "owner": "challenge-entries lane (in-app step on the account)",
-     "status": "open",
-     "evidence": "Clips account created 2026-10-27 (PR #1835 merged 264c5d9771); /record shows a Connect storage step; recordings cannot upload before it."
-    }
-   ],
-   "prizes": {
-    "status": "ESTABLISHED",
-    "pool": "$10,000 USD across five ranked cash prizes",
-    "tiers": [
-     {
-      "place": "Grand Prize",
-      "award": "$5,000 USD",
-      "source_url": "https://builder.io/hackathon/rules"
-     },
-     {
-      "place": "2nd Place",
-      "award": "$2,500 USD",
-      "source_url": "https://builder.io/hackathon/rules"
-     },
-     {
-      "place": "3rd Place",
-      "award": "$1,500 USD",
-      "source_url": "https://builder.io/hackathon/rules"
-     },
-     {
-      "place": "4th Place",
-      "award": "$750 USD",
-      "source_url": "https://builder.io/hackathon/rules"
-     },
-     {
-      "place": "5th Place",
-      "award": "$250 USD",
-      "source_url": "https://builder.io/hackathon/rules"
-     }
-    ],
-    "notes": "Each winning entry may receive at most one ranked cash prize. Recognition categories (Best Overall App, Best Productivity App, Most Creative App, Best Use of Agent-Native) add no cash."
-   },
-   "moneyball": {
-    "schema": "moneyball-plane/v2",
-    "weights": {
-     "track_record": 0.3,
-     "momentum": 0.25,
-     "engagement_surface": 0.2,
-     "composability_fit": 0.15,
-     "inverse_engagement_cost": 0.1
-    },
-    "flag_threshold": 6.0,
-    "fixed_at": "2026-10-28",
-    "fixed_ref": "ops/moneyball/plane.json consumers[0].pattern_for_consumer (PR #2211); weights fixed at intake, before any score"
-   },
-   "registration": {
-    "state": "not required",
-    "evidence": [
-     "Official Rules + hackathon page (read 2026-10-28): no registration required; no account needed to build or submit. The Clips account (for the demo recording) was created 2026-10-27; it has no username/handle."
-    ]
-   },
-   "submission": {
-    "state": "none",
-    "at": null,
-    "confirmation_ref": null
-   },
-   "brief": {
-    "evidence_pack_ref": "docs/ops/CHALLENGE-BRIEF-EVIDENCE-2026-10-28.md",
-    "anchor_lines": [
-     "Build an app where people and agents work together.",
-     "Usefulness and Execution: 40%. Creativity and Design: 20%. Innovation: 20%. Cleverness and Use of Agent-Native: 20%."
-    ]
-   },
-   "projects": [
-    {
-     "id": "listinglens",
-     "name": "ListingLens",
-     "one_liner": "D3 pick from the Delphi lane's brief-first generation on the official brief evidence pack; details in that generation record.",
-     "origin": "brief-first-gen",
-     "brief_anchor": "docs/ops/CHALLENGE-BRIEF-EVIDENCE-2026-10-28.md (D3 section)",
-     "status": "frozen",
-     "reason": "Manager-enacted freeze 2026-10-30 under owner mandate (\"manage progress. LFGOOO\"); reversible by owner.",
-     "superseded_by": null,
-     "assets": {
-      "repo_dir": null,
-      "proposal_dir": null,
-      "demo_url": null,
-      "clips_url": null,
-      "repo_url": "https://github.com/timerloggedout-spec/listinglens",
-      "repo_note": "Dedicated public repo created 2026-10-30 (owner order: new repo per entry; created by the Manager seat via PAT API, verified). Scaffold + build brief live in the repo; the monorepo apps/ scaffold from PR #2533 was superseded the same day and removed."
-     },
-     "decisions": [
-      {
-       "at": "2026-10-28",
-       "by": "delphi-lane / manager",
-       "action": "named as the D3 pick, pending owner freeze (not frozen; no build authorization from the pick alone)",
-       "pr": 2046,
-       "sha": "6aed4b6bad"
+      "moneyball": {
+        "schema": "moneyball-plane/v2",
+        "weights": {
+          "track_record": 0.3,
+          "momentum": 0.25,
+          "engagement_surface": 0.2,
+          "composability_fit": 0.15,
+          "inverse_engagement_cost": 0.1
+        },
+        "flag_threshold": 6.0,
+        "fixed_at": "2026-10-28",
+        "fixed_ref": "ops/moneyball/plane.json consumers[0].pattern_for_consumer (PR #2211); weights fixed at intake, before any score"
+      },
+      "registration": {
+        "state": "not required",
+        "evidence": [
+          "Official Rules + hackathon page (read 2026-10-28): no registration required; no account needed to build or submit. The Clips account (for the demo recording) was created 2026-10-27; it has no username/handle."
+        ]
+      },
+      "submission": {
+        "state": "none",
+        "at": null,
+        "confirmation_ref": null
+      },
+      "brief": {
+        "evidence_pack_ref": "docs/ops/CHALLENGE-BRIEF-EVIDENCE-2026-10-28.md",
+        "anchor_lines": [
+          "Build an app where people and agents work together.",
+          "Usefulness and Execution: 40%. Creativity and Design: 20%. Innovation: 20%. Cleverness and Use of Agent-Native: 20%."
+        ]
+      },
+      "projects": [
+        {
+          "id": "listinglens",
+          "name": "ListingLens",
+          "one_liner": "D3 pick from the Delphi lane's brief-first generation on the official brief evidence pack; details in that generation record.",
+          "origin": "brief-first-gen",
+          "brief_anchor": "docs/ops/CHALLENGE-BRIEF-EVIDENCE-2026-10-28.md (D3 section)",
+          "status": "frozen",
+          "reason": "Manager-enacted freeze 2026-10-30 under owner mandate (\"manage progress. LFGOOO\"); reversible by owner.",
+          "superseded_by": null,
+          "assets": {
+            "repo_dir": null,
+            "proposal_dir": null,
+            "demo_url": null,
+            "clips_url": null,
+            "repo_url": "https://github.com/timerloggedout-spec/listinglens",
+            "repo_note": "Dedicated public repo created 2026-10-30 (owner order: new repo per entry; created by the Manager seat via PAT API, verified). Scaffold + build brief live in the repo; the monorepo apps/ scaffold from PR #2533 was superseded the same day and removed."
+          },
+          "decisions": [
+            {
+              "at": "2026-10-28",
+              "by": "delphi-lane / manager",
+              "action": "named as the D3 pick, pending owner freeze (not frozen; no build authorization from the pick alone)",
+              "pr": 2046,
+              "sha": "6aed4b6bad"
+            }
+          ]
+        },
+        {
+          "id": "delphi-desk",
+          "name": "Delphi Desk",
+          "one_liner": "Human-in-the-loop decision-review cockpit: a Delphi-style agent panel drafts decision proposals with evidence receipts; every consequential move is a shared defineAction().",
+          "origin": "oracle_proposal#42",
+          "brief_anchor": null,
+          "status": "questioned",
+          "reason": "Owner correction 2026-10-28: proposal #42 is QUESTIONED / under review as a D3 build - the inward-generation defect is challenged (duplicates the fleet's own Delphi system, inward-looking, no lineage from the official Builder.io brief). NOT terminated as a proposal record; NOT the active build - do not build pending the review outcome.",
+          "superseded_by": null,
+          "assets": {
+            "repo_dir": null,
+            "proposal_dir": "docs/proposals/active/delphi-desk-builder-io",
+            "demo_url": null,
+            "clips_url": null
+          },
+          "decisions": [
+            {
+              "at": "2026-10-27",
+              "by": "delphi-lane (oracle-method)",
+              "action": "generated and registered as proposal #42 (first author: oracle-method)",
+              "pr": 1708,
+              "sha": "7a7a5888"
+            },
+            {
+              "at": "2026-10-27",
+              "by": "challenge-entries-lane",
+              "action": "cited as D3's basis in the challenge log",
+              "pr": 1709,
+              "sha": "63eae908ee"
+            },
+            {
+              "at": "2026-10-28",
+              "by": "owner (via manager)",
+              "action": "stopped as the D3 build (initial wording: killed)",
+              "pr": 2045,
+              "sha": "5707465b81"
+            },
+            {
+              "at": "2026-10-28",
+              "by": "owner",
+              "action": "correction: #42 is questioned, not killed; record stands; not the active build",
+              "pr": 2050,
+              "sha": "c220ce5da5"
+            }
+          ]
+        }
+      ],
+      "participants": [],
+      "judges": [],
+      "opportunity_cost": {
+        "outcome": "pending",
+        "top_award": {
+          "value": 5000,
+          "form": "$5,000 USD cash (Grand Prize)",
+          "source": "https://builder.io/hackathon/rules"
+        },
+        "gross_foregone": 0,
+        "non_monetary_foregone": [
+          "Grand Prize winner visibility/recognition",
+          "judge feedback"
+        ],
+        "computed_at": "2026-10-28"
+      },
+      "metrics_internal": {
+        "win_probability": {
+          "method": "winprob/v2",
+          "estimate": null,
+          "range": null,
+          "confidence": "none",
+          "prior": {
+            "base_rate": null,
+            "denominator": null,
+            "denominator_kind": null
+          },
+          "standing": {
+            "our_composite": null,
+            "our_percentile": null,
+            "field_mean": null,
+            "field_sd": null,
+            "scored_count": 0
+          },
+          "fit": {
+            "criteria_fit": null,
+            "judges_known": false
+          },
+          "unknowns": {
+            "unscored_share": 1,
+            "unverified_axis_weight_share": 1
+          },
+          "basis": "winprob/v2 (spec PR #2250): no sourced denominator \u2014 no prior exists; a number would be invented. Open OSINT task.",
+          "computed_at": "2026-10-28T22:20:00Z",
+          "superseded_v1": {
+            "method": "winprob/v1",
+            "estimate": null,
+            "basis": "NO ESTIMATE (MoneyBall ruling 2026-10-28): no sourced denominator of any kind \u2014 a number would be invented. Open OSINT task.",
+            "inputs": {
+              "award_slots_top": 1,
+              "field_size": null,
+              "field_scored_count": 0,
+              "field_mean_composite": null,
+              "our_composite": null,
+              "participants": null
+            },
+            "computed_at": "2026-10-28T22:09:00Z",
+            "superseded_by": "winprob/v2 (PR #2250 spec)"
+          }
+        }
+      },
+      "field_size": {
+        "status": "open_task",
+        "participants": null,
+        "participants_source": null,
+        "projects": null,
+        "projects_note": "builder.io/hackathon displays NO participant/project count ('No registration required', internal submission form only) \u2014 OPEN TASK, source may never be public pre-close",
+        "fetched_at": "2026-10-28T22:05:00Z"
       }
-     ]
     },
     {
-     "id": "delphi-desk",
-     "name": "Delphi Desk",
-     "one_liner": "Human-in-the-loop decision-review cockpit: a Delphi-style agent panel drafts decision proposals with evidence receipts; every consequential move is a shared defineAction().",
-     "origin": "oracle_proposal#42",
-     "brief_anchor": null,
-     "status": "questioned",
-     "reason": "Owner correction 2026-10-28: proposal #42 is QUESTIONED / under review as a D3 build - the inward-generation defect is challenged (duplicates the fleet's own Delphi system, inward-looking, no lineage from the official Builder.io brief). NOT terminated as a proposal record; NOT the active build - do not build pending the review outcome.",
-     "superseded_by": null,
-     "assets": {
-      "repo_dir": null,
-      "proposal_dir": "docs/proposals/active/delphi-desk-builder-io",
-      "demo_url": null,
-      "clips_url": null
-     },
-     "decisions": [
-      {
-       "at": "2026-10-27",
-       "by": "delphi-lane (oracle-method)",
-       "action": "generated and registered as proposal #42 (first author: oracle-method)",
-       "pr": 1708,
-       "sha": "7a7a5888"
+      "id": "D4",
+      "name": "Kiroween 2026",
+      "host": "Devpost (Kiro)",
+      "organizers": [
+        {
+          "name": "Kiro",
+          "role": "host",
+          "source_url": "https://kiroween.devpost.com",
+          "fetched_at": "2026-10-28"
+        },
+        {
+          "name": "Devpost",
+          "role": "platform",
+          "source_url": "https://kiroween.devpost.com",
+          "fetched_at": "2026-10-28"
+        }
+      ],
+      "platform": "devpost",
+      "also_platforms": [
+        "kiro"
+      ],
+      "official_url": "https://kiroween.devpost.com",
+      "status": "registering",
+      "entrant_moniker": "entrant{entrantDevpost}[platform:devpost]",
+      "dates": {
+        "announced": "NOT_ESTABLISHED",
+        "reg_open": {
+          "at": "2026-10-13T08:30:00-07:00",
+          "tz": "America/Los_Angeles",
+          "source": "official RULES s.1 (kiroween.devpost.com/rules, read 2026-10-30)"
+        },
+        "reg_close": {
+          "at": "2026-12-04T14:00:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official RULES s.1 (kiroween.devpost.com/rules, read 2026-10-30)"
+        },
+        "build_start": {
+          "at": "2026-10-30T09:00:00-07:00",
+          "tz": "America/Los_Angeles",
+          "source": "official RULES s.1 (kiroween.devpost.com/rules, read 2026-10-30): Submission Period opens Oct 30, 2026 9:00 AM PT (CORRECTS the 13:00 dates-page value carried earlier; rules prevail)"
+        },
+        "build_end": {
+          "at": "2026-12-04T14:00:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official page: until Friday, December 4, 2026 at 2:00 PM Pacific Time"
+        },
+        "submissions_open": {
+          "at": "2026-10-30T09:00:00-07:00",
+          "tz": "America/Los_Angeles",
+          "source": "official RULES s.1 (kiroween.devpost.com/rules, read 2026-10-30)"
+        },
+        "deadline": {
+          "at": "2026-12-04T14:00:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official page (read 2026-10-28): Friday, December 4, 2026 at 2:00 PM Pacific Time"
+        },
+        "judging_end": {
+          "at": "2027-01-29T13:00:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official RULES s.1 (kiroween.devpost.com/rules, read 2026-10-30): Judging Period Dec 16, 2026 - Jan 29, 2027"
+        },
+        "winners_at": {
+          "at": "2027-02-03T09:00:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official RULES s.1 (kiroween.devpost.com/rules, read 2026-10-30): on or around Feb 3, 2027"
+        }
       },
-      {
-       "at": "2026-10-27",
-       "by": "challenge-entries-lane",
-       "action": "cited as D3's basis in the challenge log",
-       "pr": 1709,
-       "sha": "63eae908ee"
+      "constraints": [
+        "Do not start building your project yet.",
+        "Only new projects created during the submission period will be eligible."
+      ],
+      "gates": [
+        {
+          "id": "D4-ACCOUNTS",
+          "label": "Devpost account + Kiro user ID created (fleet Google identity route)",
+          "blocks": "D4 registration completion",
+          "owner": "devpost-kiro lane (chat 79a004f8-3f3f-4a99-91c1-db3e54eeeb63)",
+          "status": "open",
+          "evidence": "PARTIAL 2026-10-29 (accounts lane, browser-verified): Devpost account created, handle timerloggedout, PROFILE COMPLETE (bio/skills/interests/occupation recorded in PROFILE-REGISTRY.md). Kiro account exists (Google sign-in, KIRO FREE) with NO editable profile fields. STILL BLOCKED: Kiroween registration + the exact Kiro user ID (Cloudflare + ID-surface blockers; RE target brief #1729 in dispatch)."
+        },
+        {
+          "id": "D4-ELIGIBILITY",
+          "label": "No project creation or build start before 2026-10-30T09:00:00-07:00 (official rules s.1 Submission Period open; mechanical gate in the brief and in the generator cycle code; label corrected 2026-10-30 from the stale 13:00 dates-page value)",
+          "blocks": "any D4 build start",
+          "owner": "challenge-entries lane + delphi-lane tooling",
+          "status": "cleared",
+          "evidence": "Brief eligibility_gate (docs/proposals/briefs/kiroween-delphi-concept.brief.json); log enforcement PR #1717; cycle-code enforcement PR #1719. Creation timestamp is captured into the packet as eligibility evidence at creation. | Window OPEN since 2026-10-30 09:00 PT; Delphi pass ran 2026-10-30T23:44Z under this gate (implementation stage specified_not_run). | CLEARED 2026-10-30 (gates-delegate delta + Manager ruling): window opened 2026-10-30T09:00 PT; no D4 project was created before the open; the frozen pick repo was created in-period (see projects). Not a live blocker."
+        }
+      ],
+      "prizes": {
+        "status": "ESTABLISHED",
+        "source": "official RULES s.1 (kiroween.devpost.com/rules, read 2026-10-30) (s.8 Prizes)",
+        "pool": "$94,000 cash + subscription/credit prizes (announced as $100,000 in cash prizes)",
+        "tiers": {
+          "overall": [
+            "1st $30,000",
+            "2nd $20,000",
+            "3rd $10,000"
+          ],
+          "category": [
+            "Best Resurrection $5,000",
+            "Best Frankenstein $5,000",
+            "Best Skeleton Crew $5,000",
+            "Best Costume Contest $5,000"
+          ],
+          "bonus": [
+            "Best Startup Project $10,000",
+            "Best Ghost of Kiroween Past $2,000",
+            "Best Kiro Crew App $1,000",
+            "Best Demo $1,000",
+            "Best Student Project: 1-year Kiro Pro Max subscription (~$1,500) x4",
+            "Bonus Blog Prize: 2,000 Kiro credits x100",
+            "Social Blitz Prize: 3-month Kiro Pro+ subscription x5"
+          ]
+        },
+        "note": "One Overall OR one Category prize per project, plus any number of Bonus prizes."
       },
-      {
-       "at": "2026-10-28",
-       "by": "owner (via manager)",
-       "action": "stopped as the D3 build (initial wording: killed)",
-       "pr": 2045,
-       "sha": "5707465b81"
+      "moneyball": {
+        "schema": "moneyball-plane/v2",
+        "weights": {
+          "track_record": 0.3,
+          "momentum": 0.25,
+          "engagement_surface": 0.2,
+          "composability_fit": 0.15,
+          "inverse_engagement_cost": 0.1
+        },
+        "flag_threshold": 6.0,
+        "fixed_at": "2026-10-28",
+        "fixed_ref": "ops/moneyball/plane.json consumers[0].pattern_for_consumer (PR #2211); weights fixed at intake, before any score"
       },
-      {
-       "at": "2026-10-28",
-       "by": "owner",
-       "action": "correction: #42 is questioned, not killed; record stands; not the active build",
-       "pr": 2050,
-       "sha": "c220ce5da5"
+      "registration": {
+        "state": "in progress (delegated)",
+        "evidence": [
+          "Registration attempted 2026-10-26; stopped at the Devpost sign-up wall.",
+          "Account creation owned by the Devpost + Kiro ID creation lane (owner order 2026-10-27, fleet Google identity route)."
+        ]
+      },
+      "submission": {
+        "state": "none",
+        "at": null,
+        "confirmation_ref": null
+      },
+      "brief": {
+        "evidence_pack_ref": "docs/proposals/briefs/kiroween-delphi-concept.brief.json",
+        "anchor_lines": [
+          "Do not start building your project yet.",
+          "Only new projects created during the submission period will be eligible."
+        ]
+      },
+      "projects": [
+        {
+          "id": "kiroween-skeleton-crew",
+          "name": "Kiroween variant: skeleton-crew",
+          "one_liner": "Brief variant (Skeleton Crew theme): a CMDB/reconciliation viewer as a minimal spec-first skeleton, shown with two distinct applications.",
+          "origin": "brief-first-gen",
+          "brief_anchor": "docs/proposals/briefs/kiroween-delphi-concept.brief.json (variants)",
+          "status": "frozen",
+          "reason": "Manager freeze 2026-10-30 on brief-author priors (19>17>14) + profile points (3>2=2) + scope certainty, after the round-1 tie (23.269 x3, LOCAL_BASELINE only); DEBATE (landed, calibration-only) rank-agrees 3/3 with the priors.",
+          "superseded_by": null,
+          "assets": {
+            "repo_dir": null,
+            "proposal_dir": "docs/proposals/passes/kiroween-delphi-concept",
+            "demo_url": null,
+            "clips_url": null,
+            "repo_url": "https://github.com/timerloggedout-spec/skeleton-crew",
+            "repo_created": "2026-10-30T23:55:28Z (in-period; created by Manager)",
+            "scaffold": "Landed on skeleton-crew@main commit 6b99cd4c006915fde3d540edc11fc46d47f766ff (D4 seat, recursive tree verified): /.kiro + LICENSE + foundation + apps/conflict-viewer + apps/stamped-report + README stub \u2014 Skeleton Crew shape (foundation + 2 distinct app folders) per rules."
+          },
+          "decisions": []
+        },
+        {
+          "id": "kiroween-frankenstein",
+          "name": "Kiroween variant: frankenstein",
+          "one_liner": "Brief variant (Frankenstein theme): a new in-window project stitched from public patterns of the offline Oracle MVP and the D0 package.",
+          "origin": "brief-first-gen",
+          "brief_anchor": "docs/proposals/briefs/kiroween-delphi-concept.brief.json (variants)",
+          "status": "superseded-by-freeze",
+          "reason": "Not frozen; skeleton-crew frozen 2026-10-30 (Manager ruling on priors).",
+          "superseded_by": "kiroween-skeleton-crew",
+          "assets": {
+            "repo_dir": null,
+            "proposal_dir": "docs/proposals/passes/kiroween-delphi-concept",
+            "demo_url": null,
+            "clips_url": null
+          },
+          "decisions": []
+        },
+        {
+          "id": "kiroween-resurrection",
+          "name": "Kiroween variant: resurrection",
+          "one_liner": "Brief variant (Resurrection theme): a dormant public spec rebuilt fresh in-window; subject picked at brief lock under a scope cap.",
+          "origin": "brief-first-gen",
+          "brief_anchor": "docs/proposals/briefs/kiroween-delphi-concept.brief.json (variants)",
+          "status": "superseded-by-freeze",
+          "reason": "Not frozen; skeleton-crew frozen 2026-10-30 (Manager ruling on priors).",
+          "superseded_by": "kiroween-skeleton-crew",
+          "assets": {
+            "repo_dir": null,
+            "proposal_dir": "docs/proposals/passes/kiroween-delphi-concept",
+            "demo_url": null,
+            "clips_url": null
+          },
+          "decisions": []
+        }
+      ],
+      "participants": [],
+      "judges": [],
+      "opportunity_cost": {
+        "outcome": "pending",
+        "top_award": {
+          "value": 30000,
+          "form": "$30,000 cash (Overall 1st place)",
+          "source": "Official rules s.8 + event page prize table (read firsthand 2026-10-30): Overall 1st $30,000 / 2nd $20,000 / 3rd $10,000; cash total $94,000 + subscriptions/credits",
+          "status": "ESTABLISHED (corrected 2026-10-30 from stale NOT_ESTABLISHED)"
+        },
+        "gross_foregone": 0,
+        "non_monetary_foregone": [
+          "winner visibility",
+          "judge feedback"
+        ],
+        "computed_at": "2026-10-28"
+      },
+      "metrics_internal": {
+        "win_probability": {
+          "method": "winprob/v2",
+          "estimate": 0.0005,
+          "range": [
+            2.5e-05,
+            0.001
+          ],
+          "confidence": "low",
+          "prior": {
+            "base_rate": 0.000524,
+            "denominator": 1908,
+            "denominator_kind": "participants"
+          },
+          "standing": {
+            "our_composite": null,
+            "our_percentile": null,
+            "field_mean": null,
+            "field_sd": null,
+            "scored_count": 0
+          },
+          "fit": {
+            "criteria_fit": null,
+            "judges_known": false
+          },
+          "unknowns": {
+            "unscored_share": 1,
+            "unverified_axis_weight_share": 1
+          },
+          "basis": "winprob/v2 (spec PR #2250): prior 1/1908 participants (worked value at spec time; live count 1909 per scraper \u2014 adaptive recompute next trigger); u=1, v=1, k=0.95. v1 superseded.",
+          "computed_at": "2026-10-28T22:20:00Z",
+          "superseded_v1": {
+            "method": "winprob/v1",
+            "estimate": 0.0005,
+            "basis": "MoneyBall refinement (winprob/v1): base = 1/1908 participants (projects 0, gallery unpublished).",
+            "inputs": {
+              "award_slots_top": 1,
+              "field_size": 1908,
+              "field_scored_count": 0,
+              "field_mean_composite": null,
+              "our_composite": null,
+              "participants": 1909,
+              "field_size_basis": "MoneyBall refinement denominator (see basis)"
+            },
+            "computed_at": "2026-10-28T22:09:00Z",
+            "superseded_by": "winprob/v2 (PR #2250 spec)"
+          }
+        }
+      },
+      "field_size": {
+        "status": "established",
+        "participants": 1909,
+        "participants_source": "event page HTML ('Participants (<N>)'), devpost.com",
+        "projects": 0,
+        "projects_source": "Devpost project gallery, devpost.com \u2014 RE-VERIFIED 2026-10-30T23:49Z: gallery page states the hackathon managers have not published the gallery yet; projects = 0 current",
+        "fetched_at": "2026-10-28T22:11:14Z",
+        "projects_note": "project gallery unpublished by the organizers",
+        "refresh_note": "Refresh attempted firsthand 2026-10-30T23:48Z: participants counter is no longer publicly readable (participants tab requires login; main page text exposes no count) \u2014 participants 1909 stands as of its 2026-10-28 source read; next refresh via the OSINT watch scrape.",
+        "refreshed_at": "2026-10-30T23:49:00Z"
+      },
+      "brief_status": {
+        "delphi_handoff": "Handed off to the Delphi lane 2026-10-30 with the rules stamp (brief id kiroween-delphi-concept).",
+        "delphi_pass": "RAN 2026-10-30T23:44:05Z (pass.json @master): status round_1_recorded; cycle ran [generate (n=3 candidates), cross_vote_round_1, expectations_recorded, facilitator_feedback]; specified_not_run [debate_revision, implementation, evidence_equalization...] under the eligibility gate; pass eligibility_gate.window_open = 2026-10-30T09:00:00-07:00 (agrees with rules s.1). Coordinator and pass records now agree (reconciled 2026-10-30, D4 sub-manager census delta).",
+        "delphi_debate": "LANDED 2026-10-30 (PR #2563 merged 63d22dd135, history-verified): pass status debate_recorded. Outcome (10 LOCAL_BASELINE ballots = 5 revision + 5 retained rubric): skeleton-crew 23.288 > frankenstein 22.865 > resurrection 22.481 (revision-only 23.308 / 22.462 / 21.692). Rank agreement 3/3 with brief-author priors (19/17/14) \u2014 calibration SUPPORTS the Manager skeleton-crew freeze; freeze authority unchanged (priors-based). Receipts: cycle/FEEDBACK.json + cycle/debate-ballots.json + DEBATE.md; ledger #1487 comment 6536136642. Owner HUMAN_COLLABORATOR ballot still open in parallel. Implementation / round 2 / stage-6 calibration after the post-Nov-8 build.",
+        "freeze": "skeleton-crew FROZEN 2026-10-30 (Manager, on priors); repo timerloggedout-spec/skeleton-crew created in-period 2026-10-30T23:55:28Z; DEBATE landed as calibration (3/3 rank agreement)."
       }
-     ]
-    }
-   ],
-   "participants": [],
-   "judges": [],
-   "opportunity_cost": {
-    "outcome": "pending",
-    "top_award": {
-     "value": 5000,
-     "form": "$5,000 USD cash (Grand Prize)",
-     "source": "https://builder.io/hackathon/rules"
     },
-    "gross_foregone": 0,
-    "non_monetary_foregone": [
-     "Grand Prize winner visibility/recognition",
-     "judge feedback"
-    ],
-    "computed_at": "2026-10-28"
-   },
-   "metrics_internal": {
-    "win_probability": {
-     "method": "winprob/v2",
-     "estimate": null,
-     "range": null,
-     "confidence": "none",
-     "prior": {
-      "base_rate": null,
-      "denominator": null,
-      "denominator_kind": null
-     },
-     "standing": {
-      "our_composite": null,
-      "our_percentile": null,
-      "field_mean": null,
-      "field_sd": null,
-      "scored_count": 0
-     },
-     "fit": {
-      "criteria_fit": null,
-      "judges_known": false
-     },
-     "unknowns": {
-      "unscored_share": 1,
-      "unverified_axis_weight_share": 1
-     },
-     "basis": "winprob/v2 (spec PR #2250): no sourced denominator \u2014 no prior exists; a number would be invented. Open OSINT task.",
-     "computed_at": "2026-10-28T22:20:00Z",
-     "superseded_v1": {
-      "method": "winprob/v1",
-      "estimate": null,
-      "basis": "NO ESTIMATE (MoneyBall ruling 2026-10-28): no sourced denominator of any kind \u2014 a number would be invented. Open OSINT task.",
-      "inputs": {
-       "award_slots_top": 1,
-       "field_size": null,
-       "field_scored_count": 0,
-       "field_mean_composite": null,
-       "our_composite": null,
-       "participants": null
+    {
+      "id": "D5",
+      "name": "AI Builder Day Hackathon - November 2026",
+      "host": "Aha! (Aha.io)",
+      "organizers": [
+        {
+          "name": "Aha!",
+          "role": "host",
+          "source_url": "https://www.aha.io/academy/events/ai-builder-day-hackathon-november-2026",
+          "fetched_at": "2026-10-28"
+        }
+      ],
+      "platform": "aha-io",
+      "official_url": "https://www.aha.io/academy/events/ai-builder-day-hackathon-november-2026",
+      "status": "registering",
+      "entrant_moniker": "entrant{n0nAha}[platform:aha-io]",
+      "dates": {
+        "announced": "NOT_ESTABLISHED",
+        "reg_open": "NOT_ESTABLISHED",
+        "reg_close": "NOT_ESTABLISHED",
+        "build_start": {
+          "at": "2026-11-17T09:00:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official event page (read 2026-10-28): Kick off Nov. 17 at 9 a.m. PT; Build Nov. 17-19"
+        },
+        "build_end": {
+          "at": "2026-11-19T12:00:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official Contest Rules: submissions no later than Thursday, Nov. 19 at 12 p.m. PT"
+        },
+        "submissions_open": {
+          "at": "2026-11-17T09:00:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official event page: build window opens at kickoff (submission mechanics per the Contest Rules)"
+        },
+        "deadline": {
+          "at": "2026-11-19T12:00:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official Contest Rules verbatim (read 2026-10-28): Each team must submit a video recording demonstrating your application no later than Thursday, Nov. 19 at 12 p.m. PT."
+        },
+        "judging_end": "NOT_ESTABLISHED",
+        "winners_at": {
+          "at": "2026-11-20T11:30:00-08:00",
+          "tz": "America/Los_Angeles",
+          "source": "official event page: Show it off / awards Nov. 20 at 11:30 a.m. PT"
+        }
       },
-      "computed_at": "2026-10-28T22:09:00Z",
-      "superseded_by": "winprob/v2 (PR #2250 spec)"
-     }
-    }
-   },
-   "field_size": {
-    "status": "open_task",
-    "participants": null,
-    "participants_source": null,
-    "projects": null,
-    "projects_note": "builder.io/hackathon displays NO participant/project count ('No registration required', internal submission form only) \u2014 OPEN TASK, source may never be public pre-close",
-    "fetched_at": "2026-10-28T22:05:00Z"
-   }
-  },
-  {
-   "id": "D4",
-   "name": "Kiroween 2026",
-   "host": "Devpost (Kiro)",
-   "organizers": [
-    {
-     "name": "Kiro",
-     "role": "host",
-     "source_url": "https://kiroween.devpost.com",
-     "fetched_at": "2026-10-28"
-    },
-    {
-     "name": "Devpost",
-     "role": "platform",
-     "source_url": "https://kiroween.devpost.com",
-     "fetched_at": "2026-10-28"
-    }
-   ],
-   "platform": "devpost",
-   "also_platforms": [
-    "kiro"
-   ],
-   "official_url": "https://kiroween.devpost.com",
-   "status": "registering",
-   "entrant_moniker": "entrant{entrantDevpost}[platform:devpost]",
-   "dates": {
-    "announced": "NOT_ESTABLISHED",
-    "reg_open": {
-     "at": "2026-10-13T08:30:00-07:00",
-     "tz": "America/Los_Angeles",
-     "source": "official RULES s.1 (kiroween.devpost.com/rules, read 2026-10-30)"
-    },
-    "reg_close": {
-     "at": "2026-12-04T14:00:00-08:00",
-     "tz": "America/Los_Angeles",
-     "source": "official RULES s.1 (kiroween.devpost.com/rules, read 2026-10-30)"
-    },
-    "build_start": {
-     "at": "2026-10-30T09:00:00-07:00",
-     "tz": "America/Los_Angeles",
-     "source": "official RULES s.1 (kiroween.devpost.com/rules, read 2026-10-30): Submission Period opens Oct 30, 2026 9:00 AM PT (CORRECTS the 13:00 dates-page value carried earlier; rules prevail)"
-    },
-    "build_end": {
-     "at": "2026-12-04T14:00:00-08:00",
-     "tz": "America/Los_Angeles",
-     "source": "official page: until Friday, December 4, 2026 at 2:00 PM Pacific Time"
-    },
-    "submissions_open": {
-     "at": "2026-10-30T09:00:00-07:00",
-     "tz": "America/Los_Angeles",
-     "source": "official RULES s.1 (kiroween.devpost.com/rules, read 2026-10-30)"
-    },
-    "deadline": {
-     "at": "2026-12-04T14:00:00-08:00",
-     "tz": "America/Los_Angeles",
-     "source": "official page (read 2026-10-28): Friday, December 4, 2026 at 2:00 PM Pacific Time"
-    },
-    "judging_end": {
-     "at": "2027-01-29T13:00:00-08:00",
-     "tz": "America/Los_Angeles",
-     "source": "official RULES s.1 (kiroween.devpost.com/rules, read 2026-10-30): Judging Period Dec 16, 2026 - Jan 29, 2027"
-    },
-    "winners_at": {
-     "at": "2027-02-03T09:00:00-08:00",
-     "tz": "America/Los_Angeles",
-     "source": "official RULES s.1 (kiroween.devpost.com/rules, read 2026-10-30): on or around Feb 3, 2027"
-    }
-   },
-   "constraints": [
-    "Do not start building your project yet.",
-    "Only new projects created during the submission period will be eligible."
-   ],
-   "gates": [
-    {
-     "id": "D4-ACCOUNTS",
-     "label": "Devpost account + Kiro user ID created (fleet Google identity route)",
-     "blocks": "D4 registration completion",
-     "owner": "devpost-kiro lane (chat 79a004f8-3f3f-4a99-91c1-db3e54eeeb63)",
-     "status": "open",
-     "evidence": "PARTIAL 2026-10-29 (accounts lane, browser-verified): Devpost account created, handle timerloggedout, PROFILE COMPLETE (bio/skills/interests/occupation recorded in PROFILE-REGISTRY.md). Kiro account exists (Google sign-in, KIRO FREE) with NO editable profile fields. STILL BLOCKED: Kiroween registration + the exact Kiro user ID (Cloudflare + ID-surface blockers; RE target brief #1729 in dispatch)."
-    },
-    {
-     "id": "D4-ELIGIBILITY",
-     "label": "No project creation or build start before 2026-10-30T09:00:00-07:00 (official rules s.1 Submission Period open; mechanical gate in the brief and in the generator cycle code; label corrected 2026-10-30 from the stale 13:00 dates-page value)",
-     "blocks": "any D4 build start",
-     "owner": "challenge-entries lane + delphi-lane tooling",
-     "status": "cleared",
-     "evidence": "Brief eligibility_gate (docs/proposals/briefs/kiroween-delphi-concept.brief.json); log enforcement PR #1717; cycle-code enforcement PR #1719. Creation timestamp is captured into the packet as eligibility evidence at creation. | Window OPEN since 2026-10-30 09:00 PT; Delphi pass ran 2026-10-30T23:44Z under this gate (implementation stage specified_not_run). | CLEARED 2026-10-30 (gates-delegate delta + Manager ruling): window opened 2026-10-30T09:00 PT; no D4 project was created before the open; the frozen pick repo was created in-period (see projects). Not a live blocker."
-    }
-   ],
-   "prizes": {
-    "status": "ESTABLISHED",
-    "source": "official RULES s.1 (kiroween.devpost.com/rules, read 2026-10-30) (s.8 Prizes)",
-    "pool": "$94,000 cash + subscription/credit prizes (announced as $100,000 in cash prizes)",
-    "tiers": {
-     "overall": [
-      "1st $30,000",
-      "2nd $20,000",
-      "3rd $10,000"
-     ],
-     "category": [
-      "Best Resurrection $5,000",
-      "Best Frankenstein $5,000",
-      "Best Skeleton Crew $5,000",
-      "Best Costume Contest $5,000"
-     ],
-     "bonus": [
-      "Best Startup Project $10,000",
-      "Best Ghost of Kiroween Past $2,000",
-      "Best Kiro Crew App $1,000",
-      "Best Demo $1,000",
-      "Best Student Project: 1-year Kiro Pro Max subscription (~$1,500) x4",
-      "Bonus Blog Prize: 2,000 Kiro credits x100",
-      "Social Blitz Prize: 3-month Kiro Pro+ subscription x5"
-     ]
-    },
-    "note": "One Overall OR one Category prize per project, plus any number of Bonus prizes."
-   },
-   "moneyball": {
-    "schema": "moneyball-plane/v2",
-    "weights": {
-     "track_record": 0.3,
-     "momentum": 0.25,
-     "engagement_surface": 0.2,
-     "composability_fit": 0.15,
-     "inverse_engagement_cost": 0.1
-    },
-    "flag_threshold": 6.0,
-    "fixed_at": "2026-10-28",
-    "fixed_ref": "ops/moneyball/plane.json consumers[0].pattern_for_consumer (PR #2211); weights fixed at intake, before any score"
-   },
-   "registration": {
-    "state": "in progress (delegated)",
-    "evidence": [
-     "Registration attempted 2026-10-26; stopped at the Devpost sign-up wall.",
-     "Account creation owned by the Devpost + Kiro ID creation lane (owner order 2026-10-27, fleet Google identity route)."
-    ]
-   },
-   "submission": {
-    "state": "none",
-    "at": null,
-    "confirmation_ref": null
-   },
-   "brief": {
-    "evidence_pack_ref": "docs/proposals/briefs/kiroween-delphi-concept.brief.json",
-    "anchor_lines": [
-     "Do not start building your project yet.",
-     "Only new projects created during the submission period will be eligible."
-    ]
-   },
-   "projects": [
-    {
-     "id": "kiroween-skeleton-crew",
-     "name": "Kiroween variant: skeleton-crew",
-     "one_liner": "Brief variant (Skeleton Crew theme): a CMDB/reconciliation viewer as a minimal spec-first skeleton, shown with two distinct applications.",
-     "origin": "brief-first-gen",
-     "brief_anchor": "docs/proposals/briefs/kiroween-delphi-concept.brief.json (variants)",
-     "status": "frozen",
-     "reason": "Manager freeze 2026-10-30 on brief-author priors (19>17>14) + profile points (3>2=2) + scope certainty, after the round-1 tie (23.269 x3, LOCAL_BASELINE only); DEBATE (landed, calibration-only) rank-agrees 3/3 with the priors.",
-     "superseded_by": null,
-     "assets": {
-      "repo_dir": null,
-      "proposal_dir": "docs/proposals/passes/kiroween-delphi-concept",
-      "demo_url": null,
-      "clips_url": null,
-      "repo_url": "https://github.com/timerloggedout-spec/skeleton-crew",
-      "repo_created": "2026-10-30T23:55:28Z (in-period; created by Manager)",
-      "scaffold": "Landed on skeleton-crew@main commit 6b99cd4c006915fde3d540edc11fc46d47f766ff (D4 seat, recursive tree verified): /.kiro + LICENSE + foundation + apps/conflict-viewer + apps/stamped-report + README stub \u2014 Skeleton Crew shape (foundation + 2 distinct app folders) per rules."
-     },
-     "decisions": []
-    },
-    {
-     "id": "kiroween-frankenstein",
-     "name": "Kiroween variant: frankenstein",
-     "one_liner": "Brief variant (Frankenstein theme): a new in-window project stitched from public patterns of the offline Oracle MVP and the D0 package.",
-     "origin": "brief-first-gen",
-     "brief_anchor": "docs/proposals/briefs/kiroween-delphi-concept.brief.json (variants)",
-     "status": "superseded-by-freeze",
-     "reason": "Not frozen; skeleton-crew frozen 2026-10-30 (Manager ruling on priors).",
-     "superseded_by": "kiroween-skeleton-crew",
-     "assets": {
-      "repo_dir": null,
-      "proposal_dir": "docs/proposals/passes/kiroween-delphi-concept",
-      "demo_url": null,
-      "clips_url": null
-     },
-     "decisions": []
-    },
-    {
-     "id": "kiroween-resurrection",
-     "name": "Kiroween variant: resurrection",
-     "one_liner": "Brief variant (Resurrection theme): a dormant public spec rebuilt fresh in-window; subject picked at brief lock under a scope cap.",
-     "origin": "brief-first-gen",
-     "brief_anchor": "docs/proposals/briefs/kiroween-delphi-concept.brief.json (variants)",
-     "status": "superseded-by-freeze",
-     "reason": "Not frozen; skeleton-crew frozen 2026-10-30 (Manager ruling on priors).",
-     "superseded_by": "kiroween-skeleton-crew",
-     "assets": {
-      "repo_dir": null,
-      "proposal_dir": "docs/proposals/passes/kiroween-delphi-concept",
-      "demo_url": null,
-      "clips_url": null
-     },
-     "decisions": []
-    }
-   ],
-   "participants": [],
-   "judges": [],
-   "opportunity_cost": {
-    "outcome": "pending",
-    "top_award": {
-     "value": 30000,
-     "form": "$30,000 cash (Overall 1st place)",
-     "source": "Official rules s.8 + event page prize table (read firsthand 2026-10-30): Overall 1st $30,000 / 2nd $20,000 / 3rd $10,000; cash total $94,000 + subscriptions/credits",
-     "status": "ESTABLISHED (corrected 2026-10-30 from stale NOT_ESTABLISHED)"
-    },
-    "gross_foregone": 0,
-    "non_monetary_foregone": [
-     "winner visibility",
-     "judge feedback"
-    ],
-    "computed_at": "2026-10-28"
-   },
-   "metrics_internal": {
-    "win_probability": {
-     "method": "winprob/v2",
-     "estimate": 0.0005,
-     "range": [
-      2.5e-05,
-      0.001
-     ],
-     "confidence": "low",
-     "prior": {
-      "base_rate": 0.000524,
-      "denominator": 1908,
-      "denominator_kind": "participants"
-     },
-     "standing": {
-      "our_composite": null,
-      "our_percentile": null,
-      "field_mean": null,
-      "field_sd": null,
-      "scored_count": 0
-     },
-     "fit": {
-      "criteria_fit": null,
-      "judges_known": false
-     },
-     "unknowns": {
-      "unscored_share": 1,
-      "unverified_axis_weight_share": 1
-     },
-     "basis": "winprob/v2 (spec PR #2250): prior 1/1908 participants (worked value at spec time; live count 1909 per scraper \u2014 adaptive recompute next trigger); u=1, v=1, k=0.95. v1 superseded.",
-     "computed_at": "2026-10-28T22:20:00Z",
-     "superseded_v1": {
-      "method": "winprob/v1",
-      "estimate": 0.0005,
-      "basis": "MoneyBall refinement (winprob/v1): base = 1/1908 participants (projects 0, gallery unpublished).",
-      "inputs": {
-       "award_slots_top": 1,
-       "field_size": 1908,
-       "field_scored_count": 0,
-       "field_mean_composite": null,
-       "our_composite": null,
-       "participants": 1909,
-       "field_size_basis": "MoneyBall refinement denominator (see basis)"
+      "constraints": [
+        "Anonymous registrations will not be accepted. We will review complete registrations and email you to confirm your spot.",
+        "Each team must submit a video recording demonstrating your application no later than Thursday, Nov. 19 at 12 p.m. PT.",
+        "You may participate individually, or in a team of up to three eligible persons."
+      ],
+      "gates": [
+        {
+          "id": "D5-SPOT",
+          "label": "Spot confirmation email from Aha!'s registration review",
+          "blocks": "D5 build commitment",
+          "owner": "Aha! (platform review)",
+          "status": "open",
+          "evidence": "Registration submitted 2026-10-27 23:34 PT (agency, 4n0n); on-screen confirmation: 'Thanks for registering! We will review your registration and email you to confirm your spot.' No confirmation or rejection email as of 2026-10-28."
+        }
+      ],
+      "prizes": {
+        "status": "ESTABLISHED",
+        "pool": null,
+        "tiers": [
+          {
+            "place": "winner - Best replacement app",
+            "award": "Six-month subscription to Aha! Builder (approx. retail value $744) for each member of the winning team; AI Builder badge and certificate (event page)",
+            "source_url": "https://www.aha.io/hackathon/ai-builder-day-contest-rules"
+          },
+          {
+            "place": "winner - Most innovative user interface",
+            "award": "Six-month subscription to Aha! Builder (approx. retail value $744) for each member of the winning team; AI Builder badge and certificate (event page)",
+            "source_url": "https://www.aha.io/hackathon/ai-builder-day-contest-rules"
+          }
+        ],
+        "notes": "Judges also select an honorable mention in each category; the rules state no separate prize for honorable mention. No cash prizes published. Each team receives a 14-day free trial of Aha! Builder plus AI credits to build with (Contest Rules section 3)."
       },
-      "computed_at": "2026-10-28T22:09:00Z",
-      "superseded_by": "winprob/v2 (PR #2250 spec)"
-     }
-    }
-   },
-   "field_size": {
-    "status": "established",
-    "participants": 1909,
-    "participants_source": "event page HTML ('Participants (<N>)'), devpost.com",
-    "projects": 0,
-    "projects_source": "Devpost project gallery, devpost.com \u2014 RE-VERIFIED 2026-10-30T23:49Z: gallery page states the hackathon managers have not published the gallery yet; projects = 0 current",
-    "fetched_at": "2026-10-28T22:11:14Z",
-    "projects_note": "project gallery unpublished by the organizers",
-    "refresh_note": "Refresh attempted firsthand 2026-10-30T23:48Z: participants counter is no longer publicly readable (participants tab requires login; main page text exposes no count) \u2014 participants 1909 stands as of its 2026-10-28 source read; next refresh via the OSINT watch scrape.",
-    "refreshed_at": "2026-10-30T23:49:00Z"
-   },
-   "brief_status": {
-    "delphi_handoff": "Handed off to the Delphi lane 2026-10-30 with the rules stamp (brief id kiroween-delphi-concept).",
-    "delphi_pass": "RAN 2026-10-30T23:44:05Z (pass.json @master): status round_1_recorded; cycle ran [generate (n=3 candidates), cross_vote_round_1, expectations_recorded, facilitator_feedback]; specified_not_run [debate_revision, implementation, evidence_equalization...] under the eligibility gate; pass eligibility_gate.window_open = 2026-10-30T09:00:00-07:00 (agrees with rules s.1). Coordinator and pass records now agree (reconciled 2026-10-30, D4 sub-manager census delta).",
-    "delphi_debate": "LANDED 2026-10-30 (PR #2563 merged 63d22dd135, history-verified): pass status debate_recorded. Outcome (10 LOCAL_BASELINE ballots = 5 revision + 5 retained rubric): skeleton-crew 23.288 > frankenstein 22.865 > resurrection 22.481 (revision-only 23.308 / 22.462 / 21.692). Rank agreement 3/3 with brief-author priors (19/17/14) \u2014 calibration SUPPORTS the Manager skeleton-crew freeze; freeze authority unchanged (priors-based). Receipts: cycle/FEEDBACK.json + cycle/debate-ballots.json + DEBATE.md; ledger #1487 comment 6536136642. Owner HUMAN_COLLABORATOR ballot still open in parallel. Implementation / round 2 / stage-6 calibration after the post-Nov-8 build.",
-    "freeze": "skeleton-crew FROZEN 2026-10-30 (Manager, on priors); repo timerloggedout-spec/skeleton-crew created in-period 2026-10-30T23:55:28Z; DEBATE landed as calibration (3/3 rank agreement)."
-   }
-  },
-  {
-   "id": "D5",
-   "name": "AI Builder Day Hackathon - November 2026",
-   "host": "Aha! (Aha.io)",
-   "organizers": [
-    {
-     "name": "Aha!",
-     "role": "host",
-     "source_url": "https://www.aha.io/academy/events/ai-builder-day-hackathon-november-2026",
-     "fetched_at": "2026-10-28"
-    }
-   ],
-   "platform": "aha-io",
-   "official_url": "https://www.aha.io/academy/events/ai-builder-day-hackathon-november-2026",
-   "status": "registering",
-   "entrant_moniker": "entrant{n0nAha}[platform:aha-io]",
-   "dates": {
-    "announced": "NOT_ESTABLISHED",
-    "reg_open": "NOT_ESTABLISHED",
-    "reg_close": "NOT_ESTABLISHED",
-    "build_start": {
-     "at": "2026-11-17T09:00:00-08:00",
-     "tz": "America/Los_Angeles",
-     "source": "official event page (read 2026-10-28): Kick off Nov. 17 at 9 a.m. PT; Build Nov. 17-19"
-    },
-    "build_end": {
-     "at": "2026-11-19T12:00:00-08:00",
-     "tz": "America/Los_Angeles",
-     "source": "official Contest Rules: submissions no later than Thursday, Nov. 19 at 12 p.m. PT"
-    },
-    "submissions_open": {
-     "at": "2026-11-17T09:00:00-08:00",
-     "tz": "America/Los_Angeles",
-     "source": "official event page: build window opens at kickoff (submission mechanics per the Contest Rules)"
-    },
-    "deadline": {
-     "at": "2026-11-19T12:00:00-08:00",
-     "tz": "America/Los_Angeles",
-     "source": "official Contest Rules verbatim (read 2026-10-28): Each team must submit a video recording demonstrating your application no later than Thursday, Nov. 19 at 12 p.m. PT."
-    },
-    "judging_end": "NOT_ESTABLISHED",
-    "winners_at": {
-     "at": "2026-11-20T11:30:00-08:00",
-     "tz": "America/Los_Angeles",
-     "source": "official event page: Show it off / awards Nov. 20 at 11:30 a.m. PT"
-    }
-   },
-   "constraints": [
-    "Anonymous registrations will not be accepted. We will review complete registrations and email you to confirm your spot.",
-    "Each team must submit a video recording demonstrating your application no later than Thursday, Nov. 19 at 12 p.m. PT.",
-    "You may participate individually, or in a team of up to three eligible persons."
-   ],
-   "gates": [
-    {
-     "id": "D5-SPOT",
-     "label": "Spot confirmation email from Aha!'s registration review",
-     "blocks": "D5 build commitment",
-     "owner": "Aha! (platform review)",
-     "status": "open",
-     "evidence": "Registration submitted 2026-10-27 23:34 PT (agency, 4n0n); on-screen confirmation: 'Thanks for registering! We will review your registration and email you to confirm your spot.' No confirmation or rejection email as of 2026-10-28."
-    }
-   ],
-   "prizes": {
-    "status": "ESTABLISHED",
-    "pool": null,
-    "tiers": [
-     {
-      "place": "winner - Best replacement app",
-      "award": "Six-month subscription to Aha! Builder (approx. retail value $744) for each member of the winning team; AI Builder badge and certificate (event page)",
-      "source_url": "https://www.aha.io/hackathon/ai-builder-day-contest-rules"
-     },
-     {
-      "place": "winner - Most innovative user interface",
-      "award": "Six-month subscription to Aha! Builder (approx. retail value $744) for each member of the winning team; AI Builder badge and certificate (event page)",
-      "source_url": "https://www.aha.io/hackathon/ai-builder-day-contest-rules"
-     }
-    ],
-    "notes": "Judges also select an honorable mention in each category; the rules state no separate prize for honorable mention. No cash prizes published. Each team receives a 14-day free trial of Aha! Builder plus AI credits to build with (Contest Rules section 3)."
-   },
-   "moneyball": {
-    "schema": "moneyball-plane/v2",
-    "weights": {
-     "track_record": 0.3,
-     "momentum": 0.25,
-     "engagement_surface": 0.2,
-     "composability_fit": 0.15,
-     "inverse_engagement_cost": 0.1
-    },
-    "flag_threshold": 6.0,
-    "fixed_at": "2026-10-28",
-    "fixed_ref": "ops/moneyball/plane.json consumers[0].pattern_for_consumer (PR #2211); weights fixed at intake, before any score"
-   },
-   "registration": {
-    "state": "submitted - spot pending review",
-    "evidence": [
-     "On-screen confirmation 2026-10-27 23:34 PT: 'Thanks for registering! We will review your registration and email you to confirm your spot in the AI Builder Day hackathon and share more details soon.'",
-     "Form-only registration: no account, profile, or handle created; no platform ID issued. Recorded as R4 in challenge log section 1 (PR #1969)."
-    ]
-   },
-   "submission": {
-    "state": "none",
-    "at": null,
-    "confirmation_ref": null
-   },
-   "brief": {
-    "evidence_pack_ref": null,
-    "anchor_lines": [
-     "Pick an application that frustrates you - then build a better alternative with Aha! Builder."
-    ]
-   },
-   "projects": [],
-   "participants": [],
-   "judges": [],
-   "opportunity_cost": {
-    "outcome": "pending",
-    "top_award": {
-     "value": 744,
-     "form": "Six-month Aha! Builder subscription (approx. retail $744) per winning-team member + AI Builder badge + certificate",
-     "source": "https://www.aha.io/hackathon/ai-builder-day-contest-rules"
-    },
-    "gross_foregone": 0,
-    "non_monetary_foregone": [
-     "AI Builder badge",
-     "winner certificate",
-     "winner visibility"
-    ],
-    "computed_at": "2026-10-28"
-   },
-   "metrics_internal": {
-    "win_probability": {
-     "method": "winprob/v2",
-     "estimate": null,
-     "range": null,
-     "confidence": "none",
-     "prior": {
-      "base_rate": null,
-      "denominator": null,
-      "denominator_kind": null
-     },
-     "standing": {
-      "our_composite": null,
-      "our_percentile": null,
-      "field_mean": null,
-      "field_sd": null,
-      "scored_count": 0
-     },
-     "fit": {
-      "criteria_fit": null,
-      "judges_known": false
-     },
-     "unknowns": {
-      "unscored_share": 1,
-      "unverified_axis_weight_share": 1
-     },
-     "basis": "winprob/v2 (spec PR #2250): no sourced denominator \u2014 no prior exists. Open OSINT task.",
-     "computed_at": "2026-10-28T22:20:00Z",
-     "superseded_v1": {
-      "method": "winprob/v1",
-      "estimate": null,
-      "basis": "NO ESTIMATE (MoneyBall ruling 2026-10-28): no sourced denominator of any kind \u2014 a number would be invented. Open OSINT task.",
-      "inputs": {
-       "award_slots_top": 1,
-       "field_size": null,
-       "field_scored_count": 0,
-       "field_mean_composite": null,
-       "our_composite": null,
-       "participants": null
+      "moneyball": {
+        "schema": "moneyball-plane/v2",
+        "weights": {
+          "track_record": 0.3,
+          "momentum": 0.25,
+          "engagement_surface": 0.2,
+          "composability_fit": 0.15,
+          "inverse_engagement_cost": 0.1
+        },
+        "flag_threshold": 6.0,
+        "fixed_at": "2026-10-28",
+        "fixed_ref": "ops/moneyball/plane.json consumers[0].pattern_for_consumer (PR #2211); weights fixed at intake, before any score"
       },
-      "computed_at": "2026-10-28T22:09:00Z",
-      "superseded_by": "winprob/v2 (PR #2250 spec)"
-     }
+      "registration": {
+        "state": "submitted - spot pending review",
+        "evidence": [
+          "On-screen confirmation 2026-10-27 23:34 PT: 'Thanks for registering! We will review your registration and email you to confirm your spot in the AI Builder Day hackathon and share more details soon.'",
+          "Form-only registration: no account, profile, or handle created; no platform ID issued. Recorded as R4 in challenge log section 1 (PR #1969)."
+        ]
+      },
+      "submission": {
+        "state": "none",
+        "at": null,
+        "confirmation_ref": null
+      },
+      "brief": {
+        "evidence_pack_ref": null,
+        "anchor_lines": [
+          "Pick an application that frustrates you - then build a better alternative with Aha! Builder."
+        ]
+      },
+      "projects": [],
+      "participants": [],
+      "judges": [],
+      "opportunity_cost": {
+        "outcome": "pending",
+        "top_award": {
+          "value": 744,
+          "form": "Six-month Aha! Builder subscription (approx. retail $744) per winning-team member + AI Builder badge + certificate",
+          "source": "https://www.aha.io/hackathon/ai-builder-day-contest-rules"
+        },
+        "gross_foregone": 0,
+        "non_monetary_foregone": [
+          "AI Builder badge",
+          "winner certificate",
+          "winner visibility"
+        ],
+        "computed_at": "2026-10-28"
+      },
+      "metrics_internal": {
+        "win_probability": {
+          "method": "winprob/v2",
+          "estimate": null,
+          "range": null,
+          "confidence": "none",
+          "prior": {
+            "base_rate": null,
+            "denominator": null,
+            "denominator_kind": null
+          },
+          "standing": {
+            "our_composite": null,
+            "our_percentile": null,
+            "field_mean": null,
+            "field_sd": null,
+            "scored_count": 0
+          },
+          "fit": {
+            "criteria_fit": null,
+            "judges_known": false
+          },
+          "unknowns": {
+            "unscored_share": 1,
+            "unverified_axis_weight_share": 1
+          },
+          "basis": "winprob/v2 (spec PR #2250): no sourced denominator \u2014 no prior exists. Open OSINT task.",
+          "computed_at": "2026-10-28T22:20:00Z",
+          "superseded_v1": {
+            "method": "winprob/v1",
+            "estimate": null,
+            "basis": "NO ESTIMATE (MoneyBall ruling 2026-10-28): no sourced denominator of any kind \u2014 a number would be invented. Open OSINT task.",
+            "inputs": {
+              "award_slots_top": 1,
+              "field_size": null,
+              "field_scored_count": 0,
+              "field_mean_composite": null,
+              "our_composite": null,
+              "participants": null
+            },
+            "computed_at": "2026-10-28T22:09:00Z",
+            "superseded_by": "winprob/v2 (PR #2250 spec)"
+          }
+        }
+      },
+      "field_size": {
+        "status": "open_task",
+        "participants": null,
+        "participants_source": null,
+        "projects": null,
+        "projects_note": "aha.io event page displays NO participant/team/project counter or gallery \u2014 OPEN TASK",
+        "fetched_at": "2026-10-28T22:05:00Z"
+      }
     }
-   },
-   "field_size": {
-    "status": "open_task",
-    "participants": null,
-    "participants_source": null,
-    "projects": null,
-    "projects_note": "aha.io event page displays NO participant/team/project counter or gallery \u2014 OPEN TASK",
-    "fetched_at": "2026-10-28T22:05:00Z"
-   }
-  }
- ],
- "derived": {
-  "note": "Computed by tooling from the events above (scripts/challenge_entries/countdowns.py --json over the log's stored instants, plus counts from the registration/submission states); never hand-written.",
-  "computed_at": "2026-10-28T12:53:00-07:00",
-  "next_deadline": {
-   "event_id": "D1",
-   "at": "2026-11-04T23:59:00-08:00",
-   "tz": "America/Los_Angeles"
-  },
-  "countdowns": [
-   {
-    "id": "D0",
-    "opens": null,
-    "closes": "2026-10-26T13:00:00-07:00",
-    "state": "CLOSED"
-   },
-   {
-    "id": "D1",
-    "opens": "2026-10-28T00:00:00-07:00",
-    "closes": "2026-11-04T23:59:00-08:00",
-    "state": "closes in 7d 12h"
-   },
-   {
-    "id": "D2",
-    "opens": "2026-11-05T00:00:00-08:00",
-    "closes": "2026-11-08T15:00:00-08:00",
-    "state": "opens in 7d 12h"
-   },
-   {
-    "id": "D3",
-    "opens": null,
-    "closes": "2026-11-09T23:59:00-08:00",
-    "state": "closes in 12d 12h"
-   },
-   {
-    "id": "D4",
-    "opens": "2026-10-30T09:00:00-07:00",
-    "closes": "2026-12-04T14:00:00-08:00",
-    "state": "OPEN (window opened 2026-10-30 09:00 PT)"
-   },
-   {
-    "id": "D5",
-    "opens": "2026-11-17T09:00:00-08:00",
-    "closes": "2026-11-19T12:00:00-08:00",
-    "state": "opens in 19d 21h"
-   }
   ],
-  "critical_path": [
-   "G-07 profile gate (blocks D1 validity)",
-   "D1 workshop sitting + completion evidence (Oct 28 - Nov 4)",
-   "D4 eligibility opened Oct 30 09:00 PT per rules s.1 (brief handoff + Delphi pass round 1 same day)",
-   "D1 submission deadline Nov 4 23:59 PT",
-   "D2 submission deadline Nov 8 15:00 PT",
-   "D3 submission deadline Nov 9 23:59 PT",
-   "D5 build Nov 17-19 (spot confirmation first)"
+  "derived": {
+    "note": "Computed by tooling from the events above (scripts/challenge_entries/countdowns.py --json over the log's stored instants, plus counts from the registration/submission states); never hand-written.",
+    "computed_at": "2026-10-28T12:53:00-07:00",
+    "next_deadline": {
+      "event_id": "D1",
+      "at": "2026-11-04T23:59:00-08:00",
+      "tz": "America/Los_Angeles"
+    },
+    "countdowns": [
+      {
+        "id": "D0",
+        "opens": null,
+        "closes": "2026-10-26T13:00:00-07:00",
+        "state": "CLOSED"
+      },
+      {
+        "id": "D1",
+        "opens": "2026-10-28T00:00:00-07:00",
+        "closes": "2026-11-04T23:59:00-08:00",
+        "state": "closes in 7d 12h"
+      },
+      {
+        "id": "D2",
+        "opens": "2026-11-05T00:00:00-08:00",
+        "closes": "2026-11-08T15:00:00-08:00",
+        "state": "opens in 7d 12h"
+      },
+      {
+        "id": "D3",
+        "opens": null,
+        "closes": "2026-11-09T23:59:00-08:00",
+        "state": "closes in 12d 12h"
+      },
+      {
+        "id": "D4",
+        "opens": "2026-10-30T09:00:00-07:00",
+        "closes": "2026-12-04T14:00:00-08:00",
+        "state": "OPEN (window opened 2026-10-30 09:00 PT)"
+      },
+      {
+        "id": "D5",
+        "opens": "2026-11-17T09:00:00-08:00",
+        "closes": "2026-11-19T12:00:00-08:00",
+        "state": "opens in 19d 21h"
+      }
+    ],
+    "critical_path": [
+      "G-07 profile gate (blocks D1 validity)",
+      "D1 workshop sitting + completion evidence (Oct 28 - Nov 4)",
+      "D4 eligibility opened Oct 30 09:00 PT per rules s.1 (brief handoff + Delphi pass round 1 same day)",
+      "D1 submission deadline Nov 4 23:59 PT",
+      "D2 submission deadline Nov 8 15:00 PT",
+      "D3 submission deadline Nov 9 23:59 PT",
+      "D5 build Nov 17-19 (spot confirmation first)"
+    ],
+    "counts": {
+      "submitted": 0,
+      "registered": 4,
+      "in_build": 0
+    }
+  },
+  "opportunity_ledger": {
+    "json": "ops/challenge/opportunity_ledger.json",
+    "doc": "docs/ops/CHALLENGE-OPPORTUNITY-LEDGER.md",
+    "rule": "append-only; corrections as new entries; entry appended at every event close; AT_RISK for live near-deadline events without submission"
+  },
+  "osint": {
+    "coverage": "ops/challenge/osint/coverage.json",
+    "snapshots": "ops/challenge/osint/snapshots.json",
+    "watch": "scripts/challenge/osint_watch.py via .github/workflows/challenge-osint-watch.yml (weekly Wed 08:17Z + push + dispatch)",
+    "contract": "docs/ops/CHALLENGE-OSINT.md",
+    "rule": "public sources only; every fact sourced + fetched_at; gaps NOT_ESTABLISHED"
+  },
+  "planning_horizons": [
+    {
+      "candidates": [
+        {
+          "deadline": "2026-12-22T12:00:00-08:00",
+          "event": "Codegeist 2026 \u2014 Atlassian (Devpost)",
+          "fetched_at": "2026-10-30",
+          "prework_vs_start": "clean",
+          "prizes": "$120,000",
+          "rule": "Rules s.4 'New & Existing': pre-existing projects permitted if updated or rebuilt in the Forge platform after the Submission Period start, with a Forge manifest + at least one Forge module. The 2026-10-29 start also falls inside the Submission Period. Structural requirement (not temporal): the entered Project must be a Forge app integrating at least one Atlassian product (Jira/Confluence/JSM/Bitbucket/Teamwork Graph/Rovo); Repo Replay fits as the underlying engine under a Forge layer.",
+          "source_url": "https://codegeist2026.devpost.com/rules",
+          "submission_period": "2026-10-27T09:00:00-07:00 / 2026-12-22T12:00:00-08:00",
+          "log_fit_of_record": "Log s.3 C8 (PR #2481): primary fit = I1 Repo+Story (GitHub App surface, owner-named 2026-10-30), candidate unassigned. The Repo Replay shape above is a second, unassigned claimant shape assessed by this lane 2026-10-30; the two do not collide. Any claim by either => Manager rules-check first."
+        },
+        {
+          "deadline": "2026-12-20 (submission); judging begins 2026-12-22",
+          "event": "International AI Startup Challenge (IASC)",
+          "fetched_at": "2026-10-30",
+          "prework_vs_start": "bar",
+          "rule": "Eligibility bar independent of pre-work: competition is for students ages 13-18 only (official page, read 2026-10-30). Entrant pool categorically closed.",
+          "source_url": "https://www.joiniasc.org/"
+        },
+        {
+          "deadline": "2026-12-01 (exploit registration)",
+          "event": "ZeroDay.Cloud 2026 \u2014 Wiz",
+          "fetched_at": "2026-10-30",
+          "prework_vs_start": "bar",
+          "rule": "Not an entry vehicle for a project: the competition pays for exploits against open-source software; a version-control project is a potential target class, not a submission.",
+          "source_url": "https://devgrantsdaily.com/industry/devtools/"
+        }
+      ],
+      "claim_gate": "Any future event claim for Repo Replay => Manager rules-check FIRST (reaffirmed 2026-10-30).",
+      "field_note": "Remainder of the December 2026 dev-tools field = grants/bounties (rolling, no in-period project rules): HeroDevs OSS Sustainability Fund, goose grant (Block), OpenAI Codex for Open Source, Gem Fellowship (Ruby-bound). Enumerated 2026-10-30 by the challenge-entries lane (Manager-directed pass).",
+      "horizon_date": "2026-12-22",
+      "kind": "planning_horizon_only",
+      "not_a_claim": true,
+      "not_a_submission_state": true,
+      "not_an_event_entry": true,
+      "project_start": "2026-10-29 (public repo, timestamped commits)",
+      "subject": "Repo Replay / RevWright"
+    }
   ],
-  "counts": {
-   "submitted": 0,
-   "registered": 4,
-   "in_build": 0
-  }
- },
- "opportunity_ledger": {
-  "json": "ops/challenge/opportunity_ledger.json",
-  "doc": "docs/ops/CHALLENGE-OPPORTUNITY-LEDGER.md",
-  "rule": "append-only; corrections as new entries; entry appended at every event close; AT_RISK for live near-deadline events without submission"
- },
- "osint": {
-  "coverage": "ops/challenge/osint/coverage.json",
-  "snapshots": "ops/challenge/osint/snapshots.json",
-  "watch": "scripts/challenge/osint_watch.py via .github/workflows/challenge-osint-watch.yml (weekly Wed 08:17Z + push + dispatch)",
-  "contract": "docs/ops/CHALLENGE-OSINT.md",
-  "rule": "public sources only; every fact sourced + fetched_at; gaps NOT_ESTABLISHED"
- },
- "planning_horizons": [
-  {
-   "candidates": [
+  "candidate_events": [
     {
-     "deadline": "2026-12-22T12:00:00-08:00",
-     "event": "Codegeist 2026 \u2014 Atlassian (Devpost)",
-     "fetched_at": "2026-10-30",
-     "prework_vs_start": "clean",
-     "prizes": "$120,000",
-     "rule": "Rules s.4 'New & Existing': pre-existing projects permitted if updated or rebuilt in the Forge platform after the Submission Period start, with a Forge manifest + at least one Forge module. The 2026-10-29 start also falls inside the Submission Period. Structural requirement (not temporal): the entered Project must be a Forge app integrating at least one Atlassian product (Jira/Confluence/JSM/Bitbucket/Teamwork Graph/Rovo); Repo Replay fits as the underlying engine under a Forge layer.",
-     "source_url": "https://codegeist2026.devpost.com/rules",
-     "submission_period": "2026-10-27T09:00:00-07:00 / 2026-12-22T12:00:00-08:00",
-     "log_fit_of_record": "Log s.3 C8 (PR #2481): primary fit = I1 Repo+Story (GitHub App surface, owner-named 2026-10-30), candidate unassigned. The Repo Replay shape above is a second, unassigned claimant shape assessed by this lane 2026-10-30; the two do not collide. Any claim by either => Manager rules-check first."
-    },
-    {
-     "deadline": "2026-12-20 (submission); judging begins 2026-12-22",
-     "event": "International AI Startup Challenge (IASC)",
-     "fetched_at": "2026-10-30",
-     "prework_vs_start": "bar",
-     "rule": "Eligibility bar independent of pre-work: competition is for students ages 13-18 only (official page, read 2026-10-30). Entrant pool categorically closed.",
-     "source_url": "https://www.joiniasc.org/"
-    },
-    {
-     "deadline": "2026-12-01 (exploit registration)",
-     "event": "ZeroDay.Cloud 2026 \u2014 Wiz",
-     "fetched_at": "2026-10-30",
-     "prework_vs_start": "bar",
-     "rule": "Not an entry vehicle for a project: the competition pays for exploits against open-source software; a version-control project is a potential target class, not a submission.",
-     "source_url": "https://devgrantsdaily.com/industry/devtools/"
+      "candidate_id": "C11",
+      "claim_gate": "No claim language for any candidate match (esp. Match 5 repo-repair x Repo Replay) until Manager rules-check vs the 2026-10-29 start.",
+      "deadline": "2026-12-01T11:00:00-08:00",
+      "fetched_at": "2026-10-30",
+      "format": "individual participation only (no teams)",
+      "handle": "Rap1dZ3nith",
+      "host": "AMD x lablab.ai",
+      "kind": "candidate_event",
+      "league_window": "2026-09-01 / 2026-12-01",
+      "matches": [
+        {
+          "id": "M1",
+          "name": "Onboarding: Get Started With AMD",
+          "points": 300,
+          "state": "open throughout the League",
+          "tasks": "AMD sign-up (done), claim $100 GPU credits, first Academy course, complete AMD profile, join lablab Discord (required for Match participation), join AMD Discord"
+        },
+        {
+          "deadline": "2026-12-01T11:00:00-08:00 (league submission deadline)",
+          "id": "M4",
+          "name": "Intelligent Web Information Retrieval",
+          "points": 1800,
+          "state": "LIVE (as of 2026-10-30)",
+          "rules": "card brief only + league-wide shared rules; no harness published"
+        },
+        {
+          "id": "M5",
+          "name": "AI-Powered Code Repository Repair",
+          "points": 2100,
+          "state": "coming soon (Nov)",
+          "rules": "card text only; nothing else published yet"
+        },
+        {
+          "dates": "2026-11-10 / 2026-11-14",
+          "id": "M6",
+          "name": "Can Your AI Master the Unknown?",
+          "points": 2400,
+          "state": "coming soon"
+        }
+      ],
+      "name": "AMD AI League",
+      "oversight": "Manager oversight direct (ruling 2026-10-30); promotion to slate = owner call; NOT a D-numbered packet",
+      "packet": "challenge-entries lane: brief + per-match rules firsthand before any build (see log s.3 C11 packet)",
+      "platform": "lablab.ai",
+      "prizes": "League podium $2,500/$1,500/$1,000 (gate: >=5 Academy courses) | per Match $500 cash / $250 GPU credits / $100 GPU credits top-50 | Referral Leaders $1,000/$600/$400 | ROCm Certified Associate credential",
+      "registration": {
+        "by": "challenge-entries lane, owner order via main",
+        "evidence": "platform notification verbatim: 'You've been approved for the hackathon'; participant counter displayed 6287",
+        "joined": "2026-10-30T16:31:00-07:00",
+        "screening_form": "none exists for this event (no fields presented, no values submitted)",
+        "state": "Approved"
+      },
+      "source_url": "https://lablab.ai/ai-hackathons/amd-lablab-ai-academy-challenge",
+      "rules_state": "League-wide shared rules published (official Match 1 & 2 brief: container contract, ROCm base image, hard gates); Match 4 + Match 5: NO match-specific detail page, rubric, or pre-work/originality rule published (checked firsthand 2026-10-30). Match 5 claim-gate holds until Manager rules-check.",
+      "sub_manager": {
+        "role_moniker": "challenge-entries-manager-amd (delegate; moniker registry-pending)",
+        "chat_id": "f92553f1-4e05-4712-bd83-2430702968c3"
+      },
+      "gates": [
+        {
+          "id": "AMD-ACADEMY-5",
+          "label": "Complete >=5 AMD Academy courses (league podium gate)",
+          "blocks": "C11 league podium eligibility ($2,500/$1,500/$1,000)",
+          "owner": "gates-academy oversight (840bd147) with AMD sub-manager (f92553f1)",
+          "status": "open",
+          "evidence": "Plan deadline 2026-11-20 (gates-delegate plan); league deadline 2026-12-01T11:00-08:00. Evidence per course: completion certificate + points screenshot (x5). Course plan: AI on AMD (<=Nov 07, +M1 100pts) -> PyTorch on AMD GPUs (<=Nov 10) -> AI Agents 101 MCP/Open-Source Inference (<=Nov 13) -> AI Agents 201 Multi-Agent Systems (<=Nov 17) -> LLM Serving Inference vLLM/MI300X (<=Nov 20)."
+        },
+        {
+          "id": "AMD-GPU100",
+          "label": "Claim $100 AMD GPU credits (Match 1 onboarding task, timed claim)",
+          "blocks": "C11 Match 1 points (+100) and GPU build capacity",
+          "owner": "gates-academy oversight (840bd147) with AMD sub-manager (f92553f1)",
+          "status": "open",
+          "evidence": "Target <=2026-11-07 with the M1 verify-all pass. Evidence: claim screenshot."
+        },
+        {
+          "id": "AMD-M1-ONBOARDING",
+          "label": "Match 1 remainder: complete AMD profile (+50), join AMD Discord (+50), join lablab Discord (REQUIRED for Match participation)",
+          "blocks": "C11 Match 1 completion + Match participation eligibility",
+          "owner": "gates-academy oversight (840bd147); lablab-side steps with venue specialist (6401df1e); Discord account creation = owner (2026-10-30)",
+          "status": "open",
+          "evidence": "Sign-up with AMD done at registration 2026-10-30 (Approved). Remainder open; lablab Discord step waits on the fleet Discord account. | 2026-10-30: lablab-side Discord requirement SATISFIED \u2014 Discord CONNECTED 2026-10-30 (owner-created account; OAuth via lablab completed this lane): issued username wh1msical_sw4n_06136 (NOTE: differs from the registry-directed gentleonyx47 \u2014 owner-created, issued fact governs); lablab profile 60% -> 70%, \"Connect your account with Discord\" checked, Discord section shows Connected \u2014 wh1msical_sw4n_06136. Login location authorized via the emailed Verify Login link (owner-directed click); Discord login saved in the Secure Vault (email-keyed). D2 team create/join blocker LIFTED. A separate \"Verify Email Address for Discord\" email (2026-10-30 18:24 PT) exists; account email-verification state NOT_ESTABLISHED from this lane. AMD Discord server join (+50) still open (separate step)."
+        }
+      ]
     }
-   ],
-   "claim_gate": "Any future event claim for Repo Replay => Manager rules-check FIRST (reaffirmed 2026-10-30).",
-   "field_note": "Remainder of the December 2026 dev-tools field = grants/bounties (rolling, no in-period project rules): HeroDevs OSS Sustainability Fund, goose grant (Block), OpenAI Codex for Open Source, Gem Fellowship (Ruby-bound). Enumerated 2026-10-30 by the challenge-entries lane (Manager-directed pass).",
-   "horizon_date": "2026-12-22",
-   "kind": "planning_horizon_only",
-   "not_a_claim": true,
-   "not_a_submission_state": true,
-   "not_an_event_entry": true,
-   "project_start": "2026-10-29 (public repo, timestamped commits)",
-   "subject": "Repo Replay / RevWright"
-  }
- ],
- "candidate_events": [
-  {
-   "candidate_id": "C11",
-   "claim_gate": "No claim language for any candidate match (esp. Match 5 repo-repair x Repo Replay) until Manager rules-check vs the 2026-10-29 start.",
-   "deadline": "2026-12-01T11:00:00-08:00",
-   "fetched_at": "2026-10-30",
-   "format": "individual participation only (no teams)",
-   "handle": "Rap1dZ3nith",
-   "host": "AMD x lablab.ai",
-   "kind": "candidate_event",
-   "league_window": "2026-09-01 / 2026-12-01",
-   "matches": [
-    {
-     "id": "M1",
-     "name": "Onboarding: Get Started With AMD",
-     "points": 300,
-     "state": "open throughout the League",
-     "tasks": "AMD sign-up (done), claim $100 GPU credits, first Academy course, complete AMD profile, join lablab Discord (required for Match participation), join AMD Discord"
-    },
-    {
-     "deadline": "2026-12-01T11:00:00-08:00 (league submission deadline)",
-     "id": "M4",
-     "name": "Intelligent Web Information Retrieval",
-     "points": 1800,
-     "state": "LIVE (as of 2026-10-30)",
-     "rules": "card brief only + league-wide shared rules; no harness published"
-    },
-    {
-     "id": "M5",
-     "name": "AI-Powered Code Repository Repair",
-     "points": 2100,
-     "state": "coming soon (Nov)",
-     "rules": "card text only; nothing else published yet"
-    },
-    {
-     "dates": "2026-11-10 / 2026-11-14",
-     "id": "M6",
-     "name": "Can Your AI Master the Unknown?",
-     "points": 2400,
-     "state": "coming soon"
+  ],
+  "architecture": {
+    "contestant_model": "OWNER CONTESTANT FRAMING (record correction, 2026-10-30 via Manager): termux-monorepo = HQ + the build/test CONTESTANT BODY \u2014 contributor lanes land entry code in the monorepo via branch/PR, built and tested by repo CI (repo_gate + agentic termux smoke); the per-entry repos are PUBLIC SUBMISSION ARTIFACTS synced from those contributions. PR #2538's \"record only\" gloss is SUPERSEDED \u2014 that PR removed duplicate scaffolds only, it did not demote the monorepo.",
+    "recorded": "2026-10-30",
+    "source": "owner ruling via Manager",
+    "roles": {
+      "sub_managers": "spec / census / gates / verify \u2014 NOT code (owner, 2026-10-30, contestant model)",
+      "assistant_contribution_desk": "chat a440bcb2-f95a-41c5-81b4-9e1728e5fd6c (Challenge Management \u2014 Assistant) ADDITIONALLY = CONTRIBUTION DESK: contribution queue, routing to builder lanes, CI/merge tracking, artifact sync state (entry repos synced from monorepo contributions)",
+      "builder_lanes": "land code in termux-monorepo via branch/PR (contestant body); CI = repo_gate + agentic termux smoke",
+      "entries_lane": "coordinator/log single-writer (records)"
     }
-   ],
-   "name": "AMD AI League",
-   "oversight": "Manager oversight direct (ruling 2026-10-30); promotion to slate = owner call; NOT a D-numbered packet",
-   "packet": "challenge-entries lane: brief + per-match rules firsthand before any build (see log s.3 C11 packet)",
-   "platform": "lablab.ai",
-   "prizes": "League podium $2,500/$1,500/$1,000 (gate: >=5 Academy courses) | per Match $500 cash / $250 GPU credits / $100 GPU credits top-50 | Referral Leaders $1,000/$600/$400 | ROCm Certified Associate credential",
-   "registration": {
-    "by": "challenge-entries lane, owner order via main",
-    "evidence": "platform notification verbatim: 'You've been approved for the hackathon'; participant counter displayed 6287",
-    "joined": "2026-10-30T16:31:00-07:00",
-    "screening_form": "none exists for this event (no fields presented, no values submitted)",
-    "state": "Approved"
-   },
-   "source_url": "https://lablab.ai/ai-hackathons/amd-lablab-ai-academy-challenge",
-   "rules_state": "League-wide shared rules published (official Match 1 & 2 brief: container contract, ROCm base image, hard gates); Match 4 + Match 5: NO match-specific detail page, rubric, or pre-work/originality rule published (checked firsthand 2026-10-30). Match 5 claim-gate holds until Manager rules-check.",
-   "sub_manager": {
-    "role_moniker": "challenge-entries-manager-amd (delegate; moniker registry-pending)",
-    "chat_id": "f92553f1-4e05-4712-bd83-2430702968c3"
-   },
-   "gates": [
-    {
-     "id": "AMD-ACADEMY-5",
-     "label": "Complete >=5 AMD Academy courses (league podium gate)",
-     "blocks": "C11 league podium eligibility ($2,500/$1,500/$1,000)",
-     "owner": "gates-academy oversight (840bd147) with AMD sub-manager (f92553f1)",
-     "status": "open",
-     "evidence": "Plan deadline 2026-11-20 (gates-delegate plan); league deadline 2026-12-01T11:00-08:00. Evidence per course: completion certificate + points screenshot (x5). Course plan: AI on AMD (<=Nov 07, +M1 100pts) -> PyTorch on AMD GPUs (<=Nov 10) -> AI Agents 101 MCP/Open-Source Inference (<=Nov 13) -> AI Agents 201 Multi-Agent Systems (<=Nov 17) -> LLM Serving Inference vLLM/MI300X (<=Nov 20)."
-    },
-    {
-     "id": "AMD-GPU100",
-     "label": "Claim $100 AMD GPU credits (Match 1 onboarding task, timed claim)",
-     "blocks": "C11 Match 1 points (+100) and GPU build capacity",
-     "owner": "gates-academy oversight (840bd147) with AMD sub-manager (f92553f1)",
-     "status": "open",
-     "evidence": "Target <=2026-11-07 with the M1 verify-all pass. Evidence: claim screenshot."
-    },
-    {
-     "id": "AMD-M1-ONBOARDING",
-     "label": "Match 1 remainder: complete AMD profile (+50), join AMD Discord (+50), join lablab Discord (REQUIRED for Match participation)",
-     "blocks": "C11 Match 1 completion + Match participation eligibility",
-     "owner": "gates-academy oversight (840bd147); lablab-side steps with venue specialist (6401df1e); Discord account creation = owner (2026-10-30)",
-     "status": "open",
-     "evidence": "Sign-up with AMD done at registration 2026-10-30 (Approved). Remainder open; lablab Discord step waits on the fleet Discord account. | 2026-10-30: lablab-side Discord requirement SATISFIED \u2014 Discord CONNECTED 2026-10-30 (owner-created account; OAuth via lablab completed this lane): issued username wh1msical_sw4n_06136 (NOTE: differs from the registry-directed gentleonyx47 \u2014 owner-created, issued fact governs); lablab profile 60% -> 70%, \"Connect your account with Discord\" checked, Discord section shows Connected \u2014 wh1msical_sw4n_06136. Login location authorized via the emailed Verify Login link (owner-directed click); Discord login saved in the Secure Vault (email-keyed). D2 team create/join blocker LIFTED. A separate \"Verify Email Address for Discord\" email (2026-10-30 18:24 PT) exists; account email-verification state NOT_ESTABLISHED from this lane. AMD Discord server join (+50) still open (separate step)."
-    }
-   ]
   }
- ],
- "architecture": {
-  "contestant_model": "OWNER CONTESTANT FRAMING (record correction, 2026-10-30 via Manager): termux-monorepo = HQ + the build/test CONTESTANT BODY \u2014 contributor lanes land entry code in the monorepo via branch/PR, built and tested by repo CI (repo_gate + agentic termux smoke); the per-entry repos are PUBLIC SUBMISSION ARTIFACTS synced from those contributions. PR #2538's \"record only\" gloss is SUPERSEDED \u2014 that PR removed duplicate scaffolds only, it did not demote the monorepo.",
-  "recorded": "2026-10-30",
-  "source": "owner ruling via Manager",
-  "roles": {
-   "sub_managers": "spec / census / gates / verify \u2014 NOT code (owner, 2026-10-30, contestant model)",
-   "assistant_contribution_desk": "chat a440bcb2-f95a-41c5-81b4-9e1728e5fd6c (Challenge Management \u2014 Assistant) ADDITIONALLY = CONTRIBUTION DESK: contribution queue, routing to builder lanes, CI/merge tracking, artifact sync state (entry repos synced from monorepo contributions)",
-   "builder_lanes": "land code in termux-monorepo via branch/PR (contestant body); CI = repo_gate + agentic termux smoke",
-   "entries_lane": "coordinator/log single-writer (records)"
-  }
- }
 }

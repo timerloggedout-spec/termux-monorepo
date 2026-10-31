@@ -71,6 +71,27 @@ def cell_instance(campaign_dir: Path, design: dict, cell: dict) -> dict:
     phrases = (design.get("provider_phrases") or {}).get(cell["model"])
     prompt_text = composed_prompt(campaign_dir, cell["prompt"],
                                   cell["role"], phrases)
+    phrase_stamp = None
+    layer_cfg = design.get("phrase_layer")
+    if layer_cfg and not phrases:
+        # JIT phrase layer (owner, 2026-10-31): sets come from the
+        # provider-phrases SSOT (ops/phrases submodule). Enabled in
+        # the design but data not checked out = fail loud at plan
+        # time, never a silent unphrased dispatch.
+        _ps = importlib.util.spec_from_file_location(
+            "phrase_layer", Path(__file__).parent / "phrase_layer.py")
+        PL = importlib.util.module_from_spec(_ps)
+        _ps.loader.exec_module(PL)
+        pfile = layer_cfg.get("phrases_file") or str(
+            campaign_dir.parents[2] / "ops" / "phrases" /
+            "phrases.json")
+        data = PL.load_sets(pfile)
+        prompt_text, phrase_stamp = PL.apply_phrases(
+            prompt_text, data, cell["model"],
+            selection=layer_cfg.get("selection", "first"),
+            placement=layer_cfg.get("placement", "prefix+suffix"),
+            form=layer_cfg.get("form", "verbatim"),
+            profile=layer_cfg.get("profile"))
     provider, model = cell["model"].split("/", 1)
     p_sha = IK.sha256_text(prompt_text)
     t_sha = IK.tools_sha256(TOOLS)
@@ -85,7 +106,13 @@ def cell_instance(campaign_dir: Path, design: dict, cell: dict) -> dict:
             "ref": f"experiments/doe/{design['campaign_id']}/prompts/"
                    f"{cell['prompt']}.md (+ role line: {cell['role']})"
                    + (" (+ provider phrases)"
-                      if phrases else ""),
+                      if phrases else "")
+                   + (f" (+ phrase layer: {phrase_stamp['provider']}/"
+                      f"{phrase_stamp['placement']}/"
+                      f"{phrase_stamp['form']}"
+                      + (f"/{phrase_stamp['profile']}"
+                         if phrase_stamp["profile"] else "") + ")"
+                      if phrase_stamp else ""),
             "sha256": p_sha},
         "tools": {"ref": "tools:doe-expert:lab-runner",
                   "sha256": t_sha},

@@ -246,24 +246,23 @@
           "If Discord rejects the assigned username (taken or invalid), the executing lane surfaces it; the registry assigns the rule-v3 collision variant (suffix bump) - the lane never improvises a different name."
         ],
         "owner_lane": "challenge-entries",
-        "receipts_route": "Account facts (issued username, display name, persona DOB as submitted, lablab OAuth connect state) are recorded in the Profile Registry by the challenge-entries lane under its own section and cited by PR; the coordinator connect state is that lane's seam. This entry flips to a resolving profile_ref when that block lands.",
-        "submission_authority": "Manager ruling 2026-10-30: the challenge-entries lane creates the fleet Discord account under agency authorization (the owner-sign-in path is not taken) and connects lablab OAuth. The assigned moniker IS the signup username of record, pulled from this registry - never invented at the form."
+        "receipts_route": "Account facts are recorded in the Profile Registry (Discord block) by the challenge-entries lane, PR #2588; the coordinator connect state is that lane's seam.",
+        "submission_authority": "Manager ruling 2026-10-30 (agency creation by the challenge-entries lane) as superseded by the owner's direct order the same day: the OWNER created the account; the challenge-entries lane records the issued facts and the lablab connect state."
       },
       "kind": "provider",
-      "moniker": "GentleOnyx47",
-      "moniker_rule": "v3",
+      "moniker": "wh1msical_sw4n_06136",
+      "moniker_rule": "owner-issued",
       "notes": [
-        "Assigned 2026-10-30 by the registry lane at the challenge-entries lane's direction request (manager ruling: create the fleet Discord, agency path). Purpose: the fleet Discord identity the lablab.ai account connects via OAuth - unblocks D2 team create/join (Discord-not-connected blocker) and satisfies the AMD AI League Discord-join requirement. Rule-v3 codename: no shared stem, no platform token, no cross-platform reuse (in particular no relation to the lablab handle Rap1dZ3nith - rule 3).",
-        "Platform rendering: Discord usernames are lowercase-only, so the signup username is gentleonyx47 (the codename's lowercase form); the Discord display name carries the canonical case, GentleOnyx47. The moniker of record stays GentleOnyx47; the issued username is a Profile Registry fact, recorded there by the executing lane.",
-        "Persona DOB assigned by the registry lane under the demographic rule (2026-10-29): the fleet builder persona keeps its 25-34 bracket (first assigned for lablab.ai, 2026-10-29); the exact date of record was relayed to the executing lane with this direction and is recorded with the Discord profile in the Profile Registry - one persona DOB of record, reused across forms, never re-rolled per form."
+        "ISSUED 2026-10-30: username = wh1msical_sw4n_06136 - the owner created the account (owner direct order superseded the agency path) and connected it to lablab the same day (lablab profile 70% per the recording lane). The issued username DIFFERS from the directed codename: it is the platform-suggested value the owner used, not gentleonyx47. Under the owner-issued rule the issued name is the moniker of record. Recorded by the challenge-entries lane in the Profile Registry (Discord block) + coordinator, PR #2588 merged 9b9302740b31.",
+        "Assignment history: rule-v3 codename GentleOnyx47 assigned by the registry lane 2026-10-30 (PR #2556 merged bd6377e88a8a; signup rendering gentleonyx47, display name GentleOnyx47) - never consumed at the form; superseded by the issued name above. Purpose stands: the fleet Discord identity for lablab OAuth (D2 team create/join; AMD AI League Discord-join requirement).",
+        "Persona DOB: the Profile Registry Discord block carries the persona DOB of record 1996-04-17 as directed (fleet builder persona, 25-34 bracket). The as-submitted DOB and the display name are NOT_ESTABLISHED - owner-entered at creation, not observed by the recording lane."
       ],
       "platform": "Discord",
       "platform_id": "discord",
-      "profile_pending": "challenge-entries",
-      "profile_ref": null,
+      "profile_ref": "Discord",
       "registrations": [],
       "role": "account",
-      "status": "registering"
+      "status": "active"
     },
     {
       "handling": {

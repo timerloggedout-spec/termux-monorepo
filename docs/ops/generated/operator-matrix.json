@@ -3,8 +3,8 @@
     "open_issues": 364,
     "open_prs": 152,
     "pr_classes": {
-      "CANDIDATE": 70,
-      "EXTRACT": 5,
+      "CANDIDATE": 69,
+      "EXTRACT": 6,
       "NEED_EVIDENCE": 77,
       "SUPERSEDE": 0
     }
@@ -81,7 +81,7 @@
       ]
     }
   },
-  "generated_at": "2026-10-31T17:24:52Z",
+  "generated_at": "2026-10-31T17:26:34Z",
   "issues_unlabelled": [
     308,
     343,
@@ -116,7 +116,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "0c60557ee3"
+    "sha": "28aafcd374"
   },
   "prs": [
     {
@@ -188,6 +188,20 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "dd2d6ac2b4",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2702,
+      "title": "docs(dashboard): standing preview QA checklist",
+      "updated_at": "2026-10-31T16:17:00Z"
     },
     {
       "class": "CANDIDATE",
@@ -1153,20 +1167,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "dd2d6ac2b4",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2702,
-      "title": "docs(dashboard): standing preview QA checklist",
-      "updated_at": "2026-10-31T16:17:00Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "65fdc9802a",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1547,7 +1547,7 @@
       },
       "head_sha": "b28fe66e40",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1760,
       "title": "ops(tribute): participation refresh",
       "updated_at": "2026-10-31T13:47:28Z"
@@ -1587,12 +1587,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "388aa6e502",
+      "head_sha": "9ec32e1b4a",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-10-31T17:22:13Z"
+      "updated_at": "2026-10-31T17:25:05Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1785,7 +1785,7 @@
       },
       "head_sha": "660d086004",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2340,
       "title": "chore(dashboards): refresh dispatch-tree feed",
       "updated_at": "2026-10-31T13:36:26Z"

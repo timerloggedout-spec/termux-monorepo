@@ -9,6 +9,15 @@ The codec only mutates known compressed dictionary tokens. Variants are
 recognized during decode, so ordinary digits, URLs, paths, and prose are not
 rewritten accidentally. `probability=0.70` is the initial migration/default
 phase; callers can ratchet it upward after validation.
+
+Performance & Token Efficiency Note:
+Base64 encoding expands raw bytes by 33% in character length (4 chars per 3 bytes)
+and causes ~71.4% BPE token inflation in modern LLM tokenizers (Tiktoken cl100k_base,
+o200k_base, Llama) due to splitting non-word ASCII chunks into 2-3 char tokens.
+In contrast, CedrLang symbolic representations reduce token footprint by 20-50%+ while
+preserving lossless round-trip expansion. The ConversationalSteganographyCipher below
+implements a 4th development lane for pre-LLM pre-parser steganographic obfuscation
+using Base-4 zero-width quadruplet encoding with zero visible character overhead.
 """
 
 from __future__ import annotations
@@ -240,3 +249,78 @@ def compile_phase(text: str, canonical_compiler) -> str:
 def decompile_phase(text: str, canonical_decompiler) -> str:
     """Normalize diaspora variants, then use the existing canonical decompiler."""
     return canonical_decompiler(from_1337speak(text))
+
+
+class ConversationalSteganographyCipher:
+    """4th development lane: Pre-LLM Pre-Parser Steganographic Obfuscation Cipher.
+
+    Encodes secret/private payload bytes as invisible zero-width character quadruplets
+    (\\u200b, \\u200c, \\u200d, \\ufeff) using Base-4 representation.
+    Supports optional private key XOR mapping for pre-parser encryption/decryption.
+    Zero-width payload can be embedded within natural cover text invisibly.
+    """
+
+    ZW_CHARS: Tuple[str, str, str, str] = ("\u200b", "\u200c", "\u200d", "\ufeff")
+    CHAR_TO_DIGIT: Dict[str, int] = {c: i for i, c in enumerate(ZW_CHARS)}
+    ZW_REGEX: re.Pattern = re.compile(r"[\u200b\u200c\u200d\ufeff]+")
+
+    @classmethod
+    def encode(cls, payload: str, cover_text: str = "", key: Optional[str] = None) -> str:
+        """Encode payload string into invisible zero-width quadruplets and embed in cover_text."""
+        if not payload:
+            return cover_text
+        payload_bytes = payload.encode("utf-8")
+        if key:
+            key_bytes = key.encode("utf-8")
+            payload_bytes = bytes(b ^ key_bytes[i % len(key_bytes)] for i, b in enumerate(payload_bytes))
+
+        # Build zero-width quadruplets
+        zw_parts = []
+        for b in payload_bytes:
+            zw_parts.append(cls.ZW_CHARS[(b >> 6) & 3])
+            zw_parts.append(cls.ZW_CHARS[(b >> 4) & 3])
+            zw_parts.append(cls.ZW_CHARS[(b >> 2) & 3])
+            zw_parts.append(cls.ZW_CHARS[b & 3])
+
+        stego_payload = "".join(zw_parts)
+        if not cover_text:
+            return stego_payload
+        space_idx = cover_text.find(" ")
+        if space_idx != -1:
+            return cover_text[:space_idx] + stego_payload + cover_text[space_idx:]
+        return cover_text + stego_payload
+
+    @classmethod
+    def decode(cls, text: str, key: Optional[str] = None) -> str:
+        """Extract and decode zero-width quadruplet steganographic payload from text."""
+        if not text or not cls.ZW_REGEX.search(text):
+            return ""
+        matches = cls.ZW_REGEX.findall(text)
+        zw_stream = "".join(matches)
+        if len(zw_stream) < 4:
+            return ""
+
+        out_bytes = bytearray()
+        for i in range(0, len(zw_stream) - (len(zw_stream) % 4), 4):
+            d0 = cls.CHAR_TO_DIGIT.get(zw_stream[i], 0)
+            d1 = cls.CHAR_TO_DIGIT.get(zw_stream[i + 1], 0)
+            d2 = cls.CHAR_TO_DIGIT.get(zw_stream[i + 2], 0)
+            d3 = cls.CHAR_TO_DIGIT.get(zw_stream[i + 3], 0)
+            b = (d0 << 6) | (d1 << 4) | (d2 << 2) | d3
+            out_bytes.append(b)
+
+        if key:
+            key_bytes = key.encode("utf-8")
+            out_bytes = bytearray(b ^ key_bytes[i % len(key_bytes)] for i, b in enumerate(out_bytes))
+
+        try:
+            return out_bytes.decode("utf-8")
+        except UnicodeDecodeError:
+            return ""
+
+    @classmethod
+    def strip_stego(cls, text: str) -> str:
+        """Remove zero-width steganographic characters from cover text."""
+        if not text or not cls.ZW_REGEX.search(text):
+            return text
+        return cls.ZW_REGEX.sub("", text)

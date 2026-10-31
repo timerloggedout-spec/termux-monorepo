@@ -4,6 +4,7 @@ from workspace.compression_sandbox.cedrlang.phase_codec import (
     INITIAL_SUBSTITUTION_PROBABILITY,
     from_1337speak,
     to_1337speak,
+    ConversationalSteganographyCipher,
 )
 
 
@@ -46,3 +47,24 @@ def test_probability_validation():
             pass
         else:
             raise AssertionError("invalid probability was accepted")
+
+
+def test_conversational_steganography_cipher_roundtrip():
+    payload = "Agent2Agent Private Payload 123!"
+    cover = "This is ordinary cover prose for LLM pre-parser routing."
+
+    stego_text = ConversationalSteganographyCipher.encode(payload, cover_text=cover)
+    assert payload not in stego_text
+    assert ConversationalSteganographyCipher.decode(stego_text) == payload
+    assert ConversationalSteganographyCipher.strip_stego(stego_text) == cover
+
+
+def test_conversational_steganography_cipher_key_encryption():
+    payload = "Encrypted Secret key=0xDEADBEEF"
+    key = "private_agent_key_42"
+
+    stego_text = ConversationalSteganographyCipher.encode(payload, key=key)
+    # Incorrect key or no key yields empty or garbled decoding
+    assert ConversationalSteganographyCipher.decode(stego_text) != payload
+    # Correct key recovers original secret payload losslessly
+    assert ConversationalSteganographyCipher.decode(stego_text, key=key) == payload

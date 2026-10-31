@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Contribution Desk — Queue, Traversals &amp; Dispatch</title>
 <!--
-  Renders ONLY data/desk-feed.json (schema desk-feed/v1.1), seeded by the
+  Renders ONLY data/desk-feed.json (schema desk-feed/v1.2), seeded by the
   viz lane from firsthand audits of the live record (2026-10-30) and
   refreshed by the Contribution Desk lane as traversals move. The page
   mutates nothing: dispatch opens the intake issue on GitHub, where the
@@ -14,6 +14,10 @@
   v1.1 adds provider + usage per dispatch (owner order 2026-10-30):
   consumption renders only where a provider surface establishes it,
   never estimated; a null usage always carries its reason in the feed.
+  v1.2 renders the QUOTA-ATTRIBUTION usage{} shape (value/unit/source/
+  window/match/note): activity-proxy figures are labeled as activity,
+  never as consumption; telemetry coverage is counted in the roll-up
+  (owner ruling 2026-10-30: telemetry REQUIRED for all entries).
 -->
 <link rel="stylesheet" href="./dashboard.css">
 <style>
@@ -87,9 +91,15 @@ function providerCell(t){
     const name=p.provider? esc(p.provider) : "provider not established";
     const sess=p.session_id? " · session "+esc(p.session_id) : "";
     const scope=p.scope? esc(p.scope)+" · " : "";
-    const use=(p.usage==null)? "usage: not established" : "usage: "+esc(JSON.stringify(p.usage));
-    return scope+"<strong>"+name+"</strong>"+sess+"<br><span class='dim'>"+esc(p.state||"")+" · "+use+"</span>";
+    return scope+"<strong>"+name+"</strong>"+sess+"<br><span class='dim'>"+esc(p.state||"")+" · "+esc(usageText(p))+"</span>";
   }).join("<br>");
+}
+function usageText(p){
+  const u=p.usage;
+  if(u==null) return "usage: not established";
+  if(u.value==null) return "usage: not established — "+(u.note||"no keyed match");
+  if(u.match==="activity-proxy") return "activity: "+u.value+" "+(u.unit||"")+" (activity-proxy — not consumption)";
+  return "usage: "+u.value+" "+(u.unit||"");
 }
 function providerRollup(traversals){
   const counts={}, live=[], unknown={dispatches:0};
@@ -98,7 +108,22 @@ function providerRollup(traversals){
     counts[p.provider]=(counts[p.provider]||0)+1;
     if(p.session_id) live.push({entry:t.entry, provider:p.provider, session_id:p.session_id, state:p.state});
   });});
-  return {counts, live, unknown};
+  const coverage={total:0, established:0, activity:0, waived:0, fault:0, pending:0, unstamped:0, covered:0, gap:0};
+  (traversals||[]).forEach(t=>{ (t.provider_usage||[]).forEach(p=>{
+    coverage.total++;
+    const u=p.usage, st=u&&u.status;
+    if(st==="established") coverage.established++;
+    else if(st==="activity-only") coverage.activity++;
+    else if(st==="waived") coverage.waived++;
+    else if(st==="fault") coverage.fault++;
+    else if(st==="pending") coverage.pending++;
+    else if(u==null || u.value==null) coverage.unstamped++;
+    else if(u.match==="activity-proxy") coverage.activity++;
+    else coverage.established++;
+  });});
+  coverage.covered=coverage.established+coverage.activity+coverage.waived;
+  coverage.gap=coverage.fault+coverage.pending+coverage.unstamped;
+  return {counts, live, unknown, coverage};
 }
 function evidenceText(ev){
   const parts=[];
@@ -134,7 +159,8 @@ function renderAll(){
   const counts=Object.keys(roll.counts).map(k=>"<tr><th>"+esc(k)+"</th><td>"+roll.counts[k]+" dispatch(es)</td></tr>").join("");
   const live=roll.live.map(s=>"<tr><th>"+esc(s.entry)+" · "+esc(s.provider)+"</th><td>session "+esc(s.session_id)+" — "+esc(s.state||"")+"</td></tr>").join("");
   const unk=roll.unknown.dispatches? "<tr><th>provider not established</th><td>"+roll.unknown.dispatches+" dispatch(es)</td></tr>" : "";
-  $("provroll").innerHTML="<table class='st'>"+counts+unk+live+"</table><p class='dim'>Numeric per-dispatch consumption: NOT ESTABLISHED for every current provider (Jules API = session state only; Muse = one shared weekly bucket, unsplit per dispatch). From v1.1 the desk stamps provider + session at dispatch, so consumption joins as soon as a provider surface exposes it.</p>";
+  const cov=roll.coverage;
+  $("provroll").innerHTML="<table class='st'>"+counts+unk+live+"</table><p class='dim'>Telemetry coverage: "+cov.covered+"/"+cov.total+" covered — established "+cov.established+" · activity-only "+cov.activity+" · waived "+cov.waived+"; gap "+cov.gap+" (fault "+cov.fault+" · pending "+cov.pending+" · unstamped "+cov.unstamped+"). Owner ruling: telemetry REQUIRED for all entries; pre-mandate history = waived-with-reason, fault reserved for post-mandate unstamped dispatches (QUOTA-ATTRIBUTION ruling). Grouping: provider \u2227 model@version \u2227 role \u2227 moniker \u2227 context — a model is never aggregated across versions or roles.</p>";
   $("prov").textContent=PACK.provenance+" "+PACK.refresh;
 }
 fetch("./data/desk-feed.json").then(r=>{ if(!r.ok) throw new Error("feed fetch "+r.status); return r.json(); }).then(p=>{ PACK=p; renderAll(); }).catch(e=>{ $("meta").textContent="Desk feed failed to load: "+e.message; });

@@ -2689,7 +2689,7 @@
    "live": "GET http://127.0.0.1:8791/health + durable log ~/workspace/vm-webhooks/intake.jsonl (proof 2026-10-30: signed payload 202, duplicate 200, bad signature 401)",
    "planned_use": {
     "safety": 1.0,
-    "note": "Provider-dispatch may route bounded trigger/intake tasks here (AI Studio mesh VM trigger precedent, owner-ruled 2026-10-30). Secret name VM_WEBHOOK_SECRET (local 0600 custody, never committed). Standing/public hosting exceeds this scope \u2014 see docs/ops/VM-WEBHOOKS.md."
+    "note": "Provider-dispatch may route bounded trigger/intake tasks here (AI Studio mesh VM trigger precedent, owner-ruled 2026-10-30). Secret VM_WEBHOOK_SECRET provisioned in GitHub Actions secrets via PAT sealed-box (verified 2026-10-31T06:18:04Z; repo secrets 59 => 60), same value mirrored in local 0600 custody for the receiver process; values never in chat/files/commits. Standing/public hosting exceeds this scope \u2014 see docs/ops/VM-WEBHOOKS.md."
    }
   }
  ]

@@ -1,0 +1,33 @@
+{
+ "schema_version": "1.0",
+ "experiment_id": "marketing-fb-pages-mvt-1-fb-b-snapshot-2026-10-31",
+ "observed_at": "2026-10-31T16:20:03Z",
+ "baseline_sha": "01d05f70570db5bd1f3674fc98d4fa84d6fa5a15",
+ "candidate_sha": "01d05f70570db5bd1f3674fc98d4fa84d6fa5a15",
+ "merge_base_sha": null,
+ "suite": "doe-family:fb-pages-mvt-1",
+ "cohort": "window-1",
+ "treatment": {
+  "manager_policy_id": "marketing-channel/fb-pages-mvt-1",
+  "provider": "facebook-pages",
+  "model": null,
+  "arm": "fb-b"
+ },
+ "status": "running",
+ "outcome": "window-1 interim: fb-b live since 2026-10-27; 2 posts, views=5, link_clicks=0, attributed redemptions=0 (rotation_log empty); decision rule not yet triggered (10 redemptions or 2026-11-10)",
+ "metrics": {
+  "posts": 2,
+  "views_total": 5,
+  "link_clicks_total": 0,
+  "engagements_total": 0,
+  "comment_count_total": 0,
+  "attributed_redemptions": 0
+ },
+ "provenance": "manual",
+ "confidence": "high",
+ "evidence_refs": [
+  "apps/help-wanted-dashboard/data/fb-traffic.json",
+  "config/referral_programs.json (rotation_log = [] at snapshot)",
+  "facebook:page posts 122100212403525407, 122100315417525407 (facebook-cli pull 2026-10-31T09:20-07:00)"
+ ]
+}

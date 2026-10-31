@@ -35,6 +35,42 @@ ownership spec for the surfaces.
   cohort/version, never silently folded into a running design (skill
   rule 12).
 
+## Configured-instance identity (owner fix, 2026-10-30)
+
+`model@version` is NOT a sufficient identity under the DoE. One
+provider model@version runs as DIFFERENT configured instances —
+distinct system prompts, distinct tools, per role/context. Every
+DoE record keys the executing instance by its configuration, in
+`treatment.instance` (EXPERIMENT.schema.json):
+
+```
+{provider, model@version (verbatim), system_prompt {ref, sha256},
+ tools {ref, sha256}, role, moniker, context, instance_key}
+```
+
+**Ref scheme (named by this lane; the fleet stamps the same refs):**
+a ref is a repo-relative **path** when the artifact lives in the
+repo (a prompt file, a tool manifest); otherwise a **scoped id** —
+`prompt:<moniker>:<slug>` or `tools:<moniker>:<slug>`. Every ref
+travels with the **full SHA-256** of the exact content as
+dispatched: prompt text for prompts; manifest bytes for tools when
+a manifest exists, else the canonical tool set (sorted tool names
+joined by `\n`). Compact stamp form: `<ref>#<sha256[:12]>`.
+`instance_key` = SHA-256 of the canonical tuple JSON (helper:
+`scripts/doe/instance_key.py`). Aggregation, comparison, and quota
+attribution group by `instance_key` — never by model alone; two
+instances sharing a model@version are different experimental units
+and their results are never pooled.
+
+Pilot-1 retro-identification (records are immutable evidence and
+are NOT rewritten): its executing instance was the offline harness —
+provider `local`, model `offline-harness@1`, system_prompt and
+tools both ref `scripts/doe/run_pilot1.py` (sha256
+`7931ec226e8ea1a4694a548d326269d4528513ba36b14469687f43586fc42bcd`),
+role `extractor`, moniker `doe-expert`, context
+`pilot-1 offline-deterministic`. New campaigns stamp
+`treatment.instance` at run time.
+
 ## Binding rules (from #1865 + separation spec)
 
 1. One primary home per record. Cross-surface references are citations

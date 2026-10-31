@@ -117,3 +117,54 @@ def test_delphi_record_never_counted_as_doe_result():
             # never Delphi candidate ids.
             for arm in camp["results"]["arms"]:
                 assert "/" in arm, arm
+
+
+def test_configured_instance_identity():
+    """Owner fix 2026-10-30: model@version alone is not an identity.
+    The schema carries treatment.instance with the full configured
+    tuple + ref/hash scheme; the key helper is deterministic and
+    sensitive to every tuple field."""
+    import importlib.util
+    schema = json.loads(
+        (ROOT / "docs/ops/corpus/EXPERIMENT.schema.json").read_text())
+    inst = schema["properties"]["treatment"]["properties"]["instance"]
+    assert set(inst["required"]) == {
+        "provider", "model", "system_prompt", "tools", "role",
+        "moniker", "context", "instance_key"}
+    spec = importlib.util.spec_from_file_location(
+        "instance_key", ROOT / "scripts/doe/instance_key.py")
+    ik = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(ik)
+    base = dict(provider="meta", model="muse-spark@1.3",
+                system_prompt_sha256=ik.sha256_text("prompt A"),
+                tools_sha256_=ik.tools_sha256(["search", "edit"]),
+                role="reviewer", moniker="doe-expert",
+                context="pilot-x")
+    k1 = ik.instance_key(**base)
+    assert k1 == ik.instance_key(**base)
+    assert len(k1) == 64
+    changed = dict(base, system_prompt_sha256=ik.sha256_text("prompt B"))
+    assert ik.instance_key(**changed) != k1
+    changed = dict(base, tools_sha256_=ik.tools_sha256(["search"]))
+    assert ik.instance_key(**changed) != k1
+    # A record carrying the instance validates against the schema.
+    rec = {"schema_version": "1.0", "experiment_id": "x",
+           "observed_at": "2026-10-30T00:00:00Z",
+           "baseline_sha": "0" * 40, "candidate_sha": "1" * 40,
+           "suite": "s",
+           "treatment": {"manager_policy_id": "p", "provider": "meta",
+                         "model": "muse-spark@1.3", "arm": None,
+                         "instance": {
+                             "provider": "meta",
+                             "model": "muse-spark@1.3",
+                             "system_prompt": {
+                                 "ref": "prompt:doe-expert:reviewer",
+                                 "sha256": base["system_prompt_sha256"]},
+                             "tools": {
+                                 "ref": "tools:doe-expert:reviewer",
+                                 "sha256": base["tools_sha256_"]},
+                             "role": "reviewer", "moniker": "doe-expert",
+                             "context": "pilot-x", "instance_key": k1}},
+           "status": "observed", "provenance": "manual",
+           "confidence": "high"}
+    jsonschema.validate(rec, schema)

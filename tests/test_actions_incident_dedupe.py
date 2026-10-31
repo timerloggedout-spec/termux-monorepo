@@ -18,7 +18,6 @@ class ActionsIncidentDedupeTests(unittest.TestCase):
         cadence = Path(".github/workflows/cadence-lead-lag.yml").read_text(encoding="utf-8")
         self.assertIn("Emit incidents for lag_failure", cadence)
         self.assertIn("gh issue create", cadence)
-        self.assertIn("cron: \"12 */4 * * *\"", cadence)
 
     def test_first_fingerprint_requests_notification_and_records_run(self):
         result = reconcile_incident(

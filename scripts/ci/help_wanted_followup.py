@@ -44,6 +44,7 @@ except ImportError:  # pragma: no cover - Actions checkout root
 
 API = "https://api.github.com"
 AUTHOR = os.environ.get("HELP_WANTED_AUTHOR", "timerloggedout-spec")
+AUTHOR_LOWER = AUTHOR.lower()
 EXCLUDE_REPOS = {"timerloggedout-spec/termux-monorepo"}
 
 
@@ -110,9 +111,15 @@ def parse_ts(s: str | None) -> datetime | None:
     if not s:
         return None
     try:
-        return datetime.fromisoformat(s.replace("Z", "+00:00"))
+        # Bolt performance optimization: datetime.fromisoformat directly supports
+        # ISO 8601 strings with trailing 'Z' in Python 3.11+, avoiding string
+        # replacement allocation frames.
+        return datetime.fromisoformat(s)
     except ValueError:
-        return None
+        try:
+            return datetime.fromisoformat(s.replace("Z", "+00:00"))
+        except ValueError:
+            return None
 
 
 def _search_foreign_prs(qualifier: str) -> list[dict]:
@@ -226,12 +233,11 @@ def filter_maintainer_activity(
     GitHub's author_association is the evidence source; unknown association is
     deliberately not promoted to maintainer feedback.
     """
-    def is_maintainer(event: dict) -> bool:
-        return str(event.get("author_association") or "").upper() in MAINTAINER_ASSOCIATIONS
-
+    # Bolt performance optimization: Inline maintainer check to avoid per-event
+    # function definition overhead in thread activity filtering loops.
     return (
-        [event for event in comments if is_maintainer(event)],
-        [event for event in reviews if is_maintainer(event)],
+        [event for event in comments if (event.get("author_association") or "").upper() in MAINTAINER_ASSOCIATIONS],
+        [event for event in reviews if (event.get("author_association") or "").upper() in MAINTAINER_ASSOCIATIONS],
     )
 
 
@@ -351,7 +357,7 @@ def latest_maintainer_signal(
     events: list[tuple[datetime, str, str]] = []
     for c in comments:
         login = ((c.get("user") or {}).get("login") or "").lower()
-        if login in {AUTHOR.lower(), "github-actions[bot]"}:
+        if login in {AUTHOR_LOWER, "github-actions[bot]"}:
             continue
         if MARKER in (c.get("body") or ""):
             continue
@@ -364,7 +370,7 @@ def latest_maintainer_signal(
         events.append((ts, login, body))
     for r in reviews:
         login = ((r.get("user") or {}).get("login") or "").lower()
-        if login == AUTHOR.lower():
+        if login == AUTHOR_LOWER:
             continue
         ts = parse_ts(r.get("submitted_at"))
         if not ts:
@@ -384,7 +390,9 @@ def latest_maintainer_signal(
     summary = f"Latest thread signal by @{login} ({ts.isoformat()}):\n\n> " + excerpt.replace(
         "\n", "\n> "
     )
-    return ts, summary, extract_urls(body)
+    # Bolt performance optimization: Skip URL extraction regex if text lacks 'http' substring (case-insensitive).
+    urls = extract_urls(body) if "http" in body.lower() else []
+    return ts, summary, urls
 
 
 def decide_action(

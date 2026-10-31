@@ -1,6 +1,6 @@
 {
- "schema": "desk-feed/v1.1",
- "generated_at": "2026-10-31T06:09:00Z",
+ "schema": "desk-feed/v1.2",
+ "generated_at": "2026-10-31T06:12:00Z",
  "built_by": "contribution desk (refresh #1, 2026-10-30)",
  "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal — the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
  "desk": {
@@ -58,8 +58,15 @@
      "via": "provider route of record at the time",
      "session_id": null,
      "state": "landed",
-     "usage": null,
-     "usage_note": "per-dispatch consumption NOT ESTABLISHED (no provider surface recorded it)"
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": null,
+      "window": null,
+      "match": null,
+      "note": "No provider surface exposes a consumption figure for the owner-named Scout/Delphi lanes; per-dispatch consumption NOT ESTABLISHED."
+     },
+     "model": "NOT ESTABLISHED"
     }
    ]
   },
@@ -104,8 +111,15 @@
      "via": "D1 lane under owner ruling (we complete ourselves, via main); contributed byte-identical via PR #2606 — desk/D1 record",
      "session_id": null,
      "state": "landed",
-     "usage": null,
-     "usage_note": "no provider surface; pre-correction in-house build"
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": "Muse subscription status (account level)",
+      "window": "week of 2026-10-30",
+      "match": null,
+      "note": "no provider surface; pre-correction in-house build Per-PR split NOT ESTABLISHED."
+     },
+     "model": "NOT ESTABLISHED"
     },
     {
      "provider": "Jules",
@@ -113,8 +127,18 @@
      "via": "issue #2626 + jules label (agent-jules-on-issues)",
      "session_id": "17326020844735872479",
      "state": "landed (merged 2c0894d2e7d3; synced f7270f379fae)",
-     "usage": null,
-     "usage_note": "Jules API exposes session state/timing only; per-session consumption NOT ESTABLISHED"
+     "usage": {
+      "value": 1,
+      "unit": "sessions",
+      "source": "Jules API session record (sessions/17326020844735872479)",
+      "window": "2026-10-31T05:32Z dispatch; session COMPLETED",
+      "match": "activity-proxy",
+      "note": "activity proxy, labeled — NOT consumption; Jules API exposes no usage figure"
+     },
+     "model": "NOT ESTABLISHED",
+     "moniker": "[MUSEai]@{role:{challenge-entries-manager}}",
+     "role": "contribution-desk dispatch (per-dispatch)",
+     "context": "issue #2626 (D1 iteration backlog) + jules label via agent-jules-on-issues"
     }
    ]
   },
@@ -145,8 +169,18 @@
      "via": "substituted route (retracted 2026-10-30)",
      "session_id": null,
      "state": "landed",
-     "usage": null,
-     "usage_note": "shared Muse weekly bucket: 100% consumed the night of 2026-10-30 (resets 2026-11-03 03:21 PST); per-dispatch split NOT ESTABLISHED"
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": "Muse subscription status (account level)",
+      "window": "week of 2026-10-30; resets 2026-11-03 03:21 PST",
+      "match": null,
+      "note": "shared Muse weekly bucket: 100% consumed the night of 2026-10-30 (resets 2026-11-03 03:21 PST); per-dispatch split NOT ESTABLISHED Per-PR split NOT ESTABLISHED — shared Muse bucket (weekly 100% + additional tokens 26% consumed at 2026-10-30 measurement)."
+     },
+     "model": "Muse Spark 1.3",
+     "moniker": "[MUSEai]@{role:{challenge-entries-manager}}",
+     "role": "contribution-desk dispatch (per-dispatch)",
+     "context": "desk-spawned builder subagents, 2026-10-30 (substituted route, retracted)"
     }
    ]
   },
@@ -184,8 +218,18 @@
      "via": "substituted route (retracted 2026-10-30)",
      "session_id": null,
      "state": "landed",
-     "usage": null,
-     "usage_note": "shared Muse weekly bucket: 100% consumed the night of 2026-10-30 (resets 2026-11-03 03:21 PST); per-dispatch split NOT ESTABLISHED"
+     "usage": {
+      "value": null,
+      "unit": null,
+      "source": "Muse subscription status (account level)",
+      "window": "week of 2026-10-30; resets 2026-11-03 03:21 PST",
+      "match": null,
+      "note": "shared Muse weekly bucket: 100% consumed the night of 2026-10-30 (resets 2026-11-03 03:21 PST); per-dispatch split NOT ESTABLISHED Per-PR split NOT ESTABLISHED — shared Muse bucket (weekly 100% + additional tokens 26% consumed at 2026-10-30 measurement)."
+     },
+     "model": "Muse Spark 1.3",
+     "moniker": "[MUSEai]@{role:{challenge-entries-manager}}",
+     "role": "contribution-desk dispatch (per-dispatch)",
+     "context": "desk-spawned builder subagents, 2026-10-30 (substituted route, retracted)"
     }
    ]
   },

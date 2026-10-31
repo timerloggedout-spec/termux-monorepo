@@ -1,0 +1,110 @@
+{
+  "schema": "delphi-evidence-set/v1",
+  "artifact": {
+    "kind": "bundle",
+    "ref": "amd-repo-repair"
+  },
+  "assembled_at": "2026-10-30T00:00:00Z",
+  "fresh_until": "2026-11-29T00:00:00Z",
+  "items": [
+    {
+      "claim": "event:match5_repair",
+      "value": {
+        "match": "AI-Powered Code Repository Repair",
+        "source_url": "https://lablab.ai/ai-hackathons/amd-lablab-ai-academy-challenge",
+        "observed_on": "2026-10-30"
+      },
+      "provenance": {
+        "source": "official-event-page",
+        "url": "https://lablab.ai/ai-hackathons/amd-lablab-ai-academy-challenge",
+        "observed_at": "2026-10-30T00:00:00Z"
+      },
+      "fresh_until": "2026-12-01T19:00:00Z",
+      "sha256": "c337b1534f05e57a89e4a655d20a81133e8e62045fc7d4f80cc91252dd0413be"
+    },
+    {
+      "claim": "repo:aef_correctness_priority",
+      "value": "Agent Evaluation Framework says correctness and integrated task outcome outrank latency.",
+      "provenance": {
+        "source": "github-api",
+        "path": "docs/architecture/AGENT-EVALUATION-FRAMEWORK.md",
+        "blob_sha": "a63b27dc1af24cc5e13ab7e69ff60f2249a94b66",
+        "observed_at": "2026-10-30T00:00:00Z"
+      },
+      "fresh_until": "2026-11-29T00:00:00Z",
+      "sha256": "a4b8c2ce750f942d6b293cc8b4664856f2a1c7532b2f9edfc95e6ef87482ff61"
+    },
+    {
+      "claim": "repo:she_repair_planner",
+      "value": "she/repair_pr.py defines an inspectable repair-PR plan, evidence URIs, required tests, rollback SHA and promotion constraints; its current planner does not create live PRs or mutate source.",
+      "provenance": {
+        "source": "github-api",
+        "path": "she/repair_pr.py",
+        "blob_sha": "52cd38a0c31e7e6fb45f24509a59114b91fcbed7",
+        "observed_at": "2026-10-30T00:00:00Z"
+      },
+      "fresh_until": "2026-11-29T00:00:00Z",
+      "sha256": "f017376f967905984b26bc500748654def9819e56e48128cabf21a41bd15a7dc"
+    },
+    {
+      "claim": "repo:she_sandbox",
+      "value": "she/sandbox.py provides repair sandbox planning.",
+      "provenance": {
+        "source": "github-api",
+        "path": "she/sandbox.py",
+        "blob_sha": "ce82634fa26e0c8052bafbd810e0fa8e61cdc383",
+        "observed_at": "2026-10-30T00:00:00Z"
+      },
+      "fresh_until": "2026-11-29T00:00:00Z",
+      "sha256": "d8ba62e70ef1f6b817c62465bfd651da6ecccb3215f6d4f0e9919424ba887669"
+    },
+    {
+      "claim": "repo:she_verify",
+      "value": "she/verify.py provides verification planning and dual gates; repair planner requires repo-gate and termux-smoke among required tests.",
+      "provenance": {
+        "source": "github-api",
+        "path": "she/verify.py",
+        "blob_sha": "776b1ab457af4703045f4b2ae57cd7bf1a29ebe5",
+        "observed_at": "2026-10-30T00:00:00Z"
+      },
+      "fresh_until": "2026-11-29T00:00:00Z",
+      "sha256": "6943a06864be3b9a00ccef7dd8492da15e56eca2b02d7f6474080532bf89a3c9"
+    },
+    {
+      "claim": "repo:oracle_method",
+      "value": "scripts/delphi/generate_proposal.py implements generation-first proposal generation from briefs and evidence sets and marks unresolved evidence refs unverified.",
+      "provenance": {
+        "source": "github-api",
+        "path": "scripts/delphi/generate_proposal.py",
+        "blob_sha": "e99494d6aee1954721447ced82c441aadd329468",
+        "observed_at": "2026-10-30T00:00:00Z"
+      },
+      "fresh_until": "2026-11-29T00:00:00Z",
+      "sha256": "2f7c3b1d11ec896b42e1f8cff0632da4b4efc186581c69edc24b8cbe313ac268"
+    },
+    {
+      "claim": "repo:delphi_cycle",
+      "value": "ops/delphi/panel.json specifies three proposals per pass, implementation comparisons, evidence equalization, round-2 re-vote and calibration; unavailable stages must be specified_not_run.",
+      "provenance": {
+        "source": "github-api",
+        "path": "ops/delphi/panel.json",
+        "blob_sha": "4336fdf9d3be9c461422d816e2c56e2a7bfb8010",
+        "observed_at": "2026-10-30T00:00:00Z"
+      },
+      "fresh_until": "2026-11-29T00:00:00Z",
+      "sha256": "49dc694423983c5f14f45cb8dfb1397d8c5a78fa23b91203ef1c7d68c829fbe8"
+    },
+    {
+      "claim": "event:individual_only",
+      "value": "The repository's event log records individual participation only for the AMD AI League entry.",
+      "provenance": {
+        "source": "github-api",
+        "path": "docs/ops/CHALLENGE-ENTRIES-LOG.md",
+        "blob_sha": "fb020c43bd32111ec6f8ed0274ce0b2260592383",
+        "observed_at": "2026-10-30T00:00:00Z"
+      },
+      "fresh_until": "2026-12-01T19:00:00Z",
+      "sha256": "7e6bd7c288efba469ea9fb2bae32493bafff89d64119f7f56277d59c1f706186"
+    }
+  ]
+}

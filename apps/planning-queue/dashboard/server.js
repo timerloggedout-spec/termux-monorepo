@@ -1,0 +1,10 @@
+'use strict';
+const path = require('node:path');
+const express = require('express');
+const app = express();
+app.disable('x-powered-by');
+app.get('/health', (_q, r) => r.json({ ok: true, service: 'planning-dashboard', sha: process.env.GIT_SHA || null }));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use((req, res) => (req.method === 'GET' || req.method === 'HEAD') ? res.sendFile(path.join(__dirname, 'public', 'index.html')) : res.status(405).json({ error: 'Method not allowed' }));
+const server = app.listen(Number(process.env.PORT || 8080), () => console.log('[planning-dashboard] listening'));
+for (const s of ['SIGTERM', 'SIGINT']) process.on(s, () => { setTimeout(() => process.exit(1), 10_000).unref(); server.close(() => process.exit(0)); });

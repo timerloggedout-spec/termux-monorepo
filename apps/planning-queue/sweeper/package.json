@@ -1,0 +1,9 @@
+{
+  "name": "planning-queue-sweeper",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Invoked by the scheduler node: re-queues or marks stale claims in ops_queue.",
+  "engines": { "node": ">=20" },
+  "scripts": { "start": "node server.js", "sweep": "node server.js --once" },
+  "dependencies": { "express": "^5.1.0", "pg": "^8.16.0" }
+}

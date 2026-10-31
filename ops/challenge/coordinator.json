@@ -51,6 +51,12 @@
     "role_moniker": "registry-pending",
     "chat_id": "840bd147-dcf6-4ce1-8f88-633186849181",
     "scope": "Completion assurance for all non-build requirements: gates register oversight (coordinator events[].gates[]) + AMD Academy >=5-course gate plan/schedule/evidence. Record deltas route via the entries lane."
+   },
+   {
+    "role": "contribution-desk",
+    "role_moniker": "challenge-entries-assistant",
+    "chat_id": "a440bcb2-f95a-41c5-81b4-9e1728e5fd6c",
+    "scope": "Challenge Management \u2014 Assistant seat, ADDITIONALLY Contribution Desk under the contestant model (owner, 2026-10-30): contribution queue, routing to builder lanes, CI/merge tracking, artifact sync state. (Base scope unchanged: wiring + coverage matrix + opportunity-cost/ledger + metrics_internal landings.)"
    }
   ]
  },
@@ -2018,6 +2024,12 @@
  "architecture": {
   "contestant_model": "OWNER CONTESTANT FRAMING (record correction, 2026-10-30 via Manager): termux-monorepo = HQ + the build/test CONTESTANT BODY \u2014 contributor lanes land entry code in the monorepo via branch/PR, built and tested by repo CI (repo_gate + agentic termux smoke); the per-entry repos are PUBLIC SUBMISSION ARTIFACTS synced from those contributions. PR #2538's \"record only\" gloss is SUPERSEDED \u2014 that PR removed duplicate scaffolds only, it did not demote the monorepo.",
   "recorded": "2026-10-30",
-  "source": "owner ruling via Manager"
+  "source": "owner ruling via Manager",
+  "roles": {
+   "sub_managers": "spec / census / gates / verify \u2014 NOT code (owner, 2026-10-30, contestant model)",
+   "assistant_contribution_desk": "chat a440bcb2-f95a-41c5-81b4-9e1728e5fd6c (Challenge Management \u2014 Assistant) ADDITIONALLY = CONTRIBUTION DESK: contribution queue, routing to builder lanes, CI/merge tracking, artifact sync state (entry repos synced from monorepo contributions)",
+   "builder_lanes": "land code in termux-monorepo via branch/PR (contestant body); CI = repo_gate + agentic termux smoke",
+   "entries_lane": "coordinator/log single-writer (records)"
+  }
  }
 }

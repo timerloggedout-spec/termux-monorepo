@@ -1,0 +1,164 @@
+{
+ "schema": "desk-feed/v1",
+ "generated_at": "2026-10-31T05:47:00Z",
+ "built_by": "viz lane (seed from firsthand audits, 2026-10-30)",
+ "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence.",
+ "desk": {
+  "name": "Contribution Desk",
+  "seat": "Challenge Management — Assistant (contribution desk under the contestant model, PR #2604)",
+  "model": "termux-monorepo = HQ + build/test contestant body; Muse = single contributor. Contributor lanes land entry code in the monorepo via branch/PR (CI = repo gate + agentic termux smoke); per-entry repos are public submission artifacts synced from those contributions.",
+  "roles": {
+   "sub_managers": "spec / census / gates / verify — not code",
+   "desk": "contribution queue, routing to builder lanes, CI/merge tracking, artifact sync state",
+   "builder_lanes": "land code in termux-monorepo via branch/PR",
+   "entries_lane": "coordinator/log single-writer (records)"
+  },
+  "pipeline": [
+   "spec",
+   "desk",
+   "builder",
+   "pr",
+   "ci",
+   "merge",
+   "sync"
+  ]
+ },
+ "dispatch": {
+  "how": "A dispatch is a GitHub issue spec: sub-manager spec check ⇒ desk routes ⇒ builder lane lands a monorepo PR ⇒ desk verifies ⇒ merge on merge-clear ⇒ artifact sync. This page mutates nothing; the button opens the intake issue on GitHub, where the desk works.",
+  "intake_url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/new?title=%5BDESK%20DISPATCH%5D%20%3Centry%3E%3A%20%3Cone-line%20spec%3E&body=Entry%3A%20%0ASpec%20%28what%20to%20build%29%3A%20%0ABuilder%20ask%20%28lane%20or%20any%29%3A%20%0ADeadline%20/%20checkpoint%3A%20%0AEvidence%20links%3A%20%0A%0ADesk%20route%3A%20sub-manager%20spec%20check%20%3D%3E%20desk%20routes%20to%20builder%20lane%20%3D%3E%20monorepo%20PR%20%3D%3E%20desk%20verifies%20%3D%3E%20merge%20on%20merge-clear%20%3D%3E%20artifact%20sync.",
+  "intake_label": "New dispatch (GitHub issue)"
+ },
+ "traversals": [
+  {
+   "entry": "D1",
+   "project": "StudySprint",
+   "artifact_repo": "timerloggedout-spec/studysprint",
+   "status": "landed",
+   "stages": {
+    "spec": "done",
+    "desk": "done",
+    "builder": "done",
+    "pr": "done",
+    "ci": "done",
+    "merge": "done",
+    "sync": "done"
+   },
+   "evidence": {
+    "pr": 2606,
+    "merge_sha": "cd381db0e824",
+    "ci": "head b66a86a29f5a: 46 check runs, 29 success / 0 failure",
+    "sync": "artifact repo live; parity 19/19 per D1 seat verification"
+   },
+   "next": "Iteration re-sync = first sync test, by 2026-11-03; submission deadline 2026-11-04"
+  },
+  {
+   "entry": "D3",
+   "project": "ListingLens",
+   "artifact_repo": "timerloggedout-spec/listinglens",
+   "status": "landed",
+   "stages": {
+    "spec": "done",
+    "desk": "done",
+    "builder": "done",
+    "pr": "done",
+    "ci": "done",
+    "merge": "done",
+    "sync": "done"
+   },
+   "evidence": {
+    "pr": 2616,
+    "merge_sha": "6ea0e52b0d95",
+    "sync": "artifact repo HEAD 59c6c3b0427d = sync commit (viz firsthand)",
+    "note": "Authorship: desk-spawned Muse subagents (substituted route; retracted as provider-lane production 2026-10-30). Merge + sync facts stand."
+   },
+   "next": "Nov 1 checkpoint met build-side (landed 2026-10-30); submission deadline 2026-11-09"
+  },
+  {
+   "entry": "AMD M4",
+   "project": "amd-m4-retrieval (AI League C11)",
+   "artifact_repo": null,
+   "status": "in-progress",
+   "stages": {
+    "spec": "done",
+    "desk": "done",
+    "builder": "done",
+    "pr": "done",
+    "ci": "done",
+    "merge": "done",
+    "sync": "na"
+   },
+   "evidence": {
+    "prs": [
+     2615,
+     2619,
+     2623
+    ],
+    "merge_shas": [
+     "4a5c49b265f8",
+     "95cf49d2c917",
+     "5687f6033a4b"
+    ],
+    "note": "P0 scaffold + P1 retrieval + P2 tests landed (40 ok / 2 skip; P3-VALIDATION.md runbook NOT-RUN). AUTHORSHIP: desk-spawned Muse subagents — substituted route (Jules unsteerable, no escalation); provider-lane production credit RETRACTED 2026-10-30."
+   },
+   "next": "P3 execution = AMD seat Nov 07–09 (docker first-build + LLM live activation); M4 frozen @5687f6033a4b. First provider-produced PR (Jules-on-issues) = the live proof still owed."
+  },
+  {
+   "entry": "AMD M3",
+   "project": "amd-m3-rag",
+   "artifact_repo": null,
+   "status": "gated",
+   "stages": {
+    "spec": "done",
+    "desk": "done",
+    "builder": "gated",
+    "pr": "pending",
+    "ci": "pending",
+    "merge": "pending",
+    "sync": "na"
+   },
+   "evidence": {
+    "note": "staged at the desk; gate = M4 submitted or builder idle and not competing; priority M3 over M2 (desk record)"
+   },
+   "next": "Routes to a builder lane when the gate opens"
+  },
+  {
+   "entry": "AMD M2",
+   "project": "amd-m2-ocr",
+   "artifact_repo": null,
+   "status": "gated",
+   "stages": {
+    "spec": "done",
+    "desk": "done",
+    "builder": "gated",
+    "pr": "pending",
+    "ci": "pending",
+    "merge": "pending",
+    "sync": "na"
+   },
+   "evidence": {
+    "note": "staged at the desk behind the same gate as M3, lower priority (desk record)"
+   },
+   "next": "Routes after M3 or when builders idle"
+  },
+  {
+   "entry": "D2",
+   "project": "Vultr Agent Rush — pick not frozen (candidate: Web Adapter Foundry)",
+   "artifact_repo": null,
+   "status": "queued",
+   "stages": {
+    "spec": "pending",
+    "desk": "pending",
+    "builder": "pending",
+    "pr": "pending",
+    "ci": "pending",
+    "merge": "pending",
+    "sync": "pending"
+   },
+   "evidence": {
+    "note": "build route per D2 seat record: pick/spec ⇒ Desk ⇒ builder lanes ⇒ monorepo PR ⇒ sync ⇒ D2 verifies"
+   },
+   "next": "Kickoff 2026-11-03T15:00Z; gate D2-NOCARD open (Vultr account before the gift-code step)"
+  }
+ ],
+ "provenance": "Seeded by the viz lane from firsthand PAT-API audits on 2026-10-30 (contribution-desk audit + lane-level identification for the challenge manager): every PR, merge SHA (master-history verified), CI count and sync HEAD above was read from the live record; items sourced from another lane's record say so in their evidence."
+}

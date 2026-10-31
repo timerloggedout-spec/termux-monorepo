@@ -72,7 +72,7 @@ def test_provider_usage_shape_and_d0():
     by_entry = {t["entry"]: t for t in pack["traversals"]}
     assert by_entry["D0"]["evidence"]["pr"] == 1702
     allowed = {"provider", "scope", "via", "session_id", "state", "usage",
-               "model", "moniker", "role", "context"}
+               "model", "moniker", "role", "context", "instance_key"}
     for t in pack["traversals"]:
         assert isinstance(t.get("provider_usage"), list), t["entry"]
         for p in t["provider_usage"]:
@@ -83,6 +83,40 @@ def test_provider_usage_shape_and_d0():
     assert "Jules" in providers
     assert sum(1 for x in providers if x and x.startswith("Muse — desk-spawned")) == 2
     assert "Muse (in-house, pre-correction)" in providers
+
+
+def test_duplicate_instances_are_distinguished():
+    # The two "Muse - desk-spawned subagents" rows share provider+model:
+    # they are duplicates on the model axis alone and must stay distinct
+    # configured instances (DoE identity, PR #2656) - entry-scoped context
+    # plus an instance stamp each, with different system_prompt_refs.
+    pack = _pack()
+    dupes = [p for t in pack["traversals"] for p in t["provider_usage"]
+             if p["provider"].startswith("Muse \u2014 desk-spawned")]
+    assert len(dupes) == 2
+    assert len({p["context"] for p in dupes}) == 2
+    refs = [p["instance_key"]["system_prompt_ref"] for p in dupes]
+    assert len(set(refs)) == 2 and all(r.startswith("prompt:") for r in refs)
+    for p in dupes:
+        assert p["instance_key"]["tools_ref"].startswith("tools:")
+        assert "NOT ESTABLISHED" in p["instance_key"]["note"]  # hashes never fabricated
+    # Every stamped row (moniker+role present) carries an instance stamp;
+    # the Jules pilot stamp carries its content hash in compact form.
+    for t in pack["traversals"]:
+        for p in t["provider_usage"]:
+            if "moniker" in p:
+                assert "instance_key" in p, (t["entry"], p["provider"])
+    jules = [p for t in pack["traversals"] for p in t["provider_usage"]
+             if p["provider"] == "Jules"][0]
+    assert "#" in jules["instance_key"]["system_prompt_ref"]
+
+
+def test_dispatch_intake_carries_instance_stamp_fields():
+    pack = _pack()
+    assert "Instance stamp" in pack["dispatch"]["how"]
+    url = pack["dispatch"]["intake_url"]
+    for field in ["system_prompt_ref", "tools_ref", "Model%40version"]:
+        assert field in url, field
 
 
 def test_dispatch_is_a_link_not_a_mutation():

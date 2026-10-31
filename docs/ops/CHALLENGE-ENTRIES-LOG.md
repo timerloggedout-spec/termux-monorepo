@@ -289,19 +289,20 @@ this log is the human view of the same verified state.
 | D1 | IN PROGRESS — window OPEN; concept set STOPPED 2026-10-28 (tainted); pick **FROZEN 2026-10-30 (Manager-enacted): StudySprint** — dedicated repo https://github.com/timerloggedout-spec/studysprint (created 2026-10-30, owner order); workshop begun 2026-10-30; FIRST deadline — priority up | closes Nov 4 23:59 | **G-07 Builder profile — CLEARED 2026-10-29** (all 5 mandatory fields live, verified on the public profile 17:10 PT: 4n0nS3C avatar + About bisection text + GitHub link; forced save fields = least-specific values) — remaining D1 gate: in-window workshop badge evidence |
 - **D0 FOUNDATION EXTRACTED 2026-10-30** (D1 sub-manager census, firsthand): the D0 prerequisite package (`apps/weekend-challenge-delphi-oracle`, PR #1702; demo-run 103 ALLOW / 0 ABSTAIN / ESCALATE receipts) is extracted into the StudySprint repo as `foundation/D0-FOUNDATION.md` + `foundation/fetch_evidence.py` (verbatim D0 tool blob). Open gaps: G1 kernel path-bound · G2 artifact kinds · G3 Strands wiring none yet · G4 workshop not yet evidenced · G5 article/demo/submission none yet.
 - **WORKSHOP STARTED 2026-10-30** (in-window qualifier in progress): "Building AI Agents with Strands SDK: From Simple Loops to Multi-Agent Swarms" — free sandbox provisioned 16:54 PT (8h window), Module 1 executed in-session (notebook EXIT:0, agent loop + tool calls evidenced). Modules 2–7 + Wrap-Up + Cleanup running in the same session; badge/certificate not yet surfaced — D1-WORKSHOP gate stays open until completion evidence lands.
+- **WORKSHOP COMPLETED 2026-10-30 (in-window qualifier satisfied)**: all 7 modules executed EXIT:0 in the free sandbox, incl. a live AgentCore Runtime deployment (Module 5, runtime READY + answering queries) and Evals (Module 7). Workshop Studio Cleanup page: "Workshop Complete!". **No badge/certificate exists for this workshop** (Badges tab exhaustively checked: 21 badges, only the two Oct-29 profile badges earned) — completion evidence = the platform completion page + per-module execution receipts. Gate D1-WORKSHOP **cleared** on that evidence. Remaining D1 path: StudySprint build ⇒ article ⇒ demo ⇒ submit by Nov 4, 23:59 PT.
 | D2 | **REGISTRATION COMPLETE 2026-10-29 — ENROLLED** (lablab via AMD SSO; screening form submitted; organizer email confirmation pending); Nov 5–8 build PRIMARY over D3 final weekend | opens Nov 5; closes Nov 8 15:00 | no-card path only (lablab + Discord + Vultr sandbox) |
 | D3 | Concept #42 QUESTIONED 2026-10-28 — under review, NOT killed, NOT the active build; pick **FROZEN 2026-10-30 (Manager-enacted): ListingLens** — dedicated repo https://github.com/timerloggedout-spec/listinglens (created 2026-10-30, owner order); core build Oct 30–Nov 1, final weekend polish/Clips only | closes Nov 9 23:59 (official schedule moved; corrected 2026-10-28) | Clips account ✓ created 2026-10-27 (held for the regenerated concept) |
 | D4 | REGISTERING — Devpost profile COMPLETE 2026-10-29 (timerloggedout); Kiro account exists (no editable fields); Kiroween registration + exact Kiro ID still blocked | eligibility opens Oct 30 09:00 PDT (rules s.1); closes Dec 4 14:00 | no project creation before the window opens |
 | D5 | REGISTERED — spot pending review | opens Nov 17 9:00 AM; closes Nov 19 12:00 PT (official Contest Rules) | spot confirmation email |
 
-<!-- countdown:BLOCK -->⏳ countdowns — D0: CLOSED · D1: closes in 7d 12h · D2: opens in 7d 12h (closes Nov 8 15:00 PT) · D3: closes in 12d 12h · D4: opens in 2d 0h (closes Dec 4 14:00 PT) · D5: opens in 19d 21h (closes Nov 19 12:00 PT) (computed 2026-10-28 12:55 PT)<!-- /countdown:BLOCK -->
+<!-- countdown:BLOCK -->⏳ countdowns — D0: CLOSED · D1: closes in 5d 6h · D2: opens in 3d 13h (closes Nov 8 15:00 PT) · D3: closes in 10d 6h · D4: closes in 34d 20h · D5: opens in 17d 15h (closes Nov 19 12:00 PT) (computed 2026-10-30 18:12 PT)<!-- /countdown:BLOCK -->
 
 ### D0 — for R2, Weekend Challenge: Give your Agent a Tool — COMPLETED 2026-10-27
 
 - **ROLE (owner framing, 2026-10-30): prerequisite-practice.** D0 is the mandate practice — the prerequisite pattern for the whole slate: agent + one new tool + article + demo; its completion package is the template every entry follows. D1 executes the D0 pattern formally (workshop agent + tool; StudySprint article + demo per the D0 shape). The opportunity ledger is UNCHANGED (OC-002 LOST $200 stands) — this framing is not a reclassification. (owner ruling 2026-10-27; date set: Oct 29)
 
 <!-- countdown-data:D0 opens=- closes=2026-10-26T13:00:00-07:00 -->
-<!-- countdown:D0 -->⏳ CLOSED (computed 2026-10-28 12:55 PT)<!-- /countdown:D0 -->
+<!-- countdown:D0 -->⏳ CLOSED (computed 2026-10-30 18:12 PT)<!-- /countdown:D0 -->
 
 `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]`
 
@@ -363,7 +364,7 @@ this log is the human view of the same verified state.
 ### D1 — for C1, Workshop to Ship — IN PROGRESS (owner already joined) — CONCEPT SET STOPPED 2026-10-28 (brief-first regeneration pending)
 
 <!-- countdown-data:D1 opens=2026-10-28T00:00:00-07:00 closes=2026-11-04T23:59:00-08:00 -->
-<!-- countdown:D1 -->⏳ closes in 7d 12h (computed 2026-10-28 12:55 PT)<!-- /countdown:D1 -->
+<!-- countdown:D1 -->⏳ closes in 5d 6h (computed 2026-10-30 18:12 PT)<!-- /countdown:D1 -->
 
 `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]`
 
@@ -428,7 +429,7 @@ this log is the human view of the same verified state.
 ### D2 — for C2, Vultr Agent Rush (Foundry entry) — IN PROGRESS
 
 <!-- countdown-data:D2 opens=2026-11-03T15:00:00Z closes=2026-11-08T15:00:00-08:00 -->
-<!-- countdown:D2 -->⏳ opens in 7d 12h (computed 2026-10-28 12:55 PT)<!-- /countdown:D2 -->
+<!-- countdown:D2 -->⏳ opens in 3d 13h (computed 2026-10-30 18:12 PT)<!-- /countdown:D2 -->
 
 `entrant{entrantLablabAi}[platform:lablab-ai]` + `entrant{entrantVultr}[platform:vultr]`
 
@@ -469,7 +470,7 @@ this log is the human view of the same verified state.
 ### D3 — for C3, Builder.io Agent-Native Hackathon — concept #42 QUESTIONED 2026-10-28 (under review; not the active build)
 
 <!-- countdown-data:D3 opens=- closes=2026-11-09T23:59:00-08:00 -->
-<!-- countdown:D3 -->⏳ closes in 12d 12h (computed 2026-10-28 12:55 PT)<!-- /countdown:D3 -->
+<!-- countdown:D3 -->⏳ closes in 10d 6h (computed 2026-10-30 18:12 PT)<!-- /countdown:D3 -->
 
 `entrant{entrantBuilderIo}[platform:builder-io]`
 
@@ -573,7 +574,7 @@ this log is the human view of the same verified state.
 - **DEBATE LANDED 2026-10-30** (PR #2563, calibration-only under the enacted freeze): skeleton-crew 23.288 > frankenstein 22.865 > resurrection 22.481 (10 LOCAL_BASELINE ballots; revision-only 23.308 / 22.462 / 21.692) — rank agreement 3/3 with the brief-author priors; calibration supports the freeze. Pass status = debate_recorded; receipts in the pass cycle/ (FEEDBACK.json, debate-ballots.json, DEBATE.md). Owner ballot still open.
 
 <!-- countdown-data:D4 opens=2026-10-30T09:00:00-07:00 closes=2026-12-04T14:00:00-08:00 -->
-<!-- countdown:D4 -->⏳ opens in 2d 0h (computed 2026-10-28 12:55 PT)<!-- /countdown:D4 -->
+<!-- countdown:D4 -->⏳ closes in 34d 20h (computed 2026-10-30 18:12 PT)<!-- /countdown:D4 -->
 
 `entrant{entrantDevpost}[platform:devpost]` + `entrant{entrantKiro}[platform:kiro]` — account creation owned by the dedicated Devpost + Kiro ID creation chat (owner order 2026-10-27, fleet Google identity route); registration completes with this lane on its handoff.
 
@@ -633,7 +634,7 @@ this log is the human view of the same verified state.
 ### D5 — for Aha! AI Builder Day Hackathon (Aha.io) — REGISTERED 2026-10-27 (spot pending review)
 
 <!-- countdown-data:D5 opens=2026-11-17T09:00:00-08:00 closes=2026-11-19T12:00:00-08:00 -->
-<!-- countdown:D5 -->⏳ opens in 19d 21h (computed 2026-10-28 12:55 PT)<!-- /countdown:D5 -->
+<!-- countdown:D5 -->⏳ opens in 17d 15h (computed 2026-10-30 18:12 PT)<!-- /countdown:D5 -->
 
 `entrant{n0nAha}[platform:aha-io]` (assigned via the registry process,
 PR #1970 merged 2e99fadd).

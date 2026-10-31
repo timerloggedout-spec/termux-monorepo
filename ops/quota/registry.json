@@ -2619,6 +2619,78 @@
    "planned_use": {
     "note": "NOT ESTABLISHED: no numeric limit published by the vendor for this surface (primary source checked 2026-10-28: https://chat9.yqcloud.top). USAGE-LOG INFERENCE (not a documented limit): g4f tester harvest 2026-10-28 \u2014 1 of 1 catalogued models tester-working; treat as unmetered-until-429 with experiment label. Auth: Unknown/no-auth web chat surface as fetched; no login, pricing, or terms information was published on the fetched page. Checked: https://chat9.yqcloud.top (page text only 'AIchatOS2' / 'kErrorDropped', no numeric limit, pricing, or docs). Web searches for 'chat9.yqcloud.top'/'yqcloud.top' free/pricing found no primary pricing/docs/terms page for this domain; results w"
    }
+  },
+  {
+   "id": "meta.model_api",
+   "provider": "meta",
+   "lane": "model",
+   "metric": "Meta Model API usage \u2014 Muse Spark / Muse Wonder / Muse Voice via https://api.meta.ai/v1 (Responses + Chat Completions + Messages + Files; OpenAI/Anthropic SDK compatible)",
+   "limit": null,
+   "unit": "tokens (metered, public preview)",
+   "window": "n/a",
+   "reset": "unverified \u2014 no published rate-limit counter established 2026-10-30",
+   "zone": "UTC",
+   "source": "https://ai.meta.com/blog/introducing-muse-spark-meta-model-api/",
+   "doc_quote": "developers can begin building with Muse Spark 1.1 via the new Meta Model API, now in public preview",
+   "live": "none (no usage API established; credential MODEL_API_KEY not provisioned \u2014 owner provisioning item, names-only)",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "Public preview, US-only at launch; $20 starter credit + $1.25/$4.25 per M in/out tokens documented for muse-spark-1.1; muse-spark-1.3 ids incl. -contributor tier. NOT provisioned: do not route until MODEL_API_KEY exists."
+   }
+  },
+  {
+   "id": "meta.muse_code",
+   "provider": "meta",
+   "lane": "model",
+   "metric": "Muse Code CLI coding agent (terminal agent backed by Muse Spark; install https://dev.meta.ai/install.sh, binary `muse`)",
+   "limit": null,
+   "unit": "tasks (subscription or Meta Model API PAYG)",
+   "window": "monthly (subscription) / metered (PAYG)",
+   "reset": "unverified",
+   "zone": "UTC",
+   "source": "https://developer.meta.com/ai/products/muse-code",
+   "doc_quote": "A coding agent for your most complex coding workstreams. Build, debug and ship with Muse Code.",
+   "live": "none (auth = browser sign-in or META_API_KEY / muse auth set; credential not provisioned \u2014 owner item, names-only)",
+   "planned_use": {
+    "safety": 0.9,
+    "note": "Code-assist provider surface, distinct from meta.model_api raw inference. NOT provisioned: do not route until owner takes the sign-in / key step."
+   }
+  },
+  {
+   "id": "meta.llama_api",
+   "provider": "meta",
+   "lane": "model",
+   "metric": "Meta Llama API (RETIRED 2026-07-06; was https://api.llama.com/compat/v1/, LLAMA_API_KEY)",
+   "limit": 0,
+   "unit": "requests",
+   "window": "n/a",
+   "reset": "n/a (retired)",
+   "zone": "UTC",
+   "source": "https://www.promptfoo.dev/docs/providers/meta/",
+   "doc_quote": "Meta retired the separate Llama API at api.llama.com on July 6, 2026.",
+   "live": "none (retired; superseded by meta.model_api)",
+   "planned_use": {
+    "safety": 0.0,
+    "note": "DO NOT ROUTE \u2014 record exists only so dispatch never revives the retired endpoint."
+   }
+  },
+  {
+   "id": "fleet.vm_webhooks",
+   "provider": "fleet-vm",
+   "lane": "ops",
+   "metric": "VM bounded webhook intake events (Receiver Mesh VM leg: POST /webhook/<source>, GET /health on 127.0.0.1:8791; HMAC-SHA256 verify, delivery_id dedupe, allowlisted envelope only)",
+   "limit": null,
+   "unit": "events",
+   "window": "session (process runs only while launched; no daemon, no systemd)",
+   "reset": "n/a",
+   "zone": "UTC",
+   "source": "docs/ops/VM-WEBHOOKS.md",
+   "doc_quote": "Bounded intake only: verify, dedupe, append the allowlisted envelope to the durable intake log; no business logic, no dispatch.",
+   "live": "GET http://127.0.0.1:8791/health + durable log ~/workspace/vm-webhooks/intake.jsonl (proof 2026-10-30: signed payload 202, duplicate 200, bad signature 401)",
+   "planned_use": {
+    "safety": 1.0,
+    "note": "Provider-dispatch may route bounded trigger/intake tasks here (AI Studio mesh VM trigger precedent, owner-ruled 2026-10-30). Secret name VM_WEBHOOK_SECRET (local 0600 custody, never committed). Standing/public hosting exceeds this scope \u2014 see docs/ops/VM-WEBHOOKS.md."
+   }
   }
  ]
 }

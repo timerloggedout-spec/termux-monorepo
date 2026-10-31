@@ -4,8 +4,8 @@
 `{role:{marketing-channel}}` (chat 81cbe17c) · build/submission owner =
 entries lane a33d3ca1 ∧ manager `{role:{challenge-entries-manager}}`
 (chat 9cb1c873) ∧ D3 seat 39fc8b89.
-Status: PLAN — ∅ copy published yet; beats fire on evidence events,
-¬ calendar alone (except Beat A, whose evidence already landed).
+Status: ACTIVE — Beat A PUBLISHED 2026-10-31 (see §2); remaining
+beats fire on evidence events, ¬ calendar alone.
 
 ## 1. Census (verified firsthand, 2026-10-31)
 
@@ -31,9 +31,12 @@ per #1734); (e) notation per #320.
 
 ## 2. Beats (event-triggered)
 
-1. **A Build-in-open** — fire: NOW (build-done evidence landed:
-   PR #2616 ∧ sync `59c6c3b`). Channel: FB Page (fb-a ∨ fb-b per
-   parent MVT routing) + repo link.
+1. **A Build-in-open** — FIRED ✓ 2026-10-31: parent channel call
+   = fb-a (Dream In Production); published 2026-10-31T09:37:48 PT,
+   post_id `122096301147538523`, visibility public (verified
+   firsthand via facebook-cli `post read`):
+   https://facebook.com/61596155692530/posts/pfbid05UUNPezsZaG3vrtGKAsXbaSW7rnSJ9XNBMPSSGHFjqDYVXctP2RosEHVpNLmVGBRl/
+   Watch baseline @2026-10-31T09:38 PT: comments 0, reactions 0.
 2. **B Final-weekend / polish** — fire: Nov 6–8 window opens ∧
    polish dispatch receipt exists. Includes Clips-demo link ONLY
    when clips_url is verified public (no-login viewable).

@@ -79,3 +79,28 @@ Per-entry quota usage is REQUIRED telemetry for ALL entries. Consequences:
 - `waived` — ALL of the entry's dispatches predate the mandate AND consumption is unrecoverable (provider exposes ∅ per-entry units, or the draw sat in a shared bucket with ∅ per-consumer split). `note` MUST carry the reason verbatim. D0, D1-original, D3, M4 land here at the mandate's start.
 - `fault` — ANY dispatch at/after the mandate lacks its stamp. Fault is a live, fixable state: stamping the late record (with its true window) clears it. Fault-forever is rejected as a state: it would mark mathematically unrecoverable history as a standing failure and destroy the signal.
 - Coverage counts `established + activity-only + waived` as covered; `fault` and unstamped post-mandate `pending` render as visible gaps.
+
+## Telemetry key set + roll-ups (owner, 2026-10-30 23:10 PT)
+
+Every requisition record carries the full 5-axis key tuple:
+
+```json
+"keys": {
+  "provider": "<registry provider id>",
+  "model": "<model id, or null when the provider exposes no per-model split>",
+  "moniker": "<fleet moniker from the signed identity>",
+  "role": "<fleet role>",
+  "context": "<entry id / dispatch context>"
+}
+```
+
+- `moniker` + `role` = the dispatching lane's signed identity `[MUSEai]@{role:{moniker}}`; `context` = the entry/dispatch the draw served. All three are known at requisition time — a post-mandate record missing any of them is unstamped ⇒ `fault`.
+- `provider` from the registry id space; `model` is the provider's own model id verbatim, `null` (never guessed) when the surface doesn't split by model.
+- `usage{}` records sit under these keys; desk-feed groups on exactly this tuple.
+
+Roll-ups (rendered totals):
+
+- TOTAL quota used = Σ `usage.value` over `established` records, per `unit` (units never summed across).
+- Per-axis totals = same Σ grouped by each of provider / model / moniker / role / context.
+- `activity-proxy` values roll up separately under their unit, labeled activity — never merged into consumption totals.
+- `waived` records contribute ∅ to totals and count as covered in the coverage strip; `fault` records contribute ∅ and count as gaps.

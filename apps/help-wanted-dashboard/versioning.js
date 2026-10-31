@@ -70,21 +70,29 @@
       fetch(PRODUCTION_ROOT + "version-manifest.json", {cache:"no-store"}).then(function (r) { if(!r.ok) throw new Error("production manifest HTTP "+r.status); return r.json(); })
     ]).then(function (results) {
       var current = results[0], prod = results[1];
-      var rows = (current.pages || []).map(function (p) {
-        var old = (prod.pages || []).find(function (q) { return q.id === p.id; });
-        var changed = !old ? "NEW PAGE" : (!old.content_sha256 || !p.content_sha256 ? "HASH UNAVAILABLE" : (old.content_sha256 !== p.content_sha256 ? "CHANGED" : "same content"));
-        return '<tr><th scope="row">' + esc(p.id) + '</th><td>' + esc(p.title || p.file) +
-          '</td><td>' + esc(changed) + '</td><td><a href="./' + esc(p.file) + '?page_unique_id=' +
+      var currentPages = current.pages || [];
+      var productionPages = prod.pages || [];
+      var ids = Object.create(null);
+      currentPages.concat(productionPages).forEach(function (p) { ids[p.id] = true; });
+      var rows = Object.keys(ids).sort().map(function (id) {
+        var p = currentPages.find(function (q) { return q.id === id; });
+        var old = productionPages.find(function (q) { return q.id === id; });
+        var page = p || old;
+        var changed = !p ? "REMOVED FROM PREVIEW" : (!old ? "NEW PAGE" : (!old.content_sha256 || !p.content_sha256 ? "HASH UNAVAILABLE" : (old.content_sha256 !== p.content_sha256 ? "CHANGED" : "same content")));
+        var previewLink = p ? '<a href="./' + esc(p.file) + '?page_unique_id=' +
           encodeURIComponent(p.id) + '&amp;version=' + encodeURIComponent(current.version) +
-          '&amp;channel=' + encodeURIComponent(current.channel) + '">Open preview</a></td><td>' +
-          (old ? '<a href="' + esc(PRODUCTION_ROOT + old.file) + '">Open production</a>' : '—') + '</td></tr>';
+          '&amp;channel=' + encodeURIComponent(current.channel) + '">Open preview</a>' : '—';
+        var productionLink = old ? '<a href="' + esc(PRODUCTION_ROOT + old.file) + '">Open production</a>' : '—';
+        return '<tr><th scope="row">' + esc(id) + '</th><td>' + esc(page.title || page.file) +
+          '</td><td>' + esc(changed) + '</td><td>' + previewLink + '</td><td>' + productionLink + '</td></tr>';
       }).join("");
       root.innerHTML = '<p><strong>Current:</strong> ' + esc(current.channel) + ' · ' +
         esc(current.version) + ' · <code>' + esc(current.source_sha || "unverified") +
         '</code></p><p><strong>Production:</strong> ' + esc(prod.version || "unverified") +
         ' · <code>' + esc(prod.source_sha || "unverified") + '</code></p>' +
-        '<p><a href="https://github.com/' + APP + '/compare/master...' +
-        encodeURIComponent(current.source_ref || "master") + '">GitHub source diff</a></p>' +
+        (current.source_sha && prod.source_sha ? '<p><a href="https://github.com/' + APP + '/compare/' +
+        encodeURIComponent(prod.source_sha) + '...' + encodeURIComponent(current.source_sha) +
+        '">GitHub source diff</a></p>' : '<p>Source diff unavailable: one or both manifest source SHAs are missing.</p>') +
         '<div class="pv-table-wrap"><table><thead><tr><th>Page unique ID</th><th>Page</th><th>Comparison</th><th>Preview</th><th>Production</th></tr></thead><tbody>' +
         rows + '</tbody></table></div>';
     }).catch(function (error) {

@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 357,
-    "open_prs": 148,
+    "open_prs": 149,
     "pr_classes": {
-      "CANDIDATE": 70,
+      "CANDIDATE": 69,
       "EXTRACT": 5,
-      "NEED_EVIDENCE": 73,
+      "NEED_EVIDENCE": 75,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 21,
-      "prs": 146,
+      "prs": 147,
       "unlabelled_numbers": [
         308,
         343,
@@ -76,7 +76,7 @@
       ]
     }
   },
-  "generated_at": "2026-10-31T05:01:17Z",
+  "generated_at": "2026-10-31T05:02:18Z",
   "issues_unlabelled": [
     308,
     343,
@@ -106,7 +106,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "cc51e7c6e8"
+    "sha": "69ee937743"
   },
   "prs": [
     {
@@ -1151,20 +1151,6 @@
       "updated_at": "2026-10-31T00:26:12Z"
     },
     {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "b66a86a29f",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2606,
-      "title": "D1 StudySprint \u2014 contribution into apps/studysprint (contestant model)",
-      "updated_at": "2026-10-31T04:59:49Z"
-    },
-    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -1731,12 +1717,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "81f2510c4b",
+      "head_sha": "06d33f7ad5",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-10-31T05:00:42Z"
+      "updated_at": "2026-10-31T05:01:40Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2181,10 +2167,38 @@
       },
       "head_sha": "276c631095",
       "labels": [],
-      "mergeable_state": "clean",
+      "mergeable_state": "unknown",
       "number": 2608,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-31T05:01:04Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "465402d9b4",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2610,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-10-31T05:01:53Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "queued"
+      },
+      "head_sha": "74bba4afd4",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2611,
+      "title": "D1 record: monorepo contribution landed (PR #2606, apps/studysprint/)",
+      "updated_at": "2026-10-31T05:02:13Z"
     }
   ],
   "schema": "operator-matrix/v1",

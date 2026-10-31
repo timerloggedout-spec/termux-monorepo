@@ -26,6 +26,9 @@ P1 properties (over the P0 scaffold):
     Non-loopback endpoints are refused. No model => HeuristicPlanner.
   - stdlib only => requirements.txt still carries no packages; the endpoint
     path needs nothing beyond urllib.
+  - P2: fetch reads are capped at MAX_RESPONSE_BYTES (huge-page truncation
+    bound) and `--selfcheck` functionally verifies the declared startup /
+    page / time budgets, printing the measured numbers.
 """
 
 from __future__ import annotations
@@ -34,7 +37,9 @@ import argparse
 import json
 import os
 import re
+import subprocess
 import sys
+import time
 from abc import ABC, abstractmethod
 from dataclasses import asdict, dataclass, field
 from html.parser import HTMLParser
@@ -47,6 +52,8 @@ FETCH_TIMEOUT_S = 15
 MAX_PAGES = 8   # total fetch bound per run (P0: 5; P1 multi-hop needs room)
 MAX_HOPS = 2    # link-follow depth beyond the seed pages
 MAX_SUBQUERIES = 4
+MAX_RESPONSE_BYTES = 2_000_000  # P2: per-fetch truncation bound (huge pages)
+STARTUP_BUDGET_S = 5.0          # P2: declared cold-start budget (selfcheck)
 
 
 # ---------------------------------------------------------------------------
@@ -321,11 +328,15 @@ def make_planner(name: str | None = None) -> Planner:
 # ---------------------------------------------------------------------------
 
 def fetch(url: str, timeout: int = FETCH_TIMEOUT_S) -> str:
-    """GET a public page => decoded HTML text. No credentials, ever."""
+    """GET a public page => decoded HTML text. No credentials, ever.
+
+    The body read is capped at MAX_RESPONSE_BYTES: a huge page truncates
+    instead of exhausting memory/time (P2 robustness bound).
+    """
     req = Request(url, headers={"User-Agent": USER_AGENT})
     with urlopen(req, timeout=timeout) as resp:  # noqa: S310 (public pages only)
         charset = resp.headers.get_content_charset() or "utf-8"
-        return resp.read().decode(charset, errors="replace")
+        return resp.read(MAX_RESPONSE_BYTES).decode(charset, errors="replace")
 
 
 # ---------------------------------------------------------------------------
@@ -351,6 +362,7 @@ class _Extractor(HTMLParser):
         self._in_title = False
         self.blocks: list[str] = []
         self._block_buf: list[str] | None = None
+        self._block_tag: str | None = None
         self.lists: list[list[str]] = []
         self.list_titles: list[str] = []
         self._list_stack: list[list[str]] = []
@@ -374,14 +386,24 @@ class _Extractor(HTMLParser):
         if tag == "title":
             self._in_title = True
         elif tag in _BLOCK_TAGS:
+            # malformed pages omit </p>/</li>/...: a new block auto-closes
+            # the pending one instead of silently dropping its text (P2)
+            if self._block_buf is not None:
+                self._flush_block()
             self._block_buf = []
+            self._block_tag = tag
         elif tag in ("ul", "ol"):
             self._list_stack.append([])
         elif tag == "table":
             self._table = []
         elif tag == "tr" and self._table is not None:
+            if self._row is not None:  # unclosed previous row (P2)
+                self._flush_cell()
+                self._flush_row()
             self._row = []
         elif tag in ("td", "th") and self._row is not None:
+            if self._cell is not None:  # unclosed previous cell (P2)
+                self._flush_cell()
             self._cell = []
         elif tag == "link" and (attr.get("rel") or "").lower() == "next" and attr.get("href"):
             self.next_url = urljoin(self.base_url, attr["href"])
@@ -393,6 +415,54 @@ class _Extractor(HTMLParser):
             self._a_href = urljoin(self.base_url, attr["href"])
             self._a_buf = []
 
+    # -- flush helpers: shared by end tags, start-tag auto-close, close() ---
+    def _flush_block(self) -> None:
+        if self._block_buf is None:
+            return
+        text = _clean(" ".join(self._block_buf))
+        if text:
+            self.blocks.append(text)
+            if self._block_tag in ("h1", "h2", "h3", "h4", "h5", "h6"):
+                self._last_heading = text
+            if self._block_tag == "li" and self._list_stack:
+                self._list_stack[-1].append(text)
+        self._block_buf = None
+        self._block_tag = None
+
+    def _flush_list(self) -> None:
+        if not self._list_stack:
+            return
+        items = self._list_stack.pop()
+        if items:
+            self.lists.append(items)
+            self.list_titles.append(self._last_heading)
+
+    def _flush_cell(self) -> None:
+        if self._cell is not None and self._row is not None:
+            self._row.append(_clean(" ".join(self._cell)))
+        self._cell = None
+
+    def _flush_row(self) -> None:
+        if self._row is not None and self._table is not None and any(self._row):
+            self._table.append(self._row)
+        self._row = None
+
+    def _flush_table(self) -> None:
+        self._flush_cell()
+        self._flush_row()
+        if self._table:
+            self.tables.append(self._table)
+        self._table = None
+
+    def close(self) -> None:
+        super().close()
+        # EOF with tags still open (malformed pages): keep what was read
+        self._flush_block()
+        while self._list_stack:
+            self._flush_list()
+        if self._table is not None:
+            self._flush_table()
+
     def handle_endtag(self, tag: str) -> None:
         if tag in _SKIP_TAGS:
             self.skip_depth = max(0, self.skip_depth - 1)
@@ -401,31 +471,17 @@ class _Extractor(HTMLParser):
             return
         if tag == "title":
             self._in_title = False
-        elif tag in _BLOCK_TAGS and self._block_buf is not None:
-            text = _clean(" ".join(self._block_buf))
-            if text:
-                self.blocks.append(text)
-                if tag in ("h1", "h2", "h3", "h4", "h5", "h6"):
-                    self._last_heading = text
-                if tag == "li" and self._list_stack:
-                    self._list_stack[-1].append(text)
-            self._block_buf = None
-        elif tag in ("ul", "ol") and self._list_stack:
-            items = self._list_stack.pop()
-            if items:
-                self.lists.append(items)
-                self.list_titles.append(self._last_heading)
-        elif tag in ("td", "th") and self._cell is not None and self._row is not None:
-            self._row.append(_clean(" ".join(self._cell)))
-            self._cell = None
-        elif tag == "tr" and self._row is not None and self._table is not None:
-            if any(self._row):
-                self._table.append(self._row)
-            self._row = None
+        elif tag in _BLOCK_TAGS:
+            self._flush_block()
+        elif tag in ("ul", "ol"):
+            self._flush_list()
+        elif tag in ("td", "th"):
+            self._flush_cell()
+        elif tag == "tr":
+            self._flush_cell()
+            self._flush_row()
         elif tag == "table" and self._table is not None:
-            if self._table:
-                self.tables.append(self._table)
-            self._table = None
+            self._flush_table()
         elif tag == "a" and self._a_href is not None:
             text = _clean(" ".join(self._a_buf or []))
             if text:
@@ -652,6 +708,104 @@ class RetrievalAgent:
 
 
 # ---------------------------------------------------------------------------
+# selfcheck (P2) — declared budgets, functionally enforced, numbers printed
+# ---------------------------------------------------------------------------
+
+def _measure_startup_s() -> float:
+    """Cold-start of a fresh interpreter importing this module (seconds)."""
+    code = ("import time; t = time.perf_counter(); import app; "
+            "print(time.perf_counter() - t)")
+    out = subprocess.run(
+        [sys.executable, "-c", code],
+        cwd=str(os.path.dirname(os.path.abspath(__file__))),
+        capture_output=True, text=True, timeout=60, check=True)
+    return float(out.stdout.strip().splitlines()[-1])
+
+
+def run_selfcheck() -> dict:
+    """Assert the contract's startup/process limits are real, not nominal.
+
+    Budgets declared here (no league numbers published): cold start <=
+    STARTUP_BUDGET_S; a run fetches <= MAX_PAGES pages, each fetch bounded
+    by FETCH_TIMEOUT_S and MAX_RESPONSE_BYTES (worst-case process time for
+    fetching is therefore MAX_PAGES * FETCH_TIMEOUT_S, printed below).
+    Every check is functional (measured / exercised), never a constant echo.
+    """
+    import threading
+    from http.server import BaseHTTPRequestHandler, HTTPServer
+
+    checks: dict[str, bool] = {}
+
+    startup_s = _measure_startup_s()
+    checks["startup_within_budget"] = startup_s <= STARTUP_BUDGET_S
+
+    # page bound: an endless next-chain must stop at MAX_PAGES fetches
+    def chain_fetch(url: str) -> str:
+        n = int(url.rsplit("/", 1)[1])
+        return (f"<html><body><p>Chain page {n} about harbour schedules.</p>"
+                f'<a rel="next" href="https://chain.example.test/{n + 1}">'
+                f"Next</a></body></html>")
+
+    agent = RetrievalAgent(planner=HeuristicPlanner(), fetcher=chain_fetch)
+    ans = agent.run("Tell me about harbour schedules",
+                    ["https://chain.example.test/0"])
+    max_pages_seen = len(ans.pages_fetched)
+    checks["max_pages_enforced"] = max_pages_seen == MAX_PAGES
+
+    # byte cap + timeout: exercised against a loopback server (real fetch)
+    class _Probe(BaseHTTPRequestHandler):
+        def log_message(self, *args):
+            pass
+
+        def do_GET(self):  # noqa: N802
+            if self.path == "/slow":
+                time.sleep(4)
+                body = b"<html><body>slow</body></html>"
+            elif self.path == "/big":
+                body = b"x" * (MAX_RESPONSE_BYTES + 1_000_000)
+            else:
+                body = b"<html><body>ok</body></html>"
+            self.send_response(200)
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            try:
+                self.wfile.write(body)
+            except (BrokenPipeError, ConnectionResetError):
+                pass  # client left early (timeout / cap) — expected here
+
+    server = HTTPServer(("127.0.0.1", 0), _Probe)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    base = f"http://127.0.0.1:{server.server_address[1]}"
+    try:
+        big_len = len(fetch(base + "/big"))
+        checks["response_bytes_capped"] = big_len <= MAX_RESPONSE_BYTES
+        t0 = time.perf_counter()
+        try:
+            fetch(base + "/slow", timeout=1)
+            timeout_elapsed, timed_out = time.perf_counter() - t0, False
+        except Exception:
+            timeout_elapsed, timed_out = time.perf_counter() - t0, True
+        checks["fetch_timeout_enforced"] = timed_out and timeout_elapsed < 3.5
+    finally:
+        server.shutdown()
+        server.server_close()
+
+    return {
+        "selfcheck": "amd-m4-retrieval",
+        "ok": all(checks.values()),
+        "startup_s": round(startup_s, 3),
+        "startup_budget_s": STARTUP_BUDGET_S,
+        "max_pages": MAX_PAGES,
+        "max_pages_seen_on_endless_chain": max_pages_seen,
+        "max_hops": MAX_HOPS,
+        "fetch_timeout_s": FETCH_TIMEOUT_S,
+        "max_response_bytes": MAX_RESPONSE_BYTES,
+        "worst_case_fetch_time_s": MAX_PAGES * FETCH_TIMEOUT_S,
+        "checks": checks,
+    }
+
+
+# ---------------------------------------------------------------------------
 # service + CLI
 # ---------------------------------------------------------------------------
 
@@ -703,12 +857,19 @@ def main(argv: list[str] | None = None) -> int:
                     help="heuristic (default) | llm (local model) | auto")
     ap.add_argument("--model-status", action="store_true",
                     help="print local-model capability detection, then exit")
+    ap.add_argument("--selfcheck", action="store_true",
+                    help="verify startup/page/time budgets are enforced, "
+                         "print the numbers as JSON, then exit")
     ap.add_argument("--serve", action="store_true", help="run the HTTP service")
     ap.add_argument("--port", type=int, default=8080)
     ns = ap.parse_args(argv)
     if ns.model_status:
         print(json.dumps(local_model_status(), indent=2))
         return 0
+    if ns.selfcheck:
+        report = run_selfcheck()
+        print(json.dumps(report, indent=2))
+        return 0 if report["ok"] else 1
     if ns.serve:
         serve(ns.port)
         return 0

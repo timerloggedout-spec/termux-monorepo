@@ -18,6 +18,10 @@
   window/match/note): activity-proxy figures are labeled as activity,
   never as consumption; telemetry coverage is counted in the roll-up
   (owner ruling 2026-10-30: telemetry REQUIRED for all entries).
+  Phrase stamps (provider-phrases SSOT, JIT phrase layer — PR #2676):
+  a dispatch's phrases{} {set, placement, form, profile} renders beside
+  its instance stamp; a phrased instance is a different instance
+  (composed text is hash-covered), never silently the unphrased one.
 -->
 <link rel="stylesheet" href="./dashboard.css">
 <style>
@@ -91,7 +95,8 @@ function providerCell(t){
     const name=p.provider? esc(p.provider) : "provider not established";
     const sess=p.session_id? " · session "+esc(p.session_id) : "";
     const scope=p.scope? esc(p.scope)+" · " : "";
-    return scope+"<strong>"+name+"</strong>"+sess+"<br><span class='dim'>"+esc(p.state||"")+" · "+esc(usageText(p))+"</span>";
+    const ph=phrasesText(p);
+    return scope+"<strong>"+name+"</strong>"+sess+"<br><span class='dim'>"+esc(p.state||"")+" · "+esc(usageText(p))+"</span>"+(ph? "<br><span class='dim'>"+esc(ph)+"</span>" : "");
   }).join("<br>");
 }
 function usageText(p){
@@ -100,6 +105,13 @@ function usageText(p){
   if(u.value==null) return "usage: not established — "+(u.note||"no keyed match");
   if(u.match==="activity-proxy") return "activity: "+u.value+" "+(u.unit||"")+" (activity-proxy — not consumption)";
   return "usage: "+u.value+" "+(u.unit||"");
+}
+function phrasesText(p){
+  const ph=p.phrases;
+  if(ph==null) return "";
+  if(typeof ph==="string") return "phrases: "+ph;
+  const cell=v=>v==null? "\u2014" : String(v);
+  return "phrases: "+cell(ph.set)+" · "+cell(ph.placement)+" · "+cell(ph.form)+" · "+cell(ph.profile);
 }
 function providerRollup(traversals){
   const counts={}, live=[], unknown={dispatches:0};

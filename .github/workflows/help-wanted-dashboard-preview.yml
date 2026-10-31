@@ -40,7 +40,6 @@ jobs:
         env:
           SOURCE_REF: ${{ inputs.source_ref }}
           PREVIEW_KEY: ${{ inputs.preview_key }}
-          SOURCE_SHA: ${{ github.sha }}
         run: |
           set -euo pipefail
           if ! [[ "$PREVIEW_KEY" =~ ^[a-z0-9][a-z0-9-]{0,60}$ ]]; then
@@ -54,7 +53,7 @@ jobs:
             --channel preview \
             --source-ref "$SOURCE_REF" \
             --source-sha "$(git -C source rev-parse HEAD)" \
-            --version-prefix "1.0.0"
+            --version-prefix "1.0.1"
           printf '%s\n' "Preview key: $PREVIEW_KEY" "Requested ref: $SOURCE_REF" "Source SHA: $(git -C source rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"
           echo "PREVIEW_URL=https://timerloggedout-spec.github.io/previews/$PREVIEW_KEY/help-wanted/" >> "$GITHUB_ENV"
       - name: Publish isolated preview without replacing production files

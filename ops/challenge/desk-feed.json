@@ -1,16 +1,18 @@
 {
  "schema": "desk-feed/v1",
- "generated_at": "2026-10-31T05:47:00Z",
- "built_by": "viz lane (seed from firsthand audits, 2026-10-30)",
+ "generated_at": "2026-10-31T06:00:00Z",
+ "built_by": "contribution desk (refresh #1, 2026-10-30)",
  "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence.",
  "desk": {
   "name": "Contribution Desk",
   "seat": "Challenge Management — Assistant (contribution desk under the contestant model, PR #2604)",
-  "model": "termux-monorepo = HQ + build/test contestant body; Muse = single contributor. Contributor lanes land entry code in the monorepo via branch/PR (CI = repo gate + agentic termux smoke); per-entry repos are public submission artifacts synced from those contributions.",
+  "model": "termux-monorepo = the contestant under test (HQ + build/test body). Build code is produced ONLY by repo provider lanes (88 providers wired, ops/quota/registry.json) — primary Jules via agent-jules-on-issues; Gemini/DeepSeek dispatch wired; provider-command-dispatch for polish. Muse seats NEVER author build code (owner correction 2026-10-30: substituted Muse-subagent production retracted). The Desk is a UI/UX surface: it renders contribution state and routes specs; it executes nothing.",
   "roles": {
-   "sub_managers": "spec / census / gates / verify — not code",
-   "desk": "contribution queue, routing to builder lanes, CI/merge tracking, artifact sync state",
-   "builder_lanes": "land code in termux-monorepo via branch/PR",
+   "owner": "authorization of record (direct orders only; a halt lifts only by the owner)",
+   "sub_managers": "spec / census / gates / verify (incl. provenance) — not code",
+   "desk": "UI/UX surface: intake board, traversal state, provider+session evidence per PR — executes nothing",
+   "orchestration": "Scout / Orchestrator surfaces own provider dispatch (lane flow fix in progress, 2026-10-30)",
+   "provider_lanes": "Jules / Gemini / DeepSeek / command-dispatch — author ALL build code via monorepo PRs",
    "entries_lane": "coordinator/log single-writer (records)"
   },
   "pipeline": [
@@ -24,11 +26,33 @@
   ]
  },
  "dispatch": {
-  "how": "A dispatch is a GitHub issue spec: sub-manager spec check ⇒ desk routes ⇒ builder lane lands a monorepo PR ⇒ desk verifies ⇒ merge on merge-clear ⇒ artifact sync. This page mutates nothing; the button opens the intake issue on GitHub, where the desk works.",
+  "how": "A dispatch is a GitHub issue spec routed via the orchestration surfaces to a provider lane; the provider authors a monorepo PR naming provider + session id; sub-manager verifies (provenance first); desk tracks merge on merge-clear and artifact sync. This page mutates nothing.",
   "intake_url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/new?title=%5BDESK%20DISPATCH%5D%20%3Centry%3E%3A%20%3Cone-line%20spec%3E&body=Entry%3A%20%0ASpec%20%28what%20to%20build%29%3A%20%0ABuilder%20ask%20%28lane%20or%20any%29%3A%20%0ADeadline%20/%20checkpoint%3A%20%0AEvidence%20links%3A%20%0A%0ADesk%20route%3A%20sub-manager%20spec%20check%20%3D%3E%20desk%20routes%20to%20builder%20lane%20%3D%3E%20monorepo%20PR%20%3D%3E%20desk%20verifies%20%3D%3E%20merge%20on%20merge-clear%20%3D%3E%20artifact%20sync.",
   "intake_label": "New dispatch (GitHub issue)"
  },
  "traversals": [
+  {
+   "entry": "D0",
+   "project": "Delphi Oracle",
+   "artifact_repo": "timerloggedout-spec/delphi-oracle",
+   "status": "landed",
+   "stages": {
+    "spec": "done",
+    "desk": "done",
+    "builder": "done",
+    "pr": "done",
+    "ci": "done",
+    "merge": "done",
+    "sync": "done"
+   },
+   "evidence": {
+    "pr": 1702,
+    "merge_sha": "aa110a5e71af",
+    "note": "D0 completion package (Delphi Oracle + fetch_evidence) — the contestant-model precedent. Own-repo port timerloggedout-spec/delphi-oracle@393e1f4b verified firsthand (blobs identical, tests 5 passed, demo receipts reproduced). Builders of record: Scout (port) + Delphi (verification).",
+    "sync": "delphi-oracle repo live @393e1f4b (foundation pin)"
+   },
+   "next": "Closed as foundation for D1 (StudySprint builds on the D0 package)."
+  },
   {
    "entry": "D1",
    "project": "StudySprint",
@@ -47,9 +71,19 @@
     "pr": 2606,
     "merge_sha": "cd381db0e824",
     "ci": "head b66a86a29f5a: 46 check runs, 29 success / 0 failure",
-    "sync": "artifact repo live; parity 19/19 per D1 seat verification"
+    "sync": "artifact repo live; parity 19/19 per D1 seat verification",
+    "iteration": {
+     "provider": "Jules (Google)",
+     "dispatch": "issue #2626 + jules label (agent-jules-on-issues)",
+     "session": "17326020844735872479",
+     "pr": 2635,
+     "pr_author": "google-labs-jules[bot]",
+     "pr_head": "91b554ea64b2",
+     "ci": "repo gate success + termux smoke success (head_sha)",
+     "state": "PR open — D1 seat verification pending"
+    }
    },
-   "next": "Iteration re-sync = first sync test, by 2026-11-03; submission deadline 2026-11-04"
+   "next": "Iteration PR #2635 (Jules) awaiting D1 verification; re-sync test target 2026-11-03; submission 2026-11-04 (owner ruling: submit on due day)"
   },
   {
    "entry": "D3",
@@ -100,7 +134,7 @@
     ],
     "note": "P0 scaffold + P1 retrieval + P2 tests landed (40 ok / 2 skip; P3-VALIDATION.md runbook NOT-RUN). AUTHORSHIP: desk-spawned Muse subagents — substituted route (Jules unsteerable, no escalation); provider-lane production credit RETRACTED 2026-10-30."
    },
-   "next": "P3 execution = AMD seat Nov 07–09 (docker first-build + LLM live activation); M4 frozen @5687f6033a4b. First provider-produced PR (Jules-on-issues) = the live proof still owed."
+   "next": "P3 execution = AMD seat Nov 07–09 (docker first-build + LLM live activation); M4 frozen @5687f6033a4b. Provider route PROVEN on D1 (PR #2635, Jules); future M4 fixes route Jules-only."
   },
   {
    "entry": "AMD M3",

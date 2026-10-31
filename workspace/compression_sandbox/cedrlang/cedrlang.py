@@ -95,6 +95,7 @@ MAPPINGS = [
     ("research", "r3534rch"),
     ("concepts", "c0nc3p7s"),
     ("concept", "c0nc3p7"),
+    ("repo replay", "r3vwr1gh7"),
 ]
 
 def capitalize_word(w: str) -> str:

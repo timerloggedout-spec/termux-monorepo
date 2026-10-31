@@ -182,6 +182,31 @@ experiments/doe/<campaign-id>/
 Runner: `scripts/doe/run_pilot1.py` (deterministic, offline; re-running
 regenerates records + summary — `observed_at`/elapsed are run stamps).
 
+### ChronoMancer mapping (2026-10-30)
+
+`harmony_hub/workspace/agent/chronomancer.py` (+ CHRONOMANCER_SPEC.md)
+is a Time-Loop fork selector/executor: it scans `run_history`
+(SQLite: session_id, account, timestamp, validated) for the last
+validated run, forks the conversation at the assistant message
+preceding it, injects a validated-state summary as the new
+session's first prompt, and logs the fork back with a `time_loop`
+verdict (feeding the Bidder/ELO system). In DoE terms it is a
+sequential selection mechanism: fork-point choice = which arm's
+lineage continues; downstream `validated` = the outcome signal.
+
+Mapping: `moniker` = `chronomancer`; `role` = `fork-selector`;
+`context` = session_id + account; the fork POLICY is a factor
+(levels: fork-from-last-validated | root fork `--root`); the
+injected validated-state summary is its prompt artifact (ref =
+the injection at fork time; sha256 NOT ESTABLISHED — generated at
+runtime, not committed); tools = deepcli `branch_conversation`
+surface (`tools:chronomancer:branch`). Gaps named: `run_history`
+is local SQLite, never emitted as repo records — ChronoMancer
+rows join the experiment record only when a fork's outcome is
+written back into a campaign or ledger record; and the forked
+session's own producing instance is a separate stamp (the fork
+event and the continuation are two records, not one).
+
 ### DSPy-DoE mapping (2026-10-30)
 
 The DSPy-DoE stub (`scripts/model_selection_market/dspy_doe.py`)

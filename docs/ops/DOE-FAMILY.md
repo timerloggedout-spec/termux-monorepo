@@ -158,6 +158,43 @@ records; selection decisions logged as prose, not rows). Closing
 them is per-surface record emission under the provider-schema
 mapping rule above — surface by surface, not a new platform.
 
+### Test types: live development first, fragment suites are the control (owner, 2026-10-31)
+
+Active development IS the live testing: the primary experimental
+mass is real development and review work, run and recorded as
+experiments (competing builds, selection decisions, hand-offs —
+above). Fragment-style suites (fixed tasks scored on exact
+source-fragment recovery, e.g. pilot-1 and lab-1) are a CONTROL
+type: they calibrate and sanity-check the measurement machinery
+against a deterministic scorer, and their use stays MINIMAL — a
+control is run to anchor a comparison, never as the main body of
+evidence about production. Campaigns declare `suite_type` in
+their design (`control` | `live`); lab-1 is `control`.
+
+### Mandatory provider phrases in experiments (owner, 2026-10-31)
+
+The fleet's provider phrase sets are mandatory prompt content,
+not decoration: `harmony_hub/workspace/prompts/prompt_engine.py`
+(per-provider PREFIXES / SUFFIXES — the established sets are
+DeepSeek-shaped, e.g. "Build the Future Now. Make it so." /
+"Show me what you got. GB") and the harmony profiles
+`harmony_hub/config/prompts/profiles/*.json` (e.g. `1337.json`:
+system prefix incl. its emoji sequence + leet suffixes); the
+Grimoire pointer `→cmd:build` ↦ the same build phrase
+(`harmony_hub/config/GRIMOIRE_DICTIONARY.md`). Framing of the
+work itself follows `docs/ops/DO-PHRASING-FRAMING-FRAMEWORK.md`.
+
+Rule: when a campaign dispatches to a provider/model route with
+an established phrase set, the campaign design declares it under
+`provider_phrases` (keyed by the model route, verbatim) and the
+runner composes prefix + campaign prompt + role line + suffix
+into the dispatched system prompt — the phrases are covered by
+the prompt hash, so a run without them is a DIFFERENT configured
+instance and never pools with phrased runs. Where no set is
+established for a route, the design records that (lab-1: none
+established for its two OpenRouter routes — NOT ESTABLISHED,
+recorded in its DESIGN.json, not silently skipped).
+
 ## Binding rules (from #1865 + separation spec)
 
 1. One primary home per record. Cross-surface references are citations

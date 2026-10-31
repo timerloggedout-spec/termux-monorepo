@@ -130,6 +130,26 @@ is its at-a-glance view and is refreshed from here.
   organizer confirmation by email pending). Discord connect = build-week
   step (required before team create/join). See the log, packet D2.
 
+#### Discord — account CREATED + CONNECTED to lablab 2026-10-30
+
+- **Issued username: `wh1msical_sw4n_06136`** — account created by the OWNER 2026-10-30
+  (owner execution superseded the agency path). **Differs from the registry-directed
+  v3 codename `GentleOnyx47` / signup username `gentleonyx47` (registration_monikers.json,
+  PR #2556): the issued fact governs; the registry lane was notified to flip the entry to
+  the issued username (their surface). Display name: NOT_ESTABLISHED from this lane
+  (owner-entered, not observed).
+- **Persona DOB of record = 1996-04-17** (registry-lane assignment for the fleet builder
+  persona, bracket 25-34) — the value directed for this signup; the as-submitted value is
+  NOT_ESTABLISHED from this lane (owner-entered).
+- **Connected to lablab.ai 2026-10-30** (OAuth, this lane): lablab profile (@Rap1dZ3nith)
+  shows Discord = Connected — `wh1msical_sw4n_06136`; profile completeness 60% -> 70%.
+  Unblocks: D2 team create/join + the AMD League Match-1 lablab-Discord requirement.
+  AMD Discord server join is a separate step (still open).
+- Login: timerloggedout@gmail.com; login location authorized via Discord's emailed
+  Verify Login link (owner-directed). Credentials held in the Secure Vault (discord.com,
+  email-keyed entry) — never recorded here. A "Verify Email Address for Discord" email
+  (2026-10-30) exists; account email-verification state NOT_ESTABLISHED from this lane.
+
 #### Vultr — not created (D2 window) — EXECUTION: challenge lane
 
 - Execution handed to the challenge lane 2026-10-29

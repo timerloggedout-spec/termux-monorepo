@@ -18,6 +18,19 @@ DoE design can treat them as factors:
              prompt itself)
   profile:   a named profile in the provider set (its
              system_prefix / system_suffix override the lists)
+  token_forms: per-token replacement forms applied to the phrase
+             text (word-boundary, case-insensitive match, verbatim
+             replacement) — the casing/substitution ladder KIND:
+             e.g. {"do": "d0"} vs {"do": "DO"} vs {"do": "Do"} vs
+             {"do": "do"} are LEVELS of one factor, admitted for
+             evaluation, never a precedence to assert.
+
+The general rule (owner, 2026-10-31): micro-variables of this
+kind — casing ladders, substitution scope/depth, placement,
+selection, timing, profile composition, emoji inclusion — are
+evaluation dimensions. Any single example (the d0 ladder is one)
+stands for the whole kind; designs enumerate the kind's levels
+and let runs rank them.
 
 Returns the composed text + a stamp dict; the caller folds the
 composed text into its prompt hash, so phrased and unphrased runs
@@ -27,6 +40,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from pathlib import Path
 
 # The ESTABLISHED substitution set, read off the 1337 profile's
@@ -67,11 +81,19 @@ def _pick(items: list, selection: str, seed: str) -> str:
     return items[0]
 
 
+def _apply_token_forms(text: str, token_forms: dict) -> str:
+    for token, replacement in token_forms.items():
+        text = re.sub(rf"\b{re.escape(token)}\b", replacement, text,
+                      flags=re.IGNORECASE)
+    return text
+
+
 def apply_phrases(prompt: str, data: dict, model_route: str, *,
                   selection: str = "first",
                   placement: str = "prefix+suffix",
                   form: str = "verbatim",
-                  profile: str | None = None) -> tuple[str, dict | None]:
+                  profile: str | None = None,
+                  token_forms: dict | None = None) -> tuple[str, dict | None]:
     found = find_set(data, model_route)
     if not found:
         return prompt, None
@@ -92,10 +114,13 @@ def apply_phrases(prompt: str, data: dict, model_route: str, *,
         prefix, suffix = leet(prefix), leet(suffix)
     elif form != "verbatim":
         raise ValueError(f"unknown form {form!r}")
+    if token_forms:
+        prefix = _apply_token_forms(prefix, token_forms)
+        suffix = _apply_token_forms(suffix, token_forms)
     parts = [p.strip() for p in (prefix, prompt, suffix) if p.strip()]
     stamp = {"provider": key, "selection": selection,
              "placement": placement, "form": form,
-             "profile": profile,
+             "profile": profile, "token_forms": token_forms or {},
              "prefix_sha256_12": hashlib.sha256(
                  prefix.encode()).hexdigest()[:12] if prefix else None,
              "suffix_sha256_12": hashlib.sha256(

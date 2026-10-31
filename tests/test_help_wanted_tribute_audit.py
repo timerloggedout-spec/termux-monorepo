@@ -60,7 +60,7 @@ class HelpWantedTributeAuditTests(unittest.TestCase):
 
     def test_partial_audits_are_not_counted_as_complete_coverage(self):
         url = "https://github.com/example/project/pull/1"
-        previous = [{"pr_url": url, "stage": "accepted", "audit_status": "observed"}]
+        previous = [{"pr_url": url, "stage": "accepted", "audit_status": "observed", "audited_at": "2026-10-18T10:00:00Z", "head_sha": "abc123"}]
         fresh = [{
             "pr_url": url, "stage": "accepted", "audit_status": "partial",
             "audited_at": "2026-10-19T10:00:00Z", "evidence_gaps": ["checks_http_403"],
@@ -68,6 +68,27 @@ class HelpWantedTributeAuditTests(unittest.TestCase):
         merged = merge_audit_history([url], previous, fresh)
         self.assertEqual(merged[0]["audit_status"], "partial")
         self.assertEqual(merged[0]["stage"], "accepted")
+        self.assertEqual(merged[0]["last_observed_at"], "2026-10-18T10:00:00Z")
+        self.assertEqual(merged[0]["last_observed_head_sha"], "abc123")
+        self.assertEqual(merged[0]["last_attempt_status"], "partial")
+
+    def test_partial_refresh_does_not_erase_historical_coverage(self):
+        url = "https://github.com/example/project/pull/7"
+        previous = [{
+            "pr_url": url, "stage": "validated_solution", "audit_status": "observed",
+            "audited_at": "2026-10-18T10:00:00Z", "head_sha": "old-sha",
+        }]
+        fresh = [{
+            "pr_url": url, "stage": "solution_claimed_unvalidated", "audit_status": "partial",
+            "audited_at": "2026-10-19T10:00:00Z", "head_sha": "new-sha",
+            "evidence_gaps": ["checks_http_403"],
+        }]
+        merged = merge_audit_history([url], previous, fresh)
+        self.assertEqual(merged[0]["audit_status"], "partial")
+        self.assertEqual(merged[0]["stage"], "solution_claimed_unvalidated")
+        self.assertEqual(merged[0]["last_observed_at"], "2026-10-18T10:00:00Z")
+        self.assertEqual(merged[0]["last_observed_head_sha"], "old-sha")
+        self.assertEqual(merged[0]["last_attempt_status"], "partial")
 
     def test_rotating_audit_accumulates_coverage_across_refreshes(self):
         urls = ["https://github.com/example/project/pull/1", "https://github.com/example/project/pull/2"]

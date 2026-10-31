@@ -3,8 +3,8 @@
     "open_issues": 364,
     "open_prs": 152,
     "pr_classes": {
-      "CANDIDATE": 69,
-      "EXTRACT": 6,
+      "CANDIDATE": 70,
+      "EXTRACT": 5,
       "NEED_EVIDENCE": 77,
       "SUPERSEDE": 0
     }
@@ -81,7 +81,7 @@
       ]
     }
   },
-  "generated_at": "2026-10-31T17:26:34Z",
+  "generated_at": "2026-10-31T17:29:50Z",
   "issues_unlabelled": [
     308,
     343,
@@ -116,7 +116,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "28aafcd374"
+    "sha": "05b1ea2f69"
   },
   "prs": [
     {
@@ -188,20 +188,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "dd2d6ac2b4",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2702,
-      "title": "docs(dashboard): standing preview QA checklist",
-      "updated_at": "2026-10-31T16:17:00Z"
     },
     {
       "class": "CANDIDATE",
@@ -1167,12 +1153,26 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "65fdc9802a",
+      "head_sha": "dd2d6ac2b4",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2702,
+      "title": "docs(dashboard): standing preview QA checklist",
+      "updated_at": "2026-10-31T16:17:00Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "949975d84b",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2731,
       "title": "StudySprint v0.2.0 release cut \u2014 VERSION bump + CHANGELOG + receipts refresh",
-      "updated_at": "2026-10-31T17:19:55Z"
+      "updated_at": "2026-10-31T17:27:57Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1547,7 +1547,7 @@
       },
       "head_sha": "b28fe66e40",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1760,
       "title": "ops(tribute): participation refresh",
       "updated_at": "2026-10-31T13:47:28Z"
@@ -1587,12 +1587,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "9ec32e1b4a",
+      "head_sha": "5055559b0c",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-10-31T17:25:05Z"
+      "updated_at": "2026-10-31T17:27:43Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1785,7 +1785,7 @@
       },
       "head_sha": "660d086004",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2340,
       "title": "chore(dashboards): refresh dispatch-tree feed",
       "updated_at": "2026-10-31T13:36:26Z"

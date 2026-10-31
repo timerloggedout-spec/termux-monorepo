@@ -10,3 +10,4 @@
 | LC-006 | ForeSight forecast receipts + HindSight reflect scoring loop | proposed | HindSight store decision gated on LC-007 |
 | LC-007 | Blind evaluation of n8n / Bifrost / Temporal / Neon / Platform201 / JSONL-control treatments | proposed | blind-agent-evaluation skill; MoneyBall/3L0 ranking |
 | LC-008 | Decide fate of #1277 Neon lane_events writer (keep no-op, convert to JSONL writer, or mirror) | blocked | operator decision |
+| LC-009 | Repair Hindsight dashboard false-PASS database receipts and constrain stale-bank purge scope | executing | Authorized PR #1436 safety follow-up; offline shell and disposable PostgreSQL regressions; no live purge |

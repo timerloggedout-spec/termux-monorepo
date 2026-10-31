@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 354,
-    "open_prs": 134,
+    "open_prs": 136,
     "pr_classes": {
       "CANDIDATE": 66,
       "EXTRACT": 5,
-      "NEED_EVIDENCE": 63,
+      "NEED_EVIDENCE": 65,
       "SUPERSEDE": 0
     }
   },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 19,
-      "prs": 132,
+      "prs": 134,
       "unlabelled_numbers": [
         308,
         343,
@@ -74,7 +74,7 @@
       ]
     }
   },
-  "generated_at": "2026-10-30T23:58:42Z",
+  "generated_at": "2026-10-31T00:06:52Z",
   "issues_unlabelled": [
     308,
     343,
@@ -102,7 +102,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "c31ef9fd67"
+    "sha": "ca5c03f597"
   },
   "prs": [
     {
@@ -1643,12 +1643,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "3378078158",
+      "head_sha": "82fa276419",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2235,
       "title": "chore(osint): refresh coverage + page snapshots",
-      "updated_at": "2026-10-30T23:58:06Z"
+      "updated_at": "2026-10-31T00:06:45Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -1985,6 +1985,34 @@
       "number": 2555,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-30T23:55:45Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "8e52828b5d",
+      "labels": [],
+      "mergeable_state": "dirty",
+      "number": 2561,
+      "title": "Gates: C11 AMD gates registered; D4-ELIGIBILITY cleared; skeleton-crew freeze recorded",
+      "updated_at": "2026-10-31T00:02:34Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "3ab9d4bd7c",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2562,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-10-30T23:59:17Z"
     }
   ],
   "schema": "operator-matrix/v1",

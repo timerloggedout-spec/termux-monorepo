@@ -53,6 +53,21 @@ def test_dispatch_payload_is_blocked_on_validation_errors():
     assert "does not send it" in handler
 
 
+def test_blank_field_types_are_rejected():
+    html = _html()
+    start = html.index("function runVerify(){")
+    end = html.index("\\nfunction updateVerify()", start)
+    validator = html[start:end]
+    assert 'typeof field.type!=="string"||!field.type.trim()' in validator
+
+
+def test_editing_inspector_invalidates_prepared_payload():
+    html = _html()
+    assert 'Prepared payload invalidated: graph fields changed.' in html
+    assert 'document.addEventListener("input"' in html
+    assert 'document.addEventListener("change"' in html
+
+
 def test_model_derived_count_keys_are_escaped_before_inner_html():
     html = _html()
     assert 'function fmt(o){return Object.keys(o).sort().map(function(k){return esc(k)+" "+o[k];})' in html

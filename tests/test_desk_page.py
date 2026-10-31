@@ -1,6 +1,6 @@
 """Pins for the Contribution Desk page (traversal board + dispatch).
 
-The page renders ONLY data/desk-feed.json (schema desk-feed/v1), seeded
+The page renders ONLY data/desk-feed.json (schema desk-feed/v1.1), seeded
 by the viz lane from firsthand audits of the live record (2026-10-30)
 and refreshed by the Contribution Desk lane as traversals move.
 Integrity rules pinned here: the dashboard copy is a byte-identical
@@ -41,7 +41,7 @@ def test_page_consumes_only_the_feed():
     html = _html()
     fetches = re.findall(r"fetch\(([^)]*)\)", html)
     assert fetches == ['"./data/desk-feed.json"'], fetches
-    for el in ["meta", "model", "roles", "dispatchhow", "intake", "board", "prov"]:
+    for el in ["meta", "model", "roles", "dispatchhow", "intake", "board", "provroll", "prov"]:
         assert f'id="{el}"' in html
 
 
@@ -54,7 +54,7 @@ def test_no_hardcoded_evidence_in_page():
 
 def test_feed_schema_and_stage_states():
     pack = _pack()
-    assert pack["schema"] == "desk-feed/v1"
+    assert pack["schema"] == "desk-feed/v1.1"
     assert pack["desk"]["pipeline"] == PIPELINE
     assert pack["traversals"], "board must not be empty"
     for t in pack["traversals"]:
@@ -65,6 +65,23 @@ def test_feed_schema_and_stage_states():
             assert "pr" in t["evidence"] or "prs" in t["evidence"], t["entry"]
         if t["stages"]["merge"] == "done":
             assert "merge_sha" in t["evidence"] or "merge_shas" in t["evidence"], t["entry"]
+
+
+def test_provider_usage_shape_and_d0():
+    pack = _pack()
+    by_entry = {t["entry"]: t for t in pack["traversals"]}
+    assert by_entry["D0"]["evidence"]["pr"] == 1702
+    allowed = {"provider", "scope", "via", "session_id", "state", "usage", "usage_note"}
+    for t in pack["traversals"]:
+        assert isinstance(t.get("provider_usage"), list), t["entry"]
+        for p in t["provider_usage"]:
+            assert set(p.keys()) <= allowed, (t["entry"], p)
+            if p["usage"] is None:
+                assert p["usage_note"], (t["entry"], p)
+    providers = [p["provider"] for t in pack["traversals"] for p in t["provider_usage"]]
+    assert "Jules" in providers
+    assert sum(1 for x in providers if x and x.startswith("Muse — desk-spawned")) == 2
+    assert "Muse (in-house, pre-correction)" in providers
 
 
 def test_dispatch_is_a_link_not_a_mutation():
@@ -95,13 +112,20 @@ def test_node_sim_logic(tmp_path):
         script, re.S)
     assert m, "pure-logic markers missing"
     pack = _pack()
+    travs_json = json.dumps(pack["traversals"])
     sim = esc_line + "\n" + m.group(1) + """
 const t = %s;
+const TRAVS = TRAVSJSON;
 const row = boardRow(t);
 if (!row.chips.includes("chip done")) throw new Error("chips");
 if (stageClass("bogus") !== "pending") throw new Error("stageClass");
+const roll = providerRollup(TRAVS);
+if ((roll.counts["Jules"] || 0) < 1) throw new Error("rollup jules");
+if ((roll.counts["Muse (in-house, pre-correction)"] || 0) !== 1) throw new Error("rollup in-house");
+if (!roll.live.some(s => s.session_id === "17326020844735872479")) throw new Error("rollup live");
 console.log("ok");
 """ % json.dumps(pack["traversals"][1])
+    sim = sim.replace("TRAVSJSON", travs_json)
     f = tmp_path / "sim.cjs"
     f.write_text(sim, encoding="utf-8")
     r = subprocess.run(["node", str(f)], capture_output=True, text=True)

@@ -18,12 +18,20 @@ DoE design can treat them as factors:
              prompt itself)
   profile:   a named profile in the provider set (its
              system_prefix / system_suffix override the lists)
-  token_forms: per-token replacement forms applied to the phrase
-             text (word-boundary, case-insensitive match, verbatim
-             replacement) — the casing/substitution ladder KIND:
-             e.g. {"do": "d0"} vs {"do": "DO"} vs {"do": "Do"} vs
-             {"do": "do"} are LEVELS of one factor, admitted for
-             evaluation, never a precedence to assert.
+  transform: the AUTOMATED mechanism — a data-driven engine over
+             the SSOT `char_variants` table + `established_vowel_map`:
+             {casing: as-written|upper|lower|title,
+              sub_scope: none|vowels|consonants|all,
+              sub_depth: variant index}. Ladders EMERGE from the
+             parameter cross (e.g. casing=lower x sub_scope=vowels
+             generates the "d0" rung for any token) — nothing is
+             hand-enumerated per token.
+  generate_variants(): emits the ladder for any phrase text
+             automatically (casing x substitution cross, deduped,
+             stable ids) — designs select generated variant ids
+             as factor levels.
+  token_forms: MANUAL OVERRIDE escape hatch only (per-token
+             verbatim replacement); not the mechanism.
 
 The general rule (owner, 2026-10-31): micro-variables of this
 kind — casing ladders, substitution scope/depth, placement,
@@ -57,6 +65,73 @@ LEET_MAP = {"a": "4", "e": "3", "i": "1", "o": "0"}
 def leet(text: str) -> str:
     return "".join(LEET_MAP.get(ch.lower(), ch) if ch.isalpha()
                    else ch for ch in text)
+
+
+VOWELS = set("aeiou")
+
+
+def transform(text: str, *, casing: str = "as-written",
+              sub_scope: str = "none", sub_depth: int = 0,
+              variants: dict | None = None,
+              vowel_map: dict | None = None) -> str:
+    """Data-driven casing x substitution engine. Substitution
+    data comes from the SSOT phrases.json (`char_variants` +
+    `established_vowel_map`); callers pass them in from the
+    loaded data so the table is never duplicated in code."""
+    if casing == "upper":
+        text = text.upper()
+    elif casing == "lower":
+        text = text.lower()
+    elif casing == "title":
+        text = text.title()
+    elif casing != "as-written":
+        raise ValueError(f"unknown casing {casing!r}")
+    if sub_scope == "none":
+        return text
+    vm = vowel_map if vowel_map is not None else LEET_MAP
+    out = []
+    for ch in text:
+        low = ch.lower()
+        if sub_scope == "vowels":
+            out.append(vm.get(low, ch) if low in VOWELS else ch)
+        elif sub_scope in ("consonants", "all"):
+            if low in VOWELS:
+                out.append(vm.get(low, ch) if sub_scope == "all"
+                           else ch)
+            elif ch.isalpha() and variants and low in variants:
+                opts = variants[low]
+                out.append(opts[min(sub_depth, len(opts) - 1)])
+            else:
+                out.append(ch)
+        else:
+            raise ValueError(f"unknown sub_scope {sub_scope!r}")
+    return "".join(out)
+
+
+def generate_variants(text: str, data: dict) -> list[dict]:
+    """Emit the ladder for any phrase automatically: the casing x
+    substitution cross, deduped, stable order + ids. Designs use
+    the ids as factor levels — generated, never enumerated."""
+    variants = data.get("char_variants")
+    vowel_map = data.get("established_vowel_map")
+    grid = [("verbatim", {}),
+            ("upper", {"casing": "upper"}),
+            ("lower", {"casing": "lower"}),
+            ("vowels", {"sub_scope": "vowels"}),
+            ("upper+vowels", {"casing": "upper",
+                              "sub_scope": "vowels"}),
+            ("lower+vowels", {"casing": "lower",
+                              "sub_scope": "vowels"}),
+            ("leet-full", {"sub_scope": "all"}),
+            ("leet-full-d1", {"sub_scope": "all", "sub_depth": 1})]
+    seen, out = set(), []
+    for vid, params in grid:
+        t = transform(text, variants=variants, vowel_map=vowel_map,
+                      **params)
+        if t not in seen:
+            seen.add(t)
+            out.append({"id": vid, "text": t, "params": params})
+    return out
 
 
 def load_sets(phrases_file: str | Path) -> dict:
@@ -93,7 +168,8 @@ def apply_phrases(prompt: str, data: dict, model_route: str, *,
                   placement: str = "prefix+suffix",
                   form: str = "verbatim",
                   profile: str | None = None,
-                  token_forms: dict | None = None) -> tuple[str, dict | None]:
+                  token_forms: dict | None = None,
+                  transform_cfg: dict | None = None) -> tuple[str, dict | None]:
     found = find_set(data, model_route)
     if not found:
         return prompt, None
@@ -114,6 +190,11 @@ def apply_phrases(prompt: str, data: dict, model_route: str, *,
         prefix, suffix = leet(prefix), leet(suffix)
     elif form != "verbatim":
         raise ValueError(f"unknown form {form!r}")
+    if transform_cfg:
+        kw = {"variants": data.get("char_variants"),
+              "vowel_map": data.get("established_vowel_map")}
+        prefix = transform(prefix, **{**kw, **transform_cfg})
+        suffix = transform(suffix, **{**kw, **transform_cfg})
     if token_forms:
         prefix = _apply_token_forms(prefix, token_forms)
         suffix = _apply_token_forms(suffix, token_forms)
@@ -121,6 +202,7 @@ def apply_phrases(prompt: str, data: dict, model_route: str, *,
     stamp = {"provider": key, "selection": selection,
              "placement": placement, "form": form,
              "profile": profile, "token_forms": token_forms or {},
+             "transform": transform_cfg or {},
              "prefix_sha256_12": hashlib.sha256(
                  prefix.encode()).hexdigest()[:12] if prefix else None,
              "suffix_sha256_12": hashlib.sha256(

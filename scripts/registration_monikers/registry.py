@@ -42,7 +42,7 @@ per-platform owner decision, never a silent re-derivation. An entry
 may instead carry "moniker_rule": "owner-issued": the owner set the
 platform's issued name directly and that name IS the moniker of
 record - its value lives in OWNER_ISSUED below and is never
-re-derived (first instance: lablab-ai, 2026-10-30).
+re-derived (instances: lablab-ai + discord, both 2026-10-30).
 
 Canonical form: <role>{<moniker>}[platform:<platform_id>] with role
 "entrant" (challenge platforms) or "account" (provider accounts).
@@ -192,7 +192,12 @@ def derive_moniker_v3(platform_id, taken):
 #   converged on latentf0rge; owner overrode pre-submit to this leet
 #   respell of the v3 derive RapidZenith18). Evidence: PR #2504
 #   (Profile Registry + coordinator), https://lablab.ai/u/@Rap1dZ3nith.
-OWNER_ISSUED = {"lablab-ai": "Rap1dZ3nith"}
+#   discord: wh1msical_sw4n_06136 - owner self-created the account
+#   2026-10-30 with the platform-suggested username instead of the
+#   directed v3 codename GentleOnyx47 (PR #2556); the issued name
+#   governs. Evidence: PR #2588 (Profile Registry Discord block).
+OWNER_ISSUED = {"discord": "wh1msical_sw4n_06136",
+                "lablab-ai": "Rap1dZ3nith"}
 
 
 def canonical(entry):

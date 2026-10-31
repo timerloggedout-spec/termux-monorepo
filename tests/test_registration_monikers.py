@@ -91,6 +91,11 @@ def test_owner_issued_moniker_is_the_record_not_a_derivation():
     assert reg.OWNER_ISSUED["lablab-ai"] == "Rap1dZ3nith"
     entry = {"platform_id": "lablab-ai", "moniker_rule": "owner-issued"}
     assert reg.expected_monikers([entry])["lablab-ai"] == "Rap1dZ3nith"
+    # discord: owner self-created with the platform-suggested username;
+    # the issued name, not the directed v3 codename, is the record.
+    assert reg.OWNER_ISSUED["discord"] == "wh1msical_sw4n_06136"
+    entry = {"platform_id": "discord", "moniker_rule": "owner-issued"}
+    assert reg.expected_monikers([entry])["discord"] == "wh1msical_sw4n_06136"
     assert reg.derive_moniker("lablab-ai", {}) == "n0nLablab"  # frozen v2 rule, superseded on-platform
 
 

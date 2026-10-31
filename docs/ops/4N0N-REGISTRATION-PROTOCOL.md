@@ -111,7 +111,7 @@ forms; the owning lane records it with the profile.
 | Code, Not Card | `account{n0nCodeNotCard}[platform:code-not-card]` | — (pending: marketing-channel) | pending | — | marketing-channel |
 | Cohere | `account{HappyCanyon42}[platform:cohere]` | — (pending: account-creation) | registering | — | account-creation |
 | Devpost | `entrant{n0nDevpost}[platform:devpost]` | Devpost | active | D4 | challenge-entries |
-| Discord | `account{GentleOnyx47}[platform:discord]` | — (pending: challenge-entries) | registering | — | challenge-entries |
+| Discord | `account{wh1msical_sw4n_06136}[platform:discord]` | Discord | active | — | challenge-entries |
 | Dream In Production | `account{n0nDreamInProduction}[platform:dream-in-production]` | — (pending: marketing-channel) | pending | — | marketing-channel |
 | iFlytek | `account{PluckyOasis73}[platform:iflytek]` | — (pending: account-creation) | pending | — | account-creation |
 | Kilo | `account{RapidHarbor74}[platform:kilo]` | — (pending: account-creation) | pending | — | account-creation |
@@ -203,7 +203,10 @@ no platform name**:
   the candidate queue and the owner's draw converged on `latentf0rge`,
   overridden pre-submit to this leet respelling of the v3 derive
   `RapidZenith18`; issued handle recorded in the Profile Registry,
-  PR #2504).
+  PR #2504). Second instance: discord → `wh1msical_sw4n_06136` —
+  the owner self-created the account with the platform-suggested
+  username instead of the directed v3 codename `GentleOnyx47`
+  (PR #2556); the issued name governs (record PR #2588).
 
 ## 4. Orchestration routes
 

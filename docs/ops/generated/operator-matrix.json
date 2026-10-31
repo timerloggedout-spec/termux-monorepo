@@ -3,9 +3,9 @@
     "open_issues": 365,
     "open_prs": 152,
     "pr_classes": {
-      "CANDIDATE": 70,
+      "CANDIDATE": 69,
       "EXTRACT": 5,
-      "NEED_EVIDENCE": 77,
+      "NEED_EVIDENCE": 78,
       "SUPERSEDE": 0
     }
   },
@@ -82,7 +82,7 @@
       ]
     }
   },
-  "generated_at": "2026-10-31T17:33:51Z",
+  "generated_at": "2026-10-31T17:36:03Z",
   "issues_unlabelled": [
     308,
     343,
@@ -118,7 +118,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "03513445b2"
+    "sha": "dde9caa3f8"
   },
   "prs": [
     {
@@ -569,7 +569,7 @@
       },
       "head_sha": "2177e62206",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1556,
       "title": "\ud83d\udcd6 Linguist: implement steganographic cipher lane and token efficiency analysis",
       "updated_at": "2026-10-31T12:48:25Z"
@@ -737,7 +737,7 @@
       },
       "head_sha": "bc797513fa",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 1642,
       "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
       "updated_at": "2026-10-31T12:49:28Z"
@@ -1163,20 +1163,6 @@
       "updated_at": "2026-10-31T16:17:00Z"
     },
     {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "949975d84b",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2731,
-      "title": "StudySprint v0.2.0 release cut \u2014 VERSION bump + CHANGELOG + receipts refresh",
-      "updated_at": "2026-10-31T17:27:57Z"
-    },
-    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -1589,12 +1575,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "0b911801f4",
+      "head_sha": "0ebcaf765a",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2167,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-10-31T17:32:31Z"
+      "updated_at": "2026-10-31T17:34:26Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2253,6 +2239,20 @@
       "number": 2629,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-31T05:34:47Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "in_progress",
+        "smoke": "in_progress"
+      },
+      "head_sha": "5a17bdcbb5",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2731,
+      "title": "StudySprint v0.2.0 release cut \u2014 VERSION bump + CHANGELOG + receipts refresh",
+      "updated_at": "2026-10-31T17:35:57Z"
     }
   ],
   "schema": "operator-matrix/v1",

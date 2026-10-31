@@ -12,8 +12,10 @@ on:
       - "tests/test_tdqs.py"
       - "scripts/ci/emit_ates_run_receipt.py"
       - "scripts/ci/bridge_ates_trace_to_events.py"
+      - "scripts/ci/correlate_ates_evidence.py"
       - "tests/test_emit_ates_run_receipt.py"
       - "tests/test_bridge_ates_trace_to_events.py"
+      - "tests/test_correlate_ates_evidence.py"
       - ".github/workflows/ates-phase-b-run-receipt.yml"
       - "tests/test_she_agent_throughput.py"
       - "docs/ops/AGENT-THROUGHPUT-*.md"
@@ -65,12 +67,12 @@ jobs:
             ':(glob)**/*.sh'
 
       - name: Compile telemetry and TDQS Python sources
-        run: python -m compileall -q she/metrics scripts/ci tests/test_she_agent_throughput.py tests/test_emit_ates_run_receipt.py tests/test_bridge_ates_trace_to_events.py tests/test_orchestrator_trace.py tests/test_tdqs.py
+        run: python -m compileall -q she/metrics scripts/ci tests/test_she_agent_throughput.py tests/test_emit_ates_run_receipt.py tests/test_bridge_ates_trace_to_events.py tests/test_correlate_ates_evidence.py tests/test_orchestrator_trace.py tests/test_tdqs.py
 
       - name: Validate event and TDQS evidence schema JSON
         run: |
           python -m json.tool docs/ops/AGENT-THROUGHPUT-EVENT.schema.json >/dev/null
           python -m json.tool docs/ops/TDQS-EVIDENCE.schema.json >/dev/null
 
-      - name: Run focused ATES, trace, and TDQS tests
-        run: python -m unittest tests.test_she_agent_throughput tests.test_emit_ates_run_receipt tests.test_bridge_ates_trace_to_events tests.test_orchestrator_trace tests.test_tdqs -v
+      - name: Run focused ATES, trace, correlation, and TDQS tests
+        run: python -m unittest tests.test_she_agent_throughput tests.test_emit_ates_run_receipt tests.test_bridge_ates_trace_to_events tests.test_correlate_ates_evidence tests.test_orchestrator_trace tests.test_tdqs -v

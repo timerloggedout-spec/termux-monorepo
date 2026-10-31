@@ -79,3 +79,39 @@ Per-entry quota usage is REQUIRED telemetry for ALL entries. Consequences:
 - `waived` — ALL of the entry's dispatches predate the mandate AND consumption is unrecoverable (provider exposes ∅ per-entry units, or the draw sat in a shared bucket with ∅ per-consumer split). `note` MUST carry the reason verbatim. D0, D1-original, D3, M4 land here at the mandate's start.
 - `fault` — ANY dispatch at/after the mandate lacks its stamp. Fault is a live, fixable state: stamping the late record (with its true window) clears it. Fault-forever is rejected as a state: it would mark mathematically unrecoverable history as a standing failure and destroy the signal.
 - Coverage counts `established + activity-only + waived` as covered; `fault` and unstamped post-mandate `pending` render as visible gaps.
+
+## Telemetry key set + roll-ups (owner, 2026-10-30 23:10 PT)
+
+Every requisition record carries the full key tuple. The identity atom is the CONFIGURED INSTANCE — a single model@version under different system prompts / tools per role/context is a different consumer. This atom stands since init; QUOTA-ATTRIBUTION lagged it, and the owner clarified the standing fact on 2026-10-30 (clarification, not a delta, per #1734).
+
+```json
+"keys": {
+  "provider": "<registry provider id>",
+  "model": "<model id>@<version> — version provider-verbatim; no version exposed => version NOT ESTABLISHED, never inferred (e.g. Jules)",
+  "system_prompt_ref": "<ref per the DoE scheme; encoding NOT ESTABLISHED until the DoE seat names it — adopted verbatim when named>",
+  "tools_ref": "<ref per the DoE scheme; same status as system_prompt_ref>",
+  "moniker": "<fleet moniker from the signed identity>",
+  "role": "<fleet role — per-dispatch axis, never aggregated away>",
+  "context": "<entry id / dispatch context>"
+}
+
+- `moniker` + `role` = the dispatching lane's signed identity `[MUSEai]@{role:{moniker}}`; `context` = the entry/dispatch the draw served. All three are known at requisition time — a post-mandate record missing any of them is unstamped ⇒ `fault`.
+- `system_prompt_ref` + `tools_ref`: carried on every record; until the DoE seat names the ref scheme they are `null` and NOT a fault axis (unstampable until nameable); after the scheme lands, a missing ref on a dispatch = unstamped ⇒ `fault`. The spec adopts the DoE scheme verbatim when named.
+- `provider` from the registry id space; `model` is the provider's own model id verbatim, `null` (never guessed) when the surface doesn't split by model.
+- `usage{}` records sit under these keys; desk-feed groups on exactly this tuple.
+
+Roll-ups (rendered totals):
+
+- TOTAL quota used = Σ `usage.value` over `established` records, per `unit` (units never summed across).
+- Split BEFORE any Σ: records group by {provider, model@version, role} first (role is per-dispatch, never aggregated away); per-axis totals for moniker / context / instance (prompt/tools refs) derive from the split rows, never from pre-aggregated sums.
+- `activity-proxy` values roll up separately under their unit, labeled activity — never merged into consumption totals.
+- `waived` records contribute ∅ to totals and count as covered in the coverage strip; `fault` records contribute ∅ and count as gaps.
+
+## Ref scheme (DoE, landed PR #2656 `82bd529b17fc` — adopted verbatim)
+
+`system_prompt_ref` / `tools_ref` are now NAMEABLE:
+
+- ref = repo-relative PATH ∨ scoped id `prompt:<moniker>:<slug>` / `tools:<moniker>:<slug>`, ALWAYS + the full SHA-256 of the exact dispatched content.
+- Compact stamp = `<ref>#<sha256[:12]>`.
+- `instance_key` = `sha256(canonical tuple JSON)`; helper `scripts/doe/instance_key.py` on master computes it.
+- Fault boundary flips at the scheme landing: dispatches after PR #2656 carry both refs or they are unstamped ⇒ `fault`. Pre-scheme records keep `null` refs, waived on those two axes.

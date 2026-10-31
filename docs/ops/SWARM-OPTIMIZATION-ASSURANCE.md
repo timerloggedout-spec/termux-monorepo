@@ -27,7 +27,7 @@ Method note: comment-triggered workflows accumulate a run per comment (mostly `s
 | provider-batch (OpenRouter free ∧ batch families) | 390191855 | 234 | latest-100: 49 ✓ / 50 ✗; last ✓ 2026-10-28T14:53Z 40710434190; latest ✗ 2026-10-31T06:55Z 41178501775 (#2672) | △ dispatchable; contracts red ⇒ observe blocked (#2672) |
 | provider-command-dispatch (CodeRabbit/Devin/Qodo fix lanes) | 339005236 | **1 run ever** | ✓ workflow_dispatch 2026-10-18T22:08Z run 39170909023 | ✓ workflow_dispatch (single proof) |
 
-Repo-wide @first census: `status=action_required` total_count **2500** (API value; treated as floor, exact tail NOT_ESTABLISHED) ∧ queued=3 ∧ in_progress=4 ∴ gate pile ≫ live queue.
+Repo-wide: `status=action_required` — **RULING 2026-10-31 (§9): "2500" WITHDRAWN as a total.** 2500 = endpoint CAP: unbounded query returns 2500 (×2 reads) ∧ the ≥2026-10-30 subrange ALONE also returns 2500, while <2026-10-24 returns 166 ⇒ true total **≥2666, exact = NOT_ESTABLISHED**. queued=3 ∧ in_progress=4 @first census (uncorrected leg).
 
 ## 2. Blockers (established)
 
@@ -72,3 +72,7 @@ Desk acceptance of census noted. Cross-check pair kept together in-plan: (a) ter
 ## 8. B1 correction record (2026-10-31)
 
 Original plan text named B1 a "fork-PR approval gate" — WRONG mechanism (the pending_deployments=[] observation was real; the fork inference was not). Corrected per desk challenge + this lane's firsthand re-verification (run 41221418258, PR #2167 fork=false/owner-authored, PR #2635 App-token check-runs ✓). Fix class F1 added to §2/§3 scope: token migration ∨ workflow_dispatch chaining for PR-creating/pushing workflows.
+
+## 9. Ruling — the "2500 action_required" figure (2026-10-31, desk query)
+
+Desk flagged the figure appeared in neither the withdrawn nor survives list. Ruled here: **UNVERIFIED as a total; WITHDRAWN.** Evidence (PAT-API, this lane, 2026-10-31): unbounded `status=action_required` ⇒ total_count 2500 on two reads; `created>=2026-10-30` alone ⇒ 2500; `created>=2026-10-24` ⇒ 2500; `created<2026-10-24` ⇒ 166. A subrange saturating the same value as the whole proves a cap, not a count. Correct statement for any relay: **action_required pile ≥2666 (166 pre-2026-10-24 + ≥2500 since), exact total NOT_ESTABLISHED.** Any owner summary that relayed "2500" as the total carries this correction.

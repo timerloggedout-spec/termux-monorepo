@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contribution Desk — Queue, Traversals &amp; Dispatch</title>
+<!--
+  Renders ONLY data/desk-feed.json (schema desk-feed/v1), seeded by the
+  viz lane from firsthand audits of the live record (2026-10-30) and
+  refreshed by the Contribution Desk lane as traversals move. The page
+  mutates nothing: dispatch opens the intake issue on GitHub, where the
+  desk works (the fleet's coordination surface). No metrics_internal
+  data appears here — the desk board is build state, not win odds.
+-->
+<link rel="stylesheet" href="./dashboard.css">
+<style>
+  .chip{display:inline-block;padding:0 8px;border-radius:10px;font-size:11px;border:1px solid var(--line);white-space:nowrap}
+  .chip.done{border-color:var(--ok);color:var(--ok)}
+  .chip.active{border-color:var(--gold);color:var(--gold);font-weight:700}
+  .chip.gated{border-color:var(--gold);color:var(--gold);border-style:dashed}
+  .chip.pending{color:var(--muted)}
+  .chip.na{color:var(--muted);border-style:dotted}
+  table.st{width:100%;border-collapse:collapse;font-size:13px}
+  table.st td,table.st th{padding:4px 6px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
+  .dim{color:var(--muted)}
+  .stage{display:inline-block;margin:1px 2px}
+  .arrow{color:var(--muted);font-size:11px}
+  .dispatch{border:1px solid var(--gold);border-radius:8px;padding:.7rem .8rem}
+  .dispatch a.btn{display:inline-block;padding:.35rem .9rem;border:1px solid var(--gold);border-radius:6px;color:var(--gold);font-weight:700;text-decoration:none}
+</style>
+</head>
+<body>
+<header>
+<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/help-wanted/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/help-wanted/quota-usage.html">Quota Usage</a><a href="https://timerloggedout-spec.github.io/help-wanted/admin.html">Admin</a></nav>
+<h1>Contribution Desk</h1>
+<p id="meta">Loading desk feed…</p>
+</header>
+<main>
+<section>
+<h2>The desk</h2>
+<p id="model"></p>
+<table class="st" id="roles"></table>
+</section>
+<section>
+<h2>Dispatch a build</h2>
+<div class="dispatch">
+<p id="dispatchhow"></p>
+<p><a class="btn" id="intake" href="#" target="_blank" rel="noopener">New dispatch</a></p>
+</div>
+</section>
+<section>
+<h2>Traversal board</h2>
+<p class="dim">Pipeline: spec ⇒ desk ⇒ builder ⇒ PR ⇒ CI ⇒ merge ⇒ artifact sync. A stage shows done only with its evidence in the feed.</p>
+<div id="board"></div>
+</section>
+<section>
+<h2>Provenance</h2>
+<p id="prov" class="dim"></p>
+</section>
+</main>
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+// ==== pure logic (node-sim tested) ====
+const STAGES=["spec","desk","builder","pr","ci","merge","sync"];
+const STAGE_STATES=["done","active","pending","gated","na"];
+function stageClass(state){ return STAGE_STATES.indexOf(state)>=0 ? state : "pending"; }
+function stageLabel(stage,state){ return stage+" "+(state==="done"?"✓":state==="gated"?"⛔":state==="na"?"—":state==="active"?"…":"·"); }
+function boardRow(t){
+  const chips=STAGES.map((s,i)=>((i? '<span class="arrow">⇒</span>' : "")+'<span class="stage"><span class="chip '+stageClass(t.stages[s])+'">'+esc(stageLabel(s,t.stages[s]))+"</span></span>")).join("");
+  return {entry:t.entry, project:t.project, status:t.status, chips};
+}
+function evidenceText(ev){
+  const parts=[];
+  if(ev.pr) parts.push("PR #"+ev.pr);
+  if(ev.prs) parts.push("PRs "+ev.prs.map(n=>"#"+n).join(", "));
+  if(ev.merge_sha) parts.push("merge "+ev.merge_sha);
+  if(ev.merge_shas) parts.push("merges "+ev.merge_shas.join(", "));
+  if(ev.ci) parts.push("CI: "+ev.ci);
+  if(ev.sync) parts.push("sync: "+ev.sync);
+  if(ev.note) parts.push(ev.note);
+  return parts.join(" · ");
+}
+// ==== end pure logic ====
+let PACK=null;
+function renderBoard(){
+  const rows=PACK.traversals.map(t=>{
+    const r=boardRow(t);
+    return "<tr><td><strong>"+esc(r.entry)+"</strong><br><span class='dim'>"+esc(r.project)+"</span></td>"+
+      "<td>"+esc(r.status)+"</td><td>"+r.chips+"</td>"+
+      "<td>"+esc(evidenceText(t.evidence||{}))+"</td><td>"+esc(t.next||"")+"</td></tr>";
+  }).join("");
+  $("board").innerHTML="<table class='st'><tr><th>Entry</th><th>Status</th><th>Pipeline</th><th>Evidence</th><th>Next</th></tr>"+rows+"</table>";
+}
+function renderAll(){
+  $("meta").textContent="Feed "+PACK.schema+" · generated "+PACK.generated_at+" · "+PACK.built_by+".";
+  $("model").textContent=PACK.desk.model;
+  $("roles").innerHTML=Object.keys(PACK.desk.roles).map(k=>"<tr><th>"+esc(k)+"</th><td>"+esc(PACK.desk.roles[k])+"</td></tr>").join("");
+  $("dispatchhow").textContent=PACK.dispatch.how;
+  const a=$("intake"); a.href=PACK.dispatch.intake_url; a.textContent=PACK.dispatch.intake_label;
+  renderBoard();
+  $("prov").textContent=PACK.provenance+" "+PACK.refresh;
+}
+fetch("./data/desk-feed.json").then(r=>{ if(!r.ok) throw new Error("feed fetch "+r.status); return r.json(); }).then(p=>{ PACK=p; renderAll(); }).catch(e=>{ $("meta").textContent="Desk feed failed to load: "+e.message; });
+</script>
+</body>
+</html>

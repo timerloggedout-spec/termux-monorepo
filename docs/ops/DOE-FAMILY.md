@@ -75,6 +75,38 @@ role `extractor`, moniker `doe-expert`, context
 `pilot-1 offline-deterministic`. New campaigns stamp
 `treatment.instance` at run time.
 
+### HindSight provider-schema mapping (2026-10-30)
+
+HindSight carries its own provider schema — per function role:
+`HINDSIGHT_API_{LLM|EMBEDDINGS|RERANKER}_{PROVIDER|MODEL}` (set by
+the deploy workflows). A mapping IS needed, at exactly one seam:
+whenever HindSight activity is attributed or compared (quota
+attribution, DoE records, dispatch stamps), its rows must translate
+into configured-instance terms — HindSight's schema has no
+prompt/tools fields and its role axis is the function, so an
+unmapped join collapses distinct instances. The need is proven on
+master today: two deployments share the schema with different
+values (Fly `hindsight-termux`: LLM openrouter /
+`openai/gpt-4o-mini`, embeddings google / `text-embedding-004`;
+Koyeb: LLM openrouter / `meta-llama/llama-3.1-8b-instruct:free`,
+embeddings google / `gemini-embedding-001`; reranker `rrf` in
+both).
+
+| HindSight schema | instance field |
+|---|---|
+| `HINDSIGHT_API_<ROLE>_PROVIDER` | `provider` |
+| `HINDSIGHT_API_<ROLE>_MODEL` | `model` (verbatim) |
+| function role (LLM / EMBEDDINGS / RERANKER) | `role` = `hindsight-llm` / `hindsight-embeddings` / `hindsight-reranker` |
+| deployment + bank (e.g. `fly:hindsight-termux`, bank id) | `context` |
+| — (the service itself) | `moniker` = `hindsight` |
+| — (upstream server-internal) | `system_prompt` ref `prompt:hindsight:server-internal`, `tools` ref `tools:hindsight:server-internal`; sha256 **NOT ESTABLISHED** (upstream vectorize-io internals, not in this repo — never invented) |
+
+Edges: the `rrf` reranker has no model — its `model` is `rrf`
+(the algorithm is the engine). HindSight's memory-content schema
+(world facts / experiences / observations / mental models) is
+unrelated to provider identity and needs no mapping. The deploy
+configs themselves are unchanged by this mapping.
+
 ## Binding rules (from #1865 + separation spec)
 
 1. One primary home per record. Cross-surface references are citations

@@ -2,7 +2,7 @@
 
 **Lane:** `planning:mesh-resiliency`  
 **Tracking issue:** [#1622](https://github.com/timerloggedout-spec/termux-monorepo/issues/1622)  
-**Status:** Planning claimed; research not yet completed  
+**Status:** Independent planning lane established; initial official-source evidence captured; workload inventory and provider research remain in progress  
 **Version:** 0.1.0  
 **Last updated:** 2026-10-24  
 **Owner boundary:** Independent of the hackathon Delphi Oracle RFP, PR #1620, Hex, and any AWS account signup.
@@ -117,6 +117,9 @@ Prefer official pricing, quota, product-limit, and terms pages. Secondary source
 - Store observation time separately from source publication time.
 - Expired or inaccessible evidence becomes `unknown`, not “still free.”
 - Preserve historical snapshots so quota/terms changes can be analyzed.
+
+### Initial source-backed findings (2026-10-24)
+The first evidence batch is recorded in [PROVIDER-EVIDENCE-MATRIX.md](./PROVIDER-EVIDENCE-MATRIX.md). It captures public documentation for Oracle Cloud Always Free, Google Cloud Compute Engine Free Tier, Cloudflare Workers Free, and GitHub Actions included usage. These are **public terms only**; account-specific eligibility, current available capacity, repo billing configuration, and end-to-end workload fit remain unknown. The source-backed facts already show why these products must not be treated as interchangeable: the shortlist includes Arm VM capacity, a region-limited small VM, a strict edge-runtime CPU/request budget, and plan-bound CI minutes/storage. No provider has been selected or scored.
 
 ## 7. Scoring rubric (version 1)
 
@@ -267,7 +270,7 @@ Publish a decision record with chosen topology, rejected alternatives, score/unc
 | Separate planning lane claimed | complete | issue #1622 |
 | Standalone RFP draft | in progress | this committed file, reviewed and refined |
 | Workload inventory | pending | workflow-derived profile table with source references |
-| Official provider evidence collection | pending | timestamped evidence ledger |
+| Official provider evidence collection | in progress | initial official-source evidence for Oracle, Google Compute Engine, Cloudflare Workers, and GitHub Actions; remaining providers unknown |
 | Weight/rubric approval | pending | versioned rubric decision |
 | Offline scheduler simulation | pending | fixtures, tests, deterministic report |
 | Pilot authorization | blocked by design until code ready | explicit owner approval and cost/security gate |

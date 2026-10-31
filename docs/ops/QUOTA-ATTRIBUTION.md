@@ -82,25 +82,27 @@ Per-entry quota usage is REQUIRED telemetry for ALL entries. Consequences:
 
 ## Telemetry key set + roll-ups (owner, 2026-10-30 23:10 PT)
 
-Every requisition record carries the full 5-axis key tuple:
+Every requisition record carries the full key tuple. The identity atom is the CONFIGURED INSTANCE — a single model@version under different system prompts / tools per role/context is a different consumer. This atom stands since init; QUOTA-ATTRIBUTION lagged it, and the owner clarified the standing fact on 2026-10-30 (clarification, not a delta, per #1734).
 
 ```json
 "keys": {
   "provider": "<registry provider id>",
-  "model": "<model id, or null when the provider exposes no per-model split>",
+  "model": "<model id>@<version> — version provider-verbatim; no version exposed => version NOT ESTABLISHED, never inferred (e.g. Jules)",
+  "system_prompt_ref": "<ref per the DoE scheme; encoding NOT ESTABLISHED until the DoE seat names it — adopted verbatim when named>",
+  "tools_ref": "<ref per the DoE scheme; same status as system_prompt_ref>",
   "moniker": "<fleet moniker from the signed identity>",
-  "role": "<fleet role>",
+  "role": "<fleet role — per-dispatch axis, never aggregated away>",
   "context": "<entry id / dispatch context>"
 }
-```
 
 - `moniker` + `role` = the dispatching lane's signed identity `[MUSEai]@{role:{moniker}}`; `context` = the entry/dispatch the draw served. All three are known at requisition time — a post-mandate record missing any of them is unstamped ⇒ `fault`.
+- `system_prompt_ref` + `tools_ref`: carried on every record; until the DoE seat names the ref scheme they are `null` and NOT a fault axis (unstampable until nameable); after the scheme lands, a missing ref on a dispatch = unstamped ⇒ `fault`. The spec adopts the DoE scheme verbatim when named.
 - `provider` from the registry id space; `model` is the provider's own model id verbatim, `null` (never guessed) when the surface doesn't split by model.
 - `usage{}` records sit under these keys; desk-feed groups on exactly this tuple.
 
 Roll-ups (rendered totals):
 
 - TOTAL quota used = Σ `usage.value` over `established` records, per `unit` (units never summed across).
-- Per-axis totals = same Σ grouped by each of provider / model / moniker / role / context.
+- Split BEFORE any Σ: records group by {provider, model@version, role} first (role is per-dispatch, never aggregated away); per-axis totals for moniker / context / instance (prompt/tools refs) derive from the split rows, never from pre-aggregated sums.
 - `activity-proxy` values roll up separately under their unit, labeled activity — never merged into consumption totals.
 - `waived` records contribute ∅ to totals and count as covered in the coverage strip; `fault` records contribute ∅ and count as gaps.
